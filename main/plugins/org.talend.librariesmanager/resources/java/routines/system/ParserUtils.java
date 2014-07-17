@@ -8,7 +8,7 @@
 // You should have received a copy of the agreement
 // along with this program; if not, write to Talend SA
 // 9 rue Pages 92150 Suresnes, France
-//   
+//
 // ============================================================================
 package routines.system;
 
@@ -33,28 +33,30 @@ public class ParserUtils {
     public static List parseTo_List(String s) {
         return parseTo_List(s, null);
     }
+
     /**
      * the source should be a string wrapped in chars[ ] which stands for it is a collection
+     * 
      * @param stSrc
      * @param fieldSep
      * @return
      */
     public static List<String> parseTo_List(final String strSrc, String fieldSep) {
-    	if (strSrc == null) {
-    		return null;
-    	}
-    	List<String> list = new ArrayList<String>();
-    	
-    	// the source string is wrap in [] which means it is a collection
-    	if ( (fieldSep == null || "".equals(fieldSep)) || !(strSrc.startsWith("[") && strSrc.endsWith("]"))) {
+        if (strSrc == null) {
+            return null;
+        }
+        List<String> list = new ArrayList<String>();
+
+        // the source string is wrap in [] which means it is a collection
+        if ((fieldSep == null || "".equals(fieldSep)) || !(strSrc.startsWith("[") && strSrc.endsWith("]"))) {
             list.add(strSrc);
             return list;
-    	}
-    	String strTemp = strSrc.substring(1, strSrc.length()-1); // remove the [ ]
-    	for (String str : strTemp.split(fieldSep, -1)) {
-    		list.add(str);
-    	}
-    	return list;
+        }
+        String strTemp = strSrc.substring(1, strSrc.length() - 1); // remove the [ ]
+        for (String str : strTemp.split(fieldSep, -1)) {
+            list.add(str);
+        }
+        return list;
     }
 
     public static Character parseTo_Character(String s) {
@@ -75,8 +77,23 @@ public class ParserUtils {
         return Byte.decode(s).byteValue();
     }
 
+    public static Byte parseTo_Byte(String s, boolean isDecode) {
+        if (s == null) {
+            return null;
+        }
+        if (isDecode) {
+            return Byte.decode(s).byteValue();
+        } else {
+            return Byte.parseByte(s);
+        }
+    }
+
     public static byte parseTo_byte(String s) {
         return parseTo_Byte(s);
+    }
+
+    public static byte parseTo_byte(String s, boolean isDecode) {
+        return parseTo_Byte(s, isDecode);
     }
 
     public static Double parseTo_Double(String s) {
@@ -105,6 +122,14 @@ public class ParserUtils {
         return Integer.parseInt(s);
     }
 
+    public static int parseTo_int(String s, boolean isDecode) {
+        if (isDecode) {
+            return Integer.decode(s).intValue();
+        } else {
+            return Integer.parseInt(s);
+        }
+    }
+
     public static Integer parseTo_Integer(String s) {
         if (s == null) {
             return null;
@@ -112,8 +137,23 @@ public class ParserUtils {
         return parseTo_int(s);
     }
 
+    public static Integer parseTo_Integer(String s, boolean isDecode) {
+        if (s == null) {
+            return null;
+        }
+        return parseTo_int(s, isDecode);
+    }
+
     public static short parseTo_short(String s) {
         return Short.parseShort(s);
+    }
+
+    public static short parseTo_short(String s, boolean isDecode) {
+        if (isDecode) {
+            return Short.decode(s).shortValue();
+        } else {
+            return Short.parseShort(s);
+        }
     }
 
     public static Short parseTo_Short(String s) {
@@ -123,8 +163,23 @@ public class ParserUtils {
         return parseTo_short(s);
     }
 
+    public static Short parseTo_Short(String s, boolean isDecode) {
+        if (s == null) {
+            return null;
+        }
+        return parseTo_short(s, isDecode);
+    }
+
     public static long parseTo_long(String s) {
         return Long.parseLong(s);
+    }
+
+    public static long parseTo_long(String s, boolean isDecode) {
+        if (isDecode) {
+            return Long.decode(s).longValue();
+        } else {
+            return Long.parseLong(s);
+        }
     }
 
     public static Long parseTo_Long(String s) {
@@ -132,6 +187,13 @@ public class ParserUtils {
             return null;
         }
         return parseTo_long(s);
+    }
+
+    public static Long parseTo_Long(String s, boolean isDecode) {
+        if (s == null) {
+            return null;
+        }
+        return parseTo_long(s, isDecode);
     }
 
     public static Boolean parseTo_Boolean(String s) {
@@ -165,10 +227,10 @@ public class ParserUtils {
             result.append(s.get(i));
         }
         result.append("]");
-        
+
         return result.toString();
     }
-    
+
     public static BigDecimal parseTo_BigDecimal(String s) {
         if (s == null) {
             return null;
@@ -177,34 +239,36 @@ public class ParserUtils {
     }
 
     public static routines.system.Document parseTo_Document(String s) throws org.dom4j.DocumentException {
-    	return parseTo_Document(s,false);
+        return parseTo_Document(s, false);
     }
-    
+
     public static routines.system.Document parseTo_Document(String s, boolean ignoreDTD) throws org.dom4j.DocumentException {
-    	return parseTo_Document(s,false,null);
+        return parseTo_Document(s, false, null);
     }
-    
-    public static routines.system.Document parseTo_Document(String s, boolean ignoreDTD,String encoding) throws org.dom4j.DocumentException {
+
+    public static routines.system.Document parseTo_Document(String s, boolean ignoreDTD, String encoding)
+            throws org.dom4j.DocumentException {
         if (s == null) {
             return null;
         }
         routines.system.Document theDoc = new routines.system.Document();
         org.dom4j.io.SAXReader reader = new org.dom4j.io.SAXReader();
-        
-        if(ignoreDTD) {
-        	reader.setEntityResolver(new EntityResolver() {
-				
-				public InputSource resolveEntity(String publicId, String systemId)
-						throws SAXException, IOException {
-					return new org.xml.sax.InputSource(new java.io.ByteArrayInputStream("<?xml version='1.0' encoding='UTF-8'?>".getBytes())); 
-				}
-			});
+
+        if (ignoreDTD) {
+            reader.setEntityResolver(new EntityResolver() {
+
+                @Override
+                public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
+                    return new org.xml.sax.InputSource(new java.io.ByteArrayInputStream("<?xml version='1.0' encoding='UTF-8'?>"
+                            .getBytes()));
+                }
+            });
         }
-        
-		org.dom4j.Document document = reader.read(new java.io.StringReader(s));
-		if(encoding!=null && !("".equals(encoding))){
-			document.setXMLEncoding(encoding);
-		}
+
+        org.dom4j.Document document = reader.read(new java.io.StringReader(s));
+        if (encoding != null && !("".equals(encoding))) {
+            document.setXMLEncoding(encoding);
+        }
         theDoc.setDocument(document);
         return theDoc;
     }
@@ -217,8 +281,8 @@ public class ParserUtils {
         if (s == null || s.length() == 0) {
             return null;
         }
-        if(pattern == null) {
-        	pattern = Constant.dateDefaultPattern;
+        if (pattern == null) {
+            pattern = Constant.dateDefaultPattern;
         }
         java.util.Date date = null;
         // try {
@@ -256,8 +320,8 @@ public class ParserUtils {
         if (s == null || s.length() == 0) {
             return null;
         }
-        if(pattern == null) {
-        	pattern = Constant.dateDefaultPattern;
+        if (pattern == null) {
+            pattern = Constant.dateDefaultPattern;
         }
         java.util.Date date = null;
         // try {
@@ -315,61 +379,61 @@ public class ParserUtils {
         }
         return result;
     }
-    
+
     private static final Set<String> primitiveType = new HashSet<String>();
-    
-    private static final Map<String,String> primitiveTypeToDefaultValueMap = new HashMap<String,String>();
-    
+
+    private static final Map<String, String> primitiveTypeToDefaultValueMap = new HashMap<String, String>();
+
     static {
-    	primitiveType.add("boolean");
-    	primitiveType.add("int");
-    	primitiveType.add("byte");
-    	primitiveType.add("char");
-    	primitiveType.add("double");
-    	primitiveType.add("float");
-    	primitiveType.add("long");
-    	primitiveType.add("short");
-    	
-    	primitiveTypeToDefaultValueMap.put("boolean", "false");
-    	primitiveTypeToDefaultValueMap.put("int", "0");
-    	primitiveTypeToDefaultValueMap.put("byte", "0");
-    	primitiveTypeToDefaultValueMap.put("char", " ");
-    	primitiveTypeToDefaultValueMap.put("double", "0");
-    	primitiveTypeToDefaultValueMap.put("float", "0");
-    	primitiveTypeToDefaultValueMap.put("long", "0");
-    	primitiveTypeToDefaultValueMap.put("short", "0");
+        primitiveType.add("boolean");
+        primitiveType.add("int");
+        primitiveType.add("byte");
+        primitiveType.add("char");
+        primitiveType.add("double");
+        primitiveType.add("float");
+        primitiveType.add("long");
+        primitiveType.add("short");
+
+        primitiveTypeToDefaultValueMap.put("boolean", "false");
+        primitiveTypeToDefaultValueMap.put("int", "0");
+        primitiveTypeToDefaultValueMap.put("byte", "0");
+        primitiveTypeToDefaultValueMap.put("char", " ");
+        primitiveTypeToDefaultValueMap.put("double", "0");
+        primitiveTypeToDefaultValueMap.put("float", "0");
+        primitiveTypeToDefaultValueMap.put("long", "0");
+        primitiveTypeToDefaultValueMap.put("short", "0");
     }
-    
-    public static Object parse(String text,String javaType,String pattern) {
-    	if("String".equals(javaType) || "Object".equals(javaType)) {
-    		return text;
-    	}
-    	
-    	if(text==null || text.length()==0){
-    		boolean isPrimitiveType =  primitiveType.contains(javaType);
-    		if(!isPrimitiveType) {
-    			return null;
-    		} else {
-    			text = primitiveTypeToDefaultValueMap.get(javaType);
-    		}
-    	} else {
-	    	if("java.util.Date".equals(javaType)) {
-	    		return ParserUtils.parseTo_Date(text, pattern); 
-	    	}
-	    	
-	    	if("byte[]".equals(javaType)) {
-	    		return text.getBytes();
-	    	}
-    	}
-    	
-    	try {
-			Method method = ParserUtils.class.getMethod("parseTo_" + javaType, String.class);
-			return method.invoke(null, text);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return null;
+
+    public static Object parse(String text, String javaType, String pattern) {
+        if ("String".equals(javaType) || "Object".equals(javaType)) {
+            return text;
+        }
+
+        if (text == null || text.length() == 0) {
+            boolean isPrimitiveType = primitiveType.contains(javaType);
+            if (!isPrimitiveType) {
+                return null;
+            } else {
+                text = primitiveTypeToDefaultValueMap.get(javaType);
+            }
+        } else {
+            if ("java.util.Date".equals(javaType)) {
+                return ParserUtils.parseTo_Date(text, pattern);
+            }
+
+            if ("byte[]".equals(javaType)) {
+                return text.getBytes();
+            }
+        }
+
+        try {
+            Method method = ParserUtils.class.getMethod("parseTo_" + javaType, String.class);
+            return method.invoke(null, text);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
-    
+
 }

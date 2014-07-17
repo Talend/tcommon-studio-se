@@ -393,6 +393,19 @@ public final class JavaTypesManager {
     }
 
     /**
+     * They are all the INTEGER number type.
+     * <p>
+     * int(Integer), long(Long), short(Short), byte(Byte)
+     * </p>
+     * 
+     * @param type
+     * @return true if given type represents a primitive java type
+     */
+    public static boolean isNumberIntType(JavaType javaType) {
+        return javaType == BYTE || javaType == INTEGER || javaType == SHORT || javaType == LONG;
+    }
+
+    /**
      * 
      * Return the default value for a given type.
      * 
