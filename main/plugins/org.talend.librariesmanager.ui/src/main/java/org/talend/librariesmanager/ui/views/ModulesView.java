@@ -15,6 +15,10 @@ package org.talend.librariesmanager.ui.views;
 import java.util.List;
 
 import org.eclipse.core.commands.IHandler;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -82,8 +86,15 @@ public class ModulesView extends ViewPart {
             }
         };
         LibManagerUiPlugin.getDefault().getLibrariesService().addChangeLibrariesListener(changedLibrariesListener);
-
-        LibManagerUiPlugin.getDefault().getLibrariesService().checkLibraries();
+        Job job = new Job("check libraries") {
+			
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				LibManagerUiPlugin.getDefault().getLibrariesService().checkLibraries();
+				return Status.OK_STATUS;
+			}
+		};
+		job.schedule();
     }
 
     @Override
