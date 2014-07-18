@@ -221,6 +221,8 @@ public class ModulesViewComposite extends Composite {
             }
         };
 
+        TableViewerProvideFilterWrapper.wrapViewer(tableViewerCreator.getTableViewer());
+
         parent.addFocusListener(fl);
         rightPartComposite.addFocusListener(fl);
         tableViewerCreator.getTableViewer().getTable().addFocusListener(fl);
