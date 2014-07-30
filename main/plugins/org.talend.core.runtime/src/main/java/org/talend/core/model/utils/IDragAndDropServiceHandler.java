@@ -91,9 +91,10 @@ public interface IDragAndDropServiceHandler {
      * 
      * Set metadata table relevant parameters value of the element.
      * 
+     * @param connection
      * @param ele
      * @param metadataTable
      */
-    public void handleTableRelevantParameters(IElement ele, IMetadataTable metadataTable);
+    public void handleTableRelevantParameters(Connection connection, IElement ele, IMetadataTable metadataTable);
 
 }

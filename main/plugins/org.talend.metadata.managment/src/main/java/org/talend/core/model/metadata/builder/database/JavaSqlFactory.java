@@ -126,20 +126,12 @@ public final class JavaSqlFactory {
     public static TypedReturnCode<java.sql.Connection> createConnection(Connection connection) {
         TypedReturnCode<java.sql.Connection> rc = new TypedReturnCode<java.sql.Connection>(false);
         String url = getURL(connection);
-        if (url == null) {
+        if (url == null || !(connection instanceof DatabaseConnection)) {
             rc.setMessage(Messages.getString("JavaSqlFactory.DatabaseConnectionNull")); //$NON-NLS-1$
             rc.setOk(false);
             return rc; // MOD scorreia 2010-10-20 bug 16403 avoid NPE while importing items
         }
-        java.sql.Connection sqlConnection = null;
-
-        if (connection instanceof DatabaseConnection) {
-            sqlConnection = MetadataConnectionUtils.createConnection((DatabaseConnection) connection).getObject();
-        }
-        rc.setObject(sqlConnection);
-        rc.setOk(sqlConnection != null);
-
-        return rc;
+        return MetadataConnectionUtils.createConnection((DatabaseConnection) connection);
     }
 
     /**
