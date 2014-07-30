@@ -1161,6 +1161,7 @@ public abstract class RepositoryUpdateManager {
                 types.add(EUpdateItemType.JOB_PROPERTY_STATS_LOGS);
                 types.add(EUpdateItemType.JOB_PROPERTY_HEADERFOOTER);
                 types.add(EUpdateItemType.JOB_PROPERTY_MAPREDUCE);
+                types.add(EUpdateItemType.JOB_PROPERTY_STORM);
 
                 return types;
             }
@@ -1857,7 +1858,7 @@ public abstract class RepositoryUpdateManager {
         Item item = node.getObject().getProperty().getItem();
         List<Relation> relations = null;
         if (parameter instanceof Query) {
-            String id = item.getProperty().getId(); //$NON-NLS-1$
+            String id = item.getProperty().getId();
             relations = RelationshipItemBuilder.getInstance().getItemsRelatedTo(id, RelationshipItemBuilder.LATEST_VERSION,
                     RelationshipItemBuilder.QUERY_RELATION);
         }
