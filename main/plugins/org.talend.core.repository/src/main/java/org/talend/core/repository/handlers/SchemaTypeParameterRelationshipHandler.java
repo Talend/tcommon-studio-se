@@ -28,18 +28,7 @@ public class SchemaTypeParameterRelationshipHandler extends AbstractJobParameter
      */
     @Override
     protected String getRepositoryTypeName() {
-        return "SCHEMA:SCHEMA_TYPE"; //$NON-NLS-1$
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.relationship.AbstractJobParameterInRepositoryRelationshipHandler#getRepositoryTypeNameN()
-     */
-    @Override
-    protected String[] getRepositoryTypeNameN() {
-        return new String[] { "SCHEMA_OTHER:SCHEMA_TYPE" }; //$NON-NLS-1$
+        return "SCHEMA_TYPE"; //$NON-NLS-1$
     }
 
     /*
@@ -51,19 +40,7 @@ public class SchemaTypeParameterRelationshipHandler extends AbstractJobParameter
      */
     @Override
     protected String getRepositoryTypeValueName() {
-        return "SCHEMA:REPOSITORY_SCHEMA_TYPE"; //$NON-NLS-1$
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.relationship.AbstractJobParameterInRepositoryRelationshipHandler#getRepositoryTypeValueNameN
-     * ()
-     */
-    @Override
-    protected String[] getRepositoryTypeValueNameN() {
-        return new String[] { "SCHEMA_OTHER:REPOSITORY_SCHEMA_TYPE" }; //$NON-NLS-1$
+        return "REPOSITORY_SCHEMA_TYPE"; //$NON-NLS-1$
     }
 
     /*

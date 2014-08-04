@@ -201,6 +201,14 @@ public enum SupportDBUrlType {
                    "org.apache.hadoop.hive.jdbc.HiveDriver", //$NON-NLS-1$
                    null,
                    "Hive"), //$NON-NLS-1$
+    IMPALA("Impala", //$NON-NLS-1$
+           "localhost", //$NON-NLS-1$
+           "10000", //$NON-NLS-1$
+           null,
+           null,
+           "org.apache.hive.jdbc.HiveDriver", //$NON-NLS-1$
+           null,
+           "Impala"), //$NON-NLS-1$
     REDSHIFT("Redshift", //$NON-NLS-1$
              "localhost", //$NON-NLS-1$
              "10000", //$NON-NLS-1$
@@ -252,8 +260,8 @@ public enum SupportDBUrlType {
      * @param datasource the data source
      * @param language the specific language used by the database
      */
-    SupportDBUrlType(String dbKey, String hostName, String port, String dbName, String paramSeprator, String dbDriver,
-            String datasource, String language) {
+    SupportDBUrlType(String dbKey, String hostName, String port, String dbName, String paramSeprator, String dbDriver, String datasource,
+            String language) {
         this.dbKey = dbKey;
         this.hostName = hostName;
         this.port = port;
@@ -359,7 +367,6 @@ public enum SupportDBUrlType {
     public static boolean justHaveSchema(String dbKey) {
         SupportDBUrlType dbTypeByKey = getDBTypeByKey(dbKey);
         return dbTypeByKey != null
-                && (isOracle(dbKey) || dbTypeByKey == TERADATADEFAULTURL || dbTypeByKey == INGRESDEFAULTURL
-                        || dbTypeByKey == DB2DEFAULTURL || dbTypeByKey == DB2ZOSDEFAULTURL);
+                && (isOracle(dbKey) || dbTypeByKey == TERADATADEFAULTURL || dbTypeByKey == INGRESDEFAULTURL || dbTypeByKey == DB2DEFAULTURL || dbTypeByKey == DB2ZOSDEFAULTURL);
     }
 }
