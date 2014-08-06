@@ -69,8 +69,7 @@ public final class SupportDBUrlStore {
         supportDBUrlMap.put(SupportDBUrlType.ODBCDEFAULTURL.getDBKey(), SupportDBUrlType.ODBCDEFAULTURL);
         supportDBUrlMap.put(SupportDBUrlType.MYSQLDEFAULTURL.getDBKey(), SupportDBUrlType.MYSQLDEFAULTURL);
         supportDBUrlMap.put(SupportDBUrlType.ORACLEWITHSIDDEFAULTURL.getDBKey(), SupportDBUrlType.ORACLEWITHSIDDEFAULTURL);
-        supportDBUrlMap.put(SupportDBUrlType.ORACLEWITHSERVICENAMEDEFAULTURL.getDBKey(),
-                SupportDBUrlType.ORACLEWITHSERVICENAMEDEFAULTURL);
+        supportDBUrlMap.put(SupportDBUrlType.ORACLEWITHSERVICENAMEDEFAULTURL.getDBKey(), SupportDBUrlType.ORACLEWITHSERVICENAMEDEFAULTURL);
         supportDBUrlMap.put(SupportDBUrlType.ORACLEOCIDEFAULTURL.getDBKey(), SupportDBUrlType.ORACLEOCIDEFAULTURL);
         supportDBUrlMap.put(SupportDBUrlType.ORACLECUSTOMDEFAULTURL.getDBKey(), SupportDBUrlType.ORACLECUSTOMDEFAULTURL);
         supportDBUrlMap.put(SupportDBUrlType.MSSQLDEFAULTURL.getDBKey(), SupportDBUrlType.MSSQLDEFAULTURL);
@@ -94,14 +93,14 @@ public final class SupportDBUrlStore {
         supportDBUrlMap.put(SupportDBUrlType.HIVEDEFAULTURL.getDBKey(), SupportDBUrlType.HIVEDEFAULTURL);
         supportDBUrlMap.put(SupportDBUrlType.VERTICA.getDBKey(), SupportDBUrlType.VERTICA);
         supportDBUrlMap.put(SupportDBUrlType.VERTICA2.getDBKey(), SupportDBUrlType.VERTICA2);
+        supportDBUrlMap.put(SupportDBUrlType.IMPALA.getDBKey(), SupportDBUrlType.IMPALA);
 
         // MOD mzhao bug 12313, 2010-04-02 There is not dbType in prv files before 4.0 release, here use driver class
         // name
         // to get db type.
         supportDiverNameDBUrlMap.put(SupportDBUrlType.ODBCDEFAULTURL.getDbDriver(), SupportDBUrlType.ODBCDEFAULTURL);
         supportDiverNameDBUrlMap.put(SupportDBUrlType.MYSQLDEFAULTURL.getDbDriver(), SupportDBUrlType.MYSQLDEFAULTURL);
-        supportDiverNameDBUrlMap.put(SupportDBUrlType.ORACLEWITHSIDDEFAULTURL.getDbDriver(),
-                SupportDBUrlType.ORACLEWITHSIDDEFAULTURL);
+        supportDiverNameDBUrlMap.put(SupportDBUrlType.ORACLEWITHSIDDEFAULTURL.getDbDriver(), SupportDBUrlType.ORACLEWITHSIDDEFAULTURL);
         supportDiverNameDBUrlMap.put(SupportDBUrlType.ORACLEWITHSERVICENAMEDEFAULTURL.getDbDriver(),
                 SupportDBUrlType.ORACLEWITHSERVICENAMEDEFAULTURL);
         supportDiverNameDBUrlMap.put(SupportDBUrlType.MSSQLDEFAULTURL.getDbDriver(), SupportDBUrlType.MSSQLDEFAULTURL);
@@ -119,8 +118,7 @@ public final class SupportDBUrlStore {
         supportDiverNameDBUrlMap.put(SupportDBUrlType.INGRESDEFAULTURL.getDbDriver(), SupportDBUrlType.INGRESDEFAULTURL);
         supportDiverNameDBUrlMap.put(SupportDBUrlType.INFORMIXDEFAULTURL.getDbDriver(), SupportDBUrlType.INFORMIXDEFAULTURL);
         supportDiverNameDBUrlMap.put(SupportDBUrlType.SQLITE3DEFAULTURL.getDbDriver(), SupportDBUrlType.SQLITE3DEFAULTURL);
-        supportDiverNameDBUrlMap
-                .put(SupportDBUrlType.GENERICJDBCDEFAULTURL.getDbDriver(), SupportDBUrlType.GENERICJDBCDEFAULTURL);
+        supportDiverNameDBUrlMap.put(SupportDBUrlType.GENERICJDBCDEFAULTURL.getDbDriver(), SupportDBUrlType.GENERICJDBCDEFAULTURL);
         supportDiverNameDBUrlMap.put(SupportDBUrlType.TERADATADEFAULTURL.getDbDriver(), SupportDBUrlType.TERADATADEFAULTURL);
         supportDiverNameDBUrlMap.put(SupportDBUrlType.AS400DEFAULTURL.getDbDriver(), SupportDBUrlType.AS400DEFAULTURL);
         // supportDiverNameDBUrlMap.put(SupportDBUrlType.XML_eXist.getDbDriver(), SupportDBUrlType.XML_eXist);

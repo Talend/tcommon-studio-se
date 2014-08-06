@@ -139,6 +139,17 @@ public enum EDatabaseVersion4Drivers {
     // Changed by Marvin Wang on Oct.9, 2012, just because the libs checking can not pass, Remy updated some jars from
     HBASE(new DbVersion4Drivers(EDatabaseTypeName.HBASE, new String[] {})),
 
+    IMPALA_CDH4(new DbVersion4Drivers(EDatabaseTypeName.IMPALA, "Cloudera 4", "CLOUDERA_4", new String[] {
+            "commons-logging-1.0.4.jar", "hive-jdbc-0.10.0-cdh4.4.0.jar", "hive-metastore-0.10.0-cdh4.4.0.jar",
+            "hive-service-0.10.0-cdh4.4.0.jar", "libfb303-0.9.0.jar", "log4j-1.2.16.jar", "slf4j-api-1.6.1.jar",
+            "slf4j-log4j12-1.6.1.jar", "hive-exec-0.10.0-cdh4.4.0.jar" })),
+
+    IMPALA_CDH5(new DbVersion4Drivers(EDatabaseTypeName.IMPALA, "Cloudera 5", "CLOUDERA_5", new String[] {
+            "commons-logging-1.0.4.jar", "hive-jdbc-0.12.0-cdh5.0.0.jar", "hive-metastore-0.12.0-cdh5.0.0.jar",
+            "hive-service-0.12.0-cdh5.0.0.jar", "libfb303-0.9.0.jar", "log4j-1.2.16.jar", "slf4j-api-1.6.1.jar",
+            "slf4j-log4j12-1.6.1.jar", "hive-exec-0.12.0-cdh5.0.0.jar", "httpcore-4.2.5.jar", "httpclient-4.2.5.jar",
+            "hadoop-core-1.0.0.jar" })),
+
     REDSHIFT(new DbVersion4Drivers(EDatabaseTypeName.REDSHIFT, "paraccel-jdbc.jar")); //$NON-NLS-1$
 
     private DbVersion4Drivers dbVersionBean;

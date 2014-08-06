@@ -88,14 +88,14 @@ import org.talend.repository.ui.swt.utils.AbstractSalesforceStepForm;
 import org.talend.repository.ui.utils.ConnectionContextHelper;
 import org.talend.repository.ui.utils.ManagerConnection;
 import org.talend.repository.ui.utils.OtherConnectionContextUtils;
+import org.talend.salesforce.SforceConnection;
 import org.talend.salesforce.SforceManagementImpl;
+import org.talend.salesforce.SforceSessionConnection;
 import org.talend.salesforce.oauth.OAuthClient;
 import org.talend.salesforce.oauth.Token;
 import orgomg.cwm.objectmodel.core.CoreFactory;
 
-import com.salesforce.soap.partner.DescribeGlobal;
 import com.salesforce.soap.partner.DescribeGlobalSObjectResult;
-import com.salesforce.soap.partner.SessionHeader;
 import com.sforce.soap.enterprise.DescribeGlobalResult;
 
 /**
@@ -329,7 +329,7 @@ public class SelectorModulesForm extends AbstractSalesforceStepForm {
         // Button Create Table
         String displayStr = Messages.getString("SelectorTableForm.selectAllTables"); //$NON-NLS-1$
         Point buttonSize = gc.stringExtent(displayStr);
-        selectAllTablesButton = new UtilsButton(compositeRetreiveSchemaButton, displayStr, buttonSize.x + 12, HEIGHT_BUTTON_PIXEL); //$NON-NLS-1$
+        selectAllTablesButton = new UtilsButton(compositeRetreiveSchemaButton, displayStr, buttonSize.x + 12, HEIGHT_BUTTON_PIXEL);
 
         displayStr = Messages.getString("SelectorTableForm.selectNoneTables"); //$NON-NLS-1$
         buttonSize = gc.stringExtent(displayStr);
@@ -416,6 +416,7 @@ public class SelectorModulesForm extends AbstractSalesforceStepForm {
 
             private final Comparator strComparator = new Comparator() {
 
+                @Override
                 public int compare(Object arg0, Object arg1) {
 
                     TableItem t1 = (TableItem) arg0;
@@ -513,8 +514,8 @@ public class SelectorModulesForm extends AbstractSalesforceStepForm {
                 updateStatus(IStatus.ERROR, null);
                 TableItem[] tableItems = table.getItems();
                 int size = tableItems.length;
-                for (int i = 0; i < tableItems.length; i++) {
-                    TableItem tableItem = tableItems[i];
+                for (TableItem tableItem2 : tableItems) {
+                    TableItem tableItem = tableItem2;
                     if (!tableItem.getChecked()) {
                         tableItem.setText(3, Messages.getString("SelectorTableForm.Pending")); //$NON-NLS-1$
                         countPending++;
@@ -539,8 +540,7 @@ public class SelectorModulesForm extends AbstractSalesforceStepForm {
                 countSuccess = 0;
                 countPending = 0;
                 TableItem[] tableItems = table.getItems();
-                for (int i = 0; i < tableItems.length; i++) {
-                    TableItem tableItem = tableItems[i];
+                for (TableItem tableItem : tableItems) {
                     if (tableItem.getChecked()) {
                         clearTableItem(tableItem);
                         tableItem.setChecked(false);
@@ -611,6 +611,7 @@ public class SelectorModulesForm extends AbstractSalesforceStepForm {
             }
             parentWizardPage.getWizard().getContainer().run(true, true, new IRunnableWithProgress() {
 
+                @Override
                 public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
                     monitor.beginTask(Messages.getString("CreateTableAction.action.createTitle"), IProgressMonitor.UNKNOWN); //$NON-NLS-1$
 
@@ -619,9 +620,9 @@ public class SelectorModulesForm extends AbstractSalesforceStepForm {
                     String proxy = null;
                     oldTemConnection = getOriginalValueConnection();
                     if (oldTemConnection.isUseProxy()) {
-                        proxy = SalesforceModuleParseAPI.USE_SOCKS_PROXY;//$NON-NLS-1$
+                        proxy = SalesforceModuleParseAPI.USE_SOCKS_PROXY;
                     } else if (oldTemConnection.isUseHttpProxy()) {
-                        proxy = SalesforceModuleParseAPI.USE_HTTP_PROXY;//$NON-NLS-1$
+                        proxy = SalesforceModuleParseAPI.USE_HTTP_PROXY;
                     }
 
                     itemTableName = connectFromCustomModuleName(proxy);
@@ -654,6 +655,7 @@ public class SelectorModulesForm extends AbstractSalesforceStepForm {
     private void createAllItems(final boolean displayMessageBox, final List<String> newList) {
         Display.getDefault().asyncExec(new Runnable() {
 
+            @Override
             public void run() {
                 List<String> list = new ArrayList<String>();
                 if (newList != null) {
@@ -697,6 +699,7 @@ public class SelectorModulesForm extends AbstractSalesforceStepForm {
         if (ifUseRunnable) {
             shell.getDisplay().asyncExec(new Runnable() {
 
+                @Override
                 public void run() {
                     MessageDialog.openInformation(shell, title, msg);
                 }
@@ -873,8 +876,8 @@ public class SelectorModulesForm extends AbstractSalesforceStepForm {
             if (runnable != null) {
                 return runnable;
             }
-            for (Iterator iter = getQueue().iterator(); iter.hasNext();) {
-                RetrieveColumnRunnable element = (RetrieveColumnRunnable) iter.next();
+            for (Object element2 : getQueue()) {
+                RetrieveColumnRunnable element = (RetrieveColumnRunnable) element2;
                 if (element.getTableItem() == key) {
                     return element;
                 }
@@ -938,6 +941,7 @@ public class SelectorModulesForm extends AbstractSalesforceStepForm {
             getConnection().setModuleName(tableString);
         }
 
+        @Override
         public void run() {
             if (isCanceled()) {
                 return;
@@ -1042,6 +1046,7 @@ public class SelectorModulesForm extends AbstractSalesforceStepForm {
             //
             Display.getDefault().syncExec(new Runnable() {
 
+                @Override
                 public void run() {
                     if (isCanceled()) {
                         return;
@@ -1162,6 +1167,7 @@ public class SelectorModulesForm extends AbstractSalesforceStepForm {
     protected void addFieldsListeners() {
         nameFilter.addModifyListener(new ModifyListener() {
 
+            @Override
             public void modifyText(ModifyEvent e) {
                 List<String> newList = new ArrayList<String>();
 
@@ -1318,6 +1324,7 @@ public class SelectorModulesForm extends AbstractSalesforceStepForm {
         }
     }
 
+    @Override
     protected SalesforceSchemaConnection getConnection() {
         if (oldTemConnection != null) {
             return oldTemConnection;
@@ -1428,10 +1435,7 @@ public class SelectorModulesForm extends AbstractSalesforceStepForm {
                     if (currentAPI instanceof SalesforceModuleParserPartner) {
                         SalesforceModuleParserPartner partner = (SalesforceModuleParserPartner) currentAPI;
                         SforceManagementImpl sforceManagement = partner.getSforceManagement();
-                        SessionHeader sessionHeader = sforceManagement.getSessionHeader();
-                        DescribeGlobal dg = new DescribeGlobal();
-                        com.salesforce.soap.partner.DescribeGlobalResult dgr = sforceManagement.getStub()
-                                .describeGlobal(dg, sessionHeader, null, null).getResult();
+                        com.salesforce.soap.partner.DescribeGlobalResult dgr = sforceManagement.describeGlobal();
                         dgsrs = dgr.getSobjects();
 
                     }
@@ -1442,20 +1446,18 @@ public class SelectorModulesForm extends AbstractSalesforceStepForm {
                 Token token = salesforceAPI.login(endPointForAuth, consumerKey, consumeSecret, callbackHost, callbackPort,
                         salesforceVersion, tokenProperties, timeOut);
                 if (token != null) {
-                    org.talend.salesforce.SforceManagement sfMgr = new org.talend.salesforce.SforceManagementImpl();
                     OAuthClient client = new OAuthClient();
                     client.setBaseOAuthURL(endPointForAuth);
                     client.setCallbackHost(callbackHost);
                     client.setCallbackPort(Integer.parseInt(callbackPort));
                     client.setClientID(consumerKey);
                     client.setClientSecret(consumeSecret);
-                    String endpoint = client.getSOAPEndpoint(token, salesforceVersion);
-                    boolean result = sfMgr.login(token.getAccess_token(), endpoint, Integer.parseInt(timeOut), false);
-                    SessionHeader sessionHeader = sfMgr.getSessionHeader();
-                    DescribeGlobal dg = new DescribeGlobal();
-                    com.salesforce.soap.partner.DescribeGlobalResult dgr = sfMgr.getStub()
-                            .describeGlobal(dg, sessionHeader, null, null).getResult();
-                    dgsrs = dgr.getSobjects();
+                    String endpoint = OAuthClient.getSOAPEndpoint(token, salesforceVersion);
+                    org.talend.salesforce.SforceManagement sfMgr = null;
+                    SforceConnection sforceConn = new SforceSessionConnection.Builder(endpoint, token.getAccess_token())
+                            .setTimeout(timeOut).needCompression(false).build();
+                    sfMgr = new org.talend.salesforce.SforceManagementImpl(sforceConn);
+                    dgsrs = sfMgr.describeGlobal().getSobjects();
                 }
             }
 
@@ -1479,8 +1481,7 @@ public class SelectorModulesForm extends AbstractSalesforceStepForm {
                 }
             }
             if (dgsrs != null && dgsrs.length > 0) {
-                for (int k = 0; k < dgsrs.length; k++) {
-                    DescribeGlobalSObjectResult dsResult = dgsrs[k];
+                for (DescribeGlobalSObjectResult dsResult : dgsrs) {
                     String name = dsResult.getName();
                     if (!list.contains(name)) {
                         list.add(name);

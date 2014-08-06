@@ -86,6 +86,8 @@ public enum EDatabase4DriverClassName {
 
     HIVE2(EDatabaseTypeName.HIVE, "org.apache.hive.jdbc.HiveDriver"), //$NON-NLS-1$
 
+    IMPALA(EDatabaseTypeName.IMPALA, "org.apache.hive.jdbc.HiveDriver"), //$NON-NLS-1$ 
+
     H2(EDatabaseTypeName.H2, "org.h2.Driver")//$NON-NLS-1$
     //
     ;

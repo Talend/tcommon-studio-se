@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.talend.core.runtime.librariesNeeded">
+      <libraryNeeded
+            context="plugin:org.talend.libraries.apache.cassandra"
+            id="cassandra-driver-core-2.0.3.jar"
+            language="java"
+            name="cassandra-driver-core-2.0.3.jar"
+            required="true">
+      </libraryNeeded>
+      <libraryNeeded
+            context="plugin:org.talend.libraries.apache.cassandra"
+            id="metrics-core-3.0.2.jar"
+            language="java"
+            name="metrics-core-3.0.2.jar"
+            required="true">
+      </libraryNeeded>
+   </extension>
+
+</plugin>

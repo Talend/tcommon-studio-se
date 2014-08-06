@@ -324,6 +324,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
         IWorkbenchActivitySupport activitySupport = getWindowConfigurer().getWindow().getWorkbench().getActivitySupport();
         String hideUpdateSiteId = "org.talend.rcp.hideUpdatesite"; //$NON-NLS-1$
         Set<String> enabledActivities = new HashSet<String>();
+        enabledActivities.addAll(activitySupport.getActivityManager().getEnabledActivityIds());
         if (!PluginChecker.isSVNProviderPluginLoaded()) {
             if (activitySupport.getActivityManager().getActivity(hideUpdateSiteId).isDefined()) {
                 enabledActivities.remove(hideUpdateSiteId);
@@ -342,9 +343,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
         IMenuManager menuManager = actionBarConfigurer.getMenuManager();
 
         IContributionItem[] menuItems = menuManager.getItems();
-        for (int i = 0; i < menuItems.length; i++) {
-            IContributionItem menuItem = menuItems[i];
-
+        for (IContributionItem menuItem : menuItems) {
             // Hack to remove the Run menu - it seems you cannot do this using the
             // "org.eclipse.ui.activities" extension
             if ("org.eclipse.ui.run".equals(menuItem.getId())) {

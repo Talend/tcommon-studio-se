@@ -71,6 +71,9 @@
 <MODE NAME="css"		FILE="css.xml"
 				FILE_NAME_GLOB="*.css" />
 
+<MODE NAME="cypher"   FILE="cypher.xml"
+                FILE_NAME_GLOB="*.cypher" />
+
 <MODE NAME="dsssl"		FILE="dsssl.xml"
 				FILE_NAME_GLOB="*.dsl" />
 

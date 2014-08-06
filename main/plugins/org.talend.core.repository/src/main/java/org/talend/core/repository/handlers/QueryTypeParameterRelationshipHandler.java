@@ -28,7 +28,7 @@ public class QueryTypeParameterRelationshipHandler extends AbstractJobParameterI
      */
     @Override
     protected String getRepositoryTypeName() {
-        return "QUERYSTORE:QUERYSTORE_TYPE"; //$NON-NLS-1$
+        return "QUERYSTORE_TYPE"; //$NON-NLS-1$
     }
 
     /*
@@ -40,7 +40,7 @@ public class QueryTypeParameterRelationshipHandler extends AbstractJobParameterI
      */
     @Override
     protected String getRepositoryTypeValueName() {
-        return "QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE"; //$NON-NLS-1$
+        return "REPOSITORY_QUERYSTORE_TYPE"; //$NON-NLS-1$
     }
 
     /*

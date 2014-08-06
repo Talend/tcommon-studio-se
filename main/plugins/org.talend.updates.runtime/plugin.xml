@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="extraUpdatesFactory" name="ExtraUpdatesFactory" schema="schema/extraUpdatesFactory.exsd"/>
+   
+      <extension
+         point="org.eclipse.ui.startup">
+      <startup
+            class="org.talend.updates.runtime.WorkbenchStartup">
+      </startup>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            id="org.talend.updates.show.wizard.command"
+            name="%talend.additional.package.menu">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="org.talend.updates.runtime.ui.ShowWizardHandler"
+            commandId="org.talend.updates.show.wizard.command">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="menu:help?after=talend">
+         <command
+                  commandId="org.talend.updates.show.wizard.command"
+                  id="org.talend.updates.menus.show.wizard.command"
+                 >
+            </command>
+      </menuContribution>
+   </extension>
+   
+   <extension
+         point="org.talend.updates.runtime.extraUpdatesFactory">
+      <factory
+            class="org.talend.updates.runtime.engine.factory.PluginRequiredMissingJarsExtraUpdatesFactory"
+            id="org.talend.updates.PluginRequiredMissingJars"
+            name="Plugin Required Missing Jars">
+      </factory>
+      <factory
+            class="org.talend.updates.runtime.engine.factory.PluginOptionalMissingJarsExtraUpdatesFactory"
+            id="org.talend.updates.PluginOptionalMissingJars"
+            name="Plugin Optional Missing Jars">
+      </factory>
+   </extension>
+
+</plugin>

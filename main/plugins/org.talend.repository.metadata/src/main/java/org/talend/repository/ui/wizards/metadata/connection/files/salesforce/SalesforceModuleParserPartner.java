@@ -18,14 +18,12 @@ import java.util.List;
 
 import org.talend.core.model.metadata.IMetadataColumn;
 import org.talend.repository.metadata.i18n.Messages;
+import org.talend.salesforce.SforceBasicConnection;
+import org.talend.salesforce.SforceConnection;
 import org.talend.salesforce.SforceManagementImpl;
 
-import com.salesforce.soap.partner.DescribeSObject;
 import com.salesforce.soap.partner.DescribeSObjectResult;
 import com.salesforce.soap.partner.Field;
-import com.salesforce.soap.partner.InvalidSObjectFault;
-import com.salesforce.soap.partner.SessionHeader;
-import com.salesforce.soap.partner.UnexpectedErrorFault;
 
 /**
  * Maybe need a long connection ...
@@ -83,7 +81,7 @@ public class SalesforceModuleParserPartner implements ISalesforceModuleParser {
             throw new Exception(Messages.getString("SalesforceModuleParseAPI.lostUsernameOrPass")); //$NON-NLS-1$
         }
         ArrayList doLoginList = null;
-        sforceManagement = new SforceManagementImpl();
+        sforceManagement = null;
         boolean login = false;
         if (name != null && pwd != null && url != null) {
             if (!url.equals(endPoint) || !name.equals(username) || !pwd.equals(password)) {
@@ -95,7 +93,13 @@ public class SalesforceModuleParserPartner implements ISalesforceModuleParser {
                 // null) || (proxy == null && theProxy != null))) {
 
                 // doLoginList = doLogin(endPoint, username, password);
-                login = sforceManagement.login(endPoint, username, password, 10000, false);
+                try {
+                    SforceConnection sforceConn = new SforceBasicConnection.Builder(endPoint, username, password)
+                            .setTimeout(10000).needCompression(false).build();
+                    login = true;
+                    sforceManagement = new SforceManagementImpl(sforceConn);
+                } catch (Exception ex) {
+                }
 
             } else {
                 if (isLogin()) {
@@ -104,10 +108,17 @@ public class SalesforceModuleParserPartner implements ISalesforceModuleParser {
             }
         } else {
             // doLoginList = doLogin(endPoint, username, password);
-            login = sforceManagement.login(endPoint, username, password, 10000, false);
+            try {
+                SforceConnection sforceConn = new SforceBasicConnection.Builder(endPoint, username, password).setTimeout(10000)
+                        .needCompression(false).build();
+                login = true;
+                sforceManagement = new SforceManagementImpl(sforceConn);
+            } catch (Exception ex) {
+            }
             doLoginList = new ArrayList();
-            doLoginList.add(sforceManagement.getStub());
+            doLoginList.add(sforceManagement);
         }
+
         setLogin(login);
         setSforceManagement(sforceManagement);
         this.name = username;
@@ -126,13 +137,20 @@ public class SalesforceModuleParserPartner implements ISalesforceModuleParser {
         }
         int time = Integer.valueOf(timeOut);
         ArrayList doLoginList = null;
-        sforceManagement = new SforceManagementImpl();
+        sforceManagement = null;
         boolean login = false;
         if (name != null && pwd != null && url != null) {
             if (!url.equals(endPoint) || !name.equals(username) || !pwd.equals(password)) {
 
                 // doLoginList = doLogin(endPoint, username, password);
-                login = sforceManagement.login(endPoint, username, password, time, false);
+                try {
+                    SforceConnection sforceConn = new SforceBasicConnection.Builder(endPoint, username, password)
+                            .setTimeout(time).needCompression(false).build();
+                    login = true;
+                    sforceManagement = new SforceManagementImpl(sforceConn);
+                } catch (Exception ex) {
+
+                }
 
             } else {
                 if (isLogin()) {
@@ -141,9 +159,16 @@ public class SalesforceModuleParserPartner implements ISalesforceModuleParser {
             }
         } else {
             // doLoginList = doLogin(endPoint, username, password);
-            login = sforceManagement.login(endPoint, username, password, time, false);
+            try {
+                SforceConnection sforceConn = new SforceBasicConnection.Builder(endPoint, username, password).setTimeout(time)
+                        .needCompression(false).build();
+                login = true;
+                sforceManagement = new SforceManagementImpl(sforceConn);
+            } catch (Exception ex) {
+
+            }
             doLoginList = new ArrayList();
-            doLoginList.add(sforceManagement.getStub());
+            doLoginList.add(sforceManagement);
         }
         setLogin(login);
         setSforceManagement(sforceManagement);
@@ -248,20 +273,13 @@ public class SalesforceModuleParserPartner implements ISalesforceModuleParser {
      */
     private Field[] fetchSFDescriptionField(String module) {
 
-        DescribeSObject d = new DescribeSObject();
-        d.setSObjectType(module);
-        SessionHeader sh = sforceManagement.getSessionHeader();
         DescribeSObjectResult r;
         try {
-            r = sforceManagement.getStub().describeSObject(d, sh, null, null, null).getResult();
+            r = sforceManagement.describeSObject(module);
             Field[] fields = r.getFields();
             setCurrentModuleName(module);
             return fields;
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        } catch (InvalidSObjectFault e) {
-            e.printStackTrace();
-        } catch (UnexpectedErrorFault e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

@@ -1,0 +1,139 @@
+{"HADOOP": {
+    "HORTONWORKS": {
+        "NAMENODE_URI": "hdfs://localhost:8020",
+        "JOBTRACKER": "localhost:50300",
+        "RESOURCE_MANAGER": "localhost:8050",
+        "NAMENODE_PRINCIPAL": "nn/_HOST@EXAMPLE.COM",
+        "HIVE": {
+            "EMBEDDED": {
+                "PORT": 9083
+            },
+            "STANDALONE": {
+                "PORT": 10000
+            },
+            "DATABASE": "default",
+            "HIVE_PRINCIPAL": "hive/_HOST@EXAMPLE.COM"
+        },
+        "HBASE": {
+            "PORT": 2181
+        }
+    },
+    "CLOUDERA": { 
+        "NAMENODE_URI": "hdfs://localhost:8020",
+        "JOBTRACKER": "localhost:8021",
+        "RESOURCE_MANAGER": "localhost:8032",
+        "NAMENODE_PRINCIPAL": "nn/_HOST@EXAMPLE.COM",
+        "HIVE": {
+            "EMBEDDED": {
+                "PORT": 9083
+            },
+            "STANDALONE": {
+                "PORT": 10000
+            },
+            "DATABASE": "default",
+            "HIVE_PRINCIPAL": "hive/_HOST@EXAMPLE.COM"
+        },
+        "HBASE": {
+            "PORT": 2181
+        }
+    },
+    "MAPR": {
+        "NAMENODE_URI": "maprfs:///localhost:7222",
+        "JOBTRACKER": "localhost:9001",
+        "HIVE": {
+            "EMBEDDED": {
+                "PORT": 9083
+            },
+            "STANDALONE": {
+                "PORT": 10000
+            },
+            "DATABASE": "default",
+            "HIVE_PRINCIPAL": "hive/_HOST@EXAMPLE.COM"
+        },
+        "HBASE": {
+            "PORT": 5181
+        }
+    },
+    "APACHE": {
+        "NAMENODE_URI": "hdfs://localhost:9000",
+        "JOBTRACKER": "localhost:9001",
+        "NAMENODE_PRINCIPAL": "nn/_HOST@EXAMPLE.COM",
+        "HIVE": {
+            "EMBEDDED": {
+                "PORT": 9083
+            },
+            "STANDALONE": {
+                "PORT": 10000
+            },
+            "DATABASE": "default",
+            "HIVE_PRINCIPAL": "hive/_HOST@EXAMPLE.COM"
+        },
+        "HBASE": {
+            "PORT": 2181
+        }
+    },
+    "AMAZON_EMR": {
+        "APACHE_1_0_3_EMR": {
+            "NAMENODE_URI": "hdfs://localhost:9000",
+            "JOBTRACKER": "localhost:9001",
+            "HBASE": {
+                "PORT": 2181
+            }
+        },
+        "MapR_EMR": {
+            "NAMENODE_URI": "maprfs:///localhost:7222",
+            "JOBTRACKER": "localhost:9001",
+            "HBASE": {
+                "PORT": 5181
+            }
+        },
+        "NAMENODE_PRINCIPAL": "nn/_HOST@EXAMPLE.COM",
+        "HIVE": {
+            "EMBEDDED": {
+                "PORT": 9083
+            },
+            "STANDALONE": {
+                "PORT": 10000
+            },
+            "DATABASE": "default",
+            "HIVE_PRINCIPAL": "hive/_HOST@EXAMPLE.COM"
+        }
+    },
+    "PIVOTAL_HD": {
+        "NAMENODE_URI": "hdfs://localhost:8020",
+        "JOBTRACKER": "localhost:8032",
+        "RESOURCE_MANAGER": "localhost:8032",
+        "HIVE": {
+            "EMBEDDED": {
+                "PORT": 9083
+            },
+            "STANDALONE": {
+                "PORT": 10000
+            },
+            "DATABASE": "default",
+            "HIVE_PRINCIPAL": "hive/_HOST@EXAMPLE.COM"
+        },
+        "HBASE": {
+            "PORT": 5181
+        }
+    },
+    "CUSTOM": {
+        "NAMENODE_URI": "hdfs://localhost:8020",
+        "JOBTRACKER": "localhost:50300",
+        "RESOURCE_MANAGER": "localhost:8050",
+        "NAMENODE_PRINCIPAL": "nn/_HOST@EXAMPLE.COM",
+        "HIVE": {
+            "EMBEDDED": {
+                "PORT": 9083
+            },
+            "STANDALONE": {
+                "PORT": 10000
+            },
+            "DATABASE": "default",
+            "HIVE_PRINCIPAL": "hive/_HOST@EXAMPLE.COM"
+        },
+        "HBASE": {
+            "PORT": 2181
+        }
+    }
+}}

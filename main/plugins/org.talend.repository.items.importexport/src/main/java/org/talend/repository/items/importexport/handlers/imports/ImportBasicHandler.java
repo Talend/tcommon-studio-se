@@ -21,7 +21,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -715,8 +714,11 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
                 User author = selectedImportItem.getProperty().getAuthor();
                 if (author != null) {
                     if (!repFactory.setAuthorByLogin(tmpItem, author.getLogin())) {
-                        // author will be the logged user in create method
-                        tmpItem.getProperty().setAuthor(null);
+                        // if the import user not exist in talend.project, then add
+                        Resource resource = ProjectManager.getInstance().getCurrentProject().getEmfProject().eResource();
+                        if (resource != null && resource.getContents() != null) {
+                            resource.getContents().add(author);
+                        }
                     }
                 }
 

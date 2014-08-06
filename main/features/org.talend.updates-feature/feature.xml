@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.talend.updates_feature"
+      label="Updates-feature"
+      version="1.0.0.qualifier"
+      provider-name=".Talend SA.">
+
+   <copyright url="http://www.talend.com/about-us">
+      [Enter Copyright Description here.]
+   </copyright>
+
+   <requires>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.apache.log4j"/>
+      <import plugin="org.eclipse.jface"/>
+      <import plugin="org.eclipse.jface.databinding"/>
+      <import plugin="org.eclipse.core.databinding"/>
+      <import plugin="org.eclipse.core.databinding.beans"/>
+      <import plugin="org.eclipse.core.databinding.observable"/>
+      <import plugin="org.eclipse.core.databinding.property"/>
+      <import plugin="org.talend.librariesmanager"/>
+      <import plugin="org.talend.librariesmanager.ui"/>
+   </requires>
+
+   <plugin
+         id="org.talend.updates.runtime"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

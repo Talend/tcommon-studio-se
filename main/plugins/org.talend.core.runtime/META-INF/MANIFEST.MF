@@ -20,6 +20,7 @@ Export-Package: org.talend.commons.utils.generation,
  org.talend.core.download,
  org.talend.core.exception,
  org.talend.core.hadoop,
+ org.talend.core.hadoop.conf,
  org.talend.core.hadoop.repository,
  org.talend.core.hadoop.version,
  org.talend.core.hadoop.version.custom,
@@ -50,6 +51,7 @@ Export-Package: org.talend.commons.utils.generation,
  org.talend.core.prefs,
  org.talend.core.repository,
  org.talend.core.runtime,
+ org.talend.core.runtime.conf,
  org.talend.core.runtime.repository.build,
  org.talend.core.runtime.repository.demo,
  org.talend.core.service,
@@ -98,5 +100,6 @@ Require-Bundle: org.eclipse.jdt.core,
 Bundle-Activator: org.talend.core.runtime.CoreRuntimePlugin
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .,
- lib/resty-0.2.0.jar
+ lib/resty-0.2.0.jar,
+ lib/json_simple-1.1.jar
 Eclipse-RegisterBuddy: org.talend.testutils

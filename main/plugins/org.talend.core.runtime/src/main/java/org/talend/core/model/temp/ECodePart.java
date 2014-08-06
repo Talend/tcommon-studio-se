@@ -26,7 +26,11 @@ public enum ECodePart {
     FINALLY("finally"), //$NON-NLS-1$
     MRCODE("mrcode"), //$NON-NLS-1$
     MRCONFIG("mrconfig"), //$NON-NLS-1$
-    MRJOBFOOTER("mrjobfooter"); //$NON-NLS-1$
+    MRJOBFOOTER("mrjobfooter"), //$NON-NLS-1$
+    STORMCODE("stormcode"), //$NON-NLS-1$
+    STORMCONFIG("stormconfig"), //$NON-NLS-1$
+    STORMMONITOR("stormmonitor"), //$NON-NLS-1$
+    STORMJOBFOOTER("stormjobfooter"); //$NON-NLS-1$
 
     private ECodePart(String name) {
         this.name = name;

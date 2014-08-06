@@ -36,69 +36,41 @@ public abstract class AbstractJobParameterInRepositoryRelationshipHandler extend
     protected Set<Relation> collect(Map<String, ElementParameterType> parametersMap, Map<?, ?> options) {
         Set<Relation> relationSet = new HashSet<Relation>();
 
-        ElementParameterType repositoryTypeParam = getParameterTypeByNames(parametersMap, getRepositoryTypeName(),
-                getRepositoryTypeNameN());
-        if (repositoryTypeParam != null && IN_REPOSITORY.equals(repositoryTypeParam.getValue())) {
-            ElementParameterType repositoryTypeValueParam = getParameterTypeByNames(parametersMap, getRepositoryTypeValueName(),
-                    getRepositoryTypeValueNameN());
-            if (repositoryTypeValueParam != null) {
-                String repositoryIdOrValue = repositoryTypeValueParam.getValue();
-                if (StringUtils.isNotEmpty(repositoryIdOrValue)) {
-                    Relation addedRelation = new Relation();
-                    addedRelation.setId(repositoryIdOrValue);
-                    addedRelation.setType(getRepositoryRelationType());
-                    addedRelation.setVersion(RelationshipItemBuilder.LATEST_VERSION);
-                    relationSet.add(addedRelation);
+        for (ElementParameterType paramType : parametersMap.values()) {
+            if (paramType.getName().endsWith(":" + getRepositoryTypeName())) { //$NON-NLS-1$
+                String name = paramType.getName().split(":")[0]; //$NON-NLS-1$
+                ElementParameterType repositoryTypeParam = parametersMap.get(name + ":" //$NON-NLS-1$
+                        + getRepositoryTypeName());
+                if (repositoryTypeParam != null && IN_REPOSITORY.equals(repositoryTypeParam.getValue())) {
+                    ElementParameterType repositoryTypeValueParam = parametersMap.get(name + ":" //$NON-NLS-1$
+                            + getRepositoryTypeValueName());
+                    if (repositoryTypeValueParam != null) {
+                        String repositoryIdOrValue = repositoryTypeValueParam.getValue();
+                        if (StringUtils.isNotEmpty(repositoryIdOrValue)) {
+                            Relation addedRelation = new Relation();
+                            addedRelation.setId(repositoryIdOrValue);
+                            addedRelation.setType(getRepositoryRelationType());
+                            addedRelation.setVersion(RelationshipItemBuilder.LATEST_VERSION);
+                            relationSet.add(addedRelation);
+                        }
+                    }
+
                 }
             }
-
         }
+
         return relationSet;
     }
 
     /**
-     * Try to find the name1 of parameter type, if not found, will try the list of nameN.
-     */
-    protected ElementParameterType getParameterTypeByNames(Map<String, ElementParameterType> parametersMap, String name1,
-            String... nameN) {
-        if (parametersMap == null || parametersMap.isEmpty() || name1 == null) {
-            return null;
-        }
-        ElementParameterType paramType = parametersMap.get(name1);
-        if (paramType == null && nameN != null && nameN.length > 0) {
-            for (String name : nameN) {
-                paramType = parametersMap.get(name);
-                if (paramType != null) { // found
-                    break;
-                }
-            }
-        }
-        return paramType;
-    }
-
-    /**
-     * Something like PROPERTY:PROPERTY_TYPE
+     * Something like PROPERTY_TYPE
      */
     protected abstract String getRepositoryTypeName();
 
     /**
-     * Something like PROPERTY:REPOSITORY_PROPERTY_TYPE
-     */
-    protected abstract String getRepositoryTypeValueName();
-
-    /**
-     * Something like PROPERTY_TYPE
-     */
-    protected String[] getRepositoryTypeNameN() {
-        return new String[0]; // default, no Name N
-    }
-
-    /**
      * Something like REPOSITORY_PROPERTY_TYPE
      */
-    protected String[] getRepositoryTypeValueNameN() {
-        return new String[0];// default, no Name N
-    }
+    protected abstract String getRepositoryTypeValueName();
 
     /**
      * get the type of relation type

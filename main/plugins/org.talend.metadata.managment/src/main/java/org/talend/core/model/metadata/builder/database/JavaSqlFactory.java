@@ -24,8 +24,8 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.talend.core.IRepositoryContextService;
 import org.talend.core.database.conn.ConnParameterKeys;
-import org.talend.core.database.conn.DatabaseConnStrUtil;
 import org.talend.core.database.conn.HiveConfKeysForTalend;
+import org.talend.core.model.context.ContextUtils;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.metadata.builder.connection.DelimitedFileConnection;
@@ -33,11 +33,14 @@ import org.talend.core.model.metadata.builder.connection.MDMConnection;
 import org.talend.core.model.metadata.builder.database.dburl.SupportDBUrlStore;
 import org.talend.core.model.metadata.builder.database.dburl.SupportDBUrlType;
 import org.talend.core.model.metadata.builder.util.MetadataConnectionUtils;
+import org.talend.core.model.properties.ContextItem;
+import org.talend.core.model.utils.ContextParameterUtils;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.helper.SwitchHelpers;
 import org.talend.cwm.helper.TaggedValueHelper;
+import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.utils.sql.ConnectionUtils;
@@ -126,20 +129,12 @@ public final class JavaSqlFactory {
     public static TypedReturnCode<java.sql.Connection> createConnection(Connection connection) {
         TypedReturnCode<java.sql.Connection> rc = new TypedReturnCode<java.sql.Connection>(false);
         String url = getURL(connection);
-        if (url == null) {
+        if (url == null || !(connection instanceof DatabaseConnection)) {
             rc.setMessage(Messages.getString("JavaSqlFactory.DatabaseConnectionNull")); //$NON-NLS-1$
             rc.setOk(false);
             return rc; // MOD scorreia 2010-10-20 bug 16403 avoid NPE while importing items
         }
-        java.sql.Connection sqlConnection = null;
-
-        if (connection instanceof DatabaseConnection) {
-            sqlConnection = MetadataConnectionUtils.createConnection((DatabaseConnection) connection).getObject();
-        }
-        rc.setObject(sqlConnection);
-        rc.setOk(sqlConnection != null);
-
-        return rc;
+        return MetadataConnectionUtils.createConnection((DatabaseConnection) connection);
     }
 
     /**
@@ -163,15 +158,7 @@ public final class JavaSqlFactory {
             } // else we are ok
               // ADD mzhao 2012-06-25 bug TDI-21552, driver class should be replaced when in context mode.
             if (conn.isContextMode()) {
-                IRepositoryContextService repositoryContextService = CoreRuntimePlugin.getInstance()
-                        .getRepositoryContextService();
-                if (repositoryContextService != null) {
-                    // get the original value and select the defalut context
-                    String contextName = conn.getContextName();
-                    DatabaseConnection origValueConn = repositoryContextService.cloneOriginalValueConnection(dbConn,
-                            contextName == null ? true : false, contextName);
-                    driverClassName = origValueConn.getDriverClass();
-                }
+                driverClassName = getOriginalConntextValue(dbConn, driverClassName);
             }
             return driverClassName;
         }
@@ -220,15 +207,7 @@ public final class JavaSqlFactory {
         if (dbConn != null) {
             dbUserName = dbConn.getUsername();
             if (conn.isContextMode()) {
-                IRepositoryContextService repositoryContextService = CoreRuntimePlugin.getInstance()
-                        .getRepositoryContextService();
-                if (repositoryContextService != null) {
-                    // get the original value and select the defalut context
-                    String contextName = conn.getContextName();
-                    DatabaseConnection origValueConn = repositoryContextService.cloneOriginalValueConnection(dbConn,
-                            contextName == null ? true : false, contextName);
-                    dbUserName = origValueConn.getUsername();
-                }
+                dbUserName = getOriginalConntextValue(dbConn, dbUserName);
             }
             return dbUserName;
         }
@@ -251,15 +230,7 @@ public final class JavaSqlFactory {
         if (dbConn != null) {
             psw = dbConn.getPassword();
             if (conn.isContextMode()) {
-                IRepositoryContextService repositoryContextService = CoreRuntimePlugin.getInstance()
-                        .getRepositoryContextService();
-                if (repositoryContextService != null) {
-                    // get the original value and select the defalut context
-                    String contextName = conn.getContextName();
-                    DatabaseConnection origValueConn = repositoryContextService.cloneOriginalValueConnection(dbConn,
-                            contextName == null ? true : false, contextName);
-                    psw = origValueConn.getPassword();
-                }
+                psw = getOriginalConntextValue(dbConn, psw);
 
             }
 
@@ -321,16 +292,7 @@ public final class JavaSqlFactory {
         if (dbConn != null) {
             url = dbConn.getURL();
             if (conn.isContextMode()) {
-                IRepositoryContextService repositoryContextService = CoreRuntimePlugin.getInstance()
-                        .getRepositoryContextService();
-                if (repositoryContextService != null) {
-                    // get the original value and select the defalut context
-                    String contextName = conn.getContextName();
-                    DatabaseConnection origValueConn = repositoryContextService.cloneOriginalValueConnection(dbConn,
-                            contextName == null ? true : false, contextName);
-                    url = DatabaseConnStrUtil.getURLString(origValueConn);
-                    // url = origValueConn.getURL();
-                }
+                url = getOriginalConntextValue(dbConn, url);
             }
             return url;
         }
@@ -344,6 +306,49 @@ public final class JavaSqlFactory {
             return dfConnection.getFilePath();
         }
         return null;
+    }
+
+    /**
+     * 
+     * get driver jar path only for GENERAL JDBC type.
+     * 
+     * @param conn
+     * @return
+     */
+    public static String getDriverJarPath(Connection conn) {
+        DatabaseConnection dbConn = SwitchHelpers.DATABASECONNECTION_SWITCH.doSwitch(conn);
+        String driveJarPath = null;
+        if (dbConn != null) {
+            driveJarPath = dbConn.getDriverJarPath();
+            driveJarPath = getOriginalConntextValue(dbConn, driveJarPath);
+        }
+        return driveJarPath;
+    }
+
+    /**
+     * Get the original value for context mode.
+     * 
+     * @param connection
+     * @param rawValue
+     * @return
+     */
+    public static String getOriginalConntextValue(Connection connection, String rawValue) {
+        if (rawValue == null) {
+            return PluginConstant.EMPTY_STRING;
+        }
+        String origValu = null;
+        if (connection != null && connection.isContextMode()) {
+            String contextName = connection.getContextName();
+            ContextType contextType = null;
+            ContextItem contextItem = ContextUtils.getContextItemById2(connection.getContextId());
+            if (contextName == null) {
+                contextName = contextItem.getDefaultContext();
+            }
+            contextType = ContextUtils.getContextTypeByName(contextItem, contextName, true);
+
+            origValu = ContextParameterUtils.getOriginalValue(contextType, rawValue);
+        }
+        return origValu == null ? rawValue : origValu;
     }
 
     /**

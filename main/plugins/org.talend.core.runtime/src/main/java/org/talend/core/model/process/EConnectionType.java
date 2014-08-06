@@ -95,7 +95,7 @@ public enum EConnectionType implements IConnectionCategory, IDraw2dGraphics {
 
     TABLE(9, "TABLE", //$NON-NLS-1$
           EConnectionCategory.MAIN,
-          MAIN | DATA | CUSTOM_NAME,
+          MAIN | DATA | CUSTOM_NAME | IConnectionCategory.TABLE,
           "Table", Messages.getString("EConnectionType.tableMenu"), //$NON-NLS-1$ //$NON-NLS-2$
           new Integer(LINE_SOLID),
           new RGB(0, 150, 100)),
@@ -120,54 +120,59 @@ public enum EConnectionType implements IConnectionCategory, IDraw2dGraphics {
                 new Integer(LINE_DASH),
                 new RGB(0, 50, 150)),
     ROUTE(14, "ROUTE", //$NON-NLS-1$
-                EConnectionCategory.MAIN,
-                CAMEL | UNIQUE_NAME | CUSTOM_NAME,
-                "Route", Messages.getString("EConnectionType.route"), //$NON-NLS-1$ //$NON-NLS-2$
-                new Integer(LINE_SOLID),
-                new RGB(230, 100, 0)),
+          EConnectionCategory.MAIN,
+          CAMEL | UNIQUE_NAME | CUSTOM_NAME,
+          "Route", Messages.getString("EConnectionType.route"), //$NON-NLS-1$ //$NON-NLS-2$
+          new Integer(LINE_SOLID),
+          new RGB(230, 100, 0)),
     ROUTE_WHEN(15, "ROUTE_WHEN", //$NON-NLS-1$
-                EConnectionCategory.MAIN,
-                CONDITION | CAMEL | UNIQUE_NAME| CUSTOM_NAME,
-                "When", Messages.getString("EConnectionType.when"), //$NON-NLS-1$ //$NON-NLS-2$
-                new Integer(LINE_SOLID),
-                new RGB(230, 100, 0)),
+               EConnectionCategory.MAIN,
+               CONDITION | CAMEL | UNIQUE_NAME | CUSTOM_NAME,
+               "When", Messages.getString("EConnectionType.when"), //$NON-NLS-1$ //$NON-NLS-2$
+               new Integer(LINE_SOLID),
+               new RGB(230, 100, 0)),
     ROUTE_OTHER(16, "ROUTE_OTHER", //$NON-NLS-1$
                 EConnectionCategory.MAIN,
-                CAMEL | UNIQUE_NAME| CUSTOM_NAME,
+                CAMEL | UNIQUE_NAME | CUSTOM_NAME,
                 "Otherwise", Messages.getString("EConnectionType.otherwise"), //$NON-NLS-1$ //$NON-NLS-2$
                 new Integer(LINE_SOLID),
                 new RGB(230, 100, 0)),
     ROUTE_TRY(17, "ROUTE_TRY", //$NON-NLS-1$
-            EConnectionCategory.MAIN,
-            CAMEL | UNIQUE_NAME| CUSTOM_NAME,
-            "Try", "Try", //$NON-NLS-1$ //$NON-NLS-2$
-            new Integer(LINE_SOLID),
-            new RGB(0, 100, 0)),
+              EConnectionCategory.MAIN,
+              CAMEL | UNIQUE_NAME | CUSTOM_NAME,
+              "Try", "Try", //$NON-NLS-1$ //$NON-NLS-2$
+              new Integer(LINE_SOLID),
+              new RGB(0, 100, 0)),
     ROUTE_CATCH(18, "ROUTE_CATCH", //$NON-NLS-1$
-            EConnectionCategory.MAIN,
-            CONDITION | CAMEL | UNIQUE_NAME| CUSTOM_NAME,
-            "Catch", "Catch", //$NON-NLS-1$ //$NON-NLS-2$
-            new Integer(LINE_SOLID),
-            new RGB(128, 0, 0)),
+                EConnectionCategory.MAIN,
+                CONDITION | CAMEL | UNIQUE_NAME | CUSTOM_NAME,
+                "Catch", "Catch", //$NON-NLS-1$ //$NON-NLS-2$
+                new Integer(LINE_SOLID),
+                new RGB(128, 0, 0)),
     ROUTE_FINALLY(19, "ROUTE_FINALLY", //$NON-NLS-1$
-            EConnectionCategory.MAIN,
-            CAMEL | UNIQUE_NAME| CUSTOM_NAME,
-            "Finally", "Finally", //$NON-NLS-1$ //$NON-NLS-2$
-            new Integer(LINE_SOLID),
-            new RGB(0, 0, 160)),
+                  EConnectionCategory.MAIN,
+                  CAMEL | UNIQUE_NAME | CUSTOM_NAME,
+                  "Finally", "Finally", //$NON-NLS-1$ //$NON-NLS-2$
+                  new Integer(LINE_SOLID),
+                  new RGB(0, 0, 160)),
     ROUTE_ENDBLOCK(20, "ROUTE_ENDBLOCK", //$NON-NLS-1$
-            EConnectionCategory.MAIN,
-            CAMEL | UNIQUE_NAME| CUSTOM_NAME,
-            "Route", "Route", //$NON-NLS-1$ //$NON-NLS-2$
-            new Integer(LINE_SOLID),
-            new RGB(230, 100, 0)),
-    
-    STARTS(21, "STARTS", EConnectionCategory.OTHER, 
-    		CONDITION | DEPENDENCY | UNIQUE_NAME,
-    		"Starts", Messages.getString("EConnectionType.startsMenu"),
-    		new Integer(LINE_SOLID),
-    		new RGB(0,0,150));
-    
+                   EConnectionCategory.MAIN,
+                   CAMEL | UNIQUE_NAME | CUSTOM_NAME,
+                   "Route", "Route", //$NON-NLS-1$ //$NON-NLS-2$
+                   new Integer(LINE_SOLID),
+                   new RGB(230, 100, 0)),
+
+    STARTS(21, "STARTS", EConnectionCategory.OTHER, CONDITION | DEPENDENCY | UNIQUE_NAME, "Starts", Messages
+            .getString("EConnectionType.startsMenu"), new Integer(LINE_SOLID), new RGB(0, 0, 150)),
+
+    TABLE_REF(22, "TABLE_REF", //$NON-NLS-1$
+              // EConnectionCategory.OTHER,
+              EConnectionCategory.MAIN,
+              MAIN | DATA | CUSTOM_NAME | IConnectionCategory.TABLE,
+              "Table_ref", Messages.getString("EConnectionType.tableRefMenu"), //$NON-NLS-1$ //$NON-NLS-2$
+              new Integer(LINE_DOT),
+              new RGB(0, 150, 100));
+
     private String name;
 
     private int id;
@@ -201,9 +206,9 @@ public enum EConnectionType implements IConnectionCategory, IDraw2dGraphics {
 
     public static EConnectionType getTypeFromId(int id) {
         EConnectionType[] listConnectionType = EConnectionType.values();
-        for (int i = 0; i < listConnectionType.length; i++) {
-            if ((listConnectionType[i].getId()) == id) {
-                return listConnectionType[i];
+        for (EConnectionType element : listConnectionType) {
+            if ((element.getId()) == id) {
+                return element;
             }
         }
         // Default Value
@@ -212,9 +217,9 @@ public enum EConnectionType implements IConnectionCategory, IDraw2dGraphics {
 
     public static EConnectionType getTypeFromName(String name) {
         EConnectionType[] listConnectionType = EConnectionType.values();
-        for (int i = 0; i < listConnectionType.length; i++) {
-            if (listConnectionType[i].getName().equals(name)) {
-                return listConnectionType[i];
+        for (EConnectionType element : listConnectionType) {
+            if (element.getName().equals(name)) {
+                return element;
             }
         }
         return null;

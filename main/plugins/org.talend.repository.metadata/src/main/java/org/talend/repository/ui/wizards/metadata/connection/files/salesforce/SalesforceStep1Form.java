@@ -50,6 +50,8 @@ import org.talend.repository.preview.SalesforceSchemaBean;
 import org.talend.repository.ui.swt.utils.AbstractSalesforceStepForm;
 import org.talend.repository.ui.utils.ConnectionContextHelper;
 import org.talend.repository.ui.utils.OtherConnectionContextUtils.EParamName;
+import org.talend.salesforce.SforceConnection;
+import org.talend.salesforce.SforceSessionConnection;
 import org.talend.salesforce.oauth.OAuthClient;
 import org.talend.salesforce.oauth.Token;
 
@@ -347,6 +349,7 @@ public class SalesforceStep1Form extends AbstractSalesforceStepForm {
 
         webServiceUrlText.addModifyListener(new ModifyListener() {
 
+            @Override
             public void modifyText(ModifyEvent e) {
                 if (!isContextMode()) {
                     loginOk = false;
@@ -359,6 +362,7 @@ public class SalesforceStep1Form extends AbstractSalesforceStepForm {
 
         userNameText.addModifyListener(new ModifyListener() {
 
+            @Override
             public void modifyText(ModifyEvent e) {
                 if (!isContextMode()) {
                     loginOk = false;
@@ -371,6 +375,7 @@ public class SalesforceStep1Form extends AbstractSalesforceStepForm {
 
         passwordText.addModifyListener(new ModifyListener() {
 
+            @Override
             public void modifyText(ModifyEvent e) {
                 if (!isContextMode()) {
                     loginOk = false;
@@ -382,6 +387,7 @@ public class SalesforceStep1Form extends AbstractSalesforceStepForm {
         });
         batchSizeText.addModifyListener(new ModifyListener() {
 
+            @Override
             public void modifyText(ModifyEvent e) {
                 if (!isContextMode()) {
                     loginOk = false;
@@ -393,6 +399,7 @@ public class SalesforceStep1Form extends AbstractSalesforceStepForm {
         });
         timeOutText.addModifyListener(new ModifyListener() {
 
+            @Override
             public void modifyText(ModifyEvent e) {
                 if (!isContextMode()) {
                     loginOk = false;
@@ -445,6 +452,7 @@ public class SalesforceStep1Form extends AbstractSalesforceStepForm {
         });
         proxyHostText.addModifyListener(new ModifyListener() {
 
+            @Override
             public void modifyText(ModifyEvent e) {
                 if (!isContextMode()) {
                     checkFieldsValue();
@@ -455,6 +463,7 @@ public class SalesforceStep1Form extends AbstractSalesforceStepForm {
         });
         proxyPortText.addModifyListener(new ModifyListener() {
 
+            @Override
             public void modifyText(ModifyEvent e) {
                 if (!isContextMode()) {
                     checkFieldsValue();
@@ -465,6 +474,7 @@ public class SalesforceStep1Form extends AbstractSalesforceStepForm {
         });
         proxyUsernameText.addModifyListener(new ModifyListener() {
 
+            @Override
             public void modifyText(ModifyEvent e) {
                 if (!isContextMode()) {
                     checkFieldsValue();
@@ -475,6 +485,7 @@ public class SalesforceStep1Form extends AbstractSalesforceStepForm {
         });
         proxyPasswordText.addModifyListener(new ModifyListener() {
 
+            @Override
             public void modifyText(ModifyEvent e) {
                 if (!isContextMode()) {
                     checkFieldsValue();
@@ -485,6 +496,7 @@ public class SalesforceStep1Form extends AbstractSalesforceStepForm {
         });
         authBtn.addModifyListener(new ModifyListener() {
 
+            @Override
             public void modifyText(ModifyEvent e) {
                 if (!isContextMode()) {
                     loginOk = false;
@@ -497,6 +509,7 @@ public class SalesforceStep1Form extends AbstractSalesforceStepForm {
         });
         webServiceUrlTextForOAuth.addModifyListener(new ModifyListener() {
 
+            @Override
             public void modifyText(ModifyEvent e) {
                 if (!isContextMode()) {
                     loginOk = false;
@@ -508,6 +521,7 @@ public class SalesforceStep1Form extends AbstractSalesforceStepForm {
         });
         consumeKeyText.addModifyListener(new ModifyListener() {
 
+            @Override
             public void modifyText(ModifyEvent e) {
                 if (!isContextMode()) {
                     loginOk = false;
@@ -519,6 +533,7 @@ public class SalesforceStep1Form extends AbstractSalesforceStepForm {
         });
         consumeKeySecretText.addModifyListener(new ModifyListener() {
 
+            @Override
             public void modifyText(ModifyEvent e) {
                 if (!isContextMode()) {
                     loginOk = false;
@@ -530,6 +545,7 @@ public class SalesforceStep1Form extends AbstractSalesforceStepForm {
         });
         callbackHostText.addModifyListener(new ModifyListener() {
 
+            @Override
             public void modifyText(ModifyEvent e) {
                 if (!isContextMode()) {
                     loginOk = false;
@@ -541,6 +557,7 @@ public class SalesforceStep1Form extends AbstractSalesforceStepForm {
         });
         callbackPortText.addModifyListener(new ModifyListener() {
 
+            @Override
             public void modifyText(ModifyEvent e) {
                 if (!isContextMode()) {
                     loginOk = false;
@@ -552,6 +569,7 @@ public class SalesforceStep1Form extends AbstractSalesforceStepForm {
         });
         apiVersionText.addModifyListener(new ModifyListener() {
 
+            @Override
             public void modifyText(ModifyEvent e) {
                 if (!isContextMode()) {
                     loginOk = false;
@@ -563,6 +581,7 @@ public class SalesforceStep1Form extends AbstractSalesforceStepForm {
         });
         tokenText.addModifyListener(new ModifyListener() {
 
+            @Override
             public void modifyText(ModifyEvent e) {
                 if (!isContextMode()) {
                     loginOk = false;
@@ -644,9 +663,9 @@ public class SalesforceStep1Form extends AbstractSalesforceStepForm {
                         client.stopServer();
                         if (code != null && !code.equals("")) {
                             token = client.getTokenForWizard(code);
-                            org.talend.salesforce.SforceManagement sfMgr = new org.talend.salesforce.SforceManagementImpl();
+
                             String endpoint = null;
-                            endpoint = client.getSOAPEndpoint(token, apiVersion);
+                            endpoint = OAuthClient.getSOAPEndpoint(token, apiVersion);
 
                             if (token != null) {
                                 java.util.Properties properties = new java.util.Properties();
@@ -655,7 +674,12 @@ public class SalesforceStep1Form extends AbstractSalesforceStepForm {
                                 FileWriter w = new FileWriter(tokenText.getText());
                                 properties.store(w, "");
                                 w.close();
-                                result = sfMgr.login(token.getAccess_token(), endpoint, Integer.parseInt(timeOut), false);
+                                try {
+                                    SforceConnection sforceConn = new SforceSessionConnection.Builder(endpoint, token
+                                            .getAccess_token()).setTimeout(timeOut).needCompression(false).build();
+                                    result = true;
+                                } catch (Exception ex) {
+                                }
                             }
 
                             if (!result) {
@@ -906,7 +930,7 @@ public class SalesforceStep1Form extends AbstractSalesforceStepForm {
         setTextValue(getConnection().getPassword(), passwordText);
         String batchSize2 = getConnection().getBatchSize();
         setTextValue((batchSize2 != null && !"".equals(batchSize2)) ? batchSize2 : String //$NON-NLS-1$
-                .valueOf(SalesforceSchemaBean.DEFAULT_BATCH_SIZE), batchSizeText); //$NON-NLS-1$
+                .valueOf(SalesforceSchemaBean.DEFAULT_BATCH_SIZE), batchSizeText);
         useProxyBtn.setSelection(getConnection().isUseProxy());
         useHttpBtn.setSelection(getConnection().isUseHttpProxy());
         setTextValue(getConnection().getProxyHost(), proxyHostText);
@@ -953,7 +977,7 @@ public class SalesforceStep1Form extends AbstractSalesforceStepForm {
     }
 
     private void setTextValue(String value, LabelledText control) {
-        if (value != null) { //$NON-NLS-1$
+        if (value != null) {
             control.setText(value);
         }
     }

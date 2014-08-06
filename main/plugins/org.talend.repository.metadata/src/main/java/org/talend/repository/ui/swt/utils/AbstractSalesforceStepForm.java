@@ -12,11 +12,6 @@
 // ============================================================================
 package org.talend.repository.ui.swt.utils;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -49,16 +44,14 @@ import org.talend.repository.metadata.i18n.Messages;
 import org.talend.repository.ui.wizards.metadata.connection.files.salesforce.ISalesforceModuleParser;
 import org.talend.repository.ui.wizards.metadata.connection.files.salesforce.SalesforceModuleParseAPI;
 import org.talend.repository.ui.wizards.metadata.connection.files.salesforce.SalesforceModuleParserPartner;
+import org.talend.salesforce.SforceConnection;
+import org.talend.salesforce.SforceManagement;
+import org.talend.salesforce.SforceSessionConnection;
 import org.talend.salesforce.oauth.OAuthClient;
 import org.talend.salesforce.oauth.Token;
 
-import com.salesforce.soap.partner.DescribeSObject;
 import com.salesforce.soap.partner.DescribeSObjectResult;
-import com.salesforce.soap.partner.DescribeSObjectsResponse;
 import com.salesforce.soap.partner.Field;
-import com.salesforce.soap.partner.InvalidSObjectFault;
-import com.salesforce.soap.partner.SessionHeader;
-import com.salesforce.soap.partner.SforceServiceStub;
 import com.sforce.soap.enterprise.DescribeGlobalResult;
 import com.sforce.soap.enterprise.SoapBindingStub;
 import com.sforce.soap.enterprise.fault.UnexpectedErrorFault;
@@ -85,7 +78,7 @@ public abstract class AbstractSalesforceStepForm extends AbstractForm {
 
     private SoapBindingStub binding = null;
 
-    private SforceServiceStub bindingPartner = null;
+    private SforceManagement sforceMgr = null;
 
     // private com.salesforce.soap.partner.SoapBindingStub bindingPartner = null;
 
@@ -157,9 +150,9 @@ public abstract class AbstractSalesforceStepForm extends AbstractForm {
         IMetadataTable result = null;
         String proxy = null;
         if (useProxy) {
-            proxy = SalesforceModuleParseAPI.USE_SOCKS_PROXY;//$NON-NLS-1$
+            proxy = SalesforceModuleParseAPI.USE_SOCKS_PROXY;
         } else if (useHttp) {
-            proxy = SalesforceModuleParseAPI.USE_HTTP_PROXY;//$NON-NLS-1$
+            proxy = SalesforceModuleParseAPI.USE_HTTP_PROXY;
         }
         if (!moduleName.equals(salesforceAPI.getCurrentModuleName())) {
             result = getMetadataTableBySalesforceServerAPI(endPoint, user, pass, timeOut, moduleName, proxy, proxyHost,
@@ -186,19 +179,12 @@ public abstract class AbstractSalesforceStepForm extends AbstractForm {
 
     private Field[] fetchSFDescriptionField(String module, org.talend.salesforce.SforceManagement sforceManagement) {
 
-        DescribeSObject d = new DescribeSObject();
-        d.setSObjectType(module);
-        SessionHeader sh = sforceManagement.getSessionHeader();
         DescribeSObjectResult r;
         try {
-            r = sforceManagement.getStub().describeSObject(d, sh, null, null, null).getResult();
+            r = sforceManagement.describeSObject(module);
             Field[] fields = r.getFields();
             return fields;
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        } catch (InvalidSObjectFault e) {
-            e.printStackTrace();
-        } catch (com.salesforce.soap.partner.UnexpectedErrorFault e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -261,7 +247,7 @@ public abstract class AbstractSalesforceStepForm extends AbstractForm {
                 || consumeKey.equals("") || consumeSecret.equals("") || moduleName == null || moduleName.equals("")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             return null;
         }
-        org.talend.salesforce.SforceManagement sforceManagement = new org.talend.salesforce.SforceManagementImpl();
+        org.talend.salesforce.SforceManagement sforceManagement = null;
         try {
             OAuthClient client = new OAuthClient();
             client.setBaseOAuthURL(endPoint);
@@ -271,8 +257,10 @@ public abstract class AbstractSalesforceStepForm extends AbstractForm {
             client.setClientSecret(consumeSecret);
             Token tokenFile = salesforceAPI.login(endPoint, consumeKey, consumeSecret, callbackHost, callbackPort,
                     salesforceVersion, token, timeOut);
-            String url = client.getSOAPEndpoint(tokenFile, salesforceVersion);
-            boolean result = sforceManagement.login(tokenFile.getAccess_token(), url, Integer.parseInt(timeOut), false);
+            String url = OAuthClient.getSOAPEndpoint(tokenFile, salesforceVersion);
+            SforceConnection sforceConn = new SforceSessionConnection.Builder(url, tokenFile.getAccess_token())
+                    .setTimeout(Integer.parseInt(timeOut)).needCompression(false).build();
+            sforceManagement = new org.talend.salesforce.SforceManagementImpl(sforceConn);
         } catch (Exception e) {
             ExceptionHandler.process(e);
         }
@@ -328,11 +316,9 @@ public abstract class AbstractSalesforceStepForm extends AbstractForm {
                 for (int i = 0; i < loginList.size(); i++) {
                     if (loginList.get(i) instanceof SoapBindingStub) {
                         binding = (SoapBindingStub) loginList.get(i);
-                    } else
-                    // if (loginList.get(i) instanceof com.sforce.soap.partner.SoapBindingStub)
-                    {
-                        // bindingPartner = (com.sforce.soap.partner.SoapBindingStub) loginList.get(i);
-                        bindingPartner = new SforceServiceStub(endPoint);
+                    }
+                    if (loginList.get(i) instanceof SforceManagement) {
+                        sforceMgr = (SforceManagement) loginList.get(i);
                     }
                 }
             } catch (Throwable e) {
@@ -369,6 +355,7 @@ public abstract class AbstractSalesforceStepForm extends AbstractForm {
         try {
             dialog.run(true, false, new IRunnableWithProgress() {
 
+                @Override
                 public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 
                     monitor.beginTask(Messages.getString("AbstractSalesforceStepForm.tryToLogin"), IProgressMonitor.UNKNOWN); //$NON-NLS-1$
@@ -404,8 +391,8 @@ public abstract class AbstractSalesforceStepForm extends AbstractForm {
                                 if (loginList.get(i) instanceof SoapBindingStub) {
                                     binding = (SoapBindingStub) loginList.get(i);
                                 }
-                                if (loginList.get(i) instanceof SforceServiceStub) {
-                                    bindingPartner = (SforceServiceStub) loginList.get(i);
+                                if (loginList.get(i) instanceof SforceManagement) {
+                                    sforceMgr = (SforceManagement) loginList.get(i);
                                 }
 
                             }
@@ -456,14 +443,10 @@ public abstract class AbstractSalesforceStepForm extends AbstractForm {
             if (currentAPI instanceof SalesforceModuleParserPartner) {
                 SalesforceModuleParserPartner partner = (SalesforceModuleParserPartner) currentAPI;
                 try {
-                    DescribeSObjectsResponse describeSObjects = bindingPartner.describeSObjects(null, null, null, null, null);
-                    // return describeSObjects.getResult();
-                } catch (InvalidSObjectFault e) {
-                    e.printStackTrace();
-                } catch (com.salesforce.soap.partner.UnexpectedErrorFault e) {
+                    sforceMgr.describeSObjects(null);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-
             }
         }
         return null;

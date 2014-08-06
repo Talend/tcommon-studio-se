@@ -51,6 +51,7 @@ import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.core.model.metadata.builder.database.ExtractMetaDataFromDataBase;
 import org.talend.core.model.metadata.builder.database.ExtractMetaDataFromDataBase.ETableTypes;
 import org.talend.core.model.metadata.builder.database.ExtractMetaDataUtils;
+import org.talend.core.model.metadata.builder.database.JavaSqlFactory;
 import org.talend.core.model.metadata.builder.database.PluginConstant;
 import org.talend.core.model.metadata.builder.database.TableInfoParameters;
 import org.talend.core.model.metadata.builder.database.hive.EmbeddedHiveDataBaseMetadata;
@@ -65,6 +66,7 @@ import org.talend.cwm.helper.ColumnSetHelper;
 import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.helper.PackageHelper;
 import org.talend.cwm.helper.SchemaHelper;
+import org.talend.cwm.helper.SwitchHelpers;
 import org.talend.cwm.helper.TableHelper;
 import org.talend.cwm.helper.TaggedValueHelper;
 import org.talend.cwm.relational.RelationalFactory;
@@ -164,7 +166,11 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
             boolean isHiveJdbc = dbconn.getDatabaseType().equals(EDatabaseTypeName.GENERAL_JDBC.getDisplayName())
                     && dbconn.getDriverClass() != null
                     && dbconn.getDriverClass().equals(EDatabase4DriverClassName.HIVE.getDriverClass());
-            if (!isHive && !isHiveJdbc) {
+            boolean isImpala = dbconn.getDatabaseType().equals(EDatabaseTypeName.IMPALA.getDisplayName());
+            boolean isImpalaJdbc = dbconn.getDatabaseType().equals(EDatabaseTypeName.IMPALA.getDisplayName())
+                    && dbconn.getDriverClass() != null
+                    && dbconn.getDriverClass().equals(EDatabase4DriverClassName.IMPALA.getDriverClass());
+            if (!isHive && !isHiveJdbc && !isImpala && !isImpalaJdbc) {
                 String identifierQuote = dbMetadata.getIdentifierQuoteString();
                 ConnectionHelper.setIdentifierQuoteString(identifierQuote == null ? "" : identifierQuote, dbconn); //$NON-NLS-1$
             }
@@ -1502,9 +1508,13 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                 column.setInitialValue(defExpression);
                 extractMeta.handleDefaultValue(column, dbJDBCMetadata);
 
-                DatabaseConnection dbConnection = (DatabaseConnection) ConnectionHelper.getConnection(colSet);
+                DatabaseConnection dbConnection = SwitchHelpers.DATABASECONNECTION_SWITCH.doSwitch(ConnectionHelper
+                        .getConnection(colSet));
                 String dbmsId = dbConnection == null ? null : dbConnection.getDbmsId();
                 if (dbmsId != null) {
+                    if (dbConnection.isContextMode()) {
+                        dbmsId = JavaSqlFactory.getOriginalConntextValue(dbConnection, dbmsId);
+                    }
                     MappingTypeRetriever mappingTypeRetriever = MetadataTalendType.getMappingTypeRetriever(dbmsId);
                     String talendType = mappingTypeRetriever
                             .getDefaultSelectedTalendType(
@@ -1512,8 +1522,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                                     extractMeta.getIntMetaDataInfo(columns, "COLUMN_SIZE"), (dbJDBCMetadata instanceof TeradataDataBaseMetadata) ? 0 : extractMeta.getIntMetaDataInfo(columns, //$NON-NLS-1$
                                                             "DECIMAL_DIGITS")); //$NON-NLS-1$
                     column.setTalendType(talendType);
-                    String defaultSelectedDbType = MetadataTalendType.getMappingTypeRetriever(dbConnection.getDbmsId())
-                            .getDefaultSelectedDbType(talendType);
+                    String defaultSelectedDbType = MetadataTalendType.getMappingTypeRetriever(dbmsId).getDefaultSelectedDbType(
+                            talendType);
                     column.setSourceType(defaultSelectedDbType);
                 }
                 try {

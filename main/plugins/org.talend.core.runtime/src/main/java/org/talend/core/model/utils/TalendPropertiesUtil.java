@@ -73,4 +73,13 @@ public final class TalendPropertiesUtil {
     public static boolean isEnabledUseBrowser() {
         return isEnabled("USE_BROWSER"); //$NON-NLS-1$
     }
+
+    /**
+     * is Enabled Old MDM Profiling.
+     * 
+     * @return
+     */
+    public static boolean isEnabledOldMDMProfiling() {
+        return isEnabled("talend.enable.old.mdm.profiling"); //$NON-NLS-1$
+    }
 }

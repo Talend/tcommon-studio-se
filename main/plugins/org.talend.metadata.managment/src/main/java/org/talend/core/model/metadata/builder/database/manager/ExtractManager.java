@@ -384,7 +384,9 @@ public class ExtractManager {
                 }
                 fillSynonyms(metadataConnection, metadataColumns, table, tableName, dbMetaData);
             } else {
-                metadataColumns = MetadataFillFactory.getDBInstance().fillColumns(table, metadataConnection, dbMetaData, null);
+                EDatabaseTypeName currentEDatabaseType = EDatabaseTypeName.getTypeFromDbType(dbType);
+                metadataColumns = MetadataFillFactory.getDBInstance(currentEDatabaseType).fillColumns(table, metadataConnection,
+                        dbMetaData, null);
             }
 
             // metadataColumns = ExtractMetaDataFromDataBase.extractColumns(dbMetaData, newNode, metadataConnection,

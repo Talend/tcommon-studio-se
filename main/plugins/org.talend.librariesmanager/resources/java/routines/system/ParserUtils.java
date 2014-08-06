@@ -257,7 +257,6 @@ public class ParserUtils {
         if (ignoreDTD) {
             reader.setEntityResolver(new EntityResolver() {
 
-                @Override
                 public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
                     return new org.xml.sax.InputSource(new java.io.ByteArrayInputStream("<?xml version='1.0' encoding='UTF-8'?>"
                             .getBytes()));

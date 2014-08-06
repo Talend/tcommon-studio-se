@@ -82,4 +82,9 @@ public interface IConnectionCategory {
      * For CAMEL, for ROUTE links of course. (Links property should be overrided directly in component)
      */
     public static final int CAMEL = 1 << 11;
+
+    /**
+     * For TABLE, TABLE_REF.
+     */
+    public static final int TABLE = 1 << 12;
 }

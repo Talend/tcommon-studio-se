@@ -87,7 +87,7 @@ public enum EParameterFieldType {
     HADOOP_JARS_DIALOG,
     HMAP_PATH, // wchen added for TDM
     MATCH_RULE_IMEX_CONTROLLER, // sizhaoliu TDQ-7910
-    ;
+    TABLE_BY_ROW, ;
 
     public String getName() {
         return toString();
