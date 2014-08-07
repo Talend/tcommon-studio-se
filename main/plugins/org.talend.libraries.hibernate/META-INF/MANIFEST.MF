@@ -14,13 +14,8 @@ Bundle-ClassPath: .,
  lib/asm.jar,
  lib/hibernate-3.2-patched1.7.jar
 Require-Bundle: org.apache.log4j,
- org.talend.libraries.jdbc.jtds;resolution:=optional;visibility:=reexport,
- org.talend.libraries.jdbc.mysql;visibility:=reexport,
- org.talend.libraries.jdbc.oracle;resolution:=optional;visibility:=reexport,
- org.talend.libraries.jdbc.hsql;resolution:=optional,
  org.apache.xerces,
  org.talend.libraries.dom4j-jaxen;visibility:=reexport,
- org.talend.libraries.jdbc.postgresql;resolution:=optional;visibility:=reexport,
  org.apache.commons.collections
 Export-Package: antlr,
  antlr.ASdebug,
