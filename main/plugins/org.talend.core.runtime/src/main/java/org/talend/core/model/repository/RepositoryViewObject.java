@@ -96,6 +96,8 @@ public class RepositoryViewObject implements IRepositoryViewObject {
 
     private String path;
 
+    private String displayName;
+
     private ERepositoryStatus repositoryStatus;
 
     private ERepositoryStatus informationStatus;
@@ -118,7 +120,8 @@ public class RepositoryViewObject implements IRepositoryViewObject {
         this.creationDate = property.getCreationDate();
         this.description = property.getDescription();
         this.modificationDate = property.getModificationDate();
-        this.label = property.getDisplayName();
+        this.label = property.getLabel();
+        this.displayName = property.getDisplayName();
         this.purpose = property.getPurpose();
         this.statusCode = property.getStatusCode();
         this.version = property.getVersion();
@@ -251,6 +254,10 @@ public class RepositoryViewObject implements IRepositoryViewObject {
 
     @Override
     public String getLabel() {
+        return this.displayName;
+    }
+
+    public String getTechnicalLabel() {
         return this.label;
     }
 
@@ -297,7 +304,8 @@ public class RepositoryViewObject implements IRepositoryViewObject {
             this.creationDate = property.getCreationDate();
             this.description = property.getDescription();
             this.modificationDate = property.getModificationDate();
-            this.label = property.getDisplayName();
+            this.label = property.getLabel();
+            this.displayName = property.getDisplayName();
             this.purpose = property.getPurpose();
             this.statusCode = property.getStatusCode();
             this.version = property.getVersion();

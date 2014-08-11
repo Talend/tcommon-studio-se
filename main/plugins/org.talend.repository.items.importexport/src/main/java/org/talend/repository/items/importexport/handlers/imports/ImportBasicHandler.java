@@ -81,6 +81,7 @@ import org.talend.core.model.properties.helper.ByteArrayResource;
 import org.talend.core.model.relationship.RelationshipItemBuilder;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
+import org.talend.core.model.repository.RepositoryViewObject;
 import org.talend.core.model.utils.MigrationUtil;
 import org.talend.core.repository.constants.FileConstants;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
@@ -409,7 +410,14 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
      */
     protected boolean isSameName(ImportItem importItem, IRepositoryViewObject repObject) {
         final Property property = importItem.getProperty();
-        if ((property.getLabel() != null && property.getLabel().equalsIgnoreCase(repObject.getLabel())) // same label
+        String currentLabel = null;
+        if (repObject instanceof RepositoryViewObject) {
+            RepositoryViewObject object = (RepositoryViewObject) repObject;
+            currentLabel = object.getTechnicalLabel();
+        } else {
+            currentLabel = repObject.getLabel();
+        }
+        if ((property.getLabel() != null && property.getLabel().equalsIgnoreCase(currentLabel)) // same label
         ) {
             ERepositoryObjectType importType = importItem.getRepositoryType();
             ERepositoryObjectType repType = repObject.getRepositoryObjectType();
@@ -714,11 +722,8 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
                 User author = selectedImportItem.getProperty().getAuthor();
                 if (author != null) {
                     if (!repFactory.setAuthorByLogin(tmpItem, author.getLogin())) {
-                        // if the import user not exist in talend.project, then add
-                        Resource resource = ProjectManager.getInstance().getCurrentProject().getEmfProject().eResource();
-                        if (resource != null && resource.getContents() != null) {
-                            resource.getContents().add(author);
-                        }
+                        // author will be the logged user in create method
+                        tmpItem.getProperty().setAuthor(null);
                     }
                 }
 

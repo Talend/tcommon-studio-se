@@ -172,19 +172,6 @@ public class ExampleDemoDragAndDropHandler implements IDragAndDropServiceHandler
      * (non-Javadoc)
      * 
      * @see
-     * org.talend.core.model.utils.IDragAndDropServiceHandler#handleTableRelevantParameters(org.talend.core.model.process
-     * .IElement, org.talend.core.model.metadata.IMetadataTable)
-     */
-    @Override
-    public void handleTableRelevantParameters(IElement ele, IMetadataTable metadataTable) {
-        // TODO Auto-generated method stub
-
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
      * org.talend.core.model.utils.IDragAndDropServiceHandler#getComponentValue(org.talend.core.model.metadata.builder
      * .connection.Connection, java.lang.String, org.talend.core.model.metadata.IMetadataTable, java.lang.String)
      */
@@ -192,6 +179,20 @@ public class ExampleDemoDragAndDropHandler implements IDragAndDropServiceHandler
     public Object getComponentValue(Connection connection, String value, IMetadataTable table, String targetComponent) {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.talend.core.model.utils.IDragAndDropServiceHandler#handleTableRelevantParameters(org.talend.core.model.metadata
+     * .builder.connection.Connection, org.talend.core.model.process.IElement,
+     * org.talend.core.model.metadata.IMetadataTable)
+     */
+    @Override
+    public void handleTableRelevantParameters(Connection connection, IElement ele, IMetadataTable metadataTable) {
+        // TODO Auto-generated method stub
+
     }
 
 }
