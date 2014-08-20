@@ -328,6 +328,7 @@ public class LDAPSchemaStep1Form extends AbstractLDAPSchemaStepForm {
         if (visible) {
             initialize();
             adaptFormToEditable();
+            collectContextParams(visible);
             checkFieldsValue();
         }
 

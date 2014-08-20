@@ -19,12 +19,9 @@ import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.EditorPart;
@@ -34,7 +31,6 @@ import org.talend.core.model.process.IContext;
 import org.talend.core.model.process.IContextManager;
 import org.talend.core.model.process.IContextParameter;
 import org.talend.core.model.process.IProcess2;
-import org.talend.core.ui.i18n.Messages;
 import org.talend.designer.core.ui.editor.cmd.ContextAddParameterCommand;
 import org.talend.designer.core.ui.editor.cmd.ContextChangeDefaultCommand;
 import org.talend.designer.core.ui.editor.cmd.ContextRemoveParameterCommand;
@@ -54,6 +50,8 @@ public abstract class ContextComposite extends Composite implements IContextMode
     private ContextTreeValuesComposite treeValues;
 
     private ContextTableValuesComposite tableValues;
+
+    private ContextNebulaGridComposite tableNebulas;
 
     private CTabFolder tab;
 
@@ -112,33 +110,31 @@ public abstract class ContextComposite extends Composite implements IContextMode
             }
         }
         if (flag) {
-            template.setEnabled(false);
-            tableValues.setEnabled(false);
-            treeValues.setEnabled(false);
+            tableNebulas.setEnabled(false);
         } else {
-            template.setEnabled(enable);
-            tableValues.setEnabled(enable);
-            treeValues.setEnabled(enable);
+            tableNebulas.setEnabled(enable);
         }
     }
 
     @Override
     public void refresh() {
-        refreshTemplateTab();
-        refreshTableTab();
-        refreshTreeTab();
+        refreshTab();
     }
 
     @Override
     public void refreshTemplateTab() {
+        refreshTab();
+    }
+
+    private void refreshTab() {
         if (getContextManager() == null) {
             this.setEnabled(false);
-            template.clear();
-            template.setEnabled(isReadOnly());
+            tableNebulas.clear();
+            tableNebulas.setEnabled(isReadOnly());
         } else {
             this.setEnabled(true);
             setTabEnable(!isReadOnly());
-            toolgeRefreshContextRelitiveComposite(template);
+            toolgeRefreshContextRelitiveComposite(tableNebulas);
         }
 
         if (getContextManager() != null) {
@@ -148,37 +144,12 @@ public abstract class ContextComposite extends Composite implements IContextMode
 
     @Override
     public void refreshTableTab() {
-        if (getContextManager() != null && tableValues != null) {
-            tableValues.refresh();
-        }
-        if (getContextManager() == null) {
-            this.setEnabled(false);
-            tableValues.clear();
-        } else {
-            this.setEnabled(true);
-            setTabEnable(!isReadOnly());
-            toolgeRefreshContextRelitiveComposite(tableValues);
-        }
-
-        if (getContextManager() != null) {
-            getContextManager().fireContextsChangedEvent();
-        }
+        refreshTab();
     }
 
     @Override
     public void refreshTreeTab() {
-        if (getContextManager() == null) {
-            this.setEnabled(false);
-            treeValues.clear();
-        } else {
-            this.setEnabled(true);
-            setTabEnable(!isReadOnly());
-            toolgeRefreshContextRelitiveComposite(treeValues);
-        }
-
-        if (getContextManager() != null) {
-            getContextManager().fireContextsChangedEvent();
-        }
+        refreshTab();
     }
 
     /**
@@ -209,38 +180,11 @@ public abstract class ContextComposite extends Composite implements IContextMode
      */
     protected void initializeUI() {
 
-        tab = new CTabFolder(this, SWT.FLAT | SWT.BORDER);
-        tab.addSelectionListener(new SelectionAdapter() {
+        tableNebulas = new ContextNebulaGridComposite(this, this);
 
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                CTabItem cTabItem = (CTabItem) e.item;
-                Control control = cTabItem.getControl();
-                if (control == treeValues) {
-                    refreshTreeTab();
-                } else if (control == tableValues) {
-                    refreshTableTab();
-                } else if (control == template) {
-                    refreshTemplateTab();
-                } else {
-                    refresh();
-                }
-            }
-
-        });
-        tab.setLayoutData(new GridData(GridData.FILL_BOTH));
-        CTabItem templateItem = new CTabItem(tab, SWT.NONE);
-        templateItem.setText(Messages.getString("ContextComposite.variable")); //$NON-NLS-1$
-        creatTemplate(tab, templateItem);
-
-        CTabItem treeValuesItem = new CTabItem(tab, SWT.NONE);
-        treeValuesItem.setText(Messages.getString("ContextComposite.treeValue")); //$NON-NLS-1$
-        creatTreeValues(tab, treeValuesItem);
-
-        CTabItem tableValuesItem = new CTabItem(tab, SWT.NONE);
-        tableValuesItem.setText(Messages.getString("ContextComposite.tableValue")); //$NON-NLS-1$
-        creatTableValues(tab, tableValuesItem);
-        tab.setSelection(templateItem);
+        tableNebulas.setLayout(new GridLayout());
+        GridData gridData = new GridData(GridData.FILL_BOTH);
+        tableNebulas.setLayoutData(gridData);
     }
 
     public CTabFolder getTableFolder() {
@@ -308,6 +252,10 @@ public abstract class ContextComposite extends Composite implements IContextMode
 
     public ContextTemplateComposite getContextTemplateComposite() {
         return this.template;
+    }
+
+    public ContextNebulaGridComposite getContextTableComposite() {
+        return this.tableNebulas;
     }
 
     @Override

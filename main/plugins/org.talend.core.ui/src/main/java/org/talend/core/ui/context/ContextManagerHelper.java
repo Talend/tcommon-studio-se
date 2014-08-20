@@ -38,7 +38,9 @@ import org.talend.core.model.process.IContextParameter;
 import org.talend.core.model.properties.ContextItem;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.ui.branding.IBrandingConfiguration;
+import org.talend.core.ui.context.ContextTreeTable.ContextTreeNode;
 import org.talend.core.ui.context.cmd.OrderContextParameterCommand;
+import org.talend.core.ui.context.model.table.ContextTableTabParentModel;
 import org.talend.core.ui.context.model.template.ContextConstant;
 import org.talend.core.ui.context.model.template.ContextVariableTabChildModel;
 import org.talend.core.ui.context.model.template.ContextVariableTabParentModel;
@@ -178,6 +180,7 @@ public final class ContextManagerHelper {
      * 
      * @deprecated by 13184
      */
+    @Deprecated
     public ContextItem getContextItemByName(String name) {
         if (!isValid(name)) {
             return null;
@@ -436,6 +439,10 @@ public final class ContextManagerHelper {
         if (element instanceof ContextVariableTabParentModel) {
             movedParam = ((ContextVariableTabParentModel) element).getContextParameter();
         }
+
+        if (element instanceof ContextTableTabParentModel) {
+            movedParam = ((ContextTableTabParentModel) element).getContextParameter();
+        }
         if (movedParam == null) {
             return false;
         }
@@ -451,7 +458,52 @@ public final class ContextManagerHelper {
         //
         modelManager.refreshTemplateTab();
 
+        modelManager.refreshTableTab();
+
         revertTreeSelection(viewer, movedParam);
+
+        return orderCommand.isExecution();
+    }
+
+    /**
+     * 
+     * ggu Comment method "changeContextOrder".
+     * 
+     * order the context parameter
+     */
+    public static boolean changeContextOrder(ISelection selObj, IContextModelManager modelManager, boolean up) {
+        if (selObj == null || selObj.isEmpty()) {
+            return false;
+        }
+        if (!(selObj instanceof IStructuredSelection)) {
+            return false;
+        }
+        IStructuredSelection sSection = (IStructuredSelection) selObj;
+        if (sSection.size() != 1) { // not support multi-selection
+            return false;
+        }
+
+        Object element = sSection.getFirstElement();
+        Object model = ((ContextTreeNode) element).getTreeData();
+        IContextParameter movedParam = null;
+
+        if (model instanceof ContextTableTabParentModel) {
+            movedParam = ((ContextTableTabParentModel) model).getContextParameter();
+        }
+        if (movedParam == null) {
+            return false;
+        }
+
+        OrderContextParameterCommand orderCommand = new OrderContextParameterCommand(modelManager.getContextManager(),
+                movedParam, up);
+        final CommandStack commandStack = modelManager.getCommandStack();
+        if (commandStack != null) {
+            commandStack.execute(orderCommand);
+        } else {
+            orderCommand.execute();
+        }
+
+        modelManager.refreshTableTab();
 
         return orderCommand.isExecution();
     }

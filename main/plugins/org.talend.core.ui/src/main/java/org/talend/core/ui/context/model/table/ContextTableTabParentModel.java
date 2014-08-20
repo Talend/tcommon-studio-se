@@ -27,6 +27,8 @@ public class ContextTableTabParentModel extends ContextTabParentModel {
 
     protected IContextParameter contextParameter;
 
+    private int order;
+
     /**
      */
     public ContextTableTabParentModel() {
@@ -65,4 +67,21 @@ public class ContextTableTabParentModel extends ContextTabParentModel {
         this.contextParameter = contextParameter;
     }
 
+    /**
+     * Getter for order.
+     * 
+     * @return the order
+     */
+    public int getOrder() {
+        return this.order;
+    }
+
+    /**
+     * Sets the order.
+     * 
+     * @param order the order to set
+     */
+    public void setOrder(int order) {
+        this.order = order;
+    }
 }

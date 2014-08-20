@@ -107,6 +107,7 @@ public class WebServiceStep1Form extends AbstractWSDLSchemaStepForm {
             webService.getWebServiceUI(panel, connectionItem);
             webService.getTable().addSelectionListener(new SelectionAdapter() {
 
+                @Override
                 public void widgetSelected(SelectionEvent e) {
                     // TODO Auto-generated method stub
                     checkFieldsValue();
@@ -153,6 +154,7 @@ public class WebServiceStep1Form extends AbstractWSDLSchemaStepForm {
         }
     }
 
+    @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);
         checkFieldsValue();

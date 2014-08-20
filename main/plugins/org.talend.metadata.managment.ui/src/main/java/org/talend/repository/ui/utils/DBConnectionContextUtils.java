@@ -43,6 +43,7 @@ import org.talend.core.model.process.IContextParameter;
 import org.talend.core.model.properties.ConnectionItem;
 import org.talend.core.model.properties.ContextItem;
 import org.talend.core.model.utils.ContextParameterUtils;
+import org.talend.core.ui.context.model.table.ConectionAdaptContextVariableModel;
 import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.cwm.helper.CatalogHelper;
 import org.talend.cwm.helper.ConnectionHelper;
@@ -208,6 +209,88 @@ public final class DBConnectionContextUtils {
                     }
                 }
                 originalVariableName = getCorrectVariableName(contextItem, originalVariableName, dbParam);
+                switch (dbParam) {
+                case AdditionalParams:
+                    conn.setAdditionalParams(ContextParameterUtils.getNewScriptCode(originalVariableName, LANGUAGE));
+                    break;
+                case Datasource:
+                    conn.setDatasourceName(ContextParameterUtils.getNewScriptCode(originalVariableName, LANGUAGE));
+                    break;
+                case DBRootPath:
+                    conn.setDBRootPath(ContextParameterUtils.getNewScriptCode(originalVariableName, LANGUAGE));
+                    break;
+                case File:
+                    conn.setFileFieldName(ContextParameterUtils.getNewScriptCode(originalVariableName, LANGUAGE));
+                    break;
+                case Password:
+                    conn.setPassword(ContextParameterUtils.getNewScriptCode(originalVariableName, LANGUAGE));
+                    break;
+                // hshen
+                case JdbcUrl:
+                    conn.setURL(ContextParameterUtils.getNewScriptCode(originalVariableName, LANGUAGE));
+                    break;
+                case DriverJar:
+                    conn.setDriverJarPath(ContextParameterUtils.getNewScriptCode(originalVariableName, LANGUAGE));
+                    break;
+                case MappingFile:
+                    conn.setDbmsId(ContextParameterUtils.getNewScriptCode(originalVariableName, LANGUAGE));
+                    break;
+                case ClassName:
+                    conn.setDriverClass(ContextParameterUtils.getNewScriptCode(originalVariableName, LANGUAGE));
+                    break;
+                case Port:
+                    conn.setPort(ContextParameterUtils.getNewScriptCode(originalVariableName, LANGUAGE));
+                    break;
+                case Schema:
+                    conn.setUiSchema(ContextParameterUtils.getNewScriptCode(originalVariableName, LANGUAGE));
+                    break;
+                case Server:
+                    conn.setServerName(ContextParameterUtils.getNewScriptCode(originalVariableName, LANGUAGE));
+                    break;
+                case Sid:
+                case Database:
+                case ServiceName:
+                    conn.setSID(ContextParameterUtils.getNewScriptCode(originalVariableName, LANGUAGE));
+                    break;
+
+                case Login:
+                    conn.setUsername(ContextParameterUtils.getNewScriptCode(originalVariableName, LANGUAGE));
+                    break;
+                case JobTracker:
+                    conn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_JOB_TRACKER_URL,
+                            ContextParameterUtils.getNewScriptCode(originalVariableName, LANGUAGE));
+                    break;
+                case NameNode:
+                    conn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_NAME_NODE_URL,
+                            ContextParameterUtils.getNewScriptCode(originalVariableName, LANGUAGE));
+                    break;
+
+                default:
+                }
+            }
+        }
+
+    }
+
+    static void setPropertiesForExistContextMode(DatabaseConnection conn, Set<IConnParamName> paramSet,
+            Map<ContextItem, List<ConectionAdaptContextVariableModel>> map) {
+        String originalVariableName = null;
+        for (IConnParamName param : paramSet) {
+            if (param instanceof EDBParamName) {
+                originalVariableName = "";
+                EDBParamName dbParam = (EDBParamName) param;
+                if (map != null && map.size() > 0) {
+                    for (Map.Entry<ContextItem, List<ConectionAdaptContextVariableModel>> entry : map.entrySet()) {
+                        List<ConectionAdaptContextVariableModel> modelList = entry.getValue();
+                        for (ConectionAdaptContextVariableModel model : modelList) {
+                            if (model.getValue().equals(dbParam.name())) {
+                                originalVariableName = model.getName();
+                                break;
+                            }
+                        }
+                    }
+                }
+
                 switch (dbParam) {
                 case AdditionalParams:
                     conn.setAdditionalParams(ContextParameterUtils.getNewScriptCode(originalVariableName, LANGUAGE));

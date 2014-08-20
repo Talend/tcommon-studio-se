@@ -17,6 +17,8 @@ import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.JobletProcessItem;
 import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.Property;
+import org.talend.core.model.relationship.Relation;
+import org.talend.core.model.relationship.RelationshipItemBuilder;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.repository.ICheckDeleteItemReference;
@@ -53,8 +55,10 @@ public class CheckJobletDeleteReference extends AbstractCheckDeleteItemReference
                 if (!(item instanceof JobletProcessItem)) {
                     return list;
                 }
-                EList<?> nodesList = null;
-                // wzhang added to fix bug 10050
+                List<Relation> relations = RelationshipItemBuilder.getInstance().getItemsHaveRelationWith(property.getId());
+                if (relations.isEmpty()) {
+                	return list;
+                }
                 Set<Project> refParentProjects = new HashSet<Project>();
                 try {
                     refParentProjects.add(ProjectManager.getInstance().getCurrentProject());
@@ -65,63 +69,18 @@ public class CheckJobletDeleteReference extends AbstractCheckDeleteItemReference
                         ERepositoryObjectType jobType = ERepositoryObjectType.PROCESS;
                         if (jobType != null) {
                             List<IRepositoryViewObject> jobs = factory.getAll(refP, jobType, true);
-                            processes.addAll(jobs);
+                            checkRelationshipItems(factory, jobs, RelationshipItemBuilder.JOB_RELATION,
+    								list, label, version, type, isItemDeleted,
+    								item, relations, refP, deleteActionCache);
                         }
                         ERepositoryObjectType jobletType = ERepositoryObjectType.JOBLET;
                         if (jobletType != null) {
-                            List<IRepositoryViewObject> jobletes = factory.getAll(refP, jobletType, true);
-                            processes.addAll(jobletes);
+                            List<IRepositoryViewObject> joblets = factory.getAll(refP, jobletType, true);
+                            checkRelationshipItems(factory, joblets, RelationshipItemBuilder.JOBLET_RELATION,
+    								list, label, version, type, isItemDeleted,
+    								item, relations, refP,deleteActionCache);
                         }
                         deleteActionCache.setProcessList(processes);
-                        for (IRepositoryViewObject process : deleteActionCache.getProcessList()) {
-                            Property property2 = process.getProperty();
-                            boolean isDelete = factory.getStatus(process) == ERepositoryStatus.DELETED;
-                            Item item2 = property2.getItem();
-                            if (item == item2) {
-                                continue;
-                            }
-                            if (!isOpenedItem(item2, deleteActionCache.getOpenProcessMap())) {
-                                if (item2 instanceof ProcessItem) {
-                                    nodesList = ((ProcessItem) item2).getProcess().getNode();
-                                } else if (item2 instanceof JobletProcessItem) {
-                                    nodesList = ((JobletProcessItem) item2).getJobletProcess().getNode();
-                                }
-                            }
-                            if (nodesList != null) {
-                                for (Object object2 : nodesList) {
-                                    if (object2 instanceof NodeType) {
-                                        NodeType nodeType = (NodeType) object2;
-                                        nodeType.getElementParameter();
-                                        boolean equals = nodeType.getComponentName().equals(label);
-                                        if (equals) {
-                                            String path = item2.getState().getPath();
-                                            boolean found = false;
-                                            ItemReferenceBean bean = new ItemReferenceBean();
-                                            bean.setItemName(label);
-                                            bean.setItemVersion(version);
-                                            bean.setItemType(type);
-                                            bean.setItemDeleted(isItemDeleted);
-                                            bean.setReferenceItemName(property2.getLabel());
-                                            bean.setReferenceItemVersion(property2.getVersion());
-                                            bean.setReferenceItemType(process.getRepositoryObjectType());
-                                            bean.setReferenceItemPath(path);
-                                            bean.setReferenceProjectName(refP.getLabel());
-                                            bean.setReferenceItemDeleted(isDelete);
-                                            for (ItemReferenceBean b : list) {
-                                                if (b.equals(bean)) {
-                                                    found = true;
-                                                    b.addNodeNum();
-                                                    break;
-                                                }
-                                            }
-                                            if (!found) {
-                                                list.add(bean);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
                         for (IProcess2 openedProcess : deleteActionCache.getOpenedProcessList()) {
                             for (INode node : openedProcess.getGraphicalNodes()) {
                                 boolean equals = node.getComponent().getName().equals(label);
@@ -181,11 +140,59 @@ public class CheckJobletDeleteReference extends AbstractCheckDeleteItemReference
         return list;
     }
 
-    private static boolean isOpenedItem(Item openedItem, MultiKeyMap openProcessMap) {
-        if (openedItem == null) {
+	private void checkRelationshipItems(IProxyRepositoryFactory factory, List<IRepositoryViewObject> objects, String curRepoObjectType, Set<ItemReferenceBean> list,
+			String label, String version, ERepositoryObjectType type,
+			boolean isItemDeleted, Item item, List<Relation> relations,
+			Project refP, DeleteActionCache deleteActionCache) {
+		for (IRepositoryViewObject process : objects) {
+		    Property property2 = process.getProperty();
+		    boolean isDelete = factory.getStatus(process) == ERepositoryStatus.DELETED;
+		    Item item2 = property2.getItem();
+		    if (item == item2) {
+		        continue;
+		    }
+		    if (isOpenedItem(property2, deleteActionCache.getOpenProcessMap())) {
+		    	// will be checked in the opened item list.
+		    	continue;
+		    }
+		    Relation current = new Relation();
+		    current.setId(property2.getId());
+		    current.setType(curRepoObjectType);
+		    current.setVersion(property2.getVersion());
+		    if (!relations.contains(current)) {
+		    	continue;
+		    }
+
+		    String path = item2.getState().getPath();
+		    boolean found = false;
+		    ItemReferenceBean bean = new ItemReferenceBean();
+		    bean.setItemName(label);
+		    bean.setItemVersion(version);
+		    bean.setItemType(type);
+		    bean.setItemDeleted(isItemDeleted);
+		    bean.setReferenceItemName(property2.getLabel());
+		    bean.setReferenceItemVersion(property2.getVersion());
+		    bean.setReferenceItemType(process.getRepositoryObjectType());
+		    bean.setReferenceItemPath(path);
+		    bean.setReferenceProjectName(refP.getLabel());
+		    bean.setReferenceItemDeleted(isDelete);
+		    for (ItemReferenceBean b : list) {
+		        if (b.equals(bean)) {
+		            found = true;
+		            b.addNodeNum();
+		            break;
+		        }
+		    }
+		    if (!found) {
+		        list.add(bean);
+		    }
+		}
+	}
+
+    private boolean isOpenedItem(Property property, MultiKeyMap openProcessMap) {
+        if (property == null) {
             return false;
         }
-        Property property = openedItem.getProperty();
         return (openProcessMap.get(property.getId(), property.getLabel(), property.getVersion()) != null);
     }
 

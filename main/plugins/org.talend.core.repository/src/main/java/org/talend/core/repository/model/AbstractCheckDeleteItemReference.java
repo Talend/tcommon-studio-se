@@ -20,6 +20,7 @@ import java.util.Set;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
+import org.talend.core.model.repository.RepositoryObject;
 import org.talend.core.repository.ICheckDeleteItemReference;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IRepositoryNode;
@@ -49,7 +50,7 @@ public abstract class AbstractCheckDeleteItemReference implements ICheckDeleteIt
         for (IRepositoryNode repositoryNode : deleteNodes) {
         	IRepositoryViewObject repoObject = repositoryNode.getObject();
         	if(repoObject!=null) {
-        		refBeans.addAll(checkItemReferenceBeans(factory, deleteActionCache, repoObject));
+        		refBeans.addAll(checkItemReferenceBeans(factory, deleteActionCache, new RepositoryObject(repoObject.getProperty())));
         	}
         }
 

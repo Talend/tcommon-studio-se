@@ -60,9 +60,9 @@ public class PasswordEncryptUtil {
     }
 
     private static SecretKey passwordKey = null;
-    
+
     private static String CHARSET = "UTF-8";
-    
+
     private static SecretKey getSecretKeyUTF8() throws Exception {
         if (passwordKey == null) {
             byte rawKeyData[] = rawKey.getBytes(CHARSET);
@@ -72,20 +72,19 @@ public class PasswordEncryptUtil {
         }
         return passwordKey;
     }
-    
+
     public static String encryptPasswordHex(String input) throws Exception {
-        if (input == null || input.length() == 0) {
+        if (input == null) {
             return input;
         }
         SecretKey key = getSecretKeyUTF8();
         Cipher c = Cipher.getInstance("DES"); //$NON-NLS-1$
         c.init(Cipher.ENCRYPT_MODE, key, secureRandom);
-        byte[] cipherByte = c.doFinal(input.getBytes(CHARSET));//$NON-NLS-1$
+        byte[] cipherByte = c.doFinal(input.getBytes(CHARSET));
         String dec = Hex.encodeHexString(cipherByte);
         return dec;
     }
 
-    
     public static String decryptPassword(String input) throws Exception, BadPaddingException {
         if (input == null || input.length() == 0) {
             return input;

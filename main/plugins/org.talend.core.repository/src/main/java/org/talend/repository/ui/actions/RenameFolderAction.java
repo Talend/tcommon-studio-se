@@ -31,9 +31,11 @@ import org.eclipse.ui.PartInitException;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.commons.ui.runtime.image.ECoreImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.repository.i18n.Messages;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
+import org.talend.designer.core.ICamelDesignerCoreService;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.editor.RepositoryEditorInput;
 import org.talend.repository.model.IProxyRepositoryFactory;
@@ -144,6 +146,12 @@ public class RenameFolderAction extends AContextualAction {
                         || (node.getContentType() == ERepositoryObjectType.SQLPATTERNS && !isUnderUserDefined(node))
                         || RepositoryConstants.USER_DEFINED.equals(label)) {
                     canWork = false;
+                } else if (node.getContentType() != null && GlobalServiceRegister.getDefault().isServiceRegistered(ICamelDesignerCoreService.class)) {
+                    ICamelDesignerCoreService camelService = (ICamelDesignerCoreService) GlobalServiceRegister.getDefault()
+                            .getService(ICamelDesignerCoreService.class);
+                    if(node.getContentType().equals(camelService.getRouteDocsType())|| node.getContentType().equals(camelService.getRouteDocType())){
+                    	canWork = false;
+                    }
                 }
                 if (node.getObject() != null && node.getObject().isDeleted()) {
                     canWork = false;

@@ -232,18 +232,6 @@
                   name="hidePerspective">
             </activity>
             <activity
-                  id="org.talend.rcp.branding.activity.hideCreateToolBar"
-                  name="hideCreateToolBar">
-               <enabledWhen>
-                  <and>
-                     <test
-                           forcePluginActivation="true"
-                           property="org.talend.rcp.projectAuthorityTest.isCurrentUserReadOnly">
-                     </test>
-                  </and>
-               </enabledWhen>
-            </activity>
-            <activity
                   id="org.talend.rcp.branding.activity.hideViewsPostWindowOpen"
                   name="hideViewsPostWindowOpen">
                <enabledWhen>
@@ -301,10 +289,6 @@
                   pattern="org.eclipse.ui.externaltools/org.eclipse.ui.externaltools.OpenExternalToolsConfigurations">
             </activityPatternBinding>
             <activityPatternBinding
-                  activityId="org.talend.rcp.branding.activity.hideMenu"
-                  pattern="org.talend.repository.metadata/org.talend.repository.repositoryitem.createJob">
-            </activityPatternBinding>
-            <activityPatternBinding
                   activityId="org.talend.rcp.branding.activity.hideView"
                   pattern=".*/org.eclipse.pde.runtime.RegistryBrowser">
             </activityPatternBinding>
@@ -348,21 +332,7 @@
                   activityId="org.talend.rcp.branding.activity.hidePerspective"
                   pattern=".*/org.eclipse.team.ui.TeamSynchronizingPerspective">
             </activityPatternBinding>
-            <activityPatternBinding
-                  activityId="org.talend.rcp.branding.activity.hideCreateToolBar"
-                  pattern=".*/org.talend.repository.CreateactionSet">
-            </activityPatternBinding>
      </extension>
-<extension
-      point="org.eclipse.core.expressions.propertyTesters">
-   <propertyTester
-         class="org.talend.rcp.test.ProjectAuthorityTest"
-         id="org.talend.rcp.projectAuthorityTest"
-         namespace="org.talend.rcp.projectAuthorityTest"
-         properties="isCurrentUserReadOnly"
-         type="java.lang.Object">
-   </propertyTester>
-</extension>
 <extension
       point="org.eclipse.core.expressions.propertyTesters">
    <propertyTester

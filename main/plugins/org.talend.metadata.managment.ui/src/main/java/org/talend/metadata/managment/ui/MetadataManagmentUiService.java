@@ -14,13 +14,17 @@ package org.talend.metadata.managment.ui;
 
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.window.Window;
+import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.service.IMetadataManagmentUiService;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.metadata.managment.ui.i18n.Messages;
+import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.ui.dialog.OpenXSDFileDialog;
 import org.talend.repository.ui.utils.ConnectionContextHelper;
+import org.talend.repository.ui.wizards.context.ContextWizard;
 
 /**
  * 
@@ -28,6 +32,7 @@ import org.talend.repository.ui.utils.ConnectionContextHelper;
  */
 public class MetadataManagmentUiService implements IMetadataManagmentUiService {
 
+    @Override
     public String getAndOpenXSDFileDialog(Path initPath) {
         OpenXSDFileDialog openXSDFileDialog = new OpenXSDFileDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow()
                 .getShell());
@@ -40,12 +45,21 @@ public class MetadataManagmentUiService implements IMetadataManagmentUiService {
         return null; // don't set
     }
 
+    @Override
     public ContextType getContextTypeForContextMode(Connection connection) {
         return ConnectionContextHelper.getContextTypeForContextMode(connection);
     }
 
+    @Override
     public String getOriginalValue(ContextType contextType, String value) {
         return ConnectionContextHelper.getOriginalValue(contextType, value);
+    }
+
+    @Override
+    public void openRepositoryContextWizard(RepositoryNode repositoryNode) {
+        ContextWizard contextWizard = new ContextWizard(PlatformUI.getWorkbench(), false, repositoryNode, false);
+        WizardDialog dlg = new WizardDialog(Display.getCurrent().getActiveShell(), contextWizard);
+        dlg.open();
     }
 
 }

@@ -356,10 +356,12 @@ public class SalesforceStep2Form extends AbstractSalesforceStepForm {
 
     }
 
+    @Override
     protected void addFieldsListeners() {
         // Navigation : when the user select a table
         tableNavigator.addSelectionListener(new SelectionAdapter() {
 
+            @Override
             public void widgetSelected(SelectionEvent e) {
                 String schemaLabel = tableNavigator.getSelection()[0].getText();
                 temConnection.setModuleName(schemaLabel);
@@ -374,6 +376,7 @@ public class SalesforceStep2Form extends AbstractSalesforceStepForm {
         });
         queryConditionText.addModifyListener(new ModifyListener() {
 
+            @Override
             public void modifyText(ModifyEvent e) {
                 if (!isContextMode()) {
                     if (checkFieldsValue()) {
@@ -628,6 +631,7 @@ public class SalesforceStep2Form extends AbstractSalesforceStepForm {
                 previewInformationLabel.setText("   " + Messages.getString("FileStep2.previewFailure")); //$NON-NLS-1$ //$NON-NLS-2$
                 Display.getDefault().asyncExec(new Runnable() {
 
+                    @Override
                     public void run() {
                         handleErrorOutput(outputComposite, tabFolder, outputTabItem);
                     }
@@ -756,14 +760,17 @@ public class SalesforceStep2Form extends AbstractSalesforceStepForm {
 
         moduleViewer.setContentProvider(new IStructuredContentProvider() {
 
+            @Override
             public void dispose() {
 
             }
 
+            @Override
             public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 
             }
 
+            @Override
             public Object[] getElements(Object inputElement) {
                 if (inputElement instanceof Object[]) {
                     return (Object[]) inputElement;
@@ -775,10 +782,12 @@ public class SalesforceStep2Form extends AbstractSalesforceStepForm {
 
         moduleViewer.setLabelProvider(new ITableLabelProvider() {
 
+            @Override
             public Image getColumnImage(Object element, int columnIndex) {
                 return null;
             }
 
+            @Override
             public String getColumnText(Object element, int columnIndex) {
                 if (element instanceof IMetadataColumn) {
                     IMetadataColumn metadataColumn = (IMetadataColumn) element;
@@ -832,18 +841,22 @@ public class SalesforceStep2Form extends AbstractSalesforceStepForm {
                 }
             }
 
+            @Override
             public void addListener(ILabelProviderListener listener) {
 
             }
 
+            @Override
             public void dispose() {
 
             }
 
+            @Override
             public boolean isLabelProperty(Object element, String property) {
                 return false;
             }
 
+            @Override
             public void removeListener(ILabelProviderListener listener) {
 
             }

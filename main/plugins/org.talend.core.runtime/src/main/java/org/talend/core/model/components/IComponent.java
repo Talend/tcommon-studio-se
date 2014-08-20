@@ -98,6 +98,13 @@ public interface IComponent {
 
     public boolean isLoaded();
 
+    /**
+     * To avoid since a component can be visible in one family but displayed in another one.<br>
+     * Better use isVisible(String family) to check if component is visible in current family.
+     * 
+     * @return
+     */
+    @Deprecated
     public boolean isVisible();
 
     public boolean isVisible(String family);

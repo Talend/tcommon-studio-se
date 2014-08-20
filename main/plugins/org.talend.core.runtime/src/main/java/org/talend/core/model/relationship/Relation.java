@@ -107,4 +107,10 @@ public class Relation implements Cloneable {
     protected Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
+
+	@Override
+	public String toString() {
+		return "Relation [type=" + type + ", id=" + id + ", version=" + version
+				+ "]";
+	}
 }

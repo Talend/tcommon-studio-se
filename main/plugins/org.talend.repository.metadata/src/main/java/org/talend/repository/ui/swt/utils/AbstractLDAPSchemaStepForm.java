@@ -20,6 +20,7 @@ import org.talend.core.model.metadata.builder.connection.LDAPSchemaConnection;
 import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.core.model.properties.ConnectionItem;
 import org.talend.repository.ui.utils.OtherConnectionContextUtils;
+import org.talend.repository.ui.utils.OtherConnectionContextUtils.EParamName;
 
 /**
  * ggu class global comment. Detailled comment
@@ -53,6 +54,19 @@ public abstract class AbstractLDAPSchemaStepForm extends AbstractForm {
         }
         return getConnection();
 
+    }
+
+    protected void collectContextParams(boolean visible) {
+        clearContextParams();
+        addContextParams(EParamName.Host, visible);
+        addContextParams(EParamName.Port, visible);
+        addContextParams(EParamName.BindPrincipal, visible);
+        addContextParams(EParamName.BindPassword, visible);
+
+        addContextParams(EParamName.CountLimit, visible);
+        addContextParams(EParamName.TimeOutLimit, visible);
+        addContextParams(EParamName.Filter, visible);
+        addContextParams(EParamName.BaseDN, visible);
     }
 
     public WizardPage getWizardPage() {

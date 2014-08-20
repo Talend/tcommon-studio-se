@@ -20,6 +20,7 @@ import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.core.model.metadata.builder.connection.WSDLSchemaConnection;
 import org.talend.core.model.properties.ConnectionItem;
 import org.talend.repository.ui.utils.OtherConnectionContextUtils;
+import org.talend.repository.ui.utils.OtherConnectionContextUtils.EParamName;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -53,6 +54,22 @@ public abstract class AbstractWSDLSchemaStepForm extends AbstractForm {
         }
         return getConnection();
 
+    }
+
+    protected void collectContextParams(boolean visible) {
+        clearContextParams();
+        addContextParams(EParamName.WSDL, visible);
+        if (getConnection().isIsInputModel()) {
+            addContextParams(EParamName.MethodName, visible);
+            addContextParams(EParamName.UserName, visible);
+            addContextParams(EParamName.Password, visible);
+            addContextParams(EParamName.ProxyHost, visible);
+            addContextParams(EParamName.ProxyPort, visible);
+            addContextParams(EParamName.ProxyUser, visible);
+            addContextParams(EParamName.ProxyPassword, visible);
+        }
+        addContextParams(EParamName.EndpointURI, visible);
+        addContextParams(EParamName.Encoding, visible);
     }
 
     public WizardPage getWizardPage() {

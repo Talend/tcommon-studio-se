@@ -99,6 +99,7 @@ import org.talend.core.ui.branding.IBrandingService;
 import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.helper.SubItemHelper;
 import org.talend.cwm.helper.TableHelper;
+import org.talend.designer.core.ICamelDesignerCoreService;
 import org.talend.designer.core.IDesignerCoreService;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.model.nodes.IProjectRepositoryNode;
@@ -729,7 +730,7 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
         }
         return false;
     }
-
+    
     @SuppressWarnings("rawtypes")
     private void convertDocumentation(org.talend.core.model.general.Project newProject, Container generatedContainer,
             RepositoryNode parent, ERepositoryObjectType type, RepositoryNode recBinNode) {
@@ -737,32 +738,36 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
         // RepositoryNode generatedFolder = getRootRepositoryNode(ERepositoryObjectType.GENERATED);
 
         // for folder Documentation/generated/jobs
-        RepositoryNode jobsFolder = getRootRepositoryNode(ERepositoryObjectType.JOBS);
-
+        convertDocumentation(newProject, generatedContainer, parent, type, recBinNode, ERepositoryObjectType.JOBS, ERepositoryObjectType.JOB_DOC);
+        
         // for folder Documentation/generated/joblets
-        RepositoryNode jobletsFolder = getRootRepositoryNode(ERepositoryObjectType.JOBLETS);
+        convertDocumentation(newProject, generatedContainer, parent, type, recBinNode, ERepositoryObjectType.JOBLETS, ERepositoryObjectType.JOBLET_DOC);
 
-        Container jobsNode = null;
-        Container jobletsNode = null;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ICamelDesignerCoreService.class)){
+        	ICamelDesignerCoreService service = (ICamelDesignerCoreService) GlobalServiceRegister.getDefault().getService(ICamelDesignerCoreService.class);
+        	if(service.getRouteDocsType() != null && service.getRouteDocType() != null){
+        		convertDocumentation(newProject, generatedContainer, parent, type, recBinNode, service.getRouteDocsType(), service.getRouteDocType());
+        	}
+        }
+
+    }
+    
+    @SuppressWarnings("rawtypes")
+    private void convertDocumentation(org.talend.core.model.general.Project newProject, Container generatedContainer,
+            RepositoryNode parent, ERepositoryObjectType type, RepositoryNode recBinNode, ERepositoryObjectType parentDocType, ERepositoryObjectType docType) {
+        RepositoryNode docsFolder = getRootRepositoryNode(parentDocType);
+
+        Container docsNode = null;
         for (Object object : generatedContainer.getSubContainer()) {
-            if (((Container) object).getLabel().equalsIgnoreCase(ERepositoryObjectType.JOBS.name().toLowerCase())) {
-                jobsNode = (Container) object;
-            }
-            if (((Container) object).getLabel().equalsIgnoreCase(ERepositoryObjectType.JOBLETS.name().toLowerCase())) {
-                jobletsNode = (Container) object;
-            }
-            if (jobsNode != null && jobletsNode != null) {
-                break; // all were found
+            if (((Container) object).getLabel().equalsIgnoreCase(parentDocType.name().toLowerCase())) {
+                docsNode = (Container) object;
+                break;
             }
         }
-
+        
         // get the files under generated/nodes.
-        if (jobsNode != null) {
-            convert(newProject, jobsNode, jobsFolder, ERepositoryObjectType.JOB_DOC, recBinNode);
-        }
-
-        if (jobletsNode != null) {
-            convert(newProject, jobletsNode, jobletsFolder, ERepositoryObjectType.JOBLET_DOC, recBinNode);
+        if (docsNode != null) {
+            convert(newProject, docsNode, docsFolder, docType, recBinNode);
         }
 
     }

@@ -171,6 +171,12 @@
                style="pulldown"
                toolbarPath="Default"
                tooltip="Create">
+               <enablement>
+               <systemProperty
+                     name="ReadOnlyUser"
+                     value="false">
+               </systemProperty>
+               </enablement>
          </action>
       </actionSet>
    </extension>

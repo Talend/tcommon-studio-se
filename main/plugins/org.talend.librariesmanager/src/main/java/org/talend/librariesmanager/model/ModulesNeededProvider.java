@@ -608,14 +608,9 @@ public class ModulesNeededProvider {
 
         List<IConfigurationElement> extension = getAllModulesNeededExtensions();
 
-        ECodeLanguage projectLanguage = ((RepositoryContext) CoreRuntimePlugin.getInstance().getContext()
-                .getProperty(Context.REPOSITORY_CONTEXT_KEY)).getProject().getLanguage();
         for (IConfigurationElement current : extension) {
-            ECodeLanguage lang = ECodeLanguage.getCodeLanguage(current.getAttribute("language")); //$NON-NLS-1$
-            if (lang == projectLanguage) {
-                ModuleNeeded module = createModuleNeededInstance(current);
-                importNeedsList.add(module);
-            }
+            ModuleNeeded module = createModuleNeededInstance(current);
+            importNeedsList.add(module);
         }
 
         return importNeedsList;

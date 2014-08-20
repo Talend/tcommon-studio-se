@@ -75,6 +75,7 @@ import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.utils.CloneConnectionUtils;
 import org.talend.core.model.utils.ContextParameterUtils;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
+import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.service.IDesignerCoreUIService;
 import org.talend.core.ui.CoreUIPlugin;
 import org.talend.core.ui.context.ContextManagerHelper;
@@ -82,6 +83,7 @@ import org.talend.core.ui.context.SelectRepositoryContextGroupDialog;
 import org.talend.core.ui.context.cmd.CheckAndAddContextDNDCommand;
 import org.talend.core.ui.context.cmd.CheckAndAddContextVariablesCommand;
 import org.talend.core.ui.context.cmd.MergeContextVariablesCommand;
+import org.talend.core.ui.context.model.table.ConectionAdaptContextVariableModel;
 import org.talend.designer.core.IDesignerCoreService;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
@@ -93,6 +95,10 @@ import org.talend.repository.model.IConnParamName;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.model.RepositoryNodeUtilities;
+import org.talend.repository.ui.utils.DBConnectionContextUtils.EDBParamName;
+import org.talend.repository.ui.utils.FileConnectionContextUtils.EFileParamName;
+import org.talend.repository.ui.utils.OtherConnectionContextUtils.EParamName;
+import org.talend.repository.ui.wizards.context.ContextModeWizard;
 import org.talend.repository.ui.wizards.context.ContextWizard;
 import org.talend.repository.ui.wizards.metadata.ContextSetsSelectionDialog;
 import org.talend.repository.ui.wizards.metadata.ShowAddedContextdialog;
@@ -162,7 +168,8 @@ public final class ConnectionContextHelper {
      * ggu Comment method "exportAsContext".
      * 
      */
-    public static ContextItem exportAsContext(ConnectionItem connItem, Set<IConnParamName> paramSet) {
+    public static Map<ContextItem, List<ConectionAdaptContextVariableModel>> exportAsContext(ConnectionItem connItem,
+            Set<IConnParamName> paramSet) {
         if (connItem == null) {
             return null;
         }
@@ -178,11 +185,19 @@ public final class ConnectionContextHelper {
         if (selection == null) {
             return null;
         }
+        Map<ContextItem, List<ConectionAdaptContextVariableModel>> variableContextMap = new HashMap();
+        List<ConectionAdaptContextVariableModel> models = new ArrayList<ConectionAdaptContextVariableModel>();
 
-        ContextWizard contextWizard = new ContextWizard(contextName, selection.isEmpty(), selection, varList);
+        Set<String> connectionVaribles = getConnVariables(connItem, paramSet);
+        ContextModeWizard contextWizard = new ContextModeWizard(contextName, selection.isEmpty(), selection, varList,
+                connectionVaribles);
         WizardDialog dlg = new WizardDialog(Display.getCurrent().getActiveShell(), contextWizard);
         if (dlg.open() == Window.OK) {
             ContextItem contextItem = contextWizard.getContextItem();
+            models = contextWizard.getAdaptModels();
+            if (contextItem != null) {
+                variableContextMap.put(contextItem, models);
+            }
             contextManager = contextWizard.getContextManager();
             // 1) in the ContextWizard when user click ok, there will set the ContextItem property's label with it's
             // displayName; 2) in the ContextWizard, user may change the context name; so needn't to set the
@@ -190,7 +205,7 @@ public final class ConnectionContextHelper {
             // if (contextItem != null) {
             // contextItem.getProperty().setLabel(contextName);
             // }
-            return contextItem;
+            return variableContextMap;
         }
         return null;
     }
@@ -275,6 +290,29 @@ public final class ConnectionContextHelper {
         return varList;
     }
 
+    private static Set<String> getConnVariables(ConnectionItem connectionItem, Set<IConnParamName> paramSet) {
+        if (connectionItem == null) {
+            return null;
+        }
+
+        Set<String> varList = new HashSet<String>();
+
+        Iterator<IConnParamName> paramIt = paramSet.iterator();
+        while (paramIt.hasNext()) {
+            Object param = paramIt.next();
+            if (param instanceof EDBParamName) {
+                varList.add(((EDBParamName) param).name());
+            }
+            if (param instanceof EFileParamName) {
+                varList.add(((EFileParamName) param).name());
+            }
+            if (param instanceof EParamName) {
+                varList.add(((EParamName) param).name());
+            }
+        }
+        return varList;
+    }
+
     public static void setPropertiesForContextMode(ConnectionItem connectionItem, ContextItem contextItem,
             Set<IConnParamName> paramSet, Map<String, String> map) {
         if (connectionItem == null || contextItem == null) {
@@ -307,6 +345,40 @@ public final class ConnectionContextHelper {
         connectionItem.getConnection().setContextMode(true);
         connectionItem.getConnection().setContextId(contextItem.getProperty().getId());
         connectionItem.getConnection().setContextName(contextItem.getDefaultContext());
+
+    }
+
+    public static void setPropertiesForExistContextMode(ConnectionItem connectionItem, Set<IConnParamName> paramSet,
+            Map<ContextItem, List<ConectionAdaptContextVariableModel>> map) {
+        if (connectionItem == null) {
+            return;
+        }
+        ContextItem selItem = null;
+        if (map.keySet().size() == 1) {
+            selItem = map.keySet().iterator().next();
+        }
+        Connection conn = connectionItem.getConnection();
+
+        if (conn instanceof DatabaseConnection) {
+            DBConnectionContextUtils.setPropertiesForExistContextMode((DatabaseConnection) conn, paramSet, map);
+        } else if (conn instanceof FileConnection) {
+            FileConnectionContextUtils.setPropertiesForExistContextMode((FileConnection) conn, paramSet, map);
+        } else if (conn instanceof LdifFileConnection) {
+            OtherConnectionContextUtils.setLdifFileForExistContextMode((LdifFileConnection) conn, paramSet, map);
+        } else if (conn instanceof XmlFileConnection) {
+            OtherConnectionContextUtils.setXmlFileForExistContextMode((XmlFileConnection) conn, paramSet, map);
+        } else if (conn instanceof LDAPSchemaConnection) {
+            OtherConnectionContextUtils.setLDAPSchemaPropertiesForExistContextMode((LDAPSchemaConnection) conn, paramSet, map);
+        } else if (conn instanceof SalesforceSchemaConnection) {
+            OtherConnectionContextUtils.setSalesforcePropertiesForExistContextMode((SalesforceSchemaConnection) conn, paramSet,
+                    map);
+        } else if (conn instanceof WSDLSchemaConnection) {
+            OtherConnectionContextUtils.setWSDLSchemaPropertiesForExistContextMode((WSDLSchemaConnection) conn, paramSet, map);
+        }
+        // set connection for context mode
+        connectionItem.getConnection().setContextMode(true);
+        connectionItem.getConnection().setContextId(selItem.getProperty().getId());
+        connectionItem.getConnection().setContextName(selItem.getDefaultContext());
 
     }
 
@@ -1535,4 +1607,25 @@ public final class ConnectionContextHelper {
         sqlBuilderDialogShell = sqlBuilderDialogShellTem;
     }
 
+    public static Set<ContextItem> getContextItems() {
+        IProxyRepositoryFactory factory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
+        Set<ContextItem> itemList = null;
+
+        try {
+            itemList = new HashSet<ContextItem>(factory.getContextItem());
+        } catch (PersistenceException e) {
+            throw new RuntimeException(e);
+        }
+        if (itemList != null) {
+            List<ContextItem> toRemove = new ArrayList<ContextItem>();
+
+            for (ContextItem contextItem : itemList) {
+                if (factory.getStatus(contextItem) == ERepositoryStatus.DELETED) {
+                    toRemove.add(contextItem);
+                }
+            }
+            itemList.removeAll(toRemove);
+        }
+        return itemList;
+    }
 }

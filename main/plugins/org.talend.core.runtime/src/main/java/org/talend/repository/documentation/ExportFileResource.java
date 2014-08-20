@@ -14,10 +14,10 @@ package org.talend.repository.documentation;
 
 import java.io.File;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -75,12 +75,8 @@ public class ExportFileResource {
      * @param resources
      */
     public void addResources(String relativePath, List<URL> resources) {
-        Set<URL> storeList = map.get(relativePath);
-        if (storeList == null) {
-            storeList = new HashSet<URL>(resources);
-            map.put(relativePath, storeList);
-        } else {
-            storeList.addAll(resources);
+        for (URL resource : resources) {
+            addResource(relativePath, resource);
         }
     }
 
@@ -96,7 +92,19 @@ public class ExportFileResource {
             storeList = new HashSet<URL>();
             map.put(relativePath, storeList);
         }
-        storeList.add(resource);
+        storeList.add(getFormalResourceURL(resource));
+    }
+
+    private URL getFormalResourceURL(URL originalURL) {
+        URL url = originalURL;
+        try {
+            String decodeStr = URLDecoder.decode(url.toString(), "UTF-8"); //$NON-NLS-1$
+            url = new URL(decodeStr);
+        } catch (Exception e) {
+            e.printStackTrace(); // only for debug.
+        }
+
+        return url;
     }
 
     public void removeResources(String relativePath, URL resource) {
@@ -144,8 +152,8 @@ public class ExportFileResource {
 
         if (file.isDirectory()) {
             File[] children = file.listFiles();
-            for (int i = 0; i < children.length; i++) {
-                count += countChildrenOf(children[i].getPath());
+            for (File child : children) {
+                count += countChildrenOf(child.getPath());
             }
         }
         return count;
@@ -175,11 +183,11 @@ public class ExportFileResource {
     public int getFilesCount() throws CoreException {
         Set<String> paths = getRelativePathList();
         int result = 0;
-        for (Iterator iter = paths.iterator(); iter.hasNext();) {
-            String path = (String) iter.next();
-            Set<URL> resource = getResourcesByRelativePath(path);
-            for (Iterator iterator = resource.iterator(); iterator.hasNext();) {
-                URL url = (URL) iterator.next();
+        for (Object relPath : paths) {
+            String path = (String) relPath;
+            Set<URL> resources = getResourcesByRelativePath(path);
+            for (Object resource : resources) {
+                URL url = (URL) resource;
                 result += countChildrenOf(url.getPath());
             }
         }

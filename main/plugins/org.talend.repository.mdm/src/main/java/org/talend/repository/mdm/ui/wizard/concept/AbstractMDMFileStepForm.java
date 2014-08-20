@@ -79,26 +79,33 @@ public abstract class AbstractMDMFileStepForm extends AbstractXmlStepForm {
         return (MDMConnection) connectionItem.getConnection();
     }
 
+    @Override
     public void redrawLinkers() {
     }
 
+    @Override
     public void updateConnection() {
     }
 
+    @Override
     public void updateStatus() {
     }
 
+    @Override
     public List<FOXTreeNode> getTreeData() {
         return null;
     }
 
+    @Override
     public void setSelectedText(String label) {
     }
 
+    @Override
     public MetadataTable getMetadataTable() {
         return null;
     }
 
+    @Override
     public TableViewer getSchemaViewer() {
         return null;
     }

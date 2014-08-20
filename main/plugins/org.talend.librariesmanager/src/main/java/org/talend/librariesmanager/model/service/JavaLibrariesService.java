@@ -16,6 +16,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -26,14 +28,11 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.osgi.baseadaptor.BaseData;
-import org.eclipse.osgi.baseadaptor.bundlefile.BundleFile;
-import org.eclipse.osgi.framework.adaptor.BundleData;
-import org.eclipse.osgi.framework.internal.core.BundleHost;
 import org.osgi.framework.Bundle;
+import org.talend.commons.exception.CommonExceptionHandler;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.generation.JavaUtils;
 import org.talend.commons.utils.io.FilesUtils;
 import org.talend.core.GlobalServiceRegister;
@@ -41,6 +40,7 @@ import org.talend.core.ILibraryManagerService;
 import org.talend.core.ILibraryManagerUIService;
 import org.talend.core.PluginChecker;
 import org.talend.core.language.ECodeLanguage;
+import org.talend.core.model.components.IComponent;
 import org.talend.core.model.components.IComponentsService;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
@@ -178,9 +178,7 @@ public class JavaLibrariesService extends AbstractLibrariesService {
     @Override
     public void checkInstalledLibraries() {
         List<ModuleNeeded> toCheck = ModulesNeededProvider.getModulesNeeded();
-        Set<String> existLibraries = repositoryBundleService.list(false);
-        Set<String> existDllLibraries = repositoryBundleService.listAllDllFiles();
-        existLibraries.addAll(existDllLibraries);
+        Set<String> existLibraries = repositoryBundleService.list();
         for (ModuleNeeded current : toCheck) {
             if (existLibraries.contains(current.getModuleName())) {
                 current.setStatus(ELibraryInstallStatus.INSTALLED);
@@ -200,16 +198,133 @@ public class JavaLibrariesService extends AbstractLibrariesService {
 
     @Override
     public void syncLibrariesFromApp(IProgressMonitor... monitorWrap) {
-        List<ModuleNeeded> modulesNeededForApplication = ModulesNeededProvider.getModulesNeededForApplication();
-        repositoryBundleService.deploy(modulesNeededForApplication, monitorWrap);
+        // do nothing
+    }
+
+    private void deployComponentsLibs(IProgressMonitor... monitorWrap) throws IOException {
+        Set<String> libsNeededForComponents = new HashSet<String>();
+        Map<String, String> libsToRelativePath = new HashMap<String, String>();
+
+        IComponentsService service = (IComponentsService) GlobalServiceRegister.getDefault().getService(IComponentsService.class);
+        deploy(service.getComponentsFactory().getComponents(), libsNeededForComponents, libsToRelativePath, monitorWrap);
+
+        Map<String, File> componentsFolders = service.getComponentsFactory().getComponentsProvidersFolder();
+        Set<String> contributeIdSet = componentsFolders.keySet();
+        for (String contributeID : contributeIdSet) {
+            File file = new File(componentsFolders.get(contributeID).toURI());
+            if ("org.talend.designer.components.model.UserComponentsProvider".contains(contributeID)
+                    || "org.talend.designer.components.exchange.ExchangeComponentsProvider".contains(contributeID)) {
+                File target = new File(getStorageDirectory(), file.getName());
+                if (file.isDirectory()) {
+                    List<File> jarFiles = FilesUtils.getJarFilesFromFolder(file, null);
+                    if (jarFiles.size() > 0) {
+                        for (File jarFile : jarFiles) {
+                            String name = jarFile.getName();
+                            if (!libsNeededForComponents.contains(name)) {
+                                continue;
+                            }
+                            FilesUtils.copyFile(jarFile, target);
+                        }
+                    }
+                } else {
+                    FilesUtils.copyFile(file, target);
+                }
+            } else {
+                List<File> jarFiles = FilesUtils.getJarFilesFromFolder(file, null);
+                if (jarFiles.size() > 0) {
+                    for (File jarFile : jarFiles) {
+                        String name = jarFile.getName();
+                        if (!libsNeededForComponents.contains(name)) {
+                            continue;
+                        }
+                        String path = libsToRelativePath.get(name);
+                        int lengthBasePath = new Path(file.getParentFile().getAbsolutePath()).toPortableString().length();
+                        String relativePath = new Path(jarFile.getAbsolutePath()).toPortableString().substring(lengthBasePath);
+                        String moduleLocation = "platform:/plugin/" + contributeID + relativePath;
+                        if (path != null) {
+                            if (path.equals(moduleLocation)) {
+                                continue;
+                            } else {
+                                CommonExceptionHandler
+                                        .warn(name + " is duplicated, locations:" + path + " and:" + moduleLocation);
+                                continue;
+                            }
+                        }
+                        libsToRelativePath.put(name, moduleLocation);
+                    }
+                }
+            }
+        }
+        repositoryBundleService.deploy(libsToRelativePath, monitorWrap);
+    }
+
+    private File getStorageDirectory() {
+        String librariesPath = LibrariesManagerUtils.getLibrariesPath(ECodeLanguage.JAVA);
+        File storageDir = new File(librariesPath);
+        return storageDir;
+    }
+
+    private void deploy(Set<IComponent> componentList, Set<String> libsNeededForComponents,
+            Map<String, String> libsToRelativePath, IProgressMonitor... monitorWrap) {
+        List<ModuleNeeded> modules = new ArrayList<ModuleNeeded>();
+        Set<String> duplicateLocationJar = new HashSet<String>();
+
+        for (IComponent component : componentList) {
+            modules.addAll(component.getModulesNeeded());
+        }
+        deploy(modules, libsNeededForComponents, libsToRelativePath, duplicateLocationJar, monitorWrap);
+        if (!duplicateLocationJar.isEmpty()) {
+            for (String lib : duplicateLocationJar) {
+                Set<String> components = new HashSet<String>();
+                Set<String> locations = new HashSet<String>();
+                for (ModuleNeeded module : modules) {
+                    if (module.getModuleName().equals(lib)) {
+                        components.add(module.getContext());
+                        locations.add(module.getModuleLocaion());
+                    }
+                }
+                CommonExceptionHandler.warn("Library:" + lib + " was defined with different locations.\n"
+                        + "Components who define these jars are:" + components + "\n" + "Locations:" + locations);
+            }
+        }
+    }
+
+    private void deploy(List<ModuleNeeded> modules, Set<String> libsNeededForComponents, Map<String, String> libsToRelativePath,
+            Set<String> duplicateLocationJar, IProgressMonitor... monitorWrap) {
+        for (ModuleNeeded module : modules) {
+            String moduleLocation = module.getModuleLocaion();
+            if (moduleLocation != null && moduleLocation.startsWith("platform:/")) {
+                String relativePath = libsToRelativePath.get(module.getModuleName());
+                if (relativePath != null) {
+                    if (relativePath.equals(moduleLocation)) {
+                        continue;
+                    } else {
+                        if (!duplicateLocationJar.contains(moduleLocation)) {
+                            duplicateLocationJar.add(module.getModuleName());
+                        }
+                    }
+                    if (!repositoryBundleService.checkJarInstalledFromPlatform(moduleLocation)) {
+                        continue;
+                    }
+                }
+                libsToRelativePath.put(module.getModuleName(), moduleLocation);
+            } else {
+                libsNeededForComponents.add(module.getModuleName());
+            }
+        }
     }
 
     @Override
     public void syncLibraries(IProgressMonitor... monitorWrap) {
-        // 1. Talend libraries:
-        // File talendLibraries = new File(FileLocator
-        //                    .resolve(Platform.getBundle(BUNDLE_DI).getEntry("resources/java/lib/")).getFile()); //$NON-NLS-1$
-        // repositoryBundleService.deploy(talendLibraries.toURI(), monitorWrap);
+        // check in the libs directory of the project and add the jar with other ones.
+        syncLibrariesFromLibs(monitorWrap);
+
+        // deploy system routine libraries
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerUIService.class)) {
+            ILibraryManagerUIService libUiService = (ILibraryManagerUIService) GlobalServiceRegister.getDefault().getService(
+                    ILibraryManagerUIService.class);
+            libUiService.initializeSystemLibs();
+        }
 
         if (TalendCacheUtils.cleanComponentCache()) {
             repositoryBundleService.clearCache();
@@ -219,69 +334,17 @@ public class JavaLibrariesService extends AbstractLibrariesService {
         if (!repositoryBundleService.isInitialized()) {
             // 2. Components libraries
             if (GlobalServiceRegister.getDefault().isServiceRegistered(IComponentsService.class)) {
-                IComponentsService service = (IComponentsService) GlobalServiceRegister.getDefault().getService(
-                        IComponentsService.class);
-                repositoryBundleService.deploy(service.getComponentsFactory().getComponents(), monitorWrap);
-                Map<String, File> componentsFolders = service.getComponentsFactory().getComponentsProvidersFolder();
-                Set<String> contributeIdSet = componentsFolders.keySet();
-                for (String contributeID : contributeIdSet) {
-                    repositoryBundleService.deploy(componentsFolders.get(contributeID).toURI(), monitorWrap);
+                try {
+                    deployComponentsLibs(monitorWrap);
+                } catch (IOException e) {
+                    ExceptionHandler.process(e);
                 }
-
-                syncLibrariesFromApp(monitorWrap);
-
                 repositoryBundleService.setInitialized();
             }
         }
 
-        // 3. system routine libraries
-        // Map<String, List<URI>> routineAndJars = RoutineLibraryMananger.getInstance().getRoutineAndJars();
-        // Iterator<Entry<String, List<URI>>> rjsIter = routineAndJars.entrySet().iterator();
-        // while (rjsIter.hasNext()) {
-        // Map.Entry<String, List<URI>> entry = rjsIter.next();
-        // repositoryBundleService.deploy(entry.getValue(), monitorWrap);
-        // }
-        // 3. deploy system routine libraries
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerUIService.class)) {
-            ILibraryManagerUIService libUiService = (ILibraryManagerUIService) GlobalServiceRegister.getDefault().getService(
-                    ILibraryManagerUIService.class);
-            libUiService.initializeSystemLibs();
-        }
-
-        // 4. check in the libs directory of the project and add the jar with other ones.
-        syncLibrariesFromLibs(monitorWrap);
-
         checkInstalledLibraries();
 
-        // for AMC libraries
-
-        // check if org.talend.amc.libraries exists
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerService.class)) {
-            ILibraryManagerService libManager = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
-                    ILibraryManagerService.class);
-            Bundle bundle = Platform.getBundle("org.talend.amc.libraries"); //$NON-NLS-1$
-            if (bundle instanceof BundleHost) {
-                BundleHost bundleHost = (BundleHost) bundle;
-                final BundleData bundleData = bundleHost.getBundleData();
-                if (bundleData instanceof BaseData) {
-                    BaseData baseData = (BaseData) bundleData;
-                    final BundleFile bundleFile = baseData.getBundleFile();
-                    final File baseFile = bundleFile.getBaseFile();
-                    final File file = new File(baseFile.getAbsolutePath() + File.separator + JavaUtils.JAVA_LIB_DIRECTORY);
-                    String[] allNeededModuls = { "db2jcc.jar", "db2jcc_license_cu.jar", "jconn3.jar", "ifxjdbcx.jar", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ 
-                            "ifxlang.jar", "ifxlsupp.jar", "ifxsqlj.jar", "ifxtools.jar", "ifxjdbc.jar" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-                    for (String allNeededModul : allNeededModuls) {
-                        String name = allNeededModul;
-                        if (!libManager.contains(name)) {
-                            continue;
-                        }
-                        if (file.exists() && file.isDirectory()) {
-                            libManager.retrieve(name, file.getAbsolutePath(), new NullProgressMonitor());
-                        }
-                    }
-                }
-            }
-        }
         // clean the temp library of job needed in .java\lib
         cleanTempProLib();
 
@@ -345,5 +408,4 @@ public class JavaLibrariesService extends AbstractLibrariesService {
             }
         }
     }
-
 }

@@ -14,6 +14,7 @@ package org.talend.designer.core;
 
 import java.util.List;
 
+import org.dom4j.Element;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.ui.IEditorPart;
@@ -21,6 +22,7 @@ import org.talend.core.IService;
 import org.talend.core.model.process.EConnectionType;
 import org.talend.core.model.process.IConnection;
 import org.talend.core.model.process.INode;
+import org.talend.core.model.properties.FileItem;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.designer.codegen.ITalendSynchronizer;
@@ -38,6 +40,10 @@ public interface ICamelDesignerCoreService extends IService {
     public boolean isInstanceofCamelRoutes(Item item);
 
     public ERepositoryObjectType getRoutes();
+    
+    public ERepositoryObjectType getRouteDocType();
+    
+    public ERepositoryObjectType getRouteDocsType();
 
     public ProcessType getCamelProcessType(Item item);
 
@@ -65,5 +71,9 @@ public interface ICamelDesignerCoreService extends IService {
 	public boolean canCreateNodeOnLink(IConnection connection, INode node);
 	
 	public EConnectionType getTargetConnectionType(INode node);
+
+	public void appendRouteInfo2Doc(Item item, Element jobElement);
+
+	public FileItem newRouteDocumentationItem();
 
 }

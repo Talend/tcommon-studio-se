@@ -14,8 +14,6 @@ package org.talend.designer.components.preference.provider;
 
 import java.util.List;
 
-import org.eclipse.gef.palette.PaletteContainer;
-import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
@@ -32,9 +30,13 @@ public class TalendPaletteTreeProvider implements ITreeContentProvider {
      * 
      * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
      */
+    @Override
     public Object[] getChildren(Object parentElement) {
-        if (parentElement instanceof PaletteContainer) {
-            List children = ((PaletteContainer) parentElement).getChildren();
+        if (parentElement instanceof List) {
+            return ((List) parentElement).toArray();
+        }
+        if (parentElement instanceof IPaletteItem) {
+            List children = ((IPaletteItem) parentElement).getChildren();
             if (!children.isEmpty()) {
                 return children.toArray();
             }
@@ -48,8 +50,9 @@ public class TalendPaletteTreeProvider implements ITreeContentProvider {
      * 
      * @see org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object)
      */
+    @Override
     public Object getParent(Object element) {
-        return ((PaletteEntry) element).getParent();
+        return ((IPaletteItem) element).getParent();
     }
 
     /*
@@ -57,6 +60,7 @@ public class TalendPaletteTreeProvider implements ITreeContentProvider {
      * 
      * @see org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.Object)
      */
+    @Override
     public boolean hasChildren(Object element) {
         return getChildren(element) != null;
     }
@@ -66,7 +70,12 @@ public class TalendPaletteTreeProvider implements ITreeContentProvider {
      * 
      * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
      */
+    @Override
     public Object[] getElements(Object inputElement) {
+        if (inputElement instanceof List) {
+            return ((List) inputElement).toArray();
+        }
+
         Object[] elements = getChildren(inputElement);
         if (elements == null) {
             elements = new Object[0];
@@ -79,6 +88,7 @@ public class TalendPaletteTreeProvider implements ITreeContentProvider {
      * 
      * @see org.eclipse.jface.viewers.IContentProvider#dispose()
      */
+    @Override
     public void dispose() {
 
     }
@@ -89,6 +99,7 @@ public class TalendPaletteTreeProvider implements ITreeContentProvider {
      * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer, java.lang.Object,
      * java.lang.Object)
      */
+    @Override
     public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 
     }

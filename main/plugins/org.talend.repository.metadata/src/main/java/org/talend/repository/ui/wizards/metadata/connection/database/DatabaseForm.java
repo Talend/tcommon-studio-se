@@ -777,6 +777,8 @@ public class DatabaseForm extends AbstractForm {
 
         checkDBTypeAS400();
 
+        // installProposalKey(compositeGroupDbSettings);
+
         // scrolledComposite.setSize(compositeGroupDbSettings.computeSize(SWT.DEFAULT, SWT.DEFAULT));
         //
 

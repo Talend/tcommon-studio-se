@@ -57,6 +57,16 @@ public class ContextConstant {
 
     public static final String COMMENT_COLUMN_NAME = "COMMENT"; //$NON-NLS-1$
 
+    public static final String CONNECTION_FIELD_NAME = "FIELD"; //$NON-NLS-1$
+
+    public static final String VARIABLE_COLUMN_NAME = "VARIABLE"; //$NON-NLS-1$
+
+    public static final String CUSTOM_VARIABLE_NAME = "NEW_VARIABLE_NAME"; //$NON-NLS-1$
+
+    public static final String VARIABLE_COLUMN_VALUE = "VALUE"; //$NON-NLS-1$
+
+    public static final String NEW_VARIABLE = "<New Variable>"; //$NON-NLS-1$
+
     /*
      * column properties
      */

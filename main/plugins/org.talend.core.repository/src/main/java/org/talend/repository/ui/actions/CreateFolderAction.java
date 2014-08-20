@@ -22,10 +22,12 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.talend.commons.ui.runtime.image.ECoreImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.repository.i18n.Messages;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.ui.images.OverlayImageProvider;
+import org.talend.designer.core.ICamelDesignerCoreService;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IRepositoryNode.EProperties;
@@ -109,12 +111,24 @@ public class CreateFolderAction extends AContextualAction {
                         || ERepositoryObjectType.REFERENCED_PROJECTS.equals(property)
                         || ERepositoryObjectType.SVN_ROOT.equals(property)) {
                     canWork = false;
+                }else if (property != null && GlobalServiceRegister.getDefault().isServiceRegistered(ICamelDesignerCoreService.class)) {
+                    ICamelDesignerCoreService camelService = (ICamelDesignerCoreService) GlobalServiceRegister.getDefault()
+                            .getService(ICamelDesignerCoreService.class);
+                    if(property.equals(camelService.getRouteDocsType())){
+                    	canWork = false;
+                    }
                 }
                 break;
             case SIMPLE_FOLDER:
                 if (ERepositoryObjectType.JOB_DOC.equals(property) || ERepositoryObjectType.JOBLET_DOC.equals(property)
                         || (ERepositoryObjectType.SQLPATTERNS.equals(property) && !isUnderUserDefined(node))) {
                     canWork = false;
+                }else if (property != null && GlobalServiceRegister.getDefault().isServiceRegistered(ICamelDesignerCoreService.class)) {
+                    ICamelDesignerCoreService camelService = (ICamelDesignerCoreService) GlobalServiceRegister.getDefault()
+                            .getService(ICamelDesignerCoreService.class);
+                    if(property.equals(camelService.getRouteDocType())){
+                    	canWork = false;
+                    }
                 }
                 if (node.getObject().isDeleted()) {
                     canWork = false;

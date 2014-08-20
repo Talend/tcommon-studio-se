@@ -223,6 +223,7 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
              * 
              * @see org.eclipse.jface.viewers.ICellModifier#canModify(java.lang.Object, java.lang.String)
              */
+            @Override
             public boolean canModify(Object element, String property) {
                 return true;
             }
@@ -232,6 +233,7 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
              * 
              * @see org.eclipse.jface.viewers.ICellModifier#getValue(java.lang.Object, java.lang.String)
              */
+            @Override
             public Object getValue(Object element, String property) {
                 if (VALUE_PROPERTY.equals(property)) {
                     return element;
@@ -244,6 +246,7 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
              * 
              * @see org.eclipse.jface.viewers.ICellModifier#modify(java.lang.Object, java.lang.String, java.lang.Object)
              */
+            @Override
             public void modify(Object element, String property, Object value) {
                 if (VALUE_PROPERTY.equals(property)) {
                     ArrayList list = (ArrayList) valueTableViewer.getInput();
@@ -298,6 +301,7 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
         wsdlButton.setAlignment(SWT.RIGHT);
         wsdlButton.addSelectionListener(new SelectionAdapter() {
 
+            @Override
             public void widgetSelected(SelectionEvent e) {
                 Plugin plugin = PluginChecker.getWSDLPlugin();
                 if (plugin instanceof IWSDLExplorerAccessor) {
@@ -371,6 +375,7 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
     private void addJavaFieldsListeners() {
         needAuth.addSelectionListener(new SelectionAdapter() {
 
+            @Override
             public void widgetSelected(SelectionEvent e) {
                 checkFieldsValue();
                 setNeedAuthEnable(needAuth.getSelection());
@@ -380,6 +385,7 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
         });
         userNameText.addModifyListener(new ModifyListener() {
 
+            @Override
             public void modifyText(ModifyEvent e) {
                 if (!isContextMode()) {
                     checkFieldsValue();
@@ -390,6 +396,7 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
         });
         passWordText.addModifyListener(new ModifyListener() {
 
+            @Override
             public void modifyText(ModifyEvent e) {
                 if (!isContextMode()) {
                     checkFieldsValue();
@@ -400,6 +407,7 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
         });
         useProxy.addSelectionListener(new SelectionAdapter() {
 
+            @Override
             public void widgetSelected(SelectionEvent e) {
                 checkFieldsValue();
                 setUseProxyEnable(useProxy.getSelection());
@@ -409,6 +417,7 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
         });
         proxyHost.addModifyListener(new ModifyListener() {
 
+            @Override
             public void modifyText(ModifyEvent e) {
                 if (!isContextMode()) {
                     checkFieldsValue();
@@ -420,6 +429,7 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
         });
         proxyPort.addModifyListener(new ModifyListener() {
 
+            @Override
             public void modifyText(ModifyEvent e) {
                 if (!isContextMode()) {
                     checkFieldsValue();
@@ -431,6 +441,7 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
         });
         proxyUser.addModifyListener(new ModifyListener() {
 
+            @Override
             public void modifyText(ModifyEvent e) {
                 if (!isContextMode()) {
                     checkFieldsValue();
@@ -441,6 +452,7 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
         });
         proxyPassword.addModifyListener(new ModifyListener() {
 
+            @Override
             public void modifyText(ModifyEvent e) {
                 if (!isContextMode()) {
                     checkFieldsValue();
@@ -451,6 +463,7 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
         });
         timeOut.addModifyListener(new ModifyListener() {
 
+            @Override
             public void modifyText(ModifyEvent e) {
                 if (!isContextMode()) {
                     checkFieldsValue();
@@ -477,6 +490,7 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
     private void addPerlFieldsListeners() {
         endPointURI.addModifyListener(new ModifyListener() {
 
+            @Override
             public void modifyText(ModifyEvent e) {
                 if (!isContextMode()) {
                     checkFieldsValue();
@@ -491,6 +505,7 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
         });
         encodingCombo.addModifyListener(new ModifyListener() {
 
+            @Override
             public void modifyText(final ModifyEvent e) {
                 if (!isContextMode()) {
                     getConnection().setEncoding(encodingCombo.getText());
@@ -520,6 +535,7 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
 
         wsdlText.addModifyListener(new ModifyListener() {
 
+            @Override
             public void modifyText(ModifyEvent e) {
                 if (!isContextMode()) {
                     checkFieldsValue();
@@ -533,6 +549,7 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
         });
         methodText.addModifyListener(new ModifyListener() {
 
+            @Override
             public void modifyText(ModifyEvent e) {
                 if (!isContextMode()) {
                     checkFieldsValue();
@@ -792,6 +809,7 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
 
         ProcessDescription processDescription = null;
 
+        @Override
         public boolean preProcessStart() {
             previewButton.setText(Messages.getString("FileStep2.stop")); //$NON-NLS-1$
 
@@ -814,6 +832,7 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
             return true;
         }
 
+        @Override
         public void nonUIProcessInThread() {
             // get the CsvArray width an adapt ProcessDescription
             try {
@@ -825,6 +844,7 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
             }
         }
 
+        @Override
         public void updateUIInThreadIfThreadIsNotCanceled() {
             if (previewInformationLabel.isDisposed()) {
                 return;
@@ -833,6 +853,7 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
                 previewInformationLabel.setText(" " + Messages.getString("FileStep2.previewFailure")); //$NON-NLS-1$ //$NON-NLS-2$
                 Display.getDefault().asyncExec(new Runnable() {
 
+                    @Override
                     public void run() {
                         handleErrorOutput(outputComposite, tabFolder, outputTabItem);
                     }
@@ -861,6 +882,7 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
             }
         }
 
+        @Override
         public void updateUIInThreadIfThreadIsCanceled() {
             if (!previewInformationLabel.isDisposed()) {
                 previewInformationLabel.setText(""); //$NON-NLS-1$
@@ -869,6 +891,7 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
             if (getException() != null) {
                 Display.getDefault().syncExec(new Runnable() {
 
+                    @Override
                     public void run() {
                         handleErrorOutput(outputComposite, tabFolder, outputTabItem);
                     }
@@ -877,6 +900,7 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
             }
         }
 
+        @Override
         public void updateUIInThreadIfThreadFinally() {
             if (!previewButton.isDisposed()) {
                 previewButton.setText(Messages.getString("FileStep2.refreshPreview")); //$NON-NLS-1$
@@ -884,6 +908,7 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
             }
         }
 
+        @Override
         public void postProcessCancle() {
             previewButton.setEnabled(false);
         }
@@ -912,6 +937,7 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
         if (visible) {
             initialize();
             adaptFormToEditable();
+            collectContextParams(visible);
         }
         if (visible) {
             updateStatus(getStatusLevel(), getStatus());

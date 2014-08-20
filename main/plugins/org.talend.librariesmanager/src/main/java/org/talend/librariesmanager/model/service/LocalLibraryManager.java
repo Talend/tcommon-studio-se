@@ -28,9 +28,6 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.EMap;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.CommonExceptionHandler;
@@ -40,7 +37,7 @@ import org.talend.core.ILibraryManagerService;
 import org.talend.core.ILibraryManagerUIService;
 import org.talend.core.language.ECodeLanguage;
 import org.talend.core.model.components.IComponent;
-import org.talend.core.model.components.IComponentsService;
+import org.talend.core.model.general.ILibrariesService;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.librariesmanager.emf.librariesindex.LibrariesIndex;
 import org.talend.librariesmanager.model.ModulesNeededProvider;
@@ -53,13 +50,32 @@ public class LocalLibraryManager implements ILibraryManagerService {
 
     private Set<String> jarList = new HashSet<String>();
 
+    // map jar to file path.
+    // this will set in memory all the modules from the extension points.
+    private Map<String, String> jarsFromExtensions = new HashMap<String, String>();
+
     // map uri to absolute path
     // key = null, means uri not tested yet....
     // value is null = jar not existing
     // value set = absolute path of the jar
     private Map<String, String> uriJarInstalled = new HashMap<String, String>();
 
-    boolean listToUpdate = false;
+    private Set<String> jarsNeededForComponents = new HashSet<String>();
+
+    /**
+     * DOC nrousseau LocalLibraryManager constructor comment.
+     */
+    public LocalLibraryManager() {
+        super();
+
+        List<ModuleNeeded> modulesNeededForApplication = ModulesNeededProvider.getModulesNeededForApplication();
+        for (ModuleNeeded moduleNeeded : modulesNeededForApplication) {
+            installJarFromPlatformIfExists(moduleNeeded.getModuleName(), moduleNeeded.getModuleLocaion());
+        }
+        listToUpdate = true;
+    }
+
+    boolean listToUpdate;
 
     // private long totalSizeCanBeReduced = 0;
 
@@ -86,105 +102,19 @@ public class LocalLibraryManager implements ILibraryManagerService {
     @Override
     public void deploy(URI jarFileUri, IProgressMonitor... monitorWrap) {
         String installLocation = getStorageDirectory().getAbsolutePath();
-        File indexFile = new File(LibrariesIndexManager.getInstance().getIndexFilePath());
-        if (indexFile.exists()) {
-            LibrariesIndexManager.getInstance().loadResource();
-        }
 
         try {
             File file = new File(jarFileUri);
-            String contributeID = "";
-            // MOD qiongli 2013,avoid NPE.TOP dosen't contain IComponentsService.
-            if (GlobalServiceRegister.getDefault().isServiceRegistered(IComponentsService.class)) {
-                IComponentsService service = (IComponentsService) GlobalServiceRegister.getDefault().getService(
-                        IComponentsService.class);
-                Map<String, File> componentsFolders = service.getComponentsFactory().getComponentsProvidersFolder();
-                Set<String> contributeIdSet = componentsFolders.keySet();
-                for (String contributor : contributeIdSet) {
-                    if (file.getAbsolutePath().contains(contributor)) {
-                        contributeID = contributor;
-                        break;
-                    }
-                }
-            }
-            if (!"".equals(contributeID)) {
-                String actualPluginPath = FileLocator.getBundleFile(Platform.getBundle(contributeID)).getPath();
-                // check if the path of the imported jar is at least from the same studio, in case import a jar from a
-                // studio to another one.
-                if (!file.getAbsolutePath().startsWith(actualPluginPath)) {
-                    contributeID = "";
-                }
-            }
             if (file == null || !file.exists()) {
                 return;
             }
             listToUpdate = true;
-            if (contributeID.equals("")) {
-                if (file.isDirectory()) {
-                    FilesUtils.copyFolder(new File(jarFileUri), getStorageDirectory(), false,
-                            FilesUtils.getExcludeSystemFilesFilter(), FilesUtils.getAcceptJARFilesFilter(), false, monitorWrap);
-                } else {
-                    File target = new File(installLocation, file.getName());
-                    FilesUtils.copyFile(file, target);
-                }
+            if (file.isDirectory()) {
+                FilesUtils.copyFolder(new File(jarFileUri), getStorageDirectory(), false,
+                        FilesUtils.getExcludeSystemFilesFilter(), FilesUtils.getAcceptJARFilesFilter(), false, monitorWrap);
             } else {
-                if ("org.talend.designer.components.model.UserComponentsProvider".contains(contributeID)
-                        || "org.talend.designer.components.exchange.ExchangeComponentsProvider".contains(contributeID)) {
-                    if (file.isDirectory()) {
-                        FilesUtils.copyFolder(new File(jarFileUri), getStorageDirectory(), false,
-                                FilesUtils.getExcludeSystemFilesFilter(), FilesUtils.getAcceptJARFilesFilter(), false,
-                                monitorWrap);
-                    } else {
-                        File target = new File(installLocation, file.getName());
-                        FilesUtils.copyFile(file, target);
-                    }
-                } else {
-                    LibrariesIndex index = LibrariesIndexManager.getInstance().getIndex();
-                    EMap<String, String> jarsToRelativePath = index.getJarsToRelativePath();
-                    List<File> jarFiles = FilesUtils.getJarFilesFromFolder(file, null);
-                    boolean modified = false;
-                    if (jarFiles.size() > 0) {
-                        for (File jarFile : jarFiles) {
-                            String name = jarFile.getName();
-                            String fullPath = jarFile.getAbsolutePath();
-                            // caculate the relative path
-                            if (fullPath.indexOf(contributeID) != -1) {
-                                fullPath = new Path(fullPath).toPortableString();
-                                String relativePath = fullPath.substring(fullPath.indexOf(contributeID));
-                                if (!jarsToRelativePath.keySet().contains(name)) {
-                                    jarsToRelativePath.put(name, relativePath);
-                                    modified = true;
-                                } else {
-                                    // fix for TDI-25834 , in case the index.xml already stored some locations not exist
-                                    // in product , replace it with a new location
-                                    boolean jarFound = false;
-                                    String existedPath = jarsToRelativePath.get(name);
-                                    if (existedPath != null && existedPath.startsWith("platform:/")) {
-                                        jarFound = checkJarInstalledFromPlatform(existedPath);
-                                    }
-                                    if (!jarFound) {
-                                        jarsToRelativePath.put(name, relativePath);
-                                    }
-                                    // System.out.println("duplicate jar " + name + " found\n in :" +
-                                    // jarsToRelativePath.get(name)
-                                    // + "\n and : " + relativePath);
-                                    // totalSizeCanBeReduced += jarFile.length();
-                                    // System.out.println("total size can be reduced from:" + totalSizeCanBeReduced /
-                                    // 1024 + "kb\n");
-                                }
-                            }
-                        }
-                        if (modified) {
-                            LibrariesIndexManager.getInstance().saveResource();
-                        }
-                    }
-
-                    // copy dll files
-                    List<File> dlls = FilesUtils.getDllFilesFromFolder(file, null);
-                    for (File dllFile : dlls) {
-                        FilesUtils.copyFile(dllFile, new File(installLocation, dllFile.getName()));
-                    }
-                }
+                File target = new File(installLocation, file.getName());
+                FilesUtils.copyFile(file, target);
             }
         } catch (IOException e) {
             CommonExceptionHandler.process(e);
@@ -217,96 +147,67 @@ public class LocalLibraryManager implements ILibraryManagerService {
         return retrieve(jarNeeded, pathToStore, true, monitorWrap);
     }
 
+    private File getJarFile(String jarNeeded) throws MalformedURLException {
+        // priority to the jars from the /lib/java folder.
+        List<File> jarFiles = FilesUtils.getJarFilesFromFolder(getStorageDirectory(), jarNeeded);
+        if (jarFiles.size() > 0) {
+            File jarFile = jarFiles.get(0);
+            return jarFile;
+        }
+        // try to get the jars from the extension points.
+        if (jarsFromExtensions.containsKey(jarNeeded)) {
+            return new File(jarsFromExtensions.get(jarNeeded));
+        }
+
+        // get jars file path from index
+        EMap<String, String> jarsToRelative = LibrariesIndexManager.getInstance().getIndex().getJarsToRelativePath();
+        String uriPath = jarsToRelative.get(jarNeeded);
+        if (uriPath != null && uriPath.startsWith("platform:/")) {
+            if (checkJarInstalledFromPlatform(uriPath)) {
+                return new File(uriJarInstalled.get(uriPath));
+            }
+        }
+        return null;
+    }
+
     @Override
     public boolean retrieve(String jarNeeded, String pathToStore, boolean popUp, IProgressMonitor... monitorWrap) {
         LibrariesIndexManager.getInstance().loadResource();
         String sourcePath = null, targetPath = pathToStore;
         try {
-            List<File> jarFiles = FilesUtils.getJarFilesFromFolder(getStorageDirectory(), jarNeeded);
-            if (jarFiles.size() > 0) {
-                File jarFile = jarFiles.get(0);
-                File target = new File(StringUtils.trimToEmpty(pathToStore));
-                if (!target.exists()) {
-                    target.mkdirs();
-                }
-                sourcePath = jarFile.getAbsolutePath();
-                FilesUtils.copyFile(jarFile, new File(pathToStore, jarFile.getName()));
-                return true;
-            }
-            // retrieve jar from the index.xml if not find in lib/java
-            else {
-                EMap<String, String> jarsToRelative = LibrariesIndexManager.getInstance().getIndex().getJarsToRelativePath();
-                String relativePath = jarsToRelative.get(jarNeeded);
-                String bundleLocation = "";
-                String jarLocation = "";
-
-                Map<String, File> componentsFolders = null;
-                Set<String> contributeIdSet = null;
-                if (GlobalServiceRegister.getDefault().isServiceRegistered(IComponentsService.class)) {
-                    IComponentsService service = (IComponentsService) GlobalServiceRegister.getDefault().getService(
-                            IComponentsService.class);
-                    componentsFolders = service.getComponentsFactory().getComponentsProvidersFolder();
-                    contributeIdSet = componentsFolders.keySet();
-                }
-
-                boolean jarFound = false;
-                if (relativePath != null) {
-                    if (relativePath.startsWith("platform:/")) {
-                        jarFound = checkJarInstalledFromPlatform(relativePath);
-                        if (jarFound) {
-                            jarLocation = uriJarInstalled.get(relativePath);
-                        }
-                        if (!jarFound) {
-                            // some libraries maybe not exist in some product ,but there is configuration in index.xml
-                            // build from component
-                            if (!popUp) {
-                                return false;
-                            } else if (!CommonsPlugin.isHeadless()) {
-                                if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerUIService.class)) {
-                                    ILibraryManagerUIService libUiService = (ILibraryManagerUIService) GlobalServiceRegister
-                                            .getDefault().getService(ILibraryManagerUIService.class);
-
-                                    libUiService.installModules(new String[] { jarNeeded });
-                                }
-                                return false;
-                            }
-                        }
-                    } else {
-                        if (componentsFolders != null && contributeIdSet != null) {
-                            for (String contributor : contributeIdSet) {
-                                if (relativePath.contains(contributor)) {
-                                    // caculate the the absolute path of the jar
-                                    bundleLocation = componentsFolders.get(contributor).getAbsolutePath();
-                                    int index = bundleLocation.indexOf(contributor);
-                                    jarLocation = new Path(bundleLocation.substring(0, index)).append(relativePath)
-                                            .toPortableString();
-                                    jarFound = true;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-                sourcePath = jarLocation;
-
-                if (!jarFound && popUp && !CommonsPlugin.isHeadless()) {
+            File jarFile = getJarFile(jarNeeded);
+            if (jarFile == null) {
+                if (popUp && !CommonsPlugin.isHeadless()) {
+                    // popup dialog if needed to download the jar.
                     if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerUIService.class)) {
                         ILibraryManagerUIService libUiService = (ILibraryManagerUIService) GlobalServiceRegister.getDefault()
                                 .getService(ILibraryManagerUIService.class);
 
                         libUiService.installModules(new String[] { jarNeeded });
                     }
+                    jarFile = getJarFile(jarNeeded);
+                    if (jarFile == null) {
+                        // jar not found even after the popup > stop here
+                        return false;
+                    }
+                    // jar found > reset the modules just after install the jars
+                    if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibrariesService.class)) {
+                        ILibrariesService librariesService = (ILibrariesService) GlobalServiceRegister.getDefault().getService(
+                                ILibrariesService.class);
+                        librariesService.resetModulesNeeded();
+                    }
+                } else {
+                    // jar not found, and no popup at this point
                     return false;
                 }
-
-                if (!jarFound) {
-                    // CommonExceptionHandler.log("Jar: " + jarNeeded + " not found, not in the plugins available:"
-                    // + contributeIdSet);
-                    return false;
-                }
-                FilesUtils.copyFile(new File(sourcePath), new File(pathToStore, jarNeeded));
-                return true;
             }
+            File target = new File(StringUtils.trimToEmpty(pathToStore));
+            if (!target.exists()) {
+                target.mkdirs();
+            }
+            sourcePath = jarFile.getAbsolutePath();
+            FilesUtils.copyFile(jarFile, new File(pathToStore, jarNeeded));
+            return true;
         } catch (MalformedURLException e) {
             CommonExceptionHandler.process(e);
         } catch (IOException e) {
@@ -339,10 +240,20 @@ public class LocalLibraryManager implements ILibraryManagerService {
                 jarsNeeded = new ArrayList<String>(jarNotFound);
                 jarNotFound.clear();
                 allIsOK = true;
+                boolean needResetModulesNeeded = false;
                 for (String jar : jarsNeeded) {
                     if (!retrieve(jar, pathToStore, false, monitorWrap)) {
                         jarNotFound.add(jar);
                         allIsOK = false;
+                    } else {
+                        needResetModulesNeeded = true;
+                    }
+                }
+                if (needResetModulesNeeded) {
+                    if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibrariesService.class)) {
+                        ILibrariesService librariesService = (ILibrariesService) GlobalServiceRegister.getDefault().getService(
+                                ILibrariesService.class);
+                        librariesService.resetModulesNeeded();
                     }
                 }
             }
@@ -369,17 +280,17 @@ public class LocalLibraryManager implements ILibraryManagerService {
      */
     @Override
     public Set<String> list(IProgressMonitor... monitorWrap) {
-        return list(true, monitorWrap);
-    }
+        if (!jarList.isEmpty() && !listToUpdate) {
+            return jarList;
+        }
+        listToUpdate = false;
 
-    @Override
-    public Set<String> list(boolean withComponent, IProgressMonitor... monitorWrap) {
-        Set<String> names = new HashSet<String>();
+        jarList = new HashSet<String>();
         try {
             List<File> jarFiles = FilesUtils.getJarFilesFromFolder(getStorageDirectory(), null);
             if (jarFiles.size() > 0) {
                 for (File file : jarFiles) {
-                    names.add(file.getName());
+                    jarList.add(file.getName());
                 }
             }
         } catch (MalformedURLException e) {
@@ -390,53 +301,23 @@ public class LocalLibraryManager implements ILibraryManagerService {
 
         // fix for TDI-25474 ,some libraries are removed form tos,only list jars exist
         EMap<String, String> jarsToRelative = LibrariesIndexManager.getInstance().getIndex().getJarsToRelativePath();
-        Map<String, File> componentsFolders = null;
-        Set<String> contributeIdSet = null;
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IComponentsService.class)) {
-            IComponentsService service = (IComponentsService) GlobalServiceRegister.getDefault().getService(
-                    IComponentsService.class);
-            componentsFolders = service.getComponentsFactory().getComponentsProvidersFolder();
-            contributeIdSet = componentsFolders.keySet();
-        }
 
         for (String jarName : jarsToRelative.keySet()) {
             String relativePath = jarsToRelative.get(jarName);
             boolean jarFound = false;
-            if (relativePath != null) {
-                if (relativePath.startsWith("platform:/")) {
-                    jarFound = checkJarInstalledFromPlatform(relativePath);
-                } else {
-                    if (componentsFolders != null && contributeIdSet != null) {
-                        for (String contributor : contributeIdSet) {
-                            if (relativePath.contains(contributor)) {
-                                // caculate the the absolute path of the jar
-                                String bundleLocation = componentsFolders.get(contributor).getAbsolutePath();
-                                int index = bundleLocation.indexOf(contributor);
-                                String jarLocation = new Path(bundleLocation.substring(0, index)).append(relativePath)
-                                        .toPortableString();
-
-                                File file = new File(jarLocation);
-                                if (file.exists()) {
-                                    jarFound = true;
-                                }
-                                break;
-                            }
-                        }
-                    }
-                }
+            if (relativePath != null && relativePath.startsWith("platform:/")) {
+                jarFound = checkJarInstalledFromPlatform(relativePath);
             }
             if (jarFound) {
-                if (!withComponent) {
-                    if (ModulesNeededProvider.getModulesNeededNames().contains(jarName)) {
-                        names.add(jarName);
-                    }
-                } else {
-                    names.add(jarName);
-                }
+                jarList.add(jarName);
             }
         }
-        return names;
+        return jarList;
+    }
 
+    @Override
+    public Set<String> list(boolean withComponent, IProgressMonitor... monitorWrap) {
+        return list(monitorWrap);
     }
 
     @Override
@@ -472,14 +353,11 @@ public class LocalLibraryManager implements ILibraryManagerService {
             LibrariesIndexManager.getInstance().getIndex().getJarsToRelativePath().clear();
             LibrariesIndexManager.getInstance().saveResource();
         }
+        listToUpdate = true;
     }
 
     @Override
     public boolean contains(String jarName) {
-        if (jarList.isEmpty() || listToUpdate) {
-            jarList = list(new NullProgressMonitor());
-            listToUpdate = false;
-        }
         return jarList.contains(jarName);
     }
 
@@ -525,6 +403,8 @@ public class LocalLibraryManager implements ILibraryManagerService {
         deploy(modules, monitorWrap);
     }
 
+    private Set<String> urlWarned = new HashSet<String>();
+
     @Override
     public void deploy(List<ModuleNeeded> modules, IProgressMonitor... monitorWrap) {
         File indexFile = new File(LibrariesIndexManager.getInstance().getIndexFilePath());
@@ -535,24 +415,30 @@ public class LocalLibraryManager implements ILibraryManagerService {
         LibrariesIndex index = LibrariesIndexManager.getInstance().getIndex();
         EMap<String, String> jarsToRelativePath = index.getJarsToRelativePath();
         for (ModuleNeeded module : modules) {
-            String moduleLocaion = module.getModuleLocaion();
-            if (moduleLocaion != null && !"".equals(moduleLocaion)) {
-                if (!jarsToRelativePath.keySet().contains(module.getModuleName())) {
-                    jarsToRelativePath.put(module.getModuleName(), moduleLocaion);
-                    modified = true;
-                } else {
-                    boolean jarFound = false;
-                    String existePath = jarsToRelativePath.get(module.getModuleName());
-                    if (existePath != null && existePath.startsWith("platform:/")) {
-                        jarFound = checkJarInstalledFromPlatform(existePath);
-                    }
-                    // in case the index.xml already stored some locations not exist in product , replace it with a new
-                    // location
-                    if (!jarFound) {
-                        jarsToRelativePath.put(module.getModuleName(), moduleLocaion);
-                        modified = true;
+            if (jarsFromExtensions.containsKey(module.getModuleName())) {
+                // already installed from extension point.
+                continue;
+            }
+            String moduleLocation = module.getModuleLocaion();
+            if (moduleLocation != null && moduleLocation.startsWith("platform:/")) {
+                if (jarsToRelativePath.containsKey(module.getModuleName())) {
+                    String relativePath = jarsToRelativePath.get(module.getModuleName());
+                    if (relativePath.equals(moduleLocation)) {
+                        continue;
+                    } else {
+                        if (!urlWarned.contains(moduleLocation)) {
+                            System.out.println(module.getModuleName() + " was already defined with:" + relativePath
+                                    + " but redefined now with:" + moduleLocation);
+                            urlWarned.add(moduleLocation);
+                        }
                     }
                 }
+                if (checkJarInstalledFromPlatform(moduleLocation)) {
+                    jarsToRelativePath.put(module.getModuleName(), moduleLocation);
+                    modified = true;
+                }
+            } else {
+                jarsNeededForComponents.add(module.getModuleName());
             }
         }
         if (modified) {
@@ -586,7 +472,8 @@ public class LocalLibraryManager implements ILibraryManagerService {
         return libPath;
     }
 
-    private boolean checkJarInstalledFromPlatform(String uriPath) {
+    @Override
+    public boolean checkJarInstalledFromPlatform(String uriPath) {
         if (uriJarInstalled.containsKey(uriPath)) {
             return uriJarInstalled.get(uriPath) != null;
         }
@@ -605,6 +492,66 @@ public class LocalLibraryManager implements ILibraryManagerService {
         }
         uriJarInstalled.put(uriPath, absolutePath);
         return jarFound;
+    }
+
+    private void installJarFromPlatformIfExists(String moduleName, String uriPath) {
+        if (jarsFromExtensions.containsValue(uriPath)) {
+            // nothing to do.
+            return;
+        }
+        String jarName = null;
+        try {
+            if (uriJarInstalled.containsKey(uriPath)) {
+                File file = new File(uriJarInstalled.get(uriPath));
+                if (file.exists()) {
+                    jarName = file.getName();
+                }
+            } else {
+                URI uri = new URI(uriPath);
+                URL url = FileLocator.toFileURL(uri.toURL());
+                File file = new File(url.getFile());
+                if (file.exists()) {
+                    jarName = file.getName();
+                }
+            }
+        } catch (Exception e) {
+            // do nothing
+        }
+        if (jarName != null) {
+            jarsFromExtensions.put(jarName, uriPath);
+            // just in case the jarName is different from the moduleName.
+            jarsFromExtensions.put(moduleName, uriPath);
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.talend.core.ILibraryManagerService#deploy(java.util.Map, org.eclipse.core.runtime.IProgressMonitor[])
+     */
+    @Override
+    public void deploy(Map<String, String> libsToRelativePath, IProgressMonitor... monitorWrap) {
+        File indexFile = new File(LibrariesIndexManager.getInstance().getIndexFilePath());
+        if (indexFile.exists()) {
+            LibrariesIndexManager.getInstance().loadResource();
+        }
+        EMap<String, String> jarsToRelative = LibrariesIndexManager.getInstance().getIndex().getJarsToRelativePath();
+        for (String key : libsToRelativePath.keySet()) {
+            if (checkJarInstalledFromPlatform(libsToRelativePath.get(key))) {
+                jarsToRelative.put(key, libsToRelativePath.get(key));
+            }
+        }
+        LibrariesIndexManager.getInstance().saveResource();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.talend.core.ILibraryManagerService#forceListUpdate()
+     */
+    @Override
+    public void forceListUpdate() {
+        listToUpdate = true;
     }
 
 }

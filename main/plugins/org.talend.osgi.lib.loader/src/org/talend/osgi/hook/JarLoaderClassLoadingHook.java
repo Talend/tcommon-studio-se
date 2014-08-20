@@ -15,6 +15,7 @@ package org.talend.osgi.hook;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.security.ProtectionDomain;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,6 +29,7 @@ import org.eclipse.osgi.baseadaptor.hooks.ClassLoadingHook;
 import org.eclipse.osgi.baseadaptor.loader.BaseClassLoader;
 import org.eclipse.osgi.baseadaptor.loader.ClasspathEntry;
 import org.eclipse.osgi.baseadaptor.loader.ClasspathManager;
+import org.eclipse.osgi.baseadaptor.loader.FragmentClasspath;
 import org.eclipse.osgi.framework.adaptor.BundleProtectionDomain;
 import org.eclipse.osgi.framework.adaptor.ClassLoaderDelegate;
 import org.eclipse.osgi.framework.log.FrameworkLog;
@@ -89,9 +91,9 @@ public class JarLoaderClassLoadingHook implements ClassLoadingHook {
     public boolean addClassPathEntry(ArrayList cpEntries, String cp, ClasspathManager hostmanager, BaseData sourcedata,
             ProtectionDomain sourcedomain) {
         // check if jar exists
-        BundleEntry entry = sourcedata.getBundleFile().getEntry(cp);
         String bundleSymbolicName = sourcedata.getSymbolicName();
-        if (entry == null && canHandleBundle(bundleSymbolicName) && cp.endsWith(".jar")) {// the jar is not part of the bundle, let's try to look for it in the //$NON-NLS-1$ 
+        if (!isJarProvidedByOriginalBundles(cp, sourcedata, hostmanager) && canHandleBundle(bundleSymbolicName)
+                && cp.endsWith(".jar")) {// the jar is not part of the bundle, let's try to look for it in the //$NON-NLS-1$ 
             // lib/java folder.
             try {
                 File libJavaFolderFile = getLibJavaFolderFile();
@@ -133,6 +135,27 @@ public class JarLoaderClassLoadingHook implements ClassLoadingHook {
             }
         }// else jar exist so let the usual entries to be used
         return false;
+    }
+
+    /**
+     * check that jar is provided by the bundle or it's fragments.
+     * 
+     * @param cp
+     * @param sourcedata
+     * @param hostmanager
+     * @return true if jar is already provided by the bundle or it's fragments
+     */
+    private boolean isJarProvidedByOriginalBundles(String cp, BaseData sourcedata, ClasspathManager hostmanager) {
+        URL hostEntry = sourcedata.getEntry(cp);
+        if (hostEntry != null) {
+            return true;
+        }// else no jar detected so look into fragments
+        for (FragmentClasspath fcp : hostmanager.getFragmentClasspaths()) {
+            if (fcp.getBundleData().getEntry(cp) != null) {
+                return true;
+            }// else not found so keep looking
+        }
+        return false;// no jar found
     }
 
     /**

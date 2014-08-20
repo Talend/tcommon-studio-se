@@ -12,16 +12,10 @@
 // ============================================================================
 package org.talend.designer.components.preference.provider;
 
-import org.eclipse.gef.palette.PaletteContainer;
-import org.eclipse.gef.palette.PaletteEntry;
-import org.eclipse.gef.palette.PaletteSeparator;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.PlatformUI;
-import org.talend.commons.ui.runtime.image.EImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
 
 /**
@@ -37,20 +31,10 @@ public class TalendPaletteLabelProvider implements ILabelProvider {
      * 
      * @see org.eclipse.jface.viewers.ILabelProvider#getImage(java.lang.Object)
      */
+    @Override
     public Image getImage(Object element) {
-        PaletteEntry entry = (PaletteEntry) element;
-        ImageDescriptor descriptor = entry.getSmallIcon();
-        if (descriptor == null) {
-            if (entry instanceof PaletteContainer) {
-                // descriptor = InternalImages.DESC_FOLDER_OPEN;
-                descriptor = PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_OBJ_FOLDER);
-            } else if (entry instanceof PaletteSeparator) {
-                // descriptor = InternalImages.DESC_SEPARATOR;
-                descriptor = ImageProvider.getImageDesc(EImage.SEPARATOR_ICON);
-            } else {
-                return null;
-            }
-        }
+        IPaletteItem entry = (IPaletteItem) element;
+        ImageDescriptor descriptor = entry.getImageDesc();
         return ImageProvider.getImage(descriptor);
     }
 
@@ -59,8 +43,12 @@ public class TalendPaletteLabelProvider implements ILabelProvider {
      * 
      * @see org.eclipse.jface.viewers.ILabelProvider#getText(java.lang.Object)
      */
+    @Override
     public String getText(Object element) {
-        return ((PaletteEntry) element).getLabel();
+        if (element instanceof String) {
+            return (String) element;
+        }
+        return ((IPaletteItem) element).getLabel();
     }
 
     /*
@@ -68,6 +56,7 @@ public class TalendPaletteLabelProvider implements ILabelProvider {
      * 
      * @see org.eclipse.jface.viewers.IBaseLabelProvider#addListener(org.eclipse.jface.viewers.ILabelProviderListener)
      */
+    @Override
     public void addListener(ILabelProviderListener listener) {
         // TODO Auto-generated method stub
 
@@ -78,6 +67,7 @@ public class TalendPaletteLabelProvider implements ILabelProvider {
      * 
      * @see org.eclipse.jface.viewers.IBaseLabelProvider#dispose()
      */
+    @Override
     public void dispose() {
         // TODO Auto-generated method stub
 
@@ -88,6 +78,7 @@ public class TalendPaletteLabelProvider implements ILabelProvider {
      * 
      * @see org.eclipse.jface.viewers.IBaseLabelProvider#isLabelProperty(java.lang.Object, java.lang.String)
      */
+    @Override
     public boolean isLabelProperty(Object element, String property) {
         return false;
     }
@@ -98,6 +89,7 @@ public class TalendPaletteLabelProvider implements ILabelProvider {
      * @see
      * org.eclipse.jface.viewers.IBaseLabelProvider#removeListener(org.eclipse.jface.viewers.ILabelProviderListener)
      */
+    @Override
     public void removeListener(ILabelProviderListener listener) {
         // TODO Auto-generated method stub
 

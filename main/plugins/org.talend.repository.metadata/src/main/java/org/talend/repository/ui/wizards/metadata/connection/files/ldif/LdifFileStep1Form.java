@@ -43,6 +43,7 @@ import org.talend.core.model.properties.ConnectionItem;
 import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.repository.metadata.i18n.Messages;
 import org.talend.repository.ui.swt.utils.AbstractLdifFileStepForm;
+import org.talend.repository.ui.utils.OtherConnectionContextUtils.EParamName;
 
 /**
  * @author cantoine
@@ -334,7 +335,12 @@ public class LdifFileStep1Form extends AbstractLdifFileStepForm {
         }
         if (visible) {
             initialize();
+            collectParameters(visible);
         }
+    }
+
+    private void collectParameters(boolean visible) {
+        addContextParams(EParamName.FilePath, visible);
     }
 
     @Override

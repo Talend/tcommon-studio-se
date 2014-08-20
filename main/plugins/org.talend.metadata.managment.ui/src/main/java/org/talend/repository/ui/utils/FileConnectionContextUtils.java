@@ -23,6 +23,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.emf.common.util.BasicEList;
@@ -39,8 +40,10 @@ import org.talend.core.model.metadata.builder.connection.PositionalFileConnectio
 import org.talend.core.model.metadata.builder.connection.RegexpFileConnection;
 import org.talend.core.model.metadata.types.JavaTypesManager;
 import org.talend.core.model.process.IContextParameter;
+import org.talend.core.model.properties.ContextItem;
 import org.talend.core.model.utils.CloneConnectionUtils;
 import org.talend.core.model.utils.ContextParameterUtils;
+import org.talend.core.ui.context.model.table.ConectionAdaptContextVariableModel;
 import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.repository.model.IConnParamName;
@@ -218,6 +221,88 @@ public final class FileConnectionContextUtils {
                         case DecimalSeparator:
                             if (LANGUAGE == ECodeLanguage.JAVA) {
                                 excelConn.setDecimalSeparator(ContextParameterUtils.getNewScriptCode(paramName, LANGUAGE));
+                            }
+                            break;
+                        default:
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+
+    }
+
+    static void setPropertiesForExistContextMode(FileConnection conn, Set<IConnParamName> paramSet,
+            Map<ContextItem, List<ConectionAdaptContextVariableModel>> map) {
+        String fileVariableName = null;
+        for (IConnParamName param : paramSet) {
+            if (param instanceof EFileParamName) {
+                fileVariableName = "";
+                EFileParamName fileParam = (EFileParamName) param;
+                if (map != null && map.size() > 0) {
+                    for (Map.Entry<ContextItem, List<ConectionAdaptContextVariableModel>> entry : map.entrySet()) {
+                        List<ConectionAdaptContextVariableModel> modelList = entry.getValue();
+                        for (ConectionAdaptContextVariableModel model : modelList) {
+                            if (model.getValue().equals(fileParam.name())) {
+                                fileVariableName = model.getName();
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                switch (fileParam) {
+                case File:
+                    conn.setFilePath(ContextParameterUtils.getNewScriptCode(fileVariableName, LANGUAGE));
+                    break;
+                case Encoding:
+                    conn.setEncoding(ContextParameterUtils.getNewScriptCode(fileVariableName, LANGUAGE));
+                    break;
+                case Limit:
+                    conn.setLimitValue(ContextParameterUtils.getNewScriptCode(fileVariableName, LANGUAGE));
+                    break;
+                case Header:
+                    conn.setHeaderValue(ContextParameterUtils.getNewScriptCode(fileVariableName, LANGUAGE));
+                    break;
+                case Footer:
+                    conn.setFooterValue(ContextParameterUtils.getNewScriptCode(fileVariableName, LANGUAGE));
+                    break;
+                case RowSeparator:
+                    if (conn instanceof DelimitedFileConnection || conn instanceof PositionalFileConnection
+                            || conn instanceof RegexpFileConnection) {
+                        conn.setRowSeparatorValue(ContextParameterUtils.getNewScriptCode(fileVariableName, LANGUAGE));
+                    }
+                    break;
+                case FieldSeparator:
+                case RegExpression:
+                    if (conn instanceof DelimitedFileConnection || conn instanceof PositionalFileConnection
+                            || conn instanceof RegexpFileConnection) {
+                        conn.setFieldSeparatorValue(ContextParameterUtils.getNewScriptCode(fileVariableName, LANGUAGE));
+                        if (conn instanceof DelimitedFileConnection) {
+                            ((DelimitedFileConnection) conn).setFieldSeparatorType(FieldSeparator.CUSTOM_UTF8_LITERAL);
+                        }
+                    }
+                    break;
+                default:
+                    if (conn instanceof FileExcelConnection) {
+                        FileExcelConnection excelConn = (FileExcelConnection) conn;
+                        switch (fileParam) {
+                        case FirstColumn:
+                            excelConn.setFirstColumn(ContextParameterUtils.getNewScriptCode(fileVariableName, LANGUAGE));
+                            break;
+                        case LastColumn:
+                            excelConn.setLastColumn(ContextParameterUtils.getNewScriptCode(fileVariableName, LANGUAGE));
+                            break;
+                        case ThousandSeparator:
+                            if (LANGUAGE == ECodeLanguage.JAVA) {
+                                excelConn
+                                        .setThousandSeparator(ContextParameterUtils.getNewScriptCode(fileVariableName, LANGUAGE));
+                            }
+                            break;
+                        case DecimalSeparator:
+                            if (LANGUAGE == ECodeLanguage.JAVA) {
+                                excelConn.setDecimalSeparator(ContextParameterUtils.getNewScriptCode(fileVariableName, LANGUAGE));
                             }
                             break;
                         default:

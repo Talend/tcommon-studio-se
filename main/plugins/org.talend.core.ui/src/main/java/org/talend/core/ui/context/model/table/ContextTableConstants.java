@@ -17,5 +17,15 @@ package org.talend.core.ui.context.model.table;
  */
 public class ContextTableConstants {
 
-    public static final String COLUMN_NAME_PROPERTY = "NAME"; //$NON-NLS-1$
+    public static final String COLUMN_NAME_PROPERTY = "Name"; //$NON-NLS-1$
+
+    public static final String COLUMN_TYPE_PROPERTY = "Type"; //$NON-NLS-1$
+
+    public static final String COLUMN_CHECK_PROPERTY = ""; //$NON-NLS-1$
+
+    public static final String COLUMN_PROMPT_PROPERTY = "Prompt"; //$NON-NLS-1$
+
+    public static final String COLUMN_CONTEXT_VALUE = "Value"; //$NON-NLS-1$
+
+    public static final int DEFAULT_COLUMN_COUNT = 8;
 }

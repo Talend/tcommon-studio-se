@@ -313,7 +313,8 @@ public class ExtractMetaDataFromDataBase {
             if ((schema != null) && (schema.compareTo("") != 0)) { //$NON-NLS-1$
                 final String product = EDatabaseTypeName.getTypeFromDisplayName(dbType).getProduct();
                 final boolean equals = EDatabaseTypeName.ORACLEFORSID.getProduct().equals(product)
-                        || EDatabaseTypeName.TERADATA.getProduct().equals(product);
+                        || EDatabaseTypeName.TERADATA.getProduct().equals(product)
+                        || EDatabaseTypeName.VERTICA.getProduct().equals(product);
                 // We have to check schema
                 if (!checkSchemaConnection(schema, connection, equals, dbType)) {
                     connectionStatus.setMessageException(Messages.getString("ExtractMetaDataFromDataBase.SchemaNoPresent")); //$NON-NLS-1$

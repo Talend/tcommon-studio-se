@@ -38,6 +38,7 @@ import org.talend.core.model.process.IContextParameter;
 import org.talend.core.model.properties.ConnectionItem;
 import org.talend.core.model.properties.ContextItem;
 import org.talend.core.model.utils.ContextParameterUtils;
+import org.talend.core.ui.context.model.table.ConectionAdaptContextVariableModel;
 import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.repository.model.IConnParamName;
@@ -147,6 +148,32 @@ public final class OtherConnectionContextUtils {
         conn.setFilePath(ContextParameterUtils.getNewScriptCode(paramName, LANGUAGE));
     }
 
+    static void setLdifFileForExistContextMode(LdifFileConnection conn, Set<IConnParamName> paramSet,
+            Map<ContextItem, List<ConectionAdaptContextVariableModel>> map) {
+        String ldifVariableName = null;
+        for (IConnParamName param : paramSet) {
+            if (param instanceof EParamName) {
+                ldifVariableName = "";
+                EParamName ldifParam = (EParamName) param;
+                if (map != null && map.size() > 0) {
+                    for (Map.Entry<ContextItem, List<ConectionAdaptContextVariableModel>> entry : map.entrySet()) {
+                        List<ConectionAdaptContextVariableModel> modelList = entry.getValue();
+                        for (ConectionAdaptContextVariableModel model : modelList) {
+                            if (model.getValue().equals(ldifParam.name())) {
+                                ldifVariableName = model.getName();
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (ldifParam.equals(EParamName.FilePath)) {
+                    conn.setFilePath(ContextParameterUtils.getNewScriptCode(ldifVariableName, LANGUAGE));
+                }
+            }
+
+        }
+    }
+
     static void revertLdifFilePropertiesForContextMode(LdifFileConnection conn, ContextType contextType) {
         if (conn == null || contextType == null) {
             return;
@@ -254,6 +281,56 @@ public final class OtherConnectionContextUtils {
             conn.setOutputFilePath(ContextParameterUtils.getNewScriptCode(paramName, LANGUAGE));
         }
 
+    }
+
+    static void setXmlFileForExistContextMode(XmlFileConnection conn, Set<IConnParamName> paramSet,
+            Map<ContextItem, List<ConectionAdaptContextVariableModel>> map) {
+        if (conn == null) {
+            return;
+        }
+        String xmlVaribleName = null;
+        for (IConnParamName param : paramSet) {
+            if (param instanceof EParamName) {
+                xmlVaribleName = "";
+                EParamName xmlParam = (EParamName) param;
+                if (map != null && map.size() > 0) {
+                    for (Map.Entry<ContextItem, List<ConectionAdaptContextVariableModel>> entry : map.entrySet()) {
+                        List<ConectionAdaptContextVariableModel> modelList = entry.getValue();
+                        for (ConectionAdaptContextVariableModel model : modelList) {
+                            if (model.getValue().equals(xmlParam.name())) {
+                                xmlVaribleName = model.getName();
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (conn.isInputModel()) {
+                    switch (xmlParam) {
+                    case Encoding:
+                        conn.setXmlFilePath(ContextParameterUtils.getNewScriptCode(xmlVaribleName, LANGUAGE));
+                        break;
+                    case XmlFilePath:
+                        conn.setXmlFilePath(ContextParameterUtils.getNewScriptCode(xmlVaribleName, LANGUAGE));
+                        break;
+                    case XPathQuery:
+                        EList schema = conn.getSchema();
+                        if (schema != null) {
+                            if (schema.get(0) instanceof XmlXPathLoopDescriptor) {
+                                XmlXPathLoopDescriptor descriptor = (XmlXPathLoopDescriptor) schema.get(0);
+                                descriptor
+                                        .setAbsoluteXPathQuery(ContextParameterUtils.getNewScriptCode(xmlVaribleName, LANGUAGE));
+                            }
+                        }
+                    default:
+                    }
+
+                } else {
+                    if (xmlParam.equals(EParamName.OutputFilePath)) {
+                        conn.setOutputFilePath(ContextParameterUtils.getNewScriptCode(xmlVaribleName, LANGUAGE));
+                    }
+                }
+            }
+        }
     }
 
     static void revertXmlFilePropertiesForContextMode(XmlFileConnection conn, ContextType contextType) {
@@ -560,6 +637,91 @@ public final class OtherConnectionContextUtils {
         }
     }
 
+    static void setSalesforcePropertiesForExistContextMode(SalesforceSchemaConnection ssConn, Set<IConnParamName> paramSet,
+            Map<ContextItem, List<ConectionAdaptContextVariableModel>> map) {
+        if (ssConn == null) {
+            return;
+        }
+
+        String sslVariableName = null;
+        ContextItem currentContext = null;
+        for (IConnParamName param : paramSet) {
+            if (param instanceof EParamName) {
+                if (param instanceof EParamName) {
+                    EParamName ssParam = (EParamName) param;
+                    if (map != null && map.size() > 0) {
+                        for (Map.Entry<ContextItem, List<ConectionAdaptContextVariableModel>> entry : map.entrySet()) {
+                            currentContext = entry.getKey();
+                            List<ConectionAdaptContextVariableModel> modelList = entry.getValue();
+                            for (ConectionAdaptContextVariableModel model : modelList) {
+                                if (model.getValue().equals(ssParam.name())) {
+                                    sslVariableName = model.getName();
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    sslVariableName = getCorrectVariableName(currentContext, sslVariableName, ssParam);
+                    switch (ssParam) {
+                    case WebServiceUrl:
+                        ssConn.setWebServiceUrl(ContextParameterUtils.getNewScriptCode(sslVariableName, LANGUAGE));
+                        break;
+                    case UserName:
+                        ssConn.setUserName(ContextParameterUtils.getNewScriptCode(sslVariableName, LANGUAGE));
+                        break;
+                    case Password:
+                        ssConn.setPassword(ContextParameterUtils.getNewScriptCode(sslVariableName, LANGUAGE));
+                        break;
+                    case WebServiceUrlForOauth:
+                        ssConn.setWebServiceUrlTextForOAuth(ContextParameterUtils.getNewScriptCode(sslVariableName, LANGUAGE));
+                        break;
+                    case ConsumerKey:
+                        ssConn.setConsumeKey(ContextParameterUtils.getNewScriptCode(sslVariableName, LANGUAGE));
+                        break;
+                    case ConsumerSecret:
+                        ssConn.setConsumeSecret(ContextParameterUtils.getNewScriptCode(sslVariableName, LANGUAGE));
+                        break;
+                    case CallbackHost:
+                        ssConn.setCallbackHost(ContextParameterUtils.getNewScriptCode(sslVariableName, LANGUAGE));
+                        break;
+                    case CallbackPort:
+                        ssConn.setCallbackPort(ContextParameterUtils.getNewScriptCode(sslVariableName, LANGUAGE));
+                        break;
+                    case SalesforceVersion:
+                        ssConn.setSalesforceVersion(ContextParameterUtils.getNewScriptCode(sslVariableName, LANGUAGE));
+                        break;
+                    case token:
+                        ssConn.setToken(ContextParameterUtils.getNewScriptCode(sslVariableName, LANGUAGE));
+                        break;
+                    case BatchSize:
+                        ssConn.setBatchSize(ContextParameterUtils.getNewScriptCode(sslVariableName, LANGUAGE));
+                        break;
+                    case TimeOut:
+                        ssConn.setTimeOut(ContextParameterUtils.getNewScriptCode(sslVariableName, LANGUAGE));
+                        break;
+                    case QueryCondition:
+                        ssConn.setQueryCondition(ContextParameterUtils.getNewScriptCode(sslVariableName, LANGUAGE));
+                        break;
+                    case SFProxyHost:
+                        ssConn.setProxyHost(ContextParameterUtils.getNewScriptCode(sslVariableName, LANGUAGE));
+                        break;
+                    case SFProxyPort:
+                        ssConn.setProxyPort(ContextParameterUtils.getNewScriptCode(sslVariableName, LANGUAGE));
+                        break;
+                    case SFProxyUsername:
+                        ssConn.setProxyUsername(ContextParameterUtils.getNewScriptCode(sslVariableName, LANGUAGE));
+                        break;
+                    case SFProxyPassword:
+                        ssConn.setProxyPassword(ContextParameterUtils.getNewScriptCode(sslVariableName, LANGUAGE));
+                        break;
+                    default:
+                    }
+                }
+
+            }
+        }
+    }
+
     static void revertSalesforcePropertiesForContextMode(SalesforceSchemaConnection ssConn, ContextType contextType) {
         if (ssConn == null || contextType == null) {
             return;
@@ -724,6 +886,53 @@ public final class OtherConnectionContextUtils {
 
         paramName = prefixName + EParamName.BaseDN;
         ldapConn.setSelectedDN(ContextParameterUtils.getNewScriptCode(paramName, LANGUAGE));
+    }
+
+    static void setLDAPSchemaPropertiesForExistContextMode(LDAPSchemaConnection ldapConn, Set<IConnParamName> paramSet,
+            Map<ContextItem, List<ConectionAdaptContextVariableModel>> map) {
+        if (ldapConn == null) {
+            return;
+        }
+
+        String ldapVariableName = null;
+        for (IConnParamName param : paramSet) {
+            if (param instanceof EParamName) {
+                ldapVariableName = "";
+                EParamName ldapParam = (EParamName) param;
+                if (map != null && map.size() > 0) {
+                    for (Map.Entry<ContextItem, List<ConectionAdaptContextVariableModel>> entry : map.entrySet()) {
+                        List<ConectionAdaptContextVariableModel> modelList = entry.getValue();
+                        for (ConectionAdaptContextVariableModel model : modelList) {
+                            if (model.getValue().equals(ldapParam.name())) {
+                                ldapVariableName = model.getName();
+                                break;
+                            }
+                        }
+                    }
+                }
+                switch (ldapParam) {
+                case Host:
+                    ldapConn.setHost(ContextParameterUtils.getNewScriptCode(ldapVariableName, LANGUAGE));
+                    break;
+                case Port:
+                    ldapConn.setPort(ContextParameterUtils.getNewScriptCode(ldapVariableName, LANGUAGE));
+                    break;
+                case BindPrincipal:
+                    ldapConn.setBindPrincipal(ContextParameterUtils.getNewScriptCode(ldapVariableName, LANGUAGE));
+                case BindPassword:
+                    ldapConn.setBindPassword(ContextParameterUtils.getNewScriptCode(ldapVariableName, LANGUAGE));
+                case CountLimit:
+                    ldapConn.setCountLimit(ContextParameterUtils.getNewScriptCode(ldapVariableName, LANGUAGE));
+                case TimeOutLimit:
+                    ldapConn.setTimeOutLimit(ContextParameterUtils.getNewScriptCode(ldapVariableName, LANGUAGE));
+                case Filter:
+                    ldapConn.setFilter(ContextParameterUtils.getNewScriptCode(ldapVariableName, LANGUAGE));
+                case BaseDN:
+                    ldapConn.setSelectedDN(ContextParameterUtils.getNewScriptCode(ldapVariableName, LANGUAGE));
+                default:
+                }
+            }
+        }
     }
 
     static void revertLDAPSchemaPropertiesForContextMode(LDAPSchemaConnection ldapConn, ContextType contextType) {
@@ -924,6 +1133,61 @@ public final class OtherConnectionContextUtils {
             break;
         }
 
+    }
+
+    static void setWSDLSchemaPropertiesForExistContextMode(WSDLSchemaConnection wsdlConn, Set<IConnParamName> paramSet,
+            Map<ContextItem, List<ConectionAdaptContextVariableModel>> map) {
+        if (wsdlConn == null) {
+            return;
+        }
+        String paramName = null;
+        String wsdlVariableName = null;
+        ContextItem currentContext = null;
+        for (IConnParamName param : paramSet) {
+            if (param instanceof EParamName) {
+                if (param instanceof EParamName) {
+                    EParamName wsdlParam = (EParamName) param;
+                    if (map != null && map.size() > 0) {
+                        for (Map.Entry<ContextItem, List<ConectionAdaptContextVariableModel>> entry : map.entrySet()) {
+                            currentContext = entry.getKey();
+                            List<ConectionAdaptContextVariableModel> modelList = entry.getValue();
+                            for (ConectionAdaptContextVariableModel model : modelList) {
+                                if (model.getValue().equals(wsdlParam.name())) {
+                                    wsdlVariableName = model.getName();
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    if (wsdlConn.isIsInputModel()) {
+                        switch (wsdlParam) {
+                        case WSDL:
+                            wsdlConn.setWSDL(ContextParameterUtils.getNewScriptCode(wsdlVariableName, LANGUAGE));
+                            break;
+                        case MethodName:
+                            wsdlConn.setMethodName(ContextParameterUtils.getNewScriptCode(wsdlVariableName, LANGUAGE));
+                        case UserName:
+                            wsdlConn.setUserName(ContextParameterUtils.getNewScriptCode(wsdlVariableName, LANGUAGE));
+                        case Password:
+                            wsdlConn.setPassword(ContextParameterUtils.getNewScriptCode(wsdlVariableName, LANGUAGE));
+                        case ProxyHost:
+                            wsdlConn.setProxyHost(ContextParameterUtils.getNewScriptCode(wsdlVariableName, LANGUAGE));
+                        case ProxyPort:
+                            wsdlConn.setProxyPort(ContextParameterUtils.getNewScriptCode(wsdlVariableName, LANGUAGE));
+                        case ProxyUser:
+                            wsdlConn.setProxyUser(ContextParameterUtils.getNewScriptCode(wsdlVariableName, LANGUAGE));
+                        case ProxyPassword:
+                            wsdlConn.setProxyPassword(ContextParameterUtils.getNewScriptCode(wsdlVariableName, LANGUAGE));
+                        case EndpointURI:
+                            wsdlConn.setEndpointURI(ContextParameterUtils.getNewScriptCode(wsdlVariableName, LANGUAGE));
+                        case Encoding:
+                            wsdlConn.setEncoding(ContextParameterUtils.getNewScriptCode(wsdlVariableName, LANGUAGE));
+                        default:
+                        }
+                    }
+                }
+            }
+        }
     }
 
     static void revertWSDLSchemaPropertiesForContextMode(WSDLSchemaConnection wsdlConn, ContextType contextType) {

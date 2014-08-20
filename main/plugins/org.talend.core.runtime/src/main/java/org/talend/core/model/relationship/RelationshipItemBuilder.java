@@ -145,6 +145,31 @@ public class RelationshipItemBuilder {
         return instance;
     }
 
+    /**
+     * Look for every linked items who use the selected id, no matter the version.
+     * Usefull when want to delete an item since it will delete every versions.
+     * 
+     * @param itemId
+     * @param version
+     * @param relationType
+     * @return
+     */
+    public List<Relation> getItemsHaveRelationWith(String itemId) {
+        if (!loaded) {
+            loadRelations();
+        }
+        Set<Relation> relations = new HashSet<Relation>();
+        Set<Relation> itemsRelations = getItemsHaveRelationWith(currentProjectItemsRelations, itemId);
+        if (itemsRelations != null) {
+            relations.addAll(itemsRelations);
+        }
+        itemsRelations = getItemsHaveRelationWith(referencesItemsRelations, itemId);
+        if (itemsRelations != null) {
+            relations.addAll(itemsRelations);
+        }
+        return new ArrayList<Relation>(relations);
+    }
+
     public List<Relation> getItemsRelatedTo(String itemId, String version, String relationType) {
         if (!loaded) {
             loadRelations();
@@ -159,6 +184,36 @@ public class RelationshipItemBuilder {
             relations.addAll(itemsRelations);
         }
         return new ArrayList<Relation>(relations);
+    }
+    
+    private Set<Relation> getItemsHaveRelationWith(Map<Relation, Set<Relation>> itemsRelations, String itemId) {
+
+        Set<Relation> relations = new HashSet<Relation>();
+
+        for (Relation baseItem : itemsRelations.keySet()) {
+            for (Relation relatedItem : itemsRelations.get(baseItem)) {            	
+                String id = relatedItem.getId();
+                if (id != null) {
+                    Relation tmpRelatedItem = null;
+                    if (id.indexOf(" - ") != -1) { //$NON-NLS-1$
+                        try {
+                            tmpRelatedItem = (Relation) relatedItem.clone();
+                            tmpRelatedItem.setId(id.split(" - ")[0]); //$NON-NLS-1$
+                        } catch (CloneNotSupportedException e) {
+                            log.error(e);
+                        }
+                    } else {
+                        tmpRelatedItem = relatedItem;
+                    }
+                    if (tmpRelatedItem != null && itemId.equals(id)) {
+                        relations.add(baseItem);
+                        break;
+                    }
+                }
+            }
+        }
+
+        return relations;
     }
 
     private Set<Relation> getItemsRelatedTo(Map<Relation, Set<Relation>> itemsRelations, String itemId, String version,

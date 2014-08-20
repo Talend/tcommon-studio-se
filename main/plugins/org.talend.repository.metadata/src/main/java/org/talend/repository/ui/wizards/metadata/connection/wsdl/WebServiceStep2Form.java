@@ -546,7 +546,9 @@ public class WebServiceStep2Form extends AbstractWSDLSchemaStepForm {
             if (isReadOnly() != readOnly) {
                 adaptFormToReadOnly();
             }
-
+            if (visible) {
+                collectContextParams(visible);
+            }
         }
     }
 

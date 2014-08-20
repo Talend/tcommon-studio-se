@@ -74,6 +74,7 @@ public interface ILibrariesService extends IService {
 
     public void syncLibraries(IProgressMonitor... monitorWrap);
 
+    @Deprecated
     public void syncLibrariesFromApp(IProgressMonitor... monitorWrap);
 
     public void syncLibrariesFromLibs(IProgressMonitor... monitorWrap);

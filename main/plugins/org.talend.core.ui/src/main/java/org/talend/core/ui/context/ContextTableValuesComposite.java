@@ -227,6 +227,7 @@ public class ContextTableValuesComposite extends AbstractContextTabEditComposite
 
             private int direction = 1;
 
+            @Override
             public void handleEvent(Event e) {
                 final TreeColumn column = (TreeColumn) e.widget;
 
@@ -340,6 +341,7 @@ public class ContextTableValuesComposite extends AbstractContextTabEditComposite
         activateCellEditor(item, tree, treeEditor, columnIndex, column);
     }
 
+    @Override
     public boolean isGroupBySource() {
         boolean isRepositoryContext = false;
         if (modelManager != null) {
@@ -366,13 +368,16 @@ public class ContextTableValuesComposite extends AbstractContextTabEditComposite
     private ICellEditorListener createEditorListener(final TreeEditor tableEditor, final int columnIndex) {
         editorListener = new ICellEditorListener() {
 
+            @Override
             public void cancelEditor() {
                 deactivateCellEditor(tableEditor, columnIndex);
             }
 
+            @Override
             public void editorValueChanged(boolean oldValidState, boolean newValidState) {
             }
 
+            @Override
             public void applyEditorValue() {
                 editing = true;
             }
@@ -428,10 +433,12 @@ public class ContextTableValuesComposite extends AbstractContextTabEditComposite
         return contexts;
     }
 
+    @Override
     public IContextModelManager getContextModelManager() {
         return this.modelManager;
     }
 
+    @Override
     public TreeViewer getViewer() {
         return this.viewer;
     }
@@ -540,6 +547,7 @@ public class ContextTableValuesComposite extends AbstractContextTabEditComposite
          * 
          * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
          */
+        @Override
         public int compare(IContext o1, IContext o2) {
             String name1 = o1.getName().toUpperCase();
             String name2 = o2.getName().toUpperCase();

@@ -96,4 +96,13 @@ public enum ComponentCategory {
         }
         return null;
     }
+
+    public static ComponentCategory getComponentCategoryFromName(String name) {
+        for (ComponentCategory category : ComponentCategory.values()) {
+            if (category.getName().equals(name)) {
+                return category;
+            }
+        }
+        return null;
+    }
 }

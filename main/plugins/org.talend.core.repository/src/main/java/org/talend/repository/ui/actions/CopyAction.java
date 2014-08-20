@@ -19,9 +19,11 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ui.actions.ActionFactory;
 import org.talend.commons.ui.runtime.image.EImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.repository.i18n.Messages;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
+import org.talend.designer.core.ICamelDesignerCoreService;
 import org.talend.repository.model.IRepositoryNode.EProperties;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.model.actions.CopyObjectAction;
@@ -118,7 +120,13 @@ public class CopyAction extends AContextualAction {
                         || (node.getProperties(EProperties.CONTENT_TYPE) == ERepositoryObjectType.METADATA_VALIDATION_RULES && node
                                 .getParent().getProperties(EProperties.CONTENT_TYPE) == ERepositoryObjectType.METADATA_VALIDATIONS_RULES_FOLDER)) {
                     canWork = false;
-                }
+                } else if (node.getContentType() != null && GlobalServiceRegister.getDefault().isServiceRegistered(ICamelDesignerCoreService.class)) {
+                    ICamelDesignerCoreService camelService = (ICamelDesignerCoreService) GlobalServiceRegister.getDefault()
+                            .getService(ICamelDesignerCoreService.class);
+                    if(node.getContentType().equals(camelService.getRouteDocsType())|| node.getContentType().equals(camelService.getRouteDocType())){
+                    	canWork = false;
+                    }
+                } 
             } else {
                 break;
             }

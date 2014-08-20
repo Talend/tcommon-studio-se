@@ -37,7 +37,7 @@ public class PasswordEncryptUtil {
     private static SecretKey getSecretKey() throws Exception {
         if (key == null) {
 
-            byte rawKeyData[] = rawKey.getBytes(CHARSET);//$NON-NLS-1$
+            byte rawKeyData[] = rawKey.getBytes(CHARSET);
             DESKeySpec dks = new DESKeySpec(rawKeyData);
             SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES"); //$NON-NLS-1$
             key = keyFactory.generateSecret(dks);
@@ -46,14 +46,14 @@ public class PasswordEncryptUtil {
     }
 
     public static String encryptPassword(String input) throws Exception {
-        if (input == null || input.length() == 0) {
+        if (input == null) {
             return input;
         }
 
         SecretKey key = getSecretKey();
         Cipher c = Cipher.getInstance("DES"); //$NON-NLS-1$
         c.init(Cipher.ENCRYPT_MODE, key, secureRandom);
-        byte[] cipherByte = c.doFinal(input.getBytes(CHARSET));//$NON-NLS-1$
+        byte[] cipherByte = c.doFinal(input.getBytes(CHARSET));
         String dec = Hex.encodeHexString(cipherByte);
         return dec;
     }
@@ -74,4 +74,5 @@ public class PasswordEncryptUtil {
         }
         return null;
     }
+
 }

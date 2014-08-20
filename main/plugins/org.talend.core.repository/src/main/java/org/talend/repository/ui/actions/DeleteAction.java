@@ -1455,6 +1455,12 @@ public class DeleteAction extends AContextualAction {
                             || node.getContentType() == ERepositoryObjectType.JOBLET_DOC
                             || RepositoryConstants.USER_DEFINED.equals(label)) {
                         visible = false;
+                    } else if (node.getContentType() != null && GlobalServiceRegister.getDefault().isServiceRegistered(ICamelDesignerCoreService.class)) {
+                        ICamelDesignerCoreService camelService = (ICamelDesignerCoreService) GlobalServiceRegister.getDefault()
+                                .getService(ICamelDesignerCoreService.class);
+                        if(node.getContentType().equals(camelService.getRouteDocsType())|| node.getContentType().equals(camelService.getRouteDocType())){
+                        	visible = false;
+                        }
                     } else {
                         if (isDeletedFolder) {
                             this.setText(DELETE_FOREVER_TITLE);
@@ -1484,7 +1490,13 @@ public class DeleteAction extends AContextualAction {
                     if (contentType == ERepositoryObjectType.JOB_DOC || contentType == ERepositoryObjectType.JOBLET_DOC) {
                         visible = false;
                         break;
-                    }
+                    } else if (GlobalServiceRegister.getDefault().isServiceRegistered(ICamelDesignerCoreService.class)) {
+                        ICamelDesignerCoreService camelService = (ICamelDesignerCoreService) GlobalServiceRegister.getDefault()
+                                .getService(ICamelDesignerCoreService.class);
+                        if(camelService.getRouteDocsType().equals(node.getContentType())|| camelService.getRouteDocType().equals(node.getContentType())){
+                        	visible = false;
+                        }
+                    } 
                     if (contentType == ERepositoryObjectType.METADATA_CON_CDC) {
                         enabled = false;
                         visible = false;

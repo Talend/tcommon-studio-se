@@ -15,6 +15,7 @@ package org.talend.core;
 import java.net.URI;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -38,8 +39,10 @@ public interface ILibraryManagerService extends IService {
 
     public void setInitialized();
 
+    @Deprecated
     public void deploy(Set<IComponent> componentList, IProgressMonitor... monitorWrap);
 
+    @Deprecated
     public void deploy(List<ModuleNeeded> modules, IProgressMonitor... monitorWrap);
 
     /**
@@ -90,12 +93,7 @@ public interface ILibraryManagerService extends IService {
      */
     public String getJarPath(String jarName);
 
-    /**
-     * 
-     * List all .dll files
-     * 
-     * @return
-     */
+    @Deprecated
     public Set<String> listAllDllFiles();
 
     public boolean delete(String jarName);
@@ -104,5 +102,18 @@ public interface ILibraryManagerService extends IService {
 
     public void clearCache();
 
+    @Deprecated
     public Set<String> list(boolean withComponent, IProgressMonitor... monitorWrap);
+
+    public void deploy(Map<String, String> libsToRelativePath, IProgressMonitor... monitorWrap);
+
+    public boolean checkJarInstalledFromPlatform(String uriPath);
+
+    /**
+     * By default the return value from the list function will be refreshed only if any new jar is deployed or deleted.<br>
+     * Call this function will force the list update on the next call.<br>
+     * Mostly usefull for SVN libraries, after a SVN Update, this will force to refresh the current list of jars
+     */
+    public void forceListUpdate();
+
 }

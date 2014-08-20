@@ -21,6 +21,8 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.talend.core.model.context.ContextUtils;
 import org.talend.core.model.context.JobContext;
+import org.talend.core.model.metadata.types.ContextParameterJavaTypeManager;
+import org.talend.core.model.metadata.types.JavaType;
 import org.talend.core.model.process.IContext;
 import org.talend.core.model.process.IContextManager;
 import org.talend.core.model.process.IContextParameter;
@@ -55,8 +57,9 @@ public class GroupBySourceTableProvider extends ContextProviderProxy {
      */
     private String lookupContextParameterValue(String sourceId, String contextParaName, int index) {
         IContextParameter contextPara = lookupContextParameter(sourceId, contextParaName, index);
-        if (contextPara != null)
+        if (contextPara != null) {
             return ContextParameterUtils.checkAndHideValue(contextPara);
+        }
         return null;
     }
 
@@ -96,11 +99,40 @@ public class GroupBySourceTableProvider extends ContextProviderProxy {
             } else {
                 return parent.getSourceName();
             }
+        } else if (columnIndex == 1) {
+            if (IContextParameter.BUILT_IN.equals(sourceId)) {
+                String contextParaType = parent.getContextParameter().getType();
+                JavaType javaType = ContextParameterJavaTypeManager.getJavaTypeFromId(contextParaType);
+                if (javaType != null) {
+                    return javaType.getLabel();
+                } else {
+                    return contextParaType;
+                }
+            } else {
+                List<ContextTabChildModel> children = parent.getChildren();
+                if (children != null && children.size() > 0) {
+                    for (ContextTabChildModel child : children) {
+                        IContextParameter contextPara = child.getContextParameter();
+                        String paraName = contextPara.getName();
+                        String childSourceId = contextPara.getSource();
+                        IContextParameter foundContextPara = lookupContextParameter(childSourceId, paraName, columnIndex);
+                        if (foundContextPara != null) {
+                            String contextParaType = foundContextPara.getType();
+                            JavaType javaType = ContextParameterJavaTypeManager.getJavaTypeFromId(contextParaType);
+                            if (javaType != null) {
+                                return javaType.getLabel();
+                            } else {
+                                return contextParaType;
+                            }
+                        }
+                    }
+                }
+            }
         } else {
             // Returns the other column text, note that the columnIndex is not fixed.
             if (IContextParameter.BUILT_IN.equals(sourceId)) {
                 String contextParaName = parent.getContextParameter().getName();
-                return lookupContextParameterValue(sourceId, contextParaName, columnIndex - 1);
+                return lookupContextParameterValue(sourceId, contextParaName, columnIndex - 2);
             } else {
                 List<ContextTabChildModel> children = parent.getChildren();
                 StringBuffer sb = new StringBuffer();
@@ -112,16 +144,18 @@ public class GroupBySourceTableProvider extends ContextProviderProxy {
                         IContextParameter foundContextPara = lookupContextParameter(childSourceId, paraName, columnIndex - 1);
                         if (foundContextPara != null) {
                             String value = foundContextPara.getValue();
-                            if (ContextConstant.NULL_STRING.equals(value))
+                            if (ContextConstant.NULL_STRING.equals(value)) {
                                 sb.append("" + "/");
-                            else
+                            } else {
                                 sb.append(ContextParameterUtils.checkAndHideValue(foundContextPara) + "/");
+                            }
                         }
                     }
-                    if (sb.toString().lastIndexOf("/") != -1)
+                    if (sb.toString().lastIndexOf("/") != -1) {
                         return sb.toString().substring(0, sb.toString().lastIndexOf("/"));
-                    else
+                    } else {
                         return sb.toString();
+                    }
                 }
             }
         }
@@ -135,10 +169,18 @@ public class GroupBySourceTableProvider extends ContextProviderProxy {
         String variableName = child.getContextParameter().getName();
         List<IContext> contextList = parentModel.getContexts();
         int size = contextList.size();
-        if (columnIndex == 0)
+        if (columnIndex == 0) {
             return child.getContextParameter().getName();
-        else if (columnIndex - 1 < size) {
-            IContext context = contextList.get(columnIndex - 1);
+        } else if (columnIndex == 1) {
+            String contextParaType = child.getContextParameter().getType();
+            JavaType javaType = ContextParameterJavaTypeManager.getJavaTypeFromId(contextParaType);
+            if (javaType != null) {
+                return javaType.getLabel();
+            } else {
+                return contextParaType;
+            }
+        } else if (columnIndex - 2 < size) {
+            IContext context = contextList.get(columnIndex - 2);
             List<IContextParameter> list = context.getContextParameterList();
             if (list != null && list.size() > 0) {
                 for (IContextParameter contextPara : list) {
@@ -158,6 +200,7 @@ public class GroupBySourceTableProvider extends ContextProviderProxy {
      * 
      * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnText(java.lang.Object, int)
      */
+    @Override
     public String getColumnText(Object element, int columnIndex) {
         if (element instanceof ContextTableTabParentModel) {
             ContextTableTabParentModel parent = (ContextTableTabParentModel) element;
@@ -185,6 +228,7 @@ public class GroupBySourceTableProvider extends ContextProviderProxy {
      * 
      * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
      */
+    @Override
     @SuppressWarnings("unchecked")
     public Object[] getElements(Object inputElement) {
         List<IContextParameter> contexts = (List<IContextParameter>) inputElement;
@@ -283,6 +327,7 @@ public class GroupBySourceTableProvider extends ContextProviderProxy {
      * 
      * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
      */
+    @Override
     public Object[] getChildren(Object parentElement) {
         if (parentElement instanceof ContextTableTabParentModel) {
             ContextTableTabParentModel parent = (ContextTableTabParentModel) parentElement;
@@ -296,6 +341,7 @@ public class GroupBySourceTableProvider extends ContextProviderProxy {
      * 
      * @see org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object)
      */
+    @Override
     public Object getParent(Object element) {
         if (element instanceof ContextTableTabChildModel) {
             ContextTableTabChildModel child = (ContextTableTabChildModel) element;
@@ -309,6 +355,7 @@ public class GroupBySourceTableProvider extends ContextProviderProxy {
      * 
      * @see org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.Object)
      */
+    @Override
     public boolean hasChildren(Object element) {
         if (element instanceof ContextTableTabParentModel) {
             ContextTableTabParentModel parent = (ContextTableTabParentModel) element;
@@ -322,6 +369,7 @@ public class GroupBySourceTableProvider extends ContextProviderProxy {
      * 
      * @see org.eclipse.jface.viewers.ITableColorProvider#getForeground(java.lang.Object, int)
      */
+    @Override
     public Color getForeground(Object element, int columnIndex) {
         return null;
     }
@@ -331,20 +379,23 @@ public class GroupBySourceTableProvider extends ContextProviderProxy {
      * 
      * @see org.eclipse.jface.viewers.ITableColorProvider#getBackground(java.lang.Object, int)
      */
+    @Override
     public Color getBackground(Object element, int columnIndex) {
         if (element instanceof ContextTableTabChildModel) {
             ContextTableTabChildModel child = (ContextTableTabChildModel) element;
             IContextParameter contextPara = child.getContextParameter();
             String name = contextPara.getName();
-            if (hasSameNameContextParameters(name))
+            if (hasSameNameContextParameters(name)) {
                 return Display.getDefault().getSystemColor(SWT.COLOR_RED);
+            }
         } else if (element instanceof ContextTableTabParentModel) {
             ContextTableTabParentModel parent = (ContextTableTabParentModel) element;
             IContextParameter contextPara = parent.getContextParameter();
             if (contextPara != null) {
                 String name = parent.getContextParameter().getName();
-                if (hasSameNameContextParameters(name))
+                if (hasSameNameContextParameters(name)) {
                     return Display.getDefault().getSystemColor(SWT.COLOR_RED);
+                }
             }
         }
         return null;
@@ -362,8 +413,9 @@ public class GroupBySourceTableProvider extends ContextProviderProxy {
         if (context instanceof JobContext) {
             JobContext jobContext = (JobContext) context;
             int size = jobContext.getSameNameContextParameterSize(name);
-            if (size > 1)
+            if (size > 1) {
                 has = true;
+            }
         }
         return has;
     }

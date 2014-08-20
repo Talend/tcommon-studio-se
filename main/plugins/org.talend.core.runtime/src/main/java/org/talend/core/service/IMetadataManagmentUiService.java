@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.Path;
 import org.talend.core.IService;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
+import org.talend.repository.model.RepositoryNode;
 
 /**
  * ggu class global comment. Detailled comment
@@ -27,4 +28,6 @@ public interface IMetadataManagmentUiService extends IService {
     public ContextType getContextTypeForContextMode(Connection connection);
 
     public String getOriginalValue(ContextType contextType, final String value);
+
+    public void openRepositoryContextWizard(RepositoryNode repositoryNode);
 }

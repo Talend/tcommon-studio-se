@@ -36,6 +36,7 @@ import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.ui.IJobletProviderService;
 import org.talend.designer.codegen.ICodeGeneratorService;
 import org.talend.designer.core.ICamelDesignerCoreService;
+import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.ui.views.IRepositoryView;
 
 /**
@@ -182,7 +183,14 @@ public final class RepositoryManager {
                                     if (objectToMove.getProperty().getItem().getProperty().getLabel().equals(seg[0])) {
                                         return true;
                                     }
-                                }
+                                }else if (editorInput.getAdapter(RepositoryNode.class) != null) {
+                                	RepositoryNode node = (RepositoryNode) editorInput.getAdapter(RepositoryNode.class);
+                                	IRepositoryViewObject object = node.getObject();
+                                	if (object != null && object.getId().equals(objectToMove.getId())
+                                            && VersionUtils.compareTo(object.getVersion(), objectToMove.getVersion()) == 0) {
+                                        return true;
+                                    }
+								}
                             }
                         }
                     }
@@ -193,6 +201,7 @@ public final class RepositoryManager {
         }
         return false;
     }
+
 
     /**
      * 
