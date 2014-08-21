@@ -175,8 +175,9 @@ public class InternalNodeComponentHandler extends AbstractComponentHandler {
                 // int index = type.getIndexOfItemFromList(type.getDisplayName());
                 // value = checkString(type.getListItemsDisplayName()[index]);
                 // }
-                else if (elemparameter.getRepositoryValue() != null
-                        && elemparameter.getRepositoryValue().contains("PASSWORD") //$NON-NLS-1$
+                else if ((elemparameter.getRepositoryValue() != null
+                        && elemparameter.getRepositoryValue().toUpperCase().contains("PASSWORD") //$NON-NLS-1$
+                || elemparameter.getFieldType() == EParameterFieldType.PASSWORD)
                         && ProjectManager.getInstance().getCurrentProject().getEmfProject().isHidePassword()
                         && !ContextParameterUtils.containContextVariables((String) elemparameter.getValue())) {
                     value = "******"; //$NON-NLS-1$

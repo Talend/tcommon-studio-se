@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Glazedlist
+Bundle-SymbolicName: org.talend.libraries.nattable.glazedlist
+Bundle-Version: 1.0.0.qualifier
+Fragment-Host: org.talend.libraries.nattable;bundle-version="1.0.0"
+

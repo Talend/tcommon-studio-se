@@ -1451,17 +1451,21 @@ public class DeleteAction extends AContextualAction {
                     if (obj instanceof String) {
                         label = (String) obj;
                     }
+                    boolean isGointoCondition = false;
                     if (node.getContentType() == ERepositoryObjectType.JOB_DOC
                             || node.getContentType() == ERepositoryObjectType.JOBLET_DOC
                             || RepositoryConstants.USER_DEFINED.equals(label)) {
                         visible = false;
+                        isGointoCondition = true;
                     } else if (node.getContentType() != null && GlobalServiceRegister.getDefault().isServiceRegistered(ICamelDesignerCoreService.class)) {
                         ICamelDesignerCoreService camelService = (ICamelDesignerCoreService) GlobalServiceRegister.getDefault()
                                 .getService(ICamelDesignerCoreService.class);
                         if(node.getContentType().equals(camelService.getRouteDocsType())|| node.getContentType().equals(camelService.getRouteDocType())){
                         	visible = false;
+                        	isGointoCondition = true;
                         }
-                    } else {
+                    } 
+                    if(!isGointoCondition){
                         if (isDeletedFolder) {
                             this.setText(DELETE_FOREVER_TITLE);
                             this.setToolTipText(DELETE_FOREVER_TOOLTIP);
@@ -1490,11 +1494,13 @@ public class DeleteAction extends AContextualAction {
                     if (contentType == ERepositoryObjectType.JOB_DOC || contentType == ERepositoryObjectType.JOBLET_DOC) {
                         visible = false;
                         break;
-                    } else if (GlobalServiceRegister.getDefault().isServiceRegistered(ICamelDesignerCoreService.class)) {
+                    } else if (node.getContentType() != null 
+                    		&& GlobalServiceRegister.getDefault().isServiceRegistered(ICamelDesignerCoreService.class)) {
                         ICamelDesignerCoreService camelService = (ICamelDesignerCoreService) GlobalServiceRegister.getDefault()
                                 .getService(ICamelDesignerCoreService.class);
-                        if(camelService.getRouteDocsType().equals(node.getContentType())|| camelService.getRouteDocType().equals(node.getContentType())){
+                        if(node.getContentType().equals(camelService.getRouteDocsType())|| node.getContentType().equals(camelService.getRouteDocType())){
                         	visible = false;
+                        	break;
                         }
                     } 
                     if (contentType == ERepositoryObjectType.METADATA_CON_CDC) {

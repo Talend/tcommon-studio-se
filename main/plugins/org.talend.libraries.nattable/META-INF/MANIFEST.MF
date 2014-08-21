@@ -3,6 +3,9 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Nattable
 Bundle-SymbolicName: org.talend.libraries.nattable;singleton:=true
 Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: .Talend SA.
+Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: lib/glazedlists_java15-1.9.0.jar
 Export-Package: ca.odell.glazedlists,
  ca.odell.glazedlists.calculation,
  ca.odell.glazedlists.event,
@@ -39,7 +42,3 @@ Export-Package: ca.odell.glazedlists,
  ca.odell.glazedlists.swing,
  ca.odell.glazedlists.swt,
  ca.odell.glazedlists.util.concurrent
-Bundle-ClassPath: .,
- lib/glazedlists_java15-1.9.0.jar
-Bundle-Vendor: .Talend SA.
-Bundle-ActivationPolicy: lazy
