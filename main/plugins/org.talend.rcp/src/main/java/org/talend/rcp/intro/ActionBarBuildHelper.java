@@ -49,6 +49,7 @@ import org.talend.core.ui.IReferencedProjectService;
 import org.talend.core.ui.branding.IActionBarHelper;
 import org.talend.core.ui.branding.IBrandingService;
 import org.talend.core.ui.perspective.PerspectiveMenuManager;
+import org.talend.rcp.intro.workspace.OpenWorkspaceAction;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.ui.actions.toolbar.ProjectSettingsAction;
 
@@ -163,6 +164,22 @@ public class ActionBarBuildHelper implements IActionBarHelper {
         fileMenu.add(switchProjectAction);
         ProjectSettingsAction projSetting = new ProjectSettingsAction();
         fileMenu.add(projSetting);
+        IWorkbenchAction openWorkspaceAction = new ActionFactory("openWorkspace") { //$NON-NLS-1$
+
+            /* (non-javadoc) method declared on ActionFactory */
+            @Override
+            public IWorkbenchAction create(IWorkbenchWindow window) {
+                if (window == null) {
+                    throw new IllegalArgumentException();
+                }
+                IWorkbenchAction action = new OpenWorkspaceAction(window);
+                action.setId(getId());
+                return action;
+            }
+        }.create(window);
+        ;
+        actionBarConfigurer.registerGlobalAction(openWorkspaceAction);
+        fileMenu.add(openWorkspaceAction);
         fileMenu.add(new Separator());
 
         fileMenu.add(ActionFactory.IMPORT.create(window));

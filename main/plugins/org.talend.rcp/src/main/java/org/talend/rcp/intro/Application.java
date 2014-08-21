@@ -15,11 +15,11 @@ package org.talend.rcp.intro;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URISyntaxException;
+import java.net.URL;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.URIUtil;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -42,7 +42,6 @@ import org.eclipse.ui.forms.events.HyperlinkAdapter;
 import org.eclipse.ui.forms.events.HyperlinkEvent;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.talend.commons.exception.BusinessException;
-import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.ui.swt.dialogs.ErrorDialogWidthDetailArea;
 import org.talend.commons.utils.system.EclipseCommandLine;
 import org.talend.core.GlobalServiceRegister;
@@ -52,11 +51,12 @@ import org.talend.core.tis.ICoreTisService;
 import org.talend.core.ui.TalendBrowserLaunchHelper;
 import org.talend.core.ui.branding.IBrandingService;
 import org.talend.rcp.i18n.Messages;
+import org.talend.rcp.intro.workspace.ChooseWorkspaceData;
+import org.talend.rcp.intro.workspace.ChooseWorkspaceDialog;
 import org.talend.repository.RegistrationPlugin;
 import org.talend.repository.license.LicenseManagement;
 import org.talend.repository.model.IRepositoryService;
 import org.talend.repository.ui.login.LoginComposite;
-import org.talend.repository.ui.login.connections.ConnectionUserPerReader;
 import org.talend.repository.ui.wizards.license.LicenseWizard;
 import org.talend.repository.ui.wizards.license.LicenseWizardDialog;
 
@@ -65,10 +65,21 @@ import org.talend.repository.ui.wizards.license.LicenseWizardDialog;
  */
 public class Application implements IApplication {
 
+    private static Logger log = Logger.getLogger(Application.class);
+
+    /**
+     * preference node forstoring the last workspace url
+     */
+    private static final String TALEND_WORKSPACE_PREF_NODE = "org.talend.workspace"; //$NON-NLS-1$
+
+    /**
+     * id of the last workspace url to store in the TALEND_WORKSPACE_PREF_NODE pref node.
+     */
+    private static final String LAST_WORKSPACE_PREF_ID = "last.workspace"; //$NON-NLS-1$
+
     @Override
     public Object start(IApplicationContext context) throws Exception {
         Display display = PlatformUI.createDisplay();
-        boolean inuse = false;
 
         try {
             Shell shell = new Shell(display, SWT.ON_TOP);
@@ -77,12 +88,10 @@ public class Application implements IApplication {
                 shell.dispose();
                 return EXIT_OK;
             }
-            inuse = !acquireWorkspaceLock(shell);
-            if (inuse) {// if inuse, will forbid launching.
-                MessageDialog.openError(shell, Messages.getString("Application.WorkspaceInuseTitle"), //$NON-NLS-1$
-                        Messages.getString("Application.WorkspaceInuseMessage")); //$NON-NLS-1$
+            Object instanceLocationCheck = acquireWorkspaceLock(shell);
+            if (instanceLocationCheck != null) {// no workspace selected so return.
                 shell.dispose();
-                return EXIT_OK;
+                return instanceLocationCheck;
             }
 
             /*
@@ -102,7 +111,7 @@ public class Application implements IApplication {
             service.executeWorspaceTasks();
             // saveConnectionBean(email);
 
-            boolean logUserOnProject = logUserOnProject(display.getActiveShell(), inuse);
+            boolean logUserOnProject = logUserOnProject(display.getActiveShell());
             try {
                 if (!logUserOnProject) {
                     // MOD qiongli 2010-11-1,bug 16723: Code Cleansing
@@ -175,8 +184,9 @@ public class Application implements IApplication {
             }
         } finally {
             display.dispose();
-            if (!inuse) { // release workspace lock for current app only, not for anothers.
-                releaseWorkspaceLock();
+            Location instanceLoc = Platform.getInstanceLocation();
+            if (instanceLoc != null) { // release workspace lock for current app only, not for anothers.
+                instanceLoc.release();
             }
         }
 
@@ -225,82 +235,137 @@ public class Application implements IApplication {
      * Return <code>true</code> if the lock could be acquired.
      * 
      * @param shell
+     * @return null if lock was aquired or some exit status else
      * @throws IOException if lock acquisition fails somehow
      */
-    private boolean acquireWorkspaceLock(Shell shell) throws IOException {
+    private Object acquireWorkspaceLock(Shell shell) throws IOException {
+        // -data @none was specified but an ide requires workspace
         Location instanceLoc = Platform.getInstanceLocation();
-        ConnectionUserPerReader perReader = ConnectionUserPerReader.getInstance();
-        if (perReader.isHaveUserPer() && instanceLoc != null && !instanceLoc.isSet()) {
+        if (instanceLoc == null) {
+            MessageDialog.openError(shell, Messages.getString("Application_workspaceMandatoryTitle"), //$NON-NLS-1$
+                    Messages.getString("Application.Application_workspaceMandatoryMessage")); //$NON-NLS-1$
+            return EXIT_OK;
+        }
+
+        // -data "/valid/path", workspace already set
+        if (instanceLoc.isSet()) {
+            // at this point its valid, so try to lock it and update the
+            // metadata version information if successful
             try {
-                String lastWorkSpacePath = perReader.readLastWorkSpace();
-                if (!"".equals(lastWorkSpacePath) && lastWorkSpacePath != null) {//$NON-NLS-1$
-                    File file = new File(lastWorkSpacePath);
-                    boolean needSet = true;
-                    if (instanceLoc.isSet()) {
-                        File curWorkspace = URIUtil.toFile(URIUtil.toURI(instanceLoc.getURL()));
-                        if (file.equals(curWorkspace)) {
-                            needSet = false;
-                        }
-                    }
-                    // make sure set really.
-                    if (needSet) {
-                        if (!file.exists()) {
-                            // for bug 10307
-                            boolean mkdirs = file.mkdirs();
-                            if (!mkdirs) {
-                                MessageDialog.openError(shell, Messages.getString("Application_workspaceInUseTitle"), //$NON-NLS-1$
-                                        Messages.getString("Application.workspaceNotExiste")); //$NON-NLS-1$
-                                perReader.saveConnections(null);
-                                return true;
-                            }
-                        }
-                        // For TUP-1749, we have to use File.toURL() although it is a deprecated method in order
-                        // to support the workspace path which contains space.
-                        instanceLoc.set(file.toURL(), false);
-                    }
+                if (instanceLoc.lock()) {
+                    return null;
                 }
-            } catch (MalformedURLException e) {
-                ExceptionHandler.process(e);
-            } catch (URISyntaxException e) {
-                ExceptionHandler.process(e);
-            } catch (IllegalStateException e) {
-                ExceptionHandler.process(e);
+
+                // we failed to create the directory.
+                // Two possibilities:
+                // 1. directory is already in use
+                // 2. directory could not be created
+                File workspaceDirectory = new File(instanceLoc.getURL().getFile());
+                if (workspaceDirectory.exists()) {
+                    MessageDialog.openError(shell, Messages.getString("Application.WorkspaceInuseTitle"), //$NON-NLS-1$
+                            Messages.getString("Application.WorkspaceInuseMessage", workspaceDirectory)); //$NON-NLS-1$
+                } else {
+                    MessageDialog.openError(shell, Messages.getString("Application.WorkspaceCannotBeSetTitle"), //$NON-NLS-1$
+                            Messages.getString("Application.WorkspaceCannotBeSetMessage")); //$NON-NLS-1$
+                }
+            } catch (IOException e) {
+                log.error("Could not obtain lock for workspace location", //$NON-NLS-1$
+                        e);
+                MessageDialog.openError(shell, "internal error", e.getMessage());
+            }
+            return EXIT_OK;
+        }
+
+        // -data @noDefault or -data not specified, prompt and set
+        ChooseWorkspaceData launchData = new ChooseWorkspaceData(instanceLoc.getDefault());
+
+        boolean force = false;
+        while (true) {
+            URL workspaceUrl = promptForWorkspace(shell, launchData, force);
+            if (workspaceUrl == null) {
+                return EXIT_OK;
             }
 
-        }
+            // if there is an error with the first selection, then force the
+            // dialog to open to give the user a chance to correct
+            force = true;
 
-        // This should never happend but in case then we accept the lauch.
-        if (instanceLoc == null || instanceLoc.getURL() == null) {
-            return true;
-        }
-        if (!instanceLoc.isSet()) {// not set previously, so set it to default value.
             try {
-                instanceLoc.set(instanceLoc.getDefault(), false);
-            } catch (IllegalStateException e) {// happens if instance url is already set which is not the case here
-                ExceptionHandler.process(e);
+                // the operation will fail if the url is not a valid
+                // instance data area, so other checking is unneeded
+                if (instanceLoc.setURL(workspaceUrl, true)) {
+                    launchData.writePersistedData();
+                    return null;
+                }
+            } catch (IllegalStateException e) {
+                MessageDialog.openError(shell, Messages.getString("Application.WorkspaceCannotBeSetTitle"), //$NON-NLS-1$
+                        Messages.getString("Application.WorkspaceCannotBeSetMessage", workspaceUrl.getFile()));
+                return EXIT_OK;
             }
-        }// else already set
-        if (instanceLoc.isLocked()) {
-            return false;
-        } else {
-            // try to lock the workspace
-            return instanceLoc.lock();
+
+            // by this point it has been determined that the workspace is
+            // already in use -- force the user to choose again
+            MessageDialog.openError(shell, Messages.getString("Application.WorkspaceInuseTitle"), //$NON-NLS-1$
+                    Messages.getString("Application.WorkspaceInuseMessage"));
         }
     }
 
     /**
-     * Release the workspace lock before we exit the application.
+     * Open a workspace selection dialog on the argument shell, populating the argument data with the user's selection.
+     * Perform first level validation on the selection by comparing the version information. This method does not
+     * examine the runtime state (e.g., is the workspace already locked?).
+     * 
+     * @param shell
+     * @param launchData
+     * @param force setting to true makes the dialog open regardless of the showDialog value
+     * @return An URL storing the selected workspace or null if the user has canceled the launch operation.
      */
-    private void releaseWorkspaceLock() {
-        Location instanceLoc = Platform.getInstanceLocation();
-        if (instanceLoc != null) {
-            instanceLoc.release();
-        }
+    private URL promptForWorkspace(Shell shell, ChooseWorkspaceData launchData, boolean force) {
+        URL url = null;
+        boolean doForce = force;
+        do {
+            // okay to use the shell now - this is the splash shell
+            new ChooseWorkspaceDialog(shell, launchData, false, true).prompt(doForce);
+            String instancePath = launchData.getSelection();
+            if (instancePath == null) {
+                return null;
+            }
+
+            // the dialog is not forced on the first iteration, but is on every
+            // subsequent one -- if there was an error then the user needs to be
+            // allowed to fix it
+            doForce = true;
+
+            // 70576: don't accept empty input
+            if (instancePath.length() <= 0) {
+                MessageDialog.openError(shell, Messages.getString("Application.workspaceEmptyTitle"), //$NON-NLS-1$
+                        Messages.getString("Application.workspaceEmptyMessage")); //$NON-NLS-1$
+                continue;
+            }
+
+            // create the workspace if it does not already exist
+            File workspace = new File(instancePath);
+            if (!workspace.exists()) {
+                workspace.mkdir();
+            }
+
+            try {
+                // Don't use File.toURL() since it adds a leading slash that Platform does not
+                // handle properly. See bug 54081 for more details.
+                String path = workspace.getAbsolutePath().replace(File.separatorChar, '/');
+                url = new URL("file", null, path); //$NON-NLS-1$
+            } catch (MalformedURLException e) {
+                MessageDialog.openError(shell, Messages.getString("Application.workspaceInvalidTitle"), //$NON-NLS-1$
+                        Messages.getString("Application.workspaceInvalidMessage")); //$NON-NLS-1$
+                continue;
+            }
+        } while (url == null);
+        return url;
     }
 
-    private boolean logUserOnProject(Shell shell, boolean inuse) {
+    private boolean logUserOnProject(Shell shell) {
         IRepositoryService service = (IRepositoryService) GlobalServiceRegister.getDefault().getService(IRepositoryService.class);
-        return service.openLoginDialog(shell, inuse);
+        return service.openLoginDialog(shell);
     }
 
     @Override

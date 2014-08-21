@@ -44,6 +44,7 @@ public class ConnectionBean implements Cloneable {
 
     private static final String USER = "user"; //$NON-NLS-1$
 
+    // this is kept for compatibility purpose but not used anymore.
     private static final String WORKSPACE = "workSpace"; //$NON-NLS-1$
 
     private static final String DYNAMICFIELDS = "dynamicFields"; //$NON-NLS-1$
@@ -225,35 +226,9 @@ public class ConnectionBean implements Cloneable {
         }
     }
 
-    /**
-     * Getter for workSpace.
-     * 
-     * @return the workSpace
-     */
-    public String getWorkSpace() {
-        try {
-            if (conDetails.has(WORKSPACE)) {
-                return conDetails.getString(WORKSPACE);
-            }
-        } catch (JSONException e) {
-            ExceptionHandler.process(e);
-        }
-        return "";
-    }
 
-    /**
-     * Sets the workSpace.
-     * 
-     * @param workSpace the workSpace to set
-     */
-    public void setWorkSpace(String workSpace) {
-        try {
-            conDetails.put(WORKSPACE, workSpace);
-        } catch (JSONException e) {
-            ExceptionHandler.process(e);
-        }
-    }
 
+    @Deprecated
     public Map<String, String> getDynamicFields() {
         return dynamicFields;
     }
@@ -301,7 +276,7 @@ public class ConnectionBean implements Cloneable {
             toReturn.setDescription(st[i++]);
             toReturn.setUser(st[i++]);
             toReturn.setPassword(st[i++]);
-            toReturn.setWorkSpace(st[i++]);
+            i++;//because of TUP-1785, workspace removed from connections 
             toReturn.setComplete(new Boolean(st[i++]));
             JSONObject dynamicJson = new JSONObject();
             toReturn.getConDetails().put(DYNAMICFIELDS, dynamicJson);

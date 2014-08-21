@@ -151,22 +151,6 @@ public class ConnectionUserPerReader {
         return tmp;
     }
 
-    public String readLastWorkSpace() {
-        if (!isRead) {
-            this.readProperties();
-        }
-        String workSpace = proper.getProperty("connection.lastWorkSpace"); //$NON-NLS-1$
-
-        if (workSpace == null) {
-            return "";//$NON-NLS-1$
-        }
-        return workSpace;
-    }
-
-    // public boolean haveWorkSpace() {
-    // return proper.containsKey("connection.lastWorkSpace");
-    // }
-
     public void saveConnections(List<ConnectionBean> cons) {
         if (!isHaveUserPer()) {
             createPropertyFile();
@@ -213,21 +197,13 @@ public class ConnectionUserPerReader {
         }
         if (bean == null) {
             proper.remove("connection.lastConnection"); //$NON-NLS-1$
-            proper.remove("connection.lastWorkSpace"); //$NON-NLS-1$
         } else {
             String userName = bean.getName();
-            String workSpace = bean.getWorkSpace();
             if (!"".equals(userName) && userName != null) { //$NON-NLS-1$
                 proper.setProperty("connection.lastConnection", userName);//$NON-NLS-1$
             } else {
                 proper.remove("connection.lastConnection"); //$NON-NLS-1$
             }
-            if (!"".equals(workSpace) && workSpace != null) { //$NON-NLS-1$
-                proper.setProperty("connection.lastWorkSpace", workSpace);//$NON-NLS-1$
-            } else {
-                proper.remove("connection.lastWorkSpace"); //$NON-NLS-1$
-            }
-
         }
         FileOutputStream out;
         try {
