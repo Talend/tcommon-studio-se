@@ -16,6 +16,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.StringTokenizer;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -28,6 +29,8 @@ import org.osgi.service.prefs.Preferences;
  * a well known configuration file.
  */
 public class ChooseWorkspaceData {
+
+    private static Logger log = Logger.getLogger(ChooseWorkspaceData.class);
 
     /**
      * 
@@ -47,7 +50,7 @@ public class ChooseWorkspaceData {
     /**
      * 
      */
-    private static final String ORG_TALEND_WORKSPACE_PREF_NODE = "org.eclipse.ui.ide"; //$NON-NLS-1$
+    public static final String ORG_TALEND_WORKSPACE_PREF_NODE = "org.eclipse.ui.ide"; //$NON-NLS-1$
 
     /**
      * 
@@ -148,7 +151,7 @@ public class ChooseWorkspaceData {
      * Toggle value of the showDialog persistent setting.
      */
     public void toggleShowDialog() {
-        showDialog = !showDialog;
+        setShowDialog(!getShowDialog());
     }
 
     /**
@@ -170,7 +173,7 @@ public class ChooseWorkspaceData {
         Preferences node = new ConfigurationScope().getNode(ORG_TALEND_WORKSPACE_PREF_NODE);
 
         // 2. get value for showDialog
-        node.putBoolean(SHOW_WORKSPACE_SELECTION_DIALOG_PREF, showDialog);
+        node.putBoolean(SHOW_WORKSPACE_SELECTION_DIALOG_PREF, getShowDialog());
 
         // 3. use value of numRecent to create proper length array
         node.putInt(MAX_RECENT_WORKSPACE_PREF, recentWorkspaces.length);
@@ -200,26 +203,8 @@ public class ChooseWorkspaceData {
         try {
             node.flush();
         } catch (BackingStoreException e) {
-            // do nothing
+            log.error("failed to store workspace location in preferences :", e); //$NON-NLS-1$
         }
-    }
-
-    /**
-     * Return the current (persisted) value of the "showDialog on startup" preference. Return the global default if the
-     * file cannot be accessed.
-     */
-    public static boolean getShowDialogValue() {
-        IPreferenceStore store = new ScopedPreferenceStore(new ConfigurationScope(), ORG_TALEND_WORKSPACE_PREF_NODE);
-        return store.getBoolean(SHOW_WORKSPACE_SELECTION_DIALOG_PREF);
-    }
-
-    /**
-     * Return the current (persisted) value of the "showDialog on startup" preference. Return the global default if the
-     * file cannot be accessed.
-     */
-    public static void setShowDialogValue(boolean showDialog) {
-        IPreferenceStore store = new ScopedPreferenceStore(new ConfigurationScope(), ORG_TALEND_WORKSPACE_PREF_NODE);
-        store.setValue(SHOW_WORKSPACE_SELECTION_DIALOG_PREF, showDialog);
     }
 
     /**
@@ -229,7 +214,7 @@ public class ChooseWorkspaceData {
         IPreferenceStore store = new ScopedPreferenceStore(new ConfigurationScope(), ORG_TALEND_WORKSPACE_PREF_NODE);
 
         // 2. get value for showDialog
-        showDialog = store.getBoolean(SHOW_WORKSPACE_SELECTION_DIALOG_PREF);
+        setShowDialog(store.getBoolean(SHOW_WORKSPACE_SELECTION_DIALOG_PREF));
 
         // 3. use value of numRecent to create proper length array
         int max = store.getInt(MAX_RECENT_WORKSPACE_PREF);
@@ -277,6 +262,15 @@ public class ChooseWorkspaceData {
         }
 
         return paths;
+    }
+
+    /**
+     * Sets the showDialog.
+     * 
+     * @param showDialog the showDialog to set
+     */
+    public void setShowDialog(boolean showDialog) {
+        this.showDialog = showDialog;
     }
 
 }

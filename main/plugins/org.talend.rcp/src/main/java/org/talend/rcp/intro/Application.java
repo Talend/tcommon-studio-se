@@ -20,6 +20,7 @@ import java.net.URL;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -41,6 +42,8 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.events.HyperlinkAdapter;
 import org.eclipse.ui.forms.events.HyperlinkEvent;
 import org.eclipse.ui.forms.widgets.Hyperlink;
+import org.osgi.service.prefs.BackingStoreException;
+import org.osgi.service.prefs.Preferences;
 import org.talend.commons.exception.BusinessException;
 import org.talend.commons.ui.swt.dialogs.ErrorDialogWidthDetailArea;
 import org.talend.commons.utils.system.EclipseCommandLine;
@@ -65,17 +68,17 @@ import org.talend.repository.ui.wizards.license.LicenseWizardDialog;
  */
 public class Application implements IApplication {
 
+    /**
+     * 
+     */
+    private static final String TALEND_FORCE_INITIAL_WORKSPACE_PROMPT_SYS_PROP = "talend.force.initial.workspace.prompt"; //$NON-NLS-1$
+
     private static Logger log = Logger.getLogger(Application.class);
 
     /**
-     * preference node forstoring the last workspace url
+     * pref node to store the first launch status.
      */
-    private static final String TALEND_WORKSPACE_PREF_NODE = "org.talend.workspace"; //$NON-NLS-1$
-
-    /**
-     * id of the last workspace url to store in the TALEND_WORKSPACE_PREF_NODE pref node.
-     */
-    private static final String LAST_WORKSPACE_PREF_ID = "last.workspace"; //$NON-NLS-1$
+    private static final String INITIAL_WORKSPACE_SHOWN = "INITIAL_WORKSPACE_SHOWN"; //$NON-NLS-1$
 
     @Override
     public Object start(IApplicationContext context) throws Exception {
@@ -246,7 +249,6 @@ public class Application implements IApplication {
                     Messages.getString("Application.Application_workspaceMandatoryMessage")); //$NON-NLS-1$
             return EXIT_OK;
         }
-
         // -data "/valid/path", workspace already set
         if (instanceLoc.isSet()) {
             // at this point its valid, so try to lock it and update the
@@ -278,14 +280,29 @@ public class Application implements IApplication {
 
         // -data @noDefault or -data not specified, prompt and set
         ChooseWorkspaceData launchData = new ChooseWorkspaceData(instanceLoc.getDefault());
-
         boolean force = false;
         while (true) {
-            URL workspaceUrl = promptForWorkspace(shell, launchData, force);
-            if (workspaceUrl == null) {
-                return EXIT_OK;
-            }
+            // check if it is first launch and the workspace is forced to be shown, otherwise do not display the prompt
+            Preferences node = new ConfigurationScope().getNode(ChooseWorkspaceData.ORG_TALEND_WORKSPACE_PREF_NODE);
+            boolean workspaceAlreadyShown = node.getBoolean(INITIAL_WORKSPACE_SHOWN, false);
+            URL workspaceUrl = null;
+            if (!workspaceAlreadyShown && !Boolean.getBoolean(TALEND_FORCE_INITIAL_WORKSPACE_PROMPT_SYS_PROP)) {
+                workspaceUrl = instanceLoc.getDefault();
+                launchData.setShowDialog(false);// prevent the prompt to be shown next restart
+                node.putBoolean(INITIAL_WORKSPACE_SHOWN, true);
+                try {
+                    node.flush();
+                } catch (BackingStoreException e) {
+                    log.error("failed to store workspace location in preferences :", e); //$NON-NLS-1$
+                }
+                // keep going to force the promp to appear
+            } else {
 
+                workspaceUrl = promptForWorkspace(shell, launchData, force);
+                if (workspaceUrl == null) {
+                    return EXIT_OK;
+                }
+            }
             // if there is an error with the first selection, then force the
             // dialog to open to give the user a chance to correct
             force = true;
@@ -298,6 +315,7 @@ public class Application implements IApplication {
                     return null;
                 }
             } catch (IllegalStateException e) {
+                log.error(e);
                 MessageDialog.openError(shell, Messages.getString("Application.WorkspaceCannotBeSetTitle"), //$NON-NLS-1$
                         Messages.getString("Application.WorkspaceCannotBeSetMessage", workspaceUrl.getFile()));
                 return EXIT_OK;
