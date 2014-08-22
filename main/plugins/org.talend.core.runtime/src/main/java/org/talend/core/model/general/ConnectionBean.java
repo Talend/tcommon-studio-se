@@ -226,8 +226,6 @@ public class ConnectionBean implements Cloneable {
         }
     }
 
-
-
     @Deprecated
     public Map<String, String> getDynamicFields() {
         return dynamicFields;
@@ -276,7 +274,6 @@ public class ConnectionBean implements Cloneable {
             toReturn.setDescription(st[i++]);
             toReturn.setUser(st[i++]);
             toReturn.setPassword(st[i++]);
-            i++;//because of TUP-1785, workspace removed from connections 
             toReturn.setComplete(new Boolean(st[i++]));
             JSONObject dynamicJson = new JSONObject();
             toReturn.getConDetails().put(DYNAMICFIELDS, dynamicJson);
