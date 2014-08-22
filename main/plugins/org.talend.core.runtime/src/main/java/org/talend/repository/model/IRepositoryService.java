@@ -76,7 +76,7 @@ public interface IRepositoryService extends IService {
     // for integration with eclipse
     public void openLoginDialog();
 
-    public boolean openLoginDialog(Shell shell, boolean inuse);
+    public boolean openLoginDialog(Shell shell);
 
     public boolean openReadOnlyDialog(Shell shell);
 

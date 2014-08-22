@@ -27,7 +27,7 @@ import java.util.Properties;
 import org.apache.commons.lang.StringUtils;
 import org.dom4j.DocumentException;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.adaptor.LocationManager;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.PlatformUI;
 import org.talend.commons.exception.ExceptionHandler;
@@ -43,7 +43,7 @@ public class ConnectionUserPerReader {
 
     private static ConnectionUserPerReader con = new ConnectionUserPerReader();
 
-    private String perfileName = "connection_user.properties"; //$NON-NLS-1$
+    private String CONNECTIONS_FILE_NAME = "connection_user.properties"; //$NON-NLS-1$
 
     public static final String CONNECTION_REGISTFAILTIMES = "connection.registFailTimes"; //$NON-NLS-1$
 
@@ -58,16 +58,9 @@ public class ConnectionUserPerReader {
     private ConnectionUserPerReader() {
         proper = new EncryptedProperties();
         isRead = false;
-        // String tmp = LocationManager.getConfigurationLocation().getURL().getPath();
-        // String s = new Path(LocationManager.getConfigurationLocation().getURL().getPath()).toFile().getPath();
-        //        path = tmp.substring(tmp.indexOf("/") + 1, tmp.length());//$NON-NLS-1$
-        path = new Path(LocationManager.getConfigurationLocation().getURL().getPath()).toFile().getAbsolutePath();
-        String tmp = String.valueOf(path.charAt(path.length() - 1));
-        if (!tmp.equals(File.separator)) {
-            perfile = new File(path + File.separator + perfileName);
-        } else {
-            perfile = new File(path + perfileName);
-        }
+        File workspaceFile = new Path(Platform.getInstanceLocation().getURL().getPath()).toFile();
+        path = workspaceFile.getAbsolutePath();
+        perfile = new File(workspaceFile, CONNECTIONS_FILE_NAME);
     }
 
     public static ConnectionUserPerReader getInstance() {
@@ -151,22 +144,6 @@ public class ConnectionUserPerReader {
         return tmp;
     }
 
-    public String readLastWorkSpace() {
-        if (!isRead) {
-            this.readProperties();
-        }
-        String workSpace = proper.getProperty("connection.lastWorkSpace"); //$NON-NLS-1$
-
-        if (workSpace == null) {
-            return "";//$NON-NLS-1$
-        }
-        return workSpace;
-    }
-
-    // public boolean haveWorkSpace() {
-    // return proper.containsKey("connection.lastWorkSpace");
-    // }
-
     public void saveConnections(List<ConnectionBean> cons) {
         if (!isHaveUserPer()) {
             createPropertyFile();
@@ -213,21 +190,13 @@ public class ConnectionUserPerReader {
         }
         if (bean == null) {
             proper.remove("connection.lastConnection"); //$NON-NLS-1$
-            proper.remove("connection.lastWorkSpace"); //$NON-NLS-1$
         } else {
             String userName = bean.getName();
-            String workSpace = bean.getWorkSpace();
             if (!"".equals(userName) && userName != null) { //$NON-NLS-1$
                 proper.setProperty("connection.lastConnection", userName);//$NON-NLS-1$
             } else {
                 proper.remove("connection.lastConnection"); //$NON-NLS-1$
             }
-            if (!"".equals(workSpace) && workSpace != null) { //$NON-NLS-1$
-                proper.setProperty("connection.lastWorkSpace", workSpace);//$NON-NLS-1$
-            } else {
-                proper.remove("connection.lastWorkSpace"); //$NON-NLS-1$
-            }
-
         }
         FileOutputStream out;
         try {

@@ -15,8 +15,6 @@ package org.talend.repository.ui.wizards.register;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.swt.SWT;
@@ -89,7 +87,7 @@ public class RegisterWizardPage3 extends AbstractBasicWizardDialog {
                 IBrandingService.class);
         String thanks1 = Messages.getString("RegisterWizardPage.legalthanks1", brandingService.getCorporationName());
         String thanks2 = Messages.getString("RegisterWizardPage.legalthanks2", brandingService.getCorporationName());
-        Font font2 = new Font(null, "Arial", 10, SWT.BOLD);//$NON-NLS-N$
+        Font font2 = new Font(null, "Arial", 10, SWT.BOLD);
 
         Composite c1 = new Composite(centerComposite, SWT.NONE);
         c1.setLayout(new GridLayout());
@@ -127,7 +125,7 @@ public class RegisterWizardPage3 extends AbstractBasicWizardDialog {
         new Label(bottomComposite, SWT.NONE);
         // label3.setLayoutData(new GridData());
 
-        new ImageCanvas(bottomComposite, ImageProvider.getImageDesc(ERepositoryImages.REGISTER_ICO)); //$NON-NLS-1$
+        new ImageCanvas(bottomComposite, ImageProvider.getImageDesc(ERepositoryImages.REGISTER_ICO));
 
         return container;
     }
@@ -143,7 +141,6 @@ public class RegisterWizardPage3 extends AbstractBasicWizardDialog {
         if (cons.isEmpty()) { // if have exited some connections, don't add default connection.
             cons = new ArrayList<ConnectionBean>();
             ConnectionBean bean = ConnectionBean.getDefaultConnectionBean();
-            bean.setWorkSpace(new Path(Platform.getInstanceLocation().getURL().getPath()).toFile().getPath());
             bean.setUser(email);
             cons.add(bean);
             perReader.saveConnections(cons);
