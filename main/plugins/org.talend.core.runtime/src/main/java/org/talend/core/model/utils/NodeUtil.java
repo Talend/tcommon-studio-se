@@ -882,7 +882,7 @@ public class NodeUtil {
         }
         List<EParameterFieldType> needQuoteList = Arrays.asList(EParameterFieldType.CLOSED_LIST, EParameterFieldType.OPENED_LIST,
                 EParameterFieldType.COMPONENT_LIST, EParameterFieldType.COLUMN_LIST, EParameterFieldType.PREV_COLUMN_LIST,
-                EParameterFieldType.MEMO_JAVA);
+                EParameterFieldType.MEMO_JAVA, EParameterFieldType.MODULE_LIST);
         List<String> needQuoteListByName = Arrays.asList("SCHEMA_COLUMN");// SCHEMA_COLUMN for BASED_ON_SCHEMA="true"
         if (needQuoteList.contains(ep.getFieldType()) || needQuoteListByName.contains(ep.getName())) {
             value = "\"" + value + "\"";

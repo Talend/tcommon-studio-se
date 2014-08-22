@@ -1201,16 +1201,14 @@ public class DeleteAction extends AContextualAction {
         return false;
     }
 
-    private boolean deleteElements(IProxyRepositoryFactory factory, DeleteActionCache deleteActionCache,
+    protected boolean deleteElements(IProxyRepositoryFactory factory, DeleteActionCache deleteActionCache,
             RepositoryNode currentJobNode) throws PersistenceException, BusinessException {
         return deleteElements(factory, deleteActionCache, currentJobNode, null);
     }
 
     protected boolean confirmFromDialog = false;
 
-    protected boolean confirmForDQ = false;
-
-    private boolean deleteElements(IProxyRepositoryFactory factory, DeleteActionCache deleteActionCache,
+    protected boolean deleteElements(IProxyRepositoryFactory factory, DeleteActionCache deleteActionCache,
             final RepositoryNode currentJobNode, Boolean confirm) throws PersistenceException, BusinessException {
         boolean needReturn = false;
         final boolean[] enableDeleting = new boolean[1];
@@ -1259,7 +1257,7 @@ public class DeleteAction extends AContextualAction {
             needReturn = true;
         } else {
             if (factory.getStatus(objToDelete) == ERepositoryStatus.DELETED) {
-                if (!confirmForDQ && resChangeService != null) {
+                if (resChangeService != null) {
                     List<IRepositoryNode> dependentNodes = resChangeService.getDependentNodes(currentJobNode);
                     if (dependentNodes != null && !dependentNodes.isEmpty()) {
                         resChangeService.openDependcesDialog(dependentNodes);
@@ -1267,26 +1265,20 @@ public class DeleteAction extends AContextualAction {
                     }
                 }
                 if (confirm == null) {
-                    // Added 20130227 TDQ-6901 yyin, when physical deleting object with dependencies, do not popup
-                    // confirm anymore.
-                    if (confirmForDQ) {
-                        confirm = confirmForDQ;
-                    } else {// ~
-                        Display.getDefault().syncExec(new Runnable() {
+                    Display.getDefault().syncExec(new Runnable() {
 
-                            @Override
-                            public void run() {
-                                String title = Messages.getString("DeleteAction.dialog.title"); //$NON-NLS-1$
+                        @Override
+                        public void run() {
+                            String title = Messages.getString("DeleteAction.dialog.title"); //$NON-NLS-1$
 
-                                String message = currentJobNode.getProperties(EProperties.LABEL)
-                                        + " " + Messages.getString("DeleteAction.dialog.message0") + "\n" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                        + Messages.getString("DeleteAction.dialog.message2"); //$NON-NLS-1$
+                            String message = currentJobNode.getProperties(EProperties.LABEL)
+                                    + " " + Messages.getString("DeleteAction.dialog.message0") + "\n" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    + Messages.getString("DeleteAction.dialog.message2"); //$NON-NLS-1$
 
-                                confirmFromDialog = MessageDialog.openQuestion(new Shell(), title, message);
-                            }
-                        });
-                        confirm = confirmFromDialog;
-                    }
+                            confirmFromDialog = MessageDialog.openQuestion(new Shell(), title, message);
+                        }
+                    });
+                    confirm = confirmFromDialog;
                 }
                 if (confirm) {
 
@@ -1457,15 +1449,17 @@ public class DeleteAction extends AContextualAction {
                             || RepositoryConstants.USER_DEFINED.equals(label)) {
                         visible = false;
                         isGointoCondition = true;
-                    } else if (node.getContentType() != null && GlobalServiceRegister.getDefault().isServiceRegistered(ICamelDesignerCoreService.class)) {
+                    } else if (node.getContentType() != null
+                            && GlobalServiceRegister.getDefault().isServiceRegistered(ICamelDesignerCoreService.class)) {
                         ICamelDesignerCoreService camelService = (ICamelDesignerCoreService) GlobalServiceRegister.getDefault()
                                 .getService(ICamelDesignerCoreService.class);
-                        if(node.getContentType().equals(camelService.getRouteDocsType())|| node.getContentType().equals(camelService.getRouteDocType())){
-                        	visible = false;
-                        	isGointoCondition = true;
+                        if (node.getContentType().equals(camelService.getRouteDocsType())
+                                || node.getContentType().equals(camelService.getRouteDocType())) {
+                            visible = false;
+                            isGointoCondition = true;
                         }
-                    } 
-                    if(!isGointoCondition){
+                    }
+                    if (!isGointoCondition) {
                         if (isDeletedFolder) {
                             this.setText(DELETE_FOREVER_TITLE);
                             this.setToolTipText(DELETE_FOREVER_TOOLTIP);
@@ -1494,15 +1488,16 @@ public class DeleteAction extends AContextualAction {
                     if (contentType == ERepositoryObjectType.JOB_DOC || contentType == ERepositoryObjectType.JOBLET_DOC) {
                         visible = false;
                         break;
-                    } else if (node.getContentType() != null 
-                    		&& GlobalServiceRegister.getDefault().isServiceRegistered(ICamelDesignerCoreService.class)) {
+                    } else if (node.getContentType() != null
+                            && GlobalServiceRegister.getDefault().isServiceRegistered(ICamelDesignerCoreService.class)) {
                         ICamelDesignerCoreService camelService = (ICamelDesignerCoreService) GlobalServiceRegister.getDefault()
                                 .getService(ICamelDesignerCoreService.class);
-                        if(node.getContentType().equals(camelService.getRouteDocsType())|| node.getContentType().equals(camelService.getRouteDocType())){
-                        	visible = false;
-                        	break;
+                        if (node.getContentType().equals(camelService.getRouteDocsType())
+                                || node.getContentType().equals(camelService.getRouteDocType())) {
+                            visible = false;
+                            break;
                         }
-                    } 
+                    }
                     if (contentType == ERepositoryObjectType.METADATA_CON_CDC) {
                         enabled = false;
                         visible = false;

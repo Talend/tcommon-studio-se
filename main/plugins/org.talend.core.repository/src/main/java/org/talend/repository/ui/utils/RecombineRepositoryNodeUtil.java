@@ -16,10 +16,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.talend.core.model.repository.ERepositoryObjectType;
+import org.talend.core.model.utils.RepositoryManagerHelper;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.ProjectRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
+import org.talend.repository.model.RepositoryNodeUtilities;
 import org.talend.repository.model.nodes.IProjectRepositoryNode;
+import org.talend.repository.ui.views.IRepositoryView;
 
 /**
  * ggu class global comment. Detailled comment
@@ -102,6 +105,11 @@ public final class RecombineRepositoryNodeUtil {
             for (ERepositoryObjectType type : prcessTypes) {
                 RepositoryNode rootNode = ((ProjectRepositoryNode) projectRepoNode).getRootRepositoryNode(type, true);
                 if (rootNode != null) {
+                    // Expand process node
+                    IRepositoryView viewPart = RepositoryManagerHelper.getRepositoryView();
+                    if (viewPart != null) {
+                        RepositoryNodeUtilities.expandParentNode(viewPart, rootNode);
+                    }
                     // Has childType nodes ,then add it.
                     if (type != null && type.hasChildrenType()) {
                         for (ERepositoryObjectType childType : type.getChildrenTypesArray()) {
