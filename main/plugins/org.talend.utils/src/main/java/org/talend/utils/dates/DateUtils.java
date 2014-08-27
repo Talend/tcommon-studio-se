@@ -13,6 +13,7 @@
 
 package org.talend.utils.dates;
 
+import java.sql.Types;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -115,5 +116,45 @@ public final class DateUtils {
             log.error(e);
         }
         return result;
+    }
+
+    /**
+     * get the date without the time, for example: 2008-08-08 00:00:00, because of oracle 12c store the date like 2008-08-08 00:00:00
+     * 
+     * @param utcExecutionDate
+     * @return
+     */
+    public static Date getDateWithoutTime(Date utcExecutionDate) {
+        Date calendarDate = utcExecutionDate;
+        try {
+            calendarDate = DateUtils.parse(DateUtils.PATTERN_3, DateUtils.formatTimeStamp(DateUtils.PATTERN_3, calendarDate.getTime()));
+        } catch (ParseException e) {
+            log.warn(e);
+        }
+        return calendarDate;
+    }
+
+    /**
+     * 
+     * create DateFormate depend on dataType.
+     * 
+     * @param dataType
+     * @return
+     */
+    public static DateFormat createDateFormater(int dataType) {
+        SimpleDateFormat ret;
+        switch (dataType) {
+        case Types.TIME:
+            ret = new SimpleDateFormat("HH:mm:ss");//$NON-NLS-1$
+            break;
+        case Types.TIMESTAMP:
+            ret = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//$NON-NLS-1$
+            break;
+        case Types.DATE:
+        default:
+            ret = new SimpleDateFormat("yyyy-MM-dd");//$NON-NLS-1$
+            break;
+        }
+        return ret;
     }
 }
