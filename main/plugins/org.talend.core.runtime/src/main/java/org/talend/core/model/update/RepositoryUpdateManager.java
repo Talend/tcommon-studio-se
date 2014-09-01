@@ -427,6 +427,11 @@ public abstract class RepositoryUpdateManager {
         if (object == parameter) {
             return true;
         }
+        if (object instanceof ConnectionItem) {
+            if (((ConnectionItem) object).getConnection() == parameter) {
+                return true;
+            }
+        }
         if (object instanceof List) {
             List list = ((List) object);
             if (!list.isEmpty()) {
@@ -1151,7 +1156,7 @@ public abstract class RepositoryUpdateManager {
         List<Relation> relations = RelationshipItemBuilder.getInstance().getItemsRelatedTo(connectionItem.getProperty().getId(),
                 RelationshipItemBuilder.LATEST_VERSION, RelationshipItemBuilder.PROPERTY_RELATION);
 
-        RepositoryUpdateManager repositoryUpdateManager = new RepositoryUpdateManager(connectionItem.getConnection(), relations) {
+        RepositoryUpdateManager repositoryUpdateManager = new RepositoryUpdateManager(connectionItem, relations) {
 
             @Override
             public Set<EUpdateItemType> getTypes() {
@@ -1182,7 +1187,7 @@ public abstract class RepositoryUpdateManager {
         List<Relation> relations = RelationshipItemBuilder.getInstance().getItemsRelatedTo(connectionItem.getProperty().getId(),
                 RelationshipItemBuilder.LATEST_VERSION, RelationshipItemBuilder.SERVICES_RELATION);
 
-        RepositoryUpdateManager repositoryUpdateManager = new RepositoryUpdateManager(connectionItem.getConnection(), relations) {
+        RepositoryUpdateManager repositoryUpdateManager = new RepositoryUpdateManager(connectionItem, relations) {
 
             @Override
             public Set<EUpdateItemType> getTypes() {
@@ -1234,7 +1239,7 @@ public abstract class RepositoryUpdateManager {
         List<Relation> relations = RelationshipItemBuilder.getInstance().getItemsRelatedTo(connectionItem.getProperty().getId(),
                 RelationshipItemBuilder.LATEST_VERSION, RelationshipItemBuilder.PROPERTY_RELATION);
 
-        RepositoryUpdateManager repositoryUpdateManager = new RepositoryUpdateManager(connectionItem.getConnection(), relations) {
+        RepositoryUpdateManager repositoryUpdateManager = new RepositoryUpdateManager(connectionItem, relations) {
 
             @Override
             public Set<EUpdateItemType> getTypes() {
@@ -1274,7 +1279,7 @@ public abstract class RepositoryUpdateManager {
         List<Relation> relations = RelationshipItemBuilder.getInstance().getItemsRelatedTo(connectionItem.getProperty().getId(),
                 RelationshipItemBuilder.LATEST_VERSION, RelationshipItemBuilder.VALIDATION_RULE_RELATION);
 
-        RepositoryUpdateManager repositoryUpdateManager = new RepositoryUpdateManager(connectionItem.getConnection(), relations) {
+        RepositoryUpdateManager repositoryUpdateManager = new RepositoryUpdateManager(connectionItem, relations) {
 
             @Override
             public Set<EUpdateItemType> getTypes() {
@@ -1607,7 +1612,7 @@ public abstract class RepositoryUpdateManager {
         List<Relation> relations = RelationshipItemBuilder.getInstance().getItemsRelatedTo(connectionItem.getProperty().getId(),
                 RelationshipItemBuilder.LATEST_VERSION, RelationshipItemBuilder.PROPERTY_RELATION);
 
-        RepositoryUpdateManager repositoryUpdateManager = new RepositoryUpdateManager(connectionItem.getConnection(), relations) {
+        RepositoryUpdateManager repositoryUpdateManager = new RepositoryUpdateManager(connectionItem, relations) {
 
             @Override
             public Set<EUpdateItemType> getTypes() {

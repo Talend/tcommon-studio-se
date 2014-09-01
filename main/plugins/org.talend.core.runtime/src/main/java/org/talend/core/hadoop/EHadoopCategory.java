@@ -22,6 +22,10 @@ public enum EHadoopCategory {
 
     HDFS,
 
+    MAP_REDUCE,
+
+    YARN,
+
     HCATALOG,
 
     HIVE,
@@ -29,6 +33,8 @@ public enum EHadoopCategory {
     HBASE,
 
     OOZIE,
+
+    CUSTOM
 
     ;
 

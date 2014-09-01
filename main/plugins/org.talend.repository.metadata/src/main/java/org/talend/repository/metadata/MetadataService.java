@@ -229,7 +229,7 @@ public class MetadataService implements IMetadataService {
                 if (node != null && relatedWizard instanceof RepositoryWizard) {// creation && node != null
                     connItem = ((RepositoryWizard) relatedWizard).getConnectionItem();
                     if (connItem != null) {
-                        changed = ComponentToRepositoryProperty.setValue(connItem.getConnection(), node);
+                        changed = ComponentToRepositoryProperty.setValue(connItem, node);
                     }
                 }
                 if (connItem != null && changed) {

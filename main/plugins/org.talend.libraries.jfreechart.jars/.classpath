@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry exported="true" kind="lib" path="lib/jcommon-1.0.15.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jfreechart-1.0.12-experimental.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jfreechart-1.0.12-swt.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jfreechart-1.0.12.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/swtgraphics2d.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

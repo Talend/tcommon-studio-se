@@ -18,11 +18,14 @@ import java.util.List;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.nebula.widgets.nattable.NatTable;
 import org.talend.core.model.process.IContextManager;
 import org.talend.core.model.process.IContextParameter;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.ui.context.IContextModelManager;
+import org.talend.core.ui.context.model.table.ContextTableTabChildModel;
+import org.talend.core.ui.context.model.table.ContextTableTabParentModel;
 import org.talend.core.ui.context.model.template.ContextVariableTabChildModel;
 import org.talend.core.ui.context.model.template.ContextVariableTabParentModel;
 import org.talend.core.ui.i18n.Messages;
@@ -39,6 +42,8 @@ public class ContextBuiltinToRepositoryAction extends AContextualAction {
     public final static String ID = "org.talend.core.ui.context.actions.ContextBuiltinToRepositoryAction"; //$NON-NLS-1$
 
     private TreeViewer viewer = null;
+
+    private NatTable table = null;
 
     private final IContextModelManager modelManager; // modified by hyWang
 
@@ -60,7 +65,7 @@ public class ContextBuiltinToRepositoryAction extends AContextualAction {
         if (contextManager != null) {
             CoreRuntimePlugin.getInstance().getRepositoryService()
                     .openRepositoryReviewDialog(ERepositoryObjectType.CONTEXT, null, params, contextManager);
-            viewer.refresh();
+            modelManager.refresh();
         }
     }
 
@@ -70,6 +75,7 @@ public class ContextBuiltinToRepositoryAction extends AContextualAction {
      * @see org.talend.commons.ui.swt.actions.ITreeContextualAction#init(org.eclipse.jface.viewers.TreeViewer,
      * org.eclipse.jface.viewers.IStructuredSelection)
      */
+    @Override
     public void init(TreeViewer viewer, IStructuredSelection selection) {
         this.viewer = viewer;
         this.contextManager = modelManager.getContextManager();
@@ -101,6 +107,32 @@ public class ContextBuiltinToRepositoryAction extends AContextualAction {
                     } else {
                         params.add(param.getContextParameter());
                     }
+                }
+            }
+        }
+        setEnabled(canWork);
+    }
+
+    public void init(NatTable table, Object rowData) {
+        this.table = table;
+        this.contextManager = modelManager.getContextManager();
+        boolean canWork = table != null && rowData != null;
+        if (canWork) {
+            if (rowData instanceof ContextTableTabParentModel) {
+                ContextTableTabParentModel param = (ContextTableTabParentModel) rowData;
+                if (!IContextParameter.BUILT_IN.equals(param.getSourceId())) {
+                    setEnabled(false);
+                    return;
+                } else {
+                    params.add(param.getContextParameter());
+                }
+            } else if (rowData instanceof ContextTableTabChildModel) {
+                ContextTableTabChildModel param = (ContextTableTabChildModel) rowData;
+                if (!IContextParameter.BUILT_IN.equals(param.getContextParameter().getSource())) {
+                    setEnabled(false);
+                    return;
+                } else {
+                    params.add(param.getContextParameter());
                 }
             }
         }

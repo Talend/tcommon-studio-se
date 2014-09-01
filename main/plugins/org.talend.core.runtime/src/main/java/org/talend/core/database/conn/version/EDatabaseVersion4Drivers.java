@@ -40,9 +40,9 @@ public enum EDatabaseVersion4Drivers {
     ORACLE_8(new DbVersion4Drivers(new EDatabaseTypeName[] { EDatabaseTypeName.ORACLEFORSID, EDatabaseTypeName.ORACLESN,
             EDatabaseTypeName.ORACLE_OCI, EDatabaseTypeName.ORACLE_CUSTOM }, "Oracle 8", "ORACLE_8", "ojdbc12.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     // AS400
-    AS400_V5R4_V6R1(new DbVersion4Drivers(EDatabaseTypeName.AS400, "V5R4 to V6R1", "V5R4 to V6R1", "jt400_V5R3.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    AS400_V5R2_V5R4(new DbVersion4Drivers(EDatabaseTypeName.AS400, "V5R2 to V5R4", "V5R2 to V5R4", "jt400_V5R2.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    AS400_V6R1_V7R2(new DbVersion4Drivers(EDatabaseTypeName.AS400, "V6R1 to V7R2", "V6R1 to V7R2", "jt400_V6R1.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    AS400_V6R1_V7R2(new DbVersion4Drivers(EDatabaseTypeName.AS400, "V6R1 to V7R2", "AS400_V6R1_V7R2", "jt400_V6R1.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    AS400_V5R3_V6R1(new DbVersion4Drivers(EDatabaseTypeName.AS400, "V5R3 to V6R1", "AS400_V5R3_V6R1", "jt400_V5R3.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    AS400_V5R2_V5R4(new DbVersion4Drivers(EDatabaseTypeName.AS400, "V5R2 to V5R4", "AS400_V5R2_V5R4", "jt400_V5R2.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     //
     INTERBASE(new DbVersion4Drivers(EDatabaseTypeName.INTERBASE, "interclient.jar")), //$NON-NLS-1$
 

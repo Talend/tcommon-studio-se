@@ -662,7 +662,6 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
             JavaSqlFactory.doHivePreSetup((DatabaseConnection) metadataConnection.getCurrentConnection());
         }
         MetadataConnectionUtils.fillConnectionInformation(connectionItem, metadataConnection);
-
         // if after fillConnection there is still no dataPackages, need to fill them from extractor
         List<Catalog> catalogs = ConnectionHelper.getCatalogs(connection);
         List<Schema> schemas = ConnectionHelper.getSchema(connection);

@@ -241,6 +241,7 @@ public class ContextTreeValuesComposite extends AbstractContextTabEditComposite 
 
             private int direction = 1;
 
+            @Override
             public void handleEvent(Event e) {
                 final TreeColumn column = (TreeColumn) e.widget;
 
@@ -290,10 +291,12 @@ public class ContextTreeValuesComposite extends AbstractContextTabEditComposite 
         configContext.setEnabled(enabled);
     }
 
+    @Override
     public TreeViewer getViewer() {
         return this.viewer;
     }
 
+    @Override
     public IContextModelManager getContextModelManager() {
         return this.modelManager;
     }
@@ -372,13 +375,16 @@ public class ContextTreeValuesComposite extends AbstractContextTabEditComposite 
     private ICellEditorListener createEditorListener(final TreeEditor tableEditor) {
         editorListener = new ICellEditorListener() {
 
+            @Override
             public void cancelEditor() {
                 deactivateCellEditor(tableEditor);
             }
 
+            @Override
             public void editorValueChanged(boolean oldValidState, boolean newValidState) {
             }
 
+            @Override
             public void applyEditorValue() {
             }
         };

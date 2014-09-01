@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Jars
+Bundle-SymbolicName: org.talend.libraries.jexcel.jars
+Bundle-Version: 1.0.0.qualifier
+Fragment-Host: org.talend.libraries.jexcel;bundle-version="1.0.0"

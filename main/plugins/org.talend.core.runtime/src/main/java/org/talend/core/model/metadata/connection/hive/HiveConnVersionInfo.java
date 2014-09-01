@@ -45,7 +45,7 @@ public enum HiveConnVersionInfo {
 
     HDP_2_1(1, "HDP_2_1", "Hortonworks Data Platform V2.1.0(Baikal)", true, false, true, true, HiveConnVersionInfo.HORTONWORKS), //$NON-NLS-1$//$NON-NLS-2$
 
-    HDP_2_0(1, "HDP_2_0", "Hortonworks Data Platform V2.0.0(BigWheel)", true, false, true, false, HiveConnVersionInfo.HORTONWORKS), //$NON-NLS-1$//$NON-NLS-2$
+    HDP_2_0(1, "HDP_2_0", "Hortonworks Data Platform V2.0.0(BigWheel)", true, false, true, true, HiveConnVersionInfo.HORTONWORKS), //$NON-NLS-1$//$NON-NLS-2$
 
     HDP_1_3(1, "HDP_1_3", "Hortonworks Data Platform V1.3.0(Condor)", true, true, HiveConnVersionInfo.HORTONWORKS), //$NON-NLS-1$//$NON-NLS-2$
 
@@ -81,7 +81,7 @@ public enum HiveConnVersionInfo {
 
     MapR_EMR(1, "MapR_EMR", "MapR 1.2.8(deprecated)", false, HiveConnVersionInfo.AMAZON_EMR), //$NON-NLS-1$//$NON-NLS-2$
 
-    PIVOTAL_HD_2_0(1, "PIVOTAL_HD_2_0", "Pivotal HD 2.0", true, false, true, false, HiveConnVersionInfo.PIVOTAL_HD), //$NON-NLS-1$//$NON-NLS-2$
+    PIVOTAL_HD_2_0(1, "PIVOTAL_HD_2_0", "Pivotal HD 2.0", true, false, true, true, HiveConnVersionInfo.PIVOTAL_HD), //$NON-NLS-1$//$NON-NLS-2$
 
     PIVOTAL_HD_1_0_1(1, "PIVOTAL_HD_1_0_1", "Pivotal HD 1.0.1", false, false, true, false, HiveConnVersionInfo.PIVOTAL_HD), //$NON-NLS-1$//$NON-NLS-2$
 

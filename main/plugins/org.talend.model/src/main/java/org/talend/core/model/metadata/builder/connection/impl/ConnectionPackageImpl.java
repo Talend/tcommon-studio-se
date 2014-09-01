@@ -3342,18 +3342,20 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getFTPConnection_KeystoreFile() {
+    public EAttribute getFTPConnection_Privatekey() {
         return (EAttribute) ftpConnectionEClass.getEStructuralFeatures().get(9);
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getFTPConnection_KeystorePassword() {
+    public EAttribute getFTPConnection_Passphrase() {
         return (EAttribute) ftpConnectionEClass.getEStructuralFeatures().get(10);
     }
 
@@ -3361,7 +3363,7 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getFTPConnection_Usesocks() {
+    public EAttribute getFTPConnection_KeystoreFile() {
         return (EAttribute) ftpConnectionEClass.getEStructuralFeatures().get(11);
     }
 
@@ -3369,7 +3371,7 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getFTPConnection_Proxyhost() {
+    public EAttribute getFTPConnection_KeystorePassword() {
         return (EAttribute) ftpConnectionEClass.getEStructuralFeatures().get(12);
     }
 
@@ -3377,7 +3379,7 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getFTPConnection_Proxyport() {
+    public EAttribute getFTPConnection_Usesocks() {
         return (EAttribute) ftpConnectionEClass.getEStructuralFeatures().get(13);
     }
 
@@ -3385,7 +3387,7 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getFTPConnection_Proxyuser() {
+    public EAttribute getFTPConnection_Proxyhost() {
         return (EAttribute) ftpConnectionEClass.getEStructuralFeatures().get(14);
     }
 
@@ -3393,7 +3395,7 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getFTPConnection_Proxypassword() {
+    public EAttribute getFTPConnection_Proxyport() {
         return (EAttribute) ftpConnectionEClass.getEStructuralFeatures().get(15);
     }
 
@@ -3401,8 +3403,24 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getFTPConnection_CustomEncode() {
+    public EAttribute getFTPConnection_Proxyuser() {
         return (EAttribute) ftpConnectionEClass.getEStructuralFeatures().get(16);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getFTPConnection_Proxypassword() {
+        return (EAttribute) ftpConnectionEClass.getEStructuralFeatures().get(17);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getFTPConnection_CustomEncode() {
+        return (EAttribute) ftpConnectionEClass.getEStructuralFeatures().get(18);
     }
 
     /**
@@ -4311,6 +4329,8 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
         createEAttribute(ftpConnectionEClass, FTP_CONNECTION__SFTP);
         createEAttribute(ftpConnectionEClass, FTP_CONNECTION__FTPS);
         createEAttribute(ftpConnectionEClass, FTP_CONNECTION__METHOD);
+        createEAttribute(ftpConnectionEClass, FTP_CONNECTION__PRIVATEKEY);
+        createEAttribute(ftpConnectionEClass, FTP_CONNECTION__PASSPHRASE);
         createEAttribute(ftpConnectionEClass, FTP_CONNECTION__KEYSTORE_FILE);
         createEAttribute(ftpConnectionEClass, FTP_CONNECTION__KEYSTORE_PASSWORD);
         createEAttribute(ftpConnectionEClass, FTP_CONNECTION__USESOCKS);
@@ -5418,6 +5438,10 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
         initEAttribute(getFTPConnection_FTPS(), ecorePackage.getEBoolean(), "FTPS", null, 0, 1, FTPConnection.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getFTPConnection_Method(), ecorePackage.getEString(), "Method", null, 0, 1, FTPConnection.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getFTPConnection_Privatekey(), ecorePackage.getEString(), "Privatekey", null, 0, 1, FTPConnection.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getFTPConnection_Passphrase(), ecorePackage.getEString(), "Passphrase", null, 0, 1, FTPConnection.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getFTPConnection_KeystoreFile(), ecorePackage.getEString(), "KeystoreFile", null, 0, 1,
                 FTPConnection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,

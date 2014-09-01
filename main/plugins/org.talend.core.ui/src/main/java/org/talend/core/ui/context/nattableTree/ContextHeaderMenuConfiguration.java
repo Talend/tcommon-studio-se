@@ -13,8 +13,12 @@
 package org.talend.core.ui.context.nattableTree;
 
 import org.eclipse.nebula.widgets.nattable.NatTable;
+import org.eclipse.nebula.widgets.nattable.data.IDataProvider;
 import org.eclipse.nebula.widgets.nattable.ui.menu.HeaderMenuConfiguration;
 import org.eclipse.nebula.widgets.nattable.ui.menu.PopupMenuBuilder;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.widgets.Menu;
 
 /**
  * created by ldong on Jul 21, 2014 Detailled comment
@@ -22,13 +26,27 @@ import org.eclipse.nebula.widgets.nattable.ui.menu.PopupMenuBuilder;
  */
 public class ContextHeaderMenuConfiguration extends HeaderMenuConfiguration {
 
+    private final Menu modeMenu;
+
+    private final ContextPopMenuBuilder contextMenuBuilder;
+
     /**
      * DOC Talend ContextHeaderMenuConfiguration constructor comment.
      * 
      * @param natTable
      */
-    public ContextHeaderMenuConfiguration(NatTable natTable) {
+    public ContextHeaderMenuConfiguration(NatTable natTable, IDataProvider dataProvider) {
         super(natTable);
+        contextMenuBuilder = new ContextPopMenuBuilder(natTable);
+        modeMenu = contextMenuBuilder.withChangeModeMenuItem(dataProvider).build();
+
+        natTable.addDisposeListener(new DisposeListener() {
+
+            @Override
+            public void widgetDisposed(DisposeEvent e) {
+                modeMenu.dispose();
+            }
+        });
     }
 
     /*
@@ -39,8 +57,8 @@ public class ContextHeaderMenuConfiguration extends HeaderMenuConfiguration {
      * .widgets.nattable.NatTable)
      */
     @Override
-    protected PopupMenuBuilder createColumnHeaderMenu(NatTable natTable) {
-        return new PopupMenuBuilder(natTable).withHideColumnMenuItem().withShowAllColumnsMenuItem();
+    protected PopupMenuBuilder createRowHeaderMenu(NatTable natTable) {
+        return contextMenuBuilder;
     }
 
 }

@@ -22,6 +22,8 @@ package org.talend.core.model.metadata.builder.connection;
  *   <li>{@link org.talend.core.model.metadata.builder.connection.FTPConnection#isSFTP <em>SFTP</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.FTPConnection#isFTPS <em>FTPS</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.FTPConnection#getMethod <em>Method</em>}</li>
+ *   <li>{@link org.talend.core.model.metadata.builder.connection.FTPConnection#getPrivatekey <em>Privatekey</em>}</li>
+ *   <li>{@link org.talend.core.model.metadata.builder.connection.FTPConnection#getPassphrase <em>Passphrase</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.FTPConnection#getKeystoreFile <em>Keystore File</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.FTPConnection#getKeystorePassword <em>Keystore Password</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.FTPConnection#isUsesocks <em>Usesocks</em>}</li>
@@ -272,6 +274,58 @@ public interface FTPConnection extends Connection {
      * @generated
      */
     void setMethod(String value);
+
+    /**
+     * Returns the value of the '<em><b>Privatekey</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Privatekey</em>' attribute isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Privatekey</em>' attribute.
+     * @see #setPrivatekey(String)
+     * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getFTPConnection_Privatekey()
+     * @model
+     * @generated
+     */
+    String getPrivatekey();
+
+    /**
+     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.FTPConnection#getPrivatekey <em>Privatekey</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Privatekey</em>' attribute.
+     * @see #getPrivatekey()
+     * @generated
+     */
+    void setPrivatekey(String value);
+
+    /**
+     * Returns the value of the '<em><b>Passphrase</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Passphrase</em>' attribute isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Passphrase</em>' attribute.
+     * @see #setPassphrase(String)
+     * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getFTPConnection_Passphrase()
+     * @model
+     * @generated
+     */
+    String getPassphrase();
+
+    /**
+     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.FTPConnection#getPassphrase <em>Passphrase</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Passphrase</em>' attribute.
+     * @see #getPassphrase()
+     * @generated
+     */
+    void setPassphrase(String value);
 
     /**
      * Returns the value of the '<em><b>Keystore File</b></em>' attribute.

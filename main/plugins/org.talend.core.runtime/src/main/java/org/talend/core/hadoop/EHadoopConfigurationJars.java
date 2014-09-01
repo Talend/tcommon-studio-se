@@ -18,8 +18,9 @@ package org.talend.core.hadoop;
  */
 public enum EHadoopConfigurationJars {
 
-    HDFS(
-         new String[] { "hadoop-conf.jar" }, new String[] { "hadoop-conf-kerberos.jar", "jetty-util-6.1.26.jar", "jersey-core-1.8.jar", "commons-io-2.4.jar" }), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+    HDFS(new String[0], new String[] { "hadoop-conf-kerberos.jar" }), //$NON-NLS-1$ 
+
+    MAP_REDUCE(new String[0], new String[] { "hadoop-conf-kerberos.jar" }), //$NON-NLS-1$ 
 
     HCATALOG(new String[] { "hadoop-conf.jar" }, new String[] { "hadoop-conf-kerberos.jar" }), //$NON-NLS-1$ //$NON-NLS-2$
 

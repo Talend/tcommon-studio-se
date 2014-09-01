@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry exported="true" kind="lib" path="lib/jfreechart-1.0.12-swt.jar" sourcepath="lib_src/jfreechart-1.0.12/swt"/>
-	<classpathentry exported="true" kind="lib" path="lib/jfreechart-1.0.12-experimental.jar" sourcepath="lib_src/jfreechart-1.0.12/experimental"/>
-	<classpathentry exported="true" kind="lib" path="lib/swtgraphics2d.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jcommon-1.0.15.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jfreechart-1.0.12.jar" sourcepath="lib_src/jfreechart-1.0.12/source"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/org.talend.libraries.jfreechart.jars"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="output" path="bin"/>

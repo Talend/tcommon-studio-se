@@ -1193,9 +1193,6 @@ public class DatabaseForm extends AbstractForm {
             hideControl(browseDriverClassButton, false);
             usernameTxt.show();
             passwordTxt.show();
-            hideControl(useKeyTab, false);
-            principalTxt.show();
-            keytabTxt.show();
         } else {
             metastoreUrlTxt.hide();
             driverJarTxt.hide();
@@ -1204,9 +1201,6 @@ public class DatabaseForm extends AbstractForm {
             hideControl(browseDriverClassButton, true);
             usernameTxt.hide();
             passwordTxt.hide();
-            hideControl(useKeyTab, true);
-            principalTxt.hide();
-            keytabTxt.hide();
         }
     }
 

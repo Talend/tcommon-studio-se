@@ -41,4 +41,9 @@ public interface ILibraryManagerUIService extends IService {
             ERepositoryObjectType type);
 
     public String getLibrariesPath(ECodeLanguage language);
+
+    public List<String> getNeedInstallModuleForBundle(String bundleName);
+
+    public boolean isModuleInstalledForBundle(String bundleName);
+
 }

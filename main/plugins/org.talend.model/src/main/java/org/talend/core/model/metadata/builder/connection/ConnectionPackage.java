@@ -15330,13 +15330,31 @@ public interface ConnectionPackage extends EPackage {
     int FTP_CONNECTION__METHOD = CONNECTION_FEATURE_COUNT + 8;
 
     /**
+     * The feature id for the '<em><b>Privatekey</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int FTP_CONNECTION__PRIVATEKEY = CONNECTION_FEATURE_COUNT + 9;
+
+    /**
+     * The feature id for the '<em><b>Passphrase</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int FTP_CONNECTION__PASSPHRASE = CONNECTION_FEATURE_COUNT + 10;
+
+    /**
      * The feature id for the '<em><b>Keystore File</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int FTP_CONNECTION__KEYSTORE_FILE = CONNECTION_FEATURE_COUNT + 9;
+    int FTP_CONNECTION__KEYSTORE_FILE = CONNECTION_FEATURE_COUNT + 11;
 
     /**
      * The feature id for the '<em><b>Keystore Password</b></em>' attribute.
@@ -15345,7 +15363,7 @@ public interface ConnectionPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int FTP_CONNECTION__KEYSTORE_PASSWORD = CONNECTION_FEATURE_COUNT + 10;
+    int FTP_CONNECTION__KEYSTORE_PASSWORD = CONNECTION_FEATURE_COUNT + 12;
 
     /**
      * The feature id for the '<em><b>Usesocks</b></em>' attribute.
@@ -15354,7 +15372,7 @@ public interface ConnectionPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int FTP_CONNECTION__USESOCKS = CONNECTION_FEATURE_COUNT + 11;
+    int FTP_CONNECTION__USESOCKS = CONNECTION_FEATURE_COUNT + 13;
 
     /**
      * The feature id for the '<em><b>Proxyhost</b></em>' attribute.
@@ -15363,7 +15381,7 @@ public interface ConnectionPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int FTP_CONNECTION__PROXYHOST = CONNECTION_FEATURE_COUNT + 12;
+    int FTP_CONNECTION__PROXYHOST = CONNECTION_FEATURE_COUNT + 14;
 
     /**
      * The feature id for the '<em><b>Proxyport</b></em>' attribute.
@@ -15372,7 +15390,7 @@ public interface ConnectionPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int FTP_CONNECTION__PROXYPORT = CONNECTION_FEATURE_COUNT + 13;
+    int FTP_CONNECTION__PROXYPORT = CONNECTION_FEATURE_COUNT + 15;
 
     /**
      * The feature id for the '<em><b>Proxyuser</b></em>' attribute.
@@ -15381,7 +15399,7 @@ public interface ConnectionPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int FTP_CONNECTION__PROXYUSER = CONNECTION_FEATURE_COUNT + 14;
+    int FTP_CONNECTION__PROXYUSER = CONNECTION_FEATURE_COUNT + 16;
 
     /**
      * The feature id for the '<em><b>Proxypassword</b></em>' attribute.
@@ -15390,7 +15408,7 @@ public interface ConnectionPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int FTP_CONNECTION__PROXYPASSWORD = CONNECTION_FEATURE_COUNT + 15;
+    int FTP_CONNECTION__PROXYPASSWORD = CONNECTION_FEATURE_COUNT + 17;
 
     /**
      * The feature id for the '<em><b>Custom Encode</b></em>' attribute.
@@ -15399,7 +15417,7 @@ public interface ConnectionPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int FTP_CONNECTION__CUSTOM_ENCODE = CONNECTION_FEATURE_COUNT + 16;
+    int FTP_CONNECTION__CUSTOM_ENCODE = CONNECTION_FEATURE_COUNT + 18;
 
     /**
      * The number of structural features of the '<em>FTP Connection</em>' class.
@@ -15408,7 +15426,7 @@ public interface ConnectionPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int FTP_CONNECTION_FEATURE_COUNT = CONNECTION_FEATURE_COUNT + 17;
+    int FTP_CONNECTION_FEATURE_COUNT = CONNECTION_FEATURE_COUNT + 19;
 
     /**
      * The meta object id for the '{@link org.talend.core.model.metadata.builder.connection.impl.BRMSConnectionImpl <em>BRMS Connection</em>}' class.
@@ -21531,6 +21549,28 @@ public interface ConnectionPackage extends EPackage {
     EAttribute getFTPConnection_Method();
 
     /**
+     * Returns the meta object for the attribute '{@link org.talend.core.model.metadata.builder.connection.FTPConnection#getPrivatekey <em>Privatekey</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Privatekey</em>'.
+     * @see org.talend.core.model.metadata.builder.connection.FTPConnection#getPrivatekey()
+     * @see #getFTPConnection()
+     * @generated
+     */
+    EAttribute getFTPConnection_Privatekey();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.talend.core.model.metadata.builder.connection.FTPConnection#getPassphrase <em>Passphrase</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Passphrase</em>'.
+     * @see org.talend.core.model.metadata.builder.connection.FTPConnection#getPassphrase()
+     * @see #getFTPConnection()
+     * @generated
+     */
+    EAttribute getFTPConnection_Passphrase();
+
+    /**
      * Returns the meta object for the attribute '{@link org.talend.core.model.metadata.builder.connection.FTPConnection#getKeystoreFile <em>Keystore File</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -25052,6 +25092,22 @@ public interface ConnectionPackage extends EPackage {
          * @generated
          */
         EAttribute FTP_CONNECTION__METHOD = eINSTANCE.getFTPConnection_Method();
+
+        /**
+         * The meta object literal for the '<em><b>Privatekey</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute FTP_CONNECTION__PRIVATEKEY = eINSTANCE.getFTPConnection_Privatekey();
+
+        /**
+         * The meta object literal for the '<em><b>Passphrase</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute FTP_CONNECTION__PASSPHRASE = eINSTANCE.getFTPConnection_Passphrase();
 
         /**
          * The meta object literal for the '<em><b>Keystore File</b></em>' attribute feature.

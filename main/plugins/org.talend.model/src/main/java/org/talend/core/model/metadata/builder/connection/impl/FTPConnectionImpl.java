@@ -30,6 +30,8 @@ import org.talend.core.model.metadata.builder.connection.FTPConnection;
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.FTPConnectionImpl#isSFTP <em>SFTP</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.FTPConnectionImpl#isFTPS <em>FTPS</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.FTPConnectionImpl#getMethod <em>Method</em>}</li>
+ *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.FTPConnectionImpl#getPrivatekey <em>Privatekey</em>}</li>
+ *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.FTPConnectionImpl#getPassphrase <em>Passphrase</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.FTPConnectionImpl#getKeystoreFile <em>Keystore File</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.FTPConnectionImpl#getKeystorePassword <em>Keystore Password</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.FTPConnectionImpl#isUsesocks <em>Usesocks</em>}</li>
@@ -224,6 +226,46 @@ public class FTPConnectionImpl extends ConnectionImpl implements FTPConnection {
      * @ordered
      */
     protected String method = METHOD_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getPrivatekey() <em>Privatekey</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getPrivatekey()
+     * @generated
+     * @ordered
+     */
+    protected static final String PRIVATEKEY_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getPrivatekey() <em>Privatekey</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getPrivatekey()
+     * @generated
+     * @ordered
+     */
+    protected String privatekey = PRIVATEKEY_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getPassphrase() <em>Passphrase</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getPassphrase()
+     * @generated
+     * @ordered
+     */
+    protected static final String PASSPHRASE_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getPassphrase() <em>Passphrase</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getPassphrase()
+     * @generated
+     * @ordered
+     */
+    protected String passphrase = PASSPHRASE_EDEFAULT;
 
     /**
      * The default value of the '{@link #getKeystoreFile() <em>Keystore File</em>}' attribute.
@@ -600,6 +642,50 @@ public class FTPConnectionImpl extends ConnectionImpl implements FTPConnection {
      * <!-- end-user-doc -->
      * @generated
      */
+    public String getPrivatekey() {
+        return privatekey;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setPrivatekey(String newPrivatekey) {
+        String oldPrivatekey = privatekey;
+        privatekey = newPrivatekey;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.FTP_CONNECTION__PRIVATEKEY, oldPrivatekey,
+                    privatekey));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public String getPassphrase() {
+        return passphrase;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setPassphrase(String newPassphrase) {
+        String oldPassphrase = passphrase;
+        passphrase = newPassphrase;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.FTP_CONNECTION__PASSPHRASE, oldPassphrase,
+                    passphrase));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public String getKeystoreFile() {
         return keystoreFile;
     }
@@ -797,6 +883,10 @@ public class FTPConnectionImpl extends ConnectionImpl implements FTPConnection {
             return isFTPS();
         case ConnectionPackage.FTP_CONNECTION__METHOD:
             return getMethod();
+        case ConnectionPackage.FTP_CONNECTION__PRIVATEKEY:
+            return getPrivatekey();
+        case ConnectionPackage.FTP_CONNECTION__PASSPHRASE:
+            return getPassphrase();
         case ConnectionPackage.FTP_CONNECTION__KEYSTORE_FILE:
             return getKeystoreFile();
         case ConnectionPackage.FTP_CONNECTION__KEYSTORE_PASSWORD:
@@ -851,6 +941,12 @@ public class FTPConnectionImpl extends ConnectionImpl implements FTPConnection {
             return;
         case ConnectionPackage.FTP_CONNECTION__METHOD:
             setMethod((String) newValue);
+            return;
+        case ConnectionPackage.FTP_CONNECTION__PRIVATEKEY:
+            setPrivatekey((String) newValue);
+            return;
+        case ConnectionPackage.FTP_CONNECTION__PASSPHRASE:
+            setPassphrase((String) newValue);
             return;
         case ConnectionPackage.FTP_CONNECTION__KEYSTORE_FILE:
             setKeystoreFile((String) newValue);
@@ -915,6 +1011,12 @@ public class FTPConnectionImpl extends ConnectionImpl implements FTPConnection {
         case ConnectionPackage.FTP_CONNECTION__METHOD:
             setMethod(METHOD_EDEFAULT);
             return;
+        case ConnectionPackage.FTP_CONNECTION__PRIVATEKEY:
+            setPrivatekey(PRIVATEKEY_EDEFAULT);
+            return;
+        case ConnectionPackage.FTP_CONNECTION__PASSPHRASE:
+            setPassphrase(PASSPHRASE_EDEFAULT);
+            return;
         case ConnectionPackage.FTP_CONNECTION__KEYSTORE_FILE:
             setKeystoreFile(KEYSTORE_FILE_EDEFAULT);
             return;
@@ -969,6 +1071,10 @@ public class FTPConnectionImpl extends ConnectionImpl implements FTPConnection {
             return ftps != FTPS_EDEFAULT;
         case ConnectionPackage.FTP_CONNECTION__METHOD:
             return METHOD_EDEFAULT == null ? method != null : !METHOD_EDEFAULT.equals(method);
+        case ConnectionPackage.FTP_CONNECTION__PRIVATEKEY:
+            return PRIVATEKEY_EDEFAULT == null ? privatekey != null : !PRIVATEKEY_EDEFAULT.equals(privatekey);
+        case ConnectionPackage.FTP_CONNECTION__PASSPHRASE:
+            return PASSPHRASE_EDEFAULT == null ? passphrase != null : !PASSPHRASE_EDEFAULT.equals(passphrase);
         case ConnectionPackage.FTP_CONNECTION__KEYSTORE_FILE:
             return KEYSTORE_FILE_EDEFAULT == null ? keystoreFile != null : !KEYSTORE_FILE_EDEFAULT.equals(keystoreFile);
         case ConnectionPackage.FTP_CONNECTION__KEYSTORE_PASSWORD:
@@ -1019,6 +1125,10 @@ public class FTPConnectionImpl extends ConnectionImpl implements FTPConnection {
         result.append(ftps);
         result.append(", Method: ");
         result.append(method);
+        result.append(", Privatekey: ");
+        result.append(privatekey);
+        result.append(", Passphrase: ");
+        result.append(passphrase);
         result.append(", KeystoreFile: ");
         result.append(keystoreFile);
         result.append(", KeystorePassword: ");

@@ -23,6 +23,7 @@ import org.talend.core.model.components.IComponentsService;
 import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.process.IElement;
+import org.talend.core.model.process.IElementParameter;
 import org.talend.core.model.process.INode;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.repository.ERepositoryObjectType;
@@ -144,7 +145,7 @@ public class ExampleDemoDragAndDropHandler implements IDragAndDropServiceHandler
      * .connection.Connection, org.talend.core.model.process.INode, java.lang.String)
      */
     @Override
-    public void setComponentValue(Connection connection, INode node, String repositoryValue) {
+    public void setComponentValue(Connection connection, INode node, IElementParameter param) {
         if (node != null && canHandle(connection)) {
             ExampleDemoConnection demoConn = (ExampleDemoConnection) connection;
             // PTODO get the values from node, and set to the matched attributes(repositoryValue) of connection

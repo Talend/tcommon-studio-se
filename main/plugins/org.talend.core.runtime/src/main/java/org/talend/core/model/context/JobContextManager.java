@@ -32,6 +32,7 @@ import org.talend.core.model.process.IContextListener;
 import org.talend.core.model.process.IContextManager;
 import org.talend.core.model.process.IContextParameter;
 import org.talend.core.model.properties.ContextItem;
+import org.talend.core.model.properties.Item;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
@@ -293,7 +294,7 @@ public class JobContextManager implements IContextManager {
                     contextParamType.setPromptNeeded(contextParam.isPromptNeeded());
                     contextParamType.setComment(contextParam.getComment());
                     if (!contextParam.isBuiltIn()) {
-                        ContextItem item = ContextUtils.getContextItemById2(contextParam.getSource());
+                        Item item = ContextUtils.getContextItemById3(contextParam.getSource());
                         if (item != null) {
                             contextParamType.setRepositoryContextId(item.getProperty().getId());
                         }
@@ -376,7 +377,10 @@ public class JobContextManager implements IContextManager {
                 String repositoryContextId = contextParamType.getRepositoryContextId();
                 String source = IContextParameter.BUILT_IN;
                 if (repositoryContextId != null && !"".equals(repositoryContextId)) { //$NON-NLS-1$
-                    ContextItem item = ContextUtils.getContextItemById(contextItemList, repositoryContextId);
+                    Item item = ContextUtils.getContextItemById(contextItemList, repositoryContextId);
+                    if (item == null) {
+                        item = ContextUtils.getContextItemById3(repositoryContextId);
+                    }
                     if (item != null) {
                         source = item.getProperty().getId();
                     } else {

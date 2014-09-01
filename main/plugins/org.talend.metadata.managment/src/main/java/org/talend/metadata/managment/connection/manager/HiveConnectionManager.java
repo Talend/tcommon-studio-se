@@ -28,6 +28,7 @@ import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.metadata.builder.database.JavaSqlFactory;
 import org.talend.core.model.metadata.builder.database.hive.EmbeddedHiveDataBaseMetadata;
 import org.talend.core.model.metadata.connection.hive.HiveConnVersionInfo;
+import org.talend.core.utils.ReflectionUtils;
 import org.talend.metadata.managment.hive.HiveClassLoaderFactory;
 import org.talend.metadata.managment.hive.handler.CDH4YarnHandler;
 import org.talend.metadata.managment.hive.handler.CDH5YarnHandler;
@@ -117,6 +118,19 @@ public class HiveConnectionManager extends DataBaseConnectionManager {
             String hivePrincipal = (String) metadataConn.getParameter(ConnParameterKeys.HIVE_AUTHENTICATION_HIVEPRINCIPLA);
             if (useKerberos) {
                 System.setProperty(HiveConfKeysForTalend.HIVE_CONF_KEY_HIVE_METASTORE_KERBEROS_PRINCIPAL.getKey(), hivePrincipal);
+                String principal = (String) metadataConn.getParameter(ConnParameterKeys.HIVE_AUTHENTICATION_PRINCIPLA);
+                String keytabPath = (String) metadataConn.getParameter(ConnParameterKeys.HIVE_AUTHENTICATION_KEYTAB);
+                boolean useKeytab = Boolean.valueOf((String) metadataConn
+                        .getParameter(ConnParameterKeys.HIVE_AUTHENTICATION_USEKEYTAB));
+                if (useKeytab) {
+                    ClassLoader hiveClassLoader = HiveClassLoaderFactory.getInstance().getClassLoader(metadataConn);
+                    try {
+                        ReflectionUtils.invokeStaticMethod("org.apache.hadoop.security.UserGroupInformation", hiveClassLoader, //$NON-NLS-1$
+                                "loginUserFromKeytab", new String[] { principal, keytabPath }); //$NON-NLS-1$
+                    } catch (Exception e) {
+                        throw new SQLException(e);
+                    }
+                }
             }
             if (connURL.startsWith(DatabaseConnConstants.HIVE_2_URL_FORMAT)) {
                 hiveStandaloneConn = createHive2StandaloneConnection(metadataConn);

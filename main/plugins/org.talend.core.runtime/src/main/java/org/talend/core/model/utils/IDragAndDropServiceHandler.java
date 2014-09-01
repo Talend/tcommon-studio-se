@@ -18,6 +18,7 @@ import org.talend.core.model.components.IComponent;
 import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.process.IElement;
+import org.talend.core.model.process.IElementParameter;
 import org.talend.core.model.process.INode;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.repository.ERepositoryObjectType;
@@ -77,9 +78,9 @@ public interface IDragAndDropServiceHandler {
      * 
      * @param connection - connection
      * @param node - node
-     * @param repositoryValue - repositoryValue
+     * @param param - param
      */
-    public void setComponentValue(Connection connection, INode node, String repositoryValue);
+    public void setComponentValue(Connection connection, INode node, IElementParameter param);
 
     /**
      * DOC zwzhao Comment method "getType".

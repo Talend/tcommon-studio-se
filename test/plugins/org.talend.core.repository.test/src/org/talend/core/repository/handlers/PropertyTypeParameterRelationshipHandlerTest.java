@@ -27,12 +27,12 @@ public class PropertyTypeParameterRelationshipHandlerTest extends AbstractReposi
 
     @Override
     protected String getRepositoryTypeName() {
-        return PropertyTypeParameterRelationshipHandler.PROPERTY_PROPERTY_TYPE;
+        return "PROPERTY:" + PropertyTypeParameterRelationshipHandler.PROPERTY_PROPERTY_TYPE; //$NON-NLS-1$
     }
 
     @Override
     protected String getRepositoryTypeValueName() {
-        return PropertyTypeParameterRelationshipHandler.PROPERTY_REPOSITORY_PROPERTY_TYPE;
+        return "PROPERTY:" + PropertyTypeParameterRelationshipHandler.PROPERTY_REPOSITORY_PROPERTY_TYPE; //$NON-NLS-1$
     }
 
     @Override

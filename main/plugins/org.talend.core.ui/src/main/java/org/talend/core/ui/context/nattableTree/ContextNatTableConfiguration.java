@@ -234,6 +234,8 @@ public class ContextNatTableConfiguration extends AbstractRegistryConfiguration 
 
     private void registerColumnThreeCheckBoxEditor(IConfigRegistry configRegistry) {
         CheckBoxCellEditor checkCellEditor = new CheckBoxCellEditor();
+        configRegistry.registerConfigAttribute(EditConfigAttributes.CELL_EDITOR, checkCellEditor, DisplayMode.EDIT,
+                ContextTableConstants.COLUMN_CHECK_PROPERTY);
         CheckBoxPainter customPainter = new CheckBoxPainter() {
 
             /*
@@ -266,10 +268,8 @@ public class ContextNatTableConfiguration extends AbstractRegistryConfiguration 
         };
         configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_PAINTER, customPainter, DisplayMode.NORMAL,
                 ContextTableConstants.COLUMN_CHECK_PROPERTY);
-        configRegistry.registerConfigAttribute(CellConfigAttributes.DISPLAY_CONVERTER, new DefaultBooleanDisplayConverter(),
+        configRegistry.registerConfigAttribute(CellConfigAttributes.DISPLAY_CONVERTER, new ContextCheckDisplayConverter(),
                 DisplayMode.NORMAL, ContextTableConstants.COLUMN_CHECK_PROPERTY);
-        configRegistry.registerConfigAttribute(EditConfigAttributes.CELL_EDITOR, checkCellEditor, DisplayMode.EDIT,
-                ContextTableConstants.COLUMN_CHECK_PROPERTY);
     }
 
     private void registerColumnFourTextEditor(IConfigRegistry configRegistry) {
@@ -437,6 +437,37 @@ public class ContextNatTableConfiguration extends AbstractRegistryConfiguration 
          */
         public void setFreeEdit(boolean freeEdit) {
             this.freeEdit = freeEdit;
+        }
+
+    }
+
+    public class ContextCheckDisplayConverter extends DefaultBooleanDisplayConverter {
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * org.eclipse.nebula.widgets.nattable.data.convert.DefaultBooleanDisplayConverter#displayToCanonicalValue(java
+         * .lang.Object)
+         */
+        @Override
+        public Object displayToCanonicalValue(Object displayValue) {
+            return super.displayToCanonicalValue(displayValue);
+        }
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * org.eclipse.nebula.widgets.nattable.data.convert.DefaultBooleanDisplayConverter#canonicalToDisplayValue(java
+         * .lang.Object)
+         */
+        @Override
+        public Object canonicalToDisplayValue(Object canonicalValue) {
+            if (canonicalValue.equals("")) {
+                return null;
+            }
+            return super.canonicalToDisplayValue(canonicalValue);
         }
 
     }

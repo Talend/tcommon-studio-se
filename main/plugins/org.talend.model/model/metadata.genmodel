@@ -456,6 +456,8 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//FTPConnection/SFTP"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//FTPConnection/FTPS"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//FTPConnection/Method"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//FTPConnection/Privatekey"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//FTPConnection/Passphrase"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//FTPConnection/KeystoreFile"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//FTPConnection/KeystorePassword"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//FTPConnection/Usesocks"/>

@@ -19,6 +19,7 @@
       <import plugin="org.eclipse.core.databinding.beans"/>
       <import plugin="org.eclipse.core.databinding.observable"/>
       <import plugin="org.eclipse.core.databinding.property"/>
+      <import plugin="org.talend.core.runtime"/>
       <import plugin="org.talend.librariesmanager"/>
       <import plugin="org.talend.librariesmanager.ui"/>
    </requires>
