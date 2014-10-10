@@ -904,7 +904,6 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                 // tableType = null;
             }
             ResultSet tables = dbJDBCMetadata.getTables(catalogName, schemaPattern, tablePattern, tableType);
-            String productName = dbJDBCMetadata.getDatabaseProductName();
 
             while (tables.next()) {
                 String coloumnName = GetTable.TABLE_SCHEM.name();
@@ -941,17 +940,7 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                 // continue;
                 // }
                 if (!isOracle8i) {
-                    try {
-                        tableComment = getStringFromResultSet(tables, GetTable.REMARKS.name());
-                        if (StringUtils.isBlank(tableComment)) {
-                            String selectRemarkOnTable = MetadataConnectionUtils.getCommonQueryStr(productName, tableName);
-                            if (selectRemarkOnTable != null) {
-                                tableComment = executeGetCommentStatement(selectRemarkOnTable, dbJDBCMetadata.getConnection());
-                            }
-                        }
-                    } catch (SQLException e) {
-                    }
-
+                    tableComment = getTableComment(dbJDBCMetadata, tables, tableName, catalogName, schemaPattern);
                 }
                 MetadataTable metadatatable = null;
                 if (TableType.VIEW.toString().equals(temptableType) || ETableTypes.VIRTUAL_VIEW.getName().equals(temptableType)) {
@@ -1052,6 +1041,34 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
 
     }
 
+    /**
+     * get Table Comment.
+     * 
+     * @param dbJDBCMetadata
+     * @param tables
+     * @param tableName
+     * @param catalogName
+     * @param schemaPattern
+     * @return
+     */
+    private String getTableComment(DatabaseMetaData dbJDBCMetadata, ResultSet tables, String tableName, String catalogName,
+            String schemaPattern) {
+        String tableComment = getStringFromResultSet(tables, GetTable.REMARKS.name());
+        try {
+            String productName = dbJDBCMetadata.getDatabaseProductName();
+            if (StringUtils.isBlank(tableComment)) {
+                String selectRemarkOnTable = MetadataConnectionUtils.getCommentQueryStr(productName, tableName, catalogName,
+                        schemaPattern);
+                if (selectRemarkOnTable != null) {
+                    tableComment = executeGetCommentStatement(selectRemarkOnTable, dbJDBCMetadata.getConnection());
+                }
+            }
+        } catch (SQLException e) {
+            log.error(e, e);
+        }
+        return tableComment;
+    }
+
     public List<MetadataTable> fillAll(Package pack, DatabaseMetaData dbJDBCMetadata, List<String> tableFilter,
             String tablePattern, String[] tableType) {
         return fillAll(pack, dbJDBCMetadata, null, tableFilter, tablePattern, tableType);
@@ -1109,7 +1126,7 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
             }
 
             ResultSet tables = dbJDBCMetadata.getTables(catalogName, schemaPattern, tablePattern, tableType);
-            String productName = dbJDBCMetadata.getDatabaseProductName();
+
             while (tables.next()) {
                 String tableName = getStringFromResultSet(tables, GetTable.TABLE_NAME.name());
                 String temptableType = getStringFromResultSet(tables, GetTable.TABLE_TYPE.name());
@@ -1127,13 +1144,7 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                     continue;
                 }
                 if (!flag) {
-                    tableComment = getStringFromResultSet(tables, GetTable.REMARKS.name());
-                    if (StringUtils.isBlank(tableComment)) {
-                        String selectRemarkOnTable = MetadataConnectionUtils.getCommonQueryStr(productName, tableName);
-                        if (selectRemarkOnTable != null) {
-                            tableComment = executeGetCommentStatement(selectRemarkOnTable, dbJDBCMetadata.getConnection());
-                        }
-                    }
+                    tableComment = getTableComment(dbJDBCMetadata, tables, tableName, catalogName, schemaPattern);
                 }
                 // create table
                 TdTable table = RelationalFactory.eINSTANCE.createTdTable();
@@ -1185,7 +1196,6 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
         try {
 
             ResultSet tables = dbJDBCMetadata.getTables(catalogName, schemaPattern, viewPattern, tableType);
-            String productName = dbJDBCMetadata.getDatabaseProductName();
             while (tables.next()) {
 
                 String tableName = getStringFromResultSet(tables, GetTable.TABLE_NAME.name());
@@ -1201,13 +1211,7 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                     flag = MetadataConnectionUtils.isOracle8i(c);
                 }
                 if (!flag) {
-                    tableComment = getStringFromResultSet(tables, GetTable.REMARKS.name());
-                    if (StringUtils.isBlank(tableComment)) {
-                        String selectRemarkOnTable = MetadataConnectionUtils.getCommonQueryStr(productName, tableName);
-                        if (selectRemarkOnTable != null) {
-                            tableComment = executeGetCommentStatement(selectRemarkOnTable, dbJDBCMetadata.getConnection());
-                        }
-                    }
+                    tableComment = getTableComment(dbJDBCMetadata, tables, tableName, catalogName, schemaPattern);
                 }
                 // create table
                 TdView table = RelationalFactory.eINSTANCE.createTdView();
@@ -1280,7 +1284,7 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
             // TDI-28578 Metadata wizard doesn't display tables starting with '/'
             boolean isOracle = MetadataConnectionUtils.isOracle(dbJDBCMetadata);
             if (isOracle && tablePattern.contains("/")) {//$NON-NLS-1$
-                tablePattern = tablePattern.replaceAll("/", "//");//$NON-NLS-1$
+                tablePattern = tablePattern.replaceAll("/", "//");//$NON-NLS-1$ //$NON-NLS-2$
             }
 
             ResultSet columns = dbJDBCMetadata.getColumns(catalogName, schemaPattern, tablePattern, columnPattern);
@@ -1558,7 +1562,7 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                     column.setSourceType(defaultSelectedDbType);
                 }
                 try {
-                    column.setNullable("YES".equals(getStringFromResultSet(columns, GetColumn.IS_NULLABLE.name()))); //$NON-NLS-1$
+                    column.setNullable(nullable == 1);
                 } catch (Exception e) {
                     // do nothing
                 }

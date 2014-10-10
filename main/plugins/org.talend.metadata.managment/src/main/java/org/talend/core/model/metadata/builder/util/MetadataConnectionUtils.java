@@ -687,7 +687,9 @@ public class MetadataConnectionUtils {
      * 
      * @param sqlConn
      * @return null only if conn is null.or can not find the
+     * @deprecated {@link #getCommentQueryStr(String, String, String)} instead.
      */
+    @Deprecated
     public static String getCommonQueryStr(String productName, String tableName) {
         if (productName == null) {
             return null;
@@ -706,6 +708,42 @@ public class MetadataConnectionUtils {
             break;
         case MySQL:
             sqlStr = "SELECT TABLE_COMMENT FROM information_schema.TABLES WHERE TABLE_NAME='" + tableName + "'"; //$NON-NLS-1$ //$NON-NLS-2$
+            break;
+        default:
+            sqlStr = null;
+
+        }
+        return sqlStr;
+
+    }
+
+    /**
+     * get Comment Query Str.
+     * 
+     * @param productName
+     * @param tableName
+     * @param catalogName
+     * @param schemaPattern
+     * @return null only if conn is null.or can not find
+     */
+    public static String getCommentQueryStr(String productName, String tableName, String catalogName, String schemaPattern) {
+        if (productName == null) {
+            return null;
+        }
+        productName = productName.replaceAll(" ", "_"); //$NON-NLS-1$ //$NON-NLS-2$
+        EDataBaseType eDataBaseType = null;
+        try {
+            eDataBaseType = EDataBaseType.valueOf(productName);
+        } catch (Exception e) {
+            eDataBaseType = EDataBaseType.Microsoft_SQL_Server;
+        }
+        String sqlStr = ""; //$NON-NLS-1$
+        switch (eDataBaseType) {
+        case Oracle:
+            sqlStr = "SELECT COMMENTS FROM ALL_TAB_COMMENTS WHERE TABLE_NAME='" + tableName + "' AND OWNER='" + schemaPattern.toUpperCase() + "'"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            break;
+        case MySQL:
+            sqlStr = "SELECT TABLE_COMMENT FROM information_schema.TABLES WHERE TABLE_NAME='" + tableName + "' AND TABLE_SCHEMA='" + catalogName + "'"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             break;
         default:
             sqlStr = null;
