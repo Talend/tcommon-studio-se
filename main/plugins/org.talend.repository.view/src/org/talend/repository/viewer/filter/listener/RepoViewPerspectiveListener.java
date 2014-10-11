@@ -112,13 +112,14 @@ public class RepoViewPerspectiveListener implements IPerspectiveListener, IPersp
     @Override
     public void perspectiveActivated(IWorkbenchPage page, IPerspectiveDescriptor perspective) {
         final CommonViewer commonViewer2 = getCommonViewer();
-        RepositoryNodeFilterHelper.filter(commonViewer2, RepositoryNodeFilterHelper.isActivedFilter(),
-                PerspectiveFilterHelper.isActivedPerspectiveFilter());
-
         if (commonViewer2 instanceof RepoViewCommonViewer) {
-            ((RepoViewCommonViewer) commonViewer2).fireRefreshNodePerspectiveLisenter();
-        }
+            RepositoryNodeFilterHelper.filter(commonViewer2, RepositoryNodeFilterHelper.isActivedFilter(),
+                    PerspectiveFilterHelper.isActivedPerspectiveFilter());
 
+            if (commonViewer2 instanceof RepoViewCommonViewer) {
+                ((RepoViewCommonViewer) commonViewer2).fireRefreshNodePerspectiveLisenter();
+            }
+        }
     }
 
     /*
