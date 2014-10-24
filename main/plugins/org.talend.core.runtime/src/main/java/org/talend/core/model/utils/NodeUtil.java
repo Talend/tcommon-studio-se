@@ -955,7 +955,9 @@ public class NodeUtil {
         // fix is just transforming into true or false to make logging OK
         else if ("BUILDIN".equals(ep.getName())) {
             value = value.toLowerCase();
-        }
+        }else if(value.endsWith("*")){
+    		value=value.substring(0, value.length()-1)+"\"*\"";
+    	}
         return value;
     }
 
