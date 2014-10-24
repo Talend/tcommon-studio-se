@@ -857,11 +857,11 @@ public class NodeUtil {
                     printedColumnExist = true;
 
                     value.append(column.getKey());
-                    value.append("=\"+");
+                    value.append("=\"+(");
 
                     value.append(getNormalizeParameterValue(column.getValue(), types.get(column.getKey()), true));
 
-                    value.append("+\"");
+                    value.append(")+\"");
 
                     if (columnsIter.hasNext()) {
                         value.append(", ");
