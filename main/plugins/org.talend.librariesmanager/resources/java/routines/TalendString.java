@@ -281,4 +281,33 @@ public class TalendString {
         }
         return result.toString();
     }
+    /**
+     * unionString: Union the variable number of arguments with separator String
+     * 
+     * @param separator union arguments .
+     * @param objects  variable number of arguments.
+     * @return A union string.
+     * 
+     * {talendTypes} String
+     * 
+     * {Category} TalendString
+     * 
+     */
+    public static String unionString(String separator,Object... objects){
+    	if(objects!=null){
+    		String value = "";
+        	boolean isFirst = true;
+	    	for(Object obj:objects){
+	    		if(isFirst){
+	    			value = String.valueOf(obj);
+	    			isFirst = false;
+	    		}else{
+	    			value = value +separator + String.valueOf(obj);
+	    		}
+	    	}
+	    	return value;
+    	}else{
+    		return null;
+    	}
+    }
 }
