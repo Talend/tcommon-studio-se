@@ -1043,13 +1043,9 @@ public class NodeUtil {
     }
     
     public static boolean containsMultiThreadComponent(IProcess process) {
-    	String[] multiThreadComponents = {"tWriteXMLField", "tWriteJSONField", "tMDMOutput", 
-    			"tCouchbaseOutput", "tCouchDBOutput", "tMongoDBOutput", "tBRMS"};
-    	for(String multiThreadComponent : multiThreadComponents) {
-			List<? extends INode> multiThreadComponentList = process.getNodesOfType(multiThreadComponent);
-			if(multiThreadComponentList != null && multiThreadComponentList.size() > 0){
-				return true;
-	    	}
+		List<? extends INode> multiThreadComponentList = process.getNodesOfType("tWriteXMLFieldOut");
+		if(multiThreadComponentList != null && multiThreadComponentList.size() > 0){
+			return true;
     	}
 		return false;
     }
