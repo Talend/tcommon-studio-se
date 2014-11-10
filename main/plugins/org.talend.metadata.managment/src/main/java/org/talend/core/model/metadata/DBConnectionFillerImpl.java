@@ -1587,14 +1587,22 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                 String dbmsId = JavaSqlFactory.getDbmsId(dbConnection);
                 if (dbmsId != null) {
                     MappingTypeRetriever mappingTypeRetriever = MetadataTalendType.getMappingTypeRetriever(dbmsId);
+                    if (mappingTypeRetriever == null) {
+                        EDatabaseTypeName dbType = EDatabaseTypeName.getTypeFromDbType(dbConnection.getDatabaseType(), false);
+                        if (dbType != null) {
+                            mappingTypeRetriever = MetadataTalendType.getMappingTypeRetrieverByProduct(dbType.getProduct());
+                        }
+                    }
+                    if (mappingTypeRetriever == null) {
+                        throw new IllegalArgumentException();
+                    }
                     String talendType = mappingTypeRetriever
                             .getDefaultSelectedTalendType(
                                     typeName,
                                     extractMeta.getIntMetaDataInfo(columns, "COLUMN_SIZE"), (dbJDBCMetadata instanceof TeradataDataBaseMetadata) ? 0 : extractMeta.getIntMetaDataInfo(columns, //$NON-NLS-1$
                                                             "DECIMAL_DIGITS")); //$NON-NLS-1$
                     column.setTalendType(talendType);
-                    String defaultSelectedDbType = MetadataTalendType.getMappingTypeRetriever(dbmsId).getDefaultSelectedDbType(
-                            talendType);
+                    String defaultSelectedDbType = mappingTypeRetriever.getDefaultSelectedDbType(talendType);
                     column.setSourceType(defaultSelectedDbType);
                 }
                 try {
