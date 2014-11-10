@@ -404,7 +404,21 @@ public final class MetadataTalendType {
                 return dbms;
             }
         }
-        ExceptionHandler.log(Messages.getString("MetadataTalendType.dbIdNotFound", dbmsId));
+        ExceptionHandler.log(Messages.getString("MetadataTalendType.dbIdNotFound", dbmsId)); //$NON-NLS-1$
+        return null;
+    }
+
+    public static Dbms getDbmsByProduct(String product) {
+        if (product == null) {
+            throw new IllegalArgumentException();
+        }
+        Dbms[] allDbmsArray = getAllDbmsArray();
+        for (Dbms dbms : allDbmsArray) {
+            if (product.equals(dbms.getProduct())) {
+                return dbms;
+            }
+        }
+        ExceptionHandler.log(Messages.getString("MetadataTalendType.dbIdNotFound", product)); //$NON-NLS-1$
         return null;
     }
 
@@ -595,6 +609,23 @@ public final class MetadataTalendType {
         System.out.println("id_Long => " + mappingTypeRetriever.getAdvicedTalendToDbTypes("id_Long")); //$NON-NLS-1$ //$NON-NLS-2$
 
         System.out.println();
+    }
+
+    /**
+     * DOC xqliu Comment method "getMappingTypeProduct".
+     * 
+     * @param product
+     * @return
+     */
+    public static MappingTypeRetriever getMappingTypeRetrieverByProduct(String product) {
+        if (product == null) {
+            throw new IllegalArgumentException();
+        }
+        Dbms dbms = getDbmsByProduct(product);
+        if (dbms == null) {
+            return null;
+        }
+        return new MappingTypeRetriever(dbms);
     }
 
 }
