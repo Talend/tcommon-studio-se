@@ -520,9 +520,9 @@ public class ProjectNodeHelper {
     public static void fillCatalogAndSchemas(IMetadataConnection iMetadataConnection, DatabaseConnection temConnection)
             throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
         java.sql.Connection sqlConn = null;
+        MetadataFillFactory dbInstance = MetadataFillFactory.getDBInstance(iMetadataConnection);
         try {
-            temConnection = (DatabaseConnection) MetadataFillFactory.getDBInstance().fillUIConnParams(iMetadataConnection,
-                    temConnection);
+            temConnection = (DatabaseConnection) dbInstance.fillUIConnParams(iMetadataConnection, temConnection);
             sqlConn = MetadataConnectionUtils.createConnection(iMetadataConnection).getObject();
             // because there is no any structure after import into 423 from 402,just sychronized the two connection's
             // UISchema for fill catalogs and scheams
@@ -544,10 +544,10 @@ public class ProjectNodeHelper {
                     dbMetaData = ExtractMetaDataUtils.getInstance().getDatabaseMetaData(sqlConn, dbType, false,
                             iMetadataConnection.getDatabase());
                 }
-                MetadataFillFactory.getDBInstance().fillCatalogs(temConnection, dbMetaData, iMetadataConnection,
+                dbInstance.fillCatalogs(temConnection, dbMetaData, iMetadataConnection,
                         MetadataConnectionUtils.getPackageFilter(temConnection, dbMetaData, true));
 
-                MetadataFillFactory.getDBInstance().fillSchemas(temConnection, dbMetaData, iMetadataConnection,
+                dbInstance.fillSchemas(temConnection, dbMetaData, iMetadataConnection,
                         MetadataConnectionUtils.getPackageFilter(temConnection, dbMetaData, false));
             }
         } catch (SQLException e) {

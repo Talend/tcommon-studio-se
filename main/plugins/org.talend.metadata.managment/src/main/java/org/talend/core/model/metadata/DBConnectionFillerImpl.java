@@ -376,15 +376,15 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
             return fillPostgresqlCatalogs(metaConnection, dbConn, dbJDBCMetadata, catalogList);
         }
 
+        IMetadataConnection iMetadataCon = metaConnection;
+        if (iMetadataCon == null) {
+            iMetadataCon = ConvertionHelper.convert(dbConn);
+        }
         // TDI-17172 : if the catalog is not fill, as the db context model, should clear "catalogFilter" .
         if (dbConn != null && dbConn.isContextMode()) {
             if (EDatabaseTypeName.MYSQL.getProduct().equals(dbConn.getProductId())
                     || EDatabaseTypeName.MSSQL.getProduct().equals(dbConn.getProductId())
                     || EDatabaseTypeName.MSSQL05_08.getProduct().equals(dbConn.getProductId())) {
-                IMetadataConnection iMetadataCon = metaConnection;
-                if (iMetadataCon == null) {
-                    iMetadataCon = ConvertionHelper.convert(dbConn);
-                }
                 if (iMetadataCon != null) {
                     String catalogTemp = iMetadataCon.getDatabase();
                     if ("".equals(catalogTemp)) { //$NON-NLS-1$
@@ -413,6 +413,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
             if (catalogNames != null) {
                 boolean isHive = MetadataConnectionUtils.isHive(dbJDBCMetadata);
                 boolean isSybase = MetadataConnectionUtils.isSybase(dbJDBCMetadata);
+                boolean isNetezza = ConnectionUtils.isNetezza(dbJDBCMetadata);
+                String sid = getSid(iMetadataCon, dbConn);
                 // else DB support getCatalogs() method
                 while (catalogNames.next()) {
                     // MOD xqliu 2009-11-03 bug 9841
@@ -431,6 +433,12 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                         // FIXME isODBCCatalog is not a good name
                         if (!isHive && !MetadataConnectionUtils.isODBCCatalog(catalogName, dbJDBCMetadata)) {
                             continue;
+                        }
+                        // if the connection is Netezza, the database is the catalog
+                        if (isNetezza && iMetadataCon != null) {
+                            if (!StringUtils.equalsIgnoreCase(catalogName, sid)) {
+                                continue;
+                            }
                         }
                     } catch (Exception e) {
                         log.warn(e, e);
@@ -568,6 +576,24 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
         }
 
         return catalogList;
+    }
+
+    /**
+     * return the sid(database name).
+     * 
+     * @param iMetadataCon
+     * @param dbConn
+     * @return
+     */
+    protected String getSid(IMetadataConnection iMetadataCon, DatabaseConnection dbConn) {
+        String sid = null;
+        if (iMetadataCon != null) {
+            sid = iMetadataCon.getDatabase();
+        }
+        if (StringUtils.isEmpty(sid) && dbConn != null) {
+            sid = dbConn.getSID();
+        }
+        return sid == null ? StringUtils.EMPTY : sid;
     }
 
     /**

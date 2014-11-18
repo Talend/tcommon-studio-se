@@ -19,14 +19,10 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.talend.commons.i18n.internal.Messages;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
-import org.talend.cwm.helper.CatalogHelper;
-import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.utils.sql.metadata.constants.MetaDataConstants;
 import orgomg.cwm.objectmodel.core.Package;
 import orgomg.cwm.resource.relational.Catalog;
-import orgomg.cwm.resource.relational.Schema;
 
 /**
  * created by xqliu on 2014-10-29 Detailled comment
@@ -40,45 +36,29 @@ public class NetezzaConnectionFiller extends DBConnectionFillerImpl {
      * (non-Javadoc)
      * 
      * @see
-     * org.talend.core.model.metadata.DBConnectionFillerImpl#fillCatalogs(org.talend.core.model.metadata.builder.connection
-     * .DatabaseConnection, java.sql.DatabaseMetaData, org.talend.core.model.metadata.IMetadataConnection,
-     * java.util.List)
+     * org.talend.core.model.metadata.DBConnectionFillerImpl#getSid(org.talend.core.model.metadata.IMetadataConnection,
+     * org.talend.core.model.metadata.builder.connection.DatabaseConnection)
      */
     @Override
-    public List<Catalog> fillCatalogs(DatabaseConnection dbConn, DatabaseMetaData dbJDBCMetadata,
-            IMetadataConnection metaConnection, List<String> catalogFilter) {
-        // catalogFilter is always empty for Netezza connection ???
-        List<Catalog> catalogList = new ArrayList<Catalog>();
-        String catalogName = dbConn.getSID();
-
-        if (StringUtils.isEmpty(catalogName)) {
-            catalogName = getCatalogNameFromUrl(metaConnection.getUrl());
-        }
-
-        if (StringUtils.isEmpty(catalogName)) {
-            log.error(Messages.getString("NetezzaConnectionFiller.emptyCalalogName")); //$NON-NLS-1$
-            return catalogList;
-        }
-
-        Catalog catalog = CatalogHelper.createCatalog(catalogName);
-        catalogList.add(catalog);
-
-        List<String> filterList = new ArrayList<String>();
-        List<Schema> schemaList = new ArrayList<Schema>();
-        try {
-            schemaList = fillSchemaToCatalog(dbConn, dbJDBCMetadata, catalog, filterList);
-            if (!schemaList.isEmpty()) {
-                CatalogHelper.addSchemas(schemaList, catalog);
+    protected String getSid(IMetadataConnection iMetadataCon, DatabaseConnection dbConn) {
+        String sid = super.getSid(iMetadataCon, dbConn);
+        // if the connection is jdbc, should get the sid from the url
+        if (StringUtils.isBlank(sid)) {
+            String url = StringUtils.EMPTY;
+            if (iMetadataCon != null) {
+                url = iMetadataCon.getUrl();
+            } else if (dbConn != null) {
+                url = dbConn.getURL();
             }
-        } catch (Throwable e) {
-            log.info(e);
+            sid = getSidFromUrl(url);
         }
-        ConnectionHelper.addCatalogs(catalogList, dbConn);
-
-        return catalogList;
+        return sid;
     }
 
-    private String getCatalogNameFromUrl(String url) {
+    private String getSidFromUrl(String url) {
+        if (StringUtils.isBlank(url)) {
+            return StringUtils.EMPTY;
+        }
         int lastIndexOf1 = StringUtils.lastIndexOf(url, "/"); //$NON-NLS-1$
         if (StringUtils.isBlank(url) || lastIndexOf1 < 0 || lastIndexOf1 > url.length() - 1) {
             return StringUtils.EMPTY;
