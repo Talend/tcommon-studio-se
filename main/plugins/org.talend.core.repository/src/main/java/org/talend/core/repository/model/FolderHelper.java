@@ -75,7 +75,7 @@ public abstract class FolderHelper {
                 if (type.hasFolder()) {
                     String folderName = ERepositoryObjectType.getFolderName(type);
                     if (getFolder(new Path(folderName)) == null) {
-                        createSystemFolder(new Path(folderName));
+                        createFolder(new Path(folderName));
                     }
                 }
             } catch (IllegalArgumentException iae) {
@@ -102,15 +102,15 @@ public abstract class FolderHelper {
     }
 
     public void createFolder(IPath path) {
-        FolderType folderType = FolderType.FOLDER_LITERAL;
-        for (ERepositoryObjectType type : (ERepositoryObjectType[]) ERepositoryObjectType.values()) {
-            if (type.hasFolder()) {
-                String folderName = ERepositoryObjectType.getFolderName(type);
-                if (folderName.equals(path.toString())) {
-                    folderType = FolderType.SYSTEM_FOLDER_LITERAL;
-                }
-            }
+        /*
+         * FIXME, Create the parent folders , and make sure the right folder type. Else, if system folder is not
+         * created, will use the simple folder type, it's wrong.
+         */
+        if (path.segmentCount() > 1) {
+            createFolder(path.removeLastSegments(1));
         }
+        //
+        FolderType folderType = getFolderType(path);
         doCreateFolder(path, folderType);
 
         if (folderType == FolderType.SYSTEM_FOLDER_LITERAL) {
@@ -120,6 +120,24 @@ public abstract class FolderHelper {
                 currentFolder = ((FolderItem) currentFolder).getParent();
             }
         }
+    }
+
+    private FolderType getFolderType(IPath path) {
+        FolderType folderType = FolderType.FOLDER_LITERAL;
+        for (ERepositoryObjectType type : (ERepositoryObjectType[]) ERepositoryObjectType.values()) {
+            if (type.hasFolder()) {
+                String folderName = ERepositoryObjectType.getFolderName(type);
+                if (folderName.equals(path.toString())) {
+                    if (type.isResouce()) {
+                        folderType = FolderType.STABLE_SYSTEM_FOLDER_LITERAL;
+                    } else {
+                        folderType = FolderType.SYSTEM_FOLDER_LITERAL;
+                    }
+                    break;
+                }
+            }
+        }
+        return folderType;
     }
 
     private void doCreateFolder(IPath path, FolderType type) {
@@ -334,15 +352,15 @@ public abstract class FolderHelper {
                 FolderItem parentFolder = (FolderItem) parent;
                 if (FolderType.SYSTEM_FOLDER_LITERAL.equals(parentFolder.getType())) {
                     if (path == null) {
-                        path = "";
+                        path = ""; //$NON-NLS-1$
                     }
                     return path;
                 }
 
-                if (path == null || "".equals(path)) {
+                if (path == null || path.length() == 0) {
                     path = parentFolder.getProperty().getLabel();
                 } else {
-                    path = parentFolder.getProperty().getLabel() + "/" + path;
+                    path = parentFolder.getProperty().getLabel() + '/' + path;
                 }
                 return getFolderPath(parentFolder, path);
             }
@@ -362,9 +380,9 @@ public abstract class FolderHelper {
 
     private String getFullFolderPath(FolderItem folder, String path) {
         if (folder.getParent() instanceof FolderItem) {
-            return getFullFolderPath((FolderItem) folder.getParent(), folder.getProperty().getLabel() + "/" + path);
+            return getFullFolderPath((FolderItem) folder.getParent(), folder.getProperty().getLabel() + '/' + path);
         }
-        return folder.getProperty().getLabel() + "/" + path;
+        return folder.getProperty().getLabel() + '/' + path;
     }
 
 }

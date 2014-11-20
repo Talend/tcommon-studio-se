@@ -984,7 +984,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
             createFolder(folderTemp);
         }
         if (folderHelper.getFolder(new Path(path)) == null) {
-            folderHelper.createSystemFolder(new Path(path));
+            folderHelper.createFolder(new Path(path));
         }
     }
 
