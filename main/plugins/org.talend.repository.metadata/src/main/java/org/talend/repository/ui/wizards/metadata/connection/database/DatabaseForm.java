@@ -111,6 +111,7 @@ import org.talend.core.hadoop.version.custom.HadoopVersionControlUtils;
 import org.talend.core.language.ECodeLanguage;
 import org.talend.core.language.LanguageManager;
 import org.talend.core.model.metadata.IMetadataConnection;
+import org.talend.core.model.metadata.MetadataFillFactory;
 import org.talend.core.model.metadata.MetadataTalendType;
 import org.talend.core.model.metadata.builder.ConvertionHelper;
 import org.talend.core.model.metadata.builder.connection.Connection;
@@ -2224,9 +2225,20 @@ public class DatabaseForm extends AbstractForm {
         checkButton.setEnabled(false);
         if (connectionItem.getConnection() instanceof DatabaseConnection) {
             DatabaseConnection c = (DatabaseConnection) connectionItem.getConnection();
-            if (EDatabaseTypeName.ORACLEFORSID.getProduct().equals(c.getProductId())) {
-                if (!isContextMode()) {
+            if (!isContextMode()) {
+                if (EDatabaseTypeName.ORACLEFORSID.getProduct().equals(c.getProductId())) {
                     schemaText.setText(schemaText.getText().toUpperCase());
+                } else if (EDatabaseTypeName.NETEZZA.getProduct().equals(c.getProductId())
+                        || MetadataFillFactory.isJdbcNetezza(c.getDatabaseType(), c.getDriverClass())) {
+                    if (sidOrDatabaseText != null) {
+                        sidOrDatabaseText.setText(sidOrDatabaseText.getText().toUpperCase());
+                    }
+                    if (urlConnectionStringText != null) {
+                        urlConnectionStringText.setText(getUppercaseNetezzaUrl(urlConnectionStringText.getText()));
+                    }
+                    if (generalJdbcUrlText != null) {
+                        generalJdbcUrlText.setText(getUppercaseNetezzaUrl(generalJdbcUrlText.getText()));
+                    }
                 }
             }
         }
@@ -2342,6 +2354,26 @@ public class DatabaseForm extends AbstractForm {
                 updateStatus(IStatus.WARNING, mainMsg);
             }
         }
+    }
+
+    private String getUppercaseNetezzaUrl(String url) {
+        String uppcaseUrl = url;
+        int lastIndexOf = StringUtils.lastIndexOf(url, "/"); //$NON-NLS-1$
+        if (lastIndexOf > 0 && lastIndexOf < url.length() - 1) {
+            String part1 = StringUtils.substring(url, 0, lastIndexOf + 1);
+            String part2 = StringUtils.substring(url, lastIndexOf + 1);
+            if (!StringUtils.isEmpty(part2)) {
+                int indexOf = StringUtils.indexOf(part2, "?"); //$NON-NLS-1$
+                if (indexOf > -1) {
+                    String sid = StringUtils.substring(part2, 0, indexOf);
+                    part2 = StringUtils.upperCase(sid) + StringUtils.substring(part2, indexOf, part2.length());
+                } else {
+                    part2 = StringUtils.upperCase(part2);
+                }
+                uppcaseUrl = part1 + part2;
+            }
+        }
+        return uppcaseUrl;
     }
 
     /**

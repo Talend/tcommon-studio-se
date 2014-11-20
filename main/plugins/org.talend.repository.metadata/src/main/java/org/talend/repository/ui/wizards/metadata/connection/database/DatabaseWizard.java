@@ -258,9 +258,9 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
             break;
 
         case REPOSITORY_ELEMENT:
-            connection = (DatabaseConnection) ((ConnectionItem) node.getObject().getProperty().getItem()).getConnection();
             connectionProperty = node.getObject().getProperty();
-            connectionItem = (ConnectionItem) node.getObject().getProperty().getItem();
+            connectionItem = (ConnectionItem) connectionProperty.getItem();
+            connection = (DatabaseConnection) connectionItem.getConnection();
 
             // set the repositoryObject, lock and set isRepositoryObjectEditable
             setRepositoryObject(node.getObject());

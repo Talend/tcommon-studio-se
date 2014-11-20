@@ -168,8 +168,9 @@ public class SelectorTreeViewerProvider extends AbstractMetadataExtractorViewPro
                 }
 
                 List<MetadataTable> tempListTables = new ArrayList<MetadataTable>();
+                MetadataFillFactory dbInstance = MetadataFillFactory.getDBInstance(metadataConn);
                 for (String filter : tableNameFilter) {
-                    tempListTables = MetadataFillFactory.getDBInstance().fillAll(pack, dbMetaData, metadataConn, null, filter,
+                    tempListTables = dbInstance.fillAll(pack, dbMetaData, metadataConn, null, filter,
                             availableTableTypes.toArray(new String[] {}));
                     for (MetadataTable table : tempListTables) {
                         boolean contains = false;
@@ -185,7 +186,7 @@ public class SelectorTreeViewerProvider extends AbstractMetadataExtractorViewPro
                     }
                 }
                 if (tableNameFilter.isEmpty()) {
-                    tempListTables = MetadataFillFactory.getDBInstance().fillAll(pack, dbMetaData, metadataConn, null, null,
+                    tempListTables = dbInstance.fillAll(pack, dbMetaData, metadataConn, null, null,
                             availableTableTypes.toArray(new String[] {}));
                     for (MetadataTable table : tempListTables) {
                         boolean contains = false;

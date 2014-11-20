@@ -66,9 +66,10 @@ public class ColumnBuilder extends CwmBuilder {
         List<TdColumn> tableColumns = new ArrayList<TdColumn>();
 
         // --- add columns to table
-        MetadataFillFactory.getDBInstance().setLinked(false);
-        tableColumns = MetadataFillFactory.getDBInstance().fillColumns(null, getConnectionMetadata(connection), null);
-        MetadataFillFactory.getDBInstance().setLinked(true);
+        MetadataFillFactory dbInstance = MetadataFillFactory.getDBInstance(dbConnection);
+        dbInstance.setLinked(false);
+        tableColumns = dbInstance.fillColumns(null, getConnectionMetadata(connection), null);
+        dbInstance.setLinked(true);
         // ResultSet columns = getConnectionMetadata(connection).getColumns(catalogName, schemaPattern, tablePattern,
         // columnPattern);
         // while (columns.next()) {
