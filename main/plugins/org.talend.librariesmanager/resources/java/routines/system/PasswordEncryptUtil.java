@@ -62,17 +62,17 @@ public class PasswordEncryptUtil {
         if (input == null || input.length() == 0) {
             return input;
         }
-        byte[] dec = Hex.decodeHex(input.toCharArray());
         try {
+        	byte[] dec = Hex.decodeHex(input.toCharArray());
             SecretKey key = getSecretKey();
             Cipher c = Cipher.getInstance("DES"); //$NON-NLS-1$
             c.init(Cipher.DECRYPT_MODE, key, secureRandom);
             byte[] clearByte = c.doFinal(dec);
             return new String(clearByte, CHARSET);
         } catch (Exception e) {
-            e.printStackTrace();
+            //do nothing
         }
-        return null;
+        return input;
     }
 
 }
