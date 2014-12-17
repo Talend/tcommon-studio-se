@@ -108,6 +108,11 @@ public class Numeric {
      * 
      */
     public static Float convertImpliedDecimalFormat(String format, String toConvert) {
+        BigDecimal decimal = Numeric.convertString2BigDecimal(format,toConvert);
+        return new Float(decimal.doubleValue());
+    }
+
+    public static BigDecimal convertString2BigDecimal(String format, String toConvert) {
         long decimalPlace = 1;
         int indexOf = format.indexOf('V');
         if (indexOf > -1) {
@@ -123,6 +128,6 @@ public class Numeric {
         }
         BigDecimal decimal = new BigDecimal(toConvert);
         decimal = decimal.divide(new BigDecimal(decimalPlace));
-        return new Float(decimal.doubleValue());
+        return decimal;
     }
 }
