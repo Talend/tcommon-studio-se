@@ -50,7 +50,7 @@
 			<dbType type="TIME" ignorePre="true" />
 			<dbType type="TINTERVAL" ignoreLen="true" ignorePre="true"  />
 			<dbType type="TIMESTAMPTZ" ignoreLen="true" ignorePre="true"  />
-			<dbType type="TIMESTAMP" ignorePre="true"  />
+			<dbType type="TIMESTAMP" ignoreLen="true" ignorePre="true"  />
 			<dbType type="TIMETZ" ignoreLen="true" ignorePre="true"  />
 			<dbType type="VARBIT" ignoreLen="true" ignorePre="true"  />			
 			<dbType type="VARCHAR" defaultLength="200" ignorePre="true" />
@@ -125,12 +125,12 @@
 					<dbType type="TEXT" />							
 				</talendType>
 				<talendType type="id_Date">
-					<dbType type="DATE" default="true" />				
+					<dbType type="DATE" />
 					<dbType type="ABSTIME" />
 					<dbType type="TIMETZ" />
 					<dbType type="TIME" />
 					<dbType type="TIMESTAMPTZ" />
-					<dbType type="TIMESTAMP" />
+					<dbType type="TIMESTAMP" default="true"/>
 					<dbType type="INTERVAL" />
 					<dbType type="TINTERVAL" />
 					<dbType type="RELTIME" />						
