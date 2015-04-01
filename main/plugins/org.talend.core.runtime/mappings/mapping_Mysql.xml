@@ -36,7 +36,7 @@
 			<dbType type="SMALLINT" ignorePre="true" />
 			<dbType type="SMALLINT UNSIGNED" ignoreLen="true" ignorePre="true" />
 			<dbType type="SET" ignoreLen="true" ignorePre="true" />
-			<dbType type="TEXT" ignorePre="true" />
+			<dbType type="TEXT" ignoreLen="true" ignorePre="true" />
 			<dbType type="TIME" ignoreLen="true" ignorePre="true" />
 			<dbType type="TIMESTAMP" ignoreLen="true" ignorePre="true" />
 			<dbType type="TINYBLOB" ignoreLen="true" ignorePre="true" />
@@ -124,6 +124,7 @@
 					<dbType type="MEDIUMTEXT" />
 					<dbType type="MULTILINESTRING" />		
 					<dbType type="TEXT" />
+					<dbType type="TINYTEXT" />
 				</talendType>
 			</talendToDbTypes>
 			<dbToTalendTypes>
