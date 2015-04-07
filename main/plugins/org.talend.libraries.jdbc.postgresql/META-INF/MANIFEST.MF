@@ -4,7 +4,8 @@ Bundle-Name: Postgresql Plug-in
 Bundle-SymbolicName: org.talend.libraries.jdbc.postgresql
 Bundle-Version: 6.0.0.qualifier
 Bundle-Vendor: .Talend SA.
-Bundle-ClassPath: lib/postgresql-9.2-1002.jdbc4.jar,
+Bundle-ClassPath: lib/postgresql-9.4-1201.jdbc41.jar,
+ lib/postgresql-9.2-1002.jdbc4.jar,
  lib/postgresql-8.1-405.jdbc3.jar,
  .
 Export-Package: org.postgresql,
