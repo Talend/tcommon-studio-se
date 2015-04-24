@@ -1556,6 +1556,19 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                 String columnName = getStringFromResultSet(columns, GetColumn.COLUMN_NAME.name());
                 TdColumn column = ColumnHelper.createTdColumn(columnName);
 
+                // TdExpression
+                Object defaultvalue = null;
+                try {
+                    if (!isOdbcTeradata) {
+                        defaultvalue = columns.getObject(GetColumn.COLUMN_DEF.name());
+                    }
+                } catch (Exception e1) {
+                    log.warn(e1, e1);
+                }
+                String defaultStr = (defaultvalue != null) ? String.valueOf(defaultvalue) : null;
+                TdExpression defExpression = createTdExpression(GetColumn.COLUMN_DEF.name(), defaultStr);
+                column.setInitialValue(defExpression);
+
                 int dataType = 0;
                 try {
                     // MOD scorreia 2010-07-24 removed the call to column.getSQLDataType() here because obviously the
@@ -1632,18 +1645,6 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                 String colComment = getColumnComment(dbJDBCMetadata, columns, tablePattern, column.getName(), schemaPattern);
                 ColumnHelper.setComment(colComment, column);
 
-                // TdExpression
-                Object defaultvalue = null;
-                try {
-                    if (!isOdbcTeradata) {
-                        defaultvalue = columns.getObject(GetColumn.COLUMN_DEF.name());
-                    }
-                } catch (Exception e1) {
-                    log.warn(e1, e1);
-                }
-                String defaultStr = (defaultvalue != null) ? String.valueOf(defaultvalue) : null;
-                TdExpression defExpression = createTdExpression(GetColumn.COLUMN_DEF.name(), defaultStr);
-                column.setInitialValue(defExpression);
                 extractMeta.handleDefaultValue(column, dbJDBCMetadata);
 
                 if (mappingTypeRetriever != null) {
