@@ -112,8 +112,6 @@ import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryConstants;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.model.StableRepositoryNode;
-import org.talend.repository.model.IRepositoryNode.ENodeType;
-import org.talend.repository.model.IRepositoryNode.EProperties;
 import org.talend.repository.model.nodes.IProjectRepositoryNode;
 import org.talend.utils.sql.ConnectionUtils;
 
@@ -890,8 +888,10 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
                 continue;
             }
 
-            boolean isJobDocRootFolder = ((label.indexOf("_") != -1) && (label.indexOf(".") != -1)); //$NON-NLS-1$ //$NON-NLS-2$
-            boolean isPicFolderName = label.equals(IHTMLDocConstants.PIC_FOLDER_NAME);
+            // TDQ-10298 survivship package name could contain "." and "_".
+            boolean isSurvivShipNode = "SURVIVORSHIP_FILE_ITEM".equals(type.getKey()); //$NON-NLS-1$
+            boolean isJobDocRootFolder = ((label.indexOf("_") != -1) && (label.indexOf(".") != -1)) && !isSurvivShipNode; //$NON-NLS-1$ //$NON-NLS-2$
+            boolean isPicFolderName = label.equals(IHTMLDocConstants.PIC_FOLDER_NAME) && !isSurvivShipNode;
 
             // Do not show job documentation root folder and Foder "pictures" on the repository view.
             if (isJobDocRootFolder || isPicFolderName) {
