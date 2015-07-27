@@ -873,6 +873,8 @@ public class NodeUtil {
                 return "\"[]\"";
             }
             value.append("new StringBuilder().append(\"[");
+            
+            int counter = 0;
             for (;;) {
                 Map<String, String> columns = linesIter.next();
                 Iterator<Entry<String, String>> columnsIter = columns.entrySet().iterator();
@@ -895,6 +897,8 @@ public class NodeUtil {
                     if (columnsIter.hasNext()) {
                         value.append(", ");
                     }
+                    
+                    counter++;
                 }
                 if (printedColumnExist && column != null && (types.get(column.getKey()) == null)) {
                     value.setLength(value.length() - 2);
@@ -905,6 +909,11 @@ public class NodeUtil {
                     return value.append("]\").toString()").toString();
                 }
                 value.append(",").append(" ");
+                
+                if(counter > 1000){
+                	value.append("\").toString() + new StringBuilder().append(\"");
+                	counter = 0;
+                }
             }
         } else {
             String value = ElementParameterParser.getValue(node, "__" + ep.getName() + "__");
