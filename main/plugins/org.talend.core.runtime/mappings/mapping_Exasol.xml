@@ -3,19 +3,12 @@
 	<dbms product="Exasol" id="Exasol_id" label="Mapping Exasol"
 		default="true">
 		<dbTypes>
-			<dbType type="VARCHAR" default="true" defaultLength="200" ignoreLen="false" ignorePre="true"/>
-			<dbType type="CHAR" defaultLength="20" ignoreLen="false" ignorePre="true"/>
-			<dbType type="DECIMAL" defaultLength="20" defaultPrecision="10" ignoreLen="false" ignorePre="false"/>
-			<dbType type="SMALLINT" ignoreLen="true" ignorePre="true"/>
-			<dbType type="TINYINT" ignoreLen="true" ignorePre="true"/>
-			<dbType type="INTEGER" ignoreLen="true" ignorePre="true"/>
 			<dbType type="BIGINT" ignoreLen="true" ignorePre="true"/>
-			<dbType type="FLOAT" ignoreLen="true" ignorePre="true"/>
-			<dbType type="BINARY_FLOAT" ignoreLen="true" ignorePre="true"/>
-			<dbType type="DOUBLE PRECISION" ignoreLen="true" ignorePre="true"/>
 			<dbType type="BINARY_DOUBLE" ignoreLen="true" ignorePre="true"/>
+			<dbType type="BINARY_FLOAT" ignoreLen="true" ignorePre="true"/>
+			<dbType type="BOOLEAN" ignoreLen="true" ignorePre="true"/>
+			<dbType type="CHAR" defaultLength="20" ignoreLen="false" ignorePre="true"/>
 			<dbType type="DATE" ignoreLen="true" ignorePre="true"/>
-<<<<<<< HEAD
 			<dbType type="DECIMAL" defaultLength="20" defaultPrecision="10" ignoreLen="false" ignorePre="false"/>
 			<dbType type="DOUBLE PRECISION" ignoreLen="true" ignorePre="true"/>
 			<dbType type="FLOAT" ignoreLen="true" ignorePre="true"/>
@@ -25,10 +18,9 @@
 			<dbType type="INTERVAL YEAR TO MONTH" ignoreLen="true" ignorePre="true"/>
 			<dbType type="LONG VARCHAR" default="true" defaultLength="2000000" ignoreLen="false" ignorePre="true"/>
 			<dbType type="SMALLINT" ignoreLen="true" ignorePre="true"/>
-=======
->>>>>>> parent of 74a4e72... type list fixed
 			<dbType type="TIMESTAMP" ignoreLen="true" ignorePre="true"/>
-			<dbType type="GEOMETRY" ignoreLen="true" ignorePre="true"/>
+			<dbType type="TINYINT" ignoreLen="true" ignorePre="true"/>
+			<dbType type="VARCHAR" default="true" defaultLength="200" ignoreLen="false" ignorePre="true"/>
 		</dbTypes>
 
 		<language name="java">
@@ -90,6 +82,9 @@
 				<dbType type="VARCHAR">
 					<talendType type="id_String" default="true" />
 				</dbType>
+				<dbType type="GEOMETRY">
+					<talendType type="id_String" default="true" />				
+				</dbType>																																
 				<dbType type="CHAR">
 					<talendType type="id_String" default="true" />
 					<talendType type="id_Character" />
@@ -97,6 +92,12 @@
 				<dbType type="LONG VARCHAR">
 					<talendType type="id_String" default="true" />
 				</dbType>
+				<dbType type="INTERVAL DAY TO SECOND">
+					<talendType type="id_String" default="true" />				
+				</dbType>																																
+				<dbType type="INTERVAL YEAR TO MONTH">
+					<talendType type="id_String" default="true" />				
+				</dbType>																																
 				<dbType type="DECIMAL">
 					<talendType type="id_BigDecimal" default="true" />
 					<talendType type="id_Long"/>
@@ -108,6 +109,9 @@
 				</dbType>
 				<dbType type="SMALLINT">
 					<talendType type="id_Short" default="true" />
+				</dbType>
+				<dbType type="BIGINT">
+					<talendType type="id_Long" default="true" />
 				</dbType>
 				<dbType type="INTEGER">
 					<talendType type="id_Integer" default="true" />
@@ -132,15 +136,6 @@
 				</dbType>																																
 				<dbType type="TIMESTAMP WITH LOCAL TIME ZONE">
 					<talendType type="id_Date" default="true" />				
-				</dbType>																																
-				<dbType type="GEOMETRY">
-					<talendType type="id_String" default="true" />				
-				</dbType>																																
-				<dbType type="INTERVAL DAY TO SECOND">
-					<talendType type="id_String" default="true" />				
-				</dbType>																																
-				<dbType type="INTERVAL YEAR TO MONTH">
-					<talendType type="id_String" default="true" />				
 				</dbType>																																
 				<dbType type="BOOLEAN">
 					<talendType type="id_Boolean" default="true" />				
