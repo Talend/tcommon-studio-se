@@ -229,9 +229,9 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
         }
         ResultSet schemas = null;
         // teradata use db name to filter schema
+        // MOD jlolling TDI-34429 EXASol database behaves pretty much in the same way as Oracle
         if (dbConn != null
-                && (EDatabaseTypeName.TERADATA.getProduct().equals(dbConn.getProductId()) || EDatabaseTypeName.EXASOL
-                        .getProduct().equals(dbConn.getProductId()))) {
+                && EDatabaseTypeName.TERADATA.getProduct().equals(dbConn.getProductId())) {
             if (!dbConn.isContextMode()) {
                 String sid = getDatabaseName(dbConn);
                 if (sid != null && sid.length() > 0) {
@@ -271,7 +271,9 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
             }
             schemas = dbJDBCMetadata.getSchemas();
         } catch (SQLException e) {
-            log.warn("This database doesn't contain any schema."); //$NON-NLS-1$
+        	// TDI-34429, jlolling we do not get an exception if the database simply do not have schemas!
+        	// in this case the resultset is empty
+            log.error("Retrieve schema from database failed: " + e.getMessage(), e); //$NON-NLS-1$
         }
         boolean hasSchema = false;
         try {
@@ -302,7 +304,7 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                     }
 
                     if ((!StringUtils.isEmpty(uiSchemaOnConnWizard) && !isNullUiSchema(dbConn)) && dbConn != null) {
-                        // If the UiSchema on ui is not empty, the shema name should be same to this UiSchema name.
+                        // If the UiSchema on ui is not empty, the schema name should be same to this UiSchema name.
                         Schema schema = SchemaHelper.createSchema(TalendCWMService.getReadableName(dbConn, uiSchemaOnConnWizard));
                         returnSchemas.add(schema);
                         break;
@@ -314,7 +316,7 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                 schemas.close();
             }
         } catch (SQLException e) {
-            log.error(e, e);
+            log.error("Retrieving schemas from resultset failed: " + e.getMessage(), e);
         }
         // handle case of SQLite (no schema no catalog)
         // MOD gdbu 2011-4-12 bug : 18975

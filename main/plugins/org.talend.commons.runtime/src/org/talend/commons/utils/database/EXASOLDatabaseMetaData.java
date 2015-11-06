@@ -28,7 +28,7 @@ import org.apache.log4j.Logger;
  */
 public class EXASOLDatabaseMetaData extends PackageFakeDatabaseMetadata {
 
-    private static Logger log = Logger.getLogger(EXASOLDatabaseMetaData.class);
+	private static final Logger logger = Logger.getLogger(EXASOLDatabaseMetaData.class);
 
     private static final String[] TABLE_META = { "TABLE_TYPE", "TABLE_NAME", "TABLE_SCHEM", "REMARKS" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
@@ -41,8 +41,19 @@ public class EXASOLDatabaseMetaData extends PackageFakeDatabaseMetadata {
     public EXASOLDatabaseMetaData(Connection connection) throws SQLException {
         super(connection);
     }
+    
+	@Override
+	public ResultSet getSchemas(String catalog, String schemaPattern) throws SQLException {
+		return super.getSchemas(null, schemaPattern);
+	}
 
-    /*
+	@Override
+	public ResultSet getColumns(String catalog, String schemaPattern, String tableNamePattern, String columnNamePattern) throws SQLException {
+		// avoid using the catalog because the catalog will retrieved in a wrong way, we get here the user and not the database
+		return super.getColumns(null, schemaPattern, tableNamePattern, columnNamePattern);
+	}
+
+	/*
      * (non-Javadoc)
      * 
      * @see org.talend.fakejdbc.FakeDatabaseMetaData#getTables(java.lang.String, java.lang.String, java.lang.String,
@@ -50,26 +61,43 @@ public class EXASOLDatabaseMetaData extends PackageFakeDatabaseMetadata {
      */
     @Override
     public ResultSet getTables(String catalog, String schemaPattern, String tableNamePattern, String[] types) throws SQLException {
-        ResultSet tables = super.getTables(catalog, schemaPattern, tableNamePattern, types);
+    	ResultSet tables = super.getTables(null, schemaPattern, tableNamePattern, types);
         List<String[]> list = getTableList(tables);
         if (list.isEmpty()) {
-            String sql = "SELECT  * FROM CAT"; //$NON-NLS-1$
+        	// get the tables and views in the same way from the metadata API
+        	StringBuilder sql = new StringBuilder();
+        	sql.append("select\n");
+        	sql.append(" a.TABLE_SCHEMA as TABLE_SCHEM,\n");
+        	sql.append(" a.TABLE_NAME,\n");
+        	sql.append(" 'TABLE' as TABLE_TYPE,\n");
+        	sql.append(" TABLE_COMMENT as REMARKS\n");
+        	sql.append("from SYS.EXA_ALL_TABLES a\n");
+        	sql.append("union all\n");
+        	sql.append("select \n");
+        	sql.append(" a.VIEW_SCHEMA as TABLE_SCHEM,\n");
+        	sql.append(" a.VIEW_NAME as TABLE_NAME,\n");
+        	sql.append(" 'VIEW' as TABLE_TYPE,\n");
+        	sql.append(" VIEW_COMMENT as REMARKS\n");
+        	sql.append("from SYS.EXA_ALL_VIEWS a");
             ResultSet rs = null;
             PreparedStatement stmt = null;
             try {
-                stmt = connection.prepareStatement(sql);
+                stmt = connection.prepareStatement(sql.toString());
                 if (!StringUtils.isEmpty(tableNamePattern)) {
                     stmt.setString(1, tableNamePattern);
-                }// ~
+                }
                 rs = stmt.executeQuery();
                 list = getTableList(rs);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
             } finally {
                 try {
-                    rs.close();
-                    stmt.close();
+                	if (rs != null) {
+                        rs.close();
+                	}
+                	if (stmt != null) {
+                    	stmt.close();
+                	}
                 } catch (Exception e) {
+                	// Intentionally left blank
                 }
             }
         }
@@ -85,10 +113,10 @@ public class EXASOLDatabaseMetaData extends PackageFakeDatabaseMetadata {
             return list;
         }
         while (rs.next()) {
-            String table_type = getStringFromResultSet(rs, "TABLE_TYPE"); //$NON-NLS-1$
-            String table_name = getStringFromResultSet(rs, "TABLE_NAME"); //$NON-NLS-1$
-            String table_schem = getStringFromResultSet(rs, "TABLE_SCHEM");//$NON-NLS-1$
-            String table_remarks = getStringFromResultSet(rs, "REMARKS"); //$NON-NLS-1$
+            String table_type = getStringFromResultSet(rs, "TABLE_TYPE");
+            String table_name = getStringFromResultSet(rs, "TABLE_NAME");
+            String table_schem = getStringFromResultSet(rs, "TABLE_SCHEM");
+            String table_remarks = getStringFromResultSet(rs, "REMARKS");
             String[] r = new String[] { table_type, table_name, table_schem, table_remarks };
             list.add(r);
         }
@@ -100,7 +128,7 @@ public class EXASOLDatabaseMetaData extends PackageFakeDatabaseMetadata {
         try {
             valueOfString = resultSet.getString(nameOfString);
         } catch (SQLException e) {
-            log.warn(e, e);
+        	logger.warn(e.getMessage(), e);
         }
         return valueOfString;
     }

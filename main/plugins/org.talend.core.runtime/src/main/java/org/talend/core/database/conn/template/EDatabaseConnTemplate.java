@@ -117,8 +117,8 @@ public enum EDatabaseConnTemplate {
     TERADATA(new DbConnStr(EDatabaseTypeName.TERADATA, //
             "jdbc:teradata://<host>/<sid>,<property>")), //$NON-NLS-1$ //feature 0013719,hywang
 
-    EXASOL(new DbConnStr(EDatabaseTypeName.EXASOL, //
-            "jdbc:exa:<host>:<port>;schema=<sid>", "8563")), //$NON-NLS-1$ //$NON-NLS-2$
+    EXASOL(new DbConnStr(EDatabaseTypeName.EXASOL, // TDI-34429, jlolling
+            "jdbc:exa:<host>:<port>;schema=<sid>;<property>", "8563", "encryption=0;clientname=Talend")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
     AS400(new DbConnStr(EDatabaseTypeName.AS400, //
             "jdbc:as400://<host>/<sid>;<property>", //$NON-NLS-1$
@@ -356,6 +356,7 @@ public enum EDatabaseConnTemplate {
             case HSQLDB_IN_PROGRESS: // for feature 11674
             case TERADATA: // for feature 0013719
             case VERTICA:
+            case EXASOL:
                 return true;
             default:
             }
