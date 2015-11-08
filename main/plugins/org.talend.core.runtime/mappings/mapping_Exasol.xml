@@ -16,7 +16,7 @@
 			<dbType type="INTEGER" ignoreLen="true" ignorePre="true"/>
 			<dbType type="INTERVAL DAY TO SECOND" ignoreLen="true" ignorePre="true"/>
 			<dbType type="INTERVAL YEAR TO MONTH" ignoreLen="true" ignorePre="true"/>
-			<dbType type="LONG VARCHAR" default="true" defaultLength="2000000" ignoreLen="false" ignorePre="true"/>
+			<dbType type="LONG VARCHAR" default="true" defaultLength="20000" ignoreLen="false" ignorePre="true"/>
 			<dbType type="SMALLINT" ignoreLen="true" ignorePre="true"/>
 			<dbType type="TIMESTAMP" ignoreLen="true" ignorePre="true"/>
 			<dbType type="TINYINT" ignoreLen="true" ignorePre="true"/>
