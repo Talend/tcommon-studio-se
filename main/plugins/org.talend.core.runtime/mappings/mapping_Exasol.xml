@@ -19,6 +19,7 @@
 			<dbType type="LONG VARCHAR" default="true" defaultLength="20000" ignoreLen="false" ignorePre="true"/>
 			<dbType type="SMALLINT" ignoreLen="true" ignorePre="true"/>
 			<dbType type="TIMESTAMP" ignoreLen="true" ignorePre="true"/>
+			<dbType type="TIMESTAMP WITH LOCAL TIME ZONE" ignoreLen="true" ignorePre="true"/>
 			<dbType type="TINYINT" ignoreLen="true" ignorePre="true"/>
 			<dbType type="VARCHAR" default="true" defaultLength="200" ignoreLen="false" ignorePre="true"/>
 		</dbTypes>
@@ -42,6 +43,7 @@
 				<talendType type="id_Date">
 					<dbType type="DATE" default="true"/>
 					<dbType type="TIMESTAMP"/>
+					<dbType type="TIMESTAMP WITH LOCAL TIME ZONE"/>
 				</talendType>
 				<talendType type="id_BigDecimal">
 					<dbType type="DECIMAL"/>
