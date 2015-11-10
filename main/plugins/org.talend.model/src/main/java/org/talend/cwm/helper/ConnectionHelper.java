@@ -48,6 +48,7 @@ import orgomg.cwm.objectmodel.core.Namespace;
 import orgomg.cwm.objectmodel.core.Package;
 import orgomg.cwm.objectmodel.core.TaggedValue;
 import orgomg.cwm.resource.record.RecordFile;
+import orgomg.cwm.resource.record.impl.RecordFileImpl;
 import orgomg.cwm.resource.relational.Catalog;
 import orgomg.cwm.resource.relational.ColumnSet;
 import orgomg.cwm.resource.relational.Schema;
@@ -245,6 +246,27 @@ public class ConnectionHelper {
             return "";
         }
         return taggedValue.getValue();
+    }
+
+    public static Connection getConnection(MetadataColumn metadataColumn) {
+        if (metadataColumn == null) {
+            return null;
+        } else if (metadataColumn.eContainer() == null) {
+            return null;
+        } else if (metadataColumn.eContainer().eContainer() == null) {
+            return null;
+        }
+        EObject eContainer = metadataColumn.eContainer().eContainer();
+        if (RecordFileImpl.class.isInstance(eContainer)) {
+            EList<DataManager> dataManager = ((RecordFileImpl) eContainer).getDataManager();
+            if (dataManager.size() > 0 && Connection.class.isInstance(dataManager.get(0))) {
+                return (Connection) dataManager.get(0);
+            }
+        } else if (orgomg.cwm.objectmodel.core.Package.class.isInstance(eContainer)) {
+            return getConnection((orgomg.cwm.objectmodel.core.Package) eContainer);
+
+        }
+        return null;
     }
 
     /**
@@ -1355,16 +1377,22 @@ public class ConnectionHelper {
      * @return
      */
     public static Connection getTdDataProvider(MetadataTable mTable) {
-        Package thePackage = null;
-        if (mTable != null && mTable.getNamespace() != null) {
-            if (mTable.getNamespace() instanceof RecordFile) {
-                thePackage = (RecordFile) mTable.getNamespace();
+        Package parentCatalogOrSchema = ColumnSetHelper.getParentCatalogOrSchema(mTable);
+        // DelimitedFile conn doesn't have Catalog and Schema.
+        if (parentCatalogOrSchema == null) {
+            Package thePackage = null;
+            if (mTable != null && mTable.getNamespace() != null) {
+                if (mTable.getNamespace() instanceof RecordFile) {
+                    thePackage = (RecordFile) mTable.getNamespace();
+                }
             }
+            if (thePackage == null) {
+                return null;
+            }
+            return getTdDataProvider(thePackage);
+        } else {
+            return getTdDataProvider(parentCatalogOrSchema);
         }
-        if (thePackage == null) {
-            return null;
-        }
-        return getTdDataProvider(thePackage);
     }
 
     // Added yyin 20121203 TDQ-6497 use "IS_DB_NEED_RELOAD" to replace "USING_URL"
