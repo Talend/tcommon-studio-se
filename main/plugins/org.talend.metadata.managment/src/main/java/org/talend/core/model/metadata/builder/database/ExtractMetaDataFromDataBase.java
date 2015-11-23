@@ -369,8 +369,13 @@ public class ExtractMetaDataFromDataBase {
         return checkSchemaConnection(schema, connection, notCaseSensitive, dbType, null);
     }
 
-    public static boolean checkSchemaConnection(final String schema, Connection connection, boolean notCaseSensitive,
+    public static boolean checkSchemaConnection(String schema, Connection connection, boolean notCaseSensitive,
             String dbType, final StringBuffer retPropsedSchema) throws SQLException {
+    	if (schema != null) {
+    		// jlolling: because we have sometimes schema names in quotas and those quotas will never be returned in 
+    		// the DatabaseMetaData.getSchema() method
+    		schema = schema.trim().replace("\"", "");
+    	}
         ExtractMetaDataUtils extractMeta = ExtractMetaDataUtils.getInstance();
         DatabaseMetaData dbMetaData = extractMeta.getDatabaseMetaData(connection, dbType);
         final StringBuffer proposeSchema = new StringBuffer();
@@ -400,13 +405,14 @@ public class ExtractMetaDataFromDataBase {
         }
         if (retPropsedSchema != null && 0 < proposeSchema.length()) {
             final StringBuffer userSelectResult = new StringBuffer();
+            final String finalSchema = schema;
             Display.getDefault().syncExec(new Runnable() {
 
                 @Override
                 public void run() {
                     String title = Messages.getString("CheckConnection.CheckSchema.ProposeSchema.title"); //$NON-NLS-1$
                     String proposeMessage = Messages.getString("CheckConnection.CheckSchema.ProposeSchema.message", new Object[] { //$NON-NLS-1$
-                            schema, proposeSchema });
+                    		finalSchema, proposeSchema });
                     MessageDialog messageDialog = new MessageDialog(new Shell(), title, null, proposeMessage,
                             MessageDialog.CONFIRM, new String[] { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL }, 0);
                     if (messageDialog.open() == 0) {
