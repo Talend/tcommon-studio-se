@@ -97,7 +97,6 @@
 		<module>main/plugins/org.talend.libraries.apache.common</module>
 		<module>main/plugins/org.talend.libraries.apache.cxf</module>
 		<module>main/plugins/org.talend.libraries.apache.google</module>
-		<module>main/plugins/org.talend.libraries.apache.hive</module>
 		<module>main/plugins/org.talend.libraries.apache.http</module>
 		<module>main/plugins/org.talend.libraries.apache.lucene</module>
 		<module>main/plugins/org.talend.libraries.apache.lucene4</module>

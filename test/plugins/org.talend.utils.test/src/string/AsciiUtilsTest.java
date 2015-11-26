@@ -12,10 +12,11 @@
 // ============================================================================
 package string;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.util.Random;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.talend.utils.string.AsciiUtils;
 import org.talend.utils.time.TimeTracer;
@@ -36,8 +37,9 @@ public class AsciiUtilsTest {
             char c = (char) rg.nextInt(maxChar);
             sb.append(c);
         }
-        if (TRACE)
+        if (TRACE) {
             System.out.println("Generated string = " + sb);
+        }
         return sb.toString();
     }
 
@@ -60,28 +62,31 @@ public class AsciiUtilsTest {
         String[] generatedStrings = generateNStrings(nbStrings, nbChars);
         tt.start();
         for (String string : generatedStrings) {
-            if (TRACE)
+            if (TRACE) {
                 System.out.println(AsciiUtils.unaccent(string));
-            else
+            } else {
                 AsciiUtils.unaccent(string);
+            }
         }
         tt.end("ASCIIUTIL time for removing accents in " + nbStrings + " strings");
 
         tt.start();
         for (String string : generatedStrings) {
-            if (TRACE)
+            if (TRACE) {
                 System.out.println(removeDiacriticalMark(string));
-            else
+            } else {
                 removeDiacriticalMark(string);
+            }
         }
         tt.end("MURAL time for removing accents in " + nbStrings + " strings");
 
         tt.start();
         for (String string : generatedStrings) {
-            if (TRACE)
+            if (TRACE) {
                 System.out.println(enhremoveDiacriticalMark(string));
-            else
+            } else {
                 enhremoveDiacriticalMark(string);
+            }
         }
         tt.end("MURAL ENH time for removing accents in " + nbStrings + " strings");
 
@@ -93,6 +98,7 @@ public class AsciiUtilsTest {
      * .
      */
     @Test
+    @Ignore("is not yet implemeneted")
     public void testReplaceCharacters() {
         fail("Not yet implemented");
     }
@@ -105,44 +111,63 @@ public class AsciiUtilsTest {
      */
     public static char removeDiacriticalMark(char c) {
 
-        if (c < 192)
+        if (c < 192) {
             return c;
-        if (c >= 192 && c <= 197)
-            return (char) 'A';
-        if (c == 199)
-            return (char) 'C';
-        if (c >= 200 && c <= 203)
-            return (char) 'E';
-        if (c >= 204 && c <= 207)
-            return (char) 'I';
-        if (c == 208)
-            return (char) 'D';
-        if (c == 209)
-            return (char) 'N';
-        if ((c >= 210 && c <= 214) || c == 216)
-            return (char) 'O';
-        if (c >= 217 && c <= 220)
-            return (char) 'U';
-        if (c == 221)
-            return (char) 'Y';
-        if (c >= 224 && c <= 229)
-            return (char) 'a';
-        if (c == 231)
-            return (char) 'c';
-        if (c >= 232 && c <= 235)
-            return (char) 'e';
-        if (c >= 236 && c <= 239)
-            return (char) 'i';
-        if (c == 240)
-            return (char) 'd';
-        if (c == 241)
-            return (char) 'n';
-        if ((c >= 242 && c <= 246) || c == 248)
-            return (char) 'o';
-        if (c >= 249 && c <= 252)
-            return (char) 'u';
-        if (c == 253 || c == 255)
-            return (char) 'y';
+        }
+        if (c >= 192 && c <= 197) {
+            return 'A';
+        }
+        if (c == 199) {
+            return 'C';
+        }
+        if (c >= 200 && c <= 203) {
+            return 'E';
+        }
+        if (c >= 204 && c <= 207) {
+            return 'I';
+        }
+        if (c == 208) {
+            return 'D';
+        }
+        if (c == 209) {
+            return 'N';
+        }
+        if ((c >= 210 && c <= 214) || c == 216) {
+            return 'O';
+        }
+        if (c >= 217 && c <= 220) {
+            return 'U';
+        }
+        if (c == 221) {
+            return 'Y';
+        }
+        if (c >= 224 && c <= 229) {
+            return 'a';
+        }
+        if (c == 231) {
+            return 'c';
+        }
+        if (c >= 232 && c <= 235) {
+            return 'e';
+        }
+        if (c >= 236 && c <= 239) {
+            return 'i';
+        }
+        if (c == 240) {
+            return 'd';
+        }
+        if (c == 241) {
+            return 'n';
+        }
+        if ((c >= 242 && c <= 246) || c == 248) {
+            return 'o';
+        }
+        if (c >= 249 && c <= 252) {
+            return 'u';
+        }
+        if (c == 253 || c == 255) {
+            return 'y';
+        }
 
         return c;
     }

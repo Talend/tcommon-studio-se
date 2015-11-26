@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.resources.IWorkspace;
@@ -708,6 +709,11 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
                     } catch (Exception e) {
                         throw new InvocationTargetException(e);
                     }
+                }
+                try {
+                    ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, monitor);
+                } catch (CoreException e) {
+                    throw new InvocationTargetException(e);
                 }
                 // TODO Why do we need to recreate a root here ????
                 // root = new ProjectRepositoryNode(null, null, ENodeType.STABLE_SYSTEM_FOLDER);

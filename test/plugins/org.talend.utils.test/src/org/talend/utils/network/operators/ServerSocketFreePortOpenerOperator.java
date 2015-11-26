@@ -79,8 +79,8 @@ public class ServerSocketFreePortOpenerOperator implements IThreadSafetyOperator
             if (debug) {
                 System.out.println(getTime() + getThreadId() + "message=" + i);
             }
-            ServerSocket openServerSocketFromRangePort = serverSocketFreePortOpener.openServerSocketFromRangePort(
-                    portRangeBound1, portRangeBound2);
+            ServerSocket openServerSocketFromRangePort = serverSocketFreePortOpener.openServerSocketFromRangePort(portRangeBound1,
+                    portRangeBound2);
             if (openServerSocketFromRangePort != null) {
                 Thread.sleep(random.nextInt(100));
                 openServerSocketFromRangePort.close();

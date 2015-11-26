@@ -14,6 +14,7 @@ package org.talend.core.ui.perspective;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -21,15 +22,15 @@ import javax.inject.Inject;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.dynamichelpers.IExtensionTracker;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.di.extensions.Preference;
 import org.eclipse.e4.ui.model.application.MApplication;
+import org.eclipse.e4.ui.model.application.ui.MUIElement;
 import org.eclipse.e4.ui.model.application.ui.advanced.MPerspective;
 import org.eclipse.e4.ui.model.application.ui.advanced.MPerspectiveStack;
+import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.basic.MWindow;
 import org.eclipse.e4.ui.model.application.ui.basic.MWindowElement;
-import org.eclipse.e4.ui.model.application.ui.menu.MTrimContribution;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.ui.workbench.modeling.ElementMatcher;
@@ -39,6 +40,7 @@ import org.eclipse.ui.IPerspectiveDescriptor;
 import org.eclipse.ui.IPerspectiveFactory;
 import org.eclipse.ui.IPerspectiveRegistry;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.internal.PerspectiveExtensionReader;
 import org.eclipse.ui.internal.PerspectiveTagger;
 import org.eclipse.ui.internal.WorkbenchPage;
@@ -47,6 +49,7 @@ import org.eclipse.ui.internal.menus.MenuHelper;
 import org.eclipse.ui.internal.registry.PerspectiveDescriptor;
 import org.eclipse.ui.internal.registry.UIExtensionTracker;
 import org.talend.core.GlobalServiceRegister;
+import org.talend.core.ui.branding.IBrandingConfiguration;
 import org.talend.core.ui.branding.IBrandingService;
 
 /**
@@ -101,18 +104,25 @@ public class RestoreAllRegisteredPerspectivesProvider {
         if (fPerspectiveStack != null) {
             return fPerspectiveStack;
         }
-        if (fWindow != null) {
+        MUIElement baseElement = fWindow;
+        if (fWindow == null) {
+            baseElement = fApp;
+        }
+        if (baseElement != null) {
             if (fPerspectiveStack == null) {
-                List<MPerspectiveStack> perspStackList = fModelService.findElements(fWindow, null, MPerspectiveStack.class, null);
+                List<MPerspectiveStack> perspStackList = fModelService.findElements(baseElement, null, MPerspectiveStack.class,
+                        null);
                 if (perspStackList.size() > 0) {// there must be only one perspectiveStack.
                     fPerspectiveStack = perspStackList.get(0);
                     return fPerspectiveStack;
                 }
             }
-            for (MWindowElement child : fWindow.getChildren()) {
-                if (child instanceof MPerspectiveStack) {
-                    fPerspectiveStack = (MPerspectiveStack) child;
-                    return fPerspectiveStack;
+            if (fWindow != null) {
+                for (MWindowElement child : fWindow.getChildren()) {
+                    if (child instanceof MPerspectiveStack) {
+                        fPerspectiveStack = (MPerspectiveStack) child;
+                        return fPerspectiveStack;
+                    }
                 }
             }
         }
@@ -125,6 +135,14 @@ public class RestoreAllRegisteredPerspectivesProvider {
             regReader.init();
         }
         return regReader;
+    }
+
+    public void closeAllEditors() {
+        List<MPart> elements = fModelService.findElements(fApp, "org.eclipse.e4.ui.compatibility.editor", MPart.class, null); //$NON-NLS-1$
+        for (MPart element : elements) {
+            element.setToBeRendered(false);
+            element.getParent().getChildren().remove(element);
+        }
     }
 
     /**
@@ -182,6 +200,12 @@ public class RestoreAllRegisteredPerspectivesProvider {
                     IBrandingService service = (IBrandingService) GlobalServiceRegister.getDefault().getService(
                             IBrandingService.class);
                     String defaultPerspectiveId = service.getBrandingConfiguration().getInitialWindowPerspectiveId();
+
+                    IPerspectiveDescriptor pd = PlatformUI.getWorkbench().getPerspectiveRegistry()
+                            .findPerspectiveWithId(defaultPerspectiveId);
+                    if (pd == null) {
+                        defaultPerspectiveId = IBrandingConfiguration.PERSPECTIVE_DI_ID;
+                    }
                     // this is not the fastest way but this is to try the find API
                     List<MPerspective> matchPerspectives = fModelService.findElements(mPerspStack, MPerspective.class,
                             EModelService.IN_ANY_PERSPECTIVE, new ElementMatcher(defaultPerspectiveId, null, (String) null));

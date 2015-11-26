@@ -58,6 +58,12 @@ public enum EHadoopVersion4Drivers {
 
     APACHE_0_20_2(EHadoopDistributions.APACHE, "Apache 0.20.2", "APACHE_0_20_2", false, true), //$NON-NLS-1$ //$NON-NLS-2$
 
+    CLOUDERA_CDH5_5(EHadoopDistributions.CLOUDERA, "Cloudera CDH5.5(YARN mode)", //$NON-NLS-1$
+                    "Cloudera_CDH5_5", //$NON-NLS-1$
+                    true,
+                    false,
+                    new EMRVersion[] { EMRVersion.YARN }),
+
     CLOUDERA_CDH5_4(EHadoopDistributions.CLOUDERA, "Cloudera CDH5.4(YARN mode)", //$NON-NLS-1$
                     "Cloudera_CDH5_4", //$NON-NLS-1$
                     true,
@@ -90,7 +96,7 @@ public enum EHadoopVersion4Drivers {
 
     CLOUDERA_CDH4(EHadoopDistributions.CLOUDERA, "Cloudera CDH4.X(MR1 mode)", "Cloudera_CDH4", true, false), //$NON-NLS-1$ //$NON-NLS-2$
 
-    MAPR500(EHadoopDistributions.MAPR, "MapR 5.0.0(YARN mode)", "MAPR500", false, true, new EMRVersion[] { EMRVersion.YARN }), //$NON-NLS-1$ //$NON-NLS-2$
+    MAPR500(EHadoopDistributions.MAPR, "MapR 5.0.0(YARN mode)", "MAPR500", true, true, new EMRVersion[] { EMRVersion.YARN }), //$NON-NLS-1$ //$NON-NLS-2$
 
     MAPR410(EHadoopDistributions.MAPR, "MapR 4.1.0(YARN mode)", "MAPR410", false, true, new EMRVersion[] { EMRVersion.YARN }), //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -250,6 +256,7 @@ public enum EHadoopVersion4Drivers {
         switch (this) {
         case EMR_4_0_0:
         case CLOUDERA_CDH5_4:
+        case CLOUDERA_CDH5_5:
         case CUSTOM:
             isSupport = true;
             break;

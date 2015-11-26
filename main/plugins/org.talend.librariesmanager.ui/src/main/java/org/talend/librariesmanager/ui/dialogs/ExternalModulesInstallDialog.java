@@ -83,7 +83,6 @@ import org.talend.commons.utils.data.bean.IBeanPropertyAccessors;
 import org.talend.commons.utils.network.NetworkUtil;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.general.ILibrariesService;
-import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.model.general.ModuleToInstall;
 import org.talend.core.runtime.maven.MavenConstants;
@@ -93,7 +92,6 @@ import org.talend.librariesmanager.ui.LibManagerUiPlugin;
 import org.talend.librariesmanager.ui.actions.ImportExternalJarAction;
 import org.talend.librariesmanager.ui.i18n.Messages;
 import org.talend.librariesmanager.utils.DownloadModuleRunnableWithLicenseDialog;
-import org.talend.librariesmanager.utils.RemoteModulesHelper;
 
 /**
  * DOC wchen class global comment. Detailled comment
@@ -602,18 +600,6 @@ public class ExternalModulesInstallDialog extends TitleAreaDialog implements IMo
 
     }
 
-    public void openDialog() {
-        List<ModuleNeeded> updatedModules = new ArrayList<ModuleNeeded>();
-        for (ModuleNeeded neededModule : ModulesNeededProvider.getModulesNeeded()) {
-            if (neededModule.getStatus() != ELibraryInstallStatus.NOT_INSTALLED) {
-                continue;
-            }
-            updatedModules.add(neededModule);
-        }
-        inputList.clear();
-        RemoteModulesHelper.getInstance().getNotInstalledModules(updatedModules, inputList, this, true);
-    }
-
     protected void createFooter(Composite parent) {
         // to be overriden
     }
@@ -658,6 +644,7 @@ public class ExternalModulesInstallDialog extends TitleAreaDialog implements IMo
 
                     });
                     button.setEnabled(!isInstalled);
+                    button.setToolTipText(data.toString());
                 } else {// add the link for manual download
                     Composite composite = new Composite(table, SWT.NONE);
                     composite.setBackground(color);
@@ -689,6 +676,7 @@ public class ExternalModulesInstallDialog extends TitleAreaDialog implements IMo
                     manualInstallButtonMap.put(data, importButton);
                     GridDataFactory.fillDefaults().align(SWT.RIGHT, SWT.CENTER).grab(true, false).applyTo(importButton);
                     importButton.setEnabled(!isInstalled);
+                    importButton.setToolTipText(data.toString());
                 }
                 editor.grabHorizontal = true;
                 editor.setEditor(control, item, tableViewerCreator.getColumns().indexOf(installcolumn));

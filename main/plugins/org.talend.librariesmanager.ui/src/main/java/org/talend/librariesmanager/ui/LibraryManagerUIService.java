@@ -58,6 +58,19 @@ public class LibraryManagerUIService implements ILibraryManagerUIService {
 
     }
 
+    @Override
+    public void installModules(final Collection<ModuleNeeded> requiredModules) {
+        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+
+            @Override
+            public void run() {
+                Shell shell = PlatformUI.getWorkbench().getDisplay().getActiveShell();
+                ModulesInstaller.installModules(new Shell(shell), requiredModules);
+            }
+        });
+
+    }
+
     /*
      * (non-Javadoc)
      * 

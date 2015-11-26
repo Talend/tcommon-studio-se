@@ -25,7 +25,6 @@ import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
@@ -33,14 +32,13 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ExpandBar;
 import org.eclipse.swt.widgets.ExpandItem;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.PlatformUI;
 import org.talend.commons.ui.runtime.image.EImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
+import org.talend.commons.ui.swt.font.FontLib;
 import org.talend.metadata.managment.ui.i18n.Messages;
 import org.talend.metadata.managment.ui.props.PropertiesFieldModel;
 import org.talend.metadata.managment.ui.props.PropertiesTableView;
@@ -180,17 +178,7 @@ public class PropertiesDialog extends TitleAreaDialog {
             propsBuffer.append(")"); //$NON-NLS-1$
             statusLabel.setText(propsBuffer.toString());
         }
-        statusLabel.setFont(getItalicFont());
-    }
-
-    private Font getItalicFont() {
-        if (italicFont == null) {
-            Display display = PlatformUI.getWorkbench().getDisplay();
-            FontData fontData = display.getSystemFont().getFontData()[0];
-            italicFont = new Font(display, new FontData(fontData.getName(), fontData.getHeight(), SWT.ITALIC));
-        }
-
-        return italicFont;
+        statusLabel.setFont(FontLib.ITALIC_FONT);
     }
 
     /**
@@ -348,6 +336,19 @@ public class PropertiesDialog extends TitleAreaDialog {
 
     public void setInitProperties(List<Map<String, Object>> initProperties) {
         this.initProperties = initProperties;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.jface.dialogs.Dialog#close()
+     */
+    @Override
+    public boolean close() {
+        if (italicFont != null) {
+            italicFont.dispose();
+        }
+        return super.close();
     }
 
 }

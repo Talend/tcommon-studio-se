@@ -373,6 +373,9 @@ public class RepositoryObject implements IRepositoryObject {
      */
     @Override
     public boolean isDeleted() {
+        if (getProperty().getItem() == null) {
+            return false;
+        }
         return getProperty().getItem().getState().isDeleted();
     }
 

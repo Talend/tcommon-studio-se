@@ -19,6 +19,7 @@ import java.util.Set;
 
 import org.talend.core.language.ECodeLanguage;
 import org.talend.core.model.general.LibraryInfo;
+import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.routines.IRoutinesProvider;
@@ -30,6 +31,8 @@ import org.talend.core.model.routines.IRoutinesProvider;
 public interface ILibraryManagerUIService extends IService {
 
     public void installModules(String[] jarNames);
+
+    public void installModules(Collection<ModuleNeeded> requiredModules);
 
     public Collection<IRoutinesProvider> getRoutinesProviders(ECodeLanguage language);
 

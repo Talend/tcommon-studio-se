@@ -59,6 +59,11 @@ public enum EHBaseDistribution4Versions {
                  EHadoopVersion4Drivers.APACHE_1_0_0.getVersionDisplay(),
                  EHadoopVersion4Drivers.APACHE_1_0_0.getVersionValue()),
 
+    CLOUDERA_CDH5_5(
+                    EHBaseDistributions.CLOUDERA,
+                    EHadoopVersion4Drivers.CLOUDERA_CDH5_5.getVersionDisplay(),
+                    EHadoopVersion4Drivers.CLOUDERA_CDH5_5.getVersionValue()),
+
     CLOUDERA_CDH5_4(
                     EHBaseDistributions.CLOUDERA,
                     EHadoopVersion4Drivers.CLOUDERA_CDH5_4.getVersionDisplay(),

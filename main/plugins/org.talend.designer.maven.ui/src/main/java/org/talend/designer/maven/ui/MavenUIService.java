@@ -12,10 +12,19 @@
 // ============================================================================
 package org.talend.designer.maven.ui;
 
+import java.util.Dictionary;
+import java.util.Hashtable;
+
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.preference.IPreferenceNode;
+import org.eclipse.m2e.core.MavenPlugin;
+import org.eclipse.m2e.core.embedder.IMavenConfigurationChangeListener;
+import org.eclipse.m2e.core.embedder.MavenConfigurationChangeEvent;
+import org.eclipse.m2e.core.internal.preferences.MavenPreferenceConstants;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.runtime.services.IMavenUIService;
+import org.talend.designer.maven.talendlib.TalendLibsServerManager;
 import org.talend.designer.maven.ui.setting.preference.M2eUserSettingForTalendLoginTask;
 import org.talend.designer.maven.ui.setting.repository.RepositoryMavenSettingManager;
 import org.talend.repository.ui.views.IRepositoryView;
@@ -46,5 +55,36 @@ public class MavenUIService implements IMavenUIService {
         } catch (Exception e) {
             ExceptionHandler.process(e);
         }
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.talend.core.runtime.services.IMavenUIService#getUserSettings()
+     */
+    @Override
+    public void updateMavenResolver(boolean setupRemoteRepository) {
+        String studioUserSettingsFile = MavenPlugin.getMavenConfiguration().getUserSettingsFile();
+        // apply the user settings to MavenResolver
+        Dictionary<String, String> props = new Hashtable<String, String>();
+        if (studioUserSettingsFile != null && !"".equals(studioUserSettingsFile)) {
+            props.put("org.ops4j.pax.url.mvn.settings", studioUserSettingsFile);
+        }
+        TalendLibsServerManager.getInstance().updateMavenResolver(props, setupRemoteRepository);
+    }
+
+    @Override
+    public void addMavenConfigurationChangeListener() {
+        MavenPlugin.getMavenConfiguration().addConfigurationChangeListener(new IMavenConfigurationChangeListener() {
+
+            @Override
+            public void mavenConfigurationChange(MavenConfigurationChangeEvent event) throws CoreException {
+                if (event.getKey() != null && event.getKey().equals(MavenPreferenceConstants.P_GLOBAL_SETTINGS_FILE)
+                        || event.getKey().equals(MavenPreferenceConstants.P_USER_SETTINGS_FILE)) {
+                    updateMavenResolver(true);
+
+                }
+            }
+        });
     }
 }

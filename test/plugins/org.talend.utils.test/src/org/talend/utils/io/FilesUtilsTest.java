@@ -12,8 +12,7 @@
 // ============================================================================
 package org.talend.utils.io;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,6 +41,7 @@ public class FilesUtilsTest {
     @Test
     public void testIsEmptyFolder() {
         File file = new File("temp");
+        file.mkdirs();
         assertTrue(file.exists());
         assertTrue(FilesUtils.isEmptyFolder("temp"));
     }

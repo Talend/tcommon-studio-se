@@ -39,9 +39,9 @@ import org.talend.core.nexus.NexusServerBean;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.maven.MavenUrlHelper;
+import org.talend.designer.maven.talendlib.TalendLibsServerManager;
 import org.talend.designer.maven.utils.PomUtil;
 import org.talend.librariesmanager.maven.ArtifactsDeployer;
-import org.talend.librariesmanager.maven.TalendLibsServerManager;
 import org.talend.repository.ProjectManager;
 import org.talend.utils.io.FilesUtils;
 import org.talend.utils.ssl.SSLUtils;
@@ -157,7 +157,8 @@ public class NexusDownloader implements IDownloadHelper {
         URL url = new URL(path + relativePath);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         if (userName != null && !"".equals(userName)) {
-            urlConnection.setRequestProperty("Authorization", "Basic " + Base64.encodeBase64((userName + ":" + password).getBytes()));//$NON-NLS-1$ //$NON-NLS-2$
+            urlConnection.setRequestProperty(
+                    "Authorization", "Basic " + Base64.encodeBase64((userName + ":" + password).getBytes()));//$NON-NLS-1$ //$NON-NLS-2$
         }
         if (urlConnection instanceof HttpsURLConnection) {
             String userDir = Platform.getInstallLocation().getURL().getPath();
@@ -173,8 +174,8 @@ public class NexusDownloader implements IDownloadHelper {
 
             });
         }
-        urlConnection.setConnectTimeout(4000);
-        urlConnection.setReadTimeout(4000);
+        urlConnection.setConnectTimeout(10000);
+        urlConnection.setReadTimeout(10000);
         return urlConnection;
     }
 

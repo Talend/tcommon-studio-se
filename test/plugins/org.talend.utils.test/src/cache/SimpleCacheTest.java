@@ -52,12 +52,12 @@ public class SimpleCacheTest {
     public void testCacheWithTimeLimit() throws Exception {
         logTestName();
 
-        int maxTime = 25; // 25 ms
+        int maxTime = 200; // 25 ms
         int maxItems = -1;
         int itemsCountToPut = 5;
         int expectedSize = 2;
 
-        long sleepTimeBetweenEachAdd = 20; // 20 ms
+        long sleepTimeBetweenEachAdd = 150; // 20 ms
         SimpleCacheTestClass simpleCache = createAndFillCache(maxTime, maxItems, itemsCountToPut, sleepTimeBetweenEachAdd);
 
         assertThat(simpleCache.size(), is(expectedSize));
@@ -214,7 +214,8 @@ public class SimpleCacheTest {
         assertThat(simpleCache.internalTimeListSize(), is(exepectedItemsCount));
     }
 
-    private SimpleCacheTestClass createAndFillCache(long maxTime, int maxItems, int itemsCountToPut, Long sleepTimeBetweenEachAdd) {
+    private SimpleCacheTestClass createAndFillCache(long maxTime, int maxItems, int itemsCountToPut,
+            Long sleepTimeBetweenEachAdd) {
         SimpleCacheTestClass simpleCache = new SimpleCacheTestClass(maxTime, maxItems);
         int itemsCount = 5;
         for (int i = 1; i <= itemsCount; i++) {

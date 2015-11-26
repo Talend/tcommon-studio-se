@@ -420,6 +420,7 @@ public class ProcessorUtilities {
                 processor = getProcessor(currentProcess, selectedProcessItem.getProperty());
             }
         }
+        jobInfo.setProcessor(processor);
         processor.cleanBeforeGenerate(TalendProcessOptionConstants.CLEAN_JAVA_CODES | TalendProcessOptionConstants.CLEAN_CONTEXTS
                 | TalendProcessOptionConstants.CLEAN_DATA_SETS);
 
@@ -487,7 +488,6 @@ public class ProcessorUtilities {
          * Set classpath for current job. If current job include some child-jobs, the child job SHARE farther job
          * libraries.
          */
-        jobInfo.setProcess(null);
         generateBuildInfo(jobInfo, progressMonitor, isMainJob, currentProcess, currentJobName, processor, option);
         return processor;
     }
@@ -756,7 +756,7 @@ public class ProcessorUtilities {
             }
             processor.cleanBeforeGenerate(TalendProcessOptionConstants.CLEAN_JAVA_CODES
                     | TalendProcessOptionConstants.CLEAN_CONTEXTS | TalendProcessOptionConstants.CLEAN_DATA_SETS);
-
+            jobInfo.setProcessor(processor);
             if (!timerStarted) {
                 idTimer = "generateCode for job: " + currentProcess.getName();
                 TimeMeasure.begin(idTimer);
@@ -839,7 +839,6 @@ public class ProcessorUtilities {
              * Set classpath for current job. If current job include some child-jobs, the child job SHARE farther job
              * libraries.
              */
-            jobInfo.setProcess(null);
             generateBuildInfo(jobInfo, progressMonitor, isMainJob, currentProcess, currentJobName, processor, option);
             TimeMeasure.step(idTimer, "generateBuildInfo");
 
@@ -1344,6 +1343,12 @@ public class ProcessorUtilities {
      */
     public static String[] getCommandLine(String targetPlatform, boolean externalUse, String processId, String contextName,
             int statisticPort, int tracePort, String... codeOptions) throws ProcessorException {
+
+        IProcessor processor = findProcessorFromJobList(processId, contextName, null);
+        if (processor != null && targetPlatform.equals(processor.getTargetPlatform())) {
+            return processor.getCommandLine(true, externalUse, statisticPort, tracePort, codeOptions);
+        }
+
         ProcessItem selectedProcessItem = ItemCacheManager.getProcessItem(processId);
         if (selectedProcessItem == null) {
             return new String[] {};
@@ -1442,18 +1447,21 @@ public class ProcessorUtilities {
      */
     public static String[] getMainCommand(String processName, String processVersion, String contextName, int statisticPort,
             int tracePort, String... codeOptions) throws ProcessorException {
-        IProcess currentProcess = null;
-        ProcessItem selectedProcessItem = null;
-        selectedProcessItem = ItemCacheManager.getProcessItem(processName, processVersion);
-        if (selectedProcessItem != null) {
-            IDesignerCoreService service = CorePlugin.getDefault().getDesignerCoreService();
-            currentProcess = service.getProcessFromProcessItem(selectedProcessItem);
+        IProcessor processor = findProcessorFromJobList(processName, contextName, processVersion);
+        if (processor == null) {
+            IProcess currentProcess = null;
+            ProcessItem selectedProcessItem = null;
+            selectedProcessItem = ItemCacheManager.getProcessItem(processName, processVersion);
+            if (selectedProcessItem != null) {
+                IDesignerCoreService service = CorePlugin.getDefault().getDesignerCoreService();
+                currentProcess = service.getProcessFromProcessItem(selectedProcessItem);
+            }
+            if (currentProcess == null) {
+                return new String[] {};
+            }
+            IContext currentContext = getContext(currentProcess, contextName);
+            processor = getProcessor(currentProcess, selectedProcessItem.getProperty(), currentContext);
         }
-        if (currentProcess == null) {
-            return new String[] {};
-        }
-        IContext currentContext = getContext(currentProcess, contextName);
-        IProcessor processor = getProcessor(currentProcess, selectedProcessItem.getProperty(), currentContext);
         String[] cmd = new String[] { processor.getMainClass() };
         if (codeOptions != null) {
             for (String string : codeOptions) {
@@ -1638,6 +1646,22 @@ public class ProcessorUtilities {
             }
         }
         return sb.toString();
+    }
+
+    private static IProcessor findProcessorFromJobList(String processId, String contextName, String version) {
+        for (JobInfo jobInfo : jobList) {
+            if (jobInfo.getJobId().equals(processId)) {
+                if (contextName != null && !contextName.equals("") && !jobInfo.getContextName().equals(contextName)) {
+                    continue;
+                }   
+                if (version != null && !version.equals(jobInfo.getJobVersion())) {
+                    continue;
+                }
+                // job found from jobList;
+                return jobInfo.getProcessor();
+            }
+        }
+        return null;
     }
 
 }

@@ -241,7 +241,7 @@ public interface IProxyRepositoryFactory {
      * @throws BusinessException
      * @see org.talend.repository.model.IRepositoryFactory#lock(org.talend.core.model.properties.Item)
      */
-    public abstract void lock(Item item) throws PersistenceException, LoginException;
+    public abstract boolean lock(Item item) throws PersistenceException, LoginException;
 
     /*
      * (non-Javadoc)

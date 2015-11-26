@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -29,9 +30,11 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.runtime.model.emf.EmfHelper;
 import org.talend.core.model.general.Project;
+import org.talend.core.model.properties.ConnectionItem;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
+import org.talend.core.repository.model.ProjectRepositoryNode;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.repository.utils.URIHelper;
 import org.talend.model.recyclebin.RecycleBin;
@@ -68,6 +71,10 @@ public class RecycleBinManager {
         return new ArrayList<String>(project.getEmfProject().getDeletedFolders());
     }
 
+    public void clearCache() {
+        projectRecyclebins.clear();
+    }
+
     public void clearIndex(Project project) {
         loadRecycleBin(project);
         projectRecyclebins.get(project.getTechnicalLabel()).getDeletedItems().clear();
@@ -77,7 +84,9 @@ public class RecycleBinManager {
     public List<IRepositoryViewObject> getDeletedObjects(Project project) {
         loadRecycleBin(project);
         List<IRepositoryViewObject> deletedObjects = new ArrayList<IRepositoryViewObject>();
-        for (TalendItem deletedItem : projectRecyclebins.get(project.getTechnicalLabel()).getDeletedItems()) {
+        final EList<TalendItem> deletedItems = projectRecyclebins.get(project.getTechnicalLabel()).getDeletedItems();
+        List<TalendItem> notDeletedItems = new ArrayList<TalendItem>();
+        for (TalendItem deletedItem : deletedItems) {
             try {
                 IRepositoryViewObject object = ProxyRepositoryFactory.getInstance().getLastVersion(project, deletedItem.getId(),
                         deletedItem.getPath(), ERepositoryObjectType.getType(deletedItem.getType()));
@@ -85,12 +94,27 @@ public class RecycleBinManager {
                     object = ProxyRepositoryFactory.getInstance().getLastVersion(project, deletedItem.getId());
                 }
                 if (object != null) {
-                    deletedObjects.add(object);
+                    Item item = object.getProperty().getItem();
+                    boolean hasSubItem = false;
+                    if (item instanceof ConnectionItem) {
+                        hasSubItem = ProjectRepositoryNode.getInstance().hasDeletedSubItem((ConnectionItem) item);
+                    }
+                    if (object.isDeleted() || hasSubItem) {
+                        deletedObjects.add(object);
+                    } else {
+                        // need remove it.
+                        notDeletedItems.add(deletedItem);
+                    }
+                } else {
+                    // need remove it.
+                    notDeletedItems.add(deletedItem);
                 }
             } catch (PersistenceException e) {
                 ExceptionHandler.process(e);
             }
         }
+        // clean
+        deletedItems.removeAll(notDeletedItems);
         return deletedObjects;
     }
 

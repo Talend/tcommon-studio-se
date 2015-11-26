@@ -88,15 +88,20 @@ public class DuplicateDialog extends CustomInputDialog {
     private void init() {
         if (sourceNode != null) {
             // job type
-            if (sourceNode.getProperties(EProperties.CONTENT_TYPE) == ERepositoryObjectType.PROCESS) {
+            final Object contentType = sourceNode.getProperties(EProperties.CONTENT_TYPE);
+            if (contentType == ERepositoryObjectType.PROCESS) {
                 jobTypeValue = JobType.STANDARD.getDisplayName();
                 jobTypeCombo.setText(jobTypeValue);
-            } else if (sourceNode.getProperties(EProperties.CONTENT_TYPE) == ERepositoryObjectType.PROCESS_MR) {
+            } else if (contentType == ERepositoryObjectType.PROCESS_MR) {
                 jobTypeValue = JobType.BIGDATABATCH.getDisplayName();
                 jobTypeCombo.setText(jobTypeValue);
-            } else if (sourceNode.getProperties(EProperties.CONTENT_TYPE) == ERepositoryObjectType.PROCESS_STORM) {
+            } else if (contentType == ERepositoryObjectType.PROCESS_STORM) {
                 jobTypeValue = JobType.BIGDATASTREAMING.getDisplayName();
                 jobTypeCombo.setText(jobTypeValue);
+            } else if (contentType == ERepositoryObjectType.PROCESS_ROUTE
+                || contentType == ERepositoryObjectType.PROCESS_ROUTELET) {
+                jobTypeCombo.setVisible(false);
+                frameworkCombo.setVisible(false);
             }
             // framework
             Property property = sourceNode.getObject().getProperty();

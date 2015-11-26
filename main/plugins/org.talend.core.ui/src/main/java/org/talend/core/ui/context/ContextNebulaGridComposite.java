@@ -14,8 +14,10 @@ package org.talend.core.ui.context;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.jface.dialogs.Dialog;
@@ -53,7 +55,6 @@ import org.talend.core.model.metadata.types.ContextParameterJavaTypeManager;
 import org.talend.core.model.process.IContext;
 import org.talend.core.model.process.IContextManager;
 import org.talend.core.model.process.IContextParameter;
-import org.talend.core.model.properties.ContextItem;
 import org.talend.core.model.properties.Item;
 import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.core.ui.CoreUIPlugin;
@@ -650,22 +651,22 @@ public class ContextNebulaGridComposite extends AbstractContextTabEditComposite 
             return;
         }
         if (contextManager != null) {
-            List<IContext> contexts = contextManager.getListContext();
             helper.initHelper(contextManager);
+            Map<String, Item> items = new HashMap<String, Item>();
             boolean needRefresh = false;
-            for (IContext context : contexts) {
-                for (IContextParameter param : context.getContextParameterList()) {
-                    if (!param.isBuiltIn()) {
-                        // TDI-31787:the context parameter's source can be either from context or joblet
-                        Item sourceItem = ContextUtils.getRepositoryContextItemById(param.getSource());
-                        if (sourceItem instanceof ContextItem) {
-                            ContextItem item = helper.getContextItemById(param.getSource());
-                            if (item == null) { // source not found
-                                needRefresh = true;
-                                param.setSource(IContextParameter.BUILT_IN);
-                                propagateType(contextManager, param);
-                            }
-                        }
+            for (IContextParameter param : contextManager.getDefaultContext().getContextParameterList()) {
+                if (!param.isBuiltIn()) {
+                    String source = param.getSource();
+                    Item sourceItem = items.get(source);
+                    if (sourceItem == null) {
+                        sourceItem = ContextUtils.getRepositoryContextItemById(source);
+                    }
+                    if (sourceItem == null) { // source not found
+                        needRefresh = true;
+                        param.setSource(IContextParameter.BUILT_IN);
+                        propagateType(contextManager, param);
+                    } else {
+                        items.put(source, sourceItem);
                     }
                 }
             }
@@ -688,6 +689,7 @@ public class ContextNebulaGridComposite extends AbstractContextTabEditComposite 
             IContextParameter paramToModify = context.getContextParameter(param.getName());
             paramToModify.setType(param.getType());
             paramToModify.setComment(param.getComment());
+            paramToModify.setSource(param.getSource());
         }
     }
 

@@ -12,6 +12,9 @@
 // ============================================================================
 package org.talend.core.model.general;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * created by WCHEN on 2012-9-17 Detailled comment
  * 
@@ -35,6 +38,8 @@ public class ModuleToInstall {
     private String licenseUrl;
 
     private String mavenUri;
+
+    private Set<String> mavenUris = new HashSet<String>();
 
     private String distribution = "";
 
@@ -150,6 +155,25 @@ public class ModuleToInstall {
 
     @Override
     public String toString() {
-        return getMavenUri();
+        if (getMavenUris().isEmpty()) {
+            return getMavenUri() == null ? "" : getMavenUri();
+        } else {
+            String toString = "";
+            for (String uri : getMavenUris()) {
+                toString = toString + uri + ";";
+            }
+            toString = toString.substring(0, toString.length() - 1);
+            return toString;
+        }
     }
+
+    /**
+     * Getter for mavenUris.
+     * 
+     * @return the mavenUris
+     */
+    public Set<String> getMavenUris() {
+        return this.mavenUris;
+    }
+
 }

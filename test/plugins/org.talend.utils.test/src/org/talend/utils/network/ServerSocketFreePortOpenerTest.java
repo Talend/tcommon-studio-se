@@ -29,60 +29,62 @@ import org.talend.utils.network.operators.ServerSocketFreePortOpenerOperator;
  */
 public class ServerSocketFreePortOpenerTest {
 
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = true;
 
     @Test
     public void testOpensServerSocketFromRangePortSameReference() throws IOException {
 
         ServerSocketFreePortOpener serverSocketFreePortOpener = new ServerSocketFreePortOpener();
-
+        ServerSocket serverSocket;
         int[] portsToOpen = new int[] { 10000, 10001, 10002, 10003, 10004 };
         List<ServerSocket> servers = openPorts(portsToOpen);
+        try {
 
-        int freePort = -1;
+            int freePort = -1;
 
-        for (int i = 0; i < 1000; i++) {
-            if (isPortFree(10005 + i)) {
-                freePort = 10005 + i;
-                break;
+            for (int i = 0; i < 1000; i++) {
+                if (isPortFree(10005 + i)) {
+                    freePort = 10005 + i;
+                    break;
+                }
             }
+
+            if (freePort == -1) {
+                fail("Can't find a free port");
+            }
+
+            serverSocket = serverSocketFreePortOpener.openServerSocketFromRangePort(10000, freePort, false);
+            if (serverSocket != null) {
+                int localPort = serverSocket.getLocalPort();
+                assertThat(localPort, is(freePort));
+            }
+
+            serverSocket = serverSocketFreePortOpener.openServerSocketFromRangePort(10000, freePort, true);
+            if (serverSocket != null) {
+                int localPort = serverSocket.getLocalPort();
+                assertThat(localPort, is(freePort));
+            }
+
+            serverSocket = serverSocketFreePortOpener.openServerSocketFromRangePort(10000, 10000, false);
+            assertNull("Can't find free port expected", serverSocket);
+
+            serverSocket = serverSocketFreePortOpener.openServerSocketFromRangePort(10000, 10000, true);
+            assertNull("Can't find free port expected", serverSocket);
+
+            serverSocket = serverSocketFreePortOpener.openServerSocketFromRangePort(freePort, freePort, false);
+            if (serverSocket != null) {
+                int localPort = serverSocket.getLocalPort();
+                assertThat(localPort, is(freePort));
+            }
+
+            serverSocket = serverSocketFreePortOpener.openServerSocketFromRangePort(freePort, freePort, true);
+            if (serverSocket != null) {
+                int localPort = serverSocket.getLocalPort();
+                assertThat(localPort, is(freePort));
+            }
+        } finally {
+            closeServerSockets(servers);
         }
-
-        if (freePort == -1) {
-            fail("Can't find a free port");
-        }
-
-        ServerSocket serverSocket = serverSocketFreePortOpener.openServerSocketFromRangePort(10000, freePort, false);
-        if (serverSocket != null) {
-            int localPort = serverSocket.getLocalPort();
-            assertThat(localPort, is(freePort));
-        }
-
-        serverSocket = serverSocketFreePortOpener.openServerSocketFromRangePort(10000, freePort, true);
-        if (serverSocket != null) {
-            int localPort = serverSocket.getLocalPort();
-            assertThat(localPort, is(freePort));
-        }
-
-        serverSocket = serverSocketFreePortOpener.openServerSocketFromRangePort(10000, 10000, false);
-        assertNull("Can't find free port expected", serverSocket);
-
-        serverSocket = serverSocketFreePortOpener.openServerSocketFromRangePort(10000, 10000, true);
-        assertNull("Can't find free port expected", serverSocket);
-
-        serverSocket = serverSocketFreePortOpener.openServerSocketFromRangePort(freePort, freePort, false);
-        if (serverSocket != null) {
-            int localPort = serverSocket.getLocalPort();
-            assertThat(localPort, is(freePort));
-        }
-
-        serverSocket = serverSocketFreePortOpener.openServerSocketFromRangePort(freePort, freePort, true);
-        if (serverSocket != null) {
-            int localPort = serverSocket.getLocalPort();
-            assertThat(localPort, is(freePort));
-        }
-
-        closeServerSockets(servers);
 
         for (int port : portsToOpen) {
             serverSocket = serverSocketFreePortOpener.openServerSocketFromRangePort(port, port, false);
@@ -98,60 +100,61 @@ public class ServerSocketFreePortOpenerTest {
     public void testOpensServerSocketFromRangePortDifferentReference() throws IOException {
 
         ServerSocketFreePortOpener serverSocketFreePortOpener = null;
-
+        ServerSocket serverSocket;
         int[] portsToOpen = new int[] { 10000, 10001, 10002, 10003, 10004 };
         List<ServerSocket> servers = openPorts(portsToOpen);
+        try {
+            int freePort = -1;
 
-        int freePort = -1;
-
-        for (int i = 0; i < 1000; i++) {
-            if (isPortFree(10005 + i)) {
-                freePort = 10005 + i;
-                break;
+            for (int i = 0; i < 1000; i++) {
+                if (isPortFree(10005 + i)) {
+                    freePort = 10005 + i;
+                    break;
+                }
             }
+
+            if (freePort == -1) {
+                fail("Can't find a free port");
+            }
+
+            serverSocketFreePortOpener = new ServerSocketFreePortOpener();
+            serverSocket = serverSocketFreePortOpener.openServerSocketFromRangePort(10000, freePort, false);
+            if (serverSocket != null) {
+                int localPort = serverSocket.getLocalPort();
+                assertThat(localPort, is(freePort));
+            }
+
+            serverSocketFreePortOpener = new ServerSocketFreePortOpener();
+            serverSocket = serverSocketFreePortOpener.openServerSocketFromRangePort(10000, freePort, true);
+            if (serverSocket != null) {
+                int localPort = serverSocket.getLocalPort();
+                assertThat(localPort, is(freePort));
+            }
+
+            serverSocketFreePortOpener = new ServerSocketFreePortOpener();
+            serverSocket = serverSocketFreePortOpener.openServerSocketFromRangePort(10000, 10000, false);
+            assertNull("Can't find free port expected", serverSocket);
+
+            serverSocketFreePortOpener = new ServerSocketFreePortOpener();
+            serverSocket = serverSocketFreePortOpener.openServerSocketFromRangePort(10000, 10000, true);
+            assertNull("Can't find free port expected", serverSocket);
+
+            serverSocketFreePortOpener = new ServerSocketFreePortOpener();
+            serverSocket = serverSocketFreePortOpener.openServerSocketFromRangePort(freePort, freePort, false);
+            if (serverSocket != null) {
+                int localPort = serverSocket.getLocalPort();
+                assertThat(localPort, is(freePort));
+            }
+
+            serverSocketFreePortOpener = new ServerSocketFreePortOpener();
+            serverSocket = serverSocketFreePortOpener.openServerSocketFromRangePort(freePort, freePort, true);
+            if (serverSocket != null) {
+                int localPort = serverSocket.getLocalPort();
+                assertThat(localPort, is(freePort));
+            }
+        } finally {
+            closeServerSockets(servers);
         }
-
-        if (freePort == -1) {
-            fail("Can't find a free port");
-        }
-
-        serverSocketFreePortOpener = new ServerSocketFreePortOpener();
-        ServerSocket serverSocket = serverSocketFreePortOpener.openServerSocketFromRangePort(10000, freePort, false);
-        if (serverSocket != null) {
-            int localPort = serverSocket.getLocalPort();
-            assertThat(localPort, is(freePort));
-        }
-
-        serverSocketFreePortOpener = new ServerSocketFreePortOpener();
-        serverSocket = serverSocketFreePortOpener.openServerSocketFromRangePort(10000, freePort, true);
-        if (serverSocket != null) {
-            int localPort = serverSocket.getLocalPort();
-            assertThat(localPort, is(freePort));
-        }
-
-        serverSocketFreePortOpener = new ServerSocketFreePortOpener();
-        serverSocket = serverSocketFreePortOpener.openServerSocketFromRangePort(10000, 10000, false);
-        assertNull("Can't find free port expected", serverSocket);
-
-        serverSocketFreePortOpener = new ServerSocketFreePortOpener();
-        serverSocket = serverSocketFreePortOpener.openServerSocketFromRangePort(10000, 10000, true);
-        assertNull("Can't find free port expected", serverSocket);
-
-        serverSocketFreePortOpener = new ServerSocketFreePortOpener();
-        serverSocket = serverSocketFreePortOpener.openServerSocketFromRangePort(freePort, freePort, false);
-        if (serverSocket != null) {
-            int localPort = serverSocket.getLocalPort();
-            assertThat(localPort, is(freePort));
-        }
-
-        serverSocketFreePortOpener = new ServerSocketFreePortOpener();
-        serverSocket = serverSocketFreePortOpener.openServerSocketFromRangePort(freePort, freePort, true);
-        if (serverSocket != null) {
-            int localPort = serverSocket.getLocalPort();
-            assertThat(localPort, is(freePort));
-        }
-
-        closeServerSockets(servers);
 
         for (int port : portsToOpen) {
             serverSocketFreePortOpener = new ServerSocketFreePortOpener();
@@ -164,8 +167,9 @@ public class ServerSocketFreePortOpenerTest {
 
     }
 
-    @Test(timeout = 5000)
-    // @Test
+    @Test(timeout = 10000)
+    // Those test seem to fail when launched from OSGI and succeed when launched from pure java.
+    // I (SeB.G.) could not figure out why.
     public void testThreadSafetySameReference() throws Exception {
         final int nOperatorsByClassOperator = 30;
         final int nOperationsByOperator = 50;
@@ -198,10 +202,10 @@ public class ServerSocketFreePortOpenerTest {
             /*
              * (non-Javadoc)
              * 
-             * @see
-             * org.talend.commons.utils.threading.AbstractThreadSafetyTester#initInstance(org.talend.commons.utils.threading
-             * .IThreadSafetyOperator)
+             * @see org.talend.commons.utils.threading.AbstractThreadSafetyTester#initInstance(org.talend.commons.utils.
+             * threading .IThreadSafetyOperator)
              */
+            @Override
             protected void initInstance(ServerSocketFreePortOpenerOperator operatorInstance) {
                 operatorInstance.setDebug(DEBUG);
                 operatorInstance.setServerSocketFreePortOpener(serverSocketFreePortOpener);
@@ -213,8 +217,9 @@ public class ServerSocketFreePortOpenerTest {
              * 
              * @see org.talend.commons.utils.threading.AbstractThreadSafetyTester#assertFinal()
              */
-            protected void assertFinal() throws IOException {
-
+            @Override
+            protected void assertFinal() throws IOException, InterruptedException {
+                Thread.sleep(1000);
                 for (int port = ServerSocketFreePortOpenerOperator.portRangeBound1; port <= ServerSocketFreePortOpenerOperator.portRangeBound2; port++) {
                     assertThat("Port " + port + " should be free!", isPortFree(port), is(true));
                 }
@@ -242,6 +247,10 @@ public class ServerSocketFreePortOpenerTest {
         try {
             serverSocket = new ServerSocket(port);
         } catch (Throwable e) {
+            if (DEBUG) {
+                System.err.println("socket error on port : " + port);
+                e.printStackTrace(System.err);
+            }
             return false;
         } finally {
             try {

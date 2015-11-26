@@ -89,6 +89,11 @@ public interface ILibraryManagerService extends IService {
     public boolean retrieve(Collection<String> jarsNeeded, String pathToStore, boolean showDialog,
             IProgressMonitor... monitorWrap);
 
+    public boolean retrieve(Set<ModuleNeeded> modulesNeeded, String pathToStore, boolean showDialog,
+            IProgressMonitor... monitorWrap);
+
+    public boolean retrieve(ModuleNeeded module, String pathToStore, boolean showDialog, IProgressMonitor... monitorWrap);
+
     /**
      * List all the jars (or other files) available.
      * 

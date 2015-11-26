@@ -180,6 +180,7 @@ public class OracleExtractManager extends ExtractManager {
                 Schema schema = (Schema) table.eContainer();
                 synSQL += "and all_synonyms.OWNER =\'" + schema.getName() + "\'";
             }
+            synSQL += " ORDER BY all_tab_columns.COLUMN_NAME"; //$NON-NLS-1$
             Statement sta = extractMeta.getConn().createStatement();
             extractMeta.setQueryStatementTimeout(sta);
             ResultSet columns = sta.executeQuery(synSQL);
@@ -244,7 +245,7 @@ public class OracleExtractManager extends ExtractManager {
             throws SQLException {
         ExtractMetaDataUtils extractMeta = ExtractMetaDataUtils.getInstance();
         if (extractMeta.isUseAllSynonyms()) {
-            String sql = "select * from all_tab_columns where table_name='" + tableName + "' "; //$NON-NLS-1$ //$NON-NLS-2$
+            String sql = "select * from all_tab_columns where table_name='" + tableName + "' ORDER BY all_tab_columns.COLUMN_NAME"; //$NON-NLS-1$ //$NON-NLS-2$
             Statement stmt = extractMeta.getConn().createStatement();
             extractMeta.setQueryStatementTimeout(stmt);
             return stmt.executeQuery(sql);

@@ -13,6 +13,7 @@
 package org.talend.librariesmanager.ui.startup;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -77,7 +78,7 @@ public class ShareLibsJob extends Job {
             Map<ModuleNeeded, File> files = new HashMap<ModuleNeeded, File>();
             SubMonitor mainSubMonitor = SubMonitor.convert(monitor, 1);
             mainSubMonitor.setTaskName(Messages.getString("ShareLibsJob.getFilesToShare")); //$NON-NLS-1$
-            final List<ModuleNeeded> modulesNeeded = ModulesNeededProvider.getModulesNeeded();
+            final List<ModuleNeeded> modulesNeeded = new ArrayList<ModuleNeeded>(ModulesNeededProvider.getModulesNeeded());
             ILibraryManagerService librariesService = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
                     ILibraryManagerService.class);
             Set<String> filePaths = new HashSet<String>();
@@ -87,7 +88,7 @@ public class ShareLibsJob extends Job {
                 }
 
                 // only deploy libraries with group id org.talend.libraries
-                MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(module.getMavenUriSnapshot());
+                MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(module.getMavenUri());
                 if (parseMvnUrl == null || !MavenConstants.DEFAULT_LIB_GROUP_ID.equals(parseMvnUrl.getGroupId())) {
                     continue;
                 }

@@ -63,7 +63,7 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 /**
  * DOC ggu class global comment. Detailled comment
  */
-public final class ImportExportHandlersManager {
+public class ImportExportHandlersManager {
 
     private final ImportExportHandlersRegistryReader registryReader;
 
@@ -160,7 +160,7 @@ public final class ImportExportHandlersManager {
             // check the special resources first.
             List<IPath> doneList = new ArrayList<IPath>();
 
-            ImportHandlerHelper importHandlerHelper = new ImportHandlerHelper();
+            ImportHandlerHelper importHandlerHelper = createImportHandlerHelper();
 
             for (IPath path : resourcesPathsList) {
                 if (monitor.isCanceled()) {
@@ -227,6 +227,11 @@ public final class ImportExportHandlersManager {
             TimeMeasure.measureActive = false;
         }
 
+    }
+
+    protected ImportHandlerHelper createImportHandlerHelper() {
+        // TODO Auto-generated method stub
+        return new ImportHandlerHelper();
     }
 
     public void importItemRecords(final IProgressMonitor progressMonitor, final ResourcesManager resManager,

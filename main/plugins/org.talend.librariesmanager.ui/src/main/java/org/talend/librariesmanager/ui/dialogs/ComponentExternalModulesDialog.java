@@ -12,28 +12,20 @@
 // ============================================================================
 package org.talend.librariesmanager.ui.dialogs;
 
-import java.util.List;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.talend.core.model.general.ModuleNeeded;
-import org.talend.librariesmanager.prefs.LibrariesManagerUtils;
 import org.talend.librariesmanager.ui.LibManagerUiPlugin;
 import org.talend.librariesmanager.ui.i18n.Messages;
-import org.talend.librariesmanager.utils.RemoteModulesHelper;
 
 /**
  * created by Administrator on 2012-9-18 Detailled comment
  * 
  */
-public class ComponentExternalModulesDialog extends ExternalModulesInstallDialog {
-
-    private List<ModuleNeeded> modules;
+public class ComponentExternalModulesDialog extends ExternalModulesInstallDialogWithProgress {
 
     private Button doNotShowBtn;
 
@@ -45,17 +37,6 @@ public class ComponentExternalModulesDialog extends ExternalModulesInstallDialog
 
     public void setCoponentName(String coponentName) {
         this.coponentName = coponentName;
-    }
-
-    /**
-     * DOC Administrator ComponentExternalModulesDialog constructor comment.
-     * 
-     * @param shell
-     * @param modulesToInstall
-     */
-    public ComponentExternalModulesDialog(Shell shell, List<ModuleNeeded> modules, String text, String title) {
-        this(shell, text, title);
-        this.modules = modules;
     }
 
     public ComponentExternalModulesDialog(Shell shell, String text, String title) {
@@ -85,33 +66,6 @@ public class ComponentExternalModulesDialog extends ExternalModulesInstallDialog
     protected void configureShell(Shell newShell) {
         super.configureShell(newShell);
         newShell.setText(text);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.librariesmanager.ui.dialogs.ExternalModulesInstallDialog#getModulesToInstall()
-     */
-    @Override
-    public void openDialog() {
-        List<ModuleNeeded> updatedModules = LibrariesManagerUtils.getNotInstalledModules(modules);
-        inputList.clear();
-        RemoteModulesHelper.getInstance().getNotInstalledModules(updatedModules, inputList, this);
-    }
-
-    @Override
-    public void listModulesDone() {
-
-        Display.getDefault().asyncExec(new Runnable() {
-
-            @Override
-            public void run() {
-                if (inputList.size() > 0) {
-                    open();
-                }
-            }
-        });
-
     }
 
 }

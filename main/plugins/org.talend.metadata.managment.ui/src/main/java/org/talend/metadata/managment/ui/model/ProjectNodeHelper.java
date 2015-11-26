@@ -21,10 +21,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.log4j.Priority;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.model.metadata.IMetadataConnection;
 import org.talend.core.model.metadata.builder.ConvertionHelper;
@@ -40,7 +42,6 @@ import org.talend.metadata.managment.connection.manager.HiveConnectionManager;
 import org.talend.metadata.managment.model.MetadataFillFactory;
 import org.talend.metadata.managment.utils.MetadataConnectionUtils;
 import org.talend.utils.sql.ConnectionUtils;
-
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.resource.relational.Catalog;
 import orgomg.cwm.resource.relational.Schema;
@@ -602,7 +603,17 @@ public class ProjectNodeHelper {
             Collection<? extends MetadataTable> tablesToDelete) {
         boolean hasSchemaInCatalog = false;
         Catalog c = (Catalog) ConnectionHelper.getPackage(dbsid, dbconn, Catalog.class);
-        Schema s = (Schema) ConnectionHelper.getPackage(schema, dbconn, Schema.class);
+        String dbType = dbconn.getDatabaseType();
+        Schema s = null;
+        if (dbType != null && !dbType.isEmpty()) {
+            EDatabaseTypeName currentType = EDatabaseTypeName.getTypeFromDbType(dbconn.getDatabaseType());
+            if (currentType != null && "ORACLE".equals(currentType.getProduct())) { //$NON-NLS-1$
+                s = getCorrectSchemaForOracle(schema, dbconn, tablesToDelete);
+            }
+        }
+        if (s == null) {
+            s = (Schema) ConnectionHelper.getPackage(schema, dbconn, Schema.class);
+        }
         List<Schema> subschemas = new ArrayList<Schema>();
         if (c != null) {
             subschemas = CatalogHelper.getSchemas(c);
@@ -659,5 +670,34 @@ public class ProjectNodeHelper {
         } else {
             // return nothing
         }
+    }
+
+    private static Schema getCorrectSchemaForOracle(String schema, DatabaseConnection dbconn,
+            Collection<? extends MetadataTable> tablesToDelete) {
+        try {
+            List<Schema> schemasExist = ConnectionHelper.getSchema(dbconn);
+            if (schemasExist != null && !schemasExist.isEmpty()) {
+                List<Schema> findedSchema = new ArrayList<Schema>();
+                Iterator<Schema> iter = schemasExist.iterator();
+                while (iter.hasNext()) {
+                    Schema s = iter.next();
+                    if (s == null) {
+                        continue;
+                    }
+                    if (s.getOwnedElement().containsAll(tablesToDelete)) {
+                        if (s.getName().equals(schema)) {
+                            return s;
+                        }
+                        findedSchema.add(s);
+                    }
+                }
+                if (!findedSchema.isEmpty()) {
+                    return findedSchema.get(0);
+                }
+            }
+        } catch (Exception e) {
+            ExceptionHandler.process(e, Priority.WARN);
+        }
+        return null;
     }
 }

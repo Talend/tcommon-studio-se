@@ -4,124 +4,118 @@
       version="6.1.1.qualifier"
       provider-name=".Talend SA.">
 
-	<plugin
+   <plugin
          id="net.sourceforge.sqlexplorer"
          download-size="0"
          install-size="0"
-         version="0.0.0" />
-         
-        <plugin
+         version="0.0.0"/>
+
+   <plugin
          id="net.sourceforge.sqlexplorer.nl"
          download-size="0"
          install-size="0"
-         version="0.0.0" />
-         
-        <plugin
-         id="org.talend.libraries.ebcdic"
-         download-size="0"
-         install-size="0"
-         version="0.0.0" />
-         
-        <plugin
+         version="0.0.0" fragment="true"/>
+
+   <plugin
          id="org.talend.libraries.edifact"
          download-size="0"
          install-size="0"
-         version="0.0.0" />
-         
-        <plugin
+         version="0.0.0"/>
+
+   <plugin
          id="org.talend.libraries.ftp"
          download-size="0"
          install-size="0"
-         version="0.0.0" />
-         
-        <plugin
+         version="0.0.0"/>
+
+   <plugin
          id="org.talend.libraries.javacsv.jars"
          download-size="0"
          install-size="0"
-         version="0.0.0" />
- 
-	<plugin
+         version="0.0.0" fragment="true"/>
+
+   <plugin
          id="org.talend.libraries.jdbc.jtds.jars"
          download-size="0"
          install-size="0"
-         version="0.0.0" />
-		 
-	<plugin
+         version="0.0.0" fragment="true"/>
+
+   <plugin
          id="org.talend.libraries.jfreechart.jars"
          download-size="0"
          install-size="0"
-         version="0.0.0" />		
-		 
-	<plugin
+         version="0.0.0" fragment="true"/>
+
+   <plugin
          id="org.talend.libraries.hl7.jars"
          download-size="0"
          install-size="0"
-         version="0.0.0" />
-		 
-	<plugin
+         version="0.0.0" fragment="true"/>
+
+   <plugin
          id="org.talend.libraries.jboss.jars"
          download-size="0"
          install-size="0"
-         version="0.0.0" />
-		 
-	<plugin
+         version="0.0.0" fragment="true"/>
+
+   <plugin
          id="org.talend.libraries.jexcel.jars"
          download-size="0"
          install-size="0"
-         version="0.0.0" />
-         
-        <plugin
+         version="0.0.0" fragment="true"/>
+
+   <plugin
          id="org.talend.libraries.microsoft"
          download-size="0"
          install-size="0"
-         version="0.0.0" />
-         
-        <plugin
-         id="org.talend.sqlbuilder.jars"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.talend.libraries.sqlbuilder.jars"
          download-size="0"
          install-size="0"
-         version="0.0.0" />
-         
-        <plugin
+         version="0.0.0" fragment="true"/>
+
+   <plugin
          id="org.talend.libraries.nattable.glazedlist"
          download-size="0"
          install-size="0"
-         version="0.0.0" />
-		 
-	<plugin
+         version="0.0.0" fragment="true"/>
+
+   <plugin
          id="org.talend.libraries.uniserv"
          download-size="0"
          install-size="0"
-         version="0.0.0" />
-		 
-	<plugin
+         version="0.0.0"/>
+
+   <plugin
          id="org.talend.dataprofiler.top.chart"
          download-size="0"
          install-size="0"
-         version="0.0.0" />
-         
-        <plugin
+         version="0.0.0"/>
+
+   <plugin
          id="org.talend.dataprofiler.top.chart.nl"
          download-size="0"
          install-size="0"
-         version="0.0.0" />
-         
-        <plugin
+         version="0.0.0" fragment="true"/>
+
+   <plugin
          id="org.talend.libraries.apache.lucene4"
          download-size="0"
          install-size="0"
-         version="0.0.0" />
-         
-        <plugin
+         version="0.0.0"/>
+
+   <plugin
          id="org.talend.dataquality.standardization.nl"
          download-size="0"
          install-size="0"
-         version="0.0.0" />
-         
-        <plugin
+         version="0.0.0" fragment="true"/>
+
+   <plugin
          id="org.talend.developpement"
          download-size="0"
          install-size="0"
-         version="0.0.0" />
+         version="0.0.0"/>
 
 </feature>

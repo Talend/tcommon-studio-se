@@ -13,12 +13,12 @@
 package org.talend.librariesmanager.ui.dialogs;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.lang.ArrayUtils;
@@ -45,6 +45,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.talend.commons.exception.CommonExceptionHandler;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.system.EclipseCommandLine;
+import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.ModuleToInstall;
 import org.talend.librariesmanager.utils.DownloadModuleRunnableWithLicenseDialog;
 import org.talend.librariesmanager.utils.RemoteModulesHelper;
@@ -674,17 +675,30 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
             CommonExceptionHandler.warn("missing jars: " + ArrayUtils.toString(requiredJars)); //$NON-NLS-1$
             return;
         }
+
+        List<ModuleNeeded> requiredModules = new ArrayList<ModuleNeeded>();
+        for (String jarName : requiredJars) {
+            // create module without mvnuri and handle it in RemoteModulesHelper.getNotInstalledModulesRunnable
+            requiredModules.add(new ModuleNeeded(null, jarName, null, true));
+        }
+        showDialog(block, requiredModules);
+    }
+
+    public void showDialog(boolean block, Collection<ModuleNeeded> requiredModules) {
+        if (ArrayUtils.contains(Platform.getApplicationArgs(),
+                EclipseCommandLine.TALEND_DISABLE_EXTERNAL_MODULE_INSTALL_DIALOG_COMMAND)) {
+            CommonExceptionHandler.warn("missing jars: " + ArrayUtils.toString(requiredModules)); //$NON-NLS-1$
+            return;
+        }
         // fork = !block;
         // remove duplicated
-        Set<String> removeDuplicated = new HashSet<String>();
-        for (String jarName : requiredJars) {
-            removeDuplicated.add(jarName.trim());
-        }
+        List<ModuleNeeded> required = new ArrayList<ModuleNeeded>(requiredModules);
         IRunnableWithProgress notInstalledModulesRunnable = RemoteModulesHelper.getInstance().getNotInstalledModulesRunnable(
-                removeDuplicated.toArray(new String[removeDuplicated.size()]), inputList);
+                required, inputList, true);
         setBlockOnOpen(block);
         setInitialRunnable(notInstalledModulesRunnable);
         open();
+
     }
 
 }

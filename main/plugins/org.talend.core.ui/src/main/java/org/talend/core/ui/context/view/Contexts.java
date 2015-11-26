@@ -16,6 +16,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
@@ -42,12 +43,18 @@ public class Contexts {
         }
     }
     
-    public static void switchToCurContextsView(IWorkbenchPart part) {
-        AbstractContextView cxtView = getViewWithPerspectiveIDs();
-        if (cxtView != null) {
-            updateTitle(cxtView);
-            cxtView.refresh(part);
-        }
+    public static void switchToCurContextsView(final IWorkbenchPart part) {
+        final AbstractContextView cxtView = getViewWithPerspectiveIDs();
+        Display.getDefault().asyncExec(new Runnable() {
+
+            @Override
+            public void run() {
+                if (cxtView != null) {
+                    updateTitle(cxtView);
+                    cxtView.refresh(part);
+                }
+            }
+        });
     }
 
     private static AbstractContextView getViewWithPerspectiveIDs() {

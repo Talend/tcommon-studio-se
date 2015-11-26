@@ -29,6 +29,10 @@ public class MavenUrlHelper {
 
     public static final String SEPERATOR = "/";
 
+    public static final String MVN_INDEX_SEPARATOR = "|";
+
+    public static final String MVN_INDEX_SPLITER = "\\|";
+
     public static final String VERSION_LATEST = "LATEST";
 
     public static final String VERSION_SNAPSHOT = "SNAPSHOT";
@@ -208,6 +212,17 @@ public class MavenUrlHelper {
         return generateMvnUrl(parseMvnUrl.getGroupId(), parseMvnUrl.getArtifactId(), parseMvnUrl.getVersion()
                 + MavenConstants.SNAPSHOT, parseMvnUrl.getType(), parseMvnUrl.getClassifier());
 
+    }
+
+    public static String generateUriFromSnapshot(String snapshotMvnuri) {
+        MavenArtifact parseMvnUrl = parseMvnUrl(snapshotMvnuri);
+        if (parseMvnUrl == null) {
+            return null;
+        }
+        String snapshotVerstion = parseMvnUrl.getVersion();
+        String verstion = snapshotVerstion.substring(0, snapshotVerstion.indexOf(MavenConstants.SNAPSHOT));
+        return generateMvnUrl(parseMvnUrl.getGroupId(), parseMvnUrl.getArtifactId(), verstion, parseMvnUrl.getType(),
+                parseMvnUrl.getClassifier());
     }
 
 }

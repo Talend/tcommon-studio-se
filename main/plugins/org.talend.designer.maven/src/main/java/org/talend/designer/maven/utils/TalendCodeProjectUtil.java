@@ -20,8 +20,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.m2e.core.internal.IMavenConstants;
-import org.talend.core.GlobalServiceRegister;
-import org.talend.core.runtime.services.IMavenUIService;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.tools.creator.CreateMavenCodeProject;
 
@@ -32,15 +30,6 @@ import org.talend.designer.maven.tools.creator.CreateMavenCodeProject;
 public final class TalendCodeProjectUtil {
 
     public static IProject initCodeProject(IProgressMonitor monitor) throws Exception {
-        // before init, must check user setting first.
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IMavenUIService.class)) {
-            IMavenUIService mavenUIService = (IMavenUIService) GlobalServiceRegister.getDefault().getService(
-                    IMavenUIService.class);
-            if (mavenUIService != null) {
-                mavenUIService.checkUserSettings(monitor);
-            }
-        }
-
         IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 
         IProject codeProject = root.getProject(TalendMavenConstants.PROJECT_NAME);

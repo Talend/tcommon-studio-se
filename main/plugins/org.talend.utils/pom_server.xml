@@ -48,6 +48,11 @@
             <artifactId>bcprov-jdk15on</artifactId>
             <version>1.51</version>
         </dependency>
+        <dependency>
+            <groupId>org.talend.daikon</groupId>
+            <artifactId>daikon</artifactId>
+            <version>0.2.0.BUILD-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>

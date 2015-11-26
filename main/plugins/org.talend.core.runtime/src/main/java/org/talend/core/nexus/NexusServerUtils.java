@@ -13,7 +13,9 @@
 package org.talend.core.nexus;
 
 import java.io.InputStream;
+import java.net.Authenticator;
 import java.net.HttpURLConnection;
+import java.net.PasswordAuthentication;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +25,6 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocketFactory;
 
-import org.apache.commons.codec.binary.Base64;
 import org.dom4j.Document;
 import org.dom4j.Node;
 import org.dom4j.io.SAXReader;
@@ -31,6 +32,7 @@ import org.eclipse.core.runtime.Platform;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.LoginException;
 import org.talend.commons.exception.PersistenceException;
+import org.talend.commons.utils.network.NetworkUtil;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.service.IRemoteService;
@@ -128,7 +130,18 @@ public class NexusServerUtils {
      * @param password
      * @return
      */
-    public static boolean checkConnectionStatus(String nexusUrl, String repositoryId, String userName, String password) {
+    public static boolean checkConnectionStatus(String nexusUrl, String repositoryId, final String userName, final String password) {
+        final Authenticator defaultAuthenticator = NetworkUtil.getDefaultAuthenticator();
+        if (userName != null && !"".equals(userName)) {
+            Authenticator.setDefault(new Authenticator() {
+
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(userName, password.toCharArray());
+                }
+
+            });
+        }
         int status = -1;
         try {
             if (nexusUrl == null || "".equals(nexusUrl) || repositoryId == null || "".equals(repositoryId)) {
@@ -142,10 +155,10 @@ public class NexusServerUtils {
 
             URL url = new URL(urlToCheck);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            if (userName != null && !"".equals(userName)) {
-                urlConnection.setRequestProperty(
-                        "Authorization", "Basic " + Base64.encodeBase64((userName + ":" + password).getBytes()));//$NON-NLS-1$ //$NON-NLS-2$
-            }
+            // if (userName != null && !"".equals(userName)) {
+            // urlConnection.setRequestProperty(
+            //                        "Authorization", "Basic " + Base64.encodeBase64((userName + ":" + password).getBytes()));//$NON-NLS-1$ //$NON-NLS-2$
+            // }
             if (urlConnection instanceof HttpsURLConnection) {
                 String userDir = Platform.getInstallLocation().getURL().getPath();
                 final SSLSocketFactory socketFactory = SSLUtils.getSSLContext(userDir).getSocketFactory();
@@ -160,14 +173,16 @@ public class NexusServerUtils {
 
                 });
             }
-            urlConnection.setConnectTimeout(4000);
-            urlConnection.setReadTimeout(4000);
+            urlConnection.setConnectTimeout(10000);
+            urlConnection.setReadTimeout(10000);
             status = urlConnection.getResponseCode();
             if (status == CONNECTION_OK) {
                 return true;
             }
         } catch (Exception e) {
             // do nothing
+        } finally {
+            Authenticator.setDefault(defaultAuthenticator);
         }
         return false;
     }
@@ -191,11 +206,22 @@ public class NexusServerUtils {
 
     }
 
-    private static void search(String nexusUrl, String userName, String password, String repositoryId, String groupIdToSearch,
-            String artifactId, String versionToSearch, int searchFrom, int searchCount, List<MavenArtifact> artifacts)
-            throws Exception {
+    private static void search(String nexusUrl, final String userName, final String password, String repositoryId,
+            String groupIdToSearch, String artifactId, String versionToSearch, int searchFrom, int searchCount,
+            List<MavenArtifact> artifacts) throws Exception {
         HttpURLConnection urlConnection = null;
         int totalCount = 0;
+        final Authenticator defaultAuthenticator = NetworkUtil.getDefaultAuthenticator();
+        if (userName != null && !"".equals(userName)) {
+            Authenticator.setDefault(new Authenticator() {
+
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(userName, password.toCharArray());
+                }
+
+            });
+        }
         try {
             String service = NexusConstants.SERVICES_SEARCH
                     + getSearchQuery(repositoryId, groupIdToSearch, artifactId, versionToSearch, searchFrom, searchCount);
@@ -269,6 +295,7 @@ public class NexusServerUtils {
             }
 
         } finally {
+            Authenticator.setDefault(defaultAuthenticator);
             if (null != urlConnection) {
                 urlConnection.disconnect();
             }
@@ -311,10 +338,6 @@ public class NexusServerUtils {
         }
         URL url = new URL(nexusUrl + restService);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-        if (userName != null && !"".equals(userName)) {
-            urlConnection.setRequestProperty(
-                    "Authorization", "Basic " + Base64.encodeBase64((userName + ":" + password).getBytes()));//$NON-NLS-1$ //$NON-NLS-2$
-        }
         if (urlConnection instanceof HttpsURLConnection) {
             String userDir = Platform.getInstallLocation().getURL().getPath();
             final SSLSocketFactory socketFactory = SSLUtils.getSSLContext(userDir).getSocketFactory();
@@ -329,8 +352,7 @@ public class NexusServerUtils {
 
             });
         }
-        urlConnection.setConnectTimeout(4000);
-        urlConnection.setReadTimeout(4000);
+        urlConnection.setConnectTimeout(10000);
         return urlConnection;
     }
 

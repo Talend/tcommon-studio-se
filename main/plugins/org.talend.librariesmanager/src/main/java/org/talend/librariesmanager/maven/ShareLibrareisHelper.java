@@ -35,6 +35,7 @@ import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.maven.MavenUrlHelper;
+import org.talend.designer.maven.talendlib.TalendLibsServerManager;
 import org.talend.librariesmanager.i18n.Messages;
 import org.talend.librariesmanager.prefs.LibrariesManagerUtils;
 import org.talend.repository.model.IProxyRepositoryFactory;

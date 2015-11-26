@@ -20,6 +20,10 @@
          id="org.eclipse.m2m.atl"
          version="0.0.0"/>
 
+   <includes
+         id="org.talend.utils.feature"
+         version="0.0.0"/>
+
    <plugin
          id="org.talend.model.migration"
          download-size="0"
@@ -58,13 +62,6 @@
 
    <plugin
          id="bcprov"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.utils"
          download-size="0"
          install-size="0"
          version="0.0.0"

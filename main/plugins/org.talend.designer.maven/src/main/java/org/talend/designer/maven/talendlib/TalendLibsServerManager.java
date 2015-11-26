@@ -10,20 +10,20 @@
 // 9 rue Pages 92150 Suresnes, France
 //
 // ============================================================================
-package org.talend.librariesmanager.maven;
+package org.talend.designer.maven.talendlib;
 
-import java.io.File;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.List;
 
-import org.eclipse.m2e.core.MavenPlugin;
 import org.ops4j.pax.url.mvn.MavenResolver;
 import org.ops4j.pax.url.mvn.ServiceConstants;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.cm.ConfigurationException;
 import org.osgi.service.cm.ManagedService;
+import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.context.RepositoryContext;
@@ -34,6 +34,7 @@ import org.talend.core.nexus.NexusServerUtils;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.service.IRemoteService;
+import org.talend.designer.maven.DesignerMavenPlugin;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryConstants;
 import org.talend.utils.json.JSONObject;
@@ -53,6 +54,32 @@ public class TalendLibsServerManager {
     public static final int CONNECTION_OK = 200;
 
     private TalendLibsServerManager() {
+        // the tracker is use in case the service is modifed
+        final BundleContext context = DesignerMavenPlugin.getPlugin().getContext();
+        ServiceTracker<org.ops4j.pax.url.mvn.MavenResolver, org.ops4j.pax.url.mvn.MavenResolver> serviceTracker = new ServiceTracker<org.ops4j.pax.url.mvn.MavenResolver, org.ops4j.pax.url.mvn.MavenResolver>(
+                context, org.ops4j.pax.url.mvn.MavenResolver.class,
+                new ServiceTrackerCustomizer<org.ops4j.pax.url.mvn.MavenResolver, org.ops4j.pax.url.mvn.MavenResolver>() {
+
+                    @Override
+                    public org.ops4j.pax.url.mvn.MavenResolver addingService(
+                            ServiceReference<org.ops4j.pax.url.mvn.MavenResolver> reference) {
+                        return context.getService(reference);
+                    }
+
+                    @Override
+                    public void modifiedService(ServiceReference<org.ops4j.pax.url.mvn.MavenResolver> reference,
+                            org.ops4j.pax.url.mvn.MavenResolver service) {
+                        mavenResolver = null;
+
+                    }
+
+                    @Override
+                    public void removedService(ServiceReference<org.ops4j.pax.url.mvn.MavenResolver> reference,
+                            org.ops4j.pax.url.mvn.MavenResolver service) {
+                        mavenResolver = null;
+                    }
+                });
+        serviceTracker.open();
 
     }
 
@@ -63,11 +90,14 @@ public class TalendLibsServerManager {
         return manager;
     }
 
-    public synchronized MavenResolver getMavenResolver() throws RuntimeException {
-        if (mavenResolver == null) {
-            BundleContext context = CoreRuntimePlugin.getInstance().getBundle().getBundleContext();
-            ServiceReference<ManagedService> managedServiceRef = context.getServiceReference(ManagedService.class);
-            if (managedServiceRef != null) {
+    public void updateMavenResolver(Dictionary<String, String> props, boolean setupRemoteRepository) {
+        if (props == null) {
+            props = new Hashtable<String, String>();
+        }
+        final BundleContext context = DesignerMavenPlugin.getPlugin().getContext();
+        ServiceReference<ManagedService> managedServiceRef = context.getServiceReference(ManagedService.class);
+        if (managedServiceRef != null) {
+            if (setupRemoteRepository) {
                 String repositories = "";
                 NexusServerBean customServer = getCustomNexusServer();
                 if (customServer != null) {
@@ -76,26 +106,24 @@ public class TalendLibsServerManager {
                 }
                 final NexusServerBean officailServer = getLibrariesNexusServer();
                 repositories = repositories + officailServer.getRepositoryUrl();
-
-                ManagedService managedService = context.getService(managedServiceRef);
-                Dictionary<String, String> props = new Hashtable<String, String>();
                 props.put(ServiceConstants.PID + '.' + ServiceConstants.PROPERTY_REPOSITORIES, repositories);
-
-                // get the setting file same as M2E preference in M2eUserSettingForTalendLoginTask.
-                String settingsFile = MavenPlugin.getMavenConfiguration().getUserSettingsFile();
-                if (settingsFile != null && new File(settingsFile).exists()) {
-                    props.put(ServiceConstants.PID + '.' + ServiceConstants.PROPERTY_SETTINGS_FILE, settingsFile);
-                }
-
-                try {
-                    managedService.updated(props);
-                } catch (ConfigurationException e) {
-                    throw new RuntimeException("Failed to modifiy the service properties"); //$NON-NLS-1$
-                }
-            } else {
-                throw new RuntimeException("Failed to load the service :" + ManagedService.class.getCanonicalName()); //$NON-NLS-1$
             }
+            ManagedService managedService = context.getService(managedServiceRef);
 
+            try {
+                managedService.updated(props);
+            } catch (ConfigurationException e) {
+                throw new RuntimeException("Failed to modifiy the service properties"); //$NON-NLS-1$
+            }
+        } else {
+            throw new RuntimeException("Failed to load the service :" + ManagedService.class.getCanonicalName()); //$NON-NLS-1$
+        }
+
+    }
+
+    public MavenResolver getMavenResolver() throws RuntimeException {
+        if (mavenResolver == null) {
+            final BundleContext context = DesignerMavenPlugin.getPlugin().getContext();
             ServiceReference<org.ops4j.pax.url.mvn.MavenResolver> mavenResolverService = context
                     .getServiceReference(org.ops4j.pax.url.mvn.MavenResolver.class);
             if (mavenResolverService != null) {
@@ -103,7 +131,6 @@ public class TalendLibsServerManager {
             } else {
                 throw new RuntimeException("Unable to acquire org.ops4j.pax.url.mvn.MavenResolver");
             }
-
         }
 
         return mavenResolver;

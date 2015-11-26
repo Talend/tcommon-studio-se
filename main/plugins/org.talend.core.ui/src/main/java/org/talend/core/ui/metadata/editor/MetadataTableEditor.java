@@ -199,6 +199,10 @@ public class MetadataTableEditor extends ExtendedTableModel<IMetadataColumn> {
         if (preferenceStore != null && preferenceStore.getString(MetadataTypeLengthConstants.FIELD_DEFAULT_TYPE) != null
                 && !preferenceStore.getString(MetadataTypeLengthConstants.FIELD_DEFAULT_TYPE).equals("")) { //$NON-NLS-1$
             metadataColumn.setTalendType(preferenceStore.getString(MetadataTypeLengthConstants.FIELD_DEFAULT_TYPE));
+            if (metadataTable.getDbms() != null) {
+                metadataColumn.setType(TypesManager.getDBTypeFromTalendType(metadataTable.getDbms(),
+                        metadataColumn.getTalendType()));
+            }
             if (preferenceStore.getString(MetadataTypeLengthConstants.FIELD_DEFAULT_LENGTH) != null
                     && !preferenceStore.getString(MetadataTypeLengthConstants.FIELD_DEFAULT_LENGTH).equals("")) { //$NON-NLS-1$
                 metadataColumn.setLength(Integer.parseInt(preferenceStore

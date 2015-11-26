@@ -108,6 +108,9 @@ public enum HiveConnVersionInfo {
     APACHE_0_20_203(1, EHadoopVersion4Drivers.APACHE_0_20_203.getVersionValue(), EHadoopVersion4Drivers.APACHE_0_20_203
             .getVersionDisplay(), false, HiveConnVersionInfo.APACHE),
 
+    Cloudera_CDH5_5(1, EHadoopVersion4Drivers.CLOUDERA_CDH5_5.getVersionValue(), EHadoopVersion4Drivers.CLOUDERA_CDH5_5
+            .getVersionDisplay(), true, false, true, true, HiveConnVersionInfo.CLOUDERA),
+
     Cloudera_CDH5_4(1, EHadoopVersion4Drivers.CLOUDERA_CDH5_4.getVersionValue(), EHadoopVersion4Drivers.CLOUDERA_CDH5_4
             .getVersionDisplay(), true, false, true, true, HiveConnVersionInfo.CLOUDERA),
 
@@ -274,6 +277,7 @@ public enum HiveConnVersionInfo {
                     HiveConnVersionInfo.Cloudera_CDH5_1,
                     HiveConnVersionInfo.Cloudera_CDH5_1_MR1,
                     HiveConnVersionInfo.Cloudera_CDH5_4,
+                    HiveConnVersionInfo.Cloudera_CDH5_5,
                     HiveConnVersionInfo.MAPR1,
                     HiveConnVersionInfo.MAPR2,
                     HiveConnVersionInfo.MAPR2_1_2,
@@ -309,9 +313,9 @@ public enum HiveConnVersionInfo {
 
     private static HiveConnVersionInfo[] hiveVersions = new HiveConnVersionInfo[] { HiveConnVersionInfo.Cloudera_CDH5,
             HiveConnVersionInfo.Cloudera_CDH5_1, HiveConnVersionInfo.Cloudera_CDH5_1_MR1, HiveConnVersionInfo.Cloudera_CDH5_4,
-            HiveConnVersionInfo.HDP_2_3, HiveConnVersionInfo.HDP_2_2, HiveConnVersionInfo.HDP_2_1, HiveConnVersionInfo.HDP_2_0,
-            HiveConnVersionInfo.PIVOTAL_HD_2_0, HiveConnVersionInfo.APACHE_2_4_0_EMR,
-            HiveConnVersionInfo.APACHE_2_4_0_EMR_0_13_1, HiveConnVersionInfo.EMR_4_0_0 };
+            HiveConnVersionInfo.Cloudera_CDH5_5, HiveConnVersionInfo.HDP_2_3, HiveConnVersionInfo.HDP_2_2,
+            HiveConnVersionInfo.HDP_2_1, HiveConnVersionInfo.HDP_2_0, HiveConnVersionInfo.PIVOTAL_HD_2_0,
+            HiveConnVersionInfo.APACHE_2_4_0_EMR, HiveConnVersionInfo.APACHE_2_4_0_EMR_0_13_1, HiveConnVersionInfo.EMR_4_0_0 };
 
     private static HiveConnVersionInfo[] hiveVersionsSupportingTez = new HiveConnVersionInfo[] { HiveConnVersionInfo.HDP_2_2,
             HiveConnVersionInfo.HDP_2_1, HiveConnVersionInfo.MAPR4_0_1, HiveConnVersionInfo.MAPR4_1_0,
@@ -378,6 +382,7 @@ public enum HiveConnVersionInfo {
             case HDP_2_3:
             case EMR_4_0_0:
             case Cloudera_CDH5_4:
+            case Cloudera_CDH5_5:
             case MAPR4_1_0:
             case MAPR5_0_0:
                 isSupport = false;

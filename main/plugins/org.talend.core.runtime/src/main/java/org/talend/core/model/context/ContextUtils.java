@@ -498,6 +498,12 @@ public class ContextUtils {
             // if (!sourceParam.getName().equals(targetParamType.getName())) {
             // return false;
             // }
+            if (sourceParam.getComment() == null) {
+                sourceParam.setComment("");
+            }
+            if (targetParamType.getComment() == null) {
+                targetParamType.setComment("");
+            }
             if (!sourceParam.getComment().equals(targetParamType.getComment())) {
                 return false;
             }

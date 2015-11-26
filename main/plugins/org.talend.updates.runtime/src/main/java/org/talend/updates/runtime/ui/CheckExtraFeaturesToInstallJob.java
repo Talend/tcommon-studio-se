@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.updates.runtime.ui;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -69,7 +70,13 @@ public class CheckExtraFeaturesToInstallJob extends Job {
         if (monitor.isCanceled()) {
             return Status.CANCEL_STATUS;
         }
-        if (!uninstalledExtraFeatures.isEmpty()) {
+        java.util.List<ExtraFeature> mustInstallList = new ArrayList<ExtraFeature>();
+        for (ExtraFeature feature : uninstalledExtraFeatures) {
+            if (feature.mustBeInstalled()) {
+                mustInstallList.add(feature);
+            }
+        }
+        if (!mustInstallList.isEmpty()) {
             synchronized (ShowWizardHandler.showWizardLock) {
                 // make sure this dialog won't be popup in some special cases
                 // just waiting for the lock to be released, then continue to execute.

@@ -105,7 +105,8 @@ public class MetadataTableEditorView extends AbstractMetadataTableEditorView<IMe
      */
     public MetadataTableEditorView(Composite parentComposite, int mainCompositeStyle,
             ExtendedTableModel<IMetadataColumn> extendedTableModel, boolean readOnly, boolean toolbarVisible, boolean labelVisible) {
-        super(parentComposite, mainCompositeStyle, extendedTableModel, readOnly, toolbarVisible, labelVisible);
+        super(parentComposite, mainCompositeStyle, extendedTableModel, readOnly, toolbarVisible, labelVisible, false);
+        this.initGraphicComponents();
     }
 
     /**
@@ -145,10 +146,12 @@ public class MetadataTableEditorView extends AbstractMetadataTableEditorView<IMe
     protected IBeanPropertyAccessors getUsefulAccessor() {
         return new IBeanPropertyAccessors<IMetadataColumn, Boolean>() {
 
+            @Override
             public Boolean get(IMetadataColumn bean) {
                 return bean.isUsefulColumn() ? Boolean.TRUE : Boolean.FALSE;
             }
 
+            @Override
             public void set(IMetadataColumn bean, Boolean value) {
                 bean.setUsefulColumn(value);
             }
@@ -165,10 +168,12 @@ public class MetadataTableEditorView extends AbstractMetadataTableEditorView<IMe
     protected IBeanPropertyAccessors getNullableAccessor() {
         return new IBeanPropertyAccessors<IMetadataColumn, Boolean>() {
 
+            @Override
             public Boolean get(IMetadataColumn bean) {
                 return bean.isNullable() ? Boolean.TRUE : Boolean.FALSE;
             }
 
+            @Override
             public void set(IMetadataColumn bean, Boolean value) {
                 bean.setNullable(value);
             }
@@ -180,10 +185,12 @@ public class MetadataTableEditorView extends AbstractMetadataTableEditorView<IMe
     protected IBeanPropertyAccessors<IMetadataColumn, String> getCommentAccessor() {
         return new IBeanPropertyAccessors<IMetadataColumn, String>() {
 
+            @Override
             public String get(IMetadataColumn bean) {
                 return bean.getComment();
             }
 
+            @Override
             public void set(IMetadataColumn bean, String value) {
                 bean.setComment(value);
             }
@@ -195,10 +202,12 @@ public class MetadataTableEditorView extends AbstractMetadataTableEditorView<IMe
     protected IBeanPropertyAccessors<IMetadataColumn, Integer> getOriginalLengthAccessor() {
         return new IBeanPropertyAccessors<IMetadataColumn, Integer>() {
 
+            @Override
             public Integer get(IMetadataColumn bean) {
                 return bean.getOriginalLength();
             }
 
+            @Override
             public void set(IMetadataColumn bean, Integer value) {
                 bean.setOriginalLength(value);
             }
@@ -209,6 +218,7 @@ public class MetadataTableEditorView extends AbstractMetadataTableEditorView<IMe
     protected IBeanPropertyAccessors<IMetadataColumn, String> getDefaultValueAccessor() {
         return new IBeanPropertyAccessors<IMetadataColumn, String>() {
 
+            @Override
             public String get(IMetadataColumn bean) {
                 String value = bean.getDefault();
                 value = handleDefaultValue(bean, value);
@@ -216,6 +226,7 @@ public class MetadataTableEditorView extends AbstractMetadataTableEditorView<IMe
                 return value;
             }
 
+            @Override
             public void set(IMetadataColumn bean, String value) {
                 value = handleDefaultValue(bean, value);
                 bean.setDefault(value);
@@ -271,6 +282,7 @@ public class MetadataTableEditorView extends AbstractMetadataTableEditorView<IMe
     protected IBeanPropertyAccessors<IMetadataColumn, Integer> getPrecisionAccessor() {
         return new IBeanPropertyAccessors<IMetadataColumn, Integer>() {
 
+            @Override
             public Integer get(IMetadataColumn bean) {
                 // String dbmsId = getCurrentDbms();
                 // if (dbmsId != null) {
@@ -285,6 +297,7 @@ public class MetadataTableEditorView extends AbstractMetadataTableEditorView<IMe
                 return bean.getPrecision();
             }
 
+            @Override
             public void set(IMetadataColumn bean, Integer value) {
                 bean.setPrecision(value);
             }
@@ -296,6 +309,7 @@ public class MetadataTableEditorView extends AbstractMetadataTableEditorView<IMe
     protected IBeanPropertyAccessors<IMetadataColumn, Integer> getLengthAccessor() {
         return new IBeanPropertyAccessors<IMetadataColumn, Integer>() {
 
+            @Override
             public Integer get(IMetadataColumn bean) {
                 // String dbmsId = getCurrentDbms();
                 // if (dbmsId != null) {
@@ -310,6 +324,7 @@ public class MetadataTableEditorView extends AbstractMetadataTableEditorView<IMe
                 return bean.getLength();
             }
 
+            @Override
             public void set(IMetadataColumn bean, Integer value) {
                 bean.setLength(value);
                 // if not set Original Length
@@ -324,10 +339,12 @@ public class MetadataTableEditorView extends AbstractMetadataTableEditorView<IMe
     protected IBeanPropertyAccessors<IMetadataColumn, String> getPatternAccessor() {
         return new IBeanPropertyAccessors<IMetadataColumn, String>() {
 
+            @Override
             public String get(IMetadataColumn bean) {
                 return bean.getPattern();
             }
 
+            @Override
             public void set(IMetadataColumn bean, String value) {
                 bean.setPattern(value); // MetadataTableEditorView.this.getJavaDateTypeForDefaultPattern(bean));
             }
@@ -339,10 +356,12 @@ public class MetadataTableEditorView extends AbstractMetadataTableEditorView<IMe
     protected IBeanPropertyAccessors<IMetadataColumn, Boolean> getKeyAccesor() {
         return new IBeanPropertyAccessors<IMetadataColumn, Boolean>() {
 
+            @Override
             public Boolean get(IMetadataColumn bean) {
                 return new Boolean(bean.isKey());
             }
 
+            @Override
             public void set(IMetadataColumn bean, Boolean value) {
                 bean.setKey(value);
             }
@@ -354,10 +373,12 @@ public class MetadataTableEditorView extends AbstractMetadataTableEditorView<IMe
     protected IBeanPropertyAccessors<IMetadataColumn, String> getLabelAccessor() {
         return new IBeanPropertyAccessors<IMetadataColumn, String>() {
 
+            @Override
             public String get(IMetadataColumn bean) {
                 return bean.getLabel();
             }
 
+            @Override
             public void set(IMetadataColumn bean, String value) {
                 // if (dbTypeColumnWritable && bean.getLabel().equals(bean.getOriginalDbColumnName())) {
                 // bean.setOriginalDbColumnName(value);
@@ -385,11 +406,13 @@ public class MetadataTableEditorView extends AbstractMetadataTableEditorView<IMe
     protected IBeanPropertyAccessors<IMetadataColumn, String> getTalendTypeAccessor() {
         return new IBeanPropertyAccessors<IMetadataColumn, String>() {
 
+            @Override
             public String get(IMetadataColumn bean) {
 
                 return bean.getTalendType();
             }
 
+            @Override
             public void set(IMetadataColumn bean, String value) {
                 String oldTalendType = bean.getTalendType();
                 bean.setTalendType(value);
@@ -421,11 +444,13 @@ public class MetadataTableEditorView extends AbstractMetadataTableEditorView<IMe
     protected IBeanPropertyAccessors getDbTypeAccessor() {
         return new IBeanPropertyAccessors<IMetadataColumn, String>() {
 
+            @Override
             public String get(IMetadataColumn bean) {
 
                 return bean.getType();
             }
 
+            @Override
             public void set(IMetadataColumn bean, String value) {
                 // String dbmsId = getCurrentDbms();
                 // if (dbmsId != null) {
@@ -474,10 +499,12 @@ public class MetadataTableEditorView extends AbstractMetadataTableEditorView<IMe
     protected IBeanPropertyAccessors<IMetadataColumn, String> getDbColumnNameAccessor() {
         return new IBeanPropertyAccessors<IMetadataColumn, String>() {
 
+            @Override
             public String get(IMetadataColumn bean) {
                 return bean.getOriginalDbColumnName();
             }
 
+            @Override
             public void set(IMetadataColumn bean, String value) {
                 bean.setOriginalDbColumnName(value);
             }
@@ -489,13 +516,16 @@ public class MetadataTableEditorView extends AbstractMetadataTableEditorView<IMe
         return CoreRuntimePlugin.getInstance().getCoreService().getPreferenceStore().getString(value.toUpperCase());
     }
 
+    @Override
     protected IBeanPropertyAccessors<IMetadataColumn, String> getRelatedEntityAccessor() {
         return new IBeanPropertyAccessors<IMetadataColumn, String>() {
 
+            @Override
             public String get(IMetadataColumn bean) {
                 return bean.getRelatedEntity();
             }
 
+            @Override
             public void set(IMetadataColumn bean, String value) {
                 bean.setRelatedEntity(value);
             }
@@ -503,13 +533,16 @@ public class MetadataTableEditorView extends AbstractMetadataTableEditorView<IMe
         };
     }
 
+    @Override
     protected IBeanPropertyAccessors<IMetadataColumn, String> getRelationshipTypeAccessor() {
         return new IBeanPropertyAccessors<IMetadataColumn, String>() {
 
+            @Override
             public String get(IMetadataColumn bean) {
                 return bean.getRelationshipType();
             }
 
+            @Override
             public void set(IMetadataColumn bean, String value) {
                 bean.setRelationshipType(value);
             }
@@ -521,10 +554,12 @@ public class MetadataTableEditorView extends AbstractMetadataTableEditorView<IMe
     protected IBeanPropertyAccessors<IMetadataColumn, String> getAdditionalFieldAccessor(final String field) {
         return new IBeanPropertyAccessors<IMetadataColumn, String>() {
 
+            @Override
             public String get(IMetadataColumn bean) {
                 return bean.getAdditionalField().get(field);
             }
 
+            @Override
             public void set(IMetadataColumn bean, String value) {
                 bean.getAdditionalField().put(field, value);
             }

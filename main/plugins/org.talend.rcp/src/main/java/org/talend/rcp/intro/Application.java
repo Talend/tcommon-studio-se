@@ -19,6 +19,7 @@ import java.net.URL;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.equinox.app.IApplication;
@@ -51,6 +52,7 @@ import org.talend.core.BrandingChecker;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.migration.IMigrationToolService;
 import org.talend.core.repository.CoreRepositoryPlugin;
+import org.talend.core.runtime.services.IMavenUIService;
 import org.talend.core.services.ICoreTisService;
 import org.talend.core.ui.TalendBrowserLaunchHelper;
 import org.talend.core.ui.branding.IBrandingService;
@@ -88,6 +90,18 @@ public class Application implements IApplication {
         Display display = PlatformUI.createDisplay();
 
         try {
+            // setup MavenResolver properties
+            // before set, must check user setting first.
+            if (GlobalServiceRegister.getDefault().isServiceRegistered(IMavenUIService.class)) {
+                IMavenUIService mavenUIService = (IMavenUIService) GlobalServiceRegister.getDefault().getService(
+                        IMavenUIService.class);
+                if (mavenUIService != null) {
+                    mavenUIService.checkUserSettings(new NullProgressMonitor());
+                    mavenUIService.updateMavenResolver(false);
+                    mavenUIService.addMavenConfigurationChangeListener();
+                }
+            }
+
             Shell shell = new Shell(display, SWT.ON_TOP);
             Object instanceLocationCheck = acquireWorkspaceLock(shell);
             if (instanceLocationCheck != null) {// no workspace selected so return.

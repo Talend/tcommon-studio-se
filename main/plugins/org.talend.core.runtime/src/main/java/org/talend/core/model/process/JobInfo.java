@@ -17,6 +17,7 @@ import java.util.Map;
 import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.Property;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
+import org.talend.designer.runprocess.IProcessor;
 
 /**
  * DOC nrousseau ProcessController class global comment. Detailled comment <br/>
@@ -45,6 +46,8 @@ public class JobInfo {
     private boolean testContainer = false;
 
     private Map<String, Object> argumentsMap;
+    
+    private IProcessor processor;
 
     public JobInfo(String jobId, String contextName, String version) {
         this.jobId = jobId;
@@ -414,6 +417,24 @@ public class JobInfo {
 
     public void setArgumentsMap(Map<String, Object> argumentsMap) {
         this.argumentsMap = argumentsMap;
+    }
+
+    
+    /**
+     * Getter for processor.
+     * @return the processor
+     */
+    public IProcessor getProcessor() {
+        return this.processor;
+    }
+
+    
+    /**
+     * Sets the processor.
+     * @param processor the processor to set
+     */
+    public void setProcessor(IProcessor processor) {
+        this.processor = processor;
     }
 
 }

@@ -16,9 +16,13 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.ops4j.pax.url.mvn.MavenResolver;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.ServiceReference;
+import org.osgi.framework.Version;
+import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
 import org.talend.core.model.process.IElementParameter;
@@ -66,8 +70,11 @@ public class ModuleNeeded {
     private String moduleLocaion;
 
     /**
-     * the maven uri configured from studio in components,extensions......
+     * The maven uri configured from studio in components,extensions...... and cached in the MavenUriIndex.xml, one jar
+     * might be configured with many mvnuris
      */
+    private Set<String> snapshotMvnUris;
+
     private String mavenUri;
 
     /**
@@ -80,16 +87,32 @@ public class ModuleNeeded {
     public static final String QUOTATION_MARK = "\""; //$NON-NLS-1$
 
     static {
-        Bundle bundle = CoreRuntimePlugin.getInstance().getBundle();
-        if (bundle != null) {
-            ServiceReference<org.ops4j.pax.url.mvn.MavenResolver> mavenResolverService = bundle.getBundleContext()
-                    .getServiceReference(org.ops4j.pax.url.mvn.MavenResolver.class);
-            if (mavenResolverService != null) {
-                mavenResolver = CoreRuntimePlugin.getInstance().getBundle().getBundleContext().getService(mavenResolverService);
-            } else {
-                throw new RuntimeException("Unable to acquire org.ops4j.pax.url.mvn.MavenResolver");
-            }
-        }
+        // the tracker is use in case the service is modifed
+        final Bundle bundle = CoreRuntimePlugin.getInstance().getBundle();
+        ServiceTracker<org.ops4j.pax.url.mvn.MavenResolver, org.ops4j.pax.url.mvn.MavenResolver> serviceTracker = new ServiceTracker<org.ops4j.pax.url.mvn.MavenResolver, org.ops4j.pax.url.mvn.MavenResolver>(
+                bundle.getBundleContext(), org.ops4j.pax.url.mvn.MavenResolver.class,
+                new ServiceTrackerCustomizer<org.ops4j.pax.url.mvn.MavenResolver, org.ops4j.pax.url.mvn.MavenResolver>() {
+
+                    @Override
+                    public org.ops4j.pax.url.mvn.MavenResolver addingService(
+                            ServiceReference<org.ops4j.pax.url.mvn.MavenResolver> reference) {
+                        return bundle.getBundleContext().getService(reference);
+                    }
+
+                    @Override
+                    public void modifiedService(ServiceReference<org.ops4j.pax.url.mvn.MavenResolver> reference,
+                            org.ops4j.pax.url.mvn.MavenResolver service) {
+                        mavenResolver = null;
+
+                    }
+
+                    @Override
+                    public void removedService(ServiceReference<org.ops4j.pax.url.mvn.MavenResolver> reference,
+                            org.ops4j.pax.url.mvn.MavenResolver service) {
+                        mavenResolver = null;
+                    }
+                });
+        serviceTracker.open();
     }
 
     /**
@@ -237,7 +260,11 @@ public class ModuleNeeded {
     }
 
     public ELibraryInstallStatus getStatus() {
-        if (status == ELibraryInstallStatus.UNKNOWN) {// compute the status of the lib.
+        final ELibraryInstallStatus eLibraryInstallStatus = ModuleStatusProvider.getStatusMap().get(getMavenUri(true));
+        if (eLibraryInstallStatus != null) {
+            return eLibraryInstallStatus;
+        } else {
+            // compute the status of the lib.
             // first use the Library manager service
             ILibraryManagerService libManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
                     ILibraryManagerService.class);
@@ -247,14 +274,33 @@ public class ModuleNeeded {
             } else {// then try to resolve locally
                 String localMavenUri = getMavenUriSnapshot().replace("mvn:", "mvn:" + MavenConstants.LOCAL_RESOLUTION_URL + "!"); //$NON-NLS-1$ //$NON-NLS-2$
                 try {
-                    mavenResolver.resolve(localMavenUri);
+                    getMavenResolver().resolve(localMavenUri);
                     status = ELibraryInstallStatus.INSTALLED;
                 } catch (IOException e) {
                     status = ELibraryInstallStatus.NOT_INSTALLED;
                 }
             }
+            ModuleStatusProvider.getStatusMap().put(getMavenUri(true), status);
         }
         return this.status;
+    }
+
+    private MavenResolver getMavenResolver() {
+        if (mavenResolver == null) {
+            final Bundle bundle = CoreRuntimePlugin.getInstance().getBundle();
+            if (bundle != null) {
+                ServiceReference<org.ops4j.pax.url.mvn.MavenResolver> mavenResolverService = bundle.getBundleContext()
+                        .getServiceReference(org.ops4j.pax.url.mvn.MavenResolver.class);
+                if (mavenResolverService != null) {
+                    mavenResolver = CoreRuntimePlugin.getInstance().getBundle().getBundleContext()
+                            .getService(mavenResolverService);
+                } else {
+                    throw new RuntimeException("Unable to acquire org.ops4j.pax.url.mvn.MavenResolver");
+                }
+            }
+        }
+        return mavenResolver;
+
     }
 
     /**
@@ -434,7 +480,7 @@ public class ModuleNeeded {
         return true;
     }
 
-    public String getMavenUriSnapshot(boolean autoGenerate) {
+    public String getMavenUriSnapshot() {
         MavenArtifact artifact = MavenUrlHelper.parseMvnUrl(getMavenUri());
         // for non-talend libs.
         if (artifact != null && !MavenConstants.DEFAULT_LIB_GROUP_ID.equals(artifact.getGroupId())) {
@@ -443,27 +489,51 @@ public class ModuleNeeded {
 
         // set an defaut maven uri if uri is null or empty, this could be done in the set
         // but this would mean to sure the set is called after the name is set.
-        if (mavenUriSnapshot == null || "".equals(mavenUriSnapshot)) { //$NON-NLS-1$
+        if (StringUtils.isEmpty(mavenUriSnapshot)) {
             String configuredUri = getMavenUri();
-            if (configuredUri != null) {
+            if (!StringUtils.isEmpty(configuredUri)) {
                 mavenUriSnapshot = MavenUrlHelper.generateSnapshotMavenUri(configuredUri);
             }
-            if (mavenUriSnapshot == null || "".equals(mavenUriSnapshot)) {
-                // get snapshot maven uri from index
-                ILibraryManagerService libManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault()
-                        .getService(ILibraryManagerService.class);
-                mavenUriSnapshot = libManagerService.getMavenUriFromIndex(getModuleName());
-            }
-            if (autoGenerate && (mavenUriSnapshot == null || "".equals(mavenUriSnapshot))) {//$NON-NLS-1$
-                return MavenUrlHelper.generateMvnUrlForJarName(getModuleName());
+        }
+        if (StringUtils.isEmpty(mavenUriSnapshot)) {
+            // get the latest snapshot maven uri from index as default
+            ILibraryManagerService libManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
+                    ILibraryManagerService.class);
+            String mvnUrisFromIndex = libManagerService.getMavenUriFromIndex(getModuleName());
+            if (mvnUrisFromIndex != null) {
+                final String[] split = mvnUrisFromIndex.split(MavenUrlHelper.MVN_INDEX_SPLITER);
+                String maxVerstion = null;
+                for (String mvnUri : split) {
+                    if (maxVerstion == null) {
+                        maxVerstion = mvnUri;
+                    } else {
+                        MavenArtifact lastArtifact = MavenUrlHelper.parseMvnUrl(maxVerstion);
+                        MavenArtifact currentArtifact = MavenUrlHelper.parseMvnUrl(mvnUri);
+                        if (lastArtifact != null && currentArtifact != null) {
+                            String lastV = lastArtifact.getVersion();
+                            lastV = lastV.replace(MavenConstants.SNAPSHOT, "");
+                            String currentV = currentArtifact.getVersion();
+                            currentV = currentV.replace(MavenConstants.SNAPSHOT, "");
+                            if (!lastV.equals(currentV)) {
+                                Version lastVersion = new Version(lastV);
+                                Version currentVersion = new Version(currentV);
+                                if (currentVersion.compareTo(lastVersion) > 0) {
+                                    maxVerstion = mvnUri;
+                                }
+                            }
+                        }
+                    }
+
+                }
+                mavenUriSnapshot = maxVerstion;
             }
         }
+
+        if (StringUtils.isEmpty(mavenUriSnapshot)) {
+            // generate a default one
+            mavenUriSnapshot = MavenUrlHelper.generateMvnUrlForJarName(getModuleName());
+        }
         return mavenUriSnapshot;
-
-    }
-
-    public String getMavenUriSnapshot() {
-        return getMavenUriSnapshot(true);
     }
 
     /**
@@ -479,7 +549,7 @@ public class ModuleNeeded {
         // set an defaut maven uri if uri is null or empty, this could be done in the set
         // but this would mean to sure the set is called after the name is set.
         if (autoGenerate && (mavenUri == null || "".equals(mavenUri))) { //$NON-NLS-1$
-            return MavenUrlHelper.generateMvnUrlForJarName(getModuleName());
+            return MavenUrlHelper.generateMvnUrlForJarName(getModuleName(), true, false);
         }
         return mavenUri;
     }

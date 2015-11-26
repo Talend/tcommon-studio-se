@@ -56,6 +56,7 @@ import org.talend.core.model.metadata.builder.database.manager.dbs.IBMDB2Extract
 import org.talend.core.model.metadata.builder.database.manager.dbs.OracleExtractManager;
 import org.talend.core.repository.model.connection.ConnectionStatus;
 import org.talend.core.repository.model.provider.IDBMetadataProvider;
+import org.talend.core.sqlbuilder.util.TextUtil;
 import org.talend.cwm.relational.TdColumn;
 import org.talend.metadata.managment.connection.manager.HiveConnectionManager;
 import org.talend.metadata.managment.repository.ManagerConnection;
@@ -303,7 +304,6 @@ public class ExtractMetaDataFromDataBase {
     public static ConnectionStatus testConnection(String dbType, String url, String username, String pwd, String schema,
             final String driverClassName, final String driverJarPath, String dbVersionString, String additionalParam,
             StringBuffer retProposedSchema) {
-
         Connection connection = null;
         ConnectionStatus connectionStatus = new ConnectionStatus();
         connectionStatus.setResult(false);
@@ -323,6 +323,7 @@ public class ExtractMetaDataFromDataBase {
                     }
                 }
             }
+            schema = TextUtil.removeQuots(schema);
             if ((schema != null) && (schema.compareTo("") != 0)) { //$NON-NLS-1$
                 final boolean notCaseSensitive = !ManagerConnection.isSchemaCaseSensitive(EDatabaseTypeName
                         .getTypeFromDisplayName(dbType));

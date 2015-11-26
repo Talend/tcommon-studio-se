@@ -116,8 +116,11 @@ public class VisitResourceHelper {
         boolean noChild = (affectedChildren == null || (affectedChildren.length == 0));
 
         // check for the empty folder, except the ".svn"
-        if (!noChild && affectedChildren != null && affectedChildren.length == 1
-                && FilesUtils.isSVNFolder(affectedChildren[0].getResource())) {
+        if (!noChild
+                && affectedChildren != null
+                && affectedChildren.length == 1
+                && (FilesUtils.isSVNFolder(affectedChildren[0].getResource()) || affectedChildren[0].getResource().getName()
+                        .equals(org.talend.utils.io.FilesUtils.GITKEEP))) {
             noChild = true;
         }
 

@@ -4,12 +4,28 @@
       version="6.1.1.qualifier"
       provider-name=".Talend SA.">
 
-	<includes
+   <includes
          id="org.talend.mdm.tom.test.feature"
          version="0.0.0"/>
-	
-	<includes
+
+   <includes
          id="org.talend.rcp.branding.tos.test.feature"
          version="0.0.0"/>
-	
+
+   <plugin
+         id="org.talend.utils.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.talend.testutils"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
 </feature>

@@ -95,6 +95,7 @@ import org.talend.core.model.metadata.types.PerlTypesManager;
 import org.talend.core.model.properties.ConnectionItem;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.repository.model.provider.AbstractMetadataExtractorViewProvider;
+import org.talend.core.sqlbuilder.util.TextUtil;
 import org.talend.core.ui.metadata.editor.MetadataEmfTableEditor;
 import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.cwm.helper.CatalogHelper;
@@ -115,7 +116,6 @@ import org.talend.metadata.managment.utils.MetadataConnectionUtils;
 import org.talend.repository.metadata.i18n.Messages;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.utils.sql.ConnectionUtils;
-
 import orgomg.cwm.objectmodel.core.CoreFactory;
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.resource.relational.Catalog;
@@ -934,6 +934,7 @@ public class SelectorTableForm extends AbstractForm {
                     if (s.getName() != null && !s.getName().equals(MetadataConnectionUtils.FAKE_SCHEMA_SYNONYMS)) {
                         boolean canAdd = true;
                         if (specifiedSchema != null) {
+                            specifiedSchema = TextUtil.removeQuots(specifiedSchema);
                             if (ManagerConnection.isSchemaCaseSensitive(dbType)) {
                                 if (!s.getName().equals(specifiedSchema)) {
                                     canAdd = false;
@@ -1634,7 +1635,12 @@ public class SelectorTableForm extends AbstractForm {
 
             if (checkConnectionIsDone) {
                 treeItem.setText(2, "" + metadataColumns.size()); //$NON-NLS-1$
-                treeItem.setText(3, Messages.getString("SelectorTableForm.Success")); //$NON-NLS-1$
+                // metadataColumns.size() won't be 0 unless SQL execution failed.
+                if (metadataColumns.size() > 0) {
+                    treeItem.setText(3, Messages.getString("SelectorTableForm.Success")); //$NON-NLS-1$
+                } else {
+                    treeItem.setText(3, Messages.getString("SelectorTableForm.Failed")); //$NON-NLS-1$
+                }
                 countSuccess++;
                 tableColumnNums.put(treeItem.getText(0), metadataColumns.size());
             } else {
@@ -2063,13 +2069,8 @@ public class SelectorTableForm extends AbstractForm {
                     }
                 }
                 if (ownedElement != null) {
-                    for (ModelElement m : ownedElement) {
-                        if (m instanceof MetadataTable) {
-                            String label = ((MetadataTable) m).getName();
-                            if (label.equals(tableNode.getValue())) {
-                                return true;
-                            }
-                        }
+                    if (isContainModelElement(ownedElement, tableNode.getValue())) {
+                        return true;
                     }
                 } else {
                     for (Object obj : ConnectionHelper.getTables(getConnection())) {
@@ -2082,9 +2083,36 @@ public class SelectorTableForm extends AbstractForm {
                         }
                     }
                 }
+                if (ETableTypes.TABLETYPE_SYNONYM.getName().equals(tableNode.getItemType())) {
+                    // synonym table may also be in schema MetadataConnectionUtils.FAKE_SCHEMA_SYNONYMS if user
+                    // checked "All synonyms" when retrieving schema last time, so need to check too.
+                    Schema s = (Schema) ConnectionHelper.getPackage(MetadataConnectionUtils.FAKE_SCHEMA_SYNONYMS,
+                            getConnection(), Schema.class);
+                    if (s != null) {
+                        ownedElement = s.getOwnedElement();
+                        if (isContainModelElement(ownedElement, tableNode.getValue())) {
+                            return true;
+                        }
+                    }
+                }
             }
         } else if (useProvider()) {
             return provider.isMetadataExsit(tableNode, getConnection());
+        }
+        return false;
+    }
+
+    private boolean isContainModelElement(EList<ModelElement> ownedElement, String tableName) {
+        if (ownedElement == null) {
+            return false;
+        }
+        for (ModelElement m : ownedElement) {
+            if (m instanceof MetadataTable) {
+                String label = ((MetadataTable) m).getName();
+                if (label.equals(tableName)) {
+                    return true;
+                }
+            }
         }
         return false;
     }

@@ -29,6 +29,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuManager;
@@ -369,7 +370,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
         RestoreAllRegisteredPerspectivesProvider perspProvider = new RestoreAllRegisteredPerspectivesProvider();
         IWorkbench workbench = PlatformUI.getWorkbench();
         IEclipseContext activeContext = ((IEclipseContext) workbench.getService(IEclipseContext.class)).getActiveLeaf();
-
+        
         ContextInjectionFactory.inject(perspProvider, activeContext);
         IWorkbenchPage activePage = getWindowConfigurer().getWindow().getWorkbench().getActiveWorkbenchWindow().getActivePage();
         // MOD zshen TDQ-10745 when welcome page is open and current Perspective is DQ will not done
@@ -380,6 +381,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
                         .getPerspective().getId().equals(ProductUtils.PERSPECTIVE_DQ_ID))) {
             perspProvider.restoreAlwaysVisiblePerspectives();
         }
+        perspProvider.closeAllEditors();
         // MOD mzhao feature 9207. 2009-09-21 ,Add part listener.
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ITDQRepositoryService.class)) {
             ITDQRepositoryService tdqRepositoryService = (ITDQRepositoryService) GlobalServiceRegister.getDefault().getService(

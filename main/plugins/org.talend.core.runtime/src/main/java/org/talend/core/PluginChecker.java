@@ -60,7 +60,7 @@ public class PluginChecker {
     private static final String PREVIEW_PLUGIN_ID = "org.talend.designer.component.preview"; //$NON-NLS-1$   
 
     private static final String SVN_PROVIDER_PLUGIN_ID = "org.talend.repository.svnprovider"; //$NON-NLS-1$   
-    
+
     private static final String GIT_PROVIDER_PLUGIN_ID = "org.talend.repository.gitprovider"; //$NON-NLS-1$   
 
     private static final String CORE_TIS_PLUGIN_ID = "org.talend.core.tis"; //$NON-NLS-1$   
@@ -112,6 +112,8 @@ public class PluginChecker {
     public static final String EXPORT_JOB_PLUGIN_ID = "org.talend.resources.export.job"; //$NON-NLS-1$
 
     public static final String MAVEN_JOB_PLUGIN_ID = "org.talend.designer.maven.job"; //$NON-NLS-1$
+
+    public static final String IPAAS_PLUGIN_ID = "org.talend.designer.components.ipaas"; //$NON-NLS-1$
 
     /**
      * Check if specific plug-in is loaded.
@@ -221,7 +223,7 @@ public class PluginChecker {
     public static boolean isSVNProviderPluginLoaded() {
         return isPluginLoaded(SVN_PROVIDER_PLUGIN_ID);
     }
-    
+
     public static boolean isGITProviderPluginLoaded() {
         return isPluginLoaded(GIT_PROVIDER_PLUGIN_ID);
     }
@@ -248,6 +250,10 @@ public class PluginChecker {
 
     public static boolean isRunRemotePluginLoaded() {
         return isPluginLoaded(RUNREMOTE_PLUGIN_ID);
+    }
+
+    public static boolean isIPaasPluginLoaded() {
+        return isPluginLoaded(IPAAS_PLUGIN_ID);
     }
 
     public static boolean isTraceDebugPluginLoaded() {

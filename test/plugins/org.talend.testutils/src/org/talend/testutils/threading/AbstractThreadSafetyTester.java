@@ -59,11 +59,10 @@ public abstract class AbstractThreadSafetyTester<T extends IThreadSafetyOperator
         List<Future<Object>> operatorsHandlerList = new ArrayList<Future<Object>>();
         try {
             for (int i = 0; i < nOperatorsByClassOperator; i++) {
-                for (int j = 0; j < classOperators.length; j++) {
-                    Class<? extends T> classOperator = classOperators[j];
+                for (Class<? extends T> classOperator : classOperators) {
                     String className = classOperator.getName();
-                    Class<? extends T> operator = (Class<? extends T>) Class.forName(className).asSubclass(
-                            IThreadSafetyOperator.class);
+                    Class<? extends T> operator = (Class<? extends T>) Class.forName(className)
+                            .asSubclass(IThreadSafetyOperator.class);
                     T operatorInstance = operator.newInstance();
                     initInstance(operatorInstance);
                     ThreadSafetyOperatorHandler threadSafetyOperatorHandler = new ThreadSafetyOperatorHandler(operatorInstance);
@@ -80,9 +79,7 @@ public abstract class AbstractThreadSafetyTester<T extends IThreadSafetyOperator
             throw e;
         }
         try {
-            int operatorsHandlerListListSize = operatorsHandlerList.size();
-            for (int i = 0; i < operatorsHandlerListListSize; i++) {
-                Future<Object> futureTask = operatorsHandlerList.get(i);
+            for (Future<Object> futureTask : operatorsHandlerList) {
                 try {
                     futureTask.get();
                 } catch (Exception e) {

@@ -63,7 +63,7 @@ public class PluginOptionalMissingJarsExtraUpdatesFactory extends AbstractExtraU
             // jface because it adds graphical
             // dependencies.
             IRunnableWithProgress notInstalledModulesRunnable = RemoteModulesHelper.getInstance().getNotInstalledModulesRunnable(
-                    unistalledModulesNeeded, modulesRequiredToBeInstalled);
+                    unistalledModulesNeeded, modulesRequiredToBeInstalled, true);
             if (notInstalledModulesRunnable != null) {// some data need to be fetched
                 try {
                     notInstalledModulesRunnable.run(mainSubMonitor.newChild(1));
@@ -87,7 +87,7 @@ public class PluginOptionalMissingJarsExtraUpdatesFactory extends AbstractExtraU
                         uninstalledExtraFeatures,
                         new TalendWebServiceUpdateExtraFeature(modulesForAutomaticInstall, Messages
                                 .getString("missing.optional.third.parties.libs.feature.name"), Messages //$NON-NLS-1$
-                                .getString("missing.optional.third.parties.libs.feature.description"), true/* mustInstall */)); //$NON-NLS-1$
+                                .getString("missing.optional.third.parties.libs.feature.description"), false/* mustInstall */)); //$NON-NLS-1$
             }
         }// else nothing to install so nothing to install ;)
 

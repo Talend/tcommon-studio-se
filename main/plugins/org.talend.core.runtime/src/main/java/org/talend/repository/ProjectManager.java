@@ -83,6 +83,9 @@ public final class ProjectManager {
     }
 
     public Project getProjectFromProjectLabel(String label) {
+        if (currentProject == null) {
+            initCurrentProject();
+        }
         if (currentProject.getLabel().equals(label)) {
             return currentProject;
         }
@@ -567,6 +570,10 @@ public final class ProjectManager {
     public void clearAll() {
         getAllReferencedProjects().clear();
         mapProjectUrlToBranchUrl.clear();
+        clearFolderCache();
+    }
+
+    public void clearFolderCache() {
         foldersMap.clear();
     }
 }

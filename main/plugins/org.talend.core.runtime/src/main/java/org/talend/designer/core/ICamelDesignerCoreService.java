@@ -23,14 +23,16 @@ import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
 
 /**
- * DOC guanglong.du class global comment. Detailled comment
+ * DOC guanglong.du class global comment. Detailled comment<br/>
+ * <b>!!!NOTE!!!</b> ICamelDesignerCoreService should also be usable for commandline, should not add UI related codes;
+ * for UI related codes, please add them into ICamelDesignerCoreUIService
  */
 public interface ICamelDesignerCoreService extends IService {
 
     public boolean isInstanceofCamelRoutes(Item item);
 
     public ERepositoryObjectType getRouteDocType();
-    
+
     public ERepositoryObjectType getRouteDocsType();
 
     public ERepositoryObjectType getBeansType();
@@ -39,23 +41,23 @@ public interface ICamelDesignerCoreService extends IService {
 
     public boolean isInstanceofCamelBeans(Item item);
 
-	/**
-	 * Synchronized Route resource
-	 * 
-	 * @param item
-	 */
-	public void synchronizeRouteResource(ProcessItem item);
+    /**
+     * Synchronized Route resource
+     * 
+     * @param item
+     */
+    public void synchronizeRouteResource(ProcessItem item);
 
-	public String getDeleteFolderName(ERepositoryObjectType type);
-	
-	public boolean isRouteBuilderNode(INode node);
+    public String getDeleteFolderName(ERepositoryObjectType type);
 
-	public boolean canCreateNodeOnLink(IConnection connection, INode node);
-	
-	public EConnectionType getTargetConnectionType(INode node);
+    public boolean isRouteBuilderNode(INode node);
 
-	public void appendRouteInfo2Doc(Item item, Element jobElement);
+    public boolean canCreateNodeOnLink(IConnection connection, INode node);
 
-	public FileItem newRouteDocumentationItem();
+    public EConnectionType getTargetConnectionType(INode node);
+
+    public void appendRouteInfo2Doc(Item item, Element jobElement);
+
+    public FileItem newRouteDocumentationItem();
 
 }

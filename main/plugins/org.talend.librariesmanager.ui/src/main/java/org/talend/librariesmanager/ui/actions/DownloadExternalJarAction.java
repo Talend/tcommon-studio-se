@@ -12,11 +12,17 @@
 // ============================================================================
 package org.talend.librariesmanager.ui.actions;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.jface.action.Action;
 import org.eclipse.ui.PlatformUI;
 import org.talend.commons.ui.runtime.image.EImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
-import org.talend.librariesmanager.ui.dialogs.ExternalModulesInstallDialog;
+import org.talend.core.model.general.ModuleNeeded;
+import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
+import org.talend.librariesmanager.model.ModulesNeededProvider;
+import org.talend.librariesmanager.ui.dialogs.ExternalModulesInstallDialogWithProgress;
 import org.talend.librariesmanager.ui.i18n.Messages;
 
 /**
@@ -36,9 +42,16 @@ public class DownloadExternalJarAction extends Action {
     public void run() {
         String title = Messages.getString("download.external.dialog.title");
         String text = Messages.getString("download.external.dialog.desciption");
-        ExternalModulesInstallDialog dialog = new ExternalModulesInstallDialog(PlatformUI.getWorkbench()
+        List<ModuleNeeded> updatedModules = new ArrayList<ModuleNeeded>();
+        for (ModuleNeeded neededModule : ModulesNeededProvider.getModulesNeeded()) {
+            if (neededModule.getStatus() != ELibraryInstallStatus.NOT_INSTALLED) {
+                continue;
+            }
+            updatedModules.add(neededModule);
+        }
+        ExternalModulesInstallDialogWithProgress dialog = new ExternalModulesInstallDialogWithProgress(PlatformUI.getWorkbench()
                 .getActiveWorkbenchWindow().getShell(), text, title);
-        dialog.openDialog();
+        dialog.showDialog(true, updatedModules);
     }
 
 }

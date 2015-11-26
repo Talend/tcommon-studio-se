@@ -23,6 +23,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
 import org.talend.commons.exception.BusinessException;
+import org.talend.commons.ui.gmf.util.DisplayUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
 import org.talend.core.model.general.ILibrariesService;
@@ -124,14 +125,14 @@ public class InitializeMissingJarHandler implements IStartup, Observer {
         }
         List<ModuleNeeded> requiredModulesForBundle = ModulesNeededProvider.filterRequiredModulesForBundle(
                 jarMissingEvent.getBundleSymbolicName(), allModulesNeededExtensionsForPlugin);
-        final List<String> requiredJars = new ArrayList<String>(requiredModulesForBundle.size());
+        final List<ModuleNeeded> filteredRequiredJars = new ArrayList<ModuleNeeded>(requiredModulesForBundle.size());
         // filter the jar that are already installed
         for (ModuleNeeded module : requiredModulesForBundle) {
             String moduleName = module.getModuleName();
             // if jar does not exist at expected folder then check if it is registered in the Studio
             boolean installed = false;
             if (!new File(jarMissingEvent.getExpectedLibFolder(), moduleName).exists()) {
-                // check that library is already available and registered but not deployed to lib/java.
+                // check that library is already available and registered but not deployed to maven.
                 try {
                     if (librariesService != null
                             && (librariesService.getLibraryStatus(moduleName) == ELibraryInstallStatus.INSTALLED)) {
@@ -160,19 +161,19 @@ public class InitializeMissingJarHandler implements IStartup, Observer {
                 }
             }
             if (!installed && !new File(jarMissingEvent.getExpectedLibFolder(), moduleName).exists()) {
-                requiredJars.add(moduleName);
+                filteredRequiredJars.add(module);
             }// else jar already installed to filter it by ignoring it.
         }
-        if (!requiredJars.isEmpty()) {
+        if (!filteredRequiredJars.isEmpty()) {
             Display.getDefault().syncExec(new Runnable() {
 
                 @Override
-                public void run() {
+                public void run() {                    
                     ExternalModulesInstallDialogWithProgress dialog = new ExternalModulesInstallDialogWithProgress(
-                            PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+                            DisplayUtils.getDefaultShell(),
                             Messages.getString("ExternalModulesInstallDialog_Title_Missing_jars_for_plugin"), //$NON-NLS-1$
                             Messages.getString("ExternalModulesInstallDialog_description_jars_to_be_installed_in"), SWT.APPLICATION_MODAL); //$NON-NLS-1$
-                    dialog.showDialog(true, requiredJars.toArray(new String[requiredJars.size()]));
+                    dialog.showDialog(true, filteredRequiredJars);
                 }
             });
         }// else there is not extension point defining the required bundles so do not ask the user ignor.

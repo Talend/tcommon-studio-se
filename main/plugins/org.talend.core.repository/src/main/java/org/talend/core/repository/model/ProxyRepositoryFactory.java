@@ -116,6 +116,7 @@ import org.talend.core.repository.utils.RepositoryPathProvider;
 import org.talend.core.repository.utils.XmiResourceManager;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
+import org.talend.core.runtime.services.IMavenUIService;
 import org.talend.core.service.ICoreUIService;
 import org.talend.cwm.helper.SubItemHelper;
 import org.talend.cwm.helper.TableHelper;
@@ -902,16 +903,18 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
      * @see org.talend.repository.model.IProxyRepositoryFactory#lock(org.talend.core.model.properties.Item)
      */
     @Override
-    public void lock(Item item) throws PersistenceException, LoginException {
-        // getStatus(item)
-        if (getStatus(item).isPotentiallyEditable()) {
-            boolean locked = this.repositoryFactoryFromProvider.lock(item);
+    public boolean  lock(Item item) throws PersistenceException, LoginException {
+        boolean locked = false;
+        // even if item is already locked, force to call the method to ensure the item is still locked
+        if (getStatus(item).isPotentiallyEditable() || getStatus(item).equals(ERepositoryStatus.LOCK_BY_USER)) {
+            locked = this.repositoryFactoryFromProvider.lock(item);
             if (locked) {
                 notifyLock(item, true);
             }
             String str[] = new String[] { item.toString(), getRepositoryContext().getUser().toString() };
             log.debug(Messages.getString("ProxyRepositoryFactory.log.lock", str)); //$NON-NLS-1$
         }
+        return locked;
     }
 
     /**
@@ -1801,6 +1804,14 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 // Check project compatibility
                 checkProjectCompatibility(project);
 
+                if (GlobalServiceRegister.getDefault().isServiceRegistered(IMavenUIService.class)) {
+                    IMavenUIService mavenUIService = (IMavenUIService) GlobalServiceRegister.getDefault().getService(
+                            IMavenUIService.class);
+                    if (mavenUIService != null) {
+                        mavenUIService.updateMavenResolver(true);
+                    }
+                }
+
                 currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);
                 currentMonitor.beginTask("Execute before logon migrations tasks", 1); //$NON-NLS-1$
                 executeMigrations(project, true, currentMonitor);
@@ -1895,8 +1906,8 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                     }
                 }
                 if (GlobalServiceRegister.getDefault().isServiceRegistered(ITDQRepositoryService.class)) {
-                    ITDQRepositoryService tdqRepositoryService = (ITDQRepositoryService) GlobalServiceRegister.getDefault().getService(
-                            ITDQRepositoryService.class);
+                    ITDQRepositoryService tdqRepositoryService = (ITDQRepositoryService) GlobalServiceRegister.getDefault()
+                            .getService(ITDQRepositoryService.class);
                     if (tdqRepositoryService != null) {
                         tdqRepositoryService.initProxyRepository();
                     }

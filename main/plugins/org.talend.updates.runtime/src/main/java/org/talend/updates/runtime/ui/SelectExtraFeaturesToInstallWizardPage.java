@@ -28,6 +28,7 @@ import org.eclipse.jface.databinding.wizard.WizardPageSupport;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ColumnWeightData;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -124,6 +125,20 @@ public class SelectExtraFeaturesToInstallWizardPage extends WizardPage {
                     @Override
                     public int category(Object element) {
                         return element.getClass().hashCode();
+                    }
+
+                    /*
+                     * (non-Javadoc)
+                     * 
+                     * @see org.eclipse.jface.viewers.ViewerComparator#compare(org.eclipse.jface.viewers.Viewer,
+                     * java.lang.Object, java.lang.Object)
+                     */
+                    @Override
+                    public int compare(Viewer viewer, Object e1, Object e2) {
+                        if ((e2 instanceof ExtraFeature) && !((ExtraFeature) e2).mustBeInstalled()) {
+                            return -1;
+                        }
+                        return 1;
                     }
                 });
         table = checkboxTableViewer.getTable();
