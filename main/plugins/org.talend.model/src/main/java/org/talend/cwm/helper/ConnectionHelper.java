@@ -48,6 +48,7 @@ import orgomg.cwm.objectmodel.core.Namespace;
 import orgomg.cwm.objectmodel.core.Package;
 import orgomg.cwm.objectmodel.core.TaggedValue;
 import orgomg.cwm.resource.record.RecordFile;
+import orgomg.cwm.resource.record.impl.RecordFileImpl;
 import orgomg.cwm.resource.relational.Catalog;
 import orgomg.cwm.resource.relational.ColumnSet;
 import orgomg.cwm.resource.relational.Schema;
@@ -245,6 +246,27 @@ public class ConnectionHelper {
             return "";
         }
         return taggedValue.getValue();
+    }
+
+    public static Connection getConnection(MetadataColumn metadataColumn) {
+        if (metadataColumn == null) {
+            return null;
+        } else if (metadataColumn.eContainer() == null) {
+            return null;
+        } else if (metadataColumn.eContainer().eContainer() == null) {
+            return null;
+        }
+        EObject eContainer = metadataColumn.eContainer().eContainer();
+        if (RecordFileImpl.class.isInstance(eContainer)) {
+            EList<DataManager> dataManager = ((RecordFileImpl) eContainer).getDataManager();
+            if (dataManager.size() > 0 && Connection.class.isInstance(dataManager.get(0))) {
+                return (Connection) dataManager.get(0);
+            }
+        } else if (orgomg.cwm.objectmodel.core.Package.class.isInstance(eContainer)) {
+            return getConnection((orgomg.cwm.objectmodel.core.Package) eContainer);
+
+        }
+        return null;
     }
 
     /**
