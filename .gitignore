@@ -5,3 +5,4 @@ class/
 classes/
 dist/
 .settings/
+*.iml
