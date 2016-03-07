@@ -158,26 +158,15 @@ public class MetadataTable implements IMetadataTable, Cloneable {
 
     @Override
     public boolean isDynamicSchema() {
-
-        int sizeListColumns = listColumns.size();
-        boolean hasDynamic = false;
-        for (int i = 0; i < sizeListColumns; i++) {
-            if (listColumns.get(i).getTalendType().equals("id_Dynamic")) {
-                hasDynamic = true;
-                break;
-            }
-        }
-        return hasDynamic;
+        return getDynamicColumn() != null;
 
     }
 
     @Override
     public IMetadataColumn getDynamicColumn() {
-        if (isDynamicSchema()) {
-            for (int i = 0; i < listColumns.size(); i++) {
-                if (listColumns.get(i).getTalendType().equals("id_Dynamic")) {
-                    return listColumns.get(i);
-                }
+        for (IMetadataColumn column : listColumns) {
+            if (column.getTalendType().equals("id_Dynamic")) {
+                return column;
             }
         }
         return null;

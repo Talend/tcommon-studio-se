@@ -117,3 +117,4 @@ Bundle-ClassPath: .,
  lib/resty-0.3.2.jar,
  lib/json_simple-1.1.jar
 Eclipse-RegisterBuddy: org.talend.testutils
+Import-Package: org.apache.avro
