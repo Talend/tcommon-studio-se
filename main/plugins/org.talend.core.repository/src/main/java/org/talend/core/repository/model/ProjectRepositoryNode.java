@@ -1680,7 +1680,9 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
         node.getChildren().add(container);
 
         EList<SAPBWTable> datasources = ((SAPConnection) metadataConnection).getBWDataSources();
-        createTables(container, repObj, datasources, ERepositoryObjectType.METADATA_CON_TABLE, validationRules);
+        EList tables = new BasicEList();
+        tables.addAll(datasources);
+        createTables(container, repObj, tables, ERepositoryObjectType.METADATA_CON_TABLE, validationRules);
     }
 
     private void createSAPBWDataStoreObjectNodes(IRepositoryViewObject repObj, Connection metadataConnection,
@@ -1692,7 +1694,9 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
         node.getChildren().add(container);
 
         EList<SAPBWTable> dataStoreObjects = ((SAPConnection) metadataConnection).getBWDataStoreObjects();
-        createTables(container, repObj, dataStoreObjects, ERepositoryObjectType.METADATA_CON_TABLE, validationRules);
+        EList tables = new BasicEList();
+        tables.addAll(dataStoreObjects);
+        createTables(container, repObj, tables, ERepositoryObjectType.METADATA_CON_TABLE, validationRules);
     }
 
     private void createSAPBWInfoCubeNodes(IRepositoryViewObject repObj, Connection metadataConnection, RepositoryNode node,
@@ -1704,7 +1708,9 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
         node.getChildren().add(container);
 
         EList<SAPBWTable> infoCubes = ((SAPConnection) metadataConnection).getBWInfoCubes();
-        createTables(container, repObj, infoCubes, ERepositoryObjectType.METADATA_CON_TABLE, validationRules);
+        EList tables = new BasicEList();
+        tables.addAll(infoCubes);
+        createTables(container, repObj, tables, ERepositoryObjectType.METADATA_CON_TABLE, validationRules);
     }
 
     private void createSAPBWInfoObjectNodes(IRepositoryViewObject repObj, Connection metadataConnection, RepositoryNode node,
@@ -1715,8 +1721,14 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
         container.setProperties(EProperties.CONTENT_TYPE, ERepositoryObjectType.METADATA_SAP_BW_INFOOBJECT);
         node.getChildren().add(container);
 
-        EList<SAPBWTable> infoObject = ((SAPConnection) metadataConnection).getBWInfoObjects();
-        createTables(container, repObj, infoObject, ERepositoryObjectType.METADATA_CON_TABLE, validationRules);
+        EList<SAPBWTable> infoObjects = ((SAPConnection) metadataConnection).getBWInfoObjects();
+        EList<SAPBWTable> tables = new BasicEList<SAPBWTable>();
+        for (SAPBWTable bwTable : infoObjects) {
+            if (!"Basic".equals(bwTable.getInnerIOType())) {
+                tables.add(bwTable);
+            }
+        }
+        createTables(container, repObj, tables, ERepositoryObjectType.METADATA_CON_TABLE, validationRules);
     }
 
     private void createSalesforceModuleNodes(IRepositoryViewObject rebObj, Connection metadataConnection,

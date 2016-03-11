@@ -560,31 +560,10 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//SAPBWTable/active"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//SAPBWTable/sourceSystemName"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//SAPBWTable/infoAreaName"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//SAPBWTable/lastModifiedAt"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//SAPBWTable/lastModifiedBy"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//SAPBWTable/owner"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//SAPBWTable/inMemoryOptimized"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//SAPBWTable/insertOnly"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//SAPBWTable/keyUnique"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//SAPBWTable/hierarchies"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//SAPBWTable/attributes"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//SAPBWTable/texts"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//SAPBWTable/attributesSize"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//SAPBWTable/textsSize"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//SAPBWTable/innerIOType"/>
     </genClasses>
     <genClasses ecoreClass="metadata.ecore#//SAPBWTableField">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//SAPBWTableField/logicalName"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//SAPBWTableField/attributes"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//SAPBWTableField/hierarchies"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//SAPBWTableField/texts"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//SAPBWTableField/timeDependentAttr"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//SAPBWTableField/attrTableName"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//SAPBWTableField/languageDependentText"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//SAPBWTableField/mediumText"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//SAPBWTableField/shortText"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//SAPBWTableField/textTableName"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//SAPBWTableField/timeDependentText"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//SAPBWTableField/lowerCaseAllowed"/>
     </genClasses>
     <nestedGenPackages prefix="cwm" basePackage="org.talend" disposableProviderFactory="true"
         ecorePackage="metadata.ecore#//cwm">

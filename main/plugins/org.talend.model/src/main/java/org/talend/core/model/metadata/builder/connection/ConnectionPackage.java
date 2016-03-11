@@ -19637,103 +19637,13 @@ public interface ConnectionPackage extends EPackage {
     int SAPBW_TABLE__INFO_AREA_NAME = SAP_TABLE_FEATURE_COUNT + 3;
 
     /**
-     * The feature id for the '<em><b>Last Modified At</b></em>' attribute.
+     * The feature id for the '<em><b>Inner IO Type</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int SAPBW_TABLE__LAST_MODIFIED_AT = SAP_TABLE_FEATURE_COUNT + 4;
-
-    /**
-     * The feature id for the '<em><b>Last Modified By</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int SAPBW_TABLE__LAST_MODIFIED_BY = SAP_TABLE_FEATURE_COUNT + 5;
-
-    /**
-     * The feature id for the '<em><b>Owner</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int SAPBW_TABLE__OWNER = SAP_TABLE_FEATURE_COUNT + 6;
-
-    /**
-     * The feature id for the '<em><b>In Memory Optimized</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int SAPBW_TABLE__IN_MEMORY_OPTIMIZED = SAP_TABLE_FEATURE_COUNT + 7;
-
-    /**
-     * The feature id for the '<em><b>Insert Only</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int SAPBW_TABLE__INSERT_ONLY = SAP_TABLE_FEATURE_COUNT + 8;
-
-    /**
-     * The feature id for the '<em><b>Key Unique</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int SAPBW_TABLE__KEY_UNIQUE = SAP_TABLE_FEATURE_COUNT + 9;
-
-    /**
-     * The feature id for the '<em><b>Hierarchies</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int SAPBW_TABLE__HIERARCHIES = SAP_TABLE_FEATURE_COUNT + 10;
-
-    /**
-     * The feature id for the '<em><b>Attributes</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int SAPBW_TABLE__ATTRIBUTES = SAP_TABLE_FEATURE_COUNT + 11;
-
-    /**
-     * The feature id for the '<em><b>Texts</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int SAPBW_TABLE__TEXTS = SAP_TABLE_FEATURE_COUNT + 12;
-
-    /**
-     * The feature id for the '<em><b>Attributes Size</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int SAPBW_TABLE__ATTRIBUTES_SIZE = SAP_TABLE_FEATURE_COUNT + 13;
-
-    /**
-     * The feature id for the '<em><b>Texts Size</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int SAPBW_TABLE__TEXTS_SIZE = SAP_TABLE_FEATURE_COUNT + 14;
+    int SAPBW_TABLE__INNER_IO_TYPE = SAP_TABLE_FEATURE_COUNT + 4;
 
     /**
      * The number of structural features of the '<em>SAPBW Table</em>' class.
@@ -19742,7 +19652,7 @@ public interface ConnectionPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int SAPBW_TABLE_FEATURE_COUNT = SAP_TABLE_FEATURE_COUNT + 15;
+    int SAPBW_TABLE_FEATURE_COUNT = SAP_TABLE_FEATURE_COUNT + 5;
 
     /**
      * The meta object id for the '{@link org.talend.core.model.metadata.builder.connection.impl.SAPBWTableFieldImpl <em>SAPBW Table Field</em>}' class.
@@ -20313,112 +20223,13 @@ public interface ConnectionPackage extends EPackage {
     int SAPBW_TABLE_FIELD__LOGICAL_NAME = SAP_TABLE_FIELD_FEATURE_COUNT + 0;
 
     /**
-     * The feature id for the '<em><b>Attributes</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int SAPBW_TABLE_FIELD__ATTRIBUTES = SAP_TABLE_FIELD_FEATURE_COUNT + 1;
-
-    /**
-     * The feature id for the '<em><b>Hierarchies</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int SAPBW_TABLE_FIELD__HIERARCHIES = SAP_TABLE_FIELD_FEATURE_COUNT + 2;
-
-    /**
-     * The feature id for the '<em><b>Texts</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int SAPBW_TABLE_FIELD__TEXTS = SAP_TABLE_FIELD_FEATURE_COUNT + 3;
-
-    /**
-     * The feature id for the '<em><b>Time Dependent Attr</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int SAPBW_TABLE_FIELD__TIME_DEPENDENT_ATTR = SAP_TABLE_FIELD_FEATURE_COUNT + 4;
-
-    /**
-     * The feature id for the '<em><b>Attr Table Name</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int SAPBW_TABLE_FIELD__ATTR_TABLE_NAME = SAP_TABLE_FIELD_FEATURE_COUNT + 5;
-
-    /**
-     * The feature id for the '<em><b>Language Dependent Text</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int SAPBW_TABLE_FIELD__LANGUAGE_DEPENDENT_TEXT = SAP_TABLE_FIELD_FEATURE_COUNT + 6;
-
-    /**
-     * The feature id for the '<em><b>Medium Text</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int SAPBW_TABLE_FIELD__MEDIUM_TEXT = SAP_TABLE_FIELD_FEATURE_COUNT + 7;
-
-    /**
-     * The feature id for the '<em><b>Short Text</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int SAPBW_TABLE_FIELD__SHORT_TEXT = SAP_TABLE_FIELD_FEATURE_COUNT + 8;
-
-    /**
-     * The feature id for the '<em><b>Text Table Name</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int SAPBW_TABLE_FIELD__TEXT_TABLE_NAME = SAP_TABLE_FIELD_FEATURE_COUNT + 9;
-
-    /**
-     * The feature id for the '<em><b>Time Dependent Text</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int SAPBW_TABLE_FIELD__TIME_DEPENDENT_TEXT = SAP_TABLE_FIELD_FEATURE_COUNT + 10;
-
-    /**
-     * The feature id for the '<em><b>Lower Case Allowed</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int SAPBW_TABLE_FIELD__LOWER_CASE_ALLOWED = SAP_TABLE_FIELD_FEATURE_COUNT + 11;
-
-    /**
      * The number of structural features of the '<em>SAPBW Table Field</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int SAPBW_TABLE_FIELD_FEATURE_COUNT = SAP_TABLE_FIELD_FEATURE_COUNT + 12;
+    int SAPBW_TABLE_FIELD_FEATURE_COUNT = SAP_TABLE_FIELD_FEATURE_COUNT + 1;
 
     /**
      * The meta object id for the '{@link org.talend.core.model.metadata.builder.connection.FileFormat <em>File Format</em>}' enum.
@@ -24918,17 +24729,6 @@ public interface ConnectionPackage extends EPackage {
     EAttribute getSAPBWTable_SourceSystemName();
 
     /**
-     * Returns the meta object for the attribute '{@link org.talend.core.model.metadata.builder.connection.SAPBWTable#getLastModifiedAt <em>Last Modified At</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Last Modified At</em>'.
-     * @see org.talend.core.model.metadata.builder.connection.SAPBWTable#getLastModifiedAt()
-     * @see #getSAPBWTable()
-     * @generated
-     */
-    EAttribute getSAPBWTable_LastModifiedAt();
-
-    /**
      * Returns the meta object for the attribute '{@link org.talend.core.model.metadata.builder.connection.SAPBWTable#getInfoAreaName <em>Info Area Name</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -24940,114 +24740,15 @@ public interface ConnectionPackage extends EPackage {
     EAttribute getSAPBWTable_InfoAreaName();
 
     /**
-     * Returns the meta object for the attribute '{@link org.talend.core.model.metadata.builder.connection.SAPBWTable#getLastModifiedBy <em>Last Modified By</em>}'.
+     * Returns the meta object for the attribute '{@link org.talend.core.model.metadata.builder.connection.SAPBWTable#getInnerIOType <em>Inner IO Type</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Last Modified By</em>'.
-     * @see org.talend.core.model.metadata.builder.connection.SAPBWTable#getLastModifiedBy()
+     * @return the meta object for the attribute '<em>Inner IO Type</em>'.
+     * @see org.talend.core.model.metadata.builder.connection.SAPBWTable#getInnerIOType()
      * @see #getSAPBWTable()
      * @generated
      */
-    EAttribute getSAPBWTable_LastModifiedBy();
-
-    /**
-     * Returns the meta object for the attribute '{@link org.talend.core.model.metadata.builder.connection.SAPBWTable#getOwner <em>Owner</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Owner</em>'.
-     * @see org.talend.core.model.metadata.builder.connection.SAPBWTable#getOwner()
-     * @see #getSAPBWTable()
-     * @generated
-     */
-    EAttribute getSAPBWTable_Owner();
-
-    /**
-     * Returns the meta object for the attribute '{@link org.talend.core.model.metadata.builder.connection.SAPBWTable#isInMemoryOptimized <em>In Memory Optimized</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>In Memory Optimized</em>'.
-     * @see org.talend.core.model.metadata.builder.connection.SAPBWTable#isInMemoryOptimized()
-     * @see #getSAPBWTable()
-     * @generated
-     */
-    EAttribute getSAPBWTable_InMemoryOptimized();
-
-    /**
-     * Returns the meta object for the attribute '{@link org.talend.core.model.metadata.builder.connection.SAPBWTable#isInsertOnly <em>Insert Only</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Insert Only</em>'.
-     * @see org.talend.core.model.metadata.builder.connection.SAPBWTable#isInsertOnly()
-     * @see #getSAPBWTable()
-     * @generated
-     */
-    EAttribute getSAPBWTable_InsertOnly();
-
-    /**
-     * Returns the meta object for the attribute '{@link org.talend.core.model.metadata.builder.connection.SAPBWTable#isKeyUnique <em>Key Unique</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Key Unique</em>'.
-     * @see org.talend.core.model.metadata.builder.connection.SAPBWTable#isKeyUnique()
-     * @see #getSAPBWTable()
-     * @generated
-     */
-    EAttribute getSAPBWTable_KeyUnique();
-
-    /**
-     * Returns the meta object for the attribute '{@link org.talend.core.model.metadata.builder.connection.SAPBWTable#isHierarchies <em>Hierarchies</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Hierarchies</em>'.
-     * @see org.talend.core.model.metadata.builder.connection.SAPBWTable#isHierarchies()
-     * @see #getSAPBWTable()
-     * @generated
-     */
-    EAttribute getSAPBWTable_Hierarchies();
-
-    /**
-     * Returns the meta object for the attribute '{@link org.talend.core.model.metadata.builder.connection.SAPBWTable#isAttributes <em>Attributes</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Attributes</em>'.
-     * @see org.talend.core.model.metadata.builder.connection.SAPBWTable#isAttributes()
-     * @see #getSAPBWTable()
-     * @generated
-     */
-    EAttribute getSAPBWTable_Attributes();
-
-    /**
-     * Returns the meta object for the attribute '{@link org.talend.core.model.metadata.builder.connection.SAPBWTable#isTexts <em>Texts</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Texts</em>'.
-     * @see org.talend.core.model.metadata.builder.connection.SAPBWTable#isTexts()
-     * @see #getSAPBWTable()
-     * @generated
-     */
-    EAttribute getSAPBWTable_Texts();
-
-    /**
-     * Returns the meta object for the attribute '{@link org.talend.core.model.metadata.builder.connection.SAPBWTable#getAttributesSize <em>Attributes Size</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Attributes Size</em>'.
-     * @see org.talend.core.model.metadata.builder.connection.SAPBWTable#getAttributesSize()
-     * @see #getSAPBWTable()
-     * @generated
-     */
-    EAttribute getSAPBWTable_AttributesSize();
-
-    /**
-     * Returns the meta object for the attribute '{@link org.talend.core.model.metadata.builder.connection.SAPBWTable#getTextsSize <em>Texts Size</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Texts Size</em>'.
-     * @see org.talend.core.model.metadata.builder.connection.SAPBWTable#getTextsSize()
-     * @see #getSAPBWTable()
-     * @generated
-     */
-    EAttribute getSAPBWTable_TextsSize();
+    EAttribute getSAPBWTable_InnerIOType();
 
     /**
      * Returns the meta object for class '{@link org.talend.core.model.metadata.builder.connection.SAPBWTableField <em>SAPBW Table Field</em>}'.
@@ -25069,127 +24770,6 @@ public interface ConnectionPackage extends EPackage {
      * @generated
      */
     EAttribute getSAPBWTableField_LogicalName();
-
-    /**
-     * Returns the meta object for the attribute '{@link org.talend.core.model.metadata.builder.connection.SAPBWTableField#isAttributes <em>Attributes</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Attributes</em>'.
-     * @see org.talend.core.model.metadata.builder.connection.SAPBWTableField#isAttributes()
-     * @see #getSAPBWTableField()
-     * @generated
-     */
-    EAttribute getSAPBWTableField_Attributes();
-
-    /**
-     * Returns the meta object for the attribute '{@link org.talend.core.model.metadata.builder.connection.SAPBWTableField#isHierarchies <em>Hierarchies</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Hierarchies</em>'.
-     * @see org.talend.core.model.metadata.builder.connection.SAPBWTableField#isHierarchies()
-     * @see #getSAPBWTableField()
-     * @generated
-     */
-    EAttribute getSAPBWTableField_Hierarchies();
-
-    /**
-     * Returns the meta object for the attribute '{@link org.talend.core.model.metadata.builder.connection.SAPBWTableField#isTexts <em>Texts</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Texts</em>'.
-     * @see org.talend.core.model.metadata.builder.connection.SAPBWTableField#isTexts()
-     * @see #getSAPBWTableField()
-     * @generated
-     */
-    EAttribute getSAPBWTableField_Texts();
-
-    /**
-     * Returns the meta object for the attribute '{@link org.talend.core.model.metadata.builder.connection.SAPBWTableField#isTimeDependentAttr <em>Time Dependent Attr</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Time Dependent Attr</em>'.
-     * @see org.talend.core.model.metadata.builder.connection.SAPBWTableField#isTimeDependentAttr()
-     * @see #getSAPBWTableField()
-     * @generated
-     */
-    EAttribute getSAPBWTableField_TimeDependentAttr();
-
-    /**
-     * Returns the meta object for the attribute '{@link org.talend.core.model.metadata.builder.connection.SAPBWTableField#getAttrTableName <em>Attr Table Name</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Attr Table Name</em>'.
-     * @see org.talend.core.model.metadata.builder.connection.SAPBWTableField#getAttrTableName()
-     * @see #getSAPBWTableField()
-     * @generated
-     */
-    EAttribute getSAPBWTableField_AttrTableName();
-
-    /**
-     * Returns the meta object for the attribute '{@link org.talend.core.model.metadata.builder.connection.SAPBWTableField#isLanguageDependentText <em>Language Dependent Text</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Language Dependent Text</em>'.
-     * @see org.talend.core.model.metadata.builder.connection.SAPBWTableField#isLanguageDependentText()
-     * @see #getSAPBWTableField()
-     * @generated
-     */
-    EAttribute getSAPBWTableField_LanguageDependentText();
-
-    /**
-     * Returns the meta object for the attribute '{@link org.talend.core.model.metadata.builder.connection.SAPBWTableField#isMediumText <em>Medium Text</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Medium Text</em>'.
-     * @see org.talend.core.model.metadata.builder.connection.SAPBWTableField#isMediumText()
-     * @see #getSAPBWTableField()
-     * @generated
-     */
-    EAttribute getSAPBWTableField_MediumText();
-
-    /**
-     * Returns the meta object for the attribute '{@link org.talend.core.model.metadata.builder.connection.SAPBWTableField#isShortText <em>Short Text</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Short Text</em>'.
-     * @see org.talend.core.model.metadata.builder.connection.SAPBWTableField#isShortText()
-     * @see #getSAPBWTableField()
-     * @generated
-     */
-    EAttribute getSAPBWTableField_ShortText();
-
-    /**
-     * Returns the meta object for the attribute '{@link org.talend.core.model.metadata.builder.connection.SAPBWTableField#getTextTableName <em>Text Table Name</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Text Table Name</em>'.
-     * @see org.talend.core.model.metadata.builder.connection.SAPBWTableField#getTextTableName()
-     * @see #getSAPBWTableField()
-     * @generated
-     */
-    EAttribute getSAPBWTableField_TextTableName();
-
-    /**
-     * Returns the meta object for the attribute '{@link org.talend.core.model.metadata.builder.connection.SAPBWTableField#isTimeDependentText <em>Time Dependent Text</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Time Dependent Text</em>'.
-     * @see org.talend.core.model.metadata.builder.connection.SAPBWTableField#isTimeDependentText()
-     * @see #getSAPBWTableField()
-     * @generated
-     */
-    EAttribute getSAPBWTableField_TimeDependentText();
-
-    /**
-     * Returns the meta object for the attribute '{@link org.talend.core.model.metadata.builder.connection.SAPBWTableField#isLowerCaseAllowed <em>Lower Case Allowed</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Lower Case Allowed</em>'.
-     * @see org.talend.core.model.metadata.builder.connection.SAPBWTableField#isLowerCaseAllowed()
-     * @see #getSAPBWTableField()
-     * @generated
-     */
-    EAttribute getSAPBWTableField_LowerCaseAllowed();
 
     /**
      * Returns the meta object for class '{@link org.talend.core.model.metadata.builder.connection.SAPTable <em>SAP Table</em>}'.
@@ -28893,14 +28473,6 @@ public interface ConnectionPackage extends EPackage {
         EAttribute SAPBW_TABLE__SOURCE_SYSTEM_NAME = eINSTANCE.getSAPBWTable_SourceSystemName();
 
         /**
-         * The meta object literal for the '<em><b>Last Modified At</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute SAPBW_TABLE__LAST_MODIFIED_AT = eINSTANCE.getSAPBWTable_LastModifiedAt();
-
-        /**
          * The meta object literal for the '<em><b>Info Area Name</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -28909,84 +28481,12 @@ public interface ConnectionPackage extends EPackage {
         EAttribute SAPBW_TABLE__INFO_AREA_NAME = eINSTANCE.getSAPBWTable_InfoAreaName();
 
         /**
-         * The meta object literal for the '<em><b>Last Modified By</b></em>' attribute feature.
+         * The meta object literal for the '<em><b>Inner IO Type</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute SAPBW_TABLE__LAST_MODIFIED_BY = eINSTANCE.getSAPBWTable_LastModifiedBy();
-
-        /**
-         * The meta object literal for the '<em><b>Owner</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute SAPBW_TABLE__OWNER = eINSTANCE.getSAPBWTable_Owner();
-
-        /**
-         * The meta object literal for the '<em><b>In Memory Optimized</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute SAPBW_TABLE__IN_MEMORY_OPTIMIZED = eINSTANCE.getSAPBWTable_InMemoryOptimized();
-
-        /**
-         * The meta object literal for the '<em><b>Insert Only</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute SAPBW_TABLE__INSERT_ONLY = eINSTANCE.getSAPBWTable_InsertOnly();
-
-        /**
-         * The meta object literal for the '<em><b>Key Unique</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute SAPBW_TABLE__KEY_UNIQUE = eINSTANCE.getSAPBWTable_KeyUnique();
-
-        /**
-         * The meta object literal for the '<em><b>Hierarchies</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute SAPBW_TABLE__HIERARCHIES = eINSTANCE.getSAPBWTable_Hierarchies();
-
-        /**
-         * The meta object literal for the '<em><b>Attributes</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute SAPBW_TABLE__ATTRIBUTES = eINSTANCE.getSAPBWTable_Attributes();
-
-        /**
-         * The meta object literal for the '<em><b>Texts</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute SAPBW_TABLE__TEXTS = eINSTANCE.getSAPBWTable_Texts();
-
-        /**
-         * The meta object literal for the '<em><b>Attributes Size</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute SAPBW_TABLE__ATTRIBUTES_SIZE = eINSTANCE.getSAPBWTable_AttributesSize();
-
-        /**
-         * The meta object literal for the '<em><b>Texts Size</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute SAPBW_TABLE__TEXTS_SIZE = eINSTANCE.getSAPBWTable_TextsSize();
+        EAttribute SAPBW_TABLE__INNER_IO_TYPE = eINSTANCE.getSAPBWTable_InnerIOType();
 
         /**
          * The meta object literal for the '{@link org.talend.core.model.metadata.builder.connection.impl.SAPBWTableFieldImpl <em>SAPBW Table Field</em>}' class.
@@ -29005,94 +28505,6 @@ public interface ConnectionPackage extends EPackage {
          * @generated
          */
         EAttribute SAPBW_TABLE_FIELD__LOGICAL_NAME = eINSTANCE.getSAPBWTableField_LogicalName();
-
-        /**
-         * The meta object literal for the '<em><b>Attributes</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute SAPBW_TABLE_FIELD__ATTRIBUTES = eINSTANCE.getSAPBWTableField_Attributes();
-
-        /**
-         * The meta object literal for the '<em><b>Hierarchies</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute SAPBW_TABLE_FIELD__HIERARCHIES = eINSTANCE.getSAPBWTableField_Hierarchies();
-
-        /**
-         * The meta object literal for the '<em><b>Texts</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute SAPBW_TABLE_FIELD__TEXTS = eINSTANCE.getSAPBWTableField_Texts();
-
-        /**
-         * The meta object literal for the '<em><b>Time Dependent Attr</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute SAPBW_TABLE_FIELD__TIME_DEPENDENT_ATTR = eINSTANCE.getSAPBWTableField_TimeDependentAttr();
-
-        /**
-         * The meta object literal for the '<em><b>Attr Table Name</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute SAPBW_TABLE_FIELD__ATTR_TABLE_NAME = eINSTANCE.getSAPBWTableField_AttrTableName();
-
-        /**
-         * The meta object literal for the '<em><b>Language Dependent Text</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute SAPBW_TABLE_FIELD__LANGUAGE_DEPENDENT_TEXT = eINSTANCE.getSAPBWTableField_LanguageDependentText();
-
-        /**
-         * The meta object literal for the '<em><b>Medium Text</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute SAPBW_TABLE_FIELD__MEDIUM_TEXT = eINSTANCE.getSAPBWTableField_MediumText();
-
-        /**
-         * The meta object literal for the '<em><b>Short Text</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute SAPBW_TABLE_FIELD__SHORT_TEXT = eINSTANCE.getSAPBWTableField_ShortText();
-
-        /**
-         * The meta object literal for the '<em><b>Text Table Name</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute SAPBW_TABLE_FIELD__TEXT_TABLE_NAME = eINSTANCE.getSAPBWTableField_TextTableName();
-
-        /**
-         * The meta object literal for the '<em><b>Time Dependent Text</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute SAPBW_TABLE_FIELD__TIME_DEPENDENT_TEXT = eINSTANCE.getSAPBWTableField_TimeDependentText();
-
-        /**
-         * The meta object literal for the '<em><b>Lower Case Allowed</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute SAPBW_TABLE_FIELD__LOWER_CASE_ALLOWED = eINSTANCE.getSAPBWTableField_LowerCaseAllowed();
 
         /**
          * The meta object literal for the '{@link org.talend.core.model.metadata.builder.connection.impl.SAPTableImpl <em>SAP Table</em>}' class.
