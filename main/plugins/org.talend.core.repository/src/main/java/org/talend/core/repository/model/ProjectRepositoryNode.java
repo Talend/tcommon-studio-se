@@ -1724,7 +1724,7 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
         EList<SAPBWTable> infoObjects = ((SAPConnection) metadataConnection).getBWInfoObjects();
         EList<SAPBWTable> tables = new BasicEList<SAPBWTable>();
         for (SAPBWTable bwTable : infoObjects) {
-            if (!"Basic".equals(bwTable.getInnerIOType())) {
+            if (!"BASIC".equals(bwTable.getInnerIOType())) { //$NON-NLS-1$
                 tables.add(bwTable);
             }
         }
