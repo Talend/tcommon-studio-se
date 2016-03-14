@@ -363,6 +363,14 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="jcoVersion" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="additionalProperties" upperBound="-1"
         eType="#//AdditionalConnectionProperty" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="BWDataSources" upperBound="-1"
+        eType="#//SAPBWTable" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="BWDataStoreObjects" upperBound="-1"
+        eType="#//SAPBWTable" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="BWInfoCubes" upperBound="-1"
+        eType="#//SAPBWTable" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="BWInfoObjects" upperBound="-1"
+        eType="#//SAPBWTable" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SAPFunctionUnit" eSuperTypes="#//AbstractMetadataObject">
     <eOperations name="setDocument">
@@ -843,6 +851,16 @@
   <eClassifiers xsi:type="ecore:EClass" name="AdditionalConnectionProperty">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="propertyName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="Value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SAPBWTable" eSuperTypes="#//SAPTable">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="modelType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="active" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="sourceSystemName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="infoAreaName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="innerIOType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SAPBWTableField" eSuperTypes="#//SAPTableField">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="logicalName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eSubpackages name="cwm" nsURI="http://www.talend.org/cwm/2010" nsPrefix="cwm">
     <eSubpackages name="relational" nsURI="http://www.talend.org/cwm/resource/relational/2010"

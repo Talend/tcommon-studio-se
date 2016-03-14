@@ -156,6 +156,7 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference metadata.ecore#//MDMConnection/schemas"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//MDMConnection/protocol"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//MDMConnection/context"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//MDMConnection/serverUrl"/>
       <genOperations ecoreOperation="metadata.ecore#//MDMConnection/getConnectionString"/>
     </genClasses>
     <genClasses ecoreClass="metadata.ecore#//DatabaseConnection">
@@ -198,6 +199,10 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference metadata.ecore#//SAPConnection/IDocs"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//SAPConnection/jcoVersion"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference metadata.ecore#//SAPConnection/additionalProperties"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference metadata.ecore#//SAPConnection/BWDataSources"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference metadata.ecore#//SAPConnection/BWDataStoreObjects"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference metadata.ecore#//SAPConnection/BWInfoCubes"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference metadata.ecore#//SAPConnection/BWInfoObjects"/>
     </genClasses>
     <genClasses ecoreClass="metadata.ecore#//SAPFunctionUnit">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//SAPFunctionUnit/OutputType"/>
@@ -540,6 +545,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//SAPFunctionParameter/changing"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//SAPFunctionParameter/testValue"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference metadata.ecore#//SAPFunctionParameter/children"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//SAPFunctionParameter/tableResideInTables"/>
     </genClasses>
     <genClasses ecoreClass="metadata.ecore#//SAPFunctionParamData">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference metadata.ecore#//SAPFunctionParamData/inputRoot"/>
@@ -548,6 +554,16 @@
     <genClasses ecoreClass="metadata.ecore#//AdditionalConnectionProperty">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//AdditionalConnectionProperty/propertyName"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//AdditionalConnectionProperty/Value"/>
+    </genClasses>
+    <genClasses ecoreClass="metadata.ecore#//SAPBWTable">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//SAPBWTable/modelType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//SAPBWTable/active"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//SAPBWTable/sourceSystemName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//SAPBWTable/infoAreaName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//SAPBWTable/innerIOType"/>
+    </genClasses>
+    <genClasses ecoreClass="metadata.ecore#//SAPBWTableField">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//SAPBWTableField/logicalName"/>
     </genClasses>
     <nestedGenPackages prefix="cwm" basePackage="org.talend" disposableProviderFactory="true"
         ecorePackage="metadata.ecore#//cwm">

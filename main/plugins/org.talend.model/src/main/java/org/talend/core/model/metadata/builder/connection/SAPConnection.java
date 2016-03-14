@@ -26,6 +26,10 @@ import org.eclipse.emf.common.util.EMap;
  *   <li>{@link org.talend.core.model.metadata.builder.connection.SAPConnection#getIDocs <em>IDocs</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.SAPConnection#getJcoVersion <em>Jco Version</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.SAPConnection#getAdditionalProperties <em>Additional Properties</em>}</li>
+ *   <li>{@link org.talend.core.model.metadata.builder.connection.SAPConnection#getBWDataSources <em>BW Data Sources</em>}</li>
+ *   <li>{@link org.talend.core.model.metadata.builder.connection.SAPConnection#getBWDataStoreObjects <em>BW Data Store Objects</em>}</li>
+ *   <li>{@link org.talend.core.model.metadata.builder.connection.SAPConnection#getBWInfoCubes <em>BW Info Cubes</em>}</li>
+ *   <li>{@link org.talend.core.model.metadata.builder.connection.SAPConnection#getBWInfoObjects <em>BW Info Objects</em>}</li>
  * </ul>
  * </p>
  *
@@ -286,5 +290,69 @@ public interface SAPConnection extends Connection {
      * @generated
      */
     EList<AdditionalConnectionProperty> getAdditionalProperties();
+
+    /**
+     * Returns the value of the '<em><b>BW Data Sources</b></em>' containment reference list.
+     * The list contents are of type {@link org.talend.core.model.metadata.builder.connection.SAPBWTable}.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>BW Data Sources</em>' containment reference list isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>BW Data Sources</em>' containment reference list.
+     * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getSAPConnection_BWDataSources()
+     * @model containment="true" resolveProxies="true"
+     * @generated
+     */
+    EList<SAPBWTable> getBWDataSources();
+
+    /**
+     * Returns the value of the '<em><b>BW Data Store Objects</b></em>' containment reference list.
+     * The list contents are of type {@link org.talend.core.model.metadata.builder.connection.SAPBWTable}.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>BW Data Store Objects</em>' containment reference list isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>BW Data Store Objects</em>' containment reference list.
+     * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getSAPConnection_BWDataStoreObjects()
+     * @model containment="true" resolveProxies="true"
+     * @generated
+     */
+    EList<SAPBWTable> getBWDataStoreObjects();
+
+    /**
+     * Returns the value of the '<em><b>BW Info Cubes</b></em>' containment reference list.
+     * The list contents are of type {@link org.talend.core.model.metadata.builder.connection.SAPBWTable}.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>BW Info Cubes</em>' containment reference list isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>BW Info Cubes</em>' containment reference list.
+     * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getSAPConnection_BWInfoCubes()
+     * @model containment="true" resolveProxies="true"
+     * @generated
+     */
+    EList<SAPBWTable> getBWInfoCubes();
+
+    /**
+     * Returns the value of the '<em><b>BW Info Objects</b></em>' containment reference list.
+     * The list contents are of type {@link org.talend.core.model.metadata.builder.connection.SAPBWTable}.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>BW Info Objects</em>' containment reference list isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>BW Info Objects</em>' containment reference list.
+     * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getSAPConnection_BWInfoObjects()
+     * @model containment="true" resolveProxies="true"
+     * @generated
+     */
+    EList<SAPBWTable> getBWInfoObjects();
 
 } // SAPConnection

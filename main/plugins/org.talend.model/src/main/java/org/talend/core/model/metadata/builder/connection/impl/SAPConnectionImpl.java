@@ -28,6 +28,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.talend.core.model.metadata.builder.connection.AdditionalConnectionProperty;
 import org.talend.core.model.metadata.builder.connection.ConnectionPackage;
+import org.talend.core.model.metadata.builder.connection.SAPBWTable;
 import org.talend.core.model.metadata.builder.connection.SAPConnection;
 import org.talend.core.model.metadata.builder.connection.SAPFunctionUnit;
 import org.talend.core.model.metadata.builder.connection.SAPIDocUnit;
@@ -50,6 +51,10 @@ import org.talend.core.model.metadata.builder.connection.SAPIDocUnit;
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.SAPConnectionImpl#getIDocs <em>IDocs</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.SAPConnectionImpl#getJcoVersion <em>Jco Version</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.SAPConnectionImpl#getAdditionalProperties <em>Additional Properties</em>}</li>
+ *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.SAPConnectionImpl#getBWDataSources <em>BW Data Sources</em>}</li>
+ *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.SAPConnectionImpl#getBWDataStoreObjects <em>BW Data Store Objects</em>}</li>
+ *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.SAPConnectionImpl#getBWInfoCubes <em>BW Info Cubes</em>}</li>
+ *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.SAPConnectionImpl#getBWInfoObjects <em>BW Info Objects</em>}</li>
  * </ul>
  * </p>
  *
@@ -246,6 +251,46 @@ public class SAPConnectionImpl extends ConnectionImpl implements SAPConnection {
      * @ordered
      */
     protected EList<AdditionalConnectionProperty> additionalProperties;
+
+    /**
+     * The cached value of the '{@link #getBWDataSources() <em>BW Data Sources</em>}' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getBWDataSources()
+     * @generated
+     * @ordered
+     */
+    protected EList<SAPBWTable> bwDataSources;
+
+    /**
+     * The cached value of the '{@link #getBWDataStoreObjects() <em>BW Data Store Objects</em>}' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getBWDataStoreObjects()
+     * @generated
+     * @ordered
+     */
+    protected EList<SAPBWTable> bwDataStoreObjects;
+
+    /**
+     * The cached value of the '{@link #getBWInfoCubes() <em>BW Info Cubes</em>}' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getBWInfoCubes()
+     * @generated
+     * @ordered
+     */
+    protected EList<SAPBWTable> bwInfoCubes;
+
+    /**
+     * The cached value of the '{@link #getBWInfoObjects() <em>BW Info Objects</em>}' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getBWInfoObjects()
+     * @generated
+     * @ordered
+     */
+    protected EList<SAPBWTable> bwInfoObjects;
 
     /**
      * <!-- begin-user-doc -->
@@ -485,6 +530,58 @@ public class SAPConnectionImpl extends ConnectionImpl implements SAPConnection {
      * <!-- end-user-doc -->
      * @generated
      */
+    public EList<SAPBWTable> getBWDataSources() {
+        if (bwDataSources == null) {
+            bwDataSources = new EObjectContainmentEList.Resolving<SAPBWTable>(SAPBWTable.class, this,
+                    ConnectionPackage.SAP_CONNECTION__BW_DATA_SOURCES);
+        }
+        return bwDataSources;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EList<SAPBWTable> getBWDataStoreObjects() {
+        if (bwDataStoreObjects == null) {
+            bwDataStoreObjects = new EObjectContainmentEList.Resolving<SAPBWTable>(SAPBWTable.class, this,
+                    ConnectionPackage.SAP_CONNECTION__BW_DATA_STORE_OBJECTS);
+        }
+        return bwDataStoreObjects;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EList<SAPBWTable> getBWInfoCubes() {
+        if (bwInfoCubes == null) {
+            bwInfoCubes = new EObjectContainmentEList.Resolving<SAPBWTable>(SAPBWTable.class, this,
+                    ConnectionPackage.SAP_CONNECTION__BW_INFO_CUBES);
+        }
+        return bwInfoCubes;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EList<SAPBWTable> getBWInfoObjects() {
+        if (bwInfoObjects == null) {
+            bwInfoObjects = new EObjectContainmentEList.Resolving<SAPBWTable>(SAPBWTable.class, this,
+                    ConnectionPackage.SAP_CONNECTION__BW_INFO_OBJECTS);
+        }
+        return bwInfoObjects;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     @SuppressWarnings("unchecked")
     @Override
     public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
@@ -509,6 +606,14 @@ public class SAPConnectionImpl extends ConnectionImpl implements SAPConnection {
             return ((InternalEList<?>) getIDocs()).basicRemove(otherEnd, msgs);
         case ConnectionPackage.SAP_CONNECTION__ADDITIONAL_PROPERTIES:
             return ((InternalEList<?>) getAdditionalProperties()).basicRemove(otherEnd, msgs);
+        case ConnectionPackage.SAP_CONNECTION__BW_DATA_SOURCES:
+            return ((InternalEList<?>) getBWDataSources()).basicRemove(otherEnd, msgs);
+        case ConnectionPackage.SAP_CONNECTION__BW_DATA_STORE_OBJECTS:
+            return ((InternalEList<?>) getBWDataStoreObjects()).basicRemove(otherEnd, msgs);
+        case ConnectionPackage.SAP_CONNECTION__BW_INFO_CUBES:
+            return ((InternalEList<?>) getBWInfoCubes()).basicRemove(otherEnd, msgs);
+        case ConnectionPackage.SAP_CONNECTION__BW_INFO_OBJECTS:
+            return ((InternalEList<?>) getBWInfoObjects()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -543,6 +648,14 @@ public class SAPConnectionImpl extends ConnectionImpl implements SAPConnection {
             return getJcoVersion();
         case ConnectionPackage.SAP_CONNECTION__ADDITIONAL_PROPERTIES:
             return getAdditionalProperties();
+        case ConnectionPackage.SAP_CONNECTION__BW_DATA_SOURCES:
+            return getBWDataSources();
+        case ConnectionPackage.SAP_CONNECTION__BW_DATA_STORE_OBJECTS:
+            return getBWDataStoreObjects();
+        case ConnectionPackage.SAP_CONNECTION__BW_INFO_CUBES:
+            return getBWInfoCubes();
+        case ConnectionPackage.SAP_CONNECTION__BW_INFO_OBJECTS:
+            return getBWInfoObjects();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -592,6 +705,22 @@ public class SAPConnectionImpl extends ConnectionImpl implements SAPConnection {
             getAdditionalProperties().clear();
             getAdditionalProperties().addAll((Collection<? extends AdditionalConnectionProperty>) newValue);
             return;
+        case ConnectionPackage.SAP_CONNECTION__BW_DATA_SOURCES:
+            getBWDataSources().clear();
+            getBWDataSources().addAll((Collection<? extends SAPBWTable>) newValue);
+            return;
+        case ConnectionPackage.SAP_CONNECTION__BW_DATA_STORE_OBJECTS:
+            getBWDataStoreObjects().clear();
+            getBWDataStoreObjects().addAll((Collection<? extends SAPBWTable>) newValue);
+            return;
+        case ConnectionPackage.SAP_CONNECTION__BW_INFO_CUBES:
+            getBWInfoCubes().clear();
+            getBWInfoCubes().addAll((Collection<? extends SAPBWTable>) newValue);
+            return;
+        case ConnectionPackage.SAP_CONNECTION__BW_INFO_OBJECTS:
+            getBWInfoObjects().clear();
+            getBWInfoObjects().addAll((Collection<? extends SAPBWTable>) newValue);
+            return;
         }
         super.eSet(featureID, newValue);
     }
@@ -637,6 +766,18 @@ public class SAPConnectionImpl extends ConnectionImpl implements SAPConnection {
         case ConnectionPackage.SAP_CONNECTION__ADDITIONAL_PROPERTIES:
             getAdditionalProperties().clear();
             return;
+        case ConnectionPackage.SAP_CONNECTION__BW_DATA_SOURCES:
+            getBWDataSources().clear();
+            return;
+        case ConnectionPackage.SAP_CONNECTION__BW_DATA_STORE_OBJECTS:
+            getBWDataStoreObjects().clear();
+            return;
+        case ConnectionPackage.SAP_CONNECTION__BW_INFO_CUBES:
+            getBWInfoCubes().clear();
+            return;
+        case ConnectionPackage.SAP_CONNECTION__BW_INFO_OBJECTS:
+            getBWInfoObjects().clear();
+            return;
         }
         super.eUnset(featureID);
     }
@@ -672,6 +813,14 @@ public class SAPConnectionImpl extends ConnectionImpl implements SAPConnection {
             return JCO_VERSION_EDEFAULT == null ? jcoVersion != null : !JCO_VERSION_EDEFAULT.equals(jcoVersion);
         case ConnectionPackage.SAP_CONNECTION__ADDITIONAL_PROPERTIES:
             return additionalProperties != null && !additionalProperties.isEmpty();
+        case ConnectionPackage.SAP_CONNECTION__BW_DATA_SOURCES:
+            return bwDataSources != null && !bwDataSources.isEmpty();
+        case ConnectionPackage.SAP_CONNECTION__BW_DATA_STORE_OBJECTS:
+            return bwDataStoreObjects != null && !bwDataStoreObjects.isEmpty();
+        case ConnectionPackage.SAP_CONNECTION__BW_INFO_CUBES:
+            return bwInfoCubes != null && !bwInfoCubes.isEmpty();
+        case ConnectionPackage.SAP_CONNECTION__BW_INFO_OBJECTS:
+            return bwInfoObjects != null && !bwInfoObjects.isEmpty();
         }
         return super.eIsSet(featureID);
     }

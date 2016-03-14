@@ -575,6 +575,7 @@ public class DatabaseConnectionImpl extends ConnectionImpl implements DatabaseCo
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
      */
+    @Override
     protected EClass eStaticClass() {
         return ConnectionPackage.Literals.DATABASE_CONNECTION;
     }
@@ -719,7 +720,6 @@ public class DatabaseConnectionImpl extends ConnectionImpl implements DatabaseCo
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
      * @generated
      */
     public String getPassword() {
@@ -1177,6 +1177,7 @@ public class DatabaseConnectionImpl extends ConnectionImpl implements DatabaseCo
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
         case ConnectionPackage.DATABASE_CONNECTION__CDC_CONNS:
@@ -1192,6 +1193,7 @@ public class DatabaseConnectionImpl extends ConnectionImpl implements DatabaseCo
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
         case ConnectionPackage.DATABASE_CONNECTION__CDC_CONNS:
@@ -1271,23 +1273,77 @@ public class DatabaseConnectionImpl extends ConnectionImpl implements DatabaseCo
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
      * @generated
      */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
+        case ConnectionPackage.DATABASE_CONNECTION__DATABASE_TYPE:
+            return getDatabaseType();
+        case ConnectionPackage.DATABASE_CONNECTION__DRIVER_JAR_PATH:
+            return getDriverJarPath();
+        case ConnectionPackage.DATABASE_CONNECTION__DRIVER_CLASS:
+            return getDriverClass();
+        case ConnectionPackage.DATABASE_CONNECTION__URL:
+            return getURL();
+        case ConnectionPackage.DATABASE_CONNECTION__DB_VERSION_STRING:
+            return getDbVersionString();
+        case ConnectionPackage.DATABASE_CONNECTION__PORT:
+            return getPort();
+        case ConnectionPackage.DATABASE_CONNECTION__USERNAME:
+            return getUsername();
         case ConnectionPackage.DATABASE_CONNECTION__PASSWORD:
             return getPassword();
+        case ConnectionPackage.DATABASE_CONNECTION__SERVER_NAME:
+            return getServerName();
+        case ConnectionPackage.DATABASE_CONNECTION__DATASOURCE_NAME:
+            return getDatasourceName();
+        case ConnectionPackage.DATABASE_CONNECTION__FILE_FIELD_NAME:
+            return getFileFieldName();
+        case ConnectionPackage.DATABASE_CONNECTION__SID:
+            return getSID();
+        case ConnectionPackage.DATABASE_CONNECTION__SQL_SYNTHAX:
+            return getSqlSynthax();
+        case ConnectionPackage.DATABASE_CONNECTION__STRING_QUOTE:
+            return getStringQuote();
+        case ConnectionPackage.DATABASE_CONNECTION__NULL_CHAR:
+            return getNullChar();
+        case ConnectionPackage.DATABASE_CONNECTION__DBMS_ID:
+            return getDbmsId();
+        case ConnectionPackage.DATABASE_CONNECTION__PRODUCT_ID:
+            return getProductId();
+        case ConnectionPackage.DATABASE_CONNECTION__DB_ROOT_PATH:
+            return getDBRootPath();
+        case ConnectionPackage.DATABASE_CONNECTION__ADDITIONAL_PARAMS:
+            return getAdditionalParams();
+        case ConnectionPackage.DATABASE_CONNECTION__STANDARD_SQL:
+            return isStandardSQL();
+        case ConnectionPackage.DATABASE_CONNECTION__SYSTEM_SQL:
+            return isSystemSQL();
         case ConnectionPackage.DATABASE_CONNECTION__CDC_CONNS:
-            return getCdcConns();
+            if (resolve)
+                return getCdcConns();
+            return basicGetCdcConns();
+        case ConnectionPackage.DATABASE_CONNECTION__CDC_TYPE_MODE:
+            return getCdcTypeMode();
+        case ConnectionPackage.DATABASE_CONNECTION__SQL_MODE:
+            return isSQLMode();
+        case ConnectionPackage.DATABASE_CONNECTION__UI_SCHEMA:
+            return getUiSchema();
+        case ConnectionPackage.DATABASE_CONNECTION__PARAMETERS:
+            if (coreType)
+                return getParameters();
+            else
+                return getParameters().map();
         }
-        return eGetGen(featureID, resolve, coreType);
+        return super.eGet(featureID, resolve, coreType);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
         case ConnectionPackage.DATABASE_CONNECTION__DATABASE_TYPE:
@@ -1376,6 +1432,7 @@ public class DatabaseConnectionImpl extends ConnectionImpl implements DatabaseCo
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eUnset(int featureID) {
         switch (featureID) {
         case ConnectionPackage.DATABASE_CONNECTION__DATABASE_TYPE:
@@ -1464,6 +1521,7 @@ public class DatabaseConnectionImpl extends ConnectionImpl implements DatabaseCo
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
         case ConnectionPackage.DATABASE_CONNECTION__DATABASE_TYPE:
@@ -1528,6 +1586,7 @@ public class DatabaseConnectionImpl extends ConnectionImpl implements DatabaseCo
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String toString() {
         if (eIsProxy())
             return super.toString();

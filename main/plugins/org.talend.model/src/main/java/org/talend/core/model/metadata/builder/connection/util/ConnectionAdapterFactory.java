@@ -403,6 +403,16 @@ public class ConnectionAdapterFactory extends AdapterFactoryImpl {
         }
 
         @Override
+        public Adapter caseSAPBWTable(SAPBWTable object) {
+            return createSAPBWTableAdapter();
+        }
+
+        @Override
+        public Adapter caseSAPBWTableField(SAPBWTableField object) {
+            return createSAPBWTableFieldAdapter();
+        }
+
+        @Override
         public Adapter caseElement(Element object) {
             return createElementAdapter();
         }
@@ -1216,6 +1226,34 @@ public class ConnectionAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createAdditionalConnectionPropertyAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.metadata.builder.connection.SAPBWTable <em>SAPBW Table</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see org.talend.core.model.metadata.builder.connection.SAPBWTable
+     * @generated
+     */
+    public Adapter createSAPBWTableAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.metadata.builder.connection.SAPBWTableField <em>SAPBW Table Field</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see org.talend.core.model.metadata.builder.connection.SAPBWTableField
+     * @generated
+     */
+    public Adapter createSAPBWTableFieldAdapter() {
         return null;
     }
 

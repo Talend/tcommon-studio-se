@@ -426,6 +426,24 @@ public interface ConnectionFactory extends EFactory {
     AdditionalConnectionProperty createAdditionalConnectionProperty();
 
     /**
+     * Returns a new object of class '<em>SAPBW Table</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>SAPBW Table</em>'.
+     * @generated
+     */
+    SAPBWTable createSAPBWTable();
+
+    /**
+     * Returns a new object of class '<em>SAPBW Table Field</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>SAPBW Table Field</em>'.
+     * @generated
+     */
+    SAPBWTableField createSAPBWTableField();
+
+    /**
      * Returns a new object of class '<em>SAP Table</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

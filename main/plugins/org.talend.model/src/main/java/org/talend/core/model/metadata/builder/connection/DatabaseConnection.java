@@ -77,10 +77,8 @@ public interface DatabaseConnection extends Connection {
     String getDatabaseType();
 
     /**
-     * Sets the value of the '
-     * {@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getDatabaseType
-     * <em>Database Type</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getDatabaseType <em>Database Type</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @param value the new value of the '<em>Database Type</em>' attribute.
      * @see #getDatabaseType()
      * @generated
@@ -105,10 +103,8 @@ public interface DatabaseConnection extends Connection {
     String getDriverJarPath();
 
     /**
-     * Sets the value of the '
-     * {@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getDriverJarPath
-     * <em>Driver Jar Path</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getDriverJarPath <em>Driver Jar Path</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @param value the new value of the '<em>Driver Jar Path</em>' attribute.
      * @see #getDriverJarPath()
      * @generated
@@ -132,10 +128,8 @@ public interface DatabaseConnection extends Connection {
     String getDriverClass();
 
     /**
-     * Sets the value of the '
-     * {@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getDriverClass <em>Driver Class</em>}
-     * ' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getDriverClass <em>Driver Class</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @param value the new value of the '<em>Driver Class</em>' attribute.
      * @see #getDriverClass()
      * @generated
@@ -159,9 +153,8 @@ public interface DatabaseConnection extends Connection {
     String getURL();
 
     /**
-     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getURL
-     * <em>URL</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getURL <em>URL</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @param value the new value of the '<em>URL</em>' attribute.
      * @see #getURL()
      * @generated
@@ -186,10 +179,8 @@ public interface DatabaseConnection extends Connection {
     String getDbVersionString();
 
     /**
-     * Sets the value of the '
-     * {@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getDbVersionString
-     * <em>Db Version String</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getDbVersionString <em>Db Version String</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @param value the new value of the '<em>Db Version String</em>' attribute.
      * @see #getDbVersionString()
      * @generated
@@ -212,9 +203,8 @@ public interface DatabaseConnection extends Connection {
     String getPort();
 
     /**
-     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getPort
-     * <em>Port</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getPort <em>Port</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @param value the new value of the '<em>Port</em>' attribute.
      * @see #getPort()
      * @generated
@@ -239,9 +229,8 @@ public interface DatabaseConnection extends Connection {
     String getUsername();
 
     /**
-     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getUsername
-     * <em>Username</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getUsername <em>Username</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @param value the new value of the '<em>Username</em>' attribute.
      * @see #getUsername()
      * @generated
@@ -277,9 +266,8 @@ public interface DatabaseConnection extends Connection {
     String getRawPassword();
 
     /**
-     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getPassword
-     * <em>Password</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getPassword <em>Password</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @param value the new value of the '<em>Password</em>' attribute.
      * @see #getPassword()
      * @generated
@@ -311,9 +299,8 @@ public interface DatabaseConnection extends Connection {
     String getServerName();
 
     /**
-     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getServerName
-     * <em>Server Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getServerName <em>Server Name</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @param value the new value of the '<em>Server Name</em>' attribute.
      * @see #getServerName()
      * @generated
@@ -321,13 +308,13 @@ public interface DatabaseConnection extends Connection {
     void setServerName(String value);
 
     /**
-     * Returns the value of the '<em><b>Datasource Name</b></em>' attribute. <!-- begin-user-doc -->
+     * Returns the value of the '<em><b>Datasource Name</b></em>' attribute.
+     * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Datasource Name</em>' attribute isn't clear, there really should be more of a
      * description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
      * @return the value of the '<em>Datasource Name</em>' attribute.
      * @see #setDatasourceName(String)
      * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getDatabaseConnection_DatasourceName()
@@ -337,10 +324,8 @@ public interface DatabaseConnection extends Connection {
     String getDatasourceName();
 
     /**
-     * Sets the value of the '
-     * {@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getDatasourceName
-     * <em>Datasource Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getDatasourceName <em>Datasource Name</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @param value the new value of the '<em>Datasource Name</em>' attribute.
      * @see #getDatasourceName()
      * @generated
@@ -364,10 +349,8 @@ public interface DatabaseConnection extends Connection {
     String getFileFieldName();
 
     /**
-     * Sets the value of the '
-     * {@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getFileFieldName
-     * <em>File Field Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getFileFieldName <em>File Field Name</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @param value the new value of the '<em>File Field Name</em>' attribute.
      * @see #getFileFieldName()
      * @generated
@@ -390,9 +373,8 @@ public interface DatabaseConnection extends Connection {
     String getSID();
 
     /**
-     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getSID
-     * <em>SID</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getSID <em>SID</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @param value the new value of the '<em>SID</em>' attribute.
      * @see #getSID()
      * @generated
@@ -400,13 +382,13 @@ public interface DatabaseConnection extends Connection {
     void setSID(String value);
 
     /**
-     * Returns the value of the '<em><b>Sql Synthax</b></em>' attribute. <!-- begin-user-doc -->
+     * Returns the value of the '<em><b>Sql Synthax</b></em>' attribute.
+     * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Sql Synthax</em>' attribute isn't clear, there really should be more of a description
      * here...
      * </p>
      * <!-- end-user-doc -->
-     * 
      * @return the value of the '<em>Sql Synthax</em>' attribute.
      * @see #setSqlSynthax(String)
      * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getDatabaseConnection_SqlSynthax()
@@ -416,9 +398,8 @@ public interface DatabaseConnection extends Connection {
     String getSqlSynthax();
 
     /**
-     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getSqlSynthax
-     * <em>Sql Synthax</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getSqlSynthax <em>Sql Synthax</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @param value the new value of the '<em>Sql Synthax</em>' attribute.
      * @see #getSqlSynthax()
      * @generated
@@ -443,10 +424,8 @@ public interface DatabaseConnection extends Connection {
     String getStringQuote();
 
     /**
-     * Sets the value of the '
-     * {@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getStringQuote <em>String Quote</em>}
-     * ' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getStringQuote <em>String Quote</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @param value the new value of the '<em>String Quote</em>' attribute.
      * @see #getStringQuote()
      * @generated
@@ -471,9 +450,8 @@ public interface DatabaseConnection extends Connection {
     String getNullChar();
 
     /**
-     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getNullChar
-     * <em>Null Char</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getNullChar <em>Null Char</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @param value the new value of the '<em>Null Char</em>' attribute.
      * @see #getNullChar()
      * @generated
@@ -481,13 +459,13 @@ public interface DatabaseConnection extends Connection {
     void setNullChar(String value);
 
     /**
-     * Returns the value of the '<em><b>Dbms Id</b></em>' attribute. <!-- begin-user-doc -->
+     * Returns the value of the '<em><b>Dbms Id</b></em>' attribute.
+     * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Dbms Id</em>' attribute isn't clear, there really should be more of a description
      * here...
      * </p>
      * <!-- end-user-doc -->
-     * 
      * @return the value of the '<em>Dbms Id</em>' attribute.
      * @see #setDbmsId(String)
      * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getDatabaseConnection_DbmsId()
@@ -497,9 +475,8 @@ public interface DatabaseConnection extends Connection {
     String getDbmsId();
 
     /**
-     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getDbmsId
-     * <em>Dbms Id</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getDbmsId <em>Dbms Id</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @param value the new value of the '<em>Dbms Id</em>' attribute.
      * @see #getDbmsId()
      * @generated
@@ -507,13 +484,13 @@ public interface DatabaseConnection extends Connection {
     void setDbmsId(String value);
 
     /**
-     * Returns the value of the '<em><b>Product Id</b></em>' attribute. <!-- begin-user-doc -->
+     * Returns the value of the '<em><b>Product Id</b></em>' attribute.
+     * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Product Id</em>' attribute isn't clear, there really should be more of a description
      * here...
      * </p>
      * <!-- end-user-doc -->
-     * 
      * @return the value of the '<em>Product Id</em>' attribute.
      * @see #setProductId(String)
      * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getDatabaseConnection_ProductId()
@@ -523,9 +500,8 @@ public interface DatabaseConnection extends Connection {
     String getProductId();
 
     /**
-     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getProductId
-     * <em>Product Id</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getProductId <em>Product Id</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @param value the new value of the '<em>Product Id</em>' attribute.
      * @see #getProductId()
      * @generated
@@ -533,13 +509,13 @@ public interface DatabaseConnection extends Connection {
     void setProductId(String value);
 
     /**
-     * Returns the value of the '<em><b>DB Root Path</b></em>' attribute. <!-- begin-user-doc -->
+     * Returns the value of the '<em><b>DB Root Path</b></em>' attribute.
+     * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>DB Root Path</em>' attribute isn't clear, there really should be more of a description
      * here...
      * </p>
      * <!-- end-user-doc -->
-     * 
      * @return the value of the '<em>DB Root Path</em>' attribute.
      * @see #setDBRootPath(String)
      * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getDatabaseConnection_DBRootPath()
@@ -549,9 +525,8 @@ public interface DatabaseConnection extends Connection {
     String getDBRootPath();
 
     /**
-     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getDBRootPath
-     * <em>DB Root Path</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getDBRootPath <em>DB Root Path</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @param value the new value of the '<em>DB Root Path</em>' attribute.
      * @see #getDBRootPath()
      * @generated
@@ -576,10 +551,8 @@ public interface DatabaseConnection extends Connection {
     String getAdditionalParams();
 
     /**
-     * Sets the value of the '
-     * {@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getAdditionalParams
-     * <em>Additional Params</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getAdditionalParams <em>Additional Params</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @param value the new value of the '<em>Additional Params</em>' attribute.
      * @see #getAdditionalParams()
      * @generated
@@ -587,13 +560,13 @@ public interface DatabaseConnection extends Connection {
     void setAdditionalParams(String value);
 
     /**
-     * Returns the value of the '<em><b>Standard SQL</b></em>' attribute. <!-- begin-user-doc -->
+     * Returns the value of the '<em><b>Standard SQL</b></em>' attribute.
+     * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Standard SQL</em>' attribute isn't clear, there really should be more of a description
      * here...
      * </p>
      * <!-- end-user-doc -->
-     * 
      * @return the value of the '<em>Standard SQL</em>' attribute.
      * @see #setStandardSQL(boolean)
      * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getDatabaseConnection_StandardSQL()
@@ -603,9 +576,8 @@ public interface DatabaseConnection extends Connection {
     boolean isStandardSQL();
 
     /**
-     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#isStandardSQL
-     * <em>Standard SQL</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#isStandardSQL <em>Standard SQL</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @param value the new value of the '<em>Standard SQL</em>' attribute.
      * @see #isStandardSQL()
      * @generated
@@ -613,13 +585,13 @@ public interface DatabaseConnection extends Connection {
     void setStandardSQL(boolean value);
 
     /**
-     * Returns the value of the '<em><b>System SQL</b></em>' attribute. <!-- begin-user-doc -->
+     * Returns the value of the '<em><b>System SQL</b></em>' attribute.
+     * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>System SQL</em>' attribute isn't clear, there really should be more of a description
      * here...
      * </p>
      * <!-- end-user-doc -->
-     * 
      * @return the value of the '<em>System SQL</em>' attribute.
      * @see #setSystemSQL(boolean)
      * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getDatabaseConnection_SystemSQL()
@@ -629,9 +601,8 @@ public interface DatabaseConnection extends Connection {
     boolean isSystemSQL();
 
     /**
-     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#isSystemSQL
-     * <em>System SQL</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#isSystemSQL <em>System SQL</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @param value the new value of the '<em>System SQL</em>' attribute.
      * @see #isSystemSQL()
      * @generated
@@ -659,9 +630,8 @@ public interface DatabaseConnection extends Connection {
     CDCConnection getCdcConns();
 
     /**
-     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getCdcConns
-     * <em>Cdc Conns</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getCdcConns <em>Cdc Conns</em>}' containment reference.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @param value the new value of the '<em>Cdc Conns</em>' containment reference.
      * @see #getCdcConns()
      * @generated
@@ -669,13 +639,13 @@ public interface DatabaseConnection extends Connection {
     void setCdcConns(CDCConnection value);
 
     /**
-     * Returns the value of the '<em><b>Cdc Type Mode</b></em>' attribute. <!-- begin-user-doc -->
+     * Returns the value of the '<em><b>Cdc Type Mode</b></em>' attribute.
+     * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Cdc Type Mode</em>' attribute isn't clear, there really should be more of a
      * description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
      * @return the value of the '<em>Cdc Type Mode</em>' attribute.
      * @see #setCdcTypeMode(String)
      * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getDatabaseConnection_CdcTypeMode()
@@ -685,10 +655,8 @@ public interface DatabaseConnection extends Connection {
     String getCdcTypeMode();
 
     /**
-     * Sets the value of the '
-     * {@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getCdcTypeMode
-     * <em>Cdc Type Mode</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getCdcTypeMode <em>Cdc Type Mode</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @param value the new value of the '<em>Cdc Type Mode</em>' attribute.
      * @see #getCdcTypeMode()
      * @generated
@@ -715,9 +683,8 @@ public interface DatabaseConnection extends Connection {
     boolean isSQLMode();
 
     /**
-     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#isSQLMode
-     * <em>SQL Mode</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#isSQLMode <em>SQL Mode</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @param value the new value of the '<em>SQL Mode</em>' attribute.
      * @see #isSetSQLMode()
      * @see #unsetSQLMode()
@@ -727,9 +694,8 @@ public interface DatabaseConnection extends Connection {
     void setSQLMode(boolean value);
 
     /**
-     * Unsets the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#isSQLMode
-     * <em>SQL Mode</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     * Unsets the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#isSQLMode <em>SQL Mode</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @see #isSetSQLMode()
      * @see #isSQLMode()
      * @see #setSQLMode(boolean)
@@ -738,10 +704,8 @@ public interface DatabaseConnection extends Connection {
     void unsetSQLMode();
 
     /**
-     * Returns whether the value of the '
-     * {@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#isSQLMode <em>SQL Mode</em>}'
-     * attribute is set. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     * Returns whether the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#isSQLMode <em>SQL Mode</em>}' attribute is set.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @return whether the value of the '<em>SQL Mode</em>' attribute is set.
      * @see #unsetSQLMode()
      * @see #isSQLMode()
@@ -751,13 +715,13 @@ public interface DatabaseConnection extends Connection {
     boolean isSetSQLMode();
 
     /**
-     * Returns the value of the '<em><b>Ui Schema</b></em>' attribute. <!-- begin-user-doc -->
+     * Returns the value of the '<em><b>Ui Schema</b></em>' attribute.
+     * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Ui Schema</em>' attribute isn't clear, there really should be more of a description
      * here...
      * </p>
      * <!-- end-user-doc -->
-     * 
      * @return the value of the '<em>Ui Schema</em>' attribute.
      * @see #setUiSchema(String)
      * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getDatabaseConnection_UiSchema()
@@ -767,9 +731,8 @@ public interface DatabaseConnection extends Connection {
     String getUiSchema();
 
     /**
-     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getUiSchema
-     * <em>Ui Schema</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getUiSchema <em>Ui Schema</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @param value the new value of the '<em>Ui Schema</em>' attribute.
      * @see #getUiSchema()
      * @generated
@@ -777,17 +740,17 @@ public interface DatabaseConnection extends Connection {
     void setUiSchema(String value);
 
     /**
-     * Returns the value of the '<em><b>Parameters</b></em>' map. The key is of type {@link java.lang.String}, and the
-     * value is of type {@link java.lang.String}, <!-- begin-user-doc -->
+     * Returns the value of the '<em><b>Parameters</b></em>' map.
+     * The key is of type {@link java.lang.String},
+     * and the value is of type {@link java.lang.String},
+     * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Parameters</em>' map isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
      * @return the value of the '<em>Parameters</em>' map.
      * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getDatabaseConnection_Parameters()
-     * @model mapType=
-     * "org.talend.core.model.metadata.builder.connection.AdditionalProperties<org.eclipse.emf.ecore.EString, org.eclipse.emf.ecore.EString>"
+     * @model mapType="org.talend.core.model.metadata.builder.connection.AdditionalProperties<org.eclipse.emf.ecore.EString, org.eclipse.emf.ecore.EString>"
      * @generated
      */
     EMap<String, String> getParameters();

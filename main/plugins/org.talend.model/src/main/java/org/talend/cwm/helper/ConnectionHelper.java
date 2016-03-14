@@ -953,6 +953,18 @@ public class ConnectionHelper {
             }
             return result;
         }
+        
+        if (connection instanceof SAPConnection) {
+            EList<Package> packages = connection.getDataPackage();
+            for (Package pack : new ArrayList<Package>(packages)) {
+                PackageHelper.getAllTables(pack, result);
+            }
+            result.addAll(((SAPConnection)connection).getBWDataSources());
+            result.addAll(((SAPConnection)connection).getBWDataStoreObjects());
+            result.addAll(((SAPConnection)connection).getBWInfoCubes());
+            result.addAll(((SAPConnection)connection).getBWInfoObjects());
+            return result;
+        }
         // else if (connection instanceof SAPConnection) {
         // SAPConnection sapConnection = (SAPConnection) connection;
         // final EList<SAPFunctionUnit> funtions = sapConnection.getFuntions();

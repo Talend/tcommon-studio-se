@@ -29,6 +29,7 @@ import org.talend.core.model.metadata.builder.connection.EbcdicConnection;
 import org.talend.core.model.metadata.builder.connection.HL7Connection;
 import org.talend.core.model.metadata.builder.connection.MDMConnection;
 import org.talend.core.model.metadata.builder.connection.impl.MetadataTableImpl;
+import org.talend.core.model.metadata.builder.connection.impl.SAPBWTableImpl;
 import org.talend.core.model.metadata.builder.connection.impl.SAPTableImpl;
 import org.talend.core.model.properties.DatabaseConnectionItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
@@ -235,6 +236,24 @@ public class RepoDoubleClickAction extends Action {
         return false;
     }
 
+    private boolean isSAPBWTable(RepositoryNode theNode) {
+        ERepositoryObjectType nodeType = (ERepositoryObjectType) theNode.getProperties(EProperties.CONTENT_TYPE);
+        if (nodeType == ERepositoryObjectType.METADATA_CON_TABLE) {
+            RepositoryNode node = theNode.getParent();
+            nodeType = (ERepositoryObjectType) node.getProperties(EProperties.CONTENT_TYPE);
+        } else if (nodeType == ERepositoryObjectType.METADATA_CON_COLUMN) {
+            RepositoryNode node = theNode.getParent().getParent().getParent();
+            nodeType = (ERepositoryObjectType) node.getProperties(EProperties.CONTENT_TYPE);
+        }
+        if (nodeType == ERepositoryObjectType.METADATA_SAP_BW_DATASOURCE
+                || nodeType == ERepositoryObjectType.METADATA_SAP_BW_DATASTOREOBJECT
+                || nodeType == ERepositoryObjectType.METADATA_SAP_BW_INFOCUBE
+                || nodeType == ERepositoryObjectType.METADATA_SAP_BW_INFOOBJECT) {
+            return true;
+        }
+        return false;
+    }
+
     private boolean isHL7Table(RepositoryNode theNode) {
         ERepositoryObjectType nodeType = (ERepositoryObjectType) theNode.getProperties(EProperties.CONTENT_TYPE);
         if (nodeType == ERepositoryObjectType.METADATA_CON_TABLE) {
@@ -312,6 +331,9 @@ public class RepoDoubleClickAction extends Action {
                 }
 
                 if (isSAPTable(obj) && current.getClassForDoubleClick().equals(SAPTableImpl.class)) {
+                    return current;
+                }
+                if (isSAPBWTable(obj) && current.getClassForDoubleClick().equals(SAPBWTableImpl.class)) {
                     return current;
                 }
 

@@ -217,6 +217,10 @@ public class ConnectionFactoryImpl extends EFactoryImpl implements ConnectionFac
             return createSAPFunctionParamData();
         case ConnectionPackage.ADDITIONAL_CONNECTION_PROPERTY:
             return createAdditionalConnectionProperty();
+        case ConnectionPackage.SAPBW_TABLE:
+            return createSAPBWTable();
+        case ConnectionPackage.SAPBW_TABLE_FIELD:
+            return createSAPBWTableField();
         default:
             throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -757,6 +761,26 @@ public class ConnectionFactoryImpl extends EFactoryImpl implements ConnectionFac
     public AdditionalConnectionProperty createAdditionalConnectionProperty() {
         AdditionalConnectionPropertyImpl additionalConnectionProperty = new AdditionalConnectionPropertyImpl();
         return additionalConnectionProperty;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public SAPBWTable createSAPBWTable() {
+        SAPBWTableImpl sapbwTable = new SAPBWTableImpl();
+        return sapbwTable;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public SAPBWTableField createSAPBWTableField() {
+        SAPBWTableFieldImpl sapbwTableField = new SAPBWTableFieldImpl();
+        return sapbwTableField;
     }
 
     /**

@@ -27,6 +27,8 @@ import org.talend.core.model.metadata.builder.connection.AbstractMetadataObject;
 import org.talend.core.model.metadata.builder.connection.Concept;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.builder.connection.MDMConnection;
+import org.talend.core.model.metadata.builder.connection.SAPBWTable;
+import org.talend.core.model.metadata.builder.connection.SAPConnection;
 import org.talend.core.model.metadata.builder.connection.SAPFunctionUnit;
 import org.talend.core.model.metadata.builder.connection.SalesforceModuleUnit;
 import org.talend.core.model.properties.ConnectionItem;
@@ -38,6 +40,7 @@ import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.repository.ISubRepositoryObject;
 import org.talend.core.runtime.services.IGenericWizardService;
 import org.talend.cwm.helper.ConnectionHelper;
+import org.talend.cwm.helper.SAPBWTableHelper;
 import org.talend.cwm.helper.SubItemHelper;
 import org.talend.cwm.helper.SwitchHelpers;
 import org.talend.cwm.relational.TdTable;
@@ -121,6 +124,12 @@ public class MetadataTableRepositoryObject extends MetadataTable implements ISub
             moduleUnit.getTables().remove(table);
             return;
         }
+        
+        if (table.eContainer() instanceof SAPConnection && table instanceof SAPBWTable) {
+            SAPBWTableHelper.removeBWTable((Connection) table.eContainer(), ((SAPBWTable) table).getModelType(),
+                    (SAPBWTable) table);
+        }
+
         if (table.getNamespace() instanceof Package) {
             Package pkg = (Package) table.getNamespace();
             if (pkg.getOwnedElement().contains(table)) {
@@ -184,6 +193,10 @@ public class MetadataTableRepositoryObject extends MetadataTable implements ISub
         } else if (table.eContainer() instanceof SAPFunctionUnit) {
             SAPFunctionUnit funUnit = (SAPFunctionUnit) table.eContainer();
             tables = ConnectionHelper.getTables(connection, funUnit);
+        } else if (table instanceof SAPBWTable) {
+            String bwTableType = ((SAPBWTable) table).getModelType();
+            String innerIOType = ((SAPBWTable) table).getInnerIOType();
+            tables = SAPBWTableHelper.getBWTables(connection, bwTableType, innerIOType, true);
         } else {
             tables = ConnectionHelper.getTables(connection);
         }

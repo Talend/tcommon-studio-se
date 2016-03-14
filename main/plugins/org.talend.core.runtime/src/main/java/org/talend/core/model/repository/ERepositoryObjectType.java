@@ -358,6 +358,18 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
 
     public final static ERepositoryObjectType METADATA_SAP_TABLE = new ERepositoryObjectType("repository.SAPTable", //$NON-NLS-1$
             "METADATA_SAP_TABLE", 104, true, true, new String[] { PROD_DI }, new String[] {}, false);
+ 
+    public final static ERepositoryObjectType METADATA_SAP_BW_DATASOURCE = new ERepositoryObjectType("repository.SAPBWDataSource", //$NON-NLS-1$
+            "METADATA_SAP_BW_DATASOURCE", 105, true, true, new String[] { PROD_DI }, new String[] {}, false);
+    
+    public final static ERepositoryObjectType METADATA_SAP_BW_DATASTOREOBJECT = new ERepositoryObjectType("repository.SAPBWDataStoreObject", //$NON-NLS-1$
+            "METADATA_SAP_BW_DATASTOREOBJECT", 106, true, true, new String[] { PROD_DI }, new String[] {}, false);
+    
+    public final static ERepositoryObjectType METADATA_SAP_BW_INFOCUBE = new ERepositoryObjectType("repository.SAPBWInfoCube", //$NON-NLS-1$
+            "METADATA_SAP_BW_INFOCUBE", 107, true, true, new String[] { PROD_DI }, new String[] {}, false);
+    
+    public final static ERepositoryObjectType METADATA_SAP_BW_INFOOBJECT = new ERepositoryObjectType("repository.SAPBWInfoObject", //$NON-NLS-1$
+            "METADATA_SAP_BW_INFOOBJECT", 108, true, true, new String[] { PROD_DI }, new String[] {}, false);
 
     private String label;
 

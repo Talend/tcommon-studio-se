@@ -1131,6 +1131,54 @@ public class ConnectionSwitch<T> {
                 result = defaultCase(theEObject);
             return result;
         }
+        case ConnectionPackage.SAPBW_TABLE: {
+            SAPBWTable sapbwTable = (SAPBWTable) theEObject;
+            T result = caseSAPBWTable(sapbwTable);
+            if (result == null)
+                result = caseSAPTable(sapbwTable);
+            if (result == null)
+                result = caseMetadataTable(sapbwTable);
+            if (result == null)
+                result = caseAbstractMetadataObject(sapbwTable);
+            if (result == null)
+                result = caseClass(sapbwTable);
+            if (result == null)
+                result = caseClassifier(sapbwTable);
+            if (result == null)
+                result = caseElement(sapbwTable);
+            if (result == null)
+                result = caseNamespace(sapbwTable);
+            if (result == null)
+                result = caseModelElement(sapbwTable);
+            if (result == null)
+                result = defaultCase(theEObject);
+            return result;
+        }
+        case ConnectionPackage.SAPBW_TABLE_FIELD: {
+            SAPBWTableField sapbwTableField = (SAPBWTableField) theEObject;
+            T result = caseSAPBWTableField(sapbwTableField);
+            if (result == null)
+                result = caseSAPTableField(sapbwTableField);
+            if (result == null)
+                result = caseMetadataColumn(sapbwTableField);
+            if (result == null)
+                result = caseAbstractMetadataObject(sapbwTableField);
+            if (result == null)
+                result = caseField(sapbwTableField);
+            if (result == null)
+                result = caseAttribute(sapbwTableField);
+            if (result == null)
+                result = caseElement(sapbwTableField);
+            if (result == null)
+                result = caseStructuralFeature(sapbwTableField);
+            if (result == null)
+                result = caseFeature(sapbwTableField);
+            if (result == null)
+                result = caseModelElement(sapbwTableField);
+            if (result == null)
+                result = defaultCase(theEObject);
+            return result;
+        }
         default:
             return defaultCase(theEObject);
         }
@@ -1828,6 +1876,36 @@ public class ConnectionSwitch<T> {
      * @generated
      */
     public T caseAdditionalConnectionProperty(AdditionalConnectionProperty object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>SAPBW Table</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>SAPBW Table</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseSAPBWTable(SAPBWTable object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>SAPBW Table Field</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>SAPBW Table Field</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseSAPBWTableField(SAPBWTableField object) {
         return null;
     }
 
