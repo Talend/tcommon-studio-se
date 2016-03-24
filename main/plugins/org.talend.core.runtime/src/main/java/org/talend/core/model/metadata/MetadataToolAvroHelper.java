@@ -29,6 +29,7 @@ import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.core.model.metadata.types.JavaTypesManager;
 import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.cwm.helper.TaggedValueHelper;
+import org.talend.daikon.avro.DynamicTypeFactory;
 import org.talend.daikon.avro.SchemaConstants;
 import org.talend.daikon.avro.util.AvroUtils;
 import org.talend.daikon.talend6.Talend6SchemaConstants;
@@ -137,7 +138,7 @@ public final class MetadataToolAvroHelper {
             // decimal(precision, scale) == column length and precision?
             Decimal d = LogicalTypes.decimal((int) in.getLength(), (int) in.getPrecision());
             Schema bigdecimal = d.addToSchema(Schema.create(Schema.Type.BYTES));
-            return fb.type(bigdecimal).withDefault(defaultValue);
+            return defaultValue == null ? fb.type(bigdecimal).noDefault() : fb.type(bigdecimal).withDefault(defaultValue);
         }
 
         // Other primitive types that map directly to Avro.
@@ -165,11 +166,17 @@ public final class MetadataToolAvroHelper {
         }
 
         // Types with unknown elements, store as binary
-        if (JavaTypesManager.OBJECT.getId().equals(tt) || JavaTypesManager.DYNAMIC.getId().equals(tt)) {
+        if (JavaTypesManager.OBJECT.getId().equals(tt)) {
             return defaultValue == null //
             ? ftb.bytesType().noDefault()
                     : ftb.bytesType().bytesDefault(defaultValue);
         }
+
+        if ("id_Dynamic".equals(tt)) { //$NON-NLS-1$
+            return defaultValue == null ? fb.type(DynamicTypeFactory.getDynamic()).noDefault() : fb.type(
+                    DynamicTypeFactory.getDynamic()).withDefault(defaultValue);
+        }
+
         if (JavaTypesManager.LIST.getId().equals(tt)) {
             return ftb.array().items().bytesType().noDefault();
         }
@@ -317,46 +324,50 @@ public final class MetadataToolAvroHelper {
         col.setLabel(field.name());
         col.setName(field.name());
         Schema nonnullable = AvroUtils.unwrapIfNullable(in);
-        switch (nonnullable.getType()) {
-        case ARRAY:
-            col.setTalendType(JavaTypesManager.LIST.getId());
-            break;
-        case BOOLEAN:
-            col.setTalendType(JavaTypesManager.BOOLEAN.getId());
-            break;
-        case BYTES:
-        case FIXED:
-            col.setTalendType(JavaTypesManager.BYTE_ARRAY.getId());
-            break;
-        case DOUBLE:
-            col.setTalendType(JavaTypesManager.DOUBLE.getId());
-            break;
-        case FLOAT:
-            col.setTalendType(JavaTypesManager.FLOAT.getId());
-            break;
-        case INT:
-            col.setTalendType(JavaTypesManager.INTEGER.getId());
-            break;
-        case LONG:
-            String prop = null;
-            if (null != (prop = nonnullable.getProp(SchemaConstants.TALEND_COLUMN_PATTERN))) {
-                col.setTalendType(JavaTypesManager.DATE.getId());
-                col.setPattern(TalendQuoteUtils.addQuotesIfNotExist(prop));
-            } else {
-                col.setTalendType(JavaTypesManager.LONG.getId());
+        if (DynamicTypeFactory.isDynamic(nonnullable)) {
+            col.setTalendType("id_Dynamic"); //$NON-NLS-1$
+        } else {
+            switch (nonnullable.getType()) {
+            case ARRAY:
+                col.setTalendType(JavaTypesManager.LIST.getId());
+                break;
+            case BOOLEAN:
+                col.setTalendType(JavaTypesManager.BOOLEAN.getId());
+                break;
+            case BYTES:
+            case FIXED:
+                col.setTalendType(JavaTypesManager.BYTE_ARRAY.getId());
+                break;
+            case DOUBLE:
+                col.setTalendType(JavaTypesManager.DOUBLE.getId());
+                break;
+            case FLOAT:
+                col.setTalendType(JavaTypesManager.FLOAT.getId());
+                break;
+            case INT:
+                col.setTalendType(JavaTypesManager.INTEGER.getId());
+                break;
+            case LONG:
+                String prop = null;
+                if (null != (prop = nonnullable.getProp(SchemaConstants.TALEND_COLUMN_PATTERN))) {
+                    col.setTalendType(JavaTypesManager.DATE.getId());
+                    col.setPattern(TalendQuoteUtils.addQuotesIfNotExist(prop));
+                } else {
+                    col.setTalendType(JavaTypesManager.LONG.getId());
+                }
+                break;
+            case ENUM:
+            case STRING:
+                col.setTalendType(JavaTypesManager.STRING.getId());
+                break;
+            case RECORD:
+            case NULL:
+            case MAP:
+            case UNION:
+            default:
+                // Can this occur in the studio?
+                break;
             }
-            break;
-        case ENUM:
-        case STRING:
-            col.setTalendType(JavaTypesManager.STRING.getId());
-            break;
-        case RECORD:
-        case NULL:
-        case MAP:
-        case UNION:
-        default:
-            // Can this occur in the studio?
-            break;
         }
         // TODO setSourceType from the field Schema type.
         col.setNullable(AvroUtils.isNullable(in));
