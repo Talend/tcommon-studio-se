@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.core.repository.utils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +20,9 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.custom.CCombo;
@@ -433,7 +436,7 @@ public class ConvertJobsUtil {
         if (newItem == null) {
             return false;
         }
-
+        convertTestcases(newItem,sourceObject,jobTypeValue);
         boolean isNewItemCreated = true;
         Property repositoryProperty = sourceObject.getProperty();
         if (repositoryProperty != null) {
@@ -485,6 +488,38 @@ public class ConvertJobsUtil {
             workspace.run(runnable, schedulingRule, IWorkspace.AVOID_UPDATE, null);
         }
         return isNewItemCreated;
+    }
+    
+    public static void convertTestcases(final Item newItem,final IRepositoryViewObject sourceObject,final String jobTypeValue){
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
+            ITestContainerProviderService testContainerService = (ITestContainerProviderService) GlobalServiceRegister
+                    .getDefault().getService(ITestContainerProviderService.class);
+            if (testContainerService != null) {
+                testContainerService.copyDataFiles(newItem, sourceObject.getId());
+                Item item =  sourceObject.getProperty().getItem();
+                if(!(item instanceof ProcessItem)){
+                  return;
+                }
+
+                testContainerService.copyTestCase(newItem, (ProcessItem)item, getTestCasePath(newItem,jobTypeValue), null, true);
+            }
+        }
+    }
+    
+    public static IPath getTestCasePath(Item newItem, String jobTypeValue) {
+        StringBuffer pathName = new StringBuffer();
+        if (JobType.STANDARD.getDisplayName().equals(jobTypeValue)) {
+            pathName.append(JobType.STANDARD.repositoryObjectType.getFolder());
+        }else if (JobType.BIGDATASTREAMING.getDisplayName().equals(jobTypeValue)){
+            pathName.append(JobType.BIGDATASTREAMING.repositoryObjectType.getFolder());
+        }else if (JobType.BIGDATABATCH.getDisplayName().equals(jobTypeValue)){
+            pathName.append(JobType.BIGDATABATCH.repositoryObjectType.getFolder());
+        } else {
+            pathName.append("process");
+        }
+        pathName.append(File.separator).append(newItem.getProperty().getId());
+        final Path path = new Path(pathName.toString());
+        return path;
     }
 
     /**

@@ -80,12 +80,12 @@ public class EditProcessPropertiesWizard extends PropertiesWizard {
             if (sourceJobType != null && !isNeedConvert) {
                 return super.performFinish();
             }
-            boolean hasTestCase = ConvertJobsUtil.hasTestCase(object.getProperty());
-            if (hasTestCase
-                    && !MessageDialogWithToggle.openConfirm(null, "Warning",
-                            "Warning: You will lost all the testcases when you do converting, do you want to continue?")) {
-                return super.performFinish();
-            }
+//            boolean hasTestCase = ConvertJobsUtil.hasTestCase(object.getProperty());
+//            if (hasTestCase
+//                    && !MessageDialogWithToggle.openConfirm(null, "Warning",
+//                            "Warning: You will lost all the testcases when you do converting, do you want to continue?")) {
+//                return super.performFinish();
+//            }
             // Convert
             boolean convert = true;
             try {

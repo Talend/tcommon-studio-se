@@ -390,7 +390,7 @@ public class CopyObjectAction {
             ITestContainerProviderService testContainerService = (ITestContainerProviderService) GlobalServiceRegister
                     .getDefault().getService(ITestContainerProviderService.class);
             if (testContainerService != null) {
-                testContainerService.copyDataFiles(newItem, sourceNode);
+                testContainerService.copyDataFiles(newItem, sourceNode.getId());
                 for (IRepositoryNode testNode : sourceNode.getChildren()) {
                     Item testItem = testNode.getObject().getProperty().getItem();
                     if (!(testItem instanceof ProcessItem)) {
