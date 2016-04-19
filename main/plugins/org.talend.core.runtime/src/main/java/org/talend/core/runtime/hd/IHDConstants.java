@@ -28,12 +28,23 @@ public interface IHDConstants {
     static final String SERVICE_HADOOP = "org.talend.hadoop.distribution.component.HadoopComponent";
 
     /**
+     * must be full class name of {@link MRComponent}
+     */
+    static final String SERVICE_MR = "org.talend.hadoop.distribution.component.MRComponent";
+
+    /**
      * must be full class name of {@link SparkComponent}
      */
     static final String SERVICE_SPARK = "org.talend.hadoop.distribution.component.SparkComponent";
 
     /**
+     * must be full class name of {@link SparkBatchComponent}
+     */
+    static final String SERVICE_SPARK_BATCH = "org.talend.hadoop.distribution.component.SparkBatchComponent";
+
+    /**
      * must be full class name of {@link SparkStreamingComponent}
      */
     static final String SERVICE_SPARK_STREAMING = "org.talend.hadoop.distribution.component.SparkStreamingComponent";
+
 }

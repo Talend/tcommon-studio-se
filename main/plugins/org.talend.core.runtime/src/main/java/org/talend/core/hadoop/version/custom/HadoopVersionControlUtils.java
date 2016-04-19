@@ -19,8 +19,11 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.emf.common.util.EMap;
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.database.conn.ConnParameterKeys;
+import org.talend.core.hadoop.IHadoopDistributionService;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
+import org.talend.core.runtime.hd.IDistributionsManager;
 
 /**
  * Created by Marvin Wang on Mar 26, 2013.
@@ -99,5 +102,27 @@ public class HadoopVersionControlUtils {
         customVersionMap.put(versionGroup.getName(), jarSet);
 
         return customVersionMap;
+    }
+
+    public static IDistributionsManager getDistributionsManager(ECustomVersionType type) {
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IHadoopDistributionService.class)) {
+            IHadoopDistributionService hadoopDistributionService = (IHadoopDistributionService) GlobalServiceRegister
+                    .getDefault().getService(IHadoopDistributionService.class);
+            IDistributionsManager distributionManager = null;
+            if (type != null) {
+                if (type == ECustomVersionType.SPARK) {
+                    distributionManager = hadoopDistributionService.getSparkBatchDistributionManager();
+                } else if (type == ECustomVersionType.SPARK_STREAMING) {
+                    distributionManager = hadoopDistributionService.getSparkStreamingDistributionManager();
+                } else if (type == ECustomVersionType.MAP_REDUCE) {
+                    distributionManager = hadoopDistributionService.getMapReduceDistributionManager();
+                }
+            }
+            if (distributionManager == null) {// default one
+                distributionManager = hadoopDistributionService.getHadoopDistributionManager();
+            }
+            return distributionManager;
+        }
+        return null;
     }
 }

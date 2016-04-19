@@ -40,7 +40,6 @@ import org.talend.core.model.process.IElementParameter;
 import org.talend.core.model.process.INode;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.hd.IDistributionsManager;
-import org.talend.core.runtime.hd.IHDConstants;
 import org.talend.core.runtime.hd.IHDistribution;
 import org.talend.core.runtime.hd.IHDistributionVersion;
 import org.talend.core.runtime.i18n.Messages;
@@ -278,10 +277,9 @@ public class HadoopVersionDialog extends TitleAreaDialog {
     }
 
     private IHDistribution getHadoopDistribution() {
-        IHadoopDistributionService hadoopDistributionService = getHadoopDistributionService();
-        if (hadoopDistributionService != null) {
-            final IHDistribution distributionByDisplay = hadoopDistributionService.getHadoopDistribution(
-                    distributionCombo.getText(), true);
+        IDistributionsManager distributionManager = getDistributionsManager();
+        if (distributionManager != null) {
+            final IHDistribution distributionByDisplay = distributionManager.getDistribution(distributionCombo.getText(), true);
             return distributionByDisplay;
         }
         return null;
@@ -357,20 +355,22 @@ public class HadoopVersionDialog extends TitleAreaDialog {
         });
     }
 
+    private IDistributionsManager getDistributionsManager() {
+        if (types != null && types.length == 1) {
+            return HadoopVersionControlUtils.getDistributionsManager(types[0]);
+        }
+        return null;
+
+    }
+
     private void init() {
         List<String> distributionsDisplay = new ArrayList<String>();
-        IHadoopDistributionService hadoopDistributionService = getHadoopDistributionService();
-        if (hadoopDistributionService != null) {
-            IDistributionsManager distributionManager = null;
-            if (isSparkJob()) {
-                distributionManager = hadoopDistributionService.getSparkDistributionManager();
-            } else {
-                distributionManager = hadoopDistributionService.getHadoopDistributionManager();
-            }
+        IDistributionsManager distributionManager = getDistributionsManager();
+        if (distributionManager != null) {
             IHDistribution[] distributions = distributionManager.getDistributions();
             if (distributions != null) {
                 for (IHDistribution d : distributions) {
-                    if (!d.useCustom()) {
+                    if (!d.useCustom()) {// not need custom
                         distributionsDisplay.add(d.getDisplayName());
                     }
                 }
@@ -381,43 +381,17 @@ public class HadoopVersionDialog extends TitleAreaDialog {
         distributionCombo.select(0);
     }
 
-    protected boolean isSparkJob() {
-        if (types != null && types.length == 1
-                && (types[0] == ECustomVersionType.SPARK || types[0] == ECustomVersionType.SPARK_STREAMING)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     private void updateVersionPart() {
-        IHadoopDistributionService hadoopDistributionService = getHadoopDistributionService();
-        if (hadoopDistributionService != null) {
-            final IHDistribution hDistribution = hadoopDistributionService.getHadoopDistribution(distribution, false);
-            if (hDistribution != null) {
-                boolean isSparkJob = isSparkJob();
-                final IHDistributionVersion[] hdVersions = hDistribution.getHDVersions();
-                List<String> versionsDisplay = new ArrayList<String>();
-                for (IHDistributionVersion hdv : hdVersions) {
-                    final String displayVersion = hdv.getDisplayVersion();
-                    if (displayVersion == null) {
-                        continue;
-                    }
-                    if (isSparkJob) {
-                        if (hadoopDistributionService.doSupportService(hdv, IHDConstants.SERVICE_SPARK)) {
-                            versionsDisplay.add(displayVersion);
-                        }
-                    } else {
-                        versionsDisplay.add(displayVersion);
-                    }
-                }
-                versionCombo.getCombo().setItems(versionsDisplay.toArray(new String[0]));
-                IHDistributionVersion defaultVersion = hDistribution.getDefaultVersion();
-                if (defaultVersion != null) {
-                    versionCombo.getCombo().setText(defaultVersion.getDisplayVersion());
-                } else if (!versionsDisplay.isEmpty()) {
-                    versionCombo.getCombo().select(0);
-                }
+        final IHDistribution hadoopDistribution = getHadoopDistribution();
+        if (hadoopDistribution != null) {
+            String[] versionsDisplay = hadoopDistribution.getVersionsDisplay();
+            IHDistributionVersion defaultVersion = hadoopDistribution.getDefaultVersion();
+
+            versionCombo.getCombo().setItems(versionsDisplay);
+            if (defaultVersion != null) {
+                versionCombo.getCombo().setText(defaultVersion.getDisplayVersion());
+            } else if (versionsDisplay.length > 0) {
+                versionCombo.getCombo().select(0);
             }
         }
     }

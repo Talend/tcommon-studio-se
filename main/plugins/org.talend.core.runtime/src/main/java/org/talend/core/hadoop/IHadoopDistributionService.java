@@ -71,19 +71,31 @@ public interface IHadoopDistributionService extends IService {
 
     /**
      * 
+     * for MapReduce Distribution {@link MRComponent}.
+     */
+    IDistributionsManager getMapReduceDistributionManager();
+
+    /**
+     * 
      * for HBase in Database wizard.{@link HBaseComponent}.
      */
     IDistributionsManager getHBaseDistributionManager();
 
     /**
      * 
-     * for Hive Distribution {@link HiveComponent}.
+     * for Spark Streaming Distribution {@link SparkStreamingComponent}.
      */
-    IDistributionsManager getSparkDistributionManager();
+    IDistributionsManager getSparkStreamingDistributionManager();
 
     /**
      * 
-     * for Spark Distribution {@link SparkComponent}.
+     * for Spark Batch Distribution {@link SparkBatchComponent}.
+     */
+    IDistributionsManager getSparkBatchDistributionManager();
+
+    /**
+     * 
+     * for Hive Distribution {@link HiveComponent}.
      */
     IDistributionsManager getHiveDistributionManager();
 
