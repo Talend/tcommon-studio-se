@@ -95,7 +95,22 @@ public class PasteAction extends AContextualAction {
                     } catch (BusinessException e) {
                         jobNewName = sourceNode.getObject().getLabel();
                     }
+                    //
+                    Object sourceFramework = null;
+                    if (sourceNode.getObject() != null) {
+                        sourceFramework = sourceNode.getObject().getProperty().getAdditionalProperties()
+                                .get(ConvertJobsUtil.FRAMEWORK);
+                    }
                     ConvertJobsUtil.createOperation(jobNewName, jobTypeValue, frameworkNewValue, sourceNode.getObject());
+                    // reset the framework
+                    if (sourceNode.getObject() != null) {
+                        Object currentFramework = sourceNode.getObject().getProperty().getAdditionalProperties()
+                                .get(ConvertJobsUtil.FRAMEWORK);
+                        if (sourceFramework != null && currentFramework != null && !sourceFramework.equals(currentFramework)) {
+                            sourceNode.getObject().getProperty().getAdditionalProperties()
+                                    .put(ConvertJobsUtil.FRAMEWORK, sourceFramework);
+                        }
+                    }
                 } else {
                     try {
                         if (copyObjectAction.validateAction((RepositoryNode) currentSource, target)) {
