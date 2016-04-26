@@ -127,7 +127,6 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryConstants;
 import org.talend.utils.io.FilesUtils;
 import org.talend.utils.json.JSONArray;
-
 import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
@@ -824,8 +823,8 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
     }
 
     @Override
-    public void restoreObject(Project project, IRepositoryViewObject objToRestore, IPath path)
-            throws PersistenceException, BusinessException {
+    public void restoreObject(Project project, IRepositoryViewObject objToRestore, IPath path) throws PersistenceException,
+            BusinessException {
         this.repositoryFactoryFromProvider.restoreObject(project, objToRestore, path);
         unlock(objToRestore);
         // i18n
@@ -1498,6 +1497,10 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
     @Override
     public void initialize() throws PersistenceException {
         this.repositoryFactoryFromProvider.initialize();
+    }
+
+    public void loadProjectAndSetContext(IProject eclipseProject) throws PersistenceException {
+        this.repositoryFactoryFromProvider.loadProjectAndSetContext(eclipseProject);
     }
 
     /**

@@ -156,7 +156,6 @@ import org.talend.repository.localprovider.i18n.Messages;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryConstants;
 import org.talend.utils.json.JSONArray;
-
 import orgomg.cwm.foundation.businessinformation.BusinessinformationPackage;
 
 /**
@@ -1677,7 +1676,6 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         }
     }
 
-
     @Override
     public void restoreObject(IRepositoryViewObject objToRestore, IPath path) throws PersistenceException {
         restoreObject(getRepositoryContext().getProject(), objToRestore, path);
@@ -3099,8 +3097,8 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
     @Override
     public List<org.talend.core.model.properties.Project> getReferencedProjects(Project project) {
-        String parentBranch = getRepositoryContext().getFields()
-                .get(IProxyRepositoryFactory.BRANCH_SELECTION + "_" + getRepositoryContext().getProject().getTechnicalLabel());
+        String parentBranch = getRepositoryContext().getFields().get(
+                IProxyRepositoryFactory.BRANCH_SELECTION + "_" + getRepositoryContext().getProject().getTechnicalLabel());
 
         List<org.talend.core.model.properties.Project> refProjectList = new ArrayList<org.talend.core.model.properties.Project>();
         for (ProjectReference refProject : (List<ProjectReference>) project.getEmfProject().getReferencedProjects()) {
@@ -3359,5 +3357,11 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
     public JSONArray getAllRemoteLocks() {
         // TODO Auto-generated method stub
         return new JSONArray();
+    }
+
+    @Override
+    public void loadProjectAndSetContext(IProject eclipseProject) throws PersistenceException {
+        // TODO Auto-generated method stub
+
     }
 }

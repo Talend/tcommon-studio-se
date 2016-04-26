@@ -422,4 +422,6 @@ public interface IRepositoryFactory {
     public String getStorage();
 
     public JSONArray getAllRemoteLocks();
+
+    public void loadProjectAndSetContext(IProject eclipseProject) throws PersistenceException;
 }
