@@ -1180,26 +1180,36 @@ public class DeleteAction extends AContextualAction {
             return true;
         }
 
+        ERepositoryObjectType contentType = node.getContentType();
         // Avoid to delete all related documentation node by click Key "Delete" from keyboard.
-        if (node.getContentType() == ERepositoryObjectType.JOB_DOC) {
-            return true;
+        if (ERepositoryObjectType.JOB_DOC != null && contentType != null) {
+            if (contentType.equals(ERepositoryObjectType.JOB_DOC)) {
+                return true;
+            }
+        }
+        if (ERepositoryObjectType.JOB_DOC != null && node.getProperties(EProperties.CONTENT_TYPE) != null) {
+            if (node.getProperties(EProperties.CONTENT_TYPE).equals(ERepositoryObjectType.JOB_DOC)) {
+                return true;
+            }
         }
 
-        if (node.getProperties(EProperties.CONTENT_TYPE) == ERepositoryObjectType.JOB_DOC) {
-            return true;
+        if (ERepositoryObjectType.JOBLET_DOC != null && contentType != null) {
+            if (contentType.equals(ERepositoryObjectType.JOBLET_DOC)) {
+                return true;
+            }
+        }
+        if (ERepositoryObjectType.JOBLET_DOC != null && node.getProperties(EProperties.CONTENT_TYPE) != null) {
+            if (node.getProperties(EProperties.CONTENT_TYPE).equals(ERepositoryObjectType.JOBLET_DOC)) {
+                return true;
+            }
         }
 
-        if (node.getContentType() == ERepositoryObjectType.JOBLET_DOC) {
-            return true;
+        if (ERepositoryObjectType.GENERATED != null && contentType != null) {
+            if (contentType.equals(ERepositoryObjectType.GENERATED)) {
+                return true;
+            }
         }
 
-        if (node.getProperties(EProperties.CONTENT_TYPE) == ERepositoryObjectType.JOBLET_DOC) {
-            return true;
-        }
-
-        if (node.getContentType() == ERepositoryObjectType.GENERATED) {
-            return true;
-        }
         if (node.getProperties(EProperties.CONTENT_TYPE) == ERepositoryObjectType.METADATA_CON_CDC) {
             return true;
         }
