@@ -165,7 +165,7 @@ public enum EDatabaseConnTemplate {
             "5439")), //$NON-NLS-1$
 
     REDSHIFT(new DbConnStr(EDatabaseTypeName.REDSHIFT, //
-            "jdbc:paraccel://<host>:<port>/<sid>", //$NON-NLS-1$
+            "jdbc:redshift://<host>:<port>/<sid>", //$NON-NLS-1$
             "5439")), //$NON-NLS-1$
 
     NETEZZA(new DbConnStr(EDatabaseTypeName.NETEZZA, //

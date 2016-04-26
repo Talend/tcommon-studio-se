@@ -180,7 +180,7 @@ public enum EDatabaseVersion4Drivers {
             "commons-codec-1.9.jar", "htrace-core-3.2.0-incubating.jar", "jackson-mapper-asl-1.8.8.jar",
             "jackson-core-asl-1.8.8.jar", "jackson-jaxrs-1.8.8.jar", "jackson-xc-1.8.8.jar", "jersey-client-1.9.jar" })),
 
-    REDSHIFT(new DbVersion4Drivers(EDatabaseTypeName.REDSHIFT, "paraccel-jdbc.jar")), //$NON-NLS-1$
+    REDSHIFT(new DbVersion4Drivers(EDatabaseTypeName.REDSHIFT, "RedshiftJDBC41-1.1.13.1013.jar")), //$NON-NLS-1$
 
     AMAZON_AURORA(new DbVersion4Drivers(EDatabaseTypeName.AMAZON_AURORA, "mysql-connector-java-5.1.30-bin.jar")); //$NON-NLS-1$
 
