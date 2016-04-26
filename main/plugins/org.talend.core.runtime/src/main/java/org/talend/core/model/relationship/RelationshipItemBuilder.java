@@ -151,6 +151,10 @@ public class RelationshipItemBuilder {
     }
 
     public static RelationshipItemBuilder createInstance(IProxyRepositoryFactory repositoryFactory, Project project) {
+        /**
+         * NOTE: if use cache, should take care of synchronize problem
+         */
+
         RelationshipItemBuilder instance = new RelationshipItemBuilder();
         instance.setAimProject(project);
         instance.setProxyRepositoryFactory(repositoryFactory);
