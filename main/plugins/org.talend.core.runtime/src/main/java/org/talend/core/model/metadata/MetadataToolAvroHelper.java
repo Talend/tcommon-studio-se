@@ -146,22 +146,22 @@ public final class MetadataToolAvroHelper {
         // Numeric types.
         if (JavaTypesManager.LONG.getId().equals(tt)) {
             type = AvroTypes._long();
-            defaultValue = defaultValue == null ? null : Long.parseLong(defaultValue.toString());
+            defaultValue = StringUtils.isEmpty((String)defaultValue) ? null : Long.parseLong(defaultValue.toString());
         } else if (JavaTypesManager.INTEGER.getId().equals(tt)) {
             type = AvroTypes._int();
-            defaultValue = defaultValue == null ? null : Integer.parseInt(defaultValue.toString());
+            defaultValue = StringUtils.isEmpty((String)defaultValue) ? null : Integer.parseInt(defaultValue.toString());
         } else if (JavaTypesManager.SHORT.getId().equals(tt)) {
             type = AvroTypes._short();
-            defaultValue = defaultValue == null ? null : Integer.parseInt(defaultValue.toString());
+            defaultValue = StringUtils.isEmpty((String)defaultValue) ? null : Integer.parseInt(defaultValue.toString());
         } else if (JavaTypesManager.BYTE.getId().equals(tt)) {
             type = AvroTypes._byte();
-            defaultValue = defaultValue == null ? null : Integer.parseInt(defaultValue.toString());
+            defaultValue = StringUtils.isEmpty((String)defaultValue) ? null : Integer.parseInt(defaultValue.toString());
         } else if (JavaTypesManager.DOUBLE.getId().equals(tt)) {
             type = AvroTypes._double();
-            defaultValue = defaultValue == null ? null : Double.parseDouble(defaultValue.toString());
+            defaultValue = StringUtils.isEmpty((String)defaultValue) ? null : Double.parseDouble(defaultValue.toString());
         } else if (JavaTypesManager.FLOAT.getId().equals(tt)) {
             type = AvroTypes._float();
-            defaultValue = defaultValue == null ? null : Float.parseFloat(defaultValue.toString());
+            defaultValue = StringUtils.isEmpty((String)defaultValue) ? null : Float.parseFloat(defaultValue.toString());
         } else if (JavaTypesManager.BIGDECIMAL.getId().equals(tt)) {
             // decimal(precision, scale) == column length and precision?
             type = AvroTypes._decimal();
@@ -170,7 +170,7 @@ public final class MetadataToolAvroHelper {
         // Other primitive types that map directly to Avro.
         else if (JavaTypesManager.BOOLEAN.getId().equals(tt)) {
             type = AvroTypes._boolean();
-            defaultValue = defaultValue == null ? null : Boolean.parseBoolean(defaultValue.toString());
+            defaultValue = StringUtils.isEmpty((String)defaultValue) ? null : Boolean.parseBoolean(defaultValue.toString());
         } else if (JavaTypesManager.BYTE_ARRAY.getId().equals(tt)) {
             type = AvroTypes._bytes();
         } else if (JavaTypesManager.DATE.getId().equals(tt)) {
