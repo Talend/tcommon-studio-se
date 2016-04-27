@@ -181,9 +181,9 @@ public class HiveMetadataHelper {
             String hiveServerVersion, boolean byDisplay) {
         HiveModeInfo hiveModeInfo = byDisplay ? HiveModeInfo.getByDisplay(hiveMode) : HiveModeInfo.get(hiveMode);
         HiveServerVersionInfo hiveServerVersionInfo = byDisplay ? HiveServerVersionInfo.getByDisplay(hiveServerVersion)
-                : HiveServerVersionInfo.valueOf(hiveServerVersion);
+                : HiveServerVersionInfo.getByKey(hiveServerVersion); // same as DatabaseForm
 
-        boolean supportSecurity = doSupportMethod(hiveDistribution, hiveVersion, byDisplay, "doSupportSecurity");//$NON-NLS-1$
+        boolean supportSecurity = doSupportMethod(hiveDistribution, hiveVersion, byDisplay, "doSupportKerberos");//$NON-NLS-1$
         if (supportSecurity
                 && (HiveServerVersionInfo.HIVE_SERVER_2 == hiveServerVersionInfo || hiveModeInfo == HiveModeInfo.EMBEDDED)) {
             return true;
