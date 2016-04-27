@@ -13,6 +13,7 @@
 package org.talend.core.ui.composite;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
@@ -41,6 +42,8 @@ public class ElementsSelectionComposite<T> extends Composite {
     private boolean multipleSelection = true;
 
     private CheckboxTreeViewer viewer;
+
+    private List<T> viewerData;
 
     public ElementsSelectionComposite(Composite parent) {
         this(parent, true);
@@ -74,6 +77,24 @@ public class ElementsSelectionComposite<T> extends Composite {
         });
         GridData treeGridData = (GridData) filteredCheckboxTree.getLayoutData();
         treeGridData.heightHint = 270;
+    }
+
+    public void setCheckedState() {
+        List<String> selectedElementLabels = getSelectedElementLabels();
+        if (selectedElementLabels != null) {
+            List<T> selectedElements = getInitSelectedElements(selectedElementLabels);
+            if (selectedElements != null) {
+                viewer.setCheckedElements(selectedElements.toArray());
+            }
+        }
+    }
+
+    protected List<T> getInitSelectedElements(List<String> selectedElementLabels) {
+        return new ArrayList<>();
+    }
+
+    protected List<String> getSelectedElementLabels() {
+        return Collections.EMPTY_LIST;
     }
 
     @Override
@@ -149,7 +170,12 @@ public class ElementsSelectionComposite<T> extends Composite {
     }
 
     public void setViewerData(List<T> nls) {
+        this.viewerData = nls;
         viewer.setInput(nls);
+    }
+
+    public List<T> getViewerData() {
+        return this.viewerData;
     }
 
     public List<T> getSelectedElements() {
