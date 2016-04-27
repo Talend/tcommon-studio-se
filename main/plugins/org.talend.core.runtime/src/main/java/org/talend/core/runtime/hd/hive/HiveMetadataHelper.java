@@ -13,7 +13,6 @@
 package org.talend.core.runtime.hd.hive;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.talend.core.GlobalServiceRegister;
@@ -86,22 +85,22 @@ public class HiveMetadataHelper {
         List<String> versionsItems = new ArrayList<String>();
         IHDistribution distribution = getDistribution(hiveDistribution, byDisplay);
         if (distribution != null) {
-            // IHDistributionVersion[] hdVersions = distribution.getHDVersions();
-            // for (IHDistributionVersion v : hdVersions) {
-            // String[] hiveModesDisplay = getHiveModesDisplay(distribution.getName(), v.getVersion(), null, false);
-            // if (hiveModesDisplay == null || hiveModesDisplay.length == 0) {
-            // continue; // if no hive mode to support, ignore this version?
-            // }
-            // String[] hiveServersDisplay = getHiveServersDisplay(distribution.getName(), v.getVersion(), false);
-            // if (hiveServersDisplay == null || hiveServersDisplay.length == 0) {
-            // continue; // if no hive server to support, ignore this version?
-            // }
-            // String displayVersion = v.getDisplayVersion();
-            // if (displayVersion != null) {
-            // versionsItems.add(displayVersion);
-            // }
-            // }
-            versionsItems.addAll(Arrays.asList(distribution.getVersionsDisplay()));
+            IHDistributionVersion[] hdVersions = distribution.getHDVersions();
+            for (IHDistributionVersion v : hdVersions) {
+                String[] hiveModesDisplay = getHiveModesDisplay(distribution.getName(), v.getVersion(), null, false);
+                if (hiveModesDisplay == null || hiveModesDisplay.length == 0) {
+                    continue; // if no hive mode to support, ignore this version?
+                }
+                // String[] hiveServersDisplay = getHiveServersDisplay(distribution.getName(), v.getVersion(), false);
+                // if (hiveServersDisplay == null || hiveServersDisplay.length == 0) {
+                // continue; // if no hive server to support, ignore this version?
+                // }
+                String displayVersion = v.getDisplayVersion();
+                if (displayVersion != null) {
+                    versionsItems.add(displayVersion);
+                }
+            }
+            // versionsItems.addAll(Arrays.asList(distribution.getVersionsDisplay()));
         }
         return versionsItems.toArray(new String[versionsItems.size()]);
     }
