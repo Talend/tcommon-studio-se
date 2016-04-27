@@ -6382,7 +6382,7 @@ public class DatabaseForm extends AbstractForm {
 
     private boolean doSupportTez() {
         if (isHiveDBConnSelected()) {
-            HiveMetadataHelper.doSupportTez(hiveDistributionCombo.getText(), hiveVersionCombo.getText(), true);
+            return HiveMetadataHelper.doSupportTez(hiveDistributionCombo.getText(), hiveVersionCombo.getText(), true);
         }
         return false;
     }
