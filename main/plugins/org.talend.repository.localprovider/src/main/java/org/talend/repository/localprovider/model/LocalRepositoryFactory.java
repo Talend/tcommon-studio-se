@@ -3361,7 +3361,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
     @Override
     public void loadProjectAndSetContext(IProject eclipseProject) throws PersistenceException {
-        // TODO Auto-generated method stub
+        // nothing to do
 
     }
 }
