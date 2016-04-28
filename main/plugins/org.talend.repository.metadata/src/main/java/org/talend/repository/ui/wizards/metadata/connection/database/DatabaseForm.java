@@ -3893,7 +3893,19 @@ public class DatabaseForm extends AbstractForm {
             public void modifyText(final ModifyEvent e) {
                 if (!isContextMode()) {
                     if (validText(generalJdbcDriverjarText.getText())) {
-                        getConnection().setDriverJarPath(generalJdbcDriverjarText.getText());
+                        String jarPath = generalJdbcDriverjarText.getText();
+                        String[] jarNames = jarPath.split(";");
+                        StringBuffer buffer = new StringBuffer();
+                        for (int i = 0; i < jarNames.length; i++) {
+                            if(i!=0){
+                                buffer.append(";");
+                            }
+                            String path = jarNames[i];
+                            IPath ipath = Path.fromOSString(path);
+                            String lastSegment = ipath.lastSegment();
+                            buffer.append(lastSegment);
+                        }
+                        getConnection().setDriverJarPath(buffer.toString());
                     }
                     checkFieldsValue();
                 }
