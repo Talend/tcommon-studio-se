@@ -1448,7 +1448,7 @@ public class RepositoryToComponentProperty {
 
         if (value.equals("USE_DATANODE_HOSTNAME")) {
             String USE_DATANODE_HOSTNAME = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_USE_DATANODE_HOSTNAME);
-            return "true".equals(USE_DATANODE_HOSTNAME);
+            return USE_DATANODE_HOSTNAME == null ? null : "true".equals(USE_DATANODE_HOSTNAME);
         }
 
         return null;

@@ -168,11 +168,14 @@ public class RepositoryToComponentPropertyTest {
         paramMap.put(ConnParameterKeys.HIVE_AUTHENTICATION_HIVEPRINCIPLA, "hive_principal"); //$NON-NLS-1$
         paramMap.put(ConnParameterKeys.CONN_PARA_KEY_KEYTAB_PRINCIPAL, "keytab_principal"); //$NON-NLS-1$
         paramMap.put(ConnParameterKeys.CONN_PARA_KEY_KEYTAB, "keytab"); //$NON-NLS-1$
+        paramMap.put(ConnParameterKeys.CONN_PARA_KEY_USE_DATANODE_HOSTNAME, null); //$NON-NLS-1$
         when(dbConnection.getParameters()).thenReturn(paramMap);
 
         checkIfWithoutQuotes(dbConnection, "HIVE_PRINCIPAL"); //$NON-NLS-1$
         checkIfWithoutQuotes(dbConnection, "PRINCIPAL"); //$NON-NLS-1$
         checkIfWithoutQuotes(dbConnection, "KEYTAB_PATH"); //$NON-NLS-1$
+        Object result = RepositoryToComponentProperty.getValue(dbConnection, "USE_DATANODE_HOSTNAME", null); //$NON-NLS-1$
+        assertTrue(result == null);
     }
 
     private void checkIfWithoutQuotes(DatabaseConnection connection, String value) {
