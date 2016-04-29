@@ -23,7 +23,9 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.hadoop.IHadoopClusterService;
 import org.talend.core.model.metadata.builder.connection.Connection;
+import org.talend.core.model.utils.ContextParameterUtils;
 import org.talend.core.utils.TalendQuoteUtils;
+import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.utils.json.JSONArray;
 import org.talend.utils.json.JSONException;
 import org.talend.utils.json.JSONObject;
@@ -272,4 +274,36 @@ public class HadoopRepositoryUtil {
         return false;
     }
 
+    public static String getOriginalValueOfProperties(ContextType contextType, String propertiesStrings) {
+        String originalValueOfProperties = propertiesStrings;
+        if (propertiesStrings != null && !propertiesStrings.isEmpty()) {
+            List<Map<String, Object>> jdbcPropertiesList = HadoopRepositoryUtil.getHadoopPropertiesList(propertiesStrings);
+            if (jdbcPropertiesList != null && !jdbcPropertiesList.isEmpty()) {
+                List<Map<String, Object>> newJdbcPropertiesList = new ArrayList<Map<String, Object>>(jdbcPropertiesList.size());
+                Iterator<Map<String, Object>> iter = jdbcPropertiesList.iterator();
+                while (iter.hasNext()) {
+                    Map<String, Object> map = iter.next();
+                    if (map != null && !map.isEmpty()) {
+                        Map<String, Object> newMap = new HashMap<String, Object>();
+                        Iterator<Map.Entry<String, Object>> mapEntryIter = map.entrySet().iterator();
+                        while (mapEntryIter.hasNext()) {
+                            Map.Entry<String, Object> entry = mapEntryIter.next();
+                            if (entry != null) {
+                                Object obj = entry.getValue();
+                                Object newValue = null;
+                                if (obj != null) {
+                                    newValue = ContextParameterUtils.getOriginalValue(contextType, obj.toString());
+                                }
+                                newMap.put(entry.getKey(), newValue);
+                            }
+                        }
+                        newJdbcPropertiesList.add(newMap);
+                    }
+
+                }
+                originalValueOfProperties = HadoopRepositoryUtil.getHadoopPropertiesJsonStr(newJdbcPropertiesList);
+            }
+        }
+        return originalValueOfProperties;
+    }
 }

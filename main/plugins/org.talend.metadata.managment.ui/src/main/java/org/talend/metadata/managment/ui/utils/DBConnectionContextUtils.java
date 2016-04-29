@@ -53,6 +53,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.metadata.managment.repository.ManagerConnection;
 import org.talend.metadata.managment.ui.model.IConnParamName;
 import org.talend.model.bridge.ReponsitoryContextBridge;
+
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.resource.relational.Catalog;
 import orgomg.cwm.resource.relational.Schema;
@@ -823,6 +824,14 @@ public final class DBConnectionContextUtils {
             String keytab = cloneConn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_KEYTAB);
             cloneConn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_KEYTAB,
                     ContextParameterUtils.getOriginalValue(contextType, keytab));
+
+            String jdbcPropertiesString = cloneConn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_JDBC_PROPERTIES);
+            cloneConn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_JDBC_PROPERTIES,
+                    HadoopRepositoryUtil.getOriginalValueOfProperties(contextType, jdbcPropertiesString));
+
+            String propertiesString = cloneConn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_PROPERTIES);
+            cloneConn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_PROPERTIES,
+                    HadoopRepositoryUtil.getOriginalValueOfProperties(contextType, propertiesString));
 
             String template = null;
             String hiveServerVersion = HiveServerVersionInfo.HIVE_SERVER_1.getKey();
