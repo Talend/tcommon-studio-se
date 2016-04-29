@@ -48,6 +48,11 @@
             id="org.talend.updates.PluginOptionalMissingJars"
             name="Plugin Optional Missing Jars">
       </factory>
+      <factory
+            class="org.talend.updates.runtime.engine.factory.TOSDynamicExtraFeaturesFactory"
+            id="org.talend.updates.TOSDynamicExtraFeaturesFactory"
+            name="TOS Dynamic ExtraFeatures Factory">
+      </factory>
    </extension>
 
 </plugin>
