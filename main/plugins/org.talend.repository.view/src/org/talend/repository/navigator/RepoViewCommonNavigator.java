@@ -36,10 +36,11 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
@@ -333,11 +334,11 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
 
         viewer = getCommonViewer();
 
-        if (service != null && service.isGIT())
-            viewer.getTree().addListener(SWT.Resize, new Listener() {
+        if (service != null && service.isGIT()) {
+            viewer.getTree().addPaintListener(new PaintListener() {
 
                 @Override
-                public void handleEvent(Event event) {
+                public void paintControl(PaintEvent e) {
                     Point viewerPoint = viewer.getTree().getSize();
                     Point point = parent.getSize();
                     if (viewerPoint.x == point.x - 7 && viewerPoint.y == point.y - 40)
@@ -346,6 +347,7 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
                     viewer.getTree().showSelection();
                 }
             });
+        }
 
         if (viewer instanceof ITreeViewerListener) {
             viewer.addTreeListener((ITreeViewerListener) viewer);
