@@ -38,7 +38,7 @@ public class TestNestedProperties extends ComponentProperties {
     @Override
     public void setupLayout() {
         super.setupLayout();
-        Form form = Form.create(this, Form.MAIN, "Nested Component"); //$NON-NLS-1$
+        Form form = Form.create(this, Form.MAIN); //$NON-NLS-1$
         form.addRow(userName);
         form.addRow(widget(userPassword).setWidgetType(WidgetType.HIDDEN_TEXT));
     }

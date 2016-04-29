@@ -45,7 +45,7 @@ public class TestProperties extends FixedConnectorsComponentProperties {
     @Override
     public void setupLayout() {
         super.setupLayout();
-        Form form = Form.create(this, Form.MAIN, "Test Component"); //$NON-NLS-1$
+        Form form = Form.create(this, Form.MAIN); //$NON-NLS-1$
         form.addRow(userId);
         form.addRow(nestedProps.getForm(Form.MAIN));
     }

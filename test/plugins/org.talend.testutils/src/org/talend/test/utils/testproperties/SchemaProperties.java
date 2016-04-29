@@ -40,10 +40,10 @@ public class SchemaProperties extends ComponentProperties {
     public void setupLayout() {
         super.setupLayout();
 
-        Form schemaForm = Form.create(this, Form.MAIN, "Schema"); //$NON-NLS-1$
+        Form schemaForm = Form.create(this, Form.MAIN); //$NON-NLS-1$
         schemaForm.addRow(widget(schema).setWidgetType(WidgetType.SCHEMA_EDITOR));
 
-        Form schemaRefForm = Form.create(this, Form.REFERENCE, "Schema"); //$NON-NLS-1$
+        Form schemaRefForm = Form.create(this, Form.REFERENCE); //$NON-NLS-1$
         schemaRefForm.addRow(widget(schema).setWidgetType(WidgetType.SCHEMA_REFERENCE));
     }
 
