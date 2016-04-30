@@ -389,6 +389,12 @@ public final class ElementParameterParser {
                         newLine.put(items[i], replacedValue);
                     } else {
                         newLine.put(items[i], (String) o);
+                        if (param.getListItemsValue() != null && param.getListItemsValue()[i] instanceof IElementParameter) {
+                            IElementParameter tmpParam = (IElementParameter) param.getListItemsValue()[i];
+                            if (tmpParam.getListItemsValue() != null && tmpParam.getListItemsValue().length > 0) {
+                                newLine.put(items[i], (String) tmpParam.getListItemsValue()[0]);
+                            }
+                        }
                     }
                 } else {
                     if (o instanceof Boolean) {
