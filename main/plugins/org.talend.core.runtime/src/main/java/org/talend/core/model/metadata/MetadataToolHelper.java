@@ -1134,7 +1134,7 @@ public final class MetadataToolHelper {
                             }
                         }
                     }
-                } else if (param.getValue() instanceof Schema) {
+                } else if (param.getFieldType() == EParameterFieldType.SCHEMA_REFERENCE) {
                     if (!param.getDefaultValues().isEmpty()) {
                         Schema schema = (Schema) param.getDefaultValues().get(0).getDefaultValue();
                         org.talend.core.model.metadata.builder.connection.MetadataTable defaultEmfTable = MetadataToolAvroHelper
