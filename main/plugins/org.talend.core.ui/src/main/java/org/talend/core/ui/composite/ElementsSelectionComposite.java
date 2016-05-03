@@ -85,6 +85,7 @@ public class ElementsSelectionComposite<T> extends Composite {
             List<T> selectedElements = getInitSelectedElements(selectedElementLabels);
             if (selectedElements != null) {
                 viewer.setCheckedElements(selectedElements.toArray());
+                doSelectionChanged();
             }
         }
     }
