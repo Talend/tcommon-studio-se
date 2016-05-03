@@ -405,7 +405,7 @@ public class RepoDoubleClickAction extends Action {
                     return current;
                 }
 
-            } else if (nodeType != null && nodeType.equals(ERepositoryObjectType.PROCESS_ROUTE)
+            } else if (nodeType != null && ERepositoryObjectType.PROCESS_ROUTE.equals(obj.getContentType())
                     && isDITestCaseEditOrReadAction(current)) {
                 continue;
 
