@@ -333,7 +333,7 @@
              folder="metadata/SalesforceSchema"
              isResouce="true"
              key="repository.metadataSalesforceSchema"
-             label="SalesforceOld"
+             label="Salesforce"
              ordinal="45"
              parentNodeType="METADATA"
              products="DI"
