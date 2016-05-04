@@ -405,8 +405,9 @@ public class RepoDoubleClickAction extends Action {
                     return current;
                 }
 
-            } else if (nodeType != null && ERepositoryObjectType.PROCESS_ROUTE.equals(obj.getContentType())
-                    && isDITestCaseEditOrReadAction(current)) {
+            } else if (nodeType != null && obj.getContentType() != null
+                    && obj.getContentType().equals(ERepositoryObjectType.PROCESS_ROUTE) && isDITestCaseEditOrReadAction(current)) {
+                // TESB-17272: Cannot open route test case editor
                 continue;
 
             } else if (obj.getObject() != null
