@@ -174,28 +174,45 @@ public class ComponentServiceWithValueEvaluator implements ComponentService {
         return service.cancelFormValues(arg0, arg1);
     }
 
-    /* (non-Javadoc)
-     * @see org.talend.components.api.service.ComponentService#getSchema(org.talend.components.api.properties.ComponentProperties, org.talend.components.api.component.Connector, boolean)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.talend.components.api.service.ComponentService#getSchema(org.talend.components.api.properties.ComponentProperties
+     * , org.talend.components.api.component.Connector, boolean)
      */
     @Override
     public Schema getSchema(ComponentProperties arg0, Connector arg1, boolean arg2) {
         return service.getSchema(arg0, arg1, arg2);
     }
 
-    /* (non-Javadoc)
-     * @see org.talend.components.api.service.ComponentService#getAvailableConnectors(org.talend.components.api.properties.ComponentProperties, java.util.Set, boolean)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.talend.components.api.service.ComponentService#getAvailableConnectors(org.talend.components.api.properties
+     * .ComponentProperties, java.util.Set, boolean)
      */
     @Override
     public Set<? extends Connector> getAvailableConnectors(ComponentProperties arg0, Set<? extends Connector> arg1, boolean arg2) {
         return service.getAvailableConnectors(arg0, arg1, arg2);
     }
 
-    /* (non-Javadoc)
-     * @see org.talend.components.api.service.ComponentService#setSchema(org.talend.components.api.properties.ComponentProperties, org.talend.components.api.component.Connector, org.apache.avro.Schema, boolean)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.talend.components.api.service.ComponentService#setSchema(org.talend.components.api.properties.ComponentProperties
+     * , org.talend.components.api.component.Connector, org.apache.avro.Schema, boolean)
      */
     @Override
     public void setSchema(ComponentProperties arg0, Connector arg1, Schema arg2, boolean arg3) {
         service.setSchema(arg0, arg1, arg2, arg3);
+    }
+
+    @Override
+    public boolean setNestedPropertiesValues(ComponentProperties targetProperties, ComponentProperties nestedValues) {
+        return targetProperties.updateNestedProperties(nestedValues);
     }
 
 }
