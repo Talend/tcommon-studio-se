@@ -280,7 +280,6 @@ public abstract class ProjectRepoAbstractContentProvider extends FolderListenerS
                         @Override
                         public void run() {
                             if (repoNode != null && viewer != null && !viewer.getTree().isDisposed() && !refreshOnce) {
-                                System.out.println("one time");
                                 viewer.refresh(repoNode, true);
                                 refreshOnce = true;
                             }
