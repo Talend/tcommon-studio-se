@@ -73,14 +73,13 @@ import org.talend.core.runtime.i18n.Messages;
 import org.talend.core.runtime.services.IGenericWizardService;
 import org.talend.core.utils.KeywordsValidator;
 import org.talend.cwm.helper.ConnectionHelper;
-import org.talend.daikon.talend6.Talend6SchemaConstants;
+import org.talend.daikon.di.DiSchemaConstants;
 import org.talend.designer.core.model.utils.emf.talendfile.ColumnType;
 import org.talend.designer.core.model.utils.emf.talendfile.MetadataType;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IRepositoryService;
 import org.talend.repository.model.RepositoryConstants;
-
 import orgomg.cwm.objectmodel.core.TaggedValue;
 
 /**
@@ -1353,7 +1352,7 @@ public final class MetadataToolHelper {
         result.setTableName(sourceName);
         List<IMetadataColumn> columns = new ArrayList<IMetadataColumn>(old.getColumns().size());
         for (TaggedValue tv : old.getTaggedValue()) {
-            if (Talend6SchemaConstants.TALEND6_IS_READ_ONLY.equals(tv.getTag())) {
+            if (DiSchemaConstants.TALEND6_IS_READ_ONLY.equals(tv.getTag())) {
                 result.setReadOnly(Boolean.valueOf(tv.getValue()));
                 break;
             }
@@ -1392,9 +1391,9 @@ public final class MetadataToolHelper {
                         String[] splits = additionalTag.split(":");
                         additionalTag = splits[1];
                     }
-                    if (Talend6SchemaConstants.TALEND6_COLUMN_CUSTOM.equals(additionalTag)) {
+                    if (DiSchemaConstants.TALEND6_COLUMN_CUSTOM.equals(additionalTag)) {
                         newColumn.setCustom(Boolean.valueOf(tv.getValue()));
-                    } else if (Talend6SchemaConstants.TALEND6_IS_READ_ONLY.equals(additionalTag)) {
+                    } else if (DiSchemaConstants.TALEND6_IS_READ_ONLY.equals(additionalTag)) {
                         newColumn.setReadOnly(Boolean.valueOf(tv.getValue()));
                     } else {
                         newColumn.getAdditionalField().put(additionalTag, tv.getValue());

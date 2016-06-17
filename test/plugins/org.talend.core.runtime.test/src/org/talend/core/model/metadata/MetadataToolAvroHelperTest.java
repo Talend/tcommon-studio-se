@@ -28,10 +28,9 @@ import org.junit.Test;
 import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
 import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.core.model.metadata.types.JavaTypesManager;
+import org.talend.daikon.avro.AvroUtils;
 import org.talend.daikon.avro.SchemaConstants;
-import org.talend.daikon.avro.util.AvroTypes;
-import org.talend.daikon.avro.util.AvroUtils;
-import org.talend.daikon.talend6.Talend6SchemaConstants;
+import org.talend.daikon.di.DiSchemaConstants;
 
 /**
  * DOC hwang class global comment. Detailled comment <br/>
@@ -93,62 +92,62 @@ public class MetadataToolAvroHelperTest {
         assertThat(s.getName(), is("testTable"));
         assertThat(s.getFields().size(), is(3));
         // assertThat(s.getObjectProps().keySet(),
-        // contains(Talend6SchemaConstants.TALEND6_LABEL, Talend6SchemaConstants.TALEND6_COMMENT));
-        assertThat(s.getProp(Talend6SchemaConstants.TALEND6_LABEL), is("testTable"));
-        assertThat(s.getProp(Talend6SchemaConstants.TALEND6_COMMENT), is("A comment about this table."));
+        // contains(DiSchemaConstants.TALEND6_LABEL, DiSchemaConstants.TALEND6_COMMENT));
+        assertThat(s.getProp(DiSchemaConstants.TALEND6_LABEL), is("testTable"));
+        assertThat(s.getProp(DiSchemaConstants.TALEND6_COMMENT), is("A comment about this table."));
 
         Schema.Field f = s.getFields().get(0);
         assertTrue(AvroUtils.isNullable(f.schema()));
         assertThat(AvroUtils.unwrapIfNullable(f.schema()).getType(), is(Schema.Type.INT));
         assertThat(f.name(), is("id"));
         // assertThat(s.getObjectProps().keySet(),
-        // contains(Talend6SchemaConstants.TALEND6_LABEL, Talend6SchemaConstants.TALEND6_COLUMN_TALEND_TYPE));
-        assertThat(f.getProp(Talend6SchemaConstants.TALEND6_LABEL), is("id"));
-        assertThat(f.getProp(Talend6SchemaConstants.TALEND6_COLUMN_TALEND_TYPE), is("id_Integer"));
+        // contains(DiSchemaConstants.TALEND6_LABEL, DiSchemaConstants.TALEND6_COLUMN_TALEND_TYPE));
+        assertThat(f.getProp(DiSchemaConstants.TALEND6_LABEL), is("id"));
+        assertThat(f.getProp(DiSchemaConstants.TALEND6_COLUMN_TALEND_TYPE), is("id_Integer"));
 
         f = s.getFields().get(1);
         assertThat(f.schema().getType(), is(Schema.Type.STRING));
         assertThat(f.name(), is("name"));
         assertFalse(AvroUtils.isNullable(f.schema()));
         // assertThat(s.getObjectProps().keySet(),
-        // contains(Talend6SchemaConstants.TALEND6_LABEL, Talend6SchemaConstants.TALEND6_COLUMN_TALEND_TYPE));
-        assertThat(f.getProp(Talend6SchemaConstants.TALEND6_LABEL), is("name"));
-        assertThat(f.getProp(Talend6SchemaConstants.TALEND6_COLUMN_TALEND_TYPE), is("id_String"));
+        // contains(DiSchemaConstants.TALEND6_LABEL, DiSchemaConstants.TALEND6_COLUMN_TALEND_TYPE));
+        assertThat(f.getProp(DiSchemaConstants.TALEND6_LABEL), is("name"));
+        assertThat(f.getProp(DiSchemaConstants.TALEND6_COLUMN_TALEND_TYPE), is("id_String"));
 
         f = s.getFields().get(2);
         assertThat(f.schema().getType(), is(Schema.Type.BOOLEAN));
         assertThat(f.name(), is("valid"));
         // assertThat(s.getObjectProps().keySet(),
-        // contains(Talend6SchemaConstants.TALEND6_LABEL, Talend6SchemaConstants.TALEND6_COLUMN_TALEND_TYPE));
-        assertThat(f.getProp(Talend6SchemaConstants.TALEND6_LABEL), is("valid"));
-        assertThat(f.getProp(Talend6SchemaConstants.TALEND6_COLUMN_TALEND_TYPE), is("id_Boolean"));
+        // contains(DiSchemaConstants.TALEND6_LABEL, DiSchemaConstants.TALEND6_COLUMN_TALEND_TYPE));
+        assertThat(f.getProp(DiSchemaConstants.TALEND6_LABEL), is("valid"));
+        assertThat(f.getProp(DiSchemaConstants.TALEND6_COLUMN_TALEND_TYPE), is("id_Boolean"));
 
         assertThat(s.getProp(SchemaConstants.INCLUDE_ALL_FIELDS), is("true"));
-        assertThat(s.getProp(Talend6SchemaConstants.TALEND6_DYNAMIC_COLUMN_NAME), is("dyn"));
-        assertThat(s.getProp(Talend6SchemaConstants.TALEND6_DYNAMIC_COLUMN_POSITION), is("3"));
-        assertThat(s.getProp(Talend6SchemaConstants.TALEND6_COLUMN_TALEND_TYPE), is("id_Dynamic"));
+        assertThat(s.getProp(DiSchemaConstants.TALEND6_DYNAMIC_COLUMN_NAME), is("dyn"));
+        assertThat(s.getProp(DiSchemaConstants.TALEND6_DYNAMIC_COLUMN_POSITION), is("3"));
+        assertThat(s.getProp(DiSchemaConstants.TALEND6_COLUMN_TALEND_TYPE), is("id_Dynamic"));
     }
 
     @Test
     public void testConvertFromAvro() {
         SortedMap<String, Schema> map = new TreeMap<>();
-        map.put(JavaTypesManager.STRING.getId(), AvroTypes._string());
-        map.put(JavaTypesManager.LONG.getId(), AvroTypes._long());
-        map.put(JavaTypesManager.INTEGER.getId(), AvroTypes._int());
-        map.put(JavaTypesManager.SHORT.getId(), AvroTypes._short());
-        map.put(JavaTypesManager.BYTE.getId(), AvroTypes._byte());
-        map.put(JavaTypesManager.DOUBLE.getId(), AvroTypes._double());
-        map.put(JavaTypesManager.FLOAT.getId(), AvroTypes._float());
-        map.put(JavaTypesManager.BIGDECIMAL.getId(), AvroTypes._decimal());
-        map.put(JavaTypesManager.BOOLEAN.getId(), AvroTypes._boolean());
-        map.put(JavaTypesManager.BYTE_ARRAY.getId(), AvroTypes._bytes());
-        map.put(JavaTypesManager.DATE.getId(), AvroTypes._date());
+        map.put(JavaTypesManager.STRING.getId(), AvroUtils._string());
+        map.put(JavaTypesManager.LONG.getId(), AvroUtils._long());
+        map.put(JavaTypesManager.INTEGER.getId(), AvroUtils._int());
+        map.put(JavaTypesManager.SHORT.getId(), AvroUtils._short());
+        map.put(JavaTypesManager.BYTE.getId(), AvroUtils._byte());
+        map.put(JavaTypesManager.DOUBLE.getId(), AvroUtils._double());
+        map.put(JavaTypesManager.FLOAT.getId(), AvroUtils._float());
+        map.put(JavaTypesManager.BIGDECIMAL.getId(), AvroUtils._decimal());
+        map.put(JavaTypesManager.BOOLEAN.getId(), AvroUtils._boolean());
+        map.put(JavaTypesManager.BYTE_ARRAY.getId(), AvroUtils._bytes());
+        map.put(JavaTypesManager.DATE.getId(), AvroUtils._date());
 
         RecordBuilder<Schema> builder = SchemaBuilder.builder().record("MyTable"); //$NON-NLS-1$
         FieldAssembler<Schema> fa = builder.fields();
         for (String talendType : map.keySet()) {
             FieldBuilder<Schema> fb = fa.name(talendType.replace('[', '_').replace(']', '_'));
-            fb.prop(Talend6SchemaConstants.TALEND6_LABEL, talendType);
+            fb.prop(DiSchemaConstants.TALEND6_LABEL, talendType);
             fa = fb.type(map.get(talendType)).noDefault();
         }
         Schema schema = fa.endRecord();
