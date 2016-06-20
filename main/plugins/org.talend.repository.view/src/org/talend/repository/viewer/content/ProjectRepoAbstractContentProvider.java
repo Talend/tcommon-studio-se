@@ -64,6 +64,8 @@ public abstract class ProjectRepoAbstractContentProvider extends FolderListenerS
 
     private ServiceRegistration lockService;
 
+    public static boolean refreshOnce = false;
+
     private final class DeletedFolderListener extends AdapterImpl {
 
         @Override
@@ -277,12 +279,14 @@ public abstract class ProjectRepoAbstractContentProvider extends FolderListenerS
 
                         @Override
                         public void run() {
-                            if (repoNode != null && viewer != null && !viewer.getTree().isDisposed()) {
+                            if (repoNode != null && viewer != null && !viewer.getTree().isDisposed() && !refreshOnce) {
                                 viewer.refresh(repoNode, true);
+                                refreshOnce = true;
                             }
 
                         }
                     });
+                    refreshOnce = false;
 
                 }// else not an item handled by this content provider so ignore it.
             }
