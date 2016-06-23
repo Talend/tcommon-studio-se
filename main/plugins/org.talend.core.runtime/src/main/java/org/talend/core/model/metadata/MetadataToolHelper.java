@@ -1338,6 +1338,10 @@ public final class MetadataToolHelper {
         return null;
     }
 
+    /**
+     * Converts from org.talend.core.model.metadata.builder.connection.MetadataTable to
+     * org.talend.core.model.metadata.MetadataTable
+     */
     public static IMetadataTable convert(MetadataTable old) {
         ICoreService coreService = (ICoreService) GlobalServiceRegister.getDefault().getService(ICoreService.class);
         IMetadataTable result = new org.talend.core.model.metadata.MetadataTable();

@@ -31,6 +31,7 @@ import org.talend.core.model.metadata.types.JavaTypesManager;
 import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.cwm.helper.TaggedValueHelper;
 import org.talend.daikon.avro.AvroUtils;
+import org.talend.daikon.avro.SchemaConstants;
 import orgomg.cwm.objectmodel.core.Expression;
 import orgomg.cwm.objectmodel.core.TaggedValue;
 
@@ -550,7 +551,7 @@ public final class MetadataToolAvroHelper {
                 col.getTaggedValue().add(tv);
             }
         }
-        if (null != (prop = field.getProp(DiSchemaConstants.TALEND6_COLUMN_CUSTOM))) {
+        if (null != (prop = field.getProp(SchemaConstants.TALEND_FIELD_GENERATED))) {
             TaggedValue tv = TaggedValueHelper.createTaggedValue(DiSchemaConstants.TALEND6_COLUMN_CUSTOM, prop);
             col.getTaggedValue().add(tv);
         }
