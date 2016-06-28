@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.librariesmanager.model.service;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -226,5 +227,10 @@ public class LibrariesService implements ILibrariesService {
     @Override
     public Set<ModuleNeeded> getCodesModuleNeededs(ERepositoryObjectType type) {
         return getLibrariesService().getCodesModuleNeededs(type);
+    }
+
+    @Override
+    public void deployProjectLibrary(File source) throws IOException{
+        this.getLibrariesService().deployProjectLibrary(source);
     }
 }

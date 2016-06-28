@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.core.model.general;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -59,6 +60,8 @@ public interface ILibrariesService extends IService {
     public void deployLibrary(URL source) throws IOException;
 
     public void deployLibrarys(URL[] source) throws IOException;
+    
+    public void deployProjectLibrary(File source) throws IOException;
 
     public void undeployLibrary(String jarName) throws IOException;
 
