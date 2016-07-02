@@ -178,6 +178,15 @@ public class RepositoryViewLabelProvider extends AbstractRepoViewLabelProvider {
             return false;
         }
 
+        /* (non-Javadoc)
+         * @see org.talend.repository.ui.views.IRepositoryView#findRepositoryNode(java.lang.String)
+         */
+        @Override
+        public RepositoryNode findRepositoryNode(String id) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
     }
 
     RepositoryLabelProvider repoLabelProv;

@@ -252,6 +252,10 @@ public class RepositoryNodeUtilities {
         if (view == null) {
             return null;
         }
+        RepositoryNode node = view.findRepositoryNode(curNode.getId());
+        if (node != null) {
+            return node;
+        }
         return getRepositoryNode((IRepositoryNode) view.getRoot(), curNode, view, expanded);
     }
 

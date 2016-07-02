@@ -52,4 +52,5 @@ public interface IRepositoryView extends IViewPart {
 
     public boolean containsRepositoryType(ERepositoryObjectType type);
 
+    public RepositoryNode findRepositoryNode(String id);
 }

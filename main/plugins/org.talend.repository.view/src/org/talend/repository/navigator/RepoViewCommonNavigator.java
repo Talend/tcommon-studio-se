@@ -991,4 +991,34 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
         super.dispose();
     }
 
+    /* (non-Javadoc)
+     * @see org.talend.repository.ui.views.IRepositoryView#findRepositoryNode(java.lang.String)
+     */
+    @Override
+    public RepositoryNode findRepositoryNode(String id) {
+        for (TreeItem item : viewer.getTree().getItems()) {
+            RepositoryNode node = findRepositoryNode(id, item);
+            if (node != null) {
+                return node;
+            }
+        }
+        return null;
+    }
+    
+    private RepositoryNode findRepositoryNode(String id, TreeItem parentItem) {
+        for (TreeItem item : parentItem.getItems()) {
+            if (item.getData() instanceof RepositoryNode) {
+                RepositoryNode node = (RepositoryNode) item.getData();
+                if (node.getId().equals(id)) {
+                    return node;
+                }
+            }
+            RepositoryNode node = findRepositoryNode(id, item);
+            if (node != null) {
+                return node;
+            }
+        }
+        return null;
+    }
+
 }
