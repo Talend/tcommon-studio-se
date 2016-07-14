@@ -769,11 +769,24 @@ public class RelationshipItemBuilder {
         }
     }
 
+    public boolean supportRelation(Item item){
+    	ERepositoryObjectType itemType = ERepositoryObjectType.getItemType(item);
+    	 if (ERepositoryObjectType.getAllTypesOfProcess().contains(itemType)) {
+    		 return true;
+    	 }else if(ERepositoryObjectType.JOBLET!=null && itemType == ERepositoryObjectType.JOBLET){
+    		 return true;
+    	 }
+    	return false;
+    }
+    
     public void addOrUpdateItem(Item item) {
         addOrUpdateItem(item, false);
     }
 
     public void addOrUpdateItem(Item item, boolean fromMigration) {
+    	if(!supportRelation(item)){
+    		return;
+    	}
         if (!loaded) {
             loadRelations();
         }

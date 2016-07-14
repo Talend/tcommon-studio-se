@@ -13,6 +13,7 @@
 package org.talend.repository.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -42,6 +43,7 @@ import org.talend.core.model.properties.SAPConnectionItem;
 import org.talend.core.model.relationship.Relation;
 import org.talend.core.model.relationship.RelationshipItemBuilder;
 import org.talend.core.model.repository.ERepositoryObjectType;
+import org.talend.core.model.repository.IRepositoryPrefConstants;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.repository.ISubRepositoryObject;
 import org.talend.core.model.utils.RepositoryManagerHelper;
@@ -792,18 +794,38 @@ public class RepositoryNodeUtilities {
         return null;
 
     }
+    
+    public static void checkItemDependencies(Collection<Item> selectedItems, List<IRepositoryViewObject> repositoryObjects,
+            boolean includeSystemItems, boolean includeReferenceProjectItems) {
+    	Boolean needRebuild = CoreRuntimePlugin.getInstance().getDesignerCoreService().getPreferenceStoreBooleanValue(IRepositoryPrefConstants.REBUILD_RELATIONSHIPS);
+    	for (Item item : selectedItems) {
+            RepositoryNodeUtilities.checkItemDependencies(item, repositoryObjects, false, true, needRebuild);
+        }
+    	if(needRebuild && selectedItems.size()>0){
+    		RelationshipItemBuilder.getInstance().saveRelations();
+    	}
+    }
 
     public static void checkItemDependencies(Item item, List<IRepositoryViewObject> repositoryObjects) {
         checkItemDependencies(item, repositoryObjects, true, true);
     }
 
     public static void checkItemDependencies(Item item, List<IRepositoryViewObject> repositoryObjects,
-            boolean includeSystemItems, boolean includeReferenceProjectItems) {
+            boolean includeSystemItems, boolean includeReferenceProjectItems){
+    	checkItemDependencies(item, repositoryObjects, includeSystemItems, includeReferenceProjectItems,false);
+    }
+    
+    
+    public static void checkItemDependencies(Item item, List<IRepositoryViewObject> repositoryObjects,
+            boolean includeSystemItems, boolean includeReferenceProjectItems,boolean needRebuild) {
         if (item == null) {
             return;
         }
         IProxyRepositoryFactory factory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
         RelationshipItemBuilder builder = RelationshipItemBuilder.getInstance();
+        if (needRebuild){
+			 RelationshipItemBuilder.getInstance().addOrUpdateItem(item, true);
+	     }
         List<Relation> relations = builder.getItemsRelatedTo(item.getProperty().getId(), item.getProperty().getVersion(),
                 RelationshipItemBuilder.JOB_RELATION);
         relations.addAll(builder.getItemsRelatedTo(item.getProperty().getId(), item.getProperty().getVersion(),
@@ -835,7 +857,7 @@ public class RepositoryNodeUtilities {
                         obj = factory.getLastVersion(ProjectManager.getInstance().getCurrentProject(), id);
                     }
                 }
-                checkItemDependencies(obj, repositoryObjects, includeSystemItems, includeReferenceProjectItems);
+                checkItemDependencies(obj, repositoryObjects, includeSystemItems, includeReferenceProjectItems , needRebuild);
             }
 
             // fix for TDI-19548 , and should be removed after implement add connection and context relationship to
@@ -851,7 +873,7 @@ public class RepositoryNodeUtilities {
                         } else {
                             object = factory.getLastVersion(ProjectManager.getInstance().getCurrentProject(), id);
                         }
-                        checkItemDependencies(object, repositoryObjects, includeSystemItems, includeReferenceProjectItems);
+                        checkItemDependencies(object, repositoryObjects, includeSystemItems, includeReferenceProjectItems, needRebuild);
                     }
                 }
             }
@@ -862,12 +884,12 @@ public class RepositoryNodeUtilities {
     }
 
     private static void checkItemDependencies(IRepositoryViewObject obj, List<IRepositoryViewObject> repositoryObjects,
-            boolean includeSystemItems, boolean includeReferenceProjectItems) {
+            boolean includeSystemItems, boolean includeReferenceProjectItems, boolean needRebuild) {
         if (obj != null && !repositoryObjects.contains(obj)) {
             repositoryObjects.add(obj);
             checkAllVersionLatest(repositoryObjects, obj, includeSystemItems, includeReferenceProjectItems);
             checkItemDependencies(obj.getProperty().getItem(), repositoryObjects, includeSystemItems,
-                    includeReferenceProjectItems);
+                    includeReferenceProjectItems, needRebuild);
         }
     }
 
