@@ -33,6 +33,8 @@ import org.talend.core.model.temp.ECodePart;
 public interface IComponent {
 
     String JOBLET_PID = "org.talend.designer.joblet"; //$NON-NLS-1$
+    
+    String SPARK_JOBLET_PID = "org.talend.designer.sparkjoblet"; //$NON-NLS-1$
 
     String PROP_NAME = "NAME"; //$NON-NLS-1$
 

@@ -27,4 +27,6 @@ public interface ISparkJobletProviderService extends IService{
     
     public void clearSparkJobletComponent();
     
+    public IComponent createSparkJobletComponent();
+    
 }
