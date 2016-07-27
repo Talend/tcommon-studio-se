@@ -12,12 +12,19 @@
 // ============================================================================
 package org.talend.core.ui;
 
+import org.talend.core.IService;
+import org.talend.core.model.components.IComponent;
 import org.talend.core.model.process.INode;
 
 /**
  * DOC hwang  class global comment. Detailled comment
  */
-public interface ISparkJobletProviderService {
+public interface ISparkJobletProviderService extends IService{
 
     public boolean isSparkJobletComponent(INode node);
+    
+    public IComponent instanceSparkJobletComponent(Object execObj);
+    
+    public void clearSparkJobletComponent();
+    
 }

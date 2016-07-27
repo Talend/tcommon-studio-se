@@ -46,7 +46,9 @@ public interface IComponent {
 
     String PROP_HELP = "HELP"; //$NON-NLS-1$
 
-    String FAMILY = "Joblets"; //$NON-NLS-1$
+    String JOBLET_FAMILY = "Joblets"; //$NON-NLS-1$
+    
+    String SPARK_JOBLET_FAMILY = "Spark Joblets"; //$NON-NLS-1$
 
     public String getName();
 
