@@ -12,14 +12,22 @@
 // ============================================================================
 package org.talend.core.ui;
 
+import org.eclipse.core.runtime.IAdaptable;
+import org.talend.commons.exception.PersistenceException;
 import org.talend.core.IService;
 import org.talend.core.model.components.IComponent;
+import org.talend.core.model.process.Element;
 import org.talend.core.model.process.INode;
+import org.talend.core.model.properties.Item;
+import org.talend.core.model.properties.JobletProcessItem;
+import org.talend.core.model.repository.IRepositoryEditorInput;
 
 /**
  * DOC hwang  class global comment. Detailled comment
  */
 public interface ISparkJobletProviderService extends IService{
+    
+    public boolean isSparkJobletItem(Item item);
 
     public boolean isSparkJobletComponent(INode node);
     
@@ -28,5 +36,11 @@ public interface ISparkJobletProviderService extends IService{
     public void clearSparkJobletComponent();
     
     public IComponent createSparkJobletComponent();
+    
+    public Element createSparkJobletContainer(INode node);
+    
+    public IAdaptable createEditorPart(Object model);
+    
+    public IRepositoryEditorInput createJobletEditor(JobletProcessItem processItem, Boolean load, Boolean lastVersion, Boolean readonly,Boolean openedInJob) throws PersistenceException;
     
 }
