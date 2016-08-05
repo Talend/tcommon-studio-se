@@ -7,6 +7,14 @@ Require-Bundle: org.eclipse.xsd,
  org.apache.commons.beanutils,
  org.apache.commons.lang,
  org.talend.core.runtime,
- org.apache.xerces
+ org.apache.xerces,
+ org.eclipse.wst.xsd.ui,
+ org.eclipse.wst.sse.core,
+ org.eclipse.core.resources,
+ org.eclipse.core.runtime,
+ org.eclipse.wst.xml.core,
+ org.eclipse.wst.wsdl.ui,
+ org.eclipse.wst.wsdl,
+ javax.wsdl;bundle-version="1.6.2"
 Export-Package: org.talend.datatools.xml.utils
 Bundle-Vendor: .Talend SA.

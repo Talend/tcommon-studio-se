@@ -28,12 +28,25 @@ import java.util.Set;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.wst.sse.core.StructuredModelManager;
+import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
+import org.eclipse.wst.wsdl.Definition;
+import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
+import org.eclipse.wst.wsdl.internal.util.WSDLResourceFactoryImpl;
+import org.eclipse.wst.wsdl.ui.internal.text.WSDLModelLocatorAdapterFactory;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
+import org.eclipse.wst.xsd.ui.internal.text.XSDModelAdapter;
+import org.eclipse.wst.xsd.ui.internal.util.XSDSchemaLocationResolverAdapterFactory;
 import org.eclipse.xsd.XSDAttributeDeclaration;
 import org.eclipse.xsd.XSDAttributeUse;
 import org.eclipse.xsd.XSDComplexTypeDefinition;
@@ -48,6 +61,7 @@ import org.eclipse.xsd.XSDTypeDefinition;
 import org.eclipse.xsd.impl.XSDNamedComponentImpl;
 import org.eclipse.xsd.util.XSDConstants;
 import org.eclipse.xsd.util.XSDResourceImpl;
+import org.w3c.dom.Document;
 
 /**
  * DOC ycbai class global comment. Detailled comment
@@ -74,9 +88,14 @@ public class XSDPopulationUtil2 {
 
     private Map<XSDElementDeclaration, ATreeNode> particleToTreeNode = new HashMap<XSDElementDeclaration, ATreeNode>();
 
-    ResourceSet resourceSet = new ResourceSetImpl();
+    private boolean loadFromWSDL;
+
+    ResourceSet resourceSet;
 
     public XSDPopulationUtil2() {
+        resourceSet = new ResourceSetImpl();
+        resourceSet.getAdapterFactories().add(new WSDLModelLocatorAdapterFactory());
+        resourceSet.getAdapterFactories().add(new XSDSchemaLocationResolverAdapterFactory());
     }
 
     public XSDSchema getXSDSchema(String fileName) throws URISyntaxException, MalformedURLException {
@@ -165,8 +184,8 @@ public class XSDPopulationUtil2 {
                 }
                 node.setValue(elementName);
                 if (xsdTypeDefinition == null) {
-                    XSDComplexTypeDefinition generalType = xsdSchema.resolveComplexTypeDefinitionURI(xsdElementDeclaration
-                            .getURI());
+                    XSDComplexTypeDefinition generalType = xsdSchema
+                            .resolveComplexTypeDefinitionURI(xsdElementDeclaration.getURI());
                     if (generalType.getContainer() != null) {
                         xsdTypeDefinition = generalType;
                     }
@@ -196,7 +215,25 @@ public class XSDPopulationUtil2 {
         return rootNodes;
     }
 
-    private XSDSchema getXSDSchemaFromNamespace(String namespace) {
+    public XSDSchema getXSDSchemaFromNamespace(String namespace) {
+        if (loadFromWSDL) {
+            if (resourceSet.getResources().size() == 1) {
+                Resource resource = resourceSet.getResources().get(0);
+                if (resource.getContents().size() == 1) {
+                    Object oDef = resource.getContents().get(0);
+                    if (oDef instanceof Definition) {
+                        Definition definition = (Definition) oDef;
+                        for (Object o : definition.getETypes().getEExtensibilityElements()) {
+                            XSDSchemaExtensibilityElement schema = (XSDSchemaExtensibilityElement) o;
+                            if (schema.getSchema().getTargetNamespace().equals(namespace)) {
+                                return schema.getSchema();
+                            }
+                        }
+                    }
+                }
+            }
+            return null;
+        }
         for (Resource resource : resourceSet.getResources()) {
             if (resource instanceof XSDResourceImpl) {
                 XSDResourceImpl xsdResource = (XSDResourceImpl) resource;
@@ -238,8 +275,8 @@ public class XSDPopulationUtil2 {
                 if (schemaFromNamespace == null) {
                     schemaFromNamespace = xsdSchema;
                 }
-                xsdElementDeclarationParticle = schemaFromNamespace.resolveElementDeclarationURI(xsdElementDeclarationParticle
-                        .getURI());
+                xsdElementDeclarationParticle = schemaFromNamespace
+                        .resolveElementDeclarationURI(xsdElementDeclarationParticle.getURI());
                 typeDef = xsdElementDeclarationParticle.getTypeDefinition();
             }
             String typeNamespace = typeDef.getTargetNamespace();
@@ -255,8 +292,8 @@ public class XSDPopulationUtil2 {
             if (namespace != null) {
                 prefix = namespaceToPrefix.get(namespace);
                 if (prefix == null) {
-                    prefix = ((XSDElementDeclaration) xsdTerm).getQName().contains(":") ? ((XSDElementDeclaration) xsdTerm)
-                            .getQName().split(":")[0] : "";
+                    prefix = ((XSDElementDeclaration) xsdTerm).getQName().contains(":")
+                            ? ((XSDElementDeclaration) xsdTerm).getQName().split(":")[0] : "";
 
                     if (isEnableGeneratePrefix() && (prefix == null || prefix.isEmpty())) {
                         // generate a new prefix
@@ -278,7 +315,8 @@ public class XSDPopulationUtil2 {
                             for (Object child : node.getChildren()) {
                                 if (child instanceof ATreeNode) {
                                     ATreeNode childNode = (ATreeNode) child;
-                                    if (childNode.getType() == ATreeNode.NAMESPACE_TYPE && namespace.equals(childNode.getValue())) {
+                                    if (childNode.getType() == ATreeNode.NAMESPACE_TYPE
+                                            && namespace.equals(childNode.getValue())) {
                                         namespaceFoundInParent = true;
                                         break;
                                     }
@@ -335,8 +373,9 @@ public class XSDPopulationUtil2 {
             }
             if (!resolvedAsComplex) {
                 String dataType = xsdElementDeclarationParticle.getTypeDefinition().getQName();
-                if (!XSDConstants.isSchemaForSchemaNamespace(xsdElementDeclarationParticle.getTypeDefinition()
-                        .getTargetNamespace()) && xsdElementDeclarationParticle.getTypeDefinition().getBaseType() != null) {
+                if (!XSDConstants
+                        .isSchemaForSchemaNamespace(xsdElementDeclarationParticle.getTypeDefinition().getTargetNamespace())
+                        && xsdElementDeclarationParticle.getTypeDefinition().getBaseType() != null) {
                     if (!"xs:anySimpleType".equals(xsdElementDeclarationParticle.getTypeDefinition().getBaseType().getQName())) {
                         dataType = xsdElementDeclarationParticle.getTypeDefinition().getBaseType().getQName();
                     }
@@ -382,7 +421,8 @@ public class XSDPopulationUtil2 {
         return getSchemaTree(xsdSchema, selectedNode, true, false, false);
     }
 
-    public ATreeNode getSchemaTree(XSDSchema xsdSchema, ATreeNode selectedNode, boolean supportChoice, boolean supportSubstitution) {
+    public ATreeNode getSchemaTree(XSDSchema xsdSchema, ATreeNode selectedNode, boolean supportChoice,
+            boolean supportSubstitution) {
         return getSchemaTree(xsdSchema, selectedNode, true, supportChoice, supportSubstitution);
     }
 
@@ -451,8 +491,8 @@ public class XSDPopulationUtil2 {
 
                 XSDTypeDefinition xsdTypeDefinition = xsdElementDeclaration.getTypeDefinition();
                 if (xsdTypeDefinition == null) {
-                    XSDComplexTypeDefinition generalType = xsdSchema.resolveComplexTypeDefinitionURI(xsdElementDeclaration
-                            .getURI());
+                    XSDComplexTypeDefinition generalType = xsdSchema
+                            .resolveComplexTypeDefinitionURI(xsdElementDeclaration.getURI());
                     if (generalType.getContainer() != null) {
                         xsdTypeDefinition = generalType;
                     }
@@ -758,4 +798,20 @@ public class XSDPopulationUtil2 {
     public void setIncludeAbsSubs(boolean includeAbsSubs) {
         this.includeAbsSubs = includeAbsSubs;
     }
+
+    /**
+     * DOC nrousseau Comment method "loadWSDL".
+     * 
+     * @param wsdlFile
+     * @throws CoreException
+     * @throws IOException
+     */
+    public void loadWSDL(String wsdlFile) throws IOException, CoreException {
+        WSDLResourceFactoryImpl resourceFactory = new WSDLResourceFactoryImpl();
+        Resource resource = resourceFactory.createResource(URI.createURI(wsdlFile));
+        resourceSet.getResources().add(resource);
+        resource.load(null);
+        loadFromWSDL = true;
+    }
+
 }

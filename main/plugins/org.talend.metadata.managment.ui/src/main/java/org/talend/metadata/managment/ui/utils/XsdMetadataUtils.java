@@ -177,8 +177,9 @@ public final class XsdMetadataUtils {
         connection.setName(ERepositoryObjectType.METADATA_FILE_XML.getKey());
         connectionItem = PropertiesFactory.eINSTANCE.createXmlFileConnectionItem();
         connectionProperty = PropertiesFactory.eINSTANCE.createProperty();
-        connectionProperty.setAuthor(((RepositoryContext) CoreRuntimePlugin.getInstance().getContext()
-                .getProperty(Context.REPOSITORY_CONTEXT_KEY)).getUser());
+        connectionProperty.setAuthor(
+                ((RepositoryContext) CoreRuntimePlugin.getInstance().getContext().getProperty(Context.REPOSITORY_CONTEXT_KEY))
+                        .getUser());
         connectionProperty.setLabel(connectionLabel);
         connectionProperty.setVersion(VersionUtils.DEFAULT_VERSION);
         connectionProperty.setStatusCode(""); //$NON-NLS-1$
@@ -196,7 +197,10 @@ public final class XsdMetadataUtils {
         connection.setXmlFilePath(schemaFileName.concat("_").concat(zip.getName())); //$NON-NLS-1$
         try {
             String filePath = schemaFile.getPath(); // name of xsd file needed
-            XSDSchema xsdSchema = populationUtil.getXSDSchema(filePath);
+            XSDSchema xsdSchema = populationUtil.getXSDSchemaFromNamespace(parameter.getNamespaceURI());
+            if (xsdSchema == null) {
+                xsdSchema = populationUtil.getXSDSchema(filePath);
+            }
             List<ATreeNode> rootNodes = populationUtil.getAllRootNodes(xsdSchema);
             ATreeNode node = null;
             // try to find the root element needed from XSD file.
@@ -433,7 +437,7 @@ public final class XsdMetadataUtils {
 
     public static String getImportedXmlSchemaPath(String namespace, String portType, String operation) throws URISyntaxException {
         if (namespace == null || portType == null || operation == null) {
-            throw new URISyntaxException(namespace + " " + portType + " " + operation,//$NON-NLS-1$//$NON-NLS-2$
+            throw new URISyntaxException(namespace + " " + portType + " " + operation, //$NON-NLS-1$//$NON-NLS-2$
                     "The arguments can't be empty, please check");//$NON-NLS-1$
         }
         StringBuilder builder = new StringBuilder(replaceAllLimited(new URI(namespace).getRawSchemeSpecificPart()));
