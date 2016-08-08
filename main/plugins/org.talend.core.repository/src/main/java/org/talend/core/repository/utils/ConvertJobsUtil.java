@@ -40,6 +40,7 @@ import org.talend.core.model.general.Project;
 import org.talend.core.model.process.IElementParameter;
 import org.talend.core.model.process.IProcess;
 import org.talend.core.model.properties.Item;
+import org.talend.core.model.properties.JobletProcessItem;
 import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
@@ -395,6 +396,20 @@ public class ConvertJobsUtil {
 
     public static Item createOperation(final String newJobName, final String jobTypeValue, final String frameworkValue,
             final IRepositoryViewObject sourceObject) {
+        if (sourceObject == null || sourceObject.getProperty() == null || newJobName == null) {
+            return null;
+        }
+        Item item = sourceObject.getProperty().getItem();
+        if(item instanceof ProcessItem){
+            return createProcessOperation(newJobName, jobTypeValue,  frameworkValue, sourceObject);
+        }else if(item instanceof JobletProcessItem){
+            return createJobletOperation(newJobName, jobTypeValue,  frameworkValue, sourceObject);
+        }
+        return null;
+    }
+    
+    public static Item createProcessOperation(final String newJobName, final String jobTypeValue, final String frameworkValue,
+            final IRepositoryViewObject sourceObject) {
         IProcessConvertService converter = null;
         if (sourceObject == null || sourceObject.getProperty() == null || newJobName == null) {
             return null;
@@ -422,6 +437,34 @@ public class ConvertJobsUtil {
             }
         } else if (JobType.BIGDATABATCH.getDisplayName().equals(jobTypeValue)) {
             converter = ProcessConvertManager.getInstance().extractConvertService(ProcessConverterType.CONVERTER_FOR_MAPREDUCE);
+            if (converter != null && converter instanceof IProcessConvertToAllTypeService) {
+                return ((IProcessConvertToAllTypeService) converter).convertToProcessBatch(item, sourceObject, newJobName,
+                        jobTypeValue, frameworkValue);
+            }
+        }
+        return null;
+    }
+    
+    public static Item createJobletOperation(final String newJobName, final String jobTypeValue, final String frameworkValue,
+            final IRepositoryViewObject sourceObject) {
+        IProcessConvertService converter = null;
+        if (sourceObject == null || sourceObject.getProperty() == null || newJobName == null) {
+            return null;
+        }
+        Item item = sourceObject.getProperty().getItem();
+        if (JobType.STANDARD.getDisplayName().equals(jobTypeValue)) {
+            String sourceJobType = getJobTypeFromFramework(item);
+            if (JobType.BIGDATABATCH.getDisplayName().equals(sourceJobType)
+                    || ERepositoryObjectType.PROCESS_MR == sourceObject.getRepositoryObjectType()) {
+                converter = ProcessConvertManager.getInstance().extractConvertService(
+                        ProcessConverterType.CONVERTER_FOR_SPARK_JOBLET);
+            }
+            if (converter != null && converter instanceof IProcessConvertToAllTypeService) {
+                return ((IProcessConvertToAllTypeService) converter).convertToProcess(item, sourceObject, newJobName,
+                        jobTypeValue);
+            }
+        } else if (JobType.BIGDATABATCH.getDisplayName().equals(jobTypeValue)) {
+            converter = ProcessConvertManager.getInstance().extractConvertService(ProcessConverterType.CONVERTER_FOR_SPARK_JOBLET);
             if (converter != null && converter instanceof IProcessConvertToAllTypeService) {
                 return ((IProcessConvertToAllTypeService) converter).convertToProcessBatch(item, sourceObject, newJobName,
                         jobTypeValue, frameworkValue);
