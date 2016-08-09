@@ -13,6 +13,7 @@
 package org.talend.datatools.xml.utils;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -31,8 +32,10 @@ import org.apache.commons.lang.StringUtils;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.xsd.XSDAttributeDeclaration;
 import org.eclipse.xsd.XSDAttributeUse;
@@ -74,9 +77,30 @@ public class XSDPopulationUtil2 {
 
     private Map<XSDElementDeclaration, ATreeNode> particleToTreeNode = new HashMap<XSDElementDeclaration, ATreeNode>();
 
-    ResourceSet resourceSet = new ResourceSetImpl();
+    ResourceSet resourceSet;
 
     public XSDPopulationUtil2() {
+        resourceSet = new ResourceSetImpl();
+        resourceSet.setURIConverter(new ExtensibleURIConverterImpl() {
+
+            /*
+             * (non-Javadoc)
+             * 
+             * @see org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl#createInputStream(org.eclipse.
+             * emf.common.util.URI, java.util.Map)
+             */
+            @Override
+            public InputStream createInputStream(URI uri, Map<?, ?> options) throws IOException {
+                InputStream inputStream = null;
+                EPackage ePackage = resourceSet.getPackageRegistry().getEPackage(uri.toString());
+                if (ePackage != null || !"http".equals(uri.scheme())) {
+                    inputStream = super.createInputStream(uri, options);
+                } else {
+                    inputStream = null;
+                }
+                return inputStream;
+            }
+        });
     }
 
     public XSDSchema getXSDSchema(String fileName) throws URISyntaxException, MalformedURLException {
