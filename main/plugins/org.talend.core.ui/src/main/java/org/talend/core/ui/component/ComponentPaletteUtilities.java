@@ -55,6 +55,8 @@ public class ComponentPaletteUtilities {
     private static boolean jobletFlag = false;
     
     private static boolean sparkJobletFlag = false;
+    
+    private static boolean sparkStreamingJobletFlag = false;
 
     public static int histate = 0;
 
@@ -78,7 +80,8 @@ public class ComponentPaletteUtilities {
         boolean isJoblet = false;
         jobletFlag = (itemType == ERepositoryObjectType.JOBLET);
         sparkJobletFlag = (itemType == ERepositoryObjectType.SPARK_JOBLET);
-        isJoblet = (itemType == ERepositoryObjectType.JOBLET || itemType == ERepositoryObjectType.SPARK_JOBLET);
+        sparkStreamingJobletFlag = (itemType == ERepositoryObjectType.SPARK_STREAMING_JOBLET);
+        isJoblet = (itemType == ERepositoryObjectType.JOBLET || itemType == ERepositoryObjectType.SPARK_JOBLET|| itemType == ERepositoryObjectType.SPARK_STREAMING_JOBLET);
         if (extraPaletteEntry != null) {
             for (PaletteEntry entry : extraPaletteEntry) {
                 if(entry instanceof TalendCreationToolEntry){
@@ -103,6 +106,9 @@ public class ComponentPaletteUtilities {
         }
         if(sparkJobletFlag == true){
             setExtraEntryVisible(ERepositoryObjectType.SPARK_JOBLET);
+        }
+        if(sparkStreamingJobletFlag == true){
+            setExtraEntryVisible(ERepositoryObjectType.SPARK_STREAMING_JOBLET);
         }
         if (skipUpdatePalette) {
             return;

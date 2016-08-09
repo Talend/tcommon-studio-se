@@ -86,6 +86,13 @@ public class CheckJobletDeleteReference extends AbstractCheckDeleteItemReference
                                     list, label, version, type, isItemDeleted,
                                     item, relations, refP,deleteActionCache);
                         }
+                        ERepositoryObjectType sparkStreamingJobletType = ERepositoryObjectType.SPARK_STREAMING_JOBLET;
+                        if (sparkStreamingJobletType != null) {
+                            List<IRepositoryViewObject> sparkStreamingJoblets = factory.getAll(refP, sparkStreamingJobletType, true);
+                            checkRelationshipItems(factory, sparkStreamingJoblets, RelationshipItemBuilder.JOBLET_RELATION,
+                                    list, label, version, type, isItemDeleted,
+                                    item, relations, refP,deleteActionCache);
+                        }
                         deleteActionCache.setProcessList(processes);
                         for (IProcess2 openedProcess : deleteActionCache.getOpenedProcessList()) {
                             for (INode node : openedProcess.getGraphicalNodes()) {

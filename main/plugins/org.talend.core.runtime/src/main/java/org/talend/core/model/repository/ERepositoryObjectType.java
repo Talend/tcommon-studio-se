@@ -409,6 +409,8 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
     
     public final static ERepositoryObjectType SPARK_JOBLET = ERepositoryObjectType.valueOf("SPARK_JOBLET"); //$NON-NLS-1$
     
+    public final static ERepositoryObjectType SPARK_STREAMING_JOBLET = ERepositoryObjectType.valueOf("SPARK_STREAMING_JOBLET"); //$NON-NLS-1$
+    
     public final static ERepositoryObjectType TEST_CONTAINER = ERepositoryObjectType.valueOf("TEST_CONTAINER"); //$NON-NLS-1$
 
     public final static ERepositoryObjectType CODE = ERepositoryObjectType.valueOf("CODE"); //$NON-NLS-1$
