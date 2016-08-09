@@ -28,25 +28,12 @@ import java.util.Set;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.wst.sse.core.StructuredModelManager;
-import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
-import org.eclipse.wst.wsdl.Definition;
-import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
-import org.eclipse.wst.wsdl.internal.util.WSDLResourceFactoryImpl;
-import org.eclipse.wst.wsdl.ui.internal.text.WSDLModelLocatorAdapterFactory;
-import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
-import org.eclipse.wst.xsd.ui.internal.text.XSDModelAdapter;
-import org.eclipse.wst.xsd.ui.internal.util.XSDSchemaLocationResolverAdapterFactory;
 import org.eclipse.xsd.XSDAttributeDeclaration;
 import org.eclipse.xsd.XSDAttributeUse;
 import org.eclipse.xsd.XSDComplexTypeDefinition;
@@ -61,7 +48,6 @@ import org.eclipse.xsd.XSDTypeDefinition;
 import org.eclipse.xsd.impl.XSDNamedComponentImpl;
 import org.eclipse.xsd.util.XSDConstants;
 import org.eclipse.xsd.util.XSDResourceImpl;
-import org.w3c.dom.Document;
 
 /**
  * DOC ycbai class global comment. Detailled comment
@@ -88,14 +74,10 @@ public class XSDPopulationUtil2 {
 
     private Map<XSDElementDeclaration, ATreeNode> particleToTreeNode = new HashMap<XSDElementDeclaration, ATreeNode>();
 
-    private boolean loadFromWSDL;
-
-    ResourceSet resourceSet;
+    protected ResourceSet resourceSet;
 
     public XSDPopulationUtil2() {
         resourceSet = new ResourceSetImpl();
-        resourceSet.getAdapterFactories().add(new WSDLModelLocatorAdapterFactory());
-        resourceSet.getAdapterFactories().add(new XSDSchemaLocationResolverAdapterFactory());
     }
 
     public XSDSchema getXSDSchema(String fileName) throws URISyntaxException, MalformedURLException {
@@ -216,24 +198,6 @@ public class XSDPopulationUtil2 {
     }
 
     public XSDSchema getXSDSchemaFromNamespace(String namespace) {
-        if (loadFromWSDL) {
-            if (resourceSet.getResources().size() == 1) {
-                Resource resource = resourceSet.getResources().get(0);
-                if (resource.getContents().size() == 1) {
-                    Object oDef = resource.getContents().get(0);
-                    if (oDef instanceof Definition) {
-                        Definition definition = (Definition) oDef;
-                        for (Object o : definition.getETypes().getEExtensibilityElements()) {
-                            XSDSchemaExtensibilityElement schema = (XSDSchemaExtensibilityElement) o;
-                            if (schema.getSchema().getTargetNamespace().equals(namespace)) {
-                                return schema.getSchema();
-                            }
-                        }
-                    }
-                }
-            }
-            return null;
-        }
         for (Resource resource : resourceSet.getResources()) {
             if (resource instanceof XSDResourceImpl) {
                 XSDResourceImpl xsdResource = (XSDResourceImpl) resource;
@@ -797,21 +761,6 @@ public class XSDPopulationUtil2 {
      */
     public void setIncludeAbsSubs(boolean includeAbsSubs) {
         this.includeAbsSubs = includeAbsSubs;
-    }
-
-    /**
-     * DOC nrousseau Comment method "loadWSDL".
-     * 
-     * @param wsdlFile
-     * @throws CoreException
-     * @throws IOException
-     */
-    public void loadWSDL(String wsdlFile) throws IOException, CoreException {
-        WSDLResourceFactoryImpl resourceFactory = new WSDLResourceFactoryImpl();
-        Resource resource = resourceFactory.createResource(URI.createURI(wsdlFile));
-        resourceSet.getResources().add(resource);
-        resource.load(null);
-        loadFromWSDL = true;
     }
 
 }
