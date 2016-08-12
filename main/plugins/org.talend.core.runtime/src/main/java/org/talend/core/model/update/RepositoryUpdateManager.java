@@ -32,8 +32,8 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.PlatformUI;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
-import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ICoreService;
 import org.talend.core.IRepositoryContextUpdateService;
@@ -47,6 +47,7 @@ import org.talend.core.hadoop.repository.HadoopRepositoryUtil;
 import org.talend.core.model.context.ContextUtils;
 import org.talend.core.model.context.JobContext;
 import org.talend.core.model.context.JobContextManager;
+import org.talend.core.model.context.JobContextParameter;
 import org.talend.core.model.metadata.IMetadataColumn;
 import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.core.model.metadata.MetadataSchemaType;
@@ -95,6 +96,8 @@ import org.talend.core.service.IStormProcessService;
 import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.helper.SAPBWTableHelper;
 import org.talend.designer.core.IDesignerCoreService;
+import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
+import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.designer.runprocess.ItemCacheManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IRepositoryService;
@@ -144,6 +147,8 @@ public abstract class RepositoryUpdateManager {
     private static ICoreService coreService = null;
 
     private boolean isDetectAndUpdate = false;
+
+    private boolean checkAddContextGroup;
 
     protected static boolean isAddColumn = false;
 
@@ -1135,7 +1140,39 @@ public abstract class RepositoryUpdateManager {
                     jobContextManager.setRepositoryRenamedMap(getContextRenamedMap());
                     jobContextManager.setNewParametersMap(getNewParametersMap());
                     Map<ContextItem, List<IContext>> repositoryAddGroupContext = getRepositoryAddGroupContext();
-
+                    
+                    if(checkAddContextGroup && repositoryAddGroupContext.isEmpty() && parameter instanceof ContextItem) {
+                        List<IContext> addContextGroupList = new ArrayList<IContext>();
+                        List<IContext> jobContexts = process2.getContextManager().getListContext();
+                        List<ContextType> repositoryContexts = ((ContextItem) parameter).getContext();
+                        String repositoryId = ((ContextItem) parameter).getProperty().getId();
+                        for (ContextType repoContext : repositoryContexts) {
+                            boolean found = false;
+                            for (IContext jobContext : jobContexts) {
+                                if (jobContext.getName().equals(repoContext.getName())) {
+                                    found = true;
+                                }
+                            }
+                            if (!found) {
+                                IContext jobContext = new JobContext(repoContext.getName());
+                                List<ContextParameterType> repoParams = repoContext.getContextParameter();
+                                for (ContextParameterType repoParam : repoParams) {
+                                    IContextParameter jobParam = new JobContextParameter();
+                                    jobParam.setName(repoParam.getName());
+                                    jobParam.setContext(jobContext);
+                                    jobParam.setComment(repoParam.getComment());
+                                    jobParam.setPrompt(repoParam.getPrompt());
+                                    jobParam.setSource(repositoryId);
+                                    jobParam.setType(repoParam.getType());
+                                    jobParam.setValue(repoParam.getValue());
+                                    jobContext.getContextParameterList().add(jobParam);
+                                }
+                                addContextGroupList.add(jobContext);
+                            }
+                        }
+                        repositoryAddGroupContext.put((ContextItem) parameter, addContextGroupList);
+                    }
+                    
                     List<IContext> listIContext = new ArrayList<IContext>();
                     for (ContextItem item : repositoryAddGroupContext.keySet()) {
                         List<IContext> list = repositoryAddGroupContext.get(item);
@@ -2110,7 +2147,7 @@ public abstract class RepositoryUpdateManager {
     }
 
     public static boolean updateContext(ContextItem item, boolean show, boolean onlySimpleShow) {
-        return updateContext(null, item, show, onlySimpleShow);
+        return updateContext(null, item, show, onlySimpleShow, true);
     }
 
     /**
@@ -2126,6 +2163,11 @@ public abstract class RepositoryUpdateManager {
 
     private static boolean updateContext(JobContextManager repositoryContextManager, ContextItem item, boolean show,
             boolean onlySimpleShow) {
+        return updateContext(repositoryContextManager, item, show, onlySimpleShow, false);
+    }
+    
+    private static boolean updateContext(JobContextManager repositoryContextManager, ContextItem item, boolean show,
+            boolean onlySimpleShow, boolean detectAddContextGroup) {
         List<Relation> relations = RelationshipItemBuilder.getInstance().getItemsRelatedTo(item.getProperty().getId(),
                 RelationshipItemBuilder.LATEST_VERSION, RelationshipItemBuilder.CONTEXT_RELATION);
 
@@ -2140,6 +2182,7 @@ public abstract class RepositoryUpdateManager {
             }
 
         };
+        repositoryUpdateManager.checkAddContextGroup = detectAddContextGroup;
         if (repositoryContextManager != null) {
             // add for bug 9119 context group
             Map<ContextItem, List<IContext>> repositoryContextGroupMap = new HashMap<ContextItem, List<IContext>>();
