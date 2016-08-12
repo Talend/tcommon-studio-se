@@ -42,6 +42,7 @@ import org.talend.core.model.metadata.builder.connection.XmlXPathLoopDescriptor;
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.XmlFileConnectionImpl#isInputModel <em>Input Model</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.XmlFileConnectionImpl#getOutputFilePath <em>Output File Path</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.XmlFileConnectionImpl#getFileContent <em>File Content</em>}</li>
+ *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.XmlFileConnectionImpl#getTargetNameSpace <em>Target Name Space</em>}</li>
  * </ul>
  * </p>
  *
@@ -248,6 +249,26 @@ public class XmlFileConnectionImpl extends ConnectionImpl implements XmlFileConn
      * @ordered
      */
     protected byte[] fileContent = FILE_CONTENT_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getTargetNameSpace() <em>Target Name Space</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getTargetNameSpace()
+     * @generated
+     * @ordered
+     */
+    protected static final String TARGET_NAME_SPACE_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getTargetNameSpace() <em>Target Name Space</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getTargetNameSpace()
+     * @generated
+     * @ordered
+     */
+    protected String targetNameSpace = TARGET_NAME_SPACE_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
@@ -499,6 +520,28 @@ public class XmlFileConnectionImpl extends ConnectionImpl implements XmlFileConn
      * <!-- end-user-doc -->
      * @generated
      */
+    public String getTargetNameSpace() {
+        return targetNameSpace;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setTargetNameSpace(String newTargetNameSpace) {
+        String oldTargetNameSpace = targetNameSpace;
+        targetNameSpace = newTargetNameSpace;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.XML_FILE_CONNECTION__TARGET_NAME_SPACE,
+                    oldTargetNameSpace, targetNameSpace));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     @SuppressWarnings("unchecked")
     @Override
     public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
@@ -561,6 +604,8 @@ public class XmlFileConnectionImpl extends ConnectionImpl implements XmlFileConn
             return getOutputFilePath();
         case ConnectionPackage.XML_FILE_CONNECTION__FILE_CONTENT:
             return getFileContent();
+        case ConnectionPackage.XML_FILE_CONNECTION__TARGET_NAME_SPACE:
+            return getTargetNameSpace();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -614,6 +659,9 @@ public class XmlFileConnectionImpl extends ConnectionImpl implements XmlFileConn
         case ConnectionPackage.XML_FILE_CONNECTION__FILE_CONTENT:
             setFileContent((byte[]) newValue);
             return;
+        case ConnectionPackage.XML_FILE_CONNECTION__TARGET_NAME_SPACE:
+            setTargetNameSpace((String) newValue);
+            return;
         }
         super.eSet(featureID, newValue);
     }
@@ -662,6 +710,9 @@ public class XmlFileConnectionImpl extends ConnectionImpl implements XmlFileConn
         case ConnectionPackage.XML_FILE_CONNECTION__FILE_CONTENT:
             setFileContent(FILE_CONTENT_EDEFAULT);
             return;
+        case ConnectionPackage.XML_FILE_CONNECTION__TARGET_NAME_SPACE:
+            setTargetNameSpace(TARGET_NAME_SPACE_EDEFAULT);
+            return;
         }
         super.eUnset(featureID);
     }
@@ -698,6 +749,9 @@ public class XmlFileConnectionImpl extends ConnectionImpl implements XmlFileConn
             return OUTPUT_FILE_PATH_EDEFAULT == null ? outputFilePath != null : !OUTPUT_FILE_PATH_EDEFAULT.equals(outputFilePath);
         case ConnectionPackage.XML_FILE_CONNECTION__FILE_CONTENT:
             return FILE_CONTENT_EDEFAULT == null ? fileContent != null : !FILE_CONTENT_EDEFAULT.equals(fileContent);
+        case ConnectionPackage.XML_FILE_CONNECTION__TARGET_NAME_SPACE:
+            return TARGET_NAME_SPACE_EDEFAULT == null ? targetNameSpace != null : !TARGET_NAME_SPACE_EDEFAULT
+                    .equals(targetNameSpace);
         }
         return super.eIsSet(featureID);
     }
@@ -729,6 +783,8 @@ public class XmlFileConnectionImpl extends ConnectionImpl implements XmlFileConn
         result.append(outputFilePath);
         result.append(", fileContent: ");
         result.append(fileContent);
+        result.append(", targetNameSpace: ");
+        result.append(targetNameSpace);
         result.append(')');
         return result.toString();
     }

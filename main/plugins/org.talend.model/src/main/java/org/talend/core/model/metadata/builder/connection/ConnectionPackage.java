@@ -8360,13 +8360,22 @@ public interface ConnectionPackage extends EPackage {
     int XML_FILE_CONNECTION__FILE_CONTENT = CONNECTION_FEATURE_COUNT + 11;
 
     /**
+     * The feature id for the '<em><b>Target Name Space</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int XML_FILE_CONNECTION__TARGET_NAME_SPACE = CONNECTION_FEATURE_COUNT + 12;
+
+    /**
      * The number of structural features of the '<em>Xml File Connection</em>' class.
      * <!-- begin-user-doc --> <!--
      * end-user-doc -->
      * @generated
      * @ordered
      */
-    int XML_FILE_CONNECTION_FEATURE_COUNT = CONNECTION_FEATURE_COUNT + 12;
+    int XML_FILE_CONNECTION_FEATURE_COUNT = CONNECTION_FEATURE_COUNT + 13;
 
     /**
      * The meta object id for the '{@link org.talend.core.model.metadata.builder.connection.impl.SchemaTargetImpl <em>Schema Target</em>}' class.
@@ -22190,6 +22199,17 @@ public interface ConnectionPackage extends EPackage {
     EAttribute getXmlFileConnection_FileContent();
 
     /**
+     * Returns the meta object for the attribute '{@link org.talend.core.model.metadata.builder.connection.XmlFileConnection#getTargetNameSpace <em>Target Name Space</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Target Name Space</em>'.
+     * @see org.talend.core.model.metadata.builder.connection.XmlFileConnection#getTargetNameSpace()
+     * @see #getXmlFileConnection()
+     * @generated
+     */
+    EAttribute getXmlFileConnection_TargetNameSpace();
+
+    /**
      * Returns the meta object for class '{@link org.talend.core.model.metadata.builder.connection.SchemaTarget <em>Schema Target</em>}'.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @return the meta object for class '<em>Schema Target</em>'.
@@ -26522,6 +26542,14 @@ public interface ConnectionPackage extends EPackage {
          * @generated
          */
         EAttribute XML_FILE_CONNECTION__FILE_CONTENT = eINSTANCE.getXmlFileConnection_FileContent();
+
+        /**
+         * The meta object literal for the '<em><b>Target Name Space</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute XML_FILE_CONNECTION__TARGET_NAME_SPACE = eINSTANCE.getXmlFileConnection_TargetNameSpace();
 
         /**
          * The meta object literal for the '{@link org.talend.core.model.metadata.builder.connection.impl.SchemaTargetImpl <em>Schema Target</em>}' class.

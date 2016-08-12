@@ -166,7 +166,7 @@ public class XmlFileOutputStep1Form extends AbstractXmlFileStepForm {
                     && (XmlUtil.isWSDLFile(xmlXsdPath) || XmlUtil.isXSDFile(xmlXsdPath) || xmlXsdPath.endsWith(".zip"))) {
                 try {
                     XSDPopulationUtil2 xsdPopulationUtil = XSDUtils.getXsdHander(xmlXsdPath);
-                    String targetNamespace = getConnection().getXsdFilePath();
+                    String targetNamespace = getConnection().getTargetNameSpace();
                     XSDSchema xsdSchema = TreeUtil.getXSDSchema(xsdPopulationUtil, xmlXsdPath, targetNamespace);
                     List<ATreeNode> rootNodes = xsdPopulationUtil.getAllRootNodes(xsdSchema);
                     if (rootNodes.size() > 0) {

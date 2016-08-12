@@ -190,7 +190,7 @@ public final class XsdMetadataUtils {
         connection.setFileContent(byteArray.getInnerContent());
 
         connection.setXmlFilePath(fileForInnerContent.getName());
-        connection.setXsdFilePath(targetNameSpace);
+        connection.setTargetNameSpace(targetNameSpace);
         try {
             List<ATreeNode> rootNodes = populationUtil.getAllRootNodes(xsdSchema);
             ATreeNode node = null;

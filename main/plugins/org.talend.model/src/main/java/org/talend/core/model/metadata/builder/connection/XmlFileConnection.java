@@ -27,6 +27,7 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link org.talend.core.model.metadata.builder.connection.XmlFileConnection#isInputModel <em>Input Model</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.XmlFileConnection#getOutputFilePath <em>Output File Path</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.XmlFileConnection#getFileContent <em>File Content</em>}</li>
+ *   <li>{@link org.talend.core.model.metadata.builder.connection.XmlFileConnection#getTargetNameSpace <em>Target Name Space</em>}</li>
  * </ul>
  * </p>
  *
@@ -310,5 +311,31 @@ public interface XmlFileConnection extends Connection {
      * @generated
      */
     void setFileContent(byte[] value);
+
+    /**
+     * Returns the value of the '<em><b>Target Name Space</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Target Name Space</em>' attribute isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Target Name Space</em>' attribute.
+     * @see #setTargetNameSpace(String)
+     * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getXmlFileConnection_TargetNameSpace()
+     * @model
+     * @generated
+     */
+    String getTargetNameSpace();
+
+    /**
+     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.XmlFileConnection#getTargetNameSpace <em>Target Name Space</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Target Name Space</em>' attribute.
+     * @see #getTargetNameSpace()
+     * @generated
+     */
+    void setTargetNameSpace(String value);
 
 } // XmlFileConnection
