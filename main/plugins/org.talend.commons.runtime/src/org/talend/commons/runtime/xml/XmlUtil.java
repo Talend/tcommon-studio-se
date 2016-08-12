@@ -21,9 +21,13 @@ public final class XmlUtil {
 
     public static final String XSD = "xsd"; //$NON-NLS-1$
 
+    public static final String WSDL = "wsdl"; //$NON-NLS-1$
+
     public static final String FILE_XML_SUFFIX = '.' + XML;
 
     public static final String FILE_XSD_SUFFIX = '.' + XSD;
+
+    public static final String FILE_WSDL_SUFFIX = '.' + WSDL;
 
     public static boolean isXMLFile(String value) {
         if (value != null) {
@@ -35,6 +39,13 @@ public final class XmlUtil {
     public static boolean isXSDFile(String value) {
         if (value != null) {
             return value.toLowerCase().endsWith(FILE_XSD_SUFFIX);
+        }
+        return false;
+    }
+
+    public static boolean isWSDLFile(String value) {
+        if (value != null) {
+            return value.toLowerCase().endsWith(FILE_WSDL_SUFFIX);
         }
         return false;
     }

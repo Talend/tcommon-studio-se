@@ -15,6 +15,7 @@ package org.talend.core;
 import org.talend.core.model.process.INode;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.repository.ERepositoryObjectType;
+import org.talend.core.utils.IXSDPopulationUtil;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
 
@@ -53,4 +54,5 @@ public interface IESBService extends IService {
 
     public void copyDataServiceRelateJob(Item newItem);
 
+    public IXSDPopulationUtil getXSDPopulationUtil();
 }

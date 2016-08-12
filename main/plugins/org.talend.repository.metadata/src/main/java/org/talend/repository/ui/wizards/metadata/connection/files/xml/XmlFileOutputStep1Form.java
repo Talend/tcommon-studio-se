@@ -75,6 +75,7 @@ import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.helper.PackageHelper;
 import org.talend.datatools.xml.utils.ATreeNode;
 import org.talend.datatools.xml.utils.XSDPopulationUtil2;
+import org.talend.datatools.xml.utils.XSDUtils;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.metadata.managment.ui.dialog.RootNodeSelectDialog;
 import org.talend.metadata.managment.ui.utils.ConnectionContextHelper;
@@ -161,10 +162,12 @@ public class XmlFileOutputStep1Form extends AbstractXmlFileStepForm {
                 initFileContent();
                 xmlXsdPath = tempXmlXsdPath;
             }
-            if (xmlXsdPath != null && !"".equals(xmlXsdPath) && (XmlUtil.isXSDFile(xmlXsdPath) || xmlXsdPath.endsWith(".zip"))) {
+            if (xmlXsdPath != null && !"".equals(xmlXsdPath)
+                    && (XmlUtil.isWSDLFile(xmlXsdPath) || XmlUtil.isXSDFile(xmlXsdPath) || xmlXsdPath.endsWith(".zip"))) {
                 try {
-                    XSDPopulationUtil2 xsdPopulationUtil = new XSDPopulationUtil2();
-                    XSDSchema xsdSchema = TreeUtil.getXSDSchema(xsdPopulationUtil, xmlXsdPath);
+                    XSDPopulationUtil2 xsdPopulationUtil = XSDUtils.getXsdHander(xmlXsdPath);
+                    String targetNamespace = getConnection().getXsdFilePath();
+                    XSDSchema xsdSchema = TreeUtil.getXSDSchema(xsdPopulationUtil, xmlXsdPath, targetNamespace);
                     List<ATreeNode> rootNodes = xsdPopulationUtil.getAllRootNodes(xsdSchema);
                     if (rootNodes.size() > 0) {
                         ATreeNode rootNode = getDefaultRootNode(rootNodes);
@@ -755,17 +758,8 @@ public class XmlFileOutputStep1Form extends AbstractXmlFileStepForm {
             return;
         }
         byte[] bytes = getConnection().getFileContent();
-        Project project = ProjectManager.getInstance().getCurrentProject();
-        IProject fsProject = null;
-        try {
-            fsProject = ResourceUtils.getProject(project);
-        } catch (PersistenceException e2) {
-            ExceptionHandler.process(e2);
-        }
-        if (fsProject == null) {
-            return;
-        }
-        String temPath = fsProject.getLocationURI().getPath() + File.separator + "temp";
+
+        String temPath = getProjectTempPath();
         String fileName = "";
 
         String xmlXsdPath = getConnection().getXmlFilePath();
@@ -777,6 +771,8 @@ public class XmlFileOutputStep1Form extends AbstractXmlFileStepForm {
             fileName = StringUtil.TMP_XML_FILE;
         } else if (xmlXsdPath != null && XmlUtil.isXSDFile(xmlXsdPath)) {
             fileName = StringUtil.TMP_XSD_FILE;
+        } else if (xmlXsdPath != null && XmlUtil.isWSDLFile(xmlXsdPath)) {
+            fileName = StringUtil.TMP_WSDL_FILE;
         } else if (xmlXsdPath.contains(".zip")) {
             fileName = new Path(xmlXsdPath).lastSegment();
         }
@@ -805,5 +801,17 @@ public class XmlFileOutputStep1Form extends AbstractXmlFileStepForm {
         }
         // valid = this.treePopulator.populateTree(tempXmlXsdPath, treeNode);
 
+    }
+
+    private String getProjectTempPath() {
+        Project project = ProjectManager.getInstance().getCurrentProject();
+        IProject fsProject = null;
+        try {
+            fsProject = ResourceUtils.getProject(project);
+        } catch (PersistenceException e2) {
+            ExceptionHandler.process(e2);
+        }
+        String temPath = fsProject.getLocationURI().getPath() + File.separator + "temp";
+        return temPath;
     }
 }

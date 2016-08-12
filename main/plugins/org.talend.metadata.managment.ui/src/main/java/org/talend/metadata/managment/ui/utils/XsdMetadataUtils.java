@@ -27,7 +27,6 @@ import javax.xml.namespace.QName;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.xsd.XSDSchema;
 import org.talend.commons.exception.ExceptionHandler;
@@ -59,11 +58,8 @@ import org.talend.cwm.helper.PackageHelper;
 import org.talend.datatools.xml.utils.ATreeNode;
 import org.talend.datatools.xml.utils.OdaException;
 import org.talend.datatools.xml.utils.XSDPopulationUtil2;
-import org.talend.metadata.managment.ui.wizard.metadata.xml.node.FOXTreeNode;
-import org.talend.metadata.managment.ui.wizard.metadata.xml.utils.TreeUtil;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
-
 import orgomg.cwm.resource.record.RecordFactory;
 import orgomg.cwm.resource.record.RecordFile;
 
@@ -87,7 +83,7 @@ public final class XsdMetadataUtils {
         XSDPopulationUtil2 populationUtil = new XSDPopulationUtil2();
         Collection<XmlFileConnectionItem> selectItems = new ArrayList<XmlFileConnectionItem>();
         try {
-            createMetadataFromXSD(parameter, "", "", schemaFile, selectItems, schemaFile, populationUtil);//$NON-NLS-1$//$NON-NLS-2$
+            createMetadataFromXSD(parameter, "", "", selectItems, schemaFile, populationUtil);//$NON-NLS-1$//$NON-NLS-2$
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -98,7 +94,7 @@ public final class XsdMetadataUtils {
         XSDPopulationUtil2 populationUtil = new XSDPopulationUtil2();
         Collection<XmlFileConnectionItem> selectItems = new ArrayList<XmlFileConnectionItem>();
         try {
-            createMetadataFromXSD(parameter, connectionLabel, portTypeName, operationName, schemaFile, selectItems, schemaFile,
+            createMetadataFromXSD(parameter, connectionLabel, portTypeName, operationName, selectItems, schemaFile,
                     populationUtil);
         } catch (IOException e) {
             e.printStackTrace();
@@ -118,10 +114,9 @@ public final class XsdMetadataUtils {
      * @param populationUtil
      * @throws IOException
      */
-    public static void createMetadataFromXSD(QName parameter, String portTypeName, String operationName, File schemaFile,
+    public static void createMetadataFromXSD(QName parameter, String portTypeName, String operationName,
             Collection<XmlFileConnectionItem> selectItems, File zip, XSDPopulationUtil2 populationUtil) throws IOException {
-        createMetadataFromXSD(parameter, parameter.getLocalPart(), portTypeName, operationName, schemaFile, selectItems, zip,
-                populationUtil);
+        createMetadataFromXSD(parameter, parameter.getLocalPart(), portTypeName, operationName, selectItems, zip, populationUtil);
     }
 
     /**
@@ -134,13 +129,18 @@ public final class XsdMetadataUtils {
      * @param operationName
      * @param schemaFile
      * @param selectItems
-     * @param zip
+     * @param fileForInnerContent
      * @param populationUtil
      * @throws IOException
      */
     public static void createMetadataFromXSD(QName parameter, String connectionLabel, String portTypeName, String operationName,
-            File schemaFile, Collection<XmlFileConnectionItem> selectItems, File zip, XSDPopulationUtil2 populationUtil)
+            Collection<XmlFileConnectionItem> selectItems, File fileForInnerContent, XSDPopulationUtil2 populationUtil)
             throws IOException {
+        String targetNameSpace = parameter.getNamespaceURI();
+        XSDSchema xsdSchema = populationUtil.getXSDSchemaFromNamespace(targetNameSpace);
+        if (xsdSchema == null) {
+            return;
+        }
         String name = /* componentName + "_"+ */parameter.getLocalPart();
         XmlFileConnection connection = null;
         Property connectionProperty = null;
@@ -177,9 +177,8 @@ public final class XsdMetadataUtils {
         connection.setName(ERepositoryObjectType.METADATA_FILE_XML.getKey());
         connectionItem = PropertiesFactory.eINSTANCE.createXmlFileConnectionItem();
         connectionProperty = PropertiesFactory.eINSTANCE.createProperty();
-        connectionProperty.setAuthor(
-                ((RepositoryContext) CoreRuntimePlugin.getInstance().getContext().getProperty(Context.REPOSITORY_CONTEXT_KEY))
-                        .getUser());
+        connectionProperty.setAuthor(((RepositoryContext) CoreRuntimePlugin.getInstance().getContext()
+                .getProperty(Context.REPOSITORY_CONTEXT_KEY)).getUser());
         connectionProperty.setLabel(connectionLabel);
         connectionProperty.setVersion(VersionUtils.DEFAULT_VERSION);
         connectionProperty.setStatusCode(""); //$NON-NLS-1$
@@ -187,20 +186,12 @@ public final class XsdMetadataUtils {
         connectionItem.setConnection(connection);
         connection.setInputModel(false);
         ByteArray byteArray = PropertiesFactory.eINSTANCE.createByteArray();
-        byteArray.setInnerContentFromFile(zip);
+        byteArray.setInnerContentFromFile(fileForInnerContent);
         connection.setFileContent(byteArray.getInnerContent());
-        // don't put any XSD directly inside the xml connection but put zip file
-        // Use xsd schema file name + zip file name as xml file path in case we need get the root schema of xml
-        // connection after.
-        String schemaFileName = schemaFile.getName();
-        schemaFileName = schemaFileName.substring(0, schemaFileName.lastIndexOf(".")); //$NON-NLS-1$
-        connection.setXmlFilePath(schemaFileName.concat("_").concat(zip.getName())); //$NON-NLS-1$
+
+        connection.setXmlFilePath(fileForInnerContent.getName());
+        connection.setXsdFilePath(targetNameSpace);
         try {
-            String filePath = schemaFile.getPath(); // name of xsd file needed
-            XSDSchema xsdSchema = populationUtil.getXSDSchemaFromNamespace(parameter.getNamespaceURI());
-            if (xsdSchema == null) {
-                xsdSchema = populationUtil.getXSDSchema(filePath);
-            }
             List<ATreeNode> rootNodes = populationUtil.getAllRootNodes(xsdSchema);
             ATreeNode node = null;
             // try to find the root element needed from XSD file.
@@ -246,31 +237,7 @@ public final class XsdMetadataUtils {
                     break;
                 }
             }
-            List<FOXTreeNode> foxTreeNodes = TreeUtil.getFoxTreeNodesByRootNode(xsdSchema, node, true);
-            if (foxTreeNodes.size() > 0 && false) {
-                FOXTreeNode foxTreeNode = foxTreeNodes.get(0);
-                EList root = connection.getRoot();
-                if (root != null) {
-                    XMLFileNode xmlFileNode = ConnectionFactory.eINSTANCE.createXMLFileNode();
-                    String currentPath = "/" + foxTreeNode.getLabel();
-                    xmlFileNode.setXMLPath(currentPath);
-                    xmlFileNode.setRelatedColumn(foxTreeNode.getColumnLabel());
-                    xmlFileNode.setAttribute(foxTreeNode.isMain() ? "main" : "branch");
-                    xmlFileNode.setDefaultValue(foxTreeNode.getDefaultValue());
-                    xmlFileNode.setType(foxTreeNode.getDataType());
-                    XMLFileNode originalXmlNode = null;
-                    if (root.size() > 0) {
-                        originalXmlNode = (XMLFileNode) root.get(0);
-                    }
-                    root.clear();
-                    root.add(xmlFileNode);
-                }
-            }
             fillRootInfo(connection, node, "", !haveElement); //$NON-NLS-1$
-        } catch (IOException e) {
-            throw e;
-        } catch (URISyntaxException e1) {
-            ExceptionHandler.process(e1);
         } catch (OdaException e) {
             ExceptionHandler.process(e);
         }
@@ -280,7 +247,7 @@ public final class XsdMetadataUtils {
         try {
             // http://jira.talendforge.org/browse/TESB-3655 Remove possible
             // schema prefix
-            String folderPath = getImportedXmlSchemaPath(parameter.getNamespaceURI(), portTypeName, operationName);
+            String folderPath = getImportedXmlSchemaPath(targetNameSpace, portTypeName, operationName);
             IPath path = new Path(folderPath);
             factory.create(connectionItem, path, true); // consider this as migration will overwrite the old metadata if
             // existing in the same path

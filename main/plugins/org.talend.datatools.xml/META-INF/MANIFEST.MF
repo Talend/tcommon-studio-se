@@ -6,6 +6,8 @@ Bundle-Version: 6.3.0.qualifier
 Require-Bundle: org.eclipse.xsd,
  org.apache.commons.beanutils,
  org.apache.commons.lang,
+ javax.wsdl;bundle-version="1.6.2",
+ org.talend.libraries.apache.axis2,
  org.talend.core.runtime,
  org.apache.xerces
 Export-Package: org.talend.datatools.xml.utils

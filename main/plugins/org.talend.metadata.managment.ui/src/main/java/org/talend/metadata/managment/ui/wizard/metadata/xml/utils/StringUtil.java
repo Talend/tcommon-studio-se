@@ -24,6 +24,8 @@ public class StringUtil {
 
     public static final String TMP_XSD_FILE = "tempXSDFile" + XmlUtil.FILE_XSD_SUFFIX; //$NON-NLS-1$
 
+    public static final String TMP_WSDL_FILE = "tempWSDLFile" + XmlUtil.FILE_WSDL_SUFFIX; //$NON-NLS-1$
+
     public static boolean validateLabelForXML(String label) {
         if (label == null) {
             return false;
@@ -40,8 +42,8 @@ public class StringUtil {
         // return false;
         // }
         char[] array = label.toCharArray();
-        for (int i = 0; i < array.length; i++) {
-            if (Character.isSpaceChar(array[i]) || Character.isWhitespace(array[i])) {
+        for (char element : array) {
+            if (Character.isSpaceChar(element) || Character.isWhitespace(element)) {
                 return false;
             }
         }
@@ -55,7 +57,7 @@ public class StringUtil {
         if (label.length() < 1) {
             return false;
         }
-        if (label.toLowerCase().startsWith(XmlUtil.XML)) { //$NON-NLS-1$
+        if (label.toLowerCase().startsWith(XmlUtil.XML)) {
             return false;
         }
         // char[] array = label.toCharArray();
@@ -71,7 +73,7 @@ public class StringUtil {
         if (label == null) {
             return false;
         }
-        if (label.toLowerCase().startsWith(XmlUtil.XML)) { //$NON-NLS-1$
+        if (label.toLowerCase().startsWith(XmlUtil.XML)) {
             return false;
         }
         if (label.contains(".")) { //$NON-NLS-1$
@@ -83,8 +85,8 @@ public class StringUtil {
                 return false;
             }
             char[] array = label.toCharArray();
-            for (int i = 0; i < array.length; i++) {
-                if (Character.isSpaceChar(array[i]) || Character.isWhitespace(array[i])) {
+            for (char element : array) {
+                if (Character.isSpaceChar(element) || Character.isWhitespace(element)) {
                     return false;
                 }
             }

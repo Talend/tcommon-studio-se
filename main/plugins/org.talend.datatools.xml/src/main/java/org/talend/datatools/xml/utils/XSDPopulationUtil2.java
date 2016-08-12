@@ -48,11 +48,12 @@ import org.eclipse.xsd.XSDTypeDefinition;
 import org.eclipse.xsd.impl.XSDNamedComponentImpl;
 import org.eclipse.xsd.util.XSDConstants;
 import org.eclipse.xsd.util.XSDResourceImpl;
+import org.talend.core.utils.IXSDPopulationUtil;
 
 /**
  * DOC ycbai class global comment. Detailled comment
  */
-public class XSDPopulationUtil2 {
+public class XSDPopulationUtil2 implements IXSDPopulationUtil {
 
     public static final String CHOICE = "(choice)"; //$NON-NLS-1$
 
@@ -166,8 +167,8 @@ public class XSDPopulationUtil2 {
                 }
                 node.setValue(elementName);
                 if (xsdTypeDefinition == null) {
-                    XSDComplexTypeDefinition generalType = xsdSchema
-                            .resolveComplexTypeDefinitionURI(xsdElementDeclaration.getURI());
+                    XSDComplexTypeDefinition generalType = xsdSchema.resolveComplexTypeDefinitionURI(xsdElementDeclaration
+                            .getURI());
                     if (generalType.getContainer() != null) {
                         xsdTypeDefinition = generalType;
                     }
@@ -239,8 +240,8 @@ public class XSDPopulationUtil2 {
                 if (schemaFromNamespace == null) {
                     schemaFromNamespace = xsdSchema;
                 }
-                xsdElementDeclarationParticle = schemaFromNamespace
-                        .resolveElementDeclarationURI(xsdElementDeclarationParticle.getURI());
+                xsdElementDeclarationParticle = schemaFromNamespace.resolveElementDeclarationURI(xsdElementDeclarationParticle
+                        .getURI());
                 typeDef = xsdElementDeclarationParticle.getTypeDefinition();
             }
             String typeNamespace = typeDef.getTargetNamespace();
@@ -256,8 +257,8 @@ public class XSDPopulationUtil2 {
             if (namespace != null) {
                 prefix = namespaceToPrefix.get(namespace);
                 if (prefix == null) {
-                    prefix = ((XSDElementDeclaration) xsdTerm).getQName().contains(":")
-                            ? ((XSDElementDeclaration) xsdTerm).getQName().split(":")[0] : "";
+                    prefix = ((XSDElementDeclaration) xsdTerm).getQName().contains(":") ? ((XSDElementDeclaration) xsdTerm)
+                            .getQName().split(":")[0] : "";
 
                     if (isEnableGeneratePrefix() && (prefix == null || prefix.isEmpty())) {
                         // generate a new prefix
@@ -279,8 +280,7 @@ public class XSDPopulationUtil2 {
                             for (Object child : node.getChildren()) {
                                 if (child instanceof ATreeNode) {
                                     ATreeNode childNode = (ATreeNode) child;
-                                    if (childNode.getType() == ATreeNode.NAMESPACE_TYPE
-                                            && namespace.equals(childNode.getValue())) {
+                                    if (childNode.getType() == ATreeNode.NAMESPACE_TYPE && namespace.equals(childNode.getValue())) {
                                         namespaceFoundInParent = true;
                                         break;
                                     }
@@ -337,9 +337,8 @@ public class XSDPopulationUtil2 {
             }
             if (!resolvedAsComplex) {
                 String dataType = xsdElementDeclarationParticle.getTypeDefinition().getQName();
-                if (!XSDConstants
-                        .isSchemaForSchemaNamespace(xsdElementDeclarationParticle.getTypeDefinition().getTargetNamespace())
-                        && xsdElementDeclarationParticle.getTypeDefinition().getBaseType() != null) {
+                if (!XSDConstants.isSchemaForSchemaNamespace(xsdElementDeclarationParticle.getTypeDefinition()
+                        .getTargetNamespace()) && xsdElementDeclarationParticle.getTypeDefinition().getBaseType() != null) {
                     if (!"xs:anySimpleType".equals(xsdElementDeclarationParticle.getTypeDefinition().getBaseType().getQName())) {
                         dataType = xsdElementDeclarationParticle.getTypeDefinition().getBaseType().getQName();
                     }
@@ -385,8 +384,7 @@ public class XSDPopulationUtil2 {
         return getSchemaTree(xsdSchema, selectedNode, true, false, false);
     }
 
-    public ATreeNode getSchemaTree(XSDSchema xsdSchema, ATreeNode selectedNode, boolean supportChoice,
-            boolean supportSubstitution) {
+    public ATreeNode getSchemaTree(XSDSchema xsdSchema, ATreeNode selectedNode, boolean supportChoice, boolean supportSubstitution) {
         return getSchemaTree(xsdSchema, selectedNode, true, supportChoice, supportSubstitution);
     }
 
@@ -455,8 +453,8 @@ public class XSDPopulationUtil2 {
 
                 XSDTypeDefinition xsdTypeDefinition = xsdElementDeclaration.getTypeDefinition();
                 if (xsdTypeDefinition == null) {
-                    XSDComplexTypeDefinition generalType = xsdSchema
-                            .resolveComplexTypeDefinitionURI(xsdElementDeclaration.getURI());
+                    XSDComplexTypeDefinition generalType = xsdSchema.resolveComplexTypeDefinitionURI(xsdElementDeclaration
+                            .getURI());
                     if (generalType.getContainer() != null) {
                         xsdTypeDefinition = generalType;
                     }
@@ -761,6 +759,15 @@ public class XSDPopulationUtil2 {
      */
     public void setIncludeAbsSubs(boolean includeAbsSubs) {
         this.includeAbsSubs = includeAbsSubs;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.talend.core.utils.IXSDPopulationUtil#loadWSDL(java.lang.String)
+     */
+    @Override
+    public void loadWSDL(String wsdlFile) throws IOException {
     }
 
 }
