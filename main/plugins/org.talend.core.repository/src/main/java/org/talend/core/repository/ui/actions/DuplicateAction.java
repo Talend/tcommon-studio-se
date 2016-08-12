@@ -235,7 +235,7 @@ public class DuplicateAction extends AContextualAction {
             jobNameValue = ""; //$NON-NLS-1$
         }
         //
-        if (item instanceof ProcessItem && PluginChecker.isTIS()) {
+        if (((item instanceof ProcessItem)||(item instanceof JobletProcessItem)) && PluginChecker.isTIS()) {
             DuplicateDialog jobNewNameDialog = new DuplicateDialog(sourceNode,
                     Messages.getString("DuplicateAction.input.title.v2"), //$NON-NLS-1$
                     Messages.getString("DuplicateAction.input.message"), jobNameValue, new IInputValidator() { //$NON-NLS-1$

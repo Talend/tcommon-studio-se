@@ -458,6 +458,9 @@ public class ConvertJobsUtil {
                     || ERepositoryObjectType.PROCESS_MR == sourceObject.getRepositoryObjectType()) {
                 converter = ProcessConvertManager.getInstance().extractConvertService(
                         ProcessConverterType.CONVERTER_FOR_SPARK_JOBLET);
+            }else if(JobType.BIGDATASTREAMING.getDisplayName().equals(sourceJobType)
+                    || ERepositoryObjectType.PROCESS_STORM == sourceObject.getRepositoryObjectType()) {
+                converter = ProcessConvertManager.getInstance().extractConvertService(ProcessConverterType.CONVERTER_FOR_SPARK_STREAMING_JOBLET);
             }
             if (converter != null && converter instanceof IProcessConvertToAllTypeService) {
                 return ((IProcessConvertToAllTypeService) converter).convertToProcess(item, sourceObject, newJobName,
@@ -469,7 +472,13 @@ public class ConvertJobsUtil {
                 return ((IProcessConvertToAllTypeService) converter).convertToProcessBatch(item, sourceObject, newJobName,
                         jobTypeValue, frameworkValue);
             }
-        }
+        } else if (JobType.BIGDATASTREAMING.getDisplayName().equals(jobTypeValue)) {
+            converter = ProcessConvertManager.getInstance().extractConvertService(ProcessConverterType.CONVERTER_FOR_SPARK_STREAMING_JOBLET);
+            if (converter != null && converter instanceof IProcessConvertToAllTypeService) {
+                return ((IProcessConvertToAllTypeService) converter).convertToProcessStreaming(item, sourceObject, newJobName,
+                        jobTypeValue, frameworkValue);
+            }
+        } 
         return null;
     }
 
