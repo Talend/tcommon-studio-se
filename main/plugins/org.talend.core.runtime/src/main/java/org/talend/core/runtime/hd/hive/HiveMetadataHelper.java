@@ -220,6 +220,23 @@ public class HiveMetadataHelper {
     }
 
     /**
+     * return true/false of {@link HiveComponent#doSupportMapR}. also, when hive service or embedded
+     */
+    public static boolean doSupportMapR(String hiveDistribution, String hiveVersion, String hiveMode, String hiveServerVersion,
+            boolean byDisplay) {
+        HiveModeInfo hiveModeInfo = byDisplay ? HiveModeInfo.getByDisplay(hiveMode) : HiveModeInfo.get(hiveMode);
+        HiveServerVersionInfo hiveServerVersionInfo = byDisplay ? HiveServerVersionInfo.getByDisplay(hiveServerVersion)
+                : HiveServerVersionInfo.getByKey(hiveServerVersion); // same as DatabaseForm
+
+        boolean supportSecurity = doSupportMethod(hiveDistribution, hiveVersion, byDisplay, "doSupportMapRTicket");
+        if (supportSecurity
+                && (HiveServerVersionInfo.HIVE_SERVER_2 == hiveServerVersionInfo || hiveModeInfo == HiveModeInfo.EMBEDDED)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * return true/false of {@link HiveComponent#doSupportEmbeddedMode}.
      */
     public static boolean doSupportEmbeddedMode(String hiveDistribution, String hiveVersion, boolean byDisplay) {

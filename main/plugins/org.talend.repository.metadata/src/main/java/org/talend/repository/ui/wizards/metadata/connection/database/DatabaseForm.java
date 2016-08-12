@@ -343,6 +343,10 @@ public class DatabaseForm extends AbstractForm {
     // 19754 end
     private final boolean isCreation;
 
+    private boolean isSupportMapr;
+
+    private boolean isSupportSecurity;
+
     private boolean first = true;
 
     private Composite newParent;
@@ -1374,7 +1378,9 @@ public class DatabaseForm extends AbstractForm {
 
     private void showIfAuthentication() {
         if (isHiveDBConnSelected()) {
-            if (doSupportSecurity()) {
+            isSupportSecurity = doSupportSecurity();
+            isSupportMapr = doSupportMapR();
+            if (isSupportSecurity || isSupportMapr) {
                 updateAuthenticationForHive(isHiveEmbeddedMode());
                 setHidAuthenticationForHive(false);
             } else {
@@ -1990,6 +1996,13 @@ public class DatabaseForm extends AbstractForm {
             hideControl(browseDriverClassButton, false);
             usernameTxt.show();
             passwordTxt.show();
+            metastoreUrlTxt.setEditable(false);
+            driverJarTxt.setEditable(false);
+            browseDriverJarBtn.setEnabled(false);
+            driverClassTxt.setEnabled(false);
+            browseDriverClassButton.setEnabled(false);
+            usernameTxt.setEditable(false);
+            passwordTxt.setEditable(false);
         } else {
             metastoreUrlTxt.hide();
             driverJarTxt.hide();
@@ -1999,6 +2012,11 @@ public class DatabaseForm extends AbstractForm {
             usernameTxt.hide();
             passwordTxt.hide();
         }
+        useKerberos.setEnabled(isSupportMapr && isSupportSecurity);
+        hivePrincipalTxt.setEditable(isSupportMapr && isSupportSecurity);
+        useKeyTab.setEnabled(isSupportMapr && isSupportSecurity);
+        principalTxt.setEditable(isSupportMapr && isSupportSecurity);
+        keytabTxt.setEditable(isSupportMapr && isSupportSecurity);
     }
 
     private void updateHadoopPropertiesFieldsState() {
@@ -7173,6 +7191,11 @@ public class DatabaseForm extends AbstractForm {
 
     private boolean doSupportSecurity() {
         return HiveMetadataHelper.doSupportSecurity(hiveDistributionCombo.getText(), hiveVersionCombo.getText(),
+                hiveModeCombo.getText(), hiveServerVersionCombo.getText(), true);
+    }
+
+    private boolean doSupportMapR() {
+        return HiveMetadataHelper.doSupportMapR(hiveDistributionCombo.getText(), hiveVersionCombo.getText(),
                 hiveModeCombo.getText(), hiveServerVersionCombo.getText(), true);
     }
 
