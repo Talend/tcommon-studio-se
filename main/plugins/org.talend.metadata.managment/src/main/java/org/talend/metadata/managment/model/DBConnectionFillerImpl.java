@@ -1393,6 +1393,11 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
             while (columns.next()) {
                 int decimalDigits = 0;
                 int numPrecRadix = 0;
+                // TDI-36954 Metadata wizard mix up columns
+                String receivedTableName = getStringFromResultSet(columns, GetColumn.TABLE_NAME.name());
+                if (receivedTableName.equalsIgnoreCase(tablePattern) == false) {
+                	continue;
+                }
                 String columnName = getStringFromResultSet(columns, GetColumn.COLUMN_NAME.name());
                 TdColumn column = ColumnHelper.createTdColumn(columnName);
 
@@ -1580,6 +1585,11 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
             while (columns.next()) {
                 int decimalDigits = 0;
                 int numPrecRadix = 0;
+                // TDI-36954 Metadata wizard mix up columns
+                String receivedTableName = getStringFromResultSet(columns, GetColumn.TABLE_NAME.name());
+                if (receivedTableName.equalsIgnoreCase(tablePattern) == false) {
+                	continue;
+                }
                 String columnName = getStringFromResultSet(columns, GetColumn.COLUMN_NAME.name());
                 TdColumn column = ColumnHelper.createTdColumn(columnName);
 
