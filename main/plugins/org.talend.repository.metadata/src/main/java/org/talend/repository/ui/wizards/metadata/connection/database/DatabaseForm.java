@@ -343,10 +343,6 @@ public class DatabaseForm extends AbstractForm {
     // 19754 end
     private final boolean isCreation;
 
-    private boolean isSupportMapr;
-
-    private boolean isSupportSecurity;
-
     private boolean first = true;
 
     private Composite newParent;
@@ -1378,10 +1374,9 @@ public class DatabaseForm extends AbstractForm {
 
     private void showIfAuthentication() {
         if (isHiveDBConnSelected()) {
-            isSupportSecurity = doSupportSecurity();
-            isSupportMapr = doSupportMapR();
-            if (isSupportSecurity || isSupportMapr) {
+            if (doSupportSecurity()) {
                 updateAuthenticationForHive(isHiveEmbeddedMode());
+                hideControlForKerbTickt();
                 setHidAuthenticationForHive(false);
             } else {
                 setHidAuthenticationForHive(true);
@@ -1389,6 +1384,36 @@ public class DatabaseForm extends AbstractForm {
         } else {
             setHidAuthenticationForHive(true);
         }
+    }
+
+    private void hideControlForKerbTickt() {
+        if (!doSupportKerb() && doSupportTicket()) {
+            hideControl(useKerberos, true);
+            hideControl(authenticationCom, true);
+            hideControl(useKeyTab, true);
+            hideControl(keyTabComponent, true);
+            hideControl(useMaprTForHive, !doSupportTicket());
+            hideControl(authenticationMaprTComForHive, !(useMaprTForHive.getSelection() && doSupportTicket()));
+            hideControl(authenticationUserPassComForHive, !(useMaprTForHive.getSelection() && doSupportTicket()));
+        } else if (doSupportKerb() && doSupportTicket()) {
+            hideControl(useKerberos, false);
+            hideControl(authenticationCom, !(doSupportKerb() && useKerberos.getSelection()));
+            hideControl(useKeyTab, false);
+            hideControl(keyTabComponent, !(doSupportKerb() && useKeyTab.getSelection()));
+            hideControl(useMaprTForHive, !doSupportTicket());
+            hideControl(authenticationMaprTComForHive, !(useMaprTForHive.getSelection() && doSupportTicket()));
+            hideControl(authenticationUserPassComForHive, useKerberos.getSelection() && doSupportTicket());
+        } else if (doSupportKerb() && !doSupportTicket()) {
+            hideControl(useKerberos, false);
+            hideControl(authenticationCom, !(doSupportKerb() && useKerberos.getSelection()));
+            hideControl(useKeyTab, false);
+            hideControl(keyTabComponent, !(doSupportKerb() && useKeyTab.getSelection()));
+            hideControl(useMaprTForHive, true);
+            hideControl(authenticationMaprTComForHive, true);
+            hideControl(authenticationUserPassComForHive, true);
+        }
+        authenticationGrp.layout();
+        authenticationGrp.getParent().layout();
     }
 
     private void showIfAdditionalJDBCSettings() {
@@ -1996,13 +2021,6 @@ public class DatabaseForm extends AbstractForm {
             hideControl(browseDriverClassButton, false);
             usernameTxt.show();
             passwordTxt.show();
-            metastoreUrlTxt.setEditable(false);
-            driverJarTxt.setEditable(false);
-            browseDriverJarBtn.setEnabled(false);
-            driverClassTxt.setEnabled(false);
-            browseDriverClassButton.setEnabled(false);
-            usernameTxt.setEditable(false);
-            passwordTxt.setEditable(false);
         } else {
             metastoreUrlTxt.hide();
             driverJarTxt.hide();
@@ -2012,11 +2030,6 @@ public class DatabaseForm extends AbstractForm {
             usernameTxt.hide();
             passwordTxt.hide();
         }
-        useKerberos.setEnabled(isSupportMapr && isSupportSecurity);
-        hivePrincipalTxt.setEditable(isSupportMapr && isSupportSecurity);
-        useKeyTab.setEnabled(isSupportMapr && isSupportSecurity);
-        principalTxt.setEditable(isSupportMapr && isSupportSecurity);
-        keytabTxt.setEditable(isSupportMapr && isSupportSecurity);
     }
 
     private void updateHadoopPropertiesFieldsState() {
@@ -7190,13 +7203,26 @@ public class DatabaseForm extends AbstractForm {
     }
 
     private boolean doSupportSecurity() {
+        return doSupportKerb() || doSupportTicket();
+    }
+
+    private boolean doSupportKerb() {
         return HiveMetadataHelper.doSupportSecurity(hiveDistributionCombo.getText(), hiveVersionCombo.getText(),
                 hiveModeCombo.getText(), hiveServerVersionCombo.getText(), true);
     }
 
-    private boolean doSupportMapR() {
-        return HiveMetadataHelper.doSupportMapR(hiveDistributionCombo.getText(), hiveVersionCombo.getText(),
-                hiveModeCombo.getText(), hiveServerVersionCombo.getText(), true);
+    private boolean doSupportTicket() {
+        boolean doSupportMapRTicket = false;
+        IHDistribution hiveDistribution = getCurrentHiveDistribution(true);
+        if (hiveDistribution == null) {
+            return false;
+        }
+        IHadoopDistributionService hadoopService = getHadoopDistributionService();
+        if (hadoopService != null && hiveDistribution != null) {
+            doSupportMapRTicket = hadoopService
+                    .doSupportMapRTicket(hiveDistribution.getHDVersion(hiveVersionCombo.getText(), true));
+        }
+        return doSupportMapRTicket;
     }
 
     private boolean doSupportTez() {
