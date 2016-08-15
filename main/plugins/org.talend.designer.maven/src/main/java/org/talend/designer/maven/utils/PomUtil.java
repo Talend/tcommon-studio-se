@@ -274,6 +274,14 @@ public class PomUtil {
         return false;
     }
 
+    public static boolean isAvailable(String mvnUri) {
+        MavenArtifact artifact = MavenUrlHelper.parseMvnUrl(mvnUri);
+        if (artifact != null) {
+            return isAvailable(artifact);
+        }
+        return false;
+    }
+
     /**
      * return the list of existed maven artifacts in local repository.
      */
