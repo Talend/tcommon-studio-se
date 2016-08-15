@@ -20,8 +20,11 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Path;
 import org.junit.Assert;
 import org.junit.Test;
+import org.ops4j.pax.url.mvn.MavenResolver;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.model.general.Project;
+import org.talend.core.nexus.TalendLibsServerManager;
+import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.repository.ProjectManager;
 import org.talend.utils.io.FilesUtils;
@@ -223,4 +226,55 @@ public class PomUtilTest {
 
     }
 
+    @Test
+    public void testIsAvailableString() throws Exception {
+        File baseFile = null;
+        try {
+            Project currentProject = ProjectManager.getInstance().getCurrentProject();
+            Assert.assertNotNull(currentProject);
+            IProject project = ResourceUtils.getProject(currentProject.getTechnicalLabel());
+            IFolder tempFolder = project.getFolder("temp");
+            if (!tempFolder.exists()) {
+                tempFolder.create(true, true, null);
+            }
+            IFolder baseFolder = tempFolder.getFolder("testIsAvailableString");
+            if (!baseFolder.exists()) {
+                baseFolder.create(true, true, null);
+            }
+            baseFile = baseFolder.getLocation().toFile();
+            File test1 = new File(baseFile, "test1.txt");
+            test1.createNewFile();
+
+            File test2 = new File(baseFile, "test2.jar");
+            test2.createNewFile();
+
+            MavenResolver mvnResolver = TalendLibsServerManager.getInstance().getMavenResolver();
+            mvnResolver.upload("org.talend.libraries", "test1", null, "txt", "6.0.0", test1);
+            mvnResolver.upload("org.talend.studio", "test2", null, "jar", "6.0.0", test1);
+
+            Assert.assertTrue(PomUtil.isAvailable("mvn:org.talend.libraries/test1/6.0.0/txt"));
+            Assert.assertTrue(PomUtil.isAvailable("mvn:org.talend.studio/test2/6.0.0/jar"));
+        } finally {
+            if (baseFile != null) {
+                FilesUtils.deleteFolder(baseFile, true);
+            }
+            MavenArtifact artifact = new MavenArtifact();
+            artifact.setGroupId("org.talend.libraries");
+            artifact.setArtifactId("test1");
+            artifact.setType("txt");
+            artifact.setVersion("6.0.0");
+            String absArtifactPath = PomUtil.getAbsArtifactPath(artifact);
+            File file = new File(absArtifactPath);
+            FilesUtils.deleteFolder(file.getParentFile().getParentFile(), true);
+            file.getParentFile().getParentFile().delete();
+            artifact.setGroupId("org.talend.studio");
+            artifact.setArtifactId("test2");
+            artifact.setType("jar");
+            artifact.setVersion("6.0.0");
+            absArtifactPath = PomUtil.getAbsArtifactPath(artifact);
+            file = new File(absArtifactPath);
+            FilesUtils.deleteFolder(file.getParentFile().getParentFile(), true);
+
+        }
+    }
 }
