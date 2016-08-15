@@ -1376,6 +1376,7 @@ public class DatabaseForm extends AbstractForm {
         if (isHiveDBConnSelected()) {
             if (doSupportSecurity()) {
                 updateAuthenticationForHive(isHiveEmbeddedMode());
+                hideControlForKerbTickt();
                 setHidAuthenticationForHive(false);
             } else {
                 setHidAuthenticationForHive(true);
@@ -1383,6 +1384,36 @@ public class DatabaseForm extends AbstractForm {
         } else {
             setHidAuthenticationForHive(true);
         }
+    }
+
+    private void hideControlForKerbTickt() {
+        if (!doSupportKerb() && doSupportTicket()) {
+            hideControl(useKerberos, true);
+            hideControl(authenticationCom, true);
+            hideControl(useKeyTab, true);
+            hideControl(keyTabComponent, true);
+            hideControl(useMaprTForHive, !doSupportTicket());
+            hideControl(authenticationMaprTComForHive, !(useMaprTForHive.getSelection() && doSupportTicket()));
+            hideControl(authenticationUserPassComForHive, !(useMaprTForHive.getSelection() && doSupportTicket()));
+        } else if (doSupportKerb() && doSupportTicket()) {
+            hideControl(useKerberos, false);
+            hideControl(authenticationCom, !(doSupportKerb() && useKerberos.getSelection()));
+            hideControl(useKeyTab, false);
+            hideControl(keyTabComponent, !(doSupportKerb() && useKeyTab.getSelection()));
+            hideControl(useMaprTForHive, !doSupportTicket());
+            hideControl(authenticationMaprTComForHive, !(useMaprTForHive.getSelection() && doSupportTicket()));
+            hideControl(authenticationUserPassComForHive, useKerberos.getSelection() && doSupportTicket());
+        } else if (doSupportKerb() && !doSupportTicket()) {
+            hideControl(useKerberos, false);
+            hideControl(authenticationCom, !(doSupportKerb() && useKerberos.getSelection()));
+            hideControl(useKeyTab, false);
+            hideControl(keyTabComponent, !(doSupportKerb() && useKeyTab.getSelection()));
+            hideControl(useMaprTForHive, true);
+            hideControl(authenticationMaprTComForHive, true);
+            hideControl(authenticationUserPassComForHive, true);
+        }
+        authenticationGrp.layout();
+        authenticationGrp.getParent().layout();
     }
 
     private void showIfAdditionalJDBCSettings() {
@@ -7172,8 +7203,26 @@ public class DatabaseForm extends AbstractForm {
     }
 
     private boolean doSupportSecurity() {
+        return doSupportKerb() || doSupportTicket();
+    }
+
+    private boolean doSupportKerb() {
         return HiveMetadataHelper.doSupportSecurity(hiveDistributionCombo.getText(), hiveVersionCombo.getText(),
                 hiveModeCombo.getText(), hiveServerVersionCombo.getText(), true);
+    }
+
+    private boolean doSupportTicket() {
+        boolean doSupportMapRTicket = false;
+        IHDistribution hiveDistribution = getCurrentHiveDistribution(true);
+        if (hiveDistribution == null) {
+            return false;
+        }
+        IHadoopDistributionService hadoopService = getHadoopDistributionService();
+        if (hadoopService != null && hiveDistribution != null) {
+            doSupportMapRTicket = hadoopService
+                    .doSupportMapRTicket(hiveDistribution.getHDVersion(hiveVersionCombo.getText(), true));
+        }
+        return doSupportMapRTicket;
     }
 
     private boolean doSupportTez() {
