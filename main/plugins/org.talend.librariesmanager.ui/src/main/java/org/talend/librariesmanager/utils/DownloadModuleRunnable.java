@@ -101,12 +101,14 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
                             // update module status
                             final Map<String, ELibraryInstallStatus> statusMap = ModuleStatusProvider.getStatusMap();
                             statusMap.put(mvnUri, ELibraryInstallStatus.INSTALLED);
+                            ModuleStatusProvider.getDeployStatusMap().put(mvnUri, ELibraryInstallStatus.DEPLOYED);
                         }
                     } else {
                         downloader.download(new URL(null, module.getMavenUri(), new Handler()), null, subMonitor.newChild(1));
                         // update module status
                         final Map<String, ELibraryInstallStatus> statusMap = ModuleStatusProvider.getStatusMap();
                         statusMap.put(module.getMavenUri(), ELibraryInstallStatus.INSTALLED);
+                        ModuleStatusProvider.getDeployStatusMap().put(module.getMavenUri(), ELibraryInstallStatus.DEPLOYED);
                     }
 
                     // deploy to index as snapshot
