@@ -29,6 +29,8 @@ import org.apache.http.util.EntityUtils;
 import org.ops4j.pax.url.mvn.MavenResolver;
 import org.talend.commons.exception.BusinessException;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
+import org.talend.core.model.general.ModuleStatusProvider;
 import org.talend.core.nexus.NexusConstants;
 import org.talend.core.nexus.NexusServerBean;
 import org.talend.core.nexus.TalendLibsServerManager;
@@ -99,6 +101,7 @@ public class ArtifactsDeployer {
             MavenResolver mvnResolver = TalendLibsServerManager.getInstance().getMavenResolver();
             mvnResolver.upload(parseMvnUrl.getGroupId(), parseMvnUrl.getArtifactId(), parseMvnUrl.getClassifier(), artifactType,
                     parseMvnUrl.getVersion(), new File(path));
+            ModuleStatusProvider.getDeployStatusMap().put(mavenUri, ELibraryInstallStatus.DEPLOYED);
             String pomType = TalendMavenConstants.PACKAGING_POM;
             String generatePom = PomUtil.generatePom(parseMvnUrl);
             if (generatePom != null) {

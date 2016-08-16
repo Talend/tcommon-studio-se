@@ -31,6 +31,8 @@ public class ModuleStatusProvider {
      */
     private static Map<String, ELibraryInstallStatus> statusMap = new HashMap<String, ELibraryInstallStatus>();
 
+    private static Map<String, ELibraryInstallStatus> deployStatusMap = new HashMap<String, ELibraryInstallStatus>();
+
     /**
      * Getter for statusMap.
      * 
@@ -40,7 +42,17 @@ public class ModuleStatusProvider {
         return statusMap;
     }
 
+    /**
+     * Getter for deployStatusMap.
+     * 
+     * @return the deployStatusMap
+     */
+    public static Map<String, ELibraryInstallStatus> getDeployStatusMap() {
+        return deployStatusMap;
+    }
+
     public static void reset() {
         statusMap.clear();
+        deployStatusMap.clear();
     }
 }

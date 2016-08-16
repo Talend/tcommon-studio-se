@@ -471,6 +471,7 @@ public class LocalLibraryManager implements ILibraryManagerService {
             // reset module status
             final Map<String, ELibraryInstallStatus> statusMap = ModuleStatusProvider.getStatusMap();
             statusMap.put(uri, ELibraryInstallStatus.INSTALLED);
+            ModuleStatusProvider.getDeployStatusMap().put(uri, ELibraryInstallStatus.DEPLOYED);
             // update installed path
             mavenJarInstalled.put(uri, resolvedFile.getAbsolutePath());
         }

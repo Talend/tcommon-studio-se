@@ -62,6 +62,9 @@ public class ModuleNeeded {
 
     private ELibraryInstallStatus status = ELibraryInstallStatus.UNKNOWN;
 
+    // status installed in maven
+    private ELibraryInstallStatus installStatus = ELibraryInstallStatus.UNKNOWN;
+
     private boolean isShow = true;
 
     List<String> installURL;
@@ -113,7 +116,10 @@ public class ModuleNeeded {
         UNKNOWN,
         INSTALLED,
         UNUSED,
-        NOT_INSTALLED;
+        NOT_INSTALLED,
+        DEPLOYED,
+        NOT_DEPLOYED;
+
     }
 
     /**
@@ -280,18 +286,39 @@ public class ModuleNeeded {
             Set<String> existLibraries = libManagerService.list();
             if (existLibraries.contains(getModuleName())) {
                 status = ELibraryInstallStatus.INSTALLED;
+                ModuleStatusProvider.getStatusMap().put(mvnUriStatusKey, status);
             } else {// then try to resolve locally
-                String localMavenUri = mvnUriStatusKey.replace("mvn:", "mvn:" + MavenConstants.LOCAL_RESOLUTION_URL + "!"); //$NON-NLS-1$ //$NON-NLS-2$
-                try {
-                    getMavenResolver().resolve(localMavenUri);
-                    status = ELibraryInstallStatus.INSTALLED;
-                } catch (Exception e) {
-                    status = ELibraryInstallStatus.NOT_INSTALLED;
-                }
+                resolveStatusLocally(mvnUriStatusKey);
             }
-            ModuleStatusProvider.getStatusMap().put(mvnUriStatusKey, status);
+
         }
         return this.status;
+    }
+
+    public ELibraryInstallStatus getDeployStatus() {
+        String mvnUriStatusKey = getMavenUri(true);
+        final ELibraryInstallStatus eLibraryDeployStatus = ModuleStatusProvider.getDeployStatusMap().get(mvnUriStatusKey);
+        if (eLibraryDeployStatus != null) {
+            return eLibraryDeployStatus;
+        } else {
+            resolveStatusLocally(mvnUriStatusKey);
+        }
+        return this.installStatus;
+    }
+
+    private void resolveStatusLocally(String mvnUriStatusKey) {
+        // then try to resolve locally
+        String localMavenUri = mvnUriStatusKey.replace("mvn:", "mvn:" + MavenConstants.LOCAL_RESOLUTION_URL + "!"); //$NON-NLS-1$ //$NON-NLS-2$
+        try {
+            getMavenResolver().resolve(localMavenUri);
+            status = ELibraryInstallStatus.INSTALLED;
+            installStatus = ELibraryInstallStatus.DEPLOYED;
+        } catch (Exception e) {
+            status = ELibraryInstallStatus.NOT_INSTALLED;
+            installStatus = ELibraryInstallStatus.NOT_DEPLOYED;
+        }
+        ModuleStatusProvider.getStatusMap().put(mvnUriStatusKey, status);
+        ModuleStatusProvider.getDeployStatusMap().put(mvnUriStatusKey, installStatus);
     }
 
     private MavenResolver getMavenResolver() {
@@ -556,8 +583,8 @@ public class ModuleNeeded {
                 // set jar by default
                 parseMvnUrl.setType(MavenConstants.TYPE_JAR);
             }
-            uri = MavenUrlHelper.generateMvnUrl(parseMvnUrl.getGroupId(), parseMvnUrl.getArtifactId(),
-                    parseMvnUrl.getVersion(), parseMvnUrl.getType(), parseMvnUrl.getClassifier());
+            uri = MavenUrlHelper.generateMvnUrl(parseMvnUrl.getGroupId(), parseMvnUrl.getArtifactId(), parseMvnUrl.getVersion(),
+                    parseMvnUrl.getType(), parseMvnUrl.getClassifier());
         }
         return uri;
     }

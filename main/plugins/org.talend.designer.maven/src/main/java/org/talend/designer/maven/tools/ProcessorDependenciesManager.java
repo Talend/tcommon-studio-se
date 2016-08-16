@@ -50,7 +50,7 @@ public class ProcessorDependenciesManager {
             Set<ModuleNeeded> neededLibraries = processor.getNeededModules();
             for (ModuleNeeded module : neededLibraries) {
                 Dependency dependency = null;
-                if (module.getStatus() != ELibraryInstallStatus.NOT_INSTALLED) {
+                if (module.getDeployStatus() == ELibraryInstallStatus.DEPLOYED) {
                     dependency = PomUtil.createModuleDependency(module.getMavenUri(true));
                 }
                 if (dependency != null) {
