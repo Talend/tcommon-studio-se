@@ -1376,6 +1376,7 @@ public class DatabaseForm extends AbstractForm {
         if (isHiveDBConnSelected()) {
             if (doSupportSecurity()) {
                 updateAuthenticationForHive(isHiveEmbeddedMode());
+                hideControlForKerbTickt();
                 setHidAuthenticationForHive(false);
             } else {
                 setHidAuthenticationForHive(true);
@@ -1384,7 +1385,17 @@ public class DatabaseForm extends AbstractForm {
             setHidAuthenticationForHive(true);
         }
     }
-
+    
+    private void hideControlForKerbTickt() {
+     	hideControl(useKerberos, !doSupportKerb());
+ 	    hideControl(authenticationCom, !(doSupportKerb() && useKerberos.getSelection()));
+ 	    hideControl(useKeyTab, !doSupportKerb());
+ 	    hideControl(keyTabComponent, !(doSupportKerb() && useKeyTab.getSelection()));
+     	hideControl(useMaprTForHive, !doSupportTicket());
+ 	    hideControl(authenticationMaprTComForHive, !(useMaprTForHive.getSelection() && doSupportTicket()));
+        hideControl(authenticationUserPassComForHive, doSupportKerb() && useKerberos.getSelection() && doSupportTicket());
+    }
+    
     private void showIfAdditionalJDBCSettings() {
         setHidAdditionalJDBCSettings(!isSupportHiveAdditionalSettings());
     }
@@ -7172,9 +7183,27 @@ public class DatabaseForm extends AbstractForm {
     }
 
     private boolean doSupportSecurity() {
+        return doSupportKerb() || doSupportTicket();
+     }
+ 
+     private boolean doSupportKerb() {
         return HiveMetadataHelper.doSupportSecurity(hiveDistributionCombo.getText(), hiveVersionCombo.getText(),
-                hiveModeCombo.getText(), hiveServerVersionCombo.getText(), true);
-    }
+                  hiveModeCombo.getText(), hiveServerVersionCombo.getText(), true);
+      }
+  
+     private boolean doSupportTicket() {
+        boolean doSupportMapRTicket = false;
+        IHDistribution hiveDistribution = getCurrentHiveDistribution(true);
+        if (hiveDistribution == null) {
+            return false;
+        }
+        IHadoopDistributionService hadoopService = getHadoopDistributionService();
+        if (hadoopService != null && hiveDistribution != null) {
+            doSupportMapRTicket = hadoopService
+                    .doSupportMapRTicket(hiveDistribution.getHDVersion(hiveVersionCombo.getText(), true));
+        }
+        return doSupportMapRTicket;
+     }
 
     private boolean doSupportTez() {
         if (isHiveDBConnSelected()) {
