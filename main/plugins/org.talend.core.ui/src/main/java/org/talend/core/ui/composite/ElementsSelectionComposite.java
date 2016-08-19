@@ -14,7 +14,9 @@ package org.talend.core.ui.composite;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTreeViewer;
@@ -41,6 +43,8 @@ public class ElementsSelectionComposite<T> extends Composite {
 
     private boolean multipleSelection = true;
 
+    private FilteredCheckboxTree filteredCheckboxTree;
+
     private CheckboxTreeViewer viewer;
 
     private List<T> viewerData;
@@ -64,7 +68,7 @@ public class ElementsSelectionComposite<T> extends Composite {
         if (multipleSelection) {
             styles = styles | SWT.MULTI;
         }
-        FilteredCheckboxTree filteredCheckboxTree = new FilteredCheckboxTree(this, styles, new PatternFilter());
+        filteredCheckboxTree = new FilteredCheckboxTree(this, styles, new PatternFilter());
         viewer = filteredCheckboxTree.getViewer();
         viewer.setContentProvider(getContentProvider());
         viewer.setLabelProvider(getLabelProvider());
@@ -179,14 +183,19 @@ public class ElementsSelectionComposite<T> extends Composite {
         return this.viewerData;
     }
 
+    @SuppressWarnings("unchecked")
     public List<T> getSelectedElements() {
-        List<T> nls = new ArrayList<>();
-        Object[] checkedElements = viewer.getCheckedElements();
-        for (Object obj : checkedElements) {
-            T nl = (T) obj;
-            nls.add(nl);
+        Set<T> checkedElements = new HashSet<>();
+        // If using filter
+        for (Object obj : filteredCheckboxTree.getCheckedLeafNodes()) {
+            checkedElements.add((T) obj);
         }
-        return nls;
+        // If does not use filter
+        for (Object obj : viewer.getCheckedElements()) {
+            checkedElements.add((T) obj);
+        }
+
+        return new ArrayList<>(checkedElements);
     }
 
 }
