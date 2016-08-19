@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.talend.commons.ui.swt.formtools.LabelledCombo;
 import org.talend.core.model.properties.Item;
+import org.talend.core.model.properties.JobletProcessItem;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.repository.utils.ConvertJobsUtil;
@@ -89,13 +90,13 @@ public class DuplicateDialog extends CustomInputDialog {
         if (sourceNode != null) {
             // job type
             final Object contentType = sourceNode.getProperties(EProperties.CONTENT_TYPE);
-            if (contentType == ERepositoryObjectType.PROCESS) {
+            if (contentType == ERepositoryObjectType.PROCESS || contentType == ERepositoryObjectType.JOBLET) {
                 jobTypeValue = JobType.STANDARD.getDisplayName();
                 jobTypeCombo.setText(jobTypeValue);
-            } else if (contentType == ERepositoryObjectType.PROCESS_MR) {
+            } else if (contentType == ERepositoryObjectType.PROCESS_MR || contentType == ERepositoryObjectType.SPARK_JOBLET) {
                 jobTypeValue = JobType.BIGDATABATCH.getDisplayName();
                 jobTypeCombo.setText(jobTypeValue);
-            } else if (contentType == ERepositoryObjectType.PROCESS_STORM) {
+            } else if (contentType == ERepositoryObjectType.PROCESS_STORM || contentType == ERepositoryObjectType.SPARK_STREAMING_JOBLET) {
                 jobTypeValue = JobType.BIGDATASTREAMING.getDisplayName();
                 jobTypeCombo.setText(jobTypeValue);
             } else if (contentType == ERepositoryObjectType.PROCESS_ROUTE
@@ -142,18 +143,32 @@ public class DuplicateDialog extends CustomInputDialog {
     }
 
     private void updateJobFrameworkPart() {
+    	boolean isJoblet = false;
+    	if(sourceNode.getObject().getProperty().getItem() instanceof JobletProcessItem){
+    		isJoblet = true;
+    	}
         if (JobType.STANDARD.getDisplayName().equals(jobTypeValue)) {
             frameworkCombo.getCombo().setItems(new String[0]);
             frameworkCombo.setReadOnly(true);
         } else if (JobType.BIGDATABATCH.getDisplayName().equals(jobTypeValue)) {
-            String[] items = JobBatchFramework.getFrameworkToDispaly();
+        	String[] items = null;
+        	if(isJoblet){
+        		items = JobBatchFramework.getFrameworkToDispaly(JobBatchFramework.SPARKFRAMEWORK.getDisplayName());
+        	}else{
+        		items = JobBatchFramework.getFrameworkToDispaly();
+        	}
             frameworkCombo.getCombo().setItems(items);
             if (items.length > 0) {
                 frameworkCombo.getCombo().select(0);
             }
             frameworkCombo.setReadOnly(false);
         } else if (JobType.BIGDATASTREAMING.getDisplayName().equals(jobTypeValue)) {
-            String[] items = JobStreamingFramework.getFrameworkToDispaly();
+            String[] items = null;
+            if(isJoblet){
+            	items = JobStreamingFramework.getFrameworkToDispaly(JobStreamingFramework.SPARKSTREAMINGFRAMEWORK.getDisplayName());
+            }else{
+            	items = JobStreamingFramework.getFrameworkToDispaly();
+            }
             frameworkCombo.getCombo().setItems(items);
             if (items.length > 0) {
                 frameworkCombo.getCombo().select(0);

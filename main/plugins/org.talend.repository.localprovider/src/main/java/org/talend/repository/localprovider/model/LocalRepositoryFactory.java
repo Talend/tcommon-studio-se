@@ -1656,7 +1656,9 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
             version = null; // for all version
         }
         if (objToDelete.getRepositoryObjectType() == ERepositoryObjectType.PROCESS
-                || objToDelete.getRepositoryObjectType() == ERepositoryObjectType.JOBLET) {
+                || objToDelete.getRepositoryObjectType() == ERepositoryObjectType.JOBLET
+                || objToDelete.getRepositoryObjectType() == ERepositoryObjectType.SPARK_JOBLET
+                || objToDelete.getRepositoryObjectType() == ERepositoryObjectType.SPARK_STREAMING_JOBLET) {
             if (coreSerivce.isAlreadyBuilt(project)) {
                 if (objToDelete.getProperty() != null) {
                     coreSerivce.removeItemRelations(objToDelete.getProperty().getItem());

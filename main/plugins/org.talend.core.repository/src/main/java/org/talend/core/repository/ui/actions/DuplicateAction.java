@@ -441,7 +441,29 @@ public class DuplicateAction extends AContextualAction {
                     } catch (PersistenceException e1) {
                         return Messages.getString("DuplicateAction.ItemExistsError"); //$NON-NLS-1$
                     }
-                } else {
+                } else if (repositoryType == ERepositoryObjectType.JOBLET || repositoryType == ERepositoryObjectType.SPARK_JOBLET
+                        || repositoryType == ERepositoryObjectType.SPARK_STREAMING_JOBLET) {
+                    try {
+                        List<IRepositoryViewObject> listExistingObjects = repositoryFactory.getAll(ERepositoryObjectType.JOBLET,
+                                true, false);
+                        if (PluginChecker.isStormPluginLoader()) {
+                            listExistingObjects
+                                    .addAll(repositoryFactory.getAll(ERepositoryObjectType.SPARK_JOBLET, true, false));
+                        }
+                        if (PluginChecker.isMapReducePluginLoader()) {
+                            listExistingObjects.addAll(repositoryFactory.getAll(ERepositoryObjectType.SPARK_STREAMING_JOBLET, true, false));
+                        }
+
+                        Property property = ((RepositoryNode) selectionInClipboard.toArray()[0]).getObject().getProperty();
+                        if (property != null
+                                && (!repositoryFactory.isNameAvailable(property.getItem(), itemName, listExistingObjects) || itemName
+                                        .equals(property.getLabel()))) {
+                            return Messages.getString("DuplicateAction.ItemExistsError");//$NON-NLS-1$
+                        }
+                    } catch (PersistenceException e1) {
+                        return Messages.getString("DuplicateAction.ItemExistsError"); //$NON-NLS-1$
+                    }
+                }else {
                     boolean isTestContainer = false;
                     List<IRepositoryViewObject> testObjectList = new ArrayList<IRepositoryViewObject>();
                     if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {

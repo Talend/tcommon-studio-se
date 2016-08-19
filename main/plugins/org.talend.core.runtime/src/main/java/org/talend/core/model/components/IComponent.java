@@ -53,6 +53,8 @@ public interface IComponent {
     String JOBLET_FAMILY = "Joblets"; //$NON-NLS-1$
     
     String SPARK_JOBLET_FAMILY = "Spark Joblets"; //$NON-NLS-1$
+    
+    String SPARK_STREAMING_JOBLET_FAMILY = "Spark Streaming Joblets"; //$NON-NLS-1$
 
     public String getName();
 
