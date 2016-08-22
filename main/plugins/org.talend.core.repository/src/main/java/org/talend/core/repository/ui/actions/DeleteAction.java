@@ -507,7 +507,7 @@ public class DeleteAction extends AContextualAction {
             }
             curItem = parentFolder;
         }
-        if (objectType.getKey().toString().startsWith("repository.metadata")) { //$NON-NLS-1$
+        if (objectType.getKey().toString().startsWith("repository.metadata") || isGenericType(objectType)) { //$NON-NLS-1$
             while (((FolderItem) curItem.getParent()).getType().getValue() != FolderType.SYSTEM_FOLDER) {
                 if ("".equals(fullPath)) { //$NON-NLS-1$
                     fullPath = ((FolderItem) curItem.getParent()).getProperty().getLabel() + fullPath;
