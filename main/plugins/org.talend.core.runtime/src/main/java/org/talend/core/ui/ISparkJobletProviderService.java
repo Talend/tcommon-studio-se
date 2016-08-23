@@ -13,6 +13,7 @@
 package org.talend.core.ui;
 
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.ui.IEditorPart;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.core.IService;
 import org.talend.core.model.components.IComponent;
@@ -26,6 +27,8 @@ import org.talend.core.model.repository.IRepositoryEditorInput;
  * DOC hwang  class global comment. Detailled comment
  */
 public interface ISparkJobletProviderService extends IService{
+	
+	public boolean isSparkJobletEditor(IEditorPart activeEditor);
     
     public boolean isSparkJobletItem(Item item);
 

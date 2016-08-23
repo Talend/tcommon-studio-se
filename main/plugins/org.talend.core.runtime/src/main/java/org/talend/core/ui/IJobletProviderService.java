@@ -138,5 +138,7 @@ public interface IJobletProviderService extends IService {
 
     public IRepositoryEditorInput getJobletProcessEditorInput(JobletProcessItem processItem, Boolean load, Boolean lastVersion,
             Boolean readOnly, Boolean openedInJob) throws PersistenceException;
+    
+    public boolean isJobletEditor(IEditorPart activeEditor);
 
 }
