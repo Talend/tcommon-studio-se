@@ -34,7 +34,11 @@ public class CreateMavenBeanPom extends AbstractMavenCodesTemplatePom {
 
     @Override
     protected Model getTemplateModel() {
-        return MavenTemplateManager.getBeansTempalteModel();
+        Model model = MavenTemplateManager.getBeansTempalteModel();
+        if (getDeployVersion() != null) {
+            model.setVersion(getDeployVersion());
+        }
+        return model;
     }
 
     @Override

@@ -23,6 +23,7 @@ import org.talend.core.model.components.ComponentCategory;
 import org.talend.core.model.properties.Project;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.utils.JavaResourcesHelper;
+import org.talend.core.runtime.process.TalendProcessArgumentConstant;
 import org.talend.core.runtime.projectsetting.IProjectSettingTemplateConstants;
 import org.talend.designer.maven.template.ETalendMavenVariables;
 import org.talend.designer.maven.tools.MavenPomSynchronizer;
@@ -49,6 +50,14 @@ public class CreateMavenTestPom extends AbstractMavenProcessorPom {
         return super.getTemplateStream();
     }
 
+    @Override
+    protected void configModel(Model model) {
+        if (getDeployVersion() != null) {
+            model.setVersion(getDeployVersion());
+        }
+        super.configModel(model);
+    }
+
     /**
      * 
      * Add the properties for job.
@@ -73,7 +82,12 @@ public class CreateMavenTestPom extends AbstractMavenProcessorPom {
         checkPomProperty(properties, "talend.project.name", ETalendMavenVariables.ProjectName, project.getTechnicalLabel());
         checkPomProperty(properties, "talend.job.path", ETalendMavenVariables.JobPath, jobClassPackageFolder);
         checkPomProperty(properties, "talend.job.name", ETalendMavenVariables.JobName, "${project.artifactId}");
-        checkPomProperty(properties, "talend.job.version", ETalendMavenVariables.JobVersion, "${project.version}");
+        String jobVersion = property.getVersion();
+        if (getArgumentsMap().get(TalendProcessArgumentConstant.ARG_DEPLOY_VERSION) == null) {
+            // if deploy version does not set
+            jobVersion = "${project.version}";
+        }
+        checkPomProperty(properties, "talend.job.version", ETalendMavenVariables.JobVersion, jobVersion);
     }
 
     protected void afterCreate(IProgressMonitor monitor) throws Exception {

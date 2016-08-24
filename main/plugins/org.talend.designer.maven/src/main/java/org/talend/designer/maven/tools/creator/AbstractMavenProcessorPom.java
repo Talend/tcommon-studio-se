@@ -108,7 +108,7 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
     protected Model createModel() {
         Model model = super.createModel();
         if (model != null) {
-            PomUtil.checkParent(model, this.getPomFile());
+            PomUtil.checkParent(model, this.getPomFile(), getDeployVersion());
 
             addDependencies(model);
         }
@@ -128,9 +128,13 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
                     if (!validChildrenJob(jobInfo)) {
                         continue;
                     }
+                    String version = PomIdsHelper.getJobVersion(jobInfo);
+                    if (getDeployVersion() != null) {
+                        version = getDeployVersion();
+                    }
                     // same group as main job.
                     Dependency d = PomUtil.createDependency(model.getGroupId(), PomIdsHelper.getJobArtifactId(jobInfo),
-                            PomIdsHelper.getJobVersion(jobInfo), null);
+                            version, null);
                     dependencies.add(d);
                 }
             }

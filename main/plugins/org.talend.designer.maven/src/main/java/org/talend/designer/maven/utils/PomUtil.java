@@ -164,7 +164,7 @@ public class PomUtil {
      * @param curModel
      * @param curPomFile
      */
-    public static void checkParent(Model curModel, IFile curPomFile) {
+    public static void checkParent(Model curModel, IFile curPomFile, String specialVersion) {
         Parent parent = curModel.getParent();
         if (parent == null) {
             parent = new Parent();
@@ -174,6 +174,11 @@ public class PomUtil {
         }
         // always depend on current poject
         Model codeProjectTemplateModel = MavenTemplateManager.getCodeProjectTemplateModel();
+
+        if (specialVersion != null) {
+            codeProjectTemplateModel.setVersion(specialVersion);
+        }
+        
         parent.setGroupId(codeProjectTemplateModel.getGroupId());
         parent.setArtifactId(codeProjectTemplateModel.getArtifactId());
         parent.setVersion(codeProjectTemplateModel.getVersion());

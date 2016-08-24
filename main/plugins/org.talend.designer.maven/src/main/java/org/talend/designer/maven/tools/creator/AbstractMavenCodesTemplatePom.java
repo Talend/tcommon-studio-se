@@ -45,7 +45,7 @@ public abstract class AbstractMavenCodesTemplatePom extends AbstractMavenGeneral
         setAttributes(templateModel);
         addProperties(templateModel);
 
-        PomUtil.checkParent(templateModel, this.getPomFile());
+        PomUtil.checkParent(templateModel, this.getPomFile(), getDeployVersion());
 
         addDependencies(templateModel);
 

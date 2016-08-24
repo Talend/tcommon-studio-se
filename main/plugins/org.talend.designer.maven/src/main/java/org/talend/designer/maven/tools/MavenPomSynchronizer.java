@@ -55,6 +55,8 @@ import org.talend.utils.io.FilesUtils;
 public class MavenPomSynchronizer {
 
     private final ITalendProcessJavaProject codeProject;
+    
+    private Map<String, Object> argumentsMap = new HashMap<String, Object>();
 
     public MavenPomSynchronizer(ITalendProcessJavaProject codeProject) {
         super();
@@ -70,6 +72,7 @@ public class MavenPomSynchronizer {
                 PomUtil.getPomFileName(TalendMavenConstants.DEFAULT_ROUTINES_ARTIFACT_ID));
         // generate new one
         CreateMavenBundleTemplatePom createTemplatePom = new CreateMavenRoutinePom(routinesPomFile);
+        createTemplatePom.setArgumentsMap(getArgumentsMap());
         createTemplatePom.setOverwrite(overwrite);
         createTemplatePom.create(null);
     }
@@ -80,6 +83,7 @@ public class MavenPomSynchronizer {
                 PomUtil.getPomFileName(TalendMavenConstants.DEFAULT_BEANS_ARTIFACT_ID));
         // generate new one
         CreateMavenBeanPom createTemplatePom = new CreateMavenBeanPom(beansPomFile);
+        createTemplatePom.setArgumentsMap(getArgumentsMap());
         createTemplatePom.setOverwrite(overwrite);
         createTemplatePom.create(null);
     }
@@ -90,6 +94,7 @@ public class MavenPomSynchronizer {
                 PomUtil.getPomFileName(TalendMavenConstants.DEFAULT_PIGUDFS_ARTIFACT_ID));
         // generate new one
         CreateMavenPigUDFPom createTemplatePom = new CreateMavenPigUDFPom(beansPomFile);
+        createTemplatePom.setArgumentsMap(getArgumentsMap());
         createTemplatePom.setOverwrite(overwrite);
         createTemplatePom.create(null);
     }
@@ -268,5 +273,13 @@ public class MavenPomSynchronizer {
         // finally, update project
         ProjectPomManager projectManager = new ProjectPomManager(codeProject.getProject());
         projectManager.update(monitor, processor);
+    }
+    
+    public Map<String, Object> getArgumentsMap() {
+        return argumentsMap;
+    }
+
+    public void setArgumentsMap(Map<String, Object> argumentsMap) {
+        this.argumentsMap = argumentsMap;
     }
 }

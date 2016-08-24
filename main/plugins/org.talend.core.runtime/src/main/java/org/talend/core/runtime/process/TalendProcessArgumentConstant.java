@@ -53,6 +53,8 @@ public interface TalendProcessArgumentConstant {
     static final String ARG_ENABLE_WATCH = "ENABLE_WATCH";
 
     static final String ARG_NEED_PIGUDFS = "NEED_PIGUDFS";
+    
+    static final String ARG_DEPLOY_VERSION = "DEPLOY_VERSION";
 
     static final String CMD_ARG_STATS_PORT_PARAM = "stat_port";
 

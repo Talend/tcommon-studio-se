@@ -180,6 +180,9 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
 
     @Override
     protected void configModel(Model model) {
+        if (getDeployVersion() != null) {
+            model.setVersion(getDeployVersion());
+        }
         super.configModel(model);
         setProfiles(model);
     }
@@ -242,8 +245,12 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
 
         checkPomProperty(properties, "talend.job.name", ETalendMavenVariables.JobName,
                 jobInfoProp.getProperty(JobInfoProperties.JOB_NAME, property.getLabel()));
-
-        checkPomProperty(properties, "talend.job.version", ETalendMavenVariables.JobVersion, "${project.version}");
+        String jobVersion = property.getVersion();
+        if (getArgumentsMap().get(TalendProcessArgumentConstant.ARG_DEPLOY_VERSION) == null) {
+            // if deploy version does not set
+            jobVersion = "${project.version}";
+        }
+        checkPomProperty(properties, "talend.job.version", ETalendMavenVariables.JobVersion, jobVersion);
 
         checkPomProperty(properties, "talend.job.date", ETalendMavenVariables.JobDate,
                 jobInfoProp.getProperty(JobInfoProperties.DATE, JobInfoProperties.DATAFORMAT.format(new Date())));
@@ -465,6 +472,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
 
         // generate routines
         MavenPomSynchronizer pomSync = new MavenPomSynchronizer(this.getJobProcessor().getTalendJavaProject());
+        pomSync.setArgumentsMap(getArgumentsMap());
         pomSync.syncCodesPoms(monitor, getJobProcessor().getProcess(), true);
         // because need update the latest content for templates.
         pomSync.syncTemplates(true);

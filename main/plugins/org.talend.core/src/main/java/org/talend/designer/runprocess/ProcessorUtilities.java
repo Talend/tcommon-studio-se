@@ -866,7 +866,13 @@ public class ProcessorUtilities {
                 argumentsMap.put(TalendProcessArgumentConstant.ARG_ENABLE_APPLY_CONTEXT_TO_CHILDREN,
                         jobInfo.isApplyContextToChildren());
                 argumentsMap.put(TalendProcessArgumentConstant.ARG_GENERATE_OPTION, option);
-
+                Map<String, Object> fatherArgumentsMap = getTopArgumentsMap(jobInfo);
+                if (fatherArgumentsMap != null) {
+                    String deployVersion = (String) fatherArgumentsMap.get(TalendProcessArgumentConstant.ARG_DEPLOY_VERSION);
+                    if (deployVersion != null) {
+                        argumentsMap.put(TalendProcessArgumentConstant.ARG_DEPLOY_VERSION, deployVersion);
+                    }
+                }
                 processor.setArguments(argumentsMap);
             }
             setNeededResources(argumentsMap, jobInfo);
@@ -943,6 +949,14 @@ public class ProcessorUtilities {
         generatedJobInfo.setTestContainer(jobInfo.isTestContainer());
         generatedJobInfo.setFatherJobInfo(cloneJobInfo(jobInfo.getFatherJobInfo()));
         return generatedJobInfo;
+    }
+    
+    private static Map<String, Object> getTopArgumentsMap(JobInfo jobInfo) {
+        if (jobInfo.getFatherJobInfo() != null) {
+            return getTopArgumentsMap(jobInfo.getFatherJobInfo());
+        } else {
+            return jobInfo.getArgumentsMap();
+        }
     }
 
     private static void generateNodeInfo(JobInfo jobInfo, String selectedContextName, boolean statistics, boolean properties,

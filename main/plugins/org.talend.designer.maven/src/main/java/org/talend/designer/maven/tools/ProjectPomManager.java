@@ -13,8 +13,10 @@
 package org.talend.designer.maven.tools;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
@@ -28,6 +30,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.eclipse.m2e.core.embedder.MavenModelManager;
 import org.talend.core.model.process.JobInfo;
+import org.talend.core.runtime.process.TalendProcessArgumentConstant;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.template.MavenTemplateManager;
 import org.talend.designer.maven.utils.PomIdsHelper;
@@ -49,6 +52,8 @@ public class ProjectPomManager {
     private boolean updateModules = true;
 
     private boolean updateDependencies = true;
+    
+    private Map<String, Object> argumentsMap = new HashMap<String, Object>();
 
     public ProjectPomManager(IProject project) {
         super();
@@ -123,6 +128,11 @@ public class ProjectPomManager {
      */
     protected void updateAttributes(IProgressMonitor monitor, IProcessor processor, Model projectModel) throws Exception {
         Model templateModel = MavenTemplateManager.getCodeProjectTemplateModel();
+        
+        String deployVersion = (String) argumentsMap.get(TalendProcessArgumentConstant.ARG_DEPLOY_VERSION);
+        if (deployVersion != null) {
+            templateModel.setVersion(deployVersion);
+        }
 
         projectModel.setGroupId(templateModel.getGroupId());
         projectModel.setArtifactId(templateModel.getArtifactId());
@@ -186,7 +196,7 @@ public class ProjectPomManager {
                         continue; // not same
                     }
 
-                    PomUtil.checkParent(model, file);
+                    PomUtil.checkParent(model, file, (String) argumentsMap.get(TalendProcessArgumentConstant.ARG_DEPLOY_VERSION));
                     PomUtil.savePom(monitor, model, file);
                 }
             }
@@ -240,6 +250,11 @@ public class ProjectPomManager {
 
     protected IFile getBasePomFile() {
         return null;
+    }
+
+    
+    public void setArgumentsMap(Map<String, Object> argumentsMap) {
+        this.argumentsMap = argumentsMap;
     }
 
 }
