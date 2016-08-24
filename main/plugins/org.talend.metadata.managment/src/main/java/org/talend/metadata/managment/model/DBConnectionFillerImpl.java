@@ -28,8 +28,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import metadata.managment.i18n.Messages;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
@@ -91,6 +89,8 @@ import org.talend.utils.sql.metadata.constants.GetPrimaryKey;
 import org.talend.utils.sql.metadata.constants.GetTable;
 import org.talend.utils.sql.metadata.constants.MetaDataConstants;
 import org.talend.utils.sql.metadata.constants.TableType;
+
+import metadata.managment.i18n.Messages;
 import orgomg.cwm.objectmodel.core.Package;
 import orgomg.cwm.resource.relational.Catalog;
 import orgomg.cwm.resource.relational.ColumnSet;
@@ -1400,7 +1400,7 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
 
                 String fetchTableName = extractMeta.getStringMetaDataInfo(columns, ExtractManager.TABLE_NAME, null);
                 fetchTableName = ManagementTextUtils.filterSpecialChar(fetchTableName);
-                if (fetchTableName.equals(tablePattern)) {
+                if (fetchTableName.equalsIgnoreCase(tablePattern)) {
                     String columnName = getStringFromResultSet(columns, GetColumn.COLUMN_NAME.name());
                     TdColumn column = ColumnHelper.createTdColumn(columnName);
 
@@ -1592,7 +1592,7 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
 
                 String fetchTableName = extractMeta.getStringMetaDataInfo(columns, ExtractManager.TABLE_NAME, null);
                 fetchTableName = ManagementTextUtils.filterSpecialChar(fetchTableName);
-                if (fetchTableName.equals(tablePattern)) {
+                if (fetchTableName.equalsIgnoreCase(tablePattern)) {
                     String columnName = getStringFromResultSet(columns, GetColumn.COLUMN_NAME.name());
                     TdColumn column = ColumnHelper.createTdColumn(columnName);
 
