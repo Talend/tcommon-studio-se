@@ -40,6 +40,8 @@ public interface ISparkJobletProviderService extends IService{
     
     public IComponent createSparkJobletComponent();
     
+    public IComponent createSparkJobletInputOutputComponent(Object jobletNodeType);
+    
     public Element createSparkJobletContainer(INode node);
     
     public IAdaptable createEditorPart(Object model);
