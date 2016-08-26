@@ -103,7 +103,7 @@ public enum EParameterFieldType {
     HIDDEN_TEXT, // hcyi added for generic wizard/component properties
     SCHEMA_REFERENCE, // hcyi added for component properties
 
-    CAMPAIGN_NAME, // pwlin added for TDS components
+    CAMPAIGN_CHOOSER, // pwlin added for TDS components
     ;
 
     public String getName() {
