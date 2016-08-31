@@ -27,6 +27,7 @@ import org.talend.core.database.EDatabase4DriverClassName;
 import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.database.conn.template.EDatabaseConnTemplate;
 import org.talend.core.model.metadata.Dbms;
+import org.talend.core.model.metadata.DiSchemaConstants;
 import org.talend.core.model.metadata.IConvertionConstants;
 import org.talend.core.model.metadata.IMetadataColumn;
 import org.talend.core.model.metadata.IMetadataConnection;
@@ -46,7 +47,9 @@ import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.utils.KeywordsValidator;
 import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.helper.SAPBWTableHelper;
+import org.talend.cwm.helper.TaggedValueHelper;
 import org.talend.model.bridge.ReponsitoryContextBridge;
+
 import orgomg.cwm.objectmodel.core.TaggedValue;
 
 /**
@@ -549,6 +552,10 @@ public final class ConvertionHelper {
                 newColumn.setName(column.getOriginalDbColumnName());
             }
             // columns.add(convertToMetaDataColumn(column));
+            if (column.isReadOnly()) {
+                TaggedValue tv = TaggedValueHelper.createTaggedValue(DiSchemaConstants.TALEND6_IS_READ_ONLY, "true"); //$NON-NLS-1$
+                newColumn.getTaggedValue().add(tv);
+            }
         }
         result.getColumns().addAll(columns);
         return result;

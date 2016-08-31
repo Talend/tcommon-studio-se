@@ -42,6 +42,7 @@ import org.talend.commons.runtime.model.components.IComponentConstants;
 import org.talend.commons.runtime.model.repository.ERepositoryStatus;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.commons.utils.data.list.UniqueStringGenerator;
+import org.talend.components.api.properties.ComponentProperties;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ICoreService;
 import org.talend.core.PluginChecker;
@@ -79,6 +80,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IRepositoryService;
 import org.talend.repository.model.RepositoryConstants;
+
 import orgomg.cwm.objectmodel.core.TaggedValue;
 
 /**
@@ -1072,68 +1074,15 @@ public final class MetadataToolHelper {
     public static void initilializeSchemaFromElementParameters(IMetadataTable metadataTable,
             List<IElementParameter> elementParameters) {
         IElementParameter mappingParameter = getMappingParameter(elementParameters);
-        String uniqueName = null;
         for (int i = 0; i < elementParameters.size(); i++) {
             IElementParameter param = elementParameters.get(i);
-            if ((param.getFieldType().equals(EParameterFieldType.SCHEMA_TYPE) || param.getFieldType().equals(
-                    EParameterFieldType.SCHEMA_REFERENCE))
+            if ((param.getFieldType().equals(EParameterFieldType.SCHEMA_TYPE)
+                    || param.getFieldType().equals(EParameterFieldType.SCHEMA_REFERENCE))
                     && param.getContext().equals(metadataTable.getAttachedConnector())) {
                 if (param.getValue() instanceof IMetadataTable) {
-                    param.setValueToDefault(elementParameters);
-                    IMetadataTable table = (IMetadataTable) param.getValue();
-                    String metadataTableName = metadataTable.getTableName();
-                    if (mappingParameter != null) {
-                        if (mappingParameter.getValue() != null && (!mappingParameter.getValue().equals(""))) { //$NON-NLS-1$
-                            table.setDbms((String) mappingParameter.getValue());
-                        }
-                    }
-                    metadataTable.setReadOnly(table.isReadOnly());
-
-                    metadataTable.setReadOnlyColumnPosition(table.getReadOnlyColumnPosition());
-
-                    // if all the table is read only then remove all columns to
-                    // set the one defined in the emf component
-                    // if (metadataTable.isReadOnly()) {
-                    // metadataTable.getListColumns().clear();
-                    // }
-                    for (int k = 0; k < table.getListColumns().size(); k++) {
-                        IMetadataColumn newColumn = table.getListColumns().get(k);
-                        IElement element = param.getElement();
-                        IMetadataColumn oldColumn = metadataTable.getColumn(newColumn.getLabel());
-                        if (element instanceof INode && oldColumn == null) {
-                            INode node = (INode) element;
-                            if (node.getComponent().getName().equals("tGenKeyHadoop")) { //$NON-NLS-1$
-                                int lastIndexOf = node.getLabel().lastIndexOf("_"); //$NON-NLS-1$
-                                oldColumn = metadataTable
-                                        .getColumn(newColumn.getLabel() + node.getLabel().substring(lastIndexOf));
-                            }
-                        }
-
-                        boolean update = true;
-                        if (metadataTableName != null && !metadataTableName.equals(table.getTableName())) {
-                            update = newColumn.isCustom();
-                        }
-                        if (oldColumn != null && update) {
-                            // if column exists, then override read only /
-                            // custom
-                            oldColumn.setReadOnly(newColumn.isReadOnly());
-                            oldColumn.setCustom(newColumn.isCustom());
-                            oldColumn.setCustomId(newColumn.getCustomId());
-                            if (newColumn.isReadOnly()) { // if read only,
-                                // override
-                                // everything
-                                oldColumn.setKey(newColumn.isKey());
-                                oldColumn.setNullable(newColumn.isNullable());
-                                oldColumn.setLength(newColumn.getLength());
-                                oldColumn.setPrecision(newColumn.getPrecision());
-                                oldColumn.setPattern(newColumn.getPattern());
-                                oldColumn.setType(newColumn.getType());
-                                oldColumn.setTalendType(newColumn.getTalendType());
-                                oldColumn.setComment(newColumn.getComment());
-                            }
-                        }
-                    }
+                    initilializeSchema(metadataTable, elementParameters, mappingParameter, param);
                 } else if (param.getFieldType() == EParameterFieldType.SCHEMA_REFERENCE) {
+                    initilializeNewSchema(metadataTable, mappingParameter, param);
                     if (!param.getDefaultValues().isEmpty()) {
                         Schema schema = (Schema) param.getDefaultValues().get(0).getDefaultValue();
                         org.talend.core.model.metadata.builder.connection.MetadataTable defaultEmfTable = MetadataToolAvroHelper
@@ -1153,6 +1102,89 @@ public final class MetadataToolHelper {
 
         }
         metadataTable.sortCustomColumns();
+    }
+
+    public static void initilializeNewSchema(IMetadataTable metadataTable, IElementParameter mappingParameter,
+            IElementParameter param) {
+        Object value = param.getValue();
+        if (value instanceof String) {
+            IElement element = param.getElement();
+            if (element instanceof INode) {
+                INode node = (INode) element;
+                ComponentProperties properties = node.getComponentProperties();
+                if (properties != null) {
+                    Object schemaObj = properties.getValuedProperty(param.getName()).getValue();
+                    if (schemaObj instanceof Schema) {
+                        Schema schema = (Schema) schemaObj;
+                        org.talend.core.model.metadata.builder.connection.MetadataTable emfTable = MetadataToolAvroHelper
+                                .convertFromAvro(schema);
+                        IMetadataTable newTable = MetadataToolHelper.convert(emfTable);
+                        initilializeSchema(metadataTable, newTable, mappingParameter, node);
+                    }
+                }
+            }
+        }
+    }
+
+    public static void initilializeSchema(IMetadataTable metadataTable, List<IElementParameter> elementParameters,
+            IElementParameter mappingParameter, IElementParameter param) {
+        param.setValueToDefault(elementParameters);
+        IMetadataTable newTable = (IMetadataTable) param.getValue();
+        initilializeSchema(metadataTable, newTable, mappingParameter, param.getElement());
+    }
+
+    public static void initilializeSchema(IMetadataTable metadataTable, IMetadataTable newTable,
+            IElementParameter mappingParameter, IElement element) {
+        String metadataTableName = metadataTable.getTableName();
+        if (mappingParameter != null) {
+            if (mappingParameter.getValue() != null && (!mappingParameter.getValue().equals(""))) { //$NON-NLS-1$
+                newTable.setDbms((String) mappingParameter.getValue());
+            }
+        }
+        metadataTable.setReadOnly(newTable.isReadOnly());
+
+        metadataTable.setReadOnlyColumnPosition(newTable.getReadOnlyColumnPosition());
+
+        // if all the table is read only then remove all columns to
+        // set the one defined in the emf component
+        // if (metadataTable.isReadOnly()) {
+        // metadataTable.getListColumns().clear();
+        // }
+        for (int k = 0; k < newTable.getListColumns().size(); k++) {
+            IMetadataColumn newColumn = newTable.getListColumns().get(k);
+            IMetadataColumn oldColumn = metadataTable.getColumn(newColumn.getLabel());
+            if (element instanceof INode && oldColumn == null) {
+                INode node = (INode) element;
+                if (node.getComponent().getName().equals("tGenKeyHadoop")) { //$NON-NLS-1$
+                    int lastIndexOf = node.getLabel().lastIndexOf("_"); //$NON-NLS-1$
+                    oldColumn = metadataTable.getColumn(newColumn.getLabel() + node.getLabel().substring(lastIndexOf));
+                }
+            }
+
+            boolean update = true;
+            if (metadataTableName != null && !metadataTableName.equals(newTable.getTableName())) {
+                update = newColumn.isCustom();
+            }
+            if (oldColumn != null && update) {
+                // if column exists, then override read only /
+                // custom
+                oldColumn.setReadOnly(newColumn.isReadOnly());
+                oldColumn.setCustom(newColumn.isCustom());
+                oldColumn.setCustomId(newColumn.getCustomId());
+                if (newColumn.isReadOnly()) { // if read only,
+                    // override
+                    // everything
+                    oldColumn.setKey(newColumn.isKey());
+                    oldColumn.setNullable(newColumn.isNullable());
+                    oldColumn.setLength(newColumn.getLength());
+                    oldColumn.setPrecision(newColumn.getPrecision());
+                    oldColumn.setPattern(newColumn.getPattern());
+                    oldColumn.setType(newColumn.getType());
+                    oldColumn.setTalendType(newColumn.getTalendType());
+                    oldColumn.setComment(newColumn.getComment());
+                }
+            }
+        }
     }
 
     public static IElementParameter getMappingParameter(List<IElementParameter> elementParameters) {
