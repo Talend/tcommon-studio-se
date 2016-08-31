@@ -360,6 +360,8 @@ public class ProcessorUtilities {
     private static IProcessor generateCode(IProcessor processor2, JobInfo jobInfo, String selectedContextName,
             boolean statistics, boolean trace, boolean needContext, int option, IProgressMonitor progressMonitor)
             throws ProcessorException {
+    	boolean isAutoBuild = ResourcesPlugin.getWorkspace().getDescription().isAutoBuilding();
+    	setAutoBuilding(false);
         needContextInCurrentGeneration = needContext;
         if (progressMonitor == null) {
             progressMonitor = new NullProgressMonitor();
@@ -368,22 +370,12 @@ public class ProcessorUtilities {
             return null;
         }
         boolean isMainJob = false;
-        boolean isAutoBuild = false;
+       
         if (jobInfo.getFatherJobInfo() == null) {
 
             // In order to avoid eclipse to compile the code at each change in the workspace, we deactivate the
             // auto-build feature during the whole build time.
             // It will be reactivated at the end if the auto-build is activated in the workspace preferences.
-            isAutoBuild = ResourcesPlugin.getWorkspace().getDescription().isAutoBuilding();
-            IWorkspace workspace = ResourcesPlugin.getWorkspace();
-            IWorkspaceDescription desc = workspace.getDescription();
-            desc.setAutoBuilding(false);
-            try {
-                workspace.setDescription(desc);
-            } catch (CoreException e) {
-                CommonExceptionHandler.warn(e.getMessage());
-            }
-
             isMainJob = true;
             codeModified = false;
 
@@ -515,16 +507,7 @@ public class ProcessorUtilities {
 
         // If the auto-build is activated in the workspace preferences, we reactivate the feature since it's been
         // deactivated at the beginning of the build time.
-        if (isAutoBuild) {
-            IWorkspace workspace = ResourcesPlugin.getWorkspace();
-            IWorkspaceDescription desc = workspace.getDescription();
-            desc.setAutoBuilding(true);
-            try {
-                workspace.setDescription(desc);
-            } catch (CoreException e) {
-                CommonExceptionHandler.warn(e.getMessage());
-            }
-        }
+        setAutoBuilding(isAutoBuild);
 
         return processor;
     }
@@ -728,6 +711,8 @@ public class ProcessorUtilities {
         TimeMeasure.displaySteps = CommonsPlugin.isDebugMode();
         TimeMeasure.measureActive = CommonsPlugin.isDebugMode();
 
+        boolean isAutoBuild = ResourcesPlugin.getWorkspace().getDescription().isAutoBuilding();
+    	setAutoBuilding(false);
         boolean timerStarted = false;
         String idTimer = "generateCode for job: <job not loaded yet>";
         if (jobInfo.getJobName() != null) {
@@ -903,6 +888,7 @@ public class ProcessorUtilities {
             // TimeMeasure.display = false;
             // TimeMeasure.displaySteps = false;
             // TimeMeasure.measureActive = false;
+            setAutoBuilding(isAutoBuild);
         }
     }
 
@@ -1750,6 +1736,18 @@ public class ProcessorUtilities {
             }
         }
         return null;
+    }
+    
+    private static void setAutoBuilding(boolean isAuto){
+        IWorkspace workspace = ResourcesPlugin.getWorkspace();
+        IWorkspaceDescription desc = workspace.getDescription();
+        desc.setAutoBuilding(isAuto);
+        try {
+            workspace.setDescription(desc);
+        } catch (CoreException e) {
+            CommonExceptionHandler.warn(e.getMessage());
+        }
+        ResourcesPlugin.getWorkspace().getDescription().isAutoBuilding();
     }
 
 }
