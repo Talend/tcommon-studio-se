@@ -2,20 +2,27 @@ package org.talend.core.model.metadata.builder;
 
 import static org.junit.Assert.*;
 
+import org.eclipse.emf.common.util.EList;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.rule.PowerMockRule;
+import org.talend.core.model.metadata.DiSchemaConstants;
+import org.talend.core.model.metadata.IMetadataColumn;
 import org.talend.core.model.metadata.IMetadataConnection;
 import org.talend.core.model.metadata.IMetadataTable;
+import org.talend.core.model.metadata.MetadataColumn;
+import org.talend.core.model.metadata.MetadataTable;
 import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.metadata.builder.connection.SAPBWTable;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.helper.SAPBWTableHelper;
+
+import orgomg.cwm.objectmodel.core.TaggedValue;
 
 @PrepareForTest({ CoreRuntimePlugin.class })
 public class ConvertionHelperTest {
@@ -121,6 +128,45 @@ public class ConvertionHelperTest {
         ConnectionHelper.setVersion("1.1", dbProvider); //$NON-NLS-1$
         ConnectionHelper.setUniverse("", dbProvider); //$NON-NLS-1$
         return true;
+    }
+
+    @Test
+    public void testReadonlyStatusInConvert() {
+        String C1 = "C1"; //$NON-NLS-1$
+        String C2 = "C2"; //$NON-NLS-1$
+        IMetadataTable table = new MetadataTable();
+        IMetadataColumn column = new MetadataColumn();
+        column.setLabel(C1); 
+        table.getListColumns().add(column);
+        column = new MetadataColumn();
+        column.setLabel(C2); 
+        table.getListColumns().add(column);
+
+        org.talend.core.model.metadata.builder.connection.MetadataTable newTable = ConvertionHelper.convert(table);
+        assertFalse(isColumnTaggedAsReadonly(newTable, C2));
+        
+        table.getColumn(C2).setReadOnly(true);
+        newTable = ConvertionHelper.convert(table);
+        assertTrue(isColumnTaggedAsReadonly(newTable, C2));
+    }
+
+    private boolean isColumnTaggedAsReadonly(org.talend.core.model.metadata.builder.connection.MetadataTable table,
+            String columnName) {
+        if (table == null || columnName == null) {
+            return false;
+        }
+        EList<org.talend.core.model.metadata.builder.connection.MetadataColumn> columns = table.getColumns();
+        for (org.talend.core.model.metadata.builder.connection.MetadataColumn newColumn : columns) {
+            if (columnName.equals(newColumn.getLabel())) {
+                EList<TaggedValue> taggedValues = newColumn.getTaggedValue();
+                for (TaggedValue taggedValue : taggedValues) {
+                    if (DiSchemaConstants.TALEND6_IS_READ_ONLY.equals(taggedValue.getTag())) {
+                        return Boolean.valueOf(taggedValue.getValue());
+                    }
+                }
+            }
+        }
+        return false;
     }
 
 }
