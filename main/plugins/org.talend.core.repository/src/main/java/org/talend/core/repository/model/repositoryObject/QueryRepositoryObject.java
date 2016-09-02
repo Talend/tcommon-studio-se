@@ -31,7 +31,6 @@ import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.repository.ISubRepositoryObject;
 import org.talend.cwm.helper.SubItemHelper;
 import org.talend.repository.model.IRepositoryNode;
-
 import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
@@ -46,6 +45,10 @@ public class QueryRepositoryObject extends org.talend.core.model.metadata.Query 
     public QueryRepositoryObject(IRepositoryViewObject repObj, Query table) {
         this.repObj = repObj;
         this.query = table;
+    }
+
+    public IRepositoryViewObject getViewObject() {
+        return this.repObj;
     }
 
     @Override
