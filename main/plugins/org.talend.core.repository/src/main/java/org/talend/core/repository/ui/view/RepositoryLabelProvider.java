@@ -427,8 +427,6 @@ public class RepositoryLabelProvider extends LabelProvider implements IColorProv
                 if (icon != null) {
                     return ImageProvider.getImage(icon);
                 }
-            }else if(repositoryObjectType == ERepositoryObjectType.JOBLET){
-            	return ImageProvider.getImage(ECoreImage.JOBLET_ICON);
             }
             return getImage(node.getObject());
         }
