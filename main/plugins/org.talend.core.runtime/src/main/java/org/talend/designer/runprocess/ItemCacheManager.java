@@ -145,7 +145,7 @@ public class ItemCacheManager {
         IProxyRepositoryFactory factory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
         try {
             IRepositoryViewObject object = factory.getLastVersion(project, jobletId);
-            if (object == null || object.getRepositoryObjectType() != ERepositoryObjectType.JOBLET) {
+            if (object == null || !(object.getProperty().getItem() instanceof JobletProcessItem)) {
                 return null;
             }
             lastVersionOfJoblet = (JobletProcessItem) object.getProperty().getItem();
@@ -182,10 +182,9 @@ public class ItemCacheManager {
 
         IProxyRepositoryFactory factory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
         try {
-        	ERepositoryObjectType originalType = factory.getLastVersion(jobletId).getRepositoryObjectType();
             List<IRepositoryViewObject> allVersions = factory.getAllVersion(project, jobletId, false);
             for (IRepositoryViewObject ro : allVersions) {
-                if (ro.getRepositoryObjectType() == originalType) {
+                if (ro.getProperty().getItem() instanceof JobletProcessItem) {
                     if (ro.getVersion().equals(version)) {
                         selectedProcessItem = (JobletProcessItem) ro.getProperty().getItem();
                         break;
