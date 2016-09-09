@@ -56,7 +56,6 @@ import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.metadata.managment.repository.ManagerConnection;
 import org.talend.metadata.managment.ui.model.IConnParamName;
 import org.talend.model.bridge.ReponsitoryContextBridge;
-
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.resource.relational.Catalog;
 import orgomg.cwm.resource.relational.Schema;
@@ -111,6 +110,10 @@ public final class DBConnectionContextUtils {
         RegionPrincipal,
         HbaseKeyTabPrincipal,
         HbaseKeyTab,
+
+        // maprdb
+        MaprdbKeyTabPrincipal,
+        MaprdbKeyTab,
         Username,
         Maprticket_Password,
         Maprticket_Cluster,

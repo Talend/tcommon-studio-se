@@ -24,6 +24,8 @@ public enum ECustomVersionGroup {
 
     HBASE,
 
+    MAPRDB,
+
     PIG,
 
     PIG_HBASE,
