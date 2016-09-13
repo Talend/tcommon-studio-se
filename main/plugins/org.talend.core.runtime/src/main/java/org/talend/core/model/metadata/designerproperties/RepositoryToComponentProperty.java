@@ -972,6 +972,8 @@ public class RepositoryToComponentProperty {
                 return connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_VERSION);
             } else if (EDatabaseTypeName.HBASE.getDisplayName().equals(databaseType)) {
                 return connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HBASE_VERSION);
+            } else if (EDatabaseTypeName.MAPRDB.getDisplayName().equals(databaseType)) {
+                return connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_VERSION);
             } else if (EDatabaseTypeName.GENERAL_JDBC.getDisplayName().equals(databaseType)) {
                 return dbVersionString;
             } else {
@@ -1577,8 +1579,8 @@ public class RepositoryToComponentProperty {
     private static boolean isContextMode(Connection connection, String value) {
         IMetadataManagmentUiService mmService = null;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IMetadataManagmentUiService.class)) {
-            mmService = (IMetadataManagmentUiService) GlobalServiceRegister.getDefault()
-                    .getService(IMetadataManagmentUiService.class);
+            mmService = (IMetadataManagmentUiService) GlobalServiceRegister.getDefault().getService(
+                    IMetadataManagmentUiService.class);
         }
         if (mmService != null) {
             return mmService.isContextMode(connection, value);

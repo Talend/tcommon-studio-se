@@ -5880,7 +5880,7 @@ public class DatabaseForm extends AbstractForm {
                 serverText.setLabelText(Messages.getString("DatabaseForm.server"));
             }
 
-            hideHCLinkSettings(!isHbase && !isHiveDBConnSelected());
+            hideHCLinkSettings(!isHbase && !isMaprdb && !isHiveDBConnSelected());
             hideHBaseSettings(!isHbase);
             hideMaprdbSettings(!isMaprdb);
             hideImpalaSettings(!isImpala);
@@ -5983,7 +5983,7 @@ public class DatabaseForm extends AbstractForm {
                 }
                 addContextParams(EDBParamName.Server, false);
             }
-            if (s.contains(EDatabaseConnVar.PORT.getVariable()) || isHbase || isImpala) {
+            if (s.contains(EDatabaseConnVar.PORT.getVariable()) || isHbase || isMaprdb || isImpala) {
                 portText.show();
                 portText.setEditable(visible);
                 addContextParams(EDBParamName.Port, visible);
@@ -6067,7 +6067,7 @@ public class DatabaseForm extends AbstractForm {
                 /* hbase no need username and password */
                 usernameText.show();
                 passwordText.show();
-                if (isHbase) {
+                if (isHbase || isMaprdb) {
                     usernameText.hide();
                     passwordText.hide();
                 } else if (isImpala) {
@@ -6120,7 +6120,7 @@ public class DatabaseForm extends AbstractForm {
                 schemaText.show();
                 schemaText.setEditable(visible);
                 // for hbase it should be using column family to replace the common schema.
-                if (isHbase) {
+                if (isHbase || isMaprdb) {
                     schemaText.setLabelText("Column Family"); //$NON-NLS-1$
                 }
                 addContextParams(EDBParamName.Schema, visible);
