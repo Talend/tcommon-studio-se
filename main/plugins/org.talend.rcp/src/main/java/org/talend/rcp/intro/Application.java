@@ -21,6 +21,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.adaptor.EclipseStarter;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
@@ -48,6 +49,7 @@ import org.osgi.service.prefs.Preferences;
 import org.talend.commons.exception.BusinessException;
 import org.talend.commons.runtime.helper.PatchComponentHelper;
 import org.talend.commons.runtime.service.PatchComponent;
+import org.talend.commons.ui.runtime.update.PreferenceKeys;
 import org.talend.commons.ui.swt.dialogs.ErrorDialogWidthDetailArea;
 import org.talend.commons.utils.system.EclipseCommandLine;
 import org.talend.core.BrandingChecker;
@@ -86,19 +88,27 @@ public class Application implements IApplication {
      */
     private static final String INITIAL_WORKSPACE_SHOWN = "INITIAL_WORKSPACE_SHOWN"; //$NON-NLS-1$
 
+    @SuppressWarnings("restriction")
     @Override
     public Object start(IApplicationContext context) throws Exception {
-
         Display display = PlatformUI.createDisplay();
 
         try {
+            final IPreferenceStore store = PlatformUI.getPreferenceStore();
+            // need do clean, but without clean before.
+            if (store.getBoolean(PreferenceKeys.NEED_OSGI_CLEAN) && !Boolean.getBoolean(EclipseStarter.PROP_CLEAN)) {
+                store.setToDefault(PreferenceKeys.NEED_OSGI_CLEAN); // remove the key
+                EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(EclipseCommandLine.CLEAN, null, false);
+                return IApplication.EXIT_RELAUNCH;
+            }
+
             Shell shell = new Shell(display, SWT.ON_TOP);
             Object instanceLocationCheck = acquireWorkspaceLock(shell);
             if (instanceLocationCheck != null) {// no workspace selected so return.
                 shell.dispose();
                 return instanceLocationCheck;
             }
-            
+
             // setup MavenResolver properties
             // before set, must check user setting first.
             if (GlobalServiceRegister.getDefault().isServiceRegistered(IMavenUIService.class)) {
@@ -110,7 +120,7 @@ public class Application implements IApplication {
                     mavenUIService.addMavenConfigurationChangeListener();
                 }
             }
-            
+
             /*
              * setSqlpatternUsibility(context); setRefProjectUsibility(context);
              */
@@ -186,11 +196,9 @@ public class Application implements IApplication {
             // other products will simply reuse the default presentation factory.
             if (brandingService.isPoweredbyTalend()) {
                 // setup the presentation factory, which is defined in the plugin.xml of the org.talend.rcp
-                IPreferenceStore store = PlatformUI.getPreferenceStore();
                 store.putValue(IWorkbenchPreferenceConstants.PRESENTATION_FACTORY_ID, "org.talend.rcp.presentationfactory"); //$NON-NLS-1$
             }
             // clean the clearPersistedState if branding or project type change
-            IPreferenceStore store = PlatformUI.getPreferenceStore();
             String lastProjectType = store.getString("last_started_project_type");
             String projectType = ProjectManager.getInstance().getCurrentProject().getEmfProject().getType();
             if (projectType == null) {

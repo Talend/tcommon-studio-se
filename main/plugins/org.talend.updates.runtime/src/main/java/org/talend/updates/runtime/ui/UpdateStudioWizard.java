@@ -35,6 +35,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.osgi.service.prefs.BackingStoreException;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.commons.ui.runtime.update.PreferenceKeys;
+import org.talend.commons.utils.system.EclipseCommandLine;
 import org.talend.updates.runtime.Constants;
 import org.talend.updates.runtime.engine.ExtraFeaturesUpdatesFactory;
 import org.talend.updates.runtime.engine.InstallNewFeatureJob;
@@ -143,7 +145,12 @@ public class UpdateStudioWizard extends Wizard {
                                 boolean isOkToRestart = MessageDialog.openQuestion(getShell(),
                                         Messages.getString("UpdateStudioWizard.install.sucessfull"), finalMessage); //$NON-NLS-1$
                                 if (isOkToRestart) {
+                                    EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(EclipseCommandLine.CLEAN, null,
+                                            false);
                                     PlatformUI.getWorkbench().restart();
+                                } else {
+                                    store.setValue(PreferenceKeys.NEED_OSGI_CLEAN, true); // will do clean for next
+                                                                                          // time.
                                 }
                             }
                         }

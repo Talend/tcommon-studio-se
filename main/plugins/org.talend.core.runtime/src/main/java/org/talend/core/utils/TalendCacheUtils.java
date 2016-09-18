@@ -14,6 +14,7 @@ package org.talend.core.utils;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.eclipse.core.runtime.Platform;
+import org.talend.commons.utils.system.EclipseCommandLine;
 import org.talend.core.BrandingChecker;
 import org.talend.core.model.utils.TalendPropertiesUtil;
 
@@ -25,8 +26,6 @@ import org.talend.core.model.utils.TalendPropertiesUtil;
  */
 public final class TalendCacheUtils {
 
-    private static final String CLEAN = "-clean"; //$NON-NLS-1$
-
     private static final String CLEAN_COMPONENT_CACHE = "--clean_component_cache"; //$NON-NLS-1$
 
     public static boolean isSetCleanComponentCache() {
@@ -34,7 +33,7 @@ public final class TalendCacheUtils {
     }
 
     public static boolean isSetClean() {
-        return ArrayUtils.contains(Platform.getApplicationArgs(), CLEAN);
+        return ArrayUtils.contains(Platform.getApplicationArgs(), EclipseCommandLine.CLEAN);
     }
 
     public static boolean cleanComponentCache() {
