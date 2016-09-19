@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema>
+    <column comment="" default=""
+        function="TalendString.getAsciiRandomString(int)" key="false"
+        label="col1" length="-1" nullable="true"
+        originalDbColumnName="col1" originalLength="-1"
+        parameter="length=>6  ; " pattern="" precision="-1" preview=""
+        talendType="id_String" type=""/>
+    <column comment="" default=""
+        function="Mathematical.BITAND(int,int)" key="false" label="col2"
+        length="-1" nullable="true" originalDbColumnName="col2"
+        originalLength="-1" parameter="a=>1  ; b=>2  ; " pattern=""
+        precision="-1" preview="" talendType="id_Integer" type=""/>
+    <column comment="" default=""
+        function="TalendDate.addDate(Date,int,Date)" key="false"
+        label="col3" length="-1" nullable="true"
+        originalDbColumnName="col3" originalLength="-1"
+        parameter="date=>myDate  ; nb=>addValue  ; dateType=>&quot;MM&quot;  ; "
+        pattern="&quot;dd-MM-yyyy&quot;" precision="-1" preview=""
+        talendType="id_Date" type=""/>
+</schema>
