@@ -222,7 +222,7 @@ public class HiveConnectionManager extends DataBaseConnectionManager {
                 String version = (String) metadataConn.getParameter(ConnParameterKeys.CONN_PARA_KEY_HIVE_VERSION);
                 Object[] argsObj = new Object[] { mapRTicketCluster, mapRTicketUsername, mapRTicketPassword,
                         desiredTicketDurInSecs };
-                if ("MAPR520".equals(version)) {//$NON-NLS-1$
+                if (version != null && "MAPR520".compareTo(version) <= 0) {//$NON-NLS-1$
                     argsObj = new Object[] { mapRTicketCluster, mapRTicketUsername, mapRTicketPassword, desiredTicketDurInSecs,
                             "" };//$NON-NLS-1$
                 }
