@@ -952,7 +952,7 @@ public class RepositoryToComponentProperty {
         }
         if (value.equals("DRIVER")) { //$NON-NLS-1$
             String dbVersionString = connection.getDbVersionString();
-            if (dbVersionString!=null&&EDatabaseConnTemplate.MSSQL.getDBDisplayName().equals(databaseType)) {
+            if (dbVersionString != null && EDatabaseConnTemplate.MSSQL.getDBDisplayName().equals(databaseType)) {
                 return dbVersionString.toUpperCase();
             }
         }
@@ -1160,8 +1160,10 @@ public class RepositoryToComponentProperty {
         }
 
         if (value.equals("DISTRIBUTION")) {
-            if ((databaseType).equals(EDatabaseTypeName.HBASE.getDisplayName())) {
+            if (EDatabaseTypeName.HBASE.getDisplayName().equals(databaseType)) {
                 return connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HBASE_DISTRIBUTION);
+            } else if (EDatabaseTypeName.MAPRDB.getDisplayName().equals(databaseType)) {
+                return connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_DISTRIBUTION);
             } else {
                 return connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_DISTRIBUTION);
             }
@@ -1184,14 +1186,26 @@ public class RepositoryToComponentProperty {
         }
 
         if (value.equals("HBASE_MASTER_PRINCIPAL")) {
-            String hbaseMasterPrinc = connection.getParameters().get(
-                    ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MASTERPRINCIPAL);
+            String hbaseMasterPrinc = null;
+            if (EDatabaseTypeName.HBASE.getDisplayName().equals(databaseType)) {
+                hbaseMasterPrinc = connection.getParameters().get(
+                        ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MASTERPRINCIPAL);
+            } else if (EDatabaseTypeName.MAPRDB.getDisplayName().equals(databaseType)) {
+                hbaseMasterPrinc = connection.getParameters().get(
+                        ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MASTERPRINCIPAL);
+            }
             return getAppropriateValue(connection, hbaseMasterPrinc);
         }
 
         if (value.equals("HBASE_REGIONSERVER_PRINCIPAL")) {
-            String hbaseRegPrinc = connection.getParameters().get(
-                    ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_REGIONSERVERPRINCIPAL);
+            String hbaseRegPrinc = null;
+            if (EDatabaseTypeName.HBASE.getDisplayName().equals(databaseType)) {
+                hbaseRegPrinc = connection.getParameters().get(
+                        ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_REGIONSERVERPRINCIPAL);
+            } else if (EDatabaseTypeName.MAPRDB.getDisplayName().equals(databaseType)) {
+                hbaseRegPrinc = connection.getParameters().get(
+                        ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_REGIONSERVERPRINCIPAL);
+            }
             return getAppropriateValue(connection, hbaseRegPrinc);
         }
 
@@ -1200,6 +1214,9 @@ public class RepositoryToComponentProperty {
             if (EDatabaseTypeName.HBASE.getDisplayName().equals(databaseType)) {
                 useMaprTValue = connection.getParameters().get(
                         ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_USE_MAPRTICKET);
+            } else if (EDatabaseTypeName.MAPRDB.getDisplayName().equals(databaseType)) {
+                useMaprTValue = connection.getParameters().get(
+                        ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_USE_MAPRTICKET);
             } else if (EDatabaseTypeName.HIVE.getDisplayName().equals(databaseType)) {
                 useMaprTValue = connection.getParameters()
                         .get(ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_USE_MAPRTICKET);
@@ -1207,7 +1224,12 @@ public class RepositoryToComponentProperty {
             return Boolean.parseBoolean(useMaprTValue);
         }
         if (value.equals("USERNAME")) {
-            String hbaseUsername = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_USERNAME);
+            String hbaseUsername = null;
+            if (EDatabaseTypeName.HBASE.getDisplayName().equals(databaseType)) {
+                hbaseUsername = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_USERNAME);
+            } else if (EDatabaseTypeName.MAPRDB.getDisplayName().equals(databaseType)) {
+                hbaseUsername = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_USERNAME);
+            }
             return getAppropriateValue(connection, hbaseUsername);
         }
         if (value.equals("MAPRTICKET_USERNAME")) {
@@ -1221,6 +1243,9 @@ public class RepositoryToComponentProperty {
             if (EDatabaseTypeName.HBASE.getDisplayName().equals(databaseType)) {
                 maprticket_Password = connection.getParameters().get(
                         ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MAPRTICKET_PASSWORD);
+            } else if (EDatabaseTypeName.MAPRDB.getDisplayName().equals(databaseType)) {
+                maprticket_Password = connection.getParameters().get(
+                        ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MAPRTICKET_PASSWORD);
             } else if (EDatabaseTypeName.HIVE.getDisplayName().equals(databaseType)) {
                 maprticket_Password = connection.getParameters().get(
                         ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_MAPRTICKET_PASSWORD);
@@ -1232,6 +1257,9 @@ public class RepositoryToComponentProperty {
             if (EDatabaseTypeName.HBASE.getDisplayName().equals(databaseType)) {
                 maprticket_Cluster = connection.getParameters().get(
                         ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MAPRTICKET_CLUSTER);
+            } else if (EDatabaseTypeName.MAPRDB.getDisplayName().equals(databaseType)) {
+                maprticket_Cluster = connection.getParameters().get(
+                        ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MAPRTICKET_CLUSTER);
             } else if (EDatabaseTypeName.HIVE.getDisplayName().equals(databaseType)) {
                 maprticket_Cluster = connection.getParameters().get(
                         ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_MAPRTICKET_CLUSTER);
@@ -1241,6 +1269,8 @@ public class RepositoryToComponentProperty {
         if (value.equals("MAPRTICKET_DURATION")) {
             if (EDatabaseTypeName.HBASE.getDisplayName().equals(databaseType)) {
                 return connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MAPRTICKET_DURATION);
+            } else if (EDatabaseTypeName.MAPRDB.getDisplayName().equals(databaseType)) {
+                return connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MAPRTICKET_DURATION);
             } else if (EDatabaseTypeName.HIVE.getDisplayName().equals(databaseType)) {
                 return connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_MAPRTICKET_DURATION);
             }

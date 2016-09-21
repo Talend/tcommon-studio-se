@@ -200,7 +200,7 @@ public enum EDatabaseConnTemplate {
             "2181")), //$NON-NLS-1$
 
     MAPRDB(new DbConnStr(EDatabaseTypeName.MAPRDB, "127.0.0.1", //$NON-NLS-1$
-            "7222")); //$NON-NLS-1$    
+            "5181")); //$NON-NLS-1$    
 
     private DbConnStr connStr;
 

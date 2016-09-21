@@ -265,11 +265,19 @@ public final class DBConnectionContextUtils {
                     ConnectionContextHelper.createParameters(varList, paramName, value, JavaTypesManager.PASSWORD);
                     break;
                 case MasterPrincipal:
-                    value = conn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MASTERPRINCIPAL);
+                    String key = ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MASTERPRINCIPAL;
+                    if (EDatabaseTypeName.MAPRDB.getDisplayName().equals(conn.getDatabaseType())) {
+                        key = ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MASTERPRINCIPAL;
+                    }
+                    value = conn.getParameters().get(key);
                     ConnectionContextHelper.createParameters(varList, paramName, value);
                     break;
                 case RegionPrincipal:
-                    value = conn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_REGIONSERVERPRINCIPAL);
+                    key = ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_REGIONSERVERPRINCIPAL;
+                    if (EDatabaseTypeName.MAPRDB.getDisplayName().equals(conn.getDatabaseType())) {
+                        key = ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_REGIONSERVERPRINCIPAL;
+                    }
+                    value = conn.getParameters().get(key);
                     ConnectionContextHelper.createParameters(varList, paramName, value);
                     break;
                 case Znode_Parent:
@@ -291,7 +299,7 @@ public final class DBConnectionContextUtils {
                     ConnectionContextHelper.createParameters(varList, paramName, value);
                     break;
                 case Username:
-                    String key = ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_USERNAME;
+                    key = ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_USERNAME;
                     if (EDatabaseTypeName.HBASE.getDisplayName().equals(conn.getDatabaseType())) {
                         key = ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_USERNAME;
                     } else if (EDatabaseTypeName.MAPRDB.getDisplayName().equals(conn.getDatabaseType())) {
@@ -613,12 +621,18 @@ public final class DBConnectionContextUtils {
                     ContextParameterUtils.getNewScriptCode(originalVariableName, LANGUAGE));
             break;
         case MasterPrincipal:
-            conn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MASTERPRINCIPAL,
-                    ContextParameterUtils.getNewScriptCode(originalVariableName, LANGUAGE));
+            String key = ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MASTERPRINCIPAL;
+            if (EDatabaseTypeName.MAPRDB.getDisplayName().equals(conn.getDatabaseType())) {
+                key = ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MASTERPRINCIPAL;
+            }
+            conn.getParameters().put(key, ContextParameterUtils.getNewScriptCode(originalVariableName, LANGUAGE));
             break;
         case RegionPrincipal:
-            conn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_REGIONSERVERPRINCIPAL,
-                    ContextParameterUtils.getNewScriptCode(originalVariableName, LANGUAGE));
+            key = ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_REGIONSERVERPRINCIPAL;
+            if (EDatabaseTypeName.MAPRDB.getDisplayName().equals(conn.getDatabaseType())) {
+                key = ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_REGIONSERVERPRINCIPAL;
+            }
+            conn.getParameters().put(key, ContextParameterUtils.getNewScriptCode(originalVariableName, LANGUAGE));
             break;
         case Znode_Parent:
             conn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HBASE_ZNODE_PARENT,
@@ -635,7 +649,7 @@ public final class DBConnectionContextUtils {
                     ContextParameterUtils.getNewScriptCode(originalVariableName, LANGUAGE));
             break;
         case Username:
-            String key = ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_USERNAME;
+            key = ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_USERNAME;
             if (EDatabaseTypeName.HBASE.getDisplayName().equals(conn.getDatabaseType())) {
                 key = ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_USERNAME;
             } else if (EDatabaseTypeName.MAPRDB.getDisplayName().equals(conn.getDatabaseType())) {
@@ -1079,8 +1093,8 @@ public final class DBConnectionContextUtils {
             cloneConn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_REGIONSERVERPRINCIPAL,
                     getOriginalValue(hadoopClusterContextType, contextType, maprdbRegionPrin));
 
-            String znodeParent = cloneConn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_ZNODE_PARENT);
-            cloneConn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_ZNODE_PARENT,
+            String znodeParent = cloneConn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HBASE_ZNODE_PARENT);
+            cloneConn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HBASE_ZNODE_PARENT,
                     getOriginalValue(hadoopClusterContextType, contextType, znodeParent));
 
             String maprdbKeyTabPrin = cloneConn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_KEYTAB_PRINCIPAL);
@@ -1385,6 +1399,10 @@ public final class DBConnectionContextUtils {
                     ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_REGIONSERVERPRINCIPAL);
             conn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_REGIONSERVERPRINCIPAL,
                     ContextParameterUtils.getOriginalValue(contextType, maprdbRegionPrin));
+
+            String znode_Parent = conn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HBASE_ZNODE_PARENT);
+            conn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HBASE_ZNODE_PARENT,
+                    ContextParameterUtils.getOriginalValue(contextType, znode_Parent));
             String maprdbKeyTabPrin = conn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_KEYTAB_PRINCIPAL);
             conn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_KEYTAB_PRINCIPAL,
                     ContextParameterUtils.getOriginalValue(contextType, maprdbKeyTabPrin));

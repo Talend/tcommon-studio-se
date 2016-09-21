@@ -619,7 +619,7 @@ public class DatabaseForm extends AbstractForm {
                 initZnodeParent();
             } else if (isDBTypeSelected(EDatabaseConnTemplate.MAPRDB)) {
                 initMaprdbSettings();
-                // initZnodeParent();
+                initZnodeParent();
             } else if (isDBTypeSelected(EDatabaseConnTemplate.IMPALA)) {
                 initImpalaSettings();
                 initImpalaInfo();
@@ -1498,9 +1498,10 @@ public class DatabaseForm extends AbstractForm {
 
     private void initZnodeParent() {
         DatabaseConnection connection = getConnection();
-        boolean isHbase = connection != null
-                && EDatabaseConnTemplate.HBASE.getDBDisplayName().equals(getConnection().getDatabaseType());
-        hideControl(znodeparentGrp, !isHbase);
+        boolean isShow = connection != null
+                && (EDatabaseConnTemplate.HBASE.getDBDisplayName().equals(getConnection().getDatabaseType()) || EDatabaseConnTemplate.MAPRDB
+                        .getDBDisplayName().equals(getConnection().getDatabaseType()));
+        hideControl(znodeparentGrp, !isShow);
         String setZnodeParentStr = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HBASE_SET_ZNODE_PARENT);
         String znodeParent = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HBASE_ZNODE_PARENT);
         boolean selected_Znode_Parent = Boolean.valueOf(setZnodeParentStr);
@@ -2794,6 +2795,9 @@ public class DatabaseForm extends AbstractForm {
         maprTClusterForMaprdbTxt.setEditable(!isContextMode());
         maprTDurationForMaprdbTxt.setEditable(!isContextMode());
 
+        set_znode_parent.setEnabled(!isContextMode());
+        znode_parent.setEditable(!isContextMode());
+
         if (isContextMode()) {
             maprTPasswordForMaprdbTxt.getTextControl().setEchoChar('\0');
         } else {
@@ -3295,7 +3299,7 @@ public class DatabaseForm extends AbstractForm {
         List<String> result = new ArrayList<String>();
         List<EDatabaseVersion4Drivers> v4dList = EDatabaseVersion4Drivers.indexOfByDbType(dbType);
         for (EDatabaseVersion4Drivers v4d : v4dList) {
-            if(v4d.getVersionDisplay()!=null){
+            if (v4d.getVersionDisplay() != null) {
                 result.add(v4d.getVersionDisplay());
             }
         }
@@ -4432,7 +4436,7 @@ public class DatabaseForm extends AbstractForm {
                     // initZnodeParent();
                 } else if (isDBTypeSelected(EDatabaseConnTemplate.MAPRDB)) {
                     hideControl(authenticationCom, true);
-                    // hideControl(znodeparentGrp, false);// seems maprdb no use this
+                    hideControl(znodeparentGrp, false);
                     initMaprdbSettings();
                 } else if (isDBTypeSelected(EDatabaseConnTemplate.IMPALA)) {
                     hideControl(authenticationCom, true);
@@ -4868,10 +4872,10 @@ public class DatabaseForm extends AbstractForm {
         } else if (dbType.equals(EDatabaseConnTemplate.MSSQL05_08.getDBDisplayName())) {
             dbVersionCombo.getCombo().setItems(versions);
             dbVersionCombo.setHideWidgets(false);
-        }else if (dbType.equals(EDatabaseConnTemplate.MSSQL.getDBDisplayName())) {
+        } else if (dbType.equals(EDatabaseConnTemplate.MSSQL.getDBDisplayName())) {
             dbVersionCombo.getCombo().setItems(versions);
             dbVersionCombo.setHideWidgets(!isMsSQL);
-        }  else if (dbType.equals(EDatabaseConnTemplate.SAS.getDBDisplayName())) {
+        } else if (dbType.equals(EDatabaseConnTemplate.SAS.getDBDisplayName())) {
             dbVersionCombo.getCombo().setItems(versions);
             dbVersionCombo.setHideWidgets(!isSAS);
         } else if (dbType.equals(EDatabaseConnTemplate.PSQL.getDBDisplayName())) {
@@ -6252,6 +6256,7 @@ public class DatabaseForm extends AbstractForm {
             addContextParams(EDBParamName.Server, true);
             addContextParams(EDBParamName.Port, true);
             addContextParams(EDBParamName.Schema, true);
+            addContextParams(EDBParamName.Znode_Parent, set_znode_parent.getSelection());
             addContextParams(EDBParamName.MasterPrincipal, useKerberosForMaprdb.getSelection());
             addContextParams(EDBParamName.RegionPrincipal, useKerberosForMaprdb.getSelection());
             addContextParams(EDBParamName.MaprdbKeyTabPrincipal, useKeyTabForMaprdb.getSelection());
@@ -6352,7 +6357,7 @@ public class DatabaseForm extends AbstractForm {
         return template != null && template == EDatabaseConnTemplate.MYSQL
                 && LanguageManager.getCurrentLanguage().equals(ECodeLanguage.JAVA);
     }
-    
+
     /**
      * 
      * DOC hwang Comment method "asMsSQLVersionEnable".
