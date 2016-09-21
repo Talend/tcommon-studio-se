@@ -107,6 +107,12 @@ public final class OtherConnectionContextUtils {
         MethodName,
         EndpointURI,
         Encoding,
+        // These constants seems to be used by deprecated code
+        // Added temporary to avoid studio build failure
+        MDMURL,     
+        UNIVERSE,
+        DATACLUSTER,
+        DATAMODEL,
         // MDM
         MDM_URL,
         MDM_Username,
