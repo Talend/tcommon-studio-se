@@ -1054,13 +1054,13 @@ public abstract class AbstractNode implements INode {
 
     @Override
     public List<ModuleNeeded> getModulesNeeded() {
-        if (modulesNeeded.isEmpty() && component != null && component.getModulesNeeded() != null) {
+        if (modulesNeeded.isEmpty() && component != null && component.getModulesNeeded(this) != null) {
             // if the list is empty, initialize from the original component
             // this avoids complex refactor to initialize this list all the
             // time, and add the possibility to add more
             // modules needed to one original component
 
-            modulesNeeded.addAll(component.getModulesNeeded());
+            modulesNeeded.addAll(component.getModulesNeeded(this));
         }
         return modulesNeeded;
     }

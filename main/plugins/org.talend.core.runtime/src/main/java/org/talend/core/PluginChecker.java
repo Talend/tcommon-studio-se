@@ -32,6 +32,10 @@ public class PluginChecker {
     private static final String DOCUMENTATION_PLUGIN_ID = "org.talend.repository.documentation"; //$NON-NLS-1$
 
     private static final String JOBLET_PLUGIN_ID = "org.talend.designer.joblet"; //$NON-NLS-1$
+    
+    private static final String SPARK_JOBLET_PLUGIN_ID = "org.talend.designer.sparkjoblet"; //$NON-NLS-1$
+    
+    private static final String SPARK_STREAMING_JOBLET_PLUGIN_ID = "org.talend.designer.sparkstreamingjoblet"; //$NON-NLS-1$
 
     private static final String WSDL_PLUGIN_ID = "org.talend.wsdl.advancement"; //$NON-NLS-1$
 
@@ -173,6 +177,24 @@ public class PluginChecker {
      */
     public static boolean isJobLetPluginLoaded() {
         return isPluginLoaded(JOBLET_PLUGIN_ID);
+    }
+    
+    /**
+     * DOC tang Comment method "isSparkJobLetPluginLoaded".
+     * 
+     * @return
+     */
+    public static boolean isSparkJobLetPluginLoaded() {
+        return isPluginLoaded(SPARK_JOBLET_PLUGIN_ID);
+    }
+    
+    /**
+     * DOC tang Comment method "isSparkStreamingJobLetPluginLoaded".
+     * 
+     * @return
+     */
+    public static boolean isSparkStreamingJobLetPluginLoaded() {
+        return isPluginLoaded(SPARK_STREAMING_JOBLET_PLUGIN_ID);
     }
 
     /**

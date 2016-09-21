@@ -145,7 +145,7 @@ public final class TalendQuoteUtils {
         if (newText == null || quote == null) {
             return null;
         }
-        if (!text.startsWith(quote) || !text.endsWith(quote)) {
+        if (!(text.startsWith(quote) && text.endsWith(quote) && text.length() > 1)) {
             newText = addQuotes(newText);
         }
         return newText;

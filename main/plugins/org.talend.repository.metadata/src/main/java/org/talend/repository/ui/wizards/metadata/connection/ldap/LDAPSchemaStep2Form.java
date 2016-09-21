@@ -331,7 +331,10 @@ public class LDAPSchemaStep2Form extends AbstractLDAPSchemaStepForm {
                     MessageDialog.openInformation(Display.getDefault().getActiveShell(),
                             Messages.getString("LDAPSchemaStep2Form.checkPara"), //$NON-NLS-1$
                             Messages.getString("LDAPSchemaStep2Form.checkSuccessful")); //$NON-NLS-1$
-                    updateStatus(IStatus.ERROR, alertForFetchBaseDNs);
+                    String baseDN = baseDNCombo.getText();
+                    if(baseDN == null || baseDN.length()<=0){
+                        updateStatus(IStatus.ERROR, alertForFetchBaseDNs);
+                    }
                 } else {
 
                     MessageDialog.openError(Display.getDefault().getActiveShell(),

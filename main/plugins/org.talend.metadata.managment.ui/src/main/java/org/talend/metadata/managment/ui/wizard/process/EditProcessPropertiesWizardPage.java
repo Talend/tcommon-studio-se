@@ -120,166 +120,8 @@ public class EditProcessPropertiesWizardPage extends PropertiesWizardPage {
             gridData.horizontalSpan = 2;
             label.setLayoutData(gridData);
         }
-        if (!PluginChecker.isMapReducePluginLoader() && !PluginChecker.isStormPluginLoader()) {
-            super.createControl(container);
-        } else {
-            GridData data;
-
-            // Name
-            Label nameLab = new Label(container, SWT.NONE);
-            nameLab.setText(Messages.getString("PropertiesWizardPage.Name")); //$NON-NLS-1$
-
-            nameText = new Text(container, SWT.BORDER);
-            nameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-            nameText.setEditable(!readOnly);
-
-            // Job type
-            Label jobTypeLabel = new Label(container, SWT.NONE);
-            jobTypeLabel.setText(Messages.getString("PropertiesWizardPage.jobTypeLabel")); //$NON-NLS-1$
-
-            Composite typeGroup = new Composite(container, SWT.NONE);
-            typeGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-            GridLayout typeGroupLayout = new GridLayout(3, false);
-            typeGroupLayout.marginHeight = 0;
-            typeGroupLayout.marginWidth = 0;
-            typeGroupLayout.horizontalSpacing = 0;
-            typeGroup.setLayout(typeGroupLayout);
-
-            jobTypeCCombo = new CCombo(typeGroup, SWT.BORDER);
-            jobTypeCCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-            jobTypeCCombo.setEditable(false);
-            jobTypeCCombo.setItems(JobType.getJobTypeToDispaly());
-            jobTypeCCombo.setText(JobType.STANDARD.getDisplayName());
-            jobTypeCCombo.setEnabled(!readOnly);
-
-            // Framework
-            Label label = new Label(typeGroup, SWT.NONE);
-            label.setText("  " + Messages.getString("PropertiesWizardPage.framework") + "  "); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-
-            framework = new CCombo(typeGroup, SWT.BORDER);
-            framework.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-            framework.setEditable(false);
-            framework.setItems(new String[0]);
-            framework.setEnabled(false);
-
-            // Purpose
-            Label purposeLab = new Label(container, SWT.NONE);
-            purposeLab.setText(Messages.getString("PropertiesWizardPage.Purpose")); //$NON-NLS-1$
-
-            purposeText = new Text(container, SWT.BORDER);
-            purposeText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-            purposeText.setEditable(!readOnly);
-
-            // Description
-            Label descriptionLab = new Label(container, SWT.NONE);
-            descriptionLab.setText(Messages.getString("PropertiesWizardPage.Description")); //$NON-NLS-1$
-            descriptionLab.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
-
-            descriptionText = new Text(container, SWT.BORDER | SWT.MULTI | SWT.WRAP | SWT.V_SCROLL);
-            data = new GridData(GridData.FILL_HORIZONTAL);
-            data.heightHint = 60;
-            descriptionText.setLayoutData(data);
-            descriptionText.setEditable(!readOnly);
-
-            // Author
-            Label authorLab = new Label(container, SWT.NONE);
-            authorLab.setText(Messages.getString("PropertiesWizardPage.Author")); //$NON-NLS-1$
-
-            authorText = new Text(container, SWT.BORDER);
-            authorText.setEnabled(false);
-            authorText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-            // Locker
-            Label lockerLab = new Label(container, SWT.NONE);
-            lockerLab.setText(Messages.getString("PropertiesWizardPage.Locker")); //$NON-NLS-1$
-
-            lockerText = new Text(container, SWT.BORDER);
-            lockerText.setEnabled(false);
-            lockerText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-            // Version
-            IBrandingService brandingService = (IBrandingService) GlobalServiceRegister.getDefault().getService(
-                    IBrandingService.class);
-            allowVerchange = brandingService.getBrandingConfiguration().isAllowChengeVersion();
-            if (allowVerchange) {
-                Label versionLab = new Label(container, SWT.NONE);
-                versionLab.setText(Messages.getString("PropertiesWizardPage.Version")); //$NON-NLS-1$
-
-                Composite versionContainer = new Composite(container, SWT.NONE);
-                versionContainer.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-                GridLayout versionLayout = new GridLayout(3, false);
-                versionLayout.marginHeight = 0;
-                versionLayout.marginWidth = 0;
-                versionLayout.horizontalSpacing = 0;
-                versionContainer.setLayout(versionLayout);
-
-                versionText = new Text(versionContainer, SWT.BORDER);
-                versionText.setEnabled(false);
-                versionText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-                versionMajorBtn = new Button(versionContainer, SWT.PUSH);
-                versionMajorBtn.setText(Messages.getString("PropertiesWizardPage.Version.Major")); //$NON-NLS-1$
-                versionMajorBtn.setEnabled(!readOnly && allowVerchange);
-
-                versionMinorBtn = new Button(versionContainer, SWT.PUSH);
-                versionMinorBtn.setText(Messages.getString("PropertiesWizardPage.Version.Minor")); //$NON-NLS-1$
-                versionMinorBtn.setEnabled(!readOnly && allowVerchange);
-            }
-
-            // Status
-            Label statusLab = new Label(container, SWT.NONE);
-            statusLab.setText(Messages.getString("PropertiesWizardPage.Status")); //$NON-NLS-1$
-
-            statusText = new CCombo(container, SWT.BORDER);
-            statusText.setEditable(false);
-            List<org.talend.core.model.properties.Status> statusList;
-            try {
-                if (property != null) {
-                    statusList = statusHelper.getStatusList(property);
-                    statusText.setItems(toArray(statusList));
-                    statusText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-                    // statusText.setEditable(!readOnly);
-                    statusText.setEnabled(!readOnly);
-                }
-            } catch (PersistenceException e) {
-                // TODO Auto-generated catch block
-                // e.printStackTrace();
-                ExceptionHandler.process(e);
-            }
-
-            // Path:
-            Label pathLab = new Label(container, SWT.NONE);
-            pathLab.setText(Messages.getString("PropertiesWizardPage.Path")); //$NON-NLS-1$
-
-            Composite pathContainer = new Composite(container, SWT.NONE);
-            pathContainer.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-            GridLayout pathLayout = new GridLayout(2, false);
-            pathLayout.marginHeight = 0;
-            pathLayout.marginWidth = 0;
-            pathLayout.horizontalSpacing = 0;
-            pathContainer.setLayout(pathLayout);
-
-            pathText = new Text(pathContainer, SWT.BORDER);
-            pathText.setEnabled(false);
-            pathText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-            if (editPath) {
-                Button button = new Button(pathContainer, SWT.PUSH);
-                button.setText(Messages.getString("PropertiesWizardPage.Select")); //$NON-NLS-1$
-
-                button.addSelectionListener(new SelectionAdapter() {
-
-                    @Override
-                    public void widgetSelected(SelectionEvent e) {
-                        openFolderSelectionDialog(NEED_CANCEL_BUTTON);
-                    }
-                });
-
-                if (destinationPath == null) {
-                    openFolderSelectionDialog(!NEED_CANCEL_BUTTON);
-                }
-            }
-        }
+        
+        super.createControl(container);
         // Added by Marvin Wang on Jan. 29, 2013.
         // createBottomPart(container);
 
@@ -287,6 +129,43 @@ public class EditProcessPropertiesWizardPage extends PropertiesWizardPage {
         updateContent();
         addListeners();
         setPageComplete(false);
+    }
+    
+    
+
+    @Override
+    protected void createFrameworkPart(Composite parent) {
+        if (!PluginChecker.isMapReducePluginLoader() && !PluginChecker.isStormPluginLoader()) {
+            return;
+        }
+     // Job type
+        Label jobTypeLabel = new Label(parent, SWT.NONE);
+        jobTypeLabel.setText(Messages.getString("PropertiesWizardPage.jobTypeLabel")); //$NON-NLS-1$
+
+        Composite typeGroup = new Composite(parent, SWT.NONE);
+        typeGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        GridLayout typeGroupLayout = new GridLayout(3, false);
+        typeGroupLayout.marginHeight = 0;
+        typeGroupLayout.marginWidth = 0;
+        typeGroupLayout.horizontalSpacing = 0;
+        typeGroup.setLayout(typeGroupLayout);
+
+        jobTypeCCombo = new CCombo(typeGroup, SWT.BORDER);
+        jobTypeCCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        jobTypeCCombo.setEditable(false);
+        jobTypeCCombo.setItems(JobType.getJobTypeToDispaly());
+        jobTypeCCombo.setText(JobType.STANDARD.getDisplayName());
+        jobTypeCCombo.setEnabled(!readOnly);
+
+        // Framework
+        Label label = new Label(typeGroup, SWT.NONE);
+        label.setText("  " + Messages.getString("PropertiesWizardPage.framework") + "  "); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+
+        framework = new CCombo(typeGroup, SWT.BORDER);
+        framework.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        framework.setEditable(false);
+        framework.setItems(new String[0]);
+        framework.setEnabled(false);
     }
 
     @Override

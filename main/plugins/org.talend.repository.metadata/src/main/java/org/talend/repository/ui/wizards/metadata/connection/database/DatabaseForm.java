@@ -3295,7 +3295,9 @@ public class DatabaseForm extends AbstractForm {
         List<String> result = new ArrayList<String>();
         List<EDatabaseVersion4Drivers> v4dList = EDatabaseVersion4Drivers.indexOfByDbType(dbType);
         for (EDatabaseVersion4Drivers v4d : v4dList) {
-            result.add(v4d.getVersionDisplay());
+            if(v4d.getVersionDisplay()!=null){
+                result.add(v4d.getVersionDisplay());
+            }
         }
         return result;
     }
@@ -4840,6 +4842,7 @@ public class DatabaseForm extends AbstractForm {
         boolean isSAS = asSASVersionEnable();
         boolean isSAPHana = asSAPHanaVersionEnable();
         boolean isImpala = ImpalaVersionEnable();
+        boolean isMsSQL = asMsSQLVersionEnable();
 
         String selectedVersion = getConnection().getDbVersionString();
         dbVersionCombo.removeAll();
@@ -4865,7 +4868,10 @@ public class DatabaseForm extends AbstractForm {
         } else if (dbType.equals(EDatabaseConnTemplate.MSSQL05_08.getDBDisplayName())) {
             dbVersionCombo.getCombo().setItems(versions);
             dbVersionCombo.setHideWidgets(false);
-        } else if (dbType.equals(EDatabaseConnTemplate.SAS.getDBDisplayName())) {
+        }else if (dbType.equals(EDatabaseConnTemplate.MSSQL.getDBDisplayName())) {
+            dbVersionCombo.getCombo().setItems(versions);
+            dbVersionCombo.setHideWidgets(!isMsSQL);
+        }  else if (dbType.equals(EDatabaseConnTemplate.SAS.getDBDisplayName())) {
             dbVersionCombo.getCombo().setItems(versions);
             dbVersionCombo.setHideWidgets(!isSAS);
         } else if (dbType.equals(EDatabaseConnTemplate.PSQL.getDBDisplayName())) {
@@ -5112,7 +5118,7 @@ public class DatabaseForm extends AbstractForm {
 
             @Override
             public void widgetSelected(SelectionEvent e) {
-                handleHadoopCustomVersion(ECustomVersionType.ALL);
+                handleHadoopCustomVersion(ECustomVersionType.HIVE);
             }
         });
     }
@@ -5804,10 +5810,11 @@ public class DatabaseForm extends AbstractForm {
         boolean isHbase = visible && asHbaseVersionEnable();
         boolean isMaprdb = visible && asMaprdbVersionEnable();
         boolean isImpala = visible && ImpalaVersionEnable();
+        boolean isMsSQL = visible && asMsSQLVersionEnable();
 
         dbVersionCombo
                 .setEnabled(!isReadOnly()
-                        && (isOracle || isAS400 || isMySQL || isVertica || isSAS || isImpala
+                        && (isOracle || isAS400 || isMySQL || isVertica || isSAS || isImpala || isMsSQL
                                 || EDatabaseConnTemplate.PSQL.getDBTypeName().equals(dbTypeCombo.getText())
                                 || EDatabaseConnTemplate.PLUSPSQL.getDBTypeName().equals(dbTypeCombo.getText())
                                 || EDatabaseConnTemplate.ACCESS.getDBTypeName().equals(dbTypeCombo.getText()) || EDatabaseConnTemplate.MSSQL05_08
@@ -6262,6 +6269,7 @@ public class DatabaseForm extends AbstractForm {
         // recollect context params for impala
         if (isImpalaDBConnSelected()) {
             getConetxtParams().clear();
+            addContextParams(EDBParamName.Login, true);
             addContextParams(EDBParamName.Server, true);
             addContextParams(EDBParamName.Port, true);
             addContextParams(EDBParamName.Database, true);
@@ -6342,6 +6350,22 @@ public class DatabaseForm extends AbstractForm {
         }
         EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(dbTypeCombo.getText());
         return template != null && template == EDatabaseConnTemplate.MYSQL
+                && LanguageManager.getCurrentLanguage().equals(ECodeLanguage.JAVA);
+    }
+    
+    /**
+     * 
+     * DOC hwang Comment method "asMsSQLVersionEnable".
+     * 
+     * @return
+     */
+    private boolean asMsSQLVersionEnable() {
+        // for bug 11487
+        if (dbTypeCombo == null) {
+            return false;
+        }
+        EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(dbTypeCombo.getText());
+        return template != null && template == EDatabaseConnTemplate.MSSQL
                 && LanguageManager.getCurrentLanguage().equals(ECodeLanguage.JAVA);
     }
 

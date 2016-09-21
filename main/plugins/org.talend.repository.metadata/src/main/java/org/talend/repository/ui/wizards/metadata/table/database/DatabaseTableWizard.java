@@ -45,6 +45,7 @@ import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.metadata.builder.connection.MetadataTable;
+import org.talend.core.model.metadata.builder.database.ExtractMetaDataUtils;
 import org.talend.core.model.metadata.builder.database.TableInfoParameters;
 import org.talend.core.model.properties.ConnectionItem;
 import org.talend.core.model.repository.IRepositoryViewObject;
@@ -251,6 +252,9 @@ public class DatabaseTableWizard extends CheckLastVersionRepositoryWizard implem
 
                     oldCopiedConnection = null;
                     tableHelper.clean();
+                    if (ExtractMetaDataUtils.getInstance().getConn() != null) {
+                        ExtractMetaDataUtils.getInstance().closeConnection();
+                    }
                 }
             };
             try {

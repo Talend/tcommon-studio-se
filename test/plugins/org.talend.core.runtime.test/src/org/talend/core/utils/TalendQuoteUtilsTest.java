@@ -192,6 +192,14 @@ public class TalendQuoteUtilsTest {
         testStr = "ab\"cd\"";
         resultStr = TalendQuoteUtils.addPairQuotesIfNotExist(testStr);
         assertEquals("\"ab\\\"cd\\\"\"", resultStr);
+
+        testStr = "\"\"";
+        resultStr = TalendQuoteUtils.addPairQuotesIfNotExist(testStr);
+        assertEquals(testStr, resultStr);
+
+        testStr = "\"";
+        resultStr = TalendQuoteUtils.addPairQuotesIfNotExist(testStr);
+        assertEquals("\"\\\"\"", resultStr);
     }
 
 }

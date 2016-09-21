@@ -27,6 +27,10 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.service.IMRProcessService;
 import org.talend.core.service.IStormProcessService;
+import org.talend.core.ui.IJobletProviderService;
+import org.talend.core.ui.ISparkJobletProviderService;
+import org.talend.core.ui.ISparkStreamingJobletProviderService;
+import org.talend.designer.core.IDesignerCoreService;
 
 /**
  * DOC qzhang class global comment. Detailled comment
@@ -95,6 +99,42 @@ public abstract class CustomExternalActions extends SelectionAction {
         IEditorPart activeEditor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
         return mrService.isMapReduceEditor(activeEditor);
     }
+    
+    protected boolean isSParkJobletEditorActive() {
+        if (!GlobalServiceRegister.getDefault().isServiceRegistered(ISparkJobletProviderService.class)) {
+            return false;
+        }
+        ISparkJobletProviderService mrService = (ISparkJobletProviderService) GlobalServiceRegister.getDefault().getService(ISparkJobletProviderService.class);
+        if (mrService == null) {
+            return false;
+        }
+        IEditorPart activeEditor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+        return mrService.isSparkJobletEditor(activeEditor);
+    }
+    
+    protected boolean isStandardJobEditorActive() {
+        if (!GlobalServiceRegister.getDefault().isServiceRegistered(IDesignerCoreService.class)) {
+            return false;
+        }
+        IDesignerCoreService service = (IDesignerCoreService) GlobalServiceRegister.getDefault().getService(IDesignerCoreService.class);
+        if(service == null){
+            return false;
+        }
+        IEditorPart activeEditor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+        return service.isTalendEditor(activeEditor);
+    }
+    
+    protected boolean isStandardJobletEditorActive() {
+        if (!GlobalServiceRegister.getDefault().isServiceRegistered(IJobletProviderService.class)) {
+            return false;
+        }
+        IJobletProviderService service = (IJobletProviderService) GlobalServiceRegister.getDefault().getService(IJobletProviderService.class);
+        if(service == null){
+            return false;
+        }
+        IEditorPart activeEditor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+        return service.isJobletEditor(activeEditor);
+    }
 
     protected boolean isStormEditorActive() {
         if (!GlobalServiceRegister.getDefault().isServiceRegistered(IStormProcessService.class)) {
@@ -107,5 +147,18 @@ public abstract class CustomExternalActions extends SelectionAction {
         }
         IEditorPart activeEditor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
         return mrService.isStormEditor(activeEditor);
+    }
+    
+    protected boolean isSParkStreamingJobletEditorActive() {
+        if (!GlobalServiceRegister.getDefault().isServiceRegistered(ISparkStreamingJobletProviderService.class)) {
+            return false;
+        }
+        ISparkStreamingJobletProviderService mrService = (ISparkStreamingJobletProviderService) GlobalServiceRegister.getDefault().getService(
+        		ISparkStreamingJobletProviderService.class);
+        if (mrService == null) {
+            return false;
+        }
+        IEditorPart activeEditor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+        return mrService.isSparkStreamingJobletEditor(activeEditor);
     }
 }

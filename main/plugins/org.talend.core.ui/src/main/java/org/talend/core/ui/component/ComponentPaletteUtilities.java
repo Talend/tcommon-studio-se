@@ -53,6 +53,10 @@ public class ComponentPaletteUtilities {
     // public static int histate = 0;
 
     private static boolean jobletFlag = false;
+    
+    private static boolean sparkJobletFlag = false;
+    
+    private static boolean sparkStreamingJobletFlag = false;
 
     public static int histate = 0;
 
@@ -71,6 +75,26 @@ public class ComponentPaletteUtilities {
             }
         }
     }
+    
+    private static void setExtraEntryVisible(ERepositoryObjectType itemType) {
+        boolean isJoblet = false;
+        jobletFlag = (itemType == ERepositoryObjectType.JOBLET);
+        sparkJobletFlag = (itemType == ERepositoryObjectType.SPARK_JOBLET);
+        sparkStreamingJobletFlag = (itemType == ERepositoryObjectType.SPARK_STREAMING_JOBLET);
+        isJoblet = (itemType == ERepositoryObjectType.JOBLET || itemType == ERepositoryObjectType.SPARK_JOBLET|| itemType == ERepositoryObjectType.SPARK_STREAMING_JOBLET);
+        if (extraPaletteEntry != null) {
+            for (PaletteEntry entry : extraPaletteEntry) {
+                if(entry instanceof TalendCreationToolEntry){
+                    ERepositoryObjectType type = ((TalendCreationToolEntry)entry).getRepositoryObjectType();
+                    if(type != null){
+                        entry.setVisible(type == itemType);
+                    }
+                }else{
+                    entry.setVisible(isJoblet);
+                }
+            }
+        }
+    }
 
     public static void setSkipUpdatePalette(boolean skipUpdatePalette) {
         ComponentPaletteUtilities.skipUpdatePalette = skipUpdatePalette;
@@ -78,7 +102,13 @@ public class ComponentPaletteUtilities {
 
     public static void updatePalette() {
         if (jobletFlag == true) {
-            setExtraEntryVisible(true);
+            setExtraEntryVisible(ERepositoryObjectType.JOBLET);
+        }
+        if(sparkJobletFlag == true){
+            setExtraEntryVisible(ERepositoryObjectType.SPARK_JOBLET);
+        }
+        if(sparkStreamingJobletFlag == true){
+            setExtraEntryVisible(ERepositoryObjectType.SPARK_STREAMING_JOBLET);
         }
         if (skipUpdatePalette) {
             return;
@@ -263,7 +293,7 @@ public class ComponentPaletteUtilities {
      */
     public static void updateFromRepositoryType(ERepositoryObjectType itemType) {
         updatePalette(faState);
-        setExtraEntryVisible(itemType.equals(ERepositoryObjectType.JOBLET));
+        setExtraEntryVisible(itemType);
     }
 
 }

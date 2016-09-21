@@ -55,6 +55,23 @@ public abstract class AbstractCheckDeleteItemReference implements ICheckDeleteIt
 
         return refBeans;
     }
+    
+    @Override
+	public Set<ItemReferenceBean> getItemReferenceBeans(IRepositoryViewObject convertNode,
+            DeleteActionCache deleteActionCache) {
+        Set<ItemReferenceBean> refBeans = new HashSet<ItemReferenceBean>();
+
+        if (deleteActionCache == null) {
+            deleteActionCache = DeleteActionCache.getInstance();
+            deleteActionCache.createRecords();
+        }
+
+        if(convertNode!=null) {
+        	refBeans.addAll(checkItemReferenceBeans(factory, deleteActionCache, new RepositoryObject(convertNode.getProperty())));
+        }
+
+        return refBeans;
+    }
 
     /**
      * Find reference beans.

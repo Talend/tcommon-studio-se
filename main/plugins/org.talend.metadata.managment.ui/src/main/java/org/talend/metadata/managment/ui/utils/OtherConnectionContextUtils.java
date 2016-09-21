@@ -1126,16 +1126,22 @@ public final class OtherConnectionContextUtils {
                     break;
                 case BindPrincipal:
                     ldapConn.setBindPrincipal(ContextParameterUtils.getNewScriptCode(ldapVariableName, LANGUAGE));
+                    break;
                 case BindPassword:
                     ldapConn.setBindPassword(ContextParameterUtils.getNewScriptCode(ldapVariableName, LANGUAGE));
+                    break;
                 case CountLimit:
                     ldapConn.setCountLimit(ContextParameterUtils.getNewScriptCode(ldapVariableName, LANGUAGE));
+                    break;
                 case TimeOutLimit:
                     ldapConn.setTimeOutLimit(ContextParameterUtils.getNewScriptCode(ldapVariableName, LANGUAGE));
+                    break;
                 case Filter:
                     ldapConn.setFilter(ContextParameterUtils.getNewScriptCode(ldapVariableName, LANGUAGE));
+                    break;
                 case BaseDN:
                     ldapConn.setSelectedDN(ContextParameterUtils.getNewScriptCode(ldapVariableName, LANGUAGE));
+                    break;
                 default:
                 }
             }

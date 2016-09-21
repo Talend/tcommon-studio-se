@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.core.repository.ui.dialog;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -29,9 +30,13 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.talend.core.GlobalServiceRegister;
+import org.talend.core.model.properties.Item;
+import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.IRepositoryObject;
 import org.talend.core.model.repository.IRepositoryViewObject;
+import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.model.IRepositoryNode.EProperties;
 
@@ -51,6 +56,8 @@ public class PastSelectorDialog extends Dialog {
     private Button selectAll;
 
     private Button selectNone;
+    
+    private List<String> testParentVersions;
 
     /**
      * DOC talend PastSelectorDialog constructor comment.
@@ -62,6 +69,11 @@ public class PastSelectorDialog extends Dialog {
         setShellStyle(getShellStyle() | SWT.RESIZE);
         this.versions = versions;
         this.sourceNode = sourceNode;
+        init();
+    }
+    
+    private void init(){
+        this.testParentVersions = getTestParentVersionList();
     }
 
     @Override
@@ -96,15 +108,16 @@ public class PastSelectorDialog extends Dialog {
         modificationTime.setText("Modification Time");
 
         for (IRepositoryViewObject object : versions) {
-            // if (object.getVersion().equals(sourceNode.getObject().getVersion())) {
-            // continue;
-            // }
             TableItem item = new TableItem(table, SWT.NONE);
             item.setData(object);
             item.setText(0, object.getVersion());
             item.setText(1, object.getCreationDate().toString());
             if (object.getModificationDate() != null) {
                 item.setText(2, object.getModificationDate().toString());
+            }
+            if(testParentVersions.contains(object.getVersion())){
+                item.setChecked(true);
+                selectedVersionItems.add(object);
             }
         }
 
@@ -118,6 +131,7 @@ public class PastSelectorDialog extends Dialog {
         selectAll.setText("Select All");
         selectNone = new Button(buttonContainer, SWT.PUSH);
         selectNone.setText("Select None");
+        selectNone.setEnabled(this.testParentVersions.isEmpty());
 
         table.addSelectionListener(new SelectionAdapter() {
 
@@ -126,6 +140,11 @@ public class PastSelectorDialog extends Dialog {
                 if (e.detail == SWT.CHECK) {
                     TableItem tableItem = (TableItem) e.item;
                     Property property = ((IRepositoryObject) tableItem.getData()).getProperty();
+                    if(testParentVersions.contains(property.getVersion())){
+                        tableItem.setChecked(true);
+                        checkSelectedItems();
+                        return;
+                    }
                     if (property != null && property.getItem() != null) {
                         if (tableItem.getChecked()) {
                             // selectedVersionItems.add(property.getItem());
@@ -166,7 +185,6 @@ public class PastSelectorDialog extends Dialog {
             }
 
         });
-
         return composite;
     }
 
@@ -186,6 +204,32 @@ public class PastSelectorDialog extends Dialog {
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
         super.createButtonsForButtonBar(parent);
-        this.getOKButton().setEnabled(false);
+        checkSelectedItems();
+    }
+    
+    private List<String> getTestParentVersionList(){
+        List<String> versionList = new ArrayList<String>();
+        if(sourceNode.getObject() == null){
+           return versionList; 
+        }
+        Item item = sourceNode.getObject().getProperty().getItem();
+        if (!(item instanceof ProcessItem)) {
+            return versionList;
+        }
+        ProcessItem processItem = (ProcessItem) item;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
+            ITestContainerProviderService testContainerService = (ITestContainerProviderService) GlobalServiceRegister
+                    .getDefault().getService(ITestContainerProviderService.class);
+            if (testContainerService != null) {
+                if(!testContainerService.isDuplicateTestCaseOptionSelected()){
+                    return versionList;
+                }
+                List<ProcessItem> testsItems = testContainerService.getAllTestContainers(processItem);
+                for(ProcessItem testItem : testsItems){
+                    versionList.add(testContainerService.getParentVersion(testItem)); 
+                }
+            }
+        }
+        return versionList;
     }
 }

@@ -950,6 +950,12 @@ public class RepositoryToComponentProperty {
         if (value.equals("PROPERTIES_STRING")) { //$NON-NLS-1$
             return getAppropriateValue(connection, connection.getAdditionalParams());
         }
+        if (value.equals("DRIVER")) { //$NON-NLS-1$
+            String dbVersionString = connection.getDbVersionString();
+            if (dbVersionString!=null&&EDatabaseConnTemplate.MSSQL.getDBDisplayName().equals(databaseType)) {
+                return dbVersionString.toUpperCase();
+            }
+        }
 
         if (value.equals("CDC_MODE")) { //$NON-NLS-1$
             if (isContextMode(connection, connection.getCdcTypeMode())) {

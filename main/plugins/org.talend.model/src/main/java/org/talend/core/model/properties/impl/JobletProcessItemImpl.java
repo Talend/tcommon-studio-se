@@ -139,7 +139,7 @@ public class JobletProcessItemImpl extends ItemImpl implements JobletProcessItem
         if (icon != null && icon.eIsProxy()) {
             InternalEObject oldIcon = (InternalEObject) icon;
             icon = (ByteArray) eResolveProxy(oldIcon);
-            if (icon.eResource() == null && eResource() != null) {
+            if (icon.eResource() == null && eResource() != null &&eResource().getResourceSet()!=null) {
                 URI uri = EcoreUtil.getURI(icon);
                 if (uri.hasFragment()) {
                     uri = uri.trimFragment();

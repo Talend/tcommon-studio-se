@@ -107,7 +107,7 @@ public class CreateFolderAction extends AContextualAction {
                 canWork = false;
                 break;
             case SYSTEM_FOLDER:
-                if (property == null || property.equals(ERepositoryObjectType.GENERATED)
+                if (property == null || property.equals(ERepositoryObjectType.GENERATED)|| property.equals(ERepositoryObjectType.JOBLET_DESIGNS)
                         || property.equals(ERepositoryObjectType.JOB_DOC) || property.equals(ERepositoryObjectType.JOBLET_DOC)
                         || ERepositoryObjectType.SQLPATTERNS.equals(property)
                         || ERepositoryObjectType.REFERENCED_PROJECTS.equals(property)

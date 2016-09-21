@@ -6,4 +6,5 @@ Bundle-Version: 6.3.0.qualifier
 Fragment-Host: org.talend.core.runtime
 Require-Bundle: org.junit;bundle-version="4.11.0",
  org.talend.utils,
- org.talend.testutils
+ org.talend.testutils,
+ org.talend.components.common
