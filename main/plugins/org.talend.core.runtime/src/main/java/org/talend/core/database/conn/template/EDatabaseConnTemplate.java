@@ -66,10 +66,11 @@ public enum EDatabaseConnTemplate {
             "<host>")), //$NON-NLS-1$  
 
     ORACLE_OCI(new DbConnStr(EDatabaseTypeName.ORACLE_OCI, //
-            "jdbc:oracle:oci8:@<service_name>")), //$NON-NLS-1$                 
-    MSSQL(new DbConnStr(EDatabaseTypeName.MSSQL, //
-            "jdbc:jtds:sqlserver://<host>:<port>/<sid>;<property>", //$NON-NLS-1$
-            "1433")), //$NON-NLS-1$
+            "jdbc:oracle:oci8:@<service_name>")), //$NON-NLS-1$    
+    
+    MSSQL(new DbConnStrForMSSQL(EDatabaseTypeName.MSSQL, "jdbc:jtds:sqlserver://<host>:<port>/<sid>;<property>", //$NON-NLS-1$
+            "1433", new EDatabaseVersion4Drivers[] { EDatabaseVersion4Drivers.MSSQL, EDatabaseVersion4Drivers.MSSQL_2012,
+                    EDatabaseVersion4Drivers.MSSQL_PROP})),
     MSSQL05_08(new DbConnStr(EDatabaseTypeName.MSSQL05_08, //
             "jdbc:sqlserver://<host>:<port>;DatabaseName=<sid>", //$NON-NLS-1$
             "1433")), //$NON-NLS-1$         

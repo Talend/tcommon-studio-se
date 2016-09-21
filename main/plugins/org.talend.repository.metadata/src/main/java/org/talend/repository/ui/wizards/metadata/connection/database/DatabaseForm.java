@@ -2838,6 +2838,9 @@ public class DatabaseForm extends AbstractForm {
      * @return
      */
     private List<String> getVersionDrivers(String dbType) {
+        if(asMsSQLVersionEnable()){
+            return getMSSQLVersionDrivers(dbType);
+        }
         List<String> result = new ArrayList<String>();
         List<EDatabaseVersion4Drivers> v4dList = EDatabaseVersion4Drivers.indexOfByDbType(dbType);
         for (EDatabaseVersion4Drivers v4d : v4dList) {
@@ -2845,6 +2848,13 @@ public class DatabaseForm extends AbstractForm {
                 result.add(v4d.getVersionDisplay());
             }
         }
+        return result;
+    }
+    
+    private List<String> getMSSQLVersionDrivers(String dbType) {
+        List<String> result = new ArrayList<String>();
+        result.add(EDatabaseVersion4Drivers.MSSQL.getVersionDisplay());
+        result.add(EDatabaseVersion4Drivers.MSSQL_PROP.getVersionDisplay());
         return result;
     }
 
@@ -3493,6 +3503,7 @@ public class DatabaseForm extends AbstractForm {
                 || EDatabaseConnTemplate.PLUSPSQL.getDBDisplayName().equals(dbTypeCombo.getText())
                 || EDatabaseConnTemplate.VERTICA.getDBDisplayName().equals(dbTypeCombo.getText())
                 || EDatabaseConnTemplate.PSQL.getDBDisplayName().equals(dbTypeCombo.getText())
+                || EDatabaseConnTemplate.MSSQL.getDBDisplayName().equals(dbTypeCombo.getText())
                 || EDatabaseConnTemplate.IMPALA.getDBDisplayName().equals(dbTypeCombo.getText());
     }
 
@@ -4379,7 +4390,7 @@ public class DatabaseForm extends AbstractForm {
         boolean isSAPHana = asSAPHanaVersionEnable();
         boolean isImpala = ImpalaVersionEnable();
         boolean isMsSQL = asMsSQLVersionEnable();
-
+        
         String selectedVersion = getConnection().getDbVersionString();
         dbVersionCombo.removeAll();
         dbVersionCombo.setHideWidgets(true);
