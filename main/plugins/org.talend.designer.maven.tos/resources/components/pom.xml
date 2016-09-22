@@ -51,6 +51,11 @@
 			<artifactId>components-jira</artifactId>
 			<version>${components.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.talend.components</groupId>
+			<artifactId>components-filedelimited</artifactId>
+			<version>${components.version}</version>
+		</dependency>
         <dependency>
             <groupId>biz.aQute.bnd</groupId>
             <artifactId>annotation</artifactId>
