@@ -184,7 +184,7 @@ public final class MetadataToolAvroHelper {
 
         // Types with unknown elements, store as binary
         if (JavaTypesManager.OBJECT.getId().equals(tt)) {
-            // FIXME it's not right, as it don't store all the information about the object
+            type = AvroUtils._string();
         }
 
         if (JavaTypesManager.LIST.getId().equals(tt)) {
