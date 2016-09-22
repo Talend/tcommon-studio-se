@@ -3,15 +3,24 @@ package org.talend.core.model.metadata;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.net.URL;
 import java.util.List;
 
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.junit.Test;
 
 public class MetadataSchemaTest {
 
     @Test
     public void testInitializeAllColumns() throws Exception {
-        File file = new File("resources/tRowGenerator.xml");
+        URL xmlURL = FileLocator.find(Platform.getBundle("org.talend.core.runtime.test"),
+                new Path("/resources/tRowGenerator.xml"), null);
+        if (xmlURL != null) {
+            xmlURL = FileLocator.toFileURL(xmlURL);
+        }
+        File file = new File(xmlURL.getFile());
         assertTrue(file.exists());
 
         MetadataSchema ms = new MetadataSchema();
