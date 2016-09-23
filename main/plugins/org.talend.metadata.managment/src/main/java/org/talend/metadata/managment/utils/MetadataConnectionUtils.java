@@ -85,9 +85,9 @@ public class MetadataConnectionUtils {
 
     private static final SimpleDateFormat SMPL_DATE_FMT = new SimpleDateFormat("yyyyMMddhhmmss"); //$NON-NLS-1$
 
-    private static final char CHAR_TO_REMOVE = '/'; //$NON-NLS-1$
+    private static final char CHAR_TO_REMOVE = '/';
 
-    private static final char REPLACEMENT_CHAR = '_'; //$NON-NLS-1$
+    private static final char REPLACEMENT_CHAR = '_';
 
     private static final String DRIVER_EXTENSION_POINT_ID = "org.talend.metadata.managment.DBDriver_extension"; //$NON-NLS-1$
 
@@ -160,7 +160,8 @@ public class MetadataConnectionUtils {
                 rc.setMessage("Check Impala connection failed!"); //$NON-NLS-1$
                 CommonExceptionHandler.process(e);
             }
-        } else if (EDatabaseTypeName.HBASE.getXmlName().equalsIgnoreCase(metadataBean.getDbType())) {
+        } else if (EDatabaseTypeName.HBASE.getXmlName().equalsIgnoreCase(metadataBean.getDbType())
+                || EDatabaseTypeName.MAPRDB.getXmlName().equalsIgnoreCase(metadataBean.getDbType())) {
             rc.setOk(true);
         } else {
             String dbUrl = metadataBean.getUrl();
@@ -300,7 +301,8 @@ public class MetadataConnectionUtils {
             metadataConnection.setPassword(password);
             metadataConnection.setUrl(dbUrl);
 
-            // TDQ-12299: transfer the OtherParameters to metadataConnection, because create impala connection use that values
+            // TDQ-12299: transfer the OtherParameters to metadataConnection, because create impala connection use that
+            // values
             ConvertionHelper.convertOtherParameters(metadataConnection, databaseConnection);
         }
         return createConnection(metadataConnection, closeConnection);

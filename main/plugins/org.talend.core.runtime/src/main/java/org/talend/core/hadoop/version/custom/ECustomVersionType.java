@@ -16,6 +16,8 @@ public enum ECustomVersionType {
 
     HBASE("HBase", ECustomVersionGroup.HBASE), //$NON-NLS-1$
 
+    MAPRDB("Maprdb", ECustomVersionGroup.MAPRDB), //$NON-NLS-1$
+
     PIG("Pig", ECustomVersionGroup.PIG), //$NON-NLS-1$
 
     PIG_HBASE("Pig for HBase", ECustomVersionGroup.PIG_HBASE), //$NON-NLS-1$

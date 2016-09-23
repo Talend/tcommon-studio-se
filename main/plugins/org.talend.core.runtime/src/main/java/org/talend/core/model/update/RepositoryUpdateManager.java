@@ -1055,6 +1055,8 @@ public abstract class RepositoryUpdateManager {
                 hadoopProperties = parameters.get(ConnParameterKeys.CONN_PARA_KEY_HIVE_PROPERTIES);
             } else if (EDatabaseConnTemplate.HBASE.getDBDisplayName().equals(databaseType)) {
                 hadoopProperties = parameters.get(ConnParameterKeys.CONN_PARA_KEY_HBASE_PROPERTIES);
+            } else if (EDatabaseConnTemplate.MAPRDB.getDBDisplayName().equals(databaseType)) {
+                hadoopProperties = parameters.get(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_PROPERTIES);
             }
             List<Map<String, Object>> hadoopPropertiesList = HadoopRepositoryUtil.getHadoopPropertiesList(hadoopProperties);
             if (!hadoopPropertiesList.isEmpty()) {
@@ -1069,6 +1071,8 @@ public abstract class RepositoryUpdateManager {
                     dbConn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_PROPERTIES, hadoopPropertiesJson);
                 } else if (EDatabaseConnTemplate.HBASE.getDBDisplayName().equals(databaseType)) {
                     dbConn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HBASE_PROPERTIES, hadoopPropertiesJson);
+                } else if (EDatabaseConnTemplate.MAPRDB.getDBDisplayName().equals(databaseType)) {
+                    dbConn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_PROPERTIES, hadoopPropertiesJson);
                 }
             }
         }
@@ -1142,8 +1146,8 @@ public abstract class RepositoryUpdateManager {
                     jobContextManager.setRepositoryRenamedMap(getContextRenamedMap());
                     jobContextManager.setNewParametersMap(getNewParametersMap());
                     Map<ContextItem, List<IContext>> repositoryAddGroupContext = getRepositoryAddGroupContext();
-                    
-                    if(checkAddContextGroup && repositoryAddGroupContext.isEmpty() && parameter instanceof ContextItem) {
+
+                    if (checkAddContextGroup && repositoryAddGroupContext.isEmpty() && parameter instanceof ContextItem) {
                         List<IContext> addContextGroupList = new ArrayList<IContext>();
                         List<IContext> jobContexts = process2.getContextManager().getListContext();
                         List<ContextType> repositoryContexts = ((ContextItem) parameter).getContext();
@@ -1174,7 +1178,7 @@ public abstract class RepositoryUpdateManager {
                         }
                         repositoryAddGroupContext.put((ContextItem) parameter, addContextGroupList);
                     }
-                    
+
                     List<IContext> listIContext = new ArrayList<IContext>();
                     for (ContextItem item : repositoryAddGroupContext.keySet()) {
                         List<IContext> list = repositoryAddGroupContext.get(item);
@@ -2190,7 +2194,7 @@ public abstract class RepositoryUpdateManager {
             boolean onlySimpleShow) {
         return updateContext(repositoryContextManager, item, show, onlySimpleShow, false);
     }
-    
+
     private static boolean updateContext(JobContextManager repositoryContextManager, ContextItem item, boolean show,
             boolean onlySimpleShow, boolean detectAddContextGroup) {
         List<Relation> relations = RelationshipItemBuilder.getInstance().getItemsRelatedTo(item.getProperty().getId(),

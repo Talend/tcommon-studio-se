@@ -127,7 +127,10 @@ public enum EDatabaseTypeName {
            "IMPALA", "Impala", Boolean.TRUE, "IMPALA", EDatabaseSchemaOrCatalogMapping.None, EDatabaseSchemaOrCatalogMapping.Schema), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
 
     HBASE(
-          "HBase", "HBase", Boolean.FALSE, "HBASE", EDatabaseSchemaOrCatalogMapping.Sid, EDatabaseSchemaOrCatalogMapping.Column_Family, true); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+          "HBase", "HBase", Boolean.FALSE, "HBASE", EDatabaseSchemaOrCatalogMapping.Sid, EDatabaseSchemaOrCatalogMapping.Column_Family, true), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+    MAPRDB(
+           "MapRDB", "MapRDB", Boolean.FALSE, "MAPRDB", EDatabaseSchemaOrCatalogMapping.Sid, EDatabaseSchemaOrCatalogMapping.Column_Family, true);//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
     // displayName is used in Java code.
     private String displayName;

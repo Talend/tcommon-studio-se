@@ -30,6 +30,8 @@ public enum EHadoopConfs {
 
     HBASE("HBASE", new String[] { "hdfs-site.xml", "hbase-site.xml" }), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
+    MAPRDB("MAPRDB", new String[] { "hdfs-site.xml", "hbase-site.xml" }), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
     OOZIE("OOZIE", new String[] { "oozie-site.xml" }), //$NON-NLS-1$ //$NON-NLS-2$ 
 
     SPARK("SPARK", new String[0]), //$NON-NLS-1$

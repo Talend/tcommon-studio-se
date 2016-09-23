@@ -331,7 +331,9 @@ public class SelectorTableForm extends AbstractForm {
         metadataEditor = new MetadataEmfTableEditor(""); //$NON-NLS-1$
         parentWizardPage.setPageComplete(false);
         // addUtilsButtonListeners();
-        if (this.typeName != null && this.typeName.getProduct().equals(EDatabaseTypeName.HBASE.getProduct())) {
+        if (this.typeName != null
+                && (this.typeName.getProduct().equals(EDatabaseTypeName.HBASE.getProduct()) || this.typeName.getProduct().equals(
+                        EDatabaseTypeName.MAPRDB.getProduct()))) {
             selectAllTablesButton.setEnabled(false);
             selectAllTablesButton.setToolTipText(Messages.getString("SelectorTableForm.toolTip"));
             selectNoneTablesButton.setEnabled(false);
@@ -442,7 +444,9 @@ public class SelectorTableForm extends AbstractForm {
 
         TreeColumn nbColumns = new TreeColumn(tree, SWT.RIGHT);
         nbColumns.setText(Messages.getString("SelectorTableForm.ColumnNumber")); //$NON-NLS-1$
-        if (this.typeName != null && this.typeName.getProduct().equals(EDatabaseTypeName.HBASE.getProduct())) {
+        if (this.typeName != null
+                && (this.typeName.getProduct().equals(EDatabaseTypeName.HBASE.getProduct()) || this.typeName.getProduct().equals(
+                        EDatabaseTypeName.MAPRDB.getProduct()))) {
             nbColumns.setWidth(0);
             nbColumns.setResizable(false);
         } else {

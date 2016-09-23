@@ -195,10 +195,13 @@ public enum EDatabaseConnTemplate {
     //    HIVE2_STANDALONE(new DbConnStr(EDatabaseTypeName.HIVE, "jdbc:hive2://<host>:<port>/<sid>")), //$NON-NLS-1$
 
     IMPALA(new DbConnStr(EDatabaseTypeName.IMPALA, "jdbc:hive2://<host>:<port>/<sid>;auth=noSasl", //$NON-NLS-1$  
-            "21050")), //$NON-NLS-1$  
+            "21050")), //$NON-NLS-1$
 
     HBASE(new DbConnStr(EDatabaseTypeName.HBASE, "127.0.0.1", //$NON-NLS-1$
-            "2181")); //$NON-NLS-1$
+            "2181")), //$NON-NLS-1$
+
+    MAPRDB(new DbConnStr(EDatabaseTypeName.MAPRDB, "127.0.0.1", //$NON-NLS-1$
+            "5181")); //$NON-NLS-1$    
 
     private DbConnStr connStr;
 
@@ -334,6 +337,7 @@ public enum EDatabaseConnTemplate {
             case SAS:
             case SAPHana:
             case HBASE:
+            case MAPRDB:
                 return true;
             default:
             }

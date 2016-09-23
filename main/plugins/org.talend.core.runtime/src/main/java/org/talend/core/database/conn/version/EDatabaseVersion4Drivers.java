@@ -98,11 +98,9 @@ public enum EDatabaseVersion4Drivers {
     PLUSPSQL_PRIOR_TO_V9(new DbVersion4Drivers(EDatabaseTypeName.PLUSPSQL,
             "Prior to v9", "PRIOR_TO_V9", "postgresql-8.3-603.jdbc3.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     PLUSPSQL_V9_X(new DbVersion4Drivers(EDatabaseTypeName.PLUSPSQL, "v9.X", "V9_X", "postgresql-9.4-1201.jdbc41.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    IBMDB2(new DbVersion4Drivers(EDatabaseTypeName.IBMDB2,
-            new String[] { "db2jcc4.jar", "db2jcc_license_cu.jar", //$NON-NLS-1$ //$NON-NLS-2$
+    IBMDB2(new DbVersion4Drivers(EDatabaseTypeName.IBMDB2, new String[] { "db2jcc4.jar", "db2jcc_license_cu.jar", //$NON-NLS-1$ //$NON-NLS-2$
             "db2jcc_license_cisuz.jar" })), //$NON-NLS-1$ 
-    IBMDB2ZOS(new DbVersion4Drivers(EDatabaseTypeName.IBMDB2ZOS,
-            new String[] { "db2jcc4.jar", "db2jcc_license_cu.jar", //$NON-NLS-1$ //$NON-NLS-2$
+    IBMDB2ZOS(new DbVersion4Drivers(EDatabaseTypeName.IBMDB2ZOS, new String[] { "db2jcc4.jar", "db2jcc_license_cu.jar", //$NON-NLS-1$ //$NON-NLS-2$
             "db2jcc_license_cisuz.jar" })), //$NON-NLS-1$ 
     SYBASEASE(new DbVersion4Drivers(EDatabaseTypeName.SYBASEASE, "jconn3.jar")), //$NON-NLS-1$ 
     SYBASEIQ(new DbVersion4Drivers(EDatabaseTypeName.SYBASEIQ, "jconn3.jar")), //$NON-NLS-1$ 
@@ -149,6 +147,8 @@ public enum EDatabaseVersion4Drivers {
     HIVE_EMBEDDED(new DbVersion4Drivers(EDatabaseTypeName.HIVE, "EMBEDDED", "EMBEDDED", new String[] {})),
     // Changed by Marvin Wang on Oct.9, 2012, just because the libs checking can not pass, Remy updated some jars from
     HBASE(new DbVersion4Drivers(EDatabaseTypeName.HBASE, new String[] {})),
+
+    MAPRDB(new DbVersion4Drivers(EDatabaseTypeName.MAPRDB, new String[] {})),
 
     REDSHIFT(new DbVersion4Drivers(EDatabaseTypeName.REDSHIFT, "RedshiftJDBC41-1.1.13.1013.jar")), //$NON-NLS-1$
 

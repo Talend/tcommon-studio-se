@@ -312,6 +312,14 @@ public class DatabaseForm extends AbstractForm {
 
     private Button hbaseCustomButton;
 
+    private Group maprdbSettingGroup;
+
+    private LabelledCombo maprdbDistributionCombo;
+
+    private LabelledCombo maprdbVersionCombo;
+
+    private Button maprdbCustomButton;
+
     private Group impalaSettingGroup;
 
     private LabelledCombo impalaDistributionCombo;
@@ -403,6 +411,10 @@ public class DatabaseForm extends AbstractForm {
 
     private LabelledText hbaseRSPrincipalTxt;
 
+    private LabelledText maprdbMasterPrincipalTxt;
+
+    private LabelledText maprdbRSPrincipalTxt;
+
     private LabelledText metastoreUrlTxt;
 
     private LabelledText driverJarTxt;
@@ -456,6 +468,35 @@ public class DatabaseForm extends AbstractForm {
     private LabelledText maprTClusterForHBaseTxt;
 
     private LabelledText maprTDurationForHBaseTxt;
+
+    //
+    private Group authenticationGrpForMaprdb;
+
+    private Composite authenticationComForMaprdb;
+
+    private Composite keyTabCompoisteForMaprdb;
+
+    private Button useKerberosForMaprdb;
+
+    private Button useKeyTabForMaprdb;
+
+    private LabelledText principalForMaprdbTxt;
+
+    private LabelledFileField keytabForMaprdbTxt;
+
+    private Button useMaprTForMaprdb;
+
+    private Composite authenticationMaprTComForMaprdb;
+
+    private Composite authenticationUserPassComForMaprdb;
+
+    private LabelledText maprTUsernameForMaprdbTxt;
+
+    private LabelledText maprTPasswordForMaprdbTxt;
+
+    private LabelledText maprTClusterForMaprdbTxt;
+
+    private LabelledText maprTDurationForMaprdbTxt;
 
     private SashForm sash;
 
@@ -576,6 +617,9 @@ public class DatabaseForm extends AbstractForm {
             } else if (isDBTypeSelected(EDatabaseConnTemplate.HBASE)) {
                 initHBaseSettings();
                 initZnodeParent();
+            } else if (isDBTypeSelected(EDatabaseConnTemplate.MAPRDB)) {
+                initMaprdbSettings();
+                initZnodeParent();
             } else if (isDBTypeSelected(EDatabaseConnTemplate.IMPALA)) {
                 initImpalaSettings();
                 initImpalaInfo();
@@ -620,11 +664,13 @@ public class DatabaseForm extends AbstractForm {
         getConnection().setSqlSynthax(Messages.getString("DatabaseForm.sqlSyntax")); //$NON-NLS-1$
         sqlSyntaxCombo.select(getSqlSyntaxIndex(getConnection().getSqlSynthax()));
 
-        if (isDBTypeSelected(EDatabaseConnTemplate.HBASE) || isDBTypeSelected(EDatabaseConnTemplate.HIVE)
-                || isDBTypeSelected(EDatabaseConnTemplate.IMPALA)) {
+        if (isDBTypeSelected(EDatabaseConnTemplate.HBASE) || isDBTypeSelected(EDatabaseConnTemplate.MAPRDB)
+                || isDBTypeSelected(EDatabaseConnTemplate.HIVE) || isDBTypeSelected(EDatabaseConnTemplate.IMPALA)) {
             initHadoopClusterSettings();
             if (isDBTypeSelected(EDatabaseConnTemplate.HBASE)) {
                 fillDefaultsWhenHBaseVersionChanged();
+            } else if (isDBTypeSelected(EDatabaseConnTemplate.MAPRDB)) {
+                fillDefaultsWhenMaprdbVersionChanged();
             } else if (isDBTypeSelected(EDatabaseConnTemplate.IMPALA)) {
                 fillDefaultsWhenImpalaVersionChanged();
             } else {
@@ -985,6 +1031,8 @@ public class DatabaseForm extends AbstractForm {
 
         createHBaseSettingContents(typeDbCompositeParent);
 
+        createMaprdbSettingContents(typeDbCompositeParent);
+
         createImpalaSettingContents(typeDbCompositeParent);
 
         createHadoopVersionInfoForHiveEmbedded(typeDbCompositeParent);
@@ -1038,6 +1086,7 @@ public class DatabaseForm extends AbstractForm {
         createAuthenticationForHive(typeDbCompositeParent);
         createAuthenticationForImpala(typeDbCompositeParent);
         createAuthenticationForHBase(typeDbCompositeParent);
+        createAuthenticationForMaprdb(typeDbCompositeParent);
         createExecutionFieldsForHive(typeDbCompositeParent);
         createHadoopPropertiesFields(typeDbCompositeParent);
         createHivePropertiesFields(typeDbCompositeParent);
@@ -1328,6 +1377,89 @@ public class DatabaseForm extends AbstractForm {
         initForHBaseAuthentication();
     }
 
+    private void createAuthenticationForMaprdb(Composite parent) {
+        GridLayout parentLayout = (GridLayout) parent.getLayout();
+        authenticationGrpForMaprdb = new Group(parent, SWT.NONE);
+        authenticationGrpForMaprdb.setText(Messages.getString("DatabaseForm.hiveEmbedded.authentication")); //$NON-NLS-1$
+        GridDataFactory.fillDefaults().span(parentLayout.numColumns, 1).align(SWT.FILL, SWT.BEGINNING).grab(true, false)
+                .applyTo(authenticationGrpForMaprdb);
+
+        GridLayout authLayout = new GridLayout(4, false);
+        authLayout.marginHeight = 0;
+        authenticationGrpForMaprdb.setLayout(authLayout);
+
+        useKerberosForMaprdb = new Button(authenticationGrpForMaprdb, SWT.CHECK);
+        useKerberosForMaprdb.setText(Messages.getString("DatabaseForm.hiveEmbedded.useKerberos")); //$NON-NLS-1$
+        GridData data = new GridData(GridData.FILL_HORIZONTAL);
+        data.horizontalSpan = 4;
+        useKerberosForMaprdb.setLayoutData(data);
+
+        authenticationComForMaprdb = new Composite(authenticationGrpForMaprdb, SWT.NONE);
+        data = new GridData(GridData.FILL_BOTH);
+        data.horizontalSpan = 4;
+        authenticationComForMaprdb.setLayoutData(data);
+        authenticationComForMaprdb.setLayout(new GridLayout(3, false));
+
+        maprdbMasterPrincipalTxt = new LabelledText(authenticationComForMaprdb,
+                Messages.getString("DatabaseForm.maprdb.MasterPrincipalTxt.label"), 2); //$NON-NLS-1$
+        maprdbRSPrincipalTxt = new LabelledText(authenticationComForMaprdb,
+                Messages.getString("DatabaseForm.maprdb.RSPrincipalTxt.label"), 2); //$NON-NLS-1$
+
+        useKeyTabForMaprdb = new Button(authenticationComForMaprdb, SWT.CHECK);
+        useKeyTabForMaprdb.setText(Messages.getString("DatabaseForm.hiveEmbedded.useKeyTab")); //$NON-NLS-1$
+        data = new GridData(GridData.FILL_HORIZONTAL);
+        data.horizontalSpan = 4;
+        useKeyTabForMaprdb.setLayoutData(data);
+
+        keyTabCompoisteForMaprdb = new Composite(authenticationComForMaprdb, SWT.NONE);
+        data = new GridData(GridData.FILL_BOTH);
+        data.horizontalSpan = 4;
+        data.exclude = true;
+        keyTabCompoisteForMaprdb.setLayoutData(data);
+        keyTabCompoisteForMaprdb.setVisible(false);
+        keyTabCompoisteForMaprdb.setLayout(new GridLayout(5, false));
+
+        principalForMaprdbTxt = new LabelledText(keyTabCompoisteForMaprdb,
+                Messages.getString("DatabaseForm.hiveEmbedded.principal"), 1); //$NON-NLS-1$
+        String[] extensions = { "*.*" }; //$NON-NLS-1$
+        keytabForMaprdbTxt = new LabelledFileField(keyTabCompoisteForMaprdb,
+                Messages.getString("DatabaseForm.hiveEmbedded.keytab"), //$NON-NLS-1$
+                extensions);
+
+        // Mapr ticket
+        useMaprTForMaprdb = new Button(authenticationGrpForMaprdb, SWT.CHECK);
+        useMaprTForMaprdb.setText(Messages.getString("DatabaseForm.hbase.useMaprTicket")); //$NON-NLS-1$
+        data = new GridData(GridData.FILL_HORIZONTAL);
+        data.horizontalSpan = 4;
+        useMaprTForMaprdb.setLayoutData(data);
+
+        authenticationMaprTComForMaprdb = new Composite(authenticationGrpForMaprdb, SWT.NONE);
+        data = new GridData(GridData.FILL_BOTH);
+        data.horizontalSpan = 4;
+        authenticationMaprTComForMaprdb.setLayoutData(data);
+        authenticationMaprTComForMaprdb.setLayout(new GridLayout(3, false));
+
+        authenticationUserPassComForMaprdb = new Composite(authenticationMaprTComForMaprdb, SWT.NONE);
+        data = new GridData(GridData.FILL_BOTH);
+        data.horizontalSpan = 4;
+        authenticationUserPassComForMaprdb.setLayoutData(data);
+        authenticationUserPassComForMaprdb.setLayout(new GridLayout(3, false));
+
+        maprTUsernameForMaprdbTxt = new LabelledText(authenticationUserPassComForMaprdb,
+                Messages.getString("DatabaseForm.maprdb.MaprTUsernameTxt.label"), 2); //$NON-NLS-1$
+        maprTPasswordForMaprdbTxt = new LabelledText(authenticationUserPassComForMaprdb,
+                Messages.getString("DatabaseForm.maprdb.MaprTPasswordTxt.label"), 2, SWT.PASSWORD | SWT.BORDER | SWT.SINGLE); //$NON-NLS-1$
+        maprTPasswordForMaprdbTxt.getTextControl().setEchoChar('*');
+
+        maprTClusterForMaprdbTxt = new LabelledText(authenticationMaprTComForMaprdb,
+                Messages.getString("DatabaseForm.maprdb.MaprTClusterTxt.label"), 2); //$NON-NLS-1$
+        maprTDurationForMaprdbTxt = new LabelledText(authenticationMaprTComForMaprdb,
+                Messages.getString("DatabaseForm.maprdb.MaprTDurationTxt.label"), 2); //$NON-NLS-1$
+
+        addListenerMaprdbAuthentication();
+        initForMaprdbAuthentication();
+    }
+
     private void createExecutionFieldsForHive(Composite parent) {
         GridLayout parentLayout = (GridLayout) parent.getLayout();
         hiveExecutionGrp = new Group(parent, SWT.NONE);
@@ -1366,9 +1498,10 @@ public class DatabaseForm extends AbstractForm {
 
     private void initZnodeParent() {
         DatabaseConnection connection = getConnection();
-        boolean isHbase = connection != null
-                && EDatabaseConnTemplate.HBASE.getDBDisplayName().equals(getConnection().getDatabaseType());
-        hideControl(znodeparentGrp, !isHbase);
+        boolean isShow = connection != null
+                && (EDatabaseConnTemplate.HBASE.getDBDisplayName().equals(getConnection().getDatabaseType()) || EDatabaseConnTemplate.MAPRDB
+                        .getDBDisplayName().equals(getConnection().getDatabaseType()));
+        hideControl(znodeparentGrp, !isShow);
         String setZnodeParentStr = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HBASE_SET_ZNODE_PARENT);
         String znodeParent = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HBASE_ZNODE_PARENT);
         boolean selected_Znode_Parent = Boolean.valueOf(setZnodeParentStr);
@@ -1390,6 +1523,10 @@ public class DatabaseForm extends AbstractForm {
     private void initForHBaseAuthentication() {
         hideControl(authenticationGrpForHBase, true);
         hideControl(authenticationComForImpala, true);
+    }
+
+    private void initForMaprdbAuthentication() {
+        hideControl(authenticationGrpForMaprdb, true);
     }
 
     private void initForImpalaAuthentication() {
@@ -1762,6 +1899,149 @@ public class DatabaseForm extends AbstractForm {
         });
     }
 
+    private void addListenerMaprdbAuthentication() {
+        useKerberosForMaprdb.addSelectionListener(new SelectionAdapter() {
+
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                if (useKerberosForMaprdb.getSelection()) {
+                    hideControl(authenticationComForMaprdb, false);
+                    hideControl(authenticationUserPassComForMaprdb, true);
+                    getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_USE_KRB, "true"); //$NON-NLS-1$
+                } else {
+                    hideControl(authenticationComForMaprdb, true);
+                    hideControl(authenticationUserPassComForMaprdb, !useMaprTForMaprdb.getSelection());
+                    getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_USE_KRB, "false"); //$NON-NLS-1$
+                }
+                authenticationGrpForMaprdb.layout();
+                authenticationGrpForMaprdb.getParent().layout();
+            }
+
+        });
+        useKeyTabForMaprdb.addSelectionListener(new SelectionAdapter() {
+
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                if (useKeyTabForMaprdb.getSelection()) {
+                    hideControl(keyTabCompoisteForMaprdb, false);
+                    getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_USEKEYTAB, "true"); //$NON-NLS-1$
+                } else {
+                    hideControl(keyTabCompoisteForMaprdb, true);
+                    getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_USEKEYTAB, "false"); //$NON-NLS-1$
+                }
+                authenticationComForMaprdb.layout();
+                authenticationComForMaprdb.getParent().layout();
+                authenticationGrpForMaprdb.layout();
+                authenticationGrpForMaprdb.getParent().layout();
+            }
+
+        });
+        principalForMaprdbTxt.getTextControl().addModifyListener(new ModifyListener() {
+
+            @Override
+            public void modifyText(ModifyEvent e) {
+                if (!isContextMode()) {
+                    getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_KEYTAB_PRINCIPAL,
+                            principalForMaprdbTxt.getText());
+                }
+            }
+        });
+        keytabForMaprdbTxt.getTextControl().addModifyListener(new ModifyListener() {
+
+            @Override
+            public void modifyText(ModifyEvent e) {
+                if (!isContextMode()) {
+                    getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_KEYTAB, keytabForMaprdbTxt.getText());
+                }
+            }
+        });
+        maprdbMasterPrincipalTxt.getTextControl().addModifyListener(new ModifyListener() {
+
+            @Override
+            public void modifyText(ModifyEvent e) {
+                if (!isContextMode()) {
+                    getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MASTERPRINCIPAL,
+                            maprdbMasterPrincipalTxt.getText());
+                }
+            }
+        });
+        maprdbRSPrincipalTxt.getTextControl().addModifyListener(new ModifyListener() {
+
+            @Override
+            public void modifyText(ModifyEvent e) {
+                if (!isContextMode()) {
+                    getConnection().getParameters().put(
+                            ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_REGIONSERVERPRINCIPAL,
+                            maprdbRSPrincipalTxt.getText());
+                }
+            }
+        });
+
+        useMaprTForMaprdb.addSelectionListener(new SelectionAdapter() {
+
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                if (useMaprTForMaprdb.getSelection()) {
+                    hideControl(authenticationMaprTComForMaprdb, false);
+                    hideControl(authenticationUserPassComForMaprdb, useKerberosForMaprdb.getSelection());
+                    getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_USE_MAPRTICKET,
+                            "true"); //$NON-NLS-1$
+                } else {
+                    hideControl(authenticationMaprTComForMaprdb, true);
+                    hideControl(authenticationUserPassComForMaprdb, true);
+                    getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_USE_MAPRTICKET,
+                            "false"); //$NON-NLS-1$
+                }
+                authenticationGrpForMaprdb.layout();
+                authenticationGrpForMaprdb.getParent().layout();
+            }
+
+        });
+
+        maprTUsernameForMaprdbTxt.getTextControl().addModifyListener(new ModifyListener() {
+
+            @Override
+            public void modifyText(ModifyEvent e) {
+                if (!isContextMode()) {
+                    getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_USERNAME,
+                            maprTUsernameForMaprdbTxt.getText());
+                }
+            }
+        });
+        maprTPasswordForMaprdbTxt.getTextControl().addModifyListener(new ModifyListener() {
+
+            @Override
+            public void modifyText(ModifyEvent e) {
+                if (!isContextMode()) {
+                    getConnection().getParameters().put(
+                            ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MAPRTICKET_PASSWORD,
+                            maprTPasswordForMaprdbTxt.getText());
+                }
+            }
+        });
+        maprTClusterForMaprdbTxt.getTextControl().addModifyListener(new ModifyListener() {
+
+            @Override
+            public void modifyText(ModifyEvent e) {
+                if (!isContextMode()) {
+                    getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MAPRTICKET_CLUSTER,
+                            maprTClusterForMaprdbTxt.getText());
+                }
+            }
+        });
+        maprTDurationForMaprdbTxt.getTextControl().addModifyListener(new ModifyListener() {
+
+            @Override
+            public void modifyText(ModifyEvent e) {
+                if (!isContextMode()) {
+                    getConnection().getParameters().put(
+                            ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MAPRTICKET_DURATION,
+                            maprTDurationForMaprdbTxt.getText());
+                }
+            }
+        });
+    }
+
     private void addListenerForAuthentication() {
         useKeyTab.addSelectionListener(new SelectionAdapter() {
 
@@ -2096,7 +2376,8 @@ public class DatabaseForm extends AbstractForm {
 
     private boolean showHadoopProperties(String databaseType) {
         return EDatabaseConnTemplate.HIVE.getDBDisplayName().equals(databaseType)
-                || EDatabaseConnTemplate.HBASE.getDBDisplayName().equals(databaseType);
+                || EDatabaseConnTemplate.HBASE.getDBDisplayName().equals(databaseType)
+                || EDatabaseConnTemplate.MAPRDB.getDBDisplayName().equals(databaseType);
     }
 
     private String getHadoopProperties(String databaseType) {
@@ -2105,6 +2386,8 @@ public class DatabaseForm extends AbstractForm {
             return parameters.get(ConnParameterKeys.CONN_PARA_KEY_HIVE_PROPERTIES);
         } else if (EDatabaseConnTemplate.HBASE.getDBDisplayName().equals(databaseType)) {
             return parameters.get(ConnParameterKeys.CONN_PARA_KEY_HBASE_PROPERTIES);
+        } else if (EDatabaseConnTemplate.MAPRDB.getDBDisplayName().equals(databaseType)) {
+            return parameters.get(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_PROPERTIES);
         }
 
         return null;
@@ -2161,6 +2444,8 @@ public class DatabaseForm extends AbstractForm {
             parameters.put(ConnParameterKeys.CONN_PARA_KEY_HIVE_PROPERTIES, hadoopPropertiesJsonStr);
         } else if (EDatabaseConnTemplate.HBASE.getDBDisplayName().equals(databaseType)) {
             parameters.put(ConnParameterKeys.CONN_PARA_KEY_HBASE_PROPERTIES, hadoopPropertiesJsonStr);
+        } else if (EDatabaseConnTemplate.MAPRDB.getDBDisplayName().equals(databaseType)) {
+            parameters.put(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_PROPERTIES, hadoopPropertiesJsonStr);
         }
     }
 
@@ -2289,6 +2574,33 @@ public class DatabaseForm extends AbstractForm {
         hideHBaseSettings(true);
     }
 
+    private void createMaprdbSettingContents(Composite parent) {
+        if (canLinkToHadoopCluster()) {
+            createHadoopLinkPart(parent);
+        }
+
+        maprdbSettingGroup = Form.createGroup(parent, 4, Messages.getString("DatabaseForm.maprdb.settings"), 60); //$NON-NLS-1$
+        GridLayout parentLayout = (GridLayout) parent.getLayout();
+        GridDataFactory.fillDefaults().span(parentLayout.numColumns, 1).applyTo(maprdbSettingGroup);
+        String[] maprdbDistributionsDisplay = new String[0];
+        IHadoopDistributionService hadoopService = getHadoopDistributionService();
+        if (hadoopService != null) {
+            maprdbDistributionsDisplay = hadoopService.getMaprdbDistributionManager().getDistributionsDisplay(true);
+        }
+
+        maprdbDistributionCombo = new LabelledCombo(maprdbSettingGroup, Messages.getString("DatabaseForm.maprdb.distribution"), //$NON-NLS-1$
+                Messages.getString("DatabaseForm.maprdb.distribution.tooltip"), //$NON-NLS-1$
+                maprdbDistributionsDisplay, 1, true);
+        maprdbVersionCombo = new LabelledCombo(maprdbSettingGroup, Messages.getString("DatabaseForm.maprdb.version"), //$NON-NLS-1$
+                Messages.getString("DatabaseForm.maprdb.version.tooltip"), new String[0], 1, true); //$NON-NLS-1$
+        maprdbVersionCombo.setHideWidgets(true);
+        maprdbCustomButton = new Button(maprdbSettingGroup, SWT.NONE);
+        maprdbCustomButton.setImage(ImageProvider.getImage(EImage.THREE_DOTS_ICON));
+        maprdbCustomButton.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, true, false, 1, 1));
+        maprdbCustomButton.setVisible(false);
+        hideMaprdbSettings(true);
+    }
+
     private void createImpalaSettingContents(Composite parent) {
         if (canLinkToHadoopCluster()) {
             createHadoopLinkPart(parent);
@@ -2389,6 +2701,10 @@ public class DatabaseForm extends AbstractForm {
         hbaseVersionCombo.setReadOnly(fromRepository || isContextMode());
         hbaseCustomButton.setEnabled(!fromRepository && !isContextMode());
 
+        maprdbDistributionCombo.setReadOnly(fromRepository || isContextMode());
+        maprdbVersionCombo.setReadOnly(fromRepository || isContextMode());
+        maprdbCustomButton.setEnabled(!fromRepository && !isContextMode());
+
         impalaDistributionCombo.setReadOnly(fromRepository || isContextMode());
         impalaVersionCombo.setReadOnly(fromRepository || isContextMode());
         impalaCustomButton.setEnabled(!fromRepository && !isContextMode());
@@ -2459,6 +2775,33 @@ public class DatabaseForm extends AbstractForm {
             maprTPasswordForHBaseTxt.getTextControl().setEchoChar('\0');
         } else {
             maprTPasswordForHBaseTxt.getTextControl().setEchoChar('*');
+        }
+    }
+
+    private void adaptMaprdbHadoopPartEditable() {
+        hcPropertyTypeCombo.setReadOnly(isContextMode());
+        maprdbDistributionCombo.setReadOnly(isContextMode());
+        maprdbVersionCombo.setReadOnly(isContextMode());
+        useKerberosForMaprdb.setEnabled(!isContextMode());
+        useKeyTabForMaprdb.setEnabled(!isContextMode());
+        maprdbMasterPrincipalTxt.setEditable(!isContextMode());
+        maprdbRSPrincipalTxt.setEditable(!isContextMode());
+        principalForMaprdbTxt.setEditable(!isContextMode());
+        keytabForMaprdbTxt.setEditable(!isContextMode());
+
+        useMaprTForMaprdb.setEnabled(!isContextMode());
+        maprTUsernameForMaprdbTxt.setEditable(!isContextMode());
+        maprTPasswordForMaprdbTxt.setEditable(!isContextMode());
+        maprTClusterForMaprdbTxt.setEditable(!isContextMode());
+        maprTDurationForMaprdbTxt.setEditable(!isContextMode());
+
+        set_znode_parent.setEnabled(!isContextMode());
+        znode_parent.setEditable(!isContextMode());
+
+        if (isContextMode()) {
+            maprTPasswordForMaprdbTxt.getTextControl().setEchoChar('\0');
+        } else {
+            maprTPasswordForMaprdbTxt.getTextControl().setEchoChar('*');
         }
     }
 
@@ -2534,6 +2877,9 @@ public class DatabaseForm extends AbstractForm {
         if (isDBTypeSelected(EDatabaseConnTemplate.HBASE)) {
             initHBaseSettings();
         }
+        if (isDBTypeSelected(EDatabaseConnTemplate.MAPRDB)) {
+            initMaprdbSettings();
+        }
         if (isDBTypeSelected(EDatabaseConnTemplate.HIVE)) {
             initHiveInfo();
         }
@@ -2547,6 +2893,13 @@ public class DatabaseForm extends AbstractForm {
         hbaseSettingGroup.setVisible(!hide);
         hadoopData.exclude = hide;
         hbaseDistributionCombo.setHideWidgets(hide);
+    }
+
+    private void hideMaprdbSettings(boolean hide) {
+        GridData hadoopData = (GridData) maprdbSettingGroup.getLayoutData();
+        maprdbSettingGroup.setVisible(!hide);
+        hadoopData.exclude = hide;
+        maprdbDistributionCombo.setHideWidgets(hide);
     }
 
     private void hideImpalaSettings(boolean hide) {
@@ -2651,6 +3004,91 @@ public class DatabaseForm extends AbstractForm {
         authenticationGrpForHBase.getParent().layout();
     }
 
+    private void initMaprdbSettings() {
+        DatabaseConnection connection = getConnection();
+        String hadoopDistribution = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_DISTRIBUTION);
+        String hadoopVersion = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_VERSION);
+
+        IHDistribution maprdbDistribution = getMaprdbDistribution(hadoopDistribution, false);
+
+        if (maprdbDistribution != null) {
+            String distributionDisplayName = maprdbDistribution.getDisplayName();
+            maprdbDistributionCombo.setText(distributionDisplayName);
+            updateMaprdbVersionPart(maprdbDistribution);
+            IHDistributionVersion hdVersion = maprdbDistribution.getHDVersion(hadoopVersion, false);
+            if (hdVersion != null && hdVersion.getDisplayVersion() != null) {
+                maprdbVersionCombo.setText(hdVersion.getDisplayVersion());
+            } else {
+                maprdbVersionCombo.select(0);
+            }
+        } else {
+            maprdbDistributionCombo.select(0);
+            maprdbVersionCombo.select(0);
+        }
+
+        String useKrbString = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_USE_KRB);
+        String useKeytabString = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_USEKEYTAB);
+        String keytabPrincipal = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_KEYTAB_PRINCIPAL);
+        String keytab = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_KEYTAB);
+        String masterPrincipal = connection.getParameters().get(
+                ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MASTERPRINCIPAL);
+        String regionServerPrincipal = connection.getParameters().get(
+                ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_REGIONSERVERPRINCIPAL);
+        boolean useKrb = Boolean.valueOf(useKrbString);
+        boolean useKeytab = Boolean.valueOf(useKeytabString);
+        useKerberosForMaprdb.setSelection(useKrb);
+        if (useKrb) {
+            useKeyTabForMaprdb.setSelection(useKeytab);
+            if (useKeytab) {
+                principalForMaprdbTxt.setText(StringUtils.trimToEmpty(keytabPrincipal));
+                keytabForMaprdbTxt.setText(StringUtils.trimToEmpty(keytab));
+            }
+            maprdbMasterPrincipalTxt.setText(StringUtils.trimToEmpty(masterPrincipal));
+            maprdbRSPrincipalTxt.setText(StringUtils.trimToEmpty(regionServerPrincipal));
+        }
+        hideControl(keyTabCompoisteForMaprdb, !useKeytab);
+        hideControl(authenticationComForMaprdb, !useKrb);
+        hideControl(authenticationGrpForMaprdb, false);
+
+        //
+        boolean doSupportMapRTicket = false;
+        IHadoopDistributionService hadoopService = getHadoopDistributionService();
+        if (hadoopService != null && maprdbDistribution != null) {
+            doSupportMapRTicket = hadoopService.doSupportMapRTicket(maprdbDistribution.getHDVersion(hadoopVersion, false));
+        }
+        String useMaprTForMaprdbString = connection.getParameters().get(
+                ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_USE_MAPRTICKET);
+        String maprTUsernameForMaprdb = connection.getParameters().get(
+                ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_USERNAME);
+        String maprTPasswordForMaprdb = connection.getParameters().get(
+                ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MAPRTICKET_PASSWORD);
+        String maprTClusterForMaprdb = connection.getParameters().get(
+                ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MAPRTICKET_CLUSTER);
+        String maprTDurationForMaprdb = connection.getParameters().get(
+                ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MAPRTICKET_DURATION);
+        boolean checkMaprTForMaprdb = Boolean.valueOf(useMaprTForMaprdbString);
+        useMaprTForMaprdb.setSelection(checkMaprTForMaprdb);
+        if (checkMaprTForMaprdb) {
+            maprTUsernameForMaprdbTxt.setText(StringUtils.trimToEmpty(maprTUsernameForMaprdb));
+            maprTPasswordForMaprdbTxt.setText(StringUtils.trimToEmpty(maprTPasswordForMaprdb));
+            maprTClusterForMaprdbTxt.setText(StringUtils.trimToEmpty(maprTClusterForMaprdb));
+            maprTDurationForMaprdbTxt.setText(maprTDurationForMaprdb == null ? "86400" : maprTDurationForMaprdb.trim()); //$NON-NLS-1$);
+        }
+        hideControl(useMaprTForMaprdb, !doSupportMapRTicket);
+        hideControl(authenticationMaprTComForMaprdb, !(checkMaprTForMaprdb && doSupportMapRTicket));
+        hideControl(authenticationUserPassComForMaprdb, useKrb && doSupportMapRTicket);
+        authenticationGrpForMaprdb.layout();
+        authenticationGrpForMaprdb.getParent().layout();
+    }
+
+    private IHDistribution getMaprdbDistribution(String maprdbDistribution, boolean byDisplay) {
+        IHadoopDistributionService hadoopService = getHadoopDistributionService();
+        if (hadoopService != null) {
+            return hadoopService.getMaprdbDistributionManager().getDistribution(maprdbDistribution, byDisplay);
+        }
+        return null;
+    }
+
     private void initImpalaSettings() {
         DatabaseConnection connection = getConnection();
         String hadoopDistribution = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_IMPALA_DISTRIBUTION);
@@ -2713,6 +3151,26 @@ public class DatabaseForm extends AbstractForm {
                     hbaseVersionCombo.getCombo().setText(defaultVersion.getDisplayVersion());
                 } else {
                     hbaseVersionCombo.getCombo().select(0);
+                }
+            }
+        }
+    }
+
+    private void updateMaprdbVersionPart(IHDistribution maprdbDistribution) {
+        if (maprdbDistribution != null && maprdbDistribution.useCustom()) {
+            maprdbVersionCombo.setHideWidgets(true);
+            maprdbCustomButton.setVisible(true);
+        } else {
+            maprdbVersionCombo.setHideWidgets(false);
+            maprdbCustomButton.setVisible(false);
+            String[] versionsDisplay = maprdbDistribution.getVersionsDisplay();
+            maprdbVersionCombo.getCombo().setItems(versionsDisplay);
+            if (versionsDisplay.length > 0) {
+                IHDistributionVersion defaultVersion = maprdbDistribution.getDefaultVersion();
+                if (defaultVersion != null && defaultVersion.getDisplayVersion() != null) {
+                    maprdbVersionCombo.getCombo().setText(defaultVersion.getDisplayVersion());
+                } else {
+                    maprdbVersionCombo.getCombo().select(0);
                 }
             }
         }
@@ -2844,7 +3302,7 @@ public class DatabaseForm extends AbstractForm {
         List<String> result = new ArrayList<String>();
         List<EDatabaseVersion4Drivers> v4dList = EDatabaseVersion4Drivers.indexOfByDbType(dbType);
         for (EDatabaseVersion4Drivers v4d : v4dList) {
-            if(v4d.getVersionDisplay()!=null){
+            if (v4d.getVersionDisplay() != null) {
                 result.add(v4d.getVersionDisplay());
             }
         }
@@ -3219,8 +3677,8 @@ public class DatabaseForm extends AbstractForm {
                 String versionStr = ""; //$NON-NLS-1$
                 IHadoopDistributionService hadoopService = getHadoopDistributionService();
                 if (hadoopService != null) {
-                    IHDistribution impalaDistribution = hadoopService.getImpalaDistributionManager()
-                            .getDistribution(impalaDistributionCombo.getText(), true);
+                    IHDistribution impalaDistribution = hadoopService.getImpalaDistributionManager().getDistribution(
+                            impalaDistributionCombo.getText(), true);
                     if (impalaDistribution != null && !impalaDistribution.useCustom()) {
                         IHDistributionVersion impalaVersion = impalaDistribution.getHDVersion(impalaVersionCombo.getText(), true);
                         if (impalaVersion != null) {
@@ -3987,6 +4445,10 @@ public class DatabaseForm extends AbstractForm {
                     hideControl(znodeparentGrp, false);
                     initHBaseSettings();
                     // initZnodeParent();
+                } else if (isDBTypeSelected(EDatabaseConnTemplate.MAPRDB)) {
+                    hideControl(authenticationCom, true);
+                    hideControl(znodeparentGrp, false);
+                    initMaprdbSettings();
                 } else if (isDBTypeSelected(EDatabaseConnTemplate.IMPALA)) {
                     hideControl(authenticationCom, true);
                     hideControl(authenticationComForHBase, true);
@@ -4109,8 +4571,8 @@ public class DatabaseForm extends AbstractForm {
                     checkScrolledCompositeSize();
                 }
 
-                if (!isDBTypeSelected(EDatabaseConnTemplate.HBASE) && !isDBTypeSelected(EDatabaseConnTemplate.HIVE)
-                        && !isDBTypeSelected(EDatabaseConnTemplate.IMPALA)) {
+                if (!isDBTypeSelected(EDatabaseConnTemplate.HBASE) && !isDBTypeSelected(EDatabaseConnTemplate.MAPRDB)
+                        && !isDBTypeSelected(EDatabaseConnTemplate.HIVE) && !isDBTypeSelected(EDatabaseConnTemplate.IMPALA)) {
                     clearHadoopRelatedParameters();
                 }
             }
@@ -4220,6 +4682,8 @@ public class DatabaseForm extends AbstractForm {
 
         addHBaseSettingFieldsListeners();
 
+        addMaprdbSettingFieldsListeners();
+
         addImpalaSettingFieldsListeners();
 
         // Registers listeners for the combos of Hive, including distribution, hive mode and hive version.
@@ -4235,6 +4699,7 @@ public class DatabaseForm extends AbstractForm {
 
     private void resetControls() {
         hideControl(authenticationGrpForHBase, true);
+        hideControl(authenticationGrpForMaprdb, true);
         hideControl(znodeparentGrp, true);
     }
 
@@ -4266,6 +4731,9 @@ public class DatabaseForm extends AbstractForm {
         } else if (isDBTypeSelected(EDatabaseConnTemplate.HBASE)) {
             initHBaseSettings();
             initZnodeParent();
+        } else if (isDBTypeSelected(EDatabaseConnTemplate.MAPRDB)) {
+            initMaprdbSettings();
+            // initZnodeParent();
         } else {
             if (urlConnectionStringText != null) {
                 urlConnectionStringText.setText(""); //$NON-NLS-1$
@@ -4415,10 +4883,10 @@ public class DatabaseForm extends AbstractForm {
         } else if (dbType.equals(EDatabaseConnTemplate.MSSQL05_08.getDBDisplayName())) {
             dbVersionCombo.getCombo().setItems(versions);
             dbVersionCombo.setHideWidgets(false);
-        }else if (dbType.equals(EDatabaseConnTemplate.MSSQL.getDBDisplayName())) {
+        } else if (dbType.equals(EDatabaseConnTemplate.MSSQL.getDBDisplayName())) {
             dbVersionCombo.getCombo().setItems(versions);
             dbVersionCombo.setHideWidgets(!isMsSQL);
-        }  else if (dbType.equals(EDatabaseConnTemplate.SAS.getDBDisplayName())) {
+        } else if (dbType.equals(EDatabaseConnTemplate.SAS.getDBDisplayName())) {
             dbVersionCombo.getCombo().setItems(versions);
             dbVersionCombo.setHideWidgets(!isSAS);
         } else if (dbType.equals(EDatabaseConnTemplate.PSQL.getDBDisplayName())) {
@@ -4518,6 +4986,82 @@ public class DatabaseForm extends AbstractForm {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 handleHadoopCustomVersion(ECustomVersionType.HBASE);
+            }
+        });
+    }
+
+    private void addMaprdbSettingFieldsListeners() {
+        maprdbDistributionCombo.addModifyListener(new ModifyListener() {
+
+            @Override
+            public void modifyText(final ModifyEvent e) {
+                if (isContextMode()) {
+                    return;
+                }
+
+                IHDistribution newDistribution = getMaprdbDistribution(maprdbDistributionCombo.getText(), true);
+                if (newDistribution == null) {
+                    return;
+                }
+                String originalDistributionName = getConnection().getParameters().get(
+                        ConnParameterKeys.CONN_PARA_KEY_MAPRDB_DISTRIBUTION);
+                IHDistribution originalDistribution = getMaprdbDistribution(originalDistributionName, false);
+                //
+                boolean doSupportMapRTicket = false;
+                IHadoopDistributionService hadoopService = getHadoopDistributionService();
+                if (hadoopService != null && newDistribution != null) {
+                    doSupportMapRTicket = hadoopService.doSupportMapRTicket(newDistribution.getDefaultVersion());
+                }
+                hideControl(useMaprTForMaprdb, !doSupportMapRTicket);
+                hideControl(authenticationMaprTComForMaprdb, !(useMaprTForMaprdb.getSelection() && doSupportMapRTicket));
+                hideControl(authenticationUserPassComForMaprdb, useKerberosForMaprdb.getSelection() && doSupportMapRTicket);
+                authenticationGrpForMaprdb.layout();
+                authenticationGrpForMaprdb.getParent().layout();
+                if (originalDistribution == null || !newDistribution.getName().equals(originalDistribution.getName())) {
+                    getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_DISTRIBUTION,
+                            newDistribution.getName());
+                    updateMaprdbVersionPart(newDistribution);
+                    fillDefaultsWhenMaprdbVersionChanged();
+                    checkFieldsValue();
+                }
+            }
+        });
+
+        maprdbVersionCombo.addModifyListener(new ModifyListener() {
+
+            @Override
+            public void modifyText(final ModifyEvent e) {
+                if (isContextMode()) {
+                    return;
+                }
+                String originalDistributionName = getConnection().getParameters().get(
+                        ConnParameterKeys.CONN_PARA_KEY_MAPRDB_DISTRIBUTION);
+                IHDistribution originalDistribution = getMaprdbDistribution(originalDistributionName, false);
+                if (originalDistribution == null) {
+                    return;
+                }
+                String newVersionDisplayName = StringUtils.trimToNull(maprdbVersionCombo.getText());
+                IHDistributionVersion newVersion = originalDistribution.getHDVersion(newVersionDisplayName, true);
+                if (newVersion == null) {
+                    return;
+                }
+                String originalVersionName = getConnection().getParameters().get(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_VERSION);
+                IHDistributionVersion originalVersion = originalDistribution.getHDVersion(originalVersionName, false);
+
+                if (originalVersion == null || newVersion.getVersion() != null
+                        && !newVersion.getVersion().equals(originalVersion.getVersion())) {
+                    getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_VERSION, newVersion.getVersion());
+                    fillDefaultsWhenMaprdbVersionChanged();
+                    checkFieldsValue();
+                }
+            }
+        });
+
+        maprdbCustomButton.addSelectionListener(new SelectionAdapter() {
+
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                handleHadoopCustomVersion(ECustomVersionType.MAPRDB);
             }
         });
     }
@@ -4839,6 +5383,10 @@ public class DatabaseForm extends AbstractForm {
         return EDatabaseTypeName.HBASE.getDisplayName().equals(dbTypeCombo.getText());
     }
 
+    private boolean isMapRDBConnSelected() {
+        return EDatabaseTypeName.MAPRDB.getDisplayName().equals(dbTypeCombo.getText());
+    }
+
     private boolean isImpalaDBConnSelected() {
         return EDatabaseTypeName.IMPALA.getDisplayName().equals(dbTypeCombo.getText());
     }
@@ -4927,6 +5475,10 @@ public class DatabaseForm extends AbstractForm {
         }
 
         if (isDBTypeSelected(EDatabaseConnTemplate.HBASE) && !checkHBaseSettings()) {
+            return false;
+        }
+
+        if (isDBTypeSelected(EDatabaseConnTemplate.MAPRDB) && !checkMaprdbSettings()) {
             return false;
         }
 
@@ -5111,6 +5663,19 @@ public class DatabaseForm extends AbstractForm {
         return true;
     }
 
+    private boolean checkMaprdbSettings() {
+        if (maprdbDistributionCombo.getSelectionIndex() == -1) {
+            updateStatus(IStatus.WARNING, Messages.getString("DatabaseForm.maprdb.distributionAlert")); //$NON-NLS-1$
+            return false;
+        }
+        if (maprdbVersionCombo.getSelectionIndex() == -1) {
+            updateStatus(IStatus.WARNING, Messages.getString("DatabaseForm.maprdb.versionAlert")); //$NON-NLS-1$
+            return false;
+        }
+        updateStatus(IStatus.OK, null);
+        return true;
+    }
+
     private boolean checkImpalaSettings() {
         if (impalaDistributionCombo.getSelectionIndex() == -1) {
             updateStatus(IStatus.WARNING, Messages.getString("DatabaseForm.impala.distributionAlert")); //$NON-NLS-1$
@@ -5178,15 +5743,12 @@ public class DatabaseForm extends AbstractForm {
                     .getDbVersionString());
             checkButton.setEnabled((dbTypeCombo.getSelectionIndex() >= 0) && template != null
                     && (getStringConnection() != template.getUrlTemplate(version)));
-            /* hbase has no url so need,using port or server instead */
-            if (template != null && template.getDbType() != null && template.getDbType().equals(EDatabaseTypeName.HBASE)) {
-                checkButton.setEnabled((dbTypeCombo.getSelectionIndex() >= 0)
-                        && template != null
-                        && ((serverText.getText() != template.getUrlTemplate(version) || portText.getText() != template
-                                .getDefaultPort())));
-            }
-            // impala has no url so need,using port or server instead
-            if (template != null && template.getDbType() != null && template.getDbType().equals(EDatabaseTypeName.IMPALA)) {
+            /* hbase/impala/mapr-db/.. has no url so need,using port or server instead */
+            if (template != null
+                    && template.getDbType() != null
+                    && (template.getDbType().equals(EDatabaseTypeName.HBASE)
+                            || template.getDbType().equals(EDatabaseTypeName.MAPRDB) || template.getDbType().equals(
+                            EDatabaseTypeName.IMPALA))) {
                 checkButton.setEnabled((dbTypeCombo.getSelectionIndex() >= 0)
                         && template != null
                         && ((serverText.getText() != template.getUrlTemplate(version) || portText.getText() != template
@@ -5261,6 +5823,7 @@ public class DatabaseForm extends AbstractForm {
         boolean isVertica = visible && asVerticaVersionEnable();
         boolean isSAS = visible && asSASVersionEnable();
         boolean isHbase = visible && asHbaseVersionEnable();
+        boolean isMaprdb = visible && asMaprdbVersionEnable();
         boolean isImpala = visible && ImpalaVersionEnable();
         boolean isMsSQL = visible && asMsSQLVersionEnable();
 
@@ -5327,7 +5890,7 @@ public class DatabaseForm extends AbstractForm {
                     s = template.getUrlTemplate(version);
                 }
             }
-            if (isHbase || isDBTypeSelected(EDatabaseConnTemplate.ORACLE_CUSTOM)
+            if (isHbase || isMaprdb || isDBTypeSelected(EDatabaseConnTemplate.ORACLE_CUSTOM)
                     || isDBTypeSelected(EDatabaseConnTemplate.IMPALA)) {
                 urlConnectionStringText.hide();
             } else {
@@ -5339,8 +5902,9 @@ public class DatabaseForm extends AbstractForm {
                 serverText.setLabelText(Messages.getString("DatabaseForm.server"));
             }
 
-            hideHCLinkSettings(!isHbase && !isHiveDBConnSelected());
+            hideHCLinkSettings(!isHbase && !isMaprdb && !isHiveDBConnSelected());
             hideHBaseSettings(!isHbase);
+            hideMaprdbSettings(!isMaprdb);
             hideImpalaSettings(!isImpala);
             updateHadoopPropertiesFieldsState();
             updateHiveJDBCPropertiesFieldsState();
@@ -5393,7 +5957,7 @@ public class DatabaseForm extends AbstractForm {
                 // addContextParams(EDBParamName.Schema, false);
             }
             // hbase need serverText
-            if (s.contains(EDatabaseConnVar.HOST.getVariable()) || isHbase || isImpala) {
+            if (s.contains(EDatabaseConnVar.HOST.getVariable()) || isHbase || isMaprdb || isImpala) {
                 if (!EDatabaseConnTemplate.GENERAL_JDBC.getDBTypeName().equals(dbTypeCombo.getText())) {
                     serverText.show();
                     serverText.setEditable(visible);
@@ -5401,6 +5965,12 @@ public class DatabaseForm extends AbstractForm {
                         String serverName = getConnection().getServerName();
                         if (serverName == null || "".equals(serverName)) { //$NON-NLS-1$
                             serverText.setText(EDatabaseConnTemplate.HBASE.getUrlTemplate(EDatabaseVersion4Drivers.HBASE));
+                        }
+                    }
+                    if (isMaprdb) {
+                        String serverName = getConnection().getServerName();
+                        if (serverName == null || "".equals(serverName)) { //$NON-NLS-1$
+                            serverText.setText(EDatabaseConnTemplate.MAPRDB.getUrlTemplate(EDatabaseVersion4Drivers.MAPRDB));
                         }
                     }
                     if (isImpala) {
@@ -5435,7 +6005,7 @@ public class DatabaseForm extends AbstractForm {
                 }
                 addContextParams(EDBParamName.Server, false);
             }
-            if (s.contains(EDatabaseConnVar.PORT.getVariable()) || isHbase || isImpala) {
+            if (s.contains(EDatabaseConnVar.PORT.getVariable()) || isHbase || isMaprdb || isImpala) {
                 portText.show();
                 portText.setEditable(visible);
                 addContextParams(EDBParamName.Port, visible);
@@ -5519,7 +6089,7 @@ public class DatabaseForm extends AbstractForm {
                 /* hbase no need username and password */
                 usernameText.show();
                 passwordText.show();
-                if (isHbase) {
+                if (isHbase || isMaprdb) {
                     usernameText.hide();
                     passwordText.hide();
                 } else if (isImpala) {
@@ -5572,7 +6142,7 @@ public class DatabaseForm extends AbstractForm {
                 schemaText.show();
                 schemaText.setEditable(visible);
                 // for hbase it should be using column family to replace the common schema.
-                if (isHbase) {
+                if (isHbase || isMaprdb) {
                     schemaText.setLabelText("Column Family"); //$NON-NLS-1$
                 }
                 addContextParams(EDBParamName.Schema, visible);
@@ -5618,6 +6188,7 @@ public class DatabaseForm extends AbstractForm {
         }
         doHiveUIContentsLayout();
         hbaseSettingGroup.layout();
+        maprdbSettingGroup.layout();
         impalaSettingGroup.layout();
         hadoopPropGrp.layout();
         metastorePropGrp.layout();
@@ -5631,6 +6202,7 @@ public class DatabaseForm extends AbstractForm {
     private void collectContextParams() {
         collectHiveContextParams();
         collectHBaseContextParams();
+        collectMaprdbContextParams();
         collectImpalaContextParams();
     }
 
@@ -5685,6 +6257,27 @@ public class DatabaseForm extends AbstractForm {
                     !useKerberosForHBase.getSelection() && useMaprTForHBase.getSelection());
             addContextParams(EDBParamName.Maprticket_Cluster, useMaprTForHBase.getSelection());
             addContextParams(EDBParamName.Maprticket_Duration, useMaprTForHBase.getSelection());
+        }
+    }
+
+    private void collectMaprdbContextParams() {
+        // recollect context params for maprdb
+        if (isMapRDBConnSelected()) {
+            getConetxtParams().clear();
+            addContextParams(EDBParamName.Server, true);
+            addContextParams(EDBParamName.Port, true);
+            addContextParams(EDBParamName.Schema, true);
+            addContextParams(EDBParamName.Znode_Parent, set_znode_parent.getSelection());
+            addContextParams(EDBParamName.MasterPrincipal, useKerberosForMaprdb.getSelection());
+            addContextParams(EDBParamName.RegionPrincipal, useKerberosForMaprdb.getSelection());
+            addContextParams(EDBParamName.MaprdbKeyTabPrincipal, useKeyTabForMaprdb.getSelection());
+            addContextParams(EDBParamName.MaprdbKeyTab, useKeyTabForMaprdb.getSelection());
+
+            addContextParams(EDBParamName.Username, !useKerberosForMaprdb.getSelection() && useMaprTForMaprdb.getSelection());
+            addContextParams(EDBParamName.Maprticket_Password,
+                    !useKerberosForMaprdb.getSelection() && useMaprTForMaprdb.getSelection());
+            addContextParams(EDBParamName.Maprticket_Cluster, useMaprTForMaprdb.getSelection());
+            addContextParams(EDBParamName.Maprticket_Duration, useMaprTForMaprdb.getSelection());
         }
     }
 
@@ -5775,7 +6368,7 @@ public class DatabaseForm extends AbstractForm {
         return template != null && template == EDatabaseConnTemplate.MYSQL
                 && LanguageManager.getCurrentLanguage().equals(ECodeLanguage.JAVA);
     }
-    
+
     /**
      * 
      * DOC hwang Comment method "asMsSQLVersionEnable".
@@ -5843,6 +6436,15 @@ public class DatabaseForm extends AbstractForm {
         }
         EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(dbTypeCombo.getText());
         return template != null && template == EDatabaseConnTemplate.HBASE
+                && LanguageManager.getCurrentLanguage().equals(ECodeLanguage.JAVA);
+    }
+
+    private boolean asMaprdbVersionEnable() {
+        if (dbTypeCombo == null) {
+            return false;
+        }
+        EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(dbTypeCombo.getText());
+        return template != null && template == EDatabaseConnTemplate.MAPRDB
                 && LanguageManager.getCurrentLanguage().equals(ECodeLanguage.JAVA);
     }
 
@@ -5952,6 +6554,10 @@ public class DatabaseForm extends AbstractForm {
         }
         if (isHBaseDBConnSelected()) {
             adaptHbaseHadoopPartEditable();
+            updateHadoopProperties(!isContextMode());
+        }
+        if (isMapRDBConnSelected()) {
+            adaptMaprdbHadoopPartEditable();
             updateHadoopProperties(!isContextMode());
         }
         if (isImpalaDBConnSelected()) {
@@ -6683,6 +7289,75 @@ public class DatabaseForm extends AbstractForm {
                 maprTDurationForHBaseTxt.setText(maprticket_Duration);
             } else if (defaultMaprticket_Duration != null) {
                 maprTDurationForHBaseTxt.setText(defaultMaprticket_Duration);
+            }
+        }
+    }
+
+    private void fillDefaultsWhenMaprdbVersionChanged() {
+        if (isCreation && isNeedFillDefaults()) {
+            String distribution = getConnection().getParameters().get(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_DISTRIBUTION);
+            String version = getConnection().getParameters().get(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_VERSION);
+            String maprdbMasterPrincipal = getConnection().getParameters().get(
+                    ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MASTERPRINCIPAL);
+            String maprdbRSPrincipal = getConnection().getParameters().get(
+                    ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_REGIONSERVERPRINCIPAL);
+            if (distribution == null) {
+                return;
+            }
+            IHadoopDistributionService hadoopDistributionService = getHadoopDistributionService();
+            if (hadoopDistributionService == null) {
+                return;
+            }
+            IHDistribution maprdbDistribution = hadoopDistributionService.getMaprdbDistributionManager().getDistribution(
+                    distribution, false);
+            if (maprdbDistribution == null) {
+                return;
+            }
+            IHDistributionVersion maprdbVersion = maprdbDistribution.getHDVersion(version, false);
+            if (maprdbVersion == null) {
+                return;
+            }
+            String defaultPort = maprdbVersion.getDefaultConfig(distribution, EHadoopCategory.MAPRDB.getName(),
+                    EHadoopProperties.PORT.getName());
+            if (defaultPort != null && !isContextMode()) {
+                getConnection().setPort(defaultPort);
+                portText.setText(defaultPort);
+            }
+
+            String defaultHbaseMasterPrincipal = maprdbVersion.getDefaultConfig(distribution, EHadoopCategory.MAPRDB.getName(),
+                    EHadoopProperties.MAPRDB_MASTER_PRINCIPAL.getName());
+            if (StringUtils.isNotEmpty(maprdbMasterPrincipal)) {
+                maprdbMasterPrincipalTxt.setText(maprdbMasterPrincipal);
+            } else if (defaultHbaseMasterPrincipal != null) {
+                maprdbMasterPrincipalTxt.setText(defaultHbaseMasterPrincipal);
+            }
+
+            String defaultHbaseRSPrincipal = maprdbVersion.getDefaultConfig(distribution, EHadoopCategory.MAPRDB.getName(),
+                    EHadoopProperties.MAPRDB_REGIONSERVER_PRINCIPAL.getName());
+            if (StringUtils.isNotEmpty(maprdbRSPrincipal)) {
+                maprdbRSPrincipalTxt.setText(maprdbRSPrincipal);
+            } else if (defaultHbaseRSPrincipal != null) {
+                maprdbRSPrincipalTxt.setText(defaultHbaseRSPrincipal);
+            }
+
+            // default values for mapr ticket
+            String maprticket_Cluster = getConnection().getParameters().get(
+                    ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MAPRTICKET_CLUSTER);
+            String defaultMaprticket_Cluster = maprdbVersion.getDefaultConfig(distribution,
+                    EHadoopProperties.MAPRTICKET_CLUSTER.getName());
+            if (StringUtils.isNotEmpty(maprticket_Cluster)) {
+                maprTClusterForMaprdbTxt.setText(maprticket_Cluster);
+            } else if (defaultMaprticket_Cluster != null) {
+                maprTClusterForMaprdbTxt.setText(defaultMaprticket_Cluster);
+            }
+            String maprticket_Duration = getConnection().getParameters().get(
+                    ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MAPRTICKET_DURATION);
+            String defaultMaprticket_Duration = maprdbVersion.getDefaultConfig(distribution,
+                    EHadoopProperties.MAPRTICKET_DURATION.getName());
+            if (StringUtils.isNotEmpty(maprticket_Duration)) {
+                maprTDurationForMaprdbTxt.setText(maprticket_Duration);
+            } else if (defaultMaprticket_Duration != null) {
+                maprTDurationForMaprdbTxt.setText(defaultMaprticket_Duration);
             }
         }
     }

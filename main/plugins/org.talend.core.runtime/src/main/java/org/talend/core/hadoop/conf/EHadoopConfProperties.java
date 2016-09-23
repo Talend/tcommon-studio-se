@@ -103,6 +103,14 @@ public enum EHadoopConfProperties {
 
     HBASE_REGIONSERVER_KERBEROS_PRINCIPAL("hbase.regionserver.kerberos.principal", "hbase/_HOST@EXAMPLE.COM"), //$NON-NLS-1$//$NON-NLS-2$
 
+    MAPRDB_ZOOKEEPER_QUORUM("hbase.zookeeper.quorum", "localhost"), //$NON-NLS-1$ //$NON-NLS-2$
+
+    MAPRDB_ZOOKEEPER_PROPERTY_CLIENTPORT("hbase.zookeeper.property.clientPort", 2181), //$NON-NLS-1$
+
+    MAPRDB_MASTER_KERBEROS_PRINCIPAL("hbase.master.kerberos.principal", "mapr/_HOST@EXAMPLE.COM"), //$NON-NLS-1$//$NON-NLS-2$
+
+    MAPRDB_REGIONSERVER_KERBEROS_PRINCIPAL("hbase.regionserver.kerberos.principal", "mapr/_HOST@EXAMPLE.COM"), //$NON-NLS-1$//$NON-NLS-2$
+
     HIVE_SERVER2_AUTHENTICATION_KERBEROS_PRINCIPAL("hive.server2.authentication.kerberos.principal", "hive/_HOST@YOUR-REALM.COM"), //$NON-NLS-1$ //$NON-NLS-2$
 
     JAVAX_JDO_OPTION_CONNECTIONURL("javax.jdo.option.ConnectionURL", "jdbc:mysql://localhost/hive?createDatabaseIfNotExist=true"), //$NON-NLS-1$ //$NON-NLS-2$
