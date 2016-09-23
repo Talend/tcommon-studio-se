@@ -13,11 +13,12 @@
 
 package test.common;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -33,6 +34,7 @@ public class ErrorMessageTestCase {
     static List<String> errorMessagesList = new ArrayList<String>();
 
     @Test
+    @Ignore("if we want to execute test case, we can comment this line by refer addNewMessage() method comment.")
     public void FAILING_TO_LOAD_TEST_CASES() {
         // create a string with all the classes details that failed to load
         StringBuffer mess = new StringBuffer();
