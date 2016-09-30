@@ -1023,11 +1023,6 @@ public abstract class AbstractCreateTableAction extends AbstractCreateAction {
                                 if (EDatabaseTypeName.HIVE.getDisplayName().equals(metadataConnection.getDbType())) {
                                     // metadataConnection.setDriverJarPath((String)metadataConnection
                                     // .getParameter(ConnParameterKeys.CONN_PARA_KEY_METASTORE_CONN_DRIVER_JAR));
-                                    boolean useSSL = Boolean.valueOf(connection.getParameters().get(
-                                            ConnParameterKeys.CONN_PARA_KEY_USE_SSL));
-                                    if (!useSSL) {
-                                        metadataConnection.setUrl(connection.getURL());
-                                    }
                                     if (HiveModeInfo.get(hiveMode) == HiveModeInfo.EMBEDDED) {
                                         JavaSqlFactory.doHivePreSetup((DatabaseConnection) metadataConnection
                                                 .getCurrentConnection());
