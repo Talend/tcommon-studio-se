@@ -1045,43 +1045,71 @@ public class ProcessorUtilities {
                                 if (!BitwiseOptionUtils.containOption(option, GENERATE_WITH_FIRST_CHILD)) {
                                     currentProcess.setNeedRegenerateCode(true);
                                 }
-                                LastGenerationInfo
-                                        .getInstance()
-                                        .getModulesNeededWithSubjobPerJob(jobInfo.getJobId(), jobInfo.getJobVersion())
-                                        .addAll(LastGenerationInfo.getInstance().getModulesNeededWithSubjobPerJob(
-                                                subJobInfo.getJobId(), subJobInfo.getJobVersion()));
-                                LastGenerationInfo
-                                        .getInstance()
-                                        .getPigudfNeededWithSubjobPerJob(jobInfo.getJobId(), jobInfo.getJobVersion())
-                                        .addAll(LastGenerationInfo.getInstance().getPigudfNeededWithSubjobPerJob(
-                                                subJobInfo.getJobId(), subJobInfo.getJobVersion()));
-
-                                LastGenerationInfo
-                                        .getInstance()
-                                        .getRoutinesNeededWithSubjobPerJob(jobInfo.getJobId(), jobInfo.getJobVersion())
-                                        .addAll(LastGenerationInfo.getInstance().getRoutinesNeededWithSubjobPerJob(
-                                                subJobInfo.getJobId(), subJobInfo.getJobVersion()));
-
-                                if (!LastGenerationInfo.getInstance().isUseDynamic(jobInfo.getJobId(), jobInfo.getJobVersion())) {
-                                    LastGenerationInfo.getInstance().setUseDynamic(
-                                            jobInfo.getJobId(),
-                                            jobInfo.getJobVersion(),
-                                            LastGenerationInfo.getInstance().isUseDynamic(subJobInfo.getJobId(),
-                                                    subJobInfo.getJobVersion()));
-                                }
-                                if (!LastGenerationInfo.getInstance().isUsePigUDFs(jobInfo.getJobId(), jobInfo.getJobVersion())) {
-                                    LastGenerationInfo.getInstance().setUsePigUDFs(
-                                            jobInfo.getJobId(),
-                                            jobInfo.getJobVersion(),
-                                            LastGenerationInfo.getInstance().isUsePigUDFs(subJobInfo.getJobId(),
-                                                    subJobInfo.getJobVersion()));
-                                }
                             }
+
+                            setGenerationInfoWithChildrenJob(node, jobInfo, subJobInfo);
                         }
                     }
                 }
             }
         }
+    }
+
+    static void setGenerationInfoWithChildrenJob(INode node, JobInfo jobInfo, final JobInfo subJobInfo) {
+        final LastGenerationInfo generationInfo = LastGenerationInfo.getInstance();
+
+        // always check the using function for dynamic type of metadata column, PigUDF, Rules.
+        if (!generationInfo.isUseDynamic(jobInfo.getJobId(), jobInfo.getJobVersion())) {
+            generationInfo.setUseDynamic(jobInfo.getJobId(), jobInfo.getJobVersion(),
+                    generationInfo.isUseDynamic(subJobInfo.getJobId(), subJobInfo.getJobVersion()));
+        }
+        if (!generationInfo.isUsePigUDFs(jobInfo.getJobId(), jobInfo.getJobVersion())) {
+            generationInfo.setUsePigUDFs(jobInfo.getJobId(), jobInfo.getJobVersion(),
+                    generationInfo.isUsePigUDFs(subJobInfo.getJobId(), subJobInfo.getJobVersion()));
+        }
+        if (!generationInfo.isUseRules(jobInfo.getJobId(), jobInfo.getJobVersion())) {
+            generationInfo.setUseRules(jobInfo.getJobId(), jobInfo.getJobVersion(),
+                    generationInfo.isUseRules(subJobInfo.getJobId(), subJobInfo.getJobVersion()));
+        }
+
+        // TUP-5624,
+        // no need to add the modules of children job, when using dynamic job or independent
+        if (node != null) {
+            boolean needChildrenModules = true;
+            IElementParameter useDynamicJobParam = node.getElementParameter("USE_DYNAMIC_JOB"); //$NON-NLS-1$
+            // true, use dynamic job
+            if (useDynamicJobParam != null && useDynamicJobParam.getValue() != null
+                    && Boolean.parseBoolean(useDynamicJobParam.getValue().toString())) {
+                needChildrenModules = false;
+            }
+            if (needChildrenModules) { // check another param
+                IElementParameter useIndependentParam = node.getElementParameter("USE_INDEPENDENT_PROCESS"); //$NON-NLS-1$
+                // true, independent child job
+                if (useIndependentParam != null && useIndependentParam.getValue() != null
+                        && Boolean.parseBoolean(useIndependentParam.getValue().toString())) {
+                    needChildrenModules = false;
+                }
+            }
+
+            if (needChildrenModules) {
+                Set<ModuleNeeded> subjobModules = generationInfo.getModulesNeededWithSubjobPerJob(subJobInfo.getJobId(),
+                        subJobInfo.getJobVersion());
+                generationInfo.getModulesNeededWithSubjobPerJob(jobInfo.getJobId(), jobInfo.getJobVersion())
+                        .addAll(subjobModules);
+
+                Set<String> subjobRoutineModules = generationInfo.getRoutinesNeededWithSubjobPerJob(subJobInfo.getJobId(),
+                        subJobInfo.getJobVersion());
+                generationInfo.getRoutinesNeededWithSubjobPerJob(jobInfo.getJobId(), jobInfo.getJobVersion()).addAll(
+                        subjobRoutineModules);
+
+                Set<String> subjobPigUDFModules = generationInfo.getPigudfNeededWithSubjobPerJob(subJobInfo.getJobId(),
+                        subJobInfo.getJobVersion());
+                generationInfo.getPigudfNeededWithSubjobPerJob(jobInfo.getJobId(), jobInfo.getJobVersion()).addAll(
+                        subjobPigUDFModules);
+
+            }
+        }
+
     }
 
     /**

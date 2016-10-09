@@ -317,4 +317,20 @@ public class LastGenerationInfo {
         pigudfNeededWithSubjobPerJob.put(key, new HashSet<String>(modulesNeeded));
     }
 
+    public void clean() {
+        modulesNeededPerJob.clear();
+        routinesNeededPerJob.clear();
+        pigudfNeededPerJob.clear();
+        modulesNeededWithSubjobPerJob.clear();
+        routinesNeededWithSubjobPerJob.clear();
+        pigudfNeededWithSubjobPerJob.clear();
+        contextPerJob.clear();
+
+        getUseDynamicMap().clear();
+        getUsePigUDFsMap().clear();
+        getUseRulesMap().clear();
+
+        lastMainJob = null;
+        lastGeneratedjobs.clear();
+    }
 }
