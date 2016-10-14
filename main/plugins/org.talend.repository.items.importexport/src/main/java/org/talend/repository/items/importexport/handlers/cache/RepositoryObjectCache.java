@@ -21,11 +21,13 @@ import java.util.Map;
 import java.util.Set;
 
 import org.talend.commons.exception.PersistenceException;
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.repository.RepositoryViewObject;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
+import org.talend.core.runtime.services.IGenericWizardService;
 import org.talend.repository.items.importexport.handlers.model.ImportItem;
 
 /**
@@ -80,6 +82,12 @@ public class RepositoryObjectCache {
             types.add(itemType);
             // load object by type
             List<IRepositoryViewObject> list = factory.getAll(itemType, true, false);
+            if (list == null || list.isEmpty()) {
+                ERepositoryObjectType newRepType = getNewRepType(itemType);
+                if (newRepType != null) {
+                    list = factory.getAll(newRepType, true, false);
+                }
+            }
             // change to RepositoryViewObject to save memory
             // (could be enhanced directly in repository for future versions)
             List<IRepositoryViewObject> newList = new ArrayList<IRepositoryViewObject>();
@@ -96,6 +104,21 @@ public class RepositoryObjectCache {
             }
             itemsFromRepository.put(itemType, newList);
         }
+    }
+
+    private ERepositoryObjectType getNewRepType(ERepositoryObjectType oldType) {
+        if (oldType == null) {
+            return null;
+        }
+        ERepositoryObjectType newRepType = null;
+        IGenericWizardService wizardService = null;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericWizardService.class)) {
+            wizardService = (IGenericWizardService) GlobalServiceRegister.getDefault().getService(IGenericWizardService.class);
+        }
+        if (wizardService != null && !wizardService.isGenericType(oldType)) {
+            newRepType = wizardService.getNewRepType(oldType.getType());
+        }
+        return newRepType;
     }
 
     public void setItemLockState(ImportItem itemRecord, boolean state) {

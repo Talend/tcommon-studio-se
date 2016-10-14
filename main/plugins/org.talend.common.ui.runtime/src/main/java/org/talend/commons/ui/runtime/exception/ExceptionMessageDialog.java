@@ -34,6 +34,8 @@ public class ExceptionMessageDialog extends MessageDialog {
 
     private Throwable ex;
 
+    private String exceptionString = null;
+
     public ExceptionMessageDialog(Shell parentShell, String dialogTitle, Image dialogTitleImage, String dialogMessage,
             int dialogImageType, String[] dialogButtonLabels, int defaultIndex, Throwable ex) {
         super(parentShell, dialogTitle, dialogTitleImage, dialogMessage, dialogImageType, dialogButtonLabels, defaultIndex);
@@ -42,15 +44,18 @@ public class ExceptionMessageDialog extends MessageDialog {
 
     @Override
     protected Control createCustomArea(Composite parent) {
-        StringWriter stringWriter = new StringWriter();
-        ex.printStackTrace(new PrintWriter(stringWriter));
-        String exceptionString = stringWriter.toString();
+        if (exceptionString == null || exceptionString.isEmpty()) {
+            StringWriter stringWriter = new StringWriter();
+            ex.printStackTrace(new PrintWriter(stringWriter));
+            exceptionString = stringWriter.toString();
+        }
 
         ExpandableComposite errorComposite = new ExpandableComposite(parent, ExpandableComposite.COMPACT);
-        errorComposite.setLayoutData(new GridData(GridData.FILL, GridData.FILL, false, true, 1, 1));
+        errorComposite.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 1, 1));
         errorComposite.setText(Messages.getString("ExceptionMessageDialog.log")); //$NON-NLS-1$
         errorComposite.addExpansionListener(new IExpansionListener() {
 
+            @Override
             public void expansionStateChanged(ExpansionEvent e) {
                 int delta = 300;
                 if (!e.getState()) {
@@ -61,6 +66,7 @@ public class ExceptionMessageDialog extends MessageDialog {
                 getShell().setSize(newSize);
             }
 
+            @Override
             public void expansionStateChanging(ExpansionEvent e) {
             }
 
@@ -106,6 +112,14 @@ public class ExceptionMessageDialog extends MessageDialog {
                 new String[] { Messages.getString("ExceptionMessageDialog.OK") }, 0, ex); //$NON-NLS-1$
         dialog.open();
         return;
+    }
+
+    public String getExceptionString() {
+        return this.exceptionString;
+    }
+
+    public void setExceptionString(String exceptionString) {
+        this.exceptionString = exceptionString;
     }
 
 }

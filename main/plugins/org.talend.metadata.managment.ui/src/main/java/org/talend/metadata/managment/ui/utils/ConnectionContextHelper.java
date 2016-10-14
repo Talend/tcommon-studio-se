@@ -19,6 +19,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -293,7 +294,7 @@ public final class ConnectionContextHelper {
         } else if (conn instanceof GenericSchemaConnection) {
             //
         } else if (conn instanceof MDMConnection) {
-            varList = OtherConnectionContextUtils.getMDMSchemaVariables(label, (MDMConnection) conn);
+            varList = OtherConnectionContextUtils.getMDMConnectionVariables(label, (MDMConnection) conn);
         } else if (conn instanceof FTPConnection) {
             varList = OtherConnectionContextUtils.getFTPSChemaVariables(label, (FTPConnection) conn);
         } else if (conn instanceof SAPConnection) {
@@ -404,6 +405,9 @@ public final class ConnectionContextHelper {
         } else if (conn instanceof SAPConnection) {
             OtherConnectionContextUtils.setSAPConnectionPropertiesForContextMode(defaultContextName, (SAPConnection) conn,
                     paramSet);
+        } else if (conn instanceof MDMConnection) {
+            OtherConnectionContextUtils.setMDMConnectionPropertiesForContextMode(defaultContextName, (MDMConnection) conn,
+                    paramSet);
         } else {
             ExtendedNodeConnectionContextUtils.setConnectionPropertiesForContextMode(defaultContextName, conn, paramSet);
         }
@@ -444,6 +448,8 @@ public final class ConnectionContextHelper {
                     modelMap);
         } else if (conn instanceof SAPConnection) {
             OtherConnectionContextUtils.setSAPConnectionPropertiesForExistContextMode((SAPConnection) conn, paramSet, modelMap);
+        } else if (conn instanceof MDMConnection) {
+            OtherConnectionContextUtils.setMDMConnectionPropertiesForExistContextMode((MDMConnection) conn, paramSet, modelMap);
         } else {
             ExtendedNodeConnectionContextUtils.setConnectionPropertiesForExistContextMode(conn, paramSet, modelMap);
         }
@@ -649,24 +655,37 @@ public final class ConnectionContextHelper {
                             false);
                     if (addedVars != null && !addedVars.isEmpty()
                             && !isAddContextVar(contextItem, process.getContextManager(), neededVars)) {
-                        boolean added = false;
+                        AtomicBoolean added = new AtomicBoolean();
                         if (ignoreContextMode) {
                             addContextVarForJob(process, contextItem, addedVars);
-                            added = true;
+                            added.set(true);
                         } else {
                             // show
                             Map<String, Set<String>> addedVarsMap = new HashMap<String, Set<String>>();
                             addedVarsMap.put(connItem.getProperty().getId(), addedVars);
-                            if (showContextdialog(process, contextItem, process.getContextManager(), addedVarsMap, addedVars)) {
-                                added = true;
-                            }
+                            PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+
+                                @Override
+                                public void run() {
+                                    if (showContextdialog(process, contextItem, process.getContextManager(), addedVarsMap,
+                                            addedVars)) {
+                                        added.set(true);
+                                    }
+                                }
+                            });
                         }
                         // refresh context view
-                        if (added) {
+                        if (added.get()) {
                             if (GlobalServiceRegister.getDefault().isServiceRegistered(IDesignerCoreService.class)) {
                                 IDesignerCoreService service = (IDesignerCoreService) GlobalServiceRegister.getDefault()
                                         .getService(IDesignerCoreService.class);
-                                service.switchToCurContextsView();
+                                PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+
+                                    @Override
+                                    public void run() {
+                                        service.switchToCurContextsView();
+                                    }
+                                });
                             }
                         }
                     }
@@ -697,8 +716,8 @@ public final class ConnectionContextHelper {
                     IHadoopClusterService.class);
         }
         if (hadoopClusterService != null) {
-            if (hadoopClusterService.isInContextMode(connItem)) {
-                Connection connection = connItem.getConnection();
+            Connection connection = connItem.getConnection();
+            if (hadoopClusterService.isInContextMode(connection)) {
                 Set<String> neededVars = retrieveContextVar(elementParameters, connection, category);
                 if (neededVars != null && !neededVars.isEmpty()) {
                     ContextItem contextItem = ContextUtils.getContextItemById2(connection.getContextId());
@@ -1882,6 +1901,8 @@ public final class ConnectionContextHelper {
             OtherConnectionContextUtils.revertSalesforcePropertiesForContextMode((SalesforceSchemaConnection) conn, contextType);
         } else if (conn instanceof SAPConnection) {
             OtherConnectionContextUtils.revertSAPPropertiesForContextMode((SAPConnection) conn, contextType);
+        } else if (conn instanceof MDMConnection) {
+            OtherConnectionContextUtils.revertMDMConnectionPropertiesForContextMode((MDMConnection) conn, contextType);
         } else if (conn instanceof GenericSchemaConnection) {
             //
         } else {
@@ -1945,6 +1966,40 @@ public final class ConnectionContextHelper {
             realValue = TalendQuoteUtils.removeQuotes(ContextParameterUtils.getOriginalValue(contextType, value));
         }
         return realValue;
+    }
+
+    public static boolean isContextMode(Connection connection, String value) {
+        if (connection == null || value == null) {
+            return false;
+        }
+
+        if (isContextedConnection(connection) && ContextParameterUtils.isContainContextParam(value)) {
+            return true;
+        }
+        return false;
+    }
+
+    private static boolean isContextedConnection(Connection connection) {
+        IHadoopClusterService hadoopClusterService = getHadoopClusterService(connection);
+        return isHadoopSubConnection(hadoopClusterService, connection) ? hadoopClusterService.isInContextMode(connection)
+                : connection.isContextMode();
+    }
+
+    private static boolean isHadoopSubConnection(IHadoopClusterService hadoopClusterService, Connection connection) {
+        return hadoopClusterService == null ? false
+                : hadoopClusterService.getHadoopClusterConnectionBySubConnection(connection) != null;
+    }
+
+    private static IHadoopClusterService getHadoopClusterService(Connection connection) {
+        IHadoopClusterService hadoopClusterService = null;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IHadoopClusterService.class)) {
+            hadoopClusterService = (IHadoopClusterService) GlobalServiceRegister.getDefault()
+                    .getService(IHadoopClusterService.class);
+        }
+        if (hadoopClusterService != null) {
+            return hadoopClusterService;
+        }
+        return null;
     }
 
 }

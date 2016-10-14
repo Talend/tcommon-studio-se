@@ -621,10 +621,19 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
         Collections.sort(folders);
         for (String fullPath : folders) {
             String path = null;
+            
+            String comparePath = fullPath;
+            if(fullPath!=null){
+                String[] paths = fullPath.split("/");
+                if(paths.length>0){
+                    comparePath = paths[0];
+                }
+            }
+            
             ERepositoryObjectType currentType = null;
             for (DynaEnum<? extends DynaEnum<?>> type : ERepositoryObjectType.values()) {
                 ERepositoryObjectType objectType = (ERepositoryObjectType) type;
-                if (objectType.isResouce() && fullPath.startsWith(objectType.getFolder())) {
+                if (objectType.isResouce() && comparePath.equals(objectType.getFolder())) {
                     path = fullPath.substring(objectType.getFolder().length() + 1);
                     currentType = objectType;
                     break;

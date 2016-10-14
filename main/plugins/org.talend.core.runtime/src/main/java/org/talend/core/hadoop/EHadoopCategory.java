@@ -32,6 +32,8 @@ public enum EHadoopCategory {
 
     HBASE,
 
+    MAPRDB,
+
     OOZIE,
 
     CUSTOM

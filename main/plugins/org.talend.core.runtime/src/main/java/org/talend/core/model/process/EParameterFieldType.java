@@ -102,6 +102,7 @@ public enum EParameterFieldType {
     COMPONENT_REFERENCE, // ycbai added for generic wizard
     HIDDEN_TEXT, // hcyi added for generic wizard/component properties
     SCHEMA_REFERENCE, // hcyi added for component properties
+    JSON_TABLE, // ycbai added for generic wizard
 
     CAMPAIGN_CHOOSER, // pwlin added for TDS components
     ;

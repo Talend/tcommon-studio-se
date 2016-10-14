@@ -83,6 +83,12 @@ public interface IHadoopDistributionService extends IService {
 
     /**
      * 
+     * for Maprdb in Database wizard.{@link MaprdbComponent}.
+     */
+    IDistributionsManager getMaprdbDistributionManager();
+
+    /**
+     * 
      * for Spark Streaming Distribution {@link SparkStreamingComponent}.
      */
     IDistributionsManager getSparkStreamingDistributionManager();

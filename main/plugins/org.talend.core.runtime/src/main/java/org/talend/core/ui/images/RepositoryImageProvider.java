@@ -35,6 +35,8 @@ public class RepositoryImageProvider {
         } else if (type == ERepositoryObjectType.PROCESS) {
             return ECoreImage.PROCESS_ICON;
         } else if (type == ERepositoryObjectType.JOBLET) {
+            return ECoreImage.JOBLET_STANDARD_ICON;
+        } else if (type == ERepositoryObjectType.JOBLET_DESIGNS) {
             return ECoreImage.JOBLET_ICON;
         } else if (type == ERepositoryObjectType.CONTEXT) {
             return ECoreImage.CONTEXT_ICON;

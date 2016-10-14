@@ -15,6 +15,8 @@ package org.talend.repository.items.importexport.wizard.models;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -108,16 +110,51 @@ public class ImportNodesBuilder {
                     ITestContainerProviderService.class);
         }
         if (items != null && testContainerService != null) {
-            Map<String, ImportItem> itemMap = new HashMap<String, ImportItem>();
+            Map<String, List<ImportItem>> itemMap = new HashMap<String, List<ImportItem>>();
             for (ImportItem ir : items) {
                 if (ir.getItem() != null && !testContainerService.isTestContainerItem(ir.getItem())) {
-                    itemMap.put(ir.getProperty().getId(), ir);
+                    String id = ir.getProperty().getId();
+                    // may have different versions
+                    List<ImportItem> itemList = itemMap.get(id);
+                    if (itemList == null) {
+                        itemList = new LinkedList<ImportItem>();
+                        itemMap.put(id, itemList);
+                    }
+                    if (!itemList.contains(ir)) {
+                        itemList.add(ir);
+                    }
                     map.put(ir, new ArrayList<ImportItem>());
                 }
             }
             Set<String> keys = itemMap.keySet();
             for (String key : keys) {
-                Item item = itemMap.get(key).getItem();
+                // 1. get the last version
+                List<ImportItem> itemList = itemMap.get(key);
+                ImportItem importItem = null;
+                Item item = null;
+                String version = ""; //$NON-NLS-1$
+                /**
+                 * should keep same with conflict view order
+                 */
+                boolean useLastVersion = true;
+                Iterator<ImportItem> iter = itemList.iterator();
+                while (iter.hasNext()) {
+                    ImportItem curImportItem = iter.next();
+                    Item curItem = curImportItem.getItem();
+                    String curVersion = curItem.getProperty().getVersion();
+                    if (item == null) {
+                        item = curItem;
+                        version = curVersion;
+                        importItem = curImportItem;
+                    } else {
+                        if (curVersion != null && 0 < (curVersion.compareTo(version) * (useLastVersion ? 1 : -1))) {
+                            item = curItem;
+                            version = curVersion;
+                            importItem = curImportItem;
+                        }
+                    }
+                }
+
                 if (item == null) {
                     continue;
                 }
@@ -139,7 +176,7 @@ public class ImportNodesBuilder {
                         }
                     }
                 }
-                map.put(itemMap.get(key), children);
+                map.put(importItem, children);
             }
         }
         return map;

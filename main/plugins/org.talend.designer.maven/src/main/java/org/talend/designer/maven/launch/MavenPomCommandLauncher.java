@@ -60,9 +60,6 @@ public class MavenPomCommandLauncher extends MavenCommandLauncher {
             return;
         }
         if (getGoals().equals(TalendMavenConstants.GOAL_REFRESH)) {
-            MavenUpdateRequest request = new MavenUpdateRequest(launcherPomFile.getProject(), true, false);
-            MavenPluginActivator.getDefault().getProjectManagerRefreshJob().refresh(request);
-            MavenPluginActivator.getDefault().getProjectManagerRefreshJob().run(monitor);
             return;
         }
         final MavenModelManager mavenModelManager = MavenPlugin.getMavenModelManager();

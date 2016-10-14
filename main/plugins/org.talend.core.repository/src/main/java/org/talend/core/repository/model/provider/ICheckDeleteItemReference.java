@@ -15,6 +15,7 @@ package org.talend.core.repository.model.provider;
 import java.util.List;
 import java.util.Set;
 
+import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.repository.model.ItemReferenceBean;
 import org.talend.core.repository.ui.actions.DeleteActionCache;
 import org.talend.repository.model.IRepositoryNode;
@@ -25,6 +26,9 @@ import org.talend.repository.model.IRepositoryNode;
 public interface ICheckDeleteItemReference {
 
     public Set<ItemReferenceBean> getItemReferenceBeans(List<? extends IRepositoryNode> deleteNodes,
+            DeleteActionCache deleteActionCache);
+    
+    public Set<ItemReferenceBean> getItemReferenceBeans(IRepositoryViewObject convertNode,
             DeleteActionCache deleteActionCache);
 
 }

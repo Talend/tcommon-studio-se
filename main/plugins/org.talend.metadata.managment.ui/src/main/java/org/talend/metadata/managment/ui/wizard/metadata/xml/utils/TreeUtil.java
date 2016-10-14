@@ -43,6 +43,7 @@ import org.talend.core.model.metadata.MappingTypeRetriever;
 import org.talend.core.model.metadata.MetadataTalendType;
 import org.talend.core.model.metadata.types.JavaDataTypeHelper;
 import org.talend.datatools.xml.utils.ATreeNode;
+import org.talend.datatools.xml.utils.NodeCreationObserver;
 import org.talend.datatools.xml.utils.OdaException;
 import org.talend.datatools.xml.utils.SchemaPopulationUtil;
 import org.talend.datatools.xml.utils.XSDPopulationUtil;
@@ -446,11 +447,7 @@ public class TreeUtil {
 
         try {
             ATreeNode treeNode = SchemaPopulationUtil.getSchemaTree(filePath, true, 0);
-            String rootName = "";
-            if (treeNode.getValue() instanceof String) {
-                rootName += "/" + treeNode.getValue();
-            }
-            FOXTreeNode root = cloneATreeNode(treeNode, rootName, XmlUtil.isXSDFile(filePath));
+            FOXTreeNode root = cloneATreeNode(treeNode, XmlUtil.isXSDFile(filePath));
             if (root instanceof Element) {
                 root = ((Element) root).getElementChildren().get(0);
                 root.setParent(null);
@@ -557,11 +554,7 @@ public class TreeUtil {
     private static void getFoxTreeNodesForXmlMap(String filePath, List<FOXTreeNode> list) throws OdaException,
             URISyntaxException, IOException {
         ATreeNode treeNode = SchemaPopulationUtil.getSchemaTree(filePath, true, 0);
-        String rootName = "";
-        if (treeNode.getValue() instanceof String) {
-            rootName += "/" + treeNode.getValue();
-        }
-        FOXTreeNode root = cloneATreeNode(treeNode, rootName, XmlUtil.isXSDFile(filePath));
+        FOXTreeNode root = cloneATreeNode(treeNode, XmlUtil.isXSDFile(filePath));
         if (root instanceof Element) {
             if (root instanceof Element) {
                 root = ((Element) root).getElementChildren().get(0);
@@ -658,11 +651,7 @@ public class TreeUtil {
                     }
 
                     if (selectedNode != null) {
-                        String rootName = "";
-                        if (treeNode.getValue() instanceof String) {
-                            rootName += "/" + treeNode.getValue();
-                        }
-                        FOXTreeNode root = cloneATreeNode(treeNode, rootName, XmlUtil.isXSDFile(filePath));
+                        FOXTreeNode root = cloneATreeNode(treeNode, XmlUtil.isXSDFile(filePath));
                         if (root instanceof Element) {
                             root.setParent(null);
                             list.add(root);
@@ -697,11 +686,7 @@ public class TreeUtil {
                 return list;
             }
 
-            String rootName = "";
-            if (treeNode.getValue() instanceof String) {
-                rootName += "/" + treeNode.getValue();
-            }
-            FOXTreeNode root = cloneATreeNode(treeNode, rootName, true);
+            FOXTreeNode root = cloneATreeNode(treeNode, true);
             if (root instanceof Element) {
                 root.setParent(null);
                 list.add(root);
@@ -739,11 +724,7 @@ public class TreeUtil {
                 return list;
             }
 
-            String rootName = "";
-            if (treeNode.getValue() instanceof String) {
-                rootName += "/" + treeNode.getValue();
-            }
-            FOXTreeNode root = cloneATreeNode(treeNode, rootName, true);
+            FOXTreeNode root = cloneATreeNode(treeNode, true);
             if (root instanceof Element) {
                 root.setParent(null);
                 list.add(root);
@@ -783,11 +764,7 @@ public class TreeUtil {
                 return list;
             }
 
-            String rootName = "";
-            if (treeNode.getValue() instanceof String) {
-                rootName += "/" + treeNode.getValue() + "[" + treeNode.getDataType() + "]";
-            }
-            FOXTreeNode root = cloneATreeNode(treeNode, rootName, true);
+            FOXTreeNode root = cloneATreeNode(treeNode, true);
             if (root instanceof Element) {
                 root.setParent(null);
                 list.add(root);
@@ -916,62 +893,66 @@ public class TreeUtil {
         return null;
     }
 
-    public static FOXTreeNode cloneATreeNode(ATreeNode treeNode, String currentPath, boolean isXsd) {
-        FOXTreeNode node = null;
-        if (treeNode.getType() == ATreeNode.ATTRIBUTE_TYPE) {
-            node = new Attribute();
-        } else {
-            node = new Element();
-        }
-        if (treeNode.getType() == ATreeNode.NAMESPACE_TYPE) {
-            node = new NameSpaceNode();
-            node.setLabel(treeNode.getDataType());
-            node.setDefaultValue((String) treeNode.getValue());
-        } else {
-            node.setLabel(treeNode.getValue().toString());
-            node.setChoice(treeNode.isChoice());
-            node.setSubstitution(treeNode.isSubstitution());
-            node.setOptional(treeNode.isOptional());
-            // init the unique to guess first loop element when create mdmoutput wizard
-            node.getUniqueNames().clear();
-            node.getUniqueNames().addAll(treeNode.getUniqueNames());
-        }
-        if (isXsd) {
-            MappingTypeRetriever retriever = MetadataTalendType.getMappingTypeRetriever("xsd_id"); //$NON-NLS-1$
-            String originalDataType = treeNode.getOriginalDataType();
-            if (originalDataType != null && !originalDataType.startsWith("xs:")) { //$NON-NLS-1$
-                originalDataType = "xs:" + originalDataType; //$NON-NLS-1$
-            }
-            node.setDataType(retriever.getDefaultSelectedTalendType(originalDataType));
-        } else {
-            node.setDataType(treeNode.getDataType());
-        }
-        node.setDataMaxLength(treeNode.getDataMaxLength());
-        node.setPrecisionValue(treeNode.getPrecisionValue());
-        Object[] children = treeNode.getChildren();
-        if (children != null) {
-            for (Object element : children) {
-                if (element instanceof ATreeNode) {
-                    ATreeNode child = (ATreeNode) element;
-                    String newPath = currentPath + "/";
-                    if (child.getValue() instanceof String) {
-                        String elementName = (String) child.getValue() + "[" + child.getDataType() + "]";
-                        if (currentPath.contains("/" + elementName + "/") && isXsd) {
-                            // ExceptionHandler.process(new Exception("XSD ERROR: loop found. Item: " + elementName
-                            // + " is already in the currentPath (" + currentPath + ")."));
-                            continue;
-                        }
-                        newPath += elementName;
-                    } else {
-                        newPath += "unknownElement";
+    public static FOXTreeNode cloneATreeNode(ATreeNode aNode, boolean isXsd) {
+        List<ATreeNode> aNodes = NodeCreationObserver.getList();
+        FOXTreeNode rootFNode = null;
+        for (int i= 0; i< aNodes.size(); i++) {
+            ATreeNode treeNode = aNodes.get(i);
+            if (isXsd && treeNode.getValue() instanceof String) {
+                String currentPath = treeNode.getValue() + "[" + treeNode.getDataType() + "]";
+                if (treeNode.getParent() != null) {
+                    String parentPath = "/" + treeNode.getParent().getValue() + "[" + treeNode.getParent().getDataType() + "]";
+                    if (parentPath.contains("/" + currentPath + "/")) {
+                        continue;
                     }
-                    FOXTreeNode foxChild = cloneATreeNode(child, newPath, isXsd);
-                    // foxChild.setRow(schemaName);
-                    node.addChild(foxChild);
                 }
             }
+            FOXTreeNode node = null;
+            if (treeNode.getType() == ATreeNode.ATTRIBUTE_TYPE) {
+                node = new Attribute();
+            } else {
+                node = new Element();
+            }
+            if (treeNode.getType() == ATreeNode.NAMESPACE_TYPE) {
+                node = new NameSpaceNode();
+                node.setLabel(treeNode.getDataType());
+                node.setDefaultValue((String) treeNode.getValue());
+            } else {
+                node.setLabel(treeNode.getValue() == null ? null : treeNode.getValue().toString());
+                node.setChoice(treeNode.isChoice());
+                node.setSubstitution(treeNode.isSubstitution());
+                node.setOptional(treeNode.isOptional());
+                // init the unique to guess first loop element when create mdmoutput wizard
+                node.getUniqueNames().clear();
+                node.getUniqueNames().addAll(treeNode.getUniqueNames());
+            }
+            if (isXsd) {
+                MappingTypeRetriever retriever = MetadataTalendType.getMappingTypeRetriever("xsd_id"); //$NON-NLS-1$
+                String originalDataType = treeNode.getOriginalDataType();
+                if (originalDataType != null && !originalDataType.startsWith("xs:")) { //$NON-NLS-1$
+                    originalDataType = "xs:" + originalDataType; //$NON-NLS-1$
+                }
+                node.setDataType(retriever.getDefaultSelectedTalendType(originalDataType));
+            } else {
+                node.setDataType(treeNode.getDataType());
+            }
+            node.setDataMaxLength(treeNode.getDataMaxLength());
+            node.setPrecisionValue(treeNode.getPrecisionValue());
+            if (treeNode.getFoxTreeNode() == null) {
+                treeNode.setFoxTreeNode(node);
+            }
+            if (treeNode.getParent() != null && treeNode.getParent().getFoxTreeNode() != null) {
+                ((FOXTreeNode) treeNode.getParent().getFoxTreeNode()).addChild(node);
+            } 
         }
-        return node;
+        for (ATreeNode treeNode: aNodes) {
+            FOXTreeNode fNode = (FOXTreeNode) treeNode.getFoxTreeNode();
+            if ( treeNode.getParent() != null && fNode.getParent() == null) {
+                ((FOXTreeNode) treeNode.getParent().getFoxTreeNode()).addChild(fNode);
+            }
+        }
+        rootFNode = (FOXTreeNode) aNode.getFoxTreeNode();
+        return rootFNode;
     }
 
     public static FOXTreeNode getRootFOXTreeNode(FOXTreeNode node) {

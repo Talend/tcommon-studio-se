@@ -12,6 +12,8 @@
 // ============================================================================
 package org.talend.metadata.managment.ui.wizard.metadata.xml.utils;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -23,11 +25,13 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.talend.commons.runtime.xml.XmlUtil;
 import org.talend.datatools.xml.utils.ATreeNode;
 import org.talend.datatools.xml.utils.OdaException;
 import org.talend.datatools.xml.utils.SchemaPopulationUtil;
 import org.talend.datatools.xml.utils.XSDPopulationUtil2;
 import org.talend.datatools.xml.utils.XSDUtils;
+import org.talend.metadata.managment.ui.wizard.metadata.xml.node.FOXTreeNode;
 
 /**
  * created by wchen on Aug 12, 2016 Detailled comment
@@ -81,6 +85,27 @@ public class TreeUtilTest {
         Assert.assertEquals(expectedValues, treeValues);
     }
 
+    @Test
+    public void testCloneATreeNode() throws Exception {
+        String xsdFile = FileLocator.toFileURL(
+                this.getClass().getClassLoader().getResource("resources/CCTS_CCT_SchemaModule-2.1.xsd")).toURI().getPath();
+        ATreeNode treeNode = SchemaPopulationUtil.getSchemaTree(xsdFile, true, 0);
+        FOXTreeNode root = TreeUtil.cloneATreeNode(treeNode, XmlUtil.isXSDFile(xsdFile));
+        assertNotNull(root);
+        List<FOXTreeNode> list = root.getChildren();
+        assertTrue(list != null && list.size() == 10);
+        assertEquals("AmountType", list.get(0).getLabel());
+        assertEquals("IndicatorType", list.get(1).getLabel());
+        assertEquals("NumericType", list.get(2).getLabel());
+        assertEquals("CodeType", list.get(3).getLabel());
+        assertEquals("MeasureType", list.get(4).getLabel());
+        assertEquals("DateTimeType", list.get(5).getLabel());
+        assertEquals("QuantityType", list.get(6).getLabel());
+        assertEquals("TextType", list.get(7).getLabel());
+        assertEquals("BinaryObjectType", list.get(8).getLabel());
+        assertEquals("IdentifierType", list.get(9).getLabel());
+    }
+    
     private String getTreeValues(ATreeNode treeNode) {
         String treeValues = treeNode.toString();
         for (Object child : treeNode.getChildren()) {

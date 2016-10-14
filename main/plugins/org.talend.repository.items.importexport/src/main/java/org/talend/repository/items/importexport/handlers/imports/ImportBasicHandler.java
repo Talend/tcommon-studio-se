@@ -89,6 +89,7 @@ import org.talend.core.model.utils.MigrationUtil;
 import org.talend.core.repository.constants.FileConstants;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.runtime.CoreRuntimePlugin;
+import org.talend.core.runtime.services.IGenericWizardService;
 import org.talend.designer.business.model.business.BusinessPackage;
 import org.talend.designer.business.model.business.BusinessProcess;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
@@ -379,11 +380,7 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
                 if (property != null) {
                     if (isSameName(importItem, current)) {
                         itemWithSameNameObj = current;
-                        if (importItem.getRepositoryType() == current.getRepositoryObjectType()) {
-                            isSameRepositoryType = true;
-                        } else {
-                            isSameRepositoryType = false;
-                        }
+                        isSameRepositoryType = isSameRepType(current.getRepositoryObjectType(), importItem.getRepositoryType());
                     }
                     if (property.getId() != null && property.getId().equals(current.getId())) {
                         itemWithSameIdObj = current;
@@ -481,6 +478,31 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
                 return false; // in different path. should be not same name, so return false.
             }
             return true;
+        }
+        return false;
+    }
+
+    /**
+     * Check if both type are the same type.
+     */
+    protected boolean isSameRepType(ERepositoryObjectType type1, ERepositoryObjectType type2) {
+        if (type1 == null || type2 == null) {
+            return false;
+        }
+        if (type1 == type2) {
+            return true;
+        }
+        IGenericWizardService wizardService = null;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericWizardService.class)) {
+            wizardService = (IGenericWizardService) GlobalServiceRegister.getDefault().getService(IGenericWizardService.class);
+        }
+        if (wizardService != null) {
+            if (wizardService.isGenericType(type1) && !wizardService.isGenericType(type2)) {
+                return type1.equals(wizardService.getNewRepType(type2.getType()));
+            }
+            if (wizardService.isGenericType(type2) && !wizardService.isGenericType(type1)) {
+                return type2.equals(wizardService.getNewRepType(type1.getType()));
+            }
         }
         return false;
     }

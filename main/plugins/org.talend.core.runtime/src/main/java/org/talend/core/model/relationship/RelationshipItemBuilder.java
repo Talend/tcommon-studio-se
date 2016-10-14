@@ -826,6 +826,10 @@ public class RelationshipItemBuilder {
             return true;
         }else if(ERepositoryObjectType.JOBLET!=null && itemType == ERepositoryObjectType.JOBLET){
             return true;
+        }else if(ERepositoryObjectType.SPARK_JOBLET!=null && itemType == ERepositoryObjectType.SPARK_JOBLET){
+            return true;
+        }else if(ERepositoryObjectType.SPARK_STREAMING_JOBLET!=null && itemType == ERepositoryObjectType.SPARK_STREAMING_JOBLET){
+            return true;
         }
         return false;
     }

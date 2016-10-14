@@ -53,6 +53,8 @@ import org.talend.core.model.properties.PropertiesFactory;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.properties.User;
 import org.talend.core.ui.IJobletProviderService;
+import org.talend.core.ui.ISparkJobletProviderService;
+import org.talend.core.ui.ISparkStreamingJobletProviderService;
 import org.talend.core.ui.images.RepositoryImageProvider;
 import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.helper.PackageHelper;
@@ -193,7 +195,7 @@ public class RepositoryViewObject implements IRepositoryViewObject {
             // ExceptionHandler.process(e);
             // }
 
-            image = getDefaultJobletImage();
+            image = getDefaultJobletImage(item);
         } else {
 
             ImageDescriptor imageDesc = ImageUtils.createImageFromData(item.getIcon().getInnerContent());
@@ -210,7 +212,21 @@ public class RepositoryViewObject implements IRepositoryViewObject {
         return image;
     }
 
-    public static Image getDefaultJobletImage() {
+    public static Image getDefaultJobletImage(Item item ) {
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ISparkJobletProviderService.class)) {
+            ISparkJobletProviderService sparkJobletService = (ISparkJobletProviderService) GlobalServiceRegister
+                    .getDefault().getService(ISparkJobletProviderService.class);
+            if (sparkJobletService != null && sparkJobletService.isSparkJobletItem(item)) {
+                return  ImageProvider.getImage(ECoreImage.SPARK_JOBLET_COMPONENT_ICON);
+            }
+        }
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ISparkStreamingJobletProviderService.class)) {
+            ISparkStreamingJobletProviderService sparkStreamingJobletService = (ISparkStreamingJobletProviderService) GlobalServiceRegister
+                    .getDefault().getService(ISparkStreamingJobletProviderService.class);
+            if (sparkStreamingJobletService != null && sparkStreamingJobletService.isSparkStreamingJobletItem(item)) {
+                return  ImageProvider.getImage(ECoreImage.SPARK_STREAMING_JOBLET_COMPONENT_ICON);
+            }
+        }
         return ImageProvider.getImage(ECoreImage.JOBLET_COMPONENT_ICON);
     }
 

@@ -29,7 +29,6 @@ import org.talend.core.model.properties.ConnectionItem;
 import org.talend.datatools.xml.utils.ATreeNode;
 import org.talend.datatools.xml.utils.OdaException;
 import org.talend.datatools.xml.utils.XSDPopulationUtil2;
-import org.talend.metadata.managment.ui.utils.OtherConnectionContextUtils.EParamName;
 import org.talend.metadata.managment.ui.wizard.metadata.xml.node.FOXTreeNode;
 import org.talend.metadata.managment.ui.wizard.metadata.xml.utils.TreeUtil;
 import org.talend.repository.mdm.util.MDMUtil;
@@ -105,19 +104,6 @@ public abstract class AbstractMDMFileStepForm extends AbstractXmlStepForm {
     @Override
     public TableViewer getSchemaViewer() {
         return null;
-    }
-
-    @Override
-    protected void exportAsContext() {
-        collectConnParams();
-        super.exportAsContext();
-    }
-
-    protected void collectConnParams() {
-        addContextParams(EParamName.UNIVERSE, true);
-        addContextParams(EParamName.DATACLUSTER, true);
-        addContextParams(EParamName.DATAMODEL, true);
-        addContextParams(EParamName.MDMURL, true);
     }
 
     @Override

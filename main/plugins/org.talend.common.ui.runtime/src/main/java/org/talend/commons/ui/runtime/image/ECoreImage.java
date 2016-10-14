@@ -69,6 +69,7 @@ public enum ECoreImage implements IImage {
     PROCESS_BATCH_SPARK_ICON("/icons1/process_batch_spark.png"), //$NON-NLS-1$
     SERVICES_ICON("/icons1/services.png"), //$NON-NLS-1$
     JOBLET_ICON("/icons1/joblet_icon.png"), //$NON-NLS-1$
+    JOBLET_STANDARD_ICON("/icons1/joblet_standard.png"), //$NON-NLS-1$
     CONTEXT_ICON("/icons1/context_icon.png"), //$NON-NLS-1$
     CONTEXT_CONF_ICON("/icons1/context_conf_icon.gif"), //$NON-NLS-1$
     CONTEXT_WIZ("/icons1/context_wiz.png"), //$NON-NLS-1$
@@ -185,6 +186,8 @@ public enum ECoreImage implements IImage {
     PALETTE_OK_ICON("/icons1/palette_ok.png"), //$NON-NLS-1$
     PALETTE_CLEAR_ICON("/icons1/clear_toolbox.png"), //$NON-NLS-1$
     JOBLET_COMPONENT_ICON("/icons1/joblet_component.png"), //$NON-NLS-1$
+    SPARK_JOBLET_COMPONENT_ICON("/icons1/spark_joblet_component.png"), //$NON-NLS-1$
+    SPARK_STREAMING_JOBLET_COMPONENT_ICON("/icons1/spark_streaming_joblet_component.png"), //$NON-NLS-1$
     UNKNOWN(),
     PROGRESSBAR("/icons1/progressBar.gif"), //$NON-NLS-1$
     PROGRESSBARBlACK("/icons1/progressBar2.gif"), //$NON-NLS-1$

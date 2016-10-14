@@ -33,6 +33,7 @@ import org.eclipse.ui.progress.UIJob;
 import org.talend.commons.exception.LoginException;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.core.GlobalServiceRegister;
+import org.talend.core.IRepositoryContextService;
 import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.database.conn.ConnParameterKeys;
 import org.talend.core.database.conn.DatabaseConnStrUtil;
@@ -79,6 +80,7 @@ import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.repository.RepositoryContentManager;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.repository.ui.actions.metadata.AbstractCreateAction;
+import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.service.ISAPProviderService;
 import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.helper.PackageHelper;
@@ -108,6 +110,7 @@ import org.talend.repository.ui.wizards.metadata.table.files.FileLdifTableWizard
 import org.talend.repository.ui.wizards.metadata.table.files.FilePositionalTableWizard;
 import org.talend.repository.ui.wizards.metadata.table.files.FileRegexpTableWizard;
 import org.talend.repository.ui.wizards.metadata.table.files.FileXmlTableWizard;
+
 import orgomg.cwm.objectmodel.core.Package;
 import orgomg.cwm.resource.record.RecordFactory;
 import orgomg.cwm.resource.record.RecordFile;
@@ -1020,14 +1023,20 @@ public abstract class AbstractCreateTableAction extends AbstractCreateAction {
                                 if (EDatabaseTypeName.HIVE.getDisplayName().equals(metadataConnection.getDbType())) {
                                     // metadataConnection.setDriverJarPath((String)metadataConnection
                                     // .getParameter(ConnParameterKeys.CONN_PARA_KEY_METASTORE_CONN_DRIVER_JAR));
-                                    boolean useSSL = Boolean.valueOf(connection.getParameters().get(
-                                            ConnParameterKeys.CONN_PARA_KEY_USE_SSL));
-                                    if (!useSSL) {
-                                        metadataConnection.setUrl(connection.getURL());
-                                    }
                                     if (HiveModeInfo.get(hiveMode) == HiveModeInfo.EMBEDDED) {
                                         JavaSqlFactory.doHivePreSetup((DatabaseConnection) metadataConnection
                                                 .getCurrentConnection());
+                                    }
+                                } else if (EDatabaseTypeName.IMPALA.getDisplayName().equals(metadataConnection.getDbType())) {
+                                    DatabaseConnection originalValueConnection = null;
+                                    IRepositoryContextService repositoryContextService = CoreRuntimePlugin.getInstance()
+                                            .getRepositoryContextService();
+                                    if (repositoryContextService != null) {
+                                        originalValueConnection = repositoryContextService
+                                                .cloneOriginalValueConnection(connection, false, null);
+                                    }
+                                    if (originalValueConnection != null) {
+                                        metadataConnection.setUrl(originalValueConnection.getURL());
                                     }
                                 } else {
                                     String genUrl = DatabaseConnStrUtil.getURLString(metadataConnection.getDbType(),

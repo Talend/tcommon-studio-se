@@ -13,6 +13,7 @@
 package org.talend.utils.io;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -39,6 +40,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
+import org.apache.commons.io.IOUtils;
 import org.talend.utils.sugars.ReturnCode;
 
 /**
@@ -53,7 +55,7 @@ public final class FilesUtils {
 
     public static final String GITKEEP = ".gitkeep"; //$NON-NLS-1$
 
-    public static final String SVN_FOLDER_NAMES[] = new String[] { ".svn", "_svn" }; //$NON-NLS-1$  //$NON-NLS-2$
+    public static final String SVN_FOLDER_NAMES[] = new String[] { ".svn", "_svn" }; //$NON-NLS-1$ //$NON-NLS-2$
 
     public static boolean isSVNFolder(String name) {
         if (name != null) {
@@ -147,23 +149,15 @@ public final class FilesUtils {
         // 2. target exists but source has been modified recently
 
         if (!target.exists() || source.lastModified() > target.lastModified()) {
-            copyFile(new FileInputStream(source), target);
+            InputStream in = new FileInputStream(source);
+            copyFile(in, target);
         }
     }
 
     public static void copyFile(InputStream source, File target) throws IOException {
-        FileOutputStream fos = null;
+        OutputStream out = new FileOutputStream(target);
         try {
-            if (!target.getParentFile().exists()) {
-                target.getParentFile().mkdirs();
-            }
-
-            fos = new FileOutputStream(target);
-            byte[] buf = new byte[1024];
-            int i = 0;
-            while ((i = source.read(buf)) != -1) {
-                fos.write(buf, 0, i);
-            }
+            IOUtils.copy(source, out);
         } finally {
             try {
                 source.close();
@@ -171,7 +165,9 @@ public final class FilesUtils {
                 //
             }
             try {
-                fos.close();
+                if (out != null) {
+                    out.close();
+                }
             } catch (Exception e) {
                 //
             }
@@ -189,15 +185,8 @@ public final class FilesUtils {
             }
         } else {
             try {
-                InputStream is = new FileInputStream(source);
-                OutputStream os = new FileOutputStream(tarpath);
-                byte[] buf = new byte[1024];
-                int len = 0;
-                while ((len = is.read(buf)) != -1) {
-                    os.write(buf, 0, len);
-                }
-                is.close();
-                os.close();
+                InputStream in = new FileInputStream(source);
+                copyFile(in, tarpath);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -414,7 +403,7 @@ public final class FilesUtils {
         return completePath.getParent();
     }
 
-    public static long getChecksumAlder32(File file) throws IOException{
+    public static long getChecksumAlder32(File file) throws IOException {
         BufferedInputStream bufferedInputStream = null;
         CheckedInputStream cis = null;
         try {

@@ -28,13 +28,18 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.talend.commons.exception.PersistenceException;
+import org.talend.core.context.Context;
+import org.talend.core.context.RepositoryContext;
+import org.talend.core.model.general.Project;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.metadata.builder.database.ExtractMetaDataFromDataBase.ETableTypes;
 import org.talend.core.model.properties.Property;
+import org.talend.core.model.properties.impl.ProjectReferenceImpl;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
@@ -82,9 +87,9 @@ public final class DqRepositoryViewService {
     private DqRepositoryViewService() {
     }
 
-    private static final char CHAR_TO_REMOVE = '/'; //$NON-NLS-1$
+    private static final char CHAR_TO_REMOVE = '/';
 
-    private static final char REPLACEMENT_CHAR = '_'; //$NON-NLS-1$
+    private static final char REPLACEMENT_CHAR = '_';
 
     public static final String[] TABLE_TYPES = new String[] { ETableTypes.TABLETYPE_TABLE.getName(),
             ETableTypes.EXTERNAL_TABLE.getName(), ETableTypes.MANAGED_TABLE.getName(), ETableTypes.INDEX_TABLE.getName(),
@@ -201,7 +206,7 @@ public final class DqRepositoryViewService {
 
     public static List<TdTable> getTables(java.sql.Connection sqlConnection, Connection dataProvider, Catalog catalog,
             String tablePattern, boolean loadFromDB, boolean isPersist2Con) throws Exception {
-        if (loadFromDB) {
+        if (loadFromDB && !isComeFromRefrenceProject(dataProvider)) {
             return loadTables(sqlConnection, dataProvider, catalog, tablePattern, isPersist2Con);
         } else {
             return CatalogHelper.getTables(catalog);
@@ -234,7 +239,7 @@ public final class DqRepositoryViewService {
      */
     public static List<TdTable> getTables(java.sql.Connection sqlConnection, Connection dataProvider, Schema schema,
             String tablePattern, boolean loadFromDB, boolean isPersist2Con) throws Exception {
-        if (loadFromDB) {
+        if (loadFromDB && !isComeFromRefrenceProject(dataProvider)) {
             final Catalog parentCatalog = CatalogHelper.getParentCatalog(schema);
             return loadTables(sqlConnection, dataProvider, parentCatalog, schema, tablePattern, isPersist2Con);
         } else {
@@ -280,7 +285,7 @@ public final class DqRepositoryViewService {
 
     public static List<TdView> getViews(java.sql.Connection sqlConnection, Connection dataProvider, Catalog catalog,
             String viewPattern, boolean loadFromDB, boolean isPersist2Con) throws Exception {
-        if (loadFromDB) {
+        if (loadFromDB && !isComeFromRefrenceProject(dataProvider)) {
             return loadViews(sqlConnection, dataProvider, catalog, null, viewPattern, isPersist2Con);
         } else {
             return CatalogHelper.getViews(catalog);
@@ -302,7 +307,7 @@ public final class DqRepositoryViewService {
 
     public static List<TdView> getViews(java.sql.Connection sqlConnection, Connection dataProvider, Schema schema,
             String viewPattern, boolean loadFromDB, boolean isPersist2Con) throws Exception {
-        if (loadFromDB) {
+        if (loadFromDB && !isComeFromRefrenceProject(dataProvider)) {
             // get catalog is exists
             final Catalog parentCatalog = CatalogHelper.getParentCatalog(schema);
             return loadViews(sqlConnection, dataProvider, parentCatalog, schema, viewPattern, isPersist2Con);
@@ -343,7 +348,7 @@ public final class DqRepositoryViewService {
      * @throws Exception the exception the connection checking is not ok.
      */
     public static List<TdColumn> getColumns(Connection dataProvider, ColumnSet columnSet, boolean loadFromDB) throws Exception {
-        if (loadFromDB) {
+        if (loadFromDB && !isComeFromRefrenceProject(dataProvider)) {
             // MOD by zshen use new API to fill Columns
             TypedReturnCode<java.sql.Connection> rcConn = MetadataConnectionUtils
                     .createConnection((DatabaseConnection) dataProvider);
@@ -363,6 +368,33 @@ public final class DqRepositoryViewService {
         } else {
             return ColumnSetHelper.getColumns(columnSet);
         }
+    }
+
+    /**
+     * DOC zshen Comment method "isComeFromRefrenceProject".
+     * 
+     * @return
+     */
+    public static boolean isComeFromRefrenceProject(Connection dataProvider) {
+        String currentResourceProjectName = dataProvider.eResource().getURI().segment(1);
+        RepositoryContext repositoryContext = (RepositoryContext) org.talend.core.runtime.CoreRuntimePlugin.getInstance()
+                .getContext().getProperty(Context.REPOSITORY_CONTEXT_KEY);
+        Project project = repositoryContext.getProject();
+        boolean isLocal = project.getEmfProject().isLocal();
+        boolean isReference = project.getEmfProject().isReference();
+        EList<ProjectReferenceImpl> referencedProjects = project.getEmfProject().getReferencedProjects();
+        if (isLocal || isReference) {
+            return false;
+        }
+        if (referencedProjects.size() > 0) {
+            for (ProjectReferenceImpl projectRef : referencedProjects) {
+                String label = projectRef.getReferencedProject().getLabel();
+                if (currentResourceProjectName.toUpperCase().equals(label.toUpperCase())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**

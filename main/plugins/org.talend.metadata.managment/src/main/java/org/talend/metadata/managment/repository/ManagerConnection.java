@@ -17,8 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import metadata.managment.i18n.Messages;
-
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IProject;
@@ -43,6 +41,8 @@ import org.talend.core.repository.model.provider.IDBMetadataProvider;
 import org.talend.metadata.managment.connection.manager.HiveConnectionManager;
 import org.talend.metadata.managment.connection.manager.ImpalaConnectionManager;
 import org.talend.repository.ProjectManager;
+
+import metadata.managment.i18n.Messages;
 
 /**
  * @author ocarbone
@@ -453,6 +453,10 @@ public class ManagerConnection {
 
     public void setUrlConnectionString(String urlConnectionString) {
         this.urlConnectionString = urlConnectionString;
+    }
+
+    public void setDbVersionString(String dbVersion) {
+        this.dbVersionString = dbVersion;
     }
 
     /**

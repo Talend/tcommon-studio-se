@@ -75,9 +75,11 @@ public enum EDatabaseVersion4Drivers {
     MYSQL_4(new DbVersion4Drivers(EDatabaseTypeName.MYSQL, "MySQL 4", "MYSQL_4", "mysql-connector-java-3.1.14-bin.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     MARIADB(new DbVersion4Drivers(EDatabaseTypeName.MYSQL, "MariaDB", "MARIADB", "mariadb-java-client-1.1.7.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     // add for 9594
-    MSSQL(new DbVersion4Drivers(EDatabaseTypeName.MSSQL, "jtds-1.3.1-patch.jar")), //$NON-NLS-1$
+    MSSQL(new DbVersion4Drivers(EDatabaseTypeName.MSSQL,"Open source JTDS", "JTDS", "jtds-1.3.1-patch.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     MSSQL_2012(new DbVersion4Drivers(EDatabaseTypeName.MSSQL,
             "Microsoft SQL Server 2012", "Microsoft SQL Server 2012", "jtds-1.3.1-patch.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    MSSQL_PROP(new DbVersion4Drivers(EDatabaseTypeName.MSSQL,
+            "Microsoft", "MSSQL_PROP", "mssql-jdbc.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
     VERTICA_7(new DbVersion4Drivers(EDatabaseTypeName.VERTICA, "VERTICA 7.0.x", "VERTICA_7_0_X", "vertica-jdbc-7.0.1-0.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     VERTICA_6_1_X(new DbVersion4Drivers(EDatabaseTypeName.VERTICA, "VERTICA 6.1.x", "VERTICA_6_1_X", "vertica-jdk5-6.1.2-0.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -96,9 +98,9 @@ public enum EDatabaseVersion4Drivers {
     PLUSPSQL_PRIOR_TO_V9(new DbVersion4Drivers(EDatabaseTypeName.PLUSPSQL,
             "Prior to v9", "PRIOR_TO_V9", "postgresql-8.3-603.jdbc3.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     PLUSPSQL_V9_X(new DbVersion4Drivers(EDatabaseTypeName.PLUSPSQL, "v9.X", "V9_X", "postgresql-9.4-1201.jdbc41.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    IBMDB2(new DbVersion4Drivers(EDatabaseTypeName.IBMDB2, new String[] { "db2jcc.jar", "db2jcc_license_cu.jar", //$NON-NLS-1$ //$NON-NLS-2$
+    IBMDB2(new DbVersion4Drivers(EDatabaseTypeName.IBMDB2, new String[] { "db2jcc4.jar", "db2jcc_license_cu.jar", //$NON-NLS-1$ //$NON-NLS-2$
             "db2jcc_license_cisuz.jar" })), //$NON-NLS-1$ 
-    IBMDB2ZOS(new DbVersion4Drivers(EDatabaseTypeName.IBMDB2ZOS, new String[] { "db2jcc.jar", "db2jcc_license_cu.jar", //$NON-NLS-1$ //$NON-NLS-2$
+    IBMDB2ZOS(new DbVersion4Drivers(EDatabaseTypeName.IBMDB2ZOS, new String[] { "db2jcc4.jar", "db2jcc_license_cu.jar", //$NON-NLS-1$ //$NON-NLS-2$
             "db2jcc_license_cisuz.jar" })), //$NON-NLS-1$ 
     SYBASEASE(new DbVersion4Drivers(EDatabaseTypeName.SYBASEASE, "jconn3.jar")), //$NON-NLS-1$ 
     SYBASEIQ(new DbVersion4Drivers(EDatabaseTypeName.SYBASEIQ, "jconn3.jar")), //$NON-NLS-1$ 
@@ -106,7 +108,7 @@ public enum EDatabaseVersion4Drivers {
     PARACCEL(new DbVersion4Drivers(EDatabaseTypeName.PARACCEL, "paraccel-jdbc.jar")), //$NON-NLS-1$
     VECTORWISE(new DbVersion4Drivers(EDatabaseTypeName.VECTORWISE, "iijdbc.jar")), //$NON-NLS-1$
 
-    EXASOL(new DbVersion4Drivers(EDatabaseTypeName.EXASOL, "exajdbc.jar")), //$NON-NLS-1$ 
+    EXASOL(new DbVersion4Drivers(EDatabaseTypeName.EXASOL, "exajdbc-5.0.12.jar")), //$NON-NLS-1$
     MAXDB(new DbVersion4Drivers(EDatabaseTypeName.MAXDB, "sapdbc.jar")), //$NON-NLS-1$
 
     INGRES(new DbVersion4Drivers(EDatabaseTypeName.INGRES, "iijdbc.jar")), //$NON-NLS-1$
@@ -145,6 +147,8 @@ public enum EDatabaseVersion4Drivers {
     HIVE_EMBEDDED(new DbVersion4Drivers(EDatabaseTypeName.HIVE, "EMBEDDED", "EMBEDDED", new String[] {})),
     // Changed by Marvin Wang on Oct.9, 2012, just because the libs checking can not pass, Remy updated some jars from
     HBASE(new DbVersion4Drivers(EDatabaseTypeName.HBASE, new String[] {})),
+
+    MAPRDB(new DbVersion4Drivers(EDatabaseTypeName.MAPRDB, new String[] {})),
 
     REDSHIFT(new DbVersion4Drivers(EDatabaseTypeName.REDSHIFT, "RedshiftJDBC41-1.1.13.1013.jar")), //$NON-NLS-1$
 

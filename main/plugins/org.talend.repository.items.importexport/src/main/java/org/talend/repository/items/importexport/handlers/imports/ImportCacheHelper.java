@@ -38,7 +38,6 @@ import org.talend.core.repository.utils.XmiResourceManager;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.items.importexport.handlers.cache.RepositoryObjectCache;
 import org.talend.repository.items.importexport.handlers.model.ImportItem;
-import org.talend.repository.items.importexport.handlers.model.ImportItem.State;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
 /**
@@ -183,16 +182,20 @@ public final class ImportCacheHelper {
             foldersCreated.clear();
         }
     }
-    public synchronized void checkDeletedItems(){
+
+    public synchronized void checkDeletedItems() {
         IProxyRepositoryFactory factory = ProxyRepositoryFactory.getInstance();
         try {
             for (ImportItem itemRecord : importedItemRecords) {
-                if (itemRecord.isValid()&&itemRecord.getItemId()!=null) {
+                if (itemRecord.isValid() && itemRecord.getItemId() != null) {
                     IRepositoryViewObject obj = factory.getLastVersion(itemRecord.getItemId());
-                    Item item = obj.getProperty().getItem();
-                    ERepositoryStatus status = factory.getStatus(item);
-                    if (status!=null&&status == ERepositoryStatus.DELETED) {
-                        RecycleBinManager.getInstance().addToRecycleBin(ProjectManager.getInstance().getCurrentProject(), item);
+                    if (obj != null && obj.getProperty() != null) {
+                        Item item = obj.getProperty().getItem();
+                        ERepositoryStatus status = factory.getStatus(item);
+                        if (status != null && status == ERepositoryStatus.DELETED) {
+                            RecycleBinManager.getInstance().addToRecycleBin(ProjectManager.getInstance().getCurrentProject(),
+                                    item);
+                        }
                     }
                 }
             }

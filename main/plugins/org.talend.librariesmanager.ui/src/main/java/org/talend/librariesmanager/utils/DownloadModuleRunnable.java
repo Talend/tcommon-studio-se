@@ -15,7 +15,6 @@ package org.talend.librariesmanager.utils;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -67,6 +66,7 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
         if (checkAndAcceptLicenses(subMonitor)) {
             downLoad(subMonitor);
         }
+        System.out.println("**Downlaod finished");
         if (monitor != null) {
             monitor.setCanceled(subMonitor.isCanceled());
             monitor.done();
@@ -97,18 +97,17 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
                     NexusDownloadHelperWithProgress downloader = new NexusDownloadHelperWithProgress(module);
                     if (!module.getMavenUris().isEmpty()) {
                         for (String mvnUri : module.getMavenUris()) {
+                            if (ELibraryInstallStatus.INSTALLED == ModuleStatusProvider.getStatusMap().get(mvnUri)) {
+                                continue;
+                            }
                             downloader.download(new URL(null, mvnUri, new Handler()), null, subMonitor.newChild(1));
-                            // update module status
-                            final Map<String, ELibraryInstallStatus> statusMap = ModuleStatusProvider.getStatusMap();
-                            statusMap.put(mvnUri, ELibraryInstallStatus.INSTALLED);
-                            ModuleStatusProvider.getDeployStatusMap().put(mvnUri, ELibraryInstallStatus.DEPLOYED);
+
                         }
                     } else {
+                        if (ELibraryInstallStatus.INSTALLED == ModuleStatusProvider.getStatusMap().get(module.getMavenUri())) {
+                            continue;
+                        }
                         downloader.download(new URL(null, module.getMavenUri(), new Handler()), null, subMonitor.newChild(1));
-                        // update module status
-                        final Map<String, ELibraryInstallStatus> statusMap = ModuleStatusProvider.getStatusMap();
-                        statusMap.put(module.getMavenUri(), ELibraryInstallStatus.INSTALLED);
-                        ModuleStatusProvider.getDeployStatusMap().put(module.getMavenUri(), ELibraryInstallStatus.DEPLOYED);
                     }
 
                     // deploy to index as snapshot
@@ -116,7 +115,7 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
                 } catch (Exception e) {
                     downloadFailed.add(module.getName());
                     connectionTimeOut = true;
-                    MessageBoxExceptionHandler.process(new Exception("Download " + module.getName() + " failed!"));
+                    MessageBoxExceptionHandler.process(new Exception("Download " + module.getName() + " failed!", e));
                     continue;
                 }
                 accepted = false;

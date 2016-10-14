@@ -407,6 +407,8 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
         nameText = new Text(parent, SWT.BORDER);
         nameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         nameText.setEditable(!readOnly);
+        
+        createFrameworkPart(parent);
 
         // Purpose
         Label purposeLab = new Label(parent, SWT.NONE);
@@ -529,6 +531,15 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
 
         // Added by Marvin Wang on Jan. 29, 2013.
         createBottomPart(parent);
+    }
+    
+    /**
+     * This method is used to create the Job type and Framework part for any properties wizard page which extends this page. Added by
+     * hwang on Aug. 8, 2016.
+     * 
+     * @param parent
+     */
+    protected void createFrameworkPart(Composite parent) {
     }
 
     /**

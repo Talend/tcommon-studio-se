@@ -81,7 +81,6 @@ public class ProjectPomManager {
         if (monitor == null) {
             monitor = new NullProgressMonitor();
         }
-        projectPomFile.getProject().refreshLocal(IResource.DEPTH_ONE, monitor);
         if (!projectPomFile.exists()) {// delete by user manually?
             // create it or nothing to do?
             return;
@@ -96,8 +95,6 @@ public class ProjectPomManager {
         updateDependencies(monitor, processor, projectModel);
 
         PomUtil.savePom(monitor, projectModel, projectPomFile);
-
-        projectPomFile.getProject().refreshLocal(IResource.DEPTH_ONE, monitor);
     }
 
     public void updateFromTemplate(IProgressMonitor monitor) throws Exception {
@@ -106,7 +103,6 @@ public class ProjectPomManager {
         }
         Model templateModel = MavenTemplateManager.getCodeProjectTemplateModel();
 
-        projectPomFile.getProject().refreshLocal(IResource.DEPTH_ONE, monitor);
         if (projectPomFile.exists()) {
             Model projectModel = MODEL_MANAGER.readMavenModel(projectPomFile);
 
@@ -117,8 +113,6 @@ public class ProjectPomManager {
         }
 
         PomUtil.savePom(monitor, templateModel, projectPomFile);
-
-        projectPomFile.getProject().refreshLocal(IResource.DEPTH_ONE, monitor);
     }
 
     /**
@@ -183,7 +177,6 @@ public class ProjectPomManager {
          * need update the parent for each modules.
          */
         IProject project = projectPomFile.getProject();
-        project.refreshLocal(IResource.DEPTH_ONE, monitor);
 
         for (String module : modules) {
             IFile file = project.getFile(module);
@@ -212,9 +205,6 @@ public class ProjectPomManager {
         }
         IFile basePomFile = getBasePomFile();
         if (isStandardJob() && basePomFile != null && basePomFile.getLocation().toFile().exists()) {
-            if (!basePomFile.exists()) {
-                basePomFile.getParent().refreshLocal(IResource.DEPTH_ONE, monitor);
-            }
             Model jobModel = MODEL_MANAGER.readMavenModel(basePomFile);
 
             List<Dependency> withoutChildrenJobDependencies = new ArrayList<Dependency>(jobModel.getDependencies());

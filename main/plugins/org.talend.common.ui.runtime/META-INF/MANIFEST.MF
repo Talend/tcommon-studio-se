@@ -30,6 +30,7 @@ Export-Package:
  org.talend.commons.ui.runtime.swt.tableviewer.sort,
  org.talend.commons.ui.runtime.swt.tableviewer.tableeditor,
  org.talend.commons.ui.runtime.thread,
+ org.talend.commons.ui.runtime.update,
  org.talend.commons.ui.runtime.utils,
  org.talend.commons.ui.runtime.ws
 Import-Package: org.eclipse.jface.bindings.keys,

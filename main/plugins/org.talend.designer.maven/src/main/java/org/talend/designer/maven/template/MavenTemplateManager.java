@@ -13,6 +13,7 @@
 package org.talend.designer.maven.template;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
@@ -26,6 +27,8 @@ import java.util.Properties;
 
 import org.apache.maven.model.Model;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.generation.JavaUtils;
@@ -165,8 +168,13 @@ public class MavenTemplateManager {
         return null;
     }
 
-    public static void saveContent(IFile targetFile, String content, boolean overwrite) throws IOException {
-        saveContent(targetFile.getLocation().toFile(), content, overwrite);
+    public static void saveContent(IFile targetFile, String content, boolean overwrite) throws CoreException {
+        ByteArrayInputStream source = new ByteArrayInputStream(content.getBytes());
+        if (targetFile.exists()) {
+            targetFile.setContents(source, true, false, new NullProgressMonitor());
+        } else {
+            targetFile.create(source, true, new NullProgressMonitor());
+        }
     }
 
     public static void saveContent(File targetFile, String content, boolean overwrite) throws IOException {

@@ -40,6 +40,8 @@ import org.talend.core.model.properties.ConnectionItem;
 import org.talend.designer.core.IMDMService;
 import org.talend.metadata.managment.mdm.AbsMdmConnectionHelper;
 import org.talend.metadata.managment.mdm.S60MdmConnectionHelper;
+import org.talend.metadata.managment.ui.utils.ConnectionContextHelper;
+import org.talend.metadata.managment.ui.utils.OtherConnectionContextUtils.EParamName;
 import org.talend.metadata.managment.ui.wizard.AbstractForm;
 import org.talend.repository.mdm.i18n.Messages;
 
@@ -57,10 +59,6 @@ public class MDMForm extends AbstractForm {
 
     private LabelledText serverURLText;
 
-    // private LabelledText mdmServer;
-    //
-    // private LabelledText mdmHostPortText;
-
     private UtilsButton checkButton;
 
     // other variables
@@ -74,7 +72,7 @@ public class MDMForm extends AbstractForm {
 
     private boolean creation;
 
-    private static final String SERVER_RUL_S56 = "http://localhost:8180/talendmdm/services/soap";
+    private static final String SERVER_RUL_S56 = "http://localhost:8180/talend/TalendPort";
 
     private static final String SERVER_RUL_S60 = "http://localhost:8180/talendmdm/services/soap";
 
@@ -92,7 +90,7 @@ public class MDMForm extends AbstractForm {
         this.page = page;
         this.creation = creation;
         setConnectionItem(connectionItem); // must be first.
-        setupForm(false);
+        setupForm(true);
         layoutForm();
     }
 
@@ -114,8 +112,6 @@ public class MDMForm extends AbstractForm {
         mdmUsernameText.setReadOnly(readOnly);
         mdmPasswordText.setReadOnly(readOnly);
         serverURLText.setReadOnly(readOnly);
-        // mdmServer.setReadOnly(readOnly);
-        // mdmHostPortText.setReadOnly(readOnly);
     }
 
     /*
@@ -135,9 +131,7 @@ public class MDMForm extends AbstractForm {
         mdmParameterGroup.setLayoutData(gridData);
 
         versionComb = new LabelledCombo(mdmParameterGroup, "Version", "Version", MDMVersions.getVersions(), true);
-
         mdmUsernameText = new LabelledText(mdmParameterGroup, Messages.getString("MDMForm_userName"), true); //$NON-NLS-1$
-
         mdmPasswordText = new LabelledText(mdmParameterGroup, Messages.getString("MDMForm_pass"), 1, SWT.BORDER | SWT.PASSWORD); //$NON-NLS-1$
         serverURLText = new LabelledText(mdmParameterGroup, Messages.getString("MDMForm_server_url"), true); //$NON-NLS-1$
 
@@ -160,8 +154,8 @@ public class MDMForm extends AbstractForm {
         layout2.marginHeight = 0;
         layout2.marginTop = 0;
         layout2.marginBottom = 0;
-        checkButton = new UtilsButton(compositeCheckButton,
-                Messages.getString("MDMForm_check"), WIDTH_BUTTON_PIXEL, HEIGHT_BUTTON_PIXEL); //$NON-NLS-1$
+        checkButton = new UtilsButton(compositeCheckButton, Messages.getString("MDMForm_check"), WIDTH_BUTTON_PIXEL, //$NON-NLS-1$
+                HEIGHT_BUTTON_PIXEL);
         checkButton.setEnabled(false);
     }
 
@@ -243,21 +237,18 @@ public class MDMForm extends AbstractForm {
 
     private void checkMDMConnection() {
         String username = mdmUsernameText.getText();
-        String pass = mdmPasswordText.getText();
-        String server = serverURLText.getText();
-        if (username == null || pass == null || server == null) {
+        String password = mdmPasswordText.getText();
+        String serverUrl = serverURLText.getText();
+        if (username == null || password == null || serverUrl == null) {
             page.setPageComplete(false);
             return;
         }
+        if (isContextMode()) {
+            username = ConnectionContextHelper.getParamValueOffContext(getConnection(), username);
+            password = ConnectionContextHelper.getParamValueOffContext(getConnection(), password);
+            serverUrl = ConnectionContextHelper.getParamValueOffContext(getConnection(), serverUrl);
+        }
 
-        // XtentisServiceLocator xtentisService = new XtentisServiceLocator();
-        //        xtentisService.setXtentisPortEndpointAddress("http://" + mdmServer.getText() + ":" + mdmHostnameText.getText()//$NON-NLS-1$//$NON-NLS-2$
-        //                + "/talend/TalendPort" + "?wsdl");//$NON-NLS-1$
-        // XtentisPort_PortType xtentisWS = xtentisService.getXtentisPort();
-        // stub = (Stub) xtentisWS;
-        // stub.setUsername(mdmUsernameText.getText());
-        // stub.setPassword(mdmPasswordText.getText());
-        // stub.ping(new WSPing());
         AbsMdmConnectionHelper helper = null;
         helper = new S60MdmConnectionHelper();
 
@@ -270,7 +261,7 @@ public class MDMForm extends AbstractForm {
                     HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
                 }
             }
-            stub = helper.checkConnection(server, null, username, pass);
+            stub = helper.checkConnection(serverUrl, null, username, password);
         } catch (Exception e) {
             ExceptionHandler.process(e);
             stub = null;
@@ -333,39 +324,36 @@ public class MDMForm extends AbstractForm {
      */
     @Override
     protected void initialize() {
-        String version = getConnection().getVersion();
-        String serverUrl = getConnection().getServerUrl();
-        if (creation) {
-            getConnection().setVersion(MDMVersions.MDM_S60.getKey());
-            getConnection().setServerUrl(SERVER_RUL_S60);
-
+        MDMConnection mdmConn = getConnection();
+        if (isContextMode()) {
+            adaptFormToEditable();
+            versionComb.setText(MDMVersions.getDispalyName(mdmConn.getVersion()));
+            mdmUsernameText.setText(mdmConn.getUsername());
+            mdmPasswordText.setText(mdmConn.getPassword());
+            serverURLText.setText(mdmConn.getServerUrl());
         } else {
-            if (version == null || "".equals(version)) {
-                getConnection().setVersion(MDMVersions.MDM_S56.getKey());
-            }
-            if (serverUrl == null || "".equals(serverUrl)) {
-                if (MDMVersions.MDM_S60.getKey().equals(getConnection().getVersion())) {
-                    getConnection().setServerUrl(SERVER_RUL_S60);
-                } else {
-                    getConnection().setServerUrl(SERVER_RUL_S56);
+            String version = mdmConn.getVersion();
+            String serverUrl = mdmConn.getServerUrl();
+            if (creation) {
+                mdmConn.setVersion(MDMVersions.MDM_S60.getKey());
+                mdmConn.setServerUrl(SERVER_RUL_S60);
+            } else {
+                if (version == null || "".equals(version)) {
+                    mdmConn.setVersion(MDMVersions.MDM_S56.getKey());
+                }
+                if (serverUrl == null || "".equals(serverUrl)) {
+                    if (MDMVersions.MDM_S60.getKey().equals(mdmConn.getVersion())) {
+                        mdmConn.setServerUrl(SERVER_RUL_S60);
+                    } else {
+                        mdmConn.setServerUrl(SERVER_RUL_S56);
+                    }
                 }
             }
+            versionComb.setText(MDMVersions.getDispalyName(mdmConn.getVersion()));
+            mdmUsernameText.setText(mdmConn.getUsername());
+            mdmPasswordText.setText(mdmConn.getValue(mdmConn.getPassword(), false));
+            serverURLText.setText(mdmConn.getServerUrl());
         }
-        version = getConnection().getVersion();
-        serverUrl = getConnection().getServerUrl();
-        String username = getConnection().getUsername();
-        String pass = getConnection().getValue(getConnection().getPassword(), false);
-        versionComb.setText(MDMVersions.getDispalyName(version));
-        mdmUsernameText.setText(username);
-        mdmPasswordText.setText(pass);
-
-        serverURLText.setText(serverUrl);
-        // if (username != null && pass != null && server != null && port != null) {
-        // updateStatus(IStatus.ERROR, "Please check the connection");
-        // } else {
-        // updateStatus(IStatus.ERROR, "Please set properties");
-        // }
-
     }
 
     protected MDMConnection getConnection() {
@@ -380,8 +368,6 @@ public class MDMForm extends AbstractForm {
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);
-
-        // updateCheckButton();
 
         if (isContextMode()) {
             adaptFormToEditable();
@@ -404,6 +390,18 @@ public class MDMForm extends AbstractForm {
 
     public String getPassword() {
         return mdmPasswordText.getText();
+    }
+
+    @Override
+    protected void exportAsContext() {
+        collectConnParams();
+        super.exportAsContext();
+    }
+
+    protected void collectConnParams() {
+        addContextParams(EParamName.MDM_URL, true);
+        addContextParams(EParamName.MDM_Username, true);
+        addContextParams(EParamName.MDM_Password, true);
     }
 
 }

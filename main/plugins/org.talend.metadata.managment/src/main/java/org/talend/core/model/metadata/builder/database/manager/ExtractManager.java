@@ -374,17 +374,13 @@ public class ExtractManager {
             // metadataColumns = ExtractMetaDataFromDataBase.extractColumns(dbMetaData, newNode, metadataConnection,
             // dbType);
             ColumnSetHelper.addColumns(table, metadataColumns);
-
-            if (needCreateAndClose) {
-                extractMeta.closeConnection();
-            }
         } catch (Exception e) {
             ExceptionHandler.process(e);
             log.error(e);
         } finally {
             // bug 22619
-            if (extractMeta.getConn() != null) {
-                ConnectionUtils.closeConnection(extractMeta.getConn());
+            if (needCreateAndClose && extractMeta.getConn() != null) {
+                extractMeta.closeConnection();
             }
         }
 

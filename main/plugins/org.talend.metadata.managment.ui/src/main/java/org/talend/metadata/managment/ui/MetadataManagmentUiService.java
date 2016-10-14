@@ -62,4 +62,9 @@ public class MetadataManagmentUiService implements IMetadataManagmentUiService {
         dlg.open();
     }
 
+    @Override
+    public boolean isContextMode(Connection connection, String value) {
+        return ConnectionContextHelper.isContextMode(connection, value);
+    }
+
 }

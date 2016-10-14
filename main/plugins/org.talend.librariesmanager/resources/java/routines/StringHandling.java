@@ -60,7 +60,10 @@ public class StringHandling {
     }
 
     /**
-     * Substitutes an element of a string with a replacement element.
+     * Substitutes all substrings that match the given regular expression in the given old string with the given replacement and returns a new string.
+     * @param oldStr: the old string.
+     * @param regex: the regular expression to match.
+     * @param replacement: the string to be substituted for every match.
      * 
      * {talendTypes} String
      * 
@@ -68,17 +71,17 @@ public class StringHandling {
      * 
      * {param} string("hello world!") oldStr: The whole string.
      * 
-     * {param} string("world") newStr: Regx.
+     * {param} string("world") regex: Regx.
      * 
      * {param} string("guy") replacement: Replacement.
      * 
      * {example} CHANGE("hello world!","world","guy") # hello world
      */
-    public static String CHANGE(String oldStr, String newStr, String replacement) {
-        if (oldStr == null || newStr == null || replacement == null)
+    public static String CHANGE(String oldStr, String regex, String replacement) {
+        if (oldStr == null || regex == null || replacement == null)
         	return oldStr;
         else 
-        	return oldStr.replaceAll(newStr, replacement);
+        	return oldStr.replaceAll(regex, replacement);
     }
 
     /**
@@ -153,7 +156,10 @@ public class StringHandling {
     }
 
     /**
-     * Substitutes an element of a string with a replacement element.
+     * Substitutes all substrings that match the given regular expression in the given old string with the given replacement and returns a new string.
+     * @param oldStr: the old string.
+     * @param regex: the regular expression to match.
+     * @param replacement: the string to be substituted for every match.
      * 
      * {talendTypes} String
      * 
@@ -161,14 +167,14 @@ public class StringHandling {
      * 
      * {param} string("hello world!") oldStr: The whole string.
      * 
-     * {param} string("world") newStr: Regx.
+     * {param} string("world") regex: Regx.
      * 
      * {param} string("guy") replacement: Replacement.
      * 
      * {example} EREPLACE("hello world!","world","guy") # hello world
      */
-    public static String EREPLACE(String oldStr, String newStr, String replacement) {
-        return CHANGE(oldStr, newStr, replacement);
+    public static String EREPLACE(String oldStr, String regex, String replacement) {
+        return CHANGE(oldStr, regex, replacement);
     }
 
     /**

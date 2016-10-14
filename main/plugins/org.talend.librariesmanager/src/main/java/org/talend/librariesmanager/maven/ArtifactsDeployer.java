@@ -103,7 +103,7 @@ public class ArtifactsDeployer {
                     parseMvnUrl.getVersion(), new File(path));
             ModuleStatusProvider.getDeployStatusMap().put(mavenUri, ELibraryInstallStatus.DEPLOYED);
             String pomType = TalendMavenConstants.PACKAGING_POM;
-            String generatePom = PomUtil.generatePom(parseMvnUrl);
+            String generatePom = PomUtil.generatePom2(parseMvnUrl);
             if (generatePom != null) {
                 mvnResolver.upload(parseMvnUrl.getGroupId(), parseMvnUrl.getArtifactId(), parseMvnUrl.getClassifier(), pomType,
                         parseMvnUrl.getVersion(), new File(generatePom));

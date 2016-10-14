@@ -50,7 +50,7 @@ public enum EDatabaseTypeName {
     IBMDB2(
            "IBM DB2", "IBM DB2", Boolean.TRUE, "IBM_DB2", "DB2", EDatabaseSchemaOrCatalogMapping.None, EDatabaseSchemaOrCatalogMapping.Schema), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     IBMDB2ZOS(
-              "IBM DB2 ZOS", "IBM DB2 ZOS", Boolean.TRUE, "IBM_DB2", "DB2", EDatabaseSchemaOrCatalogMapping.None, EDatabaseSchemaOrCatalogMapping.Schema), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+              "IBM DB2 ZOS", "IBM DB2 ZOS", Boolean.TRUE, "IBM_DB2", "DB2", EDatabaseSchemaOrCatalogMapping.Sid, EDatabaseSchemaOrCatalogMapping.Schema), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     SYBASEASE(
               "SybaseASE", "Sybase (ASE and IQ)", Boolean.TRUE, "SYBASE", EDatabaseSchemaOrCatalogMapping.Sid, EDatabaseSchemaOrCatalogMapping.None), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
@@ -127,7 +127,10 @@ public enum EDatabaseTypeName {
            "IMPALA", "Impala", Boolean.TRUE, "IMPALA", EDatabaseSchemaOrCatalogMapping.None, EDatabaseSchemaOrCatalogMapping.Schema), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
 
     HBASE(
-          "HBase", "HBase", Boolean.FALSE, "HBASE", EDatabaseSchemaOrCatalogMapping.Sid, EDatabaseSchemaOrCatalogMapping.Column_Family, true); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+          "HBase", "HBase", Boolean.FALSE, "HBASE", EDatabaseSchemaOrCatalogMapping.Sid, EDatabaseSchemaOrCatalogMapping.Column_Family, true), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+    MAPRDB(
+           "MapRDB", "MapRDB", Boolean.FALSE, "MAPRDB", EDatabaseSchemaOrCatalogMapping.Sid, EDatabaseSchemaOrCatalogMapping.Column_Family, true);//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
     // displayName is used in Java code.
     private String displayName;

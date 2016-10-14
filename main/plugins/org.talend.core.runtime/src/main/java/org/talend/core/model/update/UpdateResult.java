@@ -42,6 +42,10 @@ public abstract class UpdateResult {
     protected String jobInfor;
 
     protected boolean isJoblet;
+    
+    protected boolean isSparkJoblet;
+    
+    protected boolean isSparkStreamingJoblet;
 
     protected boolean isMR;
 
@@ -299,6 +303,14 @@ public abstract class UpdateResult {
 
     public boolean isJoblet() {
         return isJoblet;
+    }
+    
+    public boolean isSparkJoblet() {
+        return isSparkJoblet;
+    }
+    
+    public boolean isSparkStreamingJoblet() {
+        return isSparkStreamingJoblet;
     }
 
     public boolean isMR() {

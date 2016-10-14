@@ -63,7 +63,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.XMLResource;
-import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.graphics.Image;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
@@ -76,8 +76,6 @@ import org.talend.commons.exception.LoginException;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.exception.ResourceNotFoundException;
 import org.talend.commons.runtime.model.repository.ERepositoryStatus;
-import org.talend.commons.ui.runtime.image.ECoreImage;
-import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.commons.ui.runtime.image.ImageUtils;
 import org.talend.commons.utils.VersionUtils;
 import org.talend.commons.utils.data.container.Container;
@@ -150,6 +148,7 @@ import org.talend.core.repository.model.ProjectRepositoryNode;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.repository.model.VersionList;
 import org.talend.core.repository.recyclebin.RecycleBinManager;
+import org.talend.core.repository.ui.view.RepositoryLabelProvider;
 import org.talend.core.repository.utils.AbstractResourceChangesService;
 import org.talend.core.repository.utils.ResourceFilenameHelper;
 import org.talend.core.repository.utils.RoutineUtils;
@@ -595,7 +594,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
                                     avoidSaveProject, true));
                         } else if (!(curItem instanceof FolderItem)) {
                             if (property.eResource() != null) {
-                                if (id == null || property.getId().equals(id)) {
+                                if (id == null || id.equals(property.getId())) {
                                     if (withDeleted || !property.getItem().getState().isDeleted()) {
                                         toReturn.add(new RepositoryObject(property));
                                     }
@@ -1096,8 +1095,8 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
     }
 
     /**
-     * @see org.talend.core.model.repository.factories.IRepositoryFactory#readProject(java.lang.String,
-     * java.lang.String, java.lang.String)
+     * @see org.talend.core.model.repository.factories.IRepositoryFactory#readProject(java.lang.String, java.lang.String,
+     * java.lang.String)
      */
     @Override
     public Project[] readProject() throws PersistenceException {
@@ -1656,7 +1655,9 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
             version = null; // for all version
         }
         if (objToDelete.getRepositoryObjectType() == ERepositoryObjectType.PROCESS
-                || objToDelete.getRepositoryObjectType() == ERepositoryObjectType.JOBLET) {
+                || objToDelete.getRepositoryObjectType() == ERepositoryObjectType.JOBLET
+                || objToDelete.getRepositoryObjectType() == ERepositoryObjectType.SPARK_JOBLET
+                || objToDelete.getRepositoryObjectType() == ERepositoryObjectType.SPARK_STREAMING_JOBLET) {
             if (coreSerivce.isAlreadyBuilt(project)) {
                 if (objToDelete.getProperty() != null) {
                     coreSerivce.removeItemRelations(objToDelete.getProperty().getItem());
@@ -2258,8 +2259,8 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         itemResource.getContents().add(item.getJobletProcess());
         if (item.getIcon() == null) {
             item.setIcon(PropertiesFactory.eINSTANCE.createByteArray());
-            ImageDescriptor imageDesc = ImageProvider.getImageDesc(ECoreImage.JOBLET_COMPONENT_ICON);
-            item.getIcon().setInnerContent(ImageUtils.saveImageToData(imageDesc));
+            Image image = RepositoryLabelProvider.getJobletCustomIcon(item.getProperty());
+            item.getIcon().setInnerContent(ImageUtils.saveImageToData(image));
         }
         if (item.getIcon() != null) {
             itemResource.getContents().add(item.getIcon());
@@ -2482,6 +2483,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
             } else {
                 newItem = copyFromResource(createResource, newItemLabel);
             }
+            copyIcon(originalItem, newItem);
             // *need to create all referenece files when copy the item*//
             copyReferenceFiles(originalItem, newItem);
             create(getRepositoryContext().getProject(), newItem, path);
@@ -2503,6 +2505,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
                     xmlResource.setID(connectionItem.getConnection(), EcoreUtil.generateUUID());
                 }
             }
+            
             return newItem;
         } catch (IOException e) {
             // e.printStackTrace();
@@ -2524,6 +2527,15 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
             newItem.getReferenceResources().add(newRefItem);
             newRefItem.setContent(byarray);
+        }
+    }
+    
+    private void copyIcon(Item originalItem, Item newItem) throws PersistenceException {
+        if (!(newItem instanceof JobletProcessItem)) {
+            return;
+        }
+        for (IRepositoryContentHandler handler : RepositoryContentManager.getHandlers()) {
+            handler.copyIcon(originalItem, newItem);
         }
     }
 

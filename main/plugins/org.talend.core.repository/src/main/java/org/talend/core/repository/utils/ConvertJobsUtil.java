@@ -40,6 +40,7 @@ import org.talend.core.model.general.Project;
 import org.talend.core.model.process.IElementParameter;
 import org.talend.core.model.process.IProcess;
 import org.talend.core.model.properties.Item;
+import org.talend.core.model.properties.JobletProcessItem;
 import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
@@ -171,6 +172,15 @@ public class ConvertJobsUtil {
             }
             return dispalyNames;
         }
+        
+        public static String[] getFrameworkToDispaly(String framework) {
+        	if(framework == null){
+        		return getFrameworkToDispaly();
+        	}
+            String[] dispalyNames = new String[1];
+            dispalyNames[0] = framework;
+            return dispalyNames;
+        }
     }
 
     public static enum JobBatchFramework {
@@ -199,6 +209,15 @@ public class ConvertJobsUtil {
             for (int i = 0; i < values().length; i++) {
                 dispalyNames[i] = values()[i].getDisplayName();
             }
+            return dispalyNames;
+        }
+        
+        public static String[] getFrameworkToDispaly(String framework) {
+        	if(framework == null){
+        		return getFrameworkToDispaly();
+        	}
+            String[] dispalyNames = new String[1];
+            dispalyNames[0] = framework;
             return dispalyNames;
         }
     }
@@ -254,6 +273,31 @@ public class ConvertJobsUtil {
             }
         }
     }
+    
+    public static void updateJobFrameworkPart(String jobTypeValue, CCombo frameworkCombo, boolean isJoblet) {
+    	if(!isJoblet){
+    		updateJobFrameworkPart(jobTypeValue, frameworkCombo);
+    		return;
+    	}
+        frameworkCombo.setEnabled(true);
+        if (JobType.STANDARD.getDisplayName().equals(jobTypeValue)) {
+            frameworkCombo.setItems(new String[0]);
+            frameworkCombo.setText("");//$NON-NLS-1$ 
+            frameworkCombo.setEnabled(false);
+        } else if (JobType.BIGDATABATCH.getDisplayName().equals(jobTypeValue)) {
+            String[] items = JobBatchFramework.getFrameworkToDispaly(JobBatchFramework.SPARKFRAMEWORK.getDisplayName());
+            frameworkCombo.setItems(items);
+            if (items.length > 0) {
+                frameworkCombo.select(0);
+            }
+        } else if (JobType.BIGDATASTREAMING.getDisplayName().equals(jobTypeValue)) {
+            String[] items = JobStreamingFramework.getFrameworkToDispaly(JobStreamingFramework.SPARKSTREAMINGFRAMEWORK.getDisplayName());
+            frameworkCombo.setItems(items);
+            if (items.length > 0) {
+                frameworkCombo.select(0);
+            }
+        }
+    }
 
     /**
      * get the target execution framework from the field in Job properties
@@ -300,6 +344,19 @@ public class ConvertJobsUtil {
             return JobBatchFramework.getFrameworkToDispaly();
         } else if (JobType.BIGDATASTREAMING.getDisplayName().equals(jobType)) {
             return JobStreamingFramework.getFrameworkToDispaly();
+        } else {
+            return new String[0];
+        }
+    }
+    
+    public static String[] getFrameworkItemsByJobType(String jobType, boolean isJoblet) {
+    	if(!isJoblet){
+    		return getFrameworkItemsByJobType(jobType);
+    	}
+        if (JobType.BIGDATABATCH.getDisplayName().equals(jobType)) {
+            return JobBatchFramework.getFrameworkToDispaly(JobBatchFramework.SPARKFRAMEWORK.getDisplayName());
+        } else if (JobType.BIGDATASTREAMING.getDisplayName().equals(jobType)) {
+            return JobStreamingFramework.getFrameworkToDispaly(JobStreamingFramework.SPARKSTREAMINGFRAMEWORK.getDisplayName());
         } else {
             return new String[0];
         }
@@ -395,6 +452,20 @@ public class ConvertJobsUtil {
 
     public static Item createOperation(final String newJobName, final String jobTypeValue, final String frameworkValue,
             final IRepositoryViewObject sourceObject) {
+        if (sourceObject == null || sourceObject.getProperty() == null || newJobName == null) {
+            return null;
+        }
+        Item item = sourceObject.getProperty().getItem();
+        if(item instanceof ProcessItem){
+            return createProcessOperation(newJobName, jobTypeValue,  frameworkValue, sourceObject);
+        }else if(item instanceof JobletProcessItem){
+            return createJobletOperation(newJobName, jobTypeValue,  frameworkValue, sourceObject);
+        }
+        return null;
+    }
+    
+    public static Item createProcessOperation(final String newJobName, final String jobTypeValue, final String frameworkValue,
+            final IRepositoryViewObject sourceObject) {
         IProcessConvertService converter = null;
         if (sourceObject == null || sourceObject.getProperty() == null || newJobName == null) {
             return null;
@@ -427,6 +498,43 @@ public class ConvertJobsUtil {
                         jobTypeValue, frameworkValue);
             }
         }
+        return null;
+    }
+    
+    public static Item createJobletOperation(final String newJobName, final String jobTypeValue, final String frameworkValue,
+            final IRepositoryViewObject sourceObject) {
+        IProcessConvertService converter = null;
+        if (sourceObject == null || sourceObject.getProperty() == null || newJobName == null) {
+            return null;
+        }
+        Item item = sourceObject.getProperty().getItem();
+        if (JobType.STANDARD.getDisplayName().equals(jobTypeValue)) {
+            String sourceJobType = getJobTypeFromFramework(item);
+            if (JobType.BIGDATABATCH.getDisplayName().equals(sourceJobType)
+                    || ERepositoryObjectType.PROCESS_MR == sourceObject.getRepositoryObjectType()) {
+                converter = ProcessConvertManager.getInstance().extractConvertService(
+                        ProcessConverterType.CONVERTER_FOR_SPARK_JOBLET);
+            }else if(JobType.BIGDATASTREAMING.getDisplayName().equals(sourceJobType)
+                    || ERepositoryObjectType.PROCESS_STORM == sourceObject.getRepositoryObjectType()) {
+                converter = ProcessConvertManager.getInstance().extractConvertService(ProcessConverterType.CONVERTER_FOR_SPARK_STREAMING_JOBLET);
+            }
+            if (converter != null && converter instanceof IProcessConvertToAllTypeService) {
+                return ((IProcessConvertToAllTypeService) converter).convertToProcess(item, sourceObject, newJobName,
+                        jobTypeValue);
+            }
+        } else if (JobType.BIGDATABATCH.getDisplayName().equals(jobTypeValue)) {
+            converter = ProcessConvertManager.getInstance().extractConvertService(ProcessConverterType.CONVERTER_FOR_SPARK_JOBLET);
+            if (converter != null && converter instanceof IProcessConvertToAllTypeService) {
+                return ((IProcessConvertToAllTypeService) converter).convertToProcessBatch(item, sourceObject, newJobName,
+                        jobTypeValue, frameworkValue);
+            }
+        } else if (JobType.BIGDATASTREAMING.getDisplayName().equals(jobTypeValue)) {
+            converter = ProcessConvertManager.getInstance().extractConvertService(ProcessConverterType.CONVERTER_FOR_SPARK_STREAMING_JOBLET);
+            if (converter != null && converter instanceof IProcessConvertToAllTypeService) {
+                return ((IProcessConvertToAllTypeService) converter).convertToProcessStreaming(item, sourceObject, newJobName,
+                        jobTypeValue, frameworkValue);
+            }
+        } 
         return null;
     }
 
@@ -533,6 +641,10 @@ public class ConvertJobsUtil {
                 return JobBatchFramework.getFrameworkToDispaly();
             } else if (repositoryObjectType.equals(ERepositoryObjectType.PROCESS_STORM)) {
                 return JobStreamingFramework.getFrameworkToDispaly();
+            }else if(repositoryObjectType.equals(ERepositoryObjectType.SPARK_JOBLET)){
+            	return JobBatchFramework.getFrameworkToDispaly(JobBatchFramework.SPARKFRAMEWORK.getDisplayName());
+            }else if(repositoryObjectType.equals(ERepositoryObjectType.SPARK_STREAMING_JOBLET)){
+            	return JobStreamingFramework.getFrameworkToDispaly(JobStreamingFramework.SPARKSTREAMINGFRAMEWORK.getDisplayName());
             }
         }
         return new String[0];

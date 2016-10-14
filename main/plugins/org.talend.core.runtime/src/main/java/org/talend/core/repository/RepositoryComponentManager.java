@@ -343,8 +343,9 @@ public final class RepositoryComponentManager {
         return null;
 
     }
+    
+    public static List<IComponent> filterNeededComponents(Item item, RepositoryNode seletetedNode, ERepositoryObjectType type, boolean isCurrentPeoject, String projectName) {
 
-    public static List<IComponent> filterNeededComponents(Item item, RepositoryNode seletetedNode, ERepositoryObjectType type) {
         if (!GlobalServiceRegister.getDefault().isServiceRegistered(IComponentsService.class)) {
             return Collections.emptyList();
         }
@@ -370,6 +371,10 @@ public final class RepositoryComponentManager {
                 if (repositoryType == null) {
                     continue;
                 }
+                if((type == ERepositoryObjectType.JOBLET || type == ERepositoryObjectType.SPARK_JOBLET 
+                		|| type == ERepositoryObjectType.SPARK_STREAMING_JOBLET ) && !isCurrentPeoject && projectName!=null){
+                	repositoryType = repositoryType +"_"+projectName;
+                }
                 if (!exceptedComponents.contains(component)
                         && filter.except(item, type, seletetedNode, component, repositoryType)) {
                     exceptedComponents.add(component);
@@ -385,6 +390,11 @@ public final class RepositoryComponentManager {
         neededComponents.removeAll(exceptedComponents);
 
         return sortFilteredComponnents(item, seletetedNode, type, neededComponents);
+    
+    }
+
+    public static List<IComponent> filterNeededComponents(Item item, RepositoryNode seletetedNode, ERepositoryObjectType type) {
+    	return filterNeededComponents(item, seletetedNode, type, true, null);
     }
 
     private static List<IComponent> sortFilteredComponnents(Item item, RepositoryNode seletetedNode, ERepositoryObjectType type,

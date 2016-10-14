@@ -16,6 +16,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -23,6 +24,17 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.model.Dependency;
@@ -60,6 +72,11 @@ import org.talend.designer.maven.template.MavenTemplateManager;
 import org.talend.designer.maven.tools.repo.LocalRepositoryManager;
 import org.talend.designer.runprocess.IProcessor;
 import org.talend.repository.ProjectManager;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.xml.sax.SAXException;
 
 /**
  * created by ggu on 6 Feb 2015 Detailled comment
@@ -76,12 +93,6 @@ public class PomUtil {
         if (pomFile == null) {
             throw new NullPointerException("the output file is null.");
         }
-
-        // pomFile.getParent().refreshLocal(IResource.DEPTH_ONE, monitor);
-        // if (pomFile.exists()) {
-        // pomFile.delete(true, monitor);
-        // }
-        // MavenPlugin.getMavenModelManager().createMavenModel(pomFile, model);
 
         /*
          * copied the codes from createMavenModel of MavenModelManager
@@ -178,7 +189,7 @@ public class PomUtil {
         if (specialVersion != null) {
             codeProjectTemplateModel.setVersion(specialVersion);
         }
-        
+
         parent.setGroupId(codeProjectTemplateModel.getGroupId());
         parent.setArtifactId(codeProjectTemplateModel.getArtifactId());
         parent.setVersion(codeProjectTemplateModel.getVersion());
@@ -342,14 +353,6 @@ public class PomUtil {
         if (templateRootContainer == null || !templateRootContainer.exists() || fileName == null || fileName.length() == 0) {
             return null;
         }
-        try {
-            if (!templateRootContainer.isSynchronized(IResource.DEPTH_INFINITE)) {
-                templateRootContainer.refreshLocal(IResource.DEPTH_INFINITE, null);
-            }
-        } catch (CoreException e) {
-            //
-        }
-
         IContainer baseContainer = templateRootContainer; // support found the file in current base container.
         boolean hasPath = templateRelativePath != null && !templateRelativePath.isEmpty();
         if (hasPath) {
@@ -436,6 +439,91 @@ public class PomUtil {
         } catch (IOException e) {
             ExceptionHandler.process(e);
         } catch (CoreException e) {
+            ExceptionHandler.process(e);
+        }
+        return null;
+    }
+
+    /**
+     * 
+     * Create pom without refresh eclipse resources
+     * 
+     * @param artifact
+     * @return
+     */
+    public static String generatePom2(MavenArtifact artifact) {
+        try {
+            Project project = ProjectManager.getInstance().getCurrentProject();
+            IProject fsProject = ResourceUtils.getProject(project);
+            SecureRandom random = new SecureRandom();
+            IPath tempPath = fsProject.getLocation().append("temp").append("pom" + Math.abs(random.nextLong()));
+            File tmpFolder = new File(tempPath.toPortableString());
+            tmpFolder.mkdirs();
+            String pomFile = tempPath.append(TalendMavenConstants.POM_FILE_NAME).toPortableString();
+            Model pomModel = new Model();
+            pomModel.setModelVersion(TalendMavenConstants.POM_VERSION);
+            pomModel.setModelEncoding(TalendMavenConstants.DEFAULT_ENCODING);
+            pomModel.setGroupId(artifact.getGroupId());
+            pomModel.setArtifactId(artifact.getArtifactId());
+            pomModel.setVersion(artifact.getVersion());
+            String artifactType = artifact.getType();
+            if (artifactType == null || "".equals(artifactType)) {
+                artifactType = TalendMavenConstants.PACKAGING_JAR;
+            }
+            pomModel.setPackaging(artifactType);
+
+            ByteArrayOutputStream buf = new ByteArrayOutputStream();
+
+            MavenPlugin.getMaven().writeModel(pomModel, buf);
+
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(false);
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            TransformerFactory tfactory = TransformerFactory.newInstance();
+
+            Document document = documentBuilder.parse(new ByteArrayInputStream(buf.toByteArray()));
+            Element documentElement = document.getDocumentElement();
+
+            NamedNodeMap attributes = documentElement.getAttributes();
+
+            if (attributes == null || attributes.getNamedItem("xmlns") == null) { //$NON-NLS-1$
+                Attr attr = document.createAttribute("xmlns"); //$NON-NLS-1$
+                attr.setTextContent("http://maven.apache.org/POM/4.0.0"); //$NON-NLS-1$
+                documentElement.setAttributeNode(attr);
+            }
+
+            if (attributes == null || attributes.getNamedItem("xmlns:xsi") == null) { //$NON-NLS-1$
+                Attr attr = document.createAttribute("xmlns:xsi"); //$NON-NLS-1$
+                attr.setTextContent("http://www.w3.org/2001/XMLSchema-instance"); //$NON-NLS-1$
+                documentElement.setAttributeNode(attr);
+            }
+
+            if (attributes == null || attributes.getNamedItem("xsi:schemaLocation") == null) { //$NON-NLS-1$
+                Attr attr = document.createAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "xsi:schemaLocation"); //$NON-NLS-1$ //$NON-NLS-2$
+                attr.setTextContent("http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"); //$NON-NLS-1$
+                documentElement.setAttributeNode(attr);
+            }
+            Transformer transformer = tfactory.newTransformer();
+            DOMSource source = new DOMSource(document);
+            StreamResult result = new StreamResult(new File(pomFile));
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes"); //$NON-NLS-1$
+            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+            transformer.transform(source, result);
+
+            return pomFile;
+        } catch (PersistenceException e) {
+            ExceptionHandler.process(e);
+        } catch (CoreException e) {
+            ExceptionHandler.process(e);
+        } catch (ParserConfigurationException e) {
+            ExceptionHandler.process(e);
+        } catch (SAXException e) {
+            ExceptionHandler.process(e);
+        } catch (IOException e) {
+            ExceptionHandler.process(e);
+        } catch (TransformerConfigurationException e) {
+            ExceptionHandler.process(e);
+        } catch (TransformerException e) {
             ExceptionHandler.process(e);
         }
         return null;

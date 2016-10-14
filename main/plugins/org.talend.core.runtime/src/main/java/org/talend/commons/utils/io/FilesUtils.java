@@ -1157,23 +1157,15 @@ public class FilesUtils {
         return in;
     }
 
-    protected static List<IResource> getExistedResources(IResource file, boolean ignoreFileNameCase) {
-        List<IResource> existedFiles = new ArrayList<IResource>();
+    protected static List<IResource> getExistedResources(IResource file, boolean ignoreFileNameCase) throws CoreException {
+        List<IResource> existedFiles = new ArrayList<>();
         if (ignoreFileNameCase) {
             final String currentFileName = file.getName();
-            File parentFile = file.getLocation().toFile().getParentFile();
+            IContainer parentFile = file.getParent();
             if (parentFile.exists()) {
-                File[] listFiles = parentFile.listFiles(new FilenameFilter() {
-
-                    @Override
-                    public boolean accept(File dir, String name) {
-                        return name.equalsIgnoreCase(currentFileName);
-                    }
-                });
-                if (listFiles != null) {
-                    for (File f : listFiles) {
-                        IFile sameFile = file.getParent().getFile(new Path(f.getName()));
-                        existedFiles.add(sameFile);
+                for (IResource resource: parentFile.members()) {
+                    if (resource.getName().equalsIgnoreCase(currentFileName)) {
+                        existedFiles.add(resource);
                     }
                 }
             }
@@ -1185,11 +1177,6 @@ public class FilesUtils {
 
     public static void removeExistedResources(IProgressMonitor monitor, IResource currentResources, boolean ignoreFileNameCase,
             boolean overwrite) throws Exception {
-        final IContainer parent = currentResources.getParent();
-        if (!parent.isSynchronized(IResource.DEPTH_ONE)) {
-            parent.refreshLocal(IResource.DEPTH_ONE, monitor);
-        }
-
         List<IResource> existedSameFiles = getExistedResources(currentResources, ignoreFileNameCase);
 
         // existed current one and not overwrite.
@@ -1198,17 +1185,8 @@ public class FilesUtils {
         }
         // delete all
         for (IResource resource : existedSameFiles) {
-            File f = resource.getLocation().toFile();
-            if (f.exists()) {
-                if (f.isDirectory()) {
-                    org.talend.utils.io.FilesUtils.deleteFolder(f, true);
-                } else {
-                    f.delete();
-                }
-            }
+            resource.delete(true, monitor);
         }
-
-        parent.refreshLocal(IResource.DEPTH_ONE, monitor);
     }
 
 }

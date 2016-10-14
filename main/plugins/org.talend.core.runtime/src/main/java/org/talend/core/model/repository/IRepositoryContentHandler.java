@@ -69,6 +69,8 @@ public interface IRepositoryContentHandler {
      * @throws IOException
      */
     void copyScreenShotFile(Item originalItem, Item newItem) throws IOException;
+    
+    void copyIcon(Item originalItem, Item newItem);
 
     public Resource save(Item item) throws PersistenceException;
 

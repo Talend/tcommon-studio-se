@@ -574,11 +574,15 @@ public class ImportExportHandlersManager {
                                 if (itemRecord.isImported()) {
                                     continue; // have imported
                                 }
-                                if (ERepositoryObjectType.JOBLET == itemRecord.getRepositoryType()) {
+                                if ((ERepositoryObjectType.JOBLET == itemRecord.getRepositoryType())
+                                        ||(ERepositoryObjectType.SPARK_JOBLET == itemRecord.getRepositoryType())
+                                        ||(ERepositoryObjectType.SPARK_STREAMING_JOBLET == itemRecord.getRepositoryType())) {
                                     hasJoblet = true;
                                 }
                                 if (hasJoblet) {
-                                    if (ERepositoryObjectType.JOBLET != itemRecord.getRepositoryType()) {
+                                    if (ERepositoryObjectType.JOBLET != itemRecord.getRepositoryType() &&
+                                            ERepositoryObjectType.SPARK_JOBLET != itemRecord.getRepositoryType()&&
+                                            ERepositoryObjectType.SPARK_STREAMING_JOBLET != itemRecord.getRepositoryType()) {
                                         // fix for TUP-3032 load joblet process before import job in order to build
                                         // items relationship
                                         reloadJoblet = true;

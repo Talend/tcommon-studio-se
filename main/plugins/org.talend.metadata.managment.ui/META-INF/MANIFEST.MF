@@ -22,7 +22,8 @@ Require-Bundle: org.eclipse.ui,
  org.apache.log4j,
  org.eclipse.jdt.core,
  org.talend.core.ui,
- org.talend.components.api
+ org.talend.components.api,
+ org.apache.servicemix.bundles.avro
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: .Talend SA.
 Bundle-Localization: plugin

@@ -88,6 +88,7 @@ public final class ProjectManager {
         if (currentProject == null) {
             initCurrentProject();
         }
+
         if (currentProject.getLabel().equals(label)) {
             return currentProject;
         }
@@ -96,6 +97,7 @@ public final class ProjectManager {
                 return project;
             }
         }
+
         return null;
     }
 
@@ -146,7 +148,7 @@ public final class ProjectManager {
     }
 
     /**
-     * 
+     *
      * retrieve the referenced projects of current project.
      */
     public void retrieveReferencedProjects(List<Project> referencedprojects) {
@@ -183,7 +185,7 @@ public final class ProjectManager {
 
     /**
      * return current project.
-     * 
+     *
      */
     public Project getCurrentProject() {
         initCurrentProject();
@@ -191,7 +193,7 @@ public final class ProjectManager {
     }
 
     /**
-     * 
+     *
      * return the referenced projects of current project.
      */
     public List<Project> getReferencedProjects() {
@@ -207,7 +209,7 @@ public final class ProjectManager {
     }
 
     /**
-     * 
+     *
      * return all the referenced projects of current project.
      */
     public List<Project> getAllReferencedProjects() {
@@ -237,7 +239,7 @@ public final class ProjectManager {
     }
 
     /**
-     * 
+     *
      * return the referenced projects of the project.
      */
     @SuppressWarnings("unchecked")
@@ -261,7 +263,7 @@ public final class ProjectManager {
     }
 
     /**
-     * 
+     *
      * return the project by object.
      */
     public org.talend.core.model.properties.Project getProject(EObject object) {
@@ -273,6 +275,13 @@ public final class ProjectManager {
                 return getProject(((Property) object).getItem());
             }
             if (object instanceof Item) {
+                if (((Item) object).getParent() == null) { // may be a routelet from reference project
+                    org.talend.core.model.properties.Project refProject = getRouteletReferenceProject((Item)object);
+                    if (refProject != null) {
+                        return refProject;
+                    }
+                }
+
                 return getProject(((Item) object).getParent());
             }
         }
@@ -282,6 +291,49 @@ public final class ProjectManager {
         if (p != null) {
             return p.getEmfProject();
         }
+        return null;
+    }
+
+    /*
+     * returns reference project where the given routelet comes from, or null
+     * in case if the routelet is from the current project
+     */
+    private org.talend.core.model.properties.Project getRouteletReferenceProject(Item item) {
+
+        final String URI_PREFIX = "platform:/resource/";
+
+        org.talend.core.model.properties.ItemState state = item.getState();
+
+        if ( state != null) {
+            if (state instanceof org.eclipse.emf.ecore.impl.EObjectImpl) {
+                org.eclipse.emf.common.util.URI eProxyUri = ((org.eclipse.emf.ecore.impl.EObjectImpl)state).eProxyURI();
+                if (eProxyUri == null) {
+                    return null;
+                }
+                String eProxyUriString = eProxyUri.toString();
+                if (eProxyUriString != null && eProxyUriString.startsWith(URI_PREFIX)) {
+                    String tmpString = eProxyUriString.substring(URI_PREFIX.length());
+                    if (!tmpString.contains("/routelets/")) {
+                        return null;
+                    }
+                    String projectLabel = tmpString.substring(0, tmpString.indexOf("/"));
+
+                    if (currentProject == null) {
+                        initCurrentProject();
+                    }
+
+                    if (currentProject.getLabel().equalsIgnoreCase(projectLabel)) {
+                        return currentProject.getEmfProject();
+                    }
+                    for (Project project : getAllReferencedProjects()) {
+                        if (project.getLabel().equalsIgnoreCase(projectLabel)) {
+                            return project.getEmfProject();
+                        }
+                    }
+                }
+            }
+        }
+
         return null;
     }
 
@@ -325,9 +377,9 @@ public final class ProjectManager {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "isInCurrentMainProject".
-     * 
+     *
      * check the EObject in current main project.
      */
     public boolean isInCurrentMainProject(EObject object) {
@@ -345,9 +397,9 @@ public final class ProjectManager {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "isInCurrentMainProject".
-     * 
+     *
      * check the node in current main project.
      */
     public boolean isInCurrentMainProject(IRepositoryNode node) {
@@ -450,9 +502,9 @@ public final class ProjectManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "getLocalTechnicalProjectName". TDI-21185
-     * 
+     *
      * @param projectLabel
      * @return
      */
@@ -482,9 +534,9 @@ public final class ProjectManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "getProjectDisplayLabel".
-     * 
+     *
      * @param project
      * @return
      */
@@ -499,9 +551,9 @@ public final class ProjectManager {
     }
 
     /**
-     * 
+     *
      * DOC ldong Comment method "getCurrentBranchLabel".
-     * 
+     *
      * @param project
      * @return
      */
@@ -532,9 +584,9 @@ public final class ProjectManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "getMainProjectBranch".
-     * 
+     *
      * @param technicalLabel
      * @return
      */
@@ -567,7 +619,7 @@ public final class ProjectManager {
 
     /**
      * DOC ggu Comment method "getRepositoryContextFields".
-     * 
+     *
      * @return
      */
     private Map<String, String> getRepositoryContextFields() {
@@ -596,12 +648,12 @@ public final class ProjectManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "setMainProjectBranch".
-     * 
+     *
      * When use this method to set the branch value, make sure that have set the RepositoryContext object in context
      * "ctx.putProperty(Context.REPOSITORY_CONTEXT_KEY, repositoryContext)"
-     * 
+     *
      * @param technicalLabel
      * @param branchValue
      */
@@ -632,7 +684,7 @@ public final class ProjectManager {
 
     /**
      * Returns the type of project (local / svn / git).
-     * 
+     *
      * @param project
      * @return
      */

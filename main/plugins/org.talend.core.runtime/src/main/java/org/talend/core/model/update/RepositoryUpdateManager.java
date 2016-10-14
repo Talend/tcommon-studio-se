@@ -93,6 +93,8 @@ import org.talend.core.runtime.i18n.Messages;
 import org.talend.core.service.IMRProcessService;
 import org.talend.core.service.IMetadataManagmentService;
 import org.talend.core.service.IStormProcessService;
+import org.talend.core.ui.ISparkJobletProviderService;
+import org.talend.core.ui.ISparkStreamingJobletProviderService;
 import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.helper.SAPBWTableHelper;
 import org.talend.designer.core.IDesignerCoreService;
@@ -1053,6 +1055,8 @@ public abstract class RepositoryUpdateManager {
                 hadoopProperties = parameters.get(ConnParameterKeys.CONN_PARA_KEY_HIVE_PROPERTIES);
             } else if (EDatabaseConnTemplate.HBASE.getDBDisplayName().equals(databaseType)) {
                 hadoopProperties = parameters.get(ConnParameterKeys.CONN_PARA_KEY_HBASE_PROPERTIES);
+            } else if (EDatabaseConnTemplate.MAPRDB.getDBDisplayName().equals(databaseType)) {
+                hadoopProperties = parameters.get(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_PROPERTIES);
             }
             List<Map<String, Object>> hadoopPropertiesList = HadoopRepositoryUtil.getHadoopPropertiesList(hadoopProperties);
             if (!hadoopPropertiesList.isEmpty()) {
@@ -1067,6 +1071,8 @@ public abstract class RepositoryUpdateManager {
                     dbConn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_PROPERTIES, hadoopPropertiesJson);
                 } else if (EDatabaseConnTemplate.HBASE.getDBDisplayName().equals(databaseType)) {
                     dbConn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HBASE_PROPERTIES, hadoopPropertiesJson);
+                } else if (EDatabaseConnTemplate.MAPRDB.getDBDisplayName().equals(databaseType)) {
+                    dbConn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_PROPERTIES, hadoopPropertiesJson);
                 }
             }
         }
@@ -1140,8 +1146,8 @@ public abstract class RepositoryUpdateManager {
                     jobContextManager.setRepositoryRenamedMap(getContextRenamedMap());
                     jobContextManager.setNewParametersMap(getNewParametersMap());
                     Map<ContextItem, List<IContext>> repositoryAddGroupContext = getRepositoryAddGroupContext();
-                    
-                    if(checkAddContextGroup && repositoryAddGroupContext.isEmpty() && parameter instanceof ContextItem) {
+
+                    if (checkAddContextGroup && repositoryAddGroupContext.isEmpty() && parameter instanceof ContextItem) {
                         List<IContext> addContextGroupList = new ArrayList<IContext>();
                         List<IContext> jobContexts = process2.getContextManager().getListContext();
                         List<ContextType> repositoryContexts = ((ContextItem) parameter).getContext();
@@ -1172,7 +1178,7 @@ public abstract class RepositoryUpdateManager {
                         }
                         repositoryAddGroupContext.put((ContextItem) parameter, addContextGroupList);
                     }
-                    
+
                     List<IContext> listIContext = new ArrayList<IContext>();
                     for (ContextItem item : repositoryAddGroupContext.keySet()) {
                         List<IContext> list = repositoryAddGroupContext.get(item);
@@ -1297,7 +1303,30 @@ public abstract class RepositoryUpdateManager {
         String label = null;
         String version = null;
         if (property.getItem() instanceof JobletProcessItem) { // for joblet
-            prefix = UpdatesConstants.JOBLET;
+            boolean isSpark = false;
+            boolean isSparkStreaming = false;
+            if (GlobalServiceRegister.getDefault().isServiceRegistered(ISparkJobletProviderService.class)) {
+                ISparkJobletProviderService sparkJobletService = (ISparkJobletProviderService) GlobalServiceRegister
+                        .getDefault().getService(ISparkJobletProviderService.class);
+                if (sparkJobletService != null && sparkJobletService.isSparkJobletItem(property.getItem())) {
+                    isSpark = true;
+                }
+            }
+            if (GlobalServiceRegister.getDefault().isServiceRegistered(ISparkStreamingJobletProviderService.class)) {
+                ISparkStreamingJobletProviderService sparkStreamingJobletService = (ISparkStreamingJobletProviderService) GlobalServiceRegister
+                        .getDefault().getService(ISparkStreamingJobletProviderService.class);
+                if (sparkStreamingJobletService != null && sparkStreamingJobletService.isSparkStreamingJobletItem(property.getItem())) {
+                    isSparkStreaming = true;
+                }
+            }
+            if(isSpark){
+                prefix = UpdatesConstants.SPARK_JOBLET;
+            }else if(isSparkStreaming){
+                prefix = UpdatesConstants.SPARK_STREAMING_JOBLET;
+            }else{
+                prefix = UpdatesConstants.JOBLET;
+            }
+            
         }
         Item item = property.getItem();
         if (item != null && prefix.isEmpty() && GlobalServiceRegister.getDefault().isServiceRegistered(IMRProcessService.class)) {
@@ -2165,7 +2194,7 @@ public abstract class RepositoryUpdateManager {
             boolean onlySimpleShow) {
         return updateContext(repositoryContextManager, item, show, onlySimpleShow, false);
     }
-    
+
     private static boolean updateContext(JobContextManager repositoryContextManager, ContextItem item, boolean show,
             boolean onlySimpleShow, boolean detectAddContextGroup) {
         List<Relation> relations = RelationshipItemBuilder.getInstance().getItemsRelatedTo(item.getProperty().getId(),

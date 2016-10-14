@@ -321,4 +321,9 @@ public abstract class AbstractRepositoryContentHandler implements IRepositoryCon
         return false;
     }
 
+    @Override
+    public void copyIcon(Item originalItem, Item newItem){
+        
+    }
+
 }

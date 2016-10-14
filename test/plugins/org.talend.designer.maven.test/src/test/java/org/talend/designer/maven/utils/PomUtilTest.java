@@ -277,4 +277,17 @@ public class PomUtilTest {
 
         }
     }
+
+    @Test
+    public void testGeneratePom2() {
+        MavenArtifact artifact = new MavenArtifact();
+        artifact.setArtifactId("testJar");
+        artifact.setGroupId("org.talend.libraries");
+        artifact.setType("jar");
+        artifact.setVersion("6.3.1");
+        String generatedPom = PomUtil.generatePom2(artifact);
+        File pomFile = new File(generatedPom);
+        Assert.assertTrue(pomFile.exists());
+        FilesUtils.deleteFolder(pomFile.getParentFile(), true);
+    }
 }

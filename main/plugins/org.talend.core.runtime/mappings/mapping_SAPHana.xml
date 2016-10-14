@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <mapping>
-	<dbms product="SAPHANA" id="saphana_id" label="Mapping SAP Hana" default="true">
+	<dbms product="SAPHANA" id="saphana_id" label="Mapping SAPHana" default="true">
 		<dbTypes>
 			<dbType type="TIMESTAMP" ignoreLen="true" ignorePre="true"/>
 			<dbType type="SECONDDATE" ignoreLen="true" ignorePre="true"/>

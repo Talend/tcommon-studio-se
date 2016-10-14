@@ -4,4 +4,5 @@ Bundle-Name: Test
 Bundle-SymbolicName: org.talend.core.test
 Bundle-Version: 6.3.0.qualifier
 Fragment-Host: org.talend.core
-Require-Bundle: org.talend.testutils
+Require-Bundle: org.talend.testutils,
+ org.talend.components.api

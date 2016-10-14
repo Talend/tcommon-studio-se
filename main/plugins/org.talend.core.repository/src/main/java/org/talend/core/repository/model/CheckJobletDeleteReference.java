@@ -79,6 +79,34 @@ public class CheckJobletDeleteReference extends AbstractCheckDeleteItemReference
     								list, label, version, type, isItemDeleted,
     								item, relations, refP,deleteActionCache);
                         }
+                        ERepositoryObjectType sparkType = ERepositoryObjectType.PROCESS_MR;
+                        if (sparkType != null) {
+                            List<IRepositoryViewObject> jobs = factory.getAll(refP, sparkType, true);
+                            checkRelationshipItems(factory, jobs, RelationshipItemBuilder.JOB_RELATION,
+    								list, label, version, type, isItemDeleted,
+    								item, relations, refP, deleteActionCache);
+                        }
+                        ERepositoryObjectType sparkJobletType = ERepositoryObjectType.SPARK_JOBLET;
+                        if (sparkJobletType != null) {
+                            List<IRepositoryViewObject> sparkJoblets = factory.getAll(refP, sparkJobletType, true);
+                            checkRelationshipItems(factory, sparkJoblets, RelationshipItemBuilder.JOBLET_RELATION,
+                                    list, label, version, type, isItemDeleted,
+                                    item, relations, refP,deleteActionCache);
+                        }
+                        ERepositoryObjectType streamingType = ERepositoryObjectType.PROCESS_STORM;
+                        if (streamingType != null) {
+                            List<IRepositoryViewObject> jobs = factory.getAll(refP, streamingType, true);
+                            checkRelationshipItems(factory, jobs, RelationshipItemBuilder.JOB_RELATION,
+    								list, label, version, type, isItemDeleted,
+    								item, relations, refP, deleteActionCache);
+                        }
+                        ERepositoryObjectType sparkStreamingJobletType = ERepositoryObjectType.SPARK_STREAMING_JOBLET;
+                        if (sparkStreamingJobletType != null) {
+                            List<IRepositoryViewObject> sparkStreamingJoblets = factory.getAll(refP, sparkStreamingJobletType, true);
+                            checkRelationshipItems(factory, sparkStreamingJoblets, RelationshipItemBuilder.JOBLET_RELATION,
+                                    list, label, version, type, isItemDeleted,
+                                    item, relations, refP,deleteActionCache);
+                        }
                         deleteActionCache.setProcessList(processes);
                         for (IProcess2 openedProcess : deleteActionCache.getOpenedProcessList()) {
                             for (INode node : openedProcess.getGraphicalNodes()) {

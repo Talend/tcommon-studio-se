@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.designer.maven.tools.creator;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
@@ -19,8 +20,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
@@ -466,14 +469,18 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
     protected void afterCreate(IProgressMonitor monitor) throws Exception {
         setPomForHDLight(monitor);
 
-        PomJobExtensionRegistry.getInstance().updatePom(monitor, getPomFile());
+        final IProcess process = getJobProcessor().getProcess();
+        Map<String, Object> args = new HashMap<String, Object>();
+        args.put(IPomJobExtension.KEY_PROCESS, process);
+
+        PomJobExtensionRegistry.getInstance().updatePom(monitor, getPomFile(), args);
 
         generateAssemblyFile(monitor);
 
         // generate routines
         MavenPomSynchronizer pomSync = new MavenPomSynchronizer(this.getJobProcessor().getTalendJavaProject());
         pomSync.setArgumentsMap(getArgumentsMap());
-        pomSync.syncCodesPoms(monitor, getJobProcessor().getProcess(), true);
+        pomSync.syncCodesPoms(monitor, process, true);
         // because need update the latest content for templates.
         pomSync.syncTemplates(true);
 
@@ -536,11 +543,12 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
                         IProjectSettingTemplateConstants.PATH_STANDALONE + '/'
                                 + IProjectSettingTemplateConstants.ASSEMBLY_JOB_TEMPLATE_FILE_NAME);
                 if (content != null) {
-                    FileWriter writer = new FileWriter(assemblyFile.getLocation().toFile());
-                    writer.write(content);
-                    writer.close();
-
-                    assemblyFile.getParent().refreshLocal(IResource.DEPTH_ONE, monitor);
+                    ByteArrayInputStream source = new ByteArrayInputStream(content.getBytes());
+                    if (assemblyFile.exists()) {
+                        assemblyFile.setContents(source, true, false, monitor);
+                    } else {
+                        assemblyFile.create(source, true, monitor);
+                    }
                     set = true;
                 }
             } catch (Exception e) {
@@ -550,8 +558,6 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
             if (set) {
                 // add children resources in assembly.
                 addChildrenJobsInAssembly(monitor, assemblyFile);
-
-                assemblyFile.getParent().refreshLocal(IResource.DEPTH_ONE, monitor);
             }
         }
     }
@@ -651,9 +657,6 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
 
             // clean for children poms
             cleanChildrenPomSettings(monitor, childrenPomsIncludes);
-
-            // refresh the project level for children poms
-            assemblyFile.getProject().refreshLocal(IResource.DEPTH_ONE, monitor);
         }
 
     }

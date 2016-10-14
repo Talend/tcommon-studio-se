@@ -56,6 +56,8 @@ import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.services.IGenericWizardService;
 import org.talend.core.ui.ICDCProviderService;
 import org.talend.core.ui.IReferencedProjectService;
+import org.talend.core.ui.ISparkJobletProviderService;
+import org.talend.core.ui.ISparkStreamingJobletProviderService;
 import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.core.ui.branding.IBrandingService;
 import org.talend.core.ui.images.RepositoryImageProvider;
@@ -306,6 +308,24 @@ public class RepositoryLabelProvider extends LabelProvider implements IColorProv
     public static Image getDefaultJobletImage() {
         return ImageProvider.getImage(ECoreImage.JOBLET_COMPONENT_ICON);
     }
+    
+    public static Image getDefaultJobletImage(Item item) {
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ISparkJobletProviderService.class)) {
+            ISparkJobletProviderService sparkJobletService = (ISparkJobletProviderService) GlobalServiceRegister
+                    .getDefault().getService(ISparkJobletProviderService.class);
+            if (sparkJobletService != null && sparkJobletService.isSparkJobletItem(item)) {
+                return  ImageProvider.getImage(ECoreImage.SPARK_JOBLET_COMPONENT_ICON);
+            }
+        }
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ISparkStreamingJobletProviderService.class)) {
+            ISparkStreamingJobletProviderService sparkStreamingJobletService = (ISparkStreamingJobletProviderService) GlobalServiceRegister
+                    .getDefault().getService(ISparkStreamingJobletProviderService.class);
+            if (sparkStreamingJobletService != null && sparkStreamingJobletService.isSparkStreamingJobletItem(item)) {
+                return  ImageProvider.getImage(ECoreImage.SPARK_STREAMING_JOBLET_COMPONENT_ICON);
+            }
+        }
+        return ImageProvider.getImage(ECoreImage.JOBLET_COMPONENT_ICON);
+    }
 
     /**
      * DOC bqian Comment method "getJobletCustomIcon".
@@ -317,14 +337,7 @@ public class RepositoryLabelProvider extends LabelProvider implements IColorProv
         JobletProcessItem item = (JobletProcessItem) property.getItem();
         Image image = null;
         if (item.getIcon() == null || item.getIcon().getInnerContent() == null || item.getIcon().getInnerContent().length == 0) {
-            // File image = RepositoryLabelProvider.getDefaultJobletImage();
-            // try {
-            // item.getIcon().setInnerContentFromFile(image);
-            // } catch (Exception e) {
-            // ExceptionHandler.process(e);
-            // }
-
-            image = getDefaultJobletImage();
+            image = getDefaultJobletImage(item);
         } else {
 
             ImageDescriptor imageDesc = ImageUtils.createImageFromData(item.getIcon().getInnerContent());

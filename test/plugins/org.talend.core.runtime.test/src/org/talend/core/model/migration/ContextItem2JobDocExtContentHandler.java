@@ -195,5 +195,10 @@ public class ContextItem2JobDocExtContentHandler implements IRepositoryContentHa
         // TODO Auto-generated method stub
         return false;
     }
+    
+    @Override
+    public void copyIcon(Item originalItem, Item newItem) {
+        
+    }
 
 }

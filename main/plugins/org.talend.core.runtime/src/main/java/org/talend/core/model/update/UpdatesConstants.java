@@ -59,6 +59,10 @@ public final class UpdatesConstants {
     public static final String COMPONENT = Messages.getString("UpdatesConstants.Component"); //$NON-NLS-1$
 
     public static final String JOBLET = Messages.getString("UpdatesConstants.Joblet"); //$NON-NLS-1$
+    
+    public static final String SPARK_JOBLET = Messages.getString("UpdatesConstants.Spark_Joblet"); //$NON-NLS-1$
+    
+    public static final String SPARK_STREAMING_JOBLET = Messages.getString("UpdatesConstants.Spark_Streaming_Joblet"); //$NON-NLS-1$
 
     public static final String JOB = Messages.getString("UpdatesConstants.Job"); //$NON-NLS-1$
 

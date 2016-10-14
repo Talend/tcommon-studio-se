@@ -950,6 +950,9 @@ public class ExtractMetaDataUtils {
                     } else if (EDatabaseTypeName.MYSQL.getXmlName().equals(dbType)
                             && (EDatabaseVersion4Drivers.MARIADB.getVersionValue().equals(dbVersion))) {
                         driverClassName = EDatabase4DriverClassName.MARIADB.getDriverClass();
+                    }else if(EDatabaseTypeName.MSSQL.getDisplayName().equals(dbType) 
+                            && EDatabaseVersion4Drivers.MSSQL_PROP.getVersionValue().equals(dbVersion)){
+                        driverClassName = EDatabase4DriverClassName.MSSQL2.getDriverClass();
                     }
                 }
             } else {

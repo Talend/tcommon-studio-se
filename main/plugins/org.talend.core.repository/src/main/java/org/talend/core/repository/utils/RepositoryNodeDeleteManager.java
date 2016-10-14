@@ -27,6 +27,7 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.core.model.repository.ERepositoryObjectType;
+import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.repository.model.ItemReferenceBean;
 import org.talend.core.repository.model.provider.ICheckDeleteItemReference;
 import org.talend.core.repository.ui.actions.DeleteActionCache;
@@ -162,6 +163,89 @@ public class RepositoryNodeDeleteManager {
                         nodeIter.remove();
                     }
                 }
+            }
+        } catch (Exception e) {
+            ExceptionHandler.process(e);
+        }
+
+        return beans;
+    }
+    
+    @SuppressWarnings("unchecked")
+    public List<ItemReferenceBean> getUnDeleteItems(IRepositoryViewObject convertNode,
+            DeleteActionCache deleteActionCache, boolean updateDelList) {
+        List<ItemReferenceBean> beans = new ArrayList<ItemReferenceBean>();
+        Set<ItemReferenceBean> refBeans = new HashSet<ItemReferenceBean>();
+        List<DeleteCheck> deleteChecks = new ArrayList<DeleteCheck>();
+
+        if (convertNode == null) {
+            return beans;
+        }
+
+        try {
+            for (IConfigurationElement element : configurationElements) {
+                ICheckDeleteItemReference checkDeleteItemReference = (ICheckDeleteItemReference) element
+                        .createExecutableExtension(ATT_CLASS);
+                String priorityStr = element.getAttribute(ATT_PRIORITY);
+                DeleteCheck.Priority priority = (priorityStr != null && priorityStr.length() > 0) ? DeleteCheck.Priority
+                        .valueOf(priorityStr.toUpperCase()) : DeleteCheck.Priority.NORMAL;
+                DeleteCheck deleteCheck = new DeleteCheck(checkDeleteItemReference, priority);
+                if (!deleteChecks.contains(deleteCheck)) {
+                    deleteChecks.add(deleteCheck);
+                }
+            }
+            sortDeleteChecks(deleteChecks);
+            for (DeleteCheck deleteCheck : deleteChecks) {
+                refBeans.addAll(deleteCheck.checkDeleteItemReference.getItemReferenceBeans(convertNode, deleteActionCache));
+            }
+
+            MultiKeyMap item2beansMap = new MultiKeyMap();
+            for (ItemReferenceBean refBean : refBeans) {
+                List<ItemReferenceBean> beansList = (List<ItemReferenceBean>) item2beansMap.get(refBean.getItemName(),
+                        refBean.getItemVersion(), refBean.getItemType());
+                if (beansList == null) {
+                    beansList = new ArrayList<ItemReferenceBean>();
+                    item2beansMap.put(refBean.getItemName(), refBean.getItemVersion(), refBean.getItemType(), beansList);
+                }
+                if (!beansList.contains(refBean)) {
+                    beansList.add(refBean);
+                }
+            }
+
+            Iterator it = item2beansMap.keySet().iterator();
+            while (it.hasNext()) {
+                Object obj = it.next();
+                if (obj instanceof MultiKey) {
+                    Object[] keys = ((MultiKey) obj).getKeys();
+                    if (keys.length >= 3) {
+                        String itemName = String.valueOf(keys[0]);
+                        String itemVersion = String.valueOf(keys[1]);
+                        ERepositoryObjectType itemType = (ERepositoryObjectType) keys[2];
+                        ItemReferenceBean parentBean = new ItemReferenceBean();
+                        parentBean.setItemName(itemName);
+                        parentBean.setItemVersion(itemVersion);
+                        parentBean.setItemType(itemType);
+                        parentBean.setHost(true);
+                        parentBean.addChildren((List<ItemReferenceBean>) item2beansMap.get(obj));
+                        beans.add(parentBean);
+                    }
+                }
+            }
+            sortReferenceBeans(beans);
+
+            if (updateDelList) {
+                List<String> unDeleteItemNames = new ArrayList<String>();
+                for (ItemReferenceBean bean : beans) {
+                    unDeleteItemNames.add(bean.getItemName());
+                }
+//                Iterator<? extends IRepositoryNode> nodeIter = deleteNodes.iterator();
+//                while (nodeIter.hasNext()) {
+//                    IRepositoryNode node = nodeIter.next();
+//                    Object label = node.getProperties(EProperties.LABEL);
+//                    if (unDeleteItemNames.contains(label)) {
+//                        nodeIter.remove();
+//                    }
+//                }
             }
         } catch (Exception e) {
             ExceptionHandler.process(e);

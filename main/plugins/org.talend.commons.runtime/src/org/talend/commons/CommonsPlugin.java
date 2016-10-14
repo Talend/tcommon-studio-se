@@ -48,6 +48,9 @@ public class CommonsPlugin implements BundleActivator {
 
     private static boolean isWorkbenchCreated = false;
 
+    // TESB-17856: For commandline builds ESB Micorservice bundle
+    private static boolean isESBMicorservice = false;
+
     public static boolean isWorkbenchCreated() {
         return isWorkbenchCreated;
     }
@@ -137,6 +140,14 @@ public class CommonsPlugin implements BundleActivator {
             }
         }
         return service;
+    }
+
+    public static boolean isESBMicorservice() {
+        return isESBMicorservice;
+    }
+
+    public static void setESBMicorservice(boolean isESBMicorservice) {
+        CommonsPlugin.isESBMicorservice = isESBMicorservice;
     }
 
 }

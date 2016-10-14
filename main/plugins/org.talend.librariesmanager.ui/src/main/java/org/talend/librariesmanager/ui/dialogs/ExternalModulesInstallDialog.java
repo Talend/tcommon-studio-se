@@ -84,6 +84,7 @@ import org.talend.commons.utils.network.NetworkUtil;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.general.ILibrariesService;
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
+import org.talend.core.model.general.ModuleStatusProvider;
 import org.talend.core.model.general.ModuleToInstall;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.designer.core.IDesignerCoreService;
@@ -933,7 +934,8 @@ public class ExternalModulesInstallDialog extends TitleAreaDialog implements IMo
         List<ModuleToInstall> toInstall = new ArrayList<ModuleToInstall>();
         for (ModuleToInstall module : theInputList) {
             if (!MavenConstants.DOWNLOAD_MANUAL.equals(module.getDistribution())
-                    && !jarsInstalledSuccuss.contains(module.getName())) {
+                    && !jarsInstalledSuccuss.contains(module.getName())
+                    && ELibraryInstallStatus.INSTALLED != ModuleStatusProvider.getStatusMap().get(module.getMavenUri())) {
                 toInstall.add(module);
             }
         }

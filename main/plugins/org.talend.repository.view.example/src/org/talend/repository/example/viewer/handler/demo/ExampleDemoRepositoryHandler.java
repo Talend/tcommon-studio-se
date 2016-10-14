@@ -384,5 +384,10 @@ public class ExampleDemoRepositoryHandler implements IRepositoryContentHandler {
         // TODO Auto-generated method stub
         return false;
     }
+    
+    @Override
+    public void copyIcon(Item originalItem, Item newItem){
+        
+    }
 
 }

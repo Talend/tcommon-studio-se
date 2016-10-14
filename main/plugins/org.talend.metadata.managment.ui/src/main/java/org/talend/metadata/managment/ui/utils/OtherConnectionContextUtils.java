@@ -107,11 +107,16 @@ public final class OtherConnectionContextUtils {
         MethodName,
         EndpointURI,
         Encoding,
-        // MDM
-        MDMURL,
+        // These constants seems to be used by deprecated code
+        // Added temporary to avoid studio build failure
+        MDMURL,     
         UNIVERSE,
         DATACLUSTER,
         DATAMODEL,
+        // MDM
+        MDM_URL,
+        MDM_Username,
+        MDM_Password,
 
         // FTP
         FTPHOST,
@@ -498,31 +503,7 @@ public final class OtherConnectionContextUtils {
         return varList;
     }
 
-    static void setMDMPropertiesForContextMode(String prefixName, MDMConnection conn) {
-        // if (conn == null || prefixName == null) {
-        // return;
-        // }
-        // prefixName = prefixName + ConnectionContextHelper.LINE;
-        // String paramName = null;
-        //
-        // paramName = prefixName + EParamName.XmlFilePath;
-        // conn.setXmlFilePath(ContextParameterUtils.getNewScriptCode(paramName, LANGUAGE));
-        //
-        // EList schema = conn.getSchema();
-        // if (schema != null) {
-        // if (schema.get(0) instanceof XmlXPathLoopDescriptor) {
-        // XmlXPathLoopDescriptor descriptor = (XmlXPathLoopDescriptor) schema.get(0);
-        // paramName = prefixName + EParamName.XPathQuery;
-        // descriptor.setAbsoluteXPathQuery(ContextParameterUtils.getNewScriptCode(paramName, LANGUAGE));
-        // }
-        // }
-        //
-        // paramName = prefixName + EParamName.Encoding;
-        // conn.setEncoding(ContextParameterUtils.getNewScriptCode(paramName, LANGUAGE));
-
-    }
-
-    static List<IContextParameter> getMDMSchemaVariables(String prefixName, MDMConnection conn) {
+    static List<IContextParameter> getMDMConnectionVariables(String prefixName, MDMConnection conn) {
         if (conn == null || prefixName == null) {
             return Collections.emptyList();
         }
@@ -530,18 +511,14 @@ public final class OtherConnectionContextUtils {
         prefixName = prefixName + ConnectionContextHelper.LINE;
         String paramName = null;
 
-        paramName = prefixName + EParamName.UNIVERSE;
-        ConnectionContextHelper.createParameters(varList, paramName, conn.getUniverse());
+        paramName = prefixName + EParamName.MDM_Username;
+        ConnectionContextHelper.createParameters(varList, paramName, conn.getUsername());
 
-        paramName = prefixName + EParamName.DATACLUSTER;
-        ConnectionContextHelper.createParameters(varList, paramName, conn.getDatacluster());
+        paramName = prefixName + EParamName.MDM_Password;
+        ConnectionContextHelper.createParameters(varList, paramName, conn.getValue(conn.getPassword(), false), JavaTypesManager.PASSWORD);
 
-        paramName = prefixName + EParamName.DATAMODEL;
-        ConnectionContextHelper.createParameters(varList, paramName, conn.getDatamodel());
-
-        paramName = prefixName + EParamName.MDMURL;
-        String url = "http://" + conn.getServer() + ":" + conn.getPort() + "/talend/TalendPort"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        ConnectionContextHelper.createParameters(varList, paramName, url);
+        paramName = prefixName + EParamName.MDM_URL;
+        ConnectionContextHelper.createParameters(varList, paramName, conn.getServerUrl());
 
         return varList;
     }
@@ -758,6 +735,80 @@ public final class OtherConnectionContextUtils {
         ConnectionContextHelper.cloneConnectionProperties(fileConn, cloneConn);
 
         return cloneConn;
+    }
+
+    static void setMDMConnectionPropertiesForContextMode(String prefixName, MDMConnection mdmCon, Set<IConnParamName> paramSet) {
+        if (mdmCon == null || prefixName == null) {
+            return;
+        }
+
+        String originalVariableName = prefixName + ConnectionContextHelper.LINE;
+        String mdmVariableName = null;
+        for (IConnParamName param : paramSet) {
+            if (param instanceof EParamName) {
+                EParamName mdmParam = (EParamName) param;
+                originalVariableName = prefixName + ConnectionContextHelper.LINE;
+                mdmVariableName = originalVariableName + mdmParam;
+                setMDMConnnectionBasicPropertiesForContextMode(mdmCon, mdmParam, mdmVariableName);
+            }
+        }
+    }
+
+    static void setMDMConnectionPropertiesForExistContextMode(MDMConnection mdmConn, Set<IConnParamName> paramSet,
+            Map<ContextItem, List<ConectionAdaptContextVariableModel>> map) {
+        if (mdmConn == null) {
+            return;
+        }
+
+        String mdmVariableName = null;
+        ContextItem currentContext = null;
+        for (IConnParamName param : paramSet) {
+            if (param instanceof EParamName) {
+                EParamName mdmParam = (EParamName) param;
+                if (map != null && map.size() > 0) {
+                    for (Map.Entry<ContextItem, List<ConectionAdaptContextVariableModel>> entry : map.entrySet()) {
+                        currentContext = entry.getKey();
+                        List<ConectionAdaptContextVariableModel> modelList = entry.getValue();
+                        for (ConectionAdaptContextVariableModel model : modelList) {
+                            if (model.getValue().equals(mdmParam.name())) {
+                                mdmVariableName = model.getName();
+                                break;
+                            }
+                        }
+                    }
+                }
+                mdmVariableName = getCorrectVariableName(currentContext, mdmVariableName, mdmParam);
+                setMDMConnnectionBasicPropertiesForContextMode(mdmConn, mdmParam, mdmVariableName);
+            }
+        }
+    }
+
+    static void setMDMConnnectionBasicPropertiesForContextMode(MDMConnection mdmConn, EParamName mdmParam, String mdmBasicVarName) {
+        switch (mdmParam) {
+        case MDM_URL:
+            mdmConn.setServerUrl(ContextParameterUtils.getNewScriptCode(mdmBasicVarName, LANGUAGE));
+            break;
+        case MDM_Username:
+            mdmConn.setUsername(ContextParameterUtils.getNewScriptCode(mdmBasicVarName, LANGUAGE));
+            break;
+        case MDM_Password:
+            mdmConn.setPassword(ContextParameterUtils.getNewScriptCode(mdmBasicVarName, LANGUAGE));
+            break;
+        default:
+        }
+    }
+
+    static void revertMDMConnectionPropertiesForContextMode(MDMConnection conn, ContextType contextType) {
+        if (conn == null || contextType == null) {
+            return;
+        }
+        String username = TalendQuoteUtils.removeQuotes(ConnectionContextHelper.getOriginalValue(contextType, conn.getUsername()));
+        String password = TalendQuoteUtils.removeQuotes(ConnectionContextHelper.getOriginalValue(contextType, conn.getPassword()));       
+        String serverUrl = TalendQuoteUtils.removeQuotes(ConnectionContextHelper.getOriginalValue(contextType, conn.getServerUrl()));
+
+        conn.setUsername(username);
+        conn.setPassword(password);
+        conn.setServerUrl(serverUrl);
     }
 
     static void setSalesforcePropertiesForContextMode(String prefixName, SalesforceSchemaConnection ssConn,
@@ -1126,16 +1177,22 @@ public final class OtherConnectionContextUtils {
                     break;
                 case BindPrincipal:
                     ldapConn.setBindPrincipal(ContextParameterUtils.getNewScriptCode(ldapVariableName, LANGUAGE));
+                    break;
                 case BindPassword:
                     ldapConn.setBindPassword(ContextParameterUtils.getNewScriptCode(ldapVariableName, LANGUAGE));
+                    break;
                 case CountLimit:
                     ldapConn.setCountLimit(ContextParameterUtils.getNewScriptCode(ldapVariableName, LANGUAGE));
+                    break;
                 case TimeOutLimit:
                     ldapConn.setTimeOutLimit(ContextParameterUtils.getNewScriptCode(ldapVariableName, LANGUAGE));
+                    break;
                 case Filter:
                     ldapConn.setFilter(ContextParameterUtils.getNewScriptCode(ldapVariableName, LANGUAGE));
+                    break;
                 case BaseDN:
                     ldapConn.setSelectedDN(ContextParameterUtils.getNewScriptCode(ldapVariableName, LANGUAGE));
+                    break;
                 default:
                 }
             }

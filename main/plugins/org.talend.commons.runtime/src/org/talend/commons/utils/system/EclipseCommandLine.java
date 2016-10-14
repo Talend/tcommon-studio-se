@@ -42,6 +42,8 @@ public class EclipseCommandLine {
 
     static final String NEW_LINE = "\n"; //$NON-NLS-1$
 
+    static public final String CLEAN = "-clean"; //$NON-NLS-1$
+
     /**
      * Use it to specify the type of project that will be use to configure the studio when relaunched
      */

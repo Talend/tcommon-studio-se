@@ -543,7 +543,7 @@ public class AbstractTest4ExtractManager {
     }
 
     protected void verifyConnection4ReturnColumns4DontCreateConnection(Connection conn) throws SQLException {
-        verify(conn, times(4)).isClosed();
+        verify(conn, times(2)).isClosed();
     }
 
     protected void verifyDbMetadata4ReturnColumns4DontCreateConnection(DatabaseMetaData dbMetadata) throws SQLException {

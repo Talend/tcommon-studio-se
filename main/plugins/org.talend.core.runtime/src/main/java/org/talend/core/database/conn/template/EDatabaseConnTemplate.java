@@ -66,10 +66,11 @@ public enum EDatabaseConnTemplate {
             "<host>")), //$NON-NLS-1$  
 
     ORACLE_OCI(new DbConnStr(EDatabaseTypeName.ORACLE_OCI, //
-            "jdbc:oracle:oci8:@<service_name>")), //$NON-NLS-1$                 
-    MSSQL(new DbConnStr(EDatabaseTypeName.MSSQL, //
-            "jdbc:jtds:sqlserver://<host>:<port>/<sid>;<property>", //$NON-NLS-1$
-            "1433")), //$NON-NLS-1$
+            "jdbc:oracle:oci8:@<service_name>")), //$NON-NLS-1$    
+    
+    MSSQL(new DbConnStrForMSSQL(EDatabaseTypeName.MSSQL, "jdbc:jtds:sqlserver://<host>:<port>/<sid>;<property>", //$NON-NLS-1$
+            "1433", new EDatabaseVersion4Drivers[] { EDatabaseVersion4Drivers.MSSQL, EDatabaseVersion4Drivers.MSSQL_2012,
+                    EDatabaseVersion4Drivers.MSSQL_PROP})),
     MSSQL05_08(new DbConnStr(EDatabaseTypeName.MSSQL05_08, //
             "jdbc:sqlserver://<host>:<port>;DatabaseName=<sid>", //$NON-NLS-1$
             "1433")), //$NON-NLS-1$         
@@ -194,10 +195,13 @@ public enum EDatabaseConnTemplate {
     //    HIVE2_STANDALONE(new DbConnStr(EDatabaseTypeName.HIVE, "jdbc:hive2://<host>:<port>/<sid>")), //$NON-NLS-1$
 
     IMPALA(new DbConnStr(EDatabaseTypeName.IMPALA, "jdbc:hive2://<host>:<port>/<sid>;auth=noSasl", //$NON-NLS-1$  
-            "21050")), //$NON-NLS-1$  
+            "21050")), //$NON-NLS-1$
 
     HBASE(new DbConnStr(EDatabaseTypeName.HBASE, "127.0.0.1", //$NON-NLS-1$
-            "2181")); //$NON-NLS-1$
+            "2181")), //$NON-NLS-1$
+
+    MAPRDB(new DbConnStr(EDatabaseTypeName.MAPRDB, "127.0.0.1", //$NON-NLS-1$
+            "5181")); //$NON-NLS-1$    
 
     private DbConnStr connStr;
 
@@ -333,6 +337,7 @@ public enum EDatabaseConnTemplate {
             case SAS:
             case SAPHana:
             case HBASE:
+            case MAPRDB:
                 return true;
             default:
             }

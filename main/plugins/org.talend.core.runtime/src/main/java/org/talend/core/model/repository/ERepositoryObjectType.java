@@ -404,7 +404,13 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
      * <font color="red">This value may be <b>null</b> in TOS, <b>should add NPE check</b></font>
      */
     public final static ERepositoryObjectType JOBLET = ERepositoryObjectType.valueOf("JOBLET"); //$NON-NLS-1$
-
+    
+    public final static ERepositoryObjectType JOBLET_DESIGNS = ERepositoryObjectType.valueOf("JOBLET_DESIGNS"); //$NON-NLS-1$
+    
+    public final static ERepositoryObjectType SPARK_JOBLET = ERepositoryObjectType.valueOf("SPARK_JOBLET"); //$NON-NLS-1$
+    
+    public final static ERepositoryObjectType SPARK_STREAMING_JOBLET = ERepositoryObjectType.valueOf("SPARK_STREAMING_JOBLET"); //$NON-NLS-1$
+    
     public final static ERepositoryObjectType TEST_CONTAINER = ERepositoryObjectType.valueOf("TEST_CONTAINER"); //$NON-NLS-1$
 
     public final static ERepositoryObjectType CODE = ERepositoryObjectType.valueOf("CODE"); //$NON-NLS-1$
@@ -1372,6 +1378,21 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
             allTypes.add(ERepositoryObjectType.PROCESS_ROUTELET);
         }
 
+        return allTypes;
+    }
+    
+    public static List<ERepositoryObjectType> getAllTypesOfJoblet() {
+        List<ERepositoryObjectType> allTypes = new ArrayList<ERepositoryObjectType>();
+
+        if (ERepositoryObjectType.JOBLET != null) {
+            allTypes.add(ERepositoryObjectType.JOBLET);
+        }
+        if (ERepositoryObjectType.SPARK_JOBLET != null) {
+            allTypes.add(ERepositoryObjectType.SPARK_JOBLET);
+        }
+        if (ERepositoryObjectType.SPARK_STREAMING_JOBLET != null) {
+            allTypes.add(ERepositoryObjectType.SPARK_STREAMING_JOBLET);
+        }
         return allTypes;
     }
 }
