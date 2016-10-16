@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Schema Enforcer Plug-in
+Bundle-SymbolicName: org.talend.schema.enforcer;singleton:=true
+Bundle-Version: 6.3.0.qualifier
+Bundle-Localization: plugin
+Bundle-Vendor: .Talend SA.
+Bundle-ActivationPolicy: lazy
+Export-Package: org.talend.schema.enforcer;uses:="org.apache.avro,org.apache.avro.generic"
+Import-Package: org.apache.avro;version="[1.8,2)",
+ org.apache.avro.generic;version="[1.8,2)",
+ org.codehaus.jackson;version="1.9.13",
+ org.talend.daikon.avro;version="[0.13,1)",
+ org.talend.daikon.avro.converter;version="[0.13,1)"
