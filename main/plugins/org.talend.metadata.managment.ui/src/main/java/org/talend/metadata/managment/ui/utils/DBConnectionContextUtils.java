@@ -661,6 +661,8 @@ public final class DBConnectionContextUtils {
             key = ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_MAPRTICKET_PASSWORD;
             if (EDatabaseTypeName.HBASE.getDisplayName().equals(conn.getDatabaseType())) {
                 key = ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MAPRTICKET_PASSWORD;
+            } else if (EDatabaseTypeName.MAPRDB.getDisplayName().equals(conn.getDatabaseType())) {
+                key = ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MAPRTICKET_PASSWORD;
             }
             conn.getParameters().put(key, ContextParameterUtils.getNewScriptCode(originalVariableName, LANGUAGE));
             break;
