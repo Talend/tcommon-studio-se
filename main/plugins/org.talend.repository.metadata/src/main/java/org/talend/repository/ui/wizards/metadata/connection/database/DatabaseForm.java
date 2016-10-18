@@ -2953,6 +2953,12 @@ public class DatabaseForm extends AbstractForm {
         String useKeytabString = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_USEKEYTAB);
         String keytabPrincipal = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_KEYTAB_PRINCIPAL);
         String keytab = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_KEYTAB);
+        if (!connection.isContextMode() && ContextParameterUtils.isContainContextParam(keytabPrincipal)) {
+            keytabPrincipal = (String) metadataconnection.getParameter(ConnParameterKeys.CONN_PARA_KEY_KEYTAB_PRINCIPAL);
+        }
+        if (!connection.isContextMode() && ContextParameterUtils.isContainContextParam(keytab)) {
+            keytab = (String) metadataconnection.getParameter(ConnParameterKeys.CONN_PARA_KEY_KEYTAB);
+        }
         String masterPrincipal = connection.getParameters().get(
                 ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MASTERPRINCIPAL);
         String regionServerPrincipal = connection.getParameters().get(
@@ -3030,6 +3036,12 @@ public class DatabaseForm extends AbstractForm {
         String useKeytabString = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_USEKEYTAB);
         String keytabPrincipal = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_KEYTAB_PRINCIPAL);
         String keytab = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_KEYTAB);
+        if (!connection.isContextMode() && ContextParameterUtils.isContainContextParam(keytabPrincipal)) {
+            keytabPrincipal = (String) metadataconnection.getParameter(ConnParameterKeys.CONN_PARA_KEY_KEYTAB_PRINCIPAL);
+        }
+        if (!connection.isContextMode() && ContextParameterUtils.isContainContextParam(keytab)) {
+            keytab = (String) metadataconnection.getParameter(ConnParameterKeys.CONN_PARA_KEY_KEYTAB);
+        }
         String masterPrincipal = connection.getParameters().get(
                 ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MASTERPRINCIPAL);
         String regionServerPrincipal = connection.getParameters().get(
@@ -3060,12 +3072,24 @@ public class DatabaseForm extends AbstractForm {
                 ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_USE_MAPRTICKET);
         String maprTUsernameForMaprdb = connection.getParameters().get(
                 ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_USERNAME);
+        if (!connection.isContextMode() && ContextParameterUtils.isContainContextParam(maprTUsernameForMaprdb)) {
+            maprTUsernameForMaprdb = (String) metadataconnection.getParameter(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_USERNAME);
+        }
         String maprTPasswordForMaprdb = connection.getParameters().get(
                 ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MAPRTICKET_PASSWORD);
+        if (!connection.isContextMode() && ContextParameterUtils.isContainContextParam(maprTPasswordForMaprdb)) {
+            maprTPasswordForMaprdb = (String) metadataconnection.getParameter(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MAPRTICKET_PASSWORD);
+        }
         String maprTClusterForMaprdb = connection.getParameters().get(
                 ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MAPRTICKET_CLUSTER);
+        if (!connection.isContextMode() && ContextParameterUtils.isContainContextParam(maprTClusterForMaprdb)) {
+            maprTClusterForMaprdb = (String) metadataconnection.getParameter(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MAPRTICKET_CLUSTER);
+        }
         String maprTDurationForMaprdb = connection.getParameters().get(
                 ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MAPRTICKET_DURATION);
+        if (!connection.isContextMode() && ContextParameterUtils.isContainContextParam(maprTDurationForMaprdb)) {
+            maprTDurationForMaprdb = (String) metadataconnection.getParameter(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MAPRTICKET_DURATION);
+        }
         boolean checkMaprTForMaprdb = Boolean.valueOf(useMaprTForMaprdbString);
         useMaprTForMaprdb.setSelection(checkMaprTForMaprdb);
         if (checkMaprTForMaprdb) {
@@ -6698,6 +6722,12 @@ public class DatabaseForm extends AbstractForm {
         String useKeytabString = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_USEKEYTAB);
         String Principla = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_KEYTAB_PRINCIPAL);
         String keytab = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_KEYTAB);
+        if (!connection.isContextMode() && ContextParameterUtils.isContainContextParam(Principla)) {
+            Principla = (String) metadataconnection.getParameter(ConnParameterKeys.CONN_PARA_KEY_KEYTAB_PRINCIPAL);
+        }
+        if (!connection.isContextMode() && ContextParameterUtils.isContainContextParam(keytab)) {
+            keytab = (String) metadataconnection.getParameter(ConnParameterKeys.CONN_PARA_KEY_KEYTAB);
+        }
         String additionalJDBCSettings = connection.getParameters().get(
                 ConnParameterKeys.CONN_PARA_KEY_HIVE_ADDITIONAL_JDBC_SETTINGS);
         boolean useSSL = Boolean.parseBoolean(connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_USE_SSL));
