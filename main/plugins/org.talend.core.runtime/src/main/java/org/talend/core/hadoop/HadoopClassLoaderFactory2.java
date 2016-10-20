@@ -218,7 +218,7 @@ public class HadoopClassLoaderFactory2 {
         return cll;
     }
 
-    private static String[] getSecurityJars(EHadoopCategory category) {
+    public static String[] getSecurityJars(EHadoopCategory category) {
         String[] securityJars;
         switch (category) {
         case HDFS:
