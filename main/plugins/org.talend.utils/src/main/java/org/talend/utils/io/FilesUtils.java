@@ -13,7 +13,6 @@
 package org.talend.utils.io;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -155,6 +154,10 @@ public final class FilesUtils {
     }
 
     public static void copyFile(InputStream source, File target) throws IOException {
+        final File parentFile = target.getParentFile();
+        if (parentFile != null && !parentFile.exists()) {
+            parentFile.mkdirs();
+        }
         OutputStream out = new FileOutputStream(target);
         try {
             IOUtils.copy(source, out);
