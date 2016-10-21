@@ -427,6 +427,8 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
 
     public final static ERepositoryObjectType SQLPATTERNS = ERepositoryObjectType.valueOf("SQLPATTERNS"); //$NON-NLS-1$
 
+    public final static ERepositoryObjectType ROUTE_RESOURCES = ERepositoryObjectType.valueOf("ROUTE_RESOURCES"); //$NON-NLS-1$
+
     /**
      * Docs
      * 
