@@ -2991,12 +2991,24 @@ public class DatabaseForm extends AbstractForm {
                 ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_USE_MAPRTICKET);
         String maprTUsernameForHBase = connection.getParameters().get(
                 ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_USERNAME);
+        if (!connection.isContextMode() && ContextParameterUtils.isContainContextParam(maprTUsernameForHBase)) {
+            maprTUsernameForHBase = (String) metadataconnection.getParameter(ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_USERNAME);
+        }
         String maprTPasswordForHBase = connection.getParameters().get(
                 ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MAPRTICKET_PASSWORD);
+        if (!connection.isContextMode() && ContextParameterUtils.isContainContextParam(maprTPasswordForHBase)) {
+            maprTPasswordForHBase = (String) metadataconnection.getParameter(ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MAPRTICKET_PASSWORD);
+        }
         String maprTClusterForHBase = connection.getParameters().get(
                 ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MAPRTICKET_CLUSTER);
+        if (!connection.isContextMode() && ContextParameterUtils.isContainContextParam(maprTClusterForHBase)) {
+            maprTClusterForHBase = (String) metadataconnection.getParameter(ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MAPRTICKET_CLUSTER);
+        }
         String maprTDurationForHBase = connection.getParameters().get(
                 ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MAPRTICKET_DURATION);
+        if (!connection.isContextMode() && ContextParameterUtils.isContainContextParam(maprTDurationForHBase)) {
+            maprTDurationForHBase = (String) metadataconnection.getParameter(ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MAPRTICKET_DURATION);
+        }
         boolean checkMaprTForHBase = Boolean.valueOf(useMaprTForHBaseString);
         useMaprTForHBase.setSelection(checkMaprTForHBase);
         if (checkMaprTForHBase) {
@@ -6792,12 +6804,24 @@ public class DatabaseForm extends AbstractForm {
                 ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_USE_MAPRTICKET);
         String maprTUsernameForHive = connection.getParameters()
                 .get(ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_USERNAME);
+        if (!connection.isContextMode() && ContextParameterUtils.isContainContextParam(maprTUsernameForHive)) {
+            maprTUsernameForHive = (String) metadataconnection.getParameter(ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_USERNAME);
+        }
         String maprTPasswordForHive = connection.getParameters().get(
                 ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_MAPRTICKET_PASSWORD);
+        if (!connection.isContextMode() && ContextParameterUtils.isContainContextParam(maprTPasswordForHive)) {
+            maprTPasswordForHive = (String) metadataconnection.getParameter(ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_MAPRTICKET_PASSWORD);
+        }
         String maprTClusterForHive = connection.getParameters().get(
                 ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_MAPRTICKET_CLUSTER);
+        if (!connection.isContextMode() && ContextParameterUtils.isContainContextParam(maprTClusterForHive)) {
+            maprTClusterForHive = (String) metadataconnection.getParameter(ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_MAPRTICKET_CLUSTER);
+        }
         String maprTDurationForHive = connection.getParameters().get(
                 ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_MAPRTICKET_DURATION);
+        if (!connection.isContextMode() && ContextParameterUtils.isContainContextParam(maprTDurationForHive)) {
+            maprTDurationForHive = (String) metadataconnection.getParameter(ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_MAPRTICKET_DURATION);
+        }
         boolean checkMaprTForHive = Boolean.valueOf(useMaprTForHiveString);
         useMaprTForHive.setSelection(checkMaprTForHive);
         if (checkMaprTForHive) {
