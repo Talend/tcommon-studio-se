@@ -596,10 +596,11 @@ public class RelationshipItemBuilder {
                     return o1.getType().compareTo(o2.getType());
                 }
             });
+            List<ItemRelation> usedRelationList = new ArrayList<ItemRelation>();
+            List<ItemRelation> oldRelatedItems = new ArrayList<ItemRelation>(itemRelations.getRelatedItems());
             for (Relation relatedItem : relationItemsList) {
-                List<ItemRelation> relationList = new ArrayList<ItemRelation>(itemRelations.getRelatedItems());
                 boolean found = false;
-                for (ItemRelation item : relationList) {
+                for (ItemRelation item : oldRelatedItems) {
                     boolean isIdSame = false;
                     String itemId = item.getId();
                     if (itemId != null) {
@@ -610,6 +611,7 @@ public class RelationshipItemBuilder {
                         isVersionSame = StringUtils.equals(item.getVersion(), relatedItem.getVersion());
                     }
                     if (isIdSame && isVersionSame) {
+                        usedRelationList.add(item);
                         found = true;
                         break;
                     }
@@ -623,6 +625,10 @@ public class RelationshipItemBuilder {
                 emfRelatedItem.setVersion(relatedItem.getVersion());
                 itemRelations.getRelatedItems().add(emfRelatedItem);
             }
+            // get unused relation items
+            oldRelatedItems.removeAll(usedRelationList);
+            // remove unused relation items
+            itemRelations.getRelatedItems().removeAll(oldRelatedItems);
             if (!exist) {
                 currentProject.getEmfProject().getItemsRelations().add(itemRelations);
             }
