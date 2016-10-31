@@ -189,8 +189,30 @@ public class DeleteAction extends AContextualAction {
                         }
                     }
                 }
+                List<RepositoryNode> selectNodesFullList = new ArrayList<RepositoryNode>(selectNodes);
                 final List<ItemReferenceBean> unDeleteItems = RepositoryNodeDeleteManager.getInstance().getUnDeleteItems(
                         selectNodes, deleteActionCache);
+                if (unDeleteItems.size() > 0) {
+                    boolean isForceDelete[] = new boolean[1];
+                    Display.getDefault().syncExec(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            ItemReferenceDialog dialog = new ItemReferenceDialog(
+                                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), unDeleteItems);
+                            dialog.showForceDeleteButton(true);
+                            int userChoice = dialog.open();
+                            if (ItemReferenceDialog.FORCE_DELETE_ID == userChoice) {
+                                isForceDelete[0] = true;
+                            } else {
+                                isForceDelete[0] = false;
+                            }
+                        }
+                    });
+                    if (isForceDelete[0]) {
+                        selectNodes = selectNodesFullList;
+                    }
+                }
                 List<RepositoryNode> accessNodes = new ArrayList<RepositoryNode>();
                 for (RepositoryNode node : selectNodes) {
                     try {
@@ -315,17 +337,7 @@ public class DeleteAction extends AContextualAction {
                         MessageBoxExceptionHandler.process(e);
                     }
                 }
-                if (unDeleteItems.size() > 0) {
-                    Display.getDefault().syncExec(new Runnable() {
 
-                        @Override
-                        public void run() {
-                            ItemReferenceDialog dialog = new ItemReferenceDialog(PlatformUI.getWorkbench()
-                                    .getActiveWorkbenchWindow().getShell(), unDeleteItems);
-                            dialog.open();
-                        }
-                    });
-                }
                 try {
                     factory.saveProject(ProjectManager.getInstance().getCurrentProject());
                 } catch (PersistenceException e) {

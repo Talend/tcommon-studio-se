@@ -100,22 +100,23 @@ public class EmptyRecycleBinAction extends AContextualAction {
         String message = null;
         // TDI-20542
         List<IRepositoryNode> originalChildren = node.getChildren();
-        final List<IRepositoryNode> children = new ArrayList<IRepositoryNode>(originalChildren);
+        List<IRepositoryNode> childrenNeedToDelete = new ArrayList<IRepositoryNode>(originalChildren);
+
         // MOD qiongli 2012-11-23 TUP-273 if a connection in recycle bin which depended by DQ analysis,should give a
         // warning then return.
-        if (children.size() == 0) {
+        if (childrenNeedToDelete.size() == 0) {
             return;
         }
         AbstractResourceChangesService resChangeService = TDQServiceRegister.getInstance().getResourceChangeService(
                 AbstractResourceChangesService.class);
         if (resChangeService != null) {
-            List<IRepositoryNode> dependentNodes = resChangeService.getDependentConnNodesInRecycleBin(children);
+            List<IRepositoryNode> dependentNodes = resChangeService.getDependentConnNodesInRecycleBin(childrenNeedToDelete);
             if (dependentNodes != null && !dependentNodes.isEmpty()) {
                 resChangeService.openDependcesDialog(dependentNodes);
                 return;
             }
         }
-        if (children.size() > 1) {
+        if (childrenNeedToDelete.size() > 1) {
             message = Messages.getString("DeleteAction.dialog.messageAllElements") + "\n" + //$NON-NLS-1$ //$NON-NLS-2$
                     Messages.getString("DeleteAction.dialog.message2"); //$NON-NLS-1$;
         } else {
@@ -123,13 +124,38 @@ public class EmptyRecycleBinAction extends AContextualAction {
                     + Messages.getString("DeleteAction.dialog.message2"); //$NON-NLS-1$
         }
 
-        final List<ItemReferenceBean> unDeleteItems = RepositoryNodeDeleteManager.getInstance().getUnDeleteItems(children, null);
-
         final Shell shell = getShell();
         if (!(MessageDialog.openQuestion(shell, title, message))) {
             DeleteActionCache.getInstance().revertParameters();
             return;
         }
+
+        final List<ItemReferenceBean> unDeleteItems = RepositoryNodeDeleteManager.getInstance()
+                .getUnDeleteItems(childrenNeedToDelete, null);
+
+        if (unDeleteItems.size() > 0) {
+            boolean isForceDelete[] = new boolean[1];
+            Display.getDefault().syncExec(new Runnable() {
+
+                @Override
+                public void run() {
+                    ItemReferenceDialog dialog = new ItemReferenceDialog(
+                            PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), unDeleteItems);
+                    dialog.showForceDeleteButton(true);
+                    int userChoice = dialog.open();
+                    if (ItemReferenceDialog.FORCE_DELETE_ID == userChoice) {
+                        isForceDelete[0] = true;
+                    } else {
+                        isForceDelete[0] = false;
+                    }
+                }
+            });
+            if (isForceDelete[0]) {
+                childrenNeedToDelete = originalChildren;
+            }
+        }
+
+        final List<IRepositoryNode> children = new ArrayList<IRepositoryNode>(childrenNeedToDelete);
 
         // TDQ-5359
         for (IRepositoryNode child : children) {
@@ -199,18 +225,6 @@ public class EmptyRecycleBinAction extends AContextualAction {
 
         } catch (Exception e) {
             ExceptionHandler.process(e);
-        }
-
-        if (unDeleteItems.size() > 0) {
-            Display.getDefault().syncExec(new Runnable() {
-
-                @Override
-                public void run() {
-                    ItemReferenceDialog dialog = new ItemReferenceDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-                            .getShell(), unDeleteItems);
-                    dialog.open();
-                }
-            });
         }
 
         DeleteActionCache.getInstance().revertParameters();
