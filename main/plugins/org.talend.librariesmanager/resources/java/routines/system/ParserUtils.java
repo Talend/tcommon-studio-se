@@ -231,12 +231,16 @@ public class ParserUtils {
         return result.toString();
     }
 
-    public static BigDecimal parseTo_BigDecimal(String s) {
-        if (s == null) {
-            return null;
-        }
-        return new BigDecimal(s);
-    }
+	public static BigDecimal parseTo_BigDecimal(String s) {
+		if (s == null) {
+			return null;
+		}
+		try {
+			return new BigDecimal(s);
+		} catch (NumberFormatException nfe) {
+			throw new NumberFormatException("Bad input for BigDecimal.");
+		}
+	}
 
     public static routines.system.Document parseTo_Document(String s) throws org.dom4j.DocumentException {
         return parseTo_Document(s, false);
