@@ -237,8 +237,17 @@ public class ParserUtils {
 		}
 		try {
 			return new BigDecimal(s);
+			
 		} catch (NumberFormatException nfe) {
-			throw new NumberFormatException("Bad input for BigDecimal.");
+			
+			if (nfe.getMessage() == null) {
+				
+				throw new NumberFormatException("Incorrect input for BigDecimal.");
+				
+			} else {
+				
+				throw nfe;
+			}
 		}
 	}
 
