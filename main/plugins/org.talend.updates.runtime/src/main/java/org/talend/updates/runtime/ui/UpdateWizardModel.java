@@ -15,9 +15,13 @@ package org.talend.updates.runtime.ui;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
+import org.eclipse.core.databinding.observable.set.ComputedSet;
 import org.eclipse.core.databinding.observable.set.IObservableSet;
 import org.eclipse.core.databinding.observable.set.WritableSet;
 import org.eclipse.core.databinding.validation.IValidator;
@@ -44,8 +48,8 @@ public class UpdateWizardModel {
         @Override
         protected IStatus validate() {
             if (selectedExtraFeatures.isEmpty()) {
-                return ValidationStatus.error(Messages
-                        .getString("SelectExtraFeaturesToInstallWizardPage.one.feature.must.be.selected")); //$NON-NLS-1$
+                return ValidationStatus
+                        .error(Messages.getString("SelectExtraFeaturesToInstallWizardPage.one.feature.must.be.selected")); //$NON-NLS-1$
             } else if (!selectedExtraFeatures.isEmpty() && !canConfigureUpdateSiteLocation()) {
                 @SuppressWarnings("unchecked")
                 ExtraFeature extraFeature = getFirstExtraFeatureNotAllowingUpdateSiteConfig(selectedExtraFeatures);
@@ -108,7 +112,7 @@ public class UpdateWizardModel {
      */
     public UpdateWizardModel(Set<ExtraFeature> extraFeatures) {
         // create an observable set of the feature that may be installed
-        availableExtraFeatures = extraFeatures != null ? new WritableSet(extraFeatures, ExtraFeature.class) : new WritableSet();
+        availableExtraFeatures = extraFeatures != null ? new FilteredCategories(extraFeatures, ExtraFeature.class) : new FilteredCategories();;
         this.featureRepositories = new FeatureRepositories();
     }
 
@@ -155,7 +159,8 @@ public class UpdateWizardModel {
      */
     public boolean canConfigureUpdateSiteLocation() {
         @SuppressWarnings("unchecked")
-        ExtraFeature firstExtraFeatureNotAllowingUpdateSiteConfig = getFirstExtraFeatureNotAllowingUpdateSiteConfig(selectedExtraFeatures);
+        ExtraFeature firstExtraFeatureNotAllowingUpdateSiteConfig = getFirstExtraFeatureNotAllowingUpdateSiteConfig(
+                selectedExtraFeatures);
         return firstExtraFeatureNotAllowingUpdateSiteConfig == null;
     }
 
@@ -166,11 +171,42 @@ public class UpdateWizardModel {
     private ExtraFeature getFirstExtraFeatureNotAllowingUpdateSiteConfig(Set<ExtraFeature> extraFeatures) {
         for (ExtraFeature ef : extraFeatures) {
             EnumSet<UpdateSiteLocationType> updateSiteCompatibleTypes = ef.getUpdateSiteCompatibleTypes();
-            if (updateSiteCompatibleTypes.size() == 1 && updateSiteCompatibleTypes.contains(UpdateSiteLocationType.DEFAULT_REPO)) {
+            if (updateSiteCompatibleTypes.size() == 1
+                    && updateSiteCompatibleTypes.contains(UpdateSiteLocationType.DEFAULT_REPO)) {
                 return ef;
             }
         }
         return null;
     }
 
+    private class FilteredCategories extends WritableSet {
+
+
+        /**
+         * DOC nrousseau FilteredCategories constructor comment.
+         * @param extraFeatures
+         * @param class1
+         */
+        public FilteredCategories(Set<ExtraFeature> extraFeatures, Class<ExtraFeature> class1) {
+            super(extraFeatures, class1);
+        }
+
+        /**
+         * DOC nrousseau FilteredCategories constructor comment.
+         */
+        public FilteredCategories() {
+            super();
+        }
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see org.eclipse.core.databinding.observable.set.AbstractObservableSet#add(java.lang.Object)
+         */
+        @Override
+        public boolean add(Object o) {
+            return super.add(o);
+        }
+
+    }
 }
