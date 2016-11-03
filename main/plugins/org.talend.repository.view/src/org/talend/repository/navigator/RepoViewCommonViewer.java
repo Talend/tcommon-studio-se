@@ -19,11 +19,9 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jface.util.LocalSelectionTransfer;
@@ -38,6 +36,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Item;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.navigator.CommonViewer;
 import org.eclipse.ui.navigator.INavigatorContentService;
 import org.osgi.framework.BundleContext;
@@ -46,7 +45,6 @@ import org.osgi.service.event.Event;
 import org.osgi.service.event.EventConstants;
 import org.osgi.service.event.EventHandler;
 import org.talend.core.model.properties.Property;
-import org.talend.core.model.repository.Folder;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.repository.CoreRepositoryPlugin;
 import org.talend.core.repository.constants.Constant;
@@ -323,12 +321,25 @@ public class RepoViewCommonViewer extends CommonViewer implements INavigatorCont
             if (id.equals(node.getId())) {
                 return node;
             }
-            ITreeContentProvider contentProvider = (ITreeContentProvider) getContentProvider();
-            Object[] childrensObject = contentProvider.getElements(node);
             List<IRepositoryNode> childrens = new ArrayList<>();
-            for (Object o : childrensObject) {
-                if (o instanceof IRepositoryNode) {
-                    childrens.add((IRepositoryNode) o);
+            Widget repWidget = this.findItem(node);
+            if (repWidget != null) {
+                Item[] childrenItem = this.getChildren(repWidget);
+                if (childrenItem != null) {
+                    for (Item childItem : childrenItem) {
+                        RepositoryNode repNode = this.getRepositoryNode(childItem);
+                        if (repNode != null) {
+                            childrens.add(repNode);
+                        }
+                    }
+                }
+            } else {
+                ITreeContentProvider contentProvider = (ITreeContentProvider) getContentProvider();
+                Object[] childrensObject = contentProvider.getElements(node);
+                for (Object o : childrensObject) {
+                    if (o instanceof IRepositoryNode) {
+                        childrens.add((IRepositoryNode) o);
+                    }
                 }
             }
             IRepositoryNode childNode = findItemNode(id, childrens);

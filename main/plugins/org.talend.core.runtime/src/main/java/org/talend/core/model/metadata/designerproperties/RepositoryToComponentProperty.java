@@ -1164,6 +1164,8 @@ public class RepositoryToComponentProperty {
                 return connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HBASE_DISTRIBUTION);
             } else if (EDatabaseTypeName.MAPRDB.getDisplayName().equals(databaseType)) {
                 return connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_DISTRIBUTION);
+            } else if (EDatabaseTypeName.IMPALA.getDisplayName().equals(databaseType)) {
+                return connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_IMPALA_DISTRIBUTION);
             } else {
                 return connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_DISTRIBUTION);
             }

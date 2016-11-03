@@ -17,12 +17,23 @@ import java.util.List;
 
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.runtime.i18n.Messages;
+import org.talend.utils.json.JSONArray;
+import org.talend.utils.json.JSONException;
+import org.talend.utils.json.JSONObject;
 
 /**
  * class global comment. Detailled comment <br/>
  * $Id: Function.java,v 1.10 2007/02/02 08:07:02 pub Exp $
  */
 public class Function implements Cloneable {
+
+    public static final String NAME = "NAME"; //$NON-NLS-1$
+
+    public static final String PARAMETERS = "PARAMETERS"; //$NON-NLS-1$
+
+    public static final String PARAMETER_NAME = "PARAMETER_NAME"; //$NON-NLS-1$
+
+    public static final String PARAMETER_VALUE = "PARAMETER_VALUE"; //$NON-NLS-1$
 
     private String category;
 
@@ -234,6 +245,32 @@ public class Function implements Cloneable {
             for (int i = 0; i < function.getParameters().size(); i++) {
                 Parameter pa = (Parameter) function.getParameters().get(i);
                 pa.setValue(parameters[i]);
+            }
+        }
+        return function;
+    }
+
+    @SuppressWarnings("unchecked")
+    public Function clone(JSONArray parametersArray) {
+        if (parametersArray == null || parametersArray.length() == 0) {
+            return (Function) clone();
+        }
+        Function function = (Function) clone();
+        if (parametersArray != null) {
+            try {
+                List<Parameter> params = function.getParameters();
+                for (Parameter param : params) {
+                    for (int i = 0; i < parametersArray.length(); i++) {
+                        JSONObject parameterObj = parametersArray.getJSONObject(i);
+                        String paramName = parameterObj.getString(PARAMETER_NAME);
+                        String paramValue = parameterObj.getString(PARAMETER_VALUE);
+                        if (param.getName().equals(paramName)) {
+                            param.setValue(paramValue);
+                        }
+                    }
+                }
+            } catch (JSONException e) {
+                ExceptionHandler.process(e);
             }
         }
         return function;
@@ -477,4 +514,21 @@ public class Function implements Cloneable {
     public void setClassName(String className) {
         this.className = className;
     }
+
+    @SuppressWarnings("unchecked")
+    public String toSerialized() throws JSONException {
+        JSONObject functionObj = new JSONObject();
+        functionObj.put(NAME, getName());
+        JSONArray parametersArr = new JSONArray();
+        List<Parameter> params = getParameters();
+        for (Parameter param : params) {
+            JSONObject parameterObj = new JSONObject();
+            parameterObj.put(PARAMETER_NAME, param.getName());
+            parameterObj.put(PARAMETER_VALUE, param.getValue());
+            parametersArr.put(parameterObj);
+        }
+        functionObj.put(PARAMETERS, parametersArr);
+        return functionObj.toString();
+    }
+
 }

@@ -66,6 +66,7 @@ public class QueryUtil {
                 case IBMDB2:
                 case IBMDB2ZOS:
                 case HIVE:
+                case IMPALA:
                     /*
                      * if not work on DefaultQueryGenerator.
                      */

@@ -111,6 +111,7 @@ public class MetadataColumn implements IMetadataColumn, Cloneable {
         setRelatedEntity(metadataColumn.getRelatedEntity());
         setRelationshipType(metadataColumn.getRelationshipType());
         this.usefulColumn = metadataColumn.isUsefulColumn();
+        this.getAdditionalField().putAll(metadataColumn.getAdditionalField());
     }
 
     private static synchronized String getNewId() {

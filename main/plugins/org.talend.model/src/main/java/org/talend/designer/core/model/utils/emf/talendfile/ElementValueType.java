@@ -116,4 +116,31 @@ public interface ElementValueType extends EObject {
      */
     void setType(String value);
 
+    /**
+     * Returns the value of the '<em><b>Hex Value</b></em>' attribute.
+     * The default value is <code>"false"</code>.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Hex Value</em>' attribute isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Hex Value</em>' attribute.
+     * @see #setHexValue(boolean)
+     * @see org.talend.designer.core.model.utils.emf.talendfile.TalendFilePackage#getElementValueType_HexValue()
+     * @model default="false" dataType="org.eclipse.emf.ecore.xml.type.Boolean"
+     * @generated
+     */
+    boolean isHexValue();
+
+    /**
+     * Sets the value of the '{@link org.talend.designer.core.model.utils.emf.talendfile.ElementValueType#isHexValue <em>Hex Value</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Hex Value</em>' attribute.
+     * @see #isHexValue()
+     * @generated
+     */
+    void setHexValue(boolean value);
+
 } // ElementValueType

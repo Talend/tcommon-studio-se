@@ -119,7 +119,7 @@ public final class ResourceUtils {
     public static IFolder getFolder(IProject source, String folderName, boolean forceExists) throws PersistenceException {
         IFolder processFolder = source.getFolder(folderName);
 
-        if (forceExists && !processFolder.getLocation().toFile().exists()) {
+        if (forceExists && !processFolder.exists()) {
             String msg = Messages.getString("resources.folder.notGet", folderName, source.getName()); //$NON-NLS-1$
             throw new ResourceNotFoundException(msg);
         }
