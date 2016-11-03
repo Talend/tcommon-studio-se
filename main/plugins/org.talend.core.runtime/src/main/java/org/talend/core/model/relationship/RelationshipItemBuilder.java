@@ -751,6 +751,7 @@ public class RelationshipItemBuilder {
     private List<ERepositoryObjectType> getTypes() {
         List<ERepositoryObjectType> toReturn = new ArrayList<ERepositoryObjectType>();
         toReturn.add(ERepositoryObjectType.PROCESS);
+        toReturn.add(ERepositoryObjectType.PROCESS_ROUTE);
         toReturn.add(ERepositoryObjectType.JOBLET);
         return toReturn;
     }
