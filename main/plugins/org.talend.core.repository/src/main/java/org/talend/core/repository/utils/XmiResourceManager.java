@@ -369,9 +369,18 @@ public class XmiResourceManager {
         return getItemResource(item, true);
     }
 
+    public Resource getItemResource(ResourceSet resourceSet, Item item) {
+        return getItemResource(resourceSet, item, true);
+    }
+
     public Resource getItemResource(Item item, boolean forceLoad) {
-        if (item == null)
+        return getItemResource(getResourceSet(), item, forceLoad);
+    }
+
+    public Resource getItemResource(ResourceSet resourceSet, Item item, boolean forceLoad) {
+        if (item == null) {
             return null;
+        }
         URI itemResourceURI = null;
         if (item.getFileExtension() != null) {
             itemResourceURI = getItemResourceURI(getItemURI(item), item.getFileExtension());
@@ -381,13 +390,13 @@ public class XmiResourceManager {
         } else {
             itemResourceURI = getItemResourceURI(getItemURI(item));
         }
-        Resource itemResource = getResourceSet().getResource(itemResourceURI, false);
+        Resource itemResource = resourceSet.getResource(itemResourceURI, false);
         if (forceLoad && itemResource == null) {
             if (item instanceof FileItem) {
                 itemResource = new ByteArrayResource(itemResourceURI);
-                getResourceSet().getResources().add(itemResource);
+                resourceSet.getResources().add(itemResource);
             }
-            itemResource = getResourceSet().getResource(itemResourceURI, true);
+            itemResource = resourceSet.getResource(itemResourceURI, true);
         }
         return itemResource;
     }
@@ -400,10 +409,14 @@ public class XmiResourceManager {
      * Get a resource obj from Item resource file. if the resouce file does not exist ,will create it first.
      */
     public Resource getScreenshotResource(Item item, boolean createIfNotExist) {
-        return getScreenshotResource(item, createIfNotExist, false);
+        return getScreenshotResource(getResourceSet(), item, createIfNotExist, false);
     }
 
     public Resource getScreenshotResource(Item item, boolean createIfNotExist, boolean forceReload) {
+        return getScreenshotResource(getResourceSet(), item, createIfNotExist, forceReload);
+    }
+
+    public Resource getScreenshotResource(ResourceSet resourceSet, Item item, boolean createIfNotExist, boolean forceReload) {
         URI itemResourceURI = null;
         itemResourceURI = getScreenshotResourceURI(getItemURI(item));
         boolean fileExist = false;
@@ -526,6 +539,10 @@ public class XmiResourceManager {
     // }
 
     public List<Resource> getAffectedResources(Property property) {
+        return getAffectedResources(getResourceSet(), property);
+    }
+
+    public List<Resource> getAffectedResources(ResourceSet resourceSet, Property property) {
         List<Resource> resources = new ArrayList<Resource>();
         List<Resource> allRes = resourceSet.getResources();
         synchronized (allRes) {
@@ -547,8 +564,8 @@ public class XmiResourceManager {
                     if (!currentResource.getURI().lastSegment().equals(getProjectFilename())) {
                         resources.add(currentResource);
                     }
-                    if (!getResourceSet().getResources().contains(currentResource)) {
-                        getResourceSet().getResources().add(currentResource);
+                    if (!resourceSet.getResources().contains(currentResource)) {
+                        resourceSet.getResources().add(currentResource);
                     }
                 }
                 if (object instanceof ReferenceFileItem) {
@@ -591,8 +608,8 @@ public class XmiResourceManager {
                             resources.add(currentResource);
                         }
                     }
-                    if (!getResourceSet().getResources().contains(currentResource)) {
-                        getResourceSet().getResources().add(currentResource);
+                    if (!resourceSet.getResources().contains(currentResource)) {
+                        resourceSet.getResources().add(currentResource);
                     }
                 }
             }
@@ -608,7 +625,7 @@ public class XmiResourceManager {
 
             if (property.getItem() instanceof ProcessItem || property.getItem() instanceof JobletProcessItem || isTestContainer) {
                 if (property.eResource() != null) {
-                    Resource screenshotResource = getScreenshotResource(property.getItem());
+                    Resource screenshotResource = getScreenshotResource(resourceSet, property.getItem(), false, false);
                     if (screenshotResource != null) {
                         resources.add(screenshotResource);
                     }
@@ -850,10 +867,14 @@ public class XmiResourceManager {
     }
 
     public void unloadResources(Property property) {
-        for (Resource resource : getAffectedResources(property)) {
+        unloadResources(getResourceSet(), property);
+    }
+
+    public void unloadResources(ResourceSet resourceSet, Property property) {
+        for (Resource resource : getAffectedResources(resourceSet, property)) {
             if (resource != null) {
                 resource.unload();
-                getResourceSet().getResources().remove(resource);
+                resourceSet.getResources().remove(resource);
             }
         }
     }

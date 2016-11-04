@@ -44,7 +44,6 @@ import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ICoreService;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.migration.IMigrationToolService;
-import org.talend.core.model.properties.FolderItem;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.MigrationStatus;
 import org.talend.core.model.properties.MigrationTask;
@@ -160,13 +159,13 @@ public class MigrationToolService implements IMigrationToolService {
                 routineSynchronizer.syncRoutine(routineItem, true);
                 routineSynchronizer.getFile(routineItem);
             }
-            if (item.getProperty().eResource() != null) {
-                factory.unloadResources(item.getProperty());
-                if (item.getParent() != null && item.getParent() instanceof FolderItem) {
-                    ((FolderItem) item.getParent()).getChildren().remove(item);
-                    item.setParent(null);
-                }
-            }
+            // if (item.getProperty().eResource() != null) {
+            // factory.unloadResources(item.getProperty());
+            // if (item.getParent() != null && item.getParent() instanceof FolderItem) {
+            // ((FolderItem) item.getParent()).getChildren().remove(item);
+            // item.setParent(null);
+            // }
+            // }
         } catch (Exception e) {
             throw e;
         }
