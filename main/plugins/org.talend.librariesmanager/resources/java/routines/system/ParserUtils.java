@@ -242,7 +242,7 @@ public class ParserUtils {
 			
 			if (nfe.getMessage() == null) {
 				
-				throw new NumberFormatException("Incorrect input for BigDecimal.");
+				throw new NumberFormatException("Incorrect input \""+s+"\" for BigDecimal.");
 				
 			} else {
 				
