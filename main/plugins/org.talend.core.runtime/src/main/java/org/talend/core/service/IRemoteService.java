@@ -20,7 +20,7 @@ import org.talend.utils.json.JSONException;
 import org.talend.utils.json.JSONObject;
 
 /**
- * DOC hywang class global comment. Detailled comment
+ * DOC hywang class global comment. Detailed comment
  */
 public interface IRemoteService extends IService {
 

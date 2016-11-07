@@ -20,7 +20,7 @@ import org.talend.metadata.managment.ui.wizard.metadata.xml.utils.TreeUtil;
 import org.talend.repository.metadata.ui.wizards.form.AbstractXmlStepForm;
 
 /**
- * wzhang class global comment. Detailled comment
+ * wzhang class global comment. Detailed comment
  */
 public class SetForLoopAction extends SelectionProviderAction {
 

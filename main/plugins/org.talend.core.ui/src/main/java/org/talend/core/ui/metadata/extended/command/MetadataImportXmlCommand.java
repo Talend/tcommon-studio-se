@@ -27,7 +27,7 @@ import org.talend.core.model.metadata.MetadataSchema;
 import org.xml.sax.SAXException;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  * $Id$
  * 

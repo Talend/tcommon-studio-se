@@ -38,7 +38,7 @@ import org.talend.core.ui.metadata.editor.AbstractMetadataTableEditorView;
 import org.talend.core.ui.metadata.editor.MetadataEmfTableEditorView;
 
 /**
- * DOC Administrator class global comment. Detailled comment <br/>
+ * DOC Administrator class global comment. Detailed comment <br/>
  * 
  */
 public class CustomTableManagerOnlyForGenericSchema {
@@ -179,7 +179,7 @@ public class CustomTableManagerOnlyForGenericSchema {
     }
 
     /**
-     * DOC nrousseau CustomTableManager class global comment. Detailled comment <br/>
+     * DOC nrousseau CustomTableManager class global comment. Detailed comment <br/>
      * 
      * $Id: talend-code-templates.xml 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
      * 
@@ -227,7 +227,7 @@ public class CustomTableManagerOnlyForGenericSchema {
     }
 
     /**
-     * DOC nrousseau class global comment. Detailled comment <br/>
+     * DOC nrousseau class global comment. Detailed comment <br/>
      * 
      * $Id: talend-code-templates.xml 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
      * 

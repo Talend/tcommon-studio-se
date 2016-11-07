@@ -19,7 +19,7 @@ import org.eclipse.core.runtime.IPath;
  * time status for the use of run process.
  * 
  * 
- * DOC yzhang class global comment. Detailled comment <br/>
+ * DOC yzhang class global comment. Detailed comment <br/>
  * 
  * $Id: JavaStatus.java JavaStatus 2007-1-23 下午05:12:45 +0000 (下午05:12:45, 2007-1-23 2007) yzhang $
  * 

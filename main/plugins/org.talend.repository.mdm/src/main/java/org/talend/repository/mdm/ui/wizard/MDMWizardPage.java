@@ -18,7 +18,7 @@ import org.talend.core.model.properties.ConnectionItem;
 import org.talend.metadata.managment.ui.wizard.AbstractForm;
 
 /**
- * DOC hwang class global comment. Detailled comment
+ * DOC hwang class global comment. Detailed comment
  */
 public class MDMWizardPage extends WizardPage {
 

@@ -19,7 +19,7 @@ import net.sourceforge.jtds.jdbc.JtdsConnection;
 import net.sourceforge.jtds.jdbc.JtdsDatabaseMetaData;
 
 /**
- * DOC sizhaoliu class global comment. Detailled comment
+ * DOC sizhaoliu class global comment. Detailed comment
  */
 public class JtdsMetadataAdapter extends JtdsDatabaseMetaData {
 

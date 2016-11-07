@@ -13,7 +13,7 @@
 package org.talend.designer.runprocess;
 
 /**
- * DOC chuger class global comment. Detailled comment <br/>
+ * DOC chuger class global comment. Detailed comment <br/>
  * 
  * $Id: ProcessorException.java 1 2006-09-29 17:06:40 +0000 (鏄熸湡浜� 29 涔?鏈�2006) nrousseau $
  * 

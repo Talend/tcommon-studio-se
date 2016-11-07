@@ -17,7 +17,7 @@ import org.talend.core.ui.IImportExportServices;
 import org.talend.repository.items.importexport.wizard.models.ItemImportNode;
 
 /**
- * created by Talend on Dec 30, 2015 Detailled comment
+ * created by Talend on Dec 30, 2015 Detailed comment
  *
  */
 public class ImportExportServices implements IImportExportServices {

@@ -27,7 +27,7 @@ import org.talend.core.ui.branding.IBrandingService;
 import org.talend.rcp.i18n.Messages;
 
 /**
- * DOC ccarbone class global comment. Detailled comment <br/>
+ * DOC ccarbone class global comment. Detailed comment <br/>
  * 
  * $Id$
  * 

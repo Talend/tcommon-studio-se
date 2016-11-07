@@ -16,7 +16,7 @@ import org.eclipse.jface.fieldassist.IControlContentAdapter;
 import org.eclipse.swt.widgets.Control;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  * $Id: IControlContentAdapterExtended.java 7038 2007-11-15 14:05:48Z plegall $
  * 

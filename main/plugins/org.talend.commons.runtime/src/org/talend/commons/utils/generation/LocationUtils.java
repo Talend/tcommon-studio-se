@@ -22,7 +22,7 @@ import org.talend.commons.utils.data.text.StringHelper;
 
 /**
  * 
- * DOC pierrick class global comment. Detailled comment <br/>
+ * DOC pierrick class global comment. Detailed comment <br/>
  * 
  * $Id$
  * 

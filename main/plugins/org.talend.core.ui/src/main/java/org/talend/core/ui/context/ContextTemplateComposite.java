@@ -77,7 +77,7 @@ import org.talend.core.ui.i18n.Messages;
 import org.talend.core.utils.TalendQuoteUtils;
 
 /**
- * zwang class global comment. Detailled comment <br/>
+ * zwang class global comment. Detailed comment <br/>
  * 
  */
 public class ContextTemplateComposite extends AbstractContextTabEditComposite {

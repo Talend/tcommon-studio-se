@@ -21,7 +21,7 @@ import org.talend.commons.ui.swt.actions.ITreeContextualAction;
 import org.talend.core.IService;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public interface ICoreUIService extends IService {
 

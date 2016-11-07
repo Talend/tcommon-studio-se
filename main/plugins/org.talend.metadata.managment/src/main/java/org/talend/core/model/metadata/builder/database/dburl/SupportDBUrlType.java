@@ -15,7 +15,7 @@ package org.talend.core.model.metadata.builder.database.dburl;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * DOC rli class global comment. Detailled comment <br/>
+ * DOC rli class global comment. Detailed comment <br/>
  * 
  */
 public enum SupportDBUrlType {

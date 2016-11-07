@@ -17,7 +17,7 @@ import org.eclipse.swt.graphics.GC;
 import org.talend.commons.ui.swt.drawing.link.StyleLink.EDirection;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  * $Id$
  * 

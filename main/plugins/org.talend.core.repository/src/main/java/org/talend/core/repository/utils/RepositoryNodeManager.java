@@ -33,7 +33,7 @@ import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.model.StableRepositoryNode;
 
 /**
- * DOC ycbai class global comment. Detailled comment
+ * DOC ycbai class global comment. Detailed comment
  */
 public class RepositoryNodeManager {
 

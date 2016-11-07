@@ -25,7 +25,7 @@ import org.talend.core.model.metadata.builder.connection.MetadataTable;
 
 /**
  * created by zshen on Jul 17, 2013
- * Detailled comment
+ * Detailed comment
  *
  */
 public class MetadataTableImplTest {

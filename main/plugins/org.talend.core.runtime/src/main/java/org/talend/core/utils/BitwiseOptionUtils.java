@@ -13,7 +13,7 @@
 package org.talend.core.utils;
 
 /**
- * created by ycbai on 2015年5月15日 Detailled comment
+ * created by ycbai on 2015年5月15日 Detailed comment
  *
  */
 public class BitwiseOptionUtils {

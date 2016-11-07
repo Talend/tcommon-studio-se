@@ -44,7 +44,7 @@ import org.talend.metadata.managment.creator.AbstractHadoopDBConnectionCreator;
 import org.talend.metadata.managment.ui.utils.ConnectionContextHelper;
 
 /**
- * created by ycbai on 2015年6月29日 Detailled comment
+ * created by ycbai on 2015年6月29日 Detailed comment
  *
  */
 public class HiveConnectionCreator extends AbstractHadoopDBConnectionCreator {

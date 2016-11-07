@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 /**
- * created by ggu on Jul 28, 2014 Detailled comment
+ * created by ggu on Jul 28, 2014 Detailed comment
  *
  */
 public class EditableComboBoxCellEditor extends ComboBoxCellEditor {

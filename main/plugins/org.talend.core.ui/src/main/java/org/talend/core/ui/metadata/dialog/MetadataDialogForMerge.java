@@ -59,7 +59,7 @@ import org.talend.core.ui.metadata.editor.MetadataTableEditor;
 import org.talend.core.ui.metadata.editor.MetadataTableEditorView;
 
 /**
- * DOC nrousseau class global comment. Detailled comment <br/>
+ * DOC nrousseau class global comment. Detailed comment <br/>
  * 
  * $Id: MetadataDialog.java 4400 2007-07-10 07:59:06 +0000 (星期二, 10 七月 2007) bqian $
  * 

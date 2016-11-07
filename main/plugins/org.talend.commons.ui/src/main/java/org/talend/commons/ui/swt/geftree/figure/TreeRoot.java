@@ -17,7 +17,7 @@ import org.eclipse.draw2d.geometry.Transposer;
 import org.talend.commons.ui.swt.geftree.ITreeAction;
 
 /**
- * cli class global comment. Detailled comment
+ * cli class global comment. Detailed comment
  */
 public class TreeRoot extends TreeBranch {
 

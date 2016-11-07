@@ -23,7 +23,7 @@ import org.dom4j.io.XMLWriter;
 import org.talend.commons.exception.ExceptionHandler;
 
 /**
- * DOC Administrator class global comment. Detailled comment <br/>
+ * DOC Administrator class global comment. Detailed comment <br/>
  * 
  */
 public class XMLHandler {

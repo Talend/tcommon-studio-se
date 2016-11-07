@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class FolderImportNode extends ImportNode {
 

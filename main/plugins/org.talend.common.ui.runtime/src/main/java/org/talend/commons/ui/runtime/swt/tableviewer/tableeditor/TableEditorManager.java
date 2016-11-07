@@ -39,7 +39,7 @@ import org.talend.commons.utils.data.list.ListenableListEvent.TYPE;
 import org.talend.commons.utils.data.map.MultiLazyValuesMap;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * $Id: TableEditorManager.java,v 1.3 2006/06/02 15:24:10 amaumont Exp $
  */
 public class TableEditorManager {

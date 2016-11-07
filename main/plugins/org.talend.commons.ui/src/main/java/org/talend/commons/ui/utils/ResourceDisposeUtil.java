@@ -17,7 +17,7 @@ import org.eclipse.swt.graphics.Color;
 
 /**
  * 
- * nma class global comment. Detailled comment
+ * nma class global comment. Detailed comment
  */
 public class ResourceDisposeUtil {
 

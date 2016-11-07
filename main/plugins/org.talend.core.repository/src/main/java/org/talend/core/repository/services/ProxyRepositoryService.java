@@ -17,7 +17,7 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IProxyRepositoryService;
 
 /**
- * DOC nrousseau class global comment. Detailled comment
+ * DOC nrousseau class global comment. Detailed comment
  */
 public class ProxyRepositoryService implements IProxyRepositoryService {
 

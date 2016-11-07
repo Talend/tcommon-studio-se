@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Display;
 import org.talend.datatools.xml.utils.ATreeNode;
 
 /**
- * created by nrousseau on May 9, 2013 Detailled comment
+ * created by nrousseau on May 9, 2013 Detailed comment
  * 
  */
 public class VirtualXmlTreeLabelProvider extends LabelProvider implements IColorProvider {

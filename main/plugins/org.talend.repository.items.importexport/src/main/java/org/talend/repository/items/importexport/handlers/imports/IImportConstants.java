@@ -13,7 +13,7 @@
 package org.talend.repository.items.importexport.handlers.imports;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public interface IImportConstants {
 

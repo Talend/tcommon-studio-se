@@ -35,7 +35,7 @@ import org.talend.commons.utils.data.list.ListenableListEvent;
 
 /**
  * 
- * created by ycbai on 2015年1月4日 Detailled comment
+ * created by ycbai on 2015年1月4日 Detailed comment
  *
  */
 public class PropertiesTableView extends AbstractDataTableEditorView<Map<String, Object>> {

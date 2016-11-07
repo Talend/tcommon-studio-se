@@ -20,7 +20,7 @@ import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.utils.TalendQuoteUtils;
 
 /**
- * created by wchen on 2013-5-20 Detailled comment
+ * created by wchen on 2013-5-20 Detailed comment
  * 
  */
 public abstract class AbstractDragAndDropServiceHandler implements IDragAndDropServiceHandler {

@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * cli class global comment. Detailled comment
+ * cli class global comment. Detailed comment
  */
 public enum EDatabase4DriverClassName {
     ACCESS(EDatabaseTypeName.ACCESS, "net.ucanaccess.jdbc.UcanaccessDriver"), //$NON-NLS-1$

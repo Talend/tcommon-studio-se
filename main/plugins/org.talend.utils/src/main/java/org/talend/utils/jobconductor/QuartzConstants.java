@@ -14,7 +14,7 @@ package org.talend.utils.jobconductor;
 
 /**
  * 
- * DOC amaumont class global comment. Detailled comment
+ * DOC amaumont class global comment. Detailed comment
  */
 public final class QuartzConstants {
 

@@ -23,7 +23,7 @@ import org.talend.migration.AbstractMigrationTask;
 import org.talend.migration.IWorkspaceMigrationTask;
 
 /**
- * created by nrousseau on Jan 5, 2013 Detailled comment
+ * created by nrousseau on Jan 5, 2013 Detailed comment
  * 
  */
 public class EmptyConnectionsMigrationTask extends AbstractMigrationTask implements IWorkspaceMigrationTask {

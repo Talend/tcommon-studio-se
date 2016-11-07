@@ -21,7 +21,7 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.repository.i18n.Messages;
 
 /**
- * DOC ycbai class global comment. Detailled comment
+ * DOC ycbai class global comment. Detailed comment
  */
 public class ItemReferenceBean {
 

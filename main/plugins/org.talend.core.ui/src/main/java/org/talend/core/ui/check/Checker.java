@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.IStatus;
 
 /**
  * 
- * created by ycbai on 2015年10月9日 Detailled comment
+ * created by ycbai on 2015年10月9日 Detailed comment
  *
  */
 public class Checker implements IChecker {

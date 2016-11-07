@@ -20,7 +20,7 @@ import org.talend.core.model.process.IContextManager;
 import org.talend.core.model.process.IContextParameter;
 
 /**
- * ggu class global comment. Detailled comment
+ * ggu class global comment. Detailed comment
  */
 public class OrderContextParameterCommand extends Command {
 

@@ -19,7 +19,7 @@ import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.core.model.process.IConnection;
 
 /**
- * DOC smallet class global comment. Detailled comment <br/>
+ * DOC smallet class global comment. Detailed comment <br/>
  * 
  * $Id: IODataComponentContainer.java 38013 2010-03-05 14:21:59Z mhirt $
  * 

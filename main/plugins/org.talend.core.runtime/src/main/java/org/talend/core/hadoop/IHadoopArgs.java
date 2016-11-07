@@ -13,7 +13,7 @@
 package org.talend.core.hadoop;
 
 /**
- * created by ycbai on Aug 15, 2014 Detailled comment
+ * created by ycbai on Aug 15, 2014 Detailed comment
  *
  */
 public interface IHadoopArgs {

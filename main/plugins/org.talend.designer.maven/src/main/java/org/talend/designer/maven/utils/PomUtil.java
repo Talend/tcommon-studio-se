@@ -79,7 +79,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.xml.sax.SAXException;
 
 /**
- * created by ggu on 6 Feb 2015 Detailled comment
+ * created by ggu on 6 Feb 2015 Detailed comment
  *
  */
 public class PomUtil {

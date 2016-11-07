@@ -20,7 +20,7 @@ import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.ui.properties.tab.IDynamicProperty;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public interface ISVNUiProviderService extends IService {
 

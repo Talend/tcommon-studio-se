@@ -60,7 +60,7 @@ import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
 /**
- * DOC smallet class global comment. Detailled comment <br/>
+ * DOC smallet class global comment. Detailed comment <br/>
  *
  * $Id$
  *

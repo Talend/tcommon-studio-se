@@ -15,7 +15,7 @@ package org.talend.migration;
 import java.util.Date;
 
 /**
- * DOC ycbai class global comment. Detailled comment
+ * DOC ycbai class global comment. Detailed comment
  */
 public interface IMigrationTask {
 

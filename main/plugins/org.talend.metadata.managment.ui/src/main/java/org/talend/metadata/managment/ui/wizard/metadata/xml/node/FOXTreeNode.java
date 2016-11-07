@@ -19,7 +19,7 @@ import org.talend.core.model.metadata.IMetadataColumn;
 import org.talend.core.model.metadata.IMetadataTable;
 
 /**
- * DOC bqian class global comment. Detailled comment <br/>
+ * DOC bqian class global comment. Detailed comment <br/>
  * 
  * $Id: FOXTreeNode.java,v 1.1 2007/06/12 07:20:39 gke Exp $
  * 

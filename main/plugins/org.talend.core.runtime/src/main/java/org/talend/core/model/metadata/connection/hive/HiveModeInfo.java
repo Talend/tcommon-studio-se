@@ -13,7 +13,7 @@
 package org.talend.core.model.metadata.connection.hive;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public enum HiveModeInfo {
     STANDALONE("Standalone"), //$NON-NLS-1$

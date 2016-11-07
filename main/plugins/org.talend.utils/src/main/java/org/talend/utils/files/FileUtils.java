@@ -35,7 +35,7 @@ import org.talend.utils.string.StringUtilities;
 import org.talend.utils.sugars.ReturnCode;
 
 /**
- * DOC stephane class global comment. Detailled comment <br/>
+ * DOC stephane class global comment. Detailed comment <br/>
  * 
  * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
  * 

@@ -48,7 +48,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.metadata.managment.ui.model.IConnParamName;
 
 /**
- * ggu class global comment. Detailled comment
+ * ggu class global comment. Detailed comment
  */
 public final class OtherConnectionContextUtils {
 

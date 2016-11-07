@@ -25,7 +25,7 @@ import org.talend.core.model.repository.IRepositoryViewObject;
 import orgomg.cwm.resource.relational.Catalog;
 
 /**
- * created by xqliu on Sep 2, 2013 Detailled comment
+ * created by xqliu on Sep 2, 2013 Detailed comment
  * 
  */
 public class MetadataCatalogRepositoryObjectTest {

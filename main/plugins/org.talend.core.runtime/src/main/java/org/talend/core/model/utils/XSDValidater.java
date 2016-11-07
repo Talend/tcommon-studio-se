@@ -13,7 +13,7 @@
 package org.talend.core.model.utils;
 
 /**
- * DOC acer class global comment. Detailled comment <br/>
+ * DOC acer class global comment. Detailed comment <br/>
  * 
  */
 import java.io.File;

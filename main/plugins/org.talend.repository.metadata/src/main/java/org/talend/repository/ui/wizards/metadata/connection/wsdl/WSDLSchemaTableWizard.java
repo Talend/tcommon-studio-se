@@ -33,7 +33,7 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.ui.wizards.metadata.table.files.FileTableWizardPage;
 
 /**
- * DOC qzhang class global comment. Detailled comment
+ * DOC qzhang class global comment. Detailed comment
  */
 public class WSDLSchemaTableWizard extends CheckLastVersionRepositoryWizard implements INewWizard {
 

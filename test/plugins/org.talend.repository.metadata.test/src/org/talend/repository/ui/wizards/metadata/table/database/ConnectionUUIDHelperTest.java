@@ -45,7 +45,7 @@ import org.talend.utils.io.FilesUtils;
 import orgomg.cwm.objectmodel.core.Package;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class ConnectionUUIDHelperTest {
 

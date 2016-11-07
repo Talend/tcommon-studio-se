@@ -16,7 +16,7 @@ import org.eclipse.draw2d.Layer;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
- * cli class global comment. Detailled comment
+ * cli class global comment. Detailed comment
  */
 
 public class TreeAnimatingLayer extends Layer {

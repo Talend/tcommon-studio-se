@@ -19,7 +19,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * DOC hcyi class global comment. Detailled comment
+ * DOC hcyi class global comment. Detailed comment
  */
 public class KeywordsValidatorTest {
 

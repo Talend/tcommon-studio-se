@@ -17,7 +17,7 @@ import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.core.ui.CoreUIPlugin;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class CoreUIPreferenceInitializer extends AbstractPreferenceInitializer {
 

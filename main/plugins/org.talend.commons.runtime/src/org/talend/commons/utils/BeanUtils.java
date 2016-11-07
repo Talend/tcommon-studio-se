@@ -23,7 +23,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 /**
- * DOC ycbai class global comment. Detailled comment
+ * DOC ycbai class global comment. Detailed comment
  */
 public class BeanUtils {
 

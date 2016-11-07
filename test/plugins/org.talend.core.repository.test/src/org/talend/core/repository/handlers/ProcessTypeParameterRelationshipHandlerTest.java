@@ -25,7 +25,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 @SuppressWarnings("nls")
 public class ProcessTypeParameterRelationshipHandlerTest extends AbstractParameterRelationshipHandlerTest {

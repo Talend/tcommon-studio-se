@@ -13,7 +13,7 @@
 package org.talend.core.model.repository;
 
 /**
- * ggu class global comment. Detailled comment
+ * ggu class global comment. Detailed comment
  */
 public interface IRepositoryPrefConstants {
 

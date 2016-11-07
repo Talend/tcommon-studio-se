@@ -14,7 +14,7 @@ package org.talend.core.ui.branding;
 
 /**
  * 
- * DOC wchen class global comment. Detailled comment
+ * DOC wchen class global comment. Detailed comment
  */
 public class StartingConstants {
 

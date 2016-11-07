@@ -15,7 +15,7 @@ package org.talend.repository.ui.wizards.metadata.table.database;
 import org.eclipse.jface.wizard.WizardPage;
 
 /**
- * DOC hwang class global comment. Detailled comment
+ * DOC hwang class global comment. Detailed comment
  */
 public abstract class TemplateWizardPage extends WizardPage {
 

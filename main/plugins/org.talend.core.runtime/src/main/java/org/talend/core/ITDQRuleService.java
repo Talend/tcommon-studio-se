@@ -19,7 +19,7 @@ import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.core.model.process.IElementParameter;
 
 /**
- * DOC msjian class global comment. Detailled comment
+ * DOC msjian class global comment. Detailed comment
  */
 public interface ITDQRuleService extends ITDQService {
 

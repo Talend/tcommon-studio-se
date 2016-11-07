@@ -42,7 +42,7 @@ import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.viewer.ui.provider.RepoCommonViewerProvider;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class RepositoryMavenSettingDialog extends PreferenceDialog implements IProjectSettingContainer {
 

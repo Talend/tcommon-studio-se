@@ -52,7 +52,7 @@ import org.talend.core.ui.branding.IBrandingConfiguration;
 import org.talend.core.ui.branding.IBrandingService;
 
 /**
- * created by ggu on Nov 10, 2014 Detailled comment
+ * created by ggu on Nov 10, 2014 Detailed comment
  *
  */
 @SuppressWarnings("restriction")

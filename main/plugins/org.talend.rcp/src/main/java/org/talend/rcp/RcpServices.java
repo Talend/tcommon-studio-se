@@ -16,7 +16,7 @@ import org.talend.core.services.IRcpService;
 import org.talend.rcp.intro.ActionBarBuildHelper;
 
 /**
- * qwei class global comment. Detailled comment
+ * qwei class global comment. Detailed comment
  */
 public class RcpServices implements IRcpService {
 

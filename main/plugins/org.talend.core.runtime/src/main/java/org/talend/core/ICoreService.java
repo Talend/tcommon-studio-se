@@ -35,7 +35,7 @@ import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 
 /**
- * DOC hywang class global comment. Detailled comment
+ * DOC hywang class global comment. Detailed comment
  */
 public interface ICoreService extends IService {
 

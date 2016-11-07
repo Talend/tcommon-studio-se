@@ -20,7 +20,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 
 /**
- * DOC guanglong.du class global comment. Detailled comment
+ * DOC guanglong.du class global comment. Detailed comment
  */
 public class JobletRenameComponentConversion implements IComponentConversion {
 

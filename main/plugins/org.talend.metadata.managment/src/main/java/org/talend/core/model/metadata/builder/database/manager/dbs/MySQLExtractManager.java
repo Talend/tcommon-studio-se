@@ -26,7 +26,7 @@ import org.talend.core.model.metadata.builder.database.manager.ExtractManager;
 import org.talend.metadata.managment.utils.DatabaseConstant;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class MySQLExtractManager extends ExtractManager {
 

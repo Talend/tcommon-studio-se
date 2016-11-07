@@ -23,7 +23,7 @@ import org.eclipse.swt.widgets.Widget;
 import org.talend.commons.ui.runtime.ws.WindowSystem;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  * $Id: TableUtils.java 7183 2007-11-23 11:03:36Z amaumont $
  * 

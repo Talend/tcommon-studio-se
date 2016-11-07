@@ -18,7 +18,7 @@ import org.talend.commons.ui.swt.extended.table.AbstractExtendedTableViewer;
 import org.talend.commons.ui.swt.extended.table.ExtendedTableModel;
 
 /**
- * DOC Administrator class global comment. Detailled comment <br/>
+ * DOC Administrator class global comment. Detailed comment <br/>
  * 
  */
 public abstract class SaveAsGenericSchemaPushButtonForExtendedTable extends SaveAsGenericSchemaPushButton implements

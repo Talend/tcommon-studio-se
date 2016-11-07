@@ -22,7 +22,7 @@ import org.eclipse.ui.internal.cheatsheets.views.CheatSheetView;
 import org.eclipse.ui.internal.cheatsheets.views.ViewUtilities;
 
 /**
- * DOC yyi class global comment. Detailled comment
+ * DOC yyi class global comment. Detailed comment
  */
 public class CheatSheetPerspectiveAdapter extends PerspectiveAdapter {
 

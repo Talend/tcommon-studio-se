@@ -13,7 +13,7 @@
 package org.talend.designer.rowgenerator.data;
 
 /**
- * yzhang class global comment. Detailled comment <br/>
+ * yzhang class global comment. Detailed comment <br/>
  * 
  * $Id: LongParameter.java 下午03:40:54 2007-8-7 +0000 (2007-8-7) yzhang $
  * 

@@ -14,7 +14,7 @@ package org.talend.repository.viewer.content.listener;
 
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public interface IRefreshNodePerspectiveListener {
 

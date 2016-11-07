@@ -25,7 +25,7 @@ import org.talend.metadata.managment.ui.editor.MetadataTalendTypeEditor;
 import org.talend.metadata.managment.ui.i18n.Messages;
 
 /**
- * DOC YeXiaowei class global comment. Detailled comment <br/>
+ * DOC YeXiaowei class global comment. Detailed comment <br/>
  * 
  */
 public class MappingFileSelectDialog extends TitleAreaDialog {

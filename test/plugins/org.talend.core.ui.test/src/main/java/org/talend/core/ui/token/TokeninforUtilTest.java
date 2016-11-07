@@ -22,7 +22,7 @@ import us.monoid.json.JSONObject;
 
 /**
  * created by nrousseau on Mar 28, 2016
- * Detailled comment
+ * Detailed comment
  *
  */
 public class TokeninforUtilTest {

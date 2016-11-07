@@ -19,7 +19,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.graphics.Image;
 
 /**
- * DOC hywang class global comment. Detailled comment
+ * DOC hywang class global comment. Detailed comment
  */
 public class AbstractMetadataExtractorViewProvider extends LabelProvider implements ITreeContentProvider, ITableLabelProvider {
 

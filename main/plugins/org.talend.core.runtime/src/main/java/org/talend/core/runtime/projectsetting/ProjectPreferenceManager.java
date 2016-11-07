@@ -29,7 +29,7 @@ import org.talend.core.model.general.Project;
 import org.talend.repository.ProjectManager;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public final class ProjectPreferenceManager {
 

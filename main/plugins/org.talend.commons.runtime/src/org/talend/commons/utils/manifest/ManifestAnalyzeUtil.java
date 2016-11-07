@@ -20,7 +20,7 @@ import java.util.jar.JarInputStream;
 import java.util.jar.Manifest;
 
 /**
- * created by ycbai on 2013-3-18 Detailled comment
+ * created by ycbai on 2013-3-18 Detailed comment
  * 
  */
 public class ManifestAnalyzeUtil {

@@ -33,7 +33,7 @@ import org.talend.core.model.process.INodeReturn;
 import org.talend.core.model.process.IProcess;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class TestFakeNode extends Element implements INode {
 

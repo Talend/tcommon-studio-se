@@ -19,7 +19,7 @@ import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.core.model.properties.ConnectionItem;
 
 /**
- * DOC tguiu class global comment. Detailled comment <br/>
+ * DOC tguiu class global comment. Detailed comment <br/>
  * 
  * $Id: AbstractDelimitedFileStepForm.java 38013 2010-03-05 14:21:59Z mhirt $
  * 

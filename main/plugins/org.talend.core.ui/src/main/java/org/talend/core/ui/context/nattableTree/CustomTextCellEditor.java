@@ -26,7 +26,7 @@ import org.talend.commons.utils.PasswordEncryptUtil;
 import org.talend.core.model.process.IContextParameter;
 
 /**
- * created by ldong on Sep 5, 2014 Detailled comment
+ * created by ldong on Sep 5, 2014 Detailed comment
  * 
  */
 public class CustomTextCellEditor extends AbstractCellEditor {

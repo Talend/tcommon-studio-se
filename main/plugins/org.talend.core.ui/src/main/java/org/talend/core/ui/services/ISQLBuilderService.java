@@ -22,7 +22,7 @@ import org.talend.core.model.process.IElement;
 import org.talend.core.sqlbuilder.util.ConnectionParameters;
 
 /**
- * DOC nrousseau class global comment. Detailled comment
+ * DOC nrousseau class global comment. Detailed comment
  */
 public interface ISQLBuilderService extends IService {
 

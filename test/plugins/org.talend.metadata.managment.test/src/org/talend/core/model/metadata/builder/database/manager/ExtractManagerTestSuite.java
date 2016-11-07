@@ -28,7 +28,7 @@ import org.talend.core.model.metadata.builder.database.manager.dbs.SASExtractMan
 import org.talend.core.model.metadata.builder.database.manager.dbs.TeradataExtractManagerTest;
 
 /**
- * created by ggu on Jul 4, 2012 Detailled comment
+ * created by ggu on Jul 4, 2012 Detailed comment
  * 
  */
 @RunWith(Suite.class)

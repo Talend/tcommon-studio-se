@@ -31,7 +31,7 @@ import org.talend.core.model.metadata.IMetadataConnection;
 import org.talend.core.model.metadata.builder.database.DriverShim;
 
 /**
- * created by ggu on Jul 4, 2012 Detailled comment
+ * created by ggu on Jul 4, 2012 Detailed comment
  * 
  */
 public class JavaDBExtractManagerTest extends AbstractTest4ExtractManager {

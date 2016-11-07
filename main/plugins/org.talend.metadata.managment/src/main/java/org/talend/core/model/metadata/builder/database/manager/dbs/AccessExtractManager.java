@@ -25,7 +25,7 @@ import org.talend.core.model.metadata.builder.database.manager.ExtractManager;
 import org.talend.cwm.relational.TdColumn;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class AccessExtractManager extends ExtractManager {
 

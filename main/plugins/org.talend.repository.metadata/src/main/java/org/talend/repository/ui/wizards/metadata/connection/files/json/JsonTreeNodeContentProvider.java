@@ -18,7 +18,7 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
 /**
- * created by cmeng on Jul 2, 2015 Detailled comment
+ * created by cmeng on Jul 2, 2015 Detailed comment
  *
  */
 public class JsonTreeNodeContentProvider implements ITreeContentProvider {

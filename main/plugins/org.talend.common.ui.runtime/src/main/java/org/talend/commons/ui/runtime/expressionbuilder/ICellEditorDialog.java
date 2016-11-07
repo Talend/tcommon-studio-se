@@ -13,7 +13,7 @@
 package org.talend.commons.ui.runtime.expressionbuilder;
 
 /**
- * yzhang class global comment. Detailled comment <br/>
+ * yzhang class global comment. Detailed comment <br/>
  * 
  * $Id: ICellEditorDialog.java 下午05:56:18 2007-8-16 +0000 (2007-8-16) yzhang $
  * 

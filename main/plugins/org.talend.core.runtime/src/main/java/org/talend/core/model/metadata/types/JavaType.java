@@ -13,7 +13,7 @@
 package org.talend.core.model.metadata.types;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  * $Id$
  * 

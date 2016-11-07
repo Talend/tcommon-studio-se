@@ -26,7 +26,7 @@ import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 
 /**
- * created by wchen on Apr 24, 2015 Detailled comment
+ * created by wchen on Apr 24, 2015 Detailed comment
  *
  */
 public class NexusDownloadHelperWithProgress extends DownloadHelperWithProgress {

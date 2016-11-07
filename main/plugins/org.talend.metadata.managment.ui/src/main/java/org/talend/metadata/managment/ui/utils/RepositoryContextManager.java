@@ -24,7 +24,7 @@ import org.eclipse.core.runtime.Platform;
 import org.talend.commons.exception.ExceptionHandler;
 
 /**
- * created by ldong on Dec 18, 2014 Detailled comment
+ * created by ldong on Dec 18, 2014 Detailed comment
  * 
  */
 public class RepositoryContextManager {

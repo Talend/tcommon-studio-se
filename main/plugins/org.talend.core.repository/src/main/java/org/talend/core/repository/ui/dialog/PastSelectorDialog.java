@@ -41,7 +41,7 @@ import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.model.IRepositoryNode.EProperties;
 
 /**
- * DOC wchen class global comment. Detailled comment
+ * DOC wchen class global comment. Detailed comment
  */
 public class PastSelectorDialog extends Dialog {
 

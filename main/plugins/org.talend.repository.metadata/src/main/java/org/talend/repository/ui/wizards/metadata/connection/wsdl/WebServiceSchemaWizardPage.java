@@ -29,7 +29,7 @@ import org.talend.metadata.managment.ui.wizard.AbstractForm;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
 /**
- * DOC gldu class global comment. Detailled comment
+ * DOC gldu class global comment. Detailed comment
  */
 public class WebServiceSchemaWizardPage extends WSDLSchemaWizardPage {
 

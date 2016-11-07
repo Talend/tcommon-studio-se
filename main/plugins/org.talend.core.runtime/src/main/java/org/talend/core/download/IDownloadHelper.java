@@ -16,7 +16,7 @@ import java.io.File;
 import java.net.URL;
 
 /**
- * created by wchen on Apr 24, 2015 Detailled comment
+ * created by wchen on Apr 24, 2015 Detailed comment
  *
  */
 public interface IDownloadHelper {

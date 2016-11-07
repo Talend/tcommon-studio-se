@@ -18,7 +18,7 @@ import org.talend.commons.ui.runtime.swt.tableviewer.TableViewerCreatorNotModifi
 import org.talend.commons.ui.runtime.swt.tableviewer.sort.IColumnSortedListener;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/> $Id: ITableColumnSelectionListener.java,v 1.2 2006/06/02
+ * DOC amaumont class global comment. Detailed comment <br/> $Id: ITableColumnSelectionListener.java,v 1.2 2006/06/02
  * 15:24:10 amaumont Exp $
  */
 public interface ITableColumnSelectionListener extends SelectionListener {

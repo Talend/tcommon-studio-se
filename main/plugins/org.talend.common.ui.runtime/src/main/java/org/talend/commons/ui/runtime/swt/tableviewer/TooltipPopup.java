@@ -23,7 +23,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  * $Id: TooltipPopup.java 7038 2007-11-15 14:05:48Z plegall $
  * 
@@ -43,7 +43,7 @@ public final class TooltipPopup {
 
     /**
      * 
-     * DOC amaumont DraggingInfosPopup class global comment. Detailled comment <br/>
+     * DOC amaumont DraggingInfosPopup class global comment. Detailed comment <br/>
      * 
      * $Id: TooltipPopup.java 7038 2007-11-15 14:05:48Z plegall $
      * 

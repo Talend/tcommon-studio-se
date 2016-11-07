@@ -17,7 +17,7 @@ import org.talend.utils.thread.ThreadUtils;
 
 /**
  * 
- * DOC amaumont class global comment. Detailled comment
+ * DOC amaumont class global comment. Detailed comment
  */
 public abstract class AbstractDataCleaner {
 

@@ -18,7 +18,7 @@ import org.talend.commons.ui.runtime.geometry.Point2D;
 import org.talend.commons.ui.runtime.geometry.Point2DList;
 
 /**
- * Draw an horizontal Bezier link. Detailled comment <br/>
+ * Draw an horizontal Bezier link. Detailed comment <br/>
  * 
  * $Id$
  * 

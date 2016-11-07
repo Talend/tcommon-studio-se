@@ -30,7 +30,7 @@ import org.talend.utils.files.FileDirCleaner.SCAN_STRATEGY;
 
 /**
  * 
- * DOC amaumont class global comment. Detailled comment
+ * DOC amaumont class global comment. Detailed comment
  */
 public class TestFileDirCleaner {
 
@@ -571,7 +571,7 @@ public class TestFileDirCleaner {
 
     /**
      * 
-     * DOC amaumont FileDirCleaner2Test class global comment. Detailled comment
+     * DOC amaumont FileDirCleaner2Test class global comment. Detailed comment
      */
     public static class FSManager {
 
@@ -635,7 +635,7 @@ public class TestFileDirCleaner {
 
     /**
      * 
-     * DOC amaumont FileDirCleaner2Test class global comment. Detailled comment
+     * DOC amaumont FileDirCleaner2Test class global comment. Detailed comment
      */
     interface OperationForFSManager {
 
@@ -653,7 +653,7 @@ public class TestFileDirCleaner {
 
     /**
      * 
-     * DOC amaumont FileDirCleaner2Test class global comment. Detailled comment
+     * DOC amaumont FileDirCleaner2Test class global comment. Detailed comment
      */
     class FileDirCheckerForFSManager implements OperationForFSManager {
 
@@ -1002,7 +1002,7 @@ public class TestFileDirCleaner {
 
     /**
      * 
-     * DOC amaumont FileDirCleaner2Test class global comment. Detailled comment
+     * DOC amaumont FileDirCleaner2Test class global comment. Detailed comment
      */
     class FileGeneratorForFSManager implements OperationForFSManager {
 

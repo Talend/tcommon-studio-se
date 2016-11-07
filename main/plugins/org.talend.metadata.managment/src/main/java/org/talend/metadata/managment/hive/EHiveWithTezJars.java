@@ -14,7 +14,7 @@ package org.talend.metadata.managment.hive;
 
 /**
  *
- * created by ycbai on 2015年5月4日 Detailled comment
+ * created by ycbai on 2015年5月4日 Detailed comment
  *
  */
 public enum EHiveWithTezJars {

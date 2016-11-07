@@ -15,7 +15,7 @@ package org.talend.librariesmanager.ui.actions;
 import org.talend.commons.ui.swt.actions.AbstractShowViewAction;
 
 /**
- * DOC smallet class global comment. Detailled comment <br/>
+ * DOC smallet class global comment. Detailed comment <br/>
  * 
  * $Id: ShowModulesViewAction.java 1754 2007-02-01 09:46:26Z plegall $
  * 

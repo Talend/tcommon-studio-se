@@ -97,7 +97,7 @@ import org.talend.repository.model.RepositoryNodeUtilities;
 import org.talend.repository.ui.actions.AContextualAction;
 
 /**
- * DOC zwang class global comment. Detailled comment
+ * DOC zwang class global comment. Detailed comment
  */
 public class DuplicateAction extends AContextualAction {
 

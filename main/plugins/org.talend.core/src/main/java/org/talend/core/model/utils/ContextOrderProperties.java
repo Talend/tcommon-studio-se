@@ -42,7 +42,7 @@ import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.repository.ProjectManager;
 
 /**
- * created by ldong on Aug 7, 2014 Detailled comment
+ * created by ldong on Aug 7, 2014 Detailed comment
  * 
  */
 public class ContextOrderProperties extends Properties {

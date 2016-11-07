@@ -25,7 +25,7 @@ import org.eclipse.ui.dialogs.SelectionDialog;
 import org.talend.commons.ui.runtime.i18n.Messages;
 
 /**
- * DOC zqin class global comment. Detailled comment
+ * DOC zqin class global comment. Detailed comment
  */
 public class ModelSelectionDialog extends SelectionDialog {
 

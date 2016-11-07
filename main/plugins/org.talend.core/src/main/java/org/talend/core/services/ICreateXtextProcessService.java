@@ -20,7 +20,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 import org.talend.designer.joblet.model.JobletProcess;
 
 /**
- * DOC nma class global comment. Detailled comment
+ * DOC nma class global comment. Detailed comment
  */
 public interface ICreateXtextProcessService extends IService {
 

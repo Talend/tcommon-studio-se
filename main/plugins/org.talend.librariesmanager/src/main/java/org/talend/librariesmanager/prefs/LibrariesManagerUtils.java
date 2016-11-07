@@ -26,7 +26,7 @@ import org.talend.designer.core.IDesignerCoreService;
 import org.talend.librariesmanager.model.ModulesNeededProvider;
 
 /**
- * DOC smallet class global comment. Detailled comment <br/>
+ * DOC smallet class global comment. Detailed comment <br/>
  *
  */
 public class LibrariesManagerUtils {

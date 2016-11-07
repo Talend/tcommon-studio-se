@@ -20,7 +20,7 @@ import org.talend.core.IService;
 import org.w3c.dom.Element;
 
 /**
- * DOC smallet class global comment. Detailled comment <br/>
+ * DOC smallet class global comment. Detailed comment <br/>
  * 
  */
 public interface IBrandingService extends IService {

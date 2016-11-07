@@ -18,7 +18,7 @@ import org.talend.core.model.repository.IRepositoryPrefConstants;
 import org.talend.repository.RepositoryViewPlugin;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class RepoViewPreferenceInitializer extends AbstractPreferenceInitializer {
 

@@ -19,7 +19,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * DOC Administrator class global comment. Detailled comment
+ * DOC Administrator class global comment. Detailed comment
  */
 public class MappingTypeRetrieverTest {
 

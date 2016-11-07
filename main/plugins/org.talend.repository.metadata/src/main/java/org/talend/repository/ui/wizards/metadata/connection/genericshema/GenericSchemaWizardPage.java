@@ -23,7 +23,7 @@ import org.talend.cwm.helper.TableHelper;
 import org.talend.metadata.managment.ui.wizard.AbstractForm;
 
 /**
- * DOC Administrator class global comment. Detailled comment <br/>
+ * DOC Administrator class global comment. Detailed comment <br/>
  * 
  */
 public class GenericSchemaWizardPage extends WizardPage {

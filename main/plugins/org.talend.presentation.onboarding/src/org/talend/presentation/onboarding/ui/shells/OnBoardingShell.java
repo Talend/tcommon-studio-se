@@ -36,7 +36,7 @@ import org.talend.presentation.onboarding.utils.OnBoardingUtils;
 import org.talend.presentation.onboarding.utils.WidgetFinder;
 
 /**
- * created by cmeng on Sep 11, 2015 Detailled comment
+ * created by cmeng on Sep 11, 2015 Detailed comment
  *
  */
 public class OnBoardingShell {

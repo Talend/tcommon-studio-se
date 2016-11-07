@@ -34,7 +34,7 @@ import org.talend.repository.model.IRepositoryNode;
 import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
- * DOC nrousseau class global comment. Detailled comment
+ * DOC nrousseau class global comment. Detailed comment
  */
 public class QueryRepositoryObject extends org.talend.core.model.metadata.Query implements ISubRepositoryObject {
 

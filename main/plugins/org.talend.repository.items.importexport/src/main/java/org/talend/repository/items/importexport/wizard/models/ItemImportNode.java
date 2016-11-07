@@ -16,7 +16,7 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.repository.items.importexport.handlers.model.ImportItem;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class ItemImportNode extends ImportNode {
 

@@ -21,7 +21,7 @@ import java.lang.reflect.Method;
 import org.apache.log4j.Logger;
 
 /**
- * DOC ycbai class global comment. Detailled comment
+ * DOC ycbai class global comment. Detailed comment
  * 
  * General reflection utils.
  * 

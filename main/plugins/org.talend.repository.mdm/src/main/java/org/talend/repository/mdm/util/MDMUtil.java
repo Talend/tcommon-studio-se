@@ -38,7 +38,7 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
 /**
- * DOC hwang class global comment. Detailled comment
+ * DOC hwang class global comment. Detailed comment
  */
 public class MDMUtil {
 

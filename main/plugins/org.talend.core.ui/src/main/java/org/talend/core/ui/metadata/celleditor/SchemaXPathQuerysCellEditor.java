@@ -31,7 +31,7 @@ import org.talend.core.model.process.INode;
 import org.talend.core.ui.metadata.celleditor.xpathquery.SchemaXPathQuerysDialog;
 
 /**
- * DOC nrousseau class global comment. Detailled comment
+ * DOC nrousseau class global comment. Detailed comment
  */
 public class SchemaXPathQuerysCellEditor extends DialogCellEditor {
 

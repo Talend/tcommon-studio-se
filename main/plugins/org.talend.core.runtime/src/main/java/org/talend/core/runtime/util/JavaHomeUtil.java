@@ -24,7 +24,7 @@ import org.eclipse.jdt.launching.environments.IExecutionEnvironment;
 import org.eclipse.jdt.launching.environments.IExecutionEnvironmentsManager;
 
 /**
- * created by nrousseau on Jun 13, 2015 Detailled comment
+ * created by nrousseau on Jun 13, 2015 Detailed comment
  *
  */
 public class JavaHomeUtil {

@@ -59,7 +59,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
 import org.talend.repository.ProjectManager;
 
 /**
- * DOC nrousseau class global comment. Detailled comment
+ * DOC nrousseau class global comment. Detailed comment
  */
 public class LocalRepositoryFactoryTest extends BaseRepositoryTest {
 

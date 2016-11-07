@@ -16,7 +16,7 @@ import org.talend.core.language.ECodeLanguage;
 import org.talend.core.language.LanguageManager;
 
 /**
- * class global comment. Detailled comment <br/>
+ * class global comment. Detailed comment <br/>
  * $Id: StringParameter.java,v 1.3 2007/02/02 03:04:20 pub Exp $
  */
 public class StringParameter extends Parameter {

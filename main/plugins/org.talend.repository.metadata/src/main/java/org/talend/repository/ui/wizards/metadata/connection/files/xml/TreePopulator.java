@@ -40,7 +40,7 @@ import org.talend.metadata.managment.ui.wizard.metadata.xml.utils.CopyDeleteFile
 import org.talend.repository.ui.wizards.metadata.connection.files.json.AbstractTreePopulator;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  * $Id$
  * 

@@ -47,7 +47,7 @@ import org.talend.repository.mdm.i18n.Messages;
 import org.talend.repository.metadata.ui.wizards.form.AbstractXmlStepForm;
 
 /**
- * wzhang class global comment. Detailled comment
+ * wzhang class global comment. Detailed comment
  */
 public class MDMOutputDragAndDropHandler {
 
@@ -97,7 +97,7 @@ public class MDMOutputDragAndDropHandler {
 
     /**
      * 
-     * DOC wzhang XmlFileDragAndDropHandler class global comment. Detailled comment
+     * DOC wzhang XmlFileDragAndDropHandler class global comment. Detailed comment
      */
 
     class TreeDragSourceListener implements TransferDragSourceListener {
@@ -132,7 +132,7 @@ public class MDMOutputDragAndDropHandler {
 
     /**
      * 
-     * DOC wzhang XmlFileDragAndDropHandler class global comment. Detailled comment
+     * DOC wzhang XmlFileDragAndDropHandler class global comment. Detailed comment
      */
     class TableDropTargetListener implements TransferDropTargetListener {
 

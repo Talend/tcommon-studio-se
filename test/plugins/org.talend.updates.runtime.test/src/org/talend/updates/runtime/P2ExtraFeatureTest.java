@@ -23,7 +23,7 @@ import org.talend.updates.runtime.model.P2ExtraFeature;
 
 
 /**
- * DOC Talend  class global comment. Detailled comment
+ * DOC Talend  class global comment. Detailed comment
  */
 public class P2ExtraFeatureTest {
 

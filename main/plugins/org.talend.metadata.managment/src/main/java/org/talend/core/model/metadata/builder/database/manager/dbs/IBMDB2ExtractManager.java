@@ -37,7 +37,7 @@ import org.talend.metadata.managment.utils.ManagementTextUtils;
 import orgomg.cwm.resource.relational.NamedColumnSet;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class IBMDB2ExtractManager extends ExtractManager {
 

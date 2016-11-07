@@ -35,7 +35,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
 
 /**
- * DOC nrousseau class global comment. Detailled comment <br/>
+ * DOC nrousseau class global comment. Detailed comment <br/>
  * 
  * $Id: JobContextManager.java 51129 2010-11-10 06:35:59Z nrousseau $
  * 

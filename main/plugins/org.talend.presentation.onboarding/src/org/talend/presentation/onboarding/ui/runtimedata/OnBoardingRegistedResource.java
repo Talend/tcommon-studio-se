@@ -21,7 +21,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * created by cmeng on Sep 21, 2015 Detailled comment
+ * created by cmeng on Sep 21, 2015 Detailed comment
  *
  */
 public class OnBoardingRegistedResource {

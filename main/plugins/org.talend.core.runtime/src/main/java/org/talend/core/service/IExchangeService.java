@@ -16,7 +16,7 @@ import org.talend.core.IService;
 
 /**
  * 
- * DOC hcyi class global comment. Detailled comment
+ * DOC hcyi class global comment. Detailed comment
  */
 public interface IExchangeService extends IService {
 

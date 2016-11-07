@@ -31,7 +31,7 @@ import org.talend.designer.runprocess.IProcessor;
 import org.talend.repository.ProjectManager;
 
 /**
- * created by ggu on 4 Feb 2015 Detailled comment
+ * created by ggu on 4 Feb 2015 Detailed comment
  *
  */
 public class CreateMavenTestPom extends AbstractMavenProcessorPom {

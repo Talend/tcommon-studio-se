@@ -27,7 +27,7 @@ import org.talend.commons.ui.swt.formtools.LabelledText;
 import org.talend.metadata.managment.ui.wizard.metadata.xml.utils.StringUtil;
 
 /**
- * wzhang class global comment. Detailled comment
+ * wzhang class global comment. Detailed comment
  */
 public class NameSpaceDialog extends TitleAreaDialog {
 

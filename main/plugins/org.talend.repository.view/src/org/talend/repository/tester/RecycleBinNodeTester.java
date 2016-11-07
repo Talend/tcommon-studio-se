@@ -15,7 +15,7 @@ package org.talend.repository.tester;
 import org.talend.repository.model.RepositoryNode;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class RecycleBinNodeTester extends AbstractNodeTester {
 

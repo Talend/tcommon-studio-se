@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
 import org.talend.presentation.onboarding.utils.OnBoardingConstants;
 
 /**
- * created by cmeng on Sep 15, 2015 Detailled comment
+ * created by cmeng on Sep 15, 2015 Detailed comment
  *
  */
 public class Messages extends MessagesCore {

@@ -42,7 +42,7 @@ import org.talend.core.model.process.IContextParameter;
 import org.talend.core.utils.TalendQuoteUtils;
 
 /**
- * qzhang class global comment. Detailled comment <br/>
+ * qzhang class global comment. Detailed comment <br/>
  * 
  */
 public final class DefaultCellEditorFactory {
@@ -462,7 +462,7 @@ public final class DefaultCellEditorFactory {
     }
 
     /**
-     * qzhang DefaultCellEditorFactory class global comment. Detailled comment.
+     * qzhang DefaultCellEditorFactory class global comment. Detailed comment.
      * 
      */
     private abstract class CustomCellEditor extends CustomDialogCellEditor {

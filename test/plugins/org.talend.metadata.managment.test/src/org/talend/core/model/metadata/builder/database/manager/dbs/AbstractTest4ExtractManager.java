@@ -63,7 +63,7 @@ import org.talend.cwm.relational.TdColumn;
 import org.talend.cwm.relational.TdTable;
 
 /**
- * created by ggu on Jul 4, 2012 Detailled comment
+ * created by ggu on Jul 4, 2012 Detailed comment
  * 
  */
 @PrepareForTest({ ExtractMetaDataUtils.class })

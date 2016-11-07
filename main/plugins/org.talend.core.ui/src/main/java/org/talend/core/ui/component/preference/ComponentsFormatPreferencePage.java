@@ -760,7 +760,7 @@ public class ComponentsFormatPreferencePage extends PreferencePage implements IW
     }
 
     /**
-     * yzhang ComponentsFormatPreferencePage class global comment. Detailled comment <br/>
+     * yzhang ComponentsFormatPreferencePage class global comment. Detailed comment <br/>
      * 
      * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ææäº, 29 ä¹æ 2006) nrousseau $
      * 

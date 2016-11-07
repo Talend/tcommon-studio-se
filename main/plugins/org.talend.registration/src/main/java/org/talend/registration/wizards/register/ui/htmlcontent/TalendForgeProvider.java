@@ -34,7 +34,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * created by kongxiaohan on Mar 24, 2015 Detailled comment
+ * created by kongxiaohan on Mar 24, 2015 Detailed comment
  *
  */
 public class TalendForgeProvider implements IIntroXHTMLContentProvider {

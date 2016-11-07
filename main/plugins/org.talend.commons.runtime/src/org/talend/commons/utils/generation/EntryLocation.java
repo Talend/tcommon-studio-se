@@ -15,7 +15,7 @@ package org.talend.commons.utils.generation;
 import org.talend.commons.i18n.internal.Messages;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  * $Id$
  * 

@@ -16,7 +16,7 @@ import org.talend.core.model.properties.Item;
 import org.talend.migration.IMigrationTask.ExecutionResult;
 
 /**
- * DOC bZhou class global comment. Detailled comment
+ * DOC bZhou class global comment. Detailed comment
  */
 public interface IMigrateDIMetadataItemService extends IService {
 

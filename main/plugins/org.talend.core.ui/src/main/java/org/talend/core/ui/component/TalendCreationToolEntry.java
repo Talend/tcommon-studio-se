@@ -18,7 +18,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.talend.core.model.repository.ERepositoryObjectType;
 
 /**
- * DOC hwang class global comment. Detailled comment
+ * DOC hwang class global comment. Detailed comment
  */
 public class TalendCreationToolEntry extends CreationToolEntry {
 
@@ -46,4 +46,5 @@ public class TalendCreationToolEntry extends CreationToolEntry {
     public CreationFactory getFactory() {
         return this.factory;
     }
+
 }

@@ -23,7 +23,7 @@ import org.talend.commons.ui.swt.extended.table.ExtendedTableModel;
 
 /**
  * 
- * created by ycbai on 2015年1月4日 Detailled comment
+ * created by ycbai on 2015年1月4日 Detailed comment
  *
  */
 public class PropertiesFieldModel extends ExtendedTableModel<Map<String, Object>> {

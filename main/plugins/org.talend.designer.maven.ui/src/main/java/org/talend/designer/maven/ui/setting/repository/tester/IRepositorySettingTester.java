@@ -14,7 +14,7 @@ package org.talend.designer.maven.ui.setting.repository.tester;
 
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public interface IRepositorySettingTester {
 

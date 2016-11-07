@@ -23,7 +23,7 @@ import org.talend.librariesmanager.ui.dialogs.ExternalModulesInstallDialogWithPr
 import org.talend.librariesmanager.ui.i18n.Messages;
 
 /**
- * created by Administrator on 2012-9-17 Detailled comment
+ * created by Administrator on 2012-9-17 Detailed comment
  * 
  */
 public class ModulesInstaller {

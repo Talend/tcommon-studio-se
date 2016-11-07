@@ -15,7 +15,7 @@ package org.talend.utils.string;
 
 /**
  * 
- * DOC mzhao class global comment. Detailled comment
+ * DOC mzhao class global comment. Detailed comment
  */
 public final class MD5 {
 

@@ -30,7 +30,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
- * DOC chuger class global comment. Detailled comment <br/>
+ * DOC chuger class global comment. Detailed comment <br/>
  * 
  * $Id: XmlArray.java 38013 2010-03-05 14:21:59Z mhirt $
  * 

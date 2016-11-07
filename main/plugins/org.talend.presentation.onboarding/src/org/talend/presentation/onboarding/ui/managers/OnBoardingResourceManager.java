@@ -23,7 +23,7 @@ import org.talend.presentation.onboarding.i18n.Messages;
 import org.talend.presentation.onboarding.ui.runtimedata.OnBoardingRegistedResource;
 
 /**
- * created by cmeng on Sep 15, 2015 Detailled comment
+ * created by cmeng on Sep 15, 2015 Detailed comment
  *
  */
 public class OnBoardingResourceManager {

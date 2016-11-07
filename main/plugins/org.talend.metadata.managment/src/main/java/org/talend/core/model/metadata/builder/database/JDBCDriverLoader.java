@@ -30,7 +30,7 @@ import org.talend.core.database.conn.version.EDatabaseVersion4Drivers;
 import org.talend.utils.sql.ConnectionUtils;
 
 /**
- * DOC YeXiaowei class global comment. Detailled comment <br/>
+ * DOC YeXiaowei class global comment. Detailed comment <br/>
  * 
  */
 public class JDBCDriverLoader {

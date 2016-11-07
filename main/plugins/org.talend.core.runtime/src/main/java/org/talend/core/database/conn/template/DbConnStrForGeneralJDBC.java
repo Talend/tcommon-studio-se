@@ -16,7 +16,7 @@ import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.database.conn.EDatabaseConnVar;
 
 /**
- * cli class global comment. Detailled comment
+ * cli class global comment. Detailed comment
  */
 public class DbConnStrForGeneralJDBC extends DbConnStr {
 

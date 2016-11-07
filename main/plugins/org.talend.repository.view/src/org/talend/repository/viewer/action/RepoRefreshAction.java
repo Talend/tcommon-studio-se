@@ -23,7 +23,7 @@ import org.talend.repository.navigator.RepoViewCommonNavigator;
 
 /**
  * 
- * DOC ggu RepoRefreshAction class global comment. Detailled comment
+ * DOC ggu RepoRefreshAction class global comment. Detailed comment
  */
 public class RepoRefreshAction implements IViewActionDelegate {
 

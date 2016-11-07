@@ -18,7 +18,7 @@ import java.io.OutputStream;
 
 /**
  * 
- * DOC amaumont  class global comment. Detailled comment
+ * DOC amaumont  class global comment. Detailed comment
  * <br/>
  *
  */

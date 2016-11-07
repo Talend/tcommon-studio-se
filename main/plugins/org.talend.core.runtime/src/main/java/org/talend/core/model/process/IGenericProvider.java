@@ -15,7 +15,7 @@ package org.talend.core.model.process;
 import java.util.List;
 
 /**
- * created by hcyi on Mar 25, 2016 Detailled comment
+ * created by hcyi on Mar 25, 2016 Detailed comment
  *
  */
 public interface IGenericProvider {

@@ -35,7 +35,7 @@ import org.talend.commons.ui.runtime.utils.ControlUtils;
 import org.talend.commons.ui.swt.colorstyledtext.ColorStyledText;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  * $Id: TypedTextCommandExecutor.java 7038 2007-11-15 14:05:48Z plegall $
  * 

@@ -20,7 +20,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.rule.PowerMockRule;
 
 /**
- * DOC msjian class global comment. Detailled comment
+ * DOC msjian class global comment. Detailed comment
  */
 @PrepareForTest({ SupportDBUrlType.class })
 public class SupportDBUrlTypeTest {

@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
 import org.talend.commons.i18n.MessagesCore;
 
 /**
- * DOC wzhang class global comment. Detailled comment
+ * DOC wzhang class global comment. Detailed comment
  */
 public class Messages extends MessagesCore {
 

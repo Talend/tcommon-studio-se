@@ -13,7 +13,7 @@
 package org.talend.metadata.managment.utils;
 
 /**
- * DOC Administrator class global comment. Detailled comment
+ * DOC Administrator class global comment. Detailed comment
  */
 public class ManagementTextUtils {
 

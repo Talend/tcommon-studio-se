@@ -55,7 +55,7 @@ import org.talend.updates.runtime.model.FeatureCategory;
 import org.talend.updates.runtime.model.P2ExtraFeature;
 
 /**
- * created by sgandon on 25 févr. 2013 Detailled comment
+ * created by sgandon on 25 févr. 2013 Detailed comment
  * 
  */
 public class SelectExtraFeaturesToInstallWizardPage extends WizardPage {

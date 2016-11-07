@@ -59,7 +59,7 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryNode;
 
 /**
- * created by hcyi on May 25, 2015 Detailled comment
+ * created by hcyi on May 25, 2015 Detailed comment
  *
  */
 public class ConvertJobsUtil {

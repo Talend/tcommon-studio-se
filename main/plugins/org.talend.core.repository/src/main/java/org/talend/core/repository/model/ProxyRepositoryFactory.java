@@ -139,7 +139,7 @@ import orgomg.cwm.objectmodel.core.ModelElement;
  * 
  */
 /**
- * DOC Administrator class global comment. Detailled comment
+ * DOC Administrator class global comment. Detailed comment
  */
 public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 

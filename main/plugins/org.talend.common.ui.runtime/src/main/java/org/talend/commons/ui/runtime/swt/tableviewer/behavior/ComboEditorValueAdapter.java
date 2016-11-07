@@ -15,7 +15,7 @@ package org.talend.commons.ui.runtime.swt.tableviewer.behavior;
 import org.eclipse.jface.viewers.CellEditor;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  * $Id$
  * 

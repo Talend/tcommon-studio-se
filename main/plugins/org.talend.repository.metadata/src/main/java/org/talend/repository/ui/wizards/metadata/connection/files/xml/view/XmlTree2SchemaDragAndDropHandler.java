@@ -53,7 +53,7 @@ import org.talend.repository.ui.wizards.metadata.connection.files.xml.dnd.XPathT
 
 /**
  * 
- * DOC ycbai class global comment. Detailled comment
+ * DOC ycbai class global comment. Detailed comment
  * 
  */
 public class XmlTree2SchemaDragAndDropHandler {

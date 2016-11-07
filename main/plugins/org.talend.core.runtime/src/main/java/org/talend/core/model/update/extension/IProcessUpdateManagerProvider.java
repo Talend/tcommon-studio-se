@@ -21,7 +21,7 @@ import org.talend.core.model.update.IUpdateItemType;
 import org.talend.core.model.update.UpdateResult;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public interface IProcessUpdateManagerProvider extends IUpdateManagerProvider {
 

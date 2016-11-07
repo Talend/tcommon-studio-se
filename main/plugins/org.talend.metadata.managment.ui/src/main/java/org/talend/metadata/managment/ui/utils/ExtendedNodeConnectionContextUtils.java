@@ -27,7 +27,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.metadata.managment.ui.model.IConnParamName;
 
 /**
- * created by ldong on Dec 18, 2014 Detailled comment
+ * created by ldong on Dec 18, 2014 Detailed comment
  * 
  */
 public class ExtendedNodeConnectionContextUtils {

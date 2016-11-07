@@ -19,7 +19,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.talend.updates.runtime.model.ExtraFeature;
 
 /**
- * created by ggu on Jul 17, 2014 Detailled comment
+ * created by ggu on Jul 17, 2014 Detailed comment
  *
  */
 public abstract class AbstractExtraUpdatesFactory {

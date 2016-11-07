@@ -32,7 +32,7 @@ import org.talend.core.ui.i18n.Messages;
 import org.talend.core.ui.proposal.JavaSimpleDateFormatProposalProvider;
 
 /**
- * DOC chuang class global comment. Detailled comment
+ * DOC chuang class global comment. Detailed comment
  */
 public class PatternCalendar extends SWTCalendarWithTime {
 

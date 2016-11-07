@@ -24,7 +24,7 @@ import org.talend.core.model.process.IContextParameter;
 import org.talend.core.utils.TalendQuoteUtils;
 
 /**
- * DOC cantoine class global comment. Detailled comment <br/>
+ * DOC cantoine class global comment. Detailed comment <br/>
  * 
  * $Id: XmlExtractorSchemaModel.java 949 2006-12-11 15:03:40Z cantoine $
  * 

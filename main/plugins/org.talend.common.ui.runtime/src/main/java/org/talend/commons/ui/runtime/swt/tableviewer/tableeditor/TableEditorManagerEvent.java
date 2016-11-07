@@ -15,7 +15,7 @@ package org.talend.commons.ui.runtime.swt.tableviewer.tableeditor;
 import org.eclipse.swt.custom.TableEditor;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  */
 public class TableEditorManagerEvent {

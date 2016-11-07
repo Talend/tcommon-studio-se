@@ -26,7 +26,7 @@ import org.talend.core.ui.metadata.editor.MetadataEmfTableEditorView;
 import org.talend.repository.metadata.ui.wizards.form.AbstractXmlStepForm;
 
 /**
- * DOC hywang class global comment. Detailled comment
+ * DOC hywang class global comment. Detailed comment
  */
 public class BRMSSchemaOutputDialog extends XmlFileSchemaDialog {
 

@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Composite;
 
 /**
  * 
- * created by hcyi on Jan 30, 2015 Detailled comment
+ * created by hcyi on Jan 30, 2015 Detailed comment
  *
  */
 public class CSSUserProfileElementAdapter extends CompositeElement {

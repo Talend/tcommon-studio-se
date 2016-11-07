@@ -35,7 +35,7 @@ import orgomg.cwm.resource.relational.Catalog;
 import orgomg.cwm.resource.relational.Schema;
 
 /**
- * DOC klliu class global comment. Detailled comment
+ * DOC klliu class global comment. Detailed comment
  */
 public class MetadataSchemaRepositoryObject extends MetadataSchema implements ISubRepositoryObject {
 

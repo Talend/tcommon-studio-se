@@ -67,7 +67,7 @@ import org.talend.core.ui.context.model.tree.GroupByVariableProvider;
 import org.talend.core.ui.i18n.Messages;
 
 /**
- * DOC bqian class global comment. Detailled comment <br/>
+ * DOC bqian class global comment. Detailed comment <br/>
  * 
  */
 public class ContextTreeValuesComposite extends AbstractContextTabEditComposite {

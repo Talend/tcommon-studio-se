@@ -18,7 +18,7 @@ import org.talend.core.language.LanguageManager;
 
 
 /**
- * DOC amaumont  class global comment. Detailled comment
+ * DOC amaumont  class global comment. Detailed comment
  * <br/>
  *
  * $Id$

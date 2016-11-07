@@ -13,7 +13,7 @@
 package org.talend.commons.i18n;
 
 /**
- * DOC wzhang class global comment. Detailled comment
+ * DOC wzhang class global comment. Detailed comment
  */
 public class ImportBabiliCancelException extends InterruptedException {
 

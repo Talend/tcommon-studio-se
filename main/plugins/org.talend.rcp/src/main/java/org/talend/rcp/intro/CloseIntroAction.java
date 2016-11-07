@@ -16,7 +16,7 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.ui.PlatformUI;
 
 /**
- * wchen class global comment. Detailled comment
+ * wchen class global comment. Detailed comment
  */
 public class CloseIntroAction extends Action {
 

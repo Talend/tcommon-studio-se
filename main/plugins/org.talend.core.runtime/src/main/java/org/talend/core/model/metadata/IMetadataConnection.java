@@ -18,7 +18,7 @@ import java.util.Map;
 import org.talend.core.database.conn.ConnParameterKeys;
 
 /**
- * DOC nrousseau class global comment. Detailled comment <br/>
+ * DOC nrousseau class global comment. Detailed comment <br/>
  * 
  * $Id: IMetadataConnection.java 38013 2010-03-05 14:21:59Z mhirt $
  * 

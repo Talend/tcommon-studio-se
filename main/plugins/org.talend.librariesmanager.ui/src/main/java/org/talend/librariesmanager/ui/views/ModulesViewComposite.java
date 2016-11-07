@@ -40,7 +40,7 @@ import org.talend.librariesmanager.ui.i18n.Messages;
  * This is the composite filled in the ModulesView. So it implemented the inferface IModulesViewComposite. Know more see
  * interface IModulesViewComposite.
  * 
- * yzhang class global comment. Detailled comment <br/>
+ * yzhang class global comment. Detailed comment <br/>
  * 
  * $Id: PerlModulesViewComposite.java PerlModulesViewComposite 2007-1-26 下�?�1�7:53:04 +0000 (下�?�1�7:53:04, 2007-1-26
  * 2007) yzhang $

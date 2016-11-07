@@ -28,7 +28,7 @@ import org.talend.core.model.component_cache.util.ComponentCacheResourceFactoryI
 import org.talend.core.model.general.ILibrariesService;
 
 /**
- * DOC zwzhao class global comment. Detailled comment
+ * DOC zwzhao class global comment. Detailed comment
  */
 public class ComponentManager {
 

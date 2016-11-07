@@ -34,7 +34,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
 /**
- * created by wchen on Jan 27, 2015 Detailled comment
+ * created by wchen on Jan 27, 2015 Detailed comment
  *
  */
 public abstract class AbsMigrationCheckHandler implements IMigrationCheckHandler {

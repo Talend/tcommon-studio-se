@@ -19,7 +19,7 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.registration.RegistrationPlugin;
 
 /**
- * created by ggu on 23 Jan 2015 Detailled comment
+ * created by ggu on 23 Jan 2015 Detailed comment
  *
  */
 public class HttpProxyUtil {

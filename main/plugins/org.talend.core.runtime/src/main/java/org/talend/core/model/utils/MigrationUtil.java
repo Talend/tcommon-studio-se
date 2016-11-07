@@ -22,7 +22,7 @@ import org.talend.migration.IMigrationTask;
 import org.talend.migration.IMigrationTask.ExecutionResult;
 
 /**
- * DOC ycbai class global comment. Detailled comment
+ * DOC ycbai class global comment. Detailed comment
  */
 public class MigrationUtil {
 

@@ -20,7 +20,7 @@ import org.talend.commons.utils.TalendDBUtils;
 import org.talend.fakejdbc.FakeResultSet;
 
 /**
- * created by hwang on Sep 18, 2015 Detailled comment
+ * created by hwang on Sep 18, 2015 Detailed comment
  *
  */
 public class EXASOLResultSet extends FakeResultSet {

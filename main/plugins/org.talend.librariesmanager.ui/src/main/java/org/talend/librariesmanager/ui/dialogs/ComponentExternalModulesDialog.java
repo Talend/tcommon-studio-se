@@ -22,7 +22,7 @@ import org.talend.librariesmanager.ui.LibManagerUiPlugin;
 import org.talend.librariesmanager.ui.i18n.Messages;
 
 /**
- * created by Administrator on 2012-9-18 Detailled comment
+ * created by Administrator on 2012-9-18 Detailed comment
  * 
  */
 public class ComponentExternalModulesDialog extends ExternalModulesInstallDialogWithProgress {

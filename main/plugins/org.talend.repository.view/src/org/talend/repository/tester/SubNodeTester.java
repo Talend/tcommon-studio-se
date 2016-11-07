@@ -16,7 +16,7 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.repository.model.RepositoryNode;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public abstract class SubNodeTester extends AbstractNodeTester {
 

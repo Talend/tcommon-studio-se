@@ -18,7 +18,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 /**
- * created by bchen on Sep 19, 2012 Detailled comment
+ * created by bchen on Sep 19, 2012 Detailed comment
  * 
  */
 public class TalendTimestampWithTZ extends Date {

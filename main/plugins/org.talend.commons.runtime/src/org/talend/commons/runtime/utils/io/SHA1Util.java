@@ -21,7 +21,7 @@ import java.io.InputStream;
 /**
  * Java SHA-1
  * 
- * DOC hcyi class global comment. Detailled comment
+ * DOC hcyi class global comment. Detailed comment
  */
 public class SHA1Util {
 

@@ -19,7 +19,7 @@ import java.io.InputStreamReader;
 import org.talend.commons.exception.WarningException;
 
 /**
- * cli class global comment. Detailled comment
+ * cli class global comment. Detailed comment
  */
 public final class ProcessStreamTrashReaderUtil {
 

@@ -98,7 +98,7 @@ import org.talend.repository.ui.wizards.metadata.connection.files.xml.view.XmlFi
 import org.talend.repository.ui.wizards.metadata.connection.files.xml.view.XmlTree2SchemaLinker;
 
 /**
- * wzhang class global comment. Detailled comment
+ * wzhang class global comment. Detailed comment
  */
 public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
 
@@ -986,7 +986,7 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
     }
 
     /**
-     * class global comment. Detailled comment
+     * class global comment. Detailed comment
      */
     class DialogErrorXMLLabelCellEditor implements ICellEditorListener {
 

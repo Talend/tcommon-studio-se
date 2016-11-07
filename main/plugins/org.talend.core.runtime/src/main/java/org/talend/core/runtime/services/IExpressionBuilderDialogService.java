@@ -22,7 +22,7 @@ import org.talend.core.IService;
 import org.talend.core.model.process.INode;
 
 /**
- * yzhang class global comment. Detailled comment <br/>
+ * yzhang class global comment. Detailed comment <br/>
  * 
  * $Id: IExpressionBuilderDialogService.java 下午04:26:06 2007-8-1 +0000 (2007-8-1) yzhang $
  * 

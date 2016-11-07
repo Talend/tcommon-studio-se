@@ -17,7 +17,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 
 /**
- * DOC Administrator class global comment. Detailled comment
+ * DOC Administrator class global comment. Detailed comment
  */
 public class AddRenameOnFileCopyConversion implements IComponentConversion {
 

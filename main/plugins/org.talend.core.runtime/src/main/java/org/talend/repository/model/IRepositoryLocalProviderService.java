@@ -15,7 +15,7 @@ package org.talend.repository.model;
 import org.talend.core.IService;
 
 /**
- * yzhang class global comment. Detailled comment <br/>
+ * yzhang class global comment. Detailed comment <br/>
  * 
  * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
  * 

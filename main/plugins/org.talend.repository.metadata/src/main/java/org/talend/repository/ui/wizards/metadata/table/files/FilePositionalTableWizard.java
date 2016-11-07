@@ -32,7 +32,7 @@ import org.talend.repository.metadata.i18n.Messages;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
 /**
- * DOC ocarbone class global comment. Detailled comment <br/>
+ * DOC ocarbone class global comment. Detailed comment <br/>
  * 
  * $Id: FilePositionalTableWizard.java 51998 2010-12-01 05:33:08Z hywang $
  * 

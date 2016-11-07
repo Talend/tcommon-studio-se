@@ -25,7 +25,7 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.model.utils.IDragAndDropServiceHandler;
 
 /**
- * DOC hwang class global comment. Detailled comment
+ * DOC hwang class global comment. Detailed comment
  */
 public class DragAndDropManager {
 

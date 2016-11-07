@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 /**
- * created by wchen on 2015-5-15 Detailled comment
+ * created by wchen on 2015-5-15 Detailed comment
  *
  */
 public abstract class AbstractLoginTask implements ILoginTask {

@@ -13,7 +13,7 @@
 package org.talend.commons.ui.swt.proposal;
 
 /**
- * DOC Administrator class global comment. Detailled comment
+ * DOC Administrator class global comment. Detailed comment
  */
 public interface IContentProposalService {
 

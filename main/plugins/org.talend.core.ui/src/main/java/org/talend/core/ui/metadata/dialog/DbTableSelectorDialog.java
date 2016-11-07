@@ -38,7 +38,7 @@ import org.talend.core.ui.i18n.Messages;
 import org.talend.core.ui.metadata.dialog.DbTableSelectorObject.ObjectType;
 
 /**
- * qzhang class global comment. Detailled comment <br/>
+ * qzhang class global comment. Detailed comment <br/>
  * 
  */
 public class DbTableSelectorDialog extends Dialog {
@@ -153,7 +153,7 @@ public class DbTableSelectorDialog extends Dialog {
     }
 
     /**
-     * qzhang DbTableSelectorDialog class global comment. Detailled comment <br/>
+     * qzhang DbTableSelectorDialog class global comment. Detailed comment <br/>
      * 
      */
     private class ListProvider extends LabelProvider implements IStructuredContentProvider, ITreeContentProvider {

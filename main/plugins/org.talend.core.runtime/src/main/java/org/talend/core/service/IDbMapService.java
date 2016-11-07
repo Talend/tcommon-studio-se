@@ -17,7 +17,7 @@ import org.talend.core.model.process.IExternalNode;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 
 /**
- * DOC talend class global comment. Detailled comment
+ * DOC talend class global comment. Detailed comment
  */
 public interface IDbMapService extends IService {
 

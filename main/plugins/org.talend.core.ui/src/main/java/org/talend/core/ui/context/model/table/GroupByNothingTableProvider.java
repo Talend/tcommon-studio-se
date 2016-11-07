@@ -27,7 +27,7 @@ import org.talend.core.ui.context.ContextTableValuesComposite;
 import org.talend.core.ui.context.model.ContextProviderProxy;
 
 /**
- * cli class global comment. Detailled comment
+ * cli class global comment. Detailed comment
  */
 public class GroupByNothingTableProvider extends ContextProviderProxy {
 

@@ -21,7 +21,7 @@ import org.talend.daikon.properties.property.Property;
 import org.talend.daikon.properties.property.PropertyValueEvaluator;
 
 /**
- * created by ycbai on 2016年9月19日 Detailled comment
+ * created by ycbai on 2016年9月19日 Detailed comment
  *
  */
 public abstract class AbstractPropertyValueEvaluator implements PropertyValueEvaluator {

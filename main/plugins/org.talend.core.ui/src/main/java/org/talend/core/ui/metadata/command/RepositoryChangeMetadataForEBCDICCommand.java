@@ -28,7 +28,7 @@ import org.talend.core.model.process.INode;
 import org.talend.core.ui.CoreUIPlugin;
 
 /**
- * nrousseau class global comment. Detailled comment
+ * nrousseau class global comment. Detailed comment
  */
 public class RepositoryChangeMetadataForEBCDICCommand extends Command {
 

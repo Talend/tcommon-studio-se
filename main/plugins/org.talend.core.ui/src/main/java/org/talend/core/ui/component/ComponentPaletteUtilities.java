@@ -29,7 +29,7 @@ import org.talend.core.ui.services.IDesignerCoreUIService;
 import org.talend.designer.core.IPaletteFilter;
 
 /**
- * DOC smallet class global comment. Detailled comment <br/>
+ * DOC smallet class global comment. Detailed comment <br/>
  * 
  * TODO SML/NRO Move into org.talend.core ?
  * 

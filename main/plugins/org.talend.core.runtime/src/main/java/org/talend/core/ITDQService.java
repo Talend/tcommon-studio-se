@@ -13,7 +13,7 @@
 package org.talend.core;
 
 /**
- * created by talend on Mar 15, 2013 Detailled comment
+ * created by talend on Mar 15, 2013 Detailed comment
  * 
  */
 public interface ITDQService extends IService {

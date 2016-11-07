@@ -36,7 +36,7 @@ import org.talend.librariesmanager.ui.actions.ImportExternalJarAction;
 import org.talend.librariesmanager.ui.actions.RemoveExternalJarAction;
 
 /**
- * DOC nrousseau class global comment. Detailled comment <br/>
+ * DOC nrousseau class global comment. Detailed comment <br/>
  * 
  * $Id: ModulesView.java 1811 2007-02-05 03:29:11Z qzhang $
  * 

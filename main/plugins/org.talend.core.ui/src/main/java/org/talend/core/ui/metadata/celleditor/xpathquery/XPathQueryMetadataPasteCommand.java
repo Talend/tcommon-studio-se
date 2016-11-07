@@ -21,7 +21,7 @@ import org.talend.core.ui.metadata.editor.MetadataTableEditor;
 import org.talend.core.ui.metadata.extended.command.MetadataPasteCommand;
 
 /**
- * cli class global comment. Detailled comment
+ * cli class global comment. Detailed comment
  */
 public class XPathQueryMetadataPasteCommand extends MetadataPasteCommand {
 

@@ -23,7 +23,7 @@ import org.talend.commons.i18n.internal.Messages;
 import org.talend.commons.utils.data.list.ListenableListEvent.TYPE;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  * $Id$
  * 

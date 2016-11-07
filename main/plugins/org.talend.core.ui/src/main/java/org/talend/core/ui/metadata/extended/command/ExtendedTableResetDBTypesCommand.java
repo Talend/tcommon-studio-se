@@ -25,7 +25,7 @@ import org.talend.core.model.metadata.types.TypesManager;
 import org.talend.core.ui.i18n.Messages;
 
 /**
- * DOC nrousseau class global comment. Detailled comment <br/>
+ * DOC nrousseau class global comment. Detailed comment <br/>
  * 
  */
 public class ExtendedTableResetDBTypesCommand extends Command implements IExtendedTableCommand {

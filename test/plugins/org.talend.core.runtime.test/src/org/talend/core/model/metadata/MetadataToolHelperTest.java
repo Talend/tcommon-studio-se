@@ -50,7 +50,7 @@ import orgomg.cwm.resource.record.RecordFactory;
 import orgomg.cwm.resource.record.RecordFile;
 
 /**
- * DOC hwang class global comment. Detailled comment <br/>
+ * DOC hwang class global comment. Detailed comment <br/>
  * 
  * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
  * 

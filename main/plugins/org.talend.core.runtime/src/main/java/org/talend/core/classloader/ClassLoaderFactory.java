@@ -42,7 +42,7 @@ import org.talend.repository.ProjectManager;
 import org.talend.utils.io.FilesUtils;
 
 /**
- * DOC ycbai class global comment. Detailled comment
+ * DOC ycbai class global comment. Detailed comment
  */
 public class ClassLoaderFactory {
 

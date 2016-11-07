@@ -26,7 +26,7 @@ import orgomg.cwm.resource.relational.Catalog;
 import orgomg.cwm.resource.relational.Schema;
 
 /**
- * created by talend on Dec 30, 2013 Detailled comment
+ * created by talend on Dec 30, 2013 Detailed comment
  * 
  */
 public class SybaseConnectionFillerImpl extends DBConnectionFillerImpl {

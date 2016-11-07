@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * DOC guanglong.du class global comment. Detailled comment
+ * DOC guanglong.du class global comment. Detailed comment
  */
 public final class TalendDBUtils {
 

@@ -18,7 +18,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.talend.core.model.properties.ConnectionItem;
 
 /**
- * created by ycbai on 2015年6月29日 Detailled comment
+ * created by ycbai on 2015年6月29日 Detailed comment
  *
  */
 public interface IHadoopConnectionCreator {

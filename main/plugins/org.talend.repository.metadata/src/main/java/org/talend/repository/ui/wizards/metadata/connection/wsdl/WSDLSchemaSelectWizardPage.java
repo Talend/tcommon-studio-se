@@ -35,7 +35,7 @@ import org.talend.core.service.IWebServiceTos;
 import org.talend.repository.metadata.i18n.Messages;
 
 /**
- * DOC Administrator class global comment. Detailled comment
+ * DOC Administrator class global comment. Detailed comment
  */
 public class WSDLSchemaSelectWizardPage extends WSDLSchemaWizardPage {
 

@@ -45,7 +45,7 @@ import org.talend.metadata.managment.ui.i18n.Messages;
 import org.talend.repository.UpdateRepositoryUtils;
 
 /**
- * ggu class global comment. Detailled comment
+ * ggu class global comment. Detailed comment
  */
 public class ShowAddedContextdialog extends SelectionDialog {
 
@@ -129,7 +129,7 @@ public class ShowAddedContextdialog extends SelectionDialog {
 
     /**
      * 
-     * ggu AddedContextBean class global comment. Detailled comment
+     * ggu AddedContextBean class global comment. Detailed comment
      */
     class AddedContextBean {
 
@@ -162,7 +162,7 @@ public class ShowAddedContextdialog extends SelectionDialog {
 
     /**
      * 
-     * ggu AddedContextTreeContentProvider class global comment. Detailled comment
+     * ggu AddedContextTreeContentProvider class global comment. Detailed comment
      */
     class AddedContextProvider extends ArrayContentProvider implements ITreeContentProvider, ITableLabelProvider, ILabelProvider {
 

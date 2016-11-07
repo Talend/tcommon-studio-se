@@ -13,7 +13,7 @@
 package org.talend.designer.codegen;
 
 /**
- * created by Administrator on 2013-3-14 Detailled comment
+ * created by Administrator on 2013-3-14 Detailed comment
  * 
  */
 public enum PigTemplate {

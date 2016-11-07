@@ -22,7 +22,7 @@ import org.talend.core.model.properties.ConnectionItem;
 import org.talend.designer.core.IMultiPageTalendEditor;
 
 /**
- * DOC nrousseau class global comment. Detailled comment <br/>
+ * DOC nrousseau class global comment. Detailed comment <br/>
  * 
  */
 public interface IDynamicProperty {

@@ -34,7 +34,7 @@ import org.talend.rcp.i18n.Messages;
 import org.talend.repository.ui.wizards.newproject.copyfromeclipse.TalendImportExportWizard;
 
 /**
- * ggu class global comment. Detailled comment
+ * ggu class global comment. Detailed comment
  */
 public class ExportCommandAction extends Action {
 

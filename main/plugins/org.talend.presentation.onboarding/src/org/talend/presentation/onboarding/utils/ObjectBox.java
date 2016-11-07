@@ -13,7 +13,7 @@
 package org.talend.presentation.onboarding.utils;
 
 /**
- * created by cmeng on Sep 9, 2015 Detailled comment
+ * created by cmeng on Sep 9, 2015 Detailed comment
  *
  */
 public class ObjectBox<T> {

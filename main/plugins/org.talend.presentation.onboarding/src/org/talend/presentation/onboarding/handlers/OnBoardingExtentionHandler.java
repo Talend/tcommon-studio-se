@@ -25,7 +25,7 @@ import org.talend.presentation.onboarding.ui.runtimedata.OnBoardingRegistedResou
 import org.talend.presentation.onboarding.utils.OnBoardingUtils;
 
 /**
- * created by cmeng on Sep 21, 2015 Detailled comment
+ * created by cmeng on Sep 21, 2015 Detailed comment
  *
  */
 public class OnBoardingExtentionHandler {

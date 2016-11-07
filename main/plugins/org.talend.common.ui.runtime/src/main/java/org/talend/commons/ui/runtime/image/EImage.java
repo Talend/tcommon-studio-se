@@ -14,7 +14,7 @@ package org.talend.commons.ui.runtime.image;
 
 /**
  * 
- * DOC smallet ImageProvider class global comment. Detailled comment <br/>
+ * DOC smallet ImageProvider class global comment. Detailed comment <br/>
  * 
  * $Id: ImageProvider.java 418 2006-11-13 16:01:26 +0000 (lun., 13 nov. 2006) cantoine $
  * 

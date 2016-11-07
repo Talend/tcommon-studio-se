@@ -33,7 +33,7 @@ import org.talend.utils.json.JSONException;
 import org.talend.utils.json.JSONObject;
 
 /**
- * created by ycbai on 2013-10-24 Detailled comment
+ * created by ycbai on 2013-10-24 Detailed comment
  * 
  */
 public class HadoopRepositoryUtil {

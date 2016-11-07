@@ -13,7 +13,7 @@
 package org.talend.core.model.process.node;
 
 /**
- * created by Talend on May 7, 2015 Detailled comment
+ * created by Talend on May 7, 2015 Detailed comment
  *
  */
 public abstract class AbstractExternalMapTable implements IExternalMapTable {

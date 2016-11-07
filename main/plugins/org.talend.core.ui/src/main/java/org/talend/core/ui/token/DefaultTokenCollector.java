@@ -24,7 +24,7 @@ import org.talend.daikon.token.TokenGenerator;
 import us.monoid.json.JSONObject;
 
 /**
- * ggu class global comment. Detailled comment
+ * ggu class global comment. Detailed comment
  */
 public class DefaultTokenCollector extends AbstractTokenCollector {
 

@@ -13,7 +13,7 @@
 package org.talend.designer.rowgenerator.data;
 
 /**
- * DOC qiang.zhang class global comment. Detailled comment <br/>
+ * DOC qiang.zhang class global comment. Detailed comment <br/>
  * 
  */
 public class CharParameter extends Parameter {

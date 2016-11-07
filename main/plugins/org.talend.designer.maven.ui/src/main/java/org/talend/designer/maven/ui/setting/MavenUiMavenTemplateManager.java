@@ -15,7 +15,7 @@ package org.talend.designer.maven.ui.setting;
 import org.talend.designer.maven.template.AbstractMavenTemplateManager;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class MavenUiMavenTemplateManager extends AbstractMavenTemplateManager {
 

@@ -29,7 +29,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 
 /**
- * created by ldong on Aug 26, 2014 Detailled comment
+ * created by ldong on Aug 26, 2014 Detailed comment
  * 
  */
 public class ContextNatTableStyleConfiguration extends AbstractRegistryConfiguration {

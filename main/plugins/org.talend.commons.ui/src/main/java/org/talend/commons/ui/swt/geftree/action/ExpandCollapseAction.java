@@ -16,7 +16,7 @@ import org.talend.commons.ui.swt.geftree.figure.TreeBranch;
 import org.talend.commons.ui.swt.geftree.layout.TreeAnimatingLayer;
 
 /**
- * cli class global comment. Detailled comment
+ * cli class global comment. Detailed comment
  */
 public class ExpandCollapseAction extends AbstractTreeAction {
 

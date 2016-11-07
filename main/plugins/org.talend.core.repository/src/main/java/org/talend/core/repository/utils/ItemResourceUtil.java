@@ -28,7 +28,7 @@ import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.repository.ProjectManager;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public final class ItemResourceUtil {
 

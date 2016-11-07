@@ -22,7 +22,7 @@ import us.monoid.json.JSONObject;
 
 /**
  * created by cmeng on May 5, 2016
- * Detailled comment
+ * Detailed comment
  *
  */
 public abstract class AutoSaveTokenCollector extends AbstractTokenCollector {

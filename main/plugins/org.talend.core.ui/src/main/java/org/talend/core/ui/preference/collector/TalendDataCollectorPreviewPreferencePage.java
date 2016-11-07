@@ -43,7 +43,7 @@ import us.monoid.json.JSONException;
 import us.monoid.json.JSONObject;
 
 /**
- * ggu class global comment. Detailled comment
+ * ggu class global comment. Detailed comment
  */
 public class TalendDataCollectorPreviewPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
@@ -107,7 +107,7 @@ public class TalendDataCollectorPreviewPreferencePage extends PreferencePage imp
 
     /**
      * 
-     * ggu JsonProvider class global comment. Detailled comment
+     * ggu JsonProvider class global comment. Detailed comment
      */
 
     class JsonProvider extends LabelProvider implements ITreeContentProvider, ITableLabelProvider {
@@ -116,7 +116,7 @@ public class TalendDataCollectorPreviewPreferencePage extends PreferencePage imp
 
         /**
          * 
-         * ggu KeyValue class global comment. Detailled comment
+         * ggu KeyValue class global comment. Detailed comment
          */
         class KeyValue {
 

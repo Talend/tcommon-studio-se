@@ -16,7 +16,7 @@ import org.talend.core.IService;
 import org.talend.core.model.repository.ERepositoryObjectType;
 
 /**
- * created by Talend on Apr 16, 2015 Detailled comment
+ * created by Talend on Apr 16, 2015 Detailed comment
  *
  */
 public interface IHCatalogService extends IService {

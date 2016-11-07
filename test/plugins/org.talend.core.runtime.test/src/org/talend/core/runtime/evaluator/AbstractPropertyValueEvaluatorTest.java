@@ -27,7 +27,7 @@ import org.talend.daikon.properties.presentation.Form;
 import org.talend.daikon.properties.property.Property;
 
 /**
- * created by ycbai on 2016年9月19日 Detailled comment
+ * created by ycbai on 2016年9月19日 Detailed comment
  *
  */
 public class AbstractPropertyValueEvaluatorTest {

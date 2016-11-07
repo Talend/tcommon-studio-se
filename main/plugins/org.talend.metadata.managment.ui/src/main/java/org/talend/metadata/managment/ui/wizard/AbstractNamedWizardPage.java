@@ -40,7 +40,7 @@ import org.talend.repository.model.RepositoryConstants;
 
 /**
  * created by nrousseau on Jun 24, 2016
- * Detailled comment
+ * Detailed comment
  *
  */
 public abstract class AbstractNamedWizardPage extends WizardPage {

@@ -13,7 +13,7 @@
 package org.talend.commons.exception;
 
 /**
- * created by Talend on Aug 7, 2014 Detailled comment
+ * created by Talend on Aug 7, 2014 Detailed comment
  * 
  */
 public class OperationCancelException extends PersistenceException {

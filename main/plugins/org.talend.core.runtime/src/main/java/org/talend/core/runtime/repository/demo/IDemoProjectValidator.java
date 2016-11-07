@@ -15,7 +15,7 @@ package org.talend.core.runtime.repository.demo;
 import org.eclipse.core.runtime.IConfigurationElement;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public interface IDemoProjectValidator {
 

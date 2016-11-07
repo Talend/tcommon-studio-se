@@ -14,7 +14,7 @@ package org.talend.commons.ui.runtime.swt.tableviewer.behavior;
 
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  * $Id: talend-code-templates.xml 1 2006-09-29 17:06:40Z nrousseau $
  * 

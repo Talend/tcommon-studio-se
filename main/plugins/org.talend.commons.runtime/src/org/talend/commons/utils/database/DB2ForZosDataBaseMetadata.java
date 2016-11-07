@@ -23,7 +23,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * DOC bqian class global comment. Detailled comment
+ * DOC bqian class global comment. Detailed comment
  */
 public class DB2ForZosDataBaseMetadata extends PackageFakeDatabaseMetadata {
 

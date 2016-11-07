@@ -28,7 +28,7 @@ import org.talend.core.model.metadata.types.JavaTypesManager;
 import org.talend.core.model.process.IContextParameter;
 
 /**
- * qzhang class global comment. Detailled comment <br/>
+ * qzhang class global comment. Detailed comment <br/>
  * 
  */
 public class DialogCellEditorForContext extends CustomDialogCellEditor {

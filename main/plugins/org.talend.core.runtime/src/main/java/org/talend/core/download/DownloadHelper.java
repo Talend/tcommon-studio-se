@@ -24,7 +24,7 @@ import java.util.List;
 
 /**
  * 
- * DOC hcyi class global comment. Detailled comment
+ * DOC hcyi class global comment. Detailed comment
  */
 public class DownloadHelper implements IDownloadHelper {
 

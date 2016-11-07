@@ -48,13 +48,13 @@ import org.talend.osgi.hook.notification.JarMissingObservable;
 import org.talend.osgi.hook.notification.JarMissingObservable.JarMissingEvent;
 
 /**
- * created by sgandon on 4 févr. 2015 Detailled comment
+ * created by sgandon on 4 févr. 2015 Detailed comment
  *
  */
 public class OsgiLoaderTest {
 
     /**
-     * created by sgandon on 1 juin 2015 Detailled comment
+     * created by sgandon on 1 juin 2015 Detailed comment
      *
      */
     private class MissingJarObserverWithFolderResolution implements Observer {
@@ -100,7 +100,7 @@ public class OsgiLoaderTest {
     }
 
     /**
-     * created by sgandon on 1 juin 2015 Detailled comment
+     * created by sgandon on 1 juin 2015 Detailed comment
      *
      */
     private class MissingJarObserverWithMavenResolution implements Observer {

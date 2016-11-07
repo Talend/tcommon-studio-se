@@ -34,7 +34,7 @@ import org.talend.rcp.Activator;
 import org.talend.rcp.i18n.Messages;
 
 /**
- * DOC xtan class global comment. Detailled comment <br/>
+ * DOC xtan class global comment. Detailed comment <br/>
  * 
  */
 public class LinksToolbarItem extends ContributionItem {

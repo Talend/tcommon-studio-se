@@ -34,7 +34,7 @@ package org.talend.commons.ui.runtime.geometry;
 
 /**
  * 
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  * $Id: Curve2DBezierFixed.java 7048 2007-11-16 02:36:17Z nrousseau $
  * 

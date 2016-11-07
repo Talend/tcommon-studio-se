@@ -17,7 +17,7 @@ import org.talend.repository.example.viewer.node.ExampleDemoRepositoryNodeType;
 import org.talend.repository.view.di.metadata.tester.CoMetadataNodeTester;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class ExampleDemoMetadataNodeTester extends CoMetadataNodeTester {
 

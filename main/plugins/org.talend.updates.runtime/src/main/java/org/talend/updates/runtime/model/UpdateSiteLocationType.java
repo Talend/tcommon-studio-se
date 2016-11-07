@@ -13,7 +13,7 @@
 package org.talend.updates.runtime.model;
 
 /**
- * created by ggu on Jul 17, 2014 Detailled comment
+ * created by ggu on Jul 17, 2014 Detailed comment
  *
  */
 public enum UpdateSiteLocationType {

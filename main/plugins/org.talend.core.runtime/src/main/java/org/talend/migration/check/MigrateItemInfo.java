@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * created by wchen on Dec 30, 2014 Detailled comment
+ * created by wchen on Dec 30, 2014 Detailed comment
  *
  */
 public class MigrateItemInfo {

@@ -20,7 +20,7 @@ import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.TimeUnit;
 
 /**
- * created by wchen on 2014-6-6 Detailled comment
+ * created by wchen on 2014-6-6 Detailed comment
  * 
  */
 public class CustomMapThreadPoolExecutor extends TalendCustomThreadPoolExecutor {

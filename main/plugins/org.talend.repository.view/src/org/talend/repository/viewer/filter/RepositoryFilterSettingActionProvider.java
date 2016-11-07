@@ -20,7 +20,7 @@ import org.talend.repository.i18n.Messages;
 import org.talend.repository.viewer.dialog.RepositoryFilterSettingDialog;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class RepositoryFilterSettingActionProvider extends AbstractRepositoryFilterActionProvider {
 
@@ -40,7 +40,7 @@ public class RepositoryFilterSettingActionProvider extends AbstractRepositoryFil
 
     /**
      * 
-     * DOC ggu FilterSettingAction class global comment. Detailled comment
+     * DOC ggu FilterSettingAction class global comment. Detailed comment
      */
     class FilterSettingAction extends Action {
 

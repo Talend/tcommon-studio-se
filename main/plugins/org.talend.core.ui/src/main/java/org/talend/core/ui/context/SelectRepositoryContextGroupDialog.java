@@ -48,7 +48,7 @@ import org.talend.core.ui.i18n.Messages;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class SelectRepositoryContextGroupDialog extends SelectionDialog {
 
@@ -344,7 +344,7 @@ public class SelectRepositoryContextGroupDialog extends SelectionDialog {
 
     /**
      * 
-     * DOC ggu ContextTreeContentProvider class global comment. Detailled comment
+     * DOC ggu ContextTreeContentProvider class global comment. Detailed comment
      */
 
     class ContextTreeContentProvider implements ITreeContentProvider {
@@ -391,7 +391,7 @@ public class SelectRepositoryContextGroupDialog extends SelectionDialog {
 
     /**
      * 
-     * ggu ContextTreeLabelProvider class global comment. Detailled comment
+     * ggu ContextTreeLabelProvider class global comment. Detailed comment
      */
     class ContextTreeLabelProvider implements ILabelProvider {
 
@@ -450,7 +450,7 @@ public class SelectRepositoryContextGroupDialog extends SelectionDialog {
 
     /**
      * 
-     * ggu ContextViewerFilter class global comment. Detailled comment
+     * ggu ContextViewerFilter class global comment. Detailed comment
      */
     class ContextViewerFilter extends ViewerFilter {
 

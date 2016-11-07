@@ -28,7 +28,7 @@ import org.talend.designer.runprocess.IProcessor;
 import org.talend.designer.runprocess.ProcessorException;
 
 /**
- * created by ycbai on 2015年4月2日 Detailled comment
+ * created by ycbai on 2015年4月2日 Detailed comment
  *
  */
 public class ProcessorDependenciesManager {

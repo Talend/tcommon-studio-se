@@ -18,7 +18,7 @@ import org.eclipse.jface.fieldassist.IContentProposal;
 import org.talend.core.ui.i18n.Messages;
 
 /**
- * DOC qwei class global comment. Detailled comment
+ * DOC qwei class global comment. Detailed comment
  */
 public class JavaGlobalUtils {
 
@@ -30,7 +30,7 @@ public class JavaGlobalUtils {
 
     /**
      * 
-     * DOC ggu PerlGlobalUtils class global comment. Detailled comment <br/>
+     * DOC ggu PerlGlobalUtils class global comment. Detailed comment <br/>
      * 
      */
     static class JavaGlobalVariableProposal implements IContentProposal {

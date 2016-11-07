@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
 import org.talend.commons.i18n.MessagesCore;
 
 /**
- * ggu class global comment. Detailled comment
+ * ggu class global comment. Detailed comment
  */
 public class Messages extends MessagesCore {
 

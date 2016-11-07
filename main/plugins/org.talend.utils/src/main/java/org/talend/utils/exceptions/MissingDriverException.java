@@ -15,7 +15,7 @@ package org.talend.utils.exceptions;
 
 /**
  * created by zshen on Jun 4, 2013
- * Detailled comment
+ * Detailed comment
  *
  */
 public class MissingDriverException extends RuntimeException {

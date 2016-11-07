@@ -29,7 +29,7 @@ import org.talend.metadata.managment.ui.wizard.AbstractForm;
 import org.talend.metadata.managment.ui.wizard.metadata.MetadataContextModeManager;
 
 /**
- * ggu class global comment. Detailled comment
+ * ggu class global comment. Detailed comment
  */
 public abstract class AbstractFileStepForm extends AbstractForm {
 

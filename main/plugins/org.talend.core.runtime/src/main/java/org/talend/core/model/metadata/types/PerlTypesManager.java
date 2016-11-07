@@ -18,7 +18,7 @@ import java.util.Map;
 import org.talend.core.model.metadata.MetadataTalendType;
 
 /**
- * DOC ggu class global comment. Detailled comment <br/>
+ * DOC ggu class global comment. Detailed comment <br/>
  * <p>
  * 
  * This class was used to convert from old types to new ones. <br>

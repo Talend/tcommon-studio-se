@@ -22,7 +22,7 @@ import org.talend.repository.i18n.Messages;
 import org.talend.repository.viewer.action.ActionConstants;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class ActiveRepositoryFilterActionProvider extends AbstractRepositoryFilterActionProvider {
 
@@ -59,7 +59,7 @@ public class ActiveRepositoryFilterActionProvider extends AbstractRepositoryFilt
 
     /**
      * 
-     * DOC ggu ActiveFilterAction class global comment. Detailled comment
+     * DOC ggu ActiveFilterAction class global comment. Detailed comment
      */
     class ActiveFilterAction extends Action {
 

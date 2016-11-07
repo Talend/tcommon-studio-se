@@ -24,7 +24,7 @@ import org.talend.core.ui.context.IContextModelManager;
 import org.talend.core.ui.context.model.table.ContextTableConstants;
 
 /**
- * created by ldong on Jul 11, 2014 Detailled comment
+ * created by ldong on Jul 11, 2014 Detailed comment
  * 
  */
 public class ContextRowDataListFixture {

@@ -66,7 +66,7 @@ import org.talend.repository.metadata.ui.wizards.form.AbstractSalesforceStepForm
 
 /**
  * 
- * DOC yexiaowei class global comment. Detailled comment
+ * DOC yexiaowei class global comment. Detailed comment
  */
 public class SalesforceStep3Form extends AbstractSalesforceStepForm {
 

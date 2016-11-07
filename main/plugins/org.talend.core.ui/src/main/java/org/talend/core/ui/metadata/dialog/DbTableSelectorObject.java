@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * qzhang class global comment. Detailled comment <br/>
+ * qzhang class global comment. Detailed comment <br/>
  * 
  */
 public class DbTableSelectorObject {
@@ -24,7 +24,7 @@ public class DbTableSelectorObject {
     private ObjectType type;
 
     /**
-     * qzhang DbTableSelectorObject class global comment. Detailled comment. <br/>
+     * qzhang DbTableSelectorObject class global comment. Detailed comment. <br/>
      * 
      */
     public enum ObjectType {

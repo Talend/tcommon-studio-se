@@ -26,7 +26,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
 
 /**
- * created by cmeng on Jul 1, 2015 Detailled comment
+ * created by cmeng on Jul 1, 2015 Detailed comment
  *
  */
 public class SchemaPopulationUtil {

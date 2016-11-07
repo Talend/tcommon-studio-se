@@ -19,7 +19,7 @@ import org.talend.commons.ui.runtime.i18n.Messages;
 import org.talend.commons.ui.swt.extended.table.ExtendedTableModel;
 
 /**
- * DOC YeXiaowei class global comment. Detailled comment <br/>
+ * DOC YeXiaowei class global comment. Detailed comment <br/>
  * 
  */
 public class ExtendTableAddAllCommand extends Command implements IExtendedTableCommand {

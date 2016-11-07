@@ -32,7 +32,7 @@ import org.talend.designer.core.IDesignerCoreService;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
 /**
- * created by ggu on Mar 27, 2014 Detailled comment
+ * created by ggu on Mar 27, 2014 Detailed comment
  * 
  */
 public abstract class AbstractRepositoryUpdateManagerProvider implements IRepositoryUpdateManagerProvider {

@@ -71,7 +71,7 @@ import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.helper.PackageHelper;
 
 /**
- * DOC wzhang class global comment. Detailled comment
+ * DOC wzhang class global comment. Detailed comment
  */
 public class ComponentToRepositoryProperty {
 

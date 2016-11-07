@@ -39,7 +39,7 @@ import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
 /**
- * cli class global comment. Detailled comment
+ * cli class global comment. Detailed comment
  */
 public final class DeleteActionCache {
 

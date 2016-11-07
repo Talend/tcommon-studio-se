@@ -32,7 +32,7 @@ import org.talend.repository.metadata.ui.wizards.form.AbstractXmlStepForm;
 import org.talend.repository.ui.wizards.metadata.connection.files.xml.XmlFileOutputStep2Form;
 
 /**
- * wzhang class global comment. Detailled comment
+ * wzhang class global comment. Detailed comment
  */
 public class ImportTreeFromXMLAction extends SelectionProviderAction {
 

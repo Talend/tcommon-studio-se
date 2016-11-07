@@ -13,7 +13,7 @@
 package org.talend.commons.utils.threading;
 
 /**
- * created by wchen on 2014-6-6 Detailled comment
+ * created by wchen on 2014-6-6 Detailed comment
  * 
  */
 public abstract class AbsRetrieveColumnRunnable implements Runnable {

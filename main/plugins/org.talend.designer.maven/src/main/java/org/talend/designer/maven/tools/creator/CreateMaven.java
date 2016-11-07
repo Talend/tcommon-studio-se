@@ -24,7 +24,7 @@ import org.talend.designer.maven.template.ETalendMavenVariables;
 import org.talend.designer.maven.utils.PomUtil;
 
 /**
- * created by ggu on 2 Feb 2015 Detailled comment
+ * created by ggu on 2 Feb 2015 Detailed comment
  *
  */
 public abstract class CreateMaven {

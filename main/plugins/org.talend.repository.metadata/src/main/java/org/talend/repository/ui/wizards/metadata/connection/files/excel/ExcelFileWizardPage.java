@@ -26,7 +26,7 @@ import org.talend.metadata.managment.ui.wizard.AbstractForm;
 import org.talend.repository.metadata.ui.wizards.form.AbstractExcelFileStepForm;
 
 /**
- * DOC yexiaowei class global comment. Detailled comment
+ * DOC yexiaowei class global comment. Detailed comment
  */
 public class ExcelFileWizardPage extends WizardPage {
 

@@ -22,7 +22,7 @@ import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.ui.PlatformUI;
 
 /**
- * created by ggu on Sep 25, 2014 Detailled comment
+ * created by ggu on Sep 25, 2014 Detailed comment
  *
  */
 public class PreferencesHelper {

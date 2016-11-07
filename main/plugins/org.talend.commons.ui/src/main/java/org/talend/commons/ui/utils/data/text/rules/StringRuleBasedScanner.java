@@ -20,7 +20,7 @@ import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.Token;
 
 /**
- * DOC nrousseau class global comment. Detailled comment <br/>
+ * DOC nrousseau class global comment. Detailed comment <br/>
  * 
  * $Id: StringRuleBasedScanner.java 7038 2007-11-15 14:05:48Z plegall $
  * 

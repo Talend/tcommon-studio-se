@@ -110,7 +110,7 @@ public class TableViewerCreator<B> extends TableViewerCreatorNotModifiable<B> im
 
     /**
      * 
-     * DOC amaumont MetadataEditorEvent class global comment. Detailled comment <br/>
+     * DOC amaumont MetadataEditorEvent class global comment. Detailed comment <br/>
      * 
      * $Id: TableViewerCreator.java 7183 2007-11-23 11:03:36Z amaumont $
      * 

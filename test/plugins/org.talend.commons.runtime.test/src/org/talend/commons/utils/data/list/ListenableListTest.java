@@ -29,7 +29,7 @@ import org.talend.commons.utils.data.list.ListenableList;
 import org.talend.commons.utils.data.list.ListenableListEvent;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  * $Id: ListenableListTest.java 38252 2010-03-10 05:39:44Z nrousseau $
  * 

@@ -58,7 +58,7 @@ import com.sforce.soap.enterprise.SoapBindingStub;
 import com.sforce.soap.enterprise.fault.UnexpectedErrorFault;
 
 /**
- * DOC YeXiaowei class global comment. Detailled comment <br/>
+ * DOC YeXiaowei class global comment. Detailed comment <br/>
  * 
  */
 public abstract class AbstractSalesforceStepForm extends AbstractForm {

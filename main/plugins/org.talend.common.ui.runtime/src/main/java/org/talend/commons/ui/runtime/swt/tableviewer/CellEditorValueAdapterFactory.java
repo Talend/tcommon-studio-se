@@ -20,7 +20,7 @@ import org.talend.commons.ui.runtime.swt.tableviewer.behavior.CellEditorValueAda
 import org.talend.commons.ui.runtime.swt.tableviewer.behavior.ComboEditorValueAdapter;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  * $Id$
  * 

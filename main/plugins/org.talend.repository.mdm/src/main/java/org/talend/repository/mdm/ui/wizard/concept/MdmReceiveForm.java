@@ -92,7 +92,7 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.ui.wizards.metadata.connection.files.xml.TreePopulator;
 
 /**
- * DOC wchen class global comment. Detailled comment
+ * DOC wchen class global comment. Detailed comment
  */
 public class MdmReceiveForm extends AbstractMDMFileStepForm {
 

@@ -13,7 +13,7 @@
 package org.talend.core.model.metadata;
 
 /**
- * DOC guanglong.du class global comment. Detailled comment
+ * DOC guanglong.du class global comment. Detailed comment
  */
 public interface IEDIFACTConstant {
 

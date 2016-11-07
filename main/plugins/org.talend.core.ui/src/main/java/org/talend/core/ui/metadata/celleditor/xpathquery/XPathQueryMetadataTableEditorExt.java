@@ -18,7 +18,7 @@ import org.talend.core.model.metadata.MetadataColumn;
 import org.talend.core.ui.metadata.editor.MetadataTableEditor;
 
 /**
- * cli class global comment. Detailled comment
+ * cli class global comment. Detailed comment
  */
 public class XPathQueryMetadataTableEditorExt extends MetadataTableEditor {
 

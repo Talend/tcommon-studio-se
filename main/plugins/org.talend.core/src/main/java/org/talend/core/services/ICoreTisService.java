@@ -25,7 +25,7 @@ import org.talend.core.model.process.INode;
 import org.talend.core.updatesite.IUpdateSiteBean;
 
 /**
- * wchen class global comment. Detailled comment
+ * wchen class global comment. Detailed comment
  */
 public interface ICoreTisService extends IService {
 

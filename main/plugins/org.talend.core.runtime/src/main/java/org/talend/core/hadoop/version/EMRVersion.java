@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * created by ycbai on 2013-9-16 Detailled comment
+ * created by ycbai on 2013-9-16 Detailed comment
  * 
  * @deprecated @link EHadoopVersion instead.
  */

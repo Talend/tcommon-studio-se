@@ -44,7 +44,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 @Deprecated
 public final class UpdateContextReferenceHelper {

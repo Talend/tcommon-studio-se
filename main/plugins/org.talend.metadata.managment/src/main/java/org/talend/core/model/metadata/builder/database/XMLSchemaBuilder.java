@@ -50,7 +50,7 @@ import orgomg.cwm.foundation.softwaredeployment.DataManager;
 import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
- * DOC mzhao class global comment. Detailled comment
+ * DOC mzhao class global comment. Detailed comment
  */
 public final class XMLSchemaBuilder {
 

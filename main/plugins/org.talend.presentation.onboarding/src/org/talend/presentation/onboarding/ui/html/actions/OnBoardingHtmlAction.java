@@ -21,7 +21,7 @@ import org.talend.presentation.onboarding.i18n.Messages;
 import org.talend.presentation.onboarding.ui.managers.OnBoardingManager;
 
 /**
- * created by cmeng on Sep 16, 2015 Detailled comment
+ * created by cmeng on Sep 16, 2015 Detailed comment
  *
  */
 public class OnBoardingHtmlAction implements IIntroAction {

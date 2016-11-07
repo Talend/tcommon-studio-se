@@ -37,7 +37,7 @@ import org.talend.repository.ProjectManager;
 import org.talend.repository.model.RepositoryNode;
 
 /**
- * An util tools for java version resources. Detailled comment <br/>
+ * An util tools for java version resources. Detailed comment <br/>
  * 
  */
 /**

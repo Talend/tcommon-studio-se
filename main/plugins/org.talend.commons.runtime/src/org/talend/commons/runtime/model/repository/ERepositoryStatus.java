@@ -13,7 +13,7 @@
 package org.talend.commons.runtime.model.repository;
 
 /**
- * DOC smallet class global comment. Detailled comment <br/>
+ * DOC smallet class global comment. Detailed comment <br/>
  * 
  * $Id$
  * 

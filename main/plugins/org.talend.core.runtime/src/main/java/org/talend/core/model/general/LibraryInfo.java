@@ -13,7 +13,7 @@
 package org.talend.core.model.general;
 
 /**
- * DOC ycbai class global comment. Detailled comment
+ * DOC ycbai class global comment. Detailed comment
  */
 public class LibraryInfo {
 

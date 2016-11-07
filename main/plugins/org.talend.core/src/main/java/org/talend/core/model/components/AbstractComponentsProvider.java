@@ -23,7 +23,7 @@ import org.talend.designer.core.ILocalProviderService;
 
 /***/
 /**
- * DOC nrousseau class global comment. Detailled comment
+ * DOC nrousseau class global comment. Detailed comment
  */
 public abstract class AbstractComponentsProvider {
 

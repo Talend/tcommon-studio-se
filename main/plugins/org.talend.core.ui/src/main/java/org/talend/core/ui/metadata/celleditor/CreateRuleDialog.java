@@ -48,7 +48,7 @@ import org.talend.core.ui.services.IRulesProviderService;
 import org.talend.core.utils.TalendQuoteUtils;
 
 /**
- * DOC hywang class global comment. Detailled comment
+ * DOC hywang class global comment. Detailed comment
  */
 public class CreateRuleDialog extends SelectionDialog {
 

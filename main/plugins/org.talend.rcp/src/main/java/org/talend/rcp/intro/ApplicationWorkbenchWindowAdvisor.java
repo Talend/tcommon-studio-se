@@ -115,7 +115,7 @@ import org.talend.repository.ui.login.connections.ConnectionUserPerReader;
 import org.talend.repository.ui.views.IRepositoryView;
 
 /**
- * DOC ccarbone class global comment. Detailled comment <br/>
+ * DOC ccarbone class global comment. Detailed comment <br/>
  * 
  * $Id$
  * 

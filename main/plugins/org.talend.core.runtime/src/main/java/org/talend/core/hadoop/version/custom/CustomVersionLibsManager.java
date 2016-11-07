@@ -34,7 +34,7 @@ import org.talend.repository.ProjectManager;
 import org.talend.utils.io.FilesUtils;
 
 /**
- * created by ycbai on 2013-3-18 Detailled comment
+ * created by ycbai on 2013-3-18 Detailed comment
  * 
  */
 public class CustomVersionLibsManager {

@@ -21,7 +21,7 @@ import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ui.branding.IBrandingService;
 
 /**
- * DOC hcyi class global comment. Detailled comment
+ * DOC hcyi class global comment. Detailed comment
  */
 public class OpenWebBrowserAction implements IIntroAction {
 

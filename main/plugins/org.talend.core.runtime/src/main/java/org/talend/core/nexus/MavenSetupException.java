@@ -13,7 +13,7 @@
 package org.talend.core.nexus;
 
 /**
- * created by Talend on 2015年5月4日 Detailled comment
+ * created by Talend on 2015年5月4日 Detailed comment
  *
  */
 public class MavenSetupException extends Exception {

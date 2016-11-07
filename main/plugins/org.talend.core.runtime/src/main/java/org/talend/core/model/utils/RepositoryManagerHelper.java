@@ -37,7 +37,7 @@ import org.talend.designer.core.IMultiPageTalendEditor;
 import org.talend.repository.ui.views.IRepositoryView;
 
 /**
- * ggu class global comment. Detailled comment
+ * ggu class global comment. Detailed comment
  */
 public final class RepositoryManagerHelper {
 

@@ -17,7 +17,7 @@ import org.talend.repository.model.IRepositoryNode;
 
 /**
  * created by nrousseau on Jun 27, 2016
- * Detailled comment
+ * Detailed comment
  *
  */
 public class ResourceNode {

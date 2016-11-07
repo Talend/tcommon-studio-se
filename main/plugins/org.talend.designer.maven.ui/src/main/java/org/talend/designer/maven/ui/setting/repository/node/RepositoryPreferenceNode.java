@@ -23,7 +23,7 @@ import org.talend.core.ui.images.RepositoryImageProvider;
 import org.talend.repository.model.RepositoryNode;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class RepositoryPreferenceNode extends PreferenceNode {
 

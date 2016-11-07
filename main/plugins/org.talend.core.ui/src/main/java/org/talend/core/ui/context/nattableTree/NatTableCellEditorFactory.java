@@ -26,7 +26,7 @@ import org.talend.core.ui.context.MultiStringSelectionDialog;
 import org.talend.core.utils.TalendQuoteUtils;
 
 /**
- * created by ldong on Jul 30, 2014 Detailled comment
+ * created by ldong on Jul 30, 2014 Detailed comment
  * 
  */
 public class NatTableCellEditorFactory {

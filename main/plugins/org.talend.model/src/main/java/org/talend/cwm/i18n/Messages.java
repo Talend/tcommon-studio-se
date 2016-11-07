@@ -16,7 +16,7 @@ import java.util.ResourceBundle;
 
 /**
  * 
- * DOC Administrator class global comment. Detailled comment
+ * DOC Administrator class global comment. Detailed comment
  */
 public class Messages extends MessagesCore {
 

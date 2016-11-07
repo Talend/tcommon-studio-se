@@ -34,7 +34,7 @@ import org.talend.datatools.xml.utils.XSDUtils;
 import org.talend.metadata.managment.ui.wizard.metadata.xml.node.FOXTreeNode;
 
 /**
- * created by wchen on Aug 12, 2016 Detailled comment
+ * created by wchen on Aug 12, 2016 Detailed comment
  *
  */
 public class TreeUtilTest {

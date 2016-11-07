@@ -16,7 +16,7 @@ import org.talend.core.model.properties.Item;
 import org.talend.core.model.repository.ERepositoryObjectType;
 
 /**
- * DOC klliu class global comment. Detailled comment
+ * DOC klliu class global comment. Detailed comment
  */
 public abstract class AbstractDQModelService implements IService {
 

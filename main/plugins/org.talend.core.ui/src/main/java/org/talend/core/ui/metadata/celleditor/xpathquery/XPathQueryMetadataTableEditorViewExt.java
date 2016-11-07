@@ -26,7 +26,7 @@ import org.talend.core.ui.i18n.Messages;
 import org.talend.core.ui.metadata.editor.MetadataTableEditorView;
 
 /**
- * cli class global comment. Detailled comment
+ * cli class global comment. Detailed comment
  */
 public class XPathQueryMetadataTableEditorViewExt extends MetadataTableEditorView {
 

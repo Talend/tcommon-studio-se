@@ -22,7 +22,7 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
 
 /**
- * created by ldong on Jul 17, 2014 Detailled comment
+ * created by ldong on Jul 17, 2014 Detailed comment
  * 
  */
 public class ContextAutoResizeTextPainter extends TextPainter {

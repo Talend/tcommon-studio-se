@@ -21,7 +21,7 @@ import org.talend.commons.ui.runtime.swt.proposal.IShowInvisibleCellEditorMethod
 import org.talend.commons.ui.swt.tableviewer.TableViewerCreatorColumn;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  * $Id: TextCellEditorWithProposal.java 7038 2007-11-15 14:05:48Z plegall $
  * 

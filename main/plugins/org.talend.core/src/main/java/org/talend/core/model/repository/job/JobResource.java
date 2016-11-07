@@ -27,7 +27,7 @@ import org.talend.core.model.utils.PerlResourcesHelper;
 /**
  * Reference to both jobs and its resources.
  * 
- * yzhang class global comment. Detailled comment <br/>
+ * yzhang class global comment. Detailed comment <br/>
  * 
  * $Id: JobResource.java 下午03:41:44 2007-7-6 +0000 (2007-7-6) yzhang $
  * 

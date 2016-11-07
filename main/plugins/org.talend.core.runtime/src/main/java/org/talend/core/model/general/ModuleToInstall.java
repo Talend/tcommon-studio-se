@@ -16,7 +16,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * created by WCHEN on 2012-9-17 Detailled comment
+ * created by WCHEN on 2012-9-17 Detailed comment
  * 
  */
 public class ModuleToInstall {

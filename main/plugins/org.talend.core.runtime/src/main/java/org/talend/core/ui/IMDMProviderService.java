@@ -21,7 +21,7 @@ import org.talend.core.model.process.INode;
 import org.talend.core.model.properties.MDMConnectionItem;
 
 /**
- * DOC hwang class global comment. Detailled comment
+ * DOC hwang class global comment. Detailed comment
  */
 public interface IMDMProviderService extends IProviderService {
 

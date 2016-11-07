@@ -28,7 +28,7 @@ import org.talend.core.model.metadata.builder.connection.SAPIDocUnit;
 import org.talend.core.model.metadata.designerproperties.RepositoryToComponentProperty;
 
 /**
- * DOC YeXiaowei class global comment. Detailled comment <br/>
+ * DOC YeXiaowei class global comment. Detailed comment <br/>
  * 
  * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (忙聵聼忙聹聼盲潞聰, 29 盲鹿聺忙聹聢 2006) nrousseau $
  * 

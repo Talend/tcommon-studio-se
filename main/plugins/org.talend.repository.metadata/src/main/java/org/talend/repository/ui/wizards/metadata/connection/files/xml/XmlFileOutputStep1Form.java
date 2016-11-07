@@ -89,7 +89,7 @@ import orgomg.cwm.resource.record.RecordFactory;
 import orgomg.cwm.resource.record.RecordFile;
 
 /**
- * wzhang class global comment. Detailled comment
+ * wzhang class global comment. Detailed comment
  */
 public class XmlFileOutputStep1Form extends AbstractXmlFileStepForm {
 

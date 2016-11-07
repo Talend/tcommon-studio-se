@@ -13,7 +13,7 @@
 package org.talend.core.model.metadata;
 
 /**
- * created by wchen on Sep 19, 2014 Detailled comment
+ * created by wchen on Sep 19, 2014 Detailed comment
  *
  */
 public enum MetadataSchemaType {

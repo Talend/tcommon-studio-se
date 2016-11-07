@@ -19,7 +19,7 @@ import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.core.service.IMetadataManagmentService;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class MetadataManagmentService implements IMetadataManagmentService {
 

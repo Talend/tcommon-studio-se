@@ -24,7 +24,7 @@ import org.talend.core.repository.model.ItemReferenceBean;
 import org.talend.core.ui.images.RepositoryImageProvider;
 
 /**
- * DOC ycbai class global comment. Detailled comment
+ * DOC ycbai class global comment. Detailed comment
  */
 public class ItemReferenceViewProvider extends LabelProvider implements ITableLabelProvider, ITreeContentProvider {
 

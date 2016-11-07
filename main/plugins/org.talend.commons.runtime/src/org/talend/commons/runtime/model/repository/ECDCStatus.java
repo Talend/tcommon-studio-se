@@ -13,7 +13,7 @@
 package org.talend.commons.runtime.model.repository;
 
 /**
- * ggu class global comment. Detailled comment
+ * ggu class global comment. Detailed comment
  */
 public enum ECDCStatus {
     ADDED,

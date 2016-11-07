@@ -14,7 +14,7 @@ package org.talend.core.ui.check;
 
 /**
  * 
- * created by ycbai on 2015年9月30日 Detailled comment
+ * created by ycbai on 2015年9月30日 Detailed comment
  *
  */
 public interface ICheckListener {

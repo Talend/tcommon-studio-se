@@ -30,7 +30,7 @@ import org.talend.designer.maven.ui.setting.repository.RepositoryMavenSettingMan
 import org.talend.repository.ui.views.IRepositoryView;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class MavenUIService implements IMavenUIService {
 

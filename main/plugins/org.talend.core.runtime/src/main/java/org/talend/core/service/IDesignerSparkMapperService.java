@@ -17,7 +17,7 @@ import org.talend.core.model.process.INode;
 
 /**
  * 
- * created by hcyi on Aug 11, 2015 Detailled comment
+ * created by hcyi on Aug 11, 2015 Detailed comment
  *
  */
 public interface IDesignerSparkMapperService extends IService {

@@ -36,7 +36,7 @@ import org.talend.core.ui.advanced.composite.FilteredCheckboxTree;
 import org.talend.core.ui.advanced.composite.PatternFilter;
 
 /**
- * created by ycbai on 2015年10月8日 Detailled comment
+ * created by ycbai on 2015年10月8日 Detailed comment
  *
  */
 public class ElementsSelectionComposite<T> extends Composite {

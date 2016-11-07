@@ -15,7 +15,7 @@ package org.talend.core.ui.token;
 import us.monoid.json.JSONObject;
 
 /**
- * ggu class global comment. Detailled comment
+ * ggu class global comment. Detailed comment
  */
 public abstract class AbstractTokenCollector implements ITokenCollector {
 

@@ -29,13 +29,13 @@ import org.talend.core.model.properties.PropertiesFactory;
 import org.talend.core.model.repository.ERepositoryObjectType;
 
 /**
- * created by sgandon on 7 avr. 2014 Detailled comment
+ * created by sgandon on 7 avr. 2014 Detailed comment
  * 
  */
 public class AbstractItemMigrationTaskTest {
 
     /**
-     * created by sgandon on 23 avr. 2014 Detailled comment
+     * created by sgandon on 23 avr. 2014 Detailed comment
      * 
      */
     public class JobAndCodeItemMigrationTask extends AbstractItemMigrationTask {

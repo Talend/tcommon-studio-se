@@ -13,7 +13,7 @@
 package org.talend.core.database.conn;
 
 /**
- * cli class global comment. Detailled comment
+ * cli class global comment. Detailed comment
  */
 public enum EDatabaseConnVar {
     HOST("<host>", DatabaseConnConstants.PATTERN_HOST), //$NON-NLS-1$

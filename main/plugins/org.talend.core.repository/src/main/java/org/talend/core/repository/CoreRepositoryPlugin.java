@@ -19,7 +19,7 @@ import org.talend.repository.IRepositoryChangedListener;
 import org.talend.repository.IRepositoryElementDelta;
 
 /**
- * DOC smallet class global comment. Detailled comment <br/>
+ * DOC smallet class global comment. Detailed comment <br/>
  * 
  * $Id: RepositoryPlugin.java 38013 2010-03-05 14:21:59Z mhirt $
  * 

@@ -24,7 +24,7 @@ import org.talend.repository.metadata.ui.wizards.form.AbstractXmlStepForm;
 import org.talend.repository.ui.wizards.metadata.connection.files.xml.action.DeleteNodeAction;
 
 /**
- * wchen class global comment. Detailled comment
+ * wchen class global comment. Detailed comment
  */
 public class RemoveTreeNodeButton extends AbstractTreeNodeButton {
 

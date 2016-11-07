@@ -24,7 +24,7 @@ import org.eclipse.ui.PlatformUI;
 import org.talend.core.ui.branding.IBrandingConfiguration;
 
 /**
- * qzhang class global comment. Detailled comment <br/>
+ * qzhang class global comment. Detailed comment <br/>
  * 
  */
 public class Contexts {

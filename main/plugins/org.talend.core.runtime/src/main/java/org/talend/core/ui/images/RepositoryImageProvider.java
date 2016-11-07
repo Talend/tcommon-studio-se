@@ -22,7 +22,7 @@ import org.talend.core.model.repository.IRepositoryContentHandler;
 import org.talend.core.model.repository.RepositoryContentManager;
 
 /**
- * ggu class global comment. Detailled comment
+ * ggu class global comment. Detailed comment
  */
 public class RepositoryImageProvider {
 

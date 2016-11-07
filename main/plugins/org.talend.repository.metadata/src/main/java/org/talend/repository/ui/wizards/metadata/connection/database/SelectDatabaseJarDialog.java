@@ -38,7 +38,7 @@ import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.repository.metadata.i18n.Messages;
 
 /**
- * ggu class global comment. Detailled comment
+ * ggu class global comment. Detailed comment
  */
 public class SelectDatabaseJarDialog extends Dialog {
 

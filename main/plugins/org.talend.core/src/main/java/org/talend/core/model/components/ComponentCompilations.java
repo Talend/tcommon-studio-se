@@ -18,7 +18,7 @@ import java.io.IOException;
 import org.eclipse.core.resources.ResourcesPlugin;
 
 /**
- * DOC mhirt class global comment. Detailled comment
+ * DOC mhirt class global comment. Detailed comment
  */
 public class ComponentCompilations {
 

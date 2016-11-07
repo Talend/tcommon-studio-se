@@ -45,7 +45,7 @@ import org.talend.repository.mdm.model.MDMXSDExtractorFieldModel;
 import org.talend.repository.mdm.ui.wizard.dnd.MDMLinker;
 
 /**
- * DOC hwang class global comment. Detailled comment
+ * DOC hwang class global comment. Detailed comment
  */
 public class ExtractionFieldsWithMDMEditorView extends AbstractDataTableEditorView<ConceptTarget> {
 

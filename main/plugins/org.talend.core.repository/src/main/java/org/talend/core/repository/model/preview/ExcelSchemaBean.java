@@ -15,7 +15,7 @@ package org.talend.core.repository.model.preview;
 import java.util.ArrayList;
 
 /**
- * DOC YeXiaowei class global comment. Detailled comment <br/>
+ * DOC YeXiaowei class global comment. Detailed comment <br/>
  * 
  */
 public class ExcelSchemaBean {

@@ -29,7 +29,7 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.repository.model.RepositoryNode;
 
 /**
- * created by ycbai on 2015年9月10日 Detailled comment
+ * created by ycbai on 2015年9月10日 Detailed comment
  *
  */
 public interface IGenericWizardService extends IService {

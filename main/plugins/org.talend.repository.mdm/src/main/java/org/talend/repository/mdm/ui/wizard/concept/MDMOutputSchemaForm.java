@@ -100,7 +100,7 @@ import org.talend.repository.ui.wizards.metadata.connection.files.xml.view.XmlFi
 import org.talend.repository.ui.wizards.metadata.connection.files.xml.view.XmlFileTreeViewerProvider;
 
 /**
- * wzhang class global comment. Detailled comment
+ * wzhang class global comment. Detailed comment
  */
 public class MDMOutputSchemaForm extends AbstractMDMFileStepForm {
 
@@ -1068,7 +1068,7 @@ public class MDMOutputSchemaForm extends AbstractMDMFileStepForm {
     }
 
     /**
-     * class global comment. Detailled comment
+     * class global comment. Detailed comment
      */
     class DialogErrorXMLLabelCellEditor implements ICellEditorListener {
 

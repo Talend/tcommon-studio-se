@@ -27,7 +27,7 @@ import org.talend.core.database.conn.EDatabaseConnVar;
 import org.talend.core.database.conn.version.EDatabaseVersion4Drivers;
 
 /**
- * cli class global comment. Detailled comment
+ * cli class global comment. Detailed comment
  */
 class DbConnStr {
 

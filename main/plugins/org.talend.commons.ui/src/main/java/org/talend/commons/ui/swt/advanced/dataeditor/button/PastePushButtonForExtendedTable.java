@@ -25,7 +25,7 @@ import org.talend.commons.ui.utils.IClipoardListener;
 import org.talend.commons.ui.utils.SimpleClipboard;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  * $Id$
  * 

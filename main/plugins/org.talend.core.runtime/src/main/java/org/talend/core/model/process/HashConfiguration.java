@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * 
- * DOC amaumont AdvancedMapperComponent class global comment. Detailled comment <br/>
+ * DOC amaumont AdvancedMapperComponent class global comment. Detailed comment <br/>
  * 
  */
 public class HashConfiguration implements IHashConfiguration {

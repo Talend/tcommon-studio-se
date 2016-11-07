@@ -22,7 +22,7 @@ import net.jeeeyul.swtend.ui.HSB;
 import org.eclipse.swt.graphics.Image;
 
 /**
- * created by cmeng on Feb 9, 2015 Detailled comment
+ * created by cmeng on Feb 9, 2015 Detailed comment
  *
  */
 public class TalendTabSettings extends JTabSettings {

@@ -30,7 +30,7 @@ import org.talend.core.model.metadata.builder.database.manager.ExtractManagerFac
 import org.talend.cwm.relational.TdColumn;
 
 /**
- * created by ggu on Jul 5, 2012 Detailled comment
+ * created by ggu on Jul 5, 2012 Detailed comment
  * 
  * 
  * only test the normal null, so set mysql db as default, (no need care)

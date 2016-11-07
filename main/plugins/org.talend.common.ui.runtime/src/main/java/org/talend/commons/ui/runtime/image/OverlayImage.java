@@ -19,7 +19,7 @@ import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.Point;
 
 /**
- * DOC smallet class global comment. Detailled comment <br/>
+ * DOC smallet class global comment. Detailed comment <br/>
  * 
  * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
  * 
@@ -27,7 +27,7 @@ import org.eclipse.swt.graphics.Point;
 public class OverlayImage extends CompositeImageDescriptor {
 
     /**
-     * DOC smallet OverlayImage class global comment. Detailled comment
+     * DOC smallet OverlayImage class global comment. Detailed comment
      * 
      * $Id$
      * 

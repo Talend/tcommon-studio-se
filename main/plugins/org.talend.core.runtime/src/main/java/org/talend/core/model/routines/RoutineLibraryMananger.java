@@ -32,7 +32,7 @@ import org.talend.core.ILibraryManagerService;
 import org.talend.core.model.general.LibraryInfo;
 
 /**
- * wchen class global comment. Detailled comment
+ * wchen class global comment. Detailed comment
  */
 public class RoutineLibraryMananger {
 

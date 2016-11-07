@@ -13,7 +13,7 @@
 package org.talend.core.model.metadata;
 
 /**
- * DOC hwang class global comment. Detailled comment
+ * DOC hwang class global comment. Detailed comment
  */
 public class IMDMConstant {
 

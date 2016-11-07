@@ -23,7 +23,7 @@ import org.junit.Test;
 import org.talend.core.database.EDatabaseTypeName;
 
 /**
- * DOC Administrator class global comment. Detailled comment
+ * DOC Administrator class global comment. Detailed comment
  */
 public class TextUtilTest {
 

@@ -48,7 +48,7 @@ import org.talend.registration.register.RegisterManagement;
 import org.talend.repository.model.RepositoryConstants;
 
 /**
- * DOC zli class global comment. Detailled comment
+ * DOC zli class global comment. Detailed comment
  */
 public class RegisterWizardPage1 extends AbstractBasicWizardDialog {
 
@@ -410,7 +410,7 @@ public class RegisterWizardPage1 extends AbstractBasicWizardDialog {
     }
 
     /**
-     * DOC zli RegisterWizardPage1 class global comment. Detailled comment
+     * DOC zli RegisterWizardPage1 class global comment. Detailed comment
      */
     class NetworkSettingDialog extends Dialog {
 

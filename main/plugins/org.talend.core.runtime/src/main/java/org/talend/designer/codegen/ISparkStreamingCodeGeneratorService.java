@@ -15,7 +15,7 @@ package org.talend.designer.codegen;
 import org.talend.core.model.process.IProcess;
 
 /**
- * DOC zwzhao class global comment. Detailled comment
+ * DOC zwzhao class global comment. Detailed comment
  */
 public interface ISparkStreamingCodeGeneratorService extends IBigDataCodeGeneratorService {
 

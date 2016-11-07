@@ -65,7 +65,7 @@ import org.talend.utils.json.JSONObject;
 import com.sun.management.OperatingSystemMXBean;
 
 /**
- * wzhang class global comment. Detailled comment
+ * wzhang class global comment. Detailed comment
  */
 public class ExportLogsWizardPage extends WizardPage {
 

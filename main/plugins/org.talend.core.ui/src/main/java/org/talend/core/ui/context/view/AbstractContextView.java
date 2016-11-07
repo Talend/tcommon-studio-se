@@ -46,7 +46,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.impl.ContextTypeImpl;
 import org.talend.repository.model.RepositoryNode;
 
 /**
- * created by xqliu on Jul 26, 2013 Detailled comment
+ * created by xqliu on Jul 26, 2013 Detailed comment
  * 
  */
 public abstract class AbstractContextView extends ViewPart {

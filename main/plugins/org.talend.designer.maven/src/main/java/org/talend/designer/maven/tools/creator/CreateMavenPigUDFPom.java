@@ -24,7 +24,7 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.designer.maven.template.MavenTemplateManager;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class CreateMavenPigUDFPom extends AbstractMavenCodesTemplatePom {
 

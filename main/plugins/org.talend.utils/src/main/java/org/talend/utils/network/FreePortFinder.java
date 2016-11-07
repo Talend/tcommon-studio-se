@@ -22,7 +22,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  */
 public class FreePortFinder {

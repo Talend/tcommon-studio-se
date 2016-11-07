@@ -320,7 +320,7 @@ public class ManagerConnection {
     }
 
     /**
-     * DOC cantoine : Check connexion from IMetadataConnection comment. Detailled comment.
+     * DOC cantoine : Check connexion from IMetadataConnection comment. Detailed comment.
      * 
      * @return isValide
      */

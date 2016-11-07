@@ -23,7 +23,7 @@ import org.talend.metadata.managment.ui.wizard.PropertiesWizardPage;
 import org.talend.repository.model.RepositoryConstants;
 
 /**
- * DOC smallet class global comment. Detailled comment <br/>
+ * DOC smallet class global comment. Detailed comment <br/>
  * 
  * $Id: Step0WizardPage.java 38013 2010-03-05 14:21:59Z mhirt $
  * 

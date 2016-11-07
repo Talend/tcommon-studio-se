@@ -34,7 +34,7 @@ import org.talend.commons.ui.swt.colorstyledtext.rules.ITokenFactory;
 import org.talend.commons.ui.utils.data.text.rules.StringRuleBasedScanner;
 
 /**
- * DOC nrousseau class global comment. Detailled comment <br/>
+ * DOC nrousseau class global comment. Detailed comment <br/>
  * 
  * $Id: ColoringScanner.java 7038 2007-11-15 14:05:48Z plegall $
  * 
@@ -78,7 +78,7 @@ public class ColoringScanner extends StringRuleBasedScanner {
     protected char escape;
 
     /**
-     * DOC nrousseau ColoringPartitionScanner class global comment. Detailled comment <br/>
+     * DOC nrousseau ColoringPartitionScanner class global comment. Detailed comment <br/>
      * 
      * $Id: ColoringScanner.java 7038 2007-11-15 14:05:48Z plegall $
      * 

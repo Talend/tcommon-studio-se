@@ -15,7 +15,7 @@ package org.talend.repository.example.viewer.content.example;
 import org.talend.repository.example.viewer.node.ExampleRootNode;
 
 /**
- * created by sgandon on 1 août 2012 Detailled comment
+ * created by sgandon on 1 août 2012 Detailed comment
  * 
  */
 public class JobOnlyWithAnAContentProvider extends JobWithXLableContentProvider {

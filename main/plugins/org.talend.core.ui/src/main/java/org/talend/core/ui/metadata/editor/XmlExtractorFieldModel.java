@@ -19,7 +19,7 @@ import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
 import org.talend.core.model.metadata.builder.connection.SchemaTarget;
 
 /**
- * DOC cantoine class global comment. Detailled comment <br/>
+ * DOC cantoine class global comment. Detailed comment <br/>
  * 
  * $Id: XmlExtractorFieldModel.java 38013 2010-03-05 14:21:59Z mhirt $
  * 

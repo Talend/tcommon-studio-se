@@ -22,7 +22,7 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.model.process.IProcess2;
 
 /**
- * DOC nrousseau class global comment. Detailled comment
+ * DOC nrousseau class global comment. Detailed comment
  */
 public final class ReplaceNodesInProcessProvider {
 

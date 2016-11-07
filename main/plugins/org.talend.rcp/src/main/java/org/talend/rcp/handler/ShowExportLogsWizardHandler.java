@@ -22,7 +22,7 @@ import org.talend.rcp.exportLogs.ExportLogsWizard;
 
 /**
  * 
- * DOC fywang class global comment. Detailled comment
+ * DOC fywang class global comment. Detailed comment
  */
 public class ShowExportLogsWizardHandler extends AbstractHandler {
 

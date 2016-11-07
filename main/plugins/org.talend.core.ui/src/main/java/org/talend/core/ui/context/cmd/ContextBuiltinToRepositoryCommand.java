@@ -36,7 +36,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
 
 /**
- * created by ldong on Sep 12, 2014 Detailled comment
+ * created by ldong on Sep 12, 2014 Detailed comment
  * 
  */
 public class ContextBuiltinToRepositoryCommand extends Command {

@@ -31,7 +31,7 @@ import org.talend.core.ui.metadata.editor.MetadataEmfTableEditor;
 import org.talend.repository.metadata.i18n.Messages;
 
 /**
- * wzhang class global comment. Detailled comment
+ * wzhang class global comment. Detailed comment
  */
 public class XmlFileOutputMetadataEmfTableEditorView extends AbstractDataTableEditorView<MetadataColumn> {
 

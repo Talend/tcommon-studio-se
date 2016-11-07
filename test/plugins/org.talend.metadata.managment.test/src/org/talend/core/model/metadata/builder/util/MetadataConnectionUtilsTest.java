@@ -29,7 +29,7 @@ import org.talend.cwm.xml.TdXmlElementType;
 import org.talend.metadata.managment.utils.MetadataConnectionUtils;
 
 /**
- * created by ggu on Jul 12, 2012 Detailled comment
+ * created by ggu on Jul 12, 2012 Detailed comment
  * 
  */
 public class MetadataConnectionUtilsTest {

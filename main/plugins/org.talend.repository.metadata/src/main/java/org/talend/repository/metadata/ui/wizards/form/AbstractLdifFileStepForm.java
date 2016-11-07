@@ -23,7 +23,7 @@ import org.talend.metadata.managment.ui.utils.OtherConnectionContextUtils.EParam
 import org.talend.metadata.managment.ui.wizard.AbstractForm;
 
 /**
- * DOC cantoine class global comment. Detailled comment <br/>
+ * DOC cantoine class global comment. Detailed comment <br/>
  * 
  * $Id: AbstractLdifFileStepForm.java 302 2006-11-02 13:59:32 +0000 (jeu., 02 nov. 2006) cantoine $
  * 

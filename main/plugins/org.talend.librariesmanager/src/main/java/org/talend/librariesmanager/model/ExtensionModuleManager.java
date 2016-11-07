@@ -27,7 +27,7 @@ import org.talend.librariesmanager.i18n.Messages;
 
 /**
  *
- * created by ycbai on 2014-5-7 Detailled comment
+ * created by ycbai on 2014-5-7 Detailed comment
  *
  */
 public class ExtensionModuleManager {

@@ -28,7 +28,7 @@ import org.talend.core.model.properties.Item;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 
 /**
- * DOC talend class global comment. Detailled comment<br>
+ * DOC talend class global comment. Detailed comment<br>
  * More information please see: https://jira.talendforge.org/browse/TDI-30337
  */
 public class CorrectDBVersionListForAS400 extends AbstractItemMigrationTask {

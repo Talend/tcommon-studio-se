@@ -34,7 +34,7 @@ import org.talend.repository.mdm.util.MDMUtil;
 import org.talend.repository.model.RepositoryNode;
 
 /**
- * DOC hwang class global comment. Detailled comment
+ * DOC hwang class global comment. Detailed comment
  */
 public class MDMProviderService implements IMDMProviderService {
 

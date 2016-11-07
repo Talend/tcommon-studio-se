@@ -27,7 +27,7 @@ import org.eclipse.ui.navigator.INavigatorContentService;
 import org.talend.repository.ui.actions.AContextualAction;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public abstract class AbstractRepositoryActionProvider extends CommonActionProvider {
 

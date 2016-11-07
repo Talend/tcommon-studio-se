@@ -25,7 +25,7 @@ import org.talend.core.model.properties.ByteArray;
 import org.talend.core.model.properties.PropertiesFactory;
 
 /**
- * DOC mhelleboid class global comment. Detailled comment <br/>
+ * DOC mhelleboid class global comment. Detailed comment <br/>
  * 
  * $Id$
  * 

@@ -37,7 +37,7 @@ import org.talend.core.ui.services.IDesignerCoreUIService;
 import org.talend.core.utils.TalendQuoteUtils;
 
 /**
- * cli class global comment. Detailled comment
+ * cli class global comment. Detailed comment
  */
 public class SchemaXPathQuerysDialog extends Dialog {
 
@@ -227,7 +227,7 @@ public class SchemaXPathQuerysDialog extends Dialog {
 
     /**
      * 
-     * cli XPathQueryChangeCommand class global comment. Detailled comment
+     * cli XPathQueryChangeCommand class global comment. Detailed comment
      */
     class XPathQueryChangeCommand extends Command {
 

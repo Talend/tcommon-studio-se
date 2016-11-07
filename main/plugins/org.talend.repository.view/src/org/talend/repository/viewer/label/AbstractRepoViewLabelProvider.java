@@ -49,7 +49,7 @@ import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.ui.views.IRepositoryView;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public abstract class AbstractRepoViewLabelProvider extends LabelProvider implements ICommonLabelProvider, IFontProvider,
         IColorProvider {

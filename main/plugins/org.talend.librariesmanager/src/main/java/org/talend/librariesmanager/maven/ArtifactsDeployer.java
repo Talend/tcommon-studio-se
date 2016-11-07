@@ -42,7 +42,7 @@ import org.talend.designer.maven.utils.PomUtil;
 import org.talend.utils.io.FilesUtils;
 
 /**
- * created by wchen on 2015-5-14 Detailled comment
+ * created by wchen on 2015-5-14 Detailed comment
  *
  */
 public class ArtifactsDeployer {

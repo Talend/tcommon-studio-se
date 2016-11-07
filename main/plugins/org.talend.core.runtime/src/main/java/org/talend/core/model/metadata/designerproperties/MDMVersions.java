@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * created by wchen on Apr 15, 2015 Detailled comment
+ * created by wchen on Apr 15, 2015 Detailed comment
  *
  */
 public enum MDMVersions {

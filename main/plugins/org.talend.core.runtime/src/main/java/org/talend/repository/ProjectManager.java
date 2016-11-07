@@ -49,7 +49,7 @@ import org.talend.utils.json.JSONException;
 import org.talend.utils.json.JSONObject;
 
 /**
- * ggu class global comment. Detailled comment
+ * ggu class global comment. Detailed comment
  */
 public final class ProjectManager {
 

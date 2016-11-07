@@ -19,7 +19,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
 
 /**
- * DOC mhelleboid class global comment. Detailled comment <br/>
+ * DOC mhelleboid class global comment. Detailed comment <br/>
  * 
  * $Id: URIHelper.java 38013 2010-03-05 14:21:59Z mhirt $
  * 

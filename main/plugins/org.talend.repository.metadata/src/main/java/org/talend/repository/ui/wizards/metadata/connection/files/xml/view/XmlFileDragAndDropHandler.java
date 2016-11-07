@@ -49,7 +49,7 @@ import org.talend.metadata.managment.ui.wizard.metadata.xml.node.NameSpaceNode;
 import org.talend.repository.metadata.ui.wizards.form.AbstractXmlStepForm;
 
 /**
- * wzhang class global comment. Detailled comment
+ * wzhang class global comment. Detailed comment
  */
 public class XmlFileDragAndDropHandler {
 
@@ -99,7 +99,7 @@ public class XmlFileDragAndDropHandler {
 
     /**
      * 
-     * DOC wzhang XmlFileDragAndDropHandler class global comment. Detailled comment
+     * DOC wzhang XmlFileDragAndDropHandler class global comment. Detailed comment
      */
 
     class TreeDragSourceListener implements TransferDragSourceListener {
@@ -138,7 +138,7 @@ public class XmlFileDragAndDropHandler {
 
     /**
      * 
-     * DOC wzhang XmlFileDragAndDropHandler class global comment. Detailled comment
+     * DOC wzhang XmlFileDragAndDropHandler class global comment. Detailed comment
      */
     class TableDropTargetListener implements TransferDropTargetListener {
 

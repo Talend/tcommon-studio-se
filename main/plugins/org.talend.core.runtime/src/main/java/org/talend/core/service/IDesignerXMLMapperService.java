@@ -16,7 +16,7 @@ import org.talend.core.IService;
 import org.talend.core.model.process.INode;
 
 /**
- * DOC YeXiaowei class global comment. Detailled comment <br/>
+ * DOC YeXiaowei class global comment. Detailed comment <br/>
  * 
  */
 public interface IDesignerXMLMapperService extends IService {

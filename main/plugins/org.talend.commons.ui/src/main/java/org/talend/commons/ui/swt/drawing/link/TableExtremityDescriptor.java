@@ -15,7 +15,7 @@ package org.talend.commons.ui.swt.drawing.link;
 import org.eclipse.swt.widgets.TableItem;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  * $Id$
  * 

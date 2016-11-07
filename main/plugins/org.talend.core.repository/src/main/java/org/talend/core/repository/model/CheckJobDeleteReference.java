@@ -40,7 +40,7 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 
 /**
  * 
- * DOC hcyi class global comment. Detailled comment
+ * DOC hcyi class global comment. Detailed comment
  */
 public class CheckJobDeleteReference extends AbstractCheckDeleteItemReference implements ICheckDeleteItemReference {
 

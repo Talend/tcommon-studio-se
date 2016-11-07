@@ -52,7 +52,7 @@ import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.model.RepositoryNodeUtilities;
 
 /**
- * ftang class global comment. Detailled comment <br/>
+ * ftang class global comment. Detailed comment <br/>
  * 
  */
 public class GenericSchemaWizard extends CheckLastVersionRepositoryWizard implements INewWizard {

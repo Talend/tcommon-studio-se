@@ -18,7 +18,7 @@ import java.util.Map;
 import org.eclipse.swt.graphics.RGB;
 
 /**
- * DOC nrousseau class global comment. Detailled comment <br/>
+ * DOC nrousseau class global comment. Detailed comment <br/>
  * 
  * $Id: IElementParameter.java 39167 2010-03-26 06:55:10Z cli $
  * 

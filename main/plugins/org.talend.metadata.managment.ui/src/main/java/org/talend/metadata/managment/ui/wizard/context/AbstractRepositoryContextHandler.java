@@ -34,7 +34,7 @@ import org.talend.metadata.managment.ui.utils.ExtendedNodeConnectionContextUtils
 import org.talend.metadata.managment.ui.utils.IRepositoryContextHandler;
 
 /**
- * created by ldong on Mar 18, 2015 Detailled comment
+ * created by ldong on Mar 18, 2015 Detailed comment
  *
  */
 public abstract class AbstractRepositoryContextHandler implements IRepositoryContextHandler {

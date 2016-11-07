@@ -18,7 +18,7 @@ import javax.net.ssl.SSLContext;
 import org.talend.core.IService;
 
 /**
- * created by hcyi on Aug 17, 2016 Detailled comment
+ * created by hcyi on Aug 17, 2016 Detailed comment
  *
  */
 public interface IMDMService extends IService {

@@ -39,7 +39,7 @@ import com.sforce.soap.enterprise.sobject.SObject;
 /**
  * Maybe need a long connection ...
  * <p>
- * DOC YeXiaowei class global comment. Detailled comment <br/>
+ * DOC YeXiaowei class global comment. Detailed comment <br/>
  * 
  */
 public class SalesforceModuleParseEnterprise implements ISalesforceModuleParser {

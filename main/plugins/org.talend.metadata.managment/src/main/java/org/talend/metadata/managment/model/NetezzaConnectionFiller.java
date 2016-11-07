@@ -27,7 +27,7 @@ import orgomg.cwm.objectmodel.core.Package;
 import orgomg.cwm.resource.relational.Catalog;
 
 /**
- * created by xqliu on 2014-10-29 Detailled comment
+ * created by xqliu on 2014-10-29 Detailed comment
  * 
  */
 public class NetezzaConnectionFiller extends DBConnectionFillerImpl {

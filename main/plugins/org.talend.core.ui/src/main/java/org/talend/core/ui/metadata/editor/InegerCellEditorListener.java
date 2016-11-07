@@ -19,7 +19,7 @@ import org.talend.commons.ui.swt.tableviewer.celleditor.DialogErrorForCellEditor
 import org.talend.core.ui.i18n.Messages;
 
 /**
- * ggu class global comment. Detailled comment
+ * ggu class global comment. Detailed comment
  */
 public class InegerCellEditorListener extends DialogErrorForCellEditorListener {
 

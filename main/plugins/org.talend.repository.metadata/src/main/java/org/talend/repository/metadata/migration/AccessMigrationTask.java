@@ -27,7 +27,7 @@ import org.talend.core.model.properties.Item;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 
 /**
- * created by kongxiaohan on Jun 25, 2015 Detailled comment
+ * created by kongxiaohan on Jun 25, 2015 Detailed comment
  *
  */
 public class AccessMigrationTask extends AbstractItemMigrationTask {

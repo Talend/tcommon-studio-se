@@ -27,7 +27,7 @@ import org.talend.commons.CommonsPlugin;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 
 /**
- * DOC nrousseau class global comment. Detailled comment <br/>
+ * DOC nrousseau class global comment. Detailed comment <br/>
  * 
  * $Id: CatalogReader.java 7038 2007-11-15 14:05:48Z plegall $
  * 

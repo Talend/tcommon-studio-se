@@ -22,7 +22,7 @@ import org.talend.core.model.general.ModuleToInstall;
 import org.talend.librariesmanager.ui.dialogs.ModuleLicenseDialog;
 
 /**
- * created by sgandon on 24 sept. 2013 Detailled comment
+ * created by sgandon on 24 sept. 2013 Detailed comment
  * 
  */
 public class DownloadModuleRunnableWithLicenseDialog extends DownloadModuleRunnable {

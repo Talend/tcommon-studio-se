@@ -15,7 +15,7 @@ package org.talend.metadata.managment.ui.wizard.metadata.xml.utils;
 import org.talend.commons.runtime.xml.XmlUtil;
 
 /**
- * DOC ke class global comment. Detailled comment <br/>
+ * DOC ke class global comment. Detailed comment <br/>
  * 
  */
 public class StringUtil {

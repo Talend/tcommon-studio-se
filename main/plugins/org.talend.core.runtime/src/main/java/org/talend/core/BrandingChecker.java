@@ -22,7 +22,7 @@ import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.ui.branding.IBrandingService;
 
 /**
- * DOC talend class global comment. Detailled comment
+ * DOC talend class global comment. Detailed comment
  */
 public class BrandingChecker {
 

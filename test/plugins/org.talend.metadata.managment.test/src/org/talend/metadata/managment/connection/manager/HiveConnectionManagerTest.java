@@ -30,7 +30,7 @@ import org.talend.metadata.managment.hive.handler.HiveConnectionHandler;
 import org.talend.metadata.managment.hive.handler.Mapr212Handler;
 
 /**
- * created by qiongli on 2014-3-11 Detailled comment
+ * created by qiongli on 2014-3-11 Detailed comment
  * 
  */
 public class HiveConnectionManagerTest {

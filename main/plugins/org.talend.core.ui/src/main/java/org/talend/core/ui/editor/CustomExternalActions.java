@@ -33,7 +33,7 @@ import org.talend.core.ui.ISparkStreamingJobletProviderService;
 import org.talend.designer.core.IDesignerCoreService;
 
 /**
- * DOC qzhang class global comment. Detailled comment
+ * DOC qzhang class global comment. Detailed comment
  */
 public abstract class CustomExternalActions extends SelectionAction {
 

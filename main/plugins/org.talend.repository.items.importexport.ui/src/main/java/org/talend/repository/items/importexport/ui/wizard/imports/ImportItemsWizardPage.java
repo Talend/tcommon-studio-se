@@ -100,7 +100,7 @@ import org.talend.repository.ui.dialog.AProgressMonitorDialogWithCancel;
 
 /**
  * 
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class ImportItemsWizardPage extends WizardPage {
 

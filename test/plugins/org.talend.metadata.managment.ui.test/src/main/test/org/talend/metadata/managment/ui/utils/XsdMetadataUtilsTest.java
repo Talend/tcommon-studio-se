@@ -35,7 +35,7 @@ import org.talend.datatools.xml.utils.XSDPopulationUtil2;
 import org.talend.datatools.xml.utils.XSDUtils;
 
 /**
- * created by wchen on Aug 30, 2016 Detailled comment
+ * created by wchen on Aug 30, 2016 Detailed comment
  *
  */
 public class XsdMetadataUtilsTest {

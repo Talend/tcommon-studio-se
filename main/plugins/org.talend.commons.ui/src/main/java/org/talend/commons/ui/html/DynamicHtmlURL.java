@@ -22,7 +22,7 @@ import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 
 /**
  * 
- * DOC wchen class global comment. Detailled comment
+ * DOC wchen class global comment. Detailed comment
  */
 public class DynamicHtmlURL implements IIntroURL {
 

@@ -20,7 +20,7 @@ import java.util.Map;
 import org.talend.core.model.metadata.IMetadataTable;
 
 /**
- * DOC nrousseau class global comment. Detailled comment <br/>
+ * DOC nrousseau class global comment. Detailed comment <br/>
  * 
  * $Id$
  * 

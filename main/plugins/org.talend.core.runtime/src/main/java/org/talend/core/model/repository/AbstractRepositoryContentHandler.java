@@ -43,7 +43,7 @@ import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
 
 /**
- * DOC ycbai class global comment. Detailled comment
+ * DOC ycbai class global comment. Detailed comment
  */
 public abstract class AbstractRepositoryContentHandler implements IRepositoryContentHandler {
 

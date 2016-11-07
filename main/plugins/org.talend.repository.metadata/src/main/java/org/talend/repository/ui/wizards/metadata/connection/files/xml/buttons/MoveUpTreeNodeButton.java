@@ -29,7 +29,7 @@ import org.talend.metadata.managment.ui.wizard.metadata.xml.node.NameSpaceNode;
 import org.talend.repository.metadata.ui.wizards.form.AbstractXmlStepForm;
 
 /**
- * DOC talend class global comment. Detailled comment
+ * DOC talend class global comment. Detailed comment
  */
 public class MoveUpTreeNodeButton extends AbstractTreeNodeButton {
 

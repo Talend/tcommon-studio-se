@@ -69,7 +69,7 @@ import org.talend.repository.metadata.i18n.Messages;
 import org.talend.repository.metadata.ui.wizards.form.AbstractWSDLSchemaStepForm;
 
 /**
- * DOC Administrator class global comment. Detailled comment
+ * DOC Administrator class global comment. Detailed comment
  */
 public class WebServiceStep2Form extends AbstractWSDLSchemaStepForm {
 

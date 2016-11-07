@@ -18,7 +18,7 @@ import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.core.repository.model.preview.IPreview;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  * $Id$
  * 

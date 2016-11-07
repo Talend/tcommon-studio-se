@@ -21,7 +21,7 @@ import java.util.Map;
 import org.talend.core.model.update.extension.UpdateManagerProviderDetector;
 
 /**
- * ggu class global comment. Detailled comment
+ * ggu class global comment. Detailed comment
  * 
  * update manager for the jobs / joblets.
  */

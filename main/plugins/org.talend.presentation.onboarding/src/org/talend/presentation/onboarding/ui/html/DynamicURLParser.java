@@ -23,7 +23,7 @@ import org.eclipse.ui.internal.intro.impl.util.Log;
 import org.eclipse.ui.internal.intro.impl.util.StringUtil;
 
 /**
- * DOC talend class global comment. Detailled comment
+ * DOC talend class global comment. Detailed comment
  */
 public class DynamicURLParser {
 

@@ -4,7 +4,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 
 /**
  * 
- * created by ycbai on 2013-3-19 Detailled comment
+ * created by ycbai on 2013-3-19 Detailed comment
  * 
  */
 public class LibraryFile {

@@ -42,12 +42,12 @@ import org.talend.core.repository.i18n.Messages;
 import org.talend.core.repository.model.ContextReferenceBean;
 
 /**
- * DOC hwang class global comment. Detailled comment
+ * DOC hwang class global comment. Detailed comment
  */
 public class ContextReferenceDialog extends SelectionDialog {
 
     /**
-     * DOC hwang ContextReferenceDialog class global comment. Detailled comment
+     * DOC hwang ContextReferenceDialog class global comment. Detailed comment
      */
     class ContextsProvide extends LabelProvider implements ITableLabelProvider {
 

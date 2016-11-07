@@ -36,7 +36,7 @@ import org.talend.utils.sugars.ReturnCode;
 import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
- * DOC bZhou class global comment. Detailled comment
+ * DOC bZhou class global comment. Detailed comment
  */
 public interface ITDQRepositoryService extends IService {
 

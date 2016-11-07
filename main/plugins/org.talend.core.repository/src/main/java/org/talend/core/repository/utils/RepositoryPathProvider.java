@@ -23,7 +23,7 @@ import org.talend.core.model.general.Project;
 import org.talend.core.runtime.CoreRuntimePlugin;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  * $Id: RepositoryPathProvider.java 38013 2010-03-05 14:21:59Z mhirt $
  * 

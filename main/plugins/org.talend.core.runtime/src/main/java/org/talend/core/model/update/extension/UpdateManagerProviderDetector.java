@@ -41,7 +41,7 @@ import org.talend.designer.core.IDesignerCoreService;
 import org.talend.repository.model.RepositoryNode;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public enum UpdateManagerProviderDetector {
     INSTANCE;

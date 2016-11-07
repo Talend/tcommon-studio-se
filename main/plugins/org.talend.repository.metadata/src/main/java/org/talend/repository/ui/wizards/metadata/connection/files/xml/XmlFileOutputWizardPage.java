@@ -21,7 +21,7 @@ import org.talend.cwm.helper.TableHelper;
 import org.talend.metadata.managment.ui.wizard.AbstractForm;
 
 /**
- * wzhang class global comment. Detailled comment
+ * wzhang class global comment. Detailed comment
  */
 public class XmlFileOutputWizardPage extends XmlFileWizardPage {
 

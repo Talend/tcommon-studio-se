@@ -18,7 +18,7 @@ import org.talend.core.model.process.Problem;
 import org.talend.designer.codegen.IAloneProcessNodeConfigurer;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  * $Id: ICodeProblemsChecker.java 38013 2010-03-05 14:21:59Z mhirt $
  * 

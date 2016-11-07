@@ -18,7 +18,7 @@ import org.talend.core.model.routines.IRoutinesProvider;
 import org.talend.librariesmanager.model.service.TosJavaRoutinesProvider;
 
 /**
- * bqian class global comment. Detailled comment
+ * bqian class global comment. Detailed comment
  */
 public class TosRoutinesProviderCreator implements IRoutineProviderCreator {
 

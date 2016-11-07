@@ -14,7 +14,7 @@ package org.talend.metadata.managment.utils;
 
 
 /**
- * DOC zshen  class global comment. Detailled comment
+ * DOC zshen  class global comment. Detailed comment
  */
 public enum EDataBaseType {
     MySQL("MySQL", "mysql"), //$NON-NLS-1$//$NON-NLS-2$

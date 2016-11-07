@@ -23,7 +23,7 @@ import org.talend.core.model.process.IElementParameter;
 import org.talend.core.model.process.IElementParameterDefaultValue;
 
 /**
- * created by ggu on Sep 2, 2014 Detailled comment
+ * created by ggu on Sep 2, 2014 Detailed comment
  *
  */
 class TestElementParameter implements IElementParameter {

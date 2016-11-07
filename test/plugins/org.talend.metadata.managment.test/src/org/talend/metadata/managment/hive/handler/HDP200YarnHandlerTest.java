@@ -25,7 +25,7 @@ import org.talend.core.model.metadata.builder.MetadataConnection;
 import org.talend.core.model.metadata.connection.hive.HiveModeInfo;
 
 /**
- * created by qiongli on 2014-3-11 Detailled comment
+ * created by qiongli on 2014-3-11 Detailed comment
  * 
  */
 public class HDP200YarnHandlerTest {

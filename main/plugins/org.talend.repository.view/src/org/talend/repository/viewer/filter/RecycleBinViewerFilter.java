@@ -30,7 +30,7 @@ import org.talend.repository.model.nodes.IProjectRepositoryNode;
 import org.talend.repository.viewer.ui.provider.INavigatorContentServiceProvider;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  * 
  * TDI-20859, Only filter the nodes under recycle bin. do same function like perspective filter.
  */

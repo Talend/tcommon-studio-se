@@ -18,7 +18,7 @@ import java.util.Date;
 
 /**
  * 
- * DOC mzhao class global comment. Detailled comment
+ * DOC mzhao class global comment. Detailed comment
  * 
  * @param <T>
  */

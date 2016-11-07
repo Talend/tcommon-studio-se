@@ -65,7 +65,7 @@ import org.talend.repository.model.IRepositoryService;
 import org.talend.repository.model.RepositoryNode;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 @SuppressWarnings("rawtypes")
 public abstract class FolderMavenSettingPage extends AbstractProjectSettingPage {

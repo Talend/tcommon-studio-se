@@ -17,7 +17,7 @@ import java.util.Set;
 
 /**
  * 
- * DOC amaumont TypesManager class global comment. Detailled comment <br/>
+ * DOC amaumont TypesManager class global comment. Detailed comment <br/>
  * 
  * $Id$
  * 

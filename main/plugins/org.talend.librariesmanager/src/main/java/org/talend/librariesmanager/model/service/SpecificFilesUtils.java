@@ -22,7 +22,7 @@ import org.talend.commons.utils.io.FilesUtils;
 import org.talend.librariesmanager.i18n.Messages;
 
 /**
- * DOC smallet class global comment. Detailled comment <br/>
+ * DOC smallet class global comment. Detailed comment <br/>
  * 
  * $Id$
  * 

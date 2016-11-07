@@ -13,7 +13,7 @@
 package org.talend.utils.exceptions;
 
 /**
- * DOC scorreia class global comment. Detailled comment
+ * DOC scorreia class global comment. Detailed comment
  */
 public class TalendException extends Exception {
 

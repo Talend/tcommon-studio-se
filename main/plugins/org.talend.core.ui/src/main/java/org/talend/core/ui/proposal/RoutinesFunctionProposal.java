@@ -20,7 +20,7 @@ import org.talend.designer.rowgenerator.data.Function;
 import org.talend.designer.rowgenerator.data.FunctionManager;
 
 /**
- * DOC ggu class global comment. Detailled comment <br/>
+ * DOC ggu class global comment. Detailed comment <br/>
  * 
  */
 public class RoutinesFunctionProposal implements IContentProposal {

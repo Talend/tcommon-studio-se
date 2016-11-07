@@ -22,7 +22,7 @@ import org.talend.core.classloader.DynamicClassLoader;
 
 /**
  * 
- * created by ycbai on Aug 11, 2014 Detailled comment
+ * created by ycbai on Aug 11, 2014 Detailed comment
  * 
  * <p>
  * TODO: Need to improve it and replace {@link HadoopClassLoaderFactory} with it after.
@@ -91,7 +91,7 @@ public class HadoopClassLoaderFactory2 {
 
     /**
      * 
-     * created by ycbai on Aug 11, 2014 Detailled comment
+     * created by ycbai on Aug 11, 2014 Detailed comment
      *
      */
     public static class Builder {

@@ -30,7 +30,7 @@ import org.talend.core.model.repository.RepositoryContentManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
 /**
- * DOC smallet class global comment. Detailled comment <br/>
+ * DOC smallet class global comment. Detailed comment <br/>
  * 
  * $Id: StatusHelper.java 914 2006-12-08 08:28:53 +0000 (星期五, 08 十二月 2006) bqian $
  * 

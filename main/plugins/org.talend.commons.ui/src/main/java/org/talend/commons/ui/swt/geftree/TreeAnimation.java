@@ -25,7 +25,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
  * 
- * cli class global comment. Detailled comment
+ * cli class global comment. Detailed comment
  */
 @SuppressWarnings("unchecked")
 public class TreeAnimation {

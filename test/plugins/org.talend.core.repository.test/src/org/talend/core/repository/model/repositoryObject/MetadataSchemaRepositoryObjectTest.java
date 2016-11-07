@@ -26,7 +26,7 @@ import orgomg.cwm.resource.relational.Catalog;
 import orgomg.cwm.resource.relational.Schema;
 
 /**
- * created by xqliu on Sep 2, 2013 Detailled comment
+ * created by xqliu on Sep 2, 2013 Detailed comment
  * 
  */
 public class MetadataSchemaRepositoryObjectTest {

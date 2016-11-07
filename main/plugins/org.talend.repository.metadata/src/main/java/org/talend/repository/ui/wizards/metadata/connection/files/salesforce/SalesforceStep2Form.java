@@ -72,7 +72,7 @@ import org.talend.repository.metadata.i18n.Messages;
 import org.talend.repository.metadata.ui.wizards.form.AbstractSalesforceStepForm;
 
 /**
- * DOC YeXiaowei class global comment. Detailled comment <br/>
+ * DOC YeXiaowei class global comment. Detailed comment <br/>
  * 
  */
 public class SalesforceStep2Form extends AbstractSalesforceStepForm {
@@ -516,7 +516,7 @@ public class SalesforceStep2Form extends AbstractSalesforceStepForm {
 
     /**
      * 
-     * DOC YeXiaowei SalesforceStep2Form class global comment. Detailled comment <br/>
+     * DOC YeXiaowei SalesforceStep2Form class global comment. Detailed comment <br/>
      * 
      */
     class PreviewProcessor extends SWTUIThreadProcessor {

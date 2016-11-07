@@ -13,7 +13,7 @@
 package org.talend.core.model.metadata;
 
 /**
- * DOC hywang class global comment. Detailled comment
+ * DOC hywang class global comment. Detailed comment
  */
 public class IRuleConstant {
 

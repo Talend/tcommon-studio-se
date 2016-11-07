@@ -15,7 +15,7 @@ package routines.system;
 import java.util.List;
 
 /**
- * created by talend2 on 2013-10-17 Detailled comment
+ * created by talend2 on 2013-10-17 Detailed comment
  * 
  */
 public class NestXMLTool {

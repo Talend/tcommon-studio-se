@@ -13,7 +13,7 @@
 package org.talend.designer.rowgenerator.data;
 
 /**
- * class global comment. Detailled comment <br/> $Id: ShortParameter.java,v 1.4 2007/02/02 03:04:21 pub Exp $
+ * class global comment. Detailed comment <br/> $Id: ShortParameter.java,v 1.4 2007/02/02 03:04:21 pub Exp $
  */
 public class ShortParameter extends Parameter {
 

@@ -21,7 +21,7 @@ import org.talend.core.repository.RepositoryComponentSetting;
 import org.talend.repository.model.RepositoryNode;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class TRunjobRepositoryComponentDndFilter extends DefaultRepositoryComponentDndFilter {
 

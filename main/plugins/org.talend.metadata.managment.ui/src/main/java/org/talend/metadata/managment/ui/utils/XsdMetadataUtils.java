@@ -65,7 +65,7 @@ import orgomg.cwm.resource.record.RecordFactory;
 import orgomg.cwm.resource.record.RecordFile;
 
 /**
- * created by hcyi on Aug 29, 2014 Detailled comment
+ * created by hcyi on Aug 29, 2014 Detailed comment
  *
  * related to: class PublishMetadataRunnable
  *

@@ -29,7 +29,7 @@ import org.talend.repository.items.importexport.handlers.model.internal.ImportIt
 import org.talend.repository.items.importexport.handlers.model.internal.ImportResourcesProviderRegistry;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class ImportExportHandlersRegistryReader extends RegistryReader {
 

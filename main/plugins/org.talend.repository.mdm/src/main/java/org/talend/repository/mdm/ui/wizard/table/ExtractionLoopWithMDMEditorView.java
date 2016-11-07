@@ -33,7 +33,7 @@ import org.talend.repository.mdm.model.MDMXSDExtractorLoopModel;
 import org.talend.repository.mdm.ui.wizard.dnd.MDMLinker;
 
 /**
- * DOC hwang class global comment. Detailled comment
+ * DOC hwang class global comment. Detailed comment
  */
 public class ExtractionLoopWithMDMEditorView extends AbstractDataTableEditorView<Concept> {
 

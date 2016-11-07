@@ -22,7 +22,7 @@ import org.talend.commons.ui.utils.SimpleClipboard;
 import org.talend.commons.utils.data.list.UniqueStringGenerator;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  * $Id$
  * 

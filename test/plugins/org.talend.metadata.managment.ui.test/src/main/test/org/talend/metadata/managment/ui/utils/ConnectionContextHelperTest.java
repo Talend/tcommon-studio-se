@@ -20,7 +20,7 @@ import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
 
 /**
  * created by ycbai on 2016年9月2日
- * Detailled comment
+ * Detailed comment
  *
  */
 public class ConnectionContextHelperTest {

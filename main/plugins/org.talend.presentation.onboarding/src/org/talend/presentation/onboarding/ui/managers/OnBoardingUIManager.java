@@ -25,7 +25,7 @@ import org.talend.presentation.onboarding.ui.shells.OnBoardingShell;
 import org.talend.presentation.onboarding.utils.WidgetFinder;
 
 /**
- * created by cmeng on Sep 11, 2015 Detailled comment
+ * created by cmeng on Sep 11, 2015 Detailed comment
  *
  */
 public class OnBoardingUIManager {

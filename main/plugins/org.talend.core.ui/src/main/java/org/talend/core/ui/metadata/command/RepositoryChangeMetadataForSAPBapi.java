@@ -37,7 +37,7 @@ import org.talend.core.utils.TalendQuoteUtils;
 
 /**
  * 
- * created by wchen on Sep 19, 2014 Detailled comment
+ * created by wchen on Sep 19, 2014 Detailed comment
  *
  */
 public class RepositoryChangeMetadataForSAPBapi extends Command {

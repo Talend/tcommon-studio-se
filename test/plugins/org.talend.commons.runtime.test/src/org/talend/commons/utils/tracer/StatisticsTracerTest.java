@@ -27,7 +27,7 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 /**
- * DOC amaumont class global comment. Detailled comment
+ * DOC amaumont class global comment. Detailed comment
  */
 public class StatisticsTracerTest {
 

@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * created by bchen on Jul 24, 2013 Detailled comment
+ * created by bchen on Jul 24, 2013 Detailed comment
  * 
  */
 public class SparkStreamingRunStat extends MRRunStat {

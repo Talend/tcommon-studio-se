@@ -18,7 +18,7 @@ import org.eclipse.nebula.widgets.nattable.data.IDataProvider;
 import org.eclipse.nebula.widgets.nattable.ui.menu.PopupMenuBuilder;
 
 /**
- * created by ldong on Aug 14, 2014 Detailled comment
+ * created by ldong on Aug 14, 2014 Detailed comment
  * 
  */
 public class ContextPopMenuBuilder extends PopupMenuBuilder {

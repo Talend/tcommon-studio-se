@@ -21,7 +21,7 @@ import java.util.Map;
 import org.junit.Test;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class JSONUtilTest {
 

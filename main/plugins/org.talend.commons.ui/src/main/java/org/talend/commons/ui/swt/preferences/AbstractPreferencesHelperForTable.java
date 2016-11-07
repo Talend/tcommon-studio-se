@@ -20,7 +20,7 @@ import org.talend.commons.ui.swt.extended.table.ExtendedTableModel;
 import org.talend.commons.utils.data.bean.IBeanPropertyAccessors;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  */
 public abstract class AbstractPreferencesHelperForTable {

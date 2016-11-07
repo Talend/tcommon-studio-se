@@ -19,7 +19,7 @@ import org.eclipse.jface.preference.IPreferenceNode;
 import org.talend.core.IService;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public interface IMavenUIService extends IService {
 

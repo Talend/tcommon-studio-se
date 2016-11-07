@@ -20,7 +20,7 @@ import org.eclipse.swt.graphics.Image;
 import org.talend.commons.ui.swt.geftree.TreeSelectManager;
 
 /**
- * cli class global comment. Detailled comment
+ * cli class global comment. Detailed comment
  */
 public class ExpandCollapseFigure extends ImageFigure {
 

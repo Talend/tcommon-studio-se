@@ -20,7 +20,7 @@ import org.talend.core.context.Context;
 import org.talend.core.runtime.CoreRuntimePlugin;
 
 /**
- * DOC zli class global comment. Detailled comment
+ * DOC zli class global comment. Detailed comment
  */
 public class RegistrationPlugin extends AbstractUIPlugin {
 

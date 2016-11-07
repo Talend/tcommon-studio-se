@@ -23,7 +23,7 @@ import org.talend.commons.ui.swt.extended.table.ExtendedTableModel;
 import org.talend.core.ui.metadata.editor.MetadataToolbarEditorView;
 
 /**
- * cli class global comment. Detailled comment
+ * cli class global comment. Detailed comment
  */
 public class XPathQueryMetadataToolbarEditorViewExt extends MetadataToolbarEditorView {
 

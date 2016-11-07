@@ -40,7 +40,7 @@ import org.talend.commons.ui.swt.drawing.link.LinksManager;
 import org.talend.commons.ui.swt.drawing.link.StyleLink;
 
 /**
- * bqian class global comment. Detailled comment <br/>
+ * bqian class global comment. Detailed comment <br/>
  * 
  * $Id: TableToTablesLinker.java,v 1.1 2007/06/12 07:20:39 gke Exp $
  * 

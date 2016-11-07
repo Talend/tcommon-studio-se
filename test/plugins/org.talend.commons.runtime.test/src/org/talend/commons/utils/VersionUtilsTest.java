@@ -18,7 +18,7 @@ import org.junit.Test;
 import org.talend.utils.ProductVersion;
 
 /**
- * DOC ycbai class global comment. Detailled comment
+ * DOC ycbai class global comment. Detailed comment
  */
 public class VersionUtilsTest {
 

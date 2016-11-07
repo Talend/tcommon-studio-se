@@ -18,7 +18,7 @@ import org.talend.core.model.properties.Property;
 import org.talend.designer.runprocess.IProcessor;
 
 /**
- * DOC guanglong.du class global comment. Detailled comment
+ * DOC guanglong.du class global comment. Detailed comment
  */
 public interface IRemoteRunprocessorService extends IService {
 

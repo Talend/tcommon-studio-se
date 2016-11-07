@@ -44,7 +44,7 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.talend.commons.ui.i18n.Messages;
 
 /**
- * DOC bqian class global comment. Detailled comment <br/>
+ * DOC bqian class global comment. Detailed comment <br/>
  * 
  * $Id: talend.epf 1 2006-09-29 17:06:40 +0000) nrousseau $
  * 

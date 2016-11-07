@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.jface.viewers.Viewer;
 
 /**
- * created by wchen on 2013-11-12 Detailled comment
+ * created by wchen on 2013-11-12 Detailed comment
  * 
  */
 public interface IRepositoryReviewFilter extends IExecutableExtension {

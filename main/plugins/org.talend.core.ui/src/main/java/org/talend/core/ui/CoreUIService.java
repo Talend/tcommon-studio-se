@@ -28,7 +28,7 @@ import org.talend.core.ui.services.IDesignerCoreUIService;
 import org.talend.core.ui.services.IRulesProviderService;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class CoreUIService implements ICoreUIService {
 

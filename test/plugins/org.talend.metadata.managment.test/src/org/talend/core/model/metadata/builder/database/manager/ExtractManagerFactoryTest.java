@@ -33,7 +33,7 @@ import org.talend.core.model.metadata.builder.database.manager.dbs.OracleExtract
 import org.talend.core.model.metadata.builder.database.manager.dbs.TeradataExtractManager;
 
 /**
- * created by ggu on Jul 4, 2012 Detailled comment
+ * created by ggu on Jul 4, 2012 Detailed comment
  * 
  */
 public class ExtractManagerFactoryTest {

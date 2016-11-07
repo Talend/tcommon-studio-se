@@ -20,7 +20,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.keys.IBindingService;
 
 /**
- * created by hwang on Jan 5, 2016 Detailled comment
+ * created by hwang on Jan 5, 2016 Detailed comment
  *
  */
 public class HotKeyUtil {

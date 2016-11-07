@@ -13,7 +13,7 @@
 package org.talend.designer.maven.model;
 
 /**
- * created by ggu on 22 Jan 2015 Detailled comment
+ * created by ggu on 22 Jan 2015 Detailed comment
  *
  */
 public class ProjectSystemFolder {

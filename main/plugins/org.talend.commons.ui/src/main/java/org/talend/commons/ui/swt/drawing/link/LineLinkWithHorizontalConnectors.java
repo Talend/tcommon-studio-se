@@ -15,7 +15,7 @@ package org.talend.commons.ui.swt.drawing.link;
 import org.eclipse.swt.graphics.GC;
 
 /**
- * Draw an horizontal Bezier link. Detailled comment <br/>
+ * Draw an horizontal Bezier link. Detailed comment <br/>
  * 
  * $Id$
  * 

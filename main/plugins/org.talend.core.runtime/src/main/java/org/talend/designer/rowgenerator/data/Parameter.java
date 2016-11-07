@@ -15,7 +15,7 @@ package org.talend.designer.rowgenerator.data;
 import org.talend.core.runtime.i18n.Messages;
 
 /**
- * class global comment. Detailled comment <br/>
+ * class global comment. Detailed comment <br/>
  * $Id: Parameter.java,v 1.4 2007/02/02 03:04:21 pub Exp $
  */
 public abstract class Parameter {

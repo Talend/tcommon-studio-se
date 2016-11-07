@@ -32,7 +32,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
- * DOC chuang class global comment. Detailled comment
+ * DOC chuang class global comment. Detailed comment
  */
 public class XPathPrefixHandler {
 
@@ -363,7 +363,7 @@ public class XPathPrefixHandler {
 
     /**
      * 
-     * DOC chuang XPathPrefixHandler class global comment. Detailled comment
+     * DOC chuang XPathPrefixHandler class global comment. Detailed comment
      */
     static class PathSegment {
 
@@ -619,7 +619,7 @@ public class XPathPrefixHandler {
 
     /**
      * 
-     * DOC chuang XPathPrefixHandler class global comment. Detailled comment
+     * DOC chuang XPathPrefixHandler class global comment. Detailed comment
      */
     static class NodeInfo {
 
@@ -643,7 +643,7 @@ public class XPathPrefixHandler {
 
     /**
      * 
-     * DOC chuang XPathPrefixHandler class global comment. Detailled comment
+     * DOC chuang XPathPrefixHandler class global comment. Detailed comment
      */
     static class CustomNamespaceContext implements NamespaceContext {
 

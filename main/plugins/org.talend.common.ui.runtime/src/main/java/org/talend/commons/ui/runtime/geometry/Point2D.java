@@ -36,7 +36,7 @@ import org.eclipse.swt.graphics.Rectangle;
 
 /**
  * 
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  * $Id: Point2D.java 7048 2007-11-16 02:36:17Z nrousseau $
  * 

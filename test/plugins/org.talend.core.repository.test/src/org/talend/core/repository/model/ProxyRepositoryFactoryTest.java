@@ -22,7 +22,7 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.repository.ProjectManager;
 
 /**
- * created by ggu on Jul 9, 2014 Detailled comment
+ * created by ggu on Jul 9, 2014 Detailed comment
  *
  */
 @SuppressWarnings("nls")

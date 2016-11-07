@@ -38,7 +38,7 @@ import org.talend.registration.ERepositoryImages;
 import org.talend.registration.i18n.Messages;
 
 /**
- * DOC zli class global comment. Detailled comment
+ * DOC zli class global comment. Detailed comment
  */
 public class AbstractBasicWizardDialog extends Dialog {
 

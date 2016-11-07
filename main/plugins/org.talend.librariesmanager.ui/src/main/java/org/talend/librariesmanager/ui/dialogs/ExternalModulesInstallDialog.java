@@ -95,7 +95,7 @@ import org.talend.librariesmanager.ui.i18n.Messages;
 import org.talend.librariesmanager.utils.DownloadModuleRunnableWithLicenseDialog;
 
 /**
- * DOC wchen class global comment. Detailled comment
+ * DOC wchen class global comment. Detailed comment
  */
 public class ExternalModulesInstallDialog extends TitleAreaDialog implements IModulesListener {
 
@@ -803,7 +803,7 @@ public class ExternalModulesInstallDialog extends TitleAreaDialog implements IMo
     }
 
     /**
-     * created by sgandon on 30 sept. 2013 Detailled comment
+     * created by sgandon on 30 sept. 2013 Detailed comment
      * 
      */
     private final class ImportButtonSelectionListener implements SelectionListener {

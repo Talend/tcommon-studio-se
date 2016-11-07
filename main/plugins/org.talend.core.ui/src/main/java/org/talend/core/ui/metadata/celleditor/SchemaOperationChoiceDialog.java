@@ -46,7 +46,7 @@ import org.talend.core.ui.i18n.Messages;
 import org.talend.cwm.helper.ConnectionHelper;
 
 /**
- * nrousseau class global comment. Detailled comment
+ * nrousseau class global comment. Detailed comment
  */
 public class SchemaOperationChoiceDialog extends SelectionDialog {
 

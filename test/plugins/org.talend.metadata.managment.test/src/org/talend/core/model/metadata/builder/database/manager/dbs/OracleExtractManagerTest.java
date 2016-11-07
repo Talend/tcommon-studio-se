@@ -18,7 +18,7 @@ import org.junit.Test;
 import org.talend.core.database.EDatabaseTypeName;
 
 /**
- * created by ggu on Jul 4, 2012 Detailled comment
+ * created by ggu on Jul 4, 2012 Detailed comment
  * 
  */
 public class OracleExtractManagerTest extends AbstractTest4ExtractManager {

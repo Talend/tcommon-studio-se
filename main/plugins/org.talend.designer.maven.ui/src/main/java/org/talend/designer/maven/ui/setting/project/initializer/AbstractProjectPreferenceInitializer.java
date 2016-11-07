@@ -27,7 +27,7 @@ import org.talend.designer.maven.template.AbstractMavenTemplateManager;
 import org.talend.designer.maven.template.MavenTemplateManager;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public abstract class AbstractProjectPreferenceInitializer extends AbstractPreferenceInitializer implements IExecutableExtension {
 

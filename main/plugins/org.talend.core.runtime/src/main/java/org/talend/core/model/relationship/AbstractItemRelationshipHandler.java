@@ -20,7 +20,7 @@ import java.util.Set;
 import org.talend.core.model.properties.Item;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public abstract class AbstractItemRelationshipHandler implements IItemRelationshipHandler {
 

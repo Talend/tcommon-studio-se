@@ -21,7 +21,7 @@ import org.talend.core.model.properties.ConnectionItem;
 
 /**
  * 
- * DOC yexiaowei class global comment. Detailled comment
+ * DOC yexiaowei class global comment. Detailed comment
  */
 public abstract class AbstractExcelFileStepForm extends AbstractFileStepForm {
 

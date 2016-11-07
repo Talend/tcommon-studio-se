@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * created by ldong on Feb 6, 2015 Detailled comment
+ * created by ldong on Feb 6, 2015 Detailed comment
  * 
  */
 public class ConnectionColumnUpdateManager {

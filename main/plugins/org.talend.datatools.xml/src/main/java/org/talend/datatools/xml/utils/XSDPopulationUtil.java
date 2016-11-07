@@ -38,7 +38,7 @@ import org.apache.xerces.xs.XSNamedMap;
 import org.apache.xerces.xs.XSTypeDefinition;
 
 /**
- * DOC ycbai class global comment. Detailled comment
+ * DOC ycbai class global comment. Detailed comment
  */
 public class XSDPopulationUtil {
 

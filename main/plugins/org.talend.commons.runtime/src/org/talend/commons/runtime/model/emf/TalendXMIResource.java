@@ -27,7 +27,7 @@ import org.eclipse.emf.ecore.xmi.impl.XMISaveImpl;
 import org.xml.sax.SAXException;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class TalendXMIResource extends XMIResourceImpl {
 

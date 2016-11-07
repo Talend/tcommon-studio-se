@@ -24,7 +24,7 @@ import org.junit.Test;
 import org.talend.utils.sql.metadata.constants.GetTable;
 
 /**
- * DOC Administrator class global comment. Detailled comment
+ * DOC Administrator class global comment. Detailed comment
  */
 public class ExtractMetaDataFromDataBaseTest {
 

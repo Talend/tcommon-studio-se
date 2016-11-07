@@ -33,7 +33,7 @@ import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.ui.wizards.metadata.connection.genericshema.ImportSchemaFileWizard;
 
 /**
- * DOC ggu class global comment. Detailled comment <br/>
+ * DOC ggu class global comment. Detailed comment <br/>
  * 
  */
 public class ImportSchemaFileAction extends CreateGenericSchemaAction {

@@ -17,7 +17,7 @@ import org.talend.core.model.utils.RepositoryManagerHelper;
 import org.talend.datatools.xml.utils.ATreeNode;
 
 /**
- * created by cmeng on Jul 1, 2015 Detailled comment
+ * created by cmeng on Jul 1, 2015 Detailed comment
  *
  */
 public abstract class AbstractTreePopulator {

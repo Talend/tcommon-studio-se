@@ -13,7 +13,7 @@
 package org.talend.core.model.general;
 
 /**
- * DOC qwei class global comment. Detailled comment <br/>
+ * DOC qwei class global comment. Detailed comment <br/>
  * 
  */
 public class InstallModule {

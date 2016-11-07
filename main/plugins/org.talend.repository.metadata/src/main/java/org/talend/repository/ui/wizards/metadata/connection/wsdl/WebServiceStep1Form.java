@@ -34,7 +34,7 @@ import org.talend.metadata.managment.ui.wizard.RepositoryWizard;
 import org.talend.repository.metadata.ui.wizards.form.AbstractWSDLSchemaStepForm;
 
 /**
- * DOC Administrator class global comment. Detailled comment
+ * DOC Administrator class global comment. Detailed comment
  */
 public class WebServiceStep1Form extends AbstractWSDLSchemaStepForm {
 

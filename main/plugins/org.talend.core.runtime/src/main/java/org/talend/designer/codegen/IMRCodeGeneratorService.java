@@ -15,7 +15,7 @@ package org.talend.designer.codegen;
 import org.talend.core.model.process.IProcess;
 
 /**
- * created by bchen on Jan 11, 2013 Detailled comment
+ * created by bchen on Jan 11, 2013 Detailed comment
  * 
  */
 public interface IMRCodeGeneratorService extends IBigDataCodeGeneratorService {

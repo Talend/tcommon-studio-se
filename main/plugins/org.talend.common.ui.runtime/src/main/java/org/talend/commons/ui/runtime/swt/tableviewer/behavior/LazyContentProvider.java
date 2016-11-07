@@ -20,7 +20,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.talend.commons.ui.runtime.swt.tableviewer.TableViewerCreatorNotModifiable;
 
 /**
- * created by talend2 on 2012-8-24 Detailled comment
+ * created by talend2 on 2012-8-24 Detailed comment
  * 
  */
 public class LazyContentProvider implements ILazyContentProvider {

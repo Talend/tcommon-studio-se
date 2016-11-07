@@ -23,7 +23,7 @@ import org.talend.core.model.routines.IRoutinesProvider;
 import org.talend.librariesmanager.prefs.LibrariesManagerUtils;
 
 /**
- * class global comment. Detailled comment
+ * class global comment. Detailed comment
  */
 public class TosJavaRoutinesProvider implements IRoutinesProvider {
 

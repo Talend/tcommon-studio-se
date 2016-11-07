@@ -19,7 +19,7 @@ import org.talend.core.model.metadata.builder.connection.ConnectionPackage;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 
 /**
- * created by mzhao on Nov 12, 2012 Detailled comment
+ * created by mzhao on Nov 12, 2012 Detailed comment
  * 
  */
 public class JavaSqlFactoryTest {

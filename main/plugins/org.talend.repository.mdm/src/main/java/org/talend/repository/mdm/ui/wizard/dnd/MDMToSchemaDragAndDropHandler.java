@@ -48,7 +48,7 @@ import org.talend.repository.ui.wizards.metadata.connection.files.xml.dnd.XPathT
 import org.talend.repository.ui.wizards.metadata.connection.files.xml.dnd.XmlToSchemaDraggedData;
 
 /**
- * DOC Administrator class global comment. Detailled comment
+ * DOC Administrator class global comment. Detailed comment
  */
 public class MDMToSchemaDragAndDropHandler {
 
@@ -130,7 +130,7 @@ public class MDMToSchemaDragAndDropHandler {
 
     /**
      * 
-     * DOC amaumont XmlToSchemaDragAndDropHandler class global comment. Detailled comment <br/>
+     * DOC amaumont XmlToSchemaDragAndDropHandler class global comment. Detailed comment <br/>
      * 
      * $Id$
      * 
@@ -171,7 +171,7 @@ public class MDMToSchemaDragAndDropHandler {
 
     /**
      * 
-     * DOC amaumont XmlToSchemaDragAndDropHandler class global comment. Detailled comment <br/>
+     * DOC amaumont XmlToSchemaDragAndDropHandler class global comment. Detailed comment <br/>
      * 
      * $Id$
      * 

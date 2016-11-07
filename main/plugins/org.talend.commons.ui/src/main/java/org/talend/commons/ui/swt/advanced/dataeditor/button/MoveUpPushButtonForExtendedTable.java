@@ -18,7 +18,7 @@ import org.talend.commons.ui.swt.advanced.dataeditor.commands.ExtendedTableMoveC
 import org.talend.commons.ui.swt.extended.table.AbstractExtendedTableViewer;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  * $Id$
  * 

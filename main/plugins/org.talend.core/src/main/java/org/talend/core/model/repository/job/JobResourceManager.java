@@ -27,7 +27,7 @@ import org.talend.core.model.process.JobInfo;
 /**
  * Management of deletion and protection on resource of jobs.
  * 
- * yzhang class global comment. Detailled comment <br/>
+ * yzhang class global comment. Detailed comment <br/>
  * 
  * $Id: ResourceManager.java 下午03:44:34 2007-7-6 +0000 (2007-7-6) yzhang $
  * 

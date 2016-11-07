@@ -16,7 +16,7 @@ import org.talend.core.IService;
 import org.talend.core.model.properties.Item;
 
 /**
- * created by Talend on Dec 30, 2015 Detailled comment
+ * created by Talend on Dec 30, 2015 Detailed comment
  *
  */
 public interface IImportExportServices extends IService {

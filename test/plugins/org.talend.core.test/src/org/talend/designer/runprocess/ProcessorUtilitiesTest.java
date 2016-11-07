@@ -29,7 +29,7 @@ import org.talend.core.model.runprocess.shadow.ObjectElementParameter;
 import org.talend.core.runtime.process.LastGenerationInfo;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class ProcessorUtilitiesTest {
 

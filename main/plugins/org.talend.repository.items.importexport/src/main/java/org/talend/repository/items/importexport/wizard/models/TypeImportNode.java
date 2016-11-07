@@ -18,7 +18,7 @@ import java.util.Map;
 import org.talend.core.model.repository.ERepositoryObjectType;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class TypeImportNode extends FolderImportNode {
 

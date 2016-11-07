@@ -38,7 +38,7 @@ import org.talend.core.runtime.i18n.Messages;
 
 /**
  * 
- * created by ycbai on 2013-3-19 Detailled comment
+ * created by ycbai on 2013-3-19 Detailed comment
  * 
  * <p>
  * You can use this dialog to browse or select all internal and external libraries.<br>

@@ -17,7 +17,7 @@ import java.util.List;
 import org.talend.repository.documentation.ExportFileResource;
 
 /**
- * DOC tang class global comment. Detailled comment
+ * DOC tang class global comment. Detailed comment
  */
 public interface IDocumentationManager {
 

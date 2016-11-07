@@ -36,7 +36,7 @@ import org.talend.core.ui.metadata.editor.MetadataEmfTableEditor;
 import org.talend.core.ui.metadata.extended.command.MetadataEmfPasteCommand;
 
 /**
- * wzhang class global comment. Detailled comment
+ * wzhang class global comment. Detailed comment
  */
 public class XmlFileMetadataEmfToolbarEditor extends ExtendedToolbarView {
 

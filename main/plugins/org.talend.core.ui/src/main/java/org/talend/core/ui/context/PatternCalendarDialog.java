@@ -30,7 +30,7 @@ import org.talend.commons.ui.runtime.swt.tableviewer.celleditor.DateDialog;
 import org.talend.core.model.process.IContextParameter;
 
 /**
- * DOC chuang class global comment. Detailled comment
+ * DOC chuang class global comment. Detailed comment
  */
 public class PatternCalendarDialog extends DateDialog {
 

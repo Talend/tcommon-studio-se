@@ -22,7 +22,7 @@ import org.talend.core.model.metadata.types.JavaTypesManager;
 import org.talend.core.model.metadata.types.PerlTypesManager;
 
 /**
- * cLi class global comment. Detailled comment
+ * cLi class global comment. Detailed comment
  */
 public final class MultiSchemasUtil {
 

@@ -19,7 +19,7 @@ import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.repository.documentation.ERepositoryActionName;
 
 /**
- * DOC talend class global comment. Detailled comment
+ * DOC talend class global comment. Detailed comment
  */
 public abstract class AbstractJobRestoreListener implements PropertyChangeListener {
 

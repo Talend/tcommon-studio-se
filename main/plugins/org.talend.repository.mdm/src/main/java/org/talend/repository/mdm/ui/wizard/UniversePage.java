@@ -22,7 +22,7 @@ import org.talend.core.model.properties.ConnectionItem;
 import org.talend.metadata.managment.ui.wizard.AbstractForm;
 
 /**
- * DOC Hwang class global comment. Detailled comment
+ * DOC Hwang class global comment. Detailed comment
  */
 public class UniversePage extends WizardPage {
 

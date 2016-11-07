@@ -13,7 +13,7 @@
 package org.talend.core.hadoop;
 
 /**
- * created by cmeng on May 5, 2015 Detailled comment
+ * created by cmeng on May 5, 2015 Detailed comment
  *
  */
 @SuppressWarnings("nls")

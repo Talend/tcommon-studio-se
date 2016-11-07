@@ -21,7 +21,7 @@ import org.talend.core.ui.context.AbstractContextTabEditComposite;
 import org.talend.core.ui.context.IContextModelManager;
 
 /**
- * cli class global comment. Detailled comment.
+ * cli class global comment. Detailed comment.
  */
 public abstract class AbstractContextCellModifier implements ICellModifier {
 

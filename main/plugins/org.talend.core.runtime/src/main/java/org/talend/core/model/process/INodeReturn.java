@@ -15,7 +15,7 @@ package org.talend.core.model.process;
 import java.util.List;
 
 /**
- * DOC nrousseau class global comment. Detailled comment <br/>
+ * DOC nrousseau class global comment. Detailed comment <br/>
  * 
  * $Id: INodeReturn.java 38013 2010-03-05 14:21:59Z mhirt $
  * 

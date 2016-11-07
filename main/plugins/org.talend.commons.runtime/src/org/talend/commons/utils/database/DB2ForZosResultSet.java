@@ -20,7 +20,7 @@ import org.talend.commons.utils.TalendDBUtils;
 import org.talend.fakejdbc.FakeResultSet;
 
 /**
- * DOC bqian class global comment. Detailled comment
+ * DOC bqian class global comment. Detailed comment
  */
 public class DB2ForZosResultSet extends FakeResultSet {
 

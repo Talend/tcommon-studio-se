@@ -27,7 +27,7 @@ import org.mockito.Mockito;
 import org.talend.utils.sql.metadata.constants.TableType;
 
 /**
- * created by zshen on Apr 7, 2013 Detailled comment
+ * created by zshen on Apr 7, 2013 Detailed comment
  * 
  */
 public class DB2ForZosDataBaseMetadataTest {

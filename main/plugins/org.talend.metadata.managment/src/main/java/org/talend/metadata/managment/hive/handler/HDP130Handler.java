@@ -18,7 +18,7 @@ import java.util.Map;
 import org.talend.core.model.metadata.IMetadataConnection;
 
 /**
- * created by xqliu on 2013-11-1 Detailled comment
+ * created by xqliu on 2013-11-1 Detailed comment
  * 
  */
 public class HDP130Handler extends HortonWorksHandler {

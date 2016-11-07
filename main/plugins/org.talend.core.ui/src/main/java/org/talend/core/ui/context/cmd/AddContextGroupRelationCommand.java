@@ -22,7 +22,7 @@ import org.talend.core.model.process.IContextParameter;
 import org.talend.core.model.properties.Item;
 
 /**
- * created by ldong on Sep 12, 2014 Detailled comment
+ * created by ldong on Sep 12, 2014 Detailed comment
  * 
  */
 public class AddContextGroupRelationCommand extends Command {

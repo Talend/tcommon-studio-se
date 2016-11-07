@@ -17,7 +17,7 @@ import java.util.List;
 import org.eclipse.jface.preference.IPreferenceNode;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public interface IProjectSettingContainer {
 

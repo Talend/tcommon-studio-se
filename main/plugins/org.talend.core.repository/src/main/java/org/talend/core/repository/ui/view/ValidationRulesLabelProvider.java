@@ -30,7 +30,7 @@ import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.ui.views.IRepositoryView;
 
 /**
- * DOC hcyi class global comment. Detailled comment
+ * DOC hcyi class global comment. Detailed comment
  */
 public class ValidationRulesLabelProvider extends RepositoryLabelProvider {
 

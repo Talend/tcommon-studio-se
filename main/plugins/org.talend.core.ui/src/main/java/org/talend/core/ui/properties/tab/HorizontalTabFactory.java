@@ -30,7 +30,7 @@ import org.eclipse.ui.views.properties.tabbed.ITabItem;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
- * yzhang class global comment. Detailled comment <br/>
+ * yzhang class global comment. Detailed comment <br/>
  * 
  * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
  * 
@@ -129,7 +129,7 @@ public class HorizontalTabFactory {
     }
 
     /**
-     * yzhang HorizontalTabFactory class global comment. Detailled comment <br/>
+     * yzhang HorizontalTabFactory class global comment. Detailed comment <br/>
      * 
      * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
      * 
@@ -146,7 +146,7 @@ public class HorizontalTabFactory {
     }
 
     /**
-     * yzhang HorizontalTabFactory class global comment. Detailled comment <br/>
+     * yzhang HorizontalTabFactory class global comment. Detailed comment <br/>
      * 
      * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
      * 

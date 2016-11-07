@@ -28,7 +28,7 @@ import org.talend.core.ui.CoreUIPlugin;
 import org.talend.core.ui.i18n.Messages;
 
 /**
- * ggu class global comment. Detailled comment
+ * ggu class global comment. Detailed comment
  */
 public class TalendDataCollectorUploadingPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 

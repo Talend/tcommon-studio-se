@@ -36,7 +36,7 @@ import org.talend.migration.IMigrationTask.ExecutionResult;
 import org.talend.migration.IProjectMigrationTask;
 
 /**
- * DOC smallet class global comment. Detailled comment <br/>
+ * DOC smallet class global comment. Detailed comment <br/>
  * 
  * $Id$
  * 

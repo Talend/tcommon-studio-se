@@ -18,7 +18,7 @@ import org.talend.core.model.properties.User;
 import org.talend.core.repository.model.FolderHelper;
 
 /**
- * DOC matthieu class global comment. Detailled comment <br/>
+ * DOC matthieu class global comment. Detailed comment <br/>
  * 
  * $Id$
  * 

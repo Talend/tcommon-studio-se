@@ -19,7 +19,7 @@ import org.talend.core.model.properties.ConnectionItem;
 import org.talend.repository.model.RepositoryNode;
 
 /**
- * DOC qzhang class global comment. Detailled comment <br/>
+ * DOC qzhang class global comment. Detailed comment <br/>
  * 
  * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
  * 

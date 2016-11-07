@@ -17,7 +17,7 @@ import java.util.List;
 
 /**
  * 
- * created by ycbai on 2015年5月5日 Detailled comment
+ * created by ycbai on 2015年5月5日 Detailed comment
  *
  */
 public enum EHiveExecutionTypes {

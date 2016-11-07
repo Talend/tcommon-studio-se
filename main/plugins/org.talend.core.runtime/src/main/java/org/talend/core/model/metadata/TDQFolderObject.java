@@ -17,7 +17,7 @@ import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.repository.RepositoryViewObject;
 
 /**
- * DOC klliu class global comment. Detailled comment
+ * DOC klliu class global comment. Detailed comment
  */
 public class TDQFolderObject extends RepositoryViewObject {
 
@@ -32,7 +32,7 @@ public class TDQFolderObject extends RepositoryViewObject {
     }
 
     /**
-     * DOC klliu ETDQFolderType class global comment. Detailled comment
+     * DOC klliu ETDQFolderType class global comment. Detailed comment
      */
     public enum ETDQFolderType {
         COLUMN_FOLDER("Columns"),

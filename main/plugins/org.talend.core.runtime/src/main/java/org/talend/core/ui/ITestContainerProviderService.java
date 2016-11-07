@@ -36,7 +36,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 import org.talend.repository.model.RepositoryNode;
 
 /**
- * created by hwang on Jan 7, 2015 Detailled comment
+ * created by hwang on Jan 7, 2015 Detailed comment
  *
  */
 public interface ITestContainerProviderService extends IService {

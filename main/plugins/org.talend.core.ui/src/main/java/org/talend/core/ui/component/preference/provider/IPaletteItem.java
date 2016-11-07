@@ -18,11 +18,11 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.talend.core.model.components.ComponentCategory;
 
 /**
- * created by nrousseau on Aug 11, 2014 Detailled comment
+ * created by nrousseau on Aug 11, 2014 Detailed comment
  *
  */
 /**
- * created by nrousseau on Aug 11, 2014 Detailled comment
+ * created by nrousseau on Aug 11, 2014 Detailed comment
  *
  */
 public interface IPaletteItem {

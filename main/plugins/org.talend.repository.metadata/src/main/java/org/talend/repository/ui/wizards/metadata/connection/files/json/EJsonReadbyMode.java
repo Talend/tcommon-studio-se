@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * created by cmeng on Jul 10, 2015 Detailled comment
+ * created by cmeng on Jul 10, 2015 Detailed comment
  *
  */
 public enum EJsonReadbyMode {

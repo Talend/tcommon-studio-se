@@ -17,7 +17,7 @@ import org.talend.repository.tester.CodeNodeTester;
 import org.talend.repository.viewer.content.SubEmptyTopNodeContentProvider;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public abstract class AbstractCodeContentProvider extends SubEmptyTopNodeContentProvider {
 

@@ -27,7 +27,7 @@ import org.talend.repository.ui.wizards.metadata.connection.files.xml.action.Cre
 import org.talend.repository.ui.wizards.metadata.connection.files.xml.action.CreateNameSpaceAction;
 
 /**
- * DOC talend class global comment. Detailled comment
+ * DOC talend class global comment. Detailed comment
  */
 public class AddTreeNodeButton extends AbstractTreeNodeButton {
 

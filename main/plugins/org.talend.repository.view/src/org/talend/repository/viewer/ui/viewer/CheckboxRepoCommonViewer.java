@@ -33,7 +33,7 @@ import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.viewer.ui.provider.INavigatorContentServiceProvider;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 @SuppressWarnings("restriction")
 public class CheckboxRepoCommonViewer extends CheckboxRepositoryTreeViewer implements INavigatorContentServiceProvider {

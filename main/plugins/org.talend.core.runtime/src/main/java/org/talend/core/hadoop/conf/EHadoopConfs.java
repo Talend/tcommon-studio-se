@@ -13,7 +13,7 @@
 package org.talend.core.hadoop.conf;
 
 /**
- * created by ycbai on 2015年6月1日 Detailled comment
+ * created by ycbai on 2015年6月1日 Detailed comment
  *
  */
 public enum EHadoopConfs {

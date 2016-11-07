@@ -31,7 +31,7 @@ import org.talend.core.ui.CoreUIPlugin;
 import org.talend.core.ui.i18n.Messages;
 
 /**
- * created by ldong on Aug 18, 2014 Detailled comment
+ * created by ldong on Aug 18, 2014 Detailed comment
  * 
  */
 public class ContextMissSettingComposite extends Composite {

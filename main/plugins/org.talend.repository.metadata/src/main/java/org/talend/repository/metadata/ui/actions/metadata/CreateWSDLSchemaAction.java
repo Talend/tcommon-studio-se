@@ -31,7 +31,7 @@ import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.ui.wizards.metadata.connection.wsdl.WSDLSchemaWizard;
 
 /**
- * DOC qwei class global comment. Detailled comment
+ * DOC qwei class global comment. Detailed comment
  */
 public class CreateWSDLSchemaAction extends AbstractCreateAction {
 

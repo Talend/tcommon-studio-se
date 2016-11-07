@@ -25,7 +25,7 @@ import org.talend.helpers.HelpersPlugin;
 import org.talend.helpers.i18n.Messages;
 
 /**
- * DOC smallet class global comment. Detailled comment <br/>
+ * DOC smallet class global comment. Detailed comment <br/>
  * 
  * $Id$
  * 

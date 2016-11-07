@@ -66,7 +66,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.repository.ProjectManager;
 
 /**
- * ggu class global comment. Detailled comment <br/>
+ * ggu class global comment. Detailed comment <br/>
  * 
  * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ææäº, 29 ä¹æ 2006) nrousseau $
  * 
@@ -536,7 +536,7 @@ public class SelectRepositoryContextDialog extends SelectionDialog {
 
     /**
      * 
-     * ggu SelectRepositoryContextDialog class global comment. Detailled comment
+     * ggu SelectRepositoryContextDialog class global comment. Detailed comment
      */
     class ContextTreeContentProvider implements ITreeContentProvider {
 
@@ -585,7 +585,7 @@ public class SelectRepositoryContextDialog extends SelectionDialog {
 
     /**
      * 
-     * ggu SelectRepositoryContextDialog class global comment. Detailled comment
+     * ggu SelectRepositoryContextDialog class global comment. Detailed comment
      */
     class ContextTreeLabelProvider implements ILabelProvider {
 
@@ -653,7 +653,7 @@ public class SelectRepositoryContextDialog extends SelectionDialog {
 
     /**
      * 
-     * ggu SelectRepositoryContextDialog class global comment. Detailled comment
+     * ggu SelectRepositoryContextDialog class global comment. Detailed comment
      */
     class ContextViewerFilter extends ViewerFilter {
 
@@ -695,7 +695,7 @@ public class SelectRepositoryContextDialog extends SelectionDialog {
 
     /**
      * 
-     * ggu ContextViewerSorter class global comment. Detailled comment
+     * ggu ContextViewerSorter class global comment. Detailed comment
      */
     class ContextViewerSorter extends ViewerSorter {
 

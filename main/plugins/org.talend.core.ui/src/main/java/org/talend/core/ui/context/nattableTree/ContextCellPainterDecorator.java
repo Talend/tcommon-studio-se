@@ -17,7 +17,7 @@ import org.eclipse.nebula.widgets.nattable.painter.cell.decorator.CellPainterDec
 import org.eclipse.nebula.widgets.nattable.ui.util.CellEdgeEnum;
 
 /**
- * created by ldong on Jul 31, 2014 Detailled comment
+ * created by ldong on Jul 31, 2014 Detailed comment
  * 
  */
 class ContextCellPainterDecorator extends CellPainterDecorator {

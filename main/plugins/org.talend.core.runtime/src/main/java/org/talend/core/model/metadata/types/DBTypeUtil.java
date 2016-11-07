@@ -13,7 +13,7 @@
 package org.talend.core.model.metadata.types;
 
 /**
- * DOC talend class global comment. Detailled comment
+ * DOC talend class global comment. Detailed comment
  */
 public class DBTypeUtil {
 

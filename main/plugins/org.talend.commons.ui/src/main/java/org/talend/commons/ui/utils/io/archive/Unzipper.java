@@ -23,7 +23,7 @@ import java.util.zip.ZipInputStream;
 import org.talend.utils.io.FilesUtils;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  */
 public class Unzipper extends AbstractUnarchiver {

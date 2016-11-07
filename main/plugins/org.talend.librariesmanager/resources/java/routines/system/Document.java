@@ -20,7 +20,7 @@ import java.util.Map;
 import org.dom4j.Node;
 
 /**
- * DOC Administrator class global comment. Detailled comment
+ * DOC Administrator class global comment. Detailed comment
  */
 public class Document implements java.io.Serializable{
 

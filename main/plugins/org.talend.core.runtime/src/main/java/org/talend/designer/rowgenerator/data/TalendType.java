@@ -17,7 +17,7 @@ import java.util.List;
 import org.talend.core.runtime.i18n.Messages;
 
 /**
- * class global comment. Detailled comment <br/>
+ * class global comment. Detailed comment <br/>
  * $Id: TalendType.java,v 1.3 2007/01/31 05:20:52 pub Exp $
  */
 public class TalendType {

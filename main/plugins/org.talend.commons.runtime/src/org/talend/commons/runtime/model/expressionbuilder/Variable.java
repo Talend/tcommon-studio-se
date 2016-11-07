@@ -15,7 +15,7 @@ package org.talend.commons.runtime.model.expressionbuilder;
 /**
  * Represents to the varialbes can be list in the table viewer.
  * 
- * yzhang class global comment. Detailled comment <br/>
+ * yzhang class global comment. Detailed comment <br/>
  * 
  * $Id: Variable.java 下午04:07:16 2007-6-25 +0000 (2007-6-25) yzhang $
  * 

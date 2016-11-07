@@ -18,7 +18,7 @@ import org.talend.core.IService;
 import org.talend.core.model.general.Project;
 
 /**
- * nma class global comment. Detailled comment
+ * nma class global comment. Detailed comment
  */
 public interface ISVNProviderService extends IService {
 

@@ -13,7 +13,7 @@
 package org.talend.core.repository;
 
 /**
- * ggu class global comment. Detailled comment
+ * ggu class global comment. Detailed comment
  */
 public class SortedComponentSetting {
 

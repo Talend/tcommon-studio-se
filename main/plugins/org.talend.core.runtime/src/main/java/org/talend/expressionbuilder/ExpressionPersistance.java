@@ -48,7 +48,7 @@ import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.repository.model.RepositoryConstants;
 
 /**
- * yzhang class global comment. Detailled comment <br/>
+ * yzhang class global comment. Detailed comment <br/>
  * 
  * $Id: ExpressionPersistance.java 下午01:26:21 2007-9-24 +0000 (2007-9-24) yzhang $
  * 

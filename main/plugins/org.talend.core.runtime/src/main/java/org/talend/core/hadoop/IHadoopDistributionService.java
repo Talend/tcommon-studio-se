@@ -20,7 +20,7 @@ import org.talend.core.runtime.hd.IHDistribution;
 import org.talend.core.runtime.hd.IHDistributionVersion;
 
 /**
- * created by cmeng on Jan 15, 2016 Detailled comment
+ * created by cmeng on Jan 15, 2016 Detailed comment
  *
  */
 public interface IHadoopDistributionService extends IService {

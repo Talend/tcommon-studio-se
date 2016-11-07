@@ -23,7 +23,7 @@ import org.talend.presentation.onboarding.exceptions.OnBoardingExceptionHandler;
 
 /**
  * 
- * DOC wchen class global comment. Detailled comment
+ * DOC wchen class global comment. Detailed comment
  */
 public class DynamicHtmlURL implements IIntroURL {
 

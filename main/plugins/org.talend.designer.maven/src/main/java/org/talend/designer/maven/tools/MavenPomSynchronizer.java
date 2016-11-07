@@ -49,7 +49,7 @@ import org.talend.designer.runprocess.IProcessor;
 import org.talend.utils.io.FilesUtils;
 
 /**
- * created by ggu on 2 Feb 2015 Detailled comment
+ * created by ggu on 2 Feb 2015 Detailed comment
  *
  */
 public class MavenPomSynchronizer {

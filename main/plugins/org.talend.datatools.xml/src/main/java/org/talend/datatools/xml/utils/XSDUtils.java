@@ -38,7 +38,7 @@ import org.talend.core.utils.IXSDPopulationUtil;
 
 /**
  * 
- * created by wchen on Aug 11, 2016 Detailled comment
+ * created by wchen on Aug 11, 2016 Detailed comment
  *
  */
 public class XSDUtils {

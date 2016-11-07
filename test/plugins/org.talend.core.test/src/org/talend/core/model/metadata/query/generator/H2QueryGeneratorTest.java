@@ -27,7 +27,7 @@ import org.talend.core.model.metadata.MetadataTable;
 import org.talend.core.model.utils.TalendTextUtils;
 
 /**
- * DOC Administrator class global comment. Detailled comment
+ * DOC Administrator class global comment. Detailed comment
  */
 public class H2QueryGeneratorTest {
 

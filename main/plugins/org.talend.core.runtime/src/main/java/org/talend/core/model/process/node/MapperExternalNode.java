@@ -15,7 +15,7 @@ package org.talend.core.model.process.node;
 import org.talend.core.model.process.AbstractExternalNode;
 
 /**
- * created by wchen on 2013-4-28 Detailled comment
+ * created by wchen on 2013-4-28 Detailed comment
  * 
  */
 public abstract class MapperExternalNode extends AbstractExternalNode {

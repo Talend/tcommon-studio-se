@@ -24,7 +24,7 @@ import org.talend.repository.ui.wizards.metadata.connection.files.xml.TreePopula
 import org.w3c.dom.Node;
 
 /**
- * DOC nrousseau class global comment. Detailled comment
+ * DOC nrousseau class global comment. Detailed comment
  */
 public class XsdNodeRetriever extends XmlNodeRetriever {
 

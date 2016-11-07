@@ -25,7 +25,7 @@ import org.talend.core.model.process.node.IExternalMapTable;
 import org.talend.designer.core.model.utils.emf.talendfile.AbstractExternalData;
 
 /**
- * DOC YeXiaowei class global comment. Detailled comment <br/>
+ * DOC YeXiaowei class global comment. Detailed comment <br/>
  * 
  */
 public interface IDesignerMapperService extends IService {

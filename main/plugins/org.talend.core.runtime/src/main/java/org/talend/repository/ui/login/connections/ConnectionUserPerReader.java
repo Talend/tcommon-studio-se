@@ -37,7 +37,7 @@ import org.talend.utils.json.JSONException;
 import org.talend.utils.json.JSONObject;
 
 /**
- * DOC hwang class global comment. Detailled comment
+ * DOC hwang class global comment. Detailed comment
  */
 public class ConnectionUserPerReader {
 

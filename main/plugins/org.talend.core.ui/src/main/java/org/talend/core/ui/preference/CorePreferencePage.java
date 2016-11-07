@@ -35,7 +35,7 @@ import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.core.ui.i18n.Messages;
 
 /**
- * DOC msjian class global comment. Detailled comment <br/>
+ * DOC msjian class global comment. Detailed comment <br/>
  * 
  * $Id: CorePreferencePage.java TDQ-3990 move from org.talend.core $
  * 

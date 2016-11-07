@@ -31,7 +31,7 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.model.metadata.MetadataTalendType;
 
 /**
- * qzhang class global comment. Detailled comment <br/>
+ * qzhang class global comment. Detailed comment <br/>
  * 
  */
 public class ContextParameterJavaTypeManager {

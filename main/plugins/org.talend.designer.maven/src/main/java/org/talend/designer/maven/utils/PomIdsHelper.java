@@ -20,7 +20,7 @@ import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.repository.ProjectManager;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class PomIdsHelper {
 

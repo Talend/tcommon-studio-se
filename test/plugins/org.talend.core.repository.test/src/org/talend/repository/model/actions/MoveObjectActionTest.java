@@ -26,7 +26,7 @@ import org.talend.repository.model.RepositoryNode;
 
 /**
  * 
- * DOC hcyi class global comment. Detailled comment
+ * DOC hcyi class global comment. Detailed comment
  */
 public class MoveObjectActionTest {
 

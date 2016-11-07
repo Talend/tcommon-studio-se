@@ -22,7 +22,7 @@ import java.util.List;
 import org.junit.Test;
 
 /**
- * created by xqliu on Jul 23, 2013 Detailled comment
+ * created by xqliu on Jul 23, 2013 Detailed comment
  * 
  */
 public class SybaseResultSetTest {

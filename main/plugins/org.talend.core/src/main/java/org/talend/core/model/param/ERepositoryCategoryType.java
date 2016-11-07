@@ -13,7 +13,7 @@
 package org.talend.core.model.param;
 
 /**
- * cli class global comment. Detailled comment
+ * cli class global comment. Detailed comment
  */
 public enum ERepositoryCategoryType {
     DELIMITED,

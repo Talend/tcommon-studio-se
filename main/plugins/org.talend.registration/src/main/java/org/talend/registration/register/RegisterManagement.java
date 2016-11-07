@@ -48,7 +48,7 @@ import org.talend.registration.register.proxy.RegisterUserPortTypeProxy;
 import org.talend.repository.ui.login.connections.ConnectionUserPerReader;
 
 /**
- * DOC mhirt class global comment. Detailled comment <br/>
+ * DOC mhirt class global comment. Detailed comment <br/>
  * 
  * $Id: RegisterManagement.java 38235 2010-03-10 03:32:12Z nrousseau $
  * 

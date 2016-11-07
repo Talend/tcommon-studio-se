@@ -15,7 +15,7 @@ package org.talend.repository.example.viewer.node;
 import org.talend.core.model.repository.ERepositoryObjectType;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class ExampleDemoRepositoryNodeType {
 

@@ -34,7 +34,7 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 
 /**
- * DOC gldu class global comment. Detailled comment
+ * DOC gldu class global comment. Detailed comment
  */
 public class AddRulesGlobalMapMigrationTask extends AbstractItemMigrationTask {
 

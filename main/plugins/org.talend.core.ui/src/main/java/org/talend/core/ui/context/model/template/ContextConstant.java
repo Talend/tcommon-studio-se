@@ -15,7 +15,7 @@ package org.talend.core.ui.context.model.template;
 import org.talend.core.model.metadata.types.JavaTypesManager;
 
 /**
- * ggu class global comment. Detailled comment
+ * ggu class global comment. Detailed comment
  */
 public class ContextConstant {
 

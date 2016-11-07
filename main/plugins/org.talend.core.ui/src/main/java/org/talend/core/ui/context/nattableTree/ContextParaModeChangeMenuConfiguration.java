@@ -33,7 +33,7 @@ import org.talend.core.ui.context.model.table.ContextTableTabParentModel;
 import org.talend.core.ui.i18n.Messages;
 
 /**
- * created by ldong on Aug 14, 2014 Detailled comment
+ * created by ldong on Aug 14, 2014 Detailed comment
  * 
  */
 public class ContextParaModeChangeMenuConfiguration extends AbstractUiBindingConfiguration {

@@ -28,7 +28,7 @@ import org.talend.designer.rowgenerator.data.FunctionManager;
 import org.talend.designer.rowgenerator.data.TalendType;
 
 /**
- * created by hcyi on Oct 11, 2016 Detailled comment
+ * created by hcyi on Oct 11, 2016 Detailed comment
  *
  */
 public class AutoConversionProposalProvider implements IContentProposalProvider {

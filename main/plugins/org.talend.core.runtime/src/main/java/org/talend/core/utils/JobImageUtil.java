@@ -20,7 +20,7 @@ import org.talend.core.service.IMRProcessService;
 import org.talend.core.service.IStormProcessService;
 
 /**
- * created by kongxiaohan on Sep 15, 2015 Detailled comment
+ * created by kongxiaohan on Sep 15, 2015 Detailed comment
  *
  */
 public class JobImageUtil {

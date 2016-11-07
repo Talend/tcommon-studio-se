@@ -30,7 +30,7 @@ import org.talend.repository.ProjectManager;
 import org.talend.utils.io.FilesUtils;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class PomUtilTest {
 

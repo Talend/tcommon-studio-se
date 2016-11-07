@@ -16,7 +16,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 
 /**
- * created by cmeng on Sep 11, 2015 Detailled comment
+ * created by cmeng on Sep 11, 2015 Detailed comment
  *
  */
 public class OnBoardingPresentationData {

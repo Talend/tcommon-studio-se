@@ -86,7 +86,7 @@ import org.talend.repository.ui.wizards.metadata.connection.files.xml.extraction
 import org.w3c.dom.Node;
 
 /**
- * DOC hwang class global comment. Detailled comment
+ * DOC hwang class global comment. Detailed comment
  */
 public class MDMLinker extends TreeToTablesLinker<Object, Object> {
 

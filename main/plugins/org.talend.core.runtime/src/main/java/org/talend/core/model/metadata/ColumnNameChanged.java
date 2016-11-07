@@ -14,7 +14,7 @@ package org.talend.core.model.metadata;
 
 /**
  * 
- * DOC smallet IODataComponentContainer class global comment. Detailled comment <br/>
+ * DOC smallet IODataComponentContainer class global comment. Detailed comment <br/>
  * 
  * $Id: IODataComponent.java 961 2006-12-12 04:42:46 +0000 (mar., 12 d茅c. 2006) nrousseau $
  * 

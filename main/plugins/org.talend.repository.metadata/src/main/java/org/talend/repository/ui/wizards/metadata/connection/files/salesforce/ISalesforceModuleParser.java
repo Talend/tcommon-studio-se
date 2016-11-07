@@ -18,7 +18,7 @@ import java.util.List;
 import org.talend.core.model.metadata.IMetadataColumn;
 
 /**
- * DOC informix class global comment. Detailled comment
+ * DOC informix class global comment. Detailed comment
  */
 public interface ISalesforceModuleParser {
 

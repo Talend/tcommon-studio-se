@@ -78,7 +78,7 @@ public class ExtractMetaDataFromDataBase {
      */
 
     /**
-     * qzhang TableInfoParameters class global comment. Detailled comment <br/>
+     * qzhang TableInfoParameters class global comment. Detailed comment <br/>
      * 
      */
     public enum ETableTypes {

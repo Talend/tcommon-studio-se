@@ -67,7 +67,7 @@ import org.talend.repository.ui.wizards.metadata.connection.wsdl.WSDLSchemaWizar
 import net.sourceforge.jtds.jdbc.JtdsConnection;
 
 /**
- * DOC hwang class global comment. Detailled comment
+ * DOC hwang class global comment. Detailed comment
  */
 public class MetadataService implements IMetadataService {
 

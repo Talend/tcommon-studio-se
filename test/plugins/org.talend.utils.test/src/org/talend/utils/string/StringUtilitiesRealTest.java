@@ -20,7 +20,7 @@ import java.util.Set;
 import org.junit.Test;
 
 /**
- * DOC xqliu class global comment. Detailled comment
+ * DOC xqliu class global comment. Detailed comment
  */
 public class StringUtilitiesRealTest {
 

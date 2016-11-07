@@ -19,7 +19,7 @@ import org.talend.repository.model.IRepositoryNode;
 
 
 /**
- * DOC klliu  class global comment. Detailled comment
+ * DOC klliu  class global comment. Detailed comment
  */
 public class TdViewRepositoryObject extends MetadataTableRepositoryObject {
 

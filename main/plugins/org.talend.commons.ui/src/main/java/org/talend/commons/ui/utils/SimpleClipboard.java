@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.ListenerList;
 import org.talend.commons.ui.swt.extended.table.ClipboardEvent;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  * $Id$
  * 

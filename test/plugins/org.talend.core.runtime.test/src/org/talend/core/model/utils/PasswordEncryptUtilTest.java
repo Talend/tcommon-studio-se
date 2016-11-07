@@ -18,7 +18,7 @@ import org.junit.Test;
 import org.talend.commons.utils.PasswordEncryptUtil;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 @SuppressWarnings("nls")
 public class PasswordEncryptUtilTest {

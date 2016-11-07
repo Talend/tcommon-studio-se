@@ -23,7 +23,7 @@ import org.talend.core.repository.ui.actions.DeleteAction;
 import org.talend.core.repository.ui.actions.PasteAction;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class RepoGlobalActionProvider extends CommonActionProvider {
 

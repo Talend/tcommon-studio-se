@@ -39,7 +39,7 @@ import org.talend.repository.model.IRepositoryLocalProviderService;
 import org.talend.repository.model.IRepositoryService;
 
 /**
- * DOC nrousseau class global comment. Detailled comment <br/>
+ * DOC nrousseau class global comment. Detailed comment <br/>
  * 
  * $Id$
  * 

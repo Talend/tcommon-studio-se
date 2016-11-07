@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 import org.talend.repository.model.RepositoryConstants;
 
 /**
- * DOC hcyi class global comment. Detailled comment
+ * DOC hcyi class global comment. Detailed comment
  */
 public class ProjectUtils {
 

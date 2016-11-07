@@ -15,7 +15,7 @@ package org.talend.core.ui.component;
 import org.eclipse.gef.palette.PaletteGroup;
 
 /**
- * DOC Administrator class global comment. Detailled comment
+ * DOC Administrator class global comment. Detailed comment
  */
 public class TalendPaletteGroup extends PaletteGroup {
 

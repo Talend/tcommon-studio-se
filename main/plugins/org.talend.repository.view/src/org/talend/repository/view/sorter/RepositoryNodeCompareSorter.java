@@ -17,7 +17,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.talend.repository.model.RepositoryNode;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public abstract class RepositoryNodeCompareSorter extends RepositoryCompareSorter {
 

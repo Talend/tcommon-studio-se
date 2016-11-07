@@ -17,7 +17,7 @@ import org.talend.core.model.process.ITargetExecutionConfig;
 import org.talend.designer.runprocess.ProcessorException;
 
 /**
- * DOC nrousseau class global comment. Detailled comment
+ * DOC nrousseau class global comment. Detailed comment
  */
 public interface IEclipseProcessor {
 

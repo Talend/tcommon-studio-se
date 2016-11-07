@@ -29,7 +29,7 @@ import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
 /**
- * created by ggu on Sep 15, 2014 Detailled comment
+ * created by ggu on Sep 15, 2014 Detailed comment
  *
  */
 public abstract class AbstractShowJobStartup implements IStartup {

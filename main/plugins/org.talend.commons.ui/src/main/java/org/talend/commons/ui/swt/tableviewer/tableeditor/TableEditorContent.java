@@ -20,7 +20,7 @@ import org.talend.commons.ui.runtime.swt.tableviewer.tableeditor.TableEditorCont
 import org.talend.commons.ui.swt.tableviewer.TableViewerCreatorColumn;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * $Id: TableEditorInitializer.java,v 1.1 2006/06/02 15:24:10 amaumont Exp $
  */
 public abstract class TableEditorContent extends TableEditorContentNotModifiable {

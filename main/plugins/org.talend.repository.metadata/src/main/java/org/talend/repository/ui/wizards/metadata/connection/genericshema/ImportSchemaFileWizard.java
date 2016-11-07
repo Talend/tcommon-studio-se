@@ -55,7 +55,7 @@ import org.xml.sax.SAXException;
 import orgomg.cwm.objectmodel.core.Package;
 
 /**
- * DOC ggu class global comment. Detailled comment <br/>
+ * DOC ggu class global comment. Detailed comment <br/>
  * 
  */
 public class ImportSchemaFileWizard extends CheckLastVersionRepositoryWizard implements INewWizard {

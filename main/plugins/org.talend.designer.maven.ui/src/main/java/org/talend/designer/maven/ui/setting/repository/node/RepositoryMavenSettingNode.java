@@ -23,7 +23,7 @@ import org.talend.designer.maven.ui.setting.project.page.AbstractPersistentProje
 import org.talend.designer.maven.ui.utils.DesignerMavenUiHelper;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class RepositoryMavenSettingNode extends RepositoryPreferenceNode {
 

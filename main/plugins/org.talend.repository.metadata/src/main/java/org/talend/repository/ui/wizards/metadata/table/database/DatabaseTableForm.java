@@ -116,7 +116,7 @@ import org.talend.repository.model.IProxyRepositoryFactory;
  * 
  */
 /**
- * DOC Administrator class global comment. Detailled comment <br/>
+ * DOC Administrator class global comment. Detailed comment <br/>
  * 
  */
 public class DatabaseTableForm extends AbstractForm {

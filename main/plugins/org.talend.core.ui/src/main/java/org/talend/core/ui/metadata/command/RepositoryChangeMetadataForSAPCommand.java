@@ -32,7 +32,7 @@ import org.talend.core.ui.CoreUIPlugin;
 import org.talend.core.utils.TalendQuoteUtils;
 
 /**
- * DOC hwang class global comment. Detailled comment
+ * DOC hwang class global comment. Detailed comment
  */
 public class RepositoryChangeMetadataForSAPCommand extends Command {
 

@@ -58,7 +58,7 @@ import org.talend.repository.ProjectManager;
 import org.talend.repository.ui.wizards.metadata.connection.files.xml.XmlFileWizard;
 
 /**
- * DOC cantoine class global comment. Detailled comment <br/>
+ * DOC cantoine class global comment. Detailed comment <br/>
  * 
  * $Id: AbstractXmlFileStepForm.java 48226 2010-09-14 10:04:12Z hywang $
  * 

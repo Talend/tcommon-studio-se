@@ -25,7 +25,7 @@ import org.talend.core.model.update.RepositoryUpdateManagerHelper;
 import org.talend.core.model.update.UpdateResult;
 
 /**
- * created by ggu on Mar 28, 2014 Detailled comment
+ * created by ggu on Mar 28, 2014 Detailed comment
  * 
  * If refactor RepositoryUpdateManager totally later, need change this class, because there are some dupliates.
  * 

@@ -29,7 +29,7 @@ import org.talend.core.model.metadata.builder.database.ExtractMetaDataFromDataBa
 import org.talend.core.repository.model.provider.IDBMetadataProvider;
 
 /**
- * created by ycbai on 2015年6月29日 Detailled comment
+ * created by ycbai on 2015年6月29日 Detailed comment
  *
  */
 public abstract class AbstractHadoopDBConnectionCreator extends AbstractHadoopConnectionCreator {

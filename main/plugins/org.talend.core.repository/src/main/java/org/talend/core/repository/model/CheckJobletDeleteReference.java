@@ -29,7 +29,7 @@ import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
 /**
- * DOC ycbai class global comment. Detailled comment
+ * DOC ycbai class global comment. Detailed comment
  */
 public class CheckJobletDeleteReference extends AbstractCheckDeleteItemReference implements ICheckDeleteItemReference {
 

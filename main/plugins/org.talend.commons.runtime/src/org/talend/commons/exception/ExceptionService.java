@@ -13,7 +13,7 @@
 package org.talend.commons.exception;
 
 /**
- * created by root on 16 janv. 2013 Detailled comment
+ * created by root on 16 janv. 2013 Detailed comment
  * 
  */
 public interface ExceptionService {

@@ -15,7 +15,7 @@ package org.talend.core.model.metadata;
 import java.util.List;
 
 /**
- * DOC ggu class global comment. Detailled comment <br/>
+ * DOC ggu class global comment. Detailed comment <br/>
  * 
  * org.talend.core.model.metadata.builder.connection.MetadataColumn<br/>
  * 

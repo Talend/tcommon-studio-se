@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * DOC chuger class global comment. Detailled comment <br/>
+ * DOC chuger class global comment. Detailed comment <br/>
  * 
  * $Id: XmlRow.java 38013 2010-03-05 14:21:59Z mhirt $
  * 

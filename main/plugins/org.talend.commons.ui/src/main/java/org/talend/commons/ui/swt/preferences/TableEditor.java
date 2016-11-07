@@ -44,7 +44,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Widget;
 
 /**
- * DOC tguiu class global comment. Detailled comment <br/>
+ * DOC tguiu class global comment. Detailed comment <br/>
  * 
  * $Id: TableEditor.java 7038 2007-11-15 14:05:48Z plegall $
  * 

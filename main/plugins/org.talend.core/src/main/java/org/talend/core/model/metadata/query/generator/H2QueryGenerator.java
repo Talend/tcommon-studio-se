@@ -18,7 +18,7 @@ import org.talend.core.model.utils.TalendTextUtils;
 import org.talend.core.utils.TalendQuoteUtils;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class H2QueryGenerator extends AbstractQueryGenerator {
 

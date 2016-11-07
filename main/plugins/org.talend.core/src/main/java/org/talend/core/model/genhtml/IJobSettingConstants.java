@@ -13,7 +13,7 @@
 package org.talend.core.model.genhtml;
 
 /**
- * DOC YeXiaowei class global comment. Detailled comment <br/>
+ * DOC YeXiaowei class global comment. Detailed comment <br/>
  * 
  */
 public interface IJobSettingConstants {

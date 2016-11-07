@@ -25,7 +25,7 @@ import org.talend.repository.items.importexport.i18n.Messages;
 import org.talend.repository.items.importexport.manager.ResourcesManager;
 
 /**
- * created by ggu on Apr 15, 2014 Detailled comment
+ * created by ggu on Apr 15, 2014 Detailed comment
  * 
  */
 public class ImportHandlerHelper {

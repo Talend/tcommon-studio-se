@@ -38,7 +38,7 @@ import org.talend.osgi.hook.maven.MavenResolver;
 import org.talend.osgi.hook.notification.JarMissingObservable;
 
 /**
- * created by sgandon on 14 oct. 2014 Detailled comment
+ * created by sgandon on 14 oct. 2014 Detailed comment
  *
  */
 public class JarLoaderBundleFileWrapperFactory implements BundleFileWrapperFactoryHook {
@@ -52,7 +52,7 @@ public class JarLoaderBundleFileWrapperFactory implements BundleFileWrapperFacto
     Set<String> listOfBundlePrefixesSet = null;
 
     /**
-     * created by sgandon on 17 oct. 2014 Detailled comment
+     * created by sgandon on 17 oct. 2014 Detailed comment
      *
      */
     static class TalendBundleFileWrapper extends BundleFileWrapper {

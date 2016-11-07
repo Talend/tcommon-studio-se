@@ -40,7 +40,7 @@ import org.talend.core.ui.metadata.editor.MetadataEmfTableEditorView;
 import org.talend.repository.metadata.ui.wizards.form.AbstractXmlFileStepForm;
 
 /**
- * wzhang class global comment. Detailled comment
+ * wzhang class global comment. Detailed comment
  */
 public class XmlFileOutputStep3Form extends AbstractXmlFileStepForm {
 

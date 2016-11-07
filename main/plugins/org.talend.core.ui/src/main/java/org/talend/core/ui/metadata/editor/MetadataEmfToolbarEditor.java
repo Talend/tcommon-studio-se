@@ -36,7 +36,7 @@ import org.talend.core.ui.metadata.extended.command.MetadataEmfImportXmlCommand;
 import org.talend.core.ui.metadata.extended.command.MetadataEmfPasteCommand;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  * TGU same purpose as MetadataToolbarEditorView but uses EMF model directly $Id: MetadataToolbarEditorView2.java,v 1.1
  * 2006/08/02 19:43:45 tguiu Exp $

@@ -13,7 +13,7 @@
 package org.talend.repository.mdm.ui.wizard.concept;
 
 /**
- * DOC talend class global comment. Detailled comment
+ * DOC talend class global comment. Detailed comment
  */
 public enum XPathPrefix {
 

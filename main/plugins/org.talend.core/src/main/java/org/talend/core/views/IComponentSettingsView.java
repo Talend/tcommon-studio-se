@@ -15,7 +15,7 @@ package org.talend.core.views;
 import org.talend.core.model.process.Element;
 
 /**
- * DOC qzhang class global comment. Detailled comment.
+ * DOC qzhang class global comment. Detailed comment.
  */
 public interface IComponentSettingsView {
 

@@ -23,7 +23,7 @@ import java.util.Set;
 
 /**
  * 
- * DOC amaumont class global comment. Detailled comment
+ * DOC amaumont class global comment. Detailed comment
  */
 public class StatisticsStackTracer {
 
@@ -37,7 +37,7 @@ public class StatisticsStackTracer {
 
     /**
      * 
-     * DOC amaumont StatisticsTracer class global comment. Detailled comment
+     * DOC amaumont StatisticsTracer class global comment. Detailed comment
      */
     static class KeyStatisticTracer {
 

@@ -14,7 +14,7 @@ package org.talend.metadata.managment.ui.wizard.metadata.xml.node;
 
 
 /**
- * DOC s class global comment. Detailled comment
+ * DOC s class global comment. Detailed comment
  * 
  */
 public class NameSpaceNode extends FOXTreeNode {

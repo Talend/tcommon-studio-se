@@ -15,7 +15,7 @@ package org.talend.utils.sugars;
 import org.talend.utils.sugars.TypedReturnCode;
 
 /**
- * DOC stephane class global comment. Detailled comment
+ * DOC stephane class global comment. Detailed comment
  */
 public class StringReturnCode extends TypedReturnCode<String> {
 

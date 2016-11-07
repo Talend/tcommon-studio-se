@@ -33,7 +33,7 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IRepositoryService;
 
 /**
- * created by nrousseau on Aug 8, 2014 Detailled comment
+ * created by nrousseau on Aug 8, 2014 Detailed comment
  *
  */
 public class ComponentsSettingsHelper {

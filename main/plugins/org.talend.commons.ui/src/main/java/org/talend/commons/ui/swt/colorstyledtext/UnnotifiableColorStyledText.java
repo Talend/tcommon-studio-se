@@ -18,7 +18,7 @@ import org.eclipse.swt.SWTException;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  * $Id: MapperColorStyledText.java 898 2006-12-07 11:06:17Z amaumont $
  * 

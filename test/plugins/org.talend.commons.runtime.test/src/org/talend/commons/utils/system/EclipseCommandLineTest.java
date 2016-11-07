@@ -2,7 +2,7 @@
 //
 // Talend Community Edition
 //
-// Copyright (C) 2006-2016 Talend Ð www.talend.com
+// Copyright (C) 2006-2016 Talend ï¿½ www.talend.com
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -31,7 +31,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 /**
- * DOC sgandon class global comment. Detailled comment <br/>
+ * DOC sgandon class global comment. Detailed comment <br/>
  * 
  * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
  * 

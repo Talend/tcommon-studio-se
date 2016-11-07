@@ -21,7 +21,7 @@ import org.talend.repository.mdm.i18n.Messages;
 import org.talend.repository.model.RepositoryNode;
 
 /**
- * DOC hwang class global comment. Detailled comment
+ * DOC hwang class global comment. Detailed comment
  */
 public class MdmConceptWizardPage2 extends AbstractRetrieveConceptPage {
 

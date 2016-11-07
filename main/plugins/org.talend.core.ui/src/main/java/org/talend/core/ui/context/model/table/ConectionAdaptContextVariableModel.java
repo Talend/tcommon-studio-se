@@ -13,7 +13,7 @@
 package org.talend.core.ui.context.model.table;
 
 /**
- * ldong class global comment. Detailled comment
+ * ldong class global comment. Detailed comment
  */
 public class ConectionAdaptContextVariableModel {
 

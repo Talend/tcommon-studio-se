@@ -17,7 +17,7 @@ import java.util.List;
 import org.talend.core.model.general.ModuleNeeded;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public interface IHDistributionVersion {
 

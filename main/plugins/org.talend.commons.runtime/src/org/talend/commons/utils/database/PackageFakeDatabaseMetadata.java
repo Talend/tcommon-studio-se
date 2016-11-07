@@ -20,7 +20,7 @@ import java.sql.SQLException;
 import org.talend.fakejdbc.FakeDatabaseMetaData;
 
 /**
- * created by zshen on Apr 15, 2013 Detailled comment
+ * created by zshen on Apr 15, 2013 Detailed comment
  * 
  */
 public class PackageFakeDatabaseMetadata extends FakeDatabaseMetaData {

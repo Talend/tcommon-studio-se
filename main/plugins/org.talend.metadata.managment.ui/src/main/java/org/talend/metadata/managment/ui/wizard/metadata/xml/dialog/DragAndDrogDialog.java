@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * DOC s class global comment. Detailled comment
+ * DOC s class global comment. Detailed comment
  * 
  * $Id: DragAndDrogDialog.java,v 1.1 2008/03/10 09:52:38 xzhang Exp $
  * 

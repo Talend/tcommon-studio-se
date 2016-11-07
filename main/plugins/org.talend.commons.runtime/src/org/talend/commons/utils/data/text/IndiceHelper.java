@@ -15,7 +15,7 @@ package org.talend.commons.utils.data.text;
 import java.util.List;
 
 /**
- * DOC ocarbone class global comment. Detailled comment <br/>
+ * DOC ocarbone class global comment. Detailed comment <br/>
  * 
  * $Id$
  * 

@@ -19,7 +19,7 @@ import java.util.List;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 /**
- * DOC ycbai class global comment. Detailled comment
+ * DOC ycbai class global comment. Detailed comment
  */
 public interface IRepositoryBundleService extends IService {
 

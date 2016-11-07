@@ -21,7 +21,7 @@ import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.nodes.IProjectRepositoryNode;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public abstract class AbstractViewerProvider {
 

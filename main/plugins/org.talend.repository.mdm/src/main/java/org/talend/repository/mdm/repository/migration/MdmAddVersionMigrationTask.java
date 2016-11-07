@@ -24,7 +24,7 @@ import org.talend.core.model.properties.MDMConnectionItem;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 
 /**
- * created by wchen on Apr 20, 2015 Detailled comment
+ * created by wchen on Apr 20, 2015 Detailed comment
  *
  */
 public class MdmAddVersionMigrationTask extends AbstractItemMigrationTask {

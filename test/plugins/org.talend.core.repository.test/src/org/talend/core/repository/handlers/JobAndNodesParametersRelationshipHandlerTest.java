@@ -33,7 +33,7 @@ import org.talend.designer.joblet.model.JobletProcess;
 import static org.mockito.Mockito.*;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class JobAndNodesParametersRelationshipHandlerTest {
 

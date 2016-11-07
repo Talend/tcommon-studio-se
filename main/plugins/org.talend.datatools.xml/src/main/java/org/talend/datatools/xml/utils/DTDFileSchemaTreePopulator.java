@@ -26,7 +26,7 @@ import org.apache.xerces.impl.dtd.XMLElementDecl;
 import org.apache.xerces.xni.parser.XMLInputSource;
 
 /**
- * DOC hwang class global comment. Detailled comment This class is used to populate an DTD schema tree from an dtd file.
+ * DOC hwang class global comment. Detailed comment This class is used to populate an DTD schema tree from an dtd file.
  */
 
 public class DTDFileSchemaTreePopulator {

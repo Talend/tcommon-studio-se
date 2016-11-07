@@ -78,7 +78,7 @@ import org.talend.designer.core.IDesignerCoreService;
 import org.talend.repository.ui.dialog.LibrariesListSelectionDialog;
 
 /**
- * created by ycbai on 2013-3-12 Detailled comment
+ * created by ycbai on 2013-3-12 Detailed comment
  * 
  * <p>
  * A dialog which can be used to define a hadoop version. You can use {@link #getLibMap()} to gain all libraries which
@@ -737,7 +737,7 @@ public class HadoopCustomVersionDefineDialog extends TitleAreaDialog {
 
     /**
      * 
-     * created by ycbai on 2013-3-19 Detailled comment
+     * created by ycbai on 2013-3-19 Detailed comment
      * 
      */
     class TableViewerComparator extends ViewerComparator {
@@ -793,7 +793,7 @@ public class HadoopCustomVersionDefineDialog extends TitleAreaDialog {
     }
 
     /**
-     * created by ycbai on 2013-3-19 Detailled comment
+     * created by ycbai on 2013-3-19 Detailed comment
      * 
      */
     class LibNameDialogCellEditor extends DialogCellEditor {
@@ -867,7 +867,7 @@ public class HadoopCustomVersionDefineDialog extends TitleAreaDialog {
     }
 
     /**
-     * created by ycbai on 2013-3-19 Detailled comment
+     * created by ycbai on 2013-3-19 Detailed comment
      * 
      */
     class LibNameEditingSupport extends EditingSupport {

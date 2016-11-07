@@ -24,7 +24,7 @@ import org.talend.designer.maven.DesignerMavenPlugin;
 import org.talend.utils.io.FilesUtils;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public final class DefaultMavenRepositoryProvider {
 

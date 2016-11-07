@@ -52,7 +52,7 @@ public class ConnectionParameters {
     }
 
     /**
-     * qzhang ConnectionParameters class global comment. Detailled comment <br/>
+     * qzhang ConnectionParameters class global comment. Detailed comment <br/>
      * 
      */
     public enum EFrameworkKeyName {

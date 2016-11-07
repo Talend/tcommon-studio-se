@@ -23,7 +23,7 @@ import org.eclipse.ui.PlatformUI;
 import org.talend.commons.exception.ExceptionHandler;
 
 /**
- * created by cmeng on Jan 20, 2015 Detailled comment
+ * created by cmeng on Jan 20, 2015 Detailed comment
  *
  */
 public class CoreUIInjectInstanceProvider {

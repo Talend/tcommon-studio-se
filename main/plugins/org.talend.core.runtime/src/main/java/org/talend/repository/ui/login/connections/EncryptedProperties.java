@@ -17,7 +17,7 @@ import java.util.Properties;
 import org.talend.utils.security.CryptoHelper;
 
 /**
- * DOC hwang class global comment. Detailled comment
+ * DOC hwang class global comment. Detailed comment
  */
 public class EncryptedProperties extends Properties {
 

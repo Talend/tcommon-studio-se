@@ -26,7 +26,7 @@ import org.talend.core.model.properties.TDQItem;
 import org.talend.core.model.repository.IRepositoryViewObject;
 
 /**
- * DOC bZhou class global comment. Detailled comment
+ * DOC bZhou class global comment. Detailed comment
  */
 public interface ITDQItemService extends ITDQService {
 

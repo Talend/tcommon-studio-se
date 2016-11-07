@@ -21,7 +21,7 @@ import org.talend.core.model.process.IContextParameter;
 import org.talend.core.model.process.IProcess2;
 
 /**
- * DOC bqian class global comment. Detailled comment <br/>
+ * DOC bqian class global comment. Detailed comment <br/>
  * 
  */
 public interface IContextModelManager {

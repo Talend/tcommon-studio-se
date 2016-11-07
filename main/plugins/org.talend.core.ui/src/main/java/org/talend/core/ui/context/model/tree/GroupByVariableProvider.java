@@ -31,7 +31,7 @@ import org.talend.core.ui.context.model.ContextProviderProxy;
 import org.talend.core.ui.context.model.ContextTabParentModel;
 
 /**
- * cli class global comment. Detailled comment
+ * cli class global comment. Detailed comment
  * 
  * A label and content provider for the treeviewer which groups the Contexts by variable.
  */

@@ -43,7 +43,7 @@ import org.talend.repository.model.IMetadataService;
 import org.talend.repository.model.IRepositoryService;
 
 /**
- * DOC hywang class global comment. Detailled comment
+ * DOC hywang class global comment. Detailed comment
  */
 public class RuleCellEditor extends DialogCellEditor {
 

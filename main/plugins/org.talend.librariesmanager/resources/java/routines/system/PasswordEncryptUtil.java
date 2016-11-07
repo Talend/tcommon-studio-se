@@ -20,7 +20,7 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 
 /**
- * DOC chuang class global comment. Detailled comment
+ * DOC chuang class global comment. Detailed comment
  */
 public class PasswordEncryptUtil {
 

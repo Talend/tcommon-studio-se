@@ -28,7 +28,7 @@ import org.talend.core.model.metadata.designerproperties.MDMVersions;
 import org.talend.core.utils.ReflectionUtils;
 
 /**
- * created by wchen on Apr 15, 2015 Detailled comment
+ * created by wchen on Apr 15, 2015 Detailed comment
  *
  */
 public class S56MdmConnectionHelper extends AbsMdmConnectionHelper {

@@ -61,7 +61,7 @@ import com.sun.org.apache.xml.internal.serialize.OutputFormat;
 import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
 
 /**
- * created by wchen on 2013-3-27 Detailled comment
+ * created by wchen on 2013-3-27 Detailed comment
  * 
  */
 public class HadoopCustomLibrariesUtil {

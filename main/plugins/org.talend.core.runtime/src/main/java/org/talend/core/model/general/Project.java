@@ -25,7 +25,7 @@ import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.repository.ProjectManager;
 
 /**
- * DOC smallet class global comment. Detailled comment <br/>
+ * DOC smallet class global comment. Detailed comment <br/>
  * 
  * $Id: Project.java 46606 2010-08-11 08:33:54Z cli $
  * 

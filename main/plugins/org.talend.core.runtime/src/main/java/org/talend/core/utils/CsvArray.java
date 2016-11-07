@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Detailled comment <br/>
+ * Detailed comment <br/>
  * 
  * @author ftang, 07-25-2007
  * 

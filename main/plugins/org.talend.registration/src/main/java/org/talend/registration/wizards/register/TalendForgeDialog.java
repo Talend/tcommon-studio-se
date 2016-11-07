@@ -32,7 +32,7 @@ import org.talend.registration.i18n.Messages;
 import org.talend.registration.intro.regist.TalendForgeRegistHelper;
 
 /**
- * DOC Administrator class global comment. Detailled comment
+ * DOC Administrator class global comment. Detailed comment
  */
 public class TalendForgeDialog extends TrayDialog {
 

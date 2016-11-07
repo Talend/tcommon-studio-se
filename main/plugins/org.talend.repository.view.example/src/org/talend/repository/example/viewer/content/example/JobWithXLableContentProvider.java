@@ -24,7 +24,7 @@ import org.talend.repository.example.viewer.tester.example.ExampleTester;
 import org.talend.repository.model.RepositoryNode;
 
 /**
- * created by sgandon on 1 août 2012 Detailled comment
+ * created by sgandon on 1 août 2012 Detailed comment
  * 
  */
 public abstract class JobWithXLableContentProvider extends org.talend.repository.view.di.viewer.content.JobDesignsContentProvider {

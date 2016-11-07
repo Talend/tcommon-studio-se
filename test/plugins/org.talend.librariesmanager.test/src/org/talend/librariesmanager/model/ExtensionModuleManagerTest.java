@@ -22,7 +22,7 @@ import org.junit.Test;
 import org.talend.core.model.general.ModuleNeeded;
 
 /**
- * created by ycbai on 2014-5-8 Detailled comment
+ * created by ycbai on 2014-5-8 Detailed comment
  *
  */
 public class ExtensionModuleManagerTest {

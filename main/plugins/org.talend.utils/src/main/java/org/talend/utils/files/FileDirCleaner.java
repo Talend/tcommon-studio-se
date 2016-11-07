@@ -113,7 +113,7 @@ public class FileDirCleaner {
 
     /**
      * 
-     * DOC amaumont FileDirCleaner class global comment. Detailled comment
+     * DOC amaumont FileDirCleaner class global comment. Detailed comment
      */
     static class CleanResult {
 

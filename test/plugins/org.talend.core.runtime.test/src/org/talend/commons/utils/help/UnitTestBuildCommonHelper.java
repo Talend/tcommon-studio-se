@@ -16,7 +16,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * DOC xqliu class global comment. Detailled comment
+ * DOC xqliu class global comment. Detailed comment
  */
 public class UnitTestBuildCommonHelper {
 

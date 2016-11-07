@@ -40,7 +40,7 @@ import org.talend.metadata.managment.ui.i18n.Messages;
 import org.talend.repository.model.RepositoryConstants;
 
 /**
- * ggu class global comment. Detailled comment
+ * ggu class global comment. Detailed comment
  */
 public final class LinkDocumentationHelper {
 

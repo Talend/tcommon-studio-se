@@ -21,7 +21,7 @@ import org.talend.core.model.properties.Status;
 
 
 /**
- * DOC tguiu  class global comment. Detailled comment
+ * DOC tguiu  class global comment. Detailed comment
  * <br/>
  *
  * $Id$

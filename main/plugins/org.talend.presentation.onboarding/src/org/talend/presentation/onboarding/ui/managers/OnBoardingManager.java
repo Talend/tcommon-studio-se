@@ -41,7 +41,7 @@ import org.talend.presentation.onboarding.ui.runtimedata.OnBoardingRegistedResou
 import org.talend.presentation.onboarding.utils.OnBoardingConstants;
 
 /**
- * created by cmeng on Sep 25, 2015 Detailled comment
+ * created by cmeng on Sep 25, 2015 Detailed comment
  *
  */
 public class OnBoardingManager {

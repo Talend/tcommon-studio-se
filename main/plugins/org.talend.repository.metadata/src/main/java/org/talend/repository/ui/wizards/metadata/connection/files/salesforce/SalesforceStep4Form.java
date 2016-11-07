@@ -80,7 +80,7 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 
 /**
  * 
- * DOC yexiaowei class global comment. Detailled comment
+ * DOC yexiaowei class global comment. Detailed comment
  */
 public class SalesforceStep4Form extends AbstractSalesforceStepForm {
 

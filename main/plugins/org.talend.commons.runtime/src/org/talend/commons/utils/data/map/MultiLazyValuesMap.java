@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  */
 public abstract class MultiLazyValuesMap implements Map {

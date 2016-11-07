@@ -21,7 +21,7 @@ import org.eclipse.ui.internal.dialogs.AboutDialog;
 
 /**
  * 
- * DOC fywang class global comment. Detailled comment
+ * DOC fywang class global comment. Detailed comment
  */
 public class ShowAboutWizardHandler extends AbstractHandler {
 

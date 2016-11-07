@@ -16,7 +16,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 /**
- * yzhang class global comment. Detailled comment <br/>
+ * yzhang class global comment. Detailed comment <br/>
  * 
  * $Id: IExtendedCellEditorBehavior.java 上午09:52:19 2007-8-16 +0000 (2007-8-16) yzhang $
  * 

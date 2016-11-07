@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.IPath;
 import org.talend.core.model.repository.ERepositoryObjectType;
 
 /**
- * created by wchen on Aug 3, 2016 Detailled comment
+ * created by wchen on Aug 3, 2016 Detailed comment
  *
  */
 public class EmptyFolderImportItem extends ImportItem {

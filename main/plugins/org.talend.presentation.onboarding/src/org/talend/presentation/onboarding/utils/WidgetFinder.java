@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Widget;
 import org.talend.presentation.onboarding.utils.spies.CssSpy;
 
 /**
- * created by cmeng on Sep 8, 2015 Detailled comment
+ * created by cmeng on Sep 8, 2015 Detailed comment
  *
  * @see org.eclipse.e4.tools.css.spy.CssSpyPart
  */

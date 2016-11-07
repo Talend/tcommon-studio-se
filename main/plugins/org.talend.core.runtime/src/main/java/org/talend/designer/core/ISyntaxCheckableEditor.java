@@ -20,7 +20,7 @@ package org.talend.designer.core;
  * For example the condition below: When switch the tab from the designer to code in the multiple page Talend editor,
  * the syntax of the code need to be validated by calling the method validateSyntax.
  * 
- * yzhang class global comment. Detailled comment <br/>
+ * yzhang class global comment. Detailed comment <br/>
  * 
  * 
  * $Id: ICheckable.java 1 2007-1-18 涓嬪?�3:52:46 +0000 (涓嬪?�3:52:46, 2007-1-18 2007) yzhang $

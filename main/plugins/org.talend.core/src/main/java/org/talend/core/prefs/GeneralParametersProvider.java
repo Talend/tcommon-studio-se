@@ -60,7 +60,7 @@ public class GeneralParametersProvider extends MessagesCore {
     }
 
     /**
-     * DOC smallet GeneralParametersProvider class global comment. Detailled comment <br/>
+     * DOC smallet GeneralParametersProvider class global comment. Detailed comment <br/>
      * 
      * $Id$
      */

@@ -13,7 +13,7 @@
 package org.talend.core.model.metadata;
 
 /**
- * nrousseau class global comment. Detailled comment
+ * nrousseau class global comment. Detailed comment
  */
 public interface IHL7Constant {
 

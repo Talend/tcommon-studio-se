@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.talend.core.runtime.i18n.Messages;
 
 /**
- * created by cmeng on Nov 21, 2014 Detailled comment
+ * created by cmeng on Nov 21, 2014 Detailed comment
  *
  */
 public abstract class AProgressMonitorDialogWithCancel<T> extends ProgressMonitorDialog {

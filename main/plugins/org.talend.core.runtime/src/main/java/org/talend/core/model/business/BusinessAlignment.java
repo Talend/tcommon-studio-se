@@ -13,7 +13,7 @@
 package org.talend.core.model.business;
 
 /**
- * wchen class global comment. Detailled comment
+ * wchen class global comment. Detailed comment
  */
 public enum BusinessAlignment {
 

@@ -21,7 +21,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
 
 /**
- * created by ggu on Aug 20, 2014 Detailled comment
+ * created by ggu on Aug 20, 2014 Detailed comment
  *
  */
 @SuppressWarnings("nls")

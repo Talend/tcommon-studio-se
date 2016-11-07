@@ -18,7 +18,7 @@ import org.eclipse.core.resources.IResource;
 import org.talend.core.model.properties.Property;
 
 /**
- * created by wchen on 2013-8-22 Detailled comment
+ * created by wchen on 2013-8-22 Detailed comment
  * 
  */
 public interface IExtendedRepositoryNodeHandler {

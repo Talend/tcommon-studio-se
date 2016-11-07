@@ -18,7 +18,7 @@ import org.talend.commons.i18n.MessagesCore;
 import org.talend.designer.maven.ui.DesignerMavenUiPlugin;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class Messages extends MessagesCore {
 

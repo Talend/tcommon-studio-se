@@ -23,7 +23,7 @@ import org.eclipse.nebula.widgets.nattable.layer.event.ILayerEvent;
 import ca.odell.glazedlists.EventList;
 
 /**
- * created by ldong on Jul 14, 2014 Detailled comment
+ * created by ldong on Jul 14, 2014 Detailed comment
  * 
  */
 public class ContextListsSortModel<T> implements ILayerListener {

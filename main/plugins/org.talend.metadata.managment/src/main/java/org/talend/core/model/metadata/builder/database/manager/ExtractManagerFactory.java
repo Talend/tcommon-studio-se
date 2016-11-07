@@ -27,7 +27,7 @@ import org.talend.core.model.metadata.builder.database.manager.dbs.OracleExtract
 import org.talend.core.model.metadata.builder.database.manager.dbs.TeradataExtractManager;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public final class ExtractManagerFactory {
 

@@ -20,7 +20,7 @@ import org.talend.core.ui.branding.IBrandingConfiguration;
 import org.w3c.dom.Element;
 
 /**
- * DOC wchen class global comment. Detailled comment
+ * DOC wchen class global comment. Detailed comment
  */
 public abstract class IntroProvider implements IIntroXHTMLContentProvider {
 

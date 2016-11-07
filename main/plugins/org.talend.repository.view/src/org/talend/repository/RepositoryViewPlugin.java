@@ -20,7 +20,7 @@ import org.talend.repository.navigator.TalendRepositoryRoot;
 import org.talend.repository.viewer.content.ContentAdapterFactory;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class RepositoryViewPlugin extends AbstractUIPlugin {
 

@@ -17,7 +17,7 @@ import java.util.Map;
 import org.eclipse.jface.viewers.ISelection;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public interface IJobSettingsView {
 

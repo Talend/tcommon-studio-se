@@ -27,7 +27,7 @@ import org.talend.repository.viewer.filter.PerspectiveFilterHelper;
 import org.talend.repository.viewer.filter.RepositoryNodeFilterHelper;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class RepoViewPerspectiveListener implements IPerspectiveListener, IPerspectiveListener2, IPerspectiveListener3,
         IPerspectiveListener4 {

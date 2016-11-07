@@ -31,7 +31,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
- * created by kongxiaohan on Mar 25, 2015 Detailled comment
+ * created by kongxiaohan on Mar 25, 2015 Detailed comment
  *
  */
 public class TalendForgeRegistHelper {

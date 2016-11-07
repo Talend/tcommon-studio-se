@@ -21,7 +21,7 @@ import org.talend.core.ui.context.ContextTreeValuesComposite;
 import org.talend.core.ui.context.model.AbstractContextCellModifier;
 
 /**
- * cli class global comment. Detailled comment
+ * cli class global comment. Detailed comment
  */
 public class ContextTreeCellModifier extends AbstractContextCellModifier {
 

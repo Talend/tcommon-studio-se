@@ -16,7 +16,7 @@ import org.junit.Test;
 import org.talend.core.model.utils.SQLFormatUtil;
 
 /**
- * DOC Administrator class global comment. Detailled comment
+ * DOC Administrator class global comment. Detailed comment
  */
 public class TestSQLFormatUtil {
 

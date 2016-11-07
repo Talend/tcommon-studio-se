@@ -23,7 +23,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 /**
- * created by hwang on Sep 18, 2015 Detailled comment
+ * created by hwang on Sep 18, 2015 Detailed comment
  *
  */
 public class EXASOLDatabaseMetaData extends PackageFakeDatabaseMetadata {

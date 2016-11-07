@@ -64,7 +64,7 @@ import org.talend.repository.metadata.i18n.Messages;
 import org.talend.repository.metadata.ui.wizards.form.AbstractExcelFileStepForm;
 
 /**
- * DOC yexiaowei class global comment. Detailled comment
+ * DOC yexiaowei class global comment. Detailed comment
  */
 public class ExcelFileStep1Form extends AbstractExcelFileStepForm {
 
@@ -907,7 +907,7 @@ public class ExcelFileStep1Form extends AbstractExcelFileStepForm {
 
     /**
      * 
-     * DOC YeXiaowei ExcelFileStep1Form class global comment. Detailled comment <br/>
+     * DOC YeXiaowei ExcelFileStep1Form class global comment. Detailed comment <br/>
      * 
      */
     public static class SheetNode {

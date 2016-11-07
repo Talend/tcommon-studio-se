@@ -26,7 +26,7 @@ import org.talend.librariesmanager.ui.dialogs.ExternalModulesInstallDialogWithPr
 import org.talend.librariesmanager.ui.i18n.Messages;
 
 /**
- * created by Administrator on 2012-9-20 Detailled comment
+ * created by Administrator on 2012-9-20 Detailed comment
  * 
  */
 public class DownloadExternalJarAction extends Action {

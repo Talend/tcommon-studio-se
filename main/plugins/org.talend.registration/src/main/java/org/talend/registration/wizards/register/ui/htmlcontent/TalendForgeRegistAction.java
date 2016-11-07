@@ -39,7 +39,7 @@ import org.talend.registration.wizards.register.TalendForgeDialog;
 import org.talend.repository.model.RepositoryConstants;
 
 /**
- * created by kongxiaohan on Mar 26, 2015 Detailled comment
+ * created by kongxiaohan on Mar 26, 2015 Detailed comment
  *
  */
 public class TalendForgeRegistAction implements IIntroAction {

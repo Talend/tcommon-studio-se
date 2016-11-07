@@ -15,7 +15,7 @@ package org.talend.core.exception;
 import org.talend.commons.exception.PersistenceException;
 
 /**
- * DOC zshen  class global comment. Detailled comment
+ * DOC zshen  class global comment. Detailed comment
  */
 public class TalendInternalPersistenceException extends PersistenceException {
 

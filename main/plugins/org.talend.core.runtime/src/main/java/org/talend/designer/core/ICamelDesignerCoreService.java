@@ -23,7 +23,7 @@ import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
 
 /**
- * DOC guanglong.du class global comment. Detailled comment<br/>
+ * DOC guanglong.du class global comment. Detailed comment<br/>
  * <b>!!!NOTE!!!</b> ICamelDesignerCoreService should also be usable for commandline, should not add UI related codes;
  * for UI related codes, please add them into ICamelDesignerCoreUIService
  */

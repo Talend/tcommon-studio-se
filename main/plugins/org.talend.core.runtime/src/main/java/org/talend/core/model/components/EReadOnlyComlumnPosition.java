@@ -13,7 +13,7 @@
 package org.talend.core.model.components;
 
 /**
- * ftang class global comment. Detailled comment
+ * ftang class global comment. Detailed comment
  * 
  * 
  */

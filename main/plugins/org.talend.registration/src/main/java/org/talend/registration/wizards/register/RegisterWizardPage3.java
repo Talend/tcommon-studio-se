@@ -36,7 +36,7 @@ import org.talend.registration.i18n.Messages;
 import org.talend.repository.ui.login.connections.ConnectionUserPerReader;
 
 /**
- * DOC zli class global comment. Detailled comment
+ * DOC zli class global comment. Detailed comment
  */
 public class RegisterWizardPage3 extends AbstractBasicWizardDialog {
 

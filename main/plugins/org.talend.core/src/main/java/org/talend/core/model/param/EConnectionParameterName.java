@@ -15,7 +15,7 @@ package org.talend.core.model.param;
 import org.talend.core.i18n.Messages;
 
 /**
- * qzhang class global comment. Detailled comment <br/>
+ * qzhang class global comment. Detailed comment <br/>
  * 
  */
 public enum EConnectionParameterName {

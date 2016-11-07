@@ -41,7 +41,7 @@ import org.talend.repository.items.importexport.handlers.model.ImportItem;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public final class ImportCacheHelper {
 

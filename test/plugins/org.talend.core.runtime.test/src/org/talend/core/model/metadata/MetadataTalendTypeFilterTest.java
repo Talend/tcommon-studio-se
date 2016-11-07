@@ -19,7 +19,7 @@ import java.util.Arrays;
 import org.junit.Test;
 
 /**
- * created by rdubois on 30 juil. 2015 Detailled comment
+ * created by rdubois on 30 juil. 2015 Detailed comment
  *
  */
 public class MetadataTalendTypeFilterTest {

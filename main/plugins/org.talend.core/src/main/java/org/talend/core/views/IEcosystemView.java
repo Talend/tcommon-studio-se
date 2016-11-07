@@ -14,7 +14,7 @@ package org.talend.core.views;
 
 /**
  * 
- * DOC gcui class global comment. Detailled comment
+ * DOC gcui class global comment. Detailed comment
  */
 public interface IEcosystemView {
 

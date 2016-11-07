@@ -20,7 +20,7 @@ import org.talend.core.model.process.EConnectionType;
 import org.talend.designer.runprocess.IPerformanceData;
 
 /**
- * DOC zwei class global comment. Detailled comment
+ * DOC zwei class global comment. Detailed comment
  */
 public class IteratePerformance extends CommonPerformance {
 

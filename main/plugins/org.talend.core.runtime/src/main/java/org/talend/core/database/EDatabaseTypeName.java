@@ -17,7 +17,7 @@ import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.projectsetting.IProjectSettingPreferenceConstants;
 
 /**
- * qzhang class global comment. Detailled comment <br/>
+ * qzhang class global comment. Detailed comment <br/>
  * 
  */
 public enum EDatabaseTypeName {

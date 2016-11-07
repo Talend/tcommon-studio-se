@@ -24,7 +24,7 @@ import org.talend.core.model.general.TalendNature;
 import org.talend.core.repository.constants.FileConstants;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class VisitResourceHelper {
 

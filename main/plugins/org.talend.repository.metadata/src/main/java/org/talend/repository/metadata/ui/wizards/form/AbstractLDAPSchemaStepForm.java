@@ -24,7 +24,7 @@ import org.talend.metadata.managment.ui.utils.OtherConnectionContextUtils.EParam
 import org.talend.metadata.managment.ui.wizard.AbstractForm;
 
 /**
- * ggu class global comment. Detailled comment
+ * ggu class global comment. Detailed comment
  */
 public abstract class AbstractLDAPSchemaStepForm extends AbstractForm {
 

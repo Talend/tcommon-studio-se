@@ -16,7 +16,7 @@ import org.apache.commons.lang.StringUtils;
 
 /**
  * 
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  * $Id$
  * 

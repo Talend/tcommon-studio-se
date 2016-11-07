@@ -19,7 +19,7 @@ import java.net.URL;
 import org.talend.utils.files.FileUtils;
 
 /**
- * DOC stephane class global comment. Detailled comment
+ * DOC stephane class global comment. Detailed comment
  */
 public class PropertiesReloader {
 

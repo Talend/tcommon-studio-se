@@ -18,7 +18,7 @@ import org.talend.migration.AbstractMigrationTask;
 import org.talend.migration.IProjectMigrationTask;
 
 /**
- * DOC stephane class global comment. Detailled comment
+ * DOC stephane class global comment. Detailed comment
  */
 public abstract class AbstractProjectMigrationTask extends AbstractMigrationTask implements IProjectMigrationTask {
 

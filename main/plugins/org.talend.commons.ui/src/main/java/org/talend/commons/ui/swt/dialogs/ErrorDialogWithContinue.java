@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.talend.commons.ui.runtime.i18n.Messages;
 
 /**
- * DOC yexiaowei class global comment. Detailled comment
+ * DOC yexiaowei class global comment. Detailed comment
  */
 public class ErrorDialogWithContinue extends ErrorDialog {
 

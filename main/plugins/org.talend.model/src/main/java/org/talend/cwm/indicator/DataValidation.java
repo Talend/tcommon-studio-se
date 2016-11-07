@@ -13,7 +13,7 @@
 package org.talend.cwm.indicator;
 
 /**
- * created by talend on Aug 22, 2014 Detailled comment
+ * created by talend on Aug 22, 2014 Detailed comment
  * 
  */
 public interface DataValidation {

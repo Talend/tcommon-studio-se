@@ -21,7 +21,7 @@ import org.talend.core.runtime.util.ComponentReturnVariableUtils;
 
 /**
  * created by nrousseau on Jun 21, 2016
- * Detailled comment
+ * Detailed comment
  *
  */
 public class ComponentReturnVariableUtilsTest {

@@ -28,7 +28,7 @@ import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
 /**
- * created by ggu on 4 Feb 2015 Detailled comment
+ * created by ggu on 4 Feb 2015 Detailed comment
  *
  */
 public class JobInfoProperties extends Properties {

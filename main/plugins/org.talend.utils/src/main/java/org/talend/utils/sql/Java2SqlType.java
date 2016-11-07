@@ -15,7 +15,7 @@ package org.talend.utils.sql;
 import java.sql.Types;
 
 /**
- * DOC zqin class global comment. Detailled comment <br/>
+ * DOC zqin class global comment. Detailed comment <br/>
  * 
  * $Id: talend.epf 1 2006-09-29 17:06:40Z zqin $
  * 

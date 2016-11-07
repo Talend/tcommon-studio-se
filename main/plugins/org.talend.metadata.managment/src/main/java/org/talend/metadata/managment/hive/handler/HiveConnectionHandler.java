@@ -26,7 +26,7 @@ import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.metadata.managment.connection.manager.HiveConnectionManager;
 
 /**
- * created by xqliu on 2013-11-1 Detailled comment
+ * created by xqliu on 2013-11-1 Detailed comment
  * 
  */
 public class HiveConnectionHandler {

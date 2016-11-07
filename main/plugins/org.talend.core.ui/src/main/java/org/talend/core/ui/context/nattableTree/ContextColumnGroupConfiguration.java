@@ -33,7 +33,7 @@ import org.eclipse.nebula.widgets.nattable.ui.matcher.MouseEventMatcher;
 import org.eclipse.swt.SWT;
 
 /**
- * created by ldong on Sep 19, 2014 Detailled comment
+ * created by ldong on Sep 19, 2014 Detailed comment
  * 
  */
 public class ContextColumnGroupConfiguration extends DefaultColumnGroupHeaderLayerConfiguration {

@@ -25,7 +25,7 @@ import org.talend.core.model.properties.User;
 import org.talend.repository.model.RepositoryConstants;
 
 /**
- * ggu class global comment. Detailled comment
+ * ggu class global comment. Detailed comment
  */
 public class ProjectHelper {
 

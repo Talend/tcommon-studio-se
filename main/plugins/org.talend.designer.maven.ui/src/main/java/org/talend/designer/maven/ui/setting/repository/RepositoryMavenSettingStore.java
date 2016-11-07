@@ -25,7 +25,7 @@ import org.eclipse.jface.preference.PreferenceStore;
 import org.talend.designer.maven.template.MavenTemplateManager;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class RepositoryMavenSettingStore extends PreferenceStore {
 

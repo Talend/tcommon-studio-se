@@ -70,7 +70,7 @@ import org.talend.repository.metadata.ui.wizards.form.AbstractExcelFileStepForm;
 
 /**
  * 
- * DOC yexiaowei class global comment. Detailled comment
+ * DOC yexiaowei class global comment. Detailed comment
  */
 public class ExcelFileStep3Form extends AbstractExcelFileStepForm {
 

@@ -29,7 +29,7 @@ import org.talend.commons.ui.runtime.i18n.Messages;
 import org.vafada.swtcalendar.SWTCalendar;
 
 /**
- * DOC smallet class global comment. Detailled comment <br/>
+ * DOC smallet class global comment. Detailed comment <br/>
  * 
  */
 public class SWTCalendarWithTime extends SWTCalendar {

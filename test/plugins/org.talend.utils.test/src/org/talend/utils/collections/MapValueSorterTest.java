@@ -21,7 +21,7 @@ import org.junit.Test;
 import org.talend.utils.collections.MapValueSorter;
 
 /**
- * DOC scorreia class global comment. Detailled comment
+ * DOC scorreia class global comment. Detailed comment
  */
 public class MapValueSorterTest {
 

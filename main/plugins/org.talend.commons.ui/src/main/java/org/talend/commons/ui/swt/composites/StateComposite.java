@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Label;
 import org.talend.commons.ui.i18n.Messages;
 
 /**
- * DOC hwang class global comment. Detailled comment
+ * DOC hwang class global comment. Detailed comment
  */
 public class StateComposite extends Composite {
 

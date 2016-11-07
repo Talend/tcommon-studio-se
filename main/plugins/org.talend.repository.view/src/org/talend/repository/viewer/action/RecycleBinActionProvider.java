@@ -14,7 +14,7 @@ package org.talend.repository.viewer.action;
 
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class RecycleBinActionProvider extends RepoNodeActionProvider {
 

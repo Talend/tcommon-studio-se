@@ -25,7 +25,7 @@ import org.talend.updates.runtime.Constants;
 import org.talend.updates.runtime.engine.factory.AbstractExtraUpdatesFactory;
 
 /**
- * created by ggu on Jul 17, 2014 Detailled comment
+ * created by ggu on Jul 17, 2014 Detailed comment
  *
  */
 public class ExtraFeaturesUpdatesReader extends RegistryReader {
@@ -123,7 +123,7 @@ public class ExtraFeaturesUpdatesReader extends RegistryReader {
 
     /**
      * 
-     * created by ggu on Jul 17, 2014 Detailled comment
+     * created by ggu on Jul 17, 2014 Detailed comment
      *
      */
     class ExtraUpdatesFactoryRegistry {

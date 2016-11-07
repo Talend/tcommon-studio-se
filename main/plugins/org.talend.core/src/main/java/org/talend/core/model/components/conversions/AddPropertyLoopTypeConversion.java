@@ -16,7 +16,7 @@ import org.talend.core.model.components.ComponentUtilities;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 
 /**
- * DOC Administrator class global comment. Detailled comment
+ * DOC Administrator class global comment. Detailed comment
  */
 public class AddPropertyLoopTypeConversion implements IComponentConversion {
 

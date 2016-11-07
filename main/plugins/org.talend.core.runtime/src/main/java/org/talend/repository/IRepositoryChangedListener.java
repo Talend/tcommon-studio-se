@@ -13,7 +13,7 @@
 package org.talend.repository;
 
 /**
- * DOC bqian class global comment. Detailled comment <br/>
+ * DOC bqian class global comment. Detailed comment <br/>
  * 
  * $Id: IRepositoryChangedListener.java 2006-12-31涓嬪?�1:22:26 bqian $
  * 

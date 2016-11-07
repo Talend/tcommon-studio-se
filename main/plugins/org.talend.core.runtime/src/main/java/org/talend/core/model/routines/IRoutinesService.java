@@ -20,7 +20,7 @@ import org.talend.core.model.general.ModuleNeeded;
 
 /**
  * 
- * qli class global comment. Detailled comment
+ * qli class global comment. Detailed comment
  */
 public interface IRoutinesService extends IService {
 

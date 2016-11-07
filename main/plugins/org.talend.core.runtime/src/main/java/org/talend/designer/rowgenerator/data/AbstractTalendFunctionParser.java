@@ -40,7 +40,7 @@ import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.repository.ProjectManager;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public abstract class AbstractTalendFunctionParser extends AbstractFunctionParser {
 

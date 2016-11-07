@@ -15,7 +15,7 @@ package org.talend.utils;
 import java.util.Random;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  */
 public class IdGenerator {

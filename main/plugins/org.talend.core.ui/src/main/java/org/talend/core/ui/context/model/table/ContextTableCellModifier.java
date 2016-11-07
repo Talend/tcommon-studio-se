@@ -29,7 +29,7 @@ import org.talend.core.ui.context.model.AbstractContextCellModifier;
 import org.talend.core.ui.context.model.template.ContextConstant;
 
 /**
- * cli class global comment. Detailled comment
+ * cli class global comment. Detailed comment
  */
 public class ContextTableCellModifier extends AbstractContextCellModifier {
 

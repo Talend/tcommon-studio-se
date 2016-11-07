@@ -20,7 +20,7 @@ import org.talend.core.model.process.node.IExternalMapEntry;
 import org.talend.core.model.process.node.IExternalMapTable;
 
 /**
- * DOC nrousseau class global comment. Detailled comment <br/>
+ * DOC nrousseau class global comment. Detailed comment <br/>
  * 
  * $Id: talend-code-templates.xml 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
  * 
@@ -29,7 +29,7 @@ public interface IExternalData extends Serializable, Cloneable {
 
     /**
      * 
-     * cli ExternalDataType class global comment. Detailled comment
+     * cli ExternalDataType class global comment. Detailed comment
      */
     public enum ExternalDataType {
         OUTPUT,

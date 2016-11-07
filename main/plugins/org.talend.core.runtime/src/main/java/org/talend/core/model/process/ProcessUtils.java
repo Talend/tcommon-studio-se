@@ -60,7 +60,7 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IProxyRepositoryService;
 
 /**
- * DOC bqian class global comment. Detailled comment
+ * DOC bqian class global comment. Detailed comment
  */
 @SuppressWarnings("unchecked")
 public final class ProcessUtils {

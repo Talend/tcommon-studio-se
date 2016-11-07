@@ -13,7 +13,7 @@
 package org.talend.core.hadoop;
 
 /**
- * created by ycbai on 2014-5-28 Detailled comment
+ * created by ycbai on 2014-5-28 Detailed comment
  * 
  */
 public enum EHadoopConfigurationJars {

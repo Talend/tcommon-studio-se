@@ -19,7 +19,7 @@ import org.talend.core.model.process.INode;
 import org.talend.core.model.properties.EbcdicConnectionItem;
 
 /**
- * ggu class global comment. Detailled comment
+ * ggu class global comment. Detailed comment
  */
 public interface IEBCDICProviderService extends IProviderService {
 

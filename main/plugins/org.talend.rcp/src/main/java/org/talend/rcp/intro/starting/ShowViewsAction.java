@@ -24,7 +24,7 @@ import org.talend.repository.ui.views.IRepositoryView;
 
 /**
  * 
- * DOC wchen class global comment. Detailled comment
+ * DOC wchen class global comment. Detailed comment
  */
 public class ShowViewsAction implements IIntroAction {
 

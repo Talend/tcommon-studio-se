@@ -24,7 +24,7 @@ import org.talend.metadata.managment.ui.MetadataManagmentUiPlugin;
 import org.talend.metadata.managment.ui.i18n.Messages;
 
 /**
- * DOC bqian class global comment. Detailled comment <br/>
+ * DOC bqian class global comment. Detailed comment <br/>
  * 
  * $Id: MappingFileCheckViewerDialog.java 1 May 22, 2007 10:44:43 AM +0000 $
  * 

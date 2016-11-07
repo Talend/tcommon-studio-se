@@ -13,7 +13,7 @@
 package org.talend.migration.check;
 
 /**
- * created by wchen on Dec 30, 2014 Detailled comment
+ * created by wchen on Dec 30, 2014 Detailed comment
  *
  */
 public enum ProblemCategory {

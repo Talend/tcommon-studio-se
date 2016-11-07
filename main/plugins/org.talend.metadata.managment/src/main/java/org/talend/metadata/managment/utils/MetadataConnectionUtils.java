@@ -74,7 +74,7 @@ import orgomg.cwm.resource.relational.Catalog;
 import orgomg.cwm.resource.relational.Schema;
 
 /**
- * DOC zshen class global comment. Detailled comment
+ * DOC zshen class global comment. Detailed comment
  */
 public class MetadataConnectionUtils {
 

@@ -43,12 +43,12 @@ import org.talend.core.repository.i18n.Messages;
 import org.talend.core.repository.model.JobletReferenceBean;
 
 /**
- * ggu class global comment. Detailled comment
+ * ggu class global comment. Detailed comment
  */
 public class JobletReferenceDialog extends SelectionDialog {
 
     /**
-     * DOC ggu JobletReferenceDialog class global comment. Detailled comment
+     * DOC ggu JobletReferenceDialog class global comment. Detailed comment
      */
     class JobletsProvide extends LabelProvider implements ITableLabelProvider {
 

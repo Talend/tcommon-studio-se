@@ -15,7 +15,7 @@ package org.talend.metadata.managment.ui.wizard.documentation;
 import org.eclipse.core.runtime.IPath;
 
 /**
- * DOC chuger class global comment. Detailled comment <br/>
+ * DOC chuger class global comment. Detailed comment <br/>
  * 
  * $Id: IDocumentationContext.java 38013 2010-03-05 14:21:59Z mhirt $
  * 

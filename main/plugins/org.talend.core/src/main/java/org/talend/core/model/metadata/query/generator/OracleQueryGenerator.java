@@ -17,7 +17,7 @@ import org.talend.core.model.metadata.query.AbstractQueryGenerator;
 import org.talend.core.model.utils.TalendTextUtils;
 
 /**
- * ggu class global comment. Detailled comment
+ * ggu class global comment. Detailed comment
  */
 public class OracleQueryGenerator extends AbstractQueryGenerator {
 

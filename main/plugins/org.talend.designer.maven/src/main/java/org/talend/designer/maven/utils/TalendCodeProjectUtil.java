@@ -24,7 +24,7 @@ import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.tools.creator.CreateMavenCodeProject;
 
 /**
- * created by ggu on 23 Jan 2015 Detailled comment
+ * created by ggu on 23 Jan 2015 Detailed comment
  *
  */
 public final class TalendCodeProjectUtil {

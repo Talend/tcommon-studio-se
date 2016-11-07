@@ -20,7 +20,7 @@ import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ICoreService;
 
 /**
- * DOC YeXiaowei class global comment. Detailled comment <br/>
+ * DOC YeXiaowei class global comment. Detailed comment <br/>
  * 
  */
 public abstract class AbstractContextTabEditComposite extends Composite {

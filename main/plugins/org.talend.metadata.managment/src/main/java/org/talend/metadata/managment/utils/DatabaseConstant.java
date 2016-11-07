@@ -15,7 +15,7 @@ package org.talend.metadata.managment.utils;
 import org.talend.commons.runtime.xml.XmlUtil;
 
 /**
- * DOC xqliu class global comment. Detailled comment
+ * DOC xqliu class global comment. Detailed comment
  */
 public final class DatabaseConstant {
 

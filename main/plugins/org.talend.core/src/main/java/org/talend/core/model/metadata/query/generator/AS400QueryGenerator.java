@@ -31,7 +31,7 @@ import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.core.service.ICoreUIService;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class AS400QueryGenerator extends AbstractQueryGenerator {
 

@@ -28,7 +28,7 @@ import org.talend.core.model.properties.RulesItem;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 
 /**
- * hywang class global comment. Detailled comment
+ * hywang class global comment. Detailed comment
  */
 public interface IRulesProviderService extends IService {
 

@@ -24,7 +24,7 @@ import org.talend.commons.ui.swt.dialogs.EventLoopProgressMonitor;
 import org.talend.metadata.managment.ui.i18n.Messages;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  * $Id$
  * 

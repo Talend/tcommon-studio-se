@@ -45,7 +45,7 @@ import org.talend.commons.ui.swt.geftree.layout.TreeLayout;
 import org.talend.commons.ui.swt.geftree.layout.TreeNormalLayout;
 
 /**
- * cli class global comment. Detailled comment
+ * cli class global comment. Detailed comment
  */
 @SuppressWarnings("unchecked")
 public class TreeBranch extends Figure {

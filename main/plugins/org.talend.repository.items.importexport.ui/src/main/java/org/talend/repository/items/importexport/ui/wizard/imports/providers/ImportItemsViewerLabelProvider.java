@@ -30,7 +30,7 @@ import org.talend.repository.items.importexport.wizard.models.StandardJobImportN
 import org.talend.repository.items.importexport.wizard.models.TypeImportNode;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class ImportItemsViewerLabelProvider extends LabelProvider {
 

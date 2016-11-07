@@ -13,7 +13,7 @@
 package org.talend.core.nexus;
 
 /**
- * created by Talend on 2015年5月19日 Detailled comment
+ * created by Talend on 2015年5月19日 Detailed comment
  *
  */
 public class NexusConstants {

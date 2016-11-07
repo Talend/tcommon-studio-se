@@ -35,7 +35,7 @@ import org.talend.updates.runtime.i18n.Messages;
 import org.talend.updates.runtime.model.UpdateSiteLocationType;
 
 /**
- * created by sgandon on 25 févr. 2013 Detailled comment
+ * created by sgandon on 25 févr. 2013 Detailed comment
  * 
  */
 public class ChooseUpdateSitesWizardPage extends WizardPage {

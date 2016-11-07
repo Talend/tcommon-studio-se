@@ -15,7 +15,7 @@ package org.talend.repository.ui.wizards.metadata.connection.files.xml;
 
 /**
  * created by nrousseau on May 9, 2013
- * Detailled comment
+ * Detailed comment
  *
  */
 public class VirtualTreePopulator {

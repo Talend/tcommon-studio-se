@@ -27,7 +27,7 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IRepositoryNode;
 
 /**
- * DOC ycbai class global comment. Detailled comment
+ * DOC ycbai class global comment. Detailed comment
  */
 public abstract class AbstractCheckDeleteItemReference implements ICheckDeleteItemReference {
 

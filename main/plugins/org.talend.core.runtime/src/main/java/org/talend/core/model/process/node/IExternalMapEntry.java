@@ -13,7 +13,7 @@
 package org.talend.core.model.process.node;
 
 /**
- * cli class global comment. Detailled comment
+ * cli class global comment. Detailed comment
  */
 public interface IExternalMapEntry {
 

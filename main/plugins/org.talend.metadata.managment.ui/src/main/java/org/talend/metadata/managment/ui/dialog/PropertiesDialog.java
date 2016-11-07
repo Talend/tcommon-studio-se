@@ -45,7 +45,7 @@ import org.talend.metadata.managment.ui.props.PropertiesTableView;
 
 /**
  * 
- * created by ycbai on 2015年1月4日 Detailled comment
+ * created by ycbai on 2015年1月4日 Detailed comment
  *
  */
 public class PropertiesDialog extends TitleAreaDialog {

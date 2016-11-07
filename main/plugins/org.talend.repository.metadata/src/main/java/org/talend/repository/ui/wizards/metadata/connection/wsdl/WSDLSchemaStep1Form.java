@@ -65,7 +65,7 @@ import org.talend.repository.metadata.ui.wizards.form.AbstractWSDLSchemaStepForm
 import org.talend.repository.ui.wizards.metadata.connection.ldap.BaseWidgetUtils;
 
 /**
- * DOC qwei class global comment. Detailled comment
+ * DOC qwei class global comment. Detailed comment
  */
 public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
 

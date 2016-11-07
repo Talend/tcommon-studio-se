@@ -18,7 +18,7 @@ import java.util.List;
 import org.talend.core.model.repository.ERepositoryObjectType;
 
 /**
- * DOC rdubois class global comment. Detailled comment This job migration extension allows to migrate any type of
+ * DOC rdubois class global comment. Detailed comment This job migration extension allows to migrate any type of
  * process.
  */
 public abstract class AbstractAllJobMigrationTask extends AbstractJobMigrationTask {

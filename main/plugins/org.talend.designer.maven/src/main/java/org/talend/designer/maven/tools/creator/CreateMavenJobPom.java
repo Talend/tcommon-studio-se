@@ -86,7 +86,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
- * created by ggu on 4 Feb 2015 Detailled comment
+ * created by ggu on 4 Feb 2015 Detailed comment
  *
  */
 public class CreateMavenJobPom extends AbstractMavenProcessorPom {

@@ -17,7 +17,7 @@ import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.Property;
 
 /**
- * created by cmeng on Jul 20, 2015 Detailled comment
+ * created by cmeng on Jul 20, 2015 Detailed comment
  *
  */
 public class BigDataBasicUtil {

@@ -20,7 +20,7 @@ import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.database.conn.DatabaseConnConstants;
 
 /**
- * cli class global comment. Detailled comment
+ * cli class global comment. Detailed comment
  */
 public enum EDatabaseVersion4Drivers {
     // access

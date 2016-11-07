@@ -47,7 +47,7 @@ import org.talend.repository.model.nodes.IProjectRepositoryNode;
 import org.talend.repository.ui.views.IRepositoryView;
 
 /**
- * DOC ftang class global comment. Detailled comment <br/>
+ * DOC ftang class global comment. Detailed comment <br/>
  * 
  */
 public class DocumentationHelper {

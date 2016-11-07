@@ -39,7 +39,7 @@ import org.talend.utils.sql.metadata.constants.GetColumn;
 import orgomg.cwm.resource.relational.NamedColumnSet;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class MSSQLExtractManager extends ExtractManager {
 

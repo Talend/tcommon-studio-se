@@ -13,7 +13,7 @@
 package org.talend.commons.ui.swt.linking;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  * $Id$
  * 

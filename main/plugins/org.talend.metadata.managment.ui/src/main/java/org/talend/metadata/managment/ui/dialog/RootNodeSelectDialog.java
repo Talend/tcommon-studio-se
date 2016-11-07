@@ -29,7 +29,7 @@ import org.talend.datatools.xml.utils.ATreeNode;
 import org.talend.metadata.managment.ui.wizard.metadata.xml.FoxNodeComboViewProvider;
 
 /**
- * DOC ycbai class global comment. Detailled comment
+ * DOC ycbai class global comment. Detailed comment
  */
 public class RootNodeSelectDialog extends Dialog {
 

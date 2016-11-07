@@ -31,7 +31,7 @@ import org.talend.core.ui.metadata.celleditor.EProcessTypeForRule;
 import org.talend.core.ui.rule.AbstractRlueOperationChoice;
 
 /**
- * DOC hwang class global comment. Detailled comment
+ * DOC hwang class global comment. Detailed comment
  */
 public interface IMetadataService extends IService {
 

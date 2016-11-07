@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.talend.metadata.managment.ui.i18n.Messages;
 
 /**
- * created by ycbai on 2014年12月23日 Detailled comment
+ * created by ycbai on 2014年12月23日 Detailed comment
  *
  */
 public class HadoopPropertiesDialog extends PropertiesDialog {

@@ -15,7 +15,7 @@ package routines.system;
 import java.util.HashMap;
 
 /**
- * created by hwang on 2014-4-15 Detailled comment
+ * created by hwang on 2014-4-15 Detailed comment
  * 
  */
 public class RuntimeMap {

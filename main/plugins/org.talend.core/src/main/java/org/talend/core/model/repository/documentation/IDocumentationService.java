@@ -16,7 +16,7 @@ import org.talend.core.IService;
 import org.talend.core.model.properties.Item;
 
 /**
- * tang class global comment. Detailled comment
+ * tang class global comment. Detailed comment
  */
 public interface IDocumentationService extends IService {
 

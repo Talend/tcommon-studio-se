@@ -13,7 +13,7 @@
 package org.talend.core.model.metadata;
 
 /**
- * DOC nrousseau class global comment. Detailled comment <br/>
+ * DOC nrousseau class global comment. Detailed comment <br/>
  * 
  * $Id$
  * 

@@ -51,7 +51,7 @@ import org.eclipse.xsd.util.XSDResourceImpl;
 import org.talend.core.utils.IXSDPopulationUtil;
 
 /**
- * DOC ycbai class global comment. Detailled comment
+ * DOC ycbai class global comment. Detailed comment
  */
 public class XSDPopulationUtil2 implements IXSDPopulationUtil {
 

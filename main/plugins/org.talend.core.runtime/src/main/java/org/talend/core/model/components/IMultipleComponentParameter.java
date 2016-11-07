@@ -13,7 +13,7 @@
 package org.talend.core.model.components;
 
 /**
- * DOC nrousseau class global comment. Detailled comment <br/>
+ * DOC nrousseau class global comment. Detailed comment <br/>
  * 
  * $Id: IMultipleComponentParameter.java 38013 2010-03-05 14:21:59Z mhirt $
  * 

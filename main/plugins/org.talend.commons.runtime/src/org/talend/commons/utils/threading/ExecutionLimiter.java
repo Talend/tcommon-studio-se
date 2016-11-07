@@ -152,7 +152,7 @@ public abstract class ExecutionLimiter {
 
     /**
      * 
-     * DOC amaumont ExecutionLimiter class global comment. Detailled comment <br/>
+     * DOC amaumont ExecutionLimiter class global comment. Detailed comment <br/>
      * 
      */
     class FinalExecution extends Thread {

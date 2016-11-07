@@ -23,7 +23,7 @@ import org.talend.core.CorePlugin;
 import org.talend.core.prefs.ITalendCorePrefConstants;
 
 /**
- * wchen class global comment. Detailled comment
+ * wchen class global comment. Detailed comment
  */
 public class AlwaysWelcomeAction implements IIntroAction {
 

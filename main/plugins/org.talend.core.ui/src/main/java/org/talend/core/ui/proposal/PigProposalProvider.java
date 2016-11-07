@@ -31,7 +31,7 @@ import org.talend.designer.rowgenerator.data.FunctionManager;
 import org.talend.designer.rowgenerator.data.TalendType;
 
 /**
- * DOC hcyi class global comment. Detailled comment
+ * DOC hcyi class global comment. Detailed comment
  */
 public class PigProposalProvider extends TalendProposalProvider {
 
@@ -130,7 +130,7 @@ public class PigProposalProvider extends TalendProposalProvider {
 
     /**
      * 
-     * DOC hcyi PigProposalProvider class global comment. Detailled comment
+     * DOC hcyi PigProposalProvider class global comment. Detailed comment
      */
     class PigFunctionProposal extends RoutinesFunctionProposal {
 

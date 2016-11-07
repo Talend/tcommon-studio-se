@@ -22,7 +22,7 @@ import org.talend.core.ui.context.ContextTreeValuesComposite;
 import org.talend.core.ui.i18n.Messages;
 
 /**
- * cli class global comment. Detailled comment
+ * cli class global comment. Detailed comment
  * 
  * This action is used to group the text by Context.
  */

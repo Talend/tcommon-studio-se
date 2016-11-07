@@ -18,7 +18,7 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.metadata.managment.ui.wizard.metadata.connection.Step0WizardPage;
 
 /**
- * DOC talend class global comment. Detailled comment
+ * DOC talend class global comment. Detailed comment
  */
 public class MdmStep0WizardPage extends Step0WizardPage {
 

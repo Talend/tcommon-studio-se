@@ -22,7 +22,7 @@ import org.talend.utils.json.JSONException;
 import org.talend.utils.json.JSONObject;
 
 /**
- * class global comment. Detailled comment <br/>
+ * class global comment. Detailed comment <br/>
  * $Id: Function.java,v 1.10 2007/02/02 08:07:02 pub Exp $
  */
 public class Function implements Cloneable {

@@ -17,7 +17,7 @@ import org.talend.commons.exception.BusinessException;
 import org.talend.repository.ui.login.connections.ConnectionUserPerReader;
 
 /**
- * DOC mhirt class global comment. Detailled comment <br/>
+ * DOC mhirt class global comment. Detailed comment <br/>
  * 
  * $Id: LicenseManagement.java 38013 2010-03-05 14:21:59Z mhirt $
  * 

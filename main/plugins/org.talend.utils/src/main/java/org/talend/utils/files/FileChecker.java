@@ -17,7 +17,7 @@ import java.io.File;
 import org.talend.utils.sugars.ReturnCode;
 
 /**
- * DOC stephane class global comment. Detailled comment
+ * DOC stephane class global comment. Detailed comment
  */
 public class FileChecker {
 

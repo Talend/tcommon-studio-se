@@ -29,7 +29,7 @@ import org.talend.core.model.properties.ConnectionItem;
 import org.talend.repository.metadata.i18n.Messages;
 
 /**
- * wzhang class global comment. Detailled comment
+ * wzhang class global comment. Detailed comment
  */
 public class XmlFileSelectWizardPage extends XmlFileWizardPage {
 

@@ -24,7 +24,7 @@ import org.talend.designer.maven.ui.i18n.Messages;
 import org.talend.designer.runprocess.IRunProcessService;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class ProjectPomProjectSettingPage extends AbstractPersistentProjectSettingPage {
 

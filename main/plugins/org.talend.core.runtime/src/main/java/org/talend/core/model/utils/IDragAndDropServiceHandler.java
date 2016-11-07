@@ -26,7 +26,7 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.repository.model.RepositoryNode;
 
 /**
- * hwang class global comment. Detailled comment
+ * hwang class global comment. Detailed comment
  */
 public interface IDragAndDropServiceHandler {
 

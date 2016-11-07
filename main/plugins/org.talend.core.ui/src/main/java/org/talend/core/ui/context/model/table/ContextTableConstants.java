@@ -13,7 +13,7 @@
 package org.talend.core.ui.context.model.table;
 
 /**
- * cli class global comment. Detailled comment
+ * cli class global comment. Detailed comment
  */
 public class ContextTableConstants {
 

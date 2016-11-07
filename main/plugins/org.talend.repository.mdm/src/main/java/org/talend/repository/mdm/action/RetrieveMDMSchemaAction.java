@@ -42,7 +42,7 @@ import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.ui.views.IRepositoryView;
 
 /**
- * DOC hwang class global comment. Detailled comment
+ * DOC hwang class global comment. Detailed comment
  */
 public class RetrieveMDMSchemaAction extends AbstractCreateAction {
 

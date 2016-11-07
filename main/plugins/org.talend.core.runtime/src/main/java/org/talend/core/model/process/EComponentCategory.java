@@ -15,7 +15,7 @@ package org.talend.core.model.process;
 import org.talend.core.runtime.i18n.Messages;
 
 /**
- * DOC nrousseau class global comment. Detailled comment <br/>
+ * DOC nrousseau class global comment. Detailed comment <br/>
  * 
  * $Id: EComponentCategory.java 44874 2010-07-04 07:40:42Z nrousseau $
  * 

@@ -21,7 +21,7 @@ import org.junit.Test;
 import org.talend.commons.utils.help.UnitTestBuildCommonHelper;
 
 /**
- * DOC xqliu class global comment. Detailled comment
+ * DOC xqliu class global comment. Detailed comment
  */
 public class FilesUtilsRealTest {
 

@@ -24,7 +24,7 @@ import org.talend.core.ui.context.IContextModelManager;
 import org.talend.core.ui.context.model.table.ContextTableTabChildModel;
 
 /**
- * created by ldong on Aug 15, 2014 Detailled comment
+ * created by ldong on Aug 15, 2014 Detailed comment
  * 
  */
 public class ContextParaChangeModeCommand extends Command {

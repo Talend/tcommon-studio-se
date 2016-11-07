@@ -17,7 +17,7 @@ import org.talend.designer.maven.setting.project.IProjectSettingManagerProvider;
 import org.talend.designer.maven.ui.DesignerMavenUiPlugin;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class MavenUiProjectSettingManagerProvider implements IProjectSettingManagerProvider {
 

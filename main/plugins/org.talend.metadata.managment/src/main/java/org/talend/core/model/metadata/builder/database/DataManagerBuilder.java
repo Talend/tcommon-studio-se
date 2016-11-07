@@ -19,7 +19,7 @@ import org.talend.cwm.softwaredeployment.TdDataManager;
 import org.talend.cwm.softwaredeployment.TdMachine;
 
 /**
- * DOC scorreia class global comment. Detailled comment
+ * DOC scorreia class global comment. Detailed comment
  * 
  * @deprecated this class does not seem to be used anymore. Remove it?
  */

@@ -13,7 +13,7 @@
 package org.talend.commons.ui.runtime.update;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public interface PreferenceKeys {
 

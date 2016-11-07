@@ -44,7 +44,7 @@ import org.talend.commons.ui.swt.drawing.link.StyleLink;
 import org.talend.commons.ui.utils.TreeUtils;
 
 /**
- * bqian class global comment. Detailled comment <br/>
+ * bqian class global comment. Detailed comment <br/>
  * 
  * $Id: TableToTreeLinker.java,v 1.1 2007/06/12 07:20:38 gke Exp $
  * 

@@ -13,7 +13,7 @@
 package org.talend.repository.example.viewer.node;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class ExampleRootNode {
 

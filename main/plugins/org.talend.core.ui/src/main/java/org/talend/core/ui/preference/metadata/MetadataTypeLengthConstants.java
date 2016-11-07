@@ -15,7 +15,7 @@ package org.talend.core.ui.preference.metadata;
 import org.talend.core.model.metadata.types.JavaTypesManager;
 
 /**
- * DOC qwei class global comment. Detailled comment
+ * DOC qwei class global comment. Detailed comment
  */
 public class MetadataTypeLengthConstants {
 

@@ -16,7 +16,7 @@ import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * DOC amaumont class global comment. Detailled comment
+ * DOC amaumont class global comment. Detailed comment
  */
 public class CursorHelper {
 

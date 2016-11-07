@@ -19,7 +19,7 @@ import java.util.ResourceBundle;
 import org.apache.log4j.Logger;
 
 /**
- * created by cmeng on Sep 18, 2015 Detailled comment
+ * created by cmeng on Sep 18, 2015 Detailed comment
  *
  */
 public abstract class MessagesCore {

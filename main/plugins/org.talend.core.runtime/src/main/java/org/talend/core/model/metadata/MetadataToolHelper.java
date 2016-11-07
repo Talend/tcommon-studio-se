@@ -84,7 +84,7 @@ import org.talend.repository.model.RepositoryConstants;
 import orgomg.cwm.objectmodel.core.TaggedValue;
 
 /**
- * ggu class global comment. Detailled comment
+ * ggu class global comment. Detailed comment
  */
 public final class MetadataToolHelper {
 

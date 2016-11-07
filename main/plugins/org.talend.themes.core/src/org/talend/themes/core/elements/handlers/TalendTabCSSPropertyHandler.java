@@ -30,7 +30,7 @@ import org.w3c.dom.css.CSSValue;
 import org.w3c.dom.css.CSSValueList;
 
 /**
- * created by cmeng on Feb 9, 2015 Detailled comment
+ * created by cmeng on Feb 9, 2015 Detailed comment
  *
  */
 public class TalendTabCSSPropertyHandler implements ICSSPropertyHandler {

@@ -20,7 +20,7 @@ import org.talend.core.model.properties.ConnectionItem;
 import org.talend.core.ui.AbstractWebService;
 
 /**
- * DOC Administrator class global comment. Detailled comment
+ * DOC Administrator class global comment. Detailed comment
  */
 public interface IWebService extends IService {
 

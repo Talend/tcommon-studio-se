@@ -24,7 +24,7 @@ import org.talend.core.model.metadata.IMetadataTable;
  * 
  */
 /**
- * DOC Administrator class global comment. Detailled comment <br/>
+ * DOC Administrator class global comment. Detailed comment <br/>
  * 
  */
 public interface IProcessDescription {

@@ -31,7 +31,7 @@ import org.talend.repository.items.importexport.handlers.model.EmptyFolderImport
 import org.talend.repository.items.importexport.handlers.model.ImportItem;
 
 /**
- * created by wchen on Aug 4, 2016 Detailled comment
+ * created by wchen on Aug 4, 2016 Detailed comment
  *
  */
 public class FileResourcesUnityManagerTest {

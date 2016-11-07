@@ -25,7 +25,7 @@ import org.talend.core.model.properties.impl.PropertyImpl;
 import org.talend.core.runtime.CoreRuntimePlugin;
 
 /**
- * created by wchen on 2014-3-11 Detailled comment
+ * created by wchen on 2014-3-11 Detailed comment
  * 
  */
 public class FakePropertyImpl extends PropertyImpl {

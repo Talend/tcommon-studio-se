@@ -17,7 +17,7 @@ import java.util.Collection;
 import org.eclipse.core.runtime.IPath;
 
 /**
- * created by wchen on 2013-10-30 Detailled comment
+ * created by wchen on 2013-10-30 Detailed comment
  * 
  */
 public interface SvnHook {

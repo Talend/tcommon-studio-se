@@ -28,7 +28,7 @@ import us.monoid.json.JSONException;
 import us.monoid.json.JSONObject;
 
 /**
- * ggu class global comment. Detailled comment
+ * ggu class global comment. Detailed comment
  */
 public final class TokenInforUtil {
 

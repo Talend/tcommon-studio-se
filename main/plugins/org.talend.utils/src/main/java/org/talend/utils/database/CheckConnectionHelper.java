@@ -17,7 +17,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
- * DOC wuwei class global comment. Detailled comment
+ * DOC wuwei class global comment. Detailed comment
  */
 public class CheckConnectionHelper {
 

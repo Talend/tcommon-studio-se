@@ -19,7 +19,7 @@ import org.talend.commons.utils.TalendDBUtils;
 import org.talend.fakejdbc.FakeResultSet;
 
 /**
- * DOC gcui class global comment. Detailled comment
+ * DOC gcui class global comment. Detailed comment
  */
 public class TeradataResultSet extends FakeResultSet {
 

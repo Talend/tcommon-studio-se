@@ -35,7 +35,7 @@ import org.talend.repository.viewer.filter.RepositoryNodeFilterHelper;
 import org.talend.repository.viewer.ui.provider.RepoCommonViewerProvider;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  * 
  * the path is splitted via "." by default
  */

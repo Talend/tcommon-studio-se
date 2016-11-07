@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 /**
- * DOC qiang.zhang class global comment. Detailled comment <br/>
+ * DOC qiang.zhang class global comment. Detailed comment <br/>
  * 
  */
 public class DateCellEditor extends DialogCellEditor {

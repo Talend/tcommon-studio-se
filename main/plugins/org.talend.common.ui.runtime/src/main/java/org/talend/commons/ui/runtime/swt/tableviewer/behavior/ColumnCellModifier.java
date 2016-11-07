@@ -15,7 +15,7 @@ package org.talend.commons.ui.runtime.swt.tableviewer.behavior;
 import org.talend.commons.ui.runtime.swt.tableviewer.TableViewerCreatorColumnNotModifiable;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  */
 public class ColumnCellModifier implements IColumnCellModifier {

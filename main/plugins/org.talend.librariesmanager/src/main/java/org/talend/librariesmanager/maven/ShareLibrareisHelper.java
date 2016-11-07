@@ -44,7 +44,7 @@ import org.talend.librariesmanager.prefs.LibrariesManagerUtils;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
 /**
- * created by Talend on 2015年7月31日 Detailled comment
+ * created by Talend on 2015年7月31日 Detailed comment
  *
  */
 public abstract class ShareLibrareisHelper {

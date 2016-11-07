@@ -23,7 +23,7 @@ import javax.crypto.spec.DESKeySpec;
 import org.apache.commons.codec.binary.Base64;
 
 /**
- * DOC chuang class global comment. Detailled comment
+ * DOC chuang class global comment. Detailed comment
  */
 public class PasswordEncryptUtil {
 

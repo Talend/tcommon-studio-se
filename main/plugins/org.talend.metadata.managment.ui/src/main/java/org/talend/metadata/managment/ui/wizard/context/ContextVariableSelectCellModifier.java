@@ -19,7 +19,7 @@ import org.talend.core.ui.context.model.table.ConectionAdaptContextVariableModel
 import org.talend.core.ui.context.model.template.ContextConstant;
 
 /**
- * ldong class global comment. Detailled comment
+ * ldong class global comment. Detailed comment
  */
 public class ContextVariableSelectCellModifier implements ICellModifier {
 

@@ -56,7 +56,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
 import org.talend.repository.ProjectManager;
 
 /**
- * created by nrousseau on Dec 12, 2013 Detailled comment
+ * created by nrousseau on Dec 12, 2013 Detailed comment
  * 
  */
 public class BaseRepositoryTest {

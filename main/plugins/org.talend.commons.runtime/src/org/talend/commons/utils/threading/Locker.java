@@ -54,7 +54,7 @@ public class Locker<B, KP> {
 
     /**
      * 
-     * DOC amaumont Locker class global comment. Detailled comment <br/>
+     * DOC amaumont Locker class global comment. Detailed comment <br/>
      * 
      * @param <KP>
      */
@@ -139,7 +139,7 @@ public class Locker<B, KP> {
 
     /**
      * 
-     * DOC amaumont Locker class global comment. Detailled comment <br/>
+     * DOC amaumont Locker class global comment. Detailed comment <br/>
      * 
      * @param <KP>
      */
@@ -807,7 +807,7 @@ public class Locker<B, KP> {
 
         /**
          * 
-         * DOC amaumont Locker class global comment. Detailled comment <br/>
+         * DOC amaumont Locker class global comment. Detailed comment <br/>
          * 
          */
         class LabelValue {

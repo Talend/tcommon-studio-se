@@ -40,7 +40,7 @@ import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.ui.views.IRepositoryView;
 
 /**
- * DOC smallet class global comment. Detailled comment <br/>
+ * DOC smallet class global comment. Detailed comment <br/>
  * 
  * $Id: RepositoryWizard.java 51271 2010-11-15 08:40:42Z nrousseau $
  * 

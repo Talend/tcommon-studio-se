@@ -21,7 +21,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.graphics.Image;
 
 /**
- * DOC qwei class global comment. Detailled comment
+ * DOC qwei class global comment. Detailed comment
  */
 public class TableViewerContentProvider implements IStructuredContentProvider, ITableLabelProvider {
 

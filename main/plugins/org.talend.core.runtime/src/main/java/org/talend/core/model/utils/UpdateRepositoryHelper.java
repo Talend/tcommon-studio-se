@@ -25,7 +25,7 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.update.UpdatesConstants;
 
 /**
- * ggu class global comment. Detailled comment
+ * ggu class global comment. Detailed comment
  */
 public final class UpdateRepositoryHelper {
 

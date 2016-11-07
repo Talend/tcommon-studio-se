@@ -39,7 +39,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 
 /**
- * ggu class global comment. Detailled comment.
+ * ggu class global comment. Detailed comment.
  */
 public final class UpdateContextVariablesHelper {
 

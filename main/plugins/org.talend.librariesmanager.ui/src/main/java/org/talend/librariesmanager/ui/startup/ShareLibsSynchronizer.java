@@ -15,7 +15,7 @@ package org.talend.librariesmanager.ui.startup;
 import org.eclipse.ui.IStartup;
 
 /**
- * created by wchen on 2015-6-15 Detailled comment
+ * created by wchen on 2015-6-15 Detailed comment
  *
  */
 public class ShareLibsSynchronizer implements IStartup {

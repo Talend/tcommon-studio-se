@@ -27,7 +27,7 @@ import org.talend.commons.ui.swt.geftree.figure.ExpandCollapseFigure;
 import org.talend.commons.ui.swt.geftree.figure.TreeBranch;
 
 /**
- * DOC hwang class global comment. Detailled comment
+ * DOC hwang class global comment. Detailed comment
  */
 public abstract class TreeBodyUI {
 

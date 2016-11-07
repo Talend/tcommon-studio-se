@@ -44,7 +44,7 @@ import orgomg.cwm.objectmodel.core.Package;
 import orgomg.cwm.resource.relational.ColumnSet;
 
 /**
- * DOC zshen class global comment. Detailled comment
+ * DOC zshen class global comment. Detailed comment
  */
 public abstract class MetadataFillerImpl<T extends Connection> implements IMetadataFiller<T> {
 

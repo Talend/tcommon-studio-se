@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.DirectoryDialog;
 
 /**
- * DOC qiang.zhang class global comment. Detailled comment <br/>
+ * DOC qiang.zhang class global comment. Detailed comment <br/>
  * 
  */
 public class DirectoryCellEditor extends DialogCellEditor {

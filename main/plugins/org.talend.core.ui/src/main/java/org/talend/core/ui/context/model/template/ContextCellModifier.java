@@ -29,7 +29,7 @@ import org.talend.core.ui.context.ContextTemplateComposite;
 import org.talend.core.ui.context.model.AbstractContextCellModifier;
 
 /**
- * ggu class global comment. Detailled comment
+ * ggu class global comment. Detailed comment
  */
 public class ContextCellModifier extends AbstractContextCellModifier {
 

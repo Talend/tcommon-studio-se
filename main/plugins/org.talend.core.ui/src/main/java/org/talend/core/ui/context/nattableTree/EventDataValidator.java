@@ -21,7 +21,7 @@ import org.talend.core.ui.context.ContextTreeTable.ContextTreeNode;
 import org.talend.core.ui.i18n.Messages;
 
 /**
- * created by ldong on Jul 17, 2014 Detailled comment
+ * created by ldong on Jul 17, 2014 Detailed comment
  * 
  */
 public class EventDataValidator extends DataValidator {

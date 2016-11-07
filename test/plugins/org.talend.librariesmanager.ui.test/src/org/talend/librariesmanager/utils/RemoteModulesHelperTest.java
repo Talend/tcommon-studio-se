@@ -25,7 +25,7 @@ import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.ModuleToInstall;
 
 /**
- * created by wchen on 2016年2月18日 Detailled comment
+ * created by wchen on 2016年2月18日 Detailed comment
  *
  */
 public class RemoteModulesHelperTest {

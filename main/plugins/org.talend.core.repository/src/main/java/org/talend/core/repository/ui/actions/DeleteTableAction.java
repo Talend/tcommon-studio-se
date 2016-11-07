@@ -63,7 +63,7 @@ import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.ui.actions.AContextualAction;
 
 /**
- * DOC tguiu class global comment. Detailled comment <br/>
+ * DOC tguiu class global comment. Detailed comment <br/>
  * 
  * $Id$
  * 

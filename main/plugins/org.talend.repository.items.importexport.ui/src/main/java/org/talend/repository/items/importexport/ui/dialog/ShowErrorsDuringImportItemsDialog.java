@@ -56,7 +56,7 @@ import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.repository.items.importexport.ui.i18n.Messages;
 
 /**
- * DOC hcyi class global comment. Detailled comment
+ * DOC hcyi class global comment. Detailed comment
  */
 public class ShowErrorsDuringImportItemsDialog extends Dialog {
 

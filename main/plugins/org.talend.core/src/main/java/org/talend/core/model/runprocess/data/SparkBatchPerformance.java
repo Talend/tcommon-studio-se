@@ -21,7 +21,7 @@ import org.apache.commons.lang.StringUtils;
 import org.talend.core.model.process.EConnectionType;
 
 /**
- * DOC zwei class global comment. Detailled comment
+ * DOC zwei class global comment. Detailed comment
  */
 public class SparkBatchPerformance extends CommonPerformance {
 

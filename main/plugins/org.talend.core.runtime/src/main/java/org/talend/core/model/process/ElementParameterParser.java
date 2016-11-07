@@ -44,7 +44,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 import org.talend.designer.runprocess.ItemCacheManager;
 
 /**
- * DOC nrousseau class global comment. Detailled comment <br/>
+ * DOC nrousseau class global comment. Detailed comment <br/>
  *
  * $Id: ElementParameterParser.java 52559 2010-12-13 04:14:06Z nrousseau $
  *

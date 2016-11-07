@@ -27,7 +27,7 @@ import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.IRepositoryNode.ENodeType;
 
 /**
- * created by ggu on Mar 27, 2014 Detailled comment
+ * created by ggu on Mar 27, 2014 Detailed comment
  * 
  */
 public abstract class AbstractRepositoryNodeUpdateManagerProvider extends AbstractRepositoryUpdateManagerProvider {

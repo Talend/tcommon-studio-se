@@ -19,7 +19,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.talend.datatools.xml.utils.ATreeNode;
 
 /**
- * created by nrousseau on May 9, 2013 Detailled comment
+ * created by nrousseau on May 9, 2013 Detailed comment
  * 
  */
 public class VirtualXmlTreeNodeContentProvider extends TreeNodeContentProvider implements ILazyTreeContentProvider {

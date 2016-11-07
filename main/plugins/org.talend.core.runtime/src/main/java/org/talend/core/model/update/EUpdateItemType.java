@@ -15,7 +15,7 @@ package org.talend.core.model.update;
 import org.talend.core.runtime.i18n.Messages;
 
 /**
- * ggu class global comment. Detailled comment
+ * ggu class global comment. Detailed comment
  */
 public enum EUpdateItemType implements IUpdateItemType {
     NODE_PROPERTY(Messages.getString("EUpdateItemType.Property")), //$NON-NLS-1$

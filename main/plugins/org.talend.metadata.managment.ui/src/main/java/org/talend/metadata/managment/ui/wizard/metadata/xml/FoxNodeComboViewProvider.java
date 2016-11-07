@@ -20,7 +20,7 @@ import org.talend.datatools.xml.utils.ATreeNode;
 import org.talend.metadata.managment.ui.wizard.metadata.xml.node.FOXTreeNode;
 
 /**
- * DOC ycbai class global comment. Detailled comment
+ * DOC ycbai class global comment. Detailed comment
  */
 public class FoxNodeComboViewProvider extends ArrayContentProvider implements ILabelProvider {
 

@@ -31,7 +31,7 @@ import org.talend.core.ui.metadata.editor.XmlExtractorLoopModel;
 import org.talend.repository.metadata.i18n.Messages;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * TGU same purpose as TargetSchemaTableEditorView but uses EMF model directly
  * 
  * $Id: XPathNodeSchemaEditorView.java 904 2006-12-07 17:24:05Z amaumont $

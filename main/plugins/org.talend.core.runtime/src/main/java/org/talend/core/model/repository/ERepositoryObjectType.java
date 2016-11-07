@@ -79,7 +79,7 @@ import org.talend.designer.core.ICamelDesignerCoreService;
 import org.talend.repository.ProjectManager;
 
 /**
- * DOC hywang class global comment. Detailled comment
+ * DOC hywang class global comment. Detailed comment
  */
 public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
 

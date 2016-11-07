@@ -20,7 +20,7 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 /**
- * DOC wzhang class global comment. Detailled comment
+ * DOC wzhang class global comment. Detailed comment
  */
 public class BabiliUpdateUtil {
 

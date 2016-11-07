@@ -13,7 +13,7 @@
 package org.talend.repository.ui.wizards.metadata.connection.files.xml.dnd;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  * $Id$
  * 

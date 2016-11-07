@@ -23,7 +23,7 @@ import org.talend.daikon.properties.property.Property;
 
 /**
  * created by nrousseau on May 20, 2016
- * Detailled comment
+ * Detailed comment
  *
  */
 public class GenericTypeUtils {

@@ -37,7 +37,7 @@ import org.eclipse.osgi.util.NLS;
 import org.talend.commons.CommonsPlugin;
 
 /**
- * created by ycbai on 2015年5月27日 Detailled comment
+ * created by ycbai on 2015年5月27日 Detailed comment
  *
  */
 @SuppressWarnings("restriction")
@@ -110,7 +110,7 @@ public class TalendMavenLaunchDelegate extends MavenLaunchDelegate {
 
 /**
  * 
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 class ForegroundResourceRefresher implements IDebugEventSetListener {
 

@@ -20,7 +20,7 @@ import org.talend.repository.items.importexport.wizard.models.ProjectImportNode;
 import org.talend.repository.items.importexport.wizard.models.TypeImportNode;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class ImportItemsViewerSorter extends ViewerSorter {
 

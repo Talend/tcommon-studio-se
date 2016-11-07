@@ -30,7 +30,7 @@ import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
 
 /**
- * DOC nrousseau class global comment. Detailled comment
+ * DOC nrousseau class global comment. Detailed comment
  */
 public class SAPFunctionRepositoryObject extends RepositoryObject implements ISubRepositoryObject {
 

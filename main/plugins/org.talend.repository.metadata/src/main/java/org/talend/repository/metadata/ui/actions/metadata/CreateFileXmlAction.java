@@ -31,7 +31,7 @@ import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.ui.wizards.metadata.connection.files.xml.XmlFileWizard;
 
 /**
- * DOC cantoine class global comment. Detailled comment <br/>
+ * DOC cantoine class global comment. Detailed comment <br/>
  * 
  * $Id: CreateFileXmlAction.java 77219 2012-01-24 01:14:15Z mhirt $
  * 

@@ -21,7 +21,7 @@ import org.talend.core.model.metadata.connection.hive.HiveModeInfo;
 
 /**
  * created by cmeng on May 20, 2016
- * Detailled comment
+ * Detailed comment
  *
  */
 @SuppressWarnings("nls")

@@ -25,13 +25,13 @@ import org.osgi.framework.FrameworkUtil;
 import org.talend.core.utils.RegistryReader;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class RelationshipRegistryReader extends RegistryReader {
 
     /**
      * 
-     * DOC ggu ItemRelationshipRegistry class global comment. Detailled comment.
+     * DOC ggu ItemRelationshipRegistry class global comment. Detailed comment.
      */
     static class ItemRelationshipRegistry extends RelationshipRegistry {
 
@@ -53,7 +53,7 @@ public class RelationshipRegistryReader extends RegistryReader {
 
     /**
      * 
-     * DOC ggu ParameterRelationshipRegistry class global comment. Detailled comment.
+     * DOC ggu ParameterRelationshipRegistry class global comment. Detailed comment.
      */
     static class ParameterRelationshipRegistry extends RelationshipRegistry {
 

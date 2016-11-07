@@ -21,14 +21,14 @@ import org.talend.osgi.hook.maven.MavenResolver;
 import org.talend.osgi.hook.notification.JarMissingObservable;
 
 /**
- * created by sgandon on 17 oct. 2014 Detailled comment
+ * created by sgandon on 17 oct. 2014 Detailed comment
  */
 /**
- * created by sgandon on 27 mai 2015 Detailled comment
+ * created by sgandon on 27 mai 2015 Detailed comment
  *
  */
 /**
- * created by sgandon on 27 mai 2015 Detailled comment
+ * created by sgandon on 27 mai 2015 Detailed comment
  *
  */
 public class MissingJarServices {

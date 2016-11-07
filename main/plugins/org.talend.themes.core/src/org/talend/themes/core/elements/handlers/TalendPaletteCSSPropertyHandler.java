@@ -29,7 +29,7 @@ import org.w3c.dom.css.CSSValue;
 import org.w3c.dom.css.CSSValueList;
 
 /**
- * created by cmeng on Jan 30, 2015 Detailled comment
+ * created by cmeng on Jan 30, 2015 Detailed comment
  *
  */
 public class TalendPaletteCSSPropertyHandler implements ICSSPropertyHandler {

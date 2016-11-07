@@ -59,7 +59,7 @@ import us.monoid.json.JSONException;
 import us.monoid.json.JSONObject;
 
 /**
- * created by Administrator on 2012-9-19 Detailled comment
+ * created by Administrator on 2012-9-19 Detailed comment
  * 
  */
 public class RemoteModulesHelper {
@@ -73,7 +73,7 @@ public class RemoteModulesHelper {
     static private boolean alreadyWarnedAboutConnectionIssue = false;
 
     /**
-     * created by sgandon on 24 sept. 2013 Detailled comment
+     * created by sgandon on 24 sept. 2013 Detailed comment
      * 
      */
     private final class RemoteModulesFetchRunnable implements IRunnableWithProgress {

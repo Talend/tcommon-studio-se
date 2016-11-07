@@ -61,7 +61,7 @@ import org.talend.metadata.managment.ui.utils.ConnectionContextHelper;
 import org.talend.metadata.managment.ui.utils.ShadowProcessHelper;
 
 /**
- * DOC tguiu class global comment. Detailled comment <br/>
+ * DOC tguiu class global comment. Detailed comment <br/>
  * 
  * $Id: AbstractForm.java 45884 2010-07-23 09:18:06Z hwang $
  * 
@@ -153,7 +153,7 @@ public abstract class AbstractForm extends Composite {
     }
 
     /**
-     * DOC tguiu AbstractDelimitedFileStepForm class global comment. Detailled comment <br/>
+     * DOC tguiu AbstractDelimitedFileStepForm class global comment. Detailed comment <br/>
      * 
      * $Id: AbstractForm.java 45884 2010-07-23 09:18:06Z hwang $
      * 

@@ -53,7 +53,7 @@ import org.talend.designer.maven.template.MavenTemplateManager;
 import org.talend.designer.maven.utils.PomUtil;
 
 /**
- * created by ggu on 22 Jan 2015 Detailled comment
+ * created by ggu on 22 Jan 2015 Detailed comment
  *
  */
 public class CreateMavenCodeProject extends AbstractMavenGeneralTemplatePom {

@@ -401,7 +401,7 @@ public final class StatisticsTracer {
 
     /**
      * 
-     * DOC amaumont TimeMeasurer class global comment. Detailled comment
+     * DOC amaumont TimeMeasurer class global comment. Detailed comment
      */
     class InternalTimer {
 

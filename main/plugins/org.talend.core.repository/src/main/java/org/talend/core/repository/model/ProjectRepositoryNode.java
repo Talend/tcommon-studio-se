@@ -111,7 +111,7 @@ import us.monoid.json.JSONException;
 import us.monoid.json.JSONObject;
 
 /**
- * DOC nrousseau class global comment. Detailled comment
+ * DOC nrousseau class global comment. Detailed comment
  */
 public class ProjectRepositoryNode extends RepositoryNode implements IProjectRepositoryNode {
 

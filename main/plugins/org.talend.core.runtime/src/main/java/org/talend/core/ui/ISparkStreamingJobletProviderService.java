@@ -24,7 +24,7 @@ import org.talend.core.model.properties.JobletProcessItem;
 import org.talend.core.model.repository.IRepositoryEditorInput;
 
 /**
- * DOC hwang  class global comment. Detailled comment
+ * DOC hwang  class global comment. Detailed comment
  */
 public interface ISparkStreamingJobletProviderService extends IService{
 	

@@ -30,7 +30,7 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 
 /**
  * created by cmeng on May 10, 2016
- * Detailled comment
+ * Detailed comment
  *
  */
 public class RelationshipItemBuilderTest {

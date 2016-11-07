@@ -13,7 +13,7 @@
 package org.talend.core.ui.token;
 
 /**
- * ggu class global comment. Detailled comment
+ * ggu class global comment. Detailed comment
  */
 public class PrefTokenKey extends TokenKey {
 

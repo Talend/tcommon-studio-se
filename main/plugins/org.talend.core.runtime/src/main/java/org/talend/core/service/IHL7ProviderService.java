@@ -19,7 +19,7 @@ import org.talend.core.model.process.INode;
 import org.talend.core.model.properties.HL7ConnectionItem;
 
 /**
- * gcui class global comment. Detailled comment
+ * gcui class global comment. Detailed comment
  */
 public interface IHL7ProviderService extends IProviderService {
 

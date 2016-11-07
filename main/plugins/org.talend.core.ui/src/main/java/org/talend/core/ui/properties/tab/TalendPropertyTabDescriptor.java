@@ -19,7 +19,7 @@ import org.eclipse.swt.graphics.Image;
 import org.talend.core.model.process.EComponentCategory;
 
 /**
- * yzhang class global comment. Detailled comment <br/>
+ * yzhang class global comment. Detailed comment <br/>
  * 
  * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
  * 

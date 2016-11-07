@@ -23,7 +23,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.talend.registration.i18n.Messages;
 
 /**
- * DOC mhirt class global comment. Detailled comment <br/>
+ * DOC mhirt class global comment. Detailed comment <br/>
  * 
  * $Id: LicenseWizardDialog.java 38013 2010-03-05 14:21:59Z mhirt $
  * 

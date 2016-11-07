@@ -52,7 +52,7 @@ public class ContextSetConfigurationDialog extends ObjectSelectionDialog<IContex
     IContextModelManager manager = null;
 
     /**
-     * DOC bqian ContextSetConfigurationDialog class global comment. Detailled comment <br/>
+     * DOC bqian ContextSetConfigurationDialog class global comment. Detailed comment <br/>
      * 
      */
     public class ContextLabelProvider extends LabelProvider {
@@ -224,7 +224,7 @@ public class ContextSetConfigurationDialog extends ObjectSelectionDialog<IContex
     }
 
     /**
-     * DOC hshen ContextCompare class global comment. Detailled comment
+     * DOC hshen ContextCompare class global comment. Detailed comment
      */
     private class ContextCompare implements java.util.Comparator<IContext> {
 
@@ -330,7 +330,7 @@ public class ContextSetConfigurationDialog extends ObjectSelectionDialog<IContex
 
     // /**
     // *
-    // * DOC chuang ContextSetConfigurationDialog class global comment. Detailled comment
+    // * DOC chuang ContextSetConfigurationDialog class global comment. Detailed comment
     // */
     // class MyCheckboxTableViewer extends CheckboxTableViewer {
     //

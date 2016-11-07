@@ -14,7 +14,7 @@ package org.talend.commons.utils.data.map;
 
 
 /**
- * DOC amaumont  class global comment. Detailled comment
+ * DOC amaumont  class global comment. Detailed comment
  * <br/>
  *
  * $Id$

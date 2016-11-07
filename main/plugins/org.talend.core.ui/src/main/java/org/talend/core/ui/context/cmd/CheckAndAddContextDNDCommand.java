@@ -36,7 +36,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.designer.core.model.utils.emf.talendfile.impl.ContextTypeImpl;
 
 /**
- * DOC talend2 class global comment. Detailled comment
+ * DOC talend2 class global comment. Detailed comment
  */
 public class CheckAndAddContextDNDCommand extends Command {
 

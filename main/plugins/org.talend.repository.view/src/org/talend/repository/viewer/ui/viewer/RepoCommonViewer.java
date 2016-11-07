@@ -22,7 +22,7 @@ import org.talend.repository.viewer.ui.provider.AgentTreeViewerListener;
 import org.talend.repository.viewer.ui.provider.INavigatorContentServiceProvider;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class RepoCommonViewer extends CommonViewer implements ITreeViewerListener, INavigatorContentServiceProvider {
 

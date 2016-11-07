@@ -18,7 +18,7 @@ import org.talend.core.language.ECodeLanguage;
 import org.talend.core.language.LanguageManager;
 
 /**
- * yzhang class global comment. Detailled comment <br/>
+ * yzhang class global comment. Detailed comment <br/>
  * 
  * $Id: DateParameter.java 下午04:37:24 2007-8-7 +0000 (2007-8-7) yzhang $
  * 

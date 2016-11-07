@@ -18,7 +18,7 @@ import org.talend.components.api.component.ComponentDefinition;
 import org.talend.core.runtime.i18n.Messages;
 
 /**
- * created by nrousseau on Jun 21, 2016 Detailled comment
+ * created by nrousseau on Jun 21, 2016 Detailed comment
  *
  */
 public class ComponentReturnVariableUtils {

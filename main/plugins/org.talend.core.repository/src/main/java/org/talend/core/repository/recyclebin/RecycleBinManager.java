@@ -45,7 +45,7 @@ import org.talend.model.recyclebin.TalendItem;
 import org.talend.repository.ProjectManager;
 
 /**
- * created by nrousseau on Jun 15, 2015 Detailled comment
+ * created by nrousseau on Jun 15, 2015 Detailed comment
  *
  */
 public class RecycleBinManager {

@@ -18,7 +18,7 @@ import org.talend.core.IService;
 import org.talend.core.hadoop.version.custom.ECustomVersionType;
 
 /**
- * created by ycbai on 2013-3-14 Detailled comment
+ * created by ycbai on 2013-3-14 Detailed comment
  * 
  */
 public interface IHadoopService extends IService {

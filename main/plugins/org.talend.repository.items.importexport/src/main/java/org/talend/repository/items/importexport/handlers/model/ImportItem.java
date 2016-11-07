@@ -187,7 +187,7 @@ public class ImportItem {
 
     /**
      * 
-     * DOC hcw ImportItem class global comment. Detailled comment
+     * DOC hcw ImportItem class global comment. Detailed comment
      */
     public enum State {
                        /**

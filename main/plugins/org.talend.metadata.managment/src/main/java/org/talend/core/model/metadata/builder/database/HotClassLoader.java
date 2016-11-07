@@ -21,7 +21,7 @@ import org.talend.commons.exception.ExceptionHandler;
 
 /**
  * 
- * DOC YeXiaowei class global comment. Detailled comment <br/>
+ * DOC YeXiaowei class global comment. Detailed comment <br/>
  * 
  */
 public class HotClassLoader extends URLClassLoader {

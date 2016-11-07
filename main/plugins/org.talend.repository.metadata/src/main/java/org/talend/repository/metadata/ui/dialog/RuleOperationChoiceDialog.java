@@ -55,7 +55,7 @@ import org.talend.repository.metadata.i18n.Messages;
 import org.talend.repository.model.IRepositoryService;
 
 /**
- * DOC hywang class global comment. Detailled comment
+ * DOC hywang class global comment. Detailed comment
  */
 public class RuleOperationChoiceDialog extends AbstractRlueOperationChoice {
 

@@ -17,7 +17,7 @@ import org.talend.core.model.metadata.QueryUtil;
 import org.talend.core.model.metadata.query.AbstractQueryGenerator;
 
 /**
- * ggu class global comment. Detailled comment
+ * ggu class global comment. Detailed comment
  */
 public class OldDelegateQueryGenerator extends AbstractQueryGenerator {
 

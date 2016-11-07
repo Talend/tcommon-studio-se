@@ -23,7 +23,7 @@ import org.eclipse.ui.navigator.CommonViewer;
 import org.talend.repository.model.RepositoryNode;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class RepositoryFilterSettingProvider extends LabelProvider implements ITreeContentProvider {
 

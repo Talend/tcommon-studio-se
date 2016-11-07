@@ -34,7 +34,7 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * 
- * created by wchen on Oct 24, 2016 Detailled comment
+ * created by wchen on Oct 24, 2016 Detailed comment
  *
  */
 public class SSLContextProvider {

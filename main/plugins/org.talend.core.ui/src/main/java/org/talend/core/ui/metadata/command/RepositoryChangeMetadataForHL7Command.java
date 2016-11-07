@@ -32,7 +32,7 @@ import org.talend.core.ui.CoreUIPlugin;
 import org.talend.core.utils.TalendQuoteUtils;
 
 /**
- * nrousseau class global comment. Detailled comment
+ * nrousseau class global comment. Detailed comment
  */
 public class RepositoryChangeMetadataForHL7Command extends Command {
 

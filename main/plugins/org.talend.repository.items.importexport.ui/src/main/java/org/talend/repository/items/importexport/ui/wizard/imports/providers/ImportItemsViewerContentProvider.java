@@ -22,7 +22,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.talend.repository.items.importexport.wizard.models.ImportNode;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class ImportItemsViewerContentProvider implements ITreeContentProvider {
 

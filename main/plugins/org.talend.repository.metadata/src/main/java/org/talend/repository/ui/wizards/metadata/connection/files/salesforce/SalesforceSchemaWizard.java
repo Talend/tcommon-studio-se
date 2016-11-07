@@ -55,7 +55,7 @@ import orgomg.cwm.resource.record.RecordFactory;
 import orgomg.cwm.resource.record.RecordFile;
 
 /**
- * DOC YeXiaowei class global comment. Detailled comment <br/>
+ * DOC YeXiaowei class global comment. Detailed comment <br/>
  * 
  */
 public class SalesforceSchemaWizard extends CheckLastVersionRepositoryWizard implements INewWizard {

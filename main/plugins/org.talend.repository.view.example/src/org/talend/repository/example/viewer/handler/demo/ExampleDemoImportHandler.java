@@ -15,7 +15,7 @@ package org.talend.repository.example.viewer.handler.demo;
 import org.talend.repository.items.importexport.handlers.imports.ImportBasicHandler;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class ExampleDemoImportHandler extends ImportBasicHandler {
 

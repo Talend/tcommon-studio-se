@@ -27,7 +27,7 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.talend.updates.runtime.i18n.Messages;
 
 /**
- * created by sgandon on 26 sept. 2013 Detailled comment
+ * created by sgandon on 26 sept. 2013 Detailed comment
  * 
  */
 class UpdateStudioWizardDialog extends WizardDialog {

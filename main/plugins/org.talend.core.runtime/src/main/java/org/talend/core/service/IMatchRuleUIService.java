@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.talend.core.IService;
 
 /**
- * created by zshen on Aug 16, 2013 Detailled comment
+ * created by zshen on Aug 16, 2013 Detailed comment
  * 
  */
 public interface IMatchRuleUIService extends IService {

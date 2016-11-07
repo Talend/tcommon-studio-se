@@ -21,7 +21,7 @@ import org.talend.designer.maven.DesignerMavenPlugin;
 import org.talend.designer.maven.template.MavenTemplateManager;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class AbstractMavenGeneralTemplatePom extends CreateMavenBundleTemplatePom {
 

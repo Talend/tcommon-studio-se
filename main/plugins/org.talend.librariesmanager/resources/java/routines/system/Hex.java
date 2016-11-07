@@ -13,7 +13,7 @@
 package routines.system;
 
 /**
- * created by talend2 on 2014-4-11 Detailled comment
+ * created by talend2 on 2014-4-11 Detailed comment
  * 
  */
 public class Hex {

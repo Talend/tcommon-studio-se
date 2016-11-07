@@ -23,7 +23,7 @@ import org.talend.core.model.properties.PropertiesPackage;
 import org.talend.core.model.properties.impl.ProcessItemImpl;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class ProcessItemTest {
 

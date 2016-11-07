@@ -38,7 +38,7 @@ import org.talend.core.ui.process.IGEFProcess;
 import org.talend.core.ui.services.IDesignerCoreUIService;
 
 /**
- * ggu class global comment. Detailled comment
+ * ggu class global comment. Detailed comment
  */
 public class ModuleListCellEditor extends DialogCellEditor {
 
@@ -189,7 +189,7 @@ public class ModuleListCellEditor extends DialogCellEditor {
 
     /**
      * 
-     * ggu ModelChangeCommand class global comment. Detailled comment
+     * ggu ModelChangeCommand class global comment. Detailed comment
      */
     class ModelChangeCommand extends Command {
 

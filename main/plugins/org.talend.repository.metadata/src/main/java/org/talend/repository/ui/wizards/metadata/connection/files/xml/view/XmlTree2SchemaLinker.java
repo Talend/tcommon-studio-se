@@ -25,7 +25,7 @@ import org.talend.commons.ui.swt.linking.TreeToTablesLinker;
 import org.talend.core.model.metadata.builder.connection.XmlFileConnection;
 
 /**
- * DOC ycbai class global comment. Detailled comment
+ * DOC ycbai class global comment. Detailed comment
  */
 public class XmlTree2SchemaLinker extends TreeToTablesLinker<Object, Object> {
 

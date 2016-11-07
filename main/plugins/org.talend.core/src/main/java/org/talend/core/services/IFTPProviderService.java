@@ -19,7 +19,7 @@ import org.talend.core.model.process.INode;
 import org.talend.core.model.properties.FTPConnectionItem;
 
 /**
- * DOC hwang class global comment. Detailled comment
+ * DOC hwang class global comment. Detailed comment
  */
 public interface IFTPProviderService extends IProviderService {
 

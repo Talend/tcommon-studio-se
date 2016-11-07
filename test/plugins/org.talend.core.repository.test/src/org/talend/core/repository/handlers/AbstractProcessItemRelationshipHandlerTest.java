@@ -25,7 +25,7 @@ import org.talend.core.model.relationship.AbstractItemRelationshipHandler;
 import org.talend.core.model.relationship.Relation;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 @SuppressWarnings("nls")
 public abstract class AbstractProcessItemRelationshipHandlerTest {

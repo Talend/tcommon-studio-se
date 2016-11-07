@@ -58,7 +58,7 @@ import orgomg.cwm.resource.relational.Schema;
  * Utility class for data provider handling.
  */
 /**
- * DOC root class global comment. Detailled comment
+ * DOC root class global comment. Detailed comment
  */
 public class ConnectionHelper {
 

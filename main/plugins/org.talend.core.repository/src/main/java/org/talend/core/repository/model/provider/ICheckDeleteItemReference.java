@@ -21,7 +21,7 @@ import org.talend.core.repository.ui.actions.DeleteActionCache;
 import org.talend.repository.model.IRepositoryNode;
 
 /**
- * DOC ycbai class global comment. Detailled comment
+ * DOC ycbai class global comment. Detailed comment
  */
 public interface ICheckDeleteItemReference {
 

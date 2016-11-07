@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * DOC smallet class global comment. Detailled comment <br/>
+ * DOC smallet class global comment. Detailed comment <br/>
  * 
  * @param <K> DOC smallet
  * @param <V> DOC smallet

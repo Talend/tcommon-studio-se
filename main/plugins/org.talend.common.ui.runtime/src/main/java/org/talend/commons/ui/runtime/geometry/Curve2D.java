@@ -40,7 +40,7 @@ import org.talend.commons.ui.runtime.i18n.Messages;
 
 /**
  * 
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  * $Id: Curve2D.java 7189 2007-11-23 17:06:19Z amaumont $
  * 

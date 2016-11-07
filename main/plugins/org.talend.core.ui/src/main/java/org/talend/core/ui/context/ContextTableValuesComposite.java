@@ -64,7 +64,7 @@ import org.talend.core.ui.context.model.table.GroupBySourceTableProvider;
 import org.talend.core.ui.i18n.Messages;
 
 /**
- * DOC zwang class global comment. Detailled comment <br/>
+ * DOC zwang class global comment. Detailed comment <br/>
  * 
  */
 public class ContextTableValuesComposite extends AbstractContextTabEditComposite {
@@ -538,7 +538,7 @@ public class ContextTableValuesComposite extends AbstractContextTabEditComposite
     }
 
     /**
-     * DOC zli ContextCompare class global comment. Detailled comment
+     * DOC zli ContextCompare class global comment. Detailed comment
      */
     private class ContextCompare implements java.util.Comparator<IContext> {
 

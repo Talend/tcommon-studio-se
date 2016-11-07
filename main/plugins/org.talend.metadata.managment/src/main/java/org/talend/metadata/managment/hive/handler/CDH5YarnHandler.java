@@ -18,7 +18,7 @@ import org.apache.log4j.Logger;
 import org.talend.core.model.metadata.IMetadataConnection;
 
 /**
- * created by xqliu on 2014-2-27 Detailled comment
+ * created by xqliu on 2014-2-27 Detailed comment
  * 
  */
 public class CDH5YarnHandler extends ClouderaHandler implements IHiveYarnHandler {

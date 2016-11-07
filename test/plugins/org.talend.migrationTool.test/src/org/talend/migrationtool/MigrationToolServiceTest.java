@@ -32,7 +32,7 @@ import org.talend.core.model.properties.Project;
 import org.talend.core.model.utils.MigrationUtil;
 
 /**
- * DOC ycbai class global comment. Detailled comment
+ * DOC ycbai class global comment. Detailed comment
  */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ VersionUtils.class })

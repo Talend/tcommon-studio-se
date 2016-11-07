@@ -15,7 +15,7 @@ package org.talend.core.ui;
 import org.talend.core.IProviderService;
 
 /**
- * DOC nrousseau class global comment. Detailled comment
+ * DOC nrousseau class global comment. Detailed comment
  */
 public interface IHeaderFooterProviderService extends IProviderService {
 

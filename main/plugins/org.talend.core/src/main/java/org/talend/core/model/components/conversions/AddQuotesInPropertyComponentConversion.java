@@ -16,7 +16,7 @@ import org.talend.core.model.components.ComponentUtilities;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 
 /**
- * DOC s class global comment. Detailled comment
+ * DOC s class global comment. Detailed comment
  */
 public class AddQuotesInPropertyComponentConversion implements IComponentConversion {
 

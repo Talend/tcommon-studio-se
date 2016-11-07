@@ -19,7 +19,7 @@ import org.talend.core.model.process.INode;
 import org.talend.core.model.repository.ERepositoryObjectType;
 
 /**
- * DOC wanghong class global comment. Detailled comment
+ * DOC wanghong class global comment. Detailed comment
  */
 public interface IJSONProviderService extends IProviderService {
 

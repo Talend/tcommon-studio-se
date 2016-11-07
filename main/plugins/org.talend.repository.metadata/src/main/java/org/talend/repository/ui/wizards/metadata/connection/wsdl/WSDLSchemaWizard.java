@@ -63,7 +63,7 @@ import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.model.RepositoryNodeUtilities;
 
 /**
- * DOC qwei class global comment. Detailled comment
+ * DOC qwei class global comment. Detailed comment
  */
 public class WSDLSchemaWizard extends CheckLastVersionRepositoryWizard implements INewWizard {
 

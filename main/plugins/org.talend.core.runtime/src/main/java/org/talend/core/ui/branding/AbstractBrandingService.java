@@ -15,7 +15,7 @@ package org.talend.core.ui.branding;
 import org.talend.core.runtime.i18n.Messages;
 
 /**
- * wzhang class global comment. Detailled comment
+ * wzhang class global comment. Detailed comment
  */
 public abstract class AbstractBrandingService extends AbstractCommonBrandingService {
 

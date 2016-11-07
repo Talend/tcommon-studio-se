@@ -29,7 +29,7 @@ import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
 import org.talend.core.model.repository.ERepositoryObjectType;
 
 /**
- * DOC bZhou class global comment. Detailled comment <br/>
+ * DOC bZhou class global comment. Detailed comment <br/>
  * 
  * $Id: talend.epf 55206 2011-02-15 17:32:14Z bzhou $
  * 

@@ -16,7 +16,7 @@ import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.core.model.process.IElement;
 
 /**
- * ggu class global comment. Detailled comment
+ * ggu class global comment. Detailed comment
  */
 public interface IQueryGenerator {
 

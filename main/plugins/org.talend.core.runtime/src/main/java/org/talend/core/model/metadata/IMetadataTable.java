@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * DOC nrousseau class global comment. Detailled comment <br/>
+ * DOC nrousseau class global comment. Detailed comment <br/>
  * 
  * $Id: IMetadataTable.java 38013 2010-03-05 14:21:59Z mhirt $
  * 

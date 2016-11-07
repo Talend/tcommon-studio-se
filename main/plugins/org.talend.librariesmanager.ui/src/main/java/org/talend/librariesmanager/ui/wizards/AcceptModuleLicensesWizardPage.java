@@ -48,7 +48,7 @@ import org.talend.librariesmanager.utils.RemoteModulesHelper;
 
 /**
  * 
- * created by ycbai on 2013-10-16 Detailled comment
+ * created by ycbai on 2013-10-16 Detailed comment
  * 
  */
 public class AcceptModuleLicensesWizardPage extends WizardPage {

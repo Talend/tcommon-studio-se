@@ -22,7 +22,7 @@ import org.eclipse.swt.graphics.Image;
 import org.talend.core.model.metadata.builder.connection.MetadataColumn;
 
 /**
- * wzhang class global comment. Detailled comment
+ * wzhang class global comment. Detailed comment
  */
 public class XmlFileTableViewerProvider extends LabelProvider implements ITableLabelProvider, IStructuredContentProvider {
 

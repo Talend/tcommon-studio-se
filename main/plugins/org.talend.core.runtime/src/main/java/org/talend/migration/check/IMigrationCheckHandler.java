@@ -15,7 +15,7 @@ package org.talend.migration.check;
 import java.util.List;
 
 /**
- * created by wchen on Jan 27, 2015 Detailled comment
+ * created by wchen on Jan 27, 2015 Detailed comment
  *
  */
 public interface IMigrationCheckHandler {

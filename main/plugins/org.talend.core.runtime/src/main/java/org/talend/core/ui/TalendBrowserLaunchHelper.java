@@ -19,7 +19,7 @@ import java.util.Arrays;
 import org.talend.commons.exception.ExceptionHandler;
 
 /**
- * DOC Administrator class global comment. Detailled comment
+ * DOC Administrator class global comment. Detailed comment
  */
 public class TalendBrowserLaunchHelper {
 

@@ -115,7 +115,7 @@ import org.talend.repository.viewer.filter.RepositoryNodeFilterHelper;
 import org.talend.repository.viewer.filter.listener.RepoViewPerspectiveListener;
 
 /**
- * DOC sgandon class global comment. Detailled comment <br/>
+ * DOC sgandon class global comment. Detailed comment <br/>
  * 
  * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
  * 

@@ -30,7 +30,7 @@ import org.talend.librariesmanager.ui.i18n.Messages;
 import org.talend.librariesmanager.utils.RemoteModulesHelper;
 
 /**
- * created by WCHEN on 2012-9-18 Detailled comment
+ * created by WCHEN on 2012-9-18 Detailed comment
  * 
  */
 public class ModuleLicenseDialog extends Dialog {

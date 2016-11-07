@@ -17,7 +17,7 @@ import java.net.URL;
 import java.util.List;
 
 /**
- * bqian class global comment. Detailled comment
+ * bqian class global comment. Detailed comment
  */
 public interface IRoutinesProvider {
 

@@ -13,7 +13,7 @@
 package org.talend.librariesmanager.ui.dialogs;
 
 /**
- * created by WCHEN on 2012-10-8 Detailled comment
+ * created by WCHEN on 2012-10-8 Detailed comment
  * 
  */
 public interface IModulesListener {

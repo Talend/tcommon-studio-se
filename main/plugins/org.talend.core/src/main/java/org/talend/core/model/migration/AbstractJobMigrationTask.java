@@ -23,7 +23,7 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 
 /**
- * DOC stephane class global comment. Detailled comment
+ * DOC stephane class global comment. Detailed comment
  */
 public abstract class AbstractJobMigrationTask extends AbstractItemMigrationTask {
 

@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * DOC zwzhao class global comment. Detailled comment
+ * DOC zwzhao class global comment. Detailed comment
  */
 public class BrowerDialog extends Dialog {
 

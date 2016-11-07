@@ -44,7 +44,7 @@ import org.talend.updates.runtime.model.P2ExtraFeature;
 import org.talend.updates.runtime.model.P2ExtraFeatureException;
 
 /**
- * DOC Talend class global comment. Detailled comment
+ * DOC Talend class global comment. Detailed comment
  */
 public class TOSDynamicExtraFeaturesFactory extends AbstractExtraUpdatesFactory {
     

@@ -15,7 +15,7 @@ package org.talend.core.model.runprocess.shadow;
 import org.talend.core.model.process.EParameterFieldType;
 
 /**
- * cli class global comment. Detailled comment
+ * cli class global comment. Detailed comment
  */
 public class TextElementParameter extends ObjectElementParameter {
 

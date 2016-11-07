@@ -18,7 +18,7 @@ import org.talend.core.repository.model.ProjectRepositoryNode;
 import org.talend.repository.navigator.TalendRepositoryRoot;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public abstract class RepositoryRootNodeCompareSorter extends RepositoryCompareSorter {
 

@@ -107,7 +107,7 @@ public class ModuleNeeded {
     }
 
     /**
-     * DOC smallet ModuleNeeded class global comment. Detailled comment <br/>
+     * DOC smallet ModuleNeeded class global comment. Detailed comment <br/>
      *
      * $Id: ModuleNeeded.java 38013 2010-03-05 14:21:59Z mhirt $
      *

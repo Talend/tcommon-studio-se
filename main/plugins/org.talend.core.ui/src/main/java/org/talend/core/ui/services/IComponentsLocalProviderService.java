@@ -18,7 +18,7 @@ import org.talend.core.IService;
 import org.talend.core.language.ECodeLanguage;
 
 /**
- * DOC Administrator class global comment. Detailled comment <br/>
+ * DOC Administrator class global comment. Detailed comment <br/>
  * 
  */
 public interface IComponentsLocalProviderService extends IService {

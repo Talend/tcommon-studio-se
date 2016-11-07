@@ -15,7 +15,7 @@ package org.talend.core;
 import org.talend.core.model.metadata.builder.connection.Connection;
 
 /**
- * created by ldong on Mar 5, 2015 Detailled comment
+ * created by ldong on Mar 5, 2015 Detailed comment
  * 
  */
 public interface IRepositoryContextUpdateService extends IService {

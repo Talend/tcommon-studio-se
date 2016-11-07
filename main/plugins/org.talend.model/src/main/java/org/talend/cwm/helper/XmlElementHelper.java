@@ -27,7 +27,7 @@ import org.talend.cwm.xml.TdXmlSchema;
 import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
- * DOC xqliu class global comment. Detailled comment
+ * DOC xqliu class global comment. Detailed comment
  */
 public final class XmlElementHelper {
 

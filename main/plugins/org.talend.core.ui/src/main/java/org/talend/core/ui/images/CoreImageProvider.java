@@ -33,7 +33,7 @@ import org.talend.designer.core.IDesignerCoreService;
 import org.talend.utils.string.MD5;
 
 /**
- * amaumont class global comment. Detailled comment <br/>
+ * amaumont class global comment. Detailed comment <br/>
  * 
  * $Id$
  * 

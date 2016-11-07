@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Display;
 import org.talend.commons.ui.swt.geftree.figure.TreeBranch;
 
 /**
- * cli class global comment. Detailled comment
+ * cli class global comment. Detailed comment
  */
 @SuppressWarnings("unchecked")
 public abstract class TreeBranchLayout extends AbstractLayout {

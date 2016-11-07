@@ -24,7 +24,7 @@ package org.talend.commons.ui.swt.tableviewer;
 import org.talend.commons.ui.runtime.swt.tableviewer.TableViewerCreatorColumnNotModifiable;
 
 /**
- * DOC sgandon class global comment. Detailled comment <br/>
+ * DOC sgandon class global comment. Detailed comment <br/>
  * 
  * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
  * 

@@ -38,7 +38,7 @@ import org.junit.Test;
 import org.talend.model.migration.TosMetadataMigrationFrom400to410;
 
 /**
- * DOC sgandon class global comment. Detailled comment <br/>
+ * DOC sgandon class global comment. Detailed comment <br/>
  * 
  * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
  * 

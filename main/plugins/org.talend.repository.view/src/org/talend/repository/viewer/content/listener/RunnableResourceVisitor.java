@@ -19,7 +19,7 @@ import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.runtime.CoreException;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 
 public abstract class RunnableResourceVisitor implements IResourceDeltaVisitor {

@@ -13,7 +13,7 @@
 package org.talend.commons.ui.swt.geftree.action;
 
 /**
- * cli class global comment. Detailled comment
+ * cli class global comment. Detailed comment
  */
 public class TreeActionGroup {
 

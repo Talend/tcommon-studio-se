@@ -24,7 +24,7 @@ import org.talend.core.model.utils.ContextParameterUtils;
 import org.talend.core.ui.context.model.ContextProviderProxy;
 
 /**
- * cli class global comment. Detailled comment
+ * cli class global comment. Detailed comment
  * 
  */
 public class GroupByContextProvider extends ContextProviderProxy {

@@ -15,7 +15,7 @@ package org.talend.repository.model;
 import org.talend.core.IService;
 
 /**
- * DOC nrousseau class global comment. Detailled comment
+ * DOC nrousseau class global comment. Detailed comment
  */
 public interface IProxyRepositoryService extends IService {
 

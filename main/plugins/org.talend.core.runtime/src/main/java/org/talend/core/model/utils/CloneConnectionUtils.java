@@ -41,7 +41,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import orgomg.cwm.objectmodel.core.Package;
 
 /**
- * created by nrousseau on Sep 4, 2013 Detailled comment
+ * created by nrousseau on Sep 4, 2013 Detailed comment
  * 
  */
 public class CloneConnectionUtils {

@@ -17,7 +17,7 @@ import org.talend.core.model.process.IElement;
 import org.talend.core.model.process.IElementParameter;
 
 /**
- * created by wchen on 2013-6-5 Detailled comment
+ * created by wchen on 2013-6-5 Detailed comment
  * 
  */
 public interface IJsonFileService extends IService {

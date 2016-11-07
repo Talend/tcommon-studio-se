@@ -54,7 +54,7 @@ import orgomg.cwm.resource.record.RecordFactory;
 import orgomg.cwm.resource.record.RecordFile;
 
 /**
- * DOC yexiaowei class global comment. Detailled comment
+ * DOC yexiaowei class global comment. Detailed comment
  */
 public class ExcelFileWizard extends CheckLastVersionRepositoryWizard implements INewWizard {
 

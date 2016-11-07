@@ -14,7 +14,7 @@ package org.talend.core.prefs;
 
 /**
  * 
- * created by wchen on Sep 30, 2016 Detailled comment
+ * created by wchen on Sep 30, 2016 Detailed comment
  *
  */
 public interface SSLPreferenceConstants {

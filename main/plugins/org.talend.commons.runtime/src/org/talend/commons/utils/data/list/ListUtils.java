@@ -17,7 +17,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  * $Id$
  * 

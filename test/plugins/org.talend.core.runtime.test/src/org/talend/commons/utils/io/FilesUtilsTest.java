@@ -35,7 +35,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 
 /**
- * DOC xqliu class global comment. Detailled comment
+ * DOC xqliu class global comment. Detailed comment
  */
 @PrepareForTest({ FilesUtils.class })
 @PowerMockIgnore({"org.w3c.*", "javax.xml.*", "com.sun.*"})

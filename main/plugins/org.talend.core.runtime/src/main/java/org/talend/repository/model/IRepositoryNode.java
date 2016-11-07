@@ -19,7 +19,7 @@ import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.repository.model.nodes.IProjectRepositoryNode;
 
 /**
- * DOC nrousseau class global comment. Detailled comment
+ * DOC nrousseau class global comment. Detailed comment
  */
 public interface IRepositoryNode {
 

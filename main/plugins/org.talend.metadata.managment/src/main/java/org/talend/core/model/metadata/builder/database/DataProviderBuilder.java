@@ -20,7 +20,7 @@ import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.cwm.helper.ConnectionHelper;
 
 /**
- * DOC scorreia class global comment. Detailled comment
+ * DOC scorreia class global comment. Detailed comment
  * 
  * @deprecated this class does not seem to be used anymore. Remove it?
  */

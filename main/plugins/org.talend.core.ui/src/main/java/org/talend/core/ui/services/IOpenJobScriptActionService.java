@@ -21,7 +21,7 @@ import org.talend.core.IService;
 import org.talend.core.model.properties.Item;
 
 /**
- * DOC Administrator class global comment. Detailled comment
+ * DOC Administrator class global comment. Detailed comment
  */
 public interface IOpenJobScriptActionService extends IService {
 

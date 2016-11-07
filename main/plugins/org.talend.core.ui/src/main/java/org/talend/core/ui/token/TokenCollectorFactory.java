@@ -49,7 +49,7 @@ import us.monoid.web.TextResource;
 import us.monoid.web.mime.MultipartContent;
 
 /**
- * ggu class global comment. Detailled comment
+ * ggu class global comment. Detailed comment
  */
 public final class TokenCollectorFactory {
 

@@ -31,7 +31,7 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.runtime.i18n.Messages;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  * $Id$
  * 

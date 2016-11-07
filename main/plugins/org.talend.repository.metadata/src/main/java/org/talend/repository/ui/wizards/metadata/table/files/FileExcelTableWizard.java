@@ -32,7 +32,7 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 
 /**
  * 
- * DOC yexiaowei class global comment. Detailled comment
+ * DOC yexiaowei class global comment. Detailed comment
  */
 public class FileExcelTableWizard extends AbstractRepositoryFileTableWizard implements INewWizard {
 

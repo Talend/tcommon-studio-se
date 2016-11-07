@@ -15,7 +15,7 @@ package org.talend.repository.items.importexport.handlers.model.internal;
 import org.talend.repository.items.importexport.handlers.imports.IImportItemsHandler;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class ImportItemsProviderRegistry extends BasicRegistry {
 

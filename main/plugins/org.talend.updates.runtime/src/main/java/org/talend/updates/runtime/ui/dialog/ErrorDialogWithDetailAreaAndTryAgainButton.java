@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.Shell;
 
 /**
  * 
- * created by wchen on 2015年8月10日 Detailled comment
+ * created by wchen on 2015年8月10日 Detailed comment
  *
  */
 public class ErrorDialogWithDetailAreaAndTryAgainButton {

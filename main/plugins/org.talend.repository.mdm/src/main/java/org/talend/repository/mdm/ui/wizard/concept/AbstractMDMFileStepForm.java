@@ -35,7 +35,7 @@ import org.talend.repository.mdm.util.MDMUtil;
 import org.talend.repository.metadata.ui.wizards.form.AbstractXmlStepForm;
 
 /**
- * DOC hwang class global comment. Detailled comment
+ * DOC hwang class global comment. Detailed comment
  */
 public abstract class AbstractMDMFileStepForm extends AbstractXmlStepForm {
 

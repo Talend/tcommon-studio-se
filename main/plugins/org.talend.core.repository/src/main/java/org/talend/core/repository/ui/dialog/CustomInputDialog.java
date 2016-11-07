@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.Text;
 
 /**
  * 
- * created by hcyi on Jul 3, 2015 Detailled comment
+ * created by hcyi on Jul 3, 2015 Detailed comment
  *
  */
 public class CustomInputDialog extends Dialog {

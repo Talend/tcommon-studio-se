@@ -22,7 +22,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * DOC qiongli class global comment. Detailled comment
+ * DOC qiongli class global comment. Detailed comment
  */
 public final class TalendTypeConvert {
 

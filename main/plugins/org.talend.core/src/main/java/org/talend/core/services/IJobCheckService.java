@@ -16,7 +16,7 @@ import org.talend.commons.exception.BusinessException;
 import org.talend.core.IService;
 
 /**
- * DOC nrousseau class global comment. Detailled comment
+ * DOC nrousseau class global comment. Detailed comment
  */
 public interface IJobCheckService extends IService {
 

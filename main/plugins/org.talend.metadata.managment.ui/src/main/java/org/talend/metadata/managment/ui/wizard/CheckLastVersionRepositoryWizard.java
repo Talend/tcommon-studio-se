@@ -41,7 +41,7 @@ import org.talend.metadata.managment.ui.wizard.documentation.DocumentationUpdate
 import org.talend.repository.model.IProxyRepositoryFactory;
 
 /**
- * DOC hywang class global comment. Detailled comment
+ * DOC hywang class global comment. Detailed comment
  */
 public abstract class CheckLastVersionRepositoryWizard extends RepositoryWizard implements ILastVersionChecker {
 

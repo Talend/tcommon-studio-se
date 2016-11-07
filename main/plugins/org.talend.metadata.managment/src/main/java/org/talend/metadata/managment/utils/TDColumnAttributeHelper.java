@@ -43,7 +43,7 @@ import org.talend.utils.sugars.TypedReturnCode;
 import orgomg.cwm.resource.relational.enumerations.NullableType;
 
 /**
- * DOC zshen class global comment. Detailled comment
+ * DOC zshen class global comment. Detailed comment
  */
 public class TDColumnAttributeHelper {
 

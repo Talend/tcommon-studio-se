@@ -20,7 +20,7 @@ import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
 import org.talend.core.model.metadata.builder.connection.MetadataColumn;
 
 /**
- * DOC PLV class global comment. Detailled comment
+ * DOC PLV class global comment. Detailed comment
  */
 public class MetadataColumnTest {
 

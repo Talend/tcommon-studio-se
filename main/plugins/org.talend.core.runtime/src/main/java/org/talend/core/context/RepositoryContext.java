@@ -19,7 +19,7 @@ import org.talend.core.model.general.Project;
 import org.talend.core.model.properties.User;
 
 /**
- * DOC smallet class global comment. Detailled comment <br/>
+ * DOC smallet class global comment. Detailed comment <br/>
  * 
  * $Id: RepositoryContext.java 38013 2010-03-05 14:21:59Z mhirt $
  * 

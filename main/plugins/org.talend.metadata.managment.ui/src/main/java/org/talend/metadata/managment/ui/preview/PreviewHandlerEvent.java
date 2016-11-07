@@ -15,7 +15,7 @@ package org.talend.metadata.managment.ui.preview;
 import org.eclipse.core.runtime.CoreException;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  * $Id$
  * 

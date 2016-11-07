@@ -23,7 +23,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.log4j.Logger;
 
 /**
- * created by xqliu on Oct 26, 2012 Detailled comment
+ * created by xqliu on Oct 26, 2012 Detailed comment
  * 
  */
 public class SybaseDatabaseMetaData extends PackageFakeDatabaseMetadata {

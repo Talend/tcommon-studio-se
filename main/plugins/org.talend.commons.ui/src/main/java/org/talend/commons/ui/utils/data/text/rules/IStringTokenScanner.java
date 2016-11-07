@@ -15,7 +15,7 @@ package org.talend.commons.ui.utils.data.text.rules;
 import org.eclipse.jface.text.rules.IToken;
 
 /**
- * DOC nrousseau class global comment. Detailled comment <br/>
+ * DOC nrousseau class global comment. Detailed comment <br/>
  * 
  * $Id: IStringTokenScanner.java 7038 2007-11-15 14:05:48Z plegall $
  * 

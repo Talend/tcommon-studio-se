@@ -34,7 +34,7 @@ import org.talend.themes.core.elements.stylesettings.TalendTabbedPropertyColorHe
 import org.talend.themes.core.elements.widgets.ITalendTabbedPropertyTitleWidget;
 
 /**
- * created by hcyi on Feb 2, 2015 Detailled comment
+ * created by hcyi on Feb 2, 2015 Detailed comment
  *
  */
 public class TalendTabbedPropertyTitle extends Composite implements ITalendTabbedPropertyTitleWidget {

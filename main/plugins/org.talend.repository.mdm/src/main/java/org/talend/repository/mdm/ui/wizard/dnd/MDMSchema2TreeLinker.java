@@ -56,7 +56,7 @@ import org.talend.repository.mdm.i18n.Messages;
 import org.talend.repository.metadata.ui.wizards.form.AbstractXmlStepForm;
 
 /**
- * wzhang class global comment. Detailled comment
+ * wzhang class global comment. Detailed comment
  */
 public class MDMSchema2TreeLinker extends TableToTreeLinker<Object, Object> {
 

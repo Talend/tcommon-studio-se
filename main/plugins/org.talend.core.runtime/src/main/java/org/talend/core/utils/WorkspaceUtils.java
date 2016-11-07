@@ -20,7 +20,7 @@ import org.talend.model.bridge.ReponsitoryContextBridge;
 import org.talend.repository.model.RepositoryConstants;
 
 /**
- * created by msjian on 2014-1-2 Detailled comment
+ * created by msjian on 2014-1-2 Detailed comment
  * 
  */
 public final class WorkspaceUtils {

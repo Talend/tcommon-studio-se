@@ -25,7 +25,7 @@ import org.talend.repository.mdm.util.MDMUtil;
 import org.talend.repository.model.RepositoryNode;
 
 /**
- * DOC talend class global comment. Detailled comment
+ * DOC talend class global comment. Detailed comment
  */
 public abstract class AbstractRetrieveConceptPage extends WizardPage {
 

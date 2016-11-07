@@ -31,7 +31,7 @@ import org.talend.updates.runtime.model.FeatureRepositories;
 import org.talend.updates.runtime.ui.dialog.ErrorDialogWithDetailAreaAndTryAgainButton;
 
 /**
- * created by sgandon on 28 févr. 2013 Detailled comment
+ * created by sgandon on 28 févr. 2013 Detailed comment
  * 
  */
 public class InstallNewFeatureJob extends Job {

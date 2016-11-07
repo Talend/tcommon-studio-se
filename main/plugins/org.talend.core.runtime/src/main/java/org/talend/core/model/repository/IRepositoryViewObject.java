@@ -21,7 +21,7 @@ import org.talend.core.model.properties.User;
 import org.talend.repository.model.IRepositoryNode;
 
 /**
- * DOC Administrator class global comment. Detailled comment
+ * DOC Administrator class global comment. Detailed comment
  */
 public interface IRepositoryViewObject {
 

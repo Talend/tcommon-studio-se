@@ -552,7 +552,7 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
     }
 
     /**
-     * yzhang PropertiesWizardPage class global comment. Detailled comment <br/>
+     * yzhang PropertiesWizardPage class global comment. Detailed comment <br/>
      * 
      * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
      * 
@@ -650,7 +650,7 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
     }
 
     /**
-     * yzhang PropertiesWizardPage class global comment. Detailled comment <br/>
+     * yzhang PropertiesWizardPage class global comment. Detailed comment <br/>
      * 
      * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
      * 

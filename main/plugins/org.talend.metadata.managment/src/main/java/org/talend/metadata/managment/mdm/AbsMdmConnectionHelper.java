@@ -18,7 +18,7 @@ import java.util.List;
 import org.talend.core.model.metadata.builder.connection.MDMConnection;
 
 /**
- * created by wchen on Apr 15, 2015 Detailled comment
+ * created by wchen on Apr 15, 2015 Detailed comment
  *
  */
 public abstract class AbsMdmConnectionHelper {

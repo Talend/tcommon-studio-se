@@ -30,7 +30,7 @@ import org.talend.core.model.repository.IRepositoryTypeProcessor;
 import org.talend.repository.model.IRepositoryNode;
 
 /**
- * created by ycbai on 2013-1-28 Detailled comment
+ * created by ycbai on 2013-1-28 Detailed comment
  * 
  */
 public interface IHadoopClusterService extends IService {

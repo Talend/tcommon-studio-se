@@ -13,7 +13,7 @@
 package org.talend.core.prefs;
 
 /**
- * Core preferences. Detailled comment <br/>
+ * Core preferences. Detailed comment <br/>
  * 
  * $Id: ITalendCorePrefConstants.java 46402 2010-08-06 08:19:31Z wzhang $
  * 

@@ -31,7 +31,7 @@ import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.ui.wizards.metadata.connection.files.salesforce.SalesforceSchemaWizard;
 
 /**
- * DOC yexiaowei class global comment. Detailled comment
+ * DOC yexiaowei class global comment. Detailed comment
  */
 
 public class CreateSalesforceSchemaAction extends AbstractCreateAction {

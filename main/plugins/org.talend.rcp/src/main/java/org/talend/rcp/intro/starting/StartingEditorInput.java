@@ -19,7 +19,7 @@ import org.eclipse.ui.IPersistableElement;
 import org.talend.core.ui.branding.IBrandingService;
 
 /**
- * DOC talend class global comment. Detailled comment
+ * DOC talend class global comment. Detailed comment
  */
 public class StartingEditorInput implements IPathEditorInput {
 

@@ -17,7 +17,7 @@ import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.core.model.process.IConnection;
 
 /**
- * created by talend on Dec 17, 2014 Detailled comment
+ * created by talend on Dec 17, 2014 Detailed comment
  * 
  */
 public interface IDQComponentService extends IService {

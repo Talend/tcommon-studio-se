@@ -17,7 +17,7 @@ import org.eclipse.core.runtime.jobs.ISchedulingRule;
 
 /**
  * created by cmeng on May 31, 2016
- * Detailled comment
+ * Detailed comment
  *
  */
 public interface ITalendSchedulingRule extends ISchedulingRule {

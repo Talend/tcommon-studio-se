@@ -13,7 +13,7 @@
 package org.talend.core.model.utils;
 
 /**
- * DOC hwang class global comment. Detailled comment
+ * DOC hwang class global comment. Detailed comment
  */
 public interface IComponentName {
 

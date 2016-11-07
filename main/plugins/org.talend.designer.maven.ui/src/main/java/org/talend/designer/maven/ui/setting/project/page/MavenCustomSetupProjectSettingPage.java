@@ -16,7 +16,7 @@ import org.talend.core.runtime.projectsetting.EmptyProjectSettingPage;
 
 
 /**
- * DOC ggu  class global comment. Detailled comment
+ * DOC ggu  class global comment. Detailed comment
  */
 public class MavenCustomSetupProjectSettingPage extends EmptyProjectSettingPage {
 

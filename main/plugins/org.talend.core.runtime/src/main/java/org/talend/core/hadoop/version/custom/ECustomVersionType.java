@@ -1,7 +1,7 @@
 package org.talend.core.hadoop.version.custom;
 
 /**
- * created by ycbai on 2013-3-13 Detailled comment
+ * created by ycbai on 2013-3-13 Detailed comment
  * 
  */
 public enum ECustomVersionType {

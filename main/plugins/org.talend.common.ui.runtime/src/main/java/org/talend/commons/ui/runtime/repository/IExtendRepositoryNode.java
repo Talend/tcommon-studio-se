@@ -15,7 +15,7 @@ package org.talend.commons.ui.runtime.repository;
 import org.talend.commons.ui.runtime.image.IImage;
 
 /**
- * DOC hywang class global comment. Detailled comment
+ * DOC hywang class global comment. Detailed comment
  */
 public interface IExtendRepositoryNode {
 

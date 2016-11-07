@@ -33,7 +33,7 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.ui.wizards.metadata.table.files.FileTableWizardPage;
 
 /**
- * DOC Administrator class global comment. Detailled comment <br/>
+ * DOC Administrator class global comment. Detailed comment <br/>
  * 
  */
 public class GenericSchemaTableWizard extends AbstractRepositoryFileTableWizard implements INewWizard {

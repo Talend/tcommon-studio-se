@@ -28,7 +28,7 @@ import org.talend.core.runtime.projectsetting.IProjectSettingPreferenceConstants
 import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
 
 /**
- * created by cmeng on Jun 2, 2015 Detailled comment
+ * created by cmeng on Jun 2, 2015 Detailed comment
  *
  */
 public class ODBCMigrationTask extends AbstractItemMigrationTask {

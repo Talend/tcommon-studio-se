@@ -13,7 +13,7 @@
 package org.talend.core.hadoop.version;
 
 /**
- * DOC ycbai class global comment. Detailled comment
+ * DOC ycbai class global comment. Detailed comment
  * 
  * @deprecated @link HadoopComponent via osgi service instead.
  */

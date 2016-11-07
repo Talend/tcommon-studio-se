@@ -11,7 +11,7 @@ import routines.TalendString;
 
 /**
  * 
- * qli class global comment. Detailled comment
+ * qli class global comment. Detailed comment
  */
 public class RoutinesProviderService implements IRoutinesService {
 

@@ -15,7 +15,7 @@ package org.talend.core.model.repository.job;
 /**
  * Add protection on the resource for prescribed job.
  * 
- * yzhang class global comment. Detailled comment <br/>
+ * yzhang class global comment. Detailed comment <br/>
  * 
  * $Id: IResourceProtection.java 下午03:39:51 2007-7-6 +0000 (2007-7-6) yzhang $
  * 

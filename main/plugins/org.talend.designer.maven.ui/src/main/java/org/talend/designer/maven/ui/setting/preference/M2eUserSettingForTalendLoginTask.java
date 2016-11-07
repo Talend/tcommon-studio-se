@@ -48,7 +48,7 @@ import org.talend.login.AbstractLoginTask;
 import org.talend.utils.io.FilesUtils;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  * 
  * set the preference for MavenSettingsPreferencePage.
  */

@@ -29,7 +29,7 @@ import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.nodes.IProjectRepositoryNode;
 
 /**
- * DOC zwzhao class global comment. Detailled comment
+ * DOC zwzhao class global comment. Detailed comment
  */
 public interface IStormProcessService extends IService {
 

@@ -18,7 +18,7 @@ import org.talend.librariesmanager.ui.i18n.Messages;
 
 /**
  * 
- * created by ycbai on 2013-10-16 Detailled comment
+ * created by ycbai on 2013-10-16 Detailed comment
  * 
  */
 public class AcceptModuleLicensesWizardDialog extends WizardDialog {

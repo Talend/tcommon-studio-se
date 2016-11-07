@@ -22,7 +22,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * created by zshen on Apr 12, 2013 Detailled comment
+ * created by zshen on Apr 12, 2013 Detailed comment
  * 
  */
 public class AS400DatabaseMetaData extends PackageFakeDatabaseMetadata {

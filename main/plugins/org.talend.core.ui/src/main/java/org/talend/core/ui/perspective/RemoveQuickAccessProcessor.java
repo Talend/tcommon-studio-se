@@ -21,7 +21,7 @@ import org.eclipse.e4.ui.model.application.ui.menu.MTrimContribution;
 
 /**
  * created by nrousseau on Aug 18, 2015
- * Detailled comment
+ * Detailed comment
  *
  */
 public class RemoveQuickAccessProcessor {

@@ -32,7 +32,7 @@ import org.talend.core.repository.i18n.Messages;
 import org.talend.core.repository.model.ItemReferenceBean;
 
 /**
- * DOC ycbai class global comment. Detailled comment
+ * DOC ycbai class global comment. Detailed comment
  */
 public class ItemReferenceDialog extends Dialog {
 

@@ -31,7 +31,7 @@ import org.talend.core.model.properties.LinkType;
 import org.talend.core.repository.constants.FileConstants;
 
 /**
- * ggu class global comment. Detailled comment
+ * ggu class global comment. Detailed comment
  */
 public final class LinkUtils {
 

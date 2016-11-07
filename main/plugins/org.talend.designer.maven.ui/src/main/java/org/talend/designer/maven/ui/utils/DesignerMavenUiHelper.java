@@ -33,7 +33,7 @@ import org.talend.repository.model.RepositoryNodeUtilities;
 import org.talend.repository.model.StableRepositoryNode;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public final class DesignerMavenUiHelper {
 

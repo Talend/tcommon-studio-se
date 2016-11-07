@@ -19,7 +19,7 @@ import org.talend.commons.ui.runtime.swt.tableviewer.behavior.IColumnImageProvid
 import org.talend.core.model.general.ModuleNeeded;
 
 /**
- * DOC smallet class global comment. Detailled comment <br/>
+ * DOC smallet class global comment. Detailed comment <br/>
  * 
  * $Id: StatusImageProvider.java 1754 2007-02-01 09:46:26Z plegall $
  * 

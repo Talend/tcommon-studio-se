@@ -36,7 +36,7 @@ import org.talend.core.ui.context.model.template.ContextConstant;
 import org.talend.repository.ProjectManager;
 
 /**
- * cli class global comment. Detailled comment
+ * cli class global comment. Detailed comment
  */
 public class GroupBySourceTableProvider extends ContextProviderProxy {
 

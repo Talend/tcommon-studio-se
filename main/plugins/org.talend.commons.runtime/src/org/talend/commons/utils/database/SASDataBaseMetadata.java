@@ -22,7 +22,7 @@ import java.util.List;
 import org.talend.fakejdbc.FakeDatabaseMetaData;
 
 /**
- * DOC hwang class global comment. Detailled comment
+ * DOC hwang class global comment. Detailed comment
  */
 public class SASDataBaseMetadata extends FakeDatabaseMetaData {
 

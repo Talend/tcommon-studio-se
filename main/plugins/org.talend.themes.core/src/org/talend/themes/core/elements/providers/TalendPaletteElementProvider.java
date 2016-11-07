@@ -19,7 +19,7 @@ import org.talend.themes.core.elements.widgets.ITalendPaletteWidget;
 import org.w3c.dom.Element;
 
 /**
- * created by cmeng on Jan 30, 2015 Detailled comment
+ * created by cmeng on Jan 30, 2015 Detailed comment
  *
  */
 public class TalendPaletteElementProvider implements IElementProvider {

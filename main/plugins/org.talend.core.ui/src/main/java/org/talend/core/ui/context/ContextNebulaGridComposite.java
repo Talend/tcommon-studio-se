@@ -67,7 +67,7 @@ import org.talend.core.ui.i18n.Messages;
 import org.talend.core.utils.TalendQuoteUtils;
 
 /**
- * created by ldong on Jul 8, 2014 Detailled comment
+ * created by ldong on Jul 8, 2014 Detailed comment
  * 
  */
 public class ContextNebulaGridComposite extends AbstractContextTabEditComposite {

@@ -34,7 +34,7 @@ import org.talend.repository.model.RepositoryNode;
 import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
- * DOC nrousseau class global comment. Detailled comment
+ * DOC nrousseau class global comment. Detailed comment
  */
 public class SalesforceModuleRepositoryObject extends RepositoryObject implements ISubRepositoryObject {
 

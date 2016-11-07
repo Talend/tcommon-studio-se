@@ -23,7 +23,7 @@ import org.talend.core.ui.i18n.Messages;
 import org.talend.core.ui.token.TokenCollectorFactory;
 
 /**
- * ggu class global comment. Detailled comment
+ * ggu class global comment. Detailed comment
  */
 public class TalendDataCollectorPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 

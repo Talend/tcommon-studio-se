@@ -30,7 +30,7 @@ import org.talend.core.model.process.IContextParameter;
 import org.talend.core.model.properties.ContextItem;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class ShowSelectedContextDialog extends Dialog {
 
@@ -80,7 +80,7 @@ public class ShowSelectedContextDialog extends Dialog {
 
     /**
      * 
-     * DOC ggu ShowSelectedContextDialog class global comment. Detailled comment
+     * DOC ggu ShowSelectedContextDialog class global comment. Detailed comment
      */
     class ShowSelectedContextComposite extends ContextComposite {
 

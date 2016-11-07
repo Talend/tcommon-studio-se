@@ -29,7 +29,7 @@ import org.talend.commons.utils.workbench.extensions.ExtensionPointLimiterImpl;
 import org.talend.commons.utils.workbench.extensions.IExtensionPointLimiter;
 
 /**
- * DOC smallet class global comment. Detailled comment <br/>
+ * DOC smallet class global comment. Detailed comment <br/>
  * 
  * $Id: ActionsHelper.java 7038 2007-11-15 14:05:48Z plegall $
  * 
@@ -143,7 +143,7 @@ public class ActionsHelper {
 
     /**
      * 
-     * hywang ActionsHelper class global comment. Detailled comment
+     * hywang ActionsHelper class global comment. Detailed comment
      */
     static class RepositoryContextualsActionGroup {
 
@@ -170,7 +170,7 @@ public class ActionsHelper {
 
     /**
      * 
-     * DOC smallet ActionsHelper class global comment. Detailled comment <br/>
+     * DOC smallet ActionsHelper class global comment. Detailed comment <br/>
      * 
      * $Id: ActionsHelper.java 7038 2007-11-15 14:05:48Z plegall $
      * 

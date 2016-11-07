@@ -17,7 +17,7 @@ import org.talend.core.model.properties.Item;
 import org.talend.core.model.utils.IComponentName;
 
 /**
- * ggu class global comment. Detailled comment
+ * ggu class global comment. Detailed comment
  */
 public class RepositoryComponentSetting implements IComponentName {
 

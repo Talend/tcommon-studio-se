@@ -38,7 +38,7 @@ import org.talend.metadata.managment.connection.manager.ImpalaConnectionManager;
 import org.talend.utils.sql.ConnectionUtils;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class ImpalaExtractManager extends ExtractManager {
 

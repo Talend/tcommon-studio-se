@@ -33,7 +33,7 @@ import org.talend.librariesmanager.model.ModulesNeededProvider;
 import org.talend.librariesmanager.ui.i18n.Messages;
 
 /**
- * created by wchen on 2015年6月15日 Detailled comment
+ * created by wchen on 2015年6月15日 Detailed comment
  *
  */
 public class ShareLibsJob extends Job {
@@ -65,7 +65,7 @@ public class ShareLibsJob extends Job {
 
     /**
      * Share libs from local maven to svn lib or nexus server depends on TAC setup, created by wchen on 2015年7月31日
-     * Detailled comment
+     * Detailed comment
      *
      */
     class ShareLibsOnStartup extends ShareLibrareisHelper {

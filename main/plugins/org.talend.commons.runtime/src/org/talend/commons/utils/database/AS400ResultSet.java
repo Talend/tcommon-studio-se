@@ -20,7 +20,7 @@ import org.talend.commons.utils.TalendDBUtils;
 import org.talend.fakejdbc.FakeResultSet;
 
 /**
- * DOC zwzhao class global comment. Detailled comment
+ * DOC zwzhao class global comment. Detailed comment
  */
 public class AS400ResultSet extends FakeResultSet {
 

@@ -38,7 +38,7 @@ import org.talend.datatools.xml.utils.SchemaPopulationUtil;
 import org.talend.repository.mdm.i18n.Messages;
 
 /**
- * DOC hwang class global comment. Detailled comment
+ * DOC hwang class global comment. Detailed comment
  */
 public class SetNameForm extends AbstractMDMFileStepForm {
 

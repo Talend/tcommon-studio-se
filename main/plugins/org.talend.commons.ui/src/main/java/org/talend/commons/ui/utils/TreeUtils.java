@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  * $Id: TableUtils.java 596 2006-11-17 15:12:15 +0000 (ven., 17 nov. 2006) amaumont $
  * 

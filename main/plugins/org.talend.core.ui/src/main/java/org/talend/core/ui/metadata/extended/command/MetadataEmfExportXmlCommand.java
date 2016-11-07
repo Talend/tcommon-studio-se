@@ -24,7 +24,7 @@ import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.core.ui.metadata.editor.MetadataEmfTableEditor;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  * $Id$
  * 

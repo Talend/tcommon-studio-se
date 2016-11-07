@@ -17,7 +17,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 
 /**
- * created by rdubois on 9 juil. 2015 Detailled comment
+ * created by rdubois on 9 juil. 2015 Detailed comment
  *
  */
 public class ComponentsAction {

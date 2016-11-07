@@ -2522,7 +2522,7 @@ public class SelectorTableForm extends AbstractForm {
 
     /**
      * 
-     * wzhang SelectorTableForm class global comment. Detailled comment
+     * wzhang SelectorTableForm class global comment. Detailed comment
      */
     class selectorViewerFilter extends ViewerFilter {
 

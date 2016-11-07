@@ -13,7 +13,7 @@
 package org.talend.core.model.components;
 
 /**
- * created by Talend on 2015年7月22日 Detailled comment
+ * created by Talend on 2015年7月22日 Detailed comment
  *
  */
 public class ComponentProviderInfo {

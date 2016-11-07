@@ -24,7 +24,7 @@ import org.talend.registration.RegistrationPlugin;
 import org.w3c.dom.Document;
 
 /**
- * created by kongxiaohan on Mar 24, 2015 Detailled comment
+ * created by kongxiaohan on Mar 24, 2015 Detailed comment
  *
  */
 public class HtmlContentUtil {

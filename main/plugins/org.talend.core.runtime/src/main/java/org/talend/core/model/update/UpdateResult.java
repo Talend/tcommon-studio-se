@@ -15,7 +15,7 @@ package org.talend.core.model.update;
 import org.talend.core.model.properties.ConnectionItem;
 
 /**
- * ggu class global comment. Detailled comment
+ * ggu class global comment. Detailed comment
  */
 public abstract class UpdateResult {
 

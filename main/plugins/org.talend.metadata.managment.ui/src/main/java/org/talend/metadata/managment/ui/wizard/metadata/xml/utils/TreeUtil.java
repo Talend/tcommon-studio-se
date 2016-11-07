@@ -57,7 +57,7 @@ import org.talend.metadata.managment.ui.wizard.metadata.xml.node.NameSpaceNode;
 import org.talend.repository.ProjectManager;
 
 /**
- * DOC ke class global comment. Detailled comment <br/>
+ * DOC ke class global comment. Detailed comment <br/>
  * 
  */
 public class TreeUtil {

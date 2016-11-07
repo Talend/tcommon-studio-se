@@ -29,7 +29,7 @@ import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.core.utils.TalendQuoteUtils;
 
 /**
- * qzhang class global comment. Detailled comment <br/>
+ * qzhang class global comment. Detailed comment <br/>
  * 
  */
 public class QueryUtil {

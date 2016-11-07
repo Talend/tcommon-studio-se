@@ -32,7 +32,7 @@ import org.talend.commons.exception.CommonExceptionHandler;
 import org.talend.themes.core.elements.stylesettings.TalendTabSettings;
 
 /**
- * created by cmeng on Feb 9, 2015 Detailled comment
+ * created by cmeng on Feb 9, 2015 Detailed comment
  *
  */
 public class TalendTabRenderer extends JeeeyulsTabRenderer {

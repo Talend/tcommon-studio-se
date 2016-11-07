@@ -35,7 +35,7 @@ import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 
 /**
- * DOC xye class global comment. Detailled comment
+ * DOC xye class global comment. Detailed comment
  */
 public class SQLFormatUtil {
 

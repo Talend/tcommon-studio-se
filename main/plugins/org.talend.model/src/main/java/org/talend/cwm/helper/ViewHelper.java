@@ -21,7 +21,7 @@ import org.talend.cwm.relational.TdColumn;
 import org.talend.cwm.relational.TdView;
 
 /**
- * DOC scorreia class global comment. Detailled comment
+ * DOC scorreia class global comment. Detailed comment
  */
 public final class ViewHelper {
 

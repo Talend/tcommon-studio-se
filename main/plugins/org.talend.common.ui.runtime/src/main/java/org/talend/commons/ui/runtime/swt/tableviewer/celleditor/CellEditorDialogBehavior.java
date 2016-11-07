@@ -26,7 +26,7 @@ import org.talend.commons.ui.runtime.i18n.Messages;
 import org.talend.commons.ui.runtime.ws.WindowSystem;
 
 /**
- * yzhang class global comment. Detailled comment <br/>
+ * yzhang class global comment. Detailed comment <br/>
  * 
  * $Id: CellEditorDialogBehavior.java 上午10:08:35 2007-8-16 +0000 (2007-8-16) yzhang $
  * 

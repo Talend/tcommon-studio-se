@@ -13,7 +13,7 @@
 package org.talend.repository.documentation;
 
 /**
- * ftang class global comment. Detailled comment.
+ * ftang class global comment. Detailed comment.
  */
 public enum ERepositoryActionName {
 

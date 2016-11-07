@@ -37,7 +37,7 @@ import org.eclipse.swt.graphics.GC;
 
 /**
  * 
- * DOC amaumont class global comment. Detailled comment <br/>
+ * DOC amaumont class global comment. Detailed comment <br/>
  * 
  * $Id: Curve2DBezier.java 7189 2007-11-23 17:06:19Z amaumont $
  * 

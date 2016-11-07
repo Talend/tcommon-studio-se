@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.talend.datatools.xml.utils.ATreeNode;
 
 /**
- * created by cmeng on Jul 1, 2015 Detailled comment
+ * created by cmeng on Jul 1, 2015 Detailed comment
  *
  */
 public class JsonTreePopulator extends AbstractTreePopulator {

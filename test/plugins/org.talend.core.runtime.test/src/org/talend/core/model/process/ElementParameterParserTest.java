@@ -21,7 +21,7 @@ import java.util.List;
 import org.junit.Test;
 
 /**
- * created by wchen on 2014-4-16 Detailled comment
+ * created by wchen on 2014-4-16 Detailed comment
  * 
  */
 public class ElementParameterParserTest {

@@ -19,7 +19,7 @@ import org.talend.core.IService;
 import org.talend.core.model.process.IElementParameter;
 
 /**
- * created by ycbai on 2016年3月24日 Detailled comment
+ * created by ycbai on 2016年3月24日 Detailed comment
  *
  */
 public interface IGenericService extends IService {

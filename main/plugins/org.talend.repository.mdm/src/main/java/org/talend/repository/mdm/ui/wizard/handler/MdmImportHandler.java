@@ -15,7 +15,7 @@ package org.talend.repository.mdm.ui.wizard.handler;
 import org.talend.repository.items.importexport.handlers.imports.MetadataConnectionImportHandler;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class MdmImportHandler extends MetadataConnectionImportHandler {
 

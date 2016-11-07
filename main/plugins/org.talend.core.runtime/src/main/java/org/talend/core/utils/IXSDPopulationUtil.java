@@ -15,7 +15,7 @@ package org.talend.core.utils;
 import java.io.IOException;
 
 /**
- * created by wchen on Aug 10, 2016 Detailled comment
+ * created by wchen on Aug 10, 2016 Detailed comment
  *
  */
 public interface IXSDPopulationUtil {

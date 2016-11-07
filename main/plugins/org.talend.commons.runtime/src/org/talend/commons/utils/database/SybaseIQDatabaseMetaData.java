@@ -16,7 +16,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
- * created by qiongli on 2013-11-13 Detailled comment
+ * created by qiongli on 2013-11-13 Detailed comment
  * 
  */
 public class SybaseIQDatabaseMetaData extends SybaseDatabaseMetaData {

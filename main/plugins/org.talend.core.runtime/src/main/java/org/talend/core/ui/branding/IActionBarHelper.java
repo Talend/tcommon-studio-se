@@ -16,7 +16,7 @@ import org.eclipse.jface.action.ICoolBarManager;
 import org.eclipse.jface.action.IMenuManager;
 
 /**
- * DOC aiming class global comment. Detailled comment
+ * DOC aiming class global comment. Detailed comment
  */
 public interface IActionBarHelper {
 

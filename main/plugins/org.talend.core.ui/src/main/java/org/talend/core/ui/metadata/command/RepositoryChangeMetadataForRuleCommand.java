@@ -15,7 +15,7 @@ package org.talend.core.ui.metadata.command;
 import org.eclipse.gef.commands.Command;
 
 /**
- * DOC hywang class global comment. Detailled comment
+ * DOC hywang class global comment. Detailed comment
  */
 public class RepositoryChangeMetadataForRuleCommand extends Command {
 

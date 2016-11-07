@@ -17,7 +17,7 @@ import org.eclipse.ui.IWorkbench;
 import org.talend.repository.model.RepositoryNode;
 
 /**
- * DOC hwang class global comment. Detailled comment
+ * DOC hwang class global comment. Detailed comment
  */
 public interface IProviderService extends IService {
 

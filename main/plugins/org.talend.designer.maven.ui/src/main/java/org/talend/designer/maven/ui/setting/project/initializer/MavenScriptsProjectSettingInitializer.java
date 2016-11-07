@@ -20,7 +20,7 @@ import org.talend.designer.maven.DesignerMavenPlugin;
 import org.talend.designer.maven.ui.DesignerMavenUiPlugin;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class MavenScriptsProjectSettingInitializer extends AbstractProjectPreferenceInitializer {
 

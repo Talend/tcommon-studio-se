@@ -48,7 +48,7 @@ import org.talend.repository.ProjectManager;
 import org.talend.utils.security.CryptoHelper;
 
 /**
- * cli class global comment. Detailled comment
+ * cli class global comment. Detailed comment
  */
 public final class ParameterValueUtil {
 

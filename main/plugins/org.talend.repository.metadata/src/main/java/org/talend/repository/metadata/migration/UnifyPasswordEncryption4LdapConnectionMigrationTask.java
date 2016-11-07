@@ -27,7 +27,7 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 
 /**
- * created by ggu on Aug 29, 2014 Detailled comment
+ * created by ggu on Aug 29, 2014 Detailed comment
  *
  */
 public class UnifyPasswordEncryption4LdapConnectionMigrationTask extends AbstractItemMigrationTask {

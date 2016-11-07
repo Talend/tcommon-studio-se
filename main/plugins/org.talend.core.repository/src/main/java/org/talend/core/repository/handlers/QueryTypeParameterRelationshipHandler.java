@@ -16,7 +16,7 @@ import org.talend.core.model.relationship.AbstractJobParameterInRepositoryRelati
 import org.talend.core.model.relationship.RelationshipItemBuilder;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class QueryTypeParameterRelationshipHandler extends AbstractJobParameterInRepositoryRelationshipHandler {
 

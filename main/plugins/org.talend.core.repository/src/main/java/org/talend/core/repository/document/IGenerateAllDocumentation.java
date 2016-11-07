@@ -20,7 +20,7 @@ import org.talend.repository.model.RepositoryNode;
 
 /**
  * 
- * created by wchen on 2015年8月14日 Detailled comment
+ * created by wchen on 2015年8月14日 Detailed comment
  *
  */
 public interface IGenerateAllDocumentation {

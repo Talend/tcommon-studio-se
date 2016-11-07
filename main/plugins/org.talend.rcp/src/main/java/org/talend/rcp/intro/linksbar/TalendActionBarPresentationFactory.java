@@ -27,7 +27,7 @@ import org.eclipse.ui.presentations.StackPresentation;
 import org.talend.rcp.Activator;
 
 /**
- * created by nrousseau on May 15, 2013 Detailled comment
+ * created by nrousseau on May 15, 2013 Detailed comment
  * 
  */
 @Deprecated

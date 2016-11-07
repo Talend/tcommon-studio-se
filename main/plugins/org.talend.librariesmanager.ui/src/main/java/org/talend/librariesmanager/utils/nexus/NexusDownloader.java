@@ -50,7 +50,7 @@ import org.talend.utils.io.FilesUtils;
 import org.talend.utils.ssl.SSLUtils;
 
 /**
- * created by wchen on Apr 24, 2015 Detailled comment
+ * created by wchen on Apr 24, 2015 Detailed comment
  *
  */
 public class NexusDownloader implements IDownloadHelper {

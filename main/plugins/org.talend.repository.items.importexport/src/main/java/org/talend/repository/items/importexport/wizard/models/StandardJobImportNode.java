@@ -18,7 +18,7 @@ import java.util.Map;
 import org.talend.core.model.repository.ERepositoryObjectType;
 
 /**
- * created by kongxiaohan on Sep 28, 2015 Detailled comment
+ * created by kongxiaohan on Sep 28, 2015 Detailed comment
  *
  */
 public class StandardJobImportNode extends FolderImportNode {

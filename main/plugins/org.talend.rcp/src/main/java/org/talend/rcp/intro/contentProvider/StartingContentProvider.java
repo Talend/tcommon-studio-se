@@ -24,7 +24,7 @@ import org.w3c.dom.Element;
 
 /**
  * 
- * DOC wchen class global comment. Detailled comment
+ * DOC wchen class global comment. Detailed comment
  */
 public class StartingContentProvider implements IIntroXHTMLContentProvider {
 

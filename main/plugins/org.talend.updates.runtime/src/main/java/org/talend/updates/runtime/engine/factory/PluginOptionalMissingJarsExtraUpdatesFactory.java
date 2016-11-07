@@ -30,7 +30,7 @@ import org.talend.updates.runtime.model.ExtraFeature;
 import org.talend.updates.runtime.model.TalendWebServiceUpdateExtraFeature;
 
 /**
- * created by ggu on Jul 17, 2014 Detailled comment
+ * created by ggu on Jul 17, 2014 Detailed comment
  *
  */
 public class PluginOptionalMissingJarsExtraUpdatesFactory extends AbstractExtraUpdatesFactory {

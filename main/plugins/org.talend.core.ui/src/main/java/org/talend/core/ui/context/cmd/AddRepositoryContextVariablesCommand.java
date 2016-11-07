@@ -25,7 +25,7 @@ import org.talend.core.ui.context.IContextModelManager;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class AddRepositoryContextVariablesCommand extends Command {
 

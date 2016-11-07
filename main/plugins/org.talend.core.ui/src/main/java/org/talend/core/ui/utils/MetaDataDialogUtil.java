@@ -18,7 +18,7 @@ import org.talend.core.model.process.IElementParameter;
 import org.talend.core.model.process.INode;
 
 /**
- * created by ldong on Jan 16, 2015 Detailled comment
+ * created by ldong on Jan 16, 2015 Detailed comment
  * 
  */
 public class MetaDataDialogUtil {

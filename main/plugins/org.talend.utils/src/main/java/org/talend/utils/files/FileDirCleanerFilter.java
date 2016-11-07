@@ -16,7 +16,7 @@ import java.io.File;
 
 /**
  * 
- * DOC amaumont class global comment. Detailled comment
+ * DOC amaumont class global comment. Detailed comment
  */
 public interface FileDirCleanerFilter {
 

@@ -35,13 +35,13 @@ import org.talend.updates.runtime.model.FeatureRepositories;
 import org.talend.updates.runtime.model.UpdateSiteLocationType;
 
 /**
- * created by sgandon on 26 févr. 2013 Detailled comment
+ * created by sgandon on 26 févr. 2013 Detailed comment
  * 
  */
 public class UpdateWizardModel {
 
     /**
-     * created by sgandon on 25 avr. 2013 Detailled comment
+     * created by sgandon on 25 avr. 2013 Detailed comment
      * 
      */
     class FeatureSelectionValidator extends MultiValidator {

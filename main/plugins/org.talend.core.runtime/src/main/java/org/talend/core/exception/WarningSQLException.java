@@ -15,7 +15,7 @@ package org.talend.core.exception;
 import java.sql.SQLException;
 
 /**
- * created by ycbai on 2014年11月17日 Detailled comment
+ * created by ycbai on 2014年11月17日 Detailed comment
  *
  */
 public class WarningSQLException extends SQLException {

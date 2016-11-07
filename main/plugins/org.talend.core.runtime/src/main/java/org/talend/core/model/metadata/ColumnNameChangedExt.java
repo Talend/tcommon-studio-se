@@ -16,7 +16,7 @@ import org.talend.core.model.process.INode;
 import org.talend.core.runtime.i18n.Messages;
 
 /**
- * DOC ggu class global comment. Detailled comment <br/>
+ * DOC ggu class global comment. Detailed comment <br/>
  * 
  */
 public class ColumnNameChangedExt extends ColumnNameChanged {

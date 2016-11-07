@@ -15,7 +15,7 @@ package org.talend.core.repository.model.preview;
 import java.util.ArrayList;
 
 /**
- * DOC qwei class global comment. Detailled comment
+ * DOC qwei class global comment. Detailed comment
  */
 public class WSDLSchemaBean {
 

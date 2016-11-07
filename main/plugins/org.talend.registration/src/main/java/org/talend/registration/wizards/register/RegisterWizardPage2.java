@@ -39,7 +39,7 @@ import org.talend.registration.i18n.Messages;
 import org.talend.registration.register.RegisterManagement;
 
 /**
- * DOC zli class global comment. Detailled comment
+ * DOC zli class global comment. Detailed comment
  */
 public class RegisterWizardPage2 extends AbstractBasicWizardDialog {
 

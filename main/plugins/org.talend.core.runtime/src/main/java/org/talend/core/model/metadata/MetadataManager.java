@@ -31,7 +31,7 @@ import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.resource.record.RecordFile;
 
 /**
- * hywang class global comment. Detailled comment
+ * hywang class global comment. Detailed comment
  */
 public class MetadataManager {
 

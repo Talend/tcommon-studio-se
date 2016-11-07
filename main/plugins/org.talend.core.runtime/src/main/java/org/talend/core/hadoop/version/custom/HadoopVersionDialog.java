@@ -44,7 +44,7 @@ import org.talend.core.runtime.hd.IHDistributionVersion;
 import org.talend.core.runtime.i18n.Messages;
 
 /**
- * created by ycbai on 2013-3-15 Detailled comment
+ * created by ycbai on 2013-3-15 Detailed comment
  * 
  */
 public class HadoopVersionDialog extends TitleAreaDialog {

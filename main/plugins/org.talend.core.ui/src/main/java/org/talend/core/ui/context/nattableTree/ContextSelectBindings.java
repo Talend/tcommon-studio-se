@@ -23,7 +23,7 @@ import org.eclipse.nebula.widgets.nattable.ui.matcher.CellEditorMouseEventMatche
 import org.eclipse.swt.events.MouseEvent;
 
 /**
- * created by ldong on Jul 23, 2014 Detailled comment
+ * created by ldong on Jul 23, 2014 Detailed comment
  * 
  */
 public class ContextSelectBindings extends DefaultEditBindings {

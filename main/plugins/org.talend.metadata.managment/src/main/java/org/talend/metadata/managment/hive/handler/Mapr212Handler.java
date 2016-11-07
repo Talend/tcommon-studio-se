@@ -18,7 +18,7 @@ import java.util.Map;
 import org.talend.core.model.metadata.IMetadataConnection;
 
 /**
- * created by msjian on 2013-11-7 Detailled comment
+ * created by msjian on 2013-11-7 Detailed comment
  * 
  */
 public class Mapr212Handler extends MaprHandler {

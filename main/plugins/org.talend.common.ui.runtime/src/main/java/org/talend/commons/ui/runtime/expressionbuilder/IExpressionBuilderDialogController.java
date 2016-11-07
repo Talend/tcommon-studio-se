@@ -17,7 +17,7 @@ import java.util.List;
 import org.talend.commons.runtime.model.expressionbuilder.Variable;
 
 /**
- * yzhang class global comment. Detailled comment <br/>
+ * yzhang class global comment. Detailed comment <br/>
  * 
  * $Id: IExpressionBuilderDialogController.java 下午04:43:22 2007-8-1 +0000 (2007-8-1) yzhang $
  * 

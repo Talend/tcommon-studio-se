@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * 
- * DOC amaumont class global comment. Detailled comment
+ * DOC amaumont class global comment. Detailed comment
  */
 public class MultiThreadWaiter {
 

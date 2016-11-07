@@ -18,7 +18,7 @@ import org.talend.core.model.properties.Project;
 import org.talend.core.model.properties.User;
 
 /**
- * DOC bZhou class global comment. Detailled comment
+ * DOC bZhou class global comment. Detailed comment
  */
 public final class ReponsitoryContextBridge {
 

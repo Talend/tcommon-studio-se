@@ -30,7 +30,7 @@ import org.talend.core.ui.CoreUIPlugin;
 import org.talend.core.ui.i18n.Messages;
 
 /**
- * yzhang class global comment. Detailled comment <br/>
+ * yzhang class global comment. Detailed comment <br/>
  * 
  * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
  * 

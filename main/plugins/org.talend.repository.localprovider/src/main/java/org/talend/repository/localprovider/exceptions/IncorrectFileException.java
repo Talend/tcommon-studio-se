@@ -15,7 +15,7 @@ package org.talend.repository.localprovider.exceptions;
 import org.talend.commons.exception.PersistenceException;
 
 /**
- * DOC smallet class global comment. Detailled comment <br/>
+ * DOC smallet class global comment. Detailed comment <br/>
  * 
  * $Id$
  * 

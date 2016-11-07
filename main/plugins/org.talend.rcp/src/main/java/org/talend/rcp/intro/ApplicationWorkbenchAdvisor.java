@@ -39,7 +39,7 @@ import org.talend.rcp.TalendSplashHandler;
 import org.talend.registration.register.RegisterManagement;
 
 /**
- * DOC ccarbone class global comment. Detailled comment <br/>
+ * DOC ccarbone class global comment. Detailed comment <br/>
  * 
  * $Id$
  * 

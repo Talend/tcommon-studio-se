@@ -32,7 +32,7 @@ import org.talend.repository.items.importexport.handlers.model.ImportItem;
 
 /**
  * created by cmeng on Jan 18, 2016
- * Detailled comment
+ * Detailed comment
  *
  */
 @SuppressWarnings("nls")

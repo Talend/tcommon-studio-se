@@ -17,7 +17,7 @@ import org.talend.commons.utils.generation.JavaUtils;
 import org.talend.core.runtime.projectsetting.IProjectSettingTemplateConstants;
 
 /**
- * created by ggu on 2 Feb 2015 Detailled comment
+ * created by ggu on 2 Feb 2015 Detailed comment
  *
  */
 @SuppressWarnings("nls")

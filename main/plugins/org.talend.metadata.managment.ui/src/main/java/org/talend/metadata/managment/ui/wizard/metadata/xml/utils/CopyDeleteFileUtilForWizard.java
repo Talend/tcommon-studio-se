@@ -44,7 +44,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
- * DOC hwang class global comment. Detailled comment <br/>
+ * DOC hwang class global comment. Detailed comment <br/>
  * 
  */
 public class CopyDeleteFileUtilForWizard {

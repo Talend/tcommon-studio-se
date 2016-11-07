@@ -18,7 +18,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.talend.core.IService;
 
 /**
- * DOC guanglong.du class global comment. Detailled comment
+ * DOC guanglong.du class global comment. Detailed comment
  */
 public interface ILocalProviderService extends IService {
 
@@ -32,7 +32,7 @@ public interface ILocalProviderService extends IService {
      * 
      * http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4212439
      * 
-     * yzhang ComponentsFactory class global comment. Detailled comment <br/>
+     * yzhang ComponentsFactory class global comment. Detailed comment <br/>
      * 
      * $Id: ComponentsFactory.java 52892 2010-12-20 05:52:17Z nrousseau $
      * 

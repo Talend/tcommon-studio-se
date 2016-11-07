@@ -30,7 +30,7 @@ import org.talend.repository.model.IRepositoryService;
 import org.talend.repository.model.RepositoryConstants;
 
 /**
- * qzhang class global comment. Detailled comment <br/>
+ * qzhang class global comment. Detailed comment <br/>
  * 
  * $Id: talend-code-templates.xml 1 2007-3-28 下午02:37:17 (星期五, 29 九月 2006) qzhang $
  * 

@@ -25,7 +25,7 @@ import org.talend.metadata.managment.ui.wizard.metadata.xml.node.NameSpaceNode;
 import org.talend.metadata.managment.ui.wizard.metadata.xml.utils.TreeUtil;
 
 /**
- * wzhang class global comment. Detailled comment
+ * wzhang class global comment. Detailed comment
  */
 public class XmlFileTreeViewerProvider extends LabelProvider implements ITableLabelProvider, ITreeContentProvider {
 

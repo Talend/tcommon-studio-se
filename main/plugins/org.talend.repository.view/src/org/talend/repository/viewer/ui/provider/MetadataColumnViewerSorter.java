@@ -22,7 +22,7 @@ import org.talend.repository.model.IRepositoryNode.EProperties;
 import org.talend.repository.model.RepositoryNode;
 
 /**
- * created by ycbai on 2013-7-24 Detailled comment
+ * created by ycbai on 2013-7-24 Detailed comment
  * 
  */
 public class MetadataColumnViewerSorter extends ViewerSorter {

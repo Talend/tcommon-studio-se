@@ -21,7 +21,7 @@ import org.eclipse.nebula.widgets.nattable.data.IColumnPropertyAccessor;
 import org.eclipse.nebula.widgets.nattable.data.ReflectiveColumnPropertyAccessor;
 
 /**
- * created by ldong on Jul 24, 2014 Detailled comment
+ * created by ldong on Jul 24, 2014 Detailed comment
  * 
  */
 public class EmptyColumnContextAccessor<R> implements IColumnPropertyAccessor<R> {

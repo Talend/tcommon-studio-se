@@ -13,7 +13,7 @@
 package org.talend.core.model.metadata.designerproperties;
 
 /**
- * cli class global comment. Detailled comment
+ * cli class global comment. Detailed comment
  */
 public final class PropertyConstants {
 
@@ -23,7 +23,7 @@ public final class PropertyConstants {
     /**
      * work for cdc.
      * 
-     * cli CDCTypeMode class global comment. Detailled comment
+     * cli CDCTypeMode class global comment. Detailed comment
      */
     public enum CDCTypeMode {
         LOG_MODE("LOG"), //$NON-NLS-1$

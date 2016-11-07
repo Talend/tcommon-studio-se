@@ -23,7 +23,7 @@ import org.talend.core.repository.DefaultRepositoryComponentDndFilter;
 import org.talend.repository.model.RepositoryNode;
 
 /**
- * created by cmeng on Apr 21, 2015 Detailled comment
+ * created by cmeng on Apr 21, 2015 Detailed comment
  *
  */
 public class SalesforceComponentDndFilter extends DefaultRepositoryComponentDndFilter {

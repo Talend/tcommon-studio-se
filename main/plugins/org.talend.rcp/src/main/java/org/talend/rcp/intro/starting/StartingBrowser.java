@@ -29,7 +29,7 @@ import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.rcp.Activator;
 
 /**
- * DOC wchen class global comment. Detailled comment
+ * DOC wchen class global comment. Detailed comment
  */
 public class StartingBrowser extends EditorPart {
 

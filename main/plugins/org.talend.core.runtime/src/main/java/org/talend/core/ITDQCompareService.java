@@ -16,7 +16,7 @@ import org.talend.core.model.properties.ConnectionItem;
 import org.talend.utils.sugars.ReturnCode;
 
 /**
- * created by talend on Dec 19, 2012 Detailled comment
+ * created by talend on Dec 19, 2012 Detailed comment
  * 
  */
 public interface ITDQCompareService extends IService {

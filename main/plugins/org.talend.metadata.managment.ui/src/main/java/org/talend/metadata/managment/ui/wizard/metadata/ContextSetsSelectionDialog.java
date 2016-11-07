@@ -40,7 +40,7 @@ import org.talend.metadata.managment.ui.i18n.Messages;
 import org.talend.metadata.managment.ui.utils.ConnectionContextHelper;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public class ContextSetsSelectionDialog extends SelectionDialog {
 

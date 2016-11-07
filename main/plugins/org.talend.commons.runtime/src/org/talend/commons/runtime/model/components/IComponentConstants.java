@@ -13,7 +13,7 @@
 package org.talend.commons.runtime.model.components;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC ggu class global comment. Detailed comment
  */
 public interface IComponentConstants {
 

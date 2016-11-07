@@ -50,7 +50,7 @@ import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 
 /**
- * created by cmeng on Sep 15, 2015 Detailled comment
+ * created by cmeng on Sep 15, 2015 Detailed comment
  *
  */
 public class OnBoardingUtils {
