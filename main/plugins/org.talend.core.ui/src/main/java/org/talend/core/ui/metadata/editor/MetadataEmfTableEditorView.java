@@ -546,7 +546,7 @@ public class MetadataEmfTableEditorView extends AbstractMetadataTableEditorView<
     @Override
     protected void setTableViewerCreatorOptions(TableViewerCreator<MetadataColumn> newTableViewerCreator) {
         super.setTableViewerCreatorOptions(newTableViewerCreator);
-        // newTableViewerCreator.setLazyLoad(true);
+        newTableViewerCreator.setLazyLoad(true);
     }
 
     /*
