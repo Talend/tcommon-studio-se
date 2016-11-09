@@ -16,8 +16,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.IPath;
@@ -32,8 +32,8 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TreeExpansionEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.ModifyEvent;
@@ -60,7 +60,6 @@ import org.talend.commons.ui.swt.dialogs.RepositoryFolderSelectionDialog;
 import org.talend.commons.utils.VersionUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.properties.Item;
-import org.talend.core.model.properties.JobletProcessItem;
 import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.PropertiesFactory;
 import org.talend.core.model.properties.Property;
@@ -68,18 +67,14 @@ import org.talend.core.model.properties.RoutineItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.repository.LockInfo;
-import org.talend.core.repository.CoreRepositoryPlugin;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.ui.branding.IBrandingService;
-import org.talend.core.utils.KeywordsValidator;
 import org.talend.designer.core.convert.IProcessConvertService;
 import org.talend.metadata.managment.ui.i18n.Messages;
-import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IProxyRepositoryService;
 import org.talend.repository.model.IRepositoryService;
-import org.talend.repository.model.RepositoryConstants;
 import org.talend.repository.ui.properties.StatusHelper;
 
 /**
@@ -157,6 +152,8 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
 
     private Item item;
 
+    private HashMap<String, Boolean> folderItems;
+    
     protected IProcessConvertService converter;// Just for the page which would like to convert self to another process.
 
     // private Button convertBtn;// For convertation between M/R job and common job
@@ -858,7 +855,42 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
         // }
         // }
 
-        RepositoryFolderSelectionDialog dialog = new RepositoryFolderSelectionDialog(getShell());
+        RepositoryFolderSelectionDialog dialog = new RepositoryFolderSelectionDialog(getShell()) {
+
+            @Override
+            protected ViewerFilter[] getFilter() {
+                return (new ViewerFilter[] { new ViewerFilter() {
+
+                    @Override
+                    public boolean select(Viewer viewer, Object parentElement, Object element) {
+                        if (parentElement instanceof ERepositoryObjectType) {
+                            ERepositoryObjectType type = (ERepositoryObjectType) parentElement;
+                            IProxyRepositoryFactory factory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
+                            try {
+                                folderItems = factory.getFolderItems(type);
+                            } catch (PersistenceException e) {
+                                 e.printStackTrace();
+                            }
+                        }
+                        if (element instanceof Folder) {
+                            Folder folderElement = (Folder) element;
+                            String folderFullPath = folderElement.getFullPath();
+                            String defaultFolder = "(default)/";
+                            if ("(default)".equals(folderFullPath)) {
+                                return true;
+                            }
+                            if (folderFullPath.startsWith(defaultFolder)) {
+                                folderFullPath = folderFullPath.substring(defaultFolder.length()).trim();
+                            }
+                            if (folderItems.containsKey(folderFullPath)) {
+                                return !folderItems.get(folderFullPath);
+                            }
+                        }
+                        return true;
+                    }
+                } });
+            };
+        };
         dialog.setInput(getRepositoryObjectType());
         dialog.setContentProvider(new FoldersContentProvider());
         dialog.setLabelProvider(new FoldersLabelProvider(dialog));

@@ -28,6 +28,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.ITreeViewerListener;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -115,6 +116,7 @@ public class RepositoryFolderSelectionDialog extends SelectionDialog {
         treeViewer.setContentProvider(contentProvider);
         treeViewer.setLabelProvider(labelProvider);
         treeViewer.setInput(input);
+        treeViewer.setFilters(getFilter());
         treeViewer.addDoubleClickListener(new IDoubleClickListener() {
 
             public void doubleClick(DoubleClickEvent event) {
@@ -149,5 +151,9 @@ public class RepositoryFolderSelectionDialog extends SelectionDialog {
             return false;
         }
         return treeViewer.getExpandedState(element);
+    }
+
+    protected ViewerFilter[] getFilter() {
+        return null;
     }
 }

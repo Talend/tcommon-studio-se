@@ -13,6 +13,7 @@
 package org.talend.repository.model;
 
 import java.beans.PropertyChangeListener;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -515,4 +516,7 @@ public interface IProxyRepositoryFactory {
     public void unloadResources(Property property) throws PersistenceException;
 
     public Object getXmiResourceManager();
+
+    public abstract HashMap<String, Boolean> getFolderItems(ERepositoryObjectType type) throws PersistenceException;
+
 }

@@ -18,6 +18,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Dictionary;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -1100,28 +1101,30 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
     }
 
     public List<String> getFolders(Project project, ERepositoryObjectType type) throws PersistenceException {
+        HashMap<String, Boolean> folderItems = new HashMap<String, Boolean>();
         List<String> toReturn = new ArrayList<String>();
         String[] split = ERepositoryObjectType.getFolderName(type).split("/"); //$NON-NLS-1$
         String labelType = split[split.length - 1];
 
         FolderItem folderItem = getFolderItem(project, type, new Path(""));//$NON-NLS-1$
-        addChildren(toReturn, folderItem, labelType, ""); //$NON-NLS-1$
+        addChildren(folderItems, toReturn, folderItem, labelType, ""); //$NON-NLS-1$
 
         return toReturn;
 
     }
 
-    private void addChildren(List<String> target, FolderItem source, String type, String path) {
+    private void addChildren(HashMap<String, Boolean> folderItems, List<String> target, FolderItem source, String type,
+            String path) {
         if (source.getType() == FolderType.FOLDER_LITERAL) {
             // for bug 9352: .svnlog folder should not be visible in wizards
             EObject obj = source.getParent();
             if (obj != null && obj instanceof FolderItemImpl) {
                 String onePath = path + source.getProperty().getLabel();
                 target.add(onePath);
-
+                folderItems.put(onePath, source.getState().isDeleted());
                 for (Object current : source.getChildren()) {
                     if (current instanceof FolderItem) {
-                        addChildren(target, (FolderItem) current, type, onePath + "/"); //$NON-NLS-1$
+                        addChildren(folderItems, target, (FolderItem) current, type, onePath + "/"); //$NON-NLS-1$
                     }
                 }
             }
@@ -1135,14 +1138,32 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 if (current instanceof FolderItem) {
                     FolderItem currentChild = (FolderItem) current;
                     if (currentChild.getType() == FolderType.FOLDER_LITERAL && match) {
-                        addChildren(target, currentChild, type, path);
+                        addChildren(folderItems, target, currentChild, type, path);
                     } else if (currentChild.getType() == FolderType.SYSTEM_FOLDER_LITERAL
                             || currentChild.getType() == FolderType.STABLE_SYSTEM_FOLDER_LITERAL) {
-                        addChildren(target, currentChild, type, path);
+                        addChildren(folderItems, target, currentChild, type, path);
                     }
                 }
             }
         }
+    }
+
+    @Override
+    public HashMap<String, Boolean> getFolderItems(ERepositoryObjectType type) throws PersistenceException {
+        return getFolderItems(projectManager.getCurrentProject(), type);
+    }
+
+    public HashMap<String, Boolean> getFolderItems(Project project, ERepositoryObjectType type) throws PersistenceException {
+        HashMap<String, Boolean> folderItems = new HashMap<String, Boolean>();
+        List<String> toReturn = new ArrayList<String>();
+        String[] split = ERepositoryObjectType.getFolderName(type).split("/"); //$NON-NLS-1$
+        String labelType = split[split.length - 1];
+
+        FolderItem folderItem = getFolderItem(project, type, new Path(""));//$NON-NLS-1$
+        addChildren(folderItems, toReturn, folderItem, labelType, ""); //$NON-NLS-1$
+
+        return folderItems;
+
     }
 
     /*
