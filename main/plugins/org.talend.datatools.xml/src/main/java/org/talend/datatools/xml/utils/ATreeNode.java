@@ -308,6 +308,13 @@ public class ATreeNode {
         } else if (!this.value.equals(other.value)) {
             return false;
         }
+        if (this.parent == null) {
+            if (other.parent != null) {
+                return false;
+            }
+        } else if (!this.parent.equals(other.parent)) {
+            return false;
+        }
         return true;
     }
 

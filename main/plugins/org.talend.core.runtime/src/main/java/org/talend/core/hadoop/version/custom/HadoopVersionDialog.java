@@ -450,6 +450,10 @@ public class HadoopVersionDialog extends TitleAreaDialog {
                                         if (type == ECustomVersionType.HDFS) {
                                             commonGroupCalculated = true;
                                         }
+                                        if (type == ECustomVersionType.MAPRDB) {
+                                            // Maprdb load the same libraries of habse
+                                            type = ECustomVersionType.HBASE;
+                                        }
                                         hadoopLibraries = hadoopService.getHadoopLibrariesByType(type, getDistribution(),
                                                 getVersion());
                                     }

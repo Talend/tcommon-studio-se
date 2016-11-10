@@ -41,7 +41,11 @@ public class DbConnStrForHive extends DbConnStr {
     }
 
     public DbConnStrForHive(EDatabaseTypeName dbType, String urlTemplate, EDatabaseVersion4Drivers[] hiveModes) {
-        super(dbType, urlTemplate);
+        super(dbType, urlTemplate, null, null, hiveModes);
+    }
+    
+    public DbConnStrForHive(EDatabaseTypeName dbType, String urlTemplate, EDatabaseVersion4Drivers[] hiveModes, String defaultServer, String defaultDB) {
+        super(dbType, urlTemplate, null, null, hiveModes, defaultServer, defaultDB);
     }
 
     @Override

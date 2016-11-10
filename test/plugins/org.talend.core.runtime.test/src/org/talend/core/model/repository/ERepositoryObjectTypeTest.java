@@ -41,13 +41,11 @@ public class ERepositoryObjectTypeTest {
         SERVICES("Services"),
         ROUTES("Routes"),
         RESOURCES("Resources"),
-        BEANS("Beans"),
         HDFS("HDFS"),
         HCATALOG("HCatalog"),
         REPOSITORYMETADATAEDIFACT("repositorymetadataEDIFact"),
         CONTEXT("repository.context"),
         PROCESS("repository.process"),
-        JOBLET("repository.joblet"),
         JOBSCRIPT("repository.jobscript"),
         ROUTINES("repository.routines"),
         DOCUMENTATION("repository.documentation"),
@@ -73,10 +71,8 @@ public class ERepositoryObjectTypeTest {
         METADATAFILEHL7("repository.metadataFileHL7"),
 
         PROCESS_MR("repository.mapReduceProcess"),
-        HADOOPCLUSTER("repository.hadoopCluster"),
         PIG_UDF("repository.pigUdf"),
         JOB_DOC("repository.jobdoc"),
-        JSON("JSON"),
         METADATA_FILE_BRMS("repository.metadataFileBRMS"),
         METADATA_FILE_LINKRULES("repository.metadataLinkFileRules"),
         METADATA_HEADER_FOOTER("METADATA_HEADER_FOOTER"),
@@ -121,7 +117,28 @@ public class ERepositoryObjectTypeTest {
         NAMESPACES("NAMESPACES"),
         REPORTS("REPORTS"),
         SAMPLE_DATA("SAMPLE_DATA"),
-        STRUCTURES("STRUCTURES"), ;
+        STRUCTURES("STRUCTURES"), 
+        
+        
+        BEANS("Bean"),
+        HADOOPCLUSTER("repository.metadata.hadoopCluster"),
+        JOBLET("repository.standardjoblet"),
+        JSON("repository.metadataJSON"),
+
+        // issue TMC-9433 created for the items bellow.
+        datastewardship("datastewardship"),
+        METADATA_EDIFACT("repository.metadataEDIFact"),
+        METADATA_NOSQL_CONNECTIONS("repository.metadataNoSQLConnections"),
+        PROCESS_STORM("repository.stormProcess"),
+        ROUTE("Route"),
+        ROUTE_DOC("ROUTE_DOC"),
+        ROUTE_RESOURCES("Resource"),
+        ROUTELET("Routelet"),
+        salesforce("salesforce"),
+        SPARK_JOBLET("repository.sparkjoblet"),
+        SPARK_STREAMING_JOBLET("repository.sparkstreamingjoblet"),
+        TEST_CONTAINER("repository.testContainer"),
+        ;
 
         private String i18nKey;
 

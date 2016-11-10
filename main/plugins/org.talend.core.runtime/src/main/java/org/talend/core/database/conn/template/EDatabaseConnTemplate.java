@@ -184,7 +184,7 @@ public enum EDatabaseConnTemplate {
 
     HIVE(new DbConnStrForHive(EDatabaseTypeName.HIVE, "jdbc:hive://<host>:<port>/<sid>",//$NON-NLS-1$
             new EDatabaseVersion4Drivers[] { EDatabaseVersion4Drivers.HIVE, EDatabaseVersion4Drivers.HIVE_EMBEDDED,
-                    EDatabaseVersion4Drivers.HIVE_2_STANDALONE, EDatabaseVersion4Drivers.HIVE_2_EMBEDDED })),
+                    EDatabaseVersion4Drivers.HIVE_2_STANDALONE, EDatabaseVersion4Drivers.HIVE_2_EMBEDDED }, "localhost", null)),
 
     //    HIVE1_EMBEDDED(new DbConnStr(EDatabaseTypeName.HIVE, "jdbc:hive://")), //$NON-NLS-1$
     //
@@ -195,7 +195,7 @@ public enum EDatabaseConnTemplate {
     //    HIVE2_STANDALONE(new DbConnStr(EDatabaseTypeName.HIVE, "jdbc:hive2://<host>:<port>/<sid>")), //$NON-NLS-1$
 
     IMPALA(new DbConnStr(EDatabaseTypeName.IMPALA, "jdbc:hive2://<host>:<port>/<sid>;auth=noSasl", //$NON-NLS-1$  
-            "21050")), //$NON-NLS-1$
+            "21050", null, null, "localhost", "default")), //$NON-NLS-1$
 
     HBASE(new DbConnStr(EDatabaseTypeName.HBASE, "127.0.0.1", //$NON-NLS-1$
             "2181")), //$NON-NLS-1$
@@ -235,9 +235,13 @@ public enum EDatabaseConnTemplate {
         return this.connStr.getUrlTemplate(version);
     }
 
-    // public String getUrlPattern() {
-    // return getUrlPattern(null);
-    // }
+    public String getDefaultServer(EDatabaseVersion4Drivers version) {
+        return this.connStr.getDefaultServer(version);
+    }
+    
+    public String getDefaultDB(EDatabaseVersion4Drivers version) {
+        return this.connStr.getDefaultDB(version);
+    }
 
     public String getUrlPattern(EDatabaseVersion4Drivers version) {
         return this.connStr.getUrlPattern(version);

@@ -373,7 +373,7 @@ public final class RepositoryComponentManager {
                 }
                 if((type == ERepositoryObjectType.JOBLET || type == ERepositoryObjectType.SPARK_JOBLET 
                 		|| type == ERepositoryObjectType.SPARK_STREAMING_JOBLET ) && !isCurrentPeoject && projectName!=null){
-                	repositoryType = repositoryType +"_"+projectName;
+                	repositoryType = projectName +":"+ repositoryType; //$NON-NLS-1$
                 }
                 if (!exceptedComponents.contains(component)
                         && filter.except(item, type, seletetedNode, component, repositoryType)) {

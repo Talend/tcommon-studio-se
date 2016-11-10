@@ -43,6 +43,10 @@ class DbConnStr {
 
     // for hbase only need server name and port can create a connection
     protected String server;
+    
+    protected String defaultServer;
+    
+    protected String defaultDB;
 
     protected EDatabaseVersion4Drivers[] dbVersions;
 
@@ -54,6 +58,18 @@ class DbConnStr {
         this.additionProperty = additionProperty;
         this.dbVersions = dbVersions;
         this.urlPattern = calcPattern(urlTemplate);
+    }
+    
+    DbConnStr(EDatabaseTypeName dbType, String urlTemplate, String defaultPort, String additionProperty,
+            EDatabaseVersion4Drivers[] dbVersions , String defaultServer, String defaultDB) {
+        this.dbType = dbType;
+        this.urlTemplate = urlTemplate;
+        this.defaultPort = defaultPort;
+        this.additionProperty = additionProperty;
+        this.dbVersions = dbVersions;
+        this.urlPattern = calcPattern(urlTemplate);
+        this.defaultServer = defaultServer;
+        this.defaultDB = defaultDB;
     }
 
     DbConnStr(EDatabaseTypeName dbType, String urlTemplate, String defaultPort, String additionProperty) {
@@ -167,6 +183,14 @@ class DbConnStr {
 
     String getUrlTemplate(EDatabaseVersion4Drivers version) {
         return this.urlTemplate; // default, no need version
+    }
+    
+    String getDefaultServer(EDatabaseVersion4Drivers version) {
+        return this.defaultServer; // default, no need version
+    }
+    
+    String getDefaultDB(EDatabaseVersion4Drivers version) {
+        return this.defaultDB; // default, no need version
     }
 
     String getUrlPattern(EDatabaseVersion4Drivers version) {

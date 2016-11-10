@@ -59,10 +59,9 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
 
     @Override
     public void run(final IProgressMonitor monitor) {
-        SubMonitor subMonitor = SubMonitor
-                .convert(
-                        monitor,
-                        Messages.getString("ExternalModulesInstallDialog.downloading2") + " (" + toDownload.size() + ")", toDownload.size() * 10 + 5); //$NON-NLS-1$
+        SubMonitor subMonitor = SubMonitor.convert(monitor,
+                Messages.getString("ExternalModulesInstallDialog.downloading2") + " (" + toDownload.size() + ")", //$NON-NLS-1$
+                toDownload.size() * 10 + 5);
         if (checkAndAcceptLicenses(subMonitor)) {
             downLoad(subMonitor);
         }
@@ -74,10 +73,9 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
     }
 
     private void downLoad(final IProgressMonitor monitor) {
-        SubMonitor subMonitor = SubMonitor
-                .convert(
-                        monitor,
-                        Messages.getString("ExternalModulesInstallDialog.downloading2") + " (" + toDownload.size() + ")", toDownload.size()); //$NON-NLS-1$
+        SubMonitor subMonitor = SubMonitor.convert(monitor,
+                Messages.getString("ExternalModulesInstallDialog.downloading2") + " (" + toDownload.size() + ")", //$NON-NLS-1$
+                toDownload.size());
 
         // TUP-3135 : stop to try to download at the first timeout.
         boolean connectionTimeOut = false;
@@ -88,7 +86,8 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
                 try {
                     // check license
                     boolean isLicenseAccepted = module.isFromCustomNexus()
-                            || LibManagerUiPlugin.getDefault().getPreferenceStore().getBoolean(module.getLicenseType());
+                            || (LibManagerUiPlugin.getDefault().getPreferenceStore().contains(module.getLicenseType())
+                                    && LibManagerUiPlugin.getDefault().getPreferenceStore().getBoolean(module.getLicenseType()));
                     accepted = isLicenseAccepted;
                     if (!accepted) {
                         subMonitor.worked(1);
@@ -160,8 +159,8 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
                 @Override
                 public void run() {
                     AcceptModuleLicensesWizard licensesWizard = new AcceptModuleLicensesWizard(toDownload);
-                    AcceptModuleLicensesWizardDialog wizardDialog = new AcceptModuleLicensesWizardDialog(PlatformUI
-                            .getWorkbench().getActiveWorkbenchWindow().getShell(), licensesWizard, toDownload, monitor);
+                    AcceptModuleLicensesWizardDialog wizardDialog = new AcceptModuleLicensesWizardDialog(
+                            PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), licensesWizard, toDownload, monitor);
                     wizardDialog.setPageSize(700, 380);
                     wizardDialog.create();
                     if (wizardDialog.open() != Window.OK) {

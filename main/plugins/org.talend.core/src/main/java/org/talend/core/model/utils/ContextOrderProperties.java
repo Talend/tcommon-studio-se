@@ -29,10 +29,17 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.talend.commons.exception.ExceptionHandler;
+import org.talend.commons.exception.PersistenceException;
 import org.talend.core.i18n.Messages;
 import org.talend.core.model.context.ContextUtils;
+import org.talend.core.model.general.Project;
 import org.talend.core.model.process.IContextParameter;
 import org.talend.core.model.properties.Item;
+import org.talend.core.model.repository.ERepositoryObjectType;
+import org.talend.core.model.repository.IRepositoryViewObject;
+import org.talend.core.repository.model.ProxyRepositoryFactory;
+import org.talend.repository.ProjectManager;
 
 /**
  * created by ldong on Aug 7, 2014 Detailled comment
@@ -108,30 +115,56 @@ public class ContextOrderProperties extends Properties {
 
     private void initContextProperties() {
         // group the context and set the comment
+        List<IRepositoryViewObject> repositoryContexts = Collections.emptyList();
+        try {
+            repositoryContexts = ProxyRepositoryFactory.getInstance().getAll(ProjectManager.getInstance().getCurrentProject(),
+                    ERepositoryObjectType.CONTEXT);
+            for (Project project : ProjectManager.getInstance().getAllReferencedProjects()) {
+                repositoryContexts.addAll(ProxyRepositoryFactory.getInstance().getAll(project, ERepositoryObjectType.CONTEXT));
+            }
+        } catch (PersistenceException e) {
+            ExceptionHandler.process(e);
+        }
+
         for (IContextParameter currentParameter : parameterList) {
             int currentIndex = parameterList.indexOf(currentParameter);
             if (currentIndex == 0) {
-                initFirstContextParameter(currentParameter);
+                initFirstContextParameter(currentParameter, repositoryContexts);
             } else {
                 IContextParameter previousParameter = parameterList.get(currentIndex - 1);
-                initOtherContextParameters(currentParameter, previousParameter);
+                initOtherContextParameters(currentParameter, previousParameter, repositoryContexts);
             }
         }
     }
 
-    private void initFirstContextParameter(IContextParameter firstParameter) {
+    private Item getRepositoryContextItemById(List<IRepositoryViewObject> repositoryContexts, String contextId) {
+        for (IRepositoryViewObject repositoryContext : repositoryContexts) {
+            if (contextId.equals(repositoryContext.getId())) {
+                return repositoryContext.getProperty().getItem();
+            }
+        }
+        return null;
+    }
+
+    private void initFirstContextParameter(IContextParameter firstParameter, List<IRepositoryViewObject> repositoryContexts) {
         if (firstParameter.isBuiltIn()) {
-            this.setProperty(firstParameter.getName(), TalendTextUtils.trimParameter(firstParameter.getValue()), BUILT_IN_COMMENT);
+            this.setProperty(firstParameter.getName(), TalendTextUtils.trimParameter(firstParameter.getValue()),
+                    BUILT_IN_COMMENT);
         } else if (ContextParameterUtils.isEmptyParameter(firstParameter.getSource())) {
             this.setProperty(firstParameter.getName(), TalendTextUtils.trimParameter(firstParameter.getValue()));
         } else {
-            this.setProperty(firstParameter.getName(), TalendTextUtils.trimParameter(firstParameter.getValue()),
-                    REPOSITORY_COMMENT
-                            + ContextUtils.getRepositoryContextItemById(firstParameter.getSource()).getProperty().getLabel());
+            Item contextItem = getRepositoryContextItemById(repositoryContexts, firstParameter.getSource());
+            if (contextItem != null) {
+                this.setProperty(firstParameter.getName(), TalendTextUtils.trimParameter(firstParameter.getValue()),
+                        REPOSITORY_COMMENT + contextItem.getProperty().getLabel());
+            } else {
+                this.setProperty(firstParameter.getName(), TalendTextUtils.trimParameter(firstParameter.getValue()));
+            }
         }
     }
 
-    private void initOtherContextParameters(IContextParameter currentParameter, IContextParameter previousParameter) {
+    private void initOtherContextParameters(IContextParameter currentParameter, IContextParameter previousParameter,
+            List<IRepositoryViewObject> repositoryContexts) {
         if (currentParameter.isBuiltIn()) {
             if (previousParameter.isBuiltIn()) {
                 // same neighbor built-in in one group,no need to comment since the previous added comment
@@ -144,21 +177,24 @@ public class ContextOrderProperties extends Properties {
         } else if (ContextParameterUtils.isEmptyParameter(currentParameter.getSource())) {
             this.setProperty(currentParameter.getName(), TalendTextUtils.trimParameter(currentParameter.getValue()));
         } else {
-            Item contextItem = ContextUtils.getRepositoryContextItemById(currentParameter.getSource());
-            // TODO
-            String repositryContextName = contextItem.getProperty().getLabel();
-            if (previousParameter.isBuiltIn()) {
-                this.setProperty(currentParameter.getName(), TalendTextUtils.trimParameter(currentParameter.getValue()),
-                        REPOSITORY_COMMENT + repositryContextName);
-            } else {
-                // need to check if the same repository's context
-                if (previousParameter.getSource().equals(currentParameter.getSource())) {
-                    this.setProperty(currentParameter.getName(), TalendTextUtils.trimParameter(currentParameter.getValue()),
-                            StringUtils.EMPTY);
-                } else {
+            Item contextItem = getRepositoryContextItemById(repositoryContexts, currentParameter.getSource());
+            if (contextItem != null) {
+                String repositryContextName = contextItem.getProperty().getLabel();
+                if (previousParameter.isBuiltIn()) {
                     this.setProperty(currentParameter.getName(), TalendTextUtils.trimParameter(currentParameter.getValue()),
                             REPOSITORY_COMMENT + repositryContextName);
+                } else {
+                    // need to check if the same repository's context
+                    if (previousParameter.getSource().equals(currentParameter.getSource())) {
+                        this.setProperty(currentParameter.getName(), TalendTextUtils.trimParameter(currentParameter.getValue()),
+                                StringUtils.EMPTY);
+                    } else {
+                        this.setProperty(currentParameter.getName(), TalendTextUtils.trimParameter(currentParameter.getValue()),
+                                REPOSITORY_COMMENT + repositryContextName);
+                    }
                 }
+            } else {
+                this.setProperty(currentParameter.getName(), TalendTextUtils.trimParameter(currentParameter.getValue()));
             }
         }
     }

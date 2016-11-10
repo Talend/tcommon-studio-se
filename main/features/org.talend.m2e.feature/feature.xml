@@ -2,7 +2,7 @@
 <feature
       id="org.talend.m2e.feature"
       label="Feature"
-      version="6.3.0.qualifier">
+      version="6.3.1.qualifier">
 
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]
@@ -110,13 +110,6 @@
          download-size="9"
          install-size="17"
          version="1.5.0.20140606-0033"/>
-
-   <plugin
-         id="org.eclipse.m2e.discovery"
-         download-size="75"
-         install-size="165"
-         version="1.5.0.20140606-0033"
-         unpack="false"/>
 
    <plugin
          id="org.eclipse.m2e.core.ui"

@@ -376,20 +376,26 @@ public final class DqRepositoryViewService {
      * @return
      */
     public static boolean isComeFromRefrenceProject(Connection dataProvider) {
-        String currentResourceProjectName = dataProvider.eResource().getURI().segment(1);
         RepositoryContext repositoryContext = (RepositoryContext) org.talend.core.runtime.CoreRuntimePlugin.getInstance()
                 .getContext().getProperty(Context.REPOSITORY_CONTEXT_KEY);
+        if (repositoryContext == null) {
+            return false;
+        }
         Project project = repositoryContext.getProject();
+        if (project == null) {
+            return false;
+        }
         boolean isLocal = project.getEmfProject().isLocal();
         boolean isReference = project.getEmfProject().isReference();
-        EList<ProjectReferenceImpl> referencedProjects = project.getEmfProject().getReferencedProjects();
         if (isLocal || isReference) {
             return false;
         }
+        EList<ProjectReferenceImpl> referencedProjects = project.getEmfProject().getReferencedProjects();
         if (referencedProjects.size() > 0) {
+            String currentResourceProjectName = dataProvider.eResource().getURI().segment(1);
             for (ProjectReferenceImpl projectRef : referencedProjects) {
                 String label = projectRef.getReferencedProject().getLabel();
-                if (currentResourceProjectName.toUpperCase().equals(label.toUpperCase())) {
+                if (StringUtils.equalsIgnoreCase(currentResourceProjectName, label)) {
                     return true;
                 }
             }

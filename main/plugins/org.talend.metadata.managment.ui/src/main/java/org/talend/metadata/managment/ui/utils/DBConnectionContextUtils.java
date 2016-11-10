@@ -56,6 +56,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.metadata.managment.repository.ManagerConnection;
 import org.talend.metadata.managment.ui.model.IConnParamName;
 import org.talend.model.bridge.ReponsitoryContextBridge;
+
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.resource.relational.Catalog;
 import orgomg.cwm.resource.relational.Schema;
@@ -336,7 +337,7 @@ public final class DBConnectionContextUtils {
                         key = ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MAPRTICKET_DURATION;
                     }
                     value = conn.getParameters().get(key);
-                    ConnectionContextHelper.createParameters(varList, paramName, value);
+                    ConnectionContextHelper.createParameters(varList, paramName, value, JavaTypesManager.LONG);
                     break;
                 default:
                 }

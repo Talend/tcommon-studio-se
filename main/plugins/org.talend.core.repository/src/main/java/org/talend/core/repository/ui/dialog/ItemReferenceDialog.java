@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
@@ -35,7 +36,15 @@ import org.talend.core.repository.model.ItemReferenceBean;
  */
 public class ItemReferenceDialog extends Dialog {
 
+    public static int OK_ID = IDialogConstants.OK_ID;
+
+    public static int FORCE_DELETE_ID = 0xDE;
+
+    public static int DO_NOT_DELETE_ID = 0xD0;
+
     private List<ItemReferenceBean> referenceList;
+
+    private boolean showForceDeleteButton = false;
 
     public ItemReferenceDialog(Shell parentShell, List<ItemReferenceBean> referenceList) {
         super(parentShell);
@@ -52,7 +61,12 @@ public class ItemReferenceDialog extends Dialog {
 
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
-        createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
+        if (isShowForceDeleteButton()) {
+            createButton(parent, FORCE_DELETE_ID, Messages.getString("ItemReferenceDialog.forceDelete.button"), false); //$NON-NLS-1$
+            createButton(parent, DO_NOT_DELETE_ID, Messages.getString("ItemReferenceDialog.doNotDelete.button"), true); //$NON-NLS-1$
+        } else {
+            createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
+        }
     }
 
     @Override
@@ -99,11 +113,49 @@ public class ItemReferenceDialog extends Dialog {
         return composite;
     }
 
+    @Override
+    protected void buttonPressed(int buttonId) {
+        if (FORCE_DELETE_ID == buttonId) {
+            MessageDialog confirmDialog = new MessageDialog(getShell(),
+                    Messages.getString("ItemReferenceDialog.forceDelete.warn.title"), null, //$NON-NLS-1$
+                    Messages.getString("ItemReferenceDialog.forceDelete.warn.message"), //$NON-NLS-1$
+                    MessageDialog.WARNING, new String[] { IDialogConstants.YES_LABEL,
+                            IDialogConstants.NO_LABEL },
+                    1);
+            if (confirmDialog.open() == 0) {
+                forceDeletePressed();
+            }
+        } else if (DO_NOT_DELETE_ID == buttonId) {
+            doNotDeletePressed();
+        } else {
+            super.buttonPressed(buttonId);
+        }
+    }
+
+    @Override
     protected void initializeBounds() {
         super.initializeBounds();
 
         Point size = getShell().getSize();
         Point location = getInitialLocation(size);
         getShell().setBounds(getConstrainedShellBounds(new Rectangle(location.x, location.y, size.x, size.y)));
+    }
+
+    public void showForceDeleteButton(boolean forceDelete) {
+        this.showForceDeleteButton = forceDelete;
+    }
+
+    public boolean isShowForceDeleteButton() {
+        return this.showForceDeleteButton;
+    }
+
+    protected void forceDeletePressed() {
+        setReturnCode(FORCE_DELETE_ID);
+        close();
+    }
+
+    protected void doNotDeletePressed() {
+        setReturnCode(DO_NOT_DELETE_ID);
+        close();
     }
 }

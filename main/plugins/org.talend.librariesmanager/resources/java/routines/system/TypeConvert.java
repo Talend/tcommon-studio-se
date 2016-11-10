@@ -59,9 +59,13 @@ public class TypeConvert {
         public ConvertTypeIllegalArgumentException(String s, Throwable cause) {
             super(s, cause);
         }
-
+        
         static ConvertTypeIllegalArgumentException forInputArgument(Object argument) {
             return new ConvertTypeIllegalArgumentException("For input argument: \"" + argument + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        static ConvertTypeIllegalArgumentException forInputArgument(Object argument,String type) {
+            return new ConvertTypeIllegalArgumentException("Cannot convert \"" + argument + "\" to "+type ); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         static ConvertTypeIllegalArgumentException forInputArgument(Object argument, Throwable cause) {
@@ -3375,7 +3379,7 @@ public class TypeConvert {
             return false;
         if (o instanceof Boolean)
             return ((Boolean) o).booleanValue();
-        throw ConvertTypeIllegalArgumentException.forInputArgument(o);
+        throw ConvertTypeIllegalArgumentException.forInputArgument(o,"boolean");
     }
 
     /**
@@ -3387,7 +3391,7 @@ public class TypeConvert {
             return null;
         if (o instanceof Boolean)
             return (Boolean) o;
-        throw ConvertTypeIllegalArgumentException.forInputArgument(o);
+        throw ConvertTypeIllegalArgumentException.forInputArgument(o,"Boolean");
     }
 
     /**
@@ -3399,7 +3403,7 @@ public class TypeConvert {
             return (byte) 0;
         if (o instanceof Byte)
             return ((Byte) o).byteValue();
-        throw ConvertTypeIllegalArgumentException.forInputArgument(o);
+        throw ConvertTypeIllegalArgumentException.forInputArgument(o,"byte");
     }
 
     /**
@@ -3411,7 +3415,7 @@ public class TypeConvert {
             return null;
         if (o instanceof Byte)
             return (Byte) o;
-        throw ConvertTypeIllegalArgumentException.forInputArgument(o);
+        throw ConvertTypeIllegalArgumentException.forInputArgument(o,"Byte");
     }
 
     /**
@@ -3423,7 +3427,7 @@ public class TypeConvert {
             return null;
         if (o instanceof byte[])
             return (byte[]) o;
-        throw ConvertTypeIllegalArgumentException.forInputArgument(o);
+        throw ConvertTypeIllegalArgumentException.forInputArgument(o,"byte[]");
     }
 
     /**
@@ -3435,7 +3439,7 @@ public class TypeConvert {
             return (char) 0;
         if (o instanceof Character)
             return ((Character) o).charValue();
-        throw ConvertTypeIllegalArgumentException.forInputArgument(o);
+        throw ConvertTypeIllegalArgumentException.forInputArgument(o,"char");
     }
 
     /**
@@ -3447,7 +3451,7 @@ public class TypeConvert {
             return null;
         if (o instanceof Character)
             return (Character) o;
-        throw ConvertTypeIllegalArgumentException.forInputArgument(o);
+        throw ConvertTypeIllegalArgumentException.forInputArgument(o,"Character");
     }
 
     /**
@@ -3459,7 +3463,7 @@ public class TypeConvert {
             return null;
         if (o instanceof Date)
             return (Date) o;
-        throw ConvertTypeIllegalArgumentException.forInputArgument(o);
+        throw ConvertTypeIllegalArgumentException.forInputArgument(o,"Date");
     }
 
     /**
@@ -3471,7 +3475,7 @@ public class TypeConvert {
             return (double) 0;
         if (o instanceof Double)
             return ((Double) o).doubleValue();
-        throw ConvertTypeIllegalArgumentException.forInputArgument(o);
+        throw ConvertTypeIllegalArgumentException.forInputArgument(o,"double");
     }
 
     /**
@@ -3483,7 +3487,7 @@ public class TypeConvert {
             return null;
         if (o instanceof Double)
             return (Double) o;
-        throw ConvertTypeIllegalArgumentException.forInputArgument(o);
+        throw ConvertTypeIllegalArgumentException.forInputArgument(o,"Double");
     }
 
     /**
@@ -3495,7 +3499,7 @@ public class TypeConvert {
             return 0f;
         if (o instanceof Float)
             return ((Float) o).floatValue();
-        throw ConvertTypeIllegalArgumentException.forInputArgument(o);
+        throw ConvertTypeIllegalArgumentException.forInputArgument(o,"float");
     }
 
     /**
@@ -3507,7 +3511,7 @@ public class TypeConvert {
             return null;
         if (o instanceof Float)
             return (Float) o;
-        throw ConvertTypeIllegalArgumentException.forInputArgument(o);
+        throw ConvertTypeIllegalArgumentException.forInputArgument(o,"Float");
     }
 
     /**
@@ -3519,7 +3523,7 @@ public class TypeConvert {
             return null;
         if (o instanceof BigDecimal)
             return (BigDecimal) o;
-        throw ConvertTypeIllegalArgumentException.forInputArgument(o);
+        throw ConvertTypeIllegalArgumentException.forInputArgument(o,"BigDecimal");
     }
 
     /**
@@ -3531,7 +3535,7 @@ public class TypeConvert {
             return 0;
         if (o instanceof Integer)
             return ((Integer) o).intValue();
-        throw ConvertTypeIllegalArgumentException.forInputArgument(o);
+        throw ConvertTypeIllegalArgumentException.forInputArgument(o,"int");
     }
 
     /**
@@ -3543,7 +3547,7 @@ public class TypeConvert {
             return null;
         if (o instanceof Integer)
             return (Integer) o;
-        throw ConvertTypeIllegalArgumentException.forInputArgument(o);
+        throw ConvertTypeIllegalArgumentException.forInputArgument(o,"Integer");
     }
 
     /**
@@ -3555,7 +3559,7 @@ public class TypeConvert {
             return 0;
         if (o instanceof Long)
             return ((Long) o).longValue();
-        throw ConvertTypeIllegalArgumentException.forInputArgument(o);
+        throw ConvertTypeIllegalArgumentException.forInputArgument(o,"long");
     }
 
     /**
@@ -3567,7 +3571,7 @@ public class TypeConvert {
             return null;
         if (o instanceof Long)
             return (Long) o;
-        throw ConvertTypeIllegalArgumentException.forInputArgument(o);
+        throw ConvertTypeIllegalArgumentException.forInputArgument(o,"Long");
     }
 
     /**
@@ -3588,7 +3592,7 @@ public class TypeConvert {
             return (short) 0;
         if (o instanceof Short)
             return ((Short) o).shortValue();
-        throw ConvertTypeIllegalArgumentException.forInputArgument(o);
+        throw ConvertTypeIllegalArgumentException.forInputArgument(o,"short");
     }
 
     /**
@@ -3600,7 +3604,7 @@ public class TypeConvert {
             return null;
         if (o instanceof Short)
             return (Short) o;
-        throw ConvertTypeIllegalArgumentException.forInputArgument(o);
+        throw ConvertTypeIllegalArgumentException.forInputArgument(o,"Short");
     }
 
     /**
@@ -4026,7 +4030,7 @@ public class TypeConvert {
             return false;
         if (o.equalsIgnoreCase("true") || o.equalsIgnoreCase("false")) //$NON-NLS-1$ //$NON-NLS-2$
             return Boolean.valueOf(o);
-        throw ConvertTypeIllegalArgumentException.forInputArgument(o);
+        throw ConvertTypeIllegalArgumentException.forInputArgument(o,"boolean");
     }
 
     /**
@@ -4039,7 +4043,7 @@ public class TypeConvert {
         	return null;
         if (o.equalsIgnoreCase("true") || o.equalsIgnoreCase("false")) //$NON-NLS-1$ //$NON-NLS-2$
             return Boolean.valueOf(o);
-        throw ConvertTypeIllegalArgumentException.forInputArgument(o);
+        throw ConvertTypeIllegalArgumentException.forInputArgument(o,"Boolean");
     }
 
     /**
@@ -4080,7 +4084,7 @@ public class TypeConvert {
         if (o == null)
             return (char) 0;
         if (o.length() > 1)
-            throw ConvertTypeIllegalArgumentException.forInputArgument(o);
+            throw ConvertTypeIllegalArgumentException.forInputArgument(o,"char");
         return o.charAt(0);
     }
 
@@ -4092,7 +4096,7 @@ public class TypeConvert {
         if (o == null)
             return null;
         if (o.length() > 1)
-            throw ConvertTypeIllegalArgumentException.forInputArgument(o);
+            throw ConvertTypeIllegalArgumentException.forInputArgument(o,"Character");
         return Character.valueOf(o.charAt(0));
     }
 
@@ -4107,7 +4111,7 @@ public class TypeConvert {
         try {
             return d.parse(o);
         } catch (ParseException e) {
-            throw ConvertTypeIllegalArgumentException.forInputArgument(o);
+            throw ConvertTypeIllegalArgumentException.forInputArgument(o,"Date");
         }
     }
 

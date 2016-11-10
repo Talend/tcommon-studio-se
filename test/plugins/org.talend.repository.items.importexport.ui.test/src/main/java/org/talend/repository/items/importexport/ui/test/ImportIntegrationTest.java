@@ -35,6 +35,7 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.osgi.framework.Bundle;
 import org.talend.commons.exception.LoginException;
@@ -327,7 +328,7 @@ public class ImportIntegrationTest {
         return importItems;
     }
 
-    @Test
+    @Test @Ignore
     public void testItemSameNameDifferentId() throws Exception {
         initialize();
 
@@ -486,7 +487,7 @@ public class ImportIntegrationTest {
      * @throws Exception
      */
     @SuppressWarnings("null")
-    @Test
+    @Test @Ignore
     public void testItemDifferentNameSameIdWithDep2() throws Exception {
         List<ImportItem> importItems = getImportItems5();
         manager.importItemRecords(new NullProgressMonitor(), resManager, importItems, true,
@@ -623,7 +624,7 @@ public class ImportIntegrationTest {
      * @throws Exception
      */
     @SuppressWarnings("null")
-    @Test
+    @Test @Ignore
     public void testItemSameNameDifferentIdWithDep() throws Exception {
         List<ImportItem> importItems = getImportItems6();
         manager.importItemRecords(new NullProgressMonitor(), resManager, importItems, true,
@@ -788,7 +789,7 @@ public class ImportIntegrationTest {
         return importItems;
     }
 
-    @Test
+    @Test @Ignore
     public void testDuplicateIdInSameImport() throws Exception {
         List<ImportItem> importItems = getImportItems7();
         manager.importItemRecords(new NullProgressMonitor(), resManager, importItems, false,

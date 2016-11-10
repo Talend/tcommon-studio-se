@@ -310,7 +310,7 @@ public class LocalLibraryManagerTest {
         assertTrue(missJars.size() == 0);
     }
 
-    @Test
+    @Test @Ignore
     public void testUnusedJars() throws URISyntaxException {
 
         Bundle currentBundle = Platform.getBundle("org.talend.librariesmanager"); //$NON-NLS-1$
@@ -450,7 +450,7 @@ public class LocalLibraryManagerTest {
         node.putInt(ITalendCorePrefConstants.NEXUS_REFRESH_FREQUENCY, originalValue);
     }
 
-    @Test
+    @Test @Ignore
     public void testRetrieveFromRemote() throws Exception {
         ILibraryManagerService libraryManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
                 ILibraryManagerService.class);
@@ -604,7 +604,7 @@ public class LocalLibraryManagerTest {
         assertFalse(lm.isResolveAllowed("a")); //$NON-NLS-1$
     }
 
-    @Test
+    @Test @Ignore
     public void testNexusUpdateJar() throws Exception {
         String uri = "mvn:org.talend.libraries/test/6.0.0-SNAPSHOT/jar";
         TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
@@ -648,7 +648,7 @@ public class LocalLibraryManagerTest {
         assertEquals(newJarSHA1, finalJarSHA1);
     }
 
-    @Test
+    @Test @Ignore
     public void testNexusInstallNewJar() throws Exception {
         String uri = "mvn:org.talend.libraries/test/6.0.0-SNAPSHOT/jar";
         TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
@@ -686,7 +686,7 @@ public class LocalLibraryManagerTest {
         assertEquals(originalSHA1, finalJarSHA1);
     }
 
-    @Test
+    @Test @Ignore
     public void testResolveSha1NotExist() throws Exception {
         String uri = "mvn:org.talend.libraries/not-existing/6.0.0-SNAPSHOT/jar";
         TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
@@ -727,7 +727,7 @@ public class LocalLibraryManagerTest {
         assertFalse(localLibraryManager.isJarExistInLibFolder(testJarFile));
     }
 
-    @Test
+    @Test @Ignore
     public void testIsLocalJarSameAsNexus() throws IOException {
         String uri = "mvn:org.talend.libraries/test/6.0.0-SNAPSHOT/jar";
         TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
