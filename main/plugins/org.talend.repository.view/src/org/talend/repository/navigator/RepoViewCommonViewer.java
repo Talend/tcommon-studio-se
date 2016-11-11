@@ -291,6 +291,9 @@ public class RepoViewCommonViewer extends CommonViewer implements INavigatorCont
     }
 
     private void refreshNodeFromProperty(org.talend.core.model.properties.Property property) {
+        if (this.getTree() == null || this.getTree().isDisposed()) {
+            return;
+        }
         List<IRepositoryNode> nodes = new ArrayList<>();
         for (Object object : getExpandedElements()) {
             if (object instanceof IRepositoryNode) {
