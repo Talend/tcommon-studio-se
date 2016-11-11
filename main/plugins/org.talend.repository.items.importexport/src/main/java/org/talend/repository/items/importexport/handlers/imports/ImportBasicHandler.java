@@ -718,18 +718,6 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
         doImportItem(monitor, resManager, selectedImportItem, overwrite, destinationPath, overwriteDeletedItems,
                 idDeletedBeforeImport);
 
-        // unload the imported resources
-        // EList<Resource> resources = selectedImportItem.getResourceSet().getResources();
-        // Iterator<Resource> iterator = resources.iterator();
-        // while (iterator.hasNext()) {
-        // Resource res = iterator.next();
-        // // Due to the system of lazy loading for db repository of ByteArray,
-        // // it can't be unloaded just after create the item.
-        // if (res != null && !(res instanceof ByteArrayResource)) {
-        // res.unload();
-        // iterator.remove();
-        // }
-        // }
         String label = selectedImportItem.getLabel();
         TimeMeasure.step("importItemRecords", "Import item: " + label); //$NON-NLS-1$ //$NON-NLS-2$
 

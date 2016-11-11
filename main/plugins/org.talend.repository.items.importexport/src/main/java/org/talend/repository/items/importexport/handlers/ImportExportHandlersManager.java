@@ -593,7 +593,7 @@ public class ImportExportHandlersManager {
                             // post import
                             List<ImportItem> importedItemRecords = ImportCacheHelper.getInstance().getImportedItemRecords();
                             postImport(monitor, resManager, importedItemRecords.toArray(new ImportItem[0]));
-                            unloadReources(allImportItemRecords);
+                            unloadImportItems(allImportItemRecords);
                         }
 
                         private void importItemRecordsWithRelations(final IProgressMonitor monitor,
@@ -793,7 +793,7 @@ public class ImportExportHandlersManager {
         }
     }
 
-    private void unloadReources(ImportItem[] importItems) {
+    private void unloadImportItems(ImportItem[] importItems) {
         for (ImportItem importItem : importItems) {
             try {
                 unloadImportItem(importItem);
@@ -831,13 +831,10 @@ public class ImportExportHandlersManager {
             }
         }
         Property property = importItem.getProperty();
-        if (property == null) {
-            IRepositoryViewObject object = proxyFactory.getSpecificVersion(importItem.getItemId(), importItem.getItemVersion(),
-                    true);
-            property = object.getProperty();
+        if (property != null) {
+            proxyFactory.unloadResources(property);
         }
         importItem.setProperty(null);
-        proxyFactory.unloadResources(property);
         importItem.clear();
     }
 }
