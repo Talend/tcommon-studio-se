@@ -244,7 +244,8 @@ public class XmlFileStep2Form extends AbstractXmlFileStepForm implements IRefres
     protected void adaptFormToEditable() {
         super.adaptFormToEditable();
         loopTableEditorView.setReadOnly(isContextMode());
-        this.fieldsTableEditorView.setReadOnly(isContextMode());
+        // this.fieldsTableEditorView.setReadOnly(isContextMode());
+        this.fieldsTableEditorView.setReadOnly(false);
     }
 
     @Override

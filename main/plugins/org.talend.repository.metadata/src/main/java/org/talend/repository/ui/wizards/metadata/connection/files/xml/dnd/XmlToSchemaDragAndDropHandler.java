@@ -41,7 +41,10 @@ import org.talend.commons.utils.data.list.UniqueStringGenerator;
 import org.talend.core.model.metadata.MetadataToolHelper;
 import org.talend.core.model.metadata.builder.connection.SchemaTarget;
 import org.talend.core.model.metadata.builder.connection.XmlXPathLoopDescriptor;
+import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.datatools.xml.utils.XPathPopulationUtil;
+import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
+import org.talend.metadata.managment.ui.utils.ConnectionContextHelper;
 import org.talend.repository.ui.wizards.metadata.connection.files.xml.extraction.ExtractionFieldsWithXPathEditorView;
 import org.talend.repository.ui.wizards.metadata.connection.files.xml.extraction.ExtractionLoopWithXPathEditorView;
 import org.talend.repository.ui.wizards.metadata.connection.files.xml.extraction.XmlToXPathLinker;
@@ -263,12 +266,19 @@ public class XmlToSchemaDragAndDropHandler {
             List<TransferableXPathEntry> transferableEntryList = draggedData.getTransferableEntryList();
 
             ExtractionLoopWithXPathEditorView loopTableEditorView = linker.getLoopTableEditorView();
-            if (loopTableEditorView.isReadOnly()) {
-                return;
-            }
+            // if (loopTableEditorView.isReadOnly()) {
+            // return;
+            // }
             ExtendedTableModel<XmlXPathLoopDescriptor> extendedTableModel = loopTableEditorView.getExtendedTableModel();
             XmlXPathLoopDescriptor pathLoopDescriptor = extendedTableModel.getBeansList().get(0);
-
+            ContextType contextType = ConnectionContextHelper.getContextTypeForContextMode(pathLoopDescriptor.getConnection(),
+                    pathLoopDescriptor.getConnection().getContextName());
+            String originalValue = pathLoopDescriptor.getAbsoluteXPathQuery();
+            if (contextType != null) {
+                originalValue = ConnectionContextHelper.getOriginalValue(contextType, pathLoopDescriptor.getAbsoluteXPathQuery());
+                originalValue = TalendQuoteUtils.removeQuotes(originalValue);
+            }
+            
             if (linker.isLoopTable((Table) control)) {
 
                 if (transferableEntryList.size() > 0) {
@@ -297,8 +307,11 @@ public class XmlToSchemaDragAndDropHandler {
                 for (TransferableXPathEntry entry : transferableEntryList) {
 
                     ArrayList<String> loopXpathNodes = linker.getLoopXpathNodes();
-                    if (loopXpathNodes.size() > 0) {
-                        String loopPath = loopXpathNodes.get(0);
+                    if (loopXpathNodes.size() > 0 || (loopTableEditorView.isReadOnly() && originalValue != null)) {
+                        String loopPath = originalValue;
+                        if (loopXpathNodes.size() > 0) {
+                            loopPath = loopXpathNodes.get(0);
+                        }
                         String relativeXPath = XPathPopulationUtil.populateColumnPath(loopPath, entry.getAbsoluteXPath());
 
                         if (relativeXPath.startsWith("/")) { //$NON-NLS-1$

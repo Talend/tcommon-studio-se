@@ -18,14 +18,15 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.talend.core.model.repository.ERepositoryObjectType;
 
 /**
- * DOC hwang  class global comment. Detailled comment
+ * DOC hwang class global comment. Detailled comment
  */
-public class TalendCreationToolEntry extends CreationToolEntry{
-    
+public class TalendCreationToolEntry extends CreationToolEntry {
+
     private ERepositoryObjectType type;
 
     /**
      * DOC talend TalendCreationToolEntry constructor comment.
+     * 
      * @param label
      * @param shortDesc
      * @param factory
@@ -37,9 +38,12 @@ public class TalendCreationToolEntry extends CreationToolEntry{
         super(label, shortDesc, factory, iconSmall, iconLarge);
         this.type = type;
     }
-    
-    public ERepositoryObjectType getRepositoryObjectType(){
+
+    public ERepositoryObjectType getRepositoryObjectType() {
         return this.type;
     }
 
+    public CreationFactory getFactory() {
+        return this.factory;
+    }
 }
