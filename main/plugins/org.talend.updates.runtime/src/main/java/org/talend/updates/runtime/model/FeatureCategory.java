@@ -20,6 +20,7 @@ import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 
 
 /**
@@ -82,8 +83,7 @@ public class FeatureCategory implements ExtraFeature {
      */
     @Override
     public IStatus install(IProgressMonitor progress, List<URI> allRepoUris) throws Exception {
-        // TODO Auto-generated method stub
-        return null;
+        return Status.OK_STATUS;
     }
 
     /* (non-Javadoc)
@@ -112,14 +112,21 @@ public class FeatureCategory implements ExtraFeature {
         // TODO Auto-generated method stub
         return false;
     }
-
     
     /**
      * Getter for children.
      * @return the children
      */
-    protected Set<ExtraFeature> getChildren() {
+    public Set<ExtraFeature> getChildren() {
         return this.children;
+    }
+
+    /**
+     * Sets the name.
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 
 }

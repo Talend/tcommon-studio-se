@@ -30,6 +30,7 @@ import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
 import org.talend.updates.runtime.i18n.Messages;
 import org.talend.updates.runtime.model.ExtraFeature;
+import org.talend.updates.runtime.model.FeatureCategory;
 import org.talend.updates.runtime.model.FeatureRepositories;
 import org.talend.updates.runtime.model.UpdateSiteLocationType;
 
@@ -47,7 +48,14 @@ public class UpdateWizardModel {
 
         @Override
         protected IStatus validate() {
-            if (selectedExtraFeatures.isEmpty()) {
+            boolean hasFeatureSelected = false;
+            for (ExtraFeature feature : (Set<ExtraFeature>) selectedExtraFeatures) {
+                if (!(feature instanceof FeatureCategory)) {
+                    hasFeatureSelected = true;
+                    break;
+                }
+            }
+            if (!hasFeatureSelected) {
                 return ValidationStatus
                         .error(Messages.getString("SelectExtraFeaturesToInstallWizardPage.one.feature.must.be.selected")); //$NON-NLS-1$
             } else if (!selectedExtraFeatures.isEmpty() && !canConfigureUpdateSiteLocation()) {
@@ -112,7 +120,9 @@ public class UpdateWizardModel {
      */
     public UpdateWizardModel(Set<ExtraFeature> extraFeatures) {
         // create an observable set of the feature that may be installed
-        availableExtraFeatures = extraFeatures != null ? new FilteredCategories(extraFeatures, ExtraFeature.class) : new FilteredCategories();;
+        availableExtraFeatures = extraFeatures != null ? new WritableSet(extraFeatures, ExtraFeature.class)
+                : new WritableSet();
+        ;
         this.featureRepositories = new FeatureRepositories();
     }
 
@@ -171,42 +181,11 @@ public class UpdateWizardModel {
     private ExtraFeature getFirstExtraFeatureNotAllowingUpdateSiteConfig(Set<ExtraFeature> extraFeatures) {
         for (ExtraFeature ef : extraFeatures) {
             EnumSet<UpdateSiteLocationType> updateSiteCompatibleTypes = ef.getUpdateSiteCompatibleTypes();
-            if (updateSiteCompatibleTypes.size() == 1
+            if (updateSiteCompatibleTypes != null && updateSiteCompatibleTypes.size() == 1
                     && updateSiteCompatibleTypes.contains(UpdateSiteLocationType.DEFAULT_REPO)) {
                 return ef;
             }
         }
         return null;
-    }
-
-    private class FilteredCategories extends WritableSet {
-
-
-        /**
-         * DOC nrousseau FilteredCategories constructor comment.
-         * @param extraFeatures
-         * @param class1
-         */
-        public FilteredCategories(Set<ExtraFeature> extraFeatures, Class<ExtraFeature> class1) {
-            super(extraFeatures, class1);
-        }
-
-        /**
-         * DOC nrousseau FilteredCategories constructor comment.
-         */
-        public FilteredCategories() {
-            super();
-        }
-
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.core.databinding.observable.set.AbstractObservableSet#add(java.lang.Object)
-         */
-        @Override
-        public boolean add(Object o) {
-            return super.add(o);
-        }
-
     }
 }
