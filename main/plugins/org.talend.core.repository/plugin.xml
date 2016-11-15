@@ -692,6 +692,12 @@
             id="org.talend.core.repository.parameterHandler.processType"
             name="Process Type">
       </parameterHandler>
+      <parameterHandler
+            class="org.talend.core.repository.handlers.RouteParameterRelationshipHandler"
+            id="org.talend.core.repository.parameterHandler.route"
+            name="Route Parameter">
+      </parameterHandler>
+      
    </extension>
 
 
