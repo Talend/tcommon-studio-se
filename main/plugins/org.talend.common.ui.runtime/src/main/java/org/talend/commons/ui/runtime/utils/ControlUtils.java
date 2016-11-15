@@ -22,12 +22,6 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Control;
 import org.talend.commons.ui.runtime.i18n.Messages;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id: ControlUtils.java 7038 2007-11-15 14:05:48Z plegall $
- * 
- */
 public class ControlUtils {
 
     /**

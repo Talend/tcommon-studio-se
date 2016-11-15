@@ -15,26 +15,10 @@ package org.talend.commons.ui.swt.advanced.dataeditor.control;
 import org.eclipse.swt.widgets.Button;
 import org.talend.commons.ui.swt.extended.table.AbstractExtendedControlViewer;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public interface IExtendedPushButton {
 
-    /**
-     * Getter for button.
-     * 
-     * @return the button
-     */
     public Button getButton();
 
-    /**
-     * Getter for extendedTableViewer.
-     * 
-     * @return the extendedTableViewer
-     */
     public AbstractExtendedControlViewer getExtendedControlViewer();
 
     public boolean getEnabledState();

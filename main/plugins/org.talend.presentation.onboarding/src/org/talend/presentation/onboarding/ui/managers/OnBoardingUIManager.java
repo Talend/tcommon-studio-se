@@ -24,10 +24,6 @@ import org.talend.presentation.onboarding.ui.shells.HighlightShell;
 import org.talend.presentation.onboarding.ui.shells.OnBoardingShell;
 import org.talend.presentation.onboarding.utils.WidgetFinder;
 
-/**
- * created by cmeng on Sep 11, 2015 Detailed comment
- *
- */
 public class OnBoardingUIManager {
 
     private HighlightShell highlightShell;

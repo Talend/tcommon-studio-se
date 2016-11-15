@@ -39,9 +39,6 @@ import org.talend.designer.core.ICamelDesignerCoreService;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.ui.views.IRepositoryView;
 
-/**
- * ggu class global comment. Detailed comment
- */
 public final class RepositoryManager {
 
     public static final String PATTERNS_SEPARATOR = ","; //$NON-NLS-1$

@@ -15,19 +15,10 @@ package org.talend.repository.tester;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class MetadataNodeTester extends AbstractNodeTester {
 
     private static final Object IS_METADATA_TOP_NODE = "isMetadataTopNode"; //$NON-NLS-1$
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.tester.AbstractNodeTester#testProperty(java.lang.Object, java.lang.String,
-     * java.lang.Object[], java.lang.Object)
-     */
     @Override
     protected Boolean testProperty(Object receiver, String property, Object[] args, Object expectedValue) {
         if (receiver instanceof RepositoryNode) {

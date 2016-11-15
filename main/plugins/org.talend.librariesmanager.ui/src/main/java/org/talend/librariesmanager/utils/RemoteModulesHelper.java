@@ -58,10 +58,6 @@ import us.monoid.json.JSONArray;
 import us.monoid.json.JSONException;
 import us.monoid.json.JSONObject;
 
-/**
- * created by Administrator on 2012-9-19 Detailed comment
- * 
- */
 public class RemoteModulesHelper {
 
     private static final String SLASH = "/"; //$NON-NLS-1$
@@ -72,28 +68,15 @@ public class RemoteModulesHelper {
     // true if user was warned the network connection is not possible
     static private boolean alreadyWarnedAboutConnectionIssue = false;
 
-    /**
-     * created by sgandon on 24 sept. 2013 Detailed comment
-     * 
-     */
     private final class RemoteModulesFetchRunnable implements IRunnableWithProgress {
 
         private final boolean collectModulesWithJarName;
 
-        /**
-         * 
-         */
         private final List<ModuleToInstall> toInstall;
 
-        /**
-         * 
-         */
         private final Map<String, List<ModuleNeeded>> contextMap;
 
         /**
-         * 
-         * DOC wchen RemoteModulesFetchRunnable constructor comment.
-         * 
          * @param requiredModules a map with key=mvnuri , value =list of ModuleNeeded with the same mvnuri
          * @param toInstall
          */

@@ -14,9 +14,6 @@ package org.talend.core.model.process.node;
 
 import java.util.List;
 
-/**
- * cli class global comment. Detailed comment
- */
 public interface IExternalMapTable {
 
     public String getName();

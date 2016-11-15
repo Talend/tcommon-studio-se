@@ -319,16 +319,10 @@ public class ManagerConnection {
         return check(metadataConnection, null, onlyIfNeeded);
     }
 
-    /**
-     * DOC cantoine : Check connexion from IMetadataConnection comment. Detailed comment.
-     * 
-     * @return isValide
-     */
     public boolean check(IMetadataConnection metadataConnection, StringBuffer retProposedSchema, boolean... onlyIfNeeded) {
         messageException = null;
 
         ConnectionStatus testConnection = null;
-        // qli
         // check the same connection.
         // if same. just return true.
         if (metadataConnection == null) {

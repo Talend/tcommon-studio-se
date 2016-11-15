@@ -28,12 +28,6 @@ import org.eclipse.swt.widgets.Tree;
 import org.talend.commons.ui.runtime.ws.WindowSystem;
 import org.talend.commons.ui.swt.drawing.background.IBackgroundRefresher;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public class LinkableTree implements ILinkableControl {
 
     private Tree tree;
@@ -56,12 +50,6 @@ public class LinkableTree implements ILinkableControl {
 
     private Listener paintListener;
 
-    /**
-     * DOC amaumont LinkableTable constructor comment.
-     * 
-     * @param tree
-     * @param bgDrawableComposite
-     */
     public LinkableTree(IControlsLinker controlsLinker, IBackgroundRefresher backgroundRefresher, Tree tree,
             BgDrawableComposite bgDrawableComposite) {
         this(controlsLinker, backgroundRefresher, tree, bgDrawableComposite, true);

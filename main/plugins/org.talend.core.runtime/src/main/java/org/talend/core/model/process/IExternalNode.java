@@ -21,12 +21,6 @@ import org.talend.core.model.components.IODataComponentContainer;
 import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.designer.core.model.utils.emf.talendfile.AbstractExternalData;
 
-/**
- * DOC nrousseau class global comment. Detailed comment <br/>
- * 
- * $Id: IExternalNode.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
- */
 public interface IExternalNode extends INode {
 
     public void initialize();

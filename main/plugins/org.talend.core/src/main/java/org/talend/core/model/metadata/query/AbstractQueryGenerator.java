@@ -30,9 +30,6 @@ import org.talend.core.model.utils.ContextParameterUtils;
 import org.talend.core.model.utils.TalendTextUtils;
 import org.talend.core.prefs.ITalendCorePrefConstants;
 
-/**
- * ggu class global comment. Detailed comment
- */
 public abstract class AbstractQueryGenerator implements IQueryGenerator {
 
     private final EDatabaseTypeName dbType;

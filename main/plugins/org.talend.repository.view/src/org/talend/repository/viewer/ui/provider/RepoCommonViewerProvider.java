@@ -30,9 +30,6 @@ import org.talend.repository.viewer.filter.PerspectiveFilterHelper;
 import org.talend.repository.viewer.ui.viewer.CheckboxRepoCommonViewer;
 import org.talend.repository.viewer.ui.viewer.RepoCommonViewer;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class RepoCommonViewerProvider extends AbstractViewerProvider {
 
     public static final RepoCommonViewerProvider NORMAL = new RepoCommonViewerProvider();

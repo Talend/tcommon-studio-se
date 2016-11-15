@@ -22,9 +22,6 @@ import org.talend.core.model.properties.PropertiesFactory;
 import org.talend.core.model.properties.PropertiesPackage;
 import org.talend.core.model.properties.impl.ProcessItemImpl;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class ProcessItemTest {
 
     private ProcessItem processItem;

@@ -31,8 +31,6 @@ import org.talend.core.ui.context.model.ContextProviderProxy;
 import org.talend.core.ui.context.model.ContextTabParentModel;
 
 /**
- * cli class global comment. Detailed comment
- * 
  * A label and content provider for the treeviewer which groups the Contexts by variable.
  */
 public class GroupByVariableProvider extends ContextProviderProxy {
@@ -48,11 +46,6 @@ public class GroupByVariableProvider extends ContextProviderProxy {
         this.modelManager = modelManager;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnText(java.lang.Object, int)
-     */
     public String getColumnText(Object element, int columnIndex) {
         if (element instanceof ContextTreeTabParentModel) {
             if (columnIndex == 0)

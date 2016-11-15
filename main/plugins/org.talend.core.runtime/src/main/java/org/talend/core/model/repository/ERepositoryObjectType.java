@@ -78,9 +78,6 @@ import org.talend.core.utils.ProductUtils;
 import org.talend.designer.core.ICamelDesignerCoreService;
 import org.talend.repository.ProjectManager;
 
-/**
- * DOC hywang class global comment. Detailed comment
- */
 public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
 
     public static final String PROD_DI = ProductUtils.PROD_DI;

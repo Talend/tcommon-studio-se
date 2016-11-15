@@ -33,9 +33,6 @@ import org.talend.metadata.managment.mdm.S60MdmConnectionHelper;
 import org.talend.metadata.managment.ui.wizard.AbstractForm;
 import org.talend.repository.mdm.i18n.Messages;
 
-/**
- * DOC hwang class global comment. Detailed comment
- */
 public class UniverseForm extends AbstractForm {
 
     private LabelledCombo universeCombo = null;
@@ -43,8 +40,6 @@ public class UniverseForm extends AbstractForm {
     private LabelledCombo modelText = null;
 
     private LabelledCombo clusterText = null;
-
-    // private MDMWizardPage mdmWizardPage;
 
     private List<String> universList = new ArrayList<String>();
 
@@ -64,14 +59,6 @@ public class UniverseForm extends AbstractForm {
 
     private String pkRegex = "";
 
-    /**
-     * DOC Administrator UniverseForm constructor comment.
-     * 
-     * @param parent
-     * @param style
-     * @param existingNames
-     * @param universePage
-     */
     protected UniverseForm(Composite parent, int style, String[] existingNames, ConnectionItem connectionItem,
             UniversePage universePage) {
         super(parent, style, existingNames);
@@ -84,22 +71,11 @@ public class UniverseForm extends AbstractForm {
         setupForm(true);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#adaptFormToReadOnly()
-     */
     @Override
     protected void adaptFormToReadOnly() {
         // TODO Auto-generated method stub
-
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addFields()
-     */
     @Override
     protected void addFields() {
         Group mdmParameterGroup = new Group(this, SWT.NULL);

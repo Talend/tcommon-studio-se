@@ -16,12 +16,6 @@ import org.eclipse.ui.PlatformUI;
 import org.talend.commons.exception.BusinessException;
 import org.talend.repository.ui.login.connections.ConnectionUserPerReader;
 
-/**
- * DOC mhirt class global comment. Detailed comment <br/>
- * 
- * $Id: LicenseManagement.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
- */
 public class LicenseManagement {
 
     // LICENSE_VALIDATION_DONE = 1 : registration OK
@@ -31,14 +25,8 @@ public class LicenseManagement {
         PlatformUI.getPreferenceStore().setValue("LICENSE_VALIDATION_DONE", 1); //$NON-NLS-1$
         ConnectionUserPerReader read = ConnectionUserPerReader.getInstance();
         read.saveLiscenseManagement();
-
     }
 
-    /**
-     * DOC mhirt Comment method "isLicenseValidated".
-     * 
-     * @return
-     */
     public static boolean isLicenseValidated() {
         initPreferenceStore();
         ConnectionUserPerReader read = ConnectionUserPerReader.getInstance();
@@ -48,15 +36,6 @@ public class LicenseManagement {
         return true;
     }
 
-    /**
-     * DOC mhirt Comment method "init".
-     * 
-     * @return
-     */
-    private static void initPreferenceStore() {
-        // IPreferenceStore prefStore = PlatformUI.getPreferenceStore();
-        //        if (prefStore.getDefaultInt("LICENSE_VALIDATION_DONE") == 0) { //$NON-NLS-1$
-        //            prefStore.setDefault("LICENSE_VALIDATION_DONE", LICENSE_VALIDATION_DONE); //$NON-NLS-1$
-        // }
-    }
+    private static void initPreferenceStore() {}
+
 }

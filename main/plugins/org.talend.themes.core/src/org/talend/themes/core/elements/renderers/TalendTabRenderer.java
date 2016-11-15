@@ -31,10 +31,6 @@ import org.eclipse.swt.widgets.Display;
 import org.talend.commons.exception.CommonExceptionHandler;
 import org.talend.themes.core.elements.stylesettings.TalendTabSettings;
 
-/**
- * created by cmeng on Feb 9, 2015 Detailed comment
- *
- */
 public class TalendTabRenderer extends JeeeyulsTabRenderer {
 
     protected static SWTExtensions swtExtensions;
@@ -47,11 +43,6 @@ public class TalendTabRenderer extends JeeeyulsTabRenderer {
 
     protected static final String SWT_MODEL_ELEMENT = "modelElement"; //$NON-NLS-1$
 
-    /**
-     * DOC cmeng TalendTabRenderer constructor comment.
-     * 
-     * @param parent
-     */
     public TalendTabRenderer(CTabFolder parent) {
         super(parent);
         tTabFolder = parent;

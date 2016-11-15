@@ -24,9 +24,6 @@ import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.runtime.projectsetting.IProjectSettingTemplateConstants;
 import org.talend.designer.maven.utils.PomUtil;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public abstract class AbstractMavenCodesTemplatePom extends AbstractMavenGeneralTemplatePom {
 
     public AbstractMavenCodesTemplatePom(IFile pomFile) {

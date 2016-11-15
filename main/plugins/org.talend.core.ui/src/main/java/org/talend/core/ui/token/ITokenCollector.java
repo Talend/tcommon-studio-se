@@ -14,23 +14,14 @@ package org.talend.core.ui.token;
 
 import us.monoid.json.JSONObject;
 
-/**
- * ggu class global comment. Detailed comment
- */
 public interface ITokenCollector {
 
     /**
-     * 
-     * ggu Comment method "priorCollect".
-     * 
      * main for special collect, after logon project.
      */
     public void priorCollect() throws Exception;
 
     /**
-     * 
-     * ggu Comment method "collect".
-     * 
      * collect the values from different provider.
      */
     public JSONObject collect() throws Exception;

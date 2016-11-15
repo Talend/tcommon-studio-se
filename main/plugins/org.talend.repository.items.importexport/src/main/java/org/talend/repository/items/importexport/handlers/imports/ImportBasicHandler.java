@@ -105,9 +105,6 @@ import org.talend.repository.items.importexport.handlers.model.ImportItem.State;
 import org.talend.repository.items.importexport.i18n.Messages;
 import org.talend.repository.items.importexport.manager.ResourcesManager;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class ImportBasicHandler extends AbstractImportExecutableHandler {
 
     /**
@@ -117,13 +114,6 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
      */
     protected final Set<String> checkedBasePathes = new HashSet<String>();
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.core.runtime.IExecutableExtension#setInitializationData(org.eclipse.core.runtime.IConfigurationElement
-     * , java.lang.String, java.lang.Object)
-     */
     @SuppressWarnings("rawtypes")
     @Override
     public void setInitializationData(IConfigurationElement config, String propertyName, Object data) throws CoreException {

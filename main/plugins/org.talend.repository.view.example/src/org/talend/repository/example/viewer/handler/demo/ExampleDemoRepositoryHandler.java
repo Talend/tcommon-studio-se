@@ -43,28 +43,13 @@ import org.talend.repository.example.viewer.node.ExampleDemoRepositoryNodeType;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * DOC ggu class global comment. Detailed comment <br/>
- * 
- * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
- */
 public class ExampleDemoRepositoryHandler implements IRepositoryContentHandler {
 
     protected XmiResourceManager xmiResourceManager = new XmiResourceManager();
 
-    /**
-     * DOC ggu ExampleDemoRepositoryHandler constructor comment.
-     */
     public ExampleDemoRepositoryHandler() {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryContentHandler#create(org.eclipse.core.resources.IProject,
-     * org.talend.core.model.properties.Item, int, org.eclipse.core.runtime.IPath)
-     */
     @Override
     public Resource create(IProject project, Item item, int classifierID, IPath path) throws PersistenceException {
         ERepositoryObjectType repositoryObjectType = getRepositoryObjectType(item);
@@ -78,11 +63,6 @@ public class ExampleDemoRepositoryHandler implements IRepositoryContentHandler {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryContentHandler#save(org.talend.core.model.properties.Item)
-     */
     @Override
     public Resource save(Item item) throws PersistenceException {
         ERepositoryObjectType repositoryObjectType = getRepositoryObjectType(item);
@@ -96,12 +76,6 @@ public class ExampleDemoRepositoryHandler implements IRepositoryContentHandler {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryContentHandler#createNewItem(org.talend.core.model.repository.
-     * ERepositoryObjectType)
-     */
     @Override
     public Item createNewItem(ERepositoryObjectType type) {
         if (isRepObjType(type)) {
@@ -110,13 +84,6 @@ public class ExampleDemoRepositoryHandler implements IRepositoryContentHandler {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.repository.IRepositoryContentHandler#getRepositoryObjectType(org.talend.core.model.properties
-     * .Item)
-     */
     @Override
     public ERepositoryObjectType getRepositoryObjectType(Item item) {
         if (item.eClass() == DemoPackage.Literals.EXAMPLE_DEMO_CONNECTION_ITEM) {
@@ -125,23 +92,11 @@ public class ExampleDemoRepositoryHandler implements IRepositoryContentHandler {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryContentHandler#isRepObjType(org.talend.core.model.repository.
-     * ERepositoryObjectType)
-     */
     @Override
     public boolean isRepObjType(ERepositoryObjectType type) {
         return getHandleType().equals(type);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryContentHandler#getIcon(org.talend.core.model.repository.
-     * ERepositoryObjectType)
-     */
     @Override
     public IImage getIcon(ERepositoryObjectType type) {
         if (isRepObjType(type)) {

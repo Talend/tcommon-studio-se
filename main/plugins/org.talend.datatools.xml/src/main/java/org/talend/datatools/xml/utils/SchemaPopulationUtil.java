@@ -90,8 +90,6 @@ public class SchemaPopulationUtil {
     }
 
     /**
-     * DOC ycbai Comment method "getSchemaTree".
-     * 
      * Only for xsd.
      * 
      * @param xsModel
@@ -151,9 +149,6 @@ public class SchemaPopulationUtil {
  * This class is used to populate an XML schema tree from an xml file.
  * 
  */
-/**
- * DOC nrousseau class global comment. Detailed comment
- */
 final class XMLFileSchemaTreePopulator implements ISaxParserConsumer {
 
     //
@@ -173,10 +168,6 @@ final class XMLFileSchemaTreePopulator implements ISaxParserConsumer {
 
     Thread spThread;
 
-    /**
-     * 
-     * 
-     */
     XMLFileSchemaTreePopulator(int numberOfElementsAccessiable) {
         this.rowCount = 0;
         this.root = new ATreeNode();
@@ -184,23 +175,11 @@ final class XMLFileSchemaTreePopulator implements ISaxParserConsumer {
         this.numberOfElementsAccessiable = numberOfElementsAccessiable == 0 ? Integer.MAX_VALUE : numberOfElementsAccessiable;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.datatools.enablement.oda.xml.util.ISaxParserConsumer#manipulateData(java.lang.String,
-     * java.lang.String)
-     */
     @Override
     public void manipulateData(String path, String value) {
         guessColumnInfo(path, value);
     }
 
-    /**
-     * DOC cmeng Comment method "guessDataType".
-     * 
-     * @param path
-     * @param value
-     */
     private void guessColumnInfo(String path, String value) {
         // Most of the codes are copied from XmlFileStep3Form.refreshMetaDataTable(...)
 
@@ -759,17 +738,6 @@ final class XSDFileSchemaTreePopulator {
 
     }
 
-    /**
-     * DOC ycbai Comment method "getSchemaTree".
-     * 
-     * @param xsModel
-     * @param selectedNode
-     * @param incAttr
-     * @return
-     * @throws OdaException
-     * @throws MalformedURLException
-     * @throws URISyntaxException
-     */
     public static ATreeNode getSchemaTree(XSModel xsModel, ATreeNode selectedNode, boolean incAttr) throws OdaException,
             MalformedURLException, URISyntaxException {
         includeAttribute = incAttr;

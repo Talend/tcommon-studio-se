@@ -13,12 +13,6 @@
 
 import org.talend.core.model.metadata.types.PerlDataTypeHelper;
 
-/**
- * DOC ocarbone class global comment. Detailed comment <br/>
- * 
- * $Id: TestDataTypeHelper.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
- */
 public final class TestDataTypeHelper {
 
     /**

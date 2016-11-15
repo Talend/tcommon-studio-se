@@ -14,21 +14,10 @@ package org.talend.commons.ui.runtime.swt.tableviewer.behavior;
 
 import org.eclipse.jface.viewers.CellEditor;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public abstract class ComboEditorValueAdapter extends CellEditorValueAdapter {
 
     private String defaultItem;
 
-    /**
-     * DOC amaumont ComboEditorValueAdapter constructor comment.
-     * 
-     * @param defaultItem
-     */
     public ComboEditorValueAdapter(String defaultItem) {
         this.defaultItem = defaultItem;
     }

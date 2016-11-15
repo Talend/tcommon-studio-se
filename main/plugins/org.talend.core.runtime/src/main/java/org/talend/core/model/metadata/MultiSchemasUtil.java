@@ -21,9 +21,6 @@ import org.talend.core.model.metadata.types.JavaType;
 import org.talend.core.model.metadata.types.JavaTypesManager;
 import org.talend.core.model.metadata.types.PerlTypesManager;
 
-/**
- * cLi class global comment. Detailed comment
- */
 public final class MultiSchemasUtil {
 
     public static String getConnectionBaseName(String base) {

@@ -24,9 +24,6 @@ import org.talend.metadata.managment.ui.wizard.metadata.xml.node.FOXTreeNode;
 import org.talend.metadata.managment.ui.wizard.metadata.xml.node.NameSpaceNode;
 import org.talend.metadata.managment.ui.wizard.metadata.xml.utils.TreeUtil;
 
-/**
- * wzhang class global comment. Detailed comment
- */
 public class XmlFileTreeViewerProvider extends LabelProvider implements ITableLabelProvider, ITreeContentProvider {
 
     public Object[] getChildren(Object parentElement) {
@@ -50,31 +47,15 @@ public class XmlFileTreeViewerProvider extends LabelProvider implements ITableLa
         return list.toArray();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer, java.lang.Object,
-     * java.lang.Object)
-     */
     public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
         // TODO Auto-generated method stub
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnImage(java.lang.Object, int)
-     */
     public Image getColumnImage(Object element, int columnIndex) {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnText(java.lang.Object, int)
-     */
     public String getColumnText(Object element, int columnIndex) {
         FOXTreeNode treeNode = (FOXTreeNode) element;
         switch (columnIndex) {

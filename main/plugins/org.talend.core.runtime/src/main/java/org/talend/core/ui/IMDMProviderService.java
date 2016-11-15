@@ -20,9 +20,6 @@ import org.talend.core.model.metadata.builder.connection.MDMConnection;
 import org.talend.core.model.process.INode;
 import org.talend.core.model.properties.MDMConnectionItem;
 
-/**
- * DOC hwang class global comment. Detailed comment
- */
 public interface IMDMProviderService extends IProviderService {
 
     public boolean isMDMNode(final INode node);

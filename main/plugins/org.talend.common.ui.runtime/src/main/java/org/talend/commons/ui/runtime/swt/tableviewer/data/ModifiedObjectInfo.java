@@ -15,10 +15,6 @@ package org.talend.commons.ui.runtime.swt.tableviewer.data;
 import org.talend.commons.ui.runtime.swt.tableviewer.TableViewerCreatorColumnNotModifiable;
 
 /**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id: ModifiedObjectInfo.java 7038 2007-11-15 14:05:48Z plegall $
- * 
  * @param <O> The object type which is modified in your list
  */
 public class ModifiedObjectInfo<O> {

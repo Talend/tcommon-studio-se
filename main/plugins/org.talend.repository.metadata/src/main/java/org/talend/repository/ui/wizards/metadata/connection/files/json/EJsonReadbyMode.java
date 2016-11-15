@@ -15,10 +15,6 @@ package org.talend.repository.ui.wizards.metadata.connection.files.json;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * created by cmeng on Jul 10, 2015 Detailed comment
- *
- */
 public enum EJsonReadbyMode {
     XPATH("Xpath", "XPATH"), //$NON-NLS-1$ //$NON-NLS-2$
     JSONPATH("JsonPath", "JSONPATH"); //$NON-NLS-1$ //$NON-NLS-2$

@@ -15,9 +15,6 @@ package org.talend.core.repository.model;
 import org.talend.commons.ui.runtime.repository.IExtendRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public abstract class AbstractExtendRepositoryNode implements IExtendRepositoryNode {
 
     public AbstractExtendRepositoryNode() {

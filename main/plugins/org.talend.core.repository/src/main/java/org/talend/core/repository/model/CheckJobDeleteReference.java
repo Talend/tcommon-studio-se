@@ -38,10 +38,6 @@ import org.talend.core.repository.ui.actions.DeleteActionCache;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
-/**
- * 
- * DOC hcyi class global comment. Detailed comment
- */
 public class CheckJobDeleteReference extends AbstractCheckDeleteItemReference implements ICheckDeleteItemReference {
 
     private static final String PROCESS_TYPE_PROCESS = "PROCESS_TYPE_PROCESS"; //$NON-NLS-1$

@@ -14,9 +14,6 @@ package org.talend.core.model.update;
 
 import org.talend.core.model.properties.ConnectionItem;
 
-/**
- * ggu class global comment. Detailed comment
- */
 public abstract class UpdateResult {
 
     private boolean checked = true;

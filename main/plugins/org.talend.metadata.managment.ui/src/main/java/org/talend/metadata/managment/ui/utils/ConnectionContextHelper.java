@@ -110,9 +110,6 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.model.RepositoryNodeUtilities;
 
-/**
- * ggu class global comment. Detailed comment
- */
 public final class ConnectionContextHelper {
 
     public static final String LINE = "_"; //$NON-NLS-1$
@@ -124,9 +121,6 @@ public final class ConnectionContextHelper {
     public static IContextManager contextManager;
 
     /**
-     * 
-     * ggu Comment method "checkContextMode".
-     * 
      * initialize and check context mode for the ConnectionItem.
      */
     public static ContextItem checkContextMode(ConnectionItem connItem) {
@@ -176,11 +170,6 @@ public final class ConnectionContextHelper {
                 Messages.getString("ConnectionContextHelper.OutConextMessages")); //$NON-NLS-1$
     }
 
-    /**
-     * 
-     * ggu Comment method "exportAsContext".
-     * 
-     */
     public static Map<ContextItem, List<ConectionAdaptContextVariableModel>> exportAsContext(String defaultContextName,
             ConnectionItem connItem, Set<IConnParamName> paramSet) {
         if (connItem == null) {
@@ -222,8 +211,7 @@ public final class ConnectionContextHelper {
     }
 
     /**
-     * 
-     * change the mode of lebel to Context mode
+     * change the mode of label to Context mode
      * 
      * @param label which you want to convert(it is the name of connection normal)
      * @return Context mode label

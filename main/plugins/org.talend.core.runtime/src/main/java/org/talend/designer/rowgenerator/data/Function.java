@@ -21,10 +21,6 @@ import org.talend.utils.json.JSONArray;
 import org.talend.utils.json.JSONException;
 import org.talend.utils.json.JSONObject;
 
-/**
- * class global comment. Detailed comment <br/>
- * $Id: Function.java,v 1.10 2007/02/02 08:07:02 pub Exp $
- */
 public class Function implements Cloneable {
 
     public static final String NAME = "NAME"; //$NON-NLS-1$
@@ -43,11 +39,7 @@ public class Function implements Cloneable {
 
     private boolean isUserDefined;
 
-    /**
-     * yzhang Function constructor comment.
-     */
     public Function() {
-        // TODO Auto-generated constructor stub
     }
 
     /**

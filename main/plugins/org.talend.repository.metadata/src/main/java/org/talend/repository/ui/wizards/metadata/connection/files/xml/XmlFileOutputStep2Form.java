@@ -97,9 +97,6 @@ import org.talend.repository.ui.wizards.metadata.connection.files.xml.view.XmlFi
 import org.talend.repository.ui.wizards.metadata.connection.files.xml.view.XmlFileTreeViewerProvider;
 import org.talend.repository.ui.wizards.metadata.connection.files.xml.view.XmlTree2SchemaLinker;
 
-/**
- * wzhang class global comment. Detailed comment
- */
 public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
 
     private SashForm mainSashFormComposite;
@@ -985,9 +982,6 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
         return XmlUtil.isXSDFile(getConnection().getXmlFilePath());
     }
 
-    /**
-     * class global comment. Detailed comment
-     */
     class DialogErrorXMLLabelCellEditor implements ICellEditorListener {
 
         CellEditor editor;

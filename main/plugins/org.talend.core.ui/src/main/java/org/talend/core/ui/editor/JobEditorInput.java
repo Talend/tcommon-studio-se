@@ -46,8 +46,6 @@ import org.talend.repository.model.IRepositoryService;
 import org.talend.repository.model.RepositoryConstants;
 
 /**
- * ggu class global comment. Detailed comment
- * 
  * refactor for job/jobletEditorInput
  */
 public abstract class JobEditorInput extends RepositoryEditorInput {

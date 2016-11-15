@@ -24,31 +24,12 @@ import org.talend.core.model.metadata.builder.connection.MetadataColumn;
 import org.talend.core.model.metadata.builder.connection.impl.ConnectionFactoryImpl;
 import org.talend.core.ui.metadata.editor.MetadataTableEditor;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public class MetadataPasteCommand extends ExtendedTablePasteCommand {
 
-    /**
-     * DOC amaumont MetadataPasteCommand constructor comment.
-     * 
-     * @param extendedTable
-     * @param validAssignableType
-     * @param indexStartAdd
-     */
     public MetadataPasteCommand(ExtendedTableModel extendedTable, Integer indexStartAdd) {
         super(extendedTable, indexStartAdd);
     }
 
-    /**
-     * DOC amaumont MetadataPasteCommand constructor comment.
-     * 
-     * @param extendedTable
-     * @param instanceOfType
-     */
     public MetadataPasteCommand(ExtendedTableModel extendedTable) {
         super(extendedTable);
     }

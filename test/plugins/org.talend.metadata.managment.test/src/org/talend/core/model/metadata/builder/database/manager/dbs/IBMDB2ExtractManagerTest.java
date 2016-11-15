@@ -17,10 +17,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.talend.core.database.EDatabaseTypeName;
 
-/**
- * created by ggu on Jul 6, 2012 Detailed comment
- * 
- */
 public class IBMDB2ExtractManagerTest extends AbstractTest4ExtractManager {
 
     @Before
@@ -29,9 +25,6 @@ public class IBMDB2ExtractManagerTest extends AbstractTest4ExtractManager {
     }
 
     /**
-     * 
-     * DOC ggu Comment method "testGetSchema".
-     * 
      * @see IBMDB2ExtractManager.getSchema(IMetadataConnection)
      */
     @Override
@@ -41,12 +34,6 @@ public class IBMDB2ExtractManagerTest extends AbstractTest4ExtractManager {
         PTODO();
     }
 
-    /**
-     * 
-     * DOC ggu Comment method "testGetTableNameBySynonyms".
-     * 
-     * @throws Exception
-     */
     @Override
     @Test
     @Ignore

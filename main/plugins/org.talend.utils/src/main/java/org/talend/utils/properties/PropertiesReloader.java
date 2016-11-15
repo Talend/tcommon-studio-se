@@ -18,9 +18,6 @@ import java.net.URL;
 
 import org.talend.utils.files.FileUtils;
 
-/**
- * DOC stephane class global comment. Detailed comment
- */
 public class PropertiesReloader {
 
     public static synchronized void changeProperties(String fileName, String key, String oldValue, String newValue)

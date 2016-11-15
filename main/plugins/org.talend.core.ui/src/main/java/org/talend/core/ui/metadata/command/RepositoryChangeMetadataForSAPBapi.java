@@ -35,11 +35,6 @@ import org.talend.core.model.process.INode;
 import org.talend.core.ui.CoreUIPlugin;
 import org.talend.core.utils.TalendQuoteUtils;
 
-/**
- * 
- * created by wchen on Sep 19, 2014 Detailed comment
- *
- */
 public class RepositoryChangeMetadataForSAPBapi extends Command {
 
     private INode node;

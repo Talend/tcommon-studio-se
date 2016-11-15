@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.designer.codegen;
 
-/**
- * created by rdubois on 28 janv. 2015 Detailed comment
- *
- */
 public interface IBigDataCodeGeneratorService extends ICodeGeneratorService {
 
 }

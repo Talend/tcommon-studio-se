@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.commons.utils.scalability;
 
-/**
- * 
- * DOC amaumont class global comment. Detailed comment
- */
 public abstract class ScalabilityTool {
 
     private boolean stopping;

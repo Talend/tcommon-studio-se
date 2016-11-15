@@ -24,39 +24,18 @@ import org.talend.repository.navigator.RepoViewCommonNavigator;
 import org.talend.repository.ui.views.IJobSettingsView;
 import org.talend.repository.ui.views.IRepositoryView;
 
-/**
- * DOC ggu class global comment. Detailed comment <br/>
- * 
- * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
- */
 public class RepoViewPartListener implements IPartListener2 {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IPartListener2#partActivated(org.eclipse.ui.IWorkbenchPartReference)
-     */
     @Override
     public void partActivated(IWorkbenchPartReference partRef) {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IPartListener2#partBroughtToTop(org.eclipse.ui.IWorkbenchPartReference)
-     */
     @Override
     public void partBroughtToTop(IWorkbenchPartReference partRef) {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IPartListener2#partClosed(org.eclipse.ui.IWorkbenchPartReference)
-     */
     @Override
     public void partClosed(IWorkbenchPartReference partRef) {
         if (partRef != null && IRepositoryView.VIEW_ID.equals(partRef.getId())) {
@@ -79,41 +58,21 @@ public class RepoViewPartListener implements IPartListener2 {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IPartListener2#partDeactivated(org.eclipse.ui.IWorkbenchPartReference)
-     */
     @Override
     public void partDeactivated(IWorkbenchPartReference partRef) {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IPartListener2#partOpened(org.eclipse.ui.IWorkbenchPartReference)
-     */
     @Override
     public void partOpened(IWorkbenchPartReference partRef) {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IPartListener2#partHidden(org.eclipse.ui.IWorkbenchPartReference)
-     */
     @Override
     public void partHidden(IWorkbenchPartReference partRef) {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IPartListener2#partVisible(org.eclipse.ui.IWorkbenchPartReference)
-     */
     @Override
     public void partVisible(IWorkbenchPartReference partRef) {
         refreshRepViewDescription(partRef);
@@ -134,14 +93,8 @@ public class RepoViewPartListener implements IPartListener2 {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IPartListener2#partInputChanged(org.eclipse.ui.IWorkbenchPartReference)
-     */
     @Override
     public void partInputChanged(IWorkbenchPartReference partRef) {
-
     }
 
     private void refreshRepViewDescription(IWorkbenchPartReference curPartRef) {
@@ -156,4 +109,5 @@ public class RepoViewPartListener implements IPartListener2 {
             }
         }
     }
+
 }

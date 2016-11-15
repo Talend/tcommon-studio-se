@@ -15,9 +15,6 @@ package org.talend.core.repository.handlers;
 import org.talend.core.model.relationship.AbstractJobParameterInRepositoryRelationshipHandler;
 import org.talend.core.model.relationship.RelationshipItemBuilder;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 @SuppressWarnings("nls")
 public class QueryTypeParameterRelationshipHandlerTest extends AbstractRepositoryTypeParameterRelationshipHandlerTest {
 

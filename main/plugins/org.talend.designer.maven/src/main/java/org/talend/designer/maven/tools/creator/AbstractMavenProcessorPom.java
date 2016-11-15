@@ -39,9 +39,6 @@ import org.talend.designer.runprocess.IProcessor;
 import org.talend.designer.runprocess.ProcessorException;
 import org.talend.repository.ProjectManager;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplatePom {
 
     private final IProcessor jobProcessor;

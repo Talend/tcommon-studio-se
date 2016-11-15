@@ -35,12 +35,6 @@ import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.migration.IMigrationTask.ExecutionResult;
 import org.talend.migration.IProjectMigrationTask;
 
-/**
- * DOC smallet class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public class SummaryComposite extends Composite {
 
     private static final Color BCK_COLOR = new Color(null, 255, 255, 255);

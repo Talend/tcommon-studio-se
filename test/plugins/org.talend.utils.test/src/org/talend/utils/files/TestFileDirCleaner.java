@@ -28,10 +28,6 @@ import org.junit.Test;
 import org.talend.utils.files.FileDirCleaner;
 import org.talend.utils.files.FileDirCleaner.SCAN_STRATEGY;
 
-/**
- * 
- * DOC amaumont class global comment. Detailed comment
- */
 public class TestFileDirCleaner {
 
     private static final int LEVELS_COUNT = 2;
@@ -569,10 +565,6 @@ public class TestFileDirCleaner {
         }
     }
 
-    /**
-     * 
-     * DOC amaumont FileDirCleaner2Test class global comment. Detailed comment
-     */
     public static class FSManager {
 
         int dirCount = COUNT_FILES_DIRECTORIES;
@@ -633,10 +625,6 @@ public class TestFileDirCleaner {
 
     }
 
-    /**
-     * 
-     * DOC amaumont FileDirCleaner2Test class global comment. Detailed comment
-     */
     interface OperationForFSManager {
 
         public void processFile(File file, int currentLevel, int indexFile, int matchingChildrenFilesCount) throws IOException;
@@ -651,10 +639,6 @@ public class TestFileDirCleaner {
 
     }
 
-    /**
-     * 
-     * DOC amaumont FileDirCleaner2Test class global comment. Detailed comment
-     */
     class FileDirCheckerForFSManager implements OperationForFSManager {
 
         private int expectedEntriesByDirectoryAndByType;
@@ -685,11 +669,6 @@ public class TestFileDirCleaner {
 
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see files.TestFileDirCleaner.OperationForFSManager#processCountMatchingChildrenDir(java.io.File)
-         */
         @Override
         public int processCountMatchingChildrenDir(File dir, int currentLevel) {
             int countMatchingDir = 0;
@@ -1000,50 +979,25 @@ public class TestFileDirCleaner {
 
     }
 
-    /**
-     * 
-     * DOC amaumont FileDirCleaner2Test class global comment. Detailed comment
-     */
     class FileGeneratorForFSManager implements OperationForFSManager {
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see files.TestFileDirCleaner.OperationForFSManager#processCountMatchingChildrenDir(java.io.File, int)
-         */
         @Override
         public int processCountMatchingChildrenDir(File dir, int currentLevel) {
             /* generation does not require a valid value */
             return 0;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see files.TestFileDirCleaner.OperationForFSManager#processCountMatchingChildrenFiles(java.io.File, int)
-         */
         @Override
         public int processCountMatchingChildrenFiles(File dir, int currentLevel) {
             /* generation does not require a valid value */
             return 0;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.talend.utils.files.FileDirCleaner2Test.OperationForFSManager#processDirectoryBegin(java.io.File,
-         * int)
-         */
         @Override
         public void processDirectoryBegin(File dir, int currentLevel, int indexDir, int matchingChildrenDirCount) {
             dir.mkdirs();
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.talend.utils.files.FileDirCleaner2Test.OperationForFSManager#processDirectoryEnd(java.io.File, int)
-         */
         @Override
         public void processDirectoryEnd(File dir, int currentLevel, int indexDir) {
             Date parsedDateDir = null;
@@ -1056,11 +1010,6 @@ public class TestFileDirCleaner {
             System.out.println("setLastModified=" + parsedDateDir + ", ok? " + setLastModified);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.talend.utils.files.FileDirCleaner2Test.OperationForFSManager#processFile(java.io.File, int)
-         */
         @Override
         public void processFile(File file, int currentLevel, int indexFile, int matchingChildrenFilesCount) throws IOException {
             file.createNewFile();

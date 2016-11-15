@@ -21,12 +21,6 @@ import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.model.RepositoryNodeUtilities;
 import org.talend.repository.ui.views.IRepositoryView;
 
-/**
- * DOC ggu class global comment. Detailed comment <br/>
- * 
- * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
- */
 public final class RepositorySeekerManager {
 
     private final RepositorySeekerRegistryReader seekerReader;

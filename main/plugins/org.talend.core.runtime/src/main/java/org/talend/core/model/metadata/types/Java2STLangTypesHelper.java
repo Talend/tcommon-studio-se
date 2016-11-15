@@ -15,9 +15,6 @@ package org.talend.core.model.metadata.types;
 import org.talend.core.model.metadata.IMetadataColumn;
 import org.talend.core.model.metadata.IMetadataTable;
 
-/**
- * DOC wyang class global comment. Detailed comment
- */
 public class Java2STLangTypesHelper {
 
     /**

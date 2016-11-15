@@ -20,15 +20,9 @@ import org.talend.core.model.process.IProcess;
 import org.talend.core.model.update.IUpdateItemType;
 import org.talend.core.model.update.UpdateResult;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public interface IProcessUpdateManagerProvider extends IUpdateManagerProvider {
 
     /**
-     * 
-     * DOC ggu Comment method "validate".
-     * 
      * check the type need current provider to do or not.
      * 
      * @param type
@@ -37,18 +31,12 @@ public interface IProcessUpdateManagerProvider extends IUpdateManagerProvider {
     boolean validate(IUpdateItemType type);
 
     /**
-     * 
-     * DOC ggu Comment method "retrieveUpdateResults".
-     * 
      * @param process
      * @return
      */
     List<UpdateResult> retrieveUpdateResults(IProcess process);
 
     /**
-     * 
-     * DOC ggu Comment method "getDisplayImage".
-     * 
      * mostly work for label provider in update manager dialog.
      * 
      * @return
@@ -56,9 +44,6 @@ public interface IProcessUpdateManagerProvider extends IUpdateManagerProvider {
     Object getDisplayImage(Object element, int columnIndex);
 
     /**
-     * 
-     * DOC ggu Comment method "getDisplayText".
-     * 
      * mostly work for label provider in update manager dialog.
      * 
      * @return
@@ -66,9 +51,6 @@ public interface IProcessUpdateManagerProvider extends IUpdateManagerProvider {
     String getDisplayText(Object element, int columnIndex);
 
     /**
-     * 
-     * DOC ggu Comment method "getDisplayCategory".
-     * 
      * mostly work for label provider in update manager dialog.
      * 
      * @param result
@@ -77,9 +59,6 @@ public interface IProcessUpdateManagerProvider extends IUpdateManagerProvider {
     String getDisplayCategory(UpdateResult result);
 
     /**
-     * 
-     * DOC ggu Comment method "getResultName".
-     * 
      * the label of result.
      * 
      * @param result
@@ -88,9 +67,6 @@ public interface IProcessUpdateManagerProvider extends IUpdateManagerProvider {
     String getResultName(UpdateResult result);
 
     /**
-     * 
-     * DOC ggu Comment method "doUpdate".
-     * 
      * Will do the real update by result via GEF command, if it's opened job/joblet to be dirty by the command.
      * 
      * @param result
@@ -100,9 +76,6 @@ public interface IProcessUpdateManagerProvider extends IUpdateManagerProvider {
     boolean doUpdate(IProgressMonitor monitor, UpdateResult result);
 
     /**
-     * 
-     * DOC ggu Comment method "postUpdate".
-     * 
      * most like needRefreshRelatedViews, after udpate, need something to do.
      * 
      * @param results
@@ -110,9 +83,6 @@ public interface IProcessUpdateManagerProvider extends IUpdateManagerProvider {
     void postUpdate(List<UpdateResult> results);
 
     /**
-     * 
-     * DOC ggu Comment method "needRefreshRelatedViews".
-     * 
      * @param results all result to check the related views
      * @return will refresh the view ids.
      */

@@ -18,18 +18,8 @@ import org.talend.repository.items.importexport.handlers.imports.IImportResource
 import org.talend.repository.items.importexport.handlers.model.ImportItem;
 import org.talend.repository.items.importexport.manager.ResourcesManager;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class DemoImportResourcesHandler implements IImportResourcesHandler {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.items.importexport.handlers.imports.IImportResourcesHandler#preImport(org.talend.repository
-     * .items.importexport.manager.ResourcesManager)
-     */
     @Override
     public void preImport(IProgressMonitor monitor, ResourcesManager resManager, ImportItem[] checkedItemRecords,
             ImportItem[] allImportItemRecords) {
@@ -40,43 +30,20 @@ public class DemoImportResourcesHandler implements IImportResourcesHandler {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.items.importexport.handlers.imports.IImportResourcesHandler#postImport(org.talend.repository
-     * .items.importexport.manager.ResourcesManager)
-     */
     @Override
     public void postImport(IProgressMonitor monitor, ResourcesManager resManager, ImportItem[] importedItemRecords) {
         ExceptionHandler.log("The items have been imported successfully."); //$NON-NLS-1$
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.items.importexport.handlers.imports.IImportResourcesHandler#prePopulate(org.eclipse.core
-     * .runtime.IProgressMonitor, org.talend.repository.items.importexport.manager.ResourcesManager)
-     */
     @Override
     public void prePopulate(IProgressMonitor monitor, ResourcesManager resManager) {
         // TODO Auto-generated method stub
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.items.importexport.handlers.imports.IImportResourcesHandler#postPopulate(org.eclipse.core
-     * .runtime.IProgressMonitor, org.talend.repository.items.importexport.manager.ResourcesManager,
-     * org.talend.repository.items.importexport.handlers.model.ImportItem[])
-     */
     @Override
     public void postPopulate(IProgressMonitor monitor, ResourcesManager resManager, ImportItem[] populatedItemRecords) {
         // nothing to do
-
     }
 
 }

@@ -18,10 +18,6 @@ import org.eclipse.swt.browser.LocationListener;
 import org.talend.presentation.onboarding.ui.html.DynamicHtmlURL;
 import org.talend.presentation.onboarding.ui.html.DynamicURLParser;
 
-/**
- * created by cmeng on Sep 18, 2015 Detailed comment
- *
- */
 public class BrowserDynamicPartLocationListener implements LocationListener {
 
     @Override

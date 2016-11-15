@@ -41,12 +41,6 @@ import org.talend.repository.model.RepositoryConstants;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.ui.views.IRepositoryView;
 
-/**
- * DOC smallet class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public class ReadTableAction extends AbstractCreateTableAction {
 
     protected static final String LABEL = Messages.getString("CreateTableAction.action.readTitle"); //$NON-NLS-1$

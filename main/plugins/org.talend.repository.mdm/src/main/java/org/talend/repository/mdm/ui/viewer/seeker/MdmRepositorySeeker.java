@@ -17,19 +17,8 @@ import java.util.List;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.repository.metadata.seeker.AbstractMetadataRepoViewSeeker;
 
-/**
- * DOC ggu class global comment. Detailed comment <br/>
- * 
- * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
- */
 public class MdmRepositorySeeker extends AbstractMetadataRepoViewSeeker {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.repository.seeker.AbstractRepoViewSeeker#getValidationTypes()
-     */
     @Override
     protected List<ERepositoryObjectType> getValidationTypes() {
         List<ERepositoryObjectType> validationTypes = super.getValidationTypes();

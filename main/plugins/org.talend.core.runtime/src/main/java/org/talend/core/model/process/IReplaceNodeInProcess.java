@@ -17,9 +17,6 @@ import java.util.List;
 import org.talend.core.model.process.INode;
 import org.talend.core.model.process.IProcess2;
 
-/**
- * DOC nrousseau class global comment. Detailed comment
- */
 public interface IReplaceNodeInProcess {
 
     // rebuild the current process from the selected node

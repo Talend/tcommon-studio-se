@@ -30,9 +30,6 @@ import org.talend.core.model.metadata.builder.database.manager.ExtractManagerFac
 import org.talend.cwm.relational.TdColumn;
 
 /**
- * created by ggu on Jul 5, 2012 Detailed comment
- * 
- * 
  * only test the normal null, so set mysql db as default, (no need care)
  */
 public class ExtractManager4NormalTest {
@@ -46,7 +43,6 @@ public class ExtractManager4NormalTest {
             Assert.assertEquals(MessageFormat.format("Should be {0}, not {1}", //$NON-NLS-1$
                     type, extractManger.getDbType()), extractManger.getDbType(), type);
         }
-
     }
 
     @Test

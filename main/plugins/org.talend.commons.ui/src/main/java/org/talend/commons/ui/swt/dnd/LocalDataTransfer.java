@@ -15,12 +15,6 @@ package org.talend.commons.ui.swt.dnd;
 import org.eclipse.swt.dnd.ByteArrayTransfer;
 import org.eclipse.swt.dnd.TransferData;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id: TableEntriesTransfer.java 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- * 
- */
 public class LocalDataTransfer extends ByteArrayTransfer {
 
     private LocalDraggedData draggedData;
@@ -35,21 +29,11 @@ public class LocalDataTransfer extends ByteArrayTransfer {
         return INSTANCE;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.dnd.Transfer#getTypeIds()
-     */
     @Override
     protected int[] getTypeIds() {
         return new int[] { TYPE_ID };
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.dnd.Transfer#getTypeNames()
-     */
     @Override
     protected String[] getTypeNames() {
         return new String[] { TYPE_NAME };

@@ -47,9 +47,6 @@ import org.talend.designer.core.model.utils.emf.talendfile.ElementValueType;
 import org.talend.repository.ProjectManager;
 import org.talend.utils.security.CryptoHelper;
 
-/**
- * cli class global comment. Detailed comment
- */
 public final class ParameterValueUtil {
 
     public static final String EMPTY = ""; //$NON-NLS-1$

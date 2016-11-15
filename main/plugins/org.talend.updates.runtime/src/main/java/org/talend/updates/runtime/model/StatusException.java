@@ -14,10 +14,6 @@ package org.talend.updates.runtime.model;
 
 import org.eclipse.core.runtime.IStatus;
 
-/**
- * created by ggu on Jul 23, 2014 Detailed comment
- *
- */
 public class StatusException extends Exception {
 
     private static final long serialVersionUID = -71237725085948744L;

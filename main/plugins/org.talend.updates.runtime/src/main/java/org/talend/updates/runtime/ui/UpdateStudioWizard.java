@@ -43,10 +43,6 @@ import org.talend.updates.runtime.engine.InstallNewFeatureJob;
 import org.talend.updates.runtime.i18n.Messages;
 import org.talend.updates.runtime.model.ExtraFeature;
 
-/**
- * created by sgandon on 25 févr. 2013 Detailed comment
- * 
- */
 public class UpdateStudioWizard extends Wizard {
 
     private static Logger log = Logger.getLogger(UpdateStudioWizard.class);

@@ -14,9 +14,6 @@ package org.talend.core.model.general;
 
 import org.talend.core.IService;
 
-/**
- * DOC gcui class global comment. Detailed comment
- */
 public interface IEcosystemService extends IService {
 
     /*

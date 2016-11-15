@@ -16,12 +16,6 @@ import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
 
-/**
- * DOC nrousseau class global comment. Detailed comment <br/>
- * 
- * $Id: IContextManager.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
- */
 public interface IContextManager {
 
     public List<IContext> getListContext();

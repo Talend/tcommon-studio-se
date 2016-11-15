@@ -17,10 +17,6 @@ import java.util.Map;
 
 import org.talend.core.model.repository.ERepositoryObjectType;
 
-/**
- * created by kongxiaohan on Sep 28, 2015 Detailed comment
- *
- */
 public class StandardJobImportNode extends FolderImportNode {
 
     private Map<ERepositoryObjectType, TypeImportNode> typeNodesChildrenMap = new HashMap<ERepositoryObjectType, TypeImportNode>();
@@ -36,11 +32,6 @@ public class StandardJobImportNode extends FolderImportNode {
         return this.type;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.items.importexport.ui.wizard.imports.models.ImportNode#getDisplayLabel()
-     */
     @Override
     public String getDisplayLabel() {
         return "Standard";

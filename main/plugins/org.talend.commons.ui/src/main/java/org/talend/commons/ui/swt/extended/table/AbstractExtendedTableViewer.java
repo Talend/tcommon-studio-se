@@ -38,10 +38,6 @@ import org.talend.commons.utils.data.list.ListenableListEvent;
 import org.talend.commons.utils.data.list.ListenableListEvent.TYPE;
 
 /**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
  * @param <B> Type of beans
  */
 public abstract class AbstractExtendedTableViewer<B> extends AbstractExtendedControlViewer {
@@ -52,16 +48,10 @@ public abstract class AbstractExtendedTableViewer<B> extends AbstractExtendedCon
 
     protected boolean forceExecuteSelectionEvent;
 
-    /**
-     * DOC amaumont AbstractMacroTableView constructor comment.
-     */
     public AbstractExtendedTableViewer(ExtendedTableModel<B> extendedTableModel, Composite parent) {
         this(extendedTableModel, parent, false);
     }
 
-    /**
-     * DOC amaumont AbstractMacroTableView constructor comment.
-     */
     public AbstractExtendedTableViewer(ExtendedTableModel<B> extendedTableModel, Composite parent, boolean readOnly) {
         super(extendedTableModel, parent, readOnly);
         initTable();

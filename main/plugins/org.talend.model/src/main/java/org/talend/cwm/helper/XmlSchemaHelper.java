@@ -19,9 +19,6 @@ import java.util.List;
 import org.eclipse.emf.ecore.EObject;
 import org.talend.cwm.xml.TdXmlSchema;
 
-/**
- * DOC mzhao class global comment. Detailed comment
- */
 public final class XmlSchemaHelper {
 
     private XmlSchemaHelper() {

@@ -18,12 +18,6 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Control;
 
-/**
- * DOC nrousseau class global comment. Detailed comment <br/>
- * 
- * $Id: StyledTextContentAdapter.java 7038 2007-11-15 14:05:48Z plegall $
- * 
- */
 public class StyledTextContentAdapter implements IControlContentAdapter {
 
     public String getControlContents(Control control) {

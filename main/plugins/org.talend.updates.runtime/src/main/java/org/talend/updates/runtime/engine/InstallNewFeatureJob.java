@@ -30,32 +30,18 @@ import org.talend.updates.runtime.model.ExtraFeature;
 import org.talend.updates.runtime.model.FeatureRepositories;
 import org.talend.updates.runtime.ui.dialog.ErrorDialogWithDetailAreaAndTryAgainButton;
 
-/**
- * created by sgandon on 28 févr. 2013 Detailed comment
- * 
- */
 public class InstallNewFeatureJob extends Job {
 
     private final Set<ExtraFeature> featuresToInstall;
 
     private final FeatureRepositories featureRepositories;
 
-    /**
-     * DOC sgandon InstallNewFeatureJob constructor comment.
-     * 
-     * @param name
-     */
     public InstallNewFeatureJob(Set<ExtraFeature> featuresToInstall, FeatureRepositories featureRepositories) {
         super(Messages.getString("InstallNewFeatureJob.installing.talend.new.features")); //$NON-NLS-1$
         this.featuresToInstall = featuresToInstall;
         this.featureRepositories = featureRepositories;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.core.runtime.jobs.Job#run(org.eclipse.core.runtime.IProgressMonitor)
-     */
     @Override
     protected IStatus run(IProgressMonitor progress) {
         SubMonitor subMon = SubMonitor.convert(progress, featuresToInstall.size());

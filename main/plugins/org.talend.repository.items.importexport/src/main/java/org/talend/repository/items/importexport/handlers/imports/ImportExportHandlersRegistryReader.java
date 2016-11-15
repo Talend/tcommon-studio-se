@@ -28,9 +28,6 @@ import org.talend.repository.items.importexport.handlers.model.internal.EPriorit
 import org.talend.repository.items.importexport.handlers.model.internal.ImportItemsProviderRegistry;
 import org.talend.repository.items.importexport.handlers.model.internal.ImportResourcesProviderRegistry;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class ImportExportHandlersRegistryReader extends RegistryReader {
 
     private static Logger log = Logger.getLogger(ImportExportHandlersRegistryReader.class);

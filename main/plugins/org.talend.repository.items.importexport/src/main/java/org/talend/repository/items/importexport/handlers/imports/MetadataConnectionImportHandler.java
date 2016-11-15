@@ -28,9 +28,6 @@ import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.repository.items.importexport.handlers.model.ImportItem;
 import org.talend.repository.items.importexport.manager.ResourcesManager;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class MetadataConnectionImportHandler extends ImportRepTypeHandler {
 
     private boolean isConnectionEmptyBeforeMigration = false;
@@ -39,13 +36,6 @@ public class MetadataConnectionImportHandler extends ImportRepTypeHandler {
         super();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.items.importexport.handlers.imports.ImportBasicHandler#beforeCreatingItem(org.talend.repository
-     * .items.importexport.handlers.model.ImportItem)
-     */
     @Override
     protected void beforeCreatingItem(ImportItem selectedItemRecord) {
         super.beforeCreatingItem(selectedItemRecord);
@@ -67,13 +57,6 @@ public class MetadataConnectionImportHandler extends ImportRepTypeHandler {
                 && !selectedItemRecord.getMigrationTasksToApply().isEmpty();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.items.importexport.handlers.imports.ImportRepTypeHandler#afterCreatedItem(org.
-     * talend.repository.items.importexport.ui.wizard.imports.managers.ResourcesManager,
-     * org.talend.repository.items.importexport.ui.wizard.imports.models.ItemRecord)
-     */
     @Override
     protected void afterCreatedItem(ResourcesManager resManager, ImportItem importItem) throws Exception {
         final Item tmpItem = importItem.getItem();

@@ -32,31 +32,16 @@ import org.talend.librariesmanager.maven.ShareLibrareisHelper;
 import org.talend.librariesmanager.model.ModulesNeededProvider;
 import org.talend.librariesmanager.ui.i18n.Messages;
 
-/**
- * created by wchen on 2015年6月15日 Detailed comment
- *
- */
 public class ShareLibsJob extends Job {
 
     private final String TYPE_NEXUS = "nexus";
 
     private final String TYPE_SVN = "svn";
 
-    /**
-     * DOC Talend ShareLibsJob constructor comment.
-     * 
-     * @param name
-     */
     public ShareLibsJob() {
         super("");
-        // TODO Auto-generated constructor stub
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.core.runtime.jobs.Job#run(org.eclipse.core.runtime.IProgressMonitor)
-     */
     @Override
     protected IStatus run(IProgressMonitor monitor) {
         ShareLibsOnStartup shareLib = new ShareLibsOnStartup();
@@ -64,9 +49,7 @@ public class ShareLibsJob extends Job {
     }
 
     /**
-     * Share libs from local maven to svn lib or nexus server depends on TAC setup, created by wchen on 2015年7月31日
-     * Detailed comment
-     *
+     * Share libs from local maven to svn lib or nexus server depends on TAC setup
      */
     class ShareLibsOnStartup extends ShareLibrareisHelper {
 
@@ -100,12 +83,6 @@ public class ShareLibsJob extends Job {
             return files;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.talend.librariesmanager.utils.ShareLibrareisHelper#deployToLocalMavenOnExist(java.io.File,
-         * org.talend.core.model.general.ModuleNeeded)
-         */
         @Override
         public void deployToLocalMaven(ArtifactsDeployer deployer, File jarFile, ModuleNeeded module) throws Exception {
             // nothing to do

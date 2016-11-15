@@ -16,9 +16,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
-/**
- * bqian class global comment. Detailed comment
- */
 public interface IRoutinesProvider {
 
     public List<URL> getSystemRoutines();

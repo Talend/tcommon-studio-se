@@ -56,9 +56,6 @@ import org.talend.core.model.general.ILibrariesService;
 import org.talend.core.model.process.IElementParameter;
 import org.talend.core.ui.i18n.Messages;
 
-/**
- * created by hwang on Dec 24, 2014 Detailed comment copied from ModuleListCellEditor/ModuleListDialog
- */
 public class ModuleListDialog extends Dialog {
 
     private String selecteModule;

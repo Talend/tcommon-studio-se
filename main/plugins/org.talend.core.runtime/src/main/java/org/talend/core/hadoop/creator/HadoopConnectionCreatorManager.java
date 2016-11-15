@@ -24,10 +24,6 @@ import org.eclipse.core.runtime.Platform;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.hadoop.IHadoopConnectionCreator;
 
-/**
- * created by ycbai on 2015年6月29日 Detailed comment
- *
- */
 public class HadoopConnectionCreatorManager {
 
     private static final String CREATOR_EXT_ID = "org.talend.core.runtime.hadoopConnectionCreator"; //$NON-NLS-1$

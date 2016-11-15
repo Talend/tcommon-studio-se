@@ -17,9 +17,6 @@ import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.model.general.Project;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public final class ResourceModelHelper {
 
     public static IProject getProject(Project project) throws PersistenceException {

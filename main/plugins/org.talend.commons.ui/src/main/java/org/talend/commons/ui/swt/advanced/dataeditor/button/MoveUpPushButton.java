@@ -22,31 +22,13 @@ import org.talend.commons.ui.swt.advanced.dataeditor.control.ExtendedPushButton;
 import org.talend.commons.ui.swt.extended.table.AbstractExtendedControlViewer;
 import org.talend.commons.ui.swt.extended.table.AbstractExtendedTableViewer;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public abstract class MoveUpPushButton extends ExtendedPushButton {
 
-    /**
-     * DOC amaumont AddPushButton constructor comment.
-     * 
-     * @param parent
-     * @param tooltip
-     * @param image
-     */
     public MoveUpPushButton(Composite parent, AbstractExtendedControlViewer extendedControlViewer) {
         super(parent, extendedControlViewer,
                 Messages.getString("MoveUpPushButton.MoveUpButton.Tip"), ImageProvider.getImage(EImage.UP_ICON)); //$NON-NLS-1$
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.advanced.macrotable.control.ExtendedPushButton#getCommandToExecute()
-     */
     @Override
     protected Command getCommandToExecute() {
         AbstractExtendedTableViewer viewer = (AbstractExtendedTableViewer) getExtendedControlViewer();
@@ -54,11 +36,6 @@ public abstract class MoveUpPushButton extends ExtendedPushButton {
                 .getTable().getSelectionIndices());
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.advanced.dataeditor.control.ExtendedPushButton#getEnabledState()
-     */
     @Override
     public boolean getEnabledState() {
         return super.getEnabledState() && !getExtendedControlViewer().isReadOnly();

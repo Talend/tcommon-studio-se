@@ -17,18 +17,10 @@ import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.metadata.managment.ui.utils.ConnectionContextHelper;
 
-/**
- * ggu class global comment. Detailed comment
- */
 public class MetadataContextModeManager implements IMetadataContextModeManager {
 
     private ContextType type;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.wizards.metadata.IMetadataContextModeManager#getOriginalValue(java.lang.String)
-     */
     public String getOriginalValue(String code) {
         if (code == null) {
             return ConnectionContextHelper.EMPTY;
@@ -36,30 +28,15 @@ public class MetadataContextModeManager implements IMetadataContextModeManager {
         return ConnectionContextHelper.getOriginalValue(getSelectedContextType(), code);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.wizards.metadata.IMetadataContextModeManager#getSelectedContextType()
-     */
     public ContextType getSelectedContextType() {
         return this.type;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.wizards.metadata.IMetadataContextModeManager#setSelectedContextType(org.talend.designer.core.model.utils.emf.talendfile.ContextType)
-     */
     public void setSelectedContextType(ContextType type) {
         this.type = type;
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.wizards.metadata.IMetadataContextModeManager#setDefaultContextType(org.talend.core.model.metadata.builder.connection.Connection)
-     */
     public void setDefaultContextType(Connection connection) {
         if (connection != null && connection.isContextMode()) {
             ContextType contextType = ConnectionContextHelper.getContextTypeForContextMode(connection, true);

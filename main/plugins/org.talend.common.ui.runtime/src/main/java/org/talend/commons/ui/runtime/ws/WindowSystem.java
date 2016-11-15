@@ -16,13 +16,6 @@ import org.eclipse.core.internal.runtime.InternalPlatform;
 import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.BundleContext;
 
-/**
- * 
- * DOC root class global comment. Detailed comment <br/>
- * 
- * $Id: WindowSystem.java 7038 2007-11-15 14:05:48Z plegall $
- * 
- */
 @SuppressWarnings("restriction")
 public class WindowSystem {
 

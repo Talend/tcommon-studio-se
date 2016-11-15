@@ -17,9 +17,6 @@ import java.util.List;
 
 import org.talend.repository.items.importexport.handlers.model.ImportItem;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public abstract class ImportNode implements Comparable<ImportNode> {
 
     private ImportNode parentNode;

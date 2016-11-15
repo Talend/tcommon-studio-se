@@ -22,14 +22,10 @@ import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
 import org.talend.commons.exception.ExceptionHandler;
 
-/**
- * DOC Administrator class global comment. Detailed comment <br/>
- * 
- */
 public class XMLHandler {
 
     /**
-     * Generates xml file base on inputted path, file path and an instance of <code>Document</code>
+     * Generates xml file base on inputed path, file path and an instance of <code>Document</code>
      * 
      * @param tempFolderPath
      * @param filePath

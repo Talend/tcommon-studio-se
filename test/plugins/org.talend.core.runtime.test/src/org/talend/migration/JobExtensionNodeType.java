@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.migration;
 
-
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class JobExtensionNodeType {
 
 }

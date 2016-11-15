@@ -26,9 +26,6 @@ import org.eclipse.ui.navigator.ICommonActionExtensionSite;
 import org.eclipse.ui.navigator.INavigatorContentService;
 import org.talend.repository.ui.actions.AContextualAction;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public abstract class AbstractRepositoryActionProvider extends CommonActionProvider {
 
     private boolean contributedToViewMenu = false;

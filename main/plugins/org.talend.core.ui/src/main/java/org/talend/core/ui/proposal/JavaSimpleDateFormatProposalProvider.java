@@ -20,12 +20,6 @@ import org.eclipse.jface.fieldassist.IContentProposalProvider;
 import org.talend.core.ui.i18n.Messages;
 import org.talend.core.utils.TalendQuoteUtils;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id: talend-code-templates.xml 1 2006-09-29 17:06:40Z nrousseau $
- * 
- */
 public class JavaSimpleDateFormatProposalProvider implements IContentProposalProvider {
 
     public static void main(String[] args) {
@@ -114,13 +108,6 @@ public class JavaSimpleDateFormatProposalProvider implements IContentProposalPro
         return cp;
     }
 
-    /**
-     * 
-     * DOC amaumont JavaSimpleDateFormatProposalProvider class global comment. Detailed comment <br/>
-     * 
-     * $Id: talend-code-templates.xml 1 2006-09-29 17:06:40Z nrousseau $
-     * 
-     */
     class DateFormatContentProposal implements IContentProposal {
 
         String content;
@@ -129,13 +116,6 @@ public class JavaSimpleDateFormatProposalProvider implements IContentProposalPro
 
         String label;
 
-        /**
-         * DOC amaumont DateFormatProposal constructor comment.
-         * 
-         * @param content
-         * @param description
-         * @param label
-         */
         public DateFormatContentProposal(String label, String content, String description) {
             super();
             this.content = content;

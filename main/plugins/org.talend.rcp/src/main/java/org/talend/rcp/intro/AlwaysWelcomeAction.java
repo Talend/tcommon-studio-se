@@ -22,16 +22,8 @@ import org.eclipse.ui.intro.config.IIntroAction;
 import org.talend.core.CorePlugin;
 import org.talend.core.prefs.ITalendCorePrefConstants;
 
-/**
- * wchen class global comment. Detailed comment
- */
 public class AlwaysWelcomeAction implements IIntroAction {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.intro.config.IIntroAction#run(org.eclipse.ui.intro.IIntroSite, java.util.Properties)
-     */
     public void run(IIntroSite site, Properties params) {
         if (params == null) {
             return;

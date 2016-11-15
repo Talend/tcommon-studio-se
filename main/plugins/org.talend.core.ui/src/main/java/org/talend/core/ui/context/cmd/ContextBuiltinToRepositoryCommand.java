@@ -35,10 +35,6 @@ import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
 
-/**
- * created by ldong on Sep 12, 2014 Detailed comment
- * 
- */
 public class ContextBuiltinToRepositoryCommand extends Command {
 
     private List<IContextParameter> params = new ArrayList<IContextParameter>();
@@ -49,13 +45,6 @@ public class ContextBuiltinToRepositoryCommand extends Command {
 
     private ContextManagerHelper helper;
 
-    /**
-     * DOC ldong ContextBuiltinToRepositoryCommand constructor comment.
-     * 
-     * @param params
-     * @param contextManager
-     * @param item
-     */
     public ContextBuiltinToRepositoryCommand(List<IContextParameter> params, IContextManager contextManager, ContextItem item) {
         super();
         this.params = params;

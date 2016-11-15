@@ -32,12 +32,6 @@ import org.talend.core.runtime.i18n.Messages;
 import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * This class is used for representing connection parameters. <br/>
- * 
- * @author ftang
- * 
- */
 public class ConnectionParameters {
 
     // to check the button contextmode when use built-in mode in designer,add by hyWang
@@ -51,18 +45,11 @@ public class ConnectionParameters {
         this.ifContextButtonCheckedFromBuiltIn = ifContextButtonCheckedFromBuiltIn;
     }
 
-    /**
-     * qzhang ConnectionParameters class global comment. Detailed comment <br/>
-     * 
-     */
     public enum EFrameworkKeyName {
         EMBEDED("Embeded"), //$NON-NLS-1$
         JCCJDBC("JCCJDBC"), //$NON-NLS-1$
         DERBYCLIENT("DerbyClient"); //$NON-NLS-1$
 
-        /**
-         * qzhang ConnectionParameters.EFrameworkKeyName constructor comment.
-         */
         String displayName;
 
         EFrameworkKeyName(String displayName) {
@@ -70,11 +57,6 @@ public class ConnectionParameters {
 
         }
 
-        /**
-         * Getter for displayName.
-         * 
-         * @return the displayName
-         */
         public String getDisplayName() {
             return this.displayName;
         }

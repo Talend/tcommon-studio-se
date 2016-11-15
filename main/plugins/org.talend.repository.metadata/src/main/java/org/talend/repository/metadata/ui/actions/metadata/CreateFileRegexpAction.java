@@ -30,12 +30,6 @@ import org.talend.repository.model.IRepositoryNode.EProperties;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.ui.wizards.metadata.connection.files.regexp.RegexpFileWizard;
 
-/**
- * DOC cantoine class global comment. Detailed comment <br/>
- * 
- * $Id: CreateFileRegexpAction.java 77219 2012-01-24 01:14:15Z mhirt $
- * 
- */
 public class CreateFileRegexpAction extends AbstractCreateAction {
 
     private static final String EDIT_LABEL = Messages.getString("CreateFileRegexpAction.action.editTitle"); //$NON-NLS-1$
@@ -55,11 +49,6 @@ public class CreateFileRegexpAction extends AbstractCreateAction {
     ImageDescriptor createImage = OverlayImageProvider.getImageWithNew(ImageProvider
             .getImage(ECoreImage.METADATA_FILE_REGEXP_ICON));
 
-    /**
-     * DOC cantoine CreateFileRegexpAction constructor comment.
-     * 
-     * @param viewer
-     */
     public CreateFileRegexpAction() {
         super();
 

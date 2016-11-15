@@ -20,24 +20,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.talend.registration.i18n.Messages;
 
-/**
- * DOC smallet class global comment. Detailed comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- * 
- */
 public class RegisterWizardDialog extends WizardDialog {
 
     private IWizard wizard;
 
     private Composite workArea;
 
-    /**
-     * DOC smallet RegisterWizardDialog constructor comment.
-     * 
-     * @param parentShell
-     * @param newWizard
-     */
     public RegisterWizardDialog(Shell parentShell, IWizard newWizard) {
         super(parentShell, newWizard);
         wizard = newWizard;
@@ -52,11 +40,6 @@ public class RegisterWizardDialog extends WizardDialog {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.wizard.WizardDialog#configureShell(org.eclipse.swt.widgets.Shell)
-     */
     @Override
     protected void configureShell(Shell newShell) {
         super.configureShell(newShell);

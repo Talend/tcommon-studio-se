@@ -15,12 +15,6 @@ package org.talend.commons.runtime.model.expressionbuilder;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * yzhang class global comment. Detailed comment <br/>
- * 
- * $Id: Expression.java 上午10:50:58 2007-9-15 +0000 (2007-9-15) yzhang $
- * 
- */
 public class Expression {
 
     private String expression;

@@ -23,10 +23,6 @@ import org.eclipse.ui.internal.intro.impl.model.loader.IntroContentParser;
 import org.talend.registration.RegistrationPlugin;
 import org.w3c.dom.Document;
 
-/**
- * created by kongxiaohan on Mar 24, 2015 Detailed comment
- *
- */
 public class HtmlContentUtil {
 
     public static Document readHtmlToDocument(String path) throws IOException {

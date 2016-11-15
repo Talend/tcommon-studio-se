@@ -19,9 +19,6 @@ import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.swt.graphics.Image;
 import org.talend.commons.ui.swt.geftree.TreeSelectManager;
 
-/**
- * cli class global comment. Detailed comment
- */
 public class ExpandCollapseFigure extends ImageFigure {
 
     private TreeBranch parent;

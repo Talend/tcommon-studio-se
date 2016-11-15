@@ -21,19 +21,10 @@ import org.talend.core.model.repository.RepositoryManager;
 import org.talend.core.repository.model.ProjectRepositoryNode;
 import org.talend.repository.navigator.RepoViewCommonNavigator;
 
-/**
- * 
- * DOC ggu RepoRefreshAction class global comment. Detailed comment
- */
 public class RepoRefreshAction implements IViewActionDelegate {
 
     RepoViewCommonNavigator view;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
-     */
     @Override
     public void run(IAction action) {
         // FIXME maybe later,will remove this flag

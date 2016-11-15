@@ -19,9 +19,6 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 import org.talend.designer.joblet.model.JobletProcess;
 
-/**
- * DOC nma class global comment. Detailed comment
- */
 public interface ICreateXtextProcessService extends IService {
 
     public void createProcessItem(String jobName, String path);

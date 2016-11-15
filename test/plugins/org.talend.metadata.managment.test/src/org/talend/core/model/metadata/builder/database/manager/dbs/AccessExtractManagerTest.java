@@ -15,10 +15,6 @@ package org.talend.core.model.metadata.builder.database.manager.dbs;
 import org.junit.Before;
 import org.talend.core.database.EDatabaseTypeName;
 
-/**
- * created by ggu on Jul 4, 2012 Detailed comment
- * 
- */
 public class AccessExtractManagerTest extends AbstractTest4ExtractManager {
 
     @Before

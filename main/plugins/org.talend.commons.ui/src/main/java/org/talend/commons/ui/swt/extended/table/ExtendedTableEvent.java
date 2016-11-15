@@ -12,12 +12,6 @@
 // ============================================================================
 package org.talend.commons.ui.swt.extended.table;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public class ExtendedTableEvent {
 
 }

@@ -23,17 +23,8 @@ import org.talend.core.model.relationship.RelationshipItemBuilder;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 import org.talend.designer.core.model.utils.emf.talendfile.RoutinesParameterType;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class JobRoutinesItemRelationshipHandler extends AbstractJobItemRelationshipHandler {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.relationship.AbstractItemRelationshipHandler#collect(org.talend.core.model.properties.Item)
-     */
     @Override
     protected Set<Relation> collect(Item baseItem) {
         ProcessType processType = getProcessType(baseItem);

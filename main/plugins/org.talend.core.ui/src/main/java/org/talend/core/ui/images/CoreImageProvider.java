@@ -32,12 +32,6 @@ import org.talend.core.ui.component.ComponentsFactoryProvider;
 import org.talend.designer.core.IDesignerCoreService;
 import org.talend.utils.string.MD5;
 
-/**
- * amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public class CoreImageProvider {
 
     public static Image getImage(ERepositoryObjectType type) {

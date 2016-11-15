@@ -15,11 +15,6 @@ package org.talend.core.service;
 import org.talend.core.IService;
 import org.talend.core.model.process.INode;
 
-/**
- * 
- * created by hcyi on Aug 11, 2015 Detailed comment
- *
- */
 public interface IDesignerSparkMapperService extends IService {
 
     public boolean isVirtualComponent(final INode node);

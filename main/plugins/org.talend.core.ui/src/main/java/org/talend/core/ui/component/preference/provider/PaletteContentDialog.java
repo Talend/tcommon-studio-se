@@ -29,12 +29,6 @@ import org.eclipse.swt.widgets.Text;
 import org.talend.core.ui.component.preference.ComponentsFormatPreferencePage;
 import org.talend.core.ui.i18n.Messages;
 
-/**
- * yzhang class global comment. Detailed comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ææäº, 29 ä¹æ 2006) nrousseau $
- * 
- */
 public class PaletteContentDialog extends Dialog {
 
     private static final String DIALOG_TITLE = "Select the items in palette"; //$NON-NLS-1$
@@ -45,11 +39,6 @@ public class PaletteContentDialog extends Dialog {
 
     private final ComponentsFormatPreferencePage page;
 
-    /**
-     * DOC yzhang PaletteContentDialog constructor comment.
-     * 
-     * @param parentShell
-     */
     public PaletteContentDialog(Shell parentShell, ComponentsFormatPreferencePage page) {
         super(parentShell);
         setShellStyle(SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM | SWT.RESIZE);

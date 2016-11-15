@@ -31,10 +31,6 @@ import org.talend.core.model.metadata.IMetadataConnection;
 import org.talend.core.model.metadata.builder.MetadataConnection;
 import org.talend.core.model.metadata.builder.database.DriverShim;
 
-/**
- * created by ggu on Jul 4, 2012 Detailed comment
- * 
- */
 public class HSQLDBExtractManagerTest extends AbstractTest4ExtractManager {
 
     @Before

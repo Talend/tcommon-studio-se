@@ -18,17 +18,8 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.talend.datatools.xml.utils.ATreeNode;
 
-/**
- * created by nrousseau on May 9, 2013 Detailed comment
- * 
- */
 public class VirtualXmlTreeNodeContentProvider extends TreeNodeContentProvider implements ILazyTreeContentProvider {
 
-    /**
-     * DOC nrousseau VirtualXmlTreeNodeContentProvider constructor comment.
-     * 
-     * @param viewer
-     */
     public VirtualXmlTreeNodeContentProvider(TreeViewer viewer) {
         super();
         this.viewer = viewer;
@@ -38,11 +29,6 @@ public class VirtualXmlTreeNodeContentProvider extends TreeNodeContentProvider i
 
     private TreeViewer viewer;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ILazyTreeContentProvider#updateElement(java.lang.Object, int)
-     */
     @Override
     public void updateElement(Object parent, int index) {
         Object element;
@@ -55,11 +41,6 @@ public class VirtualXmlTreeNodeContentProvider extends TreeNodeContentProvider i
         updateChildCount(element, -1);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ILazyTreeContentProvider#updateChildCount(java.lang.Object, int)
-     */
     @Override
     public void updateChildCount(Object element, int currentChildCount) {
         int length = 0;

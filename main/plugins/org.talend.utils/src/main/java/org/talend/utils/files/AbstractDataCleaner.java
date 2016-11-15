@@ -15,10 +15,6 @@ package org.talend.utils.files;
 import org.apache.log4j.Logger;
 import org.talend.utils.thread.ThreadUtils;
 
-/**
- * 
- * DOC amaumont class global comment. Detailed comment
- */
 public abstract class AbstractDataCleaner {
 
     private static Logger log = Logger.getLogger(AbstractDataCleaner.class);
@@ -37,23 +33,10 @@ public abstract class AbstractDataCleaner {
         this.frequencyCleaningAction = frequencyCleaningAction;
     }
 
-    /**
-     * 
-     * DOC amaumont Comment method "start".
-     * 
-     * @return
-     */
     public boolean start() {
-
         if (frequencyCleaningAction > 0) {
-
             threadCleaner = new Thread(cleanerLabel) {
 
-                /*
-                 * (non-Javadoc)
-                 * 
-                 * @see java.lang.Thread#run()
-                 */
                 @Override
                 public void run() {
                     cleanLoop();

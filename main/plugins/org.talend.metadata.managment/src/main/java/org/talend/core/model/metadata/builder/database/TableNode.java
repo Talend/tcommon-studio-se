@@ -21,9 +21,6 @@ import orgomg.cwm.resource.relational.Schema;
 import orgomg.cwm.resource.relational.Table;
 import orgomg.cwm.resource.relational.View;
 
-/**
- * wzhang class global comment. Detailed comment
- */
 public class TableNode {
 
     private String value;

@@ -39,17 +39,8 @@ import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.metadata.managment.ui.i18n.Messages;
 import org.talend.repository.model.RepositoryConstants;
 
-/**
- * ggu class global comment. Detailed comment
- */
 public final class LinkDocumentationHelper {
 
-    /**
-     * 
-     * ggu Comment method "getTempFile".
-     * 
-     * 
-     */
     public static IFile getTempFile(String id, String extension) {
         if (id == null) {
             return null;

@@ -23,10 +23,6 @@ import org.eclipse.m2e.core.internal.IMavenConstants;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.tools.creator.CreateMavenCodeProject;
 
-/**
- * created by ggu on 23 Jan 2015 Detailed comment
- *
- */
 public final class TalendCodeProjectUtil {
 
     public static IProject initCodeProject(IProgressMonitor monitor) throws Exception {

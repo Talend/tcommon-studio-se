@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.core.repository.model.preview;
 
-/**
- * DOC YeXiaowei class global comment. Detailed comment <br/>
- * 
- */
 public class SalesforceSchemaBean {
 
     public static final int DEFAULT_TIME_OUT = 60000;

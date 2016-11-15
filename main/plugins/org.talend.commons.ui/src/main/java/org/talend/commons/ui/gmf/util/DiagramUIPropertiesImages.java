@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.commons.ui.gmf.util;
 
-
-/**
- * DOC nrousseau  class global comment. Detailed comment
- */
 public class DiagramUIPropertiesImages {
 
 }

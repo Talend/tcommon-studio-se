@@ -19,9 +19,6 @@ import org.talend.commons.ui.swt.extended.table.ExtendedTableModel;
 import org.talend.core.model.metadata.builder.connection.Concept;
 import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
 
-/**
- * DOC hwang class global comment. Detailed comment
- */
 public class MDMXSDExtractorLoopModel extends ExtendedTableModel<Concept> {
 
     private Concept concept;

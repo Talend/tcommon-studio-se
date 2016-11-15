@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.core.model.metadata;
 
-/**
- * DOC hwang class global comment. Detailed comment
- */
 public class IMDMConstant {
 
     public static final String REF_TYPE = "-TYPE"; //$NON-NLS-1$
@@ -29,9 +26,6 @@ public class IMDMConstant {
 
     public static final String FIELD_CODE = "CODE"; //$NON-NLS-1$
 
-    /*
-     * 
-     */
     public static final String PROPERTY = "PROPERTY"; //$NON-NLS-1$
 
     public static final String PROPERTY_TYPE = "PROPERTY_TYPE"; //$NON-NLS-1$

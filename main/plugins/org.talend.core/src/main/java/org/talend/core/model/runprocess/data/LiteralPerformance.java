@@ -15,9 +15,6 @@ package org.talend.core.model.runprocess.data;
 import org.apache.commons.lang.StringUtils;
 import org.talend.core.model.process.EConnectionType;
 
-/**
- * DOC zwei class global comment. Detailed comment
- */
 public class LiteralPerformance extends CommonPerformance {
 
     public LiteralPerformance(EConnectionType eConnectionType) {

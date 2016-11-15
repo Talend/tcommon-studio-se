@@ -32,19 +32,10 @@ import org.talend.repository.model.IRepositoryNode.EProperties;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.ui.actions.AContextualAction;
 
-/**
- * DOC tguiu class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public abstract class AbstractCreateAction extends AContextualAction {
 
     private String[] existingNames;
 
-    /**
-     * DOC tguiu AbstractCreateAction constructor comment.
-     */
     public AbstractCreateAction() {
         super();
     }

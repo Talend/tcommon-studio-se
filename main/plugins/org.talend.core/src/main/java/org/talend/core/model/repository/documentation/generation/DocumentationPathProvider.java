@@ -21,12 +21,6 @@ import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.Project;
 import org.talend.repository.ProjectManager;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id: RepositoryPathProvider.java 7038 2007-11-15 14:05:48Z plegall $
- * 
- */
 public class DocumentationPathProvider {
 
     public static IPath getPathProjectFolder(Item item, String folderName) {

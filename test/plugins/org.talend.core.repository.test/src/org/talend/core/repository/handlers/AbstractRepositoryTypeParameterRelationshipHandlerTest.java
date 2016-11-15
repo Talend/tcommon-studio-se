@@ -24,27 +24,14 @@ import org.talend.core.model.relationship.RelationshipItemBuilder;
 import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 @SuppressWarnings("nls")
 public abstract class AbstractRepositoryTypeParameterRelationshipHandlerTest extends AbstractParameterRelationshipHandlerTest {
 
     public static final String BUILTIN = "BUILT_IN";
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.repository.handlers.AbstractParameterRelationshipHandlerTest#createHandler()
-     */
     @Override
     protected abstract AbstractJobParameterInRepositoryRelationshipHandler createHandler();
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.repository.handlers.AbstractParameterRelationshipHandlerTest#getHandler()
-     */
     @Override
     protected AbstractJobParameterInRepositoryRelationshipHandler getHandler() {
         return (AbstractJobParameterInRepositoryRelationshipHandler) super.getHandler();

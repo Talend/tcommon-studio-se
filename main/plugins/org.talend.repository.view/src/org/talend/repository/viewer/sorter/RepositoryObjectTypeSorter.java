@@ -16,9 +16,6 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.view.sorter.RepositoryRootNodeCompareSorter;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class RepositoryObjectTypeSorter extends RepositoryRootNodeCompareSorter {
 
     @Override

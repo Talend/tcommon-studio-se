@@ -62,12 +62,6 @@ import org.talend.repository.model.RepositoryConstants;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.ui.actions.AContextualAction;
 
-/**
- * DOC tguiu class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public class DeleteTableAction extends AContextualAction {
 
     private static final String DELETE_LOGICAL_TITLE = Messages.getString("DeleteAction.action.logicalTitle"); //$NON-NLS-1$

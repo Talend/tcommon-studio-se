@@ -31,10 +31,7 @@ import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 
 /**
- * This bean is use to manage needed moduless (perl) and libraries (java).<br/>
- *
- * $Id: ModuleNeeded.java 38013 2010-03-05 14:21:59Z mhirt $
- *
+ * This bean is use to manage needed moduless (perl) and libraries (java).
  */
 public class ModuleNeeded {
 
@@ -106,12 +103,6 @@ public class ModuleNeeded {
         serviceTracker.open();
     }
 
-    /**
-     * DOC smallet ModuleNeeded class global comment. Detailed comment <br/>
-     *
-     * $Id: ModuleNeeded.java 38013 2010-03-05 14:21:59Z mhirt $
-     *
-     */
     public enum ELibraryInstallStatus {
         UNKNOWN,
         INSTALLED,
@@ -119,19 +110,8 @@ public class ModuleNeeded {
         NOT_INSTALLED,
         DEPLOYED,
         NOT_DEPLOYED;
-
     }
 
-    /**
-     * DOC smallet ModuleNeeded constructor comment.
-     *
-     * @param context
-     * @param moduleName
-     * @param informationMsg
-     * @param required
-     * @param unused
-     * @param status
-     */
     public ModuleNeeded(String context, String moduleName, String informationMsg, boolean required) {
         this(context, moduleName, informationMsg, required, null, null, null, ELibraryInstallStatus.UNKNOWN);
     }

@@ -41,10 +41,6 @@ import org.talend.designer.maven.setting.project.IProjectSettingManagerProvider;
 import org.talend.designer.maven.utils.PomIdsHelper;
 import org.talend.repository.ProjectManager;
 
-/**
- * created by ggu on 5 Feb 2015 Detailed comment
- *
- */
 public class MavenTemplateManager {
 
     public static Map<String, AbstractMavenTemplateManager> getTemplateManagerMap() {

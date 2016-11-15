@@ -43,12 +43,6 @@ import org.talend.librariesmanager.i18n.Messages;
 import org.talend.librariesmanager.model.ModulesNeededProvider;
 import org.talend.librariesmanager.prefs.LibrariesManagerUtils;
 
-/**
- * DOC smallet class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public class JavaLibrariesService extends AbstractLibrariesService {
 
     private static Logger log = Logger.getLogger(JavaLibrariesService.class);

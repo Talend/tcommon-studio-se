@@ -12,12 +12,6 @@
 // ============================================================================
 package org.talend.commons.ui.swt.colorstyledtext.jedit;
 
-/**
- * DOC nrousseau class global comment. Detailed comment <br/>
- * 
- * $Id: ISyntaxListener.java 7038 2007-11-15 14:05:48Z plegall $
- * 
- */
 public interface ISyntaxListener {
 
     void newRules(String name, boolean highlightDigits, boolean ignoreCase, String digitRE, char escape,

@@ -36,9 +36,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.talend.commons.exception.CommonExceptionHandler;
 import org.talend.core.model.utils.RepositoryManagerHelper;
 
-/**
- * DOC yexiaowei class global comment. Detailed comment
- */
 public class ExcelReader {
 
     private String excelPath = null;

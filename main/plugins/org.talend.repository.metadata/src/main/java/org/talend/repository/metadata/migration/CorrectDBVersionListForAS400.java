@@ -28,7 +28,6 @@ import org.talend.core.model.properties.Item;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 
 /**
- * DOC talend class global comment. Detailed comment<br>
  * More information please see: https://jira.talendforge.org/browse/TDI-30337
  */
 public class CorrectDBVersionListForAS400 extends AbstractItemMigrationTask {
@@ -46,11 +45,6 @@ public class CorrectDBVersionListForAS400 extends AbstractItemMigrationTask {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.migration.AbstractItemMigrationTask#execute(org.talend.core.model.properties.Item)
-     */
     @Override
     public ExecutionResult execute(Item item) {
         boolean modified = false;
@@ -82,11 +76,6 @@ public class CorrectDBVersionListForAS400 extends AbstractItemMigrationTask {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.migration.IProjectMigrationTask#getOrder()
-     */
     @Override
     public Date getOrder() {
         GregorianCalendar gc = new GregorianCalendar(2014, 8, 19, 9, 20, 0);

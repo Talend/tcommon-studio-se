@@ -17,9 +17,6 @@ import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.core.model.metadata.MetadataColumn;
 import org.talend.core.ui.metadata.editor.MetadataTableEditor;
 
-/**
- * cli class global comment. Detailed comment
- */
 public class XPathQueryMetadataTableEditorExt extends MetadataTableEditor {
 
     public XPathQueryMetadataTableEditorExt(IMetadataTable metadataTable, String titleName) {
@@ -29,7 +26,6 @@ public class XPathQueryMetadataTableEditorExt extends MetadataTableEditor {
     public IMetadataColumn createNewMetadataColumn() {
         final XPathQueryMetadataColumnExt metadataColumnExt = new XPathQueryMetadataColumnExt((MetadataColumn) super
                 .createNewMetadataColumn());
-        // PTODO
         return metadataColumnExt;
     }
 }

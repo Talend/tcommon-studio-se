@@ -15,45 +15,22 @@ package org.talend.core.repository.handlers;
 import org.talend.core.model.relationship.AbstractJobParameterInRepositoryRelationshipHandler;
 import org.talend.core.model.relationship.RelationshipItemBuilder;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class PropertyTypeParameterRelationshipHandler extends AbstractJobParameterInRepositoryRelationshipHandler {
 
     public static final String PROPERTY_PROPERTY_TYPE = "PROPERTY_TYPE"; //$NON-NLS-1$
 
     public static final String PROPERTY_REPOSITORY_PROPERTY_TYPE = "REPOSITORY_PROPERTY_TYPE"; //$NON-NLS-1$
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.relationship.AbstractJobParameterInRepositoryRelationshipHandler#getRepositoryTypeName()
-     */
     @Override
     protected String getRepositoryTypeName() {
         return PROPERTY_PROPERTY_TYPE;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.relationship.AbstractJobParameterInRepositoryRelationshipHandler#getRepositoryTypeValueName
-     * ()
-     */
     @Override
     protected String getRepositoryTypeValueName() {
         return PROPERTY_REPOSITORY_PROPERTY_TYPE;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.relationship.AbstractJobParameterInRepositoryRelationshipHandler#getRepositoryRelationType
-     * ()
-     */
     @Override
     protected String getRepositoryRelationType() {
         return RelationshipItemBuilder.PROPERTY_RELATION;

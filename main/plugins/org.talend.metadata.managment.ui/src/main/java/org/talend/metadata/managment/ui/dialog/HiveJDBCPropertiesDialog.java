@@ -18,11 +18,6 @@ import java.util.Map;
 import org.eclipse.swt.widgets.Shell;
 import org.talend.metadata.managment.ui.i18n.Messages;
 
-/**
- * 
- * created by ycbai on 2015年1月4日 Detailed comment
- *
- */
 public class HiveJDBCPropertiesDialog extends PropertiesDialog {
 
     public HiveJDBCPropertiesDialog(Shell parentShell, List<Map<String, Object>> initProperties) {

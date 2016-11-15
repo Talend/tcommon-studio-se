@@ -59,9 +59,6 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.model.RepositoryNodeUtilities;
 
-/**
- * DOC hwang class global comment. Detailed comment
- */
 public class MDMWizard extends RepositoryWizard implements INewWizard {
 
     private PropertiesWizardPage propertiesWizardPage;

@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.core.repository.model;
 
-/**
- * ggu class global comment. Detailed comment
- */
 public class JobletReferenceBean {
 
     private String jobName;

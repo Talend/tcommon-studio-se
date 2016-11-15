@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.registration.wizards.register.ui.htmlcontent;
 
-/**
- * created by kongxiaohan on Mar 24, 2015 Detailed comment
- *
- */
 public class ContentConstants {
 
     /**

@@ -45,10 +45,6 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryNode;
 import orgomg.cwm.objectmodel.core.Package;
 
-/**
- * Administrator class global comment. Detailed comment <br/>
- * 
- */
 public class SaveAsGenericSchemaCommand extends Command {
 
     private final ExtendedTableModel extendedTableModel;
@@ -64,11 +60,6 @@ public class SaveAsGenericSchemaCommand extends Command {
         this.dbmsId = dbmsId;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.gef.commands.Command#execute()
-     */
     @Override
     public void execute() {
         if (extendedTableModel instanceof MetadataTableEditor) {

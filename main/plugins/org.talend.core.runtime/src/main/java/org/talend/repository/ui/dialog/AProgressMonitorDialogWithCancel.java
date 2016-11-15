@@ -27,10 +27,6 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.widgets.Shell;
 import org.talend.core.runtime.i18n.Messages;
 
-/**
- * created by cmeng on Nov 21, 2014 Detailed comment
- *
- */
 public abstract class AProgressMonitorDialogWithCancel<T> extends ProgressMonitorDialog {
 
     public static final int ENDLESS_WAIT_TIME = -1;
@@ -41,11 +37,6 @@ public abstract class AProgressMonitorDialogWithCancel<T> extends ProgressMonito
 
     private boolean isUserCancelled = false;
 
-    /**
-     * DOC cmeng ProgressMonitorDialogWithCancel constructor comment.
-     * 
-     * @param parent
-     */
     public AProgressMonitorDialogWithCancel(Shell parent) {
         super(parent);
     }

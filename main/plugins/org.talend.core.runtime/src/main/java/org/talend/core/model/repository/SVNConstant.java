@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.core.model.repository;
 
-/**
- * ggu class global comment. Detailed comment
- */
 public interface SVNConstant {
 
     public static final String SVN = "svn"; //$NON-NLS-1$
@@ -29,9 +26,6 @@ public interface SVNConstant {
 
     public static final String NAME_ORIGIN = "origin"; //$NON-NLS-1$
 
-    /*
-     * 
-     */
     public static final String UNDER_LINE_CHAR = "_"; //$NON-NLS-1$
 
     public static final String SEP_CHAR = "/"; //$NON-NLS-1$

@@ -14,10 +14,6 @@ package org.talend.utils.files;
 
 import java.io.File;
 
-/**
- * 
- * DOC amaumont class global comment. Detailed comment
- */
 public interface FileDirCleanerFilter {
 
     /**

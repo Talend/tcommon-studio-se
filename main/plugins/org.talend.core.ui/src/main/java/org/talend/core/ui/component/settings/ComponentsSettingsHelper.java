@@ -32,10 +32,6 @@ import org.talend.core.ui.component.ComponentsFactoryProvider;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IRepositoryService;
 
-/**
- * created by nrousseau on Aug 8, 2014 Detailed comment
- *
- */
 public class ComponentsSettingsHelper {
 
     /**

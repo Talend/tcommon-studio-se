@@ -17,12 +17,6 @@ import java.sql.SQLException;
 
 import org.talend.fakejdbc.FakeDatabaseMetaData;
 
-/**
- * DOC ggu class global comment. Detailed comment <br/>
- * 
- * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
- */
 public abstract class AbstractFakeDatabaseMetaData extends FakeDatabaseMetaData {
 
     protected static final String[] TABLE_META = { "ID", "TABLE_SCHEM", "TABLE_NAME", "TABLE_TYPE", "REMARKS" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$

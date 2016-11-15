@@ -32,9 +32,6 @@ import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public final class ComponentUtilities {
 
     public static final String FAMILY_SEPARATOR_REGEX = "\\|"; //$NON-NLS-1$

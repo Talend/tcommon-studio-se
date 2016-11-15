@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.core.model.metadata.designerproperties;
 
-/**
- * DOC talend class global comment. Detailed comment
- */
 public enum SapJcoVersion {
     SAP2("sap jco 2.*", "sapjco.jar"), //$NON-NLS-1$
     SAP3("sap jco 3.*", "sapjco3.jar");//$NON-NLS-1$

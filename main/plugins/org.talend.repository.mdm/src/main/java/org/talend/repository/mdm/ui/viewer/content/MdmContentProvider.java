@@ -13,10 +13,6 @@
 package org.talend.repository.mdm.ui.viewer.content;
 
 /**
- * 
- * DOC ggu class global comment. Detailed comment
- * 
- * 
  * FIXME later, will enable it
  */
 public class MdmContentProvider /* extends AbstractMetadataContentProvider */{

@@ -20,12 +20,6 @@ import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * DOC mhelleboid class global comment. Detailed comment <br/>
- * 
- * $Id: RepositoryEditorInput.java 1 2006-09-29 17:06:40 +0000 (æ˜ŸæœŸäº”, 29 ä¹�æœˆ 2006) nrousseau $
- * 
- */
 public class RepositoryEditorInput extends FileEditorInput implements IRepositoryEditorInput {
 
     private Item item;

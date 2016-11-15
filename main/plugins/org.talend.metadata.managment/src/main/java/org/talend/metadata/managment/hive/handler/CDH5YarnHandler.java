@@ -17,10 +17,6 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.talend.core.model.metadata.IMetadataConnection;
 
-/**
- * created by xqliu on 2014-2-27 Detailed comment
- * 
- */
 public class CDH5YarnHandler extends ClouderaHandler implements IHiveYarnHandler {
 
     private static Logger log = Logger.getLogger(CDH5YarnHandler.class);
@@ -38,9 +34,7 @@ public class CDH5YarnHandler extends ClouderaHandler implements IHiveYarnHandler
     }
 
     /*
-     * (non-Javadoc)
-     * 
-     * If user didn't fill the property in connection wizard,set a default value for this properties. Requried
+     * If user didn't fill the property in connection wizard,set a default value for this properties. Required
      * properties:"yarn.application.classpath";"yarn.app.mapreduce.am.resource.mb";"mapreduce.map.memory.mb";
      * "mapreduce.reduce.memory.mb"
      */

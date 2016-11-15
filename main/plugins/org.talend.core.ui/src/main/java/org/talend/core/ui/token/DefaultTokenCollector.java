@@ -23,9 +23,6 @@ import org.talend.daikon.token.TokenGenerator;
 
 import us.monoid.json.JSONObject;
 
-/**
- * ggu class global comment. Detailed comment
- */
 public class DefaultTokenCollector extends AbstractTokenCollector {
 
     private static final TokenKey VERSION = new TokenKey("version"); //$NON-NLS-1$
@@ -50,11 +47,6 @@ public class DefaultTokenCollector extends AbstractTokenCollector {
         return TokenGenerator.generateMachineToken(new CryptoHelper(CryptoHelper.PASSPHRASE));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.token.AbstractTokenCollector#collect()
-     */
     @Override
     public JSONObject collect() throws Exception {
         JSONObject tokenStudioObject = new JSONObject();

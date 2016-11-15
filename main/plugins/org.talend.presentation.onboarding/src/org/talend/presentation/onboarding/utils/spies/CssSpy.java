@@ -28,16 +28,10 @@ import org.talend.presentation.onboarding.exceptions.OnBoardingExceptionHandler;
 import org.w3c.css.sac.SelectorList;
 import org.w3c.dom.NodeList;
 
-/**
- * created by cmeng on Sep 8, 2015 Detailed comment
- * 
- * @see org.eclipse.e4.tools.css.spy.CssSpyPart
- */
 @SuppressWarnings("restriction")
 public class CssSpy {
 
     /**
-     * 
      * Get related widgets based on the css selector
      * 
      * @param css must be a css selector, Example: <b>#org-eclipse-ui-editorss>CTabFolder</b>

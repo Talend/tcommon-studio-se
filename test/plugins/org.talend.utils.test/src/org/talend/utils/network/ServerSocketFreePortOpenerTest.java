@@ -24,9 +24,6 @@ import org.junit.Test;
 import org.talend.testutils.threading.AbstractThreadSafetyTester;
 import org.talend.utils.network.operators.ServerSocketFreePortOpenerOperator;
 
-/**
- * DOC amaumont class global comment. Detailed comment
- */
 public class ServerSocketFreePortOpenerTest {
 
     private static final boolean DEBUG = true;

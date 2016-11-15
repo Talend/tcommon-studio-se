@@ -20,9 +20,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.talend.utils.collections.MapValueSorter;
 
-/**
- * DOC scorreia class global comment. Detailed comment
- */
 public class MapValueSorterTest {
 
     /**
@@ -36,11 +33,6 @@ public class MapValueSorterTest {
         Assert.assertEquals(lessFrequent.get(1), "eight");
     }
 
-    /**
-     * DOC scorreia Comment method "getMap".
-     * 
-     * @return
-     */
     private Map<Object, Long> getMap() {
         Map<Object, Long> m = new HashMap<Object, Long>();
         m.put("one", 1L);

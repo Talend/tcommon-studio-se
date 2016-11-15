@@ -34,9 +34,6 @@ import org.talend.core.utils.CsvArray;
 import org.talend.cwm.helper.ColumnHelper;
 import org.talend.metadata.managment.ui.preview.ShadowProcessPreview;
 
-/**
- * DOC hyWang class global comment. Detailed comment
- */
 public class GuessSchemaUtil {
 
     private static final String DEFAULT_LABEL = "Column"; //$NON-NLS-1$

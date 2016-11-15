@@ -19,30 +19,13 @@ import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.utils.TalendQuoteUtils;
 
-/**
- * created by wchen on 2013-5-20 Detailed comment
- * 
- */
 public abstract class AbstractDragAndDropServiceHandler implements IDragAndDropServiceHandler {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.utils.IDragAndDropServiceHandler#getComponentValue(org.talend.core.model.metadata.builder
-     * .connection.Connection, java.lang.String, org.talend.core.model.metadata.IMetadataTable)
-     */
     @Override
     public Object getComponentValue(Connection connection, String value, IMetadataTable table) {
         return getComponentValue(connection, value, table, null);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.utils.IDragAndDropServiceHandler#isValidForDataViewer(org.talend.core.model.metadata.
-     * IMetadataTable)
-     */
     @Override
     public boolean isValidForDataViewer(Connection connection, IMetadataTable metadataTable) {
         if (!canHandle(connection)) {

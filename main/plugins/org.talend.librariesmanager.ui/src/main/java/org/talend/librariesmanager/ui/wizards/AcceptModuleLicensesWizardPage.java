@@ -46,11 +46,6 @@ import org.talend.librariesmanager.ui.LibManagerUiPlugin;
 import org.talend.librariesmanager.ui.i18n.Messages;
 import org.talend.librariesmanager.utils.RemoteModulesHelper;
 
-/**
- * 
- * created by ycbai on 2013-10-16 Detailed comment
- * 
- */
 public class AcceptModuleLicensesWizardPage extends WizardPage {
 
     private static final String UNKNOWN_LICENSE = "Unknown license"; //$NON-NLS-1$

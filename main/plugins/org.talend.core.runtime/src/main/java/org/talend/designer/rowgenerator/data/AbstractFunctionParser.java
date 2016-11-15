@@ -20,12 +20,6 @@ import java.util.regex.PatternSyntaxException;
 
 import org.talend.commons.exception.ExceptionHandler;
 
-/**
- * qzhang class global comment. Detailed comment <br/>
- * 
- * $Id: talend-code-templates.xml 1 2007-3-28 下午02:42:59 (星期五, 29 九月 2006) qzhang $
- * 
- */
 public abstract class AbstractFunctionParser {
 
     protected List<TalendType> list = new ArrayList<TalendType>();

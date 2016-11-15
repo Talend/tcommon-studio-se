@@ -30,14 +30,9 @@ import org.talend.core.model.metadata.builder.connection.MetadataColumn;
 import org.talend.core.ui.metadata.editor.MetadataEmfTableEditor;
 import org.talend.repository.metadata.i18n.Messages;
 
-/**
- * wzhang class global comment. Detailed comment
- */
 public class XmlFileOutputMetadataEmfTableEditorView extends AbstractDataTableEditorView<MetadataColumn> {
 
     public static final String ID_COLUMN_NAME = "ID_COLUMN_NAME";
-
-    // private TableViewerCreatorColumn nameColumn;
 
     private XmlFileSchema2TreeLinker linker;
 
@@ -51,9 +46,6 @@ public class XmlFileOutputMetadataEmfTableEditorView extends AbstractDataTableEd
         tableViewerCreator.setReadOnly(this.readOnly);
 
         configureNameColumn(tableViewerCreator);
-        // if (showDbColumnName) {
-        // configureDbColumnName(tableViewerCreator);
-        // }
     }
 
     protected void configureNameColumn(TableViewerCreator<MetadataColumn> tableViewerCreator) {

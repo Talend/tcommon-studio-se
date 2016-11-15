@@ -43,11 +43,6 @@ import org.talend.metadata.managment.ui.i18n.Messages;
 import org.talend.metadata.managment.ui.props.PropertiesFieldModel;
 import org.talend.metadata.managment.ui.props.PropertiesTableView;
 
-/**
- * 
- * created by ycbai on 2015年1月4日 Detailed comment
- *
- */
 public class PropertiesDialog extends TitleAreaDialog {
 
     private Composite propComposite;

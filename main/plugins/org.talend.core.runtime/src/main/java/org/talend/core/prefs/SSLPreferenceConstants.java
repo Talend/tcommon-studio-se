@@ -12,11 +12,6 @@
 // ============================================================================
 package org.talend.core.prefs;
 
-/**
- * 
- * created by wchen on Sep 30, 2016 Detailed comment
- *
- */
 public interface SSLPreferenceConstants {
 
     // http://docs.oracle.com/javase/7/docs/technotes/guides/security/StandardNames.html#KeyStore

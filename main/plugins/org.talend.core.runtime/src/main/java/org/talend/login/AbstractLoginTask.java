@@ -15,27 +15,13 @@ package org.talend.login;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-/**
- * created by wchen on 2015-5-15 Detailed comment
- *
- */
 public abstract class AbstractLoginTask implements ILoginTask {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.login.ILoginTask#isCommandlineTask()
-     */
     @Override
     public boolean isCommandlineTask() {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.login.ILoginTask#getOrder()
-     */
     @Override
     public Date getOrder() {
         GregorianCalendar gc = new GregorianCalendar(2015, 1, 1, 12, 0, 0);

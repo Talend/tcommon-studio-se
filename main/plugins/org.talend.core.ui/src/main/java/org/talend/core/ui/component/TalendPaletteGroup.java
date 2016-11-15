@@ -14,19 +14,10 @@ package org.talend.core.ui.component;
 
 import org.eclipse.gef.palette.PaletteGroup;
 
-/**
- * DOC Administrator class global comment. Detailed comment
- */
 public class TalendPaletteGroup extends PaletteGroup {
 
-    /**
-     * DOC Administrator TalendPaletteGroup constructor comment.
-     * 
-     * @param label
-     */
     public TalendPaletteGroup(String label) {
         super(label);
-        // TODO Auto-generated constructor stub
     }
 
 }

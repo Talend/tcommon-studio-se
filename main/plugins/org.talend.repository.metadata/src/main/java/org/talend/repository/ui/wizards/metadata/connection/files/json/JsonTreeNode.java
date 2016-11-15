@@ -21,10 +21,6 @@ import org.talend.datatools.xml.utils.ATreeNode;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-/**
- * created by cmeng on Jul 1, 2015 Detailed comment
- *
- */
 public class JsonTreeNode extends ATreeNode {
 
     private String jsonPath;

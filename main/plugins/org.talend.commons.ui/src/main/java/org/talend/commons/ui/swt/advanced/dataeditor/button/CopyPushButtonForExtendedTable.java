@@ -22,22 +22,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.talend.commons.ui.swt.advanced.dataeditor.commands.ExtendedTableCopyCommand;
 import org.talend.commons.ui.swt.extended.table.AbstractExtendedTableViewer;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public class CopyPushButtonForExtendedTable extends CopyPushButton implements IExtendedTablePushButton {
 
     private EnableStateListenerForTableButton enableStateHandler;
 
-    /**
-     * DOC amaumont SchemaTargetAddPushButton constructor comment.
-     * 
-     * @param parent
-     * @param extendedControlViewer
-     */
     public CopyPushButtonForExtendedTable(Composite parent, AbstractExtendedTableViewer extendedTableViewer) {
         super(parent, extendedTableViewer);
         this.enableStateHandler = new EnableStateListenerForTableButton(this);
@@ -53,11 +41,6 @@ public class CopyPushButtonForExtendedTable extends CopyPushButton implements IE
         return new ExtendedTableCopyCommand(Arrays.asList(objects));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.extended.button.IExtendedTablePushButton#getExtendedTableViewer()
-     */
     public AbstractExtendedTableViewer getExtendedTableViewer() {
         return (AbstractExtendedTableViewer) getExtendedControlViewer();
     }

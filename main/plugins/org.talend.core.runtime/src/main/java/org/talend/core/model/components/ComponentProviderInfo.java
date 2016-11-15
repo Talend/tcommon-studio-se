@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.core.model.components;
 
-/**
- * created by Talend on 2015年7月22日 Detailed comment
- *
- */
 public class ComponentProviderInfo {
 
     private String id;
@@ -24,56 +20,26 @@ public class ComponentProviderInfo {
 
     private String location;
 
-    /**
-     * Getter for id.
-     * 
-     * @return the id
-     */
     public String getId() {
         return this.id;
     }
 
-    /**
-     * Sets the id.
-     * 
-     * @param id the id to set
-     */
     public void setId(String id) {
         this.id = id;
     }
 
-    /**
-     * Getter for contributer.
-     * 
-     * @return the contributer
-     */
     public String getContributer() {
         return this.contributer;
     }
 
-    /**
-     * Sets the contributer.
-     * 
-     * @param contributer the contributer to set
-     */
     public void setContributer(String contributer) {
         this.contributer = contributer;
     }
 
-    /**
-     * Getter for location.
-     * 
-     * @return the location
-     */
     public String getLocation() {
         return this.location;
     }
 
-    /**
-     * Sets the location.
-     * 
-     * @param location the location to set
-     */
     public void setLocation(String location) {
         this.location = location;
     }

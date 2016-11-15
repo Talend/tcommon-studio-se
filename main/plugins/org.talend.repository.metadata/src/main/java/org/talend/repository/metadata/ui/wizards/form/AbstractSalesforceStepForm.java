@@ -57,10 +57,6 @@ import com.sforce.soap.enterprise.DescribeGlobalResult;
 import com.sforce.soap.enterprise.SoapBindingStub;
 import com.sforce.soap.enterprise.fault.UnexpectedErrorFault;
 
-/**
- * DOC YeXiaowei class global comment. Detailed comment <br/>
- * 
- */
 public abstract class AbstractSalesforceStepForm extends AbstractForm {
 
     protected int maximumRowsToPreview = RepositoryManagerHelper.getMaximumRowsToPreview();

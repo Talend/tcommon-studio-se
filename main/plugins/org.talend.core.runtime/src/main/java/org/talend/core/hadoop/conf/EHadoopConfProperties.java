@@ -19,9 +19,6 @@ import java.util.Map;
 
 import org.talend.core.utils.ReflectionUtils;
 
-/**
- * DOC ycbai class global comment. Detailed comment
- */
 public enum EHadoopConfProperties {
     /**
      * Property name for naming the job tracker (URI).

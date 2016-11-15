@@ -54,10 +54,6 @@ import org.xml.sax.SAXException;
 
 import orgomg.cwm.objectmodel.core.Package;
 
-/**
- * DOC ggu class global comment. Detailed comment <br/>
- * 
- */
 public class ImportSchemaFileWizard extends CheckLastVersionRepositoryWizard implements INewWizard {
 
     private static Logger log = Logger.getLogger(ImportSchemaFileWizard.class);

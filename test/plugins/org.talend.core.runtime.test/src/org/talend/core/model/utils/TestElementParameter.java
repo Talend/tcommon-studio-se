@@ -22,10 +22,6 @@ import org.talend.core.model.process.IElement;
 import org.talend.core.model.process.IElementParameter;
 import org.talend.core.model.process.IElementParameterDefaultValue;
 
-/**
- * created by ggu on Sep 2, 2014 Detailed comment
- *
- */
 class TestElementParameter implements IElementParameter {
 
     private Object value;
@@ -34,45 +30,24 @@ class TestElementParameter implements IElementParameter {
 
     private EParameterFieldType fieldType;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.IElementParameter#setName(java.lang.String)
-     */
     @Override
     public void setName(String s) {
         // TODO Auto-generated method stub
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.IElementParameter#getVariableName()
-     */
     @Override
     public String getVariableName() {
         // TODO Auto-generated method stub
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.process.IElementParameter#setCategory(org.talend.core.model.process.EComponentCategory)
-     */
     @Override
     public void setCategory(EComponentCategory cat) {
         // TODO Auto-generated method stub
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.IElementParameter#getCategory()
-     */
     @Override
     public EComponentCategory getCategory() {
         // TODO Auto-generated method stub

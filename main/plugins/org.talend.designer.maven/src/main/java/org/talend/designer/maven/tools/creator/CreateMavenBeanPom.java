@@ -23,9 +23,6 @@ import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.designer.maven.template.MavenTemplateManager;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class CreateMavenBeanPom extends AbstractMavenCodesTemplatePom {
 
     public CreateMavenBeanPom(IFile pomFile) {

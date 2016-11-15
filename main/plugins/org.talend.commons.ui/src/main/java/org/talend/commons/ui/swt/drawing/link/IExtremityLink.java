@@ -13,10 +13,6 @@
 package org.talend.commons.ui.swt.drawing.link;
 
 /**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
  * @param <G> graphical item
  * @param <D> data item
  */

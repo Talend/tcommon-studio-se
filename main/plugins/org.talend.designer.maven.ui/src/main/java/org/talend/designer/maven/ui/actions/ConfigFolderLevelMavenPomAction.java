@@ -29,9 +29,6 @@ import org.talend.repository.model.IRepositoryNode.ENodeType;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.ui.actions.AContextualAction;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class ConfigFolderLevelMavenPomAction extends AContextualAction {
 
     @Override

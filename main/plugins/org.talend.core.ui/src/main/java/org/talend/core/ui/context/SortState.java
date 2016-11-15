@@ -14,10 +14,6 @@ package org.talend.core.ui.context;
 
 import org.eclipse.nebula.widgets.nattable.sort.SortDirectionEnum;
 
-/**
- * created by Talend on Jul 9, 2014 Detailed comment
- * 
- */
 public class SortState {
 
     private SortDirectionEnum sortDirection = SortDirectionEnum.NONE;

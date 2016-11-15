@@ -30,9 +30,6 @@ import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.core.service.ICoreUIService;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class AS400QueryGenerator extends AbstractQueryGenerator {
 
     private boolean standardSyntax;

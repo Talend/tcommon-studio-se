@@ -33,26 +33,12 @@ import org.talend.datatools.xml.utils.XSDPopulationUtil2;
 import org.talend.datatools.xml.utils.XSDUtils;
 import org.talend.metadata.managment.ui.wizard.metadata.xml.node.FOXTreeNode;
 
-/**
- * created by wchen on Aug 12, 2016 Detailed comment
- *
- */
 public class TreeUtilTest {
 
-    /**
-     * DOC wchen Comment method "setUp".
-     * 
-     * @throws java.lang.Exception
-     */
     @Before
     public void setUp() throws Exception {
     }
 
-    /**
-     * DOC wchen Comment method "tearDown".
-     * 
-     * @throws java.lang.Exception
-     */
     @After
     public void tearDown() throws Exception {
     }

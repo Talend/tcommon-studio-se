@@ -24,9 +24,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.SelectionDialog;
 import org.talend.commons.ui.runtime.i18n.Messages;
 
-/**
- * DOC zqin class global comment. Detailed comment
- */
 public class ModelSelectionDialog extends SelectionDialog {
 
     public enum EEditSelection {
@@ -53,10 +50,6 @@ public class ModelSelectionDialog extends SelectionDialog {
     private Boolean readOnlyJob;
 
     private ESelectionType selectionType;
-
-    /**
-     * DOC yzhang ModelSelectionDialog constructor comment.
-     */
 
     public ModelSelectionDialog(Shell parentShell, ESelectionType selectionType) {
         this(parentShell, selectionType, false);

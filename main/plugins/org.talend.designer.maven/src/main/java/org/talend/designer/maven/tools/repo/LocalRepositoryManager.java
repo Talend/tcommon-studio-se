@@ -23,9 +23,6 @@ import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.designer.runprocess.IRunProcessService;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public abstract class LocalRepositoryManager {
 
     public static final boolean ENABLE_LOCAL_REPO = true;

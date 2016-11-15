@@ -18,12 +18,6 @@ import org.junit.Test;
 import org.talend.components.api.component.ComponentDefinition;
 import org.talend.core.runtime.util.ComponentReturnVariableUtils;
 
-
-/**
- * created by nrousseau on Jun 21, 2016
- * Detailed comment
- *
- */
 public class ComponentReturnVariableUtilsTest {
 
     @Test

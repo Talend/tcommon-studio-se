@@ -17,9 +17,6 @@ import java.text.MessageFormat;
 import org.eclipse.jface.fieldassist.IContentProposal;
 import org.talend.core.ui.i18n.Messages;
 
-/**
- * DOC qwei class global comment. Detailed comment
- */
 public class JavaGlobalUtils {
 
     public static IContentProposal[] getProposals() {
@@ -28,11 +25,6 @@ public class JavaGlobalUtils {
         return cp;
     }
 
-    /**
-     * 
-     * DOC ggu PerlGlobalUtils class global comment. Detailed comment <br/>
-     * 
-     */
     static class JavaGlobalVariableProposal implements IContentProposal {
 
         private String name;

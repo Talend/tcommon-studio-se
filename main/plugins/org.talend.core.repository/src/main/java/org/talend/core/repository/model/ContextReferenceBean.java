@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.core.repository.model;
 
-/**
- * DOC hwang class global comment. Detailed comment
- */
 public class ContextReferenceBean {
 
     private String relateName;

@@ -27,12 +27,6 @@ import org.talend.commons.ui.swt.extended.table.ExtendedControlEvent;
 import org.talend.commons.ui.swt.extended.table.IExtendedButtonListener;
 import org.talend.commons.ui.swt.extended.table.IExtendedControlListener;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public abstract class ExtendedPushButton implements IExtendedPushButton {
 
     Button button;
@@ -48,11 +42,6 @@ public abstract class ExtendedPushButton implements IExtendedPushButton {
 
     private ListenerList afterCommandListeners;
 
-    /**
-     * DOC amaumont ExtendedTableButton constructor comment.
-     * 
-     * @param extendedViewer
-     */
     public ExtendedPushButton(Composite parent, AbstractExtendedControlViewer extendedViewer, String tooltip, Image image) {
         super();
         this.extendedControlViewer = extendedViewer;

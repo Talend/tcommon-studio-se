@@ -18,18 +18,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.talend.themes.core.elements.stylesettings.TalendPaletteCSSStyleSetting;
 import org.talend.themes.core.elements.widgets.ITalendPaletteWidget;
 
-/**
- * created by cmeng on Jan 30, 2015 Detailed comment
- *
- */
 public class TalendPaletteElement extends CompositeElement {
 
-    /**
-     * DOC cmeng TalendPaletteElement constructor comment.
-     * 
-     * @param composite
-     * @param engine
-     */
     public TalendPaletteElement(ITalendPaletteWidget composite, CSSEngine engine) {
         super((Composite) composite, engine);
     }

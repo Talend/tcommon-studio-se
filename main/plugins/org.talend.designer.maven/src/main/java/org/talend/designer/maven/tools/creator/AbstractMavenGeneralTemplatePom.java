@@ -20,9 +20,6 @@ import org.talend.core.runtime.projectsetting.IProjectSettingTemplateConstants;
 import org.talend.designer.maven.DesignerMavenPlugin;
 import org.talend.designer.maven.template.MavenTemplateManager;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class AbstractMavenGeneralTemplatePom extends CreateMavenBundleTemplatePom {
 
     public AbstractMavenGeneralTemplatePom(IFile pomFile, String bundleTemplateName) {

@@ -22,17 +22,8 @@ import org.talend.core.model.relationship.Relation;
 import org.talend.core.model.relationship.RelationshipItemBuilder;
 import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class ProcessTypeParameterRelationshipHandler extends AbstractJobParameterRelationshipHandler {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.relationship.AbstractParameterRelationshipHandler#collect(java.util.Map,
-     * java.util.Map)
-     */
     @SuppressWarnings("nls")
     @Override
     protected Set<Relation> collect(Map<String, ElementParameterType> parametersMap, Map<?, ?> options) {

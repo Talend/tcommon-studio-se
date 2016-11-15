@@ -17,10 +17,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.talend.core.database.EDatabaseTypeName;
 
-/**
- * created by ggu on Jul 4, 2012 Detailed comment
- * 
- */
 public class MSSQLExtractManagerTest extends AbstractTest4ExtractManager {
 
     @Before
@@ -28,12 +24,6 @@ public class MSSQLExtractManagerTest extends AbstractTest4ExtractManager {
         init(EDatabaseTypeName.MSSQL);
     }
 
-    /**
-     * 
-     * DOC ggu Comment method "testGetTableNameBySynonyms".
-     * 
-     * @throws Exception
-     */
     @Override
     @Test
     @Ignore

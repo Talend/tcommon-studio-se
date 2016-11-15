@@ -14,21 +14,14 @@ package org.talend.repository.viewer.content.listener;
 
 import org.talend.repository.model.IRepositoryNode;
 
-
-/**
- * created by nrousseau on Jun 27, 2016
- * Detailed comment
- *
- */
 public class ResourceNode {
 
     private String path;
-    
+
     private IRepositoryNode topNode;
-    
+
     private String topNodePath;
 
-    
     /**
      * Getter for path.
      * @return the path
@@ -37,55 +30,26 @@ public class ResourceNode {
         return this.path;
     }
 
-    
-    /**
-     * Sets the path.
-     * @param path the path to set
-     */
     protected void setPath(String path) {
         this.path = path;
     }
 
-    
-    /**
-     * Getter for topNode.
-     * @return the topNode
-     */
     protected IRepositoryNode getTopNode() {
         return this.topNode;
     }
 
-    
-    /**
-     * Sets the topNode.
-     * @param topNode the topNode to set
-     */
     protected void setTopNode(IRepositoryNode topNode) {
         this.topNode = topNode;
     }
-    
-    /**
-     * Getter for topNodePath.
-     * @return the topNodePath
-     */
+
     protected String getTopNodePath() {
         return this.topNodePath;
     }
 
-
-    
-    /**
-     * Sets the topNodePath.
-     * @param topNodePath the topNodePath to set
-     */
     protected void setTopNodePath(String topNodePath) {
         this.topNodePath = topNodePath;
     }
 
-
-    /* (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -95,10 +59,6 @@ public class ResourceNode {
         return result;
     }
 
-
-    /* (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)

@@ -17,10 +17,6 @@ import java.util.Locale;
 import org.talend.components.api.component.ComponentDefinition;
 import org.talend.core.runtime.i18n.Messages;
 
-/**
- * created by nrousseau on Jun 21, 2016 Detailed comment
- *
- */
 public class ComponentReturnVariableUtils {
 
     public static String getStudioNameFromVariable(String variableName) {

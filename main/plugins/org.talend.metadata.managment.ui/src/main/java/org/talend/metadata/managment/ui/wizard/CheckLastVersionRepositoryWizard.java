@@ -40,18 +40,11 @@ import org.talend.metadata.managment.ui.wizard.documentation.DocumentationCreate
 import org.talend.metadata.managment.ui.wizard.documentation.DocumentationUpdateWizard;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
-/**
- * DOC hywang class global comment. Detailed comment
- */
 public abstract class CheckLastVersionRepositoryWizard extends RepositoryWizard implements ILastVersionChecker {
 
     protected ConnectionItem connectionItem;
 
     protected MetadataTable metadataTable;
-
-    // protected MetadataTable metadataTableCopy;
-    //
-    // protected Connection connectionCopy;
 
     public CheckLastVersionRepositoryWizard(IWorkbench workbench, boolean creation) {
         super(workbench, creation, false);
@@ -63,39 +56,8 @@ public abstract class CheckLastVersionRepositoryWizard extends RepositoryWizard 
 
     @Override
     public boolean performFinish() {
-        // TODO Auto-generated method stub
         return false;
     }
-
-    /**
-     * Initializes the copies including connection and metadata table. The input parameter is not <code>null</code>.
-     */
-    // protected void initConnectionCopy(Connection connection) {
-    // this.connectionCopy = cloneConnectionCopy(connection);
-    // if (connectionCopy != null)
-    // this.metadataTableCopy = ConnectionHelper.getTableById(connectionCopy, metadataTable.getId());
-    // }
-
-    /**
-     * Clones a copy of connection.
-     * 
-     * @param connection
-     */
-    // protected Connection cloneConnectionCopy(Connection connection) {
-    // Connection connectionCopy = EcoreUtil.copy(connection);
-    // EList<Package> dataPackage = connection.getDataPackage();
-    // Collection<Package> newDataPackage = EcoreUtil.copyAll(dataPackage);
-    // ConnectionHelper.addPackages(newDataPackage, connectionCopy);
-    // return connectionCopy;
-    // }
-
-    /**
-     * Applys the copies to the actural object, inclues connection and metadata table.
-     */
-    // protected void applyConnectionCopy() {
-    // connectionItem.setConnection(connectionCopy);
-    // this.metadataTable = metadataTableCopy;
-    // }
 
     @Override
     public boolean isRepositoryObjectEditable() {

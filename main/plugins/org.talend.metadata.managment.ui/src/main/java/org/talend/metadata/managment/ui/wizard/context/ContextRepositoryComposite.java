@@ -25,25 +25,12 @@ import org.talend.core.model.process.IContextManager;
 import org.talend.core.model.process.IContextParameter;
 import org.talend.core.ui.context.ContextComposite;
 
-/**
- * DOC nrousseau class global comment. Detailed comment <br/>
- * 
- * $Id: talend-code-templates.xml 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- * 
- */
 public class ContextRepositoryComposite extends ContextComposite {
 
     public ContextRepositoryComposite(Composite parent, IContextManager contextManager) {
         super(parent, contextManager);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.ui.context.JobContextComposite#onContextAddParameter(org.talend.core.model.process.IContextManager
-     * , org.talend.core.model.process.IContextParameter)
-     */
     @Override
     public void onContextAddParameter(IContextManager contextManager, IContextParameter contextParam) {
         for (int i = 0; i < contextManager.getListContext().size(); i++) {

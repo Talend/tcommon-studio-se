@@ -23,9 +23,6 @@ import org.eclipse.core.runtime.SafeRunner;
 import org.talend.core.utils.RegistryReader;
 import org.talend.repository.items.importexport.ui.handlers.IImportExportItemsActionHelper;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class ImportExportUiHandlersRegistryReader extends RegistryReader {
 
     private static Logger log = Logger.getLogger(ImportExportUiHandlersRegistryReader.class);

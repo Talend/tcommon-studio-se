@@ -27,10 +27,6 @@ import org.talend.commons.utils.io.FilesUtils;
 import org.talend.core.PluginChecker;
 import org.talend.designer.maven.template.MavenTemplateManager;
 
-/**
- * created by ggu on 2 Feb 2015 Detailed comment
- *
- */
 public class CreateMavenBundleTemplatePom extends CreateMaven {
 
     /**

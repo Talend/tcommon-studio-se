@@ -58,10 +58,6 @@ import org.talend.metadata.managment.ui.dialog.CustomTableManagerOnlyForGenericS
 import org.talend.metadata.managment.ui.wizard.AbstractForm;
 import org.talend.repository.metadata.i18n.Messages;
 
-/**
- * DOC Administrator class global comment. Detailed comment <br/>
- * 
- */
 public class GenericSchemaStep2Form extends AbstractForm {
 
     protected ConnectionItem connectionItem;

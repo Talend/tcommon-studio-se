@@ -26,10 +26,6 @@ import org.talend.core.model.properties.MDMConnectionItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 
-/**
- * created by ggu on Sep 1, 2014 Detailed comment
- *
- */
 public class UnifyPasswordEncryption4MDMConnectionMigrationTask extends AbstractItemMigrationTask {
 
     ProxyRepositoryFactory factory = ProxyRepositoryFactory.getInstance();
@@ -41,11 +37,6 @@ public class UnifyPasswordEncryption4MDMConnectionMigrationTask extends Abstract
         return toReturn;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.migration.AbstractItemMigrationTask#execute(org .talend.core.model.properties.Item)
-     */
     @Override
     public ExecutionResult execute(Item item) {
         if (item instanceof MDMConnectionItem) {

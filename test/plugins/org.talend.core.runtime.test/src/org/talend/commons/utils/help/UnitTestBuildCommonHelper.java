@@ -15,9 +15,6 @@ package org.talend.commons.utils.help;
 import java.io.File;
 import java.io.IOException;
 
-/**
- * DOC xqliu class global comment. Detailed comment
- */
 public class UnitTestBuildCommonHelper {
 
     /**

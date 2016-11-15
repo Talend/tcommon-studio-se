@@ -45,9 +45,6 @@ import org.talend.metadata.managment.ui.utils.OtherConnectionContextUtils.EParam
 import org.talend.metadata.managment.ui.wizard.AbstractForm;
 import org.talend.repository.mdm.i18n.Messages;
 
-/**
- * DOC hwang class global comment. Detailed comment
- */
 public class MDMForm extends AbstractForm {
 
     private LabelledCombo versionComb;

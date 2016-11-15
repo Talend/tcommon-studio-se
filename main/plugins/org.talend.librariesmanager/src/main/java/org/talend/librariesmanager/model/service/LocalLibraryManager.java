@@ -83,9 +83,6 @@ import org.talend.librariesmanager.model.ModulesNeededProvider;
 import org.talend.librariesmanager.prefs.LibrariesManagerUtils;
 import org.talend.osgi.hook.notification.JarMissingObservable;
 
-/**
- * DOC ycbai class global comment. Detailed comment
- */
 public class LocalLibraryManager implements ILibraryManagerService {
 
     private static Logger log = Logger.getLogger(LocalLibraryManager.class);

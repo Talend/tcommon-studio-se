@@ -18,11 +18,6 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-/**
- * Java SHA-1
- * 
- * DOC hcyi class global comment. Detailed comment
- */
 public class SHA1Util {
 
     private static final boolean hexcase = false;

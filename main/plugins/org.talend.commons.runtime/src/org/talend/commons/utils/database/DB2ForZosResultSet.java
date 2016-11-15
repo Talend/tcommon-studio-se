@@ -19,9 +19,6 @@ import org.talend.commons.i18n.internal.Messages;
 import org.talend.commons.utils.TalendDBUtils;
 import org.talend.fakejdbc.FakeResultSet;
 
-/**
- * DOC bqian class global comment. Detailed comment
- */
 public class DB2ForZosResultSet extends FakeResultSet {
 
     private String[] tableMeta = null;
@@ -30,11 +27,6 @@ public class DB2ForZosResultSet extends FakeResultSet {
 
     int index = -1;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeResultSet#next()
-     */
     @Override
     public boolean next() throws SQLException {
         if (data == null || data.size() == 0 || index >= data.size() - 1) {
@@ -53,11 +45,6 @@ public class DB2ForZosResultSet extends FakeResultSet {
         return -1;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeResultSet#getString(java.lang.String)
-     */
     @Override
     public String getString(String columnLabel) throws SQLException {
         int columnIndex = indexOf(columnLabel, tableMeta);
@@ -69,11 +56,6 @@ public class DB2ForZosResultSet extends FakeResultSet {
         return getString(columnIndex + 1);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeResultSet#getInt(java.lang.String)
-     */
     @Override
     public int getInt(String columnLabel) throws SQLException {
         String str = getString(columnLabel);
@@ -91,22 +73,12 @@ public class DB2ForZosResultSet extends FakeResultSet {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeResultSet#getBoolean(java.lang.String)
-     */
     @Override
     public boolean getBoolean(String columnLabel) throws SQLException {
         String str = getString(columnLabel);
         return Boolean.parseBoolean(str);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeResultSet#getString(int)
-     */
     @Override
     public String getString(int columnIndex) throws SQLException {
         String[] row = data.get(index);
@@ -119,21 +91,11 @@ public class DB2ForZosResultSet extends FakeResultSet {
         return row[columnIndex];
     }
 
-    /**
-     * DOC bqian Comment method "setMetadata".
-     * 
-     * @param table_meta
-     */
     public void setMetadata(String[] tableMeta) {
         this.tableMeta = tableMeta;
 
     }
 
-    /**
-     * DOC bqian Comment method "setData".
-     * 
-     * @param tables
-     */
     public void setData(List<String[]> data) {
         this.data = data;
     }

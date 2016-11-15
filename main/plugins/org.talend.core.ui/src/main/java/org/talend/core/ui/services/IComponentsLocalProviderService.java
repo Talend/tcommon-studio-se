@@ -17,10 +17,6 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.talend.core.IService;
 import org.talend.core.language.ECodeLanguage;
 
-/**
- * DOC Administrator class global comment. Detailed comment <br/>
- * 
- */
 public interface IComponentsLocalProviderService extends IService {
 
     public static final String FORMAT_IDS = "formatIds"; //$NON-NLS-1$

@@ -19,18 +19,14 @@ import java.util.Set;
 import java.util.TreeSet;
 
 /**
- * DOC amaumont class global comment. Detailed comment
- * 
  * @param <K> key
  * @param <V> value
  */
 public class SimpleCache<K, V> {
 
     /**
-     * 
-     * DOC amaumont SimpleCache class global comment. Detailed comment
-     * 
      * @param <K> key
+     * @param <V> value
      */
     class HashKeyValue<K, V> implements Comparable<HashKeyValue<K, V>> {
 

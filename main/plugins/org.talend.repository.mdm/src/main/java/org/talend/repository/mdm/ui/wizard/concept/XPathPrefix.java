@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.repository.mdm.ui.wizard.concept;
 
-/**
- * DOC talend class global comment. Detailed comment
- */
 public enum XPathPrefix {
 
     USER_DEFINED_ITEM("USER_DEFINED_ITEM", ""), //$NON-NLS-1$ //$NON-NLS-2$

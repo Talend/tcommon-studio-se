@@ -39,10 +39,6 @@ import org.talend.librariesmanager.ui.i18n.Messages;
 import org.talend.librariesmanager.ui.service.RoutineProviderManager;
 import org.talend.librariesmanager.utils.ModulesInstaller;
 
-/**
- * created by wchen on 2013-1-24 Detailed comment
- * 
- */
 public class LibraryManagerUIService implements ILibraryManagerUIService {
 
     @Override

@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.commons.exception;
 
-/**
- * created by Talend on Aug 7, 2014 Detailed comment
- * 
- */
 public class OperationCancelException extends PersistenceException {
 
     private static final long serialVersionUID = 3556433676899745391L;

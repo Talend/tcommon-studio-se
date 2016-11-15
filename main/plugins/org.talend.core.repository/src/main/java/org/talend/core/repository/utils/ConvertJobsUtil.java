@@ -58,10 +58,6 @@ import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * created by hcyi on May 25, 2015 Detailed comment
- *
- */
 public class ConvertJobsUtil {
 
     public static final String FRAMEWORK = HadoopConstants.FRAMEWORK;

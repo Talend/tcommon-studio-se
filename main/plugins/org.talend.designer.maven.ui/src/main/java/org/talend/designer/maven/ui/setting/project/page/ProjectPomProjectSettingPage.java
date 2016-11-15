@@ -23,9 +23,6 @@ import org.talend.designer.maven.ui.DesignerMavenUiPlugin;
 import org.talend.designer.maven.ui.i18n.Messages;
 import org.talend.designer.runprocess.IRunProcessService;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class ProjectPomProjectSettingPage extends AbstractPersistentProjectSettingPage {
 
     private String oldScriptContent;
@@ -45,11 +42,6 @@ public class ProjectPomProjectSettingPage extends AbstractPersistentProjectSetti
         return IProjectSettingPreferenceConstants.TEMPLATE_PROJECT_POM;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.preference.AbstractScriptPreferencePage#getHeadTitle()
-     */
     @Override
     protected String getHeadTitle() {
         return Messages.getString("ProjectPomProjectSettingPage_Titile"); //$NON-NLS-1$

@@ -24,9 +24,6 @@ import org.talend.metadata.managment.ui.wizard.metadata.xml.node.NameSpaceNode;
 import org.talend.metadata.managment.ui.wizard.metadata.xml.utils.StringUtil;
 import org.talend.repository.metadata.ui.wizards.form.AbstractXmlStepForm;
 
-/**
- * wzhang class global comment. Detailed comment
- */
 public class CreateElementAction extends SelectionProviderAction {
 
     private TreeViewer xmlViewer;

@@ -78,10 +78,6 @@ import org.talend.repository.metadata.i18n.Messages;
 import org.talend.repository.metadata.ui.wizards.form.AbstractSalesforceStepForm;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
-/**
- * 
- * DOC yexiaowei class global comment. Detailed comment
- */
 public class SalesforceStep4Form extends AbstractSalesforceStepForm {
 
     private static Logger log = Logger.getLogger(SalesforceStep4Form.class);

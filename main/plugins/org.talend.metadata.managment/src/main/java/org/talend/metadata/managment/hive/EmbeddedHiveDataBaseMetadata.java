@@ -39,12 +39,6 @@ import org.talend.designer.core.IDesignerCoreService;
 import org.talend.utils.sql.metadata.constants.GetTable;
 import org.talend.utils.sql.metadata.constants.MetaDataConstants;
 
-/**
- * DOC ggu class global comment. Detailed comment <br/>
- * 
- * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
- */
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class EmbeddedHiveDataBaseMetadata extends AbstractFakeDatabaseMetaData {
 

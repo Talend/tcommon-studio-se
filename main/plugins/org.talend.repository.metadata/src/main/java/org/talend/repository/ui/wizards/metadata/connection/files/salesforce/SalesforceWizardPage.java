@@ -25,9 +25,6 @@ import org.talend.cwm.relational.RelationalFactory;
 import org.talend.metadata.managment.ui.wizard.AbstractForm;
 import org.talend.repository.metadata.ui.wizards.form.AbstractSalesforceStepForm;
 
-/**
- * DOC yexiaowei class global comment. Detailed comment
- */
 public class SalesforceWizardPage extends WizardPage {
 
     private ConnectionItem connectionItem;
@@ -48,15 +45,6 @@ public class SalesforceWizardPage extends WizardPage {
 
     private String moduleName;
 
-    /**
-     * 
-     * DOC YeXiaowei SalesforceWizardPage constructor comment.
-     * 
-     * @param step
-     * @param connectionItem
-     * @param isRepositoryObjectEditable
-     * @param existingNames
-     */
     public SalesforceWizardPage(int step, ConnectionItem connectionItem, boolean isRepositoryObjectEditable,
             String[] existingNames, SalesforceModuleParseAPI salesforceAPI, IMetadataContextModeManager contextModeManager) {
         super("wizardPage"); //$NON-NLS-1$

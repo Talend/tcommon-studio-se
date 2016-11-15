@@ -21,40 +21,21 @@ import org.talend.commons.ui.swt.tableviewer.ModifiedBeanEvent;
 import org.talend.commons.ui.swt.tableviewer.TableViewerCreator;
 
 /**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
  * @param <B> modie
  */
 public class ModifyBeanValueCommand<B> extends Command {
 
     private ModifiedBeanEvent<B> event;
 
-    /**
-     * DOC amaumont ModifiedBeanValueCommand constructor comment.
-     * 
-     * @param event
-     */
     public ModifyBeanValueCommand(ModifiedBeanEvent<B> event) {
         this.event = event;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.command.CommonCommand#getLabel()
-     */
     @Override
     public String getLabel() {
         return Messages.getString("ModifyBeanValueCommand.ModifyCell.Label"); //$NON-NLS-1$
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.command.CommonCommand#redo()
-     */
     @SuppressWarnings("unchecked")
     @Override
     public void redo() {
@@ -71,12 +52,6 @@ public class ModifyBeanValueCommand<B> extends Command {
         }
     }
 
-    /**
-     * DOC amaumont Comment method "getBean".
-     * 
-     * @param tableViewerCreator
-     * @return
-     */
     private Object getBean(TableViewerCreator tableViewerCreator) {
         B bean = this.event.bean;
         Table table = tableViewerCreator.getTable();
@@ -91,11 +66,6 @@ public class ModifyBeanValueCommand<B> extends Command {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.command.CommonCommand#undo()
-     */
     @SuppressWarnings("unchecked")
     @Override
     public void undo() {
@@ -112,11 +82,6 @@ public class ModifyBeanValueCommand<B> extends Command {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.command.CommonCommand#canUndo()
-     */
     @Override
     public boolean canUndo() {
         return true;

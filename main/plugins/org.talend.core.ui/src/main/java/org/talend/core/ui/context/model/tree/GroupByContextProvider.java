@@ -23,17 +23,8 @@ import org.talend.core.model.process.IContextParameter;
 import org.talend.core.model.utils.ContextParameterUtils;
 import org.talend.core.ui.context.model.ContextProviderProxy;
 
-/**
- * cli class global comment. Detailed comment
- * 
- */
 public class GroupByContextProvider extends ContextProviderProxy {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnText(java.lang.Object, int)
-     */
     public String getColumnText(Object element, int columnIndex) {
         if (element instanceof IContext) {
             if (columnIndex == 0) {

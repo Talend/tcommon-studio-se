@@ -64,9 +64,6 @@ import org.talend.repository.metadata.i18n.Messages;
 import org.talend.repository.metadata.ui.wizards.form.AbstractWSDLSchemaStepForm;
 import org.talend.repository.ui.wizards.metadata.connection.ldap.BaseWidgetUtils;
 
-/**
- * DOC qwei class global comment. Detailed comment
- */
 public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
 
     public static final int TIMEOUT = 20;

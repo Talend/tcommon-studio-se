@@ -36,23 +36,12 @@ import org.talend.core.ui.metadata.extended.command.MetadataEmfImportXmlCommand;
 import org.talend.core.ui.metadata.extended.command.MetadataEmfPasteCommand;
 
 /**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * TGU same purpose as MetadataToolbarEditorView but uses EMF model directly $Id: MetadataToolbarEditorView2.java,v 1.1
- * 2006/08/02 19:43:45 tguiu Exp $
- * 
+ * TGU same purpose as MetadataToolbarEditorView but uses EMF model directly
  */
 public class MetadataEmfToolbarEditor extends ExtendedToolbarView {
 
     private String dbmsId;
 
-    /**
-     * DOC amaumont MatadataToolbarEditor constructor comment.
-     * 
-     * @param parent
-     * @param style
-     * @param metadataEditorView
-     */
     public MetadataEmfToolbarEditor(Composite parent, int style, AbstractExtendedTableViewer<MetadataColumn> extendedTableViewer) {
         super(parent, style, extendedTableViewer);
     }

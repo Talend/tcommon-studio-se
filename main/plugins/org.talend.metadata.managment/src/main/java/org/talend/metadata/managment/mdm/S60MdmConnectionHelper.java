@@ -30,18 +30,8 @@ import org.talend.core.model.metadata.builder.connection.MDMConnection;
 import org.talend.core.model.metadata.designerproperties.MDMVersions;
 import org.talend.core.utils.ReflectionUtils;
 
-/**
- * created by wchen on Apr 15, 2015 Detailed comment
- *
- */
 public class S60MdmConnectionHelper extends AbsMdmConnectionHelper {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.metadata.managment.mdm.AbsMdmConnectionHelper#checkConnection(java.lang.String, java.lang.String,
-     * java.lang.String, java.lang.String)
-     */
     @Override
     public Object checkConnection(String url, String universe, String userName, String password) throws Exception {
         BindingProvider stub = null;
@@ -72,12 +62,6 @@ public class S60MdmConnectionHelper extends AbsMdmConnectionHelper {
         return stub;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.metadata.managment.mdm.AbsMdmConnectionHelper#getPKs(org.apache.axis.client.Stub,
-     * java.lang.String, java.lang.String)
-     */
     @Override
     public List<String> getPKs(Object stub, String getDataPKsMethod, String dataPKsClass, String pkRegex,
             String getWsDataPKsMethod) throws Exception {
@@ -99,12 +83,6 @@ public class S60MdmConnectionHelper extends AbsMdmConnectionHelper {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.metadata.managment.mdm.AbsMdmConnectionHelper#initConcept(org.talend.core.model.metadata.builder.
-     * connection.MDMConnection, java.io.File)
-     */
     @Override
     public void initConcept(MDMConnection mdmConn, File file) throws Exception {
 
@@ -197,16 +175,8 @@ public class S60MdmConnectionHelper extends AbsMdmConnectionHelper {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.metadata.managment.mdm.AbsMdmConnectionHelper#resetUniverseUser(java.lang.Object,
-     * java.lang.String)
-     */
     @Override
     public void resetUniverseUser(Object stub, String userName) {
-        // TODO Auto-generated method stub
-
     }
 
 }

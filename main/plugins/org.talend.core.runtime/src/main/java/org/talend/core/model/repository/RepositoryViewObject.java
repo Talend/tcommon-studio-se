@@ -66,9 +66,6 @@ import org.talend.repository.model.IRepositoryNode;
 import orgomg.cwm.objectmodel.core.Package;
 import orgomg.cwm.resource.relational.Catalog;
 
-/**
- * DOC Administrator class global comment. Detailed comment
- */
 public class RepositoryViewObject implements IRepositoryViewObject {
 
     private IRepositoryNode repositoryNode;

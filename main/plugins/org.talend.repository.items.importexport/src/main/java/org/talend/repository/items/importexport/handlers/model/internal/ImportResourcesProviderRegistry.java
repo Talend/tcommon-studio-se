@@ -15,8 +15,6 @@ package org.talend.repository.items.importexport.handlers.model.internal;
 import org.talend.repository.items.importexport.handlers.imports.IImportResourcesHandler;
 
 /**
- * DOC ggu class global comment. Detailed comment
- * 
  * work for resourceImportHandler with extension point "org.talend.repository.items.importexport.handler".
  */
 public class ImportResourcesProviderRegistry extends BasicRegistry {
@@ -27,20 +25,10 @@ public class ImportResourcesProviderRegistry extends BasicRegistry {
         super(bundleId, id);
     }
 
-    /**
-     * Getter for importResourcesHandler.
-     * 
-     * @return the importResourcesHandler
-     */
     public IImportResourcesHandler getImportResourcesHandler() {
         return this.importResourcesHandler;
     }
 
-    /**
-     * Sets the importResourcesHandler.
-     * 
-     * @param handler the importResourcesHandler to set
-     */
     public void setImportResourcesHandler(IImportResourcesHandler handler) {
         this.importResourcesHandler = handler;
     }

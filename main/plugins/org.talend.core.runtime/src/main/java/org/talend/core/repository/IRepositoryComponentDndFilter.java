@@ -19,9 +19,6 @@ import org.talend.core.model.properties.Item;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * ggu class global comment. Detailed comment
- */
 public interface IRepositoryComponentDndFilter {
 
     public String getRepositoryType(Item item, ERepositoryObjectType type);

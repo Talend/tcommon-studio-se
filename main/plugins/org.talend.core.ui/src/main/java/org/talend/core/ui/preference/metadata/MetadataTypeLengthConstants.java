@@ -14,9 +14,6 @@ package org.talend.core.ui.preference.metadata;
 
 import org.talend.core.model.metadata.types.JavaTypesManager;
 
-/**
- * DOC qwei class global comment. Detailed comment
- */
 public class MetadataTypeLengthConstants {
 
     public static final String VALUE_DEFAULT_TYPE = "VALUE_DEFAULT_TYPE"; //$NON-NLS-1$

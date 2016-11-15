@@ -17,22 +17,10 @@ import org.eclipse.gef.requests.CreationFactory;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.talend.core.model.repository.ERepositoryObjectType;
 
-/**
- * DOC hwang class global comment. Detailed comment
- */
 public class TalendCreationToolEntry extends CreationToolEntry {
 
     private ERepositoryObjectType type;
 
-    /**
-     * DOC talend TalendCreationToolEntry constructor comment.
-     * 
-     * @param label
-     * @param shortDesc
-     * @param factory
-     * @param iconSmall
-     * @param iconLarge
-     */
     public TalendCreationToolEntry(String label, String shortDesc, CreationFactory factory, ImageDescriptor iconSmall,
             ImageDescriptor iconLarge, ERepositoryObjectType type) {
         super(label, shortDesc, factory, iconSmall, iconLarge);

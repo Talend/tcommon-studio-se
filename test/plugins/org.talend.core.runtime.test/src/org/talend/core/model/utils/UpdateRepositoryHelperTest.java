@@ -23,9 +23,6 @@ import org.talend.core.model.properties.ItemState;
 import org.talend.core.model.properties.PropertiesFactory;
 import org.talend.core.model.properties.Property;
 
-/**
- * DOC hcyi class global comment. Detailed comment
- */
 public class UpdateRepositoryHelperTest {
 
     /**

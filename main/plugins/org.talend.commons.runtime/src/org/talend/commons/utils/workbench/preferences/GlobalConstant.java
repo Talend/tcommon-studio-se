@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.commons.utils.workbench.preferences;
 
-/**
- * DOC bqian class global comment. Detailed comment <br/>
- * 
- */
 public class GlobalConstant {
 
     public static boolean generatingScreenShoot = false;

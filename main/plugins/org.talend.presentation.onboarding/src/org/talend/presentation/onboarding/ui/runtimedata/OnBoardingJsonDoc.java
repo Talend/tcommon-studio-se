@@ -19,10 +19,6 @@ import java.util.Map;
 import org.talend.presentation.onboarding.exceptions.OnBoardingExceptionHandler;
 import org.talend.presentation.onboarding.i18n.Messages;
 
-/**
- * created by cmeng on Sep 25, 2015 Detailed comment
- *
- */
 public class OnBoardingJsonDoc {
 
     private String id;

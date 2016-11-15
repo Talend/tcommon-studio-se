@@ -18,9 +18,6 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.graphics.Image;
 
-/**
- * DOC hywang class global comment. Detailed comment
- */
 public class AbstractMetadataExtractorViewProvider extends LabelProvider implements ITreeContentProvider, ITableLabelProvider {
 
     public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
@@ -32,7 +29,6 @@ public class AbstractMetadataExtractorViewProvider extends LabelProvider impleme
     }
 
     public String getColumnText(Object element, int columnIndex) {
-        // TODO Auto-generated method stub
         return null;
     }
 

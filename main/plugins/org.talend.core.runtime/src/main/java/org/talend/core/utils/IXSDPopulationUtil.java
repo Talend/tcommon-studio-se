@@ -14,10 +14,6 @@ package org.talend.core.utils;
 
 import java.io.IOException;
 
-/**
- * created by wchen on Aug 10, 2016 Detailed comment
- *
- */
 public interface IXSDPopulationUtil {
 
     public void loadWSDL(String wsdlFile) throws IOException;

@@ -35,10 +35,6 @@ import org.talend.presentation.onboarding.ui.runtimedata.OnBoardingPresentationD
 import org.talend.presentation.onboarding.utils.OnBoardingUtils;
 import org.talend.presentation.onboarding.utils.WidgetFinder;
 
-/**
- * created by cmeng on Sep 11, 2015 Detailed comment
- *
- */
 public class OnBoardingShell {
 
     public static final int DEFAULT_ALPHA_VALUE = 255;

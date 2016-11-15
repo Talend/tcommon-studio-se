@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.core.nexus;
 
-/**
- * created by wchen on 2015-5-12 Detailed comment
- *
- */
 public class NexusServerBean {
 
     String server;

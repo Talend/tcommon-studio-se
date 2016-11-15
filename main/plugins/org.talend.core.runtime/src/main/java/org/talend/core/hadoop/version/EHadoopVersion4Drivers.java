@@ -18,8 +18,6 @@ import java.util.List;
 import org.apache.commons.lang.ArrayUtils;
 
 /**
- * DOC ycbai class global comment. Detailed comment
- * 
  * @deprecated @link HadoopComponent via osgi service instead.
  */
 public enum EHadoopVersion4Drivers {

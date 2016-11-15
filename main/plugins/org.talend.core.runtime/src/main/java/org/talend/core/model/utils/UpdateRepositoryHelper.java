@@ -24,18 +24,8 @@ import org.talend.core.model.properties.Item;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.update.UpdatesConstants;
 
-/**
- * ggu class global comment. Detailed comment
- */
 public final class UpdateRepositoryHelper {
 
-    /**
-     * 
-     * ggu Comment method "getRepositoryAliasName".
-     * 
-     * @param item
-     * @return
-     */
     public static String getRepositorySourceName(Item item) {
         String source = UpdatesConstants.EMPTY;
         if (item != null) {

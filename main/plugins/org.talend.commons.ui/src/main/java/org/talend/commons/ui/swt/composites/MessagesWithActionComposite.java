@@ -19,9 +19,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class MessagesWithActionComposite extends MessagesComposite {
 
     public String CSS_MESSAGES_WITH_ACTION_COMPOSITE_WARN = "MessagesWithActionComposite-Warn"; //$NON-NLS-1$

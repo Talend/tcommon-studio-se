@@ -43,22 +43,12 @@ import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.objectmodel.core.Package;
 import orgomg.cwm.resource.relational.ColumnSet;
 
-/**
- * DOC zshen class global comment. Detailed comment
- */
 public abstract class MetadataFillerImpl<T extends Connection> implements IMetadataFiller<T> {
 
     private static Logger log = Logger.getLogger(MetadataFillFactory.class);
 
     private boolean isLinked = true;
 
-    /*
-     * (non-Jsdoc)
-     * 
-     * @see
-     * org.talend.core.model.metadata.IMetadataFiller#fillMetadataParams(org.talend.core.model.metadata.IMetadataConnection
-     * , org.talend.core.model.metadata.builder.connection.Connection)
-     */
     protected void fillMetadataParams(IMetadataConnection metadataBean, T connection) {
         if (metadataBean == null || connection == null) {
             return;

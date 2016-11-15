@@ -21,9 +21,6 @@ import org.talend.repository.ui.wizards.metadata.connection.files.excel.ExcelRea
 //
 // ============================================================================
 
-/**
- * DOC Administrator class global comment. Detailed comment
- */
 public class TestExcelReader {
 
     /**

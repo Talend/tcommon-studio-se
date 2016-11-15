@@ -28,9 +28,6 @@ import org.talend.core.ui.context.ContextManagerHelper;
 import org.talend.core.ui.context.ContextTemplateComposite;
 import org.talend.core.ui.context.model.AbstractContextCellModifier;
 
-/**
- * ggu class global comment. Detailed comment
- */
 public class ContextCellModifier extends AbstractContextCellModifier {
 
     private ContextTemplateComposite variableTabComposite;

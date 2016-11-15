@@ -19,9 +19,6 @@ import org.talend.core.model.metadata.builder.connection.MetadataColumn;
 import orgomg.cwm.foundation.softwaredeployment.DataManager;
 import orgomg.cwm.resource.record.impl.RecordFileImpl;
 
-/**
- * DOC talend class global comment. Detailed comment
- */
 public class MetadataColumnHelper {
 
     public static Connection getConnection(MetadataColumn metadataColumn) {

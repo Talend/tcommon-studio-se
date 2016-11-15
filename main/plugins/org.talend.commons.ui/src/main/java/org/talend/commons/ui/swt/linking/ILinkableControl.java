@@ -12,12 +12,6 @@
 // ============================================================================
 package org.talend.commons.ui.swt.linking;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public interface ILinkableControl {
 
     public void dispose();

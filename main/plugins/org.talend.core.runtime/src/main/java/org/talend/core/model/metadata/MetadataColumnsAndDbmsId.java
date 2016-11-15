@@ -15,15 +15,11 @@ package org.talend.core.model.metadata;
 import java.util.List;
 
 /**
- * DOC ggu class global comment. Detailed comment <br/>
- * 
  * org.talend.core.model.metadata.builder.connection.MetadataColumn<br/>
  * 
  * org.talend.core.model.metadata.IMetadataColumn<br/>
  * 
  * @param <E> Type of beans, MetadataColumn and IMetadataColumn
- * 
- * 
  */
 public class MetadataColumnsAndDbmsId<E> {
 
@@ -31,32 +27,16 @@ public class MetadataColumnsAndDbmsId<E> {
 
     private String dbmsId;
 
-    /**
-     * DOC ggu MetadataColumnsAndDbmsId constructor comment.
-     * 
-     * @param metadataColumns
-     * @param dbmsId
-     */
     public MetadataColumnsAndDbmsId(List<E> metadataColumns, String dbmsId) {
         super();
         this.metadataColumns = metadataColumns;
         this.dbmsId = dbmsId;
     }
 
-    /**
-     * Getter for metadataColumns.
-     * 
-     * @return the metadataColumns
-     */
     public List<E> getMetadataColumns() {
         return metadataColumns;
     }
 
-    /**
-     * Getter for dbmsId.
-     * 
-     * @return the dbmsId
-     */
     public String getDbmsId() {
         return dbmsId;
     }

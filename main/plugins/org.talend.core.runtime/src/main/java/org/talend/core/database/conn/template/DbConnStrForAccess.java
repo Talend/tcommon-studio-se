@@ -16,9 +16,6 @@ import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.database.conn.DatabaseConnConstants;
 import org.talend.core.database.conn.version.EDatabaseVersion4Drivers;
 
-/**
- * cli class global comment. Detailed comment
- */
 public class DbConnStrForAccess extends DbConnStr {
 
     private static final String ACCDB_PATTERN = ",\\s\\*\\.accdb"; //$NON-NLS-1$

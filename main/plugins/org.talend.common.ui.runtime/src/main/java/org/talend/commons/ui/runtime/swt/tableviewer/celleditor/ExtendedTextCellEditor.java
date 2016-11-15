@@ -36,12 +36,6 @@ import org.talend.commons.runtime.model.expressionbuilder.Variable;
 import org.talend.commons.ui.runtime.expressionbuilder.IExpressionDataBean;
 import org.talend.commons.ui.runtime.expressionbuilder.IExtendedCellEditorBehavior;
 
-/**
- * yzhang class global comment. Detailed comment <br/>
- * 
- * $Id: ExtendedTextCellEditor.java 下午03:55:26 2007-8-1 +0000 (2007-8-1) yzhang $
- * 
- */
 public class ExtendedTextCellEditor extends TextCellEditor implements IExpressionDataBean {
 
     private IExtendedCellEditorBehavior cellEditorBehavior;

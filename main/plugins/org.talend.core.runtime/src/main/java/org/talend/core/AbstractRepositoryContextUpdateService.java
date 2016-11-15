@@ -18,10 +18,6 @@ import java.util.Map;
 import org.talend.core.hadoop.repository.HadoopRepositoryUtil;
 import org.talend.core.model.metadata.builder.connection.Connection;
 
-/**
- * created by ldong on Mar 23, 2015 Detailed comment
- *
- */
 public class AbstractRepositoryContextUpdateService implements IRepositoryContextUpdateService {
 
     @Override

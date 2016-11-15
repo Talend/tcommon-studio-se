@@ -48,9 +48,6 @@ import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class ContextUtils {
 
     private static final Set<String> JAVA_KEYWORDS = new HashSet<String>(Arrays.asList("abstract", "continue", "for", "new", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
@@ -59,11 +56,6 @@ public class ContextUtils {
             "instanceof", "return", "transient", "catch", "extends", "int", "short", "try", "char", "final", "interface", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$
             "static", "void", "class", "finally", "long", "strictfp", "volatile", "const", "float", "native", "super", "while")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$
 
-    /**
-     * 
-     * ggu Comment method "isJavaKeyWords".
-     * 
-     */
     public static boolean isJavaKeyWords(final String name) {
         if (Platform.isRunning()) {
             IStatus status = JavaConventions.validateFieldName(name, JavaCore.getOption(JavaCore.COMPILER_SOURCE),
@@ -78,9 +70,7 @@ public class ContextUtils {
     }
 
     /**
-     * 
      * update the JobContextParameter form repository ContextItem by context name.
-     * 
      */
     public static boolean updateParameterFromRepository(ContextItem sourceItem, IContextParameter contextParam, String contextName) {
         if (sourceItem == null || contextParam == null) {

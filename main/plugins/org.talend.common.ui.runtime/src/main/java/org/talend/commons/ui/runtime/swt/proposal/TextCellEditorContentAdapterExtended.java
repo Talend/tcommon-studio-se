@@ -15,12 +15,6 @@ package org.talend.commons.ui.runtime.swt.proposal;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Control;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id: TextCellEditorContentAdapterExtended.java 7038 2007-11-15 14:05:48Z plegall $
- * 
- */
 public class TextCellEditorContentAdapterExtended extends TextContentAdapterExtended {
 
     @Override

@@ -64,12 +64,6 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 import orgomg.cwm.resource.record.RecordFactory;
 import orgomg.cwm.resource.record.RecordFile;
 
-/**
- * created by hcyi on Aug 29, 2014 Detailed comment
- *
- * related to: class PublishMetadataRunnable
- *
- */
 public final class XsdMetadataUtils {
 
     private static final Pattern PATTERN_TOREPLACE = Pattern.compile("[^a-zA-Z0-9]"); //$NON-NLS-1$

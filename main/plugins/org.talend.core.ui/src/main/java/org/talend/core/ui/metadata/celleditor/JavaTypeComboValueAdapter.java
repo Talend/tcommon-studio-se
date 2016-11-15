@@ -22,10 +22,6 @@ import org.talend.core.model.metadata.types.JavaType;
 import org.talend.core.model.metadata.types.JavaTypesManager;
 
 /**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
  * @param <B> type of bean
  */
 public class JavaTypeComboValueAdapter<B> extends CellEditorValueAdapter {
@@ -36,11 +32,6 @@ public class JavaTypeComboValueAdapter<B> extends CellEditorValueAdapter {
 
     private MetadataTalendTypeFilter talendTypeFilter;
 
-    /**
-     * DOC amaumont JavaTypeComboValueAdapter constructor comment.
-     * 
-     * @param nullableAccessors
-     */
     public JavaTypeComboValueAdapter(JavaType defaultJavaType, IBeanPropertyAccessors<B, Boolean> nullableAccessors) {
         this(defaultJavaType, nullableAccessors, new DummyMetadataTalendTypeFilter());
     }

@@ -37,9 +37,6 @@ import org.apache.xerces.xs.XSModel;
 import org.apache.xerces.xs.XSNamedMap;
 import org.apache.xerces.xs.XSTypeDefinition;
 
-/**
- * DOC ycbai class global comment. Detailed comment
- */
 public class XSDPopulationUtil {
 
     public static XSModel getXSModel(String fileName) throws URISyntaxException, MalformedURLException {

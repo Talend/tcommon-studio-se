@@ -30,10 +30,6 @@ import org.eclipse.core.runtime.Platform;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.model.metadata.MetadataTalendType;
 
-/**
- * qzhang class global comment. Detailed comment <br/>
- * 
- */
 public class ContextParameterJavaTypeManager {
 
     private static final JavaType[] JAVA_TYPES = new JavaType[] { JavaTypesManager.BOOLEAN, JavaTypesManager.CHARACTER,

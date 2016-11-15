@@ -22,12 +22,6 @@ import org.talend.metadata.managment.ui.i18n.Messages;
 import org.talend.metadata.managment.ui.wizard.PropertiesWizardPage;
 import org.talend.repository.model.RepositoryConstants;
 
-/**
- * DOC smallet class global comment. Detailed comment <br/>
- * 
- * $Id: Step0WizardPage.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
- */
 public class Step0WizardPage extends PropertiesWizardPage {
 
     private ERepositoryObjectType type;
@@ -41,11 +35,6 @@ public class Step0WizardPage extends PropertiesWizardPage {
         setDescription(Messages.getString("Step0WizardPage.description2")); //$NON-NLS-1$
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.wizards.PropertiesWizardPage#createControl(org.eclipse.swt.widgets.Composite)
-     */
     @Override
     public void createControl(Composite parent) {
         Composite container = new Composite(parent, SWT.NONE);
@@ -57,25 +46,16 @@ public class Step0WizardPage extends PropertiesWizardPage {
         setControl(container);
         updateContent();
         addListeners();
-        // setPageComplete(false);
 
         updatePageComplete();
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.wizards.PropertiesWizardPage#getRepositoryObjectType()
-     */
     @Override
     public ERepositoryObjectType getRepositoryObjectType() {
         return type;
     }
 
-    /*
-     * @see WizardPage#becomesVisible
-     */
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);
@@ -84,11 +64,6 @@ public class Step0WizardPage extends PropertiesWizardPage {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.wizards.PropertiesWizardPage#getPropertyLabel(java.lang.String)
-     */
     @Override
     protected String getPropertyLabel(String name) {
         String label = name;

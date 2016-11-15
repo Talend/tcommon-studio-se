@@ -24,9 +24,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.preference.PreferenceStore;
 import org.talend.designer.maven.template.MavenTemplateManager;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class RepositoryMavenSettingStore extends PreferenceStore {
 
     private final String defaultKey;
@@ -45,11 +42,6 @@ public class RepositoryMavenSettingStore extends PreferenceStore {
         return file;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.preference.PreferenceStore#load()
-     */
     @Override
     public void load() throws IOException {
         File file2 = getFile().getLocation().toFile();
@@ -59,11 +51,6 @@ public class RepositoryMavenSettingStore extends PreferenceStore {
         super.load();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.preference.PreferenceStore#load(java.io.InputStream)
-     */
     @Override
     public void load(InputStream in) throws IOException {
         String content = MavenTemplateManager.getContentFromInputStream(in);
@@ -72,11 +59,6 @@ public class RepositoryMavenSettingStore extends PreferenceStore {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.preference.PreferenceStore#save()
-     */
     @Override
     public void save() throws IOException {
         File file2 = getFile().getLocation().toFile();
@@ -87,11 +69,6 @@ public class RepositoryMavenSettingStore extends PreferenceStore {
         super.save();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.preference.PreferenceStore#save(java.io.OutputStream, java.lang.String)
-     */
     @Override
     public void save(OutputStream out, String header) throws IOException {
         String content = this.getString(defaultKey);

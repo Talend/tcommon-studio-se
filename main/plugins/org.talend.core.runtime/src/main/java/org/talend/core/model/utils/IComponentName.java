@@ -12,24 +12,12 @@
 // ============================================================================
 package org.talend.core.model.utils;
 
-/**
- * DOC hwang class global comment. Detailed comment
- */
 public interface IComponentName {
 
     public String getDefaultComponentName();
 
-    /**
-     * Getter for inputComponentName.
-     * 
-     * @return the inputComponentName
-     */
     public String getInputComponentName();
 
-    /**
-     * Getter for outPutComponentName.
-     * 
-     * @return the outPutComponentName
-     */
     public String getOutPutComponentName();
+
 }

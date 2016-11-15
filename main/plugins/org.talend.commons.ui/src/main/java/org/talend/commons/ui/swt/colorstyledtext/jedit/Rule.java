@@ -21,12 +21,6 @@ import java.util.Map;
 import org.talend.commons.ui.runtime.i18n.Messages;
 import org.talend.commons.ui.swt.colorstyledtext.scanner.ColoringScanner;
 
-/**
- * DOC nrousseau class global comment. Detailed comment <br/>
- * 
- * $Id: Rule.java 7038 2007-11-15 14:05:48Z plegall $
- * 
- */
 public class Rule {
 
     protected String name;
@@ -55,7 +49,6 @@ public class Rule {
 
     public static Rule newRule(Mode mode, String name, boolean highlightDigits, boolean ignoreCase, String digitRE, char escape,
             String defaultTokenType) {
-
         Rule newRule = new Rule(name);
         newRule.mode = mode;
         newRule.highlightDigits = highlightDigits;

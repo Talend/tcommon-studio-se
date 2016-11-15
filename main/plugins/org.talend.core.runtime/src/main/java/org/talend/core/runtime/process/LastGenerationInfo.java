@@ -19,9 +19,6 @@ import java.util.Set;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.process.JobInfo;
 
-/**
- * DOC nrousseau class global comment. Detailed comment
- */
 public class LastGenerationInfo {
 
     private HashMap<String, Set<ModuleNeeded>> modulesNeededPerJob;

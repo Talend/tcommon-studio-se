@@ -24,9 +24,6 @@ import org.eclipse.jface.action.Separator;
 import org.talend.commons.ui.swt.geftree.TreeSelectManager;
 import org.talend.commons.ui.swt.geftree.figure.TreeBranch;
 
-/**
- * cli class global comment. Detailed comment
- */
 public class TreeActionFactory {
 
     private final ActionRegistry actionRegistry = new ActionRegistry();

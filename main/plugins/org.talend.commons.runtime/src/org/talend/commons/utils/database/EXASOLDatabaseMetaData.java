@@ -22,10 +22,6 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
-/**
- * created by hwang on Sep 18, 2015 Detailed comment
- *
- */
 public class EXASOLDatabaseMetaData extends PackageFakeDatabaseMetadata {
 
     private static final Logger logger = Logger.getLogger(EXASOLDatabaseMetaData.class);
@@ -55,12 +51,6 @@ public class EXASOLDatabaseMetaData extends PackageFakeDatabaseMetadata {
         return super.getColumns(null, schemaPattern, tableNamePattern, columnNamePattern);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.fakejdbc.FakeDatabaseMetaData#getTables(java.lang.String, java.lang.String, java.lang.String,
-     * java.lang.String[])
-     */
     @Override
     public ResultSet getTables(String catalog, String schemaPattern, String tableNamePattern, String[] types) throws SQLException {
         ResultSet tables = super.getTables(null, schemaPattern, tableNamePattern, types);

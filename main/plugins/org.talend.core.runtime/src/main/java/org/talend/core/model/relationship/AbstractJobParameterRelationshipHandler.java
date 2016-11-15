@@ -16,16 +16,8 @@ import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.JobletProcessItem;
 import org.talend.core.model.properties.ProcessItem;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public abstract class AbstractJobParameterRelationshipHandler extends AbstractParameterRelationshipHandler {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.relationship.AbstractRelationshipHandler#valid(org.talend.core.model.properties.Item)
-     */
     @Override
     protected boolean valid(Item baseItem) {
         if (baseItem instanceof ProcessItem) {
@@ -37,13 +29,6 @@ public abstract class AbstractJobParameterRelationshipHandler extends AbstractPa
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.relationship.AbstractItemRelationshipHandler#getBaseItemType(org.talend.core.model.properties
-     * .Item)
-     */
     @Override
     protected String getBaseItemType(Item baseItem) {
         if (baseItem instanceof ProcessItem) {
@@ -53,7 +38,6 @@ public abstract class AbstractJobParameterRelationshipHandler extends AbstractPa
             return RelationshipItemBuilder.JOBLET_RELATION;
         }
         return null;
-
     }
 
 }

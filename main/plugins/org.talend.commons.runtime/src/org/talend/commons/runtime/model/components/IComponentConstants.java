@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.commons.runtime.model.components;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public interface IComponentConstants {
 
     public static final String UNIQUE_NAME = "UNIQUE_NAME"; //$NON-NLS-1$

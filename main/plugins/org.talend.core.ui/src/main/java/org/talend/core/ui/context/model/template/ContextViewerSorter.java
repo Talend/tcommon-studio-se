@@ -23,9 +23,6 @@ import org.eclipse.swt.widgets.TreeColumn;
 import org.talend.core.model.process.IContextManager;
 import org.talend.core.model.process.IContextParameter;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class ContextViewerSorter extends ViewerSorter {
 
     private boolean original = false; // flag

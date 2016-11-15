@@ -36,9 +36,6 @@ import orgomg.cwm.resource.relational.Catalog;
 import orgomg.cwm.resource.relational.ColumnSet;
 import orgomg.cwm.resource.relational.Schema;
 
-/**
- * zshen class global comment. Detailed comment
- */
 public class MetadataFillFactory {
 
     static Logger log = Logger.getLogger(MetadataFillFactory.class);

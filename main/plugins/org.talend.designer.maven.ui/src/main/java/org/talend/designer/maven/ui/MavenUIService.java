@@ -29,9 +29,6 @@ import org.talend.designer.maven.ui.setting.preference.M2eUserSettingForTalendLo
 import org.talend.designer.maven.ui.setting.repository.RepositoryMavenSettingManager;
 import org.talend.repository.ui.views.IRepositoryView;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class MavenUIService implements IMavenUIService {
 
     @Override
@@ -57,11 +54,6 @@ public class MavenUIService implements IMavenUIService {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.runtime.services.IMavenUIService#getUserSettings()
-     */
     @Override
     public void updateMavenResolver(boolean setupRemoteRepository) {
         Dictionary<String, String> props = getTalendMavenSetting();

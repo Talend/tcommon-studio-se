@@ -20,9 +20,6 @@ import org.eclipse.ui.intro.config.IIntroAction;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ui.branding.IBrandingService;
 
-/**
- * DOC hcyi class global comment. Detailed comment
- */
 public class OpenWebBrowserAction implements IIntroAction {
 
     private static final String USERGUIDE_URL = "http://www.talend.com/download/data-integration?qt-product_download_tabs=2#qt-product_download_tabs"; //$NON-NLS-1$

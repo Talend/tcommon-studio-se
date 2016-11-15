@@ -31,9 +31,6 @@ import org.talend.core.model.properties.Status;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * DOC guanglong.du class global comment. Detailed comment
- */
 public interface IRepositoryContentHandler {
 
     public Resource create(IProject project, Item item, int classifierID, IPath path) throws PersistenceException;

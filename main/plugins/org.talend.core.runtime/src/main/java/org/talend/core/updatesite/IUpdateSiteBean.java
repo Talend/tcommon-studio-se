@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.core.updatesite;
 
-/**
- * DOC hywang class global comment. Detailed comment
- */
 public interface IUpdateSiteBean {
 
     public String getClassifier();

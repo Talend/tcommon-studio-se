@@ -14,18 +14,11 @@ package org.talend.utils.thread;
 
 import java.util.List;
 
-/**
- * 
- * DOC amaumont class global comment. Detailed comment
- */
 public class MultiThreadWaiter {
 
     private List<? extends Thread> threads;
 
     /**
-     * 
-     * DOC amaumont MultiThreadWaiter constructor comment.
-     * 
      * @param threadsToStart list of the unstarted threads
      */
     public MultiThreadWaiter(List<? extends Thread> threadsToStart) {

@@ -26,11 +26,6 @@ import org.talend.themes.core.elements.widgets.ITalendTabbedPropertyListWidget;
 import org.talend.themes.core.elements.widgets.ITalendTabbedPropertyTitleWidget;
 import org.w3c.dom.css.CSSValue;
 
-/**
- * 
- * created by hcyi on Jan 30, 2015 Detailed comment
- *
- */
 public class TalendTabbedPropertyUserProfileCSSHandler extends AbstractCSSPropertySWTHandler implements ICSSPropertyHandler {
 
     private static final String WIDGET_FOREGROUND_COLOR = "color";

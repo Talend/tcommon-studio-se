@@ -15,15 +15,9 @@ package org.talend.core.model.update.extension;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public interface IRepositoryUpdateManagerProvider extends IUpdateManagerProvider {
 
     /**
-     * 
-     * DOC ggu Comment method "validateAction".
-     * 
      * Mostly work for the method init(TreeViewer,IStructuredSelection) of class DetecteViewImpactAction.
      * 
      * @param viewer
@@ -33,27 +27,18 @@ public interface IRepositoryUpdateManagerProvider extends IUpdateManagerProvider
     boolean validateAction(TreeViewer viewer, IStructuredSelection selection);
 
     /**
-     * 
-     * DOC ggu Comment method "needPropagate".
-     * 
      * @param selection
      * @return
      */
     boolean needPropagate(IStructuredSelection selection);
 
     /**
-     * 
-     * DOC ggu Comment method "needForcePropagation".
-     * 
      * @param selection
      * @return if true, will force propagate to update manager.
      */
     boolean needForcePropagation(IStructuredSelection selection);
 
     /**
-     * 
-     * DOC ggu Comment method "updateForRepository".
-     * 
      * Work for DetecteViewImpactAction.
      * 
      * @param selection

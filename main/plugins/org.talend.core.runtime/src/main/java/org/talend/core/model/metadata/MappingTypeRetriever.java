@@ -27,12 +27,6 @@ import org.talend.core.model.metadata.types.DBTypeUtil;
 import org.talend.core.model.metadata.types.JavaTypesManager;
 import org.talend.core.prefs.ITalendCorePrefConstants;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public class MappingTypeRetriever {
 
     private static Logger log = Logger.getLogger(MappingTypeRetriever.class);
@@ -47,20 +41,12 @@ public class MappingTypeRetriever {
 
     private MappingType mappingTypeKey = new MappingType();
 
-    /**
-     * DOC amaumont MappingTypeHelper constructor comment.
-     * 
-     * @param dbms
-     */
     public MappingTypeRetriever(Dbms dbms) {
         super();
         this.dbms = dbms;
         init(dbms);
     }
 
-    /**
-     * DOC amaumont Comment method "init".
-     */
     private void init(Dbms dbms) {
         Set<MappingType> mappingTypes = dbms.getTalendToDbTypes();
         defaultMappings.clear();

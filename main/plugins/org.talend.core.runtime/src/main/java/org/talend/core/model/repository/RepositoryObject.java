@@ -47,9 +47,6 @@ import org.talend.repository.model.IRepositoryNode;
 import orgomg.cwm.objectmodel.core.Package;
 import orgomg.cwm.resource.relational.Catalog;
 
-/**
- * DOC nrousseau class global comment. Detailed comment
- */
 public class RepositoryObject implements IRepositoryObject {
 
     protected Property property = PropertiesFactory.eINSTANCE.createProperty();

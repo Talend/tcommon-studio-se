@@ -12,21 +12,12 @@
 // ============================================================================
 package org.talend.designer.rowgenerator.data;
 
-/**
- * qzhang class global comment. Detailed comment <br/>
- * 
- */
 public class DoubleParameter extends Parameter {
 
     @Override
     public void parseProperties(String str) {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.rowgenerator.data.Parameter#sameParameterAs(org.talend.designer.rowgenerator.data.Parameter)
-     */
     @Override
     public boolean sameParameterAs(Parameter obj) {
         if (this == obj) {

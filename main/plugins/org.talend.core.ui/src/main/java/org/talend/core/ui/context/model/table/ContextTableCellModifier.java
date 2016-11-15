@@ -28,9 +28,6 @@ import org.talend.core.ui.context.ContextTableValuesComposite;
 import org.talend.core.ui.context.model.AbstractContextCellModifier;
 import org.talend.core.ui.context.model.template.ContextConstant;
 
-/**
- * cli class global comment. Detailed comment
- */
 public class ContextTableCellModifier extends AbstractContextCellModifier {
 
     public ContextTableCellModifier(ContextTableValuesComposite parentModel, boolean reposFlag) {
@@ -42,11 +39,6 @@ public class ContextTableCellModifier extends AbstractContextCellModifier {
         return (ContextTableValuesComposite) super.getParentMode();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ICellModifier#canModify(java.lang.Object, java.lang.String)
-     */
     @Override
     public boolean canModify(Object element, String property) {
         if (getModelManager().isReadOnly()) {

@@ -19,9 +19,6 @@ import org.talend.designer.core.model.utils.emf.talendfile.MetadataType;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 
-/**
- * DOC guanglong.du class global comment. Detailed comment
- */
 public class JobletRenameComponentConversion implements IComponentConversion {
 
     private String newName;
@@ -32,7 +29,6 @@ public class JobletRenameComponentConversion implements IComponentConversion {
     }
 
     public void transform(NodeType node) {
-        // TODO Auto-generated method stub
         node.setComponentName(newName);
         ProcessType item = (ProcessType) node.eContainer();
         String oldNodeUniqueName = ComponentUtilities.getNodeUniqueName(node);

@@ -24,10 +24,6 @@ import org.talend.core.model.metadata.builder.connection.MetadataColumn;
 import org.talend.core.model.metadata.types.TypesManager;
 import org.talend.core.ui.i18n.Messages;
 
-/**
- * DOC nrousseau class global comment. Detailed comment <br/>
- * 
- */
 public class ExtendedTableResetDBTypesCommand extends Command implements IExtendedTableCommand {
 
     public static final String LABEL = Messages.getString("ExtendedTableResetDBTypesCommand.ResetDBTypes.Label"); //$NON-NLS-1$

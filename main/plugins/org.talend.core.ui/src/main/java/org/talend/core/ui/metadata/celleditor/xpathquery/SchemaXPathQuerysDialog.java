@@ -36,9 +36,6 @@ import org.talend.core.ui.process.IGEFProcess;
 import org.talend.core.ui.services.IDesignerCoreUIService;
 import org.talend.core.utils.TalendQuoteUtils;
 
-/**
- * cli class global comment. Detailed comment
- */
 public class SchemaXPathQuerysDialog extends Dialog {
 
     private static final char COMMA = ',';
@@ -57,9 +54,6 @@ public class SchemaXPathQuerysDialog extends Dialog {
 
     private String values;
 
-    /*
-     * 
-     */
     private XPathQueryMetadataTableEditorExt metadataTableEditor;
 
     private XPathQueryMetadataTableEditorViewExt metadataTableEditorView;
@@ -73,7 +67,6 @@ public class SchemaXPathQuerysDialog extends Dialog {
         this.node = node;
         this.metadataTable = metadataTable.clone(true);
         this.mapping = mapping;
-        // this.setShellStyle(this.getShellStyle() | SWT.RESIZE);
 
         convertMetadataTable();
     }
@@ -225,10 +218,6 @@ public class SchemaXPathQuerysDialog extends Dialog {
         }
     }
 
-    /**
-     * 
-     * cli XPathQueryChangeCommand class global comment. Detailed comment
-     */
     class XPathQueryChangeCommand extends Command {
 
         private INode node;

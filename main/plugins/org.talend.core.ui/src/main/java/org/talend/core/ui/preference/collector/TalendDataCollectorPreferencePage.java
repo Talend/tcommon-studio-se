@@ -22,9 +22,6 @@ import org.talend.core.ui.CoreUIPlugin;
 import org.talend.core.ui.i18n.Messages;
 import org.talend.core.ui.token.TokenCollectorFactory;
 
-/**
- * ggu class global comment. Detailed comment
- */
 public class TalendDataCollectorPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
     public TalendDataCollectorPreferencePage() {
@@ -43,11 +40,6 @@ public class TalendDataCollectorPreferencePage extends FieldEditorPreferencePage
                 Messages.getString("TalendDataCollectorPreferencePage_EnableCapture"), getFieldEditorParent())); //$NON-NLS-1$
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.preference.FieldEditorPreferencePage#performOk()
-     */
     @Override
     public boolean performOk() {
         final IPreferenceStore preferenceStore = CoreUIPlugin.getDefault().getPreferenceStore();
@@ -60,4 +52,5 @@ public class TalendDataCollectorPreferencePage extends FieldEditorPreferencePage
         }
         return ok;
     }
+
 }

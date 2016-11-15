@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.commons.ui.runtime.update;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public interface PreferenceKeys {
 
     static final String NEED_OSGI_CLEAN = "need_osgi_clean"; //$NON-NLS-1$

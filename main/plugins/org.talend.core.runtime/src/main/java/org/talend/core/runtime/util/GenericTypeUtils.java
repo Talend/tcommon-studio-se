@@ -20,12 +20,6 @@ import org.apache.commons.lang3.reflect.TypeUtils;
 import org.talend.daikon.properties.property.EnumProperty;
 import org.talend.daikon.properties.property.Property;
 
-
-/**
- * created by nrousseau on May 20, 2016
- * Detailed comment
- *
- */
 public class GenericTypeUtils {
     
     private static final TypeLiteral<List<String>> LIST_STRING_TYPE = new TypeLiteral<List<String>>() {// empty

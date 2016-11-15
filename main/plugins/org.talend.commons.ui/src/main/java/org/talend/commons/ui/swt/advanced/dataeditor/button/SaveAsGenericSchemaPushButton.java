@@ -20,10 +20,6 @@ import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.commons.ui.swt.advanced.dataeditor.control.ExtendedPushButton;
 import org.talend.commons.ui.swt.extended.table.AbstractExtendedTableViewer;
 
-/**
- * DOC Administrator class global comment. Detailed comment <br/>
- * 
- */
 public abstract class SaveAsGenericSchemaPushButton extends ExtendedPushButton {
 
     public SaveAsGenericSchemaPushButton(Composite parent, AbstractExtendedTableViewer extendedViewer) {

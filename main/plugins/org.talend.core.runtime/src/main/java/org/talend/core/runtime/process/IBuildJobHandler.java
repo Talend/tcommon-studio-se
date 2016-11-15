@@ -16,10 +16,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.talend.designer.runprocess.IProcessor;
 
-/**
- * created by ycbai on 2015年5月13日 Detailed comment
- *
- */
 public interface IBuildJobHandler {
 
     public IProcessor generateJobFiles(IProgressMonitor monitor) throws Exception;

@@ -42,10 +42,6 @@ import org.talend.core.model.process.IElementParameter;
 import org.talend.core.model.process.INode;
 import org.talend.core.model.process.IProcess;
 
-/**
- * DOC xtan class global comment. Detailed comment <br/>
- *
- */
 public class NodeUtil {
 
     /**

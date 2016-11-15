@@ -14,13 +14,6 @@ package org.talend.commons.utils.data.text;
 
 import org.apache.commons.lang.StringUtils;
 
-/**
- * 
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public class StringHelper {
 
     private static final String OPEN_BRACE = "{"; //$NON-NLS-1$

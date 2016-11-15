@@ -29,12 +29,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-/**
- * DOC chuger class global comment. Detailed comment <br/>
- * 
- * $Id: XmlArray.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
- */
 public class XmlArray {
 
     private static final String TAG_ARRAY = "array"; //$NON-NLS-1$

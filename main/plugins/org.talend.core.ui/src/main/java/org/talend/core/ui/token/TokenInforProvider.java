@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.core.ui.token;
 
-/**
- * ggu class global comment. Detailed comment
- */
 public class TokenInforProvider {
 
     private String id, name, description, productType;

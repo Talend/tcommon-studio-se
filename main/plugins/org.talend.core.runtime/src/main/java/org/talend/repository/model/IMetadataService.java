@@ -30,9 +30,6 @@ import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.ui.metadata.celleditor.EProcessTypeForRule;
 import org.talend.core.ui.rule.AbstractRlueOperationChoice;
 
-/**
- * DOC hwang class global comment. Detailed comment
- */
 public interface IMetadataService extends IService {
 
     public WizardDialog getGenericSchemaWizardDialog(Shell shell, IWorkbench workbench, boolean creation, ISelection selection,

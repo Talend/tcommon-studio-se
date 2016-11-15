@@ -31,9 +31,6 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-/**
- * DOC chuang class global comment. Detailed comment
- */
 public class XPathPrefixHandler {
 
     private Map<String, List<NodeInfo>> nameNodesMap;
@@ -361,10 +358,6 @@ public class XPathPrefixHandler {
         return path;
     }
 
-    /**
-     * 
-     * DOC chuang XPathPrefixHandler class global comment. Detailed comment
-     */
     static class PathSegment {
 
         String originalPath;
@@ -617,10 +610,6 @@ public class XPathPrefixHandler {
         }
     }
 
-    /**
-     * 
-     * DOC chuang XPathPrefixHandler class global comment. Detailed comment
-     */
     static class NodeInfo {
 
         Node node;
@@ -641,10 +630,6 @@ public class XPathPrefixHandler {
 
     };
 
-    /**
-     * 
-     * DOC chuang XPathPrefixHandler class global comment. Detailed comment
-     */
     static class CustomNamespaceContext implements NamespaceContext {
 
         private BidiMap prefixToNamespace = new DualHashBidiMap();

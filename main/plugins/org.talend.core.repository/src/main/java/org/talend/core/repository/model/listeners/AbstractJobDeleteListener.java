@@ -20,9 +20,6 @@ import org.talend.core.model.repository.IRepositoryObject;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.documentation.ERepositoryActionName;
 
-/**
- * DOC talend class global comment. Detailed comment
- */
 public abstract class AbstractJobDeleteListener implements PropertyChangeListener {
 
     public static final int DELETE_LOGICAL = 0;

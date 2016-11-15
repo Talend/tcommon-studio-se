@@ -24,33 +24,18 @@ import org.eclipse.swt.widgets.Shell;
 import org.talend.metadata.managment.ui.editor.MetadataTalendTypeEditor;
 import org.talend.metadata.managment.ui.i18n.Messages;
 
-/**
- * DOC YeXiaowei class global comment. Detailed comment <br/>
- * 
- */
 public class MappingFileSelectDialog extends TitleAreaDialog {
 
     private String selectId = null;
 
     private MetadataTalendTypeEditor editor = null;
 
-    /**
-     * DOC YeXiaowei MappingFileSelectDialog constructor comment.
-     * 
-     * @param parentShell
-     */
     public MappingFileSelectDialog(Shell parentShell) {
         super(parentShell);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.TitleAreaDialog#createDialogArea(org.eclipse.swt.widgets.Composite)
-     */
     @Override
     protected Control createDialogArea(Composite parent) {
-
         parent.setLayout(new GridLayout());
 
         Composite bgComposite = new Composite(parent, SWT.NONE);

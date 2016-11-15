@@ -12,12 +12,6 @@
 // ============================================================================
 package org.talend.core.model.process;
 
-/**
- * DOC nrousseau ProcessController class global comment. Detailed comment <br/>
- * 
- * $Id: talend-code-templates.xml 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- * 
- */
 public class BasicJobInfo {
 
     private String jobId, jobName, contextName, jobVersion;

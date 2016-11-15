@@ -21,10 +21,6 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
 
-/**
- * created by ldong on Sep 22, 2014 Detailed comment
- * 
- */
 public class ContextColumnHeaderDecorator extends CellPainterWrapper {
 
     private boolean uplift = true;
@@ -38,14 +34,6 @@ public class ContextColumnHeaderDecorator extends CellPainterWrapper {
         this.uplift = uplift;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.nebula.widgets.nattable.painter.cell.decorator.BeveledBorderDecorator#paintCell(org.eclipse.nebula
-     * .widgets.nattable.layer.cell.ILayerCell, org.eclipse.swt.graphics.GC, org.eclipse.swt.graphics.Rectangle,
-     * org.eclipse.nebula.widgets.nattable.config.IConfigRegistry)
-     */
     @Override
     public void paintCell(ILayerCell cell, GC gc, Rectangle adjustedCellBounds, IConfigRegistry configRegistry) {
         Rectangle interiorBounds = getWrappedPainterBounds(cell, gc, adjustedCellBounds, configRegistry);

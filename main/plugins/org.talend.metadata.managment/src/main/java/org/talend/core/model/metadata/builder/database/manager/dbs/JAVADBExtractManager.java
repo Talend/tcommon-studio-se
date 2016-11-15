@@ -20,9 +20,6 @@ import org.talend.core.model.metadata.IMetadataConnection;
 import org.talend.core.model.metadata.builder.database.DriverShim;
 import org.talend.core.model.metadata.builder.database.manager.ExtractManager;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class JAVADBExtractManager extends ExtractManager {
 
     public JAVADBExtractManager(EDatabaseTypeName dbType) {

@@ -25,37 +25,18 @@ import org.talend.core.model.metadata.MetadataSchema;
 import org.talend.core.ui.i18n.Messages;
 import org.talend.core.ui.metadata.editor.MetadataTableEditor;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public class MetadataExportXmlCommand extends Command {
 
     private File file;
 
     private MetadataTableEditor extendedTableModel;
 
-    /**
-     * DOC amaumont MetadataPasteCommand constructor comment.
-     * 
-     * @param extendedTableModel
-     * @param extendedTable
-     * @param validAssignableType
-     * @param indexStartAdd
-     */
     public MetadataExportXmlCommand(MetadataTableEditor extendedTableModel, File file) {
         super();
         this.file = file;
         this.extendedTableModel = extendedTableModel;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.command.CommonCommand#execute()
-     */
     @Override
     public void execute() {
         // export file if it not exists and if it exists, show up a confirm dialog.

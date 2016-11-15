@@ -178,11 +178,6 @@ public abstract class ExecutionLimiterImproved {
         }
     }
 
-    /**
-     * 
-     * DOC amaumont ExecutionLimiter class global comment. Detailed comment <br/>
-     * 
-     */
     class FinalExecution extends Thread {
 
         private Object data;
@@ -211,11 +206,6 @@ public abstract class ExecutionLimiterImproved {
 
     }
 
-    /**
-     * DOC amaumont Comment method "callFinalExecute".
-     * 
-     * @param data
-     */
     private void callFinalExecute(Object data) {
         // System.out.println("before test final execute");
         if (finalExecute) {

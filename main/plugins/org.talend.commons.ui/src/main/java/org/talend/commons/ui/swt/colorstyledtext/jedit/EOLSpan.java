@@ -12,12 +12,6 @@
 // ============================================================================
 package org.talend.commons.ui.swt.colorstyledtext.jedit;
 
-/**
- * DOC nrousseau class global comment. Detailed comment <br/>
- * 
- * $Id: EOLSpan.java 7038 2007-11-15 14:05:48Z plegall $
- * 
- */
 public class EOLSpan extends Span {
 
     public void accept(IVisitor visitor) {

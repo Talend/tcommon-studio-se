@@ -18,12 +18,6 @@ import java.util.List;
 import org.eclipse.swt.graphics.Image;
 import org.talend.core.model.process.EComponentCategory;
 
-/**
- * yzhang class global comment. Detailed comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
- * 
- */
 public class TalendPropertyTabDescriptor implements IStructuredTabItem {
 
     private IDynamicProperty propertyComposite;
@@ -38,9 +32,6 @@ public class TalendPropertyTabDescriptor implements IStructuredTabItem {
 
     private EComponentCategory category;
 
-    /**
-     * yzhang TalendPropertyTabDescriptor constructor comment.
-     */
     public TalendPropertyTabDescriptor(EComponentCategory category) {
         this.category = category;
         this.label = category.getTitle();

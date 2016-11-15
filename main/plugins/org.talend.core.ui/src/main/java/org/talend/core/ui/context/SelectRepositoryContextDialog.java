@@ -65,12 +65,6 @@ import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.repository.ProjectManager;
 
-/**
- * ggu class global comment. Detailed comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ææäº, 29 ä¹æ 2006) nrousseau $
- * 
- */
 public class SelectRepositoryContextDialog extends SelectionDialog {
 
     private static final String DEFAULTMESAGE = Messages.getString("SelectRepositoryContextDialog.Label"); //$NON-NLS-1$
@@ -534,10 +528,6 @@ public class SelectRepositoryContextDialog extends SelectionDialog {
         return null;
     }
 
-    /**
-     * 
-     * ggu SelectRepositoryContextDialog class global comment. Detailed comment
-     */
     class ContextTreeContentProvider implements ITreeContentProvider {
 
         @Override
@@ -583,10 +573,6 @@ public class SelectRepositoryContextDialog extends SelectionDialog {
 
     }
 
-    /**
-     * 
-     * ggu SelectRepositoryContextDialog class global comment. Detailed comment
-     */
     class ContextTreeLabelProvider implements ILabelProvider {
 
         @Override
@@ -651,10 +637,6 @@ public class SelectRepositoryContextDialog extends SelectionDialog {
 
     }
 
-    /**
-     * 
-     * ggu SelectRepositoryContextDialog class global comment. Detailed comment
-     */
     class ContextViewerFilter extends ViewerFilter {
 
         @Override
@@ -693,10 +675,6 @@ public class SelectRepositoryContextDialog extends SelectionDialog {
 
     }
 
-    /**
-     * 
-     * ggu ContextViewerSorter class global comment. Detailed comment
-     */
     class ContextViewerSorter extends ViewerSorter {
 
         @SuppressWarnings("unchecked")

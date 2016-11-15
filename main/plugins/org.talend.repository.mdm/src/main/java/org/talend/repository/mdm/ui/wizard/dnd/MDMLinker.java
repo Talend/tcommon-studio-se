@@ -85,9 +85,6 @@ import org.talend.repository.ui.wizards.metadata.connection.files.xml.TreePopula
 import org.talend.repository.ui.wizards.metadata.connection.files.xml.extraction.XsdNodeRetriever;
 import org.w3c.dom.Node;
 
-/**
- * DOC hwang class global comment. Detailed comment
- */
 public class MDMLinker extends TreeToTablesLinker<Object, Object> {
 
     private TreePopulator treePopulator;

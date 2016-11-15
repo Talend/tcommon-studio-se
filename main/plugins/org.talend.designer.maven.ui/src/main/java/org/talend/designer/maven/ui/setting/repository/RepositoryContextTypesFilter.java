@@ -21,9 +21,6 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.repository.model.IRepositoryNode.ENodeType;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class RepositoryContextTypesFilter extends ViewerFilter {
 
     private List<ERepositoryObjectType> contentTypes;
@@ -33,12 +30,6 @@ public class RepositoryContextTypesFilter extends ViewerFilter {
         this.contentTypes = contentTypes;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers.Viewer, java.lang.Object,
-     * java.lang.Object)
-     */
     @Override
     public boolean select(Viewer viewer, Object parentElement, Object element) {
         if (element instanceof TreeItem) {

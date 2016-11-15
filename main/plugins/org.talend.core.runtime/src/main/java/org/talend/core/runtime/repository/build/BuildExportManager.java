@@ -16,9 +16,6 @@ import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.ProcessItem;
 import org.talend.repository.documentation.ExportFileResource;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public final class BuildExportManager {
 
     private static final BuildExportManager instance = new BuildExportManager();

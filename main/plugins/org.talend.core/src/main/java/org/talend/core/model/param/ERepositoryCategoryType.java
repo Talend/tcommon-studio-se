@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.core.model.param;
 
-/**
- * cli class global comment. Detailed comment
- */
 public enum ERepositoryCategoryType {
     DELIMITED,
     POSITIONAL,

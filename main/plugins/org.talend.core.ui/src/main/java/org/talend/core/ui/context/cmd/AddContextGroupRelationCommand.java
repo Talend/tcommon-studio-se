@@ -21,10 +21,6 @@ import org.talend.core.model.process.IContextManager;
 import org.talend.core.model.process.IContextParameter;
 import org.talend.core.model.properties.Item;
 
-/**
- * created by ldong on Sep 12, 2014 Detailed comment
- * 
- */
 public class AddContextGroupRelationCommand extends Command {
 
     private IContextParameter param;
@@ -42,11 +38,6 @@ public class AddContextGroupRelationCommand extends Command {
         this.sourceItem = sourceItem;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.gef.commands.Command#execute()
-     */
     @Override
     public void execute() {
         boolean isChange = false;

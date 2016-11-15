@@ -16,34 +16,23 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeViewer;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public interface IImportExportItemsActionHelper {
 
     /**
-     * 
-     * DOC ggu Comment method "isImportEnabled".
-     * 
      * Work for the method init of ImportItemsAction.
      * 
      * @param viewer, current repository view.
      * @param selection, the selection of repository view.
-     * @return if all actions return false, will disable the action. If there is one action to return true, will enable
-     * it.
+     * @return if all actions return false, will disable the action. If there is one action to return true, will enable it.
      */
     boolean isImportEnabled(TreeViewer viewer, ISelection selection);
 
     boolean isImportEnabled(IAction action, ISelection selection);
 
     /**
-     * 
-     * DOC ggu Comment method "isExportEnabled".
-     * 
      * @param viewer, current repository view.
      * @param selection, the selection of repository view.
-     * @return if all actions return false, will disable the action. If there is one action to return true, will enable
-     * it.
+     * @return if all actions return false, will disable the action. If there is one action to return true, will enable it.
      */
     boolean isExportEnabled(TreeViewer viewer, ISelection selection);
 

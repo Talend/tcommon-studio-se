@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.core.nexus;
 
-/**
- * created by Talend on 2015年5月4日 Detailed comment
- *
- */
 public class MavenSetupException extends Exception {
 
     private static final long serialVersionUID = 1L;

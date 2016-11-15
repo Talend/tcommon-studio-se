@@ -21,9 +21,6 @@ import org.talend.core.model.properties.PropertiesFactory;
 import org.talend.migration.IMigrationTask;
 import org.talend.migration.IMigrationTask.ExecutionResult;
 
-/**
- * DOC ycbai class global comment. Detailed comment
- */
 public class MigrationUtil {
 
     public static final String ADAPT_NEW_MIGRATION_TASK_SYSTEM_ID = "org.talend.repository.model.migration.UpdateExistentMigrationTasksToAdaptNewMigrationSystemMigrationTask"; //$NON-NLS-1$

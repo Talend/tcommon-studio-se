@@ -16,12 +16,6 @@ import java.util.ResourceBundle;
 
 import org.talend.commons.i18n.MessagesCore;
 
-/**
- * DOC qzhang class global comment. Detailed comment <br/>
- * 
- * $Id: talend-code-templates.xml 1 2007-2-5 上�?�11:22:30 (星期五, 29 �?月 2006) qzhang $
- * 
- */
 public class Messages extends MessagesCore {
 
     private static final String BUNDLE_NAME = "messages"; //$NON-NLS-1$

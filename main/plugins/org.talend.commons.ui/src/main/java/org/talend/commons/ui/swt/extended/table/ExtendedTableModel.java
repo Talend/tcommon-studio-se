@@ -26,10 +26,6 @@ import org.talend.commons.utils.data.list.IListenableListListener;
 import org.talend.commons.utils.data.list.ListenableList;
 
 /**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
  * @param <B> Type of beans
  */
 public class ExtendedTableModel<B> extends AbstractExtendedControlModel {
@@ -45,9 +41,6 @@ public class ExtendedTableModel<B> extends AbstractExtendedControlModel {
         init();
     }
 
-    /**
-     * DOC amaumont Comment method "init".
-     */
     private void init() {
         beansList.setUseEquals(false);
     }

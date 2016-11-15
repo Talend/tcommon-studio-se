@@ -110,9 +110,6 @@ import org.talend.utils.sql.ConnectionUtils;
 import us.monoid.json.JSONException;
 import us.monoid.json.JSONObject;
 
-/**
- * DOC nrousseau class global comment. Detailed comment
- */
 public class ProjectRepositoryNode extends RepositoryNode implements IProjectRepositoryNode {
 
     private RepositoryNode svnRootNode, recBinNode, sqlPatternNode, docNode, metadataNode, metadataConNode, metadataFileNode,

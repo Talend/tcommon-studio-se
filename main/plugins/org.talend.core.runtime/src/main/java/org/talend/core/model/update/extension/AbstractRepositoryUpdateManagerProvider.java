@@ -31,21 +31,10 @@ import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.designer.core.IDesignerCoreService;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
-/**
- * created by ggu on Mar 27, 2014 Detailed comment
- * 
- */
 public abstract class AbstractRepositoryUpdateManagerProvider implements IRepositoryUpdateManagerProvider {
 
     protected IProxyRepositoryFactory factory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.update.extension.IRepositoryUpdateManagerProvider#validateAction(org.eclipse.jface.viewers
-     * .TreeViewer, org.eclipse.jface.viewers.IStructuredSelection)
-     */
     @Override
     public boolean validateAction(TreeViewer viewer, IStructuredSelection selection) {
         if (viewer != null && selection != null) {

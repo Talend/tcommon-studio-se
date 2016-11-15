@@ -29,20 +29,12 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.ui.views.IRepositoryView;
 
-/**
- * DOC hcyi class global comment. Detailed comment
- */
 public class ValidationRulesLabelProvider extends RepositoryLabelProvider {
 
     public static final Color MERGED_REFERENCED_ITEMS_COLOR = new Color(null, 120, 120, 120);
 
     private IElement elem;
 
-    /**
-     * DOC wf ValidationRulesLabelProvider constructor comment.
-     * 
-     * @param view
-     */
     public ValidationRulesLabelProvider(IRepositoryView view, IElement elem) {
         super(view);
         this.elem = elem;

@@ -19,9 +19,6 @@ import org.talend.core.model.properties.User;
 import org.talend.utils.json.JSONException;
 import org.talend.utils.json.JSONObject;
 
-/**
- * DOC hywang class global comment. Detailed comment
- */
 public interface IRemoteService extends IService {
 
     public JSONObject getArchivaObject(User user, String password, String url) throws PersistenceException, LoginException;

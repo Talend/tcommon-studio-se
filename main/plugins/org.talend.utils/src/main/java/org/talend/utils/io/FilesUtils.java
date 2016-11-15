@@ -42,12 +42,6 @@ import java.util.zip.ZipOutputStream;
 import org.apache.commons.io.IOUtils;
 import org.talend.utils.sugars.ReturnCode;
 
-/**
- * DOC smallet class global comment. Detailed comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- * 
- */
 public final class FilesUtils {
 
     private static final int BUFFER_SIZE = 64 * 1024;

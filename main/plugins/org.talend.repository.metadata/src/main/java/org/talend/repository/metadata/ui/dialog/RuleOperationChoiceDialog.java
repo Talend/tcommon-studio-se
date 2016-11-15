@@ -54,15 +54,8 @@ import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.repository.metadata.i18n.Messages;
 import org.talend.repository.model.IRepositoryService;
 
-/**
- * DOC hywang class global comment. Detailed comment
- */
 public class RuleOperationChoiceDialog extends AbstractRlueOperationChoice {
 
-    /**
-     * 
-     * hywang ESelectionCategoryForRule.
-     */
     public enum ESelectionCategoryForRule {
         SHOW_SCHEMA,
         BUILDIN,

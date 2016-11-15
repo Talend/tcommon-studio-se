@@ -21,21 +21,8 @@ import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.commons.ui.swt.advanced.dataeditor.control.ExtendedPushButton;
 import org.talend.commons.ui.swt.extended.table.AbstractExtendedControlViewer;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public abstract class CopyPushButton extends ExtendedPushButton {
 
-    /**
-     * DOC amaumont AddPushButton constructor comment.
-     * 
-     * @param parent
-     * @param tooltip
-     * @param image
-     */
     public CopyPushButton(Composite parent, AbstractExtendedControlViewer extendedControlViewer) {
         super(parent, extendedControlViewer,
                 Messages.getString("CopyPushButton.CopyButton.Tip"), ImageProvider.getImage(EImage.COPY_ICON)); //$NON-NLS-1$
@@ -50,11 +37,6 @@ public abstract class CopyPushButton extends ExtendedPushButton {
 
     protected abstract Command getCommandToExecute();
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.advanced.dataeditor.control.ExtendedPushButton#getEnabledState()
-     */
     @Override
     public boolean getEnabledState() {
         return super.getEnabledState() || !getExtendedControlViewer().isReadOnly();

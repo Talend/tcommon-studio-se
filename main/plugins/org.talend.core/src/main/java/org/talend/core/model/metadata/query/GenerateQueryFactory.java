@@ -23,9 +23,6 @@ import org.talend.core.model.metadata.query.generator.OldDelegateQueryGenerator;
 import org.talend.core.model.metadata.query.generator.OracleQueryGenerator;
 import org.talend.core.model.metadata.query.generator.PostgreQueryGenerator;
 
-/**
- * ggu class global comment. Detailed comment
- */
 public final class GenerateQueryFactory {
 
     private GenerateQueryFactory() {

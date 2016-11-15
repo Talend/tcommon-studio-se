@@ -40,9 +40,6 @@ import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.designer.core.IDesignerCoreService;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public enum UpdateManagerProviderDetector {
     INSTANCE;
 
@@ -57,9 +54,6 @@ public enum UpdateManagerProviderDetector {
     }
 
     /**
-     * 
-     * DOC ggu Comment method "retrieveProcessUpdateResults".
-     * 
      * @param process check the process to detect the different.
      * @param type
      * @return

@@ -14,12 +14,6 @@ package org.talend.designer.codegen;
 
 import org.talend.core.model.process.INode;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public interface IAloneProcessNodeConfigurer {
 
     /**

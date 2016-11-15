@@ -22,10 +22,6 @@ import org.talend.commons.ui.runtime.swt.tableviewer.selection.ITableColumnSelec
 import org.talend.commons.ui.runtime.swt.tableviewer.sort.IColumnSortedListener;
 import org.talend.commons.ui.runtime.swt.tableviewer.sort.TableViewerCreatorSorter;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/> $Id: DefaultHeaderColumnSelectionListener.java,v 1.3
- * 2006/06/02 15:24:10 amaumont Exp $
- */
 public class DefaultHeaderColumnSelectionListener implements ITableColumnSelectionListener {
 
     private TableViewerCreatorColumnNotModifiable tableViewerCreatorColumn;

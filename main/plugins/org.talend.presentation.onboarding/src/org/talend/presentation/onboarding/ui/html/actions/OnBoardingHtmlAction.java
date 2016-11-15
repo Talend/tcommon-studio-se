@@ -20,10 +20,6 @@ import org.talend.presentation.onboarding.exceptions.OnBoardingExceptionHandler;
 import org.talend.presentation.onboarding.i18n.Messages;
 import org.talend.presentation.onboarding.ui.managers.OnBoardingManager;
 
-/**
- * created by cmeng on Sep 16, 2015 Detailed comment
- *
- */
 public class OnBoardingHtmlAction implements IIntroAction {
 
     public static final String ACTION_TYPE = "TYPE"; //$NON-NLS-1$
@@ -40,11 +36,6 @@ public class OnBoardingHtmlAction implements IIntroAction {
 
     public static final String MANAGER_ID = "MANAGER_ID"; //$NON-NLS-1$
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.intro.config.IIntroAction#run(org.eclipse.ui.intro.IIntroSite, java.util.Properties)
-     */
     @Override
     public void run(IIntroSite site, Properties params) {
         OnBoardingManager obManager = OnBoardingManager.getRegistedManager(params.getProperty(MANAGER_ID));
@@ -69,6 +60,6 @@ public class OnBoardingHtmlAction implements IIntroAction {
         } else if (ACTION_BACK.equals(params.get(ACTION_TYPE))) {
             obManager.onBoarding(obManager.getCurrentSelectedPresentationDataIndex() - 1);
         }
-
     }
+
 }

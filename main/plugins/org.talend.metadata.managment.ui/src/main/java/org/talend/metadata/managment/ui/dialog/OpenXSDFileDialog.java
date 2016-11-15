@@ -32,9 +32,6 @@ import org.talend.commons.ui.runtime.image.EImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.metadata.managment.ui.i18n.Messages;
 
-/**
- * DOC Administrator class global comment. Detailed comment
- */
 public class OpenXSDFileDialog extends TitleAreaDialog {
 
     /**

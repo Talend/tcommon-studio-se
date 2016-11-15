@@ -77,9 +77,6 @@ import orgomg.cwm.resource.relational.Catalog;
 import orgomg.cwm.resource.relational.NamedColumnSet;
 import orgomg.cwm.resource.relational.Schema;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class ExtractManager {
 
     public static final String TABLE_TYPE = "TABLE_TYPE"; //$NON-NLS-1$

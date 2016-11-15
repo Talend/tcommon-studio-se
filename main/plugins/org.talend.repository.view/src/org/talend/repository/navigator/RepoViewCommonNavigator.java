@@ -114,12 +114,6 @@ import org.talend.repository.viewer.filter.PerspectiveFilterHelper;
 import org.talend.repository.viewer.filter.RepositoryNodeFilterHelper;
 import org.talend.repository.viewer.filter.listener.RepoViewPerspectiveListener;
 
-/**
- * DOC sgandon class global comment. Detailed comment <br/>
- * 
- * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
- */
 public class RepoViewCommonNavigator extends CommonNavigator implements IRepositoryView, ITabbedPropertySheetPageContributor,
         IRepositoryChangedListener {
 
@@ -129,69 +123,37 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
      */
     public class EditorSavable extends Saveable {
 
-        /**
-         * DOC sgandon EditorSavable constructor comment.
-         * 
-         * @param repoViewCommonNavigator
-         */
         public EditorSavable() {
             // TODO Auto-generated constructor stub
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.ui.Saveable#getName()
-         */
         @Override
         public String getName() {
             // TODO Auto-generated method stub
             return null;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.ui.Saveable#getToolTipText()
-         */
         @Override
         public String getToolTipText() {
             // TODO Auto-generated method stub
             return null;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.ui.Saveable#getImageDescriptor()
-         */
         @Override
         public ImageDescriptor getImageDescriptor() {
             // TODO Auto-generated method stub
             return null;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.ui.Saveable#doSave(org.eclipse.core.runtime.IProgressMonitor)
-         */
         @Override
         public void doSave(IProgressMonitor monitor) throws CoreException {
             ISaveablePart currentEditorSavablePart = getCurrentEditorSavablePart();
             if (currentEditorSavablePart != null) {
                 currentEditorSavablePart.doSave(monitor);
                 firePropertyChange(IWorkbenchPartConstants.PROP_DIRTY);
-
             }
-
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.ui.Saveable#isDirty()
-         */
         @Override
         public boolean isDirty() {
             if (!isShouldCheckRepositoryDirty()) {
@@ -201,22 +163,12 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
             return currentEditorSavablePart != null ? currentEditorSavablePart.isDirty() : false;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.ui.Saveable#equals(java.lang.Object)
-         */
         @Override
         public boolean equals(Object object) {
             // TODO Auto-generated method stub
             return false;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.ui.Saveable#hashCode()
-         */
         @Override
         public int hashCode() {
             // TODO Auto-generated method stub
@@ -259,22 +211,12 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
 
     private IGitContentService service;
 
-    /**
-     * yzhang Comment method "addPreparedListeners".
-     * 
-     * @param listeners
-     */
     public void addPreparedListeners(ISelectionChangedListener listeners) {
         if (listeners != null) {
             listenersNeedTobeAddedIntoTreeviewer.add(listeners);
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.part.ViewPart#init(org.eclipse.ui.IViewSite)
-     */
     @Override
     public void init(IViewSite site) throws PartInitException {
         super.init(site);

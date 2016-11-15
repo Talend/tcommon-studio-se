@@ -17,9 +17,6 @@ import org.talend.core.model.process.IProcess;
 import org.talend.core.model.properties.Property;
 import org.talend.designer.runprocess.IProcessor;
 
-/**
- * DOC guanglong.du class global comment. Detailed comment
- */
 public interface IRemoteRunprocessorService extends IService {
 
     public IProcessor createRemotePerlProcessor(IProcess process, Property property, boolean filenameFromLabel);

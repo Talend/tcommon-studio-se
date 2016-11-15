@@ -16,10 +16,6 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-/**
- * created by ggu on Aug 20, 2014 Detailed comment
- *
- */
 @SuppressWarnings("nls")
 public class CryptoHelperTest {
 

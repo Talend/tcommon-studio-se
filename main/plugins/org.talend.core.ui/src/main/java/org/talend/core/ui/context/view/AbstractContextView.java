@@ -45,10 +45,6 @@ import org.talend.designer.core.model.utils.emf.talendfile.impl.ContextParameter
 import org.talend.designer.core.model.utils.emf.talendfile.impl.ContextTypeImpl;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * created by xqliu on Jul 26, 2013 Detailed comment
- * 
- */
 public abstract class AbstractContextView extends ViewPart {
 
     public static final String CTX_ID_DESIGNER = "org.talend.designer.core.ui.views.ContextsView"; //$NON-NLS-1$    

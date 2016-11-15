@@ -24,31 +24,14 @@ import org.talend.commons.ui.runtime.i18n.Messages;
 import org.talend.commons.ui.swt.extended.table.AbstractExtendedTableViewer;
 import org.talend.commons.ui.swt.extended.table.ExtendedTableModel;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public abstract class ImportPushButtonForExtendedTable extends ImportPushButton implements IExtendedTablePushButton {
 
     private File file;
 
-    /**
-     * DOC amaumont SchemaTargetAddPushButton constructor comment.
-     * 
-     * @param parent
-     * @param extendedControlViewer
-     */
     public ImportPushButtonForExtendedTable(Composite parent, AbstractExtendedTableViewer extendedTableViewer) {
         super(parent, extendedTableViewer);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.advanced.dataeditor.control.ExtendedPushButton#beforeCommandExecution()
-     */
     @Override
     protected void beforeCommandExecution() {
         FileDialog dial = new FileDialog(getButton().getShell(), SWT.OPEN);
@@ -80,11 +63,6 @@ public abstract class ImportPushButtonForExtendedTable extends ImportPushButton 
         msgBox.open();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.extended.button.IExtendedTablePushButton#getExtendedTableViewer()
-     */
     public AbstractExtendedTableViewer getExtendedTableViewer() {
         return (AbstractExtendedTableViewer) getExtendedControlViewer();
     }

@@ -14,19 +14,10 @@ package org.talend.repository.tester;
 
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class RecycleBinNodeTester extends AbstractNodeTester {
 
     private static final String IS_RECYCLE_BIN = "isRecycleBin"; //$NON-NLS-1$
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.tester.AbstractNodeTester#testProperty(java.lang.Object, java.lang.String,
-     * java.lang.Object[], java.lang.Object)
-     */
     @Override
     protected Boolean testProperty(Object receiver, String property, Object[] args, Object expectedValue) {
         if (receiver instanceof RepositoryNode) {

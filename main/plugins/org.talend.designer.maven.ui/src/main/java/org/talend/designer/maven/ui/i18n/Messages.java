@@ -17,9 +17,6 @@ import java.util.ResourceBundle;
 import org.talend.commons.i18n.MessagesCore;
 import org.talend.designer.maven.ui.DesignerMavenUiPlugin;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class Messages extends MessagesCore {
 
     private static final String BUNDLE_NAME = "messages"; //$NON-NLS-1$

@@ -33,10 +33,6 @@ import org.talend.core.ui.CoreUIPlugin;
 import org.talend.themes.core.elements.stylesettings.TalendTabbedPropertyColorHelper;
 import org.talend.themes.core.elements.widgets.ITalendTabbedPropertyTitleWidget;
 
-/**
- * created by hcyi on Feb 2, 2015 Detailed comment
- *
- */
 public class TalendTabbedPropertyTitle extends Composite implements ITalendTabbedPropertyTitleWidget {
 
     private CLabel label;
@@ -54,8 +50,6 @@ public class TalendTabbedPropertyTitle extends Composite implements ITalendTabbe
     private TalendTabbedPropertyColorHelper colorHelper;
 
     /**
-     * Constructor for TabbedPropertyTitle.
-     * 
      * @param parent the parent composite.
      * @param factory the widget factory for the tabbed property sheet
      */

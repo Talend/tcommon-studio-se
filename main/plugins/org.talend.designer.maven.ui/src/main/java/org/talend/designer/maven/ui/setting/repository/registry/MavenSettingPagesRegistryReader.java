@@ -26,9 +26,6 @@ import org.talend.designer.maven.ui.DesignerMavenUiPlugin;
 import org.talend.designer.maven.ui.setting.repository.RepositoryMavenSetting;
 import org.talend.designer.maven.ui.setting.repository.tester.IRepositorySettingTester;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 @SuppressWarnings("nls")
 public class MavenSettingPagesRegistryReader extends RegistryReader {
 

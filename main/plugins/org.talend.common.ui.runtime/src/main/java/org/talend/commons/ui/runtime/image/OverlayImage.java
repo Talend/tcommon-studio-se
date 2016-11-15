@@ -18,20 +18,8 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.Point;
 
-/**
- * DOC smallet class global comment. Detailed comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- * 
- */
 public class OverlayImage extends CompositeImageDescriptor {
 
-    /**
-     * DOC smallet OverlayImage class global comment. Detailed comment
-     * 
-     * $Id$
-     * 
-     */
     public enum EPosition {
         TOP_RIGHT(false, true),
         TOP_LEFT(true, true),
@@ -47,20 +35,10 @@ public class OverlayImage extends CompositeImageDescriptor {
             this.top = top;
         }
 
-        /**
-         * Getter for left.
-         * 
-         * @return the left
-         */
         public boolean isLeft() {
             return this.left;
         }
 
-        /**
-         * Getter for top.
-         * 
-         * @return the top
-         */
         public boolean isTop() {
             return this.top;
         }
@@ -115,11 +93,6 @@ public class OverlayImage extends CompositeImageDescriptor {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.resource.CompositeImageDescriptor#getSize()
-     */
     protected Point getSize() {
         return new Point(16, 16);
     }

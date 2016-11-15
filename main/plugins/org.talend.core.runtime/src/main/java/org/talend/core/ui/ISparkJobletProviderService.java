@@ -23,9 +23,6 @@ import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.JobletProcessItem;
 import org.talend.core.model.repository.IRepositoryEditorInput;
 
-/**
- * DOC hwang  class global comment. Detailed comment
- */
 public interface ISparkJobletProviderService extends IService{
 	
 	public boolean isSparkJobletEditor(IEditorPart activeEditor);

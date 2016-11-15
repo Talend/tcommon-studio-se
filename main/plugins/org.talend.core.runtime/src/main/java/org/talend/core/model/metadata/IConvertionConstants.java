@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.core.model.metadata;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public interface IConvertionConstants {
 
     public static String ADDITIONAL_FIELD_PREFIX = "additionalField:"; //$NON-NLS-1$

@@ -29,26 +29,12 @@ import org.talend.metadata.managment.hive.handler.HDP200YarnHandler;
 import org.talend.metadata.managment.hive.handler.HiveConnectionHandler;
 import org.talend.metadata.managment.hive.handler.Mapr212Handler;
 
-/**
- * created by qiongli on 2014-3-11 Detailed comment
- * 
- */
 public class HiveConnectionManagerTest {
 
-    /**
-     * DOC qiongli Comment method "setUp".
-     * 
-     * @throws java.lang.Exception
-     */
     @Before
     public void setUp() throws Exception {
     }
 
-    /**
-     * DOC qiongli Comment method "tearDown".
-     * 
-     * @throws java.lang.Exception
-     */
     @After
     public void tearDown() throws Exception {
     }

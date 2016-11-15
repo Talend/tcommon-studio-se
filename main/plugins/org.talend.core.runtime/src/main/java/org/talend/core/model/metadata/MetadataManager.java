@@ -30,9 +30,6 @@ import orgomg.cwm.objectmodel.core.Dependency;
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.resource.record.RecordFile;
 
-/**
- * hywang class global comment. Detailed comment
- */
 public class MetadataManager {
 
     public static final String TYPE_TABLE = "TABLE"; //$NON-NLS-1$

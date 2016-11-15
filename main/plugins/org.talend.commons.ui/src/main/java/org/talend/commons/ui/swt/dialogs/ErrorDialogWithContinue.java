@@ -19,9 +19,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.talend.commons.ui.runtime.i18n.Messages;
 
-/**
- * DOC yexiaowei class global comment. Detailed comment
- */
 public class ErrorDialogWithContinue extends ErrorDialog {
 
     static int displayMask = IStatus.OK | IStatus.INFO | IStatus.WARNING | IStatus.ERROR;

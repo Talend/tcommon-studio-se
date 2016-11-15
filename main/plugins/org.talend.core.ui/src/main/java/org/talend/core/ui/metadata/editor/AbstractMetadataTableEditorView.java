@@ -61,10 +61,6 @@ import org.talend.core.ui.metadata.celleditor.JavaTypeComboValueAdapter;
 import org.talend.core.ui.proposal.JavaSimpleDateFormatProposalProvider;
 
 /**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
  * @param <B> Type of beans in table
  */
 public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTableEditorView<B> {

@@ -15,9 +15,6 @@ package org.talend.core.model.repository.documentation.generation;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.repository.documentation.ExportFileResource;
 
-/**
- * DOC tang class global comment. Detailed comment
- */
 public interface IDocumentationGenerator {
 
     public void generateDocumentation(ExportFileResource resource, String targetPath, String... jobVersion) throws Exception;

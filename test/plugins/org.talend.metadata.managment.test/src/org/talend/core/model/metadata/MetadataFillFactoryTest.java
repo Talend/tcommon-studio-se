@@ -35,9 +35,6 @@ import org.talend.model.bridge.ReponsitoryContextBridge;
 import org.talend.utils.properties.PropertiesLoader;
 import org.talend.utils.properties.TypedProperties;
 
-/**
- * DOC zshen class global comment. Detailed comment
- */
 @PrepareForTest({ ReponsitoryContextBridge.class, MetadataTalendType.class })
 public class MetadataFillFactoryTest {
 

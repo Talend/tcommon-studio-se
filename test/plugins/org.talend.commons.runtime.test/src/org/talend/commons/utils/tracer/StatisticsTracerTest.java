@@ -26,9 +26,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-/**
- * DOC amaumont class global comment. Detailed comment
- */
 public class StatisticsTracerTest {
 
     private static final String MY_TRACER_TEST1 = "myTracerTest1";

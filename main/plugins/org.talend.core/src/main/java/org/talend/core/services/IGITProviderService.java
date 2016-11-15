@@ -17,9 +17,6 @@ import org.talend.commons.exception.PersistenceException;
 import org.talend.core.IService;
 import org.talend.core.model.general.Project;
 
-/**
- * nma class global comment. Detailed comment
- */
 public interface IGITProviderService extends IService {
 
     public boolean isProjectInGitMode();

@@ -59,12 +59,6 @@ import org.talend.librariesmanager.prefs.LibrariesManagerUtils;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
-/**
- * DOC smallet class global comment. Detailed comment <br/>
- *
- * $Id$
- *
- */
 public abstract class AbstractLibrariesService implements ILibrariesService {
 
     private static Logger log = Logger.getLogger(AbstractLibrariesService.class);

@@ -19,11 +19,6 @@ import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.metadata.connection.hive.HiveModeInfo;
 
-/**
- * created by cmeng on May 20, 2016
- * Detailed comment
- *
- */
 @SuppressWarnings("nls")
 public class DatabaseConnStrUtilTest {
 

@@ -47,9 +47,6 @@ import orgomg.cwm.resource.relational.Catalog;
 import orgomg.cwm.resource.relational.Schema;
 import orgomg.cwm.resource.relational.impl.SchemaImpl;
 
-/**
- * DOC hywang class global comment. Detailed comment
- */
 public class ProjectNodeHelper {
 
     /*

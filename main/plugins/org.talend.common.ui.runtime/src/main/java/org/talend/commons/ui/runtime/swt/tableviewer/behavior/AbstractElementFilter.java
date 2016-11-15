@@ -15,9 +15,6 @@ package org.talend.commons.ui.runtime.swt.tableviewer.behavior;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * DOC ycbai class global comment. Detailed comment
- */
 public abstract class AbstractElementFilter<E> {
 
     protected String searchString;

@@ -32,45 +32,22 @@ import org.eclipse.nebula.widgets.nattable.ui.matcher.KeyEventMatcher;
 import org.eclipse.nebula.widgets.nattable.ui.matcher.MouseEventMatcher;
 import org.eclipse.swt.SWT;
 
-/**
- * created by ldong on Sep 19, 2014 Detailed comment
- * 
- */
 public class ContextColumnGroupConfiguration extends DefaultColumnGroupHeaderLayerConfiguration {
 
     private final ColumnGroupModel columnGroupModel;
 
-    /**
-     * DOC ldong ContextColumnGroupConfiguration constructor comment.
-     * 
-     * @param columnGroupModel
-     */
     public ContextColumnGroupConfiguration(ColumnGroupModel columnGroupModel) {
         super(columnGroupModel);
         this.columnGroupModel = columnGroupModel;
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.nebula.widgets.nattable.group.config.DefaultColumnGroupHeaderLayerConfiguration#configureRegistry
-     * (org.eclipse.nebula.widgets.nattable.config.IConfigRegistry)
-     */
     @Override
     public void configureRegistry(IConfigRegistry configRegistry) {
         configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_PAINTER, new ContextColumnHeaderDecorator(
                 new ColumnGroupHeaderTextPainter()), DisplayMode.NORMAL, GridRegion.COLUMN_GROUP_HEADER);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.nebula.widgets.nattable.group.config.DefaultColumnGroupHeaderLayerConfiguration#configureUiBindings
-     * (org.eclipse.nebula.widgets.nattable.ui.binding.UiBindingRegistry)
-     */
     @Override
     public void configureUiBindings(UiBindingRegistry uiBindingRegistry) {
         uiBindingRegistry.registerMouseDragMode(MouseEventMatcher.columnGroupHeaderLeftClick(SWT.NONE), new AggregateDragMode(

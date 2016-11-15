@@ -27,10 +27,6 @@ import org.eclipse.ui.PlatformUI;
 import org.talend.core.ui.CoreUIPlugin;
 import org.talend.core.utils.RegistryReader;
 
-/**
- * created by ggu on Nov 10, 2014 Detailed comment
- *
- */
 public class ShowPerspectivesAtStartupRegistryReader extends RegistryReader {
 
     /**

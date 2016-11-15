@@ -27,9 +27,6 @@ import org.talend.core.runtime.hd.IHDConstants;
 import org.talend.core.runtime.hd.IHDistribution;
 import org.talend.core.runtime.hd.IHDistributionVersion;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class HadoopVersionControlUtilsTest {
 
     @Before

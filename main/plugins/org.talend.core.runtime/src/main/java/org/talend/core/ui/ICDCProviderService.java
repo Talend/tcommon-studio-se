@@ -18,21 +18,8 @@ import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.properties.ConnectionItem;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * DOC qzhang class global comment. Detailed comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
- * 
- */
 public interface ICDCProviderService extends IService {
 
-    /**
-     * DOC qzhang Comment method "createCDCTypes".
-     * 
-     * @param cdcNode
-     * @param recBinNode
-     * @param connection
-     */
     void createCDCTypes(RepositoryNode recBinNode, RepositoryNode cdcNode, CDCConnection connection);
 
     public boolean isSubscriberTableNode(RepositoryNode node);

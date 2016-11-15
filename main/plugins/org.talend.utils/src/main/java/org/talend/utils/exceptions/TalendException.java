@@ -12,45 +12,23 @@
 // ============================================================================
 package org.talend.utils.exceptions;
 
-/**
- * DOC scorreia class global comment. Detailed comment
- */
 public class TalendException extends Exception {
 
     private static final long serialVersionUID = -7462582102179127770L;
 
-    /**
-     * DOC scorreia TalendException constructor comment.
-     */
     public TalendException() {
         super();
     }
 
-    /**
-     * DOC scorreia TalendException constructor comment.
-     * 
-     * @param message
-     * @param cause
-     */
     public TalendException(String message, Throwable cause) {
         super(message, cause);
 
     }
 
-    /**
-     * DOC scorreia TalendException constructor comment.
-     * 
-     * @param message
-     */
     public TalendException(String message) {
         super(message);
     }
 
-    /**
-     * DOC scorreia TalendException constructor comment.
-     * 
-     * @param cause
-     */
     public TalendException(Throwable cause) {
         super(cause);
     }

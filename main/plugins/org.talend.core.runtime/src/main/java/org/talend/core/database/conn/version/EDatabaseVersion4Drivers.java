@@ -19,9 +19,6 @@ import java.util.Set;
 import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.database.conn.DatabaseConnConstants;
 
-/**
- * cli class global comment. Detailed comment
- */
 public enum EDatabaseVersion4Drivers {
     // access
     ACCESS_JDBC(new DbVersion4Drivers(EDatabaseTypeName.ACCESS, new String[] {

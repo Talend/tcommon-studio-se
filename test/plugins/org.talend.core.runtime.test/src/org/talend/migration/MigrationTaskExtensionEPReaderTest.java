@@ -30,10 +30,6 @@ import java.util.Set;
 import org.junit.Test;
 import org.talend.core.model.repository.ERepositoryObjectType;
 
-/**
- * created by sgandon on 7 avr. 2014 Detailed comment
- * 
- */
 public class MigrationTaskExtensionEPReaderTest {
 
     /**

@@ -18,9 +18,6 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class RepositoryTypeSelectionViewerFilter extends ViewerFilter {
 
     private ERepositoryObjectType repositoryType;

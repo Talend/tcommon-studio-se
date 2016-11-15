@@ -21,10 +21,6 @@ import org.osgi.framework.FrameworkUtil;
 import org.talend.commons.i18n.MessagesCore;
 import org.talend.updates.runtime.Constants;
 
-/**
- * created by sgandon on 5 mars 2013 Detailed comment
- * 
- */
 public class Messages extends MessagesCore {
 
     private static final String BUNDLE_NAME = "messages"; //$NON-NLS-1$

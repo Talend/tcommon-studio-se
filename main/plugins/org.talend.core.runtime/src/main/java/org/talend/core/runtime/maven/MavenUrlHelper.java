@@ -16,8 +16,6 @@ import org.eclipse.core.runtime.Assert;
 import org.talend.commons.exception.ExceptionHandler;
 
 /**
- * DOC ggu class global comment. Detailed comment
- * 
  * mvn-uri:='mvn:'[repository-url '!'] group-id '/' artifact-id ['/' [version] ['/' [type] ['/' classifier ]]]]
  */
 @SuppressWarnings("nls")

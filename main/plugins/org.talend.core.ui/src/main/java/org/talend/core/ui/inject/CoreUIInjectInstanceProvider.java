@@ -22,10 +22,6 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.talend.commons.exception.ExceptionHandler;
 
-/**
- * created by cmeng on Jan 20, 2015 Detailed comment
- *
- */
 public class CoreUIInjectInstanceProvider {
 
     @Inject

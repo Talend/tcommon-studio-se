@@ -22,9 +22,6 @@ import org.talend.commons.utils.io.FilesUtils;
 import org.talend.core.model.routines.IRoutinesProvider;
 import org.talend.librariesmanager.prefs.LibrariesManagerUtils;
 
-/**
- * class global comment. Detailed comment
- */
 public class TosJavaRoutinesProvider implements IRoutinesProvider {
 
     /**
@@ -40,11 +37,6 @@ public class TosJavaRoutinesProvider implements IRoutinesProvider {
         return toReturn;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.routines.IRoutinesProvider#getTalendRoutinesFolder()
-     */
     @Override
     public URL getTalendRoutinesFolder() throws IOException {
         URL url = Platform.getBundle(LibrariesManagerUtils.BUNDLE_DI).getEntry("resources/java/routines/system"); //$NON-NLS-1$

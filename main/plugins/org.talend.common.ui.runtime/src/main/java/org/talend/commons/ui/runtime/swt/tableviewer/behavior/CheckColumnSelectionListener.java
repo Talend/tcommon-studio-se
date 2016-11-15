@@ -32,12 +32,6 @@ import org.talend.commons.ui.runtime.swt.tableviewer.selection.ITableColumnSelec
 import org.talend.commons.ui.runtime.swt.tableviewer.sort.IColumnSortedListener;
 import org.talend.commons.utils.data.bean.IBeanPropertyAccessors;
 
-/**
- * zhangyi class global comment. Detailed comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
- * 
- */
 public class CheckColumnSelectionListener implements ITableColumnSelectionListener {
 
     private TableViewerCreatorColumnNotModifiable tableViewerCreatorColumn;

@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.core.model.metadata;
 
-/**
- * created by ldong on Jan 13, 2015 Detailed comment
- * 
- */
 public interface IDatabaseConstant {
 
     public static final String REDSHIFT = "DATABASE:REDSHIFT";

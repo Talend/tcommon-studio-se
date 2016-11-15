@@ -32,169 +32,91 @@ import org.talend.core.model.process.INodeConnector;
 import org.talend.core.model.process.INodeReturn;
 import org.talend.core.model.process.IProcess;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class TestFakeNode extends Element implements INode {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.IElement#isReadOnly()
-     */
     @Override
     public boolean isReadOnly() {
 
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.IElement#setReadOnly(boolean)
-     */
     @Override
     public void setReadOnly(boolean readOnly) {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.INode#getLabel()
-     */
     @Override
     public String getLabel() {
 
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.INode#getUniqueName()
-     */
     @Override
     public String getUniqueName() {
 
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.INode#getUniqueShortName()
-     */
     @Override
     public String getUniqueShortName() {
 
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.INode#isStart()
-     */
     @Override
     public boolean isStart() {
 
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.INode#isActivate()
-     */
     @Override
     public boolean isActivate() {
 
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.INode#isSubProcessStart()
-     */
     @Override
     public boolean isSubProcessStart() {
 
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.INode#isSubProcessContainTraceBreakpoint()
-     */
     @Override
     public boolean isSubProcessContainTraceBreakpoint() {
 
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.INode#getIncomingConnections()
-     */
     @Override
     public List<? extends IConnection> getIncomingConnections() {
 
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.INode#getOutgoingConnections()
-     */
     @Override
     public List<? extends IConnection> getOutgoingConnections() {
 
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.INode#hasConditionalOutputs()
-     */
     @Override
     public boolean hasConditionalOutputs() {
 
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.INode#getBlocksCodeToClose()
-     */
     @Override
     public List<BlockCode> getBlocksCodeToClose() {
 
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.INode#isMultiplyingOutputs()
-     */
     @Override
     public boolean isMultiplyingOutputs() {
 
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.INode#setPerformanceData(java.lang.String)
-     */
     @Override
     public void setPerformanceData(String perfData) {
 

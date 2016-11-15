@@ -15,9 +15,6 @@ package org.talend.repository.items.importexport.ui.managers;
 import org.eclipse.ui.wizards.datatransfer.IImportStructureProvider;
 import org.talend.repository.items.importexport.manager.ResourcesManager;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public abstract class AbstractImportResourcesManager extends ResourcesManager {
 
     public abstract IImportStructureProvider getProvider();

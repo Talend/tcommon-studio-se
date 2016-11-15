@@ -33,10 +33,6 @@ import org.talend.core.ui.context.action.ContextBuiltinToRepositoryAction;
 import org.talend.core.ui.context.model.table.ContextTableTabChildModel;
 import org.talend.core.ui.i18n.Messages;
 
-/**
- * created by ldong on Aug 14, 2014 Detailed comment
- * 
- */
 public class ContextMenuItemProviders extends MenuItemProviders {
 
     // the item of change the context parameter's mode such as from repositroy to build-in

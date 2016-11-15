@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.presentation.onboarding.interfaces;
 
-/**
- * created by cmeng on Sep 21, 2015 Detailed comment
- *
- */
 public interface IOnBoardingJsonI18n {
 
     public String getI18NString(String key);

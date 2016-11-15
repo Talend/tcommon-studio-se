@@ -23,8 +23,7 @@ import org.talend.osgi.hook.URIUtil;
 /**
  * This observable is registered as an OSGI service and can be used to register Observers by clients that whishes to be
  * notified when a jar is missing in a "org.talend.*" bundle. the notification is done in a synchronous manner. The
- * notification is done with a JarMissingEvent parameter. created by sgandon on 12 sept. 2013 Detailed comment
- * 
+ * notification is done with a JarMissingEvent parameter.
  */
 public class JarMissingObservable extends Observable {
 
@@ -38,9 +37,6 @@ public class JarMissingObservable extends Observable {
 
         private Generation   generation;
 
-        /**
-         * DOC sgandon JarMissingObservable.JarMissingEvent constructor comment.
-         */
         public JarMissingEvent(String jarName, Generation generation, String expectedLibFolder) {
             this.jarName = jarName;
             this.generation = generation;

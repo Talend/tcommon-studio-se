@@ -28,9 +28,6 @@ import org.talend.repository.items.importexport.manager.ResourcesManager;
 
 import static org.mockito.Mockito.*;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 @SuppressWarnings("nls")
 public class ImportRepTypeHandlerTest {
 

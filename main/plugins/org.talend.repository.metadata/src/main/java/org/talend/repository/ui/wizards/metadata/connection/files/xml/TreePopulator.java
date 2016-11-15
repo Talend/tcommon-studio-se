@@ -39,12 +39,6 @@ import org.talend.datatools.xml.utils.XSDPopulationUtil2;
 import org.talend.metadata.managment.ui.wizard.metadata.xml.utils.CopyDeleteFileUtilForWizard;
 import org.talend.repository.ui.wizards.metadata.connection.files.json.AbstractTreePopulator;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public class TreePopulator extends AbstractTreePopulator {
 
     private final TreeViewer availableXmlTree;
@@ -67,11 +61,6 @@ public class TreePopulator extends AbstractTreePopulator {
         availableXmlTree.setUseHashlookup(true);
     }
 
-    /**
-     * DOC amaumont TreePopulator constructor comment.
-     * 
-     * @param availableXmlTree
-     */
     public TreePopulator(TreeViewer availableXmlTree) {
         super();
         this.availableXmlTree = availableXmlTree;

@@ -16,9 +16,6 @@ import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.model.metadata.QueryUtil;
 import org.talend.core.model.metadata.query.AbstractQueryGenerator;
 
-/**
- * ggu class global comment. Detailed comment
- */
 public class OldDelegateQueryGenerator extends AbstractQueryGenerator {
 
     public OldDelegateQueryGenerator(EDatabaseTypeName dbType) {

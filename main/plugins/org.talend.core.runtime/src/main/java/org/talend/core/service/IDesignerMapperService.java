@@ -24,19 +24,8 @@ import org.talend.core.model.process.IProcess;
 import org.talend.core.model.process.node.IExternalMapTable;
 import org.talend.designer.core.model.utils.emf.talendfile.AbstractExternalData;
 
-/**
- * DOC YeXiaowei class global comment. Detailed comment <br/>
- * 
- */
 public interface IDesignerMapperService extends IService {
 
-    /**
-     * 
-     * DOC YeXiaowei Comment method "isVirtualComponent".
-     * 
-     * @param node
-     * @return
-     */
     public boolean isVirtualComponent(final INode node);
 
     public void renameJoinTable(IProcess process, IExternalData data, List<String> createdNames);
@@ -47,43 +36,16 @@ public interface IDesignerMapperService extends IService {
 
     public void updateLink(INode node, IConnection oldConnection, IConnection newConnection);
 
-    /**
-     * DOC ycbai Comment method "getRepositorySchemaIds".
-     * 
-     * @param nodeData
-     * @return
-     */
     public List<String> getRepositorySchemaIds(AbstractExternalData nodeData);
 
-    /**
-     * DOC ycbai Comment method "getRepositorySchemaIds".
-     * 
-     * @param nodeType
-     * @return
-     */
     public List<String> getRepositorySchemaIds(IExternalData nodeData);
 
     public String getRepositorySchemaId(IExternalMapTable table);
 
-    /**
-     * DOC ycbai Comment method "updateMapperTableEntries".
-     * 
-     * @param nodeData
-     * @param schemaId
-     * @param metadataTable
-     */
     public void updateMapperTableEntries(IExternalNode externalNode, String schemaId, IMetadataTable metadataTable);
 
     public void renameMapperTable(IExternalNode externalNode, String schemaId, String newSchemaId, IMetadataTable metadataTable);
 
-    /**
-     * DOC ycbai Comment method "isSameMetadata".
-     * 
-     * @param nodeData
-     * @param schemaId
-     * @param metadataTable
-     * @return
-     */
     public boolean isSameMetadata(IExternalNode externalNode, String schemaId, IMetadataTable metadataTable);
 
     public List<String> getExpressionFilter(IExternalData nodeData);

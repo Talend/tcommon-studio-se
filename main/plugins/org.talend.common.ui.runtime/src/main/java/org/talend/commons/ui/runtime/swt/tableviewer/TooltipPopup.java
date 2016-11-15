@@ -22,12 +22,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id: TooltipPopup.java 7038 2007-11-15 14:05:48Z plegall $
- * 
- */
 public final class TooltipPopup {
 
     private Popup popup;
@@ -41,13 +35,6 @@ public final class TooltipPopup {
         init(parent);
     }
 
-    /**
-     * 
-     * DOC amaumont DraggingInfosPopup class global comment. Detailed comment <br/>
-     * 
-     * $Id: TooltipPopup.java 7038 2007-11-15 14:05:48Z plegall $
-     * 
-     */
     private class Popup extends PopupDialog {
 
         private Composite mainComposite;

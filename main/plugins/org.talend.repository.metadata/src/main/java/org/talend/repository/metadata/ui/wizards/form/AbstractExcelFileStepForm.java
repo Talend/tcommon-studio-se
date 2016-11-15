@@ -19,10 +19,6 @@ import org.talend.core.model.metadata.builder.connection.FileExcelConnection;
 import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.core.model.properties.ConnectionItem;
 
-/**
- * 
- * DOC yexiaowei class global comment. Detailed comment
- */
 public abstract class AbstractExcelFileStepForm extends AbstractFileStepForm {
 
     public AbstractExcelFileStepForm(Composite parent, ConnectionItem connectionItem, String[] existingNames) {
@@ -34,7 +30,7 @@ public abstract class AbstractExcelFileStepForm extends AbstractFileStepForm {
     }
 
     /**
-     * DOC cantoine AbstractLdifFileStepForm constructor comment. Use to step1
+     * Use to step1
      */
     public AbstractExcelFileStepForm(Composite parent, ConnectionItem connectionItem, MetadataTable metadataTable,
             String[] existingNames) {

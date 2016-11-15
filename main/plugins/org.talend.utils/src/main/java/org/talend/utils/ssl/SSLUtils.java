@@ -32,9 +32,6 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
-/**
- * DOC hcyi class global comment. Detailed comment
- */
 public class SSLUtils {
 
     private static SSLContext sslcontext;
@@ -51,15 +48,6 @@ public class SSLUtils {
 
     private static final String TAC_SSL_TRUSTSTORE_PASS = "tac.net.ssl.TrustStorePass"; //$NON-NLS-1$
 
-    /**
-     * 
-     * DOC hcyi Comment method "getContent".
-     * 
-     * @param buffer
-     * @param url
-     * @return
-     * @throws AMCPluginException
-     */
     public static String getContent(StringBuffer buffer, URL url, String userDir) throws Exception {
         BufferedReader in = null;
         if (("https").equals(url.getProtocol())) {

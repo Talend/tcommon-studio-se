@@ -21,9 +21,6 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.graphics.Image;
 import org.talend.core.model.metadata.builder.connection.MetadataColumn;
 
-/**
- * wzhang class global comment. Detailed comment
- */
 public class XmlFileTableViewerProvider extends LabelProvider implements ITableLabelProvider, IStructuredContentProvider {
 
     public Image getColumnImage(Object element, int columnIndex) {

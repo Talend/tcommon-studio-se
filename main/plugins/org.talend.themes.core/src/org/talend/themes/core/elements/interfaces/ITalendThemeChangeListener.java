@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.themes.core.elements.interfaces;
 
-/**
- * created by cmeng on Jun 30, 2015 Detailed comment
- *
- */
 public interface ITalendThemeChangeListener {
 
     public void onThemeChanging(String newThemeId, String oldThemeId);

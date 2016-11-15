@@ -17,10 +17,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Table;
 import org.talend.commons.ui.runtime.swt.tableviewer.TableViewerCreatorColumnNotModifiable;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/> $Id: TableEditorInitializer.java,v 1.1 2006/06/02 15:24:10
- * amaumont Exp $
- */
 public abstract class TableEditorContentNotModifiable {
 
     private boolean layoutEnabled = true; // for performance use

@@ -35,13 +35,6 @@ package org.talend.commons.ui.runtime.geometry;
 import java.util.ArrayList;
 import java.util.ListIterator;
 
-/**
- * 
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id: PointList.java 7048 2007-11-16 02:36:17Z nrousseau $
- * 
- */
 public abstract class PointList {
 
     java.util.List list;

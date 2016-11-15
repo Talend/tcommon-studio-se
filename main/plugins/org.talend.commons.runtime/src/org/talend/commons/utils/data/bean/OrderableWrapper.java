@@ -13,17 +13,6 @@
 package org.talend.commons.utils.data.bean;
 
 /**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
-/**
- * 
- * DOC amaumont ListenableList class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
  * @param <B> bean which must be ordered by <code>order</code> value
  */
 class OrderableWrapper<B> implements Comparable<OrderableWrapper> {

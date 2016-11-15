@@ -18,9 +18,6 @@ import org.talend.core.model.process.INode;
 import org.talend.core.model.process.IProcess;
 import org.talend.core.runtime.i18n.Messages;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public final class UpdateManagerHelper {
 
     // define in extension point

@@ -17,9 +17,6 @@ import java.util.Date;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 
-/**
- * created by wchen on 2015-5-15 Detailed comment Define a login taks that will be execute when login project
- */
 public interface ILoginTask {
 
     public Date getOrder();

@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.utils.database;
 
-/**
- * DOC wuwei class global comment. Detailed comment
- */
 public class DatabaseUrlCheck {
 
     public static boolean isH2DB(String url) {

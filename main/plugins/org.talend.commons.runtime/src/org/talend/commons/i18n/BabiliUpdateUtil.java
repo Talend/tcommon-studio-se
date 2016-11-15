@@ -19,9 +19,6 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-/**
- * DOC wzhang class global comment. Detailed comment
- */
 public class BabiliUpdateUtil {
 
     private static final String REVERSION_LIST = "http://talendforge.org/babili/api/get_labels.php"; //$NON-NLS-1$

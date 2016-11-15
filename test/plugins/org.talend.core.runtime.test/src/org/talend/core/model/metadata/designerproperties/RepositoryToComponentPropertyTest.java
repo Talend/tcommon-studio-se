@@ -40,9 +40,6 @@ import org.talend.core.model.metadata.types.JavaTypesManager;
 import org.talend.core.model.process.IElementParameter;
 import org.talend.core.model.utils.ContextParameterUtils;
 
-/**
- * DOC ycbai class global comment. Detailed comment
- */
 public class RepositoryToComponentPropertyTest {
 
     private static final String QUOTES = "\""; //$NON-NLS-1$

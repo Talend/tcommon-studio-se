@@ -42,9 +42,6 @@ import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.repository.model.IMetadataService;
 import org.talend.repository.model.IRepositoryService;
 
-/**
- * DOC hywang class global comment. Detailed comment
- */
 public class RuleCellEditor extends DialogCellEditor {
 
     private static final String DRL_EXTENSION = ".drl"; //$NON-NLS-1$

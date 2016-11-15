@@ -46,25 +46,12 @@ import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import orgomg.cwm.objectmodel.core.Package;
 
-/**
- * Administrator class global comment. Detailed comment <br/>
- * 
- */
 public class CopyToGenericSchemaHelper {
 
     private static final String DEFAULT_TABLE_NAME = "metadata"; //$NON-NLS-1$
 
     private static IProxyRepositoryFactory repositoryFactory;
 
-    /**
-     * Administrator Comment method "moveToGenericSchema".
-     * 
-     * @param factory
-     * @param targetPath
-     * @param ve
-     * @param isConnectionTableSchema
-     * @throws PersistenceException
-     */
     public static void copyToGenericSchema(IProxyRepositoryFactory factory, IRepositoryViewObject tableToMove, IPath targetPath)
             throws PersistenceException {
 

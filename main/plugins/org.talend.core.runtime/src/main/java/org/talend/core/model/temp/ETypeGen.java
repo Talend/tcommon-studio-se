@@ -21,12 +21,6 @@
 // ============================================================================
 package org.talend.core.model.temp;
 
-/**
- * DOC rdubois class global comment. Detailed comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
- * 
- */
 public enum ETypeGen {
     ETL("etl"), //$NON-NLS-1$
     CAMEL("camel"), //$NON-NLS-1$

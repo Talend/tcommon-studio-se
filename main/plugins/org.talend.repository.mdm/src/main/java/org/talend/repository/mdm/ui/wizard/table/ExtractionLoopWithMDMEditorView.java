@@ -32,9 +32,6 @@ import org.talend.repository.mdm.i18n.Messages;
 import org.talend.repository.mdm.model.MDMXSDExtractorLoopModel;
 import org.talend.repository.mdm.ui.wizard.dnd.MDMLinker;
 
-/**
- * DOC hwang class global comment. Detailed comment
- */
 public class ExtractionLoopWithMDMEditorView extends AbstractDataTableEditorView<Concept> {
 
     public static final String ID_COLUMN_NAME = "ID_COLUMN_NAME"; //$NON-NLS-1$

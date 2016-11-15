@@ -28,9 +28,6 @@ import org.talend.core.model.general.Project;
 import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
 import org.talend.repository.ProjectManager;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class ProjectPreferenceManagerTest {
 
     static final String TEST_FILE_PREFIX = "org.talend.project.prefs.test";

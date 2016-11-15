@@ -17,31 +17,13 @@ import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.metadata.managment.ui.wizard.metadata.connection.Step0WizardPage;
 
-/**
- * DOC talend class global comment. Detailed comment
- */
 public class MdmStep0WizardPage extends Step0WizardPage {
 
-    /**
-     * DOC talend MdmStep0WizardPage constructor comment.
-     * 
-     * @param property
-     * @param destinationPath
-     * @param type
-     * @param readOnly
-     * @param editPath
-     */
     public MdmStep0WizardPage(Property property, IPath destinationPath, ERepositoryObjectType type, boolean readOnly,
             boolean editPath) {
         super(property, destinationPath, type, readOnly, editPath);
-        // TODO Auto-generated constructor stub
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.wizards.metadata.connection.Step0WizardPage#setVisible(boolean)
-     */
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);

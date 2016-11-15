@@ -20,11 +20,6 @@ import org.talend.repository.ProjectManager;
 
 import us.monoid.json.JSONObject;
 
-/**
- * created by cmeng on May 5, 2016
- * Detailed comment
- *
- */
 public abstract class AutoSaveTokenCollector extends AbstractTokenCollector {
 
     abstract protected IPreferenceStore getPreferenceStore() throws Exception;

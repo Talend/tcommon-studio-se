@@ -19,10 +19,6 @@ import org.talend.commons.i18n.internal.Messages;
 import org.talend.commons.utils.TalendDBUtils;
 import org.talend.fakejdbc.FakeResultSet;
 
-/**
- * created by hwang on Sep 18, 2015 Detailed comment
- *
- */
 public class EXASOLResultSet extends FakeResultSet {
 
     private String[] tableMeta = null;
@@ -31,11 +27,6 @@ public class EXASOLResultSet extends FakeResultSet {
 
     int index = -1;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeResultSet#next()
-     */
     @Override
     public boolean next() throws SQLException {
         if (data == null || data.size() == 0 || index >= data.size() - 1) {
@@ -54,11 +45,6 @@ public class EXASOLResultSet extends FakeResultSet {
         return -1;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeResultSet#getString(java.lang.String)
-     */
     @Override
     public String getString(String columnLabel) throws SQLException {
         int columnIndex = indexOf(columnLabel, tableMeta);
@@ -70,11 +56,6 @@ public class EXASOLResultSet extends FakeResultSet {
         return getString(columnIndex + 1);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeResultSet#getInt(java.lang.String)
-     */
     @Override
     public int getInt(String columnLabel) throws SQLException {
         String str = getString(columnLabel);

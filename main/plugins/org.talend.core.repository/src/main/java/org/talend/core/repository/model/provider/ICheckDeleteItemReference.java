@@ -20,9 +20,6 @@ import org.talend.core.repository.model.ItemReferenceBean;
 import org.talend.core.repository.ui.actions.DeleteActionCache;
 import org.talend.repository.model.IRepositoryNode;
 
-/**
- * DOC ycbai class global comment. Detailed comment
- */
 public interface ICheckDeleteItemReference {
 
     public Set<ItemReferenceBean> getItemReferenceBeans(List<? extends IRepositoryNode> deleteNodes,

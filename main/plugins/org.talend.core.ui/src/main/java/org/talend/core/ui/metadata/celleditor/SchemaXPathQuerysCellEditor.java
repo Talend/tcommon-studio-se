@@ -30,9 +30,6 @@ import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.core.model.process.INode;
 import org.talend.core.ui.metadata.celleditor.xpathquery.SchemaXPathQuerysDialog;
 
-/**
- * DOC nrousseau class global comment. Detailed comment
- */
 public class SchemaXPathQuerysCellEditor extends DialogCellEditor {
 
     private INode node;
@@ -67,11 +64,6 @@ public class SchemaXPathQuerysCellEditor extends DialogCellEditor {
         this.tableEditorView = tableEditorView;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.DialogCellEditor#openDialogBox(org.eclipse.swt.widgets.Control)
-     */
     @Override
     protected Object openDialogBox(Control cellEditorWindow) {
         // itemDisplayCodename

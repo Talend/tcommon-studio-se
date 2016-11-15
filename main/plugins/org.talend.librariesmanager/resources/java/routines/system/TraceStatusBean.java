@@ -1,7 +1,3 @@
-package routines.system;
-
-import java.io.Serializable;
-
 // ============================================================================
 //
 // Copyright (C) 2006-2016 Talend Inc. - www.talend.com
@@ -14,13 +10,10 @@ import java.io.Serializable;
 // 9 rue Pages 92150 Suresnes, France
 //
 // ============================================================================
+package routines.system;
 
-/**
- * DOC bchen class global comment. Detailed comment <br/>
- * 
- * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
- */
+import java.io.Serializable;
+
 public enum TraceStatusBean implements TraceBean, Serializable {
 
     UI_STATUS,

@@ -27,10 +27,6 @@ import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.projectsetting.IProjectSettingPreferenceConstants;
 import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
 
-/**
- * created by cmeng on Jun 2, 2015 Detailed comment
- *
- */
 public class ODBCMigrationTask extends AbstractItemMigrationTask {
 
     protected Boolean hasODBCConnection = null;
@@ -39,22 +35,12 @@ public class ODBCMigrationTask extends AbstractItemMigrationTask {
 
     protected static final String GENERIC_ODBC_DISPLAY_NAME_OLD_VERSION = "Generic ODBC"; //$NON-NLS-1$
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.migration.IMigrationTask#getOrder()
-     */
     @Override
     public Date getOrder() {
         GregorianCalendar gc = new GregorianCalendar(2015, 6, 2, 11, 30, 30);
         return gc.getTime();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.migration.AbstractItemMigrationTask#execute(org.talend.core.model.properties.Item)
-     */
     @Override
     public ExecutionResult execute(Item item) {
         boolean modified = false;
@@ -92,19 +78,5 @@ public class ODBCMigrationTask extends AbstractItemMigrationTask {
         }
         return ExecutionResult.SUCCESS_NO_ALERT;
     }
-    // protected static Boolean isSupportODBC = null;
-    // protected static boolean isSupportODBC() {
-    // if (isSupportODBC != null) {
-    // return isSupportODBC;
-    // }
-    // isSupportODBC = new Boolean(true);
-    //        String javaVersion = System.getProperty("java.version"); //$NON-NLS-1$
-    // if (javaVersion != null) {
-    // org.talend.commons.utils.Version v = new org.talend.commons.utils.Version(javaVersion);
-    // if (v.getMajor() == 1 && v.getMinor() > 7) { // more than JDK 1.7
-    // isSupportODBC = new Boolean(false);
-    // }
-    // }
-    // return isSupportODBC;
-    // }
+
 }

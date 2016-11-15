@@ -27,12 +27,6 @@ import org.talend.core.model.properties.Property;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.designer.core.ISyntaxCheckableEditor;
 
-/**
- * DOC qian class global comment. Detailed comment <br/>
- * 
- * $Id: talend-code-templates.xml 1 2006-09-29 17:06:40 +0000 (鏄熸湡浜� 29 涔?鏈�2006) nrousseau $
- * 
- */
 public interface IProcessor {
 
     public static final int NO_STATISTICS = -1;

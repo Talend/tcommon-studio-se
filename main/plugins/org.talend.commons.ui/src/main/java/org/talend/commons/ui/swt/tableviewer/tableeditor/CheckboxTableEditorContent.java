@@ -35,12 +35,6 @@ import org.talend.commons.ui.swt.tableviewer.ModifiedBeanEvent;
 import org.talend.commons.ui.swt.tableviewer.TableViewerCreator;
 import org.talend.commons.ui.swt.tableviewer.TableViewerCreatorColumn;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id: CheckboxTableEditorContent.java 7183 2007-11-23 11:03:36Z amaumont $
- * 
- */
 public class CheckboxTableEditorContent extends TableEditorContent {
 
     public static final boolean CHECKED = true;
@@ -53,21 +47,10 @@ public class CheckboxTableEditorContent extends TableEditorContent {
 
     private Point checkSize;
 
-    /**
-     * DOC amaumont CheckboxTableEditorContent constructor comment.
-     */
     public CheckboxTableEditorContent() {
         super();
     }
 
-    /*
-     * 
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.tableviewer.TableEditorContent#initialize(org.eclipse.swt.widgets.Table,
-     * org.eclipse.swt.custom.TableEditor, org.talend.commons.ui.swt.tableviewer.TableViewerCreatorColumn,
-     * java.lang.Object, java.lang.Object)
-     */
     @SuppressWarnings("unchecked")
     public Control initialize(final Table table, final TableEditor tableEditor, final TableViewerCreatorColumn currentColumn,
             final Object currentRowObject, final Object currentCellValue) {

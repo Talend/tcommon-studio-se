@@ -68,10 +68,6 @@ import org.talend.metadata.managment.ui.utils.ShadowProcessHelper;
 import org.talend.repository.metadata.i18n.Messages;
 import org.talend.repository.metadata.ui.wizards.form.AbstractExcelFileStepForm;
 
-/**
- * 
- * DOC yexiaowei class global comment. Detailed comment
- */
 public class ExcelFileStep3Form extends AbstractExcelFileStepForm {
 
     private static Logger log = Logger.getLogger(ExcelFileStep3Form.class);

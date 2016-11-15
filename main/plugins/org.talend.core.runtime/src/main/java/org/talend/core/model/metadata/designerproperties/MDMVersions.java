@@ -15,10 +15,6 @@ package org.talend.core.model.metadata.designerproperties;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * created by wchen on Apr 15, 2015 Detailed comment
- *
- */
 public enum MDMVersions {
     MDM_S56("s56", "Server 5.6"),
     MDM_S60("s60", "Server 6.0");

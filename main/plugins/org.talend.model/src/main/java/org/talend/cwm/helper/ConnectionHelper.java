@@ -53,12 +53,7 @@ import orgomg.cwm.resource.relational.ColumnSet;
 import orgomg.cwm.resource.relational.Schema;
 
 /**
- * @author scorreia
- * 
  * Utility class for data provider handling.
- */
-/**
- * DOC root class global comment. Detailed comment
  */
 public class ConnectionHelper {
 

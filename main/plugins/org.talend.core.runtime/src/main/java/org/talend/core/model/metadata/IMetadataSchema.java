@@ -12,9 +12,5 @@
 // ============================================================================
 package org.talend.core.model.metadata;
 
-
-/**
- * DOC Administrator  class global comment. Detailed comment
- */
 public interface IMetadataSchema {
 }

@@ -20,10 +20,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.talend.rcp.exportLogs.ExportLogsWizard;
 
-/**
- * 
- * DOC fywang class global comment. Detailed comment
- */
 public class ShowExportLogsWizardHandler extends AbstractHandler {
 
     @Override

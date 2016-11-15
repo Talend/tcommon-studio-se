@@ -14,12 +14,6 @@ package org.talend.commons.utils.generation;
 
 import org.talend.commons.i18n.internal.Messages;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public class EntryLocation {
 
     public String tableName;

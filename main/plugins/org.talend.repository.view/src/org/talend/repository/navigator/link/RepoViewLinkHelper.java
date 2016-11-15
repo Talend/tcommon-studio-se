@@ -29,12 +29,6 @@ import org.talend.core.repository.link.IRepoViewLinker;
 import org.talend.core.repository.link.RepoViewLinkerRegistryReader;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * DOC ggu class global comment. Detailed comment <br/>
- * 
- * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
- */
 public class RepoViewLinkHelper implements ILinkHelper {
 
     private final RepoViewLinkerRegistryReader repoViewLinkerReader;
@@ -47,11 +41,6 @@ public class RepoViewLinkHelper implements ILinkHelper {
         return this.repoViewLinkerReader;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.navigator.ILinkHelper#findSelection(org.eclipse.ui.IEditorInput)
-     */
     @Override
     public IStructuredSelection findSelection(IEditorInput anInput) {
         List<RepositoryNode> nodes = new ArrayList<RepositoryNode>();

@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.commons.runtime.xml;
 
-/**
- * ggu class global comment. Detailed comment
- */
 public final class XmlUtil {
 
     public static final String XML = "xml"; //$NON-NLS-1$

@@ -23,14 +23,9 @@ import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.nexus.NexusServerBean;
 import org.talend.core.nexus.TalendLibsServerManager;
 
-/**
- * DOC ycbai class global comment. Detailed comment
- */
 public interface ILibraryManagerService extends IService {
 
     /**
-     * DOC ycbai Comment method "isInitialized".
-     * 
      * Check whether the OBR has been initialized.
      * 
      * @param monitorWrap
@@ -43,7 +38,6 @@ public interface ILibraryManagerService extends IService {
     public void deployModules(Collection<ModuleNeeded> modules, IProgressMonitor monitorWrap);
 
     /**
-     * 
      * DOC wchen Comment method "deploy". deploy jars not exist in maven repository(nexus if configured in TAC)
      * 
      * @param jarFileUri

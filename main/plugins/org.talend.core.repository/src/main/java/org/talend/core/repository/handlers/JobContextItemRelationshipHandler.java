@@ -24,17 +24,8 @@ import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class JobContextItemRelationshipHandler extends AbstractJobItemRelationshipHandler {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.relationship.AbstractItemRelationshipHandler#collect(org.talend.core.model.properties.Item)
-     */
     @Override
     protected Set<Relation> collect(Item baseItem) {
         ProcessType processType = getProcessType(baseItem);

@@ -34,9 +34,6 @@ import org.talend.core.repository.ui.actions.DeleteActionCache;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.IRepositoryNode.EProperties;
 
-/**
- * DOC ycbai class global comment. Detailed comment
- */
 public class RepositoryNodeDeleteManager {
 
     private static RepositoryNodeDeleteManager instance;

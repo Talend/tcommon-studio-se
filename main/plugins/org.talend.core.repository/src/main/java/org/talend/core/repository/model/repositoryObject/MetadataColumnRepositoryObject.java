@@ -28,9 +28,6 @@ import org.talend.repository.model.IRepositoryNode;
 
 import orgomg.cwm.objectmodel.core.ModelElement;
 
-/**
- * DOC klliu class global comment. Detailed comment
- */
 public class MetadataColumnRepositoryObject extends MetadataColumn implements ISubRepositoryObject {
 
     private final IRepositoryViewObject viewObject;

@@ -44,10 +44,6 @@ import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.utils.ssl.SSLUtils;
 
-/**
- * created by wchen on 2015-5-12 Detailed comment
- *
- */
 public class NexusServerUtils {
 
     /**

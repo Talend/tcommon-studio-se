@@ -38,9 +38,6 @@ import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class ResourcePostChangeRunnableListener implements IResourceChangeListener {
 
     private final CommonViewer viewer;

@@ -20,10 +20,6 @@ import org.talend.commons.i18n.internal.Messages;
 import org.talend.commons.utils.TalendDBUtils;
 import org.talend.fakejdbc.FakeResultSet;
 
-/**
- * created by xqliu on Oct 26, 2012 Detailed comment
- * 
- */
 public class SybaseResultSet extends FakeResultSet {
 
     private String[] tableMeta = null;

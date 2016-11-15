@@ -18,9 +18,6 @@ import org.eclipse.ui.actions.SelectionProviderAction;
 import org.talend.metadata.managment.ui.wizard.metadata.xml.node.FOXTreeNode;
 import org.talend.repository.metadata.ui.wizards.form.AbstractXmlStepForm;
 
-/**
- * wzhang class global comment. Detailed comment
- */
 public class DisconnectAction extends SelectionProviderAction {
 
     private TreeViewer xmlViewer;

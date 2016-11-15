@@ -56,11 +56,6 @@ import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.repository.ProjectManager;
 import org.talend.utils.io.FilesUtils;
 
-/**
- * DOC ggu class global comment. Detailed comment
- * 
- * FIXME, not impl yet
- */
 public class LocalRepositoryAetherManager extends LocalRepositoryManager {
 
     private RepositorySystem repositorySystem;

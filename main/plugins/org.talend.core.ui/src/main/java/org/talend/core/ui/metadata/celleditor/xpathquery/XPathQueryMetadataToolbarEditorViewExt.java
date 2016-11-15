@@ -22,9 +22,6 @@ import org.talend.commons.ui.swt.extended.table.AbstractExtendedTableViewer;
 import org.talend.commons.ui.swt.extended.table.ExtendedTableModel;
 import org.talend.core.ui.metadata.editor.MetadataToolbarEditorView;
 
-/**
- * cli class global comment. Detailed comment
- */
 public class XPathQueryMetadataToolbarEditorViewExt extends MetadataToolbarEditorView {
 
     public XPathQueryMetadataToolbarEditorViewExt(Composite parent, int style, AbstractExtendedTableViewer extendedTableViewer) {

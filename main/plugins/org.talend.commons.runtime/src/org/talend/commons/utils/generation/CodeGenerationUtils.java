@@ -17,12 +17,6 @@ import org.apache.oro.text.regex.Pattern;
 import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public class CodeGenerationUtils {
 
     public static final String PROBLEM_KEY_FIELD_SEPARATOR = ":"; //$NON-NLS-1$

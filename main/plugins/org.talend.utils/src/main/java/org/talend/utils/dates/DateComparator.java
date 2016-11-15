@@ -16,12 +16,6 @@ package org.talend.utils.dates;
 import java.util.Comparator;
 import java.util.Date;
 
-/**
- * 
- * DOC mzhao class global comment. Detailed comment
- * 
- * @param <T>
- */
 public class DateComparator<T> implements Comparator<T> {
 
 	public int compare(T date1, T date2) {

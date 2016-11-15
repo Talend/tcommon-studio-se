@@ -17,9 +17,6 @@ import static org.junit.Assert.*;
 import org.junit.Assert;
 import org.junit.Test;
 
-/**
- * DOC cmeng class global comment. Detailed comment
- */
 @SuppressWarnings("nls")
 public class TalendQuoteUtilsTest {
 

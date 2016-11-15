@@ -21,12 +21,6 @@ import org.talend.commons.ui.swt.extended.table.ExtendedTableModel;
 import org.talend.commons.ui.utils.SimpleClipboard;
 import org.talend.commons.utils.data.list.UniqueStringGenerator;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public abstract class ExtendedTablePasteCommand extends Command implements IExtendedTableCommand {
 
     private ExtendedTableModel extendedTable;
@@ -35,27 +29,16 @@ public abstract class ExtendedTablePasteCommand extends Command implements IExte
 
     public static final String LABEL = Messages.getString("ExtendedTablePasteCommand.Paste.Label"); //$NON-NLS-1$
 
-    /**
-     * DOC amaumont ExtendedTableAddCommand constructor comment.
-     */
     public ExtendedTablePasteCommand(ExtendedTableModel extendedTable, Integer indexStartAdd) {
         super(LABEL);
         this.extendedTable = extendedTable;
         this.indexStart = indexStartAdd;
     }
 
-    /**
-     * DOC amaumont ExtendedTableAddCommand constructor comment.
-     */
     public ExtendedTablePasteCommand(ExtendedTableModel extendedTable) {
         this(extendedTable, null);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.gef.commands.Command#execute()
-     */
     @SuppressWarnings("unchecked")//$NON-NLS-1$
     @Override
     public void execute() {
@@ -71,11 +54,6 @@ public abstract class ExtendedTablePasteCommand extends Command implements IExte
 
     public abstract List createPastableBeansList(ExtendedTableModel extendedTable, List copiedObjectsList);
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.command.CommonCommand#canUndo()
-     */
     @Override
     public boolean canUndo() {
         return false;

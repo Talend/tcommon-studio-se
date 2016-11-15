@@ -108,13 +108,6 @@ import org.talend.commons.utils.data.list.ListenableList;
  */
 public class TableViewerCreator<B> extends TableViewerCreatorNotModifiable<B> implements IModifiedBeanListenable<B> {
 
-    /**
-     * 
-     * DOC amaumont MetadataEditorEvent class global comment. Detailed comment <br/>
-     * 
-     * $Id: TableViewerCreator.java 7183 2007-11-23 11:03:36Z amaumont $
-     * 
-     */
     public enum CELL_EDITOR_STATE {
         EDITING,
         APPLYING,

@@ -38,12 +38,6 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IRepositoryLocalProviderService;
 import org.talend.repository.model.IRepositoryService;
 
-/**
- * DOC nrousseau class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public class CorePlugin extends Plugin {
 
     // The plug-in ID
@@ -59,21 +53,11 @@ public class CorePlugin extends Plugin {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
-     */
     @Override
     public void start(BundleContext contextP) throws Exception {
         super.start(contextP);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
-     */
     @Override
     public void stop(BundleContext contextP) throws Exception {
         plugin = null;
@@ -87,12 +71,7 @@ public class CorePlugin extends Plugin {
     private ScopedPreferenceStore preferenceStore;
 
     /**
-     * 
-     * DOC ggu Comment method "getPreferenceStore".
-     * 
      * just want to remove the extended AbstractUIPlugin for this class.
-     * 
-     * @return
      */
     public IPreferenceStore getPreferenceStore() {
         // Create the preference store lazily.
@@ -103,11 +82,6 @@ public class CorePlugin extends Plugin {
         return preferenceStore;
     }
 
-    /**
-     * Getter for context.
-     * 
-     * @return the context
-     */
     public static Context getContext() {
         return CoreRuntimePlugin.getInstance().getContext();
     }
@@ -117,11 +91,6 @@ public class CorePlugin extends Plugin {
         return service.getProxyRepositoryFactory();
     }
 
-    /**
-     * DOC get a implement of RunProcessService.
-     * 
-     * @return a implement of RunProcessService
-     */
     public IRunProcessService getRunProcessService() {
         IService service = GlobalServiceRegister.getDefault().getService(IRunProcessService.class);
         return (IRunProcessService) service;
@@ -177,12 +146,6 @@ public class CorePlugin extends Plugin {
     public IRcpService getRcpService() {
         return (IRcpService) GlobalServiceRegister.getDefault().getService(IRcpService.class);
     }
-
-    /*
-     * public boolean useSQLTemplate() { return (Boolean) CorePlugin.getContext().getProperty("useSQLTemplate"); }
-     * 
-     * public boolean useRefproject() { return (Boolean) CorePlugin.getContext().getProperty("useRefProject"); }
-     */
 
     public IDesignerMapperService getMapperService() {
         return (IDesignerMapperService) GlobalServiceRegister.getDefault().getService(IDesignerMapperService.class);

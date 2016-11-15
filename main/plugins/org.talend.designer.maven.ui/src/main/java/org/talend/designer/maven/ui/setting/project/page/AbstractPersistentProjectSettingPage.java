@@ -16,9 +16,6 @@ import java.io.IOException;
 
 import org.talend.core.runtime.projectsetting.AbstractScriptProjectSettingPage;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public abstract class AbstractPersistentProjectSettingPage extends AbstractScriptProjectSettingPage {
 
     public void load() throws IOException {

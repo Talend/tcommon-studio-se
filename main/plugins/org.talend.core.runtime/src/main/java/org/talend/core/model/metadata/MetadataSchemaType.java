@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.core.model.metadata;
 
-/**
- * created by wchen on Sep 19, 2014 Detailed comment
- *
- */
 public enum MetadataSchemaType {
     INPUT,
     OUTPUT;

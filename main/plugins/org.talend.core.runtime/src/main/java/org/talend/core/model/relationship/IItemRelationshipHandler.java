@@ -17,9 +17,6 @@ import java.util.Set;
 
 import org.talend.core.model.properties.Item;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public interface IItemRelationshipHandler {
 
     /**

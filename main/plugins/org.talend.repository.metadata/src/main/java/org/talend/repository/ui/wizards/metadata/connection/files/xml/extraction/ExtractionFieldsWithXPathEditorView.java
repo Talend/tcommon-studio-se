@@ -45,11 +45,7 @@ import org.talend.core.ui.metadata.editor.XmlExtractorFieldModel;
 import org.talend.repository.metadata.i18n.Messages;
 
 /**
- * DOC amaumont class global comment. Detailed comment <br/>
  * TGU same purpose as TargetSchemaTableEditorView but uses EMF model directly
- * 
- * $Id: ExtractionFieldsWithXPathEditorView.java 44891 2010-07-05 05:35:49Z gldu $
- * 
  */
 public class ExtractionFieldsWithXPathEditorView extends AbstractDataTableEditorView<SchemaTarget> {
 
@@ -69,13 +65,6 @@ public class ExtractionFieldsWithXPathEditorView extends AbstractDataTableEditor
         this(model, parent, SWT.NONE, false);
     }
 
-    /**
-     * TargetSchemaTableEditorView2 constructor comment.
-     * 
-     * @param parent
-     * @param styleChild
-     * @param showDbTypeColumn
-     */
     public ExtractionFieldsWithXPathEditorView(XmlExtractorFieldModel model, Composite parent, int styleChild,
             boolean showDbTypeColumn) {
         super(parent, styleChild, model);

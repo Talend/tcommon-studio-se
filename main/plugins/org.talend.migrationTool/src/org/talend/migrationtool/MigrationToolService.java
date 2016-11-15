@@ -72,12 +72,6 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IRepositoryService;
 import org.talend.utils.ProductVersion;
 
-/**
- * DOC smallet class global comment. Detailed comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- * 
- */
 public class MigrationToolService implements IMigrationToolService {
 
     private static Logger log = Logger.getLogger(MigrationToolService.class);

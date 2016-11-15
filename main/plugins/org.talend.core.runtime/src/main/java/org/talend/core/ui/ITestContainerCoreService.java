@@ -15,10 +15,6 @@ package org.talend.core.ui;
 import org.talend.core.IService;
 import org.talend.core.model.properties.Item;
 
-/**
- * created by Talend on Sep 24, 2015 Detailed comment
- *
- */
 public interface ITestContainerCoreService extends IService {
 
     public boolean isSpark(Item item);

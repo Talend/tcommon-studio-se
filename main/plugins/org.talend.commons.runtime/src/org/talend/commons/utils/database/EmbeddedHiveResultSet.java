@@ -15,26 +15,12 @@ package org.talend.commons.utils.database;
 import java.sql.SQLException;
 import java.sql.Types;
 
-/**
- * DOC ggu class global comment. Detailed comment <br/>
- * 
- * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
- */
 public class EmbeddedHiveResultSet extends AbstractFakeResultSet {
 
-    /**
-     * DOC ggu EmbeddedHiveResultSet constructor comment.
-     */
     public EmbeddedHiveResultSet() {
         super();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.AbstractFakeResultSet#getInt(java.lang.String)
-     */
     @Override
     public int getInt(String columnLabel) throws SQLException {
         if ("DATA_TYPE".equals(columnLabel)) {
@@ -59,7 +45,6 @@ public class EmbeddedHiveResultSet extends AbstractFakeResultSet {
                 return Types.TIMESTAMP;
             }
         }
-        // TODO Auto-generated method stub
         return super.getInt(columnLabel);
     }
 

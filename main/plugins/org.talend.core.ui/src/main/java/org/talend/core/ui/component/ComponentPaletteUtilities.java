@@ -29,12 +29,7 @@ import org.talend.core.ui.services.IDesignerCoreUIService;
 import org.talend.designer.core.IPaletteFilter;
 
 /**
- * DOC smallet class global comment. Detailed comment <br/>
- * 
  * TODO SML/NRO Move into org.talend.core ?
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- * 
  */
 public class ComponentPaletteUtilities {
 

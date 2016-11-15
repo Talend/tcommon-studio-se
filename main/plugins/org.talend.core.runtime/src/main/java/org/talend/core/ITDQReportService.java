@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.core;
 
-
-/**
- * cli class global comment. Detailed comment
- */
 public interface ITDQReportService extends ITDQService {
 
     /**

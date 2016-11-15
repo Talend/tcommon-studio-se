@@ -26,9 +26,6 @@ import org.talend.core.model.relationship.AbstractParameterRelationshipHandler;
 import org.talend.core.model.relationship.Relation;
 import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 @SuppressWarnings("nls")
 public abstract class AbstractParameterRelationshipHandlerTest {
 

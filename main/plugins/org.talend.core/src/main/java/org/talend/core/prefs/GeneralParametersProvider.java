@@ -18,10 +18,7 @@ import java.util.ResourceBundle;
 import org.talend.commons.i18n.MessagesCore;
 
 /**
- * Use to retrieve general application parameters.<br/>
- * 
- * $Id: Messages.java 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- * 
+ * Use to retrieve general application parameters.
  */
 public class GeneralParametersProvider extends MessagesCore {
 
@@ -59,11 +56,6 @@ public class GeneralParametersProvider extends MessagesCore {
         return toReturn;
     }
 
-    /**
-     * DOC smallet GeneralParametersProvider class global comment. Detailed comment <br/>
-     * 
-     * $Id$
-     */
     public enum GeneralParameters {
         AUTHORIZED_LANGUAGE("param.authorizedlanguage"), //$NON-NLS-1$
         DEFAULT_PERL_INTERPRETER_WIN32("param.defaultPerlInterpreterPath.win32"), //$NON-NLS-1$

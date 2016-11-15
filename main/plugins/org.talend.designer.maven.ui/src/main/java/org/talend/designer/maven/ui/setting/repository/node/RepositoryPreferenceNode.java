@@ -22,9 +22,6 @@ import org.talend.core.runtime.projectsetting.EmptyProjectSettingPage;
 import org.talend.core.ui.images.RepositoryImageProvider;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class RepositoryPreferenceNode extends PreferenceNode {
 
     private final RepositoryNode curNode;
@@ -45,11 +42,6 @@ public class RepositoryPreferenceNode extends PreferenceNode {
         return curNode;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.preference.PreferenceNode#createPage()
-     */
     @Override
     public void createPage() {
         PreferencePage page = createPreferencePage();

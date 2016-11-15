@@ -29,23 +29,14 @@ import org.talend.core.model.process.IContextManager;
 import org.talend.core.model.process.IContextParameter;
 import org.talend.core.model.properties.ContextItem;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class ShowSelectedContextDialog extends Dialog {
 
     ContextItem contextItem;
 
     IContextManager contextManager;
 
-    /**
-     * DOC ggu ShowSelectedContextDialog constructor comment.
-     * 
-     * @param parentShell
-     */
     protected ShowSelectedContextDialog(ContextItem contextItem, Shell parentShell) {
         super(parentShell);
-        // setDefaultImage(ImageProvider.getImage(ECoreImage.CONTEXT_ICON));
         setShellStyle(getShellStyle() | SWT.RESIZE);
         this.contextItem = contextItem;
         this.contextManager = new JobContextManager(contextItem.getContext(), contextItem.getDefaultContext());
@@ -78,10 +69,6 @@ public class ShowSelectedContextDialog extends Dialog {
 
     }
 
-    /**
-     * 
-     * DOC ggu ShowSelectedContextDialog class global comment. Detailed comment
-     */
     class ShowSelectedContextComposite extends ContextComposite {
 
         public ShowSelectedContextComposite(Composite parent) {

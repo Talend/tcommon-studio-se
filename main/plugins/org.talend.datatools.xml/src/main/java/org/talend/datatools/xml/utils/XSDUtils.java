@@ -36,11 +36,6 @@ import org.talend.core.GlobalServiceRegister;
 import org.talend.core.IESBService;
 import org.talend.core.utils.IXSDPopulationUtil;
 
-/**
- * 
- * created by wchen on Aug 11, 2016 Detailed comment
- *
- */
 public class XSDUtils {
 
     private static final String SCHEMA_SYSTEM_ID = "custom"; //$NON-NLS-1$

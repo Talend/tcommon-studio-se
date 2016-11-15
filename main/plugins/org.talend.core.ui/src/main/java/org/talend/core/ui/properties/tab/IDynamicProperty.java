@@ -21,10 +21,6 @@ import org.talend.core.model.process.Element;
 import org.talend.core.model.properties.ConnectionItem;
 import org.talend.designer.core.IMultiPageTalendEditor;
 
-/**
- * DOC nrousseau class global comment. Detailed comment <br/>
- * 
- */
 public interface IDynamicProperty {
 
     public BidiMap getHashCurControls();
@@ -37,16 +33,9 @@ public interface IDynamicProperty {
 
     public Composite getComposite();
 
-    // public Map<String, IMetadataTable> getRepositoryTableMap();
-
     public void setCurRowSize(int i);
 
     public int getCurRowSize();
-
-    /* 16969 */
-    // public Map<String, ConnectionItem> getRepositoryConnectionItemMap();
-
-    // public Map<String, Query> getRepositoryQueryStoreMap();
 
     public Map<String, String> getTableIdAndDbTypeMap();
 

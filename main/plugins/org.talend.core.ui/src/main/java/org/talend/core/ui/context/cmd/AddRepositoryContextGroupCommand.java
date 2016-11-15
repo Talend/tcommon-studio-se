@@ -32,9 +32,6 @@ import org.talend.core.ui.editor.command.ContextRemoveParameterCommand;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class AddRepositoryContextGroupCommand extends Command {
 
     private IProgressMonitor monitor;

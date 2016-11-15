@@ -14,10 +14,6 @@ package org.talend.core.model.process;
 
 import org.eclipse.swt.graphics.RGB;
 
-/**
- * DOC nrousseau class global comment. Detailed comment <br/>
- * 
- */
 public interface IConnectionProperty {
 
     public RGB getRGB();

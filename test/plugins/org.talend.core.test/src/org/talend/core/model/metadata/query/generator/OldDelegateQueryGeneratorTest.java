@@ -31,9 +31,6 @@ import org.talend.core.model.process.IElement;
 import org.talend.core.model.process.IElementParameter;
 import org.talend.core.model.utils.TalendTextUtils;
 
-/**
- * DOC Administrator class global comment. Detailed comment
- */
 public class OldDelegateQueryGeneratorTest {
 
     /**

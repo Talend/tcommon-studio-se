@@ -26,9 +26,6 @@ import org.talend.repository.ui.wizards.metadata.connection.files.xml.action.Cre
 import org.talend.repository.ui.wizards.metadata.connection.files.xml.action.CreateElementAction;
 import org.talend.repository.ui.wizards.metadata.connection.files.xml.action.CreateNameSpaceAction;
 
-/**
- * DOC talend class global comment. Detailed comment
- */
 public class AddTreeNodeButton extends AbstractTreeNodeButton {
 
     public AddTreeNodeButton(Composite parent, AbstractXmlStepForm form) {

@@ -16,9 +16,6 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.ui.IWorkbench;
 import orgomg.cwm.objectmodel.core.ModelElement;
 
-/**
- * DOC Administrator class global comment. Detailed comment
- */
 public abstract class AbstractRepositoryFileTableWizard extends CheckLastVersionRepositoryWizard {
 
     public AbstractRepositoryFileTableWizard(IWorkbench workbench, boolean creation) {

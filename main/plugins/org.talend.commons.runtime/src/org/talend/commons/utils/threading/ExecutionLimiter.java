@@ -150,11 +150,6 @@ public abstract class ExecutionLimiter {
         }).start();
     }
 
-    /**
-     * 
-     * DOC amaumont ExecutionLimiter class global comment. Detailed comment <br/>
-     * 
-     */
     class FinalExecution extends Thread {
 
         private Object data;

@@ -91,9 +91,6 @@ import org.talend.repository.mdm.util.MDMUtil;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.ui.wizards.metadata.connection.files.xml.TreePopulator;
 
-/**
- * DOC hwang class global comment. Detailed comment
- */
 public class MDMXSDFileForm extends AbstractMDMFileStepForm {
 
     private static Logger log = Logger.getLogger(MDMXSDFileForm.class);

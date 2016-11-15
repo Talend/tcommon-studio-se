@@ -15,9 +15,6 @@ package org.talend.commons.ui.swt.geftree.action;
 import org.eclipse.jface.action.Action;
 import org.talend.commons.ui.swt.geftree.figure.TreeBranch;
 
-/**
- * cli class global comment. Detailed comment
- */
 public abstract class AbstractTreeAction extends Action {
 
     private String groupId;

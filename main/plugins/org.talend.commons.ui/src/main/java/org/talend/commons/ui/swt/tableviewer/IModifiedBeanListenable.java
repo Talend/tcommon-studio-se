@@ -13,10 +13,6 @@
 package org.talend.commons.ui.swt.tableviewer;
 
 /**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
  * @param <B> Type of beans
  */
 public interface IModifiedBeanListenable<B> {

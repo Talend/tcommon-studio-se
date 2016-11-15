@@ -18,9 +18,6 @@ import org.talend.core.model.metadata.builder.connection.AbstractMetadataObject;
 import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.core.service.IMetadataManagmentService;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class MetadataManagmentService implements IMetadataManagmentService {
 
     public IMetadataTable convertMetadataTable(MetadataTable old) {
@@ -31,14 +28,8 @@ public class MetadataManagmentService implements IMetadataManagmentService {
         return ConvertionHelper.convert(old);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.service.IMetadataManagmentService#convertServicesOperation(org.talend.core.model.metadata.builder
-     * .connection.AbstractMetadataObject)
-     */
     public IMetadataTable convertServicesOperation(AbstractMetadataObject old) {
         return ConvertionHelper.convertServicesOperational(old);
     }
+
 }

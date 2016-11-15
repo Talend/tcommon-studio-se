@@ -30,9 +30,6 @@ import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
-/**
- * DOC nrousseau class global comment. Detailed comment
- */
 public final class SQLPatternUtils {
 
     public static final String ID_SEPARATOR = "--"; //$NON-NLS-1$

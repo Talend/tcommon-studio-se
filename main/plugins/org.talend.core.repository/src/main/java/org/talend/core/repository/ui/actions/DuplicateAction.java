@@ -96,9 +96,6 @@ import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.model.RepositoryNodeUtilities;
 import org.talend.repository.ui.actions.AContextualAction;
 
-/**
- * DOC zwang class global comment. Detailed comment
- */
 public class DuplicateAction extends AContextualAction {
 
     private RepositoryNode sourceNode = null;

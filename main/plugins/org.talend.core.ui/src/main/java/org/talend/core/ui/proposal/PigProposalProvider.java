@@ -30,9 +30,6 @@ import org.talend.designer.rowgenerator.data.Function;
 import org.talend.designer.rowgenerator.data.FunctionManager;
 import org.talend.designer.rowgenerator.data.TalendType;
 
-/**
- * DOC hcyi class global comment. Detailed comment
- */
 public class PigProposalProvider extends TalendProposalProvider {
 
     public PigProposalProvider(IProcess process, INode node) {
@@ -41,11 +38,6 @@ public class PigProposalProvider extends TalendProposalProvider {
         this.process = process;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.fieldassist.IContentProposalProvider#getProposals(java.lang.String, int)
-     */
     @Override
     public IContentProposal[] getProposals(String contents, int position) {
         List<IContentProposal> proposals = new ArrayList<IContentProposal>();
@@ -128,10 +120,6 @@ public class PigProposalProvider extends TalendProposalProvider {
         return res;
     }
 
-    /**
-     * 
-     * DOC hcyi PigProposalProvider class global comment. Detailed comment
-     */
     class PigFunctionProposal extends RoutinesFunctionProposal {
 
         public PigFunctionProposal(Function function, String type) {

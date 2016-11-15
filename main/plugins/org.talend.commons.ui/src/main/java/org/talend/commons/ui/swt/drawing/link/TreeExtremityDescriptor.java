@@ -14,61 +14,30 @@ package org.talend.commons.ui.swt.drawing.link;
 
 import org.eclipse.swt.widgets.TreeItem;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public class TreeExtremityDescriptor implements IExtremityLink<TreeItem, Object> {
 
     private TreeItem treeItem;
 
     private Object dataObject;
 
-    /**
-     * DOC amaumont TreeItemExtremityDescriptor constructor comment.
-     * 
-     * @param treeItem
-     */
     public TreeExtremityDescriptor(TreeItem treeItem, Object dataObject) {
         super();
         this.treeItem = treeItem;
         this.dataObject = dataObject;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.drawing.link.IExtremityLink#getAssociatedItem()
-     */
     public TreeItem getGraphicalObject() {
         return treeItem;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.drawing.link.IExtremityLink#getDataItem()
-     */
     public Object getDataItem() {
         return dataObject;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.drawing.link.IExtremityLink#setDataItem(java.lang.Object)
-     */
     public void setDataItem(Object dataItem) {
         this.dataObject = dataItem;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.drawing.link.IExtremityLink#setGraphicalItem(java.lang.Object)
-     */
     public void setGraphicalObject(TreeItem graphicalItem) {
         this.treeItem = graphicalItem;
     }

@@ -14,12 +14,6 @@ package org.talend.commons.ui.swt.colorstyledtext.rules;
 
 import org.eclipse.jface.text.rules.IToken;
 
-/**
- * DOC nrousseau class global comment. Detailed comment <br/>
- * 
- * $Id: SingleLineRule.java 7038 2007-11-15 14:05:48Z plegall $
- * 
- */
 public class SingleLineRule extends CasedPatternRule {
 
     public SingleLineRule(String startSequence, String endSequence, IToken token, char escapeCharacter) {

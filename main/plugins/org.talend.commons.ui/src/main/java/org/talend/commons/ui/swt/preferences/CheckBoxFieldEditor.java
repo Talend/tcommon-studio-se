@@ -16,9 +16,6 @@ import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
-/**
- * ggu class global comment. Detailed comment
- */
 public class CheckBoxFieldEditor extends BooleanFieldEditor {
 
     private Composite parent;

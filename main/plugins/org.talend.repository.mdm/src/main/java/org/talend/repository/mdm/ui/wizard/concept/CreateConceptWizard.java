@@ -65,9 +65,6 @@ import org.talend.repository.model.RepositoryNodeUtilities;
 
 import orgomg.cwm.objectmodel.core.Package;
 
-/**
- * DOC hwang class global comment. Detailed comment
- */
 public class CreateConceptWizard extends RepositoryWizard implements INewWizard {
 
     private MdmConceptWizardPage1 inOutSelectPage;

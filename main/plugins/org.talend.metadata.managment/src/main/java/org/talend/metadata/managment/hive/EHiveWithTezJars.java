@@ -12,11 +12,6 @@
 // ============================================================================
 package org.talend.metadata.managment.hive;
 
-/**
- *
- * created by ycbai on 2015年5月4日 Detailed comment
- *
- */
 public enum EHiveWithTezJars {
 
     HDP_2_1(new String[] { "commons-collections4-4.0.jar", "guice-3.0.jar",

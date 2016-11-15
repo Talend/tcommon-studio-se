@@ -29,12 +29,6 @@ import org.talend.core.ui.i18n.Messages;
 import org.talend.core.ui.preference.metadata.MetadataTypeLengthConstants;
 import org.talend.core.ui.services.IDesignerCoreUIService;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id: MetadataEmfTableEditor.java 46726 2010-08-13 05:32:21Z nrousseau $
- * 
- */
 public class MetadataEmfTableEditor extends ExtendedTableModel<MetadataColumn> {
 
     private String defaultLabel = "newColumn"; //$NON-NLS-1$

@@ -21,10 +21,6 @@ import org.eclipse.nebula.widgets.nattable.util.GUIHelper;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
 
-/**
- * created by ldong on Jul 17, 2014 Detailed comment
- * 
- */
 public class ContextAutoResizeTextPainter extends TextPainter {
 
     private boolean changeBackgroundColor = false;

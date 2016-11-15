@@ -21,10 +21,6 @@ import java.security.NoSuchAlgorithmException;
 import org.junit.Test;
 import org.talend.commons.utils.PasswordHelper;
 
-/**
- * class global comment. Detailed comment. <br/>
- * 
- */
 public class PasswordHelperTest {
 
     @Test

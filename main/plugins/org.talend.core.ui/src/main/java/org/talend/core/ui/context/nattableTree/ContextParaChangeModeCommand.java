@@ -23,10 +23,6 @@ import org.talend.core.ui.context.ContextTreeTable.ContextTreeNode;
 import org.talend.core.ui.context.IContextModelManager;
 import org.talend.core.ui.context.model.table.ContextTableTabChildModel;
 
-/**
- * created by ldong on Aug 15, 2014 Detailed comment
- * 
- */
 public class ContextParaChangeModeCommand extends Command {
 
     IContextParameter param;
@@ -42,11 +38,6 @@ public class ContextParaChangeModeCommand extends Command {
         this.param = param;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.gef.commands.Command#execute()
-     */
     @Override
     public void execute() {
         boolean isChange = false;

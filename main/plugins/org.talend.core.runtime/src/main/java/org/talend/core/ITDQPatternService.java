@@ -14,9 +14,6 @@ package org.talend.core;
 
 import org.talend.core.model.process.IElementParameter;
 
-/**
- * DOC bZhou class global comment. Detailed comment
- */
 public interface ITDQPatternService extends ITDQService {
 
     /**

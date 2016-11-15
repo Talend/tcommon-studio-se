@@ -14,12 +14,6 @@ package org.talend.core.ui.properties.tab;
 
 import org.eclipse.ui.views.properties.tabbed.ITabItem;
 
-/**
- * yzhang class global comment. Detailed comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
- * 
- */
 public interface IStructuredTabItem extends ITabItem {
 
     public static final boolean EXPANDED = true;

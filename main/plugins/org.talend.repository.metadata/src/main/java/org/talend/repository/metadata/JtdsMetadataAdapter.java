@@ -18,24 +18,15 @@ import java.sql.SQLException;
 import net.sourceforge.jtds.jdbc.JtdsConnection;
 import net.sourceforge.jtds.jdbc.JtdsDatabaseMetaData;
 
-/**
- * DOC sizhaoliu class global comment. Detailed comment
- */
 public class JtdsMetadataAdapter extends JtdsDatabaseMetaData {
 
     public static final boolean JDBC3 = "1.4".compareTo(System.getProperty("java.specification.version")) <= 0;
 
     private JtdsConnection connection;
 
-    /**
-     * DOC sizhaoliu JtdsMetadataAdapter constructor comment.
-     * 
-     * @param connection
-     */
     public JtdsMetadataAdapter(JtdsConnection connection) {
         super(connection);
         this.connection = connection;
-        // TODO Auto-generated constructor stub
     }
 
     public ResultSet getSchemas() throws SQLException {

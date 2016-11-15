@@ -21,9 +21,6 @@ import org.talend.core.model.relationship.RelationshipItemBuilder;
 import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 @SuppressWarnings("nls")
 public class SchemaypeParameterRelationshipHandlerTest extends AbstractRepositoryTypeParameterRelationshipHandlerTest {
 

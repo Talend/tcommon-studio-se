@@ -12,12 +12,6 @@
 // ============================================================================
 package org.talend.designer.core;
 
-/**
- * yzhang class global comment. Detailed comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
- * 
- */
 public interface IPaletteFilter {
 
     public boolean isFiltered();

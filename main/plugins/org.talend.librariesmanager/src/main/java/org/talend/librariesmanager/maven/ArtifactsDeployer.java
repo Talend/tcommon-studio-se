@@ -41,10 +41,6 @@ import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.utils.PomUtil;
 import org.talend.utils.io.FilesUtils;
 
-/**
- * created by wchen on 2015-5-14 Detailed comment
- *
- */
 public class ArtifactsDeployer {
 
     private static final String SLASH = "/";//$NON-NLS-1$ 
@@ -59,9 +55,6 @@ public class ArtifactsDeployer {
     }
 
     /**
-     * 
-     * DOC Talend Comment method "deployToLocalMaven".
-     * 
      * @param jarSourceAndMavenUri a map with key : can be a filePath or platform uri , value :maven uri
      * @throws Exception
      */

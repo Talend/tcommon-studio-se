@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.core.runtime.maven;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 @SuppressWarnings("nls")
 public interface MavenConstants {
 

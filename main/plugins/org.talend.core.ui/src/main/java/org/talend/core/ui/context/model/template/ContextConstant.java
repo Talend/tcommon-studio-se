@@ -14,14 +14,8 @@ package org.talend.core.ui.context.model.template;
 
 import org.talend.core.model.metadata.types.JavaTypesManager;
 
-/**
- * ggu class global comment. Detailed comment
- */
 public class ContextConstant {
 
-    /*
-     * 
-     */
     public static final String DOWNWARDS_STRING = "|"; //$NON-NLS-1$
 
     public static final String SPLIT_CHAR = "\\|"; //$NON-NLS-1$

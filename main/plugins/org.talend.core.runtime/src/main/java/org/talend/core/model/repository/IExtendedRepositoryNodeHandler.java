@@ -17,16 +17,9 @@ import java.util.List;
 import org.eclipse.core.resources.IResource;
 import org.talend.core.model.properties.Property;
 
-/**
- * created by wchen on 2013-8-22 Detailed comment
- * 
- */
 public interface IExtendedRepositoryNodeHandler {
 
     /**
-     * 
-     * DOC wchen Comment method "getProperty".
-     * 
      * @param repository nodeObject
      * @return property of this repository object
      */
@@ -35,18 +28,12 @@ public interface IExtendedRepositoryNodeHandler {
     public Object getParent(Object repositoryNode);
 
     /**
-     * 
-     * DOC get ERepositoryObjectType for repository selection
-     * 
      * @param repository selected object
      * @return
      */
     public ERepositoryObjectType getObjectType(Object repositoryNode);
 
     /**
-     * 
-     * DOC get root ERepositoryObjectType for repository selection
-     * 
      * @param repository selected object
      * @return
      */

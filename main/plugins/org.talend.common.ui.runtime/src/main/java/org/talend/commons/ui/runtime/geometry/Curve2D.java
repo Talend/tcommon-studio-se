@@ -38,13 +38,6 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.talend.commons.ui.runtime.i18n.Messages;
 
-/**
- * 
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id: Curve2D.java 7189 2007-11-23 17:06:19Z amaumont $
- * 
- */
 public abstract class Curve2D extends Curve {
 
     int subdiv;

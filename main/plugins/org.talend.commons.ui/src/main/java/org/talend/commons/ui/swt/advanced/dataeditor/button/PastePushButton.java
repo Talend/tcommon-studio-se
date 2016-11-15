@@ -20,21 +20,8 @@ import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.commons.ui.swt.advanced.dataeditor.control.ExtendedPushButton;
 import org.talend.commons.ui.swt.extended.table.AbstractExtendedControlViewer;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public abstract class PastePushButton extends ExtendedPushButton {
 
-    /**
-     * DOC amaumont AddPushButton constructor comment.
-     * 
-     * @param parent
-     * @param tooltip
-     * @param image
-     */
     public PastePushButton(Composite parent, AbstractExtendedControlViewer extendedControlViewer) {
         super(parent, extendedControlViewer,
                 Messages.getString("PastePushButton.PasteButton.Label"), ImageProvider.getImage(EImage.PASTE_ICON)); //$NON-NLS-1$
@@ -42,11 +29,6 @@ public abstract class PastePushButton extends ExtendedPushButton {
 
     protected abstract Command getCommandToExecute();
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.advanced.dataeditor.control.ExtendedPushButton#getEnabledState()
-     */
     @Override
     public boolean getEnabledState() {
         return super.getEnabledState() && !getExtendedControlViewer().isReadOnly();

@@ -23,12 +23,6 @@ package org.talend.resources;
 
 import org.talend.core.services.resource.IResourceService;
 
-/**
- * yzhang class global comment. Detailed comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
- * 
- */
 public class ResourceService implements IResourceService {
 
 }

@@ -26,9 +26,6 @@ import org.talend.cwm.xml.TdXmlElementType;
 import org.talend.cwm.xml.TdXmlSchema;
 import orgomg.cwm.objectmodel.core.ModelElement;
 
-/**
- * DOC xqliu class global comment. Detailed comment
- */
 public final class XmlElementHelper {
 
     public static final String SLASH = "/";//$NON-NLS-1$
@@ -40,12 +37,6 @@ public final class XmlElementHelper {
     private XmlElementHelper() {
     }
 
-    /**
-     * DOC xqliu Comment method "isLeafNode".
-     * 
-     * @param element
-     * @return
-     */
     public static boolean isLeafNode(TdXmlElementType element) {
         boolean leafNode = false;
         XSDElementDeclaration xsdElementDeclearation = (XSDElementDeclaration) element.getXsdElementDeclaration();

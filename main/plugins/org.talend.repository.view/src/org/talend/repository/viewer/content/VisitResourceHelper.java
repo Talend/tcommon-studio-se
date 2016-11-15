@@ -23,9 +23,6 @@ import org.talend.commons.utils.io.FilesUtils;
 import org.talend.core.model.general.TalendNature;
 import org.talend.core.repository.constants.FileConstants;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class VisitResourceHelper {
 
     private final IResourceDelta srcDelta;

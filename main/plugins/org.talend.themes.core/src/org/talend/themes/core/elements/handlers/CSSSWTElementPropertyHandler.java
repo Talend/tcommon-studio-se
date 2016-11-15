@@ -29,10 +29,6 @@ import org.talend.commons.exception.CommonExceptionHandler;
 import org.w3c.dom.css.CSSValue;
 import org.w3c.dom.css.CSSValueList;
 
-/**
- * created by cmeng on Mar 24, 2015 Detailed comment
- *
- */
 public class CSSSWTElementPropertyHandler implements ICSSPropertyHandler {
 
     protected static Map<String, Image> toolItemMap;

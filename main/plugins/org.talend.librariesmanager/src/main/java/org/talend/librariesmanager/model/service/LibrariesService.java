@@ -30,18 +30,11 @@ import org.talend.core.model.process.Problem;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.designer.codegen.PigTemplate;
 
-/**
- * DOC smallet class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public class LibrariesService implements ILibrariesService {
 
     private static ILibrariesService javaService = new JavaLibrariesService();
 
     public LibrariesService() {
-
     }
 
     private ILibrariesService getLibrariesService() {

@@ -2,11 +2,6 @@ package org.talend.core.hadoop.version.custom;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
-/**
- * 
- * created by ycbai on 2013-3-19 Detailed comment
- * 
- */
 public class LibraryFile {
 
     private final String id;

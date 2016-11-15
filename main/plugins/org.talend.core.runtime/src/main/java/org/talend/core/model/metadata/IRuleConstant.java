@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.core.model.metadata;
 
-/**
- * DOC hywang class global comment. Detailed comment
- */
 public class IRuleConstant {
 
     public static final String FIELD_RULE = "RULE"; //$NON-NLS-1$

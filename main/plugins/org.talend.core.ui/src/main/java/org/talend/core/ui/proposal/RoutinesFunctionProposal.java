@@ -19,10 +19,6 @@ import org.talend.core.ui.i18n.Messages;
 import org.talend.designer.rowgenerator.data.Function;
 import org.talend.designer.rowgenerator.data.FunctionManager;
 
-/**
- * DOC ggu class global comment. Detailed comment <br/>
- * 
- */
 public class RoutinesFunctionProposal implements IContentProposal {
 
     protected Function function;

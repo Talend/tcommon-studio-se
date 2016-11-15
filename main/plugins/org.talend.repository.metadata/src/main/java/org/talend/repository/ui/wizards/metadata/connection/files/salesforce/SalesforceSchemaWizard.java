@@ -54,10 +54,6 @@ import org.talend.repository.model.RepositoryNodeUtilities;
 import orgomg.cwm.resource.record.RecordFactory;
 import orgomg.cwm.resource.record.RecordFile;
 
-/**
- * DOC YeXiaowei class global comment. Detailed comment <br/>
- * 
- */
 public class SalesforceSchemaWizard extends CheckLastVersionRepositoryWizard implements INewWizard {
 
     private static Logger log = Logger.getLogger(SalesforceSchemaWizard.class);
@@ -90,22 +86,10 @@ public class SalesforceSchemaWizard extends CheckLastVersionRepositoryWizard imp
 
     private String originalStatus;
 
-    /**
-     * Sets the isToolbar.
-     * 
-     * @param isToolbar the isToolbar to set
-     */
     public void setToolbar(boolean isToolbar) {
         this.isToolbar = isToolbar;
     }
 
-    /**
-     * DOC YeXiaowei SalesforceSchemaWizard constructor comment.
-     * 
-     * @param workbench
-     * @param creation
-     * @param forceReadOnly
-     */
     public SalesforceSchemaWizard(IWorkbench workbench, boolean creation, ISelection selection, String[] existingNames,
             boolean isSinglePageOnly) {
         super(workbench, creation);

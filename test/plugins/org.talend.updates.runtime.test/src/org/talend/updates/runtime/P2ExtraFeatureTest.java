@@ -21,10 +21,6 @@ import org.talend.commons.utils.VersionUtils;
 import org.talend.updates.runtime.model.IuP2ExtraFeature;
 import org.talend.updates.runtime.model.P2ExtraFeature;
 
-
-/**
- * DOC Talend  class global comment. Detailed comment
- */
 public class P2ExtraFeatureTest {
 
     @Test

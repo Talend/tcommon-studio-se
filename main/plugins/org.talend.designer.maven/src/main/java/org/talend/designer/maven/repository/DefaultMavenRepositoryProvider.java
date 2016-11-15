@@ -23,9 +23,6 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.designer.maven.DesignerMavenPlugin;
 import org.talend.utils.io.FilesUtils;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public final class DefaultMavenRepositoryProvider {
 
     public static final String PATH_REPO = "maven_repository"; //$NON-NLS-1$

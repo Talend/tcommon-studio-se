@@ -15,13 +15,6 @@ package org.talend.core.model.metadata;
 import java.util.List;
 import java.util.Set;
 
-/**
- * 
- * DOC amaumont TypesManager class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public class Dbms {
 
 	private String id;

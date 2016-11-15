@@ -33,9 +33,6 @@ import org.talend.core.model.properties.RulesItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 
-/**
- * DOC gldu class global comment. Detailed comment
- */
 public class AddRulesGlobalMapMigrationTask extends AbstractItemMigrationTask {
 
     public List<ERepositoryObjectType> getTypes() {
@@ -44,11 +41,6 @@ public class AddRulesGlobalMapMigrationTask extends AbstractItemMigrationTask {
         return toReturn;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.migration.AbstractItemMigrationTask#execute(org.talend.core.model.properties.Item)
-     */
     @Override
     public ExecutionResult execute(Item item) {
         // TODO Auto-generated method stub
@@ -61,13 +53,7 @@ public class AddRulesGlobalMapMigrationTask extends AbstractItemMigrationTask {
         }
     }
 
-    /**
-     * DOC gldu Comment method "addNewColumn".
-     * 
-     * @param item
-     */
     private void addNewColumn(Item item) {
-        // TODO Auto-generated method stub
         Workbook wb;
         if (!((RulesItem) item).getExtension().equals(".xls")) {
             StringBuffer buffer = new StringBuffer();
@@ -123,11 +109,6 @@ public class AddRulesGlobalMapMigrationTask extends AbstractItemMigrationTask {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.migration.IProjectMigrationTask#getOrder()
-     */
     public Date getOrder() {
         GregorianCalendar gc = new GregorianCalendar(2010, 7, 05, 17, 41, 10);
         return gc.getTime();

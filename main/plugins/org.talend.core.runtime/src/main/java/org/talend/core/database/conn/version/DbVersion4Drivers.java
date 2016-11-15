@@ -19,9 +19,6 @@ import java.util.Set;
 
 import org.talend.core.database.EDatabaseTypeName;
 
-/**
- * cli class global comment. Detailed comment
- */
 class DbVersion4Drivers {
 
     private List<EDatabaseTypeName> dbTypes = new ArrayList<EDatabaseTypeName>();

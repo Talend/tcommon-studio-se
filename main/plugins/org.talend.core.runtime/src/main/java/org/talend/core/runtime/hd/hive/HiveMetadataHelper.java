@@ -24,9 +24,6 @@ import org.talend.core.runtime.hd.IDistributionsManager;
 import org.talend.core.runtime.hd.IHDistribution;
 import org.talend.core.runtime.hd.IHDistributionVersion;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class HiveMetadataHelper {
 
     private static IHadoopDistributionService getHadoopDistributionService() {

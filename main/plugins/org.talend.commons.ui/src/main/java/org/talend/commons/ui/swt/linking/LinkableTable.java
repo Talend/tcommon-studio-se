@@ -29,12 +29,6 @@ import org.talend.commons.ui.runtime.ws.WindowSystem;
 import org.talend.commons.ui.swt.drawing.background.IBackgroundRefresher;
 import org.talend.commons.ui.swt.tableviewer.TableViewerCreator;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public class LinkableTable implements ILinkableControl {
 
     private Table table;
@@ -54,12 +48,6 @@ public class LinkableTable implements ILinkableControl {
         this(controlsLinker, backgroundRefresher, table, bgDrawableComposite, true);
     }
 
-    /**
-     * DOC amaumont LinkableTable constructor comment.
-     * 
-     * @param table
-     * @param bgDrawableComposite TODO
-     */
     public LinkableTable(IControlsLinker controlsLinker, IBackgroundRefresher backgroundRefresher, Table table,
             BgDrawableComposite bgDrawableComposite, boolean forceDrawLinksGtk) {
         super();
@@ -71,18 +59,10 @@ public class LinkableTable implements ILinkableControl {
         init();
     }
 
-    /**
-     * DOC amaumont Comment method "init".
-     */
     private void init() {
         addListeners();
     }
 
-    /**
-     * Getter for table.
-     * 
-     * @return the table
-     */
     public Table getTable() {
         return this.table;
     }
@@ -97,9 +77,6 @@ public class LinkableTable implements ILinkableControl {
 
     private SelectionListener scrollListener;
 
-    /**
-     * DOC amaumont Comment method "addListeners".
-     */
     private void addListeners() {
 
         // to correct graphic bug under Linux-GTK when the wizard is opened the first time

@@ -41,9 +41,6 @@ import org.talend.core.runtime.hd.hive.HiveMetadataHelper;
 import org.talend.repository.ProjectManager;
 import org.talend.utils.io.FilesUtils;
 
-/**
- * DOC ycbai class global comment. Detailed comment
- */
 public class ClassLoaderFactory {
 
     public final static String EXTENSION_POINT_ID = "org.talend.core.runtime.classloader_provider"; //$NON-NLS-1$

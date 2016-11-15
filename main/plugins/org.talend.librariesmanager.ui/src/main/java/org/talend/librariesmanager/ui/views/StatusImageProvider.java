@@ -18,12 +18,6 @@ import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.commons.ui.runtime.swt.tableviewer.behavior.IColumnImageProvider;
 import org.talend.core.model.general.ModuleNeeded;
 
-/**
- * DOC smallet class global comment. Detailed comment <br/>
- * 
- * $Id: StatusImageProvider.java 1754 2007-02-01 09:46:26Z plegall $
- * 
- */
 public class StatusImageProvider implements IColumnImageProvider {
 
     public Image getImage(Object bean) {

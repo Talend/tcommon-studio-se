@@ -21,9 +21,6 @@ import org.eclipse.core.runtime.Platform;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.model.process.IProcess2;
 
-/**
- * DOC nrousseau class global comment. Detailed comment
- */
 public final class ReplaceNodesInProcessProvider {
 
     public static final String EXTENSION_ID = "org.talend.designer.core.replace_nodes"; //$NON-NLS-1$

@@ -16,10 +16,6 @@ import java.util.ResourceBundle;
 
 import org.talend.presentation.onboarding.utils.OnBoardingConstants;
 
-/**
- * created by cmeng on Sep 15, 2015 Detailed comment
- *
- */
 public class Messages extends MessagesCore {
 
     private static final String PLUGIN_ID = OnBoardingConstants.PLUGIN_ID;

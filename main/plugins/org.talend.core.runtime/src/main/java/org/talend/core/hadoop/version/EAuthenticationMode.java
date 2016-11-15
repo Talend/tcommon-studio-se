@@ -15,10 +15,6 @@ package org.talend.core.hadoop.version;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * created by ycbai on 2013-3-15 Detailed comment
- * 
- */
 public enum EAuthenticationMode {
 
     USERNAME("Username"), //$NON-NLS-1$

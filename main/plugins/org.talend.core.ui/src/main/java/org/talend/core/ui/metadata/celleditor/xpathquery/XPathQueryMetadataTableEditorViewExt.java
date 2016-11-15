@@ -25,9 +25,6 @@ import org.talend.core.model.metadata.IMetadataColumn;
 import org.talend.core.ui.i18n.Messages;
 import org.talend.core.ui.metadata.editor.MetadataTableEditorView;
 
-/**
- * cli class global comment. Detailed comment
- */
 public class XPathQueryMetadataTableEditorViewExt extends MetadataTableEditorView {
 
     public static final String ID_COLUMN_XPATH_QUERY = "ID_COLUMN_XPATH_QUERY"; //$NON-NLS-1$
@@ -45,7 +42,6 @@ public class XPathQueryMetadataTableEditorViewExt extends MetadataTableEditorVie
     @Override
     protected void createColumns(TableViewerCreator<IMetadataColumn> tableViewerCreator, Table table) {
         super.createColumns(tableViewerCreator, table);
-        // ////////////////////////////////////////////
         configureXPathQueryColumns(tableViewerCreator);
     }
 

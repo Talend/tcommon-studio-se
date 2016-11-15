@@ -21,11 +21,6 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.widgets.Table;
 import org.talend.commons.ui.swt.extended.table.ExtendedTableModel;
 
-/**
- * 
- * created by ycbai on 2015年1月4日 Detailed comment
- *
- */
 public class PropertiesFieldModel extends ExtendedTableModel<Map<String, Object>> {
 
     public PropertiesFieldModel(String name) {

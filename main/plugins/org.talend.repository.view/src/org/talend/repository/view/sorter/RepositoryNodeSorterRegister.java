@@ -23,9 +23,6 @@ import org.eclipse.core.runtime.SafeRunner;
 import org.talend.core.utils.RegistryReader;
 import org.talend.repository.RepositoryViewPlugin;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public final class RepositoryNodeSorterRegister extends RegistryReader {
 
     private static final Logger log = Logger.getLogger(RepositoryNodeSorterRegister.class);

@@ -22,9 +22,6 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
-/**
- * DOC bqian class global comment. Detailed comment
- */
 public class DB2ForZosDataBaseMetadata extends PackageFakeDatabaseMetadata {
 
     private static final String[] TABLE_META = { "ID", "TABLE_SCHEM", "TABLE_NAME", "TABLE_TYPE", "REMARKS" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$

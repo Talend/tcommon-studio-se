@@ -22,10 +22,6 @@ import org.eclipse.nebula.widgets.nattable.ui.binding.UiBindingRegistry;
 import org.eclipse.nebula.widgets.nattable.ui.matcher.CellEditorMouseEventMatcher;
 import org.eclipse.swt.events.MouseEvent;
 
-/**
- * created by ldong on Jul 23, 2014 Detailed comment
- * 
- */
 public class ContextSelectBindings extends DefaultEditBindings {
 
     private IDataProvider dataProvider;
@@ -38,14 +34,6 @@ public class ContextSelectBindings extends DefaultEditBindings {
     public void configureUiBindings(UiBindingRegistry pUiBindingRegistry) {
         CellEditorMouseEventMatcher mouseEventMatcher = new CellEditorMouseEventMatcher() {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see
-             * org.eclipse.nebula.widgets.nattable.ui.matcher.CellEditorMouseEventMatcher#matches(org.eclipse.nebula
-             * .widgets.nattable.NatTable, org.eclipse.swt.events.MouseEvent,
-             * org.eclipse.nebula.widgets.nattable.layer.LabelStack)
-             */
             @Override
             public boolean matches(NatTable natTable, MouseEvent event, LabelStack regionLabels) {
                 return false;

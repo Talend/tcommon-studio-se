@@ -15,12 +15,6 @@ package org.talend.commons.ui.swt.dnd;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTargetEvent;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id: DNDKeyAnalyzer.java 7038 2007-11-15 14:05:48Z plegall $
- * 
- */
 public class DNDKeyAnalyzer {
 
     private boolean ctrlPressed;

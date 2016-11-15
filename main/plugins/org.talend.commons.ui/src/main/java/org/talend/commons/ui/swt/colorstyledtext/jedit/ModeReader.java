@@ -25,12 +25,6 @@ import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.commons.ui.runtime.i18n.Messages;
 import org.talend.commons.ui.swt.colorstyledtext.scanner.ColoringScanner;
 
-/**
- * DOC nrousseau class global comment. Detailed comment <br/>
- * 
- * $Id: ModeReader.java 7038 2007-11-15 14:05:48Z plegall $
- * 
- */
 public class ModeReader {
 
     protected ISyntaxListener listener;

@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.designer.runprocess;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- */
 public interface IProcessMessage {
 
     /**

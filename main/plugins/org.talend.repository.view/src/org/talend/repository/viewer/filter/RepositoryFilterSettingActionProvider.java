@@ -19,9 +19,6 @@ import org.eclipse.ui.navigator.ICommonActionExtensionSite;
 import org.talend.repository.i18n.Messages;
 import org.talend.repository.viewer.dialog.RepositoryFilterSettingDialog;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class RepositoryFilterSettingActionProvider extends AbstractRepositoryFilterActionProvider {
 
     private static final String DOT = "..."; //$NON-NLS-1$
@@ -32,16 +29,11 @@ public class RepositoryFilterSettingActionProvider extends AbstractRepositoryFil
 
     @Override
     protected void fillMenus(IMenuManager menuManager) {
-
         FilterSettingAction action = new FilterSettingAction(
                 Messages.getString("RepositoryFilterSettingActionProvider.FilterSetting") + DOT); //$NON-NLS-1$
         menuManager.add(action);
     }
 
-    /**
-     * 
-     * DOC ggu FilterSettingAction class global comment. Detailed comment
-     */
     class FilterSettingAction extends Action {
 
         public FilterSettingAction(String label) {

@@ -14,9 +14,6 @@ package org.talend.core.model.runprocess;
 
 import org.talend.core.IService;
 
-/**
- * DOC talend class global comment. Detailed comment
- */
 public interface IDebugProcessService extends IService {
 
     public void debugProcess();

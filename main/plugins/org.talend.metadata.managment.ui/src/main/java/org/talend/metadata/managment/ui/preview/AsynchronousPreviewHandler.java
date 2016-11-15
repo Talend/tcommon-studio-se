@@ -18,10 +18,6 @@ import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.core.repository.model.preview.IPreview;
 
 /**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
  * @param <R> result of preview
  */
 public class AsynchronousPreviewHandler<R> {
@@ -34,19 +30,11 @@ public class AsynchronousPreviewHandler<R> {
 
     private boolean previewStopped;
 
-    /**
-     * DOC amaumont PreviewHandler constructor comment.
-     */
     public AsynchronousPreviewHandler(IPreview preview) {
         super();
         this.preview = preview;
     }
 
-    /**
-     * DOC amaumont Comment method "launchSynchronousPreview".
-     * 
-     * @throws CoreException
-     */
     public void launchPreview(final ProcessDescription processDescription, final String type) {
 
         this.result = null;
@@ -55,11 +43,6 @@ public class AsynchronousPreviewHandler<R> {
 
         Thread thread = new Thread() {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see java.lang.Thread#run()
-             */
             @SuppressWarnings("unchecked")//$NON-NLS-1$
             @Override
             public void run() {

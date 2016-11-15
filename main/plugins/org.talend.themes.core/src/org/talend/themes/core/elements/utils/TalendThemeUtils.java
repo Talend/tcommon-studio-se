@@ -14,10 +14,6 @@ package org.talend.themes.core.elements.utils;
 
 import org.talend.themes.core.elements.constants.TalendThemeConstants;
 
-/**
- * created by cmeng on Jun 30, 2015 Detailed comment
- *
- */
 public class TalendThemeUtils {
 
     public static boolean isThemeFromTalend(String themeId) {

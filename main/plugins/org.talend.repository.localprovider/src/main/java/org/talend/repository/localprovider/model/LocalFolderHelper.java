@@ -17,12 +17,6 @@ import org.talend.core.model.properties.Project;
 import org.talend.core.model.properties.User;
 import org.talend.core.repository.model.FolderHelper;
 
-/**
- * DOC matthieu class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public class LocalFolderHelper extends FolderHelper {
 
     protected LocalFolderHelper(Project project, User connectedUser) {

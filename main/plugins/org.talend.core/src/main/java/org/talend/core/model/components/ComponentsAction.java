@@ -16,10 +16,6 @@ import org.talend.core.model.components.filters.IComponentFilter;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 
-/**
- * created by rdubois on 9 juil. 2015 Detailed comment
- *
- */
 public class ComponentsAction {
 
     public static NodeType search(ProcessType processType, IComponentFilter filter) {

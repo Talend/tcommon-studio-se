@@ -14,9 +14,6 @@ package org.talend.rcp.exportLogs;
 
 import org.eclipse.jface.wizard.Wizard;
 
-/**
- * DOC wzhang class global comment. Detailed comment
- */
 public class ExportLogsWizard extends Wizard {
 
     private ExportLogsWizardPage logPage;

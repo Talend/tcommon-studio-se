@@ -28,9 +28,6 @@ import org.talend.core.model.metadata.IMetadataConnection;
 import org.talend.core.runtime.hd.IHDistribution;
 import org.talend.core.runtime.hd.IHDistributionVersion;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class ImpalaConnectionManager extends DataBaseConnectionManager {
 
     private final static ImpalaConnectionManager manager = new ImpalaConnectionManager();

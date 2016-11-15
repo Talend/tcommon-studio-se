@@ -26,20 +26,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.talend.updates.runtime.i18n.Messages;
 
-/**
- * created by sgandon on 26 sept. 2013 Detailed comment
- * 
- */
 class UpdateStudioWizardDialog extends WizardDialog {
 
-    /**
-     * DOC sgandon WizardDialogExtension constructor comment.
-     * 
-     * @param parentShell
-     * @param newWizard
-     * @param updateStudioWizard TODO
-     * @param shell
-     */
     UpdateStudioWizardDialog(UpdateStudioWizard updateStudioWizard, Shell parentShell) {
         super(parentShell, updateStudioWizard);
     }

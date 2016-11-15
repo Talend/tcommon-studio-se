@@ -16,19 +16,12 @@ import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.core.ui.CoreUIPlugin;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class CoreUIPreferenceInitializer extends AbstractPreferenceInitializer {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer#initializeDefaultPreferences()
-     */
     @Override
     public void initializeDefaultPreferences() {
         // As default
         CoreUIPlugin.getDefault().getPreferenceStore().setDefault(ITalendCorePrefConstants.AS400_SQL_SEG, true);
     }
+
 }

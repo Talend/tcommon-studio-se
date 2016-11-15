@@ -16,11 +16,6 @@ import java.util.Date;
 
 import org.talend.utils.IdGenerator;
 
-/**
- * 
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- */
 public final class TriggerNameHelper {
 
     private static final String P_TASK = "_task";

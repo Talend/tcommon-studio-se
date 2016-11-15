@@ -39,9 +39,6 @@ import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.model.RepositoryNodeUtilities;
 import org.talend.repository.ui.views.IRepositoryView;
 
-/**
- * DOC hwang class global comment. Detailed comment
- */
 public class CreateMDMConnectionAction extends AbstractCreateAction {
 
     // protected static Logger log = Logger.getLogger(CreateMDMConnectionAction.class);

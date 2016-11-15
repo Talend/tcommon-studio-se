@@ -48,12 +48,6 @@ import org.talend.repository.model.IRepositoryNode.EProperties;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * DOC smallet class global comment. Detailed comment <br/>
- * 
- * $Id: RepositoryDoubleClickAction.java 77219 2012-01-24 01:14:15Z mhirt $
- * 
- */
 public class RepoDoubleClickAction extends Action {
 
     private List<ITreeContextualAction> contextualsActions = new ArrayList<ITreeContextualAction>();

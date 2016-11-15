@@ -12,15 +12,6 @@
 // ============================================================================
 package org.talend.core.model.metadata;
 
-
-
-/**
- * 
- * DOC amaumont TypesManager class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public class MappingType {
 
     private String dbType;
@@ -29,11 +20,6 @@ public class MappingType {
 
     private Boolean defaultSelected;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -44,11 +30,6 @@ public class MappingType {
         return result;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -70,76 +51,43 @@ public class MappingType {
         return true;
     }
 
-    /**
-     * Getter for dbmsType.
-     * 
-     * @return the dbmsType
-     */
     public String getDbType() {
         return this.dbType;
     }
 
-    /**
-     * Sets the dbmsType.
-     * 
-     * @param dbmsType the dbmsType to set
-     */
     public void setDbType(String dbmsType) {
         this.dbType = dbmsType;
     }
 
-    /**
-     * Getter for defaultSelected.
-     * 
-     * @return the defaultSelected
-     */
     public Boolean getDefaultSelected() {
         return this.defaultSelected;
     }
 
-    /**
-     * Sets the defaultSelected.
-     * 
-     * @param defaultSelected the defaultSelected to set
-     */
     public void setDefaultSelected(Boolean defaultSelected) {
         this.defaultSelected = defaultSelected;
     }
 
-    /**
-     * Getter for languageType.
-     * 
-     * @return the languageType
-     */
     public String getTalendType() {
         return this.talendType;
     }
 
-    /**
-     * Sets the languageType.
-     * 
-     * @param talendTypeName the languageType to set
-     */
     public void setTalendType(String talendTypeName) {
         this.talendType = talendTypeName;
     }
 
     /**
-         * toString method: creates a String representation of the object
-         * @return the String representation
-         * @author 
-         */
-        public String toString() {
-            StringBuffer buffer = new StringBuffer();
-            buffer.append("MappingType["); //$NON-NLS-1$
-            buffer.append("dbmsType = ").append(dbType); //$NON-NLS-1$
-            buffer.append(", talendType = ").append(talendType); //$NON-NLS-1$
-            buffer.append(", defaultSelected = ").append(defaultSelected); //$NON-NLS-1$
-            buffer.append("]"); //$NON-NLS-1$
-            return buffer.toString();
-        }
+     * toString method: creates a String representation of the object
+     * @return the String representation
+     */
+    public String toString() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("MappingType["); //$NON-NLS-1$
+        buffer.append("dbmsType = ").append(dbType); //$NON-NLS-1$
+        buffer.append(", talendType = ").append(talendType); //$NON-NLS-1$
+        buffer.append(", defaultSelected = ").append(defaultSelected); //$NON-NLS-1$
+        buffer.append("]"); //$NON-NLS-1$
+        return buffer.toString();
+    }
 
-    
-    
 }
 

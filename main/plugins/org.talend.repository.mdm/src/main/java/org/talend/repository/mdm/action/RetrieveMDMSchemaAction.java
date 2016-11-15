@@ -41,9 +41,6 @@ import org.talend.repository.model.IRepositoryNode.EProperties;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.ui.views.IRepositoryView;
 
-/**
- * DOC hwang class global comment. Detailed comment
- */
 public class RetrieveMDMSchemaAction extends AbstractCreateAction {
 
     protected static final int WIZARD_WIDTH = 800;

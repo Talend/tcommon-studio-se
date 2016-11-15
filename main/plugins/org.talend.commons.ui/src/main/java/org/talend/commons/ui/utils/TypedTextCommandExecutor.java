@@ -34,12 +34,6 @@ import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.commons.ui.runtime.utils.ControlUtils;
 import org.talend.commons.ui.swt.colorstyledtext.ColorStyledText;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id: TypedTextCommandExecutor.java 7038 2007-11-15 14:05:48Z plegall $
- * 
- */
 public class TypedTextCommandExecutor {
 
     private static final int KEY_CODE_REDO = 121; // 'y'

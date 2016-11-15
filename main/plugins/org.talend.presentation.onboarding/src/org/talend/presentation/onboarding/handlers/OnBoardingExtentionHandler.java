@@ -24,10 +24,6 @@ import org.talend.presentation.onboarding.interfaces.IOnBoardingJsonI18n;
 import org.talend.presentation.onboarding.ui.runtimedata.OnBoardingRegistedResource;
 import org.talend.presentation.onboarding.utils.OnBoardingUtils;
 
-/**
- * created by cmeng on Sep 21, 2015 Detailed comment
- *
- */
 public class OnBoardingExtentionHandler {
 
     public static final String RESOURCE_EXTENTION_POINT_ID = "org.talend.presentation.onboarding.resource"; //$NON-NLS-1$

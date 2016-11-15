@@ -64,12 +64,6 @@ import org.talend.core.ui.services.IComponentsLocalProviderService;
 import org.talend.core.utils.KeywordsValidator;
 import org.talend.designer.core.IDesignerCoreService;
 
-/**
- * yzhang class global comment. Detail led comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ææäº, 29 ä¹æ 2006) nrousseau $
- * 
- */
 public class ComponentsFormatPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
     private Button buttonAdd, buttonRemove;
@@ -759,12 +753,6 @@ public class ComponentsFormatPreferencePage extends PreferencePage implements IW
         super.performDefaults();
     }
 
-    /**
-     * yzhang ComponentsFormatPreferencePage class global comment. Detailed comment <br/>
-     * 
-     * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ææäº, 29 ä¹æ 2006) nrousseau $
-     * 
-     */
     private class DefaultFormat {
 
         private String hint, label, connection;
@@ -777,14 +765,7 @@ public class ComponentsFormatPreferencePage extends PreferencePage implements IW
 
         public static final int CONNECTION = 3;
 
-        /**
-         * yzhang Comment method "equals".
-         * 
-         * @param obj
-         * @return
-         */
         public int equals(DefaultFormat obj) {
-
             if (!obj.getConnection().equals(connection)) {
                 return CONNECTION;
             } else if (!obj.getHint().equals(hint)) {

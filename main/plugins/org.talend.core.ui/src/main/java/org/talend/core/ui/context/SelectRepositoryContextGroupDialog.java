@@ -47,9 +47,6 @@ import org.talend.core.model.properties.ContextItem;
 import org.talend.core.ui.i18n.Messages;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class SelectRepositoryContextGroupDialog extends SelectionDialog {
 
     private static final String DEFAULTMESAGE = Messages.getString("SelectRepositoryContextGroupDialog.Messages"); //$NON-NLS-1$
@@ -342,11 +339,6 @@ public class SelectRepositoryContextGroupDialog extends SelectionDialog {
         super.okPressed();
     }
 
-    /**
-     * 
-     * DOC ggu ContextTreeContentProvider class global comment. Detailed comment
-     */
-
     class ContextTreeContentProvider implements ITreeContentProvider {
 
         @Override
@@ -389,17 +381,10 @@ public class SelectRepositoryContextGroupDialog extends SelectionDialog {
 
     }
 
-    /**
-     * 
-     * ggu ContextTreeLabelProvider class global comment. Detailed comment
-     */
     class ContextTreeLabelProvider implements ILabelProvider {
 
         @Override
         public Image getImage(Object element) {
-            // if (element instanceof ContextItem) {
-            // return ImageProvider.getImageDesc(ECoreImage.CONTEXT_ICON).createImage();
-            // }
             return null;
         }
 
@@ -448,10 +433,6 @@ public class SelectRepositoryContextGroupDialog extends SelectionDialog {
 
     }
 
-    /**
-     * 
-     * ggu ContextViewerFilter class global comment. Detailed comment
-     */
     class ContextViewerFilter extends ViewerFilter {
 
         @Override

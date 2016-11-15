@@ -20,10 +20,6 @@ import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.internal.provisional.action.CoolBarManager2;
 import org.eclipse.swt.SWT;
 
-/**
- * created by nrousseau on May 15, 2013 Detailed comment
- * 
- */
 @Deprecated
 public class TalendCoolBarManager extends CoolBarManager2 {
 

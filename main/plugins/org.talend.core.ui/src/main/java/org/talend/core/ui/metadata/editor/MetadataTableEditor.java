@@ -28,12 +28,6 @@ import org.talend.core.ui.i18n.Messages;
 import org.talend.core.ui.preference.metadata.MetadataTypeLengthConstants;
 import org.talend.core.ui.services.IDesignerCoreUIService;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id: MetadataTableEditor.java 51244 2010-11-15 03:28:34Z cli $
- * 
- */
 public class MetadataTableEditor extends ExtendedTableModel<IMetadataColumn> {
 
     private IMetadataTable metadataTable;

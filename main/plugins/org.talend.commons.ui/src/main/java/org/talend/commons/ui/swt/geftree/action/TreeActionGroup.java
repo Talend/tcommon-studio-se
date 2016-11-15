@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.commons.ui.swt.geftree.action;
 
-/**
- * cli class global comment. Detailed comment
- */
 public class TreeActionGroup {
 
     private final String id;

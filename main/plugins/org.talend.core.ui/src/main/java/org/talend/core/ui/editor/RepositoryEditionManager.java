@@ -39,12 +39,6 @@ import org.talend.core.repository.ui.editor.RepositoryEditorInput;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.repository.model.RepositoryConstants;
 
-/**
- * DOC mhelleboid class global comment. Detailed comment <br/>
- * 
- * $Id: RepositoryEditionManager.java 295 2006-11-02 08:28:03 +0000 (星期四, 02 十一月 2006) smallet $
- * 
- */
 public class RepositoryEditionManager {
 
     private static RepositoryEditionManager instance = new RepositoryEditionManager();

@@ -27,9 +27,6 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.log4j.Logger;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
-/**
- * created by zwli on Feb 27, 2013 Detailed comment
- */
 public class AES {
 
     static {

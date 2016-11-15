@@ -22,9 +22,6 @@ import org.osgi.framework.ServiceReference;
 import org.talend.commons.exception.CommonExceptionHandler;
 import org.talend.commons.runtime.service.PatchComponent;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class PatchComponentHelper {
 
     public static PatchComponent getPatchComponent() {

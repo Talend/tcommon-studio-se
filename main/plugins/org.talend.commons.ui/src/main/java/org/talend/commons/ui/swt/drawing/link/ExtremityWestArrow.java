@@ -16,40 +16,16 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public class ExtremityWestArrow extends AbstractExtremityDrawableLink {
 
-    /**
-     * DOC amaumont TipWestArrow constructor comment.
-     * 
-     * @param styleLink
-     */
     public ExtremityWestArrow(IStyleLink styleLink) {
         super(styleLink);
     }
 
-    /**
-     * DOC amaumont TipWestArrow constructor comment.
-     * 
-     * @param styleLink
-     * @param xOffset
-     * @param yOffset
-     */
     public ExtremityWestArrow(IStyleLink styleLink, int xOffset, int yOffset) {
         super(styleLink, xOffset, yOffset);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.drawing.link.ITipLink#draw(org.eclipse.swt.graphics.GC,
-     * org.eclipse.swt.graphics.Point)
-     */
     public void draw(GC gc, Point point) {
         Color previousBackground = gc.getBackground();
         gc.setBackground(styleLink.getForegroundColor());

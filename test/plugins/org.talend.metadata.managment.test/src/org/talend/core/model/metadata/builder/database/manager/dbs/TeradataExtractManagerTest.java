@@ -17,10 +17,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.talend.core.database.EDatabaseTypeName;
 
-/**
- * created by ggu on Jul 6, 2012 Detailed comment
- * 
- */
 public class TeradataExtractManagerTest extends AbstractTest4ExtractManager {
 
     @Before
@@ -29,9 +25,6 @@ public class TeradataExtractManagerTest extends AbstractTest4ExtractManager {
     }
 
     /**
-     * 
-     * DOC ggu Comment method "testGetSchema".
-     * 
      * @see TeradataExtractManager.getSchema(IMetadataConnection)
      */
     @Override
@@ -42,9 +35,6 @@ public class TeradataExtractManagerTest extends AbstractTest4ExtractManager {
     }
 
     /**
-     * 
-     * DOC ggu Comment method "testReturnColumns4DontCreateConnection2TrueSQLMode".
-     * 
      * when " when(metadataConn.isSqlMode()).thenReturn(true)", will use fake metadata
      * 
      * @throws Exception

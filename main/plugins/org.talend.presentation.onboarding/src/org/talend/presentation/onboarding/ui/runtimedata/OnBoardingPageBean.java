@@ -15,10 +15,6 @@ package org.talend.presentation.onboarding.ui.runtimedata;
 import org.eclipse.swt.graphics.Point;
 import org.talend.presentation.onboarding.exceptions.OnBoardingExceptionHandler;
 
-/**
- * created by cmeng on Sep 15, 2015 Detailed comment
- *
- */
 public class OnBoardingPageBean {
 
     public static final String SIZE_SEPERATOR = ","; //$NON-NLS-1$

@@ -18,11 +18,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.talend.core.model.general.Project;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * 
- * created by wchen on 2015年8月14日 Detailed comment
- *
- */
 public interface IGenerateAllDocumentation {
 
     public File generateAllDocListHTML();

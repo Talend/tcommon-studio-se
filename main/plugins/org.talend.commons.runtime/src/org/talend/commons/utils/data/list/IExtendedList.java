@@ -16,10 +16,6 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
  * @param <T> type of beans in list
  */
 public interface IExtendedList<T> extends List<T> {
@@ -30,25 +26,10 @@ public interface IExtendedList<T> extends List<T> {
 
     public void swapElement(T object1, T object2);
 
-    /**
-     * Getter for useEquals.
-     * 
-     * @return the useEquals
-     */
     public boolean isUseEquals();
 
-    /**
-     * Sets the useEquals.
-     * 
-     * @param useEquals the useEquals to set
-     */
     public void setUseEquals(boolean useEquals);
 
-    /**
-     * 
-     * 
-     */
-    @SuppressWarnings("unchecked")
     public void addAll(List<Integer> indices, Collection<? extends T> c);
 
 }

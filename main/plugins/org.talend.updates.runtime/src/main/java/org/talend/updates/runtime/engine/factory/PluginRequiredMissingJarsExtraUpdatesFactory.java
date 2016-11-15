@@ -29,21 +29,10 @@ import org.talend.updates.runtime.i18n.Messages;
 import org.talend.updates.runtime.model.ExtraFeature;
 import org.talend.updates.runtime.model.TalendWebServiceUpdateExtraFeature;
 
-/**
- * created by ggu on Jul 17, 2014 Detailed comment
- *
- */
 public class PluginRequiredMissingJarsExtraUpdatesFactory extends AbstractExtraUpdatesFactory {
 
     private static Logger log = Logger.getLogger(PluginRequiredMissingJarsExtraUpdatesFactory.class);
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.updates.runtime.engine.AbstractExtraUpdatesFactory#retrieveUninstalledExtraFeatures(org.eclipse.core
-     * .runtime.IProgressMonitor, java.util.Set)
-     */
     @Override
     public void retrieveUninstalledExtraFeatures(IProgressMonitor monitor, Set<ExtraFeature> uninstalledExtraFeatures)
             throws Exception {

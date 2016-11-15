@@ -15,12 +15,6 @@ package routines.system;
 import java.io.Serializable;
 import java.util.LinkedHashMap;
 
-/**
- * DOC bchen class global comment. Detailed comment <br/>
- * 
- * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
- */
 public class TraceDataBean implements TraceBean, Serializable {
 
     private static final long serialVersionUID = -4580437449518099406L;

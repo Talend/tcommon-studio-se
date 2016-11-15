@@ -17,20 +17,8 @@ import org.talend.core.language.ECodeLanguage;
 import org.talend.core.language.LanguageManager;
 
 
-/**
- * DOC amaumont  class global comment. Detailed comment
- * <br/>
- *
- * $Id$
- *
- */
 public class PathExtractor {
 
-    /**
-     * DOC amaumont Comment method "extractPath".
-     * @param text
-     * @return 
-     */
     public static String extractPath(String filePathExpression) {
 
         ECodeLanguage currentLanguage = LanguageManager.getCurrentLanguage();

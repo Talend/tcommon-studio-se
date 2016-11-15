@@ -17,24 +17,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.talend.commons.ui.swt.extended.table.AbstractExtendedTableViewer;
 import org.talend.commons.ui.swt.extended.table.ExtendedTableModel;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public abstract class ResetDBTypesPushButtonForExtendedTable extends ResetDBTypesPushButton implements
         IExtendedTablePushButton {
 
     protected String dbmsId;
 
-    /**
-     * DOC amaumont SchemaTargetAddPushButton constructor comment.
-     * 
-     * @param parent
-     * @param dbmsId
-     * @param extendedControlViewer
-     */
     public ResetDBTypesPushButtonForExtendedTable(Composite parent, AbstractExtendedTableViewer extendedTableViewer,
             String dbmsId) {
         super(parent, extendedTableViewer);
@@ -48,11 +35,6 @@ public abstract class ResetDBTypesPushButtonForExtendedTable extends ResetDBType
 
     protected abstract Command getCommandToExecute(ExtendedTableModel extendedTableModel);
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.extended.button.IExtendedTablePushButton#getExtendedTableViewer()
-     */
     public AbstractExtendedTableViewer getExtendedTableViewer() {
         return (AbstractExtendedTableViewer) getExtendedControlViewer();
     }

@@ -20,10 +20,6 @@ import org.eclipse.ui.intro.config.IIntroAction;
 import org.eclipse.ui.intro.config.IIntroURL;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 
-/**
- * 
- * DOC wchen class global comment. Detailed comment
- */
 public class DynamicHtmlURL implements IIntroURL {
 
     private String action = null;

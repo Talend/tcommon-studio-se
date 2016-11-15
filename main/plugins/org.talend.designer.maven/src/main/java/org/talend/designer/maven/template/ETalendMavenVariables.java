@@ -14,9 +14,6 @@ package org.talend.designer.maven.template;
 
 import java.util.Map;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public enum ETalendMavenVariables {
     ProductVersion,
 

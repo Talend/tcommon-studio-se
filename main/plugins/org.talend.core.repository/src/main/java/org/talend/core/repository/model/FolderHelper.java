@@ -40,11 +40,6 @@ import org.talend.repository.model.RepositoryConstants;
 
 /**
  * This helper class contains a set of methods to perform basic operations on FolderItem objects.
- * 
- * DOC tguiu class global comment. Detailed comment <br/>
- * 
- * $Id: FolderHelper.java 44053 2010-06-12 09:14:16Z nma $
- * 
  */
 public abstract class FolderHelper {
 
@@ -52,11 +47,6 @@ public abstract class FolderHelper {
 
     private User connectedUser;
 
-    /**
-     * DOC tguiu FolderHelper constructor comment.
-     * 
-     * @param project
-     */
     protected FolderHelper(Project project, User connectedUser) {
         this.project = project;
         this.connectedUser = connectedUser;

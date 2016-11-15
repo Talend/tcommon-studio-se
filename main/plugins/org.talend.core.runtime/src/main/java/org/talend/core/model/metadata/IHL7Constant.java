@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.core.model.metadata;
 
-/**
- * nrousseau class global comment. Detailed comment
- */
 public interface IHL7Constant {
 
     public static final String REF_TYPE = "-TYPE"; //$NON-NLS-1$

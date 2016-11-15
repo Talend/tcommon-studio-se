@@ -133,13 +133,7 @@ import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
  * Repository factory use by client. Based on implementation provide by extension point system. This class contains all
- * commons treatments done by repository whatever implementation.<br/>
- * 
- * $Id: ProxyRepositoryFactory.java 46606 2010-08-11 08:33:54Z cli $
- * 
- */
-/**
- * DOC Administrator class global comment. Detailed comment
+ * commons treatments done by repository whatever implementation.
  */
 public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 

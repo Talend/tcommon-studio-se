@@ -17,9 +17,6 @@ import java.util.Set;
 
 import org.talend.core.database.EDatabaseTypeName;
 
-/**
- * cli class global comment. Detailed comment
- */
 public class DbVersion4DriversForOracle11 extends DbVersion4Drivers {
 
     public static final String DRIVER_1_6 = "ojdbc6.jar"; //$NON-NLS-1$

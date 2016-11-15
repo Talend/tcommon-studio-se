@@ -17,10 +17,6 @@ import java.util.Map;
 
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 
-/**
- * created by wchen on 2015年11月25日 Detailed comment
- *
- */
 public class ModuleStatusProvider {
 
     static ModuleStatusProvider provider;

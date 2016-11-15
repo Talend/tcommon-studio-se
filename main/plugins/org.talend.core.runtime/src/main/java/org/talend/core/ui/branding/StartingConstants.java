@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.core.ui.branding;
 
-/**
- * 
- * DOC wchen class global comment. Detailed comment
- */
 public class StartingConstants {
 
     public static final String PRODUCT_NAME = "PRODUCT_NAME";

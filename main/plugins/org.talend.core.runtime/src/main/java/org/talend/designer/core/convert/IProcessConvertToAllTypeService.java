@@ -15,10 +15,6 @@ package org.talend.designer.core.convert;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.repository.IRepositoryViewObject;
 
-/**
- * created by hcyi on May 25, 2015 Detailed comment
- *
- */
 public interface IProcessConvertToAllTypeService extends IProcessConvertService {
 
     /**

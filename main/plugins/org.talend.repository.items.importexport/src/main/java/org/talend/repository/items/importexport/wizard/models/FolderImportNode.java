@@ -17,9 +17,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class FolderImportNode extends ImportNode {
 
     private String path;
@@ -33,11 +30,6 @@ public class FolderImportNode extends ImportNode {
         this.path = path;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.items.importexport.ui.wizard.imports.models.IImportNode#getName()
-     */
     @Override
     public String getName() {
         ImportNode parentNode = this.getParentNode();

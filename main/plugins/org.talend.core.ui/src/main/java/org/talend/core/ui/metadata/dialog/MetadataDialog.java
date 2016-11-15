@@ -70,12 +70,6 @@ import org.talend.core.ui.utils.MetaDataDialogUtil;
 import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.designer.core.IDesignerCoreService;
 
-/**
- * DOC nrousseau class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public class MetadataDialog extends Dialog {
 
     private static final String DATABASE_LABEL = "Database"; //$NON-NLS-1$

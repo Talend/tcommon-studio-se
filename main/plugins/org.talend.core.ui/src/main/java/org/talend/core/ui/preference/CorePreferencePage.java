@@ -35,14 +35,9 @@ import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.core.ui.i18n.Messages;
 
 /**
- * DOC msjian class global comment. Detailed comment <br/>
- * 
- * $Id: CorePreferencePage.java TDQ-3990 move from org.talend.core $
- * 
+ * TDQ-3990 move from org.talend.core $
  */
 public class CorePreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
-
-    // private BooleanFieldEditor groupBySource =null;
 
     private List<FieldEditor> fields = new ArrayList<FieldEditor>();
 

@@ -19,19 +19,8 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.nodes.IProjectRepositoryNode;
 
-/**
- * DOC ggu class global comment. Detailed comment <br/>
- * 
- * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
- */
 public abstract class AbstractGeneratedDocRepoViewSeeker extends AbstractRepoViewSeeker {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.repository.seeker.AbstractRepoViewSeeker#getValidationTypes()
-     */
     @Override
     protected List<ERepositoryObjectType> getValidationTypes() {
         List<ERepositoryObjectType> validationTypes = super.getValidationTypes();
@@ -39,13 +28,6 @@ public abstract class AbstractGeneratedDocRepoViewSeeker extends AbstractRepoVie
         return validationTypes;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.repository.seeker.AbstractRepoViewSeeker#getRootTypeRepositoryNodes(org.talend.repository.model
-     * .nodes.IProjectRepositoryNode, org.talend.core.model.repository.ERepositoryObjectType)
-     */
     @Override
     protected List<IRepositoryNode> getRootTypeRepositoryNodes(IProjectRepositoryNode root, ERepositoryObjectType itemType) {
         if (validType(itemType)) {
@@ -54,11 +36,6 @@ public abstract class AbstractGeneratedDocRepoViewSeeker extends AbstractRepoVie
         return Collections.emptyList();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.repository.seeker.AbstractXXXRepoViewSeeker#getPreExpandTypes()
-     */
     @Override
     protected List<ERepositoryObjectType> getPreExpandTypes() {
         List<ERepositoryObjectType> preExpandTypes = super.getPreExpandTypes();

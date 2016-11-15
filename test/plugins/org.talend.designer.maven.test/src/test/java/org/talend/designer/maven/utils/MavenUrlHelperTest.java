@@ -17,9 +17,6 @@ import org.junit.Test;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class MavenUrlHelperTest {
 
     @Test

@@ -19,9 +19,6 @@ import org.apache.commons.lang.StringUtils;
 import org.talend.core.model.process.EConnectionType;
 import org.talend.designer.runprocess.IPerformanceData;
 
-/**
- * DOC zwei class global comment. Detailed comment
- */
 public class IteratePerformance extends CommonPerformance {
 
     private boolean webData;

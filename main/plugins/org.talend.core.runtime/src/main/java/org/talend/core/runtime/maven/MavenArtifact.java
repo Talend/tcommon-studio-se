@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.core.runtime.maven;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class MavenArtifact {
 
     private String repositoryUrl, groupId, artifactId, version, type, classifier, description, url, license, licenseUrl,

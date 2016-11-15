@@ -115,12 +115,6 @@ import orgomg.cwm.objectmodel.core.Package;
 import orgomg.cwm.resource.record.RecordFactory;
 import orgomg.cwm.resource.record.RecordFile;
 
-/**
- * DOC smallet class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public abstract class AbstractCreateTableAction extends AbstractCreateAction {
 
     protected static final int WIZARD_WIDTH = 900;
@@ -129,12 +123,6 @@ public abstract class AbstractCreateTableAction extends AbstractCreateAction {
 
     private static Logger log = Logger.getLogger(AbstractCreateTableAction.class);
 
-    /**
-     * DOC mhelleboid Comment method "handleWizard".
-     * 
-     * @param node
-     * @param wizardDialog
-     */
     protected void handleWizard(RepositoryNode node, WizardDialog wizardDialog) {
         wizardDialog.setPageSize(WIZARD_WIDTH, WIZARD_HEIGHT);
         wizardDialog.create();
@@ -152,12 +140,6 @@ public abstract class AbstractCreateTableAction extends AbstractCreateAction {
         }
     }
 
-    /**
-     * DOC mhelleboid Comment method "handleWizard".
-     * 
-     * @param node
-     * @param wizardDialog
-     */
     protected void handleWizard(RepositoryNode node, WizardDialog wizardDialog, boolean notSetSize) {
         if (!notSetSize) {
             wizardDialog.setPageSize(WIZARD_WIDTH, WIZARD_HEIGHT);
@@ -199,12 +181,6 @@ public abstract class AbstractCreateTableAction extends AbstractCreateAction {
         return string;
     }
 
-    /**
-     * DOC ocarbone Comment method "isUniqLabel".
-     * 
-     * @param label
-     * @return boolean
-     */
     private boolean isUniqLabel(String label) {
         // Find the existings Metadata Name of Node
         String[] existingLabel = getExistingNames();
@@ -225,12 +201,6 @@ public abstract class AbstractCreateTableAction extends AbstractCreateAction {
         ConnectionContextHelper.checkContextMode(item);
     }
 
-    /**
-     * DOC ocarbone Comment method "createFilePositionalTableWizard".
-     * 
-     * @param selection
-     * @return
-     */
     @SuppressWarnings("unchecked")
     protected void createFilePositionalTableWizard(RepositoryNode node, boolean forceReadOnly) {
 

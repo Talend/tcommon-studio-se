@@ -32,9 +32,6 @@ import org.talend.repository.model.IRepositoryNode;
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.resource.relational.Catalog;
 
-/**
- * DOC klliu class global comment. Detailed comment
- */
 public class MetadataCatalogRepositoryObject extends MetadataCatalog implements ISubRepositoryObject {
 
     private final IRepositoryViewObject viewObject;

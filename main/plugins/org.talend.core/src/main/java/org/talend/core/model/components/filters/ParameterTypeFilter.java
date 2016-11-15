@@ -15,30 +15,15 @@ package org.talend.core.model.components.filters;
 import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 
-/**
- * yzhang class global comment. Detailed comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
- * 
- */
 public class ParameterTypeFilter implements IComponentFilter {
 
     private String parameterTypeName;
 
-    /**
-     * yzhang ParameterTypeFilter constructor comment.
-     */
     public ParameterTypeFilter(String name) {
         this.parameterTypeName = name;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.components.filters.IComponentFilter#accept(org.talend.designer.core.model.utils.emf.talendfile.NodeType)
-     */
     public boolean accept(NodeType node) {
-
         for (Object objElementParameter : node.getElementParameter()) {
             ElementParameterType elementParameterType = (ElementParameterType) objElementParameter;
             if (elementParameterType.getName().equals(parameterTypeName)) {
@@ -46,6 +31,5 @@ public class ParameterTypeFilter implements IComponentFilter {
             }
         }
         return false;
-
     }
 }

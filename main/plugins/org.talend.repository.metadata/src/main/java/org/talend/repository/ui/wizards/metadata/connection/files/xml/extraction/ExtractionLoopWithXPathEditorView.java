@@ -31,10 +31,7 @@ import org.talend.core.ui.metadata.editor.XmlExtractorLoopModel;
 import org.talend.repository.metadata.i18n.Messages;
 
 /**
- * DOC amaumont class global comment. Detailed comment <br/>
  * TGU same purpose as TargetSchemaTableEditorView but uses EMF model directly
- * 
- * $Id: XPathNodeSchemaEditorView.java 904 2006-12-07 17:24:05Z amaumont $
  * 
  */
 public class ExtractionLoopWithXPathEditorView extends AbstractDataTableEditorView<XmlXPathLoopDescriptor> {
@@ -55,13 +52,6 @@ public class ExtractionLoopWithXPathEditorView extends AbstractDataTableEditorVi
         this(model, parent, SWT.NONE, false);
     }
 
-    /**
-     * TargetSchemaTableEditorView2 constructor comment.
-     * 
-     * @param parent
-     * @param styleChild
-     * @param showDbTypeColumn
-     */
     public ExtractionLoopWithXPathEditorView(XmlExtractorLoopModel model, Composite parent, int styleChild,
             boolean showDbTypeColumn) {
         super(parent, styleChild, model);

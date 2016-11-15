@@ -22,10 +22,6 @@ import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.helper.TableHelper;
 import org.talend.metadata.managment.ui.wizard.AbstractForm;
 
-/**
- * DOC Administrator class global comment. Detailed comment <br/>
- * 
- */
 public class GenericSchemaWizardPage extends WizardPage {
 
     private ConnectionItem connectionItem;
@@ -38,14 +34,6 @@ public class GenericSchemaWizardPage extends WizardPage {
 
     private boolean isRepositoryObjectEditable;
 
-    /**
-     * DOC ocarbone DelimitedFileWizardPage constructor comment.
-     * 
-     * @param step
-     * @param connection
-     * @param isRepositoryObjectEditable
-     * @param existingNames
-     */
     public GenericSchemaWizardPage(int step, ConnectionItem connectionItem, boolean isRepositoryObjectEditable,
             String[] existingNames) {
         super("wizardPage"); //$NON-NLS-1$
@@ -62,13 +50,6 @@ public class GenericSchemaWizardPage extends WizardPage {
     public void createControl(final Composite parent) {
         currentComposite = null;
 
-        // if (step == 1) {
-        // currentComposite = new DelimitedFileStep1Form(parent, connectionItem, existingNames);
-        // }
-        // else if (step == 2) {
-        // currentComposite = new DelimitedFileStep2Form(parent, connectionItem);
-        // currentComposite.setWizardPage(this);
-        // } else
         if (step == 2) {
             MetadataTable metadataTable = ConnectionHelper.getTables(connectionItem.getConnection())
                     .toArray(new MetadataTable[0])[0];

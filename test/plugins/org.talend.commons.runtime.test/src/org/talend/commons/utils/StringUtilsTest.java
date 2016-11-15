@@ -16,9 +16,6 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class StringUtilsTest {
 
     @SuppressWarnings("nls")

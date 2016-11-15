@@ -25,8 +25,6 @@ import org.talend.commons.ui.swt.extended.table.ExtendedTableModel;
 import org.talend.commons.ui.swt.tableviewer.TableViewerCreator;
 
 /**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
  * @param <B> beans
  */
 public abstract class AbstractPreferenceTableEditorView<B> extends FieldEditor {
@@ -35,13 +33,6 @@ public abstract class AbstractPreferenceTableEditorView<B> extends FieldEditor {
 
     private AbstractPreferencesHelperForTable preferencesHelper;
 
-    /**
-     * DOC amaumont AbstractPreferenceTableEditor constructor comment.
-     * 
-     * @param name
-     * @param labelText
-     * @param parent
-     */
     public AbstractPreferenceTableEditorView(String name, String labelText, Composite parent,
             AbstractPreferencesHelperForTable preferencesHelper) {
         super(name, labelText, parent);
@@ -67,30 +58,16 @@ public abstract class AbstractPreferenceTableEditorView<B> extends FieldEditor {
         };
     }
 
-    /**
-     * DOC amaumont Comment method "initToolBar".
-     * 
-     * @param extendedTableViewier
-     * @return
-     */
     protected ExtendedToolbarView initToolBar(Composite parent, AbstractExtendedTableViewer<B> extendedTableViewier) {
         return null;
     }
 
-    /*
-     * (non-Javadoc) Method declared on FieldEditor.
-     */
     protected void doLoad() {
         tableEditorView.setExtendedTableModel(createModel());
         String stringList = getPreferenceStore().getString(getPreferenceName());
         loadData(stringList);
     }
 
-    /**
-     * DOC amaumont Comment method "loadData".
-     * 
-     * @param stringList
-     */
     private void loadData(String stringList) {
         if (stringList != null && !"".equals(stringList)) { //$NON-NLS-1$
             List<B> beans = getPreferencesHelper().getBeans(stringList,
@@ -99,9 +76,6 @@ public abstract class AbstractPreferenceTableEditorView<B> extends FieldEditor {
         }
     }
 
-    /*
-     * (non-Javadoc) Method declared on FieldEditor.
-     */
     protected void doLoadDefault() {
         if (getTableViewerCreator() != null) {
             String stringList = getPreferenceStore().getDefaultString(getPreferenceName());
@@ -109,9 +83,6 @@ public abstract class AbstractPreferenceTableEditorView<B> extends FieldEditor {
         }
     }
 
-    /*
-     * (non-Javadoc) Method declared on FieldEditor.
-     */
     protected void doStore() {
         String s = getPreferencesHelper().getStorableString(getList(),
                 getPreferencesHelper().getBeanPropertyAccessors());
@@ -120,18 +91,10 @@ public abstract class AbstractPreferenceTableEditorView<B> extends FieldEditor {
         }
     }
 
-    /**
-     * DOC amaumont Comment method "getList".
-     * 
-     * @return
-     */
     private List<B> getList() {
         return tableEditorView.getExtendedTableModel().getBeansList();
     }
 
-    /*
-     * (non-Javadoc) Method declared on FieldEditor.
-     */
     public int getNumberOfControls() {
         return 1;
     }

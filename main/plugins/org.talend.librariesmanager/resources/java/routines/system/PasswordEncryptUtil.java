@@ -19,9 +19,6 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 
-/**
- * DOC chuang class global comment. Detailed comment
- */
 public class PasswordEncryptUtil {
 
     public static String ENCRYPT_KEY = "Encrypt"; //$NON-NLS-1$

@@ -19,12 +19,6 @@ import java.util.Map;
 
 import org.talend.core.model.metadata.IMetadataTable;
 
-/**
- * DOC nrousseau class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public abstract class AbstractConnection implements IConnection {
 
     private EConnectionType lineStyle;

@@ -27,12 +27,6 @@ import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.core.model.utils.NodeUtil;
 import org.talend.core.model.utils.ParameterValueUtil;
 
-/**
- * DOC nrousseau class global comment. Detailed comment <br/>
- * 
- * $Id: AbstractNode.java 51166 2010-11-11 06:09:01Z wchen $
- * 
- */
 public abstract class AbstractNode implements INode {
 
     private String componentName;

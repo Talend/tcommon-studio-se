@@ -12,11 +12,6 @@
 // ============================================================================
 package org.talend.core.model.components;
 
-/**
- * ftang class global comment. Detailed comment
- * 
- * 
- */
 public enum EReadOnlyComlumnPosition {
     TOP,
     BOTTOM;

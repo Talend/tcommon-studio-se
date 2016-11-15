@@ -20,9 +20,7 @@ import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.CommonExceptionHandler;
 
 /**
- * ggu class global comment. Detailed comment
- * 
- * add the function for debug "--talendDebug"
+ * Add the function for debug "--talendDebug"
  */
 public final class TalendDebugHandler {
 

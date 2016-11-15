@@ -34,9 +34,6 @@ import org.talend.repository.items.importexport.handlers.model.ImportItem;
 import org.talend.repository.items.importexport.manager.ResourcesManager;
 
 /**
- * DOC ggu class global comment. Detailed comment
- * 
- * 
  * most of importers should extends this class, just recommend.
  */
 @SuppressWarnings("rawtypes")

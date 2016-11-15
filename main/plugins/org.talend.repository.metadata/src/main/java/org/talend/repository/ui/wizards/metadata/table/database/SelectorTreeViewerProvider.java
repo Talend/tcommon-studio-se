@@ -43,9 +43,6 @@ import org.talend.metadata.managment.connection.manager.ImpalaConnectionManager;
 import org.talend.metadata.managment.model.MetadataFillFactory;
 import org.talend.utils.sql.ConnectionUtils;
 
-/**
- * wzhang class global comment. Detailed comment
- */
 public class SelectorTreeViewerProvider extends AbstractMetadataExtractorViewProvider {
 
     public SelectorTreeViewerProvider() {

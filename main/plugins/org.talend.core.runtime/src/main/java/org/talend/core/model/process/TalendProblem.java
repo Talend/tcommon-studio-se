@@ -19,10 +19,6 @@ import org.talend.commons.CommonsPlugin;
 import org.talend.core.model.properties.Item;
 import org.talend.core.runtime.CoreRuntimePlugin;
 
-/**
- * DOC xhuang class global comment. Detailed comment <br/>
- * 
- */
 public class TalendProblem extends Problem {
 
     private IMarker marker;

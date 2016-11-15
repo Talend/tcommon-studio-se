@@ -25,10 +25,6 @@ import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 
-/**
- * created by wchen on Apr 24, 2015 Detailed comment
- *
- */
 public class NexusDownloadHelperWithProgress extends DownloadHelperWithProgress {
 
     private ModuleToInstall toInstall;
@@ -37,12 +33,6 @@ public class NexusDownloadHelperWithProgress extends DownloadHelperWithProgress 
         this.toInstall = toInstall;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.download.DownloadHelperWithProgress#download(java.net.URL, java.io.File,
-     * org.eclipse.core.runtime.IProgressMonitor)
-     */
     @Override
     public void download(URL componentUrl, File destination, IProgressMonitor progressMonitor) throws Exception {
         File resolved = null;

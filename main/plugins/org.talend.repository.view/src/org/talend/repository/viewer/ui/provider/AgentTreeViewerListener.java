@@ -22,9 +22,6 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class AgentTreeViewerListener implements ITreeViewerListener {
 
     private Map<String, Boolean> expanded = new HashMap<String, Boolean>();

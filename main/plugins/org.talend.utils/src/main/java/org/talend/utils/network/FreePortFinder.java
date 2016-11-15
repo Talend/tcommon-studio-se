@@ -21,10 +21,6 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- */
 public class FreePortFinder {
 
     private static Logger log = Logger.getLogger(FreePortFinder.class);
@@ -33,11 +29,6 @@ public class FreePortFinder {
 
     private static Object[] randomLock = new Object[0];
 
-    /**
-     * DOC amaumont FreePortFinder constructor comment.
-     * 
-     * @throws IOException
-     */
     public FreePortFinder() {
         super();
     }

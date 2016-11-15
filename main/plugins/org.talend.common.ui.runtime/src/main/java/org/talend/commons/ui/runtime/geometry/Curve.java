@@ -36,13 +36,6 @@ import java.util.ArrayList;
 
 import org.eclipse.swt.graphics.Color;
 
-/**
- * 
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id: Curve.java 7048 2007-11-16 02:36:17Z nrousseau $
- * 
- */
 public abstract class Curve {
 
     public static final float THICKNESS = 2.0f;

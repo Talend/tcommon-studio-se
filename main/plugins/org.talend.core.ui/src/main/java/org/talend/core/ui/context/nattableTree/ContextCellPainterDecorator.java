@@ -16,10 +16,6 @@ import org.eclipse.nebula.widgets.nattable.painter.cell.ICellPainter;
 import org.eclipse.nebula.widgets.nattable.painter.cell.decorator.CellPainterDecorator;
 import org.eclipse.nebula.widgets.nattable.ui.util.CellEdgeEnum;
 
-/**
- * created by ldong on Jul 31, 2014 Detailed comment
- * 
- */
 class ContextCellPainterDecorator extends CellPainterDecorator {
 
     private ContextAutoResizeTextPainter baseCellPainter;
@@ -28,13 +24,6 @@ class ContextCellPainterDecorator extends CellPainterDecorator {
 
     private boolean isChange;
 
-    /**
-     * DOC Talend ContextCellPainterDecorator constructor comment.
-     * 
-     * @param baseCellPainter
-     * @param cellEdge
-     * @param decoratorCellPainter
-     */
     public ContextCellPainterDecorator(ContextAutoResizeTextPainter baseCellPainter, CellEdgeEnum cellEdge,
             ICellPainter decoratorCellPainter) {
         super(baseCellPainter, cellEdge, decoratorCellPainter);

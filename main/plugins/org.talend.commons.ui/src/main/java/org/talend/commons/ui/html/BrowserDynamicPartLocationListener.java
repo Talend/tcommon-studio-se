@@ -16,9 +16,6 @@ import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.LocationEvent;
 import org.eclipse.swt.browser.LocationListener;
 
-/**
- * DOC talend class global comment. Detailed comment
- */
 public class BrowserDynamicPartLocationListener implements LocationListener {
 
     public void changing(LocationEvent event) {
@@ -55,7 +52,6 @@ public class BrowserDynamicPartLocationListener implements LocationListener {
             // res://C:\WINDOWS\System32\shdoclc.dll/navcancl.htm on windows,
             // and file:/// on Linux)
             return;
-
     }
 
 }

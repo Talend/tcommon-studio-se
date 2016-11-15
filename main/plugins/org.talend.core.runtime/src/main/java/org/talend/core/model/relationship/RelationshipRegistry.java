@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.core.model.relationship;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 class RelationshipRegistry {
 
     private final String bundleId, id;

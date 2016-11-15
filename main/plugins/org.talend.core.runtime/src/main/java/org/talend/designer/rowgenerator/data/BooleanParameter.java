@@ -12,30 +12,14 @@
 // ============================================================================
 package org.talend.designer.rowgenerator.data;
 
-/**
- * yzhang class global comment. Detailed comment <br/>
- * 
- * $Id: BooleanParameter.java 下午02:45:32 2007-8-7 +0000 (2007-8-7) yzhang $
- * 
- */
 public class BooleanParameter extends Parameter {
 
     private boolean booleanValue;
 
-    /**
-     * yzhang Comment method "setValue".
-     * 
-     * @param value
-     */
     public void setValue(boolean value) {
         this.booleanValue = value;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.rowgenerator.data.Parameter#sameParameterAs(org.talend.designer.rowgenerator.data.Parameter)
-     */
     @Override
     public boolean sameParameterAs(Parameter obj) {
         if (this == obj) {

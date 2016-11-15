@@ -20,11 +20,6 @@ import java.sql.SQLFeatureNotSupportedException;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-/**
- * 
- * DOC YeXiaowei class global comment. Detailed comment <br/>
- * 
- */
 public class DriverShim implements Driver {
 
     private Driver driver;

@@ -71,20 +71,12 @@ import org.talend.librariesmanager.model.ModulesNeededProvider;
 import org.talend.librariesmanager.prefs.LibrariesManagerUtils;
 import org.talend.repository.ProjectManager;
 
-/**
- * DOC hwang class global comment. Detailed comment
- */
 public class LocalLibraryManagerTest {
 
     private ILibraryManagerService localLibraryManager;
 
     private List<String> notDilivers = new ArrayList<String>();
 
-    /**
-     * DOC Administrator Comment method "setUp".
-     *
-     * @throws java.lang.Exception
-     */
     @Before
     public void setUp() throws Exception {
         localLibraryManager = new LocalLibraryManager();

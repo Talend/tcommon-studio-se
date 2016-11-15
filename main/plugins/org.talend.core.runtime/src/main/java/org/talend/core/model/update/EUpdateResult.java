@@ -14,9 +14,6 @@ package org.talend.core.model.update;
 
 import org.talend.core.runtime.i18n.Messages;
 
-/**
- * ggu class global comment. Detailed comment
- */
 public enum EUpdateResult {
     BUIL_IN(Messages.getString("EUpdateResult.BuiltIn")), //$NON-NLS-1$
     UPDATE(Messages.getString("EUpdateResult.Update")), //$NON-NLS-1$

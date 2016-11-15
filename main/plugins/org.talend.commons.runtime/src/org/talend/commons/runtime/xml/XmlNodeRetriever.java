@@ -47,12 +47,6 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public class XmlNodeRetriever {
 
     public static final String STRING_EMPTY = ""; //$NON-NLS-1$

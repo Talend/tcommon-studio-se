@@ -20,40 +20,18 @@ import org.talend.core.model.metadata.builder.connection.PositionalFileConnectio
 import org.talend.core.model.properties.ConnectionItem;
 import org.talend.core.utils.TalendQuoteUtils;
 
-/**
- * DOC tguiu class global comment. Detailed comment <br/>
- * 
- * $Id: AbstractPositionalFileStepForm.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
- */
 public abstract class AbstractPositionalFileStepForm extends AbstractFileStepForm {
 
-    /**
-     * DOC ocarbone AbstractPositionalFileStepForm constructor comment.
-     * 
-     * @param parent
-     * @param connection
-     * @param existingNames
-     * @param originalName
-     */
     public AbstractPositionalFileStepForm(Composite parent, ConnectionItem connectionItem, String[] existingNames) {
         super(parent, connectionItem, existingNames);
     }
 
-    /**
-     * DOC ocarbone AbstractPositionalFileStepForm constructor comment.
-     * 
-     * @param parent
-     * @param connection
-     * @param existingNames
-     * @param originalName
-     */
     public AbstractPositionalFileStepForm(Composite parent, ConnectionItem connectionItem) {
         this(parent, connectionItem, null);
     }
 
     /**
-     * DOC tguiu AbstractDelimitedFileStepForm constructor comment. Use to step1
+     * Use to step1
      */
     public AbstractPositionalFileStepForm(Composite parent, ConnectionItem connectionItem, MetadataTable metadataTable,
             String[] existingNames) {
@@ -61,7 +39,7 @@ public abstract class AbstractPositionalFileStepForm extends AbstractFileStepFor
     }
 
     /**
-     * DOC ocarbone Comment method "checkPositionalFieldSeparatorValue". return a cleaned value of FieldSeparatorValue
+     * return a cleaned value of FieldSeparatorValue
      * 
      * @param value
      * @return value
@@ -95,14 +73,6 @@ public abstract class AbstractPositionalFileStepForm extends AbstractFileStepFor
         return newValue;
     }
 
-    /**
-     * DOC ocarbone Comment method "charIsAcceptedOnFieldSeparatorValue".
-     * 
-     * @param string
-     * @param character
-     * @param position
-     * @return boolean
-     */
     protected boolean charIsAcceptedOnFieldPosition(final String string, final char character, final int position) {
         if ((Character.getType(character) == 15) || Character.isDigit(character) || (character) == Character.valueOf(',')) {
             // Check unique comma
@@ -126,14 +96,6 @@ public abstract class AbstractPositionalFileStepForm extends AbstractFileStepFor
         return true;
     }
 
-    /**
-     * DOC ocarbone Comment method "charIsAcceptedOnFieldSeparatorValue".
-     * 
-     * @param string
-     * @param character
-     * @param position
-     * @return boolean
-     */
     protected boolean charIsAcceptedOnFieldSeparator(final String string, final char character, final int position) {
         final String newString = TalendQuoteUtils.removeQuotes(string);
         // remove the quotes, place will be 1

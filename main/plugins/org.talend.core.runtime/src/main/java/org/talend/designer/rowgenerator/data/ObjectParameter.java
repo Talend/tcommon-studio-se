@@ -15,30 +15,14 @@ package org.talend.designer.rowgenerator.data;
 import org.talend.core.language.ECodeLanguage;
 import org.talend.core.language.LanguageManager;
 
-/**
- * yzhang class global comment. Detailed comment <br/>
- * 
- * $Id: ObjectParameter.java 下午02:21:01 2007-8-7 +0000 (2007-8-7) yzhang $
- * 
- */
 public class ObjectParameter extends Parameter {
 
     private Object objectValue;
 
-    /**
-     * yzhang Comment method "setValue".
-     * 
-     * @param value
-     */
     public void setValue(Object value) {
         this.objectValue = value;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.rowgenerator.data.Parameter#sameParameterAs(org.talend.designer.rowgenerator.data.Parameter)
-     */
     @Override
     public boolean sameParameterAs(Parameter obj) {
         if (this == obj) {

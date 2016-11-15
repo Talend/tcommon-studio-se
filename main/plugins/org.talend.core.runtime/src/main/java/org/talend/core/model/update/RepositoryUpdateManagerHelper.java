@@ -38,10 +38,6 @@ import org.talend.core.runtime.i18n.Messages;
 import org.talend.designer.core.IDesignerCoreService;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
-/**
- * created by ggu on Mar 28, 2014 Detailed comment
- * 
- */
 public class RepositoryUpdateManagerHelper {
 
     protected boolean enableCheckItem() {

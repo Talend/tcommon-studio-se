@@ -15,12 +15,6 @@ package org.talend.core.repository.link;
 import org.eclipse.ui.IEditorInput;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * DOC ggu class global comment. Detailed comment <br/>
- * 
- * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
- */
 public interface IRepoViewLinker {
 
     RepositoryNode getRelationNode(IEditorInput editorInput);

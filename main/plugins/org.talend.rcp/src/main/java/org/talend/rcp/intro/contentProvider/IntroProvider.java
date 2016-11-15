@@ -19,9 +19,6 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.ui.branding.IBrandingConfiguration;
 import org.w3c.dom.Element;
 
-/**
- * DOC wchen class global comment. Detailed comment
- */
 public abstract class IntroProvider implements IIntroXHTMLContentProvider {
 
     protected String branding = System.getProperty("talend.license.branding");

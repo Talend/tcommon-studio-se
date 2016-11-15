@@ -45,25 +45,14 @@ import org.talend.core.model.properties.SAPConnectionItem;
 import org.talend.core.ui.i18n.Messages;
 import org.talend.cwm.helper.ConnectionHelper;
 
-/**
- * nrousseau class global comment. Detailed comment
- */
 public class SchemaOperationChoiceDialog extends SelectionDialog {
 
-    /**
-     * 
-     * nrousseau ESelectionCategory.
-     */
     public enum ESelectionCategory {
         SHOW_SCHEMA,
         BUILDIN,
         REPOSITORY;
     }
 
-    /**
-     * 
-     * nrousseau EProcessType.
-     */
     public enum EProcessType {
         CREATE,
         BUILTIN,

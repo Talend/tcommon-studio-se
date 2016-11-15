@@ -40,9 +40,6 @@ import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * ggu class global comment. Detailed comment
- */
 public final class RepositoryComponentManager {
 
     private static final String EMPTY = ""; //$NON-NLS-1$

@@ -20,10 +20,6 @@ import org.apache.commons.logging.LogFactory;
 import org.eclipse.nebula.widgets.nattable.data.IColumnPropertyAccessor;
 import org.eclipse.nebula.widgets.nattable.data.ReflectiveColumnPropertyAccessor;
 
-/**
- * created by ldong on Jul 24, 2014 Detailed comment
- * 
- */
 public class EmptyColumnContextAccessor<R> implements IColumnPropertyAccessor<R> {
 
     private static final Log log = LogFactory.getLog(ReflectiveColumnPropertyAccessor.class);
@@ -34,11 +30,6 @@ public class EmptyColumnContextAccessor<R> implements IColumnPropertyAccessor<R>
         this.propertyNames = Arrays.asList(propertyNames);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.nebula.widgets.nattable.data.IColumnAccessor#getColumnCount()
-     */
     @Override
     public int getColumnCount() {
         return propertyNames.size();

@@ -23,10 +23,6 @@ import org.eclipse.draw2d.Viewport;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-/**
- * 
- * cli class global comment. Detailed comment
- */
 @SuppressWarnings("unchecked")
 public class TreeAnimation {
 

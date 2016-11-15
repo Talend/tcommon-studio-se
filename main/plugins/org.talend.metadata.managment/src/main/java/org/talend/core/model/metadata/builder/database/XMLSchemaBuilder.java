@@ -49,9 +49,6 @@ import org.talend.utils.sugars.ReturnCode;
 import orgomg.cwm.foundation.softwaredeployment.DataManager;
 import orgomg.cwm.objectmodel.core.ModelElement;
 
-/**
- * DOC mzhao class global comment. Detailed comment
- */
 public final class XMLSchemaBuilder {
 
     private EList<XSDElementDeclaration> globalXSDElemDeclarations = null;
@@ -71,13 +68,6 @@ public final class XMLSchemaBuilder {
         return builder;
     }
 
-    /**
-     * 
-     * DOC mzhao Comment method "getRootElements".
-     * 
-     * @param xsdSchema
-     * @return
-     */
     public List<ModelElement> getRootElements(TdXmlSchema document) {
         IFolder mdmFolder = ReponsitoryContextBridge.getRootProject().getFolder(new Path(PluginConstant.MDM_PATH));
         IFolder connFolder = ReponsitoryContextBridge.getRootProject().getFolder(new Path(PluginConstant.CONN_PATH));

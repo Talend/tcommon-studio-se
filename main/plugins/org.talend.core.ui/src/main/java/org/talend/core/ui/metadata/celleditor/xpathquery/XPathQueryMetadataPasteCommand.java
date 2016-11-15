@@ -20,9 +20,6 @@ import org.talend.core.model.metadata.IMetadataColumn;
 import org.talend.core.ui.metadata.editor.MetadataTableEditor;
 import org.talend.core.ui.metadata.extended.command.MetadataPasteCommand;
 
-/**
- * cli class global comment. Detailed comment
- */
 public class XPathQueryMetadataPasteCommand extends MetadataPasteCommand {
 
     public XPathQueryMetadataPasteCommand(ExtendedTableModel extendedTable) {

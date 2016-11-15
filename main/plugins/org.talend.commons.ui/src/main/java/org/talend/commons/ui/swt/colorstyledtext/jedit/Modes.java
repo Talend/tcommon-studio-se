@@ -17,12 +17,6 @@ import java.util.TreeMap;
 
 import org.talend.commons.runtime.xml.XmlUtil;
 
-/**
- * DOC nrousseau class global comment. Detailed comment <br/>
- * 
- * $Id: Modes.java 7038 2007-11-15 14:05:48Z plegall $
- * 
- */
 public class Modes {
 
     protected static Modes soleInstace = new Modes();

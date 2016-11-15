@@ -21,9 +21,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
-/**
- * DOC talend class global comment. Detailed comment
- */
 public class AddElementDialog extends Dialog {
 
     public static final String CREATE_AS_SUBELEMENT = "sub-element"; //$NON-NLS-1$
@@ -42,9 +39,6 @@ public class AddElementDialog extends Dialog {
         return value;
     }
 
-    /*
-     * (non-Javadoc) Method declared on Dialog.
-     */
     protected Control createDialogArea(Composite parent) {
         // create composite
         Composite composite = (Composite) super.createDialogArea(parent);

@@ -20,12 +20,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.talend.commons.ui.swt.advanced.dataeditor.control.ExtendedPushButton;
 import org.talend.commons.ui.swt.extended.table.AbstractExtendedTableViewer;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public abstract class AbstractExtendedToolbar {
 
     protected Composite toolbar;
@@ -34,13 +28,6 @@ public abstract class AbstractExtendedToolbar {
 
     private Composite parentComposite;
 
-    /**
-     * DOC amaumont MatadataToolbarEditor constructor comment.
-     * 
-     * @param parent
-     * @param style
-     * @param metadataEditorView
-     */
     public AbstractExtendedToolbar(Composite parent, int style, AbstractExtendedTableViewer extendedTableViewer) {
         super();
         this.extendedTableViewer = extendedTableViewer;
@@ -49,9 +36,6 @@ public abstract class AbstractExtendedToolbar {
         updateEnabledStateOfButtons();
     }
 
-    /**
-     * DOC amaumont Comment method "initLayout".
-     */
     protected void initMainComponent(Composite parent, int style) {
         this.parentComposite = parent;
         toolbar = new Composite(parent, style);
@@ -59,32 +43,16 @@ public abstract class AbstractExtendedToolbar {
         toolbar.setLayout(new RowLayout(SWT.HORIZONTAL));
     }
 
-    /**
-     * DOC amaumont Comment method "createComponents".
-     */
     protected abstract void createComponents(Composite parent);
 
-    /**
-     * Getter for parentComposite.
-     * 
-     * @return the parentComposite
-     */
     public Composite getParentComposite() {
         return this.parentComposite;
     }
 
-    /**
-     * Getter for extendedTableViewer.
-     * 
-     * @return the extendedTableViewer
-     */
     public AbstractExtendedTableViewer getExtendedTableViewer() {
         return this.extendedTableViewer;
     }
 
-    /**
-     * DOC amaumont Comment method "updateEnabledStateOfButtons".
-     */
     public abstract void updateEnabledStateOfButtons();
 
     public abstract List<ExtendedPushButton> getButtons();

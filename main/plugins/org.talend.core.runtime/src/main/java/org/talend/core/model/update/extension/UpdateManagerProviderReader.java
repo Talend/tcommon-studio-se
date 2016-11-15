@@ -29,9 +29,6 @@ import org.talend.core.model.update.EUpdateItemType;
 import org.talend.core.model.update.IUpdateItemType;
 import org.talend.core.utils.RegistryReader;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class UpdateManagerProviderReader extends RegistryReader {
 
     private static Logger log = Logger.getLogger(UpdateManagerProviderReader.class);

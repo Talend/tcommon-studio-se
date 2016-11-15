@@ -40,10 +40,6 @@ import org.talend.commons.ui.swt.drawing.link.LinksManager;
 import org.talend.commons.ui.swt.drawing.link.StyleLink;
 
 /**
- * bqian class global comment. Detailed comment <br/>
- * 
- * $Id: TableToTablesLinker.java,v 1.1 2007/06/12 07:20:39 gke Exp $
- * 
  * @param <D1> the data item of extremety 1
  * @param <D2> the data item of extremety 2
  */
@@ -67,23 +63,10 @@ public class TableToTablesLinker<D1, D2> extends BgDrawableComposite implements 
 
     public List<Table> targets;
 
-    /**
-     * DOC amaumont TreeToTableLinker constructor comment.
-     * 
-     * @param source
-     * @param table
-     */
     public TableToTablesLinker(Composite commonParent) {
         super(commonParent);
     }
 
-    /**
-     * DOC amaumont Comment method "init".
-     * 
-     * @param sourceTable
-     * @param targetTables
-     * @param backgroundRefresher
-     */
     public void init(Table sourceTable, Table[] targetTables, IBackgroundRefresher backgroundRefresher) {
         this.display = sourceTable.getDisplay();
         this.backgroundRefresher = backgroundRefresher;

@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.core.model.process;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- */
 public interface ITargetExecutionConfig extends IServerConfiguration {
 
     public boolean isRemote();

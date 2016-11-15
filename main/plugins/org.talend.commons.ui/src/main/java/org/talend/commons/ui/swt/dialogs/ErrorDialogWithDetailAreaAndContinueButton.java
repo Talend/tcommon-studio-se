@@ -18,9 +18,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Shell;
 import org.talend.commons.ui.runtime.i18n.Messages;
 
-/**
- * DOC yexiaowei class global comment. Detailed comment
- */
 public class ErrorDialogWithDetailAreaAndContinueButton {
 
     private int codeOfButton;

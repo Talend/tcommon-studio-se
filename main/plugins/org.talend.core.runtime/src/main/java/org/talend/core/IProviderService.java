@@ -16,9 +16,6 @@ import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.ui.IWorkbench;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * DOC hwang class global comment. Detailed comment
- */
 public interface IProviderService extends IService {
 
     public IWizard newWizard(IWorkbench workbench, boolean creation, RepositoryNode node, String[] existingNames);

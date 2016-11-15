@@ -19,10 +19,6 @@ import org.talend.repository.example.model.demo.ExtendedExampleDemoConnectionIte
 import org.talend.repository.example.viewer.node.ExampleDemoRepositoryNodeType;
 
 /**
- * DOC ggu class global comment. Detailed comment <br/>
- * 
- * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
  * NOTE: this class is not finished, because need add some wizards or wizard pages also.
  */
 @SuppressWarnings("nls")

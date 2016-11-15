@@ -22,9 +22,6 @@ import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.designer.maven.ui.setting.project.page.AbstractPersistentProjectSettingPage;
 import org.talend.designer.maven.ui.utils.DesignerMavenUiHelper;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class RepositoryMavenSettingNode extends RepositoryPreferenceNode {
 
     private IFile file;
@@ -39,11 +36,6 @@ public class RepositoryMavenSettingNode extends RepositoryPreferenceNode {
         return file;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.maven.ui.dialog.RepositoryPreferenceNode#createPage()
-     */
     @Override
     public void createPage() {
         super.createPage();

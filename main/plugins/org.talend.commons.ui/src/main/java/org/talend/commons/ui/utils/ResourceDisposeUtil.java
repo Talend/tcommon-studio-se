@@ -15,10 +15,6 @@ package org.talend.commons.ui.utils;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.swt.graphics.Color;
 
-/**
- * 
- * nma class global comment. Detailed comment
- */
 public class ResourceDisposeUtil {
 
     public static void disposeColor(Color color) {
@@ -31,23 +27,10 @@ public class ResourceDisposeUtil {
         if (figure == null || newColor == null) {
             return;
         }
-        // Color oldColor = figure.getBackgroundColor();
-        // if (foreground) {
-        // oldColor = figure.getForegroundColor();
-        // }
         if (foreground) {
             figure.setForegroundColor(newColor);
         } else {
             figure.setBackgroundColor(newColor);
         }
-        // maybe, no need to dispose, because have used the cache
-
-        // if (oldColor != null && !oldColor.isDisposed()) {
-        // if (oldColor.equals(newColor)) {
-        // newColor.dispose();
-        // } else {
-        // oldColor.dispose();
-        // }
-        // }
     }
 }

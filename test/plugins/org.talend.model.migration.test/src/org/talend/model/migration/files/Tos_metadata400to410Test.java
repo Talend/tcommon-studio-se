@@ -37,17 +37,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.talend.model.migration.TosMetadataMigrationFrom400to410;
 
-/**
- * DOC sgandon class global comment. Detailed comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
- * 
- */
 public class Tos_metadata400to410Test {
 
-    /**
-     * 
-     */
     private static final String MIGRATION_FILE_EXT = ".mig";
 
     @Test

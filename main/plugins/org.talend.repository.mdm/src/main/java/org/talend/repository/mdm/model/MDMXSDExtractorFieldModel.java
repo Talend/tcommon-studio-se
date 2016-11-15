@@ -18,9 +18,6 @@ import org.talend.commons.ui.swt.extended.table.ExtendedTableModel;
 import org.talend.core.model.metadata.builder.connection.ConceptTarget;
 import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
 
-/**
- * DOC hwang class global comment. Detailed comment
- */
 public class MDMXSDExtractorFieldModel extends ExtendedTableModel<ConceptTarget> {
 
     public MDMXSDExtractorFieldModel(String name) {

@@ -36,11 +36,7 @@ import org.talend.commons.ui.swt.advanced.dataeditor.control.ExtendedPushButton;
 import org.talend.commons.ui.swt.extended.table.AbstractExtendedTableViewer;
 
 /**
- * DOC cantoine class global comment. Detailed comment <br/>
- * 
- * TGU same purpose as TargetSchemaToolbarEditorView2 but uses EMF model directly $Id:
- * TargetSchemaToolbarEditorView2.java,v 1.1 2006/08/02 19:43:45 cantoine Exp $
- * 
+ * TGU same purpose as TargetSchemaToolbarEditorView2 but uses EMF model directly.
  */
 public class ExtendedToolbarView extends AbstractExtendedToolbar {
 

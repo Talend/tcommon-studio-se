@@ -52,10 +52,6 @@ import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.template.MavenTemplateManager;
 import org.talend.designer.maven.utils.PomUtil;
 
-/**
- * created by ggu on 22 Jan 2015 Detailed comment
- *
- */
 public class CreateMavenCodeProject extends AbstractMavenGeneralTemplatePom {
 
     public static final String IS_ALREADY_SET_ECLIPSE_COMPLIANCE = "IS_ALREADY_SET_ECLIPSE_COMPLIANCE"; //$NON-NLS-1$

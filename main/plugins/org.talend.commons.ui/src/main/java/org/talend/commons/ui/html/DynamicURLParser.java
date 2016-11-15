@@ -21,9 +21,6 @@ import java.util.Properties;
 import org.eclipse.ui.internal.intro.impl.util.Log;
 import org.eclipse.ui.internal.intro.impl.util.StringUtil;
 
-/**
- * DOC talend class global comment. Detailed comment
- */
 public class DynamicURLParser {
 
     // private String url_string = null;

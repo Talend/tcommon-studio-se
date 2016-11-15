@@ -26,12 +26,6 @@ import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ui.branding.IBrandingService;
 import org.talend.rcp.i18n.Messages;
 
-/**
- * DOC ccarbone class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
     private IWorkbenchAction introAction;

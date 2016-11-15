@@ -38,9 +38,6 @@ import com.sforce.soap.enterprise.sobject.SObject;
 
 /**
  * Maybe need a long connection ...
- * <p>
- * DOC YeXiaowei class global comment. Detailed comment <br/>
- * 
  */
 public class SalesforceModuleParseEnterprise implements ISalesforceModuleParser {
 
@@ -55,17 +52,6 @@ public class SalesforceModuleParseEnterprise implements ISalesforceModuleParser 
     private String proxy = null;
 
     private boolean loginOk = false;
-
-    /*
-     * 
-     */
-    // private String proxyHost = null;
-    //
-    // private String proxyPort = null;
-    //
-    // private String proxyUsername = null;
-    //
-    // private String proxyPassword = null;
 
     private SoapBindingStub binding = null;
 

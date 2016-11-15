@@ -22,19 +22,10 @@ import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.metadata.managment.ui.wizard.AbstractForm;
 import org.talend.metadata.managment.ui.wizard.metadata.xml.node.FOXTreeNode;
 
-/**
- * wchen class global comment. Detailed comment
- */
 public abstract class AbstractXmlStepForm extends AbstractForm {
 
     private WizardPage page;
 
-    /**
-     * wchen AbstractXmlStepForm constructor comment.
-     * 
-     * @param parent
-     * @param style
-     */
     public AbstractXmlStepForm(Composite parent, int style, String[] existingNames) {
         super(parent, style, existingNames);
     }

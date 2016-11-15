@@ -111,10 +111,6 @@ public class FileDirCleaner {
         }
     }
 
-    /**
-     * 
-     * DOC amaumont FileDirCleaner class global comment. Detailed comment
-     */
     static class CleanResult {
 
         Throwable firstException;
@@ -127,7 +123,6 @@ public class FileDirCleaner {
     }
 
     /**
-     * 
      * FileDirCleaner constructor.
      * 
      * @param doAction

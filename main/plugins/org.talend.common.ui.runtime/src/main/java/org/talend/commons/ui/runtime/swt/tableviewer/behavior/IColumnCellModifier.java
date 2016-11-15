@@ -12,12 +12,6 @@
 // ============================================================================
 package org.talend.commons.ui.runtime.swt.tableviewer.behavior;
 
-/**
- * 
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * @param <B> bean
- */
 public interface IColumnCellModifier<B> {
 
     /**

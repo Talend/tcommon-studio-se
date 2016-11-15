@@ -39,9 +39,6 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IProxyRepositoryService;
 import org.talend.repository.model.IRepositoryService;
 
-/**
- * DOC nrousseau class global comment. Detailed comment
- */
 public class CoreRuntimePlugin extends Plugin {
 
     public static final String PLUGIN_ID = "org.talend.core.runtime"; //$NON-NLS-1$

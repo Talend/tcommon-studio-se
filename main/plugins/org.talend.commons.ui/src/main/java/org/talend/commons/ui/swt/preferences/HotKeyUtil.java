@@ -19,10 +19,6 @@ import org.eclipse.jface.bindings.keys.ParseException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.keys.IBindingService;
 
-/**
- * created by hwang on Jan 5, 2016 Detailed comment
- *
- */
 public class HotKeyUtil {
 
     public static String contentAssist = "org.eclipse.ui.edit.text.contentAssist.proposals";

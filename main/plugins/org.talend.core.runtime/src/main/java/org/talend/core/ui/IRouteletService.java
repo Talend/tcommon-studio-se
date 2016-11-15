@@ -14,10 +14,6 @@ package org.talend.core.ui;
 
 import org.talend.core.IService;
 
-/**
- * created by cmeng on Nov 23, 2015 Detailed comment
- *
- */
 public interface IRouteletService extends IService {
 
     public String getRouteletEditorId();

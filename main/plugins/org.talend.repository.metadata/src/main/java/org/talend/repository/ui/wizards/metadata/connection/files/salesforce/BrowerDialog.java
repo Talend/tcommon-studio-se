@@ -24,20 +24,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
-/**
- * DOC zwzhao class global comment. Detailed comment
- */
 public class BrowerDialog extends Dialog {
 
     private String url;
 
     private Browser broswer;
 
-    /**
-     * DOC zwzhao BrowerDialog constructor comment.
-     * 
-     * @param parentShell
-     */
     protected BrowerDialog(Shell parentShell, String url) {
         super(parentShell);
         this.url = url;
@@ -55,31 +47,16 @@ public class BrowerDialog extends Dialog {
         return parent;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.Dialog#getInitialSize()
-     */
     @Override
     protected Point getInitialSize() {
         // TODO Auto-generated method stub
         return new Point(1000, 800);
     }
 
-    /**
-     * Getter for broswer.
-     * 
-     * @return the broswer
-     */
     public Browser getBroswer() {
         return this.broswer;
     }
 
-    /**
-     * Sets the broswer.
-     * 
-     * @param broswer the broswer to set
-     */
     public void setBroswer(Browser broswer) {
         this.broswer = broswer;
     }

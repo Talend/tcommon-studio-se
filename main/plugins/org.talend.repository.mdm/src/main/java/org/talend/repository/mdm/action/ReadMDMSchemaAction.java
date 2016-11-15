@@ -24,9 +24,6 @@ import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.model.IRepositoryNode.ENodeType;
 import org.talend.repository.model.IRepositoryNode.EProperties;
 
-/**
- * DOC hwang class global comment. Detailed comment
- */
 public class ReadMDMSchemaAction extends RetrieveMDMSchemaAction {
 
     protected static final String LABEL = Messages.getString("ReadMDMSchemaAction_read_entity"); //$NON-NLS-1$

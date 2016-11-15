@@ -42,9 +42,6 @@ import org.talend.utils.sugars.TypedReturnCode;
 
 import orgomg.cwm.resource.relational.enumerations.NullableType;
 
-/**
- * DOC zshen class global comment. Detailed comment
- */
 public class TDColumnAttributeHelper {
 
     private static final String ODBC_DRIVER_NAME = "jdbc-odbc";

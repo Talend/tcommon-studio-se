@@ -50,9 +50,6 @@ import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public final class ContextManagerHelper {
 
     private IContextManager manager;

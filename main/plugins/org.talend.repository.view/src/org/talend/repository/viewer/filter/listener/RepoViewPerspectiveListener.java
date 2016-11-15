@@ -26,9 +26,6 @@ import org.talend.repository.navigator.RepoViewCommonViewer;
 import org.talend.repository.viewer.filter.PerspectiveFilterHelper;
 import org.talend.repository.viewer.filter.RepositoryNodeFilterHelper;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class RepoViewPerspectiveListener implements IPerspectiveListener, IPerspectiveListener2, IPerspectiveListener3,
         IPerspectiveListener4 {
 
@@ -47,68 +44,32 @@ public class RepoViewPerspectiveListener implements IPerspectiveListener, IPersp
         return getCommonViewer().getCommonNavigator();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IPerspectiveListener4#perspectivePreDeactivate(org.eclipse.ui.IWorkbenchPage,
-     * org.eclipse.ui.IPerspectiveDescriptor)
-     */
     @Override
     public void perspectivePreDeactivate(IWorkbenchPage page, IPerspectiveDescriptor perspective) {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IPerspectiveListener3#perspectiveOpened(org.eclipse.ui.IWorkbenchPage,
-     * org.eclipse.ui.IPerspectiveDescriptor)
-     */
     @Override
     public void perspectiveOpened(IWorkbenchPage page, IPerspectiveDescriptor perspective) {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IPerspectiveListener3#perspectiveClosed(org.eclipse.ui.IWorkbenchPage,
-     * org.eclipse.ui.IPerspectiveDescriptor)
-     */
     @Override
     public void perspectiveClosed(IWorkbenchPage page, IPerspectiveDescriptor perspective) {
         checkListener();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IPerspectiveListener3#perspectiveDeactivated(org.eclipse.ui.IWorkbenchPage,
-     * org.eclipse.ui.IPerspectiveDescriptor)
-     */
     @Override
     public void perspectiveDeactivated(IWorkbenchPage page, IPerspectiveDescriptor perspective) {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IPerspectiveListener3#perspectiveSavedAs(org.eclipse.ui.IWorkbenchPage,
-     * org.eclipse.ui.IPerspectiveDescriptor, org.eclipse.ui.IPerspectiveDescriptor)
-     */
     @Override
     public void perspectiveSavedAs(IWorkbenchPage page, IPerspectiveDescriptor oldPerspective,
             IPerspectiveDescriptor newPerspective) {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IPerspectiveListener#perspectiveActivated(org.eclipse.ui.IWorkbenchPage,
-     * org.eclipse.ui.IPerspectiveDescriptor)
-     */
     @Override
     public void perspectiveActivated(IWorkbenchPage page, IPerspectiveDescriptor perspective) {
         final CommonViewer commonViewer2 = getCommonViewer();
@@ -120,23 +81,11 @@ public class RepoViewPerspectiveListener implements IPerspectiveListener, IPersp
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IPerspectiveListener#perspectiveChanged(org.eclipse.ui.IWorkbenchPage,
-     * org.eclipse.ui.IPerspectiveDescriptor, java.lang.String)
-     */
     @Override
     public void perspectiveChanged(IWorkbenchPage page, IPerspectiveDescriptor perspective, String changeId) {
         checkListener();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IPerspectiveListener2#perspectiveChanged(org.eclipse.ui.IWorkbenchPage,
-     * org.eclipse.ui.IPerspectiveDescriptor, org.eclipse.ui.IWorkbenchPartReference, java.lang.String)
-     */
     @Override
     public void perspectiveChanged(IWorkbenchPage page, IPerspectiveDescriptor perspective, IWorkbenchPartReference partRef,
             String changeId) {

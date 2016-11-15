@@ -45,10 +45,6 @@ import org.talend.commons.ui.swt.drawing.link.StyleLink;
 import org.talend.commons.ui.utils.TreeUtils;
 
 /**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
  * @param <D1> the data item of extremety 1
  * @param <D2> the data item of extremety 2
  */
@@ -76,24 +72,11 @@ public class TreeToTablesLinker<D1, D2> extends BgDrawableComposite implements I
 
     private List<LinkableTable> linkableTableList;
 
-    /**
-     * DOC amaumont TreeToTableLinker constructor comment.
-     * 
-     * @param tree
-     * @param table
-     */
     public TreeToTablesLinker(Composite commonParent) {
         super(commonParent);
         linkableTableList = new ArrayList<LinkableTable>();
     }
 
-    /**
-     * DOC amaumont Comment method "init".
-     * 
-     * @param tree
-     * @param tables
-     * @param backgroundRefresher
-     */
     public void init(Tree tree, Table[] tables, IBackgroundRefresher backgroundRefresher) {
         this.display = tree.getDisplay();
         this.backgroundRefresher = backgroundRefresher;

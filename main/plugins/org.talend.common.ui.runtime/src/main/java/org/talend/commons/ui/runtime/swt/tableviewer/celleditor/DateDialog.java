@@ -26,10 +26,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.talend.commons.ui.runtime.i18n.Messages;
 import org.talend.commons.ui.runtime.swt.calendar.SWTCalendarWithTime;
 
-/**
- * qiang.zhang class global comment. Detailed comment <br/>
- * 
- */
 public class DateDialog extends Dialog {
 
     /**

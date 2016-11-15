@@ -18,11 +18,6 @@ import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ElementValueType;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 
-/**
- * DOC s class global comment. Detailed comment <br/>
- * 
- * $Id: talend.epf 1 2007-10-25 17:06:40 +0000 xzhang $
- */
 public class UpdateAttributesFortAdvancedXMLConversion implements IComponentConversion {
 
     private static final String ROOT_NAME = "ROOT"; //$NON-NLS-1$

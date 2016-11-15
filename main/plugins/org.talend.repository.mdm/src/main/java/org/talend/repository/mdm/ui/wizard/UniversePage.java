@@ -21,9 +21,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.talend.core.model.properties.ConnectionItem;
 import org.talend.metadata.managment.ui.wizard.AbstractForm;
 
-/**
- * DOC Hwang class global comment. Detailed comment
- */
 public class UniversePage extends WizardPage {
 
     private UniverseForm universeForm = null;
@@ -34,22 +31,12 @@ public class UniversePage extends WizardPage {
 
     private ConnectionItem connectionItem;
 
-    /**
-     * DOC Administrator UniseverPage constructor comment.
-     * 
-     * @param pageName
-     */
     protected UniversePage(ConnectionItem connectionItem, String pageName) {
         super(pageName);
         this.connectionItem = connectionItem;
         this.setTitle("Talend MDM"); //$NON-NLS-1$
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
-     */
     public void createControl(Composite parent) {
         universeForm = new UniverseForm(parent, SWT.NONE, null, connectionItem, this);
         universeForm.setReadOnly(false);// (!isRepositoryObjectEditable);

@@ -22,9 +22,6 @@ import javax.crypto.spec.DESKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
 
-/**
- * DOC chuang class global comment. Detailed comment
- */
 public class PasswordEncryptUtil {
 
     public static String ENCRYPT_KEY = "Encrypt"; //$NON-NLS-1$

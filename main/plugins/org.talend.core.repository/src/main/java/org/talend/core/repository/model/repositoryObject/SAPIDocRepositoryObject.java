@@ -31,9 +31,6 @@ import org.talend.repository.model.RepositoryNode;
 
 import orgomg.cwm.objectmodel.core.ModelElement;
 
-/**
- * DOC zli class global comment. Detailed comment
- */
 public class SAPIDocRepositoryObject extends RepositoryObject implements ISubRepositoryObject {
 
     private SAPIDocUnit iDocUnit;

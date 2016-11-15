@@ -56,10 +56,6 @@ import org.talend.salesforce.SforceSessionConnection;
 import org.talend.salesforce.oauth.OAuthClient;
 import org.talend.salesforce.oauth.Token;
 
-/**
- * DOC YeXiaowei class global comment. Detailed comment <br/>
- * 
- */
 public class SalesforceStep1Form extends AbstractSalesforceStepForm {
 
     private String endPoint = null;

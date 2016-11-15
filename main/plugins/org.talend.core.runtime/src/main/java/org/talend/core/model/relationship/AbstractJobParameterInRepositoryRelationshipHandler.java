@@ -19,19 +19,10 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public abstract class AbstractJobParameterInRepositoryRelationshipHandler extends AbstractJobParameterRelationshipHandler {
 
     public static final String IN_REPOSITORY = "REPOSITORY"; //$NON-NLS-1$
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.relationship.AbstractParameterRelationshipHandler#collect(java.util.Map,
-     * java.util.Map)
-     */
     @Override
     protected Set<Relation> collect(Map<String, ElementParameterType> parametersMap, Map<?, ?> options) {
         Set<Relation> relationSet = new HashSet<Relation>();

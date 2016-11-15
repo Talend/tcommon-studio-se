@@ -20,23 +20,10 @@ import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.model.IRepositoryNode.ENodeType;
 
-/**
- * DOC smallet class global comment. Detailed comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- * 
- */
 public class QueryEMFRepositoryNode extends RepositoryNode {
 
     private Query query;
 
-    /**
-     * DOC smallet EMFObjectRepositoryNode constructor comment.
-     * 
-     * @param object
-     * @param parent
-     * @param type
-     */
     public QueryEMFRepositoryNode(Query query, RepositoryNode parent) {
         super(null, parent, ENodeType.REPOSITORY_ELEMENT);
         this.query = query;

@@ -19,31 +19,13 @@ import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.commons.ui.swt.advanced.dataeditor.control.ExtendedPushButton;
 import org.talend.commons.ui.swt.extended.table.AbstractExtendedControlViewer;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public abstract class ImportPushButton extends ExtendedPushButton {
 
-    /**
-     * DOC amaumont AddPushButton constructor comment.
-     * 
-     * @param parent
-     * @param tooltip
-     * @param image
-     */
     public ImportPushButton(Composite parent, AbstractExtendedControlViewer extendedControlViewer) {
         super(parent, extendedControlViewer,
                 Messages.getString("ImportPushButton.ImportButton.Tip"), ImageProvider.getImage(EImage.IMPORT_ICON)); //$NON-NLS-1$
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.advanced.dataeditor.control.ExtendedPushButton#getEnabledState()
-     */
     @Override
     public boolean getEnabledState() {
         return super.getEnabledState() && !getExtendedControlViewer().isReadOnly();

@@ -21,12 +21,6 @@ import org.talend.commons.ui.runtime.expressionbuilder.IExpressionDataBean;
 import org.talend.core.IService;
 import org.talend.core.model.process.INode;
 
-/**
- * yzhang class global comment. Detailed comment <br/>
- * 
- * $Id: IExpressionBuilderDialogService.java 下午04:26:06 2007-8-1 +0000 (2007-8-1) yzhang $
- * 
- */
 public interface IExpressionBuilderDialogService extends IService {
 
     public IExpressionBuilderDialogController getExpressionBuilderInstance(Composite parent, IExpressionDataBean dataBean,

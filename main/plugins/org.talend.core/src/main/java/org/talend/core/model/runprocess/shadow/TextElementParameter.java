@@ -14,20 +14,12 @@ package org.talend.core.model.runprocess.shadow;
 
 import org.talend.core.model.process.EParameterFieldType;
 
-/**
- * cli class global comment. Detailed comment
- */
 public class TextElementParameter extends ObjectElementParameter {
 
     public TextElementParameter(String name, String value) {
         super(name, value);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.IElementParameter#getField()
-     */
     public EParameterFieldType getFieldType() {
         return EParameterFieldType.TEXT;
     }

@@ -14,10 +14,6 @@ package org.talend.repository.example.viewer.content.example;
 
 import org.talend.repository.example.viewer.node.ExampleRootNode;
 
-/**
- * created by sgandon on 1 août 2012 Detailed comment
- * 
- */
 public class JobOnlyWithAnAContentProvider extends JobWithXLableContentProvider {
 
     public static final Object ROOT = new ExampleRootNode() {
@@ -29,21 +25,11 @@ public class JobOnlyWithAnAContentProvider extends JobWithXLableContentProvider 
 
     };
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.viewer.content.example.JobWithXLableContentProvider#getRoot()
-     */
     @Override
     protected Object getRoot() {
         return ROOT;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.viewer.content.example.JobWithXLableContentProvider#validJob(java.lang.Object)
-     */
     @Override
     protected boolean validJob(Object potentialJob) {
         return !jobTester.isJobOnlyWithAnA(potentialJob);

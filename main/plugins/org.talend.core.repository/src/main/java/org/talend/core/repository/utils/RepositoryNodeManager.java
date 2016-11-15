@@ -32,9 +32,6 @@ import org.talend.repository.model.IRepositoryNode.EProperties;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.model.StableRepositoryNode;
 
-/**
- * DOC ycbai class global comment. Detailed comment
- */
 public class RepositoryNodeManager {
 
     public static void createTables(RepositoryNode node, IRepositoryViewObject repObj, Connection metadataConnection) {

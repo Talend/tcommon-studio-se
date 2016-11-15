@@ -14,12 +14,6 @@ package org.talend.core.model.process;
 
 import java.util.List;
 
-/**
- * DOC nrousseau class global comment. Detailed comment <br/>
- * 
- * $Id: IElement.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
- */
 public interface IElement {
 
     public IElementParameter getElementParameter(String name);

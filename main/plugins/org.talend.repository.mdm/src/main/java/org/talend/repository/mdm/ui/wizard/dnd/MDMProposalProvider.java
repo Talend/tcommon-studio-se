@@ -26,9 +26,6 @@ import org.talend.commons.ui.swt.proposal.xpath.XPathContentProposal;
 import org.talend.repository.mdm.i18n.Messages;
 import org.w3c.dom.Node;
 
-/**
- * DOC hwang class global comment. Detailed comment
- */
 public class MDMProposalProvider implements IContentProposalProvider {
 
     public static final String EMPTY_STRING = ""; //$NON-NLS-1$

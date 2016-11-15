@@ -19,9 +19,6 @@ import org.talend.core.model.utils.JavaResourcesHelper;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.repository.ProjectManager;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class PomIdsHelper {
 
     /**

@@ -18,9 +18,6 @@ import java.util.List;
 import org.talend.core.model.process.IProcess;
 import org.talend.core.model.repository.IRepositoryViewObject;
 
-/**
- * DOC gldu class global comment. Detailed comment
- */
 public class JobVersionManager {
 
     private static JobVersionManager instance = null;

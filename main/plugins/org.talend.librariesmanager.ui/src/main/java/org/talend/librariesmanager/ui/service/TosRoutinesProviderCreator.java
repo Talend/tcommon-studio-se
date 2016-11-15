@@ -17,9 +17,6 @@ import org.talend.core.model.routines.IRoutineProviderCreator;
 import org.talend.core.model.routines.IRoutinesProvider;
 import org.talend.librariesmanager.model.service.TosJavaRoutinesProvider;
 
-/**
- * bqian class global comment. Detailed comment
- */
 public class TosRoutinesProviderCreator implements IRoutineProviderCreator {
 
     IRoutinesProvider javaProvider = null;
@@ -28,15 +25,9 @@ public class TosRoutinesProviderCreator implements IRoutineProviderCreator {
         javaProvider = new TosJavaRoutinesProvider();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.routines.IRoutineProviderCreator#createIRoutinesProviderByLanguage(org.talend.core.language
-     * .ECodeLanguage)
-     */
     @Override
     public IRoutinesProvider createIRoutinesProviderByLanguage(ECodeLanguage lan) {
         return javaProvider;
     }
+
 }

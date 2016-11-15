@@ -28,20 +28,10 @@ import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.setting.project.IProjectSettingManagerProvider;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public abstract class AbstractMavenTemplateManager implements IExecutableExtension {
 
     protected String bundleName;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.core.runtime.IExecutableExtension#setInitializationData(org.eclipse.core.runtime.IConfigurationElement
-     * , java.lang.String, java.lang.Object)
-     */
     @Override
     public void setInitializationData(IConfigurationElement config, String propertyName, Object data) throws CoreException {
         // init bundle name

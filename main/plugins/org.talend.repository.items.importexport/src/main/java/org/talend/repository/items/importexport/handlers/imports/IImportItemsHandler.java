@@ -21,23 +21,14 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.talend.repository.items.importexport.handlers.model.ImportItem;
 import org.talend.repository.items.importexport.manager.ResourcesManager;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public interface IImportItemsHandler extends IExecutableExtension {
 
     /**
-     * 
-     * DOC ggu Comment method "isEnableProductChecking".
-     * 
      * @return if need recheck the items is under current product or not.
      */
     boolean isEnableProductChecking();
 
     /**
-     * 
-     * DOC ggu Comment method "setEnableProductChecking".
-     * 
      * @param enableProductChecking
      */
     void setEnableProductChecking(boolean enableProductChecking);
@@ -45,7 +36,6 @@ public interface IImportItemsHandler extends IExecutableExtension {
     /**
      * If enable to import normal files which can't be loaded via *.properties and not valid, will try to check via the
      * path of resource to import.
-     * 
      */
     boolean valid(ResourcesManager resManager, IPath path);
 

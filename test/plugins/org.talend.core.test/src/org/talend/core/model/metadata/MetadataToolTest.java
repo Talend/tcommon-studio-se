@@ -14,9 +14,6 @@ package org.talend.core.model.metadata;
 
 import org.junit.Test;
 
-/**
- * DOC Administrator class global comment. Detailed comment
- */
 public class MetadataToolTest {
 
     /**

@@ -23,10 +23,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.talend.migration.IProjectMigrationTask;
 import org.talend.migrationtool.i18n.Messages;
 
-/**
- * DOC smallet class global comment. Detailed comment <br/>
- * 
- */
 public class SummaryDialog extends TitleAreaDialog {
 
     private static final int DIALOG_HEIGHT = 350;

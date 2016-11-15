@@ -37,12 +37,6 @@ import org.talend.commons.ui.swt.colorstyledtext.rules.ITokenFactory;
 import org.talend.commons.ui.swt.colorstyledtext.rules.StarRule;
 import org.talend.commons.ui.swt.colorstyledtext.rules.TextSequenceRule;
 
-/**
- * DOC nrousseau class global comment. Detailed comment <br/>
- * 
- * $Id: ColoringEditorTools.java 7038 2007-11-15 14:05:48Z plegall $
- * 
- */
 public class ColoringEditorTools {
 
     public static void add(Rule rule, List<IRule> rules, ITokenFactory factory) {

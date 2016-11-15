@@ -19,9 +19,6 @@ import org.talend.commons.i18n.internal.Messages;
 import org.talend.commons.utils.TalendDBUtils;
 import org.talend.fakejdbc.FakeResultSet;
 
-/**
- * DOC hwang class global comment. Detailed comment
- */
 public class SASResultSet extends FakeResultSet {
 
     private String[] tableMeta = null;

@@ -25,12 +25,6 @@ import org.eclipse.swt.widgets.Table;
 import org.talend.commons.ui.runtime.swt.tableviewer.TableViewerCreatorColumnNotModifiable;
 import org.talend.commons.ui.runtime.ws.WindowSystem;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public abstract class ButtonPushImageTableEditorContent extends TableEditorContentNotModifiable {
 
     private Image image;

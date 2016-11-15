@@ -16,9 +16,6 @@ package org.talend.commons.utils.threading.lockerbykey;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-/**
- * DOC amaumont class global comment. Detailed comment
- */
 public interface ILockerByKey<KP> {
 
     public abstract int getCleanPeriod();

@@ -37,12 +37,6 @@ import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.RepositoryWorkUnit;
 
-/**
- * DOC smallet class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public abstract class AbstractRepositoryFactory implements IRepositoryFactory {
 
     private String name;

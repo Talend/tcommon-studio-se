@@ -20,9 +20,6 @@ import java.util.List;
 import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.database.conn.version.EDatabaseVersion4Drivers;
 
-/**
- * cli class global comment. Detailed comment
- */
 public enum EDatabaseConnTemplate {
 
     MYSQL(new DbConnStr(EDatabaseTypeName.MYSQL, //

@@ -18,10 +18,6 @@ import org.eclipse.gef.commands.Command;
 import org.talend.commons.ui.runtime.i18n.Messages;
 import org.talend.commons.ui.swt.extended.table.ExtendedTableModel;
 
-/**
- * DOC YeXiaowei class global comment. Detailed comment <br/>
- * 
- */
 public class ExtendTableAddAllCommand extends Command implements IExtendedTableCommand {
 
     private ExtendedTableModel extendedTable;
@@ -32,14 +28,6 @@ public class ExtendTableAddAllCommand extends Command implements IExtendedTableC
 
     public static final String LABEL = Messages.getString("ExtendedTableAddCommand.Add.Label"); //$NON-NLS-1$
 
-    /**
-     * 
-     * DOC YeXiaowei ExtendTableAddAllCommand constructor comment.
-     * 
-     * @param extendedTable
-     * @param beansToAdd
-     * @param indexStartAdd
-     */
     public ExtendTableAddAllCommand(ExtendedTableModel extendedTable, List beansToAdd, Integer indexStartAdd) {
         super(LABEL);
         this.extendedTable = extendedTable;
@@ -47,55 +35,27 @@ public class ExtendTableAddAllCommand extends Command implements IExtendedTableC
         this.beansToAdd = beansToAdd;
     }
 
-    /**
-     * DOC amaumont ExtendedTableAddCommand constructor comment.
-     */
     public ExtendTableAddAllCommand(List beansToAdd, ExtendedTableModel extendedTable) {
         this(extendedTable, beansToAdd, null);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.gef.commands.Command#execute()
-     */
     @Override
     @SuppressWarnings("unchecked")//$NON-NLS-1$
     public void execute() {
-
-        // for (Object object : beansToAdd) {
-        // extendedTable.add(object);
-        // }
-
         extendedTable.addAll(indexStartAdd, beansToAdd);
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.command.CommonCommand#canUndo()
-     */
     @Override
     public boolean canUndo() {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.command.CommonCommand#redo()
-     */
     @Override
     public void redo() {
         execute();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.command.CommonCommand#undo()
-     */
     @SuppressWarnings("unchecked")//$NON-NLS-1$
     @Override
     public void undo() {

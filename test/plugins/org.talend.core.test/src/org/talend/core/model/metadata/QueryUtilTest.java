@@ -18,9 +18,6 @@ import org.talend.core.utils.TalendQuoteUtils;
 
 import static org.junit.Assert.*;
 
-/**
- * DOC Administrator class global comment. Detailed comment
- */
 public class QueryUtilTest {
 
     /**

@@ -61,16 +61,10 @@ import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.resource.relational.Catalog;
 import orgomg.cwm.resource.relational.Schema;
 
-/**
- * ggu class global comment. Detailed comment
- */
 public final class DBConnectionContextUtils {
 
     private static final ECodeLanguage LANGUAGE = LanguageManager.getCurrentLanguage();
 
-    /**
-     * 
-     */
     public enum EDBParamName implements IConnParamName {
         Login,
         Password,

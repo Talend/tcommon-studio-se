@@ -23,37 +23,17 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IRepositoryNode.ENodeType;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class DefaultImportExportItemsActionHelper implements IImportExportItemsActionHelper {
 
-    /**
-     * DOC ggu DefaultImportExportItemsActionHelper constructor comment.
-     */
     public DefaultImportExportItemsActionHelper() {
         //
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.items.importexport.ui.handlers.IImportExportItemsActionHelper#isImportEnabled(org.eclipse
-     * .jface.viewers.TreeViewer, org.eclipse.jface.viewers.ISelection)
-     */
     @Override
     public boolean isImportEnabled(TreeViewer viewer, ISelection selection) {
         return isImportEnabledForSelection(selection);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.items.importexport.ui.handlers.IImportExportItemsActionHelper#isImportEnabled(org.eclipse
-     * .jface.action.IAction, org.eclipse.jface.viewers.ISelection)
-     */
     @Override
     public boolean isImportEnabled(IAction action, ISelection selection) {
         return isImportEnabledForSelection(selection);
@@ -90,25 +70,11 @@ public class DefaultImportExportItemsActionHelper implements IImportExportItemsA
         return enabled;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.items.importexport.ui.handlers.IImportExportItemsActionHelper#isExportEnabled(org.eclipse
-     * .jface.viewers.TreeViewer, org.eclipse.jface.viewers.ISelection)
-     */
     @Override
     public boolean isExportEnabled(TreeViewer viewer, ISelection selection) {
         return isExportEnabledForSelection(selection);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.items.importexport.ui.handlers.IImportExportItemsActionHelper#isExportEnabled(org.eclipse
-     * .jface.action.IAction, org.eclipse.jface.viewers.ISelection)
-     */
     @Override
     public boolean isExportEnabled(IAction action, ISelection selection) {
         return isExportEnabledForSelection(selection);

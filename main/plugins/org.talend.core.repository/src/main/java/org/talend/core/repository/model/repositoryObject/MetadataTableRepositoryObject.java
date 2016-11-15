@@ -48,9 +48,6 @@ import org.talend.repository.model.IRepositoryNode;
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.objectmodel.core.Package;
 
-/**
- * DOC nrousseau class global comment. Detailed comment
- */
 public class MetadataTableRepositoryObject extends MetadataTable implements ISubRepositoryObject {
 
     protected final IRepositoryViewObject viewObject;

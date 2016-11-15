@@ -18,12 +18,6 @@ import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.librariesmanager.ui.LibManagerUiPlugin;
 import org.talend.librariesmanager.ui.i18n.Messages;
 
-/**
- * DOC smallet class global comment. Detailed comment <br/>
- * 
- * $Id: CheckModulesAction.java 1811 2007-02-05 03:29:11Z qzhang $
- * 
- */
 public class CheckModulesAction extends Action {
 
     public CheckModulesAction() {
@@ -34,11 +28,6 @@ public class CheckModulesAction extends Action {
         this.setActionDefinitionId("refreshModules"); //$NON-NLS-1$
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.action.Action#run()
-     */
     @Override
     public void run() {
         LibManagerUiPlugin.getDefault().getLibrariesService().resetModulesNeeded();

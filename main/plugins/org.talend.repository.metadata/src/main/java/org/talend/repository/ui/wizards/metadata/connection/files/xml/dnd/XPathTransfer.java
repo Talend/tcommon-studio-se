@@ -15,12 +15,6 @@ package org.talend.repository.ui.wizards.metadata.connection.files.xml.dnd;
 import org.eclipse.swt.dnd.ByteArrayTransfer;
 import org.eclipse.swt.dnd.TransferData;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id: TableEntriesTransfer.java 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- * 
- */
 public class XPathTransfer extends ByteArrayTransfer {
 
     private XmlToSchemaDraggedData draggedData;
@@ -35,21 +29,11 @@ public class XPathTransfer extends ByteArrayTransfer {
         return INSTANCE;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.dnd.Transfer#getTypeIds()
-     */
     @Override
     protected int[] getTypeIds() {
         return new int[] { XML_NODE_TO_XPATH_ENTRIES_ID };
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.dnd.Transfer#getTypeNames()
-     */
     @Override
     protected String[] getTypeNames() {
         return new String[] { XML_NODE_TO_XPATH_TYPE_NAME };

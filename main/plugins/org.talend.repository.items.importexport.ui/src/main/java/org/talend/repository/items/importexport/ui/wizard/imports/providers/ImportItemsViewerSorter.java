@@ -19,18 +19,10 @@ import org.talend.repository.items.importexport.wizard.models.ItemImportNode;
 import org.talend.repository.items.importexport.wizard.models.ProjectImportNode;
 import org.talend.repository.items.importexport.wizard.models.TypeImportNode;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class ImportItemsViewerSorter extends ViewerSorter {
 
     private static final int BASE_CATEGORY = 1;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ViewerComparator#category(java.lang.Object)
-     */
     @Override
     public int category(Object element) {
         if (element instanceof ProjectImportNode) {
@@ -45,23 +37,8 @@ public class ImportItemsViewerSorter extends ViewerSorter {
         return 0;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ViewerComparator#compare(org.eclipse.jface.viewers.Viewer, java.lang.Object,
-     * java.lang.Object)
-     */
     @Override
     public int compare(Viewer viewer, Object o1, Object o2) {
-        // if (o1 instanceof TypeImportNode && o2 instanceof TypeImportNode) {
-        // // maybe it's not good to use the ordinal.
-        // return ((TypeImportNode) o2).getType().ordinal() - ((TypeImportNode) o1).getType().ordinal();
-        // } else if (o1 instanceof TypeImportNode) {
-        // return 1;
-        // } else if (o2 instanceof TypeImportNode) {
-        // return -1;
-        //
-        // }
         return super.compare(viewer, o1, o2);
     }
 

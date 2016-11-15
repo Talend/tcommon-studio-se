@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.core.repository;
 
-/**
- * ggu class global comment. Detailed comment
- */
 public class RepositoryComponentDndFilterSetting {
 
     private String id, name;

@@ -20,10 +20,6 @@ import org.talend.core.model.properties.JobletProcessItem;
 import org.talend.core.model.properties.ProcessItem;
 import org.talend.repository.documentation.ERepositoryActionName;
 
-/**
- * 
- * DOC talend class global comment. Detailed comment
- */
 public abstract class AbstractJobSaveListener implements PropertyChangeListener {
 
     @Override

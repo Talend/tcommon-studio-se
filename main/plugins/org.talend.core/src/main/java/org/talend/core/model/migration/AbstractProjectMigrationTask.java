@@ -17,9 +17,6 @@ import org.talend.core.model.properties.Item;
 import org.talend.migration.AbstractMigrationTask;
 import org.talend.migration.IProjectMigrationTask;
 
-/**
- * DOC stephane class global comment. Detailed comment
- */
 public abstract class AbstractProjectMigrationTask extends AbstractMigrationTask implements IProjectMigrationTask {
 
     public final ExecutionResult execute(Project project, Item item) {

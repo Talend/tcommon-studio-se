@@ -24,12 +24,6 @@ import org.eclipse.ui.contexts.IContextService;
 import org.talend.helpers.HelpersPlugin;
 import org.talend.helpers.i18n.Messages;
 
-/**
- * DOC smallet class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public class LogActiveContextsAction extends Action implements IWorkbenchWindowActionDelegate {
 
     private static Logger log = Logger.getLogger(LogActiveContextsAction.class);
@@ -39,11 +33,6 @@ public class LogActiveContextsAction extends Action implements IWorkbenchWindowA
         this.setActionDefinitionId("logActiveContexts"); //$NON-NLS-1$
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.action.Action#run()
-     */
     @Override
     public void run() {
         IContextService contextService = (IContextService) HelpersPlugin.getDefault().getWorkbench().getAdapter(

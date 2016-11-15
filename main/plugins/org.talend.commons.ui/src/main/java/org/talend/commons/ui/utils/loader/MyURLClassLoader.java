@@ -27,9 +27,6 @@ import java.util.zip.ZipFile;
 import org.apache.log4j.Logger;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 
-/**
- * ggu class global comment. Detailed comment
- */
 public class MyURLClassLoader extends URLClassLoader {
 
     public static interface IAssignableClassFilter {

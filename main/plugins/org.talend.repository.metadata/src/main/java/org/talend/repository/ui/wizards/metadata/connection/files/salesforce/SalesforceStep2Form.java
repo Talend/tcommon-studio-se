@@ -71,10 +71,6 @@ import org.talend.metadata.managment.ui.utils.ShadowProcessHelper;
 import org.talend.repository.metadata.i18n.Messages;
 import org.talend.repository.metadata.ui.wizards.form.AbstractSalesforceStepForm;
 
-/**
- * DOC YeXiaowei class global comment. Detailed comment <br/>
- * 
- */
 public class SalesforceStep2Form extends AbstractSalesforceStepForm {
 
     private static Logger log = Logger.getLogger(SalesforceStep2Form.class);
@@ -506,19 +502,11 @@ public class SalesforceStep2Form extends AbstractSalesforceStepForm {
         }
     }
 
-    /**
-     * DOC YeXiaowei Comment method "refreshPreview".
-     */
     private void refreshPreview() {
         initTreeNavigatorNodes();
         // processor.execute();
     }
 
-    /**
-     * 
-     * DOC YeXiaowei SalesforceStep2Form class global comment. Detailed comment <br/>
-     * 
-     */
     class PreviewProcessor extends SWTUIThreadProcessor {
 
         String previewInformationLabelMsg = null;

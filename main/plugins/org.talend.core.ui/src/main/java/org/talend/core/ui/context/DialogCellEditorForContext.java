@@ -27,10 +27,6 @@ import org.talend.commons.ui.utils.PathUtils;
 import org.talend.core.model.metadata.types.JavaTypesManager;
 import org.talend.core.model.process.IContextParameter;
 
-/**
- * qzhang class global comment. Detailed comment <br/>
- * 
- */
 public class DialogCellEditorForContext extends CustomDialogCellEditor {
 
     private TableViewerCreator tableViewerCreator;
@@ -41,9 +37,6 @@ public class DialogCellEditorForContext extends CustomDialogCellEditor {
 
     Object dialog;
 
-    /**
-     * qzhang TextCellEditorForContext constructor comment.
-     */
     public DialogCellEditorForContext(TableViewerCreatorColumn tableViewerCreatorColumn) {
         super();
         init(tableViewerCreatorColumn);

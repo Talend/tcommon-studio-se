@@ -24,9 +24,6 @@ import org.talend.core.model.properties.PropertiesFactory;
 import org.talend.core.model.properties.User;
 import org.talend.repository.model.RepositoryConstants;
 
-/**
- * ggu class global comment. Detailed comment
- */
 public class ProjectHelper {
 
     public static Project createProject(String projectName, String projectDescription, String projectLanguage,

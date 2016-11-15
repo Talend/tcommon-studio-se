@@ -20,12 +20,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.talend.commons.ui.runtime.swt.proposal.IShowInvisibleCellEditorMethods;
 import org.talend.commons.ui.swt.tableviewer.TableViewerCreatorColumn;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id: TextCellEditorWithProposal.java 7038 2007-11-15 14:05:48Z plegall $
- * 
- */
 public class TextCellEditorWithProposal extends TextCellEditor implements IShowInvisibleCellEditorMethods {
 
     private CommonTextCellEditorWithProposal commonTextEditor;
@@ -46,7 +40,6 @@ public class TextCellEditorWithProposal extends TextCellEditor implements IShowI
     public void activate() {
         super.activate();
         commonTextEditor.activate();
-        // System.out.println("previousActivatedIndex =" + previousActivatedIndex);
     }
 
     @Override

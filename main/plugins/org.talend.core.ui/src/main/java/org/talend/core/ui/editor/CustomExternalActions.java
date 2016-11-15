@@ -32,9 +32,6 @@ import org.talend.core.ui.ISparkJobletProviderService;
 import org.talend.core.ui.ISparkStreamingJobletProviderService;
 import org.talend.designer.core.IDesignerCoreService;
 
-/**
- * DOC qzhang class global comment. Detailed comment
- */
 public abstract class CustomExternalActions extends SelectionAction {
 
     public static final int INPUT = 0221;
@@ -49,9 +46,6 @@ public abstract class CustomExternalActions extends SelectionAction {
 
     public static final String EXTENSION_ID = "org.talend.core.component_custom_action"; //$NON-NLS-1$
 
-    /**
-     * DOC qzhang AbstractContextMenuProvider constructor comment.
-     */
     public CustomExternalActions() {
         super(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor());
     }

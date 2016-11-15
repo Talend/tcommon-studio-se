@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.repository.items.importexport.handlers.model.internal;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class BasicRegistry {
 
     private final String bundleId, id;
@@ -29,74 +26,34 @@ public class BasicRegistry {
         this.id = id;
     }
 
-    /**
-     * Getter for bundleId.
-     * 
-     * @return the bundleId
-     */
     public String getBundleId() {
         return this.bundleId;
     }
 
-    /**
-     * Getter for id.
-     * 
-     * @return the id
-     */
     public String getId() {
         return this.id;
     }
 
-    /**
-     * Sets the name.
-     * 
-     * @param name the name to set
-     */
     public void setName(String name) {
         this.name = name;
     }
 
-    /**
-     * Getter for name.
-     * 
-     * @return the name
-     */
     public String getName() {
         return this.name;
     }
 
-    /**
-     * Getter for description.
-     * 
-     * @return the description
-     */
     public String getDescription() {
         return this.description;
     }
 
-    /**
-     * Sets the description.
-     * 
-     * @param description the description to set
-     */
     public void setDescription(String description) {
         this.description = description;
     }
 
-    /**
-     * Getter for priority.
-     * 
-     * @return the priority
-     */
     public EPriority getPriority() {
         return this.priority;
     }
 
-    /**
-     * Sets the priority.
-     * 
-     * @param priority the priority to set
-     */
     public void setPriority(EPriority priority) {
         this.priority = priority;
     }
@@ -109,11 +66,6 @@ public class BasicRegistry {
         this.overrideId = overrideId;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -122,11 +74,6 @@ public class BasicRegistry {
         return result;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

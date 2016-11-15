@@ -28,8 +28,6 @@ import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.designer.maven.launch.MavenCommandLauncher;
 
 /**
- * DOC ggu class global comment. Detailed comment
- * 
  * Sometimes it can't work at all.
  */
 @SuppressWarnings("restriction")
@@ -104,10 +102,6 @@ public class LocalRepsitoryLauncherManager extends LocalRepositoryManager {
         processor.launch();
     }
 
-    /**
-     * 
-     * DOC ggu CustomJarProcessor class global comment. Detailed comment
-     */
     static class CustomJarLaunchProcessor {
 
         private String goal;

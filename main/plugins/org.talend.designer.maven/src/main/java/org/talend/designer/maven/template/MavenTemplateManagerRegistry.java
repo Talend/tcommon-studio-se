@@ -22,9 +22,6 @@ import org.talend.core.utils.RegistryReader;
 import org.talend.designer.maven.DesignerMavenPlugin;
 import org.talend.designer.maven.setting.project.IProjectSettingManagerProvider;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 @SuppressWarnings("nls")
 class MavenTemplateManagerRegistry extends RegistryReader {
 

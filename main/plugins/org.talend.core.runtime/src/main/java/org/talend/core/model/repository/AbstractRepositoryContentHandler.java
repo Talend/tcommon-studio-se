@@ -42,113 +42,54 @@ import org.talend.core.runtime.i18n.Messages;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * DOC ycbai class global comment. Detailed comment
- */
 public abstract class AbstractRepositoryContentHandler implements IRepositoryContentHandler {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryContentHandler#getIcon(org.talend.core.model.repository.
-     * ERepositoryObjectType)
-     */
     @Override
     public IImage getIcon(ERepositoryObjectType type) {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryContentHandler#isProcess(org.talend.core.model.properties.Item)
-     */
     @Override
     public boolean isProcess(Item item) {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryContentHandler#getProcessType()
-     */
     @Override
     public ERepositoryObjectType getProcessType() {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryContentHandler#getCodeType()
-     */
     @Override
     public ERepositoryObjectType getCodeType() {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryContentHandler#addNode(org.talend.core.model.repository.
-     * ERepositoryObjectType, org.talend.repository.model.RepositoryNode,
-     * org.talend.core.model.repository.IRepositoryViewObject, org.talend.repository.model.RepositoryNode)
-     */
     @Override
     public void addNode(ERepositoryObjectType type, RepositoryNode recBinNode, IRepositoryViewObject repositoryObject,
             RepositoryNode node) {
         // Do nothing by default.
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryContentHandler#addContents(java.util.Collection,
-     * org.eclipse.emf.ecore.resource.Resource)
-     */
     @Override
     public void addContents(Collection<EObject> collection, Resource resource) {
         // Do nothing by default.
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryContentHandler#getIcon(org.talend.core.model.properties.Item)
-     */
     @Override
     public IImage getIcon(Item item) {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryContentHandler#getHandleType()
-     */
     @Override
     public ERepositoryObjectType getHandleType() {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryContentHandler#hasSchemas()
-     */
     @Override
     public boolean hasSchemas() {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.repository.IRepositoryContentHandler#getPropertyStatus(org.talend.core.model.properties
-     * .Item)
-     */
     @Override
     public List<Status> getPropertyStatus(Item item) {
         if (isProcess(item)) {
@@ -162,60 +103,27 @@ public abstract class AbstractRepositoryContentHandler implements IRepositoryCon
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.repository.IRepositoryContentHandler#hideAction(org.talend.repository.model.IRepositoryNode
-     * , java.lang.Class)
-     */
     @Override
     public boolean hideAction(IRepositoryNode node, Class actionType) {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.repository.IRepositoryContentHandler#isOwnTable(org.talend.repository.model.IRepositoryNode
-     * , java.lang.Class)
-     */
     @Override
     public boolean isOwnTable(IRepositoryNode node, Class type) {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryContentHandler#newWizard(org.eclipse.ui.IWorkbench, boolean,
-     * org.talend.repository.model.RepositoryNode, java.lang.String[])
-     */
     @Override
     public IWizard newWizard(IWorkbench workbench, boolean creation, RepositoryNode node, String[] existingNames) {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryContentHandler#newSchemaWizard(org.eclipse.ui.IWorkbench,
-     * boolean, org.talend.core.model.repository.IRepositoryViewObject,
-     * org.talend.core.model.metadata.builder.connection.MetadataTable, java.lang.String[], boolean)
-     */
     @Override
     public IWizard newSchemaWizard(IWorkbench workbench, boolean creation, IRepositoryViewObject object,
             MetadataTable metadataTable, String[] existingNames, boolean forceReadOnly) {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryContentHandler#deleteNode(org.talend.core.model.repository.
-     * IRepositoryViewObject)
-     */
     @Override
     public void deleteNode(final IRepositoryViewObject repViewObject) {
         if (repViewObject != null && repViewObject.getProperty() != null) {
@@ -255,67 +163,32 @@ public abstract class AbstractRepositoryContentHandler implements IRepositoryCon
         // Do nothing by default.
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryContentHandler#getRepositoryTypeProcessor()
-     */
     @Override
     public IRepositoryTypeProcessor getRepositoryTypeProcessor(String repositoryType) {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.repository.IRepositoryContentHandler#createScreenShotResource(org.eclipse.core.resources
-     * .IProject, org.talend.core.model.properties.Item, int, org.eclipse.core.runtime.IPath)
-     */
     @Override
     public Resource createScreenShotResource(IProject project, Item item, int classifierID, IPath path)
             throws PersistenceException {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.repository.IRepositoryContentHandler#saveScreenShots(org.talend.core.model.properties.Item)
-     */
     @Override
     public Resource saveScreenShots(Item item) throws PersistenceException {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.repository.IRepositoryContentHandler#copyScreenShotFile(org.talend.core.model.properties
-     * .Item, org.talend.core.model.properties.Item)
-     */
     @Override
     public void copyScreenShotFile(Item originalItem, Item newItem) throws IOException {
         // Does nothing.
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.repository.IRepositoryContentHandler#getReferenceFileURI(org.eclipse.emf.common.util.URI,
-     * java.lang.String)
-     */
     @Override
     public URI getReferenceFileURI(Item item, String extension) {
         return null;
     }
 
-    /* (non-Javadoc)
-     * @see org.talend.core.model.repository.IRepositoryContentHandler#hasDynamicIcon()
-     */
     @Override
     public boolean hasDynamicIcon() {
         return false;

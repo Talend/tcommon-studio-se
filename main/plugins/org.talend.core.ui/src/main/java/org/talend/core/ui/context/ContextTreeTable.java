@@ -116,10 +116,6 @@ import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.SortedList;
 import ca.odell.glazedlists.TreeList;
 
-/**
- * created by ldong on Jul 10, 2014 Detailed comment
- * 
- */
 public class ContextTreeTable {
 
     private NatTable natTable;

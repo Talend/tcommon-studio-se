@@ -28,12 +28,6 @@ import org.talend.commons.utils.workbench.extensions.ExtensionImplementationProv
 import org.talend.commons.utils.workbench.extensions.ExtensionPointLimiterImpl;
 import org.talend.commons.utils.workbench.extensions.IExtensionPointLimiter;
 
-/**
- * DOC smallet class global comment. Detailed comment <br/>
- * 
- * $Id: ActionsHelper.java 7038 2007-11-15 14:05:48Z plegall $
- * 
- */
 public class ActionsHelper {
 
     private static final Comparator COMP = new ActionsLevelComparator();
@@ -141,10 +135,6 @@ public class ActionsHelper {
         return relation;
     }
 
-    /**
-     * 
-     * hywang ActionsHelper class global comment. Detailed comment
-     */
     static class RepositoryContextualsActionGroup {
 
         private String parentId;
@@ -168,20 +158,8 @@ public class ActionsHelper {
 
     }
 
-    /**
-     * 
-     * DOC smallet ActionsHelper class global comment. Detailed comment <br/>
-     * 
-     * $Id: ActionsHelper.java 7038 2007-11-15 14:05:48Z plegall $
-     * 
-     */
     private static class ActionsLevelComparator implements Comparator<ITreeContextualAction> {
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
-         */
         public int compare(ITreeContextualAction o1, ITreeContextualAction o2) {
             Integer l1 = o1.getLevel();
             Integer l2 = o2.getLevel();
@@ -191,9 +169,6 @@ public class ActionsHelper {
     }
 
     /**
-     * 
-     * DOC xye Comment method "getActionById".
-     * 
      * @param id
      * @return
      */

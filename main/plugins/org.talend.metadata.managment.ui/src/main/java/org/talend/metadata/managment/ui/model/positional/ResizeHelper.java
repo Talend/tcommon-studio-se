@@ -14,18 +14,8 @@ package org.talend.metadata.managment.ui.model.positional;
 
 import org.eclipse.swt.graphics.Point;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id: ResizeHelper.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
- */
 public class ResizeHelper {
 
-    /**
-     * DOC amaumont ResizeHelper class global comment. Detailed comment <br/>
-     * 
-     */
     public enum RESIZE_MODE {
         HORIZONTAL,
         VERTICAL,

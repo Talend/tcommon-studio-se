@@ -31,9 +31,6 @@ import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class JobAndNodesParametersRelationshipHandler implements IItemRelationshipHandler {
 
     protected boolean valid(Item baseItem) {

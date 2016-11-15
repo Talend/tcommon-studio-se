@@ -24,9 +24,6 @@ import org.talend.commons.ui.swt.drawing.background.IBackgroundRefresher;
 import org.talend.commons.ui.swt.linking.TreeToTablesLinker;
 import org.talend.core.model.metadata.builder.connection.XmlFileConnection;
 
-/**
- * DOC ycbai class global comment. Detailed comment
- */
 public class XmlTree2SchemaLinker extends TreeToTablesLinker<Object, Object> {
 
     private XmlFileSchema2TreeLinker delegateLinker;

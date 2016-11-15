@@ -51,16 +51,9 @@ import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ui.branding.IBrandingConfiguration;
 import org.talend.core.ui.branding.IBrandingService;
 
-/**
- * created by ggu on Nov 10, 2014 Detailed comment
- *
- */
 @SuppressWarnings("restriction")
 public class RestoreAllRegisteredPerspectivesProvider {
 
-    /**
-     * 
-     */
     private static final String FIRST_TIME_LAUNCH_PREF = "first.time.launch"; //$NON-NLS-1$
 
     private static Logger log = Logger.getLogger(RestoreAllRegisteredPerspectivesProvider.class);

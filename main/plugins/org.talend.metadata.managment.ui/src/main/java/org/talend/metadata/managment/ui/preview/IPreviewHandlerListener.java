@@ -13,10 +13,6 @@
 package org.talend.metadata.managment.ui.preview;
 
 /**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
  * @param <R> result of preview
  */
 public interface IPreviewHandlerListener<R> {

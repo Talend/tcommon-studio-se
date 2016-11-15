@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.core.model.relationship;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class Relation implements Cloneable {
 
     private String type;

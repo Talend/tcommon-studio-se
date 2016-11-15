@@ -12,30 +12,16 @@
 // ============================================================================
 package org.talend.commons.utils.threading;
 
-/**
- * created by wchen on 2014-6-6 Detailed comment
- * 
- */
 public abstract class AbsRetrieveColumnRunnable implements Runnable {
 
     volatile boolean isCanceled = false;
 
     private Object columnObject;
 
-    /**
-     * Getter for columnObject.
-     * 
-     * @return the columnObject
-     */
     public Object getColumnObject() {
         return this.columnObject;
     }
 
-    /**
-     * Sets the columnObject.
-     * 
-     * @param columnObject the columnObject to set
-     */
     public void setColumnObject(Object columnObject) {
         this.columnObject = columnObject;
     }
@@ -44,11 +30,6 @@ public abstract class AbsRetrieveColumnRunnable implements Runnable {
         this.isCanceled = cancel;
     }
 
-    /**
-     * Getter for isCanceled.
-     * 
-     * @return the isCanceled
-     */
     public boolean isCanceled() {
         return this.isCanceled;
     }

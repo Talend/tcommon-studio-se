@@ -23,16 +23,8 @@ import org.eclipse.swt.graphics.Image;
 import org.talend.core.repository.model.ItemReferenceBean;
 import org.talend.core.ui.images.RepositoryImageProvider;
 
-/**
- * DOC ycbai class global comment. Detailed comment
- */
 public class ItemReferenceViewProvider extends LabelProvider implements ITableLabelProvider, ITreeContentProvider {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnImage(java.lang.Object, int)
-     */
     public Image getColumnImage(Object element, int columnIndex) {
         ItemReferenceBean bean = (ItemReferenceBean) element;
         if (columnIndex == 0) {

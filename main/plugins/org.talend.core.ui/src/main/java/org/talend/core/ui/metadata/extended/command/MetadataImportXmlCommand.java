@@ -26,12 +26,6 @@ import org.talend.core.model.metadata.IMetadataColumn;
 import org.talend.core.model.metadata.MetadataSchema;
 import org.xml.sax.SAXException;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public class MetadataImportXmlCommand extends Command {
 
     protected File file;
@@ -42,25 +36,12 @@ public class MetadataImportXmlCommand extends Command {
 
     protected List<IMetadataColumn> added;
 
-    /**
-     * DOC amaumont MetadataPasteCommand constructor comment.
-     * 
-     * @param extendedTableModel
-     * @param extendedTable
-     * @param validAssignableType
-     * @param indexStartAdd
-     */
     public MetadataImportXmlCommand(ExtendedTableModel extendedTableModel, File file) {
         super();
         this.file = file;
         this.extendedTableModel = extendedTableModel;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.command.CommonCommand#execute()
-     */
     @Override
     public void execute() {
         try {

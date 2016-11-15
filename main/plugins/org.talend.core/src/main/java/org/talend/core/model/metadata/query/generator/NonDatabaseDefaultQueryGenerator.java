@@ -16,9 +16,6 @@ import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.model.metadata.query.AbstractQueryGenerator;
 import org.talend.core.model.process.IElement;
 
-/**
- * ggu class global comment. Detailed comment
- */
 public class NonDatabaseDefaultQueryGenerator extends AbstractQueryGenerator {
 
     public NonDatabaseDefaultQueryGenerator(EDatabaseTypeName dbType) {

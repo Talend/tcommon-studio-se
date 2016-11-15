@@ -16,12 +16,6 @@ import java.io.FileFilter;
 
 import org.talend.commons.utils.io.FilesUtils;
 
-/**
- * bqian class global comment. Detailed comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ææäº, 29 ä¹æ 2006) nrousseau $
- * 
- */
 public class PropertiesCollector {
 
     public static void main(String[] args) throws Exception {

@@ -29,10 +29,6 @@ import org.talend.librariesmanager.ui.LibManagerUiPlugin;
 import org.talend.librariesmanager.ui.i18n.Messages;
 import org.talend.librariesmanager.utils.RemoteModulesHelper;
 
-/**
- * created by WCHEN on 2012-9-18 Detailed comment
- * 
- */
 public class ModuleLicenseDialog extends Dialog {
 
     private Browser clufTextBrowser;
@@ -45,11 +41,6 @@ public class ModuleLicenseDialog extends Dialog {
 
     private String name;
 
-    /**
-     * DOC WCHEN ModuleLicenseDialog constructor comment.
-     * 
-     * @param parentShell
-     */
     public ModuleLicenseDialog(Shell parentShell, String licenseType, String license, String name) {
         super(parentShell);
         setShellStyle(SWT.CLOSE | SWT.MAX | SWT.TITLE | SWT.BORDER | SWT.APPLICATION_MODAL | SWT.RESIZE | getDefaultOrientation());
@@ -58,22 +49,12 @@ public class ModuleLicenseDialog extends Dialog {
         this.name = name;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
-     */
     @Override
     protected void configureShell(Shell newShell) {
         super.configureShell(newShell);
         newShell.setText(Messages.getString("ModuleLicenseDialog.license"));//$NON-NLS-1$
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
-     */
     @Override
     protected Control createDialogArea(Composite parent) {
         ((GridData) parent.getLayoutData()).minimumWidth = 600;
@@ -130,22 +111,12 @@ public class ModuleLicenseDialog extends Dialog {
         getButton(IDialogConstants.OK_ID).setText(Messages.getString("ModuleLicenseDialog.license.accept"));//$NON-NLS-1$
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.Dialog#okPressed()
-     */
     @Override
     protected void okPressed() {
         LibManagerUiPlugin.getDefault().getPreferenceStore().setValue(licenseType, true);
         super.okPressed();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.Dialog#cancelPressed()
-     */
     @Override
     protected void cancelPressed() {
         super.cancelPressed();

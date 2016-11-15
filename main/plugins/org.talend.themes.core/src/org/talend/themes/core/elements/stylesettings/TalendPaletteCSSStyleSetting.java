@@ -19,10 +19,6 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
 
-/**
- * created by cmeng on Jan 30, 2015 Detailed comment
- *
- */
 public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     protected Color mouseOverForgroundColor1;

@@ -14,19 +14,10 @@ package org.talend.updates.runtime.model;
 
 import org.eclipse.equinox.p2.core.ProvisionException;
 
-/**
- * created by ggu on Jul 17, 2014 Detailed comment
- *
- */
 public class P2ExtraFeatureException extends Exception {
 
     private static final long serialVersionUID = -1761956032920259160L;
 
-    /**
-     * DOC sgandon ExtraFeatureException constructor comment.
-     * 
-     * @param e
-     */
     public P2ExtraFeatureException(ProvisionException e) {
         super(e);
     }

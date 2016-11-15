@@ -12,12 +12,6 @@
 // ============================================================================
 package org.talend.core.model.utils;
 
-/**
- * DOC ggu class global comment. Detailed comment <br/>
- * 
- * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
- */
 public final class TalendPropertiesUtil {
 
     public static boolean isEnabled(String key) {
@@ -25,43 +19,18 @@ public final class TalendPropertiesUtil {
         return Boolean.parseBoolean(value);
     }
 
-    /**
-     * 
-     * DOC ggu Comment method "isHideExchange".
-     * 
-     * 
-     * @return
-     */
     public static boolean isHideExchange() {
         return isEnabled("talend.hide.exchange"); //$NON-NLS-1$
     }
 
-    /**
-     * 
-     * DOC ggu Comment method "isHideBuildNumber".
-     * 
-     * @return
-     */
     public static boolean isHideBuildNumber() {
         return isEnabled("talend.hide.buildNumber"); //$NON-NLS-1$
     }
 
-    /**
-     * 
-     * DOC ggu Comment method "isEnabledMultiBranchesInWorkspacee".
-     * 
-     * @return
-     */
     public static boolean isEnabledMultiBranchesInWorkspace() {
         return isEnabled("talend.enable.multiBranchesInWorkspace"); //$NON-NLS-1$
     }
 
-    /**
-     * 
-     * DOC ggu Comment method "isEnabledMultiBranchesInWorkspacee".
-     * 
-     * @return
-     */
     public static boolean isCleanCache() {
         return isEnabled("talend.clean.cache"); //$NON-NLS-1$
     }

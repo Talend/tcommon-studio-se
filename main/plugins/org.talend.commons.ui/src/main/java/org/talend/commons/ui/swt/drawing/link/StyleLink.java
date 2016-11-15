@@ -16,12 +16,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public class StyleLink implements IStyleLink {
 
     protected Color foregroundColor;
@@ -45,11 +39,7 @@ public class StyleLink implements IStyleLink {
     protected int[] lineDash;
 
     /**
-     * 
-     * Indicate direction of link. <br/>
-     * 
-     * $Id$
-     * 
+     * Indicate direction of link.
      */
     public enum EDirection {
         ONE_TO_TWO,

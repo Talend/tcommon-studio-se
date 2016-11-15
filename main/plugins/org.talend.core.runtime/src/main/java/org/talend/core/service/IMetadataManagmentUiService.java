@@ -18,9 +18,6 @@ import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * ggu class global comment. Detailed comment
- */
 public interface IMetadataManagmentUiService extends IService {
 
     public String getAndOpenXSDFileDialog(Path initPath);

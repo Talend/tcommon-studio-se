@@ -18,9 +18,6 @@ import java.util.List;
 import org.talend.commons.utils.TalendDBUtils;
 import org.talend.fakejdbc.FakeResultSet;
 
-/**
- * DOC gcui class global comment. Detailed comment
- */
 public class TeradataResultSet extends FakeResultSet {
 
     private String[] tableMeta = null;

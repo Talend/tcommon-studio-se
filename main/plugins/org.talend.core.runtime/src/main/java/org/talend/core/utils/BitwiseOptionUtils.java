@@ -12,16 +12,10 @@
 // ============================================================================
 package org.talend.core.utils;
 
-/**
- * created by ycbai on 2015年5月15日 Detailed comment
- *
- */
 public class BitwiseOptionUtils {
 
     /**
      * Estimate whether <code>option</code> is contained by <code>options</code>.
-     * <p>
-     * DOC ycbai Comment method "containOption".
      * 
      * @param options
      * @param option

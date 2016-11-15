@@ -66,10 +66,6 @@ import org.talend.core.ui.context.model.tree.GroupByVariableAction;
 import org.talend.core.ui.context.model.tree.GroupByVariableProvider;
 import org.talend.core.ui.i18n.Messages;
 
-/**
- * DOC bqian class global comment. Detailed comment <br/>
- * 
- */
 public class ContextTreeValuesComposite extends AbstractContextTabEditComposite {
 
     private TreeViewer viewer;

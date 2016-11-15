@@ -35,9 +35,6 @@ import org.talend.core.model.metadata.builder.connection.MetadataColumn;
 import org.talend.core.ui.metadata.editor.MetadataEmfTableEditor;
 import org.talend.core.ui.metadata.extended.command.MetadataEmfPasteCommand;
 
-/**
- * wzhang class global comment. Detailed comment
- */
 public class XmlFileMetadataEmfToolbarEditor extends ExtendedToolbarView {
 
     private String dbmsId;

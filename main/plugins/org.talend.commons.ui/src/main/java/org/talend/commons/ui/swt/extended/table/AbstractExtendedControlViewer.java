@@ -18,12 +18,6 @@ import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.swt.widgets.Composite;
 import org.talend.commons.ui.swt.advanced.dataeditor.AbstractExtendedToolbar;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public abstract class AbstractExtendedControlViewer {
 
     private AbstractExtendedControlModel extendedControlModel;
@@ -37,11 +31,7 @@ public abstract class AbstractExtendedControlViewer {
     private boolean readOnly;
 
     /**
-     * 
-     * Event type. <br/>
-     * 
-     * $Id$
-     * 
+     * Event type.
      */
     public enum EVENT_TYPE implements IExtendedControlEventType {
         MODEL_CHANGED,
@@ -53,17 +43,12 @@ public abstract class AbstractExtendedControlViewer {
      */
     private ListenerList listeners = new ListenerList();
 
-    /**
-     * DOC amaumont AbstractExtendedControlViewer constructor comment.
-     */
     public AbstractExtendedControlViewer(Composite parentComposite) {
         super();
         this.parentComposite = parentComposite;
     }
 
     /**
-     * DOC amaumont AbstractExtendedControlViewer constructor comment.
-     * 
      * @param extendedControl, can be null
      * @param parentComposite
      */
@@ -74,8 +59,6 @@ public abstract class AbstractExtendedControlViewer {
     }
 
     /**
-     * DOC amaumont AbstractExtendedControlViewer constructor comment.
-     * 
      * @param extendedControl, can be null
      * @param parentComposite
      * @param readOnly
@@ -87,11 +70,6 @@ public abstract class AbstractExtendedControlViewer {
         this.readOnly = readOnly;
     }
 
-    /**
-     * DOC amaumont Comment method "executeCommand".
-     * 
-     * @param command
-     */
     public void executeCommand(Command command) {
         if (this.commandStack != null) {
             this.commandStack.execute(command);

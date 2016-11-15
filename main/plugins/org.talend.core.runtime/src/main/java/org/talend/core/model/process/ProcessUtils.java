@@ -59,9 +59,6 @@ import org.talend.designer.runprocess.ItemCacheManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IProxyRepositoryService;
 
-/**
- * DOC bqian class global comment. Detailed comment
- */
 @SuppressWarnings("unchecked")
 public final class ProcessUtils {
 

@@ -18,12 +18,6 @@ import org.talend.core.repository.model.ChangeProcessor;
 import org.talend.repository.IRepositoryChangedListener;
 import org.talend.repository.IRepositoryElementDelta;
 
-/**
- * DOC smallet class global comment. Detailed comment <br/>
- * 
- * $Id: RepositoryPlugin.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
- */
 public class CoreRepositoryPlugin extends AbstractUIPlugin {
 
     // The plug-in ID

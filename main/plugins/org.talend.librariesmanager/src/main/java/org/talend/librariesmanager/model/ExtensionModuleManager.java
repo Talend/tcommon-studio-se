@@ -25,11 +25,6 @@ import org.talend.core.model.general.ModuleNeeded;
 import org.talend.designer.core.model.utils.emf.component.IMPORTType;
 import org.talend.librariesmanager.i18n.Messages;
 
-/**
- *
- * created by ycbai on 2014-5-7 Detailed comment
- *
- */
 public class ExtensionModuleManager {
 
     public final static String EXT_ID = "org.talend.core.runtime.librariesNeeded"; //$NON-NLS-1$

@@ -14,20 +14,10 @@ package org.talend.repository.ui.wizards.metadata.table.database;
 
 import org.eclipse.jface.wizard.WizardPage;
 
-/**
- * DOC hwang class global comment. Detailed comment
- */
 public abstract class TemplateWizardPage extends WizardPage {
 
-    /**
-     * DOC hwang TemplateWizardPage constructor comment.
-     * 
-     * @param pageName
-     */
     protected TemplateWizardPage(String pageName) {
         super(pageName);
     }
-
-    // public abstract Connection getConnection();
 
 }

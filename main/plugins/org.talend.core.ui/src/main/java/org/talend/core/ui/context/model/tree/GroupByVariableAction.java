@@ -23,8 +23,6 @@ import org.talend.core.ui.context.ContextTreeValuesComposite;
 import org.talend.core.ui.i18n.Messages;
 
 /**
- * cli class global comment. Detailed comment
- * 
  * This action is used to group the text by variables.
  */
 public class GroupByVariableAction extends Action {
@@ -36,11 +34,6 @@ public class GroupByVariableAction extends Action {
         this.parentModel = parentModel;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.action.Action#run()
-     */
     @Override
     public void run() {
         if (parentModel == null) {

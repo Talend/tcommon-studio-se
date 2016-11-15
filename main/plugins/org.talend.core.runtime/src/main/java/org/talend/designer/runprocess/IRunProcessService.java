@@ -33,12 +33,6 @@ import org.talend.core.model.properties.Property;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
 
-/**
- * DOC qian class global comment. Detailed comment <br/>
- * 
- * $Id: talend-code-templates.xml 1 2006-09-29 17:06:40 +0000 (星期五, 29 九月 2006) nrousseau $
- * 
- */
 public interface IRunProcessService extends IService {
 
     public ICodeProblemsChecker getSyntaxChecker(ECodeLanguage codeLanguage);
@@ -71,8 +65,6 @@ public interface IRunProcessService extends IService {
             String... codeOptions) throws ProcessorException;
 
     /**
-     * DOC xue Comment method "createCodeProcessor".
-     * 
      * @param process
      * @param language
      * @param filenameFromLabel
@@ -81,8 +73,6 @@ public interface IRunProcessService extends IService {
     public IProcessor createCodeProcessor(IProcess process, Property property, ECodeLanguage language, boolean filenameFromLabel);
 
     /**
-     * DOC qian Comment method "createPerformanceData".
-     * 
      * @param data IPerformanceData
      * @return
      */

@@ -23,12 +23,6 @@ import org.talend.core.model.process.EConnectionType;
 import org.talend.core.model.process.IConnection;
 import org.talend.core.model.process.INode;
 
-/**
- * DOC smallet class global comment. Detailed comment <br/>
- * 
- * $Id: IODataComponent.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
- */
 public class IODataComponent {
 
     private int columnOption = IMetadataColumn.OPTIONS_NONE;
@@ -43,11 +37,6 @@ public class IODataComponent {
 
     private static ICoreService coreService = (ICoreService) GlobalServiceRegister.getDefault().getService(ICoreService.class);
 
-    /**
-     * DOC smallet IODataComponent constructor comment.
-     * 
-     * @param connection
-     */
     public IODataComponent(IConnection connection) {
         super();
         this.connection = connection;

@@ -14,12 +14,6 @@ package org.talend.registration;
 
 import org.talend.commons.ui.runtime.image.IImage;
 
-/**
- * DOC smallet class global comment. Detailed comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- * 
- */
 public enum ERepositoryImages implements IImage {
 
     REGISTER_ICO("/icons/register_icon.png"), //$NON-NLS-1$ 
@@ -35,20 +29,10 @@ public enum ERepositoryImages implements IImage {
         this.path = path;
     }
 
-    /**
-     * Getter for path.
-     * 
-     * @return the path
-     */
     public String getPath() {
         return this.path;
     }
 
-    /**
-     * Getter for clazz.
-     * 
-     * @return the clazz
-     */
     public Class getLocation() {
         return RegistrationPlugin.class;
     }

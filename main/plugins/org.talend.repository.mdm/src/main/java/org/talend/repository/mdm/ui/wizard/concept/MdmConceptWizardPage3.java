@@ -21,9 +21,6 @@ import org.talend.metadata.managment.ui.wizard.AbstractForm;
 import org.talend.repository.mdm.i18n.Messages;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * DOC hwang class global comment. Detailed comment
- */
 public class MdmConceptWizardPage3 extends AbstractRetrieveConceptPage {
 
     // private MDMSchemaForm mdmSchemaForm;
@@ -33,11 +30,6 @@ public class MdmConceptWizardPage3 extends AbstractRetrieveConceptPage {
 
     private MetadataTable metadataTable;
 
-    /**
-     * DOC Administrator MDMSchemaWizardPage constructor comment.
-     * 
-     * @param pageName
-     */
     protected MdmConceptWizardPage3(RepositoryNode node, ConnectionItem connectionItem, MetadataTable metadataTable,
             boolean isRepositoryObjectEditable, boolean creation) {
         super(node, connectionItem, metadataTable, creation);
@@ -46,11 +38,6 @@ public class MdmConceptWizardPage3 extends AbstractRetrieveConceptPage {
         this.setTitle(Messages.getString("MdmConceptWizardPage3_mdm_entity")); //$NON-NLS-1$
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
-     */
     public void createControl(Composite parent) {
         if (getConcept() != null) {
             if (MdmConceptType.INPUT.equals(getConcept().getConceptType())) {
@@ -84,10 +71,6 @@ public class MdmConceptWizardPage3 extends AbstractRetrieveConceptPage {
         }
     }
 
-    // public void setConceptName(String name) {
-    // xsdFileForm.setConceptName(name);
-    // }
-    //
     public void createMetadataTable() {
         xsdFileForm.createTable();
     }

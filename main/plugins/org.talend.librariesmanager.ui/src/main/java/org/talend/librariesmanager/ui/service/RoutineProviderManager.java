@@ -28,9 +28,6 @@ import org.talend.core.model.routines.IRoutineProviderCreator;
 import org.talend.core.model.routines.IRoutinesProvider;
 import org.talend.librariesmanager.ui.i18n.Messages;
 
-/**
- * DOC bqian class global comment. Detailed comment
- */
 public class RoutineProviderManager {
 
     private static Logger log = Logger.getLogger(RoutineProviderManager.class);
@@ -81,4 +78,5 @@ public class RoutineProviderManager {
             }
         }
     }
+
 }

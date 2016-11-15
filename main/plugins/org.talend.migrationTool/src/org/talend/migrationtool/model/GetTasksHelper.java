@@ -26,12 +26,6 @@ import org.talend.commons.utils.workbench.extensions.IExtensionPointLimiter;
 import org.talend.migration.IProjectMigrationTask;
 import org.talend.migration.IWorkspaceMigrationTask;
 
-/**
- * DOC smallet class global comment. Detailed comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- * 
- */
 public class GetTasksHelper {
 
     private static GetTasksHelper instance = null;

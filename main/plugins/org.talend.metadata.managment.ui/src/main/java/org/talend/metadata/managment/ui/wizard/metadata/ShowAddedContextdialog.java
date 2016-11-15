@@ -44,9 +44,6 @@ import org.talend.core.model.properties.ContextItem;
 import org.talend.metadata.managment.ui.i18n.Messages;
 import org.talend.repository.UpdateRepositoryUtils;
 
-/**
- * ggu class global comment. Detailed comment
- */
 public class ShowAddedContextdialog extends SelectionDialog {
 
     private static final String TITILE = Messages.getString("ShowAddedContextdialog.Title"); //$NON-NLS-1$
@@ -127,10 +124,6 @@ public class ShowAddedContextdialog extends SelectionDialog {
         createButton(parent, IDialogConstants.NO_ID, IDialogConstants.NO_LABEL, false);
     }
 
-    /**
-     * 
-     * ggu AddedContextBean class global comment. Detailed comment
-     */
     class AddedContextBean {
 
         String idOrLabel;
@@ -160,10 +153,6 @@ public class ShowAddedContextdialog extends SelectionDialog {
 
     }
 
-    /**
-     * 
-     * ggu AddedContextTreeContentProvider class global comment. Detailed comment
-     */
     class AddedContextProvider extends ArrayContentProvider implements ITreeContentProvider, ITableLabelProvider, ILabelProvider {
 
         @Override

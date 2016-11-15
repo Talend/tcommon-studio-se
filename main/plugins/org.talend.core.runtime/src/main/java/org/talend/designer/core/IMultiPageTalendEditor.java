@@ -16,9 +16,6 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.ui.IEditorPart;
 import org.talend.core.model.process.IProcess2;
 
-/**
- * ggu class global comment. Detailed comment
- */
 public interface IMultiPageTalendEditor extends IEditorPart, IAdaptable {
 
     public IProcess2 getProcess();

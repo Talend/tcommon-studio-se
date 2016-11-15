@@ -23,9 +23,6 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.talend.commons.exception.ExceptionHandler;
 
-/**
- * DOC guanglong.du class global comment. Detailed comment
- */
 public class RepositoryContentManager {
 
     static List<IRepositoryContentHandler> handlers = null;

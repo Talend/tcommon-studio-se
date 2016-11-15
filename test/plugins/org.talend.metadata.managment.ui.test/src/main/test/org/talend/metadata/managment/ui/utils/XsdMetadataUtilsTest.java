@@ -34,26 +34,12 @@ import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.datatools.xml.utils.XSDPopulationUtil2;
 import org.talend.datatools.xml.utils.XSDUtils;
 
-/**
- * created by wchen on Aug 30, 2016 Detailed comment
- *
- */
 public class XsdMetadataUtilsTest {
 
-    /**
-     * DOC wchen Comment method "setUp".
-     * 
-     * @throws java.lang.Exception
-     */
     @Before
     public void setUp() throws Exception {
     }
 
-    /**
-     * DOC wchen Comment method "tearDown".
-     * 
-     * @throws java.lang.Exception
-     */
     @After
     public void tearDown() throws Exception {
     }

@@ -29,18 +29,8 @@ import org.talend.themes.core.elements.stylesettings.TalendTabSettings;
 import org.w3c.dom.css.CSSValue;
 import org.w3c.dom.css.CSSValueList;
 
-/**
- * created by cmeng on Feb 9, 2015 Detailed comment
- *
- */
 public class TalendTabCSSPropertyHandler implements ICSSPropertyHandler {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.e4.ui.css.core.dom.properties.ICSSPropertyHandler#applyCSSProperty(java.lang.Object,
-     * java.lang.String, org.w3c.dom.css.CSSValue, java.lang.String, org.eclipse.e4.ui.css.core.engine.CSSEngine)
-     */
     @Override
     public boolean applyCSSProperty(Object element, String property, CSSValue value, String pseudo, CSSEngine engine)
             throws Exception {

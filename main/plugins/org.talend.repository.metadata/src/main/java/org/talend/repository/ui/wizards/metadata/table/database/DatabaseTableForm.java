@@ -111,14 +111,6 @@ import org.talend.metadata.managment.ui.wizard.metadata.connection.GuessSchemaUt
 import org.talend.repository.metadata.i18n.Messages;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
-/**
- * @author ocarbone
- * 
- */
-/**
- * DOC Administrator class global comment. Detailed comment <br/>
- * 
- */
 public class DatabaseTableForm extends AbstractForm {
 
     protected static Logger log = Logger.getLogger(DatabaseTableForm.class);

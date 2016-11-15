@@ -40,16 +40,9 @@ import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import orgomg.cwm.objectmodel.core.Package;
 
-/**
- * created by nrousseau on Sep 4, 2013 Detailed comment
- * 
- */
 public class CloneConnectionUtils {
 
     /**
-     * 
-     * ggu Comment method "cloneOriginalValueConnection".
-     * 
      * perhaps, if connection is in context mode, will open dialog to choose context sets.
      */
     public static FileConnection cloneOriginalValueConnection(FileConnection fileConn) {

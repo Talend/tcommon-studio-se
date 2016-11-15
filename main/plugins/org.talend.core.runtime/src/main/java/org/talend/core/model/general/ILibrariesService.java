@@ -29,12 +29,6 @@ import org.talend.core.model.process.Problem;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.designer.codegen.PigTemplate;
 
-/**
- * DOC smallet class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public interface ILibrariesService extends IService {
 
     public static final String SOURCE_PERL_ROUTINES_FOLDER = "routines"; //$NON-NLS-1$

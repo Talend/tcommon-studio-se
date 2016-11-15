@@ -17,12 +17,6 @@ import java.util.Date;
 import org.talend.core.language.ECodeLanguage;
 import org.talend.core.language.LanguageManager;
 
-/**
- * yzhang class global comment. Detailed comment <br/>
- * 
- * $Id: DateParameter.java 下午04:37:24 2007-8-7 +0000 (2007-8-7) yzhang $
- * 
- */
 public class DateParameter extends Parameter {
 
     private Date dateValue;
@@ -36,11 +30,6 @@ public class DateParameter extends Parameter {
         this.dateValue = dateValue;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.rowgenerator.data.Parameter#sameParameterAs(org.talend.designer.rowgenerator.data.Parameter)
-     */
     @Override
     public boolean sameParameterAs(Parameter obj) {
         if (this == obj) {

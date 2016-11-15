@@ -28,11 +28,6 @@ import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
-/**
- * created by cmeng on May 10, 2016
- * Detailed comment
- *
- */
 public class RelationshipItemBuilderTest {
     
     /**

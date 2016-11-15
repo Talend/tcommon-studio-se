@@ -19,9 +19,6 @@ import org.talend.commons.i18n.internal.Messages;
 import org.talend.commons.utils.TalendDBUtils;
 import org.talend.fakejdbc.FakeResultSet;
 
-/**
- * DOC zwzhao class global comment. Detailed comment
- */
 public class AS400ResultSet extends FakeResultSet {
 
     private String[] tableMeta = null;
@@ -30,11 +27,6 @@ public class AS400ResultSet extends FakeResultSet {
 
     int index = -1;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeResultSet#next()
-     */
     @Override
     public boolean next() throws SQLException {
         if (data == null || data.size() == 0 || index >= data.size() - 1) {
@@ -53,11 +45,6 @@ public class AS400ResultSet extends FakeResultSet {
         return -1;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeResultSet#getString(java.lang.String)
-     */
     @Override
     public String getString(String columnLabel) throws SQLException {
         int columnIndex = indexOf(columnLabel, tableMeta);

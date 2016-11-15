@@ -20,9 +20,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.talend.repository.items.importexport.handlers.model.ImportItem;
 import org.talend.repository.items.importexport.manager.ResourcesManager;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public abstract class AbstractImportExecutableHandler implements IImportItemsHandler {
 
     protected final static Logger log = Logger.getLogger(AbstractImportExecutableHandler.class);
@@ -39,39 +36,17 @@ public abstract class AbstractImportExecutableHandler implements IImportItemsHan
         this.enableProductChecking = enableProductChecking;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.items.importexport.handlers.imports.IImportItemsHandler#findRelatedImportItems(org.eclipse
-     * .core .runtime.IProgressMonitor, org.talend.repository.items.importexport.manager.ResourcesManager,
-     * org.talend.repository.items.importexport.handlers.model.ImportItem,
-     * org.talend.repository.items.importexport.handlers.model.ImportItem[])
-     */
     @Override
     public List<ImportItem> findRelatedImportItems(IProgressMonitor monitor, ResourcesManager resManager, ImportItem importItem,
             ImportItem[] allImportImportItems) throws Exception {
         return Collections.emptyList(); // default, no related items
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.items.importexport.handlers.imports.IImportItemsHandler#isPriorImportRelatedItem()
-     */
     @Override
     public boolean isPriorImportRelatedItem() {
         return true; // default, import related item prior.
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.items.importexport.handlers.imports.IImportItemsHandler#afterImportingItems(org.eclipse
-     * .core.runtime.IProgressMonitor, org.talend.repository.items.importexport.manager.ResourcesManager,
-     * org.talend.repository.items.importexport.handlers.model.ImportItem)
-     */
     @Override
     public void afterImportingItems(IProgressMonitor monitor, ResourcesManager resManager, ImportItem importItem)
             throws Exception {

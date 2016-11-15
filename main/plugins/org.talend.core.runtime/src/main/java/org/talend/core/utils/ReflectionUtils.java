@@ -21,18 +21,13 @@ import java.lang.reflect.Method;
 import org.apache.log4j.Logger;
 
 /**
- * DOC ycbai class global comment. Detailed comment
- * 
  * General reflection utils.
- * 
  */
 public class ReflectionUtils {
 
     private static Logger log = Logger.getLogger(ReflectionUtils.class.getName());
 
     /**
-     * DOC ycbai Comment method "getPublicField".
-     * 
      * Returns the value of a public field.
      * 
      * @param owner

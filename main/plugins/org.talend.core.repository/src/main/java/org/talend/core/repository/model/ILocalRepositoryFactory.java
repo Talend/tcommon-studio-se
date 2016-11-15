@@ -15,9 +15,6 @@ package org.talend.core.repository.model;
 import org.eclipse.core.resources.IProject;
 import org.talend.commons.exception.PersistenceException;
 
-/**
- * DOC nrousseau class global comment. Detailed comment
- */
 public interface ILocalRepositoryFactory extends IRepositoryFactory {
 
     public void synchronizeRoutines(IProject prj) throws PersistenceException;

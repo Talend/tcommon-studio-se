@@ -34,10 +34,6 @@ import org.eclipse.swt.widgets.Text;
 import org.talend.updates.runtime.i18n.Messages;
 import org.talend.updates.runtime.model.UpdateSiteLocationType;
 
-/**
- * created by sgandon on 25 févr. 2013 Detailed comment
- * 
- */
 public class ChooseUpdateSitesWizardPage extends WizardPage {
 
     private Text CustomSiteText;
@@ -54,11 +50,6 @@ public class ChooseUpdateSitesWizardPage extends WizardPage {
 
     private Button btnDefaultRemoteSites;
 
-    /**
-     * Create the wizard.
-     * 
-     * @param updateWizardModel
-     */
     public ChooseUpdateSitesWizardPage(UpdateWizardModel updateWizardModel) {
         super("wizardPage"); //$NON-NLS-1$
         this.updateWizardModel = updateWizardModel;
@@ -66,11 +57,6 @@ public class ChooseUpdateSitesWizardPage extends WizardPage {
         setDescription(Messages.getString("ChooseUpdateSitesWizardPage.page.description")); //$NON-NLS-1$
     }
 
-    /**
-     * Create contents of the wizard.
-     * 
-     * @param parent
-     */
     @Override
     public void createControl(Composite parent) {
         Composite container = new Composite(parent, SWT.NULL);

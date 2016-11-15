@@ -26,17 +26,9 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.talend.utils.sql.metadata.constants.TableType;
 
-/**
- * created by zshen on Apr 7, 2013 Detailed comment
- * 
- */
+
 public class DB2ForZosDataBaseMetadataTest {
 
-    /**
-     * DOC zshen Comment method "setUp".
-     * 
-     * @throws java.lang.Exception
-     */
     @Before
     public void setUp() throws Exception {
     }

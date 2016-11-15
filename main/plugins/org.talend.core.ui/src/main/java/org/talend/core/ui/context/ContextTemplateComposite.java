@@ -76,10 +76,6 @@ import org.talend.core.ui.context.model.template.GroupBySourceProvider;
 import org.talend.core.ui.i18n.Messages;
 import org.talend.core.utils.TalendQuoteUtils;
 
-/**
- * zwang class global comment. Detailed comment <br/>
- * 
- */
 public class ContextTemplateComposite extends AbstractContextTabEditComposite {
 
     public static final String NEW_PARAM_NAME = "new"; //$NON-NLS-1$

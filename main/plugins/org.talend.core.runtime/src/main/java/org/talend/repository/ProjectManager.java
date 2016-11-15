@@ -48,9 +48,6 @@ import org.talend.repository.ui.views.IRepositoryView;
 import org.talend.utils.json.JSONException;
 import org.talend.utils.json.JSONObject;
 
-/**
- * ggu class global comment. Detailed comment
- */
 public final class ProjectManager {
 
     public static final String LOCAL = "LOCAL"; //$NON-NLS-1$
@@ -501,14 +498,6 @@ public final class ProjectManager {
         return TalendPropertiesUtil.isEnabledMultiBranchesInWorkspace();
     }
 
-    /**
-     *
-     * DOC ggu Comment method "getLocalTechnicalProjectName". TDI-21185
-     *
-     * @param projectLabel
-     * @return
-     */
-
     public static String getLocalTechnicalProjectName(String projectLabel) {
         if (projectLabel != null) {
             String technicalName = getTechnicalProjectLabel(projectLabel);
@@ -533,13 +522,6 @@ public final class ProjectManager {
         return projectLabel;
     }
 
-    /**
-     *
-     * DOC ggu Comment method "getProjectDisplayLabel".
-     *
-     * @param project
-     * @return
-     */
     public static String getProjectDisplayLabel(org.talend.core.model.properties.Project project) {
         if (project != null) {
             if (project.getLabel().equals(project.getTechnicalLabel())) {
@@ -550,13 +532,6 @@ public final class ProjectManager {
         return ""; //$NON-NLS-1$
     }
 
-    /**
-     *
-     * DOC ldong Comment method "getCurrentBranchLabel".
-     *
-     * @param project
-     * @return
-     */
     public static String getCurrentBranchLabel(Project project) {
         // just for TAC session,they do not want the label start with "/"
         String branchSelection = NAME_TRUNK;
@@ -583,13 +558,6 @@ public final class ProjectManager {
         return branchForMainProject;
     }
 
-    /**
-     *
-     * DOC ggu Comment method "getMainProjectBranch".
-     *
-     * @param technicalLabel
-     * @return
-     */
     public String getMainProjectBranch(String technicalLabel) {
         String branchForMainProject = null;
         Map<String, String> fields = getRepositoryContextFields();
@@ -617,11 +585,6 @@ public final class ProjectManager {
         return formatedBranchName;
     }
 
-    /**
-     * DOC ggu Comment method "getRepositoryContextFields".
-     *
-     * @return
-     */
     private Map<String, String> getRepositoryContextFields() {
         Context ctx = CoreRuntimePlugin.getInstance().getContext();
         if (ctx == null) {
@@ -648,9 +611,6 @@ public final class ProjectManager {
     }
 
     /**
-     *
-     * DOC ggu Comment method "setMainProjectBranch".
-     *
      * When use this method to set the branch value, make sure that have set the RepositoryContext object in context
      * "ctx.putProperty(Context.REPOSITORY_CONTEXT_KEY, repositoryContext)"
      *

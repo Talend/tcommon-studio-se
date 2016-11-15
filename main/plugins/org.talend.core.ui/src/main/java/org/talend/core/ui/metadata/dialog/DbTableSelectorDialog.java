@@ -37,10 +37,6 @@ import org.talend.core.ui.CoreUIPlugin;
 import org.talend.core.ui.i18n.Messages;
 import org.talend.core.ui.metadata.dialog.DbTableSelectorObject.ObjectType;
 
-/**
- * qzhang class global comment. Detailed comment <br/>
- * 
- */
 public class DbTableSelectorDialog extends Dialog {
 
     private static Image dbImage = ImageProvider.getImage(CoreUIPlugin.getImageDescriptor("/icons/database/connection.png")); //$NON-NLS-1$
@@ -55,23 +51,12 @@ public class DbTableSelectorDialog extends Dialog {
 
     private TreeViewer viewer;
 
-    /**
-     * qzhang DbTableSelectorDialog constructor comment.
-     * 
-     * @param parentShell
-     * @param object
-     */
     public DbTableSelectorDialog(Shell parentShell, DbTableSelectorObject object) {
         super(parentShell);
         setShellStyle(getShellStyle() | SWT.RESIZE);
         this.object = object;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
-     */
     @Override
     protected void configureShell(Shell newShell) {
         super.configureShell(newShell);
@@ -152,10 +137,6 @@ public class DbTableSelectorDialog extends Dialog {
         return container;
     }
 
-    /**
-     * qzhang DbTableSelectorDialog class global comment. Detailed comment <br/>
-     * 
-     */
     private class ListProvider extends LabelProvider implements IStructuredContentProvider, ITreeContentProvider {
 
         @Override

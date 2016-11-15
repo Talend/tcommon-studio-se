@@ -20,9 +20,6 @@ import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.helper.TableHelper;
 import org.talend.metadata.managment.ui.wizard.AbstractForm;
 
-/**
- * wzhang class global comment. Detailed comment
- */
 public class XmlFileOutputWizardPage extends XmlFileWizardPage {
 
     public XmlFileOutputWizardPage(boolean creation, int step, ConnectionItem connectionItem, boolean isRepositoryObjectEditable,

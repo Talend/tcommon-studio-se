@@ -18,52 +18,26 @@ import java.net.URL;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 
-/**
- * created by sgandon on 19 sept. 2013 Detailed comment
- * 
- */
 public class DownloadHelperWithProgress {
 
-    /**
-     * created by sgandon on 19 sept. 2013 Detailed comment
-     * 
-     */
     protected final class DownloadListenerImplementation implements DownloadListener {
 
         protected final IProgressMonitor progressMonitor;
 
-        /**
-         * DOC sgandon DownloadHelperWithProgress.DownloadListenerImplementation constructor comment.
-         */
         public DownloadListenerImplementation(IProgressMonitor progressMonitor) {
             this.progressMonitor = progressMonitor;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.talend.core.download.DownloadListener#downloadStart(int)
-         */
         @Override
         public void downloadStart(int totalSize) {
             progressMonitor.beginTask(null, totalSize);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.talend.core.download.DownloadListener#downloadProgress(org.talend.core.download.DownloadHelper, int)
-         */
         @Override
         public void downloadProgress(IDownloadHelper downloader, int bytesDownloaded) {
             progressMonitor.worked(bytesDownloaded);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.talend.core.download.DownloadListener#downloadComplete()
-         */
         @Override
         public void downloadComplete() {
             progressMonitor.done();

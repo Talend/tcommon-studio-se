@@ -32,11 +32,7 @@ import org.talend.core.ui.proposal.JavaSimpleDateFormatProposalProvider;
 import orgomg.cwm.objectmodel.core.TaggedValue;
 
 /**
- * DOC amaumont class global comment. Detailed comment <br/>
  * TGU same purpose as MetadataTableEditorView but uses EMF model directly
- * 
- * $Id: MetadataEmfTableEditorView.java 46940 2010-08-18 06:58:15Z wyang $
- * 
  */
 public class MetadataEmfTableEditorView extends AbstractMetadataTableEditorView<MetadataColumn> {
 

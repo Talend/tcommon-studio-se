@@ -56,18 +56,8 @@ import org.talend.metadata.managment.ui.wizard.metadata.xml.node.FOXTreeNode;
 import org.talend.metadata.managment.ui.wizard.metadata.xml.node.NameSpaceNode;
 import org.talend.repository.ProjectManager;
 
-/**
- * DOC ke class global comment. Detailed comment <br/>
- * 
- */
 public class TreeUtil {
 
-    /**
-     * DOC ke Comment method "checkLoopNode".
-     * 
-     * @param node
-     * @return
-     */
     public static boolean checkTreeLoopNode(FOXTreeNode node) {
         if (node == null) {
             return false;

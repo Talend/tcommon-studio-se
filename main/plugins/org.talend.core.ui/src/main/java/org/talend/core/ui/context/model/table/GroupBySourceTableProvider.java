@@ -35,9 +35,6 @@ import org.talend.core.ui.context.model.ContextTabChildModel;
 import org.talend.core.ui.context.model.template.ContextConstant;
 import org.talend.repository.ProjectManager;
 
-/**
- * cli class global comment. Detailed comment
- */
 public class GroupBySourceTableProvider extends ContextProviderProxy {
 
     private ContextTableValuesComposite parentModel;

@@ -17,12 +17,6 @@ import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.PatternRule;
 import org.eclipse.jface.text.rules.Token;
 
-/**
- * DOC nrousseau class global comment. Detailed comment <br/>
- * 
- * $Id: CasedPatternRule.java 7038 2007-11-15 14:05:48Z plegall $
- * 
- */
 public class CasedPatternRule extends PatternRule {
 
     protected boolean ignoreCase;

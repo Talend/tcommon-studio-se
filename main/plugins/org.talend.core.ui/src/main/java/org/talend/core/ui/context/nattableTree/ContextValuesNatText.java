@@ -35,10 +35,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.talend.core.model.process.IContextParameter;
 
-/**
- * created by ldong on Jul 29, 2014 Detailed comment
- * 
- */
 public class ContextValuesNatText extends Composite {
 
     protected final IStyle cellStyle;

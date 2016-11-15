@@ -15,16 +15,8 @@ package org.talend.rcp;
 import org.talend.core.services.IRcpService;
 import org.talend.rcp.intro.ActionBarBuildHelper;
 
-/**
- * qwei class global comment. Detailed comment
- */
 public class RcpServices implements IRcpService {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.rcp.IRcpService#activeSwitchProjectAction()
-     */
     public void activeSwitchProjectAction() {
         // ApplicationActionBarAdvisor.activeSwitchAction();
         ActionBarBuildHelper.activeSwitchAction();

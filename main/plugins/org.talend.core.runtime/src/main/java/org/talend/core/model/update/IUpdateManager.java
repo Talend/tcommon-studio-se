@@ -15,9 +15,6 @@ package org.talend.core.model.update;
 import java.beans.PropertyChangeEvent;
 import java.util.List;
 
-/**
- * ggu class global comment. Detailed comment
- */
 public interface IUpdateManager {
 
     /**

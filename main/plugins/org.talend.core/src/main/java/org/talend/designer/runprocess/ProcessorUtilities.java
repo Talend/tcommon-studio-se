@@ -89,12 +89,6 @@ import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IRepositoryService;
 
-/**
- * DOC nrousseau class global comment. Detailed comment <br/>
- * 
- * $Id: talend-code-templates.xml 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- * 
- */
 public class ProcessorUtilities {
 
     private static Logger log = Logger.getLogger(ProcessorUtilities.class);

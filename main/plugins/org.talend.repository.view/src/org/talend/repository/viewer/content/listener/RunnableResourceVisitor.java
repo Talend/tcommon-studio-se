@@ -18,10 +18,6 @@ import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.runtime.CoreException;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
-
 public abstract class RunnableResourceVisitor implements IResourceDeltaVisitor {
 
     private Collection<Runnable> runnables;
@@ -35,13 +31,6 @@ public abstract class RunnableResourceVisitor implements IResourceDeltaVisitor {
         return visit(delta, runnables);
     }
 
-    /**
-     * DOC sgandon Comment method "visit".
-     * 
-     * @param delta
-     * @param runnableCollections
-     * @return
-     */
     abstract protected boolean visit(IResourceDelta delta, Collection<Runnable> runnableCollections);
 
 }

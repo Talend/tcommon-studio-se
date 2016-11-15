@@ -22,12 +22,6 @@ import org.talend.commons.ui.runtime.i18n.Messages;
 import org.talend.commons.ui.swt.extended.table.ExtendedTableModel;
 import org.talend.commons.utils.data.list.ListenableList;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public class ExtendedTableMoveCommand extends Command implements IExtendedTableCommand {
 
     private ExtendedTableModel extendedTable;
@@ -44,9 +38,6 @@ public class ExtendedTableMoveCommand extends Command implements IExtendedTableC
 
     public static final String LABEL = Messages.getString("ExtendedTableMoveCommand.MoveLabel"); //$NON-NLS-1$
 
-    /**
-     * DOC amaumont ExtendedTableAddCommand constructor comment.
-     */
     public ExtendedTableMoveCommand(ExtendedTableModel extendedTable, boolean moveUp, int[] entriesIndices) {
         super(LABEL);
         this.extendedTable = extendedTable;
@@ -54,11 +45,6 @@ public class ExtendedTableMoveCommand extends Command implements IExtendedTableC
         this.entriesIndices = entriesIndices;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.gef.commands.Command#execute()
-     */
     @SuppressWarnings("unchecked")//$NON-NLS-1$
     @Override
     public void execute() {
@@ -105,42 +91,21 @@ public class ExtendedTableMoveCommand extends Command implements IExtendedTableC
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.command.CommonCommand#canExecute()
-     */
     @Override
     public boolean canExecute() {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.command.CommonCommand#canUndo()
-     */
     @Override
     public boolean canUndo() {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.command.CommonCommand#redo()
-     */
-    @SuppressWarnings("unchecked")//$NON-NLS-1$
     @Override
     public void redo() {
         undo();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.command.CommonCommand#undo()
-     */
     @SuppressWarnings("unchecked")//$NON-NLS-1$
     @Override
     public void undo() {

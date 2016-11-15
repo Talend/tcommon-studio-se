@@ -17,9 +17,6 @@ import java.util.Map;
 
 import org.talend.core.model.repository.ERepositoryObjectType;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class TypeImportNode extends FolderImportNode {
 
     private Map<ERepositoryObjectType, TypeImportNode> typeNodesChildrenMap = new HashMap<ERepositoryObjectType, TypeImportNode>();

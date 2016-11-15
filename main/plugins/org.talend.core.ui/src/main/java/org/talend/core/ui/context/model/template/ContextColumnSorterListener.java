@@ -19,20 +19,12 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 
-/**
- * ggu class global comment. Detailed comment
- */
 public class ContextColumnSorterListener implements Listener {
 
     private TreeViewer sortViewer;
 
     private int direction = 1;
 
-    /**
-     * ggu ContextColumnSorterListener constructor comment.
-     * 
-     * @param viewer
-     */
     public ContextColumnSorterListener(TreeViewer viewer) {
         super();
         this.sortViewer = viewer;
@@ -41,11 +33,6 @@ public class ContextColumnSorterListener implements Listener {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.widgets.Listener#handleEvent(org.eclipse.swt.widgets.Event)
-     */
     public void handleEvent(Event e) {
         if (sortViewer == null) {
             return;

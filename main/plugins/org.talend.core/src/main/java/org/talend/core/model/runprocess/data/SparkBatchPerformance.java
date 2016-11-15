@@ -20,9 +20,6 @@ import java.util.TreeMap;
 import org.apache.commons.lang.StringUtils;
 import org.talend.core.model.process.EConnectionType;
 
-/**
- * DOC zwei class global comment. Detailed comment
- */
 public class SparkBatchPerformance extends CommonPerformance {
 
     private static final String COLOR_RUNNING = "#AA3322"; //$NON-NLS-1$

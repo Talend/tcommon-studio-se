@@ -24,9 +24,6 @@ import org.talend.core.model.properties.Item;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class AddXmiIdForContextItemMigrationTask extends AbstractItemMigrationTask {
 
     public List<ERepositoryObjectType> getTypes() {
@@ -37,22 +34,12 @@ public class AddXmiIdForContextItemMigrationTask extends AbstractItemMigrationTa
         return toReturn;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.migration.IMigrationTask#getOrder()
-     */
     @Override
     public Date getOrder() {
         GregorianCalendar gc = new GregorianCalendar(2016, 4, 25, 12, 0, 0);
         return gc.getTime();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.migration.AbstractItemMigrationTask#execute(org.talend.core.model.properties.Item)
-     */
     @Override
     public ExecutionResult execute(Item item) {
         try {

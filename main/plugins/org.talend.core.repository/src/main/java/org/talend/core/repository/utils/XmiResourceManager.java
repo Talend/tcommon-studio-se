@@ -76,16 +76,7 @@ import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 import org.talend.repository.ProjectManager;
 
-/**
- * DOC mhelleboid class global comment. Detailed comment <br/>
- * 
- * $Id: XmiResourceManager.java 44692 2010-06-30 04:29:32Z nrousseau $
- * 
- */
 public class XmiResourceManager {
-
-    // PTODO mhelleboid should use a custom ResourceFactory
-    // PTODO mhelleboid test duplicate resourcesUri in resourceSet !
 
     public TalendResourceSet resourceSet = new TalendResourceSet();
 

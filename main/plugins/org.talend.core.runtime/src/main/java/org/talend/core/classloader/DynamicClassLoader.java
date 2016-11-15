@@ -28,18 +28,12 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
 
-/**
- * DOC ycbai class global comment. Detailed comment
- */
 public class DynamicClassLoader extends URLClassLoader {
 
     private final static String PATH_SEPARATOR = "/"; //$NON-NLS-1$
 
     private String libStorePath;
 
-    /**
-     * DOC ycbai DynamicClassLoader constructor comment.
-     */
     public DynamicClassLoader() {
         this(new URL[0]);
     }

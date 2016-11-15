@@ -26,10 +26,6 @@ import org.talend.metadata.managment.ui.utils.ConnectionContextHelper;
 import org.talend.metadata.managment.ui.wizard.context.ContextWizard;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * 
- * ggu class global comment. Detailed comment
- */
 public class MetadataManagmentUiService implements IMetadataManagmentUiService {
 
     @Override

@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.core.model.repository;
 
-/**
- * DOC nrousseau class global comment. Detailed comment
- */
 public interface IRepositoryWorkUnitListener {
 
     public void workUnitFinished();

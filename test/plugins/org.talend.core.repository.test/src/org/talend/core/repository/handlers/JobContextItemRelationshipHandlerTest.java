@@ -27,26 +27,13 @@ import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
 
 import static org.mockito.Mockito.*;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class JobContextItemRelationshipHandlerTest extends AbstractProcessItemRelationshipHandlerTest {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.repository.handlers.AbstractProcessItemRelationshipHandlerTest#createHandler()
-     */
     @Override
     protected AbstractItemRelationshipHandler createHandler() {
         return new JobContextItemRelationshipHandler();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.repository.handlers.AbstractProcessItemRelationshipHandlerTest#getHandler()
-     */
     @Override
     protected JobContextItemRelationshipHandler getHandler() {
         return (JobContextItemRelationshipHandler) super.getHandler();

@@ -32,9 +32,6 @@ import org.talend.core.runtime.services.IGenericWizardService;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.items.importexport.handlers.model.ImportItem;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class RepositoryObjectCache {
 
     static ProxyRepositoryFactory factory = ProxyRepositoryFactory.getInstance();

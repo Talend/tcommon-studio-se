@@ -65,9 +65,6 @@ import org.talend.repository.viewer.filter.RepositoryNodeFilterHelper;
 import org.talend.repository.viewer.ui.provider.RepoCommonViewerProvider;
 import org.talend.repository.viewer.ui.viewer.CheckboxRepoCommonViewer;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 @SuppressWarnings({ "rawtypes" })
 public class RepositoryFilterSettingDialog extends Dialog {
 

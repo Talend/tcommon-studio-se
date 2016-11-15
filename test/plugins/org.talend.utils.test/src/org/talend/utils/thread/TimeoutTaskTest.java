@@ -20,19 +20,10 @@ import java.util.concurrent.TimeoutException;
 import org.junit.Assert;
 import org.junit.Test;
 
-/**
- * DOC amaumont class global comment. Detailed comment
- */
 public class TimeoutTaskTest {
 
-    /**
-     * 
-     */
     private static final String TEST_TASK = "TestTask";
 
-    /**
-     * 
-     */
     private static final String OK = "OK"; //$NON-NLS-1$
 
     @Test

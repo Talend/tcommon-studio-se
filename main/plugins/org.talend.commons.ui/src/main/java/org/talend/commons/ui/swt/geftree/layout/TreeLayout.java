@@ -24,9 +24,6 @@ import org.talend.commons.ui.swt.geftree.TreeAnimation;
 import org.talend.commons.ui.swt.geftree.figure.TreeBranch;
 import org.talend.commons.ui.swt.geftree.figure.TreeRoot;
 
-/**
- * cli class global comment. Detailed comment
- */
 @SuppressWarnings("unchecked")
 public class TreeLayout extends AbstractLayout {
 

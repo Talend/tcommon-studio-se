@@ -25,61 +25,30 @@ import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.ui.navigator.INavigatorContentService;
 import org.talend.core.utils.RegistryReader;
 
-/**
- * DOC sgandon class global comment. Detailed comment <br/>
- * 
- * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
- */
 public class PerspectiveFilterRegistryReader extends RegistryReader {
 
     public static class PerspectiveFilterDescription {
 
-        /**
-         * 
-         */
         private static final String PATTERN = "pattern"; //$NON-NLS-1$
 
-        /**
-         * 
-         */
         private static final String CONTENT_EXTENSION = "contentExtension"; //$NON-NLS-1$
 
-        /**
-         * 
-         */
         private static final String INCLUDES = "includes"; //$NON-NLS-1$
 
-        /**
-         * 
-         */
         static final String PERSPECTIVE_ID = "perspectiveId"; //$NON-NLS-1$
 
-        /**
-         * 
-         */
         static final String ACTION_PROVIDER_ID = "actionProviderId"; //$NON-NLS-1$
 
         private static final String EXCLUDES = "excludes"; //$NON-NLS-1$
 
         private String actionProviderId;
 
-        /**
-         * Getter for actionProviderId.
-         * 
-         * @return the actionProviderId
-         */
         public String getActionProviderId() {
             return this.actionProviderId;
         }
 
         private String perspectiveId;
 
-        /**
-         * Getter for perspectiveId.
-         * 
-         * @return the perspectiveId
-         */
         public String getPerspectiveId() {
             return this.perspectiveId;
         }
@@ -88,27 +57,14 @@ public class PerspectiveFilterRegistryReader extends RegistryReader {
 
         private Set<Pattern> actionProviderExcludes;
 
-        /**
-         * Getter for actionProviderIncludes.
-         * 
-         * @return the actionProviderIncludes
-         */
         public Set<Pattern> getActionProviderIncludes() {
             return this.actionProviderIncludes;
         }
 
-        /**
-         * DOC sgandon PerspectiveFilterRegistryReader.PerspectiveFilterDescription constructor comment.
-         */
         public PerspectiveFilterDescription(IConfigurationElement element) {
             init(element);
         }
 
-        /**
-         * DOC sgandon Comment method "init".
-         * 
-         * @param element
-         */
         private void init(IConfigurationElement element) {
             perspectiveId = element.getAttribute(PERSPECTIVE_ID);
             actionProviderId = element.getAttribute(ACTION_PROVIDER_ID);
@@ -130,11 +86,6 @@ public class PerspectiveFilterRegistryReader extends RegistryReader {
             }
         }
 
-        /**
-         * DOC sgandon Comment method "getActionProviderExcludes".
-         * 
-         * @return
-         */
         public Set<Pattern> getActionProviderExcludes() {
             return this.actionProviderExcludes;
         }
@@ -142,14 +93,8 @@ public class PerspectiveFilterRegistryReader extends RegistryReader {
 
     private static Logger log = Logger.getLogger(PerspectiveFilterRegistryReader.class);
 
-    /**
-     * 
-     */
     private static final String PLUGIN_ID = "org.talend.repository.viewer"; //$NON-NLS-1$
 
-    /**
-     * 
-     */
     private static final String PERSPECTIVE_FILTER_EXTENSION = "perspective.filter"; //$NON-NLS-1$
 
     private static final Object PERSPECTIVE_FILTER = "perspectiveFilter"; //$NON-NLS-1$
@@ -158,24 +103,12 @@ public class PerspectiveFilterRegistryReader extends RegistryReader {
 
     private final String actionProviderId;
 
-    /**
-     * DOC sgandon PerspectiveFilterRegistryReader constructor comment.
-     * 
-     * @param aPluginId
-     * @param anExtensionPoint
-     */
     protected PerspectiveFilterRegistryReader(String actionProviderId) {
         super(PLUGIN_ID, PERSPECTIVE_FILTER_EXTENSION);
         this.actionProviderId = actionProviderId;
         perspectiveFilters = new HashSet<PerspectiveFilterDescription>();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.viewer.filter.RegistryReader#readElement(org.eclipse.core.runtime.IConfigurationElement)
-     */
     @Override
     protected boolean readElement(final IConfigurationElement element) {
         if (PERSPECTIVE_FILTER.equals(element.getName())) {

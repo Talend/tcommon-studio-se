@@ -16,10 +16,6 @@ import java.util.List;
 
 import org.eclipse.swt.graphics.Image;
 
-/**
- * created by hwang on Nov 17, 2015 Detailed comment
- *
- */
 public interface IContainerEntry {
 
     public String getLabel();

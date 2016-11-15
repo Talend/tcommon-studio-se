@@ -14,10 +14,6 @@ package org.talend.core.model.param;
 
 import org.talend.core.i18n.Messages;
 
-/**
- * qzhang class global comment. Detailed comment <br/>
- * 
- */
 public enum EConnectionParameterName {
     SERVER_NAME(Messages.getString("ConnectionParameterName.HostLabel")), //$NON-NLS-1$
     PORT(Messages.getString("ConnectionParameterName.PortLabel")), //$NON-NLS-1$
@@ -38,9 +34,6 @@ public enum EConnectionParameterName {
 
     private String displayName;
 
-    /**
-     * qzhang ConnectionParameterName constructor comment.
-     */
     EConnectionParameterName(String displayName) {
         this.displayName = displayName;
     }

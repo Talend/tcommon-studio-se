@@ -44,9 +44,6 @@ import org.talend.core.model.repository.IRepositoryPrefConstants;
 import org.talend.repository.RepositoryViewPlugin;
 import org.talend.repository.navigator.RepoViewCommonViewer;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 @SuppressWarnings("restriction")
 public class RepositoryNodeFilterHelper {
 

@@ -44,10 +44,6 @@ import org.talend.commons.ui.swt.drawing.link.StyleLink;
 import org.talend.commons.ui.utils.TreeUtils;
 
 /**
- * bqian class global comment. Detailed comment <br/>
- * 
- * $Id: TableToTreeLinker.java,v 1.1 2007/06/12 07:20:38 gke Exp $
- * 
  * @param <D1> the data item of extremety 1
  * @param <D2> the data item of extremety 2
  */
@@ -75,23 +71,10 @@ public class TableToTreeLinker<D1, D2> extends BgDrawableComposite implements IB
 
     private Integer xStartBezierLink;
 
-    /**
-     * DOC amaumont TreeToTableLinker constructor comment.
-     * 
-     * @param source
-     * @param table
-     */
     public TableToTreeLinker(Composite commonParent) {
         super(commonParent);
     }
 
-    /**
-     * DOC amaumont Comment method "init".
-     * 
-     * @param sourceTable
-     * @param targetTree
-     * @param backgroundRefresher
-     */
     public void init(Table sourceTable, Tree targetTree, IBackgroundRefresher backgroundRefresher) {
         this.display = sourceTable.getDisplay();
         this.backgroundRefresher = backgroundRefresher;

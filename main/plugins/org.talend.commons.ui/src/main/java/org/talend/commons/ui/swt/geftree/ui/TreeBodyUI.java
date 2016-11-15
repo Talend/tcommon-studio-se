@@ -26,9 +26,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.talend.commons.ui.swt.geftree.figure.ExpandCollapseFigure;
 import org.talend.commons.ui.swt.geftree.figure.TreeBranch;
 
-/**
- * DOC hwang class global comment. Detailed comment
- */
 public abstract class TreeBodyUI {
 
     protected Composite body;

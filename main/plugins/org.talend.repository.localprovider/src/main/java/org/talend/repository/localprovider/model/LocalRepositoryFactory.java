@@ -167,12 +167,6 @@ import org.talend.utils.json.JSONArray;
 
 import orgomg.cwm.foundation.businessinformation.BusinessinformationPackage;
 
-/**
- * DOC smallet class global comment. Detailed comment <br/>
- * 
- * $Id$ $Id: RepositoryFactory.java,v 1.55 2006/08/23 14:30:39 tguiu Exp $
- * 
- */
 public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory implements ILocalRepositoryFactory {
 
     private static final String BIN = "bin"; //$NON-NLS-1$

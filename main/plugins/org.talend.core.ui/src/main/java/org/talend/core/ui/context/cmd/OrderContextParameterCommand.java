@@ -19,9 +19,6 @@ import org.talend.core.model.process.IContext;
 import org.talend.core.model.process.IContextManager;
 import org.talend.core.model.process.IContextParameter;
 
-/**
- * ggu class global comment. Detailed comment
- */
 public class OrderContextParameterCommand extends Command {
 
     private boolean up = false;

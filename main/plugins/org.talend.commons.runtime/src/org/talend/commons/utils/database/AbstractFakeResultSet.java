@@ -20,12 +20,6 @@ import org.talend.commons.i18n.internal.Messages;
 import org.talend.commons.utils.TalendDBUtils;
 import org.talend.fakejdbc.FakeResultSet;
 
-/**
- * DOC ggu class global comment. Detailed comment <br/>
- * 
- * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
- */
 public abstract class AbstractFakeResultSet extends FakeResultSet {
 
     private String[] tableMeta = new String[0];
@@ -47,11 +41,6 @@ public abstract class AbstractFakeResultSet extends FakeResultSet {
         this.data = data;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeResultSet#next()
-     */
     @Override
     public boolean next() throws SQLException {
         if (data == null || data.size() == 0 || index >= data.size() - 1) {

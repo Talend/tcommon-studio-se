@@ -28,10 +28,6 @@ import org.eclipse.nebula.widgets.nattable.util.GUIHelper;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 
-/**
- * created by ldong on Aug 26, 2014 Detailed comment
- * 
- */
 public class ContextNatTableStyleConfiguration extends AbstractRegistryConfiguration {
 
     public Color bgColor = GUIHelper.COLOR_WHITE;

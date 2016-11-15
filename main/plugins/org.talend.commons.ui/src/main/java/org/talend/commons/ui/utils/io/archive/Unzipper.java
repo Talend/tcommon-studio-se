@@ -22,21 +22,12 @@ import java.util.zip.ZipInputStream;
 
 import org.talend.utils.io.FilesUtils;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- */
 public class Unzipper extends AbstractUnarchiver {
 
     private String archiveFilePath;
 
     private String parentAbsolutePath;
 
-    /**
-     * DOC amaumont Unzipper constructor comment.
-     * 
-     * @throws FileNotFoundException
-     */
     public Unzipper(String archiveFilePath) throws FileNotFoundException {
         super();
         this.archiveFilePath = archiveFilePath;
@@ -44,12 +35,6 @@ public class Unzipper extends AbstractUnarchiver {
         parentAbsolutePath = file.getParentFile().getAbsolutePath();
     }
 
-    /**
-     * DOC amaumont Comment method "createInputStream".
-     * 
-     * @param archiveFilePath
-     * @throws FileNotFoundException
-     */
     private ZipInputStream createInputStream(String archiveFilePath) throws FileNotFoundException {
         FileInputStream fin = new FileInputStream(archiveFilePath);
         return new ZipInputStream(fin);
@@ -78,18 +63,10 @@ public class Unzipper extends AbstractUnarchiver {
                 filePath = parentAbsolutePath + "/" + ze.getName(); //$NON-NLS-1$
             }
             FilesUtils.createFoldersIfNotExists(filePath, true);
-            // System.out.println("Unzipping " + ze.getName());
             FileOutputStream fout = new FileOutputStream(filePath);
             org.talend.commons.runtime.utils.io.StreamCopier.copy(zin, fout);
             zin.closeEntry();
             fout.close();
-            // try {
-            // System.out.println("slepping");
-            // Thread.sleep(100);
-            // } catch (InterruptedException e) {
-            // // TODO Auto-generated catch block
-            // e.printStackTrace();
-            // }
         }
         zin.close();
     }
@@ -97,18 +74,5 @@ public class Unzipper extends AbstractUnarchiver {
     public void unarchive() throws IOException {
         unarchive(null);
     }
-
-    // /**
-    // * DOC amaumont Comment method "unarchive".
-    // *
-    // * @param i
-    // * @throws IOException
-    // * @throws FileNotFoundException
-    // */
-    // public static void unarchive(String archiveFilePath) throws IOException {
-    // Unzipper unzipper = new Unzipper(archiveFilePath);
-    // unzipper.unarchive();
-    // // unzipper.close();
-    // }
 
 }

@@ -12,11 +12,6 @@
 // ============================================================================
 package org.talend.commons.exception;
 
-/**
- * DOC matthieu class global comment. Detailed comment
- * 
- * $Id: talend-code-templates.xml 1 2006-09-29 17:06:40 +0000 (ven, 29 sep 2006) nrousseau $
- */
 public class LoginException extends BusinessException {
 
     public LoginException(String message) {

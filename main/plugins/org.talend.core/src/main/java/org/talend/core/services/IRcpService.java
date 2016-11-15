@@ -14,9 +14,6 @@ package org.talend.core.services;
 
 import org.talend.core.IService;
 
-/**
- * qwei class global comment. Detailed comment
- */
 public interface IRcpService extends IService {
 
     public void activeSwitchProjectAction();

@@ -14,10 +14,6 @@ package org.talend.metadata.managment.hive.handler;
 
 import org.talend.core.model.metadata.IMetadataConnection;
 
-/**
- * created by msjian on 2013-11-7 Detailed comment
- * 
- */
 public class MaprHandler extends HiveConnectionHandler {
 
     public MaprHandler(IMetadataConnection metadataConnection) {

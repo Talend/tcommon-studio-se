@@ -114,12 +114,6 @@ import org.talend.repository.RepositoryWorkUnit;
 import org.talend.repository.ui.login.connections.ConnectionUserPerReader;
 import org.talend.repository.ui.views.IRepositoryView;
 
-/**
- * DOC ccarbone class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 @SuppressWarnings("restriction")
 public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 

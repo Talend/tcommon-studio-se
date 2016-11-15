@@ -22,9 +22,6 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.dialogs.ContainerCheckedTreeViewer;
 import org.talend.repository.viewer.ui.provider.AgentTreeViewerListener;
 
-/**
- * DOC hcw class global comment. Detailed comment
- */
 public class CheckboxRepositoryTreeViewer extends ContainerCheckedTreeViewer implements ITreeViewerListener {
 
     private AgentTreeViewerListener agent = new AgentTreeViewerListener();

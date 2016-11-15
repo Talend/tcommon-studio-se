@@ -17,9 +17,6 @@ import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import orgomg.cwm.objectmodel.core.ModelElement;
 
-/**
- * DOC nrousseau class global comment. Detailed comment
- */
 public interface ISubRepositoryObject extends IRepositoryViewObject {
 
     public AbstractMetadataObject getAbstractMetadataObject();

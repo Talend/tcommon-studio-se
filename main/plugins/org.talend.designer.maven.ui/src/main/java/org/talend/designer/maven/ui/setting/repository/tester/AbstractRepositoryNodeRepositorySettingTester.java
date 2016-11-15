@@ -15,16 +15,8 @@ package org.talend.designer.maven.ui.setting.repository.tester;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.repository.model.IRepositoryNode;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public abstract class AbstractRepositoryNodeRepositorySettingTester implements IRepositorySettingTester {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.maven.ui.setting.repository.tester.IRepositorySettingTester#valid(java.lang.Object)
-     */
     @Override
     public boolean valid(Object object) {
         if (object instanceof IRepositoryNode) {

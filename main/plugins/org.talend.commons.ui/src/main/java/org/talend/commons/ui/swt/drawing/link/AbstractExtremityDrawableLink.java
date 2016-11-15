@@ -16,12 +16,6 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public abstract class AbstractExtremityDrawableLink implements IExtremityDrawableLink {
 
     protected IStyleLink styleLink;
@@ -30,22 +24,10 @@ public abstract class AbstractExtremityDrawableLink implements IExtremityDrawabl
 
     protected int yOffset;
 
-    /**
-     * DOC amaumont AbstractTipLink constructor comment.
-     * 
-     * @param styleLink
-     */
     public AbstractExtremityDrawableLink(IStyleLink styleLink) {
         this.styleLink = styleLink;
     }
 
-    /**
-     * DOC amaumont AbstractTipLink constructor comment.
-     * 
-     * @param styleLink
-     * @param xOffset
-     * @param yOffset
-     */
     public AbstractExtremityDrawableLink(IStyleLink styleLink, int xOffset, int yOffset) {
         super();
         this.styleLink = styleLink;

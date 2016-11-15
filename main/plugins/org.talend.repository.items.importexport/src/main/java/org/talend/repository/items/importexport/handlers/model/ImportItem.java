@@ -185,10 +185,6 @@ public class ImportItem {
         return null;
     }
 
-    /**
-     * 
-     * DOC hcw ImportItem class global comment. Detailed comment
-     */
     public enum State {
                        /**
                         * only name existed

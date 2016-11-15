@@ -34,12 +34,6 @@ import org.talend.core.ui.context.model.template.ContextVariableTabParentModel;
 import org.talend.core.ui.i18n.Messages;
 import org.talend.repository.ui.actions.AContextualAction;
 
-/**
- * DOC xye class global comment. Detailed comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ææäº, 29 ä¹æ 2006) nrousseau $
- * 
- */
 public class ContextBuiltinToRepositoryAction extends AContextualAction {
 
     public final static String ID = "org.talend.core.ui.context.actions.ContextBuiltinToRepositoryAction"; //$NON-NLS-1$

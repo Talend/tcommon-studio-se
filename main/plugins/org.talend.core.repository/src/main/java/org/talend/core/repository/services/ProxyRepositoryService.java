@@ -16,16 +16,8 @@ import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IProxyRepositoryService;
 
-/**
- * DOC nrousseau class global comment. Detailed comment
- */
 public class ProxyRepositoryService implements IProxyRepositoryService {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.model.IProxyRepositoryService#getProxyRepositoryFactory()
-     */
     public IProxyRepositoryFactory getProxyRepositoryFactory() {
         return ProxyRepositoryFactory.getInstance();
     }

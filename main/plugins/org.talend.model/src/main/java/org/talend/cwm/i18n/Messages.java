@@ -14,10 +14,6 @@ package org.talend.cwm.i18n;
 
 import java.util.ResourceBundle;
 
-/**
- * 
- * DOC Administrator class global comment. Detailed comment
- */
 public class Messages extends MessagesCore {
 
     private static final String BUNDLE_NAME = "org.talend.cwm.i18n.messages"; //$NON-NLS-1$

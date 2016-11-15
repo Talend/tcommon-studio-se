@@ -32,13 +32,6 @@
 
 package org.talend.commons.ui.runtime.geometry;
 
-/**
- * 
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id: Math.java 7048 2007-11-16 02:36:17Z nrousseau $
- * 
- */
 public final class Math {
 
     public static int max(int i, int j) {

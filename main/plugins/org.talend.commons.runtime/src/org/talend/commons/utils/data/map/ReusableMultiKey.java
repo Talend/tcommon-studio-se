@@ -13,13 +13,6 @@
 package org.talend.commons.utils.data.map;
 
 
-/**
- * DOC amaumont  class global comment. Detailed comment
- * <br/>
- *
- * $Id$
- *
- */
 /*
  *  Copyright 2003-2004 The Apache Software Foundation
  *

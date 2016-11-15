@@ -19,12 +19,6 @@ import org.talend.commons.ui.swt.proposal.ProposalUtils;
 import org.talend.core.model.process.INode;
 import org.talend.core.model.process.IProcess;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public class TalendProposalUtils {
 
     /**
@@ -46,14 +40,6 @@ public class TalendProposalUtils {
         return ProposalUtils.getCommonProposal(control, proposalProvider);
     }
 
-    /**
-     * 
-     * DOC YeXiaowei Comment method "installOn".
-     * 
-     * @param control
-     * @param process
-     * @return
-     */
     public static ContentProposalAdapterExtended installOn(Control control, IProcess process) {
         return installOn(control, process, null);
     }

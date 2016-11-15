@@ -36,9 +36,6 @@ import orgomg.cwm.objectmodel.core.CoreFactory;
 import orgomg.cwm.objectmodel.core.Dependency;
 import orgomg.cwm.objectmodel.core.ModelElement;
 
-/**
- * DOC scorreia class global comment. Detailed comment
- */
 public final class ModelElementHelper {
 
     private ModelElementHelper() {

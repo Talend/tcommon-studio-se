@@ -21,9 +21,6 @@ import org.osgi.framework.FrameworkUtil;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.utils.RegistryReader;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class BuildExportRegistryReader extends RegistryReader {
 
     private List<IBuildExportDependenciesProvider> dependenciesProviders;

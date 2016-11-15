@@ -52,12 +52,6 @@ public class Locker<B, KP> {
 
     private Executor treadsPool;
 
-    /**
-     * 
-     * DOC amaumont Locker class global comment. Detailed comment <br/>
-     * 
-     * @param <KP>
-     */
     class InternalKeyLock<KP> {
 
         private String contextInfo;
@@ -137,12 +131,6 @@ public class Locker<B, KP> {
         }
     }
 
-    /**
-     * 
-     * DOC amaumont Locker class global comment. Detailed comment <br/>
-     * 
-     * @param <KP>
-     */
     public class LockerValue {
 
         private String contextInfo;
@@ -151,12 +139,6 @@ public class Locker<B, KP> {
 
         private KP key;
 
-        /**
-         * DOC amaumont InternalKeyLock constructor comment.
-         * 
-         * @param thread
-         * @param contextInfo
-         */
         public LockerValue(Thread thread, KP key, String contextInfo) {
             this.thread = thread;
             this.key = key;
@@ -169,29 +151,14 @@ public class Locker<B, KP> {
                     "LockerValue: threadName={0}, key={1}, contextInfo={2}", thread.getName(), String.valueOf(key), contextInfo); //$NON-NLS-1$
         }
 
-        /**
-         * Getter for contextInfo.
-         * 
-         * @return the contextInfo
-         */
         public String getContextInfo() {
             return contextInfo;
         }
 
-        /**
-         * Getter for thread.
-         * 
-         * @return the thread
-         */
         public Thread getThread() {
             return thread;
         }
 
-        /**
-         * Getter for key.
-         * 
-         * @return the key
-         */
         public KP getKey() {
             return key;
         }
@@ -212,8 +179,6 @@ public class Locker<B, KP> {
     private boolean allowReentrantLockFromLockerThread = true;
 
     /**
-     * DOC amaumont Locker constructor comment.
-     * 
      * @deprecated use instead {@link org.talend.commons.utils.threading.lockerbykey.LockerByKey}
      */
     @Deprecated
@@ -222,7 +187,6 @@ public class Locker<B, KP> {
     }
 
     /**
-     * 
      * Constructor Locker.
      * 
      * @param allowReentrantLockFromLockerThread default is true
@@ -805,61 +769,30 @@ public class Locker<B, KP> {
 
     public static void main(String[] args) {
 
-        /**
-         * 
-         * DOC amaumont Locker class global comment. Detailed comment <br/>
-         * 
-         */
         class LabelValue {
 
             private Integer id;
 
             private String label;
 
-            /**
-             * DOC amaumont LabelValue constructor comment.
-             * 
-             * @param id
-             * @param label
-             */
             public LabelValue(Integer id, String label) {
                 super();
                 this.id = id;
                 this.label = label;
             }
 
-            /**
-             * Getter for id.
-             * 
-             * @return the id
-             */
             public Integer getId() {
                 return this.id;
             }
 
-            /**
-             * Sets the id.
-             * 
-             * @param id the id to set
-             */
             public void setId(Integer id) {
                 this.id = id;
             }
 
-            /**
-             * Getter for label.
-             * 
-             * @return the label
-             */
             public String getLabel() {
                 return this.label;
             }
 
-            /**
-             * Sets the label.
-             * 
-             * @param label the label to set
-             */
             public void setLabel(String label) {
                 this.label = label;
             }
@@ -868,11 +801,6 @@ public class Locker<B, KP> {
 
         IGetterPropertyAccessor<LabelValue, Integer> getterPropertyAccessor = new IGetterPropertyAccessor<LabelValue, Integer>() {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.talend.commons.utils.data.bean.IGetterPropertyAccessor#get(java.lang.Object)
-             */
             @Override
             public Integer get(LabelValue bean) {
                 return bean.getId();
@@ -886,11 +814,6 @@ public class Locker<B, KP> {
 
         new Thread() {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see java.lang.Thread#run()
-             */
             @Override
             public void run() {
                 locker.lockBean(lb1);
@@ -906,11 +829,6 @@ public class Locker<B, KP> {
 
         new Thread() {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see java.lang.Thread#run()
-             */
             @Override
             public void run() {
                 try {

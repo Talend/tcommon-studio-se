@@ -25,9 +25,6 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.talend.repository.metadata.ui.wizards.form.AbstractXmlStepForm;
 
-/**
- * DOC wchen class global comment. Detailed comment
- */
 public abstract class AbstractTreeNodeButton implements ISelectionChangedListener {
 
     protected Composite parent;

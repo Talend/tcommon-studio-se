@@ -65,9 +65,6 @@ import org.talend.core.ui.process.IGraphicalNode;
 import org.talend.core.ui.services.IDesignerCoreUIService;
 import org.talend.core.ui.services.IRulesProviderService;
 
-/**
- * DOC nrousseau class global comment. Detailed comment
- */
 public class SchemaCellEditor extends DialogCellEditor {
 
     private INode node;

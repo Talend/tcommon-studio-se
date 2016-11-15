@@ -23,10 +23,6 @@ import org.talend.daikon.properties.property.Property;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.metadata.managment.ui.utils.ConnectionContextHelper;
 
-/**
- * created by ycbai on 2016年2月6日 Detailed comment
- *
- */
 public class MetadataContextPropertyValueEvaluator extends AbstractPropertyValueEvaluator {
 
     private Connection connection;

@@ -39,9 +39,6 @@ import org.talend.designer.core.IDesignerCoreService;
 import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.repository.ProjectManager;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public abstract class AbstractTalendFunctionParser extends AbstractFunctionParser {
 
     private static Logger logger = Logger.getLogger(AbstractTalendFunctionParser.class);

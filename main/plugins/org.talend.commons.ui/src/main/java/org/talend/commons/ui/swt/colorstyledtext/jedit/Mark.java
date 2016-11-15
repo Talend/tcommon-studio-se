@@ -12,12 +12,6 @@
 // ============================================================================
 package org.talend.commons.ui.swt.colorstyledtext.jedit;
 
-/**
- * DOC nrousseau class global comment. Detailed comment <br/>
- * 
- * $Id: Mark.java 7038 2007-11-15 14:05:48Z plegall $
- * 
- */
 public class Mark extends Span {
 
     protected boolean isPrevious;

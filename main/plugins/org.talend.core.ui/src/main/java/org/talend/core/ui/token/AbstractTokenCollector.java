@@ -14,9 +14,6 @@ package org.talend.core.ui.token;
 
 import us.monoid.json.JSONObject;
 
-/**
- * ggu class global comment. Detailed comment
- */
 public abstract class AbstractTokenCollector implements ITokenCollector {
 
     protected static final TokenKey PROJECTS_REPOSITORY = new TokenKey("projects.repository"); //$NON-NLS-1$

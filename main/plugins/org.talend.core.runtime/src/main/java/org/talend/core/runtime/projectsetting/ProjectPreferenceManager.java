@@ -28,9 +28,6 @@ import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.model.general.Project;
 import org.talend.repository.ProjectManager;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public final class ProjectPreferenceManager {
 
     /**

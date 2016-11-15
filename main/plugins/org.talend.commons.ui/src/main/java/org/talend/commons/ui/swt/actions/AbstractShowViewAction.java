@@ -19,12 +19,6 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 
-/**
- * DOC smallet class global comment. Detailed comment <br/>
- * 
- * $Id: AbstractShowViewAction.java 7038 2007-11-15 14:05:48Z plegall $
- * 
- */
 public abstract class AbstractShowViewAction extends Action {
 
     public AbstractShowViewAction() {

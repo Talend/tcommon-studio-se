@@ -22,9 +22,6 @@ import org.talend.commons.ui.runtime.image.ImageUtils;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.ui.images.CoreImageProvider;
 
-/**
- * DOC ggu class global comment. Detailed comment
- */
 public class CoreImageProviderTest {
 
     @Test

@@ -17,10 +17,6 @@ import java.sql.Types;
 import org.junit.Assert;
 import org.junit.Test;
 
-/**
- * created by xqliu on Jul 10, 2013 Detailed comment
- * 
- */
 public class Java2SqlTypeTest {
 
     /**

@@ -27,9 +27,6 @@ import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.core.ui.CoreUIPlugin;
 import org.talend.core.ui.i18n.Messages;
 
-/**
- * ggu class global comment. Detailed comment
- */
 public class TalendDataCollectorUploadingPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
     private StringFieldEditor lastUploadField;
@@ -40,20 +37,10 @@ public class TalendDataCollectorUploadingPreferencePage extends FieldEditorPrefe
         setDescription(Messages.getString("TalendDataCollectorUploadingPreferencePage_Description")); //$NON-NLS-1$
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
-     */
     public void init(IWorkbench workbench) {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.preference.FieldEditorPreferencePage#createFieldEditors()
-     */
     @Override
     protected void createFieldEditors() {
 
