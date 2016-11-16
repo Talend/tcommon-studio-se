@@ -19,12 +19,6 @@ import java.util.List;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.views.properties.tabbed.ITabItem;
 
-/**
- * yzhang class global comment. Detailled comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
- * 
- */
 public class TabInputChangedEvent {
 
     private ITabItem tabItem;
@@ -33,9 +27,6 @@ public class TabInputChangedEvent {
 
     private IStructuredSelection selection;
 
-    /**
-     * yzhang TabInputChangedEvent constructor comment.
-     */
     public TabInputChangedEvent(ITabItem selectedTab, Object[] newInput) {
         this.tabItem = selectedTab;
 

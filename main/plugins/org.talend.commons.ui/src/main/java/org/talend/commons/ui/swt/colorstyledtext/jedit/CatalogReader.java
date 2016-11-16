@@ -26,17 +26,8 @@ import org.eclipse.core.runtime.Platform;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 
-/**
- * DOC nrousseau class global comment. Detailled comment <br/>
- * 
- * $Id: CatalogReader.java 7038 2007-11-15 14:05:48Z plegall $
- * 
- */
 public class CatalogReader {
 
-    /**
-     * 
-     */
     private static final int A_50 = 50;
 
     public CatalogReader() {

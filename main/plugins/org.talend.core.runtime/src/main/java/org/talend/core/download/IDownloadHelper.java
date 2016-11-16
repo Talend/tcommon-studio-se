@@ -15,10 +15,6 @@ package org.talend.core.download;
 import java.io.File;
 import java.net.URL;
 
-/**
- * created by wchen on Apr 24, 2015 Detailled comment
- *
- */
 public interface IDownloadHelper {
 
     public void setCancel(boolean cancel);

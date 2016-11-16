@@ -16,19 +16,14 @@ import java.util.List;
 
 import org.eclipse.jface.preference.IPreferenceNode;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public interface IProjectSettingContainer {
 
     /**
-     * 
      * add the child nodes under the parent id of node.
      */
     boolean addChildrenPreferenceNodes(String parentId, List<IPreferenceNode> childrenNodes);
 
     /**
-     * 
      * remove the child nodes of parent id
      */
     boolean removeChildrenPreferenceNodes(String parentId, List<String> childrenIds);

@@ -17,18 +17,11 @@ import java.util.List;
 import org.talend.core.model.process.Problem;
 import org.talend.designer.codegen.IAloneProcessNodeConfigurer;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id: ICodeProblemsChecker.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
- */
 public interface ICodeProblemsChecker {
 
     public abstract List<Problem> checkProblemsForExpression(String code);
 
     /**
-     * 
      * Force code generation, check all problems and load problems in cache.
      * 
      * @param externalData TODO
@@ -37,7 +30,6 @@ public interface ICodeProblemsChecker {
     public abstract List<Problem> checkProblems(IAloneProcessNodeConfigurer nodeConfigurer);
 
     /**
-     * 
      * Force code generation, check problems which matches with given key and load all problems in cache.
      * 
      * @param key

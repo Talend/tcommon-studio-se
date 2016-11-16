@@ -16,9 +16,6 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.talend.core.model.process.ITargetExecutionConfig;
 import org.talend.designer.runprocess.ProcessorException;
 
-/**
- * DOC nrousseau class global comment. Detailled comment
- */
 public interface IEclipseProcessor {
 
     // to use "debug", the code must be generated first.

@@ -14,12 +14,6 @@ package org.talend.core.runtime.schedulingrule;
 
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 
-
-/**
- * created by cmeng on May 31, 2016
- * Detailled comment
- *
- */
 public interface ITalendSchedulingRule extends ISchedulingRule {
 
     public Thread getRuleThread();

@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.designer.rowgenerator.data;
 
-/**
- * class global comment. Detailled comment <br/> $Id: IntParameter.java,v 1.4 2007/02/02 03:04:21 pub Exp $
- */
 public class IntParameter extends Parameter {
 
     /**
@@ -25,11 +22,6 @@ public class IntParameter extends Parameter {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.rowgenerator.data.Parameter#sameParameterAs(org.talend.designer.rowgenerator.data.Parameter)
-     */
     @Override
     public boolean sameParameterAs(Parameter obj) {
         if (this == obj) {

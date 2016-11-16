@@ -18,10 +18,6 @@ import org.junit.Test;
 import org.talend.core.model.metadata.builder.connection.ConnectionPackage;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 
-/**
- * created by mzhao on Nov 12, 2012 Detailled comment
- * 
- */
 public class JavaSqlFactoryTest {
 
     /**
@@ -40,7 +36,6 @@ public class JavaSqlFactoryTest {
         conn.setRawPassword("talend4ever"); //$NON-NLS-1$
         pwd = JavaSqlFactory.getPassword(conn);
         assertEquals("talend4ever", pwd); //$NON-NLS-1$
-
     }
 
 }

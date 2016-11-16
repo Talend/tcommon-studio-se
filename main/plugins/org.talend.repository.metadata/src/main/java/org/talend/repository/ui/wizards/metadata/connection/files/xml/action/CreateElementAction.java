@@ -24,9 +24,6 @@ import org.talend.metadata.managment.ui.wizard.metadata.xml.node.NameSpaceNode;
 import org.talend.metadata.managment.ui.wizard.metadata.xml.utils.StringUtil;
 import org.talend.repository.metadata.ui.wizards.form.AbstractXmlStepForm;
 
-/**
- * wzhang class global comment. Detailled comment
- */
 public class CreateElementAction extends SelectionProviderAction {
 
     private TreeViewer xmlViewer;
@@ -90,11 +87,6 @@ public class CreateElementAction extends SelectionProviderAction {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.actions.SelectionProviderAction#selectionChanged(org.eclipse.jface.viewers.ISelection)
-     */
     @Override
     public void selectionChanged(IStructuredSelection selection) {
         FOXTreeNode node = (FOXTreeNode) this.getStructuredSelection().getFirstElement();

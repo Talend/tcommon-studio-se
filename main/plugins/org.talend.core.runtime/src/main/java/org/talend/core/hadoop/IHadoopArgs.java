@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.core.hadoop;
 
-/**
- * created by ycbai on Aug 15, 2014 Detailled comment
- *
- */
 public interface IHadoopArgs {
 
     public static final String HIVE_ARG_EMBEDDED = "EMBEDDED"; //$NON-NLS-1$

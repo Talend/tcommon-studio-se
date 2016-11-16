@@ -34,12 +34,6 @@ import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.commons.ui.runtime.utils.ControlUtils;
 import org.talend.commons.ui.swt.colorstyledtext.ColorStyledText;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id: TypedTextCommandExecutor.java 7038 2007-11-15 14:05:48Z plegall $
- * 
- */
 public class TypedTextCommandExecutor {
 
     private static final int KEY_CODE_REDO = 121; // 'y'
@@ -101,21 +95,6 @@ public class TypedTextCommandExecutor {
 
     };
 
-    // private final ModifyListener modifyListener = new ModifyListener() {
-    //
-    // /*
-    // * (non-Javadoc)
-    // *
-    // * @see org.eclipse.swt.events.ModifyListener#modifyText(org.eclipse.swt.events.ModifyEvent)
-    // */
-    // public void modifyText(ModifyEvent e) {
-    // if (isModifyFromMouse) {
-    // modifyExecute(e);
-    // }
-    // }
-    //
-    // };
-
     protected void modifyExecute(TypedEvent e) {
         Object source = e.getSource();
         if (source instanceof MenuItem) {
@@ -135,21 +114,12 @@ public class TypedTextCommandExecutor {
 
     private Perl5Matcher matcher;
 
-    /**
-     * DOC amaumont TypedTextCommandExecutor constructor comment.
-     * 
-     * @param stack
-     */
     public TypedTextCommandExecutor() {
         super();
         init();
     }
 
-    /**
-     * DOC amaumont Comment method "init".
-     */
     private void init() {
-
         Perl5Compiler compiler = new Perl5Compiler();
         matcher = new Perl5Matcher();
         patternAlphaNum = null;

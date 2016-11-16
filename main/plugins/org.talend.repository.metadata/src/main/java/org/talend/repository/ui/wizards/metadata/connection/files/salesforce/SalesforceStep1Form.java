@@ -56,10 +56,6 @@ import org.talend.salesforce.SforceSessionConnection;
 import org.talend.salesforce.oauth.OAuthClient;
 import org.talend.salesforce.oauth.Token;
 
-/**
- * DOC YeXiaowei class global comment. Detailled comment <br/>
- * 
- */
 public class SalesforceStep1Form extends AbstractSalesforceStepForm {
 
     private String endPoint = null;
@@ -195,25 +191,14 @@ public class SalesforceStep1Form extends AbstractSalesforceStepForm {
         setupForm(true);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#adaptFormToReadOnly()
-     */
     @Override
     protected void adaptFormToReadOnly() {
         readOnly = isReadOnly();
         updateStatus(IStatus.OK, ""); //$NON-NLS-1$
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addFields()
-     */
     @Override
     protected void addFields() {
-
         Group group = Form.createGroup(this, 3, Messages.getString("SalesforceStep1Form.SalesforceParam")); //$NON-NLS-1$
 
         GridData data = new GridData(GridData.FILL_HORIZONTAL);
@@ -349,14 +334,8 @@ public class SalesforceStep1Form extends AbstractSalesforceStepForm {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addFieldsListeners()
-     */
     @Override
     protected void addFieldsListeners() {
-
         webServiceUrlText.addModifyListener(new ModifyListener() {
 
             @Override
@@ -606,11 +585,6 @@ public class SalesforceStep1Form extends AbstractSalesforceStepForm {
         });
         checkButton.addSelectionListener(new SelectionAdapter() {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
-             */
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (!isContextMode()) {
@@ -824,11 +798,6 @@ public class SalesforceStep1Form extends AbstractSalesforceStepForm {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addUtilsButtonListeners()
-     */
     @Override
     protected void addUtilsButtonListeners() {
         if (!isInWizard()) {
@@ -860,11 +829,6 @@ public class SalesforceStep1Form extends AbstractSalesforceStepForm {
         });
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#checkFieldsValue()
-     */
     @Override
     protected boolean checkFieldsValue() {
         int index = authBtn.getSelectionIndex();
@@ -930,11 +894,6 @@ public class SalesforceStep1Form extends AbstractSalesforceStepForm {
         return value != null && !value.equals(""); //$NON-NLS-1$
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#initialize()
-     */
     @Override
     protected void initialize() {
 

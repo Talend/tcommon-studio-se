@@ -14,11 +14,7 @@ package org.talend.core.exception;
 
 import org.talend.commons.exception.PersistenceException;
 
-/**
- * DOC zshen  class global comment. Detailled comment
- */
 public class TalendInternalPersistenceException extends PersistenceException {
-
 
     private static final long serialVersionUID = 6242818542268554273L;
 

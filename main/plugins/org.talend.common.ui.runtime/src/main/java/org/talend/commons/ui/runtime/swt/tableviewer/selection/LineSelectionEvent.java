@@ -14,12 +14,6 @@ package org.talend.commons.ui.runtime.swt.tableviewer.selection;
 
 import org.talend.commons.ui.runtime.swt.tableviewer.TableViewerCreatorNotModifiable;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id: LineSelectionEvent.java 7038 2007-11-15 14:05:48Z plegall $
- * 
- */
 public class LineSelectionEvent {
 
     /**

@@ -814,26 +814,11 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
         this.selection = selection2;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.wizards.RepositoryWizard#getConnectionItem()
-     */
     @Override
     public ConnectionItem getConnectionItem() {
         return this.connectionItem;
     }
 
-    /**
-     * 
-     * DOC Comment method "updateConnectionInformation".
-     * 
-     * @param dbConn
-     * @throws SQLException
-     * @throws IllegalAccessException
-     * @throws InstantiationException
-     * @throws ClassNotFoundException
-     */
     private void updateConnectionInformation(DatabaseConnection dbConn, IMetadataConnection metaConnection)
             throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
         java.sql.Connection sqlConn = null;

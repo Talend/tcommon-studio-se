@@ -21,9 +21,6 @@ import org.talend.core.model.metadata.builder.database.DriverShim;
 import org.talend.core.model.metadata.builder.database.ExtractMetaDataUtils;
 import org.talend.core.model.metadata.builder.database.manager.ExtractManager;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class HSQLDBExtractManager extends ExtractManager {
 
     public HSQLDBExtractManager(EDatabaseTypeName dbType) {

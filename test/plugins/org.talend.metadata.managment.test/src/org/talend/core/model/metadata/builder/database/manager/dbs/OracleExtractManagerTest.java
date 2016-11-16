@@ -17,10 +17,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.talend.core.database.EDatabaseTypeName;
 
-/**
- * created by ggu on Jul 4, 2012 Detailled comment
- * 
- */
 public class OracleExtractManagerTest extends AbstractTest4ExtractManager {
 
     @Before
@@ -29,9 +25,6 @@ public class OracleExtractManagerTest extends AbstractTest4ExtractManager {
     }
 
     /**
-     * 
-     * DOC ggu Comment method "testExtractTablesFromDB4UseAllSynonyms".
-     * 
      * need test the case for using synonyms
      * 
      * @throws Exception

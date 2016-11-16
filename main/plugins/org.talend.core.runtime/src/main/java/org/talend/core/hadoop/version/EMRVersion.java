@@ -16,8 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * created by ycbai on 2013-9-16 Detailled comment
- * 
  * @deprecated @link EHadoopVersion instead.
  */
 public enum EMRVersion {

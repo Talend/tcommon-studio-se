@@ -19,10 +19,6 @@ import org.talend.core.ui.i18n.Messages;
 import org.talend.designer.rowgenerator.data.Function;
 import org.talend.designer.rowgenerator.data.FunctionManager;
 
-/**
- * DOC ggu class global comment. Detailled comment <br/>
- * 
- */
 public class RoutinesFunctionProposal implements IContentProposal {
 
     protected Function function;
@@ -46,32 +42,16 @@ public class RoutinesFunctionProposal implements IContentProposal {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.fieldassist.IContentProposal#getContent()
-     */
     @Override
     public String getContent() {
         return method;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.fieldassist.IContentProposal#getCursorPosition()
-     */
     @Override
     public int getCursorPosition() {
-
         return getContent().length();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.fieldassist.IContentProposal#getDescription()
-     */
     @Override
     public String getDescription() {
         String message = Messages.getString("RoutinesFunctionProposal.Description");
@@ -86,17 +66,8 @@ public class RoutinesFunctionProposal implements IContentProposal {
         return format.format(args);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.fieldassist.IContentProposal#getLabel()
-     */
     @Override
     public String getLabel() {
-        //        if ("".equals(function.getCategory())) { //$NON-NLS-1$
-        // return function.getName();
-        // }
-        //        return function.getCategory() + "." + function.getName(); //$NON-NLS-1$
         return function.getFunctionString();
     }
 }

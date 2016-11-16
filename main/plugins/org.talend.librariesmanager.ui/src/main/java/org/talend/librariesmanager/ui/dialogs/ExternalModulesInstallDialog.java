@@ -94,9 +94,6 @@ import org.talend.librariesmanager.ui.actions.ImportExternalJarAction;
 import org.talend.librariesmanager.ui.i18n.Messages;
 import org.talend.librariesmanager.utils.DownloadModuleRunnableWithLicenseDialog;
 
-/**
- * DOC wchen class global comment. Detailled comment
- */
 public class ExternalModulesInstallDialog extends TitleAreaDialog implements IModulesListener {
 
     private static Logger log = Logger.getLogger(ExternalModulesInstallDialog.class);
@@ -155,11 +152,6 @@ public class ExternalModulesInstallDialog extends TitleAreaDialog implements IMo
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
-     */
     @Override
     protected Control createDialogArea(Composite parent) {
         checkNetworkStatus();
@@ -763,13 +755,6 @@ public class ExternalModulesInstallDialog extends TitleAreaDialog implements IMo
         installButtonsEditors.clear();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.librariesmanager.ui.dialogs.ExternalModulesInstallDialog#createButtonsForButtonBar(org.eclipse.swt
-     * .widgets.Composite)
-     */
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
         installAllBtn = createInstallButton(parent);
@@ -802,21 +787,12 @@ public class ExternalModulesInstallDialog extends TitleAreaDialog implements IMo
         color.dispose();
     }
 
-    /**
-     * created by sgandon on 30 sept. 2013 Detailled comment
-     * 
-     */
     private final class ImportButtonSelectionListener implements SelectionListener {
 
         private final TableItem item;
 
         private AtomicInteger enabledButtonCount;
 
-        /**
-         * DOC sgandon ImportButtonSelectionListener constructor comment.
-         * 
-         * @param item
-         */
         public ImportButtonSelectionListener(AtomicInteger enabledButtonCount, TableItem item) {
             this.item = item;
             this.enabledButtonCount = enabledButtonCount;
@@ -834,7 +810,7 @@ public class ExternalModulesInstallDialog extends TitleAreaDialog implements IMo
     }
 
     /**
-     * I (SG) do not want to refadctor every thing so I delagate to a IRunnableWithProgress
+     * I (SG) do not want to refactor every thing so I delegate to a IRunnableWithProgress
      **/
     class DownloadModuleJob extends Job {
 
@@ -861,11 +837,6 @@ public class ExternalModulesInstallDialog extends TitleAreaDialog implements IMo
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.librariesmanager.ui.dialogs.IJobDownListener#downloadProgress()
-     */
     @Override
     public void listModulesDone() {
         Display.getDefault().asyncExec(new Runnable() {

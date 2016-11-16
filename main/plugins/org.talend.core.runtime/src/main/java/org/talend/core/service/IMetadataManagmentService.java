@@ -17,9 +17,6 @@ import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.core.model.metadata.builder.connection.AbstractMetadataObject;
 import org.talend.core.model.metadata.builder.connection.MetadataTable;
 
-/**
- * ggu class global comment. Detailled comment
- */
 public interface IMetadataManagmentService extends IService {
 
     public IMetadataTable convertMetadataTable(MetadataTable old);

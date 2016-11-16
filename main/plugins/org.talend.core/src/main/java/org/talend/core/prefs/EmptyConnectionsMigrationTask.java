@@ -22,17 +22,8 @@ import org.eclipse.ui.PlatformUI;
 import org.talend.migration.AbstractMigrationTask;
 import org.talend.migration.IWorkspaceMigrationTask;
 
-/**
- * created by nrousseau on Jan 5, 2013 Detailled comment
- * 
- */
 public class EmptyConnectionsMigrationTask extends AbstractMigrationTask implements IWorkspaceMigrationTask {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.migration.IMigrationTask#execute()
-     */
     public boolean execute() {
         IPreferenceStore store = PlatformUI.getPreferenceStore();
 

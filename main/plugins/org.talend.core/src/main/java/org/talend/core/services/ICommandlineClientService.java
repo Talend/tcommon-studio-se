@@ -20,9 +20,6 @@ import org.talend.core.model.process.ITargetExecutionConfig;
 import org.talend.designer.runprocess.IProcessMessageManager;
 import org.talend.designer.runprocess.ProcessorException;
 
-/**
- * ggu class global comment. Detailled comment
- */
 public interface ICommandlineClientService extends IService {
 
     public Process deployAndRunByCommandline(final ITargetExecutionConfig config, String jobName, String jobVersion,

@@ -37,10 +37,6 @@ import org.osgi.service.log.LogService;
 import org.talend.osgi.hook.maven.MavenResolver;
 import org.talend.osgi.hook.notification.JarMissingObservable;
 
-/**
- * created by sgandon on 14 oct. 2014 Detailled comment
- *
- */
 public class JarLoaderBundleFileWrapperFactory implements BundleFileWrapperFactoryHook {
 
     // file instance use to return the information that the jar was found in a fragment
@@ -51,32 +47,17 @@ public class JarLoaderBundleFileWrapperFactory implements BundleFileWrapperFacto
 
     Set<String> listOfBundlePrefixesSet = null;
 
-    /**
-     * created by sgandon on 17 oct. 2014 Detailled comment
-     *
-     */
     static class TalendBundleFileWrapper extends BundleFileWrapper {
 
         private Generation generation;
 
         Set<String> missingJars;
 
-        /**
-         * DOC sgandon BundleFileWrapperExtension constructor comment.
-         * 
-         * @param bundleFile
-         * @param generation
-         */
         private TalendBundleFileWrapper(BundleFile bundleFile, Generation generation) {
             super(bundleFile);
             this.generation = generation;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.osgi.storage.bundlefile.BundleFileWrapper#getEntry(java.lang.String)
-         */
         @Override
         public BundleEntry getEntry(String path) {
             // we are using te getEntry to trick equinox when a jar file is missing
@@ -184,11 +165,6 @@ public class JarLoaderBundleFileWrapperFactory implements BundleFileWrapperFacto
             return missingJars;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.osgi.storage.bundlefile.BundleFileWrapper#getFile(java.lang.String, boolean)
-         */
         @Override
         public File getFile(String path, boolean nativeCode) {
             return getFile(path, nativeCode, true);
@@ -216,12 +192,6 @@ public class JarLoaderBundleFileWrapperFactory implements BundleFileWrapperFacto
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.osgi.internal.hookregistry.BundleFileWrapperFactoryHook#wrapBundleFile(org.eclipse.osgi.storage.
-     * bundlefile.BundleFile, org.eclipse.osgi.storage.BundleInfo.Generation, boolean)
-     */
     @Override
     public BundleFileWrapper wrapBundleFile(BundleFile bundleFile, Generation generation, boolean base) {
         if (canHandleBundle(bundleFile.getBaseFile().getName())) {

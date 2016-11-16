@@ -58,10 +58,6 @@ import org.talend.metadata.managment.ui.dialog.CustomTableManagerOnlyForGenericS
 import org.talend.metadata.managment.ui.wizard.AbstractForm;
 import org.talend.repository.metadata.i18n.Messages;
 
-/**
- * DOC Administrator class global comment. Detailled comment <br/>
- * 
- */
 public class GenericSchemaStep2Form extends AbstractForm {
 
     protected ConnectionItem connectionItem;
@@ -756,11 +752,6 @@ public class GenericSchemaStep2Form extends AbstractForm {
     public void saveMetaData() {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
-     */
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);

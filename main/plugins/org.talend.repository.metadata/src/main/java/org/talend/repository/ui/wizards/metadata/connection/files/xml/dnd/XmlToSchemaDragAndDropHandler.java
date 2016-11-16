@@ -49,12 +49,6 @@ import org.talend.repository.ui.wizards.metadata.connection.files.xml.extraction
 import org.talend.repository.ui.wizards.metadata.connection.files.xml.extraction.ExtractionLoopWithXPathEditorView;
 import org.talend.repository.ui.wizards.metadata.connection.files.xml.extraction.XmlToXPathLinker;
 
-/**
- * DOC amaumont class global comment. Detailed comment <br/>
- * 
- * $Id$
- * 
- */
 public class XmlToSchemaDragAndDropHandler {
 
     private XmlToXPathLinker linker;
@@ -73,11 +67,6 @@ public class XmlToSchemaDragAndDropHandler {
 
     private DropTarget loopDropTarget;
 
-    /**
-     * DOC amaumont TreeToTableDragAndDropHandler constructor comment.
-     * 
-     * @param linker
-     */
     public XmlToSchemaDragAndDropHandler(XmlToXPathLinker linker) {
         this.linker = linker;
         tree = linker.getTree();
@@ -86,20 +75,11 @@ public class XmlToSchemaDragAndDropHandler {
         init();
     }
 
-    /**
-     * DOC amaumont Comment method "init".
-     */
     private void init() {
         createDragSource();
         createDropTarget();
     }
 
-    /**
-     * 
-     * DOC amaumont Comment method "createDragSource".
-     * 
-     * @param sourceListener
-     */
     private void createDragSource() {
         if (dragSource != null) {
             dragSource.dispose();
@@ -110,10 +90,6 @@ public class XmlToSchemaDragAndDropHandler {
         dragSource.addDragListener(sourceListener);
     }
 
-    /**
-     * 
-     * create DropTarget.
-     */
     private void createDropTarget() {
 
         if (loopDropTarget != null) {
@@ -133,13 +109,6 @@ public class XmlToSchemaDragAndDropHandler {
         fieldsDropTarget.addDropListener(targetListener);
     }
 
-    /**
-     * 
-     * DOC amaumont XmlToSchemaDragAndDropHandler class global comment. Detailled comment <br/>
-     * 
-     * $Id$
-     * 
-     */
     class TreeDragSourceListener implements TransferDragSourceListener {
 
         @Override
@@ -148,16 +117,10 @@ public class XmlToSchemaDragAndDropHandler {
 
         @Override
         public void dragSetData(DragSourceEvent event) {
-            // System.out.println("\n>>dragSetData");
-            // System.out.println(event);
-            // if (TableEntriesTransfer.getInstance().isSupportedType(event.dataType)) {
-            // }
         }
 
         @Override
         public void dragStart(DragSourceEvent event) {
-            // System.out.println("\n>>dragStart");
-            // System.out.println(event);
             TreeItem[] items = tree.getSelection();
             if (items.length == 0) {
                 event.doit = false;
@@ -178,13 +141,6 @@ public class XmlToSchemaDragAndDropHandler {
         }
     };
 
-    /**
-     * 
-     * DOC amaumont XmlToSchemaDragAndDropHandler class global comment. Detailled comment <br/>
-     * 
-     * $Id$
-     * 
-     */
     public class TableDropTargetListener implements TransferDropTargetListener {
 
         @Override
@@ -192,69 +148,41 @@ public class XmlToSchemaDragAndDropHandler {
             dragEnterExecute(event);
         }
 
-        /**
-         * DOC amaumont Comment method "dragEnterExecute".
-         * 
-         * @param event
-         */
         private void dragEnterExecute(DropTargetEvent event) {
             fieldsTable.setFocus();
         }
 
         @Override
         public void dragOver(DropTargetEvent event) {
-            // System.out.println("\n>>dragOver");
-
         }
 
         @Override
         public void dragLeave(DropTargetEvent event) {
-            // System.out.println("\n>>dragLeave");
-            // System.out.println(event);
         }
 
         @Override
         public void dragOperationChanged(DropTargetEvent event) {
-            // System.out.println("\n>>dragOperationChanged");
-            // showInfos(event);
             XmlToSchemaDraggedData draggedData = XPathTransfer.getInstance().getDraggedData();
 
         }
 
         @Override
         public void dropAccept(DropTargetEvent event) {
-            // System.out.println("\n>>dropAccept");
-            // System.out.println(event);
             XmlToSchemaDraggedData draggedData = XPathTransfer.getInstance().getDraggedData();
 
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.jface.util.TransferDropTargetListener#getTransfer()
-         */
         @Override
         public Transfer getTransfer() {
             return null;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.jface.util.TransferDropTargetListener#isEnabled(org.eclipse.swt.dnd.DropTargetEvent)
-         */
         @Override
         public boolean isEnabled(DropTargetEvent event) {
             // TODO Auto-generated method stub
             return false;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.swt.dnd.DropTargetListener#drop(org.eclipse.swt.dnd.DropTargetEvent)
-         */
         @Override
         public void drop(DropTargetEvent event) {
             // System.out.println("\n>>drop");
@@ -403,11 +331,6 @@ public class XmlToSchemaDragAndDropHandler {
         UniqueStringGenerator<SchemaTarget> uniqueStringGenerator = new UniqueStringGenerator<SchemaTarget>(columnName,
                 fullSchemaTargetList) {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.talend.commons.utils.data.list.UniqueStringGenerator#getBeanString(java.lang.Object)
-             */
             @Override
             protected String getBeanString(SchemaTarget bean) {
                 return bean.getTagName();
@@ -420,9 +343,8 @@ public class XmlToSchemaDragAndDropHandler {
 
     public static void main(String[] args) {
         String relativePath = XPathPopulationUtil.populateColumnPath("/doc/members/member/returns", "/doc/members"); //$NON-NLS-1$ //$NON-NLS-2$
-        // System.out.println(relativePath);
         relativePath = XPathPopulationUtil.populateColumnPath(
                 "/doc/members/member/returns/see/@cref", "/doc/members/member/summary/@name"); //$NON-NLS-1$ //$NON-NLS-2$
-        // System.out.println(relativePath);
     }
+
 }

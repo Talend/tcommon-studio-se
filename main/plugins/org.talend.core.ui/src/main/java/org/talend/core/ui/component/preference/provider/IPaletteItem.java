@@ -17,14 +17,6 @@ import java.util.List;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.talend.core.model.components.ComponentCategory;
 
-/**
- * created by nrousseau on Aug 11, 2014 Detailled comment
- *
- */
-/**
- * created by nrousseau on Aug 11, 2014 Detailled comment
- *
- */
 public interface IPaletteItem {
 
     public ImageDescriptor getImageDesc();

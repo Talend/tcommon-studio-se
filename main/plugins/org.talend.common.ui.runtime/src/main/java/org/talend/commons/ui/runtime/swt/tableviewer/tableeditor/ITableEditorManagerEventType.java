@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.commons.ui.runtime.swt.tableviewer.tableeditor;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- */
 public interface ITableEditorManagerEventType {
 
 }

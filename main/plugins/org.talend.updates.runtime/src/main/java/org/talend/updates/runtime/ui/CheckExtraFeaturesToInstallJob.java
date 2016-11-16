@@ -47,11 +47,6 @@ public class CheckExtraFeaturesToInstallJob extends Job {
         super(Messages.getString("CheckExtraFeaturesToInstallJob.check.extra.feature.to.install")); //$NON-NLS-1$
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.core.runtime.jobs.Job#run(org.eclipse.core.runtime.IProgressMonitor)
-     */
     @Override
     protected IStatus run(IProgressMonitor monitor) {
         // check if user wants the updates to be checked

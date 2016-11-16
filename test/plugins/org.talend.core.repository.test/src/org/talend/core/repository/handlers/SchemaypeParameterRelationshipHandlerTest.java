@@ -21,9 +21,6 @@ import org.talend.core.model.relationship.RelationshipItemBuilder;
 import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 @SuppressWarnings("nls")
 public class SchemaypeParameterRelationshipHandlerTest extends AbstractRepositoryTypeParameterRelationshipHandlerTest {
 
@@ -47,12 +44,6 @@ public class SchemaypeParameterRelationshipHandlerTest extends AbstractRepositor
         return RelationshipItemBuilder.SCHEMA_RELATION;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.repository.handlers.AbstractRepositoryTypeParameterRelationshipHandlerTest#
-     * getRepositoryTypeValuesValue()
-     */
     @Override
     protected String getRepositoryTypeValuesValue() {
         return "ABCyVUx8NF4EewOtnVeZxqg - metadata1";

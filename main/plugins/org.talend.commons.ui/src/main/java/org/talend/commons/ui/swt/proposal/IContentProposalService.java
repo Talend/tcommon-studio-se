@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.commons.ui.swt.proposal;
 
-/**
- * DOC Administrator class global comment. Detailled comment
- */
 public interface IContentProposalService {
 
     ContentProposalAdapterExtended getContentProposalAdapterExtended();

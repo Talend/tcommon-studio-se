@@ -15,9 +15,6 @@ package org.talend.core.ui.metadata.celleditor.xpathquery;
 import org.talend.core.model.metadata.IMetadataColumn;
 import org.talend.core.model.metadata.MetadataColumn;
 
-/**
- * cli class global comment. Detailled comment
- */
 public class XPathQueryMetadataColumnExt extends MetadataColumn {
 
     private String xpathQuery;

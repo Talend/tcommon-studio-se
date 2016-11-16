@@ -15,44 +15,22 @@ package org.talend.repository.items.importexport.handlers.model;
 import org.eclipse.core.runtime.IPath;
 import org.talend.core.model.repository.ERepositoryObjectType;
 
-/**
- * created by wchen on Aug 3, 2016 Detailled comment
- *
- */
 public class EmptyFolderImportItem extends ImportItem {
 
-    /**
-     * DOC wchen ImportFolderItem constructor comment.
-     * 
-     * @param path
-     */
     public EmptyFolderImportItem(IPath path) {
         super(path);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.items.importexport.handlers.model.ImportItem#getRepositoryType()
-     */
     @Override
     public ERepositoryObjectType getRepositoryType() {
         return repositoryType;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.items.importexport.handlers.model.ImportItem#getLabel()
-     */
     @Override
     public String getLabel() {
         return label;
     }
 
-    /**
-     * DOC wchen Comment method "setLabel".
-     */
     public void setLabel(String label) {
         this.label = label;
     }

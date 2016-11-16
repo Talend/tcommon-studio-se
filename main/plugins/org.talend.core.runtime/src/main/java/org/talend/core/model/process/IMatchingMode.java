@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.core.model.process;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- */
 public interface IMatchingMode {
     // Empty body due to historical reason.
 }

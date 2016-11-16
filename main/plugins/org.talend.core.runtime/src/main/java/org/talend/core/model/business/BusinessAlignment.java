@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.core.model.business;
 
-/**
- * wchen class global comment. Detailled comment
- */
 public enum BusinessAlignment {
 
     LEFT,

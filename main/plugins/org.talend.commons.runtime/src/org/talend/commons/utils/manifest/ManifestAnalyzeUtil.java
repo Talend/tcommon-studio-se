@@ -19,10 +19,6 @@ import java.util.jar.Attributes;
 import java.util.jar.JarInputStream;
 import java.util.jar.Manifest;
 
-/**
- * created by ycbai on 2013-3-18 Detailled comment
- * 
- */
 public class ManifestAnalyzeUtil {
 
     public final static String IMPLEMENTATION_TITLE = "Implementation-Title"; //$NON-NLS-1$

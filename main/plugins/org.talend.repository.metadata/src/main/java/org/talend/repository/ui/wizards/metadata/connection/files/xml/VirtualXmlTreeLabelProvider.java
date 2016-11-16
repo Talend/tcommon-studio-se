@@ -19,27 +19,15 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 import org.talend.datatools.xml.utils.ATreeNode;
 
-/**
- * created by nrousseau on May 9, 2013 Detailled comment
- * 
- */
 public class VirtualXmlTreeLabelProvider extends LabelProvider implements IColorProvider {
 
     private Color namespaceColor;
 
-    /**
-     * DOC nrousseau VirtualXmlTreeLabelProvider constructor comment.
-     */
     public VirtualXmlTreeLabelProvider() {
         super();
         namespaceColor = new Color(Display.getDefault(), new RGB(0, 130, 0));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
-     */
     @Override
     public String getText(Object element) {
         ATreeNode treeNode = (ATreeNode) element;
@@ -59,11 +47,6 @@ public class VirtualXmlTreeLabelProvider extends LabelProvider implements IColor
         return text;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.IColorProvider#getForeground(java.lang.Object)
-     */
     @Override
     public Color getForeground(Object element) {
         ATreeNode treeNode = (ATreeNode) element;
@@ -74,22 +57,12 @@ public class VirtualXmlTreeLabelProvider extends LabelProvider implements IColor
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.IColorProvider#getBackground(java.lang.Object)
-     */
     @Override
     public Color getBackground(Object element) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.BaseLabelProvider#dispose()
-     */
     @Override
     public void dispose() {
         namespaceColor.dispose();

@@ -17,16 +17,8 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.talend.core.model.repository.IRepositoryPrefConstants;
 import org.talend.repository.RepositoryViewPlugin;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class RepoViewPreferenceInitializer extends AbstractPreferenceInitializer {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer#initializeDefaultPreferences()
-     */
     @Override
     public void initializeDefaultPreferences() {
         final IPreferenceStore preferenceStore = RepositoryViewPlugin.getDefault().getPreferenceStore();

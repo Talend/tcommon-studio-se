@@ -21,10 +21,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-/**
- * 
- * DOC amaumont class global comment. Detailled comment
- */
 public class StatisticsStackTracer {
 
     private Map<KeyStatisticTracer, StatisticsTracer> mapKeyToTimer = new HashMap<KeyStatisticTracer, StatisticsTracer>();
@@ -35,10 +31,6 @@ public class StatisticsStackTracer {
 
     private boolean stoppingDisplay;
 
-    /**
-     * 
-     * DOC amaumont StatisticsTracer class global comment. Detailled comment
-     */
     static class KeyStatisticTracer {
 
         String stackTrace;

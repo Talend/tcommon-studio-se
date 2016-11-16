@@ -89,18 +89,10 @@ public class ExternalNodeComponentHandler extends AbstractComponentHandler {
         this.repositoryConnectionItemMap = repositoryConnectionItemMap;
         this.repositoryDBIdAndNameMap = repositoryDBIdAndNameMap;
         this.externalNodeHTMLMap = externalNodeHTMLMap;
-        // this.tempFolderPath = tempFolderPath;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.wizards.genHTMLDoc.IComponentHandler#generateComponentInfo(org.dom4j.Element,
-     * java.util.List)
-     */
     @Override
     public void generateComponentInfo() {
-
         for (INode externalNode : this.componentsList) {
             Element componentElement = generateComponentDetailsInfo(true, externalNode, this.externalNodeElement,
                     this.picFilePathMap, this.sourceConnectionMap, this.targetConnectionMap, this.repositoryDBIdAndNameMap);

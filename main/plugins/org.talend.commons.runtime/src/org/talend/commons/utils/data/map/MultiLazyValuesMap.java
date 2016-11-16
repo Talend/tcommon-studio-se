@@ -17,17 +17,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- */
 public abstract class MultiLazyValuesMap implements Map {
 
     private Map map;
 
-    /**
-     * DOC amaumont CollectionsMap constructor comment.
-     */
     public MultiLazyValuesMap(Map map) {
         super();
         this.map = map;
@@ -78,11 +71,6 @@ public abstract class MultiLazyValuesMap implements Map {
         return v;
     }
 
-    /**
-     * DOC amaumont Comment method "instanciateNewList".
-     * 
-     * @return
-     */
     public abstract Collection instanciateNewCollection();
 
     public void putAll(Map t) {

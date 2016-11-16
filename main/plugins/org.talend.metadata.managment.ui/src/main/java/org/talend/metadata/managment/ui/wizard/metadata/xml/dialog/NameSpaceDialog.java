@@ -26,9 +26,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.talend.commons.ui.swt.formtools.LabelledText;
 import org.talend.metadata.managment.ui.wizard.metadata.xml.utils.StringUtil;
 
-/**
- * wzhang class global comment. Detailled comment
- */
 public class NameSpaceDialog extends TitleAreaDialog {
 
     private LabelledText prefixLabel;
@@ -41,11 +38,6 @@ public class NameSpaceDialog extends TitleAreaDialog {
 
     private String nsValue;
 
-    /**
-     * wzhang NameSpaceDialog constructor comment.
-     * 
-     * @param parentShell
-     */
     public NameSpaceDialog(Shell parentShell) {
         super(parentShell);
     }

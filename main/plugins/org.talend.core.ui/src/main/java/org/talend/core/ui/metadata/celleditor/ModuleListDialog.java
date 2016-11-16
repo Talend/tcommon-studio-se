@@ -56,9 +56,6 @@ import org.talend.core.model.general.ILibrariesService;
 import org.talend.core.model.process.IElementParameter;
 import org.talend.core.ui.i18n.Messages;
 
-/**
- * created by hwang on Dec 24, 2014 Detailled comment copied from ModuleListCellEditor/ModuleListDialog
- */
 public class ModuleListDialog extends Dialog {
 
     private String selecteModule;
@@ -96,11 +93,6 @@ public class ModuleListDialog extends Dialog {
         newShell.setText(Messages.getString("ModuleListCellEditor.title")); //$NON-NLS-1$
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.Dialog#create()
-     */
     @Override
     public void create() {
         super.create();

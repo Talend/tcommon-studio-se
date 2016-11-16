@@ -21,9 +21,6 @@ import org.eclipse.ui.navigator.INavigatorContentService;
 import org.talend.repository.viewer.ui.provider.AgentTreeViewerListener;
 import org.talend.repository.viewer.ui.provider.INavigatorContentServiceProvider;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class RepoCommonViewer extends CommonViewer implements ITreeViewerListener, INavigatorContentServiceProvider {
 
     private AgentTreeViewerListener agent = new AgentTreeViewerListener();

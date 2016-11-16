@@ -15,9 +15,6 @@ package org.talend.core.model.metadata;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 
-/**
- * ggu class global comment. Detailled comment
- */
 public interface IMetadataContextModeManager {
 
     public ContextType getSelectedContextType();

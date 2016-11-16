@@ -24,19 +24,10 @@ import org.talend.core.model.properties.impl.ItemImpl;
 import org.talend.core.model.properties.impl.PropertyImpl;
 import org.talend.core.runtime.CoreRuntimePlugin;
 
-/**
- * created by wchen on 2014-3-11 Detailled comment
- * 
- */
 public class FakePropertyImpl extends PropertyImpl {
 
     private IPath itemPath;
 
-    /**
-     * DOC FakePropertyImpl constructor comment.
-     * 
-     * @param id
-     */
     public FakePropertyImpl() {
         Context ctx = CoreRuntimePlugin.getInstance().getContext();
         RepositoryContext repoContext = (RepositoryContext) ctx.getProperty(Context.REPOSITORY_CONTEXT_KEY);
@@ -44,7 +35,6 @@ public class FakePropertyImpl extends PropertyImpl {
         this.setAuthor(repoContext.getUser());
         setVersion(""); //$NON-NLS-1$
         setCreationDate(new Date());
-
     }
 
     @Override

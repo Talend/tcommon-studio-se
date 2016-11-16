@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.core.hadoop.conf;
 
-/**
- * created by ycbai on Jul 31, 2014 Detailled comment
- *
- */
 public enum EHadoopProperties {
 
     NAMENODE_URI,

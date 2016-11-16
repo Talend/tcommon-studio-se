@@ -28,17 +28,8 @@ import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
-/**
- * created by ggu on Sep 15, 2014 Detailled comment
- *
- */
 public abstract class AbstractShowJobStartup implements IStartup {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IStartup#earlyStartup()
-     */
     @Override
     public void earlyStartup() {
         // only work for studio.

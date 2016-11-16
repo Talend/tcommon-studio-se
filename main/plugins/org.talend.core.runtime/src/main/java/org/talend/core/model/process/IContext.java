@@ -14,12 +14,6 @@ package org.talend.core.model.process;
 
 import java.util.List;
 
-/**
- * DOC nrousseau class global comment. Detailled comment <br/>
- * 
- * $Id: IContext.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
- */
 public interface IContext {
 
     String DEFAULT = "Default"; //$NON-NLS-1$

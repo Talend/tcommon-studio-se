@@ -18,12 +18,6 @@ import org.apache.commons.lang.StringUtils;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.properties.User;
 
-/**
- * DOC smallet class global comment. Detailled comment <br/>
- * 
- * $Id: RepositoryContext.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
- */
 public class RepositoryContext {
 
     private User user;
@@ -44,19 +38,10 @@ public class RepositoryContext {
 
     private Map<String, String> fields;
 
-    /**
-     * DOC smallet RepositoryContext constructor comment.
-     * 
-     */
     public RepositoryContext() {
         super();
     }
 
-    /**
-     * Getter for user.
-     * 
-     * @return the user
-     */
     public User getUser() {
         return this.user;
     }
@@ -141,11 +126,6 @@ public class RepositoryContext {
         this.otp = otp;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -155,11 +135,6 @@ public class RepositoryContext {
         return result;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

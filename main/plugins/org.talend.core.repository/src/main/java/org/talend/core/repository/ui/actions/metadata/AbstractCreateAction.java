@@ -32,19 +32,10 @@ import org.talend.repository.model.IRepositoryNode.EProperties;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.ui.actions.AContextualAction;
 
-/**
- * DOC tguiu class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public abstract class AbstractCreateAction extends AContextualAction {
 
     private String[] existingNames;
 
-    /**
-     * DOC tguiu AbstractCreateAction constructor comment.
-     */
     public AbstractCreateAction() {
         super();
     }
@@ -104,11 +95,6 @@ public abstract class AbstractCreateAction extends AContextualAction {
         existingNames = names.toArray(new String[names.size()]);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.actions.AContextualAction#updateNodeToLastVersion()
-     */
     @Override
     @Deprecated
     protected void updateNodeToLastVersion() {

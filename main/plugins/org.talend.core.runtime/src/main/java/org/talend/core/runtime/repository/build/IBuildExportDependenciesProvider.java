@@ -15,9 +15,6 @@ package org.talend.core.runtime.repository.build;
 import org.talend.core.model.properties.Item;
 import org.talend.repository.documentation.ExportFileResource;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public interface IBuildExportDependenciesProvider {
 
     /**

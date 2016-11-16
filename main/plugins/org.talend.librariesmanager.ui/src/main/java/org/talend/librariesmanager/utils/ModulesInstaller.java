@@ -22,10 +22,6 @@ import org.talend.core.model.general.ModuleNeeded;
 import org.talend.librariesmanager.ui.dialogs.ExternalModulesInstallDialogWithProgress;
 import org.talend.librariesmanager.ui.i18n.Messages;
 
-/**
- * created by Administrator on 2012-9-17 Detailled comment
- * 
- */
 public class ModulesInstaller {
 
     private static Logger log = Logger.getLogger(ModulesInstaller.class);

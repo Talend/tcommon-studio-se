@@ -14,9 +14,6 @@ package org.talend.migration;
 
 import java.util.Date;
 
-/**
- * DOC ycbai class global comment. Detailled comment
- */
 public interface IMigrationTask {
 
     public String getId();

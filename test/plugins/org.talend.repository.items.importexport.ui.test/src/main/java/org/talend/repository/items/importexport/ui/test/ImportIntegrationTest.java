@@ -62,9 +62,6 @@ import org.talend.repository.items.importexport.handlers.ImportExportHandlersMan
 import org.talend.repository.items.importexport.handlers.model.ImportItem;
 import org.talend.repository.items.importexport.ui.managers.FileResourcesUnityManager;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 @SuppressWarnings("nls")
 public class ImportIntegrationTest {
 

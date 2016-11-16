@@ -36,9 +36,6 @@ import org.talend.core.ui.branding.IBrandingConfiguration;
 import org.talend.designer.core.IMultiPageTalendEditor;
 import org.talend.repository.ui.views.IRepositoryView;
 
-/**
- * ggu class global comment. Detailled comment
- */
 public final class RepositoryManagerHelper {
 
     public static IViewReference findRepositoryViewRef() {

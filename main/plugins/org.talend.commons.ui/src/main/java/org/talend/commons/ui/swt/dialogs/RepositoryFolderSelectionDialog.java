@@ -36,12 +36,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.SelectionDialog;
 
-/**
- * yzhang class global comment. Detailled comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
- * 
- */
 public class RepositoryFolderSelectionDialog extends SelectionDialog {
 
     private TreeViewer treeViewer;
@@ -103,11 +97,6 @@ public class RepositoryFolderSelectionDialog extends SelectionDialog {
         this.labelProvider = labelProvider;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
-     */
     @Override
     protected Control createDialogArea(Composite container) {
         Composite parent = (Composite) super.createDialogArea(container);
@@ -134,11 +123,6 @@ public class RepositoryFolderSelectionDialog extends SelectionDialog {
         return parent;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.Dialog#okPressed()
-     */
     @Override
     protected void okPressed() {
         IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();

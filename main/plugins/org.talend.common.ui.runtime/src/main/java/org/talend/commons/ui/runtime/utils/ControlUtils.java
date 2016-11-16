@@ -22,21 +22,8 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Control;
 import org.talend.commons.ui.runtime.i18n.Messages;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id: ControlUtils.java 7038 2007-11-15 14:05:48Z plegall $
- * 
- */
 public class ControlUtils {
 
-    /**
-     * 
-     * DOC amaumont Comment method "getText".
-     * 
-     * @param control
-     * @return
-     */
     public static String getText(Control control) {
         // use reflection to copy with any StyledText that is not compatible with RAP
         Object result = invokeMethod(control, "getText"); //$NON-NLS-1$
@@ -47,13 +34,6 @@ public class ControlUtils {
         }
     }
 
-    /**
-     * DOC sgandon Comment method "invokeMethod".
-     * 
-     * @param control
-     * @param value
-     * @return
-     */
     private static Object invokeMethod(Control control, String methodName) {
         try {
             Method getTextMethod = control.getClass().getMethod(methodName, (Class<?>[]) null);
@@ -71,13 +51,6 @@ public class ControlUtils {
         }
     }
 
-    /**
-     * DOC sgandon Comment method "invokeMethod".
-     * 
-     * @param control
-     * @param value
-     * @return
-     */
     private static Object invokeOneParamMethod(Control control, String methodName, Object param, Class clazz) {
         try {
             if (clazz == null) {
@@ -98,24 +71,10 @@ public class ControlUtils {
         }
     }
 
-    /**
-     * 
-     * DOC amaumont Comment method "getText".
-     * 
-     * @param control
-     * @return
-     */
     public static void setText(Control control, String text) {
         invokeOneParamMethod(control, "setText", text, null); //$NON-NLS-1$
     }
 
-    /**
-     * 
-     * DOC amaumont Comment method "getText".
-     * 
-     * @param control
-     * @return
-     */
     public static Point getSelection(Control control) {
         // use reflection to copy with any StyledText that is not compatible with RAP
         Object result = invokeMethod(control, "getSelection"); //$NON-NLS-1$
@@ -126,13 +85,6 @@ public class ControlUtils {
         }
     }
 
-    /**
-     * 
-     * DOC amaumont Comment method "getText".
-     * 
-     * @param control
-     * @return
-     */
     public static String getLineDelimiter(Control control) {
         // use reflection to copy with any StyledText that is not compatible with RAP
         Object result = invokeMethod(control, "getLineDelimiter"); //$NON-NLS-1$
@@ -143,23 +95,10 @@ public class ControlUtils {
         }
     }
 
-    /**
-     * 
-     * DOC amaumont Comment method "getText".
-     * 
-     * @param control
-     * @return
-     */
     public static void addModifyListener(Control control, ModifyListener modifyListener) {
         invokeOneParamMethod(control, "addModifyListener", modifyListener, null); //$NON-NLS-1$
     }
 
-    /**
-     * DOC amaumont Comment method "removeModifyListener".
-     * 
-     * @param control
-     * @param modifyListener
-     */
     public static void removeModifyListener(Control control, ModifyListener modifyListener) {
         invokeOneParamMethod(control, "removeModifyListener", modifyListener, null); //$NON-NLS-1$
     }
@@ -197,16 +136,8 @@ public class ControlUtils {
 
     static class InvocationFailedException extends RuntimeException {
 
-        /**
-         * 
-         */
         private static final long serialVersionUID = 1L;
 
-        /**
-         * DOC sgandon InvocationFailed constructor comment.
-         * 
-         * @param e
-         */
         public InvocationFailedException(Throwable e) {
             super(e);
         }

@@ -51,11 +51,6 @@ import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.metadata.managment.ui.wizard.metadata.xml.node.FOXTreeNode;
 import org.talend.repository.ui.wizards.metadata.connection.files.xml.dnd.XPathTransfer;
 
-/**
- * 
- * DOC ycbai class global comment. Detailled comment
- * 
- */
 public class XmlTree2SchemaDragAndDropHandler {
 
     private XmlTree2SchemaLinker linker;

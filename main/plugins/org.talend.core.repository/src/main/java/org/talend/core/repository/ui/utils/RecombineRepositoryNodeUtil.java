@@ -26,9 +26,6 @@ import org.talend.repository.model.RepositoryNodeUtilities;
 import org.talend.repository.model.nodes.IProjectRepositoryNode;
 import org.talend.repository.ui.views.IRepositoryView;
 
-/**
- * ggu class global comment. Detailled comment
- */
 public final class RecombineRepositoryNodeUtil {
 
     public static IRepositoryNode getFixingTypeInputRoot(IProjectRepositoryNode projectRepoNode, ERepositoryObjectType type) {

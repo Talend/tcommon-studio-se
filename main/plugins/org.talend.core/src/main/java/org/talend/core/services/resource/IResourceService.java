@@ -14,12 +14,6 @@ package org.talend.core.services.resource;
 
 import org.talend.core.IService;
 
-/**
- * yzhang class global comment. Detailled comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
- * 
- */
 public interface IResourceService extends IService {
 
 }

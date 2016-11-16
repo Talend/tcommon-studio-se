@@ -70,11 +70,6 @@ public class MetadataToolbarEditorView extends ExtendedToolbarView {
         updateEnabledStateOfButtons();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.extended.ExtendedToolbarView#createAddPushButton()
-     */
     @Override
     protected AddPushButton createAddPushButton() {
         return new AddPushButtonForExtendedTable(this.toolbar, getExtendedTableViewer()) {
@@ -88,11 +83,6 @@ public class MetadataToolbarEditorView extends ExtendedToolbarView {
         };
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.extended.ExtendedToolbarView#createPastButton()
-     */
     @Override
     public PastePushButton createPastePushButton() {
         return new PastePushButtonForExtendedTable(toolbar, extendedTableViewer) {
@@ -105,11 +95,6 @@ public class MetadataToolbarEditorView extends ExtendedToolbarView {
         };
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.extended.ExtendedToolbarView#createExportPushButton()
-     */
     @Override
     protected ExportPushButton createExportPushButton() {
         return new ExportPushButtonForExtendedTable(toolbar, extendedTableViewer) {
@@ -122,11 +107,6 @@ public class MetadataToolbarEditorView extends ExtendedToolbarView {
         };
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.extended.ExtendedToolbarView#createPastButton()
-     */
     @Override
     public ImportPushButton createImportPushButton() {
         return new ImportPushButtonForExtendedTable(toolbar, extendedTableViewer) {

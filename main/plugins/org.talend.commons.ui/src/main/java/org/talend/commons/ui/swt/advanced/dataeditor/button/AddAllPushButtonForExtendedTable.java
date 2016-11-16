@@ -21,29 +21,12 @@ import org.talend.commons.ui.swt.extended.table.AbstractExtendedControlViewer;
 import org.talend.commons.ui.swt.extended.table.AbstractExtendedTableViewer;
 import org.talend.commons.ui.swt.extended.table.ExtendedTableModel;
 
-/**
- * DOC YeXiaowei class global comment. Detailled comment <br/>
- * 
- */
 public class AddAllPushButtonForExtendedTable extends AddAllPushButton {
 
-    /**
-     * DOC YeXiaowei AddAllPushButtonForExtendedTable constructor comment.
-     * 
-     * @param parent
-     * @param extendedViewer
-     * @param tooltip
-     * @param image
-     */
     public AddAllPushButtonForExtendedTable(Composite parent, AbstractExtendedControlViewer extendedViewer) {
         super(parent, extendedViewer);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.advanced.dataeditor.control.ExtendedPushButton#getCommandToExecute()
-     */
     @Override
     protected Command getCommandToExecute() {
         AbstractExtendedTableViewer abstractExtendedTableViewer = ((AbstractExtendedTableViewer) getExtendedControlViewer());
@@ -56,11 +39,6 @@ public class AddAllPushButtonForExtendedTable extends AddAllPushButton {
         return new ExtendTableAddAllCommand(extendedTableModel, getObjectToAdd(), indexWhereInsert);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.advanced.dataeditor.button.AddAllPushButton#getObjectToAdd()
-     */
     @Override
     protected List<Object> getObjectToAdd() {
         return null;

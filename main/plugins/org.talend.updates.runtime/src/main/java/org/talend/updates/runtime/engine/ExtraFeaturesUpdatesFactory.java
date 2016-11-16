@@ -20,23 +20,12 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.updates.runtime.engine.factory.AbstractExtraUpdatesFactory;
 import org.talend.updates.runtime.model.ExtraFeature;
 
-/**
- * created by ggu on Jul 17, 2014 Detailled comment
- *
- */
 public class ExtraFeaturesUpdatesFactory {
 
     private final static ExtraFeaturesUpdatesReader updatesFactoryReader = new ExtraFeaturesUpdatesReader();
 
     /**
-     * 
-     * DOC ggu Comment method "retrieveUninstalledExtraFeatures".
-     * 
-     * 
      * Retrieve all uninstalled extra features.
-     * 
-     * @param monitor
-     * @return
      */
     public void retrieveUninstalledExtraFeatures(IProgressMonitor monitor, Set<ExtraFeature> uninstalledExtraFeatures) {
         if (uninstalledExtraFeatures == null) {

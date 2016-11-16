@@ -14,9 +14,6 @@ package org.talend.repository.viewer.ui.provider;
 
 import org.eclipse.ui.navigator.INavigatorContentService;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public interface INavigatorContentServiceProvider {
 
     public INavigatorContentService getNavigatorContentService();

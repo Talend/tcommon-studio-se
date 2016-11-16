@@ -19,9 +19,6 @@ import org.talend.core.IService;
 import org.talend.core.model.properties.ConnectionItem;
 import org.talend.core.ui.AbstractWebService;
 
-/**
- * DOC Administrator class global comment. Detailled comment
- */
 public interface IWebService extends IService {
 
     public AbstractWebService getWebServiceUI(Composite uiParent, ConnectionItem connectionItem);

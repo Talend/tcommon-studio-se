@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.core.ui.context.model.table;
 
-/**
- * cli class global comment. Detailled comment
- */
 public class ContextTableConstants {
 
     public static final String COLUMN_NAME_PROPERTY = "Name"; //$NON-NLS-1$

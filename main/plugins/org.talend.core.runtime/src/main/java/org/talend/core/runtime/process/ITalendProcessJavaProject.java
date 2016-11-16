@@ -21,10 +21,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IJavaProject;
 
-/**
- * created by ggu on 26 Jan 2015 Detailled comment
- *
- */
 public interface ITalendProcessJavaProject {
 
     IJavaProject getJavaProject();

@@ -19,12 +19,6 @@ import org.junit.Test;
 import us.monoid.json.JSONArray;
 import us.monoid.json.JSONObject;
 
-
-/**
- * created by nrousseau on Mar 28, 2016
- * Detailled comment
- *
- */
 public class TokeninforUtilTest {
 
     @Test

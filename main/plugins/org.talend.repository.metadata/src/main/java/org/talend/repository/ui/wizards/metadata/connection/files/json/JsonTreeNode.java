@@ -21,10 +21,6 @@ import org.talend.datatools.xml.utils.ATreeNode;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-/**
- * created by cmeng on Jul 1, 2015 Detailled comment
- *
- */
 public class JsonTreeNode extends ATreeNode {
 
     private String jsonPath;
@@ -85,22 +81,12 @@ public class JsonTreeNode extends ATreeNode {
         this.values.add(value);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         int result = (this.jsonPath == null) ? 0 : this.jsonPath.hashCode();
         return result;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

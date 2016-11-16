@@ -22,12 +22,6 @@ import org.talend.core.model.utils.RepositoryManagerHelper;
 import org.talend.metadata.managment.ui.utils.OtherConnectionContextUtils.EParamName;
 import org.talend.metadata.managment.ui.wizard.AbstractForm;
 
-/**
- * DOC cantoine class global comment. Detailled comment <br/>
- * 
- * $Id: AbstractLdifFileStepForm.java 302 2006-11-02 13:59:32 +0000 (jeu., 02 nov. 2006) cantoine $
- * 
- */
 public abstract class AbstractLdifFileStepForm extends AbstractForm {
 
     protected int maximumRowsToPreview = RepositoryManagerHelper.getMaximumRowsToPreview();
@@ -37,7 +31,7 @@ public abstract class AbstractLdifFileStepForm extends AbstractForm {
     private IMetadataContextModeManager contextModeManager;
 
     /**
-     * DOC cantoine AbstractLdifFileStepForm constructor comment. Use to step1
+     * Use to step1
      */
     public AbstractLdifFileStepForm(Composite parent, ConnectionItem connectionItem, String[] existingNames) {
         super(parent, SWT.NONE, existingNames);
@@ -45,7 +39,7 @@ public abstract class AbstractLdifFileStepForm extends AbstractForm {
     }
 
     /**
-     * DOC cantoine AbstractLdifFileStepForm constructor comment. Use to step2
+     * Use to step2
      * 
      * @param parent
      * @param connection2
@@ -55,7 +49,7 @@ public abstract class AbstractLdifFileStepForm extends AbstractForm {
     }
 
     /**
-     * DOC cantoine AbstractLdifFileStepForm constructor comment. Use to step1
+     * Use to step1
      */
     public AbstractLdifFileStepForm(Composite parent, ConnectionItem connectionItem, MetadataTable metadataTable,
             String[] existingNames) {

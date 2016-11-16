@@ -34,9 +34,6 @@ import org.dom4j.io.SAXReader;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 
-/**
- * DOC xye class global comment. Detailled comment
- */
 public class SQLFormatUtil {
 
     private static final String LINE_SEP = System.getProperty("line.separator"); //$NON-NLS-1$

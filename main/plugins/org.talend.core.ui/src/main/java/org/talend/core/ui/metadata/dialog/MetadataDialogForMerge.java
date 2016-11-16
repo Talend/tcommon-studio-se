@@ -58,12 +58,6 @@ import org.talend.core.ui.metadata.editor.AbstractMetadataTableEditorView;
 import org.talend.core.ui.metadata.editor.MetadataTableEditor;
 import org.talend.core.ui.metadata.editor.MetadataTableEditorView;
 
-/**
- * DOC nrousseau class global comment. Detailled comment <br/>
- * 
- * $Id: MetadataDialog.java 4400 2007-07-10 07:59:06 +0000 (星期二, 10 七月 2007) bqian $
- * 
- */
 public class MetadataDialogForMerge extends Dialog {
 
     private static final String ELT_LABEL = "ELT"; //$NON-NLS-1$

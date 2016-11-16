@@ -24,10 +24,6 @@ import org.junit.Test;
 import org.talend.repository.items.importexport.handlers.model.ImportItem;
 import org.talend.repository.items.importexport.manager.ResourcesManager;
 
-/**
- * created by ggu on Apr 28, 2014 Detailled comment
- * 
- */
 public class ImportHandlerHelperTest {
 
     private ImportHandlerHelper helper;

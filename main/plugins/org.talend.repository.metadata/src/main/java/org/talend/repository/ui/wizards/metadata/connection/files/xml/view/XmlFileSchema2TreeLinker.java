@@ -48,9 +48,6 @@ import org.talend.metadata.managment.ui.wizard.metadata.xml.XmlExtractorBgRefres
 import org.talend.metadata.managment.ui.wizard.metadata.xml.node.FOXTreeNode;
 import org.talend.repository.metadata.ui.wizards.form.AbstractXmlStepForm;
 
-/**
- * wzhang class global comment. Detailled comment
- */
 public class XmlFileSchema2TreeLinker extends TableToTreeLinker<Object, Object> {
 
     private TreeViewer xmlViewer;
@@ -393,11 +390,6 @@ public class XmlFileSchema2TreeLinker extends TableToTreeLinker<Object, Object> 
         return this.drawingLinksComparator;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.linking.TableToTreeLinker#getFirstVisibleTreeItemOfPath(java.lang.Object)
-     */
     @Override
     protected TreeItem getFirstVisibleTreeItemOfPath(Object dataItem) {
         return getFirstVisibleTreeItemOfPath((FOXTreeNode) dataItem);

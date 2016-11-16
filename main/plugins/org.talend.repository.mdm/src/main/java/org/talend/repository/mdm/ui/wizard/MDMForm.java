@@ -45,9 +45,6 @@ import org.talend.metadata.managment.ui.utils.OtherConnectionContextUtils.EParam
 import org.talend.metadata.managment.ui.wizard.AbstractForm;
 import org.talend.repository.mdm.i18n.Messages;
 
-/**
- * DOC hwang class global comment. Detailled comment
- */
 public class MDMForm extends AbstractForm {
 
     private LabelledCombo versionComb;
@@ -100,11 +97,6 @@ public class MDMForm extends AbstractForm {
         setLayout(layout);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#adaptFormToReadOnly()
-     */
     @Override
     protected void adaptFormToReadOnly() {
         readOnly = isReadOnly();
@@ -114,11 +106,6 @@ public class MDMForm extends AbstractForm {
         serverURLText.setReadOnly(readOnly);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addFields()
-     */
     @Override
     protected void addFields() {
         Group mdmParameterGroup = new Group(this, SWT.NULL);
@@ -159,11 +146,6 @@ public class MDMForm extends AbstractForm {
         checkButton.setEnabled(false);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addFieldsListeners()
-     */
     @Override
     protected void addFieldsListeners() {
         versionComb.addModifyListener(new ModifyListener() {
@@ -212,20 +194,10 @@ public class MDMForm extends AbstractForm {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addUtilsButtonListeners()
-     */
     @Override
     protected void addUtilsButtonListeners() {
         checkButton.addSelectionListener(new SelectionAdapter() {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse .swt.events.SelectionEvent)
-             */
             @Override
             public void widgetSelected(SelectionEvent e) {
                 checkMDMConnection();
@@ -280,11 +252,6 @@ public class MDMForm extends AbstractForm {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#checkFieldsValue()
-     */
     @Override
     protected boolean checkFieldsValue() {
         if (isContextMode()) {
@@ -317,11 +284,6 @@ public class MDMForm extends AbstractForm {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#initialize()
-     */
     @Override
     protected void initialize() {
         MDMConnection mdmConn = getConnection();
@@ -360,11 +322,6 @@ public class MDMForm extends AbstractForm {
         return (MDMConnection) connectionItem.getConnection();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
-     */
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);

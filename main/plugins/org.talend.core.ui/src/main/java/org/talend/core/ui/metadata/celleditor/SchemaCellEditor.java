@@ -65,9 +65,6 @@ import org.talend.core.ui.process.IGraphicalNode;
 import org.talend.core.ui.services.IDesignerCoreUIService;
 import org.talend.core.ui.services.IRulesProviderService;
 
-/**
- * DOC nrousseau class global comment. Detailled comment
- */
 public class SchemaCellEditor extends DialogCellEditor {
 
     private INode node;
@@ -112,11 +109,6 @@ public class SchemaCellEditor extends DialogCellEditor {
         this.tableEditorView = tableEditorView;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.DialogCellEditor#openDialogBox(org.eclipse.swt.widgets.Control)
-     */
     @Override
     protected Object openDialogBox(Control cellEditorWindow) {
 

@@ -29,12 +29,6 @@ import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.core.ui.CoreUIPlugin;
 import org.talend.core.ui.i18n.Messages;
 
-/**
- * yzhang class global comment. Detailled comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
- * 
- */
 public class TalendTabbedPropertyComposite extends Composite {
 
     private TabbedPropertySheetWidgetFactory factory;

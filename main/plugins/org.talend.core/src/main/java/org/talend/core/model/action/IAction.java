@@ -12,12 +12,6 @@
 // ============================================================================
 package org.talend.core.model.action;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public interface IAction {
 
     public void run(IEventAction eventAction);

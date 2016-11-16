@@ -20,12 +20,6 @@ import org.apache.commons.collections.map.MultiValueMap;
 import org.talend.core.model.process.Problem;
 import org.talend.designer.codegen.IAloneProcessNodeConfigurer;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public abstract class CodeProblemsChecker implements ICodeProblemsChecker {
 
     private List<Problem> problems;
@@ -34,11 +28,6 @@ public abstract class CodeProblemsChecker implements ICodeProblemsChecker {
 
     private List<Problem> nodeProblems = new ArrayList<Problem>();
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.language.ICodeProblemsChecker#checkProblemsFromKey(java.lang.String)
-     */
     public List<Problem> checkProblemsFromKey(String key, IAloneProcessNodeConfigurer nodeConfigurer) {
         List<Problem> nodePros = checkProblems(nodeConfigurer);
         updateNodeProblems(nodePros, key);
@@ -118,30 +107,15 @@ public abstract class CodeProblemsChecker implements ICodeProblemsChecker {
         return nodeProblems;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.language.ICodeProblemsChecker#getProblemsFromKey(java.lang.String)
-     */
     public List<Problem> getProblemsFromKey(String key) {
         List<Problem> list = (List<Problem>) multiValueMap.get(key);
         return list;
     }
 
-    /**
-     * Getter for problems.
-     * 
-     * @return the problems
-     */
     protected List<Problem> getProblems() {
         return this.problems;
     }
 
-    /**
-     * Sets the problems.
-     * 
-     * @param problems the problems to set
-     */
     protected void setProblems(List<Problem> problems) {
         this.problems = problems;
         multiValueMap.clear();

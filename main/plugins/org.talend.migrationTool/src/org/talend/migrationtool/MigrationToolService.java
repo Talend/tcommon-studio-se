@@ -72,12 +72,6 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IRepositoryService;
 import org.talend.utils.ProductVersion;
 
-/**
- * DOC smallet class global comment. Detailled comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- * 
- */
 public class MigrationToolService implements IMigrationToolService {
 
     private static Logger log = Logger.getLogger(MigrationToolService.class);
@@ -568,11 +562,6 @@ public class MigrationToolService implements IMigrationToolService {
         });
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.migration.IMigrationToolService#initNewProjectTasks()
-     */
     @Override
     public void initNewProjectTasks(Project project) {
         List<IProjectMigrationTask> toExecute = GetTasksHelper.getProjectTasks(true);
@@ -587,12 +576,6 @@ public class MigrationToolService implements IMigrationToolService {
         saveProjectMigrationTasksDone(project, done);
     }
 
-    /**
-     * DOC smallet Comment method "saveProjectMigrationTasksDone".
-     * 
-     * @param project
-     * @param done
-     */
     private void saveProjectMigrationTasksDone(Project project, List<MigrationTask> done) {
         IRepositoryService service = (IRepositoryService) GlobalServiceRegister.getDefault().getService(IRepositoryService.class);
         IProxyRepositoryFactory repFactory = service.getProxyRepositoryFactory();
@@ -603,11 +586,6 @@ public class MigrationToolService implements IMigrationToolService {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.migration.IMigrationToolService#executeWorspaceTasks()
-     */
     @Override
     public void executeWorspaceTasks() {
         log.trace("Migration tool: workspace tasks"); //$NON-NLS-1$
@@ -658,11 +636,6 @@ public class MigrationToolService implements IMigrationToolService {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.migration.IMigrationToolService#initNewWorkspaceTasks()
-     */
     public void initNewWorkspaceTasks() {
         final ICoreService coreService = getCoreService();
         if (coreService == null) {
@@ -677,21 +650,11 @@ public class MigrationToolService implements IMigrationToolService {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.migration.IMigrationToolService#executeMigration()
-     */
     @Override
     public void executeMigration(boolean underPluginModel) {
         new AlertUserOnLogin().startup(underPluginModel);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.migration.IMigrationToolService#needExecutemigration()
-     */
     @Override
     public boolean needExecutemigration() {
         return !AlertUserOnLogin.executed;

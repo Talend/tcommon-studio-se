@@ -26,10 +26,6 @@ import org.eclipse.ui.presentations.IStackPresentationSite;
 import org.eclipse.ui.presentations.StackPresentation;
 import org.talend.rcp.Activator;
 
-/**
- * created by nrousseau on May 15, 2013 Detailled comment
- * 
- */
 @Deprecated
 public class TalendActionBarPresentationFactory extends AbstractPresentationFactory implements IActionBarPresentationFactory {
 
@@ -37,7 +33,6 @@ public class TalendActionBarPresentationFactory extends AbstractPresentationFact
 
     @Override
     public ICoolBarManager2 createCoolBarManager() {
-
         return new TalendCoolBarManager(SWT.FLAT);
     }
 

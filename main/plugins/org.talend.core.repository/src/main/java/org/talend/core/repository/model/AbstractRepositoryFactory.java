@@ -37,12 +37,6 @@ import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.RepositoryWorkUnit;
 
-/**
- * DOC smallet class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public abstract class AbstractRepositoryFactory implements IRepositoryFactory {
 
     private String name;
@@ -274,12 +268,6 @@ public abstract class AbstractRepositoryFactory implements IRepositoryFactory {
         this.loggedOnProject = loggedOnProject;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @seeorg.talend.repository.model.IRepositoryFactory#addRepositoryWorkUnitListener(org.talend.repository.model.
-     * IRepositoryWorkUnitListener)
-     */
     @Override
     public void addRepositoryWorkUnitListener(IRepositoryWorkUnitListener listener) {
         synchronized (lock) {
@@ -302,11 +290,6 @@ public abstract class AbstractRepositoryFactory implements IRepositoryFactory {
 
     private Object lock = new Object();
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.model.IRepositoryFactory#readProject(boolean)
-     */
     @Override
     public Project[] readProject(boolean unloadResource) throws PersistenceException, BusinessException {
         return readProject();

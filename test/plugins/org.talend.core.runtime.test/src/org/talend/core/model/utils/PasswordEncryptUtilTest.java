@@ -17,9 +17,6 @@ import junit.framework.Assert;
 import org.junit.Test;
 import org.talend.commons.utils.PasswordEncryptUtil;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 @SuppressWarnings("nls")
 public class PasswordEncryptUtilTest {
 

@@ -16,10 +16,6 @@ import java.util.Properties;
 
 import org.talend.core.IService;
 
-/**
- * created by wchen on Mar 4, 2015 Detailled comment
- *
- */
 public interface IMapperIDocService extends IService {
 
     public void launchIDocImporter(Properties properties);

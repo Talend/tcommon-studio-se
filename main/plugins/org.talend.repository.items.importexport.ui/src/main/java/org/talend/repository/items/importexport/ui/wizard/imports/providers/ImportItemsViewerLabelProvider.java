@@ -29,16 +29,8 @@ import org.talend.repository.items.importexport.wizard.models.ProjectImportNode;
 import org.talend.repository.items.importexport.wizard.models.StandardJobImportNode;
 import org.talend.repository.items.importexport.wizard.models.TypeImportNode;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class ImportItemsViewerLabelProvider extends LabelProvider {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.LabelProvider#getImage(java.lang.Object)
-     */
     @Override
     public Image getImage(Object element) {
         return getImageBasedOn(element);
@@ -97,11 +89,6 @@ public class ImportItemsViewerLabelProvider extends LabelProvider {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
-     */
     @Override
     public String getText(Object element) {
         if (element instanceof ImportNode) {

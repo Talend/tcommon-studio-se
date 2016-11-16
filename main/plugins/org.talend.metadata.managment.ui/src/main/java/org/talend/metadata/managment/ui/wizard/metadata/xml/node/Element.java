@@ -61,11 +61,6 @@ public class Element extends FOXTreeNode {
         super.removeChild(child);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.fileoutputxml.data.FOXTreeNode#hasChildren()
-     */
     @Override
     public boolean hasChildren() {
         List<FOXTreeNode> childsWithoutNamespaces = new ArrayList<FOXTreeNode>(getChildren());
@@ -73,12 +68,6 @@ public class Element extends FOXTreeNode {
         return childsWithoutNamespaces.size() + attributes.size() > 0;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.designer.fileoutputxml.data.FOXTreeNode#addChild(org.talend.designer.fileoutputxml.data.FOXTreeNode)
-     */
     @Override
     public void addChild(FOXTreeNode child) {
         if (child instanceof Attribute) {
@@ -96,11 +85,6 @@ public class Element extends FOXTreeNode {
         super.addChild(child);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.fileoutputxml.data.FOXTreeNode#getChildren()
-     */
     @Override
     public List<FOXTreeNode> getChildren() {
         List<FOXTreeNode> list = new ArrayList<FOXTreeNode>();

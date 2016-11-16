@@ -16,10 +16,6 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
 
-/**
- * created by cmeng on Sep 18, 2015 Detailled comment
- *
- */
 public final class OnBoardingExceptionHandler {
 
     private static Logger log = Logger.getLogger(OnBoardingExceptionHandler.class);

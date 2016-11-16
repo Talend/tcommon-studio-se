@@ -19,9 +19,6 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * DOC nrousseau class global comment. Detailled comment
- */
 public interface IProjectRepositoryNode {
 
     public org.talend.core.model.general.Project getProject();

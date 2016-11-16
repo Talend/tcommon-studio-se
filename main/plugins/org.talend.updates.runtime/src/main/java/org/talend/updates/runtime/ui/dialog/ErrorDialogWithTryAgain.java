@@ -18,11 +18,6 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
-/**
- * 
- * created by wchen on 2015年8月10日 Detailled comment
- *
- */
 public class ErrorDialogWithTryAgain extends ErrorDialog {
 
     static int displayMask = IStatus.OK | IStatus.INFO | IStatus.WARNING | IStatus.ERROR;

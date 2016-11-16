@@ -77,9 +77,6 @@ import org.talend.repository.items.importexport.manager.ResourcesManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryConstants;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class ImportExportHandlersManager {
 
     private final ImportExportHandlersRegistryReader registryReader;

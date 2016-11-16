@@ -12,13 +12,6 @@
 // ============================================================================
 package org.talend.core.model.components;
 
-
-/**
- * DOC nrousseau class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public interface IMultipleComponentConnection {
 
     public String getConnectionType();

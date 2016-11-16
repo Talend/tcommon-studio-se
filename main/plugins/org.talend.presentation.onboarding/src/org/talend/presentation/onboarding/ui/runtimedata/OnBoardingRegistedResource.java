@@ -20,10 +20,6 @@ import org.talend.presentation.onboarding.interfaces.IOnBoardingJsonI18n;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-/**
- * created by cmeng on Sep 21, 2015 Detailled comment
- *
- */
 public class OnBoardingRegistedResource {
 
     private URL url;

@@ -206,14 +206,9 @@ public class DelimitedFileConnectionImpl extends FileConnectionImpl implements D
         return result.toString();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.metadata.builder.connection.impl.ConnectionImpl#getConnectionTypeName()
-     */
     @Override
     public String getConnectionTypeName() {
         return "File delimited"; //$NON-NLS-1$
     }
 
-} // DelimitedFileConnectionImpl
+}

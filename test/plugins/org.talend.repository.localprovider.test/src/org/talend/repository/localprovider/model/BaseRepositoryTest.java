@@ -55,10 +55,6 @@ import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
 import org.talend.repository.ProjectManager;
 
-/**
- * created by nrousseau on Dec 12, 2013 Detailled comment
- * 
- */
 public class BaseRepositoryTest {
 
     protected static LocalRepositoryFactory repositoryFactory;

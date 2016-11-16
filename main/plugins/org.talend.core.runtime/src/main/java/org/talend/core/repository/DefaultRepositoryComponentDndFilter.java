@@ -19,9 +19,6 @@ import org.talend.core.model.properties.Item;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * ggu class global comment. Detailled comment
- */
 public class DefaultRepositoryComponentDndFilter implements IRepositoryComponentDndFilter {
 
     protected static final String MAP = "MAP";//$NON-NLS-1$

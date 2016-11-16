@@ -16,9 +16,6 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.repository.RepositoryViewObject;
 
-/**
- * DOC klliu class global comment. Detailled comment
- */
 public class TDQFolderObject extends RepositoryViewObject {
 
     private final IRepositoryViewObject viewObject;
@@ -31,9 +28,6 @@ public class TDQFolderObject extends RepositoryViewObject {
         return this.type;
     }
 
-    /**
-     * DOC klliu ETDQFolderType class global comment. Detailled comment
-     */
     public enum ETDQFolderType {
         COLUMN_FOLDER("Columns"),
         TABLE_FOLDER("Tables"),
@@ -82,41 +76,19 @@ public class TDQFolderObject extends RepositoryViewObject {
         this.type = type;
     }
 
-    /**
-     * DOC klliu TDQFolder constructor comment.
-     * 
-     * @param property
-     * @param type
-     */
     public TDQFolderObject(IRepositoryViewObject viewObject, ERepositoryObjectType type) {
         super(viewObject.getProperty());
         this.viewObject = viewObject;
         this.type = type;
     }
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.dq.nodes.foldernode.ITDQFolder#getFolderType()
-     */
     public ETDQFolderType getFolderType() {
         return this.folderType;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.dq.nodes.foldernode.ITDQFolder#setFolderType(org.talend.dq.nodes.foldernode.ITDQFolder.ETDQFolderType)
-     */
     public void setFolderType(ETDQFolderType type) {
         this.folderType = type;
     }
 
-    /*
-     * (non-Jsdoc)
-     * 
-     * @see org.talend.dq.nodes.foldernode.ITDQFolder#getViewObject()
-     */
     public IRepositoryViewObject getViewObject() {
         return this.viewObject;
     }

@@ -12,29 +12,15 @@
 // ============================================================================
 package org.talend.commons.ui.swt.extended.table;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public class ExtendedControlEvent {
 
     private IExtendedControlEventType type;
 
-    /**
-     * DOC amaumont ExtendedModelEvent constructor comment.
-     */
     public ExtendedControlEvent(IExtendedControlEventType type) {
         super();
         this.type = type;
     }
 
-    /**
-     * Getter for type.
-     * 
-     * @return the type
-     */
     public IExtendedControlEventType getType() {
         return this.type;
     }

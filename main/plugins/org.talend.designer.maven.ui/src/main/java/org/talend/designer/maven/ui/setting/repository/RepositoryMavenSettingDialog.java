@@ -41,9 +41,6 @@ import org.talend.repository.RepositoryWorkUnit;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.viewer.ui.provider.RepoCommonViewerProvider;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class RepositoryMavenSettingDialog extends PreferenceDialog implements IProjectSettingContainer {
 
     private final RepositoryMavenSettingManager mavenSettingManager;
@@ -71,11 +68,6 @@ public class RepositoryMavenSettingDialog extends PreferenceDialog implements IP
         newShell.setSize(1000, 700);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.preference.PreferenceDialog#createTreeAreaContents(org.eclipse.swt.widgets.Composite)
-     */
     @Override
     protected Control createTreeAreaContents(Composite parent) {
         // create fake repo view
@@ -106,11 +98,6 @@ public class RepositoryMavenSettingDialog extends PreferenceDialog implements IP
         return contents;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.internal.dialogs.FilteredPreferenceDialog#findNodeMatching(java.lang.String)
-     */
     @Override
     protected IPreferenceNode findNodeMatching(String nodeId) {
         if (nodeId == null) {
@@ -126,21 +113,11 @@ public class RepositoryMavenSettingDialog extends PreferenceDialog implements IP
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.preference.PreferenceDialog#cancelPressed()
-     */
     @Override
     protected void cancelPressed() {
         super.cancelPressed();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.preference.PreferenceDialog#okPressed()
-     */
     @Override
     protected void okPressed() {
         RepositoryWorkUnit rwu = new RepositoryWorkUnit(null) {

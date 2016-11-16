@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.repository.items.importexport.handlers.imports;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public interface IImportConstants {
 
     static final String SEP_COMMA = ","; //$NON-NLS-1$

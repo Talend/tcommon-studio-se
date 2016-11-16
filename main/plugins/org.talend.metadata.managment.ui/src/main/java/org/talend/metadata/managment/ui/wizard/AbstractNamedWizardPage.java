@@ -37,12 +37,6 @@ import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryConstants;
 
-
-/**
- * created by nrousseau on Jun 24, 2016
- * Detailled comment
- *
- */
 public abstract class AbstractNamedWizardPage extends WizardPage {
 
     protected IStatus nameStatus;
@@ -53,10 +47,6 @@ public abstract class AbstractNamedWizardPage extends WizardPage {
 
     protected boolean nameModifiedByUser = false;
 
-    /**
-     * DOC nrousseau AbstractNamedWizardPage constructor comment.
-     * @param pageName
-     */
     protected AbstractNamedWizardPage(String pageName) {
         super(pageName);        
         nameStatus = createOkStatus();

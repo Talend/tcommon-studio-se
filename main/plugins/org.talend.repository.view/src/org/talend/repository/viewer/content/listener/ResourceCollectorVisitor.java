@@ -30,10 +30,6 @@ import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.viewer.content.VisitResourceHelper;
 
-/**
- * created by nrousseau on Jun 26, 2016 Detailled comment
- *
- */
 public abstract class ResourceCollectorVisitor implements IResourceDeltaVisitor {
 
     private Collection<ResourceNode> resourcesCollections;

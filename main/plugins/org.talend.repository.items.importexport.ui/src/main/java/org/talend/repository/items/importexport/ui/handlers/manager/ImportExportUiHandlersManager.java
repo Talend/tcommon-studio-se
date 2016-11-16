@@ -14,9 +14,6 @@ package org.talend.repository.items.importexport.ui.handlers.manager;
 
 import org.talend.repository.items.importexport.ui.handlers.IImportExportItemsActionHelper;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public final class ImportExportUiHandlersManager {
 
     private static final ImportExportUiHandlersManager instance = new ImportExportUiHandlersManager();

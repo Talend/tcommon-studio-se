@@ -31,12 +31,6 @@ import org.talend.metadata.managment.ui.wizard.AbstractRepositoryFileTableWizard
 import org.talend.repository.metadata.i18n.Messages;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
-/**
- * DOC ocarbone class global comment. Detailled comment <br/>
- * 
- * $Id: FilePositionalTableWizard.java 51998 2010-12-01 05:33:08Z hywang $
- * 
- */
 public class FilePositionalTableWizard extends AbstractRepositoryFileTableWizard implements INewWizard {
 
     private static Logger log = Logger.getLogger(FilePositionalTableWizard.class);
@@ -47,11 +41,6 @@ public class FilePositionalTableWizard extends AbstractRepositoryFileTableWizard
 
     private IMetadataTable oldMetadataTable;
 
-    /**
-     * Constructor for TableWizard.
-     * 
-     * @param ISelection
-     */
     @SuppressWarnings("unchecked")//$NON-NLS-1$
     public FilePositionalTableWizard(IWorkbench workbench, boolean creation, ConnectionItem connectionItem,
             MetadataTable metadataTable, boolean forceReadOnly) {

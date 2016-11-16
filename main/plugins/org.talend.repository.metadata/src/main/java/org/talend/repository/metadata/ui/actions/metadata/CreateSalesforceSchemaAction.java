@@ -30,10 +30,6 @@ import org.talend.repository.model.IRepositoryNode.EProperties;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.ui.wizards.metadata.connection.files.salesforce.SalesforceSchemaWizard;
 
-/**
- * DOC yexiaowei class global comment. Detailled comment
- */
-
 public class CreateSalesforceSchemaAction extends AbstractCreateAction {
 
     private static final String CREATE_LABEL = Messages.getString("CreateSalesforceSchemaAction.createConnection"); //$NON-NLS-1$

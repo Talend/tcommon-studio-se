@@ -19,9 +19,6 @@ import java.util.Set;
 
 import org.talend.core.model.properties.Item;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public abstract class AbstractItemRelationshipHandler implements IItemRelationshipHandler {
 
     /**
@@ -39,11 +36,6 @@ public abstract class AbstractItemRelationshipHandler implements IItemRelationsh
      */
     protected abstract String getBaseItemType(Item baseItem);
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.relationship.IItemRelationshipHandler#find(org.talend.core.model.properties.Item)
-     */
     @Override
     public Map<Relation, Set<Relation>> find(Item baseItem) {
         if (!valid(baseItem)) {

@@ -17,9 +17,6 @@ import org.talend.core.model.metadata.query.AbstractQueryGenerator;
 import org.talend.core.model.utils.TalendTextUtils;
 import org.talend.core.utils.TalendQuoteUtils;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class H2QueryGenerator extends AbstractQueryGenerator {
 
     public H2QueryGenerator(EDatabaseTypeName dbType) {

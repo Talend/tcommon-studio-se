@@ -25,10 +25,6 @@ import org.talend.librariesmanager.model.ModulesNeededProvider;
 import org.talend.librariesmanager.ui.dialogs.ExternalModulesInstallDialogWithProgress;
 import org.talend.librariesmanager.ui.i18n.Messages;
 
-/**
- * created by Administrator on 2012-9-20 Detailled comment
- * 
- */
 public class DownloadExternalJarAction extends Action {
 
     public DownloadExternalJarAction() {

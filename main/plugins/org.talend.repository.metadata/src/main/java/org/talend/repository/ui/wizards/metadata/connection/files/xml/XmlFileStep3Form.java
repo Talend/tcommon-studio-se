@@ -665,11 +665,6 @@ public class XmlFileStep3Form extends AbstractXmlFileStepForm {
     public void saveMetaData() {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
-     */
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);

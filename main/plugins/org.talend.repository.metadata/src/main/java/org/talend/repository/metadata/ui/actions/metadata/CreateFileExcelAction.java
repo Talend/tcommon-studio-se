@@ -30,10 +30,6 @@ import org.talend.repository.model.IRepositoryNode.EProperties;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.ui.wizards.metadata.connection.files.excel.ExcelFileWizard;
 
-/**
- * DOC yexiaowei class global comment. Detailled comment
- */
-
 public class CreateFileExcelAction extends AbstractCreateAction {
 
     private static final String EDIT_LABEL = Messages.getString("CreateFileExcelAction.action.editTitle"); //$NON-NLS-1$

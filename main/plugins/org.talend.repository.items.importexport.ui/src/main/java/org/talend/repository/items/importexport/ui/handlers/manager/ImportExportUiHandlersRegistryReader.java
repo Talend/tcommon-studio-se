@@ -23,9 +23,6 @@ import org.eclipse.core.runtime.SafeRunner;
 import org.talend.core.utils.RegistryReader;
 import org.talend.repository.items.importexport.ui.handlers.IImportExportItemsActionHelper;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class ImportExportUiHandlersRegistryReader extends RegistryReader {
 
     private static Logger log = Logger.getLogger(ImportExportUiHandlersRegistryReader.class);
@@ -75,11 +72,6 @@ public class ImportExportUiHandlersRegistryReader extends RegistryReader {
         return this.actionsHelpers;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.utils.RegistryReader#readElement(org.eclipse.core.runtime.IConfigurationElement)
-     */
     @Override
     protected boolean readElement(final IConfigurationElement element) {
         if ("actionHelper".equals(element.getName())) { //$NON-NLS-1$

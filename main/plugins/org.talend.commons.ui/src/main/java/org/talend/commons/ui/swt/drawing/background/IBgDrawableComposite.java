@@ -16,12 +16,6 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public interface IBgDrawableComposite {
 
     public abstract void drawBackground(GC gc);

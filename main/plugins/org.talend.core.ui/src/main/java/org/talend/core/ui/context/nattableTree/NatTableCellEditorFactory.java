@@ -25,10 +25,6 @@ import org.talend.core.model.process.IContextParameter;
 import org.talend.core.ui.context.MultiStringSelectionDialog;
 import org.talend.core.utils.TalendQuoteUtils;
 
-/**
- * created by ldong on Jul 30, 2014 Detailled comment
- * 
- */
 public class NatTableCellEditorFactory {
 
     public static final String[] BOOLEANS = new String[] { Boolean.FALSE.toString(), Boolean.TRUE.toString() };

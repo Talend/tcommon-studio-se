@@ -39,9 +39,6 @@ import org.talend.core.model.utils.ContextParameterUtils;
 import org.talend.core.ui.i18n.Messages;
 import org.talend.designer.runprocess.IRunProcessService;
 
-/**
- * ggu class global comment. Detailled comment
- */
 public class ContextValueErrorChecker {
 
     private final FocusListener focusListenerForCheckingError = new FocusAdapter() {

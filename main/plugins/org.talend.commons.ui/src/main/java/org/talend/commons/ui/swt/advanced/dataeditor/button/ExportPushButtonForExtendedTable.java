@@ -29,22 +29,10 @@ import org.talend.commons.ui.swt.extended.table.IExtendedControlListener;
 import org.talend.commons.utils.data.list.IListenableListListener;
 import org.talend.commons.utils.data.list.ListenableListEvent;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public abstract class ExportPushButtonForExtendedTable extends ExportPushButton implements IExtendedTablePushButton {
 
     private File file;
 
-    /**
-     * DOC amaumont SchemaTargetAddPushButton constructor comment.
-     * 
-     * @param parent
-     * @param extendedControlViewer
-     */
     public ExportPushButtonForExtendedTable(Composite parent, final AbstractExtendedTableViewer extendedTableViewer) {
         super(parent, extendedTableViewer);
         extendedTableViewer.addListener(new IExtendedControlListener() {
@@ -62,11 +50,6 @@ public abstract class ExportPushButtonForExtendedTable extends ExportPushButton 
 
     }
 
-    /**
-     * DOC amaumont Comment method "registerListListener".
-     * 
-     * @param extendedTableModel
-     */
     private void registerListListener(ExtendedTableModel extendedTableModel) {
         if (extendedTableModel != null) {
             extendedTableModel.addAfterOperationListListener(new IListenableListListener() {
@@ -85,11 +68,6 @@ public abstract class ExportPushButtonForExtendedTable extends ExportPushButton 
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.advanced.dataeditor.control.ExtendedPushButton#beforeCommandExecution()
-     */
     @Override
     protected void beforeCommandExecution() {
 
@@ -117,11 +95,6 @@ public abstract class ExportPushButtonForExtendedTable extends ExportPushButton 
         msgBox.open();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.extended.button.IExtendedTablePushButton#getExtendedTableViewer()
-     */
     public AbstractExtendedTableViewer getExtendedTableViewer() {
         return (AbstractExtendedTableViewer) getExtendedControlViewer();
     }

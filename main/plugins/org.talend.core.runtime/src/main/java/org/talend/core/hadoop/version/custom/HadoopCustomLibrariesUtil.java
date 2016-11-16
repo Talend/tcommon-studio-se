@@ -60,10 +60,6 @@ import org.xml.sax.SAXParseException;
 import com.sun.org.apache.xml.internal.serialize.OutputFormat;
 import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
 
-/**
- * created by wchen on 2013-3-27 Detailled comment
- * 
- */
 public class HadoopCustomLibrariesUtil {
 
     private ILibraryManagerService librairesManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault()
@@ -73,9 +69,6 @@ public class HadoopCustomLibrariesUtil {
 
     public static final String[] FILE__MASK = { "*.zip" }; //$NON-NLS-1$ 
 
-    /**
-     * DOC wchen HadoopCustomLibrariesUtil constructor comment.
-     */
     public HadoopCustomLibrariesUtil() {
         libsManager = CustomVersionLibsManager.getInstance();
     }

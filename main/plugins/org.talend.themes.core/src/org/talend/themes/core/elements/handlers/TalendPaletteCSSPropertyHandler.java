@@ -28,18 +28,8 @@ import org.w3c.dom.css.CSSPrimitiveValue;
 import org.w3c.dom.css.CSSValue;
 import org.w3c.dom.css.CSSValueList;
 
-/**
- * created by cmeng on Jan 30, 2015 Detailled comment
- *
- */
 public class TalendPaletteCSSPropertyHandler implements ICSSPropertyHandler {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.e4.ui.css.core.dom.properties.ICSSPropertyHandler#applyCSSProperty(java.lang.Object,
-     * java.lang.String, org.w3c.dom.css.CSSValue, java.lang.String, org.eclipse.e4.ui.css.core.engine.CSSEngine)
-     */
     @Override
     public boolean applyCSSProperty(Object element, String property, CSSValue value, String pseudo, CSSEngine engine)
             throws Exception {
@@ -450,12 +440,6 @@ public class TalendPaletteCSSPropertyHandler implements ICSSPropertyHandler {
         return changed;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.e4.ui.css.core.dom.properties.ICSSPropertyHandler#retrieveCSSProperty(java.lang.Object,
-     * java.lang.String, java.lang.String, org.eclipse.e4.ui.css.core.engine.CSSEngine)
-     */
     @Override
     public String retrieveCSSProperty(Object element, String property, String pseudo, CSSEngine engine) throws Exception {
         return null;

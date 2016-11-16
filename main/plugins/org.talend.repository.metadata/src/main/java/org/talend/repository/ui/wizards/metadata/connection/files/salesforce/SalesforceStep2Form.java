@@ -71,10 +71,6 @@ import org.talend.metadata.managment.ui.utils.ShadowProcessHelper;
 import org.talend.repository.metadata.i18n.Messages;
 import org.talend.repository.metadata.ui.wizards.form.AbstractSalesforceStepForm;
 
-/**
- * DOC YeXiaowei class global comment. Detailled comment <br/>
- * 
- */
 public class SalesforceStep2Form extends AbstractSalesforceStepForm {
 
     private static Logger log = Logger.getLogger(SalesforceStep2Form.class);
@@ -148,21 +144,11 @@ public class SalesforceStep2Form extends AbstractSalesforceStepForm {
         initTreeNavigatorNodes();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#adaptFormToReadOnly()
-     */
     @Override
     protected void adaptFormToReadOnly() {
         readOnly = isReadOnly();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addFields()
-     */
     @Override
     protected void addFields() {
         int leftCompositeWidth = 125;
@@ -328,11 +314,6 @@ public class SalesforceStep2Form extends AbstractSalesforceStepForm {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addFieldsListeners()
-     */
     @Override
     protected org.talend.core.model.metadata.builder.connection.MetadataTable getTableByLabel(String label) {
         org.talend.core.model.metadata.builder.connection.MetadataTable result = null;
@@ -418,11 +399,6 @@ public class SalesforceStep2Form extends AbstractSalesforceStepForm {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addUtilsButtonListeners()
-     */
     @Override
     protected void addUtilsButtonListeners() {
         // Event PreviewButton
@@ -447,11 +423,6 @@ public class SalesforceStep2Form extends AbstractSalesforceStepForm {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#checkFieldsValue()
-     */
     @Override
     protected boolean checkFieldsValue() {
         previewInformationLabel.setText("   " + Messages.getString("FileStep2.settingsIncomplete")); //$NON-NLS-1$ //$NON-NLS-2$
@@ -464,14 +435,8 @@ public class SalesforceStep2Form extends AbstractSalesforceStepForm {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#initialize()
-     */
     @Override
     protected void initialize() {
-
         String queryCondition = getConnection().getQueryCondition();
         if (queryCondition != null && !queryCondition.equals("")) { //$NON-NLS-1$
             queryConditionText.setText(queryCondition);
@@ -482,12 +447,10 @@ public class SalesforceStep2Form extends AbstractSalesforceStepForm {
         alphabet.setSelection(useAlphbet);
 
         checkFieldsValue();
-
     }
 
     @Override
     public void setVisible(boolean visible) {
-
         super.setVisible(visible);
 
         if (super.isVisible()) {
@@ -506,19 +469,11 @@ public class SalesforceStep2Form extends AbstractSalesforceStepForm {
         }
     }
 
-    /**
-     * DOC YeXiaowei Comment method "refreshPreview".
-     */
     private void refreshPreview() {
         initTreeNavigatorNodes();
         // processor.execute();
     }
 
-    /**
-     * 
-     * DOC YeXiaowei SalesforceStep2Form class global comment. Detailled comment <br/>
-     * 
-     */
     class PreviewProcessor extends SWTUIThreadProcessor {
 
         String previewInformationLabelMsg = null;

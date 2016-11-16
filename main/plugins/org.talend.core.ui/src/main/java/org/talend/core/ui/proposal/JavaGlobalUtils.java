@@ -17,9 +17,6 @@ import java.text.MessageFormat;
 import org.eclipse.jface.fieldassist.IContentProposal;
 import org.talend.core.ui.i18n.Messages;
 
-/**
- * DOC qwei class global comment. Detailled comment
- */
 public class JavaGlobalUtils {
 
     public static IContentProposal[] getProposals() {
@@ -28,11 +25,6 @@ public class JavaGlobalUtils {
         return cp;
     }
 
-    /**
-     * 
-     * DOC ggu PerlGlobalUtils class global comment. Detailled comment <br/>
-     * 
-     */
     static class JavaGlobalVariableProposal implements IContentProposal {
 
         private String name;
@@ -53,36 +45,18 @@ public class JavaGlobalUtils {
 
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.jface.fieldassist.IContentProposal#getContent()
-         */
         @Override
         public String getContent() {
-
             return code;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.jface.fieldassist.IContentProposal#getCursorPosition()
-         */
         @Override
         public int getCursorPosition() {
-
             return getContent().length();
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.jface.fieldassist.IContentProposal#getDescription()
-         */
         @Override
         public String getDescription() {
-
             String message = Messages.getString("JavaGlobalVariableProposal.Description"); //$NON-NLS-1$
             message += "\n\n"; //$NON-NLS-1$
             message += Messages.getString("JavaGlobalVariableProposal.VariableName"); //$NON-NLS-1$
@@ -92,14 +66,8 @@ public class JavaGlobalUtils {
             return format.format(args);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.jface.fieldassist.IContentProposal#getLabel()
-         */
         @Override
         public String getLabel() {
-
             return display;
         }
 

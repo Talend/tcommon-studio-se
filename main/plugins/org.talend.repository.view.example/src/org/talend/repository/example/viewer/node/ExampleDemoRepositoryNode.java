@@ -17,45 +17,21 @@ import org.talend.commons.ui.runtime.repository.IExtendRepositoryNode;
 import org.talend.repository.example.image.EExampleDemoImage;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * DOC ggu class global comment. Detailled comment <br/>
- * 
- * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
- */
 public class ExampleDemoRepositoryNode implements IExtendRepositoryNode {
 
-    /**
-     * DOC ggu ExampleDemoRepositoryNode constructor comment.
-     */
     public ExampleDemoRepositoryNode() {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.repository.IExtendRepositoryNode#getNodeImage()
-     */
     @Override
     public IImage getNodeImage() {
         return EExampleDemoImage.DEMO_ICON;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.repository.IExtendRepositoryNode#getOrdinal()
-     */
     @Override
     public int getOrdinal() {
         return 0;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.repository.IExtendRepositoryNode#getChildren()
-     */
     @Override
     public Object[] getChildren() {
         return new RepositoryNode[0];

@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.repository.items.importexport.handlers.model.internal;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public enum EPriority {
     LOWEST,
     LOW,

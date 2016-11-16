@@ -21,9 +21,6 @@ import org.eclipse.jface.resource.StringConverter;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 
-/**
- * ggu class global comment. Detailled comment
- */
 public class ColorUtils {
 
     private static RGB DEFAULT_COLOR = new RGB(255, 255, 255);// white
@@ -32,12 +29,6 @@ public class ColorUtils {
 
     private final static String COMMA = ","; //$NON-NLS-1$
 
-    /*
-     * for tPostjob/tPrejob components
-     */
-    // public static final Color SPECIAL_SUBJOB_TITLE_COLOR = new Color(null, 230, 100, 0);
-    //
-    // public final static Color SPECIAL_SUBJOB_COLOR = new Color(null, 255, 220, 180);
     /**
      * return such as "255;255;255"
      */

@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.core.ui.context.model.table;
 
-/**
- * ldong class global comment. Detailled comment
- */
 public class ConectionAdaptContextVariableModel {
 
     private String name; // keep the connection parameter's name

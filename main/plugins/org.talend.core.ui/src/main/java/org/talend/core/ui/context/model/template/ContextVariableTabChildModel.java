@@ -14,10 +14,6 @@ package org.talend.core.ui.context.model.template;
 
 import org.talend.core.ui.context.model.ContextTabChildModel;
 
-
-/**
- * DOC Marvin  class global comment. Detailled comment
- */
 public class ContextVariableTabChildModel extends ContextTabChildModel {
 
 }

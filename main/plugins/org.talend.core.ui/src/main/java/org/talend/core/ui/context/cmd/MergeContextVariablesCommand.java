@@ -35,9 +35,6 @@ import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.designer.core.model.utils.emf.talendfile.impl.ContextTypeImpl;
 
-/**
- * DOC hwang class global comment. Detailled comment
- */
 public class MergeContextVariablesCommand extends Command {
 
     private IContextManager ctxManager = null;

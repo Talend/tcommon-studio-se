@@ -15,9 +15,6 @@ package org.talend.commons.ui.swt.font;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.graphics.Font;
 
-/**
- * DOC talend class global comment. Detailled comment
- */
 public class FontLib {
 
     public static final String TALEND_ITALIC_FONT = "Talend.Italic.Font"; //$NON-NLS-1$

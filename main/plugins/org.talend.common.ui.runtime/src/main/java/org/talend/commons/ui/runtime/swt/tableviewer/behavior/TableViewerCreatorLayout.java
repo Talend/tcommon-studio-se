@@ -115,9 +115,6 @@ public class TableViewerCreatorLayout extends Layout {
         init();
     }
 
-    /**
-     * DOC amaumont Comment method "init".
-     */
     private void init() {
         this.asyncThreadingForManualColumnResizingFalse = new AsynchronousThreading(500, false, tableViewerCreator
                 .getCompositeParent().getDisplay(), new Runnable() {
@@ -141,9 +138,6 @@ public class TableViewerCreatorLayout extends Layout {
         columnsLayoutData.add(data);
     }
 
-    /*
-     * (non-Javadoc) Method declared on Layout.
-     */
     public Point computeSize(Composite c, int wHint, int hHint, boolean flush) {
         if (wHint != SWT.DEFAULT && hHint != SWT.DEFAULT) {
             return new Point(wHint, hHint);
@@ -200,40 +194,19 @@ public class TableViewerCreatorLayout extends Layout {
         return width;
     }
 
-    /*
-     * (non-Javadoc) Method declared on Layout.
-     */
     public void layout(final Composite c, boolean flush) {
-
-        // System.out.println("manualResizing=" + manualResizing);
-        // System.out.println("layout=" + this.hashCode());
         if (manualResizing) {
             return;
         }
-
-        // System.out.println("TableViewerCreatorLayout layout " + toString() + " "+ (i++) );
 
         if (fillHorizontal || continuousLayout) {
             initColumnsControlListener();
         }
 
         if (layoutExecutionLimiter == null) {
-            // layoutExecutionLimiter = new ExecutionLimiter(this.timeBetweenTwoLayouts, true) {
-            //
-            // @Override
-            // public void execute(boolean isFinalExecution) {
-
             if (c.isDisposed()) {
                 return;
             }
-
-            // c.getDisplay().syncExec(new Runnable() {
-            //
-            // /* (non-Javadoc)
-            // * @see java.lang.Runnable#run()
-            // */
-            // public void run() {
-            //
             if (!firstTime && !continuousLayout) {
                 return;
             }
@@ -253,19 +226,9 @@ public class TableViewerCreatorLayout extends Layout {
             }
 
         }
-
-        // });
-        // }
-        //
-        // };
-        // }
-
-        // layoutExecutionLimiter.startIfExecutable();
-
     }
 
     private void layout(final Composite c) {
-        // System.out.println("Layout" + System.currentTimeMillis());
         final Table table = (Table) c;
         Rectangle bounds = table.getBounds();
         Rectangle clientArea = table.getClientArea();
@@ -405,12 +368,7 @@ public class TableViewerCreatorLayout extends Layout {
 
     }
 
-    /**
-     * 
-     * DOC amaumont Comment method "initColumnsControlListener".
-     */
     private void initColumnsControlListener() {
-
         if (columnControlListenersInitialized) {
             return;
         }
@@ -524,11 +482,6 @@ public class TableViewerCreatorLayout extends Layout {
         this.widthAdjustValue = widthAdjustValue;
     }
 
-    /**
-     * DOC amaumont Comment method "setShowAllColumns".
-     * 
-     * @param b
-     */
     public void setFillHorizontal(boolean showAllColumns) {
         this.fillHorizontal = showAllColumns;
     }
@@ -574,11 +527,6 @@ public class TableViewerCreatorLayout extends Layout {
         }
     }
 
-    /**
-     * DOC amaumont Comment method "resizeControl".
-     * 
-     * @param e
-     */
     private synchronized void controlResizedExecute(ControlEvent e) {
         final TableColumn currentTableColumn = (TableColumn) e.widget;
         if (!WindowSystem.isGTK() && !columnsResizingByLayout && (fillHorizontal || continuousLayout)) {

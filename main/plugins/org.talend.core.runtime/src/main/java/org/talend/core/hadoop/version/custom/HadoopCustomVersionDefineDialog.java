@@ -78,14 +78,9 @@ import org.talend.designer.core.IDesignerCoreService;
 import org.talend.repository.ui.dialog.LibrariesListSelectionDialog;
 
 /**
- * created by ycbai on 2013-3-12 Detailled comment
- * 
- * <p>
  * A dialog which can be used to define a hadoop version. You can use {@link #getLibMap()} to gain all libraries which
  * you have defined in it or use {@link #getLibList(ECustomVersionGroup)} or {@link #getLibListStr(ECustomVersionGroup)}
  * to gain the specific type(which defined in {@link ECustomVersionGroup} of libraries.
- * </p>
- * 
  */
 public class HadoopCustomVersionDefineDialog extends TitleAreaDialog {
 
@@ -223,11 +218,6 @@ public class HadoopCustomVersionDefineDialog extends TitleAreaDialog {
         return parent;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.Dialog#createButtonsForButtonBar(org.eclipse.swt.widgets.Composite)
-     */
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
         Button createButton = createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
@@ -735,11 +725,6 @@ public class HadoopCustomVersionDefineDialog extends TitleAreaDialog {
         this.readonly = readonly;
     }
 
-    /**
-     * 
-     * created by ycbai on 2013-3-19 Detailled comment
-     * 
-     */
     class TableViewerComparator extends ViewerComparator {
 
         private int propertyIndex;
@@ -792,10 +777,6 @@ public class HadoopCustomVersionDefineDialog extends TitleAreaDialog {
 
     }
 
-    /**
-     * created by ycbai on 2013-3-19 Detailled comment
-     * 
-     */
     class LibNameDialogCellEditor extends DialogCellEditor {
 
         /**
@@ -807,11 +788,6 @@ public class HadoopCustomVersionDefineDialog extends TitleAreaDialog {
             super(composite);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.jface.viewers.DialogCellEditor#openDialogBox(org.eclipse.swt.widgets.Control)
-         */
         @Override
         protected Object openDialogBox(Control cellEditorWindow) {
             LibrariesListSelectionDialog selectDialog = new LibrariesListSelectionDialog(getShell());
@@ -866,10 +842,6 @@ public class HadoopCustomVersionDefineDialog extends TitleAreaDialog {
         return super.open();
     }
 
-    /**
-     * created by ycbai on 2013-3-19 Detailled comment
-     * 
-     */
     class LibNameEditingSupport extends EditingSupport {
 
         private TableViewer tv;

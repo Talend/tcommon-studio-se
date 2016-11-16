@@ -975,11 +975,6 @@ public class DatabaseForm extends AbstractForm {
         });
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addHelpInfoFields()
-     */
     @Override
     protected void addHelpInfoFields() {
         IBrandingService brandingService = (IBrandingService) GlobalServiceRegister.getDefault().getService(
@@ -6511,11 +6506,6 @@ public class DatabaseForm extends AbstractForm {
         return template != null && template == dbTemplate;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
-     */
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);
@@ -8180,11 +8170,6 @@ public class DatabaseForm extends AbstractForm {
         this.properties = properties;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.metadata.managment.ui.wizard.AbstractForm#exportAsContext()
-     */
     @Override
     protected void exportAsContext() {
         collectContextParams();

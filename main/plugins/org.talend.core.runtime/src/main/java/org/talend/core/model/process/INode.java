@@ -22,11 +22,6 @@ import org.talend.core.model.components.IODataComponent;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.metadata.IMetadataTable;
 
-/**
- * DOC nrousseau class global comment. Detailled comment <br/>
- * 
- * $Id: INode.java 44861 2010-07-02 12:15:36Z gldu $
- */
 public interface INode extends IElement {
 
     public static final String RELOAD_PARAMETER_METADATA_LIST = "param.metadataList"; //$NON-NLS-1$

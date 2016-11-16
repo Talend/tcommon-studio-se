@@ -23,12 +23,6 @@ import org.talend.core.model.utils.XSDValidater;
 import org.talend.metadata.managment.ui.MetadataManagmentUiPlugin;
 import org.talend.metadata.managment.ui.i18n.Messages;
 
-/**
- * DOC bqian class global comment. Detailled comment <br/>
- * 
- * $Id: MappingFileCheckViewerDialog.java 1 May 22, 2007 10:44:43 AM +0000 $
- * 
- */
 public class MappingFileCheckViewerDialog extends SourceViewerDialog {
 
     private XSDValidater validater;
@@ -42,21 +36,10 @@ public class MappingFileCheckViewerDialog extends SourceViewerDialog {
         this.validater = validater;
     }
 
-    /**
-     * bqian MappingFileCheckViewerDialog constructor comment.
-     * 
-     * @param parentShell
-     * @param title
-     */
     public MappingFileCheckViewerDialog(Shell parentShell, String title) {
         super(parentShell, title);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.Dialog#okPressed()
-     */
     @Override
     protected void okPressed() {
         if (validater != null) {

@@ -14,10 +14,6 @@ package org.talend.presentation.onboarding.ui.runtimedata;
 
 import java.util.Map;
 
-/**
- * created by cmeng on Sep 28, 2015 Detailled comment
- *
- */
 public class OnBoardingCommandBean {
 
     private String commandId;

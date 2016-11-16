@@ -17,9 +17,6 @@ import java.util.List;
 
 import org.talend.repository.items.importexport.handlers.model.ImportItem;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public abstract class ImportNode implements Comparable<ImportNode> {
 
     private ImportNode parentNode;
@@ -110,11 +107,6 @@ public abstract class ImportNode implements Comparable<ImportNode> {
         this.visible = visible;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -123,11 +115,6 @@ public abstract class ImportNode implements Comparable<ImportNode> {
         return result;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -150,21 +137,11 @@ public abstract class ImportNode implements Comparable<ImportNode> {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
         return this.getName();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Comparable#compareTo(java.lang.Object)
-     */
     @Override
     public int compareTo(ImportNode anotherNode) {
         final String label = this.getName();

@@ -18,33 +18,17 @@ import org.talend.commons.ui.swt.tableviewer.TableViewerCreatorColumn;
 import org.talend.commons.ui.swt.tableviewer.celleditor.DialogErrorForCellEditorListener;
 import org.talend.core.ui.i18n.Messages;
 
-/**
- * ggu class global comment. Detailled comment
- */
 public class InegerCellEditorListener extends DialogErrorForCellEditorListener {
 
     public InegerCellEditorListener(TextCellEditor cellEditor, TableViewerCreatorColumn column) {
         super(cellEditor, column);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.tableviewer.celleditor.DialogErrorForCellEditorListener#newValidValueTyped(int,
-     * java.lang.Object, java.lang.Object, org.talend.commons.ui.swt.tableviewer.TableViewerCreator.CELL_EDITOR_STATE)
-     */
     @Override
     public void newValidValueTyped(int itemIndex, Object previousValue, Object newValue, CELL_EDITOR_STATE state) {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.commons.ui.swt.tableviewer.celleditor.DialogErrorForCellEditorListener#validateValue(java.lang.String,
-     * int)
-     */
     @Override
     public String validateValue(String value, int beanPosition) {
         final String empty = ""; //$NON-NLS-1$

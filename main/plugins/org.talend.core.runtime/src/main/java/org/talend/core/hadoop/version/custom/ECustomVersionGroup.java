@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.core.hadoop.version.custom;
 
-/**
- * created by ycbai on 2013-3-13 Detailled comment
- * 
- */
 public enum ECustomVersionGroup {
 
     COMMON,

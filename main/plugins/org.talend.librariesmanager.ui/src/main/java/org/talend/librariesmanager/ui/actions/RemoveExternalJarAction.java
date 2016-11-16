@@ -36,15 +36,8 @@ import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.librariesmanager.ui.LibManagerUiPlugin;
 import org.talend.librariesmanager.ui.views.ModulesViewComposite;
 
-/**
- * qzhang class global comment. Detailled comment <br/>
- * 
- */
 public class RemoveExternalJarAction extends Action {
 
-    /**
-     * qzhang RemoveExternalJarAction constructor comment.
-     */
     public RemoveExternalJarAction() {
         super();
         setText("Remove external JARs"); //$NON-NLS-1$
@@ -88,11 +81,6 @@ public class RemoveExternalJarAction extends Action {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.action.Action#run()
-     */
     @Override
     public void run() {
         BusyIndicator.showWhile(Display.getDefault(), new Runnable() {

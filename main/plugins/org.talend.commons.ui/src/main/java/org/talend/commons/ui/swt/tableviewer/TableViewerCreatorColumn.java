@@ -23,29 +23,15 @@ package org.talend.commons.ui.swt.tableviewer;
 
 import org.talend.commons.ui.runtime.swt.tableviewer.TableViewerCreatorColumnNotModifiable;
 
-/**
- * DOC sgandon class global comment. Detailled comment <br/>
- * 
- * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
- */
 public class TableViewerCreatorColumn<B, V> extends TableViewerCreatorColumnNotModifiable<B, V> {
 
-    /**
-     * 
-     * @param tableViewerCreator
-     */
     public TableViewerCreatorColumn(TableViewerCreator<B> tableViewerCreator) {
         super(tableViewerCreator);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.tableviewer.TableViewerCreatorColumn#getTableViewerCreator()
-     */
     @Override
     public TableViewerCreator getTableViewerCreator() {
         return (TableViewerCreator<B>) super.getTableViewerCreator();
     }
+
 }

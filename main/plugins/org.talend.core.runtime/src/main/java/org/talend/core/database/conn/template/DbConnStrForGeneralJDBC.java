@@ -15,9 +15,6 @@ package org.talend.core.database.conn.template;
 import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.database.conn.EDatabaseConnVar;
 
-/**
- * cli class global comment. Detailled comment
- */
 public class DbConnStrForGeneralJDBC extends DbConnStr {
 
     DbConnStrForGeneralJDBC(EDatabaseTypeName dbType, String urlTemplate, String defaultPort) {

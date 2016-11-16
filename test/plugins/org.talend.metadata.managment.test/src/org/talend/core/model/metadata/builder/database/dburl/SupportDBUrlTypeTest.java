@@ -19,9 +19,6 @@ import org.junit.Test;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.rule.PowerMockRule;
 
-/**
- * DOC msjian class global comment. Detailled comment
- */
 @PrepareForTest({ SupportDBUrlType.class })
 public class SupportDBUrlTypeTest {
 
@@ -33,10 +30,8 @@ public class SupportDBUrlTypeTest {
      */
     @Test
     public void testIsMssql() {
-
         String dbKey = "Microsoft SQL Server"; //$NON-NLS-1$
         assertTrue(SupportDBUrlType.isMssql(dbKey));
-
     }
 
 }

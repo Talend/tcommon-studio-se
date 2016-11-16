@@ -31,12 +31,6 @@ import org.talend.core.model.metadata.types.JavaTypesManager;
 import org.talend.daikon.avro.AvroUtils;
 import org.talend.daikon.avro.SchemaConstants;
 
-/**
- * DOC hwang class global comment. Detailled comment <br/>
- * 
- * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
- */
 public class MetadataToolAvroHelperTest {
 
     /**

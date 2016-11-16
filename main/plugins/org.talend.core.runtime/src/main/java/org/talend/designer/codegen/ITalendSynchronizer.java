@@ -19,12 +19,6 @@ import org.talend.core.model.properties.PigudfItem;
 import org.talend.core.model.properties.RoutineItem;
 import org.talend.core.model.repository.IRepositoryViewObject;
 
-/**
- * DOC smallet class global comment. Detailled comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- * 
- */
 public interface ITalendSynchronizer {
 
     String TEMPLATE = "__TEMPLATE__"; //$NON-NLS-1$

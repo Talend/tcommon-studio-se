@@ -16,9 +16,6 @@ import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.utils.IComponentName;
 
-/**
- * ggu class global comment. Detailled comment
- */
 public class RepositoryComponentSetting implements IComponentName {
 
     private String name;

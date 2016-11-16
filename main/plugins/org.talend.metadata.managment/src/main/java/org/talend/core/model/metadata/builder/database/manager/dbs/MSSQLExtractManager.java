@@ -38,9 +38,6 @@ import org.talend.metadata.managment.utils.ManagementTextUtils;
 import org.talend.utils.sql.metadata.constants.GetColumn;
 import orgomg.cwm.resource.relational.NamedColumnSet;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class MSSQLExtractManager extends ExtractManager {
 
     private static Logger log = Logger.getLogger(MSSQLExtractManager.class);

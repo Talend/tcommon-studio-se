@@ -12,12 +12,6 @@
 // ============================================================================
 package org.talend.commons.ui.swt.colorstyledtext.jedit;
 
-/**
- * DOC nrousseau class global comment. Detailled comment <br/>
- * 
- * $Id: Type.java 7038 2007-11-15 14:05:48Z plegall $
- * 
- */
 public abstract class Type {
 
     protected boolean atLineStart, atWhitespaceEnd, atWordStart;

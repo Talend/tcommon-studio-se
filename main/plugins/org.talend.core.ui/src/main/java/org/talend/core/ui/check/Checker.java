@@ -14,11 +14,6 @@ package org.talend.core.ui.check;
 
 import org.eclipse.core.runtime.IStatus;
 
-/**
- * 
- * created by ycbai on 2015年10月9日 Detailled comment
- *
- */
 public class Checker implements IChecker {
 
     private ICheckListener listener;

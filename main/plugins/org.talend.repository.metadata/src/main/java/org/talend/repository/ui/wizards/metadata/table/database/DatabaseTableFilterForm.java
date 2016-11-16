@@ -42,10 +42,6 @@ import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.metadata.managment.ui.wizard.AbstractForm;
 import org.talend.repository.metadata.i18n.Messages;
 
-/**
- * DOC qzhang class global comment. Detailled comment <br/>
- * 
- */
 public class DatabaseTableFilterForm extends AbstractForm {
 
     public static final String PREFS_NAMEFILTER = "DatabaseTableFilterForm.NameFilter"; //$NON-NLS-1$
@@ -481,22 +477,12 @@ public class DatabaseTableFilterForm extends AbstractForm {
                         return createDialogArea;
                     }
 
-                    /*
-                     * (non-Javadoc)
-                     * 
-                     * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
-                     */
                     @Override
                     protected void configureShell(Shell newShell) {
                         super.configureShell(newShell);
                         newShell.setText(Messages.getString("DatabaseTableFilterForm.newFilterName")); //$NON-NLS-1$
                     }
 
-                    /*
-                     * (non-Javadoc)
-                     * 
-                     * @see org.eclipse.jface.dialogs.Dialog#okPressed()
-                     */
                     @Override
                     protected void okPressed() {
                         addName = addText.getText();
@@ -538,22 +524,12 @@ public class DatabaseTableFilterForm extends AbstractForm {
                         return createDialogArea;
                     }
 
-                    /*
-                     * (non-Javadoc)
-                     * 
-                     * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
-                     */
                     @Override
                     protected void configureShell(Shell newShell) {
                         super.configureShell(newShell);
                         newShell.setText(Messages.getString("DatabaseTableFilterForm.editFilterName")); //$NON-NLS-1$
                     }
 
-                    /*
-                     * (non-Javadoc)
-                     * 
-                     * @see org.eclipse.jface.dialogs.Dialog#okPressed()
-                     */
                     @Override
                     protected void okPressed() {
                         addName = addText.getText();
@@ -605,31 +581,15 @@ public class DatabaseTableFilterForm extends AbstractForm {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.AbstractForm#adaptFormToReadOnly()
-     */
     @Override
     protected void adaptFormToReadOnly() {
     }
 
-    /**
-     * Getter for tableInfoParameters.
-     * 
-     * @return the tableInfoParameters
-     */
     public TableInfoParameters getTableInfoParameters() {
         return this.tableInfoParameters;
     }
 
-    /**
-     * Getter for nameFilter.
-     * 
-     * @return the nameFilter
-     */
     public String getNameFilter() {
-
         StringBuilder s = new StringBuilder();
 
         if (getFilters().length > 0) {
@@ -641,11 +601,6 @@ public class DatabaseTableFilterForm extends AbstractForm {
         return s.toString();
     }
 
-    /**
-     * DOC qzhang Comment method "getFilters".
-     * 
-     * @return
-     */
     public String[] getFilters() {
         return nameFilter.getItems();
     }

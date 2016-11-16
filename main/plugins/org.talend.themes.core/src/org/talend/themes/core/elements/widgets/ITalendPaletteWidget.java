@@ -14,10 +14,6 @@ package org.talend.themes.core.elements.widgets;
 
 import org.talend.themes.core.elements.stylesettings.TalendPaletteCSSStyleSetting;
 
-/**
- * created by cmeng on Jan 30, 2015 Detailled comment
- *
- */
 public interface ITalendPaletteWidget {
 
     public TalendPaletteCSSStyleSetting getCSSStyleSetting();

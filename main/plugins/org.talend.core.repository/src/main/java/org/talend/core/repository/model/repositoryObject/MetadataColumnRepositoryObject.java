@@ -28,9 +28,6 @@ import org.talend.repository.model.IRepositoryNode;
 
 import orgomg.cwm.objectmodel.core.ModelElement;
 
-/**
- * DOC klliu class global comment. Detailled comment
- */
 public class MetadataColumnRepositoryObject extends MetadataColumn implements ISubRepositoryObject {
 
     private final IRepositoryViewObject viewObject;
@@ -43,27 +40,14 @@ public class MetadataColumnRepositoryObject extends MetadataColumn implements IS
 
     private org.talend.core.model.metadata.builder.connection.MetadataColumn tdColumn;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.metadata.ITDQMetadataColumn#getTdColumn()
-     */
     public org.talend.core.model.metadata.builder.connection.MetadataColumn getTdColumn() {
         return this.tdColumn;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.metadata.ITDQMetadataColumn#setTdColumn()
-     */
     public void setTdColumn(org.talend.core.model.metadata.builder.connection.MetadataColumn tdColumn) {
         this.tdColumn = tdColumn;
     }
 
-    /**
-     * DOC klliu TDQMetadataColumnRepositoryObject constructor comment.
-     */
     public MetadataColumnRepositoryObject(IRepositoryViewObject repositoryViewObject,
             org.talend.core.model.metadata.builder.connection.MetadataColumn column) {
         this.viewObject = repositoryViewObject;
@@ -196,11 +180,6 @@ public class MetadataColumnRepositoryObject extends MetadataColumn implements IS
         return this.tdColumn;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryViewObject#isModified()
-     */
     @Override
     public boolean isModified() {
         return viewObject.isModified();

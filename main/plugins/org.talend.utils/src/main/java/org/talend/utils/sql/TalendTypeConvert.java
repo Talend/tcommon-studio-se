@@ -21,9 +21,6 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
-/**
- * DOC qiongli class global comment. Detailled comment
- */
 public final class TalendTypeConvert {
 
     private static Map<String, Integer> map;

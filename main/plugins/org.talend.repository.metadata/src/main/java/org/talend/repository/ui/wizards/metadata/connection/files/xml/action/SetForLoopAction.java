@@ -19,9 +19,6 @@ import org.talend.metadata.managment.ui.wizard.metadata.xml.node.FOXTreeNode;
 import org.talend.metadata.managment.ui.wizard.metadata.xml.utils.TreeUtil;
 import org.talend.repository.metadata.ui.wizards.form.AbstractXmlStepForm;
 
-/**
- * wzhang class global comment. Detailled comment
- */
 public class SetForLoopAction extends SelectionProviderAction {
 
     private TreeViewer xmlViewer;

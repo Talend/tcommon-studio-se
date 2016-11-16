@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.utils.database;
 
-/**
- * DOC wuwei class global comment. Detailled comment
- */
 public class Constants {
 
     public static final String JDBC_MYSQL_URL = "jdbc:mysql://";

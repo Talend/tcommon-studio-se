@@ -27,12 +27,6 @@ import org.talend.commons.ui.swt.extended.table.ExtendedControlEvent;
 import org.talend.commons.ui.swt.extended.table.IExtendedButtonListener;
 import org.talend.commons.ui.swt.extended.table.IExtendedControlListener;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public abstract class ExtendedPushButton implements IExtendedPushButton {
 
     Button button;
@@ -48,24 +42,12 @@ public abstract class ExtendedPushButton implements IExtendedPushButton {
 
     private ListenerList afterCommandListeners;
 
-    /**
-     * DOC amaumont ExtendedTableButton constructor comment.
-     * 
-     * @param extendedViewer
-     */
     public ExtendedPushButton(Composite parent, AbstractExtendedControlViewer extendedViewer, String tooltip, Image image) {
         super();
         this.extendedControlViewer = extendedViewer;
         init(parent, tooltip, image);
     }
 
-    /**
-     * DOC amaumont Comment method "init".
-     * 
-     * @param image
-     * @param tooltip
-     * @param parent2
-     */
     private void init(Composite parent, String tooltip, Image image) {
         button = new Button(parent, SWT.PUSH);
         button.setToolTipText(tooltip);
@@ -99,29 +81,14 @@ public abstract class ExtendedPushButton implements IExtendedPushButton {
         button.setEnabled(getEnabledState());
     }
 
-    /**
-     * Getter for button.
-     * 
-     * @return the button
-     */
     public Button getButton() {
         return this.button;
     }
 
-    /**
-     * Getter for extendedTableViewer.
-     * 
-     * @return the extendedTableViewer
-     */
     public AbstractExtendedControlViewer getExtendedControlViewer() {
         return this.extendedControlViewer;
     }
 
-    /**
-     * DOC amaumont Comment method "executeCommand".
-     * 
-     * @param command
-     */
     public void executeCommand(Command command) {
         extendedControlViewer.executeCommand(command);
     }
@@ -141,10 +108,6 @@ public abstract class ExtendedPushButton implements IExtendedPushButton {
         }
     }
 
-    /**
-     * 
-     * DOC YeXiaowei Comment method "callSelectionAction".
-     */
     public void callSelectionAction() {
         button.notifyListeners(SWT.Selection, null);
     }
@@ -198,13 +161,7 @@ public abstract class ExtendedPushButton implements IExtendedPushButton {
         }
     }
 
-    /**
-     * DOC amaumont Comment method "fireEvent".
-     * 
-     * @param event
-     */
     protected void fireEvent(ExtendedButtonEvent event) {
-
         ListenerList listeners = null;
         if (event.isBefore()) {
             listeners = beforeCommandListeners;

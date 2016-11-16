@@ -12,30 +12,14 @@
 // ============================================================================
 package org.talend.designer.rowgenerator.data;
 
-/**
- * yzhang class global comment. Detailled comment <br/>
- * 
- * $Id: LongParameter.java 下午03:40:54 2007-8-7 +0000 (2007-8-7) yzhang $
- * 
- */
 public class LongParameter extends Parameter {
 
     private long longValue;
 
-    /**
-     * Sets the longValue.
-     * 
-     * @param longValue the longValue to set
-     */
     public void setLongValue(long longValue) {
         this.longValue = longValue;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.rowgenerator.data.Parameter#sameParameterAs(org.talend.designer.rowgenerator.data.Parameter)
-     */
     @Override
     public boolean sameParameterAs(Parameter obj) {
         if (this == obj) {

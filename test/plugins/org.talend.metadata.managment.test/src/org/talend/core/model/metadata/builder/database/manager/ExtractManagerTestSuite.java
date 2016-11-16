@@ -27,10 +27,6 @@ import org.talend.core.model.metadata.builder.database.manager.dbs.OracleExtract
 import org.talend.core.model.metadata.builder.database.manager.dbs.SASExtractManagerTest;
 import org.talend.core.model.metadata.builder.database.manager.dbs.TeradataExtractManagerTest;
 
-/**
- * created by ggu on Jul 4, 2012 Detailled comment
- * 
- */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ ExtractManagerFactoryTest.class, AccessExtractManagerTest.class, AS400ExtractManagerTest.class,
         ExtractManager4NormalTest.class, GeneralJDBCExtractManagerTest.class, HSQLDBExtractManagerTest.class,

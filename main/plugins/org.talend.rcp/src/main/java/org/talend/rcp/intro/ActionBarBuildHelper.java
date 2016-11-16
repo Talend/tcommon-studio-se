@@ -53,9 +53,6 @@ import org.talend.rcp.intro.linksbar.LinksToolbarItem;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.ui.actions.toolbar.ProjectSettingsAction;
 
-/**
- * DOC aiming class global comment. Detailled comment
- */
 public class ActionBarBuildHelper implements IActionBarHelper {
 
     protected IWorkbenchAction introAction;

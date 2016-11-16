@@ -14,12 +14,6 @@ package org.talend.repository.localprovider.exceptions;
 
 import org.talend.commons.exception.PersistenceException;
 
-/**
- * DOC smallet class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public class IncorrectFileException extends PersistenceException {
 
     private static final long serialVersionUID = -4594420267927643967L;

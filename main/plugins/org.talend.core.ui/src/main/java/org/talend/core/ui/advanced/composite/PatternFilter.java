@@ -23,9 +23,6 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.ui.internal.misc.StringMatcher;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class PatternFilter extends ViewerFilter {
 
     private ViewerFilter[] otherFilters;
@@ -61,12 +58,6 @@ public class PatternFilter extends ViewerFilter {
 
     private final static Object[] EMPTY = new Object[0];
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ViewerFilter#filter(org.eclipse.jface.viewers.Viewer, java.lang.Object,
-     * java.lang.Object[])
-     */
     @Override
     public final Object[] filter(Viewer viewer, Object parent, Object[] elements) {
         // we don't want to optimize if we've extended the filter ... this
@@ -143,12 +134,6 @@ public class PatternFilter extends ViewerFilter {
         return elementFound;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers.Viewer, java.lang.Object,
-     * java.lang.Object)
-     */
     @Override
     public final boolean select(Viewer viewer, Object parentElement, Object element) {
         return isElementVisible(viewer, element);

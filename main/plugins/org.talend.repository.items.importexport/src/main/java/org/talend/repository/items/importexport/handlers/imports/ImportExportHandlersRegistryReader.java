@@ -28,9 +28,6 @@ import org.talend.repository.items.importexport.handlers.model.internal.EPriorit
 import org.talend.repository.items.importexport.handlers.model.internal.ImportItemsProviderRegistry;
 import org.talend.repository.items.importexport.handlers.model.internal.ImportResourcesProviderRegistry;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class ImportExportHandlersRegistryReader extends RegistryReader {
 
     private static Logger log = Logger.getLogger(ImportExportHandlersRegistryReader.class);
@@ -136,11 +133,6 @@ public class ImportExportHandlersRegistryReader extends RegistryReader {
         return importResourcesHandlers;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.utils.RegistryReader#readElement(org.eclipse.core.runtime.IConfigurationElement)
-     */
     @Override
     protected boolean readElement(final IConfigurationElement element) {
         final String id = element.getAttribute("id"); //$NON-NLS-1$

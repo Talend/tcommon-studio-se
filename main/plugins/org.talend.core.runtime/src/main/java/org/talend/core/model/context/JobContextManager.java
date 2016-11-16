@@ -34,12 +34,6 @@ import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
 
-/**
- * DOC nrousseau class global comment. Detailled comment <br/>
- * 
- * $Id: JobContextManager.java 51129 2010-11-10 06:35:59Z nrousseau $
- * 
- */
 public class JobContextManager implements IContextManager {
 
     private IContext defaultContext = new JobContext(IContext.DEFAULT);
@@ -165,41 +159,21 @@ public class JobContextManager implements IContextManager {
         return renameGroupContext;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.IContextManager#getDefaultContext()
-     */
     @Override
     public IContext getDefaultContext() {
         return defaultContext;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.IContextManager#setDefaultContext(org.talend.core.model.process.IContext)
-     */
     @Override
     public void setDefaultContext(IContext context) {
         defaultContext = context;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.IContextManager#getListContext()
-     */
     @Override
     public List<IContext> getListContext() {
         return listContext;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.IContextManager#getListContext(java.util.List)
-     */
     @Override
     public void setListContext(List<IContext> listContext) {
         this.listContext = listContext;

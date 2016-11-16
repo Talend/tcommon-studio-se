@@ -18,10 +18,6 @@ import java.util.Map;
 import org.eclipse.swt.widgets.Shell;
 import org.talend.metadata.managment.ui.i18n.Messages;
 
-/**
- * created by ycbai on 2014年12月23日 Detailled comment
- *
- */
 public class HadoopPropertiesDialog extends PropertiesDialog {
 
     public HadoopPropertiesDialog(Shell parentShell, List<Map<String, Object>> initProperties) {

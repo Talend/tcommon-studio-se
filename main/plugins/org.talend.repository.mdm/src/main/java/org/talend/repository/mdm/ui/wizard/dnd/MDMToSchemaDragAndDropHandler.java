@@ -47,9 +47,6 @@ import org.talend.repository.ui.wizards.metadata.connection.files.xml.dnd.Transf
 import org.talend.repository.ui.wizards.metadata.connection.files.xml.dnd.XPathTransfer;
 import org.talend.repository.ui.wizards.metadata.connection.files.xml.dnd.XmlToSchemaDraggedData;
 
-/**
- * DOC Administrator class global comment. Detailled comment
- */
 public class MDMToSchemaDragAndDropHandler {
 
     private MDMLinker linker;
@@ -68,11 +65,6 @@ public class MDMToSchemaDragAndDropHandler {
 
     private DropTarget loopDropTarget;
 
-    /**
-     * DOC amaumont TreeToTableDragAndDropHandler constructor comment.
-     * 
-     * @param linker
-     */
     public MDMToSchemaDragAndDropHandler(MDMLinker linker) {
         this.linker = linker;
         tree = linker.getTree();
@@ -81,20 +73,11 @@ public class MDMToSchemaDragAndDropHandler {
         init();
     }
 
-    /**
-     * DOC amaumont Comment method "init".
-     */
     private void init() {
         createDragSource();
         createDropTarget();
     }
 
-    /**
-     * 
-     * DOC amaumont Comment method "createDragSource".
-     * 
-     * @param sourceListener
-     */
     private void createDragSource() {
         if (dragSource != null) {
             dragSource.dispose();
@@ -106,7 +89,6 @@ public class MDMToSchemaDragAndDropHandler {
     }
 
     /**
-     * 
      * create DropTarget.
      */
     private void createDropTarget() {
@@ -128,23 +110,12 @@ public class MDMToSchemaDragAndDropHandler {
         fieldsDropTarget.addDropListener(targetListener);
     }
 
-    /**
-     * 
-     * DOC amaumont XmlToSchemaDragAndDropHandler class global comment. Detailled comment <br/>
-     * 
-     * $Id$
-     * 
-     */
     class TreeDragSourceListener implements TransferDragSourceListener {
 
         public void dragFinished(DragSourceEvent event) {
         }
 
         public void dragSetData(DragSourceEvent event) {
-            // System.out.println("\n>>dragSetData");
-            // System.out.println(event);
-            // if (TableEntriesTransfer.getInstance().isSupportedType(event.dataType)) {
-            // }
         }
 
         public void dragStart(DragSourceEvent event) {
@@ -169,24 +140,12 @@ public class MDMToSchemaDragAndDropHandler {
         }
     };
 
-    /**
-     * 
-     * DOC amaumont XmlToSchemaDragAndDropHandler class global comment. Detailled comment <br/>
-     * 
-     * $Id$
-     * 
-     */
     public class TableDropTargetListener implements TransferDropTargetListener {
 
         public void dragEnter(DropTargetEvent event) {
             dragEnterExecute(event);
         }
 
-        /**
-         * DOC amaumont Comment method "dragEnterExecute".
-         * 
-         * @param event
-         */
         private void dragEnterExecute(DropTargetEvent event) {
             fieldsTable.setFocus();
         }
@@ -215,30 +174,15 @@ public class MDMToSchemaDragAndDropHandler {
 
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.jface.util.TransferDropTargetListener#getTransfer()
-         */
         public Transfer getTransfer() {
             return null;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.jface.util.TransferDropTargetListener#isEnabled(org.eclipse.swt.dnd.DropTargetEvent)
-         */
         public boolean isEnabled(DropTargetEvent event) {
             // TODO Auto-generated method stub
             return false;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.swt.dnd.DropTargetListener#drop(org.eclipse.swt.dnd.DropTargetEvent)
-         */
         public void drop(DropTargetEvent event) {
             // System.out.println("\n>>drop");
             DropTarget dropTarget = (DropTarget) event.getSource();
@@ -382,11 +326,6 @@ public class MDMToSchemaDragAndDropHandler {
         UniqueStringGenerator<ConceptTarget> uniqueStringGenerator = new UniqueStringGenerator<ConceptTarget>(columnName,
                 fullSchemaTargetList) {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.talend.commons.utils.data.list.UniqueStringGenerator#getBeanString(java.lang.Object)
-             */
             @Override
             protected String getBeanString(ConceptTarget bean) {
                 return bean.getTargetName();

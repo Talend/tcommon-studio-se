@@ -16,15 +16,9 @@ import org.talend.core.model.components.ComponentUtilities;
 import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 
-/**
- * DOC s class global comment. Detailled comment <br/>
- * 
- * $Id: talend.epf 1 2009-4-27 17:06:40 +0000 rshi $
- */
 public class UpdateExtendInsertDefaultValue implements IComponentConversion {
 
     public void transform(NodeType node) {
-        // TODO Auto-generated method stub
         ElementParameterType propertyExtendInsert = ComponentUtilities.getNodeProperty(node, "EXTENDINSERT"); //$NON-NLS-1$
         ElementParameterType propertyDataAction = ComponentUtilities.getNodeProperty(node, "DATA_ACTION"); //$NON-NLS-1$
         ElementParameterType propertyEnableDebugMode = ComponentUtilities.getNodeProperty(node, "ENABLE_DEBUG_MODE"); //$NON-NLS-1$

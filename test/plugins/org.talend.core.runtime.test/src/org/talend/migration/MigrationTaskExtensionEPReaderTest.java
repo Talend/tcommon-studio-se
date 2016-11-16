@@ -30,10 +30,6 @@ import java.util.Set;
 import org.junit.Test;
 import org.talend.core.model.repository.ERepositoryObjectType;
 
-/**
- * created by sgandon on 7 avr. 2014 Detailled comment
- * 
- */
 public class MigrationTaskExtensionEPReaderTest {
 
     /**
@@ -59,14 +55,10 @@ public class MigrationTaskExtensionEPReaderTest {
     public void testGetMigrationTaskExtensionsWithNoExtension() throws IOException {
         MigrationTaskExtensionEPReader migrationTaskExtensionEPReader = new MigrationTaskExtensionEPReader() {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.talend.core.utils.RegistryReader#readRegistry()
-             */
             @Override
-            public void readRegistry() {// do nothing to simulate that no extension is foundd.
+            public void readRegistry() {// do nothing to simulate that no extension is found.
             }
+
         };
         Map<ERepositoryObjectType, List<ERepositoryObjectType>> migrationTaskExtensions = migrationTaskExtensionEPReader
                 .getMigrationTaskExtensions();

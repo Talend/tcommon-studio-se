@@ -26,30 +26,16 @@ import org.talend.core.model.properties.DatabaseConnectionItem;
 import org.talend.core.model.properties.Item;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 
-/**
- * created by kongxiaohan on Jun 25, 2015 Detailled comment
- *
- */
 public class AccessMigrationTask extends AbstractItemMigrationTask {
 
     DatabaseConnection dbConn = null;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.migration.IMigrationTask#getOrder()
-     */
     @Override
     public Date getOrder() {
         GregorianCalendar gc = new GregorianCalendar(2015, 6, 25, 16, 50, 30);
         return gc.getTime();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.migration.AbstractItemMigrationTask#execute(org.talend.core.model.properties.Item)
-     */
     @Override
     public ExecutionResult execute(Item item) {
         boolean modified = false;

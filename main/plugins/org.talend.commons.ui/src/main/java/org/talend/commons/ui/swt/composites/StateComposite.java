@@ -26,9 +26,6 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.talend.commons.ui.i18n.Messages;
 
-/**
- * DOC hwang class global comment. Detailled comment
- */
 public class StateComposite extends Composite {
 
     private Label num1;
@@ -55,12 +52,6 @@ public class StateComposite extends Composite {
 
     private boolean isJoblet;
 
-    /**
-     * DOC hwang StateComposite constructor comment.
-     * 
-     * @param parent
-     * @param style
-     */
     public StateComposite(Composite parent, boolean isJoblet, int style) {
         super(parent, style);
         this.isJoblet = isJoblet;

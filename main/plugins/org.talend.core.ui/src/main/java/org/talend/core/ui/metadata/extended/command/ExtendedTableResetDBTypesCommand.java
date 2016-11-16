@@ -24,10 +24,6 @@ import org.talend.core.model.metadata.builder.connection.MetadataColumn;
 import org.talend.core.model.metadata.types.TypesManager;
 import org.talend.core.ui.i18n.Messages;
 
-/**
- * DOC nrousseau class global comment. Detailled comment <br/>
- * 
- */
 public class ExtendedTableResetDBTypesCommand extends Command implements IExtendedTableCommand {
 
     public static final String LABEL = Messages.getString("ExtendedTableResetDBTypesCommand.ResetDBTypes.Label"); //$NON-NLS-1$
@@ -48,11 +44,6 @@ public class ExtendedTableResetDBTypesCommand extends Command implements IExtend
         this.extendedTableViewer = extendedTableViewer;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.advanced.dataeditor.commands.AbstractExtendedTableResetDBTypesCommand#execute()
-     */
     @Override
     public void execute() {
         oldDbTypes = new ArrayList<String>();
@@ -87,11 +78,6 @@ public class ExtendedTableResetDBTypesCommand extends Command implements IExtend
         extendedTableViewer.getTableViewerCreator().getTableViewer().refresh();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.advanced.dataeditor.commands.AbstractExtendedTableResetDBTypesCommand#undo()
-     */
     @Override
     public synchronized void undo() {
         List beansList = extendedTable.getBeansList();

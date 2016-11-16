@@ -26,10 +26,6 @@ import org.talend.commons.utils.data.list.IListenableListListener;
 import org.talend.commons.utils.data.list.ListenableList;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
  * @param <B> Type of beans
  */
 public class ExtendedTableModel<B> extends AbstractExtendedControlModel {
@@ -45,9 +41,6 @@ public class ExtendedTableModel<B> extends AbstractExtendedControlModel {
         init();
     }
 
-    /**
-     * DOC amaumont Comment method "init".
-     */
     private void init() {
         beansList.setUseEquals(false);
     }
@@ -108,12 +101,6 @@ public class ExtendedTableModel<B> extends AbstractExtendedControlModel {
         this.beansList.add(bean);
     }
 
-    /**
-     * DOC amaumont Comment method "add".
-     * 
-     * @param beans
-     * @param index can be null
-     */
     public void addAll(final Integer index, List<B> beans) {
         addAll(index, beans, true, true);
     }
@@ -137,8 +124,6 @@ public class ExtendedTableModel<B> extends AbstractExtendedControlModel {
     }
 
     /**
-     * DOC amaumont Comment method "add".
-     * 
      * @param beans
      * @param index can be null
      */
@@ -147,8 +132,6 @@ public class ExtendedTableModel<B> extends AbstractExtendedControlModel {
     }
 
     /**
-     * DOC amaumont Comment method "add".
-     * 
      * @param beans
      * @param index can be null
      */
@@ -180,8 +163,6 @@ public class ExtendedTableModel<B> extends AbstractExtendedControlModel {
     }
 
     /**
-     * DOC amaumont Comment method "remove".
-     * 
      * @param bean
      */
     public boolean remove(B bean) {
@@ -191,11 +172,6 @@ public class ExtendedTableModel<B> extends AbstractExtendedControlModel {
         return this.beansList.remove(bean);
     }
 
-    /**
-     * DOC amaumont Comment method "remove".
-     * 
-     * @param i
-     */
     public B remove(int index) {
         if (tableViewer != null && !tableViewer.getTable().isDisposed()) {
             tableViewer.remove(this.beansList.get(index));
@@ -283,11 +259,6 @@ public class ExtendedTableModel<B> extends AbstractExtendedControlModel {
         internalSwap(this.beansList.indexOf(object1), this.beansList.indexOf(object2));
     }
 
-    /**
-     * DOC amaumont Comment method "remove".
-     * 
-     * @param indexArray
-     */
     public List<B> remove(int[] indexArray) {
         ArrayList<B> objectsToRemove = new ArrayList<B>(indexArray.length);
         for (int element : indexArray) {
@@ -362,20 +333,10 @@ public class ExtendedTableModel<B> extends AbstractExtendedControlModel {
         return beansList.isListRegistered();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.extended.macrotable.AbstractExtendedControlModel#release()
-     */
     @Override
     public void release() {
     }
 
-    /**
-     * DOC amaumont Comment method "getBeanCount".
-     * 
-     * @return
-     */
     public int getBeanCount() {
         if (beansList.isListRegistered()) {
             return beansList.size();
@@ -383,9 +344,6 @@ public class ExtendedTableModel<B> extends AbstractExtendedControlModel {
         return 0;
     }
 
-    /**
-     * DOC amaumont Comment method "createBeanInstance".
-     */
     public B createBeanInstance() {
         return null;
     }

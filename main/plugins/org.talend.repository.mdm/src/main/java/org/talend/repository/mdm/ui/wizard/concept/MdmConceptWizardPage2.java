@@ -20,9 +20,6 @@ import org.talend.metadata.managment.ui.wizard.AbstractForm;
 import org.talend.repository.mdm.i18n.Messages;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * DOC hwang class global comment. Detailled comment
- */
 public class MdmConceptWizardPage2 extends AbstractRetrieveConceptPage {
 
     private SetNameForm form;
@@ -40,13 +37,7 @@ public class MdmConceptWizardPage2 extends AbstractRetrieveConceptPage {
         this.isRepositoryObjectEditable = isRepositoryObjectEditable;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
-     */
     public void createControl(Composite parent) {
-
         if (getConcept() != null) {
             form = new SetNameForm(parent, connectionItem, getConcept(), existingNames, creation);
             form.setReadOnly(!isRepositoryObjectEditable);

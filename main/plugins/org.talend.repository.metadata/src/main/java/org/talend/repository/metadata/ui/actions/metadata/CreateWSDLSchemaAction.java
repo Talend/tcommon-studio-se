@@ -30,9 +30,6 @@ import org.talend.repository.model.IRepositoryNode.EProperties;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.ui.wizards.metadata.connection.wsdl.WSDLSchemaWizard;
 
-/**
- * DOC qwei class global comment. Detailled comment
- */
 public class CreateWSDLSchemaAction extends AbstractCreateAction {
 
     private final String createLabel;
@@ -74,12 +71,6 @@ public class CreateWSDLSchemaAction extends AbstractCreateAction {
         setToolbar(isToolbar);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.ui.actions.metadata.AbstractCreateAction#init(org.talend.repository.model.RepositoryNode)
-     */
     @Override
     protected void init(RepositoryNode node) {
         ERepositoryObjectType nodeType = (ERepositoryObjectType) node.getProperties(EProperties.CONTENT_TYPE);

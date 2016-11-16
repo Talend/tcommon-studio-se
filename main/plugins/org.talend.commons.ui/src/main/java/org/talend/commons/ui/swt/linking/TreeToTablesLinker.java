@@ -45,10 +45,6 @@ import org.talend.commons.ui.swt.drawing.link.StyleLink;
 import org.talend.commons.ui.utils.TreeUtils;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
  * @param <D1> the data item of extremety 1
  * @param <D2> the data item of extremety 2
  */
@@ -76,24 +72,11 @@ public class TreeToTablesLinker<D1, D2> extends BgDrawableComposite implements I
 
     private List<LinkableTable> linkableTableList;
 
-    /**
-     * DOC amaumont TreeToTableLinker constructor comment.
-     * 
-     * @param tree
-     * @param table
-     */
     public TreeToTablesLinker(Composite commonParent) {
         super(commonParent);
         linkableTableList = new ArrayList<LinkableTable>();
     }
 
-    /**
-     * DOC amaumont Comment method "init".
-     * 
-     * @param tree
-     * @param tables
-     * @param backgroundRefresher
-     */
     public void init(Tree tree, Table[] tables, IBackgroundRefresher backgroundRefresher) {
         this.display = tree.getDisplay();
         this.backgroundRefresher = backgroundRefresher;
@@ -129,9 +112,6 @@ public class TreeToTablesLinker<D1, D2> extends BgDrawableComposite implements I
         return this.defaultStyleLink;
     }
 
-    /**
-     * DOC amaumont Comment method "createLinkSorter".
-     */
     protected void createLinksComparators() {
 
         this.drawingLinksComparator = getDrawingLinksComparator();
@@ -162,11 +142,6 @@ public class TreeToTablesLinker<D1, D2> extends BgDrawableComposite implements I
         return this.drawingLinksComparator;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.drawing.link.BackgroundRefresher#drawBackground(org.eclipse.swt.graphics.GC)
-     */
     @Override
     public void drawBackground(GC gc) {
 
@@ -278,13 +253,6 @@ public class TreeToTablesLinker<D1, D2> extends BgDrawableComposite implements I
         return TreeUtils.getTreeItem(tree, dataOfTreeItem);
     }
 
-    /**
-     * DOC amaumont Comment method "findMaxWidth".
-     * 
-     * @param items
-     * @param maxWidth
-     * @return
-     */
     private int findXRightStartBezierLink(TreeItem[] items, int maxWidth) {
         for (TreeItem item2 : items) {
             TreeItem item = item2;
@@ -299,13 +267,6 @@ public class TreeToTablesLinker<D1, D2> extends BgDrawableComposite implements I
         return maxWidth;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.commons.ui.swt.linking.IControlsLinker#updateLinksStyleAndControlsSelection(org.eclipse.swt.widgets
-     * .Control, java.lang.Boolean)
-     */
     public void updateLinksStyleAndControlsSelection(Control currentControl, Boolean flag) {
         boolean isTable = false;
         if (currentControl instanceof Table) {

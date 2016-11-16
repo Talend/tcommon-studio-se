@@ -16,12 +16,6 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.apache.commons.beanutils.PropertyUtils;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public final class ReflectUtils {
 
     /**
@@ -44,13 +38,6 @@ public final class ReflectUtils {
         }
     }
 
-    /**
-     * DOC amaumont Comment method "getValue".
-     * 
-     * @param data
-     * @param beanPropertyName
-     * @return
-     */
     public static Object getValue(Object object, String property) {
         try {
             return PropertyUtils.getProperty(object, property);

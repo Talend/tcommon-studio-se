@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.core.nexus;
 
-/**
- * created by wchen on 2015-5-12 Detailled comment
- *
- */
 public class NexusServerBean {
 
     String server;
@@ -157,11 +153,6 @@ public class NexusServerBean {
         return result;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(Object obj) {
 

@@ -28,9 +28,6 @@ import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.nodes.IProjectRepositoryNode;
 
-/**
- * DOC zwzhao class global comment. Detailled comment
- */
 public interface IStormProcessService extends IService {
 
     boolean needStormProcess();
@@ -47,7 +44,7 @@ public interface IStormProcessService extends IService {
 
     /**
      * This method is responsible for creating additional information which are going to be registered in the Process
-     * (and then in the Item). DOC rdubois Comment method "generateSparkStreamingInfosParameter".
+     * (and then in the Item).
      * 
      * @param process the current process.
      */

@@ -85,9 +85,6 @@ import org.talend.repository.ui.wizards.metadata.connection.files.xml.TreePopula
 import org.talend.repository.ui.wizards.metadata.connection.files.xml.extraction.XsdNodeRetriever;
 import org.w3c.dom.Node;
 
-/**
- * DOC hwang class global comment. Detailled comment
- */
 public class MDMLinker extends TreeToTablesLinker<Object, Object> {
 
     private TreePopulator treePopulator;
@@ -433,11 +430,6 @@ public class MDMLinker extends TreeToTablesLinker<Object, Object> {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.linking.TreeToTableLinker#drawBackground(org.eclipse.swt.graphics.GC)
-     */
     @Override
     public void drawBackground(GC gc) {
 
@@ -1071,11 +1063,6 @@ public class MDMLinker extends TreeToTablesLinker<Object, Object> {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.linking.TreeToTablesLinker#getDrawingLinksComparator()
-     */
     @Override
     protected Comparator<LinkDescriptor<TreeItem, Object, Table, Object>> getDrawingLinksComparator() {
         if (this.drawingLinksComparator == null) {

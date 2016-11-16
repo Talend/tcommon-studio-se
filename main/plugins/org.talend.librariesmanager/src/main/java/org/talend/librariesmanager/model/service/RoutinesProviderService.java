@@ -9,10 +9,6 @@ import org.talend.librariesmanager.model.ModulesNeededProvider;
 
 import routines.TalendString;
 
-/**
- * 
- * qli class global comment. Detailled comment
- */
 public class RoutinesProviderService implements IRoutinesService {
 
     public Vector getAccents() {

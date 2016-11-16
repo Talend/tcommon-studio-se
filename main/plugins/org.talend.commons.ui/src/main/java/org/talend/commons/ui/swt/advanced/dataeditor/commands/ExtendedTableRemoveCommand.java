@@ -22,12 +22,6 @@ import org.eclipse.gef.commands.Command;
 import org.talend.commons.ui.runtime.i18n.Messages;
 import org.talend.commons.ui.swt.extended.table.ExtendedTableModel;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public class ExtendedTableRemoveCommand extends Command implements IExtendedTableCommand {
 
     private ExtendedTableModel extendedTable;
@@ -46,45 +40,28 @@ public class ExtendedTableRemoveCommand extends Command implements IExtendedTabl
 
     public static final String LABEL = Messages.getString("ExtendedTableRemoveCommand.Romve.Label"); //$NON-NLS-1$
 
-    /**
-     * DOC amaumont ExtendedTableAddCommand constructor comment.
-     */
     public ExtendedTableRemoveCommand(ExtendedTableModel extendedTable, Integer indexItemToRemove) {
         super(LABEL);
         this.extendedTable = extendedTable;
         this.indexItemToRemove = indexItemToRemove;
     }
 
-    /**
-     * DOC amaumont ExtendedTableAddCommand constructor comment.
-     */
     public ExtendedTableRemoveCommand(Object beanToRemove, ExtendedTableModel extendedTable) {
         super(LABEL);
         this.extendedTable = extendedTable;
         this.beanToRemove = beanToRemove;
     }
 
-    /**
-     * DOC amaumont ExtendedTableAddCommand constructor comment.
-     */
     public ExtendedTableRemoveCommand(ExtendedTableModel extendedTable, ArrayList beansToRemove) {
         this.extendedTable = extendedTable;
         this.beansToRemove = beansToRemove;
     }
 
-    /**
-     * DOC amaumont ExtendedTableAddCommand constructor comment.
-     */
     public ExtendedTableRemoveCommand(ExtendedTableModel extendedTable, int[] indexItemsToRemove) {
         this.extendedTable = extendedTable;
         this.indexItemsToRemove = indexItemsToRemove;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.gef.commands.Command#execute()
-     */
     @SuppressWarnings("unchecked")//$NON-NLS-1$
     @Override
     public void execute() {
@@ -133,37 +110,20 @@ public class ExtendedTableRemoveCommand extends Command implements IExtendedTabl
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.command.CommonCommand#canUndo()
-     */
     @Override
     public boolean canUndo() {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.command.CommonCommand#redo()
-     */
     @Override
     public synchronized void redo() {
         execute();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.command.CommonCommand#undo()
-     */
     @SuppressWarnings("unchecked")//$NON-NLS-1$
     @Override
     public synchronized void undo() {
-
         extendedTable.addAll(removedBeansIndices, removedBeans);
-
     }
 
 }

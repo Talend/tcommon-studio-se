@@ -43,10 +43,7 @@ public final class ExceptionHandler {
     /**
      * bug 17654: import the xml file as the schema will throw error.
      * 
-     * DOC yhch Comment method "processForSchemaImportXml".
-     * 
      * @param ex
-     * 
      */
     public static void processForSchemaImportXml(Throwable ex) {
         org.talend.commons.exception.ExceptionHandler.processForSchemaImportXml(ex);

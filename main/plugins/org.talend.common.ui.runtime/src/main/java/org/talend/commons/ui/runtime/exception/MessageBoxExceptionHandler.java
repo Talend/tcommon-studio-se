@@ -104,8 +104,6 @@ public final class MessageBoxExceptionHandler {
     /**
      * bug 17654:import the xml file as the schema will throw error.
      * 
-     * DOC yhch Comment method "showMessageForSchemaImportXml".
-     * 
      * @param ex
      * @param shell
      */

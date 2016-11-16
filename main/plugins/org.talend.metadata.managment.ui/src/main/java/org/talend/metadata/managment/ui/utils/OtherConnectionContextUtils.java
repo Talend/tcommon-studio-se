@@ -47,18 +47,12 @@ import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.metadata.managment.ui.model.IConnParamName;
 
-/**
- * ggu class global comment. Detailled comment
- */
 public final class OtherConnectionContextUtils {
 
     private static final ECodeLanguage LANGUAGE = LanguageManager.getCurrentLanguage();
 
     private static final String BASIC = "basic";
 
-    /**
-     * 
-     */
     public enum EParamName implements IConnParamName {
         FilePath,
 

@@ -18,9 +18,6 @@ import org.talend.core.IProviderService;
 import org.talend.core.model.process.INode;
 import org.talend.core.model.repository.ERepositoryObjectType;
 
-/**
- * DOC wanghong class global comment. Detailled comment
- */
 public interface IJSONProviderService extends IProviderService {
 
     public boolean isJSONNode(final INode node);

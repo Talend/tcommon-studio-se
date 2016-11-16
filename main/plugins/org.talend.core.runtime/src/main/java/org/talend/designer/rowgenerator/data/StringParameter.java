@@ -15,10 +15,6 @@ package org.talend.designer.rowgenerator.data;
 import org.talend.core.language.ECodeLanguage;
 import org.talend.core.language.LanguageManager;
 
-/**
- * class global comment. Detailled comment <br/>
- * $Id: StringParameter.java,v 1.3 2007/02/02 03:04:20 pub Exp $
- */
 public class StringParameter extends Parameter {
 
     /**
@@ -29,12 +25,6 @@ public class StringParameter extends Parameter {
         str = str.replaceFirst(ParameterFactory.PARAMETER_TYPE_STRING, ""); //$NON-NLS-1$
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.designer.rowgenerator.data.Parameter#sameParameterAs(org.talend.designer.rowgenerator.data.Parameter)
-     */
     @Override
     public boolean sameParameterAs(Parameter obj) {
         if (this == obj) {
@@ -81,11 +71,6 @@ public class StringParameter extends Parameter {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.rowgenerator.data.Parameter#setType(java.lang.String)
-     */
     @Override
     public void setType(String type) {
         if (LanguageManager.getCurrentLanguage().equals(ECodeLanguage.JAVA)) {

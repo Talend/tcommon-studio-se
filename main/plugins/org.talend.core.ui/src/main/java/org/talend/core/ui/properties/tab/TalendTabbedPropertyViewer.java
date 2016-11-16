@@ -24,12 +24,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.IWorkbenchPart;
 
-/**
- * DOC yzhang class global comment. Detailled comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
- * 
- */
 public class TalendTabbedPropertyViewer extends StructuredViewer implements IInputChangedListener {
 
     protected TalendTabbedPropertyList list;
@@ -38,11 +32,6 @@ public class TalendTabbedPropertyViewer extends StructuredViewer implements IInp
 
     protected IWorkbenchPart part;
 
-    /**
-     * Constructor for TabbedPropertyViewer.
-     * 
-     * @param list the TabbedPropertyList.
-     */
     public TalendTabbedPropertyViewer(TalendTabbedPropertyList list) {
         this.list = list;
         this.list.addInputChangedListener(this);
@@ -129,11 +118,6 @@ public class TalendTabbedPropertyViewer extends StructuredViewer implements IInp
         return list;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.Viewer#inputChanged(java.lang.Object, java.lang.Object)
-     */
     public void inputChanged(Object input, Object oldInput) {
         elements.clear();
         Object[] children = getSortedChildren(getRoot());
@@ -145,11 +129,6 @@ public class TalendTabbedPropertyViewer extends StructuredViewer implements IInp
         list.setElements(children);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.properties.tab.IInputChangedListener#inputChanged(java.lang.Object)
-     */
     public void inputChanged(TabInputChangedEvent event) {
         setInput(event.getInput());
         IStructuredSelection selection = (IStructuredSelection) getSelection();

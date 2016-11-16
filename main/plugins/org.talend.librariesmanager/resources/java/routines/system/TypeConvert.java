@@ -12,12 +12,6 @@
 // ============================================================================
 package routines.system;
 
-/**
- * DOC liyilin class global comment. Detailled comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ææäº, 29 ä¹æ 2006) nrousseau $
- * 
- */
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;

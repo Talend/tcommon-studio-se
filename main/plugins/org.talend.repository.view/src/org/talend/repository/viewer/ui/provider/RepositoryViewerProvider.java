@@ -37,9 +37,6 @@ import org.talend.repository.navigator.RepoViewCommonNavigator;
 import org.talend.repository.ui.views.IRepositoryView;
 import org.talend.repository.viewer.ui.viewer.CheckboxRepositoryTreeViewer;
 
-/**
- * ggu class global comment. Detailled comment
- */
 public class RepositoryViewerProvider extends AbstractViewerProvider {
 
     private IRepositoryView realRepView;

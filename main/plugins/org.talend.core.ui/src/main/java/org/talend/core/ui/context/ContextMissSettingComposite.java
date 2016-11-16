@@ -30,10 +30,6 @@ import org.talend.core.ILibraryManagerUIService;
 import org.talend.core.ui.CoreUIPlugin;
 import org.talend.core.ui.i18n.Messages;
 
-/**
- * created by ldong on Aug 18, 2014 Detailled comment
- * 
- */
 public class ContextMissSettingComposite extends Composite {
 
     private boolean isVisibleTopMessages;
@@ -44,12 +40,6 @@ public class ContextMissSettingComposite extends Composite {
 
     private ILibraryManagerUIService libUiService;
 
-    /**
-     * DOC ldong ContextMissSettingComposite constructor comment.
-     * 
-     * @param parent
-     * @param style
-     */
     public ContextMissSettingComposite(Composite parent, int style) {
         super(parent, style);
         initialize(this);

@@ -12,14 +12,9 @@
 // ============================================================================
 package org.talend.cwm.indicator;
 
-/**
- * created by talend on Aug 22, 2014 Detailled comment
- * 
- */
 public interface DataValidation {
 
     /**
-     * 
      * When MapDB is used some different indicator maybe used same data file.then indicator need to implements it then
      * we can know what data is for it
      * 

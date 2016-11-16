@@ -12,12 +12,6 @@
 // ============================================================================
 package org.talend.core.model.process;
 
-/**
- * DOC nrousseau class global comment. Detailled comment <br/>
- * 
- * $Id: EParameterFieldType.java 40228 2010-04-13 05:28:25Z nrousseau $
- * 
- */
 public enum EParameterFieldType {
     TEXT,
     TEXT_AREA,

@@ -284,11 +284,6 @@ public final class StatisticsTracer {
             return this.roundOfMaxTime;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see java.lang.Object#toString()
-         */
         @Override
         public String toString() {
             StringBuilder sb = new StringBuilder();
@@ -380,11 +375,6 @@ public final class StatisticsTracer {
             sb.append(callGC);
         }
 
-        /**
-         * DOC amaumont Comment method "toDataRow".
-         * 
-         * @return
-         */
         public String toDataRow() {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String date = simpleDateFormat.format(new Date());
@@ -399,10 +389,6 @@ public final class StatisticsTracer {
 
     }
 
-    /**
-     * 
-     * DOC amaumont TimeMeasurer class global comment. Detailled comment
-     */
     class InternalTimer {
 
         private long internalStartTime;
@@ -510,9 +496,6 @@ public final class StatisticsTracer {
     }
 
     /**
-     * 
-     * DOC amaumont Comment method "start".
-     * 
      * @return id of internalTimer
      */
     public synchronized long start() {

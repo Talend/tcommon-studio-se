@@ -29,9 +29,6 @@ import org.talend.core.model.update.EUpdateItemType;
 import org.talend.core.model.update.IUpdateItemType;
 import org.talend.core.utils.RegistryReader;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class UpdateManagerProviderReader extends RegistryReader {
 
     private static Logger log = Logger.getLogger(UpdateManagerProviderReader.class);
@@ -153,11 +150,6 @@ public class UpdateManagerProviderReader extends RegistryReader {
         return providers;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.utils.RegistryReader#readElement(org.eclipse.core.runtime.IConfigurationElement)
-     */
     @Override
     protected boolean readElement(final IConfigurationElement element) {
         if ("UpdateItemType".equals(element.getName())) { //$NON-NLS-1$

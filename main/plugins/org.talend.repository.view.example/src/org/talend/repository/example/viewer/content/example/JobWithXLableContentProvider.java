@@ -23,33 +23,17 @@ import org.talend.core.repository.model.ProjectRepositoryNode;
 import org.talend.repository.example.viewer.tester.example.ExampleTester;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * created by sgandon on 1 août 2012 Detailled comment
- * 
- */
 public abstract class JobWithXLableContentProvider extends org.talend.repository.view.di.viewer.content.JobDesignsContentProvider {
 
     protected ExampleTester jobTester = new ExampleTester();
 
     protected abstract Object getRoot();
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.view.di.viewer.content.JobDesignsContentProvider#getTopLevelNodeFromProjectRepositoryNode
-     * (org.talend.repository.model.ProjectRepositoryNode)
-     */
     @Override
     protected RepositoryNode getTopLevelNodeFromProjectRepositoryNode(ProjectRepositoryNode projectNode) {
         return super.getTopLevelNodeFromProjectRepositoryNode(projectNode);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
-     */
     @Override
     public Object[] getChildren(Object parentElement) {
         if (parentElement == getRoot()) {
@@ -72,11 +56,6 @@ public abstract class JobWithXLableContentProvider extends org.talend.repository
         }
     }
 
-    /**
-     * DOC sgandon Comment method "filterJobWithAnA".
-     * 
-     * @param refreshTargets
-     */
     protected void filterJob(Set potentialJobs) {
         List<Object> removedObjects = new ArrayList<Object>(potentialJobs.size());
         for (Object potentialJob : potentialJobs) {
@@ -89,13 +68,6 @@ public abstract class JobWithXLableContentProvider extends org.talend.repository
 
     protected abstract boolean validJob(Object potentialJob);
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.viewer.content.SingleTopLevelContentProvider#resetTopLevelNode(org.talend.repository.model
-     * .RepositoryNode)
-     */
     @Override
     protected void resetTopLevelNode(RepositoryNode aTopLevelNode) {
         super.resetTopLevelNode(aTopLevelNode);

@@ -40,9 +40,6 @@ import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.model.IRepositoryNode.EProperties;
 
-/**
- * DOC wchen class global comment. Detailled comment
- */
 public class PastSelectorDialog extends Dialog {
 
     private List<IRepositoryViewObject> versions;
@@ -196,11 +193,6 @@ public class PastSelectorDialog extends Dialog {
         this.getOKButton().setEnabled(!selectedVersionItems.isEmpty());
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.Dialog#createButtonsForButtonBar(org.eclipse.swt.widgets.Composite)
-     */
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
         super.createButtonsForButtonBar(parent);

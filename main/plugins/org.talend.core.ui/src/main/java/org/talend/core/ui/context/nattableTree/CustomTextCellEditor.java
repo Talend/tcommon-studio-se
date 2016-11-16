@@ -25,10 +25,6 @@ import org.eclipse.swt.widgets.Text;
 import org.talend.commons.utils.PasswordEncryptUtil;
 import org.talend.core.model.process.IContextParameter;
 
-/**
- * created by ldong on Sep 5, 2014 Detailled comment
- * 
- */
 public class CustomTextCellEditor extends AbstractCellEditor {
 
     private final IContextParameter realPara;
@@ -60,13 +56,6 @@ public class CustomTextCellEditor extends AbstractCellEditor {
         this.moveSelectionOnEnter = moveSelectionOnEnter;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.nebula.widgets.nattable.edit.editor.ICellEditor#createEditorControl(org.eclipse.swt.widgets.Composite
-     * )
-     */
     @Override
     public Control createEditorControl(Composite parentComp) {
         int style = this.editMode == EditModeEnum.INLINE ? SWT.NONE : SWT.BORDER;
@@ -118,44 +107,22 @@ public class CustomTextCellEditor extends AbstractCellEditor {
         // });
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.nebula.widgets.nattable.edit.editor.ICellEditor#getEditorControl()
-     */
     @Override
     public Control getEditorControl() {
         return this.buttonText;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.nebula.widgets.nattable.edit.editor.ICellEditor#getEditorValue()
-     */
     @Override
     public Object getEditorValue() {
         return this.buttonText.getValue();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.nebula.widgets.nattable.edit.editor.ICellEditor#setEditorValue(java.lang.Object)
-     */
     @Override
     public void setEditorValue(Object value) {
         this.buttonText.setValue(value != null && value.toString().length() > 0 ? value.toString() : ""); //$NON-NLS-1$
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.nebula.widgets.nattable.edit.editor.AbstractCellEditor#activateCell(org.eclipse.swt.widgets.Composite
-     * , java.lang.Object)
-     */
     @Override
     public Control activateCell(Composite parentComp, Object originalCanonicalValue) {
         this.recordOriginalCanonicalValue = originalCanonicalValue;
@@ -176,20 +143,10 @@ public class CustomTextCellEditor extends AbstractCellEditor {
         return this.buttonText;
     }
 
-    /**
-     * Getter for freeEdit.
-     * 
-     * @return the freeEdit
-     */
     public boolean isFreeEdit() {
         return this.freeEdit;
     }
 
-    /**
-     * Sets the freeEdit.
-     * 
-     * @param freeEdit the freeEdit to set
-     */
     public void setFreeEdit(boolean freeEdit) {
         this.freeEdit = freeEdit;
     }

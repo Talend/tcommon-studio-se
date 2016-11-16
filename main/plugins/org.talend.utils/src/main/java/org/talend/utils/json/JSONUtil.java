@@ -14,9 +14,6 @@ package org.talend.utils.json;
 
 import java.util.Iterator;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class JSONUtil {
 
     /**

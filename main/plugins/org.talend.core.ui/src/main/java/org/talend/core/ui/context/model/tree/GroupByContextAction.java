@@ -22,8 +22,6 @@ import org.talend.core.ui.context.ContextTreeValuesComposite;
 import org.talend.core.ui.i18n.Messages;
 
 /**
- * cli class global comment. Detailled comment
- * 
  * This action is used to group the text by Context.
  */
 public class GroupByContextAction extends Action {
@@ -35,11 +33,6 @@ public class GroupByContextAction extends Action {
         this.parentModel = parentModel;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.action.Action#run()
-     */
     @Override
     public void run() {
         if (parentModel == null) {

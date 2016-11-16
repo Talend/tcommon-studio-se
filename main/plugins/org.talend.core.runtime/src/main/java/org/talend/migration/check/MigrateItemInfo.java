@@ -16,10 +16,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/**
- * created by wchen on Dec 30, 2014 Detailled comment
- *
- */
 public class MigrateItemInfo {
 
     private int id;

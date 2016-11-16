@@ -26,19 +26,8 @@ import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.IRepositoryNode.ENodeType;
 
-/**
- * created by ggu on Mar 27, 2014 Detailled comment
- * 
- */
 public abstract class AbstractRepositoryNodeUpdateManagerProvider extends AbstractRepositoryUpdateManagerProvider {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.update.extension.IRepositoryUpdateManagerProvider#validateAction(org.eclipse.jface.viewers
-     * .TreeViewer, org.eclipse.jface.viewers.IStructuredSelection)
-     */
     @Override
     public boolean validateAction(TreeViewer viewer, IStructuredSelection selection) {
         if (super.validateAction(viewer, selection)) {

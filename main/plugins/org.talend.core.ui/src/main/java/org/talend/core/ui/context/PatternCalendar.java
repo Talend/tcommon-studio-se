@@ -31,9 +31,6 @@ import org.talend.commons.ui.swt.proposal.ProposalUtils;
 import org.talend.core.ui.i18n.Messages;
 import org.talend.core.ui.proposal.JavaSimpleDateFormatProposalProvider;
 
-/**
- * DOC chuang class global comment. Detailled comment
- */
 public class PatternCalendar extends SWTCalendarWithTime {
 
     private Text patternText;
@@ -44,13 +41,6 @@ public class PatternCalendar extends SWTCalendarWithTime {
 
     private String defaultFormat = "yyyy-MM-dd HH:mm:ss"; //$NON-NLS-1$
 
-    /**
-     * DOC chuang PatternCalendar constructor comment.
-     * 
-     * @param parent
-     * @param calendar
-     * @param pattern2
-     */
     public PatternCalendar(Composite parent, int style, String pattern, Calendar calendar) {
         super(parent, style);
 

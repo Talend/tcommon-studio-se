@@ -20,13 +20,6 @@ import org.apache.oro.text.regex.Perl5Substitution;
 import org.apache.oro.text.regex.Util;
 import org.talend.commons.utils.data.text.StringHelper;
 
-/**
- * 
- * DOC pierrick class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public class LocationUtils {
 
     private Perl5Matcher matcher = new Perl5Matcher();

@@ -48,7 +48,7 @@ ${body_statement}</template><template autoinsert="true" context="constructorbody
 // 9 rue Pages 92150 Suresnes, France
 //
 // ============================================================================</template><template autoinsert="false" context="typecomment_context" deleted="false" description="Comment for created types" enabled="true" id="org.eclipse.jdt.ui.text.codetemplates.typecomment" name="typecomment">/**
- * DOC ${user} ${enclosing_type} class global comment. Detailled comment
+ * DOC ${user} ${enclosing_type} class global comment. Detailed comment
  */</template><template autoinsert="true" context="fieldcomment_context" deleted="false" description="Comment for fields" enabled="true" id="org.eclipse.jdt.ui.text.codetemplates.fieldcomment" name="fieldcomment">/**
  * 
  */</template><template autoinsert="false" context="methodcomment_context" deleted="false" description="Comment for non-overriding methods" enabled="true" id="org.eclipse.jdt.ui.text.codetemplates.methodcomment" name="methodcomment">/**

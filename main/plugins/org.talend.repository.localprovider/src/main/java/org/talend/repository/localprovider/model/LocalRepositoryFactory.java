@@ -167,12 +167,6 @@ import org.talend.utils.json.JSONArray;
 
 import orgomg.cwm.foundation.businessinformation.BusinessinformationPackage;
 
-/**
- * DOC smallet class global comment. Detailled comment <br/>
- * 
- * $Id$ $Id: RepositoryFactory.java,v 1.55 2006/08/23 14:30:39 tguiu Exp $
- * 
- */
 public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory implements ILocalRepositoryFactory {
 
     private static final String BIN = "bin"; //$NON-NLS-1$
@@ -243,13 +237,6 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         return toReturn;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.repository.model.AbstractEMFRepositoryFactory#getObjectFromFolder(org.talend.core.model.general
-     * .Project, org.talend.core.model.repository.ERepositoryObjectType, java.lang.String, int)
-     */
     @Override
     public RootContainer<String, IRepositoryViewObject> getObjectFromFolder(Project project, ERepositoryObjectType type,
             String relativeFolder, int options) throws PersistenceException {
@@ -1167,12 +1154,6 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         return createFolder(project, type, path, label, false);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.core.extension.IRepositoryFactory#createFolder(org .talend.core.model.temp.Project,
-     * org.talend.core.model.repository.EObjectType, org.eclipse.core.runtime.IPath, java.lang.String)
-     */
     @Override
     public Folder createFolder(Project project, ERepositoryObjectType type, IPath path, String label, boolean isImportItem)
             throws PersistenceException {
@@ -1215,13 +1196,6 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         }
         ResourceUtils.createFolder(folder);
     }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.model.IRepositoryFactory#isValid(org.talend.core .model.general.Project,
-     * org.talend.core.model.repository.ERepositoryObjectType, org.eclipse.core.runtime.IPath, java.lang.String)
-     */
 
     @Override
     public boolean isPathValid(Project project, ERepositoryObjectType type, IPath path, String label) throws PersistenceException {
@@ -1587,11 +1561,6 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.model.IRepositoryFactory#getProcess2()
-     */
     public List<IRepositoryViewObject> getProcess2() throws PersistenceException {
         List<IRepositoryViewObject> toReturn = new VersionList(false);
 
@@ -1611,22 +1580,8 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         return toReturn;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.model.IRepositoryFactory#deleteObject(org.talend .core.model.general.Project,
-     * org.talend.core.model.repository.IRepositoryViewObject)
-     */
-
     @Override
     public void deleteObjectLogical(Project project, IRepositoryViewObject objToDelete) throws PersistenceException {
-
-        // can only delete in the main project
-        // IProject fsProject = ResourceUtils.getProject(project);
-
-        // IFolder bin = ResourceUtils.getFolder(fsProject, ERepositoryObjectType.getFolderName(objToDelete.getType())
-        // + IPath.SEPARATOR + BIN, true);
-
         List<IRepositoryViewObject> allVersionToDelete = getAllVersion(project, objToDelete.getId(), false);
         for (IRepositoryViewObject currentVersion : allVersionToDelete) {
             ItemState state = currentVersion.getProperty().getItem().getState();
@@ -1829,12 +1784,6 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         saveProject(project);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.model.IRepositoryFactory#moveObject(org.talend. core.model.general.Project,
-     * org.talend.core.model.repository.IRepositoryViewObject, org.eclipse.core.runtime.IPath)
-     */
     @Override
     public void moveObject(IRepositoryViewObject objToMove, IPath newPath) throws PersistenceException {
         Project project = getRepositoryContext().getProject();
@@ -2061,11 +2010,6 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         saveProject(project);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.model.IRepositoryFactory#isServerValid(java.lang .String, java.lang.String, int)
-     */
     @Override
     public String isServerValid() {
         return ""; //$NON-NLS-1$
@@ -3130,11 +3074,6 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.model.IRepositoryFactory#getStatus(org.talend.core .model.properties.Item)
-     */
     @Override
     public ERepositoryStatus getStatus(Item item) {
         if (item != null && item.getState() != null) {
@@ -3340,32 +3279,16 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.model.IRepositoryFactory#enableSandboxProject()
-     */
     @Override
     public boolean enableSandboxProject() {
         return false; // don't support in local model
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.model.IRepositoryFactory#isLocalConnectionProvider()
-     */
     @Override
     public boolean isLocalConnectionProvider() throws PersistenceException {
         return true; // must be true
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @seeorg.talend.repository.model.IRepositoryFactory#getMetadataByFolder(org.talend.core.model.repository.
-     * ERepositoryObjectType, org.eclipse.core.runtime.IPath)
-     */
     @Override
     public <K, T> List<T> getMetadatasByFolder(Project project, ERepositoryObjectType itemType, IPath path) {
         if (itemType == null) {
@@ -3404,11 +3327,6 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         return toReturn.getMembers();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.model.IRepositoryFactory#getResourceManager()
-     */
     @Override
     public XmiResourceManager getResourceManager() {
         return this.xmiResourceManager;
@@ -3433,21 +3351,11 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         return descBuffer.toString();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.repository.model.IRepositoryFactory#isModified(org.talend.core.model.properties.Item)
-     */
     @Override
     public boolean isModified(Object property) {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.repository.model.AbstractRepositoryFactory#logOffProject()
-     */
     @Override
     public void logOffProject() {
         invalidFiles.clear();
@@ -3463,7 +3371,6 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
     @Override
     public void loadProjectAndSetContext(IProject eclipseProject) throws PersistenceException {
         // nothing to do
-
     }
 
     protected void notifyProjectReload(org.talend.core.model.properties.Project project) {

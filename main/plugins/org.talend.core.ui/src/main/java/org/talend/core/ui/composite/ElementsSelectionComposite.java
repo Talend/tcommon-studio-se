@@ -35,10 +35,6 @@ import org.eclipse.swt.widgets.Control;
 import org.talend.core.ui.advanced.composite.FilteredCheckboxTree;
 import org.talend.core.ui.advanced.composite.PatternFilter;
 
-/**
- * created by ycbai on 2015年10月8日 Detailled comment
- *
- */
 public class ElementsSelectionComposite<T> extends Composite {
 
     private boolean multipleSelection = true;

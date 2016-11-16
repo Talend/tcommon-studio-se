@@ -178,11 +178,6 @@ public class LockerByKeyTest {
         // UNLOCK STEP
         Callable<Boolean> runnableUnlock = new Callable<Boolean>() {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see java.util.concurrent.Callable#call()
-             */
             @Override
             public Boolean call() throws Exception {
                 return locker.unlock(keyOne);
@@ -223,11 +218,6 @@ public class LockerByKeyTest {
         // UNLOCK STEP
         Callable<Boolean> runnableUnlock = new Callable<Boolean>() {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see java.util.concurrent.Callable#call()
-             */
             @Override
             public Boolean call() throws Exception {
                 return locker.unlock(keyOne);
@@ -344,11 +334,6 @@ public class LockerByKeyTest {
         final String expectedResult = "ended";
         Callable<String> runnable = new Callable<String>() {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see java.util.concurrent.Callable#call()
-             */
             @Override
             public String call() throws Exception {
                 locker.lockInterruptibly(keyOne);
@@ -392,11 +377,6 @@ public class LockerByKeyTest {
         final String expectedResult = "ended";
         Callable<String> runnable = new Callable<String>() {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see java.util.concurrent.Callable#call()
-             */
             @Override
             public String call() throws Exception {
                 locker.tryLock(keyOne, 10000);
@@ -722,13 +702,6 @@ public class LockerByKeyTest {
                 this.assertEntriesLessThanCleanPeriod = assertEntriesLessThanCleanPeriod;
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see
-             * org.talend.commons.utils.threading.AbstractThreadSafetyTester#initInstance(org.talend.commons.utils.threading
-             * .IThreadSafetyOperator)
-             */
             protected void initInstance(AbstractLockerByKeyOperator operatorInstance) {
                 operatorInstance.setDebug(DEBUG);
                 operatorInstance.setLocker(locker);
@@ -736,11 +709,6 @@ public class LockerByKeyTest {
                 operatorInstance.setResultContainer(resultContainer);
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.talend.commons.utils.threading.AbstractThreadSafetyTester#assertFinal()
-             */
             @Override
             protected void assertFinal() {
                 int actualSumLockedAtEnd = 0;

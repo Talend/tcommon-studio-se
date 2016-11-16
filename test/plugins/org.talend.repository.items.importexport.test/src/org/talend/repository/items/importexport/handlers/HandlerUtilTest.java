@@ -32,9 +32,6 @@ import org.talend.core.repository.constants.FileConstants;
 import org.talend.repository.items.importexport.handlers.model.ImportItem;
 import org.talend.repository.items.importexport.manager.ResourcesManager;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 @SuppressWarnings("nls")
 public class HandlerUtilTest {
 

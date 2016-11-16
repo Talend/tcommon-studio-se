@@ -33,10 +33,6 @@ import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
-/**
- * created by wchen on Jan 27, 2015 Detailled comment
- *
- */
 public abstract class AbsMigrationCheckHandler implements IMigrationCheckHandler {
 
     protected ERepositoryObjectType objectType;
@@ -45,42 +41,21 @@ public abstract class AbsMigrationCheckHandler implements IMigrationCheckHandler
 
     protected String name;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.migration.check.IMigrationCheckHandler#getType()
-     */
     @Override
     public String getType() {
         return this.type;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.migration.check.IMigrationCheckHandler#setType(org.talend.core.model.repository.ERepositoryObjectType)
-     */
     @Override
     public void setType(String type) {
         this.type = type;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.migration.check.IMigrationCheckHandler#getName()
-     */
     @Override
     public String getName() {
         return name;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.migration.check.IMigrationCheckHandler#setName()
-     */
     @Override
     public String setName(String name) {
         return this.name = name;

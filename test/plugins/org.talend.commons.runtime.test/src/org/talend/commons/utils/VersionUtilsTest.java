@@ -17,9 +17,6 @@ import junit.framework.Assert;
 import org.junit.Test;
 import org.talend.utils.ProductVersion;
 
-/**
- * DOC ycbai class global comment. Detailled comment
- */
 public class VersionUtilsTest {
 
     /**

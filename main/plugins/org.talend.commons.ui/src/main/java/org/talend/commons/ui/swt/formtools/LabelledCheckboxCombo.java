@@ -349,29 +349,14 @@ public class LabelledCheckboxCombo {
         return true;
     }
 
-    /**
-     * isEmpty.
-     * 
-     * @return boolean
-     */
     public Boolean isEmpty() {
         return combo.getText().equals(""); //$NON-NLS-1$
     }
 
-    /**
-     * DOC ocarbone Comment method "getLabelText".
-     * 
-     * @return string
-     */
     public String getLabelText() {
         return label.getText();
     }
 
-    /**
-     * checkbox.getSelection().
-     * 
-     * @return boolean
-     */
     public boolean isChecked() {
         return checkbox.getSelection();
     }
@@ -387,11 +372,6 @@ public class LabelledCheckboxCombo {
         combo.setText(string);
     }
 
-    /**
-     * DOC ocarbone Comment method "setReadOnly".
-     * 
-     * @param b
-     */
     public void setReadOnly(boolean visible) {
         label.setEnabled(!visible);
         combo.setEnabled(!visible);

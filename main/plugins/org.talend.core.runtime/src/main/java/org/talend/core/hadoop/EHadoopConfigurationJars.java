@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.core.hadoop;
 
-/**
- * created by ycbai on 2014-5-28 Detailled comment
- * 
- */
 public enum EHadoopConfigurationJars {
 
     HDFS(new String[0], new String[] { "hadoop-conf-kerberos.jar" }), //$NON-NLS-1$ 

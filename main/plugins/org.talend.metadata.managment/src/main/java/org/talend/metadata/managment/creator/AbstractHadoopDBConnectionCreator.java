@@ -28,10 +28,6 @@ import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.metadata.builder.database.ExtractMetaDataFromDataBase;
 import org.talend.core.repository.model.provider.IDBMetadataProvider;
 
-/**
- * created by ycbai on 2015年6月29日 Detailled comment
- *
- */
 public abstract class AbstractHadoopDBConnectionCreator extends AbstractHadoopConnectionCreator {
 
     protected void retrieveCommonParameters(Map<String, String> paramsMap) {

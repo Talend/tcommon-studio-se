@@ -17,9 +17,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * DOC guanglong.du class global comment. Detailled comment
- */
 public final class TalendDBUtils {
 
     private static Map<String, Integer> dbMap;

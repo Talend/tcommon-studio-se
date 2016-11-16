@@ -57,12 +57,6 @@ import org.talend.repository.model.IRepositoryService;
 import org.talend.repository.ui.actions.AContextualAction;
 import org.talend.repository.ui.views.IRepositoryView;
 
-/**
- * DOC qwei class global comment. Detailled comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ææäº, 29 ä¹æ 2006) nrousseau $
- * 
- */
 public abstract class AbstractCreatToolbarAction implements IWorkbenchWindowPulldownDelegate2, IActionDelegate2 {
 
     /**
@@ -77,65 +71,34 @@ public abstract class AbstractCreatToolbarAction implements IWorkbenchWindowPull
      */
     private IAction fAction;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IWorkbenchWindowPulldownDelegate2#getMenu(org.eclipse.swt.widgets.Menu)
-     */
     @Override
     public Menu getMenu(Menu parent) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#dispose()
-     */
     @Override
     public void dispose() {
         // TODO Auto-generated method stub
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#init(org.eclipse.ui.IWorkbenchWindow)
-     */
     @Override
     public void init(IWorkbenchWindow window) {
         // TODO Auto-generated method stub
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IActionDelegate2#init(org.eclipse.jface.action.IAction)
-     */
     @Override
     public void init(IAction action) {
         // TODO Auto-generated method stub
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
-     */
     @Override
     public void run(IAction action) {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IActionDelegate2#runWithEvent(org.eclipse.jface.action.IAction,
-     * org.eclipse.swt.widgets.Event)
-     */
     @Override
     public void runWithEvent(IAction action, Event event) {
         if (fMenu == null && action instanceof WWinPluginPulldown) {
@@ -146,12 +109,6 @@ public abstract class AbstractCreatToolbarAction implements IWorkbenchWindowPull
         fMenu.setVisible(true);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction,
-     * org.eclipse.jface.viewers.ISelection)
-     */
     @Override
     public void selectionChanged(IAction action, ISelection selection) {
 

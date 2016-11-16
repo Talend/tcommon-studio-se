@@ -18,15 +18,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * DOC smallet class global comment. Detailled comment <br/>
- * 
- * @param <K> DOC smallet
- * @param <V> DOC smallet
- * 
- * $Id: MapList.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
- */
 public class MapList<K, V> extends HashMap<K, List<V>> implements Map<K, List<V>> {
 
     private static final long serialVersionUID = -6734316976728141405L;

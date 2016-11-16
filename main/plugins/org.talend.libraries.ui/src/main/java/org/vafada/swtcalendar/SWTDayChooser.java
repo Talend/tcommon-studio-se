@@ -289,11 +289,6 @@ public class SWTDayChooser extends Composite implements MouseListener, FocusList
         dateChanged();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.events.MouseListener#mouseDown(org.eclipse.swt.events.MouseEvent)
-     */
     public void mouseDown(MouseEvent event) {
         if (event.button == 1) { // Left click
             setFocus();
@@ -305,49 +300,24 @@ public class SWTDayChooser extends Composite implements MouseListener, FocusList
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.events.MouseListener#mouseDoubleClick(org.eclipse.swt.events.MouseEvent)
-     */
     public void mouseDoubleClick(MouseEvent event) {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.events.MouseListener#mouseUp(org.eclipse.swt.events.MouseEvent)
-     */
     public void mouseUp(MouseEvent event) {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.events.FocusListener#focusGained(org.eclipse.swt.events.FocusEvent)
-     */
     public void focusGained(FocusEvent event) {
         DayControl selectedDay = getSelectedDayControl();
         selectedDay.setBackground(getSelectionBackgroundColor());
         selectedDay.setForeground(getSelectionForegroundColor());
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.events.FocusListener#focusLost(org.eclipse.swt.events.FocusEvent)
-     */
     public void focusLost(FocusEvent event) {
         DayControl selectedDay = getSelectedDayControl();
         selectedDay.setBackground(getSelectionBackgroundColor());
         selectedDay.setForeground(getSelectionForegroundColor());
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.events.TraverseListener#keyTraversed(org.eclipse.swt.events.TraverseEvent)
-     */
     public void keyTraversed(TraverseEvent event) {
         switch (event.detail) {
         case SWTFacade.TRAVERSE_ARROW_PREVIOUS:
@@ -363,11 +333,6 @@ public class SWTDayChooser extends Composite implements MouseListener, FocusList
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.events.KeyListener#keyPressed(org.eclipse.swt.events.KeyEvent)
-     */
     public void keyPressed(KeyEvent event) {
         switch (event.keyCode) {
         case SWT.ARROW_LEFT:
@@ -396,11 +361,6 @@ public class SWTDayChooser extends Composite implements MouseListener, FocusList
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.events.KeyListener#keyReleased(org.eclipse.swt.events.KeyEvent)
-     */
     public void keyReleased(KeyEvent event) {
     }
 
@@ -460,11 +420,6 @@ public class SWTDayChooser extends Composite implements MouseListener, FocusList
         return isFocusControl() ? activeSelectionForeground : inactiveSelectionForeground;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.widgets.Control#isFocusControl()
-     */
     public boolean isFocusControl() {
         for (Control control = getDisplay().getFocusControl(); control != null; control = control.getParent()) {
             if (control == this) {
@@ -507,11 +462,6 @@ public class SWTDayChooser extends Composite implements MouseListener, FocusList
         init();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.widgets.Control#setFont(org.eclipse.swt.graphics.Font)
-     */
     public void setFont(Font font) {
         super.setFont(font);
 
@@ -570,32 +520,17 @@ public class SWTDayChooser extends Composite implements MouseListener, FocusList
             return label.getText();
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.swt.widgets.Control#setFont(org.eclipse.swt.graphics.Font)
-         */
         public void setFont(Font font) {
             super.setFont(font);
             filler.setFont(font);
             label.setFont(font);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.swt.widgets.Control#setBackground(org.eclipse.swt.graphics.Color)
-         */
         public void setBackground(Color color) {
             filler.setBackground(color);
             label.setBackground(color);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.swt.widgets.Control#setForeground(org.eclipse.swt.graphics.Color)
-         */
         public void setForeground(Color color) {
             label.setForeground(color);
         }
@@ -604,11 +539,6 @@ public class SWTDayChooser extends Composite implements MouseListener, FocusList
             super.setBackground(color);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.swt.widgets.Listener#handleEvent(org.eclipse.swt.widgets.Event)
-         */
         public void handleEvent(Event event) {
             notifyListeners(event.type, event);
         }
@@ -620,11 +550,6 @@ public class SWTDayChooser extends Composite implements MouseListener, FocusList
             super(parent, style);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.swt.widgets.Control#computeSize(int, int, boolean)
-         */
         public Point computeSize(int wHint, int hHint, boolean changed) {
             if (wHint == SWT.DEFAULT) {
                 GC gc = new GC(this);
@@ -635,11 +560,6 @@ public class SWTDayChooser extends Composite implements MouseListener, FocusList
             return super.computeSize(wHint, hHint, changed);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.swt.widgets.Widget#checkSubclass()
-         */
         protected void checkSubclass() {
         }
     }

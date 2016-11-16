@@ -17,9 +17,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.talend.core.model.properties.ConnectionItem;
 import org.talend.metadata.managment.ui.wizard.AbstractForm;
 
-/**
- * DOC hwang class global comment. Detailled comment
- */
 public class MDMWizardPage extends WizardPage {
 
     private ConnectionItem connectionItem;
@@ -32,13 +29,6 @@ public class MDMWizardPage extends WizardPage {
 
     private boolean creation;
 
-    /**
-     * DOC Administrator MDMWizardPage constructor comment.
-     * 
-     * @param pageName
-     * @param title
-     * @param titleImage
-     */
     protected MDMWizardPage(ConnectionItem connectionItem, boolean isRepositoryObjectEditable, boolean creation,
             String[] existingNames) {
         super("Talend MDM"); //$NON-NLS-1$
@@ -49,11 +39,6 @@ public class MDMWizardPage extends WizardPage {
         this.setTitle("Talend MDM"); //$NON-NLS-1$
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
-     */
     @Override
     public void createControl(Composite parent) {
         mdmForm = new MDMForm(parent, connectionItem, existingNames, this, creation);
@@ -92,11 +77,6 @@ public class MDMWizardPage extends WizardPage {
         return mdmForm.getPassword();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.DialogPage#setVisible(boolean)
-     */
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);

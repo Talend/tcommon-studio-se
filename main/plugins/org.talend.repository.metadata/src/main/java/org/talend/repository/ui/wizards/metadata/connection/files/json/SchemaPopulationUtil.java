@@ -25,10 +25,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
 
-/**
- * created by cmeng on Jul 1, 2015 Detailled comment
- *
- */
 public class SchemaPopulationUtil {
 
     public static String getFilteredJsonPath(String jsonPath) {

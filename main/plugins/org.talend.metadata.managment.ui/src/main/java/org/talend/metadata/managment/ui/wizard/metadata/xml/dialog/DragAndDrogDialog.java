@@ -21,12 +21,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
-/**
- * DOC s class global comment. Detailled comment
- * 
- * $Id: DragAndDrogDialog.java,v 1.1 2008/03/10 09:52:38 xzhang Exp $
- * 
- */
 public class DragAndDrogDialog extends Dialog {
 
     public static final String CREATE_AS_SUBELEMENT = "sub-element"; //$NON-NLS-1$
@@ -52,16 +46,9 @@ public class DragAndDrogDialog extends Dialog {
         return value;
     }
 
-    /*
-     * (non-Javadoc) Method declared on Dialog.
-     */
     protected Control createDialogArea(Composite parent) {
         // create composite
         Composite composite = (Composite) super.createDialogArea(parent);
-        // composite.setLayout(new GridLayout());
-        // String[][] namevalues = new String[][] { { "Create as sub-element of target node", CREATE_AS_SUBELEMENT },
-        // { "Create as attribute of target node", CREATE_AS_ATTRIBUTE }, { "Add linker to target node", CREATE_AS_TEXT
-        // } };
 
         String[][] namevalues = null;
         if (hideAttr) {

@@ -25,9 +25,6 @@ import org.talend.cwm.helper.TableHelper;
 import org.talend.metadata.managment.ui.wizard.AbstractForm;
 import org.talend.repository.metadata.ui.wizards.form.AbstractExcelFileStepForm;
 
-/**
- * DOC yexiaowei class global comment. Detailled comment
- */
 public class ExcelFileWizardPage extends WizardPage {
 
     private ConnectionItem connectionItem;
@@ -44,14 +41,6 @@ public class ExcelFileWizardPage extends WizardPage {
 
     private ExcelSchemaBean bean;
 
-    /**
-     * DOC ocarbone LdifFileWizardPage constructor comment.
-     * 
-     * @param step
-     * @param connection
-     * @param isRepositoryObjectEditable
-     * @param existingNames
-     */
     public ExcelFileWizardPage(int step, ConnectionItem connectionItem, boolean isRepositoryObjectEditable,
             String[] existingNames, IMetadataContextModeManager contextModeManager, ExcelSchemaBean bean) {
         super("wizardPage"); //$NON-NLS-1$

@@ -24,9 +24,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-/**
- * DOC talend class global comment. Detailled comment
- */
 public class TalendHtmlModelUtil {
 
     private static String TAG_BODY = "body"; //$NON-NLS-1$

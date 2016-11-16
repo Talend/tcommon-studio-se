@@ -17,13 +17,6 @@ import org.talend.repository.model.RepositoryNode;
 
 abstract public class SubEmptyTopNodeContentProvider extends ProjectRepoAbstractContentProvider {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.viewer.content.ProjectRepoAbstractContentProvider#getProjectRepository(org.talend.repository
-     * .model.RepositoryNode)
-     */
     @Override
     protected ProjectRepositoryNode getProjectRepositoryNode(RepositoryNode element) {
         return ((ProjectRepositoryNode) element.getParent());

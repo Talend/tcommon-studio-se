@@ -22,10 +22,6 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
-/**
- * created by scorreia on Jul 3, 2012 Detailled comment
- * 
- */
 public class ResourceUtilTest {
 
     /**

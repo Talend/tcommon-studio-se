@@ -19,10 +19,6 @@ import org.talend.core.hadoop.HadoopConstants;
 import org.talend.core.service.IMRProcessService;
 import org.talend.core.service.IStormProcessService;
 
-/**
- * created by kongxiaohan on Sep 15, 2015 Detailled comment
- *
- */
 public class JobImageUtil {
 
     public static IImage getWizardIcon(String jobType, String framework) {

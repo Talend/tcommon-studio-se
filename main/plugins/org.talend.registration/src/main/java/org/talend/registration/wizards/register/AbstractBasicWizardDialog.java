@@ -37,9 +37,6 @@ import org.talend.core.ui.branding.IBrandingService;
 import org.talend.registration.ERepositoryImages;
 import org.talend.registration.i18n.Messages;
 
-/**
- * DOC zli class global comment. Detailled comment
- */
 public class AbstractBasicWizardDialog extends Dialog {
 
     private IWizard wizard;
@@ -54,15 +51,6 @@ public class AbstractBasicWizardDialog extends Dialog {
 
     public static final String REGISTER_TITLE = "Join the Talend community!";
 
-    // protected String emailStr;
-    //
-    // protected String countryStr;
-
-    /**
-     * DOC informix AbstractBasicWizardDialog constructor comment.
-     * 
-     * @param parentShell
-     */
     public AbstractBasicWizardDialog(Shell parentShell, IWizard wizard) {
         super(parentShell);
         this.wizard = wizard;
@@ -214,11 +202,6 @@ public class AbstractBasicWizardDialog extends Dialog {
             return size;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.swt.widgets.Widget#dispose()
-         */
         @Override
         public void dispose() {
             if (img != null) {

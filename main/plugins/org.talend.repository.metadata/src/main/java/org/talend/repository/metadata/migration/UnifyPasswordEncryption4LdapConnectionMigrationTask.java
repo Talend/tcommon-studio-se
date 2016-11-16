@@ -26,10 +26,6 @@ import org.talend.core.model.properties.LDAPSchemaConnectionItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 
-/**
- * created by ggu on Aug 29, 2014 Detailled comment
- *
- */
 public class UnifyPasswordEncryption4LdapConnectionMigrationTask extends AbstractItemMigrationTask {
 
     ProxyRepositoryFactory factory = ProxyRepositoryFactory.getInstance();
@@ -41,11 +37,6 @@ public class UnifyPasswordEncryption4LdapConnectionMigrationTask extends Abstrac
         return toReturn;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.migration.AbstractItemMigrationTask#execute(org .talend.core.model.properties.Item)
-     */
     @Override
     public ExecutionResult execute(Item item) {
         if (item instanceof LDAPSchemaConnectionItem) {
@@ -69,11 +60,6 @@ public class UnifyPasswordEncryption4LdapConnectionMigrationTask extends Abstrac
         return ExecutionResult.NOTHING_TO_DO;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.migration.IProjectMigrationTask#getOrder()
-     */
     @Override
     public Date getOrder() {
         GregorianCalendar gc = new GregorianCalendar(2014, 8, 29, 12, 0, 0);

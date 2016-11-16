@@ -30,11 +30,6 @@ import org.talend.core.model.properties.Property;
 import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.repository.items.importexport.handlers.model.ImportItem;
 
-/**
- * created by cmeng on Jan 18, 2016
- * Detailled comment
- *
- */
 @SuppressWarnings("nls")
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ GlobalServiceRegister.class })

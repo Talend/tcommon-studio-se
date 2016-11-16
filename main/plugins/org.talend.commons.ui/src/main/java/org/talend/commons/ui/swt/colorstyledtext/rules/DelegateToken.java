@@ -16,12 +16,6 @@ import org.eclipse.jface.util.Assert;
 import org.talend.commons.ui.swt.colorstyledtext.jedit.Rule;
 import org.talend.commons.ui.swt.colorstyledtext.jedit.Type;
 
-/**
- * DOC nrousseau class global comment. Detailled comment <br/>
- * 
- * $Id: DelegateToken.java 7038 2007-11-15 14:05:48Z plegall $
- * 
- */
 public class DelegateToken extends CToken {
 
     protected Rule delegate;

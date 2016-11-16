@@ -48,12 +48,6 @@ import org.talend.repository.model.IRepositoryNode.EProperties;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * DOC smallet class global comment. Detailled comment <br/>
- * 
- * $Id: RepositoryDoubleClickAction.java 77219 2012-01-24 01:14:15Z mhirt $
- * 
- */
 public class RepoDoubleClickAction extends Action {
 
     private List<ITreeContextualAction> contextualsActions = new ArrayList<ITreeContextualAction>();
@@ -78,11 +72,6 @@ public class RepoDoubleClickAction extends Action {
         this.structuredViewer = structuredViewer;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jdt.ui.actions.SelectionDispatchAction#run(org.eclipse.jface.viewers.IStructuredSelection)
-     */
     @Override
     public void run() {
         ISelection selection = structuredViewer.getSelection();
@@ -97,20 +86,6 @@ public class RepoDoubleClickAction extends Action {
             node = node.getParent().getParent();
         }
 
-        // if ((node.getType() == ENodeType.SIMPLE_FOLDER || node.getType() == ENodeType.STABLE_SYSTEM_FOLDER ||
-        // node.getType() == ENodeType.SYSTEM_FOLDER)
-        // && !isLinkCDCNode(node)) {
-        // view.expand(node);
-        // view.getViewer().refresh();
-        // if (isSERVICES(node)) {
-        // ITreeContextualAction actionToRun = getAction(node);
-        // if (!(actionToRun == null)) {
-        // actionToRun.init((TreeViewer) getViewPart().getViewer(), (IStructuredSelection) selection);
-        // actionToRun.run();
-        // // showView();
-        // }
-        // }
-        // } else {
         ITreeContextualAction actionToRun = getAction(node);
         if (actionToRun != null) {
             actionToRun.init(null, (IStructuredSelection) selection);
@@ -120,12 +95,6 @@ public class RepoDoubleClickAction extends Action {
         }
     }
 
-    /**
-     * 
-     * ggu Comment method "isLinkCDCNode".
-     * 
-     * for cdc
-     */
     private boolean isLinkCDCNode(RepositoryNode node) {
         if (node != null) {
             if (ENodeType.STABLE_SYSTEM_FOLDER.equals(node.getType())) {

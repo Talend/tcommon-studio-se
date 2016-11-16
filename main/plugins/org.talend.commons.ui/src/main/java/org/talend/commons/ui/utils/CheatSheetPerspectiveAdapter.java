@@ -21,35 +21,16 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.internal.cheatsheets.views.CheatSheetView;
 import org.eclipse.ui.internal.cheatsheets.views.ViewUtilities;
 
-/**
- * DOC yyi class global comment. Detailled comment
- */
 public class CheatSheetPerspectiveAdapter extends PerspectiveAdapter {
 
-    /**
-     * CheatSheetPerspectiveAdapter constructor.
-     * 
-     */
     public CheatSheetPerspectiveAdapter() {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.PerspectiveAdapter#perspectivePreDeactivate(org.eclipse.ui.IWorkbenchPage,
-     * org.eclipse.ui.IPerspectiveDescriptor)
-     */
     @Override
     public void perspectivePreDeactivate(IWorkbenchPage page, IPerspectiveDescriptor perspective) {
         super.perspectivePreDeactivate(page, perspective);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.PerspectiveAdapter#perspectiveActivated(org.eclipse.ui.IWorkbenchPage,
-     * org.eclipse.ui.IPerspectiveDescriptor)
-     */
     @Override
     public void perspectiveActivated(IWorkbenchPage page, IPerspectiveDescriptor perspective) {
         // 1.if it is not DQ perspective, hide cheat sheet view.

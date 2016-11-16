@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.core.model.repository;
 
-/**
- * ggu class global comment. Detailled comment
- */
 public interface IRepositoryPrefConstants {
 
     public static final String MANUALLY_REFRESH = "Repository_Manually_Refresh"; //$NON-NLS-1$

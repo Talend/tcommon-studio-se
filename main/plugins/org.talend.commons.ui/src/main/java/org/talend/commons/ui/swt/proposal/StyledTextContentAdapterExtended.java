@@ -17,22 +17,11 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Control;
 import org.talend.commons.ui.runtime.swt.proposal.IControlContentAdapterExtended;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id: StyledTextContentAdapterExtended.java 7038 2007-11-15 14:05:48Z plegall $
- * 
- */
 public class StyledTextContentAdapterExtended extends StyledTextContentAdapter implements
         IControlContentAdapterExtended {
 
     private String filterValue;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.mapper.ui.proposal.expression.IControlContentAdapterExtended#getFilterValue()
-     */
     public String getFilterValue(Control control) {
         String controlContents = getControlContents(control);
         int cursorPosition = getCursorPosition(control);
@@ -58,25 +47,6 @@ public class StyledTextContentAdapterExtended extends StyledTextContentAdapter i
             return;
         } else {
             int remaingCharsOffset = 0;
-            // int nextSpaceIndex = -1;
-            // char[] separators = new char[] { ' ', '.', '\'', '"', '(', ')', '+' };
-            // for (int i = selection.x; i < controlContents.length(); i++) {
-            // if (ArrayUtils.contains(separators, controlContents.charAt(i))) {
-            // nextSpaceIndex = i;
-            // break;
-            // }
-            // }
-            // int nextCrIndex = controlContents.indexOf('\n', selection.x);
-            // if (filterValueLength == 0) {
-            // remaingCharsOffset = 0;
-            // } else if (nextSpaceIndex != -1 && (nextCrIndex != -1 && nextSpaceIndex < nextCrIndex || nextCrIndex ==
-            // -1)) {
-            // remaingCharsOffset = nextSpaceIndex - selection.x;
-            // } else if (nextCrIndex != -1) {
-            // remaingCharsOffset = nextCrIndex - 1 - selection.x;
-            // } else {
-            // remaingCharsOffset = controlContents.length() - selection.x;
-            // }
             styledText.replaceTextRange(selection.x - filterValueLength, filterValueLength + remaingCharsOffset, text);
         }
         int offsetCursor = selection.x - filterValueLength + text.length();
@@ -87,11 +57,6 @@ public class StyledTextContentAdapterExtended extends StyledTextContentAdapter i
         styledText.redraw();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.proposal.IControlContentAdapterExtended#setUsedFilterValue(java.lang.String)
-     */
     public void setUsedFilterValue(String filterValue) {
         this.filterValue = filterValue;
     }

@@ -17,9 +17,6 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.IImportWizard;
 import org.eclipse.ui.IWorkbench;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class ImportItemsWizard extends Wizard implements IImportWizard {
 
     private ImportItemsWizardPage mainPage;
@@ -28,23 +25,12 @@ public class ImportItemsWizard extends Wizard implements IImportWizard {
 
     private IStructuredSelection selection;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench,
-     * org.eclipse.jface.viewers.IStructuredSelection)
-     */
     @Override
     public void init(IWorkbench w, IStructuredSelection s) {
         this.workbench = w;
         this.selection = s;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.wizard.Wizard#addPages()
-     */
     @Override
     public void addPages() {
         super.addPages();
@@ -52,21 +38,11 @@ public class ImportItemsWizard extends Wizard implements IImportWizard {
         addPage(mainPage);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.wizard.Wizard#performCancel()
-     */
     @Override
     public boolean performCancel() {
         return mainPage.performCancel();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.wizard.Wizard#performFinish()
-     */
     @Override
     public boolean performFinish() {
         return mainPage.performFinish();

@@ -15,9 +15,6 @@ package org.talend.repository.items.importexport.wizard.models;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.repository.items.importexport.handlers.model.ImportItem;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class ItemImportNode extends ImportNode {
 
     public ItemImportNode(ImportItem itemRecord) {
@@ -45,11 +42,6 @@ public class ItemImportNode extends ImportNode {
         return sb.toString();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.items.importexport.ui.wizard.imports.models.ImportNode#getDisplayLabel()
-     */
     @Override
     public String getDisplayLabel() {
         return getItemRecord().getLabel();

@@ -17,12 +17,6 @@ import java.util.Set;
 
 import org.eclipse.jface.text.rules.IWordDetector;
 
-/**
- * DOC nrousseau class global comment. Detailled comment <br/>
- * 
- * $Id: ColoringWordDetector.java 7038 2007-11-15 14:05:48Z plegall $
- * 
- */
 public class ColoringWordDetector implements IWordDetector {
 
     protected Set<Integer> charMap = new HashSet<Integer>();

@@ -23,12 +23,6 @@ import org.talend.core.model.metadata.MetadataSchema;
 import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.core.ui.metadata.editor.MetadataEmfTableEditor;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public class MetadataEmfExportXmlCommand extends Command {
 
     private String dbmsId = null;
@@ -37,14 +31,6 @@ public class MetadataEmfExportXmlCommand extends Command {
 
     private MetadataEmfTableEditor extendedTableModel;
 
-    /**
-     * DOC amaumont MetadataPasteCommand constructor comment.
-     * 
-     * @param extendedTableModel
-     * @param extendedTable
-     * @param validAssignableType
-     * @param indexStartAdd
-     */
     public MetadataEmfExportXmlCommand(MetadataEmfTableEditor extendedTableModel, File file) {
         super();
         this.file = file;
@@ -58,11 +44,6 @@ public class MetadataEmfExportXmlCommand extends Command {
         this.dbmsId = dbmsId;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.command.CommonCommand#execute()
-     */
     @Override
     public void execute() {
         try {

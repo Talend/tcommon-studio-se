@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.designer.maven.model;
 
-/**
- * created by ggu on 22 Jan 2015 Detailled comment
- *
- */
 @SuppressWarnings("nls")
 public class MavenSystemFolders {
 

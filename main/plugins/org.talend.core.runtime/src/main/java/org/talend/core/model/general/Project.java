@@ -24,12 +24,6 @@ import org.talend.core.model.properties.User;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.repository.ProjectManager;
 
-/**
- * DOC smallet class global comment. Detailled comment <br/>
- * 
- * $Id: Project.java 46606 2010-08-11 08:33:54Z cli $
- * 
- */
 public class Project {
 
     private org.talend.core.model.properties.Project project;
@@ -228,11 +222,6 @@ public class Project {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -241,11 +230,6 @@ public class Project {
         return result;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

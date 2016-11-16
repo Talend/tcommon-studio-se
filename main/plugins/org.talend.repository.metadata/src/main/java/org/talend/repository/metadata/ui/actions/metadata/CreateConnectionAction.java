@@ -84,11 +84,6 @@ public class CreateConnectionAction extends AbstractCreateAction {
         this.setImageDescriptor(defaultImage);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.action.Action#run()
-     */
     @Override
     public void doRun() {
         // RepositoryNode metadataNode = getViewPart().getRoot().getChildren().get(6);
@@ -236,11 +231,6 @@ public class CreateConnectionAction extends AbstractCreateAction {
         setEnabled(true);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.actions.AContextualView#getClassForDoubleClick()
-     */
     @Override
     public Class getClassForDoubleClick() {
         return DatabaseConnectionItem.class;

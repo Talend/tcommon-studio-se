@@ -32,12 +32,6 @@ import org.talend.commons.ui.runtime.swt.tableviewer.selection.ITableColumnSelec
 import org.talend.commons.ui.runtime.swt.tableviewer.sort.IColumnSortedListener;
 import org.talend.commons.utils.data.bean.IBeanPropertyAccessors;
 
-/**
- * zhangyi class global comment. Detailled comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
- * 
- */
 public class CheckColumnSelectionListener implements ITableColumnSelectionListener {
 
     private TableViewerCreatorColumnNotModifiable tableViewerCreatorColumn;
@@ -56,119 +50,49 @@ public class CheckColumnSelectionListener implements ITableColumnSelectionListen
         this.checked = true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.commons.ui.swt.tableviewer.selection.ITableColumnSelectionListener#addColumnSortedListener(org.talend
-     * .commons.ui.swt.tableviewer.sort.IColumnSortedListener)
-     */
     @Override
     public void addColumnSortedListener(IColumnSortedListener columnSortedListener) {
         // TODO Auto-generated method stub
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.tableviewer.selection.ITableColumnSelectionListener#getTableViewerCreator()
-     */
     @Override
     public TableViewerCreatorNotModifiable getTableViewerCreator() {
         // TODO Auto-generated method stub
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.tableviewer.selection.ITableColumnSelectionListener#getTableViewerCreatorColumn()
-     */
     @Override
     public TableViewerCreatorColumnNotModifiable getTableViewerCreatorColumn() {
         // TODO Auto-generated method stub
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.commons.ui.swt.tableviewer.selection.ITableColumnSelectionListener#removeColumnSortedListener(org.
-     * talend.commons.ui.swt.tableviewer.sort.IColumnSortedListener)
-     */
     @Override
     public void removeColumnSortedListener(IColumnSortedListener columnSortedListener) {
         // TODO Auto-generated method stub
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.commons.ui.swt.tableviewer.selection.ITableColumnSelectionListener#setTableViewerCreator(org.talend
-     * .commons.ui.swt.tableviewer.TableViewerCreator)
-     */
     @Override
     public void setTableViewerCreator(TableViewerCreatorNotModifiable tableViewerCreator) {
         this.tableViewerCreator = tableViewerCreator;
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.commons.ui.swt.tableviewer.selection.ITableColumnSelectionListener#setTableViewerCreatorColumn(org
-     * .talend.commons.ui.swt.tableviewer.TableViewerCreatorColumn)
-     */
     @Override
     public void setTableViewerCreatorColumn(TableViewerCreatorColumnNotModifiable tableViewerCreatorColumn) {
         this.tableViewerCreatorColumn = tableViewerCreatorColumn;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.events.SelectionListener#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
-     */
     @Override
     public void widgetDefaultSelected(SelectionEvent e) {
         // TODO Auto-generated method stub
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.events.SelectionListener#widgetSelected(org.eclipse.swt.events.SelectionEvent)
-     */
     @Override
     public void widgetSelected(SelectionEvent e) {
-        // if (tableViewerCreator != null && tableViewerCreator.isReadOnly()) {
-        // return;
-        // }
-        // TableItem items[] = tableViewerCreator.getTable().getItems();
-        // String columnId = tableViewerCreatorColumn.getId();
-        // boolean modified = false;
-        // for (TableItem tableItem : items) {
-        // tableViewerCreator.getCellModifier().modify(tableItem, columnId, checked ? false : true);
-        // if (!modified) {
-        // modified = true;
-        // }
-        // }
-        // if (modified) {
-        // if (checked) {
-        // checked = false;
-        // } else {
-        // checked = true;
-        // }
-        // tableViewerCreatorColumn.getTableColumn().setImage(
-        // checked ? ImageProvider.getImage(EImage.CHECKED_ICON) : ImageProvider.getImage(EImage.UNCHECKED_ICON));
-        // }
-
         if (tableViewerCreator != null && tableViewerCreator.isReadOnly()) {
             return;
         }

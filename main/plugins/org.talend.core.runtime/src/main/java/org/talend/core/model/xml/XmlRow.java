@@ -15,12 +15,6 @@ package org.talend.core.model.xml;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * DOC chuger class global comment. Detailled comment <br/>
- * 
- * $Id: XmlRow.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
- */
 public class XmlRow {
 
     private List<XmlField> fields;

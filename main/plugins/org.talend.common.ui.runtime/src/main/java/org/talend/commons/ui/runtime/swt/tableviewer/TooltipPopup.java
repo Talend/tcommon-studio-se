@@ -22,12 +22,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id: TooltipPopup.java 7038 2007-11-15 14:05:48Z plegall $
- * 
- */
 public final class TooltipPopup {
 
     private Popup popup;
@@ -41,13 +35,6 @@ public final class TooltipPopup {
         init(parent);
     }
 
-    /**
-     * 
-     * DOC amaumont DraggingInfosPopup class global comment. Detailled comment <br/>
-     * 
-     * $Id: TooltipPopup.java 7038 2007-11-15 14:05:48Z plegall $
-     * 
-     */
     private class Popup extends PopupDialog {
 
         private Composite mainComposite;
@@ -112,11 +99,6 @@ public final class TooltipPopup {
             }
         }
 
-        /**
-         * DOC amaumont Comment method "setVisible".
-         * 
-         * @param visible
-         */
         public void setVisible(boolean visible) {
             if (visible != this.visible) {
                 this.visible = visible;
@@ -130,11 +112,6 @@ public final class TooltipPopup {
 
     }
 
-    /**
-     * DOC amaumont Comment method "init".
-     * 
-     * @param parent
-     */
     private void init(Shell parent) {
         popup = new Popup(parent);
         popup.open();
@@ -145,30 +122,14 @@ public final class TooltipPopup {
         return new TooltipPopup(parent);
     }
 
-    /**
-     * DOC amaumont Comment method "getBounds".
-     * 
-     * @return
-     */
     public Rectangle getBounds() {
         return popup.getShell().getBounds();
     }
 
-    /**
-     * DOC amaumont Comment method "setVisible".
-     * 
-     * @param b
-     */
     public void setVisible(boolean visible) {
         popup.setVisible(visible);
     }
 
-    /**
-     * DOC amaumont Comment method "setCursorPosition".
-     * 
-     * @param x
-     * @param y
-     */
     public void setCursorPosition(int x, int y) {
         this.cursorPosition = new Point(x, y);
         // System.out.println("setCursorPosition");

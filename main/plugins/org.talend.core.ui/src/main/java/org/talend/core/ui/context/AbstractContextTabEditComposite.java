@@ -19,27 +19,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ICoreService;
 
-/**
- * DOC YeXiaowei class global comment. Detailled comment <br/>
- * 
- */
 public abstract class AbstractContextTabEditComposite extends Composite {
 
-    /**
-     * DOC YeXiaowei AbstractContextTabEditComposite constructor comment.
-     * 
-     * @param parent
-     * @param style
-     */
     public AbstractContextTabEditComposite(Composite parent, int style) {
         super(parent, style);
     }
 
-    /**
-     * 
-     * cli Comment method "getPreferenceStore".
-     * 
-     */
     public IPreferenceStore getPreferenceStore() {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreService.class)) {
             ICoreService service = (ICoreService) GlobalServiceRegister.getDefault().getService(ICoreService.class);

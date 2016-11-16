@@ -91,9 +91,6 @@ import org.talend.repository.mdm.util.MDMUtil;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.ui.wizards.metadata.connection.files.xml.TreePopulator;
 
-/**
- * DOC wchen class global comment. Detailled comment
- */
 public class MdmReceiveForm extends AbstractMDMFileStepForm {
 
     private static Logger log = Logger.getLogger(MDMXSDFileForm.class);
@@ -612,11 +609,6 @@ public class MdmReceiveForm extends AbstractMDMFileStepForm {
         // }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
-     */
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);

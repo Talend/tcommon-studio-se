@@ -44,9 +44,6 @@ import org.talend.model.emf.CwmResource;
 import org.talend.utils.io.FilesUtils;
 import orgomg.cwm.objectmodel.core.Package;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class ConnectionUUIDHelperTest {
 
     protected static final String TEST_FOLDER = "resources/test";

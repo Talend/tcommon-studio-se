@@ -23,9 +23,6 @@ import org.talend.metadata.managment.ui.utils.OtherConnectionContextUtils;
 import org.talend.metadata.managment.ui.utils.OtherConnectionContextUtils.EParamName;
 import org.talend.metadata.managment.ui.wizard.AbstractForm;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public abstract class AbstractWSDLSchemaStepForm extends AbstractForm {
 
     protected MetadataTable metadataTable;

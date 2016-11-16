@@ -31,9 +31,6 @@ import org.talend.core.model.process.INode;
 import org.talend.core.ui.CoreUIPlugin;
 import org.talend.core.utils.TalendQuoteUtils;
 
-/**
- * DOC hwang class global comment. Detailled comment
- */
 public class RepositoryChangeMetadataForSAPCommand extends Command {
 
     private INode node;
@@ -49,9 +46,6 @@ public class RepositoryChangeMetadataForSAPCommand extends Command {
     private SAPFunctionUnit functionUnit;
 
     /**
-     * 
-     * hwang RepositoryChangeMetadataForSAPCommand constructor comment.
-     * 
      * only for DND
      */
     public RepositoryChangeMetadataForSAPCommand(INode node, String propName, Object propValue, IMetadataTable newOutputMetadata) {

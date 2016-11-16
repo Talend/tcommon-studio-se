@@ -17,12 +17,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.widgets.Composite;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id: MapperColorStyledText.java 898 2006-12-07 11:06:17Z amaumont $
- * 
- */
 public class UnnotifiableColorStyledText extends ColorStyledText {
 
     public UnnotifiableColorStyledText(Composite parent, int style, IPreferenceStore store, String languageMode) {

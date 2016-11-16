@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.core.model.metadata.types;
 
-/**
- * created by hcyi on Aug 19, 2016 Detailled comment
- *
- */
 public class AutoConversionType {
 
     private String sourceDataType;

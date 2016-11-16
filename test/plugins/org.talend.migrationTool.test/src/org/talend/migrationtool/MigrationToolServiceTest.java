@@ -31,9 +31,6 @@ import org.talend.core.model.properties.MigrationTask;
 import org.talend.core.model.properties.Project;
 import org.talend.core.model.utils.MigrationUtil;
 
-/**
- * DOC ycbai class global comment. Detailled comment
- */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ VersionUtils.class })
 public class MigrationToolServiceTest {

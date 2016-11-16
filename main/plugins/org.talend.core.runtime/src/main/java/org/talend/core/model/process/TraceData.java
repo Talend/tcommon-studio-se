@@ -14,9 +14,6 @@ package org.talend.core.model.process;
 
 import java.util.LinkedHashMap;
 
-/**
- * created by wchen on 2014-1-7 Detailled comment TraceDataBean for UI
- */
 public class TraceData {
 
     private static final long serialVersionUID = -4580437449518099406L;

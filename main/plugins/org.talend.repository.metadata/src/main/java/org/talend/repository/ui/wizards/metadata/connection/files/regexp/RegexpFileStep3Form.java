@@ -541,11 +541,6 @@ public class RegexpFileStep3Form extends AbstractRegexpFileStepForm {
     public void saveMetaData() {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
-     */
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);

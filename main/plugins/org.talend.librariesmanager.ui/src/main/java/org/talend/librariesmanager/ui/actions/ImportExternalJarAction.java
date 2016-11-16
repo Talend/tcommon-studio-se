@@ -59,11 +59,6 @@ public class ImportExternalJarAction extends Action {
         this.setImageDescriptor(ImageProvider.getImageDesc(ECoreImage.IMPORT_JAR));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.action.Action#run()
-     */
     @Override
     public void run() {
 
@@ -71,8 +66,6 @@ public class ImportExternalJarAction extends Action {
     }
 
     /**
-     * DOC sgandon Comment method "handleImportJarDialog".
-     * 
      * @param shell, to display the dialog box
      * @return, list of imported file names, may be empty
      */

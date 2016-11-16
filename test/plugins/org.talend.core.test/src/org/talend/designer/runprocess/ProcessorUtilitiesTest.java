@@ -28,9 +28,6 @@ import org.talend.core.model.process.JobInfo;
 import org.talend.core.model.runprocess.shadow.ObjectElementParameter;
 import org.talend.core.runtime.process.LastGenerationInfo;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class ProcessorUtilitiesTest {
 
     LastGenerationInfo generationInfo;

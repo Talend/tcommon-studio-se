@@ -17,10 +17,6 @@ import java.util.List;
 
 import org.talend.core.model.metadata.builder.connection.MDMConnection;
 
-/**
- * created by wchen on Apr 15, 2015 Detailled comment
- *
- */
 public abstract class AbsMdmConnectionHelper {
 
     public abstract Object checkConnection(String url, String universe, String userName, String password) throws Exception;

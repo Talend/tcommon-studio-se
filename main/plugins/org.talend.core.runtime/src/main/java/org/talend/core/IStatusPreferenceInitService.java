@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.core;
 
-/**
- * DOC guanglong.du class global comment. Detailled comment
- */
 public interface IStatusPreferenceInitService extends IService {
 
     public void initStatusPreference();

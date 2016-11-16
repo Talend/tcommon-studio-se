@@ -15,10 +15,6 @@ package org.talend.presentation.onboarding.ui.runtimedata;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 
-/**
- * created by cmeng on Sep 11, 2015 Detailled comment
- *
- */
 public class OnBoardingPresentationData {
 
     public static final String DIRECTION_LEFT_SIDE = "LEFT_SIDE"; //$NON-NLS-1$

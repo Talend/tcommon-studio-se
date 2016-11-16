@@ -20,10 +20,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-/**
- * created by wchen on 2014-4-16 Detailled comment
- * 
- */
 public class ElementParameterParserTest {
 
     @Test

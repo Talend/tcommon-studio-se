@@ -59,11 +59,6 @@ public class MissingJarBundleFileWrapper extends BundleFileWrapper {
         this.jarPath = jarPath;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.osgi.storage.bundlefile.BundleFileWrapper#getFile(java.lang.String, boolean)
-     */
     @Override
     public File getFile(String path, boolean nativeCode) {
         if (resolvedBundleFile == null) {
@@ -75,22 +70,12 @@ public class MissingJarBundleFileWrapper extends BundleFileWrapper {
         return null;
     }
 
-    /**
-     * DOC sgandon Comment method "createResolvedBundleFile".
-     * 
-     * @param jarFile
-     */
     private void createResolvedBundleFile(File jarFile) {
         resolvedBundleFile = generation.getBundleInfo().getStorage().createBundleFile(jarFile, generation, false, false);
         MissingJarServices
                 .logDebugInfo("MissingJarBundleFileWrapper resolved :" + generation.getRevision().getSymbolicName() + "/" + jarPath + "(" + jarFile.getAbsolutePath() + ")"); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$                     
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.osgi.storage.bundlefile.BundleFileWrapper#getEntry(java.lang.String)
-     */
     @Override
     public BundleEntry getEntry(String path) {
         if (resolvedBundleFile == null) {
@@ -102,11 +87,6 @@ public class MissingJarBundleFileWrapper extends BundleFileWrapper {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.osgi.storage.bundlefile.BundleFileWrapper#getEntryPaths(java.lang.String)
-     */
     @Override
     public Enumeration<String> getEntryPaths(String path) {
         if (resolvedBundleFile == null) {
@@ -118,11 +98,6 @@ public class MissingJarBundleFileWrapper extends BundleFileWrapper {
         return EMPTY_STRING_ENUM;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.osgi.storage.bundlefile.BundleFileWrapper#getEntryPaths(java.lang.String, boolean)
-     */
     @Override
     public Enumeration<String> getEntryPaths(String path, boolean recurse) {
         if (resolvedBundleFile == null) {
@@ -134,12 +109,6 @@ public class MissingJarBundleFileWrapper extends BundleFileWrapper {
         return EMPTY_STRING_ENUM;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.osgi.storage.bundlefile.BundleFile#getResourceURL(java.lang.String,
-     * org.eclipse.osgi.container.Module, int)
-     */
     @Override
     public URL getResourceURL(String path, Module hostModule, int index) {
         if (resolvedBundleFile == null) {
@@ -151,9 +120,6 @@ public class MissingJarBundleFileWrapper extends BundleFileWrapper {
         return null;
     }
 
-    /**
-     * DOC sgandon Comment method "resolveMissingJarBundleFile".
-     */
     void resolveMissingJarBundleFile() {
         File jarFile = lookForMissingJar(jarPath.substring(0, jarPath.length() - 1), generation, true);
         if (jarFile != null && jarFile.exists()) {

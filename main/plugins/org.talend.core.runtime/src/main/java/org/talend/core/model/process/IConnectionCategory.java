@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.core.model.process;
 
-/**
- * DOC nrousseau class global comment. Detailled comment <br/>
- * 
- */
 public interface IConnectionCategory {
 
     /**

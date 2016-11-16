@@ -35,13 +35,6 @@ public class RecycleBinContentProvider extends ProjectRepoDirectChildrenNodeCont
 
     BinRepositoryNode binRepositoryNode;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.viewer.content.ProjectRepoChildrenNodeContentProvider#getTopLevelNodeFromProjectRepositoryNode
-     * (org.talend.repository.model.ProjectRepositoryNode)
-     */
     @Override
     protected RepositoryNode getTopLevelNodeFromProjectRepositoryNode(ProjectRepositoryNode projectRepositoryNode) {
         if (binRepositoryNode == null) {
@@ -50,11 +43,6 @@ public class RecycleBinContentProvider extends ProjectRepoDirectChildrenNodeCont
         return binRepositoryNode;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.viewer.content.SingleTopLevelContentProvider#getChildren(java.lang.Object)
-     */
     @Override
     public Object[] getChildren(Object element) {
         if (element instanceof BinRepositoryNode) {
@@ -66,13 +54,6 @@ public class RecycleBinContentProvider extends ProjectRepoDirectChildrenNodeCont
         return super.getChildren(element);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.viewer.content.FolderListenerSingleTopContentProvider#addResourceVisitor(org.eclipse.ui
-     * .navigator.CommonViewer)
-     */
     @Override
     protected void addResourceVisitor(CommonViewer v) {
         if (v == null) {
@@ -98,12 +79,6 @@ public class RecycleBinContentProvider extends ProjectRepoDirectChildrenNodeCont
 
     private DirectChildrenNodeVisitor visitor;
 
-    /**
-     * DOC sgandon class global comment. Detailled comment <br/>
-     * 
-     * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
-     * 
-     */
     private final class DirectChildrenNodeVisitor extends RunnableResourceVisitor {
 
         @Override

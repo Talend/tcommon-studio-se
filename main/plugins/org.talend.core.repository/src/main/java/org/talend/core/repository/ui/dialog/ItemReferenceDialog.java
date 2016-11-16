@@ -31,9 +31,6 @@ import org.eclipse.swt.widgets.TreeColumn;
 import org.talend.core.repository.i18n.Messages;
 import org.talend.core.repository.model.ItemReferenceBean;
 
-/**
- * DOC ycbai class global comment. Detailled comment
- */
 public class ItemReferenceDialog extends Dialog {
 
     public static int OK_ID = IDialogConstants.OK_ID;

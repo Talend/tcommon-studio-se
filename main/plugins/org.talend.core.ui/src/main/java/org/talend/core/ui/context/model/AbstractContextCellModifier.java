@@ -20,9 +20,6 @@ import org.talend.core.model.process.IContextParameter;
 import org.talend.core.ui.context.AbstractContextTabEditComposite;
 import org.talend.core.ui.context.IContextModelManager;
 
-/**
- * cli class global comment. Detailled comment.
- */
 public abstract class AbstractContextCellModifier implements ICellModifier {
 
     protected boolean repositoryFlag = false;

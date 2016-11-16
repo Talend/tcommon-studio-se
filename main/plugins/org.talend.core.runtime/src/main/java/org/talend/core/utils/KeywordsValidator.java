@@ -27,9 +27,6 @@ import org.talend.commons.ui.swt.colorstyledtext.jedit.Modes;
 import org.talend.core.language.ECodeLanguage;
 import org.talend.core.language.LanguageManager;
 
-/**
- * DOC hcw class global comment. Detailled comment
- */
 public class KeywordsValidator {
 
     private static Map<ECodeLanguage, Set<String>> keywords = new HashMap<ECodeLanguage, Set<String>>();

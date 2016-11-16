@@ -43,9 +43,6 @@ import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 @Deprecated
 public final class UpdateContextReferenceHelper {
 
@@ -53,7 +50,6 @@ public final class UpdateContextReferenceHelper {
      * only update tRunJob component.
      * 
      * the function has moved to UpdateContextParameterCommand for update manager(bug 3993).
-     * 
      */
     @Deprecated
     public static synchronized void updateJobContextReference(JobContextManager curRepositoryManager, ContextItem curContextItem) {

@@ -60,8 +60,6 @@ import org.talend.core.runtime.process.TalendProcessArgumentConstant;
 import org.talend.designer.runprocess.IRunProcessService;
 
 /**
- * DOC ggu class global comment. Detailled comment
- * 
  * most codes are copied from @see ExecutePomAction. just in order to set the debug is in foreground.
  */
 @SuppressWarnings("restriction")
@@ -334,11 +332,6 @@ public class MavenCommandLauncher {
         }
     }
 
-    /**
-     * 
-     * created by ggu on 16 Mar 2015 Detailled comment
-     *
-     */
     static class TalendLauncherWaiter implements IDebugEventSetListener {
 
         private ILaunchConfiguration launchConfig;
@@ -351,11 +344,6 @@ public class MavenCommandLauncher {
             DebugPlugin.getDefault().addDebugEventListener(this);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.debug.core.IDebugEventSetListener#handleDebugEvents(org.eclipse.debug.core.DebugEvent[])
-         */
         @Override
         public void handleDebugEvents(DebugEvent[] events) {
             for (DebugEvent event : events) {

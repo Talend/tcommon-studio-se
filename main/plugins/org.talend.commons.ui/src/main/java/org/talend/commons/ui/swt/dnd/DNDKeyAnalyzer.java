@@ -15,12 +15,6 @@ package org.talend.commons.ui.swt.dnd;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTargetEvent;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id: DNDKeyAnalyzer.java 7038 2007-11-15 14:05:48Z plegall $
- * 
- */
 public class DNDKeyAnalyzer {
 
     private boolean ctrlPressed;
@@ -32,12 +26,6 @@ public class DNDKeyAnalyzer {
         analyze(event);
     }
 
-    /**
-     * DOC amaumont Comment method "analyze".
-     * 
-     * @param event
-     * @param mapperManager
-     */
     private void analyze(DropTargetEvent event) {
         if ((event.detail & DND.DROP_COPY) != 0) { // Ctrl key
             // System.out.println("Ctrl key");

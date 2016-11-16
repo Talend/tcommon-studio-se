@@ -64,13 +64,7 @@ public class XPathProposalProvider implements IContentProposalProvider {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.fieldassist.IContentProposalProvider#getProposals(java.lang.String, int)
-     */
     public IContentProposal[] getProposals(String contents, int position) {
-
         int nodeFieldMax = 500;
         int nodeLoopMax = 3000;
         int nodeLoopNumberLimit = 10;

@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.core.model.process.node;
 
-/**
- * cli class global comment. Detailled comment
- */
 public interface IExternalMapEntry {
 
     public String getName();

@@ -17,36 +17,16 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
 
-/**
- * DOC qiang.zhang class global comment. Detailled comment <br/>
- * 
- */
 public class FileCellEditor extends DialogCellEditor {
 
-    /**
-     * DOC qiang.zhang FileCellEditor constructor comment.
-     * 
-     * @param parent
-     */
     public FileCellEditor(Composite parent) {
         super(parent);
     }
 
-    /**
-     * DOC qiang.zhang FileCellEditor constructor comment.
-     * 
-     * @param parent
-     * @param style
-     */
     public FileCellEditor(Composite parent, int style) {
         super(parent, style);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.DialogCellEditor#openDialogBox(org.eclipse.swt.widgets.Control)
-     */
     @Override
     protected Object openDialogBox(Control cellEditorWindow) {
         FileDialog dialog = new FileDialog(cellEditorWindow.getShell());

@@ -216,12 +216,6 @@ public class LabelledCombo {
         }
     }
 
-    /**
-     * DOC YeXiaowei Comment method "layoutWidgets".
-     * 
-     * @param horizontalSpan
-     * @param isFill
-     */
     private void layoutWidgets(final int horizontalSpan, final boolean isFill) {
         label.setLayoutData(new GridData());
 
@@ -235,14 +229,7 @@ public class LabelledCombo {
         combo.setLayoutData(gridData);
     }
 
-    /**
-     * 
-     * DOC YeXiaowei Comment method "hideWidgets".
-     * 
-     * @param hide
-     */
     public void setHideWidgets(final boolean hide) {
-
         GridData dataLabel = (GridData) label.getLayoutData();
         dataLabel.exclude = hide;
         label.setLayoutData(dataLabel);
@@ -410,11 +397,6 @@ public class LabelledCombo {
         return label.getText();
     }
 
-    /**
-     * DOC ocarbone Comment method "setReadOnly".
-     * 
-     * @param b
-     */
     public void setReadOnly(boolean visible) {
         label.setEnabled(true);
         combo.setEnabled(!visible);

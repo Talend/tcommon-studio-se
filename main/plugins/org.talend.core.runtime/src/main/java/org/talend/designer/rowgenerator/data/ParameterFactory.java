@@ -18,17 +18,8 @@ import java.util.regex.PatternSyntaxException;
 
 import org.talend.commons.exception.ExceptionHandler;
 
-/**
- * class global comment. Detailled comment <br/>
- * 
- * $Id: ParameterFactory.java,v 1.6 2007/01/31 05:20:51 pub Exp $
- * 
- */
 public class ParameterFactory {
 
-    /**
-     * 
-     */
     private static final String PARAMETER_TYPE_REGEX = "(^[^\\s^\\(]+)(\\s|\\()"; //$NON-NLS-1$
 
     public static final String PARAMETER_TYPE_STRING = "string"; //$NON-NLS-1$

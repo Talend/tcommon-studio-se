@@ -26,9 +26,6 @@ import org.talend.core.repository.ui.actions.DeleteActionCache;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IRepositoryNode;
 
-/**
- * DOC ycbai class global comment. Detailled comment
- */
 public abstract class AbstractCheckDeleteItemReference implements ICheckDeleteItemReference {
 
     protected IProxyRepositoryFactory factory = ProxyRepositoryFactory.getInstance();

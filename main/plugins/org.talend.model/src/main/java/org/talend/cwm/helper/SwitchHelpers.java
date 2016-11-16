@@ -57,13 +57,6 @@ public final class SwitchHelpers {
 
     public static final orgomg.cwm.resource.relational.util.RelationalSwitch<PrimaryKey> PRIMARY_KEY_SWITCH = new orgomg.cwm.resource.relational.util.RelationalSwitch<PrimaryKey>() {
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * orgomg.cwm.resource.relational.util.RelationalSwitch#casePrimaryKey(orgomg.cwm.resource.relational.PrimaryKey
-         * )
-         */
         @Override
         public PrimaryKey casePrimaryKey(PrimaryKey object) {
             return object;
@@ -73,13 +66,6 @@ public final class SwitchHelpers {
 
     public static final orgomg.cwm.resource.relational.util.RelationalSwitch<ForeignKey> FOREIGN_KEY_SWITCH = new orgomg.cwm.resource.relational.util.RelationalSwitch<ForeignKey>() {
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * orgomg.cwm.resource.relational.util.RelationalSwitch#caseForeignKey(orgomg.cwm.resource.relational.ForeignKey
-         * )
-         */
         @Override
         public ForeignKey caseForeignKey(ForeignKey object) {
             return object;
@@ -169,12 +155,6 @@ public final class SwitchHelpers {
 
     public static final SoftwaredeploymentSwitch<TdSoftwareSystem> TDSOFTWARE_SYSTEM_SWITCH = new SoftwaredeploymentSwitch<TdSoftwareSystem>() {
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @seeorg.talend.cwm.softwaredeployment.util.SoftwaredeploymentSwitch#caseTdSoftwareSystem(org.talend.cwm.
-         * softwaredeployment.TdSoftwareSystem)
-         */
         @Override
         public TdSoftwareSystem caseTdSoftwareSystem(TdSoftwareSystem object) {
             return object;
@@ -184,13 +164,6 @@ public final class SwitchHelpers {
 
     public static final orgomg.cwm.foundation.softwaredeployment.util.SoftwaredeploymentSwitch<Component> COMPONENT_SWITCH = new orgomg.cwm.foundation.softwaredeployment.util.SoftwaredeploymentSwitch<Component>() {
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * orgomg.cwm.foundation.softwaredeployment.util.SoftwaredeploymentSwitch#caseComponent(orgomg.cwm.foundation
-         * .softwaredeployment.Component)
-         */
         @Override
         public Component caseComponent(Component object) {
             return object;
@@ -200,13 +173,6 @@ public final class SwitchHelpers {
 
     public static final ConnectionSwitch<MetadataTable> METADATA_TABLE_SWITCH = new ConnectionSwitch<MetadataTable>() {
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.talend.core.model.metadata.builder.connection.util.ConnectionSwitch#caseMetadataTable(org.talend.core
-         * .model.metadata.builder.connection.MetadataTable)
-         */
         @Override
         public MetadataTable caseMetadataTable(MetadataTable object) {
             return object;

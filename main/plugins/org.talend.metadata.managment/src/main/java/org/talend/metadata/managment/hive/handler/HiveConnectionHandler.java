@@ -25,10 +25,6 @@ import org.talend.core.model.metadata.IMetadataConnection;
 import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.metadata.managment.connection.manager.HiveConnectionManager;
 
-/**
- * created by xqliu on 2013-11-1 Detailled comment
- * 
- */
 public class HiveConnectionHandler {
 
     private static Logger log = Logger.getLogger(HiveConnectionHandler.class);
@@ -41,38 +37,18 @@ public class HiveConnectionHandler {
 
     private Map<String, String> hadoopPropertiesMap = new HashMap<String, String>();
 
-    /**
-     * Getter for metadataConnection.
-     * 
-     * @return the metadataConnection
-     */
     public IMetadataConnection getMetadataConnection() {
         return this.metadataConnection;
     }
 
-    /**
-     * Sets the metadataConnection.
-     * 
-     * @param metadataConnection the metadataConnection to set
-     */
     public void setMetadataConnection(IMetadataConnection metadataConnection) {
         this.metadataConnection = metadataConnection;
     }
 
-    /**
-     * Getter for hadoopPropertiesMap.
-     * 
-     * @return the hadoopPropertiesMap
-     */
     public Map<String, String> getHadoopPropertiesMap() {
         return this.hadoopPropertiesMap;
     }
 
-    /**
-     * Sets the hadoopPropertiesMap.
-     * 
-     * @param hadoopPropertiesMap the hadoopPropertiesMap to set
-     */
     public void setHadoopPropertiesMap(Map<String, String> hadoopPropertiesMap) {
         this.hadoopPropertiesMap = hadoopPropertiesMap;
     }

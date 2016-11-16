@@ -47,9 +47,6 @@ import org.talend.utils.sql.metadata.constants.GetColumn;
 import orgomg.cwm.resource.relational.NamedColumnSet;
 import orgomg.cwm.resource.relational.Schema;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class OracleExtractManager extends ExtractManager {
 
     public static final String DATABASE_PRODUCT_NAME = "Oracle";

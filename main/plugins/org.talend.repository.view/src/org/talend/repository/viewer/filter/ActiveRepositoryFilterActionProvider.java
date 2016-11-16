@@ -21,21 +21,12 @@ import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.repository.i18n.Messages;
 import org.talend.repository.viewer.action.ActionConstants;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class ActiveRepositoryFilterActionProvider extends AbstractRepositoryFilterActionProvider {
 
     public ActiveRepositoryFilterActionProvider() {
         super();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.viewer.action.AbstractRepositoryActionProvider#fillToolBar(org.eclipse.jface.action.
-     * IToolBarManager)
-     */
     @Override
     protected void fillToolBar(IToolBarManager toolBarManager) {
         super.fillToolBar(toolBarManager);
@@ -57,10 +48,6 @@ public class ActiveRepositoryFilterActionProvider extends AbstractRepositoryFilt
         }
     }
 
-    /**
-     * 
-     * DOC ggu ActiveFilterAction class global comment. Detailled comment
-     */
     class ActiveFilterAction extends Action {
 
         /**

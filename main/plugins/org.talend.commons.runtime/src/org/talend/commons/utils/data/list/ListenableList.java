@@ -23,12 +23,7 @@ import org.talend.commons.i18n.internal.Messages;
 import org.talend.commons.utils.data.list.ListenableListEvent.TYPE;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
  * @param <T> type of beans in list
- * 
  */
 public class ListenableList<T> implements IExtendedList<T> {
 
@@ -40,9 +35,6 @@ public class ListenableList<T> implements IExtendedList<T> {
 
     boolean useEquals = true;
 
-    /**
-     * DOC amaumont ListenableList constructor comment.
-     */
     public ListenableList(List<T> list) {
         registerList(list);
     }
@@ -50,11 +42,6 @@ public class ListenableList<T> implements IExtendedList<T> {
     public ListenableList() {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.util.List#add(java.lang.Object)
-     */
     @Override
     public boolean add(T o) {
         int index = this.list.size();
@@ -67,24 +54,12 @@ public class ListenableList<T> implements IExtendedList<T> {
 
     }
 
-    /**
-     * DOC amaumont Comment method "fireAddedEvent".
-     * 
-     * @param i
-     * @param o
-     * @param before TODO
-     */
     private void fireAddedEvent(int i, T o, boolean before) {
         ArrayList<T> objects = new ArrayList<T>(1);
         objects.add(o);
         fireAddedEvent(i, objects, null, before);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.util.List#add(int, java.lang.Object)
-     */
     @Override
     public void add(int index, T element) {
         fireAddedEvent(index, element, true);
@@ -92,11 +67,6 @@ public class ListenableList<T> implements IExtendedList<T> {
         fireAddedEvent(index, element, false);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.util.List#addAll(java.util.Collection)
-     */
     @Override
     @SuppressWarnings("unchecked")
     public boolean addAll(Collection<? extends T> c) {
@@ -114,11 +84,6 @@ public class ListenableList<T> implements IExtendedList<T> {
         return returnValue;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.util.List#addAll(int, java.util.Collection)
-     */
     @Override
     @SuppressWarnings("unchecked")
     public boolean addAll(int index, Collection<? extends T> c) {
@@ -136,10 +101,6 @@ public class ListenableList<T> implements IExtendedList<T> {
         return returnValue;
     }
 
-    /**
-     * 
-     * 
-     */
     @Override
     @SuppressWarnings("unchecked")
     public void addAll(List<Integer> indices, Collection<? extends T> c) {
@@ -161,26 +122,12 @@ public class ListenableList<T> implements IExtendedList<T> {
         fireAddedEvent(null, (Collection<T>) c, indices, false);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.util.List#clear()
-     */
     @Override
     public void clear() {
         fireClearedEvent(true);
         this.list.clear();
         fireClearedEvent(false);
     }
-
-    // /*
-    // * (non-Javadoc)
-    // *
-    // * @see java.util.List#contains(java.lang.Object)
-    // */
-    // public boolean contains(Object o) {
-    // return this.list.contains(o);
-    // }
 
     /**
      * Returns whether the list contains the object. This implementation uses either <code>equals</code> or
@@ -208,15 +155,6 @@ public class ListenableList<T> implements IExtendedList<T> {
         return false;
     }
 
-    // /*
-    // * (non-Javadoc)
-    // *
-    // * @see java.util.List#indexOf(java.lang.Object)
-    // */
-    // public int indexOf(Object o) {
-    // return this.list.indexOf(o);
-    // }
-
     /**
      * Returns the position of the first occurrence of the object in the list. This implementation uses either
      * <code>equals</code> or <code>"=="</code> depending on {@link #isUseEquals useEquals}.
@@ -243,41 +181,21 @@ public class ListenableList<T> implements IExtendedList<T> {
         return -1;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.util.List#containsAll(java.util.Collection)
-     */
     @Override
     public boolean containsAll(Collection<?> c) {
         return this.list.containsAll(c);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.util.List#get(int)
-     */
     @Override
     public T get(int index) {
         return this.list.get(index);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.util.List#isEmpty()
-     */
     @Override
     public boolean isEmpty() {
         return this.list.isEmpty();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.util.List#iterator()
-     */
     @Override
     public Iterator<T> iterator() {
         return new Iterator<T>() {
@@ -308,21 +226,11 @@ public class ListenableList<T> implements IExtendedList<T> {
         };
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.util.List#lastIndexOf(java.lang.Object)
-     */
     @Override
     public int lastIndexOf(Object o) {
         return this.list.lastIndexOf(o);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.util.List#listIterator()
-     */
     @Override
     public ListIterator<T> listIterator() {
         return new ListIterator<T>() {
@@ -387,21 +295,11 @@ public class ListenableList<T> implements IExtendedList<T> {
         };
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.util.List#listIterator(int)
-     */
     @Override
     public ListIterator<T> listIterator(int index) {
         return this.list.listIterator(index);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.util.List#remove(java.lang.Object)
-     */
     @Override
     @SuppressWarnings("unchecked")
     public boolean remove(Object o) {
@@ -413,11 +311,6 @@ public class ListenableList<T> implements IExtendedList<T> {
         return returnValue;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.util.List#remove(int)
-     */
     @Override
     public T remove(int index) {
         fireBeforeRemovedEvent(index);
@@ -426,12 +319,6 @@ public class ListenableList<T> implements IExtendedList<T> {
         return removedObject;
     }
 
-    /**
-     * DOC amaumont Comment method "fireRemovedEvent".
-     * 
-     * @param index
-     * @param removedObject
-     */
     private void fireRemovedEvent(int index, T removedObject) {
         if (afterListeners.size() != 0) {
             List<T> currentList = new ArrayList<T>(1);
@@ -483,11 +370,6 @@ public class ListenableList<T> implements IExtendedList<T> {
         return modified;
     }
 
-    /**
-     * DOC amaumont Comment method "getIndices".
-     * 
-     * @param c
-     */
     private List<Integer> getIndices(Collection<?> c) {
         List<Integer> indices = new ArrayList<Integer>(c.size());
         for (Object bean : c) {
@@ -501,11 +383,6 @@ public class ListenableList<T> implements IExtendedList<T> {
         return indices;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.util.List#retainAll(java.util.Collection)
-     */
     @Override
     public boolean retainAll(Collection<?> c) {
         List<T> all = new ArrayList<T>();
@@ -525,11 +402,6 @@ public class ListenableList<T> implements IExtendedList<T> {
         return isListChanged;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.util.List#set(int, java.lang.Object)
-     */
     @Override
     public T set(int index, T element) {
         fireReplacedEvent(index, null, element, true);
@@ -538,11 +410,6 @@ public class ListenableList<T> implements IExtendedList<T> {
         return replacedObject;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.util.List#size()
-     */
     @Override
     public int size() {
         if (this.list != null) {
@@ -553,11 +420,6 @@ public class ListenableList<T> implements IExtendedList<T> {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.util.List#subList(int, int)
-     */
     @Override
     public List<T> subList(int fromIndex, int toIndex) {
         if (this.list != null) {
@@ -567,11 +429,6 @@ public class ListenableList<T> implements IExtendedList<T> {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.util.List#toArray()
-     */
     @Override
     public Object[] toArray() {
         if (this.list != null) {
@@ -581,11 +438,6 @@ public class ListenableList<T> implements IExtendedList<T> {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.util.List#toArray(T[])
-     */
     @Override
     @SuppressWarnings("hiding")
     public <T> T[] toArray(T[] a) {
@@ -657,15 +509,6 @@ public class ListenableList<T> implements IExtendedList<T> {
         swap(indexOf(object1), indexOf(object2));
     }
 
-    /**
-     * DOC amaumont Comment method "fireAddedListener".
-     * 
-     * @param index
-     * @param addedObjects
-     * @param indicesTarget TODO
-     * @param before TODO
-     * @param element
-     */
     public void fireAddedEvent(Integer index, Collection<T> addedObjects, List<Integer> indicesTarget, boolean before) {
         ListenableListEvent<T> event = new ListenableListEvent<T>();
         event.type = TYPE.ADDED;
@@ -677,14 +520,6 @@ public class ListenableList<T> implements IExtendedList<T> {
         fireEvent(event);
     }
 
-    /**
-     * DOC amaumont Comment method "fireAddedListener".
-     * 
-     * @param index
-     * @param before
-     * @param removedObject
-     * @param addedObjects
-     */
     public void fireRemovedEvent(Integer index, List<T> removedObjects, List<Integer> indices, boolean before) {
         ListenableListEvent<T> event = new ListenableListEvent<T>();
         event.type = TYPE.REMOVED;
@@ -696,14 +531,6 @@ public class ListenableList<T> implements IExtendedList<T> {
         fireEvent(event);
     }
 
-    /**
-     * DOC amaumont Comment method "fireAddedListener".
-     * 
-     * @param before
-     * 
-     * @param index
-     * @param element
-     */
     public void fireSwapedEvent(List<Integer> indexOrigin, List<Integer> indexTarget, Object[] swapedObjects, boolean before) {
         ListenableListEvent<T> event = new ListenableListEvent<T>();
         event.type = TYPE.SWAPED;
@@ -715,14 +542,6 @@ public class ListenableList<T> implements IExtendedList<T> {
         fireEvent(event);
     }
 
-    /**
-     * DOC amaumont Comment method "fireAddedListener".
-     * 
-     * @param index
-     * @param index
-     * @param before TODO
-     * @param element
-     */
     public void fireReplacedEvent(int index, T removedObject, T addedObject, boolean before) {
         ListenableListEvent<T> event = new ListenableListEvent<T>();
         event.type = TYPE.REPLACED;
@@ -739,11 +558,6 @@ public class ListenableList<T> implements IExtendedList<T> {
         fireEvent(event);
     }
 
-    /**
-     * DOC amaumont Comment method "fireClearedListener".
-     * 
-     * @param before TODO
-     */
     public void fireClearedEvent(boolean before) {
         ListenableListEvent<T> event = new ListenableListEvent<T>();
         event.type = TYPE.CLEARED;
@@ -752,11 +566,6 @@ public class ListenableList<T> implements IExtendedList<T> {
         fireEvent(event);
     }
 
-    /**
-     * DOC amaumont Comment method "fireClearedListener".
-     * 
-     * @param before TODO
-     */
     public void fireListRegisteredEvent(boolean before) {
         ListenableListEvent<T> event = new ListenableListEvent<T>();
         event.type = TYPE.LIST_REGISTERED;
@@ -765,11 +574,6 @@ public class ListenableList<T> implements IExtendedList<T> {
         fireEvent(event);
     }
 
-    /**
-     * DOC amaumont Comment method "fireEvent".
-     * 
-     * @param event
-     */
     @SuppressWarnings("unchecked")
     public void fireEvent(ListenableListEvent<T> event) {
         List<OrderableWrapper<IListenableListListener>> listeners = getCurrentListeners(event.beforeOperation);
@@ -798,7 +602,6 @@ public class ListenableList<T> implements IExtendedList<T> {
     }
 
     /**
-     * 
      * When you call this method priorityCalled is set to 50.
      * 
      * @param listener
@@ -823,12 +626,6 @@ public class ListenableList<T> implements IExtendedList<T> {
         }
     }
 
-    /**
-     * DOC amaumont Comment method "getCurrentListeners".
-     * 
-     * @param before
-     * @return
-     */
     private List<OrderableWrapper<IListenableListListener>> getCurrentListeners(boolean before) {
         List<OrderableWrapper<IListenableListListener>> listeners;
         if (before) {
@@ -847,21 +644,10 @@ public class ListenableList<T> implements IExtendedList<T> {
         }
     }
 
-    /**
-     * Getter for list.
-     * 
-     * @return the list
-     */
     public List<T> getOriginaList() {
         return this.list;
     }
 
-    /**
-     * 
-     * Register list.
-     * 
-     * @param list
-     */
     public void registerList(List<T> list) {
         fireListRegisteredEvent(true);
         this.list = list;
@@ -869,29 +655,17 @@ public class ListenableList<T> implements IExtendedList<T> {
     }
 
     /**
-     * DOC amaumont Comment method "isListRegistered".
-     * 
      * @return true if list has been registered, else false
      */
     public boolean isListRegistered() {
         return list != null;
     }
 
-    /**
-     * Getter for useEquals.
-     * 
-     * @return the useEquals
-     */
     @Override
     public boolean isUseEquals() {
         return this.useEquals;
     }
 
-    /**
-     * Sets the useEquals.
-     * 
-     * @param useEquals the useEquals to set
-     */
     @Override
     public void setUseEquals(boolean useEquals) {
         this.useEquals = useEquals;

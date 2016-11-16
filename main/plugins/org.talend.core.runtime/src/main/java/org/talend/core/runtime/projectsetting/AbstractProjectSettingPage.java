@@ -21,9 +21,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public abstract class AbstractProjectSettingPage extends FieldEditorPreferencePage {
 
     private String prefNodeId;
@@ -41,11 +38,6 @@ public abstract class AbstractProjectSettingPage extends FieldEditorPreferencePa
         this.prefNodeId = prefNodeId;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.preference.PreferencePage#doGetPreferenceStore()
-     */
     @Override
     protected IPreferenceStore doGetPreferenceStore() {
         String preferenceName = getPreferenceName();

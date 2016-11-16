@@ -35,8 +35,6 @@ import org.talend.repository.viewer.filter.RepositoryNodeFilterHelper;
 import org.talend.repository.viewer.ui.provider.RepoCommonViewerProvider;
 
 /**
- * DOC ggu class global comment. Detailled comment
- * 
  * the path is splitted via "." by default
  */
 public class RepositoryMavenSettingManager extends PreferenceManager {

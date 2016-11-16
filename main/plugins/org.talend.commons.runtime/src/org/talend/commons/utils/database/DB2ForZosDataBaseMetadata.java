@@ -22,9 +22,6 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
-/**
- * DOC bqian class global comment. Detailled comment
- */
 public class DB2ForZosDataBaseMetadata extends PackageFakeDatabaseMetadata {
 
     private static final String[] TABLE_META = { "ID", "TABLE_SCHEM", "TABLE_NAME", "TABLE_TYPE", "REMARKS" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
@@ -48,12 +45,6 @@ public class DB2ForZosDataBaseMetadata extends PackageFakeDatabaseMetadata {
 
     private String ALIAS = "ALIAS"; //$NON-NLS-1$
 
-    /**
-     * DOC xqliu Comment method "getDb2zosTypeName".
-     * 
-     * @param typeName
-     * @return
-     */
     private String getDb2zosTypeName(String typeName) {
         String result = typeName;
         if (TABLE.equals(typeName)) {
@@ -68,12 +59,6 @@ public class DB2ForZosDataBaseMetadata extends PackageFakeDatabaseMetadata {
         return result;
     }
 
-    /**
-     * DOC xqliu Comment method "getTypeNameFromDb2zosType".
-     * 
-     * @param typeName
-     * @return
-     */
     private String getTypeNameFromDb2zosType(String typeName) {
         String result = typeName;
         if (T.equals(typeName)) {
@@ -98,11 +83,6 @@ public class DB2ForZosDataBaseMetadata extends PackageFakeDatabaseMetadata {
         super(connection);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getSchemas()
-     */
     @Override
     public ResultSet getSchemas() throws SQLException {
         // see the feature 5827
@@ -138,22 +118,11 @@ public class DB2ForZosDataBaseMetadata extends PackageFakeDatabaseMetadata {
         return tableResultSet;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getPrimaryKeys(java.lang.String, java.lang.String,
-     * java.lang.String)
-     */
     @Override
     public ResultSet getPrimaryKeys(String catalog, String schema, String table) throws SQLException {
         return new DB2ForZosResultSet();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getTableTypes()
-     */
     @Override
     public ResultSet getTableTypes() throws SQLException {
         String[] s1 = new String[] { "TABLE" }; //$NON-NLS-1$
@@ -175,23 +144,11 @@ public class DB2ForZosDataBaseMetadata extends PackageFakeDatabaseMetadata {
         return tableResultSet;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getExportedKeys(java.lang.String, java.lang.String,
-     * java.lang.String)
-     */
     @Override
     public ResultSet getExportedKeys(String catalog, String schema, String table) throws SQLException {
         return new DB2ForZosResultSet();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getTables(java.lang.String, java.lang.String,
-     * java.lang.String, java.lang.String[])
-     */
     @Override
     public ResultSet getTables(String catalog, String schema, String tableNamePattern, String[] types) throws SQLException {
         String sql;
@@ -247,14 +204,6 @@ public class DB2ForZosDataBaseMetadata extends PackageFakeDatabaseMetadata {
         return tableResultSet;
     }
 
-    /**
-     * DOC xqliu Comment method "addTypesToSql".
-     * 
-     * @param sql
-     * @param types
-     * @param and
-     * @return
-     */
     private String addTypesToSql(String sql, String[] types, String and) {
         String result = sql;
         if (types != null && types.length > 0) {
@@ -273,11 +222,6 @@ public class DB2ForZosDataBaseMetadata extends PackageFakeDatabaseMetadata {
         return result;
     }
 
-    /**
-     * DOC zshen Comment method "checkContainTable".
-     * 
-     * @param types
-     */
     private boolean checkContainTable(String[] types) {
         if (types != null && types.length > 0) {
             int len = types.length;
@@ -291,21 +235,11 @@ public class DB2ForZosDataBaseMetadata extends PackageFakeDatabaseMetadata {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeDatabaseMetaData#supportsSchemasInDataManipulation()
-     */
     @Override
     public boolean supportsSchemasInDataManipulation() throws SQLException {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeDatabaseMetaData#supportsSchemasInTableDefinitions()
-     */
     @Override
     public boolean supportsSchemasInTableDefinitions() throws SQLException {
         return true;
@@ -321,12 +255,6 @@ public class DB2ForZosDataBaseMetadata extends PackageFakeDatabaseMetadata {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getColumns(java.lang.String, java.lang.String,
-     * java.lang.String, java.lang.String)
-     */
     @Override
     public ResultSet getColumns(String catalog, String schemaPattern, String tableNamePattern, String columnNamePattern)
             throws SQLException {
@@ -393,11 +321,6 @@ public class DB2ForZosDataBaseMetadata extends PackageFakeDatabaseMetadata {
         return tableResultSet;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.fakejdbc.FakeDatabaseMetaData#getDatabaseProductName()
-     */
     @Override
     public String getDatabaseProductName() throws SQLException {
         return connection.getMetaData().getDatabaseProductName();

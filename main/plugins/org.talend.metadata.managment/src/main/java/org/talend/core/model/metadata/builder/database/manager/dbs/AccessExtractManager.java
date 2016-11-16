@@ -24,9 +24,6 @@ import org.talend.core.model.metadata.IMetadataConnection;
 import org.talend.core.model.metadata.builder.database.manager.ExtractManager;
 import org.talend.cwm.relational.TdColumn;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class AccessExtractManager extends ExtractManager {
 
     private static Logger log = Logger.getLogger(AccessExtractManager.class);

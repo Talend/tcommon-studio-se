@@ -22,20 +22,8 @@ import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.commons.ui.swt.advanced.dataeditor.control.ExtendedPushButton;
 import org.talend.commons.ui.swt.extended.table.AbstractExtendedControlViewer;
 
-/**
- * DOC YeXiaowei class global comment. Detailled comment <br/>
- * 
- */
 public abstract class AddAllPushButton extends ExtendedPushButton {
 
-	/**
-	 * DOC YeXiaowei AddAllPustButton constructor comment.
-	 * 
-	 * @param parent
-	 * @param extendedViewer
-	 * @param tooltip
-	 * @param image
-	 */
 	public AddAllPushButton(Composite parent,
 			AbstractExtendedControlViewer extendedViewer) {
 		super(parent, extendedViewer, Messages
@@ -47,13 +35,6 @@ public abstract class AddAllPushButton extends ExtendedPushButton {
 
 	protected abstract List<Object> getObjectToAdd();
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.talend.commons.ui.swt.advanced.dataeditor.control.ExtendedPushButton
-	 * #getEnabledState()
-	 */
 	@Override
 	public boolean getEnabledState() {
 		return super.getEnabledState()

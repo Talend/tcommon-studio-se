@@ -15,14 +15,9 @@ package org.talend.core;
 import org.talend.core.model.properties.Item;
 import org.talend.migration.IMigrationTask.ExecutionResult;
 
-/**
- * DOC bZhou class global comment. Detailled comment
- */
 public interface IMigrateDIMetadataItemService extends IService {
 
     /**
-     * DOC bZhou Comment method "migrateDIItems".
-     * 
      * This method to invode the migration task in DI to do migration when import items from DQ perspective.
      * 
      * It should be removed after merge the migrate mechanism.

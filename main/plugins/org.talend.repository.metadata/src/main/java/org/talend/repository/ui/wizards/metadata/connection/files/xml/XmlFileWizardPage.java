@@ -113,22 +113,12 @@ public class XmlFileWizardPage extends WizardPage {
         setControl((Composite) currentComposite);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.DialogPage#dispose()
-     */
     @Override
     public void dispose() {
         XmlArray.setLimitToDefault();
         super.dispose();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.DialogPage#setVisible(boolean)
-     */
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);

@@ -17,23 +17,17 @@ import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.core.model.metadata.builder.connection.RegexpFileConnection;
 import org.talend.core.model.properties.ConnectionItem;
 
-/**
- * DOC tguiu class global comment. Detailled comment <br/>
- * 
- * $Id: AbstractRegexpFileStepForm.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
- */
 public abstract class AbstractRegexpFileStepForm extends AbstractFileStepForm {
 
     /**
-     * DOC tguiu AbstractRegexpFileStepForm constructor comment. Use to step1
+     * Use to step1
      */
     public AbstractRegexpFileStepForm(Composite parent, ConnectionItem connectionItem, String[] existingNames) {
         super(parent, connectionItem, existingNames);
     }
 
     /**
-     * DOC ocarbone AbstractRegexpFileStepForm constructor comment. Use to step2
+     * Use to step2
      * 
      * @param parent
      * @param connection2
@@ -43,7 +37,7 @@ public abstract class AbstractRegexpFileStepForm extends AbstractFileStepForm {
     }
 
     /**
-     * DOC tguiu AbstractDelimitedFileStepForm constructor comment. Use to step1
+     * Use to step1
      */
     public AbstractRegexpFileStepForm(Composite parent, ConnectionItem connectionItem, MetadataTable metadataTable,
             String[] existingNames) {

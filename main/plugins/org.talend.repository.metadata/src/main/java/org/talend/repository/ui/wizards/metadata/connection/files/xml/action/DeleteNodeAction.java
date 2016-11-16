@@ -25,9 +25,6 @@ import org.talend.metadata.managment.ui.wizard.metadata.xml.node.FOXTreeNode;
 import org.talend.metadata.managment.ui.wizard.metadata.xml.node.NameSpaceNode;
 import org.talend.repository.metadata.ui.wizards.form.AbstractXmlStepForm;
 
-/**
- * wzhang class global comment. Detailled comment
- */
 public class DeleteNodeAction extends SelectionProviderAction {
 
     private TreeViewer xmlViewer;

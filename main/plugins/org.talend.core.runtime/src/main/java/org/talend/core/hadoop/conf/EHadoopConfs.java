@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.core.hadoop.conf;
 
-/**
- * created by ycbai on 2015年6月1日 Detailled comment
- *
- */
 public enum EHadoopConfs {
 
     HDFS("HDFS", new String[] { "core-site.xml", "hdfs-site.xml" }), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$

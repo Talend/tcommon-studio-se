@@ -29,12 +29,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.views.properties.tabbed.ITabItem;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-/**
- * yzhang class global comment. Detailled comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
- * 
- */
 public class HorizontalTabFactory {
 
     private TalendTabbedPropertyComposite tabbedPropertyComposite;
@@ -128,12 +122,6 @@ public class HorizontalTabFactory {
         title.setTitleImage(image);
     }
 
-    /**
-     * yzhang HorizontalTabFactory class global comment. Detailled comment <br/>
-     * 
-     * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
-     * 
-     */
     private class TabbedPropertySheetPageLabelProvider extends LabelProvider {
 
         @Override
@@ -145,19 +133,8 @@ public class HorizontalTabFactory {
         }
     }
 
-    /**
-     * yzhang HorizontalTabFactory class global comment. Detailled comment <br/>
-     * 
-     * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
-     * 
-     */
     private class TabListContentProvider implements IStructuredContentProvider {
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
-         */
         @Override
         public Object[] getElements(Object inputElement) {
             if (!(inputElement instanceof List)) {
@@ -166,22 +143,11 @@ public class HorizontalTabFactory {
             return ((List) inputElement).toArray();
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.jface.viewers.IContentProvider#dispose()
-         */
         @Override
         public void dispose() {
 
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer,
-         * java.lang.Object, java.lang.Object)
-         */
         @Override
         public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 

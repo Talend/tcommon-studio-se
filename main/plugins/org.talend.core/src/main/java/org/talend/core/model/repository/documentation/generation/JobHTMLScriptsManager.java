@@ -52,29 +52,14 @@ public class JobHTMLScriptsManager implements IDocumentationManager {
         this.needGenerate = isNeedGenerate;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.documentation.generation.IDocumentationManager#getDocGenerator()
-     */
     public IDocumentationGenerator getDocGenerator() {
         return this.docGenerator;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.documentation.generation.IDocumentationManager#getDocGenerator()
-     */
     public boolean isNeedGenerate() {
         return this.needGenerate;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.documentation.generation.IDocumentationManager#getDocGenerator()
-     */
     public void setNeedGenerate(boolean needGenerate) {
         this.needGenerate = needGenerate;
     }
@@ -99,13 +84,6 @@ public class JobHTMLScriptsManager implements IDocumentationManager {
         return Arrays.asList(process);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.documentation.generation.IDocumentationManager#getExportResources(org.talend.repository
-     * .documentation.ExportFileResource[], java.lang.String, java.lang.String[])
-     */
     public List<ExportFileResource> getExportResources(ExportFileResource[] exportFileResources, String targetPath,
             String... jobVersion) throws Exception {
 

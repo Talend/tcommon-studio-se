@@ -89,11 +89,6 @@ public class LDAPCATruster implements X509TrustManager {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.sun.net.ssl.X509TrustManager#getAcceptedIssuers()
-     */
     public X509Certificate[] getAcceptedIssuers() {
         if (trustManager == null)
             return null;
@@ -101,12 +96,6 @@ public class LDAPCATruster implements X509TrustManager {
             return trustManager.getAcceptedIssuers();
     }
 
-    /**
-     * Comment method "getCACert".
-     * 
-     * @param chain
-     * @return
-     */
     private X509Certificate getCACert(X509Certificate chain[]) {
         X509Certificate ca = chain[chain.length - 1];
         if (ca.getSubjectDN().equals(ca.getIssuerDN()))
@@ -115,9 +104,6 @@ public class LDAPCATruster implements X509TrustManager {
             return null;
     }
 
-    /**
-     * Comment method "init".
-     */
     private void init() {
         try {
             if (certStore.endsWith(".p12")) //$NON-NLS-1$
@@ -192,11 +178,6 @@ public class LDAPCATruster implements X509TrustManager {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.sun.net.ssl.X509TrustManager#isClientTrusted(java.security.cert.X509Certificate[])
-     */
     public boolean isClientTrusted(X509Certificate chain[]) {
         if (trustManager == null)
             return false;
@@ -204,11 +185,6 @@ public class LDAPCATruster implements X509TrustManager {
             return trustManager.isClientTrusted(chain);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.sun.net.ssl.X509TrustManager#isServerTrusted(java.security.cert.X509Certificate[])
-     */
     public boolean isServerTrusted(X509Certificate chain[]) {
         if (trustManager != null) {
             boolean rs = trustManager.isServerTrusted(chain);
@@ -247,11 +223,6 @@ public class LDAPCATruster implements X509TrustManager {
         }
     }
 
-    /**
-     * Comment method "saveStore".
-     * 
-     * @return
-     */
     private boolean saveStore() {
         OutputStream out = null;
         try {

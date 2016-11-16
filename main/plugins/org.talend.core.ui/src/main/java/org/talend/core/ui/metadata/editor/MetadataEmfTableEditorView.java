@@ -32,11 +32,7 @@ import org.talend.core.ui.proposal.JavaSimpleDateFormatProposalProvider;
 import orgomg.cwm.objectmodel.core.TaggedValue;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
  * TGU same purpose as MetadataTableEditorView but uses EMF model directly
- * 
- * $Id: MetadataEmfTableEditorView.java 46940 2010-08-18 06:58:15Z wyang $
- * 
  */
 public class MetadataEmfTableEditorView extends AbstractMetadataTableEditorView<MetadataColumn> {
 
@@ -125,11 +121,6 @@ public class MetadataEmfTableEditorView extends AbstractMetadataTableEditorView<
         return getExtendedTableViewer().getTableViewerCreator();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.metadata.editor.AbstractMetadataTableEditorView#getNullableAccessor()
-     */
     @Override
     protected IBeanPropertyAccessors getNullableAccessor() {
         return new IBeanPropertyAccessors<MetadataColumn, Boolean>() {
@@ -330,11 +321,6 @@ public class MetadataEmfTableEditorView extends AbstractMetadataTableEditorView<
         };
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.metadata.editor.AbstractMetadataTableEditorView#validateColumnName(java.lang.String, int)
-     */
     @Override
     protected String validateColumnName(String newValue, int beanPosition) {
         return getMetadataEditor().validateColumnName(newValue, beanPosition);
@@ -412,23 +398,11 @@ public class MetadataEmfTableEditorView extends AbstractMetadataTableEditorView<
         };
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.advanced.dataeditor.AbstractDataTableEditorView#initToolBar()
-     */
     @Override
     protected ExtendedToolbarView initToolBar() {
         return new MetadataEmfToolbarEditor(getMainComposite(), SWT.NONE, this.getExtendedTableViewer(), getCurrentDbms());
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.ui.metadata.editor.AbstractMetadataTableEditorView#configureDefaultColumn(org.talend.commons.
-     * ui.swt.tableviewer.TableViewerCreator)
-     */
     @Override
     protected void configureDefaultColumn(TableViewerCreator<MetadataColumn> tableViewerCreator) {
         super.configureDefaultColumn(tableViewerCreator);
@@ -457,7 +431,6 @@ public class MetadataEmfTableEditorView extends AbstractMetadataTableEditorView<
 
     @Override
     protected boolean canModifyDBColumn(Object bean) {
-        // TODO
         if (bean instanceof MetadataColumnImpl) {
             if (((MetadataColumnImpl) bean).getLabel().equals(((MetadataColumnImpl) bean).getOriginalField())) {
                 return true;
@@ -536,24 +509,12 @@ public class MetadataEmfTableEditorView extends AbstractMetadataTableEditorView<
         };
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.ui.metadata.editor.AbstractMetadataTableEditorView#setTableViewerCreatorOptions(org.talend.commons
-     * .ui.swt.tableviewer.TableViewerCreator)
-     */
     @Override
     protected void setTableViewerCreatorOptions(TableViewerCreator<MetadataColumn> newTableViewerCreator) {
         super.setTableViewerCreatorOptions(newTableViewerCreator);
         newTableViewerCreator.setLazyLoad(true);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.metadata.editor.AbstractMetadataTableEditorView#getUsefulAccessor()
-     */
     @Override
     protected IBeanPropertyAccessors<MetadataColumn, Boolean> getUsefulAccessor() {
         // TODO Auto-generated method stub

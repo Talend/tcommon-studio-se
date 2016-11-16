@@ -15,9 +15,6 @@ package org.talend.commons.ui.swt.geftree.action;
 import org.talend.commons.ui.swt.geftree.figure.TreeBranch;
 import org.talend.commons.ui.swt.geftree.layout.TreeAnimatingLayer;
 
-/**
- * cli class global comment. Detailled comment
- */
 public class ExpandCollapseAction extends AbstractTreeAction {
 
     public static final String ID = "org.talend.geftree.action.ExpandCollapseAction";
@@ -26,11 +23,6 @@ public class ExpandCollapseAction extends AbstractTreeAction {
         super(ID, "Expand/Collapse");
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.datalineage.ui.tree.action.AbstractTreeAction#calcEnable()
-     */
     @Override
     public boolean calcEnable() {
         TreeBranch selection = getSelection();
@@ -43,11 +35,6 @@ public class ExpandCollapseAction extends AbstractTreeAction {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.datalineage.ui.tree.action.AbstractTreeAction#run()
-     */
     @Override
     public void run() {
         TreeBranch selection = getSelection();

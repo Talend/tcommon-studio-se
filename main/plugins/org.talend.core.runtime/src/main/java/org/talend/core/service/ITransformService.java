@@ -18,10 +18,6 @@ import org.talend.core.IService;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.repository.ERepositoryObjectType;
 
-/**
- * created by wchen on 2013-8-16 Detailled comment
- * 
- */
 public interface ITransformService extends IService {
 
     public boolean isTransformItem(Item item);

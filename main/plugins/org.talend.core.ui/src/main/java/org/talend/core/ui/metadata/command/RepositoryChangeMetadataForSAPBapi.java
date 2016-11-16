@@ -35,11 +35,6 @@ import org.talend.core.model.process.INode;
 import org.talend.core.ui.CoreUIPlugin;
 import org.talend.core.utils.TalendQuoteUtils;
 
-/**
- * 
- * created by wchen on Sep 19, 2014 Detailled comment
- *
- */
 public class RepositoryChangeMetadataForSAPBapi extends Command {
 
     private INode node;
@@ -229,11 +224,6 @@ public class RepositoryChangeMetadataForSAPBapi extends Command {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.gef.commands.Command#undo()
-     */
     @Override
     public void undo() {
         // TODO Auto-generated method stub

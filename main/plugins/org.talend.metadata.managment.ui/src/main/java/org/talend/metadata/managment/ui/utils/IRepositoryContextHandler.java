@@ -23,10 +23,6 @@ import org.talend.core.ui.context.model.table.ConectionAdaptContextVariableModel
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.metadata.managment.ui.model.IConnParamName;
 
-/**
- * created by ldong on Dec 18, 2014 Detailled comment
- * 
- */
 public interface IRepositoryContextHandler {
 
     public boolean isRepositoryConType(Connection connection);

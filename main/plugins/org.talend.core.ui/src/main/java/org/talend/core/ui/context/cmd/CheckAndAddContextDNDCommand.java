@@ -35,9 +35,6 @@ import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.designer.core.model.utils.emf.talendfile.impl.ContextTypeImpl;
 
-/**
- * DOC talend2 class global comment. Detailled comment
- */
 public class CheckAndAddContextDNDCommand extends Command {
 
     private List<ContextType> contexts = new ArrayList<ContextType>();

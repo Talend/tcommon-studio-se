@@ -19,10 +19,6 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.internal.dialogs.AboutDialog;
 
-/**
- * 
- * DOC fywang class global comment. Detailled comment
- */
 public class ShowAboutWizardHandler extends AbstractHandler {
 
     @Override

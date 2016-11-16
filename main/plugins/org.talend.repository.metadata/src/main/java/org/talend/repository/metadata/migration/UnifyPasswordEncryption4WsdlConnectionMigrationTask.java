@@ -26,10 +26,6 @@ import org.talend.core.model.properties.WSDLSchemaConnectionItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 
-/**
- * created by ggu on Aug 29, 2014 Detailled comment
- *
- */
 public class UnifyPasswordEncryption4WsdlConnectionMigrationTask extends AbstractItemMigrationTask {
 
     ProxyRepositoryFactory factory = ProxyRepositoryFactory.getInstance();
@@ -41,11 +37,6 @@ public class UnifyPasswordEncryption4WsdlConnectionMigrationTask extends Abstrac
         return toReturn;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.migration.AbstractItemMigrationTask#execute(org .talend.core.model.properties.Item)
-     */
     @Override
     public ExecutionResult execute(Item item) {
         if (item instanceof WSDLSchemaConnectionItem) {
@@ -69,11 +60,6 @@ public class UnifyPasswordEncryption4WsdlConnectionMigrationTask extends Abstrac
         return ExecutionResult.NOTHING_TO_DO;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.migration.IProjectMigrationTask#getOrder()
-     */
     @Override
     public Date getOrder() {
         GregorianCalendar gc = new GregorianCalendar(2014, 9, 1, 12, 0, 0);

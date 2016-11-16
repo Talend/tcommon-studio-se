@@ -17,10 +17,6 @@ import java.util.List;
 import org.talend.core.IService;
 import org.talend.core.model.metadata.types.AutoConversionType;
 
-/**
- * created by hcyi on Aug 22, 2016 Detailled comment
- *
- */
 public interface IAutoConvertTypesService extends IService {
 
     public List<AutoConversionType> getAllAutoConversionTypes();

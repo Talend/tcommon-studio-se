@@ -17,10 +17,6 @@ import java.util.Map;
 import org.eclipse.core.runtime.CoreException;
 import org.talend.core.model.properties.ConnectionItem;
 
-/**
- * created by ycbai on 2015年6月29日 Detailled comment
- *
- */
 public interface IHadoopConnectionCreator {
 
     public void init(String hadoopClusterId);

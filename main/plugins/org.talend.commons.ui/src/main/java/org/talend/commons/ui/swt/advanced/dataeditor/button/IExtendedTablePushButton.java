@@ -15,12 +15,6 @@ package org.talend.commons.ui.swt.advanced.dataeditor.button;
 import org.talend.commons.ui.swt.advanced.dataeditor.control.IExtendedPushButton;
 import org.talend.commons.ui.swt.extended.table.AbstractExtendedTableViewer;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public interface IExtendedTablePushButton extends IExtendedPushButton {
 
     public AbstractExtendedTableViewer getExtendedTableViewer();

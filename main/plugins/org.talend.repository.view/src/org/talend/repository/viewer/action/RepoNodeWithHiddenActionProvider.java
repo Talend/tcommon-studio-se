@@ -28,13 +28,6 @@ public class RepoNodeWithHiddenActionProvider extends RepoNodeActionProvider {
 
     private boolean hideAction;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.view.di.viewer.action.DIRepositoryNodeActionProvider#fillContextMenu(org.eclipse.jface.
-     * action.IMenuManager)
-     */
     @Override
     public void fillContextMenu(IMenuManager manager) {
         hideAction = false;

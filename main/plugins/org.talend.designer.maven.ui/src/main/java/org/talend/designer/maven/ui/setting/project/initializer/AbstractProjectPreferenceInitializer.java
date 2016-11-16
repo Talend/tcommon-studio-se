@@ -26,20 +26,10 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.designer.maven.template.AbstractMavenTemplateManager;
 import org.talend.designer.maven.template.MavenTemplateManager;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public abstract class AbstractProjectPreferenceInitializer extends AbstractPreferenceInitializer implements IExecutableExtension {
 
     private String bundleName;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.core.runtime.IExecutableExtension#setInitializationData(org.eclipse.core.runtime.IConfigurationElement
-     * , java.lang.String, java.lang.Object)
-     */
     @Override
     public void setInitializationData(IConfigurationElement config, String propertyName, Object data) throws CoreException {
         this.bundleName = config.getContributor().getName();

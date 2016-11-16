@@ -17,8 +17,6 @@ import org.talend.repository.items.importexport.handlers.model.ImportItem;
 import org.talend.repository.items.importexport.manager.ResourcesManager;
 
 /**
- * DOC ggu class global comment. Detailled comment
- * 
  * The resManager mostly is FilesManager(FileResourcesUnityManager).
  * 
  * If the original import resouce is zip or tar(.gz), The archieve will be decompressed into a temp folder for
@@ -30,9 +28,7 @@ import org.talend.repository.items.importexport.manager.ResourcesManager;
 public interface IImportResourcesHandler {
 
     /**
-     * 
      * Before do calc item records,or need prepare something before import.
-     * 
      */
     void prePopulate(IProgressMonitor monitor, ResourcesManager resManager);
 
@@ -43,7 +39,6 @@ public interface IImportResourcesHandler {
 
     /**
      * If need do some operations before importing items. can do it in this.
-     * 
      * 
      * @param monitor
      * @param resManager

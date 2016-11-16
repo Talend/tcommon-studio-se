@@ -31,9 +31,6 @@ import org.talend.metadata.managment.ui.wizard.metadata.xml.utils.TreeUtil;
 import org.talend.repository.metadata.ui.wizards.form.AbstractXmlStepForm;
 import org.talend.repository.ui.wizards.metadata.connection.files.xml.XmlFileOutputStep2Form;
 
-/**
- * wzhang class global comment. Detailled comment
- */
 public class ImportTreeFromXMLAction extends SelectionProviderAction {
 
     private TreeViewer xmlViewer;

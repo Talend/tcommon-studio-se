@@ -17,36 +17,16 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.DirectoryDialog;
 
-/**
- * DOC qiang.zhang class global comment. Detailled comment <br/>
- * 
- */
 public class DirectoryCellEditor extends DialogCellEditor {
 
-    /**
-     * DOC qiang.zhang DirectoryCellEditor constructor comment.
-     * 
-     * @param parent
-     */
     public DirectoryCellEditor(Composite parent) {
         super(parent);
     }
 
-    /**
-     * DOC qiang.zhang DirectoryCellEditor constructor comment.
-     * 
-     * @param parent
-     * @param style
-     */
     public DirectoryCellEditor(Composite parent, int style) {
         super(parent, style);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.DialogCellEditor#openDialogBox(org.eclipse.swt.widgets.Control)
-     */
     @Override
     protected Object openDialogBox(Control cellEditorWindow) {
         DirectoryDialog dialog = new DirectoryDialog(cellEditorWindow.getShell());

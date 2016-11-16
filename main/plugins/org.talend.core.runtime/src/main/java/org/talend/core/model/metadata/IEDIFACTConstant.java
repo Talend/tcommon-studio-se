@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.core.model.metadata;
 
-/**
- * DOC guanglong.du class global comment. Detailled comment
- */
 public interface IEDIFACTConstant {
 
     public static final String REF_TYPE = "-TYPE"; //$NON-NLS-1$

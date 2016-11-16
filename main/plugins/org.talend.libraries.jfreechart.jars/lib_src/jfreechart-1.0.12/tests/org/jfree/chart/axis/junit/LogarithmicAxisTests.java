@@ -72,9 +72,6 @@ public class LogarithmicAxisTests extends TestCase {
             super(label);
         }
 
-        /* (non-Javadoc)
-         * @see org.jfree.chart.axis.LogarithmicAxis#switchedLog10(double)
-         */
         protected double switchedLog10(double val) {
             return super.switchedLog10(val);
         }

@@ -15,12 +15,6 @@ package org.talend.commons.ui.utils;
 import org.eclipse.core.runtime.ListenerList;
 import org.talend.commons.ui.swt.extended.table.ClipboardEvent;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public class SimpleClipboard {
 
     private ListenerList listeners = new ListenerList();
@@ -53,11 +47,6 @@ public class SimpleClipboard {
         this.listeners.remove(listener);
     }
 
-    /**
-     * DOC amaumont Comment method "fireEvent".
-     * 
-     * @param event
-     */
     protected void fireEvent(ClipboardEvent event) {
         final Object[] listenerArray = listeners.getListeners();
         for (int i = 0; i < listenerArray.length; i++) {

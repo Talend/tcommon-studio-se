@@ -15,9 +15,6 @@ package org.talend.core.model.components.conversions;
 import org.talend.core.model.components.ComponentUtilities;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 
-/**
- * DOC s class global comment. Detailled comment
- */
 public class AddQuotesInPropertyComponentConversion implements IComponentConversion {
 
     private String propertyToModify;
@@ -27,11 +24,6 @@ public class AddQuotesInPropertyComponentConversion implements IComponentConvers
         this.propertyToModify = propertyToModify;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.components.conversions.IComponentConversion#transform(org.talend.designer.core.model.utils.emf.talendfile.NodeType)
-     */
     public void transform(NodeType node) {
         String value = ComponentUtilities.getNodePropertyValue(node, propertyToModify);
         if (!isWithinQuote(value)) {

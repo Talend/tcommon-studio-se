@@ -30,12 +30,6 @@ import org.eclipse.core.runtime.Platform;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.runtime.i18n.Messages;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public final class JavaTypesManager {
 
     public static final String DEFAULT_CHAR = "' '"; //$NON-NLS-1$

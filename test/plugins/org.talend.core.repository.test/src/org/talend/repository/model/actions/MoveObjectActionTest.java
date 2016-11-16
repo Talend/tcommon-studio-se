@@ -24,10 +24,6 @@ import org.talend.core.model.repository.RepositoryViewObject;
 import org.talend.core.repository.ui.actions.MoveObjectAction;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * 
- * DOC hcyi class global comment. Detailled comment
- */
 public class MoveObjectActionTest {
 
     @Test

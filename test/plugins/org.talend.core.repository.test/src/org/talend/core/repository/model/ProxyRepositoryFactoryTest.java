@@ -21,10 +21,6 @@ import org.talend.core.model.properties.FolderItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.repository.ProjectManager;
 
-/**
- * created by ggu on Jul 9, 2014 Detailled comment
- *
- */
 @SuppressWarnings("nls")
 public class ProxyRepositoryFactoryTest {
 

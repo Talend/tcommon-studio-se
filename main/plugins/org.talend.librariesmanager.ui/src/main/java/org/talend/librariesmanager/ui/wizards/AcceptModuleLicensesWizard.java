@@ -6,11 +6,6 @@ import org.eclipse.jface.wizard.Wizard;
 import org.talend.core.model.general.ModuleToInstall;
 import org.talend.librariesmanager.ui.i18n.Messages;
 
-/**
- * 
- * created by ycbai on 2013-10-16 Detailled comment
- * 
- */
 public class AcceptModuleLicensesWizard extends Wizard {
 
     private AcceptModuleLicensesWizardPage licensesPage;
@@ -23,11 +18,6 @@ public class AcceptModuleLicensesWizard extends Wizard {
         setWindowTitle(Messages.getString("AcceptModuleLicensesWizard.title")); //$NON-NLS-1$
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.wizard.Wizard#addPages()
-     */
     @Override
     public void addPages() {
         licensesPage = createLicensesPage();

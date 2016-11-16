@@ -35,9 +35,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-/**
- * DOC talend class global comment. Detailled comment
- */
 public class StartingHelper {
 
     private static StartingHelper helper = null;
@@ -45,7 +42,6 @@ public class StartingHelper {
     private String content;
 
     private StartingHelper() {
-
     }
 
     public static StartingHelper getHelper() {

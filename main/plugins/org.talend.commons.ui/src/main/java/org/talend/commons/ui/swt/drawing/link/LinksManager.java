@@ -22,10 +22,6 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id: LinkManager.java 318 2006-11-03 09:44:45 +0000 (ven., 03 nov. 2006) amaumont $
- * 
  * @param <G1> the graphical item of extremety 1
  * @param <D1> the data item of extremety 1
  * @param <G2> the graphical item of extremety 2
@@ -50,11 +46,6 @@ public class LinksManager<G1, D1, G2, D2> {
         currentNumberLinks = 0;
     }
 
-    /**
-     * DOC amaumont Comment method "addLink".
-     * 
-     * @param link
-     */
     public void addLink(LinkDescriptor<G1, D1, G2, D2> link) {
         currentNumberLinks++;
 
@@ -70,12 +61,6 @@ public class LinksManager<G1, D1, G2, D2> {
 
     }
 
-    /**
-     * DOC amaumont Comment method "registerItem".
-     * 
-     * @param link
-     * @param extremity
-     */
     @SuppressWarnings("unchecked")
     private void registerItem(LinkDescriptor<G1, D1, G2, D2> link, Map gToLinks, Object item) {
         Set<LinkDescriptor<G1, D1, G2, D2>> linksFromItem = (Set<LinkDescriptor<G1, D1, G2, D2>>) gToLinks.get(item);
@@ -86,11 +71,6 @@ public class LinksManager<G1, D1, G2, D2> {
         linksFromItem.add(link);
     }
 
-    /**
-     * DOC amaumont Comment method "addLink".
-     * 
-     * @param link
-     */
     public boolean removeLink(LinkDescriptor<G1, D1, G2, D2> link) {
         currentNumberLinks--;
 
@@ -104,9 +84,6 @@ public class LinksManager<G1, D1, G2, D2> {
         return removed;
     }
 
-    /**
-     * DOC amaumont Comment method "clearLinks".
-     */
     public void clearLinks() {
         links.clear();
         d1ToLinks.clear();
@@ -116,20 +93,10 @@ public class LinksManager<G1, D1, G2, D2> {
         currentNumberLinks = 0;
     }
 
-    /**
-     * DOC amaumont Comment method "getLinks".
-     * 
-     * @return
-     */
     public List<LinkDescriptor<G1, D1, G2, D2>> getLinks() {
         return this.links;
     }
 
-    /**
-     * Getter for currentNumberLinks.
-     * 
-     * @return the currentNumberLinks
-     */
     public int getCurrentNumberLinks() {
         return this.currentNumberLinks;
     }
@@ -150,11 +117,6 @@ public class LinksManager<G1, D1, G2, D2> {
         return false;
     }
 
-    /**
-     * DOC amaumont Comment method "removeLinks".
-     * 
-     * @param linksFromG2
-     */
     private boolean removeLinks(Set<LinkDescriptor<G1, D1, G2, D2>> linksFromG2) {
         boolean removed = false;
         for (LinkDescriptor<G1, D1, G2, D2> linkDescriptor : linksFromG2) {
@@ -165,49 +127,22 @@ public class LinksManager<G1, D1, G2, D2> {
         return removed;
     }
 
-    /**
-     * DOC amaumont Comment method "getLinksFromExtremity1".
-     * 
-     * @param treeItem
-     */
     public Set<LinkDescriptor<G1, D1, G2, D2>> getLinksFromGraphicalExtremity1(G1 graphicalItem) {
         return getLinks(g1ToLinks, graphicalItem);
     }
 
-    /**
-     * DOC amaumont Comment method "getLinksFromExtremity1".
-     * 
-     * @param treeItem
-     */
     public Set<LinkDescriptor<G1, D1, G2, D2>> getLinksFromDataExtremity1(D1 dataItem) {
         return getLinks(d1ToLinks, dataItem);
     }
 
-    /**
-     * DOC amaumont Comment method "getLinksFromExtremity1".
-     * 
-     * @param treeItem
-     */
     public Set<LinkDescriptor<G1, D1, G2, D2>> getLinksFromGraphicalExtremity2(G2 graphicalItem) {
         return getLinks(g2ToLinks, graphicalItem);
     }
 
-    /**
-     * DOC amaumont Comment method "getLinksFromExtremity1".
-     * 
-     * @param treeItem
-     */
     public Set<LinkDescriptor<G1, D1, G2, D2>> getLinksFromDataExtremity2(D2 dataItem) {
         return getLinks(d2ToLinks, dataItem);
     }
 
-    /**
-     * DOC amaumont Comment method "getLinks".
-     * 
-     * @param toLinks
-     * @param dataItem
-     * @return
-     */
     @SuppressWarnings("unchecked")
     private Set<LinkDescriptor<G1, D1, G2, D2>> getLinks(Map objectToLinks, Object object) {
         Set<LinkDescriptor<G1, D1, G2, D2>> linksFound = (Set<LinkDescriptor<G1, D1, G2, D2>>) objectToLinks

@@ -35,10 +35,6 @@ import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
 
-/**
- * created by ldong on Sep 12, 2014 Detailled comment
- * 
- */
 public class ContextBuiltinToRepositoryCommand extends Command {
 
     private List<IContextParameter> params = new ArrayList<IContextParameter>();
@@ -49,13 +45,6 @@ public class ContextBuiltinToRepositoryCommand extends Command {
 
     private ContextManagerHelper helper;
 
-    /**
-     * DOC ldong ContextBuiltinToRepositoryCommand constructor comment.
-     * 
-     * @param params
-     * @param contextManager
-     * @param item
-     */
     public ContextBuiltinToRepositoryCommand(List<IContextParameter> params, IContextManager contextManager, ContextItem item) {
         super();
         this.params = params;
@@ -64,11 +53,6 @@ public class ContextBuiltinToRepositoryCommand extends Command {
         this.helper = new ContextManagerHelper(contextManager);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.gef.commands.Command#execute()
-     */
     @Override
     public void execute() {
         IContext jobDefaultContext = contextManager.getDefaultContext(); // get default context from job

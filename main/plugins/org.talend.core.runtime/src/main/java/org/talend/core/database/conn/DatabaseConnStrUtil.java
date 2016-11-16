@@ -27,9 +27,6 @@ import org.talend.core.model.metadata.connection.hive.HiveModeInfo;
 import org.talend.core.model.utils.ContextParameterUtils;
 import org.talend.core.utils.TalendQuoteUtils;
 
-/**
- * cli class global comment. Detailled comment
- */
 public class DatabaseConnStrUtil {
 
     private static final String CONN = TalendQuoteUtils.getStringConnect();
@@ -44,12 +41,10 @@ public class DatabaseConnStrUtil {
     }
 
     /**
-     * 
      * cli Comment method "getStringReplace".
      * 
      * if support context, the "init" string have been quoted, and the "after" should be original(quoted or in context
      * mode).
-     * 
      */
     private static String getStringReplace(final String init, final String before, final String after,
             final boolean supportContext, final boolean password) {

@@ -38,10 +38,6 @@ import org.talend.commons.utils.data.list.ListenableListEvent;
 import org.talend.commons.utils.data.list.ListenableListEvent.TYPE;
 import org.talend.commons.utils.data.map.MultiLazyValuesMap;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * $Id: TableEditorManager.java,v 1.3 2006/06/02 15:24:10 amaumont Exp $
- */
 public class TableEditorManager {
 
     /**
@@ -430,9 +426,6 @@ public class TableEditorManager {
         return tableEditor;
     }
 
-    /**
-     * DOC amaumont Comment method "redrawAll".
-     */
     public void redrawControls() {
         for (TableEditor tableEditor : tableEditorList) {
             Control editor = tableEditor.getEditor();

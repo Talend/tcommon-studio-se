@@ -22,12 +22,6 @@ import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.core.utils.KeywordsValidator;
 import org.talend.core.utils.TalendQuoteUtils;
 
-/**
- * DOC nrousseau class global comment. Detailled comment <br/>
- * 
- * $Id: talend-code-templates.xml 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- * 
- */
 public class TalendTextUtils {
 
     public static final String SINGLE_QUOTE = TalendQuoteUtils.SINGLE_QUOTE;
@@ -555,11 +549,6 @@ public class TalendTextUtils {
                 && !name.equals(EDatabaseTypeName.GREENPLUM) && !name.equals(EDatabaseTypeName.PARACCEL);
     }
 
-    /**
-     * 
-     * DOC YeXiaowei KeyString class global comment. Detailled comment <br/>
-     * 
-     */
     public static final class KeyString {
 
         private String string = null;

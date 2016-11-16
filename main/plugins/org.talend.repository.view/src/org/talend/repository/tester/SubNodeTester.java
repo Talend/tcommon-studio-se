@@ -15,9 +15,6 @@ package org.talend.repository.tester;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public abstract class SubNodeTester extends AbstractNodeTester {
 
     public ERepositoryObjectType findParentItemType(RepositoryNode repositoryNode) {

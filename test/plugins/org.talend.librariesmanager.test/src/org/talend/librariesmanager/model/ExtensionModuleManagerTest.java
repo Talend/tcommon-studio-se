@@ -21,10 +21,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.talend.core.model.general.ModuleNeeded;
 
-/**
- * created by ycbai on 2014-5-8 Detailled comment
- *
- */
 public class ExtensionModuleManagerTest {
 
     private static ExtensionModuleManager manager;

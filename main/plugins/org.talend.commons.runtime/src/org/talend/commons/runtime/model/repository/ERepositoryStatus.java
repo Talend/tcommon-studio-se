@@ -12,12 +12,6 @@
 // ============================================================================
 package org.talend.commons.runtime.model.repository;
 
-/**
- * DOC smallet class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public enum ERepositoryStatus {
     NEW(true, true),
     LOCK_BY_USER(true, false),

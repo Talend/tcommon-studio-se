@@ -14,12 +14,6 @@ package org.talend.migration;
 
 import org.talend.migration.IMigrationTask.ExecutionResult;
 
-/**
- * DOC smallet class global comment. Detailled comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- * 
- */
 public abstract class AbstractMigrationTask {
 
     private String id;
@@ -34,16 +28,11 @@ public abstract class AbstractMigrationTask {
 
     private ExecutionResult status;
 
-    /**
-     * DOC smallet AbstractMigrationTask constructor comment.
-     */
     public AbstractMigrationTask() {
         super();
     }
 
     /**
-     * DOC smallet AbstractMigrationTask constructor comment.
-     * 
      * @param id
      * @param name
      */

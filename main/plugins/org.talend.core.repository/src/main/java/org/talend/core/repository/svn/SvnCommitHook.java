@@ -14,10 +14,6 @@ package org.talend.core.repository.svn;
 
 import org.talend.repository.ui.actions.AContextualAction;
 
-/**
- * created by wchen on 2014-4-1 Detailled comment
- * 
- */
 public abstract class SvnCommitHook extends AContextualAction {
 
     private static boolean activeAutoCommit = false;

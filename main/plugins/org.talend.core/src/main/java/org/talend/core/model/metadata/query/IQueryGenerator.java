@@ -15,9 +15,6 @@ package org.talend.core.model.metadata.query;
 import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.core.model.process.IElement;
 
-/**
- * ggu class global comment. Detailled comment
- */
 public interface IQueryGenerator {
 
     public static final String EMPTY = ""; //$NON-NLS-1$

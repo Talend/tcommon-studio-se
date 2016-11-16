@@ -12,27 +12,14 @@
 // ============================================================================
 package org.talend.designer.rowgenerator.data;
 
-/**
- * class global comment. Detailled comment <br/> $Id: ListParameter.java,v 1.5 2007/02/02 03:04:21 pub Exp $
- */
 public class ListParameter extends Parameter {
 
     private String[] values;
 
-    /**
-     * Sets the values.
-     * 
-     * @param values the values to set
-     */
     public void setValues(String[] values) {
         this.values = values;
     }
 
-    /**
-     * Getter for values.
-     * 
-     * @return the values
-     */
     public String[] getValues() {
         return this.values;
     }
@@ -44,21 +31,11 @@ public class ListParameter extends Parameter {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.rowgenerator.data.Parameter#setValue(java.lang.String)
-     */
     @Override
     public void setValue(String value) {
         super.setValue(value);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.rowgenerator.data.Parameter#sameParameterAs(org.talend.designer.rowgenerator.data.Parameter)
-     */
     @Override
     public boolean sameParameterAs(Parameter obj) {
         if (this == obj) {

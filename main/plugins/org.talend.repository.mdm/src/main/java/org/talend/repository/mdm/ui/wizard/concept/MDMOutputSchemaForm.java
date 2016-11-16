@@ -99,9 +99,6 @@ import org.talend.repository.ui.wizards.metadata.connection.files.xml.view.XmlFi
 import org.talend.repository.ui.wizards.metadata.connection.files.xml.view.XmlFileTableViewerProvider;
 import org.talend.repository.ui.wizards.metadata.connection.files.xml.view.XmlFileTreeViewerProvider;
 
-/**
- * wzhang class global comment. Detailled comment
- */
 public class MDMOutputSchemaForm extends AbstractMDMFileStepForm {
 
     private SashForm mainSashFormComposite;
@@ -1067,9 +1064,6 @@ public class MDMOutputSchemaForm extends AbstractMDMFileStepForm {
         updateConnection();
     }
 
-    /**
-     * class global comment. Detailled comment
-     */
     class DialogErrorXMLLabelCellEditor implements ICellEditorListener {
 
         CellEditor editor;
@@ -1140,11 +1134,6 @@ public class MDMOutputSchemaForm extends AbstractMDMFileStepForm {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.mdm.ui.wizard.concept.AbstractMDMFileStepForm#createTable()
-     */
     @Override
     protected void createTable() {
         // this.metadataTable = tempMetadataTable;

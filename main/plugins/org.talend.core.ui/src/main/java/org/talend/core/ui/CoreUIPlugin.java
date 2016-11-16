@@ -28,9 +28,6 @@ import org.talend.repository.model.IMetadataService;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IRepositoryService;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class CoreUIPlugin extends AbstractUIPlugin {
 
     // The plug-in ID
@@ -43,21 +40,11 @@ public class CoreUIPlugin extends AbstractUIPlugin {
         plugin = this;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
-     */
     @Override
     public void start(BundleContext contextP) throws Exception {
         super.start(contextP);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
-     */
     @Override
     public void stop(BundleContext contextP) throws Exception {
         plugin = null;

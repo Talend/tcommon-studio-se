@@ -38,15 +38,9 @@ import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 
-/**
- * ggu class global comment. Detailled comment.
- */
 public final class UpdateContextVariablesHelper {
 
     /**
-     * 
-     * ggu Comment method "updateProcess".
-     * 
      * update parameters for the current opened job .
      */
     public static boolean updateProcessForRenamed(IProcess process, final String oldVarName, final String newVarName) {

@@ -14,15 +14,8 @@ package org.talend.repository.metadata.importexport;
 
 import org.talend.repository.items.importexport.handlers.imports.MetadataConnectionImportHandler;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class SomeMetadatasImportHandler extends MetadataConnectionImportHandler {
 
-    /**
-     * 
-     * DOC ggu SomeMetadatasImportHandler constructor comment.
-     */
     public SomeMetadatasImportHandler() {
         super();
     }

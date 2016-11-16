@@ -49,10 +49,6 @@ import org.talend.repository.ProjectManager;
 import org.talend.utils.io.FilesUtils;
 import org.talend.utils.ssl.SSLUtils;
 
-/**
- * created by wchen on Apr 24, 2015 Detailled comment
- *
- */
 public class NexusDownloader implements IDownloadHelper {
 
     private List<DownloadListener> fListeners = new ArrayList<DownloadListener>();
@@ -61,11 +57,6 @@ public class NexusDownloader implements IDownloadHelper {
 
     private static final int BUFFER_SIZE = 8192;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.download.IDownloadHelper#download(java.net.URL, java.io.File)
-     */
     @Override
     public void download(URL url, File desc) throws Exception {
         BufferedInputStream bis = null;

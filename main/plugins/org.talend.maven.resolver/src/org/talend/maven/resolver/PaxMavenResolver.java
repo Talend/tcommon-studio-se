@@ -20,10 +20,6 @@ import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
 import org.talend.osgi.hook.maven.MavenResolver;
 
-/**
- * created by sgandon on 27 mai 2015 Detailled comment
- *
- */
 final class PaxMavenResolver implements MavenResolver {
 
     private org.ops4j.pax.url.mvn.MavenResolver paxResolver;

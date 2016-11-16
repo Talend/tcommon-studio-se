@@ -34,9 +34,6 @@ import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.service.IWebServiceTos;
 import org.talend.repository.metadata.i18n.Messages;
 
-/**
- * DOC Administrator class global comment. Detailled comment
- */
 public class WSDLSchemaSelectWizardPage extends WSDLSchemaWizardPage {
 
     private static final String ALL_STEPS = "4";

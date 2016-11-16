@@ -16,27 +16,16 @@ import org.talend.core.model.components.ComponentUtilities;
 import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 
-/**
- * DOC Administrator class global comment. Detailled comment
- */
 public class AddRenameOnFileCopyConversion implements IComponentConversion {
 
     private String field = "CHECK"; //$NON-NLS-1$
 
     private String name = "RENAME"; //$NON-NLS-1$
 
-    /**
-     * DOC Administrator AddRenameOnFileCopyConversion constructor comment.
-     */
     public AddRenameOnFileCopyConversion() {
         super();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.components.conversions.IComponentConversion#transform(org.talend.designer.core.model.utils.emf.talendfile.NodeType)
-     */
     public void transform(NodeType node) {
         ElementParameterType nodeProperty = ComponentUtilities.getNodeProperty(node, "DESTINATION_RENAME"); //$NON-NLS-1$
         String destinationFileName = ""; //$NON-NLS-1$

@@ -16,10 +16,6 @@ import org.talend.core.IService;
 import org.talend.core.model.process.IElement;
 import org.talend.core.model.process.IElementParameter;
 
-/**
- * created by wchen on 2013-6-5 Detailled comment
- * 
- */
 public interface IJsonFileService extends IService {
 
     public boolean changeFilePathFromRepository(Object jsonConneciton, IElementParameter filePathParm, IElement elem, Object value);

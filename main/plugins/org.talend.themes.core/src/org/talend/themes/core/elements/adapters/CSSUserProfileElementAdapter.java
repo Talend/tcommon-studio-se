@@ -16,11 +16,6 @@ import org.eclipse.e4.ui.css.core.engine.CSSEngine;
 import org.eclipse.e4.ui.css.swt.dom.CompositeElement;
 import org.eclipse.swt.widgets.Composite;
 
-/**
- * 
- * created by hcyi on Jan 30, 2015 Detailled comment
- *
- */
 public class CSSUserProfileElementAdapter extends CompositeElement {
 
     public CSSUserProfileElementAdapter(Composite composite, CSSEngine engine) {

@@ -25,12 +25,6 @@ import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.i18n.Messages;
 import org.talend.core.service.IPigMapService;
 
-/**
- * class global comment. Detailled comment <br/>
- * 
- * $Id: FunctionManager.java,v 1.13 2007/01/31 05:20:51 pub Exp $
- * 
- */
 public class FunctionManager {
 
     public static final String PURE_PERL_NAME = "..."; //$NON-NLS-1$

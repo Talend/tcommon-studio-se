@@ -14,9 +14,6 @@ package org.talend.repository.viewer.filter;
 
 import org.talend.repository.viewer.action.AbstractRepositoryActionProvider;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public abstract class AbstractRepositoryFilterActionProvider extends AbstractRepositoryActionProvider {
 
     public AbstractRepositoryFilterActionProvider() {

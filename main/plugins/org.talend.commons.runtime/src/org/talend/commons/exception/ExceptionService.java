@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.commons.exception;
 
-/**
- * created by root on 16 janv. 2013 Detailled comment
- * 
- */
 public interface ExceptionService {
 
     public void showExceptionInMessgeBox(Throwable ex);

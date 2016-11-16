@@ -27,16 +27,8 @@ import org.talend.core.ui.component.ComponentsFactoryProvider;
 import org.talend.core.ui.services.IDesignerCoreUIService;
 import org.talend.core.ui.services.IRulesProviderService;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class CoreUIService implements ICoreUIService {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.service.ICoreUIService#updatePalette()
-     */
     @Override
     public void updatePalette() {
         ComponentPaletteUtilities.updatePalette(false);

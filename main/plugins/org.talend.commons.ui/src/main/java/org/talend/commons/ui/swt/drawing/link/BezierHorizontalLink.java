@@ -17,12 +17,6 @@ import org.talend.commons.ui.runtime.geometry.Curve2DBezier;
 import org.talend.commons.ui.runtime.geometry.Point2D;
 import org.talend.commons.ui.runtime.geometry.Point2DList;
 
-/**
- * Draw an horizontal Bezier link. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public class BezierHorizontalLink extends AbstractDrawableLink {
 
     private Curve2DBezier curve;
@@ -31,19 +25,11 @@ public class BezierHorizontalLink extends AbstractDrawableLink {
 
     private static final int DISTANCE_REFERENCE = 20000;
 
-    /**
-     * DOC amaumont BezierLink constructor comment.
-     */
     public BezierHorizontalLink(StyleLink style) {
         super(style);
         connectorWidth = CONNECTOR_WIDTH_DEFAULT;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.drawing.link.ICAbstractGraphicalLink#draw(org.eclipse.swt.graphics.GC)
-     */
     @Override
     public void drawBody(GC gc) {
 

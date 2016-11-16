@@ -17,11 +17,6 @@ import org.talend.core.model.process.IExternalNode;
 import org.talend.core.model.process.INode;
 import org.talend.designer.core.model.utils.emf.talendfile.AbstractExternalData;
 
-/**
- * 
- * created by hcyi on Aug 11, 2015 Detailled comment
- *
- */
 public interface ISparkMapService extends IService {
 
     public boolean isSparkMapComponent(IExternalNode node);

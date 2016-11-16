@@ -18,12 +18,6 @@ import java.util.List;
 import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.core.model.process.IConnection;
 
-/**
- * DOC smallet class global comment. Detailled comment <br/>
- * 
- * $Id: IODataComponentContainer.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
- */
 public class IODataComponentContainer {
 
     private List<IODataComponent> inputs;
@@ -35,20 +29,10 @@ public class IODataComponentContainer {
         this.ouputs = new ArrayList<IODataComponent>();
     }
 
-    /**
-     * Getter for inputs.
-     * 
-     * @return the inputs
-     */
     public List<IODataComponent> getInputs() {
         return this.inputs;
     }
 
-    /**
-     * Getter for ouputs.
-     * 
-     * @return the ouputs
-     */
     public List<IODataComponent> getOuputs() {
         return this.ouputs;
     }

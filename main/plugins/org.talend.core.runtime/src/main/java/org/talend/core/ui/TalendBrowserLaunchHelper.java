@@ -18,9 +18,6 @@ import java.util.Arrays;
 
 import org.talend.commons.exception.ExceptionHandler;
 
-/**
- * DOC Administrator class global comment. Detailled comment
- */
 public class TalendBrowserLaunchHelper {
 
     private static final String[] browsers = { "google-chrome",//$NON-NLS-1$

@@ -32,18 +32,10 @@ import org.talend.utils.json.JSONArray;
 import org.talend.utils.json.JSONException;
 import org.talend.utils.json.JSONObject;
 
-/**
- * created by ycbai on 2013-10-24 Detailled comment
- * 
- */
 public class HadoopRepositoryUtil {
 
     /**
-     * DOC ycbai Comment method "getHadoopPropertiesJsonStr".
-     * 
-     * <p>
      * Get the json string type of hadoop properties from list type.
-     * </p>
      * 
      * @param properties
      * @return

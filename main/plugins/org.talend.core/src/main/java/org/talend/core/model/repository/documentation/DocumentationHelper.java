@@ -46,30 +46,13 @@ import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.model.nodes.IProjectRepositoryNode;
 import org.talend.repository.ui.views.IRepositoryView;
 
-/**
- * DOC ftang class global comment. Detailled comment <br/>
- * 
- */
 public class DocumentationHelper {
 
-    /**
-     * ftang Comment method "isSyncWithDocumentation".
-     * 
-     * @return
-     */
     public static boolean isSyncWithDocumentation() {
         boolean isSync = CorePlugin.getDefault().getPreferenceStore().getBoolean(ITalendCorePrefConstants.DOC_GENERATION);
         return isSync;
     }
 
-    /**
-     * ftang Comment method "isFolderExisting".
-     * 
-     * @param type
-     * @param path
-     * @param folderName
-     * @return
-     */
     public static boolean isPathValid(ERepositoryObjectType type, IPath path, String folderName) {
         IProxyRepositoryFactory repositoryFactory = CorePlugin.getDefault().getRepositoryService().getProxyRepositoryFactory();
         try {

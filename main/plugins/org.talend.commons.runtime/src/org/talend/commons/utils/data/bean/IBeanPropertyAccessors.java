@@ -13,10 +13,6 @@
 package org.talend.commons.utils.data.bean;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
  * @param <B> Bean object
  * @param <V> Value of the bean's property
  */

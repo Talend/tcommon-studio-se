@@ -14,9 +14,6 @@ package org.talend.core.repository.ui.view;
 
 import org.eclipse.core.resources.IWorkspaceRunnable;
 
-/**
- * DOC hqzhang class global comment. Detailled comment
- */
 public abstract class RunnableWithReturnValue implements IWorkspaceRunnable {
 
     public RunnableWithReturnValue(String taskName) {

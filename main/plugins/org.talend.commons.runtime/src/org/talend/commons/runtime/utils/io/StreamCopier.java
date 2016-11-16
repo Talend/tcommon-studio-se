@@ -16,12 +16,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-/**
- * 
- * DOC amaumont  class global comment. Detailled comment
- * <br/>
- *
- */
 public class StreamCopier {
 
   public static void main(String[] args) {

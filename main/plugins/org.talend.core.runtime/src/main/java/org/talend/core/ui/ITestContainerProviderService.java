@@ -35,10 +35,6 @@ import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * created by hwang on Jan 7, 2015 Detailled comment
- *
- */
 public interface ITestContainerProviderService extends IService {
 
     public boolean isMatchedPath(IPath topLevelNodeWorkspaceRelativePath, IPath path);

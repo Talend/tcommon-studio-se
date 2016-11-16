@@ -24,9 +24,6 @@ import org.talend.core.IService;
 import org.talend.core.model.components.IComponentsFactory;
 import org.talend.core.ui.process.IGEFProcess;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public interface IDesignerCoreUIService extends IService {
 
     PaletteRoot createPalette(IComponentsFactory factory);

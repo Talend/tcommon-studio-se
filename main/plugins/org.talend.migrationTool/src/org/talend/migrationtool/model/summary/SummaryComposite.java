@@ -35,12 +35,6 @@ import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.migration.IMigrationTask.ExecutionResult;
 import org.talend.migration.IProjectMigrationTask;
 
-/**
- * DOC smallet class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public class SummaryComposite extends Composite {
 
     private static final Color BCK_COLOR = new Color(null, 255, 255, 255);
@@ -85,11 +79,6 @@ public class SummaryComposite extends Composite {
 
         tableWiewer.setLabelProvider(new LabelProvider() {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.jface.viewers.LabelProvider#getImage(java.lang.Object)
-             */
             @Override
             public Image getImage(Object element) {
                 if (element instanceof IProjectMigrationTask) {
@@ -111,11 +100,6 @@ public class SummaryComposite extends Composite {
                 return super.getImage(element);
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
-             */
             @Override
             public String getText(Object element) {
                 if (element instanceof IProjectMigrationTask) {

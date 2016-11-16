@@ -36,11 +36,7 @@ import org.talend.commons.ui.swt.advanced.dataeditor.control.ExtendedPushButton;
 import org.talend.commons.ui.swt.extended.table.AbstractExtendedTableViewer;
 
 /**
- * DOC cantoine class global comment. Detailled comment <br/>
- * 
- * TGU same purpose as TargetSchemaToolbarEditorView2 but uses EMF model directly $Id:
- * TargetSchemaToolbarEditorView2.java,v 1.1 2006/08/02 19:43:45 cantoine Exp $
- * 
+ * TGU same purpose as TargetSchemaToolbarEditorView2 but uses EMF model directly.
  */
 public class ExtendedToolbarView extends AbstractExtendedToolbar {
 
@@ -85,47 +81,23 @@ public class ExtendedToolbarView extends AbstractExtendedToolbar {
     }
 
     /**
-     * Override this method if needed to instanciate only the buttons of your choice.
+     * Override this method if needed to instantiate only the buttons of your choice.
      * 
      */
     protected void createComponents(Composite parent) {
-
         addButton = createAddPushButton();
-
         removeButton = createRemovePushButton();
-
         moveUpButton = createMoveUpPushButton();
-
         moveDownButton = createMoveDownPushButton();
-
         copyButton = createCopyPushButton();
-
         pasteButton = createPastePushButton();
-
         addallButton = createAddAllPushButton();
-
         exportButton = createExportPushButton();
-
         importButton = createImportPushButton();
-
         saveAsGenericSchemaButton = createSaveAsGenericSchemaButton();
-
         selectContextVariablesButton = createSelectContextVariablesPushButton();
-
-        // loadButton = new Button(toolbar, SWT.PUSH);
-        // loadButton.setToolTipText("Import");
-        // loadButton.setImage(ImageProvider.getImage(EImage.IMPORT_ICON));
-        //
-        // exportButton = new Button(toolbar, SWT.PUSH);
-        // exportButton.setToolTipText("Export");
-        // exportButton.setImage(ImageProvider.getImage(EImage.EXPORT_ICON));
     }
 
-    /**
-     * DOC YeXiaowei Comment method "createAddAllPushButton".
-     * 
-     * @return
-     */
     protected AddAllPushButton createAddAllPushButton() {
         return null;
     }
@@ -255,11 +227,6 @@ public class ExtendedToolbarView extends AbstractExtendedToolbar {
         return selectContextVariablesButton;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.advanced.dataeditor.AbstractExtendedToolbar#updateEnabledStateOfButtons()
-     */
     @Override
     public void updateEnabledStateOfButtons() {
         List<ExtendedPushButton> buttons = getButtons();
@@ -268,11 +235,6 @@ public class ExtendedToolbarView extends AbstractExtendedToolbar {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.advanced.dataeditor.AbstractExtendedToolbar#getButtons()
-     */
     @Override
     public List<ExtendedPushButton> getButtons() {
 

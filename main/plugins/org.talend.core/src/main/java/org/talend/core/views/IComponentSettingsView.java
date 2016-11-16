@@ -14,9 +14,6 @@ package org.talend.core.views;
 
 import org.talend.core.model.process.Element;
 
-/**
- * DOC qzhang class global comment. Detailled comment.
- */
 public interface IComponentSettingsView {
 
     String ID = "org.talend.designer.core.ui.views.properties.ComponentSettingsView"; //$NON-NLS-1$

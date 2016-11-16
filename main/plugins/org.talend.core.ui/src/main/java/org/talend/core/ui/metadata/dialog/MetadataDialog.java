@@ -70,12 +70,6 @@ import org.talend.core.ui.utils.MetaDataDialogUtil;
 import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.designer.core.IDesignerCoreService;
 
-/**
- * DOC nrousseau class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public class MetadataDialog extends Dialog {
 
     private static final String DATABASE_LABEL = "Database"; //$NON-NLS-1$
@@ -685,11 +679,6 @@ public class MetadataDialog extends Dialog {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.Dialog#okPressed()
-     */
     @Override
     protected void okPressed() {
         // TODO Auto-generated method stub
@@ -758,13 +747,6 @@ public class MetadataDialog extends Dialog {
                     initGraphicsComponents);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.talend.core.ui.metadata.editor.MetadataTableEditorView#setTableViewerCreatorOptions(org.talend.commons
-         * .ui.swt.tableviewer.TableViewerCreator)
-         */
         @Override
         protected void setTableViewerCreatorOptions(TableViewerCreator<IMetadataColumn> newTableViewerCreator) {
             super.setTableViewerCreatorOptions(newTableViewerCreator);
@@ -772,20 +754,10 @@ public class MetadataDialog extends Dialog {
         }
     }
 
-    /**
-     * Getter for isSingle.
-     * 
-     * @return the isSingle
-     */
     public boolean isSingleAndStruct() {
         return this.isSingleAndStruct;
     }
 
-    /**
-     * Sets the isSingle.
-     * 
-     * @param isSingle the isSingle to set
-     */
     public void setSingleAndStruct(boolean isSingle) {
         this.isSingleAndStruct = isSingle;
     }

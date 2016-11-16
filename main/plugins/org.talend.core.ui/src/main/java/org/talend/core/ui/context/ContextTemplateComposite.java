@@ -76,10 +76,6 @@ import org.talend.core.ui.context.model.template.GroupBySourceProvider;
 import org.talend.core.ui.i18n.Messages;
 import org.talend.core.utils.TalendQuoteUtils;
 
-/**
- * zwang class global comment. Detailled comment <br/>
- * 
- */
 public class ContextTemplateComposite extends AbstractContextTabEditComposite {
 
     public static final String NEW_PARAM_NAME = "new"; //$NON-NLS-1$
@@ -135,11 +131,6 @@ public class ContextTemplateComposite extends AbstractContextTabEditComposite {
         return modelManager;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.widgets.Control#setEnabled(boolean)
-     */
     @Override
     public void setEnabled(boolean enabled) {
         // update the state of buttons
@@ -152,9 +143,6 @@ public class ContextTemplateComposite extends AbstractContextTabEditComposite {
         }
     }
 
-    /**
-     * zwang Comment method "initializeUI".
-     */
     private void initializeUI() {
         ComboBoxCellEditor comboBoxCellEditor = null;
         viewer = new TreeViewer(this, SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER | SWT.MULTI);

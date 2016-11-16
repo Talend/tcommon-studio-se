@@ -23,12 +23,6 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Widget;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public class CommandStackForComposite extends CommandStack {
 
     private Control refComposite;
@@ -41,9 +35,6 @@ public class CommandStackForComposite extends CommandStack {
 
     private static final int KEY_CODE_UNDO = 122; // 'z'
 
-    /**
-     * DOC amaumont IndependantCommandStackHandler constructor comment.
-     */
     public CommandStackForComposite(Composite refComposite) {
         super();
         this.refComposite = refComposite;
@@ -77,12 +68,6 @@ public class CommandStackForComposite extends CommandStack {
         });
     }
 
-    /**
-     * DOC amaumont Comment method "refControlIsParentOf".
-     * 
-     * @param control
-     * @return
-     */
     protected boolean refControlIsParentOf(Control control) {
 
         while (true) {
@@ -97,11 +82,6 @@ public class CommandStackForComposite extends CommandStack {
 
     }
 
-    /**
-     * DOC amaumont Comment method "keyPressedExecute".
-     * 
-     * @param e
-     */
     protected void keyPressedExecute(Event e) {
         boolean ctrlKey = (e.stateMask & (SWT.CTRL)) != 0;
         boolean undo = ctrlKey && e.keyCode == KEY_CODE_UNDO;

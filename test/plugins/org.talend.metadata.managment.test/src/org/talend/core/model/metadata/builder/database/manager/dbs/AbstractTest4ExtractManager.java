@@ -62,10 +62,6 @@ import org.talend.cwm.relational.RelationalFactory;
 import org.talend.cwm.relational.TdColumn;
 import org.talend.cwm.relational.TdTable;
 
-/**
- * created by ggu on Jul 4, 2012 Detailled comment
- * 
- */
 @PrepareForTest({ ExtractMetaDataUtils.class })
 @Ignore
 public class AbstractTest4ExtractManager {

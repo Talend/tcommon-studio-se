@@ -87,9 +87,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-/**
- * DOC Administrator class global comment. Detailled comment
- */
 public class CoreService implements ICoreService {
 
     private static Logger log = Logger.getLogger(CoreService.class);
@@ -134,52 +131,27 @@ public class CoreService implements ICoreService {
         return ContextParameterUtils.isContainContextParam(code);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ICoreService#setFlagForQueryUtils(boolean)
-     */
     @Override
     public void setFlagForQueryUtils(boolean flag) {
         QueryUtil.isContextQuery = flag;
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ICoreService#getFlagFromQueryUtils()
-     */
     @Override
     public boolean getContextFlagFromQueryUtils() {
         return QueryUtil.isContextQuery;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ICoreService#getRoutineAndJars()
-     */
     @Override
     public Map<String, List<LibraryInfo>> getRoutineAndJars() {
         return RoutineLibraryMananger.getInstance().getRoutineAndJars();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ICoreService#getTemplateString()
-     */
     @Override
     public String getTemplateString() {
         return ITalendSynchronizer.TEMPLATE;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ICoreService#getParameterUNIQUENAME()
-     */
     @Override
     public String getParameterUNIQUENAME(NodeType node) {
         return ElementParameterParser.getUNIQUENAME(node);
@@ -228,10 +200,6 @@ public class CoreService implements ICoreService {
     @Override
     public void syncLibraries(IProgressMonitor... monitorWrap) {
         CorePlugin.getDefault().getLibrariesService().syncLibraries(monitorWrap);
-        // if (!CommonsPlugin.isHeadless()) {
-        // CorePlugin.getDefault().getRunProcessService().updateLibraries(new HashSet<String>(), null);
-        // }
-
     }
 
     @Override
@@ -271,11 +239,6 @@ public class CoreService implements ICoreService {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ICoreService#syncAllRoutines()
-     */
     @Override
     public void syncAllRoutines() throws SystemException {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ICodeGeneratorService.class)) {

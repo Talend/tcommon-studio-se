@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.designer.core;
 
-/**
- * ggu class global comment. Detailled comment
- */
 public interface ITalendEditor {
 
     public boolean isDirty();

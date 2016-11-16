@@ -16,12 +16,6 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public class ExtremityEastArrow extends AbstractExtremityDrawableLink {
 
     public static final int WIDTH_IMAGE_ARROW = 5;
@@ -34,29 +28,14 @@ public class ExtremityEastArrow extends AbstractExtremityDrawableLink {
 
     public static final int FOREGROUND_INDEX_PALETTE_COLOR = 1;
 
-    /**
-     * DOC amaumont TipArrow constructor comment.
-     */
     public ExtremityEastArrow(IStyleLink styleLink) {
         super(styleLink);
     }
 
-    /**
-     * DOC amaumont TipEastArrow constructor comment.
-     * 
-     * @param styleLink
-     * @param xOffset
-     * @param yOffset
-     */
     public ExtremityEastArrow(IStyleLink styleLink, int xOffset, int yOffset) {
         super(styleLink, xOffset, yOffset);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.drawing.link.AbstractTipLink#draw(org.eclipse.swt.graphics.GC)
-     */
     @Override
     public void draw(GC gc, Point point) {
         Color previousBackground = gc.getBackground();

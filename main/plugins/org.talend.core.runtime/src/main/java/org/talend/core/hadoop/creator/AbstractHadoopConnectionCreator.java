@@ -27,10 +27,6 @@ import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
-/**
- * created by ycbai on 2015年6月29日 Detailled comment
- *
- */
 public abstract class AbstractHadoopConnectionCreator implements IHadoopConnectionCreator {
 
     protected String relativeHadoopClusterId;

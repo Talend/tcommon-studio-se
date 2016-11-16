@@ -28,17 +28,8 @@ import org.talend.commons.utils.data.list.IListenableListListener;
 import org.talend.commons.utils.data.list.ListenableList;
 import org.talend.commons.utils.data.list.ListenableListEvent;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id: ListenableListTest.java 38252 2010-03-10 05:39:44Z nrousseau $
- * 
- */
 public class ListenableListTest {
 
-    /**
-     * 
-     */
     private static final int A_3 = 3;
 
     private ListenableList<String> listenedList;
@@ -59,12 +50,8 @@ public class ListenableListTest {
 
     private IListenableListListener listener;
 
-    /**
-     * DOC amaumont Comment method "init".
-     */
     @Before
     public void init() {
-
         ArrayList<String> list = new ArrayList<String>();
         listenedList = new ListenableList<String>(list);
 

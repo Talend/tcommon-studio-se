@@ -33,67 +33,36 @@ import org.talend.registration.RegistrationPlugin;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-/**
- * created by kongxiaohan on Mar 24, 2015 Detailled comment
- *
- */
 public class TalendForgeProvider implements IIntroXHTMLContentProvider {
 
     private String oldCountry;
 
     private int countryToSelect = 0;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.ui.intro.config.IIntroContentProvider#init(org.eclipse.ui.intro.config.IIntroContentProviderSite)
-     */
     @Override
     public void init(IIntroContentProviderSite site) {
         // TODO Auto-generated method stub
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.intro.config.IIntroContentProvider#createContent(java.lang.String, java.io.PrintWriter)
-     */
     @Override
     public void createContent(String id, PrintWriter out) {
         // TODO Auto-generated method stub
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.intro.config.IIntroContentProvider#createContent(java.lang.String,
-     * org.eclipse.swt.widgets.Composite, org.eclipse.ui.forms.widgets.FormToolkit)
-     */
     @Override
     public void createContent(String id, Composite parent, FormToolkit toolkit) {
         // TODO Auto-generated method stub
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.intro.config.IIntroContentProvider#dispose()
-     */
     @Override
     public void dispose() {
         // TODO Auto-generated method stub
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.intro.config.IIntroXHTMLContentProvider#createContent(java.lang.String, org.w3c.dom.Element)
-     */
     @Override
     public void createContent(String id, Element parent) {
         if (ContentConstants.INSERT_DATA.equals(id)) {

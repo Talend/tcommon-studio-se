@@ -15,19 +15,8 @@ package org.talend.core.service;
 import org.talend.core.IService;
 import org.talend.core.model.process.INode;
 
-/**
- * DOC YeXiaowei class global comment. Detailled comment <br/>
- * 
- */
 public interface IDesignerXMLMapperService extends IService {
 
-    /**
-     * 
-     * DOC YeXiaowei Comment method "isVirtualComponent".
-     * 
-     * @param node
-     * @return
-     */
     public boolean isVirtualComponent(final INode node);
 
 }

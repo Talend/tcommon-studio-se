@@ -36,12 +36,6 @@ import org.talend.commons.runtime.model.expressionbuilder.Variable;
 import org.talend.commons.ui.runtime.expressionbuilder.IExpressionDataBean;
 import org.talend.commons.ui.runtime.expressionbuilder.IExtendedCellEditorBehavior;
 
-/**
- * yzhang class global comment. Detailled comment <br/>
- * 
- * $Id: ExtendedTextCellEditor.java 下午03:55:26 2007-8-1 +0000 (2007-8-1) yzhang $
- * 
- */
 public class ExtendedTextCellEditor extends TextCellEditor implements IExpressionDataBean {
 
     private IExtendedCellEditorBehavior cellEditorBehavior;
@@ -98,11 +92,6 @@ public class ExtendedTextCellEditor extends TextCellEditor implements IExpressio
         }
         control.addFocusListener(new FocusAdapter() {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.swt.events.FocusAdapter#focusGained(org.eclipse.swt.events.FocusEvent)
-             */
             @Override
             public void focusGained(FocusEvent e) {
                 ExtendedTextCellEditor.this.focusLost();
@@ -123,11 +112,6 @@ public class ExtendedTextCellEditor extends TextCellEditor implements IExpressio
         // initFocusListener(parent);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.TextCellEditor#createControl(org.eclipse.swt.widgets.Composite)
-     */
     @Override
     protected Control createControl(Composite parent) {
 
@@ -211,9 +195,6 @@ public class ExtendedTextCellEditor extends TextCellEditor implements IExpressio
         return modifyListener;
     }
 
-    /**
-     * yzhang Comment method "checkSelection".
-     */
     public void checkSelection() {
         boolean oldIsSelection = isSelection;
         isSelection = text.getSelectionCount() > 0;
@@ -223,9 +204,6 @@ public class ExtendedTextCellEditor extends TextCellEditor implements IExpressio
         }
     }
 
-    /**
-     * yzhang Comment method "checkDeleteable".
-     */
     public void checkDeleteable() {
         boolean oldIsDeleteable = isDeleteable;
         isDeleteable = isDeleteEnabled();
@@ -234,9 +212,6 @@ public class ExtendedTextCellEditor extends TextCellEditor implements IExpressio
         }
     }
 
-    /**
-     * yzhang Comment method "checkSelectable".
-     */
     public void checkSelectable() {
         boolean oldIsSelectable = isSelectable;
         isSelectable = isSelectAllEnabled();
@@ -245,29 +220,14 @@ public class ExtendedTextCellEditor extends TextCellEditor implements IExpressio
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.expressionbuilder.IExpressionConsumer#setConsumerExpression(java.lang.String)
-     */
     public void setConsumerExpression(String expression) {
         text.setText(expression);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.expressionbuilder.IExpressionDataBean#getExpression()
-     */
     public String getExpression() {
         return text.getText();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.expressionbuilder.IExpressionDataBean#getVariables()
-     */
     public List<Variable> getVariables() {
         if (this.data instanceof List) {
             return (List<Variable>) this.data;
@@ -286,59 +246,29 @@ public class ExtendedTextCellEditor extends TextCellEditor implements IExpressio
         this.ownerId = ownerId;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.expressionbuilder.IExpressionDataBean#getOwnerId()
-     */
     public String getOwnerId() {
         return this.ownerId;
     }
 
     private String path;
 
-    /**
-     * yzhang Comment method "setData".
-     * 
-     * @param data
-     */
     public void setData(Object data) {
         this.data = data;
     }
 
-    /**
-     * yzhang Comment method "getData".
-     * 
-     * @return
-     */
     public Object getData() {
         return this.data;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.CellEditor#focusLost()
-     */
     @Override
     public void focusLost() {
         super.focusLost();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.expressionbuilder.IExpressionDataBean#getExpressionType()
-     */
     public String getExpressionType() {
         return expressionType;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.expressionbuilder.IExpressionDataBean#setExpressionType(java.lang.String)
-     */
     public void setExpressionType(String expressionType) {
         this.expressionType = expressionType;
     }

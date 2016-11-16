@@ -91,12 +91,6 @@ import org.talend.core.utils.KeywordsValidator;
 import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.cwm.helper.ConnectionHelper;
 
-/**
- * DOC nrousseau class global comment. Detailled comment <br/>
- * 
- * $Id: RepositoryToComponentProperty.java 51621 2010-11-23 09:18:34Z hwang $
- * 
- */
 public class RepositoryToComponentProperty {
 
     public static Object getValue(Connection connection, String value, IMetadataTable table, String targetComponent) {

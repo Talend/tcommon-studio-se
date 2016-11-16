@@ -33,17 +33,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.talend.model.migration.TopMetadataMigrationFrom400to410usingGenericVM;
 
-/**
- * DOC sgandon class global comment. Detailled comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
- * 
- */
 public class Top_metadata400to410Test {
 
-    /**
-     * 
-     */
     private static final String MIGRATION_FILE_EXT = ".mig";
 
     @Test

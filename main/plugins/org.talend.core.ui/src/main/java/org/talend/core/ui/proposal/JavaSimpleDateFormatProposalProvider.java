@@ -20,12 +20,6 @@ import org.eclipse.jface.fieldassist.IContentProposalProvider;
 import org.talend.core.ui.i18n.Messages;
 import org.talend.core.utils.TalendQuoteUtils;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id: talend-code-templates.xml 1 2006-09-29 17:06:40Z nrousseau $
- * 
- */
 public class JavaSimpleDateFormatProposalProvider implements IContentProposalProvider {
 
     public static void main(String[] args) {
@@ -56,13 +50,7 @@ public class JavaSimpleDateFormatProposalProvider implements IContentProposalPro
         // Z Time zone RFC 822 time zone -0800
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.fieldassist.IContentProposalProvider#getProposals(java.lang.String, int)
-     */
     public IContentProposal[] getProposals(String contents, int position) {
-
         IContentProposal[] cp = new IContentProposal[] {
                 new DateFormatContentProposal(
                         "\"dd-MM-yyyy\" : common format", "dd-MM-yyyy", "Date\n Examples : \n  01-01-2007\n  31-12-2007"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -114,13 +102,6 @@ public class JavaSimpleDateFormatProposalProvider implements IContentProposalPro
         return cp;
     }
 
-    /**
-     * 
-     * DOC amaumont JavaSimpleDateFormatProposalProvider class global comment. Detailled comment <br/>
-     * 
-     * $Id: talend-code-templates.xml 1 2006-09-29 17:06:40Z nrousseau $
-     * 
-     */
     class DateFormatContentProposal implements IContentProposal {
 
         String content;
@@ -129,13 +110,6 @@ public class JavaSimpleDateFormatProposalProvider implements IContentProposalPro
 
         String label;
 
-        /**
-         * DOC amaumont DateFormatProposal constructor comment.
-         * 
-         * @param content
-         * @param description
-         * @param label
-         */
         public DateFormatContentProposal(String label, String content, String description) {
             super();
             this.content = content;

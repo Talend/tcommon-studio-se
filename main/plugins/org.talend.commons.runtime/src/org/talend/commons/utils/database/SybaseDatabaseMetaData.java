@@ -22,10 +22,6 @@ import java.util.List;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.log4j.Logger;
 
-/**
- * created by xqliu on Oct 26, 2012 Detailled comment
- * 
- */
 public class SybaseDatabaseMetaData extends PackageFakeDatabaseMetadata {
 
     private static final String[] TABLE_META = { "ID", "TABLE_SCHEM", "TABLE_NAME", "TABLE_TYPE", "REMARKS" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
@@ -155,12 +151,6 @@ public class SybaseDatabaseMetaData extends PackageFakeDatabaseMetadata {
         return sybaseRS;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.PackageFakeDatabaseMetadata#getTables(java.lang.String, java.lang.String,
-     * java.lang.String, java.lang.String[])
-     */
     @Override
     public ResultSet getTables(String catalog, String schemaPattern, String tableNamePattern, String[] types) throws SQLException {
         String[] neededTypes = getNeededTypes(types);

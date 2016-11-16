@@ -20,10 +20,6 @@ import java.util.Set;
 import org.talend.core.model.metadata.builder.database.ExtractMetaDataFromDataBase.ETableTypes;
 import org.talend.core.model.metadata.builder.database.manager.dbs.OracleExtractManager;
 
-/**
- * qzhang class global comment. Detailled comment <br/>
- * 
- */
 public class TableInfoParameters {
 
     public static final String DEFAULT_FILTER = "%"; //$NON-NLS-1$
@@ -34,9 +30,6 @@ public class TableInfoParameters {
 
     private final Set<String> nameFiters;
 
-    /**
-     * DOC qzhang TableInfoParameters constructor comment.
-     */
     public TableInfoParameters() {
         types = new ArrayList<ETableTypes>();
         nameFiters = new HashSet<String>();

@@ -20,9 +20,6 @@ import java.util.Map;
 
 import org.junit.Test;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class JSONUtilTest {
 
     @Test

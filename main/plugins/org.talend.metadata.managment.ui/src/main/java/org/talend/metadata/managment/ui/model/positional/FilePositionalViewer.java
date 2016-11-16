@@ -699,10 +699,6 @@ public class FilePositionalViewer extends Composite {
     }
 
     /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.widgets.Composite#layout()
-     * 
      * Resize the Text before the composite.
      */
     @Override

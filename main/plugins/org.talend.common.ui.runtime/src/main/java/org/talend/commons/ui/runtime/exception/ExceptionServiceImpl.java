@@ -17,21 +17,11 @@ import org.talend.commons.exception.ExceptionService;
 
 public class ExceptionServiceImpl implements ExceptionService {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.exception.ExceptionService#showExceptionInMessgeBox(java.lang.Throwable)
-     */
     @Override
     public void showExceptionInMessgeBox(Throwable ex) {
         MessageBoxExceptionHandler.showMessage(ex, Display.getCurrent().getActiveShell());
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.exception.ExceptionService#showMessageForSchemaImportXml(java.lang.Throwable)
-     */
     @Override
     public void showMessageForSchemaImportXml(Throwable ex) {
         MessageBoxExceptionHandler.showMessageForSchemaImportXml(ex, Display.getCurrent().getActiveShell());

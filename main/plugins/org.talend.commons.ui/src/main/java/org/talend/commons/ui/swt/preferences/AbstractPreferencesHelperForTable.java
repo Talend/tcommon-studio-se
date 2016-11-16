@@ -19,10 +19,6 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.talend.commons.ui.swt.extended.table.ExtendedTableModel;
 import org.talend.commons.utils.data.bean.IBeanPropertyAccessors;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- */
 public abstract class AbstractPreferencesHelperForTable {
 
     private static final String ROW_DELIMITER = "#;#"; //$NON-NLS-1$

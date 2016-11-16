@@ -25,21 +25,12 @@ import org.eclipse.swt.widgets.Table;
 import org.talend.commons.ui.runtime.swt.tableviewer.TableViewerCreatorColumnNotModifiable;
 import org.talend.commons.ui.runtime.ws.WindowSystem;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public abstract class ButtonPushImageTableEditorContent extends TableEditorContentNotModifiable {
 
     private Image image;
 
     private Image imageHover;
 
-    /**
-     * DOC amaumont ButtonImageTableEditorContent constructor comment.
-     */
     public ButtonPushImageTableEditorContent() {
         super();
     }
@@ -86,12 +77,6 @@ public abstract class ButtonPushImageTableEditorContent extends TableEditorConte
         return label;
     }
 
-    /**
-     * DOC amaumont Comment method "selectionEvent".
-     * 
-     * @param bean
-     * @param currentRowObject
-     */
     protected abstract void selectionEvent(TableViewerCreatorColumnNotModifiable column, Object bean);
 
     public void setImage(Image image) {
@@ -100,23 +85,12 @@ public abstract class ButtonPushImageTableEditorContent extends TableEditorConte
 
     public void setImageHover(Image imageHover) {
         throw new UnsupportedOperationException();
-        // this.imageHover = imageHover;
     }
 
-    /**
-     * Getter for image.
-     * 
-     * @return the image
-     */
     public Image getImage() {
         return this.image;
     }
 
-    /**
-     * Getter for imageHover.
-     * 
-     * @return the imageHover
-     */
     public Image getImageHover() {
         return this.imageHover;
     }

@@ -27,10 +27,6 @@ import org.eclipse.ui.PlatformUI;
 import org.talend.core.ui.CoreUIPlugin;
 import org.talend.core.utils.RegistryReader;
 
-/**
- * created by ggu on Nov 10, 2014 Detailled comment
- *
- */
 public class ShowPerspectivesAtStartupRegistryReader extends RegistryReader {
 
     /**
@@ -136,11 +132,6 @@ public class ShowPerspectivesAtStartupRegistryReader extends RegistryReader {
         return this.showPerspIds;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.utils.RegistryReader#readElement(org.eclipse.core.runtime.IConfigurationElement)
-     */
     @Override
     protected boolean readElement(final IConfigurationElement element) {
         if ("perspective".equals(element.getName())) { //$NON-NLS-1$

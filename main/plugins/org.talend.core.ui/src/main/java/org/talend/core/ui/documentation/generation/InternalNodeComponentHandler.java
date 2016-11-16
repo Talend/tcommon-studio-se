@@ -79,12 +79,6 @@ public class InternalNodeComponentHandler extends AbstractComponentHandler {
         this.internalNodeHTMLMap = internalNodeHTMLMap;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.wizards.genHTMLDoc.IComponentHandler#generateComponentInfo(org.dom4j.Element,
-     * java.util.List)
-     */
     @Override
     public void generateComponentInfo() {
         for (INode node : this.componentsList) {
@@ -96,12 +90,6 @@ public class InternalNodeComponentHandler extends AbstractComponentHandler {
         }
     }
 
-    /**
-     * DOC Administrator Comment method "generateComponentElemParamters".
-     * 
-     * @param node
-     * @param componentElement
-     */
     protected void generateComponentElemParamters(INode node, Element componentElement) {
         Element parametersElement = componentElement.addElement("parameters"); //$NON-NLS-1$
 

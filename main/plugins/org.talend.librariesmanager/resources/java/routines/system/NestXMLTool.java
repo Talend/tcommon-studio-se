@@ -14,10 +14,6 @@ package routines.system;
 
 import java.util.List;
 
-/**
- * created by talend2 on 2013-10-17 Detailled comment
- * 
- */
 public class NestXMLTool {
 
     public static void parseAndAdd(org.dom4j.Element nestRoot, String value) {

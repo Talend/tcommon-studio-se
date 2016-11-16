@@ -72,9 +72,6 @@ public class PrecisionPointList extends PointList {
         size += source.size;
     }
     
-    /* (non-Javadoc)
-     * @see org.eclipse.draw2d.geometry.PointList#addAll(org.eclipse.draw2d.geometry.PointList)
-     */
     public void addAll(PointList source) {
         if (source instanceof PrecisionPointList) {
             addAll((PrecisionPointList)source);
@@ -85,9 +82,6 @@ public class PrecisionPointList extends PointList {
         }
     }
         
-    /* (non-Javadoc)
-     * @see org.eclipse.draw2d.geometry.PointList#addPoint(org.eclipse.draw2d.geometry.Point)
-     */
     public void addPoint(Point p) {
         if (p instanceof PrecisionPoint) {
             PrecisionPoint precisionPt = (PrecisionPoint)p;
@@ -120,9 +114,6 @@ public class PrecisionPointList extends PointList {
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.draw2d.geometry.PointList#getBounds()
-     */
     public Rectangle getBounds() {
         if (bounds != null)
             return bounds;
@@ -137,9 +128,6 @@ public class PrecisionPointList extends PointList {
         return bounds;
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.draw2d.geometry.PointList#getCopy()
-     */
     public PrecisionPointList getCopy() {
         PrecisionPointList result = new PrecisionPointList(size);
         System.arraycopy(points, 0, result.points, 0, size * 2);
@@ -148,16 +136,10 @@ public class PrecisionPointList extends PointList {
         return result;
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.draw2d.geometry.PointList#getLastPoint()
-     */
     public Point getLastPoint() {
         return getPoint(size - 1);
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.draw2d.geometry.PointList#getMidpoint()
-     */
     public Point getMidpoint() {
         if (size() % 2 == 0)
             return getPoint(size() / 2 - 1).
@@ -166,9 +148,6 @@ public class PrecisionPointList extends PointList {
         return getPoint(size() / 2);
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.draw2d.geometry.PointList#getPoint(int)
-     */
     public Point getPoint(int index) {
         if (index < 0 || index >= size)
             throw new IndexOutOfBoundsException(
@@ -178,9 +157,6 @@ public class PrecisionPointList extends PointList {
         return new PrecisionPoint(points[index], points[index + 1]);
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.draw2d.geometry.PointList#getPoint(org.eclipse.draw2d.geometry.Point, int)
-     */
     public Point getPoint(Point p, int index) {
         if (index < 0 || index >= size)
             throw new IndexOutOfBoundsException(
@@ -199,9 +175,6 @@ public class PrecisionPointList extends PointList {
         return p;
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.draw2d.geometry.PointList#insertPoint(org.eclipse.draw2d.geometry.Point, int)
-     */
     public void insertPoint(Point p, int index) {
         if (bounds != null && !bounds.contains(p))
             bounds = null;
@@ -228,18 +201,12 @@ public class PrecisionPointList extends PointList {
         size++;
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.draw2d.geometry.PointList#performScale(double)
-     */
     public void performScale(double factor) {
         for (int i = 0; i < points.length; i++)
             points[i] = points[i] * factor;
         bounds = null;
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.draw2d.geometry.PointList#performTranslate(int, int)
-     */
     public void performTranslate(int dx, int dy) {
         for (int i = 0; i < size * 2; i += 2) {
             points[i] += dx;
@@ -249,17 +216,11 @@ public class PrecisionPointList extends PointList {
             bounds.translate(dx, dy);
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.draw2d.geometry.PointList#removeAllPoints()
-     */
     public void removeAllPoints() {
         bounds = null;
         size = 0;
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.draw2d.geometry.PointList#removePoint(int)
-     */
     public Point removePoint(int index) {
         bounds = null;
         if (index < 0 || index >= size)
@@ -275,9 +236,6 @@ public class PrecisionPointList extends PointList {
         return pt;
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.draw2d.geometry.PointList#reverse()
-     */
     public void reverse() {
         double temp;
         for (int i = 0, j = size * 2 - 2; i < size; i += 2 , j -= 2) {
@@ -290,9 +248,6 @@ public class PrecisionPointList extends PointList {
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.draw2d.geometry.PointList#setPoint(org.eclipse.draw2d.geometry.Point, int)
-     */
     public void setPoint(Point pt, int index) {
         if (index < 0 || index >= size)
             throw new IndexOutOfBoundsException(
@@ -310,9 +265,6 @@ public class PrecisionPointList extends PointList {
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.draw2d.geometry.PointList#setSize(int)
-     */
     public void setSize(int newSize) {
         if (points.length > newSize * 2) {
             size = newSize;
@@ -324,9 +276,6 @@ public class PrecisionPointList extends PointList {
         size = newSize;
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.draw2d.geometry.PointList#size()
-     */
     public int size() {
         return size;
     }
@@ -346,9 +295,6 @@ public class PrecisionPointList extends PointList {
         return points;
     }
     
-    /* (non-Javadoc)
-     * @see org.eclipse.draw2d.geometry.PointList#toIntArray()
-     */
     public int[] toIntArray() {
         int [] intArray = new int[size * 2];
         for (int i = 0; i < size(); i++) {
@@ -360,9 +306,6 @@ public class PrecisionPointList extends PointList {
         return intArray;
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.draw2d.geometry.PointList#translate(int, int)
-     */
     public void translate(int x, int y) {
         if (x == 0 && y == 0)
             return;
@@ -374,9 +317,6 @@ public class PrecisionPointList extends PointList {
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.draw2d.geometry.PointList#transpose()
-     */
     public void transpose() {
         double temp;
         if (bounds != null)

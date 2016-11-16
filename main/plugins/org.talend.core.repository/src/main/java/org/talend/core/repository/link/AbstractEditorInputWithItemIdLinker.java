@@ -23,29 +23,13 @@ import org.eclipse.ui.part.EditorPart;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * DOC ggu class global comment. Detailled comment <br/>
- * 
- * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
- */
 public abstract class AbstractEditorInputWithItemIdLinker extends AbstractRepoViewLinker {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.repository.link.IRepoViewLinker#getRelationNode(org.eclipse.ui.IEditorInput)
-     */
     @Override
     public RepositoryNode getRelationNode(IEditorInput editorInput) {
         return getRepoNodeFromEditor(getEditor(editorInput));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.repository.link.IRepoViewLinker#isRelation(org.eclipse.ui.IEditorInput, java.lang.String)
-     */
     @Override
     public boolean isRelation(IEditorInput editorInput, String repoNodeId) {
         RepositoryNode relationNode = getRelationNode(editorInput);

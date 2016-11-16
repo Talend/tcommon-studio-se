@@ -22,9 +22,6 @@ import org.talend.core.model.repository.RepositoryViewObject;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class RepositorySelectionViewerTextFilter extends ViewerFilter {
 
     private String text = null;

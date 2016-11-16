@@ -28,9 +28,6 @@ import org.talend.repository.model.IRepositoryNode;
 
 import orgomg.cwm.objectmodel.core.ModelElement;
 
-/**
- * DOC klliu class global comment. Detailled comment
- */
 public class MetadataXmlSchemaRepositoryObject extends MetadataXmlSchema implements ISubRepositoryObject {
 
     private final IRepositoryViewObject viewObject;
@@ -173,11 +170,6 @@ public class MetadataXmlSchemaRepositoryObject extends MetadataXmlSchema impleme
         return this.tdXmlSchema;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryViewObject#isModified()
-     */
     @Override
     public boolean isModified() {
         return viewObject.isModified();

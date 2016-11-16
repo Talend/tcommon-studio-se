@@ -20,21 +20,12 @@ import java.util.Set;
 import org.talend.core.model.properties.Item;
 import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public abstract class AbstractParameterRelationshipHandler implements IParameterRelationshipHandler {
 
     protected abstract boolean valid(Item baseItem);
 
     protected abstract String getBaseItemType(Item baseItem);
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.relationship.IParameterRelationshipHandler#find(org.talend.core.model.properties.Item,
-     * java.util.Map, java.util.Map)
-     */
     @Override
     public Map<Relation, Set<Relation>> find(Item baseItem, Map<String, ElementParameterType> parametersMap, Map<?, ?> options) {
         if (!valid(baseItem) || parametersMap == null || parametersMap.isEmpty()) {

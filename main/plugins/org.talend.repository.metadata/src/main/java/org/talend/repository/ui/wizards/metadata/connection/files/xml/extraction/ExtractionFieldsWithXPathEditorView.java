@@ -45,11 +45,7 @@ import org.talend.core.ui.metadata.editor.XmlExtractorFieldModel;
 import org.talend.repository.metadata.i18n.Messages;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
  * TGU same purpose as TargetSchemaTableEditorView but uses EMF model directly
- * 
- * $Id: ExtractionFieldsWithXPathEditorView.java 44891 2010-07-05 05:35:49Z gldu $
- * 
  */
 public class ExtractionFieldsWithXPathEditorView extends AbstractDataTableEditorView<SchemaTarget> {
 
@@ -69,13 +65,6 @@ public class ExtractionFieldsWithXPathEditorView extends AbstractDataTableEditor
         this(model, parent, SWT.NONE, false);
     }
 
-    /**
-     * TargetSchemaTableEditorView2 constructor comment.
-     * 
-     * @param parent
-     * @param styleChild
-     * @param showDbTypeColumn
-     */
     public ExtractionFieldsWithXPathEditorView(XmlExtractorFieldModel model, Composite parent, int styleChild,
             boolean showDbTypeColumn) {
         super(parent, styleChild, model);
@@ -90,55 +79,25 @@ public class ExtractionFieldsWithXPathEditorView extends AbstractDataTableEditor
         return this.xPathCellEditor;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.commons.ui.swt.advanced.dataeditor.AbstractDataTableEditorView#handleBeforeListenableListOperationEvent
-     * (org.talend.commons.utils.data.list.ListenableListEvent)
-     */
     @Override
     protected void handleBeforeListenableListOperationEvent(ListenableListEvent<SchemaTarget> event) {
         super.handleBeforeListenableListOperationEvent(event);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.commons.ui.swt.extended.macrotable.AbstractExtendedTableViewer#handleListenableListEvent(org.talend
-     * .commons.utils.data.list.ListenableListEvent)
-     */
     @Override
     protected void handleAfterListenableListOperationEvent(ListenableListEvent<SchemaTarget> event) {
         super.handleAfterListenableListOperationEvent(event);
-        // if (event.type == TYPE.REMOVED) {
         if (linker != null) {
             linker.getBackgroundRefresher().refreshBackground();
         }
-        // }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.commons.ui.swt.extended.macrotable.AbstractExtendedTableViewer#setTableViewerCreatorOptions(org.talend
-     * .commons.ui.swt.tableviewer.TableViewerCreator)
-     */
     @Override
     protected void setTableViewerCreatorOptions(TableViewerCreator<SchemaTarget> newTableViewerCreator) {
         super.setTableViewerCreatorOptions(newTableViewerCreator);
         newTableViewerCreator.setFirstVisibleColumnIsSelection(true);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.commons.ui.swt.advanced.macrotable.AbstractExtendedTableViewer#createColumns(org.talend.commons.ui
-     * .swt.tableviewer.TableViewerCreator, org.eclipse.swt.widgets.Table)
-     */
     @Override
     protected void createColumns(TableViewerCreator<SchemaTarget> tableViewerCreator, final Table table) {
         CellEditorValueAdapter intValueAdapter = new CellEditorValueAdapter() {
@@ -374,11 +333,6 @@ public class ExtractionFieldsWithXPathEditorView extends AbstractDataTableEditor
         this.linker = linker;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.advanced.dataeditor.AbstractDataTableEditorView#initToolBar()
-     */
     @Override
     protected ExtendedToolbarView initToolBar() {
         return new ExtendedToolbarView(getMainComposite(), SWT.NONE, getExtendedTableViewer()) {
@@ -408,11 +362,6 @@ public class ExtractionFieldsWithXPathEditorView extends AbstractDataTableEditor
                 };
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.talend.core.ui.extended.ExtendedToolbarView#createPastePushButton()
-             */
             @Override
             protected PastePushButton createPastePushButton() {
                 return new PastePushButtonForExtendedTable(toolbar, extendedTableViewer) {

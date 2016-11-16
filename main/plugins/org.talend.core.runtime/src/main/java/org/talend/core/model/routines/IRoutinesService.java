@@ -18,10 +18,6 @@ import java.util.Vector;
 import org.talend.core.IService;
 import org.talend.core.model.general.ModuleNeeded;
 
-/**
- * 
- * qli class global comment. Detailled comment
- */
 public interface IRoutinesService extends IService {
 
     public Vector getAccents();

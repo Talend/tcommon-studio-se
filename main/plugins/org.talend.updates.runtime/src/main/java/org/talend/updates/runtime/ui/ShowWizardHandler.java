@@ -13,11 +13,6 @@ public class ShowWizardHandler extends AbstractHandler {
 
     public static final Object showWizardLock = new Object();
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.core.commands.IHandler#execute(org.eclipse.core.commands.ExecutionEvent)
-     */
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
         Shell activeShell = HandlerUtil.getActiveShell(event);

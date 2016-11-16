@@ -18,19 +18,8 @@ import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.swt.graphics.Image;
 import org.talend.commons.ui.runtime.image.ImageProvider;
 
-/**
- * yzhang class global comment. Detailled comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ææäº, 29 ä¹æ 2006) nrousseau $
- * 
- */
 public class TalendPaletteLabelProvider implements ILabelProvider {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ILabelProvider#getImage(java.lang.Object)
-     */
     @Override
     public Image getImage(Object element) {
         IPaletteItem entry = (IPaletteItem) element;
@@ -38,11 +27,6 @@ public class TalendPaletteLabelProvider implements ILabelProvider {
         return ImageProvider.getImage(descriptor);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ILabelProvider#getText(java.lang.Object)
-     */
     @Override
     public String getText(Object element) {
         if (element instanceof String) {
@@ -51,48 +35,24 @@ public class TalendPaletteLabelProvider implements ILabelProvider {
         return ((IPaletteItem) element).getLabel();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.IBaseLabelProvider#addListener(org.eclipse.jface.viewers.ILabelProviderListener)
-     */
     @Override
     public void addListener(ILabelProviderListener listener) {
         // TODO Auto-generated method stub
-
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.IBaseLabelProvider#dispose()
-     */
     @Override
     public void dispose() {
         // TODO Auto-generated method stub
-
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.IBaseLabelProvider#isLabelProperty(java.lang.Object, java.lang.String)
-     */
     @Override
     public boolean isLabelProperty(Object element, String property) {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.jface.viewers.IBaseLabelProvider#removeListener(org.eclipse.jface.viewers.ILabelProviderListener)
-     */
     @Override
     public void removeListener(ILabelProviderListener listener) {
         // TODO Auto-generated method stub
-
     }
 
 }

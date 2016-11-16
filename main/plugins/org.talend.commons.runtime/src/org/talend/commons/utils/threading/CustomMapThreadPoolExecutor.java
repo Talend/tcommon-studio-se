@@ -19,10 +19,6 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.TimeUnit;
 
-/**
- * created by wchen on 2014-6-6 Detailled comment
- * 
- */
 public class CustomMapThreadPoolExecutor extends TalendCustomThreadPoolExecutor {
 
     // This map is used to store the tableItems that are selected or unselected by the user.
@@ -43,22 +39,12 @@ public class CustomMapThreadPoolExecutor extends TalendCustomThreadPoolExecutor 
         super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, handler);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.util.concurrent.ThreadPoolExecutor#afterExecute(java.lang.Runnable, java.lang.Throwable)
-     */
     @Override
     protected void afterExecute(Runnable r, Throwable t) {
         AbsRetrieveColumnRunnable runnable = (AbsRetrieveColumnRunnable) r;
         map.remove(runnable.getColumnObject());
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.util.concurrent.ThreadPoolExecutor#beforeExecute(java.lang.Thread, java.lang.Runnable)
-     */
     @Override
     protected void beforeExecute(Thread t, Runnable r) {
         AbsRetrieveColumnRunnable runnable = (AbsRetrieveColumnRunnable) r;

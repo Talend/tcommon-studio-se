@@ -12,21 +12,12 @@
 // ============================================================================
 package org.talend.core.ui.preference.hidden;
 
-/**
- * DOC ggu class global comment. Detailled comment <br/>
- * 
- * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
- */
 public class HidePreferencePageProvider {
 
     private String name, desc, prefPageId;
 
     private IHidePreferencePageValidator validator;
 
-    /**
-     * DOC ggu HidePreferencePageProvider constructor comment.
-     */
     public HidePreferencePageProvider() {
         super();
     }

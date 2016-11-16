@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.repository.viewer.content.listener;
 
-
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public abstract class TopLevelNodeRunnable implements Runnable {
 
     private final Object topLevelNode;

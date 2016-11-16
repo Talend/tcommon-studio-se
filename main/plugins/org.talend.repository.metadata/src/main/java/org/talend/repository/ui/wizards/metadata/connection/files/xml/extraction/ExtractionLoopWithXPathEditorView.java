@@ -31,10 +31,7 @@ import org.talend.core.ui.metadata.editor.XmlExtractorLoopModel;
 import org.talend.repository.metadata.i18n.Messages;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
  * TGU same purpose as TargetSchemaTableEditorView but uses EMF model directly
- * 
- * $Id: XPathNodeSchemaEditorView.java 904 2006-12-07 17:24:05Z amaumont $
  * 
  */
 public class ExtractionLoopWithXPathEditorView extends AbstractDataTableEditorView<XmlXPathLoopDescriptor> {
@@ -55,13 +52,6 @@ public class ExtractionLoopWithXPathEditorView extends AbstractDataTableEditorVi
         this(model, parent, SWT.NONE, false);
     }
 
-    /**
-     * TargetSchemaTableEditorView2 constructor comment.
-     * 
-     * @param parent
-     * @param styleChild
-     * @param showDbTypeColumn
-     */
     public ExtractionLoopWithXPathEditorView(XmlExtractorLoopModel model, Composite parent, int styleChild,
             boolean showDbTypeColumn) {
         super(parent, styleChild, model);
@@ -76,50 +66,22 @@ public class ExtractionLoopWithXPathEditorView extends AbstractDataTableEditorVi
         return this.xPathCellEditor;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.commons.ui.swt.advanced.dataeditor.AbstractDataTableEditorView#handleBeforeListenableListOperationEvent
-     * (org.talend.commons.utils.data.list.ListenableListEvent)
-     */
     @Override
     protected void handleBeforeListenableListOperationEvent(ListenableListEvent<XmlXPathLoopDescriptor> event) {
         super.handleBeforeListenableListOperationEvent(event);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.commons.ui.swt.extended.macrotable.AbstractExtendedTableViewer#handleListenableListEvent(org.talend
-     * .commons.utils.data.list.ListenableListEvent)
-     */
     @Override
     protected void handleAfterListenableListOperationEvent(ListenableListEvent<XmlXPathLoopDescriptor> event) {
         super.handleAfterListenableListOperationEvent(event);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.commons.ui.swt.extended.macrotable.AbstractExtendedTableViewer#setTableViewerCreatorOptions(org.talend
-     * .commons.ui.swt.tableviewer.TableViewerCreator)
-     */
     @Override
     protected void setTableViewerCreatorOptions(TableViewerCreator<XmlXPathLoopDescriptor> newTableViewerCreator) {
         super.setTableViewerCreatorOptions(newTableViewerCreator);
         newTableViewerCreator.setFirstVisibleColumnIsSelection(true);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.commons.ui.swt.advanced.macrotable.AbstractExtendedTableViewer#createColumns(org.talend.commons.ui
-     * .swt.tableviewer.TableViewerCreator, org.eclipse.swt.widgets.Table)
-     */
     @Override
     protected void createColumns(TableViewerCreator<XmlXPathLoopDescriptor> tableViewerCreator, final Table table) {
         CellEditorValueAdapter intValueAdapter = new CellEditorValueAdapter() {

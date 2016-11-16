@@ -21,23 +21,15 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.talend.core.IService;
 
-/**
- * created by zshen on Aug 16, 2013 Detailled comment
- * 
- */
 public interface IMatchRuleUIService extends IService {
 
     /**
-     * 
-     * DOC zshen Comment method "getImageByName".
-     * 
      * @param imageName can be found from {@link org.talend.dataquality.record.linkage.ui.composite.utils.ImageLib}
      * @return
      */
     public Image getImageByName(String imageName);
 
     /**
-     * 
      * get image which is like "Plus".
      * 
      * 
@@ -46,7 +38,6 @@ public interface IMatchRuleUIService extends IService {
     public Image getAddImage();
 
     /**
-     * 
      * create MatchRuleCTabFolderRenderer instance
      * 
      * @return

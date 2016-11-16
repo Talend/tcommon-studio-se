@@ -38,13 +38,6 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.talend.commons.ui.runtime.i18n.Messages;
 
-/**
- * 
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id: Curve2D.java 7189 2007-11-23 17:06:19Z amaumont $
- * 
- */
 public abstract class Curve2D extends Curve {
 
     int subdiv;
@@ -119,9 +112,6 @@ public abstract class Curve2D extends Curve {
     }
 
     /**
-     * 
-     * DOC amaumont Comment method "setMaximumSegements".
-     * 
      * @param maximumSegements positive or equals to 0 value
      */
     public void setMaximumSegements(int maximumSegements) {
@@ -136,9 +126,6 @@ public abstract class Curve2D extends Curve {
     }
 
     /**
-     * 
-     * DOC amaumont Comment method "setMinimumSegements".
-     * 
      * @param minimumSegements positive or equals to 0 value
      */
     public void setMinimumSegements(int minimumSegements) {

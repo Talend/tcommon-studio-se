@@ -42,11 +42,6 @@ public class MapValueSorter {
             this.baseMap = map;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
-         */
         public int compare(Object arg0, Object arg1) {
             Long value0 = baseMap.get(arg0);
             if (value0 == null) {
@@ -74,11 +69,6 @@ public class MapValueSorter {
             this.baseMap = map;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
-         */
         public int compare(Object arg0, Object arg1) {
             Long value1 = baseMap.get(arg1);
             if (value1 == null) {

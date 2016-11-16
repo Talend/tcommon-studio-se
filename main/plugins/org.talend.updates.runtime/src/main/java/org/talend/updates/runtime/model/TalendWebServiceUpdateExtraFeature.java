@@ -143,51 +143,26 @@ public class TalendWebServiceUpdateExtraFeature implements ExtraFeature {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.updates.model.ExtraFeature#isInstalled(org.eclipse.core.runtime.IProgressMonitor)
-     */
     @Override
     public boolean isInstalled(IProgressMonitor progress) {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.updates.model.ExtraFeature#getName()
-     */
     @Override
     public String getName() {
         return name + " (" + modulesToBeInstalled.size() + ")";
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.updates.model.ExtraFeature#getDescription()
-     */
     @Override
     public String getDescription() {
         return description;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.updates.model.ExtraFeature#getVersion()
-     */
     @Override
     public String getVersion() {
         return VersionUtils.getVersion();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -196,11 +171,6 @@ public class TalendWebServiceUpdateExtraFeature implements ExtraFeature {
         return result;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -223,32 +193,16 @@ public class TalendWebServiceUpdateExtraFeature implements ExtraFeature {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.updates.model.ExtraFeature#updateSiteCompatibleTypes()
-     */
     @Override
     public EnumSet<UpdateSiteLocationType> getUpdateSiteCompatibleTypes() {
         return EnumSet.of( UpdateSiteLocationType.DEFAULT_REPO );
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.updates.model.ExtraFeature#mustBeInstalled()
-     */
     @Override
     public boolean mustBeInstalled() {
         return mustBeInstalled;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.updates.runtime.model.ExtraFeature#createFeatureIfUpdates(org.eclipse.core.runtime.IProgressMonitor)
-     */
     @Override
     public ExtraFeature createFeatureIfUpdates(IProgressMonitor progress) throws Exception {
         return null;// we do not handle udpates yet.

@@ -44,10 +44,6 @@ import org.talend.commons.ui.swt.drawing.link.StyleLink;
 import org.talend.commons.ui.utils.TreeUtils;
 
 /**
- * bqian class global comment. Detailled comment <br/>
- * 
- * $Id: TableToTreeLinker.java,v 1.1 2007/06/12 07:20:38 gke Exp $
- * 
  * @param <D1> the data item of extremety 1
  * @param <D2> the data item of extremety 2
  */
@@ -75,23 +71,10 @@ public class TableToTreeLinker<D1, D2> extends BgDrawableComposite implements IB
 
     private Integer xStartBezierLink;
 
-    /**
-     * DOC amaumont TreeToTableLinker constructor comment.
-     * 
-     * @param source
-     * @param table
-     */
     public TableToTreeLinker(Composite commonParent) {
         super(commonParent);
     }
 
-    /**
-     * DOC amaumont Comment method "init".
-     * 
-     * @param sourceTable
-     * @param targetTree
-     * @param backgroundRefresher
-     */
     public void init(Table sourceTable, Tree targetTree, IBackgroundRefresher backgroundRefresher) {
         this.display = sourceTable.getDisplay();
         this.backgroundRefresher = backgroundRefresher;
@@ -126,9 +109,6 @@ public class TableToTreeLinker<D1, D2> extends BgDrawableComposite implements IB
         return styleLink;
     }
 
-    /**
-     * DOC amaumont Comment method "createLinkSorter".
-     */
     protected void createLinksComparators() {
         this.drawingLinksComparator = getDrawingLinksComparator();
     }
@@ -157,22 +137,12 @@ public class TableToTreeLinker<D1, D2> extends BgDrawableComposite implements IB
         return this.drawingLinksComparator;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.drawing.link.BackgroundRefresher#drawBackground(org.eclipse.swt.graphics.GC)
-     */
     @Override
     public void drawBackground(GC gc) {
 
         if (gc == null) {
             return;
         }
-
-        // TimeMeasure.measureActive = true;
-        // TimeMeasure.display = true;
-        //
-        // TimeMeasure.begin("drawBackground");
 
         List<LinkDescriptor<Item, D1, Tree, D2>> links = linksManager.getLinks();
         int lstSize = links.size();
@@ -317,33 +287,13 @@ public class TableToTreeLinker<D1, D2> extends BgDrawableComposite implements IB
                 drawableLink.draw(gc);
                 // drawnLinks++;
             }
-            // TimeMeasure.end("loop");
         }
-
-        // TimeMeasure.end("drawBackground");
-
-        // System.out.println("countStraight=" + countStraight);
-        // System.out.println("drawnLinks=" + drawnLinks);
-
     }
 
-    /**
-     * DOC nrousseau Comment method "getFirstVisibleTreeItemOfPath".
-     * 
-     * @param dataItem
-     * @return
-     */
     protected TreeItem getFirstVisibleTreeItemOfPath(D2 dataItem) {
         return TreeUtils.getTreeItem(this.target, dataItem);
     }
 
-    /**
-     * amaumont Comment method "findMaxWidth".
-     * 
-     * @param items
-     * @param maxWidth
-     * @return
-     */
     private int findXRightStartBezierLink(TableItem[] items, int maxWidth) {
         for (TableItem item2 : items) {
             TableItem item = item2;
@@ -411,83 +361,38 @@ public class TableToTreeLinker<D1, D2> extends BgDrawableComposite implements IB
         backgroundRefresher.refreshBackground();
     }
 
-    /**
-     * Getter for selectedStyleLink.
-     * 
-     * @return the selectedStyleLink
-     */
     public IStyleLink getSelectedStyleLink() {
         return this.selectedStyleLink;
     }
 
-    /**
-     * Sets the selectedStyleLink.
-     * 
-     * @param selectedStyleLink the selectedStyleLink to set
-     */
     public void setSelectedStyleLink(IStyleLink selectedStyleLink) {
         this.selectedStyleLink = selectedStyleLink;
     }
 
-    /**
-     * Getter for unselectedStyleLink.
-     * 
-     * @return the unselectedStyleLink
-     */
     public IStyleLink getUnselectedStyleLink() {
         return this.unselectedStyleLink;
     }
 
-    /**
-     * Sets the unselectedStyleLink.
-     * 
-     * @param unselectedStyleLink the unselectedStyleLink to set
-     */
     public void setUnselectedStyleLink(IStyleLink unselectedStyleLink) {
         this.unselectedStyleLink = unselectedStyleLink;
     }
 
-    /**
-     * Getter for backgroundRefresher.
-     * 
-     * @return the backgroundRefresher
-     */
     public IBackgroundRefresher getBackgroundRefresher() {
         return this.backgroundRefresher;
     }
 
-    /**
-     * Sets the backgroundRefresher.
-     * 
-     * @param backgroundRefresher the backgroundRefresher to set
-     */
     public void setBackgroundRefresher(IBackgroundRefresher backgroundRefresher) {
         this.backgroundRefresher = backgroundRefresher;
     }
 
-    /**
-     * Getter for tables.
-     * 
-     * @return the tables
-     */
     public Tree getTarget() {
         return this.target;
     }
 
-    /**
-     * Getter for tree.
-     * 
-     * @return the tree
-     */
     public Table getSource() {
         return this.source;
     }
 
-    /**
-     * Getter for linksManager.
-     * 
-     * @return the linksManager
-     */
     protected LinksManager<Item, D1, Tree, D2> getLinksManager() {
         return this.linksManager;
     }

@@ -65,12 +65,8 @@ public class UndoRedoManager {
     }
 
     /**
-     * 
-     * DOC qli Comment method "connect".
-     * 
      * let text to cotact the undo manager.
-     * 
-     * */
+     */
     public void connect(StyledText styledText) {
         if (!isConnected() && styledText != null) {
             this.styledText = styledText;
@@ -101,12 +97,6 @@ public class UndoRedoManager {
 
     private boolean isUndoing = false;
 
-    /**
-     * DOC qli Comment method "addlisteners".
-     * 
-     * addlisteners.
-     * 
-     * */
     private void addListeners() {
         if (styledText != null) {
             extendedModifyListener = new ExtendedModifyListener() {
@@ -160,11 +150,9 @@ public class UndoRedoManager {
     }
 
     /**
-     * DOC qli Comment class "UndoableOperation".
-     * 
      * The undo opetation make a change_data record.
      * 
-     * */
+     */
     private class UndoableOperation extends AbstractOperation {
 
         protected int startIndex = -1;
@@ -186,12 +174,6 @@ public class UndoRedoManager {
             this.replacedText = replacedText;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.core.commands.operations.AbstractOperation#undo(org.eclipse.core.runtime.IProgressMonitor,
-         * org.eclipse.core.runtime.IAdaptable)
-         */
         public IStatus undo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
             isUndoing = true;
             styledText.replaceTextRange(startIndex, newText.length(), replacedText);
@@ -200,12 +182,6 @@ public class UndoRedoManager {
             return Status.OK_STATUS;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.core.commands.operations.AbstractOperation#redo(org.eclipse.core.runtime.IProgressMonitor,
-         * org.eclipse.core.runtime.IAdaptable)
-         */
         public IStatus redo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
             isUndoing = true;
             styledText.replaceTextRange(startIndex, replacedText.length(), newText);
@@ -214,13 +190,6 @@ public class UndoRedoManager {
             return Status.OK_STATUS;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.eclipse.core.commands.operations.AbstractOperation#execute(org.eclipse.core.runtime.IProgressMonitor,
-         * org.eclipse.core.runtime.IAdaptable)
-         */
         public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
             return Status.OK_STATUS;
         }

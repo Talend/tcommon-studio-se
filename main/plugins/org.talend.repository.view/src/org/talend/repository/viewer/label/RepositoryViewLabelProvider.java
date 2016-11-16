@@ -35,12 +35,6 @@ import org.talend.repository.ui.views.IRepositoryView;
 
 public class RepositoryViewLabelProvider extends AbstractRepoViewLabelProvider {
 
-    /**
-     * DOC sgandon class global comment. Detailled comment <br/>
-     * 
-     * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
-     * 
-     */
     private final class CommonNavigatorRepositoryViewForLabelProvider implements IRepositoryView {
 
         private final String viewerId;
@@ -218,31 +212,16 @@ public class RepositoryViewLabelProvider extends AbstractRepoViewLabelProvider {
         repoLabelProv = new RepositoryLabelProvider(new CommonNavigatorRepositoryViewForLabelProvider(viewerId));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.viewer.label.AbstractRepoViewLabelProvider#getFont(java.lang.Object)
-     */
     @Override
     public Font getFont(Object element) {
         return repoLabelProv.getFont(element);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.viewer.label.AbstractRepoViewLabelProvider#getBackground(java.lang.Object)
-     */
     @Override
     public Color getBackground(Object element) {
         return repoLabelProv.getBackground(element);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.viewer.label.AbstractRepoViewLabelProvider#getForeground(java.lang.Object)
-     */
     @Override
     public Color getForeground(Object element) {
         return repoLabelProv.getForeground(element);

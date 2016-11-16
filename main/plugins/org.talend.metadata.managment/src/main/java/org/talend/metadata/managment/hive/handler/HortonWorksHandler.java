@@ -14,10 +14,6 @@ package org.talend.metadata.managment.hive.handler;
 
 import org.talend.core.model.metadata.IMetadataConnection;
 
-/**
- * created by xqliu on 2013-11-1 Detailled comment
- * 
- */
 public class HortonWorksHandler extends HiveConnectionHandler {
 
     public HortonWorksHandler(IMetadataConnection metadataConnection) {

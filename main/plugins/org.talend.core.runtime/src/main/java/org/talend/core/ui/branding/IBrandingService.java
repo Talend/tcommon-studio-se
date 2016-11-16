@@ -19,10 +19,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.talend.core.IService;
 import org.w3c.dom.Element;
 
-/**
- * DOC smallet class global comment. Detailled comment <br/>
- * 
- */
 public interface IBrandingService extends IService {
 
     public String getFullProductName();

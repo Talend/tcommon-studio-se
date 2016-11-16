@@ -26,9 +26,6 @@ import org.talend.designer.maven.ui.utils.DesignerMavenUiHelper;
 import org.talend.repository.model.IRepositoryNode.ENodeType;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public abstract class RepositoryMavenSetting {
 
     private String name, description;

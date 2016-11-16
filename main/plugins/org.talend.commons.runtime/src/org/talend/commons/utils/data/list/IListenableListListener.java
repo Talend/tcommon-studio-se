@@ -12,13 +12,6 @@
 // ============================================================================
 package org.talend.commons.utils.data.list;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- * @param <B>
- */
 public interface IListenableListListener<B> {
 
     public void handleEvent(ListenableListEvent<B> event);

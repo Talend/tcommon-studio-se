@@ -20,10 +20,6 @@ import org.eclipse.ui.forms.FormColors;
 import org.eclipse.ui.forms.IFormColors;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-/**
- * created by Talend on Jan 30, 2015 Detailled comment
- *
- */
 public class TalendTabbedPropertyColorHelper extends CommonCSSStyleSetting {
 
     private Color widgetForeground = null;

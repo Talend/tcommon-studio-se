@@ -16,17 +16,8 @@ import org.talend.core.model.properties.Item;
 import org.talend.core.ui.IImportExportServices;
 import org.talend.repository.items.importexport.wizard.models.ItemImportNode;
 
-/**
- * created by Talend on Dec 30, 2015 Detailled comment
- *
- */
 public class ImportExportServices implements IImportExportServices {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.IImportExportServices#getItem()
-     */
     @Override
     public Item getItem(Object importNode) {
         if (importNode instanceof ItemImportNode) {

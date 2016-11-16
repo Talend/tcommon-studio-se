@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.core.ui.metadata.celleditor;
 
-/**
- * DOC Administrator class global comment. Detailled comment
- */
 public enum EProcessTypeForRule {
     CREATE,
     BUILTIN,

@@ -42,14 +42,8 @@ import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.repository.i18n.Messages;
 import org.talend.core.repository.model.JobletReferenceBean;
 
-/**
- * ggu class global comment. Detailled comment
- */
 public class JobletReferenceDialog extends SelectionDialog {
 
-    /**
-     * DOC ggu JobletReferenceDialog class global comment. Detailled comment
-     */
     class JobletsProvide extends LabelProvider implements ITableLabelProvider {
 
         public Image getColumnImage(Object element, int columnIndex) {

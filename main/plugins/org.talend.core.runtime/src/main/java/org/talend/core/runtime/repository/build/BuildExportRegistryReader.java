@@ -21,9 +21,6 @@ import org.osgi.framework.FrameworkUtil;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.utils.RegistryReader;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class BuildExportRegistryReader extends RegistryReader {
 
     private List<IBuildExportDependenciesProvider> dependenciesProviders;
@@ -49,11 +46,6 @@ public class BuildExportRegistryReader extends RegistryReader {
         return dependenciesProviderArrays;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.utils.RegistryReader#readElement(org.eclipse.core.runtime.IConfigurationElement)
-     */
     @Override
     protected boolean readElement(final IConfigurationElement element) {
         if ("dependenciesProvider".equals(element.getName())) { //$NON-NLS-1$

@@ -24,10 +24,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.talend.core.database.EDatabaseTypeName;
 
-/**
- * created by ggu on Jul 6, 2012 Detailled comment
- * 
- */
 public class AS400ExtractManagerTest extends AbstractTest4ExtractManager {
 
     @Before
@@ -36,9 +32,6 @@ public class AS400ExtractManagerTest extends AbstractTest4ExtractManager {
     }
 
     /**
-     * 
-     * DOC ggu Comment method "testGetSchema".
-     * 
      * @see AS400ExtractManager.getSchema(IMetadataConnection)
      */
     @Override

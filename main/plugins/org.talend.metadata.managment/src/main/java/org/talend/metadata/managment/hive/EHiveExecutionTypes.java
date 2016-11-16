@@ -15,11 +15,6 @@ package org.talend.metadata.managment.hive;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 
- * created by ycbai on 2015年5月5日 Detailled comment
- *
- */
 public enum EHiveExecutionTypes {
 
     MR("MapReduce"), //$NON-NLS-1$

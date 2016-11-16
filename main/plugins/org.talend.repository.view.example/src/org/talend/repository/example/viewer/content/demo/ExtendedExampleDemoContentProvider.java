@@ -17,21 +17,8 @@ import org.talend.repository.example.viewer.node.ExampleDemoRepositoryNodeType;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.view.di.metadata.content.AbstractMetadataContentProvider;
 
-/**
- * DOC ggu class global comment. Detailled comment <br/>
- * 
- * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
- */
 public class ExtendedExampleDemoContentProvider extends AbstractMetadataContentProvider {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.viewer.content.ProjectRepoChildrenNodeContentProvider#getTopLevelNodeFromProjectRepositoryNode
-     * (org.talend.repository.model.ProjectRepositoryNode)
-     */
     @Override
     protected RepositoryNode getTopLevelNodeFromProjectRepositoryNode(ProjectRepositoryNode projectNode) {
         return projectNode.getRootRepositoryNode(ExampleDemoRepositoryNodeType.repositoryExtendedExampleDemoType);

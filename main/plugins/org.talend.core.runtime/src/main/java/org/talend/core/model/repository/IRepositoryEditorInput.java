@@ -16,9 +16,6 @@ import org.talend.core.model.properties.Item;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * ggu class global comment. Detailled comment
- */
 public interface IRepositoryEditorInput {
 
     public void setItem(Item item);

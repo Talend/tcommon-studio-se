@@ -27,10 +27,6 @@ import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
-/**
- * created by ggu on 4 Feb 2015 Detailled comment
- *
- */
 public class JobInfoProperties extends Properties {
 
     private static final long serialVersionUID = -1522349324061260504L;

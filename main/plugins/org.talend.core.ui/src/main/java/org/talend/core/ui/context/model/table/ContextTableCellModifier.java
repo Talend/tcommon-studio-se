@@ -28,9 +28,6 @@ import org.talend.core.ui.context.ContextTableValuesComposite;
 import org.talend.core.ui.context.model.AbstractContextCellModifier;
 import org.talend.core.ui.context.model.template.ContextConstant;
 
-/**
- * cli class global comment. Detailled comment
- */
 public class ContextTableCellModifier extends AbstractContextCellModifier {
 
     public ContextTableCellModifier(ContextTableValuesComposite parentModel, boolean reposFlag) {
@@ -42,11 +39,6 @@ public class ContextTableCellModifier extends AbstractContextCellModifier {
         return (ContextTableValuesComposite) super.getParentMode();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ICellModifier#canModify(java.lang.Object, java.lang.String)
-     */
     @Override
     public boolean canModify(Object element, String property) {
         if (getModelManager().isReadOnly()) {
@@ -69,11 +61,6 @@ public class ContextTableCellModifier extends AbstractContextCellModifier {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ICellModifier#getValue(java.lang.Object, java.lang.String)
-     */
     @Override
     public Object getValue(Object element, String property) {
         if (element instanceof ContextTableTabParentModel) {
@@ -189,11 +176,6 @@ public class ContextTableCellModifier extends AbstractContextCellModifier {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ICellModifier#modify(java.lang.Object, java.lang.String, java.lang.Object)
-     */
     @Override
     public void modify(Object element, final String property, final Object value) {
         TreeItem item = (TreeItem) element;

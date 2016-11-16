@@ -37,9 +37,6 @@ import org.talend.cwm.relational.TdColumn;
 import org.talend.metadata.managment.connection.manager.ImpalaConnectionManager;
 import org.talend.utils.sql.ConnectionUtils;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class ImpalaExtractManager extends ExtractManager {
 
     public ImpalaExtractManager() {

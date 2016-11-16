@@ -16,9 +16,6 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.jface.preference.IPreferenceNode;
 import org.eclipse.jface.preference.IPreferencePage;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public interface IProjectSettingPageTester {
 
     boolean valid(IConfigurationElement element, IPreferenceNode node);

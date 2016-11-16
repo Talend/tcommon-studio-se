@@ -41,9 +41,6 @@ import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
-/**
- * ggu class global comment. Detailled comment
- */
 public final class RoutinesUtil {
 
     private RoutinesUtil() {

@@ -38,9 +38,6 @@ import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
-/**
- * cli class global comment. Detailled comment
- */
 public final class DeleteActionCache {
 
     private static DeleteActionCache singleton = null;

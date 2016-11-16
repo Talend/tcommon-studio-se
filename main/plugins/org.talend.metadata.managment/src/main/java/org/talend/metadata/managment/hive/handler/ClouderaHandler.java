@@ -14,9 +14,6 @@ package org.talend.metadata.managment.hive.handler;
 
 import org.talend.core.model.metadata.IMetadataConnection;
 
-/**
- * created by xqliu on 2014-2-27 Detailled comment
- */
 public class ClouderaHandler extends HiveConnectionHandler {
 
     public ClouderaHandler(IMetadataConnection metadataConnection) {

@@ -32,11 +32,6 @@ import javax.net.ssl.X509TrustManager;
 
 import org.apache.commons.lang3.StringUtils;
 
-/**
- * 
- * created by wchen on Oct 24, 2016 Detailled comment
- *
- */
 public class SSLContextProvider {
 
     private static final TrustManager TRUST_ALL = new X509TrustManager() {

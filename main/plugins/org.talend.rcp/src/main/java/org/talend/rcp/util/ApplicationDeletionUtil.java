@@ -22,9 +22,6 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
-/**
- * cli class global comment. Detailled comment
- */
 public final class ApplicationDeletionUtil {
 
     private ApplicationDeletionUtil() {

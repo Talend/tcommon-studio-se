@@ -16,9 +16,6 @@ import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.tester.CodeNodeTester;
 import org.talend.repository.view.sorter.RepositoryNodeCompareSorter;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class CodeRepositoryNodeSorter extends RepositoryNodeCompareSorter {
 
     protected CodeNodeTester codeTester = new CodeNodeTester();

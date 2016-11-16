@@ -31,10 +31,6 @@ import org.talend.presentation.onboarding.ui.runtimedata.OnBoardingPresentationD
 import org.talend.presentation.onboarding.utils.OnBoardingConstants;
 import org.talend.presentation.onboarding.utils.OnBoardingUtils;
 
-/**
- * created by cmeng on Sep 14, 2015 Detailled comment
- *
- */
 public class OnBoardingContentComposite extends Composite {
 
     private OnBoardingManager onBoardingManager;

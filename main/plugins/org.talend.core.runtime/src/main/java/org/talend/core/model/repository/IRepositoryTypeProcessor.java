@@ -9,10 +9,7 @@ import org.talend.core.model.process.IElement;
 import org.talend.repository.model.RepositoryNode;
 
 /**
- * created by ycbai on 2013-3-4 Detailled comment
- * 
  * Move from RepositoryReviewDialog.ITypeProcessor to expand its use.
- * 
  */
 public interface IRepositoryTypeProcessor {
 

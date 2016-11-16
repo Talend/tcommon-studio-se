@@ -154,11 +154,6 @@ public class LockerByKey<KP> implements ILockerByKey<KP> {
     private void launchThreadDebugger() {
         new Thread(this.getClass().getSimpleName() + "-ThreadDebugger-" + this.hashCode()) {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see java.lang.Thread#run()
-             */
             @Override
             public void run() {
                 while (!stopped && !shuttingDown) {
@@ -555,11 +550,6 @@ public class LockerByKey<KP> implements ILockerByKey<KP> {
             this.key = key;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see java.lang.Object#hashCode()
-         */
         @Override
         public int hashCode() {
             final int prime = 31;
@@ -568,11 +558,6 @@ public class LockerByKey<KP> implements ILockerByKey<KP> {
             return result;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see java.lang.Object#equals(java.lang.Object)
-         */
         @Override
         public boolean equals(Object obj) {
             if (this == obj) {

@@ -23,9 +23,6 @@ import org.talend.metadata.managment.ui.wizard.metadata.xml.node.FOXTreeNode;
 import org.talend.repository.metadata.ui.wizards.form.AbstractXmlStepForm;
 import org.talend.repository.ui.wizards.metadata.connection.files.xml.action.DeleteNodeAction;
 
-/**
- * wchen class global comment. Detailled comment
- */
 public class RemoveTreeNodeButton extends AbstractTreeNodeButton {
 
     public RemoveTreeNodeButton(Composite parent, AbstractXmlStepForm form) {
@@ -39,11 +36,6 @@ public class RemoveTreeNodeButton extends AbstractTreeNodeButton {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.fileoutputxml.ui.footer.AbstractTreeNodeButton#updateButtonStatus()
-     */
     @Override
     protected void updateStatus(TreeSelection selection) {
         if (selection.getFirstElement() instanceof FOXTreeNode) {

@@ -36,10 +36,6 @@ import org.talend.core.model.metadata.builder.database.TableNode;
 import org.talend.cwm.relational.TdColumn;
 import org.talend.cwm.relational.TdTable;
 
-/**
- * created by ggu on Jul 11, 2012 Detailled comment
- * 
- */
 public class SASExtractManagerTest extends AbstractTest4ExtractManager {
 
     @Before

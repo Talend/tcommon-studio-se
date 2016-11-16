@@ -63,9 +63,6 @@ import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.repository.metadata.i18n.Messages;
 import org.talend.repository.metadata.ui.wizards.form.AbstractExcelFileStepForm;
 
-/**
- * DOC yexiaowei class global comment. Detailled comment
- */
 public class ExcelFileStep1Form extends AbstractExcelFileStepForm {
 
     private static final int GROUP_WIDTH = 120;
@@ -134,11 +131,6 @@ public class ExcelFileStep1Form extends AbstractExcelFileStepForm {
         this.bean = bean;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#adaptFormToReadOnly()
-     */
     @Override
     protected void adaptFormToReadOnly() {
         readOnly = isReadOnly();
@@ -146,11 +138,6 @@ public class ExcelFileStep1Form extends AbstractExcelFileStepForm {
         updateStatus(IStatus.OK, ""); //$NON-NLS-1$
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addFields()
-     */
     @Override
     protected void addFields() {
         Group group = Form.createGroup(this, 1, Messages.getString("FileStep2.groupDelimitedFileSettings"), GROUP_WIDTH); //$NON-NLS-1$
@@ -453,14 +440,8 @@ public class ExcelFileStep1Form extends AbstractExcelFileStepForm {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addFieldsListeners()
-     */
     @Override
     protected void addFieldsListeners() {
-
         serverCombo.addModifyListener(new ModifyListener() {
 
             @Override
@@ -769,11 +750,6 @@ public class ExcelFileStep1Form extends AbstractExcelFileStepForm {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addUtilsButtonListeners()
-     */
     @Override
     protected void addUtilsButtonListeners() {
         if (!isInWizard()) {
@@ -787,11 +763,6 @@ public class ExcelFileStep1Form extends AbstractExcelFileStepForm {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#checkFieldsValue()
-     */
     @Override
     protected boolean checkFieldsValue() {
         if (!isContextMode()) {
@@ -861,9 +832,6 @@ public class ExcelFileStep1Form extends AbstractExcelFileStepForm {
         }
     }
 
-    /**
-     * DOC YeXiaowei Comment method "initTreeSelectStates".
-     */
     private void initTreeSelectStates() {
         if (rootNode == null || getConnection().getSheetList() == null) {
             return;
@@ -905,11 +873,6 @@ public class ExcelFileStep1Form extends AbstractExcelFileStepForm {
 
     private Group viewerGroup;
 
-    /**
-     * 
-     * DOC YeXiaowei ExcelFileStep1Form class global comment. Detailled comment <br/>
-     * 
-     */
     public static class SheetNode {
 
         private final String label;
@@ -923,49 +886,24 @@ public class ExcelFileStep1Form extends AbstractExcelFileStepForm {
             this.parent = parent;
         }
 
-        /**
-         * Getter for label.
-         * 
-         * @return the label
-         */
         public String getLabel() {
             return this.label;
         }
 
-        /**
-         * Getter for parent.
-         * 
-         * @return the parent
-         */
         public SheetNode getParent() {
             return this.parent;
         }
 
-        /**
-         * Getter for children.
-         * 
-         * @return the children
-         */
         public List<SheetNode> getChildren() {
             return this.children;
         }
 
-        /**
-         * Sets the children.
-         * 
-         * @param children the children to set
-         */
         public void setChildren(List<SheetNode> children) {
             this.children = children;
         }
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#initialize()
-     */
     @Override
     protected void initialize() {
     }

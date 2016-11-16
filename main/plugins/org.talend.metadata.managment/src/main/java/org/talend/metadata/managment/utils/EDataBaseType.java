@@ -12,17 +12,11 @@
 // ============================================================================
 package org.talend.metadata.managment.utils;
 
-
-/**
- * DOC zshen  class global comment. Detailled comment
- */
 public enum EDataBaseType {
     MySQL("MySQL", "mysql"), //$NON-NLS-1$//$NON-NLS-2$
     Oracle("Oracle", "Oracle"), //$NON-NLS-1$
     Microsoft_SQL_Server("Microsoft SQL Server", "Microsoft SQL Server"), //$NON-NLS-1$
     MDM("MDM", "MDM"); //$NON-NLS-1$
-
-
 
     private String productName;
 

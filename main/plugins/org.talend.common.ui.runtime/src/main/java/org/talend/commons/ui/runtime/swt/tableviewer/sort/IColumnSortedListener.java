@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.commons.ui.runtime.swt.tableviewer.sort;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/> $Id: IColumnSortedListener.java,v 1.2 2006/06/02 15:24:10
- * amaumont Exp $
- */
 public interface IColumnSortedListener {
 
     public void handle();

@@ -17,17 +17,8 @@ import org.eclipse.jface.viewers.Viewer;
 import org.talend.core.repository.model.ProjectRepositoryNode;
 import org.talend.repository.navigator.TalendRepositoryRoot;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public abstract class RepositoryRootNodeCompareSorter extends RepositoryCompareSorter {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.view.sorter.IRepositoryNodeSorter#sort(org.eclipse.jface.viewers.Viewer,
-     * java.lang.Object, java.lang.Object[])
-     */
     @Override
     public void sort(Viewer viewer, Object parentPath, Object[] children) {
         if (parentPath instanceof TreePath) {

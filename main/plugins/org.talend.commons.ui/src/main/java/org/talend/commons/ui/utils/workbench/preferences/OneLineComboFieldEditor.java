@@ -28,12 +28,6 @@ public class OneLineComboFieldEditor extends ComboFieldEditor {
         super(name, labelText, entryNamesAndValues, parent);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.workbench.preferences.ComboFieldEditor#doFillIntoGrid(org.eclipse.swt.widgets.Composite,
-     * int)
-     */
     protected void doFillIntoGrid(Composite parent, int numColumns) {
         GridLayout layout = new GridLayout();
         layout.numColumns = 4;

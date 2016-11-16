@@ -31,8 +31,6 @@ import org.talend.core.ui.context.model.ContextProviderProxy;
 import org.talend.core.ui.context.model.ContextTabParentModel;
 
 /**
- * cli class global comment. Detailled comment
- * 
  * A label and content provider for the treeviewer which groups the Contexts by variable.
  */
 public class GroupByVariableProvider extends ContextProviderProxy {
@@ -48,11 +46,6 @@ public class GroupByVariableProvider extends ContextProviderProxy {
         this.modelManager = modelManager;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnText(java.lang.Object, int)
-     */
     public String getColumnText(Object element, int columnIndex) {
         if (element instanceof ContextTreeTabParentModel) {
             if (columnIndex == 0)
@@ -75,11 +68,6 @@ public class GroupByVariableProvider extends ContextProviderProxy {
         return ""; //$NON-NLS-1$
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.context.ConextTreeValuesComposite.ProviderProxy#getColumnImage(java.lang.Object, int)
-     */
     @Override
     public Image getColumnImage(Object element, int columnIndex) {
         if (columnIndex == 2 && (element instanceof ContextTreeTabChildModel)) {
@@ -114,11 +102,6 @@ public class GroupByVariableProvider extends ContextProviderProxy {
         return treeParent;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
-     */
     public Object[] getElements(Object inputElement) {
         List<IContext> contexts = (List<IContext>) inputElement;
         List<ContextTabParentModel> output = new ArrayList<ContextTabParentModel>();
@@ -142,11 +125,6 @@ public class GroupByVariableProvider extends ContextProviderProxy {
         return output.toArray();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
-     */
     public Object[] getChildren(Object parentElement) {
         if (parentElement instanceof ContextTreeTabParentModel) {
             ContextTreeTabParentModel parent = (ContextTreeTabParentModel) parentElement;
@@ -155,11 +133,6 @@ public class GroupByVariableProvider extends ContextProviderProxy {
         return new Object[0];
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object)
-     */
     public Object getParent(Object element) {
         if (element instanceof ContextTreeTabChildModel) {
             ContextTreeTabChildModel child = (ContextTreeTabChildModel) element;
@@ -168,11 +141,6 @@ public class GroupByVariableProvider extends ContextProviderProxy {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.Object)
-     */
     public boolean hasChildren(Object element) {
         boolean has = false;
         if (element instanceof ContextTreeTabParentModel) {
@@ -182,20 +150,10 @@ public class GroupByVariableProvider extends ContextProviderProxy {
         return has;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ITableColorProvider#getForeground(java.lang.Object, int)
-     */
     public Color getForeground(Object element, int columnIndex) {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ITableColorProvider#getBackground(java.lang.Object, int)
-     */
     public Color getBackground(Object element, int columnIndex) {
         if (element instanceof ContextTreeTabParentModel) {
             ContextTreeTabParentModel parent = (ContextTreeTabParentModel) element;

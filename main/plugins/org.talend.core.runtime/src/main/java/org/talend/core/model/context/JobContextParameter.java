@@ -97,79 +97,39 @@ public class JobContextParameter implements IContextParameter, Cloneable {
         this.context = context;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.core.model.context.IDesignerContextParameter#getName()
-     */
     @Override
     public String getName() {
         return this.name;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.core.model.context.IDesignerContextParameter#setName(java.lang.String)
-     */
     @Override
     public void setName(final String name) {
         this.name = name;
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.core.model.context.IDesignerContextParameter#getPrompt()
-     */
     @Override
     public String getPrompt() {
         return this.prompt;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.core.model.context.IDesignerContextParameter#setPrompt(java.lang.String)
-     */
     @Override
     public void setPrompt(final String prompt) {
         this.prompt = prompt;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.core.model.context.IDesignerContextParameter#getType()
-     */
     @Override
     public String getType() {
         return this.type;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.designer.core.model.context.IDesignerContextParameter#setType(org.talend.core.model.metadata.EMetadataType
-     * )
-     */
     @Override
     public void setType(final String type) {
         this.type = type;
         valueList = null;
         value = ""; //$NON-NLS-1$
-        // if (isList() && getValue() != null && getValue().length() != 0) {
-        // valueList = getValue().split(",");
-        // }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.core.model.context.IDesignerContextParameter#setValue(java.lang.String)
-     */
     @Override
     public void setValue(final String value) {
         this.value = value;
@@ -183,21 +143,11 @@ public class JobContextParameter implements IContextParameter, Cloneable {
         this.value = value;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.core.model.context.IDesignerContextParameter#getValue()
-     */
     @Override
     public String getValue() {
         return this.value;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.IContextParameter#getDiaplayValue()
-     */
     @Override
     public String getDisplayValue() {
         if (isList()) {
@@ -227,41 +177,21 @@ public class JobContextParameter implements IContextParameter, Cloneable {
         return MetadataToolHelper.isList(getType());
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.core.model.context.IDesignerContextParameter#getComment()
-     */
     @Override
     public String getComment() {
         return this.comment;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.core.model.context.IDesignerContextParameter#setComment(java.lang.String)
-     */
     @Override
     public void setComment(final String comment) {
         this.comment = comment;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.core.model.context.IDesignerContextParameter#isPromptNeeded()
-     */
     @Override
     public boolean isPromptNeeded() {
         return this.promptNeeded;
     }
 
-    /**
-     * Getter for scriptCode.
-     * 
-     * @return the scriptCode
-     */
     @Override
     public String getScriptCode() {
         if (this.scriptCode == null) {
@@ -270,21 +200,11 @@ public class JobContextParameter implements IContextParameter, Cloneable {
         return this.scriptCode;
     }
 
-    /**
-     * Sets the scriptCode.
-     * 
-     * @param scriptCode the scriptCode to set
-     */
     @Override
     public void setScriptCode(String scriptCode) {
         this.scriptCode = scriptCode;
     }
 
-    /**
-     * Getter for source.
-     * 
-     * @return the source
-     */
     @Override
     public String getSource() {
         return this.source;
@@ -300,11 +220,6 @@ public class JobContextParameter implements IContextParameter, Cloneable {
         this.source = source;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.core.model.context.IDesignerContextParameter#setPromptNeeded(boolean)
-     */
     @Override
     public void setPromptNeeded(boolean promptNeeded) {
         this.promptNeeded = promptNeeded;
@@ -349,18 +264,9 @@ public class JobContextParameter implements IContextParameter, Cloneable {
             return false;
         }
 
-        // if (!contextParam.getScriptCode().equals(scriptCode)) {
-        // return false;
-        // }
-
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -369,11 +275,6 @@ public class JobContextParameter implements IContextParameter, Cloneable {
         return result;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -403,12 +304,6 @@ public class JobContextParameter implements IContextParameter, Cloneable {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.process.IContextParameter#checkBuiltIn(org.talend.core.model.process.IContextParameter)
-     */
     @Override
     public boolean isBuiltIn() {
         if (getSource() != null && !"".equals(getSource()) && !IContextParameter.BUILT_IN.equals(getSource())) { //$NON-NLS-1$

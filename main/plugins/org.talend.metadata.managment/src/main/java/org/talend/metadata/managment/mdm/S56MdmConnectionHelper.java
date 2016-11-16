@@ -27,10 +27,6 @@ import org.talend.core.model.metadata.builder.connection.MDMConnection;
 import org.talend.core.model.metadata.designerproperties.MDMVersions;
 import org.talend.core.utils.ReflectionUtils;
 
-/**
- * created by wchen on Apr 15, 2015 Detailled comment
- *
- */
 public class S56MdmConnectionHelper extends AbsMdmConnectionHelper {
 
     @Override
@@ -196,11 +192,6 @@ public class S56MdmConnectionHelper extends AbsMdmConnectionHelper {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.metadata.managment.mdm.AbsMdmConnectionHelper#resetStubUser(java.lang.Object, java.lang.String)
-     */
     @Override
     public void resetUniverseUser(Object stub, String universeUser) {
         if (stub instanceof Stub) {
@@ -208,4 +199,5 @@ public class S56MdmConnectionHelper extends AbsMdmConnectionHelper {
             stub2.setUsername(universeUser + stub2.getUsername());
         }
     }
+
 }

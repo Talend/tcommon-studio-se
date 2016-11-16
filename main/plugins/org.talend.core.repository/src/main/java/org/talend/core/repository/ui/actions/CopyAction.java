@@ -29,12 +29,6 @@ import org.talend.repository.model.IRepositoryNode.EProperties;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.ui.actions.AContextualAction;
 
-/**
- * DOC smallet class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public class CopyAction extends AContextualAction {
 
     private static CopyAction singleton;
@@ -52,11 +46,6 @@ public class CopyAction extends AContextualAction {
         return singleton;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.action.Action#isEnabled()
-     */
     @Override
     public boolean isEnabled() {
         return super.isEnabled();

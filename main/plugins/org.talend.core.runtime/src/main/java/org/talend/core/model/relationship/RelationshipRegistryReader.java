@@ -24,15 +24,8 @@ import org.eclipse.core.runtime.SafeRunner;
 import org.osgi.framework.FrameworkUtil;
 import org.talend.core.utils.RegistryReader;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class RelationshipRegistryReader extends RegistryReader {
 
-    /**
-     * 
-     * DOC ggu ItemRelationshipRegistry class global comment. Detailled comment.
-     */
     static class ItemRelationshipRegistry extends RelationshipRegistry {
 
         private IItemRelationshipHandler itemRelationshipHandler;
@@ -51,10 +44,6 @@ public class RelationshipRegistryReader extends RegistryReader {
 
     }
 
-    /**
-     * 
-     * DOC ggu ParameterRelationshipRegistry class global comment. Detailled comment.
-     */
     static class ParameterRelationshipRegistry extends RelationshipRegistry {
 
         private IParameterRelationshipHandler parameterRelationshipHandler;
@@ -149,11 +138,6 @@ public class RelationshipRegistryReader extends RegistryReader {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.utils.RegistryReader#readElement(org.eclipse.core.runtime.IConfigurationElement)
-     */
     @Override
     protected boolean readElement(final IConfigurationElement element) {
         if ("itemHandler".equals(element.getName())) { //$NON-NLS-1$

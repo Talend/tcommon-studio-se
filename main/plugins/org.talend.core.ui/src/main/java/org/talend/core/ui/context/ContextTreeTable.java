@@ -116,10 +116,6 @@ import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.SortedList;
 import ca.odell.glazedlists.TreeList;
 
-/**
- * created by ldong on Jul 10, 2014 Detailled comment
- * 
- */
 public class ContextTreeTable {
 
     private NatTable natTable;
@@ -587,11 +583,6 @@ public class ContextTreeTable {
                     TREE_CONTEXT_ID), sortModel);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see ca.odell.glazedlists.TreeList.Format#getPath(java.util.List, java.lang.Object)
-         */
         @Override
         public void getPath(List<ContextTreeNode> path, ContextTreeNode element) {
             path.add(element);

@@ -14,9 +14,6 @@ package org.talend.core.ui;
 
 import org.talend.core.model.properties.Item;
 
-/**
- * DOC hywang class global comment. Detailled comment
- */
 public interface ILastVersionChecker {
 
     public boolean isLastVersion(Item item);

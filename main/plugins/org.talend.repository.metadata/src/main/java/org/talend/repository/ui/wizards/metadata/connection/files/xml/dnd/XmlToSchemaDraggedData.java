@@ -15,12 +15,6 @@ package org.talend.repository.ui.wizards.metadata.connection.files.xml.dnd;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public class XmlToSchemaDraggedData {
 
     private List<TransferableXPathEntry> transferableEntryList = new ArrayList<TransferableXPathEntry>();

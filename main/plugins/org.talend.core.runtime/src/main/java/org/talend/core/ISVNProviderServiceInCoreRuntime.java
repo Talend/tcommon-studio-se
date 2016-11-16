@@ -16,9 +16,6 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 
-/**
- * DOC zwzhao class global comment. Detailled comment
- */
 public interface ISVNProviderServiceInCoreRuntime extends IService {
 
     public boolean isSvnLibSetupOnTAC();

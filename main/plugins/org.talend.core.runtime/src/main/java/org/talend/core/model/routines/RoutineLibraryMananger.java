@@ -31,9 +31,6 @@ import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
 import org.talend.core.model.general.LibraryInfo;
 
-/**
- * wchen class global comment. Detailled comment
- */
 public class RoutineLibraryMananger {
 
     private static final String EXTENSION_POINT_ID = "org.talend.core.systemRoutineLibrary"; //$NON-NLS-1$

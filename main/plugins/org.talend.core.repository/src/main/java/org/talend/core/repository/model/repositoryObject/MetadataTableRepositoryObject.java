@@ -48,9 +48,6 @@ import org.talend.repository.model.IRepositoryNode;
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.objectmodel.core.Package;
 
-/**
- * DOC nrousseau class global comment. Detailled comment
- */
 public class MetadataTableRepositoryObject extends MetadataTable implements ISubRepositoryObject {
 
     protected final IRepositoryViewObject viewObject;
@@ -319,11 +316,6 @@ public class MetadataTableRepositoryObject extends MetadataTable implements ISub
         return this.table;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryViewObject#isModified()
-     */
     @Override
     public boolean isModified() {
         return viewObject.isModified();

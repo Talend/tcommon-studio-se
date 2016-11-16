@@ -14,10 +14,6 @@ package org.talend.commons.ui.utils.io.archive;
 
 import java.io.IOException;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- */
 public abstract class AbstractUnarchiver {
 
     private long totalEntries = -1;

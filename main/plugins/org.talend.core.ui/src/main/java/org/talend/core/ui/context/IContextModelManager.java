@@ -20,10 +20,6 @@ import org.talend.core.model.process.IContextManager;
 import org.talend.core.model.process.IContextParameter;
 import org.talend.core.model.process.IProcess2;
 
-/**
- * DOC bqian class global comment. Detailled comment <br/>
- * 
- */
 public interface IContextModelManager {
 
     public IContextManager getContextManager();

@@ -19,12 +19,6 @@ import org.talend.commons.ui.runtime.swt.celleditor.ComboxCellEditorImproved;
 import org.talend.commons.ui.runtime.swt.tableviewer.behavior.CellEditorValueAdapter;
 import org.talend.commons.ui.runtime.swt.tableviewer.behavior.ComboEditorValueAdapter;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public class CellEditorValueAdapterFactory {
 
     public static CellEditorValueAdapter getPositiveIntAdapter() {
@@ -57,13 +51,6 @@ public class CellEditorValueAdapterFactory {
                 return ""; //$NON-NLS-1$
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see
-             * org.talend.commons.ui.swt.tableviewer.behavior.CellEditorValueAdapter#getColumnText(org.eclipse.jface
-             * .viewers.CellEditor, java.lang.Object)
-             */
             @Override
             public String getColumnText(CellEditor cellEditor, Object bean, Object cellEditorTypedValue) {
                 return (String) getCellEditorTypedValue(cellEditor, cellEditorTypedValue);
@@ -74,11 +61,6 @@ public class CellEditorValueAdapterFactory {
         return positiveIntValueAdapter;
     }
 
-    /**
-     * DOC amaumont Comment method "getComboAdapter".
-     * 
-     * @return
-     */
     public static CellEditorValueAdapter getComboAdapterForComboCellEditor(final String defaultItem) {
         return new ComboEditorValueAdapter(defaultItem) {
 
@@ -91,20 +73,10 @@ public class CellEditorValueAdapterFactory {
 
     }
 
-    /**
-     * DOC amaumont Comment method "getComboAdapter".
-     * 
-     * @return
-     */
     public static CellEditorValueAdapter getComboAdapterForComboCellEditor() {
         return getComboAdapterForComboCellEditor(null);
     }
 
-    /**
-     * DOC amaumont Comment method "getComboAdapter".
-     * 
-     * @return
-     */
     public static CellEditorValueAdapter getComboAdapterForComboCellEditorImproved(final String defaultItem) {
         return new ComboEditorValueAdapter(defaultItem) {
 
@@ -117,18 +89,10 @@ public class CellEditorValueAdapterFactory {
 
     }
 
-    /**
-     * DOC amaumont Comment method "getComboAdapter".
-     * 
-     * @return
-     */
     public static CellEditorValueAdapter getComboAdapterForComboCellEditorImproved() {
         return getComboAdapterForComboCellEditorImproved(null);
     }
 
-    /**
-     * DOC amaumont Comment method "getNullToEmptyStringTextAdapater".
-     */
     public static CellEditorValueAdapter getNullToEmptyStringTextAdapater() {
         CellEditorValueAdapter nullToEmptyStringAdapter = new CellEditorValueAdapter() {
 

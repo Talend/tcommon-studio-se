@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.core.hadoop;
 
-/**
- * created by ycbai on Jul 31, 2014 Detailled comment
- *
- */
 public enum EHadoopCategory {
 
     HADOOP_CLUSTER,

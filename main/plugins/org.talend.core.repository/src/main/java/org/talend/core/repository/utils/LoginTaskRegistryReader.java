@@ -139,11 +139,6 @@ public class LoginTaskRegistryReader extends RegistryReader {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.utils.RegistryReader#readElement(org.eclipse.core.runtime.IConfigurationElement)
-     */
     @Override
     protected boolean readElement(final IConfigurationElement element) {
         if (LOGIN_TASK_ELEMENT_NAME.equals(element.getName())) {

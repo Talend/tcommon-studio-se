@@ -20,10 +20,6 @@ import org.talend.core.model.process.IContextManager;
 import org.talend.core.ui.context.ContextTreeTable.ContextTreeNode;
 import org.talend.core.ui.i18n.Messages;
 
-/**
- * created by ldong on Jul 17, 2014 Detailled comment
- * 
- */
 public class EventDataValidator extends DataValidator {
 
     private IDataProvider dataProvider;

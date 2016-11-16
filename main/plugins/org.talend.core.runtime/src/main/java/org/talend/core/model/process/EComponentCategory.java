@@ -14,12 +14,6 @@ package org.talend.core.model.process;
 
 import org.talend.core.runtime.i18n.Messages;
 
-/**
- * DOC nrousseau class global comment. Detailled comment <br/>
- * 
- * $Id: EComponentCategory.java 44874 2010-07-04 07:40:42Z nrousseau $
- * 
- */
 public enum EComponentCategory {
     MAIN(Messages.getString("EComponentCategory_main"), 1), //$NON-NLS-1$
     VIEW(Messages.getString("EComponentCategory_view"), 3), //$NON-NLS-1$

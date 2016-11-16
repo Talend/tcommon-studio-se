@@ -16,10 +16,6 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.talend.core.model.utils.RepositoryManagerHelper;
 import org.talend.datatools.xml.utils.ATreeNode;
 
-/**
- * created by cmeng on Jul 1, 2015 Detailled comment
- *
- */
 public abstract class AbstractTreePopulator {
 
     protected String filePath;
@@ -36,11 +32,6 @@ public abstract class AbstractTreePopulator {
 
     abstract public String getAbsoluteXPath(TreeItem treeItem);
 
-    /**
-     * Getter for filePath.
-     * 
-     * @return the filePath
-     */
     public String getFilePath() {
         return this.filePath;
     }
@@ -49,20 +40,10 @@ public abstract class AbstractTreePopulator {
         return RepositoryManagerHelper.getMaximumRowsToPreview();
     }
 
-    /**
-     * Sets the limit.
-     * 
-     * @param limit the limit to set
-     */
     public void setLimit(int lit) {
         limit = lit;
     }
 
-    /**
-     * Getter for limit.
-     * 
-     * @return the limit
-     */
     public static int getLimit() {
         return limit;
     }

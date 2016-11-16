@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.designer.maven.ui.setting.repository.tester;
 
-
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public interface IRepositorySettingTester {
 
     boolean valid(Object object);

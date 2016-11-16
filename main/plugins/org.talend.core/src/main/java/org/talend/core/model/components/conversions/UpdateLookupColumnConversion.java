@@ -15,12 +15,6 @@ package org.talend.core.model.components.conversions;
 import org.talend.core.model.components.ComponentUtilities;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 
-/**
- * DOC qwei class global comment. Detailled comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ææäº, 29 ä¹æ 2006) nrousseau $
- * 
- */
 public class UpdateLookupColumnConversion implements IComponentConversion {
 
     private String propertyToModify;

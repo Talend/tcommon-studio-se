@@ -26,33 +26,16 @@ import org.talend.utils.sql.metadata.constants.MetaDataConstants;
 import orgomg.cwm.objectmodel.core.Package;
 import orgomg.cwm.resource.relational.Catalog;
 
-/**
- * created by xqliu on 2014-10-29 Detailled comment
- * 
- */
 public class NetezzaConnectionFiller extends DBConnectionFillerImpl {
 
     private static Logger log = Logger.getLogger(NetezzaConnectionFiller.class);
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.metadata.DBConnectionFillerImpl#getDatabaseName(org.talend.core.model.metadata.builder.
-     * connection.DatabaseConnection)
-     */
     @Override
     protected String getDatabaseName(DatabaseConnection dbConn) {
         boolean isJdbc = MetadataFillFactory.isJdbcNetezza(dbConn.getDatabaseType(), dbConn.getDriverClass());
         return isJdbc ? getDatabaseNameFromUrl(dbConn.getURL()) : super.getDatabaseName(dbConn);
     }
 
-    /**
-     * get the database name from the url.
-     * 
-     * @param url
-     * @return
-     */
     private String getDatabaseNameFromUrl(String url) {
         if (StringUtils.isBlank(url)) {
             return StringUtils.EMPTY;
@@ -72,12 +55,6 @@ public class NetezzaConnectionFiller extends DBConnectionFillerImpl {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.metadata.DBConnectionFillerImpl#getSchemaName(java.sql.ResultSet,
-     * java.sql.DatabaseMetaData, orgomg.cwm.resource.relational.Catalog)
-     */
     @Override
     protected String getSchemaName(ResultSet schemaRs, DatabaseMetaData dbJDBCMetadata, Catalog catalog) {
         String schemaName = null;
@@ -95,14 +72,6 @@ public class NetezzaConnectionFiller extends DBConnectionFillerImpl {
         return schemaName;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.metadata.DBConnectionFillerImpl#fillSchemas(org.talend.core.model.metadata.builder.connection
-     * .DatabaseConnection, java.sql.DatabaseMetaData, org.talend.core.model.metadata.IMetadataConnection,
-     * java.util.List)
-     */
     @Override
     public List<Package> fillSchemas(DatabaseConnection dbConn, DatabaseMetaData dbJDBCMetadata,
             IMetadataConnection metaConnection, List<String> schemaFilter) {

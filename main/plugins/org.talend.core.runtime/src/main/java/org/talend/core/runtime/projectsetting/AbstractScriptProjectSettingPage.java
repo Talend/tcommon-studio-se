@@ -21,9 +21,6 @@ import org.eclipse.swt.widgets.Label;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public abstract class AbstractScriptProjectSettingPage extends AbstractProjectSettingPage {
 
     private String headerMessage;
@@ -97,11 +94,6 @@ public abstract class AbstractScriptProjectSettingPage extends AbstractProjectSe
         return getPreferenceStore().getString(getPreferenceKey());
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.preference.FieldEditorPreferencePage#performDefaults()
-     */
     @Override
     protected void performDefaults() {
         super.performDefaults();
@@ -111,11 +103,6 @@ public abstract class AbstractScriptProjectSettingPage extends AbstractProjectSe
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.preference.FieldEditorPreferencePage#performOk()
-     */
     @Override
     public boolean performOk() {
         boolean ok = super.performOk();

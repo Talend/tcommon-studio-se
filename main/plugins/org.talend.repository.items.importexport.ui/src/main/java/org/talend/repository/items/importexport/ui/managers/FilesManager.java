@@ -117,32 +117,16 @@ public class FilesManager extends AbstractImportResourcesManager {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.localprovider.imports.ResourcesManager#getProvider()
-     */
     @Override
     public IImportStructureProvider getProvider() {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.localprovider.imports.ResourcesManager#closeResource()
-     */
     @Override
     public void closeResource() {
         // TODO Auto-generated method stub
-
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.items.importexport.manager.ResourcesManager#getRoot()
-     */
     @Override
     public Object getRoot() {
         return null;

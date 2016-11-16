@@ -21,10 +21,6 @@ import org.eclipse.core.runtime.Path;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.designer.core.ILocalProviderService;
 
-/***/
-/**
- * DOC nrousseau class global comment. Detailled comment
- */
 public abstract class AbstractComponentsProvider {
 
     private static Logger logger = Logger.getLogger(AbstractComponentsProvider.class);

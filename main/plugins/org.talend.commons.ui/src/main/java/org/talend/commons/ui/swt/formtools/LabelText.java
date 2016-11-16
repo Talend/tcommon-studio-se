@@ -16,24 +16,12 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-/**
- * DOC smallet class global comment. Detailled comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- * 
- */
 public class LabelText {
 
     private Label label;
 
     private Text text;
 
-    /**
-     * DOC smallet LabelText constructor comment.
-     * 
-     * @param label
-     * @param text
-     */
     public LabelText(Label label, Text text) {
         super();
         this.label = label;

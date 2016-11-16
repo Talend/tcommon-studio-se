@@ -83,9 +83,6 @@ import org.talend.repository.model.RepositoryConstants;
 
 import orgomg.cwm.objectmodel.core.TaggedValue;
 
-/**
- * ggu class global comment. Detailled comment
- */
 public final class MetadataToolHelper {
 
     private static final int MIN = 192;
@@ -93,9 +90,6 @@ public final class MetadataToolHelper {
     private static final int MAX = 255;
 
     /**
-     * 
-     * DOC wchen Comment method "getMetadataTableFromConnection".
-     * 
      * @param conn
      * @return
      * @deprecated deprecated by getMetadataTableFromConnection(final Connection conn,String tableName) , sap tableName

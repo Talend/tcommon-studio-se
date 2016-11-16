@@ -60,12 +60,6 @@ import org.talend.metadata.managment.ui.preview.ProcessDescription;
 import org.talend.metadata.managment.ui.utils.ConnectionContextHelper;
 import org.talend.metadata.managment.ui.utils.ShadowProcessHelper;
 
-/**
- * DOC tguiu class global comment. Detailled comment <br/>
- * 
- * $Id: AbstractForm.java 45884 2010-07-23 09:18:06Z hwang $
- * 
- */
 public abstract class AbstractForm extends Composite {
 
     protected static final String PID = MetadataManagmentUiPlugin.PLUGIN_ID;
@@ -128,43 +122,24 @@ public abstract class AbstractForm extends Composite {
 
     private boolean revertingContext;
 
-    /**
-     * DOC ocarbone AbstractForm constructor comment.
-     * 
-     * @param parent
-     * @param style
-     */
     protected AbstractForm(Composite parent, int style) {
         super(parent, style);
         this.existingNames = Collections.EMPTY_LIST;
 
     }
 
-    /**
-     * DOC ocarbone AbstractForm constructor comment.
-     * 
-     * @param parent
-     * @param style
-     * @param existingNames
-     */
     protected AbstractForm(Composite parent, int style, String[] existingNames) {
         super(parent, style);
         this.existingNames = existingNames == null ? Collections.EMPTY_LIST : Arrays.asList(existingNames);
     }
 
-    /**
-     * DOC tguiu AbstractDelimitedFileStepForm class global comment. Detailled comment <br/>
-     * 
-     * $Id: AbstractForm.java 45884 2010-07-23 09:18:06Z hwang $
-     * 
-     */
     public static interface ICheckListener extends EventListener {
 
         void checkPerformed(AbstractForm source);
     }
 
     /**
-     * checks control values DOC ocarbone Comment method "checkFieldsValue".
+     * checks control values 
      */
     protected abstract boolean checkFieldsValue();
 
@@ -172,9 +147,6 @@ public abstract class AbstractForm extends Composite {
         setupForm(false);
     }
 
-    /**
-     * DOC ocarbone Comment method "setupForm".
-     */
     protected void setupForm(boolean hasContextBtn) {
         this.hasContextBtn = hasContextBtn;
         setDisposeListener();
@@ -363,11 +335,6 @@ public abstract class AbstractForm extends Composite {
 
             private final IRefreshable refreshableComposite = refresh;
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.swt.events.KeyAdapter#keyReleased(org.eclipse.swt.events.KeyEvent)
-             */
             @Override
             public void keyReleased(KeyEvent e) {
                 if ((e.keyCode == SWT.F5)) {

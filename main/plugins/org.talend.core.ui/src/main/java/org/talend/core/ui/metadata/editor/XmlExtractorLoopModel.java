@@ -19,12 +19,6 @@ import org.talend.commons.ui.swt.extended.table.ExtendedTableModel;
 import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
 import org.talend.core.model.metadata.builder.connection.XmlXPathLoopDescriptor;
 
-/**
- * DOC cantoine class global comment. Detailled comment <br/>
- * 
- * $Id: XmlExtractorSchemaModel.java 949 2006-12-11 15:03:40Z cantoine $
- * 
- */
 public class XmlExtractorLoopModel extends ExtendedTableModel<XmlXPathLoopDescriptor> {
 
     private XmlXPathLoopDescriptor xmlXPathLoopDescriptor;

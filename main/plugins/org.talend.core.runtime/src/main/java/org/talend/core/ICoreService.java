@@ -34,9 +34,6 @@ import org.talend.core.model.properties.Item;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 
-/**
- * DOC hywang class global comment. Detailled comment
- */
 public interface ICoreService extends IService {
 
     public List<ColumnNameChanged> getColumnNameChanged(IMetadataTable oldTable, IMetadataTable newTable);

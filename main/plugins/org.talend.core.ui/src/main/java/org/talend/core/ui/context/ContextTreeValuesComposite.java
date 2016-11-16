@@ -66,10 +66,6 @@ import org.talend.core.ui.context.model.tree.GroupByVariableAction;
 import org.talend.core.ui.context.model.tree.GroupByVariableProvider;
 import org.talend.core.ui.i18n.Messages;
 
-/**
- * DOC bqian class global comment. Detailled comment <br/>
- * 
- */
 public class ContextTreeValuesComposite extends AbstractContextTabEditComposite {
 
     private TreeViewer viewer;
@@ -209,12 +205,6 @@ public class ContextTreeValuesComposite extends AbstractContextTabEditComposite 
     protected void createTreeTooltip(Tree tree) {
         new AbstractTreeTooltip(tree) {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see
-             * org.talend.commons.ui.swt.tooltip.AbstractTreeTooltip#getTooltipContent(org.eclipse.swt.widgets.TreeItem)
-             */
             @Override
             public String getTooltipContent(TreeItem item) {
 
@@ -230,11 +220,6 @@ public class ContextTreeValuesComposite extends AbstractContextTabEditComposite 
 
     }
 
-    /**
-     * DOC bqian Comment method "addSorter".
-     * 
-     * @param viewer2
-     */
     private void addSorter(final TreeViewer viewer2) {
         final Tree table = viewer2.getTree();
         Listener sortListener = new Listener() {
@@ -510,11 +495,6 @@ public class ContextTreeValuesComposite extends AbstractContextTabEditComposite 
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.context.AbstractContextTabEditComposite#isGroupBySource()
-     */
     @Override
     public boolean isGroupBySource() {
         return false;

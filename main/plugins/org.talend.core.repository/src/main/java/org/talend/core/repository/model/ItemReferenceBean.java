@@ -20,9 +20,6 @@ import org.apache.commons.lang.StringUtils;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.repository.i18n.Messages;
 
-/**
- * DOC ycbai class global comment. Detailled comment
- */
 public class ItemReferenceBean {
 
     public final static String EMPTY_STRING = ""; //$NON-NLS-1$

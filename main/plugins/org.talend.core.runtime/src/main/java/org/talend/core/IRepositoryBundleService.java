@@ -18,14 +18,9 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 
-/**
- * DOC ycbai class global comment. Detailled comment
- */
 public interface IRepositoryBundleService extends IService {
 
     /**
-     * DOC ycbai Comment method "isInitialized".
-     * 
      * Check whether the OBR has been initialized.
      * 
      * @param monitorWrap
@@ -36,8 +31,6 @@ public interface IRepositoryBundleService extends IService {
     public void setInitialized();
 
     /**
-     * DOC ycbai Comment method "deploy".
-     * 
      * Deploy jar file to OBR.
      * 
      * @param jarFileUri
@@ -48,8 +41,6 @@ public interface IRepositoryBundleService extends IService {
     public void deploy(Collection<URI> jarFileUris, IProgressMonitor... monitorWrap);
 
     /**
-     * DOC ycbai Comment method "retrieve".
-     * 
      * Retrieve jar file from OBR.
      * 
      * @param jarNeeded
@@ -62,8 +53,6 @@ public interface IRepositoryBundleService extends IService {
     public boolean retrieve(Collection<String> jarsNeeded, String pathToStore, IProgressMonitor... monitorWrap);
 
     /**
-     * DOC ycbai Comment method "list".
-     * 
      * List all the jar files from OBR.
      * 
      * @param monitorWrap

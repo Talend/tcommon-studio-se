@@ -12,12 +12,6 @@
 // ============================================================================
 package org.talend.core.model.process;
 
-/**
- * DOC nrousseau class global comment. Detailled comment <br/>
- * 
- * $Id: IContextParameter.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
- */
 public interface IContextParameter {
 
     public static final String BUILT_IN = "built-in"; //$NON-NLS-1$

@@ -151,11 +151,6 @@ public abstract class AContextualAction extends Action implements ITreeContextua
         this.level = level;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.actions.ITreeContextualAction#isVisible()
-     */
     @Override
     public boolean isVisible() {
         return isEnabled();

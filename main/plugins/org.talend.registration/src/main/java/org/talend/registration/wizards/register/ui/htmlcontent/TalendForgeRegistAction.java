@@ -38,10 +38,6 @@ import org.talend.registration.register.RegisterManagement;
 import org.talend.registration.wizards.register.TalendForgeDialog;
 import org.talend.repository.model.RepositoryConstants;
 
-/**
- * created by kongxiaohan on Mar 26, 2015 Detailled comment
- *
- */
 public class TalendForgeRegistAction implements IIntroAction {
 
     public static final String ACTION_TYPE = "type"; //$NON-NLS-1$
@@ -64,11 +60,6 @@ public class TalendForgeRegistAction implements IIntroAction {
 
     public static final String FIELD_IS_HELP_IMPROVE = "IS_HELP_IMPROVE"; //$NON-NLS-1$
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.intro.config.IIntroAction#run(org.eclipse.ui.intro.IIntroSite, java.util.Properties)
-     */
     @Override
     public void run(IIntroSite site, Properties params) {
         if (ACTION_CREATE_ACCOUNT.equals(params.get(ACTION_TYPE))) {

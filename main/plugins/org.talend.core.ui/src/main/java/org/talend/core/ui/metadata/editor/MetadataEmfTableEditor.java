@@ -29,12 +29,6 @@ import org.talend.core.ui.i18n.Messages;
 import org.talend.core.ui.preference.metadata.MetadataTypeLengthConstants;
 import org.talend.core.ui.services.IDesignerCoreUIService;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id: MetadataEmfTableEditor.java 46726 2010-08-13 05:32:21Z nrousseau $
- * 
- */
 public class MetadataEmfTableEditor extends ExtendedTableModel<MetadataColumn> {
 
     private String defaultLabel = "newColumn"; //$NON-NLS-1$
@@ -163,11 +157,6 @@ public class MetadataEmfTableEditor extends ExtendedTableModel<MetadataColumn> {
         if (metadataColumns != null) {
             uniqueStringGenerator = new UniqueStringGenerator<MetadataColumn>(oldColumnName, metadataColumns) {
 
-                /*
-                 * (non-Javadoc)
-                 * 
-                 * @see org.talend.commons.utils.data.list.UniqueStringGenerator#getBeanString(java.lang.Object)
-                 */
                 @Override
                 protected String getBeanString(MetadataColumn bean) {
                     return bean.getLabel();
@@ -177,11 +166,6 @@ public class MetadataEmfTableEditor extends ExtendedTableModel<MetadataColumn> {
         } else {
             uniqueStringGenerator = new UniqueStringGenerator<MetadataColumn>(oldColumnName, getBeansList()) {
 
-                /*
-                 * (non-Javadoc)
-                 * 
-                 * @see org.talend.commons.utils.data.list.UniqueStringGenerator#getBeanString(java.lang.Object)
-                 */
                 @Override
                 protected String getBeanString(MetadataColumn bean) {
                     return bean.getLabel();

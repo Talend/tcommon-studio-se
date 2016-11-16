@@ -32,9 +32,6 @@ import org.talend.repository.metadata.i18n.Messages;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.ui.wizards.metadata.table.files.FileTableWizardPage;
 
-/**
- * DOC qzhang class global comment. Detailled comment
- */
 public class SalesforceSchemaTableWizard extends CheckLastVersionRepositoryWizard implements INewWizard {
 
     private static Logger log = Logger.getLogger(SalesforceSchemaTableWizard.class);
@@ -45,11 +42,6 @@ public class SalesforceSchemaTableWizard extends CheckLastVersionRepositoryWizar
 
     private IMetadataTable oldMetadataTable;
 
-    /**
-     * Constructor for TableWizard.
-     * 
-     * @param ISelection
-     */
     @SuppressWarnings("unchecked")//$NON-NLS-1$
     public SalesforceSchemaTableWizard(IWorkbench workbench, boolean creation, ConnectionItem connectionItem,
             MetadataTable metadataTable, boolean forceReadOnly) {

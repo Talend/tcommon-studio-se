@@ -15,10 +15,6 @@ package org.talend.core.model.update;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * created by ldong on Feb 6, 2015 Detailled comment
- * 
- */
 public class ConnectionColumnUpdateManager {
 
     private static ConnectionColumnUpdateManager columnManager = null;
@@ -26,7 +22,6 @@ public class ConnectionColumnUpdateManager {
     private Map<String, String> columnRenameMap = new HashMap<String, String>();
 
     private ConnectionColumnUpdateManager() {
-
     }
 
     public synchronized static ConnectionColumnUpdateManager getInstance() {

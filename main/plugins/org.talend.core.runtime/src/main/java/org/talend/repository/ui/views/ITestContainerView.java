@@ -14,10 +14,6 @@ package org.talend.repository.ui.views;
 
 import org.eclipse.jface.viewers.ISelection;
 
-/**
- * created by Talend on Mar 17, 2015 Detailled comment
- *
- */
 public interface ITestContainerView {
 
     public static final String ID = "org.talend.testcontainer.core.ui.views.TestContainerView"; //$NON-NLS-1$

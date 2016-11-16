@@ -15,10 +15,6 @@ package org.talend.designer.runprocess;
 import java.beans.PropertyChangeListener;
 import java.util.Collection;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- */
 public interface IProcessMessageManager {
 
     public void addPropertyChangeListener(PropertyChangeListener l);

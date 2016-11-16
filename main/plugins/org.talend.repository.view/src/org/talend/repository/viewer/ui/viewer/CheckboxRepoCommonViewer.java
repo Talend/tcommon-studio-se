@@ -32,9 +32,6 @@ import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.viewer.ui.provider.INavigatorContentServiceProvider;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 @SuppressWarnings("restriction")
 public class CheckboxRepoCommonViewer extends CheckboxRepositoryTreeViewer implements INavigatorContentServiceProvider {
 
@@ -96,14 +93,8 @@ public class CheckboxRepoCommonViewer extends CheckboxRepositoryTreeViewer imple
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.Viewer#setSelection(org.eclipse.jface.viewers.ISelection, boolean)
-     */
     @Override
     public void setSelection(ISelection selection, boolean reveal) {
-
         if (selection instanceof IStructuredSelection) {
             IStructuredSelection sSelection = (IStructuredSelection) selection;
 
@@ -131,11 +122,6 @@ public class CheckboxRepoCommonViewer extends CheckboxRepositoryTreeViewer imple
         refresh(element, true);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.StructuredViewer#update(java.lang.Object, java.lang.String[])
-     */
     @Override
     public void update(Object element, String[] properties) {
         if (element != getInput()) {
@@ -158,11 +144,6 @@ public class CheckboxRepoCommonViewer extends CheckboxRepositoryTreeViewer imple
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.dialogs.ContainerCheckedTreeViewer#doCheckStateChanged(java.lang.Object)
-     */
     @Override
     protected void doCheckStateChanged(Object element) {
         boolean isTestCase = false;

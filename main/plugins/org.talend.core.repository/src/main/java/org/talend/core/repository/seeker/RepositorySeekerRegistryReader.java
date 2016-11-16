@@ -21,12 +21,6 @@ import org.osgi.framework.FrameworkUtil;
 import org.talend.core.utils.RegistryReader;
 import org.talend.repository.model.IRepositoryNode;
 
-/**
- * DOC ggu class global comment. Detailled comment <br/>
- * 
- * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
- */
 @SuppressWarnings("rawtypes")
 public final class RepositorySeekerRegistryReader extends RegistryReader {
 
@@ -51,11 +45,6 @@ public final class RepositorySeekerRegistryReader extends RegistryReader {
         return this.allSeeker.toArray(new IRepositorySeeker[0]);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.utils.RegistryReader#readElement(org.eclipse.core.runtime.IConfigurationElement)
-     */
     @Override
     protected boolean readElement(final IConfigurationElement element) {
         if (REPO_SEEKER_ELEMENT_NAME.equals(element.getName())) {

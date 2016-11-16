@@ -34,9 +34,6 @@ import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.repository.items.importexport.handlers.model.EmptyFolderImportItem;
 import org.talend.repository.items.importexport.handlers.model.ImportItem;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class ImportNodesBuilder {
 
     /**

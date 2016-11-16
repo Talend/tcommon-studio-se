@@ -28,9 +28,6 @@ import org.talend.metadata.managment.ui.utils.FileConnectionContextUtils.EFilePa
 import org.talend.metadata.managment.ui.wizard.AbstractForm;
 import org.talend.metadata.managment.ui.wizard.metadata.MetadataContextModeManager;
 
-/**
- * ggu class global comment. Detailled comment
- */
 public abstract class AbstractFileStepForm extends AbstractForm {
 
     protected int maximumRowsToPreview = RepositoryManagerHelper.getMaximumRowsToPreview();

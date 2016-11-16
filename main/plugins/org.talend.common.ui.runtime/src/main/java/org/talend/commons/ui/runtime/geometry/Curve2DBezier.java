@@ -35,13 +35,6 @@ package org.talend.commons.ui.runtime.geometry;
 import org.apache.commons.lang.ArrayUtils;
 import org.eclipse.swt.graphics.GC;
 
-/**
- * 
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id: Curve2DBezier.java 7189 2007-11-23 17:06:19Z amaumont $
- * 
- */
 public class Curve2DBezier extends Curve2D {
 
     double[] tmp;

@@ -48,10 +48,6 @@ import org.talend.designer.maven.utils.PomUtil;
 import org.talend.designer.runprocess.IProcessor;
 import org.talend.utils.io.FilesUtils;
 
-/**
- * created by ggu on 2 Feb 2015 Detailled comment
- *
- */
 public class MavenPomSynchronizer {
 
     private final ITalendProcessJavaProject codeProject;

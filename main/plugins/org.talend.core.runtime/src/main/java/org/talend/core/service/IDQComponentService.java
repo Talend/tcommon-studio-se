@@ -16,15 +16,10 @@ import org.talend.core.IService;
 import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.core.model.process.IConnection;
 
-/**
- * created by talend on Dec 17, 2014 Detailled comment
- * 
- */
 public interface IDQComponentService extends IService {
 
     /**
-     * 
-     * Handle component chaged
+     * Handle component changed
      * 
      * @param oldConnection
      * @param newMetadataTable

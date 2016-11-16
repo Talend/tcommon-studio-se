@@ -28,9 +28,6 @@ import org.talend.commons.ui.html.BrowserDynamicPartLocationListener;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.rcp.Activator;
 
-/**
- * DOC wchen class global comment. Detailled comment
- */
 public class StartingBrowser extends EditorPart {
 
     public static final String ID = "org.talend.rcp.intro.starting.StartingBrowser"; //$NON-NLS-1$
@@ -38,11 +35,6 @@ public class StartingBrowser extends EditorPart {
     protected static final String ICON_WHITE_PATH = "/icons/appli_white_16x16.png"; //$NON-NLS-1$
 
     public StartingBrowser() {
-        // Image[] images = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell().getImages();
-        // if (images.length > 0) {
-        // this.setTitleImage(images[0]);
-        // }
-
         ImageDescriptor imageDescriptor = ImageDescriptor.createFromURL(Activator.class.getResource(ICON_WHITE_PATH));
         if (imageDescriptor != null) {
             Image image = imageDescriptor.createImage();

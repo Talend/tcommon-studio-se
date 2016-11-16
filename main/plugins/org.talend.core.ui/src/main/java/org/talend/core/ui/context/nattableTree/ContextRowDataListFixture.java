@@ -23,10 +23,6 @@ import org.talend.core.model.process.IContextManager;
 import org.talend.core.ui.context.IContextModelManager;
 import org.talend.core.ui.context.model.table.ContextTableConstants;
 
-/**
- * created by ldong on Jul 11, 2014 Detailled comment
- * 
- */
 public class ContextRowDataListFixture {
 
     public static final String CONTEXT_NAME = "NAME";

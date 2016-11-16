@@ -29,10 +29,6 @@ import org.talend.presentation.onboarding.ui.runtimedata.OnBoardingPerspectiveBe
 import org.talend.presentation.onboarding.utils.ObjectBox;
 import org.talend.presentation.onboarding.utils.OnBoardingUtils;
 
-/**
- * created by cmeng on Sep 18, 2015 Detailled comment
- *
- */
 public class OnBoardingHandler extends AbstractHandler {
 
     private String jsonDocId = null;

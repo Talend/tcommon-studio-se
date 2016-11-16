@@ -33,16 +33,8 @@ import org.talend.repository.mdm.ui.wizard.concept.XPathPrefix;
 import org.talend.repository.mdm.util.MDMUtil;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * DOC hwang class global comment. Detailled comment
- */
 public class MDMProviderService implements IMDMProviderService {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.IMDMProviderService#getRepositoryItem(org.talend.core.model.process.INode)
-     */
     public MDMConnectionItem getRepositoryItem(INode node) {
         if (node != null) {
             if (isMDMNode(node)) {
@@ -62,11 +54,6 @@ public class MDMProviderService implements IMDMProviderService {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.IMDMProviderService#isMDMNode(org.talend.core.model.process.INode)
-     */
     public boolean isMDMNode(INode node) {
         if (node != null) {
             IElementParameter param = node.getElementParameter(IMDMConstant.PROPERTY);
@@ -78,12 +65,6 @@ public class MDMProviderService implements IMDMProviderService {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.IMDMProviderService#isRepositorySchemaLine(org.talend.core.model.process.INode,
-     * java.util.Map)
-     */
     public boolean isRepositorySchemaLine(INode node, Map<String, Object> lineValue) {
         if (lineValue != null && node != null) {
             Object type = lineValue.get(IMDMConstant.FIELD_SCHEMA + IMDMConstant.REF_TYPE);
@@ -100,12 +81,6 @@ public class MDMProviderService implements IMDMProviderService {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.IMDMProviderService#newMDMWizard(org.eclipse.ui.IWorkbench, boolean,
-     * org.talend.repository.model.RepositoryNode, java.lang.String[])
-     */
     public IWizard newWizard(IWorkbench workbench, boolean creation, RepositoryNode node, String[] existingNames) {
         if (node == null) {
             return null;

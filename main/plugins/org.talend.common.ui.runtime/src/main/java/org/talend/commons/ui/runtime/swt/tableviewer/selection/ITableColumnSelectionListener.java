@@ -17,10 +17,6 @@ import org.talend.commons.ui.runtime.swt.tableviewer.TableViewerCreatorColumnNot
 import org.talend.commons.ui.runtime.swt.tableviewer.TableViewerCreatorNotModifiable;
 import org.talend.commons.ui.runtime.swt.tableviewer.sort.IColumnSortedListener;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/> $Id: ITableColumnSelectionListener.java,v 1.2 2006/06/02
- * 15:24:10 amaumont Exp $
- */
 public interface ITableColumnSelectionListener extends SelectionListener {
 
     public TableViewerCreatorColumnNotModifiable getTableViewerCreatorColumn();

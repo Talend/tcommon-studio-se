@@ -30,9 +30,6 @@ import org.talend.core.model.metadata.IMetadataColumn;
 
 /**
  * Maybe need a long connection ...
- * <p>
- * DOC YeXiaowei class global comment. Detailled comment <br/>
- * 
  */
 public class SalesforceModuleParseAPI {
 

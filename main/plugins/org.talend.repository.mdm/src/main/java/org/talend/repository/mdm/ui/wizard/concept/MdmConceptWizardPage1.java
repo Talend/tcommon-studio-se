@@ -26,9 +26,6 @@ import org.talend.core.model.properties.ConnectionItem;
 import org.talend.repository.mdm.i18n.Messages;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * DOC wchen class global comment. Detailled comment
- */
 public class MdmConceptWizardPage1 extends AbstractRetrieveConceptPage {
 
     private Label label;
@@ -39,23 +36,11 @@ public class MdmConceptWizardPage1 extends AbstractRetrieveConceptPage {
 
     private Button mdmReceiveBtn;
 
-    /**
-     * DOC wchen MDMInOutSelectPage constructor comment.
-     * 
-     * @param pageName
-     * @param title
-     * @param titleImage
-     */
     public MdmConceptWizardPage1(RepositoryNode node, ConnectionItem connectionItem, MetadataTable metadataTable, boolean creation) {
         super(node, connectionItem, metadataTable, creation);
         this.setTitle(Messages.getString("MdmConceptWizardPage1_mdm_model")); //$NON-NLS-1$
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
-     */
     public void createControl(Composite parent) {
         Composite composite = new Composite(parent, SWT.NONE);
         GridLayout layout = new GridLayout();

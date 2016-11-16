@@ -18,10 +18,6 @@ import org.eclipse.core.databinding.observable.IObservable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.talend.updates.runtime.model.ExtraFeature;
 
-/**
- * created by ggu on Jul 17, 2014 Detailled comment
- *
- */
 public abstract class AbstractExtraUpdatesFactory {
 
     public abstract void retrieveUninstalledExtraFeatures(IProgressMonitor monitor, Set<ExtraFeature> uninstalledExtraFeatures)

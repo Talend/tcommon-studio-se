@@ -22,10 +22,6 @@ import org.eclipse.nebula.widgets.nattable.layer.event.ILayerEvent;
 
 import ca.odell.glazedlists.EventList;
 
-/**
- * created by ldong on Jul 14, 2014 Detailled comment
- * 
- */
 public class ContextListsSortModel<T> implements ILayerListener {
 
     protected final EventList<T> eventList;
@@ -54,13 +50,6 @@ public class ContextListsSortModel<T> implements ILayerListener {
         this.columnHeaderDataLayer.addLayerListener(this);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.nebula.widgets.nattable.layer.ILayerListener#handleLayerEvent(org.eclipse.nebula.widgets.nattable
-     * .layer.event.ILayerEvent)
-     */
     @Override
     public void handleLayerEvent(ILayerEvent arg0) {
 

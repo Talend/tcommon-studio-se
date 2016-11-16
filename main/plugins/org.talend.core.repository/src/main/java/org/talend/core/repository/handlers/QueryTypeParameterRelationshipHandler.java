@@ -15,41 +15,18 @@ package org.talend.core.repository.handlers;
 import org.talend.core.model.relationship.AbstractJobParameterInRepositoryRelationshipHandler;
 import org.talend.core.model.relationship.RelationshipItemBuilder;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class QueryTypeParameterRelationshipHandler extends AbstractJobParameterInRepositoryRelationshipHandler {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.relationship.AbstractJobParameterInRepositoryRelationshipHandler#getRepositoryTypeName()
-     */
     @Override
     protected String getRepositoryTypeName() {
         return "QUERYSTORE_TYPE"; //$NON-NLS-1$
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.relationship.AbstractJobParameterInRepositoryRelationshipHandler#getRepositoryTypeValueName
-     * ()
-     */
     @Override
     protected String getRepositoryTypeValueName() {
         return "REPOSITORY_QUERYSTORE_TYPE"; //$NON-NLS-1$
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.relationship.AbstractJobParameterInRepositoryRelationshipHandler#getRepositoryRelationType
-     * ()
-     */
     @Override
     protected String getRepositoryRelationType() {
         return RelationshipItemBuilder.QUERY_RELATION;

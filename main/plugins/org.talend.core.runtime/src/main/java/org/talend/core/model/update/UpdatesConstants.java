@@ -14,16 +14,10 @@ package org.talend.core.model.update;
 
 import org.talend.core.runtime.i18n.Messages;
 
-/**
- * ggu class global comment. Detailled comment
- */
 public final class UpdatesConstants {
 
     public static final int SCALE = 100;
 
-    /*
-     * 
-     */
     public static final String UNDER_LINE = "_"; //$NON-NLS-1$
 
     public static final String SPACE = " "; //$NON-NLS-1$

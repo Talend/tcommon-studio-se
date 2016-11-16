@@ -14,9 +14,6 @@ package org.talend.core.services;
 
 import org.talend.core.IProviderService;
 
-/**
- * DOC hywang class global comment. Detailled comment
- */
 public interface IBRMSProviderService extends IProviderService {
 
 }

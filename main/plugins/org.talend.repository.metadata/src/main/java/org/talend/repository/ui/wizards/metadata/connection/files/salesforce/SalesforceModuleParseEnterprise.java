@@ -38,9 +38,6 @@ import com.sforce.soap.enterprise.sobject.SObject;
 
 /**
  * Maybe need a long connection ...
- * <p>
- * DOC YeXiaowei class global comment. Detailled comment <br/>
- * 
  */
 public class SalesforceModuleParseEnterprise implements ISalesforceModuleParser {
 
@@ -56,17 +53,6 @@ public class SalesforceModuleParseEnterprise implements ISalesforceModuleParser 
 
     private boolean loginOk = false;
 
-    /*
-     * 
-     */
-    // private String proxyHost = null;
-    //
-    // private String proxyPort = null;
-    //
-    // private String proxyUsername = null;
-    //
-    // private String proxyPassword = null;
-
     private SoapBindingStub binding = null;
 
     private LoginResult loginResult = null; // maintain the login results
@@ -79,14 +65,6 @@ public class SalesforceModuleParseEnterprise implements ISalesforceModuleParser 
 
     private List list = null;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.ui.wizards.metadata.connection.files.salesforce.ISalesforceModuleParser#login(java.lang
-     * .String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String,
-     * java.lang.String, java.lang.String, java.lang.String)
-     */
     @Override
     public ArrayList login(String endPoint, String username, String password) throws Exception {
         if (endPoint == null) {
@@ -230,13 +208,6 @@ public class SalesforceModuleParseEnterprise implements ISalesforceModuleParser 
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.ui.wizards.metadata.connection.files.salesforce.ISalesforceModuleParser#describeGlobalSample
-     * ()
-     */
     @Override
     public void describeGlobalSample() {
         try {
@@ -252,13 +223,6 @@ public class SalesforceModuleParseEnterprise implements ISalesforceModuleParser 
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.ui.wizards.metadata.connection.files.salesforce.ISalesforceModuleParser#fetchMetaDataColumns
-     * (java.lang.String)
-     */
     @Override
     public List<IMetadataColumn> fetchMetaDataColumns(String module) {
         Field[] fields = fetchSFDescriptionField(module);
@@ -277,12 +241,7 @@ public class SalesforceModuleParseEnterprise implements ISalesforceModuleParser 
     }
 
     /**
-     * Fetch module fields from SF service. Make sure login sucess before do this.
-     * <p>
-     * DOC YeXiaowei Comment method "fetchSFDescriptionField".
-     * 
-     * @param module
-     * @return
+     * Fetch module fields from SF service. Make sure login success before do this.
      */
     private Field[] fetchSFDescriptionField(String module) {
         try {
@@ -384,68 +343,31 @@ public class SalesforceModuleParseEnterprise implements ISalesforceModuleParser 
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.wizards.metadata.connection.files.salesforce.ISalesforceModuleParser#isLogin()
-     */
     @Override
     public boolean isLogin() {
         return this.loginOk;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.ui.wizards.metadata.connection.files.salesforce.ISalesforceModuleParser#setLogin(boolean)
-     */
     @Override
     public void setLogin(boolean login) {
         this.loginOk = login;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.ui.wizards.metadata.connection.files.salesforce.ISalesforceModuleParser#getCurrentModuleName
-     * ()
-     */
     @Override
     public String getCurrentModuleName() {
         return this.currentModuleName;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.ui.wizards.metadata.connection.files.salesforce.ISalesforceModuleParser#setCurrentModuleName
-     * (java.lang.String)
-     */
     @Override
     public void setCurrentModuleName(String currentModuleName) {
         this.currentModuleName = currentModuleName;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @seeorg.talend.repository.ui.wizards.metadata.connection.files.salesforce.ISalesforceModuleParser#
-     * getCurrentMetadataColumns()
-     */
     @Override
     public List<IMetadataColumn> getCurrentMetadataColumns() {
         return this.currentMetadataColumns;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @seeorg.talend.repository.ui.wizards.metadata.connection.files.salesforce.ISalesforceModuleParser#
-     * setCurrentMetadataColumns(java.util.List)
-     */
     @Override
     public void setCurrentMetadataColumns(List<IMetadataColumn> currentMetadataColumns) {
         this.currentMetadataColumns = currentMetadataColumns;

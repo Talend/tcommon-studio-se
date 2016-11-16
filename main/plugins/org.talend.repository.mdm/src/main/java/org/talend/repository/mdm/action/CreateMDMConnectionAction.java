@@ -39,9 +39,6 @@ import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.model.RepositoryNodeUtilities;
 import org.talend.repository.ui.views.IRepositoryView;
 
-/**
- * DOC hwang class global comment. Detailled comment
- */
 public class CreateMDMConnectionAction extends AbstractCreateAction {
 
     // protected static Logger log = Logger.getLogger(CreateMDMConnectionAction.class);
@@ -73,12 +70,6 @@ public class CreateMDMConnectionAction extends AbstractCreateAction {
         this.setImageDescriptor(defaultImage);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.ui.actions.metadata.AbstractCreateAction#init(org.talend.repository.model.RepositoryNode)
-     */
     @Override
     protected void init(RepositoryNode node) {
         ERepositoryObjectType nodeType = (ERepositoryObjectType) node.getProperties(EProperties.CONTENT_TYPE);
@@ -119,11 +110,6 @@ public class CreateMDMConnectionAction extends AbstractCreateAction {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.actions.AContextualAction#doRun()
-     */
     @Override
     protected void doRun() {
         if (repositoryNode == null) {

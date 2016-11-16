@@ -26,9 +26,6 @@ import org.talend.designer.maven.ui.DesignerMavenUiPlugin;
 import org.talend.designer.maven.ui.setting.repository.RepositoryMavenSetting;
 import org.talend.designer.maven.ui.setting.repository.tester.IRepositorySettingTester;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 @SuppressWarnings("nls")
 public class MavenSettingPagesRegistryReader extends RegistryReader {
 
@@ -79,11 +76,6 @@ public class MavenSettingPagesRegistryReader extends RegistryReader {
         return this.supportTypes.toArray(new ERepositoryObjectType[0]);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.utils.RegistryReader#readElement(org.eclipse.core.runtime.IConfigurationElement)
-     */
     @Override
     protected boolean readElement(final IConfigurationElement element) {
         if ("RepositoryMavenSetting".equals(element.getName())) {

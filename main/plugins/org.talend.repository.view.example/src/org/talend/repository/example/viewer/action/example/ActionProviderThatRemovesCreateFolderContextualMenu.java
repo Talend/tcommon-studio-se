@@ -9,13 +9,6 @@ public class ActionProviderThatRemovesCreateFolderContextualMenu extends DIRepos
         // TODO Auto-generated constructor stub
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.view.di.viewer.action.DIRepositoryNodeActionProvider#fillContextMenu(org.eclipse.jface.
-     * action.IMenuManager)
-     */
     @Override
     public void fillContextMenu(IMenuManager manager) {
         super.fillContextMenu(manager);

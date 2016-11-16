@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.core.model.general;
 
-/**
- * DOC qwei class global comment. Detailled comment <br/>
- * 
- */
 public class InstallModule {
 
     private String osName;

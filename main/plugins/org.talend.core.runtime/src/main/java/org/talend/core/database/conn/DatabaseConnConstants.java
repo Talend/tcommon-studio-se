@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.core.database.conn;
 
-/**
- * cli class global comment. Detailled comment
- */
 public class DatabaseConnConstants {
 
     public static final String EMPTY = ""; //$NON-NLS-1$

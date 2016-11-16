@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.core;
 
-/**
- * created by talend on Mar 15, 2013 Detailled comment
- * 
- */
 public interface ITDQService extends IService {
 
     public void createDQStructor();

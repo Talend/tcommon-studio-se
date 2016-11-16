@@ -12,19 +12,8 @@
 // ============================================================================
 package org.talend.commons.ui.swt.extended.table;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public interface IExtendedModelListener {
 
-    /**
-     * Handle event.
-     * 
-     * @param event
-     */
     public void handleEvent(ExtendedModelEvent event);
 
 }

@@ -18,10 +18,6 @@ import java.util.ResourceBundle;
 
 import org.apache.log4j.Logger;
 
-/**
- * created by cmeng on Sep 18, 2015 Detailled comment
- *
- */
 public abstract class MessagesCore {
 
     private static Logger log = Logger.getLogger(MessagesCore.class);

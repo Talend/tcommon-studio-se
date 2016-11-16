@@ -19,10 +19,6 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.talend.commons.ui.runtime.swt.tableviewer.TableViewerCreatorNotModifiable;
 
-/**
- * created by talend2 on 2012-8-24 Detailled comment
- * 
- */
 public class LazyContentProvider implements ILazyContentProvider {
 
     private TableViewerCreatorNotModifiable tableViewerCreator;
@@ -33,22 +29,11 @@ public class LazyContentProvider implements ILazyContentProvider {
         this.tableViewerCreator = tableViewerCreator;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.IContentProvider#dispose()
-     */
     @Override
     public void dispose() {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer, java.lang.Object,
-     * java.lang.Object)
-     */
     @Override
     public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
         if (newInput != null) {
@@ -56,11 +41,6 @@ public class LazyContentProvider implements ILazyContentProvider {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ILazyContentProvider#updateElement(int)
-     */
     @Override
     public void updateElement(int index) {
         TableViewer tableViewer = tableViewerCreator.getTableViewer();

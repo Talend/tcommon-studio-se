@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.core.model.update.extension;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public interface IUpdateManagerProvider {
 
 }

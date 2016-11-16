@@ -28,28 +28,12 @@ import org.talend.metadata.managment.ui.wizard.metadata.xml.node.FOXTreeNode;
 import org.talend.metadata.managment.ui.wizard.metadata.xml.node.NameSpaceNode;
 import org.talend.repository.metadata.ui.wizards.form.AbstractXmlStepForm;
 
-/**
- * DOC talend class global comment. Detailled comment
- */
 public class MoveUpTreeNodeButton extends AbstractTreeNodeButton {
 
-    /**
-     * DOC talend MoveUpTreeNodeButton constructor comment.
-     * 
-     * @param parent
-     * @param extendedViewer
-     * @param tooltip
-     * @param image
-     */
     public MoveUpTreeNodeButton(Composite parent, AbstractXmlStepForm form) {
         super(parent, form, "Move up", ImageProvider.getImage(EImage.UP_ICON));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.fileoutputxml.ui.footer.AbstractTreeNodeButton#handleSelectionEvent()
-     */
     @Override
     protected void handleSelectionEvent(TreeSelection selection) {
         if (!selection.isEmpty()) {
@@ -107,11 +91,6 @@ public class MoveUpTreeNodeButton extends AbstractTreeNodeButton {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.fileoutputxml.ui.footer.AbstractTreeNodeButton#updateButtonStatus()
-     */
     @Override
     protected void updateStatus(TreeSelection selection) {
         if (selection.isEmpty()) {

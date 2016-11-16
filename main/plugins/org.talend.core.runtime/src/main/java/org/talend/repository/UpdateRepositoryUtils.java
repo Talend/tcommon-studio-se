@@ -42,14 +42,9 @@ import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * ggu class global comment. Detailled comment
- */
 public final class UpdateRepositoryUtils {
 
     /**
-     * ggu Comment method "getQueryFromItem".
-     * 
      * get Query
      */
     @SuppressWarnings("unchecked")
@@ -112,9 +107,6 @@ public final class UpdateRepositoryUtils {
     }
 
     /**
-     * 
-     * ggu Comment method "getTableFromItem".
-     * 
      * get MetadataTable
      */
     @SuppressWarnings("unchecked")
@@ -220,9 +212,6 @@ public final class UpdateRepositoryUtils {
     }
 
     /**
-     * 
-     * ggu Comment method "getConnectionItemByItemId".
-     * 
      * get item by id
      */
     public static ConnectionItem getConnectionItemByItemId(String itemId) {
@@ -234,9 +223,6 @@ public final class UpdateRepositoryUtils {
     }
 
     /**
-     * 
-     * ggu Comment method "getQueriesFromItemId".
-     * 
      * get queries from the item.
      */
     public static List<Query> getQueriesFromItemId(final String itemId) {
@@ -276,9 +262,6 @@ public final class UpdateRepositoryUtils {
     }
 
     /**
-     * 
-     * ggu Comment method "getMetadataTablesFromItemId".
-     * 
      * get tables from item
      */
     public static List<MetadataTable> getMetadataTablesFromItemId(final String itemId) {
@@ -351,13 +334,6 @@ public final class UpdateRepositoryUtils {
         return null;
     }
 
-    /**
-     * 
-     * ggu Comment method "getRepositoryObjectById".
-     * 
-     * @param id
-     * @return
-     */
     public static IRepositoryViewObject getRepositoryObjectById(final String id) {
         if (id == null || "".equals(id) || RepositoryNode.NO_ID.equals(id)) { //$NON-NLS-1$
             return null;
@@ -372,13 +348,6 @@ public final class UpdateRepositoryUtils {
         return null;
     }
 
-    /**
-     * 
-     * ggu Comment method "getRepositoryAliasName".
-     * 
-     * @param item
-     * @return
-     */
     public static String getRepositorySourceName(Item item) {
         return UpdateRepositoryHelper.getRepositorySourceName(item);
     }

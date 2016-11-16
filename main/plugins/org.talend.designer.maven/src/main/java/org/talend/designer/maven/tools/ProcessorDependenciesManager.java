@@ -27,10 +27,6 @@ import org.talend.designer.maven.utils.PomUtil;
 import org.talend.designer.runprocess.IProcessor;
 import org.talend.designer.runprocess.ProcessorException;
 
-/**
- * created by ycbai on 2015年4月2日 Detailled comment
- *
- */
 public class ProcessorDependenciesManager {
 
     private final IProcessor processor;

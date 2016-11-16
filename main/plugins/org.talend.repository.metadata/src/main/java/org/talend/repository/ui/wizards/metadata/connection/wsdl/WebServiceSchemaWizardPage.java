@@ -28,16 +28,8 @@ import org.talend.cwm.helper.PackageHelper;
 import org.talend.metadata.managment.ui.wizard.AbstractForm;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
-/**
- * DOC gldu class global comment. Detailled comment
- */
 public class WebServiceSchemaWizardPage extends WSDLSchemaWizardPage {
 
-    /**
-     * DOC Administrator WebServiceSchemaWizardPage constructor comment.
-     * 
-     * @param pageName
-     */
     public int step;
 
     private AbstractForm currentComposite;
@@ -52,11 +44,6 @@ public class WebServiceSchemaWizardPage extends WSDLSchemaWizardPage {
         this.contextModeManager = contextModeManager;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
-     */
     @Override
     public void createControl(Composite parent) {
         // TODO Auto-generated method stub

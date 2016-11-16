@@ -14,12 +14,6 @@ package org.talend.commons.ui.swt.colorstyledtext.rules;
 
 import org.eclipse.jface.text.rules.Token;
 
-/**
- * DOC nrousseau class global comment. Detailled comment <br/>
- * 
- * $Id: LToken.java 7038 2007-11-15 14:05:48Z plegall $
- * 
- */
 public class LToken extends Token {
 
     protected int length;

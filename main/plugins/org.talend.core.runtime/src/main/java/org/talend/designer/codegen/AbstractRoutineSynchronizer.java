@@ -301,11 +301,6 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.codegen.ITalendSynchronizer#syncAllPigudf()
-     */
     @Override
     public void syncAllPigudf() throws SystemException {
         // TODO Auto-generated method stub

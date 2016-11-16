@@ -55,12 +55,6 @@ public class TimeMeasure {
     // key represent the idTimer,value map represent the log rows.
     private static Map<String, List<Map<Integer, Object>>> logValue = new HashMap<String, List<Map<Integer, Object>>>();
 
-    /**
-     * 
-     * DOC amaumont Comment method "start".
-     * 
-     * @param idTimer
-     */
     public static void begin(String idTimer) {
         if (!measureActive) {
             return;
@@ -81,9 +75,6 @@ public class TimeMeasure {
     }
 
     /**
-     * 
-     * DOC amaumont Comment method "end".
-     * 
      * @param idTimer
      * @return total elapsed time since start in ms
      */
@@ -130,9 +121,6 @@ public class TimeMeasure {
     }
 
     /**
-     * 
-     * DOC amaumont Comment method "timeSinceStart".
-     * 
      * @param idTimer
      * @return total elapsed time since start in ms
      */
@@ -165,9 +153,6 @@ public class TimeMeasure {
     }
 
     /**
-     * 
-     * DOC amaumont Comment method "timeStep".
-     * 
      * @param idTimer
      * @return elapsed time since previous step in ms
      */
@@ -294,9 +279,6 @@ public class TimeMeasure {
         }
     }
 
-    /**
-     * DOC amaumont Comment method "init".
-     */
     private static void init() {
         if (timers == null) {
             timers = new HashMap<String, TimeStack>();

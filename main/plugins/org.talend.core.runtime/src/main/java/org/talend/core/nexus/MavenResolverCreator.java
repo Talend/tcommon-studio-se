@@ -18,10 +18,6 @@ import org.ops4j.pax.url.mvn.MavenResolver;
 import org.ops4j.pax.url.mvn.MavenResolvers;
 import org.ops4j.pax.url.mvn.ServiceConstants;
 
-/**
- * created by wchen on Apr 24, 2015 Detailled comment
- *
- */
 public class MavenResolverCreator {
 
     private static MavenResolverCreator creator;

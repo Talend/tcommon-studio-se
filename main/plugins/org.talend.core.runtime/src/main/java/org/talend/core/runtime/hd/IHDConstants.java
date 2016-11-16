@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.core.runtime.hd;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public interface IHDConstants {
 
     /**

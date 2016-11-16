@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.core.runtime.projectsetting;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class EmptyProjectSettingPage extends AbstractProjectSettingPage {
 
     public EmptyProjectSettingPage() {

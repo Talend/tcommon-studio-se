@@ -378,11 +378,6 @@ public class LdifFileWizard extends CheckLastVersionRepositoryWizard implements 
         this.selection = selection2;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.wizards.RepositoryWizard#getConnectionItem()
-     */
     @Override
     public ConnectionItem getConnectionItem() {
         return this.connectionItem;

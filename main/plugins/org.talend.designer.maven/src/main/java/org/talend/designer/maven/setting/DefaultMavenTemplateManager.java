@@ -14,14 +14,8 @@ package org.talend.designer.maven.setting;
 
 import org.talend.designer.maven.template.AbstractMavenTemplateManager;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class DefaultMavenTemplateManager extends AbstractMavenTemplateManager {
 
-    /**
-     * DOC ggu DefaultMavenTemplateManager constructor comment.
-     */
     public DefaultMavenTemplateManager() {
         //
     }

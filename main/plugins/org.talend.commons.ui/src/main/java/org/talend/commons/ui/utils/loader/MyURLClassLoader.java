@@ -27,9 +27,6 @@ import java.util.zip.ZipFile;
 import org.apache.log4j.Logger;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 
-/**
- * ggu class global comment. Detailled comment
- */
 public class MyURLClassLoader extends URLClassLoader {
 
     public static interface IAssignableClassFilter {
@@ -144,11 +141,6 @@ public class MyURLClassLoader extends URLClassLoader {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.net.URLClassLoader#findClass(java.lang.String)
-     */
     @SuppressWarnings("unchecked")
     protected synchronized Class findCslass(String className) throws ClassNotFoundException {
         Class cls = (Class) pclasses.get(className);

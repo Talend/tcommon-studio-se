@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.commons.i18n;
 
-/**
- * DOC wzhang class global comment. Detailled comment
- */
 public class BabiliInfo {
 
     private String filepath;

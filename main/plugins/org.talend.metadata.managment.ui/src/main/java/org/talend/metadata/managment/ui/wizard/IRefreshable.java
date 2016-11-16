@@ -14,18 +14,11 @@ package org.talend.metadata.managment.ui.wizard;
 
 /**
  * Composite which support refreshing.
- * 
- * yzhang class global comment. Detailled comment <br/>
- * 
- * $Id: I.java 上午10:23:38 2007-6-15 +0000 (2007-6-15) yzhang $
- * 
  */
 public interface IRefreshable {
 
     /**
      * Refresh the concrete composite.
-     * 
-     * yzhang Comment method "refresh".
      */
     public void refresh();
 

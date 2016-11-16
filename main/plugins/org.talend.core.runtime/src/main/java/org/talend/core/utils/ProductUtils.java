@@ -15,10 +15,6 @@ package org.talend.core.utils;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * created by ggu on Apr 3, 2014 Detailled comment
- * 
- */
 public final class ProductUtils {
 
     /*

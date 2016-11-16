@@ -20,9 +20,6 @@ import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.language.ECodeLanguage;
 import org.talend.core.language.LanguageManager;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public final class TalendQuoteUtils {
 
     public static final String SINGLE_QUOTE = "'"; //$NON-NLS-1$

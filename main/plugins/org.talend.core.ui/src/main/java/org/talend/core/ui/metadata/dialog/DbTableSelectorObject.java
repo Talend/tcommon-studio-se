@@ -15,18 +15,10 @@ package org.talend.core.ui.metadata.dialog;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * qzhang class global comment. Detailled comment <br/>
- * 
- */
 public class DbTableSelectorObject {
 
     private ObjectType type;
 
-    /**
-     * qzhang DbTableSelectorObject class global comment. Detailled comment. <br/>
-     * 
-     */
     public enum ObjectType {
         TABLE,
         COLUMN,
@@ -40,9 +32,6 @@ public class DbTableSelectorObject {
 
     private DbTableSelectorObject parent;
 
-    /**
-     * qzhang DbTableSelectorDialog.TreeObject constructor comment.
-     */
     public DbTableSelectorObject() {
 
     }

@@ -16,9 +16,6 @@ import java.util.Map;
 
 import org.eclipse.jface.viewers.ISelection;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public interface IJobSettingsView {
 
     public static final String ID = "org.talend.designer.core.ui.views.jobsettings.JobSettingsView"; //$NON-NLS-1$

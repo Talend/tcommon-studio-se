@@ -14,9 +14,6 @@ package org.talend.core.runtime.repository;
 
 import org.talend.core.model.repository.IRepositoryViewObject;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public interface IRepositorySelectionDialog {
 
     int open();

@@ -22,10 +22,6 @@ import org.talend.commons.ui.runtime.swt.tableviewer.selection.ITableColumnSelec
 import org.talend.commons.ui.runtime.swt.tableviewer.sort.IColumnSortedListener;
 import org.talend.commons.ui.runtime.swt.tableviewer.sort.TableViewerCreatorSorter;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/> $Id: DefaultHeaderColumnSelectionListener.java,v 1.3
- * 2006/06/02 15:24:10 amaumont Exp $
- */
 public class DefaultHeaderColumnSelectionListener implements ITableColumnSelectionListener {
 
     private TableViewerCreatorColumnNotModifiable tableViewerCreatorColumn;
@@ -41,21 +37,11 @@ public class DefaultHeaderColumnSelectionListener implements ITableColumnSelecti
         this.tableViewerCreator = tableViewerCreator;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.events.SelectionListener#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
-     */
     public void widgetDefaultSelected(SelectionEvent e) {
         // TODO Auto-generated method stub
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.events.SelectionListener#widgetSelected(org.eclipse.swt.events.SelectionEvent)
-     */
     public void widgetSelected(SelectionEvent e) {
         TableViewerCreatorSorter viewerSorter = (TableViewerCreatorSorter) tableViewerCreator.getTableViewer()
                 .getSorter();
@@ -66,9 +52,6 @@ public class DefaultHeaderColumnSelectionListener implements ITableColumnSelecti
         }
     }
 
-    /**
-     * DOC amaumont Comment method "fireColumnSorted".
-     */
     private void fireColumnSorted() {
         for (IColumnSortedListener columnSortedListener : sortListenerList) {
             columnSortedListener.handle();

@@ -12,12 +12,6 @@
 // ============================================================================
 package org.talend.commons.ui.runtime.image;
 
-/**
- * DOC smallet class global comment. Detailled comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- * 
- */
 public interface IImage {
 
     public Class getLocation();

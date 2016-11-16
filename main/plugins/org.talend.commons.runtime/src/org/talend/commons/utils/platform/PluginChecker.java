@@ -15,9 +15,6 @@ package org.talend.commons.utils.platform;
 import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 
-/**
- * DOC Administrator class global comment. Detailled comment
- */
 public final class PluginChecker {
 
     private static final String TDQ_ID = "org.talend.dataprofiler.core.tdq"; //$NON-NLS-1$
@@ -44,8 +41,6 @@ public final class PluginChecker {
     }
 
     /**
-     * DOC bZhou Comment method "isTDQLoaded".
-     * 
      * use it to test if the platform start by TDQ.
      * 
      * @return
@@ -55,8 +50,6 @@ public final class PluginChecker {
     }
 
     /**
-     * DOC bZhou Comment method "isTDCPLoaded".
-     * 
      * use it to test if the platform start by TDCP.
      * 
      * @return

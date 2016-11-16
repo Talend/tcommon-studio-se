@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.core.model.update;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public interface IUpdateItemType {
 
     String getDisplayLabel();

@@ -12,12 +12,6 @@
 // ============================================================================
 package org.talend.commons.ui.runtime.swt.tableviewer.selection;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id: ILineSelectionListener.java 7038 2007-11-15 14:05:48Z plegall $
- * 
- */
 public interface ILineSelectionListener {
 
     public void handle(LineSelectionEvent e);

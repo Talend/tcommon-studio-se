@@ -22,9 +22,6 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class AgentTreeViewerListener implements ITreeViewerListener {
 
     private Map<String, Boolean> expanded = new HashMap<String, Boolean>();
@@ -52,22 +49,12 @@ public class AgentTreeViewerListener implements ITreeViewerListener {
         return repositoryNode;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ITreeViewerListener#treeCollapsed(org.eclipse.jface.viewers.TreeExpansionEvent)
-     */
     public void treeCollapsed(TreeExpansionEvent event) {
         Object element = event.getElement();
         internalCollapse(element);
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ITreeViewerListener#treeExpanded(org.eclipse.jface.viewers.TreeExpansionEvent)
-     */
     public void treeExpanded(TreeExpansionEvent event) {
         Object element = event.getElement();
         internalExpand(element);

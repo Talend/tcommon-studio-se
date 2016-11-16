@@ -34,27 +34,14 @@ import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.resource.relational.Catalog;
 import orgomg.cwm.resource.relational.Schema;
 
-/**
- * DOC klliu class global comment. Detailled comment
- */
 public class MetadataSchemaRepositoryObject extends MetadataSchema implements ISubRepositoryObject {
 
     private MetadataCatalogRepositoryObject parentCatalogObject;
 
-    /**
-     * Getter for parentCatalogObject.
-     * 
-     * @return the parentCatalogObject
-     */
     public MetadataCatalogRepositoryObject getParentCatalogObject() {
         return this.parentCatalogObject;
     }
 
-    /**
-     * Sets the parentCatalogObject.
-     * 
-     * @param parentCatalogObject the parentCatalogObject to set
-     */
     public void setParentCatalogObject(MetadataCatalogRepositoryObject parentCatalogObject) {
         this.parentCatalogObject = parentCatalogObject;
     }
@@ -228,11 +215,6 @@ public class MetadataSchemaRepositoryObject extends MetadataSchema implements IS
         return this.schema;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryViewObject#isModified()
-     */
     @Override
     public boolean isModified() {
         return viewObject.isModified();

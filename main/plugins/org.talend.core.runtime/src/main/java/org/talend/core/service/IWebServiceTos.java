@@ -20,9 +20,6 @@ import org.talend.core.model.process.INode;
 import org.talend.core.model.properties.ConnectionItem;
 import org.talend.core.ui.AbstractWebService;
 
-/**
- * DOC Administrator class global comment. Detailled comment
- */
 public interface IWebServiceTos extends IService {
 
     public AbstractWebService getWebServiceUI(Composite uiParent, ConnectionItem connectionItem);

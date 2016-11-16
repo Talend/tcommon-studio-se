@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.core.model.metadata.designerproperties;
 
-/**
- * cli class global comment. Detailled comment
- */
 public final class PropertyConstants {
 
     private PropertyConstants() {
@@ -22,8 +19,6 @@ public final class PropertyConstants {
 
     /**
      * work for cdc.
-     * 
-     * cli CDCTypeMode class global comment. Detailled comment
      */
     public enum CDCTypeMode {
         LOG_MODE("LOG"), //$NON-NLS-1$

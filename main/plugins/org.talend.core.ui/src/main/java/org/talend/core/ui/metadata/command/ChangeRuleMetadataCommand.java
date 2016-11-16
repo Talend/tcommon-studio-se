@@ -24,9 +24,6 @@ import org.talend.core.model.process.IElementParameter;
 import org.talend.core.model.process.INode;
 import org.talend.core.ui.CoreUIPlugin;
 
-/**
- * DOC hywang class global comment. Detailled comment
- */
 public class ChangeRuleMetadataCommand extends Command {
 
     private INode node;

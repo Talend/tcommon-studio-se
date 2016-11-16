@@ -47,9 +47,6 @@ import org.talend.registration.i18n.Messages;
 import org.talend.registration.register.RegisterManagement;
 import org.talend.repository.model.RepositoryConstants;
 
-/**
- * DOC zli class global comment. Detailled comment
- */
 public class RegisterWizardPage1 extends AbstractBasicWizardDialog {
 
     private int countryToSelect = 0;
@@ -409,9 +406,6 @@ public class RegisterWizardPage1 extends AbstractBasicWizardDialog {
         return composite;
     }
 
-    /**
-     * DOC zli RegisterWizardPage1 class global comment. Detailled comment
-     */
     class NetworkSettingDialog extends Dialog {
 
         private Text proxyHostText;
@@ -424,18 +418,12 @@ public class RegisterWizardPage1 extends AbstractBasicWizardDialog {
 
         private String[] proxyString;
 
-        /**
-         * DOC zli NetworSettingDialog constructor comment.
-         * 
-         * @param parentShell
-         */
         protected NetworkSettingDialog(Shell parentShell) {
             super(parentShell);
         }
 
         @Override
         protected void configureShell(Shell newShell) {
-
             super.configureShell(newShell);
             newShell.setModified(true);
             newShell.setSize(350, 300);

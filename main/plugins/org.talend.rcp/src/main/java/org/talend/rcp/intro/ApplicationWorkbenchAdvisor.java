@@ -38,19 +38,9 @@ import org.talend.login.ILoginTask;
 import org.talend.rcp.TalendSplashHandler;
 import org.talend.registration.register.RegisterManagement;
 
-/**
- * DOC ccarbone class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public class ApplicationWorkbenchAdvisor extends IDEWorkbenchAdvisor {
 
     private static Logger log = Logger.getLogger(ApplicationWorkbenchAdvisor.class);
-
-    /*
-     * @Override public void preStartup() { WorkbenchAdapterBuilder.registerAdapters(); super.preStartup(); }
-     */
 
     private static final String PERSPECTIVE_ID = "org.talend.rcp.perspective"; //$NON-NLS-1$
 

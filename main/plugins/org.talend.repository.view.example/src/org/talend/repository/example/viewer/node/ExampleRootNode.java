@@ -12,17 +12,7 @@
 // ============================================================================
 package org.talend.repository.example.viewer.node;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class ExampleRootNode {
 
-    // public ExampleRootNode() {
-    // super(null, null, ENodeType.STABLE_SYSTEM_FOLDER);
-    // }
-    //
-    // @Override
-    // public ENodeType getType() {
-    // return this.type;
-    // }
+
 }

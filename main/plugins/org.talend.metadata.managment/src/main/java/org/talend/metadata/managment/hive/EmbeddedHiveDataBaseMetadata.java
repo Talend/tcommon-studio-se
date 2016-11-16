@@ -39,12 +39,6 @@ import org.talend.designer.core.IDesignerCoreService;
 import org.talend.utils.sql.metadata.constants.GetTable;
 import org.talend.utils.sql.metadata.constants.MetaDataConstants;
 
-/**
- * DOC ggu class global comment. Detailled comment <br/>
- * 
- * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
- */
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class EmbeddedHiveDataBaseMetadata extends AbstractFakeDatabaseMetaData {
 
@@ -132,11 +126,6 @@ public class EmbeddedHiveDataBaseMetadata extends AbstractFakeDatabaseMetaData {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getSchemas()
-     */
     @Override
     public ResultSet getSchemas() throws SQLException {
         return new EmbeddedHiveResultSet();
@@ -147,11 +136,6 @@ public class EmbeddedHiveDataBaseMetadata extends AbstractFakeDatabaseMetaData {
         return EDatabaseTypeName.HIVE.getDisplayName();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.fakejdbc.FakeDatabaseMetaData#getCatalogs()
-     */
     @Override
     public ResultSet getCatalogs() throws SQLException {
         EmbeddedHiveResultSet resultSet = new EmbeddedHiveResultSet();
@@ -176,25 +160,13 @@ public class EmbeddedHiveDataBaseMetadata extends AbstractFakeDatabaseMetaData {
         return resultSet;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getPrimaryKeys(java.lang.String, java.lang.String,
-     * java.lang.String)
-     */
     @Override
     public ResultSet getPrimaryKeys(String catalog, String schema, String table) throws SQLException {
         return new EmbeddedHiveResultSet();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getTableTypes()
-     */
     @Override
     public ResultSet getTableTypes() throws SQLException {
-
         List<String[]> list = new ArrayList<String[]>();
         list.add(new String[] { TABLE_TYPE });
 
@@ -205,12 +177,6 @@ public class EmbeddedHiveDataBaseMetadata extends AbstractFakeDatabaseMetaData {
         return tableResultSet;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getExportedKeys(java.lang.String, java.lang.String,
-     * java.lang.String)
-     */
     @Override
     public ResultSet getExportedKeys(String catalog, String schema, String table) throws SQLException {
         return new EmbeddedHiveResultSet();
@@ -231,12 +197,6 @@ public class EmbeddedHiveDataBaseMetadata extends AbstractFakeDatabaseMetaData {
         return false; // FIXME, need check
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getTables(java.lang.String, java.lang.String,
-     * java.lang.String, java.lang.String[])
-     */
     @Override
     public ResultSet getTables(String catalog, String schema, String tableNamePattern, String[] types) throws SQLException {
         if (hiveObject == null) {
@@ -337,13 +297,6 @@ public class EmbeddedHiveDataBaseMetadata extends AbstractFakeDatabaseMetaData {
 
         return ETableTypes.TABLETYPE_TABLE.getName();
     }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getColumns(java.lang.String, java.lang.String,
-     * java.lang.String, java.lang.String)
-     */
 
     @Override
     public ResultSet getColumns(String catalog, String schemaPattern, String tableNamePattern, String columnNamePattern)

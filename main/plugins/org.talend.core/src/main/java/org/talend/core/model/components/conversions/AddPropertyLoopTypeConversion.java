@@ -15,9 +15,6 @@ package org.talend.core.model.components.conversions;
 import org.talend.core.model.components.ComponentUtilities;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 
-/**
- * DOC Administrator class global comment. Detailled comment
- */
 public class AddPropertyLoopTypeConversion implements IComponentConversion {
 
     private String field = "CLOSED_LIST"; //$NON-NLS-1$

@@ -42,9 +42,6 @@ import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.repository.model.IMetadataService;
 import org.talend.repository.model.IRepositoryService;
 
-/**
- * DOC hywang class global comment. Detailled comment
- */
 public class RuleCellEditor extends DialogCellEditor {
 
     private static final String DRL_EXTENSION = ".drl"; //$NON-NLS-1$
@@ -83,11 +80,6 @@ public class RuleCellEditor extends DialogCellEditor {
         this.tableEditorView = tableEditorView;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.DialogCellEditor#openDialogBox(org.eclipse.swt.widgets.Control)
-     */
     @Override
     protected Object openDialogBox(Control cellEditorWindow) {
         String ruleToEdit = (String) this.getValue();

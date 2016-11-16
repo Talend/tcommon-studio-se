@@ -16,10 +16,6 @@ import org.eclipse.emf.common.util.EMap;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.Property;
 
-/**
- * created by cmeng on Jul 20, 2015 Detailled comment
- *
- */
 public class BigDataBasicUtil {
 
     public static Object getFramework(Item item) {

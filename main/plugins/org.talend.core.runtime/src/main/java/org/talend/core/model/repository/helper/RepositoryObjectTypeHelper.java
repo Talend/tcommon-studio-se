@@ -28,19 +28,11 @@ import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
 import org.talend.core.model.repository.ERepositoryObjectType;
 
-/**
- * DOC bZhou class global comment. Detailled comment <br/>
- * 
- * $Id: talend.epf 55206 2011-02-15 17:32:14Z bzhou $
- * 
- */
 public final class RepositoryObjectTypeHelper {
 
     private static ERepositoryObjectType[] typeValues = (ERepositoryObjectType[]) ERepositoryObjectType.values();
 
     /**
-     * DOC bZhou Comment method "getSharedTypeList".
-     * 
      * This mehtod is to get all shared types.
      * 
      * @return
@@ -58,9 +50,7 @@ public final class RepositoryObjectTypeHelper {
     }
 
     /**
-     * DOC bZhou Comment method "getDQTypeList".
-     * 
-     * This method is to get all types used in Data Quality, it inclused the Shared types and the DP types.
+     * This method is to get all types used in Data Quality, it includs the Shared types and the DP types.
      * 
      * @return
      */
@@ -77,8 +67,6 @@ public final class RepositoryObjectTypeHelper {
     }
 
     /**
-     * DOC bZhou Comment method "getDPTypeList".
-     * 
      * This method is to get Data Profile object types. These types is just only used in the Data Profile.
      * 
      * @return
@@ -97,8 +85,6 @@ public final class RepositoryObjectTypeHelper {
     }
 
     /**
-     * DOC bZhou Comment method "getDQResourceTypeList".
-     * 
      * This method is to get all types used in Data Quality, it inclused the Shared types and the DP types.
      * 
      * @return

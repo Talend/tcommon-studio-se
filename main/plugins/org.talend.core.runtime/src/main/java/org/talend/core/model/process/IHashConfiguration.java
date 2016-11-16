@@ -14,10 +14,6 @@ package org.talend.core.model.process;
 
 import java.util.List;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- */
 public interface IHashConfiguration {
 
     public List<IHashableColumn> getHashableColumns();

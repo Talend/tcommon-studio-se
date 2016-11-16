@@ -18,18 +18,8 @@ import org.talend.themes.core.elements.adapters.TalendPaletteElement;
 import org.talend.themes.core.elements.widgets.ITalendPaletteWidget;
 import org.w3c.dom.Element;
 
-/**
- * created by cmeng on Jan 30, 2015 Detailled comment
- *
- */
 public class TalendPaletteElementProvider implements IElementProvider {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.e4.ui.css.core.dom.IElementProvider#getElement(java.lang.Object,
-     * org.eclipse.e4.ui.css.core.engine.CSSEngine)
-     */
     @Override
     public Element getElement(Object element, CSSEngine engine) {
         Element result = null;

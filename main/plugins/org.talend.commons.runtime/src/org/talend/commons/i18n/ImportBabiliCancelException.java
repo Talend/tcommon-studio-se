@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.commons.i18n;
 
-/**
- * DOC wzhang class global comment. Detailled comment
- */
 public class ImportBabiliCancelException extends InterruptedException {
 
     private static final long serialVersionUID = 334582807699186898L;

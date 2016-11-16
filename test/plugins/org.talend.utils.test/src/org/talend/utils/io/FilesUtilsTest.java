@@ -22,9 +22,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * DOC Administrator class global comment. Detailled comment
- */
 public class FilesUtilsTest {
 
     private File testBaseFolder, testTmpFolder, testDataFolder;

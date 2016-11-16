@@ -14,10 +14,6 @@ package org.talend.themes.core.elements.widgets;
 
 import org.talend.themes.core.elements.stylesettings.TalendTabbedPropertyColorHelper;
 
-/**
- * created by cmeng on Feb 9, 2015 Detailled comment
- *
- */
 public interface ITalendTabbedPropertyListWidget {
 
     public TalendTabbedPropertyColorHelper getColorHelper();

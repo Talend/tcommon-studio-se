@@ -14,12 +14,6 @@ package org.talend.utils.sql;
 
 import java.sql.Types;
 
-/**
- * DOC zqin class global comment. Detailled comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40Z zqin $
- * 
- */
 public final class Java2SqlType {
 
     // ADD by zshen bug 11875.to added additional type.

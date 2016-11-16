@@ -21,12 +21,6 @@ import org.eclipse.jface.text.rules.Token;
 import org.talend.commons.ui.swt.colorstyledtext.jedit.Mark;
 import org.talend.commons.ui.swt.colorstyledtext.scanner.ColoringScanner;
 
-/**
- * DOC nrousseau class global comment. Detailled comment <br/>
- * 
- * $Id: StarRule.java 7038 2007-11-15 14:05:48Z plegall $
- * 
- */
 public class StarRule implements IPredicateRule {
 
     protected boolean isPrevious, excludeMatch, atLineStart;

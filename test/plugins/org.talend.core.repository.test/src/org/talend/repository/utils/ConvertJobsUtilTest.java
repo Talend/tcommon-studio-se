@@ -32,10 +32,6 @@ import org.talend.core.repository.utils.ConvertJobsUtil;
 import org.talend.core.repository.utils.ConvertJobsUtil.JobType;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * 
- * DOC hwang class global comment. Detailled comment
- */
 public class ConvertJobsUtilTest {
 
     @Test

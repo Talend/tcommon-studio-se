@@ -68,9 +68,6 @@ import org.talend.metadata.managment.ui.wizard.metadata.MetadataContextModeManag
 import org.talend.repository.metadata.i18n.Messages;
 import org.talend.repository.metadata.ui.wizards.form.AbstractWSDLSchemaStepForm;
 
-/**
- * DOC Administrator class global comment. Detailled comment
- */
 public class WebServiceStep2Form extends AbstractWSDLSchemaStepForm {
 
     private static Logger log = Logger.getLogger(WebServiceStep2Form.class);
@@ -349,11 +346,6 @@ public class WebServiceStep2Form extends AbstractWSDLSchemaStepForm {
         return processDescription;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#adaptFormToReadOnly()
-     */
     @Override
     protected void adaptFormToReadOnly() {
         readOnly = isReadOnly();
@@ -530,11 +522,6 @@ public class WebServiceStep2Form extends AbstractWSDLSchemaStepForm {
         return numbersOfColumns;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
-     */
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);

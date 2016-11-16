@@ -17,9 +17,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class FolderImportNode extends ImportNode {
 
     private String path;
@@ -33,11 +30,6 @@ public class FolderImportNode extends ImportNode {
         this.path = path;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.items.importexport.ui.wizard.imports.models.IImportNode#getName()
-     */
     @Override
     public String getName() {
         ImportNode parentNode = this.getParentNode();
@@ -52,11 +44,6 @@ public class FolderImportNode extends ImportNode {
         return getPath();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.items.importexport.ui.wizard.imports.models.ImportNode#getDisplayLabel()
-     */
     @Override
     public String getDisplayLabel() {
         return getPath();
@@ -66,26 +53,6 @@ public class FolderImportNode extends ImportNode {
         return this.path;
     }
 
-    // public List<ImportNode> getSortedChildren() {
-    // List<ImportNode> children = new ArrayList<ImportNode>();
-    //
-    // List<FolderImportNode> tmpSubFolders = new ArrayList<FolderImportNode>(subFolders);
-    // Collections.sort(tmpSubFolders);
-    // children.addAll(tmpSubFolders);
-    //
-    // ArrayList<ItemImportNode> tmpItems = new ArrayList<ItemImportNode>(items);
-    // Collections.sort(tmpItems);
-    // children.addAll(tmpItems);
-    // return children;
-    // }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.items.importexport.ui.wizard.imports.models.ImportNode#addChild(org.talend.repository.items
-     * .importexport.ui.wizard.imports.models.ImportNode)
-     */
     @Override
     public void addChild(ImportNode node) {
         if (node instanceof FolderImportNode) {

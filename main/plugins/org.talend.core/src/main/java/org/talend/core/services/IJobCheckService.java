@@ -15,9 +15,6 @@ package org.talend.core.services;
 import org.talend.commons.exception.BusinessException;
 import org.talend.core.IService;
 
-/**
- * DOC nrousseau class global comment. Detailled comment
- */
 public interface IJobCheckService extends IService {
 
     boolean checkJob(String name) throws BusinessException;

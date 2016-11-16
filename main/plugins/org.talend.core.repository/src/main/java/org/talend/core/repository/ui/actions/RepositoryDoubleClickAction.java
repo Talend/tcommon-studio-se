@@ -45,12 +45,6 @@ import org.talend.repository.model.IRepositoryNode.EProperties;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.ui.views.IRepositoryView;
 
-/**
- * DOC smallet class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public class RepositoryDoubleClickAction extends Action {
 
     private List<ITreeContextualAction> contextualsActions = new ArrayList<ITreeContextualAction>();
@@ -67,11 +61,6 @@ public class RepositoryDoubleClickAction extends Action {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.action.Action#run()
-     */
     @Override
     public void run() {
         ISelection selection = getSelection();

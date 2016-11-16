@@ -64,12 +64,6 @@ import org.talend.core.ui.services.IComponentsLocalProviderService;
 import org.talend.core.utils.KeywordsValidator;
 import org.talend.designer.core.IDesignerCoreService;
 
-/**
- * yzhang class global comment. Detail led comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ææäº, 29 ä¹æ 2006) nrousseau $
- * 
- */
 public class ComponentsFormatPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
     private Button buttonAdd, buttonRemove;
@@ -111,61 +105,21 @@ public class ComponentsFormatPreferencePage extends PreferencePage implements IW
 
     private String configTextConnectionValue;
 
-    /**
-     * yzhang Comment method "getPaletteRoot".
-     */
     public PaletteRoot getPaletteRoot() {
 
         paletteRoot = ComponentPaletteUtilities.getPaletteRoot();
 
         // TODO:need to remove the tool group.
 
-        // if (paletteRoot == null || ComponentUtilities.isComponentPaletteNeedRefresh) {
-        // paletteRoot =
-        // CorePlugin.getDefault().getDesignerCoreService().createPalette(ComponentsFactoryProvider.getInstance());
-        // PaletteEntry entry = null;
-        // for (Object element : paletteRoot.getChildren()) {
-        // if (((PaletteContainer) element).getLabel().equals("Tools")) {
-        // entry = (PaletteEntry) element;
-        // break;
-        // }
-        // }
-        // if (entry != null) {
-        // paletteRoot.remove(entry);
-        // }
-        // }
         return paletteRoot;
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.preference.PreferencePage#createContents(org.eclipse.swt.widgets.Composite)
-     */
     @Override
     protected Control createContents(Composite parent) {
-
         Composite panel = new Composite(parent, SWT.NONE);
         panel.setLayout(new GridLayout(2, false));
         panel.setLayoutData(new GridData(GridData.FILL_BOTH));
-
-        // viewer = new TableViewer(panel);
-        // GridData viewerGridData = new GridData(GridData.FILL_BOTH);
-        // viewer.getControl().setLayoutData(viewerGridData);
-        // configViewer(viewer);
-
-        // Composite buttonPanel = new Composite(panel, SWT.NONE);
-        // buttonPanel.setLayoutData(new GridData(GridData.FILL_VERTICAL));
-        // buttonPanel.setLayout(new GridLayout());
-        //
-        // buttonAdd = new Button(buttonPanel, SWT.NONE);
-        //        buttonAdd.setText(Messages.getString("ComponentsFormatPreferencePage.add")); //$NON-NLS-1$
-        // buttonAdd.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        //
-        // buttonRemove = new Button(buttonPanel, SWT.NONE);
-        //        buttonRemove.setText(Messages.getString("ComponentsFormatPreferencePage.remove")); //$NON-NLS-1$
-        // buttonRemove.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
         Composite footerPanel = new Composite(panel, SWT.NONE);
         footerPanel.setLayout(new GridLayout(2, false));
@@ -201,20 +155,9 @@ public class ComponentsFormatPreferencePage extends PreferencePage implements IW
         return panel;
     }
 
-    /**
-     * yzhang Comment method "configTexts".
-     * 
-     * @param text
-     * @param preferenceType
-     */
     private void configTextModifyListener(final Text text, final String preferenceType) {
         text.addKeyListener(new KeyAdapter() {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.swt.events.KeyAdapter#keyReleased(org.eclipse.swt.events.KeyEvent)
-             */
             @Override
             public void keyReleased(KeyEvent e) {
                 // qli modified to fix the bug 7074
@@ -224,11 +167,6 @@ public class ComponentsFormatPreferencePage extends PreferencePage implements IW
                     MessageDialog.openError(getShell(), Messages.getString("ComponentsFormatPreferencePage.ErrorTitle"), message); //$NON-NLS-1$
                     setText(textConnection, configTextConnectionValue, true);
                 }
-                // Object[] objs = ((IStructuredSelection) viewer.getSelection()).toArray();
-                // for (Object o : objs) {
-                // preferenceCach.put(preferenceType, content);
-                //
-                // }
                 preferenceCach.put(preferenceType, content);
 
             }
@@ -236,41 +174,20 @@ public class ComponentsFormatPreferencePage extends PreferencePage implements IW
 
     }
 
-    /**
-     * yzhang Comment method "configListViewer".
-     * 
-     * @param viewer
-     */
     private void configViewer(TableViewer v) {
 
         v.setContentProvider(new IStructuredContentProvider() {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
-             */
             @Override
             public Object[] getElements(Object inputElement) {
                 return ((List) inputElement).toArray();
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.jface.viewers.IContentProvider#dispose()
-             */
             @Override
             public void dispose() {
 
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer,
-             * java.lang.Object, java.lang.Object)
-             */
             @Override
             public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
             }
@@ -561,11 +478,6 @@ public class ComponentsFormatPreferencePage extends PreferencePage implements IW
 
     private Set<String> idSet;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
-     */
     @Override
     public void init(IWorkbench workbench) {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IComponentsLocalProviderService.class)) {
@@ -631,97 +543,17 @@ public class ComponentsFormatPreferencePage extends PreferencePage implements IW
         return false;
     }
 
-    /**
-     * yzhang Comment method "addButtonListeners".
-     */
     private void addButtonListeners() {
-        // buttonAdd.addMouseListener(new MouseAdapter() {
-        //
-        // /*
-        // * (non-Javadoc)
-        // *
-        // * @see org.eclipse.swt.events.MouseAdapter#mouseUp(org.eclipse.swt.events.MouseEvent)
-        // */
-        // @Override
-        // public void mouseUp(MouseEvent e) {
-        // PaletteContentDialog dialog = new PaletteContentDialog(getShell(), ComponentsFormatPreferencePage.this);
-        // dialog.open();
-        // }
-        // });
-        //
-        // buttonRemove.addMouseListener(new MouseAdapter() {
-        //
-        // /*
-        // * (non-Javadoc)
-        // *
-        // * @see org.eclipse.swt.events.MouseAdapter#mouseUp(org.eclipse.swt.events.MouseEvent)
-        // */
-        // @Override
-        // public void mouseUp(MouseEvent e) {
-        // StructuredSelection selection = (StructuredSelection) viewer.getSelection();
-        // for (Object obj : selection.toArray()) {
-        // ((List) viewer.getInput()).remove(obj);
-        //
-        // String id = getIdWithoutPreferenceType(obj);
-        // preferenceCach.remove(id + IComponentsLocalProviderService.PREFERENCE_TYPE_HINT);
-        // preferenceCach.remove(id + IComponentsLocalProviderService.PREFERENCE_TYPE_LABEL);
-        // preferenceCach.remove(id + IComponentsLocalProviderService.PREFERENCE_TYPE_CONNECTION);
-        //
-        // }
-        // viewer.refresh();
-        //
-        // }
-        // });
-
     }
 
-    /**
-     * yzhang Comment method "initViewer".
-     */
     private void initViewerContent() {
-        // viewer.setInput(initViewerInput);
         initPreferenceCach();
     }
 
-    /**
-     * yzhang Comment method "setListViewerInput".
-     * 
-     * @param selections
-     */
     public void setViewerInput(ISelection selections) {
-        // List<PaletteEntry> entryList = new ArrayList<PaletteEntry>();
-        //
-        // List selectionsList = ((TreeSelection) selections).toList();
-        //
-        // if (viewer.getInput() != null) {
-        // List s = (List) viewer.getInput();
-        // entryList.addAll(s);
-        // }
-        //
-        // for (Object paletteEntry : selectionsList) {
-        // boolean contained = false;
-        // for (PaletteEntry entry : entryList) {
-        // if ((((PaletteEntry) paletteEntry)).getLabel().equals(entry.getLabel())) {
-        // contained = true;
-        // break;
-        // }
-        // }
-        // if (!contained) {
-        // entryList.add((PaletteEntry) paletteEntry);
-        // }
-        //
-        // }
-        //
-        // viewer.setInput(entryList);
-
         initPreferenceCach();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.preference.PreferencePage#performOk()
-     */
     @Override
     public boolean performOk() {
         StringBuffer key = new StringBuffer();
@@ -733,24 +565,8 @@ public class ComponentsFormatPreferencePage extends PreferencePage implements IW
         return super.performOk();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.preference.PreferencePage#performDefaults()
-     */
     @Override
     protected void performDefaults() {
-        // StructuredSelection selections = (StructuredSelection) viewer.getSelection();
-        // for (Object obj : selections.toArray()) {
-        // String id = getIdWithoutPreferenceType(obj);
-        // setDefaultValueToPreferenceCach(id, IComponentsLocalProviderService.PREFERENCE_TYPE_CONNECTION,
-        // DEFAULT_CONNECTION,
-        // true);
-        // setDefaultValueToPreferenceCach(id, IComponentsLocalProviderService.PREFERENCE_TYPE_HINT, DEFAULT_HINT,
-        // true);
-        // setDefaultValueToPreferenceCach(id, IComponentsLocalProviderService.PREFERENCE_TYPE_LABEL, DEFAULT_LABEL,
-        // true);
-        // }
         setDefaultValueToPreferenceCach("", IComponentsLocalProviderService.PREFERENCE_TYPE_CONNECTION, DEFAULT_CONNECTION, true);
         setDefaultValueToPreferenceCach("", IComponentsLocalProviderService.PREFERENCE_TYPE_HINT, DEFAULT_HINT, true);
         setDefaultValueToPreferenceCach("", IComponentsLocalProviderService.PREFERENCE_TYPE_LABEL, DEFAULT_LABEL, true);
@@ -759,12 +575,6 @@ public class ComponentsFormatPreferencePage extends PreferencePage implements IW
         super.performDefaults();
     }
 
-    /**
-     * yzhang ComponentsFormatPreferencePage class global comment. Detailled comment <br/>
-     * 
-     * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ææäº, 29 ä¹æ 2006) nrousseau $
-     * 
-     */
     private class DefaultFormat {
 
         private String hint, label, connection;
@@ -777,14 +587,7 @@ public class ComponentsFormatPreferencePage extends PreferencePage implements IW
 
         public static final int CONNECTION = 3;
 
-        /**
-         * yzhang Comment method "equals".
-         * 
-         * @param obj
-         * @return
-         */
         public int equals(DefaultFormat obj) {
-
             if (!obj.getConnection().equals(connection)) {
                 return CONNECTION;
             } else if (!obj.getHint().equals(hint)) {
@@ -796,65 +599,32 @@ public class ComponentsFormatPreferencePage extends PreferencePage implements IW
             }
         }
 
-        /**
-         * yzhang ComponentsFormatPreferencePage.DefaultFormat constructor comment.
-         */
         public DefaultFormat(String h, String l, String c) {
             hint = h;
             label = l;
             connection = c;
         }
 
-        /**
-         * Getter for hint.
-         * 
-         * @return the hint
-         */
         public String getHint() {
             return this.hint;
         }
 
-        /**
-         * Sets the hint.
-         * 
-         * @param hint the hint to set
-         */
         public void setHint(String hint) {
             this.hint = hint;
         }
 
-        /**
-         * Getter for label.
-         * 
-         * @return the label
-         */
         public String getLabel() {
             return this.label;
         }
 
-        /**
-         * Sets the label.
-         * 
-         * @param label the label to set
-         */
         public void setLabel(String label) {
             this.label = label;
         }
 
-        /**
-         * Getter for connection.
-         * 
-         * @return the connection
-         */
         public String getConnection() {
             return this.connection;
         }
 
-        /**
-         * Sets the connection.
-         * 
-         * @param connection the connection to set
-         */
         public void setConnection(String connection) {
             this.connection = connection;
         }

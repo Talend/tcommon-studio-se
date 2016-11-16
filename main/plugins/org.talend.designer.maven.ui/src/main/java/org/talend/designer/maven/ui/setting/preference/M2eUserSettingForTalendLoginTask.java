@@ -48,8 +48,6 @@ import org.talend.login.AbstractLoginTask;
 import org.talend.utils.io.FilesUtils;
 
 /**
- * DOC ggu class global comment. Detailled comment
- * 
  * set the preference for MavenSettingsPreferencePage.
  */
 @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -67,11 +65,6 @@ public class M2eUserSettingForTalendLoginTask extends AbstractLoginTask {
         return true; // also enable support for commandline, so set true.
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.login.ILoginTask#getOrder()
-     */
     @Override
     public Date getOrder() {
         GregorianCalendar gc = new GregorianCalendar(2015, 6, 17, 12, 0, 0);
@@ -86,11 +79,6 @@ public class M2eUserSettingForTalendLoginTask extends AbstractLoginTask {
         return !"global".equalsIgnoreCase(configSetting); //$NON-NLS-1$
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.login.ILoginTask#run(org.eclipse.core.runtime.IProgressMonitor)
-     */
     @Override
     public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
         if (monitor == null) {

@@ -18,9 +18,6 @@ import java.util.Map;
 import org.talend.core.model.metadata.MetadataTalendType;
 
 /**
- * DOC ggu class global comment. Detailled comment <br/>
- * <p>
- * 
  * This class was used to convert from old types to new ones. <br>
  * 
  * Generally, It was called when the project and other relationship (<i>such as: job design, schema, context,etc</i>)

@@ -22,12 +22,6 @@ import org.junit.Test;
 import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
 import org.talend.core.model.metadata.builder.connection.MetadataTable;
 
-
-/**
- * created by zshen on Jul 17, 2013
- * Detailled comment
- *
- */
 public class MetadataTableImplTest {
 
     private static String metadataTableName = "myName";
@@ -36,34 +30,18 @@ public class MetadataTableImplTest {
 
     private static String metadataTableDefaultLable = "metadata";
 
-    /**
-     * DOC zshen Comment method "setUpBeforeClass".
-     * @throws java.lang.Exception
-     */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
     }
 
-    /**
-     * DOC zshen Comment method "tearDownAfterClass".
-     * @throws java.lang.Exception
-     */
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
     }
 
-    /**
-     * DOC zshen Comment method "setUp".
-     * @throws java.lang.Exception
-     */
     @Before
     public void setUp() throws Exception {
     }
 
-    /**
-     * DOC zshen Comment method "tearDown".
-     * @throws java.lang.Exception
-     */
     @After
     public void tearDown() throws Exception {
     }

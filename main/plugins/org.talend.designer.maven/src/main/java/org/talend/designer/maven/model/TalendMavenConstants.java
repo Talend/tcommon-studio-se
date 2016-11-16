@@ -16,10 +16,6 @@ import org.eclipse.m2e.core.internal.IMavenConstants;
 import org.talend.commons.utils.generation.JavaUtils;
 import org.talend.core.runtime.projectsetting.IProjectSettingTemplateConstants;
 
-/**
- * created by ggu on 2 Feb 2015 Detailled comment
- *
- */
 @SuppressWarnings("nls")
 public interface TalendMavenConstants {
 
@@ -41,9 +37,6 @@ public interface TalendMavenConstants {
 
     static final String ASSEMBLY_FILE_NAME = IProjectSettingTemplateConstants.ASSEMBLY_FILE_NAME;
 
-    /**
-     * 
-     */
     static final String PREFIX_ARG = "-D";
 
     static final String PREFIX_PROFILE = "-P";

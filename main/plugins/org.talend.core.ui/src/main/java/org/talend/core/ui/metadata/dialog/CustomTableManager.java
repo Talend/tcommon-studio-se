@@ -35,12 +35,6 @@ import org.talend.core.model.metadata.types.TypesManager;
 import org.talend.core.ui.metadata.editor.AbstractMetadataTableEditorView;
 import org.talend.core.ui.metadata.editor.MetadataTableEditorView;
 
-/**
- * DOC nrousseau class global comment. Detailed comment <br/>
- * 
- * $Id: talend-code-templates.xml 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- * 
- */
 public class CustomTableManager {
 
     public static final Color CUSTOM_CELL_BG_COLOR = new Color(null, new RGB(0, 0xF0, 0));
@@ -179,12 +173,6 @@ public class CustomTableManager {
 
     }
 
-    /**
-     * DOC nrousseau CustomTableManager class global comment. Detailled comment <br/>
-     * 
-     * $Id: talend-code-templates.xml 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
-     * 
-     */
     private static class CustomTableLabelProvider extends DefaultTableLabelProvider {
 
         private boolean readOnly = false;
@@ -197,12 +185,6 @@ public class CustomTableManager {
             this.tableEditorView = tableEditorView;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.talend.commons.ui.swt.tableviewer.behavior.DefaultTableLabelProvider#getBackground(java.lang.Object,
-         * int)
-         */
         @Override
         public Color getBackground(Object element, int columnIndex) {
             if (!(element instanceof IMetadataColumn)) {
@@ -232,24 +214,12 @@ public class CustomTableManager {
         }
     }
 
-    /**
-     * DOC nrousseau class global comment. Detailled comment <br/>
-     * 
-     * $Id: talend-code-templates.xml 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
-     * 
-     */
     private static class CustomTableCellModifier extends DefaultCellModifier {
 
         public CustomTableCellModifier(TableViewerCreator tableViewerCreator) {
             super(tableViewerCreator);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.talend.commons.ui.swt.tableviewer.behavior.DefaultCellModifier#canModify(java.lang.Object,
-         * java.lang.String)
-         */
         @Override
         public boolean canModify(Object element, String property) {
             if (element instanceof IMetadataColumn) {

@@ -64,10 +64,6 @@ import org.talend.metadata.managment.ui.wizard.metadata.MetadataContextModeManag
 import org.talend.repository.metadata.i18n.Messages;
 import org.talend.repository.metadata.ui.wizards.form.AbstractSalesforceStepForm;
 
-/**
- * 
- * DOC yexiaowei class global comment. Detailled comment
- */
 public class SalesforceStep3Form extends AbstractSalesforceStepForm {
 
     private static Logger log = Logger.getLogger(SalesforceStep3Form.class);
@@ -575,11 +571,6 @@ public class SalesforceStep3Form extends AbstractSalesforceStepForm {
     public void saveMetaData() {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
-     */
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);

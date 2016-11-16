@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.core.download;
 
-/**
- * 
- * DOC hcyi class global comment. Detailled comment
- */
 public interface DownloadListener {
 
     /**

@@ -63,10 +63,6 @@ import org.talend.core.ui.context.model.table.GroupByNothingTableProvider;
 import org.talend.core.ui.context.model.table.GroupBySourceTableProvider;
 import org.talend.core.ui.i18n.Messages;
 
-/**
- * DOC zwang class global comment. Detailled comment <br/>
- * 
- */
 public class ContextTableValuesComposite extends AbstractContextTabEditComposite {
 
     public static final int CONTEXT_COLUMN_WIDTH = 200;
@@ -197,12 +193,6 @@ public class ContextTableValuesComposite extends AbstractContextTabEditComposite
     protected void createTreeTooltip(final Tree tree) {
         new AbstractTreeTooltip(tree) {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see
-             * org.talend.commons.ui.swt.tooltip.AbstractTreeTooltip#getTooltipContent(org.eclipse.swt.widgets.TreeItem)
-             */
             @Override
             public String getTooltipContent(TreeItem item) {
 
@@ -537,16 +527,8 @@ public class ContextTableValuesComposite extends AbstractContextTabEditComposite
         viewer.setInput(Collections.EMPTY_LIST);
     }
 
-    /**
-     * DOC zli ContextCompare class global comment. Detailled comment
-     */
     private class ContextCompare implements java.util.Comparator<IContext> {
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
-         */
         @Override
         public int compare(IContext o1, IContext o2) {
             String name1 = o1.getName().toUpperCase();

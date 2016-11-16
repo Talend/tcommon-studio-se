@@ -39,17 +39,12 @@ import org.talend.repository.model.RepositoryConstants;
 import org.talend.repository.model.RepositoryNode;
 
 /**
- * DOC ggu class global comment. Detailled comment
- * 
  * filter by status, users and label for repository element and folder
  * 
  * FIXME, later, it's better to split for each functions.
  */
 public class RepositoryCommonViewerFilter extends ViewerFilter {
 
-    /**
-     * DOC ggu RepositoryViewerFilter constructor comment.
-     */
     public RepositoryCommonViewerFilter() {
     }
 
@@ -57,12 +52,6 @@ public class RepositoryCommonViewerFilter extends ViewerFilter {
         return RepositoryViewPlugin.getDefault().getPreferenceStore();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers.Viewer, java.lang.Object,
-     * java.lang.Object)
-     */
     @Override
     public boolean select(Viewer viewer, Object parentElement, Object element) {
 

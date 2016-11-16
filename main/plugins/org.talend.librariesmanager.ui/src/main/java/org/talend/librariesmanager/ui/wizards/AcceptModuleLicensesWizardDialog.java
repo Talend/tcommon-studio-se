@@ -16,11 +16,6 @@ import org.talend.core.model.general.ModuleToInstall;
 import org.talend.librariesmanager.ui.LibManagerUiPlugin;
 import org.talend.librariesmanager.ui.i18n.Messages;
 
-/**
- * 
- * created by ycbai on 2013-10-16 Detailled comment
- * 
- */
 public class AcceptModuleLicensesWizardDialog extends WizardDialog {
 
     private static final int ACCEPT_ALL_ID = 9999;
@@ -38,11 +33,6 @@ public class AcceptModuleLicensesWizardDialog extends WizardDialog {
         this.modulesToInstall = modulesToInstall;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.wizard.WizardDialog#createButtonsForButtonBar(org.eclipse.swt.widgets.Composite)
-     */
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
         acceptAllButton = createButton(parent, ACCEPT_ALL_ID,
@@ -70,11 +60,6 @@ public class AcceptModuleLicensesWizardDialog extends WizardDialog {
         close();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.wizard.WizardDialog#cancelPressed()
-     */
     @Override
     protected void cancelPressed() {
         boolean canceled = MessageDialog.openQuestion(getShell(),

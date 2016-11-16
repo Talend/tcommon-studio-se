@@ -12,12 +12,6 @@
 // ============================================================================
 package org.talend.core.prefs;
 
-/**
- * Core preferences. Detailled comment <br/>
- * 
- * $Id: ITalendCorePrefConstants.java 46402 2010-08-06 08:19:31Z wzhang $
- * 
- */
 public interface ITalendCorePrefConstants {
 
     /** Path to the directory of temporary files. */

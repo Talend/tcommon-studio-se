@@ -12,12 +12,6 @@
 // ============================================================================
 package org.talend.core.model.process;
 
-/**
- * DOC nrousseau class global comment. Detailled comment <br/>
- * 
- * $Id: IElementParameterDefaultValue.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
- */
 public interface IElementParameterDefaultValue {
 
     public Object getDefaultValue();

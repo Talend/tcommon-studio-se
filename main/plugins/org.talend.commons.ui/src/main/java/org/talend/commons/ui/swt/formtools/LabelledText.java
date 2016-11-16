@@ -371,48 +371,22 @@ public class LabelledText {
         label.setSize(width, label.getSize().y);
     }
 
-    /**
-     * DOC ocarbone Comment method "setSize".
-     * 
-     * @param width
-     * @param height
-     */
     public void setSize(int width, int height) {
         text.setSize(width, height);
     }
 
-    /**
-     * DOC ocarbone Comment method "setLayoutData".
-     * 
-     * @param gridData
-     */
     public void setLayoutData(GridData gridData) {
         text.setLayoutData(gridData);
     }
 
-    /**
-     * DOC ocarbone Comment method "addKeyListener".
-     * 
-     * @param adapter
-     */
     public void addKeyListener(KeyAdapter adapter) {
         text.addKeyListener(adapter);
     }
 
-    /**
-     * DOC ocarbone Comment method "getSelection()".
-     * 
-     * @return Point
-     */
     public Point getSelection() {
         return text.getSelection();
     }
 
-    /**
-     * Getter for lastSelection.
-     * 
-     * @return the lastSelection
-     */
     public Point getLastSelection() {
         if (lastSelection == null) {
             return new Point(0, 0);
@@ -421,43 +395,20 @@ public class LabelledText {
         }
     }
 
-    /**
-     * DOC ocarbone Comment method "setEnable".
-     * 
-     * @param visible
-     */
     public void setEnabled(boolean visible) {
         text.setEnabled(visible);
     }
 
-    /**
-     * DOC ocarbone Comment method "addFocusListener".
-     * 
-     * @param listener
-     */
     public void addFocusListener(FocusListener listener) {
         text.addFocusListener(listener);
 
     }
 
-    /**
-     * 
-     * DOC YeXiaowei Comment method "getTextControl".
-     * 
-     * @return
-     */
     public Text getTextControl() {
         return this.text;
     }
 
-    /**
-     * 
-     * DOC YeXiaowei Comment method "hideWidgets".
-     * 
-     * @param hide
-     */
     public void setHideWidgets(final boolean hide) {
-
         GridData dataLabel = (GridData) label.getLayoutData();
         dataLabel.exclude = hide;
         label.setLayoutData(dataLabel);

@@ -35,10 +35,6 @@ import org.talend.presentation.onboarding.utils.ObjectBox;
 import org.talend.presentation.onboarding.utils.OnBoardingUtils;
 import org.talend.presentation.onboarding.utils.WidgetFinder;
 
-/**
- * created by cmeng on Sep 10, 2015 Detailled comment
- *
- */
 public class HighlightShell {
 
     // 80%

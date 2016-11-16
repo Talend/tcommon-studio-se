@@ -24,9 +24,6 @@ import org.eclipse.core.runtime.Platform;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.model.utils.IDragAndDropServiceHandler;
 
-/**
- * DOC hwang class global comment. Detailled comment
- */
 public class DragAndDropManager {
 
     public static List<IDragAndDropServiceHandler> getHandlers() {

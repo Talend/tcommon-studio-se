@@ -13,17 +13,6 @@
 package org.talend.commons.utils.data.list;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
-/**
- * 
- * DOC amaumont ListenableList class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
  * @param <B> bean which must be ordered by <code>order</code> value
  */
 class OrderableWrapper<B> implements Comparable<OrderableWrapper> {
@@ -32,20 +21,12 @@ class OrderableWrapper<B> implements Comparable<OrderableWrapper> {
 
     private B bean;
 
-    /**
-     * DOC amaumont PriorityCalledWrapper constructor comment.
-     */
     public OrderableWrapper(int order, B bean) {
         super();
         this.order = order;
         this.bean = bean;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Comparable#compareTo(java.lang.Object)
-     */
     public int compareTo(OrderableWrapper o) {
         if (o == null) {
             return 1;
@@ -66,11 +47,6 @@ class OrderableWrapper<B> implements Comparable<OrderableWrapper> {
         return 0;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -79,11 +55,6 @@ class OrderableWrapper<B> implements Comparable<OrderableWrapper> {
         return result;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

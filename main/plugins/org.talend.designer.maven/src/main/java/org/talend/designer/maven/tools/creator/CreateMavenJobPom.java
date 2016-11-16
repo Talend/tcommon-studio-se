@@ -85,10 +85,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-/**
- * created by ggu on 4 Feb 2015 Detailled comment
- *
- */
 public class CreateMavenJobPom extends AbstractMavenProcessorPom {
 
     private String windowsClasspath, unixClasspath;
@@ -161,11 +157,6 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         this.itemRelativePath = itemRelativePath;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.maven.tools.creator.CreateMavenBundleTemplatePom#getTemplateStream()
-     */
     @Override
     protected InputStream getTemplateStream() throws IOException {
         File templateFile = PomUtil.getTemplateFile(getObjectTypeFolder(), getItemRelativePath(),

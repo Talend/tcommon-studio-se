@@ -29,23 +29,14 @@ import org.talend.core.model.process.IContextManager;
 import org.talend.core.model.process.IContextParameter;
 import org.talend.core.model.properties.ContextItem;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class ShowSelectedContextDialog extends Dialog {
 
     ContextItem contextItem;
 
     IContextManager contextManager;
 
-    /**
-     * DOC ggu ShowSelectedContextDialog constructor comment.
-     * 
-     * @param parentShell
-     */
     protected ShowSelectedContextDialog(ContextItem contextItem, Shell parentShell) {
         super(parentShell);
-        // setDefaultImage(ImageProvider.getImage(ECoreImage.CONTEXT_ICON));
         setShellStyle(getShellStyle() | SWT.RESIZE);
         this.contextItem = contextItem;
         this.contextManager = new JobContextManager(contextItem.getContext(), contextItem.getDefaultContext());
@@ -78,10 +69,6 @@ public class ShowSelectedContextDialog extends Dialog {
 
     }
 
-    /**
-     * 
-     * DOC ggu ShowSelectedContextDialog class global comment. Detailled comment
-     */
     class ShowSelectedContextComposite extends ContextComposite {
 
         public ShowSelectedContextComposite(Composite parent) {
@@ -124,40 +111,19 @@ public class ShowSelectedContextDialog extends Dialog {
 
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.talend.core.ui.context.IContextModelManager#onContextRemoveParameter(org.talend.core.model.process.
-         * IContextManager, java.lang.String, java.lang.String)
-         */
         @Override
         public void onContextRemoveParameter(IContextManager contextManager, String paramName, String sourceId) {
             // TODO Auto-generated method stub
-
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.talend.core.ui.context.IContextModelManager#onContextRemoveParameter(org.talend.core.model.process.
-         * IContextManager, java.util.Set, java.lang.String)
-         */
         @Override
         public void onContextRemoveParameter(IContextManager contextManager, Set<String> paramNames, String sourceId) {
             // TODO Auto-generated method stub
-
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.talend.core.ui.context.IContextModelManager#onContextRenameParameter(org.talend.core.model.process.
-         * IContextManager, java.lang.String, java.lang.String, java.lang.String)
-         */
         @Override
         public void onContextRenameParameter(IContextManager contextManager, String sourceId, String oldName, String newName) {
             // TODO Auto-generated method stub
-
         }
 
     }

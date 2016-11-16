@@ -13,21 +13,10 @@
 package org.talend.repository.viewer.action;
 
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class RecycleBinActionProvider extends RepoNodeActionProvider {
 
     public RecycleBinActionProvider() {
         super();
     }
 
-    // @Override
-    // protected void makeContextualActions() {
-    // super.makeContextualActions();
-    //
-    // addContextualAction(new EmptyRecycleBinAction());
-    // addContextualAction(new DeleteAction());
-    // addContextualAction(new RestoreAction());
-    // }
 }

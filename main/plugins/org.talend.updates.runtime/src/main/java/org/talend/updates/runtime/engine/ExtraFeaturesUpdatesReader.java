@@ -24,10 +24,6 @@ import org.talend.core.utils.RegistryReader;
 import org.talend.updates.runtime.Constants;
 import org.talend.updates.runtime.engine.factory.AbstractExtraUpdatesFactory;
 
-/**
- * created by ggu on Jul 17, 2014 Detailled comment
- *
- */
 public class ExtraFeaturesUpdatesReader extends RegistryReader {
 
     private static Logger log = Logger.getLogger(ExtraFeaturesUpdatesReader.class);
@@ -72,11 +68,6 @@ public class ExtraFeaturesUpdatesReader extends RegistryReader {
         return this.factories;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.utils.RegistryReader#readElement(org.eclipse.core.runtime.IConfigurationElement)
-     */
     @Override
     protected boolean readElement(final IConfigurationElement element) {
         if ("factory".equals(element.getName())) { //$NON-NLS-1$
@@ -121,11 +112,6 @@ public class ExtraFeaturesUpdatesReader extends RegistryReader {
         return false;
     }
 
-    /**
-     * 
-     * created by ggu on Jul 17, 2014 Detailled comment
-     *
-     */
     class ExtraUpdatesFactoryRegistry {
 
         String name, id, description, overrideId;

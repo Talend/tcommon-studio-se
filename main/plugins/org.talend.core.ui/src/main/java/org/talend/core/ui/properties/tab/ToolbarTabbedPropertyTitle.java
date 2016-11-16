@@ -31,9 +31,6 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.internal.views.properties.tabbed.view.TabbedPropertyTitle;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class ToolbarTabbedPropertyTitle extends TabbedPropertyTitle {
 
     private Map<Integer, Button> buttons = new HashMap<Integer, Button>();
@@ -120,13 +117,6 @@ public class ToolbarTabbedPropertyTitle extends TabbedPropertyTitle {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.ui.internal.views.properties.tabbed.view.TabbedPropertyTitle#drawTitleBackground(org.eclipse.swt.
-     * events.PaintEvent)
-     */
     @Override
     protected void drawTitleBackground(PaintEvent e) {
         super.drawTitleBackground(e);

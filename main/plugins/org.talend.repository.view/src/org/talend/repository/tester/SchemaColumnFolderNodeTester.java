@@ -16,20 +16,10 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * created by ycbai on 2013-7-24 Detailled comment
- * 
- */
 public class SchemaColumnFolderNodeTester extends SubNodeTester {
 
     private static final String IS_SCHEMA_COLUMN_FOLDER = "isSchemaColumnFolder"; //$NON-NLS-1$
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.tester.AbstractNodeTester#testProperty(java.lang.Object, java.lang.String,
-     * java.lang.Object[], java.lang.Object)
-     */
     @Override
     protected Boolean testProperty(Object receiver, String property, Object[] args, Object expectedValue) {
         if (receiver instanceof RepositoryNode) {

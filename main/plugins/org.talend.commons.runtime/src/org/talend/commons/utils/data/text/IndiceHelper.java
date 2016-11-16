@@ -14,12 +14,6 @@ package org.talend.commons.utils.data.text;
 
 import java.util.List;
 
-/**
- * DOC ocarbone class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public class IndiceHelper {
 
     /**

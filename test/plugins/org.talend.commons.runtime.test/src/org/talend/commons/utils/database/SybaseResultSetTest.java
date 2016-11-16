@@ -21,10 +21,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-/**
- * created by xqliu on Jul 23, 2013 Detailled comment
- * 
- */
 public class SybaseResultSetTest {
 
     /**

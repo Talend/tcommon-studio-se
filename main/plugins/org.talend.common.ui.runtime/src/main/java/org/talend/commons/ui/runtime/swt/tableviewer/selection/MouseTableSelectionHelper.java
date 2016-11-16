@@ -36,12 +36,6 @@ import org.talend.commons.ui.runtime.swt.tableviewer.TableViewerCreatorNotModifi
 import org.talend.commons.ui.runtime.ws.WindowSystem;
 import org.talend.libraries.ui.SWTFacade;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id: MouseTableSelectionHelper.java 7038 2007-11-15 14:05:48Z plegall $
- * 
- */
 public class MouseTableSelectionHelper {
 
     private TableViewerCreatorNotModifiable tableViewerCreator;
@@ -90,11 +84,7 @@ public class MouseTableSelectionHelper {
         init();
     }
 
-    /**
-     * DOC amaumont Comment method "init".
-     */
     private void init() {
-
         this.table = tableViewerCreator.getTable();
 
         final Listener storeCursorPositionListener = new Listener() {
@@ -222,9 +212,6 @@ public class MouseTableSelectionHelper {
 
     }
 
-    /**
-     * DOC amaumont Comment method "setTableCursor".
-     */
     protected void setShellCursor(boolean cursorSelection) {
         if (!SWTFacade.isRAP()) {
 
@@ -307,12 +294,6 @@ public class MouseTableSelectionHelper {
         return this.draggingOnSelectionColumn;
     }
 
-    /**
-     * DOC amaumont Comment method "getCursorPositionFromTableOrigin".
-     * 
-     * @param event
-     * @return
-     */
     private Point getCursorPositionFromTableOrigin(Event event) {
         Point pointCursor = new Point(event.x, event.y);
 
@@ -327,12 +308,6 @@ public class MouseTableSelectionHelper {
         return pointCursor;
     }
 
-    /**
-     * DOC amaumont Comment method "isColumnSelection".
-     * 
-     * @param columnIndex
-     * @return
-     */
     private boolean isColumnSelection(int columnIndex) {
         return columnIndex == 0 && !firstColumnMasked || columnIndex == 1 && firstColumnMasked;
     }

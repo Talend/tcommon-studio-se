@@ -78,10 +78,6 @@ import org.talend.repository.metadata.i18n.Messages;
 import org.talend.repository.metadata.ui.wizards.form.AbstractSalesforceStepForm;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
-/**
- * 
- * DOC yexiaowei class global comment. Detailled comment
- */
 public class SalesforceStep4Form extends AbstractSalesforceStepForm {
 
     private static Logger log = Logger.getLogger(SalesforceStep4Form.class);
@@ -901,11 +897,6 @@ public class SalesforceStep4Form extends AbstractSalesforceStepForm {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
-     */
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);

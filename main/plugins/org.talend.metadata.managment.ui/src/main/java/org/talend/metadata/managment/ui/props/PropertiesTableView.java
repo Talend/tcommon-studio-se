@@ -33,11 +33,6 @@ import org.talend.commons.ui.swt.tableviewer.TableViewerCreatorColumn;
 import org.talend.commons.utils.data.bean.IBeanPropertyAccessors;
 import org.talend.commons.utils.data.list.ListenableListEvent;
 
-/**
- * 
- * created by ycbai on 2015年1月4日 Detailled comment
- *
- */
 public class PropertiesTableView extends AbstractDataTableEditorView<Map<String, Object>> {
 
     public static final String DEFAULT_KEY_NAME = "PROPERTY"; //$NON-NLS-1$

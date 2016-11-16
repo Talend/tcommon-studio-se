@@ -33,10 +33,6 @@ import org.talend.metadata.managment.ui.utils.ConnectionContextHelper;
 import org.talend.metadata.managment.ui.utils.ExtendedNodeConnectionContextUtils.EHadoopParamName;
 import org.talend.metadata.managment.ui.utils.IRepositoryContextHandler;
 
-/**
- * created by ldong on Mar 18, 2015 Detailled comment
- *
- */
 public abstract class AbstractRepositoryContextHandler implements IRepositoryContextHandler {
 
     private final static String HADOOP_PROPERTY = "PROPERTY"; //$NON-NLS-1$

@@ -22,10 +22,6 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 
- * DOC hcyi class global comment. Detailled comment
- */
 public class DownloadHelper implements IDownloadHelper {
 
     private List<DownloadListener> fListeners = new ArrayList<DownloadListener>();

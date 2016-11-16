@@ -59,12 +59,6 @@ import org.talend.librariesmanager.prefs.LibrariesManagerUtils;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
-/**
- * DOC smallet class global comment. Detailled comment <br/>
- *
- * $Id$
- *
- */
 public abstract class AbstractLibrariesService implements ILibrariesService {
 
     private static Logger log = Logger.getLogger(AbstractLibrariesService.class);
@@ -278,13 +272,6 @@ public abstract class AbstractLibrariesService implements ILibrariesService {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.general.ILibrariesService#resetModulesNeededForCurrentJob(org.talend.core.model.properties
-     * .Item)
-     */
     @Override
     public void updateModulesNeededForCurrentJob(IProcess process) {
         ModulesNeededProvider.resetCurrentJobNeededModuleList(process);

@@ -26,10 +26,6 @@ import org.talend.components.common.FixedConnectorsComponentProperties;
 import org.talend.daikon.properties.presentation.Form;
 import org.talend.daikon.properties.property.Property;
 
-/**
- * created by ycbai on 2016年9月19日 Detailled comment
- *
- */
 public class AbstractPropertyValueEvaluatorTest {
 
     private AbstractPropertyValueEvaluator evalutor;

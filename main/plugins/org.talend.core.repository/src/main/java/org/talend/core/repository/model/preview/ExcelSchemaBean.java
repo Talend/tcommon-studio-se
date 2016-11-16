@@ -14,10 +14,6 @@ package org.talend.core.repository.model.preview;
 
 import java.util.ArrayList;
 
-/**
- * DOC YeXiaowei class global comment. Detailled comment <br/>
- * 
- */
 public class ExcelSchemaBean {
 
     private String firstColumn = null;

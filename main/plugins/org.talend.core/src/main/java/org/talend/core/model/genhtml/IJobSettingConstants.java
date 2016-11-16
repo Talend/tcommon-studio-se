@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.core.model.genhtml;
 
-/**
- * DOC YeXiaowei class global comment. Detailled comment <br/>
- * 
- */
 public interface IJobSettingConstants {
 
     // Just for joblet

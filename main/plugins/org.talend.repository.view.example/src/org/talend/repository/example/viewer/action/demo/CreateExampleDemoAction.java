@@ -52,10 +52,6 @@ import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.model.RepositoryNodeUtilities;
 
 /**
- * DOC ggu class global comment. Detailled comment <br/>
- * 
- * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
  * NOTE: this class is not finished, because need add some wizards or wizard pages also.
  */
 @SuppressWarnings("nls")
@@ -74,22 +70,12 @@ public class CreateExampleDemoAction extends AbstractCreateAction {
 
     protected boolean creation = false;
 
-    /**
-     * DOC ggu CreateDemoAction constructor comment.
-     */
     public CreateExampleDemoAction() {
         this.setText(CREATE_LABEL);
         this.setToolTipText(CREATE_LABEL);
         this.setImageDescriptor(defaultImage);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.repository.ui.actions.metadata.AbstractCreateAction#init(org.talend.repository.model.RepositoryNode
-     * )
-     */
     @Override
     protected void init(RepositoryNode node) {
         ERepositoryObjectType nodeType = (ERepositoryObjectType) node.getProperties(EProperties.CONTENT_TYPE);
@@ -133,11 +119,6 @@ public class CreateExampleDemoAction extends AbstractCreateAction {
         setEnabled(true);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.actions.AContextualAction#doRun()
-     */
     @Override
     protected void doRun() {
         if (repositoryNode == null) {
@@ -270,11 +251,6 @@ public class CreateExampleDemoAction extends AbstractCreateAction {
         return "DemoItem";
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.actions.AContextualAction#getClassForDoubleClick()
-     */
     @Override
     public Class getClassForDoubleClick() {
         return ExampleDemoConnectionItem.class;

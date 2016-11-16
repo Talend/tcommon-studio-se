@@ -25,9 +25,6 @@ import org.talend.core.model.metadata.builder.database.ExtractMetaDataUtils;
 import org.talend.core.model.metadata.builder.database.manager.ExtractManager;
 import org.talend.metadata.managment.utils.DatabaseConstant;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class MySQLExtractManager extends ExtractManager {
 
     private static Logger log = Logger.getLogger(MySQLExtractManager.class);

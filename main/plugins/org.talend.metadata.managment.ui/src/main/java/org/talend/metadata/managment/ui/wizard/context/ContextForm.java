@@ -19,25 +19,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.talend.core.model.process.IContextManager;
 import org.talend.metadata.managment.ui.wizard.AbstractForm;
 
-/**
- * DOC nrousseau class global comment. Detailled comment <br/>
- * 
- * $Id: talend-code-templates.xml 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- * 
- */
 public class ContextForm extends AbstractForm {
 
     private IContextManager contextManager;
 
     private boolean readOnly;
 
-    /**
-     * DOC nrousseau ContextForm constructor comment.
-     * 
-     * @param parent
-     * @param style
-     * @param existingNames
-     */
     public ContextForm(Composite parent, int style, String[] existingNames, IContextManager contextManager, boolean readOnly) {
         super(parent, style, existingNames);
         this.contextManager = contextManager;
@@ -45,20 +32,10 @@ public class ContextForm extends AbstractForm {
         setupForm();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#adaptFormToReadOnly()
-     */
     @Override
     protected void adaptFormToReadOnly() {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addFields()
-     */
     @Override
     protected void addFields() {
         final ContextRepositoryComposite jobContext = new ContextRepositoryComposite(this, contextManager);
@@ -75,48 +52,25 @@ public class ContextForm extends AbstractForm {
         jobContext.refresh();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addFieldsListeners()
-     */
     @Override
     protected void addFieldsListeners() {
         // TODO Auto-generated method stub
-
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addUtilsButtonListeners()
-     */
     @Override
     protected void addUtilsButtonListeners() {
         // TODO Auto-generated method stub
-
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#checkFieldsValue()
-     */
     @Override
     protected boolean checkFieldsValue() {
         // TODO Auto-generated method stub
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#initialize()
-     */
     @Override
     protected void initialize() {
         // TODO Auto-generated method stub
-
     }
 
 }

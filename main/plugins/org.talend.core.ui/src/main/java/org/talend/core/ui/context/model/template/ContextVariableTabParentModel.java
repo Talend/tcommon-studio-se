@@ -15,9 +15,6 @@ package org.talend.core.ui.context.model.template;
 import org.talend.core.model.process.IContextParameter;
 import org.talend.core.ui.context.model.ContextTabParentModel;
 
-/**
- * DOC Marvin class global comment. Detailled comment
- */
 public class ContextVariableTabParentModel extends ContextTabParentModel {
 
     private IContextParameter contextParameter;

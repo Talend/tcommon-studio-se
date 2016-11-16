@@ -98,10 +98,6 @@ import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.model.RepositoryNodeUtilities;
 import org.talend.repository.ui.dialog.AProgressMonitorDialogWithCancel;
 
-/**
- * 
- * DOC ggu class global comment. Detailled comment
- */
 public class ImportItemsWizardPage extends WizardPage {
 
     private Button itemFromDirectoryRadio, itemFromArchiveRadio;
@@ -118,9 +114,6 @@ public class ImportItemsWizardPage extends WizardPage {
 
     private Button overwriteButton;
 
-    /*
-     * 
-     */
     private static final String[] ARCHIVE_FILE_MASK = { "*.jar;*.zip;*.tar;*.tar.gz;*.tgz", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
 
     private String previouslyBrowsedDirectoryPath, previouslyBrowsedArchivePath, lastWorkedPath;
@@ -135,12 +128,6 @@ public class ImportItemsWizardPage extends WizardPage {
 
     private final ImportExportHandlersManager importManager = new ImportExportHandlersManager();
 
-    /**
-     * 
-     * DOC ggu ImportItemsWizardPage constructor comment.
-     * 
-     * @param pageName
-     */
     public ImportItemsWizardPage(String pageName, IStructuredSelection s) {
         super(pageName);
         this.selection = s;
@@ -187,11 +174,6 @@ public class ImportItemsWizardPage extends WizardPage {
         updateSelectionFields(this.itemFromDirectoryRadio.getSelection());
     }
 
-    /**
-     * DOC ggu Comment method "createDirectorySelectionArea".
-     * 
-     * @param selectionArea
-     */
     private void createDirectorySelectionArea(Composite selectionArea) {
         this.itemFromDirectoryRadio = new Button(selectionArea, SWT.RADIO);
         this.itemFromDirectoryRadio.setText(Messages.getString("ImportItemsWizardPage_selectDirectoryText")); //$NON-NLS-1$
@@ -243,11 +225,6 @@ public class ImportItemsWizardPage extends WizardPage {
         new Label(selectionArea, SWT.NONE);
     }
 
-    /**
-     * DOC ggu Comment method "createArchiveSelectionArea".
-     * 
-     * @param selectionArea
-     */
     protected void createArchiveSelectionArea(Composite selectionArea) {
         this.itemFromArchiveRadio = new Button(selectionArea, SWT.RADIO);
         this.itemFromArchiveRadio.setText(Messages.getString("ImportItemsWizardPage_selectArchiveText")); //$NON-NLS-1$
@@ -489,11 +466,6 @@ public class ImportItemsWizardPage extends WizardPage {
 
     }
 
-    /**
-     * DOC ggu Comment method "createAdditionArea".
-     * 
-     * @param workArea
-     */
     private void createAdditionArea(Composite workArea) {
         // see feature 3949
         this.overwriteButton = new Button(workArea, SWT.CHECK);
@@ -516,7 +488,6 @@ public class ImportItemsWizardPage extends WizardPage {
 
     /**
      * From directory
-     * 
      */
     private void handleDirectoryRadioSelected() {
         boolean selection = this.itemFromDirectoryRadio.getSelection();
@@ -529,7 +500,6 @@ public class ImportItemsWizardPage extends WizardPage {
 
     /**
      * From directory
-     * 
      */
     private void handleBrowseDirectoryButtonPressed() {
         DirectoryDialog dialog = new DirectoryDialog(this.getShell());
@@ -910,11 +880,6 @@ public class ImportItemsWizardPage extends WizardPage {
         return errorMessage;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.wizard.WizardPage#isPageComplete()
-     */
     @Override
     public boolean isPageComplete() {
         if (selectedItemRecords.isEmpty() || getErrorMessage() != null) {

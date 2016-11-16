@@ -31,9 +31,6 @@ import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class JobAndNodesParametersRelationshipHandler implements IItemRelationshipHandler {
 
     protected boolean valid(Item baseItem) {
@@ -67,11 +64,6 @@ public class JobAndNodesParametersRelationshipHandler implements IItemRelationsh
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.relationship.IItemRelationshipHandler#find(org.talend.core.model.properties.Item)
-     */
     @Override
     public Map<Relation, Set<Relation>> find(Item baseItem) {
         if (!valid(baseItem)) {

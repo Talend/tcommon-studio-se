@@ -43,12 +43,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Widget;
 
-/**
- * DOC tguiu class global comment. Detailled comment <br/>
- * 
- * $Id: TableEditor.java 7038 2007-11-15 14:05:48Z plegall $
- * 
- */
 public abstract class TableEditor extends FieldEditor {
 
     protected TableViewer viewer;
@@ -110,9 +104,6 @@ public abstract class TableEditor extends FieldEditor {
         }
     }
 
-    /*
-     * (non-Javadoc) Method declared on FieldEditor.
-     */
     @Override
     protected void adjustForNumColumns(int numColumns) {
         Control control = getLabelControl();
@@ -175,9 +166,6 @@ public abstract class TableEditor extends FieldEditor {
         };
     }
 
-    /*
-     * (non-Javadoc) Method declared on FieldEditor.
-     */
     @Override
     protected void doFillIntoGrid(Composite parent, int numColumns) {
         Control control = getLabelControl(parent);
@@ -198,9 +186,6 @@ public abstract class TableEditor extends FieldEditor {
         buttonBox.setLayoutData(gd);
     }
 
-    /*
-     * (non-Javadoc) Method declared on FieldEditor.
-     */
     @Override
     protected void doLoad() {
         if (viewer != null) {
@@ -214,9 +199,6 @@ public abstract class TableEditor extends FieldEditor {
         }
     }
 
-    /*
-     * (non-Javadoc) Method declared on FieldEditor.
-     */
     @Override
     protected void doLoadDefault() {
         if (viewer != null) {
@@ -231,9 +213,6 @@ public abstract class TableEditor extends FieldEditor {
         }
     }
 
-    /*
-     * (non-Javadoc) Method declared on FieldEditor.
-     */
     @Override
     protected void doStore() {
         String s = writeString(list);
@@ -342,9 +321,6 @@ public abstract class TableEditor extends FieldEditor {
 
     protected abstract String getExistingInputObject(String obj);
 
-    /*
-     * (non-Javadoc) Method declared on FieldEditor.
-     */
     @Override
     public int getNumberOfControls() {
         return 2;
@@ -428,9 +404,6 @@ public abstract class TableEditor extends FieldEditor {
         setControlEnable(downButton, size > 1 && index >= 0 && index < size - 1);
     }
 
-    /*
-     * (non-Javadoc) Method declared on FieldEditor.
-     */
     @Override
     public void setFocus() {
         if (viewer != null) {

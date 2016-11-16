@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.core.model.metadata;
 
-/**
- * DOC hwang class global comment. Detailled comment
- */
 public interface ISAPConstant {
 
     public static final String REF_TYPE = "-TYPE"; //$NON-NLS-1$

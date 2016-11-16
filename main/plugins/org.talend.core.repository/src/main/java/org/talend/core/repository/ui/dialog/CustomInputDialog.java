@@ -27,11 +27,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-/**
- * 
- * created by hcyi on Jul 3, 2015 Detailled comment
- *
- */
 public class CustomInputDialog extends Dialog {
 
     /*

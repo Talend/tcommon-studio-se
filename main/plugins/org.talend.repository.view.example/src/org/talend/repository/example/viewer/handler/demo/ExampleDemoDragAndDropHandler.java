@@ -36,39 +36,18 @@ import org.talend.repository.example.viewer.node.ExampleDemoRepositoryNodeType;
 import org.talend.repository.model.RepositoryNode;
 
 /**
- * DOC ggu class global comment. Detailled comment <br/>
- * 
- * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
- * NOTE: this calss is not finished, because need related some components.
+ * NOTE: this class is not finished, because need related some components.
  */
 public class ExampleDemoDragAndDropHandler extends AbstractDragAndDropServiceHandler {
 
-    /**
-     * DOC ggu ExampleDemoDragAndDropHandler constructor comment.
-     */
     public ExampleDemoDragAndDropHandler() {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.utils.IDragAndDropServiceHandler#canHandle(org.talend.core.model.metadata.builder.connection
-     * .Connection)
-     */
     @Override
     public boolean canHandle(Connection connection) {
         return connection instanceof ExampleDemoConnection;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.utils.IDragAndDropServiceHandler#getComponentValue(org.talend.core.model.metadata.builder
-     * .connection.Connection, java.lang.String, org.talend.core.model.metadata.IMetadataTable)
-     */
     @Override
     public Object getComponentValue(Connection connection, String value, IMetadataTable table) {
         if (value != null && canHandle(connection)) {
@@ -82,13 +61,6 @@ public class ExampleDemoDragAndDropHandler extends AbstractDragAndDropServiceHan
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.utils.IDragAndDropServiceHandler#filterNeededComponents(org.talend.core.model.properties
-     * .Item, org.talend.repository.model.RepositoryNode, org.talend.core.model.repository.ERepositoryObjectType)
-     */
     @Override
     public List<IComponent> filterNeededComponents(Item item, RepositoryNode seletetedNode, ERepositoryObjectType type) {
         List<IComponent> neededComponents = new ArrayList<IComponent>();
@@ -106,13 +78,6 @@ public class ExampleDemoDragAndDropHandler extends AbstractDragAndDropServiceHan
         return neededComponents;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.utils.IDragAndDropServiceHandler#getCorrespondingComponentName(org.talend.core.model.properties
-     * .Item, org.talend.core.model.repository.ERepositoryObjectType)
-     */
     @Override
     public IComponentName getCorrespondingComponentName(Item item, ERepositoryObjectType type) {
         RepositoryComponentSetting setting = null;
@@ -137,13 +102,6 @@ public class ExampleDemoDragAndDropHandler extends AbstractDragAndDropServiceHan
         return setting;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.utils.IDragAndDropServiceHandler#setComponentValue(org.talend.core.model.metadata.builder
-     * .connection.Connection, org.talend.core.model.process.INode, java.lang.String)
-     */
     @Override
     public void setComponentValue(Connection connection, INode node, IElementParameter param) {
         if (node != null && canHandle(connection)) {
@@ -152,11 +110,6 @@ public class ExampleDemoDragAndDropHandler extends AbstractDragAndDropServiceHan
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.utils.IDragAndDropServiceHandler#getType(java.lang.String)
-     */
     @Override
     public ERepositoryObjectType getType(String repositoryType) {
         // PTODO accordding to the checked type to return real object type.
@@ -169,38 +122,17 @@ public class ExampleDemoDragAndDropHandler extends AbstractDragAndDropServiceHan
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.utils.IDragAndDropServiceHandler#getComponentValue(org.talend.core.model.metadata.builder
-     * .connection.Connection, java.lang.String, org.talend.core.model.metadata.IMetadataTable, java.lang.String)
-     */
     @Override
     public Object getComponentValue(Connection connection, String value, IMetadataTable table, String targetComponent) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.utils.IDragAndDropServiceHandler#handleTableRelevantParameters(org.talend.core.model.metadata
-     * .builder.connection.Connection, org.talend.core.model.process.IElement,
-     * org.talend.core.model.metadata.IMetadataTable)
-     */
     @Override
     public void handleTableRelevantParameters(Connection connection, IElement ele, IMetadataTable metadataTable) {
         // TODO Auto-generated method stub
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.utils.IDragAndDropServiceHandler#isValidForDataViewer(org.talend.core.model.metadata.
-     * IMetadataTable)
-     */
     @Override
     public boolean isValidForDataViewer(Connection connection, IMetadataTable metadataTable) {
         if (!canHandle(connection)) {

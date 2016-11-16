@@ -47,12 +47,6 @@ import org.talend.core.model.general.Project;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.repository.model.RepositoryConstants;
 
-/**
- * yzhang class global comment. Detailled comment <br/>
- * 
- * $Id: ExpressionPersistance.java 下午01:26:21 2007-9-24 +0000 (2007-9-24) yzhang $
- * 
- */
 public class ExpressionPersistance {
 
     public static final String           EXPRESSION_FOLDER_NAME    = "ExpressionBuilder"; //$NON-NLS-1$

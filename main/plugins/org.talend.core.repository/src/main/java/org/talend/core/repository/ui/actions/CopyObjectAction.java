@@ -67,12 +67,6 @@ import org.talend.repository.model.IRepositoryNode.EProperties;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.model.RepositoryNodeUtilities;
 
-/**
- * DOC smallet class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public class CopyObjectAction {
 
     IProxyRepositoryFactory factory = ProxyRepositoryFactory.getInstance();

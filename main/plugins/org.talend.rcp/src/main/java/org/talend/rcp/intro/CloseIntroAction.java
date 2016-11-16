@@ -15,20 +15,13 @@ package org.talend.rcp.intro;
 import org.eclipse.jface.action.Action;
 import org.eclipse.ui.PlatformUI;
 
-/**
- * wchen class global comment. Detailled comment
- */
 public class CloseIntroAction extends Action {
 
     private static final String ACTION_ID = "org.talend.rcp.intro.CloseIntroAction";
 
-    /**
-     * wchen CloseIntroAction constructor comment.
-     */
     public CloseIntroAction() {
         setId(ACTION_ID);
         setActionDefinitionId("org.talend.rcp.command.closeIntro");
-
     }
 
     @Override

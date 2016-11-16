@@ -29,9 +29,6 @@ import org.talend.repository.model.IRepositoryNode.ENodeType;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.ui.actions.AContextualAction;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class ConfigFolderLevelMavenPomAction extends AContextualAction {
 
     @Override
@@ -102,11 +99,6 @@ public class ConfigFolderLevelMavenPomAction extends AContextualAction {
         setEnabled(canWork);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.actions.AContextualAction#doRun()
-     */
     @Override
     protected void doRun() {
         ISelection selection = getSelection();

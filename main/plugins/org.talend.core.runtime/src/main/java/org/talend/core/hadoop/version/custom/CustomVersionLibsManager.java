@@ -33,10 +33,6 @@ import org.talend.core.model.general.Project;
 import org.talend.repository.ProjectManager;
 import org.talend.utils.io.FilesUtils;
 
-/**
- * created by ycbai on 2013-3-18 Detailled comment
- * 
- */
 public class CustomVersionLibsManager {
 
     private final static String DESC_PROP_FILE = "desc.properties"; //$NON-NLS-1$
@@ -51,9 +47,6 @@ public class CustomVersionLibsManager {
 
     private String tmpFolder;
 
-    /**
-     * DOC ycbai CustomVersionJarsManager constructor comment.
-     */
     private CustomVersionLibsManager() {
         librairesService = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(ILibraryManagerService.class);
         tmpFolder = renewTmpFolder();

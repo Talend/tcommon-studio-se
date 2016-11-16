@@ -12,11 +12,6 @@
 // ============================================================================
 package org.talend.metadata.managment.ui.wizard.metadata.xml.node;
 
-
-/**
- * DOC s class global comment. Detailled comment
- * 
- */
 public class NameSpaceNode extends FOXTreeNode {
 
     public NameSpaceNode() {
@@ -26,21 +21,11 @@ public class NameSpaceNode extends FOXTreeNode {
         setLabel(label);
     }
 
-    /**
-     * (non-Javadoc)
-     * 
-     * @see org.talend.metadata.managment.ui.wizard.metadata.xml.node.FOXTreeNode#hasChildren()
-     */
     @Override
     public boolean hasChildren() {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.fileoutputxml.data.FOXTreeNode#getValue()
-     */
     @Override
     public String getLabelForViewer() {
         if (super.getLabel() != null && super.getLabel().length() > 0) {

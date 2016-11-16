@@ -18,25 +18,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * DOC hcyi class global comment. Detailled comment
- */
 public class KeywordsValidatorTest {
 
-    /**
-     * DOC hfchang Comment method "setUp".
-     * 
-     * @throws java.lang.Exception
-     */
     @Before
     public void setUp() throws Exception {
     }
 
-    /**
-     * DOC hfchang Comment method "tearDown".
-     * 
-     * @throws java.lang.Exception
-     */
     @After
     public void tearDown() throws Exception {
     }

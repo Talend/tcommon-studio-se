@@ -57,12 +57,6 @@ import org.talend.metadata.managment.ui.wizard.metadata.xml.utils.TreeUtil;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.ui.wizards.metadata.connection.files.xml.XmlFileWizard;
 
-/**
- * DOC cantoine class global comment. Detailled comment <br/>
- * 
- * $Id: AbstractXmlFileStepForm.java 48226 2010-09-14 10:04:12Z hywang $
- * 
- */
 public abstract class AbstractXmlFileStepForm extends AbstractXmlStepForm {
 
     protected XmlFileConnection connection;
@@ -72,7 +66,7 @@ public abstract class AbstractXmlFileStepForm extends AbstractXmlStepForm {
     protected boolean xsdPathChanged = false;
 
     /**
-     * DOC cantoine AbstractXmlFileStepForm constructor comment. Use to step1
+     * Use to step1
      */
     public AbstractXmlFileStepForm(Composite parent, ConnectionItem connectionItem, String[] existingNames) {
         super(parent, SWT.NONE, existingNames);
@@ -80,7 +74,7 @@ public abstract class AbstractXmlFileStepForm extends AbstractXmlStepForm {
     }
 
     /**
-     * DOC cantoine AbstractXmlFileStepForm constructor comment. Use to step2
+     * Use to step2
      * 
      * @param parent
      * @param connection2
@@ -90,7 +84,7 @@ public abstract class AbstractXmlFileStepForm extends AbstractXmlStepForm {
     }
 
     /**
-     * DOC cantoine AbstractDelimitedFileStepForm constructor comment. Use to step1
+     * Use to step1
      */
     public AbstractXmlFileStepForm(Composite parent, ConnectionItem connectionItem, MetadataTable metadataTable,
             String[] existingNames) {

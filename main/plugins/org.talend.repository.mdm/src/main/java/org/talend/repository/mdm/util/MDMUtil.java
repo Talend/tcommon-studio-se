@@ -37,9 +37,6 @@ import org.talend.metadata.managment.mdm.S60MdmConnectionHelper;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
-/**
- * DOC hwang class global comment. Detailled comment
- */
 public class MDMUtil {
 
     public static List<String> getConcepts(XSDSchema schema) {

@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.core.repository;
 
-/**
- * ggu class global comment. Detailled comment
- */
 public class SortedComponentSetting {
 
     private String id, name, pattern, description;

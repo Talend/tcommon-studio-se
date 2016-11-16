@@ -213,11 +213,6 @@ public class SelectorTableWizardPage extends TemplateWizardPage {
         tableForm.restoreCheckItems();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.wizards.metadata.table.database.TemplateWizardPage#getConnection()
-     */
     public Connection getConnection() {
         return getDatabaseConnection();
     }

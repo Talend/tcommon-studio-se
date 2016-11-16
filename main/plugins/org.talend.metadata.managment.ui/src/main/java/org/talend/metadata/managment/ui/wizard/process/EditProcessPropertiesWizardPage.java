@@ -259,11 +259,6 @@ public class EditProcessPropertiesWizardPage extends PropertiesWizardPage {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.wizards.PropertiesWizardPage#getRepositoryObjectType()
-     */
     @Override
     public ERepositoryObjectType getRepositoryObjectType() {
         EditProcessPropertiesWizard wizard = (EditProcessPropertiesWizard) getWizard();

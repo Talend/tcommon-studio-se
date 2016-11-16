@@ -15,9 +15,6 @@ package org.talend.core.ui.rule;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.SelectionDialog;
 
-/**
- * DOC hwang class global comment. Detailled comment
- */
 public abstract class AbstractRlueOperationChoice extends SelectionDialog {
 
     protected boolean isCancel = false;

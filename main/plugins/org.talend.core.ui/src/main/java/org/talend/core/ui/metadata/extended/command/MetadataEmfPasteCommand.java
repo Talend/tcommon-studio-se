@@ -24,31 +24,12 @@ import org.talend.core.model.metadata.builder.connection.MetadataColumn;
 import org.talend.core.model.metadata.builder.connection.impl.ConnectionFactoryImpl;
 import org.talend.core.ui.metadata.editor.MetadataEmfTableEditor;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public class MetadataEmfPasteCommand extends ExtendedTablePasteCommand {
 
-    /**
-     * DOC amaumont MetadataPasteCommand constructor comment.
-     * 
-     * @param extendedTable
-     * @param validAssignableType
-     * @param indexStartAdd
-     */
     public MetadataEmfPasteCommand(ExtendedTableModel extendedTable, Integer indexStartAdd) {
         super(extendedTable, indexStartAdd);
     }
 
-    /**
-     * DOC amaumont MetadataPasteCommand constructor comment.
-     * 
-     * @param extendedTable
-     * @param instanceOfType
-     */
     public MetadataEmfPasteCommand(ExtendedTableModel extendedTable) {
         super(extendedTable);
     }
@@ -81,13 +62,6 @@ public class MetadataEmfPasteCommand extends ExtendedTablePasteCommand {
         return newColumnName;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.commons.ui.swt.advanced.dataeditor.commands.ExtendedTablePasteCommand#createPastableBeansList(java
-     * .util.List)
-     */
     @Override
     public List createPastableBeansList(ExtendedTableModel extendedTable, List copiedObjectsList) {
         ArrayList addItemList = new ArrayList();

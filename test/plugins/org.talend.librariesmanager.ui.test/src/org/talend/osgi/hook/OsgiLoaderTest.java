@@ -47,30 +47,14 @@ import org.osgi.service.cm.ManagedService;
 import org.talend.osgi.hook.notification.JarMissingObservable;
 import org.talend.osgi.hook.notification.JarMissingObservable.JarMissingEvent;
 
-/**
- * created by sgandon on 4 févr. 2015 Detailled comment
- *
- */
 public class OsgiLoaderTest {
 
-    /**
-     * created by sgandon on 1 juin 2015 Detailled comment
-     *
-     */
     private class MissingJarObserverWithFolderResolution implements Observer {
 
-        /**
-         * 
-         */
         private final Boolean[] observerCalled;
 
         private boolean checkJarName;
 
-        /**
-         * DOC sgandon MissingJarObserverWithFolderResolution constructor comment.
-         * 
-         * @param observerCalled
-         */
         private MissingJarObserverWithFolderResolution(Boolean[] observerCalled, boolean checkJarName) {
             this.observerCalled = observerCalled;
             this.checkJarName = checkJarName;
@@ -99,24 +83,12 @@ public class OsgiLoaderTest {
         }
     }
 
-    /**
-     * created by sgandon on 1 juin 2015 Detailled comment
-     *
-     */
     private class MissingJarObserverWithMavenResolution implements Observer {
 
-        /**
-         * 
-         */
         private final Boolean[] observerCalled;
 
         private boolean checkJarName;
 
-        /**
-         * DOC sgandon MissingJarObserverWithMavenResolution constructor comment.
-         * 
-         * @param observerCalled
-         */
         private MissingJarObserverWithMavenResolution(Boolean[] observerCalled, boolean checkJarName) {
             this.observerCalled = observerCalled;
             this.checkJarName = checkJarName;
@@ -145,9 +117,6 @@ public class OsgiLoaderTest {
         }
     }
 
-    /**
-     * 
-     */
     private static final String EXISTING_JAR_NAME = "any-existing.jar"; //$NON-NLS-1$
 
     @Rule
@@ -263,13 +232,6 @@ public class OsgiLoaderTest {
         assertNull(fragmentBundle);
     }
 
-    /**
-     * DOC sgandon Comment method "checkFileExists".
-     * 
-     * @param jarURL
-     * @param shouldExist
-     * @throws IOException
-     */
     public void checkFileExistsOrNot(URL jarURL, boolean shouldExist) throws IOException {
         URL fileURL = FileLocator.toFileURL(jarURL);
         File jarFile = new File(fileURL.getFile());

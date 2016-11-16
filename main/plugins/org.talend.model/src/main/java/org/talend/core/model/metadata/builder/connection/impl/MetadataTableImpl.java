@@ -1250,11 +1250,6 @@ public class MetadataTableImpl extends AbstractMetadataObjectImpl implements Met
         return result.toString();
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see orgomg.cwm.objectmodel.core.impl.ModelElementImpl#getName()
-     */
     @Override
     public String getName() {
         if (super.getName() == null) {
@@ -1264,11 +1259,6 @@ public class MetadataTableImpl extends AbstractMetadataObjectImpl implements Met
         }
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.talend.core.model.metadata.builder.connection.impl.AbstractMetadataObjectImpl#getLabel()
-     */
     @Override
     public String getLabel() {
         if (StringUtils.isEmpty(this.label)) {

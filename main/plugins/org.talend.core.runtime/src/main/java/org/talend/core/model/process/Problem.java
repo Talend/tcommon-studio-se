@@ -37,20 +37,12 @@ public class Problem {
 
     protected static final Collection<Problem> EMPTY_PROBLEM_COLLECTION = Arrays.asList(new Problem[0]);
 
-    /**
-     * smallet Problem class global comment. Detailled comment <br/>
-     * 
-     * $Id: Problem.java 48513 2010-09-18 14:56:23Z nrousseau $
-     */
     public enum ProblemStatus {
         ERROR,
         WARNING,
         INFO
     }
 
-    /**
-     * bqian Problem class global comment. Detailled comment <br/>
-     */
     public enum ProblemType {
         JOB("Job"), //$NON-NLS-1$
         ROUTINE("Routine"), //$NON-NLS-1$
@@ -147,11 +139,6 @@ public class Problem {
         return list.toArray(new IEditorReference[0]);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -164,11 +151,6 @@ public class Problem {
         return result;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

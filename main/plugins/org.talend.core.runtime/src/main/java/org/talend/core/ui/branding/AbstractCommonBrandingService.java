@@ -18,9 +18,6 @@ import org.talend.core.runtime.i18n.Messages;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public abstract class AbstractCommonBrandingService implements IBrandingService {
 
     @Override

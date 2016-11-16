@@ -61,10 +61,6 @@ import org.talend.core.ui.metadata.celleditor.JavaTypeComboValueAdapter;
 import org.talend.core.ui.proposal.JavaSimpleDateFormatProposalProvider;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
  * @param <B> Type of beans in table
  */
 public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTableEditorView<B> {
@@ -221,13 +217,6 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
         super(parentComposite, mainCompositeStyle);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.commons.ui.swt.advanced.dataeditor.AbstractDataTableEditorView#createColumns(org.talend.commons.ui
-     * .swt.tableviewer.TableViewerCreator, org.eclipse.swt.widgets.Table)
-     */
     @Override
     protected void createColumns(TableViewerCreator<B> tableViewerCreator, Table table) {
         // //////////////////////////////////////////////////////////////////////////////////////
@@ -256,36 +245,6 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
         // //////////////////////////////////////////////////////////////////////////////////////
 
         configureTypeColumns(tableViewerCreator);
-
-        // final CellEditorValueAdapter finalComboValueAdapter =
-        // comboValueAdapter;
-        // final String[] finalArrayTalendTypes = arrayTalendTypes;
-        //
-        // column.setTableEditorContent(new TableEditorContent() {
-        //
-        // /* (non-Javadoc)
-        // * @see
-        // org.talend.commons.ui.swt.tableviewer.tableeditor.TableEditorContent#initialize(org.eclipse.swt.widgets.Table,
-        // org.eclipse.swt.custom.TableEditor,
-        // org.talend.commons.ui.swt.tableviewer.TableViewerCreatorColumn,
-        // java.lang.Object, java.lang.Object)
-        // */
-        // @Override
-        // public Control initialize(Table table, TableEditor tableEditor,
-        // TableViewerCreatorColumn currentColumn,
-        // Object currentRowObject, Object currentCellValue) {
-        // CCombo combo = new CCombo(table, SWT.FLAT | SWT.READ_ONLY);
-        // combo.setItems(finalArrayTalendTypes);
-        // // combo.setText(String.valueOf(currentCellValue));
-        // combo.computeSize(SWT.DEFAULT, table.getItemHeight());
-        // // Set attributes of the editor
-        // tableEditor.grabHorizontal = true;
-        // tableEditor.minimumHeight = combo.getSize().y - 4;
-        // tableEditor.minimumWidth = combo.getSize().x;
-        // return combo;
-        // }
-        //
-        // });
 
         // //////////////////////////////////////////////////////////////////////////////////////
         if (showNullableColumn) {
@@ -565,11 +524,6 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
             });
             column.setLabelProvider(new IColumnLabelProvider() {
 
-                /*
-                 * (non-Javadoc)
-                 * 
-                 * @see org.talend.commons.ui.swt.tableviewer.behavior.IColumnLabelProvider#getLabel(java.lang.Object)
-                 */
                 @Override
                 public String getLabel(Object bean) {
                     if (!currentBeanHasJavaDateType(bean) && !isCurrentBeanHasType(bean, "id_Dynamic")) {
@@ -925,24 +879,12 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
      */
     protected abstract IBeanPropertyAccessors getDbTypeAccessor();
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.commons.ui.swt.advanced.dataeditor.AbstractDataTableEditorView#setTableViewerCreatorOptions(org.talend
-     * .commons.ui.swt.tableviewer.TableViewerCreator)
-     */
     @Override
     protected void setTableViewerCreatorOptions(TableViewerCreator<B> newTableViewerCreator) {
         super.setTableViewerCreatorOptions(newTableViewerCreator);
         newTableViewerCreator.setFirstVisibleColumnIsSelection(true);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.advanced.dataeditor.AbstractDataTableEditorView#initToolBar()
-     */
     @Override
     protected abstract ExtendedToolbarView initToolBar();
 

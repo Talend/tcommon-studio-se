@@ -1381,22 +1381,12 @@ public class SelectorTableForm extends AbstractForm {
             super(queueCapacity, handler);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see java.util.concurrent.ThreadPoolExecutor#afterExecute(java.lang.Runnable, java.lang.Throwable)
-         */
         @Override
         protected void afterExecute(Runnable r, Throwable t) {
             RetrieveColumnRunnable runnable = (RetrieveColumnRunnable) r;
             map.remove(runnable.getTreeItem());
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see java.util.concurrent.ThreadPoolExecutor#beforeExecute(java.lang.Thread, java.lang.Runnable)
-         */
         @Override
         protected void beforeExecute(Thread t, Runnable r) {
             RetrieveColumnRunnable runnable = (RetrieveColumnRunnable) r;
@@ -2340,32 +2330,18 @@ public class SelectorTableForm extends AbstractForm {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.AbstractForm#adaptFormToReadOnly()
-     */
     @Override
     protected void adaptFormToReadOnly() {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
-     */
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);
         if (visible) {
             initializeForm();
         }
-        // initControlData();
     }
 
-    /**
-     * DOC qzhang Comment method "initControlData".
-     */
     public void initControlData() {
         checkConnection(false);
         if (!tableNodeList.isEmpty()) {
@@ -2421,18 +2397,10 @@ public class SelectorTableForm extends AbstractForm {
         }
     }
 
-    /**
-     * DOC nrousseau Comment method "performCancel".
-     */
     public void performCancel() {
         processWhenDispose();
     }
 
-    /**
-     * Getter for tableInfoParameters.
-     * 
-     * @return the tableInfoParameters
-     */
     public TableInfoParameters getTableInfoParameters() {
         return this.tableInfoParameters;
     }
@@ -2520,10 +2488,6 @@ public class SelectorTableForm extends AbstractForm {
         }
     }
 
-    /**
-     * 
-     * wzhang SelectorTableForm class global comment. Detailled comment
-     */
     class selectorViewerFilter extends ViewerFilter {
 
         @Override

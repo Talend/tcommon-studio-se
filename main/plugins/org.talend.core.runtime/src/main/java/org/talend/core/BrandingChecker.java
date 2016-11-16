@@ -21,9 +21,6 @@ import org.talend.commons.ui.runtime.CommonUIPlugin;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.ui.branding.IBrandingService;
 
-/**
- * DOC talend class global comment. Detailled comment
- */
 public class BrandingChecker {
 
     private static boolean initialized = false;

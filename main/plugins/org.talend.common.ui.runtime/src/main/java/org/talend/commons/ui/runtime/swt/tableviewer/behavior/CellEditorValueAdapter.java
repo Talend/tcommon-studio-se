@@ -80,8 +80,6 @@ public class CellEditorValueAdapter {
     /**
      * Convert original typed value to cellEditor typed value.
      * 
-     * DOC amaumont Comment method "getInternalTypedValue".
-     * 
      * @param cellEditor
      * @param originalTypedValue
      * @return

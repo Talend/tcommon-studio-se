@@ -14,9 +14,6 @@ package org.talend.core.model.repository;
 
 import java.util.Date;
 
-/**
- * DOC nrousseau class global comment. Detailled comment
- */
 public class LockInfo {
 
     private String user;

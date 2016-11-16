@@ -24,9 +24,6 @@ import org.talend.repository.mdm.i18n.Messages;
 import org.talend.repository.mdm.util.MDMUtil;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * DOC talend class global comment. Detailled comment
- */
 public abstract class AbstractRetrieveConceptPage extends WizardPage {
 
     private RepositoryNode node;
@@ -39,11 +36,6 @@ public abstract class AbstractRetrieveConceptPage extends WizardPage {
 
     protected MetadataTable metadataTable;
 
-    /**
-     * DOC talend AbstractRetrieveConceptPage constructor comment.
-     * 
-     * @param pageName
-     */
     protected AbstractRetrieveConceptPage(RepositoryNode node, ConnectionItem connectionItem, MetadataTable metadataTable,
             boolean creation) {
         super(Messages.getString("AbstractRetrieveConceptPage_wizard_page")); //$NON-NLS-1$
@@ -53,13 +45,7 @@ public abstract class AbstractRetrieveConceptPage extends WizardPage {
         this.creation = creation;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
-     */
     public void createControl(Composite parent) {
-        // TODO Auto-generated method stub
 
     }
 

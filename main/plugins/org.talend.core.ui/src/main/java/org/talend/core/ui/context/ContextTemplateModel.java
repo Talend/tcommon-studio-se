@@ -23,12 +23,6 @@ import org.talend.core.model.metadata.types.ContextParameterJavaTypeManager;
 import org.talend.core.model.process.IContextParameter;
 import org.talend.core.utils.TalendQuoteUtils;
 
-/**
- * DOC cantoine class global comment. Detailled comment <br/>
- * 
- * $Id: XmlExtractorSchemaModel.java 949 2006-12-11 15:03:40Z cantoine $
- * 
- */
 public class ContextTemplateModel extends ExtendedTableModel<IContextParameter> {
 
     public static final String NEW_PARAM_NAME = "new"; //$NON-NLS-1$
@@ -40,11 +34,6 @@ public class ContextTemplateModel extends ExtendedTableModel<IContextParameter> 
         setUseEquals(true);
     }
 
-    /**
-     * DOC bqian Comment method "createNewEntry".
-     * 
-     * @return
-     */
     public Object createNewEntry() {
 
         List<IContextParameter> listParams = this.getBeansList();

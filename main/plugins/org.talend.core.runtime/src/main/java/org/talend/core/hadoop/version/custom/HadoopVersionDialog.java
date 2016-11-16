@@ -43,10 +43,6 @@ import org.talend.core.runtime.hd.IHDistribution;
 import org.talend.core.runtime.hd.IHDistributionVersion;
 import org.talend.core.runtime.i18n.Messages;
 
-/**
- * created by ycbai on 2013-3-15 Detailled comment
- * 
- */
 public class HadoopVersionDialog extends TitleAreaDialog {
 
     private static final int VISIBLE_DISTRIBUTION_COUNT = 5;

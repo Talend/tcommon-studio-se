@@ -14,12 +14,6 @@ package org.talend.commons.ui.swt.colorstyledtext.rules;
 
 import org.eclipse.jface.text.rules.IToken;
 
-/**
- * DOC nrousseau class global comment. Detailled comment <br/>
- * 
- * $Id: EndOfLineRule.java 7038 2007-11-15 14:05:48Z plegall $
- * 
- */
 public class EndOfLineRule extends SingleLineRule {
 
     public EndOfLineRule(String startSequence, IToken token, boolean ignoreCase) {

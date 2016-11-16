@@ -70,17 +70,8 @@ import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.helper.PackageHelper;
 
-/**
- * DOC wzhang class global comment. Detailled comment
- */
 public class ComponentToRepositoryProperty {
 
-    /**
-     * DOC wzhang Comment method "setValue".
-     * 
-     * @param connection
-     * @param node
-     */
     public static boolean setValue(ConnectionItem connectionItem, INode node) {
 
         if (connectionItem == null || node == null) {

@@ -21,12 +21,6 @@
 // ============================================================================
 package org.talend.core.model.temp;
 
-/**
- * DOC rdubois class global comment. Detailled comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
- * 
- */
 public enum ETypeGen {
     ETL("etl"), //$NON-NLS-1$
     CAMEL("camel"), //$NON-NLS-1$
@@ -58,11 +52,6 @@ public enum ETypeGen {
         this.name = name;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Enum#toString()
-     */
     @Override
     public String toString() {
         return getName();

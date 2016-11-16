@@ -15,10 +15,6 @@ package org.talend.commons.utils.data.list;
 import java.util.List;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
  * @param <B> type of beans
  */
 public abstract class UniqueStringGenerator<B> {
@@ -27,9 +23,6 @@ public abstract class UniqueStringGenerator<B> {
 
     private List<B> beans;
 
-    /**
-     * DOC amaumont NameGenerator constructor comment.
-     */
     public UniqueStringGenerator(String baseValue, List<B> beans) {
         super();
         this.baseValue = baseValue;

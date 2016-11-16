@@ -47,21 +47,11 @@ public class ZipFileManager extends AbstractImportResourcesManager {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.localprovider.imports.ResourcesManager#getProvider()
-     */
     @Override
     public IImportStructureProvider getProvider() {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.localprovider.imports.ResourcesManager#closeResource()
-     */
     @Override
     public void closeResource() {
         try {
@@ -73,11 +63,6 @@ public class ZipFileManager extends AbstractImportResourcesManager {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.items.importexport.manager.ResourcesManager#getRoot()
-     */
     @Override
     public Object getRoot() {
         // TODO Auto-generated method stub

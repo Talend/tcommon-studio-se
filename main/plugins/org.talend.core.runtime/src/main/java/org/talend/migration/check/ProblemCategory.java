@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.migration.check;
 
-/**
- * created by wchen on Dec 30, 2014 Detailled comment
- *
- */
 public enum ProblemCategory {
     JAR_MISSING("Jar Missing"),
     COMPONENT_MISSING("Component Missing"),
@@ -29,12 +25,8 @@ public enum ProblemCategory {
         this.displayName = displayName;
     }
 
-    /**
-     * Getter for displayName.
-     * 
-     * @return the displayName
-     */
     public String getDisplayName() {
         return this.displayName;
     }
+
 }

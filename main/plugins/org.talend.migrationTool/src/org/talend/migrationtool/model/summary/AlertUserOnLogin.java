@@ -22,10 +22,6 @@ import org.talend.core.model.migration.IMigrationToolService;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.migrationtool.MigrationToolService;
 
-/**
- * DOC smallet class global comment. Detailled comment <br/>
- * 
- */
 public class AlertUserOnLogin implements IStartup {
 
     public static boolean executed;

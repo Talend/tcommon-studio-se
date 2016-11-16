@@ -66,32 +66,16 @@ public class TeradataDataBaseMetadata extends FakeDatabaseMetaData {
         this.databaseName = dbName;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getConnection()
-     */
     @Override
     public Connection getConnection() throws SQLException {
         return connection;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getSchemas()
-     */
     @Override
     public ResultSet getSchemas() throws SQLException {
         return connection.getMetaData().getSchemas();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getPrimaryKeys(java.lang.String, java.lang.String,
-     * java.lang.String)
-     */
     @Override
     public ResultSet getPrimaryKeys(String catalog, String schema, String table) throws SQLException {
         String sql = "HELP COLUMN \"" + schema + "\".\"" + table + "\".* ";//$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
@@ -124,11 +108,6 @@ public class TeradataDataBaseMetadata extends FakeDatabaseMetaData {
         return tableResultSet;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getTableTypes()
-     */
     @Override
     public ResultSet getTableTypes() throws SQLException {
         String[] s1 = new String[] { CONST_TABLE };
@@ -148,23 +127,11 @@ public class TeradataDataBaseMetadata extends FakeDatabaseMetaData {
         return tableResultSet;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getExportedKeys(java.lang.String, java.lang.String,
-     * java.lang.String)
-     */
     @Override
     public ResultSet getExportedKeys(String catalog, String schema, String table) throws SQLException {
         return new TeradataResultSet();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getTables(java.lang.String, java.lang.String,
-     * java.lang.String, java.lang.String[])
-     */
     @Override
     public ResultSet getTables(String catalog, String database, String tableNamePattern, String[] types) throws SQLException {
         // modify by wzhang
@@ -258,32 +225,16 @@ public class TeradataDataBaseMetadata extends FakeDatabaseMetaData {
         return result;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeDatabaseMetaData#supportsSchemasInDataManipulation()
-     */
     @Override
     public boolean supportsSchemasInDataManipulation() throws SQLException {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeDatabaseMetaData#supportsSchemasInTableDefinitions()
-     */
     @Override
     public boolean supportsSchemasInTableDefinitions() throws SQLException {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getColumns(java.lang.String, java.lang.String,
-     * java.lang.String, java.lang.String)
-     */
     @Override
     public ResultSet getColumns(String catalog, String database, String tableNamePattern, String columnNamePattern)
             throws SQLException {

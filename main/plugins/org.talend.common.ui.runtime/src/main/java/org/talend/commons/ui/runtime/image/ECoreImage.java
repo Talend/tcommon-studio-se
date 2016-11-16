@@ -12,13 +12,6 @@
 // ============================================================================
 package org.talend.commons.ui.runtime.image;
 
-/**
- * 
- * DOC smallet ImageProvider class global comment. Detailled comment <br/>
- * 
- * $Id: ImageProvider.java 418 2006-11-13 16:01:26 +0000 (lun., 13 nov. 2006) cantoine $
- * 
- */
 public enum ECoreImage implements IImage {
 
     PROJECT_ICON("/icons1/prj_obj.gif"), //$NON-NLS-1$

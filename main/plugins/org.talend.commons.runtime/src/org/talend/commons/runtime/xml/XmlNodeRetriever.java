@@ -47,12 +47,6 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public class XmlNodeRetriever {
 
     public static final String STRING_EMPTY = ""; //$NON-NLS-1$
@@ -92,9 +86,6 @@ public class XmlNodeRetriever {
         super();
     }
 
-    /**
-     * DOC amaumont Comment method "initNamespaceContext".
-     */
     private void initNamespaceContext() {
         namespaceContext = new NamespaceContext() {
 
@@ -119,12 +110,6 @@ public class XmlNodeRetriever {
 
     }
 
-    /**
-     * DOC qzhang Comment method "getNamespaceForPrefix".
-     * 
-     * @param prefix
-     * @return
-     */
     protected String getNamespaceForPrefix(String prefix) {
         String namespace = prefixToNamespace.get(prefix);
         if (namespace != null) {
@@ -133,11 +118,6 @@ public class XmlNodeRetriever {
         return getDefaultNamespace();
     }
 
-    /**
-     * qzhang Comment method "getDefaultNamespace".
-     * 
-     * @return
-     */
     private String getDefaultNamespace() {
         Node parent = document.getDocumentElement();
         int type = parent.getNodeType();
@@ -154,11 +134,6 @@ public class XmlNodeRetriever {
         return XMLConstants.NULL_NS_URI;
     }
 
-    /**
-     * DOC amaumont Comment method "initSource".
-     * 
-     * @param filePath2
-     */
     private synchronized void initSource(String filePath) {
         // Parse document containing schemas and validation roots
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -200,11 +175,6 @@ public class XmlNodeRetriever {
         }
     }
 
-    /**
-     * DOC qzhang Comment method "initLastNodes".
-     * 
-     * @param node
-     */
     private void initLastNodes(Node node) {
         NodeList childNodes = node.getChildNodes();
         int length = childNodes.getLength();
@@ -220,11 +190,6 @@ public class XmlNodeRetriever {
         }
     }
 
-    /**
-     * DOC qzhang Comment method "setPrefixToNamespace".
-     * 
-     * @param node
-     */
     private void setPrefixToNamespace(Node node) {
         NamedNodeMap nnm = node.getAttributes();
         for (int i = 0; i < nnm.getLength(); i++) {
@@ -259,9 +224,6 @@ public class XmlNodeRetriever {
     }
 
     /**
-     * 
-     * DOC amaumont Comment method "retrieveListOfNodes".
-     * 
      * @param xPathExpression
      * @return always a <code>List</code> empty or not
      * @throws XPathExpressionException
@@ -272,15 +234,12 @@ public class XmlNodeRetriever {
     }
 
     /**
-     * DOC amaumont Comment method "retrieveNodeList".
-     * 
      * @param xPathExpression
      * @param nodeList
      * @return <code>NodeList</code> or null if expression is invalid
      * @throws XPathExpressionException
      */
     public synchronized List<Node> retrieveNodeList(String xPathExpression) throws XPathExpressionException {
-
         xPathExpression = simplifyXPathExpression(xPathExpression);
         // xPathExpression = addDefaultNS(xPathExpression);
         xPathExpression = prefixHandler.addXPathPrefix(xPathExpression);
@@ -300,13 +259,10 @@ public class XmlNodeRetriever {
     }
 
     /**
-     * DOC amaumont Comment method "simplifyXPathExpression".
-     * 
      * @param pathExpression
      * @return
      */
     private static String simplifyXPathExpression(String xpathExpression) {
-
         Perl5Matcher matcher = new Perl5Matcher();
 
         Perl5Compiler compiler = new Perl5Compiler();
@@ -333,8 +289,6 @@ public class XmlNodeRetriever {
     }
 
     /**
-     * DOC amaumont Comment method "retrieveNodeList".
-     * 
      * @param xPathExpression
      * @param nodeList
      * @return <code>NodeList</code> or null if expression is invalid
@@ -359,8 +313,6 @@ public class XmlNodeRetriever {
     }
 
     /**
-     * DOC amaumont Comment method "retrieveNodeList".
-     * 
      * @param xPathExpression
      * @param nodeList
      * @return <code>NodeList</code> or null if expression is invalid
@@ -374,8 +326,6 @@ public class XmlNodeRetriever {
     }
 
     /**
-     * DOC amaumont Comment method "retrieveNodeList".
-     * 
      * @param relativeXPathExpression
      * @param nodeList
      * @return <code>NodeList</code> or null if expression is invalid
@@ -389,8 +339,6 @@ public class XmlNodeRetriever {
     }
 
     /**
-     * DOC amaumont Comment method "retrieveNodeList".
-     * 
      * @param xPathExpression
      * @param nodeList
      * @return <code>NodeList</code> or null if expression is invalid
@@ -403,7 +351,6 @@ public class XmlNodeRetriever {
     }
 
     public static void main(String[] args) throws XPathExpressionException {
-
         String string = simplifyXPathExpression("/doc/members/member/.."); //$NON-NLS-1$
 
         System.out.println(string);
@@ -532,22 +479,10 @@ public class XmlNodeRetriever {
 
     }
 
-    /**
-     * DOC amaumont Comment method "getAbsoluteXPathFromNode".
-     * 
-     * @param node
-     */
     public String getAbsoluteXPathFromNode(Node node) {
         return getAbsoluteXPathFromNode(node, ""); //$NON-NLS-1$
     }
 
-    /**
-     * DOC amaumont Comment method "getAbsoluteXPathFromNode".
-     * 
-     * 
-     * @param node
-     * @param string
-     */
     private String getAbsoluteXPathFromNode(Node node, String currentXPath) {
         Node parentNode = null;
         String at = ""; //$NON-NLS-1$
@@ -589,36 +524,18 @@ public class XmlNodeRetriever {
         }
     }
 
-    /**
-     * Getter for document.
-     * 
-     * @return the document
-     */
     public Document getDocument() {
         return this.document;
     }
 
-    /**
-     * DOC amaumont Comment method "setCurrentLoopXPath".
-     * 
-     * @param newValue
-     */
     public void setCurrentLoopXPath(String currentLoopXPath) {
         this.currentLoopXPath = currentLoopXPath;
     }
 
-    /**
-     * Getter for currentLoopXPath.
-     * 
-     * @return the currentLoopXPath
-     */
     public String getCurrentLoopXPath() {
         return this.currentLoopXPath;
     }
 
-    /**
-     * DOC amaumont Comment method "dispose".
-     */
     public void dispose() {
         if (document != null) {
             // document.re

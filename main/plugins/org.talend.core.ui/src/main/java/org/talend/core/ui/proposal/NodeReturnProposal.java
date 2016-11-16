@@ -42,31 +42,16 @@ public class NodeReturnProposal implements IContentProposal {
         this.nodeReturn = nodeReturn;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.fieldassist.IContentProposal#getContent()
-     */
     @Override
     public String getContent() {
         return ElementParameterParser.parse(node, nodeReturn.getVarName());
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.fieldassist.IContentProposal#getCursorPosition()
-     */
     @Override
     public int getCursorPosition() {
         return getContent().length();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.fieldassist.IContentProposal#getDescription()
-     */
     @Override
     public String getDescription() {
         String message = Messages.getString("NodeReturnProposal.Description"); //$NON-NLS-1$
@@ -83,11 +68,6 @@ public class NodeReturnProposal implements IContentProposal {
         return format.format(args);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.fieldassist.IContentProposal#getLabel()
-     */
     @Override
     public String getLabel() {
         return node.getLabel() + "." + nodeReturn.getName(); //$NON-NLS-1$

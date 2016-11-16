@@ -31,9 +31,6 @@ import org.talend.repository.ProjectManager;
 import org.talend.utils.security.CryptoHelper;
 
 /**
- * DOC cmeng class global comment. Detailled comment
- * 
- * 
  * test for the encryption and decryption, in this junit, maybe some test case will be failed random, so fart, can't
  * find out the root problems.
  */

@@ -32,10 +32,6 @@ import org.talend.repository.metadata.i18n.Messages;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.ui.wizards.metadata.table.files.FileTableWizardPage;
 
-/**
- * DOC Administrator class global comment. Detailled comment <br/>
- * 
- */
 public class GenericSchemaTableWizard extends AbstractRepositoryFileTableWizard implements INewWizard {
 
     private static Logger log = Logger.getLogger(GenericSchemaTableWizard.class);
@@ -46,11 +42,6 @@ public class GenericSchemaTableWizard extends AbstractRepositoryFileTableWizard 
 
     private IMetadataTable oldMetadataTable;
 
-    /**
-     * Constructor for TableWizard.
-     * 
-     * @param ISelection
-     */
     @SuppressWarnings("unchecked")//$NON-NLS-1$
     public GenericSchemaTableWizard(IWorkbench workbench, boolean creation, ConnectionItem connectionItem,
             MetadataTable metadataTable, boolean forceReadOnly) {

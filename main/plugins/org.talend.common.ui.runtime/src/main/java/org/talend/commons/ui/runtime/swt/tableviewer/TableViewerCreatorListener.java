@@ -12,12 +12,6 @@
 // ============================================================================
 package org.talend.commons.ui.runtime.swt.tableviewer;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public class TableViewerCreatorListener {
 
 }

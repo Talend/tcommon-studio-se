@@ -32,10 +32,6 @@ import org.talend.core.model.metadata.builder.database.manager.dbs.MySQLExtractM
 import org.talend.core.model.metadata.builder.database.manager.dbs.OracleExtractManager;
 import org.talend.core.model.metadata.builder.database.manager.dbs.TeradataExtractManager;
 
-/**
- * created by ggu on Jul 4, 2012 Detailled comment
- * 
- */
 public class ExtractManagerFactoryTest {
 
     private Map<EDatabaseTypeName, Class> extractManagerMap;

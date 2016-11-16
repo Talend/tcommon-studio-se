@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.commons.runtime.model.repository;
 
-/**
- * ggu class global comment. Detailled comment
- */
 public enum ECDCStatus {
     ADDED,
     ACTIVATED,

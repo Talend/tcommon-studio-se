@@ -282,11 +282,6 @@ public class XmlFileStep1Form extends AbstractXmlFileStepForm {
         encodingCombo.setReadOnly(isContextMode());
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addFields()
-     */
     @Override
     protected void addFields() {
 
@@ -757,11 +752,6 @@ public class XmlFileStep1Form extends AbstractXmlFileStepForm {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
-     */
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);

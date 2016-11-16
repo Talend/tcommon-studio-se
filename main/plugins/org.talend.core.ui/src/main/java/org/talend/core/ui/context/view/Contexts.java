@@ -23,10 +23,6 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.talend.core.ui.branding.IBrandingConfiguration;
 
-/**
- * qzhang class global comment. Detailled comment <br/>
- * 
- */
 public class Contexts {
 
     private static String currentTitle = ""; //$NON-NLS-1$

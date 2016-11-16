@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.themes.core.elements.constants;
 
-/**
- * created by cmeng on Jun 30, 2015 Detailled comment
- *
- */
 public class TalendThemeConstants {
 
     public static final String TALEND_THEME_PREFIX = "org.talend.themes."; //$NON-NLS-1$

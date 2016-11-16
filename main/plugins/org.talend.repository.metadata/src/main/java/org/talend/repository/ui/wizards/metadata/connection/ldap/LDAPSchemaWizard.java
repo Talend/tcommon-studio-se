@@ -421,11 +421,6 @@ public class LDAPSchemaWizard extends CheckLastVersionRepositoryWizard implement
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.wizard.Wizard#performFinish()
-     */
     @Override
     public boolean performFinish() {
         if (isSinglePageOnly) {
@@ -487,20 +482,10 @@ public class LDAPSchemaWizard extends CheckLastVersionRepositoryWizard implement
         this.selection = selection2;
     }
 
-    /**
-     * Getter for connectionProperty.
-     * 
-     * @return the connectionProperty
-     */
     public Property getConnectionProperty() {
         return this.connectionProperty;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.wizards.RepositoryWizard#getConnectionItem()
-     */
     @Override
     public ConnectionItem getConnectionItem() {
         return this.connectionItem;

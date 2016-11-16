@@ -26,13 +26,9 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class ERepositoryObjectTypeTest {
 
     /**
-     * 
      * Copy from TAC, if there are some updated items, need update this enum
      */
     public enum ItemType implements java.io.Serializable {

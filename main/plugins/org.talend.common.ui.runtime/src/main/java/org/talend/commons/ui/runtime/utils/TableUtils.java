@@ -22,12 +22,6 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Widget;
 import org.talend.commons.ui.runtime.ws.WindowSystem;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id: TableUtils.java 7183 2007-11-23 11:03:36Z amaumont $
- * 
- */
 public class TableUtils {
 
     public static int getColumnIndex(Table table, Point pointCursor) {
@@ -78,13 +72,6 @@ public class TableUtils {
         return currentItemIndex;
     }
 
-    /**
-     * 
-     * DOC amaumont Comment method "getTableItemFromPosition".
-     * 
-     * @param cursorPosition
-     * @return
-     */
     public static TableItem getTableItemFromDraggingPosition(Table table, Point cursorPosition) {
         Point pointCursor = table.toControl(cursorPosition.x, cursorPosition.y);
         return table.getItem(pointCursor);
@@ -100,12 +87,6 @@ public class TableUtils {
         return null;
     }
 
-    /**
-     * DOC amaumont Comment method "getCursorPositionFromTableOrigin".
-     * 
-     * @param event
-     * @return
-     */
     public static Point getCursorPositionFromTableOrigin(Table table, Event event) {
         Point pointCursor = new Point(event.x, event.y);
 
@@ -120,14 +101,6 @@ public class TableUtils {
         return pointCursor;
     }
 
-    /**
-     * 
-     * DOC amaumont Comment method "getItemIndexWhereInsertFromPosition".
-     * 
-     * @param table
-     * @param cursorPosition
-     * @return
-     */
     public static int getItemIndexWhereInsertFromPosition(Table table, Point cursorPositionPrm) {
         Point cursorPosition = new Point(cursorPositionPrm.x, cursorPositionPrm.y);
         int startInsertAtThisIndex = 0;
@@ -153,11 +126,6 @@ public class TableUtils {
         return startInsertAtThisIndex;
     }
 
-    /**
-     * DOC amaumont Comment method "getTableItem".
-     * 
-     * @param target
-     */
     public static TableItem getTableItem(Table table, Object dataOfTableItem) {
         int itemIndex = getItemIndex(table, dataOfTableItem);
         if (itemIndex == -1) {
@@ -167,11 +135,6 @@ public class TableUtils {
         }
     }
 
-    /**
-     * DOC amaumont Comment method "getTableItem".
-     * 
-     * @param target
-     */
     public static int getItemIndex(Table table, Object dataOfTableItem) {
         TableItem[] tableItems = table.getItems();
         for (int i = 0; i < tableItems.length; i++) {
@@ -182,13 +145,5 @@ public class TableUtils {
         }
         return -1;
     }
-
-    // public static Rectangle getTableItemBounds(TableItem tableItem) {
-    // Rectangle bounds = tableItem.getBounds();
-    // if(WindowSystem.isGTK()) {
-    // // bounds.y +
-    // }
-    // return null;
-    // }
 
 }

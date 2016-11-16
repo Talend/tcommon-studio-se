@@ -391,11 +391,6 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
         return new Path(pathStr);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
-     */
     @Override
     public void createControl(Composite parent) {
         GridData data;
@@ -551,12 +546,6 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
     protected void createBottomPart(Composite parent) {
     }
 
-    /**
-     * yzhang PropertiesWizardPage class global comment. Detailled comment <br/>
-     * 
-     * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
-     * 
-     */
     private class Folder {
 
         public static final String ROOT_FOLDER = FoldersContentProvider.DEFAULT;
@@ -649,39 +638,20 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
 
     }
 
-    /**
-     * yzhang PropertiesWizardPage class global comment. Detailled comment <br/>
-     * 
-     * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
-     * 
-     */
     private class FoldersLabelProvider extends LabelProvider {
 
         private final RepositoryFolderSelectionDialog dialog;
 
-        /**
-         * yzhang PropertiesWizardPage.FoldersLabelProvider constructor comment.
-         */
         public FoldersLabelProvider(RepositoryFolderSelectionDialog dialog) {
             this.dialog = dialog;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.jface.viewers.ILabelProvider#getImage(java.lang.Object)
-         */
         @Override
         public Image getImage(Object element) {
             ECoreImage image = (dialog.getExpandedState(element) ? ECoreImage.FOLDER_OPEN_ICON : ECoreImage.FOLDER_CLOSE_ICON);
             return ImageProvider.getImage(image);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.jface.viewers.ILabelProvider#getText(java.lang.Object)
-         */
         @Override
         public String getText(Object element) {
             return ((Folder) element).getName();
@@ -722,13 +692,6 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
         return root;
     }
 
-    /**
-     * yzhang Comment method "findFolder".
-     * 
-     * @param folder
-     * @param name
-     * @return
-     */
     private Folder findParentFolder(Folder folder, String parentName, int parentDepth) {
         Folder toRreturn = null;
         String fullPath = folder.getFullPath();
@@ -745,20 +708,12 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
     }
 
     /**
-     * Provides all user folders for a given type.<br/>
-     * 
-     * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
-     * 
+     * Provides all user folders for a given type.
      */
     private class FoldersContentProvider implements ITreeContentProvider {
 
         private static final String DEFAULT = "(default)"; //$NON-NLS-1$
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
-         */
         @Override
         public Object[] getElements(Object inputElement) {
             ERepositoryObjectType type = (ERepositoryObjectType) inputElement;
@@ -775,55 +730,28 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
             }
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.jface.viewers.IContentProvider#dispose()
-         */
         @Override
         public void dispose() {
             // TODO Auto-generated method stub
-
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer,
-         * java.lang.Object, java.lang.Object)
-         */
         @Override
         public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
             // TODO Auto-generated method stub
 
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
-         */
         @Override
         public Object[] getChildren(Object parentElement) {
             return ((Folder) parentElement).getChildren().toArray();
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object)
-         */
         @Override
         public Object getParent(Object element) {
             // TODO Auto-generated method stub
             return null;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.Object)
-         */
         @Override
         public boolean hasChildren(Object element) {
             return ((Folder) element).getChildren().size() > 0;
@@ -832,28 +760,6 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
     }
 
     protected void openFolderSelectionDialog(boolean needCancelButton) {
-
-        // ListDialog dlg = new ListDialog(getShell());
-        // dlg.setInput(getRepositoryObjectType());
-        // dlg.setContentProvider(new FoldersContentProvider());
-        // dlg.setLabelProvider(new LabelProvider());
-        //        dlg.setTitle(Messages.getString("PropertiesWizardPage.SelectfolderTitle")); //$NON-NLS-1$
-        //        dlg.setMessage(Messages.getString("PropertiesWizardPage.SelectfolderMessage")); //$NON-NLS-1$
-        // if (!needCancelButton) {
-        // dlg.setAddCancelButton(false);
-        // }
-        //        String defaultValue = (pathText.getText().equals("") ? FoldersContentProvider.DEFAULT : pathText.getText()); //$NON-NLS-1$
-        // dlg.setInitialSelections(new String[] { defaultValue });
-        //
-        // if (dlg.open() == Window.OK) {
-        // String string = (String) dlg.getResult()[0];
-        // if (string.equals(FoldersContentProvider.DEFAULT)) {
-        //                pathText.setText(""); //$NON-NLS-1$
-        // } else {
-        // pathText.setText(string);
-        // this.path = string;
-        // }
-        // }
 
         RepositoryFolderSelectionDialog dialog = new RepositoryFolderSelectionDialog(getShell()) {
 
@@ -906,11 +812,6 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
                 setItemImage(event, false);
             }
 
-            /**
-             * yzhang Comment method "setItemImage".
-             * 
-             * @param event
-             */
             private void setItemImage(TreeExpansionEvent event, boolean isCollpased) {
                 Tree tree = ((TreeViewer) event.getSource()).getTree();
                 Object element = event.getElement();
@@ -958,13 +859,6 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
         return path;
     }
 
-    /**
-     * yzhang Comment method "getTreeObject".
-     * 
-     * @param item
-     * @param element
-     * @return
-     */
     private TreeItem getTreeObject(TreeItem item, Object element) {
         if (element.equals(item.getData())) {
             return item;
@@ -978,13 +872,6 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
         return null;
     }
 
-    /**
-     * yzhang Comment method "getTreeObject".
-     * 
-     * @param tree
-     * @param objectToFind
-     * @return
-     */
     private TreeItem getTreeObject(Tree tree, Object objectToFind) {
         for (TreeItem item : tree.getItems()) {
             TreeItem toReturn = getTreeObject(item, objectToFind);

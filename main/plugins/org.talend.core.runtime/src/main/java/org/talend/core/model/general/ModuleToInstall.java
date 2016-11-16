@@ -15,10 +15,6 @@ package org.talend.core.model.general;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * created by WCHEN on 2012-9-17 Detailled comment
- * 
- */
 public class ModuleToInstall {
 
     private String name;

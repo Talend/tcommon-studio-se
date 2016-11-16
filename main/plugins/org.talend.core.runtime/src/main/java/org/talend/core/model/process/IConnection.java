@@ -17,12 +17,6 @@ import java.util.Map;
 
 import org.talend.core.model.metadata.IMetadataTable;
 
-/**
- * DOC nrousseau class global comment. Detailled comment <br/>
- * 
- * $Id: IConnection.java 44753 2010-07-01 06:42:03Z wchen $
- * 
- */
 public interface IConnection extends IElement {
 
     /*

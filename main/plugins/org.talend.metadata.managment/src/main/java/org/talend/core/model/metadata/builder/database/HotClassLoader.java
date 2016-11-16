@@ -19,24 +19,7 @@ import java.net.URLClassLoader;
 
 import org.talend.commons.exception.ExceptionHandler;
 
-/**
- * 
- * DOC YeXiaowei class global comment. Detailled comment <br/>
- * 
- */
 public class HotClassLoader extends URLClassLoader {
-
-    // Commentted by Marvin Wang on Feb. 4, 2012 for TDI-23833.
-    // // qli modified to fix the bug 6281.
-    // private static HotClassLoader instance;
-    //
-    // public static HotClassLoader getInstance() {
-    // // bug 17800 fixed
-    // // if (instance == null) {
-    // instance = new HotClassLoader();
-    // // }
-    // return instance;
-    // }
 
     public HotClassLoader() {
         super(new URL[0], ClassLoader.getSystemClassLoader());

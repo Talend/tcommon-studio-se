@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.metadata.managment.ui.model;
 
-/**
- * ggu class global comment. Detailled comment
- */
 public interface IConnParamName {
 
 }

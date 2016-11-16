@@ -30,18 +30,11 @@ import org.talend.core.model.process.Problem;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.designer.codegen.PigTemplate;
 
-/**
- * DOC smallet class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public class LibrariesService implements ILibrariesService {
 
     private static ILibrariesService javaService = new JavaLibrariesService();
 
     public LibrariesService() {
-
     }
 
     private ILibrariesService getLibrariesService() {
@@ -78,11 +71,6 @@ public class LibrariesService implements ILibrariesService {
         return this.getLibrariesService().getRoutineTemplate();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.general.ILibrariesService#getPigudfTemplate()
-     */
     @Override
     public URL getPigudfTemplate(PigTemplate template) {
         return this.getLibrariesService().getPigudfTemplate(template);
@@ -93,11 +81,6 @@ public class LibrariesService implements ILibrariesService {
         return this.getLibrariesService().getBeanTemplate();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.general.ILibrariesService#getSqlPatternTemplate()
-     */
     @Override
     public URL getSqlPatternTemplate() {
         return this.getLibrariesService().getSqlPatternTemplate();
@@ -148,77 +131,37 @@ public class LibrariesService implements ILibrariesService {
         this.getLibrariesService().resetModulesNeeded();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.general.ILibrariesService#undeployLibrary(java.net.URL)
-     */
     @Override
     public void undeployLibrary(String path) throws IOException {
         this.getLibrariesService().undeployLibrary(path);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.general.ILibrariesService#isLibSynchronized()
-     */
     @Override
     public boolean isLibSynchronized() {
         return this.getLibrariesService().isLibSynchronized();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.general.ILibrariesService#getSystemSQLPatterns()
-     */
     @Override
     public List<URL> getSystemSQLPatterns() {
         return this.getLibrariesService().getSystemSQLPatterns();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.general.ILibrariesService#resetModulesNeededForCurrentJob(org.talend.core.model.properties
-     * .Item)
-     */
     @Override
     public void updateModulesNeededForCurrentJob(IProcess process) {
         this.getLibrariesService().updateModulesNeededForCurrentJob(process);
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.general.ILibrariesService#syncLibrariesFromLibs(org.eclipse.core.runtime.IProgressMonitor
-     * [])
-     */
     @Override
     public void syncLibrariesFromLibs(IProgressMonitor... monitorWrap) {
         this.getLibrariesService().syncLibrariesFromLibs(monitorWrap);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.general.ILibrariesService#syncLibrariesFromApp(org.eclipse.core.runtime.IProgressMonitor[])
-     */
     @Override
     public void syncLibrariesFromApp(IProgressMonitor... monitorWrap) {
         this.getLibrariesService().syncLibrariesFromApp(monitorWrap);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.general.ILibrariesService#cleanLibs()
-     */
     @Override
     public void cleanLibs() {
         this.getLibrariesService().cleanLibs();

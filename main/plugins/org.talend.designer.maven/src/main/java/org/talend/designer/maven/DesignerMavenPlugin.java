@@ -34,22 +34,12 @@ public class DesignerMavenPlugin implements BundleActivator {
         return plugin;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
-     */
     @Override
     public void start(BundleContext bundleContext) throws Exception {
         this.plugin = this;
         DesignerMavenPlugin.context = bundleContext;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
-     */
     @Override
     public void stop(BundleContext bundleContext) throws Exception {
         DesignerMavenPlugin.context = null;

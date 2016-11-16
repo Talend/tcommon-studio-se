@@ -78,21 +78,11 @@ public class MetadataTable implements IMetadataTable, Cloneable {
         return toReturn.toString();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.core.model.metadata.IMetadataTable#getTableName()
-     */
     @Override
     public String getTableName() {
         return this.tableName;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.core.model.metadata.IMetadataTable#setTableName(java.lang.String)
-     */
     @Override
     public void setTableName(String tableName) {
         this.tableName = tableName;
@@ -113,22 +103,9 @@ public class MetadataTable implements IMetadataTable, Cloneable {
         this.unusedColumns = unusedColumns;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.core.model.metadata.IMetadataTable#getListColumns()
-     */
     @Override
     public List<IMetadataColumn> getListColumns() {
-        // List<IMetadataColumn> temp = new ArrayList<IMetadataColumn>();
-        // for (IMetadataColumn column : this.listColumns) {
-        // if (!column.isUsefulColumn()) {
-        // temp.add(column);
-        // }
-        // }
-        // return temp;
         return getListColumns(false);
-        // return this.listColumns;
     }
 
     @Override
@@ -185,11 +162,6 @@ public class MetadataTable implements IMetadataTable, Cloneable {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.core.model.metadata.IMetadataTable#setListColumns(Hashtable)
-     */
     @Override
     public void setListColumns(List<IMetadataColumn> listColumns) {
         this.listColumns = listColumns;
@@ -475,41 +447,21 @@ public class MetadataTable implements IMetadataTable, Cloneable {
         this.isRepository = isRepository;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.metadata.IMetadataTable#getTableType()
-     */
     @Override
     public String getTableType() {
         return this.tableType;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.metadata.IMetadataTable#setTableType()
-     */
     @Override
     public void setTableType(String tableType) {
         this.tableType = tableType;
     }
 
-    /**
-     * Sets the originalColumns.
-     * 
-     * @param originalColumns the originalColumns to set
-     */
     @Override
     public void setOriginalColumns(List<String> originalColumns) {
         this.originalColumns = originalColumns;
     }
 
-    /**
-     * Getter for originalColumns.
-     * 
-     * @return the originalColumns
-     */
     @Override
     public List<String> getOriginalColumns() {
         return this.originalColumns;

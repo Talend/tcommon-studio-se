@@ -41,10 +41,6 @@ import org.talend.core.model.process.IContextManager;
 import org.talend.core.model.process.IContextParameter;
 import org.talend.core.utils.TalendQuoteUtils;
 
-/**
- * qzhang class global comment. Detailled comment <br/>
- * 
- */
 public final class DefaultCellEditorFactory {
 
     public static final String[] BOOLEANS = new String[] { Boolean.FALSE.toString(), Boolean.TRUE.toString() };
@@ -70,11 +66,6 @@ public final class DefaultCellEditorFactory {
     private void refreshCurrentSelection() {
         Command c = new Command() {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.gef.commands.Command#execute()
-             */
             @Override
             public void execute() {
                 if (selection != null && selection instanceof IStructuredSelection
@@ -292,12 +283,6 @@ public final class DefaultCellEditorFactory {
     private CellEditor createListCellEditor(Composite parent, final IContextParameter para2) {
         return new CustomCellEditor(parent) {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.talend.core.ui.context.DefaultCellEditorFactory.CustomCellEditor#doSetValue(java.lang.Object)
-             */
-            // @Override
             @Override
             protected void doSetValue(Object value) {
                 if (value instanceof String[]) {
@@ -461,21 +446,12 @@ public final class DefaultCellEditorFactory {
         return MetadataToolHelper.isPassword(value);
     }
 
-    /**
-     * qzhang DefaultCellEditorFactory class global comment. Detailled comment.
-     * 
-     */
     private abstract class CustomCellEditor extends CustomDialogCellEditor {
 
         public CustomCellEditor(Composite parent) {
             super(parent);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.talend.core.ui.context.CustomDialogCellEditor#doSetValue(java.lang.Object)
-         */
         @Override
         protected void doSetValue(Object value) {
             super.doSetValue(value);

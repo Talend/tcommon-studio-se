@@ -15,21 +15,8 @@ package org.talend.commons.utils.data.list;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * @param <E> $Id$
- * 
- */
 public class ListenableListEvent<E> {
 
-    /**
-     * 
-     * DOC amaumont ListenableListEvent class global comment. Detailled comment <br/>
-     * 
-     * $Id$
-     * 
-     */
     public enum TYPE {
         ADDED,
         REMOVED,

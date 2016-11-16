@@ -24,10 +24,6 @@ import org.talend.commons.ui.swt.dialogs.EventLoopProgressMonitor;
 import org.talend.metadata.managment.ui.i18n.Messages;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
  * @param <R> result of preview
  */
 public abstract class StoppablePreviewLoader<R> {
@@ -43,24 +39,12 @@ public abstract class StoppablePreviewLoader<R> {
 
     private AsynchronousPreviewHandler<R> previewHandler;
 
-    /**
-     * DOC amaumont StoppablePreviewLoader constructor comment.
-     * 
-     * @param xmlFilePreview
-     * @param infoLabel
-     */
     public StoppablePreviewLoader(AsynchronousPreviewHandler<R> previewHandler, Label infoLabel) {
         this.infoLabel = infoLabel;
         this.previewHandler = previewHandler;
     }
 
-    /**
-     * DOC amaumont Comment method "load".
-     * 
-     * @param processDescription
-     */
     public void load(final ProcessDescription processDescription) {
-
         if (previewHandler != null && previewHandlerListener == null) {
             previewHandlerListener = new IPreviewHandlerListener<R>() {
 

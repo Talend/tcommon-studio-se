@@ -24,9 +24,6 @@ import org.talend.core.model.general.Project;
 import org.talend.core.model.process.INode;
 import org.talend.core.updatesite.IUpdateSiteBean;
 
-/**
- * wchen class global comment. Detailled comment
- */
 public interface ICoreTisService extends IService {
 
     public void drawWelcomeLogo(String version);
@@ -41,12 +38,6 @@ public interface ICoreTisService extends IService {
 
     public void setNeedResartAfterUpdate(boolean needRestart);
 
-    /**
-     * DOC ycbai Comment method "exportAsCWM".
-     * 
-     * @param itemUri
-     * @param destDir
-     */
     public void exportAsCWM(URI itemUri, String destDir);
     
     public boolean needUpdate(String userName, String password, String adminUrl)  throws SystemException;

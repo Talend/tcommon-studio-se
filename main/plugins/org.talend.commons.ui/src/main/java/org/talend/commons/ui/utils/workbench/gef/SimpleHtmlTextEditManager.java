@@ -72,11 +72,6 @@ public class SimpleHtmlTextEditManager extends DirectEditManager {
         text.selectAll();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.gef.tools.DirectEditManager#getCellEditor()
-     */
     @Override
     public CellEditor getCellEditor() {
         // TODO Auto-generated method stub

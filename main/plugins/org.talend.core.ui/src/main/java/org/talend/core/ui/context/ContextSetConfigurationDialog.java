@@ -51,10 +51,6 @@ public class ContextSetConfigurationDialog extends ObjectSelectionDialog<IContex
 
     IContextModelManager manager = null;
 
-    /**
-     * DOC bqian ContextSetConfigurationDialog class global comment. Detailled comment <br/>
-     * 
-     */
     public class ContextLabelProvider extends LabelProvider {
 
         @Override
@@ -223,16 +219,8 @@ public class ContextSetConfigurationDialog extends ObjectSelectionDialog<IContex
         Collections.sort(getAllContexts(), new ContextCompare());
     }
 
-    /**
-     * DOC hshen ContextCompare class global comment. Detailled comment
-     */
     private class ContextCompare implements java.util.Comparator<IContext> {
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
-         */
         public int compare(IContext o1, IContext o2) {
             String name1 = o1.getName().toUpperCase();
             String name2 = o2.getName().toUpperCase();
@@ -328,46 +316,4 @@ public class ContextSetConfigurationDialog extends ObjectSelectionDialog<IContex
 
     }
 
-    // /**
-    // *
-    // * DOC chuang ContextSetConfigurationDialog class global comment. Detailled comment
-    // */
-    // class MyCheckboxTableViewer extends CheckboxTableViewer {
-    //
-    // MyCheckboxTableViewer(Table table) {
-    // super(table);
-    // }
-    //
-    // /*
-    // * (non-Javadoc) Method declared on StructuredViewer.
-    // */
-    // @Override
-    // public void handleSelect(SelectionEvent event) {
-    // super.handleSelect(event);
-    // // if (event.detail == SWT.CHECK) {
-    // // TableItem item = (TableItem) event.item;
-    // // if (item.getChecked()) {
-    // // return;
-    // // } else {
-    // // Table table = getTable();
-    // // table.setRedraw(false);
-    // // for (TableItem it : table.getItems()) {
-    // // it.setChecked(false);
-    // // }
-    // // item.setChecked(true);
-    // // for (IContext context : manager.getContextManager().getListContext()) {
-    // // if (context.equals(item.getData())) {
-    // // manager.onContextChangeDefault(manager.getContextManager(), context);
-    // // }
-    // // }
-    // // // manager.getContextManager().setDefaultContext(null);
-    // // table.setRedraw(true);
-    // // refresh();
-    // // }
-    // // } else {
-    // // super.handleSelect(event);
-    // // }
-    // }
-    //
-    // }
 }

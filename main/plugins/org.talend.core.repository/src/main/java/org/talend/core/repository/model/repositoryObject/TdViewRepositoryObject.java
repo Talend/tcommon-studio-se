@@ -17,10 +17,6 @@ import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.cwm.relational.TdView;
 import org.talend.repository.model.IRepositoryNode;
 
-
-/**
- * DOC klliu  class global comment. Detailled comment
- */
 public class TdViewRepositoryObject extends MetadataTableRepositoryObject {
 
     private IRepositoryNode repositoryNode;

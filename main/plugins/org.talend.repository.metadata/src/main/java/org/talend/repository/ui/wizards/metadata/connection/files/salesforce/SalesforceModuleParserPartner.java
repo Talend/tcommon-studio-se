@@ -27,9 +27,6 @@ import com.salesforce.soap.partner.Field;
 
 /**
  * Maybe need a long connection ...
- * <p>
- * DOC YeXiaowei class global comment. Detailled comment <br/>
- * 
  */
 public class SalesforceModuleParserPartner implements ISalesforceModuleParser {
 

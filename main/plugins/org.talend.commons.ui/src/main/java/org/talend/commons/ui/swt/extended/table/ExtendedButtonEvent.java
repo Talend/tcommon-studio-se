@@ -12,45 +12,17 @@
 // ============================================================================
 package org.talend.commons.ui.swt.extended.table;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public class ExtendedButtonEvent {
 
     private boolean before;
 
-    // private IExtendedControlEventType type;
-
-    /**
-     * DOC amaumont ExtendedModelEvent constructor comment.
-     * 
-     * @param b
-     */
     public ExtendedButtonEvent(boolean before) {
         super();
         this.before = before;
-        // this.type = type;
     }
 
-    /**
-     * Getter for before.
-     * 
-     * @return the before
-     */
     public boolean isBefore() {
         return this.before;
     }
 
-    // /**
-    // * Getter for type.
-    // *
-    // * @return the type
-    // */
-    // public IExtendedControlEventType getType() {
-    // return this.type;
-    // }
-    //
 }

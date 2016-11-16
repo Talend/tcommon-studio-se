@@ -857,22 +857,12 @@ public class SelectorModulesForm extends AbstractSalesforceStepForm {
             super(queueCapacity);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see java.util.concurrent.ThreadPoolExecutor#afterExecute(java.lang.Runnable, java.lang.Throwable)
-         */
         @Override
         protected void afterExecute(Runnable r, Throwable t) {
             RetrieveColumnRunnable runnable = (RetrieveColumnRunnable) r;
             map.remove(runnable.getTableItem());
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see java.util.concurrent.ThreadPoolExecutor#beforeExecute(java.lang.Thread, java.lang.Runnable)
-         */
         @Override
         protected void beforeExecute(Thread t, Runnable r) {
             RetrieveColumnRunnable runnable = (RetrieveColumnRunnable) r;
@@ -1314,20 +1304,10 @@ public class SelectorModulesForm extends AbstractSalesforceStepForm {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.AbstractForm#adaptFormToReadOnly()
-     */
     @Override
     protected void adaptFormToReadOnly() {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
-     */
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);
@@ -1337,9 +1317,6 @@ public class SelectorModulesForm extends AbstractSalesforceStepForm {
         // initControlData();
     }
 
-    /**
-     * DOC qzhang Comment method "initControlData".
-     */
     public void initControlData() {
         checkConnection(false);
         if (itemTableName != null && itemTableName.size() > 0) {
@@ -1371,18 +1348,10 @@ public class SelectorModulesForm extends AbstractSalesforceStepForm {
         return this.table;
     }
 
-    /**
-     * DOC nrousseau Comment method "performCancel".
-     */
     public void performCancel() {
         processWhenDispose();
     }
 
-    /**
-     * Getter for tableInfoParameters.
-     * 
-     * @return the tableInfoParameters
-     */
     public TableInfoParameters getTableInfoParameters() {
         return this.tableInfoParameters;
     }

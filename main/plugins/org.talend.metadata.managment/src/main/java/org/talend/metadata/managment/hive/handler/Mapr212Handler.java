@@ -17,10 +17,6 @@ import java.util.Map;
 
 import org.talend.core.model.metadata.IMetadataConnection;
 
-/**
- * created by msjian on 2013-11-7 Detailled comment
- * 
- */
 public class Mapr212Handler extends MaprHandler {
 
     private static final String MAP_MB = "mapred.map.child.java.opts"; //$NON-NLS-1$
@@ -36,9 +32,7 @@ public class Mapr212Handler extends MaprHandler {
     }
 
     /*
-     * (non-Javadoc)
-     * 
-     * If user didn't fill the property in connection wizard,set a default value for this properties. Requried
+     * If user didn't fill the property in connection wizard,set a default value for this properties. Required
      * properties:"mapred.map.child.java.opts";"mapred.reduce.child.java.opts"
      */
     @Override

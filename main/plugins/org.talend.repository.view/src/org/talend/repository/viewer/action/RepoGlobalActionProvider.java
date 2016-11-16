@@ -22,20 +22,12 @@ import org.talend.core.repository.ui.actions.CopyAction;
 import org.talend.core.repository.ui.actions.DeleteAction;
 import org.talend.core.repository.ui.actions.PasteAction;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class RepoGlobalActionProvider extends CommonActionProvider {
 
     public RepoGlobalActionProvider() {
         super();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.actions.ActionGroup#fillActionBars(org.eclipse.ui.IActionBars)
-     */
     @Override
     public void fillActionBars(IActionBars actionBars) {
         super.fillActionBars(actionBars);

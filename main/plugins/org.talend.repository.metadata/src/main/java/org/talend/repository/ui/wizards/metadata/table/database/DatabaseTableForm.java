@@ -111,14 +111,6 @@ import org.talend.metadata.managment.ui.wizard.metadata.connection.GuessSchemaUt
 import org.talend.repository.metadata.i18n.Messages;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
-/**
- * @author ocarbone
- * 
- */
-/**
- * DOC Administrator class global comment. Detailled comment <br/>
- * 
- */
 public class DatabaseTableForm extends AbstractForm {
 
     protected static Logger log = Logger.getLogger(DatabaseTableForm.class);
@@ -1260,11 +1252,6 @@ public class DatabaseTableForm extends AbstractForm {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.AbstractForm#adaptFormToReadOnly()
-     */
     @Override
     protected void adaptFormToReadOnly() {
         readOnly = isReadOnly();
@@ -1277,11 +1264,6 @@ public class DatabaseTableForm extends AbstractForm {
         retreiveSchemaButton.setEnabled(!isReadOnly());
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
-     */
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);

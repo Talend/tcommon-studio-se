@@ -21,9 +21,6 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 
-/**
- * DOC nrousseau class global comment. Detailled comment
- */
 public class ProposalFactory {
 
     public static final String EXTENSION_ID = "org.talend.core.talend_external_proposals"; //$NON-NLS-1$

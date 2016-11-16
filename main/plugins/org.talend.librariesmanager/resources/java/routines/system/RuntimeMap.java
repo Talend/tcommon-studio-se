@@ -14,10 +14,6 @@ package routines.system;
 
 import java.util.HashMap;
 
-/**
- * created by hwang on 2014-4-15 Detailled comment
- * 
- */
 public class RuntimeMap {
 
     public static java.util.Map<String, Object> globalTDMMap = null;

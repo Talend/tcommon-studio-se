@@ -16,12 +16,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public class StyleLink implements IStyleLink {
 
     protected Color foregroundColor;
@@ -45,11 +39,7 @@ public class StyleLink implements IStyleLink {
     protected int[] lineDash;
 
     /**
-     * 
-     * Indicate direction of link. <br/>
-     * 
-     * $Id$
-     * 
+     * Indicate direction of link.
      */
     public enum EDirection {
         ONE_TO_TWO,
@@ -271,11 +261,6 @@ public class StyleLink implements IStyleLink {
         this.lineWidth = lineWidth;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.drawing.link.IStyleLink#apply(org.eclipse.swt.graphics.GC)
-     */
     public void apply(GC gc) {
         if (getForegroundColor() != null) {
             gc.setForeground(getForegroundColor());

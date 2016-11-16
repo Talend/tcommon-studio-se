@@ -25,10 +25,6 @@ import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 
-/**
- * created by wchen on Apr 24, 2015 Detailled comment
- *
- */
 public class NexusDownloadHelperWithProgress extends DownloadHelperWithProgress {
 
     private ModuleToInstall toInstall;
@@ -37,12 +33,6 @@ public class NexusDownloadHelperWithProgress extends DownloadHelperWithProgress 
         this.toInstall = toInstall;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.download.DownloadHelperWithProgress#download(java.net.URL, java.io.File,
-     * org.eclipse.core.runtime.IProgressMonitor)
-     */
     @Override
     public void download(URL componentUrl, File destination, IProgressMonitor progressMonitor) throws Exception {
         File resolved = null;
@@ -65,22 +55,11 @@ public class NexusDownloadHelperWithProgress extends DownloadHelperWithProgress 
         super.download(componentUrl, destination, progressMonitor);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.download.DownloadHelperWithProgress#createDownloadHelperDelegate(org.talend.core.download.
-     * DownloadHelperWithProgress.DownloadListenerImplementation)
-     */
     @Override
     protected IDownloadHelper createDownloadHelperDelegate(final DownloadListenerImplementation downloadProgress) {
 
         NexusDownloader downloadHelper = new NexusDownloader() {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.talend.core.download.DownloadHelper#isCancel()
-             */
             @Override
             public boolean isCancel() {
                 return downloadProgress.isCanceled();

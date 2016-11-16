@@ -24,9 +24,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.SelectionDialog;
 import org.talend.commons.ui.runtime.i18n.Messages;
 
-/**
- * DOC zqin class global comment. Detailled comment
- */
 public class ModelSelectionDialog extends SelectionDialog {
 
     public enum EEditSelection {
@@ -54,10 +51,6 @@ public class ModelSelectionDialog extends SelectionDialog {
 
     private ESelectionType selectionType;
 
-    /**
-     * DOC yzhang ModelSelectionDialog constructor comment.
-     */
-
     public ModelSelectionDialog(Shell parentShell, ESelectionType selectionType) {
         this(parentShell, selectionType, false);
     }
@@ -72,11 +65,6 @@ public class ModelSelectionDialog extends SelectionDialog {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
-     */
     @Override
     protected Control createDialogArea(Composite parent) {
         Composite composite = (Composite) super.createDialogArea(parent);
@@ -122,9 +110,6 @@ public class ModelSelectionDialog extends SelectionDialog {
         return inner;
     }
 
-    /**
-     * yzhang Comment method "initControl".
-     */
     private void configControlStatus() {
         if (readOnlyJob) {
             buildIn.setEnabled(false);
@@ -140,11 +125,6 @@ public class ModelSelectionDialog extends SelectionDialog {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.Dialog#okPressed()
-     */
     @Override
     protected void okPressed() {
         if (buildIn.getSelection())

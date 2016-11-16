@@ -16,10 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * bqian A data container for LocalDataTransfer.<br/>
- * 
- * $Id$
- * 
+ * A data container for LocalDataTransfer.
  */
 public class LocalDraggedData {
 
@@ -27,41 +24,20 @@ public class LocalDraggedData {
 
     private Object table;
 
-    /**
-     * @param o
-     * @return
-     * @see java.util.List#add(java.lang.Object)
-     */
     public boolean add(Object o) {
         return this.transferableEntryList.add(o);
     }
 
-    /**
-     * 
-     * DOC wzhang Comment method "getTable".
-     * 
-     * @return
-     */
     public Object getTable() {
         return this.table;
     }
 
-    /**
-     * 
-     * DOC wzhang Comment method "setTable".
-     * 
-     * @param table
-     */
     public void setTable(Object table) {
         this.table = table;
     }
 
-    /**
-     * Getter for transferableEntryList.
-     * 
-     * @return the transferableEntryList
-     */
     public List<Object> getTransferableEntryList() {
         return this.transferableEntryList;
     }
+
 }

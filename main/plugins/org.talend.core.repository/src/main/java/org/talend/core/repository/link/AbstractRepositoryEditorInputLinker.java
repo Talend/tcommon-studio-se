@@ -17,19 +17,8 @@ import org.talend.core.model.properties.Item;
 import org.talend.core.model.repository.IRepositoryEditorInput;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * DOC ggu class global comment. Detailled comment <br/>
- * 
- * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
- */
 public abstract class AbstractRepositoryEditorInputLinker extends AbstractRepoViewLinker {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.repository.link.IRepoViewLinker#getRelationNode(org.eclipse.ui.IEditorInput)
-     */
     @Override
     public RepositoryNode getRelationNode(IEditorInput editorInput) {
         RepositoryNode repositoryNode = null;
@@ -53,11 +42,6 @@ public abstract class AbstractRepositoryEditorInputLinker extends AbstractRepoVi
         return repositoryNode;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.repository.link.IRepoViewLinker#isRelation(org.eclipse.ui.IEditorInput, java.lang.String)
-     */
     @Override
     public boolean isRelation(IEditorInput editorInput, String repoNodeId) {
         // only work for IRepositoryEditorInput

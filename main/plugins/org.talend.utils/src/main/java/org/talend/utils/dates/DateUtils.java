@@ -22,10 +22,6 @@ import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
 
-/**
- * 
- * DOC mzhao class global comment. Detailled comment
- */
 public final class DateUtils {
 
     protected static Logger log = Logger.getLogger(DateUtils.class);

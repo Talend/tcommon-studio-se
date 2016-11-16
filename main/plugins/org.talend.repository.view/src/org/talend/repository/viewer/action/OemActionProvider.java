@@ -23,15 +23,11 @@ public class OemActionProvider extends CommonActionProvider {
         // TODO Auto-generated constructor stub
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.actions.ActionGroup#fillContextMenu(org.eclipse.jface.action.IMenuManager)
-     */
     @Override
     public void fillContextMenu(IMenuManager menu) {
         super.fillContextMenu(menu);
         menu.add(ActionFactory.ABOUT.create(PlatformUI.getWorkbench().getActiveWorkbenchWindow()));
         // menu.add(new IAction)
     }
+
 }

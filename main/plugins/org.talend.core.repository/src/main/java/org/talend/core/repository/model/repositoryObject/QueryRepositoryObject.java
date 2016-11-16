@@ -33,9 +33,6 @@ import org.talend.cwm.helper.SubItemHelper;
 import org.talend.repository.model.IRepositoryNode;
 import orgomg.cwm.objectmodel.core.ModelElement;
 
-/**
- * DOC nrousseau class global comment. Detailled comment
- */
 public class QueryRepositoryObject extends org.talend.core.model.metadata.Query implements ISubRepositoryObject {
 
     private final IRepositoryViewObject repObj;
@@ -191,11 +188,6 @@ public class QueryRepositoryObject extends org.talend.core.model.metadata.Query 
         return this.query;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryViewObject#isModified()
-     */
     @Override
     public boolean isModified() {
         return repObj.isModified();

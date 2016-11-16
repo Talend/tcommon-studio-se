@@ -35,14 +35,9 @@ import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.core.ui.i18n.Messages;
 
 /**
- * DOC msjian class global comment. Detailled comment <br/>
- * 
- * $Id: CorePreferencePage.java TDQ-3990 move from org.talend.core $
- * 
+ * TDQ-3990 move from org.talend.core $
  */
 public class CorePreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
-
-    // private BooleanFieldEditor groupBySource =null;
 
     private List<FieldEditor> fields = new ArrayList<FieldEditor>();
 
@@ -121,11 +116,6 @@ public class CorePreferencePage extends FieldEditorPreferencePage implements IWo
                 getPreferenceStore().getBoolean(ITalendCorePrefConstants.LOGON_DIALOG_ALWAYS_ASK_ME_AT_STARTUP));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.preference.FieldEditorPreferencePage#performOk()
-     */
     @Override
     public boolean performOk() {
         boolean ok = super.performOk();
@@ -162,22 +152,12 @@ public class CorePreferencePage extends FieldEditorPreferencePage implements IWo
         alwaysAskAtStartup.load();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.preference.FieldEditorPreferencePage#addField(org.eclipse.jface.preference.FieldEditor)
-     */
     @Override
     public void addField(FieldEditor editor) {
         super.addField(editor);
         fields.add(editor);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.preference.FieldEditorPreferencePage#checkState()
-     */
     @Override
     protected void checkState() {
         super.checkState();

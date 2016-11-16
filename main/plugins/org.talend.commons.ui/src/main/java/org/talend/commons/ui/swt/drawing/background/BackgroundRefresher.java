@@ -32,12 +32,6 @@ import org.talend.commons.utils.performance.PerformanceEvaluator;
 import org.talend.commons.utils.performance.PerformanceEvaluatorEvent;
 import org.talend.commons.utils.threading.ExecutionLimiterImproved;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public class BackgroundRefresher implements IBackgroundRefresher {
 
     /**
@@ -103,11 +97,6 @@ public class BackgroundRefresher implements IBackgroundRefresher {
 
         executionLimiter = new ExecutionLimiterImproved(refreshTimeMax, true, this.getClass().getSimpleName() + ".init(long)") {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.talend.commons.utils.threading.ExecutionLimiter#execute(boolean)
-             */
             @Override
             protected void execute(final boolean isFinalExecution, Object data) {
                 drawableComposite.getBgDrawableComposite().getDisplay().syncExec(new Runnable() {
@@ -197,17 +186,7 @@ public class BackgroundRefresher implements IBackgroundRefresher {
 
     }
 
-    /**
-     * DOC amaumont Comment method "updateBackground".
-     */
     public synchronized void refreshBackground() {
-        // System.out.println("refreshBackground");
-
-        // TimeMeasure.measureActive = true;
-        // TimeMeasure.display = false;
-
-        // TimeMeasure.begin("refreshBackground");
-
         if (drawableComposite.getBgDrawableComposite().isDisposed()) {
             return;
         }
@@ -215,8 +194,6 @@ public class BackgroundRefresher implements IBackgroundRefresher {
         oldImage = drawableComposite.getBgDrawableComposite().getBackgroundImage();
         Image newImage = null;
         if (oldImage == null || oldImage.isDisposed()
-        // || bgImage1 == null || bgImage1.isDisposed()
-        // || bgImage2 == null || bgImage2.isDisposed()
         ) {
             createBgImages();
             newImage = bgImage1;
@@ -359,20 +336,11 @@ public class BackgroundRefresher implements IBackgroundRefresher {
         return this.antialiasAllowed;
     }
 
-    /**
-     * DOC amaumont Comment method "updateBackroundAsynchronous".
-     */
     public void refreshBackgroundWithLimiter() {
         executionLimiter.startIfExecutable();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.drawing.background.IBackgroundRefresher#dispose()
-     */
     public void dispose() {
-
         if (threadToEvaluatePerformance != null && !threadToEvaluatePerformance.isInterrupted()) {
             threadToEvaluatePerformance.interrupt();
         }

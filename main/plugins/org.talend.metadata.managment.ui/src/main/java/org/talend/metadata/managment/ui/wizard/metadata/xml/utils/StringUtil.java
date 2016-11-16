@@ -14,10 +14,6 @@ package org.talend.metadata.managment.ui.wizard.metadata.xml.utils;
 
 import org.talend.commons.runtime.xml.XmlUtil;
 
-/**
- * DOC ke class global comment. Detailled comment <br/>
- * 
- */
 public class StringUtil {
 
     public static final String TMP_XML_FILE = "tempXMLFile" + XmlUtil.FILE_XML_SUFFIX; //$NON-NLS-1$

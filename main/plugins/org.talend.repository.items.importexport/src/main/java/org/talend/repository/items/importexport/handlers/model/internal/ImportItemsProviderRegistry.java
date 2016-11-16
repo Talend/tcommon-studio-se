@@ -14,9 +14,6 @@ package org.talend.repository.items.importexport.handlers.model.internal;
 
 import org.talend.repository.items.importexport.handlers.imports.IImportItemsHandler;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class ImportItemsProviderRegistry extends BasicRegistry {
 
     private IImportItemsHandler importHandler;
@@ -25,20 +22,10 @@ public class ImportItemsProviderRegistry extends BasicRegistry {
         super(bundleId, id);
     }
 
-    /**
-     * Getter for importHandler.
-     * 
-     * @return the importHandler
-     */
     public IImportItemsHandler getImportItemsHandler() {
         return this.importHandler;
     }
 
-    /**
-     * Sets the importHandler.
-     * 
-     * @param importHandler the importHandler to set
-     */
     public void setImportItemsHandler(IImportItemsHandler handler) {
         this.importHandler = handler;
     }

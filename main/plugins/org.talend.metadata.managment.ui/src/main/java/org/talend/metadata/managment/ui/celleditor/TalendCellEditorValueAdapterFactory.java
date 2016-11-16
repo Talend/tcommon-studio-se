@@ -12,22 +12,6 @@
 // ============================================================================
 package org.talend.metadata.managment.ui.celleditor;
 
-
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public class TalendCellEditorValueAdapterFactory {
-
-    // /**
-    // * DOC amaumont Comment method "getComboAdapter".
-    // *
-    // * @return
-    // */
-    // public static CellEditorValueAdapter getComboAdapterForJavaTalendType(final String defaultItem) {
-    //
-    // }
 
 }

@@ -15,10 +15,6 @@ package org.talend.core.service;
 import org.talend.core.IService;
 import org.talend.core.model.repository.ERepositoryObjectType;
 
-/**
- * created by Talend on Apr 15, 2015 Detailled comment
- *
- */
 public interface INOSQLService extends IService {
 
     public ERepositoryObjectType getNOSQLRepositoryType();

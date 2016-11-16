@@ -15,8 +15,6 @@ package org.talend.core.model.update.extension;
 import org.talend.core.model.update.IUpdateItemType;
 
 /**
- * DOC ggu class global comment. Detailled comment
- * 
  * this is from extension point.
  */
 public class ExtensionUpdateItemType implements IUpdateItemType {

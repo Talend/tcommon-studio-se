@@ -32,10 +32,6 @@ import org.talend.core.ui.context.model.table.ContextTableTabParentModel;
 import org.talend.core.ui.i18n.Messages;
 import org.talend.repository.ProjectManager;
 
-/**
- * created by ldong on Jul 28, 2014 Detailled comment
- * 
- */
 public class ContextNatTableUtils {
 
     public static final String REQUIRE_BUNDLE_NAME = "org.talend.libraries.nattable"; //$NON-NLS-1$

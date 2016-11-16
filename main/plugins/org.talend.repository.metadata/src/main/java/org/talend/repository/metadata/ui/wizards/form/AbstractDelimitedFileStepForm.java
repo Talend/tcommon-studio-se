@@ -18,25 +18,19 @@ import org.talend.core.model.metadata.builder.connection.DelimitedFileConnection
 import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.core.model.properties.ConnectionItem;
 
-/**
- * DOC tguiu class global comment. Detailled comment <br/>
- * 
- * $Id: AbstractDelimitedFileStepForm.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
- */
 public abstract class AbstractDelimitedFileStepForm extends AbstractFileStepForm {
 
     private WizardPage page = null;
 
     /**
-     * DOC tguiu AbstractDelimitedFileStepForm constructor comment. Use to step1
+     * Use to step1
      */
     public AbstractDelimitedFileStepForm(Composite parent, ConnectionItem connectionItem, String[] existingNames) {
         super(parent, connectionItem, existingNames);
     }
 
     /**
-     * DOC ocarbone AbstractDelimitedFileStepForm constructor comment. Use to step2
+     * Use to step2
      * 
      * @param parent
      * @param connection2
@@ -46,7 +40,7 @@ public abstract class AbstractDelimitedFileStepForm extends AbstractFileStepForm
     }
 
     /**
-     * DOC tguiu AbstractDelimitedFileStepForm constructor comment. Use to step1
+     * Use to step1
      */
     public AbstractDelimitedFileStepForm(Composite parent, ConnectionItem connectionItem, MetadataTable metadataTable,
             String[] existingNames) {

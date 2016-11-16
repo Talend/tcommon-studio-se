@@ -20,10 +20,6 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.TreeItem;
 import org.talend.datatools.xml.utils.ATreeNode;
 
-/**
- * created by cmeng on Jul 1, 2015 Detailled comment
- *
- */
 public class JsonTreePopulator extends AbstractTreePopulator {
 
     private TreeViewer treeViewer;

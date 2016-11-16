@@ -40,9 +40,6 @@ import org.talend.core.repository.constants.FileConstants;
 import org.talend.repository.items.importexport.handlers.model.ImportItem;
 import org.talend.repository.items.importexport.manager.ResourcesManager;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public final class HandlerUtil {
 
     public static URI getURI(IPath path) {
@@ -152,12 +149,6 @@ public final class HandlerUtil {
             URIConverter uriConverter = resourceSet.getURIConverter();
             resourceSet.setURIConverter(new ExtensibleURIConverterImpl() {
 
-                /*
-                 * (non-Javadoc)
-                 * 
-                 * @see org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl#createInputStream(org.eclipse.
-                 * emf.common.util.URI, java.util.Map)
-                 */
                 @Override
                 public InputStream createInputStream(URI uri, Map<?, ?> options) throws IOException {
                     InputStream inputStream = null;
@@ -170,13 +161,6 @@ public final class HandlerUtil {
                     return inputStream;
                 }
 
-                /*
-                 * (non-Javadoc)
-                 * 
-                 * @see
-                 * org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl#contentDescription(org.eclipse.emf
-                 * .common.util.URI, java.util.Map)
-                 */
                 @Override
                 public Map<String, ?> contentDescription(URI uri, Map<?, ?> options) throws IOException {
                     EPackage ePackage = resourceSet.getPackageRegistry().getEPackage(uri.toString());

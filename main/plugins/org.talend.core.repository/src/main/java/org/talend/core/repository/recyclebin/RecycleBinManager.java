@@ -44,10 +44,6 @@ import org.talend.model.recyclebin.RecycleBinPackage;
 import org.talend.model.recyclebin.TalendItem;
 import org.talend.repository.ProjectManager;
 
-/**
- * created by nrousseau on Jun 15, 2015 Detailled comment
- *
- */
 public class RecycleBinManager {
 
     private static Map<String, RecycleBin> projectRecyclebins;

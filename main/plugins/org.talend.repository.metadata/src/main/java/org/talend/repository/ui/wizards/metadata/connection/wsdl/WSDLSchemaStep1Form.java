@@ -64,9 +64,6 @@ import org.talend.repository.metadata.i18n.Messages;
 import org.talend.repository.metadata.ui.wizards.form.AbstractWSDLSchemaStepForm;
 import org.talend.repository.ui.wizards.metadata.connection.ldap.BaseWidgetUtils;
 
-/**
- * DOC qwei class global comment. Detailled comment
- */
 public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
 
     public static final int TIMEOUT = 20;
@@ -166,14 +163,8 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
         setupForm(true);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addFields()
-     */
     @Override
     protected void addFields() {
-
         Composite composite = BaseWidgetUtils.createColumnContainer(this, 1, 1);
         BaseWidgetUtils.createSpacer(composite, 1);
         Group group = BaseWidgetUtils.createGroup(composite, Messages.getString("WSDLSchemaStep1Form.WSDLGroupParameter"), 1); //$NON-NLS-1$
@@ -220,21 +211,11 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
         valueTableViewer.setLabelProvider(provider);
         valueTableViewer.setCellModifier(new ICellModifier() {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.jface.viewers.ICellModifier#canModify(java.lang.Object, java.lang.String)
-             */
             @Override
             public boolean canModify(Object element, String property) {
                 return true;
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.jface.viewers.ICellModifier#getValue(java.lang.Object, java.lang.String)
-             */
             @Override
             public Object getValue(Object element, String property) {
                 if (VALUE_PROPERTY.equals(property)) {
@@ -243,11 +224,6 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
                 return ""; //$NON-NLS-1$
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.jface.viewers.ICellModifier#modify(java.lang.Object, java.lang.String, java.lang.Object)
-             */
             @Override
             public void modify(Object element, String property, Object value) {
                 if (VALUE_PROPERTY.equals(property)) {
@@ -523,14 +499,8 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
         });
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addFieldsListeners()
-     */
     @Override
     protected void addFieldsListeners() {
-
         if (LanguageManager.getCurrentLanguage().equals(ECodeLanguage.JAVA)) {
             addJavaFieldsListeners();
         } else if (LanguageManager.getCurrentLanguage().equals(ECodeLanguage.PERL)) {
@@ -567,11 +537,6 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
         });
         buttonAdd.addMouseListener(new MouseAdapter() {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.swt.events.MouseAdapter#mouseUp(org.eclipse.swt.events.MouseEvent)
-             */
             @Override
             public void mouseUp(MouseEvent e) {
                 String unName = "newLine_"; //$NON-NLS-1$
@@ -580,9 +545,6 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
                     hashmap = new ArrayList();
                 }
                 hashmap.add(unName + hashmap.size());
-                // for (ColumnValue columnValue : input) {
-                // hashmap.put(columnValue, columnValue.getValue());
-                // }
                 getConnection().setParameters(hashmap);
                 valueTableViewer.setInput(hashmap);
                 valueTableViewer.refresh();
@@ -590,11 +552,6 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
         });
         buttonRemove.addMouseListener(new MouseAdapter() {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.swt.events.MouseAdapter#mouseUp(org.eclipse.swt.events.MouseEvent)
-             */
             @Override
             public void mouseUp(MouseEvent e) {
                 ISelection selection = valueTableViewer.getSelection();
@@ -609,10 +566,6 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
                     hashmap.remove(hashmap.size() - 1);
                     valueTableViewer.refresh();
                 }
-                // HashMap<ColumnValue, String> hashmap = new HashMap<ColumnValue, String>();
-                // for (ColumnValue columnValue : list) {
-                // hashmap.put(columnValue, columnValue.getValue());
-                // }
                 getConnection().setParameters(hashmap);
             }
         });
@@ -622,28 +575,17 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
             @Override
             public void widgetSelected(final SelectionEvent e) {
                 refreshPreview();
-                // updateStatus(IStatus.OK, null);
             }
         });
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addUtilsButtonListeners()
-     */
     @Override
     protected void addUtilsButtonListeners() {
         // TODO Auto-generated method stub
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#initialize()
-     */
     @Override
     protected void initialize() {
         WSDLSchemaConnection wsdlConn = getConnection();
@@ -721,25 +663,13 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
      */
     void refreshPreview() {
         processor.execute();
-
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#adaptFormToReadOnly()
-     */
     @Override
     protected void adaptFormToReadOnly() {
         // TODO Auto-generated method stub
-
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#checkFieldsValue()
-     */
     @Override
     protected boolean checkFieldsValue() {
         // TODO Auto-generated method stub
@@ -751,7 +681,6 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
             updateStatus(IStatus.ERROR, null);
             return false;
         }
-
     }
 
     private boolean checkJavaFieldsValue() {
@@ -783,7 +712,6 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
             updateStatus(IStatus.OK, null);
             return true;
         }
-
     }
 
     private boolean checkPerlFieldsValue() {
@@ -803,10 +731,7 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
     }
 
     /**
-     * Subclass of SWTUIThreadProcessor to process the preview event. <br/>
-     * 
-     * $Id: DelimitedFileStep2Form.java 4837 2007-07-27 05:40:31Z bqian $
-     * 
+     * Subclass of SWTUIThreadProcessor to process the preview event.
      */
     class PreviewProcessor extends SWTUIThreadProcessor {
 

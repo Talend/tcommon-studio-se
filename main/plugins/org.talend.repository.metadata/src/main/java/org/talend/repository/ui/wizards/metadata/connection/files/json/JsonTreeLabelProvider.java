@@ -14,17 +14,8 @@ package org.talend.repository.ui.wizards.metadata.connection.files.json;
 
 import org.eclipse.jface.viewers.LabelProvider;
 
-/**
- * created by cmeng on Jul 2, 2015 Detailled comment
- *
- */
 public class JsonTreeLabelProvider extends LabelProvider {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
-     */
     @Override
     public String getText(Object element) {
         if (element instanceof JsonTreeNode) {

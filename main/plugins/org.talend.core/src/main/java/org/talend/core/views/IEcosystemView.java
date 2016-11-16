@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.core.views;
 
-/**
- * 
- * DOC gcui class global comment. Detailled comment
- */
 public interface IEcosystemView {
 
     public static final String VIEW_ID = "org.talend.designer.components.ecosystem.ui.views.EcosystemView"; //$NON-NLS-1$

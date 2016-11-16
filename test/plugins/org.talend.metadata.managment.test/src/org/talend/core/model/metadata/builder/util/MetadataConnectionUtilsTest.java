@@ -28,10 +28,6 @@ import org.talend.cwm.relational.TdSqlDataType;
 import org.talend.cwm.xml.TdXmlElementType;
 import org.talend.metadata.managment.utils.MetadataConnectionUtils;
 
-/**
- * created by ggu on Jul 12, 2012 Detailled comment
- * 
- */
 public class MetadataConnectionUtilsTest {
 
     private void PTODO() {

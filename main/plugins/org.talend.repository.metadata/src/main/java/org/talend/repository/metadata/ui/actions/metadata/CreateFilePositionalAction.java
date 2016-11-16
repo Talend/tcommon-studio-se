@@ -30,12 +30,6 @@ import org.talend.repository.model.IRepositoryNode.EProperties;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.ui.wizards.metadata.connection.files.positional.FilePositionalWizard;
 
-/**
- * DOC cantoine class global comment. Detailled comment <br/>
- * 
- * $Id: CreateFilePositionalAction.java 77219 2012-01-24 01:14:15Z mhirt $
- * 
- */
 public class CreateFilePositionalAction extends AbstractCreateAction {
 
     private static final String EDIT_LABEL = Messages.getString("CreateFilePositionalAction.action.editTitle"); //$NON-NLS-1$
@@ -55,11 +49,6 @@ public class CreateFilePositionalAction extends AbstractCreateAction {
     ImageDescriptor createImage = OverlayImageProvider.getImageWithNew(ImageProvider
             .getImage(ECoreImage.METADATA_FILE_POSITIONAL_ICON));
 
-    /**
-     * DOC cantoine CreateFilePositionalAction constructor comment.
-     * 
-     * @param viewer
-     */
     public CreateFilePositionalAction() {
         super();
 

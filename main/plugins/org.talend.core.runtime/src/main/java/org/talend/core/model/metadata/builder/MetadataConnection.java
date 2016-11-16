@@ -134,291 +134,131 @@ public class MetadataConnection implements IMetadataConnection {
         this.sqlMode = sqlMode;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.metadata.IMetadataTable#getName()
-     */
     public String getDbType() {
         return this.dbType;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.metadata.IMetadataTable#setName(java.lang.String)
-     */
     public void setDbType(String dbType) {
         this.dbType = dbType;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.metadata.IMetadataTable#getName()
-     */
     public String getDriverClass() {
         return this.driverClass;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.metadata.IMetadataTable#setName(java.lang.String)
-     */
     public void setDriverClass(String driverClass) {
         this.driverClass = driverClass;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.metadata.IMetadataTable#getName()
-     */
     public String getUrl() {
         return this.url;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.metadata.IMetadataTable#setName(java.lang.String)
-     */
     public void setUrl(String url) {
         this.url = url;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.metadata.IMetadataTable#getName()
-     */
     public String getPort() {
         return this.port;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.metadata.IMetadataTable#setName(java.lang.String)
-     */
     public void setPort(String port) {
         this.port = port;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.metadata.IMetadataTable#getName()
-     */
     public String getUsername() {
         return this.username;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.metadata.IMetadataTable#setName(java.lang.String)
-     */
     public void setUsername(String username) {
         this.username = username;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.metadata.IMetadataTable#getName()
-     */
     public String getPassword() {
         return this.password;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.metadata.IMetadataTable#setName(java.lang.String)
-     */
     public void setPassword(String password) {
         this.password = password;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.metadata.IMetadataTable#getName()
-     */
     public String getServerName() {
         return this.serverName;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.metadata.IMetadataTable#setName(java.lang.String)
-     */
     public void setServerName(String serverName) {
         this.serverName = serverName;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.metadata.IMetadataTable#getName()
-     */
     public String getDataSourceName() {
         return this.dataSourceName;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.metadata.IMetadataTable#setName(java.lang.String)
-     */
     public void setDataSourceName(String dataSourceName) {
         this.dataSourceName = dataSourceName;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.metadata.IMetadataTable#getName()
-     */
     public String getFileFieldName() {
         return this.fileFieldName;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.metadata.IMetadataTable#setName(java.lang.String)
-     */
     public void setFileFieldName(String fileFieldName) {
         this.fileFieldName = fileFieldName;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.metadata.IMetadataConnection#getDatabase()
-     */
     public String getDatabase() {
         return database;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.metadata.IMetadataConnection#setDatabase(java.lang.String)
-     */
     public void setDatabase(String database) {
         this.database = database;
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.metadata.IMetadataTable#getName()
-     */
     public String getSchema() {
         return this.schema;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.metadata.IMetadataTable#setName(java.lang.String)
-     */
     public void setSchema(String schema) {
         this.schema = schema;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.metadata.IMetadataTable#getName()
-     */
     public String getSqlSyntax() {
         return this.sqlSyntax;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.metadata.IMetadataTable#setName(java.lang.String)
-     */
     public void setSqlSyntax(String sqlSyntax) {
         this.sqlSyntax = sqlSyntax;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.metadata.IMetadataTable#getName()
-     */
     public String getStringQuote() {
         return this.stringQuote;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.metadata.IMetadataTable#setName(java.lang.String)
-     */
     public void setStringQuote(String stringQuote) {
         this.stringQuote = stringQuote;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.metadata.IMetadataTable#getName()
-     */
     public String getNullChar() {
         return this.nullChar;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.metadata.IMetadataTable#setName(java.lang.String)
-     */
     public void setNullChar(String nullChar) {
         this.nullChar = nullChar;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.temp.IXmlSerializable#getXmlStream()
-     */
     public InputStream getXmlStream() {
         return xmlStream;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.temp.IXmlSerializable#setXmlStream(java.io.InputStream)
-     */
     public void setXmlStream(InputStream xmlStream) {
         this.xmlStream = xmlStream;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.core.model.metadata.IMetadataTable#getListColumns()
-     */
     public List<IMetadataTable> getListTables() {
         return this.listTables;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.core.model.metadata.IMetadataTable#setListColumns(java.util.Hashtable)
-     */
     public void setListTables(List<IMetadataTable> listTables) {
         this.listTables = listTables;
     }
@@ -439,74 +279,34 @@ public class MetadataConnection implements IMetadataConnection {
         this.product = product;
     }
 
-    /**
-     * Getter for dbRootPath.
-     * 
-     * @return the dbRootPath
-     */
     public String getDbRootPath() {
         return this.dbRootPath;
     }
 
-    /**
-     * Sets the dbRootPath.
-     * 
-     * @param dbRootPath the dbRootPath to set
-     */
     public void setDbRootPath(String dbRootPath) {
         this.dbRootPath = dbRootPath;
     }
 
-    /**
-     * Getter for additionalParams.
-     * 
-     * @return the additionalParams
-     */
     public String getAdditionalParams() {
         return this.additionalParams;
     }
 
-    /**
-     * Sets the additionalParams.
-     * 
-     * @param additionalParams the additionalParams to set
-     */
     public void setAdditionalParams(String additionalParams) {
         this.additionalParams = additionalParams;
     }
 
-    /**
-     * Getter for driverJarPath.
-     * 
-     * @return the driverJarPath
-     */
     public String getDriverJarPath() {
         return this.driverJarPath;
     }
 
-    /**
-     * Sets the driverJarPath.
-     * 
-     * @param driverJarPath the driverJarPath to set
-     */
     public void setDriverJarPath(String driverJarPath) {
         this.driverJarPath = driverJarPath;
     }
 
-    /**
-     * Getter for dbVersionString.
-     * 
-     * @return the dbVersionString
-     */
     public String getDbVersionString() {
         return this.dbVersionString;
     }
 
-    /**
-     * Sets the dbVersionString.
-     * 
-     * @param dbVersionString the dbVersionString to set
-     */
     public void setDbVersionString(String dbVersionString) {
         this.dbVersionString = dbVersionString;
     }
@@ -516,7 +316,6 @@ public class MetadataConnection implements IMetadataConnection {
      * qli comment the method equals. rewrite the method equals.
      */
     public boolean equals(Object obj) {
-
         if (obj == null) {
             return false;
         }
@@ -554,9 +353,6 @@ public class MetadataConnection implements IMetadataConnection {
         return true;
     }
 
-    /**
-     * qli comment the method checkString.
-     * */
     private boolean checkString(String first, String second) {
         if (first == null && second == null) {
             return true;
@@ -727,22 +523,12 @@ public class MetadataConnection implements IMetadataConnection {
         this.contextName = contextName;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.metadata.IMetadataConnection#getParameter(java.lang.String)
-     */
     public Object getParameter(String key) {
         if (otherParameters != null)
             return otherParameters.get(key);
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.metadata.IMetadataConnection#setParameter(java.lang.String, java.lang.Object)
-     */
     public void setParameter(String key, Object value) {
         if (otherParameters == null)
             otherParameters = new HashMap<String, Object>();

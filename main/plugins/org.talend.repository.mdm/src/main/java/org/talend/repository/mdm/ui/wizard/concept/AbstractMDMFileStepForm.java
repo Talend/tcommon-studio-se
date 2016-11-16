@@ -34,9 +34,6 @@ import org.talend.metadata.managment.ui.wizard.metadata.xml.utils.TreeUtil;
 import org.talend.repository.mdm.util.MDMUtil;
 import org.talend.repository.metadata.ui.wizards.form.AbstractXmlStepForm;
 
-/**
- * DOC hwang class global comment. Detailled comment
- */
 public abstract class AbstractMDMFileStepForm extends AbstractXmlStepForm {
 
     protected MDMConnection connection;
@@ -45,12 +42,6 @@ public abstract class AbstractMDMFileStepForm extends AbstractXmlStepForm {
 
     protected MetadataTable metadataTable;
 
-    /**
-     * DOC Administrator AbstractMDMFileStepForm constructor comment.
-     * 
-     * @param parent
-     * @param style
-     */
     protected AbstractMDMFileStepForm(Composite parent, ConnectionItem connectionItem, String[] existingNames) {
         super(parent, SWT.NONE, existingNames);
         setConnectionItem(connectionItem);

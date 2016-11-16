@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.core.hadoop;
 
-/**
- * created by cmeng on May 5, 2015 Detailled comment
- *
- */
 @SuppressWarnings("nls")
 public class HadoopConstants {
 

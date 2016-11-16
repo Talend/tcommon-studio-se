@@ -12,14 +12,9 @@
 // ============================================================================
 package org.talend.utils.thread;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- */
 public class ThreadUtils {
 
     /**
-     * 
      * "waitTimeBool" wait for the given time.
      * 
      * @param object wait() will be start on this given object

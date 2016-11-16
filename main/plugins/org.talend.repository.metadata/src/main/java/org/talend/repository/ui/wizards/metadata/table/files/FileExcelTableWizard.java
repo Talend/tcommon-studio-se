@@ -30,10 +30,6 @@ import org.talend.metadata.managment.ui.wizard.AbstractRepositoryFileTableWizard
 import org.talend.repository.metadata.i18n.Messages;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
-/**
- * 
- * DOC yexiaowei class global comment. Detailled comment
- */
 public class FileExcelTableWizard extends AbstractRepositoryFileTableWizard implements INewWizard {
 
     private static Logger log = Logger.getLogger(FileExcelTableWizard.class);
@@ -44,16 +40,6 @@ public class FileExcelTableWizard extends AbstractRepositoryFileTableWizard impl
 
     private IMetadataTable oldMetadataTable;
 
-    /**
-     * 
-     * DOC yexiaowei FileExcelTableWizard constructor comment.
-     * 
-     * @param workbench
-     * @param creation
-     * @param connectionItem
-     * @param metadataTable
-     * @param forceReadOnly
-     */
     public FileExcelTableWizard(IWorkbench workbench, boolean creation, ConnectionItem connectionItem,
             MetadataTable metadataTable, boolean forceReadOnly) {
         super(workbench, creation, forceReadOnly);

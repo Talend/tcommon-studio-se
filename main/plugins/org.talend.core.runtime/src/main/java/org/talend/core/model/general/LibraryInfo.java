@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.core.model.general;
 
-/**
- * DOC ycbai class global comment. Detailled comment
- */
 public class LibraryInfo {
 
     private String libName;

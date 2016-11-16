@@ -24,10 +24,6 @@ import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import orgomg.cwm.resource.relational.Catalog;
 
-/**
- * created by xqliu on Sep 2, 2013 Detailled comment
- * 
- */
 public class MetadataCatalogRepositoryObjectTest {
 
     private static final String CATALOG_NAME = "catalogName"; //$NON-NLS-1$

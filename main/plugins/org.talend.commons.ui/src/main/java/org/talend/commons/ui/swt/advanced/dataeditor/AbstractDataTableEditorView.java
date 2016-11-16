@@ -188,9 +188,6 @@ public abstract class AbstractDataTableEditorView<B> {
 
     }
 
-    /**
-     * DOC amaumont Comment method "createElementComparer".
-     */
     protected IElementComparer createElementComparer() {
         return new IElementComparer() {
 
@@ -205,16 +202,10 @@ public abstract class AbstractDataTableEditorView<B> {
         };
     }
 
-    /**
-     * DOC amaumont Comment method "initToolBar".
-     */
     protected ExtendedToolbarView initToolBar() {
         return null;
     }
 
-    /**
-     * DOC amaumont Comment method "initTable".
-     */
     protected void initTable() {
         this.extendedTableViewer = new AbstractExtendedTableViewer<B>(this.extendedTableModel, mainComposite, this.readOnly) {
 
@@ -223,37 +214,18 @@ public abstract class AbstractDataTableEditorView<B> {
                 AbstractDataTableEditorView.this.createColumns(tableViewerCreator, table);
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see
-             * org.talend.commons.ui.swt.extended.macrotable.AbstractExtendedTableViewer#setTableViewerCreatorOptions
-             * (org.talend.commons.ui.swt.tableviewer.TableViewerCreator)
-             */
             @Override
             protected void setTableViewerCreatorOptions(TableViewerCreator<B> newTableViewerCreator) {
                 super.setTableViewerCreatorOptions(newTableViewerCreator);
                 AbstractDataTableEditorView.this.setTableViewerCreatorOptions(newTableViewerCreator);
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @seeorg.talend.commons.ui.swt.extended.macrotable.AbstractExtendedTableViewer#
-             * handleBeforeListenableListOperationEvent(org.talend.commons.utils.data.list.ListenableListEvent)
-             */
             @Override
             protected void handleBeforeListenableListOperationEvent(ListenableListEvent<B> event) {
                 AbstractDataTableEditorView.this.handleBeforeListenableListOperationEvent(event);
                 super.handleBeforeListenableListOperationEvent(event);
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @seeorg.talend.commons.ui.swt.extended.macrotable.AbstractExtendedTableViewer#
-             * handleAfterListenableListOperationEvent(org.talend.commons.utils.data.list.ListenableListEvent)
-             */
             @Override
             protected void handleAfterListenableListOperationEvent(ListenableListEvent<B> event) {
                 super.handleAfterListenableListOperationEvent(event);
@@ -263,38 +235,18 @@ public abstract class AbstractDataTableEditorView<B> {
         };
     }
 
-    /**
-     * DOC amaumont Comment method "handleBeforeListenableListOperationEvent".
-     * 
-     * @param event
-     */
     protected void handleBeforeListenableListOperationEvent(ListenableListEvent<B> event) {
 
     }
 
-    /**
-     * DOC amaumont Comment method "handleAfterListenableListOperationEvent".
-     * 
-     * @param event
-     */
     protected void handleAfterListenableListOperationEvent(ListenableListEvent<B> event) {
 
     }
 
-    /**
-     * DOC amaumont Comment method "setTableViewerCreatorOptions".
-     * 
-     * @param newTableViewerCreator
-     */
     protected void setTableViewerCreatorOptions(TableViewerCreator<B> newTableViewerCreator) {
-        // newTableViewerCreator.setUseCustomItemColoring(true);
-        // newTableViewerCreator.setFirstVisibleColumnIsSelection(true);
         newTableViewerCreator.setShowLineSelection(SHOW_ROW_SELECTION.FULL);
     }
 
-    /**
-     * DOC amaumont Comment method "addListeners".
-     */
     protected void addListeners() {
 
         final Table table = extendedTableViewer.getTable();
@@ -325,12 +277,6 @@ public abstract class AbstractDataTableEditorView<B> {
         }
     }
 
-    /**
-     * DOC ocarbone Comment method "setGridDataSize".
-     * 
-     * @param minimumWidth
-     * @param minimumHeight
-     */
     public void setGridDataSize(final int minimumWidth, final int minimumHeight) {
         mainComposite.setSize(minimumWidth, minimumHeight);
 
@@ -350,11 +296,6 @@ public abstract class AbstractDataTableEditorView<B> {
         }
     }
 
-    /**
-     * Getter for readOnly.
-     * 
-     * @return the readOnly
-     */
     public boolean isReadOnly() {
         if (extendedTableViewer != null) {
             return extendedTableViewer.isReadOnly();
@@ -363,11 +304,6 @@ public abstract class AbstractDataTableEditorView<B> {
         }
     }
 
-    /**
-     * Getter for composite.
-     * 
-     * @return the composite
-     */
     public Composite getMainComposite() {
         return this.mainComposite;
     }

@@ -17,19 +17,8 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IFileEditorInput;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * DOC ggu class global comment. Detailled comment <br/>
- * 
- * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
- */
 public abstract class AbstractFileEditorInputLinker extends AbstractEditorInputWithItemIdLinker {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.repository.link.IRepoViewLinker#getRelationNode(org.eclipse.ui.IEditorInput)
-     */
     @Override
     public RepositoryNode getRelationNode(IEditorInput editorInput) {
         if (editorInput != null && editorInput instanceof IFileEditorInput) {

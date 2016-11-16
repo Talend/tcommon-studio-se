@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.repository.documentation;
 
-/**
- * ftang class global comment. Detailled comment.
- */
 public enum ERepositoryActionName {
 
     RESTORE("restore"), //$NON-NLS-1$

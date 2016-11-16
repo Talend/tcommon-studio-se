@@ -16,9 +16,6 @@ import java.io.File;
 
 import org.talend.utils.sugars.ReturnCode;
 
-/**
- * DOC stephane class global comment. Detailled comment
- */
 public class FileChecker {
 
     public static final String NO_RIGHT_TO_WRITE = "No right to write";

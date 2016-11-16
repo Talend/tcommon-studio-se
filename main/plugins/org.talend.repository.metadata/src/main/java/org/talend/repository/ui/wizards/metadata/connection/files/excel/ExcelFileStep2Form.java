@@ -823,11 +823,6 @@ public class ExcelFileStep2Form extends AbstractExcelFileStepForm implements IRe
 
         advanceSeparatorCheckbox.addSelectionListener(new SelectionAdapter() {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
-             */
             @Override
             public void widgetSelected(SelectionEvent e) {
 
@@ -1137,11 +1132,6 @@ public class ExcelFileStep2Form extends AbstractExcelFileStepForm implements IRe
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
-     */
     @Override
     public void setVisible(boolean visible) {
 
@@ -1191,9 +1181,6 @@ public class ExcelFileStep2Form extends AbstractExcelFileStepForm implements IRe
         }
     }
 
-    /**
-     * DOC YeXiaowei Comment method "saveOriginShcemaColumns".
-     */
     private void saveOriginShcemaColumns() {
         List<String> columns = getConnection().getSheetColumns();
         originSchemaColumns.clear();
@@ -1201,11 +1188,6 @@ public class ExcelFileStep2Form extends AbstractExcelFileStepForm implements IRe
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.IRefreshable#refresh()
-     */
     @Override
     public void refresh() {
         refreshPreview();

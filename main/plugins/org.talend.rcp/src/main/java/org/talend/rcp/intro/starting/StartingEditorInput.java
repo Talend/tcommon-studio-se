@@ -18,9 +18,6 @@ import org.eclipse.ui.IPathEditorInput;
 import org.eclipse.ui.IPersistableElement;
 import org.talend.core.ui.branding.IBrandingService;
 
-/**
- * DOC talend class global comment. Detailled comment
- */
 public class StartingEditorInput implements IPathEditorInput {
 
     private IBrandingService service;
@@ -29,69 +26,34 @@ public class StartingEditorInput implements IPathEditorInput {
         this.service = service;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IEditorInput#exists()
-     */
     public boolean exists() {
         // TODO Auto-generated method stub
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IEditorInput#getImageDescriptor()
-     */
     public ImageDescriptor getImageDescriptor() {
         // TODO Auto-generated method stub
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IEditorInput#getName()
-     */
     public String getName() {
         return service.getProductName();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IEditorInput#getPersistable()
-     */
     public IPersistableElement getPersistable() {
         // TODO Auto-generated method stub
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IEditorInput#getToolTipText()
-     */
     public String getToolTipText() {
         return service.getFullProductName();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
-     */
     public Object getAdapter(Class adapter) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IPathEditorInput#getPath()
-     */
     public IPath getPath() {
         // TODO Auto-generated method stub
         return null;

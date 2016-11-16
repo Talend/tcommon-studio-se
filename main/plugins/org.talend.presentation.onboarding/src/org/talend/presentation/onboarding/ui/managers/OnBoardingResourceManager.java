@@ -22,10 +22,6 @@ import org.talend.presentation.onboarding.handlers.OnBoardingExtentionHandler;
 import org.talend.presentation.onboarding.i18n.Messages;
 import org.talend.presentation.onboarding.ui.runtimedata.OnBoardingRegistedResource;
 
-/**
- * created by cmeng on Sep 15, 2015 Detailled comment
- *
- */
 public class OnBoardingResourceManager {
 
     public static final String DEFAULT_DOC_ID = "org.talend.presentation.onboarding.docid.default"; //$NON-NLS-1$

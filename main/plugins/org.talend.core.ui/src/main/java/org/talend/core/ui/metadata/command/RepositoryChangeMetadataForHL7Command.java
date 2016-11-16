@@ -31,9 +31,6 @@ import org.talend.core.model.process.INode;
 import org.talend.core.ui.CoreUIPlugin;
 import org.talend.core.utils.TalendQuoteUtils;
 
-/**
- * nrousseau class global comment. Detailled comment
- */
 public class RepositoryChangeMetadataForHL7Command extends Command {
 
     private INode node;
@@ -47,9 +44,6 @@ public class RepositoryChangeMetadataForHL7Command extends Command {
     private Integer index;
 
     /**
-     * 
-     * nrousseau RepositoryChangeMetadataForEBCDICCommand constructor comment.
-     * 
      * only for DND
      */
     public RepositoryChangeMetadataForHL7Command(INode node, String propName, Object propValue, IMetadataTable newOutputMetadata) {

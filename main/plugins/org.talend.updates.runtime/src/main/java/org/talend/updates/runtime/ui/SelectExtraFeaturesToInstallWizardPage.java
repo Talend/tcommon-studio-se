@@ -54,10 +54,6 @@ import org.talend.updates.runtime.model.ExtraFeature;
 import org.talend.updates.runtime.model.FeatureCategory;
 import org.talend.updates.runtime.model.P2ExtraFeature;
 
-/**
- * created by sgandon on 25 févr. 2013 Detailled comment
- * 
- */
 public class SelectExtraFeaturesToInstallWizardPage extends WizardPage {
 
     private Tree tree;
@@ -83,22 +79,12 @@ public class SelectExtraFeaturesToInstallWizardPage extends WizardPage {
         setDescription(Messages.getString("SelectExtraFeaturesToInstallWizardPage.wizard.page.description")); //$NON-NLS-1$
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.wizard.WizardPage#canFlipToNextPage()
-     */
     @Override
     public boolean canFlipToNextPage() {
         return super.canFlipToNextPage() && !updateWizardModel.selectedExtraFeatures.isEmpty()
                 && updateWizardModel.canConfigureUpdateSiteLocation();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.wizard.WizardPage#isPageComplete()
-     */
     @Override
     public boolean isPageComplete() {
         return updateWizardModel.hasDoNotShowThisAgainChanged ? true : super.isPageComplete();
@@ -129,22 +115,11 @@ public class SelectExtraFeaturesToInstallWizardPage extends WizardPage {
         checkboxTreeViewer = new CheckboxTreeViewer(featureComposite, SWT.BORDER | SWT.FULL_SELECTION);
         checkboxTreeViewer.setSorter(new ViewerSorter() {// regroupt by class type and then by name
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.jface.viewers.ViewerComparator#category(java.lang.Object)
-             */
             @Override
             public int category(Object element) {
                 return element.getClass().hashCode();
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.jface.viewers.ViewerComparator#compare(org.eclipse.jface.viewers.Viewer,
-             * java.lang.Object, java.lang.Object)
-             */
             @Override
             public int compare(Viewer viewer, Object e1, Object e2) {
                 if ((e2 instanceof ExtraFeature) && ((ExtraFeature) e2).mustBeInstalled()) {

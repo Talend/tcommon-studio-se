@@ -29,15 +29,9 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryTypeProcessor;
 import org.talend.repository.model.IRepositoryNode;
 
-/**
- * created by ycbai on 2013-1-28 Detailled comment
- * 
- */
 public interface IHadoopClusterService extends IService {
 
     /**
-     * DOC ycbai Comment method "containedByCluster".
-     * 
      * Estimate whether or not the hadoopConnection belongs to the hadoopClusterConnection.
      * 
      * @param hadoopClusterConnection
@@ -47,8 +41,6 @@ public interface IHadoopClusterService extends IService {
     public boolean containedByCluster(Connection hadoopClusterConnection, Connection hadoopConnection);
 
     /**
-     * DOC ycbai Comment method "getHadoopClusterType".
-     * 
      * Get the hadoop cluster repository type.
      * 
      * @return
@@ -56,8 +48,6 @@ public interface IHadoopClusterService extends IService {
     public ERepositoryObjectType getHadoopClusterType();
 
     /**
-     * DOC ycbai Comment method "isHadoopClusterNode".
-     * 
      * Estimate whether or not the node is a hadoop cluster node.
      * 
      * @param node
@@ -66,8 +56,6 @@ public interface IHadoopClusterService extends IService {
     public boolean isHadoopClusterNode(IRepositoryNode node);
 
     /**
-     * DOC ycbai Comment method "isHadoopSubnode".
-     * 
      * Estimate whether or not the node is a subnode of a hadoop cluster.
      * 
      * @param node
@@ -77,8 +65,6 @@ public interface IHadoopClusterService extends IService {
 
     /**
      * 
-     * DOC ycbai Comment method "isHadoopFolderNode".
-     * 
      * Estimate whether or not the node is a folder node of a hadoop cluster.
      * 
      * @param node
@@ -87,8 +73,6 @@ public interface IHadoopClusterService extends IService {
     public boolean isHadoopFolderNode(IRepositoryNode node);
 
     /**
-     * DOC ycbai Comment method "isHadoopClusterItem".
-     * 
      * Estimate whether or not the item is a hadoop cluster item.
      * 
      * @param item
@@ -97,8 +81,6 @@ public interface IHadoopClusterService extends IService {
     public boolean isHadoopClusterItem(Item item);
 
     /**
-     * DOC ycbai Comment method "isHadoopSubItem".
-     * 
      * Estimate whether or not the item is a subitem of a hadoop cluster item.
      * 
      * @param item
@@ -107,8 +89,6 @@ public interface IHadoopClusterService extends IService {
     public boolean isHadoopSubItem(Item item);
 
     /**
-     * DOC ycbai Comment method "isValidHadoopSubItem".
-     * 
      * Estimate whether or not the item is a valid subitem of a hadoop cluster item.
      * 
      * @param item
@@ -117,8 +97,6 @@ public interface IHadoopClusterService extends IService {
     public boolean isValidHadoopSubItem(Item item);
 
     /**
-     * DOC ycbai Comment method "isHadoopSubItem".
-     * <p>
      * Estimate whether or not the item is hadoop subconnection item.
      * 
      * @param item
@@ -127,8 +105,6 @@ public interface IHadoopClusterService extends IService {
     public boolean isHadoopSubItem2(Item item);
 
     /**
-     * DOC ycbai Comment method "isInContextMode".
-     * <p>
      * Estimate whether or not the connection is in context mode. <br>
      * Hadoop subconnections are in context mode even though it is not context mode itself if the hadoop cluster is in
      * context mode.
@@ -139,8 +115,6 @@ public interface IHadoopClusterService extends IService {
     public boolean isInContextMode(Connection connection);
 
     /**
-     * DOC ycbai Comment method "getSubitemIdsOfHadoopCluster".
-     * 
      * Get subitem ids of hadoop cluster.
      * 
      * @param item hadoop cluster item
@@ -153,8 +127,6 @@ public interface IHadoopClusterService extends IService {
     public Item getHadoopClusterBySubitemId(Project project, String subItemId);
 
     /**
-     * DOC ycbai Comment method "refreshCluster".
-     * 
      * Refresh this Hadoop Cluster.
      * 
      * @param clusterId
@@ -162,8 +134,6 @@ public interface IHadoopClusterService extends IService {
     public void refreshCluster(String clusterId);
 
     /**
-     * DOC ycbai Comment method "getHadoopDbParameters".
-     * 
      * Get db connection(like hbase, hive) parameters by hadoop cluster.
      * 
      * @param clusterId
@@ -172,15 +142,11 @@ public interface IHadoopClusterService extends IService {
     public Map<String, String> getHadoopDbParameters(String clusterId);
 
     /**
-     * DOC ycbai Comment method "removeHadoopDbParameters".
-     * 
      * @param connection
      */
     public void removeHadoopDbParameters(DatabaseConnection connection);
 
     /**
-     * DOC ycbai Comment method "copyHadoopCluster".
-     * 
      * @param sourceItem
      * @param path
      * @throws PersistenceException
@@ -189,8 +155,6 @@ public interface IHadoopClusterService extends IService {
     public void copyHadoopCluster(final Item sourceItem, final IPath path) throws PersistenceException, BusinessException;
 
     /**
-     * 
-     * DOC ycbai Comment method "copyHadoopCluster".
      * 
      * @param sourceItem
      * @param path
@@ -206,11 +170,7 @@ public interface IHadoopClusterService extends IService {
     public IRepositoryTypeProcessor getHadoopSubMultiRepTypeProcessor(String[] repositoryTypes);
 
     /**
-     * DOC ycbai Comment method "hasDiffsFromClusterToProcess".
-     * 
-     * <p>
      * Check whether there is any change of hadoop related parameters from Process to Hadoop cluster.
-     * </p>
      * 
      * @param hcConnection
      * @param process
@@ -223,8 +183,6 @@ public interface IHadoopClusterService extends IService {
     public String getHadoopClusterProperties(Connection hadoopSubConnection);
 
     /**
-     * DOC ycbai Comment method "getHadoopClusterItemById".
-     * 
      * @param id is the id of hadoop cluster connection or its subconnection.
      * @return the hadoop cluster item.
      */

@@ -34,9 +34,6 @@ import org.talend.repository.items.importexport.handlers.model.ImportItem;
 import org.talend.repository.items.importexport.manager.ResourcesManager;
 
 /**
- * DOC ggu class global comment. Detailled comment
- * 
- * 
  * most of importers should extends this class, just recommend.
  */
 @SuppressWarnings("rawtypes")
@@ -81,13 +78,6 @@ public class ImportRepTypeHandler extends ImportBasicHandler {
      */
     protected final Set<ERepositoryObjectType> checkedItemTypes = new HashSet<ERepositoryObjectType>();
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.items.importexport.handlers.imports.AbstractImportExecutableHandler#setInitializationData
-     * (org.eclipse.core.runtime.IConfigurationElement, java.lang.String, java.lang.Object)
-     */
     @Override
     public void setInitializationData(IConfigurationElement config, String propertyName, Object data) throws CoreException {
         super.setInitializationData(config, propertyName, data);

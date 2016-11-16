@@ -62,9 +62,6 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.model.RepositoryNodeUtilities;
 
-/**
- * DOC qwei class global comment. Detailled comment
- */
 public class WSDLSchemaWizard extends CheckLastVersionRepositoryWizard implements INewWizard {
 
     private static Logger log = Logger.getLogger(WSDLSchemaWizard.class);
@@ -481,11 +478,6 @@ public class WSDLSchemaWizard extends CheckLastVersionRepositoryWizard implement
         return this.connectionProperty;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.wizard.Wizard#performFinish()
-     */
     @Override
     public boolean performFinish() {
 
@@ -560,11 +552,6 @@ public class WSDLSchemaWizard extends CheckLastVersionRepositoryWizard implement
         return super.performCancel();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.wizards.RepositoryWizard#getConnectionItem()
-     */
     @Override
     public ConnectionItem getConnectionItem() {
         return this.connectionItem;

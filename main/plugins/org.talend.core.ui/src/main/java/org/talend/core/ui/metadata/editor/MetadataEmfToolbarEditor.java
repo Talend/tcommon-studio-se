@@ -36,23 +36,12 @@ import org.talend.core.ui.metadata.extended.command.MetadataEmfImportXmlCommand;
 import org.talend.core.ui.metadata.extended.command.MetadataEmfPasteCommand;
 
 /**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * TGU same purpose as MetadataToolbarEditorView but uses EMF model directly $Id: MetadataToolbarEditorView2.java,v 1.1
- * 2006/08/02 19:43:45 tguiu Exp $
- * 
+ * TGU same purpose as MetadataToolbarEditorView but uses EMF model directly
  */
 public class MetadataEmfToolbarEditor extends ExtendedToolbarView {
 
     private String dbmsId;
 
-    /**
-     * DOC amaumont MatadataToolbarEditor constructor comment.
-     * 
-     * @param parent
-     * @param style
-     * @param metadataEditorView
-     */
     public MetadataEmfToolbarEditor(Composite parent, int style, AbstractExtendedTableViewer<MetadataColumn> extendedTableViewer) {
         super(parent, style, extendedTableViewer);
     }
@@ -78,11 +67,6 @@ public class MetadataEmfToolbarEditor extends ExtendedToolbarView {
         };
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.extended.ExtendedToolbarView#createAddPushButton()
-     */
     @Override
     protected AddPushButton createAddPushButton() {
         return new AddPushButtonForExtendedTable(this.toolbar, getExtendedTableViewer()) {
@@ -97,11 +81,6 @@ public class MetadataEmfToolbarEditor extends ExtendedToolbarView {
         };
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.extended.ExtendedToolbarView#createPastButton()
-     */
     @Override
     public PastePushButton createPastePushButton() {
         return new PastePushButtonForExtendedTable(toolbar, extendedTableViewer) {
@@ -114,11 +93,6 @@ public class MetadataEmfToolbarEditor extends ExtendedToolbarView {
         };
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.extended.ExtendedToolbarView#createExportPushButton()
-     */
     @Override
     protected ExportPushButton createExportPushButton() {
         return new ExportPushButtonForExtendedTable(toolbar, extendedTableViewer) {
@@ -131,11 +105,6 @@ public class MetadataEmfToolbarEditor extends ExtendedToolbarView {
         };
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.extended.ExtendedToolbarView#createPastButton()
-     */
     @Override
     public ImportPushButton createImportPushButton() {
         return new ImportPushButtonForExtendedTable(toolbar, extendedTableViewer) {

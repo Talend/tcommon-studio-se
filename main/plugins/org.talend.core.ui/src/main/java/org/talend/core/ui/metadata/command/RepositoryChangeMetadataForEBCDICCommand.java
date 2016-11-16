@@ -27,9 +27,6 @@ import org.talend.core.model.process.IElementParameter;
 import org.talend.core.model.process.INode;
 import org.talend.core.ui.CoreUIPlugin;
 
-/**
- * nrousseau class global comment. Detailled comment
- */
 public class RepositoryChangeMetadataForEBCDICCommand extends Command {
 
     private INode node;
@@ -43,9 +40,6 @@ public class RepositoryChangeMetadataForEBCDICCommand extends Command {
     private Integer index;
 
     /**
-     * 
-     * nrousseau RepositoryChangeMetadataForEBCDICCommand constructor comment.
-     * 
      * only for DND
      */
     public RepositoryChangeMetadataForEBCDICCommand(INode node, String propName, Object propValue,

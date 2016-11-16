@@ -32,19 +32,12 @@ import org.talend.repository.model.IRepositoryNode.EProperties;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.ui.wizards.metadata.connection.genericshema.ImportSchemaFileWizard;
 
-/**
- * DOC ggu class global comment. Detailled comment <br/>
- * 
- */
 public class ImportSchemaFileAction extends CreateGenericSchemaAction {
 
     private static final String LABEL = Messages.getString("ImportSchemaFileAction.Label"); //$NON-NLS-1$
 
     private File file = null;
 
-    /**
-     * DOC ggu ImportSchemaFileAction constructor comment.
-     */
     public ImportSchemaFileAction() {
         setText(LABEL);
         setToolTipText(LABEL);
@@ -52,23 +45,11 @@ public class ImportSchemaFileAction extends CreateGenericSchemaAction {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.actions.metadata.CreateGenericSchemaAction#getClassForDoubleClick()
-     */
     @Override
     public Class getClassForDoubleClick() {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.ui.actions.metadata.CreateGenericSchemaAction#init(org.talend.repository.model.RepositoryNode
-     * )
-     */
     @Override
     protected void init(RepositoryNode node) {
         IProxyRepositoryFactory factory = ProxyRepositoryFactory.getInstance();
@@ -97,11 +78,6 @@ public class ImportSchemaFileAction extends CreateGenericSchemaAction {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.action.Action#run()
-     */
     @Override
     protected void doRun() {
         file = openImportFileDialog();

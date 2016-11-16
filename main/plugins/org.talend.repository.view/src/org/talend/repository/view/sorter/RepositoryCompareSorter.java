@@ -17,9 +17,6 @@ import java.util.Comparator;
 
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public abstract class RepositoryCompareSorter implements IRepositoryNodeSorter {
 
     protected void sortChildren(Object[] children) {

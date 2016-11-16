@@ -22,9 +22,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.navigator.CommonViewer;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class RepositoryFilterSettingProvider extends LabelProvider implements ITreeContentProvider {
 
     private CommonViewer viewer;

@@ -17,9 +17,6 @@ import java.util.Vector;
 
 import org.talend.core.service.IWebService;
 
-/**
- * DOC Administrator class global comment. Detailled comment
- */
 public class WebServiceSaveManager {
 
     public static WebServiceSaveManager instance;

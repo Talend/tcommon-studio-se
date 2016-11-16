@@ -66,10 +66,6 @@ import org.talend.core.ui.context.nattableTree.ContextNatTableUtils;
 import org.talend.core.ui.i18n.Messages;
 import org.talend.core.utils.TalendQuoteUtils;
 
-/**
- * created by ldong on Jul 8, 2014 Detailled comment
- * 
- */
 public class ContextNebulaGridComposite extends AbstractContextTabEditComposite {
 
     public static final int CONTEXT_COLUMN_WIDTH = 200;

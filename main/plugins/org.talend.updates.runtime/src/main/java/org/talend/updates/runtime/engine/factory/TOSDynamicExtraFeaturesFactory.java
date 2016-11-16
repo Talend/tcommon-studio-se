@@ -43,9 +43,6 @@ import org.talend.updates.runtime.model.IuP2ExtraFeature;
 import org.talend.updates.runtime.model.P2ExtraFeature;
 import org.talend.updates.runtime.model.P2ExtraFeatureException;
 
-/**
- * DOC Talend class global comment. Detailled comment
- */
 public class TOSDynamicExtraFeaturesFactory extends AbstractExtraUpdatesFactory {
     
     private static final String TALEND_PRODUCTS_P2_PROP = "org.talend.authorized.products"; //$NON-NLS-1$

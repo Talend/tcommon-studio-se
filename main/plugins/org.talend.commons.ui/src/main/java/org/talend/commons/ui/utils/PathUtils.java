@@ -14,12 +14,6 @@ package org.talend.commons.ui.utils;
 
 import org.eclipse.core.runtime.Path;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public class PathUtils {
 
     public static String getPortablePath(String path) {

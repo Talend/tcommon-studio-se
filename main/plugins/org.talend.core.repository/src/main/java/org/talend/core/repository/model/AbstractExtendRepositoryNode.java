@@ -15,20 +15,12 @@ package org.talend.core.repository.model;
 import org.talend.commons.ui.runtime.repository.IExtendRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public abstract class AbstractExtendRepositoryNode implements IExtendRepositoryNode {
 
     public AbstractExtendRepositoryNode() {
         super();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.repository.IExtendRepositoryNode#getChildren()
-     */
     @Override
     public Object[] getChildren() {
         return new RepositoryNode[0];

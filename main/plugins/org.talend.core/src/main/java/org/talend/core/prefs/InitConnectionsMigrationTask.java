@@ -21,19 +21,8 @@ import org.talend.core.model.general.ConnectionBean;
 import org.talend.migration.AbstractMigrationTask;
 import org.talend.migration.IWorkspaceMigrationTask;
 
-/**
- * DOC smallet class global comment. Detailled comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- * 
- */
 public class InitConnectionsMigrationTask extends AbstractMigrationTask implements IWorkspaceMigrationTask {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.migration.IMigrationTask#execute()
-     */
     public boolean execute() {
         PreferenceManipulator prefManipulator = new PreferenceManipulator(CorePlugin.getDefault().getPreferenceStore());
 

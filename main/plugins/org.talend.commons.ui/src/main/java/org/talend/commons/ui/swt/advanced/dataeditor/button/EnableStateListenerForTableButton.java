@@ -16,22 +16,10 @@ import org.talend.commons.ui.runtime.swt.tableviewer.selection.ILineSelectionLis
 import org.talend.commons.ui.runtime.swt.tableviewer.selection.LineSelectionEvent;
 import org.talend.commons.ui.swt.tableviewer.TableViewerCreator;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public class EnableStateListenerForTableButton {
 
     private IExtendedTablePushButton pushButton;
 
-    /**
-     * DOC amaumont EnableStateHandlerForTableButton constructor comment.
-     * 
-     * @param extendedTableViewer
-     * @param button
-     */
     public EnableStateListenerForTableButton(final IExtendedTablePushButton button) {
         this.pushButton = button;
 

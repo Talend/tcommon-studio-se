@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.designer.codegen;
 
-/**
- * created by Administrator on 2013-3-14 Detailled comment
- * 
- */
 public enum PigTemplate {
     EVALFUNC("Eval Function", "__PIGUDF_EVALFUNC__"), //$NON-NLS-1$ //$NON-NLS-2$
     STOREFUNC("Store Function", "__PIGUDF_STOREFUNC__"), //$NON-NLS-1$ //$NON-NLS-2$

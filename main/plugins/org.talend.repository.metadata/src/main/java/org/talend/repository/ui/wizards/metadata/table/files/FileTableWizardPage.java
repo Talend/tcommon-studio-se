@@ -203,13 +203,6 @@ public class FileTableWizardPage extends WizardPage {
                 return salesforceStep3From;
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see
-             * org.talend.core.model.metadata.builder.connection.util.ConnectionSwitch#caseWSDLSchemaConnection(org.
-             * talend.core.model.metadata.builder.connection.WSDLSchemaConnection)
-             */
             @Override
             public Object caseWSDLSchemaConnection(WSDLSchemaConnection object) {
                 WSDLSchemaStep2Form sadkSchemaStep2Form = new WSDLSchemaStep2Form(parent, connectionItem, metadataTable);

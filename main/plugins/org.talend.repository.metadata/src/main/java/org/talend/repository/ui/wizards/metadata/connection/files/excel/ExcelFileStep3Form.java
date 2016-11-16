@@ -68,10 +68,6 @@ import org.talend.metadata.managment.ui.utils.ShadowProcessHelper;
 import org.talend.repository.metadata.i18n.Messages;
 import org.talend.repository.metadata.ui.wizards.form.AbstractExcelFileStepForm;
 
-/**
- * 
- * DOC yexiaowei class global comment. Detailled comment
- */
 public class ExcelFileStep3Form extends AbstractExcelFileStepForm {
 
     private static Logger log = Logger.getLogger(ExcelFileStep3Form.class);
@@ -604,11 +600,6 @@ public class ExcelFileStep3Form extends AbstractExcelFileStepForm {
     public void saveMetaData() {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
-     */
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);

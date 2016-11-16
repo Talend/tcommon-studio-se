@@ -67,22 +67,11 @@ public class TableBuilder extends AbstractTableBuilder<TdTable> {
         super(conn, TableType.TABLE);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.cwm.builders.AbstractTableBuilder#createTable()
-     */
     @Override
     protected TdTable createTable() {
         return RelationalFactory.eINSTANCE.createTdTable();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.cwm.builders.AbstractTableBuilder#createTable(java.lang.String, java.lang.String,
-     * java.sql.ResultSet)
-     */
     @Override
     protected TdTable createTable(String catalogName, String schemaPattern, ResultSet tablesSet) throws SQLException {
         TdTable table = super.createTable(catalogName, schemaPattern, tablesSet);

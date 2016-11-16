@@ -18,10 +18,6 @@ import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-/**
- * created by ggu on Jul 28, 2014 Detailled comment
- *
- */
 public class EditableComboBoxCellEditor extends ComboBoxCellEditor {
 
     private CCombo comboList;

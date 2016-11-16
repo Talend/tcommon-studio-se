@@ -17,9 +17,6 @@ import java.util.List;
 
 import org.talend.core.model.metadata.IMetadataColumn;
 
-/**
- * DOC informix class global comment. Detailled comment
- */
 public interface ISalesforceModuleParser {
 
     ArrayList login(String endPoint, String username, String password) throws Exception;

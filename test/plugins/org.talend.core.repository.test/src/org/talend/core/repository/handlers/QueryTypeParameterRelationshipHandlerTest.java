@@ -15,9 +15,6 @@ package org.talend.core.repository.handlers;
 import org.talend.core.model.relationship.AbstractJobParameterInRepositoryRelationshipHandler;
 import org.talend.core.model.relationship.RelationshipItemBuilder;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 @SuppressWarnings("nls")
 public class QueryTypeParameterRelationshipHandlerTest extends AbstractRepositoryTypeParameterRelationshipHandlerTest {
 
@@ -41,12 +38,6 @@ public class QueryTypeParameterRelationshipHandlerTest extends AbstractRepositor
         return RelationshipItemBuilder.QUERY_RELATION;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.repository.handlers.AbstractRepositoryTypeParameterRelationshipHandlerTest#
-     * getRepositoryTypeValuesValue()
-     */
     @Override
     protected String getRepositoryTypeValuesValue() {
         return "ABCyVUx8NF4EewOtnVeZxqg - select";

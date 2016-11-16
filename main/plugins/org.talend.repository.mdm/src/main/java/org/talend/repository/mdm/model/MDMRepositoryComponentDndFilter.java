@@ -24,9 +24,6 @@ import org.talend.core.repository.RepositoryComponentManager;
 import org.talend.core.repository.model.repositoryObject.MetadataTableRepositoryObject;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class MDMRepositoryComponentDndFilter extends DefaultRepositoryComponentDndFilter {
 
     private static final String RECEIVE = "Receive"; //$NON-NLS-1$

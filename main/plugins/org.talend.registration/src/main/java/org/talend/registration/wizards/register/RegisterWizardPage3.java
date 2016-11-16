@@ -35,9 +35,6 @@ import org.talend.registration.ERepositoryImages;
 import org.talend.registration.i18n.Messages;
 import org.talend.repository.ui.login.connections.ConnectionUserPerReader;
 
-/**
- * DOC zli class global comment. Detailled comment
- */
 public class RegisterWizardPage3 extends AbstractBasicWizardDialog {
 
     private String email = null;
@@ -47,12 +44,6 @@ public class RegisterWizardPage3 extends AbstractBasicWizardDialog {
 
     }
 
-    /**
-     * DOC zli RegisterWizardPage1 constructor comment.
-     * 
-     * @param parentShell
-     * @param wizard
-     */
     public RegisterWizardPage3(Shell parentShell, IWizard wizard, String email) {
         super(parentShell, wizard);
         this.email = email;

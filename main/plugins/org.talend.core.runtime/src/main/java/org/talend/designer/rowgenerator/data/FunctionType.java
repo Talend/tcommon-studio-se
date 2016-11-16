@@ -12,12 +12,6 @@
 // ============================================================================
 package org.talend.designer.rowgenerator.data;
 
-/**
- * class global comment. Detailled comment <br/>
- * 
- * $Id: FunctionType.java,v 1.1 2007/01/23 01:33:19 pub Exp $
- * 
- */
 public enum FunctionType {
     StringType,
     DateType,

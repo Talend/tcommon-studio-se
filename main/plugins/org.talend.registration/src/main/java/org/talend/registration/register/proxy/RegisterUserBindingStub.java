@@ -836,14 +836,6 @@ public class RegisterUserBindingStub extends org.apache.axis.client.Stub impleme
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.registeruser.proxy.RegisterUserPortType#
-     * registerUserWithAllUserInformationsUniqueIdAndReturnId(java.lang.String, java.lang.String, java.lang.String,
-     * java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String,
-     * java.lang.String, java.lang.String, java.lang.String)
-     */
     @Override
     public BigInteger registerUserWithAllUserInformationsUniqueIdAndReturnId(String email, String country,
             String designerversion, String productname, String projectLanguage, String osName, String osVersion,

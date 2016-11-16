@@ -27,10 +27,6 @@ import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.model.metadata.IMetadataConnection;
 import org.talend.core.model.metadata.builder.database.DriverShim;
 
-/**
- * created by ggu on Jul 6, 2012 Detailled comment
- * 
- */
 public class GeneralJDBCExtractManagerTest extends AbstractTest4ExtractManager {
 
     @Before

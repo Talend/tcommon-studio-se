@@ -82,11 +82,6 @@ public class RootContainer<K, V> extends Container<K, V> {
         }
     }
 
-    /**
-     * DOC smallet Comment method "contains".
-     * 
-     * @param key
-     */
     public boolean contains(K key) {
         return (getAbsoluteMember(key) == null);
     }

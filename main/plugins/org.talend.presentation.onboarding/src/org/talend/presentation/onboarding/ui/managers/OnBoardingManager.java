@@ -40,10 +40,6 @@ import org.talend.presentation.onboarding.ui.runtimedata.OnBoardingPresentationD
 import org.talend.presentation.onboarding.ui.runtimedata.OnBoardingRegistedResource;
 import org.talend.presentation.onboarding.utils.OnBoardingConstants;
 
-/**
- * created by cmeng on Sep 25, 2015 Detailled comment
- *
- */
 public class OnBoardingManager {
 
     public static final String PREFERENCE_NOT_SHOW_ONBOARDING_AT_STARTUP = OnBoardingConstants.PREFERENCE_NOT_SHOW_ONBOARDING_AT_STARTUP;

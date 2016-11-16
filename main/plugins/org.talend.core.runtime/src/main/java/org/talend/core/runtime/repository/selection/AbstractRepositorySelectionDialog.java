@@ -31,9 +31,6 @@ import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.runtime.repository.IRepositorySelectionDialog;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public abstract class AbstractRepositorySelectionDialog extends Dialog implements IRepositorySelectionDialog {
 
     private Project project;

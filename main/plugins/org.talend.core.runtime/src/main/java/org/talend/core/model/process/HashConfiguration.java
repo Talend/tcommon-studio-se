@@ -14,11 +14,6 @@ package org.talend.core.model.process;
 
 import java.util.List;
 
-/**
- * 
- * DOC amaumont AdvancedMapperComponent class global comment. Detailled comment <br/>
- * 
- */
 public class HashConfiguration implements IHashConfiguration {
 
     private List<IHashableColumn> hashableColumns;
@@ -31,14 +26,6 @@ public class HashConfiguration implements IHashConfiguration {
 
     private String rowsBufferSize;
 
-    /**
-     * DOC amaumont HashConfigurationForMapper constructor comment.
-     * 
-     * @param hashableColumns
-     * @param hashableColumnsIndices
-     * @param matchingMode
-     * @param b
-     */
     public HashConfiguration(List<IHashableColumn> hashableColumns, IMatchingMode matchingMode, boolean persistent,
             String temporaryDataDirectory, String rowsBufferSize) {
         super();
@@ -49,29 +36,14 @@ public class HashConfiguration implements IHashConfiguration {
         this.rowsBufferSize = rowsBufferSize;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.IHashConfiguration#getHashableColumns(java.lang.String)
-     */
     public List<IHashableColumn> getHashableColumns() {
         return this.hashableColumns;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.IHashConfiguration#getMatchingMode()
-     */
     public IMatchingMode getMatchingMode() {
         return this.matchingMode;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.IHashConfiguration#isPersistent()
-     */
     public boolean isPersistent() {
         return persistent;
     }

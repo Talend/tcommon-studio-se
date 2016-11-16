@@ -19,9 +19,6 @@ import java.util.Set;
 
 import org.junit.Test;
 
-/**
- * DOC xqliu class global comment. Detailled comment
- */
 public class StringUtilitiesRealTest {
 
     /**

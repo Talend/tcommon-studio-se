@@ -21,10 +21,6 @@ import org.eclipse.ui.intro.config.IIntroAction;
 import org.eclipse.ui.intro.config.IIntroURL;
 import org.talend.presentation.onboarding.exceptions.OnBoardingExceptionHandler;
 
-/**
- * 
- * DOC wchen class global comment. Detailled comment
- */
 public class DynamicHtmlURL implements IIntroURL {
 
     private String action = null;
@@ -43,7 +39,6 @@ public class DynamicHtmlURL implements IIntroURL {
                     getParameter(IntroURL.KEY_STANDBY));
         }
         return false;
-
     }
 
     @Override

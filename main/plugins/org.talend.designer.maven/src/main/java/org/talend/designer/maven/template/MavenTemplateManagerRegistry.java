@@ -22,9 +22,6 @@ import org.talend.core.utils.RegistryReader;
 import org.talend.designer.maven.DesignerMavenPlugin;
 import org.talend.designer.maven.setting.project.IProjectSettingManagerProvider;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 @SuppressWarnings("nls")
 class MavenTemplateManagerRegistry extends RegistryReader {
 
@@ -59,11 +56,6 @@ class MavenTemplateManagerRegistry extends RegistryReader {
         return projectSettingManagerBundleMap;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.utils.RegistryReader#readElement(org.eclipse.core.runtime.IConfigurationElement)
-     */
     @Override
     protected boolean readElement(final IConfigurationElement element) {
         final String bundleName = element.getContributor().getName();

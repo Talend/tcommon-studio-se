@@ -45,11 +45,6 @@ public abstract class ValueAggregate<T, N> {
     public abstract void addValue(T key, N[] values);
 
     
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();

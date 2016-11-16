@@ -17,9 +17,6 @@ import java.util.Map;
 
 import org.talend.core.model.repository.ERepositoryObjectType;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class TypeImportNode extends FolderImportNode {
 
     private Map<ERepositoryObjectType, TypeImportNode> typeNodesChildrenMap = new HashMap<ERepositoryObjectType, TypeImportNode>();
@@ -48,11 +45,6 @@ public class TypeImportNode extends FolderImportNode {
         return super.getName();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.items.importexport.ui.wizard.imports.models.ImportNode#getDisplayLabel()
-     */
     @Override
     public String getDisplayLabel() {
         return type.getLabel();

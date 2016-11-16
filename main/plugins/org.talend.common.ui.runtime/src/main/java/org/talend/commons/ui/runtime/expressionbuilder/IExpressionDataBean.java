@@ -16,12 +16,6 @@ import java.util.List;
 
 import org.talend.commons.runtime.model.expressionbuilder.Variable;
 
-/**
- * yzhang class global comment. Detailled comment <br/>
- * 
- * $Id: IExpressionConsumer.java 下午04:21:19 2007-8-1 +0000 (2007-8-1) yzhang $
- * 
- */
 public interface IExpressionDataBean {
 
     public String getExpression();

@@ -54,11 +54,6 @@ public class XPathContentProposal implements IContentProposal {
         this.comment = comment;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.fieldassist.IContentProposal#getContent()
-     */
     public String getContent() {
         if (comment != null) {
             content = ""; //$NON-NLS-1$
@@ -68,20 +63,10 @@ public class XPathContentProposal implements IContentProposal {
         return content;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.fieldassist.IContentProposal#getCursorPosition()
-     */
     public int getCursorPosition() {
         return content.length() + 1;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.fieldassist.IContentProposal#getDescription()
-     */
     public String getDescription() {
         // StringBuilder sb = new StringBuilder();
         return null;
@@ -94,11 +79,6 @@ public class XPathContentProposal implements IContentProposal {
         return String.valueOf(object);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.fieldassist.IContentProposal#getLabel()
-     */
     public String getLabel() {
         if (comment != null) {
             return comment;

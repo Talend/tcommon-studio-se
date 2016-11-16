@@ -344,11 +344,6 @@ public class WSDLSchemaStep2Form extends AbstractWSDLSchemaStepForm {
         return processDescription;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#adaptFormToReadOnly()
-     */
     @Override
     protected void adaptFormToReadOnly() {
         readOnly = isReadOnly();
@@ -360,11 +355,6 @@ public class WSDLSchemaStep2Form extends AbstractWSDLSchemaStepForm {
         metadataNameText.setReadOnly(!inputModel);
     }
 
-    /**
-     * DOC ocarbone Comment method "refreshMetaData".
-     * 
-     * @param csvArray
-     */
     public void refreshMetaDataTable(final CsvArray csvArray, ProcessDescription processDescription) {
         informationLabel.setText("   " + Messages.getString("FileStep3.guessIsDone")); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -525,11 +515,6 @@ public class WSDLSchemaStep2Form extends AbstractWSDLSchemaStepForm {
         return numbersOfColumns;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
-     */
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);

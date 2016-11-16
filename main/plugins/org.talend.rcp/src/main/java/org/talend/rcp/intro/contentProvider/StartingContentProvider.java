@@ -22,34 +22,26 @@ import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ui.branding.IBrandingService;
 import org.w3c.dom.Element;
 
-/**
- * 
- * DOC wchen class global comment. Detailled comment
- */
 public class StartingContentProvider implements IIntroXHTMLContentProvider {
 
     @Override
     public void init(IIntroContentProviderSite site) {
         // TODO Auto-generated method stub
-
     }
 
     @Override
     public void createContent(String id, PrintWriter out) {
         // TODO Auto-generated method stub
-
     }
 
     @Override
     public void createContent(String id, Composite parent, FormToolkit toolkit) {
         // TODO Auto-generated method stub
-
     }
 
     @Override
     public void dispose() {
         // TODO Auto-generated method stub
-
     }
 
     @Override
@@ -59,4 +51,5 @@ public class StartingContentProvider implements IIntroXHTMLContentProvider {
             service.createStartingContent(id, parent);
         }
     }
+
 }

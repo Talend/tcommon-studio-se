@@ -21,13 +21,9 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryContentHandler;
 import org.talend.core.model.repository.RepositoryContentManager;
 
-/**
- * ggu class global comment. Detailled comment
- */
 public class RepositoryImageProvider {
 
     public static IImage getIcon(ERepositoryObjectType type) {
-
         if (type == ERepositoryObjectType.SVN_ROOT) {
             return ECoreImage.SVN_ROOT_ICON;
         } else if (type == ERepositoryObjectType.BUSINESS_PROCESS) {

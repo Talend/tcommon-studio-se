@@ -37,14 +37,8 @@ import org.talend.librariesmanager.model.ModulesNeededProvider;
 import org.talend.librariesmanager.ui.i18n.Messages;
 
 /**
- * This is the composite filled in the ModulesView. So it implemented the inferface IModulesViewComposite. Know more see
+ * This is the composite filled in the ModulesView. So it implemented the interface IModulesViewComposite. Know more see
  * interface IModulesViewComposite.
- * 
- * yzhang class global comment. Detailled comment <br/>
- * 
- * $Id: PerlModulesViewComposite.java PerlModulesViewComposite 2007-1-26 下�?�1�7:53:04 +0000 (下�?�1�7:53:04, 2007-1-26
- * 2007) yzhang $
- * 
  */
 public class ModulesViewComposite extends Composite {
 
@@ -58,8 +52,6 @@ public class ModulesViewComposite extends Composite {
 
     /**
      * Construct a new Perl modules view composite.
-     * 
-     * yzhang PerlModulesViewComposite constructor comment.
      * 
      * @param parent
      * @param style

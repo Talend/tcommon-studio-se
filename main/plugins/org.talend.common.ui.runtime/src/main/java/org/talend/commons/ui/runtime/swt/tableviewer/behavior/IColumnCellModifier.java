@@ -12,16 +12,9 @@
 // ============================================================================
 package org.talend.commons.ui.runtime.swt.tableviewer.behavior;
 
-/**
- * 
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * @param <B> bean
- */
 public interface IColumnCellModifier<B> {
 
     /**
-     * 
      * Can modify the value at current column in the given bean.
      * 
      * @param bean
@@ -30,7 +23,6 @@ public interface IColumnCellModifier<B> {
     public boolean canModify(B bean);
 
     /**
-     * 
      * Get the value at current column from the given bean.
      * 
      * @param bean
@@ -40,9 +32,6 @@ public interface IColumnCellModifier<B> {
     public Object getValue(B bean);
 
     /**
-     * 
-     * DOC amaumont Comment method "modify".
-     * 
      * @param bean
      * @param value
      * @return true if modify has modified bean, else false so DefaultCellModifier will process the modification.

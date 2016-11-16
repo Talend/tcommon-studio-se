@@ -22,30 +22,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.talend.registration.i18n.Messages;
 
-/**
- * DOC mhirt class global comment. Detailled comment <br/>
- * 
- * $Id: LicenseWizardDialog.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
- */
 public final class LicenseWizardDialog extends WizardDialog {
 
-    /**
-     * DOC mhirt LicenseWizardDialog constructor comment.
-     * 
-     * @param parentShell
-     * @param newWizard
-     */
     public LicenseWizardDialog(Shell parentShell, IWizard newWizard) {
         super(parentShell, newWizard);
-        // TODO Auto-generated constructor stub
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.wizard.WizardDialog#createButtonsForButtonBar(org.eclipse.swt.widgets.Composite)
-     */
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
         super.createButtonsForButtonBar(parent);
@@ -63,4 +45,5 @@ public final class LicenseWizardDialog extends WizardDialog {
             buttonCancle.setLayoutData(data);
         }
     }
+
 }

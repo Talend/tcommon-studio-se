@@ -18,10 +18,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.registration.RegistrationPlugin;
 
-/**
- * created by ggu on 23 Jan 2015 Detailled comment
- *
- */
 public class HttpProxyUtil {
 
     public static void setHttpProxyInfo(boolean enable, String httpProxyServer, String httpProxyPort) {

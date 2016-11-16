@@ -24,12 +24,6 @@ import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.talend.core.model.properties.ByteArray;
 import org.talend.core.model.properties.PropertiesFactory;
 
-/**
- * DOC mhelleboid class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public class ByteArrayResource extends ResourceImpl {
 
     public ByteArrayResource(URI uri) {

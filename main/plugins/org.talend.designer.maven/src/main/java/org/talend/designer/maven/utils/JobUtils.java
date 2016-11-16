@@ -30,10 +30,6 @@ import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.designer.core.IDesignerCoreService;
 import org.talend.designer.runprocess.IProcessor;
 
-/**
- * created by ycbai on 2015年4月3日 Detailled comment
- *
- */
 public class JobUtils {
 
     public static List<String> getRunningJobFolders(IProcessor processor) {

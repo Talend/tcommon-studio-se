@@ -31,10 +31,7 @@ import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 
 /**
- * This bean is use to manage needed moduless (perl) and libraries (java).<br/>
- *
- * $Id: ModuleNeeded.java 38013 2010-03-05 14:21:59Z mhirt $
- *
+ * This bean is use to manage needed moduless (perl) and libraries (java).
  */
 public class ModuleNeeded {
 
@@ -106,12 +103,6 @@ public class ModuleNeeded {
         serviceTracker.open();
     }
 
-    /**
-     * DOC smallet ModuleNeeded class global comment. Detailled comment <br/>
-     *
-     * $Id: ModuleNeeded.java 38013 2010-03-05 14:21:59Z mhirt $
-     *
-     */
     public enum ELibraryInstallStatus {
         UNKNOWN,
         INSTALLED,
@@ -119,19 +110,8 @@ public class ModuleNeeded {
         NOT_INSTALLED,
         DEPLOYED,
         NOT_DEPLOYED;
-
     }
 
-    /**
-     * DOC smallet ModuleNeeded constructor comment.
-     *
-     * @param context
-     * @param moduleName
-     * @param informationMsg
-     * @param required
-     * @param unused
-     * @param status
-     */
     public ModuleNeeded(String context, String moduleName, String informationMsg, boolean required) {
         this(context, moduleName, informationMsg, required, null, null, null, ELibraryInstallStatus.UNKNOWN);
     }
@@ -418,11 +398,6 @@ public class ModuleNeeded {
         this.moduleLocaion = moduleLocaion;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         int hashCode = 31;
@@ -441,11 +416,6 @@ public class ModuleNeeded {
         return hashCode;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -555,20 +525,10 @@ public class ModuleNeeded {
         return mavenUri;
     }
 
-    /**
-     * Getter for mavenUriSnapshot.
-     * 
-     * @return the mavenUriSnapshot
-     */
     public String getMavenUri() {
         return getMavenUri(false);
     }
 
-    /**
-     * Sets the mavenUrl.
-     * 
-     * @param mavenUrl the mavenUrl to set
-     */
     public void setMavenUri(String mavenUri) {
         this.mavenUri = addTypeForMavenUri(mavenUri, getModuleName());
     }

@@ -25,9 +25,6 @@ import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 
-/**
- * DOC hywang class global comment. Detailled comment
- */
 public class DatabaseConnectionParameterUtil {
 
     public static String getTrueParamValue(DatabaseConnection conn, String paramValue) {

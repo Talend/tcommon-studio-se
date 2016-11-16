@@ -23,10 +23,6 @@ import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.template.ETalendMavenVariables;
 import org.talend.designer.maven.utils.PomUtil;
 
-/**
- * created by ggu on 2 Feb 2015 Detailled comment
- *
- */
 public abstract class CreateMaven {
 
     /* by default, the version is same as product */

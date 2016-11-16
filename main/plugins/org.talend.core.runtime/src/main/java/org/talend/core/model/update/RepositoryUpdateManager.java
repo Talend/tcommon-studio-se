@@ -105,9 +105,6 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IRepositoryService;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * ggu class global comment. Detailled comment
- */
 public abstract class RepositoryUpdateManager {
 
     /**

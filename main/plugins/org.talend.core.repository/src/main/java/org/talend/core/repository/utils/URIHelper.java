@@ -18,12 +18,6 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
 
-/**
- * DOC mhelleboid class global comment. Detailled comment <br/>
- * 
- * $Id: URIHelper.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
- */
 public class URIHelper {
 
     private static final String RESOURCE = "resource"; //$NON-NLS-1$

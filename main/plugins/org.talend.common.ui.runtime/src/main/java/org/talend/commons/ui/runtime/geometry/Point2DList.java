@@ -34,13 +34,6 @@ package org.talend.commons.ui.runtime.geometry;
 
 import java.util.ListIterator;
 
-/**
- * 
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id: Point2DList.java 7048 2007-11-16 02:36:17Z nrousseau $
- * 
- */
 public class Point2DList extends PointList {
 
     // contains

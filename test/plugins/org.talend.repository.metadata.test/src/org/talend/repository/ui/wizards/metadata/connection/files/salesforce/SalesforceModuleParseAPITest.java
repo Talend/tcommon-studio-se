@@ -19,9 +19,6 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * DOC Administrator class global comment. Detailled comment
- */
 public class SalesforceModuleParseAPITest {
 
     String proxyType = "http";
@@ -40,11 +37,6 @@ public class SalesforceModuleParseAPITest {
 
     boolean httpsProxy;
 
-    /**
-     * DOC Administrator Comment method "setUp".
-     * 
-     * @throws java.lang.Exception
-     */
     @Before
     public void setUp() throws Exception {
 

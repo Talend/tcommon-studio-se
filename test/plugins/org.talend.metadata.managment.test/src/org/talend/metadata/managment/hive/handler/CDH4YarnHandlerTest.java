@@ -24,26 +24,12 @@ import org.talend.core.model.metadata.IMetadataConnection;
 import org.talend.core.model.metadata.builder.MetadataConnection;
 import org.talend.core.model.metadata.connection.hive.HiveModeInfo;
 
-/**
- * created by qiongli on 2014-3-11 Detailled comment
- * 
- */
 public class CDH4YarnHandlerTest {
 
-    /**
-     * DOC qiongli Comment method "setUp".
-     * 
-     * @throws java.lang.Exception
-     */
     @Before
     public void setUp() throws Exception {
     }
 
-    /**
-     * DOC qiongli Comment method "tearDown".
-     * 
-     * @throws java.lang.Exception
-     */
     @After
     public void tearDown() throws Exception {
     }

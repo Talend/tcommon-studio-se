@@ -15,12 +15,6 @@ package org.talend.repository.model;
 import org.talend.commons.ui.runtime.image.IImage;
 import org.talend.core.model.repository.ERepositoryObjectType;
 
-/**
- * DOC smallet class global comment. Detailled comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- * 
- */
 public class StableRepositoryNode extends RepositoryNode {
 
     private IImage icon;
@@ -29,13 +23,6 @@ public class StableRepositoryNode extends RepositoryNode {
 
     private ERepositoryObjectType childrenObjectType;
 
-    /**
-     * DOC smallet StableRepositoryNode constructor comment.
-     * 
-     * @param object
-     * @param parent
-     * @param type
-     */
     public StableRepositoryNode(RepositoryNode parent, String label, IImage icon) {
         super(null, parent, ENodeType.STABLE_SYSTEM_FOLDER);
         this.label = label;

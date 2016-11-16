@@ -16,9 +16,6 @@ import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.model.metadata.query.AbstractQueryGenerator;
 import org.talend.core.model.utils.TalendTextUtils;
 
-/**
- * ggu class global comment. Detailled comment
- */
 public class OracleQueryGenerator extends AbstractQueryGenerator {
 
     public OracleQueryGenerator(EDatabaseTypeName dbType) {
@@ -33,10 +30,8 @@ public class OracleQueryGenerator extends AbstractQueryGenerator {
             String schemaName = schema;
             if (getElement() != null) {
                 tableName = getDBTableName(getElement());
-                // schemaName = getSchema(getElement());
             } else {
                 tableName = realTableName;
-                // schemaName = schema;
             }
             final String tableNameWithDBAndSchema = getTableNameWithDBAndSchema("", schemaName, tableName);
 

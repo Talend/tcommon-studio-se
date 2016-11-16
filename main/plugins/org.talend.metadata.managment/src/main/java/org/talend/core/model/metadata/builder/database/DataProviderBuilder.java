@@ -20,8 +20,6 @@ import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.cwm.helper.ConnectionHelper;
 
 /**
- * DOC scorreia class global comment. Detailled comment
- * 
  * @deprecated this class does not seem to be used anymore. Remove it?
  */
 public class DataProviderBuilder extends CwmBuilder {

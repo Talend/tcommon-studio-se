@@ -15,9 +15,6 @@ package org.talend.core.model.repository.documentation;
 import org.talend.core.IService;
 import org.talend.core.model.properties.Item;
 
-/**
- * tang class global comment. Detailled comment
- */
 public interface IDocumentationService extends IService {
 
     public boolean saveDocumentNode(Item item) throws Exception;

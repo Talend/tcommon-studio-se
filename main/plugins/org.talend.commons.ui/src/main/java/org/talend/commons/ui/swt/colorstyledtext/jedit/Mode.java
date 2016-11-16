@@ -23,20 +23,8 @@ import org.apache.regexp.RESyntaxException;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.commons.ui.runtime.i18n.Messages;
 
-/**
- * DOC nrousseau class global comment. Detailled comment <br/>
- * 
- * $Id: Mode.java 7038 2007-11-15 14:05:48Z plegall $
- * 
- */
 public class Mode {
 
-    /**
-     * DOC nrousseau Mode class global comment. Detailled comment <br/>
-     * 
-     * $Id: Mode.java 7038 2007-11-15 14:05:48Z plegall $
-     * 
-     */
     class ModeSyntaxListener implements ISyntaxListener {
 
         public void newEOLSpan(String type, String text) {

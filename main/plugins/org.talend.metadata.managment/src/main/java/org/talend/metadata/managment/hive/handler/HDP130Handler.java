@@ -17,10 +17,6 @@ import java.util.Map;
 
 import org.talend.core.model.metadata.IMetadataConnection;
 
-/**
- * created by xqliu on 2013-11-1 Detailled comment
- * 
- */
 public class HDP130Handler extends HortonWorksHandler {
 
     private final String MAP_MB = "mapred.job.map.memory.mb"; //$NON-NLS-1$
@@ -36,9 +32,7 @@ public class HDP130Handler extends HortonWorksHandler {
     }
 
     /*
-     * (non-Javadoc)
-     * 
-     * If user didn't fill the property in connection wizard,set a default value for this properties. Requried
+     * If user didn't fill the property in connection wizard,set a default value for this properties. Required
      * properties:"mapred.job.map.memory.mb";"mapred.job.reduce.memory.mb"
      */
     @Override

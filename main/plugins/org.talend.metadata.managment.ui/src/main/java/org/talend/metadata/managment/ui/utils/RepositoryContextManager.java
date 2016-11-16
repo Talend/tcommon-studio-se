@@ -23,10 +23,6 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.talend.commons.exception.ExceptionHandler;
 
-/**
- * created by ldong on Dec 18, 2014 Detailled comment
- * 
- */
 public class RepositoryContextManager {
 
     public static List<IRepositoryContextHandler> handlers = null;

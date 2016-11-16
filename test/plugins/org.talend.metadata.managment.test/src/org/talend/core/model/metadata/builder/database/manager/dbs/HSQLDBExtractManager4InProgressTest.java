@@ -28,10 +28,6 @@ import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.model.metadata.IMetadataConnection;
 import org.talend.core.model.metadata.builder.database.DriverShim;
 
-/**
- * created by ggu on Jul 4, 2012 Detailled comment
- * 
- */
 public class HSQLDBExtractManager4InProgressTest extends HSQLDBExtractManagerTest {
 
     @Override

@@ -25,21 +25,10 @@ import org.talend.utils.sql.metadata.constants.MetaDataConstants;
 import orgomg.cwm.resource.relational.Catalog;
 import orgomg.cwm.resource.relational.Schema;
 
-/**
- * created by talend on Dec 30, 2013 Detailled comment
- * 
- */
 public class SybaseConnectionFillerImpl extends DBConnectionFillerImpl {
 
     private static Logger log = Logger.getLogger(SybaseConnectionFillerImpl.class);
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.metadata.DBConnectionFillerImpl#fillSchemaToCatalog(org.talend.core.model.metadata.builder
-     * .connection.Connection, java.sql.DatabaseMetaData, orgomg.cwm.resource.relational.Catalog, java.util.List)
-     */
     @Override
     public List<Schema> fillSchemaToCatalog(DatabaseConnection dbConn, DatabaseMetaData dbJDBCMetadata, Catalog catalog,
             List<String> schemaFilter) throws Throwable {

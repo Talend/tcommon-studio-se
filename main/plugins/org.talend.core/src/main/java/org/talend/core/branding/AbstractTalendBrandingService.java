@@ -14,9 +14,6 @@ package org.talend.core.branding;
 
 import org.talend.core.ui.branding.AbstractBrandingService;
 
-/**
- * DOC xtan class global comment. Detailled comment
- */
 public abstract class AbstractTalendBrandingService extends AbstractBrandingService {
 
     public String getFullProductName() {

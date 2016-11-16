@@ -108,11 +108,6 @@ public final class TestExtendedTableViewer extends AbstractDataTableEditorView<D
         display.dispose();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.advanced.macrotable.AbstractExtendedTableViewer#createColumns()
-     */
     @Override
     protected void createColumns(TableViewerCreator<DataObject> tableViewerCreator, Table table) {
         CellEditorValueAdapter intValueAdapter = new CellEditorValueAdapter() {

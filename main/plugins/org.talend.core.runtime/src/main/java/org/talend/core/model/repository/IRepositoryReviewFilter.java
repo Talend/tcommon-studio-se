@@ -15,10 +15,6 @@ package org.talend.core.model.repository;
 import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.jface.viewers.Viewer;
 
-/**
- * created by wchen on 2013-11-12 Detailled comment
- * 
- */
 public interface IRepositoryReviewFilter extends IExecutableExtension {
 
     public boolean filter(Viewer viewer, Object parentElement, Object element, String filterType);

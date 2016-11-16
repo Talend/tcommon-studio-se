@@ -33,9 +33,6 @@ import org.talend.metadata.managment.mdm.S60MdmConnectionHelper;
 import org.talend.metadata.managment.ui.wizard.AbstractForm;
 import org.talend.repository.mdm.i18n.Messages;
 
-/**
- * DOC hwang class global comment. Detailled comment
- */
 public class UniverseForm extends AbstractForm {
 
     private LabelledCombo universeCombo = null;
@@ -43,8 +40,6 @@ public class UniverseForm extends AbstractForm {
     private LabelledCombo modelText = null;
 
     private LabelledCombo clusterText = null;
-
-    // private MDMWizardPage mdmWizardPage;
 
     private List<String> universList = new ArrayList<String>();
 
@@ -64,14 +59,6 @@ public class UniverseForm extends AbstractForm {
 
     private String pkRegex = "";
 
-    /**
-     * DOC Administrator UniverseForm constructor comment.
-     * 
-     * @param parent
-     * @param style
-     * @param existingNames
-     * @param universePage
-     */
     protected UniverseForm(Composite parent, int style, String[] existingNames, ConnectionItem connectionItem,
             UniversePage universePage) {
         super(parent, style, existingNames);
@@ -84,22 +71,11 @@ public class UniverseForm extends AbstractForm {
         setupForm(true);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#adaptFormToReadOnly()
-     */
     @Override
     protected void adaptFormToReadOnly() {
         // TODO Auto-generated method stub
-
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addFields()
-     */
     @Override
     protected void addFields() {
         Group mdmParameterGroup = new Group(this, SWT.NULL);
@@ -121,11 +97,6 @@ public class UniverseForm extends AbstractForm {
         universePage.setPageComplete(false);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addFieldsListeners()
-     */
     @Override
     protected void addFieldsListeners() {
         if (universeCombo != null) {
@@ -188,22 +159,12 @@ public class UniverseForm extends AbstractForm {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addUtilsButtonListeners()
-     */
     @Override
     protected void addUtilsButtonListeners() {
         // TODO Auto-generated method stub
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#checkFieldsValue()
-     */
     @Override
     protected boolean checkFieldsValue() {
         if (universeCombo != null && (universeCombo.getText() == null || "".equals(universeCombo.getText()))) {
@@ -225,11 +186,6 @@ public class UniverseForm extends AbstractForm {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#initialize()
-     */
     @Override
     protected void initialize() {
         String universeValue = getConnection().getUniverse();
@@ -319,22 +275,6 @@ public class UniverseForm extends AbstractForm {
         clusterText.setText(clusters.get(0));
     }
 
-    // private void refreshClusterCombo(WSDataClusterPK[] clusters) {
-    // String connCluster = (String) clusterText.getCombo().getData();
-    // clusterText.removeAll();
-    // if (clusters.length <= 0) {
-    // return;
-    // }
-    // for (WSDataClusterPK cluster : clusters) {
-    // clusterText.add(cluster.getPk());
-    // }
-    //        if (!"".equals(connCluster) && connCluster != null) { //$NON-NLS-1$
-    // clusterText.setText(connCluster);
-    // return;
-    // }
-    // clusterText.setText(clusters[0].getPk());
-    // }
-
     public MDMConnection getConnection() {
         return (MDMConnection) connectionItem.getConnection();
     }
@@ -343,11 +283,6 @@ public class UniverseForm extends AbstractForm {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
-     */
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);

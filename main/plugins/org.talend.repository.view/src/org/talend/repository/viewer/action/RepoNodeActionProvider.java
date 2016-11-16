@@ -46,11 +46,6 @@ public class RepoNodeActionProvider extends CommonActionProvider {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.navigator.CommonActionProvider#init(org.eclipse.ui.navigator.ICommonActionExtensionSite)
-     */
     @Override
     public void init(ICommonActionExtensionSite aSite) {
 
@@ -58,11 +53,6 @@ public class RepoNodeActionProvider extends CommonActionProvider {
         makeActions();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.actions.ActionGroup#fillContextMenu(org.eclipse.jface.action.IMenuManager)
-     */
     @Override
     public void fillContextMenu(IMenuManager manager) {
         super.fillContextMenu(manager);
@@ -71,9 +61,6 @@ public class RepoNodeActionProvider extends CommonActionProvider {
     }
 
     /**
-     * 
-     * DOC ggu Comment method "addActions".
-     * 
      * check and add all contextualsActions
      * 
      * @param manager
@@ -193,11 +180,6 @@ public class RepoNodeActionProvider extends CommonActionProvider {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.actions.ActionGroup#fillActionBars(org.eclipse.ui.IActionBars)
-     */
     @Override
     public void fillActionBars(IActionBars actionBars) {
         if (doubleClickAction != null && !doubleClickAction.getStructuredViewer().equals(getActionSite().getStructuredViewer())) {
@@ -211,7 +193,6 @@ public class RepoNodeActionProvider extends CommonActionProvider {
         }
         super.fillActionBars(actionBars);
         actionBars.setGlobalActionHandler(ICommonActionConstants.OPEN, doubleClickAction);
-
     }
 
 }

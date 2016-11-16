@@ -41,14 +41,8 @@ import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.repository.i18n.Messages;
 import org.talend.core.repository.model.ContextReferenceBean;
 
-/**
- * DOC hwang class global comment. Detailled comment
- */
 public class ContextReferenceDialog extends SelectionDialog {
 
-    /**
-     * DOC hwang ContextReferenceDialog class global comment. Detailled comment
-     */
     class ContextsProvide extends LabelProvider implements ITableLabelProvider {
 
         @Override

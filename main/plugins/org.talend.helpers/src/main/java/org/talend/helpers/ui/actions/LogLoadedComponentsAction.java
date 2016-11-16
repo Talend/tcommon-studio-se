@@ -23,12 +23,6 @@ import org.talend.core.model.components.IComponentsFactory;
 import org.talend.core.ui.component.ComponentsFactoryProvider;
 import org.talend.helpers.i18n.Messages;
 
-/**
- * DOC smallet class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public class LogLoadedComponentsAction extends Action implements IWorkbenchWindowActionDelegate {
 
     private static Logger log = Logger.getLogger(LogLoadedComponentsAction.class);
@@ -38,11 +32,6 @@ public class LogLoadedComponentsAction extends Action implements IWorkbenchWindo
         this.setActionDefinitionId("logLoadedComponents"); //$NON-NLS-1$
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.action.Action#run()
-     */
     @Override
     public void run() {
         IComponentsFactory componentsFactory = ComponentsFactoryProvider.getInstance();

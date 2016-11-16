@@ -41,11 +41,6 @@ public class ChangePerspectiveAction extends Action {
         this.perspectiveId = perspectiveId;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.action.Action#run()
-     */
     @Override
     public void run() {
         IWorkbench workbench = PlatformUI.getWorkbench();

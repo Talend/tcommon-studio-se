@@ -82,12 +82,6 @@ import org.talend.repository.ui.wizards.metadata.connection.files.xml.TreePopula
 import org.talend.repository.ui.wizards.metadata.connection.files.xml.dnd.XmlToSchemaDragAndDropHandler;
 import org.w3c.dom.Node;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public class XmlToXPathLinker extends TreeToTablesLinker<Object, Object> {
 
     private TreePopulator treePopulator;
@@ -115,8 +109,6 @@ public class XmlToXPathLinker extends TreeToTablesLinker<Object, Object> {
     private boolean isXSDFile;
 
     /**
-     * DOC amaumont XmlToMetadataTableLinker constructor comment.
-     * 
      * @param commonParent common main parent of tree and table, it and its children should have backgoundMode
      * configured with SWT.INHERIT_FORCE, same configuration for parents of tree and table.
      * @param tree
@@ -430,11 +422,6 @@ public class XmlToXPathLinker extends TreeToTablesLinker<Object, Object> {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.linking.TreeToTableLinker#drawBackground(org.eclipse.swt.graphics.GC)
-     */
     @Override
     public void drawBackground(GC gc) {
 
@@ -1074,11 +1061,6 @@ public class XmlToXPathLinker extends TreeToTablesLinker<Object, Object> {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.linking.TreeToTablesLinker#getDrawingLinksComparator()
-     */
     @Override
     protected Comparator<LinkDescriptor<TreeItem, Object, Table, Object>> getDrawingLinksComparator() {
         if (this.drawingLinksComparator == null) {

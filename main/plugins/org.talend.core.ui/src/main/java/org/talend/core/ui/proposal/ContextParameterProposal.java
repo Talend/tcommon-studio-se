@@ -41,11 +41,6 @@ public class ContextParameterProposal implements IContentProposal {
         this.contextParameter = contextParameter;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.fieldassist.IContentProposal#getContent()
-     */
     @Override
     public String getContent() {
 
@@ -53,21 +48,11 @@ public class ContextParameterProposal implements IContentProposal {
         return ContextParameterUtils.getNewScriptCode(contextParameter.getName(), language);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.fieldassist.IContentProposal#getCursorPosition()
-     */
     @Override
     public int getCursorPosition() {
         return getContent().length();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.fieldassist.IContentProposal#getDescription()
-     */
     @Override
     public String getDescription() {
         String desc = new String();
@@ -95,11 +80,6 @@ public class ContextParameterProposal implements IContentProposal {
         return message;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.fieldassist.IContentProposal#getLabel()
-     */
     @Override
     public String getLabel() {
         return ContextParameterUtils.JAVA_NEW_CONTEXT_PREFIX + contextParameter.getName();

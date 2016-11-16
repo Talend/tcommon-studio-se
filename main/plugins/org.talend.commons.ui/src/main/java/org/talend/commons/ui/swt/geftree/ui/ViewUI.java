@@ -14,9 +14,6 @@ package org.talend.commons.ui.swt.geftree.ui;
 
 import org.eclipse.ui.forms.widgets.Form;
 
-/**
- * DOC hwang class global comment. Detailled comment
- */
 public interface ViewUI {
 
     public abstract Form getForm();

@@ -35,12 +35,6 @@ import org.talend.librariesmanager.ui.actions.DownloadExternalJarAction;
 import org.talend.librariesmanager.ui.actions.ImportExternalJarAction;
 import org.talend.librariesmanager.ui.actions.RemoveExternalJarAction;
 
-/**
- * DOC nrousseau class global comment. Detailled comment <br/>
- * 
- * $Id: ModulesView.java 1811 2007-02-05 03:29:11Z qzhang $
- * 
- */
 public class ModulesView extends ViewPart {
 
     private CheckModulesAction checkAction;
@@ -51,21 +45,17 @@ public class ModulesView extends ViewPart {
 
     /**
      * Ask the modules view composite to refresh its content.
-     * 
-     * yzhang Comment method "refresh".
      */
     public void refresh() {
         modulesViewComposite.refresh();
     }
 
     /*
-     * Creat the content of this view.
-     * 
-     * @see org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
+     * Create the content of this view.
      */
     @Override
     public void createPartControl(Composite parent) {
-        // If the content of this view need to display libries of Java, a new composite for it should be developed. And
+        // If the content of this view need to display libraries of Java, a new composite for it should be developed. And
         // replace the PerlModulesViewComposite here.
 
         modulesViewComposite = new ModulesViewComposite(parent);

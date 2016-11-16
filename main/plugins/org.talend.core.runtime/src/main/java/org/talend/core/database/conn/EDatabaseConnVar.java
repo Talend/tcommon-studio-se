@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.core.database.conn;
 
-/**
- * cli class global comment. Detailled comment
- */
 public enum EDatabaseConnVar {
     HOST("<host>", DatabaseConnConstants.PATTERN_HOST), //$NON-NLS-1$
     PORT("<port>", DatabaseConnConstants.PATTERN_PORT), //$NON-NLS-1$
@@ -28,7 +25,6 @@ public enum EDatabaseConnVar {
     LOGIN("<login>"), //$NON-NLS-1$
     PASSWORD("<password>"), //$NON-NLS-1$
     XXX("<xxx>", "xxxx"), //$NON-NLS-1$ //$NON-NLS-2$
-    //
     ;
 
     private String variable;

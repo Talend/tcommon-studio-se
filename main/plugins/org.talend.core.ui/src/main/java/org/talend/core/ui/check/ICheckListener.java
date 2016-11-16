@@ -12,11 +12,6 @@
 // ============================================================================
 package org.talend.core.ui.check;
 
-/**
- * 
- * created by ycbai on 2015年9月30日 Detailled comment
- *
- */
 public interface ICheckListener {
 
     public void checkPerformed(IChecker source);

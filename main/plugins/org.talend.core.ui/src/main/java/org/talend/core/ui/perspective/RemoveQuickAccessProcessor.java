@@ -18,12 +18,6 @@ import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.menu.MTrimContribution;
 
-
-/**
- * created by nrousseau on Aug 18, 2015
- * Detailled comment
- *
- */
 public class RemoveQuickAccessProcessor {
 
     @Execute
@@ -36,4 +30,5 @@ public class RemoveQuickAccessProcessor {
             }
         }
     }
+
 }

@@ -28,16 +28,8 @@ import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.PropertiesFactory;
 import org.talend.core.model.repository.ERepositoryObjectType;
 
-/**
- * created by sgandon on 7 avr. 2014 Detailled comment
- * 
- */
 public class AbstractItemMigrationTaskTest {
 
-    /**
-     * created by sgandon on 23 avr. 2014 Detailled comment
-     * 
-     */
     public class JobAndCodeItemMigrationTask extends AbstractItemMigrationTask {
 
         @Override
@@ -50,11 +42,6 @@ public class AbstractItemMigrationTaskTest {
             return null;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.talend.core.model.migration.AbstractItemMigrationTask#getTypes()
-         */
         @Override
         public List<ERepositoryObjectType> getTypes() {
             return Arrays.asList(ERepositoryObjectType.JOB_DOC, ERepositoryObjectType.CODE);
@@ -73,11 +60,6 @@ public class AbstractItemMigrationTaskTest {
             return null;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.talend.core.model.migration.AbstractItemMigrationTask#getTypes()
-         */
         @Override
         public List<ERepositoryObjectType> getTypes() {
             return Arrays.asList(ERepositoryObjectType.JOB_DOC);
@@ -98,11 +80,6 @@ public class AbstractItemMigrationTaskTest {
             return null;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.talend.core.model.migration.AbstractItemMigrationTask#getTypes()
-         */
         @Override
         public List<ERepositoryObjectType> getTypes() {
             return Collections.EMPTY_LIST;

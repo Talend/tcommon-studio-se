@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.core.runtime.process;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public interface TalendProcessOptionConstants {
 
     /**

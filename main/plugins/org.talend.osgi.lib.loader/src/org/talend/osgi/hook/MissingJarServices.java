@@ -20,17 +20,6 @@ import org.talend.osgi.configurator.OsgiLoaderActivator;
 import org.talend.osgi.hook.maven.MavenResolver;
 import org.talend.osgi.hook.notification.JarMissingObservable;
 
-/**
- * created by sgandon on 17 oct. 2014 Detailled comment
- */
-/**
- * created by sgandon on 27 mai 2015 Detailled comment
- *
- */
-/**
- * created by sgandon on 27 mai 2015 Detailled comment
- *
- */
 public class MissingJarServices {
 
     static final boolean DEBUG = false;// we canot use the PDE debug feature cause we are a osgi fragment loaded way

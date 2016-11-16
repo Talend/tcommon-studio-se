@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.metadata.managment.utils;
 
-/**
- * DOC Administrator class global comment. Detailled comment
- */
 public class ManagementTextUtils {
 
     public static final String QUOTATION_MARK = "\""; //$NON-NLS-1$

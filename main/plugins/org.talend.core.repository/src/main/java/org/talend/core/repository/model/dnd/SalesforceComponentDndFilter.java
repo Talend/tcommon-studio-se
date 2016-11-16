@@ -22,10 +22,6 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.repository.DefaultRepositoryComponentDndFilter;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * created by cmeng on Apr 21, 2015 Detailled comment
- *
- */
 public class SalesforceComponentDndFilter extends DefaultRepositoryComponentDndFilter {
 
     public static final String COMPONENT_T_SALSEFORCE_CONNECTION = "tSalesforceConnection"; //$NON-NLS-1$

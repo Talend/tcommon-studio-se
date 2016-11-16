@@ -30,10 +30,6 @@ import org.talend.designer.maven.tools.MavenPomSynchronizer;
 import org.talend.designer.runprocess.IProcessor;
 import org.talend.repository.ProjectManager;
 
-/**
- * created by ggu on 4 Feb 2015 Detailled comment
- *
- */
 public class CreateMavenTestPom extends AbstractMavenProcessorPom {
 
     public CreateMavenTestPom(IProcessor jobProcessor, IFile pomFile) {

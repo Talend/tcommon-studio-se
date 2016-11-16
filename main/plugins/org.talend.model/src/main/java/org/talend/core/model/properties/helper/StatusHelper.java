@@ -19,14 +19,6 @@ import java.util.List;
 import org.talend.core.model.properties.PropertiesFactory;
 import org.talend.core.model.properties.Status;
 
-
-/**
- * DOC tguiu  class global comment. Detailled comment
- * <br/>
- *
- * $Id$
- *
- */
 public final class StatusHelper {
 
     private static final String STATUS_DELIMITER = ";"; //$NON-NLS-1$

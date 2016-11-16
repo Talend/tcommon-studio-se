@@ -20,12 +20,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Detailled comment <br/>
- * 
- * @author ftang, 07-25-2007
- * 
- */
 public class CsvArray {
 
     private static final String ENCODING = "ISO-8859-15"; //$NON-NLS-1$

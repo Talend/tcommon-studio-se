@@ -15,9 +15,6 @@ package org.talend.commons.ui.swt.geftree;
 import org.eclipse.draw2d.IFigure;
 import org.talend.commons.ui.swt.geftree.figure.TreeBranch;
 
-/**
- * cli class global comment. Detailled comment
- */
 public class TreeSelectManager {
 
     private static TreeSelectManager manager;

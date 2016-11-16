@@ -19,9 +19,6 @@ import org.talend.repository.navigator.DescriptorAdapterFactory;
 import org.talend.repository.navigator.TalendRepositoryRoot;
 import org.talend.repository.viewer.content.ContentAdapterFactory;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class RepositoryViewPlugin extends AbstractUIPlugin {
 
     // The plug-in ID
@@ -34,30 +31,17 @@ public class RepositoryViewPlugin extends AbstractUIPlugin {
         plugin = this;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
-     */
     public void start(BundleContext context) throws Exception {
         super.start(context);
         registerAdapters();
     }
 
-    /**
-     * DOC sgandon Comment method "registerAdapters".
-     */
     private void registerAdapters() {
         Platform.getAdapterManager().registerAdapters(new DescriptorAdapterFactory(), TalendRepositoryRoot.class);
         // TDI-20850
         Platform.getAdapterManager().registerAdapters(new ContentAdapterFactory(), TalendRepositoryRoot.class);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
-     */
     public void stop(BundleContext context) throws Exception {
         plugin = null;
         super.stop(context);

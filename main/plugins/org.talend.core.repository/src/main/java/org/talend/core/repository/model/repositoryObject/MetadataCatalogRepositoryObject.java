@@ -32,9 +32,6 @@ import org.talend.repository.model.IRepositoryNode;
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.resource.relational.Catalog;
 
-/**
- * DOC klliu class global comment. Detailled comment
- */
 public class MetadataCatalogRepositoryObject extends MetadataCatalog implements ISubRepositoryObject {
 
     private final IRepositoryViewObject viewObject;
@@ -200,11 +197,6 @@ public class MetadataCatalogRepositoryObject extends MetadataCatalog implements 
         return this.catalog;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryViewObject#isModified()
-     */
     @Override
     public boolean isModified() {
         return viewObject.isModified();

@@ -16,9 +16,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-/**
- * DOC wuwei class global comment. Detailled comment
- */
 public class CheckConnectionHelper {
 
     public static void connect(String login, String passwd, String url) throws InstantiationException, IllegalAccessException,

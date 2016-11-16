@@ -30,12 +30,6 @@ import org.talend.repository.model.IRepositoryNode.EProperties;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.ui.wizards.metadata.connection.files.xml.XmlFileWizard;
 
-/**
- * DOC cantoine class global comment. Detailled comment <br/>
- * 
- * $Id: CreateFileXmlAction.java 77219 2012-01-24 01:14:15Z mhirt $
- * 
- */
 public class CreateFileXmlAction extends AbstractCreateAction {
 
     private static final String EDIT_LABEL = Messages.getString("CreateFileXmlAction.action.editTitle"); //$NON-NLS-1$
@@ -54,11 +48,6 @@ public class CreateFileXmlAction extends AbstractCreateAction {
 
     ImageDescriptor createImage = OverlayImageProvider.getImageWithNew(ImageProvider.getImage(ECoreImage.METADATA_FILE_XML_ICON));
 
-    /**
-     * DOC cantoine CreateFileXmlAction constructor comment.
-     * 
-     * @param viewer
-     */
     public CreateFileXmlAction() {
         super();
 

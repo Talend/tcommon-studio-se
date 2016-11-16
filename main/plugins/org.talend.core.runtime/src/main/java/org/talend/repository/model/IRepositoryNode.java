@@ -18,16 +18,10 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.repository.model.nodes.IProjectRepositoryNode;
 
-/**
- * DOC nrousseau class global comment. Detailled comment
- */
 public interface IRepositoryNode {
 
     /**
-     * Represents differents type of node.<br/>
-     * 
-     * $Id: RepositoryNode.java 914 2006-12-08 08:28:53 +0000 (鏄熸湡浜� 08 锟�?浜屾湀 2006) bqian $
-     * 
+     * Represents different types of nodes.
      */
     public enum ENodeType {
         SYSTEM_FOLDER,

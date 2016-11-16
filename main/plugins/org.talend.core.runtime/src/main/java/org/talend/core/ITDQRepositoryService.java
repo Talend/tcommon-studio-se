@@ -35,9 +35,6 @@ import org.talend.repository.model.RepositoryNode;
 import org.talend.utils.sugars.ReturnCode;
 import orgomg.cwm.objectmodel.core.ModelElement;
 
-/**
- * DOC bZhou class global comment. Detailled comment
- */
 public interface ITDQRepositoryService extends IService {
 
     public static final String RULE_VALUE = "RULE_VALUE"; //$NON-NLS-1$
@@ -53,7 +50,6 @@ public interface ITDQRepositoryService extends IService {
     public void openConnectionEditor(Item item);
 
     /**
-     * 
      * add some new Alias to sql explorer system.
      * 
      * @param items

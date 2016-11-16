@@ -33,11 +33,6 @@ import org.talend.core.repository.utils.ConvertJobsUtil.JobType;
 import org.talend.repository.model.IRepositoryNode.EProperties;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * 
- * created by hcyi on May 25, 2015 Detailled comment
- *
- */
 public class DuplicateDialog extends CustomInputDialog {
 
     private LabelledCombo jobTypeCombo;

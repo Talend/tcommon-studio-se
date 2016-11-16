@@ -14,10 +14,6 @@ package org.talend.presentation.onboarding.ui.runtimedata;
 
 import java.util.List;
 
-/**
- * created by cmeng on Sep 25, 2015 Detailled comment
- *
- */
 public class OnBoardingPerspectiveBean {
 
     private String perspId;

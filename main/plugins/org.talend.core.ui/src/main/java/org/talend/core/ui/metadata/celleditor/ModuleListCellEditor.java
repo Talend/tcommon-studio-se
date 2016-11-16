@@ -37,9 +37,6 @@ import org.talend.core.ui.CoreUIPlugin;
 import org.talend.core.ui.process.IGEFProcess;
 import org.talend.core.ui.services.IDesignerCoreUIService;
 
-/**
- * ggu class global comment. Detailled comment
- */
 public class ModuleListCellEditor extends DialogCellEditor {
 
     private final IElementParameter param, tableParam;
@@ -187,10 +184,6 @@ public class ModuleListCellEditor extends DialogCellEditor {
         }
     }
 
-    /**
-     * 
-     * ggu ModelChangeCommand class global comment. Detailled comment
-     */
     class ModelChangeCommand extends Command {
 
         private final IElementParameter param;

@@ -137,11 +137,6 @@ public class RepeatingButton extends Button {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.widgets.Widget#checkSubclass()
-     */
     protected void checkSubclass() {
     }
 
@@ -156,11 +151,6 @@ public class RepeatingButton extends Button {
             this.stateMask = stateMask;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see java.lang.Runnable#run()
-         */
         public void run() {
             if (!canceled) {
                 buttonPressed(stateMask, (int) System.currentTimeMillis());

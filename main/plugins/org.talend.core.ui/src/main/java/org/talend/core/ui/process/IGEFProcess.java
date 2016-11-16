@@ -14,9 +14,6 @@ package org.talend.core.ui.process;
 
 import org.eclipse.gef.commands.CommandStack;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public interface IGEFProcess {
 
     public CommandStack getCommandStack();

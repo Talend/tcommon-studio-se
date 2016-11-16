@@ -14,12 +14,6 @@ package org.talend.commons.ui.swt.colorstyledtext.rules;
 
 import org.eclipse.jface.text.rules.IWhitespaceDetector;
 
-/**
- * DOC nrousseau class global comment. Detailled comment <br/>
- * 
- * $Id: ColoringWhitespaceDetector.java 7038 2007-11-15 14:05:48Z plegall $
- * 
- */
 public class ColoringWhitespaceDetector implements IWhitespaceDetector {
 
     public boolean isWhitespace(char c) {

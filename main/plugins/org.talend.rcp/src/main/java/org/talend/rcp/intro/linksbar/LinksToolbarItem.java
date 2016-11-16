@@ -33,10 +33,6 @@ import org.talend.core.service.IExchangeService;
 import org.talend.rcp.Activator;
 import org.talend.rcp.i18n.Messages;
 
-/**
- * DOC xtan class global comment. Detailled comment <br/>
- * 
- */
 public class LinksToolbarItem extends ContributionItem {
 
     private ToolItem toolitem;
@@ -44,8 +40,6 @@ public class LinksToolbarItem extends ContributionItem {
     private static final String LEARN_URL = "<a href=\"https://help.talend.com\">Learn</a>"; //$NON-NLS-1$
 
     private static final String ASK_URL = "<a href=\"http://www.talendforge.org/forum/\">Ask</a>"; //$NON-NLS-1$
-
-    // private static final String SHARE_URL = "<a href=\"http://www.talendforge.org/exchange/\">Share</a>"; //$NON-NLS-1$
 
     private static final String UPGRADE_URL = "<a href=\"http://www.talend.com/whyupgrade.php\">Upgrade!</a>"; //$NON-NLS-1$
 
@@ -182,11 +176,6 @@ public class LinksToolbarItem extends ContributionItem {
         return composite;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.action.ContributionItem#dispose()
-     */
     @Override
     public void dispose() {
         toolitem = null;

@@ -30,9 +30,6 @@ import org.talend.core.model.properties.LinkDocumentationItem;
 import org.talend.core.model.properties.LinkType;
 import org.talend.core.repository.constants.FileConstants;
 
-/**
- * ggu class global comment. Detailled comment
- */
 public final class LinkUtils {
 
     public static final String DOT = "."; //$NON-NLS-1$
@@ -65,9 +62,6 @@ public final class LinkUtils {
     }
 
     /**
-     * 
-     * ggu Comment method "existedLink".
-     * 
      * the link is valid or not.
      */
     public static boolean validateLink(LinkType link) {

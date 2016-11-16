@@ -62,13 +62,6 @@ public class SwitchContextGroupNameImpl implements ISwitchContext {
         return instance;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.metadata.builder.database.ISwitchContext#updateContextGroup(org.talend.core.model.properties
-     * .ContextItem, org.talend.core.model.metadata.builder.connection.Connection)
-     */
     public boolean updateContextGroup(ConnectionItem connItem, String selectedContext) {
         if (connItem == null) {
             return false;
@@ -215,12 +208,6 @@ public class SwitchContextGroupNameImpl implements ISwitchContext {
                 password, port, sidOrDatabase, filePath.toLowerCase(), datasource, dbRootPath, additionParam);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.utils.ISwitchContext#updateContextForConnectionItems(java.util.Map,
-     * org.talend.core.model.properties.ContextItem)
-     */
     public boolean updateContextForConnectionItems(Map<String, String> contextGroupRanamedMap, ContextItem contextItem) {
         if (contextItem == null) {
             return false;

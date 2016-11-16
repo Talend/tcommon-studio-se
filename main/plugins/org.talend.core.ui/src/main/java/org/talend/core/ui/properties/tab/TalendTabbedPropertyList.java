@@ -56,12 +56,6 @@ import org.talend.core.ui.CoreUIPlugin;
 import org.talend.themes.core.elements.stylesettings.TalendTabbedPropertyColorHelper;
 import org.talend.themes.core.elements.widgets.ITalendTabbedPropertyListWidget;
 
-/**
- * yzhang class global comment. Detailled comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
- * 
- */
 public class TalendTabbedPropertyList extends Composite implements ITalendTabbedPropertyListWidget {
 
     private static final String PROPERTIES_NOT_AVAILABLE = "Properties not available."; //$NON-NLS-1$

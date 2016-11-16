@@ -8,16 +8,6 @@ import org.talend.repository.viewer.label.AbstractRepoViewLabelProvider;
 
 public class JobOnlyWithAnALabelProvider extends AbstractRepoViewLabelProvider {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.viewer.label.RepositoryViewLabelProvider#getText(java.lang.Object)
-     */
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.viewer.label.RepositoryViewLabelProvider#getText(java.lang.Object)
-     */
     @Override
     public String getText(Object element) {
         if (element == JobOnlyWithAnAContentProvider.ROOT) {
@@ -26,11 +16,6 @@ public class JobOnlyWithAnALabelProvider extends AbstractRepoViewLabelProvider {
         return super.getText(element);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.viewer.label.RepositoryViewLabelProvider#getImage(java.lang.Object)
-     */
     @Override
     public Image getImage(Object element) {
         if (element == JobOnlyWithAnAContentProvider.ROOT) {
@@ -39,11 +24,6 @@ public class JobOnlyWithAnALabelProvider extends AbstractRepoViewLabelProvider {
         return super.getImage(element);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.viewer.label.RepositoryViewLabelProvider#getFont(java.lang.Object)
-     */
     @Override
     public Font getFont(Object element) {
         if (element == JobOnlyWithAnAContentProvider.ROOT) {
@@ -52,11 +32,6 @@ public class JobOnlyWithAnALabelProvider extends AbstractRepoViewLabelProvider {
         return super.getFont(element);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.viewer.label.RepositoryViewLabelProvider#getBackground(java.lang.Object)
-     */
     @Override
     public Color getBackground(Object element) {
         if (element == JobOnlyWithAnAContentProvider.ROOT) {
@@ -65,11 +40,6 @@ public class JobOnlyWithAnALabelProvider extends AbstractRepoViewLabelProvider {
         return super.getBackground(element);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.viewer.label.RepositoryViewLabelProvider#getForeground(java.lang.Object)
-     */
     @Override
     public Color getForeground(Object element) {
         if (element == JobOnlyWithAnAContentProvider.ROOT) {

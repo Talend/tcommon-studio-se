@@ -43,22 +43,12 @@ import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.objectmodel.core.Package;
 import orgomg.cwm.resource.relational.ColumnSet;
 
-/**
- * DOC zshen class global comment. Detailled comment
- */
 public abstract class MetadataFillerImpl<T extends Connection> implements IMetadataFiller<T> {
 
     private static Logger log = Logger.getLogger(MetadataFillFactory.class);
 
     private boolean isLinked = true;
 
-    /*
-     * (non-Jsdoc)
-     * 
-     * @see
-     * org.talend.core.model.metadata.IMetadataFiller#fillMetadataParams(org.talend.core.model.metadata.IMetadataConnection
-     * , org.talend.core.model.metadata.builder.connection.Connection)
-     */
     protected void fillMetadataParams(IMetadataConnection metadataBean, T connection) {
         if (metadataBean == null || connection == null) {
             return;
@@ -102,13 +92,6 @@ public abstract class MetadataFillerImpl<T extends Connection> implements IMetad
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.metadata.IMetadataFiller#fillUIConnParams(org.talend.core.model.metadata.IMetadataConnection
-     * , org.talend.core.model.metadata.builder.connection.Connection)
-     */
     @Override
     public T fillUIConnParams(IMetadataConnection metadataBean, T connection) {
         if (connection == null || metadataBean == null) {
@@ -316,24 +299,12 @@ public abstract class MetadataFillerImpl<T extends Connection> implements IMetad
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.metadata.IMetadataFiller#fillViews(orgomg.cwm.objectmodel.core.Package,
-     * java.sql.DatabaseMetaData, java.util.List, java.lang.String)
-     */
     @Override
     public List<TdView> fillViews(Package pack, DatabaseMetaData dbJDBCMetadata, List<String> viewFilter, String viewPattern,
             String[] tableTypes) {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.metadata.IMetadataFiller#fillColumns(orgomg.cwm.resource.relational.ColumnSet,
-     * java.sql.DatabaseMetaData, java.util.List, java.lang.String)
-     */
     @Override
     public List<TdColumn> fillColumns(ColumnSet colSet, DatabaseMetaData dbJDBCMetadata, List<String> columnFilter,
             String columnPattern) {
@@ -368,25 +339,11 @@ public abstract class MetadataFillerImpl<T extends Connection> implements IMetad
         this.isLinked = isLinked;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.metadata.IMetadataFiller#checkConnection(org.talend.core.model.metadata.IMetadataConnection
-     * )
-     */
     @Override
     public ReturnCode checkConnection(IMetadataConnection metadataBean) {
         return createConnection(metadataBean, true);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.metadata.IMetadataFiller#createConnection(org.talend.core.model.metadata.IMetadataConnection
-     * )
-     */
     @Override
     public TypedReturnCode<?> createConnection(IMetadataConnection metadataBean) {
         return createConnection(metadataBean, false);

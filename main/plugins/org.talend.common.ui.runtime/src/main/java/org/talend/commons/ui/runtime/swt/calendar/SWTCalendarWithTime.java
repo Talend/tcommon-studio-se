@@ -28,10 +28,6 @@ import org.eclipse.swt.widgets.Spinner;
 import org.talend.commons.ui.runtime.i18n.Messages;
 import org.vafada.swtcalendar.SWTCalendar;
 
-/**
- * DOC smallet class global comment. Detailled comment <br/>
- * 
- */
 public class SWTCalendarWithTime extends SWTCalendar {
 
     private Spinner hourChooser;

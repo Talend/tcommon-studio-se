@@ -30,26 +30,12 @@ import org.talend.repository.items.importexport.handlers.ImportExportHandlersMan
 import org.talend.repository.items.importexport.handlers.model.EmptyFolderImportItem;
 import org.talend.repository.items.importexport.handlers.model.ImportItem;
 
-/**
- * created by wchen on Aug 4, 2016 Detailled comment
- *
- */
 public class FileResourcesUnityManagerTest {
 
-    /**
-     * DOC wchen Comment method "setUp".
-     * 
-     * @throws java.lang.Exception
-     */
     @Before
     public void setUp() throws Exception {
     }
 
-    /**
-     * DOC wchen Comment method "tearDown".
-     * 
-     * @throws java.lang.Exception
-     */
     @After
     public void tearDown() throws Exception {
     }

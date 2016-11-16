@@ -43,12 +43,6 @@ import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 import org.talend.designer.runprocess.ItemCacheManager;
 
-/**
- * DOC nrousseau class global comment. Detailled comment <br/>
- *
- * $Id: ElementParameterParser.java 52559 2010-12-13 04:14:06Z nrousseau $
- *
- */
 public final class ElementParameterParser {
 
     public static final String UNIQUE_NAME = "UNIQUE_NAME"; //$NON-NLS-1$

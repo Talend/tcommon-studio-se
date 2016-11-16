@@ -55,11 +55,6 @@ public class DynamicContentProvider extends IntroProvider {
 
     private static final String LEVEL_SEPARATOR = "."; //$NON-NLS-1$
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.intro.config.IIntroXHTMLContentProvider#createContent(java.lang.String, org.w3c.dom.Element)
-     */
     @Override
     public void createContent(String id, Element parent) {
         // content for latest modified jobs and business models
@@ -302,46 +297,24 @@ public class DynamicContentProvider extends IntroProvider {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.intro.config.IIntroContentProvider#createContent(java.lang.String, java.io.PrintWriter)
-     */
     @Override
     public void createContent(String id, PrintWriter out) {
         // TODO Auto-generated method stub
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.intro.config.IIntroContentProvider#createContent(java.lang.String,
-     * org.eclipse.swt.widgets.Composite, org.eclipse.ui.forms.widgets.FormToolkit)
-     */
     @Override
     public void createContent(String id, Composite parent, FormToolkit toolkit) {
         // TODO Auto-generated method stub
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.intro.config.IIntroContentProvider#dispose()
-     */
     @Override
     public void dispose() {
         // TODO Auto-generated method stub
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.ui.intro.config.IIntroContentProvider#init(org.eclipse.ui.intro.config.IIntroContentProviderSite)
-     */
     @Override
     public void init(IIntroContentProviderSite site) {
     }

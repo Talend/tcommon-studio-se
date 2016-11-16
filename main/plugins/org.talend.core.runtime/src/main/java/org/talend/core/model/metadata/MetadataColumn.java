@@ -143,232 +143,101 @@ public class MetadataColumn implements IMetadataColumn, Cloneable {
         this.id = id;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.core.model.metadata.IMetadataColumn#getLabel()
-     */
     @Override
     public String getLabel() {
         return this.label;
     }
 
-    // /**
-    // * Check the input String is empty or not.
-    // *
-    // * @param input
-    // * @return
-    // */
-    // private boolean isNull(String input) {
-    // return input == null;
-    // }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.core.model.metadata.IMetadataColumn#setLabel(java.lang.String)
-     */
     @Override
     public void setLabel(String label) {
         this.label = label;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.core.model.metadata.IMetadataColumn#isKey()
-     */
     @Override
     public boolean isKey() {
         return this.key;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.core.model.metadata.IMetadataColumn#setKey(boolean)
-     */
     @Override
     public void setKey(boolean key) {
         this.key = key;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.core.model.metadata.IMetadataColumn#getType()
-     */
     @Override
     public String getType() {
         return this.sourceType;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.core.model.metadata.IMetadataColumn#setType(java.lang.String)
-     */
     @Override
     public void setType(String sourceType) {
         this.sourceType = sourceType;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.metadata.IMetadataColumn#getTalendType()
-     */
     @Override
     public String getTalendType() {
-        // if ((talendType == null) || (talendType.compareTo("") == 0)) { //$NON-NLS-1$
-        // this.talendType = MetadataTalendType.loadTalendType(this.type, this.dbms, false);
-        // }
         return talendType;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.metadata.IMetadataColumn#setTalendType(java.lang.String)
-     */
     @Override
     public void setTalendType(String talendType) {
         this.talendType = talendType;
     }
 
-    // /*
-    // * (non-Javadoc)
-    // *
-    // * @see org.talend.core.model.metadata.IMetadataColumn#getDbms()
-    // */
-    // public String getDbms() {
-    // return this.dbms;
-    // }
-
-    // /*
-    // * (non-Javadoc)
-    // *
-    // * @see org.talend.core.model.metadata.IMetadataColumn#setDbms(java.lang.String)
-    // */
-    // public void setDbms(String dbms) {
-    // this.dbms = dbms;
-    // }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.core.model.metadata.IMetadataColumn#getLength()
-     */
     @Override
     public Integer getLength() {
         return this.length;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.core.model.metadata.IMetadataColumn#setLength(Integer)
-     */
     @Override
     public void setLength(Integer length) {
         this.length = length;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.core.model.metadata.IMetadataColumn#isNullable()
-     */
     @Override
     public boolean isNullable() {
         return this.nullable;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.core.model.metadata.IMetadataColumn#setNullable(boolean)
-     */
     @Override
     public void setNullable(boolean nullable) {
         this.nullable = nullable;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.core.model.metadata.IMetadataColumn#getPrecision()
-     */
     @Override
     public Integer getPrecision() {
         return this.precision;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.core.model.metadata.IMetadataColumn#setPrecision(Integer)
-     */
     @Override
     public void setPrecision(Integer precision) {
         this.precision = precision;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.core.model.metadata.IMetadataColumn#getDefault()
-     */
     @Override
     public String getDefault() {
         return this.defaut;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.core.model.metadata.IMetadataColumn#setDefault(java.lang.String)
-     */
     @Override
     public void setDefault(String defaut) {
         this.defaut = defaut;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.core.model.metadata.IMetadataColumn#getComment()
-     */
     @Override
     public String getComment() {
         return this.comment;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.core.model.metadata.IMetadataColumn#setComment(java.lang.String)
-     */
     @Override
     public void setComment(String comment) {
         this.comment = comment;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.metadata.IMetadataColumn#getPattern()
-     */
     @Override
     public String getPattern() {
         return this.pattern;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.metadata.IMetadataColumn#setPattern(java.lang.String)
-     */
     @Override
     public void setPattern(String pattern) {
         this.pattern = pattern;

@@ -32,13 +32,6 @@
 
 package org.talend.commons.ui.runtime.geometry;
 
-/**
- * 
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id: Curve2DBezierFixed.java 7048 2007-11-16 02:36:17Z nrousseau $
- * 
- */
 public class Curve2DBezierFixed extends Curve2D {
 
     double[] tmp;
@@ -96,15 +89,6 @@ public class Curve2DBezierFixed extends Curve2D {
         }
     }
 
-    /**
-     * 
-     * DOC amaumont Comment method "BezierTerm".
-     * 
-     * @param d
-     * @param i
-     * @param t
-     * @return
-     */
     double bezierTerm(int d, int i, int t) {
         return (double) (Math.pow(tmp[t], i) * Math.pow(1 - tmp[t], d - i) * Math.comb(d, i));
     }

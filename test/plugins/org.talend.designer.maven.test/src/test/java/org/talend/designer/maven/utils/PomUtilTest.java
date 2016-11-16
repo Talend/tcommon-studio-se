@@ -29,9 +29,6 @@ import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.repository.ProjectManager;
 import org.talend.utils.io.FilesUtils;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class PomUtilTest {
 
     @Test

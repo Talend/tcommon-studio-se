@@ -17,30 +17,12 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.talend.commons.exception.IllegalPluginConfigurationException;
 
-/**
- * 
- * DOC amaumont ExtensionImplementationProvider class global comment. Detailled comment <br/>
- * 
- * $Id: talend-code-templates.xml 1 2006-09-29 17:06:40Z nrousseau $
- * 
- * @param <T>
- */
 public class ClassExtensionImplementationProvider<T> extends ExtensionImplementationProvider<T> {
 
-    /**
-     * DOC amaumont DefaultExtensionImplementationProvider constructor comment.
-     * @param plugInId 
-     */
     public ClassExtensionImplementationProvider(IExtensionPointLimiter extensionPointLimiter, String plugInId) {
         super(extensionPointLimiter, plugInId);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.workbench.extensions.ExtensionImplementationProvider#createImplementation(org.eclipse.core.runtime.IExtension,
-     * org.talend.commons.utils.workbench.extensions.IExtensionPointLimiter)
-     */
     @Override
     protected T createImplementation(IExtension extension, IExtensionPointLimiter extensionPointLimiter,
             IConfigurationElement configurationElement) {

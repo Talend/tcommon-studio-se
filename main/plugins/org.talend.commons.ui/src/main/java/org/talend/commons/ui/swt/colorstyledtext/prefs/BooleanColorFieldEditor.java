@@ -20,12 +20,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-/**
- * DOC nrousseau class global comment. Detailled comment <br/>
- * 
- * $Id: BooleanColorFieldEditor.java 7038 2007-11-15 14:05:48Z plegall $
- * 
- */
 public class BooleanColorFieldEditor extends ColorFieldEditor {
 
     protected Button check;

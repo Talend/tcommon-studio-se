@@ -18,9 +18,6 @@ import org.talend.core.IService;
 import org.talend.designer.core.model.utils.emf.talendfile.AbstractExternalData;
 import org.talend.designer.rowgenerator.data.AbstractTalendFunctionParser;
 
-/**
- * DOC hcyi class global comment. Detailled comment
- */
 public interface IPigMapService extends IService {
 
     public IContentProposalProvider createExpressionProposalProvider(IExpressionDataBean dataBean);

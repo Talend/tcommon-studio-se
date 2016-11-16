@@ -13,16 +13,8 @@
 package org.talend.utils.exceptions;
 
 
-/**
- * created by zshen on Jun 4, 2013
- * Detailled comment
- *
- */
 public class MissingDriverException extends RuntimeException {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = 1L;
 
     private String errorMessage = ""; //$NON-NLS-1$

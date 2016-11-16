@@ -21,10 +21,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.talend.librariesmanager.ui.LibManagerUiPlugin;
 import org.talend.librariesmanager.ui.i18n.Messages;
 
-/**
- * created by Administrator on 2012-9-18 Detailled comment
- * 
- */
 public class ComponentExternalModulesDialog extends ExternalModulesInstallDialogWithProgress {
 
     private Button doNotShowBtn;
@@ -56,12 +52,6 @@ public class ComponentExternalModulesDialog extends ExternalModulesInstallDialog
         });
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.librariesmanager.ui.dialogs.ExternalModulesInstallDialog#configureShell(org.eclipse.swt.widgets.Shell)
-     */
     @Override
     protected void configureShell(Shell newShell) {
         super.configureShell(newShell);

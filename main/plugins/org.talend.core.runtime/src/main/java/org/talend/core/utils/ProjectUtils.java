@@ -16,9 +16,6 @@ import java.util.regex.Pattern;
 
 import org.talend.repository.model.RepositoryConstants;
 
-/**
- * DOC hcyi class global comment. Detailled comment
- */
 public class ProjectUtils {
 
     public static final String[] JAVA_KEY_WORDS = {
@@ -34,7 +31,7 @@ public class ProjectUtils {
     }
 
     /**
-     * for the tac side DOC hcyi Comment method "isValidProjectName".
+     * for the tac side
      * 
      * @param projectLabel
      * @return

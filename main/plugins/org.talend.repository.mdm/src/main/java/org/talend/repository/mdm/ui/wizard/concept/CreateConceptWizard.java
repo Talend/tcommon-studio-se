@@ -65,9 +65,6 @@ import org.talend.repository.model.RepositoryNodeUtilities;
 
 import orgomg.cwm.objectmodel.core.Package;
 
-/**
- * DOC hwang class global comment. Detailled comment
- */
 public class CreateConceptWizard extends RepositoryWizard implements INewWizard {
 
     private MdmConceptWizardPage1 inOutSelectPage;
@@ -234,11 +231,6 @@ public class CreateConceptWizard extends RepositoryWizard implements INewWizard 
         return super.getNextPage(page);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.wizard.Wizard#performFinish()
-     */
     @Override
     public boolean performFinish() {
         IPath sasPath = new Path(System.getProperty("user.dir")).append("temp");//$NON-NLS-1$ //$NON-NLS-2$
@@ -308,14 +300,7 @@ public class CreateConceptWizard extends RepositoryWizard implements INewWizard 
         pathFile.delete();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench,
-     * org.eclipse.jface.viewers.IStructuredSelection)
-     */
     public void init(IWorkbench workbench, IStructuredSelection selection) {
-
     }
 
     @Override
@@ -323,11 +308,6 @@ public class CreateConceptWizard extends RepositoryWizard implements INewWizard 
         // do nothing to create pages lazily
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.wizard.Wizard#canFinish()
-     */
     @Override
     public boolean canFinish() {
         if (creation && currentPage instanceof MdmConceptWizardPage3 && currentPage.isPageComplete()) {

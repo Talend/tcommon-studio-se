@@ -12,12 +12,6 @@
 // ============================================================================
 package org.talend.core.model.metadata;
 
-
-
-/**
- * DOC klliu  class global comment. Detailled comment
- */
 public class MetadataXmlElementType implements IMetadataXmlElementType {
-
 
 }

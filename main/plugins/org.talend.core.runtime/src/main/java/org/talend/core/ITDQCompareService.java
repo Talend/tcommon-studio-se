@@ -15,10 +15,6 @@ package org.talend.core;
 import org.talend.core.model.properties.ConnectionItem;
 import org.talend.utils.sugars.ReturnCode;
 
-/**
- * created by talend on Dec 19, 2012 Detailled comment
- * 
- */
 public interface ITDQCompareService extends IService {
 
     // ADD zshen 2012-12-19 to reuse reloadAction

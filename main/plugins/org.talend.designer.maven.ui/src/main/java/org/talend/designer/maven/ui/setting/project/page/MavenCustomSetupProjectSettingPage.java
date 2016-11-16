@@ -14,10 +14,6 @@ package org.talend.designer.maven.ui.setting.project.page;
 
 import org.talend.core.runtime.projectsetting.EmptyProjectSettingPage;
 
-
-/**
- * DOC ggu  class global comment. Detailled comment
- */
 public class MavenCustomSetupProjectSettingPage extends EmptyProjectSettingPage {
 
 }

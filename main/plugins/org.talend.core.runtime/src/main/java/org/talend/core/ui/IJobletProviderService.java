@@ -39,9 +39,6 @@ import org.talend.core.model.repository.IRepositoryEditorInput;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 
-/**
- * cli class global comment. Detailled comment
- */
 public interface IJobletProviderService extends IService {
 
     public boolean isJobletComponent(INode node);

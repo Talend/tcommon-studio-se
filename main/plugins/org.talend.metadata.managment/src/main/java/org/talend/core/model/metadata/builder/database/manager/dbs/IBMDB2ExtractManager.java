@@ -36,9 +36,6 @@ import org.talend.cwm.relational.TdColumn;
 import org.talend.metadata.managment.utils.ManagementTextUtils;
 import orgomg.cwm.resource.relational.NamedColumnSet;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class IBMDB2ExtractManager extends ExtractManager {
 
     public static final String DATABASE_PRODUCT_NAME = "DB2/"; //$NON-NLS-1$

@@ -46,11 +46,6 @@ import org.talend.librariesmanager.ui.LibManagerUiPlugin;
 import org.talend.librariesmanager.ui.i18n.Messages;
 import org.talend.librariesmanager.utils.RemoteModulesHelper;
 
-/**
- * 
- * created by ycbai on 2013-10-16 Detailled comment
- * 
- */
 public class AcceptModuleLicensesWizardPage extends WizardPage {
 
     private static final String UNKNOWN_LICENSE = "Unknown license"; //$NON-NLS-1$
@@ -86,11 +81,6 @@ public class AcceptModuleLicensesWizardPage extends WizardPage {
         this.modulesToInstall = modulesToInstall;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
-     */
     @Override
     public void createControl(Composite parent) {
         initializeDialogUnits(parent);
@@ -267,11 +257,6 @@ public class AcceptModuleLicensesWizardPage extends WizardPage {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.DialogPage#setVisible(boolean)
-     */
     @Override
     public void setVisible(boolean visible) {
         retrieveLicensesModel();

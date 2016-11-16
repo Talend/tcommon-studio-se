@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.core.model.utils;
 
-/**
- * DOC acer class global comment. Detailled comment <br/>
- * 
- */
 import java.io.File;
 import java.io.FileReader;
 import java.io.Reader;

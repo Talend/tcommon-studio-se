@@ -16,9 +16,6 @@ import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 import org.talend.designer.core.model.utils.emf.talendfile.impl.ElementValueTypeImpl;
 
-/**
- * DOC Administrator class global comment. Detailled comment
- */
 public class UpdateAttributesFortFilterRow implements IComponentConversion {
 
     private String value;

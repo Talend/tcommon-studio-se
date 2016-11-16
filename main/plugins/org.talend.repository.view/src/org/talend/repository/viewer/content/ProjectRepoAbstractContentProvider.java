@@ -196,13 +196,6 @@ public abstract class ProjectRepoAbstractContentProvider extends FolderListenerS
         return potentialRootNode;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.viewer.content.FolderListenerSingleTopContentProvider#inputChanged(org.eclipse.jface.viewers
-     * .Viewer, java.lang.Object, java.lang.Object)
-     */
     @Override
     public void inputChanged(Viewer arg0, Object arg1, Object arg2) {
         super.inputChanged(arg0, arg1, arg2);
@@ -211,9 +204,6 @@ public abstract class ProjectRepoAbstractContentProvider extends FolderListenerS
         registerMergeRefListener();
     }
 
-    /**
-     * DOC sgandon Comment method "registerMergeRefListgener".
-     */
     private void registerMergeRefListener() {
         if (mergeRefListener == null) {
             mergeRefListener = new IPropertyChangeListener() {
@@ -236,9 +226,6 @@ public abstract class ProjectRepoAbstractContentProvider extends FolderListenerS
         }
     }
 
-    /**
-     * DOC sgandon Comment method "refreshTopLevelNodes".
-     */
     protected void refreshTopLevelNodes() {
         Set<RepositoryNode> topLevelNodes = getTopLevelNodes();
         if (topLevelNodes == null) {
@@ -250,11 +237,6 @@ public abstract class ProjectRepoAbstractContentProvider extends FolderListenerS
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.viewer.content.FolderListenerSingleTopContentProvider#dispose()
-     */
     @Override
     public void dispose() {
         if (deleteFolderListener != null) {

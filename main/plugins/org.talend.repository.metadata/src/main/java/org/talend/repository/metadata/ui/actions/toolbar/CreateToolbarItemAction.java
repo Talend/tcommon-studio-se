@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.repository.metadata.ui.actions.toolbar;
 
-/**
- * DOC qwei class global comment. Detailled comment <br/>
- */
 public class CreateToolbarItemAction extends AbstractCreatToolbarAction {
 
     public CreateToolbarItemAction() {

@@ -41,9 +41,6 @@ import org.talend.repository.model.IRepositoryNode.EProperties;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.ui.views.IRepositoryView;
 
-/**
- * DOC hwang class global comment. Detailled comment
- */
 public class RetrieveMDMSchemaAction extends AbstractCreateAction {
 
     protected static final int WIZARD_WIDTH = 800;
@@ -71,12 +68,6 @@ public class RetrieveMDMSchemaAction extends AbstractCreateAction {
         this.node = node;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.ui.actions.metadata.AbstractCreateAction#init(org.talend.repository.model.RepositoryNode)
-     */
     @Override
     protected void init(RepositoryNode node) {
         IProxyRepositoryFactory factory = ProxyRepositoryFactory.getInstance();
@@ -124,11 +115,6 @@ public class RetrieveMDMSchemaAction extends AbstractCreateAction {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.actions.AContextualAction#doRun()
-     */
     @Override
     protected void doRun() {
         node = getCurrentRepositoryNode();

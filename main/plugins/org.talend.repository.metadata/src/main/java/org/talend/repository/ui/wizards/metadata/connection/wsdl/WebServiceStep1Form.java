@@ -33,9 +33,6 @@ import org.talend.metadata.managment.ui.utils.ConnectionContextHelper;
 import org.talend.metadata.managment.ui.wizard.RepositoryWizard;
 import org.talend.repository.metadata.ui.wizards.form.AbstractWSDLSchemaStepForm;
 
-/**
- * DOC Administrator class global comment. Detailled comment
- */
 public class WebServiceStep1Form extends AbstractWSDLSchemaStepForm {
 
     private IWebServiceTos webService;
@@ -51,37 +48,18 @@ public class WebServiceStep1Form extends AbstractWSDLSchemaStepForm {
         this(parent, connectionItem, metadataTable, existingNames, contextModeManager, null);
     }
 
-    /**
-     * DOC Administrator WebServiceStep1Form constructor comment.
-     * 
-     * @param parent
-     * @param connectionItem
-     * @param metadataTable
-     * @param existingNames
-     */
     public WebServiceStep1Form(Composite parent, ConnectionItem connectionItem, MetadataTable metadataTable,
             String[] existingNames, IMetadataContextModeManager contextModeManager, WSDLSchemaWizardPage wpage) {
         super(parent, connectionItem, metadataTable, existingNames);
         this.wizardPage = wpage;
         this.connectionItem = connectionItem;
         this.contextModeManager = contextModeManager;
-        // List<? extends IElementParameter> parameters = ComponentsFactoryProvider.getInstance().get("tWebService")
-        // .createElementParameters(connector);
-        // connector.setElementParameters(parameters);
         setConnectionItem(connectionItem);
         setContextModeManager(contextModeManager);
 
         setupForm(true);
-        // initWebserviceUI();
-        // initInputMetaCopy();
-        // initOutputMetaCopy();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#adaptFormToReadOnly()
-     */
     @Override
     protected void adaptFormToReadOnly() {
     }
@@ -98,11 +76,6 @@ public class WebServiceStep1Form extends AbstractWSDLSchemaStepForm {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addFields()
-     */
     @Override
     protected void addFields() {
         // TODO Auto-generated method stub
@@ -141,33 +114,18 @@ public class WebServiceStep1Form extends AbstractWSDLSchemaStepForm {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addFieldsListeners()
-     */
     @Override
     protected void addFieldsListeners() {
         // TODO Auto-generated method stub
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addUtilsButtonListeners()
-     */
     @Override
     protected void addUtilsButtonListeners() {
         // TODO Auto-generated method stub
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#checkFieldsValue()
-     */
     @Override
     protected boolean checkFieldsValue() {
         if (getCurrentFunction() == false) {
@@ -193,11 +151,6 @@ public class WebServiceStep1Form extends AbstractWSDLSchemaStepForm {
         checkFieldsValue();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#initialize()
-     */
     @Override
     protected void initialize() {
         // TODO Auto-generated method stub

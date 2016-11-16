@@ -16,10 +16,6 @@ import java.util.Collection;
 
 import org.eclipse.core.runtime.IPath;
 
-/**
- * created by wchen on 2013-10-30 Detailled comment
- * 
- */
 public interface SvnHook {
 
     public void unloadAndRemoveResources(Collection<String> changedPaths);

@@ -17,12 +17,6 @@ import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.repository.navigator.INavigatorDescriptor;
 import org.talend.repository.navigator.TalendRepositoryRoot;
 
-/**
- * DOC sgandon class global comment. Detailled comment <br/>
- * 
- * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
- */
 public class DescriptorAdapterFactory implements IAdapterFactory {
 
     @Override

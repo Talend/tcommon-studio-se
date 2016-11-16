@@ -14,9 +14,6 @@ package org.talend.core.ui.context.model.tree;
 
 import org.talend.core.ui.i18n.Messages;
 
-/**
- * cli class global comment. Detailled comment
- */
 public class ContextTreeConstants {
 
     public static final int VARIABLE_COLUMN_INDEX = 4;

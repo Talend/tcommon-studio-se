@@ -63,11 +63,6 @@ public class ContextNatTableConfiguration extends AbstractRegistryConfiguration 
 
     private IContextModelManager modelManager;
 
-    /**
-     * DOC ldong ContextNatTableConfiguration constructor comment.
-     * 
-     * @param dataProvider
-     */
     public ContextNatTableConfiguration(IDataProvider dataProvider, ColumnGroupModel columnGroupModel, IContextManager manager,
             IContextModelManager modelManager) {
         super();
@@ -77,13 +72,6 @@ public class ContextNatTableConfiguration extends AbstractRegistryConfiguration 
         this.modelManager = modelManager;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.nebula.widgets.nattable.config.IConfiguration#configureRegistry(org.eclipse.nebula.widgets.nattable
-     * .config.IConfigRegistry)
-     */
     @Override
     public void configureRegistry(IConfigRegistry configRegistry) {
         registerEditableRules(configRegistry);
@@ -222,14 +210,6 @@ public class ContextNatTableConfiguration extends AbstractRegistryConfiguration 
 
         ComboBoxPainter customPainter = new ComboBoxPainter() {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see
-             * org.eclipse.nebula.widgets.nattable.painter.cell.CellPainterWrapper#paintCell(org.eclipse.nebula.widgets
-             * .nattable.layer.cell.ILayerCell, org.eclipse.swt.graphics.GC, org.eclipse.swt.graphics.Rectangle,
-             * org.eclipse.nebula.widgets.nattable.config.IConfigRegistry)
-             */
             @Override
             public void paintCell(ILayerCell cell, GC gc, Rectangle adjustedCellBounds, IConfigRegistry configRegistry) {
                 ContextTreeNode rowNode = ((GlazedListsDataProvider<ContextTreeNode>) dataProvider).getRowObject(cell
@@ -269,14 +249,6 @@ public class ContextNatTableConfiguration extends AbstractRegistryConfiguration 
                 ContextTableConstants.COLUMN_CHECK_PROPERTY);
         CheckBoxPainter customPainter = new CheckBoxPainter() {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see
-             * org.eclipse.nebula.widgets.nattable.painter.cell.ImagePainter#paintCell(org.eclipse.nebula.widgets.nattable
-             * .layer.cell.ILayerCell, org.eclipse.swt.graphics.GC, org.eclipse.swt.graphics.Rectangle,
-             * org.eclipse.nebula.widgets.nattable.config.IConfigRegistry)
-             */
             @Override
             public void paintCell(ILayerCell cell, GC gc, Rectangle bounds, IConfigRegistry configRegistry) {
                 ContextTreeNode rowNode = ((GlazedListsDataProvider<ContextTreeNode>) dataProvider).getRowObject(cell
@@ -321,25 +293,11 @@ public class ContextNatTableConfiguration extends AbstractRegistryConfiguration 
 
     public class ContextCheckDisplayConverter extends DefaultBooleanDisplayConverter {
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.eclipse.nebula.widgets.nattable.data.convert.DefaultBooleanDisplayConverter#displayToCanonicalValue(java
-         * .lang.Object)
-         */
         @Override
         public Object displayToCanonicalValue(Object displayValue) {
             return super.displayToCanonicalValue(displayValue);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.eclipse.nebula.widgets.nattable.data.convert.DefaultBooleanDisplayConverter#canonicalToDisplayValue(java
-         * .lang.Object)
-         */
         @Override
         public Object canonicalToDisplayValue(Object canonicalValue) {
             if (canonicalValue.equals("")) {

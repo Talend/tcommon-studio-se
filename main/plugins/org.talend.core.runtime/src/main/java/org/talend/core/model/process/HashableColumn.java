@@ -12,42 +12,22 @@
 // ============================================================================
 package org.talend.core.model.process;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- */
 public class HashableColumn implements IHashableColumn {
 
     private String name;
 
     private int index;
 
-    /**
-     * DOC amaumont HashableColumn constructor comment.
-     * 
-     * @param name
-     * @param index
-     */
     public HashableColumn(String name, int index) {
         super();
         this.name = name;
         this.index = index;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.IHashableColumn#getIndex()
-     */
     public int getIndex() {
         return this.index;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.IHashableColumn#getName()
-     */
     public String getName() {
         return this.name;
     }

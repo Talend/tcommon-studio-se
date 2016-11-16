@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.designer.rowgenerator.data;
 
-/**
- * DOC qiang.zhang class global comment. Detailled comment <br/>
- * 
- */
 public class CharParameter extends Parameter {
 
     private char charValue;
@@ -24,11 +20,6 @@ public class CharParameter extends Parameter {
         this.charValue = value;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.rowgenerator.data.Parameter#sameParameterAs(org.talend.designer.rowgenerator.data.Parameter)
-     */
     @Override
     public boolean sameParameterAs(Parameter obj) {
         if (this == obj) {

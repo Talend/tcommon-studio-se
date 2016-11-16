@@ -30,11 +30,6 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.utils.PomUtil;
 
-/**
- * created by ggu on 13 Mar 2015 Detailled comment
- *
- */
-
 public class MavenPomCommandLauncher extends MavenCommandLauncher {
 
     private final IFile launcherPomFile;

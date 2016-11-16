@@ -31,21 +31,10 @@ import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.designer.core.IDesignerCoreService;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
-/**
- * created by ggu on Mar 27, 2014 Detailled comment
- * 
- */
 public abstract class AbstractRepositoryUpdateManagerProvider implements IRepositoryUpdateManagerProvider {
 
     protected IProxyRepositoryFactory factory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.update.extension.IRepositoryUpdateManagerProvider#validateAction(org.eclipse.jface.viewers
-     * .TreeViewer, org.eclipse.jface.viewers.IStructuredSelection)
-     */
     @Override
     public boolean validateAction(TreeViewer viewer, IStructuredSelection selection) {
         if (viewer != null && selection != null) {
@@ -63,12 +52,6 @@ public abstract class AbstractRepositoryUpdateManagerProvider implements IReposi
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.update.extension.IRepositoryUpdateManagerProvider#updateForRepository(IStructuredSelection)
-     */
     @Override
     public boolean updateForRepository(IStructuredSelection selection) {
         if (!needPropagate(selection)) {
@@ -92,12 +75,6 @@ public abstract class AbstractRepositoryUpdateManagerProvider implements IReposi
         return false;
     }
 
-    /**
-     * 
-     * DOC ggu Comment method "needPropagate".
-     * 
-     * @return
-     */
     @Override
     public boolean needPropagate(IStructuredSelection selection) {
         if (needForcePropagation(selection)) {

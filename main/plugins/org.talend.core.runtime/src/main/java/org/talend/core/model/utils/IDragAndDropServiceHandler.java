@@ -25,14 +25,9 @@ import org.talend.core.model.properties.Item;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * hwang class global comment. Detailled comment
- */
 public interface IDragAndDropServiceHandler {
 
     /**
-     * DOC hwang Comment method "canHandle".
-     * 
      * to judge can handle or not(base on connection)
      * 
      * @param connection - connection
@@ -40,8 +35,6 @@ public interface IDragAndDropServiceHandler {
     public boolean canHandle(Connection connection);
 
     /**
-     * DOC hwang Comment method "getComponentValue".
-     * 
      * get parameter value of the connection
      * 
      * @param connection - connection
@@ -52,8 +45,6 @@ public interface IDragAndDropServiceHandler {
     public Object getComponentValue(Connection connection, String value, IMetadataTable table, String targetComponent);
 
     /**
-     * DOC hwang Comment method "filterNeededComponents".
-     * 
      * get components list when you drag&drop a repositoryNode to processEditor
      * 
      * @param item - the Item of the selectedNode
@@ -63,8 +54,6 @@ public interface IDragAndDropServiceHandler {
     public List<IComponent> filterNeededComponents(Item item, RepositoryNode seletetedNode, ERepositoryObjectType type);
 
     /**
-     * DOC hwang Comment method "getCorrespondingComponentName".
-     * 
      * get the default component and input/output names for the quick drag&drop
      * 
      * @param item - the Item of the selectedNode
@@ -73,8 +62,6 @@ public interface IDragAndDropServiceHandler {
     public IComponentName getCorrespondingComponentName(Item item, ERepositoryObjectType type);
 
     /**
-     * DOC zwzhao Comment method "setComponentValue".
-     * 
      * set parameter value of the connection
      * 
      * @param connection - connection
@@ -83,14 +70,9 @@ public interface IDragAndDropServiceHandler {
      */
     public void setComponentValue(Connection connection, INode node, IElementParameter param);
 
-    /**
-     * DOC zwzhao Comment method "getType".
-     */
     public ERepositoryObjectType getType(String repositoryType);
 
     /**
-     * DOC ycbai Comment method "handleTableRelevantParameters".
-     * 
      * Set metadata table relevant parameters value of the element.
      * 
      * @param connection
@@ -100,8 +82,6 @@ public interface IDragAndDropServiceHandler {
     public void handleTableRelevantParameters(Connection connection, IElement ele, IMetadataTable metadataTable);
 
     /**
-     * DOC ycbai Comment method "isValidForDataViewer".
-     * <p>
      * Check if the table can do data viewer.
      * 
      * @param connection
@@ -111,8 +91,6 @@ public interface IDragAndDropServiceHandler {
     public boolean isValidForDataViewer(Connection connection, IMetadataTable metadataTable);
 
     /**
-     * 
-     * DOC hcyi Comment method "isGenericRepositoryValue".
      * 
      * @param connection
      * @param paramName

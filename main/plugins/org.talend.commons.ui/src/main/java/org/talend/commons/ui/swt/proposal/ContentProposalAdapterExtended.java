@@ -140,11 +140,6 @@ public class ContentProposalAdapterExtended {
 
                     new AsynchronousThreading(100, false, control.getDisplay(), new Runnable() {
 
-                        /*
-                         * (non-Javadoc)
-                         * 
-                         * @see java.lang.Runnable#run()
-                         */
                         public void run() {
                             if (!control.isDisposed()) {
                                 Control focusControl = control.getDisplay().getFocusControl();
@@ -158,37 +153,28 @@ public class ContentProposalAdapterExtended {
 
                 }
 
-                // System.out.println(e + " " + hasFocus() + " " + control.isFocusControl());
-                // System.out.println("hasJustAccepetd="+hasJustAccepetd);
-
                 if (e.type == SWT.MouseDown && e.widget == proposalTable) {
-                    // System.out.println("Mouse down");
                     return;
                 }
 
                 if (e.type == SWT.MouseDoubleClick) {
-                    // System.out.println("Mouse double click");
                     acceptCurrentProposal();
                     return;
                 }
 
                 if (e.type == SWT.Deactivate) {
-                    // System.out.println("Deactivate");
                     return;
                 }
 
                 if (e.type == SWT.FocusOut && e.widget == control && control.isFocusControl() && !hasJustAccepted) {
-                    // System.out.println("1");
                     return;
                 }
                 //
                 if (e.type == SWT.FocusOut && e.widget == proposalTable && hasFocus() && !hasJustAccepted) {
-                    // System.out.println(2);
                     return;
                 }
                 //
                 if (e.type == SWT.Deactivate && hasFocus() && !hasJustAccepted) {
-                    // System.out.println(3);
                     return;
                 }
 
@@ -723,7 +709,7 @@ public class ContentProposalAdapterExtended {
         }
 
         /*
-         * Overridden to force change of colors. See https://bugs.eclipse.org/bugs/show_bug.cgi?id=136244 (non-Javadoc)
+         * Overridden to force change of colors. See https://bugs.eclipse.org/bugs/show_bug.cgi?id=136244 
          * 
          * @see org.eclipse.jface.dialogs.PopupDialog#createContents(org.eclipse.swt.widgets.Composite)
          */
@@ -793,11 +779,6 @@ public class ContentProposalAdapterExtended {
             return proposalTable;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.jface.dialogs.PopupDialog.adjustBounds()
-         */
         @Override
         protected void adjustBounds() {
             // Get our control's location in display coordinates.

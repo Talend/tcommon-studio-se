@@ -29,12 +29,6 @@ import org.talend.core.model.repository.IRepositoryContentHandler;
 import org.talend.core.model.repository.RepositoryContentManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
-/**
- * DOC smallet class global comment. Detailled comment <br/>
- * 
- * $Id: StatusHelper.java 914 2006-12-08 08:28:53 +0000 (星期五, 08 十二月 2006) bqian $
- * 
- */
 public class StatusHelper {
 
     private Map<String, Status> code2status;
@@ -141,12 +135,6 @@ public class StatusHelper {
         return status;
     }
 
-    /**
-     * DOC tguiu Comment method "asMap".
-     * 
-     * @param status
-     * @return
-     */
     private void toMaps(List<Status> status) {
         code2status = new HashMap<String, Status>();
         label2code = new HashMap<String, String>();
@@ -155,4 +143,5 @@ public class StatusHelper {
             label2code.put(s.getLabel(), s.getCode());
         }
     }
+
 }

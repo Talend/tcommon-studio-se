@@ -15,16 +15,10 @@ package org.talend.commons.ui.swt.cursor;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.widgets.Shell;
 
-/**
- * DOC amaumont class global comment. Detailled comment
- */
 public class CursorHelper {
 
     /**
-     * Looad the given cursor for the current active shell.
-     * 
-     * @param display
-     * @return
+     * Load the given cursor for the current active shell.
      */
     public static void changeCursor(Shell shell, int swtCursor) {
         Cursor cursor = shell.getDisplay().getSystemCursor(swtCursor);

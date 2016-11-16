@@ -25,10 +25,6 @@ import org.talend.core.model.process.INode;
 import org.talend.designer.core.IDesignerCoreService;
 import org.talend.librariesmanager.model.ModulesNeededProvider;
 
-/**
- * DOC smallet class global comment. Detailled comment <br/>
- *
- */
 public class LibrariesManagerUtils {
 
     public static final String BUNDLE_DI = "org.talend.librariesmanager";
@@ -44,7 +40,6 @@ public class LibrariesManagerUtils {
     }
 
     /**
-     *
      * @deprecated should use getNotInstalledModules(INode) instead.
      */
     @Deprecated

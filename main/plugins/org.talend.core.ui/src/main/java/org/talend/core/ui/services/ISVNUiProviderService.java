@@ -19,9 +19,6 @@ import org.talend.core.IService;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.ui.properties.tab.IDynamicProperty;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public interface ISVNUiProviderService extends IService {
 
     public IDynamicProperty createProcessSVNHistoryComposite(Composite parent, TabbedPropertySheetWidgetFactory factory,

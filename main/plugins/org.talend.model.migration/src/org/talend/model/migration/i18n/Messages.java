@@ -16,9 +16,6 @@ import java.util.ResourceBundle;
 
 import org.talend.commons.i18n.MessagesCore;
 
-/**
- * DOC wzhang class global comment. Detailled comment
- */
 public class Messages extends MessagesCore {
 
     private static final String BUNDLE_NAME = "messages"; //$NON-NLS-1$

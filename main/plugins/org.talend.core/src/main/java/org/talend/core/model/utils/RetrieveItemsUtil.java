@@ -34,19 +34,11 @@ import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * cli class global comment. Detailled comment
- */
 public final class RetrieveItemsUtil {
 
     private RetrieveItemsUtil() {
     }
 
-    /**
-     * 
-     * cli Comment method "retrieveItems".
-     * 
-     */
     public static List<IRepositoryViewObject> retrieveItems(final ERepositoryObjectType[] types, final boolean withLastVersion,
             final boolean withDeleted, final boolean withLocked, final boolean withRefProject) throws PersistenceException {
         final Project curProject = ProjectManager.getInstance().getCurrentProject();

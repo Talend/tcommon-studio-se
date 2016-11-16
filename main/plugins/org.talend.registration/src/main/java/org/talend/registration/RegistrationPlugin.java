@@ -19,9 +19,6 @@ import org.osgi.util.tracker.ServiceTracker;
 import org.talend.core.context.Context;
 import org.talend.core.runtime.CoreRuntimePlugin;
 
-/**
- * DOC zli class global comment. Detailled comment
- */
 public class RegistrationPlugin extends AbstractUIPlugin {
 
     // The plug-in ID
@@ -36,21 +33,11 @@ public class RegistrationPlugin extends AbstractUIPlugin {
         plugin = this;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
-     */
     @Override
     public void start(BundleContext context) throws Exception {
         super.start(context);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
-     */
     @Override
     public void stop(BundleContext context) throws Exception {
         plugin = null;
@@ -61,11 +48,6 @@ public class RegistrationPlugin extends AbstractUIPlugin {
         return plugin;
     }
 
-    /**
-     * Getter for context.
-     * 
-     * @return the context
-     */
     public Context getContext() {
         return CoreRuntimePlugin.getInstance().getContext();
     }

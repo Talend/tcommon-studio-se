@@ -14,10 +14,6 @@ package org.talend.metadata.managment.ui.utils;
 
 import org.talend.metadata.managment.ui.model.IConnParamName;
 
-/**
- * created by ycbai on 2015年11月20日 Detailled comment
- *
- */
 public class GenericConnParamName implements IConnParamName {
 
     private String name;

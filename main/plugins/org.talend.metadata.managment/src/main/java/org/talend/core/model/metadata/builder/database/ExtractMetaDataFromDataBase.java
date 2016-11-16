@@ -64,23 +64,12 @@ import org.talend.utils.sql.ConnectionUtils;
 import org.talend.utils.sql.metadata.constants.GetTable;
 
 /**
- * DOC cantoine. Extract Meta Data Table. Contains all the Table and Metadata about a DB Connection. <br/>
- * 
- * $Id: ExtractMetaDataFromDataBase.java 44018 2010-06-12 02:22:29Z zli $
- * 
+ * Extract Meta Data Table. Contains all the Table and Metadata about a DB Connection.
  */
 public class ExtractMetaDataFromDataBase {
 
     public static List<IDBMetadataProviderObject> providerObjects = null;
 
-    /**
-     * 
-     */
-
-    /**
-     * qzhang TableInfoParameters class global comment. Detailled comment <br/>
-     * 
-     */
     public enum ETableTypes {
         TABLETYPE_TABLE("TABLE"), //$NON-NLS-1$
         TABLETYPE_BASE_TABLE("BASE TABLE"), //for mariadb //$NON-NLS-1$ 

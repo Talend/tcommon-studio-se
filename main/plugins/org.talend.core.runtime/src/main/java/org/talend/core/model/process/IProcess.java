@@ -18,15 +18,6 @@ import java.util.Set;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.metadata.IMetadataTable;
 
-/**
- * DOC nrousseau class global comment. Detailled comment <br/>
- * 
- * $Id: IProcess.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
- */
-/**
- * DOC nrousseau class global comment. Detailled comment
- */
 public interface IProcess extends IElement {
 
     public static final String NEED_UPDATE_JOB = "NEED_UPDATE_JOB"; //$NON-NLS-1$

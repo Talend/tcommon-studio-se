@@ -41,10 +41,6 @@ import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.repository.ProjectManager;
 
-/**
- * created by ldong on Aug 7, 2014 Detailled comment
- * 
- */
 public class ContextOrderProperties extends Properties {
 
     private LinkedHashMap<String, String> commentMap = new LinkedHashMap<String, String>();
@@ -57,14 +53,8 @@ public class ContextOrderProperties extends Properties {
 
     private final static String DEFAULT_PROPERTY_ENCODING = "8859_1";
 
-    /**
-     * Version ID
-     */
     private static final long serialVersionUID = 1L;
 
-    /**
-     * Constructor.
-     */
     public ContextOrderProperties() {
         super();
     }
@@ -103,11 +93,6 @@ public class ContextOrderProperties extends Properties {
 
     }
 
-    /**
-     * Constructor.
-     * 
-     * @param properties the java propertis.
-     */
     public ContextOrderProperties(List<IContextParameter> parameterList) {
         this.parameterList = parameterList;
         initContextProperties();

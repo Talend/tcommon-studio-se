@@ -21,12 +21,6 @@ import org.talend.core.model.metadata.ColumnNameChanged;
 import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.designer.core.model.utils.emf.talendfile.AbstractExternalData;
 
-/**
- * DOC nrousseau class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public abstract class AbstractExternalNode extends AbstractNode implements IExternalNode {
 
     private IODataComponentContainer ioDataContainer;
@@ -35,11 +29,6 @@ public abstract class AbstractExternalNode extends AbstractNode implements IExte
 
     protected INode                  originalNode;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.AbstractNode#getExternalNode()
-     */
     @Override
     public IExternalNode getExternalNode() {
         return this;
@@ -49,30 +38,14 @@ public abstract class AbstractExternalNode extends AbstractNode implements IExte
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @seeorg.talend.core.model.process.IExternalNode#setIODataComponents(org.talend.core.model.components.
-     * IODataComponentContainer)
-     */
     public void setIODataComponents(IODataComponentContainer ioDatacontainer) {
         this.ioDataContainer = ioDatacontainer;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.IExternalNode#getIODataComponents()
-     */
     public IODataComponentContainer getIODataComponents() {
         return this.ioDataContainer;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.INode#metataChanged(org.talend.core.model.components.IODataComponent)
-     */
     public void metadataInputChanged(IODataComponent dataComponent, String connectionToApply) {
         for (ColumnNameChanged col : dataComponent.getColumnNameChanged()) {
             // System.out.println(" -> " + col + " " + connectionToApply); //$NON-NLS-1$ //$NON-NLS-2$
@@ -93,11 +66,6 @@ public abstract class AbstractExternalNode extends AbstractNode implements IExte
 
     protected abstract void renameMetadataColumnName(String conectionName, String oldColumnName, String newColumnName);
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.IExternalNode#isRunRefSubProcessAtStart(java.lang.String)
-     */
     public boolean isRunRefSubProcessAtStart(String connectionName) {
         return true;
     }
@@ -123,7 +91,6 @@ public abstract class AbstractExternalNode extends AbstractNode implements IExte
     }
 
     public void buildExternalData(AbstractExternalData abstractData) {
-
     }
 
     public INode getJobletNode() {
@@ -131,8 +98,6 @@ public abstract class AbstractExternalNode extends AbstractNode implements IExte
     }
 
     public void setExternalEmfData(AbstractExternalData externalEmfData) {
-        // TODO Auto-generated method stub
-
     }
 
     public List<String> checkNeededRoutines(List<String> possibleRoutines, String additionalString) {
@@ -140,15 +105,6 @@ public abstract class AbstractExternalNode extends AbstractNode implements IExte
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.process.IExternalNode#connectionStatusChanged(org.talend.core.model.process.EConnectionType
-     * , java.lang.String)
-     */
     public void connectionStatusChanged(EConnectionType newValue, String connectionToApply) {
-        // TODO Auto-generated method stub
-
     }
 }

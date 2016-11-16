@@ -29,21 +29,12 @@ import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.commons.ui.runtime.swt.tableviewer.celleditor.DateDialog;
 import org.talend.core.model.process.IContextParameter;
 
-/**
- * DOC chuang class global comment. Detailled comment
- */
 public class PatternCalendarDialog extends DateDialog {
 
     private IContextParameter param;
 
     private PatternCalendar time;
 
-    /**
-     * DOC chuang PatternCalendarDialog constructor comment.
-     * 
-     * @param parentShell
-     * @param param
-     */
     protected PatternCalendarDialog(Shell parentShell, IContextParameter param) {
         super(parentShell);
         setShellStyle(SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);

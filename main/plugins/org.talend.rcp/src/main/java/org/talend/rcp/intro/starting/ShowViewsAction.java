@@ -22,10 +22,6 @@ import org.eclipse.ui.intro.config.IIntroAction;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.repository.ui.views.IRepositoryView;
 
-/**
- * 
- * DOC wchen class global comment. Detailled comment
- */
 public class ShowViewsAction implements IIntroAction {
 
     public static final String SHOW_JOB_DESIGNER = "SHOW_JOB_DESIGNER";

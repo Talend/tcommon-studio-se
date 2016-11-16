@@ -12,12 +12,6 @@
 // ============================================================================
 package org.talend.core.model.metadata.types;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public final class JavaType {
 
     private String label;
@@ -33,11 +27,6 @@ public final class JavaType {
     // only to know for object input/output stream, if should base on readObject or not.
     private boolean objectBased;
 
-    /**
-     * @param label
-     * @param primitiveType
-     * @param clazzType
-     */
     protected JavaType(Class nullableClass, Class primitiveClass) {
         super();
         this.nullableClass = nullableClass;
@@ -46,20 +35,10 @@ public final class JavaType {
         this.id = createId(nullableClass.getSimpleName());
     }
 
-    /**
-     * DOC amaumont Comment method "createId".
-     * 
-     * @param simpleName
-     * @return
-     */
     private String createId(String value) {
         return "id_" + value; //$NON-NLS-1$
     }
 
-    /**
-     * @param label
-     * @param nullableClass
-     */
     public JavaType(Class nullableClass, boolean generateWithCanonicalName, boolean objectBased) {
         super();
         this.nullableClass = nullableClass;
@@ -77,12 +56,6 @@ public final class JavaType {
         this.generateWithCanonicalName = generateWithCanonicalName;
     }
 
-    /**
-     * @param label
-     * @param id
-     * @param nullableClass
-     * @param primitiveClass
-     */
     protected JavaType(String id, Class nullableClass, Class primitiveClass, String label) {
         super();
         this.label = label;
@@ -91,13 +64,6 @@ public final class JavaType {
         this.id = createId(nullableClass.getSimpleName());
     }
 
-    /**
-     * DOC amaumont JavaType constructor comment.
-     * 
-     * @param id
-     * @param nullableClass
-     * @param primitiveClass
-     */
     protected JavaType(String id, Class nullableClass, Class primitiveClass) {
         super();
         this.id = id;
@@ -105,41 +71,20 @@ public final class JavaType {
         this.primitiveClass = primitiveClass;
     }
 
-    /**
-     * DOC amaumont JavaType constructor comment.
-     * 
-     * @param id
-     * @param nullableClass
-     */
     public JavaType(String id, Class nullableClass) {
         super();
         this.id = id;
         this.nullableClass = nullableClass;
     }
 
-    /**
-     * Getter for label.
-     * 
-     * @return the label
-     */
     public String getLabel() {
         return this.label;
     }
 
-    /**
-     * Getter for id.
-     * 
-     * @return the id
-     */
     public String getId() {
         return this.id;
     }
 
-    /**
-     * Getter for objectClass.
-     * 
-     * @return the objectClass
-     */
     public Class getNullableClass() {
         return this.nullableClass;
     }
@@ -162,11 +107,6 @@ public final class JavaType {
         return this.generateWithCanonicalName;
     }
 
-    /**
-     * 
-     * @return
-     * @author
-     */
     public String toString() {
         StringBuffer buffer = new StringBuffer();
         buffer.append("JavaType["); //$NON-NLS-1$

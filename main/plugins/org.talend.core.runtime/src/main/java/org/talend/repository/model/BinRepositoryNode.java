@@ -16,17 +16,9 @@ import org.talend.commons.ui.runtime.image.ECoreImage;
 import org.talend.commons.ui.runtime.image.IImage;
 import org.talend.core.runtime.i18n.Messages;
 
-/**
- * DOC smallet class global comment. Detailled comment <br/>
- * 
- * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- * 
- */
 public class BinRepositoryNode extends StableRepositoryNode {
 
     /**
-     * DOC smallet StableRepositoryNode constructor comment.
-     * 
      * @param object
      * @param parent
      * @param type

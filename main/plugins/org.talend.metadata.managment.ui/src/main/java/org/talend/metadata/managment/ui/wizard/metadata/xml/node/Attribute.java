@@ -34,21 +34,11 @@ public class Attribute extends FOXTreeNode {
         setLabel(label);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.fileoutputxml.data.FOXTreeNode#hasChildren()
-     */
     @Override
     public boolean hasChildren() {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.fileoutputxml.data.FOXTreeNode#getValue()
-     */
     @Override
     public String getLabelForViewer() {
         return "@" + super.getLabel(); //$NON-NLS-1$

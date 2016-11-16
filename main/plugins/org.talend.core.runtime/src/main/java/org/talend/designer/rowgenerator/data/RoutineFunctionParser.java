@@ -29,19 +29,10 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IRepositoryService;
 import org.talend.repository.model.RepositoryConstants;
 
-/**
- * qzhang class global comment. Detailled comment <br/>
- * 
- * $Id: talend-code-templates.xml 1 2007-3-28 下午02:37:17 (星期五, 29 九月 2006) qzhang $
- * 
- */
 public class RoutineFunctionParser extends AbstractTalendFunctionParser {
 
     private List<String> systems;
 
-    /**
-     * qzhang RoutineFunctionParser constructor comment.
-     */
     public RoutineFunctionParser() {
         super();
     }
@@ -75,13 +66,6 @@ public class RoutineFunctionParser extends AbstractTalendFunctionParser {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.designer.rowgenerator.data.AbstractTalendFunctionParser#processSourceType(org.eclipse.jdt.internal
-     * .core.SourceType)
-     */
     @SuppressWarnings("restriction")
     @Override
     protected void processSourceType(IMember member, String className, String fullName, String funcName, boolean isSystem) {
@@ -97,11 +81,6 @@ public class RoutineFunctionParser extends AbstractTalendFunctionParser {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.rowgenerator.data.AbstractTalendFunctionParser#getPackageFragment()
-     */
     @Override
     protected String getPackageFragment() {
         return JavaUtils.JAVA_ROUTINES_DIRECTORY;

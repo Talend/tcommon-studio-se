@@ -26,12 +26,6 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 import org.talend.commons.ui.swt.colorstyledtext.scanner.ColoringScanner;
 
-/**
- * DOC nrousseau class global comment. Detailled comment <br/>
- * 
- * $Id: ColorManager.java 7038 2007-11-15 14:05:48Z plegall $
- * 
- */
 public class ColorManager {
 
     public static final RGB DEFAULT_STRING_COLOR = new RGB(0, 0, 0);

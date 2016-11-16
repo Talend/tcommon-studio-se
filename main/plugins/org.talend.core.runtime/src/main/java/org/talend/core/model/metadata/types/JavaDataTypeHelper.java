@@ -314,9 +314,6 @@ public final class JavaDataTypeHelper {
         }
     }
 
-    /**
-     * DOC nrousseau GuessSchemaUtil class global comment. Detailled comment
-     */
     private enum EJavaTypePriority {
         STRING("id_String", 10, false), //$NON-NLS-1$
         BOOLEAN("id_Boolean", 9, false), //$NON-NLS-1$

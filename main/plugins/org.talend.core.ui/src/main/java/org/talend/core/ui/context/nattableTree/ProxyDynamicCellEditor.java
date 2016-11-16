@@ -58,11 +58,6 @@ public class ProxyDynamicCellEditor extends AbstractCellEditor {
         this.manager = manager;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.nebula.widgets.nattable.edit.editor.ICellEditor#getEditorValue()
-     */
     @Override
     public Object getEditorValue() {
         if (!getEditorControl().isDisposed()) {
@@ -71,46 +66,22 @@ public class ProxyDynamicCellEditor extends AbstractCellEditor {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.nebula.widgets.nattable.edit.editor.ICellEditor#setEditorValue(java.lang.Object)
-     */
     @Override
     public void setEditorValue(Object value) {
         dynamicEditor.setEditorValue(value);
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.nebula.widgets.nattable.edit.editor.ICellEditor#getEditorControl()
-     */
     @Override
     public Control getEditorControl() {
         return dynamicEditor.getEditorControl();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.nebula.widgets.nattable.edit.editor.ICellEditor#createEditorControl(org.eclipse.swt.widgets.Composite
-     * )
-     */
     @Override
     public Control createEditorControl(Composite parent) {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.nebula.widgets.nattable.edit.editor.AbstractCellEditor#activateCell(org.eclipse.swt.widgets.Composite
-     * , java.lang.Object)
-     */
     @Override
     public Control activateCell(Composite parent, Object originalCanonicalValue) {
         ICellEditHandler editHandler = new InlineEditHandler(this.layerCell.getLayer(), this.layerCell.getColumnPosition(),
@@ -145,13 +116,6 @@ public class ProxyDynamicCellEditor extends AbstractCellEditor {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.nebula.widgets.nattable.edit.editor.AbstractCellEditor#commit(org.eclipse.nebula.widgets.nattable
-     * .selection.SelectionLayer.MoveDirectionEnum, boolean, boolean)
-     */
     @Override
     public boolean commit(MoveDirectionEnum direction, boolean closeAfterCommit, boolean skipValidation) {
         if (dynamicEditor != null) {

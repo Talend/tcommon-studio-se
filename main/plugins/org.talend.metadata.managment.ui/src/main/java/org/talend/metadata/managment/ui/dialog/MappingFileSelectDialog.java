@@ -24,33 +24,18 @@ import org.eclipse.swt.widgets.Shell;
 import org.talend.metadata.managment.ui.editor.MetadataTalendTypeEditor;
 import org.talend.metadata.managment.ui.i18n.Messages;
 
-/**
- * DOC YeXiaowei class global comment. Detailled comment <br/>
- * 
- */
 public class MappingFileSelectDialog extends TitleAreaDialog {
 
     private String selectId = null;
 
     private MetadataTalendTypeEditor editor = null;
 
-    /**
-     * DOC YeXiaowei MappingFileSelectDialog constructor comment.
-     * 
-     * @param parentShell
-     */
     public MappingFileSelectDialog(Shell parentShell) {
         super(parentShell);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.TitleAreaDialog#createDialogArea(org.eclipse.swt.widgets.Composite)
-     */
     @Override
     protected Control createDialogArea(Composite parent) {
-
         parent.setLayout(new GridLayout());
 
         Composite bgComposite = new Composite(parent, SWT.NONE);
@@ -68,25 +53,14 @@ public class MappingFileSelectDialog extends TitleAreaDialog {
         return bgComposite;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
-     */
     @Override
     protected void configureShell(Shell newShell) {
         newShell.setSize(new Point(500, 600));
         super.configureShell(newShell);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.Dialog#okPressed()
-     */
     @Override
     protected void okPressed() {
-
         if (editor != null) {
             editor.forceStore();
         }
@@ -95,31 +69,16 @@ public class MappingFileSelectDialog extends TitleAreaDialog {
         super.okPressed();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.Dialog#createButtonsForButtonBar(org.eclipse.swt.widgets.Composite)
-     */
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
         // Only need OK button
         createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
     }
 
-    /**
-     * Getter for selectId.
-     * 
-     * @return the selectId
-     */
     public String getSelectId() {
         return this.selectId;
     }
 
-    /**
-     * Sets the selectId.
-     * 
-     * @param selectId the selectId to set
-     */
     public void setSelectId(String selectId) {
         this.selectId = selectId;
     }

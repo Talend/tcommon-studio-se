@@ -12,13 +12,6 @@
 // ============================================================================
 package org.talend.core.language;
 
-
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public class LanguageManager {
 
     public static ECodeLanguage getCurrentLanguage() {

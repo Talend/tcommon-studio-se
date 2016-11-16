@@ -49,12 +49,6 @@ public class TableViewerCreatorSorter extends ViewerSorter {
         this.columnsBeanComparator = new MultipleColumnsBeanComparator();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ViewerComparator#compare(org.eclipse.jface.viewers.Viewer, java.lang.Object,
-     * java.lang.Object)
-     */
     @Override
     public int compare(Viewer viewer, Object object1, Object object2) {
         if (lastIdColumnSorted != null && lastIdColumnSorted.getComparator() != null) {
@@ -72,13 +66,6 @@ public class TableViewerCreatorSorter extends ViewerSorter {
         prepareSort(tableViewerCreator, tableViewerCreatorColumn, newOrderDirection);
     }
 
-    /**
-     * DOC amaumont Comment method "prepareSort".
-     * 
-     * @param tableViewerCreator
-     * @param tableViewerCreatorColumn
-     * @param newOrderDirection
-     */
     public void prepareSort(TableViewerCreatorNotModifiable tableViewerCreator, TableViewerCreatorColumnNotModifiable tableViewerCreatorColumn,
             SORT newOrderDirection) {
         tableViewerCreator.getTable().setSortColumn(tableViewerCreatorColumn.getTableColumn());

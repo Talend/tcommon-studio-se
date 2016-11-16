@@ -16,9 +16,6 @@ import org.eclipse.jface.viewers.ViewerSorter;
 import org.talend.repository.model.IRepositoryNode.ENodeType;
 import org.talend.repository.model.RepositoryNode;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class RepFolderOnTopAlwaysViewerSorter extends ViewerSorter {
 
     @Override

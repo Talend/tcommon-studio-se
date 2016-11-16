@@ -19,12 +19,6 @@ import org.apache.commons.collections.map.MultiKeyMap;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 
-/**
- * DOC smallet class global comment. Detailled comment <br/>
- * 
- * $Id: ImageProvider.java 7038 2007-11-15 14:05:48Z plegall $
- * 
- */
 public class ImageProvider {
 
     private static Map<ImageDescriptor, Image> cachedImages = new HashMap<ImageDescriptor, Image>();

@@ -84,24 +84,12 @@ public class DefaultBrandingConfiguration implements IBrandingConfiguration {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.branding.IBrandingConfiguration#getHiddenRepositoryCategory()
-     */
     @Override
     public List<IRepositoryNode> getHiddenRepositoryCategory(IRepositoryNode parent, String type) {
-
         List<IRepositoryNode> nodes = new ArrayList<IRepositoryNode>();
-
         return nodes;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.branding.IBrandingConfiguration#initPerspective(org.eclipse.ui.IPageLayout)
-     */
     @Override
     public void initPerspective(IPageLayout layout) {
         try {
@@ -165,21 +153,11 @@ public class DefaultBrandingConfiguration implements IBrandingConfiguration {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.branding.IBrandingConfiguration#getAvailableComponents()
-     */
     @Override
     public String[] getAvailableComponents() {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.branding.IBrandingConfiguration#getAvailableLanguages()
-     */
     @Override
     public String[] getAvailableLanguages() {
         String[] languages;
@@ -188,72 +166,37 @@ public class DefaultBrandingConfiguration implements IBrandingConfiguration {
         return languages;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.branding.IBrandingConfiguration#getJobEditorSettings()
-     */
     @Override
     public Map<String, Object> getJobEditorSettings() {
         // no specific settings by default.
         return new HashMap<String, Object>();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.branding.IBrandingConfiguration#isUseMailLoginCheck()
-     */
     @Override
     public boolean isUseMailLoginCheck() {
         return useMainLoginCheck;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.branding.IBrandingConfiguration#isUseProductRegistration()
-     */
     @Override
     public boolean isUseProductRegistration() {
         return useProductRegistration;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.branding.IBrandingConfiguration#isAllowDebugMode()
-     */
     @Override
     public boolean isAllowDebugMode() {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.branding.IBrandingConfiguration#isUseDemoProjects()
-     */
     @Override
     public boolean isUseDemoProjects() {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.branding.IBrandingConfiguration#getAdditionalTitle()
-     */
     @Override
     public String getAdditionalTitle() {
         return title;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.branding.IBrandingConfiguration#setAdditionalTitle(java.lang.String)
-     */
     @Override
     public void setAdditionalTitle(String title) {
         this.title = title;
@@ -275,21 +218,11 @@ public class DefaultBrandingConfiguration implements IBrandingConfiguration {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.branding.IBrandingConfiguration#setUseMailLoginCheck(boolean)
-     */
     @Override
     public void setUseMailLoginCheck(boolean useMainLoginCheck) {
         this.useMainLoginCheck = useMainLoginCheck;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.branding.IBrandingConfiguration#setUseProductRegistration(boolean)
-     */
     @Override
     public void setUseProductRegistration(boolean useProductRegistration) {
         this.useProductRegistration = useProductRegistration;

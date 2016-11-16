@@ -48,9 +48,6 @@ import us.monoid.web.Resty;
 import us.monoid.web.TextResource;
 import us.monoid.web.mime.MultipartContent;
 
-/**
- * ggu class global comment. Detailled comment
- */
 public final class TokenCollectorFactory {
 
     private static Logger log = Logger.getLogger(TokenCollectorFactory.class);

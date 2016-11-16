@@ -16,19 +16,8 @@ import java.util.List;
 
 import org.talend.core.model.repository.ERepositoryObjectType;
 
-/**
- * DOC ggu class global comment. Detailled comment <br/>
- * 
- * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
- */
 public class AbstractJobRepoViewSeeker extends AbstractRepoViewSeeker {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.repository.seeker.AbstractRepoViewSeeker#getPreExpandTypes()
-     */
     @Override
     protected List<ERepositoryObjectType> getPreExpandTypes() {
         List<ERepositoryObjectType> preExpandTypes = super.getPreExpandTypes();

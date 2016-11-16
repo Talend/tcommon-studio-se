@@ -46,9 +46,6 @@ import org.talend.metadata.managment.ui.wizard.metadata.xml.node.FOXTreeNode;
 import org.talend.repository.mdm.i18n.Messages;
 import org.talend.repository.metadata.ui.wizards.form.AbstractXmlStepForm;
 
-/**
- * wzhang class global comment. Detailled comment
- */
 public class MDMOutputDragAndDropHandler {
 
     private MDMSchema2TreeLinker linker;
@@ -95,11 +92,6 @@ public class MDMOutputDragAndDropHandler {
 
     }
 
-    /**
-     * 
-     * DOC wzhang XmlFileDragAndDropHandler class global comment. Detailled comment
-     */
-
     class TreeDragSourceListener implements TransferDragSourceListener {
 
         public void dragFinished(DragSourceEvent event) {
@@ -130,10 +122,6 @@ public class MDMOutputDragAndDropHandler {
         }
     }
 
-    /**
-     * 
-     * DOC wzhang XmlFileDragAndDropHandler class global comment. Detailled comment
-     */
     class TableDropTargetListener implements TransferDropTargetListener {
 
         public void dragEnter(DropTargetEvent event) {

@@ -61,11 +61,6 @@ public class MigrationTaskExtensionEPReader extends RegistryReader {
         readRegistry();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.utils.RegistryReader#readElement(org.eclipse.core.runtime.IConfigurationElement)
-     */
     @Override
     protected boolean readElement(final IConfigurationElement element) {
         if (TYPE_EXTENTION_ELEMENT_NAME.equals(element.getName())) {

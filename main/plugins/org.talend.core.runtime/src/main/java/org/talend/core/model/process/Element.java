@@ -157,11 +157,6 @@ public abstract class Element implements Cloneable, IElement {
         listParam.add(parameter);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.core.ui.editor.IElement#getElementParameters()
-     */
     @Override
     public List<? extends IElementParameter> getElementParameters() {
         return listParam;
@@ -289,21 +284,11 @@ public abstract class Element implements Cloneable, IElement {
     @Override
     public abstract String getElementName();
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.IElement#isForceReadOnly()
-     */
     @Override
     public boolean isForceReadOnly() {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.IElement#setForceReadOnly(boolean)
-     */
     @Override
     public void setForceReadOnly(boolean readOnly) {
 

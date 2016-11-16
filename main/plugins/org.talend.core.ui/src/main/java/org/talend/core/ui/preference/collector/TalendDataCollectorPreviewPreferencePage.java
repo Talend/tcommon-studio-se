@@ -42,9 +42,6 @@ import us.monoid.json.JSONArray;
 import us.monoid.json.JSONException;
 import us.monoid.json.JSONObject;
 
-/**
- * ggu class global comment. Detailled comment
- */
 public class TalendDataCollectorPreviewPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
     public TalendDataCollectorPreviewPreferencePage() {
@@ -105,19 +102,11 @@ public class TalendDataCollectorPreviewPreferencePage extends PreferencePage imp
         return comp;
     }
 
-    /**
-     * 
-     * ggu JsonProvider class global comment. Detailled comment
-     */
 
     class JsonProvider extends LabelProvider implements ITreeContentProvider, ITableLabelProvider {
 
         private static final String EMPTY = ""; //$NON-NLS-1$
 
-        /**
-         * 
-         * ggu KeyValue class global comment. Detailled comment
-         */
         class KeyValue {
 
             private String key;

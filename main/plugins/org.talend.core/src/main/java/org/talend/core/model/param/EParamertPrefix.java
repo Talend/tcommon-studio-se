@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.core.model.param;
 
-/**
- * cli class global comment. Detailled comment
- */
 public enum EParamertPrefix {
     PROPERTY_TYPE_IMPLICIT_CONTEXT, // process extra param
     PROPERTY_TYPE, // process stats and logs param

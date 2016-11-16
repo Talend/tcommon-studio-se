@@ -14,12 +14,6 @@ package org.talend.core.model.components;
 
 import java.util.List;
 
-/**
- * DOC nrousseau class global comment. Detailled comment <br/>
- * 
- * $Id: IMultipleComponentManager.java 44635 2010-06-29 06:51:38Z nrousseau $
- * 
- */
 public interface IMultipleComponentManager {
 
     public IMultipleComponentItem addItem(String name, String component);

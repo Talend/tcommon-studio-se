@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.core.model.metadata.connection.hive;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public enum HiveModeInfo {
     STANDALONE("Standalone"), //$NON-NLS-1$
     EMBEDDED("Embedded"), //$NON-NLS-1$

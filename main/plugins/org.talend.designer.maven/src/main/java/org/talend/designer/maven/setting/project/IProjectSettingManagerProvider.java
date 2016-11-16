@@ -14,9 +14,6 @@ package org.talend.designer.maven.setting.project;
 
 import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public interface IProjectSettingManagerProvider {
 
     ProjectPreferenceManager getProjectSettingManager();

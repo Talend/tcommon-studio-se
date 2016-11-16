@@ -18,9 +18,6 @@ import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-/**
- * cli class global comment. Detailled comment
- */
 public class TalendCustomThreadPoolExecutor extends ThreadPoolExecutor {
 
     public TalendCustomThreadPoolExecutor(int queueCapacity) {
@@ -46,9 +43,6 @@ public class TalendCustomThreadPoolExecutor extends ThreadPoolExecutor {
     }
 
     /**
-     * 
-     * cli Comment method "clearThreads".
-     * 
      * (bug 6976)
      */
     public void clearThreads() {

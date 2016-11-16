@@ -14,9 +14,6 @@ package org.talend.designer.codegen;
 
 import org.talend.core.model.process.IProcess;
 
-/**
- * DOC zwzhao class global comment. Detailled comment
- */
 public interface IStormCodeGeneratorService extends IBigDataCodeGeneratorService {
 
     boolean validProcess(IProcess process);

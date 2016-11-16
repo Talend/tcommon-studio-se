@@ -15,12 +15,6 @@ package org.talend.core.model.metadata;
 import java.util.List;
 import java.util.Map;
 
-/**
- * DOC nrousseau class global comment. Detailled comment <br/>
- * 
- * $Id: IMetadataTable.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
- */
 public interface IMetadataTable {
 
     public String getId();

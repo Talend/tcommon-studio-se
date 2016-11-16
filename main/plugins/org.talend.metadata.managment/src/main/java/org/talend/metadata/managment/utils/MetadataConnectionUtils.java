@@ -73,9 +73,6 @@ import orgomg.cwm.objectmodel.core.Package;
 import orgomg.cwm.resource.relational.Catalog;
 import orgomg.cwm.resource.relational.Schema;
 
-/**
- * DOC zshen class global comment. Detailled comment
- */
 public class MetadataConnectionUtils {
 
     private static Logger log = Logger.getLogger(MetadataConnectionUtils.class);

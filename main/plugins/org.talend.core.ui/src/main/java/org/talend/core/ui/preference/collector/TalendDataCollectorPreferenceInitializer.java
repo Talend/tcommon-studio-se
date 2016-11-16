@@ -17,22 +17,13 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.core.ui.CoreUIPlugin;
 
-/**
- * ggu class global comment. Detailled comment
- */
 public class TalendDataCollectorPreferenceInitializer extends AbstractPreferenceInitializer {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer#initializeDefaultPreferences()
-     */
     @Override
     public void initializeDefaultPreferences() {
         IPreferenceStore preferenceStore = CoreUIPlugin.getDefault().getPreferenceStore();
         preferenceStore.setDefault(ITalendCorePrefConstants.DATA_COLLECTOR_ENABLED, true);
         preferenceStore.setDefault(ITalendCorePrefConstants.DATA_COLLECTOR_UPLOAD_PERIOD, 10);
-
     }
 
 }

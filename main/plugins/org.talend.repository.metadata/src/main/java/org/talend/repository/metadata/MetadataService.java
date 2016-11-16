@@ -66,21 +66,12 @@ import org.talend.repository.ui.wizards.metadata.connection.wsdl.WSDLSchemaWizar
 
 import net.sourceforge.jtds.jdbc.JtdsConnection;
 
-/**
- * DOC hwang class global comment. Detailled comment
- */
 public class MetadataService implements IMetadataService {
 
     private static Logger log = Logger.getLogger(MetadataService.class);
 
     private GenericSchemaWizard genericSchemaWizard = null;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.model.IRepositoryService#getGenericSchemaWizardDialog(org.eclipse.swt.widgets.Shell,
-     * org.eclipse.ui.IWorkbench, boolean, org.eclipse.jface.viewers.ISelection, java.lang.String[], boolean)
-     */
     @Override
     public WizardDialog getGenericSchemaWizardDialog(Shell shell, IWorkbench workbench, boolean creation, ISelection selection,
             String[] existingNames, boolean isSinglePageOnly) {
@@ -89,11 +80,6 @@ public class MetadataService implements IMetadataService {
         return new WizardDialog(shell, genericSchemaWizard);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.model.IRepositoryService#getPropertyFromWizardDialog()
-     */
     @Override
     public Property getPropertyFromWizardDialog() {
         if (this.genericSchemaWizard != null) {
@@ -102,11 +88,6 @@ public class MetadataService implements IMetadataService {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.model.IRepositoryService#getPathForSaveAsGenericSchema()
-     */
     @Override
     public IPath getPathForSaveAsGenericSchema() {
         if (this.genericSchemaWizard != null) {
@@ -253,11 +234,6 @@ public class MetadataService implements IMetadataService {
         if (realNode != null) {
             AbstractCreateTableAction action = new CreateTableAction() {
 
-                /*
-                 * (non-Javadoc)
-                 * 
-                 * @see org.talend.repository.ui.actions.AContextualAction#getSelection()
-                 */
                 @Override
                 public ISelection getSelection() {
                     return new StructuredSelection(realNode);

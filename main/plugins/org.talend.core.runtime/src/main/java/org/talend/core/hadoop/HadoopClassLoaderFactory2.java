@@ -21,13 +21,7 @@ import org.talend.core.classloader.ClassLoaderFactory;
 import org.talend.core.classloader.DynamicClassLoader;
 
 /**
- * 
- * created by ycbai on Aug 11, 2014 Detailled comment
- * 
- * <p>
  * TODO: Need to improve it and replace {@link HadoopClassLoaderFactory} with it after.
- * </p>
- *
  */
 public class HadoopClassLoaderFactory2 {
 
@@ -89,11 +83,6 @@ public class HadoopClassLoaderFactory2 {
         return new HadoopClassLoaderFactory2.Builder();
     }
 
-    /**
-     * 
-     * created by ycbai on Aug 11, 2014 Detailled comment
-     *
-     */
     public static class Builder {
 
         private static final String INDEX_SEP = ":"; //$NON-NLS-1$

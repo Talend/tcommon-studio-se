@@ -88,9 +88,6 @@ import org.talend.repository.metadata.ui.wizards.form.AbstractXmlFileStepForm;
 import orgomg.cwm.resource.record.RecordFactory;
 import orgomg.cwm.resource.record.RecordFile;
 
-/**
- * wzhang class global comment. Detailled comment
- */
 public class XmlFileOutputStep1Form extends AbstractXmlFileStepForm {
 
     private static Logger log = Logger.getLogger(XmlFileOutputStep1Form.class);

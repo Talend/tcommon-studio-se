@@ -25,11 +25,6 @@ public class SpecificSettingPreferencePage extends FieldEditorPreferencePage imp
         setPreferenceStore(CoreUIPlugin.getDefault().getPreferenceStore());
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.preference.FieldEditorPreferencePage#createFieldEditors()
-     */
     @Override
     protected void createFieldEditors() {
         addField(new BooleanFieldEditor(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS,
@@ -37,11 +32,6 @@ public class SpecificSettingPreferencePage extends FieldEditorPreferencePage imp
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
-     */
     @Override
     public void init(IWorkbench workbench) {
 

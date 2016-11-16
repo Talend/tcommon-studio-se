@@ -14,20 +14,10 @@ package org.talend.commons.ui.swt.extended.table;
 
 import org.eclipse.core.runtime.ListenerList;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public abstract class AbstractExtendedControlModel {
 
     /**
-     * 
-     * Event type. <br/>
-     * 
-     * $Id$
-     * 
+     * Event type
      */
     public enum EVENT_TYPE implements IExtendedControlEventType {
         NAME_CHANGED,
@@ -42,17 +32,11 @@ public abstract class AbstractExtendedControlModel {
 
     private String name;
 
-    /**
-     * DOC amaumont AbstractExtendedControlModel constructor comment.
-     */
     public AbstractExtendedControlModel(String name) {
         super();
         this.name = name;
     }
 
-    /**
-     * DOC amaumont AbstractExtendedControlModel constructor comment.
-     */
     public AbstractExtendedControlModel() {
     }
 
@@ -60,11 +44,6 @@ public abstract class AbstractExtendedControlModel {
         return this.name;
     }
 
-    /**
-     * Sets the name.
-     * 
-     * @param name the name to set
-     */
     public void setName(String name) {
         this.name = name;
         fireEvent(new ExtendedModelEvent(EVENT_TYPE.NAME_CHANGED));
@@ -82,11 +61,6 @@ public abstract class AbstractExtendedControlModel {
         this.listeners.remove(listener);
     }
 
-    /**
-     * DOC amaumont Comment method "fireEvent".
-     * 
-     * @param event
-     */
     protected void fireEvent(ExtendedModelEvent event) {
         final Object[] listenerArray = listeners.getListeners();
         for (int i = 0; i < listenerArray.length; i++) {

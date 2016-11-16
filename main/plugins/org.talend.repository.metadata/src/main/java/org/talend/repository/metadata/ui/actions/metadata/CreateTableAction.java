@@ -170,12 +170,6 @@ public class CreateTableAction extends AbstractCreateTableAction {
         return IMetadataTable.class;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.ui.actions.metadata.AbstractCreateAction#init(org.talend.repository.model.RepositoryNode)
-     */
     @Override
     protected void init(RepositoryNode node) {
         IProxyRepositoryFactory factory = ProxyRepositoryFactory.getInstance();

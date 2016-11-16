@@ -15,12 +15,6 @@ package org.talend.commons.ui.swt.colorstyledtext.rules;
 import org.eclipse.jface.text.rules.IToken;
 import org.talend.commons.ui.swt.colorstyledtext.jedit.Type;
 
-/**
- * DOC nrousseau class global comment. Detailled comment <br/>
- * 
- * $Id: ITokenFactory.java 7038 2007-11-15 14:05:48Z plegall $
- * 
- */
 public interface ITokenFactory {
 
     IToken makeToken(Type type);

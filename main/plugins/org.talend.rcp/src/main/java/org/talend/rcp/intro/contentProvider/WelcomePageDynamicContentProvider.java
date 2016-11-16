@@ -22,20 +22,12 @@ import org.talend.rcp.i18n.Messages;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-/**
- * DOC hcyi class global comment. Detailled comment
- */
 public class WelcomePageDynamicContentProvider implements IIntroXHTMLContentProvider {
 
     private static final String BROWSER_URL = "http://org.eclipse.ui.intro/runAction?pluginId=org.talend.rcp&class=org.talend.rcp.intro.OpenWebBrowserAction&type="; //$NON-NLS-1$
 
     private static final String BROWSER_DEMO_URL = "http://org.eclipse.ui.intro/runAction?pluginId=org.talend.rcp&class=org.talend.rcp.intro.ImportDemoProjectAction&type="; //$NON-NLS-1$
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.intro.config.IIntroXHTMLContentProvider#createContent(java.lang.String, org.w3c.dom.Element)
-     */
     @Override
     public void createContent(String id, Element parent) {
         Document dom = parent.getOwnerDocument();
@@ -475,52 +467,27 @@ public class WelcomePageDynamicContentProvider implements IIntroXHTMLContentProv
             if (i != hyperlinkText.length - 1) {
                 p.appendChild(dom.createElement("br"));
             }
-
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.ui.intro.config.IIntroContentProvider#init(org.eclipse.ui.intro.config.IIntroContentProviderSite)
-     */
     @Override
     public void init(IIntroContentProviderSite site) {
         // TODO Auto-generated method stub
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.intro.config.IIntroContentProvider#createContent(java.lang.String, java.io.PrintWriter)
-     */
     @Override
     public void createContent(String id, PrintWriter out) {
         // TODO Auto-generated method stub
-
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.intro.config.IIntroContentProvider#createContent(java.lang.String,
-     * org.eclipse.swt.widgets.Composite, org.eclipse.ui.forms.widgets.FormToolkit)
-     */
     @Override
     public void createContent(String id, Composite parent, FormToolkit toolkit) {
         // TODO Auto-generated method stub
-
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.intro.config.IIntroContentProvider#dispose()
-     */
     @Override
     public void dispose() {
         // TODO Auto-generated method stub
-
     }
+
 }

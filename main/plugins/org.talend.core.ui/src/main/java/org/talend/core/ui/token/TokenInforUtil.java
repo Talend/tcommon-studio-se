@@ -27,13 +27,9 @@ import us.monoid.json.JSONArray;
 import us.monoid.json.JSONException;
 import us.monoid.json.JSONObject;
 
-/**
- * ggu class global comment. Detailled comment
- */
 public final class TokenInforUtil {
 
     /**
-     * 
      * calc the average to x.x. for example, 5/3,should be 1.8
      */
     public static String calcAverageToStr(int total, int per) {
@@ -50,9 +46,6 @@ public final class TokenInforUtil {
     }
 
     /**
-     * 
-     * ggu Comment method "getDateAfter".
-     * 
      * add the days after date
      */
     public static Date getDateAfter(Date date, int days) {
@@ -63,9 +56,6 @@ public final class TokenInforUtil {
     }
 
     /**
-     * 
-     * ggu Comment method "convertTopComponents".
-     * 
      * convert the map to json, and only with the max values.
      */
     public static JSONObject convertTopComponents(Map<String, Integer> numComponentMap, final int max) throws JSONException {

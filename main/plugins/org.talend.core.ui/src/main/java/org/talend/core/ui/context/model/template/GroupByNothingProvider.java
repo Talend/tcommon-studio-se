@@ -92,11 +92,6 @@ public class GroupByNothingProvider extends ContextProviderProxy {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnText(java.lang.Object, int)
-     */
     public String getColumnText(Object element, int columnIndex) {
         if (element instanceof ContextVariableTabParentModel) {
             ContextVariableTabParentModel parent = (ContextVariableTabParentModel) element;
@@ -113,21 +108,11 @@ public class GroupByNothingProvider extends ContextProviderProxy {
         return ""; //$NON-NLS-1$
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.context.ConextTreeValuesComposite.ProviderProxy#getColumnImage(java.lang.Object, int)
-     */
     @Override
     public Image getColumnImage(Object element, int columnIndex) {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
-     */
     public Object[] getElements(Object inputElement) {
         List<IContext> contexts = (List<IContext>) inputElement;
         List<ContextVariableTabParentModel> output = new ArrayList<ContextVariableTabParentModel>();
@@ -145,11 +130,6 @@ public class GroupByNothingProvider extends ContextProviderProxy {
         return output.toArray();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
-     */
     public Object[] getChildren(Object parentElement) {
         if (parentElement instanceof ContextVariableTabParentModel) {
             ContextVariableTabParentModel parent = (ContextVariableTabParentModel) parentElement;
@@ -158,11 +138,6 @@ public class GroupByNothingProvider extends ContextProviderProxy {
         return new Object[0];
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object)
-     */
     public Object getParent(Object element) {
         if (element instanceof ContextVariableTabChildModel) {
             ContextVariableTabChildModel child = (ContextVariableTabChildModel) element;
@@ -171,11 +146,6 @@ public class GroupByNothingProvider extends ContextProviderProxy {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.Object)
-     */
     public boolean hasChildren(Object element) {
         if (element instanceof ContextVariableTabParentModel) {
             ContextVariableTabParentModel parent = (ContextVariableTabParentModel) element;
@@ -184,20 +154,10 @@ public class GroupByNothingProvider extends ContextProviderProxy {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ITableColorProvider#getForeground(java.lang.Object, int)
-     */
     public Color getForeground(Object element, int columnIndex) {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ITableColorProvider#getBackground(java.lang.Object, int)
-     */
     public Color getBackground(Object element, int columnIndex) {
         if (element instanceof ContextVariableTabParentModel) {
             ContextVariableTabParentModel parent = (ContextVariableTabParentModel) element;
@@ -209,11 +169,6 @@ public class GroupByNothingProvider extends ContextProviderProxy {
         return null;
     }
 
-    /**
-     * 
-     * @param name
-     * @return
-     */
     private boolean hasSameNameContextParameters(String name) {
         boolean has = false;
         IContextManager contextManager = getContextManager();

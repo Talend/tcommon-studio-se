@@ -15,12 +15,6 @@ package org.talend.commons.ui.runtime.swt.proposal;
 import org.eclipse.jface.fieldassist.IControlContentAdapter;
 import org.eclipse.swt.widgets.Control;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id: IControlContentAdapterExtended.java 7038 2007-11-15 14:05:48Z plegall $
- * 
- */
 public interface IControlContentAdapterExtended extends IControlContentAdapter {
 
     /**

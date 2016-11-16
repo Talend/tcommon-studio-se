@@ -28,9 +28,6 @@ import org.talend.core.ui.context.ContextManagerHelper;
 import org.talend.core.ui.context.ContextTemplateComposite;
 import org.talend.core.ui.context.model.AbstractContextCellModifier;
 
-/**
- * ggu class global comment. Detailled comment
- */
 public class ContextCellModifier extends AbstractContextCellModifier {
 
     private ContextTemplateComposite variableTabComposite;
@@ -59,11 +56,6 @@ public class ContextCellModifier extends AbstractContextCellModifier {
         return sourceId;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ICellModifier#canModify(java.lang.Object, java.lang.String)
-     */
     public boolean canModify(Object element, String property) {
         if (getModelManager().isReadOnly()) {
             return false;
@@ -98,11 +90,6 @@ public class ContextCellModifier extends AbstractContextCellModifier {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ICellModifier#getValue(java.lang.Object, java.lang.String)
-     */
     public Object getValue(Object element, String property) {
         IContextParameter contextPara = null;
         if (element instanceof ContextVariableTabParentModel) {
@@ -174,11 +161,6 @@ public class ContextCellModifier extends AbstractContextCellModifier {
         return para;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ICellModifier#modify(java.lang.Object, java.lang.String, java.lang.Object)
-     */
     public void modify(Object element, final String property, final Object value) {
         TreeItem item = (TreeItem) element;
         final Object object = item.getData();

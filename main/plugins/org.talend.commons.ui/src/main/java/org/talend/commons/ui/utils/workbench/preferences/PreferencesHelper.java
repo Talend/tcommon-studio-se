@@ -21,10 +21,6 @@ import org.eclipse.jface.preference.IPreferenceNode;
 import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.ui.PlatformUI;
 
-/**
- * created by ggu on Sep 25, 2014 Detailled comment
- *
- */
 public class PreferencesHelper {
 
     public static boolean removePage(String prefId) {
@@ -32,7 +28,6 @@ public class PreferencesHelper {
     }
 
     /**
-     * 
      * Use the BFS(Breadth First Search) to remove the preferences ids.
      */
     public static boolean removePages(String[] prefIds) {

@@ -28,12 +28,6 @@ import org.eclipse.swt.widgets.Tree;
 import org.talend.commons.ui.runtime.ws.WindowSystem;
 import org.talend.commons.ui.swt.drawing.background.IBackgroundRefresher;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public class LinkableTree implements ILinkableControl {
 
     private Tree tree;
@@ -56,12 +50,6 @@ public class LinkableTree implements ILinkableControl {
 
     private Listener paintListener;
 
-    /**
-     * DOC amaumont LinkableTable constructor comment.
-     * 
-     * @param tree
-     * @param bgDrawableComposite
-     */
     public LinkableTree(IControlsLinker controlsLinker, IBackgroundRefresher backgroundRefresher, Tree tree,
             BgDrawableComposite bgDrawableComposite) {
         this(controlsLinker, backgroundRefresher, tree, bgDrawableComposite, true);
@@ -93,29 +81,14 @@ public class LinkableTree implements ILinkableControl {
         init();
     }
 
-    /**
-     * DOC amaumont Comment method "init".
-     * 
-     * @param forceDrawLinksGtk2
-     */
     private void init() {
         addListeners();
     }
 
-    /**
-     * Getter for table.
-     * 
-     * @return the table
-     */
     public Tree getTree() {
         return this.tree;
     }
 
-    /**
-     * DOC amaumont Comment method "addListeners".
-     * 
-     * @param forceDrawLinksGtk2
-     */
     private void addListeners() {
         if (WindowSystem.isGTK() && forceDrawLinksGtk) {
             paintListener = new Listener() {
@@ -213,11 +186,6 @@ public class LinkableTree implements ILinkableControl {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.linking.ILinkableControl#dispose()
-     */
     public void dispose() {
         removeListeners();
     }

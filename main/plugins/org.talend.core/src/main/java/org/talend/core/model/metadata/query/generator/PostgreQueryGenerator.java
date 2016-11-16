@@ -16,9 +16,6 @@ import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.model.metadata.query.AbstractQueryGenerator;
 import org.talend.core.model.process.IElement;
 
-/**
- * ggu class global comment. Detailled comment
- */
 public class PostgreQueryGenerator extends AbstractQueryGenerator {
 
     public PostgreQueryGenerator(EDatabaseTypeName dbType) {
@@ -27,7 +24,6 @@ public class PostgreQueryGenerator extends AbstractQueryGenerator {
 
     @Override
     protected boolean forceAddQuote() {
-        // return super.forceAddQuote();
         return true; // always quote
     }
 

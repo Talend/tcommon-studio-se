@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.commons.utils.resource;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public interface FileExtensions {
 
     String PROPERTIES_EXTENSION = "properties"; //$NON-NLS-1$

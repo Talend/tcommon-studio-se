@@ -36,22 +36,12 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-/**
- * DOC amaumont class global comment. Detailled comment <br/>
- * 
- */
 public class MappingFileLoader {
 
     private static Logger log = Logger.getLogger(MappingFileLoader.class);
 
     private Dbms dbms;
 
-    /**
-     * DOC amaumont Comment method "load".
-     * 
-     * @param file
-     * @throws SystemException
-     */
     public void load(File file) throws SystemException {
         XmlNodeRetriever defaultNodeRetriever = new XmlNodeRetriever();
         ECodeLanguage codeLanguage = MetadataTalendType.getCodeLanguage();

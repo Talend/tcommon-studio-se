@@ -12,18 +12,9 @@
 // ============================================================================
 package org.talend.core.ui.preference.hidden;
 
-/**
- * DOC ggu class global comment. Detailled comment <br/>
- * 
- * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
- */
 public interface IHidePreferencePageValidator {
 
     /**
-     * 
-     * DOC ggu Comment method "validate".
-     * 
      * @return if true, will be hidden. if false, will enable
      */
     public boolean validate();

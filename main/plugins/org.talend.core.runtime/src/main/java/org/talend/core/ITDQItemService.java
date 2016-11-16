@@ -25,14 +25,9 @@ import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.TDQItem;
 import org.talend.core.model.repository.IRepositoryViewObject;
 
-/**
- * DOC bZhou class global comment. Detailled comment
- */
 public interface ITDQItemService extends ITDQService {
 
     /**
-     * DOC bZhou Comment method "getVersion".
-     * 
      * This function is to get the version for a specified item, it's used as additional functionality to listItem
      * command in the CommandLine, e.g. listItem -m
      * 
@@ -42,8 +37,6 @@ public interface ITDQItemService extends ITDQService {
     public String getVersion(TDQItem item);
 
     /**
-     * DOC bZhou Comment method "changeItemStatus".
-     * 
      * This function is to change the status in one item, it used the specified status constant to set the value. It's
      * used for the changeItemStatus command in the CommandLine.
      * 
@@ -54,8 +47,6 @@ public interface ITDQItemService extends ITDQService {
     public void changeItemStatus(String newStatus, Item item) throws PersistenceException;
 
     /**
-     * DOC bZhou Comment method "changeVersions".
-     * 
      * This function is to change the version for a item. it's used for the changeVersions command in the CommandLine.
      * 
      * @param newVersion
@@ -65,8 +56,6 @@ public interface ITDQItemService extends ITDQService {
     public void changeVersions(String newVersion, Item item) throws Exception;
 
     /**
-     * DOC bZhou Comment method "exportItems".
-     * 
      * This function is to export items in current workspace to the destination location. it's used for the exportItems
      * command in the CommandLine.
      * 
@@ -80,8 +69,6 @@ public interface ITDQItemService extends ITDQService {
             NullProgressMonitor nullProgressMonitor);
 
     /**
-     * DOC bZhou Comment method "importItems".
-     * 
      * Import items from out source, this is used for the importItems command in CommandLine.
      * 
      * @param sourceFile
@@ -94,15 +81,12 @@ public interface ITDQItemService extends ITDQService {
     /**
      * Invoked by GenerateGrammarController class, and return a file will be created in routines
      * 
-     * DOC ytao
-     * 
      * @param node, properties of component
      * @return
      */
     public File fileCreatedInRoutines(INode node, String className) throws Exception;
 
     /**
-     * 
      * zshen create GrammerFile to temp location.
      * 
      * @param node same as fileCreatedInRoutines
@@ -112,9 +96,6 @@ public interface ITDQItemService extends ITDQService {
     public IFile createGrammerFile(INode node) throws Exception;
 
     /**
-     * 
-     * zshen Comment method "createGrammerFile".
-     * 
      * @param rules the list which save the attribute about rule table.
      * @param folderName the .g file will be generate under it.
      * @return
@@ -123,25 +104,18 @@ public interface ITDQItemService extends ITDQService {
     public IFile createGrammerFile(List<Map<String, String>> rules, String folderName) throws Exception;
 
     /**
-     * 
-     * zshen Comment method "deleteGrammerFile".
-     * 
      * @param folderName the floder name wich will be delete.
      * @return
      */
     public boolean deleteGrammerFile(String folderName);
 
     /**
-     * DOC sizhaoliu Comment method "getReportGenerationResources".
-     * 
      * @param items
      * @return
      */
     public boolean hasProcessItemDependencies(Collection<Item> items);
 
     /**
-     * DOC sizhaoliu Comment method "getReportGenerationResources".
-     * 
      * @param items
      * @return
      */

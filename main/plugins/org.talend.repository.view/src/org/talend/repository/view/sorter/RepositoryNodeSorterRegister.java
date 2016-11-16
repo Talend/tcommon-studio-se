@@ -23,9 +23,6 @@ import org.eclipse.core.runtime.SafeRunner;
 import org.talend.core.utils.RegistryReader;
 import org.talend.repository.RepositoryViewPlugin;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public final class RepositoryNodeSorterRegister extends RegistryReader {
 
     private static final Logger log = Logger.getLogger(RepositoryNodeSorterRegister.class);
@@ -90,11 +87,6 @@ public final class RepositoryNodeSorterRegister extends RegistryReader {
         return finalSorters;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.utils.RegistryReader#readElement(org.eclipse.core.runtime.IConfigurationElement)
-     */
     @Override
     protected boolean readElement(IConfigurationElement element) {
         if ("sorter".equals(element.getName())) { //$NON-NLS-1$

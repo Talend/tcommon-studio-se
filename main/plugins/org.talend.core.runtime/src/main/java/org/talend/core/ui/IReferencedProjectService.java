@@ -16,9 +16,6 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.talend.core.IService;
 
-/**
- * DOC wchen class global comment. Detailled comment
- */
 public interface IReferencedProjectService extends IService {
 
     public boolean isMergeRefProject();

@@ -32,12 +32,6 @@ import org.talend.core.utils.RegistryReader;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.IRepositoryNode.ENodeType;
 
-/**
- * DOC ggu class global comment. Detailled comment <br/>
- * 
- * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
- */
 @SuppressWarnings("rawtypes")
 public class RepositoryNodeProviderRegistryReader extends RegistryReader {
 
@@ -231,11 +225,6 @@ public class RepositoryNodeProviderRegistryReader extends RegistryReader {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.utils.RegistryReader#readElement(org.eclipse.core.runtime.IConfigurationElement)
-     */
     @Override
     protected boolean readElement(final IConfigurationElement element) {
         if (REPOSITORY_NODE_ELEMENT_NAME.equals(element.getName())) {

@@ -25,9 +25,6 @@ import org.talend.commons.ui.runtime.image.EImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.commons.ui.utils.image.ColorUtils;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class MessagesComposite extends Composite {
 
     protected static final int H_SPACE_WIDTH = 3;
@@ -62,9 +59,6 @@ public class MessagesComposite extends Composite {
     }
 
     /**
-     * 
-     * DOC ggu Comment method "updateTopMessages".
-     * 
      * @param messages
      * @param status is one of IStatus.INFO, IStatus.WARNING, IStatus.ERROR
      */

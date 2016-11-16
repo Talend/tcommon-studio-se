@@ -314,24 +314,12 @@ public class LockerTest {
                 super(nOperatorsByClassOperator, classOperators);
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see
-             * org.talend.commons.utils.threading.AbstractThreadSafetyTester#initInstance(org.talend.commons.utils.threading
-             * .IThreadSafetyOperator)
-             */
             protected void initInstance(AbstractLockerOperator operatorInstance) {
                 operatorInstance.setLocker(locker);
                 operatorInstance.setnOperationsByOperator(nOperationsByOperator);
                 operatorInstance.setResultContainer(resultContainer);
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.talend.commons.utils.threading.AbstractThreadSafetyTester#assertFinal()
-             */
             @Override
             protected void assertFinal() {
                 int expectedSumLockedAtEnd = 0;
@@ -406,24 +394,12 @@ public class LockerTest {
                 super(nOperatorsByClassOperator, classOperators);
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see
-             * org.talend.commons.utils.threading.AbstractThreadSafetyTester#initInstance(org.talend.commons.utils.threading
-             * .IThreadSafetyOperator)
-             */
             protected void initInstance(AbstractLockerOperator operatorInstance) {
                 operatorInstance.setLocker(locker);
                 operatorInstance.setnOperationsByOperator(nOperationsByOperator);
                 operatorInstance.setResultContainer(resultContainer);
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.talend.commons.utils.threading.AbstractThreadSafetyTester#assertFinal()
-             */
             @Override
             protected void assertFinal() {
                 int actualSumLockedAtEnd = 0;

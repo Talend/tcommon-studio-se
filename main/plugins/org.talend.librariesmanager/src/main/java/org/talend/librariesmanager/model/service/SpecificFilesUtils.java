@@ -21,12 +21,6 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import org.talend.commons.utils.io.FilesUtils;
 import org.talend.librariesmanager.i18n.Messages;
 
-/**
- * DOC smallet class global comment. Detailled comment <br/>
- * 
- * $Id$
- * 
- */
 public class SpecificFilesUtils {
 
     public static void copySpecificSubFolder(File source, File target, final FileFilter sourceFolderFilter,

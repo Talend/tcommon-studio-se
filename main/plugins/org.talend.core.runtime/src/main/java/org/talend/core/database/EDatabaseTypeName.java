@@ -16,10 +16,6 @@ import org.talend.core.model.metadata.builder.database.EDatabaseSchemaOrCatalogM
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.projectsetting.IProjectSettingPreferenceConstants;
 
-/**
- * qzhang class global comment. Detailled comment <br/>
- * 
- */
 public enum EDatabaseTypeName {
     MYSQL(
           "MySQL", "MySQL", Boolean.FALSE, "MYSQL", "MYSQL", EDatabaseSchemaOrCatalogMapping.Sid, EDatabaseSchemaOrCatalogMapping.None), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$

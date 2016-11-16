@@ -26,9 +26,6 @@ import org.eclipse.ui.navigator.ICommonActionExtensionSite;
 import org.eclipse.ui.navigator.INavigatorContentService;
 import org.talend.repository.ui.actions.AContextualAction;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public abstract class AbstractRepositoryActionProvider extends CommonActionProvider {
 
     private boolean contributedToViewMenu = false;
@@ -108,11 +105,6 @@ public abstract class AbstractRepositoryActionProvider extends CommonActionProvi
         //
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.actions.ActionGroup#fillContextMenu(org.eclipse.jface.action.IMenuManager)
-     */
     @Override
     public void fillContextMenu(IMenuManager manager) {
         super.fillContextMenu(manager);

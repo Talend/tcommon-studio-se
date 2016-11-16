@@ -38,10 +38,6 @@ import org.talend.repository.model.RepositoryConstants;
 import org.talend.utils.json.JSONException;
 import org.talend.utils.json.JSONObject;
 
-/**
- * created by wchen on 2015年6月16日 Detailled comment
- *
- */
 public class TalendLibsServerManager {
 
     private static String NEXUS_USER = "nexus.user";

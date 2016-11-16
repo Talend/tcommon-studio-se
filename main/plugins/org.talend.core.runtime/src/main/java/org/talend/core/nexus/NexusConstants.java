@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.core.nexus;
 
-/**
- * created by Talend on 2015年5月19日 Detailled comment
- *
- */
 public class NexusConstants {
 
     public static final String SERVICES_SEARCH = "service/local/lucene/search?";//$NON-NLS-1$ 

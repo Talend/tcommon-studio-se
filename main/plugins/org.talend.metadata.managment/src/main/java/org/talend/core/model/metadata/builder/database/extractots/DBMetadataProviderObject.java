@@ -14,9 +14,6 @@ package org.talend.core.model.metadata.builder.database.extractots;
 
 import org.talend.core.repository.model.provider.IDBMetadataProvider;
 
-/**
- * DOC Administrator class global comment. Detailled comment
- */
 public class DBMetadataProviderObject implements IDBMetadataProviderObject {
 
     private IDBMetadataProvider provider;

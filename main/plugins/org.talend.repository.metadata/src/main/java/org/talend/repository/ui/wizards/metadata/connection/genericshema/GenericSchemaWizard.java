@@ -51,10 +51,6 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.model.RepositoryNodeUtilities;
 
-/**
- * ftang class global comment. Detailled comment <br/>
- * 
- */
 public class GenericSchemaWizard extends CheckLastVersionRepositoryWizard implements INewWizard {
 
     private static Logger log = Logger.getLogger(GenericSchemaWizard.class);

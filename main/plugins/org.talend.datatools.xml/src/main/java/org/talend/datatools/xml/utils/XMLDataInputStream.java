@@ -102,19 +102,11 @@ public class XMLDataInputStream extends InputStream
 		}
 	}
 
-	/*
-	 *  (non-Javadoc)
-	 * @see java.io.InputStream#read()
-	 */
 	public int read( ) throws IOException
 	{
 		return this.inputStream.read();
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see java.io.InputStream#close()
-	 */
 	public void close( ) throws IOException
 	{
 		if ( this.inputStream != null )

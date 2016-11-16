@@ -39,9 +39,6 @@ import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.metadata.managment.ui.i18n.Messages;
 import org.talend.metadata.managment.ui.utils.ConnectionContextHelper;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public class ContextSetsSelectionDialog extends SelectionDialog {
 
     private static final String DEFAULT_FLAG = "(default)"; //$NON-NLS-1$

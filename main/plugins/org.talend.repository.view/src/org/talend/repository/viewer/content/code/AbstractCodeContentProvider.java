@@ -16,18 +16,10 @@ import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.tester.CodeNodeTester;
 import org.talend.repository.viewer.content.SubEmptyTopNodeContentProvider;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
 public abstract class AbstractCodeContentProvider extends SubEmptyTopNodeContentProvider {
 
     CodeNodeTester nodeTester = new CodeNodeTester();
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.viewer.content.SingleTopLevelContentProvider#isRootNodeType(java.lang.Object)
-     */
     @Override
     protected boolean isRootNodeType(Object element) {
         if (element instanceof RepositoryNode) {
@@ -35,7 +27,6 @@ public abstract class AbstractCodeContentProvider extends SubEmptyTopNodeContent
         } else {
             return false;
         }
-
     }
 
 }
