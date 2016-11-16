@@ -211,22 +211,12 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.application.WorkbenchWindowAdvisor#postWindowRestore()
-     */
     @Override
     public void postWindowRestore() throws WorkbenchException {
         super.postWindowRestore();
         // do not use this; never called : see https://bugs.eclipse.org/bugs/show_bug.cgi?id=450541
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.application.WorkbenchWindowAdvisor#postWindowOpen()
-     */
     @Override
     public void postWindowOpen() {
         // TDQ-11355 avoid "java.nio.channels.ClosedChannelException" .If the current perspective is DQ, delay this
@@ -540,11 +530,6 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.application.WorkbenchWindowAdvisor#postWindowClose()
-     */
     @Override
     public void postWindowClose() {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ISQLBuilderService.class)) {
@@ -560,15 +545,8 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
         super.postWindowClose();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.application.WorkbenchWindowAdvisor#preWindowShellClose()
-     */
-
     @Override
     public boolean preWindowShellClose() {
-
         if (PlatformUI.getWorkbench().getWorkbenchWindowCount() > 1) {
             return true;
         }

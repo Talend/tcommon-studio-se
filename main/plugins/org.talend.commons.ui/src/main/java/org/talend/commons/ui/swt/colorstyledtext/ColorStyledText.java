@@ -154,12 +154,6 @@ public class ColorStyledText extends StyledText {
         addExtendedModifyListener(modifyListener);
     }
 
-    /**
-     * DOC qli Comment method "invokeAction".
-     * 
-     * @param action
-     * 
-     * */
     public void invokeAction(int action) {
         super.invokeAction(action);
 
@@ -173,20 +167,10 @@ public class ColorStyledText extends StyledText {
         }
     }
 
-    /**
-     * Getter for undoRedoManager.
-     * 
-     * @return the undoRedoManager
-     */
     public UndoRedoManager getUndoManager() {
         return this.undoRedoManager;
     }
 
-    /**
-     * Sets the undoRedoManager.
-     * 
-     * @param undoRedoManager the undoRedoManager to set
-     */
     public void setUndoManager(UndoRedoManager undoRedoManager) {
         this.undoRedoManager = undoRedoManager;
     }

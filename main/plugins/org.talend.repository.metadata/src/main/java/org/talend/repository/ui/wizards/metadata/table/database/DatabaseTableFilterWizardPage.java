@@ -84,11 +84,6 @@ public class DatabaseTableFilterWizardPage extends WizardPage {
         setControl(tableForm);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.wizard.WizardPage#getNextPage()
-     */
     @Override
     public IWizardPage getNextPage() {
         CoreRuntimePlugin.getInstance().getCoreService().getPreferenceStore()
@@ -101,21 +96,11 @@ public class DatabaseTableFilterWizardPage extends WizardPage {
         return nextPage;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.wizard.WizardPage#canFlipToNextPage()
-     */
     @Override
     public boolean canFlipToNextPage() {
         return true;
     }
 
-    /**
-     * Getter for tableInfoParameters.
-     * 
-     * @return the tableInfoParameters
-     */
     public TableInfoParameters getTableInfoParameters() {
         return this.tableInfoParameters;
     }

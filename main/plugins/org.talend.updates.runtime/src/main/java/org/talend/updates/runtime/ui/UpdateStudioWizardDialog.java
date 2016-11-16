@@ -82,11 +82,6 @@ class UpdateStudioWizardDialog extends WizardDialog {
         return createProgressMonitorPart;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.Dialog#create()
-     */
     @Override
     public void create() {
         super.create();

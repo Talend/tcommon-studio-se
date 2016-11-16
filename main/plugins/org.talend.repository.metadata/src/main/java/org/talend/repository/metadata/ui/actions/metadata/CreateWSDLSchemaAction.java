@@ -71,12 +71,6 @@ public class CreateWSDLSchemaAction extends AbstractCreateAction {
         setToolbar(isToolbar);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.ui.actions.metadata.AbstractCreateAction#init(org.talend.repository.model.RepositoryNode)
-     */
     @Override
     protected void init(RepositoryNode node) {
         ERepositoryObjectType nodeType = (ERepositoryObjectType) node.getProperties(EProperties.CONTENT_TYPE);

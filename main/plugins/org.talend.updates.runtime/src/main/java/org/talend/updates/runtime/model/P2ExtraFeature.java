@@ -93,11 +93,6 @@ public class P2ExtraFeature implements ExtraFeature {
         // do nothing be authorise subclasses to have a constructor
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.updates.model.ExtraFeature#isInstalled(org.eclipse.core.runtime.IProgressMonitor)
-     */
     @Override
     public boolean isInstalled(IProgressMonitor progress) throws P2ExtraFeatureException {
         try {
@@ -210,41 +205,21 @@ public class P2ExtraFeature implements ExtraFeature {
         this.p2IuId = p2IuId;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.updates.model.ExtraFeature#getName()
-     */
     @Override
     public String getName() {
         return this.name;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.updates.model.ExtraFeature#getDescription()
-     */
     @Override
     public String getDescription() {
         return this.description;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.updates.model.ExtraFeature#getVersion()
-     */
     @Override
     public String getVersion() {
         return this.version;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.updates.model.ExtraFeature#install(org.eclipse.core.runtime.IProgressMonitor, java.util.List)
-     */
     @Override
     public IStatus install(IProgressMonitor progress, List<URI> allRepoUris) throws P2ExtraFeatureException {
         IStatus doInstallStatus = null;
@@ -437,11 +412,6 @@ public class P2ExtraFeature implements ExtraFeature {
         return metadataManager.query(iuQuery, progress).toUnmodifiableSet();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -451,11 +421,6 @@ public class P2ExtraFeature implements ExtraFeature {
         return result;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -530,21 +495,11 @@ public class P2ExtraFeature implements ExtraFeature {
         agent.registerService("eclipse.p2.profile", getP2ProfileId());//$NON-NLS-1$
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.updates.model.ExtraFeature#updateSiteCompatibleTypes()
-     */
     @Override
     public EnumSet<UpdateSiteLocationType> getUpdateSiteCompatibleTypes() {
         return EnumSet.allOf(UpdateSiteLocationType.class);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.updates.model.ExtraFeature#mustBeInstalled()
-     */
     @Override
     public boolean mustBeInstalled() {
         return mustBeInstalled;

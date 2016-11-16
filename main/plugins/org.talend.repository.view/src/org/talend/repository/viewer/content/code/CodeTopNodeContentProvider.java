@@ -19,13 +19,6 @@ import org.talend.repository.viewer.content.EmptyTopNodeContentProvider;
 
 public class CodeTopNodeContentProvider extends EmptyTopNodeContentProvider {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.viewer.content.ProjectRepoChildrenNodeContentProvider#getTopLevelNodeFromProjectRepositoryNode
-     * (org.talend.repository.model.ProjectRepositoryNode)
-     */
     @Override
     protected RepositoryNode getTopLevelNodeFromProjectRepositoryNode(ProjectRepositoryNode projectRepositoryNode) {
         return projectRepositoryNode.getRootRepositoryNode(ERepositoryObjectType.CODE);

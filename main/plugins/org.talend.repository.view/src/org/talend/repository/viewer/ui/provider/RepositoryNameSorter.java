@@ -30,11 +30,6 @@ import org.talend.repository.model.RepositoryNode;
 @Deprecated
 public class RepositoryNameSorter extends ViewerSorter {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ViewerComparator#category(java.lang.Object)
-     */
     @Override
     public int category(Object element) {
         if (!(element instanceof RepositoryNode)) {// this sorter return super value if this is not a repository
@@ -131,21 +126,10 @@ public class RepositoryNameSorter extends ViewerSorter {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ViewerSorter#getComparator()
-     */
     @Override
     protected Comparator<String> getComparator() {
 
         return new Comparator<String>() {
-
-            /*
-             * (non-Javadoc)
-             * 
-             * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
-             */
 
             @Override
             public int compare(String o1, String o2) {

@@ -467,52 +467,27 @@ public class WelcomePageDynamicContentProvider implements IIntroXHTMLContentProv
             if (i != hyperlinkText.length - 1) {
                 p.appendChild(dom.createElement("br"));
             }
-
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.ui.intro.config.IIntroContentProvider#init(org.eclipse.ui.intro.config.IIntroContentProviderSite)
-     */
     @Override
     public void init(IIntroContentProviderSite site) {
         // TODO Auto-generated method stub
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.intro.config.IIntroContentProvider#createContent(java.lang.String, java.io.PrintWriter)
-     */
     @Override
     public void createContent(String id, PrintWriter out) {
         // TODO Auto-generated method stub
-
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.intro.config.IIntroContentProvider#createContent(java.lang.String,
-     * org.eclipse.swt.widgets.Composite, org.eclipse.ui.forms.widgets.FormToolkit)
-     */
     @Override
     public void createContent(String id, Composite parent, FormToolkit toolkit) {
         // TODO Auto-generated method stub
-
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.intro.config.IIntroContentProvider#dispose()
-     */
     @Override
     public void dispose() {
         // TODO Auto-generated method stub
-
     }
+
 }

@@ -137,11 +137,6 @@ public abstract class AbstractThreadSafetyTester<T extends IThreadSafetyOperator
             this.operatorInstance = operatorInstance;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see java.util.concurrent.Callable#call()
-         */
         @Override
         public Object call() throws Exception {
             try {

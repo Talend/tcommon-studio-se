@@ -55,11 +55,6 @@ public class MdmAddVersionMigrationTask extends AbstractItemMigrationTask {
         return ExecutionResult.NOTHING_TO_DO;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.migration.IMigrationTask#getOrder()
-     */
     @Override
     public Date getOrder() {
         GregorianCalendar gc = new GregorianCalendar(2015, 4, 20, 12, 0, 0);

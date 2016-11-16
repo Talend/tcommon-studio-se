@@ -70,12 +70,6 @@ public class CreateMDMConnectionAction extends AbstractCreateAction {
         this.setImageDescriptor(defaultImage);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.ui.actions.metadata.AbstractCreateAction#init(org.talend.repository.model.RepositoryNode)
-     */
     @Override
     protected void init(RepositoryNode node) {
         ERepositoryObjectType nodeType = (ERepositoryObjectType) node.getProperties(EProperties.CONTENT_TYPE);
@@ -116,11 +110,6 @@ public class CreateMDMConnectionAction extends AbstractCreateAction {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.actions.AContextualAction#doRun()
-     */
     @Override
     protected void doRun() {
         if (repositoryNode == null) {

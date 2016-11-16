@@ -59,9 +59,6 @@ public class MessagesComposite extends Composite {
     }
 
     /**
-     * 
-     * DOC ggu Comment method "updateTopMessages".
-     * 
      * @param messages
      * @param status is one of IStatus.INFO, IStatus.WARNING, IStatus.ERROR
      */

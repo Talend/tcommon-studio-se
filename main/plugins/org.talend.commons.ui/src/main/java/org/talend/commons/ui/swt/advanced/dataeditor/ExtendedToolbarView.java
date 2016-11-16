@@ -81,47 +81,23 @@ public class ExtendedToolbarView extends AbstractExtendedToolbar {
     }
 
     /**
-     * Override this method if needed to instanciate only the buttons of your choice.
+     * Override this method if needed to instantiate only the buttons of your choice.
      * 
      */
     protected void createComponents(Composite parent) {
-
         addButton = createAddPushButton();
-
         removeButton = createRemovePushButton();
-
         moveUpButton = createMoveUpPushButton();
-
         moveDownButton = createMoveDownPushButton();
-
         copyButton = createCopyPushButton();
-
         pasteButton = createPastePushButton();
-
         addallButton = createAddAllPushButton();
-
         exportButton = createExportPushButton();
-
         importButton = createImportPushButton();
-
         saveAsGenericSchemaButton = createSaveAsGenericSchemaButton();
-
         selectContextVariablesButton = createSelectContextVariablesPushButton();
-
-        // loadButton = new Button(toolbar, SWT.PUSH);
-        // loadButton.setToolTipText("Import");
-        // loadButton.setImage(ImageProvider.getImage(EImage.IMPORT_ICON));
-        //
-        // exportButton = new Button(toolbar, SWT.PUSH);
-        // exportButton.setToolTipText("Export");
-        // exportButton.setImage(ImageProvider.getImage(EImage.EXPORT_ICON));
     }
 
-    /**
-     * DOC YeXiaowei Comment method "createAddAllPushButton".
-     * 
-     * @return
-     */
     protected AddAllPushButton createAddAllPushButton() {
         return null;
     }

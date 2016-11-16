@@ -102,34 +102,16 @@ public abstract class AbstractExtendedControlViewer {
         }
     }
 
-    /**
-     * DOC amaumont Comment method "modelChanged".
-     */
     protected abstract void modelChanged(AbstractExtendedControlModel previousModel, AbstractExtendedControlModel newModel);
 
-    /**
-     * Getter for parentComposite.
-     * 
-     * @return the parentComposite
-     */
     public Composite getParentComposite() {
         return this.parentComposite;
     }
 
-    /**
-     * Getter for commandStackAdapter.
-     * 
-     * @return the commandStackAdapter
-     */
     public CommandStack getCommandStack() {
         return this.commandStack;
     }
 
-    /**
-     * Sets the commandStackAdapter.
-     * 
-     * @param commandStack the commandStackAdapter to set
-     */
     public void setCommandStack(CommandStack commandStack) {
         this.commandStack = commandStack;
     }
@@ -142,11 +124,6 @@ public abstract class AbstractExtendedControlViewer {
         this.listeners.remove(listener);
     }
 
-    /**
-     * DOC amaumont Comment method "fireEvent".
-     * 
-     * @param event
-     */
     protected void fireEvent(ExtendedControlEvent event) {
         final Object[] listenerArray = listeners.getListeners();
         for (int i = 0; i < listenerArray.length; i++) {
@@ -155,20 +132,10 @@ public abstract class AbstractExtendedControlViewer {
 
     }
 
-    /**
-     * Getter for readOnly.
-     * 
-     * @return the readOnly
-     */
     public boolean isReadOnly() {
         return this.readOnly;
     }
 
-    /**
-     * Sets the readOnly.
-     * 
-     * @param readOnly the readOnly to set
-     */
     public void setReadOnly(boolean readOnly) {
         if (readOnly != this.readOnly) {
             this.readOnly = readOnly;
@@ -176,20 +143,10 @@ public abstract class AbstractExtendedControlViewer {
         }
     }
 
-    /**
-     * Getter for bindingToolbar.
-     * 
-     * @return the bindingToolbar
-     */
     public AbstractExtendedToolbar getBindingToolbar() {
         return this.bindingToolbar;
     }
 
-    /**
-     * Sets the bindingToolbar.
-     * 
-     * @param bindingToolbar the bindingToolbar to set
-     */
     public void setBindingToolbar(AbstractExtendedToolbar bindingToolbar) {
         this.bindingToolbar = bindingToolbar;
     }

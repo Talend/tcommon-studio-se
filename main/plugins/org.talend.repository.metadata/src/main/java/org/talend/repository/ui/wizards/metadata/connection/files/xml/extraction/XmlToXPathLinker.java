@@ -422,11 +422,6 @@ public class XmlToXPathLinker extends TreeToTablesLinker<Object, Object> {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.linking.TreeToTableLinker#drawBackground(org.eclipse.swt.graphics.GC)
-     */
     @Override
     public void drawBackground(GC gc) {
 
@@ -1066,11 +1061,6 @@ public class XmlToXPathLinker extends TreeToTablesLinker<Object, Object> {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.linking.TreeToTablesLinker#getDrawingLinksComparator()
-     */
     @Override
     protected Comparator<LinkDescriptor<TreeItem, Object, Table, Object>> getDrawingLinksComparator() {
         if (this.drawingLinksComparator == null) {

@@ -165,11 +165,6 @@ public class JarLoaderBundleFileWrapperFactory implements BundleFileWrapperFacto
             return missingJars;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.osgi.storage.bundlefile.BundleFileWrapper#getFile(java.lang.String, boolean)
-         */
         @Override
         public File getFile(String path, boolean nativeCode) {
             return getFile(path, nativeCode, true);
@@ -197,12 +192,6 @@ public class JarLoaderBundleFileWrapperFactory implements BundleFileWrapperFacto
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.osgi.internal.hookregistry.BundleFileWrapperFactoryHook#wrapBundleFile(org.eclipse.osgi.storage.
-     * bundlefile.BundleFile, org.eclipse.osgi.storage.BundleInfo.Generation, boolean)
-     */
     @Override
     public BundleFileWrapper wrapBundleFile(BundleFile bundleFile, Generation generation, boolean base) {
         if (canHandleBundle(bundleFile.getBaseFile().getName())) {

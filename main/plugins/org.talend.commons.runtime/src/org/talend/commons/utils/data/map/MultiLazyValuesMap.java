@@ -71,11 +71,6 @@ public abstract class MultiLazyValuesMap implements Map {
         return v;
     }
 
-    /**
-     * DOC amaumont Comment method "instanciateNewList".
-     * 
-     * @return
-     */
     public abstract Collection instanciateNewCollection();
 
     public void putAll(Map t) {

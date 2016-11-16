@@ -897,11 +897,6 @@ public class SalesforceStep4Form extends AbstractSalesforceStepForm {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
-     */
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);

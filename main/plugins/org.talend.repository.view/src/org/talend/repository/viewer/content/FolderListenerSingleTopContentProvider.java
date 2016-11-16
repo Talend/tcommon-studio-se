@@ -48,17 +48,11 @@ public abstract class FolderListenerSingleTopContentProvider extends SingleTopLe
 
     private final class DirectChildrenNodeVisitor extends ResourceCollectorVisitor {
 
-        /* (non-Javadoc)
-         * @see org.talend.repository.viewer.content.listener.ResourceCollectorVisitor#getTopLevelNodes()
-         */
         @Override
         protected Set<RepositoryNode> getTopNodes() {
             return getTopLevelNodes();
         }
 
-        /* (non-Javadoc)
-         * @see org.talend.repository.viewer.content.listener.ResourceCollectorVisitor#getTopLevelNodePath(org.talend.repository.model.RepositoryNode)
-         */
         @Override
         protected IPath getTopLevelNodePath(RepositoryNode repoNode) {
             return topLevelNodeToPathMap.get(repoNode);
@@ -161,12 +155,6 @@ public abstract class FolderListenerSingleTopContentProvider extends SingleTopLe
 
     private DirectChildrenNodeVisitor visitor;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer, java.lang.Object,
-     * java.lang.Object)
-     */
     @Override
     public void inputChanged(Viewer arg0, Object arg1, Object arg2) {
         if (arg0 instanceof CommonViewer) {
@@ -180,12 +168,6 @@ public abstract class FolderListenerSingleTopContentProvider extends SingleTopLe
 
     }
 
-    /**
-     * 
-     * DOC ggu Comment method "addResourceVisitor".
-     * 
-     * @param v
-     */
     protected void addResourceVisitor(CommonViewer v) {
         if (v == null) {
             return;
@@ -208,11 +190,6 @@ public abstract class FolderListenerSingleTopContentProvider extends SingleTopLe
         navigator.addVisitor(this.visitor);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.IContentProvider#dispose()
-     */
     @Override
     public void dispose() {
         // visitor

@@ -399,11 +399,6 @@ public class DelimitedFileWizard extends CheckLastVersionRepositoryWizard implem
         this.selection = selection2;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.wizards.RepositoryWizard#getConnectionItem()
-     */
     @Override
     public ConnectionItem getConnectionItem() {
         return this.connectionItem;

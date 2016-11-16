@@ -42,11 +42,6 @@ public class ItemImportNode extends ImportNode {
         return sb.toString();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.items.importexport.ui.wizard.imports.models.ImportNode#getDisplayLabel()
-     */
     @Override
     public String getDisplayLabel() {
         return getItemRecord().getLabel();

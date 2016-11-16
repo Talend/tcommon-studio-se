@@ -181,22 +181,12 @@ public class BusinessAssignmentItemProvider extends ItemProviderAdapter implemen
         return BusinessEditPlugin.INSTANCE;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.emf.edit.provider.ITableItemLabelProvider#getColumnImage(java.lang.Object, int)
-     */
     public Object getColumnImage(Object object, int columnIndex) {
         if (columnIndex == 0)
             return getImage(object);
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.emf.edit.provider.ITableItemLabelProvider#getColumnText(java.lang.Object, int)
-     */
     public String getColumnText(Object object, int columnIndex) {
         BusinessAssignment businessAssignment = (BusinessAssignment) object;
 
@@ -204,133 +194,56 @@ public class BusinessAssignmentItemProvider extends ItemProviderAdapter implemen
         case 0:
             Object type = new BusinessSwitch() {
 
-                /*
-                 * (non-Javadoc)
-                 * 
-                 * @see
-                 * org.talend.designer.business.model.business.util.BusinessSwitch#caseBusinessProcess(org.talend.designer
-                 * .business.model.business.BusinessProcess)
-                 */
                 @Override
                 public Object caseBusinessProcess(BusinessProcess object) {
                     return getString("_UI_BusinessProcess_type"); //$NON-NLS-1$
                 }
 
-                /*
-                 * (non-Javadoc)
-                 * 
-                 * @see
-                 * org.talend.designer.business.model.business.util.BusinessSwitch#caseDatabaseMetadata(org.talend.designer
-                 * .business.model.business.DatabaseMetadata)
-                 */
                 @Override
                 public Object caseDatabaseMetadata(DatabaseMetadata object) {
                     return getString("_UI_DatabaseMetadata_type"); //$NON-NLS-1$
                 }
 
-                /*
-                 * (non-Javadoc)
-                 * 
-                 * @see
-                 * org.talend.designer.business.model.business.util.BusinessSwitch#caseDocumentation(org.talend.designer
-                 * .business.model.business.Documentation)
-                 */
                 @Override
                 public Object caseDocumentation(Documentation object) {
                     return getString("_UI_Documentation_type"); //$NON-NLS-1$
                 }
 
-                /*
-                 * (non-Javadoc)
-                 * 
-                 * @see
-                 * org.talend.designer.business.model.business.util.BusinessSwitch#caseFileDelimitedMetadata(org.talend
-                 * .designer.business.model.business.FileDelimitedMetadata)
-                 */
                 @Override
                 public Object caseFileDelimitedMetadata(FileDelimitedMetadata object) {
                     return getString("_UI_FileDelimitedMetadata_type"); //$NON-NLS-1$
                 }
 
-                /*
-                 * (non-Javadoc)
-                 * 
-                 * @see
-                 * org.talend.designer.business.model.business.util.BusinessSwitch#caseFilePositionalMetadata(org.talend
-                 * .designer.business.model.business.FilePositionalMetadata)
-                 */
                 @Override
                 public Object caseFilePositionalMetadata(FilePositionalMetadata object) {
                     return getString("_UI_FilePositionalMetadata_type"); //$NON-NLS-1$
                 }
 
-                /*
-                 * (non-Javadoc)
-                 * 
-                 * @see
-                 * org.talend.designer.business.model.business.util.BusinessSwitch#caseProcess(org.talend.designer.business
-                 * .model.business.Process)
-                 */
                 @Override
                 public Object caseProcess(Process object) {
                     return getString("_UI_Process_type"); //$NON-NLS-1$
                 }
 
-                /*
-                 * (non-Javadoc)
-                 * 
-                 * @see
-                 * org.talend.designer.business.model.business.util.BusinessSwitch#caseRoutine(org.talend.designer.business
-                 * .model.business.Routine)
-                 */
                 @Override
                 public Object caseRoutine(Routine object) {
                     return getString("_UI_Routine_type"); //$NON-NLS-1$
                 }
 
-                /*
-                 * (non-Javadoc)
-                 * 
-                 * @see
-                 * org.talend.designer.business.model.business.util.BusinessSwitch#caseTableMetadata(org.talend.designer
-                 * .business.model.business.TableMetadata)
-                 */
                 @Override
                 public Object caseTableMetadata(TableMetadata object) {
                     return getString("_UI_TableMetadata_type"); //$NON-NLS-1$
                 }
 
-                /*
-                 * (non-Javadoc)
-                 * 
-                 * @see
-                 * org.talend.designer.business.model.business.util.BusinessSwitch#caseFileRegexpMetadata(org.talend
-                 * .designer.business.model.business.FileRegexpMetadata)
-                 */
                 @Override
                 public Object caseFileRegexpMetadata(FileRegexpMetadata object) {
                     return getString("_UI_FileRegexpMetadata_type"); //$NON-NLS-1$
                 }
 
-                /*
-                 * (non-Javadoc)
-                 * 
-                 * @see
-                 * org.talend.designer.business.model.business.util.BusinessSwitch#caseFileRegexpMetadata(org.talend
-                 * .designer.business.model.business.FileRegexpMetadata)
-                 */
                 @Override
                 public Object caseFileXmlMetadata(FileXmlMetadata object) {
                     return getString("_UI_FileXmlMetadata_type"); //$NON-NLS-1$
                 }
 
-                /*
-                 * (non-Javadoc)
-                 * 
-                 * @see
-                 * org.talend.designer.business.model.business.util.BusinessSwitch#caseFileRegexpMetadata(org.talend
-                 * .designer.business.model.business.FileRegexpMetadata)
-                 */
                 @Override
                 public Object caseFileLdifMetadata(FileLdifMetadata object) {
                     return getString("_UI_FileLdifMetadata_type"); //$NON-NLS-1$

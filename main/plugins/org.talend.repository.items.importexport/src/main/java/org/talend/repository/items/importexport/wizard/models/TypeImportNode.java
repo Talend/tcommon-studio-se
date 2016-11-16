@@ -45,11 +45,6 @@ public class TypeImportNode extends FolderImportNode {
         return super.getName();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.items.importexport.ui.wizard.imports.models.ImportNode#getDisplayLabel()
-     */
     @Override
     public String getDisplayLabel() {
         return type.getLabel();

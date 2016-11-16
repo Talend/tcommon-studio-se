@@ -242,11 +242,6 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.navigator.CommonNavigator#createCommonViewerObject(org.eclipse.swt.widgets.Composite)
-     */
     @Override
     protected CommonViewer createCommonViewerObject(Composite aParent) {
         return new RepoViewCommonViewer(this, getViewSite().getId(), aParent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
@@ -514,20 +509,9 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
         return navDesc;
     }
 
-    /**
-     * DOC bqian Comment method "createTreeTooltip".
-     * 
-     * @param tree
-     */
     private void createTreeTooltip(Tree tree) {
         new AbstractTreeTooltip(tree) {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see
-             * org.talend.commons.ui.swt.tooltip.AbstractTreeTooltip#getTooltipContent(org.eclipse.swt.widgets.TreeItem)
-             */
             @Override
             public String getTooltipContent(TreeItem item) {
 
@@ -642,11 +626,6 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
         viewer.getControl().setFocus();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.repository.views.IRepositoryView#getViewer()
-     */
     @Override
     public TreeViewer getViewer() {
         return viewer;
@@ -657,11 +636,6 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
         this.refresh(false);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.repository.views.IRepositoryView#refresh()
-     */
     public void refresh(final boolean needInitialize) {
         /*
          * fix bug 4040. Sometimes Display.getCurrent.getActiveShell() get null result we not expect.
@@ -757,11 +731,6 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.views.IRepositoryView#refresh(java.lang.Object)
-     */
     @Override
     public void refresh(Object object) {
 
@@ -823,21 +792,11 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
         return ProjectRepositoryNode.getInstance();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.views.properties.tabbed.ITabbedPropertySheetPageContributor#getContributorId()
-     */
     @Override
     public String getContributorId() {
         return getSite().getId();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.part.WorkbenchPart#getAdapter(java.lang.Class)
-     */
     @Override
     public Object getAdapter(Class adapter) {
         if (adapter == IPropertySheetPage.class) {
@@ -851,12 +810,6 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
         refresh();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @seeorg.talend.repository.ui.views.IRepositoryView#containsRepositoryType(org.talend.core.model.repository.
-     * ERepositoryObjectType)
-     */
     @Override
     public boolean containsRepositoryType(ERepositoryObjectType type) {
         return researchRootRepositoryNode(type) != null;

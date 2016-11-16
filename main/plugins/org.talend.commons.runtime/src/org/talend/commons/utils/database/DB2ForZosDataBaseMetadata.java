@@ -45,12 +45,6 @@ public class DB2ForZosDataBaseMetadata extends PackageFakeDatabaseMetadata {
 
     private String ALIAS = "ALIAS"; //$NON-NLS-1$
 
-    /**
-     * DOC xqliu Comment method "getDb2zosTypeName".
-     * 
-     * @param typeName
-     * @return
-     */
     private String getDb2zosTypeName(String typeName) {
         String result = typeName;
         if (TABLE.equals(typeName)) {
@@ -65,12 +59,6 @@ public class DB2ForZosDataBaseMetadata extends PackageFakeDatabaseMetadata {
         return result;
     }
 
-    /**
-     * DOC xqliu Comment method "getTypeNameFromDb2zosType".
-     * 
-     * @param typeName
-     * @return
-     */
     private String getTypeNameFromDb2zosType(String typeName) {
         String result = typeName;
         if (T.equals(typeName)) {

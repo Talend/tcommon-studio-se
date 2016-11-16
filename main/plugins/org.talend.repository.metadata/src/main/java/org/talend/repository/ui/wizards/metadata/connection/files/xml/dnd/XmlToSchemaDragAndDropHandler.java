@@ -331,11 +331,6 @@ public class XmlToSchemaDragAndDropHandler {
         UniqueStringGenerator<SchemaTarget> uniqueStringGenerator = new UniqueStringGenerator<SchemaTarget>(columnName,
                 fullSchemaTargetList) {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.talend.commons.utils.data.list.UniqueStringGenerator#getBeanString(java.lang.Object)
-             */
             @Override
             protected String getBeanString(SchemaTarget bean) {
                 return bean.getTagName();
@@ -348,9 +343,8 @@ public class XmlToSchemaDragAndDropHandler {
 
     public static void main(String[] args) {
         String relativePath = XPathPopulationUtil.populateColumnPath("/doc/members/member/returns", "/doc/members"); //$NON-NLS-1$ //$NON-NLS-2$
-        // System.out.println(relativePath);
         relativePath = XPathPopulationUtil.populateColumnPath(
                 "/doc/members/member/returns/see/@cref", "/doc/members/member/summary/@name"); //$NON-NLS-1$ //$NON-NLS-2$
-        // System.out.println(relativePath);
     }
+
 }

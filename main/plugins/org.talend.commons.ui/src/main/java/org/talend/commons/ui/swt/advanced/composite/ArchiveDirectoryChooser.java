@@ -252,7 +252,6 @@ public class ArchiveDirectoryChooser {
      * The browse button has been selected. Select the location.
      */
     protected void handleLocationArchiveButtonPressed() {
-
         FileDialog dialog = new FileDialog(archivePathField.getShell(), SWT.SAVE);
         dialog.setFilterExtensions(fileFilterString);
         // dialog.setText(DataTransferMessages.ArchiveExport_description);
@@ -263,7 +262,6 @@ public class ArchiveDirectoryChooser {
         }
 
         if (fileName.length() == 0) {
-            // dialog.setFilterPath(IDEWorkbenchPlugin.getPluginWorkspace().getRoot().getLocation().toOSString());
             dialog.setFilterPath(ResourcesPlugin.getWorkspace().getRoot().getLocation().toOSString());
         } else {
             File path = new File(fileName);
@@ -291,39 +289,19 @@ public class ArchiveDirectoryChooser {
         }
     }
 
-    /**
-     * Sets the fileFilterString.
-     * 
-     * @param fileFilterString the fileFilterString to set
-     */
     public void setFileFilterString(String[] fileFilterString) {
         this.fileFilterString = fileFilterString;
     }
 
-    /**
-     * Getter for lastPath.
-     * 
-     * @return the lastPath
-     */
     public String getLastPath() {
         return this.lastPath;
     }
 
-    /**
-     * DOC bqian Comment method "setArchiveSelected".
-     * 
-     * @param isArchive
-     */
     public void setArchiveSelected(boolean isArchive) {
         itemFromArchiveRadio.setSelection(isArchive);
         // archiveRadioSelected();
     }
 
-    /**
-     * DOC bqian Comment method "setDestinationValue".
-     * 
-     * @param value
-     */
     public void setDestinationValue(String value) {
         if (isArchiveTypeSelected()) {
             archivePathField.setText(value);
@@ -332,11 +310,6 @@ public class ArchiveDirectoryChooser {
         }
     }
 
-    /**
-     * DOC bqian Comment method "addDestinationItem".
-     * 
-     * @param string
-     */
     public void addDestinationItem(String string) {
         if (isArchiveTypeSelected()) {
             archivePathField.add(string);
@@ -344,14 +317,5 @@ public class ArchiveDirectoryChooser {
             directoryPathField.add(string);
         }
     }
-
-    // protected void displayErrorDialog(String message) {
-    // MessageDialog.openError(getContainer().getShell(), getErrorDialogTitle(), message);
-    // }
-    //
-    // @SuppressWarnings("restriction")
-    // protected String getErrorDialogTitle() {
-    // return IDEWorkbenchMessages.WizardExportPage_internalErrorTitle;
-    // }
 
 }

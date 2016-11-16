@@ -195,9 +195,6 @@ public class ExtendedTextCellEditor extends TextCellEditor implements IExpressio
         return modifyListener;
     }
 
-    /**
-     * yzhang Comment method "checkSelection".
-     */
     public void checkSelection() {
         boolean oldIsSelection = isSelection;
         isSelection = text.getSelectionCount() > 0;
@@ -207,9 +204,6 @@ public class ExtendedTextCellEditor extends TextCellEditor implements IExpressio
         }
     }
 
-    /**
-     * yzhang Comment method "checkDeleteable".
-     */
     public void checkDeleteable() {
         boolean oldIsDeleteable = isDeleteable;
         isDeleteable = isDeleteEnabled();
@@ -218,9 +212,6 @@ public class ExtendedTextCellEditor extends TextCellEditor implements IExpressio
         }
     }
 
-    /**
-     * yzhang Comment method "checkSelectable".
-     */
     public void checkSelectable() {
         boolean oldIsSelectable = isSelectable;
         isSelectable = isSelectAllEnabled();

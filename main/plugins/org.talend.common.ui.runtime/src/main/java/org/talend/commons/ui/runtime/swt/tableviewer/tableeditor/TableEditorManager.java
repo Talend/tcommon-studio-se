@@ -426,9 +426,6 @@ public class TableEditorManager {
         return tableEditor;
     }
 
-    /**
-     * DOC amaumont Comment method "redrawAll".
-     */
     public void redrawControls() {
         for (TableEditor tableEditor : tableEditorList) {
             Control editor = tableEditor.getEditor();

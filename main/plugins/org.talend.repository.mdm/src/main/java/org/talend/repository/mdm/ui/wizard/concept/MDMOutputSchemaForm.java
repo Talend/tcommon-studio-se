@@ -1134,11 +1134,6 @@ public class MDMOutputSchemaForm extends AbstractMDMFileStepForm {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.mdm.ui.wizard.concept.AbstractMDMFileStepForm#createTable()
-     */
     @Override
     protected void createTable() {
         // this.metadataTable = tempMetadataTable;

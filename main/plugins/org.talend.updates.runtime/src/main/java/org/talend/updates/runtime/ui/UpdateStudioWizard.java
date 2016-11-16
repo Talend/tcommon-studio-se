@@ -234,11 +234,6 @@ public class UpdateStudioWizard extends Wizard {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.wizard.Wizard#needsProgressMonitor()
-     */
     @Override
     public boolean needsProgressMonitor() {
         return true;

@@ -600,11 +600,6 @@ public class ExcelFileStep3Form extends AbstractExcelFileStepForm {
     public void saveMetaData() {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
-     */
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);

@@ -632,9 +632,6 @@ public class TableViewerCreatorNotModifiable<B> {
                 }
             }
 
-            /**
-             * DOC amaumont Comment method "forceTableFocus".
-             */
             private void forceTableFocus() {
                 new AsynchronousThreading(10, false, getTable().getDisplay(), new Runnable() {
 
@@ -725,12 +722,6 @@ public class TableViewerCreatorNotModifiable<B> {
 
     }
 
-    /**
-     * DOC amaumont Comment method "addTraversListenerRecursivly".
-     * 
-     * @param control
-     * @param traverseListenerForControls
-     */
     private void addTraverseListenerRecursivly(Control control, TraverseListener traverseListenerForControls) {
         if (control instanceof Composite) {
             control.addTraverseListener(traverseListenerForControls);
@@ -890,13 +881,6 @@ public class TableViewerCreatorNotModifiable<B> {
 
     }
 
-    /**
-     * DOC amaumont Comment method "isEqualsOrChildOf".
-     * 
-     * @param currentControl
-     * @param control
-     * @return
-     */
     private boolean isEqualsOrChildOf(Control equalsOrChild, Control controlRef) {
 
         if (equalsOrChild == controlRef) {
@@ -1122,11 +1106,6 @@ public class TableViewerCreatorNotModifiable<B> {
         return tableViewer;
     }
 
-    /**
-     * DOC amaumont Comment method "initColumnLayout".
-     * 
-     * @param column
-     */
     protected void initColumnLayout(final TableViewerCreatorColumnNotModifiable column) {
         ColumnLayoutData columnLayoutData = null;
         if (column.getWeight() > 0) {
@@ -1225,12 +1204,6 @@ public class TableViewerCreatorNotModifiable<B> {
         }
     }
 
-    /**
-     * 
-     * DOC amaumont Comment method "addColumn".
-     * 
-     * @param tableEditorColumn
-     */
     public void addColumn(TableViewerCreatorColumnNotModifiable tableEditorColumn) {
         String id = tableEditorColumn.getId();
         if (id == null) {
@@ -1674,8 +1647,6 @@ public class TableViewerCreatorNotModifiable<B> {
     }
 
     /**
-     * DOC amaumont Comment method "getModifiedObjectInfo".
-     * 
      * @return always a instance of ModifiedObjectInfo
      */
     public ModifiedObjectInfo<B> getModifiedObjectInfo() {
@@ -1810,9 +1781,6 @@ public class TableViewerCreatorNotModifiable<B> {
         }
     }
 
-    /**
-     * DOC amaumont Comment method "removePaintListener".
-     */
     protected void removeEraseItemListener() {
         if (eraseItemListener != null) {
             table.removeListener(SWTFacade.EraseItem, eraseItemListener);
@@ -1925,27 +1893,10 @@ public class TableViewerCreatorNotModifiable<B> {
         return (B) AccessorUtils.get(currentRowObject, column);
     }
 
-    /**
-     * Getter for compositeParent.
-     * 
-     * @return the compositeParent
-     */
     public Composite getCompositeParent() {
         return this.compositeParent;
     }
 
-    // /**
-    // * DOC amaumont Comment method "removeEraseListener".
-    // */
-    // private void removeEraseListener() {
-    // if (eraseItemListener != null) {
-    // table.removeListener(SWT.EraseItem, eraseItemListener);
-    // }
-    // }
-
-    /**
-     * DOC amaumont Comment method "addEraseListener".
-     */
     private void addEraseItemListener() {
         if (useCustomItemColoring) {
             createEraseItemListener();
@@ -1955,20 +1906,10 @@ public class TableViewerCreatorNotModifiable<B> {
         }
     }
 
-    /**
-     * Getter for readOnly.
-     * 
-     * @return the readOnly
-     */
     public boolean isReadOnly() {
         return this.readOnly;
     }
 
-    /**
-     * Sets the readOnly.
-     * 
-     * @param readOnly the readOnly to set
-     */
     public void setReadOnly(boolean readOnly) {
         this.readOnly = readOnly;
     }
@@ -2020,9 +1961,6 @@ public class TableViewerCreatorNotModifiable<B> {
         }
     }
 
-    /**
-     * DOC amaumont Comment method "refresh".
-     */
     public void refresh() {
         if (tableViewer != null) {
             tableViewer.refresh();
@@ -2031,32 +1969,6 @@ public class TableViewerCreatorNotModifiable<B> {
             tableEditorManager.refresh();
         }
     }
-
-    /**
-     * DOC amaumont Comment method "applyActivatedCellEditor".
-     */
-    // public void applyActivatedCellEditor() {
-    // TableViewer tableViewer = getTableViewer();
-    // if (tableViewer != null && !tableViewer.getTable().isDisposed()) {
-    // CellEditor activatedCellEditor = null;
-    // if (tableViewer.isCellEditorActive()) {
-    // CellEditor[] cellEditors = tableViewer.getCellEditors();
-    // for (int i = 0; i < cellEditors.length; i++) {
-    // CellEditor cellEditor = cellEditors[i];
-    // if (cellEditor != null && cellEditor.isActivated()
-    // && cellEditor instanceof ExtendedTextCellEditorWithProposal) {
-    // ((ExtendedTextCellEditorWithProposal) cellEditor).fireApplyEditorValue();
-    // activatedCellEditor = cellEditor;
-    // }
-    // }
-    // }
-    // if (activatedCellEditor != null) {
-    // Object currentModifiedBean = getModifiedObjectInfo().getCurrentModifiedBean();
-    // tableViewer.refresh(currentModifiedBean, true);
-    // }
-    // }
-    //
-    // }
 
     public void setTriggerEditorActivate(boolean editorActivate) {
         this.editorActivate = editorActivate;

@@ -39,22 +39,11 @@ public class RepoRefreshAction implements IViewActionDelegate {
         RepositoryManager.syncUserComponents();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction,
-     * org.eclipse.jface.viewers.ISelection)
-     */
     @Override
     public void selectionChanged(IAction action, ISelection selection) {
         // nothing to do when selection changes.
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IViewActionDelegate#init(org.eclipse.ui.IViewPart)
-     */
     @Override
     public void init(IViewPart theView) {
         view = (RepoViewCommonNavigator) theView;

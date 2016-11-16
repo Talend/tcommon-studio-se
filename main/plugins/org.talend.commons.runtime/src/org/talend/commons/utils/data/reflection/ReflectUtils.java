@@ -38,13 +38,6 @@ public final class ReflectUtils {
         }
     }
 
-    /**
-     * DOC amaumont Comment method "getValue".
-     * 
-     * @param data
-     * @param beanPropertyName
-     * @return
-     */
     public static Object getValue(Object object, String property) {
         try {
             return PropertyUtils.getProperty(object, property);

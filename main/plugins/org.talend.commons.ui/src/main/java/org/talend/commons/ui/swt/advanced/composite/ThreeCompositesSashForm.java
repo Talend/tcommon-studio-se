@@ -108,17 +108,9 @@ public class ThreeCompositesSashForm extends Composite {
         return this.rightComposite;
     }
 
-    /**
-     * qzhang Comment method "addSashListeners".
-     */
     private void addSashListeners() {
         leftSash.addListener(SWT.Selection, new Listener() {
 
-            /*
-             * (non-Java)
-             * 
-             * @see org.eclipse.swt.widgets.Listener#handleEvent(org.eclipse.swt.widgets.Event)
-             */
             public void handleEvent(Event event) {
                 int shift = event.x - leftSash.getBounds().x;
                 setCompositesBounds(shift);
@@ -128,11 +120,6 @@ public class ThreeCompositesSashForm extends Composite {
         });
         rightSash.addListener(SWT.Selection, new Listener() {
 
-            /*
-             * (non-Java)
-             * 
-             * @see org.eclipse.swt.widgets.Listener#handleEvent(org.eclipse.swt.widgets.Event)
-             */
             public void handleEvent(Event event) {
                 int shift = event.x - rightSash.getBounds().x;
                 setCompositesBounds(shift);
@@ -142,9 +129,6 @@ public class ThreeCompositesSashForm extends Composite {
 
     }
 
-    /**
-     * qzhang Comment method "addComponents".
-     */
     private void addComponents() {
         leftComposite = new Composite(this, SWT.NONE);
         GridLayout gridLayout = new GridLayout();
@@ -199,7 +183,6 @@ public class ThreeCompositesSashForm extends Composite {
     }
 
     public void attachSizes() {
-
         Composite composite = (Composite) leftComposite.getChildren()[0];
 
         Control[] children = (composite).getChildren();
@@ -211,11 +194,6 @@ public class ThreeCompositesSashForm extends Composite {
         }
     }
 
-    /**
-     * qzhang Comment method "setGridDatas".
-     * 
-     * @return
-     */
     public void setGridDatas() {
         Composite composite = (Composite) leftComposite.getChildren()[0];
         GridLayout gridLayout2 = new GridLayout();
@@ -240,6 +218,6 @@ public class ThreeCompositesSashForm extends Composite {
         gridLayout2.horizontalSpacing = 0;
         composite2.setLayout(gridLayout2);
         composite2.setLayoutData(new GridData(GridData.FILL_BOTH));
-
     }
+
 }

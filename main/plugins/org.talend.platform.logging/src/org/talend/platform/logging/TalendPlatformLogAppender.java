@@ -33,13 +33,7 @@ public class TalendPlatformLogAppender extends AppenderSkeleton {
 
     private String symbolicName;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.log4j.AppenderSkeleton#append(org.apache.log4j.spi.LoggingEvent)
-     */
     protected void append(LoggingEvent event) {
-
         // don't go any further if event is not severe enough.
         if (!isAsSevereAsThreshold(event.getLevel())) {
             return;

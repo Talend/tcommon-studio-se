@@ -87,11 +87,6 @@ public final class RepositoryNodeSorterRegister extends RegistryReader {
         return finalSorters;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.utils.RegistryReader#readElement(org.eclipse.core.runtime.IConfigurationElement)
-     */
     @Override
     protected boolean readElement(IConfigurationElement element) {
         if ("sorter".equals(element.getName())) { //$NON-NLS-1$

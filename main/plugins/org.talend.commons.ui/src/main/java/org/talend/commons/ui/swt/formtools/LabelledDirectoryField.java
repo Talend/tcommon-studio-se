@@ -361,22 +361,12 @@ public class LabelledDirectoryField {
         return text.getCharCount();
     }
 
-    /**
-     * DOC ocarbone Comment method "setReadOnly".
-     * 
-     * @param b
-     */
     public void setReadOnly(boolean visible) {
         label.setEnabled(true);
         text.setEnabled(!visible);
         button.setEnabled(!visible);
     }
 
-    /**
-     * DOC ycbai Comment method "getTextControl".
-     * 
-     * @return
-     */
     public Text getTextControl() {
         return this.text;
     }

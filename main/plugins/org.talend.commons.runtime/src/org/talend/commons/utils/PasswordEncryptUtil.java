@@ -44,9 +44,6 @@ public class PasswordEncryptUtil {
     }
 
     /**
-     * 
-     * DOC ggu Comment method "encryptPassword".
-     * 
      * TDI-30227, should only work for old migration task.
      */
     @Deprecated
@@ -64,9 +61,6 @@ public class PasswordEncryptUtil {
     }
 
     /**
-     * 
-     * DOC ggu Comment method "encryptPassword".
-     * 
      * TDI-30227, should only work for old migration task.
      */
     @Deprecated
@@ -114,9 +108,6 @@ public class PasswordEncryptUtil {
     }
 
     /**
-     * 
-     * DOC ggu Comment method "isPasswordType".
-     * 
      * should match with JavaTypesManager.PASSWORD.getId()
      * 
      * @param type
@@ -127,9 +118,6 @@ public class PasswordEncryptUtil {
     }
 
     /**
-     * 
-     * DOC ggu Comment method "isPasswordField".
-     * 
      * should match with the EParameterFieldType.PASSWORD
      * 
      * @param field
@@ -140,9 +128,6 @@ public class PasswordEncryptUtil {
     }
 
     /**
-     * 
-     * DOC ggu Comment method "getPasswordDisplay".
-     * 
      * will be * to dispaly always.
      * 
      * @param value

@@ -31,14 +31,6 @@ public class CodeGenerationUtils {
 
     private static Pattern patternAlphaNumChar;
 
-    /**
-     * DOC amaumont Comment method "buildProblemKey".
-     * 
-     * @param mapperComponent
-     * @param problemKeyField
-     * @param tableName
-     * @param entryName
-     */
     public static String buildProblemKey(String... valuesOfKey) {
         String key = ""; //$NON-NLS-1$
         for (int i = 0; i < valuesOfKey.length; i++) {
@@ -53,23 +45,10 @@ public class CodeGenerationUtils {
         return key;
     }
 
-    /**
-     * DOC amaumont Comment method "insertFieldKey".
-     * 
-     * @param string
-     * @param expression
-     * @return
-     */
     public static String buildJavaStartFieldKey(String key) {
         return "/** " + START_FIELD + " " + key + " */"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
-    /**
-     * DOC amaumont Comment method "buildEndFieldKey".
-     * 
-     * @param key
-     * @return
-     */
     public static String buildJavaEndFieldKey(String key) {
         return "/** " + END_FIELD + " " + key + " */"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }

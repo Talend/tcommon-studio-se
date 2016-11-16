@@ -49,23 +49,7 @@ public class SelectionHelper {
         init();
     }
 
-    /**
-     * DOC amaumont Comment method "init".
-     */
     private void init() {
-        // this.tableSelectionListener = new SelectionListener() {
-        //
-        // public void widgetDefaultSelected(SelectionEvent e) {
-        //
-        // }
-        //
-        // public void widgetSelected(SelectionEvent e) {
-        // // LineSelectionEvent lineSelectionEvent = new LineSelectionEvent();
-        // // fireAfterSelectionChanged(lineSelectionEvent);
-        // }
-        //
-        // };
-
         this.selectionChangedListener = new ISelectionChangedListener() {
 
             public void selectionChanged(SelectionChangedEvent event) {
@@ -110,9 +94,6 @@ public class SelectionHelper {
         }
     }
 
-    /**
-     * DOC amaumont Comment method "addListeners".
-     */
     private void addListeners() {
         // this.tableViewerCreator.getTable().addSelectionListener(this.tableSelectionListener);
         this.tableViewerCreator.getTableViewer().addPostSelectionChangedListener(this.postSelectionChangedListener);
@@ -125,14 +106,6 @@ public class SelectionHelper {
         this.tableViewerCreator.getTableViewer().removeSelectionChangedListener(this.selectionChangedListener);
     }
 
-    /**
-     * 
-     * DOC amaumont Comment method "setSelection".
-     * 
-     * @param selection
-     * @param reveal
-     * @see TableViewer#setSelection(ISelection, boolean)
-     */
     public void setSelection(ISelection selection, boolean reveal) {
         LineSelectionEvent lineSelectionEvent = new LineSelectionEvent();
         lineSelectionEvent.selectionByMethod = true;
@@ -142,13 +115,6 @@ public class SelectionHelper {
         fireAfterSelectionChanged(lineSelectionEvent);
     }
 
-    /**
-     * 
-     * DOC amaumont Comment method "setSelection".
-     * 
-     * @param selection
-     * @see TableViewer#setSelection(ISelection)
-     */
     public void setSelection(ISelection selection) {
         LineSelectionEvent lineSelectionEvent = new LineSelectionEvent();
         lineSelectionEvent.source = tableViewerCreator;
@@ -157,14 +123,6 @@ public class SelectionHelper {
         fireAfterSelectionChanged(lineSelectionEvent);
     }
 
-    /**
-     * 
-     * DOC amaumont Comment method "setSelection".
-     * 
-     * @param start
-     * @param end
-     * @see Table#setSelection(int, int)
-     */
     public void setSelection(int start, int end) {
         LineSelectionEvent lineSelectionEvent = new LineSelectionEvent();
         lineSelectionEvent.source = tableViewerCreator;
@@ -173,13 +131,6 @@ public class SelectionHelper {
         fireAfterSelectionChanged(lineSelectionEvent);
     }
 
-    /**
-     * 
-     * DOC amaumont Comment method "setSelection".
-     * 
-     * @param index
-     * @see Table#setSelection(int)
-     */
     public void setSelection(int index) {
         LineSelectionEvent lineSelectionEvent = new LineSelectionEvent();
         lineSelectionEvent.selectionByMethod = true;
@@ -189,13 +140,6 @@ public class SelectionHelper {
         fireAfterSelectionChanged(lineSelectionEvent);
     }
 
-    /**
-     * 
-     * DOC amaumont Comment method "setSelection".
-     * 
-     * @param indices
-     * @see Table#setSelection(int[])
-     */
     public void setSelection(int[] indices) {
         LineSelectionEvent lineSelectionEvent = new LineSelectionEvent();
         lineSelectionEvent.selectionByMethod = true;
@@ -205,13 +149,6 @@ public class SelectionHelper {
         fireAfterSelectionChanged(lineSelectionEvent);
     }
 
-    /**
-     * 
-     * DOC amaumont Comment method "setSelection".
-     * 
-     * @param item
-     * @see Table#setSelection(TableItem)
-     */
     public void setSelection(TableItem item) {
         LineSelectionEvent lineSelectionEvent = new LineSelectionEvent();
         lineSelectionEvent.selectionByMethod = true;
@@ -221,13 +158,6 @@ public class SelectionHelper {
         fireAfterSelectionChanged(lineSelectionEvent);
     }
 
-    /**
-     * 
-     * DOC amaumont Comment method "setSelection".
-     * 
-     * @param items
-     * @see Table#setSelection(TableItem[])
-     */
     public void setSelection(TableItem[] items) {
         LineSelectionEvent lineSelectionEvent = new LineSelectionEvent();
         lineSelectionEvent.selectionByMethod = true;
@@ -237,14 +167,6 @@ public class SelectionHelper {
         fireAfterSelectionChanged(lineSelectionEvent);
     }
 
-    /**
-     * 
-     * DOC amaumont Comment method "deselect".
-     * 
-     * @param start
-     * @param end
-     * @see Table#deselect(int, int)
-     */
     public void deselect(int start, int end) {
         LineSelectionEvent lineSelectionEvent = new LineSelectionEvent();
         lineSelectionEvent.selectionByMethod = true;
@@ -254,13 +176,6 @@ public class SelectionHelper {
         fireAfterSelectionChanged(lineSelectionEvent);
     }
 
-    /**
-     * 
-     * DOC amaumont Comment method "deselect".
-     * 
-     * @param index
-     * @see Table#deselect(int)
-     */
     public void deselect(int index) {
         LineSelectionEvent lineSelectionEvent = new LineSelectionEvent();
         lineSelectionEvent.selectionByMethod = true;
@@ -270,13 +185,6 @@ public class SelectionHelper {
         fireAfterSelectionChanged(lineSelectionEvent);
     }
 
-    /**
-     * 
-     * DOC amaumont Comment method "deselect".
-     * 
-     * @param indices
-     * @see Table#deselect(int[])
-     */
     public void deselect(int[] indices) {
         LineSelectionEvent lineSelectionEvent = new LineSelectionEvent();
         lineSelectionEvent.selectionByMethod = true;
@@ -286,12 +194,6 @@ public class SelectionHelper {
         fireAfterSelectionChanged(lineSelectionEvent);
     }
 
-    /**
-     * 
-     * DOC amaumont Comment method "deselectAll".
-     * 
-     * @see Table#deselectAll()
-     */
     public void deselectAll() {
         LineSelectionEvent lineSelectionEvent = new LineSelectionEvent();
         lineSelectionEvent.selectionByMethod = true;
@@ -301,14 +203,6 @@ public class SelectionHelper {
         fireAfterSelectionChanged(lineSelectionEvent);
     }
 
-    /**
-     * 
-     * DOC amaumont Comment method "select".
-     * 
-     * @param start
-     * @param end
-     * @see Table#select(int, int)
-     */
     public void select(int start, int end) {
         LineSelectionEvent lineSelectionEvent = new LineSelectionEvent();
         lineSelectionEvent.selectionByMethod = true;
@@ -318,13 +212,6 @@ public class SelectionHelper {
         fireAfterSelectionChanged(lineSelectionEvent);
     }
 
-    /**
-     * 
-     * DOC amaumont Comment method "select".
-     * 
-     * @param index
-     * @see Table#select(int)
-     */
     public void select(int index) {
         LineSelectionEvent lineSelectionEvent = new LineSelectionEvent();
         lineSelectionEvent.selectionByMethod = true;
@@ -334,13 +221,6 @@ public class SelectionHelper {
         fireAfterSelectionChanged(lineSelectionEvent);
     }
 
-    /**
-     * 
-     * DOC amaumont Comment method "select".
-     * 
-     * @param indices
-     * @see Table#select(int[])
-     */
     public void select(int[] indices) {
         LineSelectionEvent lineSelectionEvent = new LineSelectionEvent();
         lineSelectionEvent.selectionByMethod = true;
@@ -350,12 +230,6 @@ public class SelectionHelper {
         fireAfterSelectionChanged(lineSelectionEvent);
     }
 
-    /**
-     * 
-     * DOC amaumont Comment method "selectAll".
-     * 
-     * @see Table#selectAll()
-     */
     public void selectAll() {
         LineSelectionEvent lineSelectionEvent = new LineSelectionEvent();
         lineSelectionEvent.selectionByMethod = true;
@@ -366,9 +240,6 @@ public class SelectionHelper {
     }
 
     /**
-     * 
-     * DOC amaumont Comment method "addSelectionListener".
-     * 
      * Listeners on <code>Table</code> and <code>TableViewer</code> are registered when number of listeners is 0.
      * 
      * @param lineSelectionListener
@@ -381,9 +252,7 @@ public class SelectionHelper {
     }
 
     /**
-     * 
-     * DOC amaumont Comment method "removeSelectionListener". Listeners on <code>Table</code> and
-     * <code>TableViewer</code> are unregistered when number of listeners become 0.
+     * Listeners on <code>Table</code> and <code>TableViewer</code> are unregistered when number of listeners become 0.
      * 
      * @param lineSelectionListener
      */
@@ -397,9 +266,6 @@ public class SelectionHelper {
     }
 
     /**
-     * 
-     * DOC amaumont Comment method "addSelectionListener".
-     * 
      * Listeners on <code>Table</code> and <code>TableViewer</code> are registered when number of listeners is 0.
      * 
      * @param lineSelectionListener
@@ -412,9 +278,7 @@ public class SelectionHelper {
     }
 
     /**
-     * 
-     * DOC amaumont Comment method "removeSelectionListener". Listeners on <code>Table</code> and
-     * <code>TableViewer</code> are unregistered when number of listeners become 0.
+     * Listeners on <code>Table</code> and <code>TableViewer</code> are unregistered when number of listeners become 0.
      * 
      * @param lineSelectionListener
      */
@@ -435,8 +299,7 @@ public class SelectionHelper {
     }
 
     /**
-     * 
-     * DOC amaumont Comment method "setActiveFireChanged". activeFireChanged is true by default.
+     * activeFireChanged is true by default.
      * 
      * @param activeFireChanged
      */

@@ -22,25 +22,12 @@ import org.talend.repository.model.RepositoryNode;
  * */
 public abstract class ProjectRepoDirectChildrenNodeContentProvider extends ProjectRepoAbstractContentProvider {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.viewer.content.ProjectRepoAbstractContentProvider#getProjectRepository(org.talend.repository
-     * .model.RepositoryNode)
-     */
     @Override
     protected ProjectRepositoryNode getProjectRepositoryNode(RepositoryNode element) {
         Assert.isTrue(element instanceof ProjectRepositoryNode);
         return (ProjectRepositoryNode) element;
     }
 
-    /**
-     * DOC sgandon Comment method "getTopLevelNodeFromProjectRepositoryNode".
-     * 
-     * @param element
-     * @return
-     */
     @Override
     abstract protected RepositoryNode getTopLevelNodeFromProjectRepositoryNode(ProjectRepositoryNode projectNode);
 

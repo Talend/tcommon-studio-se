@@ -357,11 +357,6 @@ public class LDAPSchemaStep4Form extends AbstractLDAPSchemaStepForm {
         return processDescription;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#adaptFormToReadOnly()
-     */
     @Override
     protected void adaptFormToReadOnly() {
         readOnly = isReadOnly();
@@ -369,18 +364,8 @@ public class LDAPSchemaStep4Form extends AbstractLDAPSchemaStepForm {
         metadataNameText.setReadOnly(isReadOnly());
         metadataCommentText.setReadOnly(isReadOnly());
         tableEditorView.setReadOnly(isReadOnly());
-
-        // if (getParent().getChildren().length == 1) { // open the table
-        // guessButton.setEnabled(false);
-        // informationLabel.setVisible(false);
-        // }
     }
 
-    /**
-     * DOC ocarbone Comment method "refreshMetaData".
-     * 
-     * @param csvArray
-     */
     public void refreshMetaDataTable(final CsvArray csvArray, ProcessDescription processDescription) {
         informationLabel.setText("   " + Messages.getString("FileStep3.guessIsDone")); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -541,11 +526,6 @@ public class LDAPSchemaStep4Form extends AbstractLDAPSchemaStepForm {
         return numbersOfColumns;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
-     */
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);

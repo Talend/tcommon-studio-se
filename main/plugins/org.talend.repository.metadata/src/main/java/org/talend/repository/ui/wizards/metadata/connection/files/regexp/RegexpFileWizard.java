@@ -367,20 +367,10 @@ public class RegexpFileWizard extends CheckLastVersionRepositoryWizard implement
         this.selection = selection2;
     }
 
-    /**
-     * yzhang Comment method "setToolbar".
-     * 
-     * @param isToolbar
-     */
     public void setToolbar(boolean isToolbar) {
         this.isToolbar = isToolbar;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.wizards.RepositoryWizard#getConnectionItem()
-     */
     @Override
     public ConnectionItem getConnectionItem() {
         return this.connectionItem;

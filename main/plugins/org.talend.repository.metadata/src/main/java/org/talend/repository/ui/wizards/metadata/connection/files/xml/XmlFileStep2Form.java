@@ -539,13 +539,6 @@ public class XmlFileStep2Form extends AbstractXmlFileStepForm implements IRefres
 
         StoppablePreviewLoader previewLoader = new StoppablePreviewLoader<CsvArray>(previewHandler, previewInformationLabel) {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see
-             * org.talend.repository.ui.wizards.metadata.connection.files.xml.StoppablePreviewLoader#previewEnded(java
-             * .lang.Object)
-             */
             @Override
             protected void previewEnded(CsvArray result) {
                 xmlFilePreview.refreshTablePreview(result, false, (getConnection().getSchema().get(0)).getSchemaTargets());
@@ -878,11 +871,6 @@ public class XmlFileStep2Form extends AbstractXmlFileStepForm implements IRefres
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
-     */
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);
@@ -1005,11 +993,6 @@ public class XmlFileStep2Form extends AbstractXmlFileStepForm implements IRefres
         return wizard.isXsdRootChange();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.IRefreshable#refresh()
-     */
     @Override
     public void refresh() {
         refreshPreview();

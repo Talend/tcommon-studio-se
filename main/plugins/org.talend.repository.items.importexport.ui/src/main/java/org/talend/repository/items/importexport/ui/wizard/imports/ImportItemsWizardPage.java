@@ -880,11 +880,6 @@ public class ImportItemsWizardPage extends WizardPage {
         return errorMessage;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.wizard.WizardPage#isPageComplete()
-     */
     @Override
     public boolean isPageComplete() {
         if (selectedItemRecords.isEmpty() || getErrorMessage() != null) {

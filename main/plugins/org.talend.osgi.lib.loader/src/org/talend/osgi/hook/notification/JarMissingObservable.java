@@ -83,11 +83,6 @@ public class JarMissingObservable extends Observable {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.util.Observable#notifyObservers(java.lang.Object)
-     */
     @Override
     public void notifyObservers(Object arg) {
         if (!prenventNotificationLock.isLocked()) {

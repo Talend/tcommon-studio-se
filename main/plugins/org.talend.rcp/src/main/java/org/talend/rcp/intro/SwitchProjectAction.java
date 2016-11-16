@@ -43,11 +43,6 @@ public class SwitchProjectAction extends Action {
         setEnabled(true);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.action.Action#run()
-     */
     @Override
     public void run() {
         // close all editors before logOffProject to solve bug 22738 , folder relations will be cleared in logOffProject
@@ -107,22 +102,9 @@ public class SwitchProjectAction extends Action {
         // }
     }
 
-    //
-    // private boolean logUserOnProject(Shell shell) {
-    // boolean logged = false;
-    // LoginDialog loginDialog = new LoginDialog(shell);
-    // logged = loginDialog.open() == LoginDialog.OK;
-    // return logged;
-    // }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.action.Action#setEnabled()
-     */
     @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
     }
-    // setEnabled(CodeGeneratorEmittersPoolFactory.initialized);
+
 }

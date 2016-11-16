@@ -342,11 +342,6 @@ public class SalesforceSchemaWizard extends CheckLastVersionRepositoryWizard imp
         this.selection = selection;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.wizards.RepositoryWizard#getConnectionItem()
-     */
     @Override
     public ConnectionItem getConnectionItem() {
         return this.connectionItem;

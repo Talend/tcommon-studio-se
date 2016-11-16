@@ -133,11 +133,6 @@ public class ImportExportHandlersRegistryReader extends RegistryReader {
         return importResourcesHandlers;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.utils.RegistryReader#readElement(org.eclipse.core.runtime.IConfigurationElement)
-     */
     @Override
     protected boolean readElement(final IConfigurationElement element) {
         final String id = element.getAttribute("id"); //$NON-NLS-1$

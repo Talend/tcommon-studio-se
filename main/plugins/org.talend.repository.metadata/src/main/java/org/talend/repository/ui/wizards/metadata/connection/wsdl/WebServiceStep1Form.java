@@ -76,11 +76,6 @@ public class WebServiceStep1Form extends AbstractWSDLSchemaStepForm {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addFields()
-     */
     @Override
     protected void addFields() {
         // TODO Auto-generated method stub
@@ -119,33 +114,18 @@ public class WebServiceStep1Form extends AbstractWSDLSchemaStepForm {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addFieldsListeners()
-     */
     @Override
     protected void addFieldsListeners() {
         // TODO Auto-generated method stub
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addUtilsButtonListeners()
-     */
     @Override
     protected void addUtilsButtonListeners() {
         // TODO Auto-generated method stub
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#checkFieldsValue()
-     */
     @Override
     protected boolean checkFieldsValue() {
         if (getCurrentFunction() == false) {
@@ -171,11 +151,6 @@ public class WebServiceStep1Form extends AbstractWSDLSchemaStepForm {
         checkFieldsValue();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#initialize()
-     */
     @Override
     protected void initialize() {
         // TODO Auto-generated method stub

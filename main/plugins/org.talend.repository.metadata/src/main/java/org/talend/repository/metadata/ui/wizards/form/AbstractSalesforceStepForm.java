@@ -578,85 +578,41 @@ public abstract class AbstractSalesforceStepForm extends AbstractForm {
         return metadataTableOrder;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#adaptFormToReadOnly()
-     */
     @Override
     protected void adaptFormToReadOnly() {
         // TODO Auto-generated method stub
-
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addFields()
-     */
     @Override
     protected void addFields() {
         // TODO Auto-generated method stub
-
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addFieldsListeners()
-     */
     @Override
     protected void addFieldsListeners() {
         // TODO Auto-generated method stub
-
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addUtilsButtonListeners()
-     */
     @Override
     protected void addUtilsButtonListeners() {
         // TODO Auto-generated method stub
-
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#checkFieldsValue()
-     */
     @Override
     protected boolean checkFieldsValue() {
         // TODO Auto-generated method stub
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#initialize()
-     */
     @Override
     protected void initialize() {
         // TODO Auto-generated method stub
     }
 
-    /**
-     * Getter for salesforceAPI.
-     * 
-     * @return the salesforceAPI
-     */
     public SalesforceModuleParseAPI getSalesforceAPI() {
         return this.salesforceAPI;
     }
 
-    /**
-     * Sets the salesforceAPI.
-     * 
-     * @param salesforceAPI the salesforceAPI to set
-     */
     public void setSalesforceAPI(SalesforceModuleParseAPI salesforceAPI) {
         this.salesforceAPI = salesforceAPI;
     }
@@ -669,14 +625,9 @@ public abstract class AbstractSalesforceStepForm extends AbstractForm {
         this.contextModeManager = contextModeManager;
     }
 
-    /**
-     * DOC Administrator Comment method "getTableByLabel".
-     * 
-     * @param label
-     * @return
-     */
     protected MetadataTable getTableByLabel(String label) {
         // TODO Auto-generated method stub
         return null;
     }
+
 }

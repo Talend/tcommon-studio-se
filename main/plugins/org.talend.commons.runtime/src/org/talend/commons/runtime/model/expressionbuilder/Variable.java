@@ -25,37 +25,19 @@ public class Variable {
 
     private boolean nullable;
 
-    /**
-     * yzhang Variable constructor comment.
-     */
     public Variable() {
     }
 
-    /**
-     * yzhang Variable constructor comment.
-     */
     public Variable(int n) {
         name = "name" + String.valueOf(n); //$NON-NLS-1$
         value = "value" + String.valueOf(n); //$NON-NLS-1$
     }
 
-    /**
-     * yzhang Variable constructor comment.
-     * 
-     * @param name
-     * @param value
-     */
     public Variable(String name, String value) {
         this.name = name;
         this.value = value;
     }
 
-    /**
-     * yzhang Variable constructor comment.
-     * 
-     * @param name
-     * @param value
-     */
     public Variable(String name, String value, String type, boolean nullable) {
         this.name = name;
         this.value = value;
@@ -63,74 +45,34 @@ public class Variable {
         this.nullable = nullable;
     }
 
-    /**
-     * Getter for name.
-     * 
-     * @return the name
-     */
     public String getName() {
         return this.name;
     }
 
-    /**
-     * Getter for value.
-     * 
-     * @return the value
-     */
     public String getValue() {
         return this.value;
     }
 
-    /**
-     * yzhang Comment method "getTalendType".
-     * 
-     * @return
-     */
     public String getTalendType() {
         return this.talendType;
     }
 
-    /**
-     * yzhang Comment method "isNullable".
-     * 
-     * @return
-     */
     public boolean isNullable() {
         return this.nullable;
     }
 
-    /**
-     * Sets the name.
-     * 
-     * @param name the name to set
-     */
     public void setName(String name) {
         this.name = name;
     }
 
-    /**
-     * Sets the value.
-     * 
-     * @param value the value to set
-     */
     public void setValue(String value) {
         this.value = value;
     }
 
-    /**
-     * yzhang Comment method "setTalendType".
-     * 
-     * @param typeId
-     */
     public void setTalendType(String typeId) {
         this.talendType = typeId;
     }
 
-    /**
-     * yzhang Comment method "setNullable".
-     * 
-     * @param nullable
-     */
     public void setNullable(boolean nullable) {
         this.nullable = nullable;
     }

@@ -72,11 +72,6 @@ public class DateDialog extends Dialog {
         return control2;
     }
 
-    /**
-     * qiang.zhang Comment method "getDate".
-     * 
-     * @return
-     */
     public Date getDate() {
         return time.getCalendar().getTime();
     }

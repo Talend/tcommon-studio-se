@@ -25,9 +25,6 @@ public abstract class AbstractElementFilter<E> {
     }
 
     /**
-     * 
-     * DOC ycbai Comment method "filter".
-     * 
      * Returns the passed elements from this filter.
      * 
      * @return
@@ -59,9 +56,6 @@ public abstract class AbstractElementFilter<E> {
     }
 
     /**
-     * 
-     * DOC ycbai Comment method "select".
-     * 
      * Returns whether the given element makes it through this filter.
      * 
      * @param element
@@ -70,9 +64,6 @@ public abstract class AbstractElementFilter<E> {
     protected abstract boolean select(E element);
 
     /**
-     * 
-     * DOC ycbai Comment method "setElements".
-     * 
      * Set the elements which will be filtered.
      * 
      * @param elements
@@ -82,9 +73,6 @@ public abstract class AbstractElementFilter<E> {
     }
 
     /**
-     * 
-     * DOC ycbai Comment method "setSearchText".
-     * 
      * Set the search string.
      * 
      * @param searchText

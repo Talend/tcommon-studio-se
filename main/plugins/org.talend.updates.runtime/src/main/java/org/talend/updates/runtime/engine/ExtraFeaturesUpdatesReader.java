@@ -68,11 +68,6 @@ public class ExtraFeaturesUpdatesReader extends RegistryReader {
         return this.factories;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.utils.RegistryReader#readElement(org.eclipse.core.runtime.IConfigurationElement)
-     */
     @Override
     protected boolean readElement(final IConfigurationElement element) {
         if ("factory".equals(element.getName())) { //$NON-NLS-1$

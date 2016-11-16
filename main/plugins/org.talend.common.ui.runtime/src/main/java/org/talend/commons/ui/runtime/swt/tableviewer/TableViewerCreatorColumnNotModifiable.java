@@ -176,19 +176,11 @@ public class TableViewerCreatorColumnNotModifiable<B, V> implements Cloneable {
         this.comparator = comparator;
     }
 
-    /**
-     * 
-     * DOC amaumont Comment method "getImage".
-     * 
-     * @return
-     */
     public Image getImageHeader() {
         return imageHeader;
     }
 
     /**
-     * DOC amaumont Comment method "setImageHeader".
-     * 
      * Note: imageHeader is replaced by up or down arrow image when sorting.
      * 
      * @param imageHeader
@@ -429,11 +421,6 @@ public class TableViewerCreatorColumnNotModifiable<B, V> implements Cloneable {
         this.defaultInternalValue = defaultInternalValue;
     }
 
-    /**
-     * DOC amaumont Comment method "setDisplayedValue".
-     * 
-     * @param object
-     */
     public void setDisplayedValue(String displayedValue) {
         this.displayedValue = displayedValue;
     }
@@ -534,11 +521,6 @@ public class TableViewerCreatorColumnNotModifiable<B, V> implements Cloneable {
         this.colorProvider = colorProvider;
     }
 
-    /**
-     * DOC amaumont Comment method "setColumnCellModifier".
-     * 
-     * @param columnCellModifier
-     */
     public void setColumnCellModifier(ColumnCellModifier columnCellModifier) {
         this.columnCellModifier = columnCellModifier;
     }

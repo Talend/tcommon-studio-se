@@ -609,11 +609,6 @@ public class MdmReceiveForm extends AbstractMDMFileStepForm {
         // }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
-     */
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);

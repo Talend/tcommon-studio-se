@@ -105,11 +105,6 @@ public abstract class AbstractRepositoryActionProvider extends CommonActionProvi
         //
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.actions.ActionGroup#fillContextMenu(org.eclipse.jface.action.IMenuManager)
-     */
     @Override
     public void fillContextMenu(IMenuManager manager) {
         super.fillContextMenu(manager);

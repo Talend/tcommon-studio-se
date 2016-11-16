@@ -1035,11 +1035,6 @@ public class FileStep2Form extends AbstractPositionalFileStepForm implements IRe
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
-     */
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);
@@ -1067,11 +1062,6 @@ public class FileStep2Form extends AbstractPositionalFileStepForm implements IRe
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.IRefreshable#refresh()
-     */
     @Override
     public void refresh() {
         refreshPreview();

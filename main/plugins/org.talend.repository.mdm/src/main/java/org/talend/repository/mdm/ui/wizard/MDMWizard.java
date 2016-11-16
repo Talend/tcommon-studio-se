@@ -204,11 +204,6 @@ public class MDMWizard extends RepositoryWizard implements INewWizard {
         ConnectionContextHelper.checkContextMode(connectionItem);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.wizard.Wizard#performFinish()
-     */
     @Override
     public boolean performFinish() {
         // if (mdmWizardPage.isPageComplete()) {
@@ -310,16 +305,9 @@ public class MDMWizard extends RepositoryWizard implements INewWizard {
         // do nothing to create pages lazily
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench,
-     * org.eclipse.jface.viewers.IStructuredSelection)
-     */
     @Override
     public void init(IWorkbench workbench, IStructuredSelection selection) {
         // TODO Auto-generated method stub
-
     }
 
     @Override
@@ -344,11 +332,6 @@ public class MDMWizard extends RepositoryWizard implements INewWizard {
         this.isToolBar = isToolbar;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.wizards.RepositoryWizard#getConnectionItem()
-     */
     @Override
     public ConnectionItem getConnectionItem() {
         return this.connectionItem;
@@ -366,10 +349,10 @@ public class MDMWizard extends RepositoryWizard implements INewWizard {
         this.currentPage = currentPage;
     }
 
-    @Override
     /**
      * TDQ-7217 if the related connection editor is opened in DQ side,shoud not unlock.
      */
+    @Override
     public void closeLockStrategy() {
         ITDQRepositoryService tdqRepService = null;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ITDQRepositoryService.class)) {

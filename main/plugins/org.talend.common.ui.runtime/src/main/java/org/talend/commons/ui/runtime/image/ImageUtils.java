@@ -237,9 +237,6 @@ public class ImageUtils {
     }
 
     /**
-     * 
-     * DOC amaumont Comment method "changeAlpha".
-     * 
      * @param image
      * @param alpha 0 is meaning fully transparent, 255 is meaning fully opaque
      * @return
@@ -264,9 +261,6 @@ public class ImageUtils {
     }
 
     /**
-     * 
-     * ggu Comment method "AdjustSize".
-     * 
      * do the better size of image, when scale.
      */
     public static Point AdjustSize(final Point originalSize, final Point requiredSize) {

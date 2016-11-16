@@ -14,11 +14,6 @@ package org.talend.commons.ui.runtime.swt.tableviewer.tableeditor;
 
 public interface ITableEditorManagerListener {
 
-    /**
-     * DOC amaumont Comment method "notifyEvent".
-     * 
-     * @param event
-     */
     public void notifyEvent(TableEditorManagerEvent event);
 
 }

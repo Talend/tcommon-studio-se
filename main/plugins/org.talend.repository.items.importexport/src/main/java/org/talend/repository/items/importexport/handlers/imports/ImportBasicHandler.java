@@ -182,30 +182,14 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.items.importexport.handlers.imports.IImportItemsHandler#valid(org.talend.repository.items
-     * .importexport.handlers.model.ImportItem)
-     */
     @Override
     public boolean valid(ImportItem importItem) {
         return importItem != null && importItem.getItem() != null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.items.importexport.handlers.imports.IImportItemsHandler#createImportItem(org.eclipse.
-     * core. runtime.IProgressMonitor,
-     * org.talend.repository.items.importexport.ui.wizard.imports.managers.ResourcesManager,
-     * org.eclipse.core.runtime.IPath, boolean, java.util.List)
-     */
     @Override
     public ImportItem createImportItem(IProgressMonitor progressMonitor, ResourcesManager resManager, IPath resourcePath,
             boolean overwrite, List<ImportItem> existeditems) throws Exception {
-
         ImportItem importItem = computeImportItem(resManager, resourcePath);
         if (progressMonitor.isCanceled()) {
             return null;
@@ -688,15 +672,6 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
         ExceptionHandler.process(e);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.items.importexport.handlers.imports.IImportItemsHandler#importItemRecord(org.eclipse.core
-     * .runtime .IProgressMonitor, org.talend.repository.items.importexport.manager.ResourcesManager,
-     * org.talend.repository.items.importexport.handlers.model.ImportItem, boolean, org.eclipse.core.runtime.IPath,
-     * java.util.Set, java.util.Set)
-     */
     @Override
     public void doImport(IProgressMonitor monitor, ResourcesManager resManager, ImportItem selectedImportItem, boolean overwrite,
             IPath destinationPath, Set<String> overwriteDeletedItems, Set<String> idDeletedBeforeImport) throws Exception {
@@ -1216,13 +1191,6 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.items.importexport.handlers.imports.IImportItemsHandler#afterImportingItemRecords(org.talend
-     * .repository.items.importexport.ui.wizard.imports.models.ItemRecord)
-     */
     @Override
     public void afterImportingItems(IProgressMonitor monitor, ResourcesManager resManager, ImportItem importItem) {
         if (importItem == null) {

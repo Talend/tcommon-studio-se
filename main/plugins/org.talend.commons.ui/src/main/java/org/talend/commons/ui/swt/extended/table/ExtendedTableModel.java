@@ -101,12 +101,6 @@ public class ExtendedTableModel<B> extends AbstractExtendedControlModel {
         this.beansList.add(bean);
     }
 
-    /**
-     * DOC amaumont Comment method "add".
-     * 
-     * @param beans
-     * @param index can be null
-     */
     public void addAll(final Integer index, List<B> beans) {
         addAll(index, beans, true, true);
     }
@@ -130,8 +124,6 @@ public class ExtendedTableModel<B> extends AbstractExtendedControlModel {
     }
 
     /**
-     * DOC amaumont Comment method "add".
-     * 
      * @param beans
      * @param index can be null
      */
@@ -140,8 +132,6 @@ public class ExtendedTableModel<B> extends AbstractExtendedControlModel {
     }
 
     /**
-     * DOC amaumont Comment method "add".
-     * 
      * @param beans
      * @param index can be null
      */
@@ -173,8 +163,6 @@ public class ExtendedTableModel<B> extends AbstractExtendedControlModel {
     }
 
     /**
-     * DOC amaumont Comment method "remove".
-     * 
      * @param bean
      */
     public boolean remove(B bean) {
@@ -184,11 +172,6 @@ public class ExtendedTableModel<B> extends AbstractExtendedControlModel {
         return this.beansList.remove(bean);
     }
 
-    /**
-     * DOC amaumont Comment method "remove".
-     * 
-     * @param i
-     */
     public B remove(int index) {
         if (tableViewer != null && !tableViewer.getTable().isDisposed()) {
             tableViewer.remove(this.beansList.get(index));

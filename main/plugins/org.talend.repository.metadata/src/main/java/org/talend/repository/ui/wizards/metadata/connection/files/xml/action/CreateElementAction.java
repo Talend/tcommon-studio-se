@@ -87,11 +87,6 @@ public class CreateElementAction extends SelectionProviderAction {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.actions.SelectionProviderAction#selectionChanged(org.eclipse.jface.viewers.ISelection)
-     */
     @Override
     public void selectionChanged(IStructuredSelection selection) {
         FOXTreeNode node = (FOXTreeNode) this.getStructuredSelection().getFirstElement();

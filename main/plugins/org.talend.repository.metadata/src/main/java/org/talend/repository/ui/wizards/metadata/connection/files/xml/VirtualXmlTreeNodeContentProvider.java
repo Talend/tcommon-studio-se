@@ -56,11 +56,6 @@ public class VirtualXmlTreeNodeContentProvider extends TreeNodeContentProvider i
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ILazyTreeContentProvider#getParent(java.lang.Object)
-     */
     @Override
     public Object getParent(Object element) {
         if (element instanceof ATreeNode) {
@@ -69,22 +64,11 @@ public class VirtualXmlTreeNodeContentProvider extends TreeNodeContentProvider i
         return elements;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.TreeNodeContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer,
-     * java.lang.Object, java.lang.Object)
-     */
     @Override
     public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
         this.elements = (Object[]) newInput;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.TreeNodeContentProvider#getChildren(java.lang.Object)
-     */
     @Override
     public Object[] getChildren(Object parentElement) {
         if (parentElement instanceof ATreeNode) {
@@ -96,11 +80,6 @@ public class VirtualXmlTreeNodeContentProvider extends TreeNodeContentProvider i
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.TreeNodeContentProvider#hasChildren(java.lang.Object)
-     */
     @Override
     public boolean hasChildren(Object element) {
         if (element instanceof ATreeNode) {

@@ -188,9 +188,6 @@ public abstract class AbstractDataTableEditorView<B> {
 
     }
 
-    /**
-     * DOC amaumont Comment method "createElementComparer".
-     */
     protected IElementComparer createElementComparer() {
         return new IElementComparer() {
 
@@ -205,16 +202,10 @@ public abstract class AbstractDataTableEditorView<B> {
         };
     }
 
-    /**
-     * DOC amaumont Comment method "initToolBar".
-     */
     protected ExtendedToolbarView initToolBar() {
         return null;
     }
 
-    /**
-     * DOC amaumont Comment method "initTable".
-     */
     protected void initTable() {
         this.extendedTableViewer = new AbstractExtendedTableViewer<B>(this.extendedTableModel, mainComposite, this.readOnly) {
 

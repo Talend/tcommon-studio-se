@@ -90,11 +90,6 @@ public class ModifiedObjectInfo<O> {
         this.currentModifiedColumn = currentModifiedColumn;
     }
 
-    /**
-     * DOC amaumont Comment method "setCurrentModifiedIndex".
-     * 
-     * @param i
-     */
     public void setCurrentModifiedIndex(int currentModifiedIndex) {
         this.currentModifiedIndex = currentModifiedIndex;
     }

@@ -24,8 +24,7 @@ public class BabiliUpdateUtil {
     private static final String REVERSION_LIST = "http://talendforge.org/babili/api/get_labels.php"; //$NON-NLS-1$
 
     /**
-     * 
-     * DOC wzhang Comment method "getBabiliList". get the list from Babili.
+     * get the list from Babili.
      * 
      * @param language
      * @param validated
@@ -46,9 +45,6 @@ public class BabiliUpdateUtil {
     }
 
     /**
-     * 
-     * DOC wzhang Comment method "sendGetRequest".
-     * 
      * @param url
      * @return
      * @throws Exception
@@ -64,9 +60,6 @@ public class BabiliUpdateUtil {
     }
 
     /**
-     * 
-     * DOC wzhang Comment method "parseJsonObject".
-     * 
      * @param jsonContent
      * @param clazz
      * @return
@@ -90,9 +83,6 @@ public class BabiliUpdateUtil {
     }
 
     /**
-     * 
-     * wzhang Comment method "checkProcessCancel".
-     * 
      * @param monitor
      * @throws ImportBabiliCancelException
      * @deprecated

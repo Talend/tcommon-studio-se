@@ -164,13 +164,6 @@ public class LdifFileStep2Form extends AbstractLdifFileStepForm implements IRefr
         attributeModel.registerDataList(itemTableName);
         tableEditorView = new AbstractExtendedTableViewer<String>(attributeModel, group) {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see
-             * org.talend.commons.ui.swt.extended.macrotable.AbstractExtendedTableViewer#setTableViewerCreatorOptions
-             * (org.talend.commons.ui.swt.tableviewer.TableViewerCreator)
-             */
             @Override
             protected void setTableViewerCreatorOptions(TableViewerCreator<String> newTableViewerCreator) {
                 super.setTableViewerCreatorOptions(newTableViewerCreator);
@@ -202,12 +195,6 @@ public class LdifFileStep2Form extends AbstractLdifFileStepForm implements IRefr
         // uncomment this block for activate the ToolBar MoveUp and MoveDown Lines
         // new ExtendedTableToolbarView(group, SWT.NONE, tableEditorView) {
         //
-        // /*
-        // * (non-Javadoc)
-        // *
-        // * @see
-        // org.talend.core.ui.extended.ExtendedTableToolbarView#createComponents(org.eclipse.swt.widgets.Composite)
-        // */
         // @Override
         // protected void createComponents(Composite parent) {
         // moveUpButton = createMoveUpPushButton();
@@ -659,11 +646,6 @@ public class LdifFileStep2Form extends AbstractLdifFileStepForm implements IRefr
         });
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
-     */
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);
@@ -699,11 +681,6 @@ public class LdifFileStep2Form extends AbstractLdifFileStepForm implements IRefr
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.IRefreshable#refresh()
-     */
     @Override
     public void refresh() {
         refreshPreview();

@@ -72,11 +72,6 @@ public class ImportExportUiHandlersRegistryReader extends RegistryReader {
         return this.actionsHelpers;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.utils.RegistryReader#readElement(org.eclipse.core.runtime.IConfigurationElement)
-     */
     @Override
     protected boolean readElement(final IConfigurationElement element) {
         if ("actionHelper".equals(element.getName())) { //$NON-NLS-1$

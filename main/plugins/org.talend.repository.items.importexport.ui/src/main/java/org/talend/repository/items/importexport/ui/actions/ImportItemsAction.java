@@ -51,11 +51,6 @@ public class ImportItemsAction extends AContextualAction implements IWorkbenchWi
         run();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.actions.AContextualAction#getSelection()
-     */
     @Override
     public IStructuredSelection getSelection() {
         return this.structureSelection;

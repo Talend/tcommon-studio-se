@@ -82,22 +82,11 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
         actionBarConfigurer.registerGlobalAction(ActionFactory.RESET_PERSPECTIVE.create(window));
     }
 
-    // private static final String[] ACTIONSETID = new String[] {
-    //            "org.eclipse.ui.edit.text.actionSet.convertLineDelimitersTo", //$NON-NLS-1$
-    //            "org.eclipse.ui.edit.text.actionSet.annotationNavigation", "org.eclipse.ui.NavigateActionSet", //$NON-NLS-1$ //$NON-NLS-2$
-    //            "org.eclipse.ui.WorkingSetActionSet", "org.eclipse.ui.edit.text.actionSet.navigation", //$NON-NLS-1$ //$NON-NLS-2$
-    //            "org.eclipse.search.searchActionSet", "org.eclipse.ui.externaltools.ExternalToolsSet", "org.talend.repository.bootTalendActionSet" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-
     @Override
     protected void fillMenuBar(final IMenuManager menuBar) {
         helper.fillMenuBar(menuBar);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.application.ActionBarAdvisor#fillCoolBar(org.eclipse.jface. action.ICoolBarManager)
-     */
     @Override
     protected void fillCoolBar(ICoolBarManager coolBar) {
         helper.fillCoolBar(coolBar);

@@ -130,10 +130,6 @@ public abstract class ExecutionLimiter {
         execute(false, data);
     }
 
-    /**
-     * DOC amaumont Comment method "startThreadForFinalExecution".
-     * @param data 
-     */
     private void startThreadForFinalExecution(final Object data) {
         (new Thread() {
 
@@ -179,8 +175,6 @@ public abstract class ExecutionLimiter {
     }
 
     /**
-     * 
-     * DOC amaumont Comment method "execute".
      * @param isFinalExecution
      * @param data can be null
      */

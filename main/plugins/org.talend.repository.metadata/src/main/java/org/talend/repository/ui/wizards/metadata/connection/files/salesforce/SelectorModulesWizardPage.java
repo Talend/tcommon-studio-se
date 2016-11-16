@@ -201,7 +201,7 @@ public class SelectorModulesWizardPage extends TemplateWizardPage {
             tableForm.setIMetadataConnection(metadataConnection);
             Catalog c = (Catalog) ConnectionHelper.getPackage(((DatabaseConnection) tableForm.getConnection()).getSID(),
                     tableForm.getConnection(), Catalog.class);
-            if (c != null) { // hywang
+            if (c != null) {
                 c.getOwnedElement().clear();
             }
             if (isCreateTemplate) {
@@ -214,11 +214,6 @@ public class SelectorModulesWizardPage extends TemplateWizardPage {
         tableForm.restoreCheckItems();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.wizards.metadata.table.database.TemplateWizardPage#getConnection()
-     */
     public Connection getConnection() {
         return getDatabaseConnection();
     }
@@ -226,12 +221,5 @@ public class SelectorModulesWizardPage extends TemplateWizardPage {
     public List<String> getItemListName() {
         return tableForm.getItemTableNameList();
     }
-    // public IMetadataConnection getMetadataConnection() {
-    // return this.metadataConnection;
-    // }
-    //
-    // public void setMetadataConnection(IMetadataConnection metadataConnection) {
-    // this.metadataConnection = metadataConnection;
-    // }
 
 }

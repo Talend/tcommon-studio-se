@@ -22,11 +22,6 @@ import java.util.Arrays;
  */
 public class DoubleValueAggregate<T> extends ValueAggregate<T, Double> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.utils.collections.ValueAggregate#addValue(java.lang.Object, N[])
-     */
     public void addValue(T key, Double[] values) {
         Double[] doubles = keyToVal.get(key);
         if (doubles == null) {

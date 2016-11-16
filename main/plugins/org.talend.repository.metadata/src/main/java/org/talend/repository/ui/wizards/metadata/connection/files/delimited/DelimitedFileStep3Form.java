@@ -56,10 +56,6 @@ import org.talend.metadata.managment.ui.wizard.metadata.connection.GuessSchemaUt
 import org.talend.repository.metadata.i18n.Messages;
 import org.talend.repository.metadata.ui.wizards.form.AbstractDelimitedFileStepForm;
 
-/**
- * @author ocarbone
- * 
- */
 public class DelimitedFileStep3Form extends AbstractDelimitedFileStepForm {
 
     private static Logger log = Logger.getLogger(DelimitedFileStep3Form.class);
@@ -401,11 +397,6 @@ public class DelimitedFileStep3Form extends AbstractDelimitedFileStepForm {
     public void saveMetaData() {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
-     */
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);

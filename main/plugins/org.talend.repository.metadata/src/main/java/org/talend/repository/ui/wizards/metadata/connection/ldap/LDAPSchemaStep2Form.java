@@ -119,22 +119,11 @@ public class LDAPSchemaStep2Form extends AbstractLDAPSchemaStepForm {
         setupForm(true);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#adaptFormToReadOnly()
-     */
     @Override
     protected void adaptFormToReadOnly() {
         // TODO Auto-generated method stub
-
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addFields()
-     */
     @Override
     protected void addFields() {
 
@@ -235,19 +224,9 @@ public class LDAPSchemaStep2Form extends AbstractLDAPSchemaStepForm {
         addLimitGroupInput(composite);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addFieldsListeners()
-     */
     @Override
     protected void addFieldsListeners() {
-
         final LDAPSchemaConnection connection = (LDAPSchemaConnection) connectionItem.getConnection();
-
-        // if (connection == null) {
-        // connection.setProtocol(EAuthenticationMethod.ANONYMOUS.getName());
-        // }
 
         bindPrincipalCombo.addModifyListener(new ModifyListener() {
 
@@ -545,25 +524,13 @@ public class LDAPSchemaStep2Form extends AbstractLDAPSchemaStepForm {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addUtilsButtonListeners()
-     */
     @Override
     protected void addUtilsButtonListeners() {
         // TODO Auto-generated method stub
-
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#checkFieldsValue()
-     */
     @Override
     protected boolean checkFieldsValue() {
-
         boolean isSampleAuthMethod = authenticationMethodCombo.getText().equals(EAuthenticationMethod.SIMPLE.getName());
 
         String[] items = bindPrincipalCombo.getItems();
@@ -575,14 +542,6 @@ public class LDAPSchemaStep2Form extends AbstractLDAPSchemaStepForm {
             updateStatus(IStatus.ERROR, "Bind DN or user name must be specified"); //$NON-NLS-1$
             return false;
         }
-        // } else if (isSampleAuthMethod && (bindPasswordText.getText() == null ||
-        // bindPasswordText.getText().equals(""))) {
-        // // bindPasswordText.forceFocus();
-        // this.checkPrincipalPasswordAuthButton.setEnabled(false);
-        // this.fetchBaseDnsButton.setEnabled(false);
-        // updateStatus(IStatus.ERROR, "Bind password must be specified"); //$NON-NLS-1$
-        // return false;
-        // }
         else if (isSampleAuthMethod && (bindPasswordText.getText() == null || "".equals(bindPasswordText.getText()))) {
             updateStatus(IStatus.ERROR, Messages.getString("LDAPSchemaStep2Form.verifyAuthentication")); //$NON-NLS-1$
             checkPrincipalPasswordAuthButton.setEnabled(true);
@@ -594,11 +553,6 @@ public class LDAPSchemaStep2Form extends AbstractLDAPSchemaStepForm {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#initialize()
-     */
     @Override
     protected void initialize() {
         LDAPSchemaConnection connection = (LDAPSchemaConnection) this.connectionItem.getConnection();
@@ -850,9 +804,6 @@ public class LDAPSchemaStep2Form extends AbstractLDAPSchemaStepForm {
         }
     }
 
-    /**
-     * ftang Comment method "fetchBaseDNsList".
-     */
     private List<String> fetchBaseDNsList() {
         boolean isOK = LDAPConnectionUtils.checkParam(getOriginalValueConnection(), false);
 

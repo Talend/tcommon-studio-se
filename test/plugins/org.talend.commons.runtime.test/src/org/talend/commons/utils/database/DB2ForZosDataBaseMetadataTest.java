@@ -175,16 +175,6 @@ public class DB2ForZosDataBaseMetadataTest {
         }
     }
 
-    /**
-     * DOC yyin Comment method "mockMetadata".
-     * 
-     * @param catalog
-     * @param schema
-     * @param tableNamePattern
-     * @param types
-     * @param sqlConnection
-     * @return
-     */
     private ResultSet mockMetadata(String catalog, String schema, String tableNamePattern, String[] types,
             Connection sqlConnection) {
         DB2ForZosDataBaseMetadata db2ZosMetadata = null;
@@ -198,11 +188,6 @@ public class DB2ForZosDataBaseMetadataTest {
         return tablesResult;
     }
 
-    /**
-     * DOC yyin Comment method "mockResultSet".
-     * 
-     * @return
-     */
     private ResultSet mockResultSet() {
         ResultSet resultSet = Mockito.mock(ResultSet.class);
         try {
@@ -216,12 +201,6 @@ public class DB2ForZosDataBaseMetadataTest {
         return resultSet;
     }
 
-    /**
-     * DOC yyin Comment method "mockPreparedStatement".
-     * 
-     * @param resultSet
-     * @return
-     */
     private PreparedStatement mockPreparedStatement(ResultSet resultSet) {
         PreparedStatement sqlStatement = Mockito.mock(PreparedStatement.class);
         try {
@@ -232,13 +211,6 @@ public class DB2ForZosDataBaseMetadataTest {
         return sqlStatement;
     }
 
-    /**
-     * DOC yyin Comment method "mockConnection".
-     * 
-     * @param exceptSql
-     * @param sqlStatement
-     * @return
-     */
     private Connection mockConnection(PreparedStatement sqlStatement) {
         Connection sqlConnection = Mockito.mock(Connection.class);
         try {

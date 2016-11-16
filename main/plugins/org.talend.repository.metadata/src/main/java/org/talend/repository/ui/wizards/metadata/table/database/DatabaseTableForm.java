@@ -1252,11 +1252,6 @@ public class DatabaseTableForm extends AbstractForm {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.AbstractForm#adaptFormToReadOnly()
-     */
     @Override
     protected void adaptFormToReadOnly() {
         readOnly = isReadOnly();
@@ -1269,11 +1264,6 @@ public class DatabaseTableForm extends AbstractForm {
         retreiveSchemaButton.setEnabled(!isReadOnly());
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
-     */
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);

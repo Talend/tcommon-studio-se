@@ -89,13 +89,8 @@ public class TableToTablesLinker<D1, D2> extends BgDrawableComposite implements 
         return this.defaultStyleLink;
     }
 
-    /**
-     * DOC amaumont Comment method "createLinkSorter".
-     */
     protected void createLinksComparators() {
-
         this.drawingLinksComparator = getDrawingLinksComparator();
-
     }
 
     /**
@@ -227,13 +222,6 @@ public class TableToTablesLinker<D1, D2> extends BgDrawableComposite implements 
 
     }
 
-    /**
-     * DOC amaumont Comment method "findMaxWidth".
-     * 
-     * @param items
-     * @param maxWidth
-     * @return
-     */
     public int findXRightStartBezierLink(TableItem[] items, int maxWidth) {
         for (int i = 0; i < items.length; i++) {
             TableItem item = items[i];

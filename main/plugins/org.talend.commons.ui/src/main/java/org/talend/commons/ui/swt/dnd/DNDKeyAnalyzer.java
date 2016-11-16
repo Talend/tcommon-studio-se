@@ -26,12 +26,6 @@ public class DNDKeyAnalyzer {
         analyze(event);
     }
 
-    /**
-     * DOC amaumont Comment method "analyze".
-     * 
-     * @param event
-     * @param mapperManager
-     */
     private void analyze(DropTargetEvent event) {
         if ((event.detail & DND.DROP_COPY) != 0) { // Ctrl key
             // System.out.println("Ctrl key");

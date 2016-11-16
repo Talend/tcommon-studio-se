@@ -398,11 +398,6 @@ public class LabelledFileField {
         return text.getCharCount();
     }
 
-    /**
-     * DOC ocarbone Comment method "setReadOnly".
-     * 
-     * @param b
-     */
     public void setReadOnly(boolean visible) {
         label.setEnabled(true);
         text.setEnabled(!visible);

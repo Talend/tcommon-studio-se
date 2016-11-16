@@ -174,30 +174,15 @@ public class MDMToSchemaDragAndDropHandler {
 
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.jface.util.TransferDropTargetListener#getTransfer()
-         */
         public Transfer getTransfer() {
             return null;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.jface.util.TransferDropTargetListener#isEnabled(org.eclipse.swt.dnd.DropTargetEvent)
-         */
         public boolean isEnabled(DropTargetEvent event) {
             // TODO Auto-generated method stub
             return false;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.swt.dnd.DropTargetListener#drop(org.eclipse.swt.dnd.DropTargetEvent)
-         */
         public void drop(DropTargetEvent event) {
             // System.out.println("\n>>drop");
             DropTarget dropTarget = (DropTarget) event.getSource();
@@ -341,11 +326,6 @@ public class MDMToSchemaDragAndDropHandler {
         UniqueStringGenerator<ConceptTarget> uniqueStringGenerator = new UniqueStringGenerator<ConceptTarget>(columnName,
                 fullSchemaTargetList) {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.talend.commons.utils.data.list.UniqueStringGenerator#getBeanString(java.lang.Object)
-             */
             @Override
             protected String getBeanString(ConceptTarget bean) {
                 return bean.getTargetName();

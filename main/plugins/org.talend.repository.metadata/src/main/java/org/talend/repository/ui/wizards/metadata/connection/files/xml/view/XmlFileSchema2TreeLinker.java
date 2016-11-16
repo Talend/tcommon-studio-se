@@ -390,11 +390,6 @@ public class XmlFileSchema2TreeLinker extends TableToTreeLinker<Object, Object> 
         return this.drawingLinksComparator;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.linking.TableToTreeLinker#getFirstVisibleTreeItemOfPath(java.lang.Object)
-     */
     @Override
     protected TreeItem getFirstVisibleTreeItemOfPath(Object dataItem) {
         return getFirstVisibleTreeItemOfPath((FOXTreeNode) dataItem);

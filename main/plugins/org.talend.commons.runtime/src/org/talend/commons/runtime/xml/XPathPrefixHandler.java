@@ -90,13 +90,6 @@ public class XPathPrefixHandler {
         return buf.toString();
     }
 
-    /**
-     * DOC chuang Comment method "addXPathPrefix".
-     * 
-     * @param relativeXPathExpression
-     * @param referenceNode
-     * @return
-     */
     public String addXPathPrefix(String relativeXPathExpression, Node node) {
         if (namespaceContext.getNamespaceCount() == 0) {
             return relativeXPathExpression;
@@ -118,13 +111,6 @@ public class XPathPrefixHandler {
         // return result.substring(path.length() + 1);
     }
 
-    /**
-     * DOC chuang Comment method "extractRelativePath".
-     * 
-     * @param result
-     * @param relativeXPathExpression
-     * @return
-     */
     private String extractRelativePath(String absolutePath, String relativePath) {
         String[] aPath = absolutePath.split("/"); //$NON-NLS-1$
         String[] rPath = relativePath.split("/"); //$NON-NLS-1$
@@ -136,12 +122,6 @@ public class XPathPrefixHandler {
         return StringUtils.join(path, "/"); //$NON-NLS-1$
     }
 
-    /**
-     * DOC chuang Comment method "getNodeInfo".
-     * 
-     * @param node
-     * @param list
-     */
     private NodeInfo getNodeInfo(Node node, List<NodeInfo> list) {
         NodeInfo info = null;
 
@@ -227,11 +207,6 @@ public class XPathPrefixHandler {
         return expr.toString();
     }
 
-    /**
-     * DOC chuang Comment method "fixXPath".
-     * 
-     * @param paths
-     */
     private void fixUnknownPath(PathSegment[] paths) {
         for (int i = 0; i < paths.length; i++) {
             PathSegment seg = paths[i];
@@ -247,14 +222,6 @@ public class XPathPrefixHandler {
 
     }
 
-    /**
-     * DOC chuang Comment method "validate".
-     * 
-     * @param paths
-     * @param pos
-     * @param node
-     * @return
-     */
     private boolean validatePath(PathSegment[] paths, int pos, NodeInfo node) {
         int level = 0;
         for (int i = pos + 1; i < paths.length; i++) {
@@ -302,11 +269,6 @@ public class XPathPrefixHandler {
         return true;
     }
 
-    /**
-     * DOC chuang Comment method "resolve".
-     * 
-     * @param path
-     */
     private int resolvePath(PathSegment[] path) {
         int fixed = 0;
         for (PathSegment p : path) {
@@ -339,12 +301,6 @@ public class XPathPrefixHandler {
         return fixed;
     }
 
-    /**
-     * DOC chuang Comment method "createPathSegments".
-     * 
-     * @param names
-     * @return
-     */
     private PathSegment[] createPathSegments(String[] names) {
         PathSegment[] path = new PathSegment[names.length];
         for (int i = 0; i < names.length; i++) {
@@ -372,24 +328,12 @@ public class XPathPrefixHandler {
 
     }
 
-    /**
-     * DOC chuang Comment method "getPrefix".
-     * 
-     * @param name
-     * @return
-     */
     private String getPrefix(String name) {
         List<NodeInfo> nodes = nameNodesMap.get(name);
         NodeInfo info = nodes.get(0);
         return namespaceContext.getPrefix(info.namespace);
     }
 
-    /**
-     * DOC chuang Comment method "collectNodes".
-     * 
-     * @param root2
-     * @param string
-     */
     private void collectNodes(Node node, String path, int level) {
 
         int type = node.getNodeType();
@@ -454,9 +398,6 @@ public class XPathPrefixHandler {
         }
     }
 
-    /**
-     * DOC nrousseau Comment method "replaceReferences".
-     */
     private void replaceReferences() {
         Map<String, NodeInfo> newPathNodesMap = new HashMap<String, NodeInfo>();
 
@@ -488,12 +429,6 @@ public class XPathPrefixHandler {
         }
     }
 
-    /**
-     * DOC chuang Comment method "addInfoToMap".
-     * 
-     * @param node
-     * @param info
-     */
     private void addNodeInfoToMap(String name, NodeInfo info) {
         List<NodeInfo> nodeInfos = nameNodesMap.get(name);
         if (nodeInfos == null) {
@@ -503,13 +438,6 @@ public class XPathPrefixHandler {
         nodeInfos.add(info);
     }
 
-    /**
-     * DOC chuang Comment method "getNamespace".
-     * 
-     * @param node
-     * @param parentPath
-     * @return
-     */
     private void computeNamespace(NodeInfo info, String parentPath) {
         Node node = info.node;
         List<Node> attributes = new ArrayList<Node>();
@@ -561,12 +489,6 @@ public class XPathPrefixHandler {
         collectAttributes(info, attributes);
     }
 
-    /**
-     * DOC chuang Comment method "collectAttributes".
-     * 
-     * @param info
-     * @param attributes
-     */
     private void collectAttributes(NodeInfo info, List<Node> attributes) {
         for (Node attr : attributes) {
             String elementName = attr.getNodeName();

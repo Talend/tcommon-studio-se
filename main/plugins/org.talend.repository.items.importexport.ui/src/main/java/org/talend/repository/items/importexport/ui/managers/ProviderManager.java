@@ -95,11 +95,6 @@ public class ProviderManager extends AbstractImportResourcesManager {
         return this.provider;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.items.importexport.manager.ResourcesManager#getRoot()
-     */
     @Override
     public Object getRoot() {
         if (provider instanceof ZipLeveledStructureProvider) {

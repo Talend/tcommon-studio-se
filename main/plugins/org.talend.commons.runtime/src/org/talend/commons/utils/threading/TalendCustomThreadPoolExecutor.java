@@ -43,9 +43,6 @@ public class TalendCustomThreadPoolExecutor extends ThreadPoolExecutor {
     }
 
     /**
-     * 
-     * cli Comment method "clearThreads".
-     * 
      * (bug 6976)
      */
     public void clearThreads() {

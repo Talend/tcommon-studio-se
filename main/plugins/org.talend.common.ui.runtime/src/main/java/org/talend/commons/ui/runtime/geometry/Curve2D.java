@@ -112,9 +112,6 @@ public abstract class Curve2D extends Curve {
     }
 
     /**
-     * 
-     * DOC amaumont Comment method "setMaximumSegements".
-     * 
      * @param maximumSegements positive or equals to 0 value
      */
     public void setMaximumSegements(int maximumSegements) {
@@ -129,9 +126,6 @@ public abstract class Curve2D extends Curve {
     }
 
     /**
-     * 
-     * DOC amaumont Comment method "setMinimumSegements".
-     * 
      * @param minimumSegements positive or equals to 0 value
      */
     public void setMinimumSegements(int minimumSegements) {

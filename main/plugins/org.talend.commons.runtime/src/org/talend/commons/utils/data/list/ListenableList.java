@@ -370,11 +370,6 @@ public class ListenableList<T> implements IExtendedList<T> {
         return modified;
     }
 
-    /**
-     * DOC amaumont Comment method "getIndices".
-     * 
-     * @param c
-     */
     private List<Integer> getIndices(Collection<?> c) {
         List<Integer> indices = new ArrayList<Integer>(c.size());
         for (Object bean : c) {

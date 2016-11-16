@@ -686,11 +686,6 @@ public class TestFileDirCleaner {
             return countMatchingDir;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see files.TestFileDirCleaner.OperationForFSManager#processCountMatchingChildrenDir(java.io.File)
-         */
         @Override
         public int processCountMatchingChildrenFiles(File dir, int currentLevel) {
             int countMatchingFiles = 0;
@@ -708,12 +703,6 @@ public class TestFileDirCleaner {
             return countMatchingFiles;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.talend.utils.files.FileDirCleaner2Test.OperationForFSManager#processDirectoryBegin(java.io.File,
-         * int)
-         */
         @Override
         public void processDirectoryBegin(File dir, int currentLevel, int indexDir, int matchingChildrenDirCount) {
 
@@ -755,21 +744,10 @@ public class TestFileDirCleaner {
                     + ", cleanFiles=" + cleanFiles + ", recursively=" + recursively + "]";
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.talend.utils.files.FileDirCleaner2Test.OperationForFSManager#processDirectoryEnd(java.io.File, int)
-         */
         @Override
         public void processDirectoryEnd(File dir, int currentLevel, int indexDir) {
-
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.talend.utils.files.FileDirCleaner2Test.OperationForFSManager#processFile(java.io.File, int)
-         */
         @Override
         public void processFile(File file, int currentLevel, int indexFile, int matchingChildrenFilesCount) throws IOException {
 

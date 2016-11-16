@@ -93,11 +93,6 @@ public class ExportLogsWizardPage extends WizardPage {
         setDescription(Messages.getString("ExportLogsWizardPage.exportLog")); //$NON-NLS-1$
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
-     */
     @Override
     public void createControl(Composite parent) {
         Composite workArea = new Composite(parent, SWT.NONE);

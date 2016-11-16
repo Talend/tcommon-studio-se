@@ -234,11 +234,6 @@ public class MetadataService implements IMetadataService {
         if (realNode != null) {
             AbstractCreateTableAction action = new CreateTableAction() {
 
-                /*
-                 * (non-Javadoc)
-                 * 
-                 * @see org.talend.repository.ui.actions.AContextualAction#getSelection()
-                 */
                 @Override
                 public ISelection getSelection() {
                     return new StructuredSelection(realNode);

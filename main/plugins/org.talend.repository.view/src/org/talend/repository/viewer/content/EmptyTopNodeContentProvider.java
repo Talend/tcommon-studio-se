@@ -18,25 +18,11 @@ import org.talend.repository.model.RepositoryNode;
 
 public abstract class EmptyTopNodeContentProvider extends ProjectRepoDirectChildrenNodeContentProvider {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.viewer.content.LegacyRepositoryContentProvider#getRepositoryNodeChildren(java.lang.Object,
-     * org.talend.repository.model.RepositoryNode)
-     */
     @Override
     protected Object[] getRepositoryNodeChildren(RepositoryNode repositoryNode) {
         return NO_CHILDREN;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.viewer.content.FolderListenerSingleTopContentProvider#inputChanged(org.eclipse.jface.viewers
-     * .Viewer, java.lang.Object, java.lang.Object)
-     */
     @Override
     public void inputChanged(Viewer arg0, Object arg1, Object arg2) {
         // do nothing caus we do not need any notification
@@ -47,4 +33,5 @@ public abstract class EmptyTopNodeContentProvider extends ProjectRepoDirectChild
         // not need re-init it.
         // super.initAndClear();
     }
+
 }

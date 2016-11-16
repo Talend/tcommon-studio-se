@@ -79,29 +79,11 @@ public class RepoViewCommonViewer extends CommonViewer implements INavigatorCont
         this.repViewCommonNavigator = repViewCommonNavigator;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.navigator.CommonViewer#init()
-     */
     @Override
     protected void init() {
         super.init();
         registerLockUnlockServiceListener();
     }
-
-    // @SuppressWarnings("restriction")
-    // private void updateNavigatorContentState() {
-    // INavigatorContentService contentService = getNavigatorContentService();
-    // String[] visibleExtensionIds = contentService.getVisibleExtensionIds();
-    // List<String> needRemovedExtensionIds = RepositoryNodeFilterHelper.getExtensionIdsNeedRemove(visibleExtensionIds);
-    // if (contentService.getActivationService() instanceof NavigatorActivationService) {
-    // NavigatorActivationService activationService = (NavigatorActivationService)
-    // contentService.getActivationService();
-    // activationService.setActive(needRemovedExtensionIds.toArray(new String[needRemovedExtensionIds.size()]), false);
-    // activationService.persistExtensionActivations();
-    // }
-    // }
 
     private RepositoryNode getRepositoryNode(Item node) {
         Object data = node.getData();
@@ -126,22 +108,12 @@ public class RepoViewCommonViewer extends CommonViewer implements INavigatorCont
 
             private static final long FFFFFFFFL = 0xFFFFFFFFL;
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.swt.dnd.DragSourceAdapter#dragSetData(org.eclipse.swt.dnd.DragSourceEvent)
-             */
             @Override
             public void dragSetData(DragSourceEvent event) {
                 repViewCommonNavigator.setNoNeedUpdate(true);
                 event.data = LocalSelectionTransfer.getTransfer().getSelection();
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.swt.dnd.DragSourceAdapter#dragStart(org.eclipse.swt.dnd.DragSourceEvent)
-             */
             @Override
             public void dragStart(DragSourceEvent event) {
                 ISelection selection = RepoViewCommonViewer.this.getSelection();
@@ -159,11 +131,6 @@ public class RepoViewCommonViewer extends CommonViewer implements INavigatorCont
                 LocalSelectionTransfer.getTransfer().setSelectionSetTime(event.time & FFFFFFFFL);
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.swt.dnd.DragSourceAdapter#dragFinished(org.eclipse.swt.dnd.DragSourceEvent)
-             */
             @Override
             public void dragFinished(DragSourceEvent event) {
                 repViewCommonNavigator.dragFinished();
@@ -215,11 +182,6 @@ public class RepoViewCommonViewer extends CommonViewer implements INavigatorCont
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.AbstractTreeViewer#getSortedChildren(java.lang.Object)
-     */
     @Override
     protected Object[] getSortedChildren(Object parentElementOrTreePath) {
         Object[] children = super.getSortedChildren(parentElementOrTreePath);
@@ -233,9 +195,6 @@ public class RepoViewCommonViewer extends CommonViewer implements INavigatorCont
         return children;
     }
 
-    /**
-     * DOC sgandon Comment method "registerLockUnlockServiceListener".
-     */
     private void registerLockUnlockServiceListener() {
         if (lockService == null) {
             BundleContext bundleContext = CoreRepositoryPlugin.getDefault().getBundle().getBundleContext();
@@ -361,11 +320,6 @@ public class RepoViewCommonViewer extends CommonViewer implements INavigatorCont
         });
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.navigator.CommonViewer#dispose()
-     */
     @Override
     public void dispose() {
         if (lockService != null) {

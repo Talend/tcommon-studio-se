@@ -36,95 +36,60 @@ public class FeatureCategory implements ExtraFeature {
     private Set<ExtraFeature> children = new HashSet<>();
     
 
-    /* (non-Javadoc)
-     * @see org.talend.updates.runtime.model.ExtraFeature#isInstalled(org.eclipse.core.runtime.IProgressMonitor)
-     */
     @Override
     public boolean isInstalled(IProgressMonitor progress) throws Exception {
         // TODO Auto-generated method stub
         return false;
     }
 
-    /* (non-Javadoc)
-     * @see org.talend.updates.runtime.model.ExtraFeature#createFeatureIfUpdates(org.eclipse.core.runtime.IProgressMonitor)
-     */
     @Override
     public ExtraFeature createFeatureIfUpdates(IProgressMonitor progress) throws Exception {
         // TODO Auto-generated method stub
         return null;
     }
 
-    /* (non-Javadoc)
-     * @see org.talend.updates.runtime.model.ExtraFeature#getName()
-     */
     @Override
     public String getName() {
         return name;
     }
 
-    /* (non-Javadoc)
-     * @see org.talend.updates.runtime.model.ExtraFeature#getDescription()
-     */
     @Override
     public String getDescription() {
         return description;
     }
 
-    /* (non-Javadoc)
-     * @see org.talend.updates.runtime.model.ExtraFeature#getVersion()
-     */
     @Override
     public String getVersion() {
         return version;
     }
 
-    /* (non-Javadoc)
-     * @see org.talend.updates.runtime.model.ExtraFeature#install(org.eclipse.core.runtime.IProgressMonitor, java.util.List)
-     */
     @Override
     public IStatus install(IProgressMonitor progress, List<URI> allRepoUris) throws Exception {
         return Status.OK_STATUS;
     }
 
-    /* (non-Javadoc)
-     * @see org.talend.updates.runtime.model.ExtraFeature#getUpdateSiteCompatibleTypes()
-     */
     @Override
     public EnumSet<UpdateSiteLocationType> getUpdateSiteCompatibleTypes() {
         // TODO Auto-generated method stub
         return null;
     }
 
-    /* (non-Javadoc)
-     * @see org.talend.updates.runtime.model.ExtraFeature#mustBeInstalled()
-     */
     @Override
     public boolean mustBeInstalled() {
         // TODO Auto-generated method stub
         return false;
     }
 
-    /* (non-Javadoc)
-     * @see org.talend.updates.runtime.model.ExtraFeature#needRestart()
-     */
     @Override
     public boolean needRestart() {
         // TODO Auto-generated method stub
         return false;
     }
-    
-    /**
-     * Getter for children.
-     * @return the children
-     */
+
     public Set<ExtraFeature> getChildren() {
         return this.children;
     }
 
-    /**
-     * Sets the name.
-     * @param name the name to set
-     */
     public void setName(String name) {
         this.name = name;
     }

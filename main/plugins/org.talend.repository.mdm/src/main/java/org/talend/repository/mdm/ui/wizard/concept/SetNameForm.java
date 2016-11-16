@@ -74,22 +74,11 @@ public class SetNameForm extends AbstractMDMFileStepForm {
         setupForm(false);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#adaptFormToReadOnly()
-     */
     @Override
     protected void adaptFormToReadOnly() {
         // TODO Auto-generated method stub
-
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addFields()
-     */
     @Override
     protected void addFields() {
         Group mdmParameterGroup = new Group(this, SWT.NULL);
@@ -113,11 +102,6 @@ public class SetNameForm extends AbstractMDMFileStepForm {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addFieldsListeners()
-     */
     @Override
     protected void addFieldsListeners() {
         nameText.addModifyListener(new ModifyListener() {
@@ -217,22 +201,11 @@ public class SetNameForm extends AbstractMDMFileStepForm {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addUtilsButtonListeners()
-     */
     @Override
     protected void addUtilsButtonListeners() {
         // TODO Auto-generated method stub
-
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#checkFieldsValue()
-     */
     @Override
     protected boolean checkFieldsValue() {
         if (nameText == null || nameText.getCharCount() == 0) {
@@ -244,11 +217,6 @@ public class SetNameForm extends AbstractMDMFileStepForm {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#initialize()
-     */
     @Override
     protected void initialize() {
         super.initialize();

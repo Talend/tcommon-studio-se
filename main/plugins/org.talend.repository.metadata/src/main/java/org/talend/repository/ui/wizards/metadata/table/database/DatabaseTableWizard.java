@@ -292,11 +292,6 @@ public class DatabaseTableWizard extends CheckLastVersionRepositoryWizard implem
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.wizards.RepositoryWizard#performCancel()
-     */
     @Override
     public boolean performCancel() {
         if (selectorWizardPage != null) {

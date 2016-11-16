@@ -186,17 +186,7 @@ public class BackgroundRefresher implements IBackgroundRefresher {
 
     }
 
-    /**
-     * DOC amaumont Comment method "updateBackground".
-     */
     public synchronized void refreshBackground() {
-        // System.out.println("refreshBackground");
-
-        // TimeMeasure.measureActive = true;
-        // TimeMeasure.display = false;
-
-        // TimeMeasure.begin("refreshBackground");
-
         if (drawableComposite.getBgDrawableComposite().isDisposed()) {
             return;
         }
@@ -204,8 +194,6 @@ public class BackgroundRefresher implements IBackgroundRefresher {
         oldImage = drawableComposite.getBgDrawableComposite().getBackgroundImage();
         Image newImage = null;
         if (oldImage == null || oldImage.isDisposed()
-        // || bgImage1 == null || bgImage1.isDisposed()
-        // || bgImage2 == null || bgImage2.isDisposed()
         ) {
             createBgImages();
             newImage = bgImage1;

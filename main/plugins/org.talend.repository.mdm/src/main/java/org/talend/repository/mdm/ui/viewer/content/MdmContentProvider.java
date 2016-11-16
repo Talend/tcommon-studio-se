@@ -17,16 +17,10 @@ package org.talend.repository.mdm.ui.viewer.content;
  */
 public class MdmContentProvider /* extends AbstractMetadataContentProvider */{
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.viewer.content.SingleTopLevelContentProvider#getTopLevelNode(org.talend.repository.model
-     * .RepositoryNode)
-     */
     // @Override
     // protected RepositoryNode getTopLevelNode(RepositoryNode theRootNode) {
     // return ((ProjectRepositoryNode) theRootNode.getParent())
     // .getRootRepositoryNode(ERepositoryObjectType.METADATA_MDMCONNECTION);
     // }
+
 }

@@ -440,12 +440,6 @@ public class TalendPaletteCSSPropertyHandler implements ICSSPropertyHandler {
         return changed;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.e4.ui.css.core.dom.properties.ICSSPropertyHandler#retrieveCSSProperty(java.lang.Object,
-     * java.lang.String, java.lang.String, org.eclipse.e4.ui.css.core.engine.CSSEngine)
-     */
     @Override
     public String retrieveCSSProperty(Object element, String property, String pseudo, CSSEngine engine) throws Exception {
         return null;

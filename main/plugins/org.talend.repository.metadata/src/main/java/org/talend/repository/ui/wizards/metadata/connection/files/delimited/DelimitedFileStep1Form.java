@@ -349,11 +349,6 @@ public class DelimitedFileStep1Form extends AbstractDelimitedFileStepForm {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
-     */
     public void setVisible(boolean visible) {
         super.setVisible(visible);
         if (isReadOnly() != readOnly) {

@@ -109,11 +109,6 @@ public abstract class AbstractRepoViewLabelProvider extends LabelProvider implem
         return JFaceResources.getFontRegistry().defaultFont();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.LabelProvider#getImage(java.lang.Object)
-     */
     @Override
     public Image getImage(Object element) {
         if (element instanceof IRepositoryViewObject) {
@@ -200,11 +195,6 @@ public abstract class AbstractRepoViewLabelProvider extends LabelProvider implem
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
-     */
     @Override
     public String getText(Object element) {
         if (element instanceof IRepositoryViewObject) {

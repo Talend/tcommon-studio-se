@@ -50,71 +50,31 @@ public class ExtractionLoopWithMDMEditorView extends AbstractDataTableEditorView
         this(model, parent, SWT.NONE, false);
     }
 
-    /**
-     * TargetSchemaTableEditorView2 constructor comment.
-     * 
-     * @param parent
-     * @param styleChild
-     * @param showDbTypeColumn
-     */
     public ExtractionLoopWithMDMEditorView(MDMXSDExtractorLoopModel model, Composite parent, int styleChild,
             boolean showDbTypeColumn) {
         super(parent, styleChild, model);
     }
 
-    /**
-     * Getter for xPathCellEditor.
-     * 
-     * @return the xPathCellEditor
-     */
     public TextCellEditorWithProposal getXPathCellEditor() {
         return this.xPathCellEditor;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.commons.ui.swt.advanced.dataeditor.AbstractDataTableEditorView#handleBeforeListenableListOperationEvent
-     * (org.talend.commons.utils.data.list.ListenableListEvent)
-     */
     @Override
     protected void handleBeforeListenableListOperationEvent(ListenableListEvent<Concept> event) {
         super.handleBeforeListenableListOperationEvent(event);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.commons.ui.swt.extended.macrotable.AbstractExtendedTableViewer#handleListenableListEvent(org.talend
-     * .commons.utils.data.list.ListenableListEvent)
-     */
     @Override
     protected void handleAfterListenableListOperationEvent(ListenableListEvent<Concept> event) {
         super.handleAfterListenableListOperationEvent(event);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.commons.ui.swt.extended.macrotable.AbstractExtendedTableViewer#setTableViewerCreatorOptions(org.talend
-     * .commons.ui.swt.tableviewer.TableViewerCreator)
-     */
     @Override
     protected void setTableViewerCreatorOptions(TableViewerCreator<Concept> newTableViewerCreator) {
         super.setTableViewerCreatorOptions(newTableViewerCreator);
         newTableViewerCreator.setFirstVisibleColumnIsSelection(true);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.commons.ui.swt.advanced.macrotable.AbstractExtendedTableViewer#createColumns(org.talend.commons.ui
-     * .swt.tableviewer.TableViewerCreator, org.eclipse.swt.widgets.Table)
-     */
     @Override
     protected void createColumns(TableViewerCreator<Concept> tableViewerCreator, final Table table) {
         CellEditorValueAdapter intValueAdapter = new CellEditorValueAdapter() {

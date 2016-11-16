@@ -179,11 +179,6 @@ public class SalesforceModulesWizard extends CheckLastVersionRepositoryWizard im
         this.selection = selection2;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.wizards.RepositoryWizard#performCancel()
-     */
     @Override
     public boolean performCancel() {
         selectorWizardPage.performCancel();

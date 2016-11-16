@@ -65,12 +65,8 @@ public class UndoRedoManager {
     }
 
     /**
-     * 
-     * DOC qli Comment method "connect".
-     * 
      * let text to cotact the undo manager.
-     * 
-     * */
+     */
     public void connect(StyledText styledText) {
         if (!isConnected() && styledText != null) {
             this.styledText = styledText;
@@ -101,12 +97,6 @@ public class UndoRedoManager {
 
     private boolean isUndoing = false;
 
-    /**
-     * DOC qli Comment method "addlisteners".
-     * 
-     * addlisteners.
-     * 
-     * */
     private void addListeners() {
         if (styledText != null) {
             extendedModifyListener = new ExtendedModifyListener() {
@@ -160,11 +150,9 @@ public class UndoRedoManager {
     }
 
     /**
-     * DOC qli Comment class "UndoableOperation".
-     * 
      * The undo opetation make a change_data record.
      * 
-     * */
+     */
     private class UndoableOperation extends AbstractOperation {
 
         protected int startIndex = -1;

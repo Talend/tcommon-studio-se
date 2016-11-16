@@ -55,12 +55,6 @@ public class RepoViewLinkHelper implements ILinkHelper {
         return new StructuredSelection(nodes);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.navigator.ILinkHelper#activateEditor(org.eclipse.ui.IWorkbenchPage,
-     * org.eclipse.jface.viewers.IStructuredSelection)
-     */
     @Override
     public void activateEditor(IWorkbenchPage aPage, IStructuredSelection aSelection) {
         Object firstElement = aSelection.getFirstElement();

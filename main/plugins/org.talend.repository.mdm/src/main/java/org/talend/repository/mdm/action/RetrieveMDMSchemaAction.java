@@ -68,12 +68,6 @@ public class RetrieveMDMSchemaAction extends AbstractCreateAction {
         this.node = node;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.ui.actions.metadata.AbstractCreateAction#init(org.talend.repository.model.RepositoryNode)
-     */
     @Override
     protected void init(RepositoryNode node) {
         IProxyRepositoryFactory factory = ProxyRepositoryFactory.getInstance();
@@ -121,11 +115,6 @@ public class RetrieveMDMSchemaAction extends AbstractCreateAction {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.actions.AContextualAction#doRun()
-     */
     @Override
     protected void doRun() {
         node = getCurrentRepositoryNode();

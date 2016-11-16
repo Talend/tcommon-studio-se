@@ -127,24 +127,13 @@ public class LDAPSchemaStep3Form extends AbstractLDAPSchemaStepForm implements I
         setupForm();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#adaptFormToReadOnly()
-     */
     @Override
     protected void adaptFormToReadOnly() {
         readOnly = isReadOnly();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addFields()
-     */
     @Override
     protected void addFields() {
-
         // compositeFile Main Fields
         Composite mainComposite = Form.startNewGridLayout(this, 2);
         addGroupAttributes(mainComposite, 300, 115);
@@ -160,11 +149,6 @@ public class LDAPSchemaStep3Form extends AbstractLDAPSchemaStepForm implements I
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addFieldsListeners()
-     */
     @Override
     protected void addFieldsListeners() {
         filterText.addModifyListener(new ModifyListener() {
@@ -230,11 +214,6 @@ public class LDAPSchemaStep3Form extends AbstractLDAPSchemaStepForm implements I
         });
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#checkFieldsValue()
-     */
     @Override
     protected boolean checkFieldsValue() {
         previewInformationLabel.setText(""); //$NON-NLS-1$
@@ -242,11 +221,6 @@ public class LDAPSchemaStep3Form extends AbstractLDAPSchemaStepForm implements I
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#initialize()
-     */
     @Override
     protected void initialize() {
         String filter = getConnection().getFilter();
@@ -259,21 +233,13 @@ public class LDAPSchemaStep3Form extends AbstractLDAPSchemaStepForm implements I
         checkFieldsValue();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.IRefreshable#refresh()
-     */
     @Override
     public void refresh() {
         refreshPreview();
     }
 
     /**
-     * Subclass of SWTUIThreadProcessor to process the preview event. <br/>
-     * 
-     * $Id: DelimitedFileStep2Form.java 4837 2007-07-27 05:40:31Z bqian $
-     * 
+     * Subclass of SWTUIThreadProcessor to process the preview event.
      */
     class PreviewProcessor extends SWTUIThreadProcessor {
 
@@ -423,13 +389,6 @@ public class LDAPSchemaStep3Form extends AbstractLDAPSchemaStepForm implements I
         attributeModel.registerDataList(itemTableNameList);
         tableEditorView = new AbstractExtendedTableViewer<String>(attributeModel, group) {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see
-             * org.talend.commons.ui.swt.extended.macrotable.AbstractExtendedTableViewer#setTableViewerCreatorOptions
-             * (org.talend.commons.ui.swt.tableviewer.TableViewerCreator)
-             */
             @Override
             protected void setTableViewerCreatorOptions(TableViewerCreator<String> newTableViewerCreator) {
                 super.setTableViewerCreatorOptions(newTableViewerCreator);
@@ -723,11 +682,6 @@ public class LDAPSchemaStep3Form extends AbstractLDAPSchemaStepForm implements I
         return processDescription;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
-     */
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);

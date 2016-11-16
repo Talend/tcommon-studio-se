@@ -50,11 +50,6 @@ public class OsgiLoaderActivator implements BundleActivator {
         return context;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
-     */
     @Override
     public void start(BundleContext theContext) throws Exception {
         OsgiLoaderActivator.context = theContext;
@@ -63,21 +58,11 @@ public class OsgiLoaderActivator implements BundleActivator {
         storeTalendLibFolder(context);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
-     */
     @Override
     public void stop(BundleContext theContext) throws Exception {
         // nothing to do, service should be un-registered when bundle is stopping automatically.
     }
 
-    /**
-     * DOC sgandon Comment method "storeTalendLibFolder".
-     * 
-     * @param context
-     */
     private void storeTalendLibFolder(BundleContext theContext) {
         try {
             File talendLibFolder = getLibJavaFolderFile(theContext);

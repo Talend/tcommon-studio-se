@@ -1575,21 +1575,15 @@ public class UserImpl extends EObjectImpl implements User {
     }
 
     String gitAuthentification;
-    
-    /* (non-Javadoc)
-     * @see org.talend.core.model.properties.User#getGitAuthenticationInfo()
-     */
+
     @Override
     public String getGitAuthenticationInfo() {
         return gitAuthentification;
     }
 
-    /* (non-Javadoc)
-     * @see org.talend.core.model.properties.User#setGitAuthenticationInfo(java.lang.String)
-     */
     @Override
     public void setGitAuthenticationInfo(String value) {
         this.gitAuthentification = value;
     }
 
-} // UserImpl
+}

@@ -202,11 +202,6 @@ public class AbstractBasicWizardDialog extends Dialog {
             return size;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.swt.widgets.Widget#dispose()
-         */
         @Override
         public void dispose() {
             if (img != null) {

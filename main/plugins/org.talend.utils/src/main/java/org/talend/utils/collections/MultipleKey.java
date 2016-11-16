@@ -29,11 +29,6 @@ public class MultipleKey implements Comparable<MultipleKey> {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -46,11 +41,6 @@ public class MultipleKey implements Comparable<MultipleKey> {
         return this.compareTo(other) == 0;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         int hash = 0;
@@ -83,11 +73,6 @@ public class MultipleKey implements Comparable<MultipleKey> {
         return diff;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();

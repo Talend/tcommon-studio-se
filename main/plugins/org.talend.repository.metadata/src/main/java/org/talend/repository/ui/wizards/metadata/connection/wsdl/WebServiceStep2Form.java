@@ -346,11 +346,6 @@ public class WebServiceStep2Form extends AbstractWSDLSchemaStepForm {
         return processDescription;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#adaptFormToReadOnly()
-     */
     @Override
     protected void adaptFormToReadOnly() {
         readOnly = isReadOnly();
@@ -527,11 +522,6 @@ public class WebServiceStep2Form extends AbstractWSDLSchemaStepForm {
         return numbersOfColumns;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
-     */
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);

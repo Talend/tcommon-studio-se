@@ -42,11 +42,6 @@ public class StandardJobImportNode extends FolderImportNode {
         return this.typeNodesChildrenMap;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.items.importexport.wizard.models.ImportNode#getName()
-     */
     @Override
     public String getName() {
         ImportNode parentNode = this.getParentNode();

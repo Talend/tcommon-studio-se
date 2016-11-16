@@ -103,21 +103,11 @@ public class GenericTestsJUnit4Suite extends Suite {
 
     private RunListener runListener = new RunListener() {
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.junit.runner.notification.RunListener#testStarted(org.junit.runner.Description)
-         */
         @Override
         public void testStarted(Description description) throws Exception {
             printBeforeTest(description);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.junit.runner.notification.RunListener#testFinished(org.junit.runner.Description)
-         */
         @Override
         public void testFinished(Description description) throws Exception {
             printAfterTest(description);
@@ -140,11 +130,6 @@ public class GenericTestsJUnit4Suite extends Suite {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.junit.runners.Suite#runChild(org.junit.runner.Runner, org.junit.runner.notification.RunNotifier)
-     */
     @Override
     protected void runChild(Runner runner, RunNotifier notifier) {
         printBeforeTestClass(runner);
@@ -165,11 +150,6 @@ public class GenericTestsJUnit4Suite extends Suite {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.junit.runners.ParentRunner#run(org.junit.runner.notification.RunNotifier)
-     */
     @Override
     public void run(RunNotifier runNotifier) {
         beforeRun(runNotifier);

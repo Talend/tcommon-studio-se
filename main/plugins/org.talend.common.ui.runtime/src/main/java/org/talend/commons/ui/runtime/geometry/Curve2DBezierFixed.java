@@ -89,15 +89,6 @@ public class Curve2DBezierFixed extends Curve2D {
         }
     }
 
-    /**
-     * 
-     * DOC amaumont Comment method "BezierTerm".
-     * 
-     * @param d
-     * @param i
-     * @param t
-     * @return
-     */
     double bezierTerm(int d, int i, int t) {
         return (double) (Math.pow(tmp[t], i) * Math.pow(1 - tmp[t], d - i) * Math.comb(d, i));
     }

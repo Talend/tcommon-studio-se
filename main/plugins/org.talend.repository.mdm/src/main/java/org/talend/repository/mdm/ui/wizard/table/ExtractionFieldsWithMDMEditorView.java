@@ -83,25 +83,11 @@ public class ExtractionFieldsWithMDMEditorView extends AbstractDataTableEditorVi
         return this.xPathCellEditor;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.commons.ui.swt.advanced.dataeditor.AbstractDataTableEditorView#handleBeforeListenableListOperationEvent
-     * (org.talend.commons.utils.data.list.ListenableListEvent)
-     */
     @Override
     protected void handleBeforeListenableListOperationEvent(ListenableListEvent<ConceptTarget> event) {
         super.handleBeforeListenableListOperationEvent(event);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.commons.ui.swt.extended.macrotable.AbstractExtendedTableViewer#handleListenableListEvent(org.talend
-     * .commons.utils.data.list.ListenableListEvent)
-     */
     @Override
     protected void handleAfterListenableListOperationEvent(ListenableListEvent<ConceptTarget> event) {
         super.handleAfterListenableListOperationEvent(event);
@@ -112,26 +98,12 @@ public class ExtractionFieldsWithMDMEditorView extends AbstractDataTableEditorVi
         // }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.commons.ui.swt.extended.macrotable.AbstractExtendedTableViewer#setTableViewerCreatorOptions(org.talend
-     * .commons.ui.swt.tableviewer.TableViewerCreator)
-     */
     @Override
     protected void setTableViewerCreatorOptions(TableViewerCreator<ConceptTarget> newTableViewerCreator) {
         super.setTableViewerCreatorOptions(newTableViewerCreator);
         newTableViewerCreator.setFirstVisibleColumnIsSelection(true);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.commons.ui.swt.advanced.macrotable.AbstractExtendedTableViewer#createColumns(org.talend.commons.ui
-     * .swt.tableviewer.TableViewerCreator, org.eclipse.swt.widgets.Table)
-     */
     @Override
     protected void createColumns(TableViewerCreator<ConceptTarget> tableViewerCreator, final Table table) {
         CellEditorValueAdapter intValueAdapter = new CellEditorValueAdapter() {
@@ -236,48 +208,14 @@ public class ExtractionFieldsWithMDMEditorView extends AbstractDataTableEditorVi
         column.setCellEditor(tagNameCellEditor);
     }
 
-    /**
-     * DOC chuang Comment method "createTagName".
-     * 
-     * @param tableViewerCreator
-     * @param column
-     * @return
-     */
     private TextCellEditorWithProposal createTagNameEditor(TableViewerCreator<ConceptTarget> tableViewerCreator,
             TableViewerCreatorColumn column) {
         final TextCellEditorWithProposal tagNameCellEditor = new TextCellEditorWithProposal(tableViewerCreator.getTable(),
                 SWT.NONE, column);
         // (bug 6038) zywang disabled method "newValidValueTyped" to removed duplicate dialog.
-
-        // tagNameCellEditor.addListener(new DialogErrorForCellEditorListener(tagNameCellEditor, column) {
-        //
-        // @Override
-        // public void newValidValueTyped(int itemIndex, Object previousValue, Object newValue, CELL_EDITOR_STATE state)
-        // {
-        // }
-        //
-        // @Override
-        // public String validateValue(String newValue, int beanPosition) {
-        // List<SchemaTarget> list = getModel().getBeansList();
-        // String errorMessage = null;
-        // int lstSize = list.size();
-        // for (int i = 0; i < lstSize; i++) {
-        // if (newValue.equals(list.get(i).getTagName()) && i != beanPosition) {
-        //                        errorMessage = "The column name '" + newValue + "' already exists."; //$NON-NLS-1$
-        // break;
-        // }
-        //
-        // }
-        // return errorMessage;
-        // }
-        //
-        // });
         return tagNameCellEditor;
     }
 
-    /**
-     * DOC chuang Comment method "checkColumnNames".
-     */
     public String checkColumnNames() {
         List<ConceptTarget> list = getModel().getBeansList();
         Set<String> conflictNames = new HashSet<String>();
@@ -359,11 +297,6 @@ public class ExtractionFieldsWithMDMEditorView extends AbstractDataTableEditorVi
         this.linker = linker;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.advanced.dataeditor.AbstractDataTableEditorView#initToolBar()
-     */
     @Override
     protected ExtendedToolbarView initToolBar() {
         return new ExtendedToolbarView(getMainComposite(), SWT.NONE, getExtendedTableViewer()) {
@@ -393,11 +326,6 @@ public class ExtractionFieldsWithMDMEditorView extends AbstractDataTableEditorVi
                 };
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.talend.core.ui.extended.ExtendedToolbarView#createPastePushButton()
-             */
             @Override
             protected PastePushButton createPastePushButton() {
                 return new PastePushButtonForExtendedTable(toolbar, extendedTableViewer) {

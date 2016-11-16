@@ -115,9 +115,6 @@ public class TableViewerCreatorLayout extends Layout {
         init();
     }
 
-    /**
-     * DOC amaumont Comment method "init".
-     */
     private void init() {
         this.asyncThreadingForManualColumnResizingFalse = new AsynchronousThreading(500, false, tableViewerCreator
                 .getCompositeParent().getDisplay(), new Runnable() {
@@ -371,12 +368,7 @@ public class TableViewerCreatorLayout extends Layout {
 
     }
 
-    /**
-     * 
-     * DOC amaumont Comment method "initColumnsControlListener".
-     */
     private void initColumnsControlListener() {
-
         if (columnControlListenersInitialized) {
             return;
         }
@@ -490,11 +482,6 @@ public class TableViewerCreatorLayout extends Layout {
         this.widthAdjustValue = widthAdjustValue;
     }
 
-    /**
-     * DOC amaumont Comment method "setShowAllColumns".
-     * 
-     * @param b
-     */
     public void setFillHorizontal(boolean showAllColumns) {
         this.fillHorizontal = showAllColumns;
     }
@@ -540,11 +527,6 @@ public class TableViewerCreatorLayout extends Layout {
         }
     }
 
-    /**
-     * DOC amaumont Comment method "resizeControl".
-     * 
-     * @param e
-     */
     private synchronized void controlResizedExecute(ControlEvent e) {
         final TableColumn currentTableColumn = (TableColumn) e.widget;
         if (!WindowSystem.isGTK() && !columnsResizingByLayout && (fillHorizontal || continuousLayout)) {

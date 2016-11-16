@@ -81,29 +81,14 @@ public class LinkableTree implements ILinkableControl {
         init();
     }
 
-    /**
-     * DOC amaumont Comment method "init".
-     * 
-     * @param forceDrawLinksGtk2
-     */
     private void init() {
         addListeners();
     }
 
-    /**
-     * Getter for table.
-     * 
-     * @return the table
-     */
     public Tree getTree() {
         return this.tree;
     }
 
-    /**
-     * DOC amaumont Comment method "addListeners".
-     * 
-     * @param forceDrawLinksGtk2
-     */
     private void addListeners() {
         if (WindowSystem.isGTK() && forceDrawLinksGtk) {
             paintListener = new Listener() {

@@ -99,11 +99,6 @@ public final class TooltipPopup {
             }
         }
 
-        /**
-         * DOC amaumont Comment method "setVisible".
-         * 
-         * @param visible
-         */
         public void setVisible(boolean visible) {
             if (visible != this.visible) {
                 this.visible = visible;
@@ -117,11 +112,6 @@ public final class TooltipPopup {
 
     }
 
-    /**
-     * DOC amaumont Comment method "init".
-     * 
-     * @param parent
-     */
     private void init(Shell parent) {
         popup = new Popup(parent);
         popup.open();
@@ -132,30 +122,14 @@ public final class TooltipPopup {
         return new TooltipPopup(parent);
     }
 
-    /**
-     * DOC amaumont Comment method "getBounds".
-     * 
-     * @return
-     */
     public Rectangle getBounds() {
         return popup.getShell().getBounds();
     }
 
-    /**
-     * DOC amaumont Comment method "setVisible".
-     * 
-     * @param b
-     */
     public void setVisible(boolean visible) {
         popup.setVisible(visible);
     }
 
-    /**
-     * DOC amaumont Comment method "setCursorPosition".
-     * 
-     * @param x
-     * @param y
-     */
     public void setCursorPosition(int x, int y) {
         this.cursorPosition = new Point(x, y);
         // System.out.println("setCursorPosition");

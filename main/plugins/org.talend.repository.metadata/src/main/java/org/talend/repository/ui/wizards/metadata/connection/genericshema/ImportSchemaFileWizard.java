@@ -89,11 +89,6 @@ public class ImportSchemaFileWizard extends CheckLastVersionRepositoryWizard imp
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.wizards.metadata.connection.genericshema.GenericSchemaWizard#addPages()
-     */
     @Override
     public void addPages() {
 
@@ -107,11 +102,6 @@ public class ImportSchemaFileWizard extends CheckLastVersionRepositoryWizard imp
         genericSchemaWizardPage.setPageComplete(true);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.wizards.metadata.connection.genericshema.GenericSchemaWizard#performFinish()
-     */
     @Override
     public boolean performFinish() {
         if (genericSchemaWizardPage.isPageComplete()) {

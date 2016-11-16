@@ -218,9 +218,6 @@ public class Locker<B, KP> {
     }
 
     /**
-     * 
-     * DOC amaumont Comment method "isLockedBean".
-     * 
      * @param bean
      * @return
      * @deprecated use instead {@link org.talend.commons.utils.threading.lockerbykey.LockerByKey#isLocked(Object)}
@@ -233,8 +230,6 @@ public class Locker<B, KP> {
     }
 
     /**
-     * DOC amaumont Comment method "isLocked".
-     * 
      * @param key
      * @return
      * @deprecated use instead {@link org.talend.commons.utils.threading.lockerbykey.LockerByKey#isLocked(Object)}
@@ -399,22 +394,12 @@ public class Locker<B, KP> {
         }
     }
 
-    /**
-     * DOC amaumont Comment method "check".
-     * 
-     * @param bean
-     */
     private void checkBean(B bean) {
         if (bean == null) {
             throw new IllegalArgumentException("bean can't be null"); //$NON-NLS-1$
         }
     }
 
-    /**
-     * DOC amaumont Comment method "check".
-     * 
-     * @param key
-     */
     private void check(KP key) {
         if (key == null) {
             throw new IllegalArgumentException("key can't be null"); //$NON-NLS-1$

@@ -44,11 +44,6 @@ public class OpenWebBrowserAction implements IIntroAction {
 
     private static final String TALEND_HELP_CENTER = "https://help.talend.com/display/HOME/Current+Documentation";
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.intro.config.IIntroAction#run(org.eclipse.ui.intro.IIntroSite, java.util.Properties)
-     */
     @Override
     public void run(IIntroSite site, Properties params) {
         if (params == null) {

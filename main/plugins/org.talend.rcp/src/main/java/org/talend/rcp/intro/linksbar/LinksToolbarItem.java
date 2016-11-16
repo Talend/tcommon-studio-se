@@ -176,11 +176,6 @@ public class LinksToolbarItem extends ContributionItem {
         return composite;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.action.ContributionItem#dispose()
-     */
     @Override
     public void dispose() {
         toolitem = null;

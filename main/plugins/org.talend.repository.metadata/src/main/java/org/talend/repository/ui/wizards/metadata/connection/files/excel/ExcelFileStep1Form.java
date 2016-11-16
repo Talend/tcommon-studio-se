@@ -131,11 +131,6 @@ public class ExcelFileStep1Form extends AbstractExcelFileStepForm {
         this.bean = bean;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#adaptFormToReadOnly()
-     */
     @Override
     protected void adaptFormToReadOnly() {
         readOnly = isReadOnly();
@@ -143,11 +138,6 @@ public class ExcelFileStep1Form extends AbstractExcelFileStepForm {
         updateStatus(IStatus.OK, ""); //$NON-NLS-1$
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addFields()
-     */
     @Override
     protected void addFields() {
         Group group = Form.createGroup(this, 1, Messages.getString("FileStep2.groupDelimitedFileSettings"), GROUP_WIDTH); //$NON-NLS-1$
@@ -450,14 +440,8 @@ public class ExcelFileStep1Form extends AbstractExcelFileStepForm {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addFieldsListeners()
-     */
     @Override
     protected void addFieldsListeners() {
-
         serverCombo.addModifyListener(new ModifyListener() {
 
             @Override
@@ -766,11 +750,6 @@ public class ExcelFileStep1Form extends AbstractExcelFileStepForm {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addUtilsButtonListeners()
-     */
     @Override
     protected void addUtilsButtonListeners() {
         if (!isInWizard()) {
@@ -784,11 +763,6 @@ public class ExcelFileStep1Form extends AbstractExcelFileStepForm {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#checkFieldsValue()
-     */
     @Override
     protected boolean checkFieldsValue() {
         if (!isContextMode()) {

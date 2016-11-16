@@ -375,11 +375,6 @@ public final class StatisticsTracer {
             sb.append(callGC);
         }
 
-        /**
-         * DOC amaumont Comment method "toDataRow".
-         * 
-         * @return
-         */
         public String toDataRow() {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String date = simpleDateFormat.format(new Date());
@@ -501,9 +496,6 @@ public final class StatisticsTracer {
     }
 
     /**
-     * 
-     * DOC amaumont Comment method "start".
-     * 
      * @return id of internalTimer
      */
     public synchronized long start() {

@@ -196,12 +196,6 @@ public class ServerSocketFreePortOpenerTest {
                 super(nOperatorsByClassOperator, classOperators);
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.talend.commons.utils.threading.AbstractThreadSafetyTester#initInstance(org.talend.commons.utils.
-             * threading .IThreadSafetyOperator)
-             */
             @Override
             protected void initInstance(ServerSocketFreePortOpenerOperator operatorInstance) {
                 operatorInstance.setDebug(DEBUG);
@@ -209,18 +203,12 @@ public class ServerSocketFreePortOpenerTest {
                 operatorInstance.setnOperationsByOperator(nOperationsByOperator);
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.talend.commons.utils.threading.AbstractThreadSafetyTester#assertFinal()
-             */
             @Override
             protected void assertFinal() throws IOException, InterruptedException {
                 Thread.sleep(1000);
                 for (int port = ServerSocketFreePortOpenerOperator.portRangeBound1; port <= ServerSocketFreePortOpenerOperator.portRangeBound2; port++) {
                     assertThat("Port " + port + " should be free!", isPortFree(port), is(true));
                 }
-
             }
 
         }

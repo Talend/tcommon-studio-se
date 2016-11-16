@@ -26,12 +26,6 @@ public final class TalendDebugHandler {
 
     public static final String TALEND_DEBUG = "--talendDebug"; //$NON-NLS-1$
 
-    /**
-     * 
-     * ggu Comment method "debug".
-     * 
-     * @param e
-     */
     public static void debug(Throwable e) {
         debug(e, true, true);
     }
@@ -49,12 +43,6 @@ public final class TalendDebugHandler {
 
     }
 
-    /**
-     * 
-     * ggu Comment method "debug".
-     * 
-     * @param messages
-     */
     public static void debug(String messages) {
         debug(messages, true, true);
     }

@@ -92,11 +92,6 @@ public class MoveDownTreeNodeButton extends AbstractTreeNodeButton {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.fileoutputxml.ui.footer.AbstractTreeNodeButton#updateButtonStatus()
-     */
     @Override
     protected void updateStatus(TreeSelection selection) {
         if (selection.isEmpty()) {

@@ -233,11 +233,6 @@ public class ExcelFileWizard extends CheckLastVersionRepositoryWizard implements
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.wizard.Wizard#performFinish()
-     */
     @Override
     public boolean performFinish() {
 
@@ -288,22 +283,11 @@ public class ExcelFileWizard extends CheckLastVersionRepositoryWizard implements
         return super.performCancel();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench,
-     * org.eclipse.jface.viewers.IStructuredSelection)
-     */
     @Override
     public void init(IWorkbench workbench, IStructuredSelection selection) {
         this.selection = selection;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.wizards.RepositoryWizard#getConnectionItem()
-     */
     @Override
     public ConnectionItem getConnectionItem() {
         return this.connectionItem;

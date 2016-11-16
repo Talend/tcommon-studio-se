@@ -191,8 +191,6 @@ public abstract class ExtensionImplementationProvider<I> {
     }
 
     /**
-     * DOC amaumont Comment method "createAndAddImplementation".
-     * 
      * @param toReturn
      * @param extension
      * @param extensionPointLimiter

@@ -60,16 +60,6 @@ public class UnifyPasswordEncryption4MDMConnectionMigrationTask extends Abstract
         return ExecutionResult.NOTHING_TO_DO;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.migration.IMigrationTask#getOrder()
-     */
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.migration.IProjectMigrationTask#getOrder()
-     */
     @Override
     public Date getOrder() {
         GregorianCalendar gc = new GregorianCalendar(2014, 9, 1, 12, 0, 0);

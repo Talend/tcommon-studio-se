@@ -109,9 +109,6 @@ public class TableToTreeLinker<D1, D2> extends BgDrawableComposite implements IB
         return styleLink;
     }
 
-    /**
-     * DOC amaumont Comment method "createLinkSorter".
-     */
     protected void createLinksComparators() {
         this.drawingLinksComparator = getDrawingLinksComparator();
     }
@@ -290,33 +287,13 @@ public class TableToTreeLinker<D1, D2> extends BgDrawableComposite implements IB
                 drawableLink.draw(gc);
                 // drawnLinks++;
             }
-            // TimeMeasure.end("loop");
         }
-
-        // TimeMeasure.end("drawBackground");
-
-        // System.out.println("countStraight=" + countStraight);
-        // System.out.println("drawnLinks=" + drawnLinks);
-
     }
 
-    /**
-     * DOC nrousseau Comment method "getFirstVisibleTreeItemOfPath".
-     * 
-     * @param dataItem
-     * @return
-     */
     protected TreeItem getFirstVisibleTreeItemOfPath(D2 dataItem) {
         return TreeUtils.getTreeItem(this.target, dataItem);
     }
 
-    /**
-     * amaumont Comment method "findMaxWidth".
-     * 
-     * @param items
-     * @param maxWidth
-     * @return
-     */
     private int findXRightStartBezierLink(TableItem[] items, int maxWidth) {
         for (TableItem item2 : items) {
             TableItem item = item2;
@@ -384,83 +361,38 @@ public class TableToTreeLinker<D1, D2> extends BgDrawableComposite implements IB
         backgroundRefresher.refreshBackground();
     }
 
-    /**
-     * Getter for selectedStyleLink.
-     * 
-     * @return the selectedStyleLink
-     */
     public IStyleLink getSelectedStyleLink() {
         return this.selectedStyleLink;
     }
 
-    /**
-     * Sets the selectedStyleLink.
-     * 
-     * @param selectedStyleLink the selectedStyleLink to set
-     */
     public void setSelectedStyleLink(IStyleLink selectedStyleLink) {
         this.selectedStyleLink = selectedStyleLink;
     }
 
-    /**
-     * Getter for unselectedStyleLink.
-     * 
-     * @return the unselectedStyleLink
-     */
     public IStyleLink getUnselectedStyleLink() {
         return this.unselectedStyleLink;
     }
 
-    /**
-     * Sets the unselectedStyleLink.
-     * 
-     * @param unselectedStyleLink the unselectedStyleLink to set
-     */
     public void setUnselectedStyleLink(IStyleLink unselectedStyleLink) {
         this.unselectedStyleLink = unselectedStyleLink;
     }
 
-    /**
-     * Getter for backgroundRefresher.
-     * 
-     * @return the backgroundRefresher
-     */
     public IBackgroundRefresher getBackgroundRefresher() {
         return this.backgroundRefresher;
     }
 
-    /**
-     * Sets the backgroundRefresher.
-     * 
-     * @param backgroundRefresher the backgroundRefresher to set
-     */
     public void setBackgroundRefresher(IBackgroundRefresher backgroundRefresher) {
         this.backgroundRefresher = backgroundRefresher;
     }
 
-    /**
-     * Getter for tables.
-     * 
-     * @return the tables
-     */
     public Tree getTarget() {
         return this.target;
     }
 
-    /**
-     * Getter for tree.
-     * 
-     * @return the tree
-     */
     public Table getSource() {
         return this.source;
     }
 
-    /**
-     * Getter for linksManager.
-     * 
-     * @return the linksManager
-     */
     protected LinksManager<Item, D1, Tree, D2> getLinksManager() {
         return this.linksManager;
     }

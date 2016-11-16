@@ -71,14 +71,7 @@ public class VersionUtils {
         }
         return version;
     }
-    
-    /**
-     * 
-     * DOC ggu Comment method "getEclipseProductFile".
-     * 
-     * @return
-     * @throws URISyntaxException
-     */
+
     private static File getEclipseProductFile() throws URISyntaxException {
         File installFolder = URIUtil.toFile(URIUtil.toURI(Platform.getInstallLocation().getURL()));
         // .eclipseproduct file
@@ -87,10 +80,10 @@ public class VersionUtils {
     }
 
     public static String getInternalVersion() {
-    	if (Platform.inDevelopmentMode()) {
-    		return getVersion();
-    	}
-    	
+        if (Platform.inDevelopmentMode()) {
+            return getVersion();
+        }
+
         String version = null;
         Bundle bundle = FrameworkUtil.getBundle(VersionUtils.class);
         if (bundle != null) {
@@ -124,8 +117,6 @@ public class VersionUtils {
     }
 
     /**
-     * DOC ycbai Comment method "getVersion".
-     * 
      * @deprecated Please use either getInternalVersion() or getDisplayVersion()
      * @return the studio version.
      */
@@ -134,14 +125,11 @@ public class VersionUtils {
     }
 
     /**
-     * DOC ycbai Comment method "getTalendVersion".
-     * 
      * return the internal version of the studio that may be different from the Studio version in OEM distribution. look
      * for version in org.talend.commons.runtime/talend.properties with the key talend.version if none found then return
      * the Studio version.
      * 
      * @return the talend version or the Studio version or null if none found.
-     * 
      */
     public static String getTalendVersion() {
         String version = null;

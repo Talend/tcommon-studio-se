@@ -201,11 +201,6 @@ public abstract class SingleTopLevelContentProvider implements ITreeContentProvi
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.IContentProvider#dispose()
-     */
     @Override
     public void dispose() {
         // to help garbage collection
@@ -214,13 +209,6 @@ public abstract class SingleTopLevelContentProvider implements ITreeContentProvi
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.viewer.content.ProjectRepoDirectChildrenNodeContentProvider#inputChanged(org.eclipse.jface
-     * .viewers.Viewer, java.lang.Object, java.lang.Object)
-     */
     @Override
     public void inputChanged(Viewer arg0, Object arg1, Object arg2) {
         // FIXME by TDI-22701, If the input model has been changed, so need clean

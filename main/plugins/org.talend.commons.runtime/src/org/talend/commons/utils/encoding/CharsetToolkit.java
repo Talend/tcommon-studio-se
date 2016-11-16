@@ -300,8 +300,6 @@ public class CharsetToolkit {
     }
 
     /**
-     * DOC ycbai Comment method "getInternalSystemCharset".
-     * 
      * Retrieve the system charset from "sun.jnu.encoding" property.
      * 
      * @return

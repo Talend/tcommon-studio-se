@@ -41,8 +41,6 @@ public final class PluginChecker {
     }
 
     /**
-     * DOC bZhou Comment method "isTDQLoaded".
-     * 
      * use it to test if the platform start by TDQ.
      * 
      * @return
@@ -52,8 +50,6 @@ public final class PluginChecker {
     }
 
     /**
-     * DOC bZhou Comment method "isTDCPLoaded".
-     * 
      * use it to test if the platform start by TDCP.
      * 
      * @return

@@ -81,10 +81,6 @@ public abstract class AbstractExtendedTableViewer<B> extends AbstractExtendedCon
         }
     }
 
-    /**
-     * DOC amaumont Comment method "init".
-     * 
-     */
     protected void initTable() {
         if (this.tableViewerCreator != null && this.tableViewerCreator.getTable() != null) {
             this.tableViewerCreator.getTable().dispose();
@@ -96,16 +92,10 @@ public abstract class AbstractExtendedTableViewer<B> extends AbstractExtendedCon
         this.tableViewerCreator.getTable().layout();
     }
 
-    /**
-     * DOC amaumont Comment method "initViewTableListeners".
-     */
     protected void initTableListeners() {
         initLineSelectionListeners();
     }
 
-    /**
-     * DOC amaumont Comment method "loadTable".
-     */
     private void loadTableData() {
         ExtendedTableModel<B> extendedTableModel = getExtendedTableModel();
         if (extendedTableModel != null) {
@@ -136,11 +126,6 @@ public abstract class AbstractExtendedTableViewer<B> extends AbstractExtendedCon
         return newTableViewerCreator;
     }
 
-    /**
-     * DOC amaumont Comment method "initLineSelectionListeners".
-     * 
-     * @return
-     */
     protected void initLineSelectionListeners() {
         final SelectionHelper selectionHelper = getTableViewerCreator().getSelectionHelper();
         final Table table = getTableViewerCreator().getTable();
@@ -191,10 +176,6 @@ public abstract class AbstractExtendedTableViewer<B> extends AbstractExtendedCon
         });
     }
 
-    /**
-     * 
-     * DOC YeXiaowei Comment method "copyMetdataItem".
-     */
     private void copyMetdataItem() {
         if (getBindingToolbar() == null) {
             return;
@@ -209,10 +190,6 @@ public abstract class AbstractExtendedTableViewer<B> extends AbstractExtendedCon
 
     }
 
-    /**
-     * 
-     * DOC YeXiaowei Comment method "pasteMetadataItem".
-     */
     private void pasteMetadataItem() {
 
         if (getBindingToolbar() == null) {
@@ -227,11 +204,6 @@ public abstract class AbstractExtendedTableViewer<B> extends AbstractExtendedCon
         }
     }
 
-    /**
-     * .
-     * 
-     * @param newTableViewerCreator
-     */
     protected void setTableViewerCreatorOptions(TableViewerCreator<B> newTableViewerCreator) {
         newTableViewerCreator.setLayoutMode(LAYOUT_MODE.CONTINUOUS);
         newTableViewerCreator.setColumnsResizableByDefault(true);
@@ -243,18 +215,10 @@ public abstract class AbstractExtendedTableViewer<B> extends AbstractExtendedCon
         newTableViewerCreator.setBgColorForEmptyArea(getParentComposite().getDisplay().getSystemColor(SWT.COLOR_WHITE));
     }
 
-    /**
-     * DOC amaumont Comment method "getBeansList".
-     * 
-     * @return
-     */
     private List<B> getBeansList() {
         return getExtendedTableModel().getBeansList();
     }
 
-    /**
-     * DOC amaumont Comment method "initListeners".
-     */
     protected void initModelListeners() {
         if (getExtendedTableModel() != null) {
 
@@ -321,11 +285,6 @@ public abstract class AbstractExtendedTableViewer<B> extends AbstractExtendedCon
 
     }
 
-    /**
-     * DOC amaumont Comment method "handleListenableListEvent".
-     * 
-     * @param event
-     */
     protected void handleBeforeListenableListOperationEvent(ListenableListEvent<B> event) {
         if (tableViewerCreator.getTable() != null && !tableViewerCreator.getTable().isDisposed()) {
             if (tableViewerCreator.getInputList() == null && getExtendedTableModel().isDataRegistered()) {
@@ -335,7 +294,6 @@ public abstract class AbstractExtendedTableViewer<B> extends AbstractExtendedCon
                 if (event.type == TYPE.ADDED) {
                     tableViewerCreator.getTable().deselectAll();
                 } else if (event.type == TYPE.REMOVED) {
-
                     // tableViewerCreator.getTable().deselectAll();
                     // tableViewerCreator.getTableViewer().remove(event.removedObjects.toArray());
                     // tableViewerCreator.layout();
@@ -344,11 +302,6 @@ public abstract class AbstractExtendedTableViewer<B> extends AbstractExtendedCon
         }
     }
 
-    /**
-     * DOC amaumont Comment method "handleListenableListEvent".
-     * 
-     * @param event
-     */
     protected void handleAfterListenableListOperationEvent(ListenableListEvent<B> event) {
         if (tableViewerCreator.getTable() != null && !tableViewerCreator.getTable().isDisposed()) {
             TableViewer tableViewer = tableViewerCreator.getTableViewer();
@@ -399,37 +352,17 @@ public abstract class AbstractExtendedTableViewer<B> extends AbstractExtendedCon
         }
     }
 
-    /**
-     * DOC amaumont Comment method "createColumns".
-     * 
-     * @param tableViewerCreator2
-     */
     protected abstract void createColumns(TableViewerCreator<B> tableViewerCreator, Table table);
 
-    /**
-     * Getter for extendedTable.
-     * 
-     * @return the extendedTable
-     */
     @SuppressWarnings("unchecked")
     public ExtendedTableModel<B> getExtendedTableModel() {
         return (ExtendedTableModel<B>) getExtendedControlModel();
     }
 
-    /**
-     * Getter for tableViewerCreator.
-     * 
-     * @return the tableViewerCreator
-     */
     public TableViewerCreator<B> getTableViewerCreator() {
         return this.tableViewerCreator;
     }
 
-    /**
-     * Getter for tableViewerCreator.
-     * 
-     * @return the tableViewerCreator
-     */
     public Table getTable() {
         if (this.tableViewerCreator != null) {
             return this.tableViewerCreator.getTable();

@@ -112,9 +112,6 @@ public class TreeToTablesLinker<D1, D2> extends BgDrawableComposite implements I
         return this.defaultStyleLink;
     }
 
-    /**
-     * DOC amaumont Comment method "createLinkSorter".
-     */
     protected void createLinksComparators() {
 
         this.drawingLinksComparator = getDrawingLinksComparator();
@@ -256,13 +253,6 @@ public class TreeToTablesLinker<D1, D2> extends BgDrawableComposite implements I
         return TreeUtils.getTreeItem(tree, dataOfTreeItem);
     }
 
-    /**
-     * DOC amaumont Comment method "findMaxWidth".
-     * 
-     * @param items
-     * @param maxWidth
-     * @return
-     */
     private int findXRightStartBezierLink(TreeItem[] items, int maxWidth) {
         for (TreeItem item2 : items) {
             TreeItem item = item2;

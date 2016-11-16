@@ -82,14 +82,8 @@ public class LDAPSchemaStep1Form extends AbstractLDAPSchemaStepForm {
         setupForm();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addFields()
-     */
     @Override
     protected void addFields() {
-
         Composite composite = BaseWidgetUtils.createColumnContainer(this, 1, 1);
 
         // Composite nameComposite = BaseWidgetUtils.createColumnContainer(composite, 2, 1);
@@ -129,11 +123,6 @@ public class LDAPSchemaStep1Form extends AbstractLDAPSchemaStepForm {
         checkFieldsValue();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addFieldsListeners()
-     */
     @Override
     protected void addFieldsListeners() {
 
@@ -215,22 +204,11 @@ public class LDAPSchemaStep1Form extends AbstractLDAPSchemaStepForm {
         });
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addUtilsButtonListeners()
-     */
     @Override
     protected void addUtilsButtonListeners() {
         //
-
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#checkFieldsValue()
-     */
     @Override
     protected boolean checkFieldsValue() {
         String host = null;
@@ -277,11 +255,6 @@ public class LDAPSchemaStep1Form extends AbstractLDAPSchemaStepForm {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#initialize()
-     */
     @Override
     protected void initialize() {
         LDAPSchemaConnection connection = (LDAPSchemaConnection) this.connectionItem.getConnection();
@@ -304,18 +277,12 @@ public class LDAPSchemaStep1Form extends AbstractLDAPSchemaStepForm {
         checkFieldsValue();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#adaptFormToReadOnly()
-     */
     @Override
     protected void adaptFormToReadOnly() {
         hostCombo.setEnabled(!isReadOnly());
         portCombo.setEnabled(!isReadOnly());
         encryptionMethodCombo.setEnabled(!isReadOnly());
         updateStatus(IStatus.OK, ""); //$NON-NLS-1$
-
     }
 
     /**

@@ -46,11 +46,6 @@ public class SimpleCache<K, V> {
             this.value = value;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see java.lang.Object#hashCode()
-         */
         @Override
         public int hashCode() {
             final int prime = 31;
@@ -59,11 +54,6 @@ public class SimpleCache<K, V> {
             return result;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see java.lang.Object#equals(java.lang.Object)
-         */
         @Override
         public boolean equals(Object obj) {
             if (this == obj) {
@@ -86,11 +76,6 @@ public class SimpleCache<K, V> {
             return true;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see java.lang.Comparable#compareTo(java.lang.Object)
-         */
         public int compareTo(HashKeyValue<K, V> o) {
             if (this.equals(o)) {
                 return 0;
@@ -98,29 +83,14 @@ public class SimpleCache<K, V> {
             return (getAddTime() < o.getAddTime()) ? -1 : 1;
         }
 
-        /**
-         * Getter for value.
-         * 
-         * @return the value
-         */
         public V getValue() {
             return value;
         }
 
-        /**
-         * Getter for key.
-         * 
-         * @return the key
-         */
         public K getKey() {
             return key;
         }
 
-        /**
-         * Getter for addTime.
-         * 
-         * @return the addTime
-         */
         public long getAddTime() {
             return addTime;
         }

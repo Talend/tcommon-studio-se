@@ -63,13 +63,6 @@ public class ResourcePostChangeRunnableListener implements IResourceChangeListen
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.core.resources.IResourceChangeListener#resourceChanged(org.eclipse.core.resources.IResourceChangeEvent
-     * )
-     */
     @Override
     public void resourceChanged(IResourceChangeEvent event) {
         if (viewer == null || resourcevisitors == null || resourcevisitors.isEmpty()) {
@@ -105,11 +98,6 @@ public class ResourcePostChangeRunnableListener implements IResourceChangeListen
             } else {
                 ctrl.getDisplay().asyncExec(new Runnable() {
 
-                    /*
-                     * (non-Javadoc)
-                     * 
-                     * @see java.lang.Runnable#run()
-                     */
                     @Override
                     public void run() {
                         // Abort if this happens after disposes
