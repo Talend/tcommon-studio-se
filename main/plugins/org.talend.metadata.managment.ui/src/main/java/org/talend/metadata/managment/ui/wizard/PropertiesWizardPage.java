@@ -391,11 +391,6 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
         return new Path(pathStr);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
-     */
     @Override
     public void createControl(Composite parent) {
         GridData data;

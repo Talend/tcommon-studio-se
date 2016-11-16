@@ -149,11 +149,6 @@ public abstract class AbstractTalendFunctionParser extends AbstractFunctionParse
 
     protected abstract String getPackageFragment();
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.rowgenerator.data.AbstractFunctionParser#parseDescription(java.lang.String)
-     */
     @Override
     protected String parseDescription(String string) {
         String string2 = ""; //$NON-NLS-1$
@@ -163,11 +158,6 @@ public abstract class AbstractTalendFunctionParser extends AbstractFunctionParse
         return string2;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.rowgenerator.data.AbstractFunctionParser#parseFunctionType(java.lang.String)
-     */
     @Override
     protected String parseFunctionType(String string) {
         String string2 = super.parseFunctionType(string);

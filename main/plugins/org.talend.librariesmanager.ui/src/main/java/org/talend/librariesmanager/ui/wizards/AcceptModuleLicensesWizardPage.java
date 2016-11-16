@@ -81,11 +81,6 @@ public class AcceptModuleLicensesWizardPage extends WizardPage {
         this.modulesToInstall = modulesToInstall;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
-     */
     @Override
     public void createControl(Composite parent) {
         initializeDialogUnits(parent);
@@ -262,11 +257,6 @@ public class AcceptModuleLicensesWizardPage extends WizardPage {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.DialogPage#setVisible(boolean)
-     */
     @Override
     public void setVisible(boolean visible) {
         retrieveLicensesModel();

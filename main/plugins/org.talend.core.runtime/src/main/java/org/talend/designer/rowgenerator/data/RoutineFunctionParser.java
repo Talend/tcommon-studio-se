@@ -66,13 +66,6 @@ public class RoutineFunctionParser extends AbstractTalendFunctionParser {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.designer.rowgenerator.data.AbstractTalendFunctionParser#processSourceType(org.eclipse.jdt.internal
-     * .core.SourceType)
-     */
     @SuppressWarnings("restriction")
     @Override
     protected void processSourceType(IMember member, String className, String fullName, String funcName, boolean isSystem) {
@@ -88,11 +81,6 @@ public class RoutineFunctionParser extends AbstractTalendFunctionParser {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.rowgenerator.data.AbstractTalendFunctionParser#getPackageFragment()
-     */
     @Override
     protected String getPackageFragment() {
         return JavaUtils.JAVA_ROUTINES_DIRECTORY;

@@ -225,11 +225,6 @@ public class RepositoryNodeProviderRegistryReader extends RegistryReader {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.utils.RegistryReader#readElement(org.eclipse.core.runtime.IConfigurationElement)
-     */
     @Override
     protected boolean readElement(final IConfigurationElement element) {
         if (REPOSITORY_NODE_ELEMENT_NAME.equals(element.getName())) {

@@ -224,11 +224,6 @@ public class RepositoryChangeMetadataForSAPBapi extends Command {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.gef.commands.Command#undo()
-     */
     @Override
     public void undo() {
         // TODO Auto-generated method stub

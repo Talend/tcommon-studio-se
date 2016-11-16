@@ -348,11 +348,6 @@ public class MetadataSchema {
                 UniqueStringGenerator<org.talend.core.model.metadata.builder.connection.MetadataColumn> uniqueLabelGenerator = new UniqueStringGenerator<org.talend.core.model.metadata.builder.connection.MetadataColumn>(
                         metadataColumn.getLabel(), listColumns) {
 
-                    /*
-                     * (non-Javadoc)
-                     * 
-                     * @see org.talend.commons.utils.data.list.UniqueStringGenerator#getBeanString(java.lang.Object)
-                     */
                     @Override
                     protected String getBeanString(org.talend.core.model.metadata.builder.connection.MetadataColumn bean) {
                         return bean.getLabel();

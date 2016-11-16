@@ -74,12 +74,6 @@ public interface IProxyRepositoryFactory {
 
     public abstract List<ContextItem> getContextItem() throws PersistenceException;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.model.IRepositoryFactory#isValid(org.talend.core .model.general.Project,
-     * org.talend.core.model.repository.ERepositoryObjectType, org.eclipse.core.runtime.IPath, java.lang.String)
-     */
     public abstract boolean isNameAvailable(Item item, String name, List<IRepositoryViewObject>... givenList)
             throws PersistenceException;
 
@@ -195,12 +189,6 @@ public interface IProxyRepositoryFactory {
      */
     public abstract void renameFolder(ERepositoryObjectType type, IPath path, String label) throws PersistenceException;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.model.IRepositoryFactory#deleteObject(org.talend .core.model.general.Project,
-     * org.talend.core.model.repository.IRepositoryViewObject)
-     */
     public abstract void deleteObjectLogical(IRepositoryViewObject objToDelete) throws PersistenceException, BusinessException;
 
     public abstract void deleteObjectLogical(Project project, IRepositoryViewObject objToDelete) throws PersistenceException,
@@ -228,12 +216,6 @@ public interface IProxyRepositoryFactory {
     public abstract void restoreObject(Project project, IRepositoryViewObject objToRestore, IPath path)
             throws PersistenceException, BusinessException;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.model.IRepositoryFactory#moveObject(org.talend. core.model.general.Project,
-     * org.talend.core.model.repository.IRepositoryViewObject)
-     */
     public abstract void moveObject(IRepositoryViewObject objToMove, IPath path, IPath... sourcePath)
             throws PersistenceException, BusinessException;
 
@@ -250,11 +232,6 @@ public interface IProxyRepositoryFactory {
      */
     public abstract boolean lock(Item item) throws PersistenceException, LoginException;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.model.IRepositoryFactory#getAllVersion(org.talend .core.model.general.Project, int)
-     */
     public abstract List<IRepositoryViewObject> getAllVersion(Project project, String id, boolean avoidSaveProject)
             throws PersistenceException;
 
@@ -330,12 +307,6 @@ public interface IProxyRepositoryFactory {
 
     public abstract void setMigrationTasksDone(Project project, List<MigrationTask> list) throws PersistenceException;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.model.IRepositoryFactory#isServerValid()
-     */
-    // public abstract String isServerValid();
     public abstract void create(Item item, IPath path, boolean... isImportItem) throws PersistenceException;
 
     public abstract void create(Project project, Item item, IPath path, boolean... isImportItem) throws PersistenceException;
@@ -360,12 +331,6 @@ public interface IProxyRepositoryFactory {
 
     public abstract Property reload(Property property) throws PersistenceException;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.model.IRepositoryFactory#unlock(org.talend.core .model.general.Project,
-     * org.talend.core.model.repository.IRepositoryViewObject)
-     */
     public abstract void unlock(IRepositoryViewObject obj) throws PersistenceException, LoginException;
 
     /**
@@ -375,49 +340,20 @@ public interface IProxyRepositoryFactory {
      */
     public abstract void unlock(Item item) throws PersistenceException, LoginException;
 
-    // public abstract boolean doesLoggedUserExist() throws
-    // PersistenceException;
-
-    // public abstract void createUser() throws PersistenceException;
-
     public abstract void initialize() throws PersistenceException;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.model.IRepositoryFactory#getStatus(org.talend.core .model.properties.Item)
-     */
     public abstract ERepositoryStatus getStatus(IRepositoryViewObject obj);
 
     public abstract ERepositoryStatus getStatus(Item item);
 
     public abstract ERepositoryStatus getStatus(InformationLevel level);
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.model.IRepositoryFactory#getStatusAndLockIfPossible
-     * (org.talend.core.model.properties.Item)
-     */
     public abstract boolean isEditableAndLockIfPossible(Item item);
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.model.IRepositoryFactory#isEditable(org.talend.
-     * core.model.repository.IRepositoryViewObject)
-     */
     public abstract boolean isEditableAndLockIfPossible(IRepositoryViewObject obj);
 
     public org.talend.core.model.properties.Project getProject(Item item);
 
-    /*
-     * (non-Javadoc)
-     * 
-     * 
-     * @seeorg.talend.repository.model.IRepositoryFactory#isPotentiallyEditable(org .talend.core.model.repository.
-     * IRepositoryViewObject)
-     */
     public abstract boolean isPotentiallyEditable(IRepositoryViewObject obj);
 
     @Deprecated
@@ -474,9 +410,6 @@ public interface IProxyRepositoryFactory {
     public boolean isLocalConnectionProvider() throws PersistenceException;
 
     /**
-     * 
-     * DOC zshen Comment method "getMetadataByFolder".
-     * 
      * @param project
      * @param itemType
      * @param path
@@ -488,11 +421,6 @@ public interface IProxyRepositoryFactory {
 
     public LockInfo getLockInfo(Item item);
 
-    /**
-     * DOC ycbai Comment method "getNavigatorViewDescription".
-     * 
-     * @return
-     */
     public String getNavigatorViewDescription();
 
     public void updateLockStatus() throws PersistenceException;
@@ -500,8 +428,6 @@ public interface IProxyRepositoryFactory {
     public boolean isModified(Object property);
 
     /**
-     * DOC nrousseau Comment method "getObjectFromFolder".
-     * 
      * @param project
      * @param type
      * @param folderName

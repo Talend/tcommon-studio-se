@@ -45,11 +45,6 @@ public final class RepositorySeekerRegistryReader extends RegistryReader {
         return this.allSeeker.toArray(new IRepositorySeeker[0]);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.utils.RegistryReader#readElement(org.eclipse.core.runtime.IConfigurationElement)
-     */
     @Override
     protected boolean readElement(final IConfigurationElement element) {
         if (REPO_SEEKER_ELEMENT_NAME.equals(element.getName())) {

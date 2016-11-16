@@ -76,22 +76,12 @@ public class JavaLibrariesService extends AbstractLibrariesService {
                 "resources/java/" + SOURCE_JAVA_BEANS_FOLDER + "/__TEMPLATE__.java"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.general.ILibrariesService#getSqlPatternTemplate()
-     */
     @Override
     public URL getSqlPatternTemplate() {
         return Platform.getBundle(LibrariesManagerUtils.BUNDLE_DI).getEntry(
                 "resources/java/" + SOURCE_SQLPATTERN_FOLDER + "/__TEMPLATE__" + TEMPLATE_SUFFIX); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.general.ILibrariesService#getSystemRoutines()
-     */
     @Override
     public List<URL> getSystemRoutines() {
         List<URL> toReturn = new ArrayList<URL>();
@@ -113,11 +103,6 @@ public class JavaLibrariesService extends AbstractLibrariesService {
                 SQLPATTERN_FILE_SUFFIX, false, true);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.general.ILibrariesService#getTalendRoutines()
-     */
     @Override
     public List<URL> getTalendRoutinesFolder() throws IOException {
         List<URL> toReturn = new ArrayList<URL>();
@@ -235,35 +220,18 @@ public class JavaLibrariesService extends AbstractLibrariesService {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.general.ILibrariesService#isLibSynchronized()
-     */
     @Override
     public boolean isLibSynchronized() {
         return this.isLibSynchronized;
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.general.ILibrariesService#getPerlLibrariesPath()
-     */
     @Override
     public String getPerlLibrariesPath() {
         // TODO Auto-generated method stub
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.general.ILibrariesService#syncLibrariesFromLibs(org.eclipse.core.runtime.IProgressMonitor
-     * [])
-     */
     @Override
     public void syncLibrariesFromLibs(IProgressMonitor... monitorWrap) {
         // TODO sync project/lib will be done in migration

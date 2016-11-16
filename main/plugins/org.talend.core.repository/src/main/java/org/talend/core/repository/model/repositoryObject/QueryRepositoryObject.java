@@ -188,11 +188,6 @@ public class QueryRepositoryObject extends org.talend.core.model.metadata.Query 
         return this.query;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryViewObject#isModified()
-     */
     @Override
     public boolean isModified() {
         return repObj.isModified();

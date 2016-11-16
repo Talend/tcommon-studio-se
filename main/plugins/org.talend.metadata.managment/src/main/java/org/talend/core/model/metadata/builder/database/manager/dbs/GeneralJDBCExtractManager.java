@@ -98,16 +98,8 @@ public class GeneralJDBCExtractManager extends ExtractManager {
             }
         }
         return null;
-
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.metadata.builder.database.manager.ExtractManager#closeConnection(org.talend.core.model.
-     * metadata.IMetadataConnection, org.talend.core.model.metadata.builder.database.DriverShim)
-     */
     @Override
     public boolean closeConnection(IMetadataConnection metadataConnection, DriverShim wapperDriver) {
         if (wapperDriver != null && metadataConnection != null) {

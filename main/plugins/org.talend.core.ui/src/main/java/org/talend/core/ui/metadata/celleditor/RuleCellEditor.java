@@ -80,11 +80,6 @@ public class RuleCellEditor extends DialogCellEditor {
         this.tableEditorView = tableEditorView;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.DialogCellEditor#openDialogBox(org.eclipse.swt.widgets.Control)
-     */
     @Override
     protected Object openDialogBox(Control cellEditorWindow) {
         String ruleToEdit = (String) this.getValue();

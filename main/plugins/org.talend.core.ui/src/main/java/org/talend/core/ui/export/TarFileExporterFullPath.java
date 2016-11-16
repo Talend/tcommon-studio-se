@@ -114,11 +114,6 @@ public class TarFileExporterFullPath implements IFileExporterFullPath {
         write(newEntry, resource);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.export.IFileExporterFullPath#writeFolder(java.lang.String)
-     */
     @Override
     public void writeFolder(String destinationPath) throws IOException, CoreException {
         TarEntry newEntry = new TarEntry(destinationPath);

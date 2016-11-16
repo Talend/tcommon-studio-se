@@ -62,11 +62,6 @@ public class TalendProposalProvider implements IContentProposalProvider {
     public TalendProposalProvider() {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.fieldassist.IContentProposalProvider#getProposals(java.lang.String, int)
-     */
     @Override
     public IContentProposal[] getProposals(String contents, int position) {
         List<IContentProposal> proposals = new ArrayList<IContentProposal>();

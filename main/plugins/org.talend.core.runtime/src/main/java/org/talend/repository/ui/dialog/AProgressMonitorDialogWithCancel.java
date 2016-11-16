@@ -136,11 +136,6 @@ public abstract class AProgressMonitorDialogWithCancel<T> extends ProgressMonito
 
         abstract protected T runnableWithCancel(IProgressMonitor monitor) throws Throwable;
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.jface.operation.IRunnableWithProgress#run(org.eclipse.core.runtime.IProgressMonitor)
-         */
         @Override
         public final void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
             futureTask = new FutureTask<T>(new Callable<T>() {

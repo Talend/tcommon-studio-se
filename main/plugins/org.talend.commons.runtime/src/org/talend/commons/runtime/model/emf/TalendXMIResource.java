@@ -48,11 +48,6 @@ public class TalendXMIResource extends XMIResourceImpl {
     protected XMLLoad createXMLLoad() {
         return new XMILoadImpl(createXMLHelper()) {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.emf.ecore.xmi.impl.XMLLoadImpl#makeParser()
-             */
             @Override
             protected SAXParser makeParser() throws ParserConfigurationException, SAXException {
                 // this is made to avoid the jdk 1.6 SAX parser bug so we instanciate the xercer lib bundled in
@@ -72,12 +67,6 @@ public class TalendXMIResource extends XMIResourceImpl {
     protected XMLSave createXMLSave() {
         return new XMISaveImpl(createXMLHelper()) {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.emf.ecore.xmi.impl.XMISaveImpl#init(org.eclipse.emf.ecore.xmi.XMLResource,
-             * java.util.Map)
-             */
             @Override
             protected void init(XMLResource resource, Map<?, ?> options) {
                 super.init(resource, options);

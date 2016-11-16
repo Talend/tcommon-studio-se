@@ -62,13 +62,6 @@ public class MetadataEmfPasteCommand extends ExtendedTablePasteCommand {
         return newColumnName;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.commons.ui.swt.advanced.dataeditor.commands.ExtendedTablePasteCommand#createPastableBeansList(java
-     * .util.List)
-     */
     @Override
     public List createPastableBeansList(ExtendedTableModel extendedTable, List copiedObjectsList) {
         ArrayList addItemList = new ArrayList();

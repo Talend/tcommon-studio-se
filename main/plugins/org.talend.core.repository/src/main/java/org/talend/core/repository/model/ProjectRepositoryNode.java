@@ -1859,11 +1859,6 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
         return tableNode;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.model.IProjectRepositoryNode#getProject()
-     */
     @Override
     public org.talend.core.model.general.Project getProject() {
         return this.project;
@@ -1917,11 +1912,6 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.model.nodes.IProjectRepositoryNode#getRecBinNode()
-     */
     @Override
     public RepositoryNode getRecBinNode() {
         return this.recBinNode;

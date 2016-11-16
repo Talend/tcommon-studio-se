@@ -45,11 +45,6 @@ public class SalesforceModuleRepositoryObject extends RepositoryObject implement
         this.moduleUnit = moduleUnit;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.RepositoryObject#getAdapter(java.lang .Class)
-     */
     public Object getAdapter(Class adapter) {
         if (adapter == org.talend.core.model.metadata.builder.connection.MetadataTable.class) {
             return moduleUnit.getMetadataTable();
@@ -57,11 +52,6 @@ public class SalesforceModuleRepositoryObject extends RepositoryObject implement
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryObject#getType()
-     */
     @Override
     public ERepositoryObjectType getRepositoryObjectType() {
         return ERepositoryObjectType.METADATA_SALESFORCE_MODULE;
@@ -74,11 +64,6 @@ public class SalesforceModuleRepositoryObject extends RepositoryObject implement
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.RepositoryObject#getLabel()
-     */
     @Override
     public String getLabel() {
         return moduleUnit.getLabel();
@@ -110,21 +95,11 @@ public class SalesforceModuleRepositoryObject extends RepositoryObject implement
         return moduleUnit.getId();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.model.ISubRepositoryObject#getAbstractMetadataObject ()
-     */
     @Override
     public AbstractMetadataObject getAbstractMetadataObject() {
         return this.moduleUnit;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.model.ISubRepositoryObject#removeFromParent()
-     */
     @Override
     public void removeFromParent() {
         moduleUnit.getConnection().getModules().remove(moduleUnit);

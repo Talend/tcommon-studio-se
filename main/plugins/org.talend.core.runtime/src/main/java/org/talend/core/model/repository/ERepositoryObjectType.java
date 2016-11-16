@@ -671,11 +671,6 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
         return this.label;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.DynaEnum#toString()
-     */
     @Override
     public String toString() {
         return getLabel();
@@ -901,35 +896,16 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
                 return METADATA_FILE_LINKRULES;
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @seeorg.talend.core.model.properties.util.PropertiesSwitch# caseJobDocumentationItem
-             * (org.talend.core.model.properties.JobDocumentationItem)
-             */
             @Override
             public Object caseJobDocumentationItem(JobDocumentationItem object) {
                 return JOB_DOC;
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @seeorg.talend.core.model.properties.util.PropertiesSwitch# caseJobletDocumentationItem
-             * (org.talend.core.model.properties.JobletDocumentationItem)
-             */
             @Override
             public Object caseJobletDocumentationItem(JobletDocumentationItem object) {
                 return JOBLET_DOC;
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see
-             * org.talend.core.model.properties.util.PropertiesSwitch#casePigudfItem(org.talend.core.model.properties
-             * .PigudfItem)
-             */
             @Override
             public Object casePigudfItem(PigudfItem object) {
                 return PIG_UDF;
@@ -940,21 +916,11 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
                 return ROUTINES;
             }
 
-            // public Object caseBeanItem(BeanItem object) {
-            // return BEANS;
-            // }
-
             @Override
             public Object caseJobScriptItem(JobScriptItem object) {
                 return JOB_SCRIPT;
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @seeorg.talend.core.model.properties.util.PropertiesSwitch# caseSQLPatternItem
-             * (org.talend.core.model.properties.SQLPatternItem)
-             */
             @Override
             public Object caseSQLPatternItem(SQLPatternItem object) {
                 return SQLPATTERNS;
@@ -962,16 +928,9 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
 
             @Override
             public Object caseProcessItem(ProcessItem object) {
-
                 return PROCESS;
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @seeorg.talend.core.model.properties.util.PropertiesSwitch# caseJobletProcessItem
-             * (org.talend.core.model.properties.JobletProcessItem)
-             */
             @Override
             public Object caseJobletProcessItem(JobletProcessItem object) {
                 return JOBLET;
@@ -1184,11 +1143,6 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
         return isDQItemType() && isDIItemType();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.DynaEnum#name()
-     */
     @Override
     public String name() {
         if (isStaticNode()) {

@@ -50,13 +50,6 @@ public class ContextListsSortModel<T> implements ILayerListener {
         this.columnHeaderDataLayer.addLayerListener(this);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.nebula.widgets.nattable.layer.ILayerListener#handleLayerEvent(org.eclipse.nebula.widgets.nattable
-     * .layer.event.ILayerEvent)
-     */
     @Override
     public void handleLayerEvent(ILayerEvent arg0) {
 

@@ -583,11 +583,6 @@ public class ContextTreeTable {
                     TREE_CONTEXT_ID), sortModel);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see ca.odell.glazedlists.TreeList.Format#getPath(java.util.List, java.lang.Object)
-         */
         @Override
         public void getPath(List<ContextTreeNode> path, ContextTreeNode element) {
             path.add(element);

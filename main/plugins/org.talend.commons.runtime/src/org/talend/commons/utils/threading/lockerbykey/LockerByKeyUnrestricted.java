@@ -184,11 +184,6 @@ public class LockerByKeyUnrestricted<KP> implements ILockerByKey<KP> {
             final AtomicBoolean hasError = new AtomicBoolean();
             Callable<Boolean> callable = new Callable<Boolean>() {
 
-                /*
-                 * (non-Javadoc)
-                 * 
-                 * @see java.util.concurrent.Callable#call()
-                 */
                 @Override
                 public Boolean call() throws Exception {
                     try {
@@ -276,11 +271,6 @@ public class LockerByKeyUnrestricted<KP> implements ILockerByKey<KP> {
             final CyclicBarrier cyclicBarrier = new CyclicBarrier(2);
             Callable<Boolean> callable = new Callable<Boolean>() {
 
-                /*
-                 * (non-Javadoc)
-                 * 
-                 * @see java.util.concurrent.Callable#call()
-                 */
                 @Override
                 public Boolean call() throws Exception {
                     boolean locked;
@@ -399,11 +389,6 @@ public class LockerByKeyUnrestricted<KP> implements ILockerByKey<KP> {
             final CyclicBarrier cyclicBarrier = new CyclicBarrier(2);
             Callable<Boolean> callable = new Callable<Boolean>() {
 
-                /*
-                 * (non-Javadoc)
-                 * 
-                 * @see java.util.concurrent.Callable#call()
-                 */
                 @Override
                 public Boolean call() throws Exception {
                     boolean locked = false;

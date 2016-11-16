@@ -63,11 +63,6 @@ public class RepositoryNode implements IRepositoryNode, IActionFilter {
 
     private boolean enableDisposed = false;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.model.RepositoryNode#isInitialized()
-     */
     public boolean isInitialized() {
         return initialized;
     }
@@ -120,11 +115,6 @@ public class RepositoryNode implements IRepositoryNode, IActionFilter {
         return service.getRepositoryPath(this).toString();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.model.RepositoryNode#getChildren()
-     */
     @Override
     public List<IRepositoryNode> getChildren() {
         if (true) {
@@ -158,21 +148,11 @@ public class RepositoryNode implements IRepositoryNode, IActionFilter {
         return toReturn;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.model.RepositoryNode#hasChildren()
-     */
     @Override
     public boolean hasChildren() {
         return !getChildren().isEmpty();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.model.RepositoryNode#getId()
-     */
     @Override
     public String getId() {
         return this.id;
@@ -187,21 +167,11 @@ public class RepositoryNode implements IRepositoryNode, IActionFilter {
         this.id = id;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.model.RepositoryNode#getObject()
-     */
     @Override
     public IRepositoryViewObject getObject() {
         return this.object;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.model.RepositoryNode#getParent()
-     */
     @Override
     public RepositoryNode getParent() {
         return this.parent;
@@ -216,11 +186,6 @@ public class RepositoryNode implements IRepositoryNode, IActionFilter {
         this.parent = parent;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.model.RepositoryNode#getType()
-     */
     @Override
     public ENodeType getType() {
         // TDQ-11426: for dq exchange node, the object is null
@@ -231,11 +196,6 @@ public class RepositoryNode implements IRepositoryNode, IActionFilter {
         return type;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.model.RepositoryNode#getObjectType()
-     */
     @Override
     public ERepositoryObjectType getObjectType() {
         if (getObject() != null) {
@@ -244,11 +204,6 @@ public class RepositoryNode implements IRepositoryNode, IActionFilter {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.model.RepositoryNode#getContentType()
-     */
     @Override
     public ERepositoryObjectType getContentType() {
         if (getObject() != null) {
@@ -273,11 +228,6 @@ public class RepositoryNode implements IRepositoryNode, IActionFilter {
         this.type = type;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.model.RepositoryNode#getLabel()
-     */
     @Override
     public String getLabel() {
         switch (getType()) {
@@ -309,11 +259,6 @@ public class RepositoryNode implements IRepositoryNode, IActionFilter {
         return "";
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.model.RepositoryNode#getIcon()
-     */
     public IImage getIcon() {
         if (this.icon == null) {
             switch (getType()) {
@@ -335,22 +280,11 @@ public class RepositoryNode implements IRepositoryNode, IActionFilter {
     }
 
     // TODO SML Remove theses props
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.model.RepositoryNode#getProperties(org.talend.
-     * repository.model.RepositoryNode.EProperties)
-     */
     @Override
     public Object getProperties(EProperties key) {
         return properties.get(key);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.model.RepositoryNode#isBin()
-     */
     @Override
     public boolean isBin() {
         return false;
@@ -358,11 +292,6 @@ public class RepositoryNode implements IRepositoryNode, IActionFilter {
 
     private static final int PRIME = 31;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         int result = 1;
@@ -372,11 +301,6 @@ public class RepositoryNode implements IRepositoryNode, IActionFilter {
         return result;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -554,11 +478,6 @@ public class RepositoryNode implements IRepositoryNode, IActionFilter {
         return this.isDisposed;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.model.IRepositoryNode#getDisplayText()
-     */
     @Override
     public String getDisplayText() {
         return getLabel();

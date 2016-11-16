@@ -95,11 +95,6 @@ public abstract class AbstractCreateAction extends AContextualAction {
         existingNames = names.toArray(new String[names.size()]);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.actions.AContextualAction#updateNodeToLastVersion()
-     */
     @Override
     @Deprecated
     protected void updateNodeToLastVersion() {

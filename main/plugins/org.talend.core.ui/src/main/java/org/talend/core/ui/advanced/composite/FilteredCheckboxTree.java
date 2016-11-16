@@ -279,11 +279,6 @@ public class FilteredCheckboxTree extends Composite {
         treeViewer.getControl().setLayoutData(data);
         treeViewer.getControl().addDisposeListener(new DisposeListener() {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.swt.events.DisposeListener#widgetDisposed(org.eclipse.swt.events.DisposeEvent)
-             */
             @Override
             public void widgetDisposed(DisposeEvent e) {
                 refreshJob.cancel();
@@ -331,11 +326,6 @@ public class FilteredCheckboxTree extends Composite {
     private void createRefreshJob() {
         refreshJob = new WorkbenchJob("Refresh Filter") {//$NON-NLS-1$
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.ui.progress.UIJob#runInUIThread(org.eclipse.core.runtime.IProgressMonitor)
-             */
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
                 if (treeViewer.getControl().isDisposed()) {
@@ -462,12 +452,6 @@ public class FilteredCheckboxTree extends Composite {
         setInitialText(Messages.getString("WorkbenchMessages.FilteredTree_FilterMessage")); //$NON-NLS-1$
         filterText.getAccessible().addAccessibleListener(new AccessibleAdapter() {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see
-             * org.eclipse.swt.accessibility.AccessibleListener#getName(org.eclipse.swt.accessibility.AccessibleEvent)
-             */
             @Override
             public void getName(AccessibleEvent e) {
                 String filterTextString = filterText.getText();
@@ -481,11 +465,6 @@ public class FilteredCheckboxTree extends Composite {
 
         filterText.addFocusListener(new FocusAdapter() {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.swt.events.FocusListener#focusLost(org.eclipse.swt.events.FocusEvent)
-             */
             @Override
             public void focusGained(FocusEvent e) {
                 /*
@@ -509,11 +488,6 @@ public class FilteredCheckboxTree extends Composite {
 
         filterText.addKeyListener(new KeyAdapter() {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.swt.events.KeyAdapter#keyReleased(org.eclipse.swt.events.KeyEvent)
-             */
             @Override
             public void keyPressed(KeyEvent e) {
                 // on a CR we want to transfer focus to the list
@@ -554,11 +528,6 @@ public class FilteredCheckboxTree extends Composite {
 
         filterTextModifyListener = new ModifyListener() {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.swt.events.ModifyListener#modifyText(org.eclipse.swt.events.ModifyEvent)
-             */
             @Override
             public void modifyText(ModifyEvent e) {
                 textChanged();
@@ -710,11 +679,6 @@ public class FilteredCheckboxTree extends Composite {
 
             IAction clearTextAction = new Action("", IAction.AS_PUSH_BUTTON) {//$NON-NLS-1$
 
-                /*
-                 * (non-Javadoc)
-                 * 
-                 * @see org.eclipse.jface.action.Action#run()
-                 */
                 @Override
                 public void run() {
                     clearText();
@@ -964,11 +928,6 @@ public class FilteredCheckboxTree extends Composite {
             super.setHasChildren(elementOrTreePath, hasChildren);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.ui.dialogs.ContainerCheckedTreeViewer#doCheckStateChanged(java.lang.Object)
-         */
         @Override
         protected void doCheckStateChanged(Object element) {
             boolean isTestCase = false;

@@ -31,37 +31,16 @@ public class StandaloneRepositoryContextService implements IRepositoryContextSer
         this.contextProperties = contextProperties;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.model.IRepositoryService#cloneOriginalValueConnection(org.talend.core.model.metadata.builder
-     * .connection.DatabaseConnection)
-     */
     @Override
     public DatabaseConnection cloneOriginalValueConnection(DatabaseConnection dbConn) {
         return StandaloneConnectionContextUtils.cloneOriginalValueConnection(dbConn, contextProperties);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.model.IRepositoryService#cloneOriginalValueConnection(org.talend.core.model.metadata.builder
-     * .connection.DatabaseConnection, boolean)
-     */
     @Override
     public DatabaseConnection cloneOriginalValueConnection(DatabaseConnection dbConn, boolean defaultContext) {
         return StandaloneConnectionContextUtils.cloneOriginalValueConnection(dbConn, contextProperties);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.repository.model.IRepositoryService#cloneOriginalValueConnection(org.talend.core.model.metadata.builder
-     * .connection.DatabaseConnection, boolean, java.lang.String)
-     */
     @Override
     public DatabaseConnection cloneOriginalValueConnection(DatabaseConnection dbConn, boolean defaultContext,
             String selectedContext) {

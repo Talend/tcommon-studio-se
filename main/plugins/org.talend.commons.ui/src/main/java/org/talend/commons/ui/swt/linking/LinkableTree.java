@@ -201,11 +201,6 @@ public class LinkableTree implements ILinkableControl {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.linking.ILinkableControl#dispose()
-     */
     public void dispose() {
         removeListeners();
     }

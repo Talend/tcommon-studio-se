@@ -172,10 +172,6 @@ public class LineSeg
         terminus.y = fromY + dy;
     }
 
-    /* 
-     * (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     public boolean equals(Object seg) {
         if (!(seg instanceof LineSeg))
             return false;
@@ -185,10 +181,6 @@ public class LineSeg
             && getTerminus().equals(ls.getTerminus());
     }
     
-    /* 
-     * (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
     public int hashCode() {
         return getOrigin().hashCode() ^ getTerminus().hashCode();
     }
@@ -968,19 +960,11 @@ public class LineSeg
         return intersections;
     }
 
-    /* 
-     * (non-Javadoc)
-     * @see org.eclipse.draw2d.geometry.Translatable#performScale(double)
-     */
     public void performScale(double factor) {
         setOrigin(getOrigin().scale(factor));
         setTerminus(getTerminus().scale(factor));
     }
 
-    /* 
-     * (non-Javadoc)
-     * @see org.eclipse.draw2d.geometry.Translatable#performTranslate(int, int)
-     */
     public void performTranslate(int dx, int dy) {
         setOrigin(getOrigin().translate(dx, dy));
         setTerminus(getTerminus().translate(dx, dy));

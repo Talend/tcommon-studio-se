@@ -143,22 +143,11 @@ public abstract class AbstractRepoViewSeeker implements IRepositorySeeker<IRepos
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.repository.seeker.IRepositorySeeker#neededExpand()
-     */
     @Override
     public boolean neededExpand() {
         return true; // by default
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.repository.seeker.IRepositorySeeker#expandNodes(org.eclipse.jface.viewers.TreeViewer,
-     * java.lang.Object, int)
-     */
     @Override
     public void expandNode(TreeViewer viewer, IRepositoryNode repoNode, int expandLevel) {
         if (repoNode != null && validType(repoNode.getObjectType())) {

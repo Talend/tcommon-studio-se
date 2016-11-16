@@ -59,11 +59,6 @@ public abstract class AbstractFakeResultSet extends FakeResultSet {
         return -1;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeResultSet#getString(java.lang.String)
-     */
     @Override
     public String getString(String columnLabel) throws SQLException {
         int columnIndex = indexOf(columnLabel, tableMeta);
@@ -75,11 +70,6 @@ public abstract class AbstractFakeResultSet extends FakeResultSet {
         return getString(columnIndex + 1);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeResultSet#getInt(java.lang.String)
-     */
     @Override
     public int getInt(String columnLabel) throws SQLException {
         String str = getString(columnLabel);
@@ -97,22 +87,12 @@ public abstract class AbstractFakeResultSet extends FakeResultSet {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeResultSet#getBoolean(java.lang.String)
-     */
     @Override
     public boolean getBoolean(String columnLabel) throws SQLException {
         String str = getString(columnLabel);
         return Boolean.parseBoolean(str);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeResultSet#getString(int)
-     */
     @Override
     public String getString(int columnIndex) throws SQLException {
         String[] row = data.get(index);

@@ -57,11 +57,6 @@ public class XPathPrefixHandler {
         }
     }
 
-    /**
-     * DOC chuang Comment method "sortByLevel".
-     * 
-     * @param nameNodesMap2
-     */
     private void sortByLevel(Map<String, List<NodeInfo>> map) {
         for (List<NodeInfo> list : map.values()) {
             Collections.sort(list, new Comparator<NodeInfo>() {
@@ -658,20 +653,10 @@ public class XPathPrefixHandler {
             }
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see javax.xml.namespace.NamespaceContext#getNamespaceURI(java.lang.String)
-         */
         public String getNamespaceURI(String prefix) {
             return (String) prefixToNamespace.get(prefix);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see javax.xml.namespace.NamespaceContext#getPrefix(java.lang.String)
-         */
         public String getPrefix(String namespaceURI) {
             if (namespaceURI == null || "".equals(namespaceURI)) {
                 return ""; //$NON-NLS-1$
@@ -679,11 +664,6 @@ public class XPathPrefixHandler {
             return (String) prefixToNamespace.getKey(namespaceURI);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see javax.xml.namespace.NamespaceContext#getPrefixes(java.lang.String)
-         */
         public Iterator getPrefixes(String namespaceURI) {
             return null;
         }

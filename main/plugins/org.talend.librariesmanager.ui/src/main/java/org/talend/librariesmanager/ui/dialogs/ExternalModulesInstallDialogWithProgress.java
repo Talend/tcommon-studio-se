@@ -128,13 +128,6 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
         this(shell, text, title, 0);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.librariesmanager.ui.dialogs.ExternalModulesInstallDialog#createDialogArea(org.eclipse.swt.widgets.
-     * Composite)
-     */
     @Override
     protected Control createDialogArea(Composite parent) {
         Composite composite = (Composite) super.createDialogArea(parent);
@@ -160,55 +153,30 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
 
             String currentTask = null;
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.jface.wizard.ProgressMonitorPart#setBlocked(org.eclipse.core.runtime.IStatus)
-             */
             @Override
             public void setBlocked(IStatus reason) {
                 super.setBlocked(reason);
                 getBlockedHandler().showBlocked(getShell(), this, reason, currentTask);
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.jface.wizard.ProgressMonitorPart#clearBlocked()
-             */
             @Override
             public void clearBlocked() {
                 super.clearBlocked();
                 getBlockedHandler().clearBlocked();
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.jface.wizard.ProgressMonitorPart#beginTask(java.lang.String, int)
-             */
             @Override
             public void beginTask(String name, int totalWork) {
                 super.beginTask(name, totalWork);
                 currentTask = name;
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.jface.wizard.ProgressMonitorPart#setTaskName(java.lang.String)
-             */
             @Override
             public void setTaskName(String name) {
                 super.setTaskName(name);
                 currentTask = name;
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.jface.wizard.ProgressMonitorPart#subTask(java.lang.String)
-             */
             @Override
             public void subTask(String name) {
                 super.subTask(name);
@@ -221,11 +189,6 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
         };
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.TrayDialog#close() can be called when the user click on close system button
-     */
     @Override
     public boolean close() {
         getProgressMonitor().setCanceled(true);
@@ -239,7 +202,6 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
     /*
      * called when the close button is pressed
      */
-
     protected void closePressed() {
         getProgressMonitor().setCanceled(true);
         if (activeRunningOperations <= 0) {
@@ -262,11 +224,6 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
         return super.getButton(id);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.Dialog#buttonPressed(int)
-     */
     @Override
     protected void buttonPressed(int buttonId) {
         if (IDialogConstants.CLOSE_ID == buttonId) {
@@ -399,13 +356,6 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
         return button;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.librariesmanager.ui.dialogs.ExternalModulesInstallDialog#createButtonsForButtonBar(org.eclipse.swt
-     * .widgets.Composite)
-     */
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
         closeButton = createCloseButton(parent);// make the cancel button the most left
@@ -531,11 +481,6 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
         });
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.Dialog#create()
-     */
     @Override
     public void create() {
         super.create();
@@ -603,13 +548,6 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.librariesmanager.ui.dialogs.ExternalModulesInstallDialog#launchIndividualDownload(java.util.concurrent
-     * .atomic.AtomicInteger, org.talend.core.model.general.ModuleToInstall)
-     */
     @Override
     protected void launchIndividualDownload(final AtomicInteger enabledButtonCount, ModuleToInstall data, final Button button) {
         button.setEnabled(false);

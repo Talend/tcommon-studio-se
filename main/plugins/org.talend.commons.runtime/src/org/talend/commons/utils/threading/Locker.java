@@ -78,17 +78,9 @@ public class Locker<B, KP> {
             this.contextInfo = contextInfo;
         }
 
-        /**
-         * DOC amaumont InternalKeyLock constructor comment.
-         */
         public InternalKeyLock() {
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see java.lang.Object#hashCode()
-         */
         @Override
         public int hashCode() {
             final int prime = 31;
@@ -97,11 +89,6 @@ public class Locker<B, KP> {
             return result;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see java.lang.Object#equals(java.lang.Object)
-         */
         @Override
         public boolean equals(Object obj) {
             if (this == obj) {

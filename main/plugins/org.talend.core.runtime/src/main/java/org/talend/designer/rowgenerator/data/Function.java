@@ -60,11 +60,6 @@ public class Function implements Cloneable {
         this.category = category;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#clone()
-     */
     @SuppressWarnings("unchecked")
     @Override
     public Object clone() {

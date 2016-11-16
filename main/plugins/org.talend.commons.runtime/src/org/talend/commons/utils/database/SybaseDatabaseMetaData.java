@@ -151,12 +151,6 @@ public class SybaseDatabaseMetaData extends PackageFakeDatabaseMetadata {
         return sybaseRS;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.PackageFakeDatabaseMetadata#getTables(java.lang.String, java.lang.String,
-     * java.lang.String, java.lang.String[])
-     */
     @Override
     public ResultSet getTables(String catalog, String schemaPattern, String tableNamePattern, String[] types) throws SQLException {
         String[] neededTypes = getNeededTypes(types);

@@ -21,19 +21,11 @@ public class CustomReentrantLock extends ReentrantLock {
         super(fair);
     }
 
-    /* (non-Javadoc)
-     * @see java.util.concurrent.locks.ReentrantLock#getQueuedThreads()
-     */
     @Override
     public Collection<Thread> getQueuedThreads() {
         return super.getQueuedThreads();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.util.concurrent.locks.ReentrantLock#getOwner()
-     */
     @Override
     public Thread getOwner() {
         return super.getOwner();

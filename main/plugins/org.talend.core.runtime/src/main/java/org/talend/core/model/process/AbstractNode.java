@@ -217,11 +217,6 @@ public abstract class AbstractNode implements INode {
         // null
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.INode#getReturns()
-     */
     @Override
     public List<? extends INodeReturn> getReturns() {
         return new ArrayList<INodeReturn>();
@@ -337,49 +332,24 @@ public abstract class AbstractNode implements INode {
         return nb;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.INode#hasConditionnalOutputs()
-     */
     @Override
     public boolean hasConditionalOutputs() {
         return this.hasConditionalOutputs;
     }
 
-    /**
-     * Sets the hasConditionnalOutputs.
-     * 
-     * @param hasConditionalOutputs the hasConditionnalOutputs to set
-     */
     public void setHasConditionalOutputs(boolean hasConditionalOutputs) {
         this.hasConditionalOutputs = hasConditionalOutputs;
     }
 
-    /**
-     * Getter for isMultiplyingOutputs.
-     * 
-     * @return the isMultiplyingOutputs
-     */
     @Override
     public boolean isMultiplyingOutputs() {
         return isMultiplyingOutputs;
     }
 
-    /**
-     * Sets the isMultiplyingOutputs.
-     * 
-     * @param isMultiplyingOutputs the isMultiplyingOutputs to set
-     */
     public void setIsMultiplyingOutputs(Boolean isMultiplyingOutputs) {
         this.isMultiplyingOutputs = isMultiplyingOutputs;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
         StringBuffer buff = new StringBuffer();
@@ -403,11 +373,6 @@ public abstract class AbstractNode implements INode {
         return buff.toString();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.INode#getLocation()
-     */
     public Object getLocation() {
         return null;
     }
@@ -421,21 +386,11 @@ public abstract class AbstractNode implements INode {
         this.externalNode = externalNode;
     }
 
-    /**
-     * Getter for isThereLinkWithHash.
-     * 
-     * @return the isThereLinkWithHash
-     */
     @Override
     public boolean isThereLinkWithHash() {
         return isThereLinkWithHash;
     }
 
-    /**
-     * Sets the isThereLinkWithHash.
-     * 
-     * @param isThereLinkWithHash the isThereLinkWithHash to set
-     */
     public void setThereLinkWithHash(boolean isThereLinkWithHash) {
         this.isThereLinkWithHash = isThereLinkWithHash;
     }
@@ -496,21 +451,11 @@ public abstract class AbstractNode implements INode {
         return org.talend.core.model.utils.NodeUtil.getMainOutgoingConnections(this);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.INode#getOutgoingConnections(org.talend .core.model.process.EConnectionType)
-     */
     @Override
     public List<? extends IConnection> getOutgoingConnections(EConnectionType connectionType) {
         return org.talend.core.model.utils.NodeUtil.getOutgoingConnections(this, connectionType);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.INode#getOutgoingConnections(java.lang. String)
-     */
     @Override
     public List<? extends IConnection> getOutgoingConnections(String connectorName) {
         return org.talend.core.model.utils.NodeUtil.getOutgoingConnections(this, connectorName);
@@ -525,11 +470,6 @@ public abstract class AbstractNode implements INode {
         this.blocksCodeToClose = blockCodesToClose;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.INode#renameData(java.lang.String, java.lang.String)
-     */
     @Override
     public void renameData(String oldName, String newName) {
         if (oldName.equals(newName)) {
@@ -546,11 +486,6 @@ public abstract class AbstractNode implements INode {
 
     /**
      * see bug 4733
-     * <p>
-     * DOC YeXiaowei Comment method "isSQLQueryParameter".
-     * 
-     * @param parameter
-     * @return
      */
     private boolean isSQLQueryParameter(final IElementParameter parameter) {
         return parameter.getFieldType().equals(EParameterFieldType.MEMO_SQL) && parameter.getName().equals("QUERY"); //$NON-NLS-1$
@@ -558,11 +493,6 @@ public abstract class AbstractNode implements INode {
 
     /**
      * bug TDM-409
-     * <p>
-     * DOC hwang Comment method "isTDMParameter".
-     * 
-     * @param parameter
-     * @return
      */
     private boolean isTDMParameter(final IElementParameter parameter) {
 
@@ -570,11 +500,6 @@ public abstract class AbstractNode implements INode {
                 && parameter.getName().equals(EParameterFieldType.HMAP_PATH.getName());
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.INode#useData(java.lang.String)
-     */
     @Override
     public boolean useData(String name) {
 
@@ -610,11 +535,6 @@ public abstract class AbstractNode implements INode {
         this.isThereLinkWithMerge = isThereLinkWithHash;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.INode#getIncomingConnections(org.talend .core.model.process.EConnectionType)
-     */
     @Override
     public List<? extends IConnection> getIncomingConnections(EConnectionType connectionType) {
         return org.talend.core.model.utils.NodeUtil.getIncomingConnections(this, connectionType);
@@ -624,11 +544,6 @@ public abstract class AbstractNode implements INode {
         return org.talend.core.model.utils.NodeUtil.getIncomingConnections(this, connectorName);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.INode#getLabel()
-     */
     @Override
     public String getLabel() {
         return label;
@@ -647,11 +562,6 @@ public abstract class AbstractNode implements INode {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.INode#getConnectorFromName(java.lang.String )
-     */
     @Override
     public INodeConnector getConnectorFromName(String connName) {
         INodeConnector nodeConnector = null;
@@ -666,23 +576,11 @@ public abstract class AbstractNode implements INode {
         return nodeConnector;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.INode#reloadComponent(org.talend.core.model .components.IComponent,
-     * java.util.Map)
-     */
     @Override
     public void reloadComponent(IComponent component, Map<String, Object> parameters, boolean isUpdate) {
         // TODO Auto-generated method stub
-
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.INode#getDesignSubjobStart()
-     */
     @Override
     public INode getDesignSubjobStartNode() {
         if (designSubjobStartNode == null) {
@@ -693,20 +591,10 @@ public abstract class AbstractNode implements INode {
         return designSubjobStartNode;
     }
 
-    /**
-     * Sets the designSubjobStart.
-     * 
-     * @param designSubjobStart the designSubjobStart to set
-     */
     public void setDesignSubjobStartNode(INode designSubjobStartNode) {
         this.designSubjobStartNode = designSubjobStartNode;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.INode#isDesignSubjobStartNode()
-     */
     @Override
     public boolean isDesignSubjobStartNode() {
         if (designSubjobStartNode == null) {
@@ -724,11 +612,6 @@ public abstract class AbstractNode implements INode {
         return this.isVirtualGenerateNode = isVirtualGenerateNode;
     }
 
-    /**
-     * Sets the listConnector.
-     * 
-     * @param listConnector the listConnector to set
-     */
     public void setListConnector(List<? extends INodeConnector> listConnector) {
         this.listConnector = listConnector;
     }
@@ -776,11 +659,6 @@ public abstract class AbstractNode implements INode {
         this.virtualLinkTo = virtualLinkTo;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.INode#isELTComponent()
-     */
     @Override
     public boolean isELTComponent() {
         if (getComponent() != null) {
@@ -799,21 +677,11 @@ public abstract class AbstractNode implements INode {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.INode#getUniqueShortName()
-     */
     @Override
     public String getUniqueShortName() {
         return this.uniqueShortName;
     }
 
-    /**
-     * Sets the uniqueShortName.
-     * 
-     * @param uniqueShortName the uniqueShortName to set
-     */
     public void setUniqueShortName(String uniqueShortName) {
         this.uniqueShortName = uniqueShortName;
     }
@@ -827,11 +695,6 @@ public abstract class AbstractNode implements INode {
         return subProcessContainBreakpoint;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.IElement#getElementName()
-     */
     @Override
     public String getElementName() {
         return this.getUniqueName();
@@ -1059,193 +922,88 @@ public abstract class AbstractNode implements INode {
         return modulesNeeded;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.INode#isSubtreeStart()
-     */
     @Override
     public boolean isSubtreeStart() {
         return isDesignSubjobStartNode() && !isThereLinkWithHash();
     }
 
-    /**
-     * Getter for mrGroupId.
-     * 
-     * @return the mrGroupId
-     */
     public Integer getMRGroupId() {
         return mrGroupId;
     }
 
-    /**
-     * Sets the mrGroupId.
-     * 
-     * @param mrGroupId the mrGroupId to set
-     */
     public void setMRGroupId(Integer mrGroupId) {
         this.mrGroupId = mrGroupId;
     }
 
-    /**
-     * Getter for mrJobInGroupCount.
-     * 
-     * @return the mrJobInGroupCount
-     */
     public Integer getMRJobInGroupCount() {
         return mrJobInGroupCount;
     }
 
-    /**
-     * Sets the mrJobInGroupCount.
-     * 
-     * @param mrJobInGroupCount the mrJobInGroupCount to set
-     */
     public void setMRJobInGroupCount(Integer mrJobInGroupCount) {
         this.mrJobInGroupCount = mrJobInGroupCount;
     }
 
-    /**
-     * Getter for mrJobIDInGroup.
-     * 
-     * @return the mrJobIDInGroup
-     */
     public Integer getMrJobIDInGroup() {
         return mrJobIDInGroup;
     }
 
-    /**
-     * Sets the mrJobIDInGroup.
-     * 
-     * @param mrJobIDInGroup the mrJobIDInGroup to set
-     */
     public void setMrJobIDInGroup(Integer mrJobIDInGroup) {
         this.mrJobIDInGroup = mrJobIDInGroup;
     }
 
-    /**
-     * Getter for mrContainsReduce.
-     * 
-     * @return the mrContainsReduce
-     */
     public boolean isMrContainsReduce() {
         return this.mrContainsReduce;
     }
 
-    /**
-     * Sets the mrContainsReduce.
-     * 
-     * @param mrContainsReduce the mrContainsReduce to set
-     */
     public void setMrContainsReduce(boolean mrContainsReduce) {
         this.mrContainsReduce = mrContainsReduce;
     }
 
-    /**
-     * Getter for isThereLinkWithRef.
-     * 
-     * @return the isThereLinkWithRef
-     */
     public boolean isThereLinkWithRef() {
         return this.isThereLinkWithRef;
     }
 
-    /**
-     * Sets the isThereLinkWithRef.
-     * 
-     * @param isThereLinkWithRef the isThereLinkWithRef to set
-     */
     public void setThereLinkWithRef(boolean isThereLinkWithRef) {
         this.isThereLinkWithRef = isThereLinkWithRef;
     }
 
-    /**
-     * Getter for refNodes.
-     * 
-     * @return the refNodes
-     */
     public List<INode> getRefNodes() {
         return this.refNodes;
     }
 
-    /**
-     * Sets the refNodes.
-     * 
-     * @param refNodes the refNodes to set
-     */
     public void setRefNodes(List<INode> refNodes) {
         this.refNodes = refNodes;
     }
 
-    /**
-     * Getter for mapOnlyAfterReduce.
-     * 
-     * @return the mapOnlyAfterReduce
-     */
     public boolean isMapOnlyAfterReduce() {
         return this.mapOnlyAfterReduce;
     }
 
-    /**
-     * Sets the mapOnlyAfterReduce.
-     * 
-     * @param mapOnlyAfterReduce the mapOnlyAfterReduce to set
-     */
     public void setMapOnlyAfterReduce(boolean mapOnlyAfterReduce) {
         this.mapOnlyAfterReduce = mapOnlyAfterReduce;
     }
 
-    /**
-     * Getter for isRefNode.
-     * 
-     * @return the isRefNode
-     */
     public boolean isRefNode() {
         return this.isRefNode;
     }
 
-    /**
-     * Sets the isRefNode.
-     * 
-     * @param isRefNode the isRefNode to set
-     */
     public void setRefNode(boolean isRefNode) {
         this.isRefNode = isRefNode;
     }
 
-    /**
-     * Getter for parallelIterator.
-     * 
-     * @return the parallelIterator
-     */
     public String getParallelIterator() {
         return parallelIterator;
     }
 
-    /**
-     * Sets the parallelIterator.
-     * 
-     * @param parallelIterator the parallelIterator to set
-     */
     public void setParallelIterator(String parallelIterator) {
         this.parallelIterator = parallelIterator;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.IElement#isForceReadOnly()
-     */
     @Override
     public boolean isForceReadOnly() {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.IElement#setForceReadOnly(boolean)
-     */
     @Override
     public void setForceReadOnly(boolean readOnly) {
 

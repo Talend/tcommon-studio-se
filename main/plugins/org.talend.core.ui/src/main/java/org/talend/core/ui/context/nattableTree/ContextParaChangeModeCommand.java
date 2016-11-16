@@ -70,11 +70,6 @@ public class ContextParaChangeModeCommand extends Command {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.gef.commands.Command#undo()
-     */
     @Override
     public void undo() {
     }

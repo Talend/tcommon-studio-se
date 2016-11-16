@@ -140,22 +140,12 @@ public class TableToTreeLinker<D1, D2> extends BgDrawableComposite implements IB
         return this.drawingLinksComparator;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.drawing.link.BackgroundRefresher#drawBackground(org.eclipse.swt.graphics.GC)
-     */
     @Override
     public void drawBackground(GC gc) {
 
         if (gc == null) {
             return;
         }
-
-        // TimeMeasure.measureActive = true;
-        // TimeMeasure.display = true;
-        //
-        // TimeMeasure.begin("drawBackground");
 
         List<LinkDescriptor<Item, D1, Tree, D2>> links = linksManager.getLinks();
         int lstSize = links.size();

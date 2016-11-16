@@ -90,9 +90,6 @@ public class LookupPaintScale
             this.paint = paint;
         }
 
-        /* (non-Javadoc)
-         * @see java.lang.Comparable#compareTo(java.lang.Object)
-         */
         public int compareTo(Object obj) {
             PaintItem that = (PaintItem) obj;
             double d1 = this.value;

@@ -43,11 +43,6 @@ import org.eclipse.emf.ecore.util.NotifyingInternalEListImpl;
  */
 public class TalendResourceSet extends ResourceSetImpl {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.emf.ecore.resource.impl.ResourceSetImpl#getResources()
-     */
     @Override
     public EList<Resource> getResources() {
         if (resources == null) {
@@ -56,11 +51,6 @@ public class TalendResourceSet extends ResourceSetImpl {
         return resources;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.emf.ecore.resource.impl.ResourceSetImpl#getResource(org.eclipse.emf.common.util.URI, boolean)
-     */
     @Override
     public Resource getResource(URI uri, boolean loadOnDemand) {
         Map<URI, Resource> map = getURIResourceMap();
@@ -126,11 +116,6 @@ public class TalendResourceSet extends ResourceSetImpl {
     private class SynchronizedResourcesEList<E extends Object & Resource> extends NotifyingInternalEListImpl<E> implements
             InternalEList<E> {
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.emf.common.util.AbstractEList#add(java.lang.Object)
-         */
         @Override
         public synchronized boolean add(E object) {
             if (object == null) {
@@ -139,51 +124,26 @@ public class TalendResourceSet extends ResourceSetImpl {
             return super.add(object);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.emf.common.util.AbstractEList#add(int, java.lang.Object)
-         */
         @Override
         public synchronized void add(int index, E object) {
             super.add(index, object);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.emf.common.util.AbstractEList#addAll(java.util.Collection)
-         */
         @Override
         public synchronized boolean addAll(Collection<? extends E> collection) {
             return super.addAll(collection);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.emf.common.util.AbstractEList#addAll(int, java.util.Collection)
-         */
         @Override
         public synchronized boolean addAll(int index, Collection<? extends E> collection) {
             return super.addAll(index, collection);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.emf.common.util.AbstractEList#remove(java.lang.Object)
-         */
         @Override
         public synchronized boolean remove(Object object) {
             return super.remove(object);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.emf.common.util.AbstractEList#move(int, java.lang.Object)
-         */
         @Override
         public synchronized void move(int index, E object) {
             super.move(index, object);

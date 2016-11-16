@@ -59,11 +59,6 @@ public class OpenWorkspaceAction extends Action implements ActionFactory.IWorkbe
             setToolTipText(Messages.getString("WorkspaceMnu.choose.tooltip"));//$NON-NLS-1$
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.jface.action.Action#run()
-         */
         @Override
         public void run() {
             OpenWorkspaceAction.this.run();
@@ -91,11 +86,6 @@ public class OpenWorkspaceAction extends Action implements ActionFactory.IWorkbe
             this.data = data;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.jface.action.Action#run()
-         */
         @Override
         public void run() {
             data.workspaceSelected(location);
@@ -168,22 +158,12 @@ public class OpenWorkspaceAction extends Action implements ActionFactory.IWorkbe
                 }
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.jface.action.IMenuCreator#getMenu(org.eclipse.swt.widgets.Control)
-             */
             @Override
             public Menu getMenu(Control parent) {
                 createDropDownMenuMgr();
                 return dropDownMenuMgr.createContextMenu(parent);
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.jface.action.IMenuCreator#getMenu(org.eclipse.swt.widgets.Menu)
-             */
             @Override
             public Menu getMenu(Menu parent) {
                 createDropDownMenuMgr();
@@ -199,11 +179,6 @@ public class OpenWorkspaceAction extends Action implements ActionFactory.IWorkbe
                 return menu;
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.jface.action.IMenuCreator#dispose()
-             */
             @Override
             public void dispose() {
                 if (dropDownMenuMgr != null) {
@@ -214,11 +189,6 @@ public class OpenWorkspaceAction extends Action implements ActionFactory.IWorkbe
         });
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.action.Action#run()
-     */
     @Override
     public void run() {
         String path = promptForWorkspace();
@@ -328,11 +298,6 @@ public class OpenWorkspaceAction extends Action implements ActionFactory.IWorkbe
         return result.toString();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.action.Action#dispose()
-     */
     @Override
     public void dispose() {
         window = null;

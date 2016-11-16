@@ -272,13 +272,6 @@ public abstract class AbstractLibrariesService implements ILibrariesService {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.general.ILibrariesService#resetModulesNeededForCurrentJob(org.talend.core.model.properties
-     * .Item)
-     */
     @Override
     public void updateModulesNeededForCurrentJob(IProcess process) {
         ModulesNeededProvider.resetCurrentJobNeededModuleList(process);

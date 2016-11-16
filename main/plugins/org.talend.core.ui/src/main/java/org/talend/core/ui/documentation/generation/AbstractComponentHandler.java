@@ -45,16 +45,9 @@ import org.talend.repository.documentation.generation.IComponentHandler;
 
 /**
  * This abstract class is defined some common methods for generation HTML. <br/>
- * 
  */
 public abstract class AbstractComponentHandler implements IComponentHandler {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.wizards.genHTMLDoc.IComponentHandler#generateComponentInfo(org.dom4j.Element,
-     * java.util.List)
-     */
     public abstract void generateComponentInfo();
 
     /**

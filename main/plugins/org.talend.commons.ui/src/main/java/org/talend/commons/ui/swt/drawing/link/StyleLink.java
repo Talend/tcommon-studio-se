@@ -261,11 +261,6 @@ public class StyleLink implements IStyleLink {
         this.lineWidth = lineWidth;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.drawing.link.IStyleLink#apply(org.eclipse.swt.graphics.GC)
-     */
     public void apply(GC gc) {
         if (getForegroundColor() != null) {
             gc.setForeground(getForegroundColor());

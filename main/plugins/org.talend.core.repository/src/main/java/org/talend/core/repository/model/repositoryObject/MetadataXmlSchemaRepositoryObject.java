@@ -170,11 +170,6 @@ public class MetadataXmlSchemaRepositoryObject extends MetadataXmlSchema impleme
         return this.tdXmlSchema;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryViewObject#isModified()
-     */
     @Override
     public boolean isModified() {
         return viewObject.isModified();

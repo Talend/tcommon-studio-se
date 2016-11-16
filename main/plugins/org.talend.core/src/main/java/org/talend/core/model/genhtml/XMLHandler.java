@@ -44,11 +44,6 @@ public class XMLHandler {
             OutputFormat format = OutputFormat.createPrettyPrint();
             output = new XMLWriter(writer, format) {
 
-                /*
-                 * (non-Javadoc)
-                 * 
-                 * @see org.dom4j.io.XMLWriter#writeDeclaration()
-                 */
                 @Override
                 protected void writeDeclaration() throws IOException {
                     OutputFormat formatTmp = this.getOutputFormat();

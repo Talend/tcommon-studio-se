@@ -35,44 +35,22 @@ public class EmptyColumnContextAccessor<R> implements IColumnPropertyAccessor<R>
         return propertyNames.size();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.nebula.widgets.nattable.data.IColumnAccessor#getDataValue(java.lang.Object, int)
-     */
     @Override
     public Object getDataValue(R arg0, int arg1) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.nebula.widgets.nattable.data.IColumnAccessor#setDataValue(java.lang.Object, int,
-     * java.lang.Object)
-     */
     @Override
     public void setDataValue(R arg0, int arg1, Object arg2) {
         // TODO Auto-generated method stub
-
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.nebula.widgets.nattable.data.IColumnPropertyResolver#getColumnIndex(java.lang.String)
-     */
     @Override
     public int getColumnIndex(String propertyName) {
         return propertyNames.indexOf(propertyName);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.nebula.widgets.nattable.data.IColumnPropertyResolver#getColumnProperty(int)
-     */
     @Override
     public String getColumnProperty(int arg0) {
         // TODO Auto-generated method stub

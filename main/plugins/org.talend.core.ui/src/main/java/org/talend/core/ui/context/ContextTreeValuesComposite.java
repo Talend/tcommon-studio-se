@@ -205,12 +205,6 @@ public class ContextTreeValuesComposite extends AbstractContextTabEditComposite 
     protected void createTreeTooltip(Tree tree) {
         new AbstractTreeTooltip(tree) {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see
-             * org.talend.commons.ui.swt.tooltip.AbstractTreeTooltip#getTooltipContent(org.eclipse.swt.widgets.TreeItem)
-             */
             @Override
             public String getTooltipContent(TreeItem item) {
 
@@ -226,11 +220,6 @@ public class ContextTreeValuesComposite extends AbstractContextTabEditComposite 
 
     }
 
-    /**
-     * DOC bqian Comment method "addSorter".
-     * 
-     * @param viewer2
-     */
     private void addSorter(final TreeViewer viewer2) {
         final Tree table = viewer2.getTree();
         Listener sortListener = new Listener() {
@@ -506,11 +495,6 @@ public class ContextTreeValuesComposite extends AbstractContextTabEditComposite 
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.context.AbstractContextTabEditComposite#isGroupBySource()
-     */
     @Override
     public boolean isGroupBySource() {
         return false;

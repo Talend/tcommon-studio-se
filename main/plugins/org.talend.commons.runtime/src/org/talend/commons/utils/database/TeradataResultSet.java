@@ -26,11 +26,6 @@ public class TeradataResultSet extends FakeResultSet {
 
     int index = -1;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeResultSet#next()
-     */
     @Override
     public boolean next() throws SQLException {
         if (data == null || data.size() == 0 || index >= data.size() - 1) {
@@ -49,11 +44,6 @@ public class TeradataResultSet extends FakeResultSet {
         return -1;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeResultSet#getString(java.lang.String)
-     */
     @Override
     public String getString(String columnLabel) throws SQLException {
         int columnIndex = indexOf(columnLabel, tableMeta);
@@ -65,11 +55,6 @@ public class TeradataResultSet extends FakeResultSet {
         return getString(columnIndex + 1);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeResultSet#getInt(java.lang.String)
-     */
     @Override
     public int getInt(String columnLabel) throws SQLException {
         String str = getString(columnLabel);
@@ -87,22 +72,12 @@ public class TeradataResultSet extends FakeResultSet {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeResultSet#getBoolean(java.lang.String)
-     */
     @Override
     public boolean getBoolean(String columnLabel) throws SQLException {
         String str = getString(columnLabel);
         return Boolean.parseBoolean(str);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeResultSet#getString(int)
-     */
     @Override
     public String getString(int columnIndex) throws SQLException {
         String[] row = data.get(index);
@@ -114,19 +89,11 @@ public class TeradataResultSet extends FakeResultSet {
         return row[columnIndex];
     }
 
-    /**
-     * 
-     * @param table_meta
-     */
     public void setMetadata(String[] tableMeta) {
         this.tableMeta = tableMeta;
 
     }
 
-    /**
-     * 
-     * @param tables
-     */
     public void setData(List<String[]> data) {
         this.data = data;
     }

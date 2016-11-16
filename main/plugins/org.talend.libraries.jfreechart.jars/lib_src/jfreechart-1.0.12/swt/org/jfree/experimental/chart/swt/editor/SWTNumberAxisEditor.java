@@ -195,18 +195,10 @@ class SWTNumberAxisEditor extends SWTAxisEditor implements FocusListener {
         return valid;
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.swt.events.FocusListener#focusGained(
-     * org.eclipse.swt.events.FocusEvent)
-     */
     public void focusGained(FocusEvent e) {
         // don't need to do anything
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.swt.events.FocusListener#focusLost(
-     * org.eclipse.swt.events.FocusEvent)
-     */
     public void focusLost(FocusEvent e) {
         if (e.getSource() == this.minimumRangeValue) {
             // verify min value

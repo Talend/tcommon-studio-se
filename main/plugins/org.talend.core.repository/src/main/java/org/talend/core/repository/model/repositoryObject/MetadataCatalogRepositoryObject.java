@@ -197,11 +197,6 @@ public class MetadataCatalogRepositoryObject extends MetadataCatalog implements 
         return this.catalog;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryViewObject#isModified()
-     */
     @Override
     public boolean isModified() {
         return viewObject.isModified();

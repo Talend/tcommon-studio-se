@@ -42,11 +42,6 @@ public abstract class AbstractRepositoryEditorInputLinker extends AbstractRepoVi
         return repositoryNode;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.repository.link.IRepoViewLinker#isRelation(org.eclipse.ui.IEditorInput, java.lang.String)
-     */
     @Override
     public boolean isRelation(IEditorInput editorInput, String repoNodeId) {
         // only work for IRepositoryEditorInput

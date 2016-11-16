@@ -93,11 +93,6 @@ public class ModuleListDialog extends Dialog {
         newShell.setText(Messages.getString("ModuleListCellEditor.title")); //$NON-NLS-1$
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.Dialog#create()
-     */
     @Override
     public void create() {
         super.create();

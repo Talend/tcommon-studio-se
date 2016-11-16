@@ -39,22 +39,12 @@ public class CustomMapThreadPoolExecutor extends TalendCustomThreadPoolExecutor 
         super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, handler);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.util.concurrent.ThreadPoolExecutor#afterExecute(java.lang.Runnable, java.lang.Throwable)
-     */
     @Override
     protected void afterExecute(Runnable r, Throwable t) {
         AbsRetrieveColumnRunnable runnable = (AbsRetrieveColumnRunnable) r;
         map.remove(runnable.getColumnObject());
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.util.concurrent.ThreadPoolExecutor#beforeExecute(java.lang.Thread, java.lang.Runnable)
-     */
     @Override
     protected void beforeExecute(Thread t, Runnable r) {
         AbsRetrieveColumnRunnable runnable = (AbsRetrieveColumnRunnable) r;

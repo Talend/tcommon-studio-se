@@ -66,11 +66,6 @@ public class RenameFolderAction extends AContextualAction {
         this.setImageDescriptor(ImageProvider.getImageDesc(ECoreImage.FOLDER_CLOSE_ICON));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
-     */
     @Override
     protected void doRun() {
         ISelection selection = getSelection();
@@ -119,12 +114,6 @@ public class RenameFolderAction extends AContextualAction {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.actions.ITreeContextualAction#init(org.eclipse.jface.viewers.TreeViewer,
-     * org.eclipse.jface.viewers.IStructuredSelection)
-     */
     @Override
     public void init(TreeViewer viewer, IStructuredSelection selection) {
         boolean canWork = !selection.isEmpty() && selection.size() == 1;

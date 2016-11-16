@@ -62,11 +62,6 @@ public class DialogCellEditorForContext extends CustomDialogCellEditor {
         this.tableViewerCreator = tableViewerCreatorColumn.getTableViewerCreator();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.CellEditor#activate()
-     */
     @Override
     public void activate() {
         super.activate();
@@ -107,24 +102,6 @@ public class DialogCellEditorForContext extends CustomDialogCellEditor {
                     }
                     button.setVisible(true);
                     disposeCheck();
-                    // } else if (type.equals(JavaTypesManager.BOOLEAN.getId())) {
-                    // dialog = null;
-                    // button.setVisible(false);
-                    // combo = new CCombo(table, SWT.FLAT);
-                    // combo.setItems(new String[] { "false", "true" });
-                    // combo.addFocusListener(new FocusAdapter() {
-                    //
-                    // /*
-                    // * (non-Javadoc)
-                    // *
-                    // * @see org.eclipse.swt.events.FocusAdapter#focusLost(org.eclipse.swt.events.FocusEvent)
-                    // */
-                    // @Override
-                    // public void focusLost(FocusEvent e) {
-                    // combo.dispose();
-                    // }
-                    // });
-                    // editor.setEditor(combo, item, 4);
                 } else {
                     dialog = null;
                     button.setVisible(false);
@@ -135,9 +112,6 @@ public class DialogCellEditorForContext extends CustomDialogCellEditor {
         }
     }
 
-    /**
-     * qzhang Comment method "disposeCheck".
-     */
     private void disposeCheck() {
         if (combo != null && !combo.isDisposed()) {
             combo.dispose();
@@ -145,11 +119,6 @@ public class DialogCellEditorForContext extends CustomDialogCellEditor {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.DialogCellEditor#openDialogBox(org.eclipse.swt.widgets.Control)
-     */
     @Override
     protected Object openDialogBox(Control cellEditorWindow) {
         String path = ""; //$NON-NLS-1$

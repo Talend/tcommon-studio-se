@@ -95,21 +95,6 @@ public class TypedTextCommandExecutor {
 
     };
 
-    // private final ModifyListener modifyListener = new ModifyListener() {
-    //
-    // /*
-    // * (non-Javadoc)
-    // *
-    // * @see org.eclipse.swt.events.ModifyListener#modifyText(org.eclipse.swt.events.ModifyEvent)
-    // */
-    // public void modifyText(ModifyEvent e) {
-    // if (isModifyFromMouse) {
-    // modifyExecute(e);
-    // }
-    // }
-    //
-    // };
-
     protected void modifyExecute(TypedEvent e) {
         Object source = e.getSource();
         if (source instanceof MenuItem) {
@@ -129,21 +114,12 @@ public class TypedTextCommandExecutor {
 
     private Perl5Matcher matcher;
 
-    /**
-     * DOC amaumont TypedTextCommandExecutor constructor comment.
-     * 
-     * @param stack
-     */
     public TypedTextCommandExecutor() {
         super();
         init();
     }
 
-    /**
-     * DOC amaumont Comment method "init".
-     */
     private void init() {
-
         Perl5Compiler compiler = new Perl5Compiler();
         matcher = new Perl5Matcher();
         patternAlphaNum = null;

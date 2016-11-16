@@ -398,11 +398,6 @@ public class ModuleNeeded {
         this.moduleLocaion = moduleLocaion;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         int hashCode = 31;
@@ -421,11 +416,6 @@ public class ModuleNeeded {
         return hashCode;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -535,20 +525,10 @@ public class ModuleNeeded {
         return mavenUri;
     }
 
-    /**
-     * Getter for mavenUriSnapshot.
-     * 
-     * @return the mavenUriSnapshot
-     */
     public String getMavenUri() {
         return getMavenUri(false);
     }
 
-    /**
-     * Sets the mavenUrl.
-     * 
-     * @param mavenUrl the mavenUrl to set
-     */
     public void setMavenUri(String mavenUri) {
         this.mavenUri = addTypeForMavenUri(mavenUri, getModuleName());
     }

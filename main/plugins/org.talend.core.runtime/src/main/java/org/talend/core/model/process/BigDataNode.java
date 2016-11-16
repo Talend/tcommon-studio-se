@@ -309,19 +309,11 @@ public class BigDataNode extends AbstractNode implements IBigDataNode {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.IBigDataNode#setKeyList(java.lang.String, java.util.List)
-     */
     @Override
     public void setKeyList(String direction, List<IMetadataColumn> colList) {
         this.keyList.put(direction, colList);
     }
 
-    /*
-     * @see org.talend.core.model.process.IBigDataNode#getKeyList()
-     */
     @Override
     public Map<String, List<IMetadataColumn>> getKeyList() {
         return keyList;

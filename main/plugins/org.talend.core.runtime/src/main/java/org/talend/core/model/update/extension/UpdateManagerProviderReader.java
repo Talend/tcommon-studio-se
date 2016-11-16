@@ -150,11 +150,6 @@ public class UpdateManagerProviderReader extends RegistryReader {
         return providers;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.utils.RegistryReader#readElement(org.eclipse.core.runtime.IConfigurationElement)
-     */
     @Override
     protected boolean readElement(final IConfigurationElement element) {
         if ("UpdateItemType".equals(element.getName())) { //$NON-NLS-1$

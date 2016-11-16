@@ -63,11 +63,6 @@ public class AddContextGroupRelationCommand extends Command {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.gef.commands.Command#undo()
-     */
     @Override
     public void undo() {
         String sourceId = originaParam.getSource();

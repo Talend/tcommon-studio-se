@@ -49,63 +49,28 @@ public abstract class AbstractExtremityDrawableLink implements IExtremityDrawabl
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.drawing.link.ITipLink#draw(org.eclipse.swt.graphics.GC)
-     */
     public abstract void draw(GC gc, Point point);
 
-    /**
-     * Getter for styleLink.
-     * 
-     * @return the styleLink
-     */
     public IStyleLink getStyleLink() {
         return this.styleLink;
     }
 
-    /**
-     * Sets the styleLink.
-     * 
-     * @param styleLink the styleLink to set
-     */
     public void setStyleLink(IStyleLink styleLink) {
         this.styleLink = styleLink;
     }
 
-    /**
-     * Getter for xOffset.
-     * 
-     * @return the xOffset
-     */
     public int getXOffset() {
         return this.xOffset;
     }
 
-    /**
-     * Sets the xOffset.
-     * 
-     * @param offset the xOffset to set
-     */
     public void setXOffset(int offset) {
         this.xOffset = offset;
     }
 
-    /**
-     * Getter for yOffset.
-     * 
-     * @return the yOffset
-     */
     public int getYOffset() {
         return this.yOffset;
     }
 
-    /**
-     * Sets the yOffset.
-     * 
-     * @param offset the yOffset to set
-     */
     public void setYOffset(int offset) {
         this.yOffset = offset;
     }

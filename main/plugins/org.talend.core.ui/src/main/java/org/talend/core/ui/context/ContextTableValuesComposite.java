@@ -193,12 +193,6 @@ public class ContextTableValuesComposite extends AbstractContextTabEditComposite
     protected void createTreeTooltip(final Tree tree) {
         new AbstractTreeTooltip(tree) {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see
-             * org.talend.commons.ui.swt.tooltip.AbstractTreeTooltip#getTooltipContent(org.eclipse.swt.widgets.TreeItem)
-             */
             @Override
             public String getTooltipContent(TreeItem item) {
 

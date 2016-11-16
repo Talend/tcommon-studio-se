@@ -74,11 +74,6 @@ public class GroupByNothingTableProvider extends ContextProviderProxy {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnText(java.lang.Object, int)
-     */
     public String getColumnText(Object element, int columnIndex) {
         if (element instanceof ContextTableTabParentModel) {
             ContextTableTabParentModel parent = (ContextTableTabParentModel) element;
@@ -95,21 +90,11 @@ public class GroupByNothingTableProvider extends ContextProviderProxy {
         return ""; //$NON-NLS-1$
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.context.ConextTreeValuesComposite.ProviderProxy#getColumnImage(java.lang.Object, int)
-     */
     @Override
     public Image getColumnImage(Object element, int columnIndex) {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
-     */
     public Object[] getElements(Object inputElement) {
         List<IContextParameter> contexts = (List<IContextParameter>) inputElement;
         List<ContextTableTabParentModel> output = new ArrayList<ContextTableTabParentModel>();
@@ -123,11 +108,6 @@ public class GroupByNothingTableProvider extends ContextProviderProxy {
         return output.toArray();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
-     */
     public Object[] getChildren(Object parentElement) {
         if (parentElement instanceof ContextTableTabParentModel) {
             ContextTableTabParentModel parent = (ContextTableTabParentModel) parentElement;
@@ -136,11 +116,6 @@ public class GroupByNothingTableProvider extends ContextProviderProxy {
         return new Object[0];
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object)
-     */
     public Object getParent(Object element) {
         if (element instanceof ContextTableTabChildModel) {
             ContextTableTabChildModel child = (ContextTableTabChildModel) element;
@@ -149,11 +124,6 @@ public class GroupByNothingTableProvider extends ContextProviderProxy {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.Object)
-     */
     public boolean hasChildren(Object element) {
         if (element instanceof ContextTableTabParentModel) {
             ContextTableTabParentModel parent = (ContextTableTabParentModel) element;
@@ -162,21 +132,11 @@ public class GroupByNothingTableProvider extends ContextProviderProxy {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ITableColorProvider#getForeground(java.lang.Object, int)
-     */
     public Color getForeground(Object element, int columnIndex) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ITableColorProvider#getBackground(java.lang.Object, int)
-     */
     public Color getBackground(Object element, int columnIndex) {
         if (element instanceof ContextTableTabParentModel) {
             ContextTableTabParentModel parent = (ContextTableTabParentModel) element;

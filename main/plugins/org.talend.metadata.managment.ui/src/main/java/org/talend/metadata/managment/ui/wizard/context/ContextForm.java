@@ -52,48 +52,25 @@ public class ContextForm extends AbstractForm {
         jobContext.refresh();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addFieldsListeners()
-     */
     @Override
     protected void addFieldsListeners() {
         // TODO Auto-generated method stub
-
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#addUtilsButtonListeners()
-     */
     @Override
     protected void addUtilsButtonListeners() {
         // TODO Auto-generated method stub
-
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#checkFieldsValue()
-     */
     @Override
     protected boolean checkFieldsValue() {
         // TODO Auto-generated method stub
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.swt.utils.AbstractForm#initialize()
-     */
     @Override
     protected void initialize() {
         // TODO Auto-generated method stub
-
     }
 
 }

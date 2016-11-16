@@ -47,12 +47,6 @@ public abstract class ComboEditorValueAdapter extends CellEditorValueAdapter {
         return -1;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.tableviewer.behavior.CellEditorValueAdapter#getColumnText(org.eclipse.jface.viewers.CellEditor,
-     * java.lang.Object)
-     */
     @Override
     public String getColumnText(CellEditor cellEditor, Object bean, Object originalTypedValue) {
         String displayedValue = super.getColumnText(cellEditor, bean, originalTypedValue);

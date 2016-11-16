@@ -23,38 +23,18 @@ public class Query implements Cloneable {
 
     private IMetadataConnection parent;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.core.model.metadata.IMetadataTable#getTableName()
-     */
     public String getTableName() {
         return this.queryName;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.core.model.metadata.IMetadataTable#setTableName(java.lang.String)
-     */
     public void setTableName(String tableName) {
         this.queryName = tableName;
     }
 
-    /**
-     * Getter for parent.
-     * 
-     * @return the parent
-     */
     public IMetadataConnection getParent() {
         return this.parent;
     }
 
-    /**
-     * Sets the parent.
-     * 
-     * @param parent the parent to set
-     */
     public void setParent(IMetadataConnection parent) {
         this.parent = parent;
     }

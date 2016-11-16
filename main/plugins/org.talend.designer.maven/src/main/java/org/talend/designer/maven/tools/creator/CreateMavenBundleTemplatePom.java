@@ -138,22 +138,12 @@ public class CreateMavenBundleTemplatePom extends CreateMaven {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.maven.project.CreateMaven#create(org.eclipse.core.runtime.IProgressMonitor)
-     */
     @Override
     public void create(IProgressMonitor monitor) throws Exception {
         IFile curPomFile = getPomFile();
         if (curPomFile == null) {
             return;
         }
-        // if (!curPomFile.getName().equals(MavenConstants.POM_FILE_NAME)) {
-        // throw new IOException("Must be pom.xml, shouldn't be specially like: " + curPomFile);
-        // }
-
-        // curPomFile.getParent().refreshLocal(IResource.DEPTH_ONE, monitor);
 
         try {
             checkCreatingFile(monitor, curPomFile);

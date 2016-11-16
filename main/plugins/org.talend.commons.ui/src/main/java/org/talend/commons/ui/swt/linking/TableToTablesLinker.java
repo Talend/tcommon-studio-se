@@ -122,11 +122,6 @@ public class TableToTablesLinker<D1, D2> extends BgDrawableComposite implements 
         return this.drawingLinksComparator;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.drawing.link.BackgroundRefresher#drawBackground(org.eclipse.swt.graphics.GC)
-     */
     @Override
     public void drawBackground(GC gc) {
 

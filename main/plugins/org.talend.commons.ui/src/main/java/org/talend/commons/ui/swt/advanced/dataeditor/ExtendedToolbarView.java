@@ -251,11 +251,6 @@ public class ExtendedToolbarView extends AbstractExtendedToolbar {
         return selectContextVariablesButton;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.advanced.dataeditor.AbstractExtendedToolbar#updateEnabledStateOfButtons()
-     */
     @Override
     public void updateEnabledStateOfButtons() {
         List<ExtendedPushButton> buttons = getButtons();
@@ -264,11 +259,6 @@ public class ExtendedToolbarView extends AbstractExtendedToolbar {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.advanced.dataeditor.AbstractExtendedToolbar#getButtons()
-     */
     @Override
     public List<ExtendedPushButton> getButtons() {
 

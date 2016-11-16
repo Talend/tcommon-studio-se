@@ -73,11 +73,6 @@ public class DocumentationUpdateWizard extends CheckLastVersionRepositoryWizard 
         initLockStrategy();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.wizard.Wizard#addPages()
-     */
     @Override
     public void addPages() {
         mainPage = new DocumentationPage(docItem.getProperty(), pathToSave);
@@ -87,11 +82,6 @@ public class DocumentationUpdateWizard extends CheckLastVersionRepositoryWizard 
         addPage(mainPage);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.wizard.Wizard#performCancel()
-     */
     @Override
     public boolean performCancel() {
         docItem.getProperty().setDisplayName(mainPage.getOrignalName());
@@ -102,11 +92,6 @@ public class DocumentationUpdateWizard extends CheckLastVersionRepositoryWizard 
         return super.performCancel();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.wizard.Wizard#performFinish()
-     */
     @Override
     public boolean performFinish() {
         boolean updated = false;
@@ -187,47 +172,22 @@ public class DocumentationUpdateWizard extends CheckLastVersionRepositoryWizard 
         return updated;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.wizards.IDocumentationContext#getDocFilePath()
-     */
     public IPath getDocFilePath() {
         return docFilePath;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.wizards.IDocumentationContext#setDocFilePath(org.eclipse.core.runtime.IPath)
-     */
     public void setDocFilePath(IPath docFilePath) {
         this.docFilePath = docFilePath;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.wizards.IDocumentationContext#isDocNameEditable()
-     */
     public boolean isDocNameEditable() {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.wizards.IDocumentationContext#isDocVersionEditable()
-     */
     public boolean isDocVersionEditable() {
         return true;
     }
 
-    /**
-     * Getter for docOriginalExtension.
-     * 
-     * @return the docOriginalExtension
-     */
     public String getDocOriginalExtension() {
         if (getDocFilePath() != null) {
             return LinkUtils.DOT + getDocFilePath().getFileExtension();

@@ -75,11 +75,6 @@ public class RepositoryObject implements IRepositoryObject {
         this.setLabel(label);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof RepositoryObject)) {
@@ -93,11 +88,6 @@ public class RepositoryObject implements IRepositoryObject {
         return getProperty().equals(another.getProperty());
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         if (this.getProperty() != null) {
@@ -341,33 +331,17 @@ public class RepositoryObject implements IRepositoryObject {
         return object;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryObject#getRepositoryNode()
-     */
     @Override
     public IRepositoryNode getRepositoryNode() {
         return this.repositoryNode;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.repository.IRepositoryObject#setRepositoryNode(org.talend.repository.model.RepositoryNode)
-     */
     @Override
     public void setRepositoryNode(IRepositoryNode node) {
         this.repositoryNode = node;
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryViewObject#isDeleted()
-     */
     @Override
     public boolean isDeleted() {
         if (getProperty().getItem() == null) {
@@ -376,32 +350,17 @@ public class RepositoryObject implements IRepositoryObject {
         return getProperty().getItem().getState().isDeleted();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryViewObject#getProjectLabel()
-     */
     @Override
     public String getProjectLabel() {
         org.talend.core.model.properties.Project emfproject = ProjectManager.getInstance().getProject(property.getItem());
         return emfproject.getLabel();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryViewObject#getPath()
-     */
     @Override
     public String getPath() {
         return getProperty().getItem().getState().getPath();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryViewObject#getInformationStatus()
-     */
     @Override
     public ERepositoryStatus getInformationStatus() {
 
@@ -411,11 +370,6 @@ public class RepositoryObject implements IRepositoryObject {
         return factory.getStatus(informationLevel);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryViewObject#getRepositoryStatus()
-     */
     @Override
     public ERepositoryStatus getRepositoryStatus() {
         IService service = GlobalServiceRegister.getDefault().getService(IProxyRepositoryService.class);
@@ -423,11 +377,6 @@ public class RepositoryObject implements IRepositoryObject {
         return factory.getStatus(property.getItem());
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryViewObject#throwPersistenceExceptionIfAny()
-     */
     public void throwPersistenceExceptionIfAny() throws PersistenceException {
         // can't have any exception here...
     }
@@ -455,11 +404,6 @@ public class RepositoryObject implements IRepositoryObject {
         property = null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryViewObject#isModified()
-     */
     @Override
     public boolean isModified() {
         IService service = GlobalServiceRegister.getDefault().getService(IProxyRepositoryService.class);

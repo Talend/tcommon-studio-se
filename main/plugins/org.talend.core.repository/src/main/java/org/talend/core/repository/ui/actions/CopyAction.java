@@ -46,11 +46,6 @@ public class CopyAction extends AContextualAction {
         return singleton;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.action.Action#isEnabled()
-     */
     @Override
     public boolean isEnabled() {
         return super.isEnabled();

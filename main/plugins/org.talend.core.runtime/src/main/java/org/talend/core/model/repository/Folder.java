@@ -81,25 +81,9 @@ public class Folder extends RepositoryObject implements IRepositoryObject {
     @Override
     public List<IRepositoryViewObject> getChildren() {
         List<IRepositoryViewObject> toReturn = new ArrayList<IRepositoryViewObject>();
-        // disable the code for now, will return an empty list.
-        // in all case the code before must have some classcast exception since the children of folder can be something
-        // else than folder item !!
-
-        // FolderItem folderItem = (FolderItem) getProperty().getItem();
-        //
-        // for (Object current : folderItem.getChildren()) {
-        // IRepositoryObject currentChild = new Folder(((FolderItem) current).getProperty(), getContentType());
-        // toReturn.add(currentChild);
-        // }
-
         return toReturn;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.RepositoryObject#getProperty()
-     */
     @Override
     public Property getProperty() {
         if (this.projectLabel == null) {

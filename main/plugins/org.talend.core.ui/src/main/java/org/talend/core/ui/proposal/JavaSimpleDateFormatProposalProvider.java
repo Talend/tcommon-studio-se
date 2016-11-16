@@ -50,13 +50,7 @@ public class JavaSimpleDateFormatProposalProvider implements IContentProposalPro
         // Z Time zone RFC 822 time zone -0800
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.fieldassist.IContentProposalProvider#getProposals(java.lang.String, int)
-     */
     public IContentProposal[] getProposals(String contents, int position) {
-
         IContentProposal[] cp = new IContentProposal[] {
                 new DateFormatContentProposal(
                         "\"dd-MM-yyyy\" : common format", "dd-MM-yyyy", "Date\n Examples : \n  01-01-2007\n  31-12-2007"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$

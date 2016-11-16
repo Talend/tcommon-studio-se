@@ -30,11 +30,6 @@ public abstract class TableEditorContentNotModifiable {
     public TableEditor createTableEditor(final Table table) {
         return new TableEditor(table) {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.swt.custom.TableEditor#layout()
-             */
             @Override
             public void layout() {
                 if (layoutEnabled) {

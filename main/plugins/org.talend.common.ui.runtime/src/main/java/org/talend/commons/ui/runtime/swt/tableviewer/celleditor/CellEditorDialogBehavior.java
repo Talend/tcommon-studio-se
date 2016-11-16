@@ -57,13 +57,6 @@ public class CellEditorDialogBehavior implements IExtendedCellEditorBehavior {
         this.extendedTextCellEditor = extendedTextCellEditor;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.designer.rowgenerator.ui.tabs.IExtendedCellEditorBehavior#createBehaviorControls(org.eclipse.swt.widgets
-     * .Composite)
-     */
     @Override
     public Control createBehaviorControls(Composite parent) {
 
@@ -97,11 +90,6 @@ public class CellEditorDialogBehavior implements IExtendedCellEditorBehavior {
 
         button.addMouseListener(new MouseAdapter() {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.swt.events.MouseAdapter#mouseUp(org.eclipse.swt.events.MouseEvent)
-             */
             @Override
             public void mouseUp(MouseEvent e) {
                 if (cellEditorDialog != null) {

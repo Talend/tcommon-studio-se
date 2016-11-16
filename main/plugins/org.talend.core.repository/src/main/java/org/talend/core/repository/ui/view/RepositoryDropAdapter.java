@@ -202,11 +202,6 @@ public class RepositoryDropAdapter extends PluginDropAdapter {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.part.PluginDropAdapter#performDrop(java.lang.Object)
-     */
     @Override
     public boolean performDrop(final Object data) {
         int operation = getCurrentOperation();
@@ -363,11 +358,6 @@ public class RepositoryDropAdapter extends PluginDropAdapter {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.part.PluginDropAdapter#validateDrop(java.lang.Object, int, org.eclipse.swt.dnd.TransferData)
-     */
     @Override
     public boolean validateDrop(Object target, int operation, TransferData transferType) {
         if (target == null) {

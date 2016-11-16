@@ -562,11 +562,6 @@ public class MigrationToolService implements IMigrationToolService {
         });
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.migration.IMigrationToolService#initNewProjectTasks()
-     */
     @Override
     public void initNewProjectTasks(Project project) {
         List<IProjectMigrationTask> toExecute = GetTasksHelper.getProjectTasks(true);
@@ -581,12 +576,6 @@ public class MigrationToolService implements IMigrationToolService {
         saveProjectMigrationTasksDone(project, done);
     }
 
-    /**
-     * DOC smallet Comment method "saveProjectMigrationTasksDone".
-     * 
-     * @param project
-     * @param done
-     */
     private void saveProjectMigrationTasksDone(Project project, List<MigrationTask> done) {
         IRepositoryService service = (IRepositoryService) GlobalServiceRegister.getDefault().getService(IRepositoryService.class);
         IProxyRepositoryFactory repFactory = service.getProxyRepositoryFactory();
@@ -597,11 +586,6 @@ public class MigrationToolService implements IMigrationToolService {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.migration.IMigrationToolService#executeWorspaceTasks()
-     */
     @Override
     public void executeWorspaceTasks() {
         log.trace("Migration tool: workspace tasks"); //$NON-NLS-1$
@@ -652,11 +636,6 @@ public class MigrationToolService implements IMigrationToolService {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.migration.IMigrationToolService#initNewWorkspaceTasks()
-     */
     public void initNewWorkspaceTasks() {
         final ICoreService coreService = getCoreService();
         if (coreService == null) {
@@ -671,21 +650,11 @@ public class MigrationToolService implements IMigrationToolService {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.migration.IMigrationToolService#executeMigration()
-     */
     @Override
     public void executeMigration(boolean underPluginModel) {
         new AlertUserOnLogin().startup(underPluginModel);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.migration.IMigrationToolService#needExecutemigration()
-     */
     @Override
     public boolean needExecutemigration() {
         return !AlertUserOnLogin.executed;

@@ -40,11 +40,6 @@ public class VerticalRoundedCornerLink extends AbstractDrawableLink {
         this.radius = radius;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.drawing.link.AbstractDrawableLink#drawBody(org.eclipse.swt.graphics.GC)
-     */
     @Override
     protected void drawBody(GC gc) {
         boolean point1Above = point1.y > point2.y;

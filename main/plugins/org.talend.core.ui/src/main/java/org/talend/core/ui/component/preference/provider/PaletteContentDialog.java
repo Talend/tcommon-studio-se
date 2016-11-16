@@ -43,14 +43,8 @@ public class PaletteContentDialog extends Dialog {
         super(parentShell);
         setShellStyle(SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM | SWT.RESIZE);
         this.page = page;
-
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
-     */
     @Override
     protected void configureShell(Shell newShell) {
         super.configureShell(newShell);
@@ -58,11 +52,6 @@ public class PaletteContentDialog extends Dialog {
         newShell.setSize(400, 600);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
-     */
     @Override
     protected Control createDialogArea(Composite parent) {
         Composite composite = (Composite) super.createDialogArea(parent);
@@ -72,8 +61,6 @@ public class PaletteContentDialog extends Dialog {
     }
 
     /**
-     * yzhang Comment method "addViewer".
-     * 
      * @param parent
      */
     private void addTreeViewer(Composite parent) {
@@ -119,23 +106,12 @@ public class PaletteContentDialog extends Dialog {
         labelConnection.setText(Messages.getString("PaletteContentDialog.connection")); //$NON-NLS-1$
         Text textConnection = new Text(panel, SWT.BORDER);
         textConnection.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
     }
 
-    /**
-     * yzhang Comment method "getViewer".
-     * 
-     * @return
-     */
     public TreeViewer getViewer() {
         return this.viewer;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.Dialog#okPressed()
-     */
     @Override
     protected void okPressed() {
         page.setViewerInput(viewer.getSelection());

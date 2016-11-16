@@ -117,13 +117,6 @@ public class ToolbarTabbedPropertyTitle extends TabbedPropertyTitle {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.ui.internal.views.properties.tabbed.view.TabbedPropertyTitle#drawTitleBackground(org.eclipse.swt.
-     * events.PaintEvent)
-     */
     @Override
     protected void drawTitleBackground(PaintEvent e) {
         super.drawTitleBackground(e);

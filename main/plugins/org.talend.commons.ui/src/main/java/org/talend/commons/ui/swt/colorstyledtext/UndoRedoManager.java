@@ -186,12 +186,6 @@ public class UndoRedoManager {
             this.replacedText = replacedText;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.core.commands.operations.AbstractOperation#undo(org.eclipse.core.runtime.IProgressMonitor,
-         * org.eclipse.core.runtime.IAdaptable)
-         */
         public IStatus undo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
             isUndoing = true;
             styledText.replaceTextRange(startIndex, newText.length(), replacedText);
@@ -200,12 +194,6 @@ public class UndoRedoManager {
             return Status.OK_STATUS;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.core.commands.operations.AbstractOperation#redo(org.eclipse.core.runtime.IProgressMonitor,
-         * org.eclipse.core.runtime.IAdaptable)
-         */
         public IStatus redo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
             isUndoing = true;
             styledText.replaceTextRange(startIndex, replacedText.length(), newText);
@@ -214,13 +202,6 @@ public class UndoRedoManager {
             return Status.OK_STATUS;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.eclipse.core.commands.operations.AbstractOperation#execute(org.eclipse.core.runtime.IProgressMonitor,
-         * org.eclipse.core.runtime.IAdaptable)
-         */
         public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
             return Status.OK_STATUS;
         }

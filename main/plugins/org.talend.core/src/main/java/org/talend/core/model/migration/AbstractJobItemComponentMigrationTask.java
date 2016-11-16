@@ -41,13 +41,6 @@ public abstract class AbstractJobItemComponentMigrationTask extends AbstractJobM
 	/** FACTORY use to save item if changed in migration task. */
 	protected static final ProxyRepositoryFactory REPO_FACTORY = ProxyRepositoryFactory.getInstance();
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.talend.core.model.migration.AbstractItemMigrationTask#execute(org
-	 * .talend.core.model.properties.Item)
-	 */
 	@Override
 	final public ExecutionResult execute(Item item) {
 		ProcessType processType = getProcessType(item);

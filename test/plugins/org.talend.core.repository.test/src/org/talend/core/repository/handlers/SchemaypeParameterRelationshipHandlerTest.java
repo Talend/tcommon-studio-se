@@ -44,12 +44,6 @@ public class SchemaypeParameterRelationshipHandlerTest extends AbstractRepositor
         return RelationshipItemBuilder.SCHEMA_RELATION;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.repository.handlers.AbstractRepositoryTypeParameterRelationshipHandlerTest#
-     * getRepositoryTypeValuesValue()
-     */
     @Override
     protected String getRepositoryTypeValuesValue() {
         return "ABCyVUx8NF4EewOtnVeZxqg - metadata1";

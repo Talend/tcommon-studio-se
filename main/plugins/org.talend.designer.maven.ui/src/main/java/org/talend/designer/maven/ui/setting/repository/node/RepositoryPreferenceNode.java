@@ -65,11 +65,6 @@ public class RepositoryPreferenceNode extends PreferenceNode {
         return new EmptyProjectSettingPage();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.preference.PreferenceNode#getLabelImage()
-     */
     @Override
     public Image getLabelImage() {
         Image labelImage = super.getLabelImage();
@@ -80,11 +75,6 @@ public class RepositoryPreferenceNode extends PreferenceNode {
         return labelImage;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.preference.PreferenceNode#getLabelText()
-     */
     @Override
     public String getLabelText() {
         if (this.label != null) {
@@ -93,21 +83,11 @@ public class RepositoryPreferenceNode extends PreferenceNode {
         return super.getLabelText();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
         return this.getId();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -116,11 +96,6 @@ public class RepositoryPreferenceNode extends PreferenceNode {
         return result;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

@@ -120,9 +120,6 @@ public class ComboxCellEditorImproved extends CellEditor {
         populateComboBoxItems();
     }
 
-    /*
-     * (non-Javadoc) Method declared on CellEditor.
-     */
     protected Control createControl(Composite parent) {
 
         comboBox = new Combo(parent, getStyle());
@@ -176,9 +173,6 @@ public class ComboxCellEditorImproved extends CellEditor {
         return new Integer(selection);
     }
 
-    /*
-     * (non-Javadoc) Method declared on CellEditor.
-     */
     protected void doSetFocus() {
         comboBox.setFocus();
     }
@@ -256,22 +250,12 @@ public class ComboxCellEditorImproved extends CellEditor {
         deactivate();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.CellEditor#focusLost()
-     */
     protected void focusLost() {
         if (isActivated()) {
             applyEditorValueAndDeactivate();
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.CellEditor#keyReleaseOccured(org.eclipse.swt.events.KeyEvent)
-     */
     protected void keyReleaseOccured(KeyEvent keyEvent) {
         if (keyEvent.character == '\u001b') { // Escape character
             fireCancelEditor();
@@ -280,9 +264,6 @@ public class ComboxCellEditorImproved extends CellEditor {
         }
     }
 
-    /**
-     * DOC amaumont Comment method "widgetSelected".
-     */
     private void widgetSelected() {
         valueChanged(true, true);
     }

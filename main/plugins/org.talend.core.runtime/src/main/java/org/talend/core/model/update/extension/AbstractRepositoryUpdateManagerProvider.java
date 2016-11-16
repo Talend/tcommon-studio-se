@@ -52,12 +52,6 @@ public abstract class AbstractRepositoryUpdateManagerProvider implements IReposi
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.update.extension.IRepositoryUpdateManagerProvider#updateForRepository(IStructuredSelection)
-     */
     @Override
     public boolean updateForRepository(IStructuredSelection selection) {
         if (!needPropagate(selection)) {
@@ -81,12 +75,6 @@ public abstract class AbstractRepositoryUpdateManagerProvider implements IReposi
         return false;
     }
 
-    /**
-     * 
-     * DOC ggu Comment method "needPropagate".
-     * 
-     * @return
-     */
     @Override
     public boolean needPropagate(IStructuredSelection selection) {
         if (needForcePropagation(selection)) {

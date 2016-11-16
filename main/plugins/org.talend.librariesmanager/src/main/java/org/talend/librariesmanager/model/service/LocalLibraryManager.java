@@ -271,12 +271,6 @@ public class LocalLibraryManager implements ILibraryManagerService {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.IRepositoryBundleService#deploy(java.util.Collection,
-     * org.eclipse.core.runtime.IProgressMonitor[])
-     */
     @Override
     public void deploy(Collection<URI> jarFileUris, IProgressMonitor... monitorWrap) {
         if (jarFileUris == null || jarFileUris.size() == 0) {
@@ -333,11 +327,6 @@ public class LocalLibraryManager implements ILibraryManagerService {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.IRepositoryBundleService#retrieve(java.lang.String, java.lang.String)
-     */
     @Override
     public boolean retrieve(String jarNeeded, String pathToStore, IProgressMonitor... monitorWrap) {
         return retrieve(jarNeeded, pathToStore, true, monitorWrap);
@@ -636,23 +625,11 @@ public class LocalLibraryManager implements ILibraryManagerService {
         return allIsOK;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.IRepositoryBundleService#retrieve(java.util.Collection, java.lang.String,
-     * org.eclipse.core.runtime.IProgressMonitor[])
-     */
     @Override
     public boolean retrieve(Collection<String> jarsNeeded, String pathToStore, IProgressMonitor... monitorWrap) {
         return retrieve(jarsNeeded, pathToStore, true, monitorWrap);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ILibraryManagerService#retrieve(java.util.Set, java.lang.String,
-     * org.eclipse.core.runtime.IProgressMonitor[])
-     */
     @Override
     public boolean retrieve(Set<ModuleNeeded> modulesNeeded, String pathToStore, boolean showDialog,
             IProgressMonitor... monitorWrap) {
@@ -706,11 +683,6 @@ public class LocalLibraryManager implements ILibraryManagerService {
         return retrieve(jarNeeded, mavenUri, pathToStore, showDialog);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.IRepositoryBundleService#list(org.eclipse.core.runtime.IProgressMonitor[])
-     */
     @Override
     public Set<String> list(IProgressMonitor... monitorWrap) {
         if (!jarList.isEmpty() && !listToUpdate) {
@@ -971,11 +943,6 @@ public class LocalLibraryManager implements ILibraryManagerService {
         return libPath;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ILibraryManagerService#getJarPathFromMaven(java.lang.String)
-     */
     @Override
     public String getJarPathFromMaven(String jarNameOrMavenUri) {
         if (jarNameOrMavenUri == null) {
@@ -1025,12 +992,6 @@ public class LocalLibraryManager implements ILibraryManagerService {
         }
         return false;
     }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ILibraryManagerService#checkJarInstalledFromMaven(java.lang.String)
-     */
 
     @Override
     public boolean checkJarInstalledFromPlatform(String uriPath) {
@@ -1308,11 +1269,6 @@ public class LocalLibraryManager implements ILibraryManagerService {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ILibraryManagerService#deploy(java.util.Map, org.eclipse.core.runtime.IProgressMonitor[])
-     */
     @Override
     public void deploy(Map<String, String> libsToRelativePath, IProgressMonitor... monitorWrap) {
         EMap<String, String> jarsToRelative = LibrariesIndexManager.getInstance().getStudioLibIndex().getJarsToRelativePath();
@@ -1328,12 +1284,6 @@ public class LocalLibraryManager implements ILibraryManagerService {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ILibraryManagerService#deployMavenIndex(java.util.Map,
-     * org.eclipse.core.runtime.IProgressMonitor[])
-     */
     @Override
     public void deployMavenIndex(Map<String, String> libsMavenUriToDeploy, IProgressMonitor... monitorWrap) {
         EMap<String, String> jarsToMavenuri = LibrariesIndexManager.getInstance().getMavenLibIndex().getJarsToRelativePath();
@@ -1372,11 +1322,6 @@ public class LocalLibraryManager implements ILibraryManagerService {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ILibraryManagerService#forceListUpdate()
-     */
     @Override
     public void forceListUpdate() {
         listToUpdate = true;
@@ -1400,11 +1345,6 @@ public class LocalLibraryManager implements ILibraryManagerService {
         return missingJarObservable;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ILibraryManagerService#synToLocalMaven()
-     */
     @Override
     public void synToLocalMaven() {
         File libDirectory = getStorageDirectory();
@@ -1451,11 +1391,6 @@ public class LocalLibraryManager implements ILibraryManagerService {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ILibraryManagerService#getMavenUriFromIndex()
-     */
     @Override
     public String getMavenUriFromIndex(String jarName) {
         EMap<String, String> jarsToMavenuri = LibrariesIndexManager.getInstance().getMavenLibIndex().getJarsToRelativePath();

@@ -106,12 +106,6 @@ public class SelectRepositoryContextDialog extends SelectionDialog {
         contextItemList.addAll(helper.getContextItems());
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.dialogs.SelectionDialog#configureShell(org.eclipse.swt.widgets.Shell)
-     */
-
     @Override
     protected void configureShell(Shell shell) {
         super.configureShell(shell);

@@ -48,11 +48,6 @@ public class DefaultCellModifier implements ICellModifier {
         this.tableViewerCreator = tableViewerCreator;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ICellModifier#canModify(java.lang.Object, java.lang.String)
-     */
     public boolean canModify(Object bean, String idColumn) {
         TableViewerCreatorColumn column = tableViewerCreator.getColumn(idColumn);
         if (column.getColumnCellModifier() != null) {
@@ -61,11 +56,6 @@ public class DefaultCellModifier implements ICellModifier {
         return tableViewerCreator.getColumn(idColumn).isModifiable();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ICellModifier#getValue(java.lang.Object, java.lang.String)
-     */
     @SuppressWarnings("unchecked")
     public Object getValue(Object bean, String idColumn) {
         TableViewerCreatorColumn column = tableViewerCreator.getColumn(idColumn);
@@ -96,11 +86,6 @@ public class DefaultCellModifier implements ICellModifier {
         return returnValue;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ICellModifier#modify(java.lang.Object, java.lang.String, java.lang.Object)
-     */
     @SuppressWarnings("unchecked")
     public void modify(Object tableItem, String idColumn, Object value) {
         if (((TableItem) tableItem).isDisposed()) {

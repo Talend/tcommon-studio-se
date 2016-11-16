@@ -129,13 +129,6 @@ public class MetadataTableEditorView extends AbstractMetadataTableEditorView<IMe
         setExtendedTableModel(metadataTableEditor);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.commons.ui.swt.advanced.dataeditor.AbstractDataTableEditorView#setTableViewerCreatorOptions(org.talend
-     * .commons.ui.swt.tableviewer.TableViewerCreator)
-     */
     @Override
     protected void setTableViewerCreatorOptions(TableViewerCreator<IMetadataColumn> newTableViewerCreator) {
         super.setTableViewerCreatorOptions(newTableViewerCreator);
@@ -159,11 +152,6 @@ public class MetadataTableEditorView extends AbstractMetadataTableEditorView<IMe
         };
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.metadata.editor.AbstractMetadataTableEditorView#getNullableAccessor()
-     */
     @Override
     protected IBeanPropertyAccessors getNullableAccessor() {
         return new IBeanPropertyAccessors<IMetadataColumn, Boolean>() {
@@ -392,11 +380,6 @@ public class MetadataTableEditorView extends AbstractMetadataTableEditorView<IMe
         };
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.metadata.editor.AbstractMetadataTableEditorView#validateColumnName(java.lang.String, int)
-     */
     @Override
     protected String validateColumnName(String newValue, int beanPosition) {
         return getMetadataTableEditor().validateColumnName(newValue, beanPosition);
@@ -452,28 +435,12 @@ public class MetadataTableEditorView extends AbstractMetadataTableEditorView<IMe
 
             @Override
             public void set(IMetadataColumn bean, String value) {
-                // String dbmsId = getCurrentDbms();
-                // if (dbmsId != null) {
-                // Dbms dbms = MetadataTalendType.getDbms(dbmsId);
-                // List<DbDefaultLengthAndPrecision> dlpList = dbms.getDefaultLengthPrecision();
-                // for (DbDefaultLengthAndPrecision dlp : dlpList) {
-                // if (dlp.getDbTypeName().equals(value)) {
-                // bean.setLength(dlp.getDefaultLength());
-                // bean.setPrecision(dlp.getDefaultPrecision());
-                // }
-                // }
-                // }
                 bean.setType(value);
             }
 
         };
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.advanced.dataeditor.AbstractDataTableEditorView#initToolBar()
-     */
     @Override
     protected ExtendedToolbarView initToolBar() {
         return new MetadataToolbarEditorView(getMainComposite(), SWT.NONE, this.getExtendedTableViewer(), this.getCurrentDbms());
@@ -483,13 +450,6 @@ public class MetadataTableEditorView extends AbstractMetadataTableEditorView<IMe
         return (MetadataToolbarEditorView) getExtendedToolbar();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.ui.metadata.editor.AbstractMetadataTableEditorView#configureDefaultColumn(org.talend.commons.
-     * ui.swt.tableviewer.TableViewerCreator)
-     */
     @Override
     protected void configureDefaultColumn(TableViewerCreator<IMetadataColumn> tableViewerCreator) {
         super.configureDefaultColumn(tableViewerCreator);

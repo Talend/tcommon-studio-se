@@ -349,11 +349,6 @@ public class ExtendedContextColumnPropertyAccessor<R> implements IColumnProperty
             this.newValue = newValue;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.gef.commands.Command#execute()
-         */
         @Override
         public void execute() {
             boolean modified = false;
@@ -386,11 +381,6 @@ public class ExtendedContextColumnPropertyAccessor<R> implements IColumnProperty
             }
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.gef.commands.Command#undo()
-         */
         @Override
         public void undo() {
             boolean modified = false;
@@ -443,11 +433,6 @@ public class ExtendedContextColumnPropertyAccessor<R> implements IColumnProperty
             this.newValue = newValue;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.gef.commands.Command#execute()
-         */
         @Override
         public void execute() {
             boolean modified = false;
@@ -466,11 +451,6 @@ public class ExtendedContextColumnPropertyAccessor<R> implements IColumnProperty
             }
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.gef.commands.Command#undo()
-         */
         @Override
         public void undo() {
             boolean modified = false;
@@ -546,11 +526,6 @@ public class ExtendedContextColumnPropertyAccessor<R> implements IColumnProperty
             }
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.gef.commands.Command#undo()
-         */
         @Override
         public void undo() {
             boolean modified = false;
@@ -606,11 +581,6 @@ public class ExtendedContextColumnPropertyAccessor<R> implements IColumnProperty
             this.sourceId = sourceId;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.gef.commands.Command#execute()
-         */
         @Override
         public void execute() {
             boolean modified = false;
@@ -639,11 +609,6 @@ public class ExtendedContextColumnPropertyAccessor<R> implements IColumnProperty
             }
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.gef.commands.Command#undo()
-         */
         @Override
         public void undo() {
             boolean modified = false;

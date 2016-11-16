@@ -229,11 +229,6 @@ public class RepositoryViewObject implements IRepositoryViewObject {
 
     private static Map<byte[], Image> cachedImages = new HashMap<byte[], Image>();
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof RepositoryObject) && !(obj instanceof RepositoryViewObject)) {
@@ -407,22 +402,11 @@ public class RepositoryViewObject implements IRepositoryViewObject {
         return toReturn;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryObject#getRepositoryNode()
-     */
     @Override
     public IRepositoryNode getRepositoryNode() {
         return this.repositoryNode;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.repository.IRepositoryObject#setRepositoryNode(org.talend.repository.model.RepositoryNode)
-     */
     @Override
     public void setRepositoryNode(IRepositoryNode node) {
         this.repositoryNode = node;
@@ -449,11 +433,6 @@ public class RepositoryViewObject implements IRepositoryViewObject {
                 newItem = PropertiesFactory.eINSTANCE.createDatabaseConnectionItem();
                 newItem.setProperty(connectionProperty);
                 ItemState state = PropertiesFactory.eINSTANCE.createItemState();
-                // state.setCommitDate(oldItem.getState().getCommitDate());
-                // state.setDeleted(oldItem.getState().isDeleted());
-                // state.setLockDate(oldItem.getState().getLockDate());
-                // state.setLocked(oldItem.getState().isLocked());
-                // state.setLocker(oldItem.getState().getLocker());
                 state.setPath(oldItem.getState().getPath());
                 newItem.setState(state);
 
@@ -557,91 +536,46 @@ public class RepositoryViewObject implements IRepositoryViewObject {
         return object;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryViewObject#isDeleted()
-     */
     @Override
     public boolean isDeleted() {
         return deleted;
     }
 
-    /**
-     * Getter for projectLabel.
-     * 
-     * @return the projectLabel
-     */
     @Override
     public String getProjectLabel() {
         return this.projectLabel;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryViewObject#getPath()
-     */
     @Override
     public String getPath() {
         return path;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryViewObject#getInformationStatus()
-     */
     @Override
     public ERepositoryStatus getInformationStatus() {
         return informationStatus;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryViewObject#getRepositoryStatus()
-     */
     @Override
     public ERepositoryStatus getRepositoryStatus() {
         return repositoryStatus;
     }
 
-    /**
-     * Getter for customImage.
-     * 
-     * @return the customImage
-     */
     public Image getCustomImage() {
         return this.customImage;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryViewObject#throwPersistenceExceptionIfAny()
-     */
     public void throwPersistenceExceptionIfAny() throws PersistenceException {
         if (exception != null) {
             throw exception;
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryViewObject#isModified()
-     */
     @Override
     public boolean isModified() {
         return modified;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
         StringBuffer sb = new StringBuffer();
@@ -666,11 +600,6 @@ public class RepositoryViewObject implements IRepositoryViewObject {
         return sb.toString();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         if (this.getId() != null) {
@@ -679,18 +608,10 @@ public class RepositoryViewObject implements IRepositoryViewObject {
         return super.hashCode();
     }
 
-    /**
-     * Getter for framework.
-     * @return the framework
-     */
     public String getFramework() {
         return framework;
     }
 
-    /**
-     * Sets the framework.
-     * @param framework the framework to set
-     */
     public void setFramework(String framework) {
         this.framework = framework;
     }

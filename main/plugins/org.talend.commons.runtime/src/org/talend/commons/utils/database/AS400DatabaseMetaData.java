@@ -53,23 +53,12 @@ public class AS400DatabaseMetaData extends PackageFakeDatabaseMetadata {
         super(conn);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.fakejdbc.FakeDatabaseMetaData#getCatalogs()
-     */
     @Override
     public ResultSet getCatalogs() throws SQLException {
         // TODO Auto-generated method stub
         return super.getCatalogs();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.fakejdbc.FakeDatabaseMetaData#getColumns(java.lang.String, java.lang.String, java.lang.String,
-     * java.lang.String)
-     */
     @Override
     public ResultSet getColumns(String catalog, String schemaPattern, String tableNamePattern, String columnNamePattern)
             throws SQLException {
@@ -77,23 +66,12 @@ public class AS400DatabaseMetaData extends PackageFakeDatabaseMetadata {
         return super.getColumns(catalog, schemaPattern, tableNamePattern, columnNamePattern);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.fakejdbc.FakeDatabaseMetaData#getConnection()
-     */
     @Override
     public Connection getConnection() {
         // TODO Auto-generated method stub
         return super.getConnection();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.fakejdbc.FakeDatabaseMetaData#getTables(java.lang.String, java.lang.String, java.lang.String,
-     * java.lang.String[])
-     */
     @Override
     public ResultSet getTables(String catalog, String schemaPattern, String tableNamePattern, String[] types) throws SQLException {
         String sql;
@@ -195,11 +173,6 @@ public class AS400DatabaseMetaData extends PackageFakeDatabaseMetadata {
         return result;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.fakejdbc.FakeDatabaseMetaData#getSchemas(java.lang.String, java.lang.String)
-     */
     @Override
     public ResultSet getSchemas(String catalog, String schemaPattern) throws SQLException {
         ResultSet resultSet = null;

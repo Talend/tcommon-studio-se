@@ -694,21 +694,12 @@ public class MDMConnectionImpl extends ConnectionImpl implements MDMConnection {
         return result.toString();
     }
 
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated NOT
-     */
     public String getPathname() {
         return pathname == null ? this.getConnectionString() : pathname;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.metadata.builder.connection.impl.ConnectionImpl#getConnectionTypeName()
-     */
     public String getConnectionTypeName() {
         return "MDM"; //$NON-NLS-1$
     }
-} // MDMConnectionImpl
+}
+

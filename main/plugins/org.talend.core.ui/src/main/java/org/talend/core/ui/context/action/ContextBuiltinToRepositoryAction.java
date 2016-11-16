@@ -71,12 +71,6 @@ public class ContextBuiltinToRepositoryAction extends AContextualAction {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.actions.ITreeContextualAction#init(org.eclipse.jface.viewers.TreeViewer,
-     * org.eclipse.jface.viewers.IStructuredSelection)
-     */
     @Override
     public void init(TreeViewer viewer, IStructuredSelection selection) {
         this.viewer = viewer;

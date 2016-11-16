@@ -337,11 +337,6 @@ public class TableViewerCreator<B> extends TableViewerCreatorNotModifiable<B> im
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.tableviewer.TableViewerCreatorNotModifiable#getColumn(java.lang.String)
-     */
     @Override
     public TableViewerCreatorColumn getColumn(String idProperty) {
         return (TableViewerCreatorColumn) super.getColumn(idProperty);

@@ -30,11 +30,6 @@ class OrderableWrapper<B> implements Comparable<OrderableWrapper> {
         this.bean = bean;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Comparable#compareTo(java.lang.Object)
-     */
     public int compareTo(OrderableWrapper o) {
         if (o == null) {
             return 1;
@@ -55,11 +50,6 @@ class OrderableWrapper<B> implements Comparable<OrderableWrapper> {
         return 0;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -68,11 +58,6 @@ class OrderableWrapper<B> implements Comparable<OrderableWrapper> {
         return result;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

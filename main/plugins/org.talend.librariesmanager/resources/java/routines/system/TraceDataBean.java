@@ -53,11 +53,6 @@ public class TraceDataBean implements TraceBean, Serializable {
         this.data = data;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see routines.system.RunTrace.TraceBean#equals(routines.system.RunTrace.TraceBean)
-     */
     public boolean equals(TraceBean traceBean) {
         // TODO Auto-generated method stub
         return false;

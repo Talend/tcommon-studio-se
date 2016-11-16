@@ -400,11 +400,6 @@ public class TableViewerCreatorNotModifiable<B> {
         // new TableEditor(table);
         tableViewer = new TableViewer(table) {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.jface.viewers.TableViewer#add(java.lang.Object)
-             */
             @Override
             public void add(Object element) {
                 super.add(element);
@@ -412,11 +407,6 @@ public class TableViewerCreatorNotModifiable<B> {
                 // refreshTableEditorControls();
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.jface.viewers.TableViewer#add(java.lang.Object[])
-             */
             @Override
             public void add(Object[] elements) {
                 super.add(elements);
@@ -430,11 +420,6 @@ public class TableViewerCreatorNotModifiable<B> {
                 // tableEditorManager.redrawControls();
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.jface.viewers.TableViewer#remove(java.lang.Object[])
-             */
             @Override
             public void remove(Object[] elements) {
                 // removeEraseListener();
@@ -443,69 +428,28 @@ public class TableViewerCreatorNotModifiable<B> {
                 // refreshTableEditorControls();
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.jface.viewers.TableViewer#replace(java.lang.Object, int)
-             */
             @Override
             public void replace(Object element, int index) {
                 super.replace(element, index);
                 refreshTableEditorControls();
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.jface.viewers.StructuredViewer#refresh()
-             */
             @Override
             public void refresh() {
-                // boolean itemHasBeenRemoved = getInputList() != null && getInputList().size() < table.getItemCount();
-                // if (itemHasBeenRemoved) {
-                // // table.removeListener(SWT.EraseItem, eraseItemListener);
-                // }
                 super.refresh();
-                // if (itemHasBeenRemoved) {
-                // // table.addListener(SWT.EraseItem, eraseItemListener);
-                // }
-                // refreshTableEditorControls();
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.jface.viewers.StructuredViewer#refresh(boolean)
-             */
             @Override
             public void refresh(boolean updateLabels) {
-                // boolean itemHasBeenRemoved = getInputList() != null && getInputList().size() < table.getItemCount();
-                // if (itemHasBeenRemoved) {
-                // // table.removeListener(SWT.EraseItem, eraseItemListener);
-                // }
                 super.refresh(updateLabels);
-                // if (itemHasBeenRemoved) {
-                // // table.addListener(SWT.EraseItem, eraseItemListener);
-                // }
-                // refreshTableEditorControls();
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.jface.viewers.StructuredViewer#refresh(java.lang.Object, boolean)
-             */
             @Override
             public void refresh(Object element, boolean updateLabels) {
                 super.refresh(element, updateLabels);
                 refreshTableEditorControls();
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.jface.viewers.StructuredViewer#refresh(java.lang.Object)
-             */
             @Override
             public void refresh(Object element) {
                 if (table.isDisposed()) {
@@ -516,37 +460,15 @@ public class TableViewerCreatorNotModifiable<B> {
                         return;
                     }
                 }
-                // if (eraseItemListener != null) {
-                // table.removeListener(SWT.EraseItem, eraseItemListener);
-                // }
                 super.refresh(element);
-                // if (eraseItemListener != null) {
-                // table.addListener(SWT.EraseItem, eraseItemListener);
-                // }
-                // refreshTableEditorControls();
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @seeorg.eclipse.jface.viewers.ColumnViewer#triggerEditorActivationEvent(org.eclipse.jface.viewers.
-             * ColumnViewerEditorActivationEvent)
-             */
             @Override
             protected void triggerEditorActivationEvent(ColumnViewerEditorActivationEvent event) {
                 if (editorActivate) {
                     super.triggerEditorActivationEvent(event);
                 }
             }
-
-            // @Override
-            // protected void internalRefresh(Object element, boolean updateLabels) {
-            // int oldCount = tableViewer.getTable().getItemCount();
-            // if (getInputList() != null && oldCount != getInputList().size()) {
-            // setItemCount(getInputList().size());
-            // }
-            // super.internalRefresh(element, updateLabels);
-            // };
 
             @Override
             protected void hookControl(Control control) {
@@ -575,20 +497,8 @@ public class TableViewerCreatorNotModifiable<B> {
         };
         setTablePreferences();
 
-        // initCellModifier();
-
         return table;
     }
-
-    /**
-     * DOC amaumont Comment method "initCellModifier".
-     */
-    // protected void initCellModifier() {
-    // if (cellModifier == null) {
-    // cellModifier = new DefaultCellModifier(this);
-    // }
-    // tableViewer.setCellModifier(cellModifier);
-    // }
 
     protected void setTablePreferences() {
         table.setHeaderVisible(headerVisible);
@@ -608,13 +518,8 @@ public class TableViewerCreatorNotModifiable<B> {
                     int starty = table.getHeaderHeight() + table.getItemCount() * table.getItemHeight()
                             - table.getVerticalBar().getSelection() * table.getItemHeight();
 
-                    // System.out.println(starty + " < " + area.height);
-                    // System.out.println("area.width= " + area.width);
                     if (starty < area.height) {
-                        // System.out.println("0, starty, area.width, area.height");
-                        // gc.setBackground(gc.getDevice().getSystemColor(SWT.COLOR_BLUE));
                         gc.fillRectangle(0, starty, area.width, area.height);
-                        // gc.setBackground(gc.getDevice().getSystemColor(SWT.COLOR_RED));
                     }
                     TableColumn[] tableColumns = table.getColumns();
                     int widthColumns = 0;
@@ -622,7 +527,6 @@ public class TableViewerCreatorNotModifiable<B> {
                         widthColumns += tableColumn.getWidth();
                     }
                     if (widthColumns < area.width) {
-                        // System.out.println("widthColumns + 1, 0, area.width, area.height");
                         gc.fillRectangle(widthColumns + 1, 0, area.width, area.height);
                     }
 
@@ -647,7 +551,6 @@ public class TableViewerCreatorNotModifiable<B> {
     }
 
     /**
-     * 
      * Initiate the style intended for instanciate <code>Table</code>.
      * 
      * @return int style

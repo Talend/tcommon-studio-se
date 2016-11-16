@@ -38,11 +38,6 @@ public class ViewBuilder extends AbstractTableBuilder<TdView> {
         super(conn, TableType.VIEW);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.cwm.builders.AbstractTableBuilder#createTable()
-     */
     @Override
     protected TdView createTable() {
         TdView view = RelationalFactory.eINSTANCE.createTdView();

@@ -37,21 +37,11 @@ public class DefaultHeaderColumnSelectionListener implements ITableColumnSelecti
         this.tableViewerCreator = tableViewerCreator;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.events.SelectionListener#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
-     */
     public void widgetDefaultSelected(SelectionEvent e) {
         // TODO Auto-generated method stub
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.events.SelectionListener#widgetSelected(org.eclipse.swt.events.SelectionEvent)
-     */
     public void widgetSelected(SelectionEvent e) {
         TableViewerCreatorSorter viewerSorter = (TableViewerCreatorSorter) tableViewerCreator.getTableViewer()
                 .getSorter();
@@ -62,9 +52,6 @@ public class DefaultHeaderColumnSelectionListener implements ITableColumnSelecti
         }
     }
 
-    /**
-     * DOC amaumont Comment method "fireColumnSorted".
-     */
     private void fireColumnSorted() {
         for (IColumnSortedListener columnSortedListener : sortListenerList) {
             columnSortedListener.handle();

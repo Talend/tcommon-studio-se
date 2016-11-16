@@ -284,11 +284,6 @@ public final class StatisticsTracer {
             return this.roundOfMaxTime;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see java.lang.Object#toString()
-         */
         @Override
         public String toString() {
             StringBuilder sb = new StringBuilder();

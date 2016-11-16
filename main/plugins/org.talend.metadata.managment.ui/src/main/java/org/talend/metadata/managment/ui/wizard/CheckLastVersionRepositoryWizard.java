@@ -77,11 +77,6 @@ public abstract class CheckLastVersionRepositoryWizard extends RepositoryWizard 
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.ILastVersionChecker#isLastVersion(org.talend.core.model.properties.Item)
-     */
     public boolean isLastVersion(Item item) {
         if (item.getProperty() != null) {
             if (item.getProperty().getId() == null) {
@@ -108,11 +103,6 @@ public abstract class CheckLastVersionRepositoryWizard extends RepositoryWizard 
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.ILastVersionChecker#setLastVersion(java.lang.Boolean)
-     */
     public void setLastVersion(Boolean lastVersion) {
         // TODO Auto-generated method stub
     }

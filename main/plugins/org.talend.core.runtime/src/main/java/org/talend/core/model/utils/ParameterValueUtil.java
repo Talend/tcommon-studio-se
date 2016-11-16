@@ -462,11 +462,6 @@ public final class ParameterValueUtil {
             return findedList;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see java.lang.Object#toString()
-         */
         @Override
         public String toString() {
             if (getFuncAreaMaxIndex() < getFuncAreaMinIndex()) {
@@ -476,16 +471,6 @@ public final class ParameterValueUtil {
         }
     }
 
-    /**
-     * DOC cmeng Comment method "doVaribleReplace".
-     * 
-     * @param oldName
-     * @param newName
-     * @param value
-     * @param functionNameAreas
-     * @param vStart
-     * @param vEnd
-     */
     private static String doVaribleReplace(String oldName, String newName, String value, List<FunctionInfo> functions,
             int vStart, int vEnd) {
         if (value.trim().isEmpty()) {

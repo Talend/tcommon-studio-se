@@ -93,11 +93,6 @@ public class SaxParser extends DefaultHandler implements Runnable {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Runnable#run()
-     */
     @Override
     public void run() {
         SAXParser xr;
@@ -132,22 +127,12 @@ public class SaxParser extends DefaultHandler implements Runnable {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.xml.sax.ContentHandler#startDocument()
-     */
     @Override
     public void startDocument() {
         pathHolder = new XPathHolder();
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.xml.sax.ContentHandler#endDocument()
-     */
     @Override
     public void endDocument() {
         this.alive = false;
@@ -155,12 +140,6 @@ public class SaxParser extends DefaultHandler implements Runnable {
         this.spConsumer.wakeup();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.xml.sax.ContentHandler#startElement(java.lang.String, java.lang.String, java.lang.String,
-     * org.xml.sax.Attributes)
-     */
     @Override
     public void startElement(String uri, String name, String qName, Attributes atts) {
         // If the current thread should be stopped and current parsing should not continue any more, then
@@ -206,11 +185,6 @@ public class SaxParser extends DefaultHandler implements Runnable {
         return pathHolder.getPath() + "[@" + getElementName(atts.getURI(i), atts.getQName(i), atts.getLocalName(i)) + "]";
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.xml.sax.ContentHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
-     */
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
         // Manipulate the data. The currentCacheValue is trimed to delimite
@@ -249,11 +223,6 @@ public class SaxParser extends DefaultHandler implements Runnable {
         // return "["+ uri.replaceAll("\\Q\\\\E","/")+ "]" + name;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.xml.sax.ContentHandler#characters(char[], int, int)
-     */
     @Override
     public void characters(char ch[], int start, int length) {
         for (int i = 0; i < length; i++) {

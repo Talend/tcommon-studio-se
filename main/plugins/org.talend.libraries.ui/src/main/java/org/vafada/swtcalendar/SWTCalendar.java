@@ -217,11 +217,6 @@ public class SWTCalendar extends Composite {
         yearChooser.setSelection(getCalendar().get(Calendar.YEAR));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.widgets.Control#setFont(org.eclipse.swt.graphics.Font)
-     */
     public void setFont(Font font) {
         super.setFont(font);
         monthChooser.setFont(font);

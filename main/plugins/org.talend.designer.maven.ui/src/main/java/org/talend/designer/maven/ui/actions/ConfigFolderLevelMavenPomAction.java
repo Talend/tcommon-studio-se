@@ -99,11 +99,6 @@ public class ConfigFolderLevelMavenPomAction extends AContextualAction {
         setEnabled(canWork);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.actions.AContextualAction#doRun()
-     */
     @Override
     protected void doRun() {
         ISelection selection = getSelection();

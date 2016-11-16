@@ -131,11 +131,6 @@ public class ContextTemplateComposite extends AbstractContextTabEditComposite {
         return modelManager;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.widgets.Control#setEnabled(boolean)
-     */
     @Override
     public void setEnabled(boolean enabled) {
         // update the state of buttons
@@ -148,9 +143,6 @@ public class ContextTemplateComposite extends AbstractContextTabEditComposite {
         }
     }
 
-    /**
-     * zwang Comment method "initializeUI".
-     */
     private void initializeUI() {
         ComboBoxCellEditor comboBoxCellEditor = null;
         viewer = new TreeViewer(this, SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER | SWT.MULTI);

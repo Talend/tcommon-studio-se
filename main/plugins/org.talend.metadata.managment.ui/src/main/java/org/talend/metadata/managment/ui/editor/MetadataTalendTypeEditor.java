@@ -228,9 +228,6 @@ public class MetadataTalendTypeEditor extends FieldEditor {
         }
     }
 
-    /*
-     * (non-Javadoc) Method declared on FieldEditor.
-     */
     protected void doFillIntoGrid(Composite parent, int numColumns) {
         Control control = getLabelControl(parent);
         GridData gd = new GridData();
@@ -328,20 +325,12 @@ public class MetadataTalendTypeEditor extends FieldEditor {
         return contextTable;
     }
 
-    /*
-     * (non-Javadoc) Method declared on FieldEditor.
-     */
     protected void adjustForNumColumns(int numColumns) {
         Control control = getLabelControl();
         ((GridData) control.getLayoutData()).horizontalSpan = numColumns;
         ((GridData) viewer.getTable().getLayoutData()).horizontalSpan = numColumns - 1;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.preferences.TableEditor#createButtons(org.eclipse.swt.widgets.Composite)
-     */
     protected void createButtons(Composite box) {
         addButton = createPushButton(box, Messages.getString("MetadataTalendTypeEditor.button.import")); //$NON-NLS-1$
         addButton.addSelectionListener(new SelectionAdapter() {
@@ -525,11 +514,6 @@ public class MetadataTalendTypeEditor extends FieldEditor {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.preferences.TableEditor#selectionChanged()
-     */
     protected void selectionChanged() {
         boolean selected = !viewer.getSelection().isEmpty();
         setControlEnable(exportButton, selected);
@@ -559,9 +543,6 @@ public class MetadataTalendTypeEditor extends FieldEditor {
         }
     }
 
-    /*
-     * (non-Javadoc) Method declared on FieldEditor.
-     */
     protected void doLoadDefault() {
         boolean confirm = MessageDialog.openConfirm(Display.getCurrent().getActiveShell(),
                 Messages.getString("MetadataTalendTypeEditor.confirmTitle"), //$NON-NLS-1$
@@ -578,11 +559,6 @@ public class MetadataTalendTypeEditor extends FieldEditor {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.preferences.TableEditor#doLoad()
-     */
     @Override
     protected void doLoad() {
         viewer.setInput(tmpFileManager.getTempFiles());
@@ -605,11 +581,6 @@ public class MetadataTalendTypeEditor extends FieldEditor {
         doStore();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.preference.FieldEditor#doStore()
-     */
     @Override
     protected void doStore() {
         RepositoryWorkUnit workUnit = new RepositoryWorkUnit("Store mapping files") { //$NON-NLS-1$
@@ -727,27 +698,14 @@ public class MetadataTalendTypeEditor extends FieldEditor {
         return targetFile;
     }
 
-    /*
-     * (non-Javadoc) Method declared on FieldEditor.
-     */
     public int getNumberOfControls() {
         return 2;
     }
 
-    /**
-     * Getter for selectId.
-     * 
-     * @return the selectId
-     */
     public String getSelectId() {
         return this.selectId;
     }
 
-    /**
-     * Sets the selectId.
-     * 
-     * @param selectId the selectId to set
-     */
     public void setSelectId(String selectId) {
         this.selectId = selectId;
     }

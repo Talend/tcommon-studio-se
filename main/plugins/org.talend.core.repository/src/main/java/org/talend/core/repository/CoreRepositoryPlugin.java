@@ -34,20 +34,10 @@ public class CoreRepositoryPlugin extends AbstractUIPlugin {
         plugin = this;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
-     */
     public void start(BundleContext context) throws Exception {
         super.start(context);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
-     */
     public void stop(BundleContext context) throws Exception {
         plugin = null;
         super.stop(context);
@@ -57,12 +47,6 @@ public class CoreRepositoryPlugin extends AbstractUIPlugin {
         return plugin;
     }
 
-    /**
-     * 
-     * ggu Comment method "isRCPMode".
-     * 
-     * @return
-     */
     public boolean isRCPMode() {
         return rcpMode;
     }
@@ -71,12 +55,6 @@ public class CoreRepositoryPlugin extends AbstractUIPlugin {
         rcpMode = true;
     }
 
-    /**
-     * 
-     * ggu Comment method "registerRepositoryChangedListener".
-     * 
-     * @param listener
-     */
     public void registerRepositoryChangedListener(IRepositoryChangedListener listener) {
         changeProcessor.addRepositoryChangedListener(listener);
     }

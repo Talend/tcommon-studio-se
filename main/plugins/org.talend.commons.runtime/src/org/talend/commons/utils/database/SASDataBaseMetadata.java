@@ -30,30 +30,15 @@ public class SASDataBaseMetadata extends FakeDatabaseMetaData {
 
     private Connection connection;
 
-    /**
-     * DOC bqian DB2ForZosDataBaseMetadata constructor comment.
-     * 
-     * @param metaData
-     */
     public SASDataBaseMetadata(Connection connection) {
         this.connection = connection;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getConnection()
-     */
     @Override
     public Connection getConnection() throws SQLException {
         return connection;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getSchemas()
-     */
     @Override
     public ResultSet getSchemas() throws SQLException {
         // see the feature 5827
@@ -88,22 +73,11 @@ public class SASDataBaseMetadata extends FakeDatabaseMetaData {
         return tableResultSet;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getPrimaryKeys(java.lang.String, java.lang.String,
-     * java.lang.String)
-     */
     @Override
     public ResultSet getPrimaryKeys(String catalog, String schema, String table) throws SQLException {
         return new SASResultSet();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getTableTypes()
-     */
     @Override
     public ResultSet getTableTypes() throws SQLException {
         String[] s1 = new String[] { "TABLE" }; //$NON-NLS-1$
@@ -123,23 +97,11 @@ public class SASDataBaseMetadata extends FakeDatabaseMetaData {
         return tableResultSet;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getExportedKeys(java.lang.String, java.lang.String,
-     * java.lang.String)
-     */
     @Override
     public ResultSet getExportedKeys(String catalog, String schema, String table) throws SQLException {
         return new SASResultSet();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getTables(java.lang.String, java.lang.String,
-     * java.lang.String, java.lang.String[])
-     */
     @Override
     public ResultSet getTables(String catalog, String schema, String tableNamePattern, String[] types) throws SQLException {
         String sql;
@@ -191,21 +153,11 @@ public class SASDataBaseMetadata extends FakeDatabaseMetaData {
         return tableResultSet;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeDatabaseMetaData#supportsSchemasInDataManipulation()
-     */
     @Override
     public boolean supportsSchemasInDataManipulation() throws SQLException {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeDatabaseMetaData#supportsSchemasInTableDefinitions()
-     */
     @Override
     public boolean supportsSchemasInTableDefinitions() throws SQLException {
         return true;
@@ -216,12 +168,6 @@ public class SASDataBaseMetadata extends FakeDatabaseMetaData {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getColumns(java.lang.String, java.lang.String,
-     * java.lang.String, java.lang.String)
-     */
     @Override
     public ResultSet getColumns(String catalog, String schemaPattern, String tableNamePattern, String columnNamePattern)
             throws SQLException {

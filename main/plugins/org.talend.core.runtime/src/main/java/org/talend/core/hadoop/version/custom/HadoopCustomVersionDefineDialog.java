@@ -218,11 +218,6 @@ public class HadoopCustomVersionDefineDialog extends TitleAreaDialog {
         return parent;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.Dialog#createButtonsForButtonBar(org.eclipse.swt.widgets.Composite)
-     */
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
         Button createButton = createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
@@ -793,11 +788,6 @@ public class HadoopCustomVersionDefineDialog extends TitleAreaDialog {
             super(composite);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.jface.viewers.DialogCellEditor#openDialogBox(org.eclipse.swt.widgets.Control)
-         */
         @Override
         protected Object openDialogBox(Control cellEditorWindow) {
             LibrariesListSelectionDialog selectDialog = new LibrariesListSelectionDialog(getShell());

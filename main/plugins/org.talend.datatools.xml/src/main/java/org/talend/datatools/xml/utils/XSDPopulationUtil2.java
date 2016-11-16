@@ -749,20 +749,10 @@ public class XSDPopulationUtil2 implements IXSDPopulationUtil {
         this.enableGeneratePrefix = enableGeneratePrefix;
     }
 
-    /**
-     * Sets the includeAbsSubs.
-     * 
-     * @param includeAbsSubs the includeAbsSubs to set
-     */
     public void setIncludeAbsSubs(boolean includeAbsSubs) {
         this.includeAbsSubs = includeAbsSubs;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.utils.IXSDPopulationUtil#loadWSDL(java.lang.String)
-     */
     @Override
     public void loadWSDL(String wsdlFile) throws IOException {
     }

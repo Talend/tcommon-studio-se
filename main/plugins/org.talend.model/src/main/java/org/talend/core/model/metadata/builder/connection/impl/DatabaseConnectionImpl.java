@@ -1647,13 +1647,9 @@ public class DatabaseConnectionImpl extends ConnectionImpl implements DatabaseCo
         return result.toString();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.metadata.builder.connection.impl.ConnectionImpl#getConnectionTypeName()
-     */
     public String getConnectionTypeName() {
         return getDatabaseType();
     }
 
-} // DatabaseConnectionImpl
+}
+

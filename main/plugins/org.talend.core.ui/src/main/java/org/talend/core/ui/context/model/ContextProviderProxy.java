@@ -21,26 +21,14 @@ import org.eclipse.swt.graphics.Image;
 
 /**
  * A label and content provider for the treeviewer which groups the Contexts by source.
- * 
  */
 public abstract class ContextProviderProxy extends LabelProvider implements ITreeContentProvider, ITableLabelProvider,
         ITableColorProvider {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnImage(java.lang.Object, int)
-     */
     public Image getColumnImage(Object element, int columnIndex) {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer, java.lang.Object,
-     * java.lang.Object)
-     */
     public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
     }
 

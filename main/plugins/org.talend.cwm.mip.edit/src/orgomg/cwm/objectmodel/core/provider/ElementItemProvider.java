@@ -37,14 +37,6 @@ public class ElementItemProvider extends ItemProviderAdapter implements IEditing
         super(adapterFactory);
     }
 
-    /*
-     * (non-Javadoc) ADDED rli
-     * 
-     * @generated NOT
-     * 
-     * @see org.eclipse.emf.edit.provider.ItemProviderAdapter#getString(java.lang.String)
-     * 
-     */
     public String getString(String key) {
         // ADDED MODSCA 2008-04-23 use a system property for enabling the default presentation (useful when using EMF
         // generated editors for debug purpose)

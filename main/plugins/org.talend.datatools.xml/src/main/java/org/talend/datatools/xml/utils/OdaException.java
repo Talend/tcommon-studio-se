@@ -195,9 +195,6 @@ public class OdaException extends Exception
 		return m_cause;
 	}
 
-    /* (non-Javadoc)
-     * @see java.lang.Throwable#toString()
-     */
     public String toString()
     {
         String message = super.toString();

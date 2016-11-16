@@ -30,21 +30,10 @@ public abstract class AbstractFakeDatabaseMetaData extends FakeDatabaseMetaData 
         super();
     }
 
-    /**
-     * 
-     * DOC ggu AbstractFakeDatabaseMetaData constructor comment.
-     * 
-     * @param connection
-     */
     public AbstractFakeDatabaseMetaData(Connection connection) {
         this.connection = connection;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getConnection()
-     */
     @Override
     public Connection getConnection() throws SQLException {
         return connection;

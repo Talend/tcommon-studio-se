@@ -199,11 +199,6 @@ public class FileSystemExporterFullPath implements IFileExporterFullPath {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.export.IFileExporterFullPath#writeFolder(java.lang.String)
-     */
     @Override
     public void writeFolder(String destinationPath) throws IOException, CoreException {
         createFolder(destinationPath);

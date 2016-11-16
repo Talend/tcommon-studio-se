@@ -193,11 +193,6 @@ public class PastSelectorDialog extends Dialog {
         this.getOKButton().setEnabled(!selectedVersionItems.isEmpty());
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.Dialog#createButtonsForButtonBar(org.eclipse.swt.widgets.Composite)
-     */
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
         super.createButtonsForButtonBar(parent);

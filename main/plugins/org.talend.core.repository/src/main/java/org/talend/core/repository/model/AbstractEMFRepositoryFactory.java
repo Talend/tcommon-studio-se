@@ -944,26 +944,16 @@ public abstract class AbstractEMFRepositoryFactory extends AbstractRepositoryFac
         return folderItem;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.model.IRepositoryFactory#reloadProject(org.talend.core.model.general.Project)
-     */
     @Override
     public void reloadProject(Project project) throws PersistenceException {
         // TODO Auto-generated method stub
-
     }
 
     /**
-     * 
-     * DOC zshen Comment method "getMetadataByFolder".
-     * 
      * @param itemType
      * @param path
      * @return all of object under path.
      */
-
     @Override
     public List<IRepositoryViewObject> getMetadataByFolder(Project project, ERepositoryObjectType itemType, IPath path) {
         return getMetadatasByFolder(project, itemType, path);
@@ -1014,11 +1004,6 @@ public abstract class AbstractEMFRepositoryFactory extends AbstractRepositoryFac
         return new LockInfo("", "", null);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.repository.model.IRepositoryFactory#afterLogon()
-     */
     @Override
     public void afterLogon() {
         // do nothing by default

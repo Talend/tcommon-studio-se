@@ -118,11 +118,6 @@ public class TalendTabbedPropertyViewer extends StructuredViewer implements IInp
         return list;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.Viewer#inputChanged(java.lang.Object, java.lang.Object)
-     */
     public void inputChanged(Object input, Object oldInput) {
         elements.clear();
         Object[] children = getSortedChildren(getRoot());
@@ -134,11 +129,6 @@ public class TalendTabbedPropertyViewer extends StructuredViewer implements IInp
         list.setElements(children);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.properties.tab.IInputChangedListener#inputChanged(java.lang.Object)
-     */
     public void inputChanged(TabInputChangedEvent event) {
         setInput(event.getInput());
         IStructuredSelection selection = (IStructuredSelection) getSelection();

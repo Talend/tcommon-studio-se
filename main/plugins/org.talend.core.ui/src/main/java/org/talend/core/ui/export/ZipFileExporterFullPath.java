@@ -116,11 +116,6 @@ public class ZipFileExporterFullPath implements IFileExporterFullPath {
         write(newEntry, resource);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.export.IFileExporterFullPath#writeFolder(java.lang.String)
-     */
     @Override
     public void writeFolder(String destinationPath) throws IOException, CoreException {
         ZipEntry newEntry = new ZipEntry(destinationPath);

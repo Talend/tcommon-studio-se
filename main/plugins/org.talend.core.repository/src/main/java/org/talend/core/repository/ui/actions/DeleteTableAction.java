@@ -251,26 +251,8 @@ public class DeleteTableAction extends AContextualAction {
         }
 
         notifySQLBuilder(connections);
-        // IViewPart viewPart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(
-        // RepositoryView.VIEW_ID);
-        // IRepositoryView repositoryView = (IRepositoryView) viewPart;
-
-        // // Find Metadata node
-        // RepositoryNode recycleBinNode = repositoryView.getRoot().getChildren().get(8);
-        //
-        // // Force focus to the repository View ans erase the current user selection
-        // viewPart.setFocus();
-        // repositoryView.getViewSite().getSelectionProvider().setSelection(null);
-        // repositoryView.expand(recycleBinNode, true);
-
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.actions.ITreeContextualAction#init(org.eclipse.jface.viewers.TreeViewer,
-     * org.eclipse.jface.viewers.IStructuredSelection)
-     */
     @Override
     public void init(TreeViewer viewer, IStructuredSelection selection) {
         boolean canWork = false;

@@ -61,11 +61,6 @@ public class RepositoryDoubleClickAction extends Action {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.action.Action#run()
-     */
     @Override
     public void run() {
         ISelection selection = getSelection();

@@ -226,11 +226,6 @@ public class LibrariesListSelectionDialog extends AbstractElementListSelectionDi
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.dialogs.AbstractElementListSelectionDialog#setMultipleSelection(boolean)
-     */
     @Override
     public void setMultipleSelection(boolean multipleSelection) {
         super.setMultipleSelection(multipleSelection);
@@ -238,11 +233,7 @@ public class LibrariesListSelectionDialog extends AbstractElementListSelectionDi
     }
 
     /**
-     * DOC ycbai Comment method "setDeployNonexistentLibs".
-     * 
-     * <p>
      * Specifies whether or not deploy the nonexistent libraries.
-     * </p>
      * 
      * @param deployNonexistentLibs
      */
@@ -251,12 +242,8 @@ public class LibrariesListSelectionDialog extends AbstractElementListSelectionDi
     }
 
     /**
-     * DOC ycbai Comment method "setLibExtensions".
-     * 
-     * <p>
      * Specifies supported extensions of libraries. "*.jar;*.properties;*.zip;*.dll;*.so;*.bar" are supported by
      * default.
-     * </p>
      * 
      * @param libExtensions
      */
@@ -265,11 +252,7 @@ public class LibrariesListSelectionDialog extends AbstractElementListSelectionDi
     }
 
     /**
-     * DOC ycbai Comment method "setElements".
-     * 
-     * <p>
      * Sets the internal libraries elements list.
-     * </p>
      * 
      * @param elements
      */
@@ -307,11 +290,6 @@ public class LibrariesListSelectionDialog extends AbstractElementListSelectionDi
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.dialogs.SelectionStatusDialog#okPressed()
-     */
     @Override
     protected void okPressed() {
         super.okPressed();

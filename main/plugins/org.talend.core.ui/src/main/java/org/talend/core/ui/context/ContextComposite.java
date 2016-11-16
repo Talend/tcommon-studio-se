@@ -175,31 +175,16 @@ public abstract class ContextComposite extends Composite implements IContextMode
         return readOnly;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.context.IContextModelManager#getProcess()
-     */
     @Override
     public IProcess2 getProcess() {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.context.IContextModelManager#getCommandStack()
-     */
     @Override
     public CommandStack getCommandStack() {
         return null;
     }
 
-    /**
-     * Getter for isRepositoryContext.
-     * 
-     * @return the isRepositoryContext
-     */
     @Override
     public boolean isRepositoryContext() {
         return this.isRepositoryContext;
@@ -271,12 +256,6 @@ public abstract class ContextComposite extends Composite implements IContextMode
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @seeorg.talend.core.ui.context.IContextModelManager#onContextRemoveParameter(org.talend.core.model.process.
-     * IContextManager, java.util.List)
-     */
     @Override
     public void onContextRemoveParameter(IContextManager contextManager, Set<String> paramNames) {
         // record the modified operation.
@@ -284,24 +263,12 @@ public abstract class ContextComposite extends Composite implements IContextMode
         getCommandStack().execute(new ContextRemoveParameterCommand(getContextManager(), paramNames));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.context.IContextModelManager#onContextRemoveParameter(org.talend.core.model.process.
-     * IContextManager, java.lang.String, java.lang.String)
-     */
     @Override
     public void onContextRemoveParameter(IContextManager contextManager, String paramName, String sourceId) {
         setModifiedFlag(contextManager);
         getCommandStack().execute(new ContextRemoveParameterCommand(getContextManager(), paramName, sourceId));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.context.IContextModelManager#onContextRemoveParameter(org.talend.core.model.process.
-     * IContextManager, java.util.Set, java.lang.String)
-     */
     @Override
     public void onContextRemoveParameter(IContextManager contextManager, Set<String> paramNames, String sourceId) {
         setModifiedFlag(contextManager);

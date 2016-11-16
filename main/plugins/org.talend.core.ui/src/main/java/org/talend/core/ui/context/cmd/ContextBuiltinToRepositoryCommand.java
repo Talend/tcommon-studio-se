@@ -53,11 +53,6 @@ public class ContextBuiltinToRepositoryCommand extends Command {
         this.helper = new ContextManagerHelper(contextManager);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.gef.commands.Command#execute()
-     */
     @Override
     public void execute() {
         IContext jobDefaultContext = contextManager.getDefaultContext(); // get default context from job

@@ -33,13 +33,6 @@ public class TRunjobRepositoryComponentDndFilter extends DefaultRepositoryCompon
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.repository.IRepositoryComponentDndFilter#valid(org.talend.core.model.properties.Item,
-     * org.talend.core.model.repository.ERepositoryObjectType, org.talend.repository.model.RepositoryNode,
-     * org.talend.core.model.components.IComponent, java.lang.String)
-     */
     public boolean valid(Item item, ERepositoryObjectType type, RepositoryNode seletetedNode, IComponent component,
             String repositoryType) {
         // tRunJob

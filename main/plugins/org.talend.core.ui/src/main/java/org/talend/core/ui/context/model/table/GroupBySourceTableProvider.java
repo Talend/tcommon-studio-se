@@ -192,11 +192,6 @@ public class GroupBySourceTableProvider extends ContextProviderProxy {
         return text;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnText(java.lang.Object, int)
-     */
     @Override
     public String getColumnText(Object element, int columnIndex) {
         if (element instanceof ContextTableTabParentModel) {
@@ -210,21 +205,11 @@ public class GroupBySourceTableProvider extends ContextProviderProxy {
         return "";
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.ui.context.ConextTreeValuesComposite.ProviderProxy#getColumnImage(java.lang.Object, int)
-     */
     @Override
     public Image getColumnImage(Object element, int columnIndex) {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
-     */
     @Override
     @SuppressWarnings("unchecked")
     public Object[] getElements(Object inputElement) {
@@ -319,11 +304,6 @@ public class GroupBySourceTableProvider extends ContextProviderProxy {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
-     */
     @Override
     public Object[] getChildren(Object parentElement) {
         if (parentElement instanceof ContextTableTabParentModel) {
@@ -333,11 +313,6 @@ public class GroupBySourceTableProvider extends ContextProviderProxy {
         return new Object[0];
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object)
-     */
     @Override
     public Object getParent(Object element) {
         if (element instanceof ContextTableTabChildModel) {
@@ -347,11 +322,6 @@ public class GroupBySourceTableProvider extends ContextProviderProxy {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.Object)
-     */
     @Override
     public boolean hasChildren(Object element) {
         if (element instanceof ContextTableTabParentModel) {
@@ -361,21 +331,11 @@ public class GroupBySourceTableProvider extends ContextProviderProxy {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ITableColorProvider#getForeground(java.lang.Object, int)
-     */
     @Override
     public Color getForeground(Object element, int columnIndex) {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ITableColorProvider#getBackground(java.lang.Object, int)
-     */
     @Override
     public Color getBackground(Object element, int columnIndex) {
         if (element instanceof ContextTableTabChildModel) {
@@ -398,11 +358,6 @@ public class GroupBySourceTableProvider extends ContextProviderProxy {
         return null;
     }
 
-    /**
-     * 
-     * @param name
-     * @return
-     */
     private boolean hasSameNameContextParameters(String name) {
         boolean has = false;
         IContextManager contextManager = parentModel.getContextModelManager().getContextManager();

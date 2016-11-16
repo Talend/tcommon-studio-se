@@ -21,11 +21,6 @@ public abstract class AbstractExtendRepositoryNode implements IExtendRepositoryN
         super();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.repository.IExtendRepositoryNode#getChildren()
-     */
     @Override
     public Object[] getChildren() {
         return new RepositoryNode[0];

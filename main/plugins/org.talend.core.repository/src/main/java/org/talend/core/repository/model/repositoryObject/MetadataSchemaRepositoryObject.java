@@ -215,11 +215,6 @@ public class MetadataSchemaRepositoryObject extends MetadataSchema implements IS
         return this.schema;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryViewObject#isModified()
-     */
     @Override
     public boolean isModified() {
         return viewObject.isModified();

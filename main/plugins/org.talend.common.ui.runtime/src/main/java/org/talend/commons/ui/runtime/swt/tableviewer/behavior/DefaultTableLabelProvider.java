@@ -99,11 +99,6 @@ public class DefaultTableLabelProvider implements ITableLabelProvider, ITableCol
     public void removeListener(ILabelProviderListener lpl) {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ITableColorProvider#getBackground(java.lang.Object, int)
-     */
     public Color getBackground(Object element, int columnIndex) {
         TableViewerCreatorColumnNotModifiable column = (TableViewerCreatorColumnNotModifiable) this.tableViewerCreator
                 .getColumns().get(columnIndex);
@@ -113,11 +108,6 @@ public class DefaultTableLabelProvider implements ITableLabelProvider, ITableCol
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ITableColorProvider#getForeground(java.lang.Object, int)
-     */
     public Color getForeground(Object element, int columnIndex) {
         TableViewerCreatorColumnNotModifiable column = (TableViewerCreatorColumnNotModifiable) this.tableViewerCreator
                 .getColumns().get(columnIndex);

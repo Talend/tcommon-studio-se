@@ -299,11 +299,6 @@ public class ColorStyledText extends StyledText {
         return this.scanner;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.custom.StyledText#setEditable(boolean)
-     */
     @Override
     public void setEditable(boolean editable) {
         super.setEditable(editable);
@@ -312,20 +307,10 @@ public class ColorStyledText extends StyledText {
         }
     }
 
-    /**
-     * Getter for coloring.
-     * 
-     * @return the coloring
-     */
     public boolean isColoring() {
         return this.coloring;
     }
 
-    /**
-     * Sets the coloring.
-     * 
-     * @param coloring the coloring to set
-     */
     public void setColoring(boolean coloring) {
         boolean wasDifferent = this.coloring != coloring;
         this.coloring = coloring;
@@ -338,11 +323,6 @@ public class ColorStyledText extends StyledText {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.swt.widgets.Widget#dispose()
-     */
     @Override
     public void dispose() {
         super.dispose();

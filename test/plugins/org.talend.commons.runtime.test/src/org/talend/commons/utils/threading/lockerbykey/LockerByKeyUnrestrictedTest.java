@@ -184,11 +184,6 @@ public class LockerByKeyUnrestrictedTest extends LockerByKeyTest {
         // UNLOCK STEP
         Callable<Boolean> runnableUnlock = new Callable<Boolean>() {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see java.util.concurrent.Callable#call()
-             */
             @Override
             public Boolean call() throws Exception {
                 return locker.unlockUnrestricted(keyOne);
@@ -227,11 +222,6 @@ public class LockerByKeyUnrestrictedTest extends LockerByKeyTest {
         // UNLOCK STEP
         Callable<Boolean> runnableUnlock = new Callable<Boolean>() {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see java.util.concurrent.Callable#call()
-             */
             @Override
             public Boolean call() throws Exception {
                 return locker.unlockUnrestricted(keyOne);
@@ -270,11 +260,6 @@ public class LockerByKeyUnrestrictedTest extends LockerByKeyTest {
         // UNLOCK STEP
         Callable<Boolean> runnableUnlock = new Callable<Boolean>() {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see java.util.concurrent.Callable#call()
-             */
             @Override
             public Boolean call() throws Exception {
                 return locker.unlockUnrestricted(keyOne);
@@ -313,11 +298,6 @@ public class LockerByKeyUnrestrictedTest extends LockerByKeyTest {
         // TRY LOCK TIMEOUT STEP
         Callable<Boolean> runnableTryLockTimeout = new Callable<Boolean>() {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see java.util.concurrent.Callable#call()
-             */
             @Override
             public Boolean call() throws Exception {
                 // STEP 2
@@ -346,11 +326,6 @@ public class LockerByKeyUnrestrictedTest extends LockerByKeyTest {
         // UNLOCK STEP
         Callable<Boolean> runnableUnlock = new Callable<Boolean>() {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see java.util.concurrent.Callable#call()
-             */
             @Override
             public Boolean call() throws Exception {
                 // STEP 6
@@ -466,11 +441,6 @@ public class LockerByKeyUnrestrictedTest extends LockerByKeyTest {
         final String expectedResult = "ended";
         Callable<String> runnable = new Callable<String>() {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see java.util.concurrent.Callable#call()
-             */
             @Override
             public String call() throws Exception {
                 locker.lockInterruptiblyUnrestricted(keyOne);
@@ -515,11 +485,6 @@ public class LockerByKeyUnrestrictedTest extends LockerByKeyTest {
         final String expectedResult = "ended";
         Callable<String> runnable = new Callable<String>() {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see java.util.concurrent.Callable#call()
-             */
             @Override
             public String call() throws Exception {
                 locker.tryLockUnrestricted(keyOne, 10000);

@@ -145,11 +145,6 @@ public class TreeToTablesLinker<D1, D2> extends BgDrawableComposite implements I
         return this.drawingLinksComparator;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.drawing.link.BackgroundRefresher#drawBackground(org.eclipse.swt.graphics.GC)
-     */
     @Override
     public void drawBackground(GC gc) {
 
@@ -282,13 +277,6 @@ public class TreeToTablesLinker<D1, D2> extends BgDrawableComposite implements I
         return maxWidth;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.commons.ui.swt.linking.IControlsLinker#updateLinksStyleAndControlsSelection(org.eclipse.swt.widgets
-     * .Control, java.lang.Boolean)
-     */
     public void updateLinksStyleAndControlsSelection(Control currentControl, Boolean flag) {
         boolean isTable = false;
         if (currentControl instanceof Table) {

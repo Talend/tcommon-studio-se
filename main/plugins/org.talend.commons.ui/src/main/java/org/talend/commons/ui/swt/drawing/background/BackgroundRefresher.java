@@ -97,11 +97,6 @@ public class BackgroundRefresher implements IBackgroundRefresher {
 
         executionLimiter = new ExecutionLimiterImproved(refreshTimeMax, true, this.getClass().getSimpleName() + ".init(long)") {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.talend.commons.utils.threading.ExecutionLimiter#execute(boolean)
-             */
             @Override
             protected void execute(final boolean isFinalExecution, Object data) {
                 drawableComposite.getBgDrawableComposite().getDisplay().syncExec(new Runnable() {
@@ -353,20 +348,11 @@ public class BackgroundRefresher implements IBackgroundRefresher {
         return this.antialiasAllowed;
     }
 
-    /**
-     * DOC amaumont Comment method "updateBackroundAsynchronous".
-     */
     public void refreshBackgroundWithLimiter() {
         executionLimiter.startIfExecutable();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.drawing.background.IBackgroundRefresher#dispose()
-     */
     public void dispose() {
-
         if (threadToEvaluatePerformance != null && !threadToEvaluatePerformance.isInterrupted()) {
             threadToEvaluatePerformance.interrupt();
         }

@@ -138,11 +138,6 @@ public class RelationshipRegistryReader extends RegistryReader {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.utils.RegistryReader#readElement(org.eclipse.core.runtime.IConfigurationElement)
-     */
     @Override
     protected boolean readElement(final IConfigurationElement element) {
         if ("itemHandler".equals(element.getName())) { //$NON-NLS-1$

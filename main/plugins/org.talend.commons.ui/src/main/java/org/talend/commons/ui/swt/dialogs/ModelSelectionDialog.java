@@ -65,11 +65,6 @@ public class ModelSelectionDialog extends SelectionDialog {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
-     */
     @Override
     protected Control createDialogArea(Composite parent) {
         Composite composite = (Composite) super.createDialogArea(parent);
@@ -115,9 +110,6 @@ public class ModelSelectionDialog extends SelectionDialog {
         return inner;
     }
 
-    /**
-     * yzhang Comment method "initControl".
-     */
     private void configControlStatus() {
         if (readOnlyJob) {
             buildIn.setEnabled(false);
@@ -133,11 +125,6 @@ public class ModelSelectionDialog extends SelectionDialog {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.Dialog#okPressed()
-     */
     @Override
     protected void okPressed() {
         if (buildIn.getSelection())

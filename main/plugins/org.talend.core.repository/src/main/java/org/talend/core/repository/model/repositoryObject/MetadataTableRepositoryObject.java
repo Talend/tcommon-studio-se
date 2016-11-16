@@ -316,11 +316,6 @@ public class MetadataTableRepositoryObject extends MetadataTable implements ISub
         return this.table;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryViewObject#isModified()
-     */
     @Override
     public boolean isModified() {
         return viewObject.isModified();

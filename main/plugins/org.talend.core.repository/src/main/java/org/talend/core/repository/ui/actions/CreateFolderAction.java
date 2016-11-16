@@ -54,11 +54,6 @@ public class CreateFolderAction extends AContextualAction {
         this.setImageDescriptor(OverlayImageProvider.getImageWithNew(folderImg));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
-     */
     @Override
     protected void doRun() {
         ISelection selection = getSelection();
@@ -84,12 +79,6 @@ public class CreateFolderAction extends AContextualAction {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.actions.ITreeContextualAction#init(org.eclipse.jface.viewers.TreeViewer,
-     * org.eclipse.jface.viewers.IStructuredSelection)
-     */
     @Override
     public void init(TreeViewer viewer, IStructuredSelection selection) {
         boolean canWork = !selection.isEmpty() && selection.size() == 1;

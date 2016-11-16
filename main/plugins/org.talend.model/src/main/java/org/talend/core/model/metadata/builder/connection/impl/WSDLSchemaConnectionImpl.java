@@ -1112,11 +1112,6 @@ public class WSDLSchemaConnectionImpl extends ConnectionImpl implements WSDLSche
         return result.toString();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @seeorg.talend.core.model.metadata.builder.connection. WSDLSchemaConnection#isWSDLModel(boolean)
-     */
     public Boolean isWSDLModel() {
         // TODO Auto-generated method stub
         return isWSDL;
@@ -1130,11 +1125,6 @@ public class WSDLSchemaConnectionImpl extends ConnectionImpl implements WSDLSche
                     oldInputModel, isWSDL));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @seeorg.talend.core.model.metadata.builder.connection. WSDLSchemaConnection#setPortName(java.lang.String)
-     */
     public void setPortName(String newPortName) {
         // TODO Auto-generated method stub
         String oldPortName = portName;
@@ -1187,41 +1177,21 @@ public class WSDLSchemaConnectionImpl extends ConnectionImpl implements WSDLSche
         return portName;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @seeorg.talend.core.model.metadata.builder.connection. WSDLSchemaConnection#getPortNameSpace()
-     */
     public String getPortNameSpace() {
         // TODO Auto-generated method stub
         return portNameSpace;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @seeorg.talend.core.model.metadata.builder.connection. WSDLSchemaConnection#getServerName()
-     */
     public String getServerName() {
         // TODO Auto-generated method stub
         return serverName;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @seeorg.talend.core.model.metadata.builder.connection. WSDLSchemaConnection#getServerNameSpace()
-     */
     public String getServerNameSpace() {
         // TODO Auto-generated method stub
         return serverNameSpace;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @seeorg.talend.core.model.metadata.builder.connection. WSDLSchemaConnection#setPortNameSpace(java.lang.String)
-     */
     public void setPortNameSpace(String newServerNameSpace) {
         // TODO Auto-generated method stub
         String oldPortName = portNameSpace;
@@ -1231,11 +1201,6 @@ public class WSDLSchemaConnectionImpl extends ConnectionImpl implements WSDLSche
                     oldPortName, portNameSpace));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @seeorg.talend.core.model.metadata.builder.connection. WSDLSchemaConnection#setServerName(java.lang.String)
-     */
     public void setServerName(String newServerName) {
         // TODO Auto-generated method stub
         String oldPortName = serverName;
@@ -1245,11 +1210,6 @@ public class WSDLSchemaConnectionImpl extends ConnectionImpl implements WSDLSche
                     oldPortName, serverName));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @seeorg.talend.core.model.metadata.builder.connection. WSDLSchemaConnection#setServerNameSpace(java.lang.String)
-     */
     public void setServerNameSpace(String newServerNameSpace) {
         // TODO Auto-generated method stub
         String oldPortName = serverNameSpace;
@@ -1258,4 +1218,5 @@ public class WSDLSchemaConnectionImpl extends ConnectionImpl implements WSDLSche
             eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.WSDL_SCHEMA_CONNECTION__SERVER_NAME_SPACE,
                     oldPortName, serverNameSpace));
     }
-} // WSDLSchemaConnectionImpl
+}
+

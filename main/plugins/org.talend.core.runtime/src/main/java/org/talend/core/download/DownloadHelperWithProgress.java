@@ -73,11 +73,6 @@ public class DownloadHelperWithProgress {
     protected IDownloadHelper createDownloadHelperDelegate(final DownloadListenerImplementation downloadProgress) {
         DownloadHelper downloadHelper = new DownloadHelper() {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.talend.core.download.DownloadHelper#isCancel()
-             */
             @Override
             public boolean isCancel() {
                 return downloadProgress.isCanceled();

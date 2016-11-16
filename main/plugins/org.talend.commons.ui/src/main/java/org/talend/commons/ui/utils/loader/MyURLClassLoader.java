@@ -141,11 +141,6 @@ public class MyURLClassLoader extends URLClassLoader {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.net.URLClassLoader#findClass(java.lang.String)
-     */
     @SuppressWarnings("unchecked")
     protected synchronized Class findCslass(String className) throws ClassNotFoundException {
         Class cls = (Class) pclasses.get(className);

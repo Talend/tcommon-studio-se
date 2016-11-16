@@ -44,11 +44,6 @@ public class ExtendedTableResetDBTypesCommand extends Command implements IExtend
         this.extendedTableViewer = extendedTableViewer;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.advanced.dataeditor.commands.AbstractExtendedTableResetDBTypesCommand#execute()
-     */
     @Override
     public void execute() {
         oldDbTypes = new ArrayList<String>();
@@ -83,11 +78,6 @@ public class ExtendedTableResetDBTypesCommand extends Command implements IExtend
         extendedTableViewer.getTableViewerCreator().getTableViewer().refresh();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.advanced.dataeditor.commands.AbstractExtendedTableResetDBTypesCommand#undo()
-     */
     @Override
     public synchronized void undo() {
         List beansList = extendedTable.getBeansList();

@@ -64,11 +64,6 @@ public class JobAndNodesParametersRelationshipHandler implements IItemRelationsh
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.relationship.IItemRelationshipHandler#find(org.talend.core.model.properties.Item)
-     */
     @Override
     public Map<Relation, Set<Relation>> find(Item baseItem) {
         if (!valid(baseItem)) {

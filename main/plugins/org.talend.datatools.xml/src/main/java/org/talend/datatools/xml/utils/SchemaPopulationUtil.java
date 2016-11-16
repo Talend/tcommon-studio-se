@@ -230,12 +230,6 @@ final class XMLFileSchemaTreePopulator implements ISaxParserConsumer {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.datatools.enablement.oda.xml.util.ISaxParserConsumer#detectNewRow(java.lang.String,
-     * java.lang.String, java.lang.String, boolean)
-     */
     @Override
     public void detectNewRow(String path, String prefix, String uri, boolean start) {
         String treamedPath = getTreamedPath(path);
@@ -268,11 +262,6 @@ final class XMLFileSchemaTreePopulator implements ISaxParserConsumer {
         return path.matches(".*\\Q[@\\E.+\\Q]\\E.*");
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.datatools.enablement.oda.xml.util.ISaxParserConsumer#wakeup()
-     */
     @Override
     public synchronized void wakeup() {
         notify();

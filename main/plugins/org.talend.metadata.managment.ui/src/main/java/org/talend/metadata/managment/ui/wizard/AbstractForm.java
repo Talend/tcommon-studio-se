@@ -335,11 +335,6 @@ public abstract class AbstractForm extends Composite {
 
             private final IRefreshable refreshableComposite = refresh;
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.eclipse.swt.events.KeyAdapter#keyReleased(org.eclipse.swt.events.KeyEvent)
-             */
             @Override
             public void keyReleased(KeyEvent e) {
                 if ((e.keyCode == SWT.F5)) {

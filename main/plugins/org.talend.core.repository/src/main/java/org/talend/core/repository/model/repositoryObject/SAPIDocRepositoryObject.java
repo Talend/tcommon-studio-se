@@ -42,11 +42,6 @@ public class SAPIDocRepositoryObject extends RepositoryObject implements ISubRep
         this.iDocUnit = functionUnit;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryObject#getType()
-     */
     @Override
     public ERepositoryObjectType getRepositoryObjectType() {
         return ERepositoryObjectType.METADATA_SAP_IDOC;
@@ -59,11 +54,6 @@ public class SAPIDocRepositoryObject extends RepositoryObject implements ISubRep
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.RepositoryObject#getLabel()
-     */
     @Override
     public String getLabel() {
         return iDocUnit.getLabel();
@@ -86,21 +76,11 @@ public class SAPIDocRepositoryObject extends RepositoryObject implements ISubRep
         return iDocUnit.getId();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.model.ISubRepositoryObject#getAbstractMetadataObject ()
-     */
     @Override
     public AbstractMetadataObject getAbstractMetadataObject() {
         return iDocUnit;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.model.ISubRepositoryObject#removeFromParent()
-     */
     @Override
     public void removeFromParent() {
         iDocUnit.getConnection().getIDocs().remove(iDocUnit);

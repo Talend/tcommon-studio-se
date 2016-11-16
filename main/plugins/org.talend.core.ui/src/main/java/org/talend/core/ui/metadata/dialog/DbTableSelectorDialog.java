@@ -66,21 +66,10 @@ public class DbTableSelectorDialog extends Dialog {
                 getParentShell().getLocation().y + getParentShell().getSize().y / 2);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
-     */
     @Override
     protected Control createDialogArea(Composite parent) {
         Composite container = (Composite) super.createDialogArea(parent);
         GridLayout layout = new GridLayout();
-        // layout.marginBottom = 0;
-        // layout.marginHeight = 0;
-        // layout.marginLeft = 0;
-        // layout.marginRight = 0;
-        // layout.marginTop = 0;
-        // layout.marginWidth = 0;
 
         container.setLayout(layout);
         GridData gridData = new GridData(GridData.FILL_BOTH);
@@ -110,12 +99,6 @@ public class DbTableSelectorDialog extends Dialog {
 
         viewer.addSelectionChangedListener(new ISelectionChangedListener() {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @seeorg.eclipse.jface.viewers.ISelectionChangedListener#selectionChanged(org.eclipse.jface.viewers.
-             * SelectionChangedEvent)
-             */
             @Override
             public void selectionChanged(SelectionChangedEvent event) {
                 if (event.getSelection() instanceof StructuredSelection) {
@@ -162,11 +145,6 @@ public class DbTableSelectorDialog extends Dialog {
             return image;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
-         */
         @Override
         public String getText(Object element) {
             if (element instanceof DbTableSelectorObject) {
@@ -175,22 +153,11 @@ public class DbTableSelectorDialog extends Dialog {
             return super.getText(element);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer,
-         * java.lang.Object, java.lang.Object)
-         */
         @Override
         public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
-         */
         @Override
         public Object[] getElements(Object inputElement) {
             if (inputElement instanceof DbTableSelectorObject) {
@@ -202,21 +169,11 @@ public class DbTableSelectorDialog extends Dialog {
             return Collections.EMPTY_LIST.toArray();
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
-         */
         @Override
         public Object[] getChildren(Object parentElement) {
             return getElements(parentElement);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object)
-         */
         @Override
         public Object getParent(Object element) {
             if (element instanceof DbTableSelectorObject) {
@@ -228,22 +185,12 @@ public class DbTableSelectorDialog extends Dialog {
             return object;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.Object)
-         */
         @Override
         public boolean hasChildren(Object element) {
             return getElements(element).length > 0;
         }
     }
 
-    /**
-     * qzhang Comment method "getSelectName".
-     * 
-     * @return
-     */
     public String getSelectName() {
         return this.selectName;
     }

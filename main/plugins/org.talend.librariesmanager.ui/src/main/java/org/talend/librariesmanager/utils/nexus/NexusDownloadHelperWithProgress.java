@@ -55,22 +55,11 @@ public class NexusDownloadHelperWithProgress extends DownloadHelperWithProgress 
         super.download(componentUrl, destination, progressMonitor);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.download.DownloadHelperWithProgress#createDownloadHelperDelegate(org.talend.core.download.
-     * DownloadHelperWithProgress.DownloadListenerImplementation)
-     */
     @Override
     protected IDownloadHelper createDownloadHelperDelegate(final DownloadListenerImplementation downloadProgress) {
 
         NexusDownloader downloadHelper = new NexusDownloader() {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.talend.core.download.DownloadHelper#isCancel()
-             */
             @Override
             public boolean isCancel() {
                 return downloadProgress.isCanceled();

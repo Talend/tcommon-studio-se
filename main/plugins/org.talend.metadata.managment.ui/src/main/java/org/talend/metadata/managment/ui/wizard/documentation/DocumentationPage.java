@@ -86,11 +86,6 @@ public class DocumentationPage extends PropertiesWizardPage {
         documentationItem = property.getItem();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
-     */
     public void createControl(Composite parent) {
         Composite container = new Composite(parent, SWT.NONE);
         GridLayout layout = new GridLayout(2, false);

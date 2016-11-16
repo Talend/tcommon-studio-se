@@ -205,39 +205,23 @@ public class StatisticsTracerTest {
 
         long averageWorkTime = myTracerTest1.getAverageWorkTime();
         boolean testAverageWorkTime = averageWorkTime >= sleepTime && averageWorkTime < sleepTime + 100;
-        // log.info("averageWorkTime=" + averageWorkTime);
-        // System.out.println("averageWorkTime=" + averageWorkTime);
         assertTrue(testAverageWorkTime);
 
         int expectedElapsedTimeSinceFirstStart = sleepTime * executionsCount;
         long elapsedTimeSinceFirstStart = myTracerTest1.getElapsedTimeSinceFirstStart();
-        // log.info("elapsedTimeSinceFirstStart=" + elapsedTimeSinceFirstStart);
-        // System.out.println("elapsedTimeSinceFirstStart=" + elapsedTimeSinceFirstStart);
         assertEquals(expectedElapsedTimeSinceFirstStart, elapsedTimeSinceFirstStart, 1500);
 
-        // log.info("executionsCount=" + myTracerTest1.getCountExecutions());
-        // System.out.println("executionsCount=" + myTracerTest1.getCountExecutions());
         assertEquals(executionsCount * concurrentExecutionsCount, myTracerTest1.getCountExecutions());
 
         StatisticsTracer.removeTracer(tracerId);
     }
 
-    /**
-     * DOC amaumont Comment method "intializePool".
-     * 
-     * @return
-     */
     private ThreadPoolExecutor intializePool(int poolSize) {
 
         return (ThreadPoolExecutor) Executors.newFixedThreadPool(poolSize, new ThreadFactory() {
 
             ThreadFactory defaultThreadFactory = Executors.defaultThreadFactory();
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see java.util.concurrent.ThreadFactory#newThread(java.lang.Runnable)
-             */
             @Override
             public Thread newThread(Runnable r) {
                 Thread newThread = defaultThreadFactory.newThread(r);

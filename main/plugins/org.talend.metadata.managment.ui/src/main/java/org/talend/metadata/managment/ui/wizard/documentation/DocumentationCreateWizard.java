@@ -99,11 +99,6 @@ public class DocumentationCreateWizard extends CheckLastVersionRepositoryWizard 
         setDefaultPageImageDescriptor(ImageProvider.getImageDesc(ECoreImage.PROCESS_WIZ));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.wizard.Wizard#addPages()
-     */
     @Override
     public void addPages() {
         mainPage = new DocumentationPage(property, pathToSave);
@@ -114,11 +109,6 @@ public class DocumentationCreateWizard extends CheckLastVersionRepositoryWizard 
         setNeedsProgressMonitor(true);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.wizard.Wizard#performFinish()
-     */
     @Override
     public boolean performFinish() {
         boolean created = false;
@@ -260,20 +250,10 @@ public class DocumentationCreateWizard extends CheckLastVersionRepositoryWizard 
         this.docFilePath = docFilePath;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.wizards.IDocumentationContext#isDocNameEditable()
-     */
     public boolean isDocNameEditable() {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.wizards.IDocumentationContext#isDocVersionEditable()
-     */
     public boolean isDocVersionEditable() {
         return true;
     }

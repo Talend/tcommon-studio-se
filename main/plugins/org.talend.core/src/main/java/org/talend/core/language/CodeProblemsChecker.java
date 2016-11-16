@@ -107,30 +107,15 @@ public abstract class CodeProblemsChecker implements ICodeProblemsChecker {
         return nodeProblems;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.language.ICodeProblemsChecker#getProblemsFromKey(java.lang.String)
-     */
     public List<Problem> getProblemsFromKey(String key) {
         List<Problem> list = (List<Problem>) multiValueMap.get(key);
         return list;
     }
 
-    /**
-     * Getter for problems.
-     * 
-     * @return the problems
-     */
     protected List<Problem> getProblems() {
         return this.problems;
     }
 
-    /**
-     * Sets the problems.
-     * 
-     * @param problems the problems to set
-     */
     protected void setProblems(List<Problem> problems) {
         this.problems = problems;
         multiValueMap.clear();

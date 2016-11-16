@@ -61,11 +61,6 @@ public class ContextTableCellModifier extends AbstractContextCellModifier {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ICellModifier#getValue(java.lang.Object, java.lang.String)
-     */
     @Override
     public Object getValue(Object element, String property) {
         if (element instanceof ContextTableTabParentModel) {
@@ -181,11 +176,6 @@ public class ContextTableCellModifier extends AbstractContextCellModifier {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ICellModifier#modify(java.lang.Object, java.lang.String, java.lang.Object)
-     */
     @Override
     public void modify(Object element, final String property, final Object value) {
         TreeItem item = (TreeItem) element;

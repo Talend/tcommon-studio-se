@@ -437,14 +437,6 @@ public abstract class AbstractExtendedTableViewer<B> extends AbstractExtendedCon
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.commons.ui.swt.extended.macrotable.AbstractExtendedControlViewer#modelChanged(org.talend.commons.ui
-     * .swt.extended.macrotable.AbstractExtendedControlModel,
-     * org.talend.commons.ui.swt.extended.macrotable.AbstractExtendedControlModel)
-     */
     @Override
     protected void modelChanged(AbstractExtendedControlModel previousModel, AbstractExtendedControlModel newModel) {
         if (previousModel != null) {
@@ -455,13 +447,6 @@ public abstract class AbstractExtendedTableViewer<B> extends AbstractExtendedCon
         this.tableViewerCreator.getTable().layout();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.commons.ui.swt.extended.table.AbstractExtendedControlViewer#setCommandStackAdapter(org.talend.commons
-     * .ui.command.ICommandStackAdapter)
-     */
     @Override
     public void setCommandStack(CommandStack commandStack) {
         super.setCommandStack(commandStack);
@@ -470,11 +455,6 @@ public abstract class AbstractExtendedTableViewer<B> extends AbstractExtendedCon
         }
     }
 
-    /**
-     * DOC amaumont Comment method "setTableSelection".
-     * 
-     * @param selectionIndices
-     */
     public void setTableSelection(int[] selectionIndices, boolean executeSelectionEvent) {
         SelectionHelper selectionHelper = getTableViewerCreator().getSelectionHelper();
         selectionHelper.setActiveFireSelectionChanged(false);
@@ -491,11 +471,6 @@ public abstract class AbstractExtendedTableViewer<B> extends AbstractExtendedCon
         getTableViewerCreator().getSelectionHelper().setActiveFireSelectionChanged(executeSelectionEvent);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.extended.table.AbstractExtendedControlViewer#setReadOnly(boolean)
-     */
     @Override
     public void setReadOnly(boolean readOnly) {
         super.setReadOnly(readOnly);

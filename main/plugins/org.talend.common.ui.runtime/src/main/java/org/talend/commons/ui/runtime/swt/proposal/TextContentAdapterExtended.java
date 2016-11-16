@@ -79,11 +79,6 @@ public class TextContentAdapterExtended extends TextContentAdapter implements IC
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.proposal.IControlContentAdapterExtended#setUsedFilterValue(java.lang.String)
-     */
     public void setUsedFilterValue(String filterValue) {
         this.filterValue = filterValue;
     }

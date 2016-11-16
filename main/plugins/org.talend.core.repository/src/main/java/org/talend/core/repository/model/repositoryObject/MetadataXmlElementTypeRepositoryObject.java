@@ -170,11 +170,6 @@ public class MetadataXmlElementTypeRepositoryObject extends MetadataXmlElementTy
         return this.tdXmlElementType;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.repository.IRepositoryViewObject#isModified()
-     */
     @Override
     public boolean isModified() {
         return viewObject.isModified();

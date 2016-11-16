@@ -77,11 +77,6 @@ public class DateParameter extends Parameter {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.rowgenerator.data.Parameter#setType(java.lang.String)
-     */
     @Override
     public void setType(String type) {
         if (LanguageManager.getCurrentLanguage().equals(ECodeLanguage.JAVA)) {

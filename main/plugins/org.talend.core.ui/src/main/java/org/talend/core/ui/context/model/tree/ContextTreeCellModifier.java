@@ -53,11 +53,6 @@ public class ContextTreeCellModifier extends AbstractContextCellModifier {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ICellModifier#getValue(java.lang.Object, java.lang.String)
-     */
     public Object getValue(Object element, String property) {
         IContextParameter para = getRealParameter(element);
 
@@ -73,13 +68,6 @@ public class ContextTreeCellModifier extends AbstractContextCellModifier {
         return ""; //$NON-NLS-1$
     }
 
-    /**
-     * bqian Comment method "getRealParameter".
-     * 
-     * @param property
-     * @param templatePara
-     * @return
-     */
     public IContextParameter getRealParameter(Object element) {
         IContextParameter para = null;
 
@@ -91,11 +79,6 @@ public class ContextTreeCellModifier extends AbstractContextCellModifier {
         return para;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.ICellModifier#modify(java.lang.Object, java.lang.String, java.lang.Object)
-     */
     public void modify(Object element, final String property, final Object value) {
         TreeItem item = (TreeItem) element;
         final Object object = item.getData();

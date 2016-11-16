@@ -132,11 +132,6 @@ public class ShowPerspectivesAtStartupRegistryReader extends RegistryReader {
         return this.showPerspIds;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.utils.RegistryReader#readElement(org.eclipse.core.runtime.IConfigurationElement)
-     */
     @Override
     protected boolean readElement(final IConfigurationElement element) {
         if ("perspective".equals(element.getName())) { //$NON-NLS-1$

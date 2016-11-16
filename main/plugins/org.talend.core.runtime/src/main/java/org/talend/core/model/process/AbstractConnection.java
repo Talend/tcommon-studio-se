@@ -266,11 +266,6 @@ public abstract class AbstractConnection implements IConnection {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
         return "{Name=" + getName() + ", Table=" + getMetadataTable() + "}"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -305,7 +300,6 @@ public abstract class AbstractConnection implements IConnection {
     }
 
     public INode getTmpNode() {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -314,11 +308,6 @@ public abstract class AbstractConnection implements IConnection {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.IElement#getElementName()
-     */
     @Override
     public String getElementName() {
         return this.getUniqueName();
@@ -433,21 +422,11 @@ public abstract class AbstractConnection implements IConnection {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.IElement#isForceReadOnly()
-     */
     @Override
     public boolean isForceReadOnly() {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.core.model.process.IElement#setForceReadOnly(boolean)
-     */
     @Override
     public void setForceReadOnly(boolean readOnly) {
 

@@ -111,12 +111,6 @@ public abstract class ExtensionImplementationProvider<I> {
         ExtensionImplementationProvider<IConfigurationElement> provider = new ExtensionImplementationProvider<IConfigurationElement>(
                 extensionPointLimiter, plugInId) {
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.talend.commons.utils.workbench.extensions.ExtensionImplementationProvider#createImplementation(org.eclipse.core.runtime.IExtension,
-             * org.talend.commons.utils.workbench.extensions.IExtensionPointLimiter)
-             */
             @Override
             protected IConfigurationElement createImplementation(IExtension extension,
                     IExtensionPointLimiter extensionPointLimiter, IConfigurationElement configurationElement) {

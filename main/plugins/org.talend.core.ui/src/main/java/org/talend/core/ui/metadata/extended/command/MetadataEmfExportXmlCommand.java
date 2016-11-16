@@ -44,11 +44,6 @@ public class MetadataEmfExportXmlCommand extends Command {
         this.dbmsId = dbmsId;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.command.CommonCommand#execute()
-     */
     @Override
     public void execute() {
         try {

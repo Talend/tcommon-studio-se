@@ -56,11 +56,6 @@ public class AS400ResultSet extends FakeResultSet {
         return getString(columnIndex + 1);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeResultSet#getInt(java.lang.String)
-     */
     @Override
     public int getInt(String columnLabel) throws SQLException {
         String str = getString(columnLabel);
@@ -78,22 +73,12 @@ public class AS400ResultSet extends FakeResultSet {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeResultSet#getBoolean(java.lang.String)
-     */
     @Override
     public boolean getBoolean(String columnLabel) throws SQLException {
         String str = getString(columnLabel);
         return Boolean.parseBoolean(str);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.utils.database.FakeResultSet#getString(int)
-     */
     @Override
     public String getString(int columnIndex) throws SQLException {
         String[] row = data.get(index);
@@ -106,21 +91,11 @@ public class AS400ResultSet extends FakeResultSet {
         return row[columnIndex];
     }
 
-    /**
-     * DOC bqian Comment method "setMetadata".
-     * 
-     * @param table_meta
-     */
     public void setMetadata(String[] tableMeta) {
         this.tableMeta = tableMeta;
 
     }
 
-    /**
-     * DOC bqian Comment method "setData".
-     * 
-     * @param tables
-     */
     public void setData(List<String[]> data) {
         this.data = data;
     }
