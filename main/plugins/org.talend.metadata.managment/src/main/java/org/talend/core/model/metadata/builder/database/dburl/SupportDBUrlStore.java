@@ -24,7 +24,10 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.talend.core.database.conn.DatabaseConnStrUtil;
+import org.talend.core.database.conn.version.EDatabaseVersion4Drivers;
 import org.talend.core.model.metadata.builder.database.PluginConstant;
 
 /**
@@ -176,10 +179,46 @@ public final class SupportDBUrlStore {
                 dbType.getParamSeprator() != null ? PluginConstant.DEFAULT_PARAMETERS : PluginConstant.EMPTY_STRING);
     }
 
-    // }
+    /**
+     * get dburl which content are replaced by parameter value.
+     * 
+     * @param dbType
+     * @param dbVersion
+     * @param host
+     * @param username
+     * @param password
+     * @param port
+     * @param dbName
+     * @param dataSource
+     * @param paramString
+     * @return
+     */
+    public String getDBUrl(String dbType, String dbVersion, String host, String username, String password, String port,
+            String dbName, String dataSource, String paramString) {
+        if (SupportDBUrlType.isMssql(dbType)) {
+            // TDQ-12794: for mssql, because of some changes, we need to do like this
+            String versionStr = changeMSSQLVersion(dbVersion);
+            EDatabaseVersion4Drivers version = EDatabaseVersion4Drivers.indexOfByVersionDisplay(versionStr);
+            if (version != null) {
+                versionStr = version.getVersionValue();
+            }
+            return DatabaseConnStrUtil.getURLString(dbType, versionStr, host, username, password, port, dbName,
+                    StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY, paramString);
+        } else {
+            return getDBUrl(dbType, host, port, dbName, StringUtils.EMPTY, paramString);
+        }
+    }
+
+    public String changeMSSQLVersion(String version) {
+        if (version.equals(EDatabaseVersion4Drivers.MSSQL_2012.getVersionValue())) {
+            return EDatabaseVersion4Drivers.MSSQL.getVersionValue();
+        }
+        return version;
+    }
 
     /**
-     * Get dburl which content are replaced by parameter value.
+     * Get dburl which content are replaced by parameter value.(note: for mssql, this method result is wrong, so i deprecated this
+     * method)
      * 
      * @param dbType
      * @param host
@@ -188,7 +227,10 @@ public final class SupportDBUrlStore {
      * @param dataSource
      * @param paramString TODO
      * @return
+     * @deprecated use
+     * {@link #getDBUrl(String dbType, String Version, String host, String username, String password, String port, String dbName, String dataSource, String paramString)}
      */
+    @Deprecated
     public String getDBUrl(String dbType, String host, String port, String dbName, String dataSource, String paramString) {
         String propUrlValue = PROP.getProperty(dbType);
         SupportDBUrlType defaultUrlType = supportDBUrlMap.get(dbType);

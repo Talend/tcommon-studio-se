@@ -2118,8 +2118,8 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         return itemResource;
     }
 
-    private Resource save(BusinessProcessItem item) {
-        Resource itemResource = xmiResourceManager.getItemResource(item);
+    private Resource save(ResourceSet resourceSet, BusinessProcessItem item) {
+        Resource itemResource = xmiResourceManager.getItemResource(resourceSet, item);
         itemResource.getContents().clear();
         // itemResource.getContents().add(item.getNotation());
         itemResource.getContents().add(item.getSemantic());
@@ -2129,8 +2129,8 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         return itemResource;
     }
 
-    private Resource save(ConnectionItem item) {
-        Resource itemResource = xmiResourceManager.getItemResource(item);
+    private Resource save(ResourceSet resourceSet, ConnectionItem item) {
+        Resource itemResource = xmiResourceManager.getItemResource(resourceSet, item);
         itemResource.getContents().clear();
         MetadataManager.addContents(item, itemResource); // 13221
 
@@ -2152,8 +2152,8 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         return itemResource;
     }
 
-    private Resource save(TDQItem item) {
-        Resource itemResource = xmiResourceManager.getItemResource(item);
+    private Resource save(ResourceSet resourceSet, TDQItem item) {
+        Resource itemResource = xmiResourceManager.getItemResource(resourceSet, item);
         return itemResource;
     }
 
@@ -2165,8 +2165,8 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         return itemResource;
     }
 
-    private Resource save(FileItem item) {
-        Resource itemResource = xmiResourceManager.getItemResource(item);
+    private Resource save(ResourceSet resourceSet, FileItem item) {
+        Resource itemResource = xmiResourceManager.getItemResource(resourceSet, item);
 
         ByteArray content = item.getContent();
         itemResource.getContents().clear();
@@ -2213,8 +2213,8 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         return itemResource;
     }
 
-    private Resource save(ContextItem item) {
-        Resource itemResource = xmiResourceManager.getItemResource(item);
+    private Resource save(ResourceSet resourceSet, ContextItem item) {
+        Resource itemResource = xmiResourceManager.getItemResource(resourceSet, item);
 
         itemResource.getContents().clear();
         itemResource.getContents().addAll(item.getContext());
@@ -2229,8 +2229,8 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         return itemResource;
     }
 
-    private Resource save(SnippetItem item) {
-        Resource itemResource = xmiResourceManager.getItemResource(item);
+    private Resource save(ResourceSet resourceSet, SnippetItem item) {
+        Resource itemResource = xmiResourceManager.getItemResource(resourceSet, item);
 
         itemResource.getContents().clear();
         itemResource.getContents().addAll(item.getVariables());
@@ -2238,8 +2238,8 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         return itemResource;
     }
 
-    private Resource saveScreenshots(Item item) {
-        Resource itemResource = xmiResourceManager.getScreenshotResource(item, true, true);
+    private Resource saveScreenshots(ResourceSet resourceSet, Item item) {
+        Resource itemResource = xmiResourceManager.getScreenshotResource(resourceSet, item, true, true);
         EMap screenshots = null;
         if (item instanceof ProcessItem) {
             screenshots = ((ProcessItem) item).getProcess().getScreenshots();
@@ -2253,15 +2253,15 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         return itemResource;
     }
 
-    private Resource save(ProcessItem item) {
-        Resource itemResource = xmiResourceManager.getItemResource(item);
+    private Resource save(ResourceSet resourceSet, ProcessItem item) {
+        Resource itemResource = xmiResourceManager.getItemResource(resourceSet, item);
         itemResource.getContents().clear();
         itemResource.getContents().add(item.getProcess());
         return itemResource;
     }
 
-    private Resource save(JobletProcessItem item) {
-        Resource itemResource = xmiResourceManager.getItemResource(item);
+    private Resource save(ResourceSet resourceSet, JobletProcessItem item) {
+        Resource itemResource = xmiResourceManager.getItemResource(resourceSet, item);
 
         itemResource.getContents().clear();
         itemResource.getContents().add(item.getJobletProcess());
@@ -2293,8 +2293,8 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         return itemResource;
     }
 
-    private Resource save(LinkDocumentationItem item) {
-        Resource itemResource = xmiResourceManager.getItemResource(item);
+    private Resource save(ResourceSet resourceSet, LinkDocumentationItem item) {
+        Resource itemResource = xmiResourceManager.getItemResource(resourceSet, item);
 
         itemResource.getContents().clear();
         itemResource.getContents().add(item.getLink());
@@ -2304,8 +2304,23 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
     @Override
     public void save(Project project, Item item) throws PersistenceException {
-        xmiResourceManager.getAffectedResources(item.getProperty()); // only call this will force to load all sub items
-                                                                     // in case some are not loaded
+
+        boolean isSameResourceSet = true;
+        ResourceSet resourceSet = xmiResourceManager.getResourceSet();
+        try {
+            ResourceSet projectResourceSet = project.getEmfProject().eResource().getResourceSet();
+            ResourceSet defaultResourceSet = xmiResourceManager.getResourceSet();
+            if (projectResourceSet != null) {
+                resourceSet = projectResourceSet;
+            }
+            isSameResourceSet = (projectResourceSet == defaultResourceSet);
+        } catch (Exception e) {
+            ExceptionHandler.process(e);
+        }
+        if (isSameResourceSet) {
+            xmiResourceManager.getAffectedResources(item.getProperty()); // only call this will force to load all sub
+                                                                         // items in case some are not loaded
+        }
 
         computePropertyMaxInformationLevel(item.getProperty());
         item.getProperty().setModificationDate(new Date());
@@ -2317,13 +2332,13 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
             switch (eClass.getClassifierID()) {
 
             case PropertiesPackage.HEADER_FOOTER_CONNECTION_ITEM:
-                itemResource = save((HeaderFooterConnectionItem) item);
+                itemResource = save(resourceSet, (HeaderFooterConnectionItem) item);
                 break;
             case PropertiesPackage.BUSINESS_PROCESS_ITEM:
-                itemResource = save((BusinessProcessItem) item);
+                itemResource = save(resourceSet, (BusinessProcessItem) item);
                 break;
             case PropertiesPackage.SVG_BUSINESS_PROCESS_ITEM:
-                itemResource = save((SVGBusinessProcessItem) item);
+                itemResource = save(resourceSet, (SVGBusinessProcessItem) item);
                 break;
             case PropertiesPackage.POSITIONAL_FILE_CONNECTION_ITEM:
             case PropertiesPackage.DELIMITED_FILE_CONNECTION_ITEM:
@@ -2342,58 +2357,58 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
             case PropertiesPackage.EBCDIC_CONNECTION_ITEM:
                 // not really usefull for ConnectionItem : it's not copied to
                 // another resource for edition
-                itemResource = save((ConnectionItem) item);
+                itemResource = save(resourceSet, (ConnectionItem) item);
                 break;
             case PropertiesPackage.LDIF_FILE_CONNECTION_ITEM:
                 // not really usefull for ConnectionItem : it's not copied to
                 // another resource for edition
-                itemResource = save((ConnectionItem) item);
+                itemResource = save(resourceSet, (ConnectionItem) item);
                 break;
             case PropertiesPackage.GENERIC_SCHEMA_CONNECTION_ITEM:
                 // not really usefull for ConnectionItem : it's not copied to
                 // another resource for edition
-                itemResource = save((ConnectionItem) item);
+                itemResource = save(resourceSet, (ConnectionItem) item);
                 break;
             case PropertiesPackage.DOCUMENTATION_ITEM:
             case PropertiesPackage.ROUTINE_ITEM:
             case PropertiesPackage.PIGUDF_ITEM:
             case PropertiesPackage.JOB_SCRIPT_ITEM:
             case PropertiesPackage.SQL_PATTERN_ITEM:
-                itemResource = save((FileItem) item);
+                itemResource = save(resourceSet, (FileItem) item);
                 break;
             case PropertiesPackage.PROCESS_ITEM:
-                screenshotResource = saveScreenshots(item);
-                itemResource = save((ProcessItem) item);
+                screenshotResource = saveScreenshots(resourceSet, item);
+                itemResource = save(resourceSet, (ProcessItem) item);
                 screenshotFlag = true;
                 break;
             case PropertiesPackage.JOBLET_PROCESS_ITEM:
-                screenshotResource = saveScreenshots(item);
-                itemResource = save((JobletProcessItem) item);
+                screenshotResource = saveScreenshots(resourceSet, item);
+                itemResource = save(resourceSet, (JobletProcessItem) item);
                 screenshotFlag = true;
                 break;
             case PropertiesPackage.CONTEXT_ITEM:
-                itemResource = save((ContextItem) item);
+                itemResource = save(resourceSet, (ContextItem) item);
                 break;
             case PropertiesPackage.SNIPPET_ITEM:
-                itemResource = save((SnippetItem) item);
+                itemResource = save(resourceSet, (SnippetItem) item);
                 break;
             case PropertiesPackage.JOB_DOCUMENTATION_ITEM:
-                itemResource = save((JobDocumentationItem) item);
+                itemResource = save(resourceSet, (JobDocumentationItem) item);
                 break;
             case PropertiesPackage.JOBLET_DOCUMENTATION_ITEM:
-                itemResource = save((JobletDocumentationItem) item);
+                itemResource = save(resourceSet, (JobletDocumentationItem) item);
                 break;
             case PropertiesPackage.LINK_DOCUMENTATION_ITEM:
-                itemResource = save((LinkDocumentationItem) item);
+                itemResource = save(resourceSet, (LinkDocumentationItem) item);
                 break;
             case PropertiesPackage.RULES_ITEM:// feature 6484 added
-                itemResource = save((RulesItem) item);
+                itemResource = save(resourceSet, (RulesItem) item);
                 break;
             case PropertiesPackage.VALIDATION_RULES_CONNECTION_ITEM:
-                itemResource = save((ValidationRulesConnectionItem) item);
+                itemResource = save(resourceSet, (ValidationRulesConnectionItem) item);
                 break;
             case PropertiesPackage.EDIFACT_CONNECTION_ITEM:
-                itemResource = save((EDIFACTConnectionItem) item);
+                itemResource = save(resourceSet, (EDIFACTConnectionItem) item);
                 break;
             default:
                 throw new UnsupportedOperationException();
@@ -2408,7 +2423,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
                     Property property = repositoryViewObject.getProperty();
                     item = property.getItem();
                 }
-                itemResource = save((TDQItem) item);
+                itemResource = save(resourceSet, (TDQItem) item);
             } else {
                 for (IRepositoryContentHandler handler : RepositoryContentManager.getHandlers()) {
                     screenshotResource = handler.saveScreenShots(item);
@@ -3254,7 +3269,18 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
     @Override
     public void unloadResources(Property property) {
-        xmiResourceManager.unloadResources(property);
+        ResourceSet resourceSet = null;
+        org.talend.core.model.properties.Project project = ProjectManager.getInstance().getProject(property);
+        if (project != null) {
+            Resource resource = project.eResource();
+            if (resource != null) {
+                resourceSet = resource.getResourceSet();
+            }
+        }
+        if (resourceSet == null) {
+            resourceSet = xmiResourceManager.getResourceSet();
+        }
+        xmiResourceManager.unloadResources(resourceSet, property);
     }
 
     /**

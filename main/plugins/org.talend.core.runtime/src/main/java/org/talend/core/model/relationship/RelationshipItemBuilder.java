@@ -175,7 +175,7 @@ public class RelationshipItemBuilder {
         return instance;
     }
 
-    private static RelationshipItemBuilder createInstance(IProxyRepositoryFactory repositoryFactory, Project project) {
+    public static RelationshipItemBuilder createInstance(IProxyRepositoryFactory repositoryFactory, Project project) {
         RelationshipItemBuilder instance = new RelationshipItemBuilder();
         instance.setAimProject(project);
         instance.setProxyRepositoryFactory(repositoryFactory);
@@ -218,15 +218,28 @@ public class RelationshipItemBuilder {
      * @return
      */
     public List<Relation> getItemsHaveRelationWith(String itemId) {
+        return getItemsHaveRelationWith(itemId, null);
+
+    }
+
+    /**
+     * Look for every linked items who use the selected id, no matter the version. Usefull when want to delete an item
+     * since it will delete every versions.
+     * 
+     * @param itemId
+     * @param version
+     * @return
+     */
+    public List<Relation> getItemsHaveRelationWith(String itemId, String version) {
         if (!loaded) {
             loadRelations();
         }
         Set<Relation> relations = new HashSet<Relation>();
-        Set<Relation> itemsRelations = getItemsHaveRelationWith(currentProjectItemsRelations, itemId);
+        Set<Relation> itemsRelations = getItemsHaveRelationWith(currentProjectItemsRelations, itemId, version);
         if (itemsRelations != null) {
             relations.addAll(itemsRelations);
         }
-        itemsRelations = getItemsHaveRelationWith(referencesItemsRelations, itemId);
+        itemsRelations = getItemsHaveRelationWith(referencesItemsRelations, itemId, version);
         if (itemsRelations != null) {
             relations.addAll(itemsRelations);
         }
@@ -275,7 +288,20 @@ public class RelationshipItemBuilder {
         return new ArrayList<Relation>(relations);
     }
 
-    private Set<Relation> getItemsHaveRelationWith(Map<Relation, Set<Relation>> itemsRelations, String itemId) {
+    /**
+     * 
+     * DOC cmeng Comment method "getItemsHaveRelationWith".
+     * 
+     * @param itemsRelations
+     * @param itemId
+     * @param version if null, then won't check
+     * @return
+     */
+    private Set<Relation> getItemsHaveRelationWith(Map<Relation, Set<Relation>> itemsRelations, String itemId, String version) {
+
+        /**
+         * if verison is null, then won't check
+         */
 
         Set<Relation> relations = new HashSet<Relation>();
 
@@ -295,8 +321,36 @@ public class RelationshipItemBuilder {
                         tmpRelatedItem = relatedItem;
                     }
                     if (tmpRelatedItem != null && itemId.equals(id)) {
-                        relations.add(baseItem);
-                        break;
+                        boolean isEqual = true;
+
+                        if (version != null) {
+                            /**
+                             * if verison is null, then won't check
+                             */
+                            String curVersion = tmpRelatedItem.getVersion();
+
+                            if (!LATEST_VERSION.equals(version) && LATEST_VERSION.equals(curVersion)) {
+                                try {
+                                    IRepositoryViewObject latest = getProxyRepositoryFactory().getLastVersion(getAimProject(),
+                                            id);
+                                    if (latest != null) {
+                                        curVersion = latest.getVersion();
+                                    }
+                                } catch (PersistenceException e) {
+                                    ExceptionHandler.process(e);
+                                }
+                            }
+                            if (version.equals(curVersion)) {
+                                isEqual = true;
+                            } else {
+                                isEqual = false;
+                            }
+                        }
+
+                        if (isEqual) {
+                            relations.add(baseItem);
+                            break;
+                        }
                     }
                 }
             }
@@ -314,7 +368,7 @@ public class RelationshipItemBuilder {
                 if (relatedItem.getType().equals(JOB_RELATION) && itemId.equals(id)) {
                     if ("Latest".equals(relatedItem.getVersion())) {
                         try {
-                            IRepositoryViewObject latest = getProxyRepositoryFactory().getLastVersion(id);
+                            IRepositoryViewObject latest = getProxyRepositoryFactory().getLastVersion(getAimProject(), id);
                             if (!latest.getVersion().equals(version)) {
                                 continue;
                             }
@@ -727,7 +781,7 @@ public class RelationshipItemBuilder {
         try {
             for (ERepositoryObjectType curTyp : getTypes()) {
                 if (curTyp != null) {
-                    list.addAll(factory.getAll(curTyp, true, true));
+                    list.addAll(factory.getAll(project, curTyp, true, true));
                 }
             }
             monitor.beginTask(Messages.getString("RelationshipItemBuilder.buildingIndex"), list.size()); //$NON-NLS-1$

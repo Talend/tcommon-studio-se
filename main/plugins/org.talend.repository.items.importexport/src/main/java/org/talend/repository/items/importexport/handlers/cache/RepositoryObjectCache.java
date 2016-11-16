@@ -22,12 +22,14 @@ import java.util.Set;
 
 import org.talend.commons.exception.PersistenceException;
 import org.talend.core.GlobalServiceRegister;
+import org.talend.core.model.general.Project;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.repository.RepositoryViewObject;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.runtime.services.IGenericWizardService;
+import org.talend.repository.ProjectManager;
 import org.talend.repository.items.importexport.handlers.model.ImportItem;
 
 /**
@@ -80,12 +82,29 @@ public class RepositoryObjectCache {
     public void initialize(ERepositoryObjectType itemType) throws PersistenceException {
         if (!types.contains(itemType)) {
             types.add(itemType);
+            List<Project> allRefProjects = ProjectManager.getInstance().getAllReferencedProjects();
             // load object by type
             List<IRepositoryViewObject> list = factory.getAll(itemType, true, false);
+            if (allRefProjects != null && !allRefProjects.isEmpty()) {
+                for (Project refProject : allRefProjects) {
+                    List<IRepositoryViewObject> objList = factory.getAll(refProject, itemType, true, false);
+                    if (objList != null && !objList.isEmpty()) {
+                        list.addAll(objList);
+                    }
+                }
+            }
             if (list == null || list.isEmpty()) {
                 ERepositoryObjectType newRepType = getNewRepType(itemType);
                 if (newRepType != null) {
                     list = factory.getAll(newRepType, true, false);
+                    if (allRefProjects != null && !allRefProjects.isEmpty()) {
+                        for (Project refProject : allRefProjects) {
+                            List<IRepositoryViewObject> objList = factory.getAll(refProject, newRepType, true, false);
+                            if (objList != null && !objList.isEmpty()) {
+                                list.addAll(objList);
+                            }
+                        }
+                    }
                 }
             }
             // change to RepositoryViewObject to save memory

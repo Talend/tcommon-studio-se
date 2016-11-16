@@ -64,7 +64,7 @@ import us.monoid.json.JSONObject;
  */
 public class RemoteModulesHelper {
 
-    private static final String SLASH = "/"; //$NON-NLS-1$ 
+    private static final String SLASH = "/"; //$NON-NLS-1$
 
     // TODO to be removed after nexus server available
     public static final boolean nexus_available = true;
@@ -145,7 +145,7 @@ public class RemoteModulesHelper {
                 if (!alreadyWarnedAboutConnectionIssue) {
                     log.warn("failed to connect to internet");
                     alreadyWarnedAboutConnectionIssue = true;
-                }// else already warned so do nothing
+                } // else already warned so do nothing
             } else {
                 searchFromRemoteNexus(mavenUrisTofetch, monitor);
                 addCachedModulesToToBeInstallModules(toInstall, mavenUrisTofetch, contextMap, remoteCache);
@@ -282,8 +282,8 @@ public class RemoteModulesHelper {
             m.setDescription(description);
             m.setUrl_description(url);
             m.setUrl_download(url);
-            if (artifact.getType() == null
-                    || "".equals(artifact.getType()) || MavenConstants.PACKAGING_POM.equals(artifact.getType())) { //$NON-NLS-1$
+            if (artifact.getType() == null || "".equals(artifact.getType()) //$NON-NLS-1$
+                    || MavenConstants.PACKAGING_POM.equals(artifact.getType())) {
                 m.setDistribution(MavenConstants.DOWNLOAD_MANUAL);
             } else {
                 m.setDistribution(artifact.getType());
@@ -315,6 +315,15 @@ public class RemoteModulesHelper {
             String mvnUri = iterator.next();
             ModuleToInstall moduleToInstall = null;
             moduleToInstall = theCache.get(mvnUri);
+            if (moduleToInstall == null) {
+                // no packaging type maybe on default remote nexus:
+                MavenArtifact ma = MavenUrlHelper.parseMvnUrl(mvnUri);
+                if (ma != null) {
+                    String newMvnUri = MavenUrlHelper.generateMvnUrl(ma.getGroupId(), ma.getArtifactId(), ma.getVersion(), null,
+                            ma.getClassifier());
+                    moduleToInstall = theCache.get(newMvnUri);
+                }
+            }
             if (moduleToInstall != null) {
                 List<ModuleNeeded> moduleContext = contextMap.get(mvnUri);
                 setContext(moduleToInstall, mvnUri, contextMap);
@@ -379,12 +388,12 @@ public class RemoteModulesHelper {
             if (type == null) {
                 type = MavenConstants.TYPE_JAR;
             }
-            m.setName(name + "." + type);
+            m.setName(name + "." + type);//$NON-NLS-1$
 
         }
-        ExceptionHandler.log("The download URL for " + name + " is not available");//$NON-NLS-1$//$NON-NLS-2$
+        ExceptionHandler.log("The download URL for " + name + " is not available (" + mvnUri + ")");//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         if (CommonsPlugin.isDebugMode()) {
-            appendToLogFile(name + "\n");
+            appendToLogFile(mvnUri + "\n");//$NON-NLS-1$
         }
 
         return m;
@@ -576,7 +585,7 @@ public class RemoteModulesHelper {
      * 
      * @param collectModulesWithJarName if<true> then collect the modules with jarname and fill all mvnuri to
      * ModuleToInstall.mavenUris set to download all needed versions
-     * */
+     */
     public RemoteModulesFetchRunnable getNotInstalledModulesRunnable(List<ModuleNeeded> neededModules,
             List<ModuleToInstall> toInstall, boolean collectModulesWithJarName) {
         Map<String, List<ModuleNeeded>> contextMap = new HashMap<String, List<ModuleNeeded>>();

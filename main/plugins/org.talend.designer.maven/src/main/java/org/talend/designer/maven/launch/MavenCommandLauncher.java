@@ -67,6 +67,8 @@ import org.talend.designer.runprocess.IRunProcessService;
 @SuppressWarnings("restriction")
 public class MavenCommandLauncher {
 
+    private String mavenArgs = "mavenArgs"; //$NON-NLS-1$
+
     private final String goals;
 
     /*
@@ -188,6 +190,11 @@ public class MavenCommandLauncher {
             IPath path = getJREContainerPath(basedir);
             if (path != null) {
                 workingCopy.setAttribute(IJavaLaunchConfigurationConstants.ATTR_JRE_CONTAINER_PATH, path.toPortableString());
+            }
+
+            String vmargs = System.getProperty(mavenArgs);
+            if (vmargs != null) {
+                workingCopy.setAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, vmargs);
             }
 
             String programArgs = getArgumentValue(TalendProcessArgumentConstant.ARG_PROGRAM_ARGUMENTS);

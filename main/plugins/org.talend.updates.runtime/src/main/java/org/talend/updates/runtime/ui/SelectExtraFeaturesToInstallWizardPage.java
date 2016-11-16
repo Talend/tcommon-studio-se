@@ -17,17 +17,27 @@ import java.util.Set;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.beans.PojoProperties;
+import org.eclipse.core.databinding.observable.IObservable;
+import org.eclipse.core.databinding.observable.Realm;
+import org.eclipse.core.databinding.observable.masterdetail.IObservableFactory;
+import org.eclipse.core.databinding.observable.set.IObservableSet;
 import org.eclipse.core.databinding.observable.set.ISetChangeListener;
 import org.eclipse.core.databinding.observable.set.SetChangeEvent;
+import org.eclipse.core.databinding.observable.set.WritableSet;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.databinding.property.Properties;
 import org.eclipse.core.databinding.property.value.IValueProperty;
 import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.jface.databinding.viewers.ObservableMapLabelProvider;
+import org.eclipse.jface.databinding.viewers.ObservableSetTreeContentProvider;
 import org.eclipse.jface.databinding.viewers.ViewerSupport;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
 import org.eclipse.jface.databinding.wizard.WizardPageSupport;
-import org.eclipse.jface.layout.TableColumnLayout;
-import org.eclipse.jface.viewers.CheckboxTableViewer;
+import org.eclipse.jface.layout.TreeColumnLayout;
+import org.eclipse.jface.viewers.CheckStateChangedEvent;
+import org.eclipse.jface.viewers.CheckboxTreeViewer;
 import org.eclipse.jface.viewers.ColumnWeightData;
+import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.jface.wizard.WizardPage;
@@ -37,10 +47,12 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeColumn;
 import org.talend.updates.runtime.i18n.Messages;
 import org.talend.updates.runtime.model.ExtraFeature;
+import org.talend.updates.runtime.model.FeatureCategory;
+import org.talend.updates.runtime.model.P2ExtraFeature;
 
 /**
  * created by sgandon on 25 févr. 2013 Detailled comment
@@ -48,11 +60,11 @@ import org.talend.updates.runtime.model.ExtraFeature;
  */
 public class SelectExtraFeaturesToInstallWizardPage extends WizardPage {
 
-    private Table table;
+    private Tree tree;
 
     private final UpdateWizardModel updateWizardModel;
 
-    private CheckboxTableViewer checkboxTableViewer;
+    private CheckboxTreeViewer checkboxTreeViewer;
 
     private StyledText featureDescriptionText;
 
@@ -111,45 +123,49 @@ public class SelectExtraFeaturesToInstallWizardPage extends WizardPage {
 
         Composite featureComposite = new Composite(container, SWT.NONE);
         featureComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-        TableColumnLayout friendsColumnLayout = new TableColumnLayout();
+        TreeColumnLayout friendsColumnLayout = new TreeColumnLayout();
         featureComposite.setLayout(friendsColumnLayout);
 
-        checkboxTableViewer = CheckboxTableViewer.newCheckList(featureComposite, SWT.BORDER | SWT.FULL_SELECTION);
-        checkboxTableViewer.setSorter(new ViewerSorter() {// regroupt by class type and then by name
+        checkboxTreeViewer = new CheckboxTreeViewer(featureComposite, SWT.BORDER | SWT.FULL_SELECTION);
+        checkboxTreeViewer.setSorter(new ViewerSorter() {// regroupt by class type and then by name
 
-                    /*
-                     * (non-Javadoc)
-                     * 
-                     * @see org.eclipse.jface.viewers.ViewerComparator#category(java.lang.Object)
-                     */
-                    @Override
-                    public int category(Object element) {
-                        return element.getClass().hashCode();
-                    }
+            /*
+             * (non-Javadoc)
+             * 
+             * @see org.eclipse.jface.viewers.ViewerComparator#category(java.lang.Object)
+             */
+            @Override
+            public int category(Object element) {
+                return element.getClass().hashCode();
+            }
 
-                    /*
-                     * (non-Javadoc)
-                     * 
-                     * @see org.eclipse.jface.viewers.ViewerComparator#compare(org.eclipse.jface.viewers.Viewer,
-                     * java.lang.Object, java.lang.Object)
-                     */
-                    @Override
-                    public int compare(Viewer viewer, Object e1, Object e2) {
-                        if ((e2 instanceof ExtraFeature) && !((ExtraFeature) e2).mustBeInstalled()) {
-                            return -1;
-                        }
-                        return 1;
-                    }
-                });
-        table = checkboxTableViewer.getTable();
-        table.setSize(400, 155);
-        table.setHeaderVisible(true);
-        table.setLinesVisible(true);
-        TableColumn featureNameColumn = new TableColumn(table, SWT.NONE);
+            /*
+             * (non-Javadoc)
+             * 
+             * @see org.eclipse.jface.viewers.ViewerComparator#compare(org.eclipse.jface.viewers.Viewer,
+             * java.lang.Object, java.lang.Object)
+             */
+            @Override
+            public int compare(Viewer viewer, Object e1, Object e2) {
+                if ((e2 instanceof ExtraFeature) && ((ExtraFeature) e2).mustBeInstalled()) {
+                    return 1;
+                }
+                if ((e1 instanceof ExtraFeature) && ((ExtraFeature) e1).mustBeInstalled()) {
+                    return -1;
+                }
+                return ((ExtraFeature)e1).getName().compareTo(((ExtraFeature)e2).getName());
+            }
+        });
+        tree = checkboxTreeViewer.getTree();
+        tree.setSize(400, 155);
+        tree.setHeaderVisible(true);
+        tree.setLinesVisible(true);
+        
+        TreeColumn featureNameColumn = new TreeColumn(tree, SWT.NONE);
         featureNameColumn.setText(Messages.getString("SelectExtraFeaturesToInstallWizardPage.feature.column.name.name")); //$NON-NLS-1$
         friendsColumnLayout.setColumnData(featureNameColumn, new ColumnWeightData(3, true));
 
-        TableColumn tblclmnVersion = new TableColumn(table, SWT.NONE);
+        TreeColumn tblclmnVersion = new TreeColumn(tree, SWT.NONE);
         friendsColumnLayout.setColumnData(tblclmnVersion, new ColumnWeightData(1, true));
         tblclmnVersion.setText(Messages.getString("SelectExtraFeaturesToInstallWizardPage.features.column.version.name")); //$NON-NLS-1$
 
@@ -161,6 +177,60 @@ public class SelectExtraFeaturesToInstallWizardPage extends WizardPage {
         GridData gd_featureDescriptionText = new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1);
         gd_featureDescriptionText.heightHint = 61;
         featureDescriptionText.setLayoutData(gd_featureDescriptionText);
+        
+        final IObservableFactory setFactory = new IObservableFactory() {
+            public IObservable createObservable(final Object target) {
+                if (target instanceof WritableSet) {
+                    return (IObservableSet) target;
+                }
+                if (target instanceof FeatureCategory) {
+                    WritableSet set = new WritableSet();
+                    set.addAll(((FeatureCategory)target).getChildren());
+                    return set;
+                }
+                return null;
+            }
+        };
+
+        ObservableSetTreeContentProvider contentProvider = new ObservableSetTreeContentProvider(
+                setFactory, null);
+
+        checkboxTreeViewer.setContentProvider(contentProvider);
+        checkboxTreeViewer.addCheckStateListener(new ICheckStateListener() {
+            
+            @Override
+            public void checkStateChanged(CheckStateChangedEvent event) {
+                if (event.getElement() instanceof FeatureCategory) {
+                    if (event.getChecked()) {
+                        updateWizardModel.selectedExtraFeatures.addAll(((FeatureCategory)event.getElement()).getChildren());
+                    } else {
+                        updateWizardModel.selectedExtraFeatures.removeAll(((FeatureCategory)event.getElement()).getChildren());
+                    }
+                } else if (event.getElement() instanceof P2ExtraFeature) {
+                    if (event.getChecked()) {
+                        updateWizardModel.selectedExtraFeatures.add(((P2ExtraFeature)event.getElement()).getParentCategory());
+                    } else {
+                        boolean containFeature = false;
+                        for (ExtraFeature ef : ((P2ExtraFeature)event.getElement()).getParentCategory().getChildren()) {
+                            if (!ef.equals(event.getElement()) && updateWizardModel.selectedExtraFeatures.contains(ef)) {
+                                containFeature = true;
+                                break;
+                            }
+                        }
+                        if (!containFeature) {
+                            updateWizardModel.selectedExtraFeatures.remove(((P2ExtraFeature)event.getElement()).getParentCategory());
+                        }
+                    }
+                }
+            }
+        });
+        
+        checkboxTreeViewer.setLabelProvider(new ObservableMapLabelProvider(Properties
+                .observeEach(contentProvider.getKnownElements(),
+                        new IValueProperty[] { PojoProperties.value(ExtraFeature.class, "name"), //$NON-NLS-1$
+                                PojoProperties.value(ExtraFeature.class, "version") }))); //$NON-NLS-1$
+
+        checkboxTreeViewer.setInput(updateWizardModel.availableExtraFeatures);
         initDataBindings();
         updateSelectedState(updateWizardModel.availableExtraFeatures);
         updatePageStatus();
@@ -168,16 +238,13 @@ public class SelectExtraFeaturesToInstallWizardPage extends WizardPage {
 
     protected DataBindingContext initDataBindings() {
         dbc = new DataBindingContext();
-        // bind the table elements with the updateWizardModel availableExtraFeatures and the columns with the
-        // extrafeatures values
-        ViewerSupport.bind(checkboxTableViewer, updateWizardModel.availableExtraFeatures,
-                new IValueProperty[] { PojoProperties.value(ExtraFeature.class, "name"), //$NON-NLS-1$
-                        PojoProperties.value(ExtraFeature.class, "version") }); //$NON-NLS-1$
+
         // bind selecting of the check boxes to the selected extra features set in the model
-        dbc.bindSet(ViewersObservables.observeCheckedElements(checkboxTableViewer, ExtraFeature.class),
+        dbc.bindSet(ViewersObservables.observeCheckedElements(checkboxTreeViewer, ExtraFeature.class),
                 updateWizardModel.selectedExtraFeatures);
+        
         // bind the table selection desctiption to the text field
-        IObservableValue selectedFeature = ViewersObservables.observeSingleSelection(checkboxTableViewer);
+        IObservableValue selectedFeature = ViewersObservables.observeSingleSelection(checkboxTreeViewer);
         dbc.bindValue(SWTObservables.observeText(featureDescriptionText),
                 PojoObservables.observeDetailValue(selectedFeature, "description", String.class)); //$NON-NLS-1$
         // add a validator for feature selection because SetObservable does not provide any validator.
@@ -207,7 +274,7 @@ public class SelectExtraFeaturesToInstallWizardPage extends WizardPage {
         for (ExtraFeature ef : features) {
             if (ef.mustBeInstalled()) {
                 updateWizardModel.selectedExtraFeatures.add(ef);
-            }// else do not select caus must not be installed
+            } // else do not select caus must not be installed
         }
     }
 

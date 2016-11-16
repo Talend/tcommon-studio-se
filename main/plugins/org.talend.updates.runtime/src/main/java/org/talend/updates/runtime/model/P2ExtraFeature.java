@@ -86,6 +86,8 @@ public class P2ExtraFeature implements ExtraFeature {
     protected boolean mustBeInstalled;
 
     protected boolean useLegacyP2Install;
+    
+    protected FeatureCategory parentCategory;
 
     protected P2ExtraFeature() {
         // do nothing be authorise subclasses to have a constructor
@@ -703,6 +705,33 @@ public class P2ExtraFeature implements ExtraFeature {
     @Override
     public boolean needRestart() {
         return true;
+    }
+
+    
+    /**
+     * Sets the name.
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    
+    /**
+     * Getter for parentCategory.
+     * @return the parentCategory
+     */
+    public FeatureCategory getParentCategory() {
+        return this.parentCategory;
+    }
+
+    
+    /**
+     * Sets the parentCategory.
+     * @param parentCategory the parentCategory to set
+     */
+    public void setParentCategory(FeatureCategory parentCategory) {
+        this.parentCategory = parentCategory;
     }
 
 }
