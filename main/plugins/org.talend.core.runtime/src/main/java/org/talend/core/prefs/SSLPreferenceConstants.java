@@ -23,6 +23,8 @@ public interface SSLPreferenceConstants {
 
     String[] KEYSTORE_TYPES = new String[] { "JKS", "JCEKS", "PKCS12" };
 
+    String[] SSL_ALGORITHMS = new String[] { "TLS", "SSL" };
+
     // File of the keystore
     String KEYSTORE_FILE = "talend.ssl.keystoreFile"; //$NON-NLS-1$
 
@@ -41,4 +43,9 @@ public interface SSLPreferenceConstants {
     // Type of file used for the truststore.
     String TRUSTSTORE_TYPE = "talend.ssl.truststoreType"; //$NON-NLS-1$
 
+    // verifyHostname:
+    String VERIFY_HOSTNAME = "talend.ssl.verifyHostname"; //$NON-NLS-1$
+
+    // aligorithm of create sslContext
+    String SSL_ALGORITHM = "talend.ssl.sslAlgorithm"; //$NON-NLS-1$
 }

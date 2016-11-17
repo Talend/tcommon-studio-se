@@ -10,7 +10,7 @@
 // 9 rue Pages 92150 Suresnes, France
 //
 // ============================================================================
-package org.talend.utils.ssl;
+package org.talend.core.utils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,16 +21,20 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
-import javax.net.ssl.X509TrustManager;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.conn.ssl.SSLSocketFactory;
+import org.apache.http.conn.ssl.X509HostnameVerifier;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.talend.core.prefs.SSLPreferenceConstants;
+import org.talend.core.runtime.CoreRuntimePlugin;
+import org.talend.utils.security.CryptoHelper;
 
 /**
  * 
@@ -39,21 +43,9 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class SSLContextProvider {
 
-    private static final TrustManager TRUST_ALL = new X509TrustManager() {
+    private static SSLContext context;
 
-        @Override
-        public void checkClientTrusted(X509Certificate[] xcs, String string) throws CertificateException {
-        }
-
-        @Override
-        public void checkServerTrusted(X509Certificate[] xcs, String string) throws CertificateException {
-        }
-
-        @Override
-        public X509Certificate[] getAcceptedIssuers() {
-            return null;
-        }
-    };
+    private static final IPreferenceStore store = CoreRuntimePlugin.getInstance().getCoreService().getPreferenceStore();
 
     private static KeyManager[] buildKeyManagers(String path, String storePass, String keytype) throws KeyStoreException,
             NoSuchAlgorithmException, CertificateException, IOException, UnrecoverableKeyException {
@@ -110,17 +102,45 @@ public class SSLContextProvider {
         }
     }
 
-    public synchronized static SSLContext buildContext(String algorithm, String keypath, String keypass, String keytype,
+    public static X509HostnameVerifier getHostnameVerifier() {
+        boolean verify = store.getBoolean(SSLPreferenceConstants.VERIFY_HOSTNAME);
+        if (verify) {
+            return SSLSocketFactory.STRICT_HOSTNAME_VERIFIER;
+        } else {
+            return SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER;
+        }
+    }
+
+    public synchronized static void buildContext(String algorithm, String keypath, String keypass, String keytype,
             String trustpath, String trustpass, String trusttype) {
         try {
             KeyManager[] kms = buildKeyManagers(keypath, keypass, keytype);
             TrustManager[] tms = buildTrustManagers(trustpath, trustpass, trusttype);
-            SSLContext sslcontext = SSLContext.getInstance(algorithm);
-            sslcontext.init(kms, tms, null);
-            return sslcontext;
+            context = SSLContext.getInstance(algorithm);
+            context.init(kms, tms, null);
         } catch (Exception e) {
             throw new SecurityException(e.getMessage(), e);
         }
     }
 
+    public static synchronized SSLContext getContext() {
+        if (null == context) {
+            buildContext();
+        }
+        return context;
+    }
+
+    private static void buildContext() {
+        String algorithm = store.getString(SSLPreferenceConstants.SSL_ALGORITHM);
+        String keypath = store.getString(SSLPreferenceConstants.KEYSTORE_FILE);
+        String keypass = store.getString(SSLPreferenceConstants.KEYSTORE_PASSWORD);
+        String keytype = store.getString(SSLPreferenceConstants.KEYSTORE_TYPE);
+        String trustpath = store.getString(SSLPreferenceConstants.TRUSTSTORE_FILE);
+        String trustpass = store.getString(SSLPreferenceConstants.TRUSTSTORE_PASSWORD);
+        String trusttype = store.getString(SSLPreferenceConstants.TRUSTSTORE_TYPE);
+        CryptoHelper cryptoHelper = CryptoHelper.getDefault();
+        keypass = cryptoHelper.decrypt(keypass);
+        trustpass = cryptoHelper.decrypt(trustpass);
+        buildContext(algorithm, keypath, keypass, keytype, trustpath, trustpass, trusttype);
+    }
 }
