@@ -66,7 +66,6 @@ import org.talend.core.ui.i18n.Messages;
 import org.talend.core.ui.metadata.editor.AbstractMetadataTableEditorView;
 import org.talend.core.ui.metadata.editor.MetadataTableEditor;
 import org.talend.core.ui.metadata.editor.MetadataTableEditorView;
-import org.talend.core.ui.utils.MetaDataDialogUtil;
 import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.designer.core.IDesignerCoreService;
 
@@ -295,9 +294,6 @@ public class MetadataDialog extends Dialog {
     }
 
     private static void showColumnsOfCustomComponents(INode node, MetadataTableEditorView metaView) {
-        if (isRedShiftNode(node)) {
-            metaView.setShowPrecisionColumn(false);
-        }
         if (isSingleAndStruct) {
             metaView.setShowDbColumnName(false, false);
             metaView.setShowKeyColumn(false);
@@ -790,7 +786,4 @@ public class MetadataDialog extends Dialog {
         this.isSingleAndStruct = isSingle;
     }
 
-    private static boolean isRedShiftNode(INode node) {
-        return MetaDataDialogUtil.isRedShiftNode(node);
-    }
 }
