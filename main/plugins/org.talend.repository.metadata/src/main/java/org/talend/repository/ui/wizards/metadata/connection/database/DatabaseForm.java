@@ -536,6 +536,12 @@ public class DatabaseForm extends AbstractForm {
 
     private LabelledText tableNSMappingOfMapRDBTxt;
 
+    private Composite tableInfoPartOfHbaseComp;
+
+    private Button set_table_ns_mapping;
+
+    private LabelledText tableNSMappingOfHbaseTxt;
+
     /**
      * wheather the db properties group visible
      */
@@ -620,6 +626,7 @@ public class DatabaseForm extends AbstractForm {
                 initializeGeneralJDBC();
             } else if (isDBTypeSelected(EDatabaseConnTemplate.HBASE)) {
                 initHBaseSettings();
+                initTableInfoPartOfHbase();
                 initZnodeParent();
             } else if (isDBTypeSelected(EDatabaseConnTemplate.MAPRDB)) {
                 initMaprdbSettings();
@@ -1087,6 +1094,7 @@ public class DatabaseForm extends AbstractForm {
         createHadoopUIContentsForHiveEmbedded(typeDbCompositeParent);
         createMetastoreUIContentsForHiveEmbedded(typeDbCompositeParent);
         createEncryptionGroupForHive(typeDbCompositeParent);
+        createTableInfoPartForHbase(typeDbCompositeParent);
         createTableInfoPartForMaprdb(typeDbCompositeParent);
         createZnodeParent(typeDbCompositeParent);
         createAuthenticationForHive(typeDbCompositeParent);
@@ -1150,6 +1158,71 @@ public class DatabaseForm extends AbstractForm {
         if (connection != null) {
             String tableNSMapping = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_TABLE_NS_MAPPING);
             tableNSMappingOfMapRDBTxt.setText(StringUtils.trimToEmpty(tableNSMapping));
+        }
+    }
+
+    private void createTableInfoPartForHbase(Composite parent) {
+        GridLayout parentLayout = (GridLayout) parent.getLayout();
+        tableInfoPartOfHbaseComp = new Composite(parent, SWT.NONE);
+        GridDataFactory.fillDefaults().span(parentLayout.numColumns, 1).align(SWT.FILL, SWT.BEGINNING).grab(true, false)
+                .applyTo(tableInfoPartOfHbaseComp);
+        GridLayout tableInfoPartLayout = new GridLayout(4, false);
+        tableInfoPartLayout.marginHeight = 0;
+        tableInfoPartOfHbaseComp.setLayout(tableInfoPartLayout);
+        set_table_ns_mapping = new Button(tableInfoPartOfHbaseComp, SWT.CHECK);
+        set_table_ns_mapping.setText(Messages.getString("DatabaseForm.set_table_ns_mapping.checkBtn")); //$NON-NLS-1$
+        tableNSMappingOfHbaseTxt = new LabelledText(tableInfoPartOfHbaseComp, "", 2); //$NON-NLS-1$
+        addListenerForTableInfoPartOfHbase();
+        initTableInfoPartOfHbase();
+    }
+
+    private void addListenerForTableInfoPartOfHbase() {
+        set_table_ns_mapping.addSelectionListener(new SelectionAdapter() {
+
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                if (set_table_ns_mapping.getSelection()) {
+                    tableNSMappingOfHbaseTxt.setVisible(true);
+                    tableInfoPartOfHbaseComp.layout();
+                    getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HBASE_SET_TABLE_NS_MAPPING,
+                            Boolean.TRUE.toString());
+                } else {
+                    tableNSMappingOfHbaseTxt.setVisible(false);
+                    tableInfoPartOfHbaseComp.layout();
+                    getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HBASE_SET_TABLE_NS_MAPPING,
+                            Boolean.FALSE.toString());
+                }
+            }
+
+        });
+        tableNSMappingOfHbaseTxt.getTextControl().addModifyListener(new ModifyListener() {
+
+            @Override
+            public void modifyText(ModifyEvent e) {
+                if (!isContextMode()) {
+                    getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HBASE_TABLE_NS_MAPPING,
+                            tableNSMappingOfHbaseTxt.getText());
+                }
+            }
+        });
+    }
+
+    private void initTableInfoPartOfHbase() {
+        DatabaseConnection connection = getConnection();
+        boolean isShow = connection != null
+                && EDatabaseConnTemplate.HBASE.getDBDisplayName().equals(getConnection().getDatabaseType())
+                && doSupportMaprTicketForHbase();
+        hideControl(tableInfoPartOfHbaseComp, !isShow);
+        if (connection != null) {
+            String setTableNSMappingStr = connection.getParameters().get(
+                    ConnParameterKeys.CONN_PARA_KEY_HBASE_SET_TABLE_NS_MAPPING);
+            String tableNSMapping = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HBASE_TABLE_NS_MAPPING);
+            boolean check = Boolean.valueOf(setTableNSMappingStr);
+            set_table_ns_mapping.setSelection(check);
+            if (check) {
+                tableNSMappingOfHbaseTxt.setText(StringUtils.trimToEmpty(tableNSMapping));
+            }
+            tableNSMappingOfHbaseTxt.setVisible(set_table_ns_mapping.getSelection());
         }
     }
 
@@ -1774,7 +1847,8 @@ public class DatabaseForm extends AbstractForm {
                     authenticationGrpForImpala.layout();
                     authenticationGrpForImpala.getParent().layout();
                     getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_USE_KRB, Boolean.TRUE.toString());
-                    getConnection().getParameters().put(ConnParameterKeys.IMPALA_AUTHENTICATION_PRINCIPLA,impalaPrincipalTxt.getText());
+                    getConnection().getParameters().put(ConnParameterKeys.IMPALA_AUTHENTICATION_PRINCIPLA,
+                            impalaPrincipalTxt.getText());
                     urlConnectionStringText.setText(getStringConnection());
                 } else {
                     GridData hadoopData = (GridData) authenticationComForImpala.getLayoutData();
@@ -1795,7 +1869,7 @@ public class DatabaseForm extends AbstractForm {
 
             @Override
             public void modifyText(ModifyEvent e) {
-                if (!isContextMode()&&impalaPrincipalTxt.isVisiable()) {
+                if (!isContextMode() && impalaPrincipalTxt.isVisiable()) {
                     getConnection().getParameters().put(ConnParameterKeys.IMPALA_AUTHENTICATION_PRINCIPLA,
                             impalaPrincipalTxt.getText());
                     urlConnectionStringText.setText(getStringConnection());
@@ -2814,6 +2888,8 @@ public class DatabaseForm extends AbstractForm {
         maprTClusterForHBaseTxt.setEditable(!isContextMode());
         maprTDurationForHBaseTxt.setEditable(!isContextMode());
 
+        set_table_ns_mapping.setEnabled(!isContextMode());
+        tableNSMappingOfHbaseTxt.setEditable(!isContextMode());
         set_znode_parent.setEnabled(!isContextMode());
         znode_parent.setEditable(!isContextMode());
 
@@ -3037,22 +3113,26 @@ public class DatabaseForm extends AbstractForm {
         String maprTUsernameForHBase = connection.getParameters().get(
                 ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_USERNAME);
         if (!connection.isContextMode() && ContextParameterUtils.isContainContextParam(maprTUsernameForHBase)) {
-            maprTUsernameForHBase = (String) metadataconnection.getParameter(ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_USERNAME);
+            maprTUsernameForHBase = (String) metadataconnection
+                    .getParameter(ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_USERNAME);
         }
         String maprTPasswordForHBase = connection.getParameters().get(
                 ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MAPRTICKET_PASSWORD);
         if (!connection.isContextMode() && ContextParameterUtils.isContainContextParam(maprTPasswordForHBase)) {
-            maprTPasswordForHBase = (String) metadataconnection.getParameter(ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MAPRTICKET_PASSWORD);
+            maprTPasswordForHBase = (String) metadataconnection
+                    .getParameter(ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MAPRTICKET_PASSWORD);
         }
         String maprTClusterForHBase = connection.getParameters().get(
                 ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MAPRTICKET_CLUSTER);
         if (!connection.isContextMode() && ContextParameterUtils.isContainContextParam(maprTClusterForHBase)) {
-            maprTClusterForHBase = (String) metadataconnection.getParameter(ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MAPRTICKET_CLUSTER);
+            maprTClusterForHBase = (String) metadataconnection
+                    .getParameter(ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MAPRTICKET_CLUSTER);
         }
         String maprTDurationForHBase = connection.getParameters().get(
                 ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MAPRTICKET_DURATION);
         if (!connection.isContextMode() && ContextParameterUtils.isContainContextParam(maprTDurationForHBase)) {
-            maprTDurationForHBase = (String) metadataconnection.getParameter(ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MAPRTICKET_DURATION);
+            maprTDurationForHBase = (String) metadataconnection
+                    .getParameter(ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MAPRTICKET_DURATION);
         }
         boolean checkMaprTForHBase = Boolean.valueOf(useMaprTForHBaseString);
         useMaprTForHBase.setSelection(checkMaprTForHBase);
@@ -3132,22 +3212,26 @@ public class DatabaseForm extends AbstractForm {
         String maprTUsernameForMaprdb = connection.getParameters().get(
                 ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_USERNAME);
         if (!connection.isContextMode() && ContextParameterUtils.isContainContextParam(maprTUsernameForMaprdb)) {
-            maprTUsernameForMaprdb = (String) metadataconnection.getParameter(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_USERNAME);
+            maprTUsernameForMaprdb = (String) metadataconnection
+                    .getParameter(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_USERNAME);
         }
         String maprTPasswordForMaprdb = connection.getParameters().get(
                 ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MAPRTICKET_PASSWORD);
         if (!connection.isContextMode() && ContextParameterUtils.isContainContextParam(maprTPasswordForMaprdb)) {
-            maprTPasswordForMaprdb = (String) metadataconnection.getParameter(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MAPRTICKET_PASSWORD);
+            maprTPasswordForMaprdb = (String) metadataconnection
+                    .getParameter(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MAPRTICKET_PASSWORD);
         }
         String maprTClusterForMaprdb = connection.getParameters().get(
                 ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MAPRTICKET_CLUSTER);
         if (!connection.isContextMode() && ContextParameterUtils.isContainContextParam(maprTClusterForMaprdb)) {
-            maprTClusterForMaprdb = (String) metadataconnection.getParameter(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MAPRTICKET_CLUSTER);
+            maprTClusterForMaprdb = (String) metadataconnection
+                    .getParameter(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MAPRTICKET_CLUSTER);
         }
         String maprTDurationForMaprdb = connection.getParameters().get(
                 ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MAPRTICKET_DURATION);
         if (!connection.isContextMode() && ContextParameterUtils.isContainContextParam(maprTDurationForMaprdb)) {
-            maprTDurationForMaprdb = (String) metadataconnection.getParameter(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MAPRTICKET_DURATION);
+            maprTDurationForMaprdb = (String) metadataconnection
+                    .getParameter(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MAPRTICKET_DURATION);
         }
         boolean checkMaprTForMaprdb = Boolean.valueOf(useMaprTForMaprdbString);
         useMaprTForMaprdb.setSelection(checkMaprTForMaprdb);
@@ -3379,7 +3463,7 @@ public class DatabaseForm extends AbstractForm {
      * @return
      */
     private List<String> getVersionDrivers(String dbType) {
-        if(asMsSQLVersionEnable()){
+        if (asMsSQLVersionEnable()) {
             return getMSSQLVersionDrivers(dbType);
         }
         List<String> result = new ArrayList<String>();
@@ -3391,7 +3475,7 @@ public class DatabaseForm extends AbstractForm {
         }
         return result;
     }
-    
+
     private List<String> getMSSQLVersionDrivers(String dbType) {
         List<String> result = new ArrayList<String>();
         result.add(EDatabaseVersion4Drivers.MSSQL.getVersionDisplay());
@@ -4134,7 +4218,7 @@ public class DatabaseForm extends AbstractForm {
 
                         index = 3;
                         if (s[index] != "") { //$NON-NLS-1$
-                            if (selection.equals(EDatabaseConnTemplate.AS400.getDBDisplayName()) 
+                            if (selection.equals(EDatabaseConnTemplate.AS400.getDBDisplayName())
                                     || selection.equals(EDatabaseConnTemplate.REDSHIFT.getDBDisplayName())) {
                                 sidOrDatabaseText.setText(s[index]);
                                 getConnection().setSID(s[index]);
@@ -4527,6 +4611,7 @@ public class DatabaseForm extends AbstractForm {
                 } else if (isDBTypeSelected(EDatabaseConnTemplate.HBASE)) {
                     hideControl(authenticationCom, true);
                     hideControl(znodeparentGrp, false);
+                    hideControl(tableInfoPartOfHbaseComp, !doSupportMaprTicketForHbase());
                     initHBaseSettings();
                     // initZnodeParent();
                 } else if (isDBTypeSelected(EDatabaseConnTemplate.MAPRDB)) {
@@ -4786,6 +4871,7 @@ public class DatabaseForm extends AbstractForm {
         hideControl(authenticationGrpForHBase, true);
         hideControl(authenticationGrpForMaprdb, true);
         hideControl(znodeparentGrp, true);
+        hideControl(tableInfoPartOfHbaseComp, true);
         hideControl(tableInfoPartOfMapRDBComp, true);
     }
 
@@ -4944,7 +5030,7 @@ public class DatabaseForm extends AbstractForm {
         boolean isSAPHana = asSAPHanaVersionEnable();
         boolean isImpala = ImpalaVersionEnable();
         boolean isMsSQL = asMsSQLVersionEnable();
-        
+
         String selectedVersion = getConnection().getDbVersionString();
         dbVersionCombo.removeAll();
         dbVersionCombo.setHideWidgets(true);
@@ -5022,6 +5108,7 @@ public class DatabaseForm extends AbstractForm {
                 if (hadoopService != null && newDistribution != null) {
                     doSupportMapRTicket = hadoopService.doSupportMapRTicket(newDistribution.getDefaultVersion());
                 }
+                hideControl(tableInfoPartOfHbaseComp, !doSupportMapRTicket);
                 hideControl(useMaprTForHBase, !doSupportMapRTicket);
                 hideControl(authenticationMaprTComForHBase, !(useMaprTForHBase.getSelection() && doSupportMapRTicket));
                 hideControl(authenticationUserPassComForHBase, useKerberosForHBase.getSelection() && doSupportMapRTicket);
@@ -6066,7 +6153,7 @@ public class DatabaseForm extends AbstractForm {
                             serverText.setText(EDatabaseConnTemplate.IMPALA.getDefaultServer(null));
                         }
                     }
-                    if(isHive){
+                    if (isHive) {
                         String serverName = getConnection().getServerName();
                         if (serverName == null || "".equals(serverName)) { //$NON-NLS-1$
                             serverText.setText(EDatabaseConnTemplate.HIVE.getDefaultServer(EDatabaseVersion4Drivers.HIVE));
@@ -6339,6 +6426,7 @@ public class DatabaseForm extends AbstractForm {
             addContextParams(EDBParamName.Server, true);
             addContextParams(EDBParamName.Port, true);
             addContextParams(EDBParamName.Schema, true);
+            addContextParams(EDBParamName.TableNSMapping, set_table_ns_mapping.getSelection());
             addContextParams(EDBParamName.Znode_Parent, set_znode_parent.getSelection());
             addContextParams(EDBParamName.MasterPrincipal, useKerberosForHBase.getSelection());
             addContextParams(EDBParamName.RegionPrincipal, useKerberosForHBase.getSelection());
@@ -6430,7 +6518,7 @@ public class DatabaseForm extends AbstractForm {
         EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(dbTypeCombo.getText());
         return template != null && (template == EDatabaseConnTemplate.IMPALA);
     }
-    
+
     private boolean hiveVersionEnable() {
 
         if (dbTypeCombo == null) {
@@ -6870,22 +6958,26 @@ public class DatabaseForm extends AbstractForm {
         String maprTUsernameForHive = connection.getParameters()
                 .get(ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_USERNAME);
         if (!connection.isContextMode() && ContextParameterUtils.isContainContextParam(maprTUsernameForHive)) {
-            maprTUsernameForHive = (String) metadataconnection.getParameter(ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_USERNAME);
+            maprTUsernameForHive = (String) metadataconnection
+                    .getParameter(ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_USERNAME);
         }
         String maprTPasswordForHive = connection.getParameters().get(
                 ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_MAPRTICKET_PASSWORD);
         if (!connection.isContextMode() && ContextParameterUtils.isContainContextParam(maprTPasswordForHive)) {
-            maprTPasswordForHive = (String) metadataconnection.getParameter(ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_MAPRTICKET_PASSWORD);
+            maprTPasswordForHive = (String) metadataconnection
+                    .getParameter(ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_MAPRTICKET_PASSWORD);
         }
         String maprTClusterForHive = connection.getParameters().get(
                 ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_MAPRTICKET_CLUSTER);
         if (!connection.isContextMode() && ContextParameterUtils.isContainContextParam(maprTClusterForHive)) {
-            maprTClusterForHive = (String) metadataconnection.getParameter(ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_MAPRTICKET_CLUSTER);
+            maprTClusterForHive = (String) metadataconnection
+                    .getParameter(ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_MAPRTICKET_CLUSTER);
         }
         String maprTDurationForHive = connection.getParameters().get(
                 ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_MAPRTICKET_DURATION);
         if (!connection.isContextMode() && ContextParameterUtils.isContainContextParam(maprTDurationForHive)) {
-            maprTDurationForHive = (String) metadataconnection.getParameter(ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_MAPRTICKET_DURATION);
+            maprTDurationForHive = (String) metadataconnection
+                    .getParameter(ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_MAPRTICKET_DURATION);
         }
         boolean checkMaprTForHive = Boolean.valueOf(useMaprTForHiveString);
         useMaprTForHive.setSelection(checkMaprTForHive);
@@ -7378,6 +7470,15 @@ public class DatabaseForm extends AbstractForm {
             if (defaultPort != null && !isContextMode()) {
                 getConnection().setPort(defaultPort);
                 portText.setText(defaultPort);
+            }
+
+            String tableNSMapping = getConnection().getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HBASE_TABLE_NS_MAPPING);
+            String defaultTableNSMapping = hbaseVersion.getDefaultConfig(distribution, EHadoopCategory.HBASE.getName(),
+                    EHadoopProperties.HBASE_TABLE_NS_MAPPING.getName());
+            if (StringUtils.isNotEmpty(tableNSMapping)) {
+                tableNSMappingOfHbaseTxt.setText(tableNSMapping);
+            } else if (defaultTableNSMapping != null) {
+                tableNSMappingOfHbaseTxt.setText(defaultTableNSMapping);
             }
 
             String defaultHbaseMasterPrincipal = hbaseVersion.getDefaultConfig(distribution, EHadoopCategory.HBASE.getName(),
@@ -8156,6 +8257,19 @@ public class DatabaseForm extends AbstractForm {
         if (hadoopService != null && hiveDistribution != null) {
             doSupportMapRTicket = hadoopService.doSupportMapRTicket(hiveDistribution.getHDVersion(hiveVersionCombo.getText(),
                     true));
+        }
+        return doSupportMapRTicket;
+    }
+
+    private boolean doSupportMaprTicketForHbase() {
+        boolean doSupportMapRTicket = false;
+        IHDistribution newDistribution = getHBaseDistribution(hbaseDistributionCombo.getText(), true);
+        if (newDistribution == null) {
+            return false;
+        }
+        IHadoopDistributionService hadoopService = getHadoopDistributionService();
+        if (hadoopService != null && newDistribution != null) {
+            doSupportMapRTicket = hadoopService.doSupportMapRTicket(newDistribution.getDefaultVersion());
         }
         return doSupportMapRTicket;
     }

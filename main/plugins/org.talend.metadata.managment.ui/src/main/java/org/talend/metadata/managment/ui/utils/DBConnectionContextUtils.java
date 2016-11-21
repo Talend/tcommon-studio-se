@@ -56,7 +56,6 @@ import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.metadata.managment.repository.ManagerConnection;
 import org.talend.metadata.managment.ui.model.IConnParamName;
 import org.talend.model.bridge.ReponsitoryContextBridge;
-
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.resource.relational.Catalog;
 import orgomg.cwm.resource.relational.Schema;
@@ -267,11 +266,15 @@ public final class DBConnectionContextUtils {
                     ConnectionContextHelper.createParameters(varList, paramName, value, JavaTypesManager.PASSWORD);
                     break;
                 case TableNSMapping:
-                    value = conn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_TABLE_NS_MAPPING);
+                    String key = ConnParameterKeys.CONN_PARA_KEY_HBASE_TABLE_NS_MAPPING;
+                    if (EDatabaseTypeName.MAPRDB.getDisplayName().equals(conn.getDatabaseType())) {
+                        key = ConnParameterKeys.CONN_PARA_KEY_MAPRDB_TABLE_NS_MAPPING;
+                    }
+                    value = conn.getParameters().get(key);
                     ConnectionContextHelper.createParameters(varList, paramName, value);
                     break;
                 case MasterPrincipal:
-                    String key = ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MASTERPRINCIPAL;
+                    key = ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MASTERPRINCIPAL;
                     if (EDatabaseTypeName.MAPRDB.getDisplayName().equals(conn.getDatabaseType())) {
                         key = ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MASTERPRINCIPAL;
                     }
@@ -627,11 +630,14 @@ public final class DBConnectionContextUtils {
                     ContextParameterUtils.getNewScriptCode(originalVariableName, LANGUAGE));
             break;
         case TableNSMapping:
-            conn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_TABLE_NS_MAPPING,
-                    ContextParameterUtils.getNewScriptCode(originalVariableName, LANGUAGE));
+            String key = ConnParameterKeys.CONN_PARA_KEY_HBASE_TABLE_NS_MAPPING;
+            if (EDatabaseTypeName.MAPRDB.getDisplayName().equals(conn.getDatabaseType())) {
+                key = ConnParameterKeys.CONN_PARA_KEY_MAPRDB_TABLE_NS_MAPPING;
+            }
+            conn.getParameters().put(key, ContextParameterUtils.getNewScriptCode(originalVariableName, LANGUAGE));
             break;
         case MasterPrincipal:
-            String key = ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MASTERPRINCIPAL;
+            key = ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MASTERPRINCIPAL;
             if (EDatabaseTypeName.MAPRDB.getDisplayName().equals(conn.getDatabaseType())) {
                 key = ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MASTERPRINCIPAL;
             }
@@ -1091,6 +1097,9 @@ public final class DBConnectionContextUtils {
             cloneConn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MAPRTICKET_DURATION,
                     getOriginalValue(hadoopClusterContextType, contextType, maprticket_Duration));
 
+            String tableNSMapping = cloneConn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HBASE_TABLE_NS_MAPPING);
+            cloneConn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HBASE_TABLE_NS_MAPPING,
+                    getOriginalValue(hadoopClusterContextType, contextType, tableNSMapping));
         }
 
         // for Maprdb
@@ -1401,6 +1410,9 @@ public final class DBConnectionContextUtils {
             conn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MAPRTICKET_DURATION,
                     ContextParameterUtils.getOriginalValue(contextType, maprticket_Duration));
 
+            String maprdbTableNSMapping = conn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HBASE_TABLE_NS_MAPPING);
+            conn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HBASE_TABLE_NS_MAPPING,
+                    ContextParameterUtils.getOriginalValue(contextType, maprdbTableNSMapping));
         }
 
         // for Maprdb
