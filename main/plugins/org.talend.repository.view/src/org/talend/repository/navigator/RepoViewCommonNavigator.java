@@ -755,10 +755,10 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
                 }
                 // TODO Why do we need to recreate a root here ????
                 // root = new ProjectRepositoryNode(null, null, ENodeType.STABLE_SYSTEM_FOLDER);
-                viewer.refresh();
-
+                
                 // unsetting the selection will prevent the propertyView from displaying dirty data
                 viewer.setSelection(new TreeSelection());
+                viewer.refresh();
                 expandTreeRootIfOnlyOneRoot();
 
                 if (PluginChecker.isJobLetPluginLoaded()) {

@@ -326,7 +326,7 @@ public class RepoViewCommonViewer extends CommonViewer implements INavigatorCont
             }
             List<IRepositoryNode> childrens = new ArrayList<>();
             Widget repWidget = this.findItem(node);
-            if (repWidget != null) {
+            if (repWidget != null && !repWidget.isDisposed()) {
                 Item[] childrenItem = this.getChildren(repWidget);
                 if (childrenItem != null) {
                     for (Item childItem : childrenItem) {
