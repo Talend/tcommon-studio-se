@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.avro.LogicalTypes;
 import org.apache.avro.Schema;
 import org.apache.avro.SchemaBuilder;
 import org.apache.avro.SchemaBuilder.BaseFieldTypeBuilder;
@@ -515,9 +516,19 @@ public final class MetadataToolAvroHelper {
         } else if (AvroUtils.isSameType(nonnullable, AvroUtils._float())) {
             col.setTalendType(JavaTypesManager.FLOAT.getId());
         } else if (AvroUtils.isSameType(nonnullable, AvroUtils._int())) {
-            col.setTalendType(JavaTypesManager.INTEGER.getId());
+        	if (LogicalTypes.fromSchema(nonnullable) == LogicalTypes.timeMillis()) {
+                col.setTalendType(JavaTypesManager.DATE.getId());
+        	} else if (LogicalTypes.fromSchema(nonnullable) == LogicalTypes.date()) { 
+             	col.setTalendType(JavaTypesManager.DATE.getId());
+        	} else {
+        		col.setTalendType(JavaTypesManager.INTEGER.getId());
+        	}
         } else if (AvroUtils.isSameType(nonnullable, AvroUtils._long())) {
-            col.setTalendType(JavaTypesManager.LONG.getId());
+        	if (LogicalTypes.fromSchema(nonnullable) == LogicalTypes.timestampMillis()) { 
+             	col.setTalendType(JavaTypesManager.DATE.getId());
+        	} else {
+        		col.setTalendType(JavaTypesManager.LONG.getId());
+        	}
         } else if (AvroUtils.isSameType(nonnullable, AvroUtils._short())) {
             col.setTalendType(JavaTypesManager.SHORT.getId());
         } else if (AvroUtils.isSameType(nonnullable, AvroUtils._string())) {
