@@ -132,7 +132,6 @@ public final class MetadataToolAvroHelper {
             org.talend.core.model.metadata.builder.connection.MetadataColumn in) {
         FieldBuilder<Schema> fb = fa.name(in.getLabel());
         copyColumnProperties(fb, in);
-        BaseFieldTypeBuilder<Schema> ftb = in.isNullable() ? fb.type().nullable() : fb.type();
 
         Object defaultValue = null;
         Expression initialValue = in.getInitialValue();
@@ -174,7 +173,14 @@ public final class MetadataToolAvroHelper {
         } else if (JavaTypesManager.BYTE_ARRAY.getId().equals(tt)) {
             type = AvroUtils._bytes();
         } else if (JavaTypesManager.DATE.getId().equals(tt)) {
-            type = AvroUtils._date();
+        	if (matchTag(in, DiSchemaConstants.TALEND6_COLUMN_DATE_DATE)) {
+        		type = AvroUtils._logicalDate();
+        	} else if (matchTag(in, DiSchemaConstants.TALEND6_COLUMN_DATE_TIMESTAMP)) {
+        		type = AvroUtils._logicalTimestamp();
+        	} else {
+        		// FIXME - this one should go away
+        		type = AvroUtils._date();
+        	}
         }
         // String-ish types.
         else if (JavaTypesManager.STRING.getId().equals(tt) || JavaTypesManager.FILE.getId().equals(tt)
@@ -200,6 +206,15 @@ public final class MetadataToolAvroHelper {
         return defaultValue == null ? fb.type(type).noDefault() : fb.type(type).withDefault(defaultValue);
     }
 
+    private static boolean matchTag(org.talend.core.model.metadata.builder.connection.MetadataColumn in, String value) {
+        for (TaggedValue tv : in.getTaggedValue()) {
+            if (tv.getTag().equals(value)) {
+            	return true;
+            }
+        }
+        return false;
+    }
+    
     private static Schema copyDynamicColumnProperties(Schema schema,
             org.talend.core.model.metadata.builder.connection.MetadataColumn in) {
         Map<String, String> props = new HashMap<String, String>();
@@ -274,6 +289,7 @@ public final class MetadataToolAvroHelper {
         return schema;
     }
 
+    
     /**
      * Copy all of the information from the IMetadataColumn in the form of key/value properties into an Avro object.
      * 
@@ -509,6 +525,8 @@ public final class MetadataToolAvroHelper {
             col.setTalendType(JavaTypesManager.CHARACTER.getId());
         } else if (AvroUtils.isSameType(nonnullable, AvroUtils._date())) {
             col.setTalendType(JavaTypesManager.DATE.getId());
+            TaggedValue tv = TaggedValueHelper.createTaggedValue(DiSchemaConstants.TALEND6_COLUMN_DATE_NO_LOGICAL_TYPE, "true");
+            col.getTaggedValue().add(tv);
         } else if (AvroUtils.isSameType(nonnullable, AvroUtils._decimal())) {
             col.setTalendType(JavaTypesManager.BIGDECIMAL.getId());
         } else if (AvroUtils.isSameType(nonnullable, AvroUtils._double())) {
@@ -516,16 +534,19 @@ public final class MetadataToolAvroHelper {
         } else if (AvroUtils.isSameType(nonnullable, AvroUtils._float())) {
             col.setTalendType(JavaTypesManager.FLOAT.getId());
         } else if (AvroUtils.isSameType(nonnullable, AvroUtils._int())) {
-        	if (LogicalTypes.fromSchema(nonnullable) == LogicalTypes.timeMillis()) {
-                col.setTalendType(JavaTypesManager.DATE.getId());
-        	} else if (LogicalTypes.fromSchema(nonnullable) == LogicalTypes.date()) { 
+        	if (LogicalTypes.fromSchema(nonnullable) == LogicalTypes.date()) { 
              	col.setTalendType(JavaTypesManager.DATE.getId());
+                TaggedValue tv = TaggedValueHelper.createTaggedValue(DiSchemaConstants.TALEND6_COLUMN_DATE_DATE, "true");
+                col.getTaggedValue().add(tv);
         	} else {
+        		// The logical type time maps to this as well
         		col.setTalendType(JavaTypesManager.INTEGER.getId());
         	}
         } else if (AvroUtils.isSameType(nonnullable, AvroUtils._long())) {
         	if (LogicalTypes.fromSchema(nonnullable) == LogicalTypes.timestampMillis()) { 
              	col.setTalendType(JavaTypesManager.DATE.getId());
+                TaggedValue tv = TaggedValueHelper.createTaggedValue(DiSchemaConstants.TALEND6_COLUMN_DATE_TIMESTAMP, "true");
+                col.getTaggedValue().add(tv);
         	} else {
         		col.setTalendType(JavaTypesManager.LONG.getId());
         	}

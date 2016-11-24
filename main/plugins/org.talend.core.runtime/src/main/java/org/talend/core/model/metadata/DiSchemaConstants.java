@@ -99,5 +99,15 @@ public interface DiSchemaConstants {
 
     /** The key will have this as a prefix, pointing to the value. */
     public final static String TALEND6_DYNAMIC_ADDITIONAL_PROPERTIES = "di.dynamic.prop."; //$NON-NLS-1$
+    
+    /** Original Avro logical type date */
+    public final static String TALEND6_COLUMN_DATE_DATE = "di.date.date";
+
+    /** Original Avro logical type timestamp */
+    public final static String TALEND6_COLUMN_DATE_TIMESTAMP = "di.date.timestamp";
+
+    /** Original Avro date, but no logical type */
+    // FIXME - this one should go away once we move the all of the components to use the Avro logical types
+    public final static String TALEND6_COLUMN_DATE_NO_LOGICAL_TYPE = "di.date.noLogicalType";
 
 }
