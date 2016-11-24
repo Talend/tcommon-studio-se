@@ -204,6 +204,9 @@ public final class ProcessStreamTrashReaderUtil {
                         String line = null;
                         while ((line = reader.readLine()) != null) {
                             System.out.println("getErrorStream " + line); //$NON-NLS-1$
+                            if(line.startsWith("log4j:WARN")){
+                                continue;
+                            }
                             buffer.append(line);
                             buffer.append("\r\n");
                         }
