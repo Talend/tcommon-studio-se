@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.repository.mdm.ui.wizard;
 
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
@@ -33,11 +30,9 @@ import org.talend.commons.ui.swt.formtools.Form;
 import org.talend.commons.ui.swt.formtools.LabelledCombo;
 import org.talend.commons.ui.swt.formtools.LabelledText;
 import org.talend.commons.ui.swt.formtools.UtilsButton;
-import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.metadata.builder.connection.MDMConnection;
 import org.talend.core.model.metadata.designerproperties.MDMVersions;
 import org.talend.core.model.properties.ConnectionItem;
-import org.talend.designer.core.IMDMService;
 import org.talend.metadata.managment.mdm.AbsMdmConnectionHelper;
 import org.talend.metadata.managment.mdm.S60MdmConnectionHelper;
 import org.talend.metadata.managment.ui.utils.ConnectionContextHelper;
@@ -253,14 +248,9 @@ public class MDMForm extends AbstractForm {
         helper = new S60MdmConnectionHelper();
 
         try {
-            if (GlobalServiceRegister.getDefault().isServiceRegistered(IMDMService.class)) {
-                IMDMService mdmService = (IMDMService) GlobalServiceRegister.getDefault().getService(IMDMService.class);
-                if (mdmService != null) {
-                    SSLContext sslContext = mdmService.getSSLContext();
-                    HttpsURLConnection.setDefaultHostnameVerifier(mdmService.getDefaultHostnameVerifier());
-                    HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
-                }
-            }
+            // SSLContext sslcontext = StudioSSLContextProvider.getContext();
+            // HttpsURLConnection.setDefaultSSLSocketFactory(sslcontext.getSocketFactory());
+
             stub = helper.checkConnection(serverUrl, null, username, password);
         } catch (Exception e) {
             ExceptionHandler.process(e);

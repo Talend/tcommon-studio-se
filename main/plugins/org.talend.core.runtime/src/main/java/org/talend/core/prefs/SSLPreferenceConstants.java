@@ -24,21 +24,23 @@ public interface SSLPreferenceConstants {
     String[] KEYSTORE_TYPES = new String[] { "JKS", "JCEKS", "PKCS12" };
 
     // File of the keystore
-    String KEYSTORE_FILE = "talend.ssl.keystoreFile"; //$NON-NLS-1$
+    String KEYSTORE_FILE = "javax.net.ssl.keyStore"; //$NON-NLS-1$
 
     // Password to unlock the keystore.
-    String KEYSTORE_PASSWORD = "talend.ssl.keystorePassword"; //$NON-NLS-1$
+    String KEYSTORE_PASSWORD = "javax.net.ssl.keyStorePassword"; //$NON-NLS-1$
 
     // Type of file used for the keystore.
-    String KEYSTORE_TYPE = "talend.ssl.keystoreType"; //$NON-NLS-1$
+    String KEYSTORE_TYPE = "javax.net.ssl.keyStoreType"; //$NON-NLS-1$
 
     // File of the truststore
-    String TRUSTSTORE_FILE = "talend.ssl.truststoreFile"; //$NON-NLS-1$
+    String TRUSTSTORE_FILE = "javax.net.ssl.trustStore"; //$NON-NLS-1$
 
     // Password to unlock the truststore.
-    String TRUSTSTORE_PASSWORD = "talend.ssl.truststorePassword"; //$NON-NLS-1$
+    String TRUSTSTORE_PASSWORD = "javax.net.ssl.trustStorePassword"; //$NON-NLS-1$
 
     // Type of file used for the truststore.
-    String TRUSTSTORE_TYPE = "talend.ssl.truststoreType"; //$NON-NLS-1$
+    String TRUSTSTORE_TYPE = "javax.net.ssl.trustStoreType"; //$NON-NLS-1$
+
+    static final String FILE_CONFIG_INI = "config.ini";//$NON-NLS-1$
 
 }

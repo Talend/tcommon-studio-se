@@ -7,13 +7,15 @@ Bundle-ActivationPolicy: lazy
 Eclipse-BundleShape: dir
 Bundle-ClassPath: ./,
  lib/httpclient-4.2.5.jar,
- lib/httpcore-4.2.5.jar
+ lib/httpcore-4.2.5.jar,
+ lib/fluent-hc-4.2.6.jar
 Export-Package: org.apache.http,
  org.apache.http.annotation,
  org.apache.http.auth,
  org.apache.http.auth.params,
  org.apache.http.client,
  org.apache.http.client.entity,
+ org.apache.http.client.fluent,
  org.apache.http.client.methods,
  org.apache.http.client.params,
  org.apache.http.client.protocol,

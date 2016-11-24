@@ -31,19 +31,11 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.osgi.service.datalocation.Location;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferenceConstants;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.forms.events.HyperlinkAdapter;
-import org.eclipse.ui.forms.events.HyperlinkEvent;
-import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 import org.talend.commons.exception.BusinessException;
@@ -55,13 +47,15 @@ import org.talend.commons.utils.system.EclipseCommandLine;
 import org.talend.core.BrandingChecker;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.migration.IMigrationToolService;
+import org.talend.core.prefs.SSLPreferenceConstants;
 import org.talend.core.repository.CoreRepositoryPlugin;
+import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.services.IMavenUIService;
 import org.talend.core.services.ICoreTisService;
-import org.talend.core.ui.TalendBrowserLaunchHelper;
 import org.talend.core.ui.branding.IBrandingService;
 import org.talend.core.ui.workspace.ChooseWorkspaceData;
 import org.talend.core.ui.workspace.ChooseWorkspaceDialog;
+import org.talend.core.utils.StudioSSLContextProvider;
 import org.talend.rcp.i18n.Messages;
 import org.talend.registration.RegistrationPlugin;
 import org.talend.registration.license.LicenseManagement;
@@ -70,6 +64,7 @@ import org.talend.registration.wizards.license.LicenseWizardDialog;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IRepositoryService;
 import org.talend.repository.ui.login.LoginHelper;
+import org.talend.utils.security.CryptoHelper;
 
 /**
  * This class controls all aspects of the application's execution.
@@ -108,6 +103,25 @@ public class Application implements IApplication {
                 shell.dispose();
                 return instanceLocationCheck;
             }
+
+            final IPreferenceStore sslStore = CoreRuntimePlugin.getInstance().getCoreService().getPreferenceStore();
+            CryptoHelper cryptoHelper = CryptoHelper.getDefault();
+            String keyStore = sslStore.getString(SSLPreferenceConstants.KEYSTORE_FILE);
+            if (keyStore != null && !"".equals(keyStore.trim())) {
+                System.setProperty(SSLPreferenceConstants.KEYSTORE_FILE, keyStore);
+                System.setProperty(SSLPreferenceConstants.KEYSTORE_PASSWORD,
+                        cryptoHelper.decrypt(sslStore.getString(SSLPreferenceConstants.KEYSTORE_PASSWORD)));
+                System.setProperty(SSLPreferenceConstants.KEYSTORE_TYPE, sslStore.getString(SSLPreferenceConstants.KEYSTORE_TYPE));
+            }
+            String trustStore = sslStore.getString(SSLPreferenceConstants.TRUSTSTORE_FILE);
+            if (trustStore != null && !"".equals(trustStore.trim())) {
+                System.setProperty(SSLPreferenceConstants.TRUSTSTORE_FILE, trustStore);
+                System.setProperty(SSLPreferenceConstants.TRUSTSTORE_PASSWORD,
+                        cryptoHelper.decrypt(sslStore.getString(SSLPreferenceConstants.TRUSTSTORE_PASSWORD)));
+                System.setProperty(SSLPreferenceConstants.TRUSTSTORE_TYPE,
+                        sslStore.getString(SSLPreferenceConstants.TRUSTSTORE_TYPE));
+            }
+            StudioSSLContextProvider.unregisterHttpsScheme();
 
             // setup MavenResolver properties
             // before set, must check user setting first.
