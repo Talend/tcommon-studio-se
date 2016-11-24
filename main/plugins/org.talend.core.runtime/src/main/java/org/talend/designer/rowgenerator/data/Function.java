@@ -31,6 +31,8 @@ public class Function implements Cloneable {
 
     public static final String PARAMETERS = "PARAMETERS"; //$NON-NLS-1$
 
+    public static final String PARAMETER_CLASS_NAME = "PARAMETER_CLASS_NAME"; //$NON-NLS-1$
+
     public static final String PARAMETER_NAME = "PARAMETER_NAME"; //$NON-NLS-1$
 
     public static final String PARAMETER_VALUE = "PARAMETER_VALUE"; //$NON-NLS-1$
@@ -518,6 +520,7 @@ public class Function implements Cloneable {
     @SuppressWarnings("unchecked")
     public String toSerialized() throws JSONException {
         JSONObject functionObj = new JSONObject();
+        functionObj.put(PARAMETER_CLASS_NAME, getClassName() == null ? "" : getClassName());
         functionObj.put(NAME, getName());
         JSONArray parametersArr = new JSONArray();
         List<Parameter> params = getParameters();
