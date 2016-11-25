@@ -41,6 +41,8 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.graphics.Color;
@@ -68,8 +70,8 @@ import org.talend.commons.ui.runtime.swt.tableviewer.selection.SelectionHelper;
 import org.talend.commons.ui.runtime.swt.tableviewer.sort.TableViewerCreatorSorter;
 import org.talend.commons.ui.runtime.swt.tableviewer.tableeditor.ITableEditorManagerListener;
 import org.talend.commons.ui.runtime.swt.tableviewer.tableeditor.TableEditorManager;
-import org.talend.commons.ui.runtime.swt.tableviewer.tableeditor.TableEditorManagerEvent;
 import org.talend.commons.ui.runtime.swt.tableviewer.tableeditor.TableEditorManager.EVENT_TYPE;
+import org.talend.commons.ui.runtime.swt.tableviewer.tableeditor.TableEditorManagerEvent;
 import org.talend.commons.ui.runtime.thread.AsynchronousThreading;
 import org.talend.commons.ui.runtime.utils.TableUtils;
 import org.talend.commons.ui.runtime.ws.WindowSystem;
@@ -819,7 +821,15 @@ public class TableViewerCreatorNotModifiable<B> {
                 addTraverseListenerRecursivly(cellEditor.getControl(), traverseListenerForControls);
             }
         }
+        
+        getTable().addPaintListener(new PaintListener() {
 
+            public void paintControl(PaintEvent event) {
+                if (tableEditorManager != null) {
+                    tableEditorManager.paintVisibleAreaEditor(event);
+                }
+            }           
+        });
     }
 
     /**

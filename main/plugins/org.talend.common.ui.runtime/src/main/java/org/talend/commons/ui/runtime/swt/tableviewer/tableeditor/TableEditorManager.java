@@ -23,6 +23,9 @@ import java.util.Set;
 
 import org.apache.commons.collections.set.MapBackedSet;
 import org.eclipse.swt.custom.TableEditor;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Table;
@@ -146,9 +149,7 @@ public class TableEditorManager {
                     public void handleEvent(ListenableListEvent event) {
 
                         if (event.type == TYPE.ADDED) {
-
                             handleAddedEventAsynchronous(event);
-
                         } else if (event.type == TYPE.REMOVED) {
                             handleRemovedEventAsynchronous(event);
                         } else if (event.type == TYPE.SWAPED) {
@@ -190,7 +191,6 @@ public class TableEditorManager {
 
             }).start();
         }
-
     }
 
     private void handleRemovedEventAsynchronous(final ListenableListEvent event) {
@@ -218,7 +218,7 @@ public class TableEditorManager {
 
         int indexStart = event.index;
 
-        if (tableViewerCreator.getTable().isDisposed()) {
+        if (tableViewerCreator.getTable().isDisposed() || tableViewerCreator.isLazyLoad()) {
             return;
         }
 
@@ -301,7 +301,7 @@ public class TableEditorManager {
         // //////////////////////////////////
         Set dataHash = MapBackedSet.decorate(new IdentityHashMap());
         dataHash.addAll(Arrays.asList(event.swapedObjects));
-        ;
+
         for (TableItem tableItem : items) {
             Object data = tableItem.getData();
             if (dataHash.contains(data)) {
@@ -350,12 +350,65 @@ public class TableEditorManager {
         }
 
     }
+    
+    public void paintVisibleAreaEditor(PaintEvent event) {
+        Table table = tableViewerCreator.getTable();
+        if (table.isDisposed()) {
+            return;
+        }
+
+        int topIndex = table.getTopIndex();
+        int itemsCount = table.getItemCount();
+        int itemHeight = table.getItemHeight();
+        GC gc = event.gc;
+        Rectangle clipping = gc.getClipping();
+        int headerHeight = table.getHeaderHeight();
+        int startIndex = (clipping.y - headerHeight) / itemHeight + topIndex;
+        int endIndex = -1;
+        if (startIndex < itemsCount) {
+            endIndex = startIndex + (int) Math.ceil((float) clipping.height / itemHeight);
+        }
+        startIndex = Math.max(0, startIndex);
+        endIndex = Math.min(endIndex, itemsCount - 1);
+        // Set the cell editor if need
+        for (int itemIndex = topIndex; itemIndex <= endIndex; itemIndex++) {
+            TableItem item = table.getItem(itemIndex);
+            for (int columnIndex = 0; columnIndex < columnsWithEditorContent.size(); columnIndex++) {
+                TableViewerCreatorColumnNotModifiable column = columnsWithEditorContent.get(columnIndex);
+                TableEditorContentNotModifiable tableEditorContent = column.getTableEditorContent();
+                
+                if (dataToMultipleDataEditor.containsKey(item.getData())) {
+                    Collection<TableEditor> tableEditorCollection = dataToMultipleDataEditor.getCollection(item.getData());
+                    for (TableEditor tableEditor : tableEditorCollection) {
+                        tableEditor.setItem(item);
+                        Control editor = tableEditor.getEditor();
+                        if (editor != null) {
+                            editor.redraw();
+                        }
+                    }
+                    if (columnIndex < tableEditorCollection.size()) {
+                        continue;
+                    } else {
+                        addTableEditor(column, tableEditorContent, column.getId(), item);
+                    }
+                } else {
+                    addTableEditor(column, tableEditorContent, column.getId(), item);
+                }
+            }
+        }
+    }
 
     public void refreshColumn(int index) {
         Table table = tableViewerCreator.getTable();
         if (table.isDisposed() || index >= table.getItems().length) {
             return;
-        }
+        }     
+       int topIndex = table.getTopIndex();
+       int itemCount = table.getItemCount();
+       int numVisibleLines = Math.min((table.getBounds().height / table.getItemHeight()) + 2, itemCount - topIndex); 
+       if (index < topIndex || index > topIndex + numVisibleLines) {
+           return;
+       }     
         for (int iEditorCol = 0; iEditorCol < columnsWithEditorContent.size(); iEditorCol++) {
             TableViewerCreatorColumnNotModifiable column = columnsWithEditorContent.get(iEditorCol);
 
@@ -411,16 +464,6 @@ public class TableEditorManager {
         }
 
         Control control = tableEditorContent.initialize(tableItem.getParent(), tableEditor, column, currentRowObject, value);
-
-        // control.addDisposeListener(new DisposeListener() {
-        //
-        // public void widgetDisposed(DisposeEvent e) {
-        //
-        // // System.out.println(e);
-        //
-        // }
-        //
-        // });
 
         if (tableItem != null && !tableItem.isDisposed()) {
             tableEditor.setEditor(control, tableItem, column.getIndex());
