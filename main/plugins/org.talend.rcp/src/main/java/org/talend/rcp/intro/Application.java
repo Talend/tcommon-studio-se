@@ -31,23 +31,17 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.osgi.service.datalocation.Location;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferenceConstants;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.forms.events.HyperlinkAdapter;
-import org.eclipse.ui.forms.events.HyperlinkEvent;
-import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 import org.talend.commons.exception.BusinessException;
+import org.talend.commons.runtime.helper.LocalComponentInstallHelper;
 import org.talend.commons.runtime.helper.PatchComponentHelper;
+import org.talend.commons.runtime.service.ComponentsInstallComponent;
 import org.talend.commons.runtime.service.PatchComponent;
 import org.talend.commons.ui.runtime.update.PreferenceKeys;
 import org.talend.commons.ui.swt.dialogs.ErrorDialogWidthDetailArea;
@@ -58,7 +52,6 @@ import org.talend.core.model.migration.IMigrationToolService;
 import org.talend.core.repository.CoreRepositoryPlugin;
 import org.talend.core.runtime.services.IMavenUIService;
 import org.talend.core.services.ICoreTisService;
-import org.talend.core.ui.TalendBrowserLaunchHelper;
 import org.talend.core.ui.branding.IBrandingService;
 import org.talend.core.ui.workspace.ChooseWorkspaceData;
 import org.talend.core.ui.workspace.ChooseWorkspaceDialog;
@@ -150,6 +143,14 @@ public class Application implements IApplication {
                         setRelaunchData();
                         return IApplication.EXIT_RELAUNCH;
                     }
+                }
+            }
+            final ComponentsInstallComponent component = LocalComponentInstallHelper.getComponent();
+            if (component != null) {
+                // install component silently
+                if (component.install() && component.needRelaunch()) {
+                    setRelaunchData();
+                    return IApplication.EXIT_RELAUNCH;
                 }
             }
 

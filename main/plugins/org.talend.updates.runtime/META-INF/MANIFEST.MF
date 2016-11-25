@@ -13,7 +13,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.databinding.beans,
  org.eclipse.core.databinding.observable,
  org.eclipse.core.databinding.property,
- org.eclipse.equinox.p2.core,
+ org.eclipse.equinox.p2.core;visibility:=reexport,
  org.eclipse.equinox.p2.metadata,
  org.eclipse.equinox.p2.engine,
  org.eclipse.equinox.p2.operations,
@@ -23,6 +23,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.talend.librariesmanager.ui,
  org.talend.librariesmanager
 Bundle-ActivationPolicy: lazy
+Service-Component: OSGI-INF/components_install.xml
 Export-Package: org.talend.updates.runtime.engine,
  org.talend.updates.runtime.engine.factory,
  org.talend.updates.runtime.model,

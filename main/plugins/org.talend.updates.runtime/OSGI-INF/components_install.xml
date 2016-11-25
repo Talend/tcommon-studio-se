@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<component name="LocalComponentsInstallComponent">
+  <implementation class="org.talend.updates.runtime.engine.component.LocalComponentsInstallComponent"/>
+  <service>
+    <provide interface="org.talend.commons.runtime.service.ComponentsInstallComponent"/>
+  </service>
+</component>
