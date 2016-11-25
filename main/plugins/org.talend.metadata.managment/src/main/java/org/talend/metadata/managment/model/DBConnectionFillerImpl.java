@@ -274,7 +274,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
         }
 
         try {
-            if (dbConn != null && EDatabaseTypeName.ACCESS.getProduct().equals(dbConn.getProductId())) {
+            if (dbConn != null && (EDatabaseTypeName.ACCESS.getProduct().equals(dbConn.getProductId())
+                    || !isSupportFeatureUcanaccess(dbConn, metaConnection))) {
                 return null;
             }
             schemas = dbJDBCMetadata.getSchemas();
@@ -370,6 +371,24 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
         return ListUtils.castList(Package.class, returnSchemas);
     }
 
+    private boolean isSupportFeatureUcanaccess(DatabaseConnection dbConn, IMetadataConnection metaConnection) {
+        IMetadataConnection iMetadataCon = metaConnection;
+        String url = dbConn.getURL();
+        String productId = dbConn.getProductId();
+        if (dbConn != null && dbConn.isContextMode() && EDatabaseTypeName.GENERAL_JDBC.getProduct().equals(productId)) {
+            if (iMetadataCon == null) {
+                iMetadataCon = ConvertionHelper.convert(dbConn);
+            }
+            url = iMetadataCon.getUrl();
+        }
+        if ((EDatabaseTypeName.GENERAL_JDBC.getProduct().equals(productId)
+                || EDatabaseTypeName.ACCESS.getProduct().equals(productId)) && url != null
+                && url.startsWith("jdbc:ucanaccess:")) {
+            return false;
+        }
+        return true;
+    }
+
     /**
      * fill the fake schemas into sqlite database connection since Sqlite no catalogs and no schemas.
      * 
@@ -421,6 +440,9 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
             }
             if (!isDbHasCatalogs(dbJDBCMetadata)) {
                 ConnectionHelper.removeAllPackages(dbConn);
+                return catalogList;
+            }
+            if (!isSupportFeatureUcanaccess(dbConn, metaConnection)) {
                 return catalogList;
             }
             ResultSet catalogNames = null;
