@@ -275,7 +275,7 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
 
         try {
             if (dbConn != null && (EDatabaseTypeName.ACCESS.getProduct().equals(dbConn.getProductId())
-                    || !isSupportFeatureUcanaccess(dbConn, metaConnection))) {
+                    || !isSupportFeatureJDBC(dbConn, metaConnection))) {
                 return null;
             }
             schemas = dbJDBCMetadata.getSchemas();
@@ -370,21 +370,29 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
         }
         return ListUtils.castList(Package.class, returnSchemas);
     }
-
-    private boolean isSupportFeatureUcanaccess(DatabaseConnection dbConn, IMetadataConnection metaConnection) {
+    
+    private boolean isSupportFeatureJDBC(DatabaseConnection dbConn, IMetadataConnection metaConnection) {
         IMetadataConnection iMetadataCon = metaConnection;
-        String url = dbConn.getURL();
-        String productId = dbConn.getProductId();
-        if (dbConn != null && dbConn.isContextMode() && EDatabaseTypeName.GENERAL_JDBC.getProduct().equals(productId)) {
-            if (iMetadataCon == null) {
-                iMetadataCon = ConvertionHelper.convert(dbConn);
+        String driverClass = null;
+        if (dbConn != null) {
+            driverClass = dbConn.getDriverClass();
+            if (dbConn.isContextMode()) {
+                if (iMetadataCon == null) {
+                    iMetadataCon = ConvertionHelper.convert(dbConn);
+                }
+                driverClass = iMetadataCon.getDriverClass();
             }
-            url = iMetadataCon.getUrl();
         }
-        if ((EDatabaseTypeName.GENERAL_JDBC.getProduct().equals(productId)
-                || EDatabaseTypeName.ACCESS.getProduct().equals(productId)) && url != null
-                && url.startsWith("jdbc:ucanaccess:")) {
-            return false;
+        if (driverClass != null) {
+            List<EDatabase4DriverClassName> db4DriverClasses = EDatabase4DriverClassName.indexOfByDriverClass(driverClass);
+            if (db4DriverClasses != null && !db4DriverClasses.isEmpty()) {
+                EDatabaseTypeName dbType = db4DriverClasses.get(0).getDbType();
+                if (dbType != null) {
+                    if (EDatabaseTypeName.ACCESS.equals(dbType)) {
+                        return false;
+                    }
+                }
+            }
         }
         return true;
     }
@@ -442,7 +450,7 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                 ConnectionHelper.removeAllPackages(dbConn);
                 return catalogList;
             }
-            if (!isSupportFeatureUcanaccess(dbConn, metaConnection)) {
+            if (!isSupportFeatureJDBC(dbConn, metaConnection)) {
                 return catalogList;
             }
             ResultSet catalogNames = null;
