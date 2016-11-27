@@ -534,7 +534,7 @@ public final class MetadataToolAvroHelper {
         } else if (AvroUtils.isSameType(nonnullable, AvroUtils._float())) {
             col.setTalendType(JavaTypesManager.FLOAT.getId());
         } else if (AvroUtils.isSameType(nonnullable, AvroUtils._int())) {
-        	if (LogicalTypes.fromSchema(nonnullable) == LogicalTypes.date()) { 
+        	if (LogicalTypes.fromSchemaIgnoreInvalid(nonnullable) == LogicalTypes.date()) { 
              	col.setTalendType(JavaTypesManager.DATE.getId());
                 TaggedValue tv = TaggedValueHelper.createTaggedValue(DiSchemaConstants.TALEND6_COLUMN_DATE_DATE, "true");
                 col.getTaggedValue().add(tv);
@@ -543,7 +543,7 @@ public final class MetadataToolAvroHelper {
         		col.setTalendType(JavaTypesManager.INTEGER.getId());
         	}
         } else if (AvroUtils.isSameType(nonnullable, AvroUtils._long())) {
-        	if (LogicalTypes.fromSchema(nonnullable) == LogicalTypes.timestampMillis()) { 
+        	if (LogicalTypes.fromSchemaIgnoreInvalid(nonnullable) == LogicalTypes.timestampMillis()) { 
              	col.setTalendType(JavaTypesManager.DATE.getId());
                 TaggedValue tv = TaggedValueHelper.createTaggedValue(DiSchemaConstants.TALEND6_COLUMN_DATE_TIMESTAMP, "true");
                 col.getTaggedValue().add(tv);
