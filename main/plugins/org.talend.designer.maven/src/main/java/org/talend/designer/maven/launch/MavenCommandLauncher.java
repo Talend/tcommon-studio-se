@@ -49,6 +49,7 @@ import org.eclipse.m2e.core.project.IMavenProjectFacade;
 import org.eclipse.m2e.core.project.IMavenProjectRegistry;
 import org.eclipse.m2e.core.project.ResolverConfiguration;
 import org.eclipse.m2e.internal.launch.MavenLaunchDelegate;
+import org.eclipse.m2e.internal.launch.MavenLaunchUtils;
 import org.eclipse.osgi.util.NLS;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
@@ -203,7 +204,7 @@ public class MavenCommandLauncher {
             }
             IPath generatedLog = basedir.getProject().getLocation().append("lastGenerated.log"); //$NON-NLS-1$
             workingCopy.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS,
-                    "-l " + generatedLog.toPortableString() + " " //$NON-NLS-1$ //$NON-NLS-2$
+                    "-l " + MavenLaunchUtils.quote(generatedLog.toPortableString()) + " " //$NON-NLS-1$ //$NON-NLS-2$
                             + workingCopy.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, "")); //$NON-NLS-1$
 
             // TODO when launching Maven with debugger consider to add the following property
