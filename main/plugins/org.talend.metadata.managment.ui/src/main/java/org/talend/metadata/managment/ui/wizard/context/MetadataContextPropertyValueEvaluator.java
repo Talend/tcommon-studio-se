@@ -49,7 +49,8 @@ public class MetadataContextPropertyValueEvaluator extends AbstractPropertyValue
             isPropertySupportContext = true;
         }
         if (connection != null && connection.isContextMode() && isPropertySupportContext) {
-            ContextType contextType = ConnectionContextHelper.getContextTypeForContextMode(null, connection, true);
+            ContextType contextType = ConnectionContextHelper.getContextTypeForContextMode(connection,
+                    connection.getContextName(), false);
             storedValue = ContextParameterUtils.getOriginalValue(contextType, String.valueOf(storedValue));
         }
         return getTypedValue(property, storedValue);
