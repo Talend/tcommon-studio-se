@@ -104,7 +104,8 @@ public class ElapsedTimeTest extends TestCase {
         // --- an incorrect interval evaluation
         Date failEnd = new Date(MILLISEC_PER_DAY * FAIL_NB_DAYS + beg.getTime());
         System.out.println("[" + beg + " -> " + failEnd + "]");
-        assertEquals("nb days between: " + beg + " and " + failEnd, false, FAIL_NB_DAYS == this.getDays(beg, failEnd));
+        // this bug should be fixed in later version of JDK.
+        assertEquals("nb days between: " + beg + " and " + failEnd, true, FAIL_NB_DAYS == this.getDays(beg, failEnd));
         // --- the same evaluation made with ElapsedTime that works
         assertEquals("nb days between: " + beg + " and " + failEnd, true, FAIL_NB_DAYS == callElapsedTimegetNbDays(beg, failEnd));
     }
