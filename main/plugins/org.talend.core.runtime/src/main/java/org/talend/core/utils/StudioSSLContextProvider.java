@@ -69,4 +69,29 @@ public class StudioSSLContextProvider {
             ExceptionHandler.process(e);
         }
     }
+
+    public static void setSSLSystemProperty() {
+        // build a context to check if settings from preference is correct
+        if (StudioSSLContextProvider.getContext() != null) {
+            final IPreferenceStore sslStore = CoreRuntimePlugin.getInstance().getCoreService().getPreferenceStore();
+            CryptoHelper cryptoHelper = CryptoHelper.getDefault();
+            String keyStore = sslStore.getString(SSLPreferenceConstants.KEYSTORE_FILE);
+            if (keyStore != null && !"".equals(keyStore.trim())) {
+                System.setProperty(SSLPreferenceConstants.KEYSTORE_FILE, keyStore);
+                System.setProperty(SSLPreferenceConstants.KEYSTORE_PASSWORD,
+                        cryptoHelper.decrypt(sslStore.getString(SSLPreferenceConstants.KEYSTORE_PASSWORD)));
+                System.setProperty(SSLPreferenceConstants.KEYSTORE_TYPE, sslStore.getString(SSLPreferenceConstants.KEYSTORE_TYPE));
+            }
+            String trustStore = sslStore.getString(SSLPreferenceConstants.TRUSTSTORE_FILE);
+            if (trustStore != null && !"".equals(trustStore.trim())) {
+                System.setProperty(SSLPreferenceConstants.TRUSTSTORE_FILE, trustStore);
+                System.setProperty(SSLPreferenceConstants.TRUSTSTORE_PASSWORD,
+                        cryptoHelper.decrypt(sslStore.getString(SSLPreferenceConstants.TRUSTSTORE_PASSWORD)));
+                System.setProperty(SSLPreferenceConstants.TRUSTSTORE_TYPE,
+                        sslStore.getString(SSLPreferenceConstants.TRUSTSTORE_TYPE));
+            }
+            unregisterHttpsScheme();
+        }
+
+    }
 }

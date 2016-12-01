@@ -47,9 +47,7 @@ import org.talend.commons.utils.system.EclipseCommandLine;
 import org.talend.core.BrandingChecker;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.migration.IMigrationToolService;
-import org.talend.core.prefs.SSLPreferenceConstants;
 import org.talend.core.repository.CoreRepositoryPlugin;
-import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.services.IMavenUIService;
 import org.talend.core.services.ICoreTisService;
 import org.talend.core.ui.branding.IBrandingService;
@@ -64,7 +62,6 @@ import org.talend.registration.wizards.license.LicenseWizardDialog;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IRepositoryService;
 import org.talend.repository.ui.login.LoginHelper;
-import org.talend.utils.security.CryptoHelper;
 
 /**
  * This class controls all aspects of the application's execution.
@@ -104,31 +101,7 @@ public class Application implements IApplication {
                 return instanceLocationCheck;
             }
 
-            // build a context to check if settings from preference is correct
-            StudioSSLContextProvider.buildContext();
-            if (StudioSSLContextProvider.getContext() != null) {
-                final IPreferenceStore sslStore = CoreRuntimePlugin.getInstance().getCoreService().getPreferenceStore();
-                CryptoHelper cryptoHelper = CryptoHelper.getDefault();
-                String keyStore = sslStore.getString(SSLPreferenceConstants.KEYSTORE_FILE);
-                if (keyStore != null && !"".equals(keyStore.trim())) {
-                    System.setProperty(SSLPreferenceConstants.KEYSTORE_FILE, keyStore);
-                    System.setProperty(SSLPreferenceConstants.KEYSTORE_PASSWORD,
-                            cryptoHelper.decrypt(sslStore.getString(SSLPreferenceConstants.KEYSTORE_PASSWORD)));
-                    System.setProperty(SSLPreferenceConstants.KEYSTORE_TYPE,
-                            sslStore.getString(SSLPreferenceConstants.KEYSTORE_TYPE));
-                }
-                String trustStore = sslStore.getString(SSLPreferenceConstants.TRUSTSTORE_FILE);
-                if (trustStore != null && !"".equals(trustStore.trim())) {
-                    System.setProperty(SSLPreferenceConstants.TRUSTSTORE_FILE, trustStore);
-                    System.setProperty(SSLPreferenceConstants.TRUSTSTORE_PASSWORD,
-                            cryptoHelper.decrypt(sslStore.getString(SSLPreferenceConstants.TRUSTSTORE_PASSWORD)));
-                    System.setProperty(SSLPreferenceConstants.TRUSTSTORE_TYPE,
-                            sslStore.getString(SSLPreferenceConstants.TRUSTSTORE_TYPE));
-                }
-                StudioSSLContextProvider.unregisterHttpsScheme();
-            } else {
-                log.warn("Can't build SSL context from Talend SSL preference");
-            }
+            StudioSSLContextProvider.setSSLSystemProperty();
 
             // setup MavenResolver properties
             // before set, must check user setting first.
