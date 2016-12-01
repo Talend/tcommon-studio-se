@@ -15,6 +15,7 @@ package org.talend.updates.runtime.engine;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -65,7 +66,7 @@ public class P2Installer {
         return tmpInstallFolder;
     }
 
-    private void copyConfigFile(boolean restore) throws IOException {
+    protected void copyConfigFile(boolean restore) throws IOException {
         File configrationFile = new File(Platform.getConfigurationLocation().getURL().getPath(), UpdatesHelper.FILE_CONFIG_INI);
         File tempConfigrationFile = new File(getTmpInstallFolder(), UpdatesHelper.FILE_CONFIG_INI);
         if (restore) {
@@ -79,37 +80,53 @@ public class P2Installer {
         }
     }
 
-    public String installPatchesByP2(File updatesiteFolder, boolean noConfigChange) throws IOException, ProvisionException {
-        String newProductVersion = "";
+    public Set<InstalledUnit> installPatchFile(File updatesiteZip, boolean keepChangeConfigIni) throws Exception {
+        if (updatesiteZip != null && updatesiteZip.exists() && updatesiteZip.isFile()) {
+
+            final File tmpFolder = org.talend.utils.files.FileUtils.createTmpFolder("p2", "update"); //$NON-NLS-1$  //$NON-NLS-2$
+            try {
+                FilesUtils.unzip(updatesiteZip.getAbsolutePath(), tmpFolder.getAbsolutePath());
+
+                final File[] updateFiles = UpdatesHelper.findUpdateFiles(tmpFolder);
+                Set<InstalledUnit> installed = new HashSet<InstalledUnit>();
+                if (updateFiles != null && updateFiles.length > 1) {
+                    for (File f : updateFiles) {
+                        installed.addAll(installPatchFolder(f, keepChangeConfigIni));
+                    }
+                }
+                return installed;
+            } finally {
+                FilesUtils.deleteFolder(tmpFolder, true);
+            }
+        }
+        return Collections.emptySet();
+    }
+
+    public Set<InstalledUnit> installPatchFolder(File updatesiteFolder, boolean keepChangeConfigIni) throws IOException,
+            ProvisionException {
         if (updatesiteFolder != null && updatesiteFolder.exists() && updatesiteFolder.isDirectory()) {
-            if (noConfigChange) {
+            if (!keepChangeConfigIni) {
                 copyConfigFile(false);
             }
             try {
                 /** The metadata repository and the artifact repository should be same **/
-                newProductVersion = installPatchesByP2(updatesiteFolder);
+                return installPatchRepository(updatesiteFolder, updatesiteFolder);
             } finally {// to be sure to place the file back untouched.
-                if (noConfigChange) {
+                if (!keepChangeConfigIni) {
                     copyConfigFile(true);
                     FilesUtils.deleteFolder(getTmpInstallFolder(), true);
                 }
             }
         }
-        return newProductVersion;
-    }
-
-    public String installPatchesByP2(File updatesiteFolder) throws ProvisionException {
-        if (updatesiteFolder != null && updatesiteFolder.exists() && updatesiteFolder.isDirectory()) {
-            return installPatchesByP2(updatesiteFolder, updatesiteFolder);
-        }
-        return null;
+        return Collections.emptySet();
     }
 
     /**
      * 
      * FIXME, Copied from the class @link NexusUpdateSiteManager#installPatchesByP2
      */
-    public String installPatchesByP2(File metadataRepository, File artifactRepository) throws ProvisionException {
+    protected Set<InstalledUnit> installPatchRepository(File metadataRepository, File artifactRepository)
+            throws ProvisionException {
         NullProgressMonitor nullProgressMonitor = new NullProgressMonitor();
         String newProductVersion = "";
         Bundle bundle = FrameworkUtil.getBundle(this.getClass());
@@ -120,7 +137,7 @@ public class P2Installer {
         IProvisioningAgentProvider agentProvider = null;
         IProvisioningAgent agent = null;
         if (sr == null) {
-            return null;
+            return Collections.emptySet();
         }
         agentProvider = (IProvisioningAgentProvider) context.getService(sr);
 
@@ -169,7 +186,11 @@ public class P2Installer {
             IStatus status = provisioningJob.run(new NullProgressMonitor());
             log.info("provisionning status is :" + status);
             // }// else IUs cannot be installed so tell the user.
-            return newProductVersion;
+            Set<InstalledUnit> installedUnits = new HashSet<InstalledUnit>();
+            for (IInstallableUnit unit : toInstall) {
+                installedUnits.add(new InstalledUnit(unit.getId(), unit.getVersion().toString()));
+            }
+            return installedUnits;
         } finally {
             agent.stop();
         }

@@ -18,6 +18,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
@@ -136,25 +137,40 @@ public class Application implements IApplication {
             service.executeWorspaceTasks();
             // saveConnectionBean(email);
 
-            // local patches
+            boolean needRelaunch = false;
             final PatchComponent patchComponent = PatchComponentHelper.getPatchComponent();
             if (patchComponent != null) {
                 final boolean installed = patchComponent.install();
                 if (installed) {
-                    MessageDialog.openInformation(new Shell(), "Installing Patches", patchComponent.getInstalledMessages());
+                    final String installedMessages = patchComponent.getInstalledMessages();
+                    if (installedMessages != null) {
+                        log.log(Level.INFO, installedMessages);
+                        MessageDialog.openInformation(new Shell(), "Installing Patches", installedMessages);
+                    }
                     if (patchComponent.needRelaunch()) {
-                        setRelaunchData();
-                        return IApplication.EXIT_RELAUNCH;
+                        needRelaunch = true;
                     }
                 }
             }
+
             final ComponentsInstallComponent component = LocalComponentInstallHelper.getComponent();
             if (component != null) {
                 // install component silently
-                if (component.install() && component.needRelaunch()) {
-                    setRelaunchData();
-                    return IApplication.EXIT_RELAUNCH;
+                final boolean installed = component.install();
+                if (installed) {
+                    final String installedMessages = component.getInstalledMessages();
+                    if (installedMessages != null) {
+                        log.log(Level.INFO, installedMessages);
+                        MessageDialog.openInformation(new Shell(), "Installing Components", installedMessages);
+                    }
+                    if (patchComponent.needRelaunch()) {
+                        needRelaunch = true;
+                    }
                 }
+            }
+            if (needRelaunch) {
+                setRelaunchData();
+                return IApplication.EXIT_RELAUNCH;
             }
 
             boolean logUserOnProject = logUserOnProject(display.getActiveShell());

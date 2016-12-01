@@ -15,9 +15,6 @@ package org.talend.commons.runtime.service;
 /**
  * DOC ggu class global comment. Detailled comment
  */
-public interface ComponentsInstallComponent {
+public interface ComponentsInstallComponent extends P2InstallComponent {
 
-    boolean install();
-
-    boolean needRelaunch();
 }

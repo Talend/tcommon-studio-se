@@ -13,16 +13,22 @@
 package org.talend.updates.runtime.engine.component;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
+import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
-import org.talend.commons.exception.FatalException;
 import org.talend.commons.runtime.service.ComponentsInstallComponent;
 import org.talend.commons.utils.resource.UpdatesHelper;
+import org.talend.updates.runtime.engine.InstalledUnit;
 import org.talend.updates.runtime.engine.P2Installer;
-import org.talend.utils.io.FilesUtils;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -31,12 +37,15 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
 
     private boolean needRelaunch;
 
+    private String installedMessage;
+
     public boolean needRelaunch() {
         return needRelaunch;
     }
 
     private void reset() {
         needRelaunch = false;
+        installedMessage = null;
     }
 
     /**
@@ -49,17 +58,30 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
         reset();
 
         try {
-            // FIXME For Test install the new components
             final IPath componentsPath = new Path(Platform.getConfigurationLocation().getURL().getPath()).append("components");
             final File file = componentsPath.toFile();
             if (file.exists() && file.isDirectory()) {
                 boolean success = false;
+                Map<File, Set<InstalledUnit>> successUnits = new HashMap<File, Set<InstalledUnit>>();
+                List<File> failedUnits = new ArrayList<File>();
+
                 final File[] updateFiles = UpdatesHelper.findUpdateFiles(file);
                 if (updateFiles != null && updateFiles.length > 0) {
                     for (File f : updateFiles) {
                         if (f.isFile()) {
-                            if (installUpdateSiteComponent(f)) {
-                                success = true;
+                            P2Installer installer = new P2Installer();
+                            try {
+                                final Set<InstalledUnit> installed = installer.installPatchFile(f, true);
+                                if (installed != null && !installed.isEmpty()) {
+                                    success = true;
+                                    successUnits.put(f, installed);
+                                }
+                            } catch (Exception e) { // sometime, if reinstall it, will got one exception also.
+                                // won't block others to install.
+                                if (!CommonsPlugin.isHeadless()) {
+                                    ExceptionHandler.process(e);
+                                }
+                                failedUnits.add(f);
                             }
                         }
                     }
@@ -67,44 +89,41 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
                 if (success) { // have one component install ok.
                     needRelaunch = true;
                 }
-                return true;
-            }
-        } catch (Exception e) {
-            // make sure to popup error dialog for studio
-            ExceptionHandler.process(new FatalException(e));
-        }
-        return false;
-    }
 
-    protected boolean installUpdateSiteComponent(File localZipFile) {
-        final File tmpFolder = org.talend.utils.files.FileUtils.createTmpFolder("components", "updatesite");
-        try {
-            boolean success = false;
-            FilesUtils.unzip(localZipFile.getAbsolutePath(), tmpFolder.getAbsolutePath());
+                // messages
+                StringBuffer messages = new StringBuffer(100);
+                if (successUnits.isEmpty()) {
+                    installedMessage = null; // no message
+                } else {
+                    messages.append("Installed success components:\n");
+                    List<File> succussFiles = new ArrayList(successUnits.keySet());
+                    Collections.sort(succussFiles);
 
-            final File[] updateFiles = UpdatesHelper.findUpdateFiles(tmpFolder);
-            if (updateFiles != null && updateFiles.length > 0) {
-                P2Installer installer = new P2Installer();
-                for (File f : updateFiles) {
-                    if (UpdatesHelper.isUpdateSite(f)) {
-                        try {
-                            String version = installer.installPatchesByP2(f, false);
-                            if (version != null) {
-                                success = true;
-                            }
-                        } catch (Exception e) {
-                            // if have error, just ignore current one.
-                            ExceptionHandler.process(e);
+                    for (File f : succussFiles) {
+                        messages.append("  file: " + f.getName());
+                        Set<InstalledUnit> set = successUnits.get(f);
+                        for (InstalledUnit unit : set) {
+                            messages.append("  b=" + unit.getBundle() + " , v=" + unit.getVersion());
                         }
+                        messages.append('\n');
                     }
+
+                    installedMessage = messages.toString();
                 }
+                return !successUnits.isEmpty();
             }
-            return success;
         } catch (Exception e) {
-            ExceptionHandler.process(e);
-        } finally {
-            FilesUtils.deleteFolder(tmpFolder, true);
+            if (!CommonsPlugin.isHeadless()) {
+                // make sure to popup error dialog for studio
+                ExceptionHandler.process(e);
+            }
         }
         return false;
     }
+
+    @Override
+    public String getInstalledMessages() {
+        return installedMessage;
+    }
+
 }

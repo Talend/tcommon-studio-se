@@ -15,6 +15,11 @@ package org.talend.commons.runtime.service;
 /**
  * DOC ggu class global comment. Detailled comment
  */
-public interface PatchComponent extends P2InstallComponent {
+public interface P2InstallComponent {
 
+    boolean install();
+
+    boolean needRelaunch();
+
+    String getInstalledMessages();
 }
