@@ -118,8 +118,8 @@
 					<talendType type="id_Byte"/>
 				</dbType>
 				<dbType type="NUMERIC">
-					<talendType type="id_Float" default="true" />
-					<talendType type="id_BigDecimal"/>
+					<talendType type="id_Float"/>
+					<talendType type="id_BigDecimal" default="true"/>
 					<talendType type="id_Double"/>
 				</dbType>
 				<dbType type="REAL">

@@ -88,8 +88,8 @@
 					<talendType type="id_Date" default="true" />
 				</dbType>
 				<dbType type="DECIMAL">
-					<talendType type="id_Double" default="true" />
-					<talendType type="id_BigDecimal"/>
+					<talendType type="id_Double"/>
+					<talendType type="id_BigDecimal" default="true"/>
 					<talendType type="id_Float"/>
 				</dbType>
 				<dbType type="DOUBLE PRECISION">
@@ -106,8 +106,8 @@
 					<talendType type="id_Integer" default="true" />
 				</dbType>
 				<dbType type="NUMERIC">
-					<talendType type="id_Double" default="true" />
-					<talendType type="id_BigDecimal"/>
+					<talendType type="id_Double"/>
+					<talendType type="id_BigDecimal" default="true"/>
 					<talendType type="id_Float"/>
 				</dbType>
 				<dbType type="SMALLINT">

@@ -278,10 +278,10 @@
 				<dbType type="FLOAT8" >
 					<talendType type="id_Double" default="true" />				
 					<talendType type="id_BigDecimal"/>			
-				</dbType>				
-				<dbType type="NUMERIC" >
-					<talendType type="id_Double" default="true" />
-					<talendType type="id_BigDecimal"/>			
+				</dbType>
+				<dbType type="NUMERIC">
+					<talendType type="id_Double"/>
+					<talendType type="id_BigDecimal" default="true" />			
 				</dbType>				
 				<dbType type="BOOL" >
 					<talendType type="id_Boolean" default="true" />				

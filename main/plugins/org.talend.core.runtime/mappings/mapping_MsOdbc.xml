@@ -558,12 +558,12 @@
 					<talendType type="id_BigDecimal"/>
 				</dbType>
 				<dbType type="DECIMAL">
-					<talendType type="id_Double" default="true" />
-					<talendType type="id_BigDecimal"/>
+					<talendType type="id_Double"/>
+					<talendType type="id_BigDecimal" default="true"/>
 				</dbType>
 				<dbType type="NUMERIC">
-					<talendType type="id_Double" default="true" />
-					<talendType type="id_BigDecimal"/>
+					<talendType type="id_Double"/>
+					<talendType type="id_BigDecimal" default="true"/>
 				</dbType>
 				<dbType type="REAL">
 					<talendType type="id_Double" default="true" />

@@ -139,8 +139,8 @@
 					<talendType type="id_Character"/>
 				</dbType>
 				<dbType type="DECIMAL">
-					<talendType type="id_Float" default="true" />
-					<talendType type="id_BigDecimal"/>
+					<talendType type="id_Float"/>
+					<talendType type="id_BigDecimal" default="true"/>
 				</dbType>
 				<dbType type="DATE">
 					<talendType type="id_Date" default="true" />

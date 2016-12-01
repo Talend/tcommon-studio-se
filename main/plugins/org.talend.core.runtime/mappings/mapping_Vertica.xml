@@ -123,8 +123,8 @@
 					<talendType type="id_byte[]" default="true" />
 				</dbType>
 				<dbType type="NUMERIC">
-					<talendType type="id_Double" default="true" />
-					<talendType type="id_BigDecimal" />
+					<talendType type="id_Double"/>
+					<talendType type="id_BigDecimal" default="true"/>
 				</dbType>
 			</dbToTalendTypes>
 		</language>

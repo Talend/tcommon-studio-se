@@ -126,8 +126,8 @@
 					<talendType type="id_Date" default="true"/>
 				</dbType>
 				<dbType type="DECIMAL">
-					<talendType type="id_Float" default="true"/>
-					<talendType type="id_BigDecimal"/>
+					<talendType type="id_Float"/>
+					<talendType type="id_BigDecimal" default="true"/>
 					<talendType type="id_Double"/>
 				</dbType>
 				<dbType type="DOUBLE">
@@ -153,9 +153,9 @@
 					<talendType type="id_String" default="true"/>
 				</dbType>
 				<dbType type="NUMERIC">
-					<talendType type="id_Float" default="true"/>
+					<talendType type="id_Float"/>
 					<talendType type="id_Double"/>
-					<talendType type="id_BigDecimal"/>
+					<talendType type="id_BigDecimal" default="true"/>
 				</dbType>	
 				<dbType type="OBJECT">
 					<talendType type="id_Object" default="true"/>
