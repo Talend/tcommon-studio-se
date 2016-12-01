@@ -54,7 +54,7 @@ public class TypedTextCommandExecutor {
 
     private String previousText;
 
-    private final KeyListener keyListener = new KeyListener() {
+    protected final KeyListener keyListener = new KeyListener() {
 
         public void keyPressed(KeyEvent e) {
             // keyPressedExecute(e);
@@ -66,7 +66,7 @@ public class TypedTextCommandExecutor {
 
     };
 
-    private final FocusListener focusListener = new FocusListener() {
+    protected final FocusListener focusListener = new FocusListener() {
 
         public void focusGained(FocusEvent e) {
             focusGainedExecute(e);
