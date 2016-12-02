@@ -17,19 +17,16 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.URL;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
 
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.p2.core.ProvisionException;
 import org.junit.Assert;
 import org.junit.Test;
-import org.osgi.framework.FrameworkUtil;
+import org.talend.commons.utils.resource.BundleFileUtil;
 import org.talend.commons.utils.resource.UpdatesHelper;
 
 /**
@@ -45,19 +42,6 @@ public class P2InstallerTest {
                 throws ProvisionException {
             return Collections.emptySet();
         }
-    }
-
-    private File getTestDataFile(String bundlePath) throws IOException {
-        URL dataUrl = FileLocator.find(FrameworkUtil.getBundle(this.getClass()), new Path(bundlePath), null);
-        if (dataUrl != null) {
-            dataUrl = FileLocator.toFileURL(dataUrl);
-        }
-
-        File zipFile = new File(dataUrl.getFile());
-        if (zipFile.exists()) {
-            return zipFile;
-        }
-        return null;
     }
 
     @Test
@@ -83,6 +67,7 @@ public class P2InstallerTest {
         testConfigIni(configrationFile, true);
         installer.copyConfigFile(true);
         testConfigIni(configrationFile, false);
+        installer.clean();
     }
 
     private void testConfigIni(File configrationFile, boolean testExisted) throws IOException {
@@ -142,7 +127,7 @@ public class P2InstallerTest {
 
     @Test
     public void test_installPatchFile() throws Exception {
-        final File testDataFile = getTestDataFile(TEST_COMP_MYJIRA);
+        final File testDataFile = BundleFileUtil.getBundleFile(this.getClass(), TEST_COMP_MYJIRA);
         Assert.assertNotNull(testDataFile);
         Assert.assertTrue(testDataFile.exists());
         P2InstallerTestClass installer = new P2InstallerTestClass() {

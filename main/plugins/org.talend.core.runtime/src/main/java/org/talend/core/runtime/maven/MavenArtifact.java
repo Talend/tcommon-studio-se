@@ -12,10 +12,16 @@
 // ============================================================================
 package org.talend.core.runtime.maven;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * DOC ggu class global comment. Detailled comment
  */
 public class MavenArtifact {
+
+    private static final char GROUP_SEPARATOR = '.';
+
+    private static final char ARTIFACT_SEPARATOR = '-';
 
     private String repositoryUrl, groupId, artifactId, version, type, classifier, description, url, license, licenseUrl,
             distribution;
@@ -106,6 +112,28 @@ public class MavenArtifact {
 
     public void setDistribution(String distribution) {
         this.distribution = distribution;
+    }
+
+    /**
+     * 
+     * DOC ggu Comment method "getDeployFileName".
+     * 
+     * @return if need full path, try PomUtil.getArtifactPath
+     */
+    public String getFileName() {
+        StringBuilder name = new StringBuilder(128);
+
+        name.append(getArtifactId()).append(ARTIFACT_SEPARATOR).append(getVersion());
+        if (StringUtils.isNotEmpty(getClassifier())) {
+            name.append(ARTIFACT_SEPARATOR).append(getClassifier());
+        }
+        name.append(GROUP_SEPARATOR);
+        if (StringUtils.isNotEmpty(getType())) {
+            name.append(getType());
+        } else {
+            name.append("jar"); // by default
+        }
+        return name.toString();
     }
 
     @Override
