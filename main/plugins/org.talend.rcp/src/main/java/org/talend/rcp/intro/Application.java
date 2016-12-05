@@ -174,6 +174,11 @@ public class Application implements IApplication {
             }
 
             boolean logUserOnProject = logUserOnProject(display.getActiveShell());
+            if (LoginHelper.isRestart && LoginHelper.isAutoLogonFailed) {
+                setRelaunchData();
+                EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(EclipseCommandLine.TALEND_PROJECT_TYPE_COMMAND, null, true);
+                return IApplication.EXIT_RELAUNCH;
+            }
             try {
                 if (!logUserOnProject) {
                     // MOD qiongli 2010-11-1,bug 16723: Code Cleansing
