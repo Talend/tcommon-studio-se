@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.librariesmanager.prefs;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -35,12 +36,26 @@ public class LibrariesManagerUtils {
 
     public static final String TALEND_LIBRARY_PATH = "talend.library.path"; //$NON-NLS-1$
 
-    public static String getLibrariesPath(ECodeLanguage language) {
+    /**
+     * should be same as OsgiLoaderActivator.LIB_JAVA_SUB_FOLDER
+     */
+    public static final String LIB_JAVA_SUB_FOLDER = "lib/java"; //$NON-NLS-1$
+
+    public static String getLibrariesPath() {
         String libPath = System.getProperty(TALEND_LIBRARY_PATH);
         if (libPath != null) {
             return libPath;
         }
-        return Platform.getConfigurationLocation().getURL().getFile() + "lib/java";
+        try {
+            return Platform.getConfigurationLocation().getDataArea(LIB_JAVA_SUB_FOLDER).getFile();
+        } catch (IOException e) {
+            //
+        }
+        return Platform.getConfigurationLocation().getURL().getFile() + LIB_JAVA_SUB_FOLDER;
+    }
+
+    public static String getLibrariesPath(ECodeLanguage language) {
+        return getLibrariesPath();
     }
 
     /**

@@ -17,4 +17,5 @@ package org.talend.commons.runtime.service;
  */
 public interface ComponentsInstallComponent extends P2InstallComponent {
 
+    String FOLDER_COMPS = "components";
 }

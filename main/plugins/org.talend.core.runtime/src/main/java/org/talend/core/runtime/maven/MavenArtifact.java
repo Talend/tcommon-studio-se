@@ -116,7 +116,7 @@ public class MavenArtifact {
 
     /**
      * 
-     * DOC ggu Comment method "getDeployFileName".
+     * DOC ggu Comment method "getFileName".
      * 
      * @return if need full path, try PomUtil.getArtifactPath
      */

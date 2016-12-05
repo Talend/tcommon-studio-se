@@ -34,7 +34,7 @@ import org.talend.commons.utils.resource.UpdatesHelper;
  */
 public class P2InstallerTest {
 
-    private static final String TEST_COMP_MYJIRA = "resources/components/components-myjira-0.16.0-SNAPSHOT-updatesite.zip";
+    public static final String TEST_COMP_MYJIRA = "resources/components/components-myjira-0.16.0-SNAPSHOT-updatesite.zip";
 
     class P2InstallerTestClass extends P2Installer {
 
