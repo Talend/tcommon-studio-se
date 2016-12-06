@@ -130,4 +130,6 @@ public interface IGenericWizardService extends IService {
      */
     public ERepositoryObjectType getNewRepType(String oldRepTypeName);
 
+    public String getConnectionProperties(Connection connection);
+
 }
