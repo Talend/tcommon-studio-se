@@ -59,6 +59,10 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
         return new File(System.getProperty("user.dir") + '/' + FOLDER_COMPS); //$NON-NLS-1$
     }
 
+    File getInstalledComponentFolder() {
+        return new File(getInstallingComponentFolder(), FOLDER_INSTALLED);
+    }
+
     /**
      * If have patches to be installed, will ask restart.
      */
@@ -69,19 +73,21 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
         reset();
 
         try {
-            final File file = getInstallingComponentFolder();
-            if (file == null) {
+            final File installedComponentFolder = getInstalledComponentFolder();
+            final File componentFolder = getInstallingComponentFolder();
+            if (componentFolder == null || !componentFolder.exists()) {
                 return false;
             }
-            if (file.exists() && file.isDirectory()) {
-                boolean success = false;
+            if (componentFolder.isDirectory()) {
                 Map<File, Set<InstalledUnit>> successUnits = new HashMap<File, Set<InstalledUnit>>();
                 List<File> failedUnits = new ArrayList<File>();
 
-                final File[] updateFiles = UpdatesHelper.findUpdateFiles(file);
+                final File[] updateFiles = componentFolder.listFiles(); // no children folders recursively.
                 if (updateFiles != null && updateFiles.length > 0) {
                     for (File f : updateFiles) {
-                        if (f.isFile()) {
+                        // must be file, and update site.
+                        if (f.isFile() && UpdatesHelper.isUpdateSite(f)) {
+
                             P2Installer installer = new P2Installer() {
 
                                 @Override
@@ -89,7 +95,7 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
                                         throws IOException, ProvisionException {
                                     final Set<InstalledUnit> installed = super.installPatchFolder(updatesiteFolder,
                                             keepChangeConfigIni);
-                                    if (!installed.isEmpty()) {
+                                    if (!installed.isEmpty()) { // install success
                                         // sync the component libraries
                                         syncLibraries(updatesiteFolder);
                                     }
@@ -97,11 +103,15 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
                                 }
 
                             };
+
                             try {
                                 final Set<InstalledUnit> installed = installer.installPatchFile(f, true);
-                                if (installed != null && !installed.isEmpty()) {
-                                    success = true;
+                                if (installed != null && !installed.isEmpty()) { // install success
                                     successUnits.put(f, installed);
+
+                                    // try to move install success to installed folder
+                                    FilesUtils.copyFile(f, new File(installedComponentFolder, f.getName()));
+                                    f.delete(); // delete original file.
                                 }
                             } catch (Exception e) { // sometime, if reinstall it, will got one exception also.
                                 // won't block others to install.
@@ -113,7 +123,8 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
                         }
                     }
                 }
-                if (success) { // have one component install ok.
+
+                if (!successUnits.isEmpty()) { // have one component install ok.
                     needRelaunch = true;
                 }
 
@@ -127,12 +138,13 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
                     Collections.sort(succussFiles);
 
                     for (File f : succussFiles) {
-                        messages.append("  file: " + f.getName());
+                        messages.append("\n  file: " + f.getName());
+                        messages.append('\n');
                         Set<InstalledUnit> set = successUnits.get(f);
                         for (InstalledUnit unit : set) {
-                            messages.append("  b=" + unit.getBundle() + " , v=" + unit.getVersion());
+                            messages.append("  > bundle:" + unit.getBundle() + " , version=" + unit.getVersion());
+                            messages.append('\n');
                         }
-                        messages.append('\n');
                     }
 
                     installedMessage = messages.toString();

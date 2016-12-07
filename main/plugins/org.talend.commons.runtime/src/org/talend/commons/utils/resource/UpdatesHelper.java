@@ -40,14 +40,22 @@ public class UpdatesHelper {
 
     public static final String FILE_ECLIPSE_PRODUCT = ".eclipseproduct";
 
-    static boolean existArtifacts(File base) {
+    public static boolean existArtifacts(File base) {
         return new File(base, FILE_ARTIFACTS).exists() || new File(base, FILE_JAR_ARTIFACTS).exists()
                 || new File(base, FILE_XZ_ARTIFACTS).exists();
     }
 
-    static boolean existContent(File base) {
+    public static boolean isArtifacts(String path) {
+        return path.endsWith(FILE_ARTIFACTS) || path.endsWith(FILE_JAR_ARTIFACTS) || path.endsWith(FILE_XZ_ARTIFACTS);
+    }
+
+    public static boolean existContent(File base) {
         return new File(base, FILE_CONTENT).exists() || new File(base, FILE_JAR_CONTENT).exists()
                 || new File(base, FILE_XZ_CONTENT).exists();
+    }
+
+    public static boolean isContent(String path) {
+        return path.endsWith(FILE_CONTENT) || path.endsWith(FILE_JAR_CONTENT) || path.endsWith(FILE_XZ_CONTENT);
     }
 
     /**

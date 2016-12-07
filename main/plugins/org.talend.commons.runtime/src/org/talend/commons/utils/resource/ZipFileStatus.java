@@ -57,10 +57,10 @@ public class ZipFileStatus {
                 while (enumeration.hasMoreElements()) {
                     ZipEntry entry = enumeration.nextElement();
                     String path = entry.getName();
-                    if (path.endsWith(UpdatesHelper.FILE_ARTIFACTS)) {
+                    if (UpdatesHelper.isArtifacts(path)) {
                         hasArtfacts = true;
                         artifactEntryName = path;
-                    } else if (path.endsWith(UpdatesHelper.FILE_CONTENT)) {
+                    } else if (UpdatesHelper.isContent(path)) {
                         hasContents = true;
                         contentEntryName = path;
                     } else {
