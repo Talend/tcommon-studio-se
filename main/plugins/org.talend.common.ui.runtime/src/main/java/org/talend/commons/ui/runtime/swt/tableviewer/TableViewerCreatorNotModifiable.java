@@ -405,16 +405,15 @@ public class TableViewerCreatorNotModifiable<B> {
 
             @Override
             protected void handleDispose(DisposeEvent event) {
-                if(this.isCellEditorActive()){
+                if (this.isCellEditorActive()) {
                     CellEditor[] cellEditors = this.getCellEditors();
-                    for (int i = 0; i < cellEditors.length; i++) {
-                    CellEditor cellEditor = cellEditors[i];
-                    if (cellEditor != null && cellEditor.isActivated()
-                             && cellEditor instanceof IShowInvisibleCellEditorMethods) {
-                        ((IShowInvisibleCellEditorMethods)cellEditor).fireApplyEditorValue();
+                    for (CellEditor cellEditor : cellEditors) {
+                        if (cellEditor != null && cellEditor.isActivated()
+                                && cellEditor instanceof IShowInvisibleCellEditorMethods) {
+                            ((IShowInvisibleCellEditorMethods) cellEditor).fireApplyEditorValue();
+                        }
                     }
                 }
-              }
                 super.handleDispose(event);
             }
 
@@ -837,15 +836,17 @@ public class TableViewerCreatorNotModifiable<B> {
                 addTraverseListenerRecursivly(cellEditor.getControl(), traverseListenerForControls);
             }
         }
-        
-        getTable().addPaintListener(new PaintListener() {
+        if ((this.getTable().getStyle() & SWT.VIRTUAL) != 0) {
+            getTable().addPaintListener(new PaintListener() {
 
-            public void paintControl(PaintEvent event) {
-                if (tableEditorManager != null) {
-                    tableEditorManager.paintVisibleAreaEditor(event);
+                @Override
+                public void paintControl(PaintEvent event) {
+                    if (tableEditorManager != null) {
+                        tableEditorManager.paintVisibleAreaEditor(event);
+                    }
                 }
-            }           
-        });
+            });
+        }
     }
 
     /**
