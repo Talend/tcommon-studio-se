@@ -689,10 +689,21 @@ public class TableViewerCreatorNotModifiable<B> {
         if (verticalScroll) {
             style |= SWT.V_SCROLL;
         }
-        if (isLazyLoad()) {
+        if (isLazyLoad() && isSupportOS()) {
             style |= SWT.VIRTUAL;
         }
         return style;
+    }
+
+    private boolean isSupportOS() {
+        String osName = System.getProperty("os.name").toLowerCase();
+        String osVersion = System.getProperty("os.version");
+        Boolean isLinux = osName.startsWith("linux");
+
+        if (WindowSystem.isGTK() && isLinux && osVersion != null && "3.2.0-23-generic".equals(osVersion)) {
+            return false;
+        }
+        return true;
     }
 
     protected void addListeners() {
@@ -836,7 +847,7 @@ public class TableViewerCreatorNotModifiable<B> {
                 addTraverseListenerRecursivly(cellEditor.getControl(), traverseListenerForControls);
             }
         }
-        if ((this.getTable().getStyle() & SWT.VIRTUAL) != 0) {
+        if (isLazyLoad()) {
             getTable().addPaintListener(new PaintListener() {
 
                 @Override
