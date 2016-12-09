@@ -15,7 +15,10 @@ package org.talend.metadata.managment.utils;
 import java.io.UnsupportedEncodingException;
 import java.sql.DatabaseMetaData;
 import java.sql.Driver;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -67,6 +70,7 @@ import org.talend.utils.exceptions.MissingDriverException;
 import org.talend.utils.sql.ConnectionUtils;
 import org.talend.utils.sugars.ReturnCode;
 import org.talend.utils.sugars.TypedReturnCode;
+
 import orgomg.cwm.foundation.softwaredeployment.DataProvider;
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.objectmodel.core.Package;
@@ -1245,6 +1249,36 @@ public class MetadataConnectionUtils {
         }
 
         return name;
+    }
+
+    /**
+     * Get column type name by {@link ResultSetMetaData}.
+     * 
+     * @param connection is a jdbc connection.
+     * @param tableName is the name of table which the column belongs to.
+     * @param colIndex is the column index in the table (start with 1).
+     * @return the column type name.
+     */
+    public static String getColumnTypeName(java.sql.Connection connection, String tableName, int colIndex) {
+        String columnTypeName = null;
+        Statement statement = null;
+        try {
+            statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT FIRST 1 * FROM " + tableName + ";"); //$NON-NLS-1$ //$NON-NLS-2$
+            ResultSetMetaData rsMetaData = resultSet.getMetaData();
+            columnTypeName = rsMetaData.getColumnTypeName(colIndex);
+        } catch (Exception e) {
+            // Do nothing.
+        } finally {
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace(); // only for debug
+                }
+            }
+        }
+        return columnTypeName;
     }
 
 }

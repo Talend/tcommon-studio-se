@@ -1425,6 +1425,13 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                     // MOD scorreia 2010-07-24 removed the call to column.getSQLDataType() here because obviously the sql
                     // data type it is null and results in a NPE
                     typeName = getStringFromResultSet(columns, GetColumn.TYPE_NAME.name());
+                    if (EDatabaseTypeName.INFORMIX.getDisplayName().equals(iMetadataConnection.getDbType())) {
+                        String tn = MetadataConnectionUtils.getColumnTypeName(dbJDBCMetadata.getConnection(), fetchTableName,
+                                index + 1);
+                        if (tn != null) {
+                            typeName = tn;
+                        }
+                    }
                     typeName = typeName.toUpperCase().trim();
                     typeName = ManagementTextUtils.filterSpecialChar(typeName);
                     if (typeName.startsWith("TIMESTAMP(")) { //$NON-NLS-1$

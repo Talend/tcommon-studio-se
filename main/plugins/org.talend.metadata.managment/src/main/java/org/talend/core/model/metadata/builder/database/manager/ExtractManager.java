@@ -27,8 +27,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import metadata.managment.i18n.Messages;
-
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -72,6 +70,8 @@ import org.talend.repository.model.IRepositoryService;
 import org.talend.utils.sql.ConnectionUtils;
 import org.talend.utils.sql.metadata.constants.GetColumn;
 import org.talend.utils.sql.metadata.constants.GetTable;
+
+import metadata.managment.i18n.Messages;
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.resource.relational.Catalog;
 import orgomg.cwm.resource.relational.NamedColumnSet;
@@ -703,9 +703,18 @@ public class ExtractManager {
                         typeName = "DATA_TYPE"; //$NON-NLS-1$
                     }
                     String dbType = extractMeta.getStringMetaDataInfo(columns, typeName, null).toUpperCase();
+
+                    if (EDatabaseTypeName.INFORMIX.getDisplayName().equals(metadataConnection.getDbType())) {
+                        String tn = MetadataConnectionUtils.getColumnTypeName(dbMetaData.getConnection(), fetchTableName,
+                                columnIndex);
+                        if (tn != null) {
+                            dbType = tn;
+                        }
+                    }
+
                     // For sometime the dbType will return one more space character at the end.So need to trim,comment
                     // for bug 17509
-                    dbType = dbType.trim();
+                    dbType = dbType.toUpperCase().trim();
                     dbType = ManagementTextUtils.filterSpecialChar(dbType);
                     dbType = handleDBtype(dbType);
                     metadataColumn.setSourceType(dbType);
