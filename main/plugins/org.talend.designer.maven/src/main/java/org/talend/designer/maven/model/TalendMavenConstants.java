@@ -106,6 +106,8 @@ public interface TalendMavenConstants {
     
     static final String PROFILE_INCLUDE_MICROSERVICE_RUNNING_CONFIGS = "include-microservice-running-configs";
 
+    static final String PROFILE_INCLUDE_SURVIVORSHIP_RULES = "include-survivorship-rules";
+
     /**
      * argments
      */
