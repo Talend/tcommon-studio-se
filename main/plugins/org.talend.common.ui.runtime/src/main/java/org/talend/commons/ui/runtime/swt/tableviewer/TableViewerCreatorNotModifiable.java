@@ -689,21 +689,10 @@ public class TableViewerCreatorNotModifiable<B> {
         if (verticalScroll) {
             style |= SWT.V_SCROLL;
         }
-        if (isLazyLoad() && isSupportOS()) {
+        if (isLazyLoad()) {
             style |= SWT.VIRTUAL;
         }
         return style;
-    }
-
-    private boolean isSupportOS() {
-        String osName = System.getProperty("os.name").toLowerCase();
-        String osVersion = System.getProperty("os.version");
-        Boolean isLinux = osName.startsWith("linux");
-
-        if (WindowSystem.isGTK() && isLinux && osVersion != null && "3.2.0-23-generic".equals(osVersion)) {
-            return false;
-        }
-        return true;
     }
 
     protected void addListeners() {
@@ -2202,7 +2191,11 @@ public class TableViewerCreatorNotModifiable<B> {
     }
 
     public void setLazyLoad(boolean lazyLoad) {
-        this.lazyLoad = lazyLoad;
+        if (!Boolean.getBoolean("talend.table.disableLazyLoading")) {
+            this.lazyLoad = lazyLoad;
+        }
+        // for bug TUP-15924, lazyload always be false by default,we have a system property like
+        // "disableLazyLoading" and if set to true we won't set virtual here. (user would set it manually).
     }
-
+ 
 }
