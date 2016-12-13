@@ -12,7 +12,11 @@
 // ============================================================================
 package org.talend.core;
 
+import java.util.Collection;
+
 import org.talend.core.model.process.INode;
+import org.talend.core.model.properties.Item;
+import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 
 /**
  * Interface of TDQSurvivorshipService
@@ -26,4 +30,13 @@ public interface ITDQSurvivorshipService extends IService {
      * @param node
      */
     public void createSurvivorshipItems(INode node);
+
+    /**
+     * 
+     * get all tRuleSurvirship Nodes from a job and all dependencies(job/joblet).
+     * 
+     * @param item
+     * @return
+     */
+    public Collection<NodeType> getSurvivorshipNodesOfProcess(Item item);
 }
