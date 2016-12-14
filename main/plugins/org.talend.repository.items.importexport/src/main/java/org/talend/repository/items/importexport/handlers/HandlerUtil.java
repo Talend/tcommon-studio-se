@@ -12,14 +12,19 @@
 // ============================================================================
 package org.talend.repository.items.importexport.handlers;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
+import java.util.zip.ZipEntry;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
@@ -34,6 +39,7 @@ import org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.runtime.utils.io.FileCopyUtils;
+import org.talend.commons.utils.io.FilesUtils;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.helper.ByteArrayResource;
 import org.talend.core.repository.constants.FileConstants;
@@ -44,6 +50,8 @@ import org.talend.repository.items.importexport.manager.ResourcesManager;
  * DOC ggu class global comment. Detailled comment
  */
 public final class HandlerUtil {
+
+    private static final int BUFFER_SIZE = 1024;
 
     public static URI getURI(IPath path) {
         return URI.createURI(path.lastSegment());
@@ -225,5 +233,74 @@ public final class HandlerUtil {
             resource = resourceSet.createResource(pathUri);
         }
         return resource;
+    }
+
+    public static void decompress(ResourcesManager srcManager, File destRootFolder, boolean interrupable) throws IOException {
+        Set<IPath> paths = srcManager.getPaths();
+        Thread currentThread = Thread.currentThread();
+        try {
+            for (IPath path : paths) {
+                if (interrupable && currentThread.isInterrupted()) {
+                    throw new InterruptedException();
+                }
+                Object obj = srcManager.getObjectOfPath(path);
+                /**
+                 * DON'T write TarEntry here, since TarEntry we used is in ui plugin while commandline can't use ui
+                 * plugin
+                 */
+                if (obj instanceof ZipEntry) {
+                    if (((ZipEntry) obj).isDirectory()) {
+                        continue;
+                    }
+                }
+
+                InputStream bis = srcManager.getStream(path);
+                File destFile = new File(destRootFolder, path.toPortableString());
+                File parentFile = destFile.getParentFile();
+                if (!parentFile.exists()) {
+                    parentFile.mkdirs();
+                }
+                BufferedOutputStream bos = null;
+                try {
+                    bos = new BufferedOutputStream(new FileOutputStream(destFile), BUFFER_SIZE);
+                    int count;
+                    byte data[] = new byte[BUFFER_SIZE];
+                    while ((count = bis.read(data, 0, BUFFER_SIZE)) != -1) {
+                        if (interrupable && currentThread.isInterrupted()) {
+                            break;
+                        }
+                        bos.write(data, 0, count);
+                    }
+                } finally {
+                    if (bos != null) {
+                        bos.flush();
+                        bos.close();
+                    }
+                    bis.close();
+                }
+            }
+        } catch (Throwable e) {
+            if (e instanceof InterruptedException && interrupable) {
+                // if interrupable, needn't to process
+            } else {
+                ExceptionHandler.process(e);
+            }
+        }
+    }
+
+    public static File createTmpFolder() {
+        File tempFolder = null;
+        try {
+            File tmpFile = File.createTempFile("Import", null); //$NON-NLS-1$
+            tmpFile.delete();
+            tempFolder = tmpFile;
+        } catch (IOException e) {
+            tempFolder = new File(Platform.getInstallLocation().getURL().getFile(), "tmp" + new Date().getTime()); //$NON-NLS-1$
+        }
+        if (tempFolder.exists()) {
+            FilesUtils.removeFolder(tempFolder, true);
+        }
+        tempFolder.mkdirs();
+        return tempFolder;
     }
 }

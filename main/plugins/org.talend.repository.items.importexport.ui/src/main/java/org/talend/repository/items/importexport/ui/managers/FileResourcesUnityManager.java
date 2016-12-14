@@ -12,19 +12,14 @@
 // ============================================================================
 package org.talend.repository.items.importexport.ui.managers;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Date;
-import java.util.Set;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.internal.wizards.datatransfer.ArchiveFileManipulations;
 import org.eclipse.ui.internal.wizards.datatransfer.ILeveledImportStructureProvider;
@@ -35,6 +30,7 @@ import org.eclipse.ui.internal.wizards.datatransfer.ZipLeveledStructureProvider;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.runtime.utils.io.FileCopyUtils;
 import org.talend.commons.utils.io.FilesUtils;
+import org.talend.repository.items.importexport.handlers.HandlerUtil;
 import org.talend.repository.items.importexport.manager.ResourcesManager;
 
 /**
@@ -44,8 +40,6 @@ import org.talend.repository.items.importexport.manager.ResourcesManager;
  * some special operations in Folder only, non-archives.
  */
 public class FileResourcesUnityManager extends FilesManager {
-
-    private static final int BUFFER_SIZE = 1024;
 
     /**
      * Original file.
@@ -145,7 +139,7 @@ public class FileResourcesUnityManager extends FilesManager {
                     throw new IOException("Collect files failure.");
                 }
                 try {
-                    decompress(archiveProviderManager, tmpWorkFolder, interruptable);
+                    HandlerUtil.decompress(archiveProviderManager, tmpWorkFolder, interruptable);
                 } finally {
                     if (archiveProviderManager != null) {
                         archiveProviderManager.closeResource();
@@ -158,45 +152,4 @@ public class FileResourcesUnityManager extends FilesManager {
         return this;
     }
 
-    private void decompress(ResourcesManager srcManager, File destRootFolder, boolean interrupable) throws IOException {
-        Set<IPath> paths = srcManager.getPaths();
-        Thread currentThread = Thread.currentThread();
-        try {
-            for (IPath path : paths) {
-                if (interrupable && currentThread.isInterrupted()) {
-                    throw new InterruptedException();
-                }
-                InputStream bis = srcManager.getStream(path);
-                File destFile = new File(destRootFolder, path.toPortableString());
-                File parentFile = destFile.getParentFile();
-                if (!parentFile.exists()) {
-                    parentFile.mkdirs();
-                }
-                BufferedOutputStream bos = null;
-                try {
-                    bos = new BufferedOutputStream(new FileOutputStream(destFile), BUFFER_SIZE);
-                    int count;
-                    byte data[] = new byte[BUFFER_SIZE];
-                    while ((count = bis.read(data, 0, BUFFER_SIZE)) != -1) {
-                        if (interrupable && currentThread.isInterrupted()) {
-                            break;
-                        }
-                        bos.write(data, 0, count);
-                    }
-                } finally {
-                    if (bos != null) {
-                        bos.flush();
-                        bos.close();
-                    }
-                    bis.close();
-                }
-            }
-        } catch (Throwable e) {
-            if (e instanceof InterruptedException && interrupable) {
-                // if interrupable, needn't to process
-            } else {
-                ExceptionHandler.process(e);
-            }
-        }
-    }
 }

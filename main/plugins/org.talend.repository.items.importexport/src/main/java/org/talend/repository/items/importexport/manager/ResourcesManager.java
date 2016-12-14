@@ -42,6 +42,10 @@ public abstract class ResourcesManager {
         path2Object.put(path, object);
     }
 
+    public Object getObjectOfPath(IPath path) {
+        return path2Object.get(path);
+    }
+
     public Set<IPath> getPaths() {
         return path2Object.keySet();
     }
