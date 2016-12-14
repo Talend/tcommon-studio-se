@@ -89,6 +89,14 @@ public class Application implements IApplication {
         Display display = PlatformUI.createDisplay();
 
         try {
+            // TUP-5816 don't put any code ahead of this part unless you make sure it won't trigger workspace initialization.
+            Shell shell = new Shell(display, SWT.ON_TOP);
+            Object instanceLocationCheck = acquireWorkspaceLock(shell);
+            if (instanceLocationCheck != null) {// no workspace selected so return.
+                shell.dispose();
+                return instanceLocationCheck;
+            }
+            
             final IPreferenceStore store = PlatformUI.getPreferenceStore();
             // need do clean, but without clean before.
             if (store.getBoolean(PreferenceKeys.NEED_OSGI_CLEAN) && !Boolean.getBoolean(EclipseStarter.PROP_CLEAN)) {
@@ -97,12 +105,6 @@ public class Application implements IApplication {
                 return IApplication.EXIT_RELAUNCH;
             }
 
-            Shell shell = new Shell(display, SWT.ON_TOP);
-            Object instanceLocationCheck = acquireWorkspaceLock(shell);
-            if (instanceLocationCheck != null) {// no workspace selected so return.
-                shell.dispose();
-                return instanceLocationCheck;
-            }
 
             StudioSSLContextProvider.setSSLSystemProperty();
 
