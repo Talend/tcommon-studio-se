@@ -274,7 +274,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
         }
 
         try {
-            if (dbConn != null && EDatabaseTypeName.ACCESS.getProduct().equals(dbConn.getProductId())) {
+            if (dbConn != null && (EDatabaseTypeName.ACCESS.getProduct().equals(dbConn.getProductId())
+                    || !isSupportFeatureJDBC(dbConn, metaConnection))) {
                 return null;
             }
             schemas = dbJDBCMetadata.getSchemas();
@@ -369,6 +370,32 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
         }
         return ListUtils.castList(Package.class, returnSchemas);
     }
+    
+    private boolean isSupportFeatureJDBC(DatabaseConnection dbConn, IMetadataConnection metaConnection) {
+        IMetadataConnection iMetadataCon = metaConnection;
+        String driverClass = null;
+        if (dbConn != null) {
+            driverClass = dbConn.getDriverClass();
+            if (dbConn.isContextMode()) {
+                if (iMetadataCon == null) {
+                    iMetadataCon = ConvertionHelper.convert(dbConn);
+                }
+                driverClass = iMetadataCon.getDriverClass();
+            }
+        }
+        if (driverClass != null) {
+            List<EDatabase4DriverClassName> db4DriverClasses = EDatabase4DriverClassName.indexOfByDriverClass(driverClass);
+            if (db4DriverClasses != null && !db4DriverClasses.isEmpty()) {
+                EDatabaseTypeName dbType = db4DriverClasses.get(0).getDbType();
+                if (dbType != null) {
+                    if (EDatabaseTypeName.ACCESS.equals(dbType)) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
 
     /**
      * fill the fake schemas into sqlite database connection since Sqlite no catalogs and no schemas.
@@ -421,6 +448,9 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
             }
             if (!isDbHasCatalogs(dbJDBCMetadata)) {
                 ConnectionHelper.removeAllPackages(dbConn);
+                return catalogList;
+            }
+            if (!isSupportFeatureJDBC(dbConn, metaConnection)) {
                 return catalogList;
             }
             ResultSet catalogNames = null;
