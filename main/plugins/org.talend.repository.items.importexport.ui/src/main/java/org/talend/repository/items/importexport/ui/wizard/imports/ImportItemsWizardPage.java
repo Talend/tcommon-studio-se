@@ -19,6 +19,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -997,8 +998,15 @@ public class ImportItemsWizardPage extends WizardPage {
                         }
                     }
 
+
+
+                    Date start = new Date();
+                    System.out.println("kkk: Begin-----------------------" + start);
                     importManager.importItemRecords(monitor, resManager, checkedItemRecords, overwrite,
                             nodesBuilder.getAllImportItemRecords(), destinationPath);
+                    Date stop = new Date();
+                    System.out.println(
+                            "kkk: End-------------------------" + stop + "\t cost:" + (stop.getTime() - start.getTime()) + "ms");
 
                 }
             };
