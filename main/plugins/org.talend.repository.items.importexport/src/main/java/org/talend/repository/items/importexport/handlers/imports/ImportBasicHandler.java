@@ -768,19 +768,27 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
                         final IRepositoryViewObject lastVersionBackup = lastVersion;
                         if (idDeletedBeforeImport != null && !idDeletedBeforeImport.contains(id)) {
                             // TDI-19535 (check if exists, delete all items with same id)
-                            final List<IRepositoryViewObject> allVersionToDelete = repFactory.getAllVersion(ProjectManager
-                                    .getInstance().getCurrentProject(), lastVersionBackup.getId(), false);
+                            final List<IRepositoryViewObject> allVersionToDelete = repFactory.getAllVersion(
+                                    ProjectManager.getInstance().getCurrentProject(), lastVersionBackup.getId(), false);
+                            String importingLabel = selectedImportItem.getProperty().getLabel();
+                            String existLabel = lastVersionBackup.getProperty().getLabel();
+                            boolean isDeleteOnRemote = isNeedDeleteOnRemote(importingLabel, existLabel);
                             RepositoryWorkUnit repositoryWorkUnit = new RepositoryWorkUnit(
                                     Messages.getString("ImportExportHandlersManager_deletingItemsMessage")) {
 
                                 @Override
                                 public void run() throws PersistenceException {
                                     for (IRepositoryViewObject currentVersion : allVersionToDelete) {
-                                        repFactory.forceDeleteObjectPhysical(lastVersionBackup, currentVersion.getVersion());
+                                        repFactory.forceDeleteObjectPhysical(lastVersionBackup, currentVersion.getVersion(), isDeleteOnRemote);
                                     }
                                 }
                             };
-                            repositoryWorkUnit.setForceTransaction(true);
+                            if (isDeleteOnRemote) {
+                                repositoryWorkUnit.setForceTransaction(true);
+                            } else {
+                                repositoryWorkUnit.setForceTransaction(false);
+                            }
+
                             repositoryWorkUnit.setRefreshRepository(false);
                             ProxyRepositoryFactory.getInstance().executeRepositoryWorkUnit(repositoryWorkUnit);
                             idDeletedBeforeImport.add(id);
@@ -860,6 +868,13 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
                 logError(e);
             }
         }
+    }
+    
+    private boolean isNeedDeleteOnRemote(String importingLabel, String existLabel) {
+        if (importingLabel != null && importingLabel.equalsIgnoreCase(importingLabel) && !importingLabel.equals(existLabel)) {
+            return true;
+        }
+        return false;
     }
 
     /**

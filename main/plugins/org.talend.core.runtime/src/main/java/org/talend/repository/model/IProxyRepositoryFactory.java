@@ -449,7 +449,7 @@ public interface IProxyRepositoryFactory {
     public void createParentFoldersRecursively(Project project, ERepositoryObjectType itemType, IPath path, boolean isImportItem)
             throws PersistenceException;
 
-    public void forceDeleteObjectPhysical(IRepositoryViewObject objToDelete, String version) throws PersistenceException;
+    public void forceDeleteObjectPhysical(IRepositoryViewObject objToDelete, String version, boolean isDeleteOnRemote) throws PersistenceException;
 
     public Property getUptodateProperty(Project project, Property property) throws PersistenceException;
 

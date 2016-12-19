@@ -185,7 +185,7 @@ public class LocalRepositoryFactoryTest extends BaseRepositoryTest {
         IProject project = ResourceUtils.getProject(sampleProject.getTechnicalLabel());
         checkFileExists(project, ERepositoryObjectType.PROCESS, "", "myJob", VersionUtils.DEFAULT_VERSION);
         // delete the item to cleanup the workspace
-        repositoryFactory.deleteObjectPhysical(sampleProject, new RepositoryObject(property));
+        repositoryFactory.deleteObjectPhysical(sampleProject, new RepositoryObject(property), false);
         checkFileNotExists(project, ERepositoryObjectType.PROCESS, "", "myJob", VersionUtils.DEFAULT_VERSION);
     }
 
@@ -290,7 +290,7 @@ public class LocalRepositoryFactoryTest extends BaseRepositoryTest {
                 .getCurrentProject(), ERepositoryObjectType.PROCESS, true);
         assertNotNull(objectFromFolder);
         for (Resource resource : repositoryFactory.xmiResourceManager.getAffectedResources(property)) {
-            repositoryFactory.xmiResourceManager.deleteResource(resource);
+            repositoryFactory.xmiResourceManager.deleteResource(resource, false);
         }
     }
 
@@ -354,7 +354,7 @@ public class LocalRepositoryFactoryTest extends BaseRepositoryTest {
         // item has been unloaded, so will reload from file
         assertEquals(uptodateProperty2.getDisplayName(), "myJob");
 
-        repositoryFactory.deleteObjectPhysical(sampleProject, new RepositoryObject(uptodateProperty));
+        repositoryFactory.deleteObjectPhysical(sampleProject, new RepositoryObject(uptodateProperty), false);
     }
 
     /**
@@ -404,7 +404,7 @@ public class LocalRepositoryFactoryTest extends BaseRepositoryTest {
         assertNotNull(all);
         assertTrue(!all.isEmpty());
 
-        repositoryFactory.deleteObjectPhysical(sampleProject, new RepositoryObject(property));
+        repositoryFactory.deleteObjectPhysical(sampleProject, new RepositoryObject(property), false);
     }
 
     /**
@@ -496,13 +496,13 @@ public class LocalRepositoryFactoryTest extends BaseRepositoryTest {
         assertNotNull(pItem.eResource());
 
         property = repositoryFactory.getUptodateProperty(sampleProject, property);
-        repositoryFactory.deleteObjectPhysical(sampleProject, new RepositoryObject(property));
+        repositoryFactory.deleteObjectPhysical(sampleProject, new RepositoryObject(property), false);
         property2 = repositoryFactory.getUptodateProperty(sampleProject, property2);
-        repositoryFactory.deleteObjectPhysical(sampleProject, new RepositoryObject(property2));
+        repositoryFactory.deleteObjectPhysical(sampleProject, new RepositoryObject(property2), false);
         prop1 = repositoryFactory.getUptodateProperty(sampleProject, prop1);
-        repositoryFactory.deleteObjectPhysical(sampleProject, new RepositoryObject(prop1));
+        repositoryFactory.deleteObjectPhysical(sampleProject, new RepositoryObject(prop1), false);
         prop2 = repositoryFactory.getUptodateProperty(sampleProject, prop2);
-        repositoryFactory.deleteObjectPhysical(sampleProject, new RepositoryObject(prop2));
+        repositoryFactory.deleteObjectPhysical(sampleProject, new RepositoryObject(prop2), false);
     }
 
     /**
@@ -553,9 +553,9 @@ public class LocalRepositoryFactoryTest extends BaseRepositoryTest {
         assertNull(processItem2.eResource());
 
         property = repositoryFactory.getUptodateProperty(sampleProject, property);
-        repositoryFactory.deleteObjectPhysical(sampleProject, new RepositoryObject(property));
+        repositoryFactory.deleteObjectPhysical(sampleProject, new RepositoryObject(property), false);
         property2 = repositoryFactory.getUptodateProperty(sampleProject, property2);
-        repositoryFactory.deleteObjectPhysical(sampleProject, new RepositoryObject(property2));
+        repositoryFactory.deleteObjectPhysical(sampleProject, new RepositoryObject(property2), false);
     }
 
     /**
@@ -708,7 +708,7 @@ public class LocalRepositoryFactoryTest extends BaseRepositoryTest {
             assertTrue(object.getProperty().getItem().getParent().equals(folderItem));
         }
 
-        factory.deleteObjectPhysical(sampleProject, factory.getLastVersion(sampleProject, processId));
+        factory.deleteObjectPhysical(sampleProject, factory.getLastVersion(sampleProject, processId), false);
     }
 
     private void testRoutinepropagateFileName(LocalRepositoryFactory factory, String path) throws PersistenceException {
@@ -815,7 +815,7 @@ public class LocalRepositoryFactoryTest extends BaseRepositoryTest {
             assertTrue(object.getProperty().getItem().getParent().equals(folderItem));
         }
 
-        factory.deleteObjectPhysical(sampleProject, factory.getLastVersion(sampleProject, routineId));
+        factory.deleteObjectPhysical(sampleProject, factory.getLastVersion(sampleProject, routineId), false);
     }
 
     private void testProcesspropagateFileName2(LocalRepositoryFactory factory, String path) throws PersistenceException {
@@ -891,7 +891,7 @@ public class LocalRepositoryFactoryTest extends BaseRepositoryTest {
         objects = factory.getAllVersion(sampleProject, processId, false);
         assertTrue(objects.size() == 4);
 
-        factory.deleteObjectPhysical(sampleProject, factory.getLastVersion(sampleProject, processId));
+        factory.deleteObjectPhysical(sampleProject, factory.getLastVersion(sampleProject, processId), false);
     }
 
     private void testRoutinepropagateFileName2(LocalRepositoryFactory factory, String path) throws PersistenceException {
@@ -966,7 +966,7 @@ public class LocalRepositoryFactoryTest extends BaseRepositoryTest {
         objects = factory.getAllVersion(sampleProject, routineId, false);
         assertTrue(objects.size() == 4);
 
-        factory.deleteObjectPhysical(sampleProject, factory.getLastVersion(sampleProject, routineId));
+        factory.deleteObjectPhysical(sampleProject, factory.getLastVersion(sampleProject, routineId), false);
     }
 
     private void checkFileExists(IProject project, ERepositoryObjectType type, String path, String name, String version) {
@@ -1037,7 +1037,7 @@ public class LocalRepositoryFactoryTest extends BaseRepositoryTest {
                 .getLabel(), processItem.getProperty().getVersion());
 
         Property property = repositoryFactory.getUptodateProperty(sampleProject, processItem.getProperty());
-        repositoryFactory.deleteObjectPhysical(sampleProject, new RepositoryObject(property));
+        repositoryFactory.deleteObjectPhysical(sampleProject, new RepositoryObject(property), false);
     }
 
     private void checkMoveObjectFileExists(IProject project, ERepositoryObjectType type, String path, String name, String version) {
@@ -1089,7 +1089,7 @@ public class LocalRepositoryFactoryTest extends BaseRepositoryTest {
                 processItem.getProperty().getLabel(), processItem.getProperty().getVersion());
 
         Property property = repositoryFactory.getUptodateProperty(sampleProject, processItem.getProperty());
-        repositoryFactory.deleteObjectPhysical(sampleProject, new RepositoryObject(property));
+        repositoryFactory.deleteObjectPhysical(sampleProject, new RepositoryObject(property), false);
     }
 
     /**
@@ -1149,7 +1149,7 @@ public class LocalRepositoryFactoryTest extends BaseRepositoryTest {
         }
 
         // delete the item to cleanup the workspace
-        repositoryFactory.deleteObjectPhysical(sampleProject, new RepositoryObject(property));
+        repositoryFactory.deleteObjectPhysical(sampleProject, new RepositoryObject(property), false);
 
         // check File Not Exists
         checkFileNotExists(project, ERepositoryObjectType.METADATA_CONNECTIONS, "", "myJob", VersionUtils.DEFAULT_VERSION);

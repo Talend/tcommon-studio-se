@@ -262,7 +262,7 @@ public class BaseRepositoryTest {
         assertTrue(serializableFromFolder.size() == 0);
 
         // test if physical delete
-        repositoryFactory.deleteObjectPhysical(sampleProject, rvo);
+        repositoryFactory.deleteObjectPhysical(sampleProject, rvo, false);
         serializableFromFolder = repositoryFactory.getSerializableFromFolder(sampleProject, fullFolder, routineId,
                 ERepositoryObjectType.ROUTINES, true, true, true, false);
         assertNotNull(serializableFromFolder);
@@ -365,7 +365,7 @@ public class BaseRepositoryTest {
         assertTrue(serializableFromFolder.size() == 0);
 
         // test if physical delete
-        repositoryFactory.deleteObjectPhysical(sampleProject, rvo);
+        repositoryFactory.deleteObjectPhysical(sampleProject, rvo, false);
         serializableFromFolder = repositoryFactory.getSerializableFromFolder(sampleProject, fullFolder, jobId,
                 ERepositoryObjectType.PROCESS, true, true, true, false);
         assertNotNull(serializableFromFolder);

@@ -200,13 +200,14 @@ public interface IRepositoryFactory {
      * @param deletionAuthor - the user perfom the deletion (only for logging in this version)
      * @throws PersistenceException
      */
-    public void deleteObjectPhysical(Project project, IRepositoryViewObject objToDelete) throws PersistenceException;
+    public void deleteObjectPhysical(Project project, IRepositoryViewObject objToDelete, boolean isDeleteOnRemote)
+            throws PersistenceException;
 
-    public void deleteObjectPhysical(Project project, IRepositoryViewObject objToDelete, String version)
+    public void deleteObjectPhysical(Project project, IRepositoryViewObject objToDelete, String version, boolean isDeleteOnRemote)
             throws PersistenceException;
 
     public void deleteObjectPhysical(Project project, IRepositoryViewObject objToDelete, String version,
-            boolean fromEmptyRecycleBin) throws PersistenceException;
+            boolean fromEmptyRecycleBin, boolean isDeleteOnRemote) throws PersistenceException;
 
     /**
      * Restore a logically deleted object. <code>isDeleted</code> on this object will now returned <code>false</code>.

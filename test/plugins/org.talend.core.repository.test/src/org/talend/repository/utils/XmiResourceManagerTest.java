@@ -299,7 +299,7 @@ public class XmiResourceManagerTest {
                 false);
         assertTrue(processItemResource != null);
         IFile file = URIHelper.getFile(processItemResource.getURI());
-        xrm.deleteResource(processItemResource);
+        xrm.deleteResource(processItemResource, false);
         assertTrue(!file.exists());
         assertTrue(!xrm.resourceSet.getResources().contains(processItemResource));
 
@@ -308,7 +308,7 @@ public class XmiResourceManagerTest {
         processItemResource = xrm.createItemResource(project, processItem, new Path(""), ERepositoryObjectType.PROCESS, false);
         assertTrue(processItemResource != null);
         file = URIHelper.getFile(processItemResource.getURI());
-        xrm.deleteResource(processItemResource);
+        xrm.deleteResource(processItemResource, false);
         assertTrue(!file.exists());
         assertTrue(!xrm.resourceSet.getResources().contains(processItemResource));
 
@@ -317,7 +317,7 @@ public class XmiResourceManagerTest {
                 true);
         assertTrue(routineItemResource != null);
         file = URIHelper.getFile(routineItemResource.getURI());
-        xrm.deleteResource(routineItemResource);
+        xrm.deleteResource(routineItemResource, false);
         assertTrue(!file.exists());
         assertTrue(!xrm.resourceSet.getResources().contains(routineItemResource));
     }
@@ -343,8 +343,8 @@ public class XmiResourceManagerTest {
         assertTrue(processItemResource != null);
         Resource propertyResource = xrm.createPropertyResource(processItem, processItemResource);
         assertTrue(propertyResource != null);
-        xrm.deleteResource(propertyResource);
-        xrm.deleteResource(processItemResource);
+        xrm.deleteResource(propertyResource, false);
+        xrm.deleteResource(processItemResource, false);
 
         processItem = createTempProcessItem();
         processItem.setFileExtension("process"); // test with file extension change
@@ -352,8 +352,8 @@ public class XmiResourceManagerTest {
         assertTrue(processItemResource != null);
         propertyResource = xrm.createPropertyResource(processItem, processItemResource);
         assertTrue(propertyResource != null);
-        xrm.deleteResource(propertyResource);
-        xrm.deleteResource(processItemResource);
+        xrm.deleteResource(propertyResource, false);
+        xrm.deleteResource(processItemResource, false);
 
         RoutineItem routineItem = createTempRoutineItem();
         Resource routineItemResource = xrm.createItemResource(project, routineItem, new Path(""), ERepositoryObjectType.ROUTINES,
@@ -361,8 +361,8 @@ public class XmiResourceManagerTest {
         assertTrue(routineItemResource != null);
         propertyResource = xrm.createPropertyResource(routineItem, routineItemResource);
         assertTrue(propertyResource != null);
-        xrm.deleteResource(propertyResource);
-        xrm.deleteResource(routineItemResource);
+        xrm.deleteResource(propertyResource, false);
+        xrm.deleteResource(routineItemResource, false);
     }
 
     /**
@@ -393,8 +393,8 @@ public class XmiResourceManagerTest {
 
         Resource itemResource = xrm.getItemResource(processItem);
         assertTrue(itemResource != null && itemResource.equals(processItemResource));
-        xrm.deleteResource(propertyResource);
-        xrm.deleteResource(itemResource);
+        xrm.deleteResource(propertyResource, false);
+        xrm.deleteResource(itemResource, false);
 
         // process with file extension changed
 
@@ -412,8 +412,8 @@ public class XmiResourceManagerTest {
         itemResource = xrm.getItemResource(processItem);
         assertTrue(itemResource.getURI().fileExtension().equals("process"));
         assertTrue(itemResource != null && itemResource.equals(processItemResource));
-        xrm.deleteResource(propertyResource);
-        xrm.deleteResource(itemResource);
+        xrm.deleteResource(propertyResource, false);
+        xrm.deleteResource(itemResource, false);
 
         // / routine
 
@@ -431,8 +431,8 @@ public class XmiResourceManagerTest {
         itemResource = xrm.getItemResource(routineItem);
         assertTrue(itemResource != null && itemResource.equals(routineItemResource));
 
-        xrm.deleteResource(propertyResource);
-        xrm.deleteResource(routineItemResource);
+        xrm.deleteResource(propertyResource, false);
+        xrm.deleteResource(routineItemResource, false);
     }
 
     /**
@@ -472,9 +472,9 @@ public class XmiResourceManagerTest {
         assertTrue(resources.contains(propertyResource));
         assertTrue(resources.contains(screenshotsResource));
 
-        xrm.deleteResource(propertyResource);
-        xrm.deleteResource(processItemResource);
-        xrm.deleteResource(screenshotsResource);
+        xrm.deleteResource(propertyResource, false);
+        xrm.deleteResource(processItemResource, false);
+        xrm.deleteResource(screenshotsResource, false);
 
         // process with file extension change
         processItem = createTempProcessItem();
@@ -499,9 +499,9 @@ public class XmiResourceManagerTest {
         assertTrue(resources.contains(propertyResource));
         assertTrue(resources.contains(screenshotsResource));
 
-        xrm.deleteResource(propertyResource);
-        xrm.deleteResource(processItemResource);
-        xrm.deleteResource(screenshotsResource);
+        xrm.deleteResource(propertyResource, false);
+        xrm.deleteResource(processItemResource, false);
+        xrm.deleteResource(screenshotsResource, false);
 
         // routine
 
@@ -521,8 +521,8 @@ public class XmiResourceManagerTest {
         assertTrue(resources.contains(routineItemResource));
         assertTrue(resources.contains(propertyResource));
 
-        xrm.deleteResource(propertyResource);
-        xrm.deleteResource(routineItemResource);
+        xrm.deleteResource(propertyResource, false);
+        xrm.deleteResource(routineItemResource, false);
     }
 
     /**
@@ -560,7 +560,7 @@ public class XmiResourceManagerTest {
         assertTrue(property.getLabel().equals("myJob"));
 
         for (Resource resource : xrm.getAffectedResources(property)) {
-            xrm.deleteResource(resource);
+            xrm.deleteResource(resource, false);
         }
 
         RoutineItem routineItem = createTempRoutineItem();
@@ -584,7 +584,7 @@ public class XmiResourceManagerTest {
         assertTrue(property.getLabel().equals("myRoutine"));
 
         for (Resource resource : xrm.getAffectedResources(property)) {
-            xrm.deleteResource(resource);
+            xrm.deleteResource(resource, false);
         }
     }
 
@@ -621,7 +621,7 @@ public class XmiResourceManagerTest {
         assertTrue(property.getLabel().equals("myJob"));
 
         for (Resource resource : xrm.getAffectedResources(property)) {
-            xrm.deleteResource(resource);
+            xrm.deleteResource(resource, false);
         }
 
         RoutineItem routineItem = createTempRoutineItem();
@@ -642,7 +642,7 @@ public class XmiResourceManagerTest {
         assertTrue(property.getLabel().equals("myRoutine"));
 
         for (Resource resource : xrm.getAffectedResources(property)) {
-            xrm.deleteResource(resource);
+            xrm.deleteResource(resource, false);
         }
     }
 
@@ -692,9 +692,9 @@ public class XmiResourceManagerTest {
         assertTrue(processItem.eResource() != null);
         assertTrue(processItem.eResource().getURI().toString().endsWith("/temp/myJob_0.1.properties"));
 
-        xrm.deleteResource(propertyResource);
-        xrm.deleteResource(processItemResource);
-        xrm.deleteResource(screenshotsResource);
+        xrm.deleteResource(propertyResource, false);
+        xrm.deleteResource(processItemResource, false);
+        xrm.deleteResource(screenshotsResource, false);
 
         RoutineItem routineItem = createTempRoutineItem();
         Resource routineItemResource = xrm.createItemResource(project, routineItem, new Path(""), ERepositoryObjectType.ROUTINES,
@@ -714,8 +714,8 @@ public class XmiResourceManagerTest {
         assertTrue(routineItem.eResource() != null);
         assertTrue(routineItem.eResource().getURI().toString().endsWith("/temp/myRoutine_0.1.properties"));
 
-        xrm.deleteResource(propertyResource);
-        xrm.deleteResource(routineItemResource);
+        xrm.deleteResource(propertyResource, false);
+        xrm.deleteResource(routineItemResource, false);
     }
 
     /**
@@ -751,7 +751,7 @@ public class XmiResourceManagerTest {
                 .equals("test"));
 
         for (Resource resource : xrm.getAffectedResources(property)) {
-            xrm.deleteResource(resource);
+            xrm.deleteResource(resource, false);
         }
 
         RoutineItem routineItem = createTempRoutineItem();
@@ -774,7 +774,7 @@ public class XmiResourceManagerTest {
         assertTrue(content.equals("myRoutineContent"));
 
         for (Resource resource : xrm.getAffectedResources(property)) {
-            xrm.deleteResource(resource);
+            xrm.deleteResource(resource, false);
         }
     }
 
@@ -822,8 +822,8 @@ public class XmiResourceManagerTest {
         file = project.getFile(new Path(ERepositoryObjectType.getFolderName(ERepositoryObjectType.PROCESS) + "/myJob_0.1.item"));
         assertTrue(!xrm.isPropertyFile(file));
 
-        xrm.deleteResource(propertyResource);
-        xrm.deleteResource(processItemResource);
+        xrm.deleteResource(propertyResource, false);
+        xrm.deleteResource(processItemResource, false);
     }
 
     /**
@@ -994,7 +994,7 @@ public class XmiResourceManagerTest {
                 "0.1"));
         List<Resource> resources = xrm.getAffectedResources(oldProperty);
         for (Resource resource : resources) {
-            xrm.deleteResource(resource);
+            xrm.deleteResource(resource, false);
         }
         file = project.getFile(new Path(ERepositoryObjectType.getFolderName(ERepositoryObjectType.PROCESS)
                 + "/myJob_0.2.properties"));
@@ -1003,7 +1003,7 @@ public class XmiResourceManagerTest {
                 "0.2"));
         resources = xrm.getAffectedResources(oldProperty);
         for (Resource resource : resources) {
-            xrm.deleteResource(resource);
+            xrm.deleteResource(resource, false);
         }
         file = project.getFile(new Path(ERepositoryObjectType.getFolderName(ERepositoryObjectType.PROCESS)
                 + "/myJob_0.3.properties"));
@@ -1012,7 +1012,7 @@ public class XmiResourceManagerTest {
                 "0.3"));
         resources = xrm.getAffectedResources(oldProperty);
         for (Resource resource : resources) {
-            xrm.deleteResource(resource);
+            xrm.deleteResource(resource, false);
         }
 
         assertTrue(((NodeType) processItem.getProcess().getNode().get(0)).getComponentVersion().equals("1.0"));
@@ -1021,7 +1021,7 @@ public class XmiResourceManagerTest {
 
         resources = xrm.getAffectedResources(property);
         for (Resource resource : resources) {
-            xrm.deleteResource(resource);
+            xrm.deleteResource(resource, false);
         }
     }
 
@@ -1122,7 +1122,7 @@ public class XmiResourceManagerTest {
         assertTrue(content.equals("myRoutineContent"));
         List<Resource> resources = xrm.getAffectedResources(oldProperty);
         for (Resource resource : resources) {
-            xrm.deleteResource(resource);
+            xrm.deleteResource(resource, false);
         }
         file = project.getFile(new Path(ERepositoryObjectType.getFolderName(ERepositoryObjectType.ROUTINES)
                 + "/myRoutine_0.2.properties"));
@@ -1131,7 +1131,7 @@ public class XmiResourceManagerTest {
         assertTrue(content.equals("myRoutineContent_0.2"));
         resources = xrm.getAffectedResources(oldProperty);
         for (Resource resource : resources) {
-            xrm.deleteResource(resource);
+            xrm.deleteResource(resource, false);
         }
         file = project.getFile(new Path(ERepositoryObjectType.getFolderName(ERepositoryObjectType.ROUTINES)
                 + "/myRoutine_0.3.properties"));
@@ -1141,7 +1141,7 @@ public class XmiResourceManagerTest {
 
         resources = xrm.getAffectedResources(oldProperty);
         for (Resource resource : resources) {
-            xrm.deleteResource(resource);
+            xrm.deleteResource(resource, false);
         }
         content = new String(routineItem.getContent().getInnerContent());
         assertTrue(content.equals("myRoutineContent_1.0"));
@@ -1149,7 +1149,7 @@ public class XmiResourceManagerTest {
         Property property = xrm.forceReloadProperty(routineItem.getProperty());
         resources = xrm.getAffectedResources(property);
         for (Resource resource : resources) {
-            xrm.deleteResource(resource);
+            xrm.deleteResource(resource, false);
         }
     }
 
@@ -1210,7 +1210,7 @@ public class XmiResourceManagerTest {
 
         List<Resource> resources = xrm.getAffectedResources(property);
         for (Resource resource : resources) {
-            xrm.deleteResource(resource);
+            xrm.deleteResource(resource, false);
         }
 
         RoutineItem routineItem = createTempRoutineItem();
@@ -1234,7 +1234,7 @@ public class XmiResourceManagerTest {
 
         resources = xrm.getAffectedResources(property);
         for (Resource resource : resources) {
-            xrm.deleteResource(resource);
+            xrm.deleteResource(resource, false);
         }
     }
 

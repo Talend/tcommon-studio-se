@@ -713,8 +713,8 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
      * IRepositoryViewObject)
      */
     @Override
-    public void forceDeleteObjectPhysical(IRepositoryViewObject objToDelete, String version) throws PersistenceException {
-        this.repositoryFactoryFromProvider.deleteObjectPhysical(projectManager.getCurrentProject(), objToDelete, version);
+    public void forceDeleteObjectPhysical(IRepositoryViewObject objToDelete, String version, boolean isDeleteOnRemote) throws PersistenceException {
+        this.repositoryFactoryFromProvider.deleteObjectPhysical(projectManager.getCurrentProject(), objToDelete, version, isDeleteOnRemote);
         // i18n
         // log.info("Physical deletion [" + objToDelete + "] by " + getRepositoryContext().getUser() + ".");
         String str[] = new String[] { objToDelete.toString(), getRepositoryContext().getUser().toString() };
