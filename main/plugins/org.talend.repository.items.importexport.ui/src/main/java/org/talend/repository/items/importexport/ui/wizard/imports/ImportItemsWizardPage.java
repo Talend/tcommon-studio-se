@@ -19,7 +19,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -997,7 +996,8 @@ public class ImportItemsWizardPage extends WizardPage {
                             }
                         }
                     }
-
+                    importManager.importItemRecords(monitor, resManager, checkedItemRecords, overwrite,
+                            nodesBuilder.getAllImportItemRecords(), destinationPath);
                 }
             };
 
