@@ -15510,13 +15510,22 @@ public interface ConnectionPackage extends EPackage {
     int FTP_CONNECTION__CUSTOM_ENCODE = CONNECTION_FEATURE_COUNT + 18;
 
     /**
+     * The feature id for the '<em><b>Use File Name Encoding</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int FTP_CONNECTION__USE_FILE_NAME_ENCODING = CONNECTION_FEATURE_COUNT + 19;
+
+    /**
      * The number of structural features of the '<em>FTP Connection</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int FTP_CONNECTION_FEATURE_COUNT = CONNECTION_FEATURE_COUNT + 19;
+    int FTP_CONNECTION_FEATURE_COUNT = CONNECTION_FEATURE_COUNT + 20;
 
     /**
      * The meta object id for the '{@link org.talend.core.model.metadata.builder.connection.impl.BRMSConnectionImpl <em>BRMS Connection</em>}' class.
@@ -24170,6 +24179,17 @@ public interface ConnectionPackage extends EPackage {
     EAttribute getFTPConnection_CustomEncode();
 
     /**
+     * Returns the meta object for the attribute '{@link org.talend.core.model.metadata.builder.connection.FTPConnection#isUseFileNameEncoding <em>Use File Name Encoding</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Use File Name Encoding</em>'.
+     * @see org.talend.core.model.metadata.builder.connection.FTPConnection#isUseFileNameEncoding()
+     * @see #getFTPConnection()
+     * @generated
+     */
+    EAttribute getFTPConnection_UseFileNameEncoding();
+
+    /**
      * Returns the meta object for class '{@link org.talend.core.model.metadata.builder.connection.BRMSConnection <em>BRMS Connection</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -28064,6 +28084,14 @@ public interface ConnectionPackage extends EPackage {
          * @generated
          */
         EAttribute FTP_CONNECTION__CUSTOM_ENCODE = eINSTANCE.getFTPConnection_CustomEncode();
+
+        /**
+         * The meta object literal for the '<em><b>Use File Name Encoding</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute FTP_CONNECTION__USE_FILE_NAME_ENCODING = eINSTANCE.getFTPConnection_UseFileNameEncoding();
 
         /**
          * The meta object literal for the '{@link org.talend.core.model.metadata.builder.connection.impl.BRMSConnectionImpl <em>BRMS Connection</em>}' class.

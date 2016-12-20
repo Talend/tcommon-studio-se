@@ -12,6 +12,7 @@ package org.talend.core.model.metadata.builder.connection;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.FTPConnection#getHost <em>Host</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.FTPConnection#getPort <em>Port</em>}</li>
@@ -32,8 +33,8 @@ package org.talend.core.model.metadata.builder.connection;
  *   <li>{@link org.talend.core.model.metadata.builder.connection.FTPConnection#getProxyuser <em>Proxyuser</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.FTPConnection#getProxypassword <em>Proxypassword</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.FTPConnection#getCustomEncode <em>Custom Encode</em>}</li>
+ *   <li>{@link org.talend.core.model.metadata.builder.connection.FTPConnection#isUseFileNameEncoding <em>Use File Name Encoding</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getFTPConnection()
  * @model
@@ -534,5 +535,31 @@ public interface FTPConnection extends Connection {
      * @generated
      */
     void setCustomEncode(String value);
+
+    /**
+     * Returns the value of the '<em><b>Use File Name Encoding</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Use File Name Encoding</em>' attribute isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Use File Name Encoding</em>' attribute.
+     * @see #setUseFileNameEncoding(boolean)
+     * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getFTPConnection_UseFileNameEncoding()
+     * @model
+     * @generated
+     */
+    boolean isUseFileNameEncoding();
+
+    /**
+     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.FTPConnection#isUseFileNameEncoding <em>Use File Name Encoding</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Use File Name Encoding</em>' attribute.
+     * @see #isUseFileNameEncoding()
+     * @generated
+     */
+    void setUseFileNameEncoding(boolean value);
 
 } // FTPConnection

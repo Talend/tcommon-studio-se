@@ -721,6 +721,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="Proxyuser" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="Proxypassword" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="CustomEncode" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="UseFileNameEncoding" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="BRMSConnection" eSuperTypes="#//Connection">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlField" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>

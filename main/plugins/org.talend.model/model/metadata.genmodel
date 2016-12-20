@@ -265,6 +265,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//XmlFileConnection/inputModel"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//XmlFileConnection/outputFilePath"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//XmlFileConnection/fileContent"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//XmlFileConnection/targetNameSpace"/>
     </genClasses>
     <genClasses ecoreClass="metadata.ecore#//SchemaTarget">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//SchemaTarget/RelativeXPathQuery"/>
@@ -473,6 +474,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//FTPConnection/Proxyuser"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//FTPConnection/Proxypassword"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//FTPConnection/CustomEncode"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//FTPConnection/UseFileNameEncoding"/>
     </genClasses>
     <genClasses ecoreClass="metadata.ecore#//BRMSConnection">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//BRMSConnection/xmlField"/>

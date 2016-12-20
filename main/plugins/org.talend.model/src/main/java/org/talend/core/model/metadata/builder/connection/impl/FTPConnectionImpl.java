@@ -20,6 +20,7 @@ import org.talend.core.model.metadata.builder.connection.FTPConnection;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.FTPConnectionImpl#getHost <em>Host</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.FTPConnectionImpl#getPort <em>Port</em>}</li>
@@ -40,8 +41,8 @@ import org.talend.core.model.metadata.builder.connection.FTPConnection;
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.FTPConnectionImpl#getProxyuser <em>Proxyuser</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.FTPConnectionImpl#getProxypassword <em>Proxypassword</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.FTPConnectionImpl#getCustomEncode <em>Custom Encode</em>}</li>
+ *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.FTPConnectionImpl#isUseFileNameEncoding <em>Use File Name Encoding</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -428,6 +429,26 @@ public class FTPConnectionImpl extends ConnectionImpl implements FTPConnection {
     protected String customEncode = CUSTOM_ENCODE_EDEFAULT;
 
     /**
+     * The default value of the '{@link #isUseFileNameEncoding() <em>Use File Name Encoding</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #isUseFileNameEncoding()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean USE_FILE_NAME_ENCODING_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isUseFileNameEncoding() <em>Use File Name Encoding</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #isUseFileNameEncoding()
+     * @generated
+     * @ordered
+     */
+    protected boolean useFileNameEncoding = USE_FILE_NAME_ENCODING_EDEFAULT;
+
+    /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
@@ -571,7 +592,8 @@ public class FTPConnectionImpl extends ConnectionImpl implements FTPConnection {
         String oldEcoding = ecoding;
         ecoding = newEcoding;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.FTP_CONNECTION__ECODING, oldEcoding, ecoding));
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.FTP_CONNECTION__ECODING, oldEcoding,
+                    ecoding));
     }
 
     /**
@@ -862,6 +884,28 @@ public class FTPConnectionImpl extends ConnectionImpl implements FTPConnection {
      * <!-- end-user-doc -->
      * @generated
      */
+    public boolean isUseFileNameEncoding() {
+        return useFileNameEncoding;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setUseFileNameEncoding(boolean newUseFileNameEncoding) {
+        boolean oldUseFileNameEncoding = useFileNameEncoding;
+        useFileNameEncoding = newUseFileNameEncoding;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.FTP_CONNECTION__USE_FILE_NAME_ENCODING,
+                    oldUseFileNameEncoding, useFileNameEncoding));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
@@ -903,6 +947,8 @@ public class FTPConnectionImpl extends ConnectionImpl implements FTPConnection {
             return getProxypassword();
         case ConnectionPackage.FTP_CONNECTION__CUSTOM_ENCODE:
             return getCustomEncode();
+        case ConnectionPackage.FTP_CONNECTION__USE_FILE_NAME_ENCODING:
+            return isUseFileNameEncoding();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -971,6 +1017,9 @@ public class FTPConnectionImpl extends ConnectionImpl implements FTPConnection {
             return;
         case ConnectionPackage.FTP_CONNECTION__CUSTOM_ENCODE:
             setCustomEncode((String) newValue);
+            return;
+        case ConnectionPackage.FTP_CONNECTION__USE_FILE_NAME_ENCODING:
+            setUseFileNameEncoding((Boolean) newValue);
             return;
         }
         super.eSet(featureID, newValue);
@@ -1041,6 +1090,9 @@ public class FTPConnectionImpl extends ConnectionImpl implements FTPConnection {
         case ConnectionPackage.FTP_CONNECTION__CUSTOM_ENCODE:
             setCustomEncode(CUSTOM_ENCODE_EDEFAULT);
             return;
+        case ConnectionPackage.FTP_CONNECTION__USE_FILE_NAME_ENCODING:
+            setUseFileNameEncoding(USE_FILE_NAME_ENCODING_EDEFAULT);
+            return;
         }
         super.eUnset(featureID);
     }
@@ -1078,8 +1130,8 @@ public class FTPConnectionImpl extends ConnectionImpl implements FTPConnection {
         case ConnectionPackage.FTP_CONNECTION__KEYSTORE_FILE:
             return KEYSTORE_FILE_EDEFAULT == null ? keystoreFile != null : !KEYSTORE_FILE_EDEFAULT.equals(keystoreFile);
         case ConnectionPackage.FTP_CONNECTION__KEYSTORE_PASSWORD:
-            return KEYSTORE_PASSWORD_EDEFAULT == null ? keystorePassword != null : !KEYSTORE_PASSWORD_EDEFAULT
-                    .equals(keystorePassword);
+            return KEYSTORE_PASSWORD_EDEFAULT == null ? keystorePassword != null
+                    : !KEYSTORE_PASSWORD_EDEFAULT.equals(keystorePassword);
         case ConnectionPackage.FTP_CONNECTION__USESOCKS:
             return usesocks != USESOCKS_EDEFAULT;
         case ConnectionPackage.FTP_CONNECTION__PROXYHOST:
@@ -1092,6 +1144,8 @@ public class FTPConnectionImpl extends ConnectionImpl implements FTPConnection {
             return PROXYPASSWORD_EDEFAULT == null ? proxypassword != null : !PROXYPASSWORD_EDEFAULT.equals(proxypassword);
         case ConnectionPackage.FTP_CONNECTION__CUSTOM_ENCODE:
             return CUSTOM_ENCODE_EDEFAULT == null ? customEncode != null : !CUSTOM_ENCODE_EDEFAULT.equals(customEncode);
+        case ConnectionPackage.FTP_CONNECTION__USE_FILE_NAME_ENCODING:
+            return useFileNameEncoding != USE_FILE_NAME_ENCODING_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -1145,6 +1199,8 @@ public class FTPConnectionImpl extends ConnectionImpl implements FTPConnection {
         result.append(proxypassword);
         result.append(", CustomEncode: ");
         result.append(customEncode);
+        result.append(", UseFileNameEncoding: ");
+        result.append(useFileNameEncoding);
         result.append(')');
         return result.toString();
     }
