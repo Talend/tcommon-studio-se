@@ -290,7 +290,7 @@ public class LocalRepositoryFactoryTest extends BaseRepositoryTest {
                 .getCurrentProject(), ERepositoryObjectType.PROCESS, true);
         assertNotNull(objectFromFolder);
         for (Resource resource : repositoryFactory.xmiResourceManager.getAffectedResources(property)) {
-            repositoryFactory.xmiResourceManager.deleteResource(resource, false);
+            repositoryFactory.xmiResourceManager.deleteResource(resource);
         }
     }
 

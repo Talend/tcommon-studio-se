@@ -353,7 +353,7 @@ public class XmiResourceManager {
         return itemResource;
     }
 
-    public void deleteResource(Resource resource, boolean isDeleteOnRemote) throws PersistenceException {
+    public void deleteResource(Resource resource) throws PersistenceException {
         ResourceUtils.deleteFile(URIHelper.getFile(resource.getURI()));
         resourcesMap.remove(resource.getURI());
         getResourceSet().getResources().remove(resource);

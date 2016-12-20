@@ -1957,7 +1957,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
      * @throws PersistenceException
      */
     protected void deleteResource(Resource resource, boolean isDeleteOnRemote) throws PersistenceException {
-        xmiResourceManager.deleteResource(resource, isDeleteOnRemote);
+        xmiResourceManager.deleteResource(resource);
     }
 
     protected void moveResource(Resource resource, IPath path) throws PersistenceException {
