@@ -113,11 +113,11 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 
 /**
  * @author ocarbone
- * 
+ *
  */
 /**
  * DOC Administrator class global comment. Detailled comment <br/>
- * 
+ *
  */
 public class DatabaseTableForm extends AbstractForm {
 
@@ -208,7 +208,7 @@ public class DatabaseTableForm extends AbstractForm {
 
     /**
      * TableForm Constructor to use by RCP Wizard.
-     * 
+     *
      * @param parent
      * @param connection
      * @param page
@@ -251,10 +251,10 @@ public class DatabaseTableForm extends AbstractForm {
 
     /**
      * DOC ocarbone Comment method "initExistingNames".
-     * 
+     *
      * @param connection
      * @param metadataTable
-     * 
+     *
      */
     private void initExistingNames() {
         String[] exisNames;
@@ -267,9 +267,9 @@ public class DatabaseTableForm extends AbstractForm {
     }
 
     /**
-     * 
+     *
      * Initialize value, forceFocus first field for right Click (new Table).
-     * 
+     *
      */
     @Override
     public void initialize() {
@@ -277,14 +277,14 @@ public class DatabaseTableForm extends AbstractForm {
     }
 
     /**
-     * 
+     *
      * Initialize value, forceFocus first field for right Click (new Table).
-     * 
+     *
      * @throws SQLException
      * @throws IllegalAccessException
      * @throws InstantiationException
      * @throws ClassNotFoundException
-     * 
+     *
      */
     public void initializeForm() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
 
@@ -328,7 +328,7 @@ public class DatabaseTableForm extends AbstractForm {
 
     /**
      * DOC ocarbone Comment method "initTreeNodes".
-     * 
+     *
      * @throws SQLException
      * @throws IllegalAccessException
      * @throws InstantiationException
@@ -462,7 +462,7 @@ public class DatabaseTableForm extends AbstractForm {
 
     /**
      * DOC bqian Comment method "removeDoubleQuotes".
-     * 
+     *
      * @param metadataColumnList see bug 3738
      */
     private void removeDoubleQuotes(List<MetadataColumn> metadataColumnList) {
@@ -541,7 +541,7 @@ public class DatabaseTableForm extends AbstractForm {
 
     /**
      * Adds double quotes if Talend type is Date or String.
-     * 
+     *
      * @param bean
      * @param value
      * @return
@@ -635,7 +635,7 @@ public class DatabaseTableForm extends AbstractForm {
         // Combo Table
         // Composite comboComposite = Form.startNewGridLayout(rightComposite, 3, false, SWT.LEFT, SWT.TOP);
         tableCombo = new LabelledCombo(container, Messages.getString("DatabaseTableForm.table"), Messages //$NON-NLS-1$
-                .getString("DatabaseTableForm.tableTip"), //$NON-NLS-1$  
+                        .getString("DatabaseTableForm.tableTip"), //$NON-NLS-1$
                 itemTableName != null ? itemTableName.toArray(new String[0]) : null, 1, true, SWT.NONE);
         tableCombo.setEnabled(false);
 
@@ -701,7 +701,7 @@ public class DatabaseTableForm extends AbstractForm {
 
     /**
      * DOC ocarbone Comment method "addTreeNavigator".
-     * 
+     *
      * @param parent
      * @param width
      * @param height
@@ -760,7 +760,7 @@ public class DatabaseTableForm extends AbstractForm {
 
     /**
      * addButtonControls.
-     * 
+     *
      */
     @Override
     protected void addUtilsButtonListeners() {
@@ -888,7 +888,7 @@ public class DatabaseTableForm extends AbstractForm {
 
     /**
      * DOC ocarbone Comment method "addMetadataTable".
-     * 
+     *
      * @throws SQLException
      * @throws IllegalAccessException
      * @throws InstantiationException
@@ -961,7 +961,7 @@ public class DatabaseTableForm extends AbstractForm {
 
     /**
      * checkConnectionButton.
-     * 
+     *
      * @param displayMessageBox
      */
 
@@ -1041,7 +1041,7 @@ public class DatabaseTableForm extends AbstractForm {
 
     /**
      * DOC ocarbone Comment method "allTableHaveItems".
-     * 
+     *
      * @return
      */
     private boolean checkAllTablesIsCorrect() {
@@ -1210,11 +1210,15 @@ public class DatabaseTableForm extends AbstractForm {
             if (schemaContent.size() <= 0) {
                 return;
             }
+            boolean isHive = EDatabaseTypeName.HIVE.getDisplayName().equals(metadataconnection.getDbType());
             int numbOfColumn = schemaContent.get(0).length;
             for (int i = 1; i <= numbOfColumn; i++) {
                 MetadataColumn oneColum = columns.get(i - 1);
                 // get the column name from the temp file genenrated by GuessSchemaProcess.java
                 String labelName = (schemaContent.get(0))[i - 1];
+                if (isHive && labelName != null && labelName.indexOf(".") != -1) { //$NON-NLS-1$
+                    labelName = labelName.substring(labelName.lastIndexOf(".") + 1); //$NON-NLS-1$
+                }
                 // oneColum.setLabel(labelName);
                 if (!"".equals(labelName)) { //$NON-NLS-1$
                     oneColum.setOriginalField(labelName);
@@ -1262,7 +1266,7 @@ public class DatabaseTableForm extends AbstractForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.AbstractForm#adaptFormToReadOnly()
      */
     @Override
@@ -1279,7 +1283,7 @@ public class DatabaseTableForm extends AbstractForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
      */
     @Override
@@ -1369,7 +1373,7 @@ public class DatabaseTableForm extends AbstractForm {
     }
 
     /**
-     * 
+     *
      * for featrue 2449
      */
 
@@ -1383,7 +1387,7 @@ public class DatabaseTableForm extends AbstractForm {
 
     /**
      * Comment method "changeTableNavigatorStatus".
-     * 
+     *
      * @param schemaLabel
      */
     private void changeTableNavigatorStatus(String schemaLabel) {
@@ -1400,7 +1404,7 @@ public class DatabaseTableForm extends AbstractForm {
 
     /**
      * DOC Administrator Comment method "changeControlStatus".
-     * 
+     *
      * @param children
      * @param status
      */
@@ -1416,7 +1420,7 @@ public class DatabaseTableForm extends AbstractForm {
 
     /**
      * Comment method "changeTableNavigatorStatus".
-     * 
+     *
      * @param isEnabled
      */
     private void changeTableNavigatorStatus(boolean isEnabled) {
@@ -1428,7 +1432,7 @@ public class DatabaseTableForm extends AbstractForm {
 
     /**
      * DOC JKWANG Comment method "setButtonsVisibility".
-     * 
+     *
      * @param isRepositoryObjectEditable
      */
     public void setButtonsVisibility(boolean isVisible) {
@@ -1443,7 +1447,7 @@ public class DatabaseTableForm extends AbstractForm {
 
     /**
      * Getter for labelChanged.
-     * 
+     *
      * @return the labelChanged
      */
     public Map<String, Map<String, String>> getLabelChanged() {
