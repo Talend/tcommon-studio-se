@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: webservice.ce
+Bundle-SymbolicName: org.talend.libraries.mdm.webservice.ce
+Bundle-Version: 6.4.0.qualifier
+Bundle-ClassPath: lib/mdm_webservice_tomcat_ce.jar
+Bundle-Vendor: Talend
+Fragment-Host: org.talend.libraries.mdm
+Export-Package: org.talend.mdm.webservice
