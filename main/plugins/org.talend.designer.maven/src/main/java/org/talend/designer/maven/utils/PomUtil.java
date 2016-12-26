@@ -44,7 +44,6 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -207,7 +206,7 @@ public class PomUtil {
         if (artifactId == null) {
             return null;
         }
-        Dependency dependency = new Dependency();
+        Dependency dependency = new SortableDependency();
         dependency.setGroupId(groupId == null ? MavenConstants.DEFAULT_LIB_GROUP_ID : groupId);
         dependency.setArtifactId(artifactId);
         dependency.setVersion(version == null ? MavenConstants.DEFAULT_LIB_VERSION : version);
