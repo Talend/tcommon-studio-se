@@ -57,6 +57,8 @@ public class ATreeNode {
     private long precisionValue;
 
     private static HashMap xmlTypeToDataType = new HashMap();
+    
+    private Object foxTreeNode;
 
     static {
         try {
@@ -96,6 +98,9 @@ public class ATreeNode {
 	 */
     protected ATreeNode() {
         children = new ArrayList();
+        if (NodeCreationObserver.isRunning()) {
+            NodeCreationObserver.add(this);
+        }
     }
 
     /**
@@ -303,9 +308,6 @@ public class ATreeNode {
         } else if (!this.value.equals(other.value)) {
             return false;
         }
-        if (!this.children.equals(other.children)) {
-            return false;
-        }
         return true;
     }
 
@@ -367,4 +369,13 @@ public class ATreeNode {
     public void setPrecisionValue(long precisionValue) {
         this.precisionValue = precisionValue;
     }
+    
+    public Object getFoxTreeNode() {
+        return foxTreeNode;
+    }
+
+    public void setFoxTreeNode(Object foxTreeNode) {
+        this.foxTreeNode = foxTreeNode;
+    }
+    
 }

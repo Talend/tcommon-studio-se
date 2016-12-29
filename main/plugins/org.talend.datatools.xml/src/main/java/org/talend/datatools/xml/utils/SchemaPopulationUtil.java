@@ -61,24 +61,32 @@ public class SchemaPopulationUtil {
      */
     public static ATreeNode getSchemaTree(String fileName, boolean includeAttribute, boolean forMDM,
             int numberOfElementsAccessiable, List<String> attList) throws OdaException, URISyntaxException, IOException {
+        ATreeNode node = null;
+        NodeCreationObserver.start();
         if (fileName.toUpperCase().endsWith(".XSD")) {
-            return XSDFileSchemaTreePopulator.getSchemaTree(fileName, includeAttribute, forMDM, attList);
+            node = XSDFileSchemaTreePopulator.getSchemaTree(fileName, includeAttribute, forMDM, attList);
         } else if (fileName.toUpperCase().endsWith(".DTD")) {
-            return new DTDFileSchemaTreePopulator().getSchemaTree(fileName, includeAttribute);
+            node = new DTDFileSchemaTreePopulator().getSchemaTree(fileName, includeAttribute);
         } else {
-            return new XMLFileSchemaTreePopulator(numberOfElementsAccessiable).getSchemaTree(fileName, includeAttribute);
+            node = new XMLFileSchemaTreePopulator(numberOfElementsAccessiable).getSchemaTree(fileName, includeAttribute);
         }
+        NodeCreationObserver.stop();
+        return node;
     }
 
     public static ATreeNode getSchemaTree(String fileName, boolean includeAttribute, int numberOfElementsAccessiable)
             throws OdaException, URISyntaxException, IOException {
+        ATreeNode node = null;
+        NodeCreationObserver.start();
         if (fileName.toUpperCase().endsWith(".XSD")) {
-            return XSDFileSchemaTreePopulator.getSchemaTree(fileName, includeAttribute);
+            node = XSDFileSchemaTreePopulator.getSchemaTree(fileName, includeAttribute);
         } else if (fileName.toUpperCase().endsWith(".DTD")) {
-            return new DTDFileSchemaTreePopulator().getSchemaTree(fileName, includeAttribute);
+            node = new DTDFileSchemaTreePopulator().getSchemaTree(fileName, includeAttribute);
         } else {
-            return new XMLFileSchemaTreePopulator(numberOfElementsAccessiable).getSchemaTree(fileName, includeAttribute);
+            node = new XMLFileSchemaTreePopulator(numberOfElementsAccessiable).getSchemaTree(fileName, includeAttribute);
         }
+        NodeCreationObserver.stop();
+        return node;
     }
 
     /**
@@ -96,7 +104,11 @@ public class SchemaPopulationUtil {
      */
     public static ATreeNode getSchemaTree(XSModel xsModel, ATreeNode selectedNode, boolean includeAttribute) throws OdaException,
             URISyntaxException, IOException {
-        return XSDFileSchemaTreePopulator.getSchemaTree(xsModel, selectedNode, includeAttribute);
+        ATreeNode node = null;
+        NodeCreationObserver.start();
+        node = XSDFileSchemaTreePopulator.getSchemaTree(xsModel, selectedNode, includeAttribute);
+        NodeCreationObserver.stop();
+        return node;
     }
 
     public static ATreeNode getSchemaTree(XSDSchema schema, ATreeNode selectedNode) throws OdaException, URISyntaxException,
@@ -106,18 +118,26 @@ public class SchemaPopulationUtil {
 
     public static ATreeNode getSchemaTree(XSDPopulationUtil2 popUtil, XSDSchema schema, ATreeNode selectedNode)
             throws OdaException, URISyntaxException, IOException {
+        ATreeNode node = null;
+        NodeCreationObserver.start();
         if (popUtil == null) {
             popUtil = new XSDPopulationUtil2();
         }
-        return popUtil.getSchemaTree(schema, selectedNode);
+        node = popUtil.getSchemaTree(schema, selectedNode);
+        NodeCreationObserver.stop();
+        return node;
     }
 
     public static ATreeNode getSchemaTree(XSDPopulationUtil2 popUtil, XSDSchema schema, ATreeNode selectedNode,
             boolean supportChoice, boolean supportSubstitution) throws OdaException, URISyntaxException, IOException {
+        ATreeNode node = null;
+        NodeCreationObserver.start();
         if (popUtil == null) {
             popUtil = new XSDPopulationUtil2();
         }
-        return popUtil.getSchemaTree(schema, selectedNode, supportChoice, supportSubstitution);
+        node = popUtil.getSchemaTree(schema, selectedNode, supportChoice, supportSubstitution);
+        NodeCreationObserver.stop();
+        return node;
     }
 
     public static ATreeNode getSchemaTree(XSDSchema schema, ATreeNode selectedNode, boolean supportChoice,

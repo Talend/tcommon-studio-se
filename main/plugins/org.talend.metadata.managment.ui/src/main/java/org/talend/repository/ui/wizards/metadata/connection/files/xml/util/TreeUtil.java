@@ -18,11 +18,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.apache.xerces.xs.XSModel;
 import org.eclipse.core.resources.IProject;
@@ -38,14 +34,15 @@ import org.osgi.framework.Bundle;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.commons.utils.io.FilesUtils;
+import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.commons.xml.XmlUtil;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.metadata.MappingTypeRetriever;
 import org.talend.core.model.metadata.MetadataTalendType;
 import org.talend.core.model.metadata.types.JavaDataTypeHelper;
-import org.talend.core.repository.model.ResourceModelUtils;
 import org.talend.core.ui.metadata.dialog.RootNodeSelectDialog;
 import org.talend.datatools.xml.utils.ATreeNode;
+import org.talend.datatools.xml.utils.NodeCreationObserver;
 import org.talend.datatools.xml.utils.OdaException;
 import org.talend.datatools.xml.utils.SchemaPopulationUtil;
 import org.talend.datatools.xml.utils.XSDPopulationUtil;
@@ -447,11 +444,7 @@ public class TreeUtil {
 
         try {
             ATreeNode treeNode = SchemaPopulationUtil.getSchemaTree(filePath, true, 0);
-            String rootName = "";
-            if (treeNode.getValue() instanceof String) {
-                rootName += "/" + treeNode.getValue();
-            }
-            FOXTreeNode root = cloneATreeNode(treeNode, rootName, XmlUtil.isXSDFile(filePath));
+            FOXTreeNode root = cloneATreeNode(treeNode, XmlUtil.isXSDFile(filePath));
             if (root instanceof Element) {
                 root = ((Element) root).getElementChildren().get(0);
                 root.setParent(null);
@@ -489,9 +482,8 @@ public class TreeUtil {
 
     }
 
-    public static List<FOXTreeNode> getFoxTreeNodesForXmlMap(String filePath, String absoluteXPathQuery, boolean includeAbsSubs)
-            throws Exception {
-
+    public static List<FOXTreeNode> getFoxTreeNodesForXmlMap(String filePath, String absoluteXPathQuery, String targetNamespace,
+            boolean includeAbsSubs) throws Exception {
         List<FOXTreeNode> list = new ArrayList<FOXTreeNode>();
         if (filePath == null) {
             return list;
@@ -499,89 +491,7 @@ public class TreeUtil {
         XSDPopulationUtil2 popUtil = new XSDPopulationUtil2();
         popUtil.setIncludeAbsSubs(includeAbsSubs);
         if (filePath.endsWith(".zip")) {
-            // unzip the file than add all treenode from unzip file
-            Project project = ProjectManager.getInstance().getCurrentProject();
-            IProject fsProject = null;
-            try {
-                fsProject = ResourceModelUtils.getProject(project);
-            } catch (PersistenceException e2) {
-                ExceptionHandler.process(e2);
-            }
-            IPath path = new Path(fsProject.getLocationURI().getPath());
-            path = path.append("temp").append("unzip_" + new Path(filePath).lastSegment());
-            String unzipPath = path.toPortableString();
-            File zip = new File(filePath);
-            if (zip.exists()) {
-                try {
-                    FilesUtils.unzip(zip.getAbsolutePath(), unzipPath);
-                } catch (Exception e) {
-                    ExceptionHandler.process(e);
-                }
-            }
-            File unzipFile = new File(unzipPath);
-            List<ATreeNode> allTreeNodes = new ArrayList<ATreeNode>();
-            XSDSchema xsModel = null;
-            Map<XSDSchema, List<ATreeNode>> schemaTreeNodeMap = new HashMap<XSDSchema, List<ATreeNode>>();
-            if (unzipFile.exists() && unzipFile.isDirectory()) {
-                File[] tempXSDFiles = unzipFile.listFiles();
-                for (File tempXSDFile1 : tempXSDFiles) {
-                    popUtil.addSchema(tempXSDFile1.getAbsolutePath());
-                }
-                for (File tempXSDFile : tempXSDFiles) {
-                    XSDSchema tempXSD = popUtil.getXSDSchema(tempXSDFile.getAbsolutePath(), true);
-                    List<ATreeNode> tempTreeNodes = popUtil.getAllRootNodes(tempXSD);
-                    schemaTreeNodeMap.put(tempXSD, tempTreeNodes);
-                    allTreeNodes.addAll(tempTreeNodes);
-                }
-            }
-            ATreeNode selectedTreeNode = null;
-            if (allTreeNodes != null && !allTreeNodes.isEmpty()) {
-                if (allTreeNodes.size() > 1) {
-                    String[] split = absoluteXPathQuery.split("/");
-                    if (split.length > 1) {
-                        boolean found = false;
-                        for (int i = 0; i < allTreeNodes.size(); i++) {
-                            if (split[1] != null && split[1].equals(allTreeNodes.get(i).getValue())) {
-                                selectedTreeNode = allTreeNodes.get(i);
-                                found = true;
-                                Set set = schemaTreeNodeMap.keySet();
-                                Iterator it = set.iterator();
-                                while (it.hasNext()) {
-                                    XSDSchema tempSchema = (XSDSchema) it.next();
-                                    List<ATreeNode> tempTreeNodes = schemaTreeNodeMap.get(tempSchema);
-                                    if (tempTreeNodes.contains(selectedTreeNode)) {
-                                        xsModel = tempSchema;
-                                    }
-                                }
-                                break;
-                            }
-                        }
-                        if (!found) {
-                            for (int i = 0; i < allTreeNodes.size(); i++) {
-                                ATreeNode node = allTreeNodes.get(i);
-                                String[] nodeValue = ((String) node.getValue()).split(":");
-                                if (nodeValue.length > 1) {
-                                    if (split[1].equals(nodeValue[1])) {
-                                        List<ATreeNode> treeNodes = new ArrayList<ATreeNode>();
-                                        selectedTreeNode = allTreeNodes.get(i);
-                                        found = true;
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    if (selectedTreeNode == null) {
-                        selectedTreeNode = allTreeNodes.get(0);
-                    }
-                } else {
-                    selectedTreeNode = allTreeNodes.get(0);
-                }
-                list = getFoxTreeNodesByRootNode(popUtil, xsModel, selectedTreeNode, false, true, true);
-            }
-        } else if (XmlUtil.isXSDFile(filePath)) {
-            XSDSchema xsModel = getXSDSchema(filePath);
+            XSDSchema xsModel = getXSDSchema(popUtil, filePath, targetNamespace);
             List<ATreeNode> allTreeNodes = popUtil.getAllRootNodes(xsModel);
             ATreeNode selectedTreeNode = null;
             if (allTreeNodes != null && !allTreeNodes.isEmpty()) {
@@ -629,6 +539,11 @@ public class TreeUtil {
 
     }
 
+    public static List<FOXTreeNode> getFoxTreeNodesForXmlMap(String filePath, String absoluteXPathQuery, boolean includeAbsSubs)
+            throws Exception {
+        return getFoxTreeNodesForXmlMap(filePath, absoluteXPathQuery, filePath, includeAbsSubs);
+    }
+
     public static List<FOXTreeNode> getFoxTreeNodesForXmlMap(String filePath, String absoluteXPathQuery) throws Exception {
         return getFoxTreeNodesForXmlMap(filePath, absoluteXPathQuery, false);
     }
@@ -636,11 +551,7 @@ public class TreeUtil {
     private static void getFoxTreeNodesForXmlMap(String filePath, List<FOXTreeNode> list) throws OdaException,
             URISyntaxException, IOException {
         ATreeNode treeNode = SchemaPopulationUtil.getSchemaTree(filePath, true, 0);
-        String rootName = "";
-        if (treeNode.getValue() instanceof String) {
-            rootName += "/" + treeNode.getValue();
-        }
-        FOXTreeNode root = cloneATreeNode(treeNode, rootName, XmlUtil.isXSDFile(filePath));
+        FOXTreeNode root = cloneATreeNode(treeNode, XmlUtil.isXSDFile(filePath));
         if (root instanceof Element) {
             if (root instanceof Element) {
                 root = ((Element) root).getElementChildren().get(0);
@@ -737,11 +648,7 @@ public class TreeUtil {
                     }
 
                     if (selectedNode != null) {
-                        String rootName = "";
-                        if (treeNode.getValue() instanceof String) {
-                            rootName += "/" + treeNode.getValue();
-                        }
-                        FOXTreeNode root = cloneATreeNode(treeNode, rootName, XmlUtil.isXSDFile(filePath));
+                        FOXTreeNode root = cloneATreeNode(treeNode, XmlUtil.isXSDFile(filePath));
                         if (root instanceof Element) {
                             root.setParent(null);
                             list.add(root);
@@ -776,11 +683,7 @@ public class TreeUtil {
                 return list;
             }
 
-            String rootName = "";
-            if (treeNode.getValue() instanceof String) {
-                rootName += "/" + treeNode.getValue();
-            }
-            FOXTreeNode root = cloneATreeNode(treeNode, rootName, true);
+            FOXTreeNode root = cloneATreeNode(treeNode, true);
             if (root instanceof Element) {
                 root.setParent(null);
                 list.add(root);
@@ -818,11 +721,7 @@ public class TreeUtil {
                 return list;
             }
 
-            String rootName = "";
-            if (treeNode.getValue() instanceof String) {
-                rootName += "/" + treeNode.getValue();
-            }
-            FOXTreeNode root = cloneATreeNode(treeNode, rootName, true);
+            FOXTreeNode root = cloneATreeNode(treeNode, true);
             if (root instanceof Element) {
                 root.setParent(null);
                 list.add(root);
@@ -862,11 +761,7 @@ public class TreeUtil {
                 return list;
             }
 
-            String rootName = "";
-            if (treeNode.getValue() instanceof String) {
-                rootName += "/" + treeNode.getValue() + "[" + treeNode.getDataType() + "]";
-            }
-            FOXTreeNode root = cloneATreeNode(treeNode, rootName, true);
+            FOXTreeNode root = cloneATreeNode(treeNode, true);
             if (root instanceof Element) {
                 root.setParent(null);
                 list.add(root);
@@ -905,47 +800,17 @@ public class TreeUtil {
     }
 
     public static XSDSchema getXSDSchema(XSDPopulationUtil2 popUtil, String fileName) {
+        return getXSDSchema(popUtil, fileName, fileName);
+    }
+
+    public static XSDSchema getXSDSchema(XSDPopulationUtil2 popUtil, String fileName, String targetNamespace) {
         XSDSchema schema = null;
         if (popUtil == null) {
             popUtil = new XSDPopulationUtil2();
         }
         try {
             if (fileName.endsWith(".zip")) {
-                Project project = ProjectManager.getInstance().getCurrentProject();
-                IProject fsProject = null;
-                try {
-                    fsProject = ResourceModelUtils.getProject(project);
-                } catch (PersistenceException e2) {
-                    ExceptionHandler.process(e2);
-                }
-                IPath path = new Path(fsProject.getLocationURI().getPath());
-                path = path.append("temp").append("unzip_" + new Path(fileName).lastSegment());
-                String unzipPath = path.toPortableString();
-                File zip = new File(fileName);
-                if (zip.exists()) {
-                    try {
-                        FilesUtils.unzip(zip.getAbsolutePath(), unzipPath);
-                    } catch (Exception e) {
-                        ExceptionHandler.process(e);
-                    }
-                }
-                File unzipFile = new File(unzipPath);
-                if (unzipFile.exists() && unzipFile.isDirectory()) {
-                    File[] tempXSDFiles = unzipFile.listFiles();
-                    File schemaFile = tempXSDFiles[0];
-                    String schemaFileNameHint = null;
-                    String[] zipNameArray = zip.getName().split("_"); //$NON-NLS-1$
-                    if (zipNameArray.length >= 2) {
-                        schemaFileNameHint = zipNameArray[0];
-                    }
-                    for (File tempXSDFile : tempXSDFiles) {
-                        popUtil.addSchema(tempXSDFile.getAbsolutePath());
-                        if (schemaFileNameHint != null && tempXSDFile.getName().startsWith(schemaFileNameHint)) {
-                            schemaFile = tempXSDFile;
-                        }
-                    }
-                    schema = popUtil.getXSDSchema(schemaFile.getAbsolutePath());
-                }
+                schema = getSchemaFromZip(popUtil, fileName);
             } else {
                 String newFilePath;
                 try {
@@ -961,62 +826,111 @@ public class TreeUtil {
         return schema;
     }
 
-    public static FOXTreeNode cloneATreeNode(ATreeNode treeNode, String currentPath, boolean isXsd) {
-        FOXTreeNode node = null;
-        if (treeNode.getType() == ATreeNode.ATTRIBUTE_TYPE) {
-            node = new Attribute();
-        } else {
-            node = new Element();
+    private static IPath getTempPath() {
+        Project project = ProjectManager.getInstance().getCurrentProject();
+        IProject fsProject = null;
+        try {
+            fsProject = ResourceUtils.getProject(project.getTechnicalLabel());
+        } catch (PersistenceException e2) {
+            ExceptionHandler.process(e2);
         }
-        if (treeNode.getType() == ATreeNode.NAMESPACE_TYPE) {
-            node = new NameSpaceNode();
-            node.setLabel(treeNode.getDataType());
-            node.setDefaultValue((String) treeNode.getValue());
-        } else {
-            node.setLabel(treeNode.getValue().toString());
-            node.setChoice(treeNode.isChoice());
-            node.setSubstitution(treeNode.isSubstitution());
-            node.setOptional(treeNode.isOptional());
-            // init the unique to guess first loop element when create mdmoutput wizard
-            node.getUniqueNames().clear();
-            node.getUniqueNames().addAll(treeNode.getUniqueNames());
-        }
-        if (isXsd) {
-            MappingTypeRetriever retriever = MetadataTalendType.getMappingTypeRetriever("xsd_id"); //$NON-NLS-1$
-            String originalDataType = treeNode.getOriginalDataType();
-            if (originalDataType != null && !originalDataType.startsWith("xs:")) { //$NON-NLS-1$
-                originalDataType = "xs:" + originalDataType; //$NON-NLS-1$
+        IPath path = new Path(fsProject.getLocationURI().getPath());
+        path = path.append("temp");
+        return path;
+    }
+
+    private static XSDSchema getSchemaFromZip(XSDPopulationUtil2 popUtil, String fileName) throws IOException, URISyntaxException {
+        IPath path = getTempPath();
+        path = path.append("unzip_" + new Path(fileName).lastSegment());
+        String unzipPath = path.toPortableString();
+        File zip = new File(fileName);
+        if (zip.exists()) {
+            try {
+                FilesUtils.unzip(zip.getAbsolutePath(), unzipPath);
+            } catch (Exception e) {
+                ExceptionHandler.process(e);
             }
-            node.setDataType(retriever.getDefaultSelectedTalendType(originalDataType));
-        } else {
-            node.setDataType(treeNode.getDataType());
         }
-        node.setDataMaxLength(treeNode.getDataMaxLength());
-        node.setPrecisionValue(treeNode.getPrecisionValue());
-        Object[] children = treeNode.getChildren();
-        if (children != null) {
-            for (Object element : children) {
-                if (element instanceof ATreeNode) {
-                    ATreeNode child = (ATreeNode) element;
-                    String newPath = currentPath + "/";
-                    if (child.getValue() instanceof String) {
-                        String elementName = (String) child.getValue() + "[" + child.getDataType() + "]";
-                        if (currentPath.contains("/" + elementName + "/") && isXsd) {
-                            // ExceptionHandler.process(new Exception("XSD ERROR: loop found. Item: " + elementName
-                            // + " is already in the currentPath (" + currentPath + ")."));
-                            continue;
-                        }
-                        newPath += elementName;
-                    } else {
-                        newPath += "unknownElement";
-                    }
-                    FOXTreeNode foxChild = cloneATreeNode(child, newPath, isXsd);
-                    // foxChild.setRow(schemaName);
-                    node.addChild(foxChild);
+        File unzipFile = new File(unzipPath);
+        if (unzipFile.exists() && unzipFile.isDirectory()) {
+            File[] tempXSDFiles = unzipFile.listFiles();
+            File schemaFile = tempXSDFiles[0];
+            String schemaFileNameHint = null;
+            String[] zipNameArray = zip.getName().split("_"); //$NON-NLS-1$
+            if (zipNameArray.length >= 2) {
+                schemaFileNameHint = zipNameArray[0];
+            }
+            for (File tempXSDFile : tempXSDFiles) {
+                popUtil.addSchema(tempXSDFile.getAbsolutePath());
+                if (schemaFileNameHint != null && tempXSDFile.getName().startsWith(schemaFileNameHint)) {
+                    schemaFile = tempXSDFile;
                 }
             }
+            return popUtil.getXSDSchema(schemaFile.getAbsolutePath());
         }
-        return node;
+        return null;
+    }
+
+    public static FOXTreeNode cloneATreeNode(ATreeNode aNode, boolean isXsd) {
+        List<ATreeNode> aNodes = NodeCreationObserver.getList();
+        FOXTreeNode rootFNode = null;
+        for (int i = 0; i < aNodes.size(); i++) {
+            ATreeNode treeNode = aNodes.get(i);
+            if (isXsd && treeNode.getValue() instanceof String) {
+                String currentPath = treeNode.getValue() + "[" + treeNode.getDataType() + "]";
+                if (treeNode.getParent() != null) {
+                    String parentPath = "/" + treeNode.getParent().getValue() + "[" + treeNode.getParent().getDataType() + "]";
+                    if (parentPath.contains("/" + currentPath + "/")) {
+                        continue;
+                    }
+                }
+            }
+            FOXTreeNode node = null;
+            if (treeNode.getType() == ATreeNode.ATTRIBUTE_TYPE) {
+                node = new Attribute();
+            } else {
+                node = new Element();
+            }
+            if (treeNode.getType() == ATreeNode.NAMESPACE_TYPE) {
+                node = new NameSpaceNode();
+                node.setLabel(treeNode.getDataType());
+                node.setDefaultValue((String) treeNode.getValue());
+            } else {
+                node.setLabel(treeNode.getValue() == null ? null : treeNode.getValue().toString());
+                node.setChoice(treeNode.isChoice());
+                node.setSubstitution(treeNode.isSubstitution());
+                node.setOptional(treeNode.isOptional());
+                // init the unique to guess first loop element when create mdmoutput wizard
+                node.getUniqueNames().clear();
+                node.getUniqueNames().addAll(treeNode.getUniqueNames());
+            }
+            if (isXsd) {
+                MappingTypeRetriever retriever = MetadataTalendType.getMappingTypeRetriever("xsd_id"); //$NON-NLS-1$
+                String originalDataType = treeNode.getOriginalDataType();
+                if (originalDataType != null && !originalDataType.startsWith("xs:")) { //$NON-NLS-1$
+                    originalDataType = "xs:" + originalDataType; //$NON-NLS-1$
+                }
+                node.setDataType(retriever.getDefaultSelectedTalendType(originalDataType));
+            } else {
+                node.setDataType(treeNode.getDataType());
+            }
+            node.setDataMaxLength(treeNode.getDataMaxLength());
+            node.setPrecisionValue(treeNode.getPrecisionValue());
+            if (treeNode.getFoxTreeNode() == null) {
+                treeNode.setFoxTreeNode(node);
+            }
+            if (treeNode.getParent() != null && treeNode.getParent().getFoxTreeNode() != null) {
+                ((FOXTreeNode) treeNode.getParent().getFoxTreeNode()).addChild(node);
+            }
+        }
+        for (ATreeNode treeNode : aNodes) {
+            FOXTreeNode fNode = (FOXTreeNode) treeNode.getFoxTreeNode();
+            if (treeNode.getParent() != null && fNode.getParent() == null) {
+                ((FOXTreeNode) treeNode.getParent().getFoxTreeNode()).addChild(fNode);
+            }
+        }
+        rootFNode = (FOXTreeNode) aNode.getFoxTreeNode();
+        return rootFNode;
     }
 
     public static FOXTreeNode getRootFOXTreeNode(FOXTreeNode node) {
