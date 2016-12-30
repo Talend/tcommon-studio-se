@@ -160,7 +160,9 @@ public class XSDUtils {
     private static File initFileContent(File tempFolder, final XmlSchema schema) throws IOException {
         FileOutputStream outStream = null;
         try {
-            File temfile = new File(tempFolder, File.createTempFile("tempXSDFile", ".xsd").getName()); //$NON-NLS-1$ //$NON-NLS-2$
+            File createTempFile = File.createTempFile("tempXSDFile", ".xsd");
+            createTempFile.delete();
+            File temfile = new File(tempFolder, createTempFile.getName());
             outStream = new FileOutputStream(temfile);
             schema.write(outStream); // this method hangs when using invalid wsdl.
             return temfile;

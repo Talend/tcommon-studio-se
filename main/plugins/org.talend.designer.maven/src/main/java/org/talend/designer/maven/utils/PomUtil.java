@@ -415,7 +415,9 @@ public class PomUtil {
             if (!tmpFolder.exists()) {
                 tmpFolder.create(true, true, null);
             }
-            String tmpFolderName = File.createTempFile(TalendMavenConstants.PACKAGING_POM, "").getName();
+            File createTempFile = File.createTempFile(TalendMavenConstants.PACKAGING_POM, "");
+            createTempFile.delete();
+            String tmpFolderName = createTempFile.getName();
             IFolder folder = tmpFolder.getFolder(tmpFolderName);
             folder.create(true, true, null);
             IFile pomFile = folder.getFile(TalendMavenConstants.POM_FILE_NAME);

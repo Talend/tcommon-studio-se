@@ -154,6 +154,7 @@ public class LocalRepositoryAetherManager extends LocalRepositoryManager {
         return session;
     }
 
+    @Override
     public void install(File file, MavenArtifact artifact) throws Exception {
         Artifact jarArtifact = createArtifact(file, artifact);
         Artifact pomArtifact = createPomArtifact(jarArtifact);
@@ -198,7 +199,9 @@ public class LocalRepositoryAetherManager extends LocalRepositoryManager {
     }
 
     protected Artifact createPomArtifact(Artifact jarArtifact) throws IOException, CoreException {
-        String tmpFolderName = File.createTempFile(TalendMavenConstants.PACKAGING_POM, "").getName();
+        File createTempFile = File.createTempFile(TalendMavenConstants.PACKAGING_POM, "");
+        createTempFile.delete();
+        String tmpFolderName = createTempFile.getName();
         IFolder folder = getTempFolder().getFolder(tmpFolderName);
         folder.create(true, true, null);
         IFile pomFile = folder.getFile(TalendMavenConstants.POM_FILE_NAME);
@@ -217,6 +220,7 @@ public class LocalRepositoryAetherManager extends LocalRepositoryManager {
         return pomArtifact;
     }
 
+    @Override
     public void cleanup(IProgressMonitor monitor) {
         if (monitor == null) {
             monitor = new NullProgressMonitor();

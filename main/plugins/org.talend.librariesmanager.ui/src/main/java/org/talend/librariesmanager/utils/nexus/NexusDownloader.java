@@ -79,7 +79,9 @@ public class NexusDownloader implements IDownloadHelper {
             if (parseMvnUrl != null) {
                 String reletivePath = PomUtil.getArtifactPath(parseMvnUrl);
                 String tempPath = getTmpFolderPath();
-                tempFolder = new File(tempPath + File.separator + File.createTempFile("talend_official", "").getName()); //$NON-NLS-1$ //$NON-NLS-2$
+                File createTempFile = File.createTempFile("talend_official", "");
+                createTempFile.delete();
+                tempFolder = new File(tempPath + File.separator + createTempFile.getName());
                 if (tempFolder.exists()) {
                     tempFolder.delete();
                 }
