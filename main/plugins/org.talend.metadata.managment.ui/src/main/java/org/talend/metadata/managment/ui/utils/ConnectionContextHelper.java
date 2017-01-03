@@ -349,7 +349,7 @@ public final class ConnectionContextHelper {
         Connection currentConnection = connectionItem.getConnection();
         // TODO:Maybe later has other type support context for the additional table.Now only sap
         INOSQLService service = null;
-        if(GlobalServiceRegister.getDefault().isServiceRegistered(INOSQLService.class)) {
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(INOSQLService.class)) {
             service = (INOSQLService) GlobalServiceRegister.getDefault().getService(INOSQLService.class);
         }
         if (service != null && service.isUseReplicaSet(currentConnection)) {
@@ -880,33 +880,39 @@ public final class ConnectionContextHelper {
                     ConnectionContextHelper.addContextVarForJob(process, contextItem, addedVars);
                 }
             } else {
-                // construct selectedContextItems
-                List<ContextItem> selectedContextItems = new ArrayList<ContextItem>();
-                selectedContextItems.add(contextItem);
-                // check Show ContextGroup
-                Set<String> groupSet = new HashSet<String>();
-                for (ContextType type : (List<ContextType>) contextItem.getContext()) {
-                    groupSet.add(type.getName());
-                }
-                Set<String> curGroupSet = new HashSet<String>();
-                for (IContext context : contextManager.getListContext()) {
-                    curGroupSet.add(context.getName());
-                }
-                Set<String> contextGoupNameSet = new HashSet<String>();
-                if (!curGroupSet.containsAll(groupSet)) {
-                    // ask to copy all context group
-                    SelectRepositoryContextGroupDialog groupDialog = new SelectRepositoryContextGroupDialog(PlatformUI
-                            .getWorkbench().getDisplay().getActiveShell(), contextManager, new ContextManagerHelper(
-                            contextManager), selectedContextItems);
-                    if (Dialog.OK == groupDialog.open()) {
-                        contextGoupNameSet = groupDialog.getSelectedContextGroupName();
-                    }
-                }
-                addContextVarForJob(process, contextItem, contextManager, addedVars, contextGoupNameSet);
+                showContextGroupDialog(process, contextItem, contextManager, addedVars);
+                isAddContext = true;
             }
-            isAddContext = true;
         }
         return isAddContext;
+    }
+
+    public static void showContextGroupDialog(IProcess2 process, ContextItem contextItem, IContextManager contextManager,
+            Set<String> addedVars) {
+        // construct selectedContextItems
+        List<ContextItem> selectedContextItems = new ArrayList<ContextItem>();
+        selectedContextItems.add(contextItem);
+        // check Show ContextGroup
+        Set<String> groupSet = new HashSet<String>();
+        for (ContextType type : (List<ContextType>) contextItem.getContext()) {
+            groupSet.add(type.getName());
+        }
+        Set<String> curGroupSet = new HashSet<String>();
+        for (IContext context : contextManager.getListContext()) {
+            curGroupSet.add(context.getName());
+        }
+        Set<String> contextGoupNameSet = new HashSet<String>();
+        if (!curGroupSet.containsAll(groupSet)) {
+            // ask to copy all context group
+            SelectRepositoryContextGroupDialog groupDialog = new SelectRepositoryContextGroupDialog(PlatformUI.getWorkbench()
+                    .getDisplay().getActiveShell(), contextManager, new ContextManagerHelper(contextManager),
+                    selectedContextItems);
+            if (Dialog.OK == groupDialog.open()) {
+                contextGoupNameSet = groupDialog.getSelectedContextGroupName();
+            }
+        }
+        addContextVarForJob(process, contextItem, contextManager, addedVars, contextGoupNameSet);
+
     }
 
     /**
@@ -2019,8 +2025,8 @@ public final class ConnectionContextHelper {
     private static IHadoopClusterService getHadoopClusterService(Connection connection) {
         IHadoopClusterService hadoopClusterService = null;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IHadoopClusterService.class)) {
-            hadoopClusterService = (IHadoopClusterService) GlobalServiceRegister.getDefault()
-                    .getService(IHadoopClusterService.class);
+            hadoopClusterService = (IHadoopClusterService) GlobalServiceRegister.getDefault().getService(
+                    IHadoopClusterService.class);
         }
         if (hadoopClusterService != null) {
             return hadoopClusterService;

@@ -70,6 +70,7 @@ public class MergeContextVariablesCommand extends Command {
         this.helper = new ContextManagerHelper(ctxManager);
     }
 
+    @Override
     public void execute() {
 
         Map<String, List<ContextParameterType>> map = getContextNameParamsMap(contexts);
@@ -227,7 +228,7 @@ public class MergeContextVariablesCommand extends Command {
             JobContext jobContext) {
         for (ContextParameterType contextImpl : ctxParams) {
             for (String var : addedVars) {
-                if (var.equals(contextImpl.getName())) {
+                if (var.equals(contextImpl.getName()) && jobContext.getContextParameter(var) == null) {
                     JobContextParameter contextParam = new JobContextParameter();
                     ContextUtils.updateParameter(contextImpl, contextParam);
                     if (contextItemId != null) {
@@ -240,11 +241,13 @@ public class MergeContextVariablesCommand extends Command {
         }
     }
 
+    @Override
     public void redo() {
         execute();
         this.helper.refreshContextView();
     }
 
+    @Override
     public void undo() {
 
         List<IContext> removeList = new ArrayList<IContext>();
