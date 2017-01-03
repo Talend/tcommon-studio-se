@@ -16,6 +16,8 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.httpclient.protocol.Protocol;
+import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
 import org.talend.core.model.metadata.IMetadataColumn;
 import org.talend.repository.metadata.i18n.Messages;
 import org.talend.salesforce.SforceBasicConnection;
@@ -68,6 +70,8 @@ public class SalesforceModuleParserPartner implements ISalesforceModuleParser {
 
     private List list = null;
 
+    private static final String BASE_HTTPS = "https"; //$NON-NLS-1$
+
     /**
      * DOC YeXiaowei Comment method "login".
      */
@@ -93,8 +97,9 @@ public class SalesforceModuleParserPartner implements ISalesforceModuleParser {
                 // null) || (proxy == null && theProxy != null))) {
 
                 // doLoginList = doLogin(endPoint, username, password);
+                registerProtocol();
                 SforceConnection sforceConn = new SforceBasicConnection.Builder(endPoint, username, password).setTimeout(10000)
-                        .needCompression(false).build();
+                        .needCompression(false).useHttpChunked(false).build();
                 login = true;
                 sforceManagement = new SforceManagementImpl(sforceConn);
 
@@ -105,8 +110,9 @@ public class SalesforceModuleParserPartner implements ISalesforceModuleParser {
             }
         } else {
             // doLoginList = doLogin(endPoint, username, password);
+            registerProtocol();
             SforceConnection sforceConn = new SforceBasicConnection.Builder(endPoint, username, password).setTimeout(10000)
-                    .needCompression(false).build();
+                    .needCompression(false).useHttpChunked(false).build();
             login = true;
             sforceManagement = new SforceManagementImpl(sforceConn);
             doLoginList = new ArrayList();
@@ -137,8 +143,9 @@ public class SalesforceModuleParserPartner implements ISalesforceModuleParser {
             if (!url.equals(endPoint) || !name.equals(username) || !pwd.equals(password)) {
 
                 // doLoginList = doLogin(endPoint, username, password);
+                registerProtocol();
                 SforceConnection sforceConn = new SforceBasicConnection.Builder(endPoint, username, password).setTimeout(time)
-                        .needCompression(false).build();
+                        .needCompression(false).useHttpChunked(false).build();
                 login = true;
                 sforceManagement = new SforceManagementImpl(sforceConn);
 
@@ -149,8 +156,9 @@ public class SalesforceModuleParserPartner implements ISalesforceModuleParser {
             }
         } else {
             // doLoginList = doLogin(endPoint, username, password);
+            registerProtocol();
             SforceConnection sforceConn = new SforceBasicConnection.Builder(endPoint, username, password).setTimeout(time)
-                    .needCompression(false).build();
+                    .needCompression(false).useHttpChunked(false).build();
             login = true;
             sforceManagement = new SforceManagementImpl(sforceConn);
             doLoginList = new ArrayList();
@@ -162,6 +170,58 @@ public class SalesforceModuleParserPartner implements ISalesforceModuleParser {
         this.pwd = password;
         this.url = endPoint;
         return doLoginList;
+    }
+
+    private void registerProtocol() {
+        Protocol baseHttps = Protocol.getProtocol(BASE_HTTPS);
+        int defaultPort = baseHttps.getDefaultPort();
+        final ProtocolSocketFactory baseFactory = baseHttps.getSocketFactory();
+        Protocol protocol = new Protocol(BASE_HTTPS, new ProtocolSocketFactory() {
+
+            private java.util.List<String> protocols = null;
+
+            private java.net.Socket accept(java.net.Socket socket) {
+                if (!(socket instanceof javax.net.ssl.SSLSocket)) {
+                    return socket;
+                }
+                javax.net.ssl.SSLSocket sslSocket = (javax.net.ssl.SSLSocket) socket;
+                if (protocols == null) {
+                    protocols = new java.util.ArrayList<String>(8);
+                    for (String enabledProtocol : sslSocket.getEnabledProtocols()) {
+                        protocols.add(enabledProtocol);
+                    }
+                    for (String supportedProtocol : sslSocket.getSupportedProtocols()) {
+                        if (("TLSv1.1".equalsIgnoreCase(supportedProtocol) || "TLSv1.2"//$NON-NLS-1$//$NON-NLS-2$
+                                .equalsIgnoreCase(supportedProtocol))
+                                && !protocols.contains(supportedProtocol)) {
+                            protocols.add(supportedProtocol);
+                        }
+                    }
+                }
+                sslSocket.setEnabledProtocols(protocols.toArray(new String[0]));
+                return sslSocket;
+            }
+
+            @Override
+            public java.net.Socket createSocket(String arg0, int arg1) throws java.io.IOException, java.net.UnknownHostException {
+                return accept(baseFactory.createSocket(arg0, arg1));
+            }
+
+            @Override
+            public java.net.Socket createSocket(String arg0, int arg1, java.net.InetAddress arg2, int arg3)
+                    throws java.io.IOException, java.net.UnknownHostException {
+                return accept(baseFactory.createSocket(arg0, arg1, arg2, arg3));
+            }
+
+            @Override
+            public java.net.Socket createSocket(String arg0, int arg1, java.net.InetAddress arg2, int arg3,
+                    org.apache.commons.httpclient.params.HttpConnectionParams arg4) throws java.io.IOException,
+                    java.net.UnknownHostException, org.apache.commons.httpclient.ConnectTimeoutException {
+                return accept(baseFactory.createSocket(arg0, arg1, arg2, arg3, arg4));
+            }
+
+        }, defaultPort);
+        Protocol.registerProtocol(BASE_HTTPS, protocol);
     }
 
     private boolean checkString(String str1, String str2) {
