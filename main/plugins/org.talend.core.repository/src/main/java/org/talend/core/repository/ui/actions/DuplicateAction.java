@@ -264,8 +264,10 @@ public class DuplicateAction extends AContextualAction {
                 isAllowDuplicateTest = false;
             }
             newCreatedItem = null;
-            createOperation(jobNewName, sourceNode, copyObjectAction, selectionInClipboard);
+            createOperation(jobNewName, sourceNode, copyObjectAction, selectionInClipboard, frameworkNewValue);
             if (newCreatedItem != null) {
+                // Set old framework in order to use ConvertJobsUtil
+                ConvertJobsUtil.updateFramework(newCreatedItem, sourceFramework);
                 // normally only for jobs, means will ignore hadoop cluster items
                 boolean isNeedConvert = ConvertJobsUtil.isNeedConvert(newCreatedItem, jobTypeValue, frameworkNewValue, true);
                 boolean isNewItemCreated = false;
@@ -282,9 +284,9 @@ public class DuplicateAction extends AContextualAction {
                     } catch (Exception e) {
                         CommonExceptionHandler.process(e);
                     }
-                } else {
-                    ConvertJobsUtil.updateFramework(newCreatedItem, frameworkNewValue);
-                }
+                } 
+                ConvertJobsUtil.updateFramework(newCreatedItem, frameworkNewValue);
+                
                 if (!isNewItemCreated) {
                     // save the modifications
                     IWorkspaceRunnable runnable = new IWorkspaceRunnable() {
@@ -330,7 +332,7 @@ public class DuplicateAction extends AContextualAction {
                 return;
             }
             String jobNewName = jobNewNameDialog.getValue();
-            createOperation(jobNewName, sourceNode, copyObjectAction, selectionInClipboard);
+            createOperation(jobNewName, sourceNode, copyObjectAction, selectionInClipboard, null);
         }
     }
 
@@ -634,7 +636,7 @@ public class DuplicateAction extends AContextualAction {
     }
 
     private void createOperation(final String newJobName, final RepositoryNode target, final CopyObjectAction copyObjectAction,
-            final TreeSelection selectionInClipboard) {
+            final TreeSelection selectionInClipboard, String frameworkNewValue) {
 
         Object currentSource = selectionInClipboard.toArray()[0];
         newCreatedItem = null;
@@ -652,7 +654,7 @@ public class DuplicateAction extends AContextualAction {
                 }
 
                 if (allVersion.size() == 1) {
-                    duplicateSingleVersionItem(originalItem, path, newJobName, copyObjectAction);
+                    duplicateSingleVersionItem(originalItem, path, newJobName, copyObjectAction, frameworkNewValue);
                 } else if (allVersion.size() > 1) {
                     final PastSelectorDialog dialog = new PastSelectorDialog(Display.getCurrent().getActiveShell(), allVersion,
                             sourceNode);
@@ -682,7 +684,9 @@ public class DuplicateAction extends AContextualAction {
                                         Item copy;
                                         copy = factory.copy(selectedItem, path, newJobName);
                                         // update framework if change it when duplicating
-                                        // ConvertJobsUtil.updateFramework(copy, frameworkNewValue);
+                                        if (frameworkNewValue != null) {
+                                            ConvertJobsUtil.updateFramework(copy, frameworkNewValue);
+                                        }
 
                                         newItems.add(copy);
                                         if (isfirst) {
@@ -772,7 +776,7 @@ public class DuplicateAction extends AContextualAction {
     }
 
     private void duplicateSingleVersionItem(final Item item, final IPath path, final String newName,
-            final CopyObjectAction copyObjectAction) {
+            final CopyObjectAction copyObjectAction, String frameworkNewValue) {
         final IWorkspaceRunnable op = new IWorkspaceRunnable() {
 
             @Override
@@ -786,7 +790,9 @@ public class DuplicateAction extends AContextualAction {
                     final Item newItem = factory.copy(item, path, newName);
                     newCreatedItem = newItem;
                     // update framework if change it when duplicating
-                    // ConvertJobsUtil.updateFramework(newItem, frameworkNewValue);
+                    if (frameworkNewValue != null) {
+                        ConvertJobsUtil.updateFramework(newItem, frameworkNewValue);
+                    }
 
                     // qli modified to fix the bug 5400 and 6185.
                     if (newItem instanceof RoutineItem) {
