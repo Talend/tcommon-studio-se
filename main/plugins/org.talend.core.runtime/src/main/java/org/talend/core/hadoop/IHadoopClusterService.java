@@ -31,15 +31,15 @@ import org.talend.repository.model.IRepositoryNode;
 
 /**
  * created by ycbai on 2013-1-28 Detailled comment
- * 
+ *
  */
 public interface IHadoopClusterService extends IService {
 
     /**
      * DOC ycbai Comment method "containedByCluster".
-     * 
+     *
      * Estimate whether or not the hadoopConnection belongs to the hadoopClusterConnection.
-     * 
+     *
      * @param hadoopClusterConnection
      * @param hadoopConnection
      * @return
@@ -48,18 +48,18 @@ public interface IHadoopClusterService extends IService {
 
     /**
      * DOC ycbai Comment method "getHadoopClusterType".
-     * 
+     *
      * Get the hadoop cluster repository type.
-     * 
+     *
      * @return
      */
     public ERepositoryObjectType getHadoopClusterType();
 
     /**
      * DOC ycbai Comment method "isHadoopClusterNode".
-     * 
+     *
      * Estimate whether or not the node is a hadoop cluster node.
-     * 
+     *
      * @param node
      * @return
      */
@@ -67,20 +67,20 @@ public interface IHadoopClusterService extends IService {
 
     /**
      * DOC ycbai Comment method "isHadoopSubnode".
-     * 
+     *
      * Estimate whether or not the node is a subnode of a hadoop cluster.
-     * 
+     *
      * @param node
      * @return
      */
     public boolean isHadoopSubnode(IRepositoryNode node);
 
     /**
-     * 
+     *
      * DOC ycbai Comment method "isHadoopFolderNode".
-     * 
+     *
      * Estimate whether or not the node is a folder node of a hadoop cluster.
-     * 
+     *
      * @param node
      * @return
      */
@@ -88,9 +88,9 @@ public interface IHadoopClusterService extends IService {
 
     /**
      * DOC ycbai Comment method "isHadoopClusterItem".
-     * 
+     *
      * Estimate whether or not the item is a hadoop cluster item.
-     * 
+     *
      * @param item
      * @return
      */
@@ -98,9 +98,9 @@ public interface IHadoopClusterService extends IService {
 
     /**
      * DOC ycbai Comment method "isHadoopSubItem".
-     * 
+     *
      * Estimate whether or not the item is a subitem of a hadoop cluster item.
-     * 
+     *
      * @param item
      * @return
      */
@@ -108,9 +108,9 @@ public interface IHadoopClusterService extends IService {
 
     /**
      * DOC ycbai Comment method "isValidHadoopSubItem".
-     * 
+     *
      * Estimate whether or not the item is a valid subitem of a hadoop cluster item.
-     * 
+     *
      * @param item
      * @return
      */
@@ -120,7 +120,7 @@ public interface IHadoopClusterService extends IService {
      * DOC ycbai Comment method "isHadoopSubItem".
      * <p>
      * Estimate whether or not the item is hadoop subconnection item.
-     * 
+     *
      * @param item
      * @return
      */
@@ -132,7 +132,7 @@ public interface IHadoopClusterService extends IService {
      * Estimate whether or not the connection is in context mode. <br>
      * Hadoop subconnections are in context mode even though it is not context mode itself if the hadoop cluster is in
      * context mode.
-     * 
+     *
      * @param connection
      * @return
      */
@@ -140,9 +140,9 @@ public interface IHadoopClusterService extends IService {
 
     /**
      * DOC ycbai Comment method "getSubitemIdsOfHadoopCluster".
-     * 
+     *
      * Get subitem ids of hadoop cluster.
-     * 
+     *
      * @param item hadoop cluster item
      * @return
      */
@@ -154,18 +154,18 @@ public interface IHadoopClusterService extends IService {
 
     /**
      * DOC ycbai Comment method "refreshCluster".
-     * 
+     *
      * Refresh this Hadoop Cluster.
-     * 
+     *
      * @param clusterId
      */
     public void refreshCluster(String clusterId);
 
     /**
      * DOC ycbai Comment method "getHadoopDbParameters".
-     * 
+     *
      * Get db connection(like hbase, hive) parameters by hadoop cluster.
-     * 
+     *
      * @param clusterId
      * @return
      */
@@ -173,14 +173,14 @@ public interface IHadoopClusterService extends IService {
 
     /**
      * DOC ycbai Comment method "removeHadoopDbParameters".
-     * 
+     *
      * @param connection
      */
     public void removeHadoopDbParameters(DatabaseConnection connection);
 
     /**
      * DOC ycbai Comment method "copyHadoopCluster".
-     * 
+     *
      * @param sourceItem
      * @param path
      * @throws PersistenceException
@@ -189,9 +189,9 @@ public interface IHadoopClusterService extends IService {
     public void copyHadoopCluster(final Item sourceItem, final IPath path) throws PersistenceException, BusinessException;
 
     /**
-     * 
+     *
      * DOC ycbai Comment method "copyHadoopCluster".
-     * 
+     *
      * @param sourceItem
      * @param path
      * @param newName
@@ -207,11 +207,11 @@ public interface IHadoopClusterService extends IService {
 
     /**
      * DOC ycbai Comment method "hasDiffsFromClusterToProcess".
-     * 
+     *
      * <p>
      * Check whether there is any change of hadoop related parameters from Process to Hadoop cluster.
      * </p>
-     * 
+     *
      * @param hcConnection
      * @param process
      * @return true if there are some changes from them, otherwise return false.
@@ -224,7 +224,7 @@ public interface IHadoopClusterService extends IService {
 
     /**
      * DOC ycbai Comment method "getHadoopClusterItemById".
-     * 
+     *
      * @param id is the id of hadoop cluster connection or its subconnection.
      * @return the hadoop cluster item.
      */
@@ -233,23 +233,25 @@ public interface IHadoopClusterService extends IService {
     public String getCustomConfsJarName(String clusterId);
 
     public void useCustomConfsJarIfNeeded(List<ModuleNeeded> modulesNeeded, String clusterId);
-    
+
     public boolean useClouderaNavi(Connection hadoopSubConnection);
-    
+
     public String getClouderaNaviUserName(Connection hadoopSubConnection);
-    
+
     public String getClouderaNaviPassword(Connection hadoopSubConnection);
-    
+
     public String getClouderaNaviUrl(Connection hadoopSubConnection);
-    
+
     public String getClouderaNaviMetadataUrl(Connection hadoopSubConnection);
-    
+
     public String getClouderaNaviClientUrl(Connection hadoopSubConnection);
-    
+
     public boolean clouderaNaviAutoCommit(Connection hadoopSubConnection);
-    
+
     public boolean clouderaNaviDisableSSL(Connection hadoopSubConnection);
-    
+
     public boolean clouderaNaviDieOnError(Connection hadoopSubConnection);
+
+    public String getRepositoryTypeOfHadoopSubItem(Item subItem);
 
 }
