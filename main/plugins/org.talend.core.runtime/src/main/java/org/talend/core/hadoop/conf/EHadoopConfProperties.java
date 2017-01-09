@@ -99,6 +99,8 @@ public enum EHadoopConfProperties {
 
     HBASE_ZOOKEEPER_PROPERTY_CLIENTPORT("hbase.zookeeper.property.clientPort", 2181), //$NON-NLS-1$
 
+    HBASE_ZNODE_PARENT("zookeeper.znode.parent", "/hbase"), //$NON-NLS-1$//$NON-NLS-2$
+
     HBASE_TABLE_NS_MAPPING("hbase.table.namespace.mappings", "*:/tables"), //$NON-NLS-1$//$NON-NLS-2$
 
     HBASE_MASTER_KERBEROS_PRINCIPAL("hbase.master.kerberos.principal", "hbase/_HOST@EXAMPLE.COM"), //$NON-NLS-1$//$NON-NLS-2$
