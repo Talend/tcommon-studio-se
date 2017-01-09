@@ -75,11 +75,14 @@ public abstract class AbstractNamedWizardPage extends WizardPage {
 
 
     protected void evaluateName(String name) {
+        //TUP-4619 check more about '\t' name issue here and avoid NPE error
         if (name == null || name.length() == 0 || StringUtils.trimToNull(name) == null) {
             nameStatus = createStatus(IStatus.ERROR, Messages.getString("PropertiesWizardPage.NameEmptyError")); //$NON-NLS-1$
         } else if (name.startsWith(" ") //$NON-NLS-1$
+                || name.startsWith("\t") //$NON-NLS-1$
                 || !Pattern.matches(RepositoryConstants.getPattern(getRepositoryObjectType()), name)
-                || name.trim().contains(" ")) { //$NON-NLS-1$
+                || name.trim().contains(" ") //$NON-NLS-1$
+                || name.trim().contains("\t")) { //$NON-NLS-1$
             nameStatus = createStatus(IStatus.ERROR, Messages.getString("PropertiesWizardPage.NameFormatError")); //$NON-NLS-1$
         } else if (isKeywords(name) || "java".equalsIgnoreCase(name)) {//$NON-NLS-1$
             nameStatus = createStatus(IStatus.ERROR, Messages.getString("PropertiesWizardPage.KeywordsError")); //$NON-NLS-1$
