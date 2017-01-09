@@ -72,7 +72,6 @@ import org.talend.core.model.repository.RepositoryManager;
 import org.talend.core.model.repository.job.JobResource;
 import org.talend.core.model.repository.job.JobResourceManager;
 import org.talend.core.model.utils.JavaResourcesHelper;
-import org.talend.core.model.utils.PerlResourcesHelper;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.core.runtime.process.LastGenerationInfo;
 import org.talend.core.runtime.process.TalendProcessArgumentConstant;
@@ -367,6 +366,7 @@ public class ProcessorUtilities {
         if (progressMonitor.isCanceled()) {
             return null;
         }
+
         boolean isMainJob = false;
         if (jobInfo.getFatherJobInfo() == null) {
 
@@ -450,7 +450,6 @@ public class ProcessorUtilities {
                 | TalendProcessOptionConstants.CLEAN_DATA_SETS);
 
         generateJobInfo(jobInfo, isMainJob, currentProcess, selectedProcessItem);
-
         // pigudf
         Set<String> neededpigudf = currentProcess.getNeededPigudf();
         if (neededpigudf != null) {
@@ -609,17 +608,20 @@ public class ProcessorUtilities {
         if (isMainJob) {
             progressMonitor.subTask(Messages.getString("ProcessorUtilities.finalizeBuild") + currentJobName); //$NON-NLS-1$
 
+            final String timeMeasureGenerateCodesId = "Generate job source codes for " //$NON-NLS-1$
+                    + (jobInfo.getJobName() != null ? jobInfo.getJobName() : jobInfo.getJobId());
+            TimeMeasure.step(timeMeasureGenerateCodesId, "Generated all source codes with children jobs (if have)");
             if (codeModified && !BitwiseOptionUtils.containOption(option, GENERATE_WITHOUT_COMPILING)) {
                 try {
                     processor.build(progressMonitor);
                 } catch (Exception e) {
                     throw new ProcessorException(e);
                 }
+                TimeMeasure.step(timeMeasureGenerateCodesId, "Compile all source codes");
                 processor.syntaxCheck();
 
                 // TDI-36930, just after compile, need check the compile errors first.
                 CorePlugin.getDefault().getRunProcessService().checkLastGenerationHasCompilationError(true);
-
             }
             needContextInCurrentGeneration = true;
             retrievedJarsForCurrentBuild.clear();
@@ -713,9 +715,11 @@ public class ProcessorUtilities {
             boolean needContext, boolean isNeedLoadmodules, int option, IProgressMonitor progressMonitor)
             throws ProcessorException {
         needContextInCurrentGeneration = needContext;
-        TimeMeasure.display = CommonsPlugin.isDebugMode();
-        TimeMeasure.displaySteps = CommonsPlugin.isDebugMode();
-        TimeMeasure.measureActive = CommonsPlugin.isDebugMode();
+
+        final boolean oldMeasureActived = TimeMeasure.measureActive;
+        if (!oldMeasureActived) { // not active before.
+            TimeMeasure.display = TimeMeasure.displaySteps = TimeMeasure.measureActive = CommonsPlugin.isDebugMode();
+        }
 
         boolean timerStarted = false;
         String idTimer = "generateCode for job: <job not loaded yet>";
@@ -724,6 +728,9 @@ public class ProcessorUtilities {
             timerStarted = true;
             TimeMeasure.begin(idTimer);
         }
+        final String timeMeasureGenerateCodesId = "Generate job source codes for " //$NON-NLS-1$
+                + (jobInfo.getJobName() != null ? jobInfo.getJobName() : jobInfo.getJobId());
+        TimeMeasure.begin(timeMeasureGenerateCodesId);
         try {
             if (progressMonitor == null) {
                 progressMonitor = new NullProgressMonitor();
@@ -887,11 +894,12 @@ public class ProcessorUtilities {
 
             return processor;
         } finally {
+            TimeMeasure.end(timeMeasureGenerateCodesId);
             TimeMeasure.end(idTimer);
-            // don't set the value false here ,there will be TimeMeasure outside need to display
-            // TimeMeasure.display = false;
-            // TimeMeasure.displaySteps = false;
-            // TimeMeasure.measureActive = false;
+            // if active before, not disable and active still.
+            if (!oldMeasureActived) {
+                TimeMeasure.display = TimeMeasure.displaySteps = TimeMeasure.measureActive = false;
+            }
         }
     }
 
@@ -911,11 +919,7 @@ public class ProcessorUtilities {
         // here we recreate a new JobInfo, to be sure to don't have link in memory to Emf or IProcess
         JobInfo generatedJobInfo = cloneJobInfo(jobInfo);
         String projectFolderName;
-        if (LanguageManager.getCurrentLanguage() == ECodeLanguage.JAVA) {
-            projectFolderName = JavaResourcesHelper.getProjectFolderName(selectedProcessItem);
-        } else {
-            projectFolderName = PerlResourcesHelper.getRootProjectName(selectedProcessItem);
-        }
+        projectFolderName = JavaResourcesHelper.getProjectFolderName(selectedProcessItem);
         generatedJobInfo.setProjectFolderName(projectFolderName);
         LastGenerationInfo.getInstance().getLastGeneratedjobs().add(generatedJobInfo);
         if (isMainJob) {
@@ -1385,10 +1389,25 @@ public class ProcessorUtilities {
         } else {
             jobInfo = new JobInfo(process, context);
         }
+        final boolean oldMeasureActived = TimeMeasure.measureActive;
+        if (!oldMeasureActived) { // not active before.
+            TimeMeasure.display = TimeMeasure.displaySteps = TimeMeasure.measureActive = CommonsPlugin.isDebugMode();
+        }
+        final String timeMeasureGenerateCodesId = "Generate job source codes for " //$NON-NLS-1$
+                + (jobInfo.getJobName() != null ? jobInfo.getJobName() : jobInfo.getJobId());
+        TimeMeasure.begin(timeMeasureGenerateCodesId);
+
         jobList.clear();
         IProcessor genCode = generateCode(processor, jobInfo, context.getName(), statistics, trace, properties,
                 GENERATE_ALL_CHILDS, progressMonitor);
         jobList.clear();
+
+        TimeMeasure.end(timeMeasureGenerateCodesId);
+        // if active before, not disable and active still.
+        if (!oldMeasureActived) {
+            TimeMeasure.display = TimeMeasure.displaySteps = TimeMeasure.measureActive = false;
+        }
+
         return genCode;
     }
 

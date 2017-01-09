@@ -104,6 +104,37 @@ public class TimeMeasureTest extends TestCase {
         assertTrue(endTime - startTime - TIME_C - TIME_D >= totalElapsedTime);
     }
 
+    private void caseMixSteps() throws InterruptedException {
+        long startTime = System.currentTimeMillis();
+
+        TimeMeasure.begin(TIMER_TEST_1);
+        Thread.sleep(TIME_A);
+        long elapsedTime1_step1 = TimeMeasure.step(TIMER_TEST_1, "Test1-Step1");
+        long endTime1 = System.currentTimeMillis();
+
+        assertTrue(endTime1 - startTime >= elapsedTime1_step1);
+        TimeMeasure.begin(TIMER_TEST_2);
+        Thread.sleep(TIME_B);
+        long elapsedTime2_step1 = TimeMeasure.step(TIMER_TEST_2, "Test2-Step1");
+        long endTime2 = System.currentTimeMillis();
+
+        assertTrue(endTime1 - startTime < elapsedTime2_step1);
+        assertTrue(endTime2 - startTime >= elapsedTime2_step1);
+        Thread.sleep(TIME_C);
+
+        long elapsedTime2_step2 = TimeMeasure.step(TIMER_TEST_2, "Test2-Step2");
+        long elapsedTime1_step2 = TimeMeasure.step(TIMER_TEST_1, "Test1-Step2");
+        long endTime_step2 = System.currentTimeMillis();
+        assertTrue(endTime_step2 - startTime >= elapsedTime1_step2);
+        assertTrue(endTime_step2 - startTime >= elapsedTime2_step2);
+
+        long totalElapsedTime2 = TimeMeasure.end(TIMER_TEST_2);
+        long totalElapsedTime1 = TimeMeasure.end(TIMER_TEST_1);
+        long endTime = System.currentTimeMillis();
+        assertTrue(endTime - startTime >= totalElapsedTime1);
+        assertTrue(endTime - startTime >= totalElapsedTime2);
+    }
+
     /**
      * Changed by Marvin Wang on Mar.22, 2012. Just test sevaral main flows, if need to verify others, add them as
      * required.
@@ -111,8 +142,17 @@ public class TimeMeasureTest extends TestCase {
      * @throws InterruptedException
      */
     public void test() throws InterruptedException {
+        TimeMeasure.displaySteps = TimeMeasure.display = TimeMeasure.measureActive = true;
+        assertTrue(TimeMeasure.displaySteps && TimeMeasure.display && TimeMeasure.measureActive);
+
         caseOneStep();
         caseStepPauseStep();
         caseStepPauseStepResumeStep();
+        caseMixSteps();
+
+        TimeMeasure.displaySteps = TimeMeasure.display = TimeMeasure.measureActive = false;
+        assertFalse(TimeMeasure.displaySteps );
+        assertFalse( TimeMeasure.display);
+        assertFalse( TimeMeasure.measureActive);
     }
 }
