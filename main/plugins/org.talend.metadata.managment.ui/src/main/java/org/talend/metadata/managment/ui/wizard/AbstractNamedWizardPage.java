@@ -75,7 +75,7 @@ public abstract class AbstractNamedWizardPage extends WizardPage {
 
 
     protected void evaluateName(String name) {
-        if (name == null || name.length() == 0) {
+        if (name == null || name.length() == 0 || StringUtils.trimToNull(name) == null) {
             nameStatus = createStatus(IStatus.ERROR, Messages.getString("PropertiesWizardPage.NameEmptyError")); //$NON-NLS-1$
         } else if (name.startsWith(" ") //$NON-NLS-1$
                 || !Pattern.matches(RepositoryConstants.getPattern(getRepositoryObjectType()), name)
