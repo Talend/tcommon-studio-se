@@ -636,7 +636,7 @@ public class DuplicateAction extends AContextualAction {
     }
 
     private void createOperation(final String newJobName, final RepositoryNode target, final CopyObjectAction copyObjectAction,
-            final TreeSelection selectionInClipboard, String frameworkNewValue) {
+            final TreeSelection selectionInClipboard, final String frameworkNewValue) {
 
         Object currentSource = selectionInClipboard.toArray()[0];
         newCreatedItem = null;
@@ -776,7 +776,7 @@ public class DuplicateAction extends AContextualAction {
     }
 
     private void duplicateSingleVersionItem(final Item item, final IPath path, final String newName,
-            final CopyObjectAction copyObjectAction, String frameworkNewValue) {
+            final CopyObjectAction copyObjectAction,final String frameworkNewValue) {
         final IWorkspaceRunnable op = new IWorkspaceRunnable() {
 
             @Override
