@@ -614,9 +614,9 @@ public class ExcelFileStep1Form extends AbstractExcelFileStepForm {
             filePath = PathUtils.getPortablePath(fileStr);
         }
 
-        if (filePath.endsWith(".xlsx")) {
+        if (filePath.toLowerCase().endsWith(".xlsx")) {
             isXlsx = true;
-        } else if (filePath.endsWith(".xls")) {
+        } else if (filePath.toLowerCase().endsWith(".xls")) {
             isXlsx = false;
         }
 
