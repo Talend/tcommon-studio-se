@@ -82,6 +82,7 @@ import org.talend.core.model.properties.SnippetItem;
 import org.talend.core.model.properties.User;
 import org.talend.core.model.relationship.RelationshipItemBuilder;
 import org.talend.core.model.repository.ERepositoryObjectType;
+import org.talend.core.model.repository.FakePropertyImpl;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.repository.RepositoryViewObject;
 import org.talend.core.model.utils.MigrationUtil;
@@ -442,8 +443,9 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
                 }
             }
 
-            if (overwrite && (importItem.getState() == State.NAME_AND_ID_EXISTED
-                    || importItem.getState() == State.NAME_AND_ID_EXISTED_BOTH) && isSameRepositoryType) {
+            if (overwrite
+                    && (importItem.getState() == State.NAME_AND_ID_EXISTED || importItem.getState() == State.NAME_AND_ID_EXISTED_BOTH)
+                    && isSameRepositoryType) {
                 // if item is locked, cannot overwrite
                 if (checkIfLocked(importItem)) {
                     importItem.addError(Messages.getString("AbstractImportHandler_itemLocked")); //$NON-NLS-1$
@@ -746,11 +748,12 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
                         || selectedImportItem.getState() == State.NAME_AND_ID_EXISTED_BOTH) {
                     lastVersion = selectedImportItem.getExistingItemWithSameName();
                 }
-                if (lastVersion != null && overwrite && !selectedImportItem.isLocked()
+                if (lastVersion != null
+                        && overwrite
+                        && !selectedImportItem.isLocked()
                         && (selectedImportItem.getState() == State.ID_EXISTED
                                 || selectedImportItem.getState() == State.NAME_EXISTED
-                                || selectedImportItem.getState() == State.NAME_AND_ID_EXISTED
-                                || selectedImportItem.getState() == State.NAME_AND_ID_EXISTED_BOTH)
+                                || selectedImportItem.getState() == State.NAME_AND_ID_EXISTED || selectedImportItem.getState() == State.NAME_AND_ID_EXISTED_BOTH)
                         && !ImportCacheHelper.getInstance().getDeletedItems().contains(id)) {
 
                     if (overwriteDeletedItems != null && !overwriteDeletedItems.contains(id)) { // bug 10520.
@@ -768,8 +771,8 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
                         final IRepositoryViewObject lastVersionBackup = lastVersion;
                         if (idDeletedBeforeImport != null && !idDeletedBeforeImport.contains(id)) {
                             // TDI-19535 (check if exists, delete all items with same id)
-                            final List<IRepositoryViewObject> allVersionToDelete = repFactory.getAllVersion(
-                                    ProjectManager.getInstance().getCurrentProject(), lastVersionBackup.getId(), false);
+                            final List<IRepositoryViewObject> allVersionToDelete = repFactory.getAllVersion(ProjectManager
+                                    .getInstance().getCurrentProject(), lastVersionBackup.getId(), false);
                             String importingLabel = selectedImportItem.getProperty().getLabel();
                             String existLabel = lastVersionBackup.getProperty().getLabel();
                             boolean isDeleteOnRemote = isNeedDeleteOnRemote(importingLabel, existLabel);
@@ -779,7 +782,8 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
                                 @Override
                                 public void run() throws PersistenceException {
                                     for (IRepositoryViewObject currentVersion : allVersionToDelete) {
-                                        repFactory.forceDeleteObjectPhysical(lastVersionBackup, currentVersion.getVersion(), isDeleteOnRemote);
+                                        repFactory.forceDeleteObjectPhysical(lastVersionBackup, currentVersion.getVersion(),
+                                                isDeleteOnRemote);
                                     }
                                 }
                             };
@@ -869,7 +873,7 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
             }
         }
     }
-    
+
     private boolean isNeedDeleteOnRemote(String importingLabel, String existLabel) {
         if (importingLabel != null && importingLabel.equalsIgnoreCase(importingLabel) && !importingLabel.equals(existLabel)) {
             return true;
@@ -1048,7 +1052,7 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
     }
 
     public void resolveItem(ResourcesManager manager, ImportItem importItem) {
-        if (importItem.isResolved()) {
+        if (importItem.isResolved() || importItem.getProperty() instanceof FakePropertyImpl) {
             return;
         }
 
