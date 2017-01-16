@@ -12,7 +12,9 @@
 // ============================================================================
 package org.talend.core.model.process;
 
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.Property;
@@ -48,6 +50,10 @@ public class JobInfo {
     private Map<String, Object> argumentsMap;
     
     private IProcessor processor;
+    
+    private boolean independentOrDynamic;
+    
+    private Set<JobInfo> subJobInfos = new LinkedHashSet<JobInfo>();
 
     public JobInfo(String jobId, String contextName, String version) {
         this.jobId = jobId;
@@ -286,57 +292,37 @@ public class JobInfo {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        // result = prime * result + ((contextName == null) ? 0 : contextName.hashCode());
         result = prime * result + ((jobId == null) ? 0 : jobId.hashCode());
+        result = prime * result + ((jobName == null) ? 0 : jobName.hashCode());
         result = prime * result + ((jobVersion == null) ? 0 : jobVersion.hashCode());
         return result;
     }
 
     @Override
     public boolean equals(Object obj) {
-        final JobInfo other = (JobInfo) obj;
-        // if (contextName == null) {
-        // if (other.contextName != null) {
-        // return false;
-        // }
-        // } else if (!contextName.equals(other.contextName)) {
-        // return false;
-        // }
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        JobInfo other = (JobInfo) obj;
         if (jobId == null) {
-            if (other.jobId != null) {
+            if (other.jobId != null)
                 return false;
-            }
-        } else if (!jobId.equals(other.jobId)) {
+        } else if (!jobId.equals(other.jobId))
             return false;
-        }
-        // if (context == null) {
-        // if (other.context != null) {
-        // return false;
-        // }
-        // } else if (!context.equals(other.context)) {
-        // return false;
-        // }
-        // if (process == null) {
-        // if (other.process != null) {
-        // return false;
-        // }
-        // } else if (!process.equals(other.process)) {
-        // return false;
-        // }
+        if (jobName == null) {
+            if (other.jobName != null)
+                return false;
+        } else if (!jobName.equals(other.jobName))
+            return false;
         if (jobVersion == null) {
-            if (other.jobVersion != null) {
+            if (other.jobVersion != null)
                 return false;
-            }
-        } else if (!jobVersion.equals(other.jobVersion)) {
+        } else if (!jobVersion.equals(other.jobVersion))
             return false;
-        }
-
         return true;
-    }
-
-    @Override
-    public String toString() {
-        return "job:" + jobName + " / context:" + contextName + " / version:" + jobVersion; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
     /*
@@ -420,6 +406,14 @@ public class JobInfo {
     }
 
     
+    public boolean isIndependentOrDynamic() {
+        return independentOrDynamic;
+    }
+
+    public void setIndependentOrDynamic(boolean independentOrDynamic) {
+        this.independentOrDynamic = independentOrDynamic;
+    }
+
     /**
      * Getter for processor.
      * @return the processor
@@ -435,6 +429,10 @@ public class JobInfo {
      */
     public void setProcessor(IProcessor processor) {
         this.processor = processor;
+    }
+
+    public Set<JobInfo> getSubJobInfos() {
+        return subJobInfos;
     }
 
 }

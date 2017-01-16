@@ -389,6 +389,8 @@ public class ProcessorUtilities {
 
             // this cache only keep the last main job's generation, so clear it since we regenerate a new job.
             LastGenerationInfo.getInstance().getLastGeneratedjobs().clear();
+            LastGenerationInfo.getInstance().getHaveGeneratedJobs().clear();
+            LastGenerationInfo.getInstance().getNoCompileErrorJobs().clear();
             retrievedJarsForCurrentBuild.clear();
 
             // if it's the father, reset the processMap to ensure to have a good
@@ -416,6 +418,7 @@ public class ProcessorUtilities {
         }
         if (selectedProcessItem != null) {
             currentJobName = selectedProcessItem.getProperty().getLabel();
+            jobInfo.setJobName(currentJobName);
         }
         progressMonitor.subTask(Messages.getString("ProcessorUtilities.loadingJob") + currentJobName); //$NON-NLS-1$
 
@@ -511,7 +514,7 @@ public class ProcessorUtilities {
          * Set classpath for current job. If current job include some child-jobs, the child job SHARE farther job
          * libraries.
          */
-        generateBuildInfo(jobInfo, progressMonitor, isMainJob, currentProcess, currentJobName, processor, option);
+        generateBuildInfo(jobInfo, progressMonitor, isMainJob, currentProcess, processor, option);
 
         return processor;
     }
@@ -602,14 +605,14 @@ public class ProcessorUtilities {
         return hasDynamicMetadata;
     }
 
-    private static void generateBuildInfo(JobInfo jobInfo, IProgressMonitor progressMonitor, boolean isMainJob,
-            IProcess currentProcess, String currentJobName, IProcessor processor, int option) throws ProcessorException {
+    private static void generateBuildInfo(JobInfo jobInfo, IProgressMonitor progressMonitor, boolean isMainJob, IProcess currentProcess,
+            IProcessor processor, int option) throws ProcessorException {
         jobInfo.setProcess(null);
         jobInfo.setProcessor(null);
-        if (isMainJob) {
-            progressMonitor.subTask(Messages.getString("ProcessorUtilities.finalizeBuild") + currentJobName); //$NON-NLS-1$
-
-            if (codeModified && !BitwiseOptionUtils.containOption(option, GENERATE_WITHOUT_COMPILING)) {
+        if (isMainJob || jobInfo.isIndependentOrDynamic()) {
+            progressMonitor.subTask(Messages.getString("ProcessorUtilities.finalizeBuild") + jobInfo.getJobName()); //$NON-NLS-1$
+            if (!LastGenerationInfo.getInstance().isJobGenerated(jobInfo) && codeModified
+                    && !BitwiseOptionUtils.containOption(option, GENERATE_WITHOUT_COMPILING)) {
                 try {
                     processor.build(progressMonitor);
                 } catch (Exception e) {
@@ -617,6 +620,7 @@ public class ProcessorUtilities {
                 }
                 processor.syntaxCheck();
 
+                LastGenerationInfo.getInstance().addToHaveGeneratedJobs(jobInfo);
                 // TDI-36930, just after compile, need check the compile errors first.
                 CorePlugin.getDefault().getRunProcessService().checkLastGenerationHasCompilationError(true);
 
@@ -630,6 +634,8 @@ public class ProcessorUtilities {
     private static void generateContextInfo(JobInfo jobInfo, String selectedContextName, boolean statistics, boolean trace,
             boolean needContext, IProgressMonitor progressMonitor, IProcess currentProcess, String currentJobName,
             IProcessor processor, boolean isMain) throws ProcessorException {
+        LastGenerationInfo.getInstance().setCurrentBuildJob(jobInfo);
+
         if (isCodeGenerationNeeded(jobInfo, statistics, trace)) {
             codeModified = true;
             if ((currentProcess instanceof IProcess2) && exportConfig) {
@@ -738,6 +744,8 @@ public class ProcessorUtilities {
 
                 // this cache only keep the last main job's generation, so clear it since we regenerate a new job.
                 LastGenerationInfo.getInstance().getLastGeneratedjobs().clear();
+                LastGenerationInfo.getInstance().getHaveGeneratedJobs().clear();
+                LastGenerationInfo.getInstance().getNoCompileErrorJobs().clear();
                 retrievedJarsForCurrentBuild.clear();
                 // if it's the father, reset the processMap to ensure to have a good
                 // code generation
@@ -765,6 +773,7 @@ public class ProcessorUtilities {
             }
             if (selectedProcessItem != null) {
                 currentJobName = selectedProcessItem.getProperty().getLabel();
+                jobInfo.setJobName(currentJobName);
             }
             progressMonitor.subTask(Messages.getString("ProcessorUtilities.loadingJob") + currentJobName); //$NON-NLS-1$
 
@@ -882,7 +891,7 @@ public class ProcessorUtilities {
              * Set classpath for current job. If current job include some child-jobs, the child job SHARE farther job
              * libraries.
              */
-            generateBuildInfo(jobInfo, progressMonitor, isMainJob, currentProcess, currentJobName, processor, option);
+            generateBuildInfo(jobInfo, progressMonitor, isMainJob, currentProcess, processor, option);
             TimeMeasure.step(idTimer, "generateBuildInfo");
 
             return processor;
@@ -1012,6 +1021,14 @@ public class ProcessorUtilities {
                             subJobInfo.setJobName(processItem.getProperty().getLabel());
 
                             subJobInfo.setFatherJobInfo(jobInfo);
+                            subJobInfo.setArgumentsMap(jobInfo.getArgumentsMap());
+                            
+                            boolean isIndenpendentOrDynamic = isIndependentOrDynamic(node);
+                            subJobInfo.setIndependentOrDynamic(isIndenpendentOrDynamic);
+                            jobInfo.getSubJobInfos().add(subJobInfo);
+                            
+                            setGenerationInfoWithChildrenJob(node, jobInfo, subJobInfo);
+                            
                             if (!jobList.contains(subJobInfo)) {
                                 if (!isNeedLoadmodules) {
                                     LastGenerationInfo.getInstance().setModulesNeededWithSubjobPerJob(subJobInfo.getJobId(),
@@ -1049,7 +1066,7 @@ public class ProcessorUtilities {
                                 }
                             }
 
-                            setGenerationInfoWithChildrenJob(node, jobInfo, subJobInfo);
+                            
                         }
                     }
                 }
@@ -1077,22 +1094,7 @@ public class ProcessorUtilities {
         // TUP-5624,
         // no need to add the modules of children job, when using dynamic job or independent
         if (node != null) {
-            boolean needChildrenModules = true;
-            IElementParameter useDynamicJobParam = node.getElementParameter("USE_DYNAMIC_JOB"); //$NON-NLS-1$
-            // true, use dynamic job
-            if (useDynamicJobParam != null && useDynamicJobParam.getValue() != null
-                    && Boolean.parseBoolean(useDynamicJobParam.getValue().toString())) {
-                needChildrenModules = false;
-            }
-            if (needChildrenModules) { // check another param
-                IElementParameter useIndependentParam = node.getElementParameter("USE_INDEPENDENT_PROCESS"); //$NON-NLS-1$
-                // true, independent child job
-                if (useIndependentParam != null && useIndependentParam.getValue() != null
-                        && Boolean.parseBoolean(useIndependentParam.getValue().toString())) {
-                    needChildrenModules = false;
-                }
-            }
-
+            boolean needChildrenModules = !isIndependentOrDynamic(node);
             if (needChildrenModules) {
                 Set<ModuleNeeded> subjobModules = generationInfo.getModulesNeededWithSubjobPerJob(subJobInfo.getJobId(),
                         subJobInfo.getJobVersion());
@@ -1112,6 +1114,43 @@ public class ProcessorUtilities {
             }
         }
 
+    }
+
+    private static boolean isIndependentOrDynamic(INode node) {
+        String useDynamicJob = null;
+        IElementParameter useDynamicJobParam = node.getElementParameter("USE_DYNAMIC_JOB"); //$NON-NLS-1$
+        if (useDynamicJobParam != null && useDynamicJobParam.getValue() != null) {
+            useDynamicJob = useDynamicJobParam.getValue().toString();
+        }
+        
+        String useIndependent = null;
+        IElementParameter useIndependentParam = node.getElementParameter("USE_INDEPENDENT_PROCESS"); //$NON-NLS-1$
+        if (useIndependentParam != null && useIndependentParam.getValue() != null) {
+            useIndependent = useIndependentParam.getValue().toString().toString();
+        }
+        
+        return isIndependentOrDynamic(useDynamicJob, useIndependent);
+    }
+    
+    private static boolean isIndependentOrDynamic(NodeType node) {
+        String useDynamicJob = getParameterValue(node.getElementParameter(), "USE_DYNAMIC_JOB"); //$NON-NLS-1$
+        String useIndependent = getParameterValue(node.getElementParameter(), "USE_INDEPENDENT_PROCESS"); //$NON-NLS-1$
+        
+        return isIndependentOrDynamic(useDynamicJob, useIndependent);
+    }
+    
+    private static boolean isIndependentOrDynamic(String useDynamicJob, String useIndependent) {
+        boolean isIndependentOrDynamic = false;
+        if (useDynamicJob != null && Boolean.parseBoolean(useDynamicJob)) {
+            isIndependentOrDynamic = true;
+        }
+        if (!isIndependentOrDynamic) { // check another param
+            // true, independent child job
+            if (useIndependent != null && Boolean.parseBoolean(useIndependent)) {
+                isIndependentOrDynamic = true;
+            }
+        }
+        return isIndependentOrDynamic;
     }
 
     /**
@@ -1636,6 +1675,7 @@ public class ProcessorUtilities {
                 String jobIds = getParameterValue(node.getElementParameter(), "PROCESS:PROCESS_TYPE_PROCESS"); //$NON-NLS-1$
                 String jobContext = getParameterValue(node.getElementParameter(), "PROCESS:PROCESS_TYPE_CONTEXT"); //$NON-NLS-1$
                 String jobVersion = getParameterValue(node.getElementParameter(), "PROCESS:PROCESS_TYPE_VERSION"); //$NON-NLS-1$
+                boolean independentOrDynamic = isIndependentOrDynamic(node);
                 // feature 19312
                 String[] jobsArr = jobIds.split(ProcessorUtilities.COMMA);
                 for (String jobId : jobsArr) {
@@ -1643,6 +1683,7 @@ public class ProcessorUtilities {
                         ProcessItem processItem = ItemCacheManager.getProcessItem(jobId, jobVersion);
                         if (processItem != null) {
                             JobInfo jobInfo = new JobInfo(processItem, jobContext);
+                            jobInfo.setIndependentOrDynamic(independentOrDynamic);
                             if (!jobInfos.contains(jobInfo)) {
                                 jobInfos.add(jobInfo);
                                 jobInfo.setFatherJobInfo(parentJobInfo);

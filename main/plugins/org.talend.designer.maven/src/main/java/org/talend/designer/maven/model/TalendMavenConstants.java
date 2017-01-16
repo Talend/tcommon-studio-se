@@ -107,11 +107,15 @@ public interface TalendMavenConstants {
     static final String PROFILE_INCLUDE_MICROSERVICE_RUNNING_CONFIGS = "include-microservice-running-configs";
 
     static final String PROFILE_INCLUDE_SURVIVORSHIP_RULES = "include-survivorship-rules";
+    
+    static final String PROFILE_SKIP_PACKAGE = "skip-package";
 
     /**
      * argments
      */
-    static final String ARG_SKIPTESTS = "-DskipTests";
+    static final String ARG_SKIPTESTS = "-DskipTests"; //skip test but still compile test classes
+
+    static final String ARG_SKIPTESTS2 = "-Dmaven.test.skip=true"; // skip test and compile test classes
 
     /* same as the JavaUtils.JAVA_PROJECT_NAME */
     static final String PROJECT_NAME = ".Java";

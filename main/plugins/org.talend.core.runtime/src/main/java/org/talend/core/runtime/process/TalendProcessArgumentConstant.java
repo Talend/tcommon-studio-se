@@ -58,6 +58,10 @@ public interface TalendProcessArgumentConstant {
     
     static final String ARG_DEPLOY_VERSION = "DEPLOY_VERSION";
 
+    static final String ARG_EXECUTE_TESTS = "EXECUTE_TESTS";
+    
+    static final String ARG_BUILD_LAST_STEP = "BUILD_LAST_STEP";
+
     static final String CMD_ARG_STATS_PORT_PARAM = "stat_port";
 
     static final String CMD_ARG_TRACE_PORT_PARAM = "trace_port";

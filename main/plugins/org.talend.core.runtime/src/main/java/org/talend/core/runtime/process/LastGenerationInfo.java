@@ -43,14 +43,22 @@ public class LastGenerationInfo {
     private static LastGenerationInfo instance;
 
     private JobInfo lastMainJob;
+    
+    private JobInfo currentBuildJob;
 
     private Set<JobInfo> lastGeneratedjobs; // main job + child jobs
+    
+    private Set<JobInfo> haveGeneratedJobs;  // for jobs which have built once.
+    
+    private Set<JobInfo> noCompileErrorJobs; 
 
     private LastGenerationInfo() {
         modulesNeededPerJob = new HashMap<String, Set<ModuleNeeded>>();
         contextPerJob = new HashMap<String, Set<String>>();
         modulesNeededWithSubjobPerJob = new HashMap<String, Set<ModuleNeeded>>();
         lastGeneratedjobs = new HashSet<JobInfo>();
+        haveGeneratedJobs = new HashSet<JobInfo>();
+        noCompileErrorJobs = new HashSet<JobInfo>();
         routinesNeededPerJob = new HashMap<String, Set<String>>();
         pigudfNeededPerJob = new HashMap<String, Set<String>>();
         routinesNeededWithSubjobPerJob = new HashMap<String, Set<String>>();
@@ -197,6 +205,21 @@ public class LastGenerationInfo {
     public JobInfo getLastMainJob() {
         return this.lastMainJob;
     }
+    
+    public JobInfo getCurrentBuildJob() {
+        return currentBuildJob;
+    }
+
+    public boolean isCurrentMainJob() {
+        if (lastMainJob != null && currentBuildJob != null && lastMainJob.equals(currentBuildJob)) {
+            return true;
+        }
+        return false;
+    }
+    
+    public void setCurrentBuildJob(JobInfo currentBuildJob) {
+        this.currentBuildJob = currentBuildJob;
+    }
 
     /**
      * Sets the lastMainJob.
@@ -223,6 +246,52 @@ public class LastGenerationInfo {
      */
     public void setLastGeneratedjobs(Set<JobInfo> lastGeneratedjobs) {
         this.lastGeneratedjobs = lastGeneratedjobs;
+    }
+
+    public Set<JobInfo> getHaveGeneratedJobs() {
+        return haveGeneratedJobs;
+    }
+
+    public void addToHaveGeneratedJobs(JobInfo jobInfo) {
+        haveGeneratedJobs.add(jobInfo);
+        addAllDependentSubJobs(jobInfo.getSubJobInfos());
+    }
+    
+    private void addAllDependentSubJobs(Set<JobInfo> jobInfos) {
+        // recur all subJobInfos and add dependent subJobInfo.
+        // for independent subJobInfo, ignore it and its' subJobInfos
+        for (JobInfo subJobInfo : jobInfos) {
+            if (!subJobInfo.isIndependentOrDynamic()) {
+                haveGeneratedJobs.add(subJobInfo);
+                addAllDependentSubJobs(subJobInfo.getSubJobInfos());
+            }
+        }
+    }
+
+    public boolean hasIndependentSubJobs() {
+        return hasIndependentSubJobs(null);
+    }
+    
+    public boolean hasIndependentSubJobs(JobInfo jobInfo) {
+        if (jobInfo == null) {
+            jobInfo = currentBuildJob;
+        }
+        if (jobInfo.isIndependentOrDynamic()) {
+            return true;
+        } else {
+            for (JobInfo info : jobInfo.getSubJobInfos()) {
+                return hasIndependentSubJobs(info);
+            }
+            return false;
+        }
+    }
+    
+    public boolean isJobGenerated(JobInfo jobInfo) {
+        return haveGeneratedJobs.contains(jobInfo);
+    }
+    
+    public Set<JobInfo> getNoCompileErrorJobs() {
+        return noCompileErrorJobs;
     }
 
     /**
@@ -332,5 +401,8 @@ public class LastGenerationInfo {
 
         lastMainJob = null;
         lastGeneratedjobs.clear();
+        currentBuildJob = null;
+        haveGeneratedJobs.clear();
+        noCompileErrorJobs.clear();
     }
 }

@@ -53,6 +53,7 @@
 						<!-- only package the codes classes -->
 						<include>${talend.codes.package}/**/*.class</include>
 					</includes>
+					<finalName>routines</finalName>
 				</configuration>
 			</plugin>
 			<plugin>
