@@ -68,6 +68,9 @@ public class StudioSSLContextProvider {
     public static boolean setSSLSystemProperty(boolean isPreference) {
         try {
             buildContext();
+            if (!isPreference && context == null) {
+                return false;
+            }
             changeProperty();
             Executor.unregisterScheme("https");
             SSLSocketFactory factory = new SSLSocketFactory(context, SSLSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER);
@@ -77,7 +80,7 @@ public class StudioSSLContextProvider {
                 changeProperty();
                 Executor.unregisterScheme("https");
             }
-            ExceptionHandler.process(e);
+            ExceptionHandler.process(new Exception("Please check the SSL settings in Preference>Talend>SSL", e));
             return false;
         }
         return true;
