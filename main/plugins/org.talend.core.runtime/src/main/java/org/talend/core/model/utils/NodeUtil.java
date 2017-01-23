@@ -938,38 +938,8 @@ public class NodeUtil {
      * @return
      */
     public static String replaceCRLFInMEMO_SQL(String original) {
-        if (original == null || original.trim().length() == 0) {
-            return original;
-        }
-        String result = "";
-        int leftQuotes = original.indexOf("\"");
-        int rightQuotes = original.indexOf("\"", leftQuotes + 1);
-        int fakeRightQuotes = original.indexOf("\\\"", leftQuotes + 1);
-        while (rightQuotes == fakeRightQuotes + 1) {
-            rightQuotes = original.indexOf("\"", rightQuotes + 1);
-            fakeRightQuotes = original.indexOf("\\\"", fakeRightQuotes + 1);
-        }
-        int leftPrev = 0;
-        while (leftQuotes >= 0 && rightQuotes > leftQuotes) {
-            if (leftQuotes > leftPrev) {
-                result += original.substring(leftPrev, leftQuotes);
-            }
-            // System.out.println("leftQuote="+leftQuotes + ", rightQuote="+rightQuotes);
-            if (leftQuotes < rightQuotes) {
-                result += original.substring(leftQuotes, rightQuotes + 1).replace("\r", "").replace("\n", "\\n");
-            }
-
-            leftQuotes = original.indexOf("\"", rightQuotes + 1);
-            leftPrev = rightQuotes + 1;
-            rightQuotes = original.indexOf("\"", leftQuotes + 1);
-            fakeRightQuotes = original.indexOf("\\\"", leftQuotes + 1);
-            while (rightQuotes == fakeRightQuotes + 1) {
-                rightQuotes = original.indexOf("\"", rightQuotes + 1);
-                fakeRightQuotes = original.indexOf("\\\"", fakeRightQuotes + 1);
-            }
-        }
-        result += original.substring(leftPrev);
-        return result;
+ 
+        return replaceLineSeparatorInMEMO(original,"(\n|\r\n)","\\n");
     }
 
     /**
