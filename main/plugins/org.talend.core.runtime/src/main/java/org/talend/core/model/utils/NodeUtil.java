@@ -939,7 +939,7 @@ public class NodeUtil {
      */
     public static String replaceCRLFInMEMO_SQL(String original) {
  
-        return replaceLineSeparatorInMEMO(original,"(\n|\r\n)","\\n");
+        return replaceLineSeparatorInMEMO(original,"(\n|\r\n)","\\\\n");
     }
 
     /**
