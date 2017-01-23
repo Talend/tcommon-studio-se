@@ -1074,11 +1074,11 @@ public class NodeUtil {
     
     /**
     *
-    * DOC Aim to resolve TDI-37755
+    * DOC Aim to resolve TDI-37755 ,just replace content in double quotation.
     *
     * @param original 
     * @param regex: '\r' for Mac, '\n' for Linux/Unix, '\r\n' for Windows
-    * @param replacement character to replace the line separator.
+    * @param replacement: character to replace the line separator.
     * @return
     */
    public static String replaceLineSeparatorInMEMO(String original,String regex, String replacement) {
