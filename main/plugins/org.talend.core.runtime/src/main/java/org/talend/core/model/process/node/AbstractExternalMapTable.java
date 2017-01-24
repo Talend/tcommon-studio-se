@@ -25,7 +25,15 @@ public abstract class AbstractExternalMapTable implements IExternalMapTable {
     public boolean isActivateExpressionFilter() {
         return false;
     }
-
+    
+    public String getColumnNameFilter(){
+        return null;
+    }
+    
+    public boolean isActivateColumnNameFilter(){
+        return false;
+    }
+    
     public boolean isMinimized() {
         return false;
     }
