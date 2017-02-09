@@ -25,7 +25,7 @@ public abstract class AbstractExternalMapTable implements IExternalMapTable {
     public boolean isActivateExpressionFilter() {
         return false;
     }
-
+      
     public boolean isMinimized() {
         return false;
     }
