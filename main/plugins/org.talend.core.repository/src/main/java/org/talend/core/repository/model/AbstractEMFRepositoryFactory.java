@@ -25,6 +25,7 @@ import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -36,6 +37,7 @@ import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.commons.utils.VersionUtils;
 import org.talend.commons.utils.data.container.Container;
 import org.talend.commons.utils.data.container.RootContainer;
+import org.talend.commons.utils.time.TimeMeasure;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ICoreService;
@@ -71,6 +73,7 @@ import org.talend.designer.core.model.utils.emf.component.ComponentFactory;
 import org.talend.designer.core.model.utils.emf.component.IMPORTType;
 import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
+import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryConstants;
@@ -1026,7 +1029,16 @@ public abstract class AbstractEMFRepositoryFactory extends AbstractRepositoryFac
      * @see org.talend.core.repository.model.IRepositoryFactory#afterLogon()
      */
     @Override
-    public void afterLogon() {
-        // do nothing by default
+    public void afterLogon(IProgressMonitor monitor) {
+//        if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
+//            IRunProcessService runProcessService = (IRunProcessService) GlobalServiceRegister.getDefault()
+//                    .getService(IRunProcessService.class);
+//            try {
+//                runProcessService.getTalendProcessJavaProject().cleanMavenFiles(monitor);
+//                TimeMeasure.step("logOnProject", "clean Maven files"); //$NON-NLS-1$ //$NON-NLS-2$
+//            } catch (Exception e) {
+//                ExceptionHandler.process(e);
+//            }
+//        }
     }
 }

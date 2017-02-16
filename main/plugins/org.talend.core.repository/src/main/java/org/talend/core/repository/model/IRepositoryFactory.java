@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 import org.talend.commons.exception.BusinessException;
 import org.talend.commons.exception.LoginException;
@@ -416,7 +417,7 @@ public interface IRepositoryFactory {
 
     public boolean isModified(Object property);
 
-    public void afterLogon();
+    public void afterLogon(IProgressMonitor monitor);
 
     public void setStorage(String storage);
 
