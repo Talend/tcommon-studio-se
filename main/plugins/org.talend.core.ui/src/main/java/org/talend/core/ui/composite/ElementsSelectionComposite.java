@@ -27,13 +27,17 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.talend.core.ui.advanced.composite.FilteredCheckboxTree;
 import org.talend.core.ui.advanced.composite.PatternFilter;
+import org.talend.core.ui.i18n.Messages;
 
 /**
  * created by ycbai on 2015年10月8日 Detailled comment
@@ -43,6 +47,8 @@ public class ElementsSelectionComposite<T> extends Composite {
 
     private boolean multipleSelection = true;
 
+    private boolean showToolbar;
+
     private FilteredCheckboxTree filteredCheckboxTree;
 
     private CheckboxTreeViewer viewer;
@@ -50,25 +56,49 @@ public class ElementsSelectionComposite<T> extends Composite {
     private List<T> viewerData;
 
     public ElementsSelectionComposite(Composite parent) {
-        this(parent, true);
-    }
-
-    public ElementsSelectionComposite(Composite parent, boolean multipleSelection) {
         super(parent, SWT.NONE);
-        this.multipleSelection = multipleSelection;
         GridLayout gridLayout = new GridLayout();
         gridLayout.marginWidth = 0;
         gridLayout.marginHeight = 0;
         setLayout(gridLayout);
+    }
+
+    public ElementsSelectionComposite<T> create() {
         createControl();
+        return this;
+    }
+
+    public ElementsSelectionComposite<T> setMultipleSelection(boolean multipleSelection) {
+        this.multipleSelection = multipleSelection;
+        return this;
+    }
+
+    public ElementsSelectionComposite<T> setShowToolbar(boolean showToolbar) {
+        this.showToolbar = showToolbar;
+        return this;
     }
 
     private void createControl() {
+        Composite composite = new Composite(this, SWT.NONE);
+        GridLayout compositeLayout = new GridLayout();
+        compositeLayout.marginHeight = 0;
+        compositeLayout.marginWidth = 0;
+        composite.setLayout(compositeLayout);
+        composite.setFont(this.getFont());
+        composite.setLayoutData(new GridData(GridData.FILL_BOTH));
+
+        createTreeArea(composite);
+        if (showToolbar) {
+            createToolbarArea(composite);
+        }
+    }
+
+    private void createTreeArea(Composite parent) {
         int styles = SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL;
         if (multipleSelection) {
             styles = styles | SWT.MULTI;
         }
-        filteredCheckboxTree = new FilteredCheckboxTree(this, styles, new PatternFilter());
+        filteredCheckboxTree = new FilteredCheckboxTree(parent, styles, new PatternFilter());
         viewer = filteredCheckboxTree.getViewer();
         viewer.setContentProvider(getContentProvider());
         viewer.setLabelProvider(getLabelProvider());
@@ -80,7 +110,40 @@ public class ElementsSelectionComposite<T> extends Composite {
             }
         });
         GridData treeGridData = (GridData) filteredCheckboxTree.getLayoutData();
-        treeGridData.heightHint = 270;
+        treeGridData.heightHint = 250;
+    }
+
+    private void createToolbarArea(Composite parent) {
+        Composite toolbarComposite = new Composite(parent, SWT.NONE);
+        GridLayout toolbarLayout = new GridLayout(2, false);
+        toolbarLayout.marginHeight = 0;
+        toolbarLayout.marginWidth = 0;
+        toolbarComposite.setLayout(toolbarLayout);
+        toolbarComposite.setFont(this.getFont());
+
+        Button selectAllBtn = new Button(toolbarComposite, SWT.PUSH);
+        selectAllBtn.setText(Messages.getString("SelectRepositoryContextDialog.SelectAll")); //$NON-NLS-1$
+        selectAllBtn.addSelectionListener(new SelectionAdapter() {
+
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                viewer.setAllChecked(true);
+                doSelectionChanged();
+            }
+        });
+
+        Button deselectAllBtn = new Button(toolbarComposite, SWT.PUSH);
+        deselectAllBtn.setText(Messages.getString("SelectRepositoryContextDialog.DeselectAll")); //$NON-NLS-1$
+        deselectAllBtn.addSelectionListener(new SelectionAdapter() {
+
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                viewer.setAllChecked(false);
+                doSelectionChanged();
+            }
+        });
+
+        toolbarComposite.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
     }
 
     public void setCheckedState() {
