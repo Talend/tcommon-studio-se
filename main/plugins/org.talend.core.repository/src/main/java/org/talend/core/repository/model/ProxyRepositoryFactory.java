@@ -1909,7 +1909,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                             ExceptionHandler.process(e);
                         }
                     }
-
+ 
                     TimeMeasure.step("logOnProject", "clean Java project"); //$NON-NLS-1$ //$NON-NLS-2$
                     if (workspace instanceof Workspace) {
                         ((Workspace) workspace).getFileSystemManager().getHistoryStore().clean(currentMonitor);
