@@ -1030,15 +1030,15 @@ public abstract class AbstractEMFRepositoryFactory extends AbstractRepositoryFac
      */
     @Override
     public void afterLogon(IProgressMonitor monitor) {
-//        if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
-//            IRunProcessService runProcessService = (IRunProcessService) GlobalServiceRegister.getDefault()
-//                    .getService(IRunProcessService.class);
-//            try {
-//                runProcessService.getTalendProcessJavaProject().cleanMavenFiles(monitor);
-//                TimeMeasure.step("logOnProject", "clean Maven files"); //$NON-NLS-1$ //$NON-NLS-2$
-//            } catch (Exception e) {
-//                ExceptionHandler.process(e);
-//            }
-//        }
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
+            IRunProcessService runProcessService = (IRunProcessService) GlobalServiceRegister.getDefault()
+                    .getService(IRunProcessService.class);
+            try {
+                runProcessService.getTalendProcessJavaProject().cleanMavenFiles(monitor);
+                TimeMeasure.step("logOnProject", "clean Maven files"); //$NON-NLS-1$ //$NON-NLS-2$
+            } catch (Exception e) {
+                ExceptionHandler.process(e);
+            }
+        }
     }
 }
