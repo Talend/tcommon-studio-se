@@ -27,6 +27,8 @@ import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.PlatformUI;
 import org.talend.commons.exception.BusinessException;
 import org.talend.commons.exception.CommonExceptionHandler;
 import org.talend.commons.exception.ExceptionHandler;
@@ -57,6 +59,7 @@ import org.talend.designer.core.convert.ProcessConverterType;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryNode;
+import org.talend.repository.ui.views.IJobSettingsView;
 
 /**
  * created by hcyi on May 25, 2015 Detailled comment
@@ -172,7 +175,7 @@ public class ConvertJobsUtil {
             }
             return dispalyNames;
         }
-        
+
         public static String[] getFrameworkToDispaly(String framework) {
         	if(framework == null){
         		return getFrameworkToDispaly();
@@ -211,7 +214,7 @@ public class ConvertJobsUtil {
             }
             return dispalyNames;
         }
-        
+
         public static String[] getFrameworkToDispaly(String framework) {
         	if(framework == null){
         		return getFrameworkToDispaly();
@@ -257,7 +260,7 @@ public class ConvertJobsUtil {
         frameworkCombo.setEnabled(true);
         if (JobType.STANDARD.getDisplayName().equals(jobTypeValue)) {
             frameworkCombo.setItems(new String[0]);
-            frameworkCombo.setText("");//$NON-NLS-1$ 
+            frameworkCombo.setText("");//$NON-NLS-1$
             frameworkCombo.setEnabled(false);
         } else if (JobType.BIGDATABATCH.getDisplayName().equals(jobTypeValue)) {
             String[] items = JobBatchFramework.getFrameworkToDispaly();
@@ -273,7 +276,7 @@ public class ConvertJobsUtil {
             }
         }
     }
-    
+
     public static void updateJobFrameworkPart(String jobTypeValue, CCombo frameworkCombo, boolean isJoblet) {
     	if(!isJoblet){
     		updateJobFrameworkPart(jobTypeValue, frameworkCombo);
@@ -282,7 +285,7 @@ public class ConvertJobsUtil {
         frameworkCombo.setEnabled(true);
         if (JobType.STANDARD.getDisplayName().equals(jobTypeValue)) {
             frameworkCombo.setItems(new String[0]);
-            frameworkCombo.setText("");//$NON-NLS-1$ 
+            frameworkCombo.setText("");//$NON-NLS-1$
             frameworkCombo.setEnabled(false);
         } else if (JobType.BIGDATABATCH.getDisplayName().equals(jobTypeValue)) {
             String[] items = JobBatchFramework.getFrameworkToDispaly(JobBatchFramework.SPARKFRAMEWORK.getDisplayName());
@@ -301,7 +304,7 @@ public class ConvertJobsUtil {
 
     /**
      * get the target execution framework from the field in Job properties
-     * 
+     *
      * @param item
      * @return
      */
@@ -323,7 +326,7 @@ public class ConvertJobsUtil {
 
     /**
      * DOC nrousseau Comment method "getJobTypeFromFramework".
-     * 
+     *
      * @param frameworkObj
      * @return
      */
@@ -348,7 +351,7 @@ public class ConvertJobsUtil {
             return new String[0];
         }
     }
-    
+
     public static String[] getFrameworkItemsByJobType(String jobType, boolean isJoblet) {
     	if(!isJoblet){
     		return getFrameworkItemsByJobType(jobType);
@@ -463,7 +466,7 @@ public class ConvertJobsUtil {
         }
         return null;
     }
-    
+
     public static Item createProcessOperation(final String newJobName, final String jobTypeValue, final String frameworkValue,
             final IRepositoryViewObject sourceObject) {
         IProcessConvertService converter = null;
@@ -500,7 +503,7 @@ public class ConvertJobsUtil {
         }
         return null;
     }
-    
+
     public static Item createJobletOperation(final String newJobName, final String jobTypeValue, final String frameworkValue,
             final IRepositoryViewObject sourceObject) {
         IProcessConvertService converter = null;
@@ -534,7 +537,7 @@ public class ConvertJobsUtil {
                 return ((IProcessConvertToAllTypeService) converter).convertToProcessStreaming(item, sourceObject, newJobName,
                         jobTypeValue, frameworkValue);
             }
-        } 
+        }
         return null;
     }
 
@@ -576,6 +579,7 @@ public class ConvertJobsUtil {
             // the update the project files need to be done in the workspace runnable to avoid all notification
             // of changes before the end of the modifications.
             workspace.run(runnable, schedulingRule, IWorkspace.AVOID_UPDATE, null);
+            updateJobsettingView();
         } else if (sourceObject.getProperty() != null) {
 
             IWorkspaceRunnable runnable = new IWorkspaceRunnable() {
@@ -597,7 +601,15 @@ public class ConvertJobsUtil {
         }
         return isNewItemCreated;
     }
-    
+
+    private static void updateJobsettingView() {
+        IViewPart jobSettingView = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+                .findView(IJobSettingsView.ID);
+        if (jobSettingView != null && jobSettingView instanceof IJobSettingsView) {
+            ((IJobSettingsView) jobSettingView).cleanDisplay();
+        }
+    }
+
     public static void convertTestcases(final Item newItem,final IRepositoryViewObject sourceObject,final String jobTypeValue){
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
             ITestContainerProviderService testContainerService = (ITestContainerProviderService) GlobalServiceRegister
@@ -608,11 +620,11 @@ public class ConvertJobsUtil {
                 if(!(item instanceof ProcessItem)){
                   return;
                 }
-                testContainerService.copyTestCase(newItem, (ProcessItem)item, getTestCasePath(newItem,jobTypeValue), null, false);
+                testContainerService.copyTestCase(newItem, item, getTestCasePath(newItem,jobTypeValue), null, false);
             }
         }
     }
-    
+
     public static IPath getTestCasePath(Item newItem, String jobTypeValue) {
         StringBuffer pathName = new StringBuffer();
         if (JobType.STANDARD.getDisplayName().equals(jobTypeValue)) {
@@ -631,7 +643,7 @@ public class ConvertJobsUtil {
 
     /**
      * DOC nrousseau Comment method "getFrameworkItemsByJobType".
-     * 
+     *
      * @param repositoryObjectType
      * @return
      */
@@ -652,7 +664,7 @@ public class ConvertJobsUtil {
 
     /**
      * Update framework if change it when duplicating DOC Comment method "updateFramework".
-     * 
+     *
      * @param item
      * @param newFrameworkNewValue
      */
