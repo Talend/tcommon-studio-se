@@ -54,11 +54,11 @@ public class PropertiesDialog extends TitleAreaDialog {
 
     private List<Map<String, Object>> initPropertiesOfParent;
 
-    private List<Map<String, Object>> initProperties;
+    protected List<Map<String, Object>> initProperties;
 
     private List<Map<String, Object>> properties;
 
-    private PropertiesTableView propertiesTableView;
+    protected PropertiesTableView propertiesTableView;
 
     private ExpandBar propertiesBar;
 

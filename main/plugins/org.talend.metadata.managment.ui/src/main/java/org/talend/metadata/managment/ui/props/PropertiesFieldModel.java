@@ -56,4 +56,8 @@ public class PropertiesFieldModel extends ExtendedTableModel<Map<String, Object>
             table.layout();
         }
     }
+
+    public void superAddAll(final Integer index, List<Map<String, Object>> beans, boolean fireBefore, boolean fireAfter) {
+        super.addAll(index, beans, fireBefore, fireAfter);
+    }
 }
