@@ -12,7 +12,7 @@
     <repositories>
         <repository>
             <id>Talend OpenSource Release</id>
-            <url>http://newbuild.talend.com:8081/nexus/content/repositories/TalendOpenSourceRelease/</url>
+            <url>https://artifacts-oss.talend.com/nexus/content/repositories/TalendOpenSourceRelease/</url>
         </repository>
     </repositories>
     <build>
