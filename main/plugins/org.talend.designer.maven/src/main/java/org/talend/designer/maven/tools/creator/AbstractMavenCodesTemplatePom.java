@@ -39,7 +39,13 @@ public abstract class AbstractMavenCodesTemplatePom extends AbstractMavenGeneral
 
         this.setGroupId(templateModel.getGroupId());
         this.setArtifactId(templateModel.getArtifactId());
-        this.setVersion(templateModel.getVersion());
+        String version;
+        if(getDeployVersion()!= null) {
+            version = getDeployVersion();
+        } else {
+            version = templateModel.getVersion();
+        }
+        this.setVersion(version);
         this.setName(templateModel.getName());
 
         setAttributes(templateModel);

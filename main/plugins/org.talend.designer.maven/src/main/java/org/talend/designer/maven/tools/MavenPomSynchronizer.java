@@ -175,17 +175,12 @@ public class MavenPomSynchronizer {
     public void cleanMavenFiles(IProgressMonitor monitor) throws Exception {
 
         // remove all job poms
-        final String routinesPomFileName = PomUtil.getPomFileName(TalendMavenConstants.DEFAULT_ROUTINES_ARTIFACT_ID);
-        final String beansPomFileName = PomUtil.getPomFileName(TalendMavenConstants.DEFAULT_BEANS_ARTIFACT_ID);
-        final String pigudfsPomFileName = PomUtil.getPomFileName(TalendMavenConstants.DEFAULT_PIGUDFS_ARTIFACT_ID);
         FilenameFilter filter = new FilenameFilter() {
 
             @Override
             public boolean accept(File dir, String name) {
                 // pom_xxx.xml
-                return name.startsWith(TalendMavenConstants.POM_NAME + '_') && name.endsWith(TalendMavenConstants.XML_EXT)
-                        && !name.equals(routinesPomFileName) && !name.equals(beansPomFileName)
-                        && !name.equals(pigudfsPomFileName);
+                return name.startsWith(TalendMavenConstants.POM_NAME + '_') && name.endsWith(TalendMavenConstants.XML_EXT);
             }
         };
         cleanupContainer(codeProject.getProject(), filter);
@@ -199,6 +194,8 @@ public class MavenPomSynchronizer {
         // clean all items in tests
         fullCleanupContainer(codeProject.getTestsFolder());
 
+        codeProject.getProject().refreshLocal(IResource.DEPTH_ONE, monitor);
+        
         // when clean, regenerate it.
         updateCodesPomWithProject(monitor, null);
 
