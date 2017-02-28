@@ -29,7 +29,6 @@ import org.talend.core.model.properties.Project;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.utils.JavaResourcesHelper;
-import org.talend.core.runtime.process.LastGenerationInfo;
 import org.talend.core.runtime.projectsetting.IProjectSettingTemplateConstants;
 import org.talend.designer.maven.template.ETalendMavenVariables;
 import org.talend.designer.maven.tools.ProcessorDependenciesManager;
@@ -78,7 +77,8 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
         // no need check property is null or not, because if null, will get default ids.
         variablesValuesMap.put(ETalendMavenVariables.JobGroupId, PomIdsHelper.getJobGroupId(property));
         variablesValuesMap.put(ETalendMavenVariables.JobArtifactId, PomIdsHelper.getJobArtifactId(property));
-        variablesValuesMap.put(ETalendMavenVariables.JobVersion, PomIdsHelper.getJobVersion(property));
+        variablesValuesMap.put(ETalendMavenVariables.JobVersion,
+                getDeployVersion() != null ? getDeployVersion() : PomIdsHelper.getJobVersion(property));
         final String jobName = JavaResourcesHelper.escapeFileName(process.getName());
         variablesValuesMap.put(ETalendMavenVariables.JobName, jobName);
 

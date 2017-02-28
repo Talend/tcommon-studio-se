@@ -183,9 +183,6 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
 
     @Override
     protected void configModel(Model model) {
-        if (getDeployVersion() != null) {
-            model.setVersion(getDeployVersion());
-        }
         super.configModel(model);
         setProfiles(model);
     }

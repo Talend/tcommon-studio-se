@@ -17,6 +17,12 @@ package org.talend.core.runtime.maven;
  */
 @SuppressWarnings("nls")
 public interface MavenConstants {
+    
+    static final String NAME_GROUP_ID= "GROUP_ID";
+
+    static final String NAME_USER_VERSION= "USER_VERSION";
+    
+    static final String NAME_EXPORT_TYPE= "EXPORT_TYPE";
 
     static final String TYPE_JAR = "jar";
 

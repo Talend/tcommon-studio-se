@@ -16,6 +16,7 @@ import org.talend.core.model.general.Project;
 import org.talend.core.model.process.JobInfo;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.utils.JavaResourcesHelper;
+import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.repository.ProjectManager;
 
@@ -113,6 +114,12 @@ public class PomIdsHelper {
      */
     public static String getJobGroupId(Property property) {
         if (property != null) {
+            if (property.getAdditionalProperties() !=null) {
+                String groupId = (String) property.getAdditionalProperties().get(MavenConstants.NAME_GROUP_ID);
+                if (groupId != null) {
+                    return groupId;
+                }
+            }
             ProjectManager pManager = ProjectManager.getInstance();
             Project currentProject = pManager.getCurrentProject();
             if (currentProject != null) {
@@ -144,6 +151,12 @@ public class PomIdsHelper {
      */
     public static String getJobVersion(Property property) {
         if (property != null) {
+            if(property.getAdditionalProperties() != null) {
+                String version = (String) property.getAdditionalProperties().get(MavenConstants.NAME_USER_VERSION);
+                if (version != null) {
+                    return version;
+                }
+            }
             String version = property.getVersion();
             return version;
         }
