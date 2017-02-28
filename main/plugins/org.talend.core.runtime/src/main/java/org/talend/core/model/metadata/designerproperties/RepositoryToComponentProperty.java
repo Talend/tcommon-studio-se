@@ -538,6 +538,12 @@ public class RepositoryToComponentProperty {
             } else {
                 return TalendQuoteUtils.addQuotes(connection.getValue(connection.getProxyPassword(), false));
             }
+        } else if ("OAUTH_TOKEN_FILE".equals(value)) { //$NON-NLS-1$
+            if (isContextMode(connection, connection.getToken())) {
+                return connection.getToken();
+            } else {
+                return TalendQuoteUtils.addQuotes(connection.getToken());
+            }
         } else if ("TIMEOUT".equals(value)) { //$NON-NLS-1$
             if (isContextMode(connection, connection.getTimeOut())) {
                 return connection.getTimeOut();
