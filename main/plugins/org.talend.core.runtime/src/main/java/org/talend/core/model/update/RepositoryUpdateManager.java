@@ -2367,4 +2367,28 @@ public abstract class RepositoryUpdateManager {
         this.deletedOrReselectTablesMap = deletedOrReselectTablesMap;
     }
 
+    public static boolean updateDQPattern(Item patternItem) {
+        List<IRepositoryViewObject> updateList = new ArrayList<IRepositoryViewObject>();
+        IProxyRepositoryFactory factory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
+        List<Relation> relations = RelationshipItemBuilder.getInstance().getItemsRelatedTo(patternItem.getProperty().getId(),
+                RelationshipItemBuilder.LATEST_VERSION, RelationshipItemBuilder.PATTERN_RELATION);
+
+        RepositoryUpdateManager repositoryUpdateManager = new RepositoryUpdateManager(patternItem, relations) {
+
+            @Override
+            public Set<EUpdateItemType> getTypes() {
+                Set<EUpdateItemType> types = new HashSet<EUpdateItemType>();
+                types.add(EUpdateItemType.NODE_PROPERTY);
+                types.add(EUpdateItemType.JOB_PROPERTY_EXTRA);
+                types.add(EUpdateItemType.JOB_PROPERTY_STATS_LOGS);
+                types.add(EUpdateItemType.JOB_PROPERTY_HEADERFOOTER);
+                types.add(EUpdateItemType.JOB_PROPERTY_STORM);
+
+                return types;
+            }
+
+        };
+        return repositoryUpdateManager.doWork(true, false);
+    }    
+
 }

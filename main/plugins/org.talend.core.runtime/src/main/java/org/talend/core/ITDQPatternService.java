@@ -12,7 +12,9 @@
 // ============================================================================
 package org.talend.core;
 
+import org.talend.core.model.process.IElement;
 import org.talend.core.model.process.IElementParameter;
+import org.talend.core.model.properties.Item;
 
 /**
  * DOC bZhou class global comment. Detailled comment
@@ -38,4 +40,10 @@ public interface ITDQPatternService extends ITDQService {
      * @param patternParam
      */
     public void overridePatternList(IElementParameter dbTypeParam, IElementParameter patternParam);
+
+    public void selectPattern(IElementParameter typeParam, IElement elem);
+
+    public boolean updateJobForPattern(IElement node, Item item);
+
+    public String getPatternDisplayName(Item item);
 }
