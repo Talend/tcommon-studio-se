@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.eclipse.core.runtime.Path;
 import org.ops4j.pax.url.mvn.MavenResolver;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.ServiceReference;
@@ -72,6 +73,8 @@ public class ModuleNeeded {
     private String moduleLocaion;
 
     private String mavenUri;
+
+    private boolean dynamic;
 
     public static final String SINGLE_QUOTE = "'"; //$NON-NLS-1$
 
@@ -147,7 +150,7 @@ public class ModuleNeeded {
 
     /**
      * creates ModuleNeeded from its maven uri. the modeule name is the artifact_ID + "." + artifact_type
-     * 
+     *
      * @param context
      * @param informationMsg
      * @param required
@@ -258,8 +261,11 @@ public class ModuleNeeded {
 
     public void setModuleName(String moduleName) {
         if (moduleName != null) {
-            this.moduleName = moduleName.replace(QUOTATION_MARK, "").replace(SINGLE_QUOTE, //$NON-NLS-1$
-                    ""); //$NON-NLS-1$
+            String mn = moduleName.replace(QUOTATION_MARK, "").replace(SINGLE_QUOTE, ""); //$NON-NLS-1$ //$NON-NLS-2$
+            if (mn.indexOf("\\") != -1 || mn.indexOf("/") != -1) { //$NON-NLS-1$ //$NON-NLS-2$
+                mn = new Path(mn).lastSegment();
+            }
+            this.moduleName = mn;
         } else {
             this.moduleName = moduleName;
         }
@@ -420,7 +426,7 @@ public class ModuleNeeded {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -443,7 +449,7 @@ public class ModuleNeeded {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -557,7 +563,7 @@ public class ModuleNeeded {
 
     /**
      * Getter for mavenUriSnapshot.
-     * 
+     *
      * @return the mavenUriSnapshot
      */
     public String getMavenUri() {
@@ -566,7 +572,7 @@ public class ModuleNeeded {
 
     /**
      * Sets the mavenUrl.
-     * 
+     *
      * @param mavenUrl the mavenUrl to set
      */
     public void setMavenUri(String mavenUri) {
@@ -588,4 +594,13 @@ public class ModuleNeeded {
         }
         return uri;
     }
+
+    public boolean isDynamic() {
+        return this.dynamic;
+    }
+
+    public void setDynamic(boolean dynamic) {
+        this.dynamic = dynamic;
+    }
+
 }

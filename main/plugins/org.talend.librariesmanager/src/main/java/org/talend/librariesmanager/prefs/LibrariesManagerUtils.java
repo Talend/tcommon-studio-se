@@ -95,7 +95,8 @@ public class LibrariesManagerUtils {
         }
 
         for (ModuleNeeded module : nodeModulesList) {
-            if (module.getStatus() == ELibraryInstallStatus.NOT_INSTALLED && module.isRequired(node.getElementParameters())) {
+            if (!module.isDynamic() && module.getStatus() == ELibraryInstallStatus.NOT_INSTALLED
+                    && module.isRequired(node.getElementParameters())) {
                 updatedModules.add(module);
             }
 
