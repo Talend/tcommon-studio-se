@@ -365,5 +365,184 @@ public class StringHandling {
 	        return string.substring(st);
     	}
     }
+    
+
+	/**
+	 * 
+	 * @param string : Passes the strings you want to search.
+	 * @param start : Must be an integer. The position in the string where you want to start counting.
+	 * @param length : Must be an integer greater than 0. The number of characters you want SUBSTR to return
+	 * @return
+	 * {example} SUBSTR("This is a test.",1,5) #his i
+	 */
+	
+	public String SUBSTR(String string, int start, Integer length) {
+
+		if (string == null) {
+			return null;
+		}
+		if (start > string.length()) {
+			return "";
+		}
+		if (start > 0) {
+			start--;
+		} else if (start < 0) {
+			start = string.length() + start;
+			if (start < 0) {
+				start = 0;
+			}
+		}
+		String result;
+		if (length == null || (length + start) > string.length()) {
+			result = string.substring(start);
+		} else if (length <= 0) {
+			return "";
+		} else {
+			result = string.substring(start, length + start);
+		}
+		return result;
+
+	}
+	/**
+	 * 
+	 * @param value : Any string value. Passes the strings you want to modify.
+	 * @param trim_set : Any string value. Passes the characters you want to remove from the end of the string.
+	 * @return
+	 * {example} LTRIM("aatestaa","a") #testaa
+	 */
+	
+	public String LTRIM(String value, String trim_set) {
+		if (value == null) {
+			return null;
+		}
+		int len = value.length();
+		int st = 0;
+		char[] val = value.toCharArray();
+		if (trim_set == null) {
+
+			while ((st < len) && (val[st] <= ' ')) {
+				st++;
+			}
+			return st > 0 ? value.substring(st) : value;
+		} else {
+			while (value.indexOf(trim_set, st) == st) {
+				st += trim_set.length();
+			}
+			return st > 0 ? value.substring(st) : value;
+		}
+
+	}
+
+	public String LTRIM(String value) {
+		return LTRIM(value, null);
+	}
+	
+	/**
+	 * 
+	 * @param value : Any string value. Passes the strings you want to modify.
+	 * @param trim_set : Any string value. Passes the characters you want to remove from the beginning of the first string
+	 * @return
+	 * {example} RTRIM("aatestaa","a") #aatest
+	 */
+
+	public String RTRIM(String value, String trim_set) {
+		if (value == null) {
+			return null;
+		}
+		int len = value.length();
+		char[] val = value.toCharArray();
+		if (trim_set == null) {
+
+			while ((0 < len) && (val[len - 1] <= ' ')) {
+				len--;
+			}
+			return len < value.length() ? value.substring(0, len) : value;
+		} else {
+			int temp = 0;
+			while (value.lastIndexOf(trim_set) == len - trim_set.length()) {
+				len -= trim_set.length();
+				value = value.substring(0, len);
+			}
+			return value;
+
+		}
+
+	}
+
+	public String RTRIM(String value) {
+		return RTRIM(value, null);
+	}
+	/**
+	 * 
+	 * @param first_string : The strings you want to change.
+	 * @param length : Must be a positive integer literal. Specifies the length you want each string to be.
+	 * @param second_string : Can be any string value. The characters you want to append to the left-side of the first_string values.
+	 * @return
+	 * {example} LPAD("test",6,"a") #aatest
+	 */
+
+	public String LPAD(String first_string, int length, String second_string) {
+
+		if (first_string == null || length < 1) {
+			return null;
+		}
+
+		int OriginLength = first_string.length();
+		if (OriginLength >= length) {
+			return first_string;
+		}
+		for (int i = OriginLength; i < length; i++) {
+			if (second_string == null) {
+				first_string = " " + first_string;
+			} else {
+				first_string = second_string + first_string;
+				if(first_string.length()>length){
+					first_string = first_string.substring(first_string.length()-length);
+				}
+			}
+		}
+
+		return first_string;
+	}
+
+	public String LPAD(String first_string, int length) {
+		return LPAD(first_string, length, null);
+	}
+	/**
+	 * 
+	 * @param first_string : The strings you want to change.
+	 * @param length : Must be a positive integer literal. Specifies the length you want each string to be.
+	 * @param second_string : Any string value. Passes the string you want to append to the right-side of the first_string values.
+	 * @return
+	 * {example} RPAD("test",6,"a") #testaa
+	 */
+
+	public String RPAD(String first_string, int length, String second_string) {
+
+		if (first_string == null || length < 1) {
+			return null;
+		}
+
+		int OriginLength = first_string.length();
+		if (OriginLength >= length) {
+			return first_string;
+		}
+		for (int i = OriginLength; i < length; i++) {
+			if (second_string == null) {
+				first_string = first_string + " ";
+			} else {
+				first_string = first_string + second_string;
+				if(first_string.length()>length){
+					first_string = first_string.substring(0, length);
+				}
+			}
+		}
+
+		return first_string;
+	}
+
+	public String RPAD(String first_string, int length) {
+		return RPAD(first_string, length, null);
+	}
 
 }
