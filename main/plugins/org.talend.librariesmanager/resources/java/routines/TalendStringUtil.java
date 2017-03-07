@@ -161,7 +161,6 @@ public class TalendStringUtil<T,Y> {
 	 * values. When you validate the expression above, you receive the following
 	 * mismatching datatypes.
 	 */
-
 	public Y DECODE(T value, Y defaultValue, Map<T, Y> search) {
 		if (search.containsKey(value)) {
 			return search.get(value);
@@ -169,15 +168,6 @@ public class TalendStringUtil<T,Y> {
 			return defaultValue;
 		}
 	}
-
-	// this is more fast
-	public String DECODE(String value, String defaultValue, Map<String, String> search) {
-		if (search.containsKey(value)) {
-			return search.get(value);
-		} else {
-			return defaultValue;
-		}
-	}	
 	
 	/**
 	 * Searches a port for a value you specify. If the function finds the value, it returns a result value, which you define. 
@@ -189,7 +179,6 @@ public class TalendStringUtil<T,Y> {
 	 * @param searchAndResult : pairs of search-value & result-value. You can enter one or more pairs of values.
 	 * @return result-value if the search finds a matching value. Default-value if the search does not find a matching value.
 	 */
-
 	public Y DECODE(T value, Y defaultValue, T... searchAndResult) {
 		if (searchAndResult.length % 2 != 0) {
 			throw new IllegalArgumentException("Parameter searchAndResult should be in pair.");
@@ -197,17 +186,6 @@ public class TalendStringUtil<T,Y> {
 		Map<T, Y> search = new HashMap<T, Y>();
 		for (int i = 0; i < searchAndResult.length; i += 2) {
 			search.put(searchAndResult[i], (Y) searchAndResult[i + 1]);
-		}
-		return DECODE(value, defaultValue, search);
-	}
-
-	public String DECODE(String value, String defaultValue, String... searchAndResult) {
-		if (searchAndResult.length % 2 != 0) {
-			throw new IllegalArgumentException("Parameter searchAndResult should be in pair.");
-		}
-		Map<String, String> search = new HashMap<String, String>();
-		for (int i = 0; i < searchAndResult.length; i += 2) {
-			search.put(searchAndResult[i], searchAndResult[i + 1]);
 		}
 		return DECODE(value, defaultValue, search);
 	}

@@ -1266,6 +1266,7 @@ public class TalendDate {
         test4.start();
         test5.start();
     }
+    
     /**
      * 
      * @param string Must be a string datatype. Passes the values that you want to convert.
@@ -1277,7 +1278,6 @@ public class TalendDate {
      * {example} TO_DATE("2015-11-21 13:23:45","yyyy-MM-dd HH:mm:ss") #Sat Nov 21 13:23:45 CST 2015
      * 
      */
-    
     public Date TO_DATE(String string, String format) throws ParseException {
 		String defaultFormat = "MM/DD/yyyy HH:mm:ss.sss";
 		if (string == null) {
@@ -1329,6 +1329,7 @@ public class TalendDate {
 
 		return format;
 	}
+	
 	/**
 	 * 
 	 * @param date  Passes the values you want to change
@@ -1339,7 +1340,6 @@ public class TalendDate {
 	 * @throws ParseException
 	 * {example} ADD_TO_DATE(new Date(1464576463231l), "HH",2) #Mon May 30 12:47:43 CST 2016
 	 */
-
 	public Date ADD_TO_DATE(Date date, String format, int amount) throws ParseException{
 		if (date == null || format == null) {
 			return null;

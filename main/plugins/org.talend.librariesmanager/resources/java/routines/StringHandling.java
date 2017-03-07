@@ -375,7 +375,6 @@ public class StringHandling {
 	 * @return
 	 * {example} SUBSTR("This is a test.",1,5) #his i
 	 */
-	
 	public String SUBSTR(String string, int start, Integer length) {
 
 		if (string == null) {
@@ -403,6 +402,7 @@ public class StringHandling {
 		return result;
 
 	}
+	
 	/**
 	 * 
 	 * @param value : Any string value. Passes the strings you want to modify.
@@ -410,7 +410,6 @@ public class StringHandling {
 	 * @return
 	 * {example} LTRIM("aatestaa","a") #testaa
 	 */
-	
 	public String LTRIM(String value, String trim_set) {
 		if (value == null) {
 			return null;
@@ -444,7 +443,6 @@ public class StringHandling {
 	 * @return
 	 * {example} RTRIM("aatestaa","a") #aatest
 	 */
-
 	public String RTRIM(String value, String trim_set) {
 		if (value == null) {
 			return null;
@@ -472,6 +470,7 @@ public class StringHandling {
 	public String RTRIM(String value) {
 		return RTRIM(value, null);
 	}
+	
 	/**
 	 * 
 	 * @param first_string : The strings you want to change.
@@ -480,7 +479,6 @@ public class StringHandling {
 	 * @return
 	 * {example} LPAD("test",6,"a") #aatest
 	 */
-
 	public String LPAD(String first_string, int length, String second_string) {
 
 		if (first_string == null || length < 1) {
@@ -508,6 +506,7 @@ public class StringHandling {
 	public String LPAD(String first_string, int length) {
 		return LPAD(first_string, length, null);
 	}
+	
 	/**
 	 * 
 	 * @param first_string : The strings you want to change.
@@ -516,7 +515,6 @@ public class StringHandling {
 	 * @return
 	 * {example} RPAD("test",6,"a") #testaa
 	 */
-
 	public String RPAD(String first_string, int length, String second_string) {
 
 		if (first_string == null || length < 1) {

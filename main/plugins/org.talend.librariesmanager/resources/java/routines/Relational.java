@@ -52,7 +52,6 @@ public class Relational {
      * 
      * {example} ISNULL(null)
      */
-    
 	public int isNull(Object value) {
 		if (value == null) {
 			return 1;
