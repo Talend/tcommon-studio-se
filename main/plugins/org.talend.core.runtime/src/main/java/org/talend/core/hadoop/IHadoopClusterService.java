@@ -230,7 +230,9 @@ public interface IHadoopClusterService extends IService {
      */
     public Item getHadoopClusterItemById(String id);
 
-    public String getCustomConfsJarName(String clusterId);
+    public String getCustomConfsJarName(String id);
+
+    public String getCustomConfsJarName(String id, boolean createJarIfNotExist, boolean addExtraIds);
 
     public void useCustomConfsJarIfNeeded(List<ModuleNeeded> modulesNeeded, String clusterId);
 
