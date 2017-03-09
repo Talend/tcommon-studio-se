@@ -38,6 +38,7 @@ import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ICoreService;
 import org.talend.core.IRepositoryContextUpdateService;
 import org.talend.core.IService;
+import org.talend.core.ITDQPatternService;
 import org.talend.core.database.conn.ConnParameterKeys;
 import org.talend.core.database.conn.template.EDatabaseConnTemplate;
 import org.talend.core.hadoop.BigDataBasicUtil;
@@ -507,7 +508,24 @@ public abstract class RepositoryUpdateManager {
         if (checkHadoopRelevances(object)) {
             return true;
         }
+        
+        if(checkForPattern(object)){
+            return true;
+        }
 
+        return false;
+    }
+
+    //Added TDQ-11688 20170309 yyin
+    private boolean checkForPattern(Object object) {
+        ITDQPatternService service = null;
+        if(GlobalServiceRegister.getDefault().isServiceRegistered(ITDQPatternService.class)){
+            service = (ITDQPatternService) GlobalServiceRegister.getDefault().getService(ITDQPatternService.class);
+        }
+        if (service != null) {
+            return service.isPattern(parameter);
+        }
+        
         return false;
     }
 
@@ -2367,6 +2385,7 @@ public abstract class RepositoryUpdateManager {
         this.deletedOrReselectTablesMap = deletedOrReselectTablesMap;
     }
 
+    //Added TDQ-11688 20170309 yyin
     public static boolean updateDQPattern(Item patternItem) {
         List<IRepositoryViewObject> updateList = new ArrayList<IRepositoryViewObject>();
         IProxyRepositoryFactory factory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
@@ -2379,10 +2398,6 @@ public abstract class RepositoryUpdateManager {
             public Set<EUpdateItemType> getTypes() {
                 Set<EUpdateItemType> types = new HashSet<EUpdateItemType>();
                 types.add(EUpdateItemType.NODE_PROPERTY);
-                types.add(EUpdateItemType.JOB_PROPERTY_EXTRA);
-                types.add(EUpdateItemType.JOB_PROPERTY_STATS_LOGS);
-                types.add(EUpdateItemType.JOB_PROPERTY_HEADERFOOTER);
-                types.add(EUpdateItemType.JOB_PROPERTY_STORM);
 
                 return types;
             }

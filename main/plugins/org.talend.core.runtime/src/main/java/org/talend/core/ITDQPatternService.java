@@ -43,7 +43,11 @@ public interface ITDQPatternService extends ITDQService {
 
     public void selectPattern(IElementParameter typeParam, IElement elem);
 
-    public boolean updateJobForPattern(IElement node, Item item);
+ //   public boolean updateJobForPattern(IElement node, Item item);
+    
+    public String getRegex(IElement node, Item item);
 
     public String getPatternDisplayName(Item item);
+
+    public boolean isPattern(Object parameter);
 }
