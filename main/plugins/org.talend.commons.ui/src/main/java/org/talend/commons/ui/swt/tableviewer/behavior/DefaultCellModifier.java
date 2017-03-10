@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.viewers.ICellModifier;
 import org.eclipse.swt.widgets.TableItem;
 import org.talend.commons.ui.runtime.i18n.Messages;
+import org.talend.commons.ui.runtime.swt.tableviewer.TableViewerCreatorColumnNotModifiable;
 import org.talend.commons.ui.runtime.swt.tableviewer.TableViewerCreatorNotModifiable;
 import org.talend.commons.ui.runtime.swt.tableviewer.behavior.ITableCellValueModifiedListener;
 import org.talend.commons.ui.runtime.swt.tableviewer.behavior.TableCellValueModifiedEvent;
@@ -54,8 +55,8 @@ public class DefaultCellModifier implements ICellModifier {
      * @see org.eclipse.jface.viewers.ICellModifier#canModify(java.lang.Object, java.lang.String)
      */
     public boolean canModify(Object bean, String idColumn) {
-        TableViewerCreatorColumn column = tableViewerCreator.getColumn(idColumn);
-        if (column.getColumnCellModifier() != null) {
+    	TableViewerCreatorColumn column = tableViewerCreator.getModifiableColumn(idColumn);
+        if (column != null && column.getColumnCellModifier() != null) {
             return column.getColumnCellModifier().canModify(bean);
         }
         return tableViewerCreator.getColumn(idColumn).isModifiable();
@@ -68,7 +69,7 @@ public class DefaultCellModifier implements ICellModifier {
      */
     @SuppressWarnings("unchecked")
     public Object getValue(Object bean, String idColumn) {
-        TableViewerCreatorColumn column = tableViewerCreator.getColumn(idColumn);
+    	TableViewerCreatorColumnNotModifiable column = tableViewerCreator.getColumn(idColumn);
         ModifiedObjectInfo modifiedObjectInfo = this.tableViewerCreator.getModifiedObjectInfo();
         modifiedObjectInfo.setCurrentModifiedBean(bean);
         modifiedObjectInfo.setCurrentModifiedColumn(column);
@@ -108,7 +109,7 @@ public class DefaultCellModifier implements ICellModifier {
             return;
         }
         Object bean = ((TableItem) tableItem).getData();
-        TableViewerCreatorColumn column = tableViewerCreator.getColumn(idColumn);
+        TableViewerCreatorColumn column = tableViewerCreator.getModifiableColumn(idColumn);
 
         boolean modifiedByColumnCellModifier = false;
         if (column.getColumnCellModifier() != null) {
@@ -154,7 +155,7 @@ public class DefaultCellModifier implements ICellModifier {
      * @param cellEditorAppliedValue
      * @param newValue
      */
-    private void fireCellEditorApplied(TableItem tableItem, Object bean, TableViewerCreatorColumn column,
+    private void fireCellEditorApplied(TableItem tableItem, Object bean, TableViewerCreatorColumnNotModifiable column,
             Object cellEditorAppliedValue, Object previousValue, Object newValue) {
         TableCellValueModifiedEvent event = new TableCellValueModifiedEvent(tableItem, bean, column, cellEditorAppliedValue,
                 newValue);

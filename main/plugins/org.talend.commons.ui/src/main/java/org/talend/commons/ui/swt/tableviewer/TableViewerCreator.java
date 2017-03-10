@@ -20,6 +20,7 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.talend.commons.ui.runtime.i18n.Messages;
+import org.talend.commons.ui.runtime.swt.tableviewer.TableViewerCreatorColumnNotModifiable;
 import org.talend.commons.ui.runtime.swt.tableviewer.TableViewerCreatorNotModifiable;
 import org.talend.commons.ui.runtime.swt.tableviewer.behavior.ITableCellValueModifiedListener;
 import org.talend.commons.ui.runtime.swt.tableviewer.data.AccessorUtils;
@@ -344,14 +345,11 @@ public class TableViewerCreator<B> extends TableViewerCreatorNotModifiable<B> im
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.commons.ui.swt.tableviewer.TableViewerCreatorNotModifiable#getColumn(java.lang.String)
-     */
-    @Override
-    public TableViewerCreatorColumn getColumn(String idProperty) {
-        return (TableViewerCreatorColumn) super.getColumn(idProperty);
-    }
-
+	public TableViewerCreatorColumn getModifiableColumn(String idProperty) {
+		TableViewerCreatorColumnNotModifiable column = super.getColumn(idProperty);
+		if (column instanceof TableViewerCreatorColumn) {
+			return (TableViewerCreatorColumn) column;
+		}
+		return null;
+	}
 }
