@@ -542,5 +542,174 @@ public class StringHandling {
 	public String RPAD(String first_string, int length) {
 		return RPAD(first_string, length, null);
 	}
+	
+	
+	
+    /**
+     * 
+     * @param string Can be a String
+     * @param search_value Can be a String 
+     * @param start 
+     * 		The default is 1, meaning that INSTR starts the search at the first character in the string.
+     * @param occurrence
+     * 		If the search value appears more than once in the string, you can specify which occurrence you want to search for.
+     * @param comparison_type
+     * 		default 0: INSTR performs a linguistic string comparison. 1: INSTR performs a binary string comparison.
+     * @return
+     * {example} new StringHandling<String>.INSTR("This is a test","t",1,2,0) #14
+     */
+	
+    public Integer INSTR(String string, String search_value, Integer start, Integer occurrence) {
+
+        int defultStart = 1;
+        int defultOccurrence = 1;
+
+        if (start != null && start != 0) {
+            defultStart = start;
+        }
+        if (occurrence != null) {
+            if (occurrence <= 0) {
+                throw new IllegalArgumentException(
+                        "The occurrence argument can only accept a positive integer greater than 0.");
+            }
+            defultOccurrence = occurrence;
+        }
+
+        Integer result = 0;
+
+        // linguistic string comparison.
+        if (string == null || string.equals("") || search_value == null || search_value.equals("")
+                || Math.abs(defultStart) >= string.length()) {
+            return null;
+        }
+        if (defultStart < 0) {
+            string = string.substring(0, string.length() + defultStart + 1);
+            int temp = string.lastIndexOf(search_value);
+            while (temp != -1 && defultOccurrence != 1) {
+                string = string.substring(0, temp);
+                defultOccurrence--;
+                temp = string.lastIndexOf(search_value);
+            }
+            return ++temp;
+
+        } else {
+            string = string.substring(defultStart - 1);
+
+            if (defultOccurrence != 1) {
+                int temp;
+                do {
+                    temp = string.indexOf(search_value) + 1;
+                    string = string.substring(temp);
+                    result += temp;
+                    defultOccurrence--;
+                } while (defultOccurrence != 0);
+                if (temp == 0) {
+                    result = 0;
+                }
+
+            } else {
+                result = string.indexOf(search_value) + 1;
+            }
+
+            return result;
+        }
+
+    }
+    
+    /**
+     * 
+     * @param string Can be a byte[]
+     * @param search_value Can be byte[]
+     * @param start 
+     * 		The default is 1, meaning that INSTR starts the search at the first character in the string.
+     * @param occurrence
+     * 		If the search value appears more than once in the string, you can specify which occurrence you want to search for.
+     * @param comparison_type
+     * 		default 0: INSTR performs a linguistic string comparison. 1: INSTR performs a binary string comparison.
+     * @return
+     * {example} new StringHandling<String>.INSTR("This is a test".getBytes(),"t".getBytes(),1,2,0) #14
+     */
+
+    public Integer INSTR(byte[] string, byte[] search_value, Integer start, Integer occurrence) {
+
+        int defultStart = 1;
+        int defultOccurrence = 1;
+
+        // binary string comparison
+        if (string == null || search_value == null || Math.abs(defultStart) >= string.length) {
+            return null;
+        }
+        if (start != null && start != 0) {
+            defultStart = start;
+        }
+        int max = string.length - 1;
+
+        if (occurrence != null) {
+            if (occurrence <= 0) {
+                throw new IllegalArgumentException(
+                        "The occurrence argument can only accept a positive integer greater than 0.");
+            }
+            defultOccurrence = occurrence;
+        }
+
+        if (defultStart > 0) {
+            return byteINSTR(string, search_value, defultStart, defultOccurrence);
+        } else {
+            int total = string.length;
+            byte[] revers = new byte[total];
+            for (int i = 0; i < total; i++) {
+                revers[max - i] = string[i];
+            }
+            defultStart = -defultStart;
+            int result = byteINSTR(revers, search_value, defultStart, defultOccurrence);
+            if (result == 0) {
+                return 0;
+            }
+
+            return total - result + 1;
+        }
+    }
+
+    private int byteINSTR(byte[] string, byte[] search_value, int defultStart, int defultOccurrence) {
+        int max = string.length - 1;
+        for (int i = defultStart - 1; i <= max; i++) {
+            /* Look for first character. */
+            if (string[i] != search_value[0]) {
+                while (++i <= max && string[i] != search_value[0])
+                    ;
+            }
+            if (i > max) {
+                return 0;
+            }
+            if (search_value.length > 1) {
+
+                /* Found first character, now look at the rest of v2 */
+                if (i <= max) {
+                    int j = i + 1;
+                    int end = j + search_value.length - 1;
+                    for (int k = 1; j < max && k < search_value.length && string[j] == search_value[k]; j++, k++)
+                        ;
+
+                    if (j == end) {
+                        /* Found whole string. */
+                        if (defultOccurrence == 1) {
+                            return i - defultStart + 2;
+                        } else {
+                            defultOccurrence--;
+                            continue;
+                        }
+                    }
+                }
+            } else {
+                if (defultOccurrence == 1) {
+                    return i - defultStart + 2;
+                } else {
+                    defultOccurrence--;
+                    continue;
+                }
+            }
+        }
+        return 0;
+    }
 
 }
