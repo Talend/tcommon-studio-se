@@ -561,48 +561,48 @@ public class StringHandling {
 	
     public Integer INSTR(String string, String search_value, Integer start, Integer occurrence) {
 
-        int defultStart = 1;
-        int defultOccurrence = 1;
+        int defaultStart = 1;
+        int defaultOccurrence = 1;
 
         if (start != null && start != 0) {
-            defultStart = start;
+            defaultStart = start;
         }
         if (occurrence != null) {
             if (occurrence <= 0) {
                 throw new IllegalArgumentException(
                         "The occurrence argument can only accept a positive integer greater than 0.");
             }
-            defultOccurrence = occurrence;
+            defaultOccurrence = occurrence;
         }
 
         Integer result = 0;
 
         // linguistic string comparison.
         if (string == null || string.equals("") || search_value == null || search_value.equals("")
-                || Math.abs(defultStart) >= string.length()) {
+                || Math.abs(defaultStart) >= string.length()) {
             return null;
         }
-        if (defultStart < 0) {
-            string = string.substring(0, string.length() + defultStart + 1);
+        if (defaultStart < 0) {
+            string = string.substring(0, string.length() + defaultStart + 1);
             int temp = string.lastIndexOf(search_value);
-            while (temp != -1 && defultOccurrence != 1) {
+            while (temp != -1 && defaultOccurrence != 1) {
                 string = string.substring(0, temp);
-                defultOccurrence--;
+                defaultOccurrence--;
                 temp = string.lastIndexOf(search_value);
             }
             return ++temp;
 
         } else {
-            string = string.substring(defultStart - 1);
+            string = string.substring(defaultStart - 1);
 
-            if (defultOccurrence != 1) {
+            if (defaultOccurrence != 1) {
                 int temp;
                 do {
                     temp = string.indexOf(search_value) + 1;
                     string = string.substring(temp);
                     result += temp;
-                    defultOccurrence--;
-                } while (defultOccurrence != 0);
+                    defaultOccurrence--;
+                } while (defaultOccurrence != 0);
                 if (temp == 0) {
                     result = 0;
                 }
@@ -632,15 +632,15 @@ public class StringHandling {
 
     public Integer INSTR(byte[] string, byte[] search_value, Integer start, Integer occurrence) {
 
-        int defultStart = 1;
-        int defultOccurrence = 1;
+        int defaultStart = 1;
+        int defaultOccurrence = 1;
 
         // binary string comparison
-        if (string == null || search_value == null || Math.abs(defultStart) >= string.length) {
+        if (string == null || search_value == null || Math.abs(defaultStart) >= string.length) {
             return null;
         }
         if (start != null && start != 0) {
-            defultStart = start;
+            defaultStart = start;
         }
         int max = string.length - 1;
 
@@ -649,19 +649,19 @@ public class StringHandling {
                 throw new IllegalArgumentException(
                         "The occurrence argument can only accept a positive integer greater than 0.");
             }
-            defultOccurrence = occurrence;
+            defaultOccurrence = occurrence;
         }
 
-        if (defultStart > 0) {
-            return byteINSTR(string, search_value, defultStart, defultOccurrence);
+        if (defaultStart > 0) {
+            return byteINSTR(string, search_value, defaultStart, defaultOccurrence);
         } else {
             int total = string.length;
             byte[] revers = new byte[total];
             for (int i = 0; i < total; i++) {
                 revers[max - i] = string[i];
             }
-            defultStart = -defultStart;
-            int result = byteINSTR(revers, search_value, defultStart, defultOccurrence);
+            defaultStart = -defaultStart;
+            int result = byteINSTR(revers, search_value, defaultStart, defaultOccurrence);
             if (result == 0) {
                 return 0;
             }
@@ -670,9 +670,9 @@ public class StringHandling {
         }
     }
 
-    private int byteINSTR(byte[] string, byte[] search_value, int defultStart, int defultOccurrence) {
+    private int byteINSTR(byte[] string, byte[] search_value, int defaultStart, int defaultOccurrence) {
         int max = string.length - 1;
-        for (int i = defultStart - 1; i <= max; i++) {
+        for (int i = defaultStart - 1; i <= max; i++) {
             /* Look for first character. */
             if (string[i] != search_value[0]) {
                 while (++i <= max && string[i] != search_value[0])
@@ -692,19 +692,19 @@ public class StringHandling {
 
                     if (j == end) {
                         /* Found whole string. */
-                        if (defultOccurrence == 1) {
-                            return i - defultStart + 2;
+                        if (defaultOccurrence == 1) {
+                            return i - defaultStart + 2;
                         } else {
-                            defultOccurrence--;
+                            defaultOccurrence--;
                             continue;
                         }
                     }
                 }
             } else {
-                if (defultOccurrence == 1) {
-                    return i - defultStart + 2;
+                if (defaultOccurrence == 1) {
+                    return i - defaultStart + 2;
                 } else {
-                    defultOccurrence--;
+                    defaultOccurrence--;
                     continue;
                 }
             }
