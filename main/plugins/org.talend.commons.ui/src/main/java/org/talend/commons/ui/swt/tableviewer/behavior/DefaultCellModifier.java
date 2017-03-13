@@ -110,7 +110,9 @@ public class DefaultCellModifier implements ICellModifier {
         }
         Object bean = ((TableItem) tableItem).getData();
         TableViewerCreatorColumn column = tableViewerCreator.getModifiableColumn(idColumn);
-
+		if (column == null) {
+			return;
+		}
         boolean modifiedByColumnCellModifier = false;
         if (column.getColumnCellModifier() != null) {
             modifiedByColumnCellModifier = column.getColumnCellModifier().modify(bean, value);
