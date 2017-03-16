@@ -254,4 +254,5 @@ public interface IHadoopClusterService extends IService {
 
     public String getRepositoryTypeOfHadoopSubItem(Item subItem);
 
+    public boolean isUseSparkProperties(Connection connection);
 }

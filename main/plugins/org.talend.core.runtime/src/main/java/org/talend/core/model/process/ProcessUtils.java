@@ -28,6 +28,7 @@ import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ITDQItemService;
 import org.talend.core.PluginChecker;
 import org.talend.core.hadoop.IHadoopClusterService;
+import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.JobletProcessItem;
 import org.talend.core.model.properties.ProcessItem;
@@ -69,7 +70,7 @@ public final class ProcessUtils {
 
     private static List<IProcess> fakeProcesses = new ArrayList<IProcess>();
 
-    private static IHadoopClusterService hadoopClusterService = null;
+    public static IHadoopClusterService hadoopClusterService = null;
     static {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IHadoopClusterService.class)) {
             hadoopClusterService = (IHadoopClusterService) GlobalServiceRegister.getDefault().getService(
@@ -276,6 +277,26 @@ public final class ProcessUtils {
             ExceptionHandler.process(et);
         }
         return null;
+    }
+
+    public static boolean isUseSparkProperties(Connection connection) {
+        if (hadoopClusterService != null) {
+            return hadoopClusterService.isUseSparkProperties(connection);
+        }
+        return false;
+    }
+
+    public static Object updateSparkProperties(Object obj) {
+        List<Map> updatedList = new ArrayList<Map>();
+        if (obj instanceof List) {
+            List<Map> list = (ArrayList) obj;
+            for (Map map : list) {
+                if (map.get("BUILDIN") != null && map.get("BUILDIN").equals("TRUE")) {
+                    updatedList.add(map);
+                }
+            }
+        }
+        return updatedList;
     }
 
     private static void checkAllVerSionLatest(List<IRepositoryViewObject> repositoryObjects, IRepositoryViewObject object) {
