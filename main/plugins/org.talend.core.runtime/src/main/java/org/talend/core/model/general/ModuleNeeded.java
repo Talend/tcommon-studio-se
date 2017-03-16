@@ -407,7 +407,7 @@ public class ModuleNeeded {
 
     @Override
     public String toString() {
-        if (bundleName == null) {
+        if (bundleName == null || "".equals(bundleName.trim())) {
             return moduleName;
         } else if (bundleVersion == null) {
             return moduleName + "[" + bundleName + "]";
@@ -426,7 +426,7 @@ public class ModuleNeeded {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -449,7 +449,7 @@ public class ModuleNeeded {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

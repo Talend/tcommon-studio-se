@@ -119,7 +119,8 @@ public interface IRunProcessService extends IService {
 
     public void updateLibraries(Set<ModuleNeeded> jobModuleList, IProcess process);
 
-    public void updateLibraries(Set<ModuleNeeded> jobModuleList, IProcess process, Set<ModuleNeeded> alreadyRetrievedModules);
+    public void updateLibraries(Set<ModuleNeeded> jobModuleList, IProcess process, Set<ModuleNeeded> alreadyRetrievedModules)
+            throws ProcessorException;
 
     public void refreshView();
 
