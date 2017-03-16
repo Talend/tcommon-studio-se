@@ -1266,4 +1266,142 @@ public class TalendDate {
         test4.start();
         test5.start();
     }
+    
+    /**
+     * 
+     * @param string Must be a string datatype. Passes the values that you want to convert.
+     * @param format Enter a valid TO_DATE format string. The format string must match the parts of the string argument
+     * 		  default formate is "MM/DD/yyyy HH:mm:ss.sss" if not specified.
+     * @return Date 
+     * @throws ParseException
+     * {example} TO_DATE("1464576463231", "J") #Mon May 30 10:47:43 CST 2016
+     * {example} TO_DATE("2015-11-21 13:23:45","yyyy-MM-dd HH:mm:ss") #Sat Nov 21 13:23:45 CST 2015
+     * 
+     */
+    public Date TO_DATE(String string, String format) throws ParseException {
+		String defaultFormat = "MM/DD/yyyy HH:mm:ss.sss";
+		if (string == null) {
+			return null;
+		}
+		if (format != null) {
+			if (format.equals("J")) {
+				return new Date(Long.parseLong(string));
+			}
+			SimpleDateFormat sdf = new SimpleDateFormat(dateFormatConvert(format));
+			return sdf.parse(string);
+		} else {
+			SimpleDateFormat sdf = new SimpleDateFormat(defaultFormat);
+			return sdf.parse(string);
+		}
+
+	}
+
+	public Date TO_DATE(String string) throws ParseException {
+		return TO_DATE(string, null);
+	}
+
+	private String dateFormatConvert(String format) {
+		/**
+		 * we do not support the type list below: 
+		 * D : Day of week (1-7), where Sunday equals 1. 
+		 * NS: Nanoseconds (0-999999999). SSSSS: Seconds since midnight (00000 - 86399). 
+		 * US: Microseconds (0-999999). 
+		 * Q: Quarter of year (1-4), where January to March equals 1.
+		 */
+		format = format.replaceAll("Y", "y");
+		format = format.replaceAll("RR", "yy");
+		format = format.replaceAll("MONTH", "MMMM");
+		format = format.replaceAll("MON", "MMM");
+		format = format.replaceAll("WW", "w");// Week of year (01-53)
+		format = format.replaceAll("W", "F");// Week of month (1-5)
+		format = format.replaceAll("(AM|A.M.|PM|P.M.)", "a");
+		format = format.replaceAll("DY", "E");// Abbreviated three-character
+												// name for a day (for example,
+												// Wed).
+		format = format.replaceAll("DDD", "D");// Day of year (001-366,
+												// including leap years).
+		format = format.replaceAll("DD", "d");// Day of month (01-31).
+		format = format.replaceAll("(HH|HH12)", "hh");
+		format = format.replaceAll("HH24", "HH");
+		format = format.replaceAll("MS", "sss");
+		format = format.replaceAll("MI", "mm");
+		format = format.replaceAll("SS", "ss");
+
+		return format;
+	}
+	
+	/**
+	 * 
+	 * @param date  Passes the values you want to change
+	 * @param format A format string specifying the portion of the date value you want to change.For example, 'mm'.
+	 * @param amount An integer value specifying the amount of years, months, days, hours, 
+	 * 				and so on by which you want to change the date value.
+	 * @return Date  NULL if a null value is passed as an argument to the function.
+	 * @throws ParseException
+	 * {example} ADD_TO_DATE(new Date(1464576463231l), "HH",2) #Mon May 30 12:47:43 CST 2016
+	 */
+	public Date ADD_TO_DATE(Date date, String format, int amount) throws ParseException{
+		if (date == null || format == null) {
+			return null;
+		}
+		if (format != null) {
+			format = dateFormatADD_TO_DATE(format);
+		}
+		Long time = date.getTime();
+		Calendar calender = Calendar.getInstance();
+		calender.setTime(date);
+		switch (format) {
+		case "Y":
+			calender.add(Calendar.YEAR, amount);
+			time = calender.getTimeInMillis();
+			break;
+		case "MONTH":
+			calender.add(Calendar.MONTH, amount);
+			time = calender.getTimeInMillis();
+			break;
+		case "DAY":
+			time += amount * 24 * 60 * 60 * 1000;
+			break;
+		case "HH":
+			time += amount * 60 * 60 * 1000;
+			break;
+		case "MI":
+			time += amount * 60 * 1000;
+			break;
+		case "SS":
+			time += amount * 1000;
+			break;
+		case "MS":
+			time += amount;
+			break;
+		case "US":
+			time += amount / 1000;
+			break;
+		case "NS":
+			time += amount / 1000000;
+			break;
+		default:
+			throw new ParseException("Please enter a vaild format.", 0);
+		}
+		return new Date(time);
+
+	}
+
+	private String dateFormatADD_TO_DATE(String format) {
+		if (format.equals("Y") || format.equals("YY") || format.equals("YYY") || format.equals("YYYY")) {
+			return "Y";
+		}
+		if (format.equals("MONTH") || format.equals("MM") || format.equals("MON")) {
+			return "MONTH";
+		}
+		if (format.equals("D") || format.equals("DD") || format.equals("DDD") || format.equals("DAY")
+				|| format.equals("DY")) {
+			return "DAY";
+		}
+		if (format.equals("HH") || format.equals("HH12") || format.equals("HH24")) {
+			return "HH";
+		}
+		return format;
+
+	}
 }

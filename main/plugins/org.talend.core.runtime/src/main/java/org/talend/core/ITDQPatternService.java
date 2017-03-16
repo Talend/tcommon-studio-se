@@ -50,4 +50,6 @@ public interface ITDQPatternService extends ITDQService {
     public String getPatternDisplayName(Item item);
 
     public boolean isPattern(Object parameter);
+    
+    public boolean isSameName(Item pattern, String patternName);
 }

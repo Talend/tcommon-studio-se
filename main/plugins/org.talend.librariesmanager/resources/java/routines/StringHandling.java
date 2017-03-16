@@ -365,5 +365,351 @@ public class StringHandling {
 	        return string.substring(st);
     	}
     }
+    
+
+	/**
+	 * 
+	 * @param string : Passes the strings you want to search.
+	 * @param start : Must be an integer. The position in the string where you want to start counting.
+	 * @param length : Must be an integer greater than 0. The number of characters you want SUBSTR to return
+	 * @return
+	 * {example} SUBSTR("This is a test.",1,5) #his i
+	 */
+	public String SUBSTR(String string, int start, Integer length) {
+
+		if (string == null) {
+			return null;
+		}
+		if (start > string.length()) {
+			return "";
+		}
+		if (start > 0) {
+			start--;
+		} else if (start < 0) {
+			start = string.length() + start;
+			if (start < 0) {
+				start = 0;
+			}
+		}
+		String result;
+		if (length == null || (length + start) > string.length()) {
+			result = string.substring(start);
+		} else if (length <= 0) {
+			return "";
+		} else {
+			result = string.substring(start, length + start);
+		}
+		return result;
+
+	}
+	
+	/**
+	 * 
+	 * @param value : Any string value. Passes the strings you want to modify.
+	 * @param trim_set : Any string value. Passes the characters you want to remove from the end of the string.
+	 * @return
+	 * {example} LTRIM("aatestaa","a") #testaa
+	 */
+	public String LTRIM(String value, String trim_set) {
+		if (value == null) {
+			return null;
+		}
+		int len = value.length();
+		int st = 0;
+		char[] val = value.toCharArray();
+		if (trim_set == null) {
+
+			while ((st < len) && (val[st] <= ' ')) {
+				st++;
+			}
+			return st > 0 ? value.substring(st) : value;
+		} else {
+			while (value.indexOf(trim_set, st) == st) {
+				st += trim_set.length();
+			}
+			return st > 0 ? value.substring(st) : value;
+		}
+
+	}
+
+	public String LTRIM(String value) {
+		return LTRIM(value, null);
+	}
+	
+	/**
+	 * 
+	 * @param value : Any string value. Passes the strings you want to modify.
+	 * @param trim_set : Any string value. Passes the characters you want to remove from the beginning of the first string
+	 * @return
+	 * {example} RTRIM("aatestaa","a") #aatest
+	 */
+	public String RTRIM(String value, String trim_set) {
+		if (value == null) {
+			return null;
+		}
+		int len = value.length();
+		char[] val = value.toCharArray();
+		if (trim_set == null) {
+
+			while ((0 < len) && (val[len - 1] <= ' ')) {
+				len--;
+			}
+			return len < value.length() ? value.substring(0, len) : value;
+		} else {
+			int temp = 0;
+			while (value.lastIndexOf(trim_set) == len - trim_set.length()) {
+				len -= trim_set.length();
+				value = value.substring(0, len);
+			}
+			return value;
+
+		}
+
+	}
+
+	public String RTRIM(String value) {
+		return RTRIM(value, null);
+	}
+	
+	/**
+	 * 
+	 * @param first_string : The strings you want to change.
+	 * @param length : Must be a positive integer literal. Specifies the length you want each string to be.
+	 * @param second_string : Can be any string value. The characters you want to append to the left-side of the first_string values.
+	 * @return
+	 * {example} LPAD("test",6,"a") #aatest
+	 */
+	public String LPAD(String first_string, int length, String second_string) {
+
+		if (first_string == null || length < 1) {
+			return null;
+		}
+
+		int OriginLength = first_string.length();
+		if (OriginLength >= length) {
+			return first_string;
+		}
+		for (int i = OriginLength; i < length; i++) {
+			if (second_string == null) {
+				first_string = " " + first_string;
+			} else {
+				first_string = second_string + first_string;
+				if(first_string.length()>length){
+					first_string = first_string.substring(first_string.length()-length);
+				}
+			}
+		}
+
+		return first_string;
+	}
+
+	public String LPAD(String first_string, int length) {
+		return LPAD(first_string, length, null);
+	}
+	
+	/**
+	 * 
+	 * @param first_string : The strings you want to change.
+	 * @param length : Must be a positive integer literal. Specifies the length you want each string to be.
+	 * @param second_string : Any string value. Passes the string you want to append to the right-side of the first_string values.
+	 * @return
+	 * {example} RPAD("test",6,"a") #testaa
+	 */
+	public String RPAD(String first_string, int length, String second_string) {
+
+		if (first_string == null || length < 1) {
+			return null;
+		}
+
+		int OriginLength = first_string.length();
+		if (OriginLength >= length) {
+			return first_string;
+		}
+		for (int i = OriginLength; i < length; i++) {
+			if (second_string == null) {
+				first_string = first_string + " ";
+			} else {
+				first_string = first_string + second_string;
+				if(first_string.length()>length){
+					first_string = first_string.substring(0, length);
+				}
+			}
+		}
+
+		return first_string;
+	}
+
+	public String RPAD(String first_string, int length) {
+		return RPAD(first_string, length, null);
+	}
+	
+	
+	
+    /**
+     * 
+     * @param string Can be a String
+     * @param search_value Can be a String 
+     * @param start 
+     * 		The default is 1, meaning that INSTR starts the search at the first character in the string.
+     * @param occurrence
+     * 		If the search value appears more than once in the string, you can specify which occurrence you want to search for.
+     * @param comparison_type
+     * 		default 0: INSTR performs a linguistic string comparison. 1: INSTR performs a binary string comparison.
+     * @return
+     * {example} new StringHandling<String>.INSTR("This is a test","t",1,2,0) #14
+     */
+	
+    public Integer INSTR(String string, String search_value, Integer start, Integer occurrence) {
+
+        int defaultStart = 1;
+        int defaultOccurrence = 1;
+
+        if (start != null && start != 0) {
+            defaultStart = start;
+        }
+        if (occurrence != null) {
+            if (occurrence <= 0) {
+                throw new IllegalArgumentException(
+                        "The occurrence argument can only accept a positive integer greater than 0.");
+            }
+            defaultOccurrence = occurrence;
+        }
+
+        Integer result = 0;
+
+        // linguistic string comparison.
+        if (string == null || string.equals("") || search_value == null || search_value.equals("")
+                || Math.abs(defaultStart) >= string.length()) {
+            return null;
+        }
+        if (defaultStart < 0) {
+            string = string.substring(0, string.length() + defaultStart + 1);
+            int temp = string.lastIndexOf(search_value);
+            while (temp != -1 && defaultOccurrence != 1) {
+                string = string.substring(0, temp);
+                defaultOccurrence--;
+                temp = string.lastIndexOf(search_value);
+            }
+            return ++temp;
+
+        } else {
+            string = string.substring(defaultStart - 1);
+
+            if (defaultOccurrence != 1) {
+                int temp;
+                do {
+                    temp = string.indexOf(search_value) + 1;
+                    string = string.substring(temp);
+                    result += temp;
+                    defaultOccurrence--;
+                } while (defaultOccurrence != 0);
+                if (temp == 0) {
+                    result = 0;
+                }
+
+            } else {
+                result = string.indexOf(search_value) + 1;
+            }
+
+            return result;
+        }
+
+    }
+    
+    /**
+     * 
+     * @param string Can be a byte[]
+     * @param search_value Can be byte[]
+     * @param start 
+     * 		The default is 1, meaning that INSTR starts the search at the first character in the string.
+     * @param occurrence
+     * 		If the search value appears more than once in the string, you can specify which occurrence you want to search for.
+     * @param comparison_type
+     * 		default 0: INSTR performs a linguistic string comparison. 1: INSTR performs a binary string comparison.
+     * @return
+     * {example} new StringHandling<String>.INSTR("This is a test".getBytes(),"t".getBytes(),1,2,0) #14
+     */
+
+    public Integer INSTR(byte[] string, byte[] search_value, Integer start, Integer occurrence) {
+
+        int defaultStart = 1;
+        int defaultOccurrence = 1;
+
+        // binary string comparison
+        if (string == null || search_value == null || Math.abs(defaultStart) >= string.length) {
+            return null;
+        }
+        if (start != null && start != 0) {
+            defaultStart = start;
+        }
+        int max = string.length - 1;
+
+        if (occurrence != null) {
+            if (occurrence <= 0) {
+                throw new IllegalArgumentException(
+                        "The occurrence argument can only accept a positive integer greater than 0.");
+            }
+            defaultOccurrence = occurrence;
+        }
+
+        if (defaultStart > 0) {
+            return byteINSTR(string, search_value, defaultStart, defaultOccurrence);
+        } else {
+            int total = string.length;
+            byte[] revers = new byte[total];
+            for (int i = 0; i < total; i++) {
+                revers[max - i] = string[i];
+            }
+            defaultStart = -defaultStart;
+            int result = byteINSTR(revers, search_value, defaultStart, defaultOccurrence);
+            if (result == 0) {
+                return 0;
+            }
+
+            return total - result + 1;
+        }
+    }
+
+    private int byteINSTR(byte[] string, byte[] search_value, int defaultStart, int defaultOccurrence) {
+        int max = string.length - 1;
+        for (int i = defaultStart - 1; i <= max; i++) {
+            /* Look for first character. */
+            if (string[i] != search_value[0]) {
+                while (++i <= max && string[i] != search_value[0])
+                    ;
+            }
+            if (i > max) {
+                return 0;
+            }
+            if (search_value.length > 1) {
+
+                /* Found first character, now look at the rest of v2 */
+                if (i <= max) {
+                    int j = i + 1;
+                    int end = j + search_value.length - 1;
+                    for (int k = 1; j < max && k < search_value.length && string[j] == search_value[k]; j++, k++)
+                        ;
+
+                    if (j == end) {
+                        /* Found whole string. */
+                        if (defaultOccurrence == 1) {
+                            return i - defaultStart + 2;
+                        } else {
+                            defaultOccurrence--;
+                            continue;
+                        }
+                    }
+                }
+            } else {
+                if (defaultOccurrence == 1) {
+                    return i - defaultStart + 2;
+                } else {
+                    defaultOccurrence--;
+                    continue;
+                }
+            }
+        }
+        return 0;
+    }
 
 }

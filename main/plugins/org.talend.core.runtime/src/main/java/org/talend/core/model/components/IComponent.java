@@ -57,6 +57,8 @@ public interface IComponent {
     String SPARK_STREAMING_JOBLET_FAMILY = "Spark Streaming Joblets"; //$NON-NLS-1$
 
     public String getName();
+    
+    public String getOriginalName();
 
     public String getLongName();
 

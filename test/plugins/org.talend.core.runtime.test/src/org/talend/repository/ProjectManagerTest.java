@@ -160,4 +160,18 @@ public class ProjectManagerTest {
         ProjectManager.getInstance().deleteLocalRefBranchSetting(project.getEmfProject(), mainBranch);
 
     }
+    
+    public void testgetCleanBranchName() {
+        String branch = "branches/a2";
+        Assert.assertEquals("a2", ProjectManager.getCleanBranchName(branch));
+        
+        String branch1 = "origin/a2";
+        Assert.assertEquals("a2", ProjectManager.getCleanBranchName(branch1));
+        
+        String branch2 = "origin/master";
+        Assert.assertEquals("master", ProjectManager.getCleanBranchName(branch2));
+        
+        String branchMaster = "master";
+        Assert.assertEquals("master", ProjectManager.getCleanBranchName(branchMaster));
+    }
 }

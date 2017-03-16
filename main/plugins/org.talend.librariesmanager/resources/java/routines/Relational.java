@@ -38,4 +38,25 @@ public class Relational {
     public static boolean NOT(boolean expression) {
         return !expression;
     }
+    
+    /**
+     * Indicates when a variable is the null value.
+     * 
+     * @param value :the object need to judge.
+     * 
+     * @return 1 if value == null, 0 if not.
+     * 
+     * {Category} Relational
+     * 
+     * {param} Object(null)
+     * 
+     * {example} ISNULL(null)
+     */
+	public int isNull(Object value) {
+		if (value == null) {
+			return 1;
+		}
+		return 0;
+
+	}
 }

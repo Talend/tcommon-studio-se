@@ -148,7 +148,11 @@ public abstract class AbsMigrationCheckHandler implements IMigrationCheckHandler
             }
 
         } else {
-            throw new Exception("Can not find source codes :" + codeFile);
+            Problem problem = new Problem();
+            problem.setCategory(ProblemCategory.COMPILATION_ERROR);
+            problem.setProblem("Can not find source codes :" + codeFile);
+            itemInfo.getProblems().add(problem);
+            hasCompilationError = true;
         }
         return hasCompilationError;
     }
