@@ -246,42 +246,51 @@ public enum UpdateManagerProviderDetector {
     public boolean updateForRepository(IStructuredSelection selection, boolean needConfirm) {
         boolean forcePropagation = false;
         IRepositoryUpdateManagerProvider[] repositoryProviders = reader.getRepositoryProviders();
-        for (IRepositoryUpdateManagerProvider provider : repositoryProviders) {
-            if (provider.needForcePropagation(selection)) {
-                forcePropagation = true;
-            }
-        }
-
-        if (!forcePropagation && needConfirm) {
-            IDesignerCoreService designerCoreService = CoreRuntimePlugin.getInstance().getDesignerCoreService();
-            boolean deactive = designerCoreService != null ? Boolean.parseBoolean(designerCoreService
-                    .getPreferenceStore(ITalendCorePrefConstants.DEACTIVE_REPOSITORY_UPDATE)) : true;
-            if (deactive) {// disable to do update
-                return false;
+        try {
+            for (IRepositoryUpdateManagerProvider provider : repositoryProviders) {
+                if (provider.needForcePropagation(selection)) {
+                    forcePropagation = true;
+                }
             }
 
-            boolean propagated = RepositoryUpdateManager.openPropagationDialog();
-            if (!propagated) {
-                return false;
-            }
-        }
+            if (!forcePropagation && needConfirm) {
+                IDesignerCoreService designerCoreService = CoreRuntimePlugin.getInstance().getDesignerCoreService();
+                boolean deactive = designerCoreService != null ? Boolean.parseBoolean(designerCoreService
+                        .getPreferenceStore(ITalendCorePrefConstants.DEACTIVE_REPOSITORY_UPDATE)) : true;
+                if (deactive) {// disable to do update
+                    return false;
+                }
 
-        boolean updated = false;
-        for (IRepositoryUpdateManagerProvider provider : repositoryProviders) {
-            // if one upate successfully, will return true.
-            if (provider.updateForRepository(selection)) {
+                boolean propagated = RepositoryUpdateManager.openPropagationDialog();
+                if (!propagated) {
+                    return false;
+                }
+            }
+
+            boolean updated = false;
+            for (IRepositoryUpdateManagerProvider provider : repositoryProviders) {
+                // fix for the joblet ,force to check closed jobs incese joblet context changed
+                provider.setEnableCheckItem(true);
+                // if one upate successfully, will return true.
+                if (provider.updateForRepository(selection)) {
+                    updated = true;
+                }
+            }
+            // Old Updates
+            if (doOldUpdates(selection)) {
                 updated = true;
             }
+            if (!updated) {
+                // nothing to update
+                RepositoryUpdateManager.openNoModificationDialog();
+            }
+            return updated;
+        } finally {
+            for (IRepositoryUpdateManagerProvider provider : repositoryProviders) {
+                // change back to default value
+                provider.setEnableCheckItem(false);
+            }
         }
-        // Old Updates
-        if (doOldUpdates(selection)) {
-            updated = true;
-        }
-        if (!updated) {
-            // nothing to update
-            RepositoryUpdateManager.openNoModificationDialog();
-        }
-        return updated;
     }
 
     private boolean doOldUpdates(IStructuredSelection selection) {

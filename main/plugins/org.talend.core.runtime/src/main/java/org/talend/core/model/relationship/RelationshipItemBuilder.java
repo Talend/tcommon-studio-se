@@ -331,8 +331,8 @@ public class RelationshipItemBuilder {
 
                             if (!LATEST_VERSION.equals(version) && LATEST_VERSION.equals(curVersion)) {
                                 try {
-                                    IRepositoryViewObject latest = getProxyRepositoryFactory().getLastVersion(getAimProject(),
-                                            id);
+                                    IRepositoryViewObject latest = getProxyRepositoryFactory()
+                                            .getLastVersion(getAimProject(), id);
                                     if (latest != null) {
                                         curVersion = latest.getVersion();
                                     }
@@ -664,7 +664,11 @@ public class RelationshipItemBuilder {
                     if (isIdSame) {
                         isVersionSame = StringUtils.equals(item.getVersion(), relatedItem.getVersion());
                     }
-                    if (isIdSame && isVersionSame) {
+                    boolean sameType = false;
+                    if (isVersionSame) {
+                        sameType = StringUtils.equals(item.getType(), relatedItem.getType());
+                    }
+                    if (isIdSame && isVersionSame && sameType) {
                         usedRelationList.add(item);
                         found = true;
                         break;
@@ -891,16 +895,17 @@ public class RelationshipItemBuilder {
             saveRelations();
         }
     }
-    
-    public boolean supportRelation(Item item){
+
+    public boolean supportRelation(Item item) {
         ERepositoryObjectType itemType = ERepositoryObjectType.getItemType(item);
         if (ERepositoryObjectType.getAllTypesOfProcess().contains(itemType)) {
             return true;
-        }else if(ERepositoryObjectType.JOBLET!=null && itemType == ERepositoryObjectType.JOBLET){
+        } else if (ERepositoryObjectType.JOBLET != null && itemType == ERepositoryObjectType.JOBLET) {
             return true;
-        }else if(ERepositoryObjectType.SPARK_JOBLET!=null && itemType == ERepositoryObjectType.SPARK_JOBLET){
+        } else if (ERepositoryObjectType.SPARK_JOBLET != null && itemType == ERepositoryObjectType.SPARK_JOBLET) {
             return true;
-        }else if(ERepositoryObjectType.SPARK_STREAMING_JOBLET!=null && itemType == ERepositoryObjectType.SPARK_STREAMING_JOBLET){
+        } else if (ERepositoryObjectType.SPARK_STREAMING_JOBLET != null
+                && itemType == ERepositoryObjectType.SPARK_STREAMING_JOBLET) {
             return true;
         }
         return false;
@@ -911,8 +916,8 @@ public class RelationshipItemBuilder {
     }
 
     public void addOrUpdateItem(Item item, boolean fromMigration) {
-        if(!supportRelation(item)){
-             return;
+        if (!supportRelation(item)) {
+            return;
         }
         if (!loaded) {
             loadRelations();

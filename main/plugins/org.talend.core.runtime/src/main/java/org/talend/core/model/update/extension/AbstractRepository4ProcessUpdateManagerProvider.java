@@ -66,10 +66,6 @@ public abstract class AbstractRepository4ProcessUpdateManagerProvider extends Ab
         return helper.checkJobItemsForUpdate(monitor, getTypes());
     }
 
-    protected boolean enableCheckItem(final IRepositoryViewObject object) {
-        return false; // false, will only check the opened job.
-    }
-
     protected List<Relation> getRelations(final IRepositoryViewObject object) {
         // get the relation of item with other items
         return null;
