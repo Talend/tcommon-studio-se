@@ -13,9 +13,19 @@
 package org.talend.commons.utils.resource;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipInputStream;
+
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -150,4 +160,105 @@ public class UpdatesHelper {
         }
     }
 
+    public static boolean isComponentUpdateSite(File file) {
+        if (file != null && file.exists()) {
+            if (file.isFile() && file.getName().endsWith(FileExtensions.ZIP_FILE_SUFFIX)) {
+                ZipFileStatus status = new ZipFileStatus(file) {
+
+                    String componentEntryName = null;
+
+                    boolean containComponent = false;
+
+                    @Override
+                    protected void judgeZipEntry(ZipFile zipFile, ZipEntry entry) throws IOException {
+                        super.judgeZipEntry(zipFile, entry);
+                        String path = entry.getName();
+                        if (path.endsWith(FileExtensions.JAR_FILE_SUFFIX)) { // is jar
+                            // if it's bundle, not from other folder, like lib, m2 repository.
+                            IPath p = new Path(path);
+                            // must be in plugins
+                            if (p.segmentCount() > 1 && p.removeLastSegments(1).lastSegment().equals(FOLDER_PLUGINS)) {
+                                InputStream inputStream = zipFile.getInputStream(entry);
+                                if (isComponentJar(inputStream)) {
+                                    containComponent = true;
+                                    componentEntryName = path;
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    protected void judgePathes() {
+                        super.judgePathes();
+                        if (containComponent) {
+                            IPath componentBundleBasePath = new Path(componentEntryName).removeLastSegments(1);
+                            IPath pluginsBasePath = new Path(pluginsEntryName);
+                            if (!componentBundleBasePath.equals(pluginsBasePath)) {
+                                containComponent = false;
+                                hasArtfacts = false;
+                                hasContents = false;
+                                hasPlugins = false;
+                            }
+
+                        } else { // no component, set all false
+                            hasArtfacts = false;
+                            hasContents = false;
+                            hasPlugins = false;
+                        }
+                    }
+
+                };
+                status.check();
+                if (status.hasArtfacts && status.hasContents && status.hasPlugins) {
+                    return true;
+                }
+            } else if (file.isDirectory()) {// folder
+                if (existArtifacts(file) && existContent(file)) {
+                    File pluginsFolder = new File(file, FOLDER_PLUGINS);
+                    if (pluginsFolder.exists() && pluginsFolder.isDirectory()) { // contained plugins folder
+                        final File[] files = pluginsFolder.listFiles();
+                        if (files != null) {
+                            for (File f : files) {
+                                try {
+                                    if (f.getName().endsWith(FileExtensions.JAR_FILE_SUFFIX) // is jar
+                                            && isComponentJar(new FileInputStream(f))) {
+                                        return true; // have one component at least
+                                    }
+                                } catch (FileNotFoundException e) {
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+
+    }
+
+    private static boolean isComponentJar(InputStream inputStream) {
+        if (inputStream != null) {
+            ZipInputStream zipStream = new ZipInputStream(inputStream);
+            ZipEntry entry = null;
+            try {
+                while ((entry = zipStream.getNextEntry()) != null) {
+                    IPath path = new Path(entry.getName());
+                    String xmlName = path.lastSegment();
+                    // OSGI-INF/installer$$XXXX.xml
+                    if (xmlName.endsWith(FileExtensions.XML_FILE_SUFFIX) && xmlName.startsWith("installer$$")
+                            && path.segmentCount() > 1) {
+                        String osgiInfFolder = path.removeLastSegments(1).lastSegment();
+                        if (osgiInfFolder.equals("OSGI-INF")) {
+                            return true;
+                        }
+                    }
+
+                }
+            } catch (IOException e) {
+                //
+            }
+        }
+        return false;
+    }
 }
