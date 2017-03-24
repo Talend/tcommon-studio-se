@@ -12,6 +12,9 @@
 // ============================================================================
 package org.talend.commons.runtime.service;
 
+import java.io.File;
+import java.util.List;
+
 /**
  * DOC ggu class global comment. Detailled comment
  */
@@ -20,4 +23,8 @@ public interface ComponentsInstallComponent extends P2InstallComponent {
     String FOLDER_COMPS = "components";
 
     String FOLDER_INSTALLED = "installed";
+
+    void setComponentFolder(File componentFolder);
+
+    List<File> getFailedComponents();
 }

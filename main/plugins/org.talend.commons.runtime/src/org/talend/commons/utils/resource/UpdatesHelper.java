@@ -50,6 +50,8 @@ public class UpdatesHelper {
 
     public static final String FILE_ECLIPSE_PRODUCT = ".eclipseproduct";
 
+    public static final String COMPONENT_SUFFIX = "_java.xml";
+
     public static boolean existArtifacts(File base) {
         return new File(base, FILE_ARTIFACTS).exists() || new File(base, FILE_JAR_ARTIFACTS).exists()
                 || new File(base, FILE_XZ_ARTIFACTS).exists();
@@ -257,6 +259,20 @@ public class UpdatesHelper {
                 }
             } catch (IOException e) {
                 //
+            }
+        }
+        return false;
+    }
+
+    public static boolean isOldComponent(File f) {
+        if (f != null && f.exists() && f.isDirectory()) {
+            File[] listFiles = f.listFiles();
+            if (listFiles != null) {
+                for (File subFile : listFiles) {
+                    if (subFile.getName().equals(f.getName() + COMPONENT_SUFFIX)) {
+                        return true;
+                    }
+                }
             }
         }
         return false;

@@ -21,8 +21,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.equinox.p2.core.ProvisionException;
+import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.runtime.service.ComponentsInstallComponent;
@@ -41,22 +44,54 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
 
     private String installedMessage;
 
+    private File componentFolder = null;
+
+    private List<File> failedComponents;
+
     public boolean needRelaunch() {
         return needRelaunch;
     }
 
+    public List<File> getFailedComponents() {
+        return failedComponents;
+    }
+
     private void reset() {
         needRelaunch = false;
+        failedComponents = new ArrayList<File>();
         installedMessage = null;
     }
 
-    File getInstallingComponentFolder() {
-        try {
-            return new File(Platform.getInstallLocation().getDataArea(FOLDER_COMPS).getPath());
-        } catch (IOException e) {
-            //
+    public void setComponentFolder(File componentFolder) {
+        this.componentFolder = componentFolder;
+    }
+
+    protected File getInstallingComponentFolder() {
+        if (componentFolder == null) {
+            // use same folder of user component from preference setting.
+            ScopedPreferenceStore preferenceStore = new ScopedPreferenceStore(InstanceScope.INSTANCE,
+                    "org.talend.designer.codegen"); //$NON-NLS-1$
+            // same key as IComponentPreferenceConstant.USER_COMPONENTS_FOLDER
+            String userCompFolder = preferenceStore.getString("USER_COMPONENTS_FOLDER"); //$NON-NLS-1$
+            if (!StringUtils.isEmpty(userCompFolder)) {
+                File compFolder = new File(userCompFolder);
+                if (compFolder.exists()) {
+                    componentFolder = compFolder;
+                }
+            }
+
+            if (componentFolder == null) {
+                try {
+                    componentFolder = new File(Platform.getInstallLocation().getDataArea(FOLDER_COMPS).getPath());
+                } catch (IOException e) {
+                    //
+                }
+            }
+            if (componentFolder == null) {
+                componentFolder = new File(System.getProperty("user.dir") + '/' + FOLDER_COMPS); //$NON-NLS-1$
+            }
         }
-        return new File(System.getProperty("user.dir") + '/' + FOLDER_COMPS); //$NON-NLS-1$
+        return componentFolder;
     }
 
     File getInstalledComponentFolder() {
@@ -73,20 +108,18 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
         reset();
 
         try {
-            final File installedComponentFolder = getInstalledComponentFolder();
             final File componentFolder = getInstallingComponentFolder();
             if (componentFolder == null || !componentFolder.exists()) {
                 return false;
             }
             if (componentFolder.isDirectory()) {
                 Map<File, Set<InstalledUnit>> successUnits = new HashMap<File, Set<InstalledUnit>>();
-                List<File> failedUnits = new ArrayList<File>();
 
                 final File[] updateFiles = componentFolder.listFiles(); // no children folders recursively.
                 if (updateFiles != null && updateFiles.length > 0) {
                     for (File f : updateFiles) {
                         // must be file, and update site.
-                        if (f.isFile() && UpdatesHelper.isUpdateSite(f)) {
+                        if (f.isFile() && UpdatesHelper.isComponentUpdateSite(f)) {
 
                             P2Installer installer = new P2Installer() {
 
@@ -109,16 +142,14 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
                                 if (installed != null && !installed.isEmpty()) { // install success
                                     successUnits.put(f, installed);
 
-                                    // try to move install success to installed folder
-                                    FilesUtils.copyFile(f, new File(installedComponentFolder, f.getName()));
-                                    f.delete(); // delete original file.
+                                    afterInstall(f);
                                 }
                             } catch (Exception e) { // sometime, if reinstall it, will got one exception also.
                                 // won't block others to install.
                                 if (!CommonsPlugin.isHeadless()) {
                                     ExceptionHandler.process(e);
                                 }
-                                failedUnits.add(f);
+                                failedComponents.add(f);
                             }
                         }
                     }
@@ -158,6 +189,13 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
             }
         }
         return false;
+    }
+
+    protected void afterInstall(File f) throws IOException {
+        // try to move install success to installed folder
+        final File installedComponentFolder = getInstalledComponentFolder();
+        FilesUtils.copyFile(f, new File(installedComponentFolder, f.getName()));
+        f.delete(); // delete original file.
     }
 
     void syncLibraries(File updatesiteFolder) throws IOException {
