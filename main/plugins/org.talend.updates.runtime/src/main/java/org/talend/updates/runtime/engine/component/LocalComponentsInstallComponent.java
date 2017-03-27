@@ -22,14 +22,20 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.maven.model.Model;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.equinox.p2.core.ProvisionException;
+import org.eclipse.m2e.core.MavenPlugin;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.runtime.service.ComponentsInstallComponent;
 import org.talend.commons.utils.resource.UpdatesHelper;
+import org.talend.core.runtime.maven.MavenUrlHelper;
+import org.talend.librariesmanager.maven.ArtifactsDeployer;
 import org.talend.librariesmanager.prefs.LibrariesManagerUtils;
 import org.talend.updates.runtime.engine.InstalledUnit;
 import org.talend.updates.runtime.engine.P2Installer;
@@ -131,6 +137,7 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
                                     if (!installed.isEmpty()) { // install success
                                         // sync the component libraries
                                         syncLibraries(updatesiteFolder);
+                                        syncM2Repository(updatesiteFolder);
                                     }
                                     return installed;
                                 }
@@ -199,16 +206,80 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
     }
 
     void syncLibraries(File updatesiteFolder) throws IOException {
-        // sync to product lib/java
-        final File productLibFolder = new File(LibrariesManagerUtils.getLibrariesPath());
-        File updatesiteLibFolder = new File(updatesiteFolder, LibrariesManagerUtils.LIB_JAVA_SUB_FOLDER);
-        if (updatesiteLibFolder.exists()) {
+        if (updatesiteFolder.exists() && updatesiteFolder.isDirectory()) {
+            // sync to product lib/java
+            final File productLibFolder = new File(LibrariesManagerUtils.getLibrariesPath());
+            File updatesiteLibFolder = new File(updatesiteFolder, LibrariesManagerUtils.LIB_JAVA_SUB_FOLDER);
+            if (updatesiteLibFolder.exists()) {
+                final File[] listFiles = updatesiteLibFolder.listFiles();
+                if (listFiles != null && listFiles.length > 0) {
+                    if (!productLibFolder.exists()) {
+                        productLibFolder.mkdirs();
+                    }
+                    FilesUtils.copyFolder(updatesiteLibFolder, productLibFolder, false, null, null, false);
+                }
+            }
+        }
+    }
+
+    void syncM2Repository(File updatesiteFolder) throws IOException {
+        // sync to the local m2 repository, if need try to deploy to remote TAC Nexus.
+        File updatesiteLibFolder = new File(updatesiteFolder, FOLDER_M2_REPOSITORY); // m2/repositroy
+        if (updatesiteLibFolder.exists() && updatesiteFolder.isDirectory()) {
             final File[] listFiles = updatesiteLibFolder.listFiles();
             if (listFiles != null && listFiles.length > 0) {
-                if (!productLibFolder.exists()) {
-                    productLibFolder.mkdirs();
+                // // 1. iterate to install the jars to local repository.
+                // final String localRepositoryPath = MavenPlugin.getMaven().getLocalRepositoryPath();
+                // // .../.m2/repository
+                // if (localRepositoryPath != null) {
+                // FileCopyUtils.copyFolder(updatesiteLibFolder, new File(localRepositoryPath));
+                // }
+
+                // 2. install to local and try to deploy to remote nexus
+                installM2RepositoryLibs(updatesiteLibFolder, new ArtifactsDeployer());
+            }
+        }
+    }
+
+    void installM2RepositoryLibs(File parentFolder, ArtifactsDeployer deployer) {
+        if (parentFolder != null && parentFolder.exists() && parentFolder.isDirectory()) {
+            final File[] allFiles = parentFolder.listFiles();
+            if (allFiles == null) {
+                return;
+            }
+            List<File> pomFiles = new ArrayList<File>();
+            List<File> subFiles = new ArrayList<File>();
+            final String pomExt = ".pom"; //$NON-NLS-1$
+            for (File file : allFiles) {
+                if (file.isDirectory()) {
+                    subFiles.add(file);
+                } else if (file.isFile()) {
+                    if (file.getName().endsWith(pomExt)) {
+                        pomFiles.add(file);
+                    }
                 }
-                FilesUtils.copyFolder(updatesiteLibFolder, productLibFolder, false, null, null, false);
+            }
+            for (File pomFile : pomFiles) {
+                try {
+                    Model model = MavenPlugin.getMaven().readModel(pomFile);
+                    final String packaging = model.getPackaging();
+                    final String mvnUrl = MavenUrlHelper.generateMvnUrl(model.getGroupId(), model.getArtifactId(),
+                            model.getVersion(), packaging, null);
+
+                    IPath libPath = new Path(pomFile.getAbsolutePath()).removeFileExtension().addFileExtension(
+                            packaging == null ? "jar" : packaging); //$NON-NLS-1$
+                    final File libFile = libPath.toFile();
+                    if (libFile.exists()) {
+                        deployer.deployToLocalMaven(mvnUrl, libFile.getAbsolutePath(), pomFile.getAbsolutePath(), true);
+                    }
+                } catch (Exception e) {
+                    ExceptionHandler.process(e);
+                }
+            }
+
+            // children folders
+            for (File subFolder : subFiles) {
+                installM2RepositoryLibs(subFolder, deployer);
             }
         }
     }

@@ -24,6 +24,8 @@ public interface ComponentsInstallComponent extends P2InstallComponent {
 
     String FOLDER_INSTALLED = "installed";
 
+    String FOLDER_M2_REPOSITORY = "m2/repository";
+
     void setComponentFolder(File componentFolder);
 
     List<File> getFailedComponents();
