@@ -187,7 +187,7 @@ public class LinksToolbarItem extends ContributionItem {
         Label videosLabel = new Label(composite, SWT.NONE);
 
         if (registry.get("videos") == null) { //$NON-NLS-1$
-            registry.put("videos", Activator.getImageDescriptor("icons/irc_protocol.png").createImage()); //$NON-NLS-1$ //$NON-NLS-2$
+            registry.put("videos", Activator.getImageDescriptor("icons/videos_icon16x16.png").createImage()); //$NON-NLS-1$ //$NON-NLS-2$
         }
         videosLabel.setImage(registry.get("videos")); //$NON-NLS-1$
 
