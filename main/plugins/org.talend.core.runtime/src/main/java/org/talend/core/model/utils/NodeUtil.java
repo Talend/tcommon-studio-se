@@ -860,10 +860,13 @@ public class NodeUtil {
     public static String getNormalizeParameterValue(INode node, IElementParameter ep) {
         if (EParameterFieldType.TABLE.equals(ep.getFieldType())) {
             Map<String, IElementParameter> types = new HashMap<String, IElementParameter>();
-            for (Object o : ep.getListItemsValue()) {
-                IElementParameter cep = (IElementParameter) o;
-                if (cep.isShow(node.getElementParameters())) {
-                    types.put(cep.getName(), cep);
+            Object[] itemsValue = ep.getListItemsValue();
+            if (itemsValue != null) {
+                for (Object o : itemsValue) {
+                    IElementParameter cep = (IElementParameter) o;
+                    if (cep.isShow(node.getElementParameters())) {
+                        types.put(cep.getName(), cep);
+                    }
                 }
             }
             List<Map<String, String>> lines = (List<Map<String, String>>) ElementParameterParser.getObjectValue(node,

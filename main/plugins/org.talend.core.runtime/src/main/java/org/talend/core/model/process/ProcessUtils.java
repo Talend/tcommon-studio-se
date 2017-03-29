@@ -65,7 +65,7 @@ import org.talend.repository.model.IProxyRepositoryService;
 @SuppressWarnings("unchecked")
 public final class ProcessUtils {
 
-    private static boolean isHD;
+    private static boolean jarWithContext;
 
     private static List<IProcess> fakeProcesses = new ArrayList<IProcess>();
 
@@ -231,7 +231,8 @@ public final class ProcessUtils {
     private static void updateRepositoryObjects(List<IRepositoryViewObject> repositoryObjects, IRepositoryViewObject obj) {
         if (!repositoryObjects.contains(obj)) {
             repositoryObjects.add(obj);
-            // TDQ-12162,should call 'checkItemDependencies(...)' first. for example,"sub job C->sub job B->main job A->Rule"
+            // TDQ-12162,should call 'checkItemDependencies(...)' first. for
+            // example,"sub job C->sub job B->main job A->Rule"
             // export script C,if call 'checkAllVerSionLatest(...)' first,the dependency X won't be added.
             checkItemDependencies(obj.getProperty().getItem(), repositoryObjects);
             checkAllVerSionLatest(repositoryObjects, obj);
@@ -692,7 +693,7 @@ public final class ProcessUtils {
         }
         return null;
     }
-    
+
     public static String getTestDataParamemter(IProcess process, String instance, String testData) {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
             ITestContainerProviderService testContainerService = (ITestContainerProviderService) GlobalServiceRegister
@@ -961,20 +962,22 @@ public final class ProcessUtils {
         return false;
     }
 
-    public static boolean isHDInsight() {
-        return isHD;
+    public static boolean jarNeedsToContainContext() {
+        return jarWithContext;
     }
 
-    public static void setHDInsight(boolean isHD) {
-        ProcessUtils.isHD = isHD;
+    public static void setJarWithContext(boolean jarWithContext) {
+        ProcessUtils.jarWithContext = jarWithContext;
     }
 
-    public static boolean isDistributionExist(ProcessItem processItem) {
+    /** Find the distribution where the generated jar rquired to have the context files inside **/
+    public static boolean needsToHaveContextInsideJar(ProcessItem processItem) {
         EList<ElementParameterType> parameters = processItem.getProcess().getParameters().getElementParameter();
         for (ElementParameterType pt : parameters) {
             if (pt.getName().equals("DISTRIBUTION")) { //$NON-NLS-1$
                 String value = pt.getValue();
-                if ("MICROSOFT_HD_INSIGHT".equals(value)) { //$NON-NLS-1$
+                if ("MICROSOFT_HD_INSIGHT".equals(value) //$NON-NLS-1$
+                        || "GOOGLE_CLOUD_DATAPROC".equals(value)) { //$NON-NLS-1$
                     return true;
                 }
             }

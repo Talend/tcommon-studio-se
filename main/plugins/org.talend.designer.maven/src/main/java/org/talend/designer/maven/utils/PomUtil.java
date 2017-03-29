@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -174,7 +175,7 @@ public class PomUtil {
      * @param curModel
      * @param curPomFile
      */
-    public static void checkParent(Model curModel, IFile curPomFile, String specialVersion) {
+    public static void checkParent(Model curModel, IFile curPomFile, IProcessor processor, String specialVersion) {
         Parent parent = curModel.getParent();
         if (parent == null) {
             parent = new Parent();
@@ -182,8 +183,8 @@ public class PomUtil {
         } else {
             // TODO, if existed, maybe just replace, not overwrite
         }
-        // always depend on current poject
-        Model codeProjectTemplateModel = MavenTemplateManager.getCodeProjectTemplateModel();
+        final Map<String, Object> templateParameters = PomUtil.getTemplateParameters(processor);
+        Model codeProjectTemplateModel = MavenTemplateManager.getCodeProjectTemplateModel(templateParameters);
 
         if (specialVersion != null) {
             codeProjectTemplateModel.setVersion(specialVersion);
@@ -534,19 +535,19 @@ public class PomUtil {
      * 
      * in order to make sure no compile error for editor, so add all needed dependencies always.
      */
-    public static Collection<Dependency> getCodesDependencies(IFile projectPomFile) throws CoreException {
+    public static Collection<Dependency> getCodesDependencies(IFile projectPomFile, String projectTechName) throws CoreException {
         Map<String, Dependency> codesDependencies = new LinkedHashMap<String, Dependency>();
 
         // routines
         addCodeDependencies(codesDependencies, projectPomFile, TalendMavenConstants.DEFAULT_ROUTINES_ARTIFACT_ID,
-                MavenTemplateManager.getRoutinesTempalteModel());
+                MavenTemplateManager.getRoutinesTempalteModel(projectTechName));
 
         // beans
         addCodeDependencies(codesDependencies, projectPomFile, TalendMavenConstants.DEFAULT_BEANS_ARTIFACT_ID,
-                MavenTemplateManager.getBeansTempalteModel());
+                MavenTemplateManager.getBeansTempalteModel(projectTechName));
         // pigudfs
         addCodeDependencies(codesDependencies, projectPomFile, TalendMavenConstants.DEFAULT_PIGUDFS_ARTIFACT_ID,
-                MavenTemplateManager.getPigUDFsTempalteModel());
+                MavenTemplateManager.getPigUDFsTempalteModel(projectTechName));
 
         return codesDependencies.values();
     }
@@ -604,5 +605,38 @@ public class PomUtil {
             codesJars.add(JavaUtils.BEANS_JAR);
         }
         return codesJars;
+    }
+
+    public static Map<String, Object> getTemplateParameters(IProcessor processor) {
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        if (processor != null) {
+            final Property property = processor.getProperty();
+            return getTemplateParameters(property);
+        }
+        return parameters;
+    }
+
+    public static Map<String, Object> getTemplateParameters(Property property) {
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        if (property != null && property.eResource() != null) {
+            final org.talend.core.model.properties.Project project = ProjectManager.getInstance().getProject(property);
+            if (project != null // from reference projects
+                    && !ProjectManager.getInstance().getCurrentProject().getTechnicalLabel().equals(project.getTechnicalLabel())) {
+                parameters.put(MavenTemplateManager.KEY_PROJECT_NAME, project.getTechnicalLabel());
+            }
+        }
+        return parameters;
+    }
+
+    public static String getProjectNameFromTemplateParameter(Map<String, Object> parameters) {
+        // get the default based one project still
+        String projectName = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
+        if (parameters != null && !parameters.isEmpty()) {
+            final Object pName = parameters.get(MavenTemplateManager.KEY_PROJECT_NAME);
+            if (pName != null && !pName.toString().isEmpty()) {
+                projectName = pName.toString();
+            }
+        }
+        return projectName;
     }
 }

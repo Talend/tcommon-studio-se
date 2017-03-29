@@ -23,14 +23,29 @@ import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.runtime.projectsetting.IProjectSettingTemplateConstants;
 import org.talend.designer.maven.utils.PomUtil;
+import org.talend.designer.runprocess.IProcessor;
 
 /**
  * DOC ggu class global comment. Detailled comment
  */
 public abstract class AbstractMavenCodesTemplatePom extends AbstractMavenGeneralTemplatePom {
 
+    private IProcessor processor;
+
     public AbstractMavenCodesTemplatePom(IFile pomFile) {
         super(pomFile, IProjectSettingTemplateConstants.POM_CODES_TEMPLATE_FILE_NAME);
+    }
+
+    public IProcessor getProcessor() {
+        return processor;
+    }
+
+    public void setProcessor(IProcessor processor) {
+        this.processor = processor;
+    }
+
+    protected String getProjectName() {
+        return PomUtil.getProjectNameFromTemplateParameter(PomUtil.getTemplateParameters(processor));
     }
 
     @Override
@@ -51,7 +66,7 @@ public abstract class AbstractMavenCodesTemplatePom extends AbstractMavenGeneral
         setAttributes(templateModel);
         addProperties(templateModel);
 
-        PomUtil.checkParent(templateModel, this.getPomFile(), getDeployVersion());
+        PomUtil.checkParent(templateModel, this.getPomFile(), this.processor, getDeployVersion());
 
         addDependencies(templateModel);
 

@@ -34,6 +34,9 @@ import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.general.ILibrariesService;
 import org.talend.core.model.process.IProcess;
 import org.talend.core.model.process.ProcessUtils;
+import org.talend.core.model.properties.Item;
+import org.talend.core.model.properties.Project;
+import org.talend.core.model.properties.Property;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.core.runtime.process.TalendProcessArgumentConstant;
 import org.talend.core.runtime.projectsetting.IProjectSettingPreferenceConstants;
@@ -46,6 +49,7 @@ import org.talend.designer.maven.tools.creator.CreateMavenPigUDFPom;
 import org.talend.designer.maven.tools.creator.CreateMavenRoutinePom;
 import org.talend.designer.maven.utils.PomUtil;
 import org.talend.designer.runprocess.IProcessor;
+import org.talend.repository.ProjectManager;
 import org.talend.utils.io.FilesUtils;
 
 /**
@@ -56,48 +60,62 @@ public class MavenPomSynchronizer {
 
     private final ITalendProcessJavaProject codeProject;
 
+    private final IProcessor processor;
+
     private Map<String, Object> argumentsMap = new HashMap<String, Object>();
+
+    public MavenPomSynchronizer(IProcessor processor) {
+        super();
+        this.processor = processor;
+        this.codeProject = this.processor.getTalendJavaProject();
+    }
 
     public MavenPomSynchronizer(ITalendProcessJavaProject codeProject) {
         super();
+        this.processor = null;
         this.codeProject = codeProject;
     }
 
     /**
      * generate routine pom.
      */
-    public void syncRoutinesPom(boolean overwrite) throws Exception {
+    public void syncRoutinesPom(IProcessor processor,boolean overwrite) throws Exception {
         // pom_routines.xml
-        IFile routinesPomFile = codeProject.getProject()
-                .getFile(PomUtil.getPomFileName(TalendMavenConstants.DEFAULT_ROUTINES_ARTIFACT_ID));
+        IFile routinesPomFile = codeProject.getProject().getFile(
+                PomUtil.getPomFileName(TalendMavenConstants.DEFAULT_ROUTINES_ARTIFACT_ID));
         // generate new one
-        CreateMavenBundleTemplatePom createTemplatePom = new CreateMavenRoutinePom(routinesPomFile);
+        CreateMavenRoutinePom createTemplatePom = new CreateMavenRoutinePom(routinesPomFile);
+        createTemplatePom.setProcessor(processor);
         createTemplatePom.setArgumentsMap(getArgumentsMap());
         createTemplatePom.setOverwrite(overwrite);
         createTemplatePom.create(null);
     }
 
-    public void syncBeansPom(boolean overwrite) throws Exception {
+    public void syncBeansPom(IProcessor processor,boolean overwrite) throws Exception {
         // pom_beans.xml
-        IFile beansPomFile = codeProject.getProject()
-                .getFile(PomUtil.getPomFileName(TalendMavenConstants.DEFAULT_BEANS_ARTIFACT_ID));
+        IFile beansPomFile = codeProject.getProject().getFile(
+                PomUtil.getPomFileName(TalendMavenConstants.DEFAULT_BEANS_ARTIFACT_ID));
         // generate new one
         CreateMavenBeanPom createTemplatePom = new CreateMavenBeanPom(beansPomFile);
+        createTemplatePom.setProcessor(processor);
         createTemplatePom.setArgumentsMap(getArgumentsMap());
         createTemplatePom.setOverwrite(overwrite);
         createTemplatePom.create(null);
     }
 
-    public void syncPigUDFsPom(boolean overwrite) throws Exception {
+    public void syncPigUDFsPom(IProcessor processor,boolean overwrite) throws Exception {
         // pom_pigudfs.xml
-        IFile beansPomFile = codeProject.getProject()
-                .getFile(PomUtil.getPomFileName(TalendMavenConstants.DEFAULT_PIGUDFS_ARTIFACT_ID));
+        IFile beansPomFile = codeProject.getProject().getFile(
+                PomUtil.getPomFileName(TalendMavenConstants.DEFAULT_PIGUDFS_ARTIFACT_ID));
         // generate new one
         CreateMavenPigUDFPom createTemplatePom = new CreateMavenPigUDFPom(beansPomFile);
+        createTemplatePom.setProcessor(processor);
         createTemplatePom.setArgumentsMap(getArgumentsMap());
         createTemplatePom.setOverwrite(overwrite);
         createTemplatePom.create(null);
     }
+
+
 
     /**
      * 
@@ -110,9 +128,13 @@ public class MavenPomSynchronizer {
         IFile batFile = templateFolder.getFile(IProjectSettingTemplateConstants.JOB_RUN_BAT_TEMPLATE_FILE_NAME);
         IFile infoFile = templateFolder.getFile(IProjectSettingTemplateConstants.JOB_INFO_TEMPLATE_FILE_NAME);
 
-        String shContent = MavenTemplateManager.getProjectSettingValue(IProjectSettingPreferenceConstants.TEMPLATE_SH);
-        String batContent = MavenTemplateManager.getProjectSettingValue(IProjectSettingPreferenceConstants.TEMPLATE_BAT);
-        String jobInfoContent = MavenTemplateManager.getProjectSettingValue(IProjectSettingPreferenceConstants.TEMPLATE_JOB_INFO);
+        final Map<String, Object> templateParameters = PomUtil.getTemplateParameters(processor);
+        String shContent = MavenTemplateManager.getProjectSettingValue(IProjectSettingPreferenceConstants.TEMPLATE_SH,
+                templateParameters);
+        String batContent = MavenTemplateManager.getProjectSettingValue(IProjectSettingPreferenceConstants.TEMPLATE_BAT,
+                templateParameters);
+        String jobInfoContent = MavenTemplateManager.getProjectSettingValue(IProjectSettingPreferenceConstants.TEMPLATE_JOB_INFO,
+                templateParameters);
 
         MavenTemplateManager.saveContent(shFile, shContent, overwrite);
         MavenTemplateManager.saveContent(batFile, batContent, overwrite);
@@ -197,7 +219,7 @@ public class MavenPomSynchronizer {
         codeProject.getProject().refreshLocal(IResource.DEPTH_ONE, monitor);
         
         // when clean, regenerate it.
-        updateCodesPomWithProject(monitor, null);
+        updateCodesPomWithProject(monitor);
 
         // try to compile it.
         final Map<String, Object> argumentsMap = new HashMap<String, Object>();
@@ -206,15 +228,15 @@ public class MavenPomSynchronizer {
 
         //
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibrariesService.class)) {
-            ILibrariesService libService = (ILibrariesService) GlobalServiceRegister.getDefault()
-                    .getService(ILibrariesService.class);
+            ILibrariesService libService = (ILibrariesService) GlobalServiceRegister.getDefault().getService(
+                    ILibrariesService.class);
             libService.addChangeLibrariesListener(new ILibrariesService.IChangedLibrariesListener() {
 
                 @Override
                 public void afterChangingLibraries() {
                     try {
                         // update the dependencies
-                        updateCodesPomWithProject(null, null);
+                        updateCodesPomWithProject(null);
                     } catch (Exception e) {
                         ExceptionHandler.process(e);
                     }
@@ -249,20 +271,22 @@ public class MavenPomSynchronizer {
         }
     }
 
-    public void syncCodesPoms(IProgressMonitor monitor, IProcess process, boolean overwrite) throws Exception {
-        syncRoutinesPom(overwrite);
+    public void syncCodesPoms(IProgressMonitor monitor, IProcessor processor, boolean overwrite) throws Exception {
+        final IProcess process =processor!=null? processor.getProcess():null;
+        
+        syncRoutinesPom(processor,overwrite);
         // PigUDFs
         if (ProcessUtils.isRequiredPigUDFs(process)) {
-            syncPigUDFsPom(overwrite);
+            syncPigUDFsPom(processor,overwrite);
         }
         // Beans
         if (ProcessUtils.isRequiredBeans(process)) {
-            syncBeansPom(overwrite);
+            syncBeansPom(processor,overwrite);
         }
     }
 
-    private void updateCodesPomWithProject(IProgressMonitor monitor, IProcessor processor) throws Exception {
-        syncCodesPoms(monitor, processor != null ? processor.getProcess() : null, true);
+    private void updateCodesPomWithProject(IProgressMonitor monitor) throws Exception {
+        syncCodesPoms(monitor,null,  true);
         // finally, update project
         regenerateMainProjectPom(monitor, processor);
     }

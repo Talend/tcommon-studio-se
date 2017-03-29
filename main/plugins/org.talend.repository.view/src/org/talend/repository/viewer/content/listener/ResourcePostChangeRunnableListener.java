@@ -129,59 +129,48 @@ public class ResourcePostChangeRunnableListener implements IResourceChangeListen
         }
 
         if (!pathToRefresh.isEmpty()) {
-            final List<IRepositoryNode> refreshList = new ArrayList<IRepositoryNode>();
-            for (ResourceNode resourceNode : pathToRefresh) {
-                XmiResourceManager xrm = new XmiResourceManager();
-                if (xrm.isPropertyFile(resourceNode.getPath())) {
-                    List<IRepositoryNode> nodes = new ArrayList<>();
-                    nodes.add(resourceNode.getTopNode());
-                    IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(resourceNode.getPath()));
-                    Property property = xrm.loadProperty(file);
-                    if (property != null) {
-                        IRepositoryNode itemNode = findItemNode(property.getId(), nodes);
-                        if (itemNode != null) {
-                            IRepositoryViewObject object = itemNode.getObject();
-                            if (object != null) {
-                                // force a refresh
-                                object.getProperty();
-                            }
-                            if (itemNode != null) {
-                                refreshList.add(itemNode);
-                                // viewer.refresh(itemNode, true);
-                            }
-                        }
-                    }
-                } else {
-                    String folder = null;
-                    if (resourceNode.getPath().startsWith(resourceNode.getTopNodePath())) {
-                        folder = resourceNode.getPath().replace(resourceNode.getTopNodePath(), ""); //$NON-NLS-1$
-                    } else {
-                        // refresh from the root node
-                        folder = "";
-                    }
-                    IRepositoryNode nodeToRefresh = findFolder(folder, resourceNode.getTopNode());
-                    if (nodeToRefresh != null) {
-                        if (nodeToRefresh != null) {
-                            refreshList.add(nodeToRefresh);
-                            // viewer.refresh(nodeToRefresh, false);
-                        }
+            Display.getDefault().asyncExec(new Runnable() {
 
+                @Override
+                public void run() {
+                    for (ResourceNode resourceNode : pathToRefresh) {
+                        XmiResourceManager xrm = new XmiResourceManager();
+                        if (xrm.isPropertyFile(resourceNode.getPath())) {
+                            List<IRepositoryNode> nodes = new ArrayList<>();
+                            nodes.add(resourceNode.getTopNode());
+                            IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(resourceNode.getPath()));
+                            Property property = xrm.loadProperty(file);
+                            if (property != null) {
+                                IRepositoryNode itemNode = findItemNode(property.getId(), nodes);
+                                if (itemNode != null) {
+                                    IRepositoryViewObject object = itemNode.getObject();
+                                    if (object != null) {
+                                        // force a refresh
+                                        object.getProperty();
+                                    }
+                                    if (itemNode != null && viewer != null && !viewer.getTree().isDisposed()) {
+                                        viewer.refresh(itemNode, true);
+                                    }
+                                }
+                            }
+                        } else {
+                            String folder = null;
+                            if (resourceNode.getPath().startsWith(resourceNode.getTopNodePath())) {
+                                folder = resourceNode.getPath().replace(resourceNode.getTopNodePath(), ""); //$NON-NLS-1$
+                            } else {
+                                // refresh from the root node
+                                folder = "";
+                            }
+                            IRepositoryNode nodeToRefresh = findFolder(folder, resourceNode.getTopNode());
+                            if (nodeToRefresh != null) {
+                                if (nodeToRefresh != null && viewer != null && !viewer.getTree().isDisposed()) {
+                                    viewer.refresh(nodeToRefresh, false);
+                                }
+                            }
+                        }
                     }
                 }
-            }
-            if (!refreshList.isEmpty()) {
-                Display.getDefault().asyncExec(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        if (viewer != null && !viewer.getTree().isDisposed()) {
-                            for (IRepositoryNode node : refreshList) {
-                                viewer.refresh(node);
-                            }
-                        }
-                    }
-                });
-            }
+            });
         }
     }
 

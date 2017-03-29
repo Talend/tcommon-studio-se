@@ -38,7 +38,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.talend.components</groupId>
-			<artifactId>components-salesforce</artifactId>
+			<artifactId>components-salesforce-runtime</artifactId>
 			<version>${components.version}</version>
 		</dependency>
 		<dependency>

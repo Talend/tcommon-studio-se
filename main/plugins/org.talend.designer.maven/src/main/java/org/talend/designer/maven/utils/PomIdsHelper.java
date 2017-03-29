@@ -32,11 +32,10 @@ public class PomIdsHelper {
      * 
      * always depend on current project.
      */
-    public static String getProjectGroupId() {
-        final Project currentProject = ProjectManager.getInstance().getCurrentProject();
-        if (currentProject != null) {
-            String technicalLabel = currentProject.getTechnicalLabel();
-            return JavaResourcesHelper.getGroupName(TalendMavenConstants.DEFAULT_MASTER + '.' + technicalLabel);
+    public static String getProjectGroupId(String projectTechName) {
+        if (projectTechName != null && !projectTechName.trim().isEmpty()) {
+            return JavaResourcesHelper.getGroupName(TalendMavenConstants.DEFAULT_MASTER + '.'
+                    + projectTechName.trim().toLowerCase());
         }
         return JavaResourcesHelper.getGroupName(TalendMavenConstants.DEFAULT_MASTER);
     }
@@ -66,9 +65,18 @@ public class PomIdsHelper {
      */
     public static String getCodesGroupId(String baseName) {
         final Project currentProject = ProjectManager.getInstance().getCurrentProject();
-        if (currentProject != null) {
-            String technicalLabel = currentProject.getTechnicalLabel();
-            return JavaResourcesHelper.getGroupName(baseName + '.' + technicalLabel);
+        return getCodesGroupId(currentProject != null ? currentProject.getTechnicalLabel() : null, baseName);
+    }
+
+    public static String getCodesGroupId(String projectTechName, String baseName) {
+        if (projectTechName == null) { // try current one
+            final Project currentProject = ProjectManager.getInstance().getCurrentProject();
+            if (currentProject != null) {
+                projectTechName = currentProject.getTechnicalLabel();
+            }
+        }
+        if (projectTechName != null && !projectTechName.trim().isEmpty()) {
+            return JavaResourcesHelper.getGroupName(baseName + '.' + projectTechName.trim().toLowerCase());
         }
         return JavaResourcesHelper.getGroupName(baseName);
     }
@@ -85,25 +93,31 @@ public class PomIdsHelper {
      * @return "org.talend.job.<name>", like "org.talend.job.test"
      */
     public static String getJobGroupId(String name) {
-        if (name != null) {
-            return JavaResourcesHelper.getGroupName(TalendMavenConstants.DEFAULT_JOB + '.' + name);
+        if (name != null && !name.trim().isEmpty()) {
+            return JavaResourcesHelper.getGroupName(TalendMavenConstants.DEFAULT_JOB + '.' + name.trim().toLowerCase());
         }
         return JavaResourcesHelper.getGroupName(TalendMavenConstants.DEFAULT_JOB);
     }
 
     public static String getTestGroupId(String name) {
-        if (name != null) {
-            return JavaResourcesHelper.getGroupName(TalendMavenConstants.DEFAULT_TEST + '.' + name);
+        if (name != null && !name.trim().isEmpty()) {
+            return JavaResourcesHelper.getGroupName(TalendMavenConstants.DEFAULT_TEST + '.' + name.trim().toLowerCase());
         }
         return JavaResourcesHelper.getGroupName(TalendMavenConstants.DEFAULT_TEST);
     }
 
     public static String getTestGroupId(Property property) {
         if (property != null) {
-            ProjectManager pManager = ProjectManager.getInstance();
-            Project currentProject = pManager.getCurrentProject();
-            if (currentProject != null) {
-                return getTestGroupId(currentProject.getTechnicalLabel());
+            final org.talend.core.model.properties.Project project = ProjectManager.getInstance().getProject(property);
+            if (project != null) {
+                if (project != null) {
+                    final Project currentProject = ProjectManager.getInstance().getCurrentProject();
+                    if (currentProject.getTechnicalLabel().equals(project.getTechnicalLabel())) {
+                        return getTestGroupId(project.getTechnicalLabel());
+                    } else { // reference project
+                        return getTestGroupId(currentProject.getTechnicalLabel() + '.' + project.getTechnicalLabel());
+                    }
+                }
             }
         }
         return getTestGroupId((String) null);
@@ -114,16 +128,20 @@ public class PomIdsHelper {
      */
     public static String getJobGroupId(Property property) {
         if (property != null) {
-            if (property.getAdditionalProperties() !=null) {
+            if (property.getAdditionalProperties() != null) {
                 String groupId = (String) property.getAdditionalProperties().get(MavenConstants.NAME_GROUP_ID);
                 if (groupId != null) {
                     return groupId;
                 }
             }
-            ProjectManager pManager = ProjectManager.getInstance();
-            Project currentProject = pManager.getCurrentProject();
-            if (currentProject != null) {
-                return getJobGroupId(currentProject.getTechnicalLabel());
+            final org.talend.core.model.properties.Project project = ProjectManager.getInstance().getProject(property);
+            if (project != null) {
+                final Project currentProject = ProjectManager.getInstance().getCurrentProject();
+                if (currentProject.getTechnicalLabel().equals(project.getTechnicalLabel())) {
+                    return getJobGroupId(project.getTechnicalLabel());
+                } else { // reference project
+                    return getJobGroupId(currentProject.getTechnicalLabel() + '.' + project.getTechnicalLabel());
+                }
             }
         }
         return getJobGroupId((String) null);
@@ -151,7 +169,7 @@ public class PomIdsHelper {
      */
     public static String getJobVersion(Property property) {
         if (property != null) {
-            if(property.getAdditionalProperties() != null) {
+            if (property.getAdditionalProperties() != null) {
                 String version = (String) property.getAdditionalProperties().get(MavenConstants.NAME_USER_VERSION);
                 if (version != null) {
                     return version;

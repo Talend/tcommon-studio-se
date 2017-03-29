@@ -15,6 +15,7 @@ package org.talend.designer.maven.tools.creator;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 
 import org.apache.maven.model.Model;
 import org.eclipse.core.resources.IFile;
@@ -46,9 +47,10 @@ public class CreateMavenStandardJobOSGiPom extends AbstractMavenProcessorPom {
         File templateFile = PomUtil.getTemplateFile(getObjectTypeFolder(), getItemRelativePath(),
                 IProjectSettingTemplateConstants.OSGI_POM_FILE_NAME);
         try {
+            final Map<String, Object> templateParameters = PomUtil.getTemplateParameters(getJobProcessor());
             return MavenTemplateManager.getTemplateStream(templateFile,
                     IProjectSettingPreferenceConstants.TEMPLATE_OSGI_BUNDLE_POM, PluginChecker.MAVEN_JOB_PLUGIN_ID,
-                    getBundleTemplatePath());
+                    getBundleTemplatePath(), templateParameters);
         } catch (Exception e) {
             throw new IOException(e);
         }

@@ -38,4 +38,19 @@ public class TalendDataSource {
     public javax.sql.DataSource getRawDataSource() {
         return ds;
     }
+    
+    /**
+     * @Deprecated
+     * 
+     * This method will be removed in future release
+     * 
+     * close all the connections which is created by the data source inside
+     * 
+     * @throws SQLException
+     */
+    
+    public void close() throws SQLException {
+    	
+    }
+    
 }

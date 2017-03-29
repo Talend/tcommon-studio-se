@@ -140,6 +140,44 @@ public final class ResultSetUtils {
      * @param columnIndex
      * @return
      * @throws SQLException
+     * @throws IOException
+     */
+    public static Object getBigObject(ResultSet set, String columnName) throws SQLException {
+        Object object = null;
+        try {
+            object = set.getObject(columnName);
+            if (object != null && object instanceof Clob) {
+                Reader is = ((Clob) object).getCharacterStream();
+                BufferedReader br = new BufferedReader(is);
+                String str = br.readLine();
+                StringBuffer sb = new StringBuffer();
+                while (str != null) {
+                    sb.append(str);
+                    str = br.readLine();
+                }
+                return sb.toString();
+            }
+        } catch (SQLException e) {
+            if (NULLDATE.equals(set.getString(columnName))) {
+                object = null;
+            } else {
+                throw e;
+            }
+
+        } catch (IOException e) {
+            object = null;
+        }
+        return object;
+    }
+
+    /**
+     * 
+     * Get Object by special column index
+     * 
+     * @param set
+     * @param columnIndex
+     * @return
+     * @throws SQLException
      */
     public static Object getObject(ResultSet set, int columnIndex) throws SQLException {
         Object object = null;

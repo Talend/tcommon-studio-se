@@ -13,10 +13,15 @@
 package org.talend.core.model.relationship;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.talend.core.model.general.Project;
+import org.talend.core.model.properties.ItemRelations;
 import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.PropertiesFactory;
 import org.talend.core.model.properties.Property;
@@ -29,12 +34,11 @@ import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
 /**
- * created by cmeng on May 10, 2016
- * Detailled comment
+ * created by cmeng on May 10, 2016 Detailled comment
  *
  */
 public class RelationshipItemBuilderTest {
-    
+
     /**
      * For TUP-4175
      */
@@ -62,8 +66,7 @@ public class RelationshipItemBuilderTest {
         ct.getContextParameter().add(cpt);
         contexts.add(ct);
         process.getContext().addAll(contexts);
-        
-        
+
         Property property2 = PropertiesFactory.eINSTANCE.createProperty();
         ProcessItem item2 = PropertiesFactory.eINSTANCE.createProcessItem();
         ProcessType process2 = TalendFileFactory.eINSTANCE.createProcessType();
@@ -85,23 +88,82 @@ public class RelationshipItemBuilderTest {
         ct2.getContextParameter().add(cpt2);
         contexts.add(ct2);
         process2.getContext().addAll(contexts2);
-        
+
         Project currentProject = ProjectManager.getInstance().getCurrentProject();
-        
-        RelationshipItemBuilder relationBuilder = RelationshipItemBuilder.getInstance(currentProject,true);
+
+        RelationshipItemBuilder relationBuilder = RelationshipItemBuilder.getInstance(currentProject, true);
         relationBuilder.addOrUpdateItem(item);
         relationBuilder.addOrUpdateItem(item2);
         relationBuilder.saveRelations();
         currentProject = relationBuilder.getAimProject();
         int shouldBeSize = relationBuilder.getCurrentProjectItemsRelations().size();
         int currentSize = currentProject.getEmfProject().getItemsRelations().size();
-        assert(shouldBeSize==currentSize);
-        
+        assert (shouldBeSize == currentSize);
+
         relationBuilder.removeItemRelations(item2);
         relationBuilder.saveRelations();
         shouldBeSize = relationBuilder.getCurrentProjectItemsRelations().size();
         currentSize = currentProject.getEmfProject().getItemsRelations().size();
-        assert(shouldBeSize==currentSize);
+        assert (shouldBeSize == currentSize);
+    }
+
+    @Test
+    public void testSaveRelationsWithSameId() {
+        IProxyRepositoryFactory proxyRepositoryFactory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
+        String jobId = proxyRepositoryFactory.getNextId();
+        String jobletId = proxyRepositoryFactory.getNextId();
+        Project currentProject = ProjectManager.getInstance().getCurrentProject();
+        RelationshipItemBuilder relationBuilder = RelationshipItemBuilder.getInstance(currentProject, true);
+        Map<Relation, Set<Relation>> currentProjectItemsRelations = relationBuilder.getCurrentProjectItemsRelations();
+        Relation baseItem = new Relation();
+        baseItem.setId(jobId);
+        baseItem.setType(RelationshipItemBuilder.JOB_RELATION);
+        baseItem.setVersion("0.1");
+        // add joblet relation
+        Relation jobletRelation = new Relation();
+        jobletRelation.setId(jobletId);
+        jobletRelation.setType(RelationshipItemBuilder.JOBLET_RELATION);
+        jobletRelation.setVersion("0.1");
+        currentProjectItemsRelations.put(baseItem, new HashSet<Relation>());
+        currentProjectItemsRelations.get(baseItem).add(jobletRelation);
+        relationBuilder.saveRelations();
+        List<Relation> currentRelations = new ArrayList<Relation>();
+        currentRelations.addAll(relationBuilder.getItemsRelatedTo(baseItem.getId(), baseItem.getVersion(), baseItem.getType()));
+        ItemRelations savedJobRelation = null;
+        for (Object r : currentProject.getEmfProject().getItemsRelations()) {
+            ItemRelations ir = (ItemRelations) r;
+            if (ir.getBaseItem().getId().equals(jobId) && ir.getBaseItem().getVersion().equals("0.1")
+                    && ir.getBaseItem().getType().equals(RelationshipItemBuilder.JOB_RELATION)) {
+                savedJobRelation = ir;
+                break;
+            }
+        }
+        Assert.assertEquals(currentRelations.size(), 1);
+        Assert.assertNotNull(savedJobRelation);
+        Assert.assertEquals(currentRelations.size(), savedJobRelation.getRelatedItems().size());
+
+        // add context relation with same id as joblet
+        Relation contextRelation = new Relation();
+        contextRelation.setId(jobletId);
+        contextRelation.setType(RelationshipItemBuilder.CONTEXT_RELATION);
+        contextRelation.setVersion("0.1");
+        currentProjectItemsRelations.get(baseItem).add(contextRelation);
+        relationBuilder.saveRelations();
+
+        savedJobRelation = null;
+        currentRelations = new ArrayList<Relation>();
+        currentRelations.addAll(relationBuilder.getItemsRelatedTo(baseItem.getId(), baseItem.getVersion(), baseItem.getType()));
+        for (Object r : currentProject.getEmfProject().getItemsRelations()) {
+            ItemRelations ir = (ItemRelations) r;
+            if (ir.getBaseItem().getId().equals(jobId) && ir.getBaseItem().getVersion().equals("0.1")
+                    && ir.getBaseItem().getType().equals(RelationshipItemBuilder.JOB_RELATION)) {
+                savedJobRelation = ir;
+                break;
+            }
+        }
+        Assert.assertEquals(currentRelations.size(), 2);
+        Assert.assertNotNull(savedJobRelation);
+        Assert.assertEquals(currentRelations.size(), savedJobRelation.getRelatedItems().size());
     }
 
     /**

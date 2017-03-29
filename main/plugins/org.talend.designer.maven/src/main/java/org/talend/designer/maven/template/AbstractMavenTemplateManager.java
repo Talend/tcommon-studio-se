@@ -18,15 +18,21 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Map;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
+import org.talend.commons.exception.PersistenceException;
+import org.talend.commons.utils.workbench.resources.ResourceUtils;
+import org.talend.core.model.general.Project;
 import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.setting.project.IProjectSettingManagerProvider;
+import org.talend.repository.ProjectManager;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -78,8 +84,32 @@ public abstract class AbstractMavenTemplateManager implements IExecutableExtensi
         return templateUrl.openStream();
     }
 
-    public InputStream readProjectSettingStream(String projectSettingTemplateKey) throws Exception {
+    protected ProjectPreferenceManager getProjectPreferenceManager(Map<String, Object> parameters) throws Exception {
         ProjectPreferenceManager projectPreferenceManager = getProjectPreferenceManager();
+
+        if (parameters != null && parameters.containsKey(MavenTemplateManager.KEY_PROJECT_NAME)) {
+            Object pName = parameters.get(MavenTemplateManager.KEY_PROJECT_NAME);
+            if (pName != null && !pName.toString().isEmpty()) {
+                final IProject rProject = getProject(pName.toString());
+                // from reference projects
+                if (rProject != null && !rProject.getName().equals(projectPreferenceManager.getProject().getName())) {
+                    projectPreferenceManager = new ProjectPreferenceManager(rProject, projectPreferenceManager.getQualifier());
+                }
+            }
+        }
+        return projectPreferenceManager;
+    }
+
+    protected IProject getProject(String techName) throws PersistenceException {
+        final Project p = ProjectManager.getInstance().getProjectFromProjectTechLabel(techName);
+        final IProject rProject = ResourceUtils.getProject(p);
+        return rProject;
+    }
+
+    public InputStream readProjectSettingStream(String projectSettingTemplateKey, Map<String, Object> parameters)
+            throws Exception {
+        ProjectPreferenceManager projectPreferenceManager = getProjectPreferenceManager(parameters);
+
         if (projectPreferenceManager == null || projectSettingTemplateKey == null) {
             throw new NullPointerException();
         }

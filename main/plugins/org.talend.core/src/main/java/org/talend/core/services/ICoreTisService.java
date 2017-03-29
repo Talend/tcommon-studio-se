@@ -52,5 +52,9 @@ public interface ICoreTisService extends IService {
     public boolean needUpdate(String userName, String password, String adminUrl)  throws SystemException;
 
     public void downLoadAndInstallUpdates(String userName, String password, String adminUrl) throws Exception;
+    
+    public boolean isLicenseExpired();
+    
+    public boolean isTheSameType(String userName, String password, String adminUrl);
 
 }

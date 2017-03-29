@@ -123,6 +123,22 @@ public final class ProjectManager {
 
         return null;
     }
+    public Project getProjectFromProjectTechLabel(String label) {
+        if (currentProject == null) {
+            initCurrentProject();
+        }
+
+        if (currentProject.getTechnicalLabel().equals(label)) {
+            return currentProject;
+        }
+        for (Project project : getAllReferencedProjects()) {
+            if (project.getTechnicalLabel().equals(label)) {
+                return project;
+            }
+        }
+
+        return null;
+    }
 
     private void initCurrentProject() {
         Context ctx = CoreRuntimePlugin.getInstance().getContext();
@@ -872,8 +888,8 @@ public final class ProjectManager {
         }
 
         if (projectReference.getBranch() == null
-                || (branchForMainProject != null && branchForMainProject.equals(projectReference.getBranch())
-                        || branchForMainProject.equals(ORIGIN_PREFIX + projectReference.getBranch()))) {
+                || (branchForMainProject != null && (branchForMainProject.equals(projectReference.getBranch())
+                        || branchForMainProject.equals(ORIGIN_PREFIX + projectReference.getBranch())))) {
             return true;
         }
         if (projectReference.getBranch() != null && projectReference.getReferencedBranch() != null) {

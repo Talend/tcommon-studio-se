@@ -33,6 +33,8 @@ public enum EHadoopDistributions {
 
     MICROSOFT_HD_INSIGHT("Microsoft HD Insight"), //$NON-NLS-1$
 
+    GOOGLE_CLOUD_DATAPROC("Google Cloud Dataproc"), //$NON-NLS-1$
+
     CUSTOM("Custom - Unsupported"); //$NON-NLS-1$
 
     private String displayName;

@@ -24,6 +24,7 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.update.IUpdateItemType;
 import org.talend.core.model.update.UpdateResult;
 import org.talend.core.model.update.UpdatesConstants;
@@ -36,6 +37,8 @@ import org.talend.repository.model.IProxyRepositoryFactory;
  * 
  */
 public abstract class AbstractRepositoryUpdateManagerProvider implements IRepositoryUpdateManagerProvider {
+
+    protected boolean enableCheckItem;
 
     protected IProxyRepositoryFactory factory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
 
@@ -196,4 +199,23 @@ public abstract class AbstractRepositoryUpdateManagerProvider implements IReposi
         }
         return false;
     }
+
+    /**
+     * @return false, will only check the opened job.
+     */
+    @Override
+    public boolean enableCheckItem(final IRepositoryViewObject object) {
+        return enableCheckItem;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.talend.core.model.update.extension.IRepositoryUpdateManagerProvider#setEnableCheckItem(boolean)
+     */
+    @Override
+    public void setEnableCheckItem(boolean checkItem) {
+        this.enableCheckItem = checkItem;
+    }
+
 }

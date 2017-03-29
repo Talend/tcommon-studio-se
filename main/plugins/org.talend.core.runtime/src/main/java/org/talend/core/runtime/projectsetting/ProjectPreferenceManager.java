@@ -83,7 +83,7 @@ public final class ProjectPreferenceManager {
         return qualifier;
     }
 
-    private IProject getProject() {
+    public IProject getProject() {
         return project;
     }
 

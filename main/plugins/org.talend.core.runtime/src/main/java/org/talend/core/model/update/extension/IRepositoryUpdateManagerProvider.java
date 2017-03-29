@@ -14,6 +14,7 @@ package org.talend.core.model.update.extension;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.talend.core.model.repository.IRepositoryViewObject;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -60,5 +61,16 @@ public interface IRepositoryUpdateManagerProvider extends IUpdateManagerProvider
      * @return true, update successfully
      */
     boolean updateForRepository(IStructuredSelection selection);
+
+    /**
+     * @return false, will only check the opened job.
+     */
+    boolean enableCheckItem(final IRepositoryViewObject object);
+
+    /**
+     * 
+     * @param checkItem if true , force to check closed job
+     */
+    void setEnableCheckItem(boolean checkItem);
 
 }

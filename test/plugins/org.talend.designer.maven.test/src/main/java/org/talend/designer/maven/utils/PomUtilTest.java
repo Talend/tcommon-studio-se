@@ -13,6 +13,9 @@
 package org.talend.designer.maven.utils;
 
 import java.io.File;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.maven.model.Dependency;
 import org.eclipse.core.resources.IFolder;
@@ -23,9 +26,13 @@ import org.junit.Test;
 import org.ops4j.pax.url.mvn.MavenResolver;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.model.general.Project;
+import org.talend.core.model.properties.PropertiesFactory;
+import org.talend.core.model.properties.Property;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
+import org.talend.designer.maven.template.MavenTemplateManager;
+import org.talend.designer.runprocess.IProcessor;
 import org.talend.repository.ProjectManager;
 import org.talend.utils.io.FilesUtils;
 
@@ -289,5 +296,62 @@ public class PomUtilTest {
         File pomFile = new File(generatedPom);
         Assert.assertTrue(pomFile.exists());
         FilesUtils.deleteFolder(pomFile.getParentFile(), true);
+    }
+
+    @Test
+    public void testGetTemplateParameters_IProcessor_null() {
+        Map<String, Object> templateParameters = PomUtil.getTemplateParameters((IProcessor) null);
+        Assert.assertNotNull(templateParameters);
+        Assert.assertEquals(0, templateParameters.size());
+
+    }
+
+    @Test
+    public void testGetTemplateParameters_Property_null() {
+        Map<String, Object> templateParameters = PomUtil.getTemplateParameters((Property) null);
+        Assert.assertNotNull(templateParameters);
+        Assert.assertEquals(0, templateParameters.size());
+    }
+
+    @Test
+    public void testGetTemplateParameters_Property_noeResourse() {
+        Property p = PropertiesFactory.eINSTANCE.createProperty();
+        Map<String, Object> templateParameters = PomUtil.getTemplateParameters(p);
+        Assert.assertNotNull(templateParameters);
+        Assert.assertEquals(0, templateParameters.size());
+    }
+
+    // @Test
+    public void testGetTemplateParameters_Property_reference() {
+        // can't test, except use mock way, because need mock one reference project.
+    }
+
+    @Test
+    public void testGetProjectNameFromTemplateParameter_empty() {
+        final String currentProjectName = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
+
+        String projectName = PomUtil.getProjectNameFromTemplateParameter(null);
+        Assert.assertNotNull(projectName);
+        Assert.assertEquals(currentProjectName, projectName);
+
+        projectName = PomUtil.getProjectNameFromTemplateParameter(Collections.emptyMap());
+        Assert.assertNotNull(projectName);
+        Assert.assertEquals(currentProjectName, projectName);
+
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put(MavenTemplateManager.KEY_PROJECT_NAME, "");
+        projectName = PomUtil.getProjectNameFromTemplateParameter(parameters);
+        Assert.assertNotNull(projectName);
+        Assert.assertEquals(currentProjectName, projectName);
+    }
+
+    @Test
+    public void testGetProjectNameFromTemplateParameter_diff() {
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put(MavenTemplateManager.KEY_PROJECT_NAME, "ABC");
+        String projectName = PomUtil.getProjectNameFromTemplateParameter(parameters);
+        Assert.assertNotNull(projectName);
+        Assert.assertEquals("ABC", projectName);
+
     }
 }
