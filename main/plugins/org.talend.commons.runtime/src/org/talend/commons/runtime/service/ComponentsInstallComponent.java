@@ -20,11 +20,13 @@ import java.util.List;
  */
 public interface ComponentsInstallComponent extends P2InstallComponent {
 
-    String FOLDER_COMPS = "components";
+    String FOLDER_COMPS = "components"; //$NON-NLS-1$
 
-    String FOLDER_INSTALLED = "installed";
+    String FOLDER_INSTALLED = "installed"; //$NON-NLS-1$
 
-    String FOLDER_M2_REPOSITORY = "m2/repository";
+    String FOLDER_M2_REPOSITORY = "m2/repository"; //$NON-NLS-1$
+
+    void setLogin(boolean login);
 
     void setComponentFolder(File componentFolder);
 

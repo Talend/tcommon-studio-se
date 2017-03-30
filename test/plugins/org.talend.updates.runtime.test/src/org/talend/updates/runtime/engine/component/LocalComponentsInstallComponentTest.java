@@ -49,9 +49,9 @@ public class LocalComponentsInstallComponentTest {
     }
 
     @Test
-    public void test_getInstallingComponentFolder() {
+    public void test_getUserComponentFolder() {
         LocalComponentsInstallComponent installComp = new LocalComponentsInstallComponent();
-        final File installingComponentFolder = installComp.getInstallingComponentFolder();
+        final File installingComponentFolder = installComp.getUserComponentFolder();
         Assert.assertEquals(new File(Platform.getInstallLocation().getURL().getFile(),
                 LocalComponentsInstallComponent.FOLDER_COMPS), installingComponentFolder);
     }

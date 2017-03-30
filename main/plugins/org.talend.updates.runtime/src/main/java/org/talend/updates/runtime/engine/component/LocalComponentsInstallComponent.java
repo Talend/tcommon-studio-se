@@ -33,6 +33,7 @@ import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.runtime.service.ComponentsInstallComponent;
+import org.talend.commons.runtime.service.PatchComponent;
 import org.talend.commons.utils.resource.UpdatesHelper;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.librariesmanager.maven.ArtifactsDeployer;
@@ -50,9 +51,16 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
 
     private String installedMessage;
 
-    private File componentFolder = null;
+    private File userComponentFolder = null;
 
     private List<File> failedComponents;
+
+    private boolean isLogin = false;
+
+    @Override
+    public void setLogin(boolean login) {
+        this.isLogin = login;
+    }
 
     public boolean needRelaunch() {
         return needRelaunch;
@@ -69,11 +77,11 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
     }
 
     public void setComponentFolder(File componentFolder) {
-        this.componentFolder = componentFolder;
+        this.userComponentFolder = componentFolder;
     }
 
-    protected File getInstallingComponentFolder() {
-        if (componentFolder == null) {
+    protected File getUserComponentFolder() {
+        if (userComponentFolder == null) {
             // use same folder of user component from preference setting.
             ScopedPreferenceStore preferenceStore = new ScopedPreferenceStore(InstanceScope.INSTANCE,
                     "org.talend.designer.codegen"); //$NON-NLS-1$
@@ -82,26 +90,34 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
             if (!StringUtils.isEmpty(userCompFolder)) {
                 File compFolder = new File(userCompFolder);
                 if (compFolder.exists()) {
-                    componentFolder = compFolder;
+                    userComponentFolder = compFolder;
                 }
             }
 
-            if (componentFolder == null) {
+            if (userComponentFolder == null) {
                 try {
-                    componentFolder = new File(Platform.getInstallLocation().getDataArea(FOLDER_COMPS).getPath());
+                    userComponentFolder = new File(Platform.getInstallLocation().getDataArea(FOLDER_COMPS).getPath());
                 } catch (IOException e) {
                     //
                 }
             }
-            if (componentFolder == null) {
-                componentFolder = new File(System.getProperty("user.dir") + '/' + FOLDER_COMPS); //$NON-NLS-1$
+            if (userComponentFolder == null) {
+                userComponentFolder = new File(System.getProperty("user.dir") + '/' + FOLDER_COMPS); //$NON-NLS-1$
             }
         }
-        return componentFolder;
+        return userComponentFolder;
     }
 
-    File getInstalledComponentFolder() {
-        return new File(getInstallingComponentFolder(), FOLDER_INSTALLED);
+    /**
+     * same as PatchLocalInstallerManager.getInstallingPatchesFolder
+     */
+    public File getPatchesFolder() {
+        try {
+            return new File(Platform.getInstallLocation().getDataArea(PatchComponent.FOLDER_PATCHES).getPath());
+        } catch (IOException e) {
+            //
+        }
+        return new File(System.getProperty("user.dir") + '/' + PatchComponent.FOLDER_PATCHES); //$NON-NLS-1$
     }
 
     /**
@@ -114,81 +130,39 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
         reset();
 
         try {
-            final File componentFolder = getInstallingComponentFolder();
-            if (componentFolder == null || !componentFolder.exists()) {
-                return false;
+            Map<File, Set<InstalledUnit>> successUnits = new HashMap<File, Set<InstalledUnit>>();
+
+            successUnits.putAll(installFromFolder(getUserComponentFolder()));
+            if (isLogin) { // try to install the components from patches folder.
+                // because in patches folder, will do after install user components.
+                successUnits.putAll(installFromFolder(getPatchesFolder()));
             }
-            if (componentFolder.isDirectory()) {
-                Map<File, Set<InstalledUnit>> successUnits = new HashMap<File, Set<InstalledUnit>>();
 
-                final File[] updateFiles = componentFolder.listFiles(); // no children folders recursively.
-                if (updateFiles != null && updateFiles.length > 0) {
-                    for (File f : updateFiles) {
-                        // must be file, and update site.
-                        if (f.isFile() && UpdatesHelper.isComponentUpdateSite(f)) {
+            if (!successUnits.isEmpty()) { // have one component install ok.
+                needRelaunch = true;
+            }
+            // messages
+            StringBuffer messages = new StringBuffer(100);
+            if (successUnits.isEmpty()) {
+                installedMessage = null; // no message
+            } else {
+                messages.append("Installed success components:\n");
+                List<File> succussFiles = new ArrayList(successUnits.keySet());
+                Collections.sort(succussFiles);
 
-                            P2Installer installer = new P2Installer() {
-
-                                @Override
-                                public Set<InstalledUnit> installPatchFolder(File updatesiteFolder, boolean keepChangeConfigIni)
-                                        throws IOException, ProvisionException {
-                                    final Set<InstalledUnit> installed = super.installPatchFolder(updatesiteFolder,
-                                            keepChangeConfigIni);
-                                    if (!installed.isEmpty()) { // install success
-                                        // sync the component libraries
-                                        syncLibraries(updatesiteFolder);
-                                        syncM2Repository(updatesiteFolder);
-                                    }
-                                    return installed;
-                                }
-
-                            };
-
-                            try {
-                                final Set<InstalledUnit> installed = installer.installPatchFile(f, true);
-                                if (installed != null && !installed.isEmpty()) { // install success
-                                    successUnits.put(f, installed);
-
-                                    afterInstall(f);
-                                }
-                            } catch (Exception e) { // sometime, if reinstall it, will got one exception also.
-                                // won't block others to install.
-                                if (!CommonsPlugin.isHeadless()) {
-                                    ExceptionHandler.process(e);
-                                }
-                                failedComponents.add(f);
-                            }
-                        }
-                    }
-                }
-
-                if (!successUnits.isEmpty()) { // have one component install ok.
-                    needRelaunch = true;
-                }
-
-                // messages
-                StringBuffer messages = new StringBuffer(100);
-                if (successUnits.isEmpty()) {
-                    installedMessage = null; // no message
-                } else {
-                    messages.append("Installed success components:\n");
-                    List<File> succussFiles = new ArrayList(successUnits.keySet());
-                    Collections.sort(succussFiles);
-
-                    for (File f : succussFiles) {
-                        messages.append("\n  file: " + f.getName());
+                for (File f : succussFiles) {
+                    messages.append("\n  file: " + f.getName());
+                    messages.append('\n');
+                    Set<InstalledUnit> set = successUnits.get(f);
+                    for (InstalledUnit unit : set) {
+                        messages.append("  > bundle:" + unit.getBundle() + " , version=" + unit.getVersion());
                         messages.append('\n');
-                        Set<InstalledUnit> set = successUnits.get(f);
-                        for (InstalledUnit unit : set) {
-                            messages.append("  > bundle:" + unit.getBundle() + " , version=" + unit.getVersion());
-                            messages.append('\n');
-                        }
                     }
-
-                    installedMessage = messages.toString();
                 }
-                return !successUnits.isEmpty();
+
+                installedMessage = messages.toString();
             }
+            return !successUnits.isEmpty();
         } catch (Exception e) {
             if (!CommonsPlugin.isHeadless()) {
                 // make sure to popup error dialog for studio
@@ -198,9 +172,58 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
         return false;
     }
 
-    protected void afterInstall(File f) throws IOException {
+    protected Map<File, Set<InstalledUnit>> installFromFolder(final File componentBaseFolder) {
+        if (componentBaseFolder == null || !componentBaseFolder.exists() || !componentBaseFolder.isDirectory()) {
+            return Collections.emptyMap();
+        }
+        Map<File, Set<InstalledUnit>> successUnits = new HashMap<File, Set<InstalledUnit>>();
+
+        final File[] updateFiles = componentBaseFolder.listFiles(); // no children folders recursively.
+        if (updateFiles != null && updateFiles.length > 0) {
+            for (File f : updateFiles) {
+                // must be file, and update site.
+                if (f.isFile() && UpdatesHelper.isComponentUpdateSite(f)) {
+
+                    P2Installer installer = new P2Installer() {
+
+                        @Override
+                        public Set<InstalledUnit> installPatchFolder(File updatesiteFolder, boolean keepChangeConfigIni)
+                                throws IOException, ProvisionException {
+                            final Set<InstalledUnit> installed = super.installPatchFolder(updatesiteFolder, keepChangeConfigIni);
+                            if (!installed.isEmpty()) { // install success
+                                // sync the component libraries
+                                syncLibraries(updatesiteFolder);
+                                syncM2Repository(updatesiteFolder);
+                            }
+                            return installed;
+                        }
+
+                    };
+
+                    try {
+                        final Set<InstalledUnit> installed = installer.installPatchFile(f, true);
+                        if (installed != null && !installed.isEmpty()) { // install success
+                            successUnits.put(f, installed);
+
+                            afterInstall(componentBaseFolder, f);
+                        }
+                    } catch (Exception e) { // sometime, if reinstall it, will got one exception also.
+                        // won't block others to install.
+                        if (!CommonsPlugin.isHeadless()) {
+                            ExceptionHandler.process(e);
+                        }
+                        failedComponents.add(f);
+                    }
+                }
+            }
+        }
+
+        return successUnits;
+    }
+
+    protected void afterInstall(final File componentBaseFolder, File f) throws IOException {
         // try to move install success to installed folder
-        final File installedComponentFolder = getInstalledComponentFolder();
+        final File installedComponentFolder = new File(componentBaseFolder, FOLDER_INSTALLED);
         FilesUtils.copyFile(f, new File(installedComponentFolder, f.getName()));
         f.delete(); // delete original file.
     }
@@ -288,5 +311,4 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
     public String getInstalledMessages() {
         return installedMessage;
     }
-
 }
