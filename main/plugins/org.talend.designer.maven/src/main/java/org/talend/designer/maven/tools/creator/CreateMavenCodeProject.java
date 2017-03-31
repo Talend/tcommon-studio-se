@@ -44,6 +44,7 @@ import org.eclipse.m2e.core.project.IProjectConfigurationManager;
 import org.eclipse.m2e.core.project.ProjectImportConfiguration;
 import org.osgi.service.prefs.BackingStoreException;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.commons.utils.generation.JavaUtils;
 import org.talend.core.runtime.projectsetting.IProjectSettingTemplateConstants;
 import org.talend.designer.maven.DesignerMavenPlugin;
 import org.talend.designer.maven.model.MavenSystemFolders;
@@ -302,6 +303,10 @@ public class CreateMavenCodeProject extends AbstractMavenGeneralTemplatePom {
             return;
         }
         String compilerCompliance = javaProject.getOption(JavaCore.COMPILER_COMPLIANCE, false);
+        String customCompilerCompliance = JavaUtils.getCustomCompilerCompliance();
+        if (customCompilerCompliance != null && !customCompilerCompliance.equals(compilerCompliance)) {
+            compilerCompliance = customCompilerCompliance;
+        }
         // clear compliance settings from project
         Set<String> keySet = projectComplianceOptions.keySet();
         for (String key : keySet) {
