@@ -67,11 +67,17 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
     }
 
     public List<File> getFailedComponents() {
+        if (failedComponents == null) {
+            failedComponents = new ArrayList<File>();
+        }
         return failedComponents;
     }
 
     private void reset() {
         needRelaunch = false;
+        if (failedComponents != null) {
+            failedComponents.clear();
+        }
         failedComponents = new ArrayList<File>();
         installedMessage = null;
     }
@@ -111,7 +117,7 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
     /**
      * same as PatchLocalInstallerManager.getInstallingPatchesFolder
      */
-    public File getPatchesFolder() {
+    protected File getPatchesFolder() {
         try {
             return new File(Platform.getInstallLocation().getDataArea(PatchComponent.FOLDER_PATCHES).getPath());
         } catch (IOException e) {
@@ -127,6 +133,10 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
         if (Platform.inDevelopmentMode()) { // for dev, no need install patches.
             return false;
         }
+        return doInstall();
+    }
+
+    protected boolean doInstall() {
         reset();
 
         try {
@@ -183,24 +193,8 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
             for (File f : updateFiles) {
                 // must be file, and update site.
                 if (f.isFile() && UpdatesHelper.isComponentUpdateSite(f)) {
-
-                    P2Installer installer = new P2Installer() {
-
-                        @Override
-                        public Set<InstalledUnit> installPatchFolder(File updatesiteFolder, boolean keepChangeConfigIni)
-                                throws IOException, ProvisionException {
-                            final Set<InstalledUnit> installed = super.installPatchFolder(updatesiteFolder, keepChangeConfigIni);
-                            if (!installed.isEmpty()) { // install success
-                                // sync the component libraries
-                                syncLibraries(updatesiteFolder);
-                                syncM2Repository(updatesiteFolder);
-                            }
-                            return installed;
-                        }
-
-                    };
-
                     try {
+                        P2Installer installer = createInstaller();
                         final Set<InstalledUnit> installed = installer.installPatchFile(f, true);
                         if (installed != null && !installed.isEmpty()) { // install success
                             successUnits.put(f, installed);
@@ -212,6 +206,9 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
                         if (!CommonsPlugin.isHeadless()) {
                             ExceptionHandler.process(e);
                         }
+                        if (failedComponents == null) {
+                            failedComponents = new ArrayList<File>();
+                        }
                         failedComponents.add(f);
                     }
                 }
@@ -221,9 +218,33 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
         return successUnits;
     }
 
+    protected P2Installer createInstaller() {
+        return new P2Installer() {
+
+            @Override
+            public Set<InstalledUnit> installPatchFile(File updatesiteFolder, boolean keepChangeConfigIni) throws Exception,
+                    ProvisionException {
+                final Set<InstalledUnit> installed = super.installPatchFile(updatesiteFolder, keepChangeConfigIni);
+                if (!installed.isEmpty()) { // install success
+                    // sync the component libraries
+                    syncLibraries(updatesiteFolder);
+                    syncM2Repository(updatesiteFolder);
+                }
+                return installed;
+            }
+
+        };
+    }
+
     protected void afterInstall(final File componentBaseFolder, File f) throws IOException {
+        if (f == null || !f.exists() || !f.isFile()) {
+            return;
+        }
         // try to move install success to installed folder
         final File installedComponentFolder = new File(componentBaseFolder, FOLDER_INSTALLED);
+        if (!installedComponentFolder.exists()) {
+            installedComponentFolder.mkdirs();
+        }
         FilesUtils.copyFile(f, new File(installedComponentFolder, f.getName()));
         f.delete(); // delete original file.
     }
