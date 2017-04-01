@@ -3470,6 +3470,8 @@ public class DatabaseForm extends AbstractForm {
     private List<String> getVersionDrivers(String dbType) {
         if (asMsSQLVersionEnable()) {
             return getMSSQLVersionDrivers(dbType);
+        }else if(asSybaseVersionEnable()){
+            return getSybaseVersionDrivers(dbType);
         }
         List<String> result = new ArrayList<String>();
         List<EDatabaseVersion4Drivers> v4dList = EDatabaseVersion4Drivers.indexOfByDbType(dbType);
@@ -3485,6 +3487,13 @@ public class DatabaseForm extends AbstractForm {
         List<String> result = new ArrayList<String>();
         result.add(EDatabaseVersion4Drivers.MSSQL.getVersionDisplay());
         result.add(EDatabaseVersion4Drivers.MSSQL_PROP.getVersionDisplay());
+        return result;
+    }
+    
+    private List<String> getSybaseVersionDrivers(String dbType) {
+        List<String> result = new ArrayList<String>();
+        result.add(EDatabaseVersion4Drivers.SYBASEASE.getVersionDisplay());
+        result.add(EDatabaseVersion4Drivers.SYBASEIQ_16.getVersionDisplay());
         return result;
     }
 
@@ -4134,6 +4143,7 @@ public class DatabaseForm extends AbstractForm {
                 || EDatabaseConnTemplate.VERTICA.getDBDisplayName().equals(dbTypeCombo.getText())
                 || EDatabaseConnTemplate.PSQL.getDBDisplayName().equals(dbTypeCombo.getText())
                 || EDatabaseConnTemplate.MSSQL.getDBDisplayName().equals(dbTypeCombo.getText())
+                || EDatabaseConnTemplate.SYBASEASE.getDBDisplayName().equals(dbTypeCombo.getText())
                 || EDatabaseConnTemplate.IMPALA.getDBDisplayName().equals(dbTypeCombo.getText());
     }
 
@@ -5036,6 +5046,7 @@ public class DatabaseForm extends AbstractForm {
         boolean isSAPHana = asSAPHanaVersionEnable();
         boolean isImpala = ImpalaVersionEnable();
         boolean isMsSQL = asMsSQLVersionEnable();
+        boolean isSybase = asSybaseVersionEnable();
 
         String selectedVersion = getConnection().getDbVersionString();
         dbVersionCombo.removeAll();
@@ -5064,6 +5075,9 @@ public class DatabaseForm extends AbstractForm {
         } else if (dbType.equals(EDatabaseConnTemplate.MSSQL.getDBDisplayName())) {
             dbVersionCombo.getCombo().setItems(versions);
             dbVersionCombo.setHideWidgets(!isMsSQL);
+        } else if (dbType.equals(EDatabaseConnTemplate.SYBASEASE.getDBDisplayName())) {
+            dbVersionCombo.getCombo().setItems(versions);
+            dbVersionCombo.setHideWidgets(!isSybase);
         } else if (dbType.equals(EDatabaseConnTemplate.SAS.getDBDisplayName())) {
             dbVersionCombo.getCombo().setItems(versions);
             dbVersionCombo.setHideWidgets(!isSAS);
@@ -6006,10 +6020,11 @@ public class DatabaseForm extends AbstractForm {
         boolean isImpala = visible && ImpalaVersionEnable();
         boolean isHive = visible && hiveVersionEnable();
         boolean isMsSQL = visible && asMsSQLVersionEnable();
+        boolean isSybase = visible && asSybaseVersionEnable();
 
         dbVersionCombo
                 .setEnabled(!isReadOnly()
-                        && (isOracle || isAS400 || isMySQL || isVertica || isSAS || isImpala || isMsSQL
+                        && (isOracle || isAS400 || isMySQL || isVertica || isSAS || isImpala || isMsSQL || isSybase
                                 || EDatabaseConnTemplate.PSQL.getDBTypeName().equals(dbTypeCombo.getText())
                                 || EDatabaseConnTemplate.PLUSPSQL.getDBTypeName().equals(dbTypeCombo.getText())
                                 || EDatabaseConnTemplate.ACCESS.getDBTypeName().equals(dbTypeCombo.getText()) || EDatabaseConnTemplate.MSSQL05_08
@@ -6581,6 +6596,21 @@ public class DatabaseForm extends AbstractForm {
         return template != null && template == EDatabaseConnTemplate.MSSQL
                 && LanguageManager.getCurrentLanguage().equals(ECodeLanguage.JAVA);
     }
+    
+    /**
+     * 
+     * DOC hwang Comment method "asSybaseVersionEnable".
+     * 
+     * @return
+     */
+    private boolean asSybaseVersionEnable() {
+        if (dbTypeCombo == null) {
+            return false;
+        }
+        EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(dbTypeCombo.getText());
+        return template != null && template == EDatabaseConnTemplate.SYBASEASE
+                && LanguageManager.getCurrentLanguage().equals(ECodeLanguage.JAVA);
+    }
 
     /**
      * 
@@ -6778,6 +6808,9 @@ public class DatabaseForm extends AbstractForm {
             if (dbType == null || dbType.equals(EDatabaseTypeName.ACCESS) || dbType.equals(EDatabaseTypeName.PSQL)
                     || dbType.equals(EDatabaseTypeName.PLUSPSQL) || dbType.equals(EDatabaseTypeName.IMPALA)) {
                 // no version check for these dbs
+                return null;
+            }
+            if(version == EDatabaseVersion4Drivers.SYBASEASE){
                 return null;
             }
             if (connection.getDriverClass() == null && dbType != EDatabaseTypeName.GENERAL_JDBC) {
