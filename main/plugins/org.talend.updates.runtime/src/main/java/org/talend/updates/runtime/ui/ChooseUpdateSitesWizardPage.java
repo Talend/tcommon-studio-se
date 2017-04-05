@@ -12,6 +12,9 @@
 // ============================================================================
 package org.talend.updates.runtime.ui;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.PojoObservables;
@@ -32,6 +35,7 @@ import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.talend.updates.runtime.i18n.Messages;
+import org.talend.updates.runtime.model.ExtraFeature;
 import org.talend.updates.runtime.model.UpdateSiteLocationType;
 
 /**
@@ -54,6 +58,8 @@ public class ChooseUpdateSitesWizardPage extends WizardPage {
 
     private Button btnDefaultRemoteSites;
 
+    private SelectObservableValue featureRepoLocationTypeObservable;
+
     /**
      * Create the wizard.
      * 
@@ -64,6 +70,14 @@ public class ChooseUpdateSitesWizardPage extends WizardPage {
         this.updateWizardModel = updateWizardModel;
         setTitle(Messages.getString("ChooseUpdateSitesWizardPage.page.title")); //$NON-NLS-1$
         setDescription(Messages.getString("ChooseUpdateSitesWizardPage.page.description")); //$NON-NLS-1$
+    }
+
+    @Override
+    public void setVisible(boolean visible) {
+        super.setVisible(visible);
+        if (visible) {
+            checkDefaultChecked();
+        }
     }
 
     /**
@@ -123,7 +137,7 @@ public class ChooseUpdateSitesWizardPage extends WizardPage {
     }
 
     protected void initDataBindings() {
-        SelectObservableValue featureRepoLocationTypeObservable = new SelectObservableValue(UpdateSiteLocationType.class);
+        featureRepoLocationTypeObservable = new SelectObservableValue(UpdateSiteLocationType.class);
         {
             DataBindingContext defaultRemoteBC = new DataBindingContext();
             // define default Repo bindings
@@ -183,6 +197,36 @@ public class ChooseUpdateSitesWizardPage extends WizardPage {
         DataBindingContext radioBC = new DataBindingContext();
         radioBC.bindValue(featureRepoLocationTypeObservable,
                 PojoObservables.observeValue(updateWizardModel, "featureRepositories.updateSiteLocationType")); //$NON-NLS-1$
+
+    }
+
+    private void checkDefaultChecked() {
+        Set<UpdateSiteLocationType> types = new HashSet<UpdateSiteLocationType>();
+        final Set<ExtraFeature> selectedExtraFeatures = updateWizardModel.getSelectedExtraFeatures();
+        for (ExtraFeature feature : selectedExtraFeatures) {
+            types.addAll(feature.getUpdateSiteCompatibleTypes());
+        }
+
+        final boolean hasDefaultRepo = types.contains(UpdateSiteLocationType.DEFAULT_REPO);
+        final boolean hasRemoteRepo = types.contains(UpdateSiteLocationType.REMOTE_REPO);
+        final boolean hasLocalFolder = types.contains(UpdateSiteLocationType.LOCAL_FOLDER);
+
+        btnDefaultRemoteSites.setEnabled(hasDefaultRepo);
+        btnCustomUpdateSite.setEnabled(hasRemoteRepo);
+        localFolderBrowseButton.setEnabled(hasLocalFolder);
+
+        UpdateSiteLocationType type = null;
+        if (hasDefaultRepo) {
+            type = UpdateSiteLocationType.DEFAULT_REPO;
+        } else {
+            if (hasRemoteRepo) {
+                type = UpdateSiteLocationType.REMOTE_REPO;
+            } else {
+                type = UpdateSiteLocationType.LOCAL_FOLDER;
+            }
+        }
+        featureRepoLocationTypeObservable.setValue(type);
+
     }
 
 }

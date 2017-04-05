@@ -43,14 +43,14 @@ public class ExtraFeaturesUpdatesFactory {
             Assert.isNotNull(uninstalledExtraFeatures);
         }
         AbstractExtraUpdatesFactory[] updatesFactories = updatesFactoryReader.getUpdatesFactories();
-        try {
-            if (updatesFactories != null) {
-                for (AbstractExtraUpdatesFactory factory : updatesFactories) {
+        if (updatesFactories != null) {
+            for (AbstractExtraUpdatesFactory factory : updatesFactories) {
+                try {
                     factory.retrieveUninstalledExtraFeatures(monitor, uninstalledExtraFeatures);
+                } catch (Exception e) {
+                    ExceptionHandler.process(e);
                 }
             }
-        } catch (Exception e) {
-            ExceptionHandler.process(e);
         }
     }
 

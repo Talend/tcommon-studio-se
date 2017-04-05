@@ -51,6 +51,8 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
 
     private String installedMessage;
 
+    private String failureMessage;
+
     private File userComponentFolder = null;
 
     private List<File> failedComponents;
@@ -80,6 +82,7 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
         }
         failedComponents = new ArrayList<File>();
         installedMessage = null;
+        failureMessage = null;
     }
 
     public void setComponentFolder(File componentFolder) {
@@ -169,9 +172,17 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
                         messages.append('\n');
                     }
                 }
-
                 installedMessage = messages.toString();
             }
+            if (getFailedComponents() != null && !getFailedComponents().isEmpty()) {
+                StringBuffer failureMessages = new StringBuffer(200);
+                failureMessages.append("[ERROR] Some components are not installed successfully:");
+                for (File f : getFailedComponents()) {
+                    failureMessages.append(f.getName() + ',' + ' ');
+                }
+                this.failureMessage = failureMessages.toString();
+            }
+
             return !successUnits.isEmpty();
         } catch (Exception e) {
             if (!CommonsPlugin.isHeadless()) {
@@ -206,10 +217,7 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
                         if (!CommonsPlugin.isHeadless()) {
                             ExceptionHandler.process(e);
                         }
-                        if (failedComponents == null) {
-                            failedComponents = new ArrayList<File>();
-                        }
-                        failedComponents.add(f);
+                        getFailedComponents().add(f);
                     }
                 }
             }
@@ -332,4 +340,10 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
     public String getInstalledMessages() {
         return installedMessage;
     }
+
+    @Override
+    public String getFailureMessage() {
+        return failureMessage;
+    }
+
 }
