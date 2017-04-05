@@ -402,7 +402,7 @@ public class ProcessorUtilities {
         ProcessItem selectedProcessItem;
 
         selectedProcessItem = jobInfo.getProcessItem();
-        String currentJobName = null;
+        String currentJobName = jobInfo.getJobName();
         if (selectedProcessItem == null && jobInfo.getJobVersion() == null) {
             // child job
             selectedProcessItem = ItemCacheManager.getProcessItem(jobInfo.getJobId());
@@ -418,7 +418,7 @@ public class ProcessorUtilities {
         if (selectedProcessItem != null) {
             currentJobName = selectedProcessItem.getProperty().getLabel();
         }
-        progressMonitor.subTask(Messages.getString("ProcessorUtilities.loadingJob") + currentJobName); //$NON-NLS-1$
+        progressMonitor.subTask(Messages.getString("ProcessorUtilities.loadingJob") + currentJobName == null ? "" : currentJobName); //$NON-NLS-1$
 
         if (jobInfo.getProcess() == null) {
             if (selectedProcessItem != null) {
