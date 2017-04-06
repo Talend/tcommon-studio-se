@@ -192,11 +192,13 @@ public class MetadataDialog extends Dialog {
         boolean dbComponent = false;
         boolean hasMappingType = false;
         boolean eltComponent = false;
+        boolean isSAPELT = false;
         boolean hasRepositoryDbSchema = false;
         boolean isEBCDIC = false;
         if (node != null && node.getComponent() != null) {
             eltComponent = node.isELTComponent();
             isEBCDIC = node.getComponent().getName().contains("EBCDIC");
+            isSAPELT = node.getComponent().getName().startsWith("tELTSAP");
             if (node.getComponent().isSupportDbType() || node.getComponent().getOriginalFamilyName().startsWith(DATABASE_LABEL)
                     || eltComponent || isEBCDIC) {
                 dbComponent = !isEBCDIC;
@@ -277,7 +279,7 @@ public class MetadataDialog extends Dialog {
         metaView.setShowDbColumnName(dbComponent, hasMappingType || (dbComponent && !hasRepositoryDbSchema));
 
         // hide the talend type for ELT components
-        metaView.setShowTalendTypeColumn(!eltComponent);
+        metaView.setShowTalendTypeColumn(!eltComponent || isSAPELT);
         // hide the pattern for ELT components
         metaView.setShowPatternColumn(!eltComponent);
 
