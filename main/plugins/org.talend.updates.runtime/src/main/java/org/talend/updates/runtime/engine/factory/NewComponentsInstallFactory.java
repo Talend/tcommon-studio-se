@@ -21,11 +21,14 @@ import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.equinox.p2.core.ProvisionException;
 import org.talend.commons.runtime.helper.LocalComponentInstallHelper;
 import org.talend.commons.runtime.service.ComponentsInstallComponent;
 import org.talend.commons.utils.VersionUtils;
+import org.talend.commons.utils.resource.UpdatesHelper;
 import org.talend.updates.runtime.i18n.Messages;
 import org.talend.updates.runtime.model.ExtraFeature;
 import org.talend.updates.runtime.model.FeatureRepositories;
@@ -41,20 +44,32 @@ public class NewComponentsInstallFactory extends AbstractExtraUpdatesFactory {
 
     // private static Logger log = Logger.getLogger(NewComponentsInstallFactory.class);
 
-    class ComponentInstallP2ExtraFeature extends P2ExtraFeature {
+    static class ComponentInstallP2ExtraFeature extends P2ExtraFeature {
 
         private boolean needRestart;
 
         private File workFolder;
 
-        public ComponentInstallP2ExtraFeature() {
+        ComponentInstallP2ExtraFeature() {
             name = Messages.getString("installing.new.components.name"); //$NON-NLS-1$
             description = Messages.getString("installing.new.components.description"); //$NON-NLS-1$
             version = VersionUtils.getDisplayVersion();
 
-            p2IuId = "org.talend.components";
+            p2IuId = "org.talend.components." + System.currentTimeMillis(); // make sure it will do always.
             useLegacyP2Install = true; // enable to modify the config.ini
             mustBeInstalled = false;
+        }
+
+        File getWorkFolder() {
+            if (workFolder == null) {
+                workFolder = org.talend.utils.files.FileUtils.createTmpFolder("NewComponents", "");//$NON-NLS-1$  //$NON-NLS-2$
+            }
+            return workFolder;
+        }
+
+        @Override
+        public boolean isInstalled(IProgressMonitor progress) throws P2ExtraFeatureException {
+            return false;
         }
 
         @Override
@@ -65,42 +80,63 @@ public class NewComponentsInstallFactory extends AbstractExtraUpdatesFactory {
 
         @Override
         public IStatus install(IProgressMonitor progress, List<URI> allRepoUris) throws P2ExtraFeatureException {
+            if (progress == null) {
+                progress = new NullProgressMonitor();
+            }
+            SubMonitor subMonitor = SubMonitor.convert(progress, 100);
             try {
-                workFolder = org.talend.utils.files.FileUtils.createTmpFolder("NewComponents", "");//$NON-NLS-1$  //$NON-NLS-2$
                 for (URI uri : allRepoUris) {
                     final String host = uri.getHost();
                     if (host != null) { // remote site?
                         // return super.install(progress, allRepoUris); // install
                     } else { // local? jar:file:/xxx/yy.zip!/
-                        final String scheme = uri.getScheme();
-                        if (scheme != null && FeatureRepositories.URI_JAR_SCHEMA.equals(scheme)) {// local zip file
-                            final String rawSchemeSpecificPart = uri.getRawSchemeSpecificPart();
-                            if (rawSchemeSpecificPart != null) {
-                                String path = rawSchemeSpecificPart.substring(0, rawSchemeSpecificPart.length()
-                                        - FeatureRepositories.URI_JAR_SUFFIX.length());
-                                path = path.substring(FeatureRepositories.URI_FILE_SCHEMA.length() + 1); // file:
-                                final File file = new File(path);
-                                if (file.exists()) {
-                                    FilesUtils.copyFile(file, new File(workFolder, file.getName()));
-                                    //
-                                }
-                            }
-                        }// else { // other file
-
+                        if (subMonitor.isCanceled()) {
+                            return new Status(IStatus.CANCEL, Messages.getPlugiId(), "Cancel"); //$NON-NLS-1$
+                        }
+                        prepareForLocalURI(uri);
                     }
+                }
+                subMonitor.worked(20);
+                if (subMonitor.isCanceled()) {
+                    return new Status(IStatus.CANCEL, Messages.getPlugiId(), "Cancel"); //$NON-NLS-1$
                 }
                 return doInstallFromFolder();
             } catch (IOException e) {
                 throw new P2ExtraFeatureException(new ProvisionException("Can't copy file", e));
             } finally {
+                subMonitor.setWorkRemaining(10);
                 afterInstall();
             }
         }
 
-        private Status doInstallFromFolder() {
-            ComponentsInstallComponent installComponent = LocalComponentInstallHelper.getComponent();
+        void prepareForLocalURI(URI uri) throws IOException {
+            if (uri == null) {
+                return;
+            }
+            final String scheme = uri.getScheme();
+            if (scheme != null && FeatureRepositories.URI_JAR_SCHEMA.equals(scheme)) {// local zip file
+                final String rawSchemeSpecificPart = uri.getRawSchemeSpecificPart();
+                if (rawSchemeSpecificPart != null) {
+                    String path = rawSchemeSpecificPart.substring(0, rawSchemeSpecificPart.length()
+                            - FeatureRepositories.URI_JAR_SUFFIX.length());
+                    path = path.substring(FeatureRepositories.URI_FILE_SCHEMA.length() + 1); // file:
+                    final File file = new File(path);
+                    if (file.exists() && UpdatesHelper.isComponentUpdateSite(file)) {
+                        FilesUtils.copyFile(file, new File(getWorkFolder(), file.getName()));
+                        //
+                    }
+                }
+            }// else { // other file
+
+        }
+
+        Status doInstallFromFolder() {
+            if (getWorkFolder() == null || getWorkFolder().list() == null || getWorkFolder().list().length == 0) {
+                return null;
+            }
+            ComponentsInstallComponent installComponent = getInstallComponent();
             try {
-                installComponent.setComponentFolder(workFolder);
+                installComponent.setComponentFolder(getWorkFolder());
 
                 boolean installed = installComponent.install();
                 needRestart = installComponent.needRelaunch();
@@ -128,6 +164,10 @@ public class NewComponentsInstallFactory extends AbstractExtraUpdatesFactory {
             }
         }
 
+        ComponentsInstallComponent getInstallComponent() {
+            return LocalComponentInstallHelper.getComponent();
+        }
+
         @Override
         public boolean needRestart() {
             return needRestart;
@@ -135,8 +175,8 @@ public class NewComponentsInstallFactory extends AbstractExtraUpdatesFactory {
 
         @Override
         protected void afterInstall() {
-            if (workFolder != null) {
-                FilesUtils.deleteFolder(workFolder, true);
+            if (getWorkFolder() != null) {
+                FilesUtils.deleteFolder(getWorkFolder(), true);
             }
         }
 
