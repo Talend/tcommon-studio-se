@@ -38,6 +38,12 @@ public class ZipFileStatus {
 
     final File file;
 
+    String artifactEntryName = null;
+
+    String contentEntryName = null;
+
+    String pluginsEntryName = null;
+
     public ZipFileStatus(File file) {
         super();
         this.file = file;
@@ -49,52 +55,12 @@ public class ZipFileStatus {
             try {
                 zipFile = new ZipFile(file);
 
-                String artifactEntryName = null;
-                String contentEntryName = null;
-                String pluginsEntryName = null;
-
                 Enumeration<ZipEntry> enumeration = (Enumeration<ZipEntry>) zipFile.entries();
                 while (enumeration.hasMoreElements()) {
-                    ZipEntry entry = enumeration.nextElement();
-                    String path = entry.getName();
-                    if (UpdatesHelper.isArtifacts(path)) {
-                        hasArtfacts = true;
-                        artifactEntryName = path;
-                    } else if (UpdatesHelper.isContent(path)) {
-                        hasContents = true;
-                        contentEntryName = path;
-                    } else {
-                        String basePluginsPath = getBasePluginsPath(path);
-                        if (!hasPlugins && basePluginsPath != null) { // only deal with the first plugins
-                            hasPlugins = true;
-                            pluginsEntryName = basePluginsPath;
-                        }
-                    }
+                    judgeZipEntry(zipFile,enumeration.nextElement());
                 }
 
-                // existed, and artifact and content should be in same path
-                if (hasArtfacts && hasContents) {
-                    IPath artifactBasePath = new Path(artifactEntryName).removeLastSegments(1);
-                    IPath contentBasePath = new Path(contentEntryName).removeLastSegments(1);
-                    // if not in same folder, force to set to be invalid
-                    if (!artifactBasePath.equals(contentBasePath)) {
-                        hasArtfacts = false;
-                        hasContents = false;
-                    }
-
-                    // if the artifact and content are still in same path , means it's update site. will try to
-                    // check plugins folder also
-                    if (hasArtfacts && hasContents && hasPlugins) {
-                        IPath pluginsBasePath = new Path(pluginsEntryName).removeLastSegments(1);
-                        if (!artifactBasePath.equals(pluginsBasePath)) {
-                            // force to set all to be invalid
-                            hasArtfacts = false;
-                            hasContents = false;
-                            hasPlugins = false;
-                        }
-
-                    }
-                }
+                judgePathes();
 
             } catch (ZipException e) {
                 ExceptionHandler.process(e);
@@ -110,6 +76,47 @@ public class ZipFileStatus {
                 }
             }
 
+        }
+    }
+
+    protected void judgeZipEntry(ZipFile zipFile,ZipEntry entry) throws IOException{
+        String path = entry.getName();
+        if (UpdatesHelper.isArtifacts(path)) {
+            hasArtfacts = true;
+            artifactEntryName = path;
+        } else if (UpdatesHelper.isContent(path)) {
+            hasContents = true;
+            contentEntryName = path;
+        } else {
+            String basePluginsPath = getBasePluginsPath(path);
+            if (!hasPlugins && basePluginsPath != null) { // only deal with the first plugins
+                hasPlugins = true;
+                pluginsEntryName = basePluginsPath;
+            }
+        }
+    }
+    protected void judgePathes(){
+     // existed, and artifact and content should be in same path
+        if (hasArtfacts && hasContents) {
+            IPath artifactBasePath = new Path(artifactEntryName).removeLastSegments(1);
+            IPath contentBasePath = new Path(contentEntryName).removeLastSegments(1);
+            // if not in same folder, force to set to be invalid
+            if (!artifactBasePath.equals(contentBasePath)) {
+                hasArtfacts = false;
+                hasContents = false;
+            }
+
+            // if the artifact and content are still in same path , means it's update site. will try to
+            // check plugins folder also
+            if (hasArtfacts && hasContents && hasPlugins) {
+                IPath pluginsBasePath = new Path(pluginsEntryName).removeLastSegments(1);
+                if (!artifactBasePath.equals(pluginsBasePath)) {
+                    // force to set all to be invalid
+                    hasArtfacts = false;
+                    hasContents = false;
+                    hasPlugins = false;
+                }
+            }
         }
     }
 

@@ -76,7 +76,7 @@
                   Must be extends the abstract class AbstractExtraUpdatesFactory and implement the method retrieveUninstalledExtraFeatures.
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn="org.talend.updates.runtime.engine.AbstractExtraUpdatesFactory:"/>
+                  <meta.attribute kind="java" basedOn="org.talend.updates.runtime.engine.factory.AbstractExtraUpdatesFactory:"/>
                </appinfo>
             </annotation>
          </attribute>

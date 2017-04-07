@@ -12,7 +12,6 @@
 // ============================================================================
 package org.talend.designer.runprocess;
 
-import java.io.File;
 import java.util.Set;
 
 import org.apache.log4j.Level;
@@ -36,9 +35,9 @@ import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
 
 /**
  * DOC qian class global comment. Detailled comment <br/>
- *
+ * 
  * $Id: talend-code-templates.xml 1 2006-09-29 17:06:40 +0000 (星期五, 29 九月 2006) nrousseau $
- *
+ * 
  */
 public interface IRunProcessService extends IService {
 
@@ -48,7 +47,7 @@ public interface IRunProcessService extends IService {
 
     /**
      * Sets the activeProcess.
-     *
+     * 
      * @param activeContext the activeContext to set
      */
     public void setActiveProcess(IProcess2 activeProcess);
@@ -59,7 +58,7 @@ public interface IRunProcessService extends IService {
 
     /**
      * Code Execution, used, when you know where the code stands.
-     *
+     * 
      * @param Perl Absolute Code Path
      * @param Context Name
      * @param Port Statistics
@@ -73,7 +72,7 @@ public interface IRunProcessService extends IService {
 
     /**
      * DOC xue Comment method "createCodeProcessor".
-     *
+     * 
      * @param process
      * @param language
      * @param filenameFromLabel
@@ -83,7 +82,7 @@ public interface IRunProcessService extends IService {
 
     /**
      * DOC qian Comment method "createPerformanceData".
-     *
+     * 
      * @param data IPerformanceData
      * @return
      */
@@ -91,20 +90,20 @@ public interface IRunProcessService extends IService {
 
     /**
      * DOC qian Gets routine filename extension.
-     *
+     * 
      * @return
      */
     public String getRoutineFilenameExt();
 
     /**
-     *
+     * 
      * @deprecated getTalendProcessJavaProject instead.
      */
     @Deprecated
     public IProject getProject(ECodeLanguage language) throws CoreException;
 
     /**
-     *
+     * 
      * @deprecated getTalendProcessJavaProject instead.
      */
     @Deprecated
@@ -113,7 +112,7 @@ public interface IRunProcessService extends IService {
     /**
      * Setter for a custom delegate service. This method should'nt be called from a delegate class, only in the
      * RunProcessService class.
-     *
+     * 
      * @param delegateService
      */
     public void setDelegateService(IRunProcessService delegateService);
@@ -147,9 +146,9 @@ public interface IRunProcessService extends IService {
 
     /**
      * DOC ycbai Comment method "getResourceFilePath".
-     *
+     * 
      * get the absolute path of file which under resource folder by relative path.
-     *
+     * 
      * @param filePath the path relative resource folder.
      * @return
      */
@@ -157,7 +156,7 @@ public interface IRunProcessService extends IService {
 
     /**
      * DOC ycbai Comment method "getTemplateStrFromPreferenceStore".
-     *
+     * 
      * @param templateType
      * @return
      */
@@ -165,9 +164,9 @@ public interface IRunProcessService extends IService {
 
     /**
      * DOC ycbai Comment method "updateLogFiles".
-     *
+     * 
      * Create or update common-logging.properties and log4j.properties files under the project.
-     *
+     * 
      * @param project
      */
     public void updateLogFiles(IProject project, boolean isLogForJob);
@@ -183,7 +182,5 @@ public interface IRunProcessService extends IService {
     ProjectPreferenceManager getProjectPreferenceManager();
 
     Set<String> getLibJarsForBD(IProcess process);
-
-    public File getJavaProjectLibFolder();
 
 }

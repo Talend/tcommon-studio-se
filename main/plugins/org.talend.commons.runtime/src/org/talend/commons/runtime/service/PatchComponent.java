@@ -17,4 +17,5 @@ package org.talend.commons.runtime.service;
  */
 public interface PatchComponent extends P2InstallComponent {
 
+    static final String FOLDER_PATCHES = "patches"; //$NON-NLS-1$
 }
