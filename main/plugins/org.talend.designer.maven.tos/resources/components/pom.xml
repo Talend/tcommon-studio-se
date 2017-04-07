@@ -61,7 +61,7 @@
 				</configuration>
 				<executions>
 					<execution>
-						<id>generate-maven-repo</id>
+						<id>generate-components-repo</id>
 						<phase>package</phase>
 						<goals>
 							<goal>install</goal>

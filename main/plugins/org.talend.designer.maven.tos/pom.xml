@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.talend.studio</groupId>
@@ -9,29 +10,44 @@
 	</parent>
 	<artifactId>org.talend.designer.maven.tos</artifactId>
 	<packaging>eclipse-plugin</packaging>
-    <dependencies>
-        <dependency>
-            <groupId>org.talend.studio</groupId>
-            <artifactId>studio-maven-repository-unzip</artifactId>
-            <version>${project.version}</version>
-            <type>pom</type>
-        </dependency>
-        <dependency>
-            <groupId>org.talend.studio</groupId>
-            <artifactId>studio-components-dependencies</artifactId>
-            <version>${project.version}</version>
-            <type>pom</type>
-        </dependency>
-        <dependency>
-            <groupId>org.talend.studio</groupId>
-            <artifactId>studio-surefire-dependencies</artifactId>
-            <version>${project.version}</version>
-            <type>pom</type>
-        </dependency>
-        <dependency>
-            <groupId>org.talend.studio</groupId>
-            <artifactId>studio-maven-repository-zip</artifactId>
-            <version>${project.version}</version>
-            <type>pom</type>
-        </dependency>
-    </dependencies></project>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>talend-opensource-snapshot</id>
+			<name>talend-opensource-snapshot</name>
+			<url>http://artifacts-oss.talend.com/nexus/content/repositories/TalendOpenSourceSnapshot/</url>
+		</pluginRepository>
+		<pluginRepository>
+			<id>talend-opensource-release</id>
+			<name>talend-opensource-release</name>
+			<url>http://artifacts-oss.talend.com/nexus/content/repositories/TalendOpenSourceRelease/</url>
+		</pluginRepository>
+	</pluginRepositories>
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-invoker-plugin</artifactId>
+				<version>2.0.0-TALEND</version>
+				<configuration>
+					<projectsDirectory>resources</projectsDirectory>
+				</configuration>
+				<executions>
+					<execution>
+						<id>generate-maven-repo</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+                                                        <pomIncludes>
+                                                                <pomInclude>pom.xml</pomInclude>
+                                                        </pomIncludes>
+							<goals>
+								<goal>package</goal>
+							</goals>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

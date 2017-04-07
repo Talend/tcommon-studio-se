@@ -160,7 +160,6 @@
 		<module>main/plugins/org.talend.themes.core</module>
 		<module>main/plugins/org.talend.themes.css.talend</module>
 		<module>main/plugins/org.talend.libraries.jdbc.access</module>
-		<module>main/plugins/org.talend.designer.maven.tos/resources</module>
 		<module>main/plugins/org.talend.designer.maven.tos</module>
 		<module>main/plugins/org.talend.libraries.persist.lookup</module>
 		<module>test/features/org.talend.test.tos.feature</module>
