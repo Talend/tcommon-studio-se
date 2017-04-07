@@ -26,7 +26,8 @@ public interface IRemoteService extends IService {
 
     public JSONObject getArchivaObject(User user, String password, String url) throws PersistenceException, LoginException;
 
-    public JSONObject getLicenseKey(String user, String password, String url) throws PersistenceException, LoginException;
+    public JSONObject getLicenseKey(String user, String password, String url, String projectLabel)
+            throws PersistenceException, LoginException;
 
     public JSONObject getUpdateRepositoryUrl(String user, String password, String url) throws PersistenceException,
             LoginException;
