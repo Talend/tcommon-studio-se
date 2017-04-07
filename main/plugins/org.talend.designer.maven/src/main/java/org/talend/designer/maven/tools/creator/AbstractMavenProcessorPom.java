@@ -21,8 +21,12 @@ import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.core.GlobalServiceRegister;
@@ -105,7 +109,8 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
         variablesValuesMap.put(ETalendMavenVariables.JobArtifactId, PomIdsHelper.getJobArtifactId(property));
         Property jobProperty = null;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
-            ITestContainerProviderService service = (ITestContainerProviderService) GlobalServiceRegister.getDefault().getService(ITestContainerProviderService.class);
+            ITestContainerProviderService service = (ITestContainerProviderService) GlobalServiceRegister.getDefault()
+                    .getService(ITestContainerProviderService.class);
             if (service.isTestContainerProcess(process)) {
                 try {
                     // for test container need to inherit version from job.
@@ -115,8 +120,10 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
                 }
             }
         }
-        variablesValuesMap.put(ETalendMavenVariables.JobVersion,
-                getDeployVersion() != null ? getDeployVersion() : PomIdsHelper.getJobVersion(jobProperty == null ? property : jobProperty));
+        variablesValuesMap.put(
+                ETalendMavenVariables.JobVersion,
+                getDeployVersion() != null ? getDeployVersion() : PomIdsHelper.getJobVersion(jobProperty == null ? property
+                        : jobProperty));
         final String jobName = JavaResourcesHelper.escapeFileName(process.getName());
         variablesValuesMap.put(ETalendMavenVariables.JobName, jobName);
 
@@ -146,7 +153,7 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
     protected Model createModel() {
         Model model = super.createModel();
         if (model != null) {
-            PomUtil.checkParent(model, this.getPomFile(), getDeployVersion());
+            PomUtil.checkParent(model, this.getPomFile(), jobProcessor, getDeployVersion());
 
             addDependencies(model);
         }
@@ -166,13 +173,36 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
                     if (!validChildrenJob(jobInfo)) {
                         continue;
                     }
+                    String groupId = model.getGroupId();
+                    String artifactId = PomIdsHelper.getJobArtifactId(jobInfo);
                     String version = PomIdsHelper.getJobVersion(jobInfo);
                     if (getDeployVersion() != null) {
                         version = getDeployVersion();
                     }
-                    // same group as main job.
-                    Dependency d = PomUtil.createDependency(model.getGroupId(), PomIdsHelper.getJobArtifactId(jobInfo), version,
-                            null);
+
+                    // try to get the pom version of children job and load from the pom file.
+                    String childPomFileName = PomUtil.getPomFileName(jobInfo.getJobName(), jobInfo.getJobVersion());
+                    IProject codeProject = getJobProcessor().getCodeProject();
+                    try {
+                        codeProject.refreshLocal(IResource.DEPTH_ONE, null); // is it ok or needed here ???
+                    } catch (CoreException e) {
+                        ExceptionHandler.process(e);
+                    }
+
+                    IFile childPomFile = codeProject.getFile(new Path(childPomFileName));
+                    if (childPomFile.exists()) {
+                        try {
+                            Model childModel = MODEL_MANAGER.readMavenModel(childPomFile);
+                            // try to get the real groupId, artifactId, version.
+                            groupId = childModel.getGroupId();
+                            artifactId = childModel.getArtifactId();
+                            version = childModel.getVersion();
+                        } catch (CoreException e) {
+                            ExceptionHandler.process(e);
+                        }
+                    }
+
+                    Dependency d = PomUtil.createDependency(groupId, artifactId, version, null);
                     dependencies.add(d);
                 }
             }

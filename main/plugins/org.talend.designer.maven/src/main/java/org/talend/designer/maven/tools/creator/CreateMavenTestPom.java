@@ -109,7 +109,7 @@ public class CreateMavenTestPom extends AbstractMavenProcessorPom {
 
     protected void afterCreate(IProgressMonitor monitor) throws Exception {
         // generate routines
-        MavenPomSynchronizer pomSync = new MavenPomSynchronizer(this.getJobProcessor().getTalendJavaProject());
-        pomSync.syncCodesPoms(monitor, this.getJobProcessor().getProcess(), true);
+        MavenPomSynchronizer pomSync = new MavenPomSynchronizer(this.getJobProcessor());
+        pomSync.syncCodesPoms(monitor, this.getJobProcessor(), true);
     }
 }

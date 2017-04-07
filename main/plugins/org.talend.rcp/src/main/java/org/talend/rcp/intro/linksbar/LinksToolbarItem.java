@@ -30,6 +30,7 @@ import org.talend.core.GlobalServiceRegister;
 import org.talend.core.PluginChecker;
 import org.talend.core.model.utils.TalendPropertiesUtil;
 import org.talend.core.service.IExchangeService;
+import org.talend.core.service.ITutorialsService;
 import org.talend.rcp.Activator;
 import org.talend.rcp.i18n.Messages;
 
@@ -50,6 +51,8 @@ public class LinksToolbarItem extends ContributionItem {
     private static final String UPGRADE_URL = "<a href=\"http://www.talend.com/whyupgrade.php\">Upgrade!</a>"; //$NON-NLS-1$
 
     private static final String EXCHANGE_URL = "<a href=\"http://www.talendforge.org/exchange/index.php\">Exchange</a>"; //$NON-NLS-1$
+
+    private static final String VIDEOS_URL = "<a href=\"https://www.talendforge.org/tutorials\">Videos</a>"; //$NON-NLS-1$
 
     private static ImageRegistry registry = new ImageRegistry();
 
@@ -80,7 +83,7 @@ public class LinksToolbarItem extends ContributionItem {
 
         final Composite composite = new Composite(parent, SWT.NONE);
 
-        GridLayout layout = new GridLayout(!PluginChecker.isTIS() ? 8 : 6, false);
+        GridLayout layout = new GridLayout(!PluginChecker.isTIS() ? 10 : 8, false);
         layout.marginHeight = 0;
         composite.setLayout(layout);
 
@@ -179,6 +182,31 @@ public class LinksToolbarItem extends ContributionItem {
                 }
             });
         }
+
+        // 5.videos
+        Label videosLabel = new Label(composite, SWT.NONE);
+
+        if (registry.get("videos") == null) { //$NON-NLS-1$
+            registry.put("videos", Activator.getImageDescriptor("icons/videos_icon16x16.png").createImage()); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+        videosLabel.setImage(registry.get("videos")); //$NON-NLS-1$
+
+        Link videos = new Link(composite, SWT.NONE);
+        GridData videosGd = new GridData(SWT.FILL, SWT.FILL, true, true);
+        videosLabel.setLayoutData(videosGd);
+        videos.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
+        videos.setText(VIDEOS_URL);
+        videos.setToolTipText(Messages.getString("LinksToolbarItem_videos")); //$NON-NLS-1$
+
+        videos.addListener(SWT.Selection, new Listener() {
+
+            @Override
+            public void handleEvent(Event event) {
+                ITutorialsService service = (ITutorialsService) GlobalServiceRegister.getDefault().getService(
+                        ITutorialsService.class);
+                service.openTutorialsDialog();
+            }
+        });
         return composite;
     }
 

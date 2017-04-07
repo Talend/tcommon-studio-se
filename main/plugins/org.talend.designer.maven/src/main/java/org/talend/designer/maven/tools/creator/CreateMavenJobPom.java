@@ -151,8 +151,10 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
             templateFile = null; // force to set null, in order to use the template from other places.
         }
         try {
+            final Map<String, Object> templateParameters = PomUtil.getTemplateParameters(getJobProcessor());
             return MavenTemplateManager.getTemplateStream(templateFile,
-                    IProjectSettingPreferenceConstants.TEMPLATE_STANDALONE_JOB_POM, JOB_TEMPLATE_BUNDLE, getBundleTemplatePath());
+                    IProjectSettingPreferenceConstants.TEMPLATE_STANDALONE_JOB_POM, JOB_TEMPLATE_BUNDLE, getBundleTemplatePath(),
+                    templateParameters);
         } catch (Exception e) {
             throw new IOException(e);
         }
@@ -223,8 +225,9 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         checkPomProperty(properties, "talend.job.name", ETalendMavenVariables.JobName,
                 jobInfoProp.getProperty(JobInfoProperties.JOB_NAME, property.getLabel()));
         String jobVersion;
-        if (getArgumentsMap().get(TalendProcessArgumentConstant.ARG_DEPLOY_VERSION) != null || (property.getAdditionalProperties() != null
-                && property.getAdditionalProperties().get(MavenConstants.NAME_USER_VERSION) != null)) {
+        if (getArgumentsMap().get(TalendProcessArgumentConstant.ARG_DEPLOY_VERSION) != null
+                || (property.getAdditionalProperties() != null && property.getAdditionalProperties().get(
+                        MavenConstants.NAME_USER_VERSION) != null)) {
             jobVersion = property.getVersion();
         } else {
             // if deploy version and user version not set
@@ -455,9 +458,9 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         generateAssemblyFile(monitor);
 
         // generate routines
-        MavenPomSynchronizer pomSync = new MavenPomSynchronizer(this.getJobProcessor().getTalendJavaProject());
+        MavenPomSynchronizer pomSync = new MavenPomSynchronizer(this.getJobProcessor());
         pomSync.setArgumentsMap(getArgumentsMap());
-        pomSync.syncCodesPoms(monitor, process, true);
+        pomSync.syncCodesPoms(monitor, getJobProcessor(), true);
         // because need update the latest content for templates.
         pomSync.syncTemplates(true);
 
@@ -515,10 +518,11 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
                     templateFile = null; // force to set null, in order to use the template from other places.
                 }
 
+                final Map<String, Object> templateParameters = PomUtil.getTemplateParameters(getJobProcessor());
                 String content = MavenTemplateManager.getTemplateContent(templateFile,
                         IProjectSettingPreferenceConstants.TEMPLATE_STANDALONE_JOB_ASSEMBLY, JOB_TEMPLATE_BUNDLE,
                         IProjectSettingTemplateConstants.PATH_STANDALONE + '/'
-                                + IProjectSettingTemplateConstants.ASSEMBLY_JOB_TEMPLATE_FILE_NAME);
+                                + IProjectSettingTemplateConstants.ASSEMBLY_JOB_TEMPLATE_FILE_NAME, templateParameters);
                 if (content != null) {
                     ByteArrayInputStream source = new ByteArrayInputStream(content.getBytes());
                     if (assemblyFile.exists()) {

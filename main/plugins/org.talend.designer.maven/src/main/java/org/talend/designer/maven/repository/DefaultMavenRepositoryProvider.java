@@ -54,6 +54,9 @@ public final class DefaultMavenRepositoryProvider {
             if (mavenRepoUrl != null) {
                 mavenRepoUrl = FileLocator.toFileURL(mavenRepoUrl);
             }
+            if (mavenRepoUrl == null) { // not existed
+                return;
+            }
 
             File zipFile = new File(mavenRepoUrl.getFile());
             if (!zipFile.exists()) {

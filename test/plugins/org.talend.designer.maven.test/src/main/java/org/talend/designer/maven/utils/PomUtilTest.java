@@ -13,19 +13,27 @@
 package org.talend.designer.maven.utils;
 
 import java.io.File;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.maven.model.Dependency;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Path;
 import org.junit.Assert;
 import org.junit.Test;
 import org.ops4j.pax.url.mvn.MavenResolver;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.model.general.Project;
+import org.talend.core.model.properties.PropertiesFactory;
+import org.talend.core.model.properties.Property;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
+import org.talend.designer.maven.template.MavenTemplateManager;
+import org.talend.designer.runprocess.IProcessor;
 import org.talend.repository.ProjectManager;
 import org.talend.utils.io.FilesUtils;
 
@@ -141,22 +149,25 @@ public class PomUtilTest {
     }
 
     @Test
-    public void testGetTemplateFileNonExisted() throws Exception {
+    public void test_getTemplateFile_NonExisted() throws Exception {
         Project currentProject = ProjectManager.getInstance().getCurrentProject();
         Assert.assertNotNull(currentProject);
         IProject project = ResourceUtils.getProject(currentProject.getTechnicalLabel());
         IFolder tempFolder = project.getFolder("temp");
-        if (!tempFolder.exists()) {
+        final File tempFile = tempFolder.getLocation().toFile();
+        if (tempFolder.exists()) {
+            FilesUtils.deleteFolder(tempFile, false);
+        } else {
             tempFolder.create(true, true, null);
         }
+        tempFolder.refreshLocal(IResource.DEPTH_INFINITE, null);
+
         IFolder baseFolder = tempFolder.getFolder("TemplateBaseFolder");
         if (!baseFolder.exists()) {
             baseFolder.create(true, true, null);
         }
+
         File baseFile = baseFolder.getLocation().toFile();
-        if (baseFile.exists()) { // clean folder
-            FilesUtils.deleteFolder(baseFile, false);
-        }
         File template1File = new File(baseFile, "template1.txt");
         File folder1 = new File(baseFile, "folder1");
         File subfolder1 = new File(baseFile, "folder1/subfolder1");
@@ -184,6 +195,8 @@ public class PomUtilTest {
         Assert.assertTrue(template2File.exists());
         Assert.assertTrue(subfolder1.exists());
 
+        tempFolder.refreshLocal(IResource.DEPTH_INFINITE, null);
+
         foundFile = PomUtil.getTemplateFile(baseFolder, null, "template1.txt"); // from current base folder directly
         Assert.assertNotNull(foundFile);
         Assert.assertEquals(template1File, foundFile);
@@ -209,6 +222,7 @@ public class PomUtilTest {
         File template3File = new File(baseFile.getParentFile(), "template3.txt");
         template3File.createNewFile();
         Assert.assertTrue(template3File.exists());
+        tempFolder.refreshLocal(IResource.DEPTH_INFINITE, null);
 
         foundFile = PomUtil.getTemplateFile(baseFolder, new Path("folder1/subfolder1"), "template3.txt");
         Assert.assertNull(foundFile); // base folder don't contain template3
@@ -221,8 +235,8 @@ public class PomUtilTest {
         Assert.assertEquals(template3File, foundFile);
 
         // clean test files
-        template3File.delete();
-        FilesUtils.deleteFolder(baseFile, true);
+        FilesUtils.deleteFolder(tempFile, false);
+        tempFolder.refreshLocal(IResource.DEPTH_INFINITE, null);
 
     }
 
@@ -289,5 +303,62 @@ public class PomUtilTest {
         File pomFile = new File(generatedPom);
         Assert.assertTrue(pomFile.exists());
         FilesUtils.deleteFolder(pomFile.getParentFile(), true);
+    }
+
+    @Test
+    public void testGetTemplateParameters_IProcessor_null() {
+        Map<String, Object> templateParameters = PomUtil.getTemplateParameters((IProcessor) null);
+        Assert.assertNotNull(templateParameters);
+        Assert.assertEquals(0, templateParameters.size());
+
+    }
+
+    @Test
+    public void testGetTemplateParameters_Property_null() {
+        Map<String, Object> templateParameters = PomUtil.getTemplateParameters((Property) null);
+        Assert.assertNotNull(templateParameters);
+        Assert.assertEquals(0, templateParameters.size());
+    }
+
+    @Test
+    public void testGetTemplateParameters_Property_noeResourse() {
+        Property p = PropertiesFactory.eINSTANCE.createProperty();
+        Map<String, Object> templateParameters = PomUtil.getTemplateParameters(p);
+        Assert.assertNotNull(templateParameters);
+        Assert.assertEquals(0, templateParameters.size());
+    }
+
+    // @Test
+    public void testGetTemplateParameters_Property_reference() {
+        // can't test, except use mock way, because need mock one reference project.
+    }
+
+    @Test
+    public void testGetProjectNameFromTemplateParameter_empty() {
+        final String currentProjectName = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
+
+        String projectName = PomUtil.getProjectNameFromTemplateParameter(null);
+        Assert.assertNotNull(projectName);
+        Assert.assertEquals(currentProjectName, projectName);
+
+        projectName = PomUtil.getProjectNameFromTemplateParameter(Collections.emptyMap());
+        Assert.assertNotNull(projectName);
+        Assert.assertEquals(currentProjectName, projectName);
+
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put(MavenTemplateManager.KEY_PROJECT_NAME, "");
+        projectName = PomUtil.getProjectNameFromTemplateParameter(parameters);
+        Assert.assertNotNull(projectName);
+        Assert.assertEquals(currentProjectName, projectName);
+    }
+
+    @Test
+    public void testGetProjectNameFromTemplateParameter_diff() {
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put(MavenTemplateManager.KEY_PROJECT_NAME, "ABC");
+        String projectName = PomUtil.getProjectNameFromTemplateParameter(parameters);
+        Assert.assertNotNull(projectName);
+        Assert.assertEquals("ABC", projectName);
+
     }
 }

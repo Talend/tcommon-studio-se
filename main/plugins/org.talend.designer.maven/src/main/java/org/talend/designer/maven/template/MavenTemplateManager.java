@@ -39,6 +39,7 @@ import org.talend.designer.maven.DesignerMavenPlugin;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.setting.project.IProjectSettingManagerProvider;
 import org.talend.designer.maven.utils.PomIdsHelper;
+import org.talend.designer.maven.utils.PomUtil;
 import org.talend.repository.ProjectManager;
 
 /**
@@ -46,6 +47,8 @@ import org.talend.repository.ProjectManager;
  *
  */
 public class MavenTemplateManager {
+
+    public static final String KEY_PROJECT_NAME = "ProjectName"; //$NON-NLS-1$
 
     public static Map<String, AbstractMavenTemplateManager> getTemplateManagerMap() {
         return MavenTemplateManagerRegistry.getInstance().getTemplateManagerMap();
@@ -65,7 +68,7 @@ public class MavenTemplateManager {
      */
     @SuppressWarnings("resource")
     public static InputStream getTemplateStream(File templateFile, String projectSettingKey, String bundleName,
-            String bundleTemplatePath) throws Exception {
+            String bundleTemplatePath, Map<String, Object> parameters) throws Exception {
         InputStream stream = null;
         // 1. from file template dirctly.
         if (templateFile != null && templateFile.exists()) {
@@ -75,7 +78,7 @@ public class MavenTemplateManager {
 
         // 2. from project setting
         if (stream == null && projectSettingKey != null) {
-            stream = getProjectSettingStream(projectSettingKey);
+            stream = getProjectSettingStream(projectSettingKey, parameters);
         }
         // 3. from bundle template.
         if (stream == null && bundleName != null && bundleTemplatePath != null) {
@@ -85,8 +88,9 @@ public class MavenTemplateManager {
     }
 
     public static String getTemplateContent(File templateFile, String projectSettingKey, String bundleName,
-            String bundleTemplatePath) throws Exception {
-        return getContentFromInputStream(getTemplateStream(templateFile, projectSettingKey, bundleName, bundleTemplatePath));
+            String bundleTemplatePath, Map<String, Object> parameters) throws Exception {
+        return getContentFromInputStream(getTemplateStream(templateFile, projectSettingKey, bundleName, bundleTemplatePath,
+                parameters));
     }
 
     /**
@@ -112,13 +116,13 @@ public class MavenTemplateManager {
     /**
      * try to find the template setting in project setting one by one.
      */
-    public static String getProjectSettingValue(String key) {
+    public static String getProjectSettingValue(String key, Map<String, Object> parameters) {
         Map<String, AbstractMavenTemplateManager> templateManagerMap = MavenTemplateManager.getTemplateManagerMap();
 
         for (String bundleName : templateManagerMap.keySet()) {
             AbstractMavenTemplateManager templateManager = templateManagerMap.get(bundleName);
             try {
-                InputStream steam = templateManager.readProjectSettingStream(key);
+                InputStream steam = templateManager.readProjectSettingStream(key, parameters);
                 if (steam != null) {
                     String content = MavenTemplateManager.getContentFromInputStream(steam);
                     if (content != null) {
@@ -135,13 +139,13 @@ public class MavenTemplateManager {
     /**
      * try to find the template setting in project setting one by one.
      */
-    public static InputStream getProjectSettingStream(String key) {
+    public static InputStream getProjectSettingStream(String key, Map<String, Object> parameters) {
         Map<String, AbstractMavenTemplateManager> templateManagerMap = MavenTemplateManager.getTemplateManagerMap();
 
         for (String bundleName : templateManagerMap.keySet()) {
             AbstractMavenTemplateManager templateManager = templateManagerMap.get(bundleName);
             try {
-                InputStream steam = templateManager.readProjectSettingStream(key);
+                InputStream steam = templateManager.readProjectSettingStream(key, parameters);
                 if (steam != null) {
                     return steam;
                 }
@@ -202,16 +206,21 @@ public class MavenTemplateManager {
         }
     }
 
+    public static Model getCodeProjectTemplateModel() {
+        return getCodeProjectTemplateModel(null); // by default will be current project.
+    }
+
     /**
      * Try to load the project template from bundle, if load failed, use default instead.
      */
-    public static Model getCodeProjectTemplateModel() {
-        Model defaultModel = getDefaultCodeProjectTemplateModel();
+    public static Model getCodeProjectTemplateModel(Map<String, Object> parameters) {
+        final String projectTechName = PomUtil.getProjectNameFromTemplateParameter(parameters);
+        Model defaultModel = getDefaultCodeProjectTemplateModel(projectTechName);
         try {
             InputStream stream = MavenTemplateManager.getTemplateStream(null,
                     IProjectSettingPreferenceConstants.TEMPLATE_PROJECT_POM, DesignerMavenPlugin.PLUGIN_ID,
                     IProjectSettingTemplateConstants.PATH_GENERAL + '/'
-                            + IProjectSettingTemplateConstants.PROJECT_TEMPLATE_FILE_NAME);
+                            + IProjectSettingTemplateConstants.PROJECT_TEMPLATE_FILE_NAME, parameters);
             if (stream != null) {
                 Model model = MavenPlugin.getMavenModelManager().readMavenModel(stream);
 
@@ -220,9 +229,7 @@ public class MavenTemplateManager {
                 variablesValuesMap.put(ETalendMavenVariables.ProjectArtifactId, defaultModel.getArtifactId());
                 variablesValuesMap.put(ETalendMavenVariables.ProjectVersion, defaultModel.getVersion());
 
-                Project currentProject = ProjectManager.getInstance().getCurrentProject();
-                variablesValuesMap.put(ETalendMavenVariables.ProjectName,
-                        currentProject != null ? currentProject.getTechnicalLabel() : null);
+                variablesValuesMap.put(ETalendMavenVariables.ProjectName, projectTechName);
 
                 model.setGroupId(ETalendMavenVariables.replaceVariables(model.getGroupId(), variablesValuesMap));
                 model.setArtifactId(ETalendMavenVariables.replaceVariables(model.getArtifactId(), variablesValuesMap));
@@ -237,10 +244,10 @@ public class MavenTemplateManager {
         return defaultModel; // if error, try to use default model
     }
 
-    private static Model getDefaultCodeProjectTemplateModel() {
+    private static Model getDefaultCodeProjectTemplateModel(String projectTechName) {
         Model templateCodeProjectMOdel = new Model();
 
-        templateCodeProjectMOdel.setGroupId(PomIdsHelper.getProjectGroupId());
+        templateCodeProjectMOdel.setGroupId(PomIdsHelper.getProjectGroupId(projectTechName));
         templateCodeProjectMOdel.setArtifactId(PomIdsHelper.getProjectArtifactId());
         templateCodeProjectMOdel.setVersion(PomIdsHelper.getProjectVersion());
         templateCodeProjectMOdel.setPackaging(TalendMavenConstants.PACKAGING_POM);
@@ -248,22 +255,25 @@ public class MavenTemplateManager {
         return templateCodeProjectMOdel;
     }
 
-    public static Model getRoutinesTempalteModel() {
-        Model defaultModel = createDefaultCodesTempalteModel(PomIdsHelper.getCodesGroupId(TalendMavenConstants.DEFAULT_CODE),
+    public static Model getRoutinesTempalteModel(String projectTechName) {
+        Model defaultModel = createDefaultCodesTempalteModel(
+                PomIdsHelper.getCodesGroupId(projectTechName, TalendMavenConstants.DEFAULT_CODE),
                 TalendMavenConstants.DEFAULT_ROUTINES_ARTIFACT_ID);
-        return getCodesModelFromGeneralTemplate(defaultModel, "Routines", JavaUtils.JAVA_ROUTINES_DIRECTORY); //$NON-NLS-1$
+        return getCodesModelFromGeneralTemplate(defaultModel, projectTechName, "Routines", JavaUtils.JAVA_ROUTINES_DIRECTORY); //$NON-NLS-1$
     }
 
-    public static Model getBeansTempalteModel() {
-        Model defaultModel = createDefaultCodesTempalteModel(PomIdsHelper.getCodesGroupId(TalendMavenConstants.DEFAULT_BEAN),
+    public static Model getBeansTempalteModel(String projectTechName) {
+        Model defaultModel = createDefaultCodesTempalteModel(
+                PomIdsHelper.getCodesGroupId(projectTechName, TalendMavenConstants.DEFAULT_BEAN),
                 TalendMavenConstants.DEFAULT_BEANS_ARTIFACT_ID);
-        return getCodesModelFromGeneralTemplate(defaultModel, "Beans", JavaUtils.JAVA_BEANS_DIRECTORY); //$NON-NLS-1$
+        return getCodesModelFromGeneralTemplate(defaultModel, projectTechName, "Beans", JavaUtils.JAVA_BEANS_DIRECTORY); //$NON-NLS-1$
     }
 
-    public static Model getPigUDFsTempalteModel() {
-        Model defaultModel = createDefaultCodesTempalteModel(PomIdsHelper.getCodesGroupId(TalendMavenConstants.DEFAULT_PIGUDF),
+    public static Model getPigUDFsTempalteModel(String projectTechName) {
+        Model defaultModel = createDefaultCodesTempalteModel(
+                PomIdsHelper.getCodesGroupId(projectTechName, TalendMavenConstants.DEFAULT_PIGUDF),
                 TalendMavenConstants.DEFAULT_PIGUDFS_ARTIFACT_ID);
-        return getCodesModelFromGeneralTemplate(defaultModel, "PigUDFs", JavaUtils.JAVA_PIGUDF_DIRECTORY); //$NON-NLS-1$
+        return getCodesModelFromGeneralTemplate(defaultModel, projectTechName, "PigUDFs", JavaUtils.JAVA_PIGUDF_DIRECTORY); //$NON-NLS-1$
     }
 
     private static Model createDefaultCodesTempalteModel(String groupId, String artifactId) {
@@ -279,8 +289,12 @@ public class MavenTemplateManager {
     /**
      * Try to load the project template from bundle, if load failed, use default instead.
      */
-    private static Model getCodesModelFromGeneralTemplate(Model defaultModel, String codesName, String codesPackage) {
+    private static Model getCodesModelFromGeneralTemplate(Model defaultModel, String projectTechName, String codesName,
+            String codesPackage) {
         try {
+            if (projectTechName == null) {
+                projectTechName = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
+            }
             InputStream stream = MavenTemplateManager.getBundleTemplateStream(DesignerMavenPlugin.PLUGIN_ID,
                     IProjectSettingTemplateConstants.PATH_GENERAL + '/'
                             + IProjectSettingTemplateConstants.POM_CODES_TEMPLATE_FILE_NAME);
@@ -295,8 +309,7 @@ public class MavenTemplateManager {
                 variablesValuesMap.put(ETalendMavenVariables.CodesPackage, codesPackage);
 
                 Project currentProject = ProjectManager.getInstance().getCurrentProject();
-                variablesValuesMap.put(ETalendMavenVariables.ProjectName,
-                        currentProject != null ? currentProject.getTechnicalLabel() : null);
+                variablesValuesMap.put(ETalendMavenVariables.ProjectName, projectTechName);
 
                 model.setGroupId(ETalendMavenVariables.replaceVariables(model.getGroupId(), variablesValuesMap));
                 model.setArtifactId(ETalendMavenVariables.replaceVariables(model.getArtifactId(), variablesValuesMap));
