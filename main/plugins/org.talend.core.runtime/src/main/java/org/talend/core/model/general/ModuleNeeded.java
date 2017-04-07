@@ -12,9 +12,7 @@
 // ============================================================================
 package org.talend.core.model.general;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -77,8 +75,6 @@ public class ModuleNeeded {
     private String mavenUri;
 
     private boolean dynamic;
-
-    private Map<String, Object> extraAttributes = new HashMap<>();
 
     public static final String SINGLE_QUOTE = "'"; //$NON-NLS-1$
 
@@ -605,10 +601,6 @@ public class ModuleNeeded {
 
     public void setDynamic(boolean dynamic) {
         this.dynamic = dynamic;
-    }
-
-    public Map<String, Object> getExtraAttributes() {
-        return this.extraAttributes;
     }
 
 }

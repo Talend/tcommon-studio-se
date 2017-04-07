@@ -15,19 +15,25 @@ package org.talend.updates.runtime.model;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FilenameFilter;
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
+
+import org.talend.commons.utils.resource.FileExtensions;
+import org.talend.commons.utils.resource.UpdatesHelper;
 
 /**
  * This represent the repository that are used to fetch the extra feature to install
  * 
  */
 public class FeatureRepositories {
+
+    public static final String URI_JAR_SCHEMA = "jar"; //$NON-NLS-1$
+
+    public static final String URI_JAR_SUFFIX = "!/"; //$NON-NLS-1$
+
+    public static final String URI_FILE_SCHEMA = "file"; //$NON-NLS-1$
 
     private UpdateSiteLocationType updateSiteLocationType;
 
@@ -72,55 +78,24 @@ public class FeatureRepositories {
     private List<URI> getP2RepoUris4LocalFolder(File localFolder) throws URISyntaxException {
         List<URI> allReposUris = new ArrayList<URI>();
 
-        final String artifactsJarName = "artifacts.jar"; //$NON-NLS-1$
-        final String contentJarName = "content.jar"; //$NON-NLS-1$
-        final String artifactsXmlName = "artifacts.xml"; //$NON-NLS-1$
-        final String contentXmlName = "content.xml"; //$NON-NLS-1$
+        if (localFolder.isDirectory()) {
+            if (UpdatesHelper.isUpdateSite(localFolder)) { // update site folder in root
+                allReposUris.add(localFolder.toURI());
+            } else { // check the zip files
+                File[] allZippedFiles = localFolder.listFiles(new FilenameFilter() {
 
-        boolean jarUpdateSite = new File(localFolder, artifactsJarName).exists()
-                && new File(localFolder, contentJarName).exists();
-        boolean xmlUpdateSite = new File(localFolder, artifactsXmlName).exists()
-                && new File(localFolder, contentXmlName).exists();
-        if (jarUpdateSite || xmlUpdateSite) {
-            allReposUris.add(localFolder.toURI());
-        } else {
-            // look for zip files
-            File[] allZippedFiles = localFolder.listFiles(new FilenameFilter() {
-
-                @Override
-                public boolean accept(File dir, String name) {
-                    return name.endsWith(".zip"); //$NON-NLS-1$
-                }
-            });
-            for (File zipFile : allZippedFiles) {
-                boolean found = false;
-                ZipFile zf = null;
-                try {
-                    zf = new ZipFile(zipFile);
-                    ZipEntry artifactsJarEntry = zf.getEntry(artifactsJarName);
-                    ZipEntry contentJarEntry = zf.getEntry(contentJarName);
-                    jarUpdateSite = artifactsJarEntry != null && !artifactsJarEntry.isDirectory() && contentJarEntry != null
-                            && !contentJarEntry.isDirectory();
-                    ZipEntry artifactsXmlEntry = zf.getEntry(artifactsXmlName);
-                    ZipEntry contentXmlEntry = zf.getEntry(contentXmlName);
-                    xmlUpdateSite = artifactsXmlEntry != null && !artifactsXmlEntry.isDirectory() && contentXmlEntry != null
-                            && !contentXmlEntry.isDirectory();
-
-                    found = xmlUpdateSite || jarUpdateSite;
-                } catch (IOException e) {
-                    //
-                } finally {
-                    if (zf != null) {
-                        try {
-                            zf.close();
-                        } catch (IOException e) {
-                            //
+                    @Override
+                    public boolean accept(File dir, String name) {
+                        return name.endsWith(FileExtensions.ZIP_FILE_SUFFIX);
+                    }
+                });
+                if (allZippedFiles != null) {
+                    for (File f : allZippedFiles) {
+                        if (UpdatesHelper.isUpdateSite(f)) {
+                            // the following URI is a special P2 uri for local zipped files
+                            allReposUris.add(new URI(URI_JAR_SCHEMA + ':' + f.toURI().toString() + URI_JAR_SUFFIX));
                         }
                     }
-                }
-                // the following URI is a special P2 uri for local zipped files
-                if (found) {
-                    allReposUris.add(new URI("jar:" + zipFile.toURI().toString() + "!/")); //$NON-NLS-1$//$NON-NLS-2$
                 }
             }
 
@@ -136,6 +111,7 @@ public class FeatureRepositories {
                 allReposUris.addAll(getP2RepoUris4LocalFolder(d));
             }
         }
+
         return allReposUris;
     }
 

@@ -12,7 +12,6 @@
 // ============================================================================
 package org.talend.designer.runprocess;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -91,9 +90,9 @@ import org.talend.repository.model.IRepositoryService;
 
 /**
  * DOC nrousseau class global comment. Detailled comment <br/>
- *
+ * 
  * $Id: talend-code-templates.xml 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- *
+ * 
  */
 public class ProcessorUtilities {
 
@@ -153,7 +152,7 @@ public class ProcessorUtilities {
 
     /**
      * Process need to be loaded to use this function.
-     *
+     * 
      * @param process
      * @param selectedContext
      * @return
@@ -233,7 +232,7 @@ public class ProcessorUtilities {
 
     /**
      * Process need to be loaded first to use this function.
-     *
+     * 
      * @param process
      * @param context
      * @return
@@ -246,7 +245,7 @@ public class ProcessorUtilities {
 
     /**
      * Process need to be loaded first to use this function.
-     *
+     * 
      * @param process
      * @param context
      * @return
@@ -402,7 +401,7 @@ public class ProcessorUtilities {
         ProcessItem selectedProcessItem;
 
         selectedProcessItem = jobInfo.getProcessItem();
-        String currentJobName = null;
+        String currentJobName = jobInfo.getJobName();
         if (selectedProcessItem == null && jobInfo.getJobVersion() == null) {
             // child job
             selectedProcessItem = ItemCacheManager.getProcessItem(jobInfo.getJobId());
@@ -418,7 +417,7 @@ public class ProcessorUtilities {
         if (selectedProcessItem != null) {
             currentJobName = selectedProcessItem.getProperty().getLabel();
         }
-        progressMonitor.subTask(Messages.getString("ProcessorUtilities.loadingJob") + currentJobName); //$NON-NLS-1$
+        progressMonitor.subTask(Messages.getString("ProcessorUtilities.loadingJob") + currentJobName == null ? "" : currentJobName); //$NON-NLS-1$
 
         if (jobInfo.getProcess() == null) {
             if (selectedProcessItem != null) {
@@ -558,7 +557,7 @@ public class ProcessorUtilities {
     }
 
     /**
-     *
+     * 
      * This method is used when export job or joblet , check if one of the database component node use dynamic metadata
      */
     private static void checkMetadataDynamic(IProcess currentProcess, JobInfo jobInfo) {
@@ -930,7 +929,7 @@ public class ProcessorUtilities {
 
     /**
      * DOC nrousseau Comment method "cloneJobInfo".
-     *
+     * 
      * @param jobInfo
      * @return
      */
@@ -1122,7 +1121,7 @@ public class ProcessorUtilities {
     /**
      * Return true if we can find a context name from the child job that matches the selected context name. see bug
      * 0003862: Export job with the flag "Apply to children" if the child don't have the same context fails.
-     *
+     * 
      * @param processItem
      * @param selectedContextName
      * @return
@@ -1141,7 +1140,7 @@ public class ProcessorUtilities {
 
     /**
      * This method is used to reset the tRunJob component's context,see feature 1625.
-     *
+     * 
      * @param jobInfo
      * @param currentProcess
      * @param selectedContextName
@@ -1164,7 +1163,7 @@ public class ProcessorUtilities {
 
     /**
      * This function will generate the code of the process and all of this sub process.
-     *
+     * 
      * @param processName
      * @param contextName
      * @param version null if no specific version required
@@ -1185,7 +1184,7 @@ public class ProcessorUtilities {
 
     /**
      * This function will generate the code of the process and all of this sub process.
-     *
+     * 
      * @param processName
      * @param contextName
      * @param version null if no specific version required
@@ -1433,7 +1432,7 @@ public class ProcessorUtilities {
     }
 
     /**
-     *
+     * 
      * @deprecated seems never use this one
      */
     @Deprecated
@@ -1443,7 +1442,7 @@ public class ProcessorUtilities {
     }
 
     /**
-     *
+     * 
      * @deprecated seems never use this one
      */
     @Deprecated
@@ -1453,7 +1452,7 @@ public class ProcessorUtilities {
     }
 
     /**
-     *
+     * 
      * Seems only work for jet code generator.
      */
     public static String[] getCommandLine(String targetPlatform, boolean externalUse, String processId, String contextName,
@@ -1480,7 +1479,7 @@ public class ProcessorUtilities {
     }
 
     /**
-     *
+     * 
      * @deprecated seems never use this one
      */
     @Deprecated
@@ -1492,7 +1491,7 @@ public class ProcessorUtilities {
     }
 
     /**
-     *
+     * 
      * @deprecated seems never use this one
      */
     @Deprecated
@@ -1512,7 +1511,7 @@ public class ProcessorUtilities {
     }
 
     /**
-     *
+     * 
      * @deprecated seems never use this one
      */
     @Deprecated
@@ -1528,7 +1527,7 @@ public class ProcessorUtilities {
     }
 
     /**
-     *
+     * 
      * @deprecated seems never use this one
      */
     @Deprecated
@@ -1557,7 +1556,7 @@ public class ProcessorUtilities {
     }
 
     /**
-     *
+     * 
      * Seems only work for jet code generator.
      */
     public static String[] getMainCommand(String processName, String processVersion, String contextName, int statisticPort,
@@ -1598,9 +1597,9 @@ public class ProcessorUtilities {
     }
 
     /**
-     *
+     * 
      * ggu Comment method "getAllVersionProcessList".
-     *
+     * 
      * @param processId
      * @return
      */
@@ -1728,7 +1727,7 @@ public class ProcessorUtilities {
 
     /**
      * DOC xtan. for bug:15299
-     *
+     * 
      * @param jobId
      * @return
      */
@@ -1746,7 +1745,7 @@ public class ProcessorUtilities {
 
     /**
      * DOC xtan. for bug:15299
-     *
+     * 
      * @param jobId
      * @return
      */
@@ -1785,15 +1784,6 @@ public class ProcessorUtilities {
                 // job found from jobList;
                 return jobInfo.getProcessor();
             }
-        }
-        return null;
-    }
-
-    public static File getJavaProjectLibFolder() {
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
-            IRunProcessService processService = (IRunProcessService) GlobalServiceRegister.getDefault()
-                    .getService(IRunProcessService.class);
-            return processService.getJavaProjectLibFolder();
         }
         return null;
     }

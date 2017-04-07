@@ -2047,4 +2047,57 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
         }
 
     }
+
+    public IRepositoryNode findNodeFromModel(IRepositoryNode oldNode) {
+        IRepositoryNode topNode = getRootRepositoryNode(getRepositoryType(oldNode));
+        return findNode(topNode, oldNode);
+    }
+
+    private ERepositoryObjectType getRepositoryType(IRepositoryNode node) {
+        IRepositoryNode testNode = node;
+        while (testNode != null) {
+            ERepositoryObjectType repObjType = testNode.getContentType();
+            if (repObjType != null) {
+                return repObjType;
+            }
+            testNode = testNode.getParent();
+            if (testNode instanceof ProjectRepositoryNode) {
+                break;
+            }
+        }
+        return null;
+    }
+
+    private IRepositoryNode findNode(IRepositoryNode modelNode, IRepositoryNode oldNode) {
+        if (modelNode == null || oldNode == null) {
+            return null;
+        }
+        if (isSameNode(modelNode, oldNode)) {
+            return modelNode;
+        }
+        IRepositoryNode latestNode = null;
+        List<IRepositoryNode> children = modelNode.getChildren();
+        if (children != null && !children.isEmpty()) {
+            for (IRepositoryNode child : children) {
+                IRepositoryNode node = findNode(child, oldNode);
+                if (node != null) {
+                    return node;
+                }
+            }
+        }
+        return latestNode;
+    }
+
+    private boolean isSameNode(IRepositoryNode left, IRepositoryNode right) {
+        if (left == right) {
+            return true;
+        }
+        if (left == null || right == null) {
+            return false;
+        }
+        if (left.equals(right)) {
+            return true;
+        }
+        return false;
+    }
 }

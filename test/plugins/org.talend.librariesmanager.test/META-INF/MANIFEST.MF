@@ -5,4 +5,5 @@ Bundle-SymbolicName: org.talend.librariesmanager.test;singleton:=true
 Bundle-Version: 6.4.0.qualifier
 Fragment-Host: org.talend.librariesmanager
 Require-Bundle: org.talend.testutils,
- org.apache.commons.io
+ org.apache.commons.io,
+ org.eclipse.m2e.maven.runtime

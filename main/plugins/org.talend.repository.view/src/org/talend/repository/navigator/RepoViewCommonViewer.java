@@ -25,8 +25,10 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jface.util.LocalSelectionTransfer;
+import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.LabelProviderChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSourceAdapter;
@@ -48,6 +50,7 @@ import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.repository.CoreRepositoryPlugin;
 import org.talend.core.repository.constants.Constant;
+import org.talend.core.repository.model.ProjectRepositoryNode;
 import org.talend.core.repository.ui.actions.MoveObjectAction;
 import org.talend.core.repository.ui.view.RepositoryDropAdapter;
 import org.talend.core.repository.utils.XmiResourceManager;
@@ -300,7 +303,26 @@ public class RepoViewCommonViewer extends CommonViewer implements INavigatorCont
                 nodes.add((IRepositoryNode) object);
             }
         }
-        IRepositoryNode itemNode = findItemNode(property.getId(), nodes);
+        List<IRepositoryNode> topNodes = new ArrayList<>();
+        ProjectRepositoryNode projNode = ProjectRepositoryNode.getInstance();
+        for (IRepositoryNode node : nodes) {
+            RepositoryNode topNode = projNode.getRootRepositoryNode(node.getContentType(), false);
+            if (topNode != null && !topNodes.contains(topNode)) {
+                topNodes.add(topNode);
+            }
+        }
+        IRepositoryNode itemNode = findItemNodeFromModel(property.getId(), topNodes);
+        if (itemNode == null) {
+            itemNode = findItemNodeFromUI(property.getId(), nodes);
+            if (itemNode != null) {
+                /**
+                 * maybe no need to get the top node, since if we force to refresh the top node, it will try to
+                 * initialise them, and effect the perfomance; here we only need to refresh the lock status in UI, the
+                 * initialisation will be done in otherwhere
+                 */
+                // itemNode = projNode.getRootRepositoryNode(itemNode.getContentType(), false);
+            }
+        }
         if (itemNode != null) {
             IRepositoryViewObject object = itemNode.getObject();
             if (object != null) {
@@ -313,18 +335,26 @@ public class RepoViewCommonViewer extends CommonViewer implements INavigatorCont
         }
     }
 
-    /**
-     * DOC nrousseau Comment method "findItemNode".
-     * 
-     * @param id
-     * @return
-     */
-    private IRepositoryNode findItemNode(String id, List<IRepositoryNode> nodes) {
+    private IRepositoryNode findItemNodeFromModel(String id, List<IRepositoryNode> nodes) {
         for (IRepositoryNode node : nodes) {
             if (id.equals(node.getId())) {
                 return node;
             }
-            List<IRepositoryNode> childrens = new ArrayList<>();
+            List<IRepositoryNode> children = node.getChildren();
+            IRepositoryNode result = findItemNodeFromModel(id, children);
+            if (result != null) {
+                return result;
+            }
+        }
+        return null;
+    }
+
+    private IRepositoryNode findItemNodeFromUI(String id, List<IRepositoryNode> nodes) {
+        for (IRepositoryNode node : nodes) {
+            if (id.equals(node.getId())) {
+                return node;
+            }
+            List<IRepositoryNode> children = new ArrayList<>();
             Widget repWidget = this.findItem(node);
             if (repWidget != null && !repWidget.isDisposed()) {
                 Item[] childrenItem = this.getChildren(repWidget);
@@ -332,7 +362,7 @@ public class RepoViewCommonViewer extends CommonViewer implements INavigatorCont
                     for (Item childItem : childrenItem) {
                         RepositoryNode repNode = this.getRepositoryNode(childItem);
                         if (repNode != null) {
-                            childrens.add(repNode);
+                            children.add(repNode);
                         }
                     }
                 }
@@ -341,16 +371,42 @@ public class RepoViewCommonViewer extends CommonViewer implements INavigatorCont
                 Object[] childrensObject = contentProvider.getElements(node);
                 for (Object o : childrensObject) {
                     if (o instanceof IRepositoryNode) {
-                        childrens.add((IRepositoryNode) o);
+                        children.add((IRepositoryNode) o);
                     }
                 }
             }
-            IRepositoryNode childNode = findItemNode(id, childrens);
+            IRepositoryNode childNode = findItemNodeFromUI(id, children);
             if (childNode != null) {
                 return childNode;
             }
         }
         return null;
+    }
+
+    @Override
+    protected void handleLabelProviderChanged(LabelProviderChangedEvent event) {
+        Object[] elements = event.getElements();
+        if (elements == null || elements.length <= 0) {
+            super.handleLabelProviderChanged(event);
+        } else {
+            List<Object> newElems = new ArrayList<>();
+            ProjectRepositoryNode projNode = ProjectRepositoryNode.getInstance();
+            for (Object element : elements) {
+                if (element instanceof IRepositoryNode) {
+                    IRepositoryNode newNode = projNode.findNodeFromModel((IRepositoryNode) element);
+                    if (newNode != null) {
+                        newElems.add(newNode);
+                    } else {
+                        newElems.add(element);
+                    }
+                } else {
+                    newElems.add(element);
+                }
+            }
+            LabelProviderChangedEvent newEvent = new LabelProviderChangedEvent((IBaseLabelProvider) event.getSource(),
+                    newElems.toArray());
+            super.handleLabelProviderChanged(newEvent);
+        }
     }
 
     protected void refreshContentIfNecessary(Collection<String> fileList) {
