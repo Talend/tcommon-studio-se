@@ -12,10 +12,7 @@
 // ============================================================================
 package org.talend.commons.utils.generation;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
@@ -23,15 +20,11 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.IVMInstall2;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jdt.launching.environments.IExecutionEnvironment;
-import org.osgi.service.prefs.BackingStoreException;
-import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.resource.FileExtensions;
 
 /**
@@ -51,8 +44,6 @@ public final class JavaUtils {
     public static final String PATH_SEPARATOR = "/"; //$NON-NLS-1$
 
     public static final String JAVA_APP_NAME = "java";//$NON-NLS-1$
-    
-    public static final String CUSTOM_JAVA_COMPLIANCE = "talend.default.java"; //$NON-NLS-1$
 
     /** added by rxl. */
     public static final String JAVATIP = "//The function of generating Java code haven't achive yet" //$NON-NLS-1$
@@ -212,61 +203,19 @@ public final class JavaUtils {
      */
     public static String getCompilerCompliance(IVMInstall2 vMInstall, String defaultCompliance) {
         String version = vMInstall.getJavaVersion();
-        return getJavaVersion(defaultCompliance, version);
-    }
-
-    public static String getCustomCompilerCompliance() {
-        String customCompliance = System.getProperty(CUSTOM_JAVA_COMPLIANCE);
-        return getJavaVersion(null, customCompliance);
-        
-    }
-    
-    public static void applyCustomComplianceIfSet() {
-        String compliance = getCustomCompilerCompliance();
-        if (compliance != null) {
-            IEclipsePreferences eclipsePreferences = InstanceScope.INSTANCE.getNode(JavaCore.PLUGIN_ID);
-            Map<String, String> complianceOptions = new HashMap<String, String>();
-            JavaCore.setComplianceOptions(compliance, complianceOptions);
-            if (!complianceOptions.isEmpty()) {
-                Set<Entry<String, String>> entrySet = complianceOptions.entrySet();
-                for (Entry<String, String> entry : entrySet) {
-                    eclipsePreferences.put(entry.getKey(), entry.getValue());
-                }
-            }
-            try {
-                eclipsePreferences.flush();
-            } catch (BackingStoreException e) {
-                ExceptionHandler.process(e);
-            }
-        }
-    }
-    
-    private static String getJavaVersion(String defaultCompliance, String version) {
         if (version == null) {
             return defaultCompliance;
-        }
-        if (version.startsWith(JavaCore.VERSION_1_8)) {
-            return JavaCore.VERSION_1_8;
-        }
-        if (version.startsWith(JavaCore.VERSION_1_7)) {
-            return JavaCore.VERSION_1_7;
-        }
-        if (version.startsWith(JavaCore.VERSION_1_6)) {
+        } else if (version.startsWith(JavaCore.VERSION_1_6)) {
             return JavaCore.VERSION_1_6;
-        }
-        if (version.startsWith(JavaCore.VERSION_1_5)) {
+        } else if (version.startsWith(JavaCore.VERSION_1_5)) {
             return JavaCore.VERSION_1_5;
-        }
-        if (version.startsWith(JavaCore.VERSION_1_4)) {
+        } else if (version.startsWith(JavaCore.VERSION_1_4)) {
             return JavaCore.VERSION_1_4;
-        }
-        if (version.startsWith(JavaCore.VERSION_1_3)) {
+        } else if (version.startsWith(JavaCore.VERSION_1_3)) {
             return JavaCore.VERSION_1_3;
-        }
-        if (version.startsWith(JavaCore.VERSION_1_2)) {
+        } else if (version.startsWith(JavaCore.VERSION_1_2)) {
             return JavaCore.VERSION_1_3;
-        }
-        if (version.startsWith(JavaCore.VERSION_1_1)) {
+        } else if (version.startsWith(JavaCore.VERSION_1_1)) {
             return JavaCore.VERSION_1_3;
         }
         return defaultCompliance;

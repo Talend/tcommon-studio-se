@@ -20,7 +20,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.m2e.core.internal.IMavenConstants;
-import org.talend.commons.utils.generation.JavaUtils;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.tools.creator.CreateMavenCodeProject;
 
@@ -46,9 +45,8 @@ public final class TalendCodeProjectUtil {
             CreateMavenCodeProject createProject = new CreateMavenCodeProject(codeProject);
             createProject.create(monitor);
             codeProject = createProject.getProject();
-        } else {
-            JavaUtils.applyCustomComplianceIfSet();
         }
+
         if (!codeProject.isOpen()) {
             codeProject.open(IProject.BACKGROUND_REFRESH, monitor);
         } else {

@@ -53,6 +53,13 @@
             id="org.talend.updates.TOSDynamicExtraFeaturesFactory"
             name="TOS Dynamic ExtraFeatures Factory">
       </factory>
+      <!--
+      <factory
+            class="org.talend.updates.runtime.engine.factory.NewComponentsInstallFactory"
+            id="org.talend.updates.NewComponentsInstallFactory"
+            name="Install new components ">
+      </factory>
+      -->
    </extension>
 
 </plugin>

@@ -89,14 +89,15 @@ public class Application implements IApplication {
         Display display = PlatformUI.createDisplay();
 
         try {
-            // TUP-5816 don't put any code ahead of this part unless you make sure it won't trigger workspace initialization.
+            // TUP-5816 don't put any code ahead of this part unless you make sure it won't trigger workspace
+            // initialization.
             Shell shell = new Shell(display, SWT.ON_TOP);
             Object instanceLocationCheck = acquireWorkspaceLock(shell);
             if (instanceLocationCheck != null) {// no workspace selected so return.
                 shell.dispose();
                 return instanceLocationCheck;
             }
-            
+
             final IPreferenceStore store = PlatformUI.getPreferenceStore();
             // need do clean, but without clean before.
             if (store.getBoolean(PreferenceKeys.NEED_OSGI_CLEAN) && !Boolean.getBoolean(EclipseStarter.PROP_CLEAN)) {
@@ -104,7 +105,6 @@ public class Application implements IApplication {
                 EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(EclipseCommandLine.CLEAN, null, false);
                 return IApplication.EXIT_RELAUNCH;
             }
-
 
             StudioSSLContextProvider.setSSLSystemProperty();
 
@@ -157,17 +157,21 @@ public class Application implements IApplication {
 
             final ComponentsInstallComponent installComponent = LocalComponentInstallHelper.getComponent();
             if (installComponent != null) {
-                // install component silently
-                final boolean installed = installComponent.install();
-                if (installed) {
-                    final String installedMessages = installComponent.getInstalledMessages();
-                    if (installedMessages != null) {
-                        log.log(Level.INFO, installedMessages);
-                        MessageDialog.openInformation(new Shell(), "Installing Components", installedMessages);
+                try {
+                    // install component silently
+                    installComponent.setLogin(true);
+                    if (installComponent.install()) {
+                        final String installedMessages = installComponent.getInstalledMessages();
+                        if (installedMessages != null) {
+                            log.log(Level.INFO, installedMessages);
+                            MessageDialog.openInformation(new Shell(), "Installing Components", installedMessages);
+                        }
+                        if (installComponent.needRelaunch()) {
+                            needRelaunch = true;
+                        }
                     }
-                    if (installComponent.needRelaunch()) {
-                        needRelaunch = true;
-                    }
+                } finally {
+                    installComponent.setLogin(false);
                 }
             }
             if (needRelaunch) {
@@ -178,7 +182,8 @@ public class Application implements IApplication {
             boolean logUserOnProject = logUserOnProject(display.getActiveShell());
             if (LoginHelper.isRestart && LoginHelper.isAutoLogonFailed) {
                 setRelaunchData();
-                EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(EclipseCommandLine.TALEND_PROJECT_TYPE_COMMAND, null, true);
+                EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(EclipseCommandLine.TALEND_PROJECT_TYPE_COMMAND,
+                        null, true);
                 return IApplication.EXIT_RELAUNCH;
             }
             try {
