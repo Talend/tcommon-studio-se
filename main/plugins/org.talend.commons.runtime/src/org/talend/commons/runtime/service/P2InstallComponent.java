@@ -22,4 +22,6 @@ public interface P2InstallComponent {
     boolean needRelaunch();
 
     String getInstalledMessages();
+
+    String getFailureMessage();
 }

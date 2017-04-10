@@ -12,6 +12,9 @@
 // ============================================================================
 package org.talend.core.model.components;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.JobletProcessItem;
@@ -45,7 +48,7 @@ public enum ComponentCategory {
 
     /**
      * Getter for name.
-     * 
+     *
      * @return the name
      */
     public String getName() {
@@ -54,7 +57,7 @@ public enum ComponentCategory {
 
     /**
      * Sets the name.
-     * 
+     *
      * @param name the name to set
      */
     public void setName(String name) {
@@ -63,7 +66,7 @@ public enum ComponentCategory {
 
     /**
      * Getter for desc.
-     * 
+     *
      * @return the desc
      */
     public String getDesc() {
@@ -72,7 +75,7 @@ public enum ComponentCategory {
 
     /**
      * Sets the desc.
-     * 
+     *
      * @param desc the desc to set
      */
     public void setDesc(String desc) {
@@ -121,4 +124,14 @@ public enum ComponentCategory {
         }
         return null;
     }
+
+    public static Set<String> getAllCategoryNames() {
+        HashSet<String> categoryNames = new HashSet<>();
+        ComponentCategory[] categories = values();
+        for (ComponentCategory category : categories) {
+            categoryNames.add(category.getName());
+        }
+        return categoryNames;
+    }
+
 }

@@ -68,7 +68,7 @@ public class ArtifactsDeployer {
     public void deployToLocalMaven(Map<String, String> jarSourceAndMavenUri) throws Exception {
         for (String mavenUri : jarSourceAndMavenUri.keySet()) {
             try {
-                deployToLocalMaven(jarSourceAndMavenUri.get(mavenUri), mavenUri);
+                deployToLocalMaven(mavenUri, jarSourceAndMavenUri.get(mavenUri), null, true);
             } catch (Exception e) {
                 ExceptionHandler.process(e);
                 continue;
@@ -79,7 +79,7 @@ public class ArtifactsDeployer {
     public void deployToLocalMaven(Map<String, String> jarSourceAndMavenUri, boolean updateRemoteJar) throws Exception {
         for (String mavenUri : jarSourceAndMavenUri.keySet()) {
             try {
-                deployToLocalMaven(jarSourceAndMavenUri.get(mavenUri), mavenUri, updateRemoteJar);
+                deployToLocalMaven(mavenUri, jarSourceAndMavenUri.get(mavenUri), null, updateRemoteJar);
             } catch (Exception e) {
                 ExceptionHandler.process(e);
                 continue;
@@ -88,39 +88,7 @@ public class ArtifactsDeployer {
     }
 
     public void deployToLocalMaven(String path, String mavenUri, boolean toRemoteNexus) throws Exception {
-        MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(mavenUri);
-        // change to snapshot version to deploy
-
-        if (parseMvnUrl != null) {
-            // install to local maven repository and create pom
-            // repositoryManager.install(new File(path), parseMvnUrl);
-            String artifactType = parseMvnUrl.getType();
-            if (artifactType == null || "".equals(artifactType)) {
-                artifactType = TalendMavenConstants.PACKAGING_JAR;
-            }
-            MavenResolver mvnResolver = TalendLibsServerManager.getInstance().getMavenResolver();
-            mvnResolver.upload(parseMvnUrl.getGroupId(), parseMvnUrl.getArtifactId(), parseMvnUrl.getClassifier(), artifactType,
-                    parseMvnUrl.getVersion(), new File(path));
-            ModuleStatusProvider.getDeployStatusMap().put(mavenUri, ELibraryInstallStatus.DEPLOYED);
-            ModuleStatusProvider.getStatusMap().put(mavenUri, ELibraryInstallStatus.INSTALLED);
-            String pomType = TalendMavenConstants.PACKAGING_POM;
-            String generatePom = PomUtil.generatePom2(parseMvnUrl);
-            if (generatePom != null) {
-                mvnResolver.upload(parseMvnUrl.getGroupId(), parseMvnUrl.getArtifactId(), parseMvnUrl.getClassifier(), pomType,
-                        parseMvnUrl.getVersion(), new File(generatePom));
-            }
-
-            if (toRemoteNexus) {
-                // repositoryManager.deploy(new File(path), parseMvnUrl);
-                installToRemote(new File(path), parseMvnUrl, artifactType);
-                // deploy the pom
-                if (new File(generatePom).exists()) {
-                    installToRemote(new File(generatePom), parseMvnUrl, pomType);
-                }
-            }
-            FilesUtils.deleteFolder(new File(generatePom).getParentFile(), true);
-        }
-
+        deployToLocalMaven(mavenUri, path, null, toRemoteNexus);
     }
 
     /**
@@ -133,6 +101,64 @@ public class ArtifactsDeployer {
      */
     public void deployToLocalMaven(String path, String mavenUri) throws Exception {
         deployToLocalMaven(path, mavenUri, true);
+    }
+
+    /**
+     * Deploy the lib with fixed pom file. if not set, will generate a default one.
+     */
+    public void deployToLocalMaven(String mavenUri, String libPath, String pomPath, boolean toRemoteNexus) throws Exception {
+        MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(mavenUri);
+        // change to snapshot version to deploy
+
+        if (parseMvnUrl != null && libPath != null && libPath.length() > 0) {
+            File libFile = new File(libPath);
+            if (!libFile.exists()) {
+                return;
+            }
+            // lib
+            String artifactType = parseMvnUrl.getType();
+            if (artifactType == null || "".equals(artifactType)) {
+                artifactType = TalendMavenConstants.PACKAGING_JAR;
+            }
+            MavenResolver mvnResolver = TalendLibsServerManager.getInstance().getMavenResolver();
+            mvnResolver.upload(parseMvnUrl.getGroupId(), parseMvnUrl.getArtifactId(), parseMvnUrl.getClassifier(), artifactType,
+                    parseMvnUrl.getVersion(), libFile);
+
+            ModuleStatusProvider.getDeployStatusMap().put(mavenUri, ELibraryInstallStatus.DEPLOYED);
+            ModuleStatusProvider.getStatusMap().put(mavenUri, ELibraryInstallStatus.INSTALLED);
+
+            // pom
+            boolean generated = false;
+            File pomFile = null;
+            if (pomPath != null && pomPath.length() > 0) {
+                pomFile = new File(pomPath);
+                if (!pomFile.exists()) {
+                    pomFile = null;
+                }
+            }
+            if (pomFile == null) {
+                pomFile = new File(PomUtil.generatePom2(parseMvnUrl));
+                generated = true;
+            }
+
+            String pomType = TalendMavenConstants.PACKAGING_POM;
+            if (pomFile != null && pomFile.exists()) {
+                mvnResolver.upload(parseMvnUrl.getGroupId(), parseMvnUrl.getArtifactId(), parseMvnUrl.getClassifier(), pomType,
+                        parseMvnUrl.getVersion(), pomFile);
+            }
+
+            if (toRemoteNexus) {
+                installToRemote(libFile, parseMvnUrl, artifactType);
+                // deploy the pom
+                if (pomFile != null && pomFile.exists()) {
+                    installToRemote(pomFile, parseMvnUrl, pomType);
+                }
+            }
+            if (generated) { // only for generate pom
+                FilesUtils.deleteFolder(pomFile.getParentFile(), true);
+            }
+        }
+
     }
 
     public void installToRemote(File content, MavenArtifact artifact, String type) throws Exception {

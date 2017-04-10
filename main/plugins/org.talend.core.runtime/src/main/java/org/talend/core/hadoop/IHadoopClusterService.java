@@ -24,7 +24,6 @@ import org.talend.core.model.general.Project;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.process.IProcess;
-import org.talend.core.model.properties.ConnectionItem;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryTypeProcessor;
@@ -231,11 +230,7 @@ public interface IHadoopClusterService extends IService {
      */
     public Item getHadoopClusterItemById(String id);
 
-    public String getCustomConfsJarName(String id);
-
-    public String getCustomConfsJarName(String id, boolean createJarIfNotExist, boolean addExtraIds);
-
-    public String getCustomConfsJarName(ConnectionItem connectionItem, boolean createJarIfNotExist, boolean addExtraIds);
+    public String getCustomConfsJarName(String clusterId);
 
     public void useCustomConfsJarIfNeeded(List<ModuleNeeded> modulesNeeded, String clusterId);
 

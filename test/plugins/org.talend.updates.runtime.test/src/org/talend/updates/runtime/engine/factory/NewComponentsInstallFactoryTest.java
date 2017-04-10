@@ -10,25 +10,12 @@
 // 9 rue Pages 92150 Suresnes, France
 //
 // ============================================================================
-package org.talend.commons.runtime.service;
+package org.talend.updates.runtime.engine.factory;
 
-import java.io.File;
-import java.util.List;
 
 /**
  * DOC ggu class global comment. Detailled comment
  */
-public interface ComponentsInstallComponent extends P2InstallComponent {
+public class NewComponentsInstallFactoryTest {
 
-    String FOLDER_COMPS = "components"; //$NON-NLS-1$
-
-    String FOLDER_INSTALLED = "installed"; //$NON-NLS-1$
-
-    String FOLDER_M2_REPOSITORY = "m2/repository"; //$NON-NLS-1$
-
-    void setLogin(boolean login);
-
-    void setComponentFolder(File componentFolder);
-
-    List<File> getFailedComponents();
 }

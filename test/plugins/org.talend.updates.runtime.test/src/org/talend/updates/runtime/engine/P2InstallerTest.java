@@ -133,8 +133,7 @@ public class P2InstallerTest {
         P2InstallerTestClass installer = new P2InstallerTestClass() {
 
             @Override
-            public Set<InstalledUnit> installPatchFolder(File updatesiteFolder, boolean keepChangeConfigIni) throws IOException,
-                    ProvisionException {
+            public Set<InstalledUnit> installPatchFile(File updatesiteZip, boolean keepChangeConfigIni) throws Exception {
                 Set<InstalledUnit> unit = new HashSet<InstalledUnit>();
                 unit.add(new InstalledUnit("myJira", "0.16.0"));
                 return unit;

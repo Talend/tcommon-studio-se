@@ -105,6 +105,13 @@ public class ExtendedNodeConnectionContextUtils {
         // Oozie
         OozieUser,
         OozieEndpoint,
+
+        // Google Dataproc
+        GoogleProjectId,
+        GoogleClusterId,
+        GoogleRegion,
+        GoogleJarsBucket,
+        PathToGoogleCredentials,
     }
 
     static List<IContextParameter> getContextVariables(final String prefixName, Connection conn, Set<IConnParamName> paramSet) {

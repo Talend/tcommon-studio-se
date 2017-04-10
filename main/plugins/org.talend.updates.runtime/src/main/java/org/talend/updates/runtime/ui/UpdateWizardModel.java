@@ -15,13 +15,10 @@ package org.talend.updates.runtime.ui;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Collections;
 import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.eclipse.core.databinding.observable.set.ComputedSet;
 import org.eclipse.core.databinding.observable.set.IObservableSet;
 import org.eclipse.core.databinding.observable.set.WritableSet;
 import org.eclipse.core.databinding.validation.IValidator;
@@ -56,8 +53,8 @@ public class UpdateWizardModel {
                 }
             }
             if (!hasFeatureSelected) {
-                return ValidationStatus
-                        .error(Messages.getString("SelectExtraFeaturesToInstallWizardPage.one.feature.must.be.selected")); //$NON-NLS-1$
+                return ValidationStatus.error(Messages
+                        .getString("SelectExtraFeaturesToInstallWizardPage.one.feature.must.be.selected")); //$NON-NLS-1$
             } else if (!selectedExtraFeatures.isEmpty() && !canConfigureUpdateSiteLocation()) {
                 @SuppressWarnings("unchecked")
                 ExtraFeature extraFeature = getFirstExtraFeatureNotAllowingUpdateSiteConfig(selectedExtraFeatures);
@@ -120,10 +117,19 @@ public class UpdateWizardModel {
      */
     public UpdateWizardModel(Set<ExtraFeature> extraFeatures) {
         // create an observable set of the feature that may be installed
-        availableExtraFeatures = extraFeatures != null ? new WritableSet(extraFeatures, ExtraFeature.class)
-                : new WritableSet();
+        availableExtraFeatures = extraFeatures != null ? new WritableSet(extraFeatures, ExtraFeature.class) : new WritableSet();
         ;
         this.featureRepositories = new FeatureRepositories();
+    }
+
+    public Set<ExtraFeature> getSelectedExtraFeatures() {
+        Set<ExtraFeature> features = new LinkedHashSet<ExtraFeature>();
+        for (Object feature : selectedExtraFeatures) {
+            if (feature instanceof ExtraFeature) {
+                features.add((ExtraFeature) feature);
+            }
+        }
+        return features;
     }
 
     /**
@@ -169,8 +175,7 @@ public class UpdateWizardModel {
      */
     public boolean canConfigureUpdateSiteLocation() {
         @SuppressWarnings("unchecked")
-        ExtraFeature firstExtraFeatureNotAllowingUpdateSiteConfig = getFirstExtraFeatureNotAllowingUpdateSiteConfig(
-                selectedExtraFeatures);
+        ExtraFeature firstExtraFeatureNotAllowingUpdateSiteConfig = getFirstExtraFeatureNotAllowingUpdateSiteConfig(selectedExtraFeatures);
         return firstExtraFeatureNotAllowingUpdateSiteConfig == null;
     }
 
