@@ -103,10 +103,6 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
         final IProcess process = jProcessor.getProcess();
         final Property property = jProcessor.getProperty();
 
-        Map<ETalendMavenVariables, String> variablesValuesMap = new HashMap<ETalendMavenVariables, String>();
-        // no need check property is null or not, because if null, will get default ids.
-        variablesValuesMap.put(ETalendMavenVariables.JobGroupId, PomIdsHelper.getJobGroupId(property));
-        variablesValuesMap.put(ETalendMavenVariables.JobArtifactId, PomIdsHelper.getJobArtifactId(property));
         Property jobProperty = null;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
             ITestContainerProviderService service = (ITestContainerProviderService) GlobalServiceRegister.getDefault()
@@ -120,6 +116,12 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
                 }
             }
         }
+        
+        Map<ETalendMavenVariables, String> variablesValuesMap = new HashMap<ETalendMavenVariables, String>();
+        // no need check property is null or not, because if null, will get default ids.
+        variablesValuesMap.put(ETalendMavenVariables.JobGroupId,
+                PomIdsHelper.getJobGroupId(jobProperty == null ? property : jobProperty));
+        variablesValuesMap.put(ETalendMavenVariables.JobArtifactId, PomIdsHelper.getJobArtifactId(property));
         variablesValuesMap.put(
                 ETalendMavenVariables.JobVersion,
                 getDeployVersion() != null ? getDeployVersion() : PomIdsHelper.getJobVersion(jobProperty == null ? property

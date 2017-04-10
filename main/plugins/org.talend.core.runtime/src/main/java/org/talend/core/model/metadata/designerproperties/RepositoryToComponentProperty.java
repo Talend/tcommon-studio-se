@@ -982,6 +982,8 @@ public class RepositoryToComponentProperty {
                 return connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_VERSION);
             } else if (EDatabaseTypeName.GENERAL_JDBC.getDisplayName().equals(databaseType)) {
                 return dbVersionString;
+            } else if (EDatabaseTypeName.SYBASEASE.getDisplayName().equals(databaseType)) {
+                return dbVersionString;
             } else {
                 String driverValue = EDatabaseVersion4Drivers.getDriversStr(databaseType, dbVersionString);
                 if (EDatabaseConnTemplate.ORACLE_OCI.getDBDisplayName().equals(databaseType)

@@ -953,6 +953,9 @@ public class ExtractMetaDataUtils {
                     }else if(EDatabaseTypeName.MSSQL.getDisplayName().equals(dbType) 
                             && EDatabaseVersion4Drivers.MSSQL_PROP.getVersionValue().equals(dbVersion)){
                         driverClassName = EDatabase4DriverClassName.MSSQL2.getDriverClass();
+                    }else if(EDatabaseTypeName.SYBASEASE.getDisplayName().equals(dbType) 
+                            && EDatabaseVersion4Drivers.SYBASEIQ_16.getVersionValue().equals(dbVersion)){
+                        driverClassName = EDatabase4DriverClassName.SYBASEIQ_16.getDriverClass();
                     }
                 }
             } else {
