@@ -25,6 +25,7 @@ import org.eclipse.core.runtime.Path;
 import org.junit.Assert;
 import org.junit.Test;
 import org.ops4j.pax.url.mvn.MavenResolver;
+import org.talend.commons.utils.VersionUtils;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.properties.PropertiesFactory;
@@ -32,6 +33,7 @@ import org.talend.core.model.properties.Property;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
+import org.talend.core.runtime.process.TalendProcessArgumentConstant;
 import org.talend.designer.maven.template.MavenTemplateManager;
 import org.talend.designer.runprocess.IProcessor;
 import org.talend.repository.ProjectManager;
@@ -359,6 +361,146 @@ public class PomUtilTest {
         String projectName = PomUtil.getProjectNameFromTemplateParameter(parameters);
         Assert.assertNotNull(projectName);
         Assert.assertEquals("ABC", projectName);
+    }
 
+    @Test
+    public void test_getJobVersionForPomProperty_null() {
+        String jobVersion = PomUtil.getJobVersionForPomProperty(null, null, null);
+        Assert.assertEquals("${project.version}", jobVersion);
+
+        jobVersion = PomUtil.getJobVersionForPomProperty(Collections.emptyMap(), null, null);
+        Assert.assertEquals("${project.version}", jobVersion);
+
+        Map<String, Object> argumentsMap = new HashMap<String, Object>();
+        argumentsMap.put(TalendProcessArgumentConstant.ARG_DEPLOY_VERSION, "1.1");
+
+        final Property property = PropertiesFactory.eINSTANCE.createProperty();
+        property.setVersion(VersionUtils.DEFAULT_VERSION);
+
+        jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, property, null);
+        Assert.assertEquals("${project.version}", jobVersion);
+
+        property.getAdditionalProperties().put(MavenConstants.NAME_USER_VERSION, "1.2");
+        jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, property, null);
+        Assert.assertEquals("${project.version}", jobVersion);
+    }
+
+    @Test
+    public void test_getJobVersionForPomProperty_arguments_empty() {
+        final Property property = PropertiesFactory.eINSTANCE.createProperty();
+        property.setVersion(VersionUtils.DEFAULT_VERSION);
+        Map<String, Object> argumentsMap = new HashMap<String, Object>();
+
+        String jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, property); // not set
+        Assert.assertEquals("${project.version}", jobVersion);
+
+        jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, null, property); // not set
+        Assert.assertEquals("${project.version}", jobVersion);
+
+        argumentsMap.put(TalendProcessArgumentConstant.ARG_DEPLOY_VERSION, null); // null
+        jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, property);
+        Assert.assertEquals("${project.version}", jobVersion);
+
+        jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, null, property);
+        Assert.assertEquals("${project.version}", jobVersion);
+
+        argumentsMap.put(TalendProcessArgumentConstant.ARG_DEPLOY_VERSION, ""); // empty
+        jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, property);
+        Assert.assertEquals("${project.version}", jobVersion);
+
+        jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, null, property);
+        Assert.assertEquals("${project.version}", jobVersion);
+
+        argumentsMap.put(TalendProcessArgumentConstant.ARG_DEPLOY_VERSION, "    "); // spaces
+        jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, property);
+        Assert.assertEquals("${project.version}", jobVersion);
+
+        jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, null, property);
+        Assert.assertEquals("${project.version}", jobVersion);
+    }
+
+    @Test
+    public void test_getJobVersionForPomProperty_arguments() {
+        final Property property = PropertiesFactory.eINSTANCE.createProperty();
+        property.setVersion(VersionUtils.DEFAULT_VERSION);
+        Map<String, Object> argumentsMap = new HashMap<String, Object>();
+        argumentsMap.put(TalendProcessArgumentConstant.ARG_DEPLOY_VERSION, "0.2");
+
+        String jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, property);
+        Assert.assertEquals("0.1", jobVersion); // the real job version
+
+        jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, null, property);
+        Assert.assertEquals("0.1", jobVersion);
+    }
+
+    @Test
+    public void test_getJobVersionForPomProperty_property_empty() {
+        final Property jobProperty = PropertiesFactory.eINSTANCE.createProperty();
+        jobProperty.setVersion(VersionUtils.DEFAULT_VERSION);
+        Map<String, Object> argumentsMap = new HashMap<String, Object>();
+
+        String jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, jobProperty); // not set
+        Assert.assertEquals("${project.version}", jobVersion);
+
+        jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, jobProperty, null);
+        Assert.assertEquals("${project.version}", jobVersion);
+
+        jobProperty.getAdditionalProperties().put(MavenConstants.NAME_USER_VERSION, null); // null
+        jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, jobProperty);
+        Assert.assertEquals("${project.version}", jobVersion);
+
+        jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, jobProperty, null);
+        Assert.assertEquals("${project.version}", jobVersion);
+
+        jobProperty.getAdditionalProperties().put(MavenConstants.NAME_USER_VERSION, ""); // empty
+        jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, jobProperty);
+        Assert.assertEquals("${project.version}", jobVersion);
+
+        jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, jobProperty, null);
+        Assert.assertEquals("${project.version}", jobVersion);
+
+        jobProperty.getAdditionalProperties().put(MavenConstants.NAME_USER_VERSION, "   ");// spaces
+        jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, jobProperty);
+        Assert.assertEquals("${project.version}", jobVersion);
+
+        jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, jobProperty, null);
+        Assert.assertEquals("${project.version}", jobVersion);
+    }
+
+    @Test
+    public void test_getJobVersionForPomProperty_property() {
+        final Property jobProperty = PropertiesFactory.eINSTANCE.createProperty();
+        jobProperty.setVersion(VersionUtils.DEFAULT_VERSION);
+        jobProperty.getAdditionalProperties().put(MavenConstants.NAME_USER_VERSION, "1.0");
+
+        String jobVersion = PomUtil.getJobVersionForPomProperty(Collections.emptyMap(), jobProperty);
+        Assert.assertEquals("0.1", jobVersion);
+
+        jobVersion = PomUtil.getJobVersionForPomProperty(null, jobProperty); // no arguments
+        Assert.assertEquals("0.1", jobVersion);
+
+        Property curProperty = PropertiesFactory.eINSTANCE.createProperty();
+        curProperty.setVersion("1.3");
+
+        jobVersion = PomUtil.getJobVersionForPomProperty(null, jobProperty, curProperty);
+        Assert.assertEquals("1.3", jobVersion);
+    }
+
+    @Test
+    public void test_getJobVersionForPomProperty_arguments_property() {
+        final Property jobProperty = PropertiesFactory.eINSTANCE.createProperty();
+        jobProperty.setVersion(VersionUtils.DEFAULT_VERSION);
+        jobProperty.getAdditionalProperties().put(MavenConstants.NAME_USER_VERSION, "1.0");
+        Map<String, Object> argumentsMap = new HashMap<String, Object>();
+        argumentsMap.put(TalendProcessArgumentConstant.ARG_DEPLOY_VERSION, "0.2");
+
+        Property curProperty = PropertiesFactory.eINSTANCE.createProperty();
+        curProperty.setVersion("1.3");
+
+        String jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, jobProperty, curProperty);
+        Assert.assertEquals("1.3", jobVersion);
+
+        jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, jobProperty);
+        Assert.assertEquals("0.1", jobVersion);
     }
 }
