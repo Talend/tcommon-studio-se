@@ -27,7 +27,7 @@ import org.talend.metadata.managment.ui.wizard.context.ContextWizard;
 import org.talend.repository.model.RepositoryNode;
 
 /**
- * 
+ *
  * ggu class global comment. Detailled comment
  */
 public class MetadataManagmentUiService implements IMetadataManagmentUiService {
@@ -48,6 +48,10 @@ public class MetadataManagmentUiService implements IMetadataManagmentUiService {
     @Override
     public ContextType getContextTypeForContextMode(Connection connection) {
         return ConnectionContextHelper.getContextTypeForContextMode(connection);
+    }
+
+    public ContextType getContextTypeForContextMode(Connection connection, String selectedContext, boolean defaultContext) {
+        return ConnectionContextHelper.getContextTypeForContextMode(null, connection, selectedContext, defaultContext);
     }
 
     @Override
