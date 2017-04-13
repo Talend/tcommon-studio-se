@@ -61,7 +61,8 @@ public class CheckJobletDeleteReference extends AbstractCheckDeleteItemReference
                 Set<Project> refParentProjects = new HashSet<Project>();
                 try {
                     refParentProjects.add(ProjectManager.getInstance().getCurrentProject());
-                    refParentProjects.addAll(ProjectManager.getInstance().getReferencedProjects());
+                    //the item in mainProject never be used in referenceProject     TDI-21403
+                    //refParentProjects.addAll(ProjectManager.getInstance().getReferencedProjects());
                     for (Project refP : refParentProjects) {
                         List<IRepositoryViewObject> processes = new ArrayList<IRepositoryViewObject>(50);
 
