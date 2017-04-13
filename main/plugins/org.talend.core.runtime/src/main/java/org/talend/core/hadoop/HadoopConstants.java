@@ -57,4 +57,6 @@ public class HadoopConstants {
 
     public static final String IS_HADOOP_CUSTOM_CONFS = "IS_HADOOP_CUSTOM_CONFS";
 
+    public static final String IS_DYNAMIC_JAR = "IS_DYNAMIC_JAR";
+
 }

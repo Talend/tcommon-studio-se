@@ -259,4 +259,6 @@ public interface IHadoopClusterService extends IService {
 
     public String getRepositoryTypeOfHadoopSubItem(Item subItem);
 
+    public boolean isUseDynamicConfJar(String id);
+
 }
