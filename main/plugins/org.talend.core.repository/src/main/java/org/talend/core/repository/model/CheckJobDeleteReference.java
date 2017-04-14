@@ -76,7 +76,7 @@ public class CheckJobDeleteReference extends AbstractCheckDeleteItemReference im
                 Set<Project> refParentProjects = new HashSet<Project>();
                 try {
                     refParentProjects.add(ProjectManager.getInstance().getCurrentProject());
-                    refParentProjects.addAll(ProjectManager.getInstance().getReferencedProjects());
+//                    refParentProjects.addAll(ProjectManager.getInstance().getReferencedProjects());
                     for (Project refP : refParentProjects) {
 
                         // get all types processes such as standard job, big data streaming job, big data batch job;
