@@ -3492,8 +3492,9 @@ public class DatabaseForm extends AbstractForm {
     
     private List<String> getSybaseVersionDrivers(String dbType) {
         List<String> result = new ArrayList<String>();
-        result.add(EDatabaseVersion4Drivers.SYBASEASE.getVersionDisplay());
         result.add(EDatabaseVersion4Drivers.SYBASEIQ_16.getVersionDisplay());
+        result.add(EDatabaseVersion4Drivers.SYBASEASE.getVersionDisplay());
+        
         return result;
     }
 
