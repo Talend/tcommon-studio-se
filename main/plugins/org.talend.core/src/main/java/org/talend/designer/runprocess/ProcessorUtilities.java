@@ -119,6 +119,8 @@ public class ProcessorUtilities {
 
     private static boolean needContextInCurrentGeneration = true;
 
+    private static boolean exportAsOSGI = false;
+
     private static IDesignerCoreService designerCoreService = (IDesignerCoreService) GlobalServiceRegister.getDefault()
             .getService(IDesignerCoreService.class);
 
@@ -216,6 +218,7 @@ public class ProcessorUtilities {
         codeLocation = null;
         libraryPath = null;
         exportConfig = false;
+        exportAsOSGI = false;
         exportTimeStamp = null;
     }
 
@@ -1796,6 +1799,14 @@ public class ProcessorUtilities {
             return processService.getJavaProjectLibFolder();
         }
         return null;
+    }
+
+    public static boolean isExportAsOSGI() {
+        return exportAsOSGI;
+    }
+
+    public static void setExportAsOSGI(boolean toOSGI) {
+        exportAsOSGI = toOSGI;
     }
 
 }
