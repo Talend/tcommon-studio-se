@@ -96,6 +96,7 @@ import org.talend.core.model.properties.PropertiesPackage;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.properties.SpagoBiServer;
 import org.talend.core.model.properties.Status;
+import org.talend.core.model.properties.User;
 import org.talend.core.model.properties.impl.FolderItemImpl;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.Folder;
@@ -127,7 +128,6 @@ import org.talend.repository.documentation.ERepositoryActionName;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryConstants;
 import org.talend.utils.io.FilesUtils;
-import org.talend.utils.json.JSONArray;
 
 import orgomg.cwm.objectmodel.core.ModelElement;
 
@@ -470,8 +470,16 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
      */
     @Override
     public Project createProject(Project projectInfor) throws PersistenceException {
+        RepositoryContext repCtx = getRepositoryContext();
+        User user = repCtx.getUser();
+        String password = repCtx.getClearPassword();
+        return createProject(user, password, projectInfor);
+    }
+
+    @Override
+    public Project createProject(User authUser, String authPassword, Project projectInfor) throws PersistenceException {
         checkFileName(projectInfor.getLabel(), RepositoryConstants.PROJECT_PATTERN);
-        Project toReturn = this.repositoryFactoryFromProvider.createProject(projectInfor);
+        Project toReturn = this.repositoryFactoryFromProvider.createProject(authUser, authPassword, projectInfor);
         if (toReturn.isLocal()) {
             IMigrationToolService service = (IMigrationToolService) GlobalServiceRegister.getDefault().getService(
                     IMigrationToolService.class);
@@ -2297,7 +2305,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
         }
     }
 
-    public JSONArray getAllRemoteLocks() {
+    public List<ILockBean> getAllRemoteLocks() {
         return repositoryFactoryFromProvider.getAllRemoteLocks();
     }
 

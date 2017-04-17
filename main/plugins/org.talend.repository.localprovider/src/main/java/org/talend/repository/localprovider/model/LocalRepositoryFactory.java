@@ -84,6 +84,7 @@ import org.talend.commons.utils.data.container.RootContainer;
 import org.talend.commons.utils.io.FilesUtils;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.GlobalServiceRegister;
+import org.talend.core.context.RepositoryContext;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.general.TalendNature;
 import org.talend.core.model.metadata.MetadataManager;
@@ -145,6 +146,7 @@ import org.talend.core.repository.constants.FileConstants;
 import org.talend.core.repository.model.AbstractEMFRepositoryFactory;
 import org.talend.core.repository.model.FolderHelper;
 import org.talend.core.repository.model.ILocalRepositoryFactory;
+import org.talend.core.repository.model.ILockBean;
 import org.talend.core.repository.model.ProjectRepositoryNode;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.repository.model.VersionList;
@@ -164,7 +166,6 @@ import org.talend.repository.localprovider.exceptions.IncorrectFileException;
 import org.talend.repository.localprovider.i18n.Messages;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryConstants;
-import org.talend.utils.json.JSONArray;
 
 import orgomg.cwm.foundation.businessinformation.BusinessinformationPackage;
 
@@ -749,6 +750,14 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
     @Override
     public Project createProject(Project projectInfor) throws PersistenceException {
+        RepositoryContext repCtx = getRepositoryContext();
+        User user = repCtx.getUser();
+        String password = repCtx.getClearPassword();
+        return createProject(user, password, projectInfor);
+    }
+
+    @Override
+    public Project createProject(User authUser, String authPassword, Project projectInfor) throws PersistenceException {
         IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
         IProgressMonitor monitor = new NullProgressMonitor();
         String technicalLabel = Project.createTechnicalName(projectInfor.getLabel());
@@ -3478,9 +3487,8 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
     }
 
     @Override
-    public JSONArray getAllRemoteLocks() {
-        // TODO Auto-generated method stub
-        return new JSONArray();
+    public List<ILockBean> getAllRemoteLocks() {
+        return new ArrayList<ILockBean>();
     }
 
     @Override

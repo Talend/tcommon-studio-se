@@ -1278,7 +1278,7 @@ public class TalendDate {
      * {example} TO_DATE("2015-11-21 13:23:45","yyyy-MM-dd HH:mm:ss") #Sat Nov 21 13:23:45 CST 2015
      * 
      */
-    public Date TO_DATE(String string, String format) throws ParseException {
+    public static Date TO_DATE(String string, String format) throws ParseException {
 		String defaultFormat = "MM/DD/yyyy HH:mm:ss.sss";
 		if (string == null) {
 			return null;
@@ -1296,11 +1296,11 @@ public class TalendDate {
 
 	}
 
-	public Date TO_DATE(String string) throws ParseException {
+	public static Date TO_DATE(String string) throws ParseException {
 		return TO_DATE(string, null);
 	}
 
-	private String dateFormatConvert(String format) {
+	private static String dateFormatConvert(String format) {
 		/**
 		 * we do not support the type list below: 
 		 * D : Day of week (1-7), where Sunday equals 1. 
@@ -1340,7 +1340,7 @@ public class TalendDate {
 	 * @throws ParseException
 	 * {example} ADD_TO_DATE(new Date(1464576463231l), "HH",2) #Mon May 30 12:47:43 CST 2016
 	 */
-	public Date ADD_TO_DATE(Date date, String format, int amount) throws ParseException{
+	public static Date ADD_TO_DATE(Date date, String format, int amount) throws ParseException{
 		if (date == null || format == null) {
 			return null;
 		}
@@ -1359,18 +1359,18 @@ public class TalendDate {
 			calender.add(Calendar.MONTH, amount);
 			time = calender.getTimeInMillis();
 			break;
-		case "DAY":
-			time += amount * 24 * 60 * 60 * 1000;
-			break;
-		case "HH":
-			time += amount * 60 * 60 * 1000;
-			break;
-		case "MI":
-			time += amount * 60 * 1000;
-			break;
-		case "SS":
-			time += amount * 1000;
-			break;
+        case "DAY":
+            time += (long)amount * (long)86400000;
+            break;
+        case "HH":
+            time += (long)amount * (long)3600000;
+            break;
+        case "MI":
+            time += (long)amount * (long)60000;
+            break;
+        case "SS":
+            time += (long)amount * (long)1000;
+            break;
 		case "MS":
 			time += amount;
 			break;
@@ -1387,7 +1387,7 @@ public class TalendDate {
 
 	}
 
-	private String dateFormatADD_TO_DATE(String format) {
+	private static String dateFormatADD_TO_DATE(String format) {
 		if (format.equals("Y") || format.equals("YY") || format.equals("YYY") || format.equals("YYYY")) {
 			return "Y";
 		}

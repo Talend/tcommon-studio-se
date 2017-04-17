@@ -13,6 +13,7 @@
 package routines.system;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.charset.Charset;
 import java.text.DecimalFormat;
 import java.util.Date;
@@ -38,6 +39,18 @@ public class FormatterUtils {
             return null;
         }
         return decimal.toPlainString();
+    }
+
+    public static String format_BigDecimal(BigDecimal decimal, Integer scale) {
+        if (decimal == null) {
+            return null;
+        }
+
+        if (scale == null) {
+            return decimal.toPlainString();
+        }
+
+        return decimal.setScale(scale, RoundingMode.HALF_UP).toPlainString();
     }
 
     public static String format(byte data[], String pattern) {

@@ -62,6 +62,8 @@
         eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="migrationTask" upperBound="-1"
         eType="#//MigrationTask" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="bigData" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ProjectComponentAuthorisation">
     <eStructuralFeatures xsi:type="ecore:EReference" name="project" lowerBound="1"

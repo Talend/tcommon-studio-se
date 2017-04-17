@@ -242,4 +242,19 @@ public class ConnParameterKeys {
     public static final String CONN_PARA_KEY_IMPALA_VERSION = "CONN_PARA_KEY_IMPALA_VERSION"; //$NON-NLS-1$
 
     public static final String IMPALA_AUTHENTICATION_PRINCIPLA = "IMPALA_AUTHENTICATION_PRINCIPLA";//$NON-NLS-1$
+
+    /**
+     * Google Dataproc keys.
+     */
+    public static final String CONN_PARA_KEY_GOOGLE_PROJECT_ID = "CONN_PARA_KEY_GOOGLE_PROJECT_ID"; //$NON-NLS-1$
+
+    public static final String CONN_PARA_KEY_GOOGLE_CLUSTER_ID = "CONN_PARA_KEY_GOOGLE_CLUSTER_ID";//$NON-NLS-1$
+
+    public static final String CONN_PARA_KEY_GOOGLE_REGION = "CONN_PARA_KEY_GOOGLE_REGION"; //$NON-NLS-1$
+
+    public static final String CONN_PARA_KEY_GOOGLE_JARS_BUCKET = "CONN_PARA_KEY_GOOGLE_JARS_BUCKET"; //$NON-NLS-1$
+
+    public static final String CONN_PARA_KEY_DEFINE_PATH_TO_GOOGLE_CREDENTIALS = "CONN_PARA_KEY_DEFINE_PATH_TO_GOOGLE_CREDENTIALS"; //$NON-NLS-1$
+
+    public static final String CONN_PARA_KEY_PATH_TO_GOOGLE_CREDENTIALS = "CONN_PARA_KEY_PATH_TO_GOOGLE_CREDENTIALS"; //$NON-NLS-1$
 }

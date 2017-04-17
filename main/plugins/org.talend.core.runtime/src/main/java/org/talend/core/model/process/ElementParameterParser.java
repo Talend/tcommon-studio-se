@@ -174,9 +174,10 @@ public final class ElementParameterParser {
             return null;
         } else {
             String linkedNodeName = ElementParameterParser.getValue(node, parameterName);
-            java.util.List<? extends INode> allGraphicNodes = ((INode) node).getProcess().getGraphicalNodes();
-            if (allGraphicNodes != null && allGraphicNodes.size() > 0) {
-                for (INode linkedNode : allGraphicNodes) {
+            //when linked node in joblet, can be found in generating node list only
+            java.util.List<? extends INode> allGeneratingNodes = ((INode) node).getProcess().getGeneratingNodes();
+            if (allGeneratingNodes != null && allGeneratingNodes.size() > 0) {
+                for (INode linkedNode : allGeneratingNodes) {
                     if (linkedNode.getUniqueName().equals(linkedNodeName)) {
                         return linkedNode;
                     }

@@ -101,4 +101,31 @@ public final class StringUtilities {
         return sf.toString();
     }
 
+    public static String removeEndingString(String fullStr, String endingStr) {
+        String newStr = fullStr;
+
+        while (0 < newStr.length()) {
+            if (newStr.endsWith(endingStr)) {
+                newStr = newStr.substring(0, newStr.length() - endingStr.length());
+            } else {
+                break;
+            }
+        }
+
+        return newStr;
+    }
+
+    public static String removeStartingString(String fullStr, String startingStr) {
+        String newStr = fullStr;
+
+        while (0 < newStr.length()) {
+            if (newStr.startsWith(startingStr)) {
+                newStr = newStr.substring(startingStr.length());
+            } else {
+                break;
+            }
+        }
+
+        return newStr;
+    }
 }

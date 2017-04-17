@@ -36,6 +36,7 @@ import org.talend.core.model.properties.MigrationTask;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.properties.SpagoBiServer;
 import org.talend.core.model.properties.Status;
+import org.talend.core.model.properties.User;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.Folder;
 import org.talend.core.model.repository.IRepositoryViewObject;
@@ -101,6 +102,8 @@ public interface IProxyRepositoryFactory {
      * @see org.talend.core.model.repository.factories.IRepositoryFactory#createProject(Project projectInfor)
      */
     public abstract Project createProject(Project projectInfor) throws PersistenceException;
+
+    public abstract Project createProject(User authUser, String authPassword, Project projectInfor) throws PersistenceException;
 
     public abstract void saveProject(Project project) throws PersistenceException;
 

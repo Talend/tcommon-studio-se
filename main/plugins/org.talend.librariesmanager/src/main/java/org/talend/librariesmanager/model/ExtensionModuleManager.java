@@ -119,7 +119,9 @@ public class ExtensionModuleManager {
             moduleNeeded.setMrRequired(importType.isMRREQUIRED());
             moduleNeeded.setRequiredIf(importType.getREQUIREDIF());
             moduleNeeded.setShow(importType.isSHOW());
-            moduleNeeded.setMavenUri(importType.getMVN());
+            if (StringUtils.isEmpty(moduleNeeded.getMavenUri())) {
+                moduleNeeded.setMavenUri(importType.getMVN());
+            }
             ModulesNeededProvider.initBundleID(importType, moduleNeeded);
             importNeedsList.add(moduleNeeded);
         }

@@ -311,4 +311,19 @@ public class ReflectionUtils {
     public static Object getByArray(Object array, int index) {
         return Array.get(array, index);
     }
+    
+
+    public static Class getClass(String className, ClassLoader loader) {
+        Class ownerClass = null;
+        try {
+            if (loader != null) {
+                ownerClass = Class.forName(className, true, loader);
+            } else {
+                ownerClass = Class.forName(className);
+            }
+        } catch (Exception e) {
+            log.error("", e);
+        }
+        return ownerClass;
+    }
 }

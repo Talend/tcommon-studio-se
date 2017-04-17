@@ -14,8 +14,10 @@ package org.talend.core.model.general;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.PlatformUI;
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.context.Context;
 import org.talend.core.context.RepositoryContext;
+import org.talend.core.hadoop.IHadoopClusterService;
 import org.talend.core.language.ECodeLanguage;
 import org.talend.core.model.process.IElement;
 import org.talend.core.model.properties.ExchangeUser;
@@ -81,10 +83,16 @@ public class Project {
     public Project(String label) {
         this.project = PropertiesFactory.eINSTANCE.createProject();
         project.setLabel(label);
+        project.setBigData(isBigdataPluginLoaded());
     }
 
     public Project() {
         this.project = PropertiesFactory.eINSTANCE.createProject();
+        this.project.setBigData(isBigdataPluginLoaded());
+    }
+
+    private boolean isBigdataPluginLoaded() {
+        return GlobalServiceRegister.getDefault().isServiceRegistered(IHadoopClusterService.class);
     }
 
     /**
@@ -263,8 +271,9 @@ public class Project {
                 return false;
             }
         } else if (!this.project.equals(other.project)) {
-        	if(this.project.getTechnicalLabel().equals(other.project.getTechnicalLabel()))
-        		return true;
+        	if(this.project.getTechnicalLabel().equals(other.project.getTechnicalLabel())) {
+                return true;
+            }
             return false;
         }
         return true;

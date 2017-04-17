@@ -19,7 +19,6 @@ import org.osgi.service.prefs.BackingStoreException;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.exception.SystemException;
 import org.talend.core.IService;
-import org.talend.core.model.components.IComponent;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.process.INode;
 import org.talend.core.updatesite.IUpdateSiteBean;
@@ -57,4 +56,5 @@ public interface ICoreTisService extends IService {
     
     public boolean isTheSameType(String userName, String password, String adminUrl);
 
+    public void clearCustomLicensePathArg();
 }

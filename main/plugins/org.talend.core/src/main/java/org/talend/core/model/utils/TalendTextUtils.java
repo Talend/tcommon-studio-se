@@ -430,7 +430,7 @@ public class TalendTextUtils {
             	// handle unicode
                 if (result.contains("\\u")) {
                 	for (int indexStart = 0; result.indexOf("\\u", indexStart) >= 0; indexStart = result.indexOf("\\u", indexStart)) {
-                		if (result.indexOf("\\u", indexStart) + 5 <= result.length()) { //$NON-NLS-1$ //$NON-NLS-2$
+                		if (result.indexOf("\\u", indexStart) + 5 <= result.length()) { //$NON-NLS-1$ 
                 			int unicodeStart = result.indexOf("\\u"); //$NON-NLS-1$
                 			int unicodeEnd = unicodeStart + 5;
                 			result = result.substring(0, Math.max(0, unicodeStart))
@@ -601,5 +601,4 @@ public class TalendTextUtils {
             return string + " ---> " + key; //$NON-NLS-1$
         }
     }
-
 }

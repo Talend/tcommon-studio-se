@@ -35,8 +35,6 @@ import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.service.IRemoteService;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryConstants;
-import org.talend.utils.json.JSONException;
-import org.talend.utils.json.JSONObject;
 
 /**
  * created by wchen on 2015年6月16日 Detailled comment
@@ -58,7 +56,7 @@ public class TalendLibsServerManager {
 
     private static String DEFAULT_LIB_SNAPSHOT_REPO = "talend-custom-libs-snapshot";
 
-    public static final String KEY_NEXUS_RUL = "nexusUrl";//$NON-NLS-1$
+    public static final String KEY_NEXUS_RUL = "url";//$NON-NLS-1$
 
     public static final String KEY_NEXUS_USER = "username";//$NON-NLS-1$
 
@@ -242,14 +240,13 @@ public class TalendLibsServerManager {
                         && GlobalServiceRegister.getDefault().isServiceRegistered(IRemoteService.class)) {
                     IRemoteService remoteService = (IRemoteService) GlobalServiceRegister.getDefault()
                             .getService(IRemoteService.class);
-                    JSONObject libServerObject;
-                    libServerObject = remoteService.getLibNexusServer(userName, password, adminUrl);
-                    if (libServerObject != null) {
-                        nexus_url = libServerObject.getString(KEY_NEXUS_RUL);
-                        nexus_user = libServerObject.getString(KEY_NEXUS_USER);
-                        nexus_pass = libServerObject.getString(KEY_NEXUS_PASS);
-                        repositoryId = libServerObject.getString(KEY_CUSTOM_LIB_REPOSITORY);
-                        snapshotRepId = libServerObject.getString(KEY_CUSTOM_LIB_SNAPSHOT_REPOSITORY);
+                    NexusServerBean bean = remoteService.getLibNexusServer(userName, password, adminUrl);
+                    if (bean != null) {
+                        nexus_url = bean.getServer();
+                        nexus_user = bean.getUserName();
+                        nexus_pass = bean.getPassword();
+                        repositoryId = bean.getRepositoryId();
+                        snapshotRepId = bean.getSnapshotRepId();
                     }
                 }
             }
@@ -317,29 +314,21 @@ public class TalendLibsServerManager {
                     && GlobalServiceRegister.getDefault().isServiceRegistered(IRemoteService.class)) {
                 IRemoteService remoteService = (IRemoteService) GlobalServiceRegister.getDefault()
                         .getService(IRemoteService.class);
-                JSONObject updateRepositoryUrl;
-                updateRepositoryUrl = remoteService.getUpdateRepositoryUrl(userName, password, adminUrl);
-                String nexus_url = updateRepositoryUrl.getString(KEY_NEXUS_RUL);
-                String nexus_user = updateRepositoryUrl.getString(KEY_NEXUS_USER);
-                String nexus_pass = updateRepositoryUrl.getString(KEY_NEXUS_PASS);
-                String nexus_repository = updateRepositoryUrl.getString(KEY_SOFTWARE_UPDATE_REPOSITORY);
+                NexusServerBean serverBean = remoteService.getUpdateRepositoryUrl(userName, password, adminUrl);
+                String nexus_url = serverBean.getServer();
+                String nexus_user = serverBean.getUserName();
+                String nexus_pass = serverBean.getPassword();
+                String nexus_repository = serverBean.getRepositoryId();
                 boolean connectionOK = NexusServerUtils.checkConnectionStatus(nexus_url, nexus_repository, nexus_user,
                         nexus_pass);
                 if (!connectionOK) {
                     return null;
                 }
-                NexusServerBean serverBean = new NexusServerBean();
-                serverBean.setServer(nexus_url);
-                serverBean.setUserName(nexus_user);
-                serverBean.setPassword(nexus_pass);
-                serverBean.setRepositoryId(nexus_repository);
                 return serverBean;
             }
         } catch (PersistenceException e) {
             ExceptionHandler.process(e);
         } catch (LoginException e) {
-            ExceptionHandler.process(e);
-        } catch (JSONException e) {
             ExceptionHandler.process(e);
         }
 

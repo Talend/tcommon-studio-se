@@ -76,6 +76,13 @@ public enum EHadoopProperties {
 
     HADOOP_LOGIN,
 
+    GOOGLE_PROJECT_ID,
+
+    GOOGLE_CLUSTER_ID,
+
+    GOOGLE_REGION,
+
+    GOOGLE_JARS_BUCKET,
     ;
 
     public String getName() {

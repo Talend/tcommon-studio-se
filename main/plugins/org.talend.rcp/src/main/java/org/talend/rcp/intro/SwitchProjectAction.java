@@ -20,7 +20,7 @@ import org.eclipse.ui.PlatformUI;
 import org.talend.core.CorePlugin;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.utils.RepositoryManagerHelper;
-import org.talend.core.repository.model.ProxyRepositoryFactory;
+import org.talend.core.services.ICoreTisService;
 import org.talend.designer.business.diagram.custom.IDiagramModelService;
 import org.talend.rcp.i18n.Messages;
 import org.talend.repository.ui.login.LoginHelper;
@@ -72,6 +72,10 @@ public class SwitchProjectAction extends Action {
             }
         }
 
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreTisService.class)) {
+            ICoreTisService tisService = (ICoreTisService) GlobalServiceRegister.getDefault().getService(ICoreTisService.class);
+            tisService.clearCustomLicensePathArg();
+        }
         // in case user uncheck the "Always show login dialog at startup"
         LoginHelper.forceShowLogonDialogNextTime();
         // The prefered method Actually is a restart :

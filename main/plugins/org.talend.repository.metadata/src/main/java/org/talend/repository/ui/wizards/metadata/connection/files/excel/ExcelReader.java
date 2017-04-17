@@ -142,8 +142,13 @@ public class ExcelReader {
                     }
                 } else {
                     xwb = new XSSFWorkbook(clone);
-                    for (XSSFSheet sheet : xwb) {
-                        sheetlist.add(sheet.getSheetName());
+                    for(int i=0;i<xwb.getNumberOfSheets();i++) {
+                        XSSFSheet sheet = xwb.getSheetAt(i);
+                        if(sheet == null) {
+                            continue; 
+                        }
+                        String name = xwb.getSheetName(i);
+                        sheetlist.add(name);
                     }
                 }
                 sheetNamesForXlsx = new String[sheetlist.size()];

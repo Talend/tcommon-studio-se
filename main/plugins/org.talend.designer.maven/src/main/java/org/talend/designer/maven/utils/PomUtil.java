@@ -67,6 +67,7 @@ import org.talend.core.model.utils.JavaResourcesHelper;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.maven.MavenUrlHelper;
+import org.talend.core.runtime.process.TalendProcessArgumentConstant;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.template.MavenTemplateManager;
 import org.talend.designer.maven.tools.repo.LocalRepositoryManager;
@@ -638,5 +639,39 @@ public class PomUtil {
             }
         }
         return projectName;
+    }
+
+    /**
+     * If no deploy version or custom version, will use pom variable. Else, will use the setting version directly.
+     */
+    public static String getJobVersionForPomProperty(Map<String, Object> argumentsMap, Property curProperty) {
+        return getJobVersionForPomProperty(argumentsMap, curProperty, curProperty);
+    }
+
+    public static String getJobVersionForPomProperty(Map<String, Object> argumentsMap, Property jobProperty, Property curProperty) {
+        String deployVersion = null;
+        if (argumentsMap != null) {
+            final Object value = argumentsMap.get(TalendProcessArgumentConstant.ARG_DEPLOY_VERSION);
+            if (value != null && StringUtils.isNotBlank(value.toString())) {
+                deployVersion = value.toString();
+            }
+        }
+        String customVersion = null;
+        if (jobProperty != null && jobProperty.getAdditionalProperties() != null) {
+            final Object value = jobProperty.getAdditionalProperties().get(MavenConstants.NAME_USER_VERSION);
+            if (value != null && StringUtils.isNotBlank(value.toString())) {
+                customVersion = value.toString();
+            }
+        }
+
+        String jobVersion;
+        if (curProperty != null && (deployVersion != null || customVersion != null)) {// have set special version
+            // if set special version, set the literal value of job.
+            jobVersion = curProperty.getVersion();
+        } else {
+            // if no special version, will reuse the project version of pom for variable.
+            jobVersion = "${project.version}";
+        }
+        return jobVersion;
     }
 }

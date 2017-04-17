@@ -2,6 +2,6 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry kind="lib" path="lib/mdm_webservice_tomcat_ce.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/mdm_webservice_tomcat.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

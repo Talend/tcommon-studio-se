@@ -15,4 +15,6 @@ public interface IGitContentService {
     public abstract Collection<Object> frezzeEditors(Collection<String> modifiledFiles) throws Exception;
 
     public abstract void defrezzeEditors(Collection<Object> frezzedEditors) throws Exception;
+
+    public void refresh();
 }
