@@ -375,7 +375,7 @@ public class StringHandling {
 	 * @return
 	 * {example} SUBSTR("This is a test.",1,5) #his i
 	 */
-	public String SUBSTR(String string, int start, Integer length) {
+	public static String SUBSTR(String string, int start, Integer length) {
 
 		if (string == null) {
 			return null;
@@ -410,29 +410,36 @@ public class StringHandling {
 	 * @return
 	 * {example} LTRIM("aatestaa","a") #testaa
 	 */
-	public String LTRIM(String value, String trim_set) {
-		if (value == null) {
-			return null;
-		}
-		int len = value.length();
-		int st = 0;
-		char[] val = value.toCharArray();
-		if (trim_set == null) {
+	public static String LTRIM(String value, String trim_set) {
+        if (value == null) {
+            return null;
+        }
+        int len = value.length();
+        int st = 0;
+        char[] val = value.toCharArray();
+        if (trim_set == null) {
 
-			while ((st < len) && (val[st] <= ' ')) {
-				st++;
-			}
-			return st > 0 ? value.substring(st) : value;
-		} else {
-			while (value.indexOf(trim_set, st) == st) {
-				st += trim_set.length();
-			}
-			return st > 0 ? value.substring(st) : value;
-		}
+            while ((st < len) && (val[st] <= ' ')) {
+                st++;
+            }
+            return st > 0 ? value.substring(st) : value;
+        } else {
+            char[] chars = trim_set.toCharArray();
+            do {
+                for (char c : chars) {
+                    for (; value.indexOf(c, st) == st; st++);
+                }
+                if(st==len){
+                    return "";
+                }
+            }while(trim_set.contains(String.valueOf(value.charAt(st))));
 
-	}
+            return st > 0 ? value.substring(st) : value;
+        }
 
-	public String LTRIM(String value) {
+    }
+
+	public static String LTRIM(String value) {
 		return LTRIM(value, null);
 	}
 	
@@ -443,29 +450,38 @@ public class StringHandling {
 	 * @return
 	 * {example} RTRIM("aatestaa","a") #aatest
 	 */
-	public String RTRIM(String value, String trim_set) {
-		if (value == null) {
-			return null;
-		}
-		int len = value.length();
-		char[] val = value.toCharArray();
-		if (trim_set == null) {
+	public static String RTRIM(String value, String trim_set) {
+        if (value == null) {
+            return null;
+        }
+        int len = value.length();
+        char[] val = value.toCharArray();
+        if (trim_set == null) {
 
-			while ((0 < len) && (val[len - 1] <= ' ')) {
-				len--;
-			}
-			return len < value.length() ? value.substring(0, len) : value;
-		} else {
-			int temp = 0;
-			while (value.lastIndexOf(trim_set) == len - trim_set.length()) {
-				len -= trim_set.length();
-				value = value.substring(0, len);
-			}
-			return value;
+            while ((0 < len) && (val[len - 1] <= ' ')) {
+                len--;
+            }
+            return len < value.length() ? value.substring(0, len) : value;
+        } else {
+            
+            char[] chars = trim_set.toCharArray();
+            
+            do {
+                for (int i = chars.length-1;i>=0;i--) {
+                    for (; value.lastIndexOf(chars[i]) == len-1; len--){
+                        if(len==0){
+                            return "";
+                        }
+                        value = value.substring(0, len-1);
+                        }
+                }
+            }while(trim_set.contains(value.substring(value.length()-1)));
 
-		}
+            return value;
 
-	}
+        }
+
+    }
 
 	public String RTRIM(String value) {
 		return RTRIM(value, null);
@@ -479,33 +495,31 @@ public class StringHandling {
 	 * @return
 	 * {example} LPAD("test",6,"a") #aatest
 	 */
-	public String LPAD(String first_string, int length, String second_string) {
+    public static String LPADA(String first_string, int length, String second_string) {
 
-		if (first_string == null || length < 1) {
-			return null;
-		}
+        if (first_string == null || length < 1) {
+            return null;
+        }
 
-		int OriginLength = first_string.length();
-		if (OriginLength >= length) {
-			return first_string;
-		}
-		for (int i = OriginLength; i < length; i++) {
-			if (second_string == null) {
-				first_string = " " + first_string;
-			} else {
-				first_string = second_string + first_string;
-				if(first_string.length()>length){
-					first_string = first_string.substring(first_string.length()-length);
-				}
-			}
-		}
+        int OriginLength = first_string.length();
+        if (OriginLength >= length) {
+            return first_string;
+        }
 
-		return first_string;
-	}
+        if (second_string == null || "".equals(second_string)) {
+            for (int i = OriginLength; i < length; i++) {
+                first_string = " " + first_string;
+            }
+        } else {
+            for (int len = second_string.length(); len < length - OriginLength; second_string += second_string)
+                len = second_string.length();
 
-	public String LPAD(String first_string, int length) {
-		return LPAD(first_string, length, null);
-	}
+            first_string = second_string.substring(0, length - OriginLength) + first_string;
+
+        }
+
+        return first_string;
+    }
 	
 	/**
 	 * 
@@ -515,7 +529,7 @@ public class StringHandling {
 	 * @return
 	 * {example} RPAD("test",6,"a") #testaa
 	 */
-	public String RPAD(String first_string, int length, String second_string) {
+	public static String RPAD(String first_string, int length, String second_string) {
 
 		if (first_string == null || length < 1) {
 			return null;
@@ -559,7 +573,7 @@ public class StringHandling {
      * {example} new StringHandling<String>.INSTR("This is a test","t",1,2,0) #14
      */
 	
-    public Integer INSTR(String string, String search_value, Integer start, Integer occurrence) {
+    public static Integer INSTR(String string, String search_value, Integer start, Integer occurrence) {
 
         int defaultStart = 1;
         int defaultOccurrence = 1;
@@ -630,7 +644,7 @@ public class StringHandling {
      * {example} new StringHandling<String>.INSTR("This is a test".getBytes(),"t".getBytes(),1,2,0) #14
      */
 
-    public Integer INSTR(byte[] string, byte[] search_value, Integer start, Integer occurrence) {
+    public static Integer INSTR(byte[] string, byte[] search_value, Integer start, Integer occurrence) {
 
         int defaultStart = 1;
         int defaultOccurrence = 1;
@@ -657,20 +671,22 @@ public class StringHandling {
         } else {
             int total = string.length;
             byte[] revers = new byte[total];
-            for (int i = 0; i < total; i++) {
+            byte[] revers_search = new byte[search_value.length];
+            for (int i = 0; i < total; i++)
                 revers[max - i] = string[i];
-            }
+            for (int i = 0; i < search_value.length; i++)
+                revers_search[search_value.length - 1 - i] = search_value[i];
             defaultStart = -defaultStart;
-            int result = byteINSTR(revers, search_value, defaultStart, defaultOccurrence);
+            int result = byteINSTR(revers, revers_search, defaultStart, defaultOccurrence);
             if (result == 0) {
                 return 0;
             }
 
-            return total - result + 1;
+            return total - result + 2 - search_value.length;
         }
     }
 
-    private int byteINSTR(byte[] string, byte[] search_value, int defaultStart, int defaultOccurrence) {
+    private static int byteINSTR(byte[] string, byte[] search_value, int defaultStart, int defaultOccurrence) {
         int max = string.length - 1;
         for (int i = defaultStart - 1; i <= max; i++) {
             /* Look for first character. */
@@ -685,9 +701,10 @@ public class StringHandling {
 
                 /* Found first character, now look at the rest of v2 */
                 if (i <= max) {
-                    int j = i + 1;
-                    int end = j + search_value.length - 1;
-                    for (int k = 1; j < max && k < search_value.length && string[j] == search_value[k]; j++, k++)
+                    int j = i;
+                    int end = i + search_value.length - 1;
+                    for (int k = 1; j + 1 <= max && k < search_value.length
+                            && string[j + 1] == search_value[k]; j++, k++)
                         ;
 
                     if (j == end) {

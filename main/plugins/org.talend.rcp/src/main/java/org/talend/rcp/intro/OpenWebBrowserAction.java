@@ -31,7 +31,7 @@ public class OpenWebBrowserAction implements IIntroAction {
 
     private static final String TUTORIALS_URL = "https://www.talendforge.org/tutorials"; //$NON-NLS-1$
 
-    private static final String FORUMS_URL = "https://www.talendforge.org/forum"; //$NON-NLS-1$
+    private static final String FORUMS_URL = "https://community.talend.com"; //$NON-NLS-1$
 
     private static final String TRAINNING_URL = "https://www.talend.com/training/talend-on-demand-training"; //$NON-NLS-1$
 
@@ -45,7 +45,7 @@ public class OpenWebBrowserAction implements IIntroAction {
 
     private static final String TOS_BD = "https://www.talend.com/download/big-data?qt-product_download_tabs=2#qt-product_download_tabs"; //$NON-NLS-1$
 
-    private static final String TALEND_HELP_CENTER = "https://help.talend.com/display/HOME/Current+Documentation";
+    private static final String TALEND_HELP_CENTER = "https://help.talend.com";
 
     /*
      * (non-Javadoc)

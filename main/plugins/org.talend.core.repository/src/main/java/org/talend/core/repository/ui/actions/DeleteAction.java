@@ -812,7 +812,7 @@ public class DeleteAction extends AContextualAction {
                 Set<Project> refParentProjects = new HashSet<Project>();
                 try {
                     refParentProjects.add(ProjectManager.getInstance().getCurrentProject());
-                    refParentProjects.addAll(ProjectManager.getInstance().getReferencedProjects());
+//                    refParentProjects.addAll(ProjectManager.getInstance().getReferencedProjects());
                     for (Project refP : refParentProjects) {
                         List<IRepositoryViewObject> objList = new ArrayList<IRepositoryViewObject>();
                         List<IRepositoryViewObject> allJobVersions = new ArrayList<IRepositoryViewObject>();
@@ -1024,7 +1024,7 @@ public class DeleteAction extends AContextualAction {
                 Set<Project> refParentProjects = new HashSet<Project>();
                 try {
                     refParentProjects.add(ProjectManager.getInstance().getCurrentProject());
-                    refParentProjects.addAll(ProjectManager.getInstance().getReferencedProjects());
+                   // refParentProjects.addAll(ProjectManager.getInstance().getReferencedProjects());
                     // if (currentProject != null) {
                     // final Project[] readProject = factory.readProject();
                     // for (Project p : readProject) {

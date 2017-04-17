@@ -1854,7 +1854,6 @@ public class DatabaseForm extends AbstractForm {
                     getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_USE_KRB, Boolean.TRUE.toString());
                     getConnection().getParameters().put(ConnParameterKeys.IMPALA_AUTHENTICATION_PRINCIPLA,
                             impalaPrincipalTxt.getText());
-                    urlConnectionStringText.setText(getStringConnection());
                 } else {
                     GridData hadoopData = (GridData) authenticationComForImpala.getLayoutData();
                     hadoopData.exclude = true;
@@ -1866,6 +1865,7 @@ public class DatabaseForm extends AbstractForm {
                     getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_USE_KRB, Boolean.FALSE.toString());
                 }
                 urlConnectionStringText.setText(getStringConnection());
+                modifyFieldValue();
             }
 
         });
@@ -1878,6 +1878,7 @@ public class DatabaseForm extends AbstractForm {
                     getConnection().getParameters().put(ConnParameterKeys.IMPALA_AUTHENTICATION_PRINCIPLA,
                             impalaPrincipalTxt.getText());
                     urlConnectionStringText.setText(getStringConnection());
+                    modifyFieldValue();
                 }
             }
         });
@@ -3492,8 +3493,9 @@ public class DatabaseForm extends AbstractForm {
     
     private List<String> getSybaseVersionDrivers(String dbType) {
         List<String> result = new ArrayList<String>();
-        result.add(EDatabaseVersion4Drivers.SYBASEASE.getVersionDisplay());
         result.add(EDatabaseVersion4Drivers.SYBASEIQ_16.getVersionDisplay());
+        result.add(EDatabaseVersion4Drivers.SYBASEASE.getVersionDisplay());
+        
         return result;
     }
 

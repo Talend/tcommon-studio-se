@@ -192,26 +192,28 @@ public class ExternalModulesInstallDialog extends TitleAreaDialog implements IMo
         tableViewerCreator.getTable().setLayoutData(layoutData);
         tableViewerCreator.getTable().pack();
 
-        Composite footComposite = new Composite(composite, SWT.NONE);
-        layoutData = new GridData(GridData.FILL_HORIZONTAL);
-        footComposite.setLayoutData(layoutData);
-        layout = new GridLayout();
-        layout.numColumns = 2;
-        footComposite.setLayout(layout);
-
-        final Link moreInfor = new Link(footComposite, SWT.NONE);
-        layoutData = new GridData(GridData.FILL_HORIZONTAL);
-        layoutData.widthHint = 200;
-        moreInfor.setText(Messages.getString("ExternalModulesInstallDialog_MoreInfor")); //$NON-NLS-1$
-        moreInfor.setLayoutData(layoutData);
-        moreInfor.addSelectionListener(new SelectionAdapter() {
-
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                //                Program.launch(Messages.getString("download.external.dialog.help.url")); //$NON-NLS-1$
-                openURL(Messages.getString("download.external.dialog.help.url")); //$NON-NLS-1$
-            }
-        });
+        // TUP-17469 remove since can't provide the URL until the documentation is published.then waitting for talend
+        // provide.
+        // Composite footComposite = new Composite(composite, SWT.NONE);
+        // layoutData = new GridData(GridData.FILL_HORIZONTAL);
+        // footComposite.setLayoutData(layoutData);
+        // layout = new GridLayout();
+        // layout.numColumns = 2;
+        // footComposite.setLayout(layout);
+        //
+        // final Link moreInfor = new Link(footComposite, SWT.NONE);
+        // layoutData = new GridData(GridData.FILL_HORIZONTAL);
+        // layoutData.widthHint = 200;
+        //        moreInfor.setText(Messages.getString("ExternalModulesInstallDialog_MoreInfor")); //$NON-NLS-1$
+        // moreInfor.setLayoutData(layoutData);
+        // moreInfor.addSelectionListener(new SelectionAdapter() {
+        //
+        // @Override
+        // public void widgetSelected(SelectionEvent e) {
+        //                //                Program.launch(Messages.getString("download.external.dialog.help.url")); //$NON-NLS-1$
+        //                openURL(Messages.getString("download.external.dialog.help.url")); //$NON-NLS-1$
+        // }
+        // });
         setupColumnSortListener();
         createFooter(composite);
         setTitle(title);
