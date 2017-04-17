@@ -20,11 +20,8 @@ public class TalendStringUtil<T,Y> {
 	 * mismatching datatypes.
 	 */
 	public Y DECODE(T value, Y defaultValue, Map<T, Y> search) {
-		if (search.containsKey(value)) {
-			return search.get(value);
-		} else {
-			return defaultValue;
-		}
+	
+			return search.containsKey(value)?search.get(value):defaultValue;
 	}
 	
 	/**
@@ -37,15 +34,16 @@ public class TalendStringUtil<T,Y> {
 	 * @param searchAndResult : pairs of search-value & result-value. You can enter one or more pairs of values.
 	 * @return result-value if the search finds a matching value. Default-value if the search does not find a matching value.
 	 */
-	public Y DECODE(T value, Y defaultValue, T... searchAndResult) {
-		if (searchAndResult.length % 2 != 0) {
-			throw new IllegalArgumentException("Parameter searchAndResult should be in pair.");
-		}
-		Map<T, Y> search = new HashMap<T, Y>();
-		for (int i = 0; i < searchAndResult.length; i += 2) {
-			search.put(searchAndResult[i], (Y) searchAndResult[i + 1]);
-		}
-		return DECODE(value, defaultValue, search);
-	}
+    @SuppressWarnings("unchecked")
+    public Y DECODE(T value, Y defaultValue, Object... searchAndResult) {
+        if (searchAndResult.length % 2 != 0) {
+            throw new IllegalArgumentException("Parameter searchAndResult should be in pair.");
+        }
+        Map<T, Y> search = new HashMap<T, Y>();
+        for (int i = 0; i < searchAndResult.length; i += 2) {
+            search.put((T)searchAndResult[i], (Y)searchAndResult[i + 1]);
+        }
+        return DECODE(value, defaultValue, search);
+    }
 
 }
