@@ -664,12 +664,39 @@ public abstract class AbstractNode implements INode {
         int nbConn = 0;
 
         while ((nodeConnector == null) && (nbConn < listConnector.size())) {
-            if (listConnector.get(nbConn).getName().equals(connName)) {
+            INodeConnector connector = listConnector.get(nbConn);
+            if (connector.getName().equals(connName) && connector.isShow()) {
                 nodeConnector = listConnector.get(nbConn);
             }
             nbConn++;
         }
         return nodeConnector;
+    }
+
+    @Override
+    public List<INodeConnector> getConnectorsFromType(final EConnectionType connType) {
+        INodeConnector nodeConnector = null;
+        List<INodeConnector> listConnectors = new ArrayList<INodeConnector>();
+        int nbConn = 0;
+
+        EConnectionType testedType;
+
+        if (connType.hasConnectionCategory(IConnectionCategory.FLOW)) {
+            testedType = EConnectionType.FLOW_MAIN;
+        } else {
+            testedType = connType;
+        }
+
+        while (nbConn < listConnector.size()) {
+            INodeConnector connector = listConnector.get(nbConn);
+            if (connector.getDefaultConnectionType() == testedType && connector.isShow()) {
+                nodeConnector = listConnector.get(nbConn);
+                listConnectors.add(nodeConnector);
+            }
+            nbConn++;
+        }
+
+        return listConnectors;
     }
 
     /*

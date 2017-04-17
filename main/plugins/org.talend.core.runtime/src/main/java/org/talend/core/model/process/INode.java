@@ -194,6 +194,8 @@ public interface INode extends IElement {
      */
     public INodeConnector getConnectorFromName(final String connector);
 
+    public List<INodeConnector> getConnectorsFromType(final EConnectionType connType);
+
     public void reloadComponent(IComponent component, Map<String, Object> parameters, boolean isUpdate);
 
     public INode getDesignSubjobStartNode();
