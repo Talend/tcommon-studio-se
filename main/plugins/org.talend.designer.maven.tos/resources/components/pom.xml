@@ -68,14 +68,14 @@
 						</goals>
 						<configuration>
 							<extraArtifacts>
-								<extraArtifact>org.talend.components:components-salesforce-runtime:0.18.0-SNAPSHOT:jar</extraArtifact>
-								<extraArtifact>org.talend.components:components-jira:0.18.0-SNAPSHOT:jar</extraArtifact>
-								<extraArtifact>org.talend.components:components-splunk:0.18.0-SNAPSHOT:jar</extraArtifact>
-								<extraArtifact>org.talend.components:components-snowflake:0.18.0-SNAPSHOT:jar</extraArtifact>
-								<extraArtifact>org.talend.components:components-azurestorage:0.18.0-SNAPSHOT:jar</extraArtifact>
-								<extraArtifact>org.talend.components:netsuite-runtime_2014_2:0.18.0-SNAPSHOT:jar</extraArtifact>
-								<extraArtifact>org.talend.components:netsuite-runtime_2016_2:0.18.0-SNAPSHOT:jar</extraArtifact>
-								<extraArtifact>org.talend.components:components-marketo:0.18.0-SNAPSHOT:jar</extraArtifact>
+								<extraArtifact>org.talend.components:components-salesforce-runtime:${components.version}:jar</extraArtifact>
+								<extraArtifact>org.talend.components:components-jira:${components.version}:jar</extraArtifact>
+								<extraArtifact>org.talend.components:components-splunk:${components.version}:jar</extraArtifact>
+								<extraArtifact>org.talend.components:components-snowflake:${components.version}:jar</extraArtifact>
+								<extraArtifact>org.talend.components:components-azurestorage:${components.version}:jar</extraArtifact>
+								<extraArtifact>org.talend.components:netsuite-runtime_2014_2:${components.version}:jar</extraArtifact>
+								<extraArtifact>org.talend.components:netsuite-runtime_2016_2:${components.version}:jar</extraArtifact>
+								<extraArtifact>org.talend.components:components-marketo:${components.version}:jar</extraArtifact>
 							</extraArtifacts>
 							<!-- <pomIncludes> <pomInclude>*/pom.xml</pomInclude> </pomIncludes> -->
 						</configuration>
