@@ -74,6 +74,8 @@ import org.talend.core.model.metadata.builder.connection.XmlXPathLoopDescriptor;
 import org.talend.core.model.process.IContext;
 import org.talend.core.model.process.IContextManager;
 import org.talend.core.model.process.IContextParameter;
+import org.talend.core.model.process.IElementParameter;
+import org.talend.core.model.process.INode;
 import org.talend.core.model.process.IProcess;
 import org.talend.core.model.process.IProcess2;
 import org.talend.core.model.properties.ConnectionItem;
@@ -1268,6 +1270,17 @@ public abstract class RepositoryUpdateManager {
                     if (isAddColumn) {
                         manager.setAddColumn(true);
                         isAddColumn = false;
+                    }
+                }
+                
+                //Added TDQ-13437: when the job contains tMultiPattern, and update the REPOSITORY_PROPERTY_TYPE value to the current modified pattern id.
+                for(INode node: process2.getGraphicalNodes()){
+                    if(node.getElementName().startsWith("tMultiPattern") && parameter instanceof Item){
+                        String id = ((Item)parameter).getProperty().getId();
+                        IElementParameter repoProperty = node.getElementParameter("REPOSITORY_PROPERTY_TYPE");
+                        if(repoProperty!=null){
+                            repoProperty.setValue(id);
+                        }
                     }
                 }
             }
