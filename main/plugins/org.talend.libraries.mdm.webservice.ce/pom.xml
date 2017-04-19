@@ -29,6 +29,7 @@
                   <groupId>org.talend.mdm</groupId>
                   <artifactId>org.talend.mdm.webservice</artifactId>
                   <classifier>ce</classifier>
+                  <version>${project.version}</version>
                   <overWrite>true</overWrite>
                   <destFileName>mdm_webservice_tomcat.jar</destFileName>
                 </artifactItem>
