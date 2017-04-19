@@ -249,7 +249,7 @@ public class MissingJarBundleFileWrapper extends BundleFileWrapper {
                     }// else no nothification required.
                 }
             }// else //no lib folder found so return null
-        } catch (URISyntaxException e) {
+        } catch (URISyntaxException | RuntimeException e) {
             MissingJarServices
                     .getLogService()
                     .log(LogService.LOG_ERROR,
