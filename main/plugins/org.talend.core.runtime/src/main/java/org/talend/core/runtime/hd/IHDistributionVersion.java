@@ -30,4 +30,6 @@ public interface IHDistributionVersion {
     String getDefaultConfig(String... keys);
 
     List<ModuleNeeded> getModulesNeeded();
+
+    boolean doSupportOozie();
 }
