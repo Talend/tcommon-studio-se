@@ -39,6 +39,7 @@ import org.eclipse.m2e.core.MavenPlugin;
 import org.eclipse.m2e.core.embedder.IMaven;
 import org.osgi.util.tracker.ServiceTracker;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.commons.utils.VersionUtils;
 import org.talend.core.runtime.projectsetting.IProjectSettingTemplateConstants;
 import org.talend.designer.maven.DesignerMavenPlugin;
 import org.talend.designer.maven.repository.DefaultMavenRepositoryProvider;
@@ -177,7 +178,7 @@ public class M2eUserSettingForTalendLoginTask extends AbstractLoginTask {
 
             // add one marker to check to sync or not.
             File repoFolder = new File(maven.getLocalRepositoryPath());
-            File markerFile = new File(repoFolder, ".syncMarker"); //$NON-NLS-1$
+            File markerFile = new File(repoFolder, ".syncMarker" + VersionUtils.getTalendVersion()); //$NON-NLS-1$
             if (!markerFile.exists()) {
                 if (!repoFolder.exists()) {
                     repoFolder.mkdirs();
