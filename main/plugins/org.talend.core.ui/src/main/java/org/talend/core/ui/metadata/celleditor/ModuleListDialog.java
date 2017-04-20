@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IPath;
@@ -53,6 +54,7 @@ import org.talend.commons.utils.io.FilesUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
 import org.talend.core.model.general.ILibrariesService;
+import org.talend.core.model.general.INexusService;
 import org.talend.core.model.process.IElementParameter;
 import org.talend.core.ui.i18n.Messages;
 
@@ -62,6 +64,8 @@ import org.talend.core.ui.i18n.Messages;
 public class ModuleListDialog extends Dialog {
 
     private String selecteModule;
+    
+    private String version;
 
     private Button innerBtn, extBtn, addBtn, delBtn;;
 
@@ -69,7 +73,7 @@ public class ModuleListDialog extends Dialog {
 
     private LabelledFileField selectField;
 
-    private boolean isInner;
+    private boolean isInner,selectChanged;
 
     private boolean isJDBCCreate = false;
 
@@ -312,6 +316,19 @@ public class ModuleListDialog extends Dialog {
     public String getSelecteModule() {
         return this.selecteModule;
     }
+    
+    public void setSelecteModule(String val) {
+    	selectChanged = true;
+        this.selecteModule = val;
+    }
+    
+    public boolean isSelectChanged(){
+    	return this.selectChanged;
+    }
+    
+    public String getSelectedVersion() {
+        return this.version;
+    }
 
     public boolean isInner() {
         return isInner;
@@ -325,7 +342,7 @@ public class ModuleListDialog extends Dialog {
                 selecteModuleArray = jarsViewer.getList().getSelection();
             } else {
                 selecteModuleArray = null;
-                selecteModule = jarsViewer.getList().getSelection()[0];
+                setSelecteModule(jarsViewer.getList().getSelection()[0]);
             }
         } else {
             List<String> pathList = new ArrayList<String>();
@@ -352,10 +369,20 @@ public class ModuleListDialog extends Dialog {
                                 ILibrariesService.class);
                         service.deployLibrary(path.toFile().toURI().toURL());
                     }
+                    
+                    if(param.getElement().getElementName().startsWith("cConfig")){
+                        if (GlobalServiceRegister.getDefault().isServiceRegistered(INexusService.class)) {
+                        	INexusService service = (INexusService) GlobalServiceRegister.getDefault().getService(
+                        			INexusService.class);
+                            Map metadata = service.upload(path.toFile().toURI().toURL());
+                            version = (String) metadata.get("Versioning.LastUpdated");
+                        }
+                    }
                 } catch (IOException ee) {
                     ExceptionHandler.process(ee);
                 }
-                selecteModule = lastSegment;
+                
+                setSelecteModule(lastSegment);
                 jarNames[i] = lastSegment;
             }
             if (isJDBCCreate) {

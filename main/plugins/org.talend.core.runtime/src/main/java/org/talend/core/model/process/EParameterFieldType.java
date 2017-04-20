@@ -109,6 +109,8 @@ public enum EParameterFieldType {
 
     GROUPING_CAMPAIGN_CHOOSER,// htyin added for DQ Matching components
     MULTI_PATTERN,//yyin added TDQ-13437
+    BUTTON_SYNC,
+    BUTTON_CHECK,
     ;
 
     public String getName() {
