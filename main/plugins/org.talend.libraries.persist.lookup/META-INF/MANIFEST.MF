@@ -18,3 +18,5 @@ Export-Package: org.talend.commons.utils.data.map,
  org.talend.designer.components.thash.io.hashimpl
 Bundle-Vendor: .Talend SA.
 Bundle-ActivationPolicy: lazy
+Require-Bundle: org.talend.librariesmanager,
+ org.talend.libraries.jboss
