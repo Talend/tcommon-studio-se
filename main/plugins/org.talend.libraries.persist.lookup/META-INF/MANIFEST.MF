@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: org.talend.persist.lookup
-Bundle-SymbolicName: org.talend.persist.lookup
+Bundle-Name: org.talend.libraries.persist.lookup
+Bundle-SymbolicName: org.talend.libraries.persist.lookup
 Bundle-Version: 6.4.0.qualifier
 Bundle-ClassPath: lib/advancedPersistentLookupLib-1.0.jar,
  .
@@ -18,5 +18,3 @@ Export-Package: org.talend.commons.utils.data.map,
  org.talend.designer.components.thash.io.hashimpl
 Bundle-Vendor: .Talend SA.
 Bundle-ActivationPolicy: lazy
-Require-Bundle: org.talend.librariesmanager,
- org.talend.libraries.jboss
