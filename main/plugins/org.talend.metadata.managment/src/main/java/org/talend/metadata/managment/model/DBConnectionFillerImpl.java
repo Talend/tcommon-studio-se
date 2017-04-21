@@ -1458,6 +1458,15 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                         int column_size = getIntFromResultSet(columns, GetColumn.COLUMN_SIZE.name());
                         column.setLength(column_size);
                         decimalDigits = getIntFromResultSet(columns, GetColumn.DECIMAL_DIGITS.name());
+//                        int precision = columns.getMetaData().getPrecision(9);
+//                        columns.getMetaData().getColumnName(9);
+                        if(decimalDigits == 0 && columnPattern==null && typeName.equalsIgnoreCase("DECIMAL")){
+//                            decimalDigits = columns.getMetaData().getPrecision(9);
+                            ResultSet result = dbJDBCMetadata.getColumns(catalogName, schemaPattern, tablePattern, columnName);
+                            while (result.next()) {
+                                decimalDigits = getIntFromResultSet(result, GetColumn.DECIMAL_DIGITS.name());
+                            }
+                        }
                         column.setPrecision(decimalDigits);
                         // Teradata SQL Mode no need this column
                         if (!MetadataConnectionUtils.isTeradataSQLMode(iMetadataConnection)) {
