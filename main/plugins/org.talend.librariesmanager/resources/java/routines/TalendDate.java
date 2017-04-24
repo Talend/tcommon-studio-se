@@ -1279,7 +1279,7 @@ public class TalendDate {
      * 
      */
     public static Date TO_DATE(String string, String format) throws ParseException {
-		String defaultFormat = "MM/DD/yyyy HH:mm:ss.sss";
+		String defaultFormat = "MM/dd/yyyy HH:mm:ss.SSS";
 		if (StringHandling.isVacant(string)) {
 			return null;
 		}
