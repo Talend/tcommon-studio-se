@@ -29,6 +29,7 @@ import org.talend.core.repository.utils.XmiResourceManager;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.viewer.content.VisitResourceHelper;
+import org.talend.utils.string.StringUtilities;
 
 /**
  * created by nrousseau on Jun 26, 2016 Detailled comment
@@ -134,6 +135,13 @@ public abstract class ResourceCollectorVisitor implements IResourceDeltaVisitor 
                 pathToRefresh.add(resourceNode);
                 ((RepositoryNode)topNode).setInitialized(false);
                 topNode.getChildren().clear();
+                try {
+                    String key = resource.getFullPath().toString();
+                    key = StringUtilities.removeStartingString(key, "/"); //$NON-NLS-1$
+                    ProjectRepositoryNode.getInstance().removeCache(key);
+                } catch (Exception e) {
+                    ExceptionHandler.process(e);
+                }
                 return false;
             } else if (delta.getKind() == IResourceDelta.CHANGED) {
                 // file modified, need to refresh the current file
