@@ -9,4 +9,16 @@
   </parent>
   <artifactId>org.talend.libraries.persist.lookup</artifactId>
   <packaging>eclipse-plugin</packaging>
+  <dependencies>
+  	<dependency>
+  		<groupId>org.talend.studio</groupId>
+  		<artifactId>org.talend.librariesmanager</artifactId>
+  		<type>eclipse-plugin</type>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.talend.studio</groupId>
+  		<artifactId>org.talend.libraries.jboss</artifactId>
+  		<type>eclipse-plugin</type>
+  	</dependency>
+  </dependencies>
 </project>
