@@ -8,9 +8,9 @@
 			<dbType type="DATE" ignoreLen="true" ignorePre="true" />
 			<dbType type="DECIMAL" defaultLength="20" defaultPrecision="10" ignoreLen="false" ignorePre="false"/>
 			<dbType type="DOUBLE" ignoreLen="true" ignorePre="true" />
-			<dbType type="FLOAT" ignoreLen="true" ignorePre="true" />
+			<dbType type="FLOAT" ignoreLen="true" ignorePre="false"/>
 			<dbType type="INTEGER" ignoreLen="true" ignorePre="true" />
-			<dbType type="NUMERIC" ignoreLen="true" ignorePre="true" />
+			<dbType type="NUMERIC" defaultLength="20" defaultPrecision="10" ignoreLen="false" ignorePre="false"/>
 			<dbType type="REAL" ignoreLen="true" ignorePre="true"/>
 			<dbType type="SMALLINT" ignoreLen="true" ignorePre="true" />
 			<dbType type="TINYINT" ignoreLen="true" ignorePre="true" />
