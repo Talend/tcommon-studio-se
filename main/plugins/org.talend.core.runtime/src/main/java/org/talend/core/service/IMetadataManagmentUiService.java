@@ -27,6 +27,8 @@ public interface IMetadataManagmentUiService extends IService {
 
     public ContextType getContextTypeForContextMode(Connection connection);
 
+    public ContextType getContextTypeForContextMode(Connection connection, String selectedContext, boolean defaultContext);
+
     public String getOriginalValue(ContextType contextType, final String value);
 
     public void openRepositoryContextWizard(RepositoryNode repositoryNode);

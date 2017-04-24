@@ -34,17 +34,17 @@ import org.talend.utils.json.JSONObject;
 
 /**
  * created by ycbai on 2013-10-24 Detailled comment
- * 
+ *
  */
 public class HadoopRepositoryUtil {
 
     /**
      * DOC ycbai Comment method "getHadoopPropertiesJsonStr".
-     * 
+     *
      * <p>
      * Get the json string type of hadoop properties from list type.
      * </p>
-     * 
+     *
      * @param properties
      * @return
      * @throws JSONException
@@ -77,11 +77,11 @@ public class HadoopRepositoryUtil {
 
     /**
      * DOC ycbai Comment method "getHadoopPropertiesList".
-     * 
+     *
      * <p>
      * Get the list type of hadoop properties from json string.
      * </p>
-     * 
+     *
      * @param propertiesJsonStr
      * @param includeQuotes
      * @return
@@ -123,12 +123,12 @@ public class HadoopRepositoryUtil {
 
     /**
      * DOC ycbai Comment method "getHadoopPropertiesFullList".
-     * 
+     *
      * <p>
      * Get the full list type of hadoop properties (with the parent properties of the hadoop cluster it belongs) from
      * json string.
      * </p>
-     * 
+     *
      * @param connection
      * @param propertiesJsonStr
      * @param includeQuotes
@@ -184,7 +184,7 @@ public class HadoopRepositoryUtil {
         }
         ContextType contextType = null;
         if (mmUIService != null) {
-            contextType = mmUIService.getContextTypeForContextMode(connection);
+            contextType = mmUIService.getContextTypeForContextMode(connection, connection.getContextName(), false);
         }
         if (useOriginalValue && contextType != null) {
             properties = getHadoopPropertiesWithOriginalValue(propertiesJsonStr, contextType, includeQuotes);
@@ -320,11 +320,11 @@ public class HadoopRepositoryUtil {
 
     /**
      * DOC ycbai Comment method "getHadoopPropertiesWithOriginalValue".
-     * 
+     *
      * <p>
      * Get hadoop properties list which convert conext value to original value if needed.
      * </p>
-     * 
+     *
      * @param propertiesStrings
      * @param contextType
      * @param includeQuotes

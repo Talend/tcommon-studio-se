@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.designer.runprocess;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -90,9 +91,9 @@ import org.talend.repository.model.IRepositoryService;
 
 /**
  * DOC nrousseau class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend-code-templates.xml 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- * 
+ *
  */
 public class ProcessorUtilities {
 
@@ -117,6 +118,8 @@ public class ProcessorUtilities {
     private static boolean codeModified;
 
     private static boolean needContextInCurrentGeneration = true;
+
+    private static boolean exportAsOSGI = false;
 
     private static IDesignerCoreService designerCoreService = (IDesignerCoreService) GlobalServiceRegister.getDefault()
             .getService(IDesignerCoreService.class);
@@ -152,7 +155,7 @@ public class ProcessorUtilities {
 
     /**
      * Process need to be loaded to use this function.
-     * 
+     *
      * @param process
      * @param selectedContext
      * @return
@@ -215,6 +218,7 @@ public class ProcessorUtilities {
         codeLocation = null;
         libraryPath = null;
         exportConfig = false;
+        exportAsOSGI = false;
         exportTimeStamp = null;
     }
 
@@ -232,7 +236,7 @@ public class ProcessorUtilities {
 
     /**
      * Process need to be loaded first to use this function.
-     * 
+     *
      * @param process
      * @param context
      * @return
@@ -245,7 +249,7 @@ public class ProcessorUtilities {
 
     /**
      * Process need to be loaded first to use this function.
-     * 
+     *
      * @param process
      * @param context
      * @return
@@ -557,7 +561,7 @@ public class ProcessorUtilities {
     }
 
     /**
-     * 
+     *
      * This method is used when export job or joblet , check if one of the database component node use dynamic metadata
      */
     private static void checkMetadataDynamic(IProcess currentProcess, JobInfo jobInfo) {
@@ -929,7 +933,7 @@ public class ProcessorUtilities {
 
     /**
      * DOC nrousseau Comment method "cloneJobInfo".
-     * 
+     *
      * @param jobInfo
      * @return
      */
@@ -1121,7 +1125,7 @@ public class ProcessorUtilities {
     /**
      * Return true if we can find a context name from the child job that matches the selected context name. see bug
      * 0003862: Export job with the flag "Apply to children" if the child don't have the same context fails.
-     * 
+     *
      * @param processItem
      * @param selectedContextName
      * @return
@@ -1140,7 +1144,7 @@ public class ProcessorUtilities {
 
     /**
      * This method is used to reset the tRunJob component's context,see feature 1625.
-     * 
+     *
      * @param jobInfo
      * @param currentProcess
      * @param selectedContextName
@@ -1163,7 +1167,7 @@ public class ProcessorUtilities {
 
     /**
      * This function will generate the code of the process and all of this sub process.
-     * 
+     *
      * @param processName
      * @param contextName
      * @param version null if no specific version required
@@ -1184,7 +1188,7 @@ public class ProcessorUtilities {
 
     /**
      * This function will generate the code of the process and all of this sub process.
-     * 
+     *
      * @param processName
      * @param contextName
      * @param version null if no specific version required
@@ -1432,7 +1436,7 @@ public class ProcessorUtilities {
     }
 
     /**
-     * 
+     *
      * @deprecated seems never use this one
      */
     @Deprecated
@@ -1442,7 +1446,7 @@ public class ProcessorUtilities {
     }
 
     /**
-     * 
+     *
      * @deprecated seems never use this one
      */
     @Deprecated
@@ -1452,7 +1456,7 @@ public class ProcessorUtilities {
     }
 
     /**
-     * 
+     *
      * Seems only work for jet code generator.
      */
     public static String[] getCommandLine(String targetPlatform, boolean externalUse, String processId, String contextName,
@@ -1479,7 +1483,7 @@ public class ProcessorUtilities {
     }
 
     /**
-     * 
+     *
      * @deprecated seems never use this one
      */
     @Deprecated
@@ -1491,7 +1495,7 @@ public class ProcessorUtilities {
     }
 
     /**
-     * 
+     *
      * @deprecated seems never use this one
      */
     @Deprecated
@@ -1511,7 +1515,7 @@ public class ProcessorUtilities {
     }
 
     /**
-     * 
+     *
      * @deprecated seems never use this one
      */
     @Deprecated
@@ -1527,7 +1531,7 @@ public class ProcessorUtilities {
     }
 
     /**
-     * 
+     *
      * @deprecated seems never use this one
      */
     @Deprecated
@@ -1556,7 +1560,7 @@ public class ProcessorUtilities {
     }
 
     /**
-     * 
+     *
      * Seems only work for jet code generator.
      */
     public static String[] getMainCommand(String processName, String processVersion, String contextName, int statisticPort,
@@ -1597,9 +1601,9 @@ public class ProcessorUtilities {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "getAllVersionProcessList".
-     * 
+     *
      * @param processId
      * @return
      */
@@ -1727,7 +1731,7 @@ public class ProcessorUtilities {
 
     /**
      * DOC xtan. for bug:15299
-     * 
+     *
      * @param jobId
      * @return
      */
@@ -1745,7 +1749,7 @@ public class ProcessorUtilities {
 
     /**
      * DOC xtan. for bug:15299
-     * 
+     *
      * @param jobId
      * @return
      */
@@ -1786,6 +1790,23 @@ public class ProcessorUtilities {
             }
         }
         return null;
+    }
+
+    public static File getJavaProjectLibFolder() {
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
+            IRunProcessService processService = (IRunProcessService) GlobalServiceRegister.getDefault()
+                    .getService(IRunProcessService.class);
+            return processService.getJavaProjectLibFolder();
+        }
+        return null;
+    }
+
+    public static boolean isExportAsOSGI() {
+        return exportAsOSGI;
+    }
+
+    public static void setExportAsOSGI(boolean toOSGI) {
+        exportAsOSGI = toOSGI;
     }
 
 }

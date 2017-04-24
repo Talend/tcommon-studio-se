@@ -13,7 +13,9 @@
 package org.talend.designer.maven.ui.setting.preference;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Properties;
 
 import org.apache.maven.cli.MavenCli;
 import org.apache.maven.settings.Profile;
@@ -39,6 +42,7 @@ import org.eclipse.m2e.core.MavenPlugin;
 import org.eclipse.m2e.core.embedder.IMaven;
 import org.osgi.util.tracker.ServiceTracker;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.commons.utils.VersionUtils;
 import org.talend.core.runtime.projectsetting.IProjectSettingTemplateConstants;
 import org.talend.designer.maven.DesignerMavenPlugin;
 import org.talend.designer.maven.repository.DefaultMavenRepositoryProvider;
@@ -56,6 +60,8 @@ import org.talend.utils.io.FilesUtils;
 public class M2eUserSettingForTalendLoginTask extends AbstractLoginTask {
 
     public static final String MAVEN_REPO_CONFIG = "maven.repository"; //$NON-NLS-1$
+
+    public static final String VERSION_KEY = "version"; //$NON-NLS-1$
 
     private ServiceTracker proxyTracker;
 
@@ -178,12 +184,38 @@ public class M2eUserSettingForTalendLoginTask extends AbstractLoginTask {
             // add one marker to check to sync or not.
             File repoFolder = new File(maven.getLocalRepositoryPath());
             File markerFile = new File(repoFolder, ".syncMarker"); //$NON-NLS-1$
-            if (!markerFile.exists()) {
-                if (!repoFolder.exists()) {
-                    repoFolder.mkdirs();
+            Properties prop = new Properties();
+            FileInputStream inStream = null;
+            FileOutputStream outputStream = null;
+            try {
+                boolean defaultMvnRepsynchronized = true;
+                if (!markerFile.exists()) {
+                    if (!repoFolder.exists()) {
+                        repoFolder.mkdirs();
+                    }
+                    defaultMvnRepsynchronized = false;
+                } else {
+                    inStream = new FileInputStream(markerFile);
+                    prop.load(inStream);
+                    if (!VersionUtils.getTalendVersion().equals(prop.getProperty(VERSION_KEY))) {
+                        defaultMvnRepsynchronized = false;
+                    }
                 }
-                markerFile.createNewFile();
-                DefaultMavenRepositoryProvider.sync(repoFolder.getParentFile());
+                if (!defaultMvnRepsynchronized) {
+                    DefaultMavenRepositoryProvider.sync(repoFolder.getParentFile());
+                    prop.put(VERSION_KEY, VersionUtils.getTalendVersion());
+                    outputStream = new FileOutputStream(markerFile);
+                    prop.store(outputStream, null);
+                }
+            } catch (IOException e) {
+                ExceptionHandler.process(e);
+            } finally {
+                if (inStream != null) {
+                    inStream.close();
+                }
+                if (outputStream != null) {
+                    outputStream.close();
+                }
             }
 
         } catch (Exception e) {

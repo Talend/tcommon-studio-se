@@ -62,9 +62,18 @@ public class ModuleListCellEditor extends DialogCellEditor {
         defaultLabel.setFont(cell.getFont());
         defaultLabel.setBackground(cell.getBackground());
         defaultLabel.addFocusListener(new FocusAdapter() {
+        	
+        	private String memo="";
+        	
+        	@Override
+        	public void focusGained(FocusEvent e) {
+        		memo = defaultLabel.getText();
+        		super.focusGained(e);
+        	}
 
             @Override
             public void focusLost(FocusEvent e) {
+            	
                 String newValue = defaultLabel.getText();
                 if (newValue == null || newValue.trim().equals("")) { //$NON-NLS-1$
                     defaultLabel.setText(oldValue);
@@ -74,7 +83,7 @@ public class ModuleListCellEditor extends DialogCellEditor {
                     return;
                 }
                 boolean newValidState = isCorrect(newValue);
-                if (newValidState) {
+                if (newValidState && !(newValue.equals(memo))) {
                     doSetValue(newValue);
                     setModuleValue(newValue);
                 }
@@ -155,15 +164,15 @@ public class ModuleListCellEditor extends DialogCellEditor {
         ModuleListDialog dialog = new ModuleListDialog(cellEditorWindow.getShell(), value, this.param, false);
         if (dialog.open() == Window.OK) {
             String selecteModule = dialog.getSelecteModule();
-            if (selecteModule != null && (value == null || !value.equals(selecteModule))) {
-                setModuleValue(selecteModule);
+            if (selecteModule != null && (value == null || !value.equals(selecteModule) || dialog.isSelectChanged())) {
+            	setModuleValue(selecteModule,dialog.getSelectedVersion());
                 return selecteModule;
             }
         }
         return null;
     }
-
-    private void setModuleValue(String newValue) {
+    
+    private void setModuleValue(String newValue,String newVersion) {
         int index = 0;
         if (getTableViewer() != null) {
             if (getTableViewer().getTable() != null && !getTableViewer().getTable().isDisposed())
@@ -181,10 +190,19 @@ public class ModuleListCellEditor extends DialogCellEditor {
         }
         //
         executeCommand(new ModelChangeCommand(tableParam, param.getName(), newValue, index));
+
+        if(newVersion!=null){
+        	executeCommand(new ModelChangeCommand(tableParam, "JAR_VERSION", newVersion, index));
+        }
+        
         oldValue = newValue;
         if (getTableViewer() != null) {
             getTableViewer().refresh(true);
         }
+    }
+
+    private void setModuleValue(String newValue) {
+    	setModuleValue(newValue, null);
     }
 
     /**

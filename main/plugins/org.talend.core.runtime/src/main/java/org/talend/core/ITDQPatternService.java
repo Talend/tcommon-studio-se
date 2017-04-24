@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.core;
 
+import org.eclipse.swt.widgets.Control;
 import org.talend.core.model.process.IElement;
 import org.talend.core.model.process.IElementParameter;
 import org.talend.core.model.properties.Item;
@@ -52,4 +53,10 @@ public interface ITDQPatternService extends ITDQService {
     public boolean isPattern(Object parameter);
     
     public boolean isSameName(Item pattern, String patternName);
+    
+    public String[] selectPattern(Control cellEditorWindow,IElementParameter dbType);
+    
+    public boolean isSinglePatternNode(IElement node);
+    
+    public boolean isMultiPatternNode(IElement node);
 }

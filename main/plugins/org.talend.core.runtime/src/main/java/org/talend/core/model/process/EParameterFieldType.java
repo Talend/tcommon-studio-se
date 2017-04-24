@@ -108,6 +108,9 @@ public enum EParameterFieldType {
     CAMPAIGN_CHOOSER, // pwlin added for TDS components
 
     GROUPING_CAMPAIGN_CHOOSER,// htyin added for DQ Matching components
+    MULTI_PATTERN,//yyin added TDQ-13437
+    SYNC_NEXUS_BUTTON,
+    CHECK_NEXUS_BUTTON,
     ;
 
     public String getName() {

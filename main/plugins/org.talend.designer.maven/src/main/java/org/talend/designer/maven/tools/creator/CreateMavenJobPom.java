@@ -309,7 +309,10 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
                 && isOptionChecked(TalendProcessArgumentConstant.ARG_NEED_LOG4J_LEVEL)) {
             String log4jLevel = getOptionString(TalendProcessArgumentConstant.ARG_LOG4J_LEVEL);
             if (StringUtils.isNotEmpty(log4jLevel)) {
-                String log4jLevelPart = TalendProcessArgumentConstant.CMD_ARG_LOG4J_LEVEL + log4jLevel;
+                String log4jLevelPart = log4jLevel;
+                if (!log4jLevel.startsWith(TalendProcessArgumentConstant.CMD_ARG_LOG4J_LEVEL)) {
+                    log4jLevelPart = TalendProcessArgumentConstant.CMD_ARG_LOG4J_LEVEL + log4jLevel;
+                }
                 addScriptAddition(windowsScriptAdditionValue, log4jLevelPart);
                 addScriptAddition(unixScriptAdditionValue, log4jLevelPart);
             }

@@ -901,4 +901,10 @@ public class TestFakeNode extends Element implements INode {
         return null;
     }
 
+    @Override
+    public List<INodeConnector> getConnectorsFromType(final EConnectionType connType) {
+
+        return null;
+    }
+
 }
