@@ -370,7 +370,7 @@ public class ModuleListDialog extends Dialog {
                         service.deployLibrary(path.toFile().toURI().toURL());
                     }
                     
-                    if(param.getElement().getElementName().startsWith("cConfig")){
+                    if(param != null && param.getElement().getElementName().startsWith("cConfig")){
                         if (GlobalServiceRegister.getDefault().isServiceRegistered(INexusService.class)) {
                         	INexusService service = (INexusService) GlobalServiceRegister.getDefault().getService(
                         			INexusService.class);
