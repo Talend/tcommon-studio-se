@@ -134,6 +134,7 @@
 					<dbType type="VARCHAR" default="true" />
 					<dbType type="NVARCHAR" />
 					<dbType type="NCHAR" />
+					<dbType type="CHAR" />
 					<dbType type="NTEXT" />
 					<dbType type="TEXT" />
 				</talendType>
