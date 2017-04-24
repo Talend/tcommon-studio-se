@@ -1275,7 +1275,7 @@ public abstract class RepositoryUpdateManager {
                 
                 //Added TDQ-13437: when the job contains tMultiPattern, and update the REPOSITORY_PROPERTY_TYPE value to the current modified pattern id.
                 for(INode node: process2.getGraphicalNodes()){
-                    if(node.getElementName().startsWith("tMultiPattern") && parameter instanceof Item){
+                    if(node.getComponent().getName().startsWith("tMultiPattern") && parameter instanceof Item){
                         String id = ((Item)parameter).getProperty().getId();
                         IElementParameter repoProperty = node.getElementParameter("REPOSITORY_PROPERTY_TYPE");
                         if(repoProperty!=null){
