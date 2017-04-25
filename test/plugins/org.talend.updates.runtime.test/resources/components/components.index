@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<components>
+	<component name="JIRA" version="0.18.0" type="" file="org.talend.components.jira_0.18.0.zip">
+		<description>Contain lib for dependencies</description>
+	</component>
+	<component name="JIRA" version="0.18.1" type="" file="org.talend.components.jira_0.18.1.zip">
+		<description>Fix some bugs</description>
+	</component>
+	<component name="JIRA" version="0.18.2" type="" file="org.talend.components.jira_0.18.2.zip">
+		<description>Support the m2 repository for dependencies</description>
+	</component>
+	<component name="MyJira" version="0.16.0" type="" file="components-myjira-0.16.0-SNAPSHOT-updatesite.zip">
+		<description>My first custom new component framework for JIRA</description>
+	</component>
+</components>

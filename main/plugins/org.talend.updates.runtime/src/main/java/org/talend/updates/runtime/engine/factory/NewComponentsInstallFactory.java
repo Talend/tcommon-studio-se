@@ -22,13 +22,16 @@ import java.util.Set;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.equinox.p2.core.ProvisionException;
+import org.talend.commons.CommonsPlugin;
 import org.talend.commons.runtime.helper.LocalComponentInstallHelper;
 import org.talend.commons.runtime.service.ComponentsInstallComponent;
 import org.talend.commons.utils.VersionUtils;
 import org.talend.commons.utils.resource.UpdatesHelper;
+import org.talend.updates.runtime.engine.component.RemoteComponentsTransport;
 import org.talend.updates.runtime.i18n.Messages;
 import org.talend.updates.runtime.model.ExtraFeature;
 import org.talend.updates.runtime.model.FeatureRepositories;
@@ -41,6 +44,8 @@ import org.talend.utils.io.FilesUtils;
  * DOC ggu class global comment. Detailled comment
  */
 public class NewComponentsInstallFactory extends AbstractExtraUpdatesFactory {
+
+    public static final String FILE_COMPONENTS_INDEX = "components.index";
 
     // private static Logger log = Logger.getLogger(NewComponentsInstallFactory.class);
 
@@ -60,6 +65,15 @@ public class NewComponentsInstallFactory extends AbstractExtraUpdatesFactory {
             mustBeInstalled = false;
         }
 
+        @Override
+        public EnumSet<UpdateSiteLocationType> getUpdateSiteCompatibleTypes() {
+            if (System.getProperties().containsKey("components.updatesite.url")) { // support default url
+                return EnumSet.of(UpdateSiteLocationType.DEFAULT_REPO, UpdateSiteLocationType.REMOTE_REPO);
+            } else {
+                return EnumSet.of(UpdateSiteLocationType.REMOTE_REPO);
+            }
+        }
+
         File getWorkFolder() {
             if (workFolder == null) {
                 workFolder = org.talend.utils.files.FileUtils.createTmpFolder("NewComponents", "");//$NON-NLS-1$  //$NON-NLS-2$
@@ -73,12 +87,6 @@ public class NewComponentsInstallFactory extends AbstractExtraUpdatesFactory {
         }
 
         @Override
-        public EnumSet<UpdateSiteLocationType> getUpdateSiteCompatibleTypes() {
-            // return super.getUpdateSiteCompatibleTypes();
-            return EnumSet.of(UpdateSiteLocationType.LOCAL_FOLDER);
-        }
-
-        @Override
         public IStatus install(IProgressMonitor progress, List<URI> allRepoUris) throws P2ExtraFeatureException {
             if (progress == null) {
                 progress = new NullProgressMonitor();
@@ -86,26 +94,47 @@ public class NewComponentsInstallFactory extends AbstractExtraUpdatesFactory {
             SubMonitor subMonitor = SubMonitor.convert(progress, 100);
             try {
                 for (URI uri : allRepoUris) {
+                    if (subMonitor.isCanceled()) {
+                        throw new OperationCanceledException();
+                    }
                     final String host = uri.getHost();
                     if (host != null) { // remote site?
                         // return super.install(progress, allRepoUris); // install
+                        prepareForSite(progress, uri);
                     } else { // local? jar:file:/xxx/yy.zip!/
-                        if (subMonitor.isCanceled()) {
-                            return new Status(IStatus.CANCEL, Messages.getPlugiId(), "Cancel"); //$NON-NLS-1$
-                        }
                         prepareForLocalURI(uri);
                     }
                 }
                 subMonitor.worked(20);
                 if (subMonitor.isCanceled()) {
-                    return new Status(IStatus.CANCEL, Messages.getPlugiId(), "Cancel"); //$NON-NLS-1$
+                    throw new OperationCanceledException();
                 }
                 return doInstallFromFolder();
-            } catch (IOException e) {
-                throw new P2ExtraFeatureException(new ProvisionException("Can't copy file", e));
+            } catch (OperationCanceledException e) {
+                return new Status(IStatus.CANCEL, Messages.getPlugiId(), "Cancel"); //$NON-NLS-1$
+            } catch (Exception e) {
+                throw new P2ExtraFeatureException(new ProvisionException("Install failure", e));
             } finally {
                 subMonitor.setWorkRemaining(10);
                 afterInstall();
+            }
+        }
+
+        void prepareForSite(IProgressMonitor monitor, URI base) throws Exception {
+            RemoteComponentsTransport compsTransport = new RemoteComponentsTransport(getWorkFolder());
+            compsTransport.download(monitor, base);
+
+            final List<String> failedDownloadComponents = compsTransport.getFailedDownloadComponents();
+            if (!failedDownloadComponents.isEmpty()) {
+                StringBuffer failedCompStr = new StringBuffer();
+                for (int i = 0; i < failedDownloadComponents.size(); i++) {
+                    failedCompStr.append(failedDownloadComponents.get(i));
+                    if (i < failedDownloadComponents.size() - 1) {
+                        failedCompStr.append(',');
+                        failedCompStr.append(' ');
+                    }
+                }
+                throw new IOException("Download the following components failure: " + failedCompStr.toString());
             }
         }
 
@@ -176,7 +205,9 @@ public class NewComponentsInstallFactory extends AbstractExtraUpdatesFactory {
         @Override
         protected void afterInstall() {
             if (getWorkFolder() != null) {
-                FilesUtils.deleteFolder(getWorkFolder(), true);
+                if (!CommonsPlugin.isDebugMode()) { // if debug, keep the files.
+                    FilesUtils.deleteFolder(getWorkFolder(), true);
+                }
             }
         }
 
