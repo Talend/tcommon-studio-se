@@ -42,7 +42,7 @@ public interface ITDQPatternService extends ITDQService {
      */
     public void overridePatternList(IElementParameter dbTypeParam, IElementParameter patternParam);
 
-    public void selectPattern(IElementParameter typeParam, IElement elem);
+    public boolean selectPattern(IElementParameter typeParam, IElement elem);
 
  //   public boolean updateJobForPattern(IElement node, Item item);
     
