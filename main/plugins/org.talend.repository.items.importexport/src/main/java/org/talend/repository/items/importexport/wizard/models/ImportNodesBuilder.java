@@ -27,6 +27,7 @@ import org.eclipse.core.runtime.Path;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.PluginChecker;
 import org.talend.core.hadoop.IHadoopClusterService;
+import org.talend.core.hadoop.repository.HadoopRepositoryUtil;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.Project;
 import org.talend.core.model.repository.ERepositoryObjectType;
@@ -53,10 +54,7 @@ public class ImportNodesBuilder {
     private static IHadoopClusterService hadoopClusterService = null;
 
     static {
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IHadoopClusterService.class)) {
-            hadoopClusterService = (IHadoopClusterService) GlobalServiceRegister.getDefault().getService(
-                    IHadoopClusterService.class);
-        }
+        hadoopClusterService = HadoopRepositoryUtil.getHadoopClusterService();
     }
 
     public List<ProjectImportNode> getProjectNodes() {

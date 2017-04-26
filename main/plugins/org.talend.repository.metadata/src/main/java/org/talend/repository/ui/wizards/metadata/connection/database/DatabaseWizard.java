@@ -50,6 +50,7 @@ import org.talend.core.database.conn.ConnParameterKeys;
 import org.talend.core.database.conn.version.EDatabaseVersion4Drivers;
 import org.talend.core.hadoop.IHadoopClusterService;
 import org.talend.core.hadoop.IHadoopDistributionService;
+import org.talend.core.hadoop.repository.HadoopRepositoryUtil;
 import org.talend.core.model.metadata.IMetadataConnection;
 import org.talend.core.model.metadata.builder.ConvertionHelper;
 import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
@@ -749,11 +750,7 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
     }
 
     private void refreshHadoopCluster() {
-        IHadoopClusterService hadoopClusterService = null;
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IHadoopClusterService.class)) {
-            hadoopClusterService = (IHadoopClusterService) GlobalServiceRegister.getDefault().getService(
-                    IHadoopClusterService.class);
-        }
+        IHadoopClusterService hadoopClusterService = HadoopRepositoryUtil.getHadoopClusterService();
         if (hadoopClusterService != null) {
             String hcId = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HADOOP_CLUSTER_ID);
             if (hcId != null) {

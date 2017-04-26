@@ -16,9 +16,9 @@ import java.net.MalformedURLException;
 import java.util.Set;
 
 import org.talend.commons.exception.ExceptionHandler;
-import org.talend.core.GlobalServiceRegister;
 import org.talend.core.classloader.ClassLoaderFactory;
 import org.talend.core.classloader.DynamicClassLoader;
+import org.talend.core.hadoop.repository.HadoopRepositoryUtil;
 
 /**
  * 
@@ -193,11 +193,7 @@ public class HadoopClassLoaderFactory2 {
     private static DynamicClassLoader addExtraJars(String relatedClusterId, EHadoopCategory category, DynamicClassLoader loader,
             boolean useKrb) throws MalformedURLException {
         DynamicClassLoader cll = loader;
-        IHadoopClusterService hadoopClusterService = null;
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IHadoopClusterService.class)) {
-            hadoopClusterService = (IHadoopClusterService) GlobalServiceRegister.getDefault().getService(
-                    IHadoopClusterService.class);
-        }
+        IHadoopClusterService hadoopClusterService = HadoopRepositoryUtil.getHadoopClusterService();
         if (hadoopClusterService != null) {
             String[] addedJars = null;
             String[] excludedJars = null;

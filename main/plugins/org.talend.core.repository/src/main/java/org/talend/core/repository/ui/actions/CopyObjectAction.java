@@ -43,6 +43,7 @@ import org.talend.core.GlobalServiceRegister;
 import org.talend.core.IESBService;
 import org.talend.core.PluginChecker;
 import org.talend.core.hadoop.IHadoopClusterService;
+import org.talend.core.hadoop.repository.HadoopRepositoryUtil;
 import org.talend.core.model.properties.ConnectionItem;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.JobletProcessItem;
@@ -61,7 +62,6 @@ import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.designer.codegen.ICodeGeneratorService;
 import org.talend.repository.RepositoryWorkUnit;
 import org.talend.repository.model.IProxyRepositoryFactory;
-import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.IRepositoryNode.ENodeType;
 import org.talend.repository.model.IRepositoryNode.EProperties;
 import org.talend.repository.model.RepositoryNode;
@@ -480,21 +480,12 @@ public class CopyObjectAction {
     }
 
     private boolean isHadoopClusterItem(Item item) {
-        IHadoopClusterService hadoopClusterService = null;
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IHadoopClusterService.class)) {
-            hadoopClusterService = (IHadoopClusterService) GlobalServiceRegister.getDefault().getService(
-                    IHadoopClusterService.class);
-        }
-
+        IHadoopClusterService hadoopClusterService = HadoopRepositoryUtil.getHadoopClusterService();
         return hadoopClusterService != null && hadoopClusterService.isHadoopClusterItem(item);
     }
 
     public void copyHadoopClusterItem(final Item item, final IPath path) throws PersistenceException, BusinessException {
-        IHadoopClusterService hadoopClusterService = null;
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IHadoopClusterService.class)) {
-            hadoopClusterService = (IHadoopClusterService) GlobalServiceRegister.getDefault().getService(
-                    IHadoopClusterService.class);
-        }
+        IHadoopClusterService hadoopClusterService = HadoopRepositoryUtil.getHadoopClusterService();
         if (hadoopClusterService != null) {
             hadoopClusterService.copyHadoopCluster(item, path);
         }

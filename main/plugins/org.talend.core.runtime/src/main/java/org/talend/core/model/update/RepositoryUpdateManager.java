@@ -510,24 +510,24 @@ public abstract class RepositoryUpdateManager {
         if (checkHadoopRelevances(object)) {
             return true;
         }
-        
-        if(checkForPattern(object)){
+
+        if (checkForPattern(object)) {
             return true;
         }
 
         return false;
     }
 
-    //Added TDQ-11688 20170309 yyin
+    // Added TDQ-11688 20170309 yyin
     private boolean checkForPattern(Object object) {
         ITDQPatternService service = null;
-        if(GlobalServiceRegister.getDefault().isServiceRegistered(ITDQPatternService.class)){
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ITDQPatternService.class)) {
             service = (ITDQPatternService) GlobalServiceRegister.getDefault().getService(ITDQPatternService.class);
         }
         if (service != null) {
             return service.isPattern(parameter);
         }
-        
+
         return false;
     }
 
@@ -556,11 +556,7 @@ public abstract class RepositoryUpdateManager {
         if (resultParam != null) {
             Connection parentConnection = getConnection(parameter);
             Connection childConnection = getConnection(resultParam);
-            IHadoopClusterService hadoopClusterService = null;
-            if (GlobalServiceRegister.getDefault().isServiceRegistered(IHadoopClusterService.class)) {
-                hadoopClusterService = (IHadoopClusterService) GlobalServiceRegister.getDefault().getService(
-                        IHadoopClusterService.class);
-            }
+            IHadoopClusterService hadoopClusterService = HadoopRepositoryUtil.getHadoopClusterService();
             if (hadoopClusterService != null) {
                 return hadoopClusterService.containedByCluster(parentConnection, childConnection);
             }
@@ -1272,13 +1268,14 @@ public abstract class RepositoryUpdateManager {
                         isAddColumn = false;
                     }
                 }
-                
-                //Added TDQ-13437: when the job contains tMultiPattern, and update the REPOSITORY_PROPERTY_TYPE value to the current modified pattern id.
-                for(INode node: process2.getGraphicalNodes()){
-                    if(node.getComponent().getName().startsWith("tMultiPattern") && parameter instanceof Item){
-                        String id = ((Item)parameter).getProperty().getId();
+
+                // Added TDQ-13437: when the job contains tMultiPattern, and update the REPOSITORY_PROPERTY_TYPE value
+                // to the current modified pattern id.
+                for (INode node : process2.getGraphicalNodes()) {
+                    if (node.getComponent().getName().startsWith("tMultiPattern") && parameter instanceof Item) {
+                        String id = ((Item) parameter).getProperty().getId();
                         IElementParameter repoProperty = node.getElementParameter("REPOSITORY_PROPERTY_TYPE");
-                        if(repoProperty!=null){
+                        if (repoProperty != null) {
                             repoProperty.setValue(id);
                         }
                     }
@@ -1337,8 +1334,8 @@ public abstract class RepositoryUpdateManager {
             boolean isSpark = false;
             boolean isSparkStreaming = false;
             if (GlobalServiceRegister.getDefault().isServiceRegistered(ISparkJobletProviderService.class)) {
-                ISparkJobletProviderService sparkJobletService = (ISparkJobletProviderService) GlobalServiceRegister
-                        .getDefault().getService(ISparkJobletProviderService.class);
+                ISparkJobletProviderService sparkJobletService = (ISparkJobletProviderService) GlobalServiceRegister.getDefault()
+                        .getService(ISparkJobletProviderService.class);
                 if (sparkJobletService != null && sparkJobletService.isSparkJobletItem(property.getItem())) {
                     isSpark = true;
                 }
@@ -1346,18 +1343,19 @@ public abstract class RepositoryUpdateManager {
             if (GlobalServiceRegister.getDefault().isServiceRegistered(ISparkStreamingJobletProviderService.class)) {
                 ISparkStreamingJobletProviderService sparkStreamingJobletService = (ISparkStreamingJobletProviderService) GlobalServiceRegister
                         .getDefault().getService(ISparkStreamingJobletProviderService.class);
-                if (sparkStreamingJobletService != null && sparkStreamingJobletService.isSparkStreamingJobletItem(property.getItem())) {
+                if (sparkStreamingJobletService != null
+                        && sparkStreamingJobletService.isSparkStreamingJobletItem(property.getItem())) {
                     isSparkStreaming = true;
                 }
             }
-            if(isSpark){
+            if (isSpark) {
                 prefix = UpdatesConstants.SPARK_JOBLET;
-            }else if(isSparkStreaming){
+            } else if (isSparkStreaming) {
                 prefix = UpdatesConstants.SPARK_STREAMING_JOBLET;
-            }else{
+            } else {
                 prefix = UpdatesConstants.JOBLET;
             }
-            
+
         }
         Item item = property.getItem();
         if (item != null && prefix.isEmpty() && GlobalServiceRegister.getDefault().isServiceRegistered(IMRProcessService.class)) {
@@ -2398,7 +2396,7 @@ public abstract class RepositoryUpdateManager {
         this.deletedOrReselectTablesMap = deletedOrReselectTablesMap;
     }
 
-    //Added TDQ-11688 20170309 yyin
+    // Added TDQ-11688 20170309 yyin
     public static boolean updateDQPattern(Item patternItem) {
         List<IRepositoryViewObject> updateList = new ArrayList<IRepositoryViewObject>();
         IProxyRepositoryFactory factory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
@@ -2417,6 +2415,6 @@ public abstract class RepositoryUpdateManager {
 
         };
         return repositoryUpdateManager.doWork(true, false);
-    }    
+    }
 
 }

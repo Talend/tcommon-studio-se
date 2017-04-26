@@ -17,11 +17,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.eclipse.emf.common.util.EMap;
-import org.talend.core.GlobalServiceRegister;
 import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.database.conn.ConnParameterKeys;
 import org.talend.core.hadoop.IHadoopClusterService;
 import org.talend.core.hadoop.creator.AbstractHadoopConnectionCreator;
+import org.talend.core.hadoop.repository.HadoopRepositoryUtil;
 import org.talend.core.model.metadata.MetadataTalendType;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
@@ -38,11 +38,7 @@ public abstract class AbstractHadoopDBConnectionCreator extends AbstractHadoopCo
         if (relativeHadoopClusterId == null || paramsMap == null) {
             return;
         }
-        IHadoopClusterService hadoopClusterService = null;
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IHadoopClusterService.class)) {
-            hadoopClusterService = (IHadoopClusterService) GlobalServiceRegister.getDefault().getService(
-                    IHadoopClusterService.class);
-        }
+        IHadoopClusterService hadoopClusterService = HadoopRepositoryUtil.getHadoopClusterService();
         if (hadoopClusterService != null) {
             Map<String, String> dbParameters = hadoopClusterService.getHadoopDbParameters(relativeHadoopClusterId);
             Iterator<Entry<String, String>> iter = dbParameters.entrySet().iterator();

@@ -24,7 +24,6 @@ import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.EMap;
 import org.talend.commons.ui.utils.PathUtils;
-import org.talend.core.GlobalServiceRegister;
 import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.database.conn.ConnParameterKeys;
 import org.talend.core.database.conn.DatabaseConnStrUtil;
@@ -1206,11 +1205,7 @@ public final class DBConnectionContextUtils {
 
     private static ContextType getHadoopClusterContextType(DatabaseConnection dbConn, boolean useDefaultContext) {
         ContextType hadoopClusterContextType = null;
-        IHadoopClusterService hadoopClusterService = null;
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IHadoopClusterService.class)) {
-            hadoopClusterService = (IHadoopClusterService) GlobalServiceRegister.getDefault().getService(
-                    IHadoopClusterService.class);
-        }
+        IHadoopClusterService hadoopClusterService = HadoopRepositoryUtil.getHadoopClusterService();
         if (hadoopClusterService != null) {
             EMap<String, String> parameters = dbConn.getParameters();
             if (parameters != null && parameters.size() > 0) {

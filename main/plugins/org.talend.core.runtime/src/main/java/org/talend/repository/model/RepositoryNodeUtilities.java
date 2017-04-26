@@ -31,6 +31,7 @@ import org.talend.commons.ui.gmf.util.DisplayUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.PluginChecker;
 import org.talend.core.hadoop.IHadoopClusterService;
+import org.talend.core.hadoop.repository.HadoopRepositoryUtil;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.metadata.builder.connection.AbstractMetadataObject;
 import org.talend.core.model.metadata.builder.connection.SAPBWTable;
@@ -68,10 +69,7 @@ public class RepositoryNodeUtilities {
 
     private static IHadoopClusterService hadoopClusterService = null;
     static {
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IHadoopClusterService.class)) {
-            hadoopClusterService = (IHadoopClusterService) GlobalServiceRegister.getDefault().getService(
-                    IHadoopClusterService.class);
-        }
+        hadoopClusterService = HadoopRepositoryUtil.getHadoopClusterService();
     }
 
     public static IPath getPath(final IRepositoryNode node) {
@@ -794,14 +792,15 @@ public class RepositoryNodeUtilities {
         return null;
 
     }
-    
+
     public static void checkItemDependencies(Collection<Item> selectedItems, List<IRepositoryViewObject> repositoryObjects,
-        boolean includeSystemItems, boolean includeReferenceProjectItems) {
-        Boolean needRebuild = CoreRuntimePlugin.getInstance().getDesignerCoreService().getPreferenceStoreBooleanValue(IRepositoryPrefConstants.REBUILD_RELATIONSHIPS);
+            boolean includeSystemItems, boolean includeReferenceProjectItems) {
+        Boolean needRebuild = CoreRuntimePlugin.getInstance().getDesignerCoreService()
+                .getPreferenceStoreBooleanValue(IRepositoryPrefConstants.REBUILD_RELATIONSHIPS);
         for (Item item : selectedItems) {
             RepositoryNodeUtilities.checkItemDependencies(item, repositoryObjects, false, true, needRebuild);
         }
-        if(needRebuild && selectedItems.size()>0){
+        if (needRebuild && selectedItems.size() > 0) {
             RelationshipItemBuilder.getInstance().saveRelations();
         }
     }
@@ -809,20 +808,20 @@ public class RepositoryNodeUtilities {
     public static void checkItemDependencies(Item item, List<IRepositoryViewObject> repositoryObjects) {
         checkItemDependencies(item, repositoryObjects, true, true);
     }
-    
-    public static void checkItemDependencies(Item item, List<IRepositoryViewObject> repositoryObjects,
-                        boolean includeSystemItems, boolean includeReferenceProjectItems) {
-            checkItemDependencies(item, repositoryObjects, includeSystemItems, includeReferenceProjectItems,false);
-     }
 
     public static void checkItemDependencies(Item item, List<IRepositoryViewObject> repositoryObjects,
-                        boolean includeSystemItems, boolean includeReferenceProjectItems,boolean needRebuild) {
+            boolean includeSystemItems, boolean includeReferenceProjectItems) {
+        checkItemDependencies(item, repositoryObjects, includeSystemItems, includeReferenceProjectItems, false);
+    }
+
+    public static void checkItemDependencies(Item item, List<IRepositoryViewObject> repositoryObjects,
+            boolean includeSystemItems, boolean includeReferenceProjectItems, boolean needRebuild) {
         if (item == null) {
             return;
         }
         IProxyRepositoryFactory factory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
         RelationshipItemBuilder builder = RelationshipItemBuilder.getInstance();
-        if (needRebuild){
+        if (needRebuild) {
             RelationshipItemBuilder.getInstance().addOrUpdateItem(item, true);
         }
         List<Relation> relations = builder.getItemsRelatedTo(item.getProperty().getId(), item.getProperty().getVersion(),
@@ -856,7 +855,7 @@ public class RepositoryNodeUtilities {
                         obj = factory.getLastVersion(ProjectManager.getInstance().getCurrentProject(), id);
                     }
                 }
-                checkItemDependencies(obj, repositoryObjects, includeSystemItems, includeReferenceProjectItems,needRebuild);
+                checkItemDependencies(obj, repositoryObjects, includeSystemItems, includeReferenceProjectItems, needRebuild);
             }
 
             // fix for TDI-19548 , and should be removed after implement add connection and context relationship to
@@ -872,7 +871,8 @@ public class RepositoryNodeUtilities {
                         } else {
                             object = factory.getLastVersion(ProjectManager.getInstance().getCurrentProject(), id);
                         }
-                        checkItemDependencies(object, repositoryObjects, includeSystemItems, includeReferenceProjectItems,needRebuild);
+                        checkItemDependencies(object, repositoryObjects, includeSystemItems, includeReferenceProjectItems,
+                                needRebuild);
                     }
                 }
             }
@@ -883,12 +883,12 @@ public class RepositoryNodeUtilities {
     }
 
     private static void checkItemDependencies(IRepositoryViewObject obj, List<IRepositoryViewObject> repositoryObjects,
-            boolean includeSystemItems, boolean includeReferenceProjectItems,boolean needRebuild) {
+            boolean includeSystemItems, boolean includeReferenceProjectItems, boolean needRebuild) {
         if (obj != null && !repositoryObjects.contains(obj)) {
             repositoryObjects.add(obj);
             checkAllVersionLatest(repositoryObjects, obj, includeSystemItems, includeReferenceProjectItems);
             checkItemDependencies(obj.getProperty().getItem(), repositoryObjects, includeSystemItems,
-                    includeReferenceProjectItems,needRebuild);
+                    includeReferenceProjectItems, needRebuild);
         }
     }
 

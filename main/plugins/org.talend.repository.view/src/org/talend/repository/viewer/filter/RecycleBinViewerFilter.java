@@ -17,8 +17,8 @@ import java.util.Set;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.ui.navigator.INavigatorContentService;
-import org.talend.core.GlobalServiceRegister;
 import org.talend.core.hadoop.IHadoopClusterService;
+import org.talend.core.hadoop.repository.HadoopRepositoryUtil;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IExtendedRepositoryNodeHandler;
@@ -105,11 +105,7 @@ public class RecycleBinViewerFilter extends ViewerFilter {
      */
     private ERepositoryObjectType findRealContextType(final RepositoryNode node) {
         // Check hadoop subitems...
-        IHadoopClusterService hadoopClusterService = null;
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IHadoopClusterService.class)) {
-            hadoopClusterService = (IHadoopClusterService) GlobalServiceRegister.getDefault().getService(
-                    IHadoopClusterService.class);
-        }
+        IHadoopClusterService hadoopClusterService = HadoopRepositoryUtil.getHadoopClusterService();
         if (hadoopClusterService != null && hadoopClusterService.isHadoopSubnode(node)) {
             return hadoopClusterService.getHadoopClusterType();
         }

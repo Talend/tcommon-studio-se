@@ -28,6 +28,7 @@ import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ITDQItemService;
 import org.talend.core.PluginChecker;
 import org.talend.core.hadoop.IHadoopClusterService;
+import org.talend.core.hadoop.repository.HadoopRepositoryUtil;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.JobletProcessItem;
 import org.talend.core.model.properties.ProcessItem;
@@ -71,10 +72,7 @@ public final class ProcessUtils {
 
     private static IHadoopClusterService hadoopClusterService = null;
     static {
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IHadoopClusterService.class)) {
-            hadoopClusterService = (IHadoopClusterService) GlobalServiceRegister.getDefault().getService(
-                    IHadoopClusterService.class);
-        }
+        hadoopClusterService = HadoopRepositoryUtil.getHadoopClusterService();
     }
 
     public static void clearFakeProcesses() {

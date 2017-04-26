@@ -58,6 +58,7 @@ import org.talend.core.IESBService;
 import org.talend.core.ITDQRepositoryService;
 import org.talend.core.PluginChecker;
 import org.talend.core.hadoop.IHadoopClusterService;
+import org.talend.core.hadoop.repository.HadoopRepositoryUtil;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.properties.ConnectionItem;
@@ -87,7 +88,6 @@ import org.talend.designer.core.ICamelDesignerCoreService;
 import org.talend.designer.core.convert.IProcessConvertService;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
-import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.IRepositoryNode.ENodeType;
 import org.talend.repository.model.IRepositoryNode.EProperties;
 import org.talend.repository.model.IRepositoryService;
@@ -235,7 +235,7 @@ public class DuplicateAction extends AContextualAction {
             jobNameValue = ""; //$NON-NLS-1$
         }
         //
-        if (((item instanceof ProcessItem)||(item instanceof JobletProcessItem)) && PluginChecker.isTIS()) {
+        if (((item instanceof ProcessItem) || (item instanceof JobletProcessItem)) && PluginChecker.isTIS()) {
             DuplicateDialog jobNewNameDialog = new DuplicateDialog(sourceNode,
                     Messages.getString("DuplicateAction.input.title.v2"), //$NON-NLS-1$
                     Messages.getString("DuplicateAction.input.message"), jobNameValue, new IInputValidator() { //$NON-NLS-1$
@@ -284,9 +284,9 @@ public class DuplicateAction extends AContextualAction {
                     } catch (Exception e) {
                         CommonExceptionHandler.process(e);
                     }
-                } 
+                }
                 ConvertJobsUtil.updateFramework(newCreatedItem, frameworkNewValue);
-                
+
                 if (!isNewItemCreated) {
                     // save the modifications
                     IWorkspaceRunnable runnable = new IWorkspaceRunnable() {
@@ -449,11 +449,11 @@ public class DuplicateAction extends AContextualAction {
                         List<IRepositoryViewObject> listExistingObjects = repositoryFactory.getAll(ERepositoryObjectType.JOBLET,
                                 true, false);
                         if (PluginChecker.isStormPluginLoader()) {
-                            listExistingObjects
-                                    .addAll(repositoryFactory.getAll(ERepositoryObjectType.SPARK_JOBLET, true, false));
+                            listExistingObjects.addAll(repositoryFactory.getAll(ERepositoryObjectType.SPARK_JOBLET, true, false));
                         }
                         if (PluginChecker.isMapReducePluginLoader()) {
-                            listExistingObjects.addAll(repositoryFactory.getAll(ERepositoryObjectType.SPARK_STREAMING_JOBLET, true, false));
+                            listExistingObjects.addAll(repositoryFactory.getAll(ERepositoryObjectType.SPARK_STREAMING_JOBLET,
+                                    true, false));
                         }
 
                         Property property = ((RepositoryNode) selectionInClipboard.toArray()[0]).getObject().getProperty();
@@ -465,7 +465,7 @@ public class DuplicateAction extends AContextualAction {
                     } catch (PersistenceException e1) {
                         return Messages.getString("DuplicateAction.ItemExistsError"); //$NON-NLS-1$
                     }
-                }else {
+                } else {
                     boolean isTestContainer = false;
                     List<IRepositoryViewObject> testObjectList = new ArrayList<IRepositoryViewObject>();
                     if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
@@ -776,7 +776,7 @@ public class DuplicateAction extends AContextualAction {
     }
 
     private void duplicateSingleVersionItem(final Item item, final IPath path, final String newName,
-            final CopyObjectAction copyObjectAction,final String frameworkNewValue) {
+            final CopyObjectAction copyObjectAction, final String frameworkNewValue) {
         final IWorkspaceRunnable op = new IWorkspaceRunnable() {
 
             @Override
@@ -918,22 +918,13 @@ public class DuplicateAction extends AContextualAction {
     }
 
     private boolean isHadoopClusterItem(Item item) {
-        IHadoopClusterService hadoopClusterService = null;
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IHadoopClusterService.class)) {
-            hadoopClusterService = (IHadoopClusterService) GlobalServiceRegister.getDefault().getService(
-                    IHadoopClusterService.class);
-        }
-
+        IHadoopClusterService hadoopClusterService = HadoopRepositoryUtil.getHadoopClusterService();
         return hadoopClusterService != null && hadoopClusterService.isHadoopClusterItem(item);
     }
 
     public void copyHadoopClusterItem(final Item item, final IPath path, String newName) throws PersistenceException,
             BusinessException {
-        IHadoopClusterService hadoopClusterService = null;
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IHadoopClusterService.class)) {
-            hadoopClusterService = (IHadoopClusterService) GlobalServiceRegister.getDefault().getService(
-                    IHadoopClusterService.class);
-        }
+        IHadoopClusterService hadoopClusterService = HadoopRepositoryUtil.getHadoopClusterService();
         if (hadoopClusterService != null) {
             hadoopClusterService.copyHadoopCluster(item, path, newName);
         }

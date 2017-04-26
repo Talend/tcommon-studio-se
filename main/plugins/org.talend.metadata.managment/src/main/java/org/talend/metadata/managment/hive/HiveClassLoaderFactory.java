@@ -24,6 +24,7 @@ import org.talend.core.classloader.DynamicClassLoader;
 import org.talend.core.database.conn.ConnParameterKeys;
 import org.talend.core.hadoop.EHadoopConfigurationJars;
 import org.talend.core.hadoop.IHadoopClusterService;
+import org.talend.core.hadoop.repository.HadoopRepositoryUtil;
 import org.talend.core.model.metadata.IMetadataConnection;
 import org.talend.core.runtime.hd.IHDistribution;
 import org.talend.core.runtime.hd.hive.HiveMetadataHelper;
@@ -160,11 +161,7 @@ public class HiveClassLoaderFactory {
     }
 
     private static String getCustomConfsJarName(String clusterId) {
-        IHadoopClusterService hadoopClusterService = null;
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IHadoopClusterService.class)) {
-            hadoopClusterService = (IHadoopClusterService) GlobalServiceRegister.getDefault().getService(
-                    IHadoopClusterService.class);
-        }
+        IHadoopClusterService hadoopClusterService = HadoopRepositoryUtil.getHadoopClusterService();
         if (hadoopClusterService != null) {
             return hadoopClusterService.getCustomConfsJarName(clusterId);
         }

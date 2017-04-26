@@ -15,8 +15,8 @@ package org.talend.core.repository.ui.utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.talend.core.GlobalServiceRegister;
 import org.talend.core.hadoop.IHadoopClusterService;
+import org.talend.core.hadoop.repository.HadoopRepositoryUtil;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.utils.RepositoryManagerHelper;
 import org.talend.core.repository.model.ProjectRepositoryNode;
@@ -131,11 +131,7 @@ public final class RecombineRepositoryNodeUtil {
     }
 
     private boolean isHadoopCluster(ERepositoryObjectType type) {
-        IHadoopClusterService hadoopClusterService = null;
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IHadoopClusterService.class)) {
-            hadoopClusterService = (IHadoopClusterService) GlobalServiceRegister.getDefault().getService(
-                    IHadoopClusterService.class);
-        }
+        IHadoopClusterService hadoopClusterService = HadoopRepositoryUtil.getHadoopClusterService();
         if (hadoopClusterService != null && type.equals(hadoopClusterService.getHadoopClusterType())) {
             return true;
         }

@@ -40,6 +40,7 @@ import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.runtime.model.repository.ERepositoryStatus;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.hadoop.IHadoopClusterService;
+import org.talend.core.hadoop.repository.HadoopRepositoryUtil;
 import org.talend.core.language.LanguageManager;
 import org.talend.core.model.context.ContextUtils;
 import org.talend.core.model.context.JobContext;
@@ -722,11 +723,7 @@ public final class ConnectionContextHelper {
     }
 
     private static boolean isHadoopSubItem(ConnectionItem connItem) {
-        IHadoopClusterService hadoopClusterService = null;
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IHadoopClusterService.class)) {
-            hadoopClusterService = (IHadoopClusterService) GlobalServiceRegister.getDefault().getService(
-                    IHadoopClusterService.class);
-        }
+        IHadoopClusterService hadoopClusterService = HadoopRepositoryUtil.getHadoopClusterService();
         if (hadoopClusterService != null) {
             return hadoopClusterService.isHadoopSubItem2(connItem);
         }
@@ -736,11 +733,7 @@ public final class ConnectionContextHelper {
     private static void addContextForHadoopElementParameters(final IProcess2 process, final ConnectionItem connItem,
             List<? extends IElementParameter> elementParameters, final EComponentCategory category,
             final boolean ignoreContextMode) {
-        IHadoopClusterService hadoopClusterService = null;
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IHadoopClusterService.class)) {
-            hadoopClusterService = (IHadoopClusterService) GlobalServiceRegister.getDefault().getService(
-                    IHadoopClusterService.class);
-        }
+        IHadoopClusterService hadoopClusterService = HadoopRepositoryUtil.getHadoopClusterService();
         if (hadoopClusterService != null) {
             Connection connection = connItem.getConnection();
             if (hadoopClusterService.isInContextMode(connection)) {
@@ -2023,11 +2016,7 @@ public final class ConnectionContextHelper {
     }
 
     private static IHadoopClusterService getHadoopClusterService(Connection connection) {
-        IHadoopClusterService hadoopClusterService = null;
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IHadoopClusterService.class)) {
-            hadoopClusterService = (IHadoopClusterService) GlobalServiceRegister.getDefault().getService(
-                    IHadoopClusterService.class);
-        }
+        IHadoopClusterService hadoopClusterService = HadoopRepositoryUtil.getHadoopClusterService();
         if (hadoopClusterService != null) {
             return hadoopClusterService;
         }

@@ -2576,11 +2576,7 @@ public class DatabaseForm extends AbstractForm {
     }
 
     private List<Map<String, Object>> getHadoopClusterProperties() {
-        IHadoopClusterService hadoopClusterService = null;
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IHadoopClusterService.class)) {
-            hadoopClusterService = (IHadoopClusterService) GlobalServiceRegister.getDefault().getService(
-                    IHadoopClusterService.class);
-        }
+        IHadoopClusterService hadoopClusterService = HadoopRepositoryUtil.getHadoopClusterService();
         if (hadoopClusterService != null) {
             return HadoopRepositoryUtil.getHadoopPropertiesList(hadoopClusterService.getHadoopClusterProperties(getConnection()));
         }
@@ -2955,11 +2951,7 @@ public class DatabaseForm extends AbstractForm {
     }
 
     private void updateHCRelatedParameters(String hcId) {
-        IHadoopClusterService hadoopClusterService = null;
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IHadoopClusterService.class)) {
-            hadoopClusterService = (IHadoopClusterService) GlobalServiceRegister.getDefault().getService(
-                    IHadoopClusterService.class);
-        }
+        IHadoopClusterService hadoopClusterService = HadoopRepositoryUtil.getHadoopClusterService();
         if (hadoopClusterService != null) {
             if (hcId == null) {
                 getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HADOOP_CLUSTER_ID, hcId);
@@ -2976,11 +2968,7 @@ public class DatabaseForm extends AbstractForm {
     }
 
     private void clearHadoopRelatedParameters() {
-        IHadoopClusterService hadoopClusterService = null;
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IHadoopClusterService.class)) {
-            hadoopClusterService = (IHadoopClusterService) GlobalServiceRegister.getDefault().getService(
-                    IHadoopClusterService.class);
-        }
+        IHadoopClusterService hadoopClusterService = HadoopRepositoryUtil.getHadoopClusterService();
         if (hadoopClusterService != null) {
             hadoopClusterService.removeHadoopDbParameters(getConnection());
         }
@@ -3471,7 +3459,7 @@ public class DatabaseForm extends AbstractForm {
     private List<String> getVersionDrivers(String dbType) {
         if (asMsSQLVersionEnable()) {
             return getMSSQLVersionDrivers(dbType);
-        }else if(asSybaseVersionEnable()){
+        } else if (asSybaseVersionEnable()) {
             return getSybaseVersionDrivers(dbType);
         }
         List<String> result = new ArrayList<String>();
@@ -3490,12 +3478,12 @@ public class DatabaseForm extends AbstractForm {
         result.add(EDatabaseVersion4Drivers.MSSQL_PROP.getVersionDisplay());
         return result;
     }
-    
+
     private List<String> getSybaseVersionDrivers(String dbType) {
         List<String> result = new ArrayList<String>();
         result.add(EDatabaseVersion4Drivers.SYBASEIQ_16.getVersionDisplay());
         result.add(EDatabaseVersion4Drivers.SYBASEASE.getVersionDisplay());
-        
+
         return result;
     }
 
@@ -6598,7 +6586,7 @@ public class DatabaseForm extends AbstractForm {
         return template != null && template == EDatabaseConnTemplate.MSSQL
                 && LanguageManager.getCurrentLanguage().equals(ECodeLanguage.JAVA);
     }
-    
+
     /**
      * 
      * DOC hwang Comment method "asSybaseVersionEnable".
@@ -6812,7 +6800,7 @@ public class DatabaseForm extends AbstractForm {
                 // no version check for these dbs
                 return null;
             }
-            if(version == EDatabaseVersion4Drivers.SYBASEASE){
+            if (version == EDatabaseVersion4Drivers.SYBASEASE) {
                 return null;
             }
             if (connection.getDriverClass() == null && dbType != EDatabaseTypeName.GENERAL_JDBC) {
@@ -7201,8 +7189,8 @@ public class DatabaseForm extends AbstractForm {
     }
 
     /**
-     * Registers a listener for the text widget of metastore connection url, it invokes {@link #doMetastoreConnURLModify()()} when
-     * the text contents is changed. Added by Marvin Wang on Oct 17, 2012.
+     * Registers a listener for the text widget of metastore connection url, it invokes
+     * {@link #doMetastoreConnURLModify()()} when the text contents is changed. Added by Marvin Wang on Oct 17, 2012.
      */
     private void regHiveRelatedWidgetMetastoreConnURLListener() {
         metastoreConnURLTxt.getTextControl().addModifyListener(new ModifyListener() {
@@ -8036,10 +8024,10 @@ public class DatabaseForm extends AbstractForm {
     }
 
     /**
-     * Invokes this method to handle the status of other widgets, for hive the following widgets need to handle: <li>The text
-     * widget of userName, variable is <code>usernameText</code>.</li> <li>The text widget of password, variable is
-     * <code>passwordText</code>.</li> <li>The text widget of database, variable is <code>sidOrDatabaseText</code>.</li> <li>The
-     * text widget of schema, variable is <code>schemaText</code>.</li> All these will be hidden when the
+     * Invokes this method to handle the status of other widgets, for hive the following widgets need to handle: <li>The
+     * text widget of userName, variable is <code>usernameText</code>.</li> <li>The text widget of password, variable is
+     * <code>passwordText</code>.</li> <li>The text widget of database, variable is <code>sidOrDatabaseText</code>.</li>
+     * <li>The text widget of schema, variable is <code>schemaText</code>.</li> All these will be hidden when the
      * current db type is <code>Hive</code> and the current hive mode is <code>STANDALONE</code>. Otherwise, all will be
      * visible when the current db type is <code>Hive</code> and the current hive mode is <code>EMBEDDED</code>. Added
      * by Marvin Wang on Oct 17, 2012.
@@ -8247,8 +8235,8 @@ public class DatabaseForm extends AbstractForm {
     }
 
     /**
-     * Indentifies the hive mode selected in hive mode combo is standalone or embedded. If embedded, return <code>true</code>,
-     * <code>false</code> otherwise.
+     * Indentifies the hive mode selected in hive mode combo is standalone or embedded. If embedded, return
+     * <code>true</code>, <code>false</code> otherwise.
      * 
      * @return
      */
@@ -8324,12 +8312,7 @@ public class DatabaseForm extends AbstractForm {
     }
 
     private boolean canLinkToHadoopCluster() {
-        IHadoopClusterService hadoopClusterService = null;
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IHadoopClusterService.class)) {
-            hadoopClusterService = (IHadoopClusterService) GlobalServiceRegister.getDefault().getService(
-                    IHadoopClusterService.class);
-        }
-
+        IHadoopClusterService hadoopClusterService = HadoopRepositoryUtil.getHadoopClusterService();
         return hadoopClusterService != null;
     }
 
