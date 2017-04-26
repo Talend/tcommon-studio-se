@@ -225,8 +225,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         checkPomProperty(properties, "talend.job.name", ETalendMavenVariables.JobName,
                 jobInfoProp.getProperty(JobInfoProperties.JOB_NAME, property.getLabel()));
 
-        String jobVersion = PomUtil.getJobVersionForPomProperty(getArgumentsMap(), property);
-        checkPomProperty(properties, "talend.job.version", ETalendMavenVariables.JobVersion, jobVersion);
+        checkPomProperty(properties, "talend.job.version", ETalendMavenVariables.TalendJobVersion, property.getVersion());
 
         checkPomProperty(properties, "talend.job.date", ETalendMavenVariables.JobDate,
                 jobInfoProp.getProperty(JobInfoProperties.DATE, JobInfoProperties.DATAFORMAT.format(new Date())));
