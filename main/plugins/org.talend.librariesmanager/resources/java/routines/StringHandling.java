@@ -499,28 +499,29 @@ public class StringHandling {
 	 */
     public static String LPAD(String first_string, int length, String second_string) {
 
-        if (isVacant(first_string) || length < 1) {
-            return null;
-        }
+    	 if (isVacant(first_string) || length < 1) {
+             return null;
+         }
 
-        int OriginLength = first_string.length();
-        if (OriginLength >= length) {
-            return first_string;
-        }
-
-        if (isVacant(second_string)) {
-            for (int i = OriginLength; i < length; i++) {
-                first_string = " " + first_string;
-            }
-        } else {
-            for (int len = second_string.length(); len < length - OriginLength; second_string += second_string)
-                len = second_string.length();
-
-            first_string = second_string.substring(0, length - OriginLength) + first_string;
-
-        }
-
-        return first_string;
+         int OriginLength = first_string.length();
+         if (OriginLength >= length) {
+             return first_string;
+         }
+         
+         if (isVacant(second_string)) {
+             StringBuilder result = new StringBuilder(first_string);
+             for (int i = OriginLength; i < length; i++) {
+                 result.append(" ");
+             }
+             return result.toString();
+         } else {
+             StringBuilder result = new StringBuilder(second_string);
+             for (int len = result.length(); len < length - OriginLength; result.append(second_string))
+                 len = result.length();
+             
+             first_string = result.substring(0, length - OriginLength)+first_string;
+             return first_string;
+         }
     }
 	
 	/**
@@ -534,25 +535,26 @@ public class StringHandling {
 	public static String RPAD(String first_string, int length, String second_string) {
 
 		if (isVacant(first_string) || length < 1) {
-			return null;
-		}
+            return null;
+        }
 
-		int OriginLength = first_string.length();
-		if (OriginLength >= length) {
-			return first_string;
-		}
-		for (int i = OriginLength; i < length; i++) {
-			if (isVacant(second_string)) {
-				first_string = first_string + " ";
-			} else {
-				first_string = first_string + second_string;
-				if(first_string.length()>length){
-					first_string = first_string.substring(0, length);
-				}
-			}
-		}
+        int OriginLength = first_string.length();
+        if (OriginLength >= length) {
+            return first_string;
+        }
+        StringBuilder result = new StringBuilder(first_string);
+        for (int i = OriginLength; i < length; i++) {
+            if (isVacant(second_string)) {
+                result.append(" ");
+            } else {
+                result.append(second_string);
+                if(result.length()>length){
+                    return result.toString().substring(0, length);
+                }
+            }
+        }
 
-		return first_string;
+        return result.toString();
 	}
 
 	public String RPAD(String first_string, int length) {
