@@ -90,6 +90,7 @@ import org.talend.core.model.metadata.builder.database.ExtractMetaDataFromDataBa
 import org.talend.core.model.metadata.builder.database.TableInfoParameters;
 import org.talend.core.model.metadata.types.JavaTypesManager;
 import org.talend.core.model.metadata.types.PerlTypesManager;
+import org.talend.core.model.metadata.types.TypesManager;
 import org.talend.core.model.properties.ConnectionItem;
 import org.talend.core.model.repository.IRepositoryPrefConstants;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
@@ -1234,6 +1235,12 @@ public class DatabaseTableForm extends AbstractForm {
                     String talendType = MetadataTalendType.getMappingTypeRetriever(tableEditorView.getCurrentDbms())
                             .getDefaultSelectedTalendType(schemaContent.get(4)[i - 1]);
                     oneColum.setTalendType(talendType);
+                    String mappingID = metadataconnection.getMapping();
+                    if (mappingID != null) {
+                        if (!TypesManager.checkDBType(mappingID, oneColum.getTalendType(), oneColum.getSourceType())) {
+                            oneColum.setSourceType(TypesManager.getDBTypeFromTalendType(mappingID, oneColum.getTalendType()));
+                        }
+                    }
                 }
                 // get if a column is nullable from the temp file genenrated by
                 // GuessSchemaProcess.java
