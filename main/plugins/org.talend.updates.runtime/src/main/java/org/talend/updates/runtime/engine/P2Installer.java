@@ -88,10 +88,10 @@ public class P2Installer {
             final File tmpFolder = org.talend.utils.files.FileUtils.createTmpFolder("p2Installer", "update"); //$NON-NLS-1$  //$NON-NLS-2$
             try {
                 FilesUtils.unzip(updatesiteZip.getAbsolutePath(), tmpFolder.getAbsolutePath());
-                final File[] updateFiles = UpdatesHelper.findUpdateFiles(tmpFolder);
+                final File[] updateFolders = findUpdateFolders(tmpFolder);
                 Set<InstalledUnit> installed = new HashSet<InstalledUnit>();
-                if (updateFiles != null && updateFiles.length > 0) {
-                    for (File f : updateFiles) {
+                if (updateFolders != null && updateFolders.length > 0) {
+                    for (File f : updateFolders) {
                         if (f.isDirectory()) { // only deal with dir, because have been de-compress before.
                             installed.addAll(installPatchFolder(f, keepChangeConfigIni));
                         }
@@ -103,6 +103,10 @@ public class P2Installer {
             }
         }
         return Collections.emptySet();
+    }
+
+    protected File[] findUpdateFolders(File baseFolder) {
+        return UpdatesHelper.findUpdateFiles(baseFolder);
     }
 
     public Set<InstalledUnit> installPatchFolder(File updatesiteFolder, boolean keepChangeConfigIni) throws IOException,

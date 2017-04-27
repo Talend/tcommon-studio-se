@@ -241,6 +241,12 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
                 return installed;
             }
 
+            protected File[] findUpdateFolders(File baseFolder) {
+                if (UpdatesHelper.isComponentUpdateSite(baseFolder)) {
+                    return new File[] { baseFolder };
+                }
+                return new File[0];
+            }
         };
     }
 
