@@ -54,9 +54,10 @@
             name="TOS Dynamic ExtraFeatures Factory">
       </factory>
       <factory
-            class="org.talend.updates.runtime.engine.factory.NewComponentsInstallFactory"
-            id="org.talend.updates.NewComponentsInstallFactory"
-            name="Install new components ">
+            class="org.talend.updates.runtime.engine.factory.ComponentsNexusInstallFactory"
+            desciption="Install components from Nexus"
+            id="org.talend.updates.ComponentsNexusInstallFactory"
+            name="Components ">
       </factory>
    </extension>
 

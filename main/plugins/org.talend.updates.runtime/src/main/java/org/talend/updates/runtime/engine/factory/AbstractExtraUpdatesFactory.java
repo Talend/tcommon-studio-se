@@ -16,6 +16,8 @@ import java.util.Set;
 
 import org.eclipse.core.databinding.observable.IObservable;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.talend.core.GlobalServiceRegister;
+import org.talend.core.ui.branding.IBrandingService;
 import org.talend.updates.runtime.model.ExtraFeature;
 
 /**
@@ -23,6 +25,16 @@ import org.talend.updates.runtime.model.ExtraFeature;
  *
  */
 public abstract class AbstractExtraUpdatesFactory {
+
+    protected String getAcronym() {
+        String acronym = "";
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IBrandingService.class)) {
+            IBrandingService brandingService = (IBrandingService) GlobalServiceRegister.getDefault().getService(
+                    IBrandingService.class);
+            acronym = brandingService.getAcronym();
+        }
+        return acronym;
+    }
 
     public abstract void retrieveUninstalledExtraFeatures(IProgressMonitor monitor, Set<ExtraFeature> uninstalledExtraFeatures)
             throws Exception;

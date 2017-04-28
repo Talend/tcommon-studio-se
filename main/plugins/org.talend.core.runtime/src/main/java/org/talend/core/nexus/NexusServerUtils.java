@@ -29,6 +29,7 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocketFactory;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.Node;
@@ -70,33 +71,48 @@ public class NexusServerUtils {
      * @param password
      * @return
      */
+    private static int getTimeout() {
+        IEclipsePreferences node = InstanceScope.INSTANCE.getNode(ORG_TALEND_DESIGNER_CORE);
+        int timeout = node.getInt(ITalendCorePrefConstants.NEXUS_TIMEOUT, 10000);
+        return timeout;
+    }
+
     public static boolean checkConnectionStatus(String nexusUrl, String repositoryId, final String userName, final String password) {
-        if (StringUtils.isEmpty(nexusUrl)) {
+        if (StringUtils.isEmpty(nexusUrl) || StringUtils.isEmpty(repositoryId)) {
+            return false;
+        }
+
+        String newUrl = nexusUrl;
+        if (newUrl.endsWith(NexusConstants.SLASH)) {
+            newUrl = newUrl.substring(0, newUrl.length() - 1);
+        }
+        String urlToCheck = newUrl + NexusConstants.CONTENT_REPOSITORIES + repositoryId;
+
+        return checkConnectionStatus(urlToCheck, userName, password);
+    }
+
+    public static boolean checkConnectionStatus(String nexusURL, final String username, final String password) {
+        if (StringUtils.isEmpty(nexusURL)) {
             return false;
         }
         final Authenticator defaultAuthenticator = NetworkUtil.getDefaultAuthenticator();
-        if (userName != null && !"".equals(userName)) {
+        if (StringUtils.isNotEmpty(username)) {
             Authenticator.setDefault(new Authenticator() {
 
                 @Override
                 protected PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication(userName, password.toCharArray());
+                    return new PasswordAuthentication(username, password.toCharArray());
                 }
 
             });
         }
         int status = -1;
         try {
-            if (nexusUrl == null || "".equals(nexusUrl) || repositoryId == null || "".equals(repositoryId)) {
-                return false;
-            }
-            String newUrl = nexusUrl;
-            if (newUrl.endsWith(NexusConstants.SLASH)) {
-                newUrl = newUrl.substring(0, newUrl.length() - 1);
-            }
-            String urlToCheck = newUrl + NexusConstants.CONTENT_REPOSITORIES + repositoryId;
+            // if (nexusURL.endsWith(NexusConstants.SLASH)) {
+            // nexusURL = nexusURL.substring(0, nexusURL.length() - 1);
+            // }
 
-            URL url = new URL(urlToCheck);
+            URL url = new URL(nexusURL);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             if (urlConnection instanceof HttpsURLConnection) {
                 String userDir = Platform.getInstallLocation().getURL().getPath();
@@ -112,9 +128,7 @@ public class NexusServerUtils {
 
                 });
             }
-            IEclipsePreferences node = InstanceScope.INSTANCE.getNode(ORG_TALEND_DESIGNER_CORE);
-            int timeout = node.getInt(ITalendCorePrefConstants.NEXUS_TIMEOUT, 10000);
-
+            int timeout = getTimeout();
             urlConnection.setConnectTimeout(timeout);
             urlConnection.setReadTimeout(timeout);
             status = urlConnection.getResponseCode();
@@ -154,7 +168,7 @@ public class NexusServerUtils {
         HttpURLConnection urlConnection = null;
         int totalCount = 0;
         final Authenticator defaultAuthenticator = NetworkUtil.getDefaultAuthenticator();
-        if (userName != null && !"".equals(userName)) {
+        if (StringUtils.isNotEmpty(userName)) {
             Authenticator.setDefault(new Authenticator() {
 
                 @Override
@@ -249,7 +263,7 @@ public class NexusServerUtils {
             String groupId, String artifactId, String version, String type) throws Exception {
         HttpURLConnection urlConnection = null;
         final Authenticator defaultAuthenticator = NetworkUtil.getDefaultAuthenticator();
-        if (userName != null && !"".equals(userName)) {
+        if (StringUtils.isNotEmpty(userName)) {
             Authenticator.setDefault(new Authenticator() {
 
                 @Override
@@ -315,13 +329,17 @@ public class NexusServerUtils {
         return query + "&from=" + from + "&count=" + count;//$NON-NLS-1$ //$NON-NLS-2$ 
     }
 
-    private static HttpURLConnection getHttpURLConnection(String nexusUrl, String restService, String userName, String password)
+    public static HttpURLConnection getHttpURLConnection(String nexusUrl, String relativePath, String username, String password)
             throws Exception {
         if (!nexusUrl.endsWith(NexusConstants.SLASH)) {
             nexusUrl = nexusUrl + NexusConstants.SLASH;
         }
-        URL url = new URL(nexusUrl + restService);
+        URL url = new URL(nexusUrl + relativePath);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        if (StringUtils.isNotEmpty(username)) {
+            urlConnection.setRequestProperty(
+                    "Authorization", "Basic " + Base64.encodeBase64((username + ':' + password).getBytes()));//$NON-NLS-1$ //$NON-NLS-2$
+        }
         if (urlConnection instanceof HttpsURLConnection) {
             String userDir = Platform.getInstallLocation().getURL().getPath();
             final SSLSocketFactory socketFactory = SSLUtils.getSSLContext(userDir).getSocketFactory();
@@ -336,10 +354,21 @@ public class NexusServerUtils {
 
             });
         }
-        IEclipsePreferences node = InstanceScope.INSTANCE.getNode(ORG_TALEND_DESIGNER_CORE);
-        int timeout = node.getInt(ITalendCorePrefConstants.NEXUS_TIMEOUT, 10000);
+        int timeout = getTimeout();
         urlConnection.setConnectTimeout(timeout);
+        urlConnection.setReadTimeout(timeout);
         return urlConnection;
+    }
+
+    public static HttpURLConnection getHttpURLConnection(String nexusUrl, String repositoryId, String relativePath,
+            String username, String password) throws Exception {
+        String path = nexusUrl;
+        if (path.endsWith(NexusConstants.SLASH)) {
+            path = path.substring(0, path.length() - 1);
+        }
+        path += NexusConstants.CONTENT_REPOSITORIES;
+        path += repositoryId + NexusConstants.SLASH;
+        return getHttpURLConnection(path, relativePath, username, password);
     }
 
     private static void writeDocument(Document document, File file) throws IOException {

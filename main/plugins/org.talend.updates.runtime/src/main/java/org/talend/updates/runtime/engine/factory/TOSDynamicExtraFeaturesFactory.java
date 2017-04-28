@@ -35,8 +35,6 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
-import org.talend.core.GlobalServiceRegister;
-import org.talend.core.ui.branding.IBrandingService;
 import org.talend.updates.runtime.i18n.Messages;
 import org.talend.updates.runtime.model.ExtraFeature;
 import org.talend.updates.runtime.model.IuP2ExtraFeature;
@@ -47,7 +45,7 @@ import org.talend.updates.runtime.model.P2ExtraFeatureException;
  * DOC Talend class global comment. Detailled comment
  */
 public class TOSDynamicExtraFeaturesFactory extends AbstractExtraUpdatesFactory {
-    
+
     private static final String TALEND_PRODUCTS_P2_PROP = "org.talend.authorized.products"; //$NON-NLS-1$
 
     private static Logger log = Logger.getLogger(TOSDynamicExtraFeaturesFactory.class);
@@ -57,26 +55,16 @@ public class TOSDynamicExtraFeaturesFactory extends AbstractExtraUpdatesFactory 
             String acronym = getAcronym();
             String key = "default.update.site.url";
             String url = System.getProperty(key);
-            if(url==null){
+            if (url == null) {
                 return Collections.EMPTY_SET;
             }
             IuP2ExtraFeature p2ExtraFeature = new IuP2ExtraFeature(url);
-            String updateSiteUrl = p2ExtraFeature.getP2RepositoryURI(key,true).toString();
+            String updateSiteUrl = p2ExtraFeature.getP2RepositoryURI(key, true).toString();
             return retrieveAllExtraFeature(mainSubMonitor, updateSiteUrl, acronym);
         } catch (ProvisionException | OperationCanceledException | URISyntaxException e) {
             log.error(Messages.getString("DynamicExtraFeaturesFactory.failed.to.retreive.features"), e); //$NON-NLS-1$
             return Collections.EMPTY_SET;
         }
-    }
-    
-    protected String getAcronym(){
-        String acronym = "";
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IBrandingService.class)) {
-            IBrandingService brandingService = (IBrandingService) GlobalServiceRegister.getDefault().getService(
-                    IBrandingService.class);
-            acronym = brandingService.getAcronym();
-        }
-        return acronym;
     }
 
     /**
@@ -120,7 +108,7 @@ public class TOSDynamicExtraFeaturesFactory extends AbstractExtraUpdatesFactory 
             }
         }
     }
-    
+
     /**
      * DOC sgandon Comment method "retreiveAllExtraFeatureForThisProduct".
      * 
@@ -189,18 +177,18 @@ public class TOSDynamicExtraFeaturesFactory extends AbstractExtraUpdatesFactory 
         Set<IInstallableUnit> filteredSet = new HashSet<IInstallableUnit>();
         for (IInstallableUnit iu : setToFilter) {
             String talend_products = iu.getProperty(TALEND_PRODUCTS_P2_PROP);
-            if(talend_products!=null){
-              String[] products =  talend_products.split(",");
-              for(String product: products){
-                  if(product.equalsIgnoreCase(acronym)){
-                      filteredSet.add(iu);
-                      break;
-                  }
-              }
+            if (talend_products != null) {
+                String[] products = talend_products.split(",");
+                for (String product : products) {
+                    if (product.equalsIgnoreCase(acronym)) {
+                        filteredSet.add(iu);
+                        break;
+                    }
+                }
             }
-//            if (iu.getProperty(TALEND_PRODUCTS_P2_PROP).contains(acronym)) {
-//                filteredSet.add(iu);
-//            }
+            // if (iu.getProperty(TALEND_PRODUCTS_P2_PROP).contains(acronym)) {
+            // filteredSet.add(iu);
+            // }
         }
         return filteredSet;
     }

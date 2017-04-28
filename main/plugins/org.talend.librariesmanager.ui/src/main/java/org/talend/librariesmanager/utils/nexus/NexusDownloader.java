@@ -23,22 +23,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocketFactory;
-
-import org.apache.commons.codec.binary.Base64;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.Platform;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.download.DownloadListener;
 import org.talend.core.download.IDownloadHelper;
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.model.general.ModuleStatusProvider;
 import org.talend.core.model.general.Project;
-import org.talend.core.nexus.NexusConstants;
 import org.talend.core.nexus.NexusServerBean;
+import org.talend.core.nexus.NexusServerUtils;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
@@ -47,7 +40,6 @@ import org.talend.designer.maven.utils.PomUtil;
 import org.talend.librariesmanager.maven.ArtifactsDeployer;
 import org.talend.repository.ProjectManager;
 import org.talend.utils.io.FilesUtils;
-import org.talend.utils.ssl.SSLUtils;
 
 /**
  * created by wchen on Apr 24, 2015 Detailled comment
@@ -155,35 +147,7 @@ public class NexusDownloader implements IDownloadHelper {
 
     private HttpURLConnection getHttpURLConnection(String nexusUrl, String repositoryId, String relativePath, String userName,
             String password) throws Exception {
-        String path = nexusUrl;
-        if (path.endsWith(NexusConstants.SLASH)) {
-            path = path.substring(0, path.length() - 1);
-        }
-        path = path + NexusConstants.CONTENT_REPOSITORIES;
-        path = path + repositoryId + NexusConstants.SLASH;
-        URL url = new URL(path + relativePath);
-        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-        if (userName != null && !"".equals(userName)) {
-            urlConnection.setRequestProperty(
-                    "Authorization", "Basic " + Base64.encodeBase64((userName + ":" + password).getBytes()));//$NON-NLS-1$ //$NON-NLS-2$
-        }
-        if (urlConnection instanceof HttpsURLConnection) {
-            String userDir = Platform.getInstallLocation().getURL().getPath();
-            final SSLSocketFactory socketFactory = SSLUtils.getSSLContext(userDir).getSocketFactory();
-            HttpsURLConnection httpsConnection = (HttpsURLConnection) urlConnection;
-            httpsConnection.setSSLSocketFactory(socketFactory);
-            httpsConnection.setHostnameVerifier(new HostnameVerifier() {
-
-                @Override
-                public boolean verify(String arg0, SSLSession arg1) {
-                    return true;
-                }
-
-            });
-        }
-        urlConnection.setConnectTimeout(10000);
-        urlConnection.setReadTimeout(10000);
-        return urlConnection;
+        return NexusServerUtils.getHttpURLConnection(nexusUrl, repositoryId, relativePath, userName, password);
     }
 
     /**
