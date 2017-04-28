@@ -20,4 +20,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 public interface IMavenPomCreator {
 
     void create(IProgressMonitor monitor) throws Exception;
+
+    // only need to syncCodesPoms for main job
+    void setSyncCodesPoms(boolean isMainJob);
 }

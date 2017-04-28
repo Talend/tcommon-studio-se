@@ -61,6 +61,8 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
 
     private IPath itemRelativePath;
 
+    private boolean syncCodesPoms;
+
     public AbstractMavenProcessorPom(IProcessor jobProcessor, IFile pomFile, String bundleTemplateName) {
         super(pomFile, IProjectSettingTemplateConstants.PATH_STANDALONE + '/' + bundleTemplateName);
         Assert.isNotNull(jobProcessor);
@@ -97,6 +99,7 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
         this.itemRelativePath = itemRelativePath;
     }
 
+    @Override
     protected void setAttributes(Model model) {
         //
         final IProcessor jProcessor = getJobProcessor();
@@ -116,7 +119,7 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
                 }
             }
         }
-        
+
         Map<ETalendMavenVariables, String> variablesValuesMap = new HashMap<ETalendMavenVariables, String>();
         // no need check property is null or not, because if null, will get default ids.
         variablesValuesMap.put(ETalendMavenVariables.JobGroupId,
@@ -218,4 +221,17 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
         return true; // default, all are valid
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.talend.core.runtime.repository.build.IMavenPomCreator#needsyncCodesPoms(boolean)
+     */
+    @Override
+    public void setSyncCodesPoms(boolean isMainJob) {
+        this.syncCodesPoms = isMainJob;
+    }
+
+    public boolean needSyncCodesPoms() {
+        return this.syncCodesPoms;
+    }
 }
