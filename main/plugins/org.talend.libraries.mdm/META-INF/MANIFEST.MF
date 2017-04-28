@@ -23,5 +23,4 @@ Bundle-ClassPath: .,
  lib/mdm_webservice_tomcat.jar
 Eclipse-ExtensibleAPI: true
 Eclipse-BundleShape: dir
-Export-Package: org.talend.mdm.webservice
 Require-Bundle: javax.wsdl
