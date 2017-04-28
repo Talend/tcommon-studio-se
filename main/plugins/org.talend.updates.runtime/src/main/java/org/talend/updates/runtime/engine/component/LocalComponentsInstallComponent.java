@@ -229,10 +229,9 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
     protected P2Installer createInstaller() {
         return new P2Installer() {
 
-            @Override
-            public Set<InstalledUnit> installPatchFile(File updatesiteFolder, boolean keepChangeConfigIni) throws Exception,
+            public Set<InstalledUnit> installPatchFolder(File updatesiteFolder, boolean keepChangeConfigIni) throws IOException,
                     ProvisionException {
-                final Set<InstalledUnit> installed = super.installPatchFile(updatesiteFolder, keepChangeConfigIni);
+                final Set<InstalledUnit> installed = super.installPatchFolder(updatesiteFolder, keepChangeConfigIni);
                 if (!installed.isEmpty()) { // install success
                     // sync the component libraries
                     syncLibraries(updatesiteFolder);
