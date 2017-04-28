@@ -5,6 +5,8 @@
 // ============================================================================
 package routines;
 
+import java.math.BigDecimal;
+
 public class StringHandling {
 
     /**
@@ -377,7 +379,7 @@ public class StringHandling {
 	 */
 	public static String SUBSTR(String string, int start, Integer length) {
 
-		if (string == null) {
+		if (isVacant(string)) {
 			return null;
 		}
 		if (start > string.length()) {
@@ -411,13 +413,13 @@ public class StringHandling {
 	 * {example} LTRIM("aatestaa","a") #testaa
 	 */
 	public static String LTRIM(String value, String trim_set) {
-        if (value == null) {
+        if (isVacant(value)) {
             return null;
         }
         int len = value.length();
         int st = 0;
         char[] val = value.toCharArray();
-        if (trim_set == null) {
+        if (isVacant(trim_set)) {
 
             while ((st < len) && (val[st] <= ' ')) {
                 st++;
@@ -451,12 +453,12 @@ public class StringHandling {
 	 * {example} RTRIM("aatestaa","a") #aatest
 	 */
 	public static String RTRIM(String value, String trim_set) {
-        if (value == null) {
+        if (isVacant(value)) {
             return null;
         }
         int len = value.length();
         char[] val = value.toCharArray();
-        if (trim_set == null) {
+        if (isVacant(trim_set)) {
 
             while ((0 < len) && (val[len - 1] <= ' ')) {
                 len--;
@@ -495,30 +497,31 @@ public class StringHandling {
 	 * @return
 	 * {example} LPAD("test",6,"a") #aatest
 	 */
-    public static String LPADA(String first_string, int length, String second_string) {
+    public static String LPAD(String first_string, int length, String second_string) {
 
-        if (first_string == null || length < 1) {
-            return null;
-        }
+    	 if (isVacant(first_string) || length < 1) {
+             return null;
+         }
 
-        int OriginLength = first_string.length();
-        if (OriginLength >= length) {
-            return first_string;
-        }
-
-        if (second_string == null || "".equals(second_string)) {
-            for (int i = OriginLength; i < length; i++) {
-                first_string = " " + first_string;
-            }
-        } else {
-            for (int len = second_string.length(); len < length - OriginLength; second_string += second_string)
-                len = second_string.length();
-
-            first_string = second_string.substring(0, length - OriginLength) + first_string;
-
-        }
-
-        return first_string;
+         int OriginLength = first_string.length();
+         if (OriginLength >= length) {
+             return first_string;
+         }
+         
+         if (isVacant(second_string)) {
+             StringBuilder result = new StringBuilder(first_string);
+             for (int i = OriginLength; i < length; i++) {
+                 result.append(" ");
+             }
+             return result.toString();
+         } else {
+             StringBuilder result = new StringBuilder(second_string);
+             for (int len = result.length(); len < length - OriginLength; result.append(second_string))
+                 len = result.length();
+             
+             first_string = result.substring(0, length - OriginLength)+first_string;
+             return first_string;
+         }
     }
 	
 	/**
@@ -531,26 +534,27 @@ public class StringHandling {
 	 */
 	public static String RPAD(String first_string, int length, String second_string) {
 
-		if (first_string == null || length < 1) {
-			return null;
-		}
+		if (isVacant(first_string) || length < 1) {
+            return null;
+        }
 
-		int OriginLength = first_string.length();
-		if (OriginLength >= length) {
-			return first_string;
-		}
-		for (int i = OriginLength; i < length; i++) {
-			if (second_string == null) {
-				first_string = first_string + " ";
-			} else {
-				first_string = first_string + second_string;
-				if(first_string.length()>length){
-					first_string = first_string.substring(0, length);
-				}
-			}
-		}
+        int OriginLength = first_string.length();
+        if (OriginLength >= length) {
+            return first_string;
+        }
+        StringBuilder result = new StringBuilder(first_string);
+        for (int i = OriginLength; i < length; i++) {
+            if (isVacant(second_string)) {
+                result.append(" ");
+            } else {
+                result.append(second_string);
+                if(result.length()>length){
+                    return result.toString().substring(0, length);
+                }
+            }
+        }
 
-		return first_string;
+        return result.toString();
 	}
 
 	public String RPAD(String first_string, int length) {
@@ -574,9 +578,15 @@ public class StringHandling {
      */
 	
     public static Integer INSTR(String string, String search_value, Integer start, Integer occurrence) {
+    	// linguistic string comparison.
 
         int defaultStart = 1;
         int defaultOccurrence = 1;
+        Integer result = 0;
+        
+        if (isVacant(string) || isVacant(search_value)|| Math.abs(defaultStart) >= string.length()) {
+            return null;
+        }
 
         if (start != null && start != 0) {
             defaultStart = start;
@@ -589,13 +599,6 @@ public class StringHandling {
             defaultOccurrence = occurrence;
         }
 
-        Integer result = 0;
-
-        // linguistic string comparison.
-        if (string == null || string.equals("") || search_value == null || search_value.equals("")
-                || Math.abs(defaultStart) >= string.length()) {
-            return null;
-        }
         if (defaultStart < 0) {
             string = string.substring(0, string.length() + defaultStart + 1);
             int temp = string.lastIndexOf(search_value);
@@ -727,6 +730,38 @@ public class StringHandling {
             }
         }
         return 0;
+    }
+    
+	protected static boolean isVacant(String value) {
+		return value == null || "".equals(value);
+	}
+	
+    /**
+     * 
+     * @param numeric_value
+     *            Numeric datatype. The numeric value you want to convert to a
+     *            string
+     * @return String. NULL if a value passed to the function is NULL.
+     * 
+     *         Converts double values to strings of up to 16 digits and provides
+     *         accuracy up to 15 digits. If you pass a number with more than 15
+     *         digits, TO_CHAR rounds the number to the sixteenth digit.
+     *         Returns decimal notation for numbers in the ranges (-1e16,-1e-16]
+     *         and [1e-16, 1e16). TO_CHAR returns scientific notation for
+     *         numbers outside these ranges.
+     */
+
+    public static String TO_CHAR(Object numeric_value) {
+        if(numeric_value==null){
+            return null;
+        }
+        
+        BigDecimal bigDecimal = new BigDecimal(numeric_value.toString());
+        if(bigDecimal.abs().compareTo(new BigDecimal("1e16"))<0&&bigDecimal.abs().compareTo(new BigDecimal("1e-16"))>0){
+            return bigDecimal.toPlainString();
+        }
+        
+        return numeric_value.toString();
     }
 
 }

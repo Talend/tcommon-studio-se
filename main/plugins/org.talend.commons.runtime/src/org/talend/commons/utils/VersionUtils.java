@@ -173,5 +173,19 @@ public class VersionUtils {
 
         return version;
     }
+    
+    public static String getPublishVersion(String version) {
+        if (version != null) {
+            // if using job version.
+            if (version.matches("\\d+\\.\\d+")) { //$NON-NLS-1$
+                // set the version format as "#.#.#"
+                String[] split = version.split("\\."); //$NON-NLS-1$
+                for (int i = 0; i < 3 - split.length; i++) {
+                    version += ".0"; //$NON-NLS-1$
+                }
+            }
+        }
+        return version;
+    }
 
 }

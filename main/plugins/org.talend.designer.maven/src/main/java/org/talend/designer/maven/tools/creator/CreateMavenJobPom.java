@@ -225,8 +225,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         checkPomProperty(properties, "talend.job.name", ETalendMavenVariables.JobName,
                 jobInfoProp.getProperty(JobInfoProperties.JOB_NAME, property.getLabel()));
 
-        String jobVersion = PomUtil.getJobVersionForPomProperty(getArgumentsMap(), property);
-        checkPomProperty(properties, "talend.job.version", ETalendMavenVariables.JobVersion, jobVersion);
+        checkPomProperty(properties, "talend.job.version", ETalendMavenVariables.TalendJobVersion, property.getVersion());
 
         checkPomProperty(properties, "talend.job.date", ETalendMavenVariables.JobDate,
                 jobInfoProp.getProperty(JobInfoProperties.DATE, JobInfoProperties.DATAFORMAT.format(new Date())));
@@ -446,7 +445,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
 
     @Override
     protected void afterCreate(IProgressMonitor monitor) throws Exception {
-        setPomForHDLight(monitor);
+        setPomForHDInsight(monitor);
 
         final IProcess process = getJobProcessor().getProcess();
         Map<String, Object> args = new HashMap<String, Object>();
@@ -465,7 +464,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
 
     }
 
-    private void setPomForHDLight(IProgressMonitor monitor) {
+    private void setPomForHDInsight(IProgressMonitor monitor) {
         if (ProcessUtils.jarNeedsToContainContext()) {
             try {
                 Model model = MODEL_MANAGER.readMavenModel(getPomFile());
@@ -633,8 +632,15 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
             TransformerFactory transFactory = TransformerFactory.newInstance();
             Transformer transFormer = transFactory.newTransformer();
             transFormer.setOutputProperty(OutputKeys.INDENT, "yes");
-            transFormer.transform(new DOMSource(document), new StreamResult(new FileOutputStream(file)));
-
+            FileOutputStream output = null;
+            try {
+                output = new FileOutputStream(file);
+                transFormer.transform(new DOMSource(document), new StreamResult(output));
+            } finally {
+                if (output != null) {
+                    output.close();
+                }
+            }
             // clean for children poms
             cleanChildrenPomSettings(monitor, childrenPomsIncludes);
         }

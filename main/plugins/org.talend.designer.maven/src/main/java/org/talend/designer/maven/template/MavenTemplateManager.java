@@ -26,9 +26,12 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.maven.model.Model;
+import org.apache.maven.model.Plugin;
+import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.generation.JavaUtils;
@@ -235,13 +238,34 @@ public class MavenTemplateManager {
                 model.setArtifactId(ETalendMavenVariables.replaceVariables(model.getArtifactId(), variablesValuesMap));
                 model.setVersion(ETalendMavenVariables.replaceVariables(model.getVersion(), variablesValuesMap));
                 model.setName(ETalendMavenVariables.replaceVariables(model.getName(), variablesValuesMap));
-
+                
+                setJavaVersionForModel(model, variablesValuesMap);
+                
                 return model;
             }
         } catch (Exception e) {
             // ExceptionHandler.process(e);
         }
         return defaultModel; // if error, try to use default model
+    }
+
+    private static void setJavaVersionForModel(Model model, Map<ETalendMavenVariables, String> variablesValuesMap) {
+        String javaVersion = JavaUtils.getProjectJavaVersion();
+        if (javaVersion == null || javaVersion.trim().equals("")) { //$NON-NLS-1$
+            javaVersion = JavaUtils.DEFAULT_VERSION;
+        }
+        variablesValuesMap.put(ETalendMavenVariables.JavaVersion, javaVersion);
+        Plugin plugin = model.getBuild().getPluginManagement().getPluginsAsMap().get("org.apache.maven.plugins:maven-compiler-plugin"); //$NON-NLS-1$
+        Object object = plugin.getConfiguration();
+        if (object instanceof Xpp3Dom) {
+            Xpp3Dom configNode = (Xpp3Dom) object;
+            Xpp3Dom sourceNode = configNode.getChild("source"); //$NON-NLS-1$
+            Xpp3Dom targetNode = configNode.getChild("target"); //$NON-NLS-1$
+            if (!javaVersion.equals(sourceNode.getValue())) {
+                sourceNode.setValue(ETalendMavenVariables.replaceVariables(sourceNode.getValue(), variablesValuesMap));
+                targetNode.setValue(ETalendMavenVariables.replaceVariables(targetNode.getValue(), variablesValuesMap));
+            }
+        }
     }
 
     private static Model getDefaultCodeProjectTemplateModel(String projectTechName) {

@@ -74,6 +74,7 @@ import org.talend.commons.exception.LoginException;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.ui.utils.CheatSheetPerspectiveAdapter;
 import org.talend.commons.utils.VersionUtils;
+import org.talend.commons.utils.generation.JavaUtils;
 import org.talend.commons.utils.workbench.extensions.ExtensionImplementationProvider;
 import org.talend.commons.utils.workbench.extensions.ExtensionPointLimiterImpl;
 import org.talend.commons.utils.workbench.extensions.IExtensionPointLimiter;
@@ -264,6 +265,12 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
         try {
             JavaHomeUtil.initializeJavaHome();
+            if (JavaHomeUtil.isSetJdkHomeVariable()) {
+                String specifiedVersion = JavaHomeUtil.getSpecifiedJavaVersion();
+                if (specifiedVersion != null && !specifiedVersion.equals(JavaUtils.getProjectJavaVersion())) {
+                    JavaUtils.updateProjectJavaVersion(specifiedVersion);
+                }
+            }
         } catch (CoreException e1) {
             CommonExceptionHandler.process(e1);
         }

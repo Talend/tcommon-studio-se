@@ -19,9 +19,11 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jdt.launching.IVMInstall;
+import org.eclipse.jdt.launching.IVMInstall2;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jdt.launching.environments.IExecutionEnvironment;
 import org.eclipse.jdt.launching.environments.IExecutionEnvironmentsManager;
+import org.talend.commons.utils.generation.JavaUtils;
 
 /**
  * created by nrousseau on Jun 13, 2015 Detailled comment
@@ -75,6 +77,19 @@ public class JavaHomeUtil {
                 }
             }
         }
+    }
+    /**
+     * Only for TUJ to setup JDK version
+     * Should invoke after initializeJavaHome()
+     */
+    public static String getSpecifiedJavaVersion() {
+        if (isSetJdkHomeVariable()) {
+            IVMInstall currentVM = JavaRuntime.getDefaultVMInstall();
+            if (currentVM instanceof IVMInstall2) {
+                return JavaUtils.getCompilerCompliance((IVMInstall2) currentVM, null);
+            }
+        }
+        return null;
     }
 
     public static boolean isSetJdkHomeVariable() {

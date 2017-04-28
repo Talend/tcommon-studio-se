@@ -12,7 +12,12 @@
 // ============================================================================
 package org.talend.commons.utils.generation;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
@@ -20,12 +25,20 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.IVMInstall2;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jdt.launching.environments.IExecutionEnvironment;
+import org.osgi.service.prefs.BackingStoreException;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.resource.FileExtensions;
+import org.talend.core.GlobalServiceRegister;
+import org.talend.core.runtime.CoreRuntimePlugin;
+import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
+import org.talend.designer.runprocess.IRunProcessService;
 
 /**
  * Utilities around perl stuff. <br/>
@@ -39,6 +52,12 @@ public final class JavaUtils {
 
     public static final String JAVA_LAUNCHCONFIGURATION = "org.talend.designer.runprocess.launchConfigurationJava"; //$NON-NLS-1$
 
+    public static final String PROJECT_JAVA_VERSION_KEY = "talend.project.java.version"; //$NON-NLS-1$
+
+    public static final String DEFAULT_VERSION = JavaCore.VERSION_1_8;
+
+    public static final List<String> AVAILABLE_VERSIONS = Arrays.asList( JavaCore.VERSION_1_7, JavaCore.VERSION_1_8 );
+    
     public static final String PROCESSOR_TYPE = "javaProcessor"; //$NON-NLS-1$
 
     public static final String PATH_SEPARATOR = "/"; //$NON-NLS-1$
@@ -203,19 +222,79 @@ public final class JavaUtils {
      */
     public static String getCompilerCompliance(IVMInstall2 vMInstall, String defaultCompliance) {
         String version = vMInstall.getJavaVersion();
+        return getJavaVersion(defaultCompliance, version);
+    }
+    
+    public static String getProjectJavaVersion() {
+        String javaVersion = CoreRuntimePlugin.getInstance().getProjectPreferenceManager().getValue(PROJECT_JAVA_VERSION_KEY);
+        if (javaVersion != null && javaVersion.trim().equals("")) { //$NON-NLS-1$
+            javaVersion = null;
+        }
+        return javaVersion;
+    }
+    
+    public static void updateProjectJavaVersion(String javaVersion) {
+        setProjectJavaVserion(javaVersion);
+        applyCompilerCompliance(javaVersion);
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
+            IRunProcessService service = (IRunProcessService) GlobalServiceRegister.getDefault().getService(IRunProcessService.class);
+            service.updateProjectPomWithTemplate();
+        }
+    }
+    
+    private static void setProjectJavaVserion(String javaVersion) {
+        if (javaVersion != null) {
+            ProjectPreferenceManager manager = CoreRuntimePlugin.getInstance().getProjectPreferenceManager();
+            manager.setValue(PROJECT_JAVA_VERSION_KEY, javaVersion);
+            manager.save();
+        }
+    }
+    
+    private static void applyCompilerCompliance(String compliance) {
+        if (compliance != null) {
+            IEclipsePreferences eclipsePreferences = InstanceScope.INSTANCE.getNode(JavaCore.PLUGIN_ID);
+            Map<String, String> complianceOptions = new HashMap<String, String>();
+            JavaCore.setComplianceOptions(compliance, complianceOptions);
+            if (!complianceOptions.isEmpty()) {
+                Set<Entry<String, String>> entrySet = complianceOptions.entrySet();
+                for (Entry<String, String> entry : entrySet) {
+                    eclipsePreferences.put(entry.getKey(), entry.getValue());
+                }
+            }
+            try {
+                eclipsePreferences.flush();
+            } catch (BackingStoreException e) {
+                ExceptionHandler.process(e);
+            }
+        }
+    }
+    
+    private static String getJavaVersion(String defaultCompliance, String version) {
         if (version == null) {
             return defaultCompliance;
-        } else if (version.startsWith(JavaCore.VERSION_1_6)) {
+        }
+        if (version.startsWith(JavaCore.VERSION_1_8)) {
+            return JavaCore.VERSION_1_8;
+        }
+        if (version.startsWith(JavaCore.VERSION_1_7)) {
+            return JavaCore.VERSION_1_7;
+        }
+        if (version.startsWith(JavaCore.VERSION_1_6)) {
             return JavaCore.VERSION_1_6;
-        } else if (version.startsWith(JavaCore.VERSION_1_5)) {
+        }
+        if (version.startsWith(JavaCore.VERSION_1_5)) {
             return JavaCore.VERSION_1_5;
-        } else if (version.startsWith(JavaCore.VERSION_1_4)) {
+        }
+        if (version.startsWith(JavaCore.VERSION_1_4)) {
             return JavaCore.VERSION_1_4;
-        } else if (version.startsWith(JavaCore.VERSION_1_3)) {
+        }
+        if (version.startsWith(JavaCore.VERSION_1_3)) {
             return JavaCore.VERSION_1_3;
-        } else if (version.startsWith(JavaCore.VERSION_1_2)) {
+        }
+        if (version.startsWith(JavaCore.VERSION_1_2)) {
             return JavaCore.VERSION_1_3;
-        } else if (version.startsWith(JavaCore.VERSION_1_1)) {
+        }
+        if (version.startsWith(JavaCore.VERSION_1_1)) {
             return JavaCore.VERSION_1_3;
         }
         return defaultCompliance;

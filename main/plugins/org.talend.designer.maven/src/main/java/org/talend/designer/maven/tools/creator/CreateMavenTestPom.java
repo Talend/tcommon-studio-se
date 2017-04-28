@@ -86,24 +86,7 @@ public class CreateMavenTestPom extends AbstractMavenProcessorPom {
         checkPomProperty(properties, "talend.project.name", ETalendMavenVariables.ProjectName, project.getTechnicalLabel());
         checkPomProperty(properties, "talend.job.path", ETalendMavenVariables.JobPath, jobClassPackageFolder);
         checkPomProperty(properties, "talend.job.name", ETalendMavenVariables.JobName, "${project.artifactId}");
-
-        Property jobProperty = null;
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
-            ITestContainerProviderService service = (ITestContainerProviderService) GlobalServiceRegister.getDefault()
-                    .getService(ITestContainerProviderService.class);
-            try {
-                final Item parentJobItem = service.getParentJobItem(property.getItem());
-                if (parentJobItem != null) {
-                    jobProperty = parentJobItem.getProperty();
-                }
-
-            } catch (PersistenceException e) {
-                ExceptionHandler.process(e);
-            }
-        }
-
-        String jobVersion = PomUtil.getJobVersionForPomProperty(getArgumentsMap(), jobProperty, property);
-        checkPomProperty(properties, "talend.job.version", ETalendMavenVariables.JobVersion, jobVersion);
+        checkPomProperty(properties, "talend.job.version", ETalendMavenVariables.TalendJobVersion, property.getVersion());
     }
 
     protected void afterCreate(IProgressMonitor monitor) throws Exception {

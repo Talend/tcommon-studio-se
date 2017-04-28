@@ -1279,11 +1279,11 @@ public class TalendDate {
      * 
      */
     public static Date TO_DATE(String string, String format) throws ParseException {
-		String defaultFormat = "MM/DD/yyyy HH:mm:ss.sss";
-		if (string == null) {
+		String defaultFormat = "MM/dd/yyyy HH:mm:ss.SSS";
+		if (StringHandling.isVacant(string)) {
 			return null;
 		}
-		if (format != null) {
+		if (!StringHandling.isVacant(format)) {
 			if (format.equals("J")) {
 				return new Date(Long.parseLong(string));
 			}
@@ -1321,8 +1321,9 @@ public class TalendDate {
 		format = format.replaceAll("DDD", "D");// Day of year (001-366,
 												// including leap years).
 		format = format.replaceAll("DD", "d");// Day of month (01-31).
+		format = format.replaceAll("HH24", "zx@i#o%l!");//protect HH24 from HH
 		format = format.replaceAll("(HH|HH12)", "hh");
-		format = format.replaceAll("HH24", "HH");
+		format = format.replaceAll("zx@i#o%l!", "HH");
 		format = format.replaceAll("MS", "sss");
 		format = format.replaceAll("MI", "mm");
 		format = format.replaceAll("SS", "ss");
@@ -1341,7 +1342,7 @@ public class TalendDate {
 	 * {example} ADD_TO_DATE(new Date(1464576463231l), "HH",2) #Mon May 30 12:47:43 CST 2016
 	 */
 	public static Date ADD_TO_DATE(Date date, String format, int amount) throws ParseException{
-		if (date == null || format == null) {
+		if (date == null || StringHandling.isVacant(format)) {
 			return null;
 		}
 		if (format != null) {
@@ -1404,4 +1405,25 @@ public class TalendDate {
 		return format;
 
 	}
+	
+    /**
+     * 
+     * @param date  Date/Time datatype. Passes the date values you want to convert to character strings.
+     * @param format   Enter a valid TO_CHAR format string. The format string defines the format of the return value,
+     * @return  String.   NULL if a value passed to the function is NULL.
+     */
+    
+    public static String TO_CHAR(Date date, String format) {
+        if (date == null) {
+            return null;
+        }
+        if(format==null||format.equals("")){
+            format="MM/DD/YYYY HH24:MI:SS";
+        }
+        if("J".equals(format)){
+            return Long.toString(date.getTime());
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat(dateFormatConvert(format));
+        return sdf.format(date);
+    }
 }

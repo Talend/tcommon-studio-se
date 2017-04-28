@@ -8,6 +8,8 @@ import org.talend.core.IService;
 public interface INexusService extends IService {
 	Map upload(URL source);
 	
+	Map upload(String version,URL source);
+	
 	Map upload(String repositoryURL, String username, String password, String groupId, String artifactId,
 			String version,  URL source);
 

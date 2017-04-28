@@ -19,6 +19,7 @@ import java.util.Map;
  */
 public enum ETalendMavenVariables {
     ProductVersion,
+    JavaVersion,
 
     ProjectGroupId,
     ProjectArtifactId,
@@ -55,7 +56,7 @@ public enum ETalendMavenVariables {
     JobShClasspath,
     JobShAddition,
     Framework,
-
+    TalendJobVersion
     //
     ;
 

@@ -22,7 +22,7 @@ public final class UpdatesConstants {
     public static final int SCALE = 100;
 
     /*
-     * 
+     *
      */
     public static final String UNDER_LINE = "_"; //$NON-NLS-1$
 
@@ -59,9 +59,9 @@ public final class UpdatesConstants {
     public static final String COMPONENT = Messages.getString("UpdatesConstants.Component"); //$NON-NLS-1$
 
     public static final String JOBLET = Messages.getString("UpdatesConstants.Joblet"); //$NON-NLS-1$
-    
+
     public static final String SPARK_JOBLET = Messages.getString("UpdatesConstants.Spark_Joblet"); //$NON-NLS-1$
-    
+
     public static final String SPARK_STREAMING_JOBLET = Messages.getString("UpdatesConstants.Spark_Streaming_Joblet"); //$NON-NLS-1$
 
     public static final String JOB = Messages.getString("UpdatesConstants.Job"); //$NON-NLS-1$
@@ -128,4 +128,7 @@ public final class UpdatesConstants {
     public static final String MONITOR_IS_CANCELED = "MONITOR_IS_CANCELED"; //$NON-NLS-1$
 
     public static final String REPOSITORY_SCHEMA_TYPE = "REPOSITORY_SCHEMA_TYPE";
+
+    public static final String CHANGED_BY_USER = "CHANGED_BY_USER"; //$NON-NLS-1$
+
 }

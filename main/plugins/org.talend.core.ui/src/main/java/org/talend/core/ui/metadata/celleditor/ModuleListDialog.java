@@ -371,12 +371,7 @@ public class ModuleListDialog extends Dialog {
                     }
                     
                     if(param != null && param.getElement().getElementName().startsWith("cConfig")){
-                        if (GlobalServiceRegister.getDefault().isServiceRegistered(INexusService.class)) {
-                        	INexusService service = (INexusService) GlobalServiceRegister.getDefault().getService(
-                        			INexusService.class);
-                            Map metadata = service.upload(path.toFile().toURI().toURL());
-                            version = (String) metadata.get("Versioning.LastUpdated");
-                        }
+                    	version = jarPath;
                     }
                 } catch (IOException ee) {
                     ExceptionHandler.process(ee);

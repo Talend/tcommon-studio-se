@@ -25,7 +25,9 @@ import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.general.Project;
+import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.repository.ProjectManager;
 
 /**
@@ -47,6 +49,8 @@ public final class ProjectPreferenceManager {
     private ProjectScope projectScope;
 
     private IPreferenceStore store;
+    
+    private IRunProcessService service;
 
     public ProjectPreferenceManager(String fileName) {
         this(ProjectManager.getInstance().getCurrentProject(), fileName);
@@ -77,6 +81,9 @@ public final class ProjectPreferenceManager {
         this.project = project;
         this.projectScope = new ProjectScope(project);
         this.store = new ScopedPreferenceStore(this.projectScope, this.qualifier);
+        if(GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
+            service = (IRunProcessService) GlobalServiceRegister.getDefault().getService(IRunProcessService.class);
+        }
     }
 
     public String getQualifier() {
@@ -153,13 +160,8 @@ public final class ProjectPreferenceManager {
      * Save the configurations.
      */
     public void save() {
-        try {
-            IPreferenceStore preferenceStore = getPreferenceStore();
-            if (preferenceStore instanceof IPersistentPreferenceStore) {
-                ((IPersistentPreferenceStore) preferenceStore).save();
-            }
-        } catch (IOException e) {
-            ExceptionHandler.process(e);
+        if (service != null) {
+            service.storeProjectPreferences(getPreferenceStore());
         }
     }
 

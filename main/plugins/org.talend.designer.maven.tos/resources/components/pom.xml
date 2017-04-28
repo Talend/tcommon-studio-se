@@ -63,12 +63,12 @@
 		</dependency>
 		<dependency>
 			<groupId>org.talend.components</groupId>
-			<artifactId>netsuite-runtime_2014_2</artifactId>
+			<artifactId>components-netsuite-runtime_2014_2</artifactId>
 			<version>${components.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.talend.components</groupId>
-			<artifactId>netsuite-runtime_2016_2</artifactId>
+			<artifactId>components-netsuite-runtime_2016_2</artifactId>
 			<version>${components.version}</version>
 		</dependency>
 		<dependency>

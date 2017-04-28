@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.designer.maven.utils;
 
+import org.talend.commons.utils.VersionUtils;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.process.JobInfo;
 import org.talend.core.model.properties.Property;
@@ -175,8 +176,7 @@ public class PomIdsHelper {
                     return version;
                 }
             }
-            String version = property.getVersion();
-            return version;
+            return VersionUtils.getPublishVersion(property.getVersion());
         }
         return null;
     }
