@@ -633,8 +633,15 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
             TransformerFactory transFactory = TransformerFactory.newInstance();
             Transformer transFormer = transFactory.newTransformer();
             transFormer.setOutputProperty(OutputKeys.INDENT, "yes");
-            transFormer.transform(new DOMSource(document), new StreamResult(new FileOutputStream(file)));
-
+            FileOutputStream output = null;
+            try {
+                output = new FileOutputStream(file);
+                transFormer.transform(new DOMSource(document), new StreamResult(output));
+            } finally {
+                if (output != null) {
+                    output.close();
+                }
+            }
             // clean for children poms
             cleanChildrenPomSettings(monitor, childrenPomsIncludes);
         }
