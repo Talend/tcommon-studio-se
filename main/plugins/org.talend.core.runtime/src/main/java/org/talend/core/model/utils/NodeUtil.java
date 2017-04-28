@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.components.ComponentCategory;
 import org.talend.core.model.components.IComponent;
 import org.talend.core.model.metadata.DummyMetadataTalendTypeFilter;
@@ -40,7 +41,9 @@ import org.talend.core.model.process.IConnection;
 import org.talend.core.model.process.IConnectionCategory;
 import org.talend.core.model.process.IElementParameter;
 import org.talend.core.model.process.INode;
+import org.talend.core.model.process.INodeConnector;
 import org.talend.core.model.process.IProcess;
+import org.talend.designer.core.ICamelDesignerCoreService;
 
 /**
  * DOC xtan class global comment. Detailled comment <br/>
@@ -1073,5 +1076,61 @@ public class NodeUtil {
             }
         }
         return new DummyMetadataTalendTypeFilter();
+    }
+    
+    /**
+     * Used for GUI normally, to know which connector is valid during the job design / link creation.
+     * @param node
+     * @return
+     */
+    public static INodeConnector getValidConnector(INode node) {
+        INodeConnector mainConnector = null;
+        if (node.isELTComponent()) {
+            mainConnector = node.getConnectorFromType(EConnectionType.TABLE);
+        } else if (ComponentCategory.CATEGORY_4_CAMEL.getName().equals(node.getComponent().getType())) {
+            INodeConnector tmp = null;
+            if (GlobalServiceRegister.getDefault().isServiceRegistered(ICamelDesignerCoreService.class)) {
+                ICamelDesignerCoreService camelService = (ICamelDesignerCoreService) GlobalServiceRegister.getDefault()
+                        .getService(ICamelDesignerCoreService.class);
+                tmp = node.getConnectorFromType(camelService.getTargetConnectionType(node));
+            } else {
+                tmp = node.getConnectorFromType(EConnectionType.ROUTE);
+            }
+            mainConnector = tmp;
+        } else {
+            List<? extends INodeConnector> nodeConnList = node.getConnectorsFromType(EConnectionType.FLOW_MAIN);
+            for (INodeConnector nodeConn : nodeConnList) {
+                if (isConnectorValid(nodeConn)) {
+                    return nodeConn;
+                }
+            }
+        }
+
+        if (!isConnectorValid(mainConnector)) {
+            return null;
+        }
+        return mainConnector;
+    }
+
+    private static boolean isConnectorValid(INodeConnector mainConnector) {
+
+        if (mainConnector == null) {
+            return false;
+        }
+
+        if (!mainConnector.isShow()) {
+            return false;
+        }
+
+        if (mainConnector.getMaxLinkOutput() != -1) {
+            if (mainConnector.getCurLinkNbOutput() >= mainConnector.getMaxLinkOutput()) {
+                return false;
+            }
+        }
+        if (mainConnector.getMaxLinkOutput() == 0) {
+            return false;
+        }
+
+        return true;
     }
 }
