@@ -30,7 +30,7 @@ public class ConvertionHelperTest {
     @Rule
     public PowerMockRule powerMockRule = new PowerMockRule();
 
-    
+
     @Test
     public void testConvertMetadataTable() {
         SAPBWTable table = ConnectionFactory.eINSTANCE.createSAPBWTable();
@@ -42,7 +42,7 @@ public class ConvertionHelperTest {
         assertEquals("TALEND", sourceSysName);
         assertEquals(SAPBWTableHelper.IO_INNERTYPE_HIERARCHY, innerIOType);
     }
-    
+
     @Test
     public void testConvertDatabaseConnectionBooleanString() {
         DatabaseConnection dbProvider = ConnectionFactory.eINSTANCE.createDatabaseConnection();
@@ -136,15 +136,15 @@ public class ConvertionHelperTest {
         String C2 = "C2"; //$NON-NLS-1$
         IMetadataTable table = new MetadataTable();
         IMetadataColumn column = new MetadataColumn();
-        column.setLabel(C1); 
+        column.setLabel(C1);
         table.getListColumns().add(column);
         column = new MetadataColumn();
-        column.setLabel(C2); 
+        column.setLabel(C2);
         table.getListColumns().add(column);
 
         org.talend.core.model.metadata.builder.connection.MetadataTable newTable = ConvertionHelper.convert(table);
         assertFalse(isColumnTaggedAsReadonly(newTable, C2));
-        
+
         table.getColumn(C2).setReadOnly(true);
         newTable = ConvertionHelper.convert(table);
         assertTrue(isColumnTaggedAsReadonly(newTable, C2));
@@ -167,6 +167,49 @@ public class ConvertionHelperTest {
             }
         }
         return false;
+    }
+
+    @Test
+    public void testTaggedValueInConvert() {
+        String C1 = "C1"; //$NON-NLS-1$
+        String C2 = "C2"; //$NON-NLS-1$
+        IMetadataTable table = new MetadataTable();
+        IMetadataColumn column = new MetadataColumn();
+        column.setLabel(C1);
+        table.getListColumns().add(column);
+        column = new MetadataColumn();
+        column.setLabel(C2);
+        table.getListColumns().add(column);
+
+        org.talend.core.model.metadata.builder.connection.MetadataTable newTable = ConvertionHelper.convert(table);
+        EList<org.talend.core.model.metadata.builder.connection.MetadataColumn> columns = newTable.getColumns();
+        for (org.talend.core.model.metadata.builder.connection.MetadataColumn newColumn : columns) {
+            assertEquals(0, newColumn.getTaggedValue().size());
+        }
+
+        String TAG1 = "TAG1"; //$NON-NLS-1$
+        String TAG2 = "TAG2"; //$NON-NLS-1$
+        String TAG1_VALUE = "TAG1_VALUE"; //$NON-NLS-1$
+        String TAG2_VALUE = "TAG2_VALUE"; //$NON-NLS-1$
+        table.getColumn(C1).getAdditionalField().put(TAG1, TAG1_VALUE);
+        table.getColumn(C2).getAdditionalField().put(TAG2, TAG2_VALUE);
+
+        newTable = ConvertionHelper.convert(table);
+        columns = newTable.getColumns();
+        for (org.talend.core.model.metadata.builder.connection.MetadataColumn newColumn : columns) {
+            EList<TaggedValue> taggedValue = newColumn.getTaggedValue();
+            assertEquals(1, taggedValue.size());
+            TaggedValue tv = taggedValue.get(0);
+            String tag = tv.getTag();
+            String value = tv.getValue();
+            if (C1.equals(newColumn.getName())) {
+                assertEquals(TAG1, tag);
+                assertEquals(TAG1_VALUE, value);
+            } else if (C2.equals(newColumn.getName())) {
+                assertEquals(TAG2, tag);
+                assertEquals(TAG2_VALUE, value);
+            }
+        }
     }
 
 }

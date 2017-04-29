@@ -14,6 +14,7 @@ package org.talend.core.model.metadata.builder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -53,13 +54,13 @@ import org.talend.model.bridge.ReponsitoryContextBridge;
 import orgomg.cwm.objectmodel.core.TaggedValue;
 
 /**
- * 
+ *
  */
 public final class ConvertionHelper {
 
     /**
      * This method doesn't perform a deep copy. DOC tguiu Comment method "convert".
-     * 
+     *
      * @param connection
      * @return
      */
@@ -69,7 +70,7 @@ public final class ConvertionHelper {
 
     /**
      * convert a Connection to IMetadataConnection.
-     * 
+     *
      * @param sourceConnection
      * @param defaultContext
      * @return
@@ -93,7 +94,7 @@ public final class ConvertionHelper {
 
     /**
      * fillUIParams from DatabaseConnection to IMetadataConnection..
-     * 
+     *
      * @param metadataConnection
      * @param conn
      */
@@ -145,7 +146,7 @@ public final class ConvertionHelper {
 
     /**
      * fillOtherParameters from DatabaseConnection to IMetadataConnection.
-     * 
+     *
      * @param metaConn
      * @param dbConn
      */
@@ -164,7 +165,7 @@ public final class ConvertionHelper {
 
     /**
      * convert a DatabaseConnection to IMetadataConnection.
-     * 
+     *
      * @param sourceConnection
      * @param defaultContext
      * @param selectedContext
@@ -244,7 +245,7 @@ public final class ConvertionHelper {
     /**
      * Copies other parameters from <code>DatabaseConnection</code> to <code>IMetadataConnection</code>. Added by Marvin
      * Wang on Aug.8, 2012.
-     * 
+     *
      * @param result
      * @param connection
      */
@@ -260,9 +261,9 @@ public final class ConvertionHelper {
     }
 
     /**
-     * 
+     *
      * DOC zshen Comment method "convert".
-     * 
+     *
      * @param sourceConnection
      * @param defaultContext
      * @param selectedContext
@@ -302,9 +303,9 @@ public final class ConvertionHelper {
     }
 
     /**
-     * 
+     *
      * DOC zshen Comment method "convert".
-     * 
+     *
      * @param sourceConnection
      * @param defaultContext
      * @param selectedContext
@@ -509,7 +510,7 @@ public final class ConvertionHelper {
 
     /**
      * DOC qiang.zhang Comment method "convert".
-     * 
+     *
      * @param metadataTable
      * @return
      */
@@ -553,17 +554,31 @@ public final class ConvertionHelper {
             }
             // columns.add(convertToMetaDataColumn(column));
             if (column.isReadOnly()) {
-                TaggedValue tv = TaggedValueHelper.createTaggedValue(DiSchemaConstants.TALEND6_IS_READ_ONLY, "true"); //$NON-NLS-1$
-                newColumn.getTaggedValue().add(tv);
+                addTaggedValue(newColumn, DiSchemaConstants.TALEND6_IS_READ_ONLY, "true");
+            }
+            Map<String, String> additionalFields = column.getAdditionalField();
+            Set<Entry<String, String>> afEntrySet = additionalFields.entrySet();
+            Iterator<Entry<String, String>> afIterator = afEntrySet.iterator();
+            while (afIterator.hasNext()) {
+                Entry<String, String> afEntry = afIterator.next();
+                addTaggedValue(newColumn, afEntry.getKey(), afEntry.getValue());
             }
         }
         result.getColumns().addAll(columns);
         return result;
     }
 
+    private static void addTaggedValue(MetadataColumn column, String tag, String value) {
+        if (column == null || tag == null) {
+            return;
+        }
+        TaggedValue tv = TaggedValueHelper.createTaggedValue(tag, value);
+        column.getTaggedValue().add(tv);
+    }
+
     /**
      * DOC ycbai Comment method "getMeataConnectionSchema".
-     * 
+     *
      * @param metadataConnection
      * @return
      */
