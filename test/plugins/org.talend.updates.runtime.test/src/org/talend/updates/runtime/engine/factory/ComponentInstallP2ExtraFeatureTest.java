@@ -358,7 +358,7 @@ public class ComponentInstallP2ExtraFeatureTest {
         installP2.install(null, allRepoUris);
     }
 
-    @Test
+    // @Test
     public void test_install_remoteSite() throws Exception {
         List<URI> allRepoUris = new ArrayList<URI>();
         allRepoUris.add(URI.create("https://update.talend.com/Studio/dev/"));

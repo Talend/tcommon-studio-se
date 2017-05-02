@@ -126,6 +126,14 @@ public class ComponentNexusP2ExtraFeature extends P2ExtraFeature {
         this.nexusPass = nexusPass;
     }
 
+    public void setNexusPass(String nexusPass) {
+        if (StringUtils.isNotEmpty(nexusPass)) {
+            setNexusPass(nexusPass.toCharArray());
+        } else {
+            setNexusPass((char[]) null);
+        }
+    }
+
     public File getDownloadFolder() {
         return downloadFolder;
     }
@@ -190,6 +198,24 @@ public class ComponentNexusP2ExtraFeature extends P2ExtraFeature {
         return result.toString();
     }
 
+    String findExistedComponentVersion() {
+        if (this.name != null && GlobalServiceRegister.getDefault().isServiceRegistered(IRepositoryService.class)) {
+            IRepositoryService service = (IRepositoryService) GlobalServiceRegister.getDefault().getService(
+                    IRepositoryService.class);
+            if (service != null) {
+                // TODO,need check the paletteType???
+                final IComponent component = service.getComponentsFactory().get(this.name);
+                if (component != null) {
+                    final String version2 = component.getVersion();
+                    if (StringUtils.isNotEmpty(version2)) { // if empty, will be null also.
+                        return version2;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
     @Override
     public boolean isInstalled(IProgressMonitor progress) throws P2ExtraFeatureException {
         final String findExistedComponentVersion = findExistedComponentVersion();
@@ -206,31 +232,17 @@ public class ComponentNexusP2ExtraFeature extends P2ExtraFeature {
             } else { // have installed one, but still try to install again.
                 return false;
             }
-        }
+        }// else // not existed
         return false;
     }
 
-    private String findExistedComponentVersion() {
-        if (this.name != null && GlobalServiceRegister.getDefault().isServiceRegistered(IRepositoryService.class)) {
-            IRepositoryService service = (IRepositoryService) GlobalServiceRegister.getDefault().getService(
-                    IRepositoryService.class);
-            if (service != null) {
-                // TODO,need check the paletteType???
-                final IComponent component = service.getComponentsFactory().get(this.name);
-                if (component != null) {
-                    final String version2 = component.getVersion();
-                    return version2 != null ? version2 : ""; // if found, don't be null, "" at least
-                }
-            }
-        }
-        return null;
-
-    }
-
     public boolean needUpgrade(IProgressMonitor progress) throws P2ExtraFeatureException {
+        if (StringUtils.isEmpty(this.version)) {
+            return false;
+        }
         final String findExistedComponentVersion = findExistedComponentVersion();
         if (findExistedComponentVersion != null) {
-            if (StringUtils.isNotEmpty(findExistedComponentVersion) && StringUtils.isNotEmpty(this.version)) {
+            if (StringUtils.isNotEmpty(findExistedComponentVersion)) {
                 org.osgi.framework.Version compVer = new org.osgi.framework.Version(findExistedComponentVersion);
                 org.osgi.framework.Version ver = new org.osgi.framework.Version(this.version);
                 final int compare = ver.compareTo(compVer);

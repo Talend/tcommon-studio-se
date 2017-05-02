@@ -86,6 +86,9 @@ public class ComponentsNexusInstallFactory extends AbstractExtraUpdatesFactory {
     }
 
     Set<P2ExtraFeature> createFeatures(ComponentNexusP2ExtraFeature defaultFeature, Document doc) {
+        if (doc == null) {
+            return Collections.emptySet();
+        }
         Set<P2ExtraFeature> p2Features = new LinkedHashSet<P2ExtraFeature>();
         if (doc != null) {
             final List componentNodes = doc.selectNodes("//components/component"); //$NON-NLS-1$
