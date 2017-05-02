@@ -1098,7 +1098,7 @@ public class NodeUtil {
             }
             mainConnector = tmp;
         } else {
-            List<? extends INodeConnector> nodeConnList = node.getConnectorsFromType(EConnectionType.FLOW_MAIN);
+            List<? extends INodeConnector> nodeConnList = getConnectorsFromType(node, EConnectionType.FLOW_MAIN);
             for (INodeConnector nodeConn : nodeConnList) {
                 if (isConnectorValid(nodeConn)) {
                     return nodeConn;
@@ -1111,6 +1111,33 @@ public class NodeUtil {
         }
         return mainConnector;
     }
+    
+	public static List<INodeConnector> getConnectorsFromType(final INode node, final EConnectionType connType) {
+		INodeConnector nodeConnector = null;
+		List<INodeConnector> listConnectors = new ArrayList<INodeConnector>();
+		
+		EConnectionType testedType;
+		if (connType.hasConnectionCategory(IConnectionCategory.FLOW)) {
+			testedType = EConnectionType.FLOW_MAIN;
+		} else {
+			testedType = connType;
+		}
+
+		List<? extends INodeConnector> listConnector = node.getListConnector();
+		if (listConnector != null) {
+			int nbConn = 0;
+			while (nbConn < listConnector.size()) {
+				INodeConnector connector = listConnector.get(nbConn);
+				if (connector.getDefaultConnectionType() == testedType && connector.isShow()) {
+					nodeConnector = listConnector.get(nbConn);
+					listConnectors.add(nodeConnector);
+				}
+				nbConn++;
+			}
+		}
+
+		return listConnectors;
+	}
 
     private static boolean isConnectorValid(INodeConnector mainConnector) {
 
