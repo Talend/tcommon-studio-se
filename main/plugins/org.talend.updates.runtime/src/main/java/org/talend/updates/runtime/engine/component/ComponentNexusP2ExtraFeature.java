@@ -15,7 +15,10 @@ package org.talend.updates.runtime.engine.component;
 import java.io.File;
 import java.net.URI;
 import java.util.EnumSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -199,18 +202,30 @@ public class ComponentNexusP2ExtraFeature extends P2ExtraFeature {
     }
 
     String findExistedComponentVersion() {
-        if (this.name != null && GlobalServiceRegister.getDefault().isServiceRegistered(IRepositoryService.class)) {
+        if (StringUtils.isNotEmpty(this.name) && GlobalServiceRegister.getDefault().isServiceRegistered(IRepositoryService.class)) {
             IRepositoryService service = (IRepositoryService) GlobalServiceRegister.getDefault().getService(
                     IRepositoryService.class);
             if (service != null) {
-                // TODO,need check the paletteType???
-                final IComponent component = service.getComponentsFactory().get(this.name);
-                if (component != null) {
-                    final String version2 = component.getVersion();
-                    if (StringUtils.isNotEmpty(version2)) { // if empty, will be null also.
-                        return version2;
+                final Map<String, Set<IComponent>> map = service.getComponentsFactory().getComponentNameMap()
+                        .get(this.name.toLowerCase());
+                if (map != null) {
+                    final Set<IComponent> set = map.get(this.name);
+                    if (set != null) {
+                        org.osgi.framework.Version maxVer = null;
+                        final Iterator<IComponent> iterator = set.iterator();
+                        while (iterator.hasNext()) {
+                            final IComponent c = iterator.next();
+                            if (StringUtils.isNotEmpty(c.getVersion())) {
+                                org.osgi.framework.Version v = new org.osgi.framework.Version(c.getVersion());
+                                if (maxVer == null || maxVer.compareTo(v) < 0) {
+                                    maxVer = v;
+                                }
+                            }
+                        }
+                        return maxVer.toString();
                     }
                 }
+
             }
         }
         return null;
