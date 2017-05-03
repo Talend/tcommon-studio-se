@@ -55,7 +55,7 @@ public class MavenRepoSynchronizer {
         }
     }
 
-    void installM2RepositoryLibs(File parentFolder) {
+    protected void installM2RepositoryLibs(File parentFolder) {
         if (parentFolder != null && parentFolder.exists() && parentFolder.isDirectory()) {
             final File[] allFiles = parentFolder.listFiles();
             if (allFiles == null) {

@@ -290,13 +290,6 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
         if (updatesiteLibFolder.exists() && updatesiteFolder.isDirectory()) {
             final File[] listFiles = updatesiteLibFolder.listFiles();
             if (listFiles != null && listFiles.length > 0) {
-                // // 1. iterate to install the jars to local repository.
-                // final String localRepositoryPath = MavenPlugin.getMaven().getLocalRepositoryPath();
-                // // .../.m2/repository
-                // if (localRepositoryPath != null) {
-                // FileCopyUtils.copyFolder(updatesiteLibFolder, new File(localRepositoryPath));
-                // }
-
                 // if have remote nexus, install component too early and before logon project , will cause the problem
                 // (TUP-17604)
                 if (isLogin) {

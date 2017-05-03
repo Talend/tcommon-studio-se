@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.maven.model.Model;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.InstanceScope;
@@ -32,7 +31,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.talend.commons.runtime.service.ComponentsInstallComponent;
 import org.talend.commons.utils.resource.BundleFileUtil;
-import org.talend.librariesmanager.maven.ArtifactsDeployer;
 import org.talend.librariesmanager.prefs.LibrariesManagerUtils;
 import org.talend.updates.runtime.engine.InstalledUnit;
 import org.talend.updates.runtime.engine.P2Installer;
@@ -647,47 +645,6 @@ public class LocalComponentsInstallComponentTest {
     }
 
     @Test
-    public void test_installM2RepositoryLibs() throws Exception {
-        final File testDataFile = BundleFileUtil.getBundleFile(this.getClass(), P2InstallerTest.TEST_COMP_MYJIRA);
-        Assert.assertNotNull(testDataFile);
-        Assert.assertTrue(testDataFile.exists());
-
-        FilesUtils.unzip(testDataFile.getAbsolutePath(), tmpFolder.getAbsolutePath());
-
-        File updatesiteLibFolder = new File(tmpFolder, ComponentsInstallComponent.FOLDER_M2_REPOSITORY); // m2/repositroy
-        Assert.assertTrue(updatesiteLibFolder.exists());
-        Assert.assertTrue(updatesiteLibFolder.isDirectory());
-
-        // check from local
-        final String localRepositoryPath = MavenPlugin.getMaven().getLocalRepositoryPath();
-        Assert.assertNotNull(localRepositoryPath);
-        File localRepoFolder = new File(localRepositoryPath);
-        Assert.assertTrue(localRepoFolder.exists());
-
-        File libFile = new File(localRepoFolder, "org/talend/libraries/mytest/6.0.0/mytest-6.0.0.jar");
-        if (libFile.exists()) {
-            libFile.delete();
-        }
-        File pomFile = new File(localRepoFolder, "org/talend/libraries/mytest/6.0.0/mytest-6.0.0.pom");
-        if (pomFile.exists()) {
-            pomFile.delete();
-        }
-
-        LocalComponentsInstallComponent installComp = new LocalComponentsInstallComponentTestClass();
-        installComp.installM2RepositoryLibs(updatesiteLibFolder, new ArtifactsDeployer());
-
-        Assert.assertTrue("sync lib for M2 repository failure", libFile.exists());
-        Assert.assertTrue(pomFile.exists());
-
-        // make sure the pom is original one. not generated new one.
-        Model model = MavenPlugin.getMaven().readModel(pomFile);
-        Assert.assertNotNull(model);
-        Assert.assertNotNull(model.getDescription());
-        Assert.assertEquals("It's a test jar", model.getDescription()); // same description
-
-    }
-
-    @Test
     public void test_syncM2Repository() throws Exception {
         final File testDataFile = BundleFileUtil.getBundleFile(this.getClass(), P2InstallerTest.TEST_COMP_MYJIRA);
         Assert.assertNotNull(testDataFile);
@@ -715,7 +672,46 @@ public class LocalComponentsInstallComponentTest {
 
         Assert.assertTrue("sync lib for M2 repository failure", libFile.exists());
         Assert.assertTrue(pomFile.exists());
+    }
 
+    @Test
+    public void test_syncM2Repository_login() throws Exception {
+        final File testDataFile = BundleFileUtil.getBundleFile(this.getClass(), P2InstallerTest.TEST_COMP_MYJIRA);
+        Assert.assertNotNull(testDataFile);
+        Assert.assertTrue(testDataFile.exists());
+
+        FilesUtils.unzip(testDataFile.getAbsolutePath(), tmpFolder.getAbsolutePath());
+
+        // check from local
+        final String localRepositoryPath = MavenPlugin.getMaven().getLocalRepositoryPath();
+        Assert.assertNotNull(localRepositoryPath);
+        File localRepoFolder = new File(localRepositoryPath);
+        Assert.assertTrue(localRepoFolder.exists());
+
+        final String libPath = "org/talend/libraries/mytest/6.0.0/mytest-6.0.0.jar";
+        File libFile = new File(localRepoFolder, libPath);
+        if (libFile.exists()) {
+            libFile.delete();
+        }
+        File pomFile = new File(localRepoFolder, "org/talend/libraries/mytest/6.0.0/mytest-6.0.0.pom");
+        if (pomFile.exists()) {
+            pomFile.delete();
+        }
+
+        LocalComponentsInstallComponent installComp = new LocalComponentsInstallComponentTestClass();
+        installComp.setLogin(true);
+        installComp.syncM2Repository(tmpFolder);
+
+        Assert.assertFalse(libFile.exists());
+        Assert.assertFalse(pomFile.exists());
+
+        final File tempM2RepoFolder = installComp.getTempM2RepoFolder();
+        Assert.assertNotNull(tempM2RepoFolder);
+        Assert.assertTrue(tempM2RepoFolder.exists());
+
+        File tmpLibFile = new File(tempM2RepoFolder, ComponentsInstallComponent.FOLDER_M2_REPOSITORY + '/' + libPath);
+        Assert.assertTrue(tmpLibFile.exists()); // in temp
+        Assert.assertFalse(libFile.exists());// no install yet
     }
 
     @Test
