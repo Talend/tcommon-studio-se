@@ -1924,17 +1924,11 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                         specifiedVersion = JavaHomeUtil.getSpecifiedJavaVersion();
                     }
                     if (specifiedVersion == null) {
-                        if (currentVersion == null) {
-                            newVersion = JavaUtils.DEFAULT_VERSION;
-                        }
+                        newVersion = currentVersion != null ? currentVersion : JavaUtils.DEFAULT_VERSION;
                     } else {
-                        if (!specifiedVersion.equals(currentVersion)) {
-                            newVersion = specifiedVersion;
-                        }
+                        newVersion = specifiedVersion;
                     } 
-                    if (newVersion != null) {
-                        JavaUtils.updateProjectJavaVersion(newVersion);
-                    }
+                    JavaUtils.updateProjectJavaVersion(newVersion);
                     
                     coreService.deleteAllJobs(false);
                     TimeMeasure.step("logOnProject", "clean Java project"); //$NON-NLS-1$ //$NON-NLS-2$     
