@@ -80,12 +80,7 @@ public class UpdateStudioWizard extends Wizard {
         addPage(new ChooseUpdateSitesWizardPage(updateWizardModel));
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public boolean performFinish() {
-        storeDoNotShowAgainPref();
-        InstallNewFeatureJob installNewFeatureJob = new InstallNewFeatureJob(new HashSet<ExtraFeature>(
-                updateWizardModel.selectedExtraFeatures), updateWizardModel.getFeatureRepositories());
+    private boolean needRestart() {
         boolean _needRestart = false;
         if (updateWizardModel.selectedExtraFeatures != null) {
             for (Object feature : updateWizardModel.selectedExtraFeatures) {
@@ -97,7 +92,16 @@ public class UpdateStudioWizard extends Wizard {
                 }
             }
         }
-        final boolean needRestart = _needRestart;
+        return _needRestart;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean performFinish() {
+        storeDoNotShowAgainPref();
+        InstallNewFeatureJob installNewFeatureJob = new InstallNewFeatureJob(new HashSet<ExtraFeature>(
+                updateWizardModel.selectedExtraFeatures), updateWizardModel.getFeatureRepositories());
+
         installNewFeatureJob.schedule();
         // listen to the job end so that we can ask the user to restart the Studio
         installNewFeatureJob.addJobChangeListener(new JobChangeAdapter() {
@@ -140,8 +144,7 @@ public class UpdateStudioWizard extends Wizard {
                             // reset the last type of project set.
                             // this will force from the Application class to reset all the perspectives
                             store.putValue("last_started_project_type", "NO_TYPE");
-
-                            if (needRestart) {
+                            if (needRestart()) {
                                 boolean isOkToRestart = MessageDialog.openQuestion(getShell(),
                                         Messages.getString("UpdateStudioWizard.install.sucessfull"), finalMessage); //$NON-NLS-1$
                                 if (isOkToRestart) {
