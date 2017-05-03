@@ -60,5 +60,12 @@
             name="Components ">
       </factory>
    </extension>
+   <extension
+         point="org.talend.core.repository.login.task">
+      <loginTask
+            class="org.talend.updates.runtime.login.SyncComponentMavenRepoLoginTask"
+            priority="normal">
+      </loginTask>
+   </extension>
 
 </plugin>

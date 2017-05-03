@@ -20,7 +20,7 @@ This is mainly used for initialisation and should report any progress and respon
       </annotation>
       <complexType>
          <sequence>
-            <element ref="loginTask"/>
+            <element ref="loginTask" minOccurs="1" maxOccurs="unbounded"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>

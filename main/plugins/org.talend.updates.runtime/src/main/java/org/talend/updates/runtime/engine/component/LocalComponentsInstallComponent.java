@@ -22,24 +22,20 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.maven.model.Model;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.equinox.p2.core.ProvisionException;
-import org.eclipse.m2e.core.MavenPlugin;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.runtime.service.ComponentsInstallComponent;
 import org.talend.commons.runtime.service.PatchComponent;
+import org.talend.commons.runtime.utils.io.FileCopyUtils;
 import org.talend.commons.utils.resource.UpdatesHelper;
-import org.talend.core.runtime.maven.MavenUrlHelper;
-import org.talend.librariesmanager.maven.ArtifactsDeployer;
 import org.talend.librariesmanager.prefs.LibrariesManagerUtils;
 import org.talend.updates.runtime.engine.InstalledUnit;
 import org.talend.updates.runtime.engine.P2Installer;
+import org.talend.updates.runtime.maven.MavenRepoSynchronizer;
 import org.talend.utils.io.FilesUtils;
 
 /**
@@ -58,6 +54,8 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
     private List<File> failedComponents;
 
     private boolean isLogin = false;
+
+    private File tmpM2RepoFolder;
 
     @Override
     public void setLogin(boolean login) {
@@ -127,6 +125,13 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
             //
         }
         return new File(System.getProperty("user.dir") + '/' + PatchComponent.FOLDER_PATCHES); //$NON-NLS-1$
+    }
+
+    public File getTempM2RepoFolder() {
+        if (tmpM2RepoFolder == null) {
+            tmpM2RepoFolder = new File(getPatchesFolder().getParentFile(), "m2temp"); //$NON-NLS-1$
+        }
+        return tmpM2RepoFolder;
     }
 
     /**
@@ -292,54 +297,16 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
                 // FileCopyUtils.copyFolder(updatesiteLibFolder, new File(localRepositoryPath));
                 // }
 
-                // 2. install to local and try to deploy to remote nexus
-                installM2RepositoryLibs(updatesiteLibFolder, new ArtifactsDeployer());
-            }
-        }
-    }
-
-    void installM2RepositoryLibs(File parentFolder, ArtifactsDeployer deployer) {
-        if (parentFolder != null && parentFolder.exists() && parentFolder.isDirectory()) {
-            final File[] allFiles = parentFolder.listFiles();
-            if (allFiles == null) {
-                return;
-            }
-            List<File> pomFiles = new ArrayList<File>();
-            List<File> subFiles = new ArrayList<File>();
-            final String pomExt = ".pom"; //$NON-NLS-1$
-            for (File file : allFiles) {
-                if (file.isDirectory()) {
-                    subFiles.add(file);
-                } else if (file.isFile()) {
-                    if (file.getName().endsWith(pomExt)) {
-                        pomFiles.add(file);
-                    }
+                // if have remote nexus, install component too early and before logon project , will cause the problem
+                // (TUP-17604)
+                if (isLogin) {
+                    // prepare to install lib after logon. so copy all to temp folder
+                    FileCopyUtils.copyFolder(updatesiteLibFolder, new File(getTempM2RepoFolder(), FOLDER_M2_REPOSITORY));
+                } else {
+                    // install to local and try to deploy to remote nexus
+                    MavenRepoSynchronizer synchronizer = new MavenRepoSynchronizer(updatesiteLibFolder);
+                    synchronizer.sync();
                 }
-            }
-            for (File pomFile : pomFiles) {
-                try {
-                    Model model = MavenPlugin.getMaven().readModel(pomFile);
-                    String packaging = model.getPackaging();
-                    if (packaging.equals("bundle")) { //$NON-NLS-1$
-                        packaging = "jar"; //$NON-NLS-1$
-                    }
-                    final String mvnUrl = MavenUrlHelper.generateMvnUrl(model.getGroupId() != null ? model.getGroupId() : model.getParent().getGroupId(), model.getArtifactId(),
-                            model.getVersion() != null ? model.getVersion() : model.getParent().getVersion(), packaging, null);
-
-                    IPath libPath = new Path(pomFile.getAbsolutePath()).removeFileExtension().addFileExtension(
-                            packaging == null ? "jar" : packaging); //$NON-NLS-1$
-                    final File libFile = libPath.toFile();
-                    if (libFile.exists()) {
-                        deployer.deployToLocalMaven(mvnUrl, libFile.getAbsolutePath(), pomFile.getAbsolutePath(), true);
-                    }
-                } catch (Exception e) {
-                    ExceptionHandler.process(e);
-                }
-            }
-
-            // children folders
-            for (File subFolder : subFiles) {
-                installM2RepositoryLibs(subFolder, deployer);
             }
         }
     }
