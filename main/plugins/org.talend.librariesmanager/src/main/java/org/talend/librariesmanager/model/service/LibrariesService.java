@@ -239,4 +239,9 @@ public class LibrariesService implements ILibrariesService {
        this.getLibrariesService().deployProjectLibrary(source);
     }
 
+    @Override
+    public boolean isMavenArtifactAvailable(String mvnUri) {
+        return getLibrariesService().isMavenArtifactAvailable(mvnUri);
+    }
+
 }
