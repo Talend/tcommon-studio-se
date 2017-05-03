@@ -119,4 +119,6 @@ public interface IDragAndDropServiceHandler {
      * @return
      */
     public boolean isGenericRepositoryValue(List<ComponentProperties> componentProperties, String paramName);
+
+    public Object getGenericRepositoryValue(List<ComponentProperties> componentProperties, String paramName);
 }

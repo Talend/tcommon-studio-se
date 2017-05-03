@@ -2837,4 +2837,14 @@ public class RepositoryToComponentProperty {
         }
         return false;
     }
+
+    public static Object getGenericRepositoryValue(Connection connection, List<ComponentProperties> componentProperties,
+            String paramName) {
+        for (IDragAndDropServiceHandler handler : DragAndDropManager.getHandlers()) {
+            if (handler.canHandle(connection)) {
+                return handler.getGenericRepositoryValue(componentProperties, paramName);
+            }
+        }
+        return null;
+    }
 }
