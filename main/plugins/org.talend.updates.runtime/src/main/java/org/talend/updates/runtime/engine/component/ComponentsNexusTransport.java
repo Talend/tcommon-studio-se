@@ -49,20 +49,51 @@ public class ComponentsNexusTransport {
         this.nexusPass = nexusPass;
     }
 
+    protected String getNexusURL() {
+        return nexusURL;
+    }
+
+    protected String getNexusUser() {
+        return nexusUser;
+    }
+
+    protected String getNexusPassStr() {
+        if (nexusPass == null) {
+            return null;
+        }
+        return new String(nexusPass);
+
+    }
+
     public ComponentsNexusTransport(String nexusUrl) {
         this(nexusUrl, null, null);
     }
 
     public boolean isAvailable() {
-        if (nexusURL == null || nexusURL.isEmpty()) {
+        if (getNexusURL() == null || getNexusURL().isEmpty()) {
             return false;
         }
-        return NexusServerUtils.checkConnectionStatus(nexusURL, nexusUser, new String(nexusPass));
+        return NexusServerUtils.checkConnectionStatus(getNexusURL(), getNexusUser(), getNexusPassStr());
     }
 
     public void downloadFile(IProgressMonitor monitor, String mvnURI, File target) throws Exception {
         MavenArtifact artifact = MavenUrlHelper.parseMvnUrl(mvnURI);
         downloadFile(monitor, artifact, target);
+    }
+
+    private void setAuthenticator() {
+        if (StringUtils.isNotEmpty(getNexusUser())) {
+            Authenticator.setDefault(new Authenticator() {
+
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    final String nexusPassStr = getNexusPassStr();
+                    return new PasswordAuthentication(getNexusUser(), nexusPassStr != null ? nexusPassStr.toCharArray()
+                            : new char[0]);
+                }
+
+            });
+        }
     }
 
     public void downloadFile(IProgressMonitor monitor, MavenArtifact artifact, File target) throws Exception {
@@ -85,18 +116,10 @@ public class ComponentsNexusTransport {
         BufferedOutputStream bos = null;
         HttpURLConnection httpURLConnection = null;
         try {
-            if (StringUtils.isNotEmpty(nexusUser)) {
-                Authenticator.setDefault(new Authenticator() {
+            setAuthenticator();
 
-                    @Override
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(nexusUser, nexusPass);
-                    }
-
-                });
-            }
-
-            httpURLConnection = NexusServerUtils.getHttpURLConnection(nexusURL, reletivePath, nexusUser, new String(nexusPass));
+            httpURLConnection = NexusServerUtils.getHttpURLConnection(getNexusURL(), reletivePath, getNexusUser(),
+                    getNexusPassStr());
 
             if (monitor.isCanceled()) {
                 throw new OperationCanceledException();
@@ -167,18 +190,10 @@ public class ComponentsNexusTransport {
         BufferedInputStream bis = null;
         HttpURLConnection httpURLConnection = null;
         try {
-            if (StringUtils.isNotEmpty(nexusUser)) {
-                Authenticator.setDefault(new Authenticator() {
+            setAuthenticator();
 
-                    @Override
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(nexusUser, nexusPass);
-                    }
-
-                });
-            }
-
-            httpURLConnection = NexusServerUtils.getHttpURLConnection(nexusURL, reletivePath, nexusUser, new String(nexusPass));
+            httpURLConnection = NexusServerUtils.getHttpURLConnection(getNexusURL(), reletivePath, getNexusUser(),
+                    getNexusPassStr());
 
             if (monitor.isCanceled()) {
                 throw new OperationCanceledException();
