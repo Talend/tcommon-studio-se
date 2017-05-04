@@ -34,7 +34,7 @@ public interface DiSchemaConstants {
     public final static String TALEND6_LABEL = "di.table.label"; //$NON-NLS-1$
 
     /** Property is present if readonly, otherwise not present. */
-    public final static String TALEND6_IS_READ_ONLY = SchemaConstants.TALEND_IS_LOCKED; //$NON-NLS-1$
+    public final static String TALEND6_IS_READ_ONLY = SchemaConstants.TALEND_IS_LOCKED; 
 
     /** The key will have this as a prefix, pointing to the value. */
     public final static String TALEND6_ADDITIONAL_PROPERTIES = "di.prop."; //$NON-NLS-1$
@@ -52,7 +52,7 @@ public interface DiSchemaConstants {
      */
 
     /** Property is present if key, otherwise not present. */
-    public final static String TALEND6_COLUMN_IS_KEY = SchemaConstants.TALEND_COLUMN_IS_KEY; //$NON-NLS-1$
+    public final static String TALEND6_COLUMN_IS_KEY = SchemaConstants.TALEND_COLUMN_IS_KEY; 
 
     public final static String TALEND6_COLUMN_SOURCE_TYPE = SchemaConstants.TALEND_COLUMN_DB_TYPE;
 
@@ -99,7 +99,7 @@ public interface DiSchemaConstants {
 
     /** The key will have this as a prefix, pointing to the value. */
     public final static String TALEND6_DYNAMIC_ADDITIONAL_PROPERTIES = "di.dynamic.prop."; //$NON-NLS-1$
-    
+
     /** Original Avro logical type date */
     public final static String TALEND6_COLUMN_DATE_DATE = "di.date.date";
 
@@ -109,5 +109,7 @@ public interface DiSchemaConstants {
     /** Original Avro date, but no logical type */
     // FIXME - this one should go away once we move the all of the components to use the Avro logical types
     public final static String TALEND6_COLUMN_DATE_NO_LOGICAL_TYPE = "di.date.noLogicalType";
+
+    public final static String TALEND6_COLUMN_LOGICAL_TYPE = "di.column.logicalType"; //$NON-NLS-1$
 
 }

@@ -17,21 +17,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.avro.LogicalType;
 import org.apache.avro.LogicalTypes;
 import org.apache.avro.Schema;
 import org.apache.avro.SchemaBuilder;
-import org.apache.avro.SchemaBuilder.BaseFieldTypeBuilder;
 import org.apache.avro.SchemaBuilder.FieldAssembler;
 import org.apache.avro.SchemaBuilder.FieldBuilder;
 import org.apache.avro.SchemaBuilder.PropBuilder;
 import org.apache.avro.SchemaBuilder.RecordBuilder;
 import org.apache.commons.lang.StringUtils;
+import org.eclipse.emf.common.util.EList;
 import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
 import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.core.model.metadata.types.JavaTypesManager;
 import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.cwm.helper.TaggedValueHelper;
 import org.talend.daikon.avro.AvroUtils;
+import org.talend.daikon.avro.LogicalTypeUtils;
 import org.talend.daikon.avro.SchemaConstants;
 
 import orgomg.cwm.objectmodel.core.Expression;
@@ -79,7 +81,7 @@ public final class MetadataToolAvroHelper {
 
     /**
      * Copy all of the information from the MetadataTable in the form of key/value properties into an Avro object.
-     * 
+     *
      * @param builder Any Avro builder capable of taking key/value in the form of strings.
      * @param in The element to copy information from.
      * @return the instance of the builder passed in.
@@ -188,7 +190,7 @@ public final class MetadataToolAvroHelper {
                 || JavaTypesManager.CHARACTER.getId().equals(tt) || JavaTypesManager.PASSWORD.getId().equals(tt)) {
             type = AvroUtils._string();
         }
-        
+
         // Types with Document/Unknown elements, store as binary
         if ("id_Document".equals(tt) || JavaTypesManager.OBJECT.getId().equals(tt)) {
             type = AvroUtils._string();
@@ -197,6 +199,12 @@ public final class MetadataToolAvroHelper {
         if (JavaTypesManager.LIST.getId().equals(tt)) {
             // FIXME it's not right, as it don't store all the information about the object
         }
+
+        Schema logicalTypeSchema = getLogicalTypeSchema(in);
+        if (logicalTypeSchema != null) {
+            type = logicalTypeSchema;
+        }
+
         // Can this occur?
         if (type == null) {
             throw new UnsupportedOperationException("Unrecognized type " + tt); //$NON-NLS-1$
@@ -204,6 +212,16 @@ public final class MetadataToolAvroHelper {
 
         type = in.isNullable() ? AvroUtils.wrapAsNullable(type) : type;
         return defaultValue == null ? fb.type(type).noDefault() : fb.type(type).withDefault(defaultValue);
+    }
+
+    private static Schema getLogicalTypeSchema(org.talend.core.model.metadata.builder.connection.MetadataColumn column) {
+        EList<TaggedValue> taggedValue = column.getTaggedValue();
+        for (TaggedValue tv : taggedValue) {
+            if (DiSchemaConstants.TALEND6_COLUMN_LOGICAL_TYPE.equals(tv.getTag())) {
+                return LogicalTypeUtils.getSchemaByLogicalType(tv.getValue());
+            }
+        }
+        return null;
     }
 
     private static boolean matchTag(org.talend.core.model.metadata.builder.connection.MetadataColumn in, String value) {
@@ -214,7 +232,7 @@ public final class MetadataToolAvroHelper {
         }
         return false;
     }
-    
+
     private static Schema copyDynamicColumnProperties(Schema schema,
             org.talend.core.model.metadata.builder.connection.MetadataColumn in) {
         Map<String, String> props = new HashMap<String, String>();
@@ -230,7 +248,7 @@ public final class MetadataToolAvroHelper {
 
         for (TaggedValue tv : in.getTaggedValue()) {
             if (DiSchemaConstants.TALEND6_IS_READ_ONLY.equals(tv.getTag())) {
-                schema = AvroUtils.setProperty(schema, DiSchemaConstants.TALEND6_DYNAMIC_IS_READ_ONLY, tv.getValue()); //$NON-NLS-1$
+                schema = AvroUtils.setProperty(schema, DiSchemaConstants.TALEND6_DYNAMIC_IS_READ_ONLY, tv.getValue());
             } else {
                 String additionalTag = tv.getTag();
                 if (tv.getValue() != null) {
@@ -244,7 +262,7 @@ public final class MetadataToolAvroHelper {
         if (in.isKey()) {
             schema = AvroUtils.setProperty(schema, DiSchemaConstants.TALEND6_COLUMN_IS_KEY, "true"); //$NON-NLS-1$
         }
-        if (in.getType() != null) {
+        if (in.getSourceType() != null) {
             schema = AvroUtils.setProperty(schema, DiSchemaConstants.TALEND6_COLUMN_SOURCE_TYPE, in.getSourceType());
         }
         if (in.getTalendType() != null) {
@@ -289,10 +307,10 @@ public final class MetadataToolAvroHelper {
         return schema;
     }
 
-    
+
     /**
      * Copy all of the information from the IMetadataColumn in the form of key/value properties into an Avro object.
-     * 
+     *
      * @param builder Any Avro builder capable of taking key/value in the form of strings.
      * @param in The element to copy information from.
      * @return the instance of the builder passed in.
@@ -323,7 +341,7 @@ public final class MetadataToolAvroHelper {
         if (in.isKey()) {
             builder.prop(DiSchemaConstants.TALEND6_COLUMN_IS_KEY, "true"); //$NON-NLS-1$
         }
-        if (in.getType() != null) {
+        if (in.getSourceType() != null) {
             builder.prop(DiSchemaConstants.TALEND6_COLUMN_SOURCE_TYPE, in.getSourceType());
         }
         if (in.getTalendType() != null) {
@@ -515,6 +533,7 @@ public final class MetadataToolAvroHelper {
         col.setLabel(field.name());
         col.setName(field.name());
         Schema nonnullable = AvroUtils.unwrapIfNullable(in);
+        LogicalType logicalType = LogicalTypes.fromSchemaIgnoreInvalid(nonnullable);
         if (AvroUtils.isSameType(nonnullable, AvroUtils._boolean())) {
             col.setTalendType(JavaTypesManager.BOOLEAN.getId());
         } else if (AvroUtils.isSameType(nonnullable, AvroUtils._byte())) {
@@ -534,7 +553,7 @@ public final class MetadataToolAvroHelper {
         } else if (AvroUtils.isSameType(nonnullable, AvroUtils._float())) {
             col.setTalendType(JavaTypesManager.FLOAT.getId());
         } else if (AvroUtils.isSameType(nonnullable, AvroUtils._int())) {
-        	if (LogicalTypes.fromSchemaIgnoreInvalid(nonnullable) == LogicalTypes.date()) { 
+            if (logicalType == LogicalTypes.date()) {
              	col.setTalendType(JavaTypesManager.DATE.getId());
                 TaggedValue tv = TaggedValueHelper.createTaggedValue(DiSchemaConstants.TALEND6_COLUMN_DATE_DATE, "true");
                 col.getTaggedValue().add(tv);
@@ -543,7 +562,7 @@ public final class MetadataToolAvroHelper {
         		col.setTalendType(JavaTypesManager.INTEGER.getId());
         	}
         } else if (AvroUtils.isSameType(nonnullable, AvroUtils._long())) {
-        	if (LogicalTypes.fromSchemaIgnoreInvalid(nonnullable) == LogicalTypes.timestampMillis()) { 
+            if (logicalType == LogicalTypes.timestampMillis()) {
              	col.setTalendType(JavaTypesManager.DATE.getId());
                 TaggedValue tv = TaggedValueHelper.createTaggedValue(DiSchemaConstants.TALEND6_COLUMN_DATE_TIMESTAMP, "true");
                 col.getTaggedValue().add(tv);
@@ -644,6 +663,12 @@ public final class MetadataToolAvroHelper {
         }
         if (null != (prop = field.getProp(DiSchemaConstants.TALEND6_COLUMN_RELATIONSHIP_TYPE))) {
             col.setRelationshipType(prop);
+        }
+
+        if (logicalType != null) {
+            TaggedValue tv = TaggedValueHelper.createTaggedValue(DiSchemaConstants.TALEND6_COLUMN_LOGICAL_TYPE,
+                    logicalType.getName());
+            col.getTaggedValue().add(tv);
         }
 
         // If the source type wasn't set, there is an issue. Can this occur in the studio.
