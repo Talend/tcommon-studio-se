@@ -128,8 +128,7 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
 
     private static ProjectRepositoryNode defaultProjRepoNode;
 
-    private static ProjectRepositoryNode dummyProjRepoNode = new ProjectRepositoryNode(null, null,
-            ENodeType.STABLE_SYSTEM_FOLDER);
+    private static ProjectRepositoryNode dummyProjRepoNode;
 
     private final IProxyRepositoryFactory factory = ProxyRepositoryFactory.getInstance();
 
@@ -178,6 +177,10 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
 
     public static ProjectRepositoryNode getInstance() {
         if (!ProxyRepositoryFactory.getInstance().isFullLogonFinished()) {
+            if (dummyProjRepoNode == null) {
+                dummyProjRepoNode = new ProjectRepositoryNode(null, null, ENodeType.STABLE_SYSTEM_FOLDER);
+                dummyProjRepoNode.initialize(null);
+            }
             return dummyProjRepoNode;
         }
         if (defaultProjRepoNode == null) {
