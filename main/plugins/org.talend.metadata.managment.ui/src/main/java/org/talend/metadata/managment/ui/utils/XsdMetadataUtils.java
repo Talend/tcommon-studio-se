@@ -303,6 +303,10 @@ public final class XsdMetadataUtils {
             nameWithoutPrefixForColumn = curName;
         }
         retriever = MetadataTalendType.getMappingTypeRetriever("xsd_id"); //$NON-NLS-1$
+        String originalDataType = node.getOriginalDataType();
+        if (originalDataType != null && !originalDataType.startsWith("xs:")) { //$NON-NLS-1$
+            originalDataType = "xs:" + originalDataType; //$NON-NLS-1$
+        }
         xmlNode.setAttribute("attri"); //$NON-NLS-1$
         xmlNode.setType(retriever.getDefaultSelectedTalendType(node.getDataType()));
         MetadataColumn column = null;
@@ -311,11 +315,11 @@ public final class XsdMetadataUtils {
         case ATreeNode.ATTRIBUTE_TYPE:
             // fix for TDI-20390 and TDI-20671 ,XMLPath for attribute should only store attribute name but not full
             // xpath
-            xmlNode.setXMLPath("" + node.getValue()); //$NON-NLS-1$
             column = ConnectionFactory.eINSTANCE.createMetadataColumn();
-            column.setTalendType(xmlNode.getType());
+            column.setTalendType(retriever.getDefaultSelectedTalendType(originalDataType));
             String uniqueName = extractColumnName(nameWithoutPrefixForColumn, metadataTable.getColumns());
             column.setLabel(uniqueName);
+            xmlNode.setXMLPath("" + node.getValue()); //$NON-NLS-1$
             xmlNode.setRelatedColumn(uniqueName);
             metadataTable.getColumns().add(column);
             break;
@@ -328,11 +332,11 @@ public final class XsdMetadataUtils {
                 }
             }
             if (!haveElementOrAttributes) {
-                xmlNode.setAttribute("branch"); //$NON-NLS-1$
                 column = ConnectionFactory.eINSTANCE.createMetadataColumn();
-                column.setTalendType(xmlNode.getType());
+                column.setTalendType(retriever.getDefaultSelectedTalendType(originalDataType));
                 uniqueName = extractColumnName(nameWithoutPrefixForColumn, metadataTable.getColumns());
                 column.setLabel(uniqueName);
+                xmlNode.setAttribute("branch"); //$NON-NLS-1$
                 xmlNode.setRelatedColumn(uniqueName);
                 metadataTable.getColumns().add(column);
             } else {

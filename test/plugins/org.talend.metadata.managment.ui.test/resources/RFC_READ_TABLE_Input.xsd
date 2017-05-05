@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="RFC_READ_TABLE">
+    <xs:complexType>
+      <xs:all>
+        <xs:element name="INPUT">
+          <xs:complexType>
+            <xs:all>
+              <xs:element name="DELIMITER">
+                <xs:simpleType>
+                  <xs:restriction base="string"/>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="NO_DATA">
+                <xs:simpleType>
+                  <xs:restriction base="string"/>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="QUERY_TABLE">
+                <xs:simpleType>
+                  <xs:restriction base="string"/>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="ROWCOUNT">
+                <xs:simpleType>
+                  <xs:restriction base="integer"/>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="ROWSKIPS">
+                <xs:simpleType>
+                  <xs:restriction base="integer"/>
+                </xs:simpleType>
+              </xs:element>
+            </xs:all>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="TABLES">
+          <xs:complexType>
+            <xs:all>
+              <xs:element name="DATA">
+                <xs:complexType>
+                  <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                    <xs:element name="item">
+                      <xs:complexType>
+                        <xs:all>
+                          <xs:element name="WA">
+                            <xs:simpleType>
+                              <xs:restriction base="string"/>
+                            </xs:simpleType>
+                          </xs:element>
+                        </xs:all>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="FIELDS">
+                <xs:complexType>
+                  <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                    <xs:element name="item">
+                      <xs:complexType>
+                        <xs:all>
+                          <xs:element name="FIELDNAME">
+                            <xs:simpleType>
+                              <xs:restriction base="string"/>
+                            </xs:simpleType>
+                          </xs:element>
+                          <xs:element name="OFFSET">
+                            <xs:simpleType>
+                              <xs:restriction base="long"/>
+                            </xs:simpleType>
+                          </xs:element>
+                          <xs:element name="LENGTH">
+                            <xs:simpleType>
+                              <xs:restriction base="long"/>
+                            </xs:simpleType>
+                          </xs:element>
+                          <xs:element name="TYPE">
+                            <xs:simpleType>
+                              <xs:restriction base="string"/>
+                            </xs:simpleType>
+                          </xs:element>
+                          <xs:element name="FIELDTEXT">
+                            <xs:simpleType>
+                              <xs:restriction base="string"/>
+                            </xs:simpleType>
+                          </xs:element>
+                        </xs:all>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="OPTIONS">
+                <xs:complexType>
+                  <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                    <xs:element name="item">
+                      <xs:complexType>
+                        <xs:all>
+                          <xs:element name="TEXT">
+                            <xs:simpleType>
+                              <xs:restriction base="string"/>
+                            </xs:simpleType>
+                          </xs:element>
+                        </xs:all>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:all>
+          </xs:complexType>
+        </xs:element>
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
