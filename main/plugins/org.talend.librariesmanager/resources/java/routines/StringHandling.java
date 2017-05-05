@@ -523,6 +523,10 @@ public class StringHandling {
              return first_string;
          }
     }
+    
+	public static String LPAD(String first_string, int length) {
+		return LPAD(first_string, length, null);
+	}
 	
 	/**
 	 * 
@@ -557,7 +561,7 @@ public class StringHandling {
         return result.toString();
 	}
 
-	public String RPAD(String first_string, int length) {
+	public static String RPAD(String first_string, int length) {
 		return RPAD(first_string, length, null);
 	}
 	
