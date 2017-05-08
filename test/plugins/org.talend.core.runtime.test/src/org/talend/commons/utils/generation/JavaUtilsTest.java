@@ -20,6 +20,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.talend.core.runtime.CoreRuntimePlugin;
+import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
 
 public class JavaUtilsTest {
 
@@ -31,6 +32,17 @@ public class JavaUtilsTest {
     public void setUp() throws Exception {
         eclipsePreferences = InstanceScope.INSTANCE.getNode(JavaCore.PLUGIN_ID);
         originalCompliance = eclipsePreferences.get(JavaCore.COMPILER_COMPLIANCE, JavaCore.VERSION_1_8);
+    }
+    
+    @Test
+    public void testGetProjectJavaVersion() {
+        ProjectPreferenceManager manager = CoreRuntimePlugin.getInstance().getProjectPreferenceManager();
+        
+        JavaUtils.getProjectJavaVersion();
+        assertTrue(manager == CoreRuntimePlugin.getInstance().getProjectPreferenceManager());
+        
+        JavaUtils.getProjectJavaVersion(true);
+        assertFalse(manager == CoreRuntimePlugin.getInstance().getProjectPreferenceManager());
     }
 
     @Test

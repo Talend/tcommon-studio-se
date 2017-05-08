@@ -1918,7 +1918,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                     currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.cleanWorkspace"), 1); //$NON-NLS-1$
                     
                     String specifiedVersion = null;
-                    String currentVersion = JavaUtils.getProjectJavaVersion();
+                    String currentVersion = JavaUtils.getProjectJavaVersion(true);
                     String newVersion = null;
                     if (CommonUIPlugin.isFullyHeadless()) {
                         specifiedVersion = JavaHomeUtil.getSpecifiedJavaVersion();

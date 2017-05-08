@@ -227,7 +227,11 @@ public class CoreRuntimePlugin extends Plugin {
     }
 
     public ProjectPreferenceManager getProjectPreferenceManager() {
-        if (projectPreferenceManager == null) {
+        return getProjectPreferenceManager(false);
+    }
+    
+    public ProjectPreferenceManager getProjectPreferenceManager(boolean reload) {
+        if (projectPreferenceManager == null || reload) {
             projectPreferenceManager = new ProjectPreferenceManager(PLUGIN_ID);
         }
         return projectPreferenceManager;

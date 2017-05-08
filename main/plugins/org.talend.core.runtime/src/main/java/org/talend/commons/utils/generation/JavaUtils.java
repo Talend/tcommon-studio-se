@@ -226,7 +226,11 @@ public final class JavaUtils {
     }
     
     public static String getProjectJavaVersion() {
-        String javaVersion = CoreRuntimePlugin.getInstance().getProjectPreferenceManager().getValue(PROJECT_JAVA_VERSION_KEY);
+        return getProjectJavaVersion(false);
+    }
+    
+    public static String getProjectJavaVersion(boolean reload) {
+        String javaVersion = CoreRuntimePlugin.getInstance().getProjectPreferenceManager(reload).getValue(PROJECT_JAVA_VERSION_KEY);
         if (javaVersion != null && javaVersion.trim().equals("")) { //$NON-NLS-1$
             javaVersion = null;
         }
