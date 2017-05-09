@@ -83,6 +83,22 @@ public enum EHadoopProperties {
     GOOGLE_REGION,
 
     GOOGLE_JARS_BUCKET,
+
+    HD_WEBHCAT_HOSTNAME,
+
+    HD_WEBHCAT_PORT,
+
+    HD_WEBHCAT_USERNAME,
+
+    HD_INSIGHT_USERNAME,
+
+    HD_AZURE_HOSTNAME,
+
+    HD_AZURE_CONTAINER,
+
+    HD_AZURE_USERNAME,
+
+    HD_AZURE_DEPLOYBOLB,
     ;
 
     public String getName() {
