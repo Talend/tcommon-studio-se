@@ -281,7 +281,9 @@ public class ComponentNexusP2ExtraFeature extends P2ExtraFeature {
             throw new OperationCanceledException();
         }
         final File workFolder = getDownloadFolder();
-        FilesUtils.deleteFolder(workFolder, false); // empty the folder
+        if (!isKeepDownloadFile()) {
+            FilesUtils.deleteFolder(workFolder, false); // empty the folder
+        }
         if (!workFolder.exists()) {
             workFolder.mkdirs();
         }

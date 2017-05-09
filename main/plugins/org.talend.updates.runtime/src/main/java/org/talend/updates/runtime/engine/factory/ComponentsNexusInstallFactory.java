@@ -13,6 +13,7 @@
 package org.talend.updates.runtime.engine.factory;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Collections;
@@ -26,8 +27,11 @@ import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Node;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SubMonitor;
+import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.updates.runtime.engine.component.ComponentNexusP2ExtraFeature;
 import org.talend.updates.runtime.engine.component.ComponentsNexusTransport;
@@ -36,18 +40,40 @@ import org.talend.updates.runtime.model.ExtraFeature;
 import org.talend.updates.runtime.model.FeatureCategory;
 import org.talend.updates.runtime.model.P2ExtraFeature;
 import org.talend.updates.runtime.model.P2ExtraFeatureException;
-import org.talend.utils.files.FileUtils;
 
 /**
  * DOC Talend class global comment. Detailled comment
  */
 public class ComponentsNexusInstallFactory extends AbstractExtraUpdatesFactory {
 
-    private File downloadFolder;
+    public static final String XPATH_INDEX_COMPONENT = "//components/component"; //$NON-NLS-1$
+
+    public static final String ATTR_INDEX_NAME = "name"; //$NON-NLS-1$
+
+    public static final String ATTR_INDEX_VERSION = "version"; //$NON-NLS-1$
+
+    public static final String ATTR_INDEX_MVNURI = "mvn_uri"; //$NON-NLS-1$
+
+    public static final String ATTR_INDEX_PRODUCT = "product"; //$NON-NLS-1$
+
+    public static final String ATTR_INDEX_DESC = "description"; //$NON-NLS-1$
+
+    protected File downloadFolder;
 
     public ComponentsNexusInstallFactory() {
         super();
-        this.downloadFolder = FileUtils.createTmpFolder("download", "component");
+    }
+
+    protected File getDownloadFolder() {
+        if (this.downloadFolder == null) {
+            final String downloadedName = ".DownloadedComponents"; //$NON-NLS-1$
+            try {
+                this.downloadFolder = new File(Platform.getConfigurationLocation().getDataArea(downloadedName).getPath());
+            } catch (IOException e) {
+                this.downloadFolder = new File(System.getProperty("user.dir") + '/' + downloadedName); //$NON-NLS-1$
+            }
+        }
+        return this.downloadFolder;
     }
 
     public String getP2ProfileId() {
@@ -63,22 +89,33 @@ public class ComponentsNexusInstallFactory extends AbstractExtraUpdatesFactory {
             ComponentNexusP2ExtraFeature defaultFeature = new ComponentNexusP2ExtraFeature();
             return retrieveComponentsFromIndex(monitor, defaultFeature);
         } catch (Exception e) {
-            ExceptionHandler.process(e);
-            return Collections.EMPTY_SET;
+            if (CommonsPlugin.isDebugMode()) {
+                ExceptionHandler.process(e);
+            }
+            return Collections.emptySet();
         }
     }
 
     protected Set<P2ExtraFeature> retrieveComponentsFromIndex(IProgressMonitor monitor,
             ComponentNexusP2ExtraFeature defaultFeature) throws Exception {
+        if (monitor == null) {
+            monitor = new NullProgressMonitor();
+        }
         if (monitor.isCanceled()) {
             throw new OperationCanceledException();
         }
+
         ComponentsNexusTransport transport = new ComponentsNexusTransport(defaultFeature.getNexusURL(),
                 defaultFeature.getNexusUser(), defaultFeature.getNexusPass());
         if (transport.isAvailable()) {
-
+            if (monitor.isCanceled()) {
+                throw new OperationCanceledException();
+            }
             final Document doc = transport.downloadXMLDocument(monitor, defaultFeature.getIndexArtifact());
 
+            if (monitor.isCanceled()) {
+                throw new OperationCanceledException();
+            }
             final Set<P2ExtraFeature> p2Features = createFeatures(defaultFeature, doc);
             return p2Features;
         }
@@ -91,16 +128,18 @@ public class ComponentsNexusInstallFactory extends AbstractExtraUpdatesFactory {
         }
         Set<P2ExtraFeature> p2Features = new LinkedHashSet<P2ExtraFeature>();
         if (doc != null) {
-            final List componentNodes = doc.selectNodes("//components/component"); //$NON-NLS-1$
+            final List componentNodes = doc.selectNodes(XPATH_INDEX_COMPONENT);
             for (Iterator iter = componentNodes.iterator(); iter.hasNext();) {
                 Element element = (Element) iter.next();
-                final String name = element.attributeValue("name"); //$NON-NLS-1$
-                final String version = element.attributeValue("version"); //$NON-NLS-1$
-                final String mvn_uri = element.attributeValue("mvn_uri"); //$NON-NLS-1$
+                final String name = element.attributeValue(ATTR_INDEX_NAME);
+                final String version = element.attributeValue(ATTR_INDEX_VERSION);
+                final String mvn_uri = element.attributeValue(ATTR_INDEX_MVNURI);
 
                 // filter product
-                final String product = element.attributeValue("product"); //$NON-NLS-1$
-                if (StringUtils.isNotEmpty(product)) {
+                String product = element.attributeValue(ATTR_INDEX_PRODUCT);
+                if (StringUtils.isEmpty(product)) {
+                    product = null;// make sure to unify to null
+                } else if (StringUtils.isNotEmpty(product)) {
                     String acronym = getAcronym();
                     final String[] prods = product.split(",");
                     if (prods != null && !Arrays.asList(prods).contains(acronym)) {
@@ -108,8 +147,8 @@ public class ComponentsNexusInstallFactory extends AbstractExtraUpdatesFactory {
                     }
                 }
 
-                final Node descriptionNode = element.selectSingleNode("description");
-                final String description = descriptionNode != null ? descriptionNode.getText() : null; //$NON-NLS-1$
+                final Node descriptionNode = element.selectSingleNode(ATTR_INDEX_DESC);
+                final String description = descriptionNode != null ? descriptionNode.getText() : null;
 
                 final ComponentNexusP2ExtraFeature cnFeature = new ComponentNexusP2ExtraFeature(name, version, description,
                         product, mvn_uri);
@@ -118,7 +157,7 @@ public class ComponentsNexusInstallFactory extends AbstractExtraUpdatesFactory {
                 cnFeature.setNexusURL(defaultFeature.getNexusURL());
                 cnFeature.setNexusUser(defaultFeature.getNexusUser());
                 cnFeature.setNexusPass(defaultFeature.getNexusPass());
-                cnFeature.setDownloadFolder(downloadFolder); // use same folder
+                cnFeature.setDownloadFolder(getDownloadFolder()); // use same folder
 
                 p2Features.add(cnFeature);
             }

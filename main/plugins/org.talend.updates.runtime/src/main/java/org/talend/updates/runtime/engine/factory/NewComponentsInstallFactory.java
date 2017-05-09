@@ -189,6 +189,7 @@ public class NewComponentsInstallFactory extends AbstractExtraUpdatesFactory {
                     }
                 }
             } finally {
+                FilesUtils.deleteFolder(getWorkFolder(), true);
                 installComponent.setComponentFolder(null); // set back
             }
         }

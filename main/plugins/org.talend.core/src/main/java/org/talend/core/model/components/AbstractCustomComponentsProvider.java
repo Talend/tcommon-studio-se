@@ -51,8 +51,13 @@ public abstract class AbstractCustomComponentsProvider extends AbstractComponent
         return needInstalledNewCFComponents;
     }
 
+    public void resetNewComponentsCache() {
+        needInstalledNewCFComponents = new JSONObject();
+    }
+
     @Override
     public void preComponentsLoad() throws IOException {
+        resetNewComponentsCache();
         File installationFolder = getInstallationFolder();
         if (installationFolder.exists()) {
             FilesUtils.removeFolder(installationFolder, true);

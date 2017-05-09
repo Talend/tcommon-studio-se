@@ -95,6 +95,8 @@ public class ComponentInstallP2ExtraFeatureTest {
         assertNotNull(workFolder);
         assertTrue(workFolder.exists());
         assertEquals(0, workFolder.list().length); // no any files
+        // clean
+        FilesUtils.deleteFolder(workFolder, true);
     }
 
     @Test
@@ -106,6 +108,8 @@ public class ComponentInstallP2ExtraFeatureTest {
         assertNotNull(workFolder);
         assertTrue(workFolder.exists());
         assertEquals(0, workFolder.list().length); // no any files
+        // clean
+        FilesUtils.deleteFolder(workFolder, true);
     }
 
     @Test
@@ -117,6 +121,8 @@ public class ComponentInstallP2ExtraFeatureTest {
         assertNotNull(workFolder);
         assertTrue(workFolder.exists());
         assertEquals(0, workFolder.list().length); // no any files
+        // clean
+        FilesUtils.deleteFolder(workFolder, true);
     }
 
     @Test
@@ -130,6 +136,8 @@ public class ComponentInstallP2ExtraFeatureTest {
         assertNotNull(workFolder);
         assertTrue(workFolder.exists());
         assertEquals(0, workFolder.list().length); // no any files
+        // clean
+        FilesUtils.deleteFolder(workFolder, true);
     }
 
     @Test
@@ -146,6 +154,8 @@ public class ComponentInstallP2ExtraFeatureTest {
         assertNotNull(workFolder);
         assertTrue(workFolder.exists());
         assertEquals(0, workFolder.list().length); // no any files
+        // clean
+        FilesUtils.deleteFolder(workFolder, true);
     }
 
     @Test
@@ -171,7 +181,8 @@ public class ComponentInstallP2ExtraFeatureTest {
         File compZipFile = new File(workFolder, testDataFile.getName());
         assertTrue(compZipFile.exists());
         assertEquals(FilesUtils.getChecksumAlder32(testDataFile), FilesUtils.getChecksumAlder32(compZipFile));
-
+        // clean
+        FilesUtils.deleteFolder(workFolder, true);
     }
 
     @Test
@@ -186,6 +197,8 @@ public class ComponentInstallP2ExtraFeatureTest {
         final Status status = installP2.doInstallFromFolder();
         assertNull(status);
         assertFalse(installP2.needRestart());
+        // clean
+        FilesUtils.deleteFolder(workFolder, true);
     }
 
     @Test
@@ -228,6 +241,8 @@ public class ComponentInstallP2ExtraFeatureTest {
         assertTrue(status.getMessage().contains("All components insalled"));
 
         assertTrue(installP2.needRestart());
+        // clean
+        FilesUtils.deleteFolder(workFolder, true);
     }
 
     @Test
@@ -244,6 +259,8 @@ public class ComponentInstallP2ExtraFeatureTest {
         final Status status = installP2.doInstallFromFolder();
         assertNotNull(status);
         assertEquals(IStatus.INFO, status.getSeverity());
+        // clean
+        FilesUtils.deleteFolder(workFolder, true);
     }
 
     @Test
@@ -299,6 +316,8 @@ public class ComponentInstallP2ExtraFeatureTest {
                 && status.getMessage().contains("Some components Failure"));
 
         assertTrue(installP2.needRestart());
+        // clean
+        FilesUtils.deleteFolder(workFolder, true);
     }
 
     @Test
@@ -338,6 +357,8 @@ public class ComponentInstallP2ExtraFeatureTest {
         assertTrue(status.getMessage().contains("NO Components"));
 
         assertFalse(installP2.needRestart());
+        // clean
+        FilesUtils.deleteFolder(workFolder, true);
     }
 
     @Test(expected = P2ExtraFeatureException.class)

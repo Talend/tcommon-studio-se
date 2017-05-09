@@ -39,6 +39,7 @@ import org.dom4j.io.XMLWriter;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.network.NetworkUtil;
 import org.talend.core.prefs.ITalendCorePrefConstants;
@@ -136,7 +137,9 @@ public class NexusServerUtils {
                 return true;
             }
         } catch (Exception e) {
-            ExceptionHandler.process(e);
+            if (CommonsPlugin.isDebugMode()) {
+                ExceptionHandler.process(e);
+            }
         } finally {
             Authenticator.setDefault(defaultAuthenticator);
         }
