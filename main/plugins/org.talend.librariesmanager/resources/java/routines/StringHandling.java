@@ -485,7 +485,7 @@ public class StringHandling {
 
     }
 
-	public String RTRIM(String value) {
+	public static String RTRIM(String value) {
 		return RTRIM(value, null);
 	}
 	
