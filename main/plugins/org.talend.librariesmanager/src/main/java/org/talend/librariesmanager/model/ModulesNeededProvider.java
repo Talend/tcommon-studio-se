@@ -53,6 +53,7 @@ import org.talend.core.model.component_cache.ComponentCachePackage;
 import org.talend.core.model.component_cache.ComponentInfo;
 import org.talend.core.model.component_cache.ComponentsCache;
 import org.talend.core.model.component_cache.util.ComponentCacheResourceFactoryImpl;
+import org.talend.core.model.components.ComponentCategory;
 import org.talend.core.model.components.ComponentManager;
 import org.talend.core.model.components.IComponent;
 import org.talend.core.model.components.IComponentsFactory;
@@ -134,12 +135,10 @@ public class ModulesNeededProvider {
          * TimeMeasure.pause("ModulesNeededProvider.getModulesNeededForJobs");
          */
         if (componentImportNeedsList.isEmpty()) {
-            componentImportNeedsList.addAll(getModulesNeededForRoutines(ERepositoryObjectType.ROUTINES));
             // TimeMeasure.step("ModulesNeededProvider.getModulesNeededForRoutines");
             componentImportNeedsList.addAll(getRunningModules());
             //            TimeMeasure.step(Messages.getString("ModulesNeededProvider.1"), "ModulesNeededProvider.getModulesNeededForRoutines"); //$NON-NLS-1$ //$NON-NLS-2$
-            
-            
+
             // TimeMeasure.begin("ModulesNeededProvider.getModulesNeededForApplication");
             componentImportNeedsList.addAll(getModulesNeededForApplication());
             if (PluginChecker.isMetadataPluginLoaded()) {
@@ -439,6 +438,23 @@ public class ModulesNeededProvider {
         return importNeedsList;
     }
 
+    public static Set<ModuleNeeded> getModulesNeededForProcess(ProcessItem processItem, IProcess process) {
+        Set<ModuleNeeded> modulesNeeded = new HashSet<ModuleNeeded>();
+        List<ModuleNeeded> modulesNeededForRoutines = ModulesNeededProvider.getModulesNeededForRoutines(processItem,
+                ERepositoryObjectType.ROUTINES);
+        modulesNeeded.addAll(modulesNeededForRoutines);
+        List<ModuleNeeded> modulesNeededForPigudf = ModulesNeededProvider.getModulesNeededForRoutines(processItem,
+                ERepositoryObjectType.PIG_UDF);
+        modulesNeeded.addAll(modulesNeededForPigudf);
+        if (ComponentCategory.CATEGORY_4_CAMEL.getName().equals(process.getComponentsType())) {
+            // route do not save any relateionship with beans , so add all for now
+            Set<ModuleNeeded> modulesNeededForBean = ModulesNeededProvider.getCodesModuleNeededs(
+                    ERepositoryObjectType.getType("BEANS"), false);
+            modulesNeeded.addAll(modulesNeededForBean);
+        }
+        return modulesNeeded;
+    }
+
     public static List<ModuleNeeded> getModulesNeededForRoutines(ProcessItem processItem, ERepositoryObjectType type) {
         return getModulesNeededForRoutines(new ProcessItem[] { processItem }, type);
     }
@@ -489,12 +505,12 @@ public class ModulesNeededProvider {
                 libUiService = (ILibraryManagerUIService) GlobalServiceRegister.getDefault().getService(
                         ILibraryManagerUIService.class);
             }
-            
+
             if (!systemRoutines.isEmpty() && libUiService != null) {
                 List<IRepositoryViewObject> systemRoutineItems = libUiService.collectRelatedRoutines(systemRoutines, true, type);
                 importNeedsList.addAll(collectModuleNeeded(systemRoutineItems, systemRoutines, true));
             }
-            
+
             if (!userRoutines.isEmpty() && libUiService != null) {
                 List<IRepositoryViewObject> collectUserRoutines = libUiService.collectRelatedRoutines(userRoutines, false, type);
                 importNeedsList.addAll(collectModuleNeeded(collectUserRoutines, userRoutines, false));
@@ -884,12 +900,17 @@ public class ModulesNeededProvider {
         return unUsedModules;
     }
 
+    public static Set<ModuleNeeded> getSystemRunningModules() {
+        // only routine have system item
+        return getCodesModuleNeededs(ERepositoryObjectType.ROUTINES, true);
+    }
+
     public static Set<ModuleNeeded> getRunningModules() {
         Set<ModuleNeeded> runningModules = new HashSet<ModuleNeeded>();
 
-        runningModules.addAll(getCodesModuleNeededs(ERepositoryObjectType.ROUTINES, true));
-        runningModules.addAll(getCodesModuleNeededs(ERepositoryObjectType.getType("BEANS"), true)); //$NON-NLS-1$
-        runningModules.addAll(getCodesModuleNeededs(ERepositoryObjectType.PIG_UDF, true));
+        runningModules.addAll(getCodesModuleNeededs(ERepositoryObjectType.ROUTINES, false));
+        runningModules.addAll(getCodesModuleNeededs(ERepositoryObjectType.getType("BEANS"), false)); //$NON-NLS-1$
+        runningModules.addAll(getCodesModuleNeededs(ERepositoryObjectType.PIG_UDF, false));
         return runningModules;
     }
 
@@ -902,9 +923,9 @@ public class ModulesNeededProvider {
         if (type.equals(ERepositoryObjectType.ROUTINES)) {
             // add the system routines modules
             codesModules.addAll(collectModuleNeeded(new ArrayList<IRepositoryViewObject>(), new HashSet<String>(), true));
-            
+
         }
-        if (!systemOnly || !type.equals(ERepositoryObjectType.ROUTINES)){
+        if (!systemOnly || !type.equals(ERepositoryObjectType.ROUTINES)) {
             codesModules.addAll(getModulesNeededForRoutines(type));
         }
         return codesModules;

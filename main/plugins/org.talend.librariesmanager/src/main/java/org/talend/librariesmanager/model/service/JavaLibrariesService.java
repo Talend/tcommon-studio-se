@@ -32,9 +32,6 @@ import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
 import org.talend.core.ILibraryManagerUIService;
 import org.talend.core.language.ECodeLanguage;
-import org.talend.core.model.general.ModuleNeeded;
-import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
-import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.routines.IRoutinesProvider;
 import org.talend.core.utils.TalendCacheUtils;
 import org.talend.designer.codegen.PigTemplate;
@@ -168,7 +165,7 @@ public class JavaLibrariesService extends AbstractLibrariesService {
     @Override
     public void checkInstalledLibraries() {
         // check and install system jars for routines
-        repositoryBundleService.deployModules(ModulesNeededProvider.getCodesModuleNeededs(ERepositoryObjectType.ROUTINES,true) , null);
+        repositoryBundleService.deployModules(ModulesNeededProvider.getSystemRunningModules(), null);
         Set<String> existLibraries = repositoryBundleService.list();
         List<String> modulesNeededNames = ModulesNeededProvider.getModulesNeededNames();
         ModulesNeededProvider.getUnUsedModules().clear();
