@@ -12,6 +12,10 @@
 // ============================================================================
 package org.talend.utils.sql;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.Reader;
+import java.sql.Clob;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -134,6 +138,82 @@ public final class ResultSetUtils {
                 throw e;
             }
 
+        }
+        return object;
+    }
+
+    /**
+     * 
+     * Get Object by special column index
+     * 
+     * @param set
+     * @param columnIndex
+     * @return
+     * @throws SQLException
+     * @throws IOException
+     */
+    public static Object getBigObject(ResultSet set, int columnIndex) throws SQLException {
+        Object object = null;
+        try {
+            object = set.getObject(columnIndex);
+            if (object != null && object instanceof Clob) {
+                Reader is = ((Clob) object).getCharacterStream();
+                BufferedReader br = new BufferedReader(is);
+                String str = br.readLine();
+                StringBuffer sb = new StringBuffer();
+                while (str != null) {
+                    sb.append(str);
+                    str = br.readLine();
+                }
+                return sb.toString();
+            }
+        } catch (SQLException e) {
+            if (NULLDATE.equals(set.getString(columnIndex))) {
+                object = null;
+            } else {
+                throw e;
+            }
+
+        } catch (IOException e) {
+            object = null;
+        }
+        return object;
+    }
+
+    /**
+     * 
+     * Get Object by special column index
+     * 
+     * @param set
+     * @param columnIndex
+     * @return
+     * @throws SQLException
+     * @throws IOException
+     */
+    public static Object getBigObject(ResultSet set, String columnName) throws SQLException {
+        Object object = null;
+        try {
+            object = set.getObject(columnName);
+            if (object != null && object instanceof Clob) {
+                Reader is = ((Clob) object).getCharacterStream();
+                BufferedReader br = new BufferedReader(is);
+                String str = br.readLine();
+                StringBuffer sb = new StringBuffer();
+                while (str != null) {
+                    sb.append(str);
+                    str = br.readLine();
+                }
+                return sb.toString();
+            }
+        } catch (SQLException e) {
+            if (NULLDATE.equals(set.getString(columnName))) {
+                object = null;
+            } else {
+                throw e;
+            }
+
+        } catch (IOException e) {
+            object = null;
         }
         return object;
     }
