@@ -48,6 +48,10 @@ public class VersionUtils {
 
     private static Logger log = Logger.getLogger(VersionUtils.class);
 
+    private static String talendVersion;
+
+    private static String productVersion;
+
     public static int compareTo(String arg0, String arg1) {
         return new Version(arg0).compareTo(new Version(arg1));
     }
@@ -71,7 +75,7 @@ public class VersionUtils {
         }
         return version;
     }
-    
+
     /**
      * 
      * DOC ggu Comment method "getEclipseProductFile".
@@ -87,40 +91,44 @@ public class VersionUtils {
     }
 
     public static String getInternalVersion() {
-    	if (Platform.inDevelopmentMode()) {
-    		return getVersion();
-    	}
-    	
-        String version = null;
-        Bundle bundle = FrameworkUtil.getBundle(VersionUtils.class);
-        if (bundle != null) {
-            version = (String) bundle.getHeaders().get(org.osgi.framework.Constants.BUNDLE_VERSION);
+        if (Platform.inDevelopmentMode()) {
+            return getDisplayVersion();
         }
+        if (productVersion == null) {
+            synchronized (VersionUtils.class) {
+                if (productVersion == null) {
+                    Bundle bundle = FrameworkUtil.getBundle(VersionUtils.class);
+                    if (bundle != null) {
+                        productVersion = (String) bundle.getHeaders().get(org.osgi.framework.Constants.BUNDLE_VERSION);
+                    }
 
-        FileInputStream in = null;
-        try {
-            File eclipseProductFile = getEclipseProductFile();
-            if (eclipseProductFile != null && eclipseProductFile.exists()) {
-                Properties p = new Properties();
-                in = new FileInputStream(eclipseProductFile);
-                p.load(in);
-                String productFileVersion = p.getProperty("version"); //$NON-NLS-1$
-                if (productFileVersion != null && !"".equals(productFileVersion)) { //$NON-NLS-1$
-                    version = productFileVersion;
-                }
-            }
-        } catch (Exception e) {
-            //
-        } finally {
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (IOException e) {
-                    //
+                    FileInputStream in = null;
+                    try {
+                        File eclipseProductFile = getEclipseProductFile();
+                        if (eclipseProductFile != null && eclipseProductFile.exists()) {
+                            Properties p = new Properties();
+                            in = new FileInputStream(eclipseProductFile);
+                            p.load(in);
+                            String productFileVersion = p.getProperty("version"); //$NON-NLS-1$
+                            if (productFileVersion != null && !"".equals(productFileVersion)) { //$NON-NLS-1$
+                                productVersion = productFileVersion;
+                            }
+                        }
+                    } catch (Exception e) {
+                        //
+                    } finally {
+                        if (in != null) {
+                            try {
+                                in.close();
+                            } catch (IOException e) {
+                                //
+                            }
+                        }
+                    }
                 }
             }
         }
-        return version;
+        return productVersion;
     }
 
     /**
@@ -144,36 +152,40 @@ public class VersionUtils {
      * 
      */
     public static String getTalendVersion() {
-        String version = null;
-
-        Bundle b = Platform.getBundle(COMMONS_PLUGIN_ID);
-        if (b != null) {
-            try {
-                URL fileUrl = FileLocator.find(b, new Path(TALEND_PROPERTIES_FILE), null);
-                if (fileUrl != null) {
-                    URL url = FileLocator.toFileURL(fileUrl);
-                    if (url != null) {
-                        FileInputStream in = new FileInputStream(url.getPath());
+        if (talendVersion == null) {
+            synchronized (VersionUtils.class) {
+                if (talendVersion == null) {
+                    Bundle b = Platform.getBundle(COMMONS_PLUGIN_ID);
+                    if (b != null) {
                         try {
-                            Properties props = new Properties();
-                            props.load(in);
-                            version = props.getProperty(TALEND_VERSION_PROP);
-                        } finally {
-                            in.close();
+                            URL fileUrl = FileLocator.find(b, new Path(TALEND_PROPERTIES_FILE), null);
+                            if (fileUrl != null) {
+                                URL url = FileLocator.toFileURL(fileUrl);
+                                if (url != null) {
+                                    FileInputStream in = new FileInputStream(url.getPath());
+                                    try {
+                                        Properties props = new Properties();
+                                        props.load(in);
+                                        talendVersion = props.getProperty(TALEND_VERSION_PROP);
+                                    } finally {
+                                        in.close();
+                                    }
+                                }
+                            }
+                        } catch (IOException e) {
+                            log.error(Messages.getString("VersionUtils.readPropertyFileError"), e);
                         }
                     }
                 }
-            } catch (IOException e) {
-                log.error(Messages.getString("VersionUtils.readPropertyFileError"), e);
             }
         }
-        if (version == null) {
-            version = getVersion();
+        if (talendVersion == null) {
+            return getDisplayVersion();
         }
 
-        return version;
+        return talendVersion;
     }
-    
+
     public static String getPublishVersion(String version) {
         if (version != null) {
             // if using job version.
