@@ -19,9 +19,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import junit.framework.Assert;
-
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -117,9 +116,8 @@ public class ERepositoryObjectTypeTest {
         NAMESPACES("NAMESPACES"),
         REPORTS("REPORTS"),
         SAMPLE_DATA("SAMPLE_DATA"),
-        STRUCTURES("STRUCTURES"), 
-        
-        
+        STRUCTURES("STRUCTURES"),
+
         BEANS("Bean"),
         HADOOPCLUSTER("repository.metadata.hadoopCluster"),
         JOBLET("repository.standardjoblet"),
@@ -137,8 +135,7 @@ public class ERepositoryObjectTypeTest {
         salesforce("salesforce"),
         SPARK_JOBLET("repository.sparkjoblet"),
         SPARK_STREAMING_JOBLET("repository.sparkstreamingjoblet"),
-        TEST_CONTAINER("repository.testContainer"),
-        ;
+        TEST_CONTAINER("repository.testContainer"), ;
 
         private String i18nKey;
 
@@ -315,7 +312,10 @@ public class ERepositoryObjectTypeTest {
 
             @Override
             boolean valid(ERepositoryObjectType type) {
-                return type.isResouce() && type.isDIItemType();
+                /*
+                 * don't test the generic one, because it's dynamic
+                 */
+                return type.isResouce() && type.isDIItemType() && !type.isGenericType();
             }
 
             @Override

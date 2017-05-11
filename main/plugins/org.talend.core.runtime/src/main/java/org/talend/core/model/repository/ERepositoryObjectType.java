@@ -387,6 +387,11 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
      */
     private boolean isAllowPlainFolder = false;
 
+    /*
+     * This attribute is used to mark the type which come from generic way.
+     */
+    private boolean isFromGeneric = false;
+
     private List<ERepositoryObjectType> parentTypes = new ArrayList<ERepositoryObjectType>();
 
     private List<ERepositoryObjectType> childrenTypes = new ArrayList<ERepositoryObjectType>();
@@ -404,13 +409,13 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
      * <font color="red">This value may be <b>null</b> in TOS, <b>should add NPE check</b></font>
      */
     public final static ERepositoryObjectType JOBLET = ERepositoryObjectType.valueOf("JOBLET"); //$NON-NLS-1$
-    
+
     public final static ERepositoryObjectType JOBLET_DESIGNS = ERepositoryObjectType.valueOf("JOBLET_DESIGNS"); //$NON-NLS-1$
-    
+
     public final static ERepositoryObjectType SPARK_JOBLET = ERepositoryObjectType.valueOf("SPARK_JOBLET"); //$NON-NLS-1$
-    
+
     public final static ERepositoryObjectType SPARK_STREAMING_JOBLET = ERepositoryObjectType.valueOf("SPARK_STREAMING_JOBLET"); //$NON-NLS-1$
-    
+
     public final static ERepositoryObjectType TEST_CONTAINER = ERepositoryObjectType.valueOf("TEST_CONTAINER"); //$NON-NLS-1$
 
     public final static ERepositoryObjectType CODE = ERepositoryObjectType.valueOf("CODE"); //$NON-NLS-1$
@@ -619,6 +624,17 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
         this.label = label;
     }
 
+    /**
+     * 
+     * DOC ggu ERepositoryObjectType constructor comment.
+     * 
+     * Used for GenericWizardInternalService to create Generic Types
+     */
+    ERepositoryObjectType(String type, String label, String alias, String folder, int ordinal, String[] products) {
+        this(type, label, folder, type, ordinal, false, alias, products, false, new String[0], true);
+        isFromGeneric = true;
+    }
+
     public static <E> DynaEnum<? extends DynaEnum<?>>[] values() {
         Project currentProject = ProjectManager.getInstance().getCurrentProject();
         String projectType = null;
@@ -661,6 +677,10 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
             }
         }
         return null;
+    }
+
+    public boolean isGenericType() {
+        return isFromGeneric;
     }
 
     public String getLabel() {
@@ -1382,7 +1402,7 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
 
         return allTypes;
     }
-    
+
     public static List<ERepositoryObjectType> getAllTypesOfJoblet() {
         List<ERepositoryObjectType> allTypes = new ArrayList<ERepositoryObjectType>();
 
