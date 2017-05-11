@@ -12,7 +12,8 @@
 // ============================================================================
 package org.talend.migrationtool;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
@@ -20,22 +21,17 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 import org.talend.commons.utils.VersionUtils;
 import org.talend.core.model.migration.IMigrationToolService;
 import org.talend.core.model.properties.MigrationStatus;
 import org.talend.core.model.properties.MigrationTask;
 import org.talend.core.model.properties.Project;
 import org.talend.core.model.utils.MigrationUtil;
+import org.talend.core.utils.ReflectionUtils;
 
 /**
  * DOC ycbai class global comment. Detailled comment
  */
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({ VersionUtils.class })
 public class MigrationToolServiceTest {
 
     private static IMigrationToolService service;
@@ -106,16 +102,22 @@ public class MigrationToolServiceTest {
     }
 
     private boolean checkMigrationTasks(String talendVersion, String topVersion, String topBreaks) {
-        Project project = mock(Project.class);
-        PowerMockito.mockStatic(VersionUtils.class);
+        final String oldTalendVersion = VersionUtils.getTalendVersion();
+        try {
+            ReflectionUtils.setStaticFieldValue(VersionUtils.class.getName(), VersionUtils.class.getClassLoader(),
+                    "talendVersion", talendVersion);
 
-        EList<MigrationTask> tasks = new BasicEList<MigrationTask>();
-        tasks.add(MigrationUtil.createMigrationTask("task", topVersion, topBreaks, DEFAULT_STATUS));
-        when(project.getMigrationTask()).thenReturn(tasks);
+            Project project = mock(Project.class);
 
-        when(VersionUtils.getTalendVersion()).thenReturn(talendVersion);
+            EList<MigrationTask> tasks = new BasicEList<MigrationTask>();
+            tasks.add(MigrationUtil.createMigrationTask("task", topVersion, topBreaks, DEFAULT_STATUS));
+            when(project.getMigrationTask()).thenReturn(tasks);
 
-        return service.checkMigrationTasks(project);
+            return service.checkMigrationTasks(project);
+        } finally {
+            ReflectionUtils.setStaticFieldValue(VersionUtils.class.getName(), VersionUtils.class.getClassLoader(),
+                    "talendVersion", oldTalendVersion);
+        }
     }
 
 }
