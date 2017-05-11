@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -155,27 +156,35 @@ public class RemoteComponentsTransportTest {
 
     @Test(expected = FileNotFoundException.class)
     public void test_downloadFile_siteFile_notExisted() throws Exception {
-        RemoteComponentsTransportTestClass transport = new RemoteComponentsTransportTestClass(tmpFolder);
-        final URI uri = URI.create("https://raw.githubusercontent.com/Talend/tcommon-studio-se/master");
-        transport.downloadFile(null, uri, "abc.txt");
+        try {
+            RemoteComponentsTransportTestClass transport = new RemoteComponentsTransportTestClass(tmpFolder);
+            final URI uri = URI.create("https://raw.githubusercontent.com/Talend/tcommon-studio-se/master");
+            transport.downloadFile(null, uri, "abc.txt");
+        } catch (UnknownHostException e) {
+            // nothing to do, when can't access web
+        }
     }
 
     @Test
     public void test_downloadFile_siteFile_existed() throws Exception {
-        RemoteComponentsTransportTestClass transport = new RemoteComponentsTransportTestClass(tmpFolder);
-        URI uri = URI.create("https://raw.githubusercontent.com/Talend/tcommon-studio-se/master");
-        final String fileName = "README.md";
-        File downloadFile = transport.downloadFile(null, uri, fileName);
-        Assert.assertNotNull(downloadFile);
-        Assert.assertTrue("Download failure from " + uri + " for file: " + fileName, downloadFile.exists());
-        Assert.assertTrue(downloadFile.length() > 0); // not empty file
+        try {
+            RemoteComponentsTransportTestClass transport = new RemoteComponentsTransportTestClass(tmpFolder);
+            URI uri = URI.create("https://raw.githubusercontent.com/Talend/tcommon-studio-se/master");
+            final String fileName = "README.md";
+            File downloadFile = transport.downloadFile(null, uri, fileName);
+            Assert.assertNotNull(downloadFile);
+            Assert.assertTrue("Download failure from " + uri + " for file: " + fileName, downloadFile.exists());
+            Assert.assertTrue(downloadFile.length() > 0); // not empty file
 
-        // with last /
-        uri = URI.create("https://raw.githubusercontent.com/Talend/tcommon-studio-se/master/");
-        downloadFile = transport.downloadFile(null, uri, fileName);
-        Assert.assertNotNull(downloadFile);
-        Assert.assertTrue("Download failure from " + uri + " for file: " + fileName, downloadFile.exists());
-        Assert.assertTrue(downloadFile.length() > 0); // not empty file
+            // with last /
+            uri = URI.create("https://raw.githubusercontent.com/Talend/tcommon-studio-se/master/");
+            downloadFile = transport.downloadFile(null, uri, fileName);
+            Assert.assertNotNull(downloadFile);
+            Assert.assertTrue("Download failure from " + uri + " for file: " + fileName, downloadFile.exists());
+            Assert.assertTrue(downloadFile.length() > 0); // not empty file
+        } catch (UnknownHostException e) {
+            // nothing to do, when can't access web
+        }
     }
 
     @Test(expected = FileNotFoundException.class)
