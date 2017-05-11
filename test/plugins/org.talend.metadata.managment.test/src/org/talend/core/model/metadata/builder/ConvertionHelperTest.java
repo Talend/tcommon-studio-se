@@ -1,14 +1,13 @@
 package org.talend.core.model.metadata.builder;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.eclipse.emf.common.util.EList;
-import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.rule.PowerMockRule;
+import org.talend.core.IRepositoryContextService;
 import org.talend.core.model.metadata.DiSchemaConstants;
 import org.talend.core.model.metadata.IMetadataColumn;
 import org.talend.core.model.metadata.IMetadataConnection;
@@ -17,19 +16,14 @@ import org.talend.core.model.metadata.MetadataColumn;
 import org.talend.core.model.metadata.MetadataTable;
 import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
+import org.talend.core.model.metadata.builder.connection.FileConnection;
 import org.talend.core.model.metadata.builder.connection.SAPBWTable;
-import org.talend.core.runtime.CoreRuntimePlugin;
+import org.talend.core.utils.ReflectionUtils;
 import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.helper.SAPBWTableHelper;
-
 import orgomg.cwm.objectmodel.core.TaggedValue;
 
-@PrepareForTest({ CoreRuntimePlugin.class })
 public class ConvertionHelperTest {
-
-    @Rule
-    public PowerMockRule powerMockRule = new PowerMockRule();
-
 
     @Test
     public void testConvertMetadataTable() {
@@ -47,15 +41,49 @@ public class ConvertionHelperTest {
     public void testConvertDatabaseConnectionBooleanString() {
         DatabaseConnection dbProvider = ConnectionFactory.eINSTANCE.createDatabaseConnection();
 
-        // mock CoreRuntimePlugin
-        CoreRuntimePlugin instanceMock = Mockito.mock(CoreRuntimePlugin.class);
-        PowerMockito.mockStatic(CoreRuntimePlugin.class);
-        Mockito.when(CoreRuntimePlugin.getInstance()).thenReturn(instanceMock);
-        Mockito.when(instanceMock.getRepositoryService()).thenReturn(null);
-        // ~CoreRuntimePlugin
-        setJDBCMysqlConnection(dbProvider);
-        IMetadataConnection convertMetadata = ConvertionHelper.convert(dbProvider, false, null);
-        validJDBCMysqlConnection(convertMetadata, dbProvider);
+        final IRepositoryContextService oldRepositoryContextService = ConvertionHelper.getRepositoryContextService();
+
+        try {
+            // no clone, so return self always
+
+            ReflectionUtils.setStaticFieldValue(ConvertionHelper.class.getName(), ConvertionHelper.class.getClassLoader(),
+                    "repositoryContextService", new IRepositoryContextService() {
+
+                        @Override
+                        public DatabaseConnection cloneOriginalValueConnection(DatabaseConnection dbConn) {
+                            return dbConn;
+                        }
+
+                        @Override
+                        public DatabaseConnection cloneOriginalValueConnection(DatabaseConnection dbConn, boolean defaultContext) {
+                            return dbConn;
+                        }
+
+                        @Override
+                        public DatabaseConnection cloneOriginalValueConnection(DatabaseConnection dbConn, boolean defaultContext,
+                                String selectedContext) {
+                            return dbConn;
+                        }
+
+                        @Override
+                        public void setMetadataConnectionParameter(DatabaseConnection dbConn, IMetadataConnection metaConn) {
+
+                        }
+
+                        @Override
+                        public FileConnection cloneOriginalValueConnection(FileConnection fileConn) {
+                            return fileConn;
+                        }
+
+                    });
+            setJDBCMysqlConnection(dbProvider);
+            IMetadataConnection convertMetadata = ConvertionHelper.convert(dbProvider, false, null);
+            validJDBCMysqlConnection(convertMetadata, dbProvider);
+        } finally {
+            ReflectionUtils.setStaticFieldValue(ConvertionHelper.class.getName(), ConvertionHelper.class.getClassLoader(),
+                    "repositoryContextService", oldRepositoryContextService);
+            // ConvertionHelper.repositoryContextService = oldRepositoryContextService;
+        }
     }
 
     private boolean validJDBCMysqlConnection(IMetadataConnection convertMetadata, DatabaseConnection dbProvider) {
@@ -76,7 +104,7 @@ public class ConvertionHelperTest {
         assertEquals(convertMetadata.getProduct(), "JDBC"); //$NON-NLS-1$
         assertEquals(convertMetadata.isSqlMode(), false);
         assertEquals(convertMetadata.isContentModel(), false);
-        assertEquals(convertMetadata.getCurrentConnection(), dbProvider);
+        assertEquals(convertMetadata.getCurrentConnection(), dbProvider); // clone via service always
         assertNotNull(convertMetadata.getPurpose());
         assertEquals(convertMetadata.getPurpose(), "my test purpose"); //$NON-NLS-1$
         assertNotNull(convertMetadata.getDescription());
