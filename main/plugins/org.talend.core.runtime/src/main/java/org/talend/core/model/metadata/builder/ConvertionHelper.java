@@ -51,13 +51,25 @@ import org.talend.cwm.helper.SAPBWTableHelper;
 import org.talend.cwm.helper.TaggedValueHelper;
 import org.talend.model.bridge.ReponsitoryContextBridge;
 import org.talend.repository.model.IProxyRepositoryFactory;
-
 import orgomg.cwm.objectmodel.core.TaggedValue;
 
 /**
  *
  */
 public final class ConvertionHelper {
+
+    private static IRepositoryContextService repositoryContextService;
+
+    public static IRepositoryContextService getRepositoryContextService() {
+        if (repositoryContextService == null) {
+            synchronized (ConvertionHelper.class) {
+                if (repositoryContextService == null) {
+                    repositoryContextService = CoreRuntimePlugin.getInstance().getRepositoryContextService();
+                }
+            }
+        }
+        return repositoryContextService;
+    }
 
     /**
      * This method doesn't perform a deep copy. DOC tguiu Comment method "convert".
@@ -104,7 +116,7 @@ public final class ConvertionHelper {
             return;
         }
 
-        IRepositoryContextService repositoryContextService = CoreRuntimePlugin.getInstance().getRepositoryContextService();
+        IRepositoryContextService repositoryContextService = getRepositoryContextService();
 
         if (repositoryContextService != null) {
             repositoryContextService.setMetadataConnectionParameter(conn, metadataConnection);
@@ -180,7 +192,7 @@ public final class ConvertionHelper {
         // if sourceConnection is not context mode, will be same as before.
         DatabaseConnection connection = null;
         DatabaseConnection originalValueConnection = null;
-        IRepositoryContextService repositoryContextService = CoreRuntimePlugin.getInstance().getRepositoryContextService();
+        IRepositoryContextService repositoryContextService = getRepositoryContextService();
         if (repositoryContextService != null) {
             originalValueConnection = repositoryContextService.cloneOriginalValueConnection(sourceConnection, defaultContext,
                     selectedContext);
@@ -342,7 +354,7 @@ public final class ConvertionHelper {
     public static IMetadataTable convert(MetadataTable old) {
         IMetadataTable result = new org.talend.core.model.metadata.MetadataTable();
         result.setComment(old.getComment());
-        if(old.getId() == null){
+        if (old.getId() == null) {
             IProxyRepositoryFactory factory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
             old.setId(factory.getNextId());
         }
