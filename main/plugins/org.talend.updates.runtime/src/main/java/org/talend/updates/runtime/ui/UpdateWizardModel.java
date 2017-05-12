@@ -125,7 +125,7 @@ public class UpdateWizardModel {
     public Set<ExtraFeature> getSelectedExtraFeatures() {
         Set<ExtraFeature> features = new LinkedHashSet<ExtraFeature>();
         for (Object feature : selectedExtraFeatures) {
-            if (feature instanceof ExtraFeature) {
+            if (feature instanceof ExtraFeature && !(feature instanceof FeatureCategory)) {
                 features.add((ExtraFeature) feature);
             }
         }
