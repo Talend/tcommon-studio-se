@@ -51,12 +51,22 @@ public class LocalComponentsInstallComponentTest {
     @Before
     public void prepare() {
         tmpFolder = org.talend.utils.files.FileUtils.createTmpFolder("test", "comp"); //$NON-NLS-1$  //$NON-NLS-2$
+        cleanM2TempFolder();
     }
 
     @After
     public void clean() {
         if (tmpFolder != null) {
             FilesUtils.deleteFolder(tmpFolder, true);
+        }
+        cleanM2TempFolder();
+    }
+
+    private void cleanM2TempFolder() {
+        LocalComponentsInstallComponent installComp = new LocalComponentsInstallComponentTestClass();
+        final File tempM2RepoFolder = installComp.getTempM2RepoFolder();
+        if (tempM2RepoFolder != null) {
+            FilesUtils.deleteFolder(tempM2RepoFolder, true);
         }
     }
 
