@@ -41,8 +41,9 @@ public enum ERepositoryActionName {
     // for joblet only
     JOBLET_FOLDER_DELETE("joblet.folder.delete"), //$NON-NLS-1$
     JOBLET_FOLDER_RENAME("joblet.folder.rename"), //$NON-NLS-1$
-    JOBLET_FOLDER_MOVE("joblet.folder.move") //$NON-NLS-1$
+    JOBLET_FOLDER_MOVE("joblet.folder.move"), //$NON-NLS-1$
 
+    PROJECT_PREFERENCES_RELOAD("reload project preferences") //$NON-NLS-1$
     ;
 
     private String name;
