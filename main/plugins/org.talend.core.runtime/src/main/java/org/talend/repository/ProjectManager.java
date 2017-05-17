@@ -89,6 +89,8 @@ public final class ProjectManager {
 
     private Set<String> migrationRecords;
     
+    private Set<Object> updatedRemoteHandlerRecords;
+
     private Map<String, List<ProjectReference>> allTACProjectProjectReferenceSetting = new HashMap<String, List<ProjectReference>>();
 
     private ProjectManager() {
@@ -97,6 +99,7 @@ public final class ProjectManager {
         beforeLogonRecords = new HashSet<String>();
         logonRecords = new HashSet<String>();
         migrationRecords = new HashSet<String>();
+        updatedRemoteHandlerRecords = new HashSet<Object>();
         initCurrentProject();
     }
 
@@ -926,7 +929,11 @@ public final class ProjectManager {
     public Set<String> getMigrationRecords() {
         return this.migrationRecords;
     }
-   
+
+    public Set<Object> getUpdatedRemoteHandlerRecords() {
+        return this.updatedRemoteHandlerRecords;
+    }
+
     public Map<String, List<ProjectReference>> getAllTACProjectProjectReferenceSetting() {
         return allTACProjectProjectReferenceSetting;
     }
