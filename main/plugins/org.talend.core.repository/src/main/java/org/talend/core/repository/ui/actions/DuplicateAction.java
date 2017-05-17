@@ -81,6 +81,7 @@ import org.talend.core.repository.ui.dialog.DuplicateDialog;
 import org.talend.core.repository.ui.dialog.PastSelectorDialog;
 import org.talend.core.repository.utils.ConvertJobsUtil;
 import org.talend.core.runtime.CoreRuntimePlugin;
+import org.talend.core.service.ICoreUIService;
 import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.core.utils.KeywordsValidator;
 import org.talend.designer.codegen.ICodeGeneratorService;
@@ -286,7 +287,15 @@ public class DuplicateAction extends AContextualAction {
                     }
                 }
                 ConvertJobsUtil.updateFramework(newCreatedItem, frameworkNewValue);
-
+                if(isNeedConvert && (newCreatedItem instanceof JobletProcessItem)){
+                    if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreUIService.class)) {
+                        ICoreUIService coreUIService = (ICoreUIService) GlobalServiceRegister.getDefault().getService(ICoreUIService.class);
+                        if(coreUIService != null){
+                            coreUIService.loadComponentsFromProviders(type);
+                            coreUIService.updatePalette();
+                        }
+                    }
+                }
                 if (!isNewItemCreated) {
                     // save the modifications
                     IWorkspaceRunnable runnable = new IWorkspaceRunnable() {

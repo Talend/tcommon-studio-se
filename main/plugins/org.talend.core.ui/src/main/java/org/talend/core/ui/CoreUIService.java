@@ -20,6 +20,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.talend.commons.ui.swt.actions.ITreeContextualAction;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.PluginChecker;
+import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.service.ICoreUIService;
 import org.talend.core.ui.actions.ActionsHelper;
 import org.talend.core.ui.component.ComponentPaletteUtilities;
@@ -97,5 +98,13 @@ public class CoreUIService implements ICoreUIService {
     @Override
     public String getPreferenceValue(String key) {
         return CoreUIPlugin.getDefault().getPreferenceStore().getString(key);
+    }
+
+    @Override
+    public void loadComponentsFromProviders(ERepositoryObjectType type) {
+        IDesignerCoreUIService designerCoreUIService = CoreUIPlugin.getDefault().getDesignerCoreUIService();
+        if (designerCoreUIService != null) {
+            designerCoreUIService.loadComponentsFromProviders(type);
+        }
     }
 }
