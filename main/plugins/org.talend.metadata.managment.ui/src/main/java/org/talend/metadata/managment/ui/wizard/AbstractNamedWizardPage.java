@@ -82,7 +82,7 @@ public abstract class AbstractNamedWizardPage extends WizardPage {
                 || name.startsWith("\t") //$NON-NLS-1$
                 || !Pattern.matches(RepositoryConstants.getPattern(getRepositoryObjectType()), name)
                 || name.trim().contains(" ") //$NON-NLS-1$
-                || name.trim().contains("\t")) { //$NON-NLS-1$
+                || name.trim().contains("\t") || name.trim().contains(".")) { //$NON-NLS-2$
             nameStatus = createStatus(IStatus.ERROR, Messages.getString("PropertiesWizardPage.NameFormatError")); //$NON-NLS-1$
         } else if (isKeywords(name) || "java".equalsIgnoreCase(name)) {//$NON-NLS-1$
             nameStatus = createStatus(IStatus.ERROR, Messages.getString("PropertiesWizardPage.KeywordsError")); //$NON-NLS-1$
