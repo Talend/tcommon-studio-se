@@ -99,6 +99,8 @@ public enum EHadoopProperties {
     HD_AZURE_USERNAME,
 
     HD_AZURE_DEPLOYBOLB,
+
+    HD_JOB_RESULT_FOLDER,
     ;
 
     public String getName() {
