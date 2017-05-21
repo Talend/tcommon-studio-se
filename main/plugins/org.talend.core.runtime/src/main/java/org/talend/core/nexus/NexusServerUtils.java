@@ -78,7 +78,8 @@ public class NexusServerUtils {
         return timeout;
     }
 
-    public static boolean checkConnectionStatus(String nexusUrl, String repositoryId, final String userName, final String password) {
+    public static boolean checkConnectionStatus(String nexusUrl, String repositoryId, final String userName,
+            final String password) {
         if (StringUtils.isEmpty(nexusUrl) || StringUtils.isEmpty(repositoryId)) {
             return false;
         }
@@ -149,7 +150,7 @@ public class NexusServerUtils {
     public static List<MavenArtifact> search(String nexusUrl, String userName, String password, String repositoryId,
             String groupIdToSearch, String versionToSearch) throws Exception {
         List<MavenArtifact> artifacts = new ArrayList<MavenArtifact>();
-        search(nexusUrl, userName, password, repositoryId, groupIdToSearch, null, versionToSearch, 0, MAX_SEARCH_COUNT, artifacts);
+        search(nexusUrl, userName, password, repositoryId, groupIdToSearch, null, versionToSearch, MAX_SEARCH_COUNT, artifacts);
 
         return artifacts;
 
@@ -158,7 +159,7 @@ public class NexusServerUtils {
     public static List<MavenArtifact> search(String nexusUrl, String userName, String password, String repositoryId,
             String groupIdToSearch, String artifactId, String versionToSearch) throws Exception {
         List<MavenArtifact> artifacts = new ArrayList<MavenArtifact>();
-        search(nexusUrl, userName, password, repositoryId, groupIdToSearch, artifactId, versionToSearch, 0, MAX_SEARCH_COUNT,
+        search(nexusUrl, userName, password, repositoryId, groupIdToSearch, artifactId, versionToSearch, MAX_SEARCH_COUNT,
                 artifacts);
 
         return artifacts;
@@ -166,8 +167,8 @@ public class NexusServerUtils {
     }
 
     private static void search(String nexusUrl, final String userName, final String password, String repositoryId,
-            String groupIdToSearch, String artifactId, String versionToSearch, int searchFrom, int searchCount,
-            List<MavenArtifact> artifacts) throws Exception {
+            String groupIdToSearch, String artifactId, String versionToSearch, int searchCount, List<MavenArtifact> artifacts)
+            throws Exception {
         HttpURLConnection urlConnection = null;
         int totalCount = 0;
         final Authenticator defaultAuthenticator = NetworkUtil.getDefaultAuthenticator();
@@ -183,7 +184,7 @@ public class NexusServerUtils {
         }
         try {
             String service = NexusConstants.SERVICES_SEARCH
-                    + getSearchQuery(repositoryId, groupIdToSearch, artifactId, versionToSearch, searchFrom, searchCount);
+                    + getSearchQuery(repositoryId, groupIdToSearch, artifactId, versionToSearch, 0, searchCount);
             urlConnection = getHttpURLConnection(nexusUrl, service, userName, password);
             SAXReader saxReader = new SAXReader();
 
@@ -199,59 +200,24 @@ public class NexusServerUtils {
                     totalCount = 0;
                 }
             }
+            
+            int searchDone = search(urlConnection, document, artifacts);
+            inputStream.close();
+                        
+            
+            while (searchDone < totalCount) {
+                service = NexusConstants.SERVICES_SEARCH
+                        + getSearchQuery(repositoryId, groupIdToSearch, artifactId, versionToSearch, searchDone, searchCount);
+                urlConnection = getHttpURLConnection(nexusUrl, service, userName, password);
+                saxReader = new SAXReader();
 
-            List<Node> list = document.selectNodes("/searchNGResponse/data/artifact");//$NON-NLS-1$ 
-            for (Node arNode : list) {
-                MavenArtifact artifact = new MavenArtifact();
-                artifacts.add(artifact);
-                artifact.setGroupId(arNode.selectSingleNode("groupId").getText());//$NON-NLS-1$ 
-                artifact.setArtifactId(arNode.selectSingleNode("artifactId").getText());//$NON-NLS-1$ 
-                artifact.setVersion(arNode.selectSingleNode("version").getText());//$NON-NLS-1$ 
-                Node descNode = arNode.selectSingleNode("description");//$NON-NLS-1$ 
-                if (descNode != null) {
-                    artifact.setDescription(descNode.getText());
-                }
-                Node urlNode = arNode.selectSingleNode("url");//$NON-NLS-1$ 
-                if (urlNode != null) {
-                    artifact.setUrl(urlNode.getText());
-                }
-                Node licenseNode = arNode.selectSingleNode("license");//$NON-NLS-1$ 
-                if (licenseNode != null) {
-                    artifact.setLicense(licenseNode.getText());
-                }
+                inputStream = urlConnection.getInputStream();
+                document = saxReader.read(inputStream);
 
-                Node licenseUrlNode = arNode.selectSingleNode("licenseUrl");//$NON-NLS-1$ 
-                if (licenseUrlNode != null) {
-                    artifact.setLicenseUrl(licenseUrlNode.getText());
-                }
+                searchDone = searchDone + search(urlConnection, document, artifacts);
+                
+                inputStream.close();
 
-                List<Node> artLinks = arNode.selectNodes("artifactHits/artifactHit/artifactLinks/artifactLink");//$NON-NLS-1$ 
-                for (Node link : artLinks) {
-                    Node extensionElement = link.selectSingleNode("extension");//$NON-NLS-1$ 
-                    String extension = null;
-                    String classifier = null;
-                    if (extensionElement != null) {
-                        if ("pom".equals(extensionElement.getText())) {//$NON-NLS-1$ 
-                            continue;
-                        }
-                        extension = extensionElement.getText();
-                    }
-                    Node classifierElement = link.selectSingleNode("classifier");//$NON-NLS-1$ 
-                    if (classifierElement != null) {
-                        classifier = classifierElement.getText();
-                    }
-                    artifact.setType(extension);
-                    artifact.setClassifier(classifier);
-                }
-            }
-            int searchDone = searchFrom + searchCount;
-            int count = MAX_SEARCH_COUNT;
-            if (searchDone < totalCount) {
-                if (totalCount - searchDone < MAX_SEARCH_COUNT) {
-                    count = totalCount - searchDone;
-                }
-                search(nexusUrl, userName, password, repositoryId, groupIdToSearch, artifactId, versionToSearch, searchDone + 1,
-                        count, artifacts);
             }
 
         } finally {
@@ -260,6 +226,56 @@ public class NexusServerUtils {
                 urlConnection.disconnect();
             }
         }
+    }
+
+    private static int search(HttpURLConnection urlConnection, Document document, List<MavenArtifact> artifacts)
+            throws Exception {
+
+        List<Node> list = document.selectNodes("/searchNGResponse/data/artifact");//$NON-NLS-1$
+        for (Node arNode : list) {
+            MavenArtifact artifact = new MavenArtifact();
+            artifacts.add(artifact);
+            artifact.setGroupId(arNode.selectSingleNode("groupId").getText());//$NON-NLS-1$
+            artifact.setArtifactId(arNode.selectSingleNode("artifactId").getText());//$NON-NLS-1$
+            artifact.setVersion(arNode.selectSingleNode("version").getText());//$NON-NLS-1$
+            Node descNode = arNode.selectSingleNode("description");//$NON-NLS-1$
+            if (descNode != null) {
+                artifact.setDescription(descNode.getText());
+            }
+            Node urlNode = arNode.selectSingleNode("url");//$NON-NLS-1$
+            if (urlNode != null) {
+                artifact.setUrl(urlNode.getText());
+            }
+            Node licenseNode = arNode.selectSingleNode("license");//$NON-NLS-1$
+            if (licenseNode != null) {
+                artifact.setLicense(licenseNode.getText());
+            }
+
+            Node licenseUrlNode = arNode.selectSingleNode("licenseUrl");//$NON-NLS-1$
+            if (licenseUrlNode != null) {
+                artifact.setLicenseUrl(licenseUrlNode.getText());
+            }
+
+            List<Node> artLinks = arNode.selectNodes("artifactHits/artifactHit/artifactLinks/artifactLink");//$NON-NLS-1$
+            for (Node link : artLinks) {
+                Node extensionElement = link.selectSingleNode("extension");//$NON-NLS-1$
+                String extension = null;
+                String classifier = null;
+                if (extensionElement != null) {
+                    if ("pom".equals(extensionElement.getText())) {//$NON-NLS-1$
+                        continue;
+                    }
+                    extension = extensionElement.getText();
+                }
+                Node classifierElement = link.selectSingleNode("classifier");//$NON-NLS-1$
+                if (classifierElement != null) {
+                    classifier = classifierElement.getText();
+                }
+                artifact.setType(extension);
+                artifact.setClassifier(classifier);
+            }
+        }
+        return list.size();
     }
 
     public static String resolveSha1(String nexusUrl, final String userName, final String password, String repositoryId,
@@ -305,31 +321,31 @@ public class NexusServerUtils {
 
     private static String getSearchQuery(String repositoryId, String groupId, String artifactId, String version, int from,
             int count) {
-        String query = "";//$NON-NLS-1$ 
+        String query = "";//$NON-NLS-1$
         if (repositoryId != null) {
-            query = "repositoryId=" + repositoryId;//$NON-NLS-1$ 
+            query = "repositoryId=" + repositoryId;//$NON-NLS-1$
         }
         if (groupId != null) {
             if (!"".equals(query)) {
                 query = query + "&";
             }
-            query = query + "g=" + groupId;//$NON-NLS-1$ 
+            query = query + "g=" + groupId;//$NON-NLS-1$
         }
         if (artifactId != null) {
             if (!"".equals(query)) {
                 query = query + "&";
             }
-            query = query + "a=" + artifactId;//$NON-NLS-1$ 
+            query = query + "a=" + artifactId;//$NON-NLS-1$
         }
 
         if (version != null) {
             if (!"".equals(query)) {
                 query = query + "&";
             }
-            query = query + "v=" + version;//$NON-NLS-1$ 
+            query = query + "v=" + version;//$NON-NLS-1$
         }
 
-        return query + "&from=" + from + "&count=" + count;//$NON-NLS-1$ //$NON-NLS-2$ 
+        return query + "&from=" + from + "&count=" + count;//$NON-NLS-1$ //$NON-NLS-2$
     }
 
     public static HttpURLConnection getHttpURLConnection(String nexusUrl, String relativePath, String username, String password)
@@ -340,8 +356,8 @@ public class NexusServerUtils {
         URL url = new URL(nexusUrl + relativePath);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         if (StringUtils.isNotEmpty(username)) {
-            urlConnection.setRequestProperty(
-                    "Authorization", "Basic " + Base64.encodeBase64((username + ':' + password).getBytes()));//$NON-NLS-1$ //$NON-NLS-2$
+            urlConnection.setRequestProperty("Authorization", //$NON-NLS-1$
+                    "Basic " + Base64.encodeBase64((username + ':' + password).getBytes()));//$NON-NLS-1$
         }
         if (urlConnection instanceof HttpsURLConnection) {
             String userDir = Platform.getInstallLocation().getURL().getPath();

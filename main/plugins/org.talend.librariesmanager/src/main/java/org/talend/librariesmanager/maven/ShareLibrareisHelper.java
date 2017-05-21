@@ -142,8 +142,6 @@ public abstract class ShareLibrareisHelper {
                         for (String groupId : groupIds) {
                             searchResults.addAll(instance.search(customServer.getServer(), customServer.getUserName(),
                                     customServer.getPassword(), customServer.getRepositoryId(), groupId, null, null));
-                            searchResults.addAll(instance.search(customServer.getServer(), customServer.getUserName(),
-                                    customServer.getPassword(), customServer.getSnapshotRepId(), groupId, null, null));
                         }
 
                         int limit = searchLimit;
