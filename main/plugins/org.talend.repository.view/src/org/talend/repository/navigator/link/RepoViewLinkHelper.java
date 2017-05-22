@@ -84,7 +84,8 @@ public class RepoViewLinkHelper implements ILinkHelper {
             return;
         }
         final String repId = object.getId(); // repository item id
-        if (repId == null) {
+        final String version = object.getVersion();
+        if (repId == null || version == null) {
             return;
         }
         IEditorReference[] editorReferences = aPage.getEditorReferences();
@@ -94,7 +95,7 @@ public class RepoViewLinkHelper implements ILinkHelper {
         for (IEditorReference er : editorReferences) {
             try {
                 IEditorInput editorInput = er.getEditorInput();
-                if (isRelation(editorInput, repId)) {
+                if (isRelation(editorInput, repId, version)) {
                     IEditorPart editor = null;
                     // aPage.bringToTop(er.getPart(false));
                     if ((editor = aPage.findEditor(editorInput)) != null) {
@@ -109,10 +110,10 @@ public class RepoViewLinkHelper implements ILinkHelper {
 
     }
 
-    protected boolean isRelation(IEditorInput editorInput, String repoNodeId) {
+    protected boolean isRelation(IEditorInput editorInput, String repoNodeId, String version) {
         IRepoViewLinker[] allRepoViewLinkers = getRepoViewLinkerReader().getAllRepoViewLinkers();
         for (IRepoViewLinker linker : allRepoViewLinkers) {
-            if (linker.isRelation(editorInput, repoNodeId)) {
+            if (linker.isRelation(editorInput, repoNodeId, version)) {
                 return true;
             }
         }
