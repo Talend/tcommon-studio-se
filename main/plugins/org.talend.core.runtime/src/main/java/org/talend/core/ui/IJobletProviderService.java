@@ -112,14 +112,8 @@ public interface IJobletProviderService extends IService {
 
     public void unlockJoblet(INode node, boolean needAsk);
 
-    public List<INode> checkAddNodes(IElement jobletContainer);
-
     public void updateRelationShip(final IProcess curJobletProcess, final IProcess2 currentProcess,
             final List<IMetadataTable> oldInputMetadata, final List<IMetadataTable> oldOutputMetadata, final boolean updateContext);
-
-    public List<INode> checkDeleteNodes(IElement jobletContainer);
-
-    public boolean checkModify(IElement jobletContainer);
 
     public boolean jobletIsDirty(INode node);
 
