@@ -135,4 +135,6 @@ public interface IJobletProviderService extends IService {
 
     public boolean isJobletEditor(IEditorPart activeEditor);
 
+    public IComponent getUpdatedJobletComponent(IComponent component);
+
 }
