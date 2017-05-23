@@ -22,6 +22,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpHead;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.FileEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -197,12 +199,20 @@ public class ArtifactsDeployer {
         try {
             httpClient.getCredentialsProvider().setCredentials(new AuthScope(targetURL.getHost(), targetURL.getPort()),
                     new UsernamePasswordCredentials(nexusServer.getUserName(), nexusServer.getPassword()));
+            HttpHead httpHead = new HttpHead(targetURL.toString());
+            HttpResponse response = httpClient.execute(httpHead);
+            StatusLine statusLine = response.getStatusLine();
+            int responseCode = statusLine.getStatusCode();
+            if (responseCode <= 399) {
+                HttpDelete httpDelete = new HttpDelete(targetURL.toString());
+                httpClient.execute(httpDelete);
+            }
 
             HttpPut httpPut = new HttpPut(targetURL.toString());
             httpPut.setEntity(entity);
-            HttpResponse response = httpClient.execute(httpPut);
-            StatusLine statusLine = response.getStatusLine();
-            int responseCode = statusLine.getStatusCode();
+            response = httpClient.execute(httpPut);
+            statusLine = response.getStatusLine();
+            responseCode = statusLine.getStatusCode();
             EntityUtils.consume(entity);
             if (responseCode > 399) {
                 if (responseCode == 500) {
