@@ -1429,6 +1429,8 @@ public class DatabaseForm extends AbstractForm {
 
         useKerberosForHBase = new Button(authenticationGrpForHBase, SWT.CHECK);
         useKerberosForHBase.setText(Messages.getString("DatabaseForm.hiveEmbedded.useKerberos")); //$NON-NLS-1$
+        //TUP-17659 disable Kerberos Authentication for EMR-Hbase
+        checkKerberos();
         GridData data = new GridData(GridData.FILL_HORIZONTAL);
         data.horizontalSpan = 4;
         useKerberosForHBase.setLayoutData(data);
@@ -1497,6 +1499,16 @@ public class DatabaseForm extends AbstractForm {
 
         addListenerHBaseAuthentication();
         initForHBaseAuthentication();
+    }
+
+    private void checkKerberos() {
+        String distributionName = StringUtils
+                .trimToEmpty(getConnection().getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HBASE_DISTRIBUTION));
+        if (distributionName != null) {
+            if ("AMAZON_EMR".equals(distributionName)) {
+                useKerberosForHBase.setEnabled(false);
+            }
+        }
     }
 
     private void createAuthenticationForMaprdb(Composite parent) {
