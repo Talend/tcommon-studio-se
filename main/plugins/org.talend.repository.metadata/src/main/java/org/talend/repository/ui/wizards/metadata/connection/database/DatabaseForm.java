@@ -1502,14 +1502,30 @@ public class DatabaseForm extends AbstractForm {
     }
 
     private void checkKerberos() {
-        String distributionName = StringUtils
-                .trimToEmpty(getConnection().getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HBASE_DISTRIBUTION));
-        if (distributionName != null) {
-            if ("AMAZON_EMR".equals(distributionName)) {
-                useKerberosForHBase.setEnabled(false);
+
+        useKerberosForHBase.setEnabled(hbaseDoSupportKerb());
+
+    }
+
+    private boolean hbaseDoSupportKerb() {
+        String hadoopDistribution = getConnection().getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HBASE_DISTRIBUTION);
+        String hadoopVersion = getConnection().getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HBASE_VERSION);
+        IHDistribution hBaseDistribution = getHBaseDistribution(hadoopDistribution, false);
+        if (hBaseDistribution != null) {
+            IHDistributionVersion hdVersion = hBaseDistribution.getHDVersion(hadoopVersion, false);
+            IHadoopDistributionService hadoopDistributionService = getHadoopDistributionService();
+            if (hdVersion != null && hadoopDistributionService != null) {
+                try {
+                    return hadoopDistributionService.doSupportMethod(hdVersion, "doSupportKerberos");
+                } catch (Exception e) {
+                    // ignore if NoSuchMethodException
+                }
             }
         }
+        return false;
     }
+    
+    
 
     private void createAuthenticationForMaprdb(Composite parent) {
         GridLayout parentLayout = (GridLayout) parent.getLayout();
