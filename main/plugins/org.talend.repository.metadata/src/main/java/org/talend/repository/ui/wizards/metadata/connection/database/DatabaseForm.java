@@ -1430,7 +1430,7 @@ public class DatabaseForm extends AbstractForm {
         useKerberosForHBase = new Button(authenticationGrpForHBase, SWT.CHECK);
         useKerberosForHBase.setText(Messages.getString("DatabaseForm.hiveEmbedded.useKerberos")); //$NON-NLS-1$
         //TUP-17659 disable Kerberos Authentication for EMR-Hbase
-        checkKerberos();
+        checkHBaseKerberos();
         GridData data = new GridData(GridData.FILL_HORIZONTAL);
         data.horizontalSpan = 4;
         useKerberosForHBase.setLayoutData(data);
@@ -1501,7 +1501,7 @@ public class DatabaseForm extends AbstractForm {
         initForHBaseAuthentication();
     }
 
-    private void checkKerberos() {
+    private void checkHBaseKerberos() {
 
         useKerberosForHBase.setEnabled(hbaseDoSupportKerb());
 
@@ -1524,8 +1524,6 @@ public class DatabaseForm extends AbstractForm {
         }
         return false;
     }
-    
-    
 
     private void createAuthenticationForMaprdb(Composite parent) {
         GridLayout parentLayout = (GridLayout) parent.getLayout();
@@ -5158,6 +5156,7 @@ public class DatabaseForm extends AbstractForm {
                     updateHBaseVersionPart(newDistribution);
                     fillDefaultsWhenHBaseVersionChanged();
                     checkFieldsValue();
+                    checkHBaseKerberos();
                 }
             }
         });
@@ -5188,6 +5187,7 @@ public class DatabaseForm extends AbstractForm {
                     getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HBASE_VERSION, newVersion.getVersion());
                     fillDefaultsWhenHBaseVersionChanged();
                     checkFieldsValue();
+                    checkHBaseKerberos();
                 }
             }
         });
