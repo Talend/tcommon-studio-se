@@ -24,4 +24,6 @@ public interface IMultiPageTalendEditor extends IEditorPart, IAdaptable {
     public IProcess2 getProcess();
 
     public ITalendEditor getTalendEditor();
+
+    public void changePaletteComponentHandler();
 }
