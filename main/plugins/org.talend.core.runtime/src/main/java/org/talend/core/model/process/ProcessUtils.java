@@ -974,8 +974,10 @@ public final class ProcessUtils {
         for (ElementParameterType pt : parameters) {
             if (pt.getName().equals("DISTRIBUTION")) { //$NON-NLS-1$
                 String value = pt.getValue();
+                System.out.println(value);
                 if ("MICROSOFT_HD_INSIGHT".equals(value) //$NON-NLS-1$
-                        || "GOOGLE_CLOUD_DATAPROC".equals(value)) { //$NON-NLS-1$
+                        || "GOOGLE_CLOUD_DATAPROC".equals(value) //$NON-NLS-1$
+                        || "ALTUS".equals(value)) { //$NON-NLS-1$
                     return true;
                 }
             }

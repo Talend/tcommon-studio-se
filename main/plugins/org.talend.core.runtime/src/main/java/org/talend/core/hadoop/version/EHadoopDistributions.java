@@ -23,6 +23,8 @@ public enum EHadoopDistributions {
 
     CLOUDERA("Cloudera"), //$NON-NLS-1$
 
+    ALTUS("Altus"), //$NON-NLS-1$
+
     MAPR("MapR"), //$NON-NLS-1$
 
     APACHE("Apache"), //$NON-NLS-1$
