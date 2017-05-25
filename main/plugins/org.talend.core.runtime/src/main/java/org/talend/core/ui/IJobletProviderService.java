@@ -45,7 +45,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 public interface IJobletProviderService extends IService {
 
     public boolean isJobletComponent(INode node);
-    
+
     public boolean isStandardJobletComponent(INode node);
 
     public boolean isJobletInOutComponent(INode node);
@@ -56,7 +56,7 @@ public interface IJobletProviderService extends IService {
 
     public Property getJobletComponentItem(IComponent component);
 
-    public void reloadJobletProcess(INode node);
+    public void reloadJobletProcess(INode node, boolean forceReload);
 
     public boolean isTriggerNode(INode node);
 
@@ -112,14 +112,8 @@ public interface IJobletProviderService extends IService {
 
     public void unlockJoblet(INode node, boolean needAsk);
 
-    public List<INode> checkAddNodes(IElement jobletContainer);
-
     public void updateRelationShip(final IProcess curJobletProcess, final IProcess2 currentProcess,
             final List<IMetadataTable> oldInputMetadata, final List<IMetadataTable> oldOutputMetadata, final boolean updateContext);
-
-    public List<INode> checkDeleteNodes(IElement jobletContainer);
-
-    public boolean checkModify(IElement jobletContainer);
 
     public boolean jobletIsDirty(INode node);
 
@@ -138,7 +132,9 @@ public interface IJobletProviderService extends IService {
 
     public IRepositoryEditorInput getJobletProcessEditorInput(JobletProcessItem processItem, Boolean load, Boolean lastVersion,
             Boolean readOnly, Boolean openedInJob) throws PersistenceException;
-    
+
     public boolean isJobletEditor(IEditorPart activeEditor);
+
+    public IComponent getUpdatedJobletComponent(IComponent component);
 
 }

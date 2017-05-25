@@ -48,11 +48,27 @@ public abstract class AbstractEditorInputWithItemIdLinker extends AbstractRepoVi
      */
     @Override
     public boolean isRelation(IEditorInput editorInput, String repoNodeId) {
+        return isRelation(editorInput, repoNodeId, null);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.talend.core.repository.link.IRepoViewLinker#isRelation(org.eclipse.ui.IEditorInput, java.lang.String,
+     * java.lang.String)
+     */
+    @Override
+    public boolean isRelation(IEditorInput editorInput, String repoNodeId, String version) {
         RepositoryNode relationNode = getRelationNode(editorInput);
+        boolean isRelation = false;
         if (relationNode != null && repoNodeId != null && repoNodeId.equals(relationNode.getId())) {
-            return true;
+            isRelation = true;
+            if (version != null && relationNode.getObject() != null) {
+                isRelation = isRelation && version.equals(relationNode.getObject().getVersion());
+            }
         }
-        return false;
+        return isRelation;
+
     }
 
     protected IEditorPart getEditor(IEditorInput editorInput) {
