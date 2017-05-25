@@ -70,7 +70,7 @@
 				<talendType type="id_Long">
 					<dbType type="INTEGER" default="true" />	
 					<dbType type="SMALLINT" />
-					<dbType type="TINYINT" />	
+					<dbType type="TINYINT" />   
 				</talendType>
 				<talendType type="id_Object">
 				</talendType>
@@ -118,9 +118,11 @@
 					<talendType type="id_Byte"/>
 				</dbType>
 				<dbType type="NUMERIC">
-					<talendType type="id_Float"/>
-					<talendType type="id_BigDecimal" default="true"/>
+					<talendType type="id_Float" default="true"/>
+					<talendType type="id_BigDecimal" />
 					<talendType type="id_Double"/>
+					<talendType type="id_Integer"/>
+					<talendType type="id_Long"/>
 				</dbType>
 				<dbType type="REAL">
 					<talendType type="id_Float" default="true" />
