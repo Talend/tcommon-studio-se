@@ -19,6 +19,8 @@ public interface IBuildParametes {
 
     static final String PROCESS = "Process"; //$NON-NLS-1$
 
+    static final String SERVICE = "Service"; //$NON-NLS-1$
+
     static final String ITEM = "Item"; //$NON-NLS-1$
 
     static final String VERSION = "Version"; //$NON-NLS-1$

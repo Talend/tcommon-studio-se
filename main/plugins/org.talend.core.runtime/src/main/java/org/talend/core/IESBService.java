@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.core;
 
+import org.eclipse.ui.IWorkbenchPart;
 import org.talend.core.model.process.INode;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.repository.ERepositoryObjectType;
@@ -55,4 +56,8 @@ public interface IESBService extends IService {
     public void copyDataServiceRelateJob(Item newItem);
 
     public IXSDPopulationUtil getXSDPopulationUtil();
+    
+    public boolean isWSDLEditor(IWorkbenchPart part);
+    
+    public Item getWSDLEditorItem(IWorkbenchPart part);
 }

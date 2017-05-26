@@ -21,6 +21,8 @@ public interface MavenConstants {
     static final String NAME_GROUP_ID = "GROUP_ID";
 
     static final String NAME_USER_VERSION = "USER_VERSION";
+    
+    static final String NAME_PUBLISH_AS_SNAPSHOT = "PUBLISH_AS_SNAPSHOT";
 
     static final String TYPE_JAR = "jar";
 
