@@ -244,4 +244,9 @@ public class LibrariesService implements ILibrariesService {
         return getLibrariesService().isMavenArtifactAvailable(mvnUri);
     }
 
+    @Override
+    public void deployLibrary(URL source, boolean updateRemoteJar) throws IOException {
+        this.getLibrariesService().deployLibrary(source,false);
+    }
+
 }

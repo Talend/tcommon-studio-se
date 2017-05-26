@@ -58,6 +58,8 @@ public interface ILibrariesService extends IService {
     public String getPerlLibrariesPath();
 
     public void deployLibrary(URL source) throws IOException;
+    
+    public void deployLibrary(URL source, boolean updateRemoteJar) throws IOException;
 
     public void deployLibrarys(URL[] source) throws IOException;
 

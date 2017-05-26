@@ -147,6 +147,11 @@ public class LocalLibraryManager implements ILibraryManagerService {
 
     @Override
     public void deploy(URI jarFileUri, IProgressMonitor... monitorWrap) {
+        deploy(jarFileUri, true, monitorWrap);
+    }
+
+    @Override
+    public void deploy(URI jarFileUri,boolean updateRemoteJar, IProgressMonitor... monitorWrap) {
         if (jarFileUri.isOpaque()) {
             return;
         }
@@ -154,7 +159,7 @@ public class LocalLibraryManager implements ILibraryManagerService {
         if (file == null || !file.exists()) {
             return;
         }
-        deployFile(file, null, true, monitorWrap);
+        deployFile(file, null, updateRemoteJar, monitorWrap);
         // deploy to configuration/lib/java if tac still use the svn lib
         try {
             if (isSvnLibSetup()) {
