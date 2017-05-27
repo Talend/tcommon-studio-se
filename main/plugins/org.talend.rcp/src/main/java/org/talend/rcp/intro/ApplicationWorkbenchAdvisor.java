@@ -18,6 +18,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SubMonitor;
+import org.eclipse.core.runtime.jobs.IJobManager;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.TrayDialog;
 import org.eclipse.ui.IPerspectiveDescriptor;
 import org.eclipse.ui.IWorkbenchPreferenceConstants;
@@ -96,6 +98,11 @@ public class ApplicationWorkbenchAdvisor extends IDEWorkbenchAdvisor {
     @Override
     public void preStartup() {
         super.preStartup();
+        IJobManager jobManager = Job.getJobManager();
+        boolean isSuspend = jobManager.isSuspended();
+        if (isSuspend) {
+            jobManager.resume();
+        }
 
         // Fix bug 329,control the startup sequence of the plugin.
         // Promise the following plugin register themselves before system loaded.
@@ -119,6 +126,9 @@ public class ApplicationWorkbenchAdvisor extends IDEWorkbenchAdvisor {
             }
         }
 
+        if (isSuspend) {
+            jobManager.suspend();
+        }
     }
 
     @Override
