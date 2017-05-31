@@ -22,6 +22,11 @@ import org.talend.core.model.properties.Item;
  */
 public interface ITDQPatternService extends ITDQService {
 
+    static final String PATTERN_NAME = "PATTERN_NAME";
+
+    static final String PATTERN_REGEX = "PATTERN_REGEX";
+
+    static final String PATTERN_ID = "PATTERN_ID";
     /**
      * This method is used in tis to get the patterns value in TDQ.
      * 
