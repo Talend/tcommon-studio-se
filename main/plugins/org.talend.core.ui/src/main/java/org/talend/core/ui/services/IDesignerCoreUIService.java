@@ -57,7 +57,7 @@ public interface IDesignerCoreUIService extends IService {
 
     boolean executeCommand(IGEFProcess process, Command cmd);
     
-    Command crateMavenDeploymentValueChangeCommand(IProcess2 process, String type, String value);
+    Command createMavenDeploymentValueChangeCommand(Object object, String type, String value);
     
     void loadComponentsFromProviders(ERepositoryObjectType type);
     

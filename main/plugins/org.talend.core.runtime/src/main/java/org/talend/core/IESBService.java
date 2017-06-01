@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.core;
 
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPart;
 import org.talend.core.model.process.INode;
 import org.talend.core.model.properties.Item;
@@ -60,4 +61,6 @@ public interface IESBService extends IService {
     public boolean isWSDLEditor(IWorkbenchPart part);
     
     public Item getWSDLEditorItem(IWorkbenchPart part);
+    
+    public boolean executeCommand(IEditorPart editorPart, Object cmd);
 }

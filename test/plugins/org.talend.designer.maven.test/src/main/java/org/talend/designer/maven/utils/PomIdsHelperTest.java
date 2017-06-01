@@ -12,11 +12,16 @@
 // ============================================================================
 package org.talend.designer.maven.utils;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.talend.core.model.process.JobInfo;
 import org.talend.core.model.properties.PropertiesFactory;
 import org.talend.core.model.properties.Property;
+import org.talend.core.runtime.maven.MavenConstants;
+import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
+import org.talend.designer.maven.DesignerMavenPlugin;
 import org.talend.repository.ProjectManager;
 
 /**
@@ -199,4 +204,13 @@ public class PomIdsHelperTest {
         Assert.assertEquals("Wo_rld_", jobArtifactId);
     }
 
+    @Test
+    public void testGetProjectVersion() {
+        ProjectPreferenceManager projectPreferenceManager = DesignerMavenPlugin.getPlugin().getProjectPreferenceManager();
+        projectPreferenceManager.setValue(MavenConstants.PROJECT_VERSION, "1.1.0");
+        projectPreferenceManager.setValue(MavenConstants.NAME_PUBLISH_AS_SNAPSHOT, true);
+        assertEquals("1.1.0-SNAPSHOT", PomIdsHelper.getProjectVersion());
+        projectPreferenceManager.setValue(MavenConstants.NAME_PUBLISH_AS_SNAPSHOT, false);
+        assertEquals("1.1.0", PomIdsHelper.getProjectVersion());
+    }
 }
