@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -61,6 +62,7 @@ import org.talend.core.model.metadata.builder.database.manager.ExtractManagerFac
 import org.talend.cwm.relational.RelationalFactory;
 import org.talend.cwm.relational.TdColumn;
 import org.talend.cwm.relational.TdTable;
+import orgomg.cwm.objectmodel.core.Feature;
 
 /**
  * created by ggu on Jul 4, 2012 Detailled comment
@@ -745,6 +747,7 @@ public class AbstractTest4ExtractManager {
         if (resource != null) {
             resource.getContents().add(tdTable);
         }
+        when(tdTable.getFeature()).thenReturn(new BasicEList<Feature>());
         return tdTable;
     }
 

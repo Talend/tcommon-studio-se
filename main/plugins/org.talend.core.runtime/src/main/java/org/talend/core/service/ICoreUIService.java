@@ -19,6 +19,7 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.talend.commons.ui.swt.actions.ITreeContextualAction;
 import org.talend.core.IService;
+import org.talend.core.model.repository.ERepositoryObjectType;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -44,4 +45,6 @@ public interface ICoreUIService extends IService {
     void syncAllRules();
 
     String getPreferenceValue(String key);
+    
+    void loadComponentsFromProviders(ERepositoryObjectType type);
 }

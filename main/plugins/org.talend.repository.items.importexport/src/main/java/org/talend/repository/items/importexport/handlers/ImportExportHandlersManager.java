@@ -524,13 +524,6 @@ public class ImportExportHandlersManager {
                                         Messages.getString("ImportExportHandlersManager_importingItemsError"), e)); //$NON-NLS-1$
                             }
 
-                            if (PluginChecker.isJobLetPluginLoaded()) {
-                                IJobletProviderService service = (IJobletProviderService) GlobalServiceRegister.getDefault()
-                                        .getService(IJobletProviderService.class);
-                                if (service != null) {
-                                    service.loadComponentsFromProviders();
-                                }
-                            }
                             ImportCacheHelper.getInstance().checkDeletedFolders();
                             ImportCacheHelper.getInstance().checkDeletedItems();
                             monitor.done();
@@ -611,7 +604,7 @@ public class ImportExportHandlersManager {
                                 final Set<String> overwriteDeletedItems, final Set<String> idDeletedBeforeImport)
                                 throws Exception {
                             boolean hasJoblet = false;
-                            boolean reloadJoblet = false;
+                            boolean jobletReloaded = false;
                             for (ImportItem itemRecord : processingItemRecords) {
                                 if (monitor.isCanceled()) {
                                     return;
@@ -624,13 +617,14 @@ public class ImportExportHandlersManager {
                                         || (ERepositoryObjectType.SPARK_STREAMING_JOBLET == itemRecord.getRepositoryType())) {
                                     hasJoblet = true;
                                 }
-                                if (hasJoblet) {
+                                if (hasJoblet && !jobletReloaded) {
                                     if (ERepositoryObjectType.JOBLET != itemRecord.getRepositoryType()
                                             && ERepositoryObjectType.SPARK_JOBLET != itemRecord.getRepositoryType()
                                             && ERepositoryObjectType.SPARK_STREAMING_JOBLET != itemRecord.getRepositoryType()) {
-                                        // fix for TUP-3032 load joblet process before import job in order to build
-                                        // items relationship
-                                        reloadJoblet = true;
+                                        // fix for TUP-3032 ,processingItemRecords is a sorted list with joblet before
+                                        // jobs . we should load joblet component before import jobs to build the
+                                        // relationship.
+                                        jobletReloaded = true;
                                         if (PluginChecker.isJobLetPluginLoaded()) {
                                             IJobletProviderService jobletService = (IJobletProviderService) GlobalServiceRegister
                                                     .getDefault().getService(IJobletProviderService.class);
@@ -693,7 +687,7 @@ public class ImportExportHandlersManager {
 
                             }
 
-                            if (hasJoblet && !reloadJoblet && PluginChecker.isJobLetPluginLoaded()) {
+                            if (hasJoblet && !jobletReloaded && PluginChecker.isJobLetPluginLoaded()) {
                                 IJobletProviderService jobletService = (IJobletProviderService) GlobalServiceRegister
                                         .getDefault().getService(IJobletProviderService.class);
                                 if (jobletService != null) {

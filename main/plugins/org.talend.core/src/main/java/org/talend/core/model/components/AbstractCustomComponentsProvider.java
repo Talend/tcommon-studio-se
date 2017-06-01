@@ -21,7 +21,6 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.io.FilesUtils;
 import org.talend.commons.utils.resource.UpdatesHelper;
 import org.talend.core.i18n.Messages;
-import org.talend.utils.json.JSONObject;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -42,22 +41,8 @@ public abstract class AbstractCustomComponentsProvider extends AbstractComponent
 
     };
 
-    protected JSONObject needInstalledNewCFComponents;
-
-    public JSONObject getNeedInstalledNewCFComponents() {
-        if (needInstalledNewCFComponents == null) {
-            needInstalledNewCFComponents = new JSONObject();
-        }
-        return needInstalledNewCFComponents;
-    }
-
-    public void resetNewComponentsCache() {
-        needInstalledNewCFComponents = new JSONObject();
-    }
-
     @Override
     public void preComponentsLoad() throws IOException {
-        resetNewComponentsCache();
         File installationFolder = getInstallationFolder();
         if (installationFolder.exists()) {
             FilesUtils.removeFolder(installationFolder, true);

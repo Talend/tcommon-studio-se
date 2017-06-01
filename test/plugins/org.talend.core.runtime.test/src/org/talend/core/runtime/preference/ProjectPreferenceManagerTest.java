@@ -12,11 +12,15 @@
 // ============================================================================
 package org.talend.core.runtime.preference;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.io.FilenameFilter;
 
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ProjectScope;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -146,4 +150,16 @@ public class ProjectPreferenceManagerTest {
         Assert.assertEquals(false, readProjectPrefManager.getBoolean("xxx"));
 
     }
+    
+    @Test
+    public void testReload() {
+        String testQualifier = getTestQualifier("TEST");
+        ProjectPreferenceManager projectPrefManager = new ProjectPreferenceManager(testQualifier);
+        IPreferenceStore originalStore = projectPrefManager.getPreferenceStore();
+        ProjectScope originalScope = projectPrefManager.getProjectScope();
+        projectPrefManager.reload();
+        assertNotEquals(projectPrefManager.getProjectScope(), originalScope);
+        assertNotEquals(projectPrefManager.getPreferenceStore(), originalStore);
+    }
+
 }

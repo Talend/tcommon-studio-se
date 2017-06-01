@@ -40,4 +40,5 @@ public abstract class AbstractRepoViewLinker implements IRepoViewLinker {
             seekerManager.expandNode(seekerManager.getRepoTreeViewer(), repoNode, 1);
         }
     }
+
 }

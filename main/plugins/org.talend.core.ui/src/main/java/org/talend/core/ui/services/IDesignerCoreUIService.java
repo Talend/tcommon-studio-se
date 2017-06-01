@@ -23,6 +23,7 @@ import org.eclipse.jface.util.IPropertyChangeListener;
 import org.talend.core.IService;
 import org.talend.core.model.components.IComponentsFactory;
 import org.talend.core.model.process.IProcess2;
+import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.ui.process.IGEFProcess;
 
 /**
@@ -57,5 +58,7 @@ public interface IDesignerCoreUIService extends IService {
     boolean executeCommand(IGEFProcess process, Command cmd);
     
     Command crateMavenDeploymentValueChangeCommand(IProcess2 process, String type, String value);
+    
+    void loadComponentsFromProviders(ERepositoryObjectType type);
     
 }

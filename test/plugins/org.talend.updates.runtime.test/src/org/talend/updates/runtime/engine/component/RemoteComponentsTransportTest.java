@@ -154,14 +154,19 @@ public class RemoteComponentsTransportTest {
 
     }
 
-    @Test(expected = FileNotFoundException.class)
+    @Test
     public void test_downloadFile_siteFile_notExisted() throws Exception {
         try {
             RemoteComponentsTransportTestClass transport = new RemoteComponentsTransportTestClass(tmpFolder);
             final URI uri = URI.create("https://raw.githubusercontent.com/Talend/tcommon-studio-se/master");
             transport.downloadFile(null, uri, "abc.txt");
+
+            Assert.assertTrue("File shouldn't be found", false); // never be here
         } catch (UnknownHostException e) {
             // nothing to do, when can't access web
+        } catch (FileNotFoundException e) {
+            // if enable to access, will be this exception
+            Assert.assertTrue("File shouldn't be found", true);
         }
     }
 

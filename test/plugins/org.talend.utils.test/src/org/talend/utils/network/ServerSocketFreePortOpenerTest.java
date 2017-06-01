@@ -12,8 +12,10 @@
 // ============================================================================
 package org.talend.utils.network;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -29,7 +31,7 @@ import org.talend.utils.network.operators.ServerSocketFreePortOpenerOperator;
  */
 public class ServerSocketFreePortOpenerTest {
 
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     @Test
     public void testOpensServerSocketFromRangePortSameReference() throws IOException {

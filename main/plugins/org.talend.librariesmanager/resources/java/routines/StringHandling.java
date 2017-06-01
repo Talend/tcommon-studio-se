@@ -509,10 +509,11 @@ public class StringHandling {
          }
          
          if (isVacant(second_string)) {
-             StringBuilder result = new StringBuilder(first_string);
+             StringBuilder result = new StringBuilder();
              for (int i = OriginLength; i < length; i++) {
                  result.append(" ");
              }
+             result.append(first_string);
              return result.toString();
          } else {
              StringBuilder result = new StringBuilder(second_string);

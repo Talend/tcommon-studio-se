@@ -1429,6 +1429,8 @@ public class DatabaseForm extends AbstractForm {
 
         useKerberosForHBase = new Button(authenticationGrpForHBase, SWT.CHECK);
         useKerberosForHBase.setText(Messages.getString("DatabaseForm.hiveEmbedded.useKerberos")); //$NON-NLS-1$
+        //TUP-17659 disable Kerberos Authentication for EMR-Hbase
+        checkHBaseKerberos();
         GridData data = new GridData(GridData.FILL_HORIZONTAL);
         data.horizontalSpan = 4;
         useKerberosForHBase.setLayoutData(data);
@@ -1497,6 +1499,30 @@ public class DatabaseForm extends AbstractForm {
 
         addListenerHBaseAuthentication();
         initForHBaseAuthentication();
+    }
+
+    private void checkHBaseKerberos() {
+
+        useKerberosForHBase.setEnabled(hbaseDoSupportKerb());
+
+    }
+
+    private boolean hbaseDoSupportKerb() {
+        String hadoopDistribution = getConnection().getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HBASE_DISTRIBUTION);
+        String hadoopVersion = getConnection().getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HBASE_VERSION);
+        IHDistribution hBaseDistribution = getHBaseDistribution(hadoopDistribution, false);
+        if (hBaseDistribution != null) {
+            IHDistributionVersion hdVersion = hBaseDistribution.getHDVersion(hadoopVersion, false);
+            IHadoopDistributionService hadoopDistributionService = getHadoopDistributionService();
+            if (hdVersion != null && hadoopDistributionService != null) {
+                try {
+                    return hadoopDistributionService.doSupportMethod(hdVersion, "doSupportKerberos");
+                } catch (Exception e) {
+                    // ignore if NoSuchMethodException
+                }
+            }
+        }
+        return false;
     }
 
     private void createAuthenticationForMaprdb(Composite parent) {
@@ -5130,6 +5156,7 @@ public class DatabaseForm extends AbstractForm {
                     updateHBaseVersionPart(newDistribution);
                     fillDefaultsWhenHBaseVersionChanged();
                     checkFieldsValue();
+                    checkHBaseKerberos();
                 }
             }
         });
@@ -5160,6 +5187,7 @@ public class DatabaseForm extends AbstractForm {
                     getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HBASE_VERSION, newVersion.getVersion());
                     fillDefaultsWhenHBaseVersionChanged();
                     checkFieldsValue();
+                    checkHBaseKerberos();
                 }
             }
         });

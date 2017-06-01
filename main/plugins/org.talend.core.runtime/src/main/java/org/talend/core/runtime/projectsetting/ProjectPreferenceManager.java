@@ -12,14 +12,14 @@
 // ============================================================================
 package org.talend.core.runtime.projectsetting;
 
-import java.io.IOException;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.eclipse.jface.preference.IPersistentPreferenceStore;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.talend.commons.exception.ExceptionHandler;
@@ -29,6 +29,8 @@ import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.general.Project;
 import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.repository.ProjectManager;
+import org.talend.repository.documentation.ERepositoryActionName;
+import org.talend.repository.model.IRepositoryService;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -50,11 +52,24 @@ public final class ProjectPreferenceManager {
 
     private IPreferenceStore store;
     
-    private IRunProcessService service;
+    private boolean isCurrentProject;
+    
+    private static IRunProcessService runProcessService;
+    
+    private static IRepositoryService repositoryService;
+    
+    static {
+    	if(GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
+            runProcessService = (IRunProcessService) GlobalServiceRegister.getDefault().getService(IRunProcessService.class);
+        }
+    	if(GlobalServiceRegister.getDefault().isServiceRegistered(IRepositoryService.class)) {
+    		repositoryService = (IRepositoryService) GlobalServiceRegister.getDefault().getService(IRepositoryService.class);
+    	}
+    }
 
     public ProjectPreferenceManager(String fileName) {
         this(ProjectManager.getInstance().getCurrentProject(), fileName);
-
+        isCurrentProject = true;
     }
 
     public ProjectPreferenceManager(Project p, String fileName) {
@@ -66,12 +81,13 @@ public final class ProjectPreferenceManager {
         } catch (PersistenceException e) {
             ExceptionHandler.process(e);
         }
-
+        addPropertyChangeListener();
     }
 
     public ProjectPreferenceManager(IProject project, String fileName) {
         super();
         init(project, fileName);
+        addPropertyChangeListener();
     }
 
     private void init(IProject project, String fileName) {
@@ -81,8 +97,11 @@ public final class ProjectPreferenceManager {
         this.project = project;
         this.projectScope = new ProjectScope(project);
         this.store = new ScopedPreferenceStore(this.projectScope, this.qualifier);
-        if(GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
-            service = (IRunProcessService) GlobalServiceRegister.getDefault().getService(IRunProcessService.class);
+    }
+
+    private void addPropertyChangeListener() {
+    	if (repositoryService != null) {
+        	repositoryService.getProxyRepositoryFactory().addPropertyChangeListener(new ProjectPreferenceReloadListener());
         }
     }
 
@@ -160,9 +179,31 @@ public final class ProjectPreferenceManager {
      * Save the configurations.
      */
     public void save() {
-        if (service != null) {
-            service.storeProjectPreferences(getPreferenceStore());
+        if (runProcessService != null) {
+            runProcessService.storeProjectPreferences(getPreferenceStore());
         }
     }
+    
+    public void reload() {
+    	if (isCurrentProject) {
+    		try {
+    			Project currentProject = ProjectManager.getInstance().getCurrentProject();
+    			init(ResourceUtils.getProject(currentProject), qualifier);
+    		} catch (PersistenceException e) {
+    			ExceptionHandler.process(e);
+    		}
+    	}
+    }
+
+	class ProjectPreferenceReloadListener implements PropertyChangeListener {
+
+		@Override
+		public void propertyChange(PropertyChangeEvent event) {
+			if (event.getPropertyName().equals(ERepositoryActionName.PROJECT_PREFERENCES_RELOAD.getName())) {
+				reload();
+			}
+		}
+		
+	}
 
 }

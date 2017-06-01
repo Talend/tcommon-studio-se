@@ -1858,8 +1858,10 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);
                 currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.initializeProjectConnection"), 1); //$NON-NLS-1$
                 ProjectManager.getInstance().getBeforeLogonRecords().clear();
+                ProjectManager.getInstance().getUpdatedRemoteHandlerRecords().clear();
                 this.repositoryFactoryFromProvider.beforeLogon(project);
                 ProjectManager.getInstance().getBeforeLogonRecords().clear();
+                ProjectManager.getInstance().getUpdatedRemoteHandlerRecords().clear();
 
                 // monitorWrap.worked(1);
                 TimeMeasure.step("logOnProject", "beforeLogon"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1903,6 +1905,8 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                     coreUiService.componentsReset();
                 }
 
+                fireRepositoryPropertyChange(ERepositoryActionName.PROJECT_PREFERENCES_RELOAD.getName(), null, null);
+                
                 currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);
                 currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.exec.migration.tasks"), 1); //$NON-NLS-1$
                 ProjectManager.getInstance().getMigrationRecords().clear();
@@ -1918,7 +1922,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                     currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.cleanWorkspace"), 1); //$NON-NLS-1$
                     
                     String specifiedVersion = null;
-                    String currentVersion = JavaUtils.getProjectJavaVersion(true);
+                    String currentVersion = JavaUtils.getProjectJavaVersion();
                     String newVersion = null;
                     if (CommonUIPlugin.isFullyHeadless()) {
                         specifiedVersion = JavaHomeUtil.getSpecifiedJavaVersion();

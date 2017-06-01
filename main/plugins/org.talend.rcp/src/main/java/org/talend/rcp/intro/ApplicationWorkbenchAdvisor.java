@@ -95,7 +95,6 @@ public class ApplicationWorkbenchAdvisor extends IDEWorkbenchAdvisor {
     @SuppressWarnings("restriction")
     @Override
     public void preStartup() {
-        super.preStartup();
 
         // Fix bug 329,control the startup sequence of the plugin.
         // Promise the following plugin register themselves before system loaded.
@@ -118,6 +117,8 @@ public class ApplicationWorkbenchAdvisor extends IDEWorkbenchAdvisor {
                 log.error("Error while execution a login task.", e); //$NON-NLS-1$
             }
         }
+
+        super.preStartup();
 
     }
 

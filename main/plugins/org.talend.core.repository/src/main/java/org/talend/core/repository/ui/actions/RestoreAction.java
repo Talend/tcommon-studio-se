@@ -137,7 +137,8 @@ public class RestoreAction extends AContextualAction {
                     }
                 }
             }
-            if (nodeType == ERepositoryObjectType.JOBLET) {
+            if (nodeType == ERepositoryObjectType.JOBLET || nodeType == ERepositoryObjectType.SPARK_JOBLET
+                    || nodeType == ERepositoryObjectType.SPARK_STREAMING_JOBLET) {
                 needToUpdatePalette = true;
             }
             if (nodeType.isSubItem()) {

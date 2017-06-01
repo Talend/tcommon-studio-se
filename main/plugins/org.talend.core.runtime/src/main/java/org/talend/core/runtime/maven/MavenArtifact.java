@@ -250,4 +250,12 @@ public class MavenArtifact {
         return true;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return "MavenArtifact [groupId=" + this.groupId + ", artifactId=" + this.artifactId + ", version=" + this.version + "]";
+    }
+
 }

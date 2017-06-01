@@ -35,17 +35,6 @@ public class JavaUtilsTest {
     }
     
     @Test
-    public void testGetProjectJavaVersion() {
-        ProjectPreferenceManager manager = CoreRuntimePlugin.getInstance().getProjectPreferenceManager();
-        
-        JavaUtils.getProjectJavaVersion();
-        assertTrue(manager == CoreRuntimePlugin.getInstance().getProjectPreferenceManager());
-        
-        JavaUtils.getProjectJavaVersion(true);
-        assertFalse(manager == CoreRuntimePlugin.getInstance().getProjectPreferenceManager());
-    }
-
-    @Test
     public void testUpdateProjectJavaVersion() {
         JavaUtils.updateProjectJavaVersion(JavaCore.VERSION_1_6);
         
