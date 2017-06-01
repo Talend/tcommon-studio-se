@@ -62,12 +62,13 @@ public class MetadataTableEditor extends ExtendedTableModel<IMetadataColumn> {
     }
 
     private void initData() {
-        if (isNeedShowAllColumn) {
-            registerDataList(this.metadataTable.getListColumns(true));
-        } else {
-            registerDataList(this.metadataTable.getListColumns());
+        if (this.metadataTable != null) {
+            if (isNeedShowAllColumn) {
+                registerDataList(this.metadataTable.getListColumns(true));
+            } else {
+                registerDataList(this.metadataTable.getListColumns());
+            } 
         }
-
     }
 
     public String getTitleName() {

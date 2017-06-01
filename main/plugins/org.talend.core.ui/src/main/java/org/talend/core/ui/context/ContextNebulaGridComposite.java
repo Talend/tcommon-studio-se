@@ -618,6 +618,9 @@ public class ContextNebulaGridComposite extends AbstractContextTabEditComposite 
 
     private void initializeContextCombo() {
         IContextManager contextManager = getContextManager();
+        if (contextsCombo == null) {
+            return;
+        }
         if (contextsCombo.getItems().length > 0) {
             contextsCombo.removeAll();
         }
