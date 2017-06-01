@@ -16,9 +16,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.database.conn.DatabaseConnStrUtil;
+import org.talend.core.hadoop.IHadoopClusterService;
+import org.talend.core.hadoop.repository.HadoopRepositoryUtil;
 import org.talend.core.model.context.ContextUtils;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
@@ -35,6 +38,7 @@ import org.talend.cwm.helper.SchemaHelper;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
+
 import orgomg.cwm.resource.relational.Catalog;
 import orgomg.cwm.resource.relational.Schema;
 
@@ -52,7 +56,7 @@ public class SwitchContextGroupNameImpl implements ISwitchContext {
 
     /**
      * get a instance of this class.
-     * 
+     *
      * @return
      */
     public static SwitchContextGroupNameImpl getInstance() {
@@ -64,11 +68,11 @@ public class SwitchContextGroupNameImpl implements ISwitchContext {
 
     /*
      * (non-Javadoc)
-     * 
-     * @see
-     * org.talend.core.model.metadata.builder.database.ISwitchContext#updateContextGroup(org.talend.core.model.properties
-     * .ContextItem, org.talend.core.model.metadata.builder.connection.Connection)
+     *
+     * @see org.talend.core.model.metadata.builder.database.ISwitchContext#updateContextGroup(org.talend.core.model.
+     * properties .ContextItem, org.talend.core.model.metadata.builder.connection.Connection)
      */
+    @Override
     public boolean updateContextGroup(ConnectionItem connItem, String selectedContext) {
         if (connItem == null) {
             return false;
@@ -104,7 +108,7 @@ public class SwitchContextGroupNameImpl implements ISwitchContext {
 
     /**
      * DOC talend Comment method "checkContextIsValid".
-     * 
+     *
      * @param selectedContext
      * @paramconn
      */
@@ -146,9 +150,9 @@ public class SwitchContextGroupNameImpl implements ISwitchContext {
     }
 
     /**
-     * 
+     *
      * change context Group need to synchronization name of catalog or schema
-     * 
+     *
      * @param dbConn
      * @param oldContextName
      */
@@ -182,9 +186,9 @@ public class SwitchContextGroupNameImpl implements ISwitchContext {
     }
 
     /**
-     * 
+     *
      * check whether str is null or length is zero
-     * 
+     *
      * @param str
      * @return
      */
@@ -194,7 +198,7 @@ public class SwitchContextGroupNameImpl implements ISwitchContext {
 
     /**
      * change the URL according to selected context Added yyin 20120918 TDQ-5668
-     * 
+     *
      * @param connItem
      * @param con
      * @param selectedContext
@@ -217,10 +221,11 @@ public class SwitchContextGroupNameImpl implements ISwitchContext {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.utils.ISwitchContext#updateContextForConnectionItems(java.util.Map,
      * org.talend.core.model.properties.ContextItem)
      */
+    @Override
     public boolean updateContextForConnectionItems(Map<String, String> contextGroupRanamedMap, ContextItem contextItem) {
         if (contextItem == null) {
             return false;
@@ -255,9 +260,15 @@ public class SwitchContextGroupNameImpl implements ISwitchContext {
                     }
                 }
             }
+
+            IHadoopClusterService hadoopClusterService = HadoopRepositoryUtil.getHadoopClusterService();
+            if (hadoopClusterService != null) {
+                hadoopClusterService.updateConfJarsByContextGroup(contextItem, contextGroupRanamedMap);
+            }
+
             return true;
         } catch (PersistenceException e) {
-            e.printStackTrace();
+            ExceptionHandler.process(e);
         }
         return false;
     }
