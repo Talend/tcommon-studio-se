@@ -16,12 +16,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.jface.viewers.IContentProvider;
+import org.eclipse.ui.internal.navigator.NavigatorContentServiceContentProvider;
 import org.talend.commons.ui.runtime.image.ECoreImage;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.builder.connection.MetadataColumn;
 import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
+import org.talend.core.model.utils.RepositoryManagerHelper;
 import org.talend.core.repository.i18n.Messages;
 import org.talend.core.repository.model.repositoryObject.MetadataColumnRepositoryObject;
 import org.talend.core.repository.model.repositoryObject.MetadataTableRepositoryObject;
@@ -31,6 +34,7 @@ import org.talend.repository.model.IRepositoryNode.ENodeType;
 import org.talend.repository.model.IRepositoryNode.EProperties;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.model.StableRepositoryNode;
+import org.talend.repository.ui.views.IRepositoryView;
 
 /**
  * DOC ycbai class global comment. Detailled comment
@@ -91,7 +95,7 @@ public class RepositoryNodeManager {
         columnList.addAll(metadataTable.getColumns());
         int num = columnList.size();
         StringBuffer floderName = new StringBuffer();
-        floderName.append(columnsFolderName);//$NON-NLS-1$
+        floderName.append(columnsFolderName);
         floderName.append("(");//$NON-NLS-1$
         floderName.append(num);
         floderName.append(")");//$NON-NLS-1$
@@ -118,6 +122,21 @@ public class RepositoryNodeManager {
         columnNode.setProperties(EProperties.LABEL, columnObj.getLabel());
         columnNode.setProperties(EProperties.CONTENT_TYPE, repositoryObjectType);
         return columnNode;
+    }
+
+    public static Object[] findChildrenFromRepository(RepositoryNode repNode) {
+        List<RepositoryNode> children = new ArrayList<RepositoryNode>();
+        IRepositoryView repView = RepositoryManagerHelper.findRepositoryView();
+        if (repView != null && repView.getViewer() != null) {
+            IContentProvider contentProvider = repView.getViewer().getContentProvider();
+            if (contentProvider instanceof NavigatorContentServiceContentProvider) {
+                NavigatorContentServiceContentProvider navigatorProvider = (NavigatorContentServiceContentProvider) contentProvider;
+                Object[] nc = navigatorProvider.getChildren(repNode);
+                return nc;
+
+            }
+        }
+        return new Object[0];
     }
 
 }

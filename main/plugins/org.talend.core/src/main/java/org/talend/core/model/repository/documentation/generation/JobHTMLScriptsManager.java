@@ -57,6 +57,7 @@ public class JobHTMLScriptsManager implements IDocumentationManager {
      * 
      * @see org.talend.repository.documentation.generation.IDocumentationManager#getDocGenerator()
      */
+    @Override
     public IDocumentationGenerator getDocGenerator() {
         return this.docGenerator;
     }
@@ -66,6 +67,7 @@ public class JobHTMLScriptsManager implements IDocumentationManager {
      * 
      * @see org.talend.repository.documentation.generation.IDocumentationManager#getDocGenerator()
      */
+    @Override
     public boolean isNeedGenerate() {
         return this.needGenerate;
     }
@@ -85,16 +87,17 @@ public class JobHTMLScriptsManager implements IDocumentationManager {
      * @param process
      * @return
      */
+    @Override
     public List<ExportFileResource> getExportResources(ExportFileResource[] process) {
-        for (int i = 0; i < process.length; i++) {
-            docGenerator.generateHTMLFile(process[i]);// added path
+        for (ExportFileResource proces : process) {
+            docGenerator.generateHTMLFile(proces);// added path
         }
         return Arrays.asList(process);
     }
 
     public List<ExportFileResource> getExportResourcesWithCss(ExportFileResource[] process, String cssFile) {
-        for (int i = 0; i < process.length; i++) {
-            docGenerator.generateHTMLFile(process[i], cssFile);// added path
+        for (ExportFileResource proces : process) {
+            docGenerator.generateHTMLFile(proces, cssFile);// added path
         }
         return Arrays.asList(process);
     }
@@ -106,16 +109,17 @@ public class JobHTMLScriptsManager implements IDocumentationManager {
      * org.talend.repository.documentation.generation.IDocumentationManager#getExportResources(org.talend.repository
      * .documentation.ExportFileResource[], java.lang.String, java.lang.String[])
      */
+    @Override
     public List<ExportFileResource> getExportResources(ExportFileResource[] exportFileResources, String targetPath,
             String... jobVersion) throws Exception {
 
         if (this.needGenerate) {
-            for (int i = 0; i < exportFileResources.length; i++) {
-                docGenerator.generateDocumentation(exportFileResources[i], targetPath, jobVersion);
+            for (ExportFileResource exportFileResource : exportFileResources) {
+                docGenerator.generateDocumentation(exportFileResource, targetPath, jobVersion);
             }
         } else {
-            for (int i = 0; i < exportFileResources.length; i++) {
-                collectGeneratedDocumentation(exportFileResources[i], targetPath, jobVersion);
+            for (ExportFileResource exportFileResource : exportFileResources) {
+                collectGeneratedDocumentation(exportFileResource, targetPath, jobVersion);
             }
         }
         List<ExportFileResource> resourceList = new ArrayList<ExportFileResource>();
@@ -147,23 +151,24 @@ public class JobHTMLScriptsManager implements IDocumentationManager {
 
         if (ERepositoryObjectType.GENERATED != null
                 && targetPath.endsWith(new Path(ERepositoryObjectType.GENERATED.getFolder()).lastSegment().toLowerCase())) {
-
-            if (item instanceof JobDocumentationItem && ERepositoryObjectType.JOB_DOC != null) {
-                subFolder = new Path(ERepositoryObjectType.JOB_DOC.getFolder()).lastSegment().toLowerCase();
-            } else if (item instanceof JobletDocumentationItem && ERepositoryObjectType.JOBLET_DOC != null) {
-                subFolder = new Path(ERepositoryObjectType.JOBLET_DOC.getFolder()).lastSegment().toLowerCase();
+            ERepositoryObjectType itemType = ERepositoryObjectType.getItemType(item);
+            if (itemType != null) {
+                subFolder = new Path(itemType.getFolder()).lastSegment().toLowerCase();
             } else {
-                subFolder = ""; //$NON-NLS-1$
+                if (item instanceof JobDocumentationItem && ERepositoryObjectType.JOB_DOC != null) {
+                    subFolder = new Path(ERepositoryObjectType.JOB_DOC.getFolder()).lastSegment().toLowerCase();
+                } else if (item instanceof JobletDocumentationItem && ERepositoryObjectType.JOBLET_DOC != null) {
+                    subFolder = new Path(ERepositoryObjectType.JOBLET_DOC.getFolder()).lastSegment().toLowerCase();
+                } else {
+                    subFolder = ""; //$NON-NLS-1$
+                }
             }
 
             targetPath = targetPath + IPath.SEPARATOR + subFolder;
         }
-
         // Used for generating/updating all jobs' documentaiton only.
-        if (targetPath.endsWith(new Path(ERepositoryObjectType.JOB_DOC.getFolder()).lastSegment().toLowerCase())
-                || targetPath.endsWith(new Path(ERepositoryObjectType.JOBLET_DOC.getFolder()).lastSegment().toLowerCase())) {
-            targetPath = targetPath + IPath.SEPARATOR + jobPath + IPath.SEPARATOR + jobName;
-        }
+        targetPath = targetPath + IPath.SEPARATOR + jobPath + IPath.SEPARATOR + jobName;
+
         String version = ""; //$NON-NLS-1$
 
         // Checks if the job's version is specified, see it on "Export documentation" Dialog:

@@ -35,6 +35,7 @@ import org.talend.core.model.repository.documentation.generation.DocumentationPa
 import org.talend.core.model.utils.RepositoryManagerHelper;
 import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.core.repository.model.ProjectRepositoryNode;
+import org.talend.core.repository.utils.RepositoryNodeManager;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.documentation.ExportFileResource;
 import org.talend.repository.model.IProxyRepositoryFactory;
@@ -197,6 +198,9 @@ public class DocumentationHelper {
             }
         }
         Object[] nodes = node.getChildren().toArray();
+        if (nodes == null || nodes.length == 0) {
+            nodes = RepositoryNodeManager.findChildrenFromRepository(node);
+        }
         if (nodes.length <= 0) {
             return;
         }

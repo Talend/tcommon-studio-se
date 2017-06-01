@@ -156,4 +156,5 @@ public final class RepositoryManagerHelper {
         });
         return list.toArray(new IEditorReference[0]);
     }
+
 }

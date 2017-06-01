@@ -28,4 +28,6 @@ public interface IDocumentationGenerator {
 
     public ERepositoryObjectType getRepositoryObjectType();
 
+    public ERepositoryObjectType getItemType();
+
 }

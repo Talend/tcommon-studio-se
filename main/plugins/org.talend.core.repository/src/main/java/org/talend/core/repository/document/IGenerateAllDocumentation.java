@@ -16,6 +16,7 @@ import java.io.File;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.talend.core.model.general.Project;
+import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.repository.model.RepositoryNode;
 
 /**
@@ -32,5 +33,17 @@ public interface IGenerateAllDocumentation {
     public void setProject(Project project);
 
     public void setRootNode(RepositoryNode jobletNode);
+
+    public void setGenerateVersions(boolean generateAllVersions);
+
+    public boolean isGenerateAllVersions();
+
+    public File getGeneratedDocHTML();
+
+    public ERepositoryObjectType getDocumentObjectType();
+
+    public ERepositoryObjectType getItemType();
+
+    public String getHTMLFileName();
 
 }
