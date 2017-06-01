@@ -1,8 +1,9 @@
 package routines.system.xml.sax;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Stack;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
@@ -10,13 +11,32 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.XMLFilterImpl;
 
 /**
+ * Responsible for removing of namespaces from XML content.
  *
+ * <p>Example of usage:
+ * <pre>
+ *     XMLReader reader = ...;
+ *
+ *     ContentHandler contentHandler = ...;
+ *
+ *     NamespaceFilter nsFilter = new NamespaceFilter();
+ *     nsFilter.setContentHandler(contentHandler);
+ *     nsFilter.setMatcher(new NamespaceFilter.Matcher() {
+ *          public boolean matches(String uri) {
+ *              return "urn:my.namespace".equals(uri);
+ *          }
+ *     });
+ *
+ *     reader.setContentHandler(nsFilter);
+ *
+ *     reader.parse(...);
+ * </pre>
  */
 public class NamespaceFilter extends XMLFilterImpl {
 
-    private Matcher matcher;
+    private Deque<Context> nsStack = new ArrayDeque<Context>();
 
-    private Stack<Context> nsStack = new Stack<Context>();
+    private Matcher matcher;
 
     public NamespaceFilter() {
     }
@@ -79,7 +99,12 @@ public class NamespaceFilter extends XMLFilterImpl {
         return false;
     }
 
+    /**
+     * Holds namespace mappings for an element.
+     */
     static class Context {
+
+        /** Table of [prefix, namespace URI] mappings. */
         private Map<String, String> prefixToUriMap;
 
         public void setMapping(String prefix, String uri) {
@@ -94,8 +119,17 @@ public class NamespaceFilter extends XMLFilterImpl {
         }
     }
 
+    /**
+     * Performs matching of namespace URI
+     */
     public interface Matcher {
 
+        /**
+         * Check whether given namespace URI matches criteria.
+         *
+         * @param uri namespace URI to be checked
+         * @return {@code true} if namespace URI matches criteria, {@code false} otherwise
+         */
         boolean matches(String uri);
     }
 
