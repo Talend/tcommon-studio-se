@@ -29,6 +29,8 @@ import org.osgi.framework.Bundle;
 import org.talend.commons.utils.resource.FileExtensions;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
+import org.talend.core.ISVNProviderServiceInCoreRuntime;
+import org.talend.core.PluginChecker;
 import org.talend.core.model.general.LibraryInfo;
 
 /**
@@ -98,6 +100,14 @@ public class RoutineLibraryMananger {
                                 }
                             }
                         }
+                    }
+                }
+
+                if (PluginChecker.isSVNProviderPluginLoaded()) {
+                    ISVNProviderServiceInCoreRuntime svnService = (ISVNProviderServiceInCoreRuntime) GlobalServiceRegister
+                            .getDefault().getService(ISVNProviderServiceInCoreRuntime.class);
+                    if (svnService != null && svnService.isSvnLibSetupOnTAC()) {
+                        svnService.syncLibs(null);
                     }
                 }
             }

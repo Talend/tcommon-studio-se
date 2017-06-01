@@ -19,6 +19,7 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.window.Window;
@@ -33,6 +34,7 @@ import org.talend.core.model.general.ModuleStatusProvider;
 import org.talend.core.model.general.ModuleToInstall;
 import org.talend.librariesmanager.ui.LibManagerUiPlugin;
 import org.talend.librariesmanager.ui.i18n.Messages;
+import org.talend.librariesmanager.ui.startup.ShareLibsOnStartup;
 import org.talend.librariesmanager.ui.wizards.AcceptModuleLicensesWizard;
 import org.talend.librariesmanager.ui.wizards.AcceptModuleLicensesWizardDialog;
 import org.talend.librariesmanager.utils.nexus.NexusDownloadHelperWithProgress;
