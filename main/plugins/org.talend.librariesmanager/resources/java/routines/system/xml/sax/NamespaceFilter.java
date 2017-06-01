@@ -19,9 +19,7 @@ import org.xml.sax.helpers.XMLFilterImpl;
  *
  *     ContentHandler contentHandler = ...;
  *
- *     NamespaceFilter nsFilter = new NamespaceFilter();
- *     nsFilter.setContentHandler(contentHandler);
- *     nsFilter.setMatcher(new NamespaceFilter.Matcher() {
+ *     NamespaceFilter nsFilter = new NamespaceFilter(contentHandler, new NamespaceFilter.Matcher() {
  *          public boolean matches(String uri) {
  *              return "urn:my.namespace".equals(uri);
  *          }
