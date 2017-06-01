@@ -264,7 +264,7 @@ public class ExtendedToolbarView extends AbstractExtendedToolbar {
     public void updateEnabledStateOfButtons() {
         List<ExtendedPushButton> buttons = getButtons();
         for (ExtendedPushButton button : buttons) {
-            button.getButton().setEnabled(button.getEnabledState());
+            button.getButton().setEnabled(button.getEnabledState() && !extendedTableViewer.isReadOnly());
         }
     }
 
