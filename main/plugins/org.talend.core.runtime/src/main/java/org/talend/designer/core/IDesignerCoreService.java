@@ -33,6 +33,7 @@ import org.talend.core.model.general.Project;
 import org.talend.core.model.metadata.IMetadataConnection;
 import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.core.model.process.IConnection;
+import org.talend.core.model.process.IContextManager;
 import org.talend.core.model.process.IElementParameter;
 import org.talend.core.model.process.INode;
 import org.talend.core.model.process.IProcess;
@@ -65,6 +66,8 @@ public interface IDesignerCoreService extends IService {
 
     // item will be ProcessItem of JobletProcessItem
     public IProcess getProcessFromItem(Item item);
+
+    public IContextManager getProcessContextFromItem(Item item);
 
     public List<IProcess2> getOpenedProcess(IEditorReference[] reference);
 
