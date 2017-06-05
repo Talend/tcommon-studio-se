@@ -93,7 +93,8 @@ public class MavenRepoSynchronizer {
                     IPath libPath = new Path(pomFile.getAbsolutePath()).removeFileExtension().addFileExtension(packaging);
                     final File libFile = libPath.toFile();
                     if (libFile.exists()) {
-                        deployer.deployToLocalMaven(mvnUrl, libFile.getAbsolutePath(), pomFile.getAbsolutePath(), deployToRemote);
+                        // TUP-17785, make sure generate new one always without any dependences
+                        deployer.deployToLocalMaven(mvnUrl, libFile.getAbsolutePath(), null, deployToRemote);
                     }
                 } catch (Exception e) {
                     ExceptionHandler.process(e);
