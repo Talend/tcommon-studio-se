@@ -171,19 +171,25 @@ public class ModuleListDialog extends Dialog {
         selectField = new LabelledFileField(c,
                 Messages.getString("ModuleListCellEditor.selectLabel"), FilesUtils.getAcceptJARFilesSuffix()); //$NON-NLS-1$
 
-        if ("cConfig".equals(this.param.getElement().getElementParameter("COMPONENT_NAME").getValue())) {
-            versionLabel = new LabelledText(c, "Version");
-            IElementParameter param = this.param.getElement().getElementParameter("DRIVER_JAR");
-            List jars = (List) param.getValue();
-            for (int i = 0; i < jars.size(); i++) {
-                Map<String, String> jar = (Map) jars.get(i);
-                if (selecteModule.equals(jar.get("JAR_NAME"))) {
-                    selectField.setText(selecteModule.equals("\"newLine\"") ? "" : selecteModule);
-                    versionLabel.setText(String.valueOf(jar.get("JAR_NEXUS_VERSION")));
-                    break;
+        if(param != null){
+            
+            IElementParameter componentName = param.getElement().getElementParameter("COMPONENT_NAME");
+            
+            if (componentName!=null && "cConfig".equals(componentName.getValue())) {
+                versionLabel = new LabelledText(c, "Version");
+                IElementParameter param = this.param.getElement().getElementParameter("DRIVER_JAR");
+                List jars = (List) param.getValue();
+                for (int i = 0; i < jars.size(); i++) {
+                    Map<String, String> jar = (Map) jars.get(i);
+                    if (selecteModule.equals(jar.get("JAR_NAME"))) {
+                        selectField.setText(selecteModule.equals("\"newLine\"") ? "" : selecteModule);
+                        versionLabel.setText(String.valueOf(jar.get("JAR_NEXUS_VERSION")));
+                        break;
+                    }
                 }
             }
         }
+        
         addListeners();
         // checkField(true); // init
         jarsViewer.getList().setSelection(new String[] { selecteModule });
@@ -410,19 +416,21 @@ public class ModuleListDialog extends Dialog {
                         ILibrariesService service = (ILibrariesService) GlobalServiceRegister.getDefault().getService(
                                 ILibrariesService.class);
                         
-                        
-                        if (param != null
-                                && "cConfig".equals(this.param.getElement().getElementParameter("COMPONENT_NAME").getValue())) {
-                            selectedJarPath = jarPath;
-                            selectedJarVersion = versionLabel.getText();
+                        if (param != null) {
                             
-                            //service.deployLibrary(path.toFile().toURI().toURL(), versionLabel.getText());
-
+                            IElementParameter componentName = param.getElement().getElementParameter("COMPONENT_NAME");
+                            
+                            if(componentName !=null && "cConfig".equals(componentName.getValue())){
+                                selectedJarPath = jarPath;
+                                selectedJarVersion = versionLabel.getText();
+                            }else{
+                                service.deployLibrary(path.toFile().toURI().toURL());
+                            }
                         }else{
                             service.deployLibrary(path.toFile().toURI().toURL());
                         }
+                        
                     }
-
 
                 } catch (Exception ee) {
                     ExceptionHandler.process(ee);
