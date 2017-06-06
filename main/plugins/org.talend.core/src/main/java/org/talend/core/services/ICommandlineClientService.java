@@ -31,6 +31,6 @@ public interface ICommandlineClientService extends IService {
 
     public Process deployByCommandlineAndRunByStudio(final IProcessMessageManager processMessageManager,
             final ITargetExecutionConfig config, String jobName, String jobVersion, String jobContextName, int statisticsPort,
-            int tracePort, String watchParam, List<IContextParameter> jobContextParams) throws ProcessorException;
+            int tracePort, String watchParam, String log4jLevel, List<IContextParameter> jobContextParams) throws ProcessorException;
 
 }
