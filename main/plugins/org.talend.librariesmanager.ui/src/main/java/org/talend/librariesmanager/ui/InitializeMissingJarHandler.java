@@ -26,6 +26,8 @@ import org.talend.commons.exception.BusinessException;
 import org.talend.commons.ui.gmf.util.DisplayUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
+import org.talend.core.ISVNProviderServiceInCoreRuntime;
+import org.talend.core.PluginChecker;
 import org.talend.core.model.general.ILibrariesService;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
@@ -151,6 +153,13 @@ public class InitializeMissingJarHandler implements IStartup, Observer {
                                     }// else not a file so keep going
                                     break;
                                 }// else not an installed module or no url so keep so keep looking
+                            }
+                            if (PluginChecker.isSVNProviderPluginLoaded()) {
+                                ISVNProviderServiceInCoreRuntime svnService = (ISVNProviderServiceInCoreRuntime) GlobalServiceRegister
+                                        .getDefault().getService(ISVNProviderServiceInCoreRuntime.class);
+                                if (svnService != null && svnService.isSvnLibSetupOnTAC()) {
+                                    svnService.syncLibs(null);
+                                }
                             }
                         } else {
                             // try to retreive again incase it exist on custom nexus

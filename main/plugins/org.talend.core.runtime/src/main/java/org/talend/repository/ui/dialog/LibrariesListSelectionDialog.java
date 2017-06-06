@@ -34,6 +34,8 @@ import org.talend.commons.ui.swt.formtools.LabelledText;
 import org.talend.commons.utils.io.FilesUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
+import org.talend.core.ISVNProviderServiceInCoreRuntime;
+import org.talend.core.PluginChecker;
 import org.talend.core.runtime.i18n.Messages;
 
 /**
@@ -297,6 +299,13 @@ public class LibrariesListSelectionDialog extends AbstractElementListSelectionDi
                         monitor.subTask(jar.toURL().getPath());
                         librairesService.deploy(jar, monitor);
                         monitor.worked(1);
+                    }
+                    if (PluginChecker.isSVNProviderPluginLoaded()) {
+                        ISVNProviderServiceInCoreRuntime svnService = (ISVNProviderServiceInCoreRuntime) GlobalServiceRegister
+                                .getDefault().getService(ISVNProviderServiceInCoreRuntime.class);
+                        if (svnService != null && svnService.isSvnLibSetupOnTAC()) {
+                            svnService.syncLibs(null);
+                        }
                     }
                 } catch (MalformedURLException e) {
                     // dont care...

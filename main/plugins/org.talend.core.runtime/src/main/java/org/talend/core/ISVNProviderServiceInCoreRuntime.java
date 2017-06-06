@@ -27,7 +27,7 @@ public interface ISVNProviderServiceInCoreRuntime extends IService {
 
     public boolean isInSvn(String filePath);
 
-    public void doUpdateAndCommit(String filePath);
+    public boolean doUpdateAndCommit(String filePath);
 
     public void createFolderAndLinkToSvn(String filePath);
 
