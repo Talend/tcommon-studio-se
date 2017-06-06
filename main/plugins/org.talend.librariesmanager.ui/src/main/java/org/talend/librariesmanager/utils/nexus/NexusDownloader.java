@@ -21,24 +21,31 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
+import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
+import org.talend.core.GlobalServiceRegister;
+import org.talend.core.ISVNProviderServiceInCoreRuntime;
+import org.talend.core.PluginChecker;
+import org.talend.core.context.Context;
+import org.talend.core.context.RepositoryContext;
 import org.talend.core.download.DownloadListener;
 import org.talend.core.download.IDownloadHelper;
-import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
-import org.talend.core.model.general.ModuleStatusProvider;
+import org.talend.core.language.ECodeLanguage;
 import org.talend.core.model.general.Project;
 import org.talend.core.nexus.NexusServerBean;
 import org.talend.core.nexus.NexusServerUtils;
 import org.talend.core.nexus.TalendLibsServerManager;
+import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.designer.maven.utils.PomUtil;
 import org.talend.librariesmanager.maven.ArtifactsDeployer;
+import org.talend.librariesmanager.prefs.LibrariesManagerUtils;
 import org.talend.repository.ProjectManager;
+import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.utils.io.FilesUtils;
 
 /**
@@ -85,14 +92,14 @@ public class NexusDownloader implements IDownloadHelper {
                     type = MavenConstants.PACKAGING_JAR;
                 }
                 name = name + "." + type;
-                File destination = new File(tempFolder, name);
+                File downloadedFile = new File(tempFolder, name);
                 HttpURLConnection connection = getHttpURLConnection(talendlibServer.getServer(),
                         talendlibServer.getRepositoryId(), reletivePath, talendlibServer.getUserName(),
                         talendlibServer.getPassword());
 
                 InputStream inputStream = connection.getInputStream();
                 bis = new BufferedInputStream(inputStream);
-                bos = new BufferedOutputStream(new FileOutputStream(destination));
+                bos = new BufferedOutputStream(new FileOutputStream(downloadedFile));
                 int contentLength = connection.getContentLength();
                 fireDownloadStart(contentLength);
 
@@ -111,11 +118,34 @@ public class NexusDownloader implements IDownloadHelper {
                 bos.close();
                 if (bytesDownloaded == contentLength) {
                     ArtifactsDeployer deployer = new ArtifactsDeployer();
-                    deployer.deployToLocalMaven(destination.getAbsolutePath(), mavenUri);
-                    // update module status
-                    final Map<String, ELibraryInstallStatus> statusMap = ModuleStatusProvider.getStatusMap();
-                    statusMap.put(mavenUri, ELibraryInstallStatus.INSTALLED);
-                    ModuleStatusProvider.getDeployStatusMap().put(mavenUri, ELibraryInstallStatus.DEPLOYED);
+                    deployer.deployToLocalMaven(downloadedFile.getAbsolutePath(), mavenUri);
+
+                    if (PluginChecker.isSVNProviderPluginLoaded()) {
+                        File libFile = new File(LibrariesManagerUtils.getLibrariesPath(ECodeLanguage.JAVA));
+                        ISVNProviderServiceInCoreRuntime service = (ISVNProviderServiceInCoreRuntime) GlobalServiceRegister
+                                .getDefault().getService(ISVNProviderServiceInCoreRuntime.class);
+                        if (service != null && service.isSvnLibSetupOnTAC() && service.isInSvn(libFile.getAbsolutePath())) {
+                            File target = new File(libFile.getAbsolutePath(), downloadedFile.getName());
+                            FilesUtils.copyFile(downloadedFile, target);
+                            // check local or remote
+                            boolean localConnectionProvider = true;
+                            IProxyRepositoryFactory proxyRepositoryFactory = CoreRuntimePlugin.getInstance()
+                                    .getProxyRepositoryFactory();
+                            if (proxyRepositoryFactory != null) {
+                                try {
+                                    localConnectionProvider = proxyRepositoryFactory.isLocalConnectionProvider();
+                                } catch (PersistenceException e) {
+                                    //
+                                }
+                            }
+                            if (!localConnectionProvider && !getRepositoryContext().isOffline()) {
+                                List jars = new ArrayList();
+                                jars.add(target.getAbsolutePath());
+                                service.deployNewJar(jars);
+                            }
+                        }
+
+                    }
                 }
             }
             fireDownloadComplete();
@@ -131,6 +161,11 @@ public class NexusDownloader implements IDownloadHelper {
             }
         }
 
+    }
+
+    private RepositoryContext getRepositoryContext() {
+        Context ctx = CoreRuntimePlugin.getInstance().getContext();
+        return (RepositoryContext) ctx.getProperty(Context.REPOSITORY_CONTEXT_KEY);
     }
 
     private String getTmpFolderPath() {

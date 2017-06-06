@@ -92,26 +92,32 @@ public class ImportExternalJarAction extends Action {
 
             @Override
             public void run() {
+                String moduleName = null;
+                String mvnUri = null;
+                if (module != null) {
+                    moduleName = module.getName();
+                    mvnUri = module.getMavenUri();
+                }
                 for (int i = 0; i < fileNames.length; i++) {
                     String fileName = fileNames[i];
                     File file = new File(path + File.separatorChar + fileName);
                     File tempFile = null;
                     try {
-                        if (module.getName() != null && fileNames.length == 1 && !file.isDirectory()
-                                && !file.getName().equals(module.getName())) {
+                        if (moduleName != null && fileNames.length == 1 && !file.isDirectory()
+                                && !file.getName().equals(moduleName)) {
                             Project project = ProjectManager.getInstance().getCurrentProject();
                             IProject fsProject = ResourceUtils.getProject(project);
                             IFolder tmpFolder = fsProject.getFolder("temp");
                             if (!tmpFolder.exists()) {
                                 tmpFolder.create(true, true, null);
                             }
-                            tempFile = new File(tmpFolder.getLocation().toPortableString(), module.getName());
+                            tempFile = new File(tmpFolder.getLocation().toPortableString(), moduleName);
                             FilesUtils.copyFile(file, tempFile);
                             file = tempFile;
                             fileNames[i] = file.getName();
                         }
-                        
-                        LibManagerUiPlugin.getDefault().getLibrariesService().deployLibrary(file.toURL(), module.getMavenUri());
+
+                        LibManagerUiPlugin.getDefault().getLibrariesService().deployLibrary(file.toURL(), mvnUri);
                         if (tempFile != null) {
                             FilesUtils.deleteFile(tempFile, true);
                         }
