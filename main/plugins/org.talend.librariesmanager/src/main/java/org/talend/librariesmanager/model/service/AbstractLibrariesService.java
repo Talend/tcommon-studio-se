@@ -111,11 +111,17 @@ public abstract class AbstractLibrariesService implements ILibrariesService {
 
         // fix for bug 0020953
         // if jdk is not 1.5, need decode %20 for space.
-        final String decode = URLDecoder.decode(source.getFile(), "UTF-8");
+
+        String decode = null;
+        if (source.getFile().contains("%20")) {
+            decode = URLDecoder.decode(source.getFile(), "UTF-8");
+        } else {
+            decode = source.getFile();
+        }
 
         final File sourceFile = new File(decode);
-        final File targetFile = new File(LibrariesManagerUtils.getLibrariesPath(ECodeLanguage.JAVA) + File.separatorChar
-                + sourceFile.getName());
+        final File targetFile = new File(
+                LibrariesManagerUtils.getLibrariesPath(ECodeLanguage.JAVA) + File.separatorChar + sourceFile.getName());
 
         if (!repositoryBundleService.contains(source.getFile())) {
             repositoryBundleService.deploy(sourceFile.toURI(), mavenUri);
