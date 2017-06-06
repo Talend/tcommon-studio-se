@@ -23,6 +23,7 @@ import java.io.ObjectOutputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -820,14 +821,32 @@ public class LocalLibraryManager implements ILibraryManagerService {
             try {
                 File jarFile = getJarFile(jarName);
                 if (jarFile != null) {
-                    list.add(jarName);
-                    contained = true;
+                    Long oldSize = getFileSize(jarFile);
+                    File newJar = new File(jarName);
+                    Long newSize = getFileSize(newJar);
+                    if (oldSize != null && newSize != null && oldSize != newSize) {
+                        contained = false;
+                    } else {
+                        list.add(jarName);
+                        contained = true;
+                    }
                 }
             } catch (MalformedURLException e) {
+                contained = false;
+            } catch (IOException e) {
                 contained = false;
             }
         }
         return contained;
+    }
+
+    private Long getFileSize(File jarFile) throws IOException {
+        if (jarFile.exists() && jarFile.isFile()) {
+            FileInputStream fis = new FileInputStream(jarFile);
+            FileChannel fc = fis.getChannel();
+            return fc.size();
+        }
+        return null;
     }
 
     /*
