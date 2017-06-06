@@ -43,6 +43,16 @@ import org.talend.repository.model.IProxyRepositoryFactory;
  * 
  */
 public class RepositoryUpdateManagerHelper {
+    
+    private RepositoryUpdateManager manager;
+    
+    public RepositoryUpdateManagerHelper() {
+        this(null);
+    }
+    
+    public RepositoryUpdateManagerHelper(RepositoryUpdateManager manager) {
+        this.manager = manager;
+    }
 
     protected boolean enableCheckItem() {
         return false; // by default, no items
@@ -213,6 +223,9 @@ public class RepositoryUpdateManagerHelper {
                     result.setJob(null);
                 }
                 result.setObjectId(item.getProperty().getId());
+                if (manager != null) {
+                    result.setRepositoryUpdateManager(manager);
+                }
             }
 
             process2.dispose();

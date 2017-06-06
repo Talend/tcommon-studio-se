@@ -62,6 +62,8 @@ public abstract class UpdateResult {
      * For opened process job is an instance of Process, For closed process job must be null to save some memory
      */
     private Object job = null;
+    
+    private RepositoryUpdateManager repositoryUpdateManager;
 
     /**
      * Getter for readOnlyProcess.
@@ -331,6 +333,14 @@ public abstract class UpdateResult {
 
     public void setFromItem(boolean fromItem) {
         this.fromItem = fromItem;
+    }
+
+    public RepositoryUpdateManager getRepositoryUpdateManager() {
+        return repositoryUpdateManager;
+    }
+
+    public void setRepositoryUpdateManager(RepositoryUpdateManager repositoryUpdateManager) {
+        this.repositoryUpdateManager = repositoryUpdateManager;
     }
 
 }
