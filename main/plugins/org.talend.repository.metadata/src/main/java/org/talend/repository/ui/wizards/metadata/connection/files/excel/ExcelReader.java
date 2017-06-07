@@ -57,6 +57,10 @@ public class ExcelReader {
 
     private static final String EVENT_MODE = "EVENT_MODE";
 
+    private static String[] x = new String[] {
+            "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$ //$NON-NLS-13$ //$NON-NLS-14$ //$NON-NLS-15$ //$NON-NLS-16$ //$NON-NLS-17$ //$NON-NLS-18$
+            "S", "T", "U", "V", "W", "X", "Y", "Z" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+
     public ExcelReader() {
 
     }
@@ -142,10 +146,10 @@ public class ExcelReader {
                     }
                 } else {
                     xwb = new XSSFWorkbook(clone);
-                    for(int i=0;i<xwb.getNumberOfSheets();i++) {
+                    for (int i = 0; i < xwb.getNumberOfSheets(); i++) {
                         XSSFSheet sheet = xwb.getSheetAt(i);
-                        if(sheet == null) {
-                            continue; 
+                        if (sheet == null) {
+                            continue;
                         }
                         String name = xwb.getSheetName(i);
                         sheetlist.add(name);
@@ -300,31 +304,14 @@ public class ExcelReader {
     }
 
     public static String[] getColumnsTitle(int rows) {
-        String[] x = new String[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$ //$NON-NLS-13$ //$NON-NLS-14$ //$NON-NLS-15$ //$NON-NLS-16$ //$NON-NLS-17$ //$NON-NLS-18$
-                "S", "T", "U", "V", "W", "X", "Y", "Z" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
         if (rows <= 0) {
-            return null;
+            return new String[0];
         } else if (rows <= 26) {
             String[] res = new String[rows];
             System.arraycopy(x, 0, res, 0, rows);
             return res;
-        } else if (rows < 26 * 26) {
-            String[] res = new String[rows];
-            System.arraycopy(x, 0, res, 0, 26);
-            int offset = 26;
-            FirstLoop: for (String first : x) {
-                for (String second : x) {
-                    String rowName = first + second;
-                    res[offset] = rowName;
-                    offset++;
-                    if (offset == rows) {
-                        break FirstLoop;
-                    }
-                }
-            }
-            return res;
         } else {
-            return null;// Too much rows
+            return getAllColumnsTitle(rows);
         }
     }
 
@@ -337,43 +324,57 @@ public class ExcelReader {
      */
     public static String[] getColumnsTitle(int index, int rows) {
         if (index > 26 * 26 + 26 || index < 1) {
-            return null;
+            return new String[0];
         }
         if (index == 1) {
             return getColumnsTitle(rows);
         }
-        String[] x = new String[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$ //$NON-NLS-13$ //$NON-NLS-14$ //$NON-NLS-15$ //$NON-NLS-16$ //$NON-NLS-17$ //$NON-NLS-18$
-                "S", "T", "U", "V", "W", "X", "Y", "Z" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
 
         index = index - 1;
         int newRows = rows + index;
 
         if (rows <= 0) {
-            return null;
+            return new String[0];
         } else if (newRows <= 26) {
             String[] res = new String[rows];
             System.arraycopy(x, index, res, 0, rows);
             return res;
-
-        } else if (newRows < 26 * 26) {
-            String[] res = new String[newRows];
-            System.arraycopy(x, 0, res, 0, 26);
-            int offset = 26;
-            FirstLoop: for (String first : x) {
-                for (String second : x) {
-                    String rowName = first + second;
-                    res[offset] = rowName;
-                    offset++;
-                    if (offset == newRows) {
-                        break FirstLoop;
-                    }
-                }
-            }
+        } else {
+            String[] res = getAllColumnsTitle(newRows);
             String[] res2 = new String[rows];
             System.arraycopy(res, index, res2, 0, rows);
             return res2;
-        } else {
-            return null;// Too much rows
         }
+    }
+
+    public static String[] getAllColumnsTitle(int rows) {
+        String[] res = new String[rows];
+        System.arraycopy(x, 0, res, 0, 26);
+        int offset = 26;
+        FirstLoop: for (String first : x) {
+            for (String second : x) {
+                String rowName = first + second;
+                res[offset] = rowName;
+                offset++;
+                if (offset == rows) {
+                    break FirstLoop;
+                }
+            }
+        }
+        if (rows > 26 * 26 + 26) {
+            SecondLoop: for (String first : x) {
+                for (String second : x) {
+                    for (String three : x) {
+                        String rowName = first + second + three;
+                        res[offset] = rowName;
+                        offset++;
+                        if (offset == rows) {
+                            break SecondLoop;
+                        }
+                    }
+                }
+            }
+        }
+        return res;
     }
 }
