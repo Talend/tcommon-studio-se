@@ -423,6 +423,7 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
             if (dbType != EDatabaseTypeName.GENERAL_JDBC) {
                 String driverClass = ExtractMetaDataUtils.getInstance().getDriverClassByDbType(connection.getDatabaseType());
                 DatabaseConnection dbConnection = (DatabaseConnection) connectionItem.getConnection();
+                String dbVersion = dbConnection.getDbVersionString();
                 // feature TDI-22108
                 if (EDatabaseTypeName.VERTICA.equals(dbType)
                         && (EDatabaseVersion4Drivers.VERTICA_6.getVersionValue().equals(connection.getDbVersionString())
@@ -431,8 +432,7 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
                                         connection.getDbVersionString()) || EDatabaseVersion4Drivers.VERTICA_7.getVersionValue()
                                 .equals(connection.getDbVersionString()))) {
                     driverClass = EDatabase4DriverClassName.VERTICA2.getDriverClass();
-                }
-                if (EDatabaseTypeName.IMPALA.equals(dbType)) {
+                } else if (EDatabaseTypeName.IMPALA.equals(dbType)) {
                     IHadoopDistributionService hadoopService = getHadoopDistributionService();
                     if (hadoopService != null) {
                         String distributionName = dbConnection.getParameters().get(
@@ -444,10 +444,15 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
                                     ConnParameterKeys.CONN_PARA_KEY_IMPALA_VERSION));
                         }
                     }
-                }
-                if (EDatabaseTypeName.MYSQL.equals(dbType)
+                } else if (EDatabaseTypeName.MYSQL.equals(dbType)
                         && (EDatabaseVersion4Drivers.MARIADB.getVersionValue().equals(connection.getDbVersionString()))) {
                     driverClass = EDatabase4DriverClassName.MARIADB.getDriverClass();
+                } else if (EDatabaseTypeName.MSSQL.equals(dbType)
+                        && EDatabaseVersion4Drivers.MSSQL_PROP.getVersionValue().equals(dbVersion)) {
+                    driverClass = EDatabase4DriverClassName.MSSQL2.getDriverClass();
+                } else if (EDatabaseTypeName.SYBASEASE.equals(dbType)
+                        && EDatabaseVersion4Drivers.SYBASEIQ_16.getVersionValue().equals(dbVersion)) {
+                    driverClass = EDatabase4DriverClassName.SYBASEIQ_16.getDriverClass();
                 }
                 dbConnection.setDriverClass(driverClass);
             }
