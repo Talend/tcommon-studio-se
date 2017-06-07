@@ -426,11 +426,10 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
                 String dbVersion = dbConnection.getDbVersionString();
                 // feature TDI-22108
                 if (EDatabaseTypeName.VERTICA.equals(dbType)
-                        && (EDatabaseVersion4Drivers.VERTICA_6.getVersionValue().equals(connection.getDbVersionString())
-                                || EDatabaseVersion4Drivers.VERTICA_5_1.getVersionValue().equals(connection.getDbVersionString())
-                                || EDatabaseVersion4Drivers.VERTICA_6_1_X.getVersionValue().equals(
-                                        connection.getDbVersionString()) || EDatabaseVersion4Drivers.VERTICA_7.getVersionValue()
-                                .equals(connection.getDbVersionString()))) {
+                        && (EDatabaseVersion4Drivers.VERTICA_6.getVersionValue().equals(dbVersion)
+                                || EDatabaseVersion4Drivers.VERTICA_5_1.getVersionValue().equals(dbVersion)
+                                || EDatabaseVersion4Drivers.VERTICA_6_1_X.getVersionValue().equals(dbVersion) || EDatabaseVersion4Drivers.VERTICA_7
+                                .getVersionValue().equals(dbVersion))) {
                     driverClass = EDatabase4DriverClassName.VERTICA2.getDriverClass();
                 } else if (EDatabaseTypeName.IMPALA.equals(dbType)) {
                     IHadoopDistributionService hadoopService = getHadoopDistributionService();
@@ -445,7 +444,7 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
                         }
                     }
                 } else if (EDatabaseTypeName.MYSQL.equals(dbType)
-                        && (EDatabaseVersion4Drivers.MARIADB.getVersionValue().equals(connection.getDbVersionString()))) {
+                        && (EDatabaseVersion4Drivers.MARIADB.getVersionValue().equals(dbVersion))) {
                     driverClass = EDatabase4DriverClassName.MARIADB.getDriverClass();
                 } else if (EDatabaseTypeName.MSSQL.equals(dbType)
                         && EDatabaseVersion4Drivers.MSSQL_PROP.getVersionValue().equals(dbVersion)) {
