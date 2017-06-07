@@ -286,8 +286,7 @@ public class ModulesNeededProvider {
                 IComponentsService service = (IComponentsService) GlobalServiceRegister.getDefault().getService(
                         IComponentsService.class);
                 IComponentsFactory compFac = service.getComponentsFactory();
-                Set<IComponent> componentList = compFac.getComponents();
-                for (IComponent comp : componentList.toArray(new IComponent[0])) {
+                for (IComponent comp : compFac.readComponents()) {
                     importNeedsList.addAll(comp.getModulesNeeded());
                 }
             }

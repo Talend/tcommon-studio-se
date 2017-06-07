@@ -13,8 +13,8 @@
 package org.talend.repository.example.viewer.handler.demo;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.core.GlobalServiceRegister;
@@ -96,7 +96,7 @@ public class ExampleDemoDragAndDropHandler extends AbstractDragAndDropServiceHan
             return neededComponents;
         }
         IComponentsService service = (IComponentsService) GlobalServiceRegister.getDefault().getService(IComponentsService.class);
-        Set<IComponent> components = service.getComponentsFactory().getComponents();
+        Collection<IComponent> components = service.getComponentsFactory().readComponents();
         for (IComponent component : components) {
             if ("tExampleComponent".equals(component.getName())) {
                 neededComponents.add(component);

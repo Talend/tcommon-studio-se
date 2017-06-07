@@ -150,6 +150,7 @@ public class LocalLibraryManager implements ILibraryManagerService {
         deploy(jarFileUri, null, monitorWrap);
     }
     
+    @Override
     public void deploy(URI jarFileUri, String mavenUri, IProgressMonitor... monitorWrap) {
         if (jarFileUri.isOpaque()) {
             return;
@@ -1137,7 +1138,7 @@ public class LocalLibraryManager implements ILibraryManagerService {
             service = (IComponentsService) GlobalServiceRegister.getDefault().getService(IComponentsService.class);
         }
         if (service != null) {
-            for (IComponent component : service.getComponentsFactory().getComponents()) {
+            for (IComponent component : service.getComponentsFactory().readComponents()) {
                 try {
                     modules.addAll(component.getModulesNeeded());
                 } catch (Exception e) {

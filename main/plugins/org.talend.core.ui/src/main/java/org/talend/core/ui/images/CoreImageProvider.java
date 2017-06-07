@@ -131,7 +131,7 @@ public class CoreImageProvider {
 
     public static void removeComponentImage(String name) {
         if (name != null && !name.equals("")) { //$NON-NLS-1$
-            for (IComponent component : ComponentsFactoryProvider.getInstance().getComponents()) {
+            for (IComponent component : ComponentsFactoryProvider.getInstance().readComponents()) {
                 if (name.equals(component.getName())) {
                     String md5Desc16 = MD5.getMD5(component.getIcon16().getImageData().data);
                     Image image = componentCachedImages.get(md5Desc16);

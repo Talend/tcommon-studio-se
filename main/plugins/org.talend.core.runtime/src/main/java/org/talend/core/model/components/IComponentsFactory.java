@@ -13,6 +13,7 @@
 package org.talend.core.model.components;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -45,7 +46,18 @@ public interface IComponentsFactory {
 
     public int size();
 
+    /**
+     * Only use it if you want to modify(add/remove) the list! and don't forget to use synchronize block!!<br/>
+     * Use readComponents() if you only want to iterate/read the list.
+     */
     public Set<IComponent> getComponents();
+
+    /**
+     * Get a readonly components collection to avoid ConcurrentModificationException caused by multiple thread
+     * access;<br/>
+     * If want to modify(add/remove) the list, please use getComponents().
+     */
+    public Collection<IComponent> readComponents();
 
     public Map<String, Map<String, Set<IComponent>>> getComponentNameMap();
 
