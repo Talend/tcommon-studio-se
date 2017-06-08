@@ -12,40 +12,14 @@
 // ============================================================================
 package org.talend.repository.ui.wizards.metadata.connection.files.excel;
 
-import java.io.IOException;
-import java.util.List;
-
-import jxl.read.biff.BiffException;
-
 import org.junit.Assert;
 import org.junit.Test;
-import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 
 /**
  * created by hcyi on Jun 7, 2017 Detailled comment
  *
  */
 public class ExcelReaderTest {
-
-    /**
-     * Test method for
-     * {@link org.talend.repository.ui.wizards.metadata.connection.files.excel.ExcelReader#readSheet(java.lang.String)}.
-     */
-    @Test
-    public void testReadSheet() {
-        try {
-            ExcelReader reader = new ExcelReader("/home/yexiaowei/testdata/test.xls"); //$NON-NLS-1$
-            List res = reader.readSheet("Sheet1"); //$NON-NLS-1$
-            Assert.assertEquals(7, res.size());
-
-        } catch (BiffException e) {
-            // e.printStackTrace();
-            ExceptionHandler.process(e);
-        } catch (IOException e) {
-            // e.printStackTrace();
-            ExceptionHandler.process(e);
-        }
-    }
 
     @Test
     public void testGetColumnsTitle4Negative() {
