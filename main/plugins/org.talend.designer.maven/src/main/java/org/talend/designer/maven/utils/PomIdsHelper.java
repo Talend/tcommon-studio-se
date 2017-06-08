@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.designer.maven.utils;
 
+import org.apache.commons.lang3.StringUtils;
 import org.talend.commons.utils.VersionUtils;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.process.JobInfo;
@@ -58,6 +59,9 @@ public class PomIdsHelper {
     public static String getProjectVersion() {
         ProjectPreferenceManager projectPreferenceManager = DesignerMavenPlugin.getPlugin().getProjectPreferenceManager();
         String projectVersion = projectPreferenceManager.getValue(MavenConstants.PROJECT_VERSION);
+        if (StringUtils.isBlank(projectVersion)){
+            projectVersion = PomUtil.getDefaultMavenVersion();
+        }
         boolean useSnapshot = projectPreferenceManager.getBoolean(MavenConstants.NAME_PUBLISH_AS_SNAPSHOT);
         if (useSnapshot) {
             projectVersion += "-SNAPSHOT"; //$NON-NLS-1$

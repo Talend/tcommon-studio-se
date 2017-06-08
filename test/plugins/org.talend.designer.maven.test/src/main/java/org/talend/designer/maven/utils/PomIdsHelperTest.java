@@ -206,6 +206,7 @@ public class PomIdsHelperTest {
 
     @Test
     public void testGetProjectVersion() {
+        assertEquals(PomUtil.getDefaultMavenVersion(), PomIdsHelper.getProjectVersion());
         ProjectPreferenceManager projectPreferenceManager = DesignerMavenPlugin.getPlugin().getProjectPreferenceManager();
         projectPreferenceManager.setValue(MavenConstants.PROJECT_VERSION, "1.1.0");
         projectPreferenceManager.setValue(MavenConstants.NAME_PUBLISH_AS_SNAPSHOT, true);
