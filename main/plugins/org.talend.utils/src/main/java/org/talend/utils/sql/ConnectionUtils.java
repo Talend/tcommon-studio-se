@@ -49,6 +49,8 @@ public final class ConnectionUtils {
     private static final String ACCESS_DRIVER = "Microsoft Access Driver"; //$NON-NLS-1$
 
     public static final String SHUTDOWN_PARAM = ";shutdown=true"; //$NON-NLS-1$
+    
+    public static final String CACHE_DB_DRIVER = "com.intersys.jdbc.CacheDriver";//$NON-NLS-1$
 
     /**
      * private constructor.
@@ -403,6 +405,10 @@ public final class ConnectionUtils {
             result = false;
         }
         return result;
+    }
+    
+    public static boolean isCacheDB(String url) {
+        return url != null && url.toLowerCase().startsWith("jdbc:cache"); //$NON-NLS-1$
     }
 
     public static boolean isSybase(DatabaseMetaData metadata) {
