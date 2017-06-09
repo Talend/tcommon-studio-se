@@ -82,6 +82,8 @@ public abstract class AbstractNode implements INode {
     private INode designSubjobStartNode;
 
     private boolean isVirtualGenerateNode;
+    
+    private INode realGraphicalNode;
 
     private EConnectionType virtualLinkTo;
 
@@ -1294,4 +1296,11 @@ public abstract class AbstractNode implements INode {
         return componentProperties;
     }
 
+    public INode getRealGraphicalNode() {
+        return realGraphicalNode;
+    }
+  
+    public void setRealGraphicalNode(INode realGraphicalNode) {
+        this.realGraphicalNode = realGraphicalNode;
+    }
 }
