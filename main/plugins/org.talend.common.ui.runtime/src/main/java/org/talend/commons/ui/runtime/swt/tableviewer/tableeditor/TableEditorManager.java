@@ -48,11 +48,11 @@ import org.talend.commons.utils.data.map.MultiLazyValuesMap;
 public class TableEditorManager {
 
     /**
-     * 
+     *
      * Event type. <br/>
-     * 
+     *
      * $Id: TableEditorManager.java 7183 2007-11-23 11:03:36Z amaumont $
-     * 
+     *
      */
     public enum EVENT_TYPE implements ITableEditorManagerEventType {
         CONTROL_CREATED,
@@ -105,7 +105,7 @@ public class TableEditorManager {
 
     /**
      * DOC amaumont TableEditorManager constructor comment.
-     * 
+     *
      * @param tableViewerCreator
      */
     public TableEditorManager(TableViewerCreatorNotModifiable tableViewerCreator) {
@@ -350,7 +350,7 @@ public class TableEditorManager {
         }
 
     }
-    
+
     public void paintVisibleAreaEditor(PaintEvent event) {
         Table table = tableViewerCreator.getTable();
         if (table.isDisposed()) {
@@ -373,10 +373,13 @@ public class TableEditorManager {
         // Set the cell editor if need
         for (int itemIndex = topIndex; itemIndex <= endIndex; itemIndex++) {
             TableItem item = table.getItem(itemIndex);
+            if (item.isDisposed()) {
+                continue;
+            }
             for (int columnIndex = 0; columnIndex < columnsWithEditorContent.size(); columnIndex++) {
                 TableViewerCreatorColumnNotModifiable column = columnsWithEditorContent.get(columnIndex);
                 TableEditorContentNotModifiable tableEditorContent = column.getTableEditorContent();
-                
+
                 if (dataToMultipleDataEditor.containsKey(item.getData())) {
                     Collection<TableEditor> tableEditorCollection = dataToMultipleDataEditor.getCollection(item.getData());
                     for (TableEditor tableEditor : tableEditorCollection) {
@@ -402,13 +405,13 @@ public class TableEditorManager {
         Table table = tableViewerCreator.getTable();
         if (table.isDisposed() || index >= table.getItems().length) {
             return;
-        }     
+        }
        int topIndex = table.getTopIndex();
        int itemCount = table.getItemCount();
-       int numVisibleLines = Math.min((table.getBounds().height / table.getItemHeight()) + 2, itemCount - topIndex); 
+        int numVisibleLines = Math.min((table.getBounds().height / table.getItemHeight()) + 2, itemCount - topIndex);
        if (index < topIndex || index > topIndex + numVisibleLines) {
            return;
-       }     
+        }
         for (int iEditorCol = 0; iEditorCol < columnsWithEditorContent.size(); iEditorCol++) {
             TableViewerCreatorColumnNotModifiable column = columnsWithEditorContent.get(iEditorCol);
 
