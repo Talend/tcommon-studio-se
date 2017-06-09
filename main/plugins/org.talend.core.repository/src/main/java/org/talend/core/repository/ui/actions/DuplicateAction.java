@@ -218,11 +218,7 @@ public class DuplicateAction extends AContextualAction {
         // update the property of the node repository object
         // sourceNode.getObject().setProperty(updatedProperty);
 
-        // String initNameValue = "zzz_" + item.getProperty().getDisplayName(); //$NON-NLS-1$
-
-        // String initNameValue = item.getProperty().getDisplayName().replaceAll("zzz_", ""); //$NON-NLS-1$
-
-        String initNameValue = item.getProperty().getDisplayName() + "_spark21"; //$NON-NLS-1$
+        String initNameValue = "Copy_of_" + item.getProperty().getDisplayName(); //$NON-NLS-1$
 
         CopyObjectAction copyObjectAction = CopyObjectAction.getInstance();
 
