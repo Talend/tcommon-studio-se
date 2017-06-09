@@ -56,7 +56,6 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
-import org.eclipse.core.runtime.Path;
 import org.osgi.framework.Bundle;
 import org.talend.commons.exception.CommonExceptionHandler;
 import org.talend.commons.i18n.internal.Messages;
@@ -215,8 +214,8 @@ public class FilesUtils {
                         copyFolder(current, newFolder, targetBaseFolder, emptyTargetBeforeCopy, sourceFolderFilter,
                                 sourceFileFilter, copyFolder, synchronize);
                     } else {
-                        copyFolder(current, target, targetBaseFolder, emptyTargetBeforeCopy, sourceFolderFilter, sourceFileFilter,
-                                copyFolder, synchronize);
+                        copyFolder(current, target, targetBaseFolder, emptyTargetBeforeCopy, sourceFolderFilter,
+                                sourceFileFilter, copyFolder, synchronize);
                     }
                 }
             }
@@ -339,8 +338,7 @@ public class FilesUtils {
         return getFilesFromFolder(bundle, path, extension, true, false);
     }
 
-    public static List<URL> getFilesFromFolder(Bundle bundle, String path, String extension, boolean absoluteURL,
-            boolean nested) {
+    public static List<URL> getFilesFromFolder(Bundle bundle, String path, String extension, boolean absoluteURL, boolean nested) {
         List<URL> toReturn = new ArrayList<URL>();
 
         Enumeration entryPaths = bundle.getEntryPaths(path);
@@ -1143,8 +1141,8 @@ public class FilesUtils {
         return filePath;
     }
 
-    public static BufferedReader isFilePathAvailable(String fileStr, FileConnection connection)
-            throws IOException, UnsupportedEncodingException, FileNotFoundException {
+    public static BufferedReader isFilePathAvailable(String fileStr, FileConnection connection) throws IOException,
+            UnsupportedEncodingException, FileNotFoundException {
         BufferedReader in;
         File file = new File(fileStr);
         Charset guessedCharset = CharsetToolkit.guessEncoding(file, 4096);
@@ -1163,7 +1161,7 @@ public class FilesUtils {
             final String currentFileName = file.getName();
             IContainer parentFile = file.getParent();
             if (parentFile.exists()) {
-                for (IResource resource: parentFile.members()) {
+                for (IResource resource : parentFile.members()) {
                     if (resource.getName().equalsIgnoreCase(currentFileName)) {
                         existedFiles.add(resource);
                     }

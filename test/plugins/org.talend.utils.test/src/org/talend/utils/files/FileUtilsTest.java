@@ -167,9 +167,11 @@ public class FileUtilsTest {
     @Test
     public void deleteFilesTest() throws IOException {
 
+        String zipFileName = "myfile2.zip"; //$NON-NLS-1$
+
         folder1.newFile("myfile.txt"); //$NON-NLS-1$
         folder1.newFile("myfile2.txt"); //$NON-NLS-1$
-        folder1.newFile("myfile2.zip"); //$NON-NLS-1$
+        folder1.newFile(zipFileName);
 
         File folder1File = folder1.getRoot();
 
@@ -178,6 +180,7 @@ public class FileUtilsTest {
 
         FileUtils.deleteFiles(folder1File, name -> name.endsWith(".txt")); //$NON-NLS-1$
         assertEquals(folder1File.listFiles().length, 1);
+        assertEquals(folder1File.listFiles()[0].getName(), zipFileName);
 
         FileUtils.deleteFiles(null, name -> name.endsWith(".txt")); //$NON-NLS-1$
         assertEquals(folder1File.listFiles().length, 1);
