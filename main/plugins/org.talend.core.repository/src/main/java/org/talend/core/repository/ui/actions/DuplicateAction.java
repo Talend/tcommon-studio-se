@@ -287,10 +287,11 @@ public class DuplicateAction extends AContextualAction {
                     }
                 }
                 ConvertJobsUtil.updateFramework(newCreatedItem, frameworkNewValue);
-                if(isNeedConvert && (newCreatedItem instanceof JobletProcessItem)){
+                if (isNeedConvert && (newCreatedItem instanceof JobletProcessItem)) {
                     if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreUIService.class)) {
-                        ICoreUIService coreUIService = (ICoreUIService) GlobalServiceRegister.getDefault().getService(ICoreUIService.class);
-                        if(coreUIService != null){
+                        ICoreUIService coreUIService = (ICoreUIService) GlobalServiceRegister.getDefault().getService(
+                                ICoreUIService.class);
+                        if (coreUIService != null) {
                             coreUIService.loadComponentsFromProviders(type);
                             coreUIService.updatePalette();
                         }

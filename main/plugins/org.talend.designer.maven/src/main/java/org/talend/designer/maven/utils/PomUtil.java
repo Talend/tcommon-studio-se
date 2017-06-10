@@ -426,7 +426,7 @@ public class PomUtil {
             folder.create(true, true, null);
             IFile pomFile = folder.getFile(TalendMavenConstants.POM_FILE_NAME);
 
-            MODEL_MANAGER.createMavenModel(pomFile, createMode(artifact));
+            MODEL_MANAGER.createMavenModel(pomFile, createModel(artifact));
             return pomFile.getLocation().toPortableString();
         } catch (PersistenceException e) {
             ExceptionHandler.process(e);
@@ -438,7 +438,7 @@ public class PomUtil {
         return null;
     }
 
-    private static Model createMode(MavenArtifact artifact) {
+    private static Model createModel(MavenArtifact artifact) {
         Model pomModel = new Model();
         pomModel.setModelVersion(TalendMavenConstants.POM_VERSION);
         pomModel.setModelEncoding(TalendMavenConstants.DEFAULT_ENCODING);
@@ -478,7 +478,7 @@ public class PomUtil {
             String pomFile = tempPath.append(TalendMavenConstants.POM_FILE_NAME).toPortableString();
 
             ByteArrayOutputStream buf = new ByteArrayOutputStream();
-            MavenPlugin.getMaven().writeModel(createMode(artifact), buf);
+            MavenPlugin.getMaven().writeModel(createModel(artifact), buf);
 
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(false);

@@ -104,7 +104,7 @@ public abstract class AbstractLibrariesService implements ILibrariesService {
     }
     
     private void deployLibrary(URL source, boolean reset) throws IOException {
-        deployLibrary(source, reset);
+        deployLibrary(source, null, reset);
     }
 
     private void deployLibrary(URL source, String mavenUri, boolean reset) throws IOException {

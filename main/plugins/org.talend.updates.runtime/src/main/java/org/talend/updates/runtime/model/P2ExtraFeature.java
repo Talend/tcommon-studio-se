@@ -47,6 +47,7 @@ import org.eclipse.equinox.p2.operations.UpdateOperation;
 import org.eclipse.equinox.p2.query.IQuery;
 import org.eclipse.equinox.p2.query.IQueryResult;
 import org.eclipse.equinox.p2.query.QueryUtil;
+import org.eclipse.equinox.p2.repository.IRepositoryManager;
 import org.eclipse.equinox.p2.repository.artifact.IArtifactRepositoryManager;
 import org.eclipse.equinox.p2.repository.metadata.IMetadataRepositoryManager;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -426,6 +427,14 @@ public class P2ExtraFeature implements ExtraFeature {
 
         // create the feature query
         IQuery<IInstallableUnit> iuQuery = QueryUtil.createLatestQuery(QueryUtil.createIUQuery(getP2IuId()));
+
+        // remove existing repositories
+        for (URI existingRepUri : metadataManager.getKnownRepositories(IRepositoryManager.REPOSITORIES_ALL)) {
+            metadataManager.removeRepository(existingRepUri);
+        }
+        for (URI existingRepUri : artifactManager.getKnownRepositories(IRepositoryManager.REPOSITORIES_ALL)) {
+            metadataManager.removeRepository(existingRepUri);
+        }
 
         for (URI repoUri : allRepoUris) {
             metadataManager.addRepository(repoUri);

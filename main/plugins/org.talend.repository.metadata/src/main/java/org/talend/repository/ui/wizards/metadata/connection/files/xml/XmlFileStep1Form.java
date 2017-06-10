@@ -332,7 +332,8 @@ public class XmlFileStep1Form extends AbstractXmlFileStepForm {
         Label labelLimitation = new Label(limitation, SWT.LEFT);
         labelLimitation.setText(Messages.getString("XmlFileStep1Form.limitation")); //$NON-NLS-1$
         final Text commonNodesLimitation = new Text(limitation, SWT.BORDER);
-        GridData gd = new GridData(18, 12);
+        GridData gd = new GridData(GridData.VERTICAL_ALIGN_FILL);
+        gd.widthHint = 18;
         commonNodesLimitation.setLayoutData(gd);
         commonNodesLimitation.setText(String.valueOf(TreePopulator.getLimit()));
         labelLimitation.setToolTipText(MessageFormat.format(Messages.getString("XmlFileStep1Form.limitToolTip"), commonNodesLimitation.getText()));//$NON-NLS-1$
