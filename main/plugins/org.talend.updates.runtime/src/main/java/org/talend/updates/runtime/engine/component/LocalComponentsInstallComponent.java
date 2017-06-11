@@ -134,11 +134,7 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
         if (Platform.inDevelopmentMode()) { // for dev, no need install patches.
             return false;
         }
-        boolean installed = doInstall();
-        if (installed && !needRelaunch()) {
-            OsgiBundleInstaller.reloadComponents();
-        }
-        return installed;
+        return doInstall();
     }
 
     protected boolean doInstall() {

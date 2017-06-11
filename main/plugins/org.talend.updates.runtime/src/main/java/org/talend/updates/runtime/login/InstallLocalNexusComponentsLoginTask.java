@@ -26,6 +26,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui.PlatformUI;
 import org.talend.commons.CommonsPlugin;
+import org.talend.core.GlobalServiceRegister;
+import org.talend.designer.codegen.ICodeGeneratorService;
 import org.talend.login.AbstractLoginTask;
 import org.talend.updates.runtime.engine.component.ComponentNexusP2ExtraFeature;
 import org.talend.updates.runtime.engine.component.InstallComponentMessages;
@@ -100,10 +102,6 @@ public class InstallLocalNexusComponentsLoginTask extends AbstractLoginTask {
 
             if (messages.isOk()) {
                 log.info(messages.getInstalledMessage());
-                if (!CommonsPlugin.isHeadless()) { //
-                    MessageDialog.openInformation(PlatformUI.getWorkbench().getDisplay().getActiveShell(),
-                            "Install components from Nexus", messages.getInstalledMessage());
-                }
                 if (!messages.isNeedRestart()) {
                     OsgiBundleInstaller.reloadComponents();
                 }

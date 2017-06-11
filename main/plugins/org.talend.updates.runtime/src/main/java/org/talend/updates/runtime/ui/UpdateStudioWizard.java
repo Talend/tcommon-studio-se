@@ -40,6 +40,7 @@ import org.talend.commons.utils.system.EclipseCommandLine;
 import org.talend.updates.runtime.Constants;
 import org.talend.updates.runtime.engine.ExtraFeaturesUpdatesFactory;
 import org.talend.updates.runtime.engine.InstallNewFeatureJob;
+import org.talend.updates.runtime.engine.component.ComponentNexusP2ExtraFeature;
 import org.talend.updates.runtime.i18n.Messages;
 import org.talend.updates.runtime.model.ExtraFeature;
 
@@ -89,18 +90,38 @@ public class UpdateStudioWizard extends Wizard {
                         _needRestart = true;
                         break;
                     }
+                    if (feature instanceof ComponentNexusP2ExtraFeature) {
+                        _needRestart = true;
+                        break;
+                    }
                 }
             }
         }
         return _needRestart;
     }
 
+//    Force a restart instead of reload components
+// This can be improved later if we want to avoid the restart
+    
+//    private boolean needReloadComponents() {
+//        boolean _needReload = false;
+//        if (updateWizardModel.selectedExtraFeatures != null) {
+//            for (Object feature : updateWizardModel.selectedExtraFeatures) {
+//                if (feature instanceof ComponentNexusP2ExtraFeature) {
+//                    _needReload = true;
+//                    break;
+//                }
+//            }
+//        }
+//        return _needReload;
+//    }
+
     @SuppressWarnings("unchecked")
     @Override
     public boolean performFinish() {
         storeDoNotShowAgainPref();
-        InstallNewFeatureJob installNewFeatureJob = new InstallNewFeatureJob(new HashSet<ExtraFeature>(
-                updateWizardModel.selectedExtraFeatures), updateWizardModel.getFeatureRepositories());
+        InstallNewFeatureJob installNewFeatureJob = new InstallNewFeatureJob(
+                new HashSet<ExtraFeature>(updateWizardModel.selectedExtraFeatures), updateWizardModel.getFeatureRepositories());
 
         installNewFeatureJob.schedule();
         // listen to the job end so that we can ask the user to restart the Studio
@@ -133,7 +154,7 @@ public class UpdateStudioWizard extends Wizard {
                 if (hasAnySuccess) {
                     if (hasAnyFailure) {
                         firstPartOfMessage = Messages.getString("UpdateStudioWizard.some.feautures.installed.sucessfully"); //$NON-NLS-1$
-                    }// else only success to keep initial message
+                    } // else only success to keep initial message
                     final String finalMessage = firstPartOfMessage
                             + Messages.getString("UpdateStudioWizard.do.you.want.to.restart"); //$NON-NLS-1$
                     Display.getDefault().syncExec(new Runnable() {
@@ -156,9 +177,14 @@ public class UpdateStudioWizard extends Wizard {
                                                                                           // time.
                                 }
                             }
+//                            if (needReloadComponents()) {
+//                                ICodeGeneratorService service = (ICodeGeneratorService) GlobalServiceRegister.getDefault().getService(
+//                                        ICodeGeneratorService.class);
+//                                service.refreshTemplates();
+//                            }
                         }
                     });
-                }// else only failure or canceled so do nothing cause error are reported by Eclipse
+                } // else only failure or canceled so do nothing cause error are reported by Eclipse
 
             }
         });
@@ -217,8 +243,8 @@ public class UpdateStudioWizard extends Wizard {
 
                             @SuppressWarnings("unchecked")
                             @Override
-                            public void run(IProgressMonitor iprogressmonitor) throws InvocationTargetException,
-                                    InterruptedException {
+                            public void run(IProgressMonitor iprogressmonitor)
+                                    throws InvocationTargetException, InterruptedException {
                                 ExtraFeaturesUpdatesFactory extraFeaturesFactory = new ExtraFeaturesUpdatesFactory();
                                 extraFeaturesFactory.retrieveUninstalledExtraFeatures(iprogressmonitor,
                                         updateWizardModel.availableExtraFeatures);

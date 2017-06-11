@@ -23,6 +23,7 @@ import org.osgi.framework.BundleException;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.Version;
 import org.talend.core.GlobalServiceRegister;
+import org.talend.designer.codegen.ICodeGeneratorService;
 import org.talend.repository.model.IRepositoryService;
 
 /**
@@ -72,10 +73,8 @@ public class OsgiBundleInstaller {
     }
 
     public static void reloadComponents() {
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IRepositoryService.class)) {
-            IRepositoryService repoService = (IRepositoryService) GlobalServiceRegister.getDefault().getService(
-                    IRepositoryService.class);
-            repoService.getComponentsFactory().resetSpecificComponents();
-        }
+        ICodeGeneratorService service = (ICodeGeneratorService) GlobalServiceRegister.getDefault().getService(
+                ICodeGeneratorService.class);
+        service.refreshTemplates();
     }
 }
