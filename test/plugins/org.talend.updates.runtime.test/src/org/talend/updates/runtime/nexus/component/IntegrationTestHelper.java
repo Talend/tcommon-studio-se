@@ -23,7 +23,10 @@ public class IntegrationTestHelper {
      * this test is release nexus URI.
      */
     public static NexusServerBean getNexusServerReleaseBean() {
-
+        NexusServerBean propertyNexusServer = NexusServerManager.getInstance().getPropertyNexusServer();
+        if (propertyNexusServer != null) { // reuse the property one
+            return propertyNexusServer;
+        }
         String nexusURL = "http://localhost:8081/nexus";
         String nexusUser = "admin";
         String nexusPass = "xxxx";

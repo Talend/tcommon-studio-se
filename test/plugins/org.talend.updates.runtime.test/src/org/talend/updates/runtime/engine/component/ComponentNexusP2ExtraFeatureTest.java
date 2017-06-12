@@ -12,9 +12,13 @@
 // ============================================================================
 package org.talend.updates.runtime.engine.component;
 
+import org.eclipse.core.runtime.Platform;
 import org.junit.Assert;
 import org.junit.Test;
+import org.talend.commons.CommonsPlugin;
+import org.talend.core.nexus.NexusServerBean;
 import org.talend.updates.runtime.model.P2ExtraFeatureException;
+import org.talend.updates.runtime.nexus.component.NexusServerManager;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -27,8 +31,8 @@ public class ComponentNexusP2ExtraFeatureTest {
             super();
         }
 
-        public ComponentNexusP2ExtraFeatureTestClass(String name, String version) {
-            super(name, version, null, null, null, null);
+        public ComponentNexusP2ExtraFeatureTestClass(String name, String version, String p2IuId) {
+            this(name, version, null, null, null, p2IuId);
         }
 
         public ComponentNexusP2ExtraFeatureTestClass(String name, String version, String description, String product,
@@ -41,6 +45,11 @@ public class ComponentNexusP2ExtraFeatureTest {
             return "profile"; //$NON-NLS-1$
         }
 
+        @Override
+        public NexusServerBean getServerSetting() {
+            // always the new one when test
+            return NexusServerManager.getInstance().getPropertyNexusServer();
+        }
     }
 
     @Test
@@ -48,12 +57,12 @@ public class ComponentNexusP2ExtraFeatureTest {
         ComponentNexusP2ExtraFeatureTestClass feature = new ComponentNexusP2ExtraFeatureTestClass();
         Assert.assertNull(feature.getNexusURL());
 
-        final String KEY = ComponentNexusP2ExtraFeatureTestClass.PROP_KEY_NEXUS_URL;
+        final String KEY = NexusServerManager.PROP_KEY_NEXUS_URL;
         String oldValue = System.getProperty(KEY);
         try {
-            System.setProperty(KEY, "http://abc.com");
+            System.setProperty(KEY, "http://abc.com:8081/nexus");
             Assert.assertNotNull(feature.getNexusURL());
-            Assert.assertEquals("http://abc.com", feature.getNexusURL());
+            Assert.assertEquals("http://abc.com:8081/nexus/content/repositories/releases/", feature.getNexusURL());
         } finally {
             if (oldValue == null) {
                 System.getProperties().remove(KEY);
@@ -64,11 +73,39 @@ public class ComponentNexusP2ExtraFeatureTest {
     }
 
     @Test
+    public void test_getNexusRepository() {
+        ComponentNexusP2ExtraFeatureTestClass feature = new ComponentNexusP2ExtraFeatureTestClass();
+        Assert.assertNull(feature.getNexusURL());
+
+        final String KEY_SERVER = NexusServerManager.PROP_KEY_NEXUS_URL;
+        String oldServerValue = System.getProperty(KEY_SERVER);
+        final String KEY_REPO = NexusServerManager.PROP_KEY_NEXUS_REPOSITORY;
+        String oldRepoValue = System.getProperty(KEY_REPO);
+        try {
+            System.setProperty(KEY_SERVER, "http://abc.com:8081/nexus");
+            System.setProperty(KEY_REPO, "myrepo");
+            Assert.assertNotNull(feature.getNexusURL());
+            Assert.assertEquals("http://abc.com:8081/nexus/content/repositories/myrepo/", feature.getNexusURL());
+        } finally {
+            if (oldServerValue == null) {
+                System.getProperties().remove(KEY_SERVER);
+            } else {
+                System.setProperty(KEY_SERVER, oldServerValue);
+            }
+            if (oldRepoValue == null) {
+                System.getProperties().remove(KEY_REPO);
+            } else {
+                System.setProperty(KEY_REPO, oldRepoValue);
+            }
+        }
+    }
+
+    @Test
     public void test_getNexusUser() {
         ComponentNexusP2ExtraFeatureTestClass feature = new ComponentNexusP2ExtraFeatureTestClass();
         Assert.assertNull(feature.getNexusUser());
 
-        final String KEY = ComponentNexusP2ExtraFeatureTestClass.PROP_KEY_NEXUS_USER;
+        final String KEY = NexusServerManager.PROP_KEY_NEXUS_USER;
         String oldValue = System.getProperty(KEY);
         try {
             System.setProperty(KEY, "admin");
@@ -88,7 +125,7 @@ public class ComponentNexusP2ExtraFeatureTest {
         ComponentNexusP2ExtraFeatureTestClass feature = new ComponentNexusP2ExtraFeatureTestClass();
         Assert.assertNull(feature.getNexusPass());
 
-        final String KEY = ComponentNexusP2ExtraFeatureTestClass.PROP_KEY_NEXUS_PASS;
+        final String KEY = NexusServerManager.PROP_KEY_NEXUS_PASS;
         String oldValue = System.getProperty(KEY);
         try {
             System.setProperty(KEY, "talend");
@@ -105,13 +142,33 @@ public class ComponentNexusP2ExtraFeatureTest {
 
     @Test
     public void test_isInstalled_emptyInstallVersion() throws P2ExtraFeatureException {
+        if (!CommonsPlugin.isDebugMode() && Platform.inDevelopmentMode()) {
+            return; // only enable to test in product
+        }
+
         // null
-        ComponentNexusP2ExtraFeatureTestClass feature = new ComponentNexusP2ExtraFeatureTestClass("tJava", null);
+        ComponentNexusP2ExtraFeatureTestClass feature = new ComponentNexusP2ExtraFeatureTestClass("Test", null,
+                "org.talend.test.abc");
         Assert.assertFalse(feature.isInstalled(null));
 
         // emtpy version
-        feature = new ComponentNexusP2ExtraFeatureTestClass("tJava", "");
+        feature = new ComponentNexusP2ExtraFeatureTestClass("Test", "", "org.talend.test.abc");
         Assert.assertFalse(feature.isInstalled(null));
     }
 
+    @Test
+    public void test_isInstalled_installed() throws P2ExtraFeatureException {
+        if (!CommonsPlugin.isDebugMode() && Platform.inDevelopmentMode()) {
+            return; // only enable to test in product
+        }
+
+        // null
+        ComponentNexusP2ExtraFeatureTestClass feature = new ComponentNexusP2ExtraFeatureTestClass("Test", null,
+                CommonsPlugin.PLUGIN_ID);
+        Assert.assertTrue(feature.isInstalled(null));
+
+        // emtpy version
+        feature = new ComponentNexusP2ExtraFeatureTestClass("Test", "", CommonsPlugin.PLUGIN_ID);
+        Assert.assertTrue(feature.isInstalled(null));
+    }
 }

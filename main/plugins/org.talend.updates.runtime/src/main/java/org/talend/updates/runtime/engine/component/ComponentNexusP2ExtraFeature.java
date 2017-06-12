@@ -25,12 +25,14 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.equinox.p2.metadata.IInstallableUnit;
 import org.eclipse.equinox.p2.metadata.Version;
+import org.talend.core.nexus.NexusServerBean;
 import org.talend.designer.maven.utils.PomUtil;
 import org.talend.updates.runtime.i18n.Messages;
 import org.talend.updates.runtime.model.P2ExtraFeature;
 import org.talend.updates.runtime.model.P2ExtraFeatureException;
 import org.talend.updates.runtime.nexus.component.ComponentIndexBean;
 import org.talend.updates.runtime.nexus.component.NexusComponentsTransport;
+import org.talend.updates.runtime.nexus.component.NexusServerManager;
 import org.talend.updates.runtime.utils.PathUtils;
 import org.talend.utils.io.FilesUtils;
 
@@ -38,14 +40,6 @@ import org.talend.utils.io.FilesUtils;
  * DOC ggu class global comment. Detailled comment
  */
 public class ComponentNexusP2ExtraFeature extends ComponentP2ExtraFeature {
-
-    public static final String PROP_KEY_NEXUS_URL = "components.nexus.url"; //$NON-NLS-1$
-
-    public static final String PROP_KEY_NEXUS_USER = "components.nexus.user"; //$NON-NLS-1$
-
-    public static final String PROP_KEY_NEXUS_PASS = "components.nexus.pass"; //$NON-NLS-1$
-
-    private boolean upgrade;
 
     private String nexusURL, nexusUser;
 
@@ -55,8 +49,17 @@ public class ComponentNexusP2ExtraFeature extends ComponentP2ExtraFeature {
 
     protected boolean keepDownloadFile = false;
 
+    protected NexusServerBean serverSetting;
+
     public ComponentNexusP2ExtraFeature() {
         super();
+    }
+
+    public NexusServerBean getServerSetting() {
+        if (serverSetting == null) {
+            serverSetting = NexusServerManager.getInstance().getPropertyNexusServer();
+        }
+        return serverSetting;
     }
 
     public ComponentNexusP2ExtraFeature(ComponentIndexBean indexBean) {
@@ -69,8 +72,8 @@ public class ComponentNexusP2ExtraFeature extends ComponentP2ExtraFeature {
     }
 
     public String getNexusURL() {
-        if (nexusURL == null) {
-            setNexusURL(System.getProperty(PROP_KEY_NEXUS_URL));
+        if (nexusURL == null && getServerSetting() != null) {
+            setNexusURL(getServerSetting().getRepositoryURI());
         }
         return nexusURL;
     }
@@ -81,8 +84,8 @@ public class ComponentNexusP2ExtraFeature extends ComponentP2ExtraFeature {
     }
 
     public String getNexusUser() {
-        if (nexusUser == null) {
-            setNexusUser(System.getProperty(PROP_KEY_NEXUS_USER));
+        if (nexusUser == null && getServerSetting() != null) {
+            setNexusUser(getServerSetting().getUserName());
         }
         return nexusUser;
     }
@@ -92,8 +95,8 @@ public class ComponentNexusP2ExtraFeature extends ComponentP2ExtraFeature {
     }
 
     public char[] getNexusPass() {
-        if (nexusPass == null) {
-            final String pass = System.getProperty(PROP_KEY_NEXUS_PASS);
+        if (nexusPass == null && getServerSetting() != null) {
+            final String pass = getServerSetting().getPassword();
             if (StringUtils.isNotEmpty(pass)) {
                 setNexusPass(pass.toCharArray());
             }
@@ -127,10 +130,6 @@ public class ComponentNexusP2ExtraFeature extends ComponentP2ExtraFeature {
 
     public void setKeepDownloadFile(boolean keepDownloadFile) {
         this.keepDownloadFile = keepDownloadFile;
-    }
-
-    public boolean isUpgrade() {
-        return upgrade;
     }
 
     @Override

@@ -24,6 +24,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.talend.commons.CommonsPlugin;
 import org.talend.commons.utils.resource.BundleFileUtil;
 import org.talend.updates.runtime.engine.P2InstallerTest;
 import org.talend.utils.io.FilesUtils;
@@ -44,8 +45,8 @@ public class LocalComponentsInstallComponentTest {
     @Before
     public void prepare() throws IOException {
         tmpFolder = org.talend.utils.files.FileUtils.createTmpFolder("test", "comp"); //$NON-NLS-1$  //$NON-NLS-2$
-        installedFolder = new File(
-                Platform.getConfigurationLocation().getDataArea(LocalComponentsInstallComponent.FOLDER_COMPS).getPath());
+        installedFolder = new File(Platform.getConfigurationLocation().getDataArea(LocalComponentsInstallComponent.FOLDER_COMPS)
+                .getPath());
         cleanM2TempFolder();
     }
 
@@ -227,6 +228,10 @@ public class LocalComponentsInstallComponentTest {
 
     @Test
     public void test_installFromFolder_updatesite_file() throws Exception {
+        if (!CommonsPlugin.isDebugMode() && Platform.inDevelopmentMode()) {
+            return; // only enable to test in product
+        }
+
         final File testDataFile = BundleFileUtil.getBundleFile(this.getClass(), P2InstallerTest.TEST_COMP_MYJIRA);
         Assert.assertNotNull(testDataFile);
         Assert.assertTrue(testDataFile.exists());
@@ -258,6 +263,10 @@ public class LocalComponentsInstallComponentTest {
 
     @Test
     public void test_doInstall_withoutLogin() throws Exception {
+        if (!CommonsPlugin.isDebugMode() && Platform.inDevelopmentMode()) {
+            return; // only enable to test in product
+        }
+
         final File testDataFile = BundleFileUtil.getBundleFile(this.getClass(), P2InstallerTest.TEST_COMP_MYJIRA);
         Assert.assertNotNull(testDataFile);
         Assert.assertTrue(testDataFile.exists());
@@ -316,6 +325,10 @@ public class LocalComponentsInstallComponentTest {
 
     @Test
     public void test_doInstall_withLogin() throws Exception {
+        if (!CommonsPlugin.isDebugMode() && Platform.inDevelopmentMode()) {
+            return; // only enable to test in product
+        }
+
         final File testDataFile = BundleFileUtil.getBundleFile(this.getClass(), P2InstallerTest.TEST_COMP_MYJIRA);
         Assert.assertNotNull(testDataFile);
         Assert.assertTrue(testDataFile.exists());
@@ -379,6 +392,10 @@ public class LocalComponentsInstallComponentTest {
 
     @Test
     public void test_doInstall_hasFailure() throws Exception {
+        if (!CommonsPlugin.isDebugMode() && Platform.inDevelopmentMode()) {
+            return; // only enable to test in product
+        }
+
         final File testDataFile = BundleFileUtil.getBundleFile(this.getClass(), P2InstallerTest.TEST_COMP_MYJIRA);
         Assert.assertNotNull(testDataFile);
         Assert.assertTrue(testDataFile.exists());

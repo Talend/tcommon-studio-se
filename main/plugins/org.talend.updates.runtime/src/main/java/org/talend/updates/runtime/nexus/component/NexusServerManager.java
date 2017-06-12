@@ -22,7 +22,15 @@ import org.talend.core.nexus.NexusServerBean;
  */
 public class NexusServerManager {
 
-    private static final String REPOSITORY_ID = "releases"; //$NON-NLS-1$
+    public static final String PROP_KEY_NEXUS_URL = "components.nexus.url"; //$NON-NLS-1$
+
+    public static final String PROP_KEY_NEXUS_REPOSITORY = "components.nexus.repository"; //$NON-NLS-1$
+
+    public static final String PROP_KEY_NEXUS_USER = "components.nexus.user"; //$NON-NLS-1$
+
+    public static final String PROP_KEY_NEXUS_PASS = "components.nexus.pass"; //$NON-NLS-1$
+
+    private static final String DEFAULT_REPOSITORY_ID = "releases"; //$NON-NLS-1$
 
     private static NexusServerManager instance;
 
@@ -44,7 +52,25 @@ public class NexusServerManager {
         if (nexusService == null) {
             return null;
         }
-        return nexusService.getPublishNexusServerBean(REPOSITORY_ID);
+        String repoId = System.getProperty(PROP_KEY_NEXUS_REPOSITORY, DEFAULT_REPOSITORY_ID);
+        return nexusService.getPublishNexusServerBean(repoId);
+    }
+
+    public NexusServerBean getPropertyNexusServer() {
+        if (!System.getProperties().containsKey(PROP_KEY_NEXUS_URL)) {
+            return null; // if not set
+        }
+        String nexusUrl = System.getProperty(PROP_KEY_NEXUS_URL);
+        String repoId = System.getProperty(PROP_KEY_NEXUS_REPOSITORY, DEFAULT_REPOSITORY_ID);
+        String nexusUser = System.getProperty(PROP_KEY_NEXUS_USER);
+        String nexusPass = System.getProperty(PROP_KEY_NEXUS_PASS);
+
+        NexusServerBean serverBean = new NexusServerBean();
+        serverBean.setServer(nexusUrl);
+        serverBean.setRepositoryId(repoId);
+        serverBean.setUserName(nexusUser);
+        serverBean.setPassword(nexusPass);
+        return serverBean;
     }
 
 }

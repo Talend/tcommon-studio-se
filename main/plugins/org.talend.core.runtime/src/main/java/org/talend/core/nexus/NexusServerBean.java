@@ -12,6 +12,8 @@
 // ============================================================================
 package org.talend.core.nexus;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * created by wchen on 2015-5-12 Detailled comment
  *
@@ -146,6 +148,9 @@ public class NexusServerBean {
     }
 
     public String getRepositoryURI() {
+        if (StringUtils.isEmpty(this.server)) {
+            return null; // no server, no uri
+        }
         String repositoryBaseURI = this.server;
         if (repositoryBaseURI.endsWith(NexusConstants.SLASH)) {
             repositoryBaseURI = repositoryBaseURI.substring(0, repositoryBaseURI.length() - 1);
@@ -169,7 +174,7 @@ public class NexusServerBean {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
