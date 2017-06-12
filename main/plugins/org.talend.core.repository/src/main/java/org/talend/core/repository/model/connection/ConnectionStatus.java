@@ -23,6 +23,8 @@ public class ConnectionStatus {
     private boolean result;
 
     private String messageException;
+    
+    private String mainMessage;
 
     public boolean getResult() {
         return this.result;
@@ -38,5 +40,13 @@ public class ConnectionStatus {
 
     public void setMessageException(String messageException) {
         this.messageException = messageException;
+    }
+    
+    public String getMainMessage() {
+        return this.mainMessage;
+    }
+
+    public void setMainMessage(String mainMessage) {
+        this.mainMessage = mainMessage;
     }
 }
