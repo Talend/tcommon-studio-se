@@ -156,17 +156,17 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
             "METADATA_COLUMN", true, 27, new String[] { PROD_DI }, new String[] {}, false);
 
     // feature 0006484 add
-    public final static ERepositoryObjectType METADATA_FILE_RULES = new ERepositoryObjectType("repository.metadataFileRules", //$NON-NLS-1$
-            "metadata/rules", "METADATA_FILE_RULES", 28, true, "repository.metadataFileRules.alias", new String[] { PROD_DI }, //$NON-NLS-1$
-            new String[] {});
+    //    public final static ERepositoryObjectType METADATA_FILE_RULES = new ERepositoryObjectType("repository.metadataFileRules", //$NON-NLS-1$
+    //            "metadata/rules", "METADATA_FILE_RULES", 28, true, "repository.metadataFileRules.alias", new String[] { PROD_DI }, //$NON-NLS-1$
+    // new String[] {});
 
     public final static ERepositoryObjectType METADATA_FILE_LINKRULES = new ERepositoryObjectType(
             "repository.metadataLinkFileRules", "metadata/rules", "METADATA_FILE_LINKRULES", 29, true, //$NON-NLS-1$ //$NON-NLS-2$
             "repository.metadataLinkFileRules.alias", new String[] { PROD_DI }, new String[] {});
 
-    public final static ERepositoryObjectType METADATA_RULES_MANAGEMENT = new ERepositoryObjectType(
-            "repository.metadataRulesManagement", "", "METADATA_RULES_MANAGEMENT", 30, true, //$NON-NLS-1$ //$NON-NLS-2$
-            "repository.metadataRulesManagement.alias", new String[] { PROD_DI }, new String[] {}, false);
+    // public final static ERepositoryObjectType METADATA_RULES_MANAGEMENT = new ERepositoryObjectType(
+    //            "repository.metadataRulesManagement", "", "METADATA_RULES_MANAGEMENT", 30, true, //$NON-NLS-1$ //$NON-NLS-2$
+    // "repository.metadataRulesManagement.alias", new String[] { PROD_DI }, new String[] {}, false);
 
     // 0015169 added
     public final static ERepositoryObjectType METADATA_FILE_BRMS = new ERepositoryObjectType("repository.metadataFileBRMS", //$NON-NLS-1$
@@ -483,6 +483,14 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
     public final static ERepositoryObjectType METADATA_FILE_HL7 = ERepositoryObjectType.valueOf("METADATA_FILE_HL7");
 
     public final static ERepositoryObjectType METADATA_EDIFACT = ERepositoryObjectType.valueOf("METADATA_EDIFACT");
+
+    /**
+     * Rules
+     */
+    public final static ERepositoryObjectType METADATA_RULES_MANAGEMENT = ERepositoryObjectType
+            .valueOf("METADATA_RULES_MANAGEMENT"); //$NON-NLS-1$
+
+    public final static ERepositoryObjectType METADATA_FILE_RULES = ERepositoryObjectType.valueOf("METADATA_FILE_RULES"); //$NON-NLS-1$
 
     /**
      * <font color="red">This value may be <b>null</b> in some licenses, <b>should add NPE check</b></font>
