@@ -2026,10 +2026,12 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
     public void logOffProject() {
         // getRepositoryContext().setProject(null);
         repositoryFactoryFromProvider.logOffProject();
-        ProjectRepositoryNode root = ProjectRepositoryNode.getInstance();
-        if (root != null) {
-            root.setEnableDisposed(true);
-            root.dispose();
+        if (!CommonsPlugin.isHeadless()) {
+            ProjectRepositoryNode root = ProjectRepositoryNode.getInstance();
+            if (root != null) {
+                root.setEnableDisposed(true);
+                root.dispose();
+            }
         }
         fullLogonFinished = false;
     }
