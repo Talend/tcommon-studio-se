@@ -184,7 +184,7 @@ public class HadoopRepositoryUtil {
         }
         ContextType contextType = null;
         if (mmUIService != null) {
-            contextType = mmUIService.getContextTypeForContextMode(connection);
+            contextType = mmUIService.getContextTypeForContextMode(connection, null, true);
         }
         if (useOriginalValue && contextType != null) {
             properties = getHadoopPropertiesWithOriginalValue(propertiesJsonStr, contextType, includeQuotes);

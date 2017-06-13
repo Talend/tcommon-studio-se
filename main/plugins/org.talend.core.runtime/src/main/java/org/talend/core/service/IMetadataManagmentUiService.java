@@ -26,6 +26,8 @@ public interface IMetadataManagmentUiService extends IService {
     public String getAndOpenXSDFileDialog(Path initPath);
 
     public ContextType getContextTypeForContextMode(Connection connection);
+    
+    public ContextType getContextTypeForContextMode(Connection connection, String selectedName, boolean defaultContext);
 
     public String getOriginalValue(ContextType contextType, final String value);
 

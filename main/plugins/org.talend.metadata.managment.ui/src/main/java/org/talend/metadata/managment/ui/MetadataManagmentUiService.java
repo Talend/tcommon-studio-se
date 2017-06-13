@@ -49,6 +49,11 @@ public class MetadataManagmentUiService implements IMetadataManagmentUiService {
     public ContextType getContextTypeForContextMode(Connection connection) {
         return ConnectionContextHelper.getContextTypeForContextMode(connection);
     }
+    
+    @Override
+    public ContextType getContextTypeForContextMode(Connection connection, String selectedName, boolean defaultContext) {
+        return ConnectionContextHelper.getContextTypeForContextMode(null, connection, selectedName, defaultContext);
+    }
 
     @Override
     public String getOriginalValue(ContextType contextType, String value) {
