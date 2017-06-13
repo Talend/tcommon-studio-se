@@ -25,6 +25,8 @@ import org.talend.core.nexus.NexusServerBean;
  */
 public class NexusServerManagerTest {
 
+    static final String PUBLISH_INIT_MESSAGE = "should be same the org.talend.designer.publish.di.preferences.PreferenceInitializer";
+
     private static String oldNexusServer, oldRepo, oldUser, oldPass;
 
     @BeforeClass
@@ -65,11 +67,11 @@ public class NexusServerManagerTest {
         NexusServerBean localNexusServer = NexusServerManager.getInstance().getLocalNexusServer();
         Assert.assertNotNull(localNexusServer);
         // should be same the org.talend.designer.publish.di.preferences.PreferenceInitializer
-        Assert.assertEquals("http://localhost:8081/nexus", localNexusServer.getServer());
-        Assert.assertEquals("releases", localNexusServer.getRepositoryId()); // default property
+        Assert.assertEquals(PUBLISH_INIT_MESSAGE, "http://localhost:8081/nexus", localNexusServer.getServer());
+        Assert.assertEquals(PUBLISH_INIT_MESSAGE, "releases", localNexusServer.getRepositoryId()); // default property
         Assert.assertEquals("http://localhost:8081/nexus/content/repositories/releases/", localNexusServer.getRepositoryURI());
-        Assert.assertEquals("admin", localNexusServer.getUserName());
-        Assert.assertEquals("Talend123", localNexusServer.getPassword());
+        Assert.assertEquals(PUBLISH_INIT_MESSAGE, "admin", localNexusServer.getUserName());
+        Assert.assertEquals(PUBLISH_INIT_MESSAGE, "Talend123", localNexusServer.getPassword());
     }
 
     @Test
@@ -80,11 +82,11 @@ public class NexusServerManagerTest {
         Assert.assertNotNull(localNexusServer);
 
         // should be same the org.talend.designer.publish.di.preferences.PreferenceInitializer
-        Assert.assertEquals("http://localhost:8081/nexus", localNexusServer.getServer());
+        Assert.assertEquals(PUBLISH_INIT_MESSAGE, "http://localhost:8081/nexus", localNexusServer.getServer());
         Assert.assertEquals("mytest", localNexusServer.getRepositoryId());
         Assert.assertEquals("http://localhost:8081/nexus/content/repositories/mytest/", localNexusServer.getRepositoryURI());
-        Assert.assertEquals("admin", localNexusServer.getUserName());
-        Assert.assertEquals("Talend123", localNexusServer.getPassword());
+        Assert.assertEquals(PUBLISH_INIT_MESSAGE, "admin", localNexusServer.getUserName());
+        Assert.assertEquals(PUBLISH_INIT_MESSAGE, "Talend123", localNexusServer.getPassword());
     }
 
     @Test
@@ -95,11 +97,11 @@ public class NexusServerManagerTest {
         Assert.assertNotNull(localNexusServer);
 
         // should be same the org.talend.designer.publish.di.preferences.PreferenceInitializer
-        Assert.assertEquals("http://localhost:8081/nexus", localNexusServer.getServer());
+        Assert.assertEquals(PUBLISH_INIT_MESSAGE, "http://localhost:8081/nexus", localNexusServer.getServer());
         Assert.assertEquals("myremote", localNexusServer.getRepositoryId());
         Assert.assertEquals("http://localhost:8081/nexus/content/repositories/myremote/", localNexusServer.getRepositoryURI());
-        Assert.assertEquals("admin", localNexusServer.getUserName());
-        Assert.assertEquals("Talend123", localNexusServer.getPassword());
+        Assert.assertEquals(PUBLISH_INIT_MESSAGE, "admin", localNexusServer.getUserName());
+        Assert.assertEquals(PUBLISH_INIT_MESSAGE, "Talend123", localNexusServer.getPassword());
     }
 
     @Test

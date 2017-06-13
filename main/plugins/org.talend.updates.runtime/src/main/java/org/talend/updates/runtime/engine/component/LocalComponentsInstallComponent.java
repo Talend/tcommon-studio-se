@@ -30,7 +30,6 @@ import org.talend.commons.runtime.service.PatchComponent;
 import org.talend.commons.utils.resource.UpdatesHelper;
 import org.talend.updates.runtime.nexus.component.ComponentIndexBean;
 import org.talend.updates.runtime.nexus.component.ComponentIndexManager;
-import org.talend.updates.runtime.utils.OsgiBundleInstaller;
 import org.talend.updates.runtime.utils.PathUtils;
 
 /**
@@ -38,7 +37,7 @@ import org.talend.updates.runtime.utils.PathUtils;
  */
 public class LocalComponentsInstallComponent implements ComponentsInstallComponent {
 
-    private InstallComponentMessages messages = new InstallComponentMessages();
+    protected InstallComponentMessages messages = new InstallComponentMessages();
 
     private File userComponentFolder = null;
 
@@ -174,7 +173,7 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
                             getFailedComponents().add(f);
                             continue;
                         }
-                        ComponentP2ExtraFeature feature = new ComponentP2ExtraFeature(f);
+                        ComponentP2ExtraFeature feature = createComponentFeature(f);
                         feature.setLogin(isLogin);
                         NullProgressMonitor progressMonitor = new NullProgressMonitor();
                         // boolean installedBefore = feature.isInstalled(progressMonitor);
@@ -194,6 +193,10 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
                 }
             }
         }
+    }
+
+    protected ComponentP2ExtraFeature createComponentFeature(File f) {
+        return new ComponentP2ExtraFeature(f);
     }
 
     @Override

@@ -41,11 +41,6 @@ public class ComponentNexusP2ExtraFeatureTest {
         }
 
         @Override
-        public String getP2ProfileId() {
-            return "profile"; //$NON-NLS-1$
-        }
-
-        @Override
         public NexusServerBean getServerSetting() {
             // always the new one when test
             return NexusServerManager.getInstance().getPropertyNexusServer();
@@ -82,7 +77,7 @@ public class ComponentNexusP2ExtraFeatureTest {
         final String KEY_REPO = NexusServerManager.PROP_KEY_NEXUS_REPOSITORY;
         String oldRepoValue = System.getProperty(KEY_REPO);
         try {
-            System.setProperty(KEY_SERVER, "http://abc.com:8081/nexus");
+            System.setProperty(KEY_SERVER, "http://abc.com:8081/nexus");// must set the nexus url
             System.setProperty(KEY_REPO, "myrepo");
             Assert.assertNotNull(feature.getNexusURL());
             Assert.assertEquals("http://abc.com:8081/nexus/content/repositories/myrepo/", feature.getNexusURL());
@@ -105,17 +100,25 @@ public class ComponentNexusP2ExtraFeatureTest {
         ComponentNexusP2ExtraFeatureTestClass feature = new ComponentNexusP2ExtraFeatureTestClass();
         Assert.assertNull(feature.getNexusUser());
 
-        final String KEY = NexusServerManager.PROP_KEY_NEXUS_USER;
-        String oldValue = System.getProperty(KEY);
+        final String KEY_SERVER = NexusServerManager.PROP_KEY_NEXUS_URL;
+        String oldServerValue = System.getProperty(KEY_SERVER);
+        final String KEY_USER = NexusServerManager.PROP_KEY_NEXUS_USER;
+        String oldValue = System.getProperty(KEY_USER);
         try {
-            System.setProperty(KEY, "admin");
+            System.setProperty(KEY_SERVER, "http://abc.com:8081/nexus");// must set the nexus url
+            System.setProperty(KEY_USER, "admin");
             Assert.assertNotNull(feature.getNexusUser());
             Assert.assertEquals("admin", feature.getNexusUser());
         } finally {
             if (oldValue == null) {
-                System.getProperties().remove(KEY);
+                System.getProperties().remove(KEY_USER);
             } else {
-                System.setProperty(KEY, oldValue);
+                System.setProperty(KEY_USER, oldValue);
+            }
+            if (oldServerValue == null) {
+                System.getProperties().remove(KEY_SERVER);
+            } else {
+                System.setProperty(KEY_SERVER, oldServerValue);
             }
         }
     }
@@ -125,17 +128,25 @@ public class ComponentNexusP2ExtraFeatureTest {
         ComponentNexusP2ExtraFeatureTestClass feature = new ComponentNexusP2ExtraFeatureTestClass();
         Assert.assertNull(feature.getNexusPass());
 
-        final String KEY = NexusServerManager.PROP_KEY_NEXUS_PASS;
-        String oldValue = System.getProperty(KEY);
+        final String KEY_SERVER = NexusServerManager.PROP_KEY_NEXUS_URL;
+        String oldServerValue = System.getProperty(KEY_SERVER);
+        final String KEY_PASS = NexusServerManager.PROP_KEY_NEXUS_PASS;
+        String oldValue = System.getProperty(KEY_PASS);
         try {
-            System.setProperty(KEY, "talend");
+            System.setProperty(KEY_SERVER, "http://abc.com:8081/nexus"); // must set the nexus url
+            System.setProperty(KEY_PASS, "talend");
             Assert.assertNotNull(feature.getNexusPass());
             Assert.assertEquals("talend", new String(feature.getNexusPass()));
         } finally {
             if (oldValue == null) {
-                System.getProperties().remove(KEY);
+                System.getProperties().remove(KEY_PASS);
             } else {
-                System.setProperty(KEY, oldValue);
+                System.setProperty(KEY_PASS, oldValue);
+            }
+            if (oldServerValue == null) {
+                System.getProperties().remove(KEY_SERVER);
+            } else {
+                System.setProperty(KEY_SERVER, oldServerValue);
             }
         }
     }

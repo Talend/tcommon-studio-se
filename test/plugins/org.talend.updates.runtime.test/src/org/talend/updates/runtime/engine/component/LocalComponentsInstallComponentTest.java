@@ -14,8 +14,12 @@ package org.talend.updates.runtime.engine.component;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.InstanceScope;
@@ -24,9 +28,14 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.osgi.framework.Bundle;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.utils.resource.BundleFileUtil;
 import org.talend.updates.runtime.engine.P2InstallerTest;
+import org.talend.updates.runtime.i18n.Messages;
+import org.talend.updates.runtime.model.P2ExtraFeatureException;
+import org.talend.updates.runtime.nexus.component.ComponentIndexBean;
+import org.talend.updates.runtime.nexus.component.ComponentIndexManager;
 import org.talend.utils.io.FilesUtils;
 
 /**
@@ -40,13 +49,9 @@ public class LocalComponentsInstallComponentTest {
 
     File tmpFolder = null;
 
-    File installedFolder = null;
-
     @Before
     public void prepare() throws IOException {
         tmpFolder = org.talend.utils.files.FileUtils.createTmpFolder("test", "comp"); //$NON-NLS-1$  //$NON-NLS-2$
-        installedFolder = new File(Platform.getConfigurationLocation().getDataArea(LocalComponentsInstallComponent.FOLDER_COMPS)
-                .getPath());
         cleanM2TempFolder();
     }
 
@@ -236,37 +241,68 @@ public class LocalComponentsInstallComponentTest {
         Assert.assertNotNull(testDataFile);
         Assert.assertTrue(testDataFile.exists());
 
+        ComponentIndexBean index = new ComponentIndexManager().create(testDataFile);
+        Assert.assertNotNull(index);
+
         final File target = new File(tmpFolder, testDataFile.getName());
         FilesUtils.copyFile(testDataFile, target);
+        final File installedFolder = new File(tmpFolder, "installed");
 
-        LocalComponentsInstallComponent installComp = new LocalComponentsInstallComponentTestClass();
-        installComp.installFromFolder(tmpFolder);
+        try {
+            LocalComponentsInstallComponent installComp = new LocalComponentsInstallComponentTestClass() {
 
-        final List<File> failedComponents = installComp.getFailedComponents();
-        Assert.assertNotNull(failedComponents);
-        Assert.assertTrue(failedComponents.isEmpty());
+                @Override
+                protected ComponentP2ExtraFeature createComponentFeature(File f) {
+                    return new ComponentP2ExtraFeature(f) {
 
-        // Assert.assertNotNull(installComp.getInstalledMessages());
+                        @Override
+                        public IStatus install(IProgressMonitor progress, List<URI> allRepoUris) throws P2ExtraFeatureException {
+                            useLegacyP2Install = false; // no need change the config.ini for test
+                            return super.install(progress, allRepoUris);
+                        }
 
-        // move to installed
-        Assert.assertTrue(installedFolder.exists());
+                        @Override
+                        protected void moveToSharedFolder(File installedComponentFolder, File compFile) throws IOException {
+                            super.moveToSharedFolder(installedFolder, compFile); // change to use test installed folder
+                        }
+                    };
+                }
 
-        File installedCompFile = new File(installedFolder, testDataFile.getName());
-        Assert.assertTrue(installedCompFile.exists());
-        Assert.assertFalse(target.exists());
-        Assert.assertEquals(testDataFile.getName(), installedCompFile.getName());
+            };
+            installComp.installFromFolder(tmpFolder);
 
-        final long originalChecksumAlder32 = FilesUtils.getChecksumAlder32(testDataFile);
-        final long checksumAlder32 = FilesUtils.getChecksumAlder32(installedCompFile);
-        Assert.assertEquals(originalChecksumAlder32, checksumAlder32);
+            final List<File> failedComponents = installComp.getFailedComponents();
+            Assert.assertNotNull(failedComponents);
+            Assert.assertTrue(failedComponents.isEmpty());
+
+            // move to installed
+            Assert.assertTrue(installedFolder.exists());
+
+            File installedCompFile = new File(installedFolder, testDataFile.getName());
+            Assert.assertTrue(installedCompFile.exists());
+            Assert.assertFalse(target.exists());
+            Assert.assertEquals(testDataFile.getName(), installedCompFile.getName());
+
+            final long originalChecksumAlder32 = FilesUtils.getChecksumAlder32(testDataFile);
+            final long checksumAlder32 = FilesUtils.getChecksumAlder32(installedCompFile);
+            Assert.assertEquals(originalChecksumAlder32, checksumAlder32);
+
+            Bundle bundle = Platform.getBundle(index.getBundleId());
+            Assert.assertNotNull("Component should be loaded", bundle);
+        } finally {
+            // uninstall the bundle, make sure the test component, won't break the product, just for test
+            Bundle bundle = Platform.getBundle(index.getBundleId());
+            if (bundle != null) {
+                if (bundle.getState() == Bundle.ACTIVE) {
+                    bundle.stop();
+                }
+                bundle.uninstall();
+            }
+        }
     }
 
     @Test
     public void test_doInstall_withoutLogin() throws Exception {
-        if (!CommonsPlugin.isDebugMode() && Platform.inDevelopmentMode()) {
-            return; // only enable to test in product
-        }
-
         final File testDataFile = BundleFileUtil.getBundleFile(this.getClass(), P2InstallerTest.TEST_COMP_MYJIRA);
         Assert.assertNotNull(testDataFile);
         Assert.assertTrue(testDataFile.exists());
@@ -291,6 +327,32 @@ public class LocalComponentsInstallComponentTest {
             @Override
             protected File getPatchesFolder() {
                 return patchesFolder;
+            }
+
+            @Override
+            protected void installFromFolder(File componentBaseFolder) {
+                Assert.assertFalse("Shouldn't deal with the patches folder", componentBaseFolder.equals(patchesFolder));
+                super.installFromFolder(componentBaseFolder);
+            }
+
+            @Override
+            protected ComponentP2ExtraFeature createComponentFeature(File f) {
+                return new ComponentP2ExtraFeature(f) {
+
+                    @Override
+                    public boolean canBeInstalled(IProgressMonitor progress) throws P2ExtraFeatureException {
+                        return true;
+                    }
+
+                    @Override
+                    public IStatus install(IProgressMonitor progress, List<URI> allRepoUris) throws P2ExtraFeatureException {
+                        return Messages.createOkStatus("sucessfull.install.of.components", getP2IuId(), getVersion()); //$NON-NLS-1$
+                    }
+
+                    public boolean needRestart() {
+                        return false;
+                    }
+                };
             }
 
         };
@@ -299,36 +361,16 @@ public class LocalComponentsInstallComponentTest {
         final boolean install = installComp.doInstall();
         Assert.assertTrue("Install failure", install);
 
-        Assert.assertTrue(installComp.needRelaunch());
+        Assert.assertFalse("Install success, no need restart", installComp.needRelaunch());
         Assert.assertNotNull(installComp.getInstalledMessages());
 
         final List<File> failedComponents = installComp.getFailedComponents();
         Assert.assertNotNull(failedComponents);
         Assert.assertTrue(failedComponents.isEmpty());
-
-        // move to installed
-        final long originalChecksumAlder32 = FilesUtils.getChecksumAlder32(testDataFile);
-
-        Assert.assertTrue(installedFolder.exists());
-
-        File userInstalledCompFile = new File(installedFolder, testDataFile.getName());
-        Assert.assertTrue(userInstalledCompFile.exists());
-        Assert.assertFalse(userCompFile.exists());
-        Assert.assertEquals(testDataFile.getName(), userInstalledCompFile.getName());
-        Assert.assertEquals(originalChecksumAlder32, FilesUtils.getChecksumAlder32(userInstalledCompFile));
-
-        File patchInstalledCompFile = new File(installedFolder, testDataFile.getName());
-        Assert.assertFalse(patchInstalledCompFile.exists());
-        Assert.assertTrue(patchFile.exists()); // still existed
-
     }
 
     @Test
     public void test_doInstall_withLogin() throws Exception {
-        if (!CommonsPlugin.isDebugMode() && Platform.inDevelopmentMode()) {
-            return; // only enable to test in product
-        }
-
         final File testDataFile = BundleFileUtil.getBundleFile(this.getClass(), P2InstallerTest.TEST_COMP_MYJIRA);
         Assert.assertNotNull(testDataFile);
         Assert.assertTrue(testDataFile.exists());
@@ -343,6 +385,7 @@ public class LocalComponentsInstallComponentTest {
         final File patchFile = new File(patchesFolder, testDataFile.getName());
         FilesUtils.copyFile(testDataFile, patchFile);
 
+        final List<File> doneList = new ArrayList<File>();
         LocalComponentsInstallComponent installComp = new LocalComponentsInstallComponentTestClass() {
 
             @Override
@@ -355,6 +398,31 @@ public class LocalComponentsInstallComponentTest {
                 return patchesFolder;
             }
 
+            @Override
+            protected void installFromFolder(File componentBaseFolder) {
+                doneList.add(componentBaseFolder);
+                super.installFromFolder(componentBaseFolder);
+            }
+
+            @Override
+            protected ComponentP2ExtraFeature createComponentFeature(File f) {
+                return new ComponentP2ExtraFeature(f) {
+
+                    @Override
+                    public boolean canBeInstalled(IProgressMonitor progress) throws P2ExtraFeatureException {
+                        return true;
+                    }
+
+                    @Override
+                    public IStatus install(IProgressMonitor progress, List<URI> allRepoUris) throws P2ExtraFeatureException {
+                        return Messages.createOkStatus("sucessfull.install.of.components", getP2IuId(), getVersion()); //$NON-NLS-1$
+                    }
+
+                    public boolean needRestart() {
+                        return false;
+                    }
+                };
+            }
         };
         try {
             installComp.setLogin(true); // add patches folder
@@ -362,29 +430,16 @@ public class LocalComponentsInstallComponentTest {
             final boolean install = installComp.doInstall();
             Assert.assertTrue("Install failure", install);
 
-            Assert.assertTrue(installComp.needRelaunch());
+            Assert.assertFalse("Install success, no need restart", installComp.needRelaunch());
             Assert.assertNotNull(installComp.getInstalledMessages());
 
             final List<File> failedComponents = installComp.getFailedComponents();
             Assert.assertNotNull(failedComponents);
             Assert.assertTrue(failedComponents.isEmpty());
 
-            // move to installed
-            final long originalChecksumAlder32 = FilesUtils.getChecksumAlder32(testDataFile);
-
-            Assert.assertTrue(installedFolder.exists());
-
-            File userInstalledCompFile = new File(installedFolder, testDataFile.getName());
-            Assert.assertTrue(userInstalledCompFile.exists());
-            Assert.assertFalse(userCompFile.exists());
-            Assert.assertEquals(testDataFile.getName(), userInstalledCompFile.getName());
-            Assert.assertEquals(originalChecksumAlder32, FilesUtils.getChecksumAlder32(userInstalledCompFile));
-
-            File patchInstalledCompFile = new File(installedFolder, testDataFile.getName());
-            Assert.assertTrue(patchInstalledCompFile.exists());
-            Assert.assertFalse(patchFile.exists());
-            Assert.assertEquals(testDataFile.getName(), patchInstalledCompFile.getName());
-            Assert.assertEquals(originalChecksumAlder32, FilesUtils.getChecksumAlder32(patchInstalledCompFile));
+            Assert.assertEquals("Must check all of the user and patches folder", 2, doneList.size());
+            Assert.assertTrue("Must deal with the user component folder", doneList.contains(userCompFolder));
+            Assert.assertTrue("Must deal with the patches folder", doneList.contains(patchesFolder));
         } finally {
             installComp.setLogin(false);
         }
@@ -392,10 +447,19 @@ public class LocalComponentsInstallComponentTest {
 
     @Test
     public void test_doInstall_hasFailure() throws Exception {
-        if (!CommonsPlugin.isDebugMode() && Platform.inDevelopmentMode()) {
-            return; // only enable to test in product
-        }
+        LocalComponentsInstallComponent installComp = new LocalComponentsInstallComponentTestClass() {
 
+            @Override
+            protected void installFromFolder(File componentBaseFolder) {
+                throw new RuntimeException();
+            }
+        };
+        boolean installed = installComp.doInstall();
+        Assert.assertFalse("Should install failure", installed);
+    }
+
+    @Test
+    public void test_doInstall_hasPatchFolderFailure() throws Exception {
         final File testDataFile = BundleFileUtil.getBundleFile(this.getClass(), P2InstallerTest.TEST_COMP_MYJIRA);
         Assert.assertNotNull(testDataFile);
         Assert.assertTrue(testDataFile.exists());
@@ -410,6 +474,8 @@ public class LocalComponentsInstallComponentTest {
         final File patchFile = new File(patchesFolder, testDataFile.getName());
         FilesUtils.copyFile(testDataFile, patchFile);
 
+        final URI patchURI = URI.create("jar:" + patchFile.toURI().toString() + "!/"); //$NON-NLS-1$ //$NON-NLS-2$
+
         LocalComponentsInstallComponent installComp = new LocalComponentsInstallComponentTestClass() {
 
             @Override
@@ -422,14 +488,36 @@ public class LocalComponentsInstallComponentTest {
                 return patchesFolder;
             }
 
+            @Override
+            protected ComponentP2ExtraFeature createComponentFeature(File f) {
+                return new ComponentP2ExtraFeature(f) {
+
+                    @Override
+                    public boolean canBeInstalled(IProgressMonitor progress) throws P2ExtraFeatureException {
+                        return true;
+                    }
+
+                    @Override
+                    public IStatus install(IProgressMonitor progress, List<URI> allRepoUris) throws P2ExtraFeatureException {
+                        if (allRepoUris.contains(patchURI)) {
+                            throw new RuntimeException();
+                        }
+                        return Messages.createOkStatus("sucessfull.install.of.components", getP2IuId(), getVersion()); //$NON-NLS-1$
+                    }
+
+                    public boolean needRestart() {
+                        return false;
+                    }
+                };
+            }
         };
         try {
-            installComp.setLogin(true); // only for user component
+            installComp.setLogin(true); // when install patch folder will have error
 
             final boolean install = installComp.doInstall();
             Assert.assertTrue("Install failure", install);
 
-            Assert.assertTrue(installComp.needRelaunch());
+            Assert.assertFalse("Install success, no need restart", installComp.needRelaunch());
             Assert.assertNotNull(installComp.getInstalledMessages());
 
             final List<File> failedComponents = installComp.getFailedComponents();
@@ -437,21 +525,6 @@ public class LocalComponentsInstallComponentTest {
             Assert.assertEquals(1, failedComponents.size());
             final File file = failedComponents.get(0);
             Assert.assertEquals(patchFile, file); // install failure file
-
-            // move to installed
-            final long originalChecksumAlder32 = FilesUtils.getChecksumAlder32(testDataFile);
-
-            Assert.assertTrue(installedFolder.exists());
-
-            File userInstalledCompFile = new File(installedFolder, testDataFile.getName());
-            Assert.assertTrue(userInstalledCompFile.exists());
-            Assert.assertFalse(userCompFile.exists());
-            Assert.assertEquals(testDataFile.getName(), userInstalledCompFile.getName());
-            Assert.assertEquals(originalChecksumAlder32, FilesUtils.getChecksumAlder32(userInstalledCompFile));
-
-            File patchInstalledCompFile = new File(installedFolder, testDataFile.getName());
-            Assert.assertFalse(patchInstalledCompFile.exists());
-            Assert.assertTrue(patchFile.exists()); // still existed
         } finally {
             installComp.setLogin(false);
         }

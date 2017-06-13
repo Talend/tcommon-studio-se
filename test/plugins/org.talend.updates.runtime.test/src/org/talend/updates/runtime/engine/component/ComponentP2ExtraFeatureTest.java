@@ -100,16 +100,6 @@ public class ComponentP2ExtraFeatureTest {
             return tempP2Folder.toURI();
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.talend.updates.model.P2ExtraFeature#getP2ProfileId()
-         */
-        @Override
-        public String getP2ProfileId() {
-            return "profile"; //$NON-NLS-1$
-        }
-
     }
 
     @Test

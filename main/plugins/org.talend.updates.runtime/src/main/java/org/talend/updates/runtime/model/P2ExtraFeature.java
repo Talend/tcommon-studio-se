@@ -145,6 +145,7 @@ public class P2ExtraFeature implements ExtraFeature {
             IProfile profile = null;
             // there seems to be a bug because if the agent is created too quickly then the profile is empty.
             // so we loop until we get a proper profile
+            final String p2ProfileId = getP2ProfileId();
             do {
                 try {
                     Thread.sleep(50);
@@ -156,11 +157,11 @@ public class P2ExtraFeature implements ExtraFeature {
                 }
                 agent = agentProvider.createAgent(getP2AgentUri());
                 IProfileRegistry profRegistry = (IProfileRegistry) agent.getService(IProfileRegistry.SERVICE_NAME);
-                profile = profRegistry.getProfile(getP2ProfileId());
-            } while (profile != null && profile.getTimestamp() == 0 && !interrupted && !progress.isCanceled());
+                profile = profRegistry.getProfile(p2ProfileId);
+            } while (profile != null && profile.getTimestamp() == 0 && !interrupted && !subMonitor.isCanceled());
 
             if (profile == null || subMonitor.isCanceled()) {
-                throw new ProvisionException("Could not find the p2 profile named _SELF_"); //$NON-NLS-1$
+                throw new ProvisionException("Could not find the p2 profile named " + p2ProfileId); //$NON-NLS-1$
             }
             subMonitor.worked(1);
             IQueryResult<IInstallableUnit> iuQueryResult = profile.available(iuQuery, subMonitor.newChild(1));
