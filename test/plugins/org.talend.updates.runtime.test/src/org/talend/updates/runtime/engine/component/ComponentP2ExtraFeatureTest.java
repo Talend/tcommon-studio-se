@@ -95,11 +95,6 @@ public class ComponentP2ExtraFeatureTest {
             super(name, version, description, product, mvnURI, p2IuId);
         }
 
-        @Override
-        public URI getP2AgentUri() {
-            return tempP2Folder.toURI();
-        }
-
     }
 
     @Test
@@ -135,16 +130,16 @@ public class ComponentP2ExtraFeatureTest {
     @Test
     public void testExtraFeatureHasUpdateAndInstallIt() throws Exception {
         assertFalse(feature.isInstalled(NULL_PROGRESS_MONITOR));
-        List<URI> repoUris = Collections.singletonList(URI
-                .create("jar:" + TEST_COMPONENTS_V1_UPDATE_SITE_FILE.toURI().toString() + "!/")); //$NON-NLS-1$//$NON-NLS-2$
+        List<URI> repoUris = Collections
+                .singletonList(URI.create("jar:" + TEST_COMPONENTS_V1_UPDATE_SITE_FILE.toURI().toString() + "!/")); //$NON-NLS-1$//$NON-NLS-2$
         feature.install(NULL_PROGRESS_MONITOR, repoUris);
         try {
             assertTrue(feature.isInstalled(NULL_PROGRESS_MONITOR));
             ExtraFeature updateFeature = feature.createFeatureIfUpdates(NULL_PROGRESS_MONITOR, repoUris);
             assertNull(updateFeature);
             // check for an update using another update site
-            repoUris = Collections.singletonList(URI
-                    .create("jar:" + TEST_COMPONENTS_V2_UPDATE_SITE_FILE.toURI().toString() + "!/")); //$NON-NLS-1$//$NON-NLS-2$
+            repoUris = Collections
+                    .singletonList(URI.create("jar:" + TEST_COMPONENTS_V2_UPDATE_SITE_FILE.toURI().toString() + "!/")); //$NON-NLS-1$//$NON-NLS-2$
             updateFeature = feature.createFeatureIfUpdates(NULL_PROGRESS_MONITOR, repoUris);
             assertNotNull(updateFeature);
             updateFeature.install(NULL_PROGRESS_MONITOR, repoUris);
@@ -160,8 +155,8 @@ public class ComponentP2ExtraFeatureTest {
     @Test
     public void testExtraFeatureNoUpdateAvailable() throws ProvisionException, P2ExtraFeatureException {
         assertFalse(feature.isInstalled(NULL_PROGRESS_MONITOR));
-        List<URI> repoUris = Collections.singletonList(URI
-                .create("jar:" + TEST_COMPONENTS_V1_UPDATE_SITE_FILE.toURI().toString() + "!/")); //$NON-NLS-1$//$NON-NLS-2$
+        List<URI> repoUris = Collections
+                .singletonList(URI.create("jar:" + TEST_COMPONENTS_V1_UPDATE_SITE_FILE.toURI().toString() + "!/")); //$NON-NLS-1$//$NON-NLS-2$
         feature.install(NULL_PROGRESS_MONITOR, repoUris);
         try {
             assertTrue(feature.isInstalled(NULL_PROGRESS_MONITOR));
