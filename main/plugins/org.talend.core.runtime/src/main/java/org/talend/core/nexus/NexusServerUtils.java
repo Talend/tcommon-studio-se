@@ -219,12 +219,16 @@ public class NexusServerUtils {
                 inputStream.close();
             }
         } catch (Exception e) {
-            if (urlConnection != null) {
-                if (HttpURLConnection.HTTP_UNAUTHORIZED == urlConnection.getResponseCode()) {
-                    throw new Exception(Messages.getString("ShareLibsJob.wrongUsernameOrPassword"), e);
+            if (e instanceof java.net.ProtocolException) {
+
+                if (urlConnection != null) {
+                    if (HttpURLConnection.HTTP_UNAUTHORIZED == urlConnection.getResponseCode()) {
+                        throw new Exception(Messages.getString("ShareLibsJob.wrongUsernameOrPassword"), e);
+                    }
                 }
             }
             throw e;
+
         } finally {
             Authenticator.setDefault(defaultAuthenticator);
             if (null != urlConnection) {
