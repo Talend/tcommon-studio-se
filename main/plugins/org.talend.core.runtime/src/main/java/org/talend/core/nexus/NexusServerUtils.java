@@ -43,6 +43,7 @@ import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.network.NetworkUtil;
 import org.talend.core.prefs.ITalendCorePrefConstants;
+import org.talend.core.runtime.i18n.Messages;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.utils.ssl.SSLUtils;
 
@@ -204,7 +205,6 @@ public class NexusServerUtils {
             int searchDone = search(urlConnection, document, artifacts);
             inputStream.close();
                         
-            
             while (searchDone < totalCount) {
                 service = NexusConstants.SERVICES_SEARCH
                         + getSearchQuery(repositoryId, groupIdToSearch, artifactId, versionToSearch, searchDone, searchCount);
@@ -215,11 +215,16 @@ public class NexusServerUtils {
                 document = saxReader.read(inputStream);
 
                 searchDone = searchDone + search(urlConnection, document, artifacts);
-                
+
                 inputStream.close();
-
             }
-
+        } catch (Exception e) {
+            if (urlConnection != null) {
+                if (HttpURLConnection.HTTP_UNAUTHORIZED == urlConnection.getResponseCode()) {
+                    throw new Exception(Messages.getString("ShareLibsJob.wrongUsernameOrPassword"), e);
+                }
+            }
+            throw e;
         } finally {
             Authenticator.setDefault(defaultAuthenticator);
             if (null != urlConnection) {
