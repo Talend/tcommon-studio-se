@@ -13,7 +13,6 @@
 package org.talend.updates.runtime.login;
 
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -23,11 +22,6 @@ import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.ui.PlatformUI;
-import org.talend.commons.CommonsPlugin;
-import org.talend.core.GlobalServiceRegister;
-import org.talend.designer.codegen.ICodeGeneratorService;
 import org.talend.login.AbstractLoginTask;
 import org.talend.updates.runtime.engine.component.ComponentNexusP2ExtraFeature;
 import org.talend.updates.runtime.engine.component.InstallComponentMessages;
@@ -59,16 +53,14 @@ public class InstallLocalNexusComponentsLoginTask extends AbstractLoginTask {
             return new ComponentNexusP2ExtraFeature(b) {
 
                 @Override
-                protected void syncComponentsToLocalNexus(IProgressMonitor progress, File installedCompFile) throws IOException {
+                protected void syncComponentsToLocalNexus(IProgressMonitor progress, File installedCompFile) {
                     // already shared, no need deploy again
-                    // super.deployComponentsToLocalNexus(progress, installedCompFile);
-                }
+                    // super.syncComponentsToLocalNexus(progress, installedCompFile);
 
-                @Override
-                protected void moveToSharedFolder(File installedComponentFolder, File compFile) throws IOException {
                     // already shared, so no need keep it in local, and try to delete the downloaded one.
-                    // super.moveToSharedFolder(installedComponentFolder, compFile);
-                    compFile.delete();
+                    if (installedCompFile.exists()) {
+                        installedCompFile.delete();
+                    }
                 }
 
             };

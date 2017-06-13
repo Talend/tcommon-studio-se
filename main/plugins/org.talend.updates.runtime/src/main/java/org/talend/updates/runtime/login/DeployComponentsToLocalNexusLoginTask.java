@@ -58,14 +58,14 @@ public class DeployComponentsToLocalNexusLoginTask extends AbstractLoginTask {
         if (componentsBaseFolder == null || !componentsBaseFolder.exists() || !componentsBaseFolder.isDirectory()) {
             return;
         }
-
+        ComponentsDeploymentManager deployManager = new ComponentsDeploymentManager();
         final File[] updateFiles = componentsBaseFolder.listFiles();
         if (updateFiles != null && updateFiles.length > 0) {
             for (File f : updateFiles) {
                 // must be file, and update site.
                 if (f.isFile() && UpdatesHelper.isComponentUpdateSite(f)) {
                     try {
-                        ComponentsDeploymentManager.getInstance().deployComponentsToLocalNexus(monitor, f);
+                        deployManager.deployComponentsToLocalNexus(monitor, f);
                     } catch (Exception e) {
                         // won't block others to install.
                         if (!CommonsPlugin.isHeadless()) {

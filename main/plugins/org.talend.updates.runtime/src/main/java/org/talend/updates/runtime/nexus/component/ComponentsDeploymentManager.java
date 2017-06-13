@@ -27,35 +27,29 @@ import org.talend.utils.io.FilesUtils;
  */
 public class ComponentsDeploymentManager {
 
-    private static ComponentsDeploymentManager instance;
-
-    private ComponentsDeploymentManager() {
-    }
-
-    public static synchronized ComponentsDeploymentManager getInstance() {
-        if (instance == null) {
-            instance = new ComponentsDeploymentManager();
-        }
-        return instance;
-    }
-
     public boolean deployComponentsToLocalNexus(IProgressMonitor progress, File componentZipFile) throws IOException {
         NexusServerBean localNexusServer = NexusServerManager.getInstance().getLocalNexusServer();
         if (localNexusServer == null) {
             return false;
         }
         NexusShareComponentsManager nexusShareComponentsManager = new NexusShareComponentsManager(localNexusServer);
-        boolean deployed = nexusShareComponentsManager.deployComponent(progress, componentZipFile);
-        if (deployed) {
-            moveToSharedFolder(componentZipFile);
+        if (nexusShareComponentsManager.getNexusTransport().isAvailable()) {
+            boolean deployed = nexusShareComponentsManager.deployComponent(progress, componentZipFile);
+            if (deployed) {
+                moveToSharedFolder(componentZipFile);
+                return true;
+            }
         }
-        return deployed;
+        return false;
     }
 
     private void moveToSharedFolder(File componentZipFile) throws IOException {
         File sharedCompFile = new File(PathUtils.getComponentsSharedFolder(), componentZipFile.getName());
         FilesUtils.copyFile(componentZipFile, sharedCompFile);
-        componentZipFile.delete();
+        boolean deleted = componentZipFile.delete();
+        if (!deleted) {// failed to delete in time
+            componentZipFile.deleteOnExit(); // try to delete when exit
+        }
     }
 
 }

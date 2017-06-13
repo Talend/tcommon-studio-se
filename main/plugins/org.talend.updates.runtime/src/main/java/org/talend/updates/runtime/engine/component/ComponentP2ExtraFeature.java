@@ -87,8 +87,8 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature {
     }
 
     public ComponentP2ExtraFeature(ComponentIndexBean indexBean) {
-        this(indexBean.getName(), indexBean.getVersion(), indexBean.getDescription(), indexBean.getProduct(),
-                indexBean.getMvnURI(), indexBean.getBundleId());
+        this(indexBean.getName(), indexBean.getVersion(), indexBean.getDescription(), indexBean.getProduct(), indexBean
+                .getMvnURI(), indexBean.getBundleId());
     }
 
     public ComponentP2ExtraFeature(File componentZipFile) {
@@ -96,8 +96,7 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature {
         this.repositoryURI = URI.create("jar:" + componentZipFile.toURI().toString() + "!/"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
-    public ComponentP2ExtraFeature(String name, String version, String description, String product, String mvnURI,
-            String p2IuId) {
+    public ComponentP2ExtraFeature(String name, String version, String description, String product, String mvnURI, String p2IuId) {
         this.name = name;
         this.version = version;
         this.description = description;
@@ -168,8 +167,8 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature {
             } // else legacy p2 install will update the config.ini
             doInstallStatus = doInstall(progress, allRepoUris);
         } catch (IOException e) {
-            throw new P2ExtraFeatureException(
-                    new ProvisionException(Messages.createErrorStatus(e, "ExtraFeaturesFactory.restore.config.error"))); //$NON-NLS-1$
+            throw new P2ExtraFeatureException(new ProvisionException(Messages.createErrorStatus(e,
+                    "ExtraFeaturesFactory.restore.config.error"))); //$NON-NLS-1$
         } finally {
             if (doInstallStatus != null && doInstallStatus.isOK()) {
                 afterInstall(progress, allRepoUris);
@@ -180,8 +179,8 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature {
                 try {
                     copyConfigFile(configIniBackupFile);
                 } catch (IOException e) {
-                    throw new P2ExtraFeatureException(
-                            new ProvisionException(Messages.createErrorStatus(e, "ExtraFeaturesFactory.back.config.error"))); //$NON-NLS-1$
+                    throw new P2ExtraFeatureException(new ProvisionException(Messages.createErrorStatus(e,
+                            "ExtraFeaturesFactory.back.config.error"))); //$NON-NLS-1$
                 }
             }
         }
@@ -241,8 +240,8 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature {
             IPhaseSet talendPhaseSet = PhaseSetFactory
                     .createDefaultPhaseSetExcluding(new String[] { PhaseSetFactory.PHASE_CHECK_TRUST });
 
-            ProfileModificationJob provisioningJob = (ProfileModificationJob) installOperation
-                    .getProvisioningJob(subMonitor.newChild(1));
+            ProfileModificationJob provisioningJob = (ProfileModificationJob) installOperation.getProvisioningJob(subMonitor
+                    .newChild(1));
             if (subMonitor.isCanceled()) {
                 return Messages.createCancelStatus("ComponentP2ExtraFeature.user.cancel.installation.of.components", //$NON-NLS-1$
                         getP2IuId(), getVersion());
@@ -262,10 +261,12 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature {
             }
             log.debug("installed new components " + getP2IuId() + " (" + getVersion() + ") with status :" + status); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
         } catch (URISyntaxException e) {
-            return Messages.createErrorStatus(e, "ComponentP2ExtraFeature.error.installing.components.uri.exception", getP2IuId(), //$NON-NLS-1$
+            return Messages.createErrorStatus(e,
+                    "ComponentP2ExtraFeature.error.installing.components.uri.exception", getP2IuId(), //$NON-NLS-1$
                     getVersion());
         } catch (ProvisionException e) {
-            return Messages.createErrorStatus(e, "ComponentP2ExtraFeature.error.installing.components.uri.exception", getP2IuId(), //$NON-NLS-1$
+            return Messages.createErrorStatus(e,
+                    "ComponentP2ExtraFeature.error.installing.components.uri.exception", getP2IuId(), //$NON-NLS-1$
                     getVersion());
         } finally {
             if (agent != null) {// agent creation did not fail
@@ -290,13 +291,10 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature {
                     File tempUpdateSiteFolder = getTempUpdateSiteFolder();
                     FilesUtils.unzip(compFile.getAbsolutePath(), tempUpdateSiteFolder.getAbsolutePath());
 
-                    syncComponentsToLocalNexus(progress, compFile);
                     syncLibraries(tempUpdateSiteFolder);
                     syncM2Repository(tempUpdateSiteFolder);
+                    syncComponentsToLocalNexus(progress, compFile);
                     installAndStartComponent(tempUpdateSiteFolder);
-
-                    moveToSharedFolder(installedComponentFolder, compFile);
-
                 }
             }
         } catch (Exception e) {
@@ -349,14 +347,6 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature {
         }
     }
 
-    protected void moveToSharedFolder(File installedComponentFolder, File compFile) throws IOException {
-        File installedCompFile = new File(installedComponentFolder, compFile.getName());
-        if (compFile.exists()) {
-            FilesUtils.copyFile(compFile, installedCompFile);
-            compFile.delete(); // delete original file.
-        }
-    }
-
     protected void installAndStartComponent(File tempUpdateSiteFolder) {
         File tmpPluginsFolder = new File(tempUpdateSiteFolder, UpdatesHelper.FOLDER_PLUGINS);
         if (!tmpPluginsFolder.exists()) {
@@ -390,8 +380,13 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature {
         }
     }
 
-    protected void syncComponentsToLocalNexus(IProgressMonitor progress, File installedCompFile) throws IOException {
-        ComponentsDeploymentManager.getInstance().deployComponentsToLocalNexus(progress, installedCompFile);
+    protected void syncComponentsToLocalNexus(IProgressMonitor progress, File installedCompFile) {
+        try {
+            new ComponentsDeploymentManager().deployComponentsToLocalNexus(progress, installedCompFile);
+        } catch (IOException e) {
+            // don't block other, so catch the exception
+            ExceptionHandler.process(e);
+        }
     }
 
     protected File getTempUpdateSiteFolder() {
