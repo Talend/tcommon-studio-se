@@ -31,6 +31,7 @@ import org.talend.core.model.process.IContext;
 import org.talend.core.model.process.IContextManager;
 import org.talend.core.model.process.IContextParameter;
 import org.talend.core.model.process.IElementParameter;
+import org.talend.core.model.process.IGenericElementParameter;
 import org.talend.core.model.process.INode;
 import org.talend.core.model.process.IProcess;
 import org.talend.core.model.process.IProcess2;
@@ -363,6 +364,9 @@ public class ChangeIdManager {
             return;
         }
         if (aim instanceof IElementParameter) {
+            if (aim instanceof IGenericElementParameter) {
+                ((IGenericElementParameter) aim).setAskPropagate(Boolean.TRUE);
+            }
             IElementParameter elemParameter = (IElementParameter) aim;
             Object elementParamValue = elemParameter.getValue();
             if (elementParamValue != null) {
