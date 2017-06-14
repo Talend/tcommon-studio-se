@@ -13,21 +13,17 @@
 package org.talend.librariesmanager.maven;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.entity.FileEntity;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpHead;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 import org.ops4j.pax.url.mvn.MavenResolver;
-import org.talend.commons.exception.BusinessException;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.GlobalServiceRegister;
@@ -170,55 +166,55 @@ public class ArtifactsDeployer {
         if (nexusServer == null) {
             return;
         }
-//        URL targetURL;
         try {
-//            String artifactPath = PomUtil.getArtifactPath(artifact);
-//            if (!artifactPath.endsWith(type)) {
-//                if (artifactPath.lastIndexOf(".") != -1) {
-//                    artifactPath = artifactPath.substring(0, artifactPath.lastIndexOf(".") + 1) + type;
-//                } else {
-//                    artifactPath = artifactPath + "." + type;
-//                }
-//            }
-//            String target = repositoryUrl;
-//            if (artifact.getVersion() != null && artifact.getVersion().endsWith(MavenConstants.SNAPSHOT)) {
-//                target = target + nexusServer.getSnapshotRepId() + NexusConstants.SLASH;
-//            } else {
-//                target = target + nexusServer.getRepositoryId() + NexusConstants.SLASH;
-//            }
+            deleteOldEntity(artifact, type);
             
             if (GlobalServiceRegister.getDefault().isServiceRegistered(INexusService.class)) {
                 INexusService nexusService = (INexusService) GlobalServiceRegister.getDefault().getService(
                         INexusService.class);
                 nexusService.upload(nexusServer, artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(), content.toURI().toURL());
             }
-//            target = target + artifactPath;
-//            targetURL = new URL(target);
-//            installToRemote(new FileEntity(content), targetURL);
+            
         } catch (Exception e) {
             ExceptionHandler.process(e);
         }
     }
 
-    private void installToRemote(HttpEntity entity, URL targetURL) throws Exception {
+    private void deleteOldEntity(MavenArtifact artifact, String type) throws Exception {
+        String artifactPath = PomUtil.getArtifactPath(artifact);
+        if (!artifactPath.endsWith(type)) {
+            if (artifactPath.lastIndexOf(".") != -1) {
+                artifactPath = artifactPath.substring(0, artifactPath.lastIndexOf(".") + 1) + type;
+            } else {
+                artifactPath = artifactPath + "." + type;
+            }
+        }
+        String target = repositoryUrl;
+        if (artifact.getVersion() != null && artifact.getVersion().endsWith(MavenConstants.SNAPSHOT)) {
+            target = target + nexusServer.getSnapshotRepId() + NexusConstants.SLASH;
+        } else {
+            target = target + nexusServer.getRepositoryId() + NexusConstants.SLASH;
+        }
+        
+        target = target + artifactPath;
+        URL targetURL = new URL(target);
+        
+        
         DefaultHttpClient httpClient = new DefaultHttpClient();
         try {
-            httpClient.getCredentialsProvider().setCredentials(new AuthScope(targetURL.getHost(), targetURL.getPort()),
-                    new UsernamePasswordCredentials(nexusServer.getUserName(), nexusServer.getPassword()));
-
-            HttpPut httpPut = new HttpPut(targetURL.toString());
-            httpPut.setEntity(entity);
-            HttpResponse response = httpClient.execute(httpPut);
-            StatusLine statusLine = response.getStatusLine();
-            int responseCode = statusLine.getStatusCode();
-            EntityUtils.consume(entity);
-            if (responseCode > 399) {
-                if (responseCode == 500) {
-                    // ignor this error , if .pom already exist on server and deploy again will get this error
-                } else if (responseCode == 401) {
-                    throw new BusinessException("Authrity failed");
-                } else {
-                    throw new BusinessException("Deploy failed: " + responseCode + ' ' + statusLine.getReasonPhrase());
+            HttpHead httpHead = null;
+            HttpResponse response = null;
+            StatusLine statusLine = null;
+            if(targetURL.getFile()!=null && !targetURL.getFile().endsWith("SNAPSHOT.jar")){
+                httpClient.getCredentialsProvider().setCredentials(new AuthScope(targetURL.getHost(), targetURL.getPort()),
+                        new UsernamePasswordCredentials(nexusServer.getUserName(), nexusServer.getPassword()));
+                httpHead = new HttpHead(targetURL.toString());
+                response = httpClient.execute(httpHead);
+                statusLine = response.getStatusLine();
+                int responseResult = statusLine.getStatusCode();
+                if (responseResult == 200) {
+                     HttpDelete httpDelete = new HttpDelete(targetURL.toString());
+                     httpClient.execute(httpDelete);
                 }
             }
         } catch (Exception e) {
