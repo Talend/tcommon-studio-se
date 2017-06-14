@@ -262,9 +262,21 @@ public class LocalComponentsInstallComponentTest {
                         }
 
                         @Override
-                        protected void moveToSharedFolder(File installedComponentFolder, File compFile) throws IOException {
-                            super.moveToSharedFolder(installedFolder, compFile); // change to use test installed folder
+                        protected void syncComponentsToLocalNexus(IProgressMonitor progress, File installedCompFile) {
+
+                            File sharedCompFile = new File(installedFolder, installedCompFile.getName());
+                            try {
+                                FilesUtils.copyFile(installedCompFile, sharedCompFile);
+                            } catch (IOException e) {
+                                //
+                            }
+                            boolean deleted = installedCompFile.delete();
+                            if (!deleted) {// failed to delete in time
+                                installedCompFile.deleteOnExit(); // try to delete when exit
+                            }
+
                         }
+
                     };
                 }
 
