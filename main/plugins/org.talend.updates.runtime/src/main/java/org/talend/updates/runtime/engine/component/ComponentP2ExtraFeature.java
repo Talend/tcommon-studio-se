@@ -24,6 +24,7 @@ import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.equinox.p2.core.IProvisioningAgent;
@@ -289,20 +290,34 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature {
         if (allRepoUris == null || allRepoUris.size() == 0) {
             return;
         }
+        if (progress.isCanceled()) {
+            throw new OperationCanceledException();
+        }
         try {
-            // try to move install success to installed folder
-            File installedComponentFolder = PathUtils.getComponentsInstalledFolder();
             for (URI uri : allRepoUris) {
                 File compFile = PathUtils.getCompFileFromP2RepURI(uri);
                 if (compFile != null && compFile.exists()) {
                     // sync the component libraries
                     File tempUpdateSiteFolder = getTempUpdateSiteFolder();
-                    FilesUtils.unzip(compFile.getAbsolutePath(), tempUpdateSiteFolder.getAbsolutePath());
+                    try {
+                        FilesUtils.unzip(compFile.getAbsolutePath(), tempUpdateSiteFolder.getAbsolutePath());
+                        progress.worked(1);
 
-                    syncLibraries(tempUpdateSiteFolder);
-                    syncM2Repository(tempUpdateSiteFolder);
-                    syncComponentsToLocalNexus(progress, compFile);
-                    installAndStartComponent(tempUpdateSiteFolder);
+                        syncLibraries(tempUpdateSiteFolder);
+                        progress.worked(1);
+
+                        syncM2Repository(tempUpdateSiteFolder);
+                        progress.worked(1);
+
+                        installAndStartComponent(tempUpdateSiteFolder);
+                        progress.worked(1);
+                    } finally {
+                        if (tempUpdateSiteFolder.exists()) {
+                            FilesUtils.deleteFolder(tempUpdateSiteFolder, true);
+                        }
+                    }
+
+                    syncComponentsToInstalledFolder(progress, compFile);
                 }
             }
         } catch (Exception e) {
@@ -355,6 +370,26 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature {
         }
     }
 
+    protected void syncComponentsToInstalledFolder(IProgressMonitor progress, File downloadedCompFile) {
+        // try to move install success to installed folder
+        try {
+            if (progress.isCanceled()) {
+                throw new OperationCanceledException();
+            }
+            final File installedComponentFolder = PathUtils.getComponentsInstalledFolder();
+            final File installedComponentFile = new File(installedComponentFolder, downloadedCompFile.getName());
+            if (!installedComponentFile.equals(downloadedCompFile)) { // not in same folder
+                FilesUtils.copyFile(downloadedCompFile, installedComponentFile);
+                downloadedCompFile.delete();
+                progress.worked(1);
+            }
+
+            syncComponentsToLocalNexus(progress, installedComponentFile);
+        } catch (IOException e) {
+            ExceptionHandler.process(e);
+        }
+    }
+
     protected void installAndStartComponent(File tempUpdateSiteFolder) {
         File tmpPluginsFolder = new File(tempUpdateSiteFolder, UpdatesHelper.FOLDER_PLUGINS);
         if (!tmpPluginsFolder.exists()) {
@@ -389,6 +424,9 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature {
     }
 
     protected void syncComponentsToLocalNexus(IProgressMonitor progress, File installedCompFile) {
+        if (progress.isCanceled()) {
+            throw new OperationCanceledException();
+        }
         try {
             new ComponentsDeploymentManager().deployComponentsToLocalNexus(progress, installedCompFile);
         } catch (IOException e) {
@@ -403,13 +441,18 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature {
 
     protected File getTempM2RepoFolder() {
         if (tmpM2RepoFolder == null) {
-            tmpM2RepoFolder = new File(getTmpFolder(), "m2temp"); //$NON-NLS-1$
+            final String m2TempFolder = "m2temp"; //$NON-NLS-1$
+            try {
+                tmpM2RepoFolder = new File(PathUtils.getComponentsFolder(), m2TempFolder);
+            } catch (IOException e) {
+                tmpM2RepoFolder = new File(getTmpFolder(), m2TempFolder);
+            }
         }
         return tmpM2RepoFolder;
     }
 
     protected File getTmpFolder() {
-        return new File(System.getProperty("user.dir") + '/' + PathUtils.FOLDER_COMPS); //$NON-NLS-1$
+        return new File(System.getProperty("user.dir"), PathUtils.FOLDER_COMPS); //$NON-NLS-1$
     }
 
 }
