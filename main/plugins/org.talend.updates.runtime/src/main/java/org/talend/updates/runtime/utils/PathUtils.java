@@ -20,6 +20,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.Platform;
+import org.talend.commons.runtime.service.ComponentsInstallComponent;
+import org.talend.commons.runtime.service.PatchComponent;
 
 /**
  * created by ycbai on 2017年5月23日 Detailled comment
@@ -33,6 +35,14 @@ public class PathUtils {
 
     public static final String FOLDER_SHARED = "shared"; //$NON-NLS-1$
 
+    public static final String FOLDER_DOWNLOADED = "downloaded"; //$NON-NLS-1$
+
+    public static final String FOLDER_M2TEMP = "m2temp"; //$NON-NLS-1$
+
+    public static final String FOLDER_PATCHES = PatchComponent.FOLDER_PATCHES;
+
+    public static final String FOLDER_M2_REPOSITORY = ComponentsInstallComponent.FOLDER_M2_REPOSITORY;
+
     private static final String P2_REP_FILE_URI_PATTERN = "^jar:(.+)!\\/$"; //$NON-NLS-1$
 
     public static File getComponentsFolder() throws IOException {
@@ -43,20 +53,42 @@ public class PathUtils {
         return componentsFolder;
     }
 
-    public static File getComponentsInstalledFolder() throws IOException {
-        File installedComponentFolder = new File(getComponentsFolder(), FOLDER_INSTALLED);
-        if (!installedComponentFolder.exists()) {
-            installedComponentFolder.mkdirs();
+    private static File createComponentFolder(String subName) {
+        File folder = null;
+        try {
+            folder = new File(getComponentsFolder(), subName);
+        } catch (IOException e) {
+            folder = new File(System.getProperty("user.dir"), subName); //$NON-NLS-1$
         }
-        return installedComponentFolder;
+        if (folder != null && !folder.exists()) {
+            folder.mkdirs();
+        }
+        return folder;
     }
 
-    public static File getComponentsSharedFolder() throws IOException {
-        File installedComponentFolder = new File(getComponentsFolder(), FOLDER_SHARED);
-        if (!installedComponentFolder.exists()) {
-            installedComponentFolder.mkdirs();
+    public static File getComponentsInstalledFolder() {
+        return createComponentFolder(FOLDER_INSTALLED);
+    }
+
+    public static File getComponentsSharedFolder() {
+        return createComponentFolder(FOLDER_SHARED);
+    }
+
+    public static File getComponentsDownloadedFolder() {
+        return createComponentFolder(FOLDER_DOWNLOADED);
+    }
+
+    public static File getComponentsM2TempFolder() {
+        return createComponentFolder(FOLDER_M2TEMP);
+    }
+
+    public static File getPatchesFolder() {
+        try {
+            return new File(Platform.getInstallLocation().getDataArea(FOLDER_PATCHES).getPath());
+        } catch (IOException e) {
+            //
         }
-        return installedComponentFolder;
+        return new File(System.getProperty("user.dir"), FOLDER_PATCHES); //$NON-NLS-1$
     }
 
     public static URI getP2RepURIFromCompFile(File compFile) {

@@ -69,8 +69,6 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature {
 
     public static final String INDEX = "index"; //$NON-NLS-1$
 
-    public static final String FOLDER_M2_REPOSITORY = "m2/repository"; //$NON-NLS-1$
-
     public static final String COMPONENT_GROUP_ID = "org.talend.components"; //$NON-NLS-1$
 
     private String product, mvnURI;
@@ -316,7 +314,7 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature {
                             FilesUtils.deleteFolder(tempUpdateSiteFolder, true);
                         }
                     }
-
+                    // move to installed folder
                     syncComponentsToInstalledFolder(progress, compFile);
                 }
             }
@@ -352,20 +350,22 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature {
 
     protected void syncM2Repository(File updatesiteFolder) throws IOException {
         // sync to the local m2 repository, if need try to deploy to remote TAC Nexus.
-        File updatesiteLibFolder = new File(updatesiteFolder, FOLDER_M2_REPOSITORY); // m2/repositroy
+        File updatesiteLibFolder = new File(updatesiteFolder, PathUtils.FOLDER_M2_REPOSITORY); // m2/repositroy
         if (updatesiteLibFolder.exists() && updatesiteFolder.isDirectory()) {
             final File[] listFiles = updatesiteLibFolder.listFiles();
             if (listFiles != null && listFiles.length > 0) {
                 // if have remote nexus, install component too early and before logon project , will cause the problem
                 // (TUP-17604)
                 if (isLogin) {
-                    // prepare to install lib after logon. so copy all to temp folder
-                    FileCopyUtils.copyFolder(updatesiteLibFolder, new File(getTempM2RepoFolder(), FOLDER_M2_REPOSITORY));
-                } else {
-                    // install to local and try to deploy to remote nexus
-                    MavenRepoSynchronizer synchronizer = new MavenRepoSynchronizer(updatesiteLibFolder);
-                    synchronizer.sync();
+                    // prepare to install lib after logon. so copy all to temp folder also.
+                    FileCopyUtils.copyFolder(updatesiteLibFolder, new File(PathUtils.getComponentsM2TempFolder(),
+                            PathUtils.FOLDER_M2_REPOSITORY));
                 }
+
+                // install to local always. and when login, no nexus yet, so no need to deploy to remote nexus.
+                final boolean toRemote = isLogin ? false : true;
+                MavenRepoSynchronizer synchronizer = new MavenRepoSynchronizer(updatesiteLibFolder, toRemote);
+                synchronizer.sync();
             }
         }
     }
@@ -437,22 +437,6 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature {
 
     protected File getTempUpdateSiteFolder() {
         return FileUtils.createTmpFolder("p2updatesite", null); //$NON-NLS-1$
-    }
-
-    protected File getTempM2RepoFolder() {
-        if (tmpM2RepoFolder == null) {
-            final String m2TempFolder = "m2temp"; //$NON-NLS-1$
-            try {
-                tmpM2RepoFolder = new File(PathUtils.getComponentsFolder(), m2TempFolder);
-            } catch (IOException e) {
-                tmpM2RepoFolder = new File(getTmpFolder(), m2TempFolder);
-            }
-        }
-        return tmpM2RepoFolder;
-    }
-
-    protected File getTmpFolder() {
-        return new File(System.getProperty("user.dir"), PathUtils.FOLDER_COMPS); //$NON-NLS-1$
     }
 
 }

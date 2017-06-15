@@ -12,15 +12,16 @@
 // ============================================================================
 package org.talend.updates.runtime.engine.component;
 
+import java.io.File;
+
 /**
  * created by ycbai on 2017年5月18日 Detailled comment
  *
  */
 public class ComponentLocalP2ExtraFeature extends ComponentP2ExtraFeature {
 
-    public ComponentLocalP2ExtraFeature(String name, String version, String description, String product, String mvnURI,
-            String p2IuId) {
-        super(name, version, description, product, mvnURI, p2IuId);
+    public ComponentLocalP2ExtraFeature(File componentFile) {
+        super(componentFile);
     }
 
 }

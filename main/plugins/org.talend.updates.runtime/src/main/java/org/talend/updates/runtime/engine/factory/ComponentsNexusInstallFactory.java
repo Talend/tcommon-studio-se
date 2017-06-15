@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.updates.runtime.engine.factory;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -25,7 +22,6 @@ import org.dom4j.Document;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SubMonitor;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
@@ -46,32 +42,10 @@ import org.talend.updates.runtime.nexus.component.NexusServerManager;
  */
 public class ComponentsNexusInstallFactory extends AbstractExtraUpdatesFactory {
 
-    protected File downloadFolder;
-
     private ComponentIndexManager indexManager = new ComponentIndexManager();
 
     public ComponentsNexusInstallFactory() {
         super();
-    }
-
-    protected File getDownloadFolder() {
-        if (this.downloadFolder == null) {
-            final String downloadedName = ".DownloadedComponents"; //$NON-NLS-1$
-            try {
-                this.downloadFolder = new File(Platform.getConfigurationLocation().getDataArea(downloadedName).getPath());
-            } catch (IOException e) {
-                this.downloadFolder = new File(System.getProperty("user.dir") + '/' + downloadedName); //$NON-NLS-1$
-            }
-        }
-        return this.downloadFolder;
-    }
-
-    public String getP2ProfileId() {
-        return "_SELF_"; //$NON-NLS-1$
-    }
-
-    public URI getP2AgentUri() {
-        return null;
     }
 
     protected Set<P2ExtraFeature> getAllExtraFeatures(IProgressMonitor monitor) {
@@ -161,7 +135,6 @@ public class ComponentsNexusInstallFactory extends AbstractExtraUpdatesFactory {
                 cnFeature.setNexusURL(defaultFeature.getNexusURL());
                 cnFeature.setNexusUser(defaultFeature.getNexusUser());
                 cnFeature.setNexusPass(defaultFeature.getNexusPass());
-                cnFeature.setDownloadFolder(getDownloadFolder()); // use same folder
 
                 p2Features.add(cnFeature);
             }

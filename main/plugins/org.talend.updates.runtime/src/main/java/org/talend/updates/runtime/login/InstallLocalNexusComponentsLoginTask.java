@@ -53,13 +53,13 @@ public class InstallLocalNexusComponentsLoginTask extends AbstractLoginTask {
             return new ComponentNexusP2ExtraFeature(b) {
 
                 @Override
-                protected void syncComponentsToLocalNexus(IProgressMonitor progress, File installedCompFile) {
+                protected void syncComponentsToInstalledFolder(IProgressMonitor progress, File downloadedCompFile) {
                     // already shared, no need deploy again
-                    // super.syncComponentsToLocalNexus(progress, installedCompFile);
+                    // super.syncComponentsToInstalledFolder(progress, installedCompFile);
 
                     // already shared, so no need keep it in local, and try to delete the downloaded one.
-                    if (installedCompFile.exists()) {
-                        installedCompFile.delete();
+                    if (downloadedCompFile.exists()) {
+                        downloadedCompFile.delete();
                     }
                 }
 
