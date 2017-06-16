@@ -112,6 +112,8 @@ import org.talend.core.model.repository.RepositoryViewObject;
 import org.talend.core.repository.CoreRepositoryPlugin;
 import org.talend.core.repository.constants.Constant;
 import org.talend.core.repository.constants.FileConstants;
+import org.talend.core.repository.document.IDocumentationService;
+import org.talend.core.repository.document.IGenerateAllDocumentation;
 import org.talend.core.repository.i18n.Messages;
 import org.talend.core.repository.recyclebin.RecycleBinManager;
 import org.talend.core.repository.utils.RepositoryPathProvider;
@@ -130,7 +132,6 @@ import org.talend.repository.documentation.ERepositoryActionName;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryConstants;
 import org.talend.utils.io.FilesUtils;
-
 import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
@@ -672,12 +673,15 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
             throw new PersistenceException(Messages.getString("ProxyRepositoryFactory.RenameFolderContainsLockedItem")); //$NON-NLS-1$
         }
         this.repositoryFactoryFromProvider.renameFolder(type, path, label);
-        if (type == ERepositoryObjectType.PROCESS) {
-            fireRepositoryPropertyChange(ERepositoryActionName.FOLDER_RENAME.getName(), path, label);
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IDocumentationService.class)) {
+            IDocumentationService service = (IDocumentationService) GlobalServiceRegister.getDefault().getService(
+                    IDocumentationService.class);
+            IGenerateAllDocumentation docGenerator = service.getDocGeneratorByProcessType(type);
+            if (docGenerator != null) {
+                fireRepositoryPropertyChange(ERepositoryActionName.FOLDER_RENAME.getName(), path, new Object[] { label, type });
+            }
         }
-        if (type == ERepositoryObjectType.JOBLET) {
-            fireRepositoryPropertyChange(ERepositoryActionName.JOBLET_FOLDER_RENAME.getName(), path, label);
-        }
+
         this.repositoryFactoryFromProvider.updateItemsPath(type, path.removeLastSegments(1).append(label));
     }
 
@@ -723,8 +727,10 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
      * IRepositoryViewObject)
      */
     @Override
-    public void forceDeleteObjectPhysical(IRepositoryViewObject objToDelete, String version, boolean isDeleteOnRemote) throws PersistenceException {
-        this.repositoryFactoryFromProvider.deleteObjectPhysical(projectManager.getCurrentProject(), objToDelete, version, isDeleteOnRemote);
+    public void forceDeleteObjectPhysical(IRepositoryViewObject objToDelete, String version, boolean isDeleteOnRemote)
+            throws PersistenceException {
+        this.repositoryFactoryFromProvider.deleteObjectPhysical(projectManager.getCurrentProject(), objToDelete, version,
+                isDeleteOnRemote);
         // i18n
         // log.info("Physical deletion [" + objToDelete + "] by " + getRepositoryContext().getUser() + ".");
         String str[] = new String[] { objToDelete.toString(), getRepositoryContext().getUser().toString() };
@@ -942,7 +948,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
         if (!toLock) {
             alreadyLockedBefore = getStatus(item).equals(ERepositoryStatus.LOCK_BY_USER);
         }
-       
+
         // even if item is already locked, force to call the method to ensure the item is still locked
         if (toLock || alreadyLockedBefore) {
             locked = this.repositoryFactoryFromProvider.lock(item);
@@ -1492,7 +1498,8 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
      */
     @Override
     public void unlock(Item obj) throws PersistenceException, LoginException {
-        if (!(obj instanceof FolderItem) && (obj.eResource() == null || obj.getProperty().eResource() == null)&&getUptodateProperty(obj.getProperty())!=null) {
+        if (!(obj instanceof FolderItem) && (obj.eResource() == null || obj.getProperty().eResource() == null)
+                && getUptodateProperty(obj.getProperty()) != null) {
             // item has been unloaded
             obj = getUptodateProperty(obj.getProperty()).getItem();
         }
@@ -1906,7 +1913,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 }
 
                 fireRepositoryPropertyChange(ERepositoryActionName.PROJECT_PREFERENCES_RELOAD.getName(), null, null);
-                
+
                 currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);
                 currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.exec.migration.tasks"), 1); //$NON-NLS-1$
                 ProjectManager.getInstance().getMigrationRecords().clear();
@@ -1920,7 +1927,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 if (coreService != null) {
                     // clean workspace
                     currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.cleanWorkspace"), 1); //$NON-NLS-1$
-                    
+
                     String specifiedVersion = null;
                     String currentVersion = JavaUtils.getProjectJavaVersion();
                     String newVersion = null;
@@ -1931,12 +1938,12 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                         newVersion = currentVersion != null ? currentVersion : JavaUtils.DEFAULT_VERSION;
                     } else {
                         newVersion = specifiedVersion;
-                    } 
+                    }
                     JavaUtils.updateProjectJavaVersion(newVersion);
-                    
+
                     coreService.deleteAllJobs(false);
                     TimeMeasure.step("logOnProject", "clean Java project"); //$NON-NLS-1$ //$NON-NLS-2$     
-                    
+
                     if (workspace instanceof Workspace) {
                         ((Workspace) workspace).getFileSystemManager().getHistoryStore().clean(currentMonitor);
                     }
