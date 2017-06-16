@@ -3858,7 +3858,7 @@ public class DatabaseForm extends AbstractForm {
         final ManagerConnection managerConnection = new ManagerConnection();
 
         if (isContextMode()) { // context mode
-            selectedContextType = ConnectionContextHelper.getContextTypeForContextMode(connectionItem.getConnection());
+            selectedContextType = ConnectionContextHelper.getContextTypeForContextMode(connectionItem.getConnection(), true);
             String urlStr = null;
             urlStr = DBConnectionContextUtils.setManagerConnectionValues(managerConnection, connectionItem, selectedContextType,
                     dbTypeCombo.getItem(dbTypeCombo.getSelectionIndex()), dbTypeCombo.getSelectionIndex());
