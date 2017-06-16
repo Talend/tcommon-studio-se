@@ -205,10 +205,18 @@ public class DocumentationHelper {
             return;
         }
         for (Object node2 : nodes) {
-
-            String label = ((RepositoryNode) node2).getProperties(EProperties.LABEL).toString();
-            String version = ""; //$NON-NLS-1$
+            String label = null;
+            Object properties = ((RepositoryNode) node2).getProperties(EProperties.LABEL);
             IRepositoryViewObject object = ((RepositoryNode) node2).getObject();
+            if (properties != null) {
+                label = properties.toString();
+            } else if (object != null) {
+                label = object.getLabel();
+            }
+            if (label == null) {
+                label = ((RepositoryNode) node2).getLabel();
+            }
+            String version = ""; //$NON-NLS-1$
             if (((RepositoryNode) node2).getType() != ENodeType.SIMPLE_FOLDER && object != null) {
                 version = object.getProperty().getVersion();
             }
