@@ -13,7 +13,6 @@
 package org.talend.updates.runtime.login;
 
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -46,12 +45,8 @@ public class DeployComponentsToLocalNexusLoginTask extends AbstractLoginTask {
 
     @Override
     public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-        try {
-            File installedComponentFolder = PathUtils.getComponentsInstalledFolder();
-            depoloyComponentsFromFolder(monitor, installedComponentFolder);
-        } catch (IOException e) {
-            throw new InvocationTargetException(e);
-        }
+        File installedComponentFolder = PathUtils.getComponentsInstalledFolder();
+        depoloyComponentsFromFolder(monitor, installedComponentFolder);
     }
 
     protected void depoloyComponentsFromFolder(final IProgressMonitor monitor, final File componentsBaseFolder) {

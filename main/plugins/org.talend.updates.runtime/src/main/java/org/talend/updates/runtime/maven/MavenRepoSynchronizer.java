@@ -21,9 +21,13 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.designer.maven.model.TalendMavenConstants;
+import org.talend.designer.maven.utils.PomUtil;
 import org.talend.librariesmanager.maven.ArtifactsDeployer;
+import org.talend.utils.files.FileUtils;
+import org.talend.utils.io.FilesUtils;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -93,8 +97,22 @@ public class MavenRepoSynchronizer {
                     IPath libPath = new Path(pomFile.getAbsolutePath()).removeFileExtension().addFileExtension(packaging);
                     final File libFile = libPath.toFile();
                     if (libFile.exists()) {
-                        // TUP-17785, make sure generate new one always without any dependences
-                        deployer.deployToLocalMaven(mvnUrl, libFile.getAbsolutePath(), null, deployToRemote);
+                        final File tempFolder = FileUtils.createTmpFolder("generate", "pom"); //$NON-NLS-1$  //$NON-NLS-2$
+                        try {
+                            MavenArtifact artifact = MavenUrlHelper.parseMvnUrl(mvnUrl);
+
+                            final String jarPath = libFile.getAbsolutePath();
+
+                            // final String pomPath=pomFile.getAbsolutePath();
+                            // TUP-17785, make sure generate new one always without any dependences, so null
+                            final String pomPath = PomUtil.generatePomInFolder(tempFolder, artifact);
+
+                            deployer.deployToLocalMaven(mvnUrl, jarPath, pomPath, deployToRemote);
+                        } finally {
+                            if (tempFolder.exists()) {
+                                FilesUtils.deleteFolder(tempFolder, true);
+                            }
+                        }
                     }
                 } catch (Exception e) {
                     ExceptionHandler.process(e);

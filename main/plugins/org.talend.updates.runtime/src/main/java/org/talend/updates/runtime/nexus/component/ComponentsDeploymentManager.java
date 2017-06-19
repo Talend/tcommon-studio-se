@@ -45,10 +45,12 @@ public class ComponentsDeploymentManager {
 
     private void moveToSharedFolder(File componentZipFile) throws IOException {
         File sharedCompFile = new File(PathUtils.getComponentsSharedFolder(), componentZipFile.getName());
-        FilesUtils.copyFile(componentZipFile, sharedCompFile);
-        boolean deleted = componentZipFile.delete();
-        if (!deleted) {// failed to delete in time
-            componentZipFile.deleteOnExit(); // try to delete when exit
+        if (!componentZipFile.equals(sharedCompFile)) { // not in same folder
+            FilesUtils.copyFile(componentZipFile, sharedCompFile);
+            boolean deleted = componentZipFile.delete();
+            if (!deleted) {// failed to delete in time
+                componentZipFile.deleteOnExit(); // try to delete when exit
+            }
         }
     }
 

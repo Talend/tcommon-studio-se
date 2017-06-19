@@ -45,6 +45,7 @@ import org.talend.updates.runtime.engine.P2InstallerTest;
 import org.talend.updates.runtime.model.ExtraFeature;
 import org.talend.updates.runtime.model.P2ExtraFeatureException;
 import org.talend.updates.runtime.model.UpdateSiteLocationType;
+import org.talend.updates.runtime.utils.PathUtils;
 import org.talend.utils.io.FilesUtils;
 
 /**
@@ -85,7 +86,7 @@ public class ComponentP2ExtraFeatureTest {
     public void after() {
         FilesUtils.deleteFolder(tmpFolder, true);
         FilesUtils.deleteFolder(tempP2Folder, true);
-        FilesUtils.deleteFolder(feature.getTmpFolder(), true);
+        FilesUtils.deleteFolder(PathUtils.getComponentsM2TempFolder(), true);
     }
 
     private final class ComponentP2ExtraFeatureForJUnit extends ComponentP2ExtraFeature {
@@ -130,16 +131,16 @@ public class ComponentP2ExtraFeatureTest {
     @Test
     public void testExtraFeatureHasUpdateAndInstallIt() throws Exception {
         assertFalse(feature.isInstalled(NULL_PROGRESS_MONITOR));
-        List<URI> repoUris = Collections
-                .singletonList(URI.create("jar:" + TEST_COMPONENTS_V1_UPDATE_SITE_FILE.toURI().toString() + "!/")); //$NON-NLS-1$//$NON-NLS-2$
+        List<URI> repoUris = Collections.singletonList(URI
+                .create("jar:" + TEST_COMPONENTS_V1_UPDATE_SITE_FILE.toURI().toString() + "!/")); //$NON-NLS-1$//$NON-NLS-2$
         feature.install(NULL_PROGRESS_MONITOR, repoUris);
         try {
             assertTrue(feature.isInstalled(NULL_PROGRESS_MONITOR));
             ExtraFeature updateFeature = feature.createFeatureIfUpdates(NULL_PROGRESS_MONITOR, repoUris);
             assertNull(updateFeature);
             // check for an update using another update site
-            repoUris = Collections
-                    .singletonList(URI.create("jar:" + TEST_COMPONENTS_V2_UPDATE_SITE_FILE.toURI().toString() + "!/")); //$NON-NLS-1$//$NON-NLS-2$
+            repoUris = Collections.singletonList(URI
+                    .create("jar:" + TEST_COMPONENTS_V2_UPDATE_SITE_FILE.toURI().toString() + "!/")); //$NON-NLS-1$//$NON-NLS-2$
             updateFeature = feature.createFeatureIfUpdates(NULL_PROGRESS_MONITOR, repoUris);
             assertNotNull(updateFeature);
             updateFeature.install(NULL_PROGRESS_MONITOR, repoUris);
@@ -155,8 +156,8 @@ public class ComponentP2ExtraFeatureTest {
     @Test
     public void testExtraFeatureNoUpdateAvailable() throws ProvisionException, P2ExtraFeatureException {
         assertFalse(feature.isInstalled(NULL_PROGRESS_MONITOR));
-        List<URI> repoUris = Collections
-                .singletonList(URI.create("jar:" + TEST_COMPONENTS_V1_UPDATE_SITE_FILE.toURI().toString() + "!/")); //$NON-NLS-1$//$NON-NLS-2$
+        List<URI> repoUris = Collections.singletonList(URI
+                .create("jar:" + TEST_COMPONENTS_V1_UPDATE_SITE_FILE.toURI().toString() + "!/")); //$NON-NLS-1$//$NON-NLS-2$
         feature.install(NULL_PROGRESS_MONITOR, repoUris);
         try {
             assertTrue(feature.isInstalled(NULL_PROGRESS_MONITOR));
@@ -299,14 +300,16 @@ public class ComponentP2ExtraFeatureTest {
         if (pomFile.exists()) {
             pomFile.delete();
         }
+        Assert.assertFalse(libFile.exists());
+        Assert.assertFalse(pomFile.exists());
 
         feature.setLogin(true);
         feature.syncM2Repository(tmpFolder);
 
-        Assert.assertFalse(libFile.exists());
-        Assert.assertFalse(pomFile.exists());
+        Assert.assertTrue("should be installed to local m2", libFile.exists());
+        Assert.assertTrue("should be installed to local m2", pomFile.exists());
 
-        final File tempM2RepoFolder = feature.getTempM2RepoFolder();
+        final File tempM2RepoFolder = PathUtils.getComponentsM2TempFolder();
         Assert.assertNotNull(tempM2RepoFolder);
         Assert.assertTrue(tempM2RepoFolder.exists());
 

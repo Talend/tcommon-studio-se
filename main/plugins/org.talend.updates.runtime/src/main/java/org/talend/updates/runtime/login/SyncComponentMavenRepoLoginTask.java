@@ -18,11 +18,9 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.talend.commons.runtime.helper.LocalComponentInstallHelper;
-import org.talend.commons.runtime.service.ComponentsInstallComponent;
 import org.talend.login.AbstractLoginTask;
-import org.talend.updates.runtime.engine.component.LocalComponentsInstallComponent;
 import org.talend.updates.runtime.maven.MavenRepoSynchronizer;
+import org.talend.updates.runtime.utils.PathUtils;
 import org.talend.utils.io.FilesUtils;
 
 /**
@@ -58,18 +56,15 @@ public class SyncComponentMavenRepoLoginTask extends AbstractLoginTask {
      */
     @Override
     public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-        final ComponentsInstallComponent installComponent = LocalComponentInstallHelper.getComponent();
-        if (installComponent instanceof LocalComponentsInstallComponent) {
-            final File tempM2RepoFolder = ((LocalComponentsInstallComponent) installComponent).getTempM2RepoFolder();
-            try {
-                if (tempM2RepoFolder != null && tempM2RepoFolder.exists()) {
-                    MavenRepoSynchronizer synchronizer = new MavenRepoSynchronizer(tempM2RepoFolder);
-                    synchronizer.sync();
-                }
-            } finally {
-                // clean
-                FilesUtils.deleteFolder(tempM2RepoFolder, true);
+        final File tempM2RepoFolder = PathUtils.getComponentsM2TempFolder();
+        try {
+            if (tempM2RepoFolder != null && tempM2RepoFolder.exists()) {
+                MavenRepoSynchronizer synchronizer = new MavenRepoSynchronizer(tempM2RepoFolder);
+                synchronizer.sync();
             }
+        } finally {
+            // clean
+            FilesUtils.deleteFolder(tempM2RepoFolder, true);
         }
     }
 

@@ -24,6 +24,7 @@ import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.equinox.p2.core.IProvisioningAgent;
@@ -67,8 +68,6 @@ import org.talend.utils.io.FilesUtils;
 public class ComponentP2ExtraFeature extends P2ExtraFeature {
 
     public static final String INDEX = "index"; //$NON-NLS-1$
-
-    public static final String FOLDER_M2_REPOSITORY = "m2/repository"; //$NON-NLS-1$
 
     public static final String COMPONENT_GROUP_ID = "org.talend.components"; //$NON-NLS-1$
 
@@ -289,20 +288,34 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature {
         if (allRepoUris == null || allRepoUris.size() == 0) {
             return;
         }
+        if (progress.isCanceled()) {
+            throw new OperationCanceledException();
+        }
         try {
-            // try to move install success to installed folder
-            File installedComponentFolder = PathUtils.getComponentsInstalledFolder();
             for (URI uri : allRepoUris) {
                 File compFile = PathUtils.getCompFileFromP2RepURI(uri);
                 if (compFile != null && compFile.exists()) {
                     // sync the component libraries
                     File tempUpdateSiteFolder = getTempUpdateSiteFolder();
-                    FilesUtils.unzip(compFile.getAbsolutePath(), tempUpdateSiteFolder.getAbsolutePath());
+                    try {
+                        FilesUtils.unzip(compFile.getAbsolutePath(), tempUpdateSiteFolder.getAbsolutePath());
+                        progress.worked(1);
 
-                    syncLibraries(tempUpdateSiteFolder);
-                    syncM2Repository(tempUpdateSiteFolder);
-                    syncComponentsToLocalNexus(progress, compFile);
-                    installAndStartComponent(tempUpdateSiteFolder);
+                        syncLibraries(tempUpdateSiteFolder);
+                        progress.worked(1);
+
+                        syncM2Repository(tempUpdateSiteFolder);
+                        progress.worked(1);
+
+                        installAndStartComponent(tempUpdateSiteFolder);
+                        progress.worked(1);
+                    } finally {
+                        if (tempUpdateSiteFolder.exists()) {
+                            FilesUtils.deleteFolder(tempUpdateSiteFolder, true);
+                        }
+                    }
+                    // move to installed folder
+                    syncComponentsToInstalledFolder(progress, compFile);
                 }
             }
         } catch (Exception e) {
@@ -337,21 +350,43 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature {
 
     protected void syncM2Repository(File updatesiteFolder) throws IOException {
         // sync to the local m2 repository, if need try to deploy to remote TAC Nexus.
-        File updatesiteLibFolder = new File(updatesiteFolder, FOLDER_M2_REPOSITORY); // m2/repositroy
+        File updatesiteLibFolder = new File(updatesiteFolder, PathUtils.FOLDER_M2_REPOSITORY); // m2/repositroy
         if (updatesiteLibFolder.exists() && updatesiteFolder.isDirectory()) {
             final File[] listFiles = updatesiteLibFolder.listFiles();
             if (listFiles != null && listFiles.length > 0) {
                 // if have remote nexus, install component too early and before logon project , will cause the problem
                 // (TUP-17604)
                 if (isLogin) {
-                    // prepare to install lib after logon. so copy all to temp folder
-                    FileCopyUtils.copyFolder(updatesiteLibFolder, new File(getTempM2RepoFolder(), FOLDER_M2_REPOSITORY));
-                } else {
-                    // install to local and try to deploy to remote nexus
-                    MavenRepoSynchronizer synchronizer = new MavenRepoSynchronizer(updatesiteLibFolder);
-                    synchronizer.sync();
+                    // prepare to install lib after logon. so copy all to temp folder also.
+                    FileCopyUtils.copyFolder(updatesiteLibFolder, new File(PathUtils.getComponentsM2TempFolder(),
+                            PathUtils.FOLDER_M2_REPOSITORY));
                 }
+
+                // install to local always. and when login, no nexus yet, so no need to deploy to remote nexus.
+                final boolean toRemote = isLogin ? false : true;
+                MavenRepoSynchronizer synchronizer = new MavenRepoSynchronizer(updatesiteLibFolder, toRemote);
+                synchronizer.sync();
             }
+        }
+    }
+
+    protected void syncComponentsToInstalledFolder(IProgressMonitor progress, File downloadedCompFile) {
+        // try to move install success to installed folder
+        try {
+            if (progress.isCanceled()) {
+                throw new OperationCanceledException();
+            }
+            final File installedComponentFolder = PathUtils.getComponentsInstalledFolder();
+            final File installedComponentFile = new File(installedComponentFolder, downloadedCompFile.getName());
+            if (!installedComponentFile.equals(downloadedCompFile)) { // not in same folder
+                FilesUtils.copyFile(downloadedCompFile, installedComponentFile);
+                downloadedCompFile.delete();
+                progress.worked(1);
+            }
+
+            syncComponentsToLocalNexus(progress, installedComponentFile);
+        } catch (IOException e) {
+            ExceptionHandler.process(e);
         }
     }
 
@@ -389,6 +424,9 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature {
     }
 
     protected void syncComponentsToLocalNexus(IProgressMonitor progress, File installedCompFile) {
+        if (progress.isCanceled()) {
+            throw new OperationCanceledException();
+        }
         try {
             new ComponentsDeploymentManager().deployComponentsToLocalNexus(progress, installedCompFile);
         } catch (IOException e) {
@@ -399,17 +437,6 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature {
 
     protected File getTempUpdateSiteFolder() {
         return FileUtils.createTmpFolder("p2updatesite", null); //$NON-NLS-1$
-    }
-
-    protected File getTempM2RepoFolder() {
-        if (tmpM2RepoFolder == null) {
-            tmpM2RepoFolder = new File(getTmpFolder(), "m2temp"); //$NON-NLS-1$
-        }
-        return tmpM2RepoFolder;
-    }
-
-    protected File getTmpFolder() {
-        return new File(System.getProperty("user.dir") + '/' + PathUtils.FOLDER_COMPS); //$NON-NLS-1$
     }
 
 }

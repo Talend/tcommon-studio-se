@@ -26,7 +26,6 @@ import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.runtime.service.ComponentsInstallComponent;
-import org.talend.commons.runtime.service.PatchComponent;
 import org.talend.commons.utils.resource.UpdatesHelper;
 import org.talend.updates.runtime.nexus.component.ComponentIndexBean;
 import org.talend.updates.runtime.nexus.component.ComponentIndexManager;
@@ -110,19 +109,7 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
      * same as PatchLocalInstallerManager.getInstallingPatchesFolder
      */
     protected File getPatchesFolder() {
-        try {
-            return new File(Platform.getInstallLocation().getDataArea(PatchComponent.FOLDER_PATCHES).getPath());
-        } catch (IOException e) {
-            //
-        }
-        return new File(System.getProperty("user.dir") + '/' + PatchComponent.FOLDER_PATCHES); //$NON-NLS-1$
-    }
-
-    public File getTempM2RepoFolder() {
-        if (tmpM2RepoFolder == null) {
-            tmpM2RepoFolder = new File(getPatchesFolder().getParentFile(), "m2temp"); //$NON-NLS-1$
-        }
-        return tmpM2RepoFolder;
+        return PathUtils.getPatchesFolder();
     }
 
     /**
@@ -196,7 +183,7 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
     }
 
     protected ComponentP2ExtraFeature createComponentFeature(File f) {
-        return new ComponentP2ExtraFeature(f);
+        return new ComponentLocalP2ExtraFeature(f);
     }
 
     @Override

@@ -45,10 +45,6 @@ public class ComponentNexusP2ExtraFeature extends ComponentP2ExtraFeature {
 
     private char[] nexusPass;
 
-    protected File downloadFolder;
-
-    protected boolean keepDownloadFile = false;
-
     protected NexusServerBean serverSetting;
 
     public ComponentNexusP2ExtraFeature() {
@@ -116,22 +112,6 @@ public class ComponentNexusP2ExtraFeature extends ComponentP2ExtraFeature {
         }
     }
 
-    public File getDownloadFolder() {
-        return downloadFolder;
-    }
-
-    public void setDownloadFolder(File downloadFolder) {
-        this.downloadFolder = downloadFolder;
-    }
-
-    public boolean isKeepDownloadFile() {
-        return keepDownloadFile;
-    }
-
-    public void setKeepDownloadFile(boolean keepDownloadFile) {
-        this.keepDownloadFile = keepDownloadFile;
-    }
-
     @Override
     public P2ExtraFeature getInstalledFeature(IProgressMonitor progress) throws P2ExtraFeatureException {
         P2ExtraFeature extraFeature = null;
@@ -167,10 +147,8 @@ public class ComponentNexusP2ExtraFeature extends ComponentP2ExtraFeature {
         if (monitor.isCanceled()) {
             throw new OperationCanceledException();
         }
-        final File workFolder = getDownloadFolder();
-        if (!isKeepDownloadFile()) {
-            FilesUtils.deleteFolder(workFolder, false); // empty the folder
-        }
+        final File workFolder = PathUtils.getComponentsDownloadedFolder();
+        FilesUtils.deleteFolder(workFolder, false); // empty the folder
         if (!workFolder.exists()) {
             workFolder.mkdirs();
         }
@@ -201,7 +179,7 @@ public class ComponentNexusP2ExtraFeature extends ComponentP2ExtraFeature {
         } catch (Exception e) {
             return Messages.createErrorStatus(e);
         } finally {
-            if (!isKeepDownloadFile() && target.exists()) {
+            if (target.exists()) {
                 target.delete();
             }
         }

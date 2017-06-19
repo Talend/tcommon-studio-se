@@ -36,6 +36,7 @@ import org.talend.updates.runtime.i18n.Messages;
 import org.talend.updates.runtime.model.P2ExtraFeatureException;
 import org.talend.updates.runtime.nexus.component.ComponentIndexBean;
 import org.talend.updates.runtime.nexus.component.ComponentIndexManager;
+import org.talend.updates.runtime.utils.PathUtils;
 import org.talend.utils.io.FilesUtils;
 
 /**
@@ -64,8 +65,7 @@ public class LocalComponentsInstallComponentTest {
     }
 
     private void cleanM2TempFolder() {
-        LocalComponentsInstallComponent installComp = new LocalComponentsInstallComponentTestClass();
-        final File tempM2RepoFolder = installComp.getTempM2RepoFolder();
+        final File tempM2RepoFolder = PathUtils.getComponentsM2TempFolder();
         if (tempM2RepoFolder != null) {
             FilesUtils.deleteFolder(tempM2RepoFolder, true);
         }

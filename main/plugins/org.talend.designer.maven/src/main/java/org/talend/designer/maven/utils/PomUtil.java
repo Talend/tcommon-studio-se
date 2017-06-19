@@ -28,11 +28,8 @@ import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -79,7 +76,6 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
-import org.xml.sax.SAXException;
 
 /**
  * created by ggu on 6 Feb 2015 Detailled comment
@@ -460,6 +456,55 @@ public class PomUtil {
         return pomModel;
     }
 
+    public static String generatePomInFolder(File baseFolder, MavenArtifact artifact) throws Exception {
+        if (baseFolder == null || artifact == null) {
+            return null;
+        }
+        if (!baseFolder.exists()) {
+            baseFolder.mkdirs();
+        }
+        File pomFile = new File(baseFolder, TalendMavenConstants.POM_FILE_NAME);
+
+        ByteArrayOutputStream buf = new ByteArrayOutputStream();
+        MavenPlugin.getMaven().writeModel(createModel(artifact), buf);
+
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        documentBuilderFactory.setNamespaceAware(false);
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        TransformerFactory tfactory = TransformerFactory.newInstance();
+
+        Document document = documentBuilder.parse(new ByteArrayInputStream(buf.toByteArray()));
+        Element documentElement = document.getDocumentElement();
+
+        NamedNodeMap attributes = documentElement.getAttributes();
+
+        if (attributes == null || attributes.getNamedItem("xmlns") == null) { //$NON-NLS-1$
+            Attr attr = document.createAttribute("xmlns"); //$NON-NLS-1$
+            attr.setTextContent("http://maven.apache.org/POM/4.0.0"); //$NON-NLS-1$
+            documentElement.setAttributeNode(attr);
+        }
+
+        if (attributes == null || attributes.getNamedItem("xmlns:xsi") == null) { //$NON-NLS-1$
+            Attr attr = document.createAttribute("xmlns:xsi"); //$NON-NLS-1$
+            attr.setTextContent("http://www.w3.org/2001/XMLSchema-instance"); //$NON-NLS-1$
+            documentElement.setAttributeNode(attr);
+        }
+
+        if (attributes == null || attributes.getNamedItem("xsi:schemaLocation") == null) { //$NON-NLS-1$
+            Attr attr = document.createAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "xsi:schemaLocation"); //$NON-NLS-1$ //$NON-NLS-2$
+            attr.setTextContent("http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"); //$NON-NLS-1$
+            documentElement.setAttributeNode(attr);
+        }
+        Transformer transformer = tfactory.newTransformer();
+        DOMSource source = new DOMSource(document);
+        StreamResult result = new StreamResult(pomFile);
+        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes"); //$NON-NLS-1$
+        transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+        transformer.transform(source, result);
+
+        return pomFile.getAbsolutePath();
+    }
+
     /**
      * 
      * Create pom without refresh eclipse resources
@@ -475,59 +520,8 @@ public class PomUtil {
             IPath tempPath = fsProject.getLocation().append("temp").append("pom" + Math.abs(random.nextLong()));
             File tmpFolder = new File(tempPath.toPortableString());
             tmpFolder.mkdirs();
-            String pomFile = tempPath.append(TalendMavenConstants.POM_FILE_NAME).toPortableString();
-
-            ByteArrayOutputStream buf = new ByteArrayOutputStream();
-            MavenPlugin.getMaven().writeModel(createModel(artifact), buf);
-
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(false);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            TransformerFactory tfactory = TransformerFactory.newInstance();
-
-            Document document = documentBuilder.parse(new ByteArrayInputStream(buf.toByteArray()));
-            Element documentElement = document.getDocumentElement();
-
-            NamedNodeMap attributes = documentElement.getAttributes();
-
-            if (attributes == null || attributes.getNamedItem("xmlns") == null) { //$NON-NLS-1$
-                Attr attr = document.createAttribute("xmlns"); //$NON-NLS-1$
-                attr.setTextContent("http://maven.apache.org/POM/4.0.0"); //$NON-NLS-1$
-                documentElement.setAttributeNode(attr);
-            }
-
-            if (attributes == null || attributes.getNamedItem("xmlns:xsi") == null) { //$NON-NLS-1$
-                Attr attr = document.createAttribute("xmlns:xsi"); //$NON-NLS-1$
-                attr.setTextContent("http://www.w3.org/2001/XMLSchema-instance"); //$NON-NLS-1$
-                documentElement.setAttributeNode(attr);
-            }
-
-            if (attributes == null || attributes.getNamedItem("xsi:schemaLocation") == null) { //$NON-NLS-1$
-                Attr attr = document.createAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "xsi:schemaLocation"); //$NON-NLS-1$ //$NON-NLS-2$
-                attr.setTextContent("http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"); //$NON-NLS-1$
-                documentElement.setAttributeNode(attr);
-            }
-            Transformer transformer = tfactory.newTransformer();
-            DOMSource source = new DOMSource(document);
-            StreamResult result = new StreamResult(new File(pomFile));
-            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes"); //$NON-NLS-1$
-            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-            transformer.transform(source, result);
-
-            return pomFile;
-        } catch (PersistenceException e) {
-            ExceptionHandler.process(e);
-        } catch (CoreException e) {
-            ExceptionHandler.process(e);
-        } catch (ParserConfigurationException e) {
-            ExceptionHandler.process(e);
-        } catch (SAXException e) {
-            ExceptionHandler.process(e);
-        } catch (IOException e) {
-            ExceptionHandler.process(e);
-        } catch (TransformerConfigurationException e) {
-            ExceptionHandler.process(e);
-        } catch (TransformerException e) {
+            return generatePomInFolder(tmpFolder, artifact);
+        } catch (Exception e) {
             ExceptionHandler.process(e);
         }
         return null;
