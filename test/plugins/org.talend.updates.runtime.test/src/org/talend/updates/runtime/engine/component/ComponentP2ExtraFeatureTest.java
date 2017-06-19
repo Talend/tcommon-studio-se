@@ -21,7 +21,6 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
@@ -29,21 +28,20 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.equinox.p2.core.ProvisionException;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.p2.metadata.IInstallableUnit;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
+import org.osgi.framework.Bundle;
 import org.talend.commons.runtime.service.ComponentsInstallComponent;
 import org.talend.commons.utils.resource.BundleFileUtil;
 import org.talend.librariesmanager.prefs.LibrariesManagerUtils;
 import org.talend.updates.runtime.TestUtils;
 import org.talend.updates.runtime.engine.P2InstallerTest;
 import org.talend.updates.runtime.model.ExtraFeature;
-import org.talend.updates.runtime.model.P2ExtraFeatureException;
 import org.talend.updates.runtime.model.UpdateSiteLocationType;
 import org.talend.updates.runtime.utils.PathUtils;
 import org.talend.utils.io.FilesUtils;
@@ -62,17 +60,9 @@ public class ComponentP2ExtraFeatureTest {
 
     private static final NullProgressMonitor NULL_PROGRESS_MONITOR = new NullProgressMonitor();
 
-    private static File TEST_COMPONENTS_V1_UPDATE_SITE_FILE;
+    private static final String TEST_COMPONENTS_V1_UPDATE_SITE_FILE = "resources/components/org.talend.components.file-0.1.0.zip";
 
-    private static File TEST_COMPONENTS_V2_UPDATE_SITE_FILE;
-
-    @BeforeClass
-    public static void beforeClass() throws URISyntaxException, IOException {
-        TEST_COMPONENTS_V1_UPDATE_SITE_FILE = TestUtils
-                .getResourceFile("/resources/components/org.talend.components.file-0.1.0.zip"); //$NON-NLS-1$
-        TEST_COMPONENTS_V2_UPDATE_SITE_FILE = TestUtils
-                .getResourceFile("/resources/components/org.talend.components.file-0.2.0.zip"); //$NON-NLS-1$
-    }
+    private static final String TEST_COMPONENTS_V2_UPDATE_SITE_FILE = "resources/components/org.talend.components.file-0.2.0.zip";
 
     @Before
     public void before() throws IOException {
@@ -115,32 +105,48 @@ public class ComponentP2ExtraFeatureTest {
         assertEquals(EnumSet.of(UpdateSiteLocationType.DEFAULT_REPO), feature.getUpdateSiteCompatibleTypes());
     }
 
-    public void testExtraFeatureInstall() throws ProvisionException, P2ExtraFeatureException {
+    @Test
+    public void testExtraFeatureInstall() throws Exception {
+        final File dataFile = BundleFileUtil.getBundleFile(this.getClass(), TEST_COMPONENTS_V1_UPDATE_SITE_FILE);
+        assertTrue(dataFile.exists());
+        File updatesiteFile = new File(tempP2Folder, dataFile.getName());
+        FilesUtils.copyFile(dataFile, updatesiteFile);
+        assertTrue(updatesiteFile.exists());
+
         assertFalse(feature.isInstalled(NULL_PROGRESS_MONITOR));
         List<URI> repoUris = new ArrayList<>(1);
-        repoUris.add(URI.create("jar:" + TEST_COMPONENTS_V1_UPDATE_SITE_FILE.toURI().toString() + "!/")); //$NON-NLS-1$//$NON-NLS-2$
+        repoUris.add(URI.create("jar:" + updatesiteFile.getAbsolutePath() + "!/")); //$NON-NLS-1$//$NON-NLS-2$
         feature.install(NULL_PROGRESS_MONITOR, repoUris);
         try {
             assertTrue(feature.isInstalled(NULL_PROGRESS_MONITOR));
         } finally {
-            TestUtils.uninstallIU(feature.getP2AgentUri(), feature.getP2ProfileId(), feature.getP2IuId());
-            assertFalse(feature.isInstalled(NULL_PROGRESS_MONITOR));
+            uninstallIU();
         }
     }
 
     @Test
     public void testExtraFeatureHasUpdateAndInstallIt() throws Exception {
+        final File dataV1File = BundleFileUtil.getBundleFile(this.getClass(), TEST_COMPONENTS_V1_UPDATE_SITE_FILE);
+        assertTrue(dataV1File.exists());
+        File updatesiteV1File = new File(tempP2Folder, dataV1File.getName());
+        FilesUtils.copyFile(dataV1File, updatesiteV1File);
+        assertTrue(updatesiteV1File.exists());
+
+        final File dataV2File = BundleFileUtil.getBundleFile(this.getClass(), TEST_COMPONENTS_V2_UPDATE_SITE_FILE);
+        assertTrue(dataV2File.exists());
+        File updatesiteV2File = new File(tempP2Folder, dataV2File.getName());
+        FilesUtils.copyFile(dataV2File, updatesiteV2File);
+        assertTrue(updatesiteV2File.exists());
+
         assertFalse(feature.isInstalled(NULL_PROGRESS_MONITOR));
-        List<URI> repoUris = Collections.singletonList(URI
-                .create("jar:" + TEST_COMPONENTS_V1_UPDATE_SITE_FILE.toURI().toString() + "!/")); //$NON-NLS-1$//$NON-NLS-2$
+        List<URI> repoUris = Collections.singletonList(URI.create("jar:" + updatesiteV1File.getAbsolutePath() + "!/")); //$NON-NLS-1$//$NON-NLS-2$
         feature.install(NULL_PROGRESS_MONITOR, repoUris);
         try {
             assertTrue(feature.isInstalled(NULL_PROGRESS_MONITOR));
             ExtraFeature updateFeature = feature.createFeatureIfUpdates(NULL_PROGRESS_MONITOR, repoUris);
             assertNull(updateFeature);
             // check for an update using another update site
-            repoUris = Collections.singletonList(URI
-                    .create("jar:" + TEST_COMPONENTS_V2_UPDATE_SITE_FILE.toURI().toString() + "!/")); //$NON-NLS-1$//$NON-NLS-2$
+            repoUris = Collections.singletonList(URI.create("jar:" + updatesiteV2File.getAbsolutePath() + "!/")); //$NON-NLS-1$//$NON-NLS-2$
             updateFeature = feature.createFeatureIfUpdates(NULL_PROGRESS_MONITOR, repoUris);
             assertNotNull(updateFeature);
             updateFeature.install(NULL_PROGRESS_MONITOR, repoUris);
@@ -148,22 +154,37 @@ public class ComponentP2ExtraFeatureTest {
             assertFalse(installedIUs.isEmpty());
             assertEquals("0.2.0", installedIUs.iterator().next().getVersion().getOriginal()); //$NON-NLS-1$
         } finally {
-            TestUtils.uninstallIU(feature.getP2AgentUri(), feature.getP2ProfileId(), feature.getP2IuId());
-            assertFalse(feature.isInstalled(NULL_PROGRESS_MONITOR));
+            uninstallIU();
         }
     }
 
     @Test
-    public void testExtraFeatureNoUpdateAvailable() throws ProvisionException, P2ExtraFeatureException {
+    public void testExtraFeatureNoUpdateAvailable() throws Exception {
+        final File dataV1File = BundleFileUtil.getBundleFile(this.getClass(), TEST_COMPONENTS_V1_UPDATE_SITE_FILE);
+        assertTrue(dataV1File.exists());
+        File updatesiteV1File = new File(tempP2Folder, dataV1File.getName());
+        FilesUtils.copyFile(dataV1File, updatesiteV1File);
+        assertTrue(updatesiteV1File.exists());
+
         assertFalse(feature.isInstalled(NULL_PROGRESS_MONITOR));
-        List<URI> repoUris = Collections.singletonList(URI
-                .create("jar:" + TEST_COMPONENTS_V1_UPDATE_SITE_FILE.toURI().toString() + "!/")); //$NON-NLS-1$//$NON-NLS-2$
+        List<URI> repoUris = Collections.singletonList(URI.create("jar:" + updatesiteV1File.getAbsolutePath() + "!/")); //$NON-NLS-1$//$NON-NLS-2$
         feature.install(NULL_PROGRESS_MONITOR, repoUris);
         try {
             assertTrue(feature.isInstalled(NULL_PROGRESS_MONITOR));
             ExtraFeature updateFeature = feature.createFeatureIfUpdates(NULL_PROGRESS_MONITOR, repoUris);
             assertNull(updateFeature);
         } finally {
+            uninstallIU();
+        }
+    }
+
+    private void uninstallIU() throws Exception {
+        Bundle bundle = Platform.getBundle(feature.getP2IuId());
+        if (bundle != null) {
+            if (bundle.getState() == Bundle.ACTIVE)
+                bundle.stop();
+            bundle.uninstall();
+
             TestUtils.uninstallIU(feature.getP2AgentUri(), feature.getP2ProfileId(), feature.getP2IuId());
             assertFalse(feature.isInstalled(NULL_PROGRESS_MONITOR));
         }
@@ -314,8 +335,8 @@ public class ComponentP2ExtraFeatureTest {
         Assert.assertTrue(tempM2RepoFolder.exists());
 
         File tmpLibFile = new File(tempM2RepoFolder, ComponentsInstallComponent.FOLDER_M2_REPOSITORY + '/' + libPath);
-        Assert.assertTrue(tmpLibFile.exists()); // in temp
-        Assert.assertFalse(libFile.exists());// no install yet
+        Assert.assertTrue("Should keep in temp m2", tmpLibFile.exists()); // in temp
+        Assert.assertTrue("Should be installed into m2 also", libFile.exists());// install also
     }
 
 }

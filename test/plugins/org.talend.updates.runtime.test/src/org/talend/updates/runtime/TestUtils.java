@@ -12,13 +12,8 @@
 // ============================================================================
 package org.talend.updates.runtime;
 
-import java.io.File;
-import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 
-import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.equinox.p2.core.IProvisioningAgent;
@@ -41,22 +36,6 @@ import org.osgi.framework.ServiceReference;
 public class TestUtils {
 
     private static final NullProgressMonitor NULL_PROGRESS_MONITOR = new NullProgressMonitor();
-
-    static public File getResourceFile(String resourcePath) throws URISyntaxException, IOException {
-        URL resUrl = TestUtils.class.getResource(resourcePath);
-        File resFile;
-        try {
-            resFile = new File(resUrl.toURI());
-        } catch (IllegalArgumentException iae) {
-            // we are in a OSGI bundle
-            resUrl = FileLocator.toFileURL(resUrl);
-            resFile = new File(new URI(resUrl.getProtocol(), resUrl.getPath(), resUrl.getQuery()));
-        }
-        if (!resFile.exists()) {
-            throw new IOException("Could not file resource :" + resourcePath); //$NON-NLS-1$
-        }
-        return resFile;
-    }
 
     static public void uninstallIU(URI agentLocation, String profileId, String iuId) throws ProvisionException {
         Bundle bundle = FrameworkUtil.getBundle(org.eclipse.equinox.p2.query.QueryUtil.class);
