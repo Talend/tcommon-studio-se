@@ -3858,7 +3858,13 @@ public class DatabaseForm extends AbstractForm {
         final ManagerConnection managerConnection = new ManagerConnection();
 
         if (isContextMode()) { // context mode
-            selectedContextType = ConnectionContextHelper.getContextTypeForContextMode(connectionItem.getConnection(), true);
+            String connectionTypeName = connectionItem.getConnection().getConnectionTypeName();
+            if (connectionTypeName.equals(EDatabaseConnTemplate.HBASE.getDBDisplayName())
+                    || connectionTypeName.equals(EDatabaseConnTemplate.HIVE.getDBDisplayName())) {
+                selectedContextType = ConnectionContextHelper.getContextTypeForContextMode(connectionItem.getConnection(), true);
+            } else {
+                selectedContextType = ConnectionContextHelper.getContextTypeForContextMode(connectionItem.getConnection());
+            }
             String urlStr = null;
             urlStr = DBConnectionContextUtils.setManagerConnectionValues(managerConnection, connectionItem, selectedContextType,
                     dbTypeCombo.getItem(dbTypeCombo.getSelectionIndex()), dbTypeCombo.getSelectionIndex());
