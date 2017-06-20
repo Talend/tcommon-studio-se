@@ -181,16 +181,21 @@ public class PomIdsHelper {
      * @return "<jobVersion>-<projectName>".
      */
     public static String getJobVersion(Property property) {
+        String version = null;
         if (property != null) {
+            boolean useSnapshot = false;
             if (property.getAdditionalProperties() != null) {
-                String version = (String) property.getAdditionalProperties().get(MavenConstants.NAME_USER_VERSION);
-                if (version != null) {
-                    return version;
-                }
+                version = (String) property.getAdditionalProperties().get(MavenConstants.NAME_USER_VERSION);
+                useSnapshot = property.getAdditionalProperties().containsKey(MavenConstants.NAME_PUBLISH_AS_SNAPSHOT);
             }
-            return VersionUtils.getPublishVersion(property.getVersion());
+            if (version == null) {
+                version = VersionUtils.getPublishVersion(property.getVersion());
+            }
+            if (useSnapshot) {
+                version += MavenConstants.SNAPSHOT;
+            }
         }
-        return null;
+        return version;
     }
 
     public static String getJobVersion(JobInfo jobInfo) {

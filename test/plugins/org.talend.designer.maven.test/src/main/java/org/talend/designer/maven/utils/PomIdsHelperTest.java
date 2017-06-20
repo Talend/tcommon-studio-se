@@ -16,6 +16,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.talend.commons.utils.VersionUtils;
 import org.talend.core.model.process.JobInfo;
 import org.talend.core.model.properties.PropertiesFactory;
 import org.talend.core.model.properties.Property;
@@ -213,5 +214,19 @@ public class PomIdsHelperTest {
         assertEquals("1.1.0-SNAPSHOT", PomIdsHelper.getProjectVersion());
         projectPreferenceManager.setValue(MavenConstants.NAME_PUBLISH_AS_SNAPSHOT, false);
         assertEquals("1.1.0", PomIdsHelper.getProjectVersion());
+    }
+    
+    @Test
+    public void testGetJobVersion() {
+        Property property = PropertiesFactory.eINSTANCE.createProperty();
+        // test default
+        property.setVersion("2.1");
+        assertEquals(VersionUtils.getPublishVersion("2.1"), PomIdsHelper.getJobVersion(property));
+        // test custom version
+        property.getAdditionalProperties().put(MavenConstants.NAME_USER_VERSION, "1.1.0");
+        assertEquals("1.1.0", PomIdsHelper.getJobVersion(property));
+        // test custom version with snapshot
+        property.getAdditionalProperties().put(MavenConstants.NAME_PUBLISH_AS_SNAPSHOT, "true");
+        assertEquals("1.1.0-SNAPSHOT", PomIdsHelper.getJobVersion(property));
     }
 }
