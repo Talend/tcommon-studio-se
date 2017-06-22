@@ -164,11 +164,9 @@ public class SelectorTableForm extends AbstractForm {
 
     private List<TableNode> tableNodeList = new ArrayList<TableNode>();
 
-    private int count = 0;
+    private volatile int  countSuccess = 0;
 
-    private int countSuccess = 0;
-
-    private int countPending = 0;
+    private volatile int countPending = 0;
 
     private final WizardPage parentWizardPage;
 
@@ -248,7 +246,6 @@ public class SelectorTableForm extends AbstractForm {
     public void initializeForm() {
         initExistingNames();
         selectAllTablesButton.setEnabled(true);
-        count = 0;
     }
 
     @Override
@@ -576,7 +573,6 @@ public class SelectorTableForm extends AbstractForm {
 
             @Override
             public void widgetSelected(final SelectionEvent e) {
-                count = 0;
                 checkConnection(true);
             }
         });
@@ -649,7 +645,6 @@ public class SelectorTableForm extends AbstractForm {
 
             @Override
             public void widgetSelected(final SelectionEvent e) {
-                count = 0;
                 countSuccess = 0;
                 countPending = 0;
                 for (TreeItem catalogItem : tree.getItems()) {
@@ -770,11 +765,7 @@ public class SelectorTableForm extends AbstractForm {
                                     refreshTable(treeItem, -1);
                                 }
                             } else {
-                                clearTableItem(treeItem);
-                                if (treeItem.getText() != null
-                                        && treeItem.getText().equals(Messages.getString("SelectorTableForm.Pending"))) { //$NON-NLS-1$
-                                    countPending--;
-                                }
+                                clearTableItem(treeItem);    
                             }
                         }
                     }
@@ -810,11 +801,8 @@ public class SelectorTableForm extends AbstractForm {
                         parentWizardPage.setPageComplete(false);
                         refreshTable(treeItem, -1);
                     }
-                } else {
+                } else {                   
                     clearTableItem(treeItem);
-                    if (treeItem.getText() != null && treeItem.getText().equals(Messages.getString("SelectorTableForm.Pending"))) { //$NON-NLS-1$
-                        countPending--;
-                    }
                 }
             } else {
                 if (!treeItem.getExpanded()) {
@@ -1452,6 +1440,9 @@ public class SelectorTableForm extends AbstractForm {
         List<TdColumn> metadataColumns = null;
 
         volatile boolean isCanceled = false;
+        
+        volatile boolean isFinished = false;
+       
 
         /**
          * Getter for tableItem.
@@ -1470,6 +1461,24 @@ public class SelectorTableForm extends AbstractForm {
 
         public void setCanceled(boolean cancel) {
             this.isCanceled = cancel;
+            if (isCanceled) {
+                if (!isFinished) {
+                    countPending--;
+                }
+            } else {
+                if (!isFinished) {
+                    countPending++;
+                }
+            }
+            final boolean isAllJobFinished = threadExecutor.getQueue().isEmpty()
+                    && (threadExecutor.getActiveCount() == 0 || countSuccess == countPending);
+            final boolean pageC = pageComplete();
+            Display.getDefault().syncExec(new Runnable() {
+                @Override
+                public void run() {
+                    parentWizardPage.setPageComplete(isAllJobFinished && !pageC);
+                }
+            });
         }
 
         /**
@@ -1620,6 +1629,11 @@ public class SelectorTableForm extends AbstractForm {
                                 }
                             }
                         }
+
+                        if (isCanceled()) {
+                            return;
+                        }
+
                         try {
                             ProjectNodeHelper.addTableForTemCatalogOrSchema(catalog, schema, getConnection(), dbtable,
                                     metadataconnection);
@@ -1676,8 +1690,9 @@ public class SelectorTableForm extends AbstractForm {
                 } else {
                     treeItem.setText(3, Messages.getString("SelectorTableForm.Failed")); //$NON-NLS-1$
                 }
-                countSuccess++;
                 tableColumnNums.put(treeItem.getText(0), metadataColumns.size());
+                isFinished = true;
+                countSuccess++;
             } else {
                 updateStatus(IStatus.WARNING, Messages.getString("DatabaseTableForm.connectionFailure")); //$NON-NLS-1$
                 new ErrorDialogWidthDetailArea(getShell(), PID, Messages.getString("DatabaseTableForm.connectionFailure"), //$NON-NLS-1$
@@ -1685,8 +1700,7 @@ public class SelectorTableForm extends AbstractForm {
 
             }
             refreshColumnData(tableNode, treeItem);
-            count++;
-
+            
             updateStatus(IStatus.OK, null);
             // selectNoneTablesButton.setEnabled(true);
             // checkConnectionButton.setEnabled(true);
@@ -1786,7 +1800,6 @@ public class SelectorTableForm extends AbstractForm {
 
                         }
                         refreshColumnData(tableNode, treeItem);
-                        count++;
 
                         updateStatus(IStatus.OK, null);
                         // selectNoneTablesButton.setEnabled(true);
