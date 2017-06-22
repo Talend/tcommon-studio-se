@@ -569,7 +569,7 @@ public class RemoteModulesHelper {
                 if (object != null) {
                     String licenseText = object.getString("licenseText");//$NON-NLS-1$
                     if (licenseText != null) {
-                        licenseText.replaceAll("http://", "https://");//$NON-NLS-1$ //$NON-NLS-2$
+                        licenseText.replace("http://", "https://");//$NON-NLS-1$ //$NON-NLS-2$
                     }
                     return licenseText;
                 }
