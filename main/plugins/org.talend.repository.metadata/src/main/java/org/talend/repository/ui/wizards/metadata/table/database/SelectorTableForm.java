@@ -192,8 +192,6 @@ public class SelectorTableForm extends AbstractForm {
     private ScrolledComposite scrolledComposite;
 
     private Composite newParent;
-    
-   // private Set<MetadataTable> existTableSet;
 
     /**
      * TableForm Constructor to use by RCP Wizard.
@@ -243,7 +241,6 @@ public class SelectorTableForm extends AbstractForm {
      */
     @Override
     public void initialize() {
-       // existTableSet = ConnectionHelper.getTables(getConnection());
     }
 
     public void initializeForm() {
