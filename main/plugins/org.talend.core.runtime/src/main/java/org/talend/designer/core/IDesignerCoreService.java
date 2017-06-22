@@ -165,6 +165,8 @@ public interface IDesignerCoreService extends IService {
 
     public void switchToCurJobSettingsView();
 
+    public void switchToCurProcessView();
+
     /**
      * When database connection is renamed, refresh the connection label in the component view of job.
      *

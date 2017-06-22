@@ -125,6 +125,8 @@ public interface IRunProcessService extends IService {
 
     public void refreshView();
 
+    public void switchToCurProcessView();
+
     public boolean needDeleteAllJobs();
 
     public void deleteAllJobs(boolean fromPluginModel);
