@@ -24,9 +24,8 @@ import org.eclipse.core.runtime.Path;
 import org.talend.core.model.genhtml.HTMLDocUtils;
 import org.talend.core.model.genhtml.IHTMLDocConstants;
 import org.talend.core.model.properties.Item;
-import org.talend.core.model.properties.JobDocumentationItem;
-import org.talend.core.model.properties.JobletDocumentationItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
+import org.talend.core.repository.document.IDocumentationGenerator;
 import org.talend.repository.documentation.ExportFileResource;
 
 /**
@@ -154,16 +153,7 @@ public class JobHTMLScriptsManager implements IDocumentationManager {
             ERepositoryObjectType itemType = ERepositoryObjectType.getItemType(item);
             if (itemType != null) {
                 subFolder = new Path(itemType.getFolder()).lastSegment().toLowerCase();
-            } else {
-                if (item instanceof JobDocumentationItem && ERepositoryObjectType.JOB_DOC != null) {
-                    subFolder = new Path(ERepositoryObjectType.JOB_DOC.getFolder()).lastSegment().toLowerCase();
-                } else if (item instanceof JobletDocumentationItem && ERepositoryObjectType.JOBLET_DOC != null) {
-                    subFolder = new Path(ERepositoryObjectType.JOBLET_DOC.getFolder()).lastSegment().toLowerCase();
-                } else {
-                    subFolder = ""; //$NON-NLS-1$
-                }
             }
-
             targetPath = targetPath + IPath.SEPARATOR + subFolder;
         }
         // Used for generating/updating all jobs' documentaiton only.

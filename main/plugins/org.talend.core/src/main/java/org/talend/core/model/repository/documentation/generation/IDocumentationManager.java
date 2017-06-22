@@ -14,6 +14,7 @@ package org.talend.core.model.repository.documentation.generation;
 
 import java.util.List;
 
+import org.talend.core.repository.document.IDocumentationGenerator;
 import org.talend.repository.documentation.ExportFileResource;
 
 /**

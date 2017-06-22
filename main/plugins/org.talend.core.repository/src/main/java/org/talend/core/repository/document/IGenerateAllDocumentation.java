@@ -46,4 +46,6 @@ public interface IGenerateAllDocumentation {
 
     public String getHTMLFileName();
 
+    public IDocumentationGenerator getHTMLGenerator();
+
 }
