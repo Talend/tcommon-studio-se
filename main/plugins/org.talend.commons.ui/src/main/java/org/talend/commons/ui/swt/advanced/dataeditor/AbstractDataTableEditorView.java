@@ -14,6 +14,7 @@ package org.talend.commons.ui.swt.advanced.dataeditor;
 
 import org.eclipse.jface.viewers.IElementComparer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.layout.GridData;
@@ -155,20 +156,27 @@ public abstract class AbstractDataTableEditorView<B> {
     }
 
     public void initGraphicComponents() {
-
-        mainComposite = new Composite(parentComposite, SWT.NONE);
-        if (parentComposite.getBackground() != null && !parentComposite.getBackground().equals(mainComposite.getBackground())) {
-            mainComposite.setBackground(parentComposite.getBackground());
-        }
-        GridLayout layout = new GridLayout();
-        mainComposite.setLayout(layout);
         if (this.labelVisible) {
-            titleLabel = new Label(mainComposite, SWT.NONE);
-            titleLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+            SashForm sash = new SashForm(parentComposite, SWT.VERTICAL);
+            sash.setLayout(new GridLayout());
+            sash.setLayoutData(new GridData(GridData.FILL_BOTH));
+
+            Composite title = new Composite(sash, SWT.NONE);
+            title.setLayout(new GridLayout());
+            title.setLayoutData(new GridData(GridData.FILL_VERTICAL));
+            titleLabel = new Label(title, SWT.NONE);
+            titleLabel.setLayoutData(new GridData(GridData.FILL_BOTH));
             if (parentComposite.getBackground() != null && !parentComposite.getBackground().equals(titleLabel.getBackground())) {
                 titleLabel.setBackground(parentComposite.getBackground());
             }
             titleLabel.setVisible(true);
+
+            initMainComposite(sash);
+
+            sash.setSashWidth(6);
+            sash.setWeights(new int[] { 1, 6 });
+        }else{
+            initMainComposite(parentComposite);
         }
 
         initTable();
@@ -186,6 +194,15 @@ public abstract class AbstractDataTableEditorView<B> {
 
         setExtendedTableModel(this.extendedTableModel);
 
+    }
+    
+    private void initMainComposite(Composite parent){
+        mainComposite = new Composite(parent, SWT.NONE);
+        if (parentComposite.getBackground() != null && !parentComposite.getBackground().equals(mainComposite.getBackground())) {
+            mainComposite.setBackground(parentComposite.getBackground());
+        }
+        GridLayout layout = new GridLayout();
+        mainComposite.setLayout(layout);
     }
 
     /**
@@ -457,6 +474,10 @@ public abstract class AbstractDataTableEditorView<B> {
      * @param title the title to set
      */
     public void setTitle(String title) {
+        this.title = title;
+        if(titleLabel == null){
+            return;
+        }
         if (title == null) {
             titleLabel.setVisible(false);
             titleLabel.setText(""); //$NON-NLS-1$
@@ -464,6 +485,5 @@ public abstract class AbstractDataTableEditorView<B> {
             titleLabel.setVisible(true);
             titleLabel.setText(title);
         }
-        this.title = title;
     }
 }
