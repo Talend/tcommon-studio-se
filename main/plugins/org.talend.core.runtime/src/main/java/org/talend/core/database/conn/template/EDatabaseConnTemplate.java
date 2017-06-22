@@ -82,7 +82,8 @@ public enum EDatabaseConnTemplate {
             "jdbc:odbc:<datasource>")), //$NON-NLS-1$
 
     ACCESS(new DbConnStr(EDatabaseTypeName.ACCESS, //
-            "jdbc:ucanaccess://<filename>;<property>", null, "memory=false")), //$NON-NLS-1$
+            "jdbc:ucanaccess://<filename>;<property>", null, //$NON-NLS-1$
+            "jackcessOpener=org.talend.ucanaccess.encrypt.CryptCodecOpener;memory=false")),
 
     SYBASEASE(new DbConnStr(EDatabaseTypeName.SYBASEASE, //
             "jdbc:sybase:Tds:<host>:<port>/<sid>?<property>", //$NON-NLS-1$ 
