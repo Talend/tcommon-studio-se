@@ -468,7 +468,7 @@ public class RemoteModulesHelper {
 
     // private static final String serviceUrl = "http://www.talend.com/TalendRegisterWS/modules.php";
 
-    private static final String serviceUrl = "http://www.talendforge.org/modules/webservices/modules.php"; //$NON-NLS-1$
+    private static final String serviceUrl = "https://www.talendforge.org/modules/webservices/modules.php"; //$NON-NLS-1$
 
     private static final String SEPARATOR_DISPLAY = " | "; //$NON-NLS-1$
 
@@ -567,7 +567,11 @@ public class RemoteModulesHelper {
             if (jsonArray != null) {
                 JSONObject object = jsonArray.getJSONObject(0);
                 if (object != null) {
-                    return object.getString("licenseText");//$NON-NLS-1$
+                    String licenseText = object.getString("licenseText");//$NON-NLS-1$
+                    if (licenseText != null) {
+                        licenseText.replace("http://", "https://");//$NON-NLS-1$ //$NON-NLS-2$
+                    }
+                    return licenseText;
                 }
             }
         } catch (JSONException e) {

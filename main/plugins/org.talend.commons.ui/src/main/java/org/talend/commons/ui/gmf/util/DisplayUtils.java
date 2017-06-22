@@ -41,6 +41,10 @@ public class DisplayUtils {
     }
 
     /**
+     * <b> !! ATTENTION !! <br/>
+     * If it returns the progress dialog shell of eclipse by Display.getDefault().getActiveShell(), may have risk to be
+     * closed automatically when progress dialog is closed! </b><br/>
+     * <br/>
      * Attempts to return the default shell. If it cannot return the default shell, it returns the shell of the first
      * workbench window that has shell.
      * 
