@@ -1,6 +1,6 @@
 package org.talend.core.model.utils;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
@@ -41,6 +41,14 @@ public class TalendTextUtilsTest {
         result = TalendTextUtils.hidePassword(pass);
         assertEquals(result,"******");
         
+    }
+
+    @Test
+    public void testcheckAndAddSQLQuote() {
+        String query = "SELECT column_name FROM information_schema.tables WHERE table_name = 'abc';";
+        String quoteStyle = "\"";
+        String result = TalendTextUtils.checkAndAddSQLQuote(query, quoteStyle, true);
+        assertEquals(result, "\"SELECT column_name FROM information_schema.tables WHERE table_name = 'abc';\"");
     }
 
 

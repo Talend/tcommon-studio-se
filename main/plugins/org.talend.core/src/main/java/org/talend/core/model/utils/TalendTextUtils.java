@@ -83,7 +83,8 @@ public class TalendTextUtils {
 
         // newString = newString.replaceAll("\r", " ");
         // newString = newString.replaceAll("\n", " ");
-        return widenSQLRestrict(newString, quoteStyle);
+        // return widenSQLRestrict(newString, quoteStyle);
+        return newString;
     }
 
     /*
@@ -95,7 +96,7 @@ public class TalendTextUtils {
         return checkAndAddSQLQuote(text, quoteStyle, false);
     }
 
-    private static String checkAndAddSQLQuote(String text, String quoteStyle, boolean internal) {
+    static String checkAndAddSQLQuote(String text, String quoteStyle, boolean internal) {
         String newString;
 
         String tempText = text;
