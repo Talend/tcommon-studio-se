@@ -178,6 +178,8 @@ public interface IDesignerCoreService extends IService {
 
     public int getDBConnectionTimeout();
 
+    public int getDBConnectionLimit();
+
     public Reader getJavadocContentAccessContentReader(IMember member) throws JavaModelException;
 
     public int getTACConnectionTimeout();
