@@ -362,39 +362,34 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
             IRepositoryViewObject itemWithSameIdObj = null;
             IRepositoryViewObject itemWithSameNameObj = null;
 
-            List<IRepositoryViewObject> repViewObjectList = null;
-
             List<ERepositoryObjectType> allTypesOfProcess = ERepositoryObjectType.getAllTypesOfProcess();
             if (allTypesOfProcess.contains(itemType)) {
                 for (ERepositoryObjectType curProcessType : allTypesOfProcess) {
                     repObjectcache.initialize(curProcessType);
                 }
-                Map<ERepositoryObjectType, List<IRepositoryViewObject>> itemsMap = repObjectcache.getItemsFromRepository();
-                repViewObjectList = new LinkedList<IRepositoryViewObject>();
-                for (ERepositoryObjectType curProcessType : allTypesOfProcess) {
-                    List<IRepositoryViewObject> itemList = itemsMap.get(curProcessType);
-                    if (itemList != null) {
-                        repViewObjectList.addAll(itemList);
-                    }
-                }
             } else {
                 repObjectcache.initialize(itemType);
-                repViewObjectList = repObjectcache.getItemsFromRepository().get(itemType);
             }
 
-            Iterator<IRepositoryViewObject> repoViewObjectIter = repViewObjectList.iterator();
             boolean isSameRepositoryType = true;
             org.talend.core.model.general.Project currentProject = ProjectManager.getInstance().getCurrentProject();
-            while (repoViewObjectIter.hasNext()) {
-                IRepositoryViewObject current = repoViewObjectIter.next();
-                final Property property = importItem.getProperty();
-                if (property != null) {
+            Map<String, List<IRepositoryViewObject>> nameCache = repObjectcache.getNameItemChache();
+            final Property property = importItem.getProperty();
+            List<IRepositoryViewObject> nameItems = nameCache.get(property.getLabel());
+            if (nameItems != null) {
+                for (IRepositoryViewObject current : nameItems) {
                     boolean isInCurrentProject = ProjectManager.getInstance().isInMainProject(currentProject,
                             current.getProperty());
                     if (isInCurrentProject && isSameName(importItem, current)) {
                         itemWithSameNameObj = current;
                         isSameRepositoryType = isSameRepType(current.getRepositoryObjectType(), importItem.getRepositoryType());
                     }
+                }
+            }
+            Map<String, List<IRepositoryViewObject>> idCache = repObjectcache.getIdItemChache();
+            List<IRepositoryViewObject> idItems = idCache.get(property.getId());
+            if (idItems != null) {
+                for (IRepositoryViewObject current : idItems) {
                     if (property.getId() != null && property.getId().equals(current.getId())) {
                         itemWithSameIdObj = current;
                     }

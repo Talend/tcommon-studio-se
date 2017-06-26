@@ -45,7 +45,9 @@ public class RepositoryObjectCache {
 
     // key is id of IRepositoryObject, value is a list of IRepositoryObject
     // with same id
-    private final Map<String, List<IRepositoryViewObject>> cache = new HashMap<String, List<IRepositoryViewObject>>();
+    private final Map<String, List<IRepositoryViewObject>> idCache = new HashMap<String, List<IRepositoryViewObject>>();
+
+    private final Map<String, List<IRepositoryViewObject>> nameCache = new HashMap<String, List<IRepositoryViewObject>>();
 
     private final Map<ERepositoryObjectType, List<IRepositoryViewObject>> itemsFromRepository = new HashMap<ERepositoryObjectType, List<IRepositoryViewObject>>();
 
@@ -53,7 +55,7 @@ public class RepositoryObjectCache {
         Item item = itemRecord.getItem();
         ERepositoryObjectType type = ERepositoryObjectType.getItemType(item);
         initialize(type);
-        List<IRepositoryViewObject> result = cache.get(itemRecord.getProperty().getId());
+        List<IRepositoryViewObject> result = idCache.get(itemRecord.getProperty().getId());
         if (result == null) {
             result = Collections.EMPTY_LIST;
         }
@@ -63,12 +65,18 @@ public class RepositoryObjectCache {
     public void addToCache(Item tmpItem) {
         ERepositoryObjectType itemType = ERepositoryObjectType.getItemType(tmpItem);
         IRepositoryViewObject newObject = new RepositoryViewObject(tmpItem.getProperty(), true);
-        List<IRepositoryViewObject> items = cache.get(newObject.getId());
-        if (items == null) {
-            items = new ArrayList<IRepositoryViewObject>();
-            cache.put(newObject.getId(), items);
+        List<IRepositoryViewObject> idItems = idCache.get(newObject.getId());
+        if (idItems == null) {
+            idItems = new ArrayList<IRepositoryViewObject>();
+            idCache.put(newObject.getId(), idItems);
         }
-        items.add(newObject);
+        idItems.add(newObject);
+        List<IRepositoryViewObject> nameItems = nameCache.get(newObject.getLabel());
+        if (nameItems == null) {
+            nameItems = new ArrayList<IRepositoryViewObject>();
+            nameCache.put(newObject.getLabel(), nameItems);
+        }
+        nameItems.add(newObject);
         List<IRepositoryViewObject> list = itemsFromRepository.get(itemType);
         if (list != null) {
             list.add(newObject);
@@ -113,12 +121,18 @@ public class RepositoryObjectCache {
             for (IRepositoryViewObject obj : list) {
                 IRepositoryViewObject newObject = new RepositoryViewObject(obj.getProperty(), true);
                 // items with same id
-                List<IRepositoryViewObject> items = cache.get(newObject.getId());
-                if (items == null) {
-                    items = new ArrayList<IRepositoryViewObject>();
-                    cache.put(newObject.getId(), items);
+                List<IRepositoryViewObject> idItems = idCache.get(newObject.getId());
+                if (idItems == null) {
+                    idItems = new ArrayList<IRepositoryViewObject>();
+                    idCache.put(newObject.getId(), idItems);
                 }
-                items.add(newObject);
+                idItems.add(newObject);
+                List<IRepositoryViewObject> nameItems = nameCache.get(newObject.getLabel());
+                if (nameItems == null) {
+                    nameItems = new ArrayList<IRepositoryViewObject>();
+                    nameCache.put(newObject.getLabel(), nameItems);
+                }
+                nameItems.add(newObject);
                 newList.add(newObject);
             }
             itemsFromRepository.put(itemType, newList);
@@ -150,7 +164,8 @@ public class RepositoryObjectCache {
 
     public void clear() {
         types.clear();
-        cache.clear();
+        idCache.clear();
+        nameCache.clear();
         lockState.clear();
         itemsFromRepository.clear();
     }
@@ -158,4 +173,13 @@ public class RepositoryObjectCache {
     public Map<ERepositoryObjectType, List<IRepositoryViewObject>> getItemsFromRepository() {
         return itemsFromRepository;
     }
+    
+    public Map<String, List<IRepositoryViewObject>> getIdItemChache() {
+        return idCache;
+    }
+    
+    public Map<String, List<IRepositoryViewObject>> getNameItemChache() {
+        return nameCache;
+    }
+    
 }
