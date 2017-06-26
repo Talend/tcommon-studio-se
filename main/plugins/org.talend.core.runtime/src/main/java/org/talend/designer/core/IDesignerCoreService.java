@@ -178,7 +178,7 @@ public interface IDesignerCoreService extends IService {
 
     public int getDBConnectionTimeout();
 
-    public int getHadoopFetchLimit();
+    public int getHBaseOrMaprDBScanLimit();
 
     public Reader getJavadocContentAccessContentReader(IMember member) throws JavaModelException;
 

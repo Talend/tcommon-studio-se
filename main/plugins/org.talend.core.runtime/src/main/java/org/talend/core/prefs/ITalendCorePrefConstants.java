@@ -85,7 +85,7 @@ public interface ITalendCorePrefConstants {
     
     public static final String DB_CONNECTION_TIMEOUT = "db_conn_timeout"; //$NON-NLS-1$
 
-    public static final String HADOOP_FETCH_LIMIT = "hadoop_fetch_limit"; //$NON-NLS-1$
+    public static final String HBASE_OR_MAPRDB_SCAN_LIMIT = "hbase_or_maprdb_scan_limit"; //$NON-NLS-1$
 
     public static final String DOC_USER_LOGO = "doc_user_logo"; //$NON-NLS-1$
 
