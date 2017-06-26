@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <jardesc>
-    <jar path="D:/studio_code/tcommon-studio-se/main/plugins/org.talend.libraries.persist.lookup/lib/advancedPersistentLookupLib-1.1.jar"/>
+    <jar path="D:/studio_code/tcommon-studio-se/main/plugins/org.talend.libraries.persist.lookup/lib/advancedPersistentLookupLib-1.2.jar"/>
     <options buildIfNeeded="true" compress="true" descriptionLocation="/org.talend.libraries.persist.lookup/export_advancedPersistentLookupLib.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="true" saveDescription="false" storeRefactorings="false" useSourceFolders="false"/>
     <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
     <selectedProjects/>
