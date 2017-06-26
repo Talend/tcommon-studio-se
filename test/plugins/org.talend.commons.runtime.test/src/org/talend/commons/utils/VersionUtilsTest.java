@@ -12,7 +12,7 @@
 // ============================================================================
 package org.talend.commons.utils;
 
-import junit.framework.Assert;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.talend.utils.ProductVersion;
@@ -28,7 +28,7 @@ public class VersionUtilsTest {
     @Test
     public void testGetTalendVersion() {
         ProductVersion talendVersion = ProductVersion.fromString(VersionUtils.getTalendVersion());
-        ProductVersion studioVersion = ProductVersion.fromString(VersionUtils.getVersion());
-        Assert.assertEquals(studioVersion, talendVersion);
+        ProductVersion studioVersion = ProductVersion.fromString(VersionUtils.getDisplayVersion());
+        assertEquals(studioVersion, talendVersion);
     }
 }
