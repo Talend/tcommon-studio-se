@@ -159,11 +159,9 @@ public abstract class AbstractDataTableEditorView<B> {
         if (this.labelVisible) {
             SashForm sash = new SashForm(parentComposite, SWT.VERTICAL);
             sash.setLayout(new GridLayout());
-            sash.setLayoutData(new GridData(GridData.FILL_BOTH));
 
             Composite title = new Composite(sash, SWT.NONE);
             title.setLayout(new GridLayout());
-            title.setLayoutData(new GridData(GridData.FILL_VERTICAL));
             titleLabel = new Label(title, SWT.NONE);
             titleLabel.setLayoutData(new GridData(GridData.FILL_BOTH));
             if (parentComposite.getBackground() != null && !parentComposite.getBackground().equals(titleLabel.getBackground())) {
