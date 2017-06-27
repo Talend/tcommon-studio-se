@@ -252,7 +252,7 @@ public enum UpdateManagerProviderDetector {
                     forcePropagation = true;
                 }
             }
-
+            
             if (!forcePropagation && needConfirm) {
                 IDesignerCoreService designerCoreService = CoreRuntimePlugin.getInstance().getDesignerCoreService();
                 boolean deactive = designerCoreService != null ? Boolean.parseBoolean(designerCoreService
@@ -260,9 +260,21 @@ public enum UpdateManagerProviderDetector {
                 if (deactive) {// disable to do update
                     return false;
                 }
-
-                boolean propagated = RepositoryUpdateManager.openPropagationDialog();
-                if (!propagated) {
+                boolean isNeedUpdate = false;
+                for (IRepositoryUpdateManagerProvider provider : repositoryProviders) {
+                    List<UpdateResult> updateResults = provider.retrieveUpdateResults(selection);
+                    List<UpdateResult> validResult = provider.validResults(updateResults);
+                    if (validResult != null && validResult.size() > 0) {
+                        isNeedUpdate = true;
+                    }
+                }
+                if (isNeedUpdate) {
+                    boolean propagated = RepositoryUpdateManager.openPropagationDialog();
+                    if (!propagated) {
+                        return false;
+                    }
+                } else {
+                    RepositoryUpdateManager.openNoModificationDialog();
                     return false;
                 }
             }

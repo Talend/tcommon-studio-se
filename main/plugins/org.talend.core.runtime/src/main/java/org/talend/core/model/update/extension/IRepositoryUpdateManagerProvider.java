@@ -12,9 +12,12 @@
 // ============================================================================
 package org.talend.core.model.update.extension;
 
+import java.util.List;
+
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.talend.core.model.repository.IRepositoryViewObject;
+import org.talend.core.model.update.UpdateResult;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -72,5 +75,17 @@ public interface IRepositoryUpdateManagerProvider extends IUpdateManagerProvider
      * @param checkItem if true , force to check closed job
      */
     void setEnableCheckItem(boolean checkItem);
+    
+    /**
+     * @param selection
+     * @return Retrieve the update result
+     */
+    public List<UpdateResult> retrieveUpdateResults(final IStructuredSelection selection);
+    
+    /**
+     * @param updateResults
+     * @return Valid update result
+     */
+    public List<UpdateResult> validResults(List<UpdateResult> updateResults);
 
 }

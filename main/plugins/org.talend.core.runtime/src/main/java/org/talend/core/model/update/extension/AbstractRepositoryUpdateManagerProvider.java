@@ -123,7 +123,7 @@ public abstract class AbstractRepositoryUpdateManagerProvider implements IReposi
      * @param node
      * @return
      */
-    protected List<UpdateResult> retrieveUpdateResults(final IStructuredSelection selection) {
+    public List<UpdateResult> retrieveUpdateResults(final IStructuredSelection selection) {
         final List<UpdateResult> results = new ArrayList<UpdateResult>();
         boolean cancelable = !needForcePropagation(selection);
 
@@ -167,7 +167,7 @@ public abstract class AbstractRepositoryUpdateManagerProvider implements IReposi
      * @param selection
      * @return
      */
-    protected abstract List<UpdateResult> retrieveUpdateResults(IProgressMonitor monitor, IStructuredSelection selection);
+    public abstract List<UpdateResult> retrieveUpdateResults(IProgressMonitor monitor, IStructuredSelection selection);
 
     /**
      * 
@@ -178,7 +178,7 @@ public abstract class AbstractRepositoryUpdateManagerProvider implements IReposi
      * @param updateResults
      * @return
      */
-    protected List<UpdateResult> validResults(List<UpdateResult> updateResults) {
+    public List<UpdateResult> validResults(List<UpdateResult> updateResults) {
         return updateResults; // by default, nothing to check and valid. so retrurn it directly.
     }
 
