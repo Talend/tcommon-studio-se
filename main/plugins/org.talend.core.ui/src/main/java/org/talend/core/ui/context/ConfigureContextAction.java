@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.core.ui.context;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.gef.commands.Command;
@@ -25,7 +26,11 @@ import org.talend.core.model.process.IContext;
 import org.talend.core.model.process.IContextManager;
 import org.talend.core.model.process.IProcess2;
 import org.talend.core.model.update.EUpdateItemType;
+import org.talend.core.model.update.IUpdateItemType;
 import org.talend.core.model.update.IUpdateManager;
+import org.talend.core.model.update.UpdateManagerHelper;
+import org.talend.core.model.update.UpdateResult;
+import org.talend.core.model.update.extension.UpdateManagerProviderDetector;
 
 /**
  * An action that can config the contexts. <br/>
@@ -61,7 +66,14 @@ public class ConfigureContextAction extends Action {
                     if (manager.getProcess() != null && manager.getProcess() instanceof IProcess2) {
                         IUpdateManager updateManager = manager.getProcess().getUpdateManager();
                         if (updateManager != null) {
-                            updateManager.update(EUpdateItemType.CONTEXT);
+                            List<UpdateResult> updatesNeeded = new ArrayList<UpdateResult>();
+                            updatesNeeded.addAll(updateManager.getUpdatesNeeded(EUpdateItemType.CONTEXT));
+                            final IUpdateItemType jobletContextType = UpdateManagerProviderDetector.INSTANCE
+                                    .getUpdateItemType(UpdateManagerHelper.TYPE_JOBLET_CONTEXT);
+                            if (jobletContextType != null) {
+                                updatesNeeded.addAll(updateManager.getUpdatesNeeded(jobletContextType));
+                            }
+                            updateManager.executeUpdates(updatesNeeded);
                         }
                     } else {
                         // set the report editor dirty according to the manager(TdqContextViewComposite)
