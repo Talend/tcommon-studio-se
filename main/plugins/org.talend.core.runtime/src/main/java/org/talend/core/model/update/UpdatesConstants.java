@@ -129,6 +129,4 @@ public final class UpdatesConstants {
 
     public static final String REPOSITORY_SCHEMA_TYPE = "REPOSITORY_SCHEMA_TYPE";
 
-    public static final String CHANGED_BY_USER = "CHANGED_BY_USER"; //$NON-NLS-1$
-
 }
