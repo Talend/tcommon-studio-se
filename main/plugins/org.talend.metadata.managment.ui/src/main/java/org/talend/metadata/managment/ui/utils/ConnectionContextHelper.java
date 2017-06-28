@@ -874,8 +874,8 @@ public final class ConnectionContextHelper {
                 }
             } else {
                 showContextGroupDialog(process, contextItem, contextManager, addedVars);
-                isAddContext = true;
             }
+            isAddContext = true;
         }
         return isAddContext;
     }
