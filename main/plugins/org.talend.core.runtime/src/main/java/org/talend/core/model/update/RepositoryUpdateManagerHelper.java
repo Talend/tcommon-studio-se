@@ -43,13 +43,13 @@ import org.talend.repository.model.IProxyRepositoryFactory;
  * 
  */
 public class RepositoryUpdateManagerHelper {
-    
+
     private RepositoryUpdateManager manager;
-    
+
     public RepositoryUpdateManagerHelper() {
         this(null);
     }
-    
+
     public RepositoryUpdateManagerHelper(RepositoryUpdateManager manager) {
         this.manager = manager;
     }
@@ -273,6 +273,7 @@ public class RepositoryUpdateManagerHelper {
         }
         List<IRepositoryViewObject> processRep = new ArrayList<IRepositoryViewObject>();
         try {
+
             ERepositoryObjectType jobType = ERepositoryObjectType.PROCESS;
             if (jobType != null) {
                 processRep.addAll(factory.getAll(jobType, true));
@@ -281,6 +282,25 @@ public class RepositoryUpdateManagerHelper {
             if (jobletType != null) {
                 processRep.addAll(factory.getAll(jobletType, true));
             }
+
+            ERepositoryObjectType processMr = ERepositoryObjectType.PROCESS_MR;
+            if (processMr != null) {
+                processRep.addAll(factory.getAll(processMr, true));
+            }
+            ERepositoryObjectType processStrom = ERepositoryObjectType.PROCESS_STORM;
+            if (processStrom != null) {
+                processRep.addAll(factory.getAll(processStrom, true));
+            }
+
+            ERepositoryObjectType sparkJoblet = ERepositoryObjectType.SPARK_JOBLET;
+            if (sparkJoblet != null) {
+                processRep.addAll(factory.getAll(sparkJoblet, true));
+            }
+            ERepositoryObjectType sparkStreamJoblet = ERepositoryObjectType.SPARK_STREAMING_JOBLET;
+            if (sparkStreamJoblet != null) {
+                processRep.addAll(factory.getAll(sparkStreamJoblet, true));
+            }
+
         } catch (PersistenceException e) {
             ExceptionHandler.process(e);
         }
