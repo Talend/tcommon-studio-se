@@ -56,6 +56,8 @@ public interface ILibrariesService extends IService {
     public List<URL> getTalendRoutines();
 
     public String getPerlLibrariesPath();
+    
+    public void deployLibrary(URL source, boolean reset) throws IOException;
 
     public void deployLibrary(URL source) throws IOException;
     

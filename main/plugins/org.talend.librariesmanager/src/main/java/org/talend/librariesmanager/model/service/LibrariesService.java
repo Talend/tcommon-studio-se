@@ -47,6 +47,11 @@ public class LibrariesService implements ILibrariesService {
     private ILibrariesService getLibrariesService() {
         return javaService;
     }
+    
+    @Override
+    public void deployLibrary(URL source, boolean reset) throws IOException {
+        this.getLibrariesService().deployLibrary(source, reset);      
+    }
 
     @Override
     public void deployLibrary(URL source) throws IOException {
