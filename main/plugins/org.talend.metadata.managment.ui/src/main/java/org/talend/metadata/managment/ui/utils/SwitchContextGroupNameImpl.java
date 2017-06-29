@@ -205,6 +205,10 @@ public class SwitchContextGroupNameImpl implements ISwitchContext {
      */
     private String getChangedURL(DatabaseConnection dbConn, String selectedContext) {
         ContextType contextType = ConnectionContextHelper.getContextTypeForContextMode(dbConn, selectedContext, false);
+        String url = dbConn.getURL();
+        if(url != null){
+            return url;
+        }
         String server = ConnectionContextHelper.getOriginalValue(contextType, dbConn.getServerName());
         String username = ConnectionContextHelper.getOriginalValue(contextType, dbConn.getUsername());
         String password = ConnectionContextHelper.getOriginalValue(contextType, dbConn.getRawPassword());
