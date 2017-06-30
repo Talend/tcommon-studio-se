@@ -103,7 +103,7 @@ public abstract class AbstractLibrariesService implements ILibrariesService {
         deployLibrary(source, mavenUri, true);
     }
     
-    private void deployLibrary(URL source, boolean reset) throws IOException {
+    public void deployLibrary(URL source, boolean reset) throws IOException {
         deployLibrary(source, null, reset);
     }
 
@@ -135,9 +135,7 @@ public abstract class AbstractLibrariesService implements ILibrariesService {
         }
 
         ModulesNeededProvider.userAddImportModules(targetFile.getPath(), sourceFile.getName(), ELibraryInstallStatus.INSTALLED);
-        if (reset) {
-            resetAndRefreshLocal(new String[] { sourceFile.getName() });
-        }
+        resetAndRefreshLocal(new String[] { sourceFile.getName() }, reset);
 
     }
 
@@ -149,7 +147,7 @@ public abstract class AbstractLibrariesService implements ILibrariesService {
             namse[i] = new File(url.toString()).getName();
             deployLibrary(url, false);
         }
-        resetAndRefreshLocal(namse);
+        resetAndRefreshLocal(namse, true);
     }
 
     private RepositoryContext getRepositoryContext() {
@@ -157,8 +155,10 @@ public abstract class AbstractLibrariesService implements ILibrariesService {
         return (RepositoryContext) ctx.getProperty(Context.REPOSITORY_CONTEXT_KEY);
     }
 
-    private void resetAndRefreshLocal(final String names[]) {
-        resetModulesNeeded();
+    private void resetAndRefreshLocal(final String names[], boolean reset) {
+        if (reset) {
+            resetModulesNeeded();
+        }
 
         // for feature 12877
         Project currentProject = ProjectManager.getInstance().getCurrentProject();
@@ -197,7 +197,7 @@ public abstract class AbstractLibrariesService implements ILibrariesService {
                 }
                 if (!localConnectionProvider && service.isSvnLibSetupOnTAC() && service.isInSvn(libFile.getAbsolutePath())
                         && !getRepositoryContext().isOffline()) {
-                    List jars = new ArrayList();
+                    List<String> jars = new ArrayList<String>();
                     for (String name : names) {
                         jars.add(libFile.getAbsolutePath() + File.separatorChar + name);
                     }
