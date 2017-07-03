@@ -45,9 +45,11 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.dialogs.SelectionDialog;
 import org.talend.commons.ui.runtime.exception.MessageBoxExceptionHandler;
 import org.talend.commons.ui.runtime.image.ECoreImage;
@@ -155,6 +157,17 @@ public class SelectRepositoryContextDialog extends SelectionDialog {
         treeViewer.getTree().setLayoutData(new GridData(GridData.FILL_BOTH));
         addTreeListener();
         updateTreeCheckedState();
+
+        TreeItem[] items = treeViewer.getTree().getItems();
+        for (TreeItem item : items) {
+            if (item.getChecked()) {
+                item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+                TreeItem[] subItems = item.getItems();
+                for (TreeItem subitem : subItems) {
+                    subitem.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+                }
+            }
+        }
     }
 
     private void createButtons(Composite parent) {
