@@ -14,6 +14,7 @@ package org.talend.core.runtime.process;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.talend.core.model.general.ModuleNeeded;
@@ -31,6 +32,8 @@ public class LastGenerationInfo {
     private HashMap<String, Set<String>> pigudfNeededPerJob;
 
     private HashMap<String, Set<ModuleNeeded>> modulesNeededWithSubjobPerJob;
+    
+    private Set<ModuleNeeded> highPriorityModuleNeeded;
 
     private HashMap<String, Set<String>> routinesNeededWithSubjobPerJob;
 
@@ -50,6 +53,7 @@ public class LastGenerationInfo {
         modulesNeededPerJob = new HashMap<String, Set<ModuleNeeded>>();
         contextPerJob = new HashMap<String, Set<String>>();
         modulesNeededWithSubjobPerJob = new HashMap<String, Set<ModuleNeeded>>();
+        highPriorityModuleNeeded = new LinkedHashSet<ModuleNeeded>();
         lastGeneratedjobs = new HashSet<JobInfo>();
         routinesNeededPerJob = new HashMap<String, Set<String>>();
         pigudfNeededPerJob = new HashMap<String, Set<String>>();
@@ -236,6 +240,14 @@ public class LastGenerationInfo {
         }
         return routinesNeededPerJob.get(key);
     }
+    
+    public Set<ModuleNeeded> getHighPriorityModuleNeeded() {
+        return highPriorityModuleNeeded;
+    }
+    
+    public void setHighPriorityModuleNeeded(ModuleNeeded moduleNeeded) {
+        highPriorityModuleNeeded.add(moduleNeeded);
+    }
 
     /**
      * Getter for pigudfNeededPerJob.
@@ -322,6 +334,7 @@ public class LastGenerationInfo {
         routinesNeededPerJob.clear();
         pigudfNeededPerJob.clear();
         modulesNeededWithSubjobPerJob.clear();
+        highPriorityModuleNeeded.clear();
         routinesNeededWithSubjobPerJob.clear();
         pigudfNeededWithSubjobPerJob.clear();
         contextPerJob.clear();

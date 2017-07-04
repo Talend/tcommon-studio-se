@@ -394,6 +394,7 @@ public class ProcessorUtilities {
 
             // this cache only keep the last main job's generation, so clear it since we regenerate a new job.
             LastGenerationInfo.getInstance().getLastGeneratedjobs().clear();
+            LastGenerationInfo.getInstance().getHighPriorityModuleNeeded().clear();
             retrievedJarsForCurrentBuild.clear();
 
             // if it's the father, reset the processMap to ensure to have a good
@@ -753,6 +754,7 @@ public class ProcessorUtilities {
 
                 // this cache only keep the last main job's generation, so clear it since we regenerate a new job.
                 LastGenerationInfo.getInstance().getLastGeneratedjobs().clear();
+                LastGenerationInfo.getInstance().getHighPriorityModuleNeeded().clear();
                 retrievedJarsForCurrentBuild.clear();
                 // if it's the father, reset the processMap to ensure to have a good
                 // code generation
