@@ -2068,16 +2068,19 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
             final Field[] declaredFields = this.getClass().getDeclaredFields();
             for (Field f : declaredFields) {
                 f.setAccessible(true);
-                try {
-                    final Object object = f.get(this);
-                    if (object == defaultProjRepoNode) {
-                        continue;
-                    }
-                    if (object instanceof RepositoryNode) {
-                        f.set(this, null);
-                    }
+				try {
+					final Object object = f.get(this);
+					if (object == defaultProjRepoNode) {
+						continue;
+					}
+					if (object == dummyProjRepoNode) {
+						continue;
+					}
+					if (object instanceof RepositoryNode) {
+						f.set(this, null);
+					}
 
-                } catch (IllegalArgumentException e) {
+				} catch (IllegalArgumentException e) {
                     //
                 } catch (IllegalAccessException e) {
                     //
