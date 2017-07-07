@@ -846,6 +846,7 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
     public void refreshView() {
 
         refresh(true);
+        refreshContentDescription();
 
         List<IProcess2> openedProcessList = RepositoryManagerHelper.getOpenedProcess(RepositoryUpdateManager.getEditors());
         List<UpdateResult> updateAllResults = new ArrayList<UpdateResult>();
