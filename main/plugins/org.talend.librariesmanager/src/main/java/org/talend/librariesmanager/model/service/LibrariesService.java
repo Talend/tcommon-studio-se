@@ -245,11 +245,6 @@ public class LibrariesService implements ILibrariesService {
     }
 
     @Override
-    public boolean isMavenArtifactAvailable(String mvnUri) {
-        return getLibrariesService().isMavenArtifactAvailable(mvnUri);
-    }
-
-    @Override
     public void deployLibrary(URL source, String mavenUri) throws IOException {
         getLibrariesService().deployLibrary(source, mavenUri);
     }

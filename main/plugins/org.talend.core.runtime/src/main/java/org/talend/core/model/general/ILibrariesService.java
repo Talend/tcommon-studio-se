@@ -107,8 +107,6 @@ public interface ILibrariesService extends IService {
     
     public void deployProjectLibrary(File source) throws IOException;
 
-    public boolean isMavenArtifactAvailable(String mvnUri);
-
     /**
      * Listener used to fire that libraries status has been changed (new lib or new check install).
      * 
