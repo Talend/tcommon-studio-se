@@ -17,6 +17,7 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -756,6 +757,41 @@ public class LocalLibraryManagerTest {
         File localJarFile = new File(localJarPath);
         FileUtils.writeStringToFile(localJarFile, "Talend");
         assertFalse(localLibraryManager.isLocalJarSameAsNexus(manager, customNexusServer, testJarName));
+    }
+    
+    @Test
+    public void testIsJarNeedToBeDeployed() throws Exception {
+        assertFalse(localLibraryManager.isSvnLibSetup());
+        Field field = null;
+        Boolean originValue = null;
+        TalendLibsServerManager libServerManager = TalendLibsServerManager.getInstance();
+        if (libServerManager.getCustomNexusServer() != null) {
+            field = TalendLibsServerManager.class.getDeclaredField("lastConnectionValid");
+            field.setAccessible(true);
+            originValue = (Boolean) field.get(libServerManager);
+            field.set(libServerManager, false);
+            assertNull(libServerManager.getCustomNexusServer());
+        }
+        String uri = "mvn:org.talend.libraries/test/6.0.0-SNAPSHOT/jar";
+        String localJarPath = localLibraryManager.getJarPathFromMaven(uri);
+        // force to delete the jar to have a valid test
+        if (localJarPath != null) {
+            org.talend.utils.io.FilesUtils.deleteFolder(new File(localJarPath).getParentFile(), true);
+        }
+        // jar should not exist anymore
+        assertNull(localLibraryManager.getJarPathFromMaven(uri));
+        
+        String testJarName = "test.jar";
+        File jarFile = new File(getTmpFolder(), testJarName);
+        FileUtils.writeStringToFile(jarFile, "Hello");
+        assertTrue(localLibraryManager.isJarNeedToBeDeployed(jarFile));
+        
+        localLibraryManager.deploy(jarFile.toURI(), null);
+        assertFalse(localLibraryManager.isJarNeedToBeDeployed(jarFile));
+        
+        if (field != null) {
+            field.set(libServerManager, originValue);
+        }
     }
 
     private File getTmpFolder() {

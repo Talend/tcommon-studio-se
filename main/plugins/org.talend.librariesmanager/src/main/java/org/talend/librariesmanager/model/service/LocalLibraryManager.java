@@ -1581,7 +1581,20 @@ public class LocalLibraryManager implements ILibraryManagerService {
 
     @Override
     public boolean isJarNeedToBeDeployed(File jarFile) {
-        return isSvnLibSetup() && !isJarExistInLibFolder(jarFile) || !isLocalJarSameAsNexus(jarFile.getName());
+        if (isSvnLibSetup() && !isJarExistInLibFolder(jarFile)) {
+            return true;
+        }
+
+        if (TalendLibsServerManager.getInstance().getCustomNexusServer() != null && !isLocalJarSameAsNexus(jarFile.getName())) {
+            return true;
+        }
+
+        String mvnUri = MavenUrlHelper.generateMvnUrlForJarName(jarFile.getName());
+        if (!PomUtil.isAvailable(mvnUri)) {
+            return true;
+        }
+        
+        return false;
     }
 
 }
