@@ -185,4 +185,6 @@ public interface IDesignerCoreService extends IService {
     public Reader getJavadocContentAccessContentReader(IMember member) throws JavaModelException;
 
     public int getTACConnectionTimeout();
+
+    public int getTACReadTimeout();
 }

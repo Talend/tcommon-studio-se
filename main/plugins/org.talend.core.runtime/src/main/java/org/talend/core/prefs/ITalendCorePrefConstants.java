@@ -184,6 +184,8 @@ public interface ITalendCorePrefConstants {
      */
     public static final String PERFORMANCE_TAC_CONNECTION_TIMEOUT = "PERFORMANCE_TAC_CONNECTION_TIMEOUT"; //$NON-NLS-1$
 
+    public static final String PERFORMANCE_TAC_READ_TIMEOUT = "PERFORMANCE_TAC_READ_TIMEOUT"; //$NON-NLS-1$
+
     public static final String PERFORMANCE_JAVA_PROCESS_CODE_FORMATE_TIMEOUT = "PERFORMANCE_JAVA_PROCESS_CODE_FORMATE_TIMEOUT"; //$NON-NLS-1$
 
     public static final String NEXUS_TIMEOUT = "NEXUS_TIMEOUT"; //$NON-NLS-1$
