@@ -99,6 +99,8 @@ public interface ILibraryManagerService extends IService {
             IProgressMonitor... monitorWrap);
 
     public boolean retrieve(ModuleNeeded module, String pathToStore, boolean showDialog, IProgressMonitor... monitorWrap);
+    
+    public boolean retrieve(ModuleNeeded module, String pathToStore, boolean showDialog, NexusServerBean bean, IProgressMonitor... monitorWrap);
 
     /**
      * 

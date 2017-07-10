@@ -367,8 +367,9 @@ public class LocalLibraryManager implements ILibraryManagerService {
     public boolean retrieve(String jarNeeded, String pathToStore, boolean popUp, IProgressMonitor... monitorWrap) {
         return retrieve(jarNeeded, null, pathToStore, popUp);
     }
+    
+    private boolean retrieve(String jarNeeded, String mavenUri, String pathToStore, boolean showDialog, NexusServerBean customNexusServer) {
 
-    private boolean retrieve(String jarNeeded, String mavenUri, String pathToStore, boolean showDialog) {
         String sourcePath = null, targetPath = pathToStore;
         File jarFile = null;
         try {
@@ -378,7 +379,9 @@ public class LocalLibraryManager implements ILibraryManagerService {
             }
             // retrieve form custom nexus server automatically
             TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
-            final NexusServerBean customNexusServer = manager.getCustomNexusServer();
+            if(customNexusServer == null){
+                customNexusServer = manager.getCustomNexusServer();
+            }
             if (customNexusServer != null) {
                 Set<String> toResolve = new HashSet<String>();
                 if (mavenUri != null) {
@@ -451,7 +454,10 @@ public class LocalLibraryManager implements ILibraryManagerService {
             CommonExceptionHandler.process(new Exception("Can not copy: " + sourcePath + " to :" + targetPath, e));
         }
         return false;
+    }
 
+    private boolean retrieve(String jarNeeded, String mavenUri, String pathToStore, boolean showDialog) {
+        return retrieve(jarNeeded,  mavenUri,  pathToStore,  showDialog, null);
     }
 
     /**
@@ -670,10 +676,11 @@ public class LocalLibraryManager implements ILibraryManagerService {
             return false;
         }
         Set<ModuleNeeded> jarNotFound = new HashSet<ModuleNeeded>();
-
+        TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
+        NexusServerBean customNexusServer = manager.getCustomNexusServer();
         boolean allIsOK = true;
         for (ModuleNeeded jar : modulesNeeded) {
-            if (!retrieve(jar, pathToStore, false, monitorWrap)) {
+            if (!retrieve(jar, pathToStore, false, customNexusServer, monitorWrap)) {
                 jarNotFound.add(jar);
                 allIsOK = false;
             }
@@ -708,6 +715,15 @@ public class LocalLibraryManager implements ILibraryManagerService {
         return allIsOK;
     }
 
+    @Override
+    public boolean retrieve(ModuleNeeded module, String pathToStore, boolean showDialog, NexusServerBean bean, IProgressMonitor... monitorWrap) {
+        // retreive form custom nexus server automatically
+        String mavenUri = module.getMavenUri();
+        String jarNeeded = module.getModuleName();
+        
+        return retrieve(jarNeeded, mavenUri, pathToStore, showDialog, bean);
+    }
+    
     @Override
     public boolean retrieve(ModuleNeeded module, String pathToStore, boolean showDialog, IProgressMonitor... monitorWrap) {
         // retreive form custom nexus server automatically

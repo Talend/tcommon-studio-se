@@ -206,6 +206,11 @@ public class TalendLibsServerManager {
         return mavenResolver;
 
     }
+    
+    public void checkAndUpdateNexusServer() {
+        lastConnectionValid = null;
+        getCustomNexusServer();
+    }
 
     public NexusServerBean getCustomNexusServer() {
         if (!org.talend.core.PluginChecker.isCoreTISPluginLoaded()) {
@@ -225,28 +230,35 @@ public class TalendLibsServerManager {
                     || Boolean.FALSE == lastConnectionValid) {
                 return null;
             }
-            if (repositoryContext != null && repositoryContext.getFields() != null && !factory.isLocalConnectionProvider()
-                    && !repositoryContext.isOffline()) {
-                String adminUrl = repositoryContext.getFields().get(RepositoryConstants.REPOSITORY_URL);
-                String userName = "";
-                String password = "";
-                User user = repositoryContext.getUser();
-                if (user != null) {
-                    userName = user.getLogin();
-                    password = repositoryContext.getClearPassword();
-                }
+            if (lastConnectionValid != Boolean.TRUE) {
+                if (repositoryContext != null && repositoryContext.getFields() != null && !factory.isLocalConnectionProvider()
+                        && !repositoryContext.isOffline()) {
+                    String adminUrl = repositoryContext.getFields().get(RepositoryConstants.REPOSITORY_URL);
+                    String userName = "";
+                    String password = "";
+                    User user = repositoryContext.getUser();
+                    if (user != null) {
+                        userName = user.getLogin();
+                        password = repositoryContext.getClearPassword();
+                    }
 
-                if (adminUrl != null && !"".equals(adminUrl)
-                        && GlobalServiceRegister.getDefault().isServiceRegistered(IRemoteService.class)) {
-                    IRemoteService remoteService = (IRemoteService) GlobalServiceRegister.getDefault()
-                            .getService(IRemoteService.class);
-                    NexusServerBean bean = remoteService.getLibNexusServer(userName, password, adminUrl);
-                    if (bean != null) {
-                        nexus_url = bean.getServer();
-                        nexus_user = bean.getUserName();
-                        nexus_pass = bean.getPassword();
-                        repositoryId = bean.getRepositoryId();
-                        snapshotRepId = bean.getSnapshotRepId();
+                    if (adminUrl != null && !"".equals(adminUrl)
+                            && GlobalServiceRegister.getDefault().isServiceRegistered(IRemoteService.class)) {
+                        IRemoteService remoteService = (IRemoteService) GlobalServiceRegister.getDefault()
+                                .getService(IRemoteService.class);
+                        NexusServerBean bean = remoteService.getLibNexusServer(userName, password, adminUrl);
+                        if (bean != null) {
+                            nexus_url = bean.getServer();
+                            nexus_user = bean.getUserName();
+                            nexus_pass = bean.getPassword();
+                            repositoryId = bean.getRepositoryId();
+                            snapshotRepId = bean.getSnapshotRepId();
+                            System.setProperty(NEXUS_URL, nexus_url);
+                            System.setProperty(NEXUS_USER, nexus_user);
+                            System.setProperty(NEXUS_PASSWORD, nexus_pass);
+                            System.setProperty(NEXUS_LIB_REPO, repositoryId);
+                            System.setProperty(NEXUS_LIB_SNAPSHOT_REPO, snapshotRepId);
+                        }
                     }
                 }
             }
