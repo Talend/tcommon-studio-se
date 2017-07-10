@@ -79,7 +79,6 @@ import org.talend.core.model.repository.RepositoryContentManager;
 import org.talend.core.model.repository.RepositoryManager;
 import org.talend.core.model.repository.RepositoryNodeProviderRegistryReader;
 import org.talend.core.model.repository.RepositoryViewObject;
-import org.talend.core.model.repository.SVNConstant;
 import org.talend.core.repository.i18n.Messages;
 import org.talend.core.repository.model.repositoryObject.MetadataColumnRepositoryObject;
 import org.talend.core.repository.model.repositoryObject.MetadataTableRepositoryObject;
@@ -116,7 +115,7 @@ import us.monoid.json.JSONObject;
  */
 public class ProjectRepositoryNode extends RepositoryNode implements IProjectRepositoryNode {
 
-    private RepositoryNode svnRootNode, recBinNode, sqlPatternNode, docNode, metadataNode, metadataConNode, metadataFileNode,
+    private RepositoryNode recBinNode, sqlPatternNode, docNode, metadataNode, metadataConNode, metadataFileNode,
             metadataSAPConnectionNode, metadataEbcdicConnectionNode, metadataHL7ConnectionNode, metadataRulesNode,
             metadataBRMSConnectionNode, metadataValidationRulesNode, metadataEDIFactConnectionNode;
 
@@ -203,42 +202,10 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
         return defaultProjRepoNode;
     }
 
-    private String showSVNRoot() {
-        String branch = ProjectManager.getInstance().getMainProjectBranch(project);
-        if ("".equals(branch) || branch == null) { //$NON-NLS-1$
-            return null;
-        }
-        if (!branch.contains(SVNConstant.NAME_TRUNK) && !branch.contains(SVNConstant.NAME_BRANCHES)
-                && !branch.contains(SVNConstant.NAME_TAGS)) {
-            return null;
-        }
-        return branch;
-    }
-
     public void initialize(String currentPerspective) {
         this.currentPerspective = currentPerspective;
         nodeAndProject = new HashMap<Object, List<Project>>();
-        IRepositoryNode curParentNode = null;
-
-        String urlBranch = null;
-        if (ProjectManager.getInstance().getCurrentBranchURL(project) != null) {
-            urlBranch = showSVNRoot();
-        }
-        if ("".equals(urlBranch) || urlBranch == null) { //$NON-NLS-1$
-            curParentNode = this;
-        } else {
-            List<IRepositoryNode> root = getChildren();
-
-            svnRootNode = new RepositoryNode(null, this, ENodeType.SYSTEM_FOLDER);
-            svnRootNode.setProperties(EProperties.LABEL, ERepositoryObjectType.SVN_ROOT + "(" + urlBranch + ")"); //$NON-NLS-1$ //$NON-NLS-2$
-            svnRootNode.setProperties(EProperties.CONTENT_TYPE, ERepositoryObjectType.SVN_ROOT);
-            if (root.contains(svnRootNode)) {
-                return;
-            }
-            root.add(svnRootNode);
-
-            curParentNode = svnRootNode;
-        }
+        IRepositoryNode curParentNode = this;
 
         List<IRepositoryNode> nodes = curParentNode.getChildren();
         // 0. Recycle bin
@@ -2008,12 +1975,7 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
     @Override
     public String getLabel() {
         if (getProject() != null) {// compute branch url to add to the project label.
-            String urlBranch = null;
-            if (ProjectManager.getInstance().getCurrentBranchURL(project) != null) {
-                urlBranch = showSVNRoot();
-            }
-
-            return getProject().getLabel() + (urlBranch != null && !"".equals(urlBranch) ? '(' + urlBranch + ')' : ""); //$NON-NLS-1$//$NON-NLS-2$
+            return getProject().getLabel();
         }
         return super.getLabel();
     }
