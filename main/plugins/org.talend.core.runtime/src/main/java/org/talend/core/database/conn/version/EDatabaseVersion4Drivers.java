@@ -61,7 +61,8 @@ public enum EDatabaseVersion4Drivers {
     JAVADB_EMBEDED(new DbVersion4Drivers(EDatabaseTypeName.JAVADB_EMBEDED, "derby.jar")), //$NON-NLS-1$
     SQLITE(new DbVersion4Drivers(EDatabaseTypeName.SQLITE, "sqlitejdbc-v056.jar")), //$NON-NLS-1$
     FIREBIRD(new DbVersion4Drivers(EDatabaseTypeName.FIREBIRD, "jaybird-full-2.1.1.jar")), //$NON-NLS-1$
-    TERADATA(new DbVersion4Drivers(EDatabaseTypeName.TERADATA, new String[] { "terajdbc4.jar", "tdgssconfig.jar" })), //$NON-NLS-1$ //$NON-NLS-2$ 
+    TERADATA(new DbVersion4Drivers(EDatabaseTypeName.TERADATA,
+            new String[] { "terajdbc4-15.10.00.14.jar", "tdgssconfig-15.10.00.14.jar" })), //$NON-NLS-1$ //$NON-NLS-2$
     JAVADB_DERBYCLIENT(new DbVersion4Drivers(EDatabaseTypeName.JAVADB_DERBYCLIENT, "derbyclient.jar")), //$NON-NLS-1$
     NETEZZA(new DbVersion4Drivers(EDatabaseTypeName.NETEZZA, "nzjdbc.jar")), //$NON-NLS-1$
     INFORMIX(new DbVersion4Drivers(EDatabaseTypeName.INFORMIX, "ifxjdbc.jar")), //$NON-NLS-1$

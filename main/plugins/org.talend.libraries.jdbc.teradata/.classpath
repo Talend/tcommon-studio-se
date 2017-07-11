@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry exported="true" kind="lib" path="lib/terajdbc4.jar" sourcepath="org.talend.libraries.jdbc.teradatasrc.zip"/>
-	<classpathentry exported="true" kind="lib" path="lib/tdgssconfig.jar" sourcepath="org.talend.libraries.jdbc.teradatasrc.zip"/>
+	<classpathentry exported="true" kind="lib" path="lib/terajdbc4-15.10.00.14.jar" sourcepath="org.talend.libraries.jdbc.teradatasrc.zip"/>
+	<classpathentry exported="true" kind="lib" path="lib/tdgssconfig-15.10.00.14.jar" sourcepath="org.talend.libraries.jdbc.teradatasrc.zip"/>
 	<classpathentry kind="output" path="class"/>
 </classpath>
