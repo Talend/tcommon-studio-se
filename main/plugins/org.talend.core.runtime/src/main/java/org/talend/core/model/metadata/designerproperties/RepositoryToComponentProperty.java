@@ -1324,8 +1324,13 @@ public class RepositoryToComponentProperty {
         }
 
         if (value.equals("HBASE_PARAMETERS")) {
-            String message = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HBASE_PROPERTIES);
-            return HadoopRepositoryUtil.getHadoopPropertiesFullList(connection, message, true);
+            String message = null;
+            if (EDatabaseTypeName.HBASE.getDisplayName().equals(databaseType)) {
+                message = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HBASE_PROPERTIES);
+            }else if (EDatabaseTypeName.MAPRDB.getDisplayName().equals(databaseType)) {
+                message = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_PROPERTIES);
+            }
+            return HadoopRepositoryUtil.getHadoopPropertiesList(message, connection.isContextMode(), true);
         }
 
         if (value.equals("USE_CLOUDERA_NAVIGATOR")) {
