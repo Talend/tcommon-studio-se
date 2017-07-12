@@ -132,6 +132,7 @@ import org.talend.repository.documentation.ERepositoryActionName;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryConstants;
 import org.talend.utils.io.FilesUtils;
+
 import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
@@ -1037,6 +1038,8 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
         return this.repositoryFactoryFromProvider.getAllVersion(project, id, avoidSaveProject);
     }
 
+
+    @Override
     public List<IRepositoryViewObject> getAllVersion(Project project, String id, String folderPath, ERepositoryObjectType type)
             throws PersistenceException {
         return this.repositoryFactoryFromProvider.getAllVersion(project, id, folderPath, type);

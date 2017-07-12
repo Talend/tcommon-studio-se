@@ -706,12 +706,23 @@ public class RelationshipItemBuilder {
 
         if (item instanceof ProcessItem) {
             type = JOB_RELATION;
-        }
-        if (item instanceof JobletProcessItem) {
+        } else if (item instanceof JobletProcessItem) {
             type = JOBLET_RELATION;
+        } else {
+            throw new RuntimeException(Messages.getString("RelationshipItemBuilder.unexpect.item", item.getClass().getName())); //$NON-NLS-1$
         }
 
         return type;
+    }
+
+    public List<ERepositoryObjectType> getSupportRepObjTypes(String relationType) {
+        if (JOB_RELATION.equals(relationType)) {
+            return ERepositoryObjectType.getAllTypesOfProcess();
+        } else if (JOBLET_RELATION.equals(relationType)) {
+            return ERepositoryObjectType.getAllTypesOfJoblet();
+        } else {
+            throw new RuntimeException(Messages.getString("RelationshipItemBuilder.unexpect.relation", relationType)); //$NON-NLS-1$
+        }
     }
 
     private void clearItemsRelations(Item baseItem) {
@@ -898,17 +909,30 @@ public class RelationshipItemBuilder {
 
     public boolean supportRelation(Item item) {
         ERepositoryObjectType itemType = ERepositoryObjectType.getItemType(item);
-        if (ERepositoryObjectType.getAllTypesOfProcess().contains(itemType)) {
-            return true;
-        } else if (ERepositoryObjectType.JOBLET != null && itemType == ERepositoryObjectType.JOBLET) {
-            return true;
-        } else if (ERepositoryObjectType.SPARK_JOBLET != null && itemType == ERepositoryObjectType.SPARK_JOBLET) {
-            return true;
-        } else if (ERepositoryObjectType.SPARK_STREAMING_JOBLET != null
-                && itemType == ERepositoryObjectType.SPARK_STREAMING_JOBLET) {
+
+        List<ERepositoryObjectType> supportTypes = getSupportTypes();
+
+        if (supportTypes != null && supportTypes.contains(itemType)) {
             return true;
         }
+
         return false;
+    }
+
+    public List<ERepositoryObjectType> getSupportTypes() {
+        List<ERepositoryObjectType> supportTypes = new ArrayList<ERepositoryObjectType>();
+
+        List<ERepositoryObjectType> processTypes = getSupportRepObjTypes(JOB_RELATION);
+        if (processTypes != null && !processTypes.isEmpty()) {
+            supportTypes.addAll(processTypes);
+        }
+
+        List<ERepositoryObjectType> jobletTypes = getSupportRepObjTypes(JOBLET_RELATION);
+        if (jobletTypes != null && !jobletTypes.isEmpty()) {
+            supportTypes.addAll(jobletTypes);
+        }
+
+        return supportTypes;
     }
 
     public void addOrUpdateItem(Item item) {
@@ -998,6 +1022,17 @@ public class RelationshipItemBuilder {
             if (itemRelations.containsKey(relation)) {
                 itemRelations.get(relation).clear();
                 itemRelations.remove(relation);
+                saveRelations();
+            }
+        }
+    }
+
+    public void removeItemRelations(Relation relation, boolean save) {
+        Map<Relation, Set<Relation>> itemRelations = getCurrentProjectItemsRelations();
+        if (itemRelations != null && itemRelations.containsKey(relation)) {
+            itemRelations.get(relation).clear();
+            itemRelations.remove(relation);
+            if (save) {
                 saveRelations();
             }
         }

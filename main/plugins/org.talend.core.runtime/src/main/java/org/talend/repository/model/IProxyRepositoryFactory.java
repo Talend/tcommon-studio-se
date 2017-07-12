@@ -261,6 +261,9 @@ public interface IProxyRepositoryFactory {
     public abstract List<IRepositoryViewObject> getAllVersion(Project project, String id, boolean avoidSaveProject)
             throws PersistenceException;
 
+    public abstract List<IRepositoryViewObject> getAllVersion(Project project, String id, String folderPath,
+            ERepositoryObjectType type) throws PersistenceException;
+
     public abstract List<IRepositoryViewObject> getAllVersion(String id) throws PersistenceException;
 
     public abstract IRepositoryViewObject getLastVersion(Project project, String id, String relativeFolder,
