@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
 import org.talend.commons.exception.PersistenceException;
@@ -70,6 +71,8 @@ public interface ITestContainerProviderService extends IService {
     public List<IFile> getTestReportFiles(ProcessItem testItem);
 
     public IFolder getProcessFolder(String originalJobID);
+    
+    public IFolder getProcessFolder(IProject project, String originalJobID);
 
     public List<ProcessItem> getAllTestContainers(ProcessItem item);
 
