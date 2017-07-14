@@ -115,4 +115,24 @@ public class TreeUtilTest {
         }
         return treeValues;
     }
+
+    @Test
+    public void getXSDPopulationUtil2AttributeType() throws URISyntaxException, IOException, OdaException {
+        File file = new File(FileLocator
+                .toFileURL(this.getClass().getClassLoader().getResource("resources/test_xsdAttribute_type.xsd")).toURI());//$NON-NLS-1$
+        XSDPopulationUtil2 populator = XSDUtils.getXsdHander(file);
+        XSDSchema xsdSchema = TreeUtil.getXSDSchema(populator, file.getPath(), "http://www.domain.com/");//$NON-NLS-1$
+        Assert.assertNotNull(xsdSchema);
+        List<ATreeNode> allRootNodes = populator.getAllRootNodes(xsdSchema);
+        for (ATreeNode rootTreeNode : allRootNodes) {
+            ATreeNode treeNode = SchemaPopulationUtil.getSchemaTree(populator, xsdSchema, rootTreeNode);
+            FOXTreeNode root = TreeUtil.cloneATreeNode(treeNode, true);
+            assertNotNull(root);
+            List<FOXTreeNode> list = root.getChildren();
+            assertTrue(list != null && list.size() == 3);
+            assertEquals("id_Integer", list.get(0).getDataType()); //$NON-NLS-1$
+            assertEquals("id_Long", list.get(1).getDataType());//$NON-NLS-1$
+            assertEquals("id_String", list.get(2).getDataType());//$NON-NLS-1$
+        }
+    }
 }
