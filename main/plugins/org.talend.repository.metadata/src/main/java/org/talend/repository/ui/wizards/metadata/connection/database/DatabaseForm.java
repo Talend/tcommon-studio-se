@@ -1180,6 +1180,41 @@ public class DatabaseForm extends AbstractForm {
         addListenerForTableInfoPartOfHbase();
         initTableInfoPartOfHbase();
     }
+    
+    private String getHBASEDefaultValue(String paraName){
+        if(paraName == null){
+            return null;
+        }
+        String distribution = getConnection().getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HBASE_DISTRIBUTION);
+        if(distribution == null){
+            return null;
+        }
+        String version = getConnection().getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HBASE_VERSION);
+        if(version == null){
+            return null;
+        }
+        IHadoopDistributionService hadoopDistributionService = getHadoopDistributionService();
+        if (hadoopDistributionService == null) {
+            return null;
+        } 
+        IHDistribution hbaseDistribution = hadoopDistributionService.getHBaseDistributionManager().getDistribution(
+                distribution, false);
+        if (hbaseDistribution == null) {
+            return null;
+        } 
+        IHDistributionVersion hbaseVersion = hbaseDistribution.getHDVersion(version, false);
+        if (hbaseVersion == null) {
+            return null;
+        }
+        String defaultValue = null;
+        if(paraName.equals(EHadoopProperties.MAPRTICKET_CLUSTER.getName()) || paraName.equals(EHadoopProperties.MAPRTICKET_DURATION.getName())){
+            defaultValue = hbaseVersion.getDefaultConfig(distribution, paraName);
+        }else{
+            defaultValue = hbaseVersion.getDefaultConfig(distribution, EHadoopCategory.HBASE.getName(),
+                    paraName);
+        }
+        return defaultValue;
+    }
 
     private void addListenerForTableInfoPartOfHbase() {
         set_table_ns_mapping.addSelectionListener(new SelectionAdapter() {
@@ -1191,6 +1226,16 @@ public class DatabaseForm extends AbstractForm {
                     tableInfoPartOfHbaseComp.layout();
                     getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HBASE_SET_TABLE_NS_MAPPING,
                             Boolean.TRUE.toString());
+                    
+                    String tableNSMapping = getConnection().getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HBASE_TABLE_NS_MAPPING);
+                    if(tableNSMapping != null && tableNSMapping.length()>0){
+                        tableNSMappingOfHbaseTxt.setText(tableNSMapping);
+                    }else {
+                        String defaultTableNSMapping = getHBASEDefaultValue(EHadoopProperties.HBASE_TABLE_NS_MAPPING.getName());
+                        if(defaultTableNSMapping != null){
+                            tableNSMappingOfHbaseTxt.setText(defaultTableNSMapping);
+                        }
+                    }
                 } else {
                     tableNSMappingOfHbaseTxt.setVisible(false);
                     tableInfoPartOfHbaseComp.layout();
@@ -1919,6 +1964,30 @@ public class DatabaseForm extends AbstractForm {
                     hideControl(authenticationComForHBase, false);
                     hideControl(authenticationUserPassComForHBase, true);
                     getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_USE_KRB, "true"); //$NON-NLS-1$
+                    
+                    String masterPrincipal = getConnection().getParameters().get(
+                            ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MASTERPRINCIPAL);
+                    String regionServerPrincipal = getConnection().getParameters().get(
+                            ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_REGIONSERVERPRINCIPAL);
+                    
+                    if(masterPrincipal != null && masterPrincipal.length()>0){
+                        hbaseMasterPrincipalTxt.setText(masterPrincipal);
+                    }else {
+                        String defaultValue = getHBASEDefaultValue(EHadoopProperties.HBASE_MASTER_PRINCIPAL.getName());
+                        if(defaultValue != null){
+                            hbaseMasterPrincipalTxt.setText(defaultValue);
+                        }
+                    }
+                    
+                    if(regionServerPrincipal != null && regionServerPrincipal.length()>0){
+                        hbaseRSPrincipalTxt.setText(regionServerPrincipal);
+                    }else {
+                        String defaultValue = getHBASEDefaultValue(EHadoopProperties.HBASE_REGIONSERVER_PRINCIPAL.getName());
+                        if(defaultValue != null){
+                            hbaseRSPrincipalTxt.setText(defaultValue);
+                        }
+                    }
+                    
                 } else {
                     hideControl(authenticationComForHBase, true);
                     hideControl(authenticationUserPassComForHBase, !useMaprTForHBase.getSelection());
@@ -1997,6 +2066,37 @@ public class DatabaseForm extends AbstractForm {
                     hideControl(authenticationUserPassComForHBase, useKerberosForHBase.getSelection());
                     getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_USE_MAPRTICKET,
                             "true"); //$NON-NLS-1$
+                    
+                    String maprTClusterForHBase = getConnection().getParameters().get(
+                            ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MAPRTICKET_CLUSTER);
+                    if (!getConnection().isContextMode() && ContextParameterUtils.isContainContextParam(maprTClusterForHBase)) {
+                        maprTClusterForHBase = (String) metadataconnection
+                                .getParameter(ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MAPRTICKET_CLUSTER);
+                    }
+                    String maprTDurationForHBase = getConnection().getParameters().get(
+                            ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MAPRTICKET_DURATION);
+                    if (!getConnection().isContextMode() && ContextParameterUtils.isContainContextParam(maprTDurationForHBase)) {
+                        maprTDurationForHBase = (String) metadataconnection
+                                .getParameter(ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MAPRTICKET_DURATION);
+                    }
+                    
+                    if(maprTClusterForHBase != null && maprTClusterForHBase.length()>0){
+                        maprTClusterForHBaseTxt.setText(maprTClusterForHBase);
+                    }else{
+                        String defaultValue = getHBASEDefaultValue(EHadoopProperties.MAPRTICKET_CLUSTER.getName());
+                        if(defaultValue != null){
+                            maprTClusterForHBaseTxt.setText(defaultValue);
+                        }
+                    }
+                    
+                    if(maprTDurationForHBase != null && maprTDurationForHBase.length()>0){
+                        maprTDurationForHBaseTxt.setText(maprTDurationForHBase);
+                    }else{
+                        String defaultValue = getHBASEDefaultValue(EHadoopProperties.MAPRTICKET_DURATION.getName());
+                        if(defaultValue != null){
+                            maprTDurationForHBaseTxt.setText(defaultValue);
+                        }
+                    }
                 } else {
                     hideControl(authenticationMaprTComForHBase, true);
                     hideControl(authenticationUserPassComForHBase, true);
