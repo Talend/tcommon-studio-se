@@ -78,6 +78,7 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryContentHandler;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.repository.RepositoryContentManager;
+import org.talend.core.repository.model.ProjectRepositoryNode;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.repository.ui.actions.metadata.AbstractCreateAction;
 import org.talend.core.runtime.CoreRuntimePlugin;
@@ -138,9 +139,17 @@ public abstract class AbstractCreateTableAction extends AbstractCreateAction {
     protected void handleWizard(RepositoryNode node, WizardDialog wizardDialog) {
         wizardDialog.setPageSize(WIZARD_WIDTH, WIZARD_HEIGHT);
         wizardDialog.create();
-        wizardDialog.open();
+        int result = wizardDialog.open();
         IRepositoryView viewPart = getViewPart();
         if (viewPart != null) {
+            if (WizardDialog.CANCEL == result) {
+                RepositoryNode rootNode = ProjectRepositoryNode.getInstance().getRootRepositoryNode(node, false);
+                if (rootNode != null) {
+                    rootNode.getChildren().clear();
+                    rootNode.setInitialized(false);
+                    viewPart.refresh(rootNode);
+                }
+            }
             viewPart.expand(node, true);
         }
         ERepositoryObjectType nodeType = (ERepositoryObjectType) node.getProperties(EProperties.CONTENT_TYPE);

@@ -1927,6 +1927,17 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
         return rootTypeNode;
     }
 
+    public RepositoryNode getRootRepositoryNode(IRepositoryNode repNode, boolean tryInit) {
+        RepositoryNode rootRepoNode = null;
+        ERepositoryObjectType repObjType = getRepositoryType(repNode);
+
+        if (repObjType != null) {
+            rootRepoNode = getRootRepositoryNode(repObjType, tryInit);
+        }
+
+        return rootRepoNode;
+    }
+
     @Override
     public Map<String, RepositoryNode> getGenericTopNodesMap() {
         return genericNodesMap;
@@ -2086,7 +2097,7 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
         return findNode(topNode, oldNode);
     }
 
-    private ERepositoryObjectType getRepositoryType(IRepositoryNode node) {
+    public ERepositoryObjectType getRepositoryType(IRepositoryNode node) {
         IRepositoryNode testNode = node;
         while (testNode != null) {
             ERepositoryObjectType repObjType = testNode.getContentType();
