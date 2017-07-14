@@ -734,8 +734,11 @@ public class XSDPopulationUtil2 implements IXSDPopulationUtil {
             childNode.setValue(attributeDeclarationName);
             childNode.setType(ATreeNode.ATTRIBUTE_TYPE);
             String dataType = xsdAttributeDeclaration.getTypeDefinition().getQName();
-            if (xsdAttributeDeclaration.getTypeDefinition().getBaseType() != null) {
-                dataType = xsdAttributeDeclaration.getTypeDefinition().getBaseType().getQName();
+            XSDTypeDefinition baseType = xsdAttributeDeclaration.getTypeDefinition().getBaseType();
+            if (!XSDConstants.isSchemaForSchemaNamespace(xsdAttributeDeclaration.getTypeDefinition().getTargetNamespace())) {
+                if (baseType != null && !"xs:anySimpleType".equals(baseType.getQName())) { //$NON-NLS-1$
+                    dataType = baseType.getQName();
+                }
             }
             if (dataType != null && dataType.length() > 0) {
                 childNode.setDataType(dataType);
