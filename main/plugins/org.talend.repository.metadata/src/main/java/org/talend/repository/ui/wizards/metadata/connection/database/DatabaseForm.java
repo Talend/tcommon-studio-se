@@ -1216,6 +1216,47 @@ public class DatabaseForm extends AbstractForm {
         return defaultValue;
     }
 
+    private String getMAPRDefaultValue(String paraName){
+        if(paraName == null){
+            return null;
+        }
+        String distribution = getConnection().getParameters().get(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_DISTRIBUTION);
+        if(distribution == null){
+            return null;
+        }
+        String version = getConnection().getParameters().get(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_VERSION);
+        if(version == null){
+            return null;
+        }
+        IHadoopDistributionService hadoopDistributionService = getHadoopDistributionService();
+        if (hadoopDistributionService == null) {
+            return null;
+        } 
+        IHDistribution maprdbDistribution = hadoopDistributionService.getMaprdbDistributionManager().getDistribution(
+                distribution, false);
+        if (maprdbDistribution == null) {
+            return null;
+        }
+        IHDistributionVersion maprdbVersion = maprdbDistribution.getHDVersion(version, false);
+        if (maprdbVersion == null) {
+            return null;
+        }
+        String defaultPort = maprdbVersion.getDefaultConfig(distribution, EHadoopCategory.MAPRDB.getName(),
+                EHadoopProperties.PORT.getName());
+        if (defaultPort != null && !isContextMode()) {
+            getConnection().setPort(defaultPort);
+            portText.setText(defaultPort);
+        }
+        String defaultValue = null;
+        if(paraName.equals(EHadoopProperties.MAPRTICKET_CLUSTER.getName()) || paraName.equals(EHadoopProperties.MAPRTICKET_DURATION.getName())){
+            defaultValue = maprdbVersion.getDefaultConfig(distribution, paraName);
+        }else{
+            defaultValue = maprdbVersion.getDefaultConfig(distribution, EHadoopCategory.MAPRDB.getName(),
+                    paraName);
+        }
+        return defaultValue;
+    }
+    
     private void addListenerForTableInfoPartOfHbase() {
         set_table_ns_mapping.addSelectionListener(new SelectionAdapter() {
 
@@ -2160,6 +2201,30 @@ public class DatabaseForm extends AbstractForm {
                     hideControl(authenticationComForMaprdb, false);
                     hideControl(authenticationUserPassComForMaprdb, true);
                     getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_USE_KRB, "true"); //$NON-NLS-1$
+                    
+
+                    String masterPrincipal = getConnection().getParameters().get(
+                            ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MASTERPRINCIPAL);
+                    String regionServerPrincipal = getConnection().getParameters().get(
+                            ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_REGIONSERVERPRINCIPAL);
+                    
+                    if(masterPrincipal != null && masterPrincipal.length()>0){
+                        maprdbMasterPrincipalTxt.setText(masterPrincipal);
+                    }else {
+                        String defaultValue = getMAPRDefaultValue(EHadoopProperties.MAPRDB_MASTER_PRINCIPAL.getName());
+                        if(defaultValue != null){
+                            maprdbMasterPrincipalTxt.setText(defaultValue);
+                       }
+                    }
+                    
+                    if(regionServerPrincipal != null && regionServerPrincipal.length()>0){
+                        maprdbRSPrincipalTxt.setText(regionServerPrincipal);
+                    }else {
+                        String defaultValue = getMAPRDefaultValue(EHadoopProperties.MAPRDB_REGIONSERVER_PRINCIPAL.getName());
+                        if(defaultValue != null){
+                            maprdbRSPrincipalTxt.setText(defaultValue);
+                        }
+                    }
                 } else {
                     hideControl(authenticationComForMaprdb, true);
                     hideControl(authenticationUserPassComForMaprdb, !useMaprTForMaprdb.getSelection());
@@ -2238,6 +2303,37 @@ public class DatabaseForm extends AbstractForm {
                     hideControl(authenticationUserPassComForMaprdb, useKerberosForMaprdb.getSelection());
                     getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_USE_MAPRTICKET,
                             "true"); //$NON-NLS-1$
+                    
+                    String maprTClusterForMapr = getConnection().getParameters().get(
+                            ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MAPRTICKET_CLUSTER);
+                    if (!getConnection().isContextMode() && ContextParameterUtils.isContainContextParam(maprTClusterForMapr)) {
+                        maprTClusterForMapr = (String) metadataconnection
+                                .getParameter(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MAPRTICKET_CLUSTER);
+                    }
+                    String maprTDurationForMapr = getConnection().getParameters().get(
+                            ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MAPRTICKET_DURATION);
+                    if (!getConnection().isContextMode() && ContextParameterUtils.isContainContextParam(maprTDurationForMapr)) {
+                        maprTDurationForMapr = (String) metadataconnection
+                                .getParameter(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MAPRTICKET_DURATION);
+                    }
+                    
+                    if(maprTClusterForMaprdbTxt != null && maprTClusterForMapr.length()>0){
+                        maprTClusterForMaprdbTxt.setText(maprTClusterForMapr);
+                    }else{
+                        String defaultValue = getMAPRDefaultValue(EHadoopProperties.MAPRTICKET_CLUSTER.getName());
+                        if(defaultValue != null){
+                            maprTClusterForMaprdbTxt.setText(defaultValue);
+                        }
+                    }
+                    
+                    if(maprTDurationForMapr != null && maprTDurationForMapr.length()>0){
+                        maprTDurationForMaprdbTxt.setText(maprTDurationForMapr);
+                    }else{
+                        String defaultValue = getMAPRDefaultValue(EHadoopProperties.MAPRTICKET_DURATION.getName());
+                        if(defaultValue != null){
+                            maprTDurationForMaprdbTxt.setText(defaultValue);
+                        }
+                    }
                 } else {
                     hideControl(authenticationMaprTComForMaprdb, true);
                     hideControl(authenticationUserPassComForMaprdb, true);
