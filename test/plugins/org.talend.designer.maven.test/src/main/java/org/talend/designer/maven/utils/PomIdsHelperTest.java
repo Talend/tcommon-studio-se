@@ -32,32 +32,9 @@ public class PomIdsHelperTest {
 
     @Test
     public void test_getProjectGroupId_empty() {
-        String projectGroupId = PomIdsHelper.getProjectGroupId(null);
+        String projectGroupId = PomIdsHelper.getProjectGroupId();
         Assert.assertNotNull(projectGroupId);
-        Assert.assertEquals("org.talend.master", projectGroupId);
-
-        projectGroupId = PomIdsHelper.getProjectGroupId("");
-        Assert.assertNotNull(projectGroupId);
-        Assert.assertEquals("org.talend.master", projectGroupId);
-
-        projectGroupId = PomIdsHelper.getProjectGroupId("   ");
-        Assert.assertNotNull(projectGroupId);
-        Assert.assertEquals("org.talend.master", projectGroupId);
-    }
-
-    @Test
-    public void test_getProjectGroupId() {
-        String projectGroupId = PomIdsHelper.getProjectGroupId("abc");
-        Assert.assertNotNull(projectGroupId);
-        Assert.assertEquals("org.talend.master.abc", projectGroupId);
-
-        projectGroupId = PomIdsHelper.getProjectGroupId("ABC");
-        Assert.assertNotNull(projectGroupId);
-        Assert.assertEquals("org.talend.master.abc", projectGroupId);
-
-        projectGroupId = PomIdsHelper.getProjectGroupId(" Abc  ");
-        Assert.assertNotNull(projectGroupId);
-        Assert.assertEquals("org.talend.master.abc", projectGroupId);
+        Assert.assertEquals("org.talend.master.aa", projectGroupId);
     }
 
     @Test
