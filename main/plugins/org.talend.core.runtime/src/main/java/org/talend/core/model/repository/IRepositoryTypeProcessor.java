@@ -18,7 +18,7 @@ public interface IRepositoryTypeProcessor {
 
     public boolean isSelectionValid(RepositoryNode node);
 
-    public ViewerFilter makeFilter();
+    public ViewerFilter makeFilter(IElement elem);
 
     public String getDialogTitle();
 
