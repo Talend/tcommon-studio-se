@@ -44,6 +44,23 @@ public interface IExternalNode extends INode {
 
     public void setExternalData(IExternalData persistentData);
 
+    /**
+     * 
+     * This function is only useful for DataProcess to keep the same IMapperModel as original node
+     * 
+     * @param mapperModel
+     */
+    public void setInternalMapperModel(IMapperModel mapperModel);
+
+    /**
+     * 
+     * This function is only useful for DataProcess to keep the same IMapperModel as original node
+     * 
+     * @param mapperModel
+     */
+    public IMapperModel getInternalMapperModel();
+
+    @Override
     public IExternalData getExternalData();
 
     public List<Problem> getProblems();
@@ -52,16 +69,20 @@ public interface IExternalNode extends INode {
 
     public void setComponentName(String componentName);
 
+    @Override
     public void setIncomingConnections(List<? extends IConnection> incomingConnections);
 
+    @Override
     public void setOutgoingConnections(List<? extends IConnection> outgoingConnections);
 
+    @Override
     public void setMetadataList(List<IMetadataTable> metadataList);
 
     public void setUniqueName(String uniqueName);
 
     public void setActivate(boolean activate);
 
+    @Override
     public void setStart(boolean start);
 
     public void setSubProcessStart(boolean subProcessStart);

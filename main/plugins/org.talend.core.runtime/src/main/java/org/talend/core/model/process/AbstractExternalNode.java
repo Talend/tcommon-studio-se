@@ -31,9 +31,9 @@ public abstract class AbstractExternalNode extends AbstractNode implements IExte
 
     private IODataComponentContainer ioDataContainer;
 
-    protected ImageDescriptor        screenshot = null;
+    protected ImageDescriptor screenshot = null;
 
-    protected INode                  originalNode;
+    protected INode originalNode;
 
     /*
      * (non-Javadoc)
@@ -45,6 +45,7 @@ public abstract class AbstractExternalNode extends AbstractNode implements IExte
         return this;
     }
 
+    @Override
     public List<Problem> getProblems() {
         return null;
     }
@@ -55,6 +56,7 @@ public abstract class AbstractExternalNode extends AbstractNode implements IExte
      * @seeorg.talend.core.model.process.IExternalNode#setIODataComponents(org.talend.core.model.components.
      * IODataComponentContainer)
      */
+    @Override
     public void setIODataComponents(IODataComponentContainer ioDatacontainer) {
         this.ioDataContainer = ioDatacontainer;
     }
@@ -64,6 +66,7 @@ public abstract class AbstractExternalNode extends AbstractNode implements IExte
      * 
      * @see org.talend.core.model.process.IExternalNode#getIODataComponents()
      */
+    @Override
     public IODataComponentContainer getIODataComponents() {
         return this.ioDataContainer;
     }
@@ -73,6 +76,7 @@ public abstract class AbstractExternalNode extends AbstractNode implements IExte
      * 
      * @see org.talend.core.model.process.INode#metataChanged(org.talend.core.model.components.IODataComponent)
      */
+    @Override
     public void metadataInputChanged(IODataComponent dataComponent, String connectionToApply) {
         for (ColumnNameChanged col : dataComponent.getColumnNameChanged()) {
             // System.out.println(" -> " + col + " " + connectionToApply); //$NON-NLS-1$ //$NON-NLS-2$
@@ -80,6 +84,7 @@ public abstract class AbstractExternalNode extends AbstractNode implements IExte
         }
     }
 
+    @Override
     public void metadataOutputChanged(IODataComponent dataComponent, String connectionToApply) {
         for (ColumnNameChanged col : dataComponent.getColumnNameChanged()) {
             // System.out.println(" -> " + col + " " + connectionToApply); //$NON-NLS-1$ //$NON-NLS-2$
@@ -87,6 +92,7 @@ public abstract class AbstractExternalNode extends AbstractNode implements IExte
         }
     }
 
+    @Override
     public void metadataOutputChanged(IMetadataTable currentMetadata) {
 
     }
@@ -98,43 +104,64 @@ public abstract class AbstractExternalNode extends AbstractNode implements IExte
      * 
      * @see org.talend.core.model.process.IExternalNode#isRunRefSubProcessAtStart(java.lang.String)
      */
+    @Override
     public boolean isRunRefSubProcessAtStart(String connectionName) {
         return true;
     }
 
+    @Override
     public ImageDescriptor getScreenshot() {
         return this.screenshot;
     }
 
+    @Override
     public void setScreenshot(ImageDescriptor screenshot) {
         this.screenshot = screenshot;
     }
 
+    @Override
     public INode getOriginalNode() {
         return this.originalNode;
     }
 
+    @Override
     public void setOriginalNode(INode originalNode) {
         this.originalNode = originalNode;
     }
 
+    @Override
     public AbstractExternalData getExternalEmfData() {
         return null;
     }
 
+    @Override
     public void buildExternalData(AbstractExternalData abstractData) {
 
     }
 
+    @Override
     public INode getJobletNode() {
         return null;
     }
 
+    @Override
     public void setExternalEmfData(AbstractExternalData externalEmfData) {
         // TODO Auto-generated method stub
 
     }
 
+    @Override
+    public void setInternalMapperModel(IMapperModel mapperModel) {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public IMapperModel getInternalMapperModel() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
     public List<String> checkNeededRoutines(List<String> possibleRoutines, String additionalString) {
         return null;
 
@@ -147,6 +174,7 @@ public abstract class AbstractExternalNode extends AbstractNode implements IExte
      * org.talend.core.model.process.IExternalNode#connectionStatusChanged(org.talend.core.model.process.EConnectionType
      * , java.lang.String)
      */
+    @Override
     public void connectionStatusChanged(EConnectionType newValue, String connectionToApply) {
         // TODO Auto-generated method stub
 
