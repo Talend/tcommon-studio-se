@@ -178,6 +178,16 @@ public abstract class AbstractCreateTableAction extends AbstractCreateAction {
                 viewPart.expand(node, true);
             }
             refresh(node);
+        } else {
+            IRepositoryView viewPart = getViewPart();
+            if (viewPart != null) {
+                RepositoryNode rootNode = ProjectRepositoryNode.getInstance().getRootRepositoryNode(node, false);
+                if (rootNode != null) {
+                    rootNode.getChildren().clear();
+                    rootNode.setInitialized(false);
+                    viewPart.refresh(rootNode);
+                }
+            }
         }
     }
 

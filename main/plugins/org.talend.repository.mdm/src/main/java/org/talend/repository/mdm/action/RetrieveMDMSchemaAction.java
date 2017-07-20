@@ -27,6 +27,7 @@ import org.talend.core.model.properties.MDMConnectionItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.xml.XmlArray;
+import org.talend.core.repository.model.ProjectRepositoryNode;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.repository.ui.actions.metadata.AbstractCreateAction;
 import org.talend.cwm.helper.TableHelper;
@@ -215,6 +216,16 @@ public class RetrieveMDMSchemaAction extends AbstractCreateAction {
                 viewPart.expand(node, true);
             }
             refresh(node);
+        } else {
+            IRepositoryView viewPart = getViewPart();
+            if (viewPart != null) {
+                RepositoryNode rootNode = ProjectRepositoryNode.getInstance().getRootRepositoryNode(node, false);
+                if (rootNode != null) {
+                    rootNode.getChildren().clear();
+                    rootNode.setInitialized(false);
+                    viewPart.refresh(rootNode);
+                }
+            }
         }
         // node = null;
     }
