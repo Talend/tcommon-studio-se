@@ -35,13 +35,13 @@ public class PomIdsHelperTest {
     @Test
     public void test_getProjectGroupId_empty() {
         Project currentProject = ProjectManager.getInstance().getCurrentProject();
-        String exceptValue = "org.talend.master";
+        String expectValue = "org.talend.master";
         if (currentProject != null) {
-            exceptValue = exceptValue + '.' + currentProject.getTechnicalLabel().toLowerCase();
+            expectValue = expectValue + '.' + currentProject.getTechnicalLabel().toLowerCase();
         }
         String projectGroupId = PomIdsHelper.getProjectGroupId();
         Assert.assertNotNull(projectGroupId);
-        Assert.assertEquals(exceptValue, projectGroupId);
+        Assert.assertEquals(expectValue, projectGroupId);
     }
 
     @Test
