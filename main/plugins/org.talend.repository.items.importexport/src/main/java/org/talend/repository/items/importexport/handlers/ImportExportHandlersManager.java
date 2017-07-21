@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Priority;
 import org.eclipse.core.resources.IWorkspace;
@@ -257,10 +258,25 @@ public class ImportExportHandlersManager {
             // add empty folders for TUP-2716
             List<IPath> emptyFolders = resManager.getEmptyFolders();
             if (!emptyFolders.isEmpty()) {
+                Set<String> toIgnore = new HashSet<String>();
                 DynaEnum<? extends DynaEnum<?>>[] values = ERepositoryObjectType.values();
-                ERepositoryObjectType folderType = null;
                 for (IPath folder : emptyFolders) {
+                    ERepositoryObjectType folderType = null;
                     if (folder.segmentCount() < 1) {
+                        continue;
+                    }
+                    if (".svn".equals(folder.lastSegment())) {
+                        toIgnore.add(folder.toPortableString());
+                        continue;
+                    }
+                    boolean isChildOfIgnored = false;
+                    for (String pathToIgnore : toIgnore) {
+                        if (folder.toPortableString().startsWith(pathToIgnore)) {
+                            isChildOfIgnored = true;
+                            break;
+                        }
+                    }
+                    if (isChildOfIgnored) {
                         continue;
                     }
                     IPath folderPathToCheck = folder.removeFirstSegments(1);
@@ -301,6 +317,18 @@ public class ImportExportHandlersManager {
                             }
                         }
                     }
+                    String pattern = null;
+                    if (folderType != null && folderType.isDQItemType()) {
+                        pattern = RepositoryConstants.TDQ_ALL_ITEM_PATTERN;
+                    } else if (folderType == ERepositoryObjectType.METADATA_FILE_XML) {
+                        pattern = RepositoryConstants.SIMPLE_FOLDER_PATTERN;
+                    } else {
+                        pattern = RepositoryConstants.FOLDER_PATTERN;
+                    }
+                    if (!Pattern.matches(pattern, folder.lastSegment())) {
+                        toIgnore.add(folder.toPortableString());
+                        continue;
+                    }
                     if (folderType != null) {
                         IPath typePath = new Path(folderType.getFolder());
                         IPath folderPath = folder.removeFirstSegments(1 + typePath.segmentCount()).removeLastSegments(1)
@@ -324,7 +352,6 @@ public class ImportExportHandlersManager {
                         createFolderItem.setState(createStatus);
                         items.add(folderItem);
                         folderItem.setProperty(property);
-                        folderType = null;
                     }
                 }
 
