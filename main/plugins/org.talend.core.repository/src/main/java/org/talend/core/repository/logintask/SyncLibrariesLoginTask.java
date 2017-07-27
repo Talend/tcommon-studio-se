@@ -23,6 +23,11 @@ public class SyncLibrariesLoginTask extends AbstractLoginTask implements IRunnab
     private static ICoreService coreService = (ICoreService) GlobalServiceRegister.getDefault().getService(ICoreService.class);
 
     @Override
+    public boolean isCommandlineTask() {
+        return true;
+    }
+
+    @Override
     public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
         TimeMeasure.display = CommonsPlugin.isDebugMode();
         TimeMeasure.displaySteps = CommonsPlugin.isDebugMode();

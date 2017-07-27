@@ -58,12 +58,12 @@ import org.osgi.service.event.Event;
 import org.osgi.service.event.EventAdmin;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.BusinessException;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.LoginException;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.exception.SystemException;
 import org.talend.commons.runtime.model.repository.ERepositoryStatus;
 import org.talend.commons.ui.runtime.CommonUIPlugin;
-import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.commons.ui.runtime.exception.MessageBoxExceptionHandler;
 import org.talend.commons.utils.data.container.RootContainer;
 import org.talend.commons.utils.generation.JavaUtils;
@@ -1985,24 +1985,6 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 }
                 TimeMeasure.step("logOnProject", "sync log4j"); //$NON-NLS-1$ //$NON-NLS-2$
 
-                if (CommonUIPlugin.isFullyHeadless()) {
-                    currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);
-                    currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.synchronizeLibraries"), 1); //$NON-NLS-1$
-                    coreService.syncLibraries(currentMonitor);
-                    TimeMeasure.step("logOnProject", "sync components libraries"); //$NON-NLS-1$ //$NON-NLS-2$
-                    if (monitor != null && monitor.isCanceled()) {
-                        throw new OperationCanceledException(""); //$NON-NLS-1$
-                    }
-                    coreService.createStatsLogAndImplicitParamter(project);
-                    if (monitor != null && monitor.isCanceled()) {
-                        throw new OperationCanceledException(""); //$NON-NLS-1$
-                    }
-                    coreService.synchronizeMapptingXML();
-
-                    if (monitor != null && monitor.isCanceled()) {
-                        throw new OperationCanceledException(""); //$NON-NLS-1$
-                    }
-                }
                 if (GlobalServiceRegister.getDefault().isServiceRegistered(ITDQRepositoryService.class)) {
                     ITDQRepositoryService tdqRepositoryService = (ITDQRepositoryService) GlobalServiceRegister.getDefault()
                             .getService(ITDQRepositoryService.class);
