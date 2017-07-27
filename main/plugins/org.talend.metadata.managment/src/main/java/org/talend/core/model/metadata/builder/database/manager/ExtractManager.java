@@ -14,6 +14,7 @@ package org.talend.core.model.metadata.builder.database.manager;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
+import java.sql.Driver;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -26,8 +27,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
-
-import metadata.managment.i18n.Messages;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -72,6 +71,8 @@ import org.talend.repository.model.IRepositoryService;
 import org.talend.utils.sql.ConnectionUtils;
 import org.talend.utils.sql.metadata.constants.GetColumn;
 import org.talend.utils.sql.metadata.constants.GetTable;
+
+import metadata.managment.i18n.Messages;
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.resource.relational.Catalog;
 import orgomg.cwm.resource.relational.NamedColumnSet;
@@ -382,6 +383,7 @@ public class ExtractManager {
             if (needCreateAndClose && extractMeta.getConn() != null) {
                 extractMeta.closeConnection();
             }
+            MetadataConnectionUtils.closeDerbyDriver();
         }
 
         return metadataColumns;
@@ -398,11 +400,22 @@ public class ExtractManager {
             dbMetaData = HiveConnectionManager.getInstance().extractDatabaseMetaData(metadataConnection);
         } else {
             if (needCreateAndClose || extractMeta.getConn() == null || extractMeta.getConn().isClosed()) {
-                extractMeta.getConnection(metadataConnection.getDbType(), metadataConnection.getUrl(),
+                List list = extractMeta.getConnection(metadataConnection.getDbType(), metadataConnection.getUrl(),
                         metadataConnection.getUsername(), metadataConnection.getPassword(), metadataConnection.getDatabase(),
                         metadataConnection.getSchema(), metadataConnection.getDriverClass(),
                         metadataConnection.getDriverJarPath(), metadataConnection.getDbVersionString(),
                         metadataConnection.getAdditionalParams());
+                if (list != null && list.size() > 0) {
+                    for (int i = 0; i < list.size(); i++) {
+                        if (list.get(i) instanceof Driver) {
+                            String driverClass = metadataConnection.getDriverClass();
+                            if (MetadataConnectionUtils.isDerbyRelatedDb(driverClass, dbType)) {
+                                MetadataConnectionUtils.setDerbyDriver((Driver) list.get(i));
+                                break;
+                            }
+                        }
+                    }
+                }
             }
             dbMetaData = extractMeta.getDatabaseMetaData(extractMeta.getConn(), dbType, metadataConnection.isSqlMode(),
                     metadataConnection.getDatabase());

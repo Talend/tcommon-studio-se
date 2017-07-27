@@ -1202,6 +1202,10 @@ public class MetadataConnectionUtils {
         return false;
     }
 
+    public static void setDerbyDriver(Driver driver) {
+        derbyDriver = driver;
+    }
+
     public static Driver getDerbyDriver() {
         return derbyDriver;
     }
