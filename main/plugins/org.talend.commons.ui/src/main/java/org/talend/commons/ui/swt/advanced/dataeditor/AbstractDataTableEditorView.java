@@ -62,6 +62,8 @@ public abstract class AbstractDataTableEditorView<B> {
 
     private KeyListener tableKeyListener;
 
+    protected Composite tableComposite;
+
     // private IExtendedModelListener modelNameListener = new IExtendedModelListener() {
     //
     // public void handleEvent(ExtendedModelEvent event) {
@@ -161,20 +163,23 @@ public abstract class AbstractDataTableEditorView<B> {
             sash.setLayout(new GridLayout());
 
             Composite title = new Composite(sash, SWT.NONE);
-            title.setLayout(new GridLayout());
+            GridLayout titleLayout = new GridLayout();
+            titleLayout.marginHeight = 0;
+            title.setLayout(titleLayout);
             titleLabel = new Label(title, SWT.NONE);
-            titleLabel.setLayoutData(new GridData(GridData.FILL_BOTH));
+            titleLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
             if (parentComposite.getBackground() != null && !parentComposite.getBackground().equals(titleLabel.getBackground())) {
                 titleLabel.setBackground(parentComposite.getBackground());
             }
             titleLabel.setVisible(true);
-
-            initMainComposite(sash);
-
+            initTableComposite(sash);
             sash.setSashWidth(6);
             sash.setWeights(new int[] { 1, 6 });
+            mainComposite = sash;
         }else{
-            initMainComposite(parentComposite);
+            initTableComposite(parentComposite);
+            mainComposite = tableComposite;
+
         }
 
         initTable();
@@ -194,13 +199,13 @@ public abstract class AbstractDataTableEditorView<B> {
 
     }
     
-    private void initMainComposite(Composite parent){
-        mainComposite = new Composite(parent, SWT.NONE);
-        if (parentComposite.getBackground() != null && !parentComposite.getBackground().equals(mainComposite.getBackground())) {
-            mainComposite.setBackground(parentComposite.getBackground());
+    private void initTableComposite(Composite parent) {
+        tableComposite = new Composite(parent, SWT.NONE);
+        if (parent.getBackground() != null && !parent.getBackground().equals(tableComposite.getBackground())) {
+            tableComposite.setBackground(parent.getBackground());
         }
         GridLayout layout = new GridLayout();
-        mainComposite.setLayout(layout);
+        tableComposite.setLayout(layout);
     }
 
     /**
@@ -231,7 +236,7 @@ public abstract class AbstractDataTableEditorView<B> {
      * DOC amaumont Comment method "initTable".
      */
     protected void initTable() {
-        this.extendedTableViewer = new AbstractExtendedTableViewer<B>(this.extendedTableModel, mainComposite, this.readOnly) {
+        this.extendedTableViewer = new AbstractExtendedTableViewer<B>(this.extendedTableModel, tableComposite, this.readOnly) {
 
             @Override
             protected void createColumns(TableViewerCreator<B> tableViewerCreator, Table table) {
