@@ -14,10 +14,9 @@ package org.talend.updates.runtime.utils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
-import org.talend.commons.utils.resource.FileExtensions;
+import org.talend.commons.utils.resource.BundleFileUtil;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -25,35 +24,14 @@ import org.talend.commons.utils.resource.FileExtensions;
 public class JarMenifestUtil {
 
     public static Manifest getManifest(File f) throws IOException {
-        if (f == null || !f.exists() || !f.isFile() || !f.getName().endsWith(FileExtensions.JAR_FILE_SUFFIX)) {
-            return null;
-        }
-        JarFile jarFile = null;
-        try {
-            jarFile = new JarFile(f);
-            return jarFile.getManifest();
-        } finally {
-            if (jarFile != null) {
-                try {
-                    jarFile.close();
-                } catch (IOException e) {
-                }
-            }
-        }
+        return BundleFileUtil.getManifest(f);
     }
 
     public static String getBundleSymbolicName(Manifest manifest) {
-        String name = manifest.getMainAttributes().getValue("Bundle-SymbolicName"); //$NON-NLS-1$
-        if (name != null) {
-            final int indexOf = name.indexOf(';');
-            if (indexOf > 0)
-                name = name.substring(0, indexOf);
-            return name;
-        }
-        return null;
+        return BundleFileUtil.getBundleSymbolicName(manifest);
     }
 
     public static String getBundleVersion(Manifest manifest) {
-        return manifest.getMainAttributes().getValue("Bundle-Version"); //$NON-NLS-1$
+        return BundleFileUtil.getBundleVersion(manifest);
     }
 }
