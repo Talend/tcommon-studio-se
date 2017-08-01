@@ -30,6 +30,8 @@ import org.talend.core.model.process.IProcess;
 import org.talend.core.model.properties.ConnectionItem;
 import org.talend.core.model.properties.ContextItem;
 import org.talend.core.model.properties.Item;
+import org.talend.core.model.relationship.Relation;
+import org.talend.core.model.relationship.RelationshipItemBuilder;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.repository.ISubRepositoryObject;
 import org.talend.core.model.update.IUpdateItemType;
@@ -260,15 +262,9 @@ public enum UpdateManagerProviderDetector {
                 if (deactive) {// disable to do update
                     return false;
                 }
-                boolean isNeedUpdate = false;
-                for (IRepositoryUpdateManagerProvider provider : repositoryProviders) {
-                    List<UpdateResult> updateResults = provider.retrieveUpdateResults(selection);
-                    List<UpdateResult> validResult = provider.validResults(updateResults);
-                    if (validResult != null && validResult.size() > 0) {
-                        isNeedUpdate = true;
-                    }
-                }
-                if (isNeedUpdate) {
+                // Get all relations
+                List<Relation> relations = getAllRelations(selection);
+                if (relations != null && relations.size() > 0) {
                     boolean propagated = RepositoryUpdateManager.openPropagationDialog();
                     if (!propagated) {
                         return false;
@@ -305,6 +301,37 @@ public enum UpdateManagerProviderDetector {
         }
     }
 
+    private List<Relation> getAllRelations(IStructuredSelection selection) {
+        Object firstElement = selection.getFirstElement();
+        if (firstElement == null || !(firstElement instanceof RepositoryNode)) {
+            return null;
+        }
+        RepositoryNode node = (RepositoryNode) firstElement;
+        Item item = node.getObject().getProperty().getItem();
+        List<Relation> allRelations = new ArrayList<Relation>();
+        if (node.getObject() != null) {
+            List<Relation> relations = RelationshipItemBuilder.getInstance().getItemsRelatedTo(item.getProperty().getId(),
+                    RelationshipItemBuilder.LATEST_VERSION, RelationshipItemBuilder.PROPERTY_RELATION);
+            if (relations != null && relations.size() > 0) {
+                allRelations.addAll(relations);
+            }
+
+            if (node.getObject() instanceof ISubRepositoryObject) {
+                ISubRepositoryObject subObject = (ISubRepositoryObject) node.getObject();
+                AbstractMetadataObject metadataObject = subObject.getAbstractMetadataObject();
+                if (metadataObject instanceof SAPFunctionUnit) {
+                    List<Relation> sapFunRelations = RelationshipItemBuilder.getInstance().getItemsRelatedTo(
+                            metadataObject.getId(), RelationshipItemBuilder.LATEST_VERSION,
+                            RelationshipItemBuilder.PROPERTY_RELATION);
+                    if (sapFunRelations != null && sapFunRelations.size() > 0) {
+                        allRelations.addAll(sapFunRelations);
+                    }
+                }
+            }
+        }
+        return allRelations;
+    }
+    
     private boolean doOldUpdates(IStructuredSelection selection) {
         Object firstElement = selection.getFirstElement();
         if (firstElement == null || !(firstElement instanceof RepositoryNode)) {
