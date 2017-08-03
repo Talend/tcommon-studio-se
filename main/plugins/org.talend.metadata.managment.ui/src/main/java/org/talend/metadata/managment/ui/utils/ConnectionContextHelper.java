@@ -1608,26 +1608,21 @@ public final class ConnectionContextHelper {
             ContextType type = ContextUtils.getContextTypeByName(contexts, context.getName(), defaultContextName);
             if (type != null) {
                 for (ContextParameterType param :(List<ContextParameterType>)type.getContextParameter()){
-                    boolean exist = false;
-                    for (IContextParameter jobParam : context.getContextParameterList()) {
-                        if (contextItemId.equals(jobParam.getSource()) && jobParam.getName().equals(param.getName())) {
-                            exist = true;
-                            break;
-                        }
-                    }
-                    if(exist){
+                    if (context.getContextParameter(param.getName()) != null) {
                         continue;
                     }
-                    JobContextParameter contextParam = new JobContextParameter();
+                    if(added){
+                        JobContextParameter contextParam = new JobContextParameter();
 
-                    ContextUtils.updateParameter(param, contextParam);
-                    if (contextItemId != null) {
-                        contextParam.setSource(contextItemId);
+                        ContextUtils.updateParameter(param, contextParam);
+                        if (contextItemId != null) {
+                            contextParam.setSource(contextItemId);
+                        }
+                        contextParam.setContext(context);
+
+                        context.getContextParameterList().add(contextParam);
                     }
-                    contextParam.setContext(context);
-
-                    context.getContextParameterList().add(contextParam);
-                    addedVars.add(contextParam.getName());
+                    addedVars.add(param.getName());
                 }
             }
         }
