@@ -29,6 +29,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.ItemRelation;
@@ -40,6 +41,7 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.i18n.Messages;
+import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
@@ -703,12 +705,21 @@ public class RelationshipItemBuilder {
 
     private String getTypeFromItem(Item item) {
         String type = null;
-
+        boolean isTestContainer = false;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
+            ITestContainerProviderService testContainerService = (ITestContainerProviderService) GlobalServiceRegister
+                    .getDefault().getService(ITestContainerProviderService.class);
+            if (testContainerService != null ) {
+                isTestContainer = testContainerService.isTestContainerItem(item);
+            }
+        }
         if (item instanceof ProcessItem) {
             type = JOB_RELATION;
         } else if (item instanceof JobletProcessItem) {
             type = JOBLET_RELATION;
-        } else {
+        }else if(isTestContainer){
+            type = TEST_RELATION;
+        }else {
             throw new RuntimeException(Messages.getString("RelationshipItemBuilder.unexpect.item", item.getClass().getName())); //$NON-NLS-1$
         }
 
@@ -720,6 +731,8 @@ public class RelationshipItemBuilder {
             return ERepositoryObjectType.getAllTypesOfProcess();
         } else if (JOBLET_RELATION.equals(relationType)) {
             return ERepositoryObjectType.getAllTypesOfJoblet();
+        }  else if (TEST_RELATION.equals(relationType)) {
+            return ERepositoryObjectType.getAllTypesOfTestContainer();
         } else {
             throw new RuntimeException(Messages.getString("RelationshipItemBuilder.unexpect.relation", relationType)); //$NON-NLS-1$
         }
@@ -930,6 +943,11 @@ public class RelationshipItemBuilder {
         List<ERepositoryObjectType> jobletTypes = getSupportRepObjTypes(JOBLET_RELATION);
         if (jobletTypes != null && !jobletTypes.isEmpty()) {
             supportTypes.addAll(jobletTypes);
+        }
+        
+        List<ERepositoryObjectType> testTypes = getSupportRepObjTypes(TEST_RELATION);
+        if (testTypes != null && !testTypes.isEmpty()) {
+            supportTypes.addAll(testTypes);
         }
 
         return supportTypes;

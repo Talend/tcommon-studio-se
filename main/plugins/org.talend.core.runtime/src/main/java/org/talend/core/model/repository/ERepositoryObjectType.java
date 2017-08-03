@@ -1425,4 +1425,13 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
         }
         return allTypes;
     }
+    
+    public static List<ERepositoryObjectType> getAllTypesOfTestContainer() {
+        List<ERepositoryObjectType> allTypes = new ArrayList<ERepositoryObjectType>();
+
+        if (ERepositoryObjectType.TEST_CONTAINER != null) {
+            allTypes.add(ERepositoryObjectType.TEST_CONTAINER);
+        }
+        return allTypes;
+    }
 }
