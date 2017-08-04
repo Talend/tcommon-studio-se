@@ -39,11 +39,13 @@ public abstract class AbstractDataTableEditorView<B> {
 
     protected boolean readOnly;
 
-    private Label titleLabel;
+    protected Label titleLabel;
 
     private String title;
 
     protected Composite mainComposite;
+    
+    protected Composite tableComposite;
 
     protected int mainCompositeStyle;
 
@@ -57,7 +59,7 @@ public abstract class AbstractDataTableEditorView<B> {
 
     private boolean toolbarVisible = true;
 
-    private boolean labelVisible = true;
+    protected boolean labelVisible = true;
 
     private KeyListener tableKeyListener;
 
@@ -153,6 +155,26 @@ public abstract class AbstractDataTableEditorView<B> {
     protected AbstractDataTableEditorView() {
         super();
     }
+    
+    protected void createLabelComposite(Composite mainComposite){
+        if (!this.labelVisible) {
+            return;
+        }
+        titleLabel = new Label(mainComposite, SWT.NONE);
+        titleLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        if (parentComposite.getBackground() != null && !parentComposite.getBackground().equals(titleLabel.getBackground())) {
+            titleLabel.setBackground(parentComposite.getBackground());
+        }
+        titleLabel.setVisible(true);
+    }
+    
+    private void createTableComposite(){
+        if(tableComposite != null){
+            initTable(tableComposite);
+            return;
+        }
+        initTable();
+    }
 
     public void initGraphicComponents() {
 
@@ -162,16 +184,9 @@ public abstract class AbstractDataTableEditorView<B> {
         }
         GridLayout layout = new GridLayout();
         mainComposite.setLayout(layout);
-        if (this.labelVisible) {
-            titleLabel = new Label(mainComposite, SWT.NONE);
-            titleLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-            if (parentComposite.getBackground() != null && !parentComposite.getBackground().equals(titleLabel.getBackground())) {
-                titleLabel.setBackground(parentComposite.getBackground());
-            }
-            titleLabel.setVisible(true);
-        }
+        createLabelComposite(mainComposite);
 
-        initTable();
+        createTableComposite();
 
         this.extendedTableViewer.getTableViewerCreator().getTableViewer().setComparer(createElementComparer());
 
@@ -211,12 +226,19 @@ public abstract class AbstractDataTableEditorView<B> {
     protected ExtendedToolbarView initToolBar() {
         return null;
     }
+    
+    protected void initTable() {
+        initTable(null);
+    }
 
     /**
      * DOC amaumont Comment method "initTable".
      */
-    protected void initTable() {
-        this.extendedTableViewer = new AbstractExtendedTableViewer<B>(this.extendedTableModel, mainComposite, this.readOnly) {
+    protected void initTable(Composite pComposite) {
+        if(pComposite == null){
+            pComposite = mainComposite;
+        }
+        this.extendedTableViewer = new AbstractExtendedTableViewer<B>(this.extendedTableModel, pComposite, this.readOnly) {
 
             @Override
             protected void createColumns(TableViewerCreator<B> tableViewerCreator, Table table) {
@@ -457,6 +479,10 @@ public abstract class AbstractDataTableEditorView<B> {
      * @param title the title to set
      */
     public void setTitle(String title) {
+        this.title = title;
+        if(titleLabel == null){
+             return;
+        }
         if (title == null) {
             titleLabel.setVisible(false);
             titleLabel.setText(""); //$NON-NLS-1$
@@ -464,6 +490,5 @@ public abstract class AbstractDataTableEditorView<B> {
             titleLabel.setVisible(true);
             titleLabel.setText(title);
         }
-        this.title = title;
     }
 }
