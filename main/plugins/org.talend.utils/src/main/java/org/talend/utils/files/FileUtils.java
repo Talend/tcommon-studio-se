@@ -46,8 +46,8 @@ public final class FileUtils {
     private FileUtils() {
     }
 
-    public static synchronized void replaceInFile(String path, String oldString, String newString) throws IOException,
-            URISyntaxException {
+    public static synchronized void replaceInFile(String path, String oldString, String newString)
+            throws IOException, URISyntaxException {
         File file = new File(path);
         File tmpFile = new File(path + ".tmp");//$NON-NLS-1$
 
@@ -235,8 +235,35 @@ public final class FileUtils {
      * @return
      */
     public static File createUserTmpFolder(String folderName) {
-        File tmpFolder = new File(System.getProperty("user.dir"), "temp/" + folderName); //$NON-NLS-1$  //$NON-NLS-2$
+        File tmpFolder = new File(System.getProperty("user.dir"), "temp/" + folderName); //$NON-NLS-1$ //$NON-NLS-2$
         tmpFolder.mkdirs();
         return tmpFolder;
+    }
+
+    public static String readFileByLines(String fileName) throws IOException {
+        String fileContent = ""; //$NON-NLS-1$
+        File file = new File(fileName);
+        BufferedReader reader = null;
+        StringBuffer sb = new StringBuffer();
+        try {
+            reader = new BufferedReader(new FileReader(file));
+            String tempString = null;
+            int line = 1;
+            while ((tempString = reader.readLine()) != null) {
+                sb.append(tempString);
+                sb.append("\n"); //$NON-NLS-1$
+                line++;
+            }
+            fileContent = sb.toString();
+            reader.close();
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e1) {
+                }
+            }
+        }
+        return fileContent;
     }
 }
