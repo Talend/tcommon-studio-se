@@ -149,7 +149,7 @@ public class LocalLibraryManager implements ILibraryManagerService {
     public void deploy(URI jarFileUri, IProgressMonitor... monitorWrap) {
         deploy(jarFileUri, null, monitorWrap);
     }
-    
+
     @Override
     public void deploy(URI jarFileUri, String mavenUri, IProgressMonitor... monitorWrap) {
         if (jarFileUri.isOpaque()) {
@@ -226,6 +226,7 @@ public class LocalLibraryManager implements ILibraryManagerService {
                         }
                     }
                     deployer.deployToLocalMaven(sourceAndMavenUri, updateRemoteJar);
+                    //
                     updateInstalledMvnUri(sourceAndMavenUri.keySet());
                 }
             } else {
@@ -253,6 +254,7 @@ public class LocalLibraryManager implements ILibraryManagerService {
                     // index
                     if (deployAsDefault) {
                         sourceAndMavenUri.put(defaultMavenUri, file.getAbsolutePath());
+
                     }
                 } else {
                     sourceAndMavenUri.put(snapshotMavenUri, file.getAbsolutePath());
@@ -278,6 +280,9 @@ public class LocalLibraryManager implements ILibraryManagerService {
         for (String uri : installedUris) {
             checkJarInstalledInMaven(uri);
         }
+
+        // TUP-18405, save the install modules
+        LibrariesIndexManager.getInstance().saveMavenIndexResource();
     }
 
     /*
@@ -367,8 +372,9 @@ public class LocalLibraryManager implements ILibraryManagerService {
     public boolean retrieve(String jarNeeded, String pathToStore, boolean popUp, IProgressMonitor... monitorWrap) {
         return retrieve(jarNeeded, null, pathToStore, popUp);
     }
-    
-    private boolean retrieve(String jarNeeded, String mavenUri, String pathToStore, boolean showDialog, NexusServerBean customNexusServer) {
+
+    private boolean retrieve(String jarNeeded, String mavenUri, String pathToStore, boolean showDialog,
+            NexusServerBean customNexusServer) {
 
         String sourcePath = null, targetPath = pathToStore;
         File jarFile = null;
@@ -379,7 +385,7 @@ public class LocalLibraryManager implements ILibraryManagerService {
             }
             // retrieve form custom nexus server automatically
             TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
-            if(customNexusServer == null){
+            if (customNexusServer == null) {
                 customNexusServer = manager.getCustomNexusServer();
             }
             if (customNexusServer != null) {
@@ -457,7 +463,7 @@ public class LocalLibraryManager implements ILibraryManagerService {
     }
 
     private boolean retrieve(String jarNeeded, String mavenUri, String pathToStore, boolean showDialog) {
-        return retrieve(jarNeeded,  mavenUri,  pathToStore,  showDialog, null);
+        return retrieve(jarNeeded, mavenUri, pathToStore, showDialog, null);
     }
 
     /**
@@ -716,20 +722,21 @@ public class LocalLibraryManager implements ILibraryManagerService {
     }
 
     @Override
-    public boolean retrieve(ModuleNeeded module, String pathToStore, boolean showDialog, NexusServerBean bean, IProgressMonitor... monitorWrap) {
+    public boolean retrieve(ModuleNeeded module, String pathToStore, boolean showDialog, NexusServerBean bean,
+            IProgressMonitor... monitorWrap) {
         // retreive form custom nexus server automatically
         String mavenUri = module.getMavenUri();
         String jarNeeded = module.getModuleName();
-        
+
         return retrieve(jarNeeded, mavenUri, pathToStore, showDialog, bean);
     }
-    
+
     @Override
     public boolean retrieve(ModuleNeeded module, String pathToStore, boolean showDialog, IProgressMonitor... monitorWrap) {
         // retreive form custom nexus server automatically
         String mavenUri = module.getMavenUri();
         String jarNeeded = module.getModuleName();
-        
+
         return retrieve(jarNeeded, mavenUri, pathToStore, showDialog);
     }
 
@@ -1609,7 +1616,7 @@ public class LocalLibraryManager implements ILibraryManagerService {
         if (!PomUtil.isAvailable(mvnUri)) {
             return true;
         }
-        
+
         return false;
     }
 

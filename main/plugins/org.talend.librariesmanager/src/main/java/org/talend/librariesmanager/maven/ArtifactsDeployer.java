@@ -25,9 +25,9 @@ import org.apache.http.client.methods.HttpHead;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.ops4j.pax.url.mvn.MavenResolver;
 import org.talend.commons.exception.ExceptionHandler;
-import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.general.INexusService;
+import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.model.general.ModuleStatusProvider;
 import org.talend.core.nexus.NexusConstants;
 import org.talend.core.nexus.NexusServerBean;
@@ -37,6 +37,7 @@ import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.utils.PomUtil;
+import org.talend.librariesmanager.model.service.LibrariesIndexManager;
 import org.talend.utils.io.FilesUtils;
 
 /**
@@ -148,13 +149,16 @@ public class ArtifactsDeployer {
             if (toRemoteNexus) {
                 installToRemote(libFile, parseMvnUrl, artifactType);
                 // deploy the pom
-//                if (pomFile != null && pomFile.exists()) {
-//                    installToRemote(pomFile, parseMvnUrl, pomType);
-//                }
+                // if (pomFile != null && pomFile.exists()) {
+                // installToRemote(pomFile, parseMvnUrl, pomType);
+                // }
             }
             if (generated) { // only for generate pom
                 FilesUtils.deleteFolder(pomFile.getParentFile(), true);
             }
+
+            // TUP-18405, record the install module
+            LibrariesIndexManager.getInstance().getMavenLibIndex().getJarsToRelativePath().put(libFile.getName(), mavenUri);
         }
 
     }
@@ -168,13 +172,13 @@ public class ArtifactsDeployer {
         }
         try {
             deleteOldEntity(artifact, type);
-            
+
             if (GlobalServiceRegister.getDefault().isServiceRegistered(INexusService.class)) {
-                INexusService nexusService = (INexusService) GlobalServiceRegister.getDefault().getService(
-                        INexusService.class);
-                nexusService.upload(nexusServer, artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(), content.toURI().toURL());
+                INexusService nexusService = (INexusService) GlobalServiceRegister.getDefault().getService(INexusService.class);
+                nexusService.upload(nexusServer, artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(), content
+                        .toURI().toURL());
             }
-            
+
         } catch (Exception e) {
             ExceptionHandler.process(e);
         }
@@ -195,17 +199,16 @@ public class ArtifactsDeployer {
         } else {
             target = target + nexusServer.getRepositoryId() + NexusConstants.SLASH;
         }
-        
+
         target = target + artifactPath;
         URL targetURL = new URL(target);
-        
-        
+
         DefaultHttpClient httpClient = new DefaultHttpClient();
         try {
             HttpHead httpHead = null;
             HttpResponse response = null;
             StatusLine statusLine = null;
-            if(targetURL.getFile()!=null && !targetURL.getFile().endsWith("SNAPSHOT.jar")){
+            if (targetURL.getFile() != null && !targetURL.getFile().endsWith("SNAPSHOT.jar")) {
                 httpClient.getCredentialsProvider().setCredentials(new AuthScope(targetURL.getHost(), targetURL.getPort()),
                         new UsernamePasswordCredentials(nexusServer.getUserName(), nexusServer.getPassword()));
                 httpHead = new HttpHead(targetURL.toString());
@@ -213,8 +216,8 @@ public class ArtifactsDeployer {
                 statusLine = response.getStatusLine();
                 int responseResult = statusLine.getStatusCode();
                 if (responseResult == 200) {
-                     HttpDelete httpDelete = new HttpDelete(targetURL.toString());
-                     httpClient.execute(httpDelete);
+                    HttpDelete httpDelete = new HttpDelete(targetURL.toString());
+                    httpClient.execute(httpDelete);
                 }
             }
         } catch (Exception e) {
