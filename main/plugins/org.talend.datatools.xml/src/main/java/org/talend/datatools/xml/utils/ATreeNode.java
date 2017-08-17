@@ -102,6 +102,24 @@ public class ATreeNode {
             NodeCreationObserver.add(this);
         }
     }
+    
+    public ATreeNode copy() {
+        ATreeNode copyNode = new ATreeNode();
+        // don't copy parents and foxTreeNode, need to reset. 
+        copyNode.setChoice(isChoice);
+        copyNode.setCurrentNamespace(currentNamespace);
+        copyNode.setDataMaxLength(dataMaxLength);
+        copyNode.dataType = dataType;
+        copyNode.originalDataType = originalDataType;
+        copyNode.setLabel(label);
+        copyNode.setOptional(isOptional);
+        copyNode.setPrecisionValue(precisionValue);
+        copyNode.setSubstitution(isSubstitution);
+        copyNode.setType(type);
+        copyNode.setValue(value);
+        
+        return copyNode;
+    }
 
     /**
      * Return the value of tree node.
