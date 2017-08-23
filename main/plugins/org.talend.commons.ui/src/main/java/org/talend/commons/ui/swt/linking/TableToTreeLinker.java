@@ -231,12 +231,14 @@ public class TableToTreeLinker<D1, D2> extends BgDrawableComposite implements IB
             Rectangle tableItemBounds = tableItem.getBounds();
 
             int yStraight = sourceToCommonPoint.y + treeItemHeight / 2 + tableItemBounds.y;
-
-            pointStartStraight.x = sourceToCommonPoint.x + tableItem.getParent().getBounds().width;
-            pointStartStraight.y = yStraight;
-
             pointEndStraight.x = sourceToCommonPoint.x + xStartBezierLink;
-            pointEndStraight.x = pointStartStraight.x;
+            if (Platform.OS_MACOSX.equals(Platform.getOS())) {
+                pointStartStraight.x = sourceToCommonPoint.x + tableItem.getParent().getBounds().width;
+                pointEndStraight.x = pointStartStraight.x;
+            } else {
+                pointStartStraight.x = sourceToCommonPoint.x + tableItemBounds.x + tableItemBounds.width;
+            }
+            pointStartStraight.y = yStraight;
             pointEndStraight.y = yStraight;
 
             TreeItem treeItem = getFirstVisibleTreeItemOfPath(extremity2.getDataItem());
