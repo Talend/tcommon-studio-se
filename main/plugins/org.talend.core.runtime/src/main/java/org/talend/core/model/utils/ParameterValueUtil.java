@@ -287,7 +287,7 @@ public final class ParameterValueUtil {
                 // get the const string
                 subString = value.substring(start, end);
                 if (!commentStringSet.contains(start + ":" + (end - 1)) && start < methodMaxIndex) { //$NON-NLS-1$
-                    subString = subString.replaceAll("\\b" + oldName + "\\b", newName);//$NON-NLS-1$ //$NON-NLS-2$
+                    subString = doSubStringReplace(oldName, newName, subString);
                 }
             } else {
                 // get the varible string, do replace, then append it
@@ -309,7 +309,7 @@ public final class ParameterValueUtil {
                     Point funcNameArea = function.getNameArea();
                     String functionName = value.substring(funcNameArea.x, funcNameArea.y);
                     if (functionName.matches("^globalMap\\..+")) { //$NON-NLS-1$
-                        subString = subString.replaceAll("\\b" + oldName + "\\b", newName);//$NON-NLS-1$ //$NON-NLS-2$
+                        subString = doSubStringReplace(oldName, newName, subString);
                     } else {
                         if (subString.equals("\"" + oldName + "\"")) { //$NON-NLS-1$ //$NON-NLS-2$
                             subString = "\"" + newName + "\""; //$NON-NLS-1$ //$NON-NLS-2$
@@ -332,6 +332,10 @@ public final class ParameterValueUtil {
         }
 
         return strBuffer.toString();
+    }
+
+    public static String doSubStringReplace(String oldName, String newName, String subString) {
+        return subString.replaceAll("\\b" + oldName + "\\b", newName);//$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
