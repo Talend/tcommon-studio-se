@@ -78,7 +78,7 @@ public interface IComponent {
 
     public List<? extends IElementParameter> createElementParameters(INode node);
 
-    public List<? extends INodeReturn> createReturns();
+    public List<? extends INodeReturn> createReturns(INode node);
 
     public List<? extends INodeConnector> createConnectors(INode node);
 
