@@ -14,6 +14,7 @@ package org.talend.core.model.utils;
 
 import java.util.ArrayList;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.talend.commons.utils.PasswordEncryptUtil;
 import org.talend.core.model.context.JobContextParameter;
@@ -28,7 +29,6 @@ import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
 import org.talend.repository.ProjectManager;
 import org.talend.utils.security.CryptoHelper;
 
-import junit.framework.Assert;
 
 /**
  * DOC cmeng class global comment. Detailled comment
@@ -467,8 +467,7 @@ public class ParameterValueUtilTest {
         expectRetValue = "\"select A.id, A.name form \"+context.table+\" A where A.name= \"+((String)globalMap.get(\"tFileList_2_CURRENT_FILE\"))";
         // if flag is false, means is from SQL. but when replace the globlemap, will be problem.
         retValue = ParameterValueUtil.renameValues(testString, "tFileList_1", "tFileList_2", false);
-        Assert.assertFalse("testRenameValues4SQLAndGlobleMap", expectRetValue.equals(retValue));
-        Assert.assertTrue("shouldn't be replaced", testString.equals(retValue));
+        Assert.assertTrue("testRenameValues4SQLAndGlobleMap", expectRetValue.equals(retValue));
     }
 
     @Test

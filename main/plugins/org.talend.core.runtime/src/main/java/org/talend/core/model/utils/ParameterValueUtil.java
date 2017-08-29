@@ -335,7 +335,25 @@ public final class ParameterValueUtil {
     }
 
     public static String doSubStringReplace(String oldName, String newName, String subString) {
-        return subString.replaceAll("\\b" + oldName + "\\b", newName);//$NON-NLS-1$ //$NON-NLS-2$
+        String newStr = subString.replaceAll("\\b" + oldName + "\\b", newName);//$NON-NLS-1$ //$NON-NLS-2$
+        if (!oldName.contains(".") && newStr.equals(subString)) { // not connection and replace failure //$NON-NLS-1$
+            boolean haveQuotes = subString.startsWith("\""); //$NON-NLS-1$
+            boolean replaced = false;
+            if (haveQuotes) {
+                subString = subString.substring(1);
+            }
+            if (subString.startsWith(oldName + '_')) { // start with unique name
+                newStr = newName + subString.substring(oldName.length());
+                replaced = true;
+            } else if (subString.startsWith(oldName + '.')) { // only connection name
+                newStr = newName + subString.substring(oldName.length());
+                replaced = true;
+            }
+            if (haveQuotes && replaced) {
+                newStr = "\"" + newStr; //$NON-NLS-1$
+            }
+        }
+        return newStr;
     }
 
     /**
