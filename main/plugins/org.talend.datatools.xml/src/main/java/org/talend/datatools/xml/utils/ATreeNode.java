@@ -8,6 +8,8 @@
 package org.talend.datatools.xml.utils;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -57,7 +59,7 @@ public class ATreeNode {
     private long precisionValue;
 
     private static HashMap xmlTypeToDataType = new HashMap();
-    
+
     private Object foxTreeNode;
 
     static {
@@ -102,10 +104,10 @@ public class ATreeNode {
             NodeCreationObserver.add(this);
         }
     }
-    
+
     public ATreeNode copy() {
         ATreeNode copyNode = new ATreeNode();
-        // don't copy parents and foxTreeNode, need to reset. 
+        // don't copy parents and foxTreeNode, need to reset.
         copyNode.setChoice(isChoice);
         copyNode.setCurrentNamespace(currentNamespace);
         copyNode.setDataMaxLength(dataMaxLength);
@@ -117,7 +119,7 @@ public class ATreeNode {
         copyNode.setSubstitution(isSubstitution);
         copyNode.setType(type);
         copyNode.setValue(value);
-        
+
         return copyNode;
     }
 
@@ -136,6 +138,25 @@ public class ATreeNode {
      * @return
      */
     public Object[] getChildren() {
+        // sort children with order namespace/attribute/element
+        Collections.sort(children, new Comparator() {
+
+            /*
+             * (non-Javadoc)
+             * 
+             * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+             */
+            @Override
+            public int compare(Object o1, Object o2) {
+                if (o1 instanceof ATreeNode && o2 instanceof ATreeNode) {
+                    ATreeNode node1 = (ATreeNode) o1;
+                    ATreeNode node2 = (ATreeNode) o2;
+                    return node2.getType() - node1.getType();
+                }
+                return 0;
+            }
+        });
+
         return children.toArray();
     }
 
@@ -291,10 +312,10 @@ public class ATreeNode {
     }
 
     @Override
-    public boolean equals(Object obj){
+    public boolean equals(Object obj) {
         return equals(obj, 0);
     }
-    
+
     public boolean equals(Object obj, int depth) {
         if (this == obj) {
             return true;
@@ -403,7 +424,7 @@ public class ATreeNode {
     public void setPrecisionValue(long precisionValue) {
         this.precisionValue = precisionValue;
     }
-    
+
     public Object getFoxTreeNode() {
         return foxTreeNode;
     }
@@ -411,5 +432,5 @@ public class ATreeNode {
     public void setFoxTreeNode(Object foxTreeNode) {
         this.foxTreeNode = foxTreeNode;
     }
-    
+
 }

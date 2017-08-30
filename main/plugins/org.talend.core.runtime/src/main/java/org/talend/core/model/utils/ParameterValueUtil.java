@@ -287,7 +287,7 @@ public final class ParameterValueUtil {
                 // get the const string
                 subString = value.substring(start, end);
                 if (!commentStringSet.contains(start + ":" + (end - 1)) && start < methodMaxIndex) { //$NON-NLS-1$
-                    subString = subString.replaceAll(oldName, newName);
+                    subString = subString.replaceAll("\\b" + oldName + "\\b", newName);//$NON-NLS-1$ //$NON-NLS-2$
                 }
             } else {
                 // get the varible string, do replace, then append it
@@ -309,7 +309,7 @@ public final class ParameterValueUtil {
                     Point funcNameArea = function.getNameArea();
                     String functionName = value.substring(funcNameArea.x, funcNameArea.y);
                     if (functionName.matches("^globalMap\\..+")) { //$NON-NLS-1$
-                        subString = subString.replaceAll(oldName, newName);
+                        subString = subString.replaceAll("\\b" + oldName + "\\b", newName);//$NON-NLS-1$ //$NON-NLS-2$
                     } else {
                         if (subString.equals("\"" + oldName + "\"")) { //$NON-NLS-1$ //$NON-NLS-2$
                             subString = "\"" + newName + "\""; //$NON-NLS-1$ //$NON-NLS-2$
@@ -489,8 +489,8 @@ public final class ParameterValueUtil {
      * @param vStart
      * @param vEnd
      */
-    private static String doVaribleReplace(String oldName, String newName, String value, List<FunctionInfo> functions,
-            int vStart, int vEnd) {
+    private static String doVaribleReplace(String oldName, String newName, String value, List<FunctionInfo> functions, int vStart,
+            int vEnd) {
         if (value.trim().isEmpty()) {
             return value;
         }
@@ -616,7 +616,7 @@ public final class ParameterValueUtil {
 
     private static int calcMethodArea(String varibleString, String wholeString, int beginIndex, List<FunctionInfo> functions) {
         // globalMap.get(...)
-        //        String regex = "\\b\\S*\\s*\\.\\s*\\S*\\s*\\(\\z"; //$NON-NLS-1$
+        // String regex = "\\b\\S*\\s*\\.\\s*\\S*\\s*\\(\\z"; //$NON-NLS-1$
         // maybe get(...) also is target
         String regex = "\\b[\\w\\.]*?\\s*\\("; //$NON-NLS-1$
 
@@ -822,7 +822,7 @@ public final class ParameterValueUtil {
             Object docValue = param.getValue();
             if (docValue != null) {
                 if ((param.getRepositoryValue() != null && param.getRepositoryValue().toUpperCase().contains("PASSWORD") //$NON-NLS-1$
-                || EParameterFieldType.PASSWORD.equals(param.getFieldType()))//
+                        || EParameterFieldType.PASSWORD.equals(param.getFieldType()))//
                         && !ContextParameterUtils.containContextVariables((String) docValue)) {
 
                     if (isHidePassword()) { // if hide will display the *

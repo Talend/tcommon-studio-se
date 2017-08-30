@@ -71,10 +71,10 @@ public class RepositoryObjectCache {
             idCache.put(newObject.getId(), idItems);
         }
         idItems.add(newObject);
-        List<IRepositoryViewObject> nameItems = nameCache.get(newObject.getLabel());
+        List<IRepositoryViewObject> nameItems = nameCache.get(newObject.getProperty().getLabel());
         if (nameItems == null) {
             nameItems = new ArrayList<IRepositoryViewObject>();
-            nameCache.put(newObject.getLabel(), nameItems);
+            nameCache.put(newObject.getProperty().getLabel(), nameItems);
         }
         nameItems.add(newObject);
         List<IRepositoryViewObject> list = itemsFromRepository.get(itemType);
@@ -130,7 +130,7 @@ public class RepositoryObjectCache {
                 List<IRepositoryViewObject> nameItems = nameCache.get(newObject.getLabel());
                 if (nameItems == null) {
                     nameItems = new ArrayList<IRepositoryViewObject>();
-                    nameCache.put(newObject.getLabel(), nameItems);
+                    nameCache.put(newObject.getProperty().getLabel(), nameItems);
                 }
                 nameItems.add(newObject);
                 newList.add(newObject);
