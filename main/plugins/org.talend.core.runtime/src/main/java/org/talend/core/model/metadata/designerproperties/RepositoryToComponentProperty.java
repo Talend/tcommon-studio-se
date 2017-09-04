@@ -992,7 +992,8 @@ public class RepositoryToComponentProperty {
                         || EDatabaseConnTemplate.ORACLESN.getDBDisplayName().equals(databaseType)
                         || EDatabaseConnTemplate.PLUSPSQL.getDBDisplayName().equals(databaseType)
                         || EDatabaseConnTemplate.PSQL.getDBDisplayName().equals(databaseType)
-                        || EDatabaseConnTemplate.SAPHana.getDBDisplayName().equals(databaseType)) {
+                        || EDatabaseConnTemplate.SAPHana.getDBDisplayName().equals(databaseType)
+                        || EDatabaseConnTemplate.MSSQL.getDBDisplayName().equals(databaseType)) {
                     if (dbVersionString != null) {
                         driverValue = dbVersionString.toUpperCase();
                     }
