@@ -20,6 +20,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.talend.commons.ui.swt.actions.ITreeContextualAction;
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.core.model.metadata.builder.connection.BRMSConnection;
 import org.talend.core.model.metadata.builder.connection.CDCConnection;
@@ -41,18 +42,19 @@ import org.talend.core.repository.model.repositoryObject.QueryEMFRepositoryNode;
 import org.talend.core.repository.model.repositoryObject.SAPFunctionRepositoryObject;
 import org.talend.core.repository.model.repositoryObject.SAPIDocRepositoryObject;
 import org.talend.core.repository.model.repositoryObject.SalesforceModuleRepositoryObject;
+import org.talend.core.runtime.services.IGenericWizardService;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.i18n.Messages;
+import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IRepositoryNode.ENodeType;
 import org.talend.repository.model.IRepositoryNode.EProperties;
-import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryNode;
 
 /**
  * DOC smallet class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: RepositoryDoubleClickAction.java 77219 2012-01-24 01:14:15Z mhirt $
- * 
+ *
  */
 public class RepoDoubleClickAction extends Action {
 
@@ -80,7 +82,7 @@ public class RepoDoubleClickAction extends Action {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jdt.ui.actions.SelectionDispatchAction#run(org.eclipse.jface.viewers.IStructuredSelection)
      */
     @Override
@@ -121,9 +123,9 @@ public class RepoDoubleClickAction extends Action {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "isLinkCDCNode".
-     * 
+     *
      * for cdc
      */
     private boolean isLinkCDCNode(RepositoryNode node) {
@@ -150,9 +152,9 @@ public class RepoDoubleClickAction extends Action {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "isEBCDICTable".
-     * 
+     *
      * for ebcdic
      */
     private boolean isEBCDICTable(RepositoryNode theNode) {
@@ -174,9 +176,9 @@ public class RepoDoubleClickAction extends Action {
     }
 
     /**
-     * 
+     *
      * hwang Comment method "isMDMTable".
-     * 
+     *
      * for mdm
      */
     private boolean isMDMTable(RepositoryNode theNode) {
@@ -198,9 +200,9 @@ public class RepoDoubleClickAction extends Action {
     }
 
     /**
-     * 
+     *
      * hwang Comment method "isSAPTable".
-     * 
+     *
      * for sap
      */
     private boolean isSAPTable(RepositoryNode theNode) {
@@ -415,6 +417,18 @@ public class RepoDoubleClickAction extends Action {
                 return current;
             }
         }
+
+        IGenericWizardService wizardService = null;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericWizardService.class)) {
+            wizardService = (IGenericWizardService) GlobalServiceRegister.getDefault().getService(IGenericWizardService.class);
+        }
+        if (wizardService != null) {
+            ITreeContextualAction defaultAction = wizardService.getDefaultAction(obj);
+            if (defaultAction != null) {
+                return defaultAction;
+            }
+        }
+
         return null;
     }
 
