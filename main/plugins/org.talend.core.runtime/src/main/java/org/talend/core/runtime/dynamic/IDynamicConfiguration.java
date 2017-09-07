@@ -21,6 +21,8 @@ public interface IDynamicConfiguration extends IDynamicAttribute {
 
     public String toXmlString() throws Exception;
 
+    public void setConfigurationName(String name);
+
     public void addChildConfiguration(IDynamicConfiguration configuration);
 
     public void removeChildConfiguration(IDynamicConfiguration configuration);

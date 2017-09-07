@@ -12,6 +12,9 @@
 // ============================================================================
 package org.talend.core.runtime.dynamic.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.talend.core.runtime.dynamic.IDynamicPluginConfiguration;
 
 import us.monoid.json.JSONArray;
@@ -25,12 +28,7 @@ public class DynamicPluginConfiguration extends AbstractDynamicElement implement
 
     @Override
     public String getId() {
-        Object id = getAttribute(ATTR_ID);
-        if (id != null) {
-            return id.toString();
-        } else {
-            return null;
-        }
+        return (String) getAttribute(ATTR_ID);
     }
 
     @Override
@@ -40,12 +38,7 @@ public class DynamicPluginConfiguration extends AbstractDynamicElement implement
 
     @Override
     public String getName() {
-        Object name = getAttribute(ATTR_NAME);
-        if (name != null) {
-            return name.toString();
-        } else {
-            return null;
-        }
+        return (String) getAttribute(ATTR_NAME);
     }
 
     @Override
@@ -54,18 +47,53 @@ public class DynamicPluginConfiguration extends AbstractDynamicElement implement
     }
 
     @Override
+    public String getVersion() {
+        return (String) getAttribute(ATTR_VERSION);
+    }
+
+    @Override
+    public void setVersion(String version) {
+        setAttribute(ATTR_VERSION, version);
+    }
+
+    @Override
     public String getDescription() {
-        Object description = getAttribute(ATTR_DESCRIPTION);
-        if (description != null) {
-            return description.toString();
-        } else {
-            return null;
-        }
+        return (String) getAttribute(ATTR_DESCRIPTION);
     }
 
     @Override
     public void setDescription(String description) {
         setAttribute(ATTR_DESCRIPTION, description);
+    }
+
+    @Override
+    public String getDistribution() {
+        return (String) getAttribute(ATTR_DISTRIBUTION);
+    }
+
+    @Override
+    public void setDistribution(String destribution) {
+        setAttribute(ATTR_DISTRIBUTION, destribution);
+    }
+
+    @Override
+    public String getRepository() {
+        return (String) getAttribute(ATTR_REPOSITORY);
+    }
+
+    @Override
+    public void setRepository(String repository) {
+        setAttribute(ATTR_REPOSITORY, repository);
+    }
+
+    @Override
+    public List<String> getServices() {
+        return (List<String>) getAttribute(ATTR_SERVICES);
+    }
+
+    @Override
+    public void setServices(List<String> services) {
+        setAttribute(ATTR_SERVICES, services);
     }
 
     @Override
@@ -89,6 +117,34 @@ public class DynamicPluginConfiguration extends AbstractDynamicElement implement
         }
 
         return dynamicPluginConfiguration;
+    }
+
+    @Override
+    protected Object readFromJsonValue(JSONObject json, String key) throws Exception {
+        if (ATTR_SERVICES.equals(key)) {
+            List<String> services = new ArrayList<>();
+            JSONArray arr = json.optJSONArray(key);
+            if (arr != null && 0 < arr.length()) {
+                for (int i = 0; i < arr.length(); ++i) {
+                    String service = arr.getString(i);
+                    services.add(service);
+                }
+            }
+            return services;
+        } else {
+            return super.readFromJsonValue(json, key);
+        }
+    }
+
+    @Override
+    protected Object convert2JsonValue(String key) throws Exception {
+        if (ATTR_SERVICES.equals(key)) {
+            List<String> services = (List<String>) getAttribute(key);
+            JSONArray arr = new JSONArray(services);
+            return arr;
+        } else {
+            return super.convert2JsonValue(key);
+        }
     }
 
     @Override

@@ -12,7 +12,10 @@
 // ============================================================================
 package org.talend.core.runtime.dynamic;
 
+import org.talend.core.runtime.dynamic.impl.DynamicConfiguration;
+import org.talend.core.runtime.dynamic.impl.DynamicExtension;
 import org.talend.core.runtime.dynamic.impl.DynamicPlugin;
+import org.talend.core.runtime.dynamic.impl.DynamicPluginConfiguration;
 
 import us.monoid.json.JSONObject;
 
@@ -34,9 +37,25 @@ public class DynamicFactory {
         return instance;
     }
 
-    public static IDynamicPlugin createPluginFromJson(String jsonString) throws Exception {
+    public IDynamicPlugin createPluginFromJson(String jsonString) throws Exception {
         JSONObject json = new JSONObject(jsonString);
         return DynamicPlugin.fromXmlJson(json);
+    }
+
+    public IDynamicPlugin createDynamicPlugin() {
+        return new DynamicPlugin();
+    }
+
+    public IDynamicPluginConfiguration createDynamicPluginConfiguration() {
+        return new DynamicPluginConfiguration();
+    }
+
+    public IDynamicExtension createDynamicExtension() {
+        return new DynamicExtension();
+    }
+
+    public IDynamicConfiguration createDynamicConfiguration() {
+        return new DynamicConfiguration();
     }
 
 }

@@ -86,7 +86,8 @@ public abstract class AbstractDynamicElement implements IDynamicAttribute {
         json.put(XML_TAG_NAME, tagName);
 
         for (Map.Entry<String, Object> entry : attributeMap.entrySet()) {
-            json.put(entry.getKey(), entry.getValue());
+            String key = entry.getKey();
+            json.put(key, convert2JsonValue(key));
         }
 
         JSONArray childArray = new JSONArray();
@@ -109,10 +110,18 @@ public abstract class AbstractDynamicElement implements IDynamicAttribute {
                 } else if (XML_ELEMENTS.equals(key)) {
                     continue;
                 }
-                Object value = json.opt(key);
+                Object value = readFromJsonValue(json, key);
                 attributeMap.put(key, value);
             }
         }
+    }
+
+    protected Object convert2JsonValue(String key) throws Exception {
+        return attributeMap.get(key);
+    }
+
+    protected Object readFromJsonValue(JSONObject json, String key) throws Exception {
+        return json.opt(key);
     }
 
     public static String getTagNameFrom(JSONObject xmlJson) throws Exception {

@@ -21,6 +21,8 @@ public interface IDynamicPlugin extends IDynamicAttribute {
 
     public static final String TAG_NAME = "plugin"; //$NON-NLS-1$
 
+    public IDynamicExtension addExtension(IDynamicExtension extension);
+
     public IDynamicExtension removeExtension(String extensionPoint);
 
     public IDynamicExtension getExtension(String extensionPoint, String extensionId, boolean createIfNotExist);

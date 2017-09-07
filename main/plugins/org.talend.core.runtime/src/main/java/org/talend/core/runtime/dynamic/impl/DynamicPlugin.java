@@ -76,6 +76,7 @@ public class DynamicPlugin extends AbstractDynamicElement implements IDynamicPlu
      * @param extension
      * @return
      */
+    @Override
     public IDynamicExtension addExtension(IDynamicExtension extension) {
         String point = extension.getExtensionPoint();
         String id = extension.getExtensionId();

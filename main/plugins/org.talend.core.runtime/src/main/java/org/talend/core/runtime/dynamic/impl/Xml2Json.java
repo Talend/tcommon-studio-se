@@ -59,7 +59,7 @@ public class Xml2Json {
         String xmlStr = readFile(file);
         JSONObject xmlJson = JSONML.toJSONObject(xmlStr);
 
-        IDynamicPlugin plugin = DynamicFactory.createPluginFromJson(xmlJson.toString());
+        IDynamicPlugin plugin = DynamicFactory.getInstance().createPluginFromJson(xmlJson.toString());
 
         // Map<String, Object> idMap = new HashMap<>();
         // buildIdMap(idMap, (AbstractDynamicElement) plugin);

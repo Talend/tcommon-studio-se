@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.core.runtime.dynamic;
 
+import java.util.List;
 
 /**
  * DOC cmeng  class global comment. Detailled comment
@@ -24,7 +25,15 @@ public interface IDynamicPluginConfiguration extends IDynamicAttribute {
 
     public static final String ATTR_NAME = "name"; //$NON-NLS-1$
 
+    public static final String ATTR_VERSION = "version"; //$NON-NLS-1$
+
     public static final String ATTR_DESCRIPTION = "description"; //$NON-NLS-1$
+
+    public static final String ATTR_DISTRIBUTION = "distribution"; //$NON-NLS-1$
+
+    public static final String ATTR_REPOSITORY = "repository"; //$NON-NLS-1$
+
+    public static final String ATTR_SERVICES = "services"; //$NON-NLS-1$
 
     /**
      * get Id / Version
@@ -54,9 +63,25 @@ public interface IDynamicPluginConfiguration extends IDynamicAttribute {
      */
     public void setName(String name);
 
+    public String getVersion();
+
+    public void setVersion(String version);
+
     public String getDescription();
 
     public void setDescription(String description);
+
+    public String getDistribution();
+
+    public void setDistribution(String destribution);
+
+    public String getRepository();
+
+    public void setRepository(String repository);
+
+    public List<String> getServices();
+
+    public void setServices(List<String> services);
 
     public String toXmlString() throws Exception;
 

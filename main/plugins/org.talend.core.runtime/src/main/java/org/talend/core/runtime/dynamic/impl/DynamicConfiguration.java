@@ -27,6 +27,7 @@ public class DynamicConfiguration extends AbstractDynamicElement implements IDyn
 
     private String configurationName;
 
+    @Override
     public void setConfigurationName(String name) {
         this.configurationName = name;
     }
