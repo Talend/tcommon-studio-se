@@ -14,6 +14,8 @@ package org.talend.core.runtime.dynamic;
 
 import java.util.Map;
 
+import us.monoid.json.JSONObject;
+
 /**
  * DOC cmeng  class global comment. Detailled comment
  */
@@ -29,4 +31,5 @@ public interface IDynamicAttribute {
 
     public String getTagName();
 
+    public JSONObject toXmlJson() throws Exception;
 }

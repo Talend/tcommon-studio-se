@@ -21,10 +21,16 @@ public interface IDynamicPluginConfiguration extends IDynamicAttribute {
 
     public static final String TAG_NAME = "dynamicPluginConfiguration"; //$NON-NLS-1$
 
+    /**
+     * Unique id which should be stored in items so that dynamic service can be got by this id
+     */
     public static final String ATTR_ID = "id"; //$NON-NLS-1$
 
     public static final String ATTR_NAME = "name"; //$NON-NLS-1$
 
+    /**
+     * Only a property to let us know which version it is
+     */
     public static final String ATTR_VERSION = "version"; //$NON-NLS-1$
 
     public static final String ATTR_DESCRIPTION = "description"; //$NON-NLS-1$
@@ -35,18 +41,8 @@ public interface IDynamicPluginConfiguration extends IDynamicAttribute {
 
     public static final String ATTR_SERVICES = "services"; //$NON-NLS-1$
 
-    /**
-     * get Id / Version
-     * 
-     * @return
-     */
     public String getId();
 
-    /**
-     * set Id / Version
-     * 
-     * @param id
-     */
     public void setId(String id);
 
     /**
