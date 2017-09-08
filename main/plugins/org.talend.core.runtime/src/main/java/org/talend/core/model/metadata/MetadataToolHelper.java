@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -346,11 +346,11 @@ public final class MetadataToolHelper {
 
         boolean isKeyword = KeywordsValidator.isKeyword(originalTableName);
 
-        // boolean isAllowSpecific = isAllowSpecificCharacters();
+        boolean isAllowSpecific = isAllowSpecificCharacters();
 
         for (int i = 0; i < originalTableName.length(); i++) {
             Character car = originalTableName.charAt(i);
-            if (car.toString().getBytes().length == 1) {
+            if (car.toString().getBytes().length == 1 || !isAllowSpecific) {
                 if (((car >= 'a') && (car <= 'z')) || ((car >= 'A') && (car <= 'Z')) || car == '_'
                         || ((car >= '0') && (car <= '9') && (i != 0))) {
                     tableName += car;

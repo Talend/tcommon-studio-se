@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -51,7 +51,9 @@ public class RepositoryObjectCacheTest {
     
     private String jobId;
     
-    private String contextName = "context1";
+    private String contextName = "org_talend_context1";
+    
+    private String contextDisplayName = "org.talend.context1";
     
     private String jobName = "job1";
     
@@ -65,6 +67,7 @@ public class RepositoryObjectCacheTest {
         contextId = ProxyRepositoryFactory.getInstance().getNextId();
         contextProperty.setId(contextId);
         contextProperty.setLabel(contextName);
+        contextProperty.setDisplayName(contextDisplayName);
         contextItem = PropertiesFactory.eINSTANCE.createContextItem();
         contextItem.setProperty(contextProperty);
         factory.create(contextItem, Path.EMPTY);

@@ -14,7 +14,11 @@ import org.eclipse.core.runtime.IProgressMonitor;
  */
 public interface IPomJobExtension {
 
-    static final String KEY_PROCESS = "PROCESS"; //$NON-NLS-1$
+    String KEY_PROCESS = "PROCESS"; //$NON-NLS-1$
+
+    String KEY_ASSEMBLY_FILE = "ASSEMBLY_FILE"; //$NON-NLS-1$
+
+    String KEY_CHILDREN_JOBS_GROUP_IDS = "KEY_CHILDREN_JOBS_GROUP_IDS"; //$NON-NLS-1$
 
     void updatePom(IProgressMonitor monitor, IFile pomFile, Map<String, Object> args);
 

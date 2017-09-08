@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -447,7 +447,8 @@ public class DatabaseTableForm extends AbstractForm {
         });
 
         // init the fields
-        nameText.setText(MetadataToolHelper.validateValue(metadataTable.getLabel()));
+        // nameText.setText(MetadataToolHelper.validateValue(metadataTable.getLabel()));
+        nameText.setText(MetadataToolHelper.validateTableName(metadataTable.getLabel()));
         commentText.setText(metadataTable.getComment());
         if (metadataTable.getTableType() != null) {
             typeText.setText(Messages.getString("DatabaseTableForm.type", metadataTable.getTableType())); //$NON-NLS-1$

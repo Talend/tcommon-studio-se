@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -992,7 +992,8 @@ public class RepositoryToComponentProperty {
                         || EDatabaseConnTemplate.ORACLESN.getDBDisplayName().equals(databaseType)
                         || EDatabaseConnTemplate.PLUSPSQL.getDBDisplayName().equals(databaseType)
                         || EDatabaseConnTemplate.PSQL.getDBDisplayName().equals(databaseType)
-                        || EDatabaseConnTemplate.SAPHana.getDBDisplayName().equals(databaseType)) {
+                        || EDatabaseConnTemplate.SAPHana.getDBDisplayName().equals(databaseType)
+                        || EDatabaseConnTemplate.MSSQL.getDBDisplayName().equals(databaseType)) {
                     if (dbVersionString != null) {
                         driverValue = dbVersionString.toUpperCase();
                     }

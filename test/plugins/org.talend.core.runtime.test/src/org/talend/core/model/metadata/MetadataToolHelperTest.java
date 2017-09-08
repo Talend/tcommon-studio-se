@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -12,7 +12,10 @@
 // ============================================================================
 package org.talend.core.model.metadata;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 
@@ -44,8 +47,8 @@ import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.helper.PackageHelper;
 import org.talend.cwm.helper.SAPBWTableHelper;
-import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
 import org.talend.repository.model.IProxyRepositoryFactory;
+
 import orgomg.cwm.resource.record.RecordFactory;
 import orgomg.cwm.resource.record.RecordFile;
 
@@ -283,6 +286,8 @@ public class MetadataToolHelperTest {
      */
     @Test
     public void testValidateTableName() {
+        IEclipsePreferences preferences = new InstanceScope().getNode(ITalendCorePrefConstants.CoreUIPlugin_ID);
+        preferences.putBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, false);
 
         String tableName = "public";
         tableName = MetadataToolHelper.validateTableName(tableName);
@@ -311,6 +316,16 @@ public class MetadataToolHelperTest {
         tableName = "_dic";
         tableName = MetadataToolHelper.validateTableName(tableName);
         assertEquals(tableName, "_dic");
+
+        tableName = "t_ht01_处理日期_2017";
+        tableName = MetadataToolHelper.validateTableName(tableName);
+        assertEquals(tableName, "t_ht01______2017");
+
+        preferences.putBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, true);
+
+        tableName = "t_ht01_处理日期_2017";
+        tableName = MetadataToolHelper.validateTableName(tableName);
+        assertEquals(tableName, "t_ht01_处理日期_2017");
 
     }
 

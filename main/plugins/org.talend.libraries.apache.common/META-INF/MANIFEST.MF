@@ -8,7 +8,9 @@ Bundle-ClassPath: .,
  lib/commons-cli-2.0-SNAPSHOT.jar,
  lib/commons-digester-2.1.jar,
  lib/commons-math3-3.3.jar,
- lib/commons-validator-1.5.1.jar
+ lib/commons-validator-1.5.1.jar,
+ lib/commons-pool2-2.4.2.jar,
+ lib/commons-text-1.1.jar
 Export-Package: org.apache.commons.cli2,
  org.apache.commons.cli2.builder,
  org.apache.commons.cli2.commandline,
@@ -40,6 +42,7 @@ Export-Package: org.apache.commons.cli2,
  org.apache.commons.math3.random;version="3.3.0",
  org.apache.commons.math3.stat.descriptive;version="3.3.0",
  org.apache.commons.math3.stat.descriptive.rank;version="3.3.0",
+ org.apache.commons.text.similarity,
  org.apache.commons.validator;version="1.5.1",
  org.apache.commons.validator.routines;version="1.5.1"
 Require-Bundle: org.apache.commons.beanutils;visibility:=reexport,

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -71,10 +71,10 @@ public class RepositoryObjectCache {
             idCache.put(newObject.getId(), idItems);
         }
         idItems.add(newObject);
-        List<IRepositoryViewObject> nameItems = nameCache.get(newObject.getLabel());
+        List<IRepositoryViewObject> nameItems = nameCache.get(newObject.getProperty().getLabel());
         if (nameItems == null) {
             nameItems = new ArrayList<IRepositoryViewObject>();
-            nameCache.put(newObject.getLabel(), nameItems);
+            nameCache.put(newObject.getProperty().getLabel(), nameItems);
         }
         nameItems.add(newObject);
         List<IRepositoryViewObject> list = itemsFromRepository.get(itemType);
@@ -130,7 +130,7 @@ public class RepositoryObjectCache {
                 List<IRepositoryViewObject> nameItems = nameCache.get(newObject.getLabel());
                 if (nameItems == null) {
                     nameItems = new ArrayList<IRepositoryViewObject>();
-                    nameCache.put(newObject.getLabel(), nameItems);
+                    nameCache.put(newObject.getProperty().getLabel(), nameItems);
                 }
                 nameItems.add(newObject);
                 newList.add(newObject);
