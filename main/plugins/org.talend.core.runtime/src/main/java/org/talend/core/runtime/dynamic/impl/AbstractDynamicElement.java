@@ -65,6 +65,9 @@ public abstract class AbstractDynamicElement implements IDynamicAttribute {
     }
 
     public void addChild(AbstractDynamicElement child) {
+        if (child == null) {
+            throw new IllegalArgumentException("New added element should not be null!");
+        }
         children.add(child);
     }
 
