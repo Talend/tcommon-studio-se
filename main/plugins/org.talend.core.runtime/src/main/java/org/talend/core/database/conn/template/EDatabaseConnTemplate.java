@@ -176,7 +176,7 @@ public enum EDatabaseConnTemplate {
             "5480")), //$NON-NLS-1$
 
     VERTICA(new DbConnStr(EDatabaseTypeName.VERTICA, //
-            "jdbc:vertica://<host>:<port>/<sid>", //$NON-NLS-1$
+            "jdbc:vertica://<host>:<port>/<sid>?<property>", //$NON-NLS-1$
             "5433")), //$NON-NLS-1$
 
     GENERAL_JDBC(new DbConnStrForGeneralJDBC(EDatabaseTypeName.GENERAL_JDBC, //

@@ -12,8 +12,9 @@
 // ============================================================================
 package org.talend.core.database.conn;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
@@ -111,5 +112,25 @@ public class DatabaseConnStrUtilTest {
         expectValue = "jdbc:hive2://" + server + ":" + port + "/" + sidOrDatabase + ";" + additionalJDBCSettings;
         realValue = DatabaseConnStrUtil.getHiveURLString(dc, server, port, sidOrDatabase, HIVE2_STANDARDLONE_URL);
         assertTrue(expectValue.equals(realValue));
+    }
+    
+    @Test 
+    public void testAnalyseURLForVertica(){
+        String url = "jdbc:vertica://localhost:5433/test_db?connectionTimeout=10000";
+        String[] analyseURL = DatabaseConnStrUtil.analyseURL("Vertica", "VERTICA_7", url);
+        Assert.assertEquals(analyseURL.length, 6);
+        Assert.assertEquals(analyseURL[4], "connectionTimeout=10000");
+        url = "jdbc:vertica://localhost:5433/test_db?connectionTimeout=10000&ConnectionLoadBalance=1";
+        analyseURL = DatabaseConnStrUtil.analyseURL("Vertica", "VERTICA_7", url);
+        Assert.assertEquals(analyseURL.length, 6);
+        Assert.assertEquals(analyseURL[4], "connectionTimeout=10000&ConnectionLoadBalance=1");
+        url = "jdbc:vertica://localhost:5433/test_db?";
+        analyseURL = DatabaseConnStrUtil.analyseURL("Vertica", "VERTICA_7", url);
+        Assert.assertEquals(analyseURL.length, 6);
+        Assert.assertEquals(analyseURL[4], "");
+        url = "jdbc:vertica://localhost:5433/test_db";
+        analyseURL = DatabaseConnStrUtil.analyseURL("Vertica", "VERTICA_7", url);
+        Assert.assertEquals(analyseURL.length, 6);
+        Assert.assertEquals(analyseURL[4], "");
     }
 }
