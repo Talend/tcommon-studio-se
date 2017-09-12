@@ -623,7 +623,17 @@ public class LocalLibraryManager implements ILibraryManagerService {
 
         boolean allIsOK = true;
         for (String jar : jarsNeeded) {
-            if (!retrieve(jar, pathToStore, false, monitorWrap)) {
+            ModuleNeeded moduleNeeded = null;
+            if (jar != null && !jar.toUpperCase().endsWith(".JAR")) {
+                moduleNeeded = ModulesNeededProvider.getModuleNeededById(jar);
+            }
+            boolean found = false;
+            if (moduleNeeded != null) {
+                found = retrieve(moduleNeeded, pathToStore, showDialog, null, monitorWrap);
+            } else {
+                found = retrieve(jar, pathToStore, false, monitorWrap);
+            }
+            if (!found) {
                 jarNotFound.add(jar);
                 allIsOK = false;
             }

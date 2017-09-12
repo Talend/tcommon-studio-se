@@ -29,6 +29,8 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.core.GlobalServiceRegister;
+import org.talend.core.model.general.ILibrariesService;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -62,7 +64,9 @@ public class DynamicServiceUtil {
             Object userToken = ((ExtensionRegistry) extensionRegistry).getTemporaryUserToken();
             IContributor contributor = ContributorFactoryOSGi.createContributor(bundle);
 
-            return extensionRegistry.addContribution(is, contributor, false, null, null, userToken);
+            boolean succeed = extensionRegistry.addContribution(is, contributor, false, null, null, userToken);
+            getLibrariesService().resetModulesNeeded();
+            return succeed;
         } finally {
             try {
                 is.close();
@@ -88,6 +92,7 @@ public class DynamicServiceUtil {
                     succeed = false;
                 }
             }
+            getLibrariesService().resetModulesNeeded();
         }
 
         return succeed;
@@ -143,5 +148,9 @@ public class DynamicServiceUtil {
                 }
             }
         }
+    }
+
+    public static ILibrariesService getLibrariesService() {
+        return (ILibrariesService) GlobalServiceRegister.getDefault().getService(ILibrariesService.class);
     }
 }

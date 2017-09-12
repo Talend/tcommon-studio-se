@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
@@ -282,12 +283,10 @@ public class RemoteModulesHelper {
             m.setDescription(description);
             m.setUrl_description(url);
             m.setUrl_download(url);
-            if (artifact.getType() == null || "".equals(artifact.getType()) //$NON-NLS-1$
-                    || MavenConstants.PACKAGING_POM.equals(artifact.getType())) {
-                m.setDistribution(MavenConstants.DOWNLOAD_MANUAL);
-            } else {
-                m.setDistribution(artifact.getType());
-            }
+
+            String artifactType = artifact.getType();
+            m.resolveDistribution(artifactType);
+
             if (theCache == localCache) {
                 m.setFromCustomNexus(true);
             }
@@ -376,20 +375,24 @@ public class RemoteModulesHelper {
         m.setMavenUri(mvnUri);
         setContext(m, mvnUri, contextMap);
         String name = null;
+        String type = null;
+
+        if (StringUtils.isNotEmpty(mvnUri)) {
+            MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(mvnUri);
+            name = parseMvnUrl.getArtifactId();
+            type = parseMvnUrl.getType();
+            if (type == null) {
+                type = MavenConstants.TYPE_JAR;
+            }
+            m.setName(name + "." + type);//$NON-NLS-1$
+            m.resolveDistribution(type);
+        }
+
         if (contextMap != null) {
             final List<ModuleNeeded> neededModules = contextMap.get(mvnUri);
             name = neededModules.get(0).getModuleName();
             m.setName(name);
             m.setDescription(getFirstDescription(neededModules));
-        } else {
-            final MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(mvnUri);
-            name = parseMvnUrl.getArtifactId();
-            String type = parseMvnUrl.getType();
-            if (type == null) {
-                type = MavenConstants.TYPE_JAR;
-            }
-            m.setName(name + "." + type);//$NON-NLS-1$
-
         }
         ExceptionHandler.log("The download URL for " + name + " is not available (" + mvnUri + ")");//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         if (CommonsPlugin.isDebugMode()) {

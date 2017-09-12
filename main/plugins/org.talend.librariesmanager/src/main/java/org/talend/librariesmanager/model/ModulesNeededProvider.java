@@ -190,6 +190,20 @@ public class ModulesNeededProvider {
         return modulesMatching;
     }
 
+    public static ModuleNeeded getModuleNeededById(String id) {
+        ModuleNeeded result = null;
+
+        List<ModuleNeeded> modulesNeeded = getModulesNeeded();
+        for (ModuleNeeded moduleNeeded : modulesNeeded) {
+            if (id.equals(moduleNeeded.getId())) {
+                result = moduleNeeded;
+                break;
+            }
+        }
+
+        return result;
+    }
+
     public static List<String> getModulesNeededNames() {
         List<String> componentImportNeedsListNames = new ArrayList<String>();
         for (ModuleNeeded m : getModulesNeeded()) {

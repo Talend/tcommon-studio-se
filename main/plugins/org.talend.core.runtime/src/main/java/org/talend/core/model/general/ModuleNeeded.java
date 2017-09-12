@@ -593,8 +593,8 @@ public class ModuleNeeded {
                 // set jar by default
                 parseMvnUrl.setType(MavenConstants.TYPE_JAR);
             }
-            uri = MavenUrlHelper.generateMvnUrl(parseMvnUrl.getGroupId(), parseMvnUrl.getArtifactId(), parseMvnUrl.getVersion(),
-                    parseMvnUrl.getType(), parseMvnUrl.getClassifier());
+            uri = MavenUrlHelper.generateMvnUrl(parseMvnUrl.getRepositoryUrl(), parseMvnUrl.getGroupId(),
+                    parseMvnUrl.getArtifactId(), parseMvnUrl.getVersion(), parseMvnUrl.getType(), parseMvnUrl.getClassifier());
         }
         return uri;
     }
