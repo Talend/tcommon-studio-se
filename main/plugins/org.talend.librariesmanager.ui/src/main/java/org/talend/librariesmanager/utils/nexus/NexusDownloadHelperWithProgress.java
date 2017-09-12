@@ -15,6 +15,7 @@ package org.talend.librariesmanager.utils.nexus;
 import java.io.File;
 import java.net.URL;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
@@ -23,6 +24,8 @@ import org.talend.core.download.IDownloadHelper;
 import org.talend.core.model.general.ModuleToInstall;
 import org.talend.core.nexus.NexusServerBean;
 import org.talend.core.nexus.TalendLibsServerManager;
+import org.talend.core.runtime.maven.MavenArtifact;
+import org.talend.core.runtime.maven.MavenUrlHelper;
 
 /**
  * created by wchen on Apr 24, 2015 Detailled comment
@@ -45,11 +48,19 @@ public class NexusDownloadHelperWithProgress extends DownloadHelperWithProgress 
     @Override
     public void download(URL componentUrl, File destination, IProgressMonitor progressMonitor) throws Exception {
         File resolved = null;
-        if (toInstall.isFromCustomNexus()) {
+        boolean downloadFromCustomNexus = toInstall.isFromCustomNexus();
+
+        String mvnUri = componentUrl.toExternalForm();
+        MavenArtifact mArtifact = MavenUrlHelper.parseMvnUrl(mvnUri, false);
+        if (mArtifact != null) {
+            String repositoryUrl = mArtifact.getRepositoryUrl();
+            downloadFromCustomNexus = downloadFromCustomNexus | StringUtils.isNotEmpty(repositoryUrl);
+        }
+        if (downloadFromCustomNexus) {
             TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
             final NexusServerBean customNexusServer = manager.getCustomNexusServer();
             if (customNexusServer != null) {
-                String mvnUri = componentUrl.toExternalForm();
+                // String mvnUri = componentUrl.toExternalForm();
                 progressMonitor.subTask("Downloading " + toInstall.getName() + ": " + mvnUri + " from "
                         + customNexusServer.getServer());
                 ILibraryManagerService libManager = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(

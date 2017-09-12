@@ -18,8 +18,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.window.Window;
@@ -32,9 +32,10 @@ import org.talend.core.ILibraryManagerService;
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.model.general.ModuleStatusProvider;
 import org.talend.core.model.general.ModuleToInstall;
+import org.talend.core.runtime.maven.MavenArtifact;
+import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.librariesmanager.ui.LibManagerUiPlugin;
 import org.talend.librariesmanager.ui.i18n.Messages;
-import org.talend.librariesmanager.ui.startup.ShareLibsOnStartup;
 import org.talend.librariesmanager.ui.wizards.AcceptModuleLicensesWizard;
 import org.talend.librariesmanager.ui.wizards.AcceptModuleLicensesWizardDialog;
 import org.talend.librariesmanager.utils.nexus.NexusDownloadHelperWithProgress;
@@ -90,7 +91,17 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
                     boolean isLicenseAccepted = module.isFromCustomNexus()
                             || (LibManagerUiPlugin.getDefault().getPreferenceStore().contains(module.getLicenseType())
                                     && LibManagerUiPlugin.getDefault().getPreferenceStore().getBoolean(module.getLicenseType()));
-                    accepted = isLicenseAccepted;
+
+                    boolean hasRepositoryUrl = false;
+
+                    String moduleMvnUri = module.getMavenUri();
+                    MavenArtifact mavenArtifact = MavenUrlHelper.parseMvnUrl(moduleMvnUri, false);
+                    if (mavenArtifact != null) {
+                        String repositoryUrl = mavenArtifact.getRepositoryUrl();
+                        hasRepositoryUrl = StringUtils.isNotEmpty(repositoryUrl);
+                    }
+
+                    accepted = isLicenseAccepted | hasRepositoryUrl;
                     if (!accepted) {
                         subMonitor.worked(1);
                         continue;
