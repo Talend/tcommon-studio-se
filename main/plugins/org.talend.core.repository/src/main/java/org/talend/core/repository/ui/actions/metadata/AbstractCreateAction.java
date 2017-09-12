@@ -78,8 +78,8 @@ public abstract class AbstractCreateAction extends AContextualAction {
      * 
      * @return
      */
-    protected String[] getExistingNames() {
-        if (existingNames == null) {
+    public String[] getExistingNames() {
+        if (existingNames == null && repositoryNode != null) {
             init(repositoryNode);
         }
         return existingNames;

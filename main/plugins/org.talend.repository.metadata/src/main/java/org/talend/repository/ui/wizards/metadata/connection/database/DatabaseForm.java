@@ -36,6 +36,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.EMap;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
@@ -63,12 +64,9 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.talend.commons.exception.CommonExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
@@ -113,7 +111,6 @@ import org.talend.core.model.metadata.builder.database.ExtractMetaDataFromDataBa
 import org.talend.core.model.metadata.builder.database.ExtractMetaDataUtils;
 import org.talend.core.model.metadata.builder.database.HotClassLoader;
 import org.talend.core.model.metadata.builder.database.JavaSqlFactory;
-import org.talend.core.model.metadata.builder.database.extractots.IDBMetadataProviderObject;
 import org.talend.core.model.metadata.connection.hive.HiveModeInfo;
 import org.talend.core.model.metadata.connection.hive.HiveServerVersionInfo;
 import org.talend.core.model.properties.ConnectionItem;
@@ -127,7 +124,6 @@ import org.talend.core.runtime.hd.IHDistribution;
 import org.talend.core.runtime.hd.IHDistributionVersion;
 import org.talend.core.runtime.hd.hive.HiveMetadataHelper;
 import org.talend.core.ui.CoreUIPlugin;
-import org.talend.core.ui.branding.IBrandingConfiguration;
 import org.talend.core.ui.branding.IBrandingService;
 import org.talend.core.ui.metadata.celleditor.ModuleListDialog;
 import org.talend.cwm.helper.ConnectionHelper;
@@ -145,6 +141,7 @@ import org.talend.metadata.managment.ui.utils.DBConnectionContextUtils.EDBParamN
 import org.talend.metadata.managment.ui.wizard.AbstractForm;
 import org.talend.metadata.managment.utils.MetadataConnectionUtils;
 import org.talend.repository.metadata.i18n.Messages;
+import org.talend.repository.metadata.preferences.IDatabasePrefConstants;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.ui.dialog.AProgressMonitorDialogWithCancel;
 import org.talend.utils.sql.ConnectionUtils;
@@ -156,11 +153,6 @@ import org.talend.utils.sql.ConnectionUtils;
 public class DatabaseForm extends AbstractForm {
 
     /**
-     * The number of items that can be visible in database type combo.
-     */
-    private static final int VISIBLE_DATABASE_COUNT = 20;
-
-    /**
      * Composite.
      */
     private Composite compositeDbSettings;
@@ -168,7 +160,7 @@ public class DatabaseForm extends AbstractForm {
     /**
      * Main Vars.
      */
-    private final ConnectionItem connectionItem;
+    private ConnectionItem connectionItem;
 
     /**
      * Flags.
@@ -199,22 +191,13 @@ public class DatabaseForm extends AbstractForm {
 
     private LabelledText metastoreConnPassword; // javax.jdo.option.ConnectionPassword
 
-    // private Group studioStandloneGrp;
-    //
-    // private LabelledText metastoreServerTxt;
-    //
-    // private LabelledText metastoreServerPortTxt;
-
     /***************************************************/
 
     /**
      * Main Fields.
      */
-    private LabelledCombo dbTypeCombo;
 
     private LabelledCombo dbVersionCombo;
-
-    private LabelledCombo sqlSyntaxCombo;
 
     private LabelledCombo hiveModeCombo;
 
@@ -241,16 +224,6 @@ public class DatabaseForm extends AbstractForm {
 
     private LabelledText datasourceText;
 
-    private LabelledText stringQuoteText;
-
-    private LabelledText nullCharText;
-
-    private Label sqlModeLabel;
-
-    private Button button1;
-
-    private Button button2;
-
     private Button hiveCustomButton;
 
     private Button useYarnButton;
@@ -272,10 +245,6 @@ public class DatabaseForm extends AbstractForm {
     private LabelledFileField trustStorePath;
 
     private LabelledText trustStorePassword;
-
-    private Button standardButton;
-
-    private Button systemButton;
 
     /**
      * Fields for general jdbc
@@ -301,8 +270,6 @@ public class DatabaseForm extends AbstractForm {
      * Anothers Fields.
      */
     private UtilsButton checkButton;
-
-    private Group databaseSettingGroup;
 
     private Group hbaseSettingGroup;
 
@@ -502,8 +469,6 @@ public class DatabaseForm extends AbstractForm {
 
     private Composite dbConnectionArea;
 
-    private Composite hidableArea;
-
     private Button moveButton;
 
     private Composite hadoopPropertiesComposite;
@@ -596,17 +561,11 @@ public class DatabaseForm extends AbstractForm {
      */
     protected void refreshHidableArea() {
         if (exportContextBtn != null) {
-            if (isDbPropertiesVisible) {
-                exportContextBtn.getControl().getParent().getParent().setParent(hidableArea);
-            } else {
-                exportContextBtn.getControl().getParent().getParent().setParent(dbConnectionArea);
-            }
+            exportContextBtn.getControl().getParent().getParent().setParent(sash);
         }
         moveButton.setVisible(isDbPropertiesVisible);
-        hidableArea.setVisible(isDbPropertiesVisible);
         sash.setSashWidth(2);
-        sash.setWeights(new int[] { 21, 12 });
-        hidableArea.layout();
+        sash.setWeights(new int[] { 25, 8 });
         this.layout();
     }
 
@@ -618,9 +577,6 @@ public class DatabaseForm extends AbstractForm {
         initializeByConnectionParameters();
         EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(getConnection().getDatabaseType());
         if (template != null) {
-            if (dbTypeCombo.getText().length() == 0 || !dbTypeCombo.getText().equals(template.getDbType().getDisplayName())) {
-                dbTypeCombo.setText(template.getDbType().getDisplayName());
-            }
             if (isGeneralJDBC()) {
                 switchBetweenTypeandGeneralDB(false);
                 initializeGeneralJDBC();
@@ -666,15 +622,10 @@ public class DatabaseForm extends AbstractForm {
         }
 
         fileField.setText(getConnection().getFileFieldName());
-        stringQuoteText.setText(getConnection().getStringQuote());
-        nullCharText.setText(getConnection().getNullChar());
         directoryField.setText(getConnection().getDBRootPath());
-        setSqlModelFields();
+        checkAndSetIniSQLModel();
         checkAS400SpecificCase();
-        // PTODO !StandBy! (use width SQL Editor): to define the values of SQL
-        // Syntax (need by SQL Editor)
-        getConnection().setSqlSynthax(Messages.getString("DatabaseForm.sqlSyntax")); //$NON-NLS-1$
-        sqlSyntaxCombo.select(getSqlSyntaxIndex(getConnection().getSqlSynthax()));
+        checkDatabaseProperties();
 
         if (isDBTypeSelected(EDatabaseConnTemplate.HBASE) || isDBTypeSelected(EDatabaseConnTemplate.MAPRDB)
                 || isDBTypeSelected(EDatabaseConnTemplate.HIVE) || isDBTypeSelected(EDatabaseConnTemplate.IMPALA)) {
@@ -746,11 +697,6 @@ public class DatabaseForm extends AbstractForm {
         }
     }
 
-    private void setSqlModelFields() {
-        button1.setSelection(getConnection().isSQLMode());
-        button2.setSelection(!getConnection().isSQLMode());
-    }
-
     /**
      * DOC YeXiaowei Comment method "initializeGeneralJDBC".
      */
@@ -818,20 +764,18 @@ public class DatabaseForm extends AbstractForm {
             jDBCschemaText.setHideWidgets(true);
         }
     }
+    
+    private void checkDatabaseProperties(){
+        IPreferenceStore store = CoreUIPlugin.getDefault().getPreferenceStore();
+        getConnection().setSqlSynthax(store.getString(IDatabasePrefConstants.SQL_SYNTAX));
+        getConnection().setStringQuote(store.getString(IDatabasePrefConstants.STRING_QUOTE));
+        getConnection().setNullChar(store.getString(IDatabasePrefConstants.NULL_CHAR));
+    }
 
     private void checkAS400SpecificCase() {
-        if (getConnection().isStandardSQL() == getConnection().isSystemSQL()) { // create
-            // connection
-            boolean b = CoreUIPlugin.getDefault().getPreferenceStore().getBoolean(ITalendCorePrefConstants.AS400_SQL_SEG);
-
-            standardButton.setSelection(b);
-            systemButton.setSelection(!b);
-            getConnection().setStandardSQL(b);
-            getConnection().setSystemSQL(!b);
-        } else {
-            standardButton.setSelection(getConnection().isStandardSQL());
-            systemButton.setSelection(getConnection().isSystemSQL());
-        }
+        boolean b = CoreUIPlugin.getDefault().getPreferenceStore().getBoolean(ITalendCorePrefConstants.AS400_SQL_SEG);
+        getConnection().setStandardSQL(b);
+        getConnection().setSystemSQL(!b);
     }
 
     /**
@@ -841,7 +785,6 @@ public class DatabaseForm extends AbstractForm {
     protected void adaptFormToReadOnly() {
         readOnly = isReadOnly();
 
-        dbTypeCombo.setReadOnly(isReadOnly());
         urlConnectionStringText.setReadOnly(isReadOnly());
         usernameText.setReadOnly(isReadOnly());
         passwordText.setReadOnly(isReadOnly());
@@ -853,26 +796,9 @@ public class DatabaseForm extends AbstractForm {
         datasourceText.setReadOnly(isReadOnly());
         additionParamText.setReadOnly(isReadOnly());
         fileField.setReadOnly(isReadOnly());
-        sqlSyntaxCombo.setReadOnly(isReadOnly());
-        stringQuoteText.setReadOnly(isReadOnly());
-        nullCharText.setReadOnly(isReadOnly());
         mappingFileText.setReadOnly(isReadOnly());
         mappingSelectButton.setEnabled(isReadOnly());
 
-    }
-
-    /**
-     * Get the index of a sqlSyntax label or 0 if the label don't exist.
-     * 
-     * @param string label
-     */
-    public int getSqlSyntaxIndex(final String label) {
-        for (int i = 0; i < sqlSyntaxCombo.getItemCount(); i++) {
-            if (sqlSyntaxCombo.getItem(i).equals(label)) {
-                return i;
-            }
-        }
-        return 0;
     }
 
     @Override
@@ -880,15 +806,11 @@ public class DatabaseForm extends AbstractForm {
         int width = getSize().x;
         GridLayout layout2;
         Composite parent = new Composite(this, SWT.NONE);
-        // FillLayout fillLayout = new FillLayout();
-        // fillLayout.marginHeight = 0;
-        // fillLayout.marginWidth = 0;
         parent.setLayout(new FillLayout());
         GridData parentGridData = new GridData(SWT.FILL, SWT.FILL, true, true);
         parent.setLayoutData(parentGridData);
 
         sash = new SashForm(parent, SWT.VERTICAL | SWT.SMOOTH);
-        // sash.setLayoutData(new GridData(GridData.FILL_BOTH));
         sash.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
         GridLayout layout = new GridLayout();
         sash.setLayout(layout);
@@ -900,13 +822,7 @@ public class DatabaseForm extends AbstractForm {
         // databaseSettingGroup = Form.createGroup(this, 1, Messages.getString("DatabaseForm.groupDatabaseSettings"),
         // 450); //$NON-NLS-1$
         //
-        databaseSettingGroup = new Group(dbConnectionArea, SWT.NONE);
-        GridLayout gridLayout1 = new GridLayout(1, false);
-        databaseSettingGroup.setLayout(gridLayout1);
-        GridData gridData1 = new GridData(SWT.FILL, SWT.FILL, true, true);
-        databaseSettingGroup.setLayoutData(gridData1);
-
-        scrolledComposite = new ScrolledComposite(databaseSettingGroup, SWT.V_SCROLL | SWT.H_SCROLL);
+        scrolledComposite = new ScrolledComposite(dbConnectionArea, SWT.V_SCROLL | SWT.H_SCROLL);
         scrolledComposite.setExpandHorizontal(true);
         scrolledComposite.setExpandVertical(true);
         scrolledComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -916,9 +832,6 @@ public class DatabaseForm extends AbstractForm {
         scrolledComposite.setContent(newParent);
 
         compositeGroupDbSettings = Form.startNewGridLayout(newParent, 1);
-        // compositeGroupDbSettings = new Composite(newParent, SWT.NONE);
-        // compositeGroupDbSettings.setLayout(new GridLayout(1, false));
-        // compositeGroupDbSettings.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         layout2 = (GridLayout) compositeGroupDbSettings.getLayout();
         layout2.marginHeight = 0;
         layout2.marginTop = 0;
@@ -931,9 +844,7 @@ public class DatabaseForm extends AbstractForm {
         compositeDbSettings.setLayout(new GridLayout(3, false));
         GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
         gridData.minimumWidth = width;
-        // gridData.minimumHeight = 50;
         gridData.widthHint = width;
-        // gridData.heightHint = 50;
         compositeDbSettings.setLayoutData(gridData);
 
         layout2 = (GridLayout) compositeDbSettings.getLayout();
@@ -943,28 +854,12 @@ public class DatabaseForm extends AbstractForm {
 
         // Main Fields
 
-        // Database Type Combo
-
-        addDBSelectCombo();
-
-        Label label = new Label(compositeDbSettings, SWT.SEPARATOR | SWT.H_SCROLL);
-        GridData data = new GridData(GridData.FILL_HORIZONTAL);
-        data.horizontalSpan = 3;
-        label.setLayoutData(data);
-
         addFieldsForTypeDB(compositeGroupDbSettings);
         addFieldsForGeneralDB(compositeGroupDbSettings);
 
         switchBetweenTypeandGeneralDB(true);
 
         addCheckAndStandardButtons(width, compositeGroupDbSettings);
-
-        checkDBTypeAS400();
-
-        // installProposalKey(compositeGroupDbSettings);
-
-        // scrolledComposite.setSize(compositeGroupDbSettings.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-        //
 
         scrolledComposite.addControlListener(new ControlAdapter() {
 
@@ -3039,8 +2934,6 @@ public class DatabaseForm extends AbstractForm {
         hcSelectBtn.setVisible(fromRepository);
         hcRepositoryText.setVisible(fromRepository);
 
-        dbTypeCombo.setReadOnly(fromRepository || isContextMode());
-
         hbaseDistributionCombo.setReadOnly(fromRepository || isContextMode());
         hbaseVersionCombo.setReadOnly(fromRepository || isContextMode());
         hbaseCustomButton.setEnabled(!fromRepository && !isContextMode());
@@ -3813,85 +3706,18 @@ public class DatabaseForm extends AbstractForm {
         moveButtonFormData.top = new FormAttachment(checkGroup, 0, SWT.CENTER);
         FormData checkGroupFormData = new FormData();
         checkGroupFormData.left = new FormAttachment(0, 0);
-        checkGroupFormData.right = new FormAttachment(100, 0);
+        checkGroupFormData.right = new FormAttachment(moveButton, 0);
         checkGroup.setLayoutData(checkGroupFormData);
         GridLayout gridLayout = new GridLayout(1, false);
         checkGroup.setLayout(gridLayout);
 
-        Composite compositeCheckButton = Form.startNewGridLayout(checkGroup, 1, false, SWT.CENTER, SWT.BOTTOM);
-
+        Composite compositeCheckButton = Form.startNewGridLayout(checkGroup, 1, false, SWT.RIGHT, SWT.BOTTOM);
         unionBtnsCompsite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        checkButton = new UtilsButton(compositeCheckButton, Messages.getString("DatabaseForm.check"), WIDTH_BUTTON_PIXEL, //$NON-NLS-1$
+        checkButton = new UtilsButton(compositeCheckButton, Messages.getString("DatabaseForm.test"), WIDTH_BUTTON_PIXEL, //$NON-NLS-1$
                 HEIGHT_BUTTON_PIXEL);
         checkButton.setEnabled(false);
 
-        hidableArea = new Composite(sash, SWT.NONE);
-        GridLayout hidableAreaLayout = new GridLayout(1, false);
-        hidableArea.setLayout(hidableAreaLayout);
-
-        // Group Database Properties
-        Group group1 = Form.createGroup(hidableArea, 1, Messages.getString("DatabaseForm.groupDatabaseProperties")); //$NON-NLS-1$
-        GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
-        // gridData.minimumHeight = 50;
-        gridData.heightHint = 80;
-        group1.setLayoutData(gridData);
-        // Composite compositeGroupDbProperties =
-        // Form.startNewGridLayout(group1, 4, false, SWT.LEFT, SWT.CENTER);
-        Composite compositeGroupDbProperties = Form.startNewDimensionnedGridLayout(group1, 8, width, 50);
-
-        // PTODO !StandBy! (use width SQL Editor): to define the values of SQL
-        // Syntax (need by SQL Editor)
-        String[] item = { "SQL 92" }; //$NON-NLS-1$
-        sqlSyntaxCombo = new LabelledCombo(compositeGroupDbProperties, Messages.getString("DatabaseForm.sqlSyntax"), null, item, //$NON-NLS-1$
-                3);
-
-        stringQuoteText = new LabelledText(compositeGroupDbProperties, Messages.getString("DatabaseForm.stringQuote"), false); //$NON-NLS-1$
-        nullCharText = new LabelledText(compositeGroupDbProperties, Messages.getString("DatabaseForm.nullChar"), false); //$NON-NLS-1$
-
-        // hiveMode = new LabelledCombo(compositeGroupDbProperties, "Hive Mode: ", "Select a Hive mode.", new String[] {
-        // "Standalone", "Embedded" }, 3);
-
-        gridData = new GridData();
-        gridData.horizontalSpan = 2;
-        standardButton = new Button(compositeGroupDbProperties, SWT.RADIO);
-        standardButton.setText(Messages.getString("DatabaseForm.StandardSQL")); //$NON-NLS-1$
-        standardButton.setLayoutData(gridData);
-        systemButton = new Button(compositeGroupDbProperties, SWT.RADIO);
-        systemButton.setText(Messages.getString("DatabaseForm.SystemSQL")); //$NON-NLS-1$
-        gridData = new GridData();
-        gridData.horizontalSpan = 2;
-        systemButton.setLayoutData(gridData);
-
-        Composite c = new Composite(compositeGroupDbProperties, SWT.NONE);
-        GridLayout layout = new GridLayout(4, false);
-        layout.horizontalSpacing = 15;
-        layout.verticalSpacing = 0;
-        GridData layoutData = new GridData(GridData.FILL_HORIZONTAL);
-        layoutData.horizontalSpan = 4;
-        c.setLayoutData(layoutData);
-        c.setLayout(layout);
-        sqlModeLabel = new Label(c, SWT.NONE);
-        sqlModeLabel.setText(Messages.getString("DatabaseForm.sqlMode")); //$NON-NLS-1$
-        button1 = new Button(c, SWT.RADIO);
-        button1.setText(Messages.getString("DatabaseForm.yes")); //$NON-NLS-1$
-        button2 = new Button(c, SWT.RADIO);
-        button2.setText(Messages.getString("DatabaseForm.no")); //$NON-NLS-1$
-        sqlModeLabel.setVisible(false);
-        button1.setVisible(false);
-        button2.setVisible(false);
-
-        sqlSyntaxCombo.setVisible(!CoreRuntimePlugin.getInstance().isDataProfilePerspectiveSelected());
         hiveModeCombo.setVisible(!CoreRuntimePlugin.getInstance().isDataProfilePerspectiveSelected());
-
-        group1.setVisible(!isTOPStandaloneMode());
-        if (metadataconnection != null) {
-            IDBMetadataProviderObject providerObj = ExtractMetaDataFromDataBase.getProviderObjectByDbType(metadataconnection
-                    .getDbType());
-            if (providerObj != null && !providerObj.isSupportJDBC()) {
-                group1.setVisible(false);
-            }
-        }
-        isDbPropertiesVisible = group1.getVisible();
     }
 
     private void addMoveButtonListener() {
@@ -3905,126 +3731,12 @@ public class DatabaseForm extends AbstractForm {
                     moveButton.setToolTipText(Messages.getString("DatabaseForm.showContext")); //$NON-NLS-1$
                     moveButton.setText(UP);
                 } else if (moveButton.getText().equals(UP)) {
-                    sash.setWeights(new int[] { 21, 12 });
+                    sash.setWeights(new int[] { 25, 8 });
                     moveButton.setToolTipText(Messages.getString("DatabaseForm.hideContext")); //$NON-NLS-1$
                     moveButton.setText(DOWN);
                 }
             }
         });
-    }
-
-    /**
-     * DOC YeXiaowei Comment method "addDBSelectCombo". Extract method form addFields()
-     */
-    private void addDBSelectCombo() {
-        // PTODO cantoine : HIDDEN some Database connection in function of
-        // project MODE (Perl/Java).
-
-        List<String> dbTypeDisplayList = EDatabaseConnTemplate.getDBTypeDisplay();
-
-        // added by dlin for 21721,only a temporary approach to resolve it -begin
-        IWorkbenchWindow workBenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-        if (workBenchWindow != null) {
-            IWorkbenchPage page = workBenchWindow.getActivePage();
-            if (page != null) {
-                String perId = page.getPerspective().getId();
-                if ((!"".equals(perId) && null != perId)) { //$NON-NLS-1$
-                    // eg : use DI, then switch to DQ : All view from DI must be hidden when switch
-                    // MOD qiongli 2012-7-10 TDQ-5801,hide also 'MSsql 2005/2008' for DQ after delete that MS jars.
-                    if (perId.equalsIgnoreCase(IBrandingConfiguration.PERSPECTIVE_DI_ID)
-                            || perId.equalsIgnoreCase(IBrandingConfiguration.PERSPECTIVE_DQ_ID)) {
-                        if (dbTypeDisplayList != null) {
-                            ArrayList<String> newList = new ArrayList<String>(dbTypeDisplayList);
-                            for (int i = 0; i < newList.size(); i++) {
-                                if (newList.get(i).equalsIgnoreCase(("Microsoft SQL Server 2005/2008"))) {
-                                    newList.remove(i);
-                                }
-                            }
-                            dbTypeDisplayList = newList;
-                        }
-                    }
-                }
-            }
-        }
-
-        // added by dlin for 21721,only a temporary approach to resolve it -end
-        if (isTOPStandaloneMode()) {
-            dbTypeDisplayList = filterUnavailableType(dbTypeDisplayList);
-        }
-        filterTypesUnloadProviders(dbTypeDisplayList);
-
-        filterUnsupportedDBType(dbTypeDisplayList);
-
-        dbTypeCombo = new LabelledCombo(compositeDbSettings, Messages.getString("DatabaseForm.dbType"), Messages //$NON-NLS-1$
-                .getString("DatabaseForm.dbTypeTip"), dbTypeDisplayList.toArray(new String[0]), 2, true); //$NON-NLS-1$
-
-        // configure the visible item of database combo
-        int visibleItemCount = dbTypeCombo.getCombo().getItemCount();
-        if (visibleItemCount > VISIBLE_DATABASE_COUNT) {
-            visibleItemCount = VISIBLE_DATABASE_COUNT;
-        }
-        dbTypeCombo.getCombo().setVisibleItemCount(visibleItemCount);
-    }
-
-    private void filterUnsupportedDBType(List<String> dbTypeDisplayList) {
-        Iterator<String> it = dbTypeDisplayList.iterator();
-        while (it.hasNext()) {
-            String displayName = it.next();
-            EDatabaseTypeName type = EDatabaseTypeName.getTypeFromDisplayName(displayName);
-            if (!type.isSupport()) {
-                it.remove();
-            }
-        }
-    }
-
-    private void filterTypesUnloadProviders(List<String> dbTypeDisplayList) {
-        Iterator<String> it = dbTypeDisplayList.iterator();
-        while (it.hasNext()) {
-            String displayName = it.next();
-            EDatabaseTypeName type = EDatabaseTypeName.getTypeFromDisplayName(displayName);
-            // if can't find the provider for current typename,remove it from combo
-            if (type != null && type.isUseProvider()) {
-                String dbtypeString = type.getXmlName();
-                if (dbtypeString != null && ExtractMetaDataFromDataBase.getProviderByDbType(dbtypeString) == null) {
-                    it.remove();
-                }
-            }
-        }
-
-    }
-
-    private List<String> filterUnavailableType(List<String> dbTypeDisplayList) {
-        List<String> resultList = new ArrayList<String>();
-
-        List<String> tdqSupportDBList = MetadataConnectionUtils.getTDQSupportDBTemplate();
-        for (String dbType : dbTypeDisplayList) {
-            if (tdqSupportDBList.contains(dbType)) {
-                resultList.add(dbType);
-            }
-        }
-
-        return resultList;
-    }
-
-    /**
-     * Check DBType is AS400,set systemButton and stardardButton visible.a
-     */
-    private void checkDBTypeAS400() {
-        if (isDBTypeSelected(EDatabaseConnTemplate.AS400)) {
-            standardButton.setVisible(true);
-            systemButton.setVisible(true);
-        } else {
-            standardButton.setVisible(false);
-            systemButton.setVisible(false);
-        }
-
-    }
-
-    /**
-     * Check data connection.
-     */
-    private void checkConnection() {
-        checkConnection(null);
     }
 
     private void checkConnection(final StringBuffer retProposedSchema) {
@@ -4063,7 +3775,7 @@ public class DatabaseForm extends AbstractForm {
             }
             String urlStr = null;
             urlStr = DBConnectionContextUtils.setManagerConnectionValues(managerConnection, connectionItem, selectedContextType,
-                    dbTypeCombo.getItem(dbTypeCombo.getSelectionIndex()), dbTypeCombo.getSelectionIndex());
+                    getConnectionDBType());
             if (isImpalaDBConnSelected()) {
                 String contextName = getConnection().getContextName();
                 DatabaseConnection cloneDBConn = null;
@@ -4088,7 +3800,7 @@ public class DatabaseForm extends AbstractForm {
                 managerConnection.setDbVersionString(versionStr);
             }
             if (urlStr == null || isHiveDBConnSelected()) {
-                if (dbTypeCombo.getText().equals(EDatabaseConnTemplate.GENERAL_JDBC.getDBDisplayName())) {
+                if (getConnectionDBType().equals(EDatabaseConnTemplate.GENERAL_JDBC.getDBDisplayName())) {
                     DatabaseConnection dbConn = (DatabaseConnection) connectionItem.getConnection();
 
                     ContextType contextType = ConnectionContextHelper.getContextTypeForContextMode(dbConn);
@@ -4129,7 +3841,7 @@ public class DatabaseForm extends AbstractForm {
             // properties.
             // doHivePreSetup();
             // set the value
-            managerConnection.setValue(0, dbTypeCombo.getItem(dbTypeCombo.getSelectionIndex()),
+            managerConnection.setValue(0, getConnectionDBType(),
                     isGeneralJDBC() ? generalJdbcUrlText.getText() : urlConnectionStringText.getText(), serverText.getText(),
                     isGeneralJDBC() ? generalJdbcUserText.getText() : usernameText.getText(),
                     isGeneralJDBC() ? generalJdbcPasswordText.getText() : passwordText.getText(), sidOrDatabaseText.getText(),
@@ -4141,10 +3853,11 @@ public class DatabaseForm extends AbstractForm {
             managerConnection.setDbRootPath(directoryField.getText());
 
         }
-        managerConnection.setValueProperties(sqlSyntaxCombo.getItem(sqlSyntaxCombo.getSelectionIndex()),
-                stringQuoteText.getText(), nullCharText.getText());
+        IPreferenceStore store = CoreUIPlugin.getDefault().getPreferenceStore();
+        managerConnection.setValueProperties(store.getString(IDatabasePrefConstants.SQL_SYNTAX),
+                store.getString(IDatabasePrefConstants.STRING_QUOTE), store.getString(IDatabasePrefConstants.NULL_CHAR));
 
-        EDatabaseTypeName dbType = EDatabaseTypeName.getTypeFromDbType(dbTypeCombo.getItem(dbTypeCombo.getSelectionIndex()));
+        EDatabaseTypeName dbType = EDatabaseTypeName.getTypeFromDbType(getConnectionDBType());
         AProgressMonitorDialogWithCancel<Boolean> checkingDialog;
         if (dbType.isUseProvider()) {
             final IMetadataConnection metadataConn = ConvertionHelper.convert(connectionItem.getConnection(), true);
@@ -4194,9 +3907,6 @@ public class DatabaseForm extends AbstractForm {
         } catch (Exception e) {
             executeException = e;
         }
-        // if (!databaseSettingIsValide)
-        // If checking is complete, it need to
-        // doRemoveHiveSetup();
 
         // update the button
         checkButton.setEnabled(true);
@@ -4291,7 +4001,7 @@ public class DatabaseForm extends AbstractForm {
             return false;
         }
 
-        String[] analyseURL = DatabaseConnStrUtil.analyseURL(dbTypeCombo.getText(), "", urlText); //$NON-NLS-1$
+        String[] analyseURL = DatabaseConnStrUtil.analyseURL(getConnectionDBType(), "", urlText); //$NON-NLS-1$
         if (analyseURL[1] != null && analyseURL.length > 1) {
             fileFullPath = getSqliteFileFullPath(analyseURL[0], analyseURL[1]);
         }
@@ -4316,7 +4026,7 @@ public class DatabaseForm extends AbstractForm {
      * @return
      */
     private boolean isGeneralJDBCSqlite() {
-        if (dbTypeCombo.getText().equals(EDatabaseConnTemplate.GENERAL_JDBC.getDBDisplayName())) {
+        if (getConnectionDBType().equals(EDatabaseConnTemplate.GENERAL_JDBC.getDBDisplayName())) {
             String urlText = generalJdbcUrlText.getText();
             if (urlText.startsWith("jdbc:sqlite:")) { //$NON-NLS-1$
                 return true;
@@ -4331,7 +4041,7 @@ public class DatabaseForm extends AbstractForm {
      * @return
      */
     private boolean isSqlite() {
-        return dbTypeCombo.getText().equals(EDatabaseConnTemplate.SQLITE.getDBDisplayName());
+        return getConnectionDBType().equals(EDatabaseConnTemplate.SQLITE.getDBDisplayName());
     }
 
     /**
@@ -4354,15 +4064,15 @@ public class DatabaseForm extends AbstractForm {
      */
     private boolean enableDbVersion() {
         return oracleVersionEnable() || as400VersionEnable()
-                || EDatabaseConnTemplate.ACCESS.getDBDisplayName().equals(dbTypeCombo.getText())
-                || EDatabaseConnTemplate.MYSQL.getDBDisplayName().equals(dbTypeCombo.getText())
-                || EDatabaseConnTemplate.HIVE.getDBDisplayName().equals(dbTypeCombo.getText())
-                || EDatabaseConnTemplate.PLUSPSQL.getDBDisplayName().equals(dbTypeCombo.getText())
-                || EDatabaseConnTemplate.VERTICA.getDBDisplayName().equals(dbTypeCombo.getText())
-                || EDatabaseConnTemplate.PSQL.getDBDisplayName().equals(dbTypeCombo.getText())
-                || EDatabaseConnTemplate.MSSQL.getDBDisplayName().equals(dbTypeCombo.getText())
-                || EDatabaseConnTemplate.SYBASEASE.getDBDisplayName().equals(dbTypeCombo.getText())
-                || EDatabaseConnTemplate.IMPALA.getDBDisplayName().equals(dbTypeCombo.getText());
+                || EDatabaseConnTemplate.ACCESS.getDBDisplayName().equals(getConnectionDBType())
+                || EDatabaseConnTemplate.MYSQL.getDBDisplayName().equals(getConnectionDBType())
+                || EDatabaseConnTemplate.HIVE.getDBDisplayName().equals(getConnectionDBType())
+                || EDatabaseConnTemplate.PLUSPSQL.getDBDisplayName().equals(getConnectionDBType())
+                || EDatabaseConnTemplate.VERTICA.getDBDisplayName().equals(getConnectionDBType())
+                || EDatabaseConnTemplate.PSQL.getDBDisplayName().equals(getConnectionDBType())
+                || EDatabaseConnTemplate.MSSQL.getDBDisplayName().equals(getConnectionDBType())
+                || EDatabaseConnTemplate.SYBASEASE.getDBDisplayName().equals(getConnectionDBType())
+                || EDatabaseConnTemplate.IMPALA.getDBDisplayName().equals(getConnectionDBType());
     }
 
     /**
@@ -4375,11 +4085,11 @@ public class DatabaseForm extends AbstractForm {
             @Override
             public void handleEvent(final Event e) {
                 if (!isContextMode()) {
-                    if (dbTypeCombo.getSelectionIndex() >= 0) {
+                    if (getConnectionDBType().length() > 0) {
                         setPropertiesFormEditable(false);
                         urlConnectionStringText.setEditable(true);
                     } else {
-                        updateStatus(IStatus.ERROR, Messages.getString("DatabaseForm.alert", dbTypeCombo.getLabel())); //$NON-NLS-1$
+                        updateStatus(IStatus.ERROR, Messages.getString("DatabaseForm.alert", "DB Type")); //$NON-NLS-1$
                     }
                 }
             }
@@ -4403,10 +4113,6 @@ public class DatabaseForm extends AbstractForm {
                         // we search if another regex corresponding at this
                         // string
                         String selection = s[0];
-                        if (!dbTypeCombo.getText().equals(selection)) {
-                            dbTypeCombo.setText(selection);
-                            dbTypeCombo.forceFocus();
-                        }
 
                         int index = 1;
                         if (s[index] != "") {//$NON-NLS-1$
@@ -4475,7 +4181,6 @@ public class DatabaseForm extends AbstractForm {
                             getConnection().setAdditionalParams(s[index]);
                         }
                     }
-                    checkDBTypeAS400();
                 }
             }
         });
@@ -4499,8 +4204,7 @@ public class DatabaseForm extends AbstractForm {
                 StringBuffer retProposedSchema = new StringBuffer();
                 checkConnection(retProposedSchema);
                 if (0 < retProposedSchema.length()) {
-                    if (ManagerConnection.isSchemaFromSidOrDatabase(EDatabaseTypeName.getTypeFromDbType(dbTypeCombo
-                            .getItem(dbTypeCombo.getSelectionIndex())))) {
+                    if (ManagerConnection.isSchemaFromSidOrDatabase(EDatabaseTypeName.getTypeFromDbType(getConnectionDBType()))) {
                         if (sidOrDatabaseText != null) {
                             sidOrDatabaseText.setText(retProposedSchema.toString());
                         }
@@ -4550,10 +4254,7 @@ public class DatabaseForm extends AbstractForm {
                 if (isContextMode()) {
                     //
                 } else {
-                    if (dbTypeCombo.getSelectionIndex() == -1) {
-                        dbTypeCombo.forceFocus();
-                    }
-                    setPropertiesFormEditable(dbTypeCombo.getSelectionIndex() > -1);
+                    setPropertiesFormEditable(getConnectionDBType().length() > 0);
                     urlConnectionStringText.setEditable(false);
                 }
             }
@@ -4757,231 +4458,27 @@ public class DatabaseForm extends AbstractForm {
                 }
             }
         });
-
-        // standardButton parameters: Event modifyText
-        standardButton.addSelectionListener(new SelectionAdapter() {
-
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                if (!isContextMode()) {
-                    getConnection().setStandardSQL(standardButton.getSelection());
-                    getConnection().setSystemSQL(systemButton.getSelection());
-                }
-            }
-
-        });
-        // systemButton parameters: Event modifyText
-        systemButton.addSelectionListener(new SelectionAdapter() {
-
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                if (!isContextMode()) {
-                    getConnection().setStandardSQL(standardButton.getSelection());
-                    getConnection().setSystemSQL(systemButton.getSelection());
-                }
-            }
-
-        });
-        // button1 parameter:Event modifyText
-        button1.addSelectionListener(new SelectionAdapter() {
-
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                if (!isContextMode()) {
-                    getConnection().setSQLMode(button1.getSelection());
-                }
-            }
-        });
-        // button2 parameter:Event modifyText
-        button2.addSelectionListener(new SelectionAdapter() {
-
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                if (!isContextMode()) {
-                    getConnection().setSQLMode(!button2.getSelection());
-                }
-            }
-        });
+//        // button1 parameter:Event modifyText
+//        button1.addSelectionListener(new SelectionAdapter() {
+//
+//            @Override
+//            public void widgetSelected(SelectionEvent e) {
+//                if (!isContextMode()) {
+//                    getConnection().setSQLMode(button1.getSelection());
+//                }
+//            }
+//        });
+//        // button2 parameter:Event modifyText
+//        button2.addSelectionListener(new SelectionAdapter() {
+//
+//            @Override
+//            public void widgetSelected(SelectionEvent e) {
+//                if (!isContextMode()) {
+//                    getConnection().setSQLMode(!button2.getSelection());
+//                }
+//            }
+//        });
         // Event dbTypeCombo
-        dbTypeCombo.addModifyListener(new ModifyListener() {
-
-            // Event Modify
-            @Override
-            public void modifyText(final ModifyEvent e) {
-                getConnection().getParameters().clear();
-                getConnection().setDbVersionString(null);
-                resetControls();
-                urlConnectionStringText.setEditable(false);
-                authenticationGrpForImpala.setVisible(false);
-                authenticationGrpForImpala.getParent().layout();
-                // add for bug 12649
-                clearFiledsForDiffDbTypes();
-                boolean isGeneralJDBC = isGeneralJDBC();
-                if (isGeneralJDBC) {
-                    if (generalJdbcUrlText != null) {
-                        generalJdbcUrlText.setText(""); //$NON-NLS-1$
-                    }
-                    if (generalJdbcUserText != null) {
-                        generalJdbcUserText.setText(""); //$NON-NLS-1$
-                    }
-                    if (generalJdbcPasswordText != null) {
-                        generalJdbcPasswordText.setText(""); //$NON-NLS-1$
-                    }
-
-                } else if (isHiveDBConnSelected()) {
-                    // Added by Marvin Wang on Oct. 15, 2012 for bug TDI-23235.
-                    if (urlConnectionStringText != null) {
-                        urlConnectionStringText.setText(""); //$NON-NLS-1$
-                    }
-                    if (usernameText != null) {
-
-                        usernameText.setText(""); //$NON-NLS-1$
-                    }
-                    if (passwordText != null) {
-                        passwordText.setText(""); //$NON-NLS-1$
-                    }
-                    hideControl(authenticationGrpForHBase, true);
-                    initHiveInfo();
-                } else if (isDBTypeSelected(EDatabaseConnTemplate.HBASE)) {
-                    hideControl(authenticationCom, true);
-                    hideControl(znodeparentGrp, false);
-                    hideControl(tableInfoPartOfHbaseComp, !doSupportMaprTicketForHbase());
-                    initHBaseSettings();
-                    // initZnodeParent();
-                } else if (isDBTypeSelected(EDatabaseConnTemplate.MAPRDB)) {
-                    hideControl(authenticationCom, true);
-                    hideControl(znodeparentGrp, false);
-                    hideControl(tableInfoPartOfMapRDBComp, false);
-                    initMaprdbSettings();
-                } else if (isDBTypeSelected(EDatabaseConnTemplate.IMPALA)) {
-                    hideControl(authenticationCom, true);
-                    hideControl(authenticationComForHBase, true);
-                    initImpalaSettings();
-                    getConnection().setDbVersionString("");
-                } else {
-                    if (urlConnectionStringText != null) {
-                        urlConnectionStringText.setText(""); //$NON-NLS-1$
-                    }
-                    if (usernameText != null) {
-
-                        usernameText.setText(""); //$NON-NLS-1$
-                    }
-                    if (passwordText != null) {
-                        passwordText.setText(""); //$NON-NLS-1$
-                    }
-                }
-                if (schemaText != null) {
-                    schemaText.setText(""); //$NON-NLS-1$
-                }
-                if (serverText != null) {
-                    serverText.setText(""); //$NON-NLS-1$
-                }
-                if (sidOrDatabaseText != null) {
-                    sidOrDatabaseText.setText(""); //$NON-NLS-1$
-                }
-                if (portText != null && portText.getText() != null) {
-                    portText.setText(""); //$NON-NLS-1$
-                }
-                if (fileField != null) {
-                    fileField.setText(""); //$NON-NLS-1$
-                }
-                if (datasourceText != null) {
-                    datasourceText.setText(""); //$NON-NLS-1$
-                }
-                if (additionParamText != null) {
-                    additionParamText.setText(""); //$NON-NLS-1$
-                }
-                if (generalJdbcClassNameText != null) {
-                    generalJdbcClassNameText.setText(""); //$NON-NLS-1$
-                }
-                if (generalJdbcDriverjarText != null) {
-                    generalJdbcDriverjarText.setText(""); //$NON-NLS-1$
-                }
-                if (additionParamText != null) {
-                    additionParamText.setText(""); //$NON-NLS-1$
-                }
-                if (mappingFileText != null) {
-                    mappingFileText.setText(""); //$NON-NLS-1$
-                }
-
-                boolean hiddenGeneral = !isGeneralJDBC();
-
-                // change controls
-                switchBetweenTypeandGeneralDB(!isGeneralJDBC());
-
-                if (!isContextMode()) {
-                    getConnection().setDatabaseType(dbTypeCombo.getText());
-
-                    EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(getConnection().getDatabaseType());
-                    if (template != null) {
-                        portText.setText(template.getDefaultPort());
-                    }
-                    final String product = EDatabaseTypeName.getTypeFromDisplayName(getConnection().getDatabaseType())
-                            .getProduct();
-                    getConnection().setProductId(product);
-
-                    String mapping = null;
-
-                    if (product == null || product.equals(EDatabaseConnTemplate.GENERAL_JDBC.getDBDisplayName())) {
-                        mapping = generalMappingFileText.getText();
-                    } else {
-                        if (MetadataTalendType.getDefaultDbmsFromProduct(product) != null) {
-                            mapping = MetadataTalendType.getDefaultDbmsFromProduct(product).getId();
-                        }
-                    }
-                    if (mapping == null) {
-                        mapping = "mysql_id"; // default value //$NON-NLS-1$
-                    }
-                    getConnection().setDbmsId(mapping);
-
-                    setPropertiesFormEditable(true);
-
-                    additionParamText.setText(EDatabaseConnTemplate.getAdditionProperty(dbTypeCombo.getText()));
-                    if (dbTypeCombo.getText().equals(EDatabaseConnTemplate.INFORMIX.getDBDisplayName())) {
-                        datasourceText.setLabelText(Messages.getString("DatabaseForm.informixInstance")); //$NON-NLS-1$
-                    }
-                    checkAndSetIniSQLModel();
-                    checkAS400SpecificCase();
-                    checkFieldsValue();
-                    hideDbVersion();
-                    // see bug 0005237: Create DB Connection issue.
-                    if (!schemaText.getEditable()) {
-                        schemaText.setText(""); //$NON-NLS-1$
-                    }
-                    if (isHiveDBConnSelected()) {
-                        doHiveDBTypeSelected();
-                        fillDefaultsWhenHiveVersionChanged();
-                        fillDefaultsWhenHiveModeChanged(isHiveEmbeddedMode());
-                    } else {
-                        doHiveDBTypeNotSelected();
-                    }
-
-                    if (isHBaseDBConnSelected()) {
-                        fillDefaultsWhenHBaseVersionChanged();
-                    }
-                    if (isImpalaDBConnSelected()) {
-                        fillDefaultsWhenImpalaVersionChanged();
-                    }
-                }
-
-                // Added by Marvin Wang on Oct. 22, 2012 just for show the scrolled bar when a hive DB type is selected.
-                // It is not the better way to do this, if the code of DB part is required to refactor, this code could
-                // be removed.
-                if (isHiveDBConnSelected()) {
-                    scrolledComposite.setMinSize(newParent.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-                } else if (isImpalaDBConnSelected()) {
-                    scrolledComposite.setMinSize(newParent.computeSize(SWT.DEFAULT, 550));
-                } else {
-                    checkScrolledCompositeSize();
-                }
-
-                if (!isDBTypeSelected(EDatabaseConnTemplate.HBASE) && !isDBTypeSelected(EDatabaseConnTemplate.MAPRDB)
-                        && !isDBTypeSelected(EDatabaseConnTemplate.HIVE) && !isDBTypeSelected(EDatabaseConnTemplate.IMPALA)) {
-                    clearHadoopRelatedParameters();
-                }
-            }
-
-        });
 
         // removed for bug TDI-14797 on 26 July, 2013. for support search by keyboard's letter.
         // When the DbType is selected, disabled the action of keyboard's letter
@@ -5006,9 +4503,9 @@ public class DatabaseForm extends AbstractForm {
             @Override
             public void handleEvent(final Event e) {
                 if (!isContextMode()) {
-                    if (dbTypeCombo.getSelectionIndex() == -1) {
-                        dbTypeCombo.forceFocus();
-                    } else {
+                    if (getConnectionDBType().length() > 0) {
+//                        dbTypeCombo.forceFocus();
+//                    } else {
                         EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(getConnection().getDatabaseType());
                         EDatabaseVersion4Drivers version = EDatabaseVersion4Drivers.indexOfByVersionDisplay(getConnection()
                                 .getDbVersionString());
@@ -5049,38 +4546,6 @@ public class DatabaseForm extends AbstractForm {
                 }
             }
         });
-        // sqlSyntaxText : Event modifyText
-        sqlSyntaxCombo.addModifyListener(new ModifyListener() {
-
-            @Override
-            public void modifyText(final ModifyEvent e) {
-                if (!isContextMode()) {
-                    getConnection().setSqlSynthax(sqlSyntaxCombo.getText());
-                }
-            }
-        });
-
-        // nullCharText : Event modifyText
-        nullCharText.addModifyListener(new ModifyListener() {
-
-            @Override
-            public void modifyText(final ModifyEvent e) {
-                if (!isContextMode()) {
-                    getConnection().setNullChar(nullCharText.getText());
-                }
-            }
-        });
-
-        // stringQuoteText : Event modifyText
-        stringQuoteText.addModifyListener(new ModifyListener() {
-
-            @Override
-            public void modifyText(final ModifyEvent e) {
-                if (!isContextMode()) {
-                    getConnection().setStringQuote(stringQuoteText.getText());
-                }
-            }
-        });
 
         addGeneralDbFieldsListeners();
 
@@ -5099,6 +4564,185 @@ public class DatabaseForm extends AbstractForm {
         if (canLinkToHadoopCluster()) {
             addHadoopClusterLinkListeners();
         }
+    }
+    
+    public void refreshDBForm(ConnectionItem connItem){
+        if(connItem != null){
+            this.connectionItem = connItem;
+        }
+        getConnection().getParameters().clear();
+        getConnection().setDbVersionString(null);
+        resetControls();
+        urlConnectionStringText.setEditable(false);
+        authenticationGrpForImpala.setVisible(false);
+        authenticationGrpForImpala.getParent().layout();
+        // add for bug 12649
+        clearFiledsForDiffDbTypes();
+        boolean isGeneralJDBC = isGeneralJDBC();
+        if (isGeneralJDBC) {
+            if (generalJdbcUrlText != null) {
+                generalJdbcUrlText.setText(""); //$NON-NLS-1$
+            }
+            if (generalJdbcUserText != null) {
+                generalJdbcUserText.setText(""); //$NON-NLS-1$
+            }
+            if (generalJdbcPasswordText != null) {
+                generalJdbcPasswordText.setText(""); //$NON-NLS-1$
+            }
+
+        } else if (isHiveDBConnSelected()) {
+            // Added by Marvin Wang on Oct. 15, 2012 for bug TDI-23235.
+            if (urlConnectionStringText != null) {
+                urlConnectionStringText.setText(""); //$NON-NLS-1$
+            }
+            if (usernameText != null) {
+
+                usernameText.setText(""); //$NON-NLS-1$
+            }
+            if (passwordText != null) {
+                passwordText.setText(""); //$NON-NLS-1$
+            }
+            hideControl(authenticationGrpForHBase, true);
+            initHiveInfo();
+        } else if (isDBTypeSelected(EDatabaseConnTemplate.HBASE)) {
+            hideControl(authenticationCom, true);
+            hideControl(znodeparentGrp, false);
+            hideControl(tableInfoPartOfHbaseComp, !doSupportMaprTicketForHbase());
+            initHBaseSettings();
+            // initZnodeParent();
+        } else if (isDBTypeSelected(EDatabaseConnTemplate.MAPRDB)) {
+            hideControl(authenticationCom, true);
+            hideControl(znodeparentGrp, false);
+            hideControl(tableInfoPartOfMapRDBComp, false);
+            initMaprdbSettings();
+        } else if (isDBTypeSelected(EDatabaseConnTemplate.IMPALA)) {
+            hideControl(authenticationCom, true);
+            hideControl(authenticationComForHBase, true);
+            initImpalaSettings();
+            getConnection().setDbVersionString("");
+        } else {
+            if (urlConnectionStringText != null) {
+                urlConnectionStringText.setText(""); //$NON-NLS-1$
+            }
+            if (usernameText != null) {
+
+                usernameText.setText(""); //$NON-NLS-1$
+            }
+            if (passwordText != null) {
+                passwordText.setText(""); //$NON-NLS-1$
+            }
+        }
+        if (schemaText != null) {
+            schemaText.setText(""); //$NON-NLS-1$
+        }
+        if (serverText != null) {
+            serverText.setText(""); //$NON-NLS-1$
+        }
+        if (sidOrDatabaseText != null) {
+            sidOrDatabaseText.setText(""); //$NON-NLS-1$
+        }
+        if (portText != null && portText.getText() != null) {
+            portText.setText(""); //$NON-NLS-1$
+        }
+        if (fileField != null) {
+            fileField.setText(""); //$NON-NLS-1$
+        }
+        if (datasourceText != null) {
+            datasourceText.setText(""); //$NON-NLS-1$
+        }
+        if (additionParamText != null) {
+            additionParamText.setText(""); //$NON-NLS-1$
+        }
+        if (generalJdbcClassNameText != null) {
+            generalJdbcClassNameText.setText(""); //$NON-NLS-1$
+        }
+        if (generalJdbcDriverjarText != null) {
+            generalJdbcDriverjarText.setText(""); //$NON-NLS-1$
+        }
+        if (additionParamText != null) {
+            additionParamText.setText(""); //$NON-NLS-1$
+        }
+        if (mappingFileText != null) {
+            mappingFileText.setText(""); //$NON-NLS-1$
+        }
+
+        boolean hiddenGeneral = !isGeneralJDBC();
+
+        // change controls
+        switchBetweenTypeandGeneralDB(!isGeneralJDBC());
+
+        if (!isContextMode()) {
+            getConnection().setDatabaseType(getConnectionDBType());
+
+            EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(getConnection().getDatabaseType());
+            if (template != null) {
+                portText.setText(template.getDefaultPort());
+            }
+            final String product = EDatabaseTypeName.getTypeFromDisplayName(getConnection().getDatabaseType())
+                    .getProduct();
+            getConnection().setProductId(product);
+
+            String mapping = null;
+
+            if (product == null || product.equals(EDatabaseConnTemplate.GENERAL_JDBC.getDBDisplayName())) {
+                mapping = generalMappingFileText.getText();
+            } else {
+                if (MetadataTalendType.getDefaultDbmsFromProduct(product) != null) {
+                    mapping = MetadataTalendType.getDefaultDbmsFromProduct(product).getId();
+                }
+            }
+            if (mapping == null) {
+                mapping = "mysql_id"; // default value //$NON-NLS-1$
+            }
+            getConnection().setDbmsId(mapping);
+
+            setPropertiesFormEditable(true);
+
+            additionParamText.setText(EDatabaseConnTemplate.getAdditionProperty(getConnectionDBType()));
+            if (getConnectionDBType().equals(EDatabaseConnTemplate.INFORMIX.getDBDisplayName())) {
+                datasourceText.setLabelText(Messages.getString("DatabaseForm.informixInstance")); //$NON-NLS-1$
+            }
+            checkAndSetIniSQLModel();
+            checkAS400SpecificCase();
+            checkDatabaseProperties();
+            checkFieldsValue();
+            hideDbVersion();
+            // see bug 0005237: Create DB Connection issue.
+            if (!schemaText.getEditable()) {
+                schemaText.setText(""); //$NON-NLS-1$
+            }
+            if (isHiveDBConnSelected()) {
+                doHiveDBTypeSelected();
+                fillDefaultsWhenHiveVersionChanged();
+                fillDefaultsWhenHiveModeChanged(isHiveEmbeddedMode());
+            } else {
+                doHiveDBTypeNotSelected();
+            }
+
+            if (isHBaseDBConnSelected()) {
+                fillDefaultsWhenHBaseVersionChanged();
+            }
+            if (isImpalaDBConnSelected()) {
+                fillDefaultsWhenImpalaVersionChanged();
+            }
+        }
+
+        // Added by Marvin Wang on Oct. 22, 2012 just for show the scrolled bar when a hive DB type is selected.
+        // It is not the better way to do this, if the code of DB part is required to refactor, this code could
+        // be removed.
+        if (isHiveDBConnSelected()) {
+            scrolledComposite.setMinSize(newParent.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+        } else if (isImpalaDBConnSelected()) {
+            scrolledComposite.setMinSize(newParent.computeSize(SWT.DEFAULT, 550));
+        } else {
+            checkScrolledCompositeSize();
+        }
+
+        if (!isDBTypeSelected(EDatabaseConnTemplate.HBASE) && !isDBTypeSelected(EDatabaseConnTemplate.MAPRDB)
+                && !isDBTypeSelected(EDatabaseConnTemplate.HIVE) && !isDBTypeSelected(EDatabaseConnTemplate.IMPALA)) {
+            clearHadoopRelatedParameters();
+        }
+    
     }
 
     private void resetControls() {
@@ -5234,11 +4878,8 @@ public class DatabaseForm extends AbstractForm {
      * bug 12811
      */
     private void checkAndSetIniSQLModel() {
-        if (isCreation && first) {
-            getConnection().setSQLMode(false);
-            setSqlModelFields();
-            first = false;
-        }
+        IPreferenceStore store = CoreUIPlugin.getDefault().getPreferenceStore();
+        getConnection().setSQLMode(store.getBoolean(IDatabasePrefConstants.USE_SQL_MODEL));
     }
 
     private void modifyFieldValue() {
@@ -5251,7 +4892,7 @@ public class DatabaseForm extends AbstractForm {
     private void hideDbVersion() {
         // qli comment
         // Just layout version combo when choose db type
-        String dbType = dbTypeCombo.getText();
+        String dbType = getConnectionDBType();
         List<String> items = getVersionDrivers(dbType);
         String[] versions = new String[items.size()];
         items.toArray(versions);
@@ -5780,7 +5421,7 @@ public class DatabaseForm extends AbstractForm {
      * @return
      */
     private boolean isGeneralJDBC() {
-        return EDatabaseConnTemplate.GENERAL_JDBC.getDBDisplayName().equals(dbTypeCombo.getText());
+        return EDatabaseConnTemplate.GENERAL_JDBC.getDBDisplayName().equals(getConnectionDBType());
     }
 
     /**
@@ -5789,19 +5430,19 @@ public class DatabaseForm extends AbstractForm {
      * @return
      */
     private boolean isHiveDBConnSelected() {
-        return EDatabaseTypeName.HIVE.getDisplayName().equals(dbTypeCombo.getText());
+        return EDatabaseTypeName.HIVE.getDisplayName().equals(getConnectionDBType());
     }
 
     private boolean isHBaseDBConnSelected() {
-        return EDatabaseTypeName.HBASE.getDisplayName().equals(dbTypeCombo.getText());
+        return EDatabaseTypeName.HBASE.getDisplayName().equals(getConnectionDBType());
     }
 
     private boolean isMapRDBConnSelected() {
-        return EDatabaseTypeName.MAPRDB.getDisplayName().equals(dbTypeCombo.getText());
+        return EDatabaseTypeName.MAPRDB.getDisplayName().equals(getConnectionDBType());
     }
 
     private boolean isImpalaDBConnSelected() {
-        return EDatabaseTypeName.IMPALA.getDisplayName().equals(dbTypeCombo.getText());
+        return EDatabaseTypeName.IMPALA.getDisplayName().equals(getConnectionDBType());
     }
 
     /**
@@ -5813,13 +5454,13 @@ public class DatabaseForm extends AbstractForm {
         boolean checkGeneralDB = isGeneralJDBC();
 
         // See bug 004800
-        if (!checkGeneralDB || dbTypeCombo.getText().equals(EDatabaseConnTemplate.ACCESS.getDBDisplayName())) {
+        if (!checkGeneralDB || getConnectionDBType().equals(EDatabaseConnTemplate.ACCESS.getDBDisplayName())) {
             getConnection().setURL(getStringConnection());
         }
-        boolean isTeradata = EDatabaseTypeName.TERADATA.getDisplayName().equals(dbTypeCombo.getText());
-        sqlModeLabel.setVisible(isTeradata);
-        button1.setVisible(isTeradata);
-        button2.setVisible(isTeradata);
+//        boolean isTeradata = EDatabaseTypeName.TERADATA.getDisplayName().equals(getConnectionDBType());
+//        sqlModeLabel.setVisible(isTeradata);
+//        button1.setVisible(isTeradata);
+//        button2.setVisible(isTeradata);
         /*
          * commet by bug 12811
          */
@@ -5866,11 +5507,11 @@ public class DatabaseForm extends AbstractForm {
                 }
             }
         }
-
-        if (dbTypeCombo.getSelectionIndex() < 0) {
-            updateStatus(IStatus.ERROR, Messages.getString("DatabaseForm.alert", dbTypeCombo.getLabel())); //$NON-NLS-1$
-            return false;
-        }
+//
+//        if (getConnectionDBType().length() <= 0) {
+//            updateStatus(IStatus.ERROR, Messages.getString("DatabaseForm.alert", "DB Type")); //$NON-NLS-1$
+//            return false;
+//        }
 
         // Show Database Properties
         // if (!isModify) {
@@ -5901,18 +5542,6 @@ public class DatabaseForm extends AbstractForm {
 
         if (!databaseSettingIsValide) {
             updateStatus(IStatus.INFO, Messages.getString("DatabaseForm.checkInformation")); //$NON-NLS-1$
-            return false;
-        }
-        if (sqlSyntaxCombo.getSelectionIndex() == -1) {
-            updateStatus(IStatus.WARNING, Messages.getString("DatabaseForm.alert", sqlSyntaxCombo.getLabel())); //$NON-NLS-1$
-            return false;
-        }
-        if (nullCharText.getCharCount() == 0) {
-            updateStatus(IStatus.WARNING, Messages.getString("DatabaseForm.alert", nullCharText.getLabelText())); //$NON-NLS-1$
-            return false;
-        }
-        if (stringQuoteText.getCharCount() == 0) {
-            updateStatus(IStatus.WARNING, Messages.getString("DatabaseForm.alert", stringQuoteText.getLabelText())); //$NON-NLS-1$
             return false;
         }
 
@@ -5952,7 +5581,7 @@ public class DatabaseForm extends AbstractForm {
      * @return
      */
     private boolean isSupportByTDQ() {
-        String selectType = dbTypeCombo.getText();
+        String selectType = getConnectionDBType();
         List<String> tdqSupportDBType = MetadataConnectionUtils.getTDQSupportDBTemplate();
         if (!tdqSupportDBType.contains(selectType)) {
             return false;
@@ -6137,7 +5766,7 @@ public class DatabaseForm extends AbstractForm {
                 if (version != null) {
                     versionStr = version.getVersionValue();
                 }
-                s = DatabaseConnStrUtil.getURLString(dbTypeCombo.getText(), versionStr, serverText.getText(),
+                s = DatabaseConnStrUtil.getURLString(getConnectionDBType(), versionStr, serverText.getText(),
                         usernameText.getText(), passwordText.getText(), portText.getText(), sidOrDatabaseText.getText(),
                         fileField.getText(), datasourceText.getText(), directoryField.getText(), additionParamText.getText());
             }
@@ -6154,7 +5783,7 @@ public class DatabaseForm extends AbstractForm {
             EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(getConnection().getDatabaseType());
             EDatabaseVersion4Drivers version = EDatabaseVersion4Drivers.indexOfByVersionDisplay(getConnection()
                     .getDbVersionString());
-            checkButton.setEnabled((dbTypeCombo.getSelectionIndex() >= 0) && template != null
+            checkButton.setEnabled((getConnectionDBType().length() >= 0) && template != null
                     && (getStringConnection() != template.getUrlTemplate(version)));
             /* hbase/impala/mapr-db/.. has no url so need,using port or server instead */
             if (template != null
@@ -6162,7 +5791,7 @@ public class DatabaseForm extends AbstractForm {
                     && (template.getDbType().equals(EDatabaseTypeName.HBASE)
                             || template.getDbType().equals(EDatabaseTypeName.MAPRDB) || template.getDbType().equals(
                             EDatabaseTypeName.IMPALA))) {
-                checkButton.setEnabled((dbTypeCombo.getSelectionIndex() >= 0)
+                checkButton.setEnabled((getConnectionDBType().length() >= 0)
                         && template != null
                         && ((serverText.getText() != template.getUrlTemplate(version) || portText.getText() != template
                                 .getDefaultPort())));
@@ -6210,16 +5839,16 @@ public class DatabaseForm extends AbstractForm {
 
         }
 
-        if (EDatabaseTypeName.MSODBC.getDisplayName().equals(dbTypeCombo.getText())) {
+        if (EDatabaseTypeName.MSODBC.getDisplayName().equals(getConnectionDBType())) {
             sidOrDatabaseText.setLabelText(Messages.getString("DatabaseForm.DataBase")); //$NON-NLS-1$
         }
 
-        if (EDatabaseTypeName.GODBC.getDisplayName().equals(dbTypeCombo.getText())) {
+        if (EDatabaseTypeName.GODBC.getDisplayName().equals(getConnectionDBType())) {
             sidOrDatabaseText.setLabelText(Messages.getString("DatabaseForm.DataBase")); //$NON-NLS-1$
         }
 
         // hshen
-        if (EDatabaseConnTemplate.GENERAL_JDBC.getDBTypeName().equals(dbTypeCombo.getText())) {
+        if (EDatabaseConnTemplate.GENERAL_JDBC.getDBTypeName().equals(getConnectionDBType())) {
             addContextParams(EDBParamName.JdbcUrl, visible);
             addContextParams(EDBParamName.DriverJar, visible);
             addContextParams(EDBParamName.MappingFile, visible);
@@ -6245,10 +5874,10 @@ public class DatabaseForm extends AbstractForm {
         dbVersionCombo
                 .setEnabled(!isReadOnly()
                         && (isOracle || isAS400 || isMySQL || isVertica || isSAS || isImpala || isMsSQL || isSybase
-                                || EDatabaseConnTemplate.PSQL.getDBTypeName().equals(dbTypeCombo.getText())
-                                || EDatabaseConnTemplate.PLUSPSQL.getDBTypeName().equals(dbTypeCombo.getText())
-                                || EDatabaseConnTemplate.ACCESS.getDBTypeName().equals(dbTypeCombo.getText()) || EDatabaseConnTemplate.MSSQL05_08
-                                .getDBDisplayName().equals(dbTypeCombo.getText())));
+                                || EDatabaseConnTemplate.PSQL.getDBTypeName().equals(getConnectionDBType())
+                                || EDatabaseConnTemplate.PLUSPSQL.getDBTypeName().equals(getConnectionDBType())
+                                || EDatabaseConnTemplate.ACCESS.getDBTypeName().equals(getConnectionDBType()) || EDatabaseConnTemplate.MSSQL05_08
+                                .getDBDisplayName().equals(getConnectionDBType())));
         usernameText.setEditable(visible);
         passwordText.setEditable(visible);
         serverText.setEditable(false);
@@ -6262,8 +5891,8 @@ public class DatabaseForm extends AbstractForm {
         mappingFileText.setEditable(false);
         mappingSelectButton.setEnabled(false);
 
-        if (EDatabaseConnTemplate.GODBC.getDBTypeName().equals(dbTypeCombo.getText())
-                || EDatabaseConnTemplate.GENERAL_JDBC.getDBTypeName().equals(dbTypeCombo.getText())) {
+        if (EDatabaseConnTemplate.GODBC.getDBTypeName().equals(getConnectionDBType())
+                || EDatabaseConnTemplate.GENERAL_JDBC.getDBTypeName().equals(getConnectionDBType())) {
             addContextParams(EDBParamName.MappingFile, true);
             mappingFileText.show();
             mappingFileText.setEditable(true);
@@ -6277,10 +5906,10 @@ public class DatabaseForm extends AbstractForm {
             mappingSelectButton.setEnabled(false);
         }
 
-        if (dbTypeCombo.getSelectionIndex() < 0) {
+        if (getConnectionDBType().length() <= 0) {
             urlConnectionStringText.setEditable(false);
         } else {
-            EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(dbTypeCombo.getText());
+            EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(getConnectionDBType());
             String s = ""; //$NON-NLS-1$
             // For bug TDI-25424, the Database text widget is missing.
             if (template != null) {
@@ -6373,7 +6002,7 @@ public class DatabaseForm extends AbstractForm {
             }
             // hbase need serverText
             if (s.contains(EDatabaseConnVar.HOST.getVariable()) || isHbase || isMaprdb || isImpala) {
-                if (!EDatabaseConnTemplate.GENERAL_JDBC.getDBTypeName().equals(dbTypeCombo.getText())) {
+                if (!EDatabaseConnTemplate.GENERAL_JDBC.getDBTypeName().equals(getConnectionDBType())) {
                     serverText.show();
                     serverText.setEditable(visible);
                     if (isHbase) {
@@ -6440,9 +6069,9 @@ public class DatabaseForm extends AbstractForm {
                 addContextParams(EDBParamName.Port, false);
             }
             if (s.contains(EDatabaseConnVar.SID.getVariable()) || s.contains(EDatabaseConnVar.SERVICE_NAME.getVariable())) {
-                if (!EDatabaseConnTemplate.GENERAL_JDBC.getDBTypeName().equals(dbTypeCombo.getText())) {
+                if (!EDatabaseConnTemplate.GENERAL_JDBC.getDBTypeName().equals(getConnectionDBType())) {
                     // Added by Marvin Wang on Aug. 15, 2012 for handling the case of Hive.
-                    if (EDatabaseTypeName.HIVE.getDisplayName().equalsIgnoreCase(dbTypeCombo.getText())) {
+                    if (EDatabaseTypeName.HIVE.getDisplayName().equalsIgnoreCase(getConnectionDBType())) {
                         if (isHiveEmbeddedMode()) {
                             // It should be reverted if emembedded is available.
                             // sidOrDatabaseText.show();
@@ -6473,7 +6102,7 @@ public class DatabaseForm extends AbstractForm {
                     addContextParams(sidOrDatabase, false);
                 }
             } else {
-                if (template.getDbType() != EDatabaseTypeName.JAVADB_EMBEDED && !isHiveDBConnSelected()) {
+                if (template != null && template.getDbType() != EDatabaseTypeName.JAVADB_EMBEDED && !isHiveDBConnSelected()) {
                     sidOrDatabaseText.hide();
                     addContextParams(sidOrDatabase, false);
                 }
@@ -6574,7 +6203,7 @@ public class DatabaseForm extends AbstractForm {
                 }
             }
             if (EDatabaseConnTemplate.isAddtionParamsNeeded(getConnection().getDatabaseType())
-                    && !EDatabaseConnTemplate.GENERAL_JDBC.getDBTypeName().equals(dbTypeCombo.getText()) && visible) {
+                    && !EDatabaseConnTemplate.GENERAL_JDBC.getDBTypeName().equals(getConnectionDBType()) && visible) {
                 additionParamText.show();
                 additionParamText.setEditable(true);
                 addContextParams(EDBParamName.AdditionalParams, true);
@@ -6616,7 +6245,6 @@ public class DatabaseForm extends AbstractForm {
         compositeDbSettings.layout();
         typeDbCompositeParent.layout();
         newParent.layout();
-        databaseSettingGroup.layout();
         compositeGroupDbSettings.layout();
     }
 
@@ -6742,10 +6370,10 @@ public class DatabaseForm extends AbstractForm {
      */
     private boolean oracleVersionEnable() {
 
-        if (dbTypeCombo == null) {
+        if (getConnectionDBType().length() <= 0) {
             return false;
         }
-        EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(dbTypeCombo.getText());
+        EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(getConnectionDBType());
         return template != null
                 && (template == EDatabaseConnTemplate.ORACLEFORSID || template == EDatabaseConnTemplate.ORACLESN
                         || template == EDatabaseConnTemplate.ORACLE_OCI || template == EDatabaseConnTemplate.ORACLE_CUSTOM);
@@ -6753,19 +6381,19 @@ public class DatabaseForm extends AbstractForm {
 
     private boolean ImpalaVersionEnable() {
 
-        if (dbTypeCombo == null) {
+        if (getConnectionDBType().length() <= 0) {
             return false;
         }
-        EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(dbTypeCombo.getText());
+        EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(getConnectionDBType());
         return template != null && (template == EDatabaseConnTemplate.IMPALA);
     }
 
     private boolean hiveVersionEnable() {
 
-        if (dbTypeCombo == null) {
+        if (getConnectionDBType().length() <= 0) {
             return false;
         }
-        EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(dbTypeCombo.getText());
+        EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(getConnectionDBType());
         return template != null && (template == EDatabaseConnTemplate.HIVE);
     }
 
@@ -6777,10 +6405,10 @@ public class DatabaseForm extends AbstractForm {
      */
     private boolean as400VersionEnable() {
 
-        if (dbTypeCombo == null) {
+        if (getConnectionDBType().length() <= 0) {
             return false;
         }
-        EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(dbTypeCombo.getText());
+        EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(getConnectionDBType());
         return template != null && template == EDatabaseConnTemplate.AS400
                 && LanguageManager.getCurrentLanguage().equals(ECodeLanguage.JAVA);
     }
@@ -6793,10 +6421,10 @@ public class DatabaseForm extends AbstractForm {
      */
     private boolean asMySQLVersionEnable() {
         // for bug 11487
-        if (dbTypeCombo == null) {
+        if (getConnectionDBType().length() <= 0) {
             return false;
         }
-        EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(dbTypeCombo.getText());
+        EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(getConnectionDBType());
         return template != null && template == EDatabaseConnTemplate.MYSQL
                 && LanguageManager.getCurrentLanguage().equals(ECodeLanguage.JAVA);
     }
@@ -6809,10 +6437,10 @@ public class DatabaseForm extends AbstractForm {
      */
     private boolean asMsSQLVersionEnable() {
         // for bug 11487
-        if (dbTypeCombo == null) {
+        if (getConnectionDBType().length() <= 0) {
             return false;
         }
-        EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(dbTypeCombo.getText());
+        EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(getConnectionDBType());
         return template != null && template == EDatabaseConnTemplate.MSSQL
                 && LanguageManager.getCurrentLanguage().equals(ECodeLanguage.JAVA);
     }
@@ -6824,10 +6452,10 @@ public class DatabaseForm extends AbstractForm {
      * @return
      */
     private boolean asSybaseVersionEnable() {
-        if (dbTypeCombo == null) {
+        if (getConnectionDBType().length() <= 0) {
             return false;
         }
-        EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(dbTypeCombo.getText());
+        EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(getConnectionDBType());
         return template != null && template == EDatabaseConnTemplate.SYBASEASE
                 && LanguageManager.getCurrentLanguage().equals(ECodeLanguage.JAVA);
     }
@@ -6839,10 +6467,10 @@ public class DatabaseForm extends AbstractForm {
      * @return
      */
     private boolean asSASVersionEnable() {
-        if (dbTypeCombo == null) {
+        if (getConnectionDBType().length() <= 0) {
             return false;
         }
-        EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(dbTypeCombo.getText());
+        EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(getConnectionDBType());
         return template != null && template == EDatabaseConnTemplate.SAS
                 && LanguageManager.getCurrentLanguage().equals(ECodeLanguage.JAVA);
     }
@@ -6854,10 +6482,10 @@ public class DatabaseForm extends AbstractForm {
      * @return
      */
     private boolean asSAPHanaVersionEnable() {
-        if (dbTypeCombo == null) {
+        if (getConnectionDBType().length() <= 0) {
             return false;
         }
-        EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(dbTypeCombo.getText());
+        EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(getConnectionDBType());
         return template != null && template == EDatabaseConnTemplate.SAPHana
                 && LanguageManager.getCurrentLanguage().equals(ECodeLanguage.JAVA);
     }
@@ -6869,37 +6497,37 @@ public class DatabaseForm extends AbstractForm {
      * @return
      */
     private boolean asVerticaVersionEnable() {
-        if (dbTypeCombo == null) {
+        if (getConnectionDBType().length() <= 0) {
             return false;
         }
-        EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(dbTypeCombo.getText());
+        EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(getConnectionDBType());
         return template != null && template == EDatabaseConnTemplate.VERTICA
                 && LanguageManager.getCurrentLanguage().equals(ECodeLanguage.JAVA);
     }
 
     private boolean asHbaseVersionEnable() {
-        if (dbTypeCombo == null) {
+        if (getConnectionDBType().length() <= 0) {
             return false;
         }
-        EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(dbTypeCombo.getText());
+        EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(getConnectionDBType());
         return template != null && template == EDatabaseConnTemplate.HBASE
                 && LanguageManager.getCurrentLanguage().equals(ECodeLanguage.JAVA);
     }
 
     private boolean asMaprdbVersionEnable() {
-        if (dbTypeCombo == null) {
+        if (getConnectionDBType().length() <= 0) {
             return false;
         }
-        EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(dbTypeCombo.getText());
+        EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(getConnectionDBType());
         return template != null && template == EDatabaseConnTemplate.MAPRDB
                 && LanguageManager.getCurrentLanguage().equals(ECodeLanguage.JAVA);
     }
 
     private boolean isDBTypeSelected(EDatabaseConnTemplate dbTemplate) {
-        if (dbTypeCombo == null) {
+        if (getConnectionDBType().length() <= 0) {
             return false;
         }
-        EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(dbTypeCombo.getText());
+        EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(getConnectionDBType());
         return template != null && template == dbTemplate;
     }
 
@@ -6951,7 +6579,7 @@ public class DatabaseForm extends AbstractForm {
     @Override
     protected void adaptFormToEditable() {
         super.adaptFormToEditable();
-        dbTypeCombo.setReadOnly(isContextMode());
+//        dbTypeCombo.setReadOnly(isContextMode());
 
         urlConnectionStringText.setEditable(!isContextMode());
         usernameText.setEditable(!isContextMode());
@@ -6966,11 +6594,8 @@ public class DatabaseForm extends AbstractForm {
         fileField.setEditable(!isContextMode());
         directoryField.setEditable(!isContextMode());
 
-        sqlSyntaxCombo.setReadOnly(isContextMode());
-        stringQuoteText.setEditable(!isContextMode());
-        nullCharText.setEditable(!isContextMode());
-        button1.setEnabled(!isContextMode());
-        button2.setEnabled(!isContextMode());
+//        button1.setEnabled(!isContextMode());
+//        button2.setEnabled(!isContextMode());
         // hshen
         generalJdbcUrlText.setEditable(!isContextMode());
 
@@ -7014,7 +6639,7 @@ public class DatabaseForm extends AbstractForm {
     }
 
     public boolean isDbTypenull() {
-        return dbTypeCombo.getText().trim().length() == 0;
+        return getConnectionDBType().trim().length() == 0;
     }
 
     private String checkDBVersion() {
@@ -8122,7 +7747,6 @@ public class DatabaseForm extends AbstractForm {
         compositeDbSettings.layout();
         typeDbCompositeParent.layout();
         newParent.layout();
-        databaseSettingGroup.layout();
         compositeGroupDbSettings.layout();
 
     }
@@ -8201,7 +7825,6 @@ public class DatabaseForm extends AbstractForm {
         compositeDbSettings.layout();
         typeDbCompositeParent.layout();
         newParent.layout();
-        databaseSettingGroup.layout();
         compositeGroupDbSettings.layout();
         scrolledComposite.layout();
     }
@@ -8213,7 +7836,6 @@ public class DatabaseForm extends AbstractForm {
         typeDbCompositeParent.layout();
         compositeDbSettings.layout();
         newParent.layout();
-        databaseSettingGroup.layout();
         compositeGroupDbSettings.layout();
         scrolledComposite.layout();
     }
@@ -8445,7 +8067,7 @@ public class DatabaseForm extends AbstractForm {
      * Added by Marvin Wang on Oct 17, 2012.
      */
     protected void doHivePreSetup(DatabaseConnection connection) {
-        String dbType = dbTypeCombo.getText();
+        String dbType = getConnectionDBType();
         if (EDatabaseTypeName.HIVE.getDisplayName().equalsIgnoreCase(dbType)) {
             String hiveModeDisplayName = hiveModeCombo.getText();
             if (hiveModeDisplayName != null
@@ -8471,11 +8093,11 @@ public class DatabaseForm extends AbstractForm {
      * @return
      */
     protected boolean isHiveEmbeddedMode() {
-        return HiveMetadataHelper.isHiveEmbeddedMode(dbTypeCombo.getText(), hiveModeCombo.getText());
+        return HiveMetadataHelper.isHiveEmbeddedMode(getConnectionDBType(), hiveModeCombo.getText());
     }
 
     private boolean isHiveStandaloneMode() {
-        return HiveMetadataHelper.isHiveStandaloneMode(dbTypeCombo.getText(), hiveModeCombo.getText());
+        return HiveMetadataHelper.isHiveStandaloneMode(getConnectionDBType(), hiveModeCombo.getText());
     }
 
     private boolean doSupportHive2() {
@@ -8615,5 +8237,12 @@ public class DatabaseForm extends AbstractForm {
     protected void exportAsContext() {
         collectContextParams();
         super.exportAsContext();
+    }
+    
+    private String getConnectionDBType(){
+        if(getConnection() == null || getConnection().getDatabaseType() == null){
+           return ""; 
+        }
+        return getConnection().getDatabaseType();
     }
 }

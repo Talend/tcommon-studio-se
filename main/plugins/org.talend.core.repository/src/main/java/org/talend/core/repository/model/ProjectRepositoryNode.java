@@ -88,6 +88,7 @@ import org.talend.core.repository.model.repositoryObject.SAPIDocRepositoryObject
 import org.talend.core.repository.model.repositoryObject.SalesforceModuleRepositoryObject;
 import org.talend.core.repository.recyclebin.RecycleBinManager;
 import org.talend.core.repository.ui.utils.ProjectRepositoryNodeCache;
+import org.talend.core.runtime.services.IGenericDBService;
 import org.talend.core.runtime.services.IGenericWizardService;
 import org.talend.core.ui.ICDCProviderService;
 import org.talend.core.ui.ITestContainerProviderService;
@@ -533,10 +534,30 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
                 ERepositoryObjectType contentType = repositoryNode.getContentType();
                 if (contentType != null && contentType.isResourceItem()) {
                     convert(newProject, factory.getMetadata(newProject, contentType, true), repositoryNode, contentType);
+                    addExtraChildren(contentType, newProject,repositoryNode);
                 }
             }
         } catch (PersistenceException e) {
             RuntimeExceptionHandler.process(e);
+        }
+    }
+    
+    private void addExtraChildren(ERepositoryObjectType contentType, org.talend.core.model.general.Project newProject, 
+            RepositoryNode repositoryNode) throws PersistenceException{
+        if(contentType != ERepositoryObjectType.METADATA_CONNECTIONS){
+            return;
+        }
+        List<ERepositoryObjectType> extraTypes = new ArrayList<ERepositoryObjectType>();
+        IGenericDBService dbService = null;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
+            dbService = (IGenericDBService) GlobalServiceRegister.getDefault().getService(
+                    IGenericDBService.class);
+        }
+        if(dbService != null){
+            extraTypes.addAll(dbService.getExtraTypes());
+        }
+        for(ERepositoryObjectType extraType : extraTypes){
+            convert(newProject, factory.getMetadata(newProject, extraType, true), repositoryNode, contentType, true);
         }
     }
 
@@ -1028,9 +1049,14 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
             }
         }
     }
-
+    
     private void convert(org.talend.core.model.general.Project newProject, Container fromModel, RepositoryNode parent,
             ERepositoryObjectType type) {
+        convert(newProject, fromModel, parent, type, false);
+    }
+
+    private void convert(org.talend.core.model.general.Project newProject, Container fromModel, RepositoryNode parent,
+            ERepositoryObjectType type, boolean extra) {
 
         if (parent == null || fromModel == null) {
             return;
@@ -1123,16 +1149,23 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
                         if (newProject != this.project && !hasTalendItems(container)) {
                             continue;
                         }
-                        folder = new RepositoryNode(oFolder, parent, ENodeType.SIMPLE_FOLDER);
-                        if (factory.getStatus(oFolder) != ERepositoryStatus.DELETED) {
-                            parent.getChildren().add(folder);
+                        folder = avoidReCreateFolder(parent, oFolder, extra);
+                        if(folder == null){
+                            folder = new RepositoryNode(oFolder, parent, ENodeType.SIMPLE_FOLDER);
+                            if (factory.getStatus(oFolder) != ERepositoryStatus.DELETED) {
+                                parent.getChildren().add(folder);
+                            } 
                         }
                     }
                 } else {
-                    folder = new RepositoryNode(oFolder, parent, ENodeType.SIMPLE_FOLDER);
-                    if (factory.getStatus(oFolder) != ERepositoryStatus.DELETED) {
-                        parent.getChildren().add(folder);
+                    folder = avoidReCreateFolder(parent, oFolder, extra);
+                    if(folder == null){
+                        folder = new RepositoryNode(oFolder, parent, ENodeType.SIMPLE_FOLDER);
+                        if (factory.getStatus(oFolder) != ERepositoryStatus.DELETED) {
+                            parent.getChildren().add(folder);
+                        } 
                     }
+                    
                 }
 
             }
@@ -1164,6 +1197,19 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
                         repositoryObject.getLabel()));
             }
         }
+    }
+    
+    private RepositoryNode avoidReCreateFolder(RepositoryNode parent, Folder oFolder, boolean extra){
+        RepositoryNode folder = null;
+        if(extra){
+            for(IRepositoryNode child : parent.getChildren()){
+                if(child.getType() == ENodeType.SIMPLE_FOLDER && child.getObject().getLabel().equals(oFolder.getLabel())){
+                    folder = (RepositoryNode)child;
+                    break;
+                }
+            }
+        }
+        return folder;
     }
 
     private boolean hasTalendItems(Container container) {
@@ -1212,11 +1258,12 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
         DatabaseConnection dbMetadataConnection = null;
         // TOP
         if (type == ERepositoryObjectType.METADATA_CONNECTIONS) {
-            dbMetadataConnection = (DatabaseConnection) ((ConnectionItem) repositoryObject.getProperty().getItem())
-                    .getConnection();
-            isAvaliableInTOS = EDatabaseTypeName.getTypeFromDbType(dbMetadataConnection.getDatabaseType(), false) == null ? false
-                    : true;
-
+            Connection conn = ((ConnectionItem) repositoryObject.getProperty().getItem()).getConnection();
+            if(conn instanceof DatabaseConnection){
+                dbMetadataConnection = (DatabaseConnection) conn;
+                isAvaliableInTOS = EDatabaseTypeName.getTypeFromDbType(dbMetadataConnection.getDatabaseType(), false) == null ? false
+                        : true;
+            }
         }
 
         Connection connection = null;

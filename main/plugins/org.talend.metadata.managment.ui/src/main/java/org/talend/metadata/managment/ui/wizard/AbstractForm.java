@@ -395,7 +395,7 @@ public abstract class AbstractForm extends Composite {
     private void addExportContextButton() {
         if (hasContextBtn() && connectionItem != null && !isTOPStandaloneMode()) {
             final int height = 45;
-            Group group = Form.createGroup(this, 1, null);
+            Composite group = Form.startNewGridLayout(this, 1, true, SWT.CENTER, SWT.CENTER);
             GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
             gridData.minimumHeight = height;
             gridData.heightHint = height;

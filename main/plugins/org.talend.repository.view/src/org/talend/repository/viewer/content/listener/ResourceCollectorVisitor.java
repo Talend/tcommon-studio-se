@@ -12,7 +12,9 @@
 // ============================================================================
 package org.talend.repository.viewer.content.listener;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
@@ -23,9 +25,12 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.io.FilesUtils;
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.general.TalendNature;
+import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.repository.model.ProjectRepositoryNode;
 import org.talend.core.repository.utils.XmiResourceManager;
+import org.talend.core.runtime.services.IGenericDBService;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.viewer.content.VisitResourceHelper;
@@ -68,11 +73,32 @@ public abstract class ResourceCollectorVisitor implements IResourceDeltaVisitor 
         for (final RepositoryNode repoNode : topLevelNodes) {
             IPath topLevelNodeWorkspaceRelativePath = getTopLevelNodePath(repoNode);
             if (topLevelNodeWorkspaceRelativePath != null && visitHelper.valid(topLevelNodeWorkspaceRelativePath, merged)) {
-                return repoNode;
+                return findTopNode(repoNode);
             }
         }
         // this visitor doesn't handle the current folder
         return null;
+    }
+    
+    private IRepositoryNode findTopNode(IRepositoryNode repoNode){
+        List<ERepositoryObjectType> extraTypes = new ArrayList<ERepositoryObjectType>();
+        IGenericDBService dbService = null;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
+            dbService = (IGenericDBService) GlobalServiceRegister.getDefault().getService(
+                    IGenericDBService.class);
+        }
+        if(dbService != null){
+            extraTypes.addAll(dbService.getExtraTypes());
+        }
+        
+        if(repoNode.getContentType() != null && extraTypes.contains(repoNode.getContentType())){
+            RepositoryNode dbRootNode = (RepositoryNode) repoNode.getRoot().getRootRepositoryNode(
+                    ERepositoryObjectType.METADATA_CONNECTIONS);
+            if(dbRootNode != null){
+                return dbRootNode;
+            }
+        }
+        return repoNode;
     }
 
     protected boolean visit(IResourceDelta delta, Collection<ResourceNode> pathToRefresh) {

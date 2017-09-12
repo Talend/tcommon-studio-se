@@ -156,7 +156,7 @@ public class MoveObjectAction {
             case SYSTEM_FOLDER:
             case SIMPLE_FOLDER:
                 boolean booleanValue = ((ERepositoryObjectType) targetNode.getProperties(EProperties.CONTENT_TYPE))
-                        .equals(objectToCopy.getRepositoryObjectType());
+                        .equals(sourceNode.getProperties(EProperties.CONTENT_TYPE));
                 if (isGenericSchema) {
                     return true;
                 } else {

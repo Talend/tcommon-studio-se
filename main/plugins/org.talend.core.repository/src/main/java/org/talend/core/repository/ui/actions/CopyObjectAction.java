@@ -57,6 +57,7 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.repository.ui.dialog.PastSelectorDialog;
+import org.talend.core.runtime.services.IGenericDBService;
 import org.talend.core.ui.ICDCProviderService;
 import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.designer.codegen.ICodeGeneratorService;
@@ -155,7 +156,7 @@ public class CopyObjectAction {
         if (targetNode.getType() == ENodeType.REPOSITORY_ELEMENT || targetNode.getType() == ENodeType.SIMPLE_FOLDER
                 || targetNode.getType() == ENodeType.SYSTEM_FOLDER) {
             ERepositoryObjectType targetType = ((ERepositoryObjectType) targetNode.getProperties(EProperties.CONTENT_TYPE));
-            ERepositoryObjectType sourceType = objectToCopy.getRepositoryObjectType();
+            ERepositoryObjectType sourceType = getSourceType(sourceNode);
             if (sourceType.equals(ERepositoryObjectType.PROCESS_STORM)) {
                 return targetType.equals(ERepositoryObjectType.PROCESS) || targetType.equals(ERepositoryObjectType.PROCESS_STORM)
                         || targetType.equals(ERepositoryObjectType.PROCESS_MR);
@@ -168,6 +169,23 @@ public class CopyObjectAction {
             return targetType.equals(sourceType);
         }
         return false;
+    }
+    
+    private ERepositoryObjectType getSourceType(RepositoryNode sourceNode){
+        List<ERepositoryObjectType> extraTypes = new ArrayList<ERepositoryObjectType>();
+        IGenericDBService dbService = null;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
+            dbService = (IGenericDBService) GlobalServiceRegister.getDefault().getService(
+                    IGenericDBService.class);
+        }
+        if(dbService != null){
+            extraTypes.addAll(dbService.getExtraTypes());
+        }
+        ERepositoryObjectType sourceType = sourceNode.getObjectType();
+        if(sourceType != null && extraTypes.contains(sourceType)){
+            return sourceNode.getContentType();
+        }
+        return sourceType;
     }
 
     public void execute(final RepositoryNode sourceNode, RepositoryNode targetNode) throws Exception {

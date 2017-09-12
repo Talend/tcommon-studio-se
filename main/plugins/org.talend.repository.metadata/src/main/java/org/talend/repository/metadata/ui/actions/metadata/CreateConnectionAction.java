@@ -24,9 +24,10 @@ import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.commons.ui.runtime.image.ECoreImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.commons.ui.runtime.image.OverlayImageProvider;
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.general.Project;
+import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
-import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.properties.ConnectionItem;
 import org.talend.core.model.properties.DatabaseConnectionItem;
 import org.talend.core.model.properties.Property;
@@ -34,9 +35,11 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.RepositoryObject;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.repository.ui.actions.metadata.AbstractCreateAction;
+import org.talend.core.runtime.services.IGenericDBService;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.metadata.i18n.Messages;
 import org.talend.repository.model.IProxyRepositoryFactory;
+import org.talend.repository.model.IRepositoryNode.ENodeType;
 import org.talend.repository.model.IRepositoryNode.EProperties;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.model.RepositoryNodeUtilities;
@@ -120,7 +123,7 @@ public class CreateConnectionAction extends AbstractCreateAction {
             }
         }
 
-        DatabaseConnection connection = null;
+        Connection connection = null;
         IPath pathToSave = null;
 
         // 16670
@@ -153,7 +156,7 @@ public class CreateConnectionAction extends AbstractCreateAction {
         switch (node.getType()) {
         case REPOSITORY_ELEMENT:
             // pathToSave = null;
-            connection = (DatabaseConnection) ((ConnectionItem) node.getObject().getProperty().getItem()).getConnection();
+            connection = ((ConnectionItem) node.getObject().getProperty().getItem()).getConnection();
             creation = false;
             break;
         case SIMPLE_FOLDER:
@@ -199,8 +202,20 @@ public class CreateConnectionAction extends AbstractCreateAction {
 
     @Override
     protected void init(RepositoryNode node) {
-        ERepositoryObjectType nodeType = (ERepositoryObjectType) node.getProperties(EProperties.CONTENT_TYPE);
-        if (!ERepositoryObjectType.METADATA_CONNECTIONS.equals(nodeType)) {
+        ERepositoryObjectType nodeType = node.getObjectType();
+        if(nodeType == null || node.getType() != ENodeType.REPOSITORY_ELEMENT){
+            nodeType = (ERepositoryObjectType) node.getProperties(EProperties.CONTENT_TYPE);
+        }
+        boolean isExtraType = false;
+        IGenericDBService dbService = null;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
+            dbService = (IGenericDBService) GlobalServiceRegister.getDefault().getService(
+                    IGenericDBService.class);
+        }
+        if(dbService != null){
+            isExtraType = dbService.getExtraTypes().contains(nodeType);
+        }
+        if (!ERepositoryObjectType.METADATA_CONNECTIONS.equals(nodeType) && !isExtraType) {
             setEnabled(false);
             return;
         }

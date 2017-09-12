@@ -74,4 +74,9 @@ public abstract class AbstractDragAndDropServiceHandler implements IDragAndDropS
     public Object getGenericRepositoryValue(List<ComponentProperties> componentProperties, String paramName) {
         return null;
     }
+    
+    @Override
+    public boolean isGenericPropertiesValue(String paramName){
+        return false;
+    }
 }

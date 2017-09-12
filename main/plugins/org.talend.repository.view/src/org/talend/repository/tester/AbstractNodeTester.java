@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.Assert;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.repository.model.ProjectRepositoryNode;
 import org.talend.repository.model.IRepositoryNode;
+import org.talend.repository.model.IRepositoryNode.ENodeType;
 import org.talend.repository.model.IRepositoryNode.EProperties;
 import org.talend.repository.model.RepositoryNode;
 
@@ -72,6 +73,13 @@ public abstract class AbstractNodeTester extends PropertyTester {
     }
 
     public ERepositoryObjectType getNodeContentType(IRepositoryNode repositoryNode) {
-        return repositoryNode != null ? (ERepositoryObjectType) repositoryNode.getProperties(EProperties.CONTENT_TYPE) : null;
+        if(repositoryNode != null){
+            ERepositoryObjectType nodeType = repositoryNode.getObjectType();
+            if(nodeType == null || repositoryNode.getType() != ENodeType.REPOSITORY_ELEMENT){
+                nodeType = (ERepositoryObjectType) repositoryNode.getProperties(EProperties.CONTENT_TYPE);
+            }
+            return nodeType;
+        }
+        return null;
     }
 }

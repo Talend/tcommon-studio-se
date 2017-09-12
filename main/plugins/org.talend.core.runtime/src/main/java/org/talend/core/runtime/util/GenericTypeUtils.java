@@ -67,6 +67,10 @@ public class GenericTypeUtils {
     public static boolean isIntegerType(Property<?> property) {
         return TypeUtils.toString(Integer.class).equals(property.getType());
     }
+    
+    public static boolean isListStringType(Property<?> property) {
+        return TypeUtils.toString(LIST_STRING_TYPE.getType()).equals(property.getType());
+    }
 
     public static boolean isObjectType(Property<?> property) {
         return TypeUtils.toString(Object.class).equals(property.getType());

@@ -727,8 +727,8 @@ public final class DBConnectionContextUtils {
      * set the ManagerConnection parameter and return the url string connection.
      */
     public static String setManagerConnectionValues(ManagerConnection managerConnection, ConnectionItem connectionItem,
-            ContextType contextType, final String dbType, final int dbTypeIndex) {
-        if (managerConnection == null || connectionItem == null || dbType == null || dbTypeIndex < 0) {
+            ContextType contextType, final String dbType) {
+        if (managerConnection == null || connectionItem == null || dbType == null || dbType.length() < 0) {
             return null;
         }
         DatabaseConnection dbConn = (DatabaseConnection) connectionItem.getConnection();
@@ -775,8 +775,8 @@ public final class DBConnectionContextUtils {
     }
 
     public static String setManagerConnectionValues(ManagerConnection managerConnection, ConnectionItem connectionItem,
-            final String dbType, final int dbTypeIndex) {
-        return setManagerConnectionValues(managerConnection, connectionItem, null, dbType, dbTypeIndex);
+            final String dbType) {
+        return setManagerConnectionValues(managerConnection, connectionItem, null, dbType);
     }
 
     /**
