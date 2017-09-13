@@ -15,11 +15,10 @@ package org.talend.librariesmanager.ui.actions;
 import java.io.File;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.Action;
 import org.eclipse.swt.SWT;
@@ -32,15 +31,15 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.ui.runtime.image.ECoreImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.commons.utils.io.FilesUtils;
-import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.GlobalServiceRegister;
+import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.model.general.ModuleToInstall;
-import org.talend.core.model.general.Project;
+import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.designer.runprocess.IRunProcessService;
+import org.talend.librariesmanager.model.ModulesNeededProvider;
 import org.talend.librariesmanager.ui.LibManagerUiPlugin;
 import org.talend.librariesmanager.ui.i18n.Messages;
-import org.talend.repository.ProjectManager;
 
 /**
  * Imports the external jar files into talend.
@@ -78,7 +77,36 @@ public class ImportExternalJarAction extends Action {
      * @return, list of imported file names, may be empty
      */
     public String[] handleImportJarDialog(Shell shell) {
-        return handleImportJarDialog(shell, null);
+        FileDialog fileDialog = new FileDialog(shell, SWT.OPEN | SWT.MULTI);
+        fileDialog.setFilterExtensions(FilesUtils.getAcceptJARFilesSuffix());
+        fileDialog.open();
+        final String path = fileDialog.getFilterPath();
+        if (path != null && !"".equals(path)) {
+            final String[] fileNames = fileDialog.getFileNames();
+            BusyIndicator.showWhile(Display.getDefault(), new Runnable() {
+
+                @Override
+                public void run() {
+                    for (String fileName : fileNames) {
+                        File file = new File(path + File.separatorChar + fileName);
+                        try {
+                            LibManagerUiPlugin.getDefault().getLibrariesService().deployLibrary(file.toURL());
+                            List<String> modulesNeededNames = ModulesNeededProvider.getModulesNeededNames();
+                            if (!modulesNeededNames.contains(fileName)) {
+                                ModulesNeededProvider.userAddUnusedModules(ELibraryInstallStatus.UNKNOWN.name(), fileName);
+                            }
+                        } catch (Exception e) {
+                            ExceptionHandler.process(e);
+                            continue;
+                        }
+                    }
+                    // only clean the existed one
+                    cleanupLib(new HashSet<String>(Arrays.asList(fileNames)));
+                }
+            });
+            return fileNames;
+        }
+        return new String[0];
     }
 
     public String[] handleImportJarDialog(Shell shell, ModuleToInstall module) {
@@ -86,62 +114,35 @@ public class ImportExternalJarAction extends Action {
         fileDialog.setFilterExtensions(FilesUtils.getAcceptJARFilesSuffix());
         fileDialog.open();
         final String path = fileDialog.getFilterPath();
-        final String[] fileNames = fileDialog.getFileNames();
+        final String fileName = fileDialog.getFileName();
+        if (path != null && !"".equals(path)) {
+            final String[] fileNames = new String[] { module.getName() };
+            BusyIndicator.showWhile(Display.getDefault(), new Runnable() {
 
-        BusyIndicator.showWhile(Display.getDefault(), new Runnable() {
-
-            @Override
-            public void run() {
-                String moduleName = null;
-                String mvnUri = null;
-                if (module != null) {
-                    moduleName = module.getName();
-                    mvnUri = module.getMavenUri();
-                }
-                for (int i = 0; i < fileNames.length; i++) {
-                    String fileName = fileNames[i];
+                @Override
+                public void run() {
+                    String mvnUri = module.getMavenUri();
+                    if (mvnUri == null) {
+                        mvnUri = MavenUrlHelper.generateMvnUrlForJarName(module.getName(), true, true);
+                    }
                     File file = new File(path + File.separatorChar + fileName);
-                    File tempFile = null;
                     try {
-                        if (moduleName != null && fileNames.length == 1 && !file.isDirectory()
-                                && !file.getName().equals(moduleName)) {
-                            Project project = ProjectManager.getInstance().getCurrentProject();
-                            IProject fsProject = ResourceUtils.getProject(project);
-                            IFolder tmpFolder = fsProject.getFolder("temp");
-                            if (!tmpFolder.exists()) {
-                                tmpFolder.create(true, true, null);
-                            }
-                            tempFile = new File(tmpFolder.getLocation().toPortableString(), moduleName);
-                            FilesUtils.copyFile(file, tempFile);
-                            file = tempFile;
-                            fileNames[i] = file.getName();
-                        }
-
                         LibManagerUiPlugin.getDefault().getLibrariesService().deployLibrary(file.toURL(), mvnUri);
-                        if (tempFile != null) {
-                            FilesUtils.deleteFile(tempFile, true);
+                        List<String> modulesNeededNames = ModulesNeededProvider.getModulesNeededNames();
+                        if (!modulesNeededNames.contains(module.getName())) {
+                            ModulesNeededProvider.userAddUnusedModules(ELibraryInstallStatus.UNKNOWN.name(), module.getName());
                         }
                     } catch (Exception e) {
                         ExceptionHandler.process(e);
-                        continue;
                     }
+                    // only clean the existed one
+                    cleanupLib(new HashSet<String>(Arrays.asList(fileNames)));
                 }
-                // only clean the existed one
-                cleanupLib(new HashSet<String>(Arrays.asList(fileNames)));
-            }
-        });
-        return fileNames;
+            });
+            return fileNames;
+        }
+        return new String[0];
     }
-
-    // private void emptyLibs() {
-    // if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibrariesService.class)) {
-    // ILibrariesService libService = (ILibrariesService) GlobalServiceRegister.getDefault().getService(
-    // ILibrariesService.class);
-    // if (libService != null) {
-    // libService.cleanLibs();
-    // }
-    // }
-    // }
 
     public static void cleanupLib(Set<String> installedModule) {
         for (String jarName : installedModule) {

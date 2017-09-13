@@ -278,8 +278,6 @@ public class LocalLibraryManager implements ILibraryManagerService {
         for (String uri : installedUris) {
             checkJarInstalledInMaven(uri);
         }
-        // TUP-18405, save the install modules
-        LibrariesIndexManager.getInstance().saveMavenIndexResource();
     }
 
     /*
