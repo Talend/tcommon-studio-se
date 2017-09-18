@@ -85,7 +85,7 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
         for (final ModuleToInstall module : toDownload) {
             if (!monitor.isCanceled() && !connectionTimeOut) {
                 monitor.subTask(module.getName());
-                boolean accepted;
+                boolean canDownload;
                 try {
                     // check license
                     boolean isLicenseAccepted = module.isFromCustomNexus()
@@ -93,7 +93,6 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
                                     && LibManagerUiPlugin.getDefault().getPreferenceStore().getBoolean(module.getLicenseType()));
 
                     boolean hasRepositoryUrl = false;
-
                     String moduleMvnUri = module.getMavenUri();
                     MavenArtifact mavenArtifact = MavenUrlHelper.parseMvnUrl(moduleMvnUri, false);
                     if (mavenArtifact != null) {
@@ -101,8 +100,8 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
                         hasRepositoryUrl = StringUtils.isNotEmpty(repositoryUrl);
                     }
 
-                    accepted = isLicenseAccepted | hasRepositoryUrl;
-                    if (!accepted) {
+                    canDownload = isLicenseAccepted | hasRepositoryUrl;
+                    if (!canDownload) {
                         subMonitor.worked(1);
                         continue;
                     }
@@ -130,7 +129,7 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
                     MessageBoxExceptionHandler.process(new Exception("Download " + module.getName() + " failed!", e));
                     continue;
                 }
-                accepted = false;
+                canDownload = false;
             } else {
                 downloadFailed.add(module.getName());
             }
