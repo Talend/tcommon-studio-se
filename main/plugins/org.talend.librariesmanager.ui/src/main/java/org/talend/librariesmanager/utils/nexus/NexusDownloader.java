@@ -42,7 +42,7 @@ import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.designer.maven.utils.PomUtil;
-import org.talend.librariesmanager.maven.ArtifactsDeployer;
+import org.talend.librariesmanager.maven.MavenArtifactsHandler;
 import org.talend.librariesmanager.prefs.LibrariesManagerUtils;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
@@ -72,7 +72,7 @@ public class NexusDownloader implements IDownloadHelper {
         File tempFolder = null;
         try {
             TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
-            final NexusServerBean talendlibServer = manager.getLibrariesNexusServer();
+            final NexusServerBean talendlibServer = manager.getTalentArtifactServer();
             String mavenUri = url.toExternalForm();
             MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(mavenUri);
             if (parseMvnUrl != null) {
@@ -117,8 +117,8 @@ public class NexusDownloader implements IDownloadHelper {
                 bos.flush();
                 bos.close();
                 if (bytesDownloaded == contentLength) {
-                    ArtifactsDeployer deployer = new ArtifactsDeployer();
-                    deployer.deployToLocalMaven(downloadedFile.getAbsolutePath(), mavenUri);
+                    MavenArtifactsHandler deployer = new MavenArtifactsHandler();
+                    deployer.install(downloadedFile.getAbsolutePath(), mavenUri);
 
                     if (PluginChecker.isSVNProviderPluginLoaded()) {
                         File libFile = new File(LibrariesManagerUtils.getLibrariesPath(ECodeLanguage.JAVA));

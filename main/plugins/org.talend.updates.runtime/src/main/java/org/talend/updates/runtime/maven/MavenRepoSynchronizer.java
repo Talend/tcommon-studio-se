@@ -25,7 +25,7 @@ import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.utils.PomUtil;
-import org.talend.librariesmanager.maven.ArtifactsDeployer;
+import org.talend.librariesmanager.maven.MavenArtifactsHandler;
 import org.talend.utils.files.FileUtils;
 import org.talend.utils.io.FilesUtils;
 
@@ -37,7 +37,7 @@ public class MavenRepoSynchronizer {
     // the folder is m2/repository
     private final File sourceM2Root;
 
-    private final ArtifactsDeployer deployer;
+    private final MavenArtifactsHandler deployer;
 
     private boolean deployToRemote;
 
@@ -46,7 +46,7 @@ public class MavenRepoSynchronizer {
         this.sourceM2Root = sourceM2Root;
         this.deployToRemote = deployToRemote;
 
-        this.deployer = new ArtifactsDeployer();
+        this.deployer = new MavenArtifactsHandler();
     }
 
     public MavenRepoSynchronizer(File sourceM2Root) {
@@ -107,7 +107,7 @@ public class MavenRepoSynchronizer {
                             // TUP-17785, make sure generate new one always without any dependences, so null
                             final String pomPath = PomUtil.generatePomInFolder(tempFolder, artifact);
 
-                            deployer.deployToLocalMaven(mvnUrl, jarPath, pomPath, deployToRemote);
+                            deployer.install(mvnUrl, jarPath, pomPath, deployToRemote);
                         } finally {
                             if (tempFolder.exists()) {
                                 FilesUtils.deleteFolder(tempFolder, true);

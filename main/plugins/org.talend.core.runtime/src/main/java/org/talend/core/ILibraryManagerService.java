@@ -41,7 +41,7 @@ public interface ILibraryManagerService extends IService {
 
     public void setInitialized();
 
-    public void deployModules(Collection<ModuleNeeded> modules, IProgressMonitor monitorWrap);
+    public void installModules(Collection<ModuleNeeded> modules, IProgressMonitor monitorWrap);
 
     /**
      * 

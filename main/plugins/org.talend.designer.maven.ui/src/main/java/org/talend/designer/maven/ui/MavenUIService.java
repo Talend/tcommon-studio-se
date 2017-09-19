@@ -23,7 +23,11 @@ import org.eclipse.m2e.core.embedder.IMavenConfigurationChangeListener;
 import org.eclipse.m2e.core.embedder.MavenConfigurationChangeEvent;
 import org.eclipse.m2e.core.internal.preferences.MavenPreferenceConstants;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.core.nexus.IRepositoryArtifactHandler;
+import org.talend.core.nexus.NexusServerBean;
+import org.talend.core.nexus.RepositoryArtifactHandlerManager;
 import org.talend.core.nexus.TalendLibsServerManager;
+import org.talend.core.nexus.TalendMavenResolver;
 import org.talend.core.runtime.services.IMavenUIService;
 import org.talend.designer.maven.ui.setting.preference.M2eUserSettingForTalendLoginTask;
 import org.talend.designer.maven.ui.setting.repository.RepositoryMavenSettingManager;
@@ -63,9 +67,26 @@ public class MavenUIService implements IMavenUIService {
      * @see org.talend.core.runtime.services.IMavenUIService#getUserSettings()
      */
     @Override
-    public void updateMavenResolver(boolean setupRemoteRepository) {
+    public void updateMavenResolver(boolean setupCustomLibNexus) {
         Dictionary<String, String> props = getTalendMavenSetting();
-        TalendLibsServerManager.getInstance().updateMavenResolver(props, setupRemoteRepository);
+        boolean updated = false;
+        if (setupCustomLibNexus) {
+            NexusServerBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
+            IRepositoryArtifactHandler repositoryHandler = RepositoryArtifactHandlerManager
+                    .getRepositoryHandler(customNexusServer);
+            if (repositoryHandler != null) {
+                updated = true;
+                repositoryHandler.updateMavenResolver(props);
+            }
+        }
+        if (!updated) {
+            try {
+                TalendMavenResolver.updateMavenResolver(props);
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to modifiy the service properties"); //$NON-NLS-1$
+            }
+        }
+
     }
 
     @Override

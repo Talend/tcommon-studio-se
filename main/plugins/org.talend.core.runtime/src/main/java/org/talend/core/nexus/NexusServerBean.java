@@ -20,17 +20,24 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class NexusServerBean {
 
-    String server;
+    public enum NexusType {
+        NEXUS_2,
+        NEXUS_3;
+    }
 
-    String userName;
+    private String server;
 
-    String password;
+    private String userName;
 
-    String repositoryId;
+    private String password;
 
-    boolean official;
+    private String repositoryId;
 
-    String snapshotRepId;
+    private boolean official;
+
+    private String snapshotRepId;
+
+    private String type = NexusType.NEXUS_2.name();
 
     public NexusServerBean() {
     }
@@ -147,17 +154,50 @@ public class NexusServerBean {
         this.official = official;
     }
 
+    /**
+     * Getter for type.
+     * 
+     * @return the type
+     */
+    public String getType() {
+        return this.type;
+    }
+
+    /**
+     * Sets the type.
+     * 
+     * @param type the type to set
+     */
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public String getRepositoryURI() {
+        return getRepositoryURI(true);
+    }
+
+    public String getRepositoryURI(boolean isRelease) {
         if (StringUtils.isEmpty(this.server)) {
             return null; // no server, no uri
         }
-        String repositoryBaseURI = this.server;
-        if (repositoryBaseURI.endsWith(NexusConstants.SLASH)) {
-            repositoryBaseURI = repositoryBaseURI.substring(0, repositoryBaseURI.length() - 1);
+        IRepositoryArtifactHandler repositoryHandler = RepositoryArtifactHandlerManager.getRepositoryHandler(this);
+        if (repositoryHandler != null) {
+            return repositoryHandler.getRepositoryURL(isRelease);
+        } else {
+            String repId = "";
+            if (isRelease) {
+                repId = repositoryId;
+            } else {
+                repId = snapshotRepId;
+            }
+            String repositoryBaseURI = this.server;
+            if (repositoryBaseURI.endsWith(NexusConstants.SLASH)) {
+                repositoryBaseURI = repositoryBaseURI.substring(0, repositoryBaseURI.length() - 1);
+            }
+            repositoryBaseURI += NexusConstants.CONTENT_REPOSITORIES;
+            repositoryBaseURI += repId + NexusConstants.SLASH;
+            return repositoryBaseURI;
         }
-        repositoryBaseURI += NexusConstants.CONTENT_REPOSITORIES;
-        repositoryBaseURI += repositoryId + NexusConstants.SLASH;
-        return repositoryBaseURI;
     }
 
     @Override
@@ -169,6 +209,7 @@ public class NexusServerBean {
         result = prime * result + ((password == null) ? 0 : password.hashCode());
         result = prime * result + ((repositoryId == null) ? 0 : repositoryId.hashCode());
         result = prime * result + ((snapshotRepId == null) ? 0 : snapshotRepId.hashCode());
+        result = prime * result + ((type == null) ? 0 : type.hashCode());
         return result;
     }
 
@@ -224,6 +265,14 @@ public class NexusServerBean {
                 return false;
             }
         } else if (!snapshotRepId.equals(other.snapshotRepId)) {
+            return false;
+        }
+
+        if (type == null) {
+            if (other.type != null) {
+                return false;
+            }
+        } else if (!type.equals(other.type)) {
             return false;
         }
 

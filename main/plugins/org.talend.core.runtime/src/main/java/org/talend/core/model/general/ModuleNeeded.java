@@ -19,15 +19,11 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.Path;
-import org.ops4j.pax.url.mvn.MavenResolver;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.ServiceReference;
 import org.osgi.framework.Version;
-import org.osgi.util.tracker.ServiceTracker;
-import org.osgi.util.tracker.ServiceTrackerCustomizer;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
 import org.talend.core.model.process.IElementParameter;
+import org.talend.core.nexus.TalendMavenResolver;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
@@ -40,8 +36,6 @@ import org.talend.core.runtime.maven.MavenUrlHelper;
  *
  */
 public class ModuleNeeded {
-
-    private static MavenResolver mavenResolver;
 
     private String id;
 
@@ -85,35 +79,6 @@ public class ModuleNeeded {
     public static final String SINGLE_QUOTE = "'"; //$NON-NLS-1$
 
     public static final String QUOTATION_MARK = "\""; //$NON-NLS-1$
-
-    static {
-        // the tracker is use in case the service is modifed
-        final Bundle bundle = CoreRuntimePlugin.getInstance().getBundle();
-        ServiceTracker<org.ops4j.pax.url.mvn.MavenResolver, org.ops4j.pax.url.mvn.MavenResolver> serviceTracker = new ServiceTracker<org.ops4j.pax.url.mvn.MavenResolver, org.ops4j.pax.url.mvn.MavenResolver>(
-                bundle.getBundleContext(), org.ops4j.pax.url.mvn.MavenResolver.class,
-                new ServiceTrackerCustomizer<org.ops4j.pax.url.mvn.MavenResolver, org.ops4j.pax.url.mvn.MavenResolver>() {
-
-                    @Override
-                    public org.ops4j.pax.url.mvn.MavenResolver addingService(
-                            ServiceReference<org.ops4j.pax.url.mvn.MavenResolver> reference) {
-                        return bundle.getBundleContext().getService(reference);
-                    }
-
-                    @Override
-                    public void modifiedService(ServiceReference<org.ops4j.pax.url.mvn.MavenResolver> reference,
-                            org.ops4j.pax.url.mvn.MavenResolver service) {
-                        mavenResolver = null;
-
-                    }
-
-                    @Override
-                    public void removedService(ServiceReference<org.ops4j.pax.url.mvn.MavenResolver> reference,
-                            org.ops4j.pax.url.mvn.MavenResolver service) {
-                        mavenResolver = null;
-                    }
-                });
-        serviceTracker.open();
-    }
 
     /**
      * DOC smallet ModuleNeeded class global comment. Detailled comment <br/>
@@ -322,7 +287,7 @@ public class ModuleNeeded {
         // then try to resolve locally
         String localMavenUri = mvnUriStatusKey.replace("mvn:", "mvn:" + MavenConstants.LOCAL_RESOLUTION_URL + "!"); //$NON-NLS-1$ //$NON-NLS-2$
         try {
-            getMavenResolver().resolve(localMavenUri);
+            TalendMavenResolver.getMavenResolver().resolve(localMavenUri);
             status = ELibraryInstallStatus.INSTALLED;
             installStatus = ELibraryInstallStatus.DEPLOYED;
         } catch (Exception e) {
@@ -331,24 +296,6 @@ public class ModuleNeeded {
         }
         ModuleStatusProvider.getStatusMap().put(mvnUriStatusKey, status);
         ModuleStatusProvider.getDeployStatusMap().put(mvnUriStatusKey, installStatus);
-    }
-
-    private MavenResolver getMavenResolver() {
-        if (mavenResolver == null) {
-            final Bundle bundle = CoreRuntimePlugin.getInstance().getBundle();
-            if (bundle != null) {
-                ServiceReference<org.ops4j.pax.url.mvn.MavenResolver> mavenResolverService = bundle.getBundleContext()
-                        .getServiceReference(org.ops4j.pax.url.mvn.MavenResolver.class);
-                if (mavenResolverService != null) {
-                    mavenResolver = CoreRuntimePlugin.getInstance().getBundle().getBundleContext()
-                            .getService(mavenResolverService);
-                } else {
-                    throw new RuntimeException("Unable to acquire org.ops4j.pax.url.mvn.MavenResolver");
-                }
-            }
-        }
-        return mavenResolver;
-
     }
 
     /**

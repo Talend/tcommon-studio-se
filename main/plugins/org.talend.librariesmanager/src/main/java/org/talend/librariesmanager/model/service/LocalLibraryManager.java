@@ -71,13 +71,14 @@ import org.talend.core.model.general.ModuleStatusProvider;
 import org.talend.core.nexus.NexusServerBean;
 import org.talend.core.nexus.NexusServerUtils;
 import org.talend.core.nexus.TalendLibsServerManager;
+import org.talend.core.nexus.TalendMavenResolver;
 import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.designer.maven.utils.PomUtil;
-import org.talend.librariesmanager.maven.ArtifactsDeployer;
+import org.talend.librariesmanager.maven.MavenArtifactsHandler;
 import org.talend.librariesmanager.model.ExtensionModuleManager;
 import org.talend.librariesmanager.model.ModulesNeededProvider;
 import org.talend.librariesmanager.prefs.LibrariesManagerUtils;
@@ -117,14 +118,14 @@ public class LocalLibraryManager implements ILibraryManagerService {
 
     boolean listToUpdate;
 
-    private ArtifactsDeployer deployer;
+    private MavenArtifactsHandler deployer;
 
     /**
      * DOC nrousseau LocalLibraryManager constructor comment.
      */
     public LocalLibraryManager() {
         super();
-        deployer = new ArtifactsDeployer();
+        deployer = new MavenArtifactsHandler();
     }
 
     @Override
@@ -159,7 +160,7 @@ public class LocalLibraryManager implements ILibraryManagerService {
         if (file == null || !file.exists()) {
             return;
         }
-        deployFile(file, mavenUri, true, monitorWrap);
+        install(file, mavenUri, true, monitorWrap);
         // deploy to configuration/lib/java if tac still use the svn lib
         try {
             if (isSvnLibSetup()) {
@@ -187,7 +188,7 @@ public class LocalLibraryManager implements ILibraryManagerService {
      * @param mavenUri snaopshot mvn uri
      * @param monitorWrap
      */
-    private void deployFile(File file, String snapshotMavenUri, boolean updateRemoteJar, IProgressMonitor... monitorWrap) {
+    private void install(File file, String snapshotMavenUri, boolean updateRemoteJar, IProgressMonitor... monitorWrap) {
         try {
             listToUpdate = true;
             if (file.isDirectory()) {
@@ -225,8 +226,8 @@ public class LocalLibraryManager implements ILibraryManagerService {
                             sourceAndMavenUri.put(snapshotMavenUri, jarFile.getAbsolutePath());
                         }
                     }
-                    deployer.deployToLocalMaven(sourceAndMavenUri, updateRemoteJar);
-                    //
+                    deployer.install(sourceAndMavenUri, updateRemoteJar);
+
                     updateInstalledMvnUri(sourceAndMavenUri.keySet());
                 }
             } else {
@@ -259,7 +260,7 @@ public class LocalLibraryManager implements ILibraryManagerService {
                 } else {
                     sourceAndMavenUri.put(snapshotMavenUri, file.getAbsolutePath());
                 }
-                deployer.deployToLocalMaven(sourceAndMavenUri, updateRemoteJar);
+                deployer.install(sourceAndMavenUri, updateRemoteJar);
                 updateInstalledMvnUri(sourceAndMavenUri.keySet());
             }
 
@@ -302,7 +303,7 @@ public class LocalLibraryManager implements ILibraryManagerService {
                 return;
             }
             // deploy to maven
-            deployFile(file, null, true, monitorWrap);
+            install(file, null, true, monitorWrap);
             // deploy to configuration/lib/java if tac still use the svn lib
             try {
                 if (isSvnLibSetup()) {
@@ -398,21 +399,31 @@ public class LocalLibraryManager implements ILibraryManagerService {
                         mavenUri = MavenUrlHelper.generateMvnUrlForJarName(jarNeeded);
                         toResolve.add(mavenUri);
                     } else {
-                        final String[] split = mavenUri.split(MavenUrlHelper.MVN_INDEX_SPLITER);
-                        for (String mvnUri : split) {
-                            toResolve.add(mvnUri);
+                        mavenUri = LibrariesIndexManager.getInstance().getMavenLibIndex().getJarsToRelativePath().get(jarNeeded);
+                        if (mavenUri == null) {
+                            mavenUri = MavenUrlHelper.generateMvnUrlForJarName(jarNeeded);
+                            toResolve.add(mavenUri);
+                        } else {
+                            final String[] split = mavenUri.split(MavenUrlHelper.MVN_INDEX_SPLITER);
+                            for (String mvnUri : split) {
+                                toResolve.add(mvnUri);
+                            }
                         }
                     }
                 }
                 for (String uri : toResolve) {
                     if (isResolveAllowed(uri)) {
+                        // MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(uri);
+                        // if (jarFile == null || parseMvnUrl.getVersion().endsWith(MavenUrlHelper.VERSION_SNAPSHOT)) {
                         File resolvedJar = resolveJar(manager, customNexusServer, uri);
                         if (resolvedJar != null) {
                             jarFile = resolvedJar;
-                            break;
                         }
+                        // }
                     }
+
                 }
+
             }
         } catch (Exception e) {
             CommonExceptionHandler.process(new Exception(getClass().getSimpleName() + " resolve " + mavenUri + " failed !"));
@@ -482,9 +493,7 @@ public class LocalLibraryManager implements ILibraryManagerService {
     public File resolveJar(TalendLibsServerManager manager, final NexusServerBean customNexusServer, String uri)
             throws Exception, IOException {
         File resolvedFile = null;
-        if (!isLocalJarSameAsNexus(manager, customNexusServer, uri)) {
-            resolvedFile = manager.getMavenResolver().resolve(uri);
-        }
+        resolvedFile = TalendMavenResolver.resolve(uri);
         if (resolvedFile != null) {
             // reset module status
             final Map<String, ELibraryInstallStatus> statusMap = ModuleStatusProvider.getStatusMap();
@@ -895,7 +904,7 @@ public class LocalLibraryManager implements ILibraryManagerService {
      * deploy needed modules with snapshot version
      */
     @Override
-    public void deployModules(Collection<ModuleNeeded> modules, IProgressMonitor monitorWrap) {
+    public void installModules(Collection<ModuleNeeded> modules, IProgressMonitor monitorWrap) {
         boolean modified = false;
         EMap<String, String> libIndex = LibrariesIndexManager.getInstance().getStudioLibIndex().getJarsToRelativePath();
         EMap<String, String> mavenIndex = LibrariesIndexManager.getInstance().getMavenLibIndex().getJarsToRelativePath();
@@ -965,7 +974,7 @@ public class LocalLibraryManager implements ILibraryManagerService {
                     ExceptionHandler.log("missing jar:" + module.getModuleName());
                 }
                 if (fileToDeploy != null) {
-                    deployFile(fileToDeploy, mavenUri, false, monitorWrap);
+                    install(fileToDeploy, mavenUri, false, monitorWrap);
                 }
             }
         }
@@ -1490,7 +1499,7 @@ public class LocalLibraryManager implements ILibraryManagerService {
                             String svnLibMD5 = DigestUtils.md5Hex(new FileInputStream(svnLibFile));
                             // check the md5 to see if jar is updated
                             if (mavenLibMD5 != null && !mavenLibMD5.equals(svnLibMD5)) {
-                                deployer.deployToLocalMaven(svnLibFile.getAbsolutePath(), mvnUri);
+                                deployer.install(svnLibFile.getAbsolutePath(), mvnUri);
                             }
                             // System.out.println("mavenLibMD5 : " + mavenLibMD5);
                             // System.out.println("svnLibMD5 : " + svnLibMD5);
@@ -1623,7 +1632,7 @@ public class LocalLibraryManager implements ILibraryManagerService {
         }
 
         String mvnUri = MavenUrlHelper.generateMvnUrlForJarName(jarFile.getName());
-        if (!PomUtil.isAvailable(mvnUri)) {
+        if (!checkJarInstalledInMaven(mvnUri)) {
             return true;
         }
 

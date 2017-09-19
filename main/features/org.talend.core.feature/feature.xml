@@ -372,6 +372,62 @@
          unpack="false"/>
 
    <plugin
+         id="org.eclipse.aether.api"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+ 
+    <plugin
+         id="org.eclipse.aether.connector.basic"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>  
+
+    <plugin
+         id="org.eclipse.aether.impl"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/> 
+         
+    <plugin
+         id="org.eclipse.aether.spi"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>  
+ 
+     <plugin
+         id="org.eclipse.aether.transport.file"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+         
+     <plugin
+         id="org.eclipse.aether.transport.http"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+     <plugin
+         id="org.eclipse.aether.util"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+     <plugin
+         id="org.talend.designer.maven.aether"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="javax.mail"
          download-size="0"
          install-size="0"

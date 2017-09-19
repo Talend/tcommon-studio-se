@@ -36,4 +36,15 @@
          </library>
       </systemRoutine>
    </extension>
+   <extension
+         point="org.talend.core.runtime.artifact_handler">
+      <handler
+            class="org.talend.librariesmanager.nexus.Nexus2RepositoryHandler"
+            type="NEXUS_2">
+      </handler>
+      <handler
+            class="org.talend.librariesmanager.nexus.Nexus3RepositoryHandler"
+            type="NEXUS_3">
+      </handler>
+   </extension>
 </plugin>

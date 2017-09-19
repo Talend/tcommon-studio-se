@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -30,7 +30,7 @@ import org.talend.utils.io.FilesUtils;
 /**
  * DOC ggu class global comment. Detailled comment
  */
-public class ArtifactsDeployerTest {
+public class MavenArtifactsHandlerTest {
 
     File tmpFolder;
 
@@ -85,7 +85,7 @@ public class ArtifactsDeployerTest {
     @Test
     public void test_deployToLocalMaven_emptyMap() throws Exception {
         Map<String, String> jarSourceAndMavenUri = new HashMap<String, String>();
-        new ArtifactsDeployer().deployToLocalMaven(jarSourceAndMavenUri, false);
+        new MavenArtifactsHandler().install(jarSourceAndMavenUri, false);
 
         Assert.assertFalse(repoJarFile.exists());
         Assert.assertFalse(repoPomFile.exists());
@@ -95,7 +95,7 @@ public class ArtifactsDeployerTest {
     public void test_deployToLocalMaven_map() throws Exception {
         Map<String, String> jarSourceAndMavenUri = new HashMap<String, String>();
         jarSourceAndMavenUri.put("mvn:org.talend.libraries/mytest/6.0.0/jar", localJarFile.getAbsolutePath());
-        new ArtifactsDeployer().deployToLocalMaven(jarSourceAndMavenUri, false);
+        new MavenArtifactsHandler().install(jarSourceAndMavenUri, false);
 
         Assert.assertTrue(repoJarFile.exists());
         Assert.assertTrue(repoPomFile.exists());
@@ -107,7 +107,7 @@ public class ArtifactsDeployerTest {
      */
     @Test
     public void test_deployToLocalMaven_generatePom() throws Exception {
-        new ArtifactsDeployer().deployToLocalMaven(localJarFile.getAbsolutePath(), "mvn:org.talend.libraries/mytest/6.0.0/jar",
+        new MavenArtifactsHandler().install(localJarFile.getAbsolutePath(), "mvn:org.talend.libraries/mytest/6.0.0/jar",
                 false);
 
         Assert.assertTrue(repoJarFile.exists());
@@ -125,19 +125,19 @@ public class ArtifactsDeployerTest {
      */
     @Test
     public void test_deployToLocalMaven_withPom_null() throws Exception {
-        new ArtifactsDeployer().deployToLocalMaven(null, null, null, false);
+        new MavenArtifactsHandler().install(null, null, null, false);
         Assert.assertFalse(repoJarFile.exists());
         Assert.assertFalse(repoPomFile.exists());
 
-        new ArtifactsDeployer().deployToLocalMaven("mvn:org.talend.libraries/mytest/6.0.0/jar", null, null, false);
+        new MavenArtifactsHandler().install("mvn:org.talend.libraries/mytest/6.0.0/jar", null, null, false);
         Assert.assertFalse(repoJarFile.exists());
         Assert.assertFalse(repoPomFile.exists());
 
-        new ArtifactsDeployer().deployToLocalMaven("mvn:org.talend.libraries/mytest/6.0.0/jar", "", null, false);
+        new MavenArtifactsHandler().install("mvn:org.talend.libraries/mytest/6.0.0/jar", "", null, false);
         Assert.assertFalse(repoJarFile.exists());
         Assert.assertFalse(repoPomFile.exists());
 
-        new ArtifactsDeployer().deployToLocalMaven("mvn:org.talend.libraries/mytest/6.0.0/jar", "abc.jar", null, false);
+        new MavenArtifactsHandler().install("mvn:org.talend.libraries/mytest/6.0.0/jar", "abc.jar", null, false);
         Assert.assertFalse(repoJarFile.exists());
         Assert.assertFalse(repoPomFile.exists());
     }
@@ -145,7 +145,7 @@ public class ArtifactsDeployerTest {
     @Test
     public void test_deployToLocalMaven_withPom_jar() throws Exception {
         final String mavenUri = "mvn:org.talend.libraries/mytest/6.0.0/jar";
-        new ArtifactsDeployer().deployToLocalMaven(mavenUri, localJarFile.getAbsolutePath(), localPomFile.getAbsolutePath(),
+        new MavenArtifactsHandler().install(mavenUri, localJarFile.getAbsolutePath(), localPomFile.getAbsolutePath(),
                 false);
 
         Assert.assertEquals(ELibraryInstallStatus.DEPLOYED, ModuleStatusProvider.getDeployStatusMap().get(mavenUri));
@@ -162,7 +162,7 @@ public class ArtifactsDeployerTest {
     @Test
     public void test_deployToLocalMaven_withPom_jar_withoutPackaging() throws Exception {
         final String mavenUri = "mvn:org.talend.libraries/mytest/6.0.0";
-        new ArtifactsDeployer().deployToLocalMaven(mavenUri, localJarFile.getAbsolutePath(), localPomFile.getAbsolutePath(),
+        new MavenArtifactsHandler().install(mavenUri, localJarFile.getAbsolutePath(), localPomFile.getAbsolutePath(),
                 false);
 
         Assert.assertEquals(ELibraryInstallStatus.DEPLOYED, ModuleStatusProvider.getDeployStatusMap().get(mavenUri));
@@ -179,7 +179,7 @@ public class ArtifactsDeployerTest {
     @Test
     public void test_deployToLocalMaven_zip() throws Exception {
         final String mavenUri = "mvn:org.talend.libraries/mytest_jar/6.4.1/zip";
-        new ArtifactsDeployer().deployToLocalMaven(mavenUri, localZipFile.getAbsolutePath(), null, false);
+        new MavenArtifactsHandler().install(mavenUri, localZipFile.getAbsolutePath(), null, false);
 
         Assert.assertEquals(ELibraryInstallStatus.DEPLOYED, ModuleStatusProvider.getDeployStatusMap().get(mavenUri));
         Assert.assertEquals(ELibraryInstallStatus.INSTALLED, ModuleStatusProvider.getStatusMap().get(mavenUri));

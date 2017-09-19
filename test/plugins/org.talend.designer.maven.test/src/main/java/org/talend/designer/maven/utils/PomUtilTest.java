@@ -34,7 +34,7 @@ import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.properties.PropertiesFactory;
 import org.talend.core.model.properties.Property;
-import org.talend.core.nexus.TalendLibsServerManager;
+import org.talend.core.nexus.TalendMavenResolver;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.process.TalendProcessArgumentConstant;
@@ -269,7 +269,7 @@ public class PomUtilTest {
             File test2 = new File(baseFile, "test2.jar");
             test2.createNewFile();
 
-            MavenResolver mvnResolver = TalendLibsServerManager.getInstance().getMavenResolver();
+            MavenResolver mvnResolver = TalendMavenResolver.getMavenResolver();
             mvnResolver.upload("org.talend.libraries", "test1", null, "txt", "6.0.0", test1);
             mvnResolver.upload("org.talend.studio", "test2", null, "jar", "6.0.0", test1);
 

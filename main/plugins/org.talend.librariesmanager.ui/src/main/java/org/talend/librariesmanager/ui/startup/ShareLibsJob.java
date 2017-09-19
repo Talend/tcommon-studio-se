@@ -43,7 +43,7 @@ public class ShareLibsJob extends Job {
      */
     @Override
     protected IStatus run(IProgressMonitor monitor) {
-        ShareLibsOnStartup shareLib = new ShareLibsOnStartup();
+        ShareMavenArtifactsOnStartup shareLib = new ShareMavenArtifactsOnStartup();
         return shareLib.shareLibs(this, monitor);
     }
 

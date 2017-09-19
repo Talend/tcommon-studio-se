@@ -16,12 +16,13 @@ Require-Bundle: org.eclipse.core.runtime,
  org.talend.libraries.apache,
  org.talend.libraries.dom4j-jaxen,
  org.talend.libraries.apache.http,
+ org.talend.libraries.jackson,
  org.talend.core.runtime;visibility:=reexport,
  org.talend.metadata.managment,
  org.apache.log4j,
  org.talend.designer.maven,
  org.talend.components.api,
- org.eclipse.m2e.maven.runtime
+ org.talend.designer.maven.aether
 Eclipse-LazyStart: true
 Bundle-ClassPath: .
 Export-Package: org.talend.librariesmanager.emf.librariesindex,
