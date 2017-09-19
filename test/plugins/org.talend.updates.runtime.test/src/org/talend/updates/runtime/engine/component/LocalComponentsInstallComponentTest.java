@@ -486,7 +486,7 @@ public class LocalComponentsInstallComponentTest {
         final File patchFile = new File(patchesFolder, testDataFile.getName());
         FilesUtils.copyFile(testDataFile, patchFile);
 
-        final URI patchURI = URI.create("jar:" + patchFile.toURI().toString() + "!/"); //$NON-NLS-1$ //$NON-NLS-2$
+        final URI patchURI = PathUtils.getP2RepURIFromCompFile(patchFile);
 
         LocalComponentsInstallComponent installComp = new LocalComponentsInstallComponentTestClass() {
 

@@ -101,6 +101,11 @@ public class CommonsPlugin implements BundleActivator {
     public static boolean isDebugMode() {
         return ArrayUtils.contains(Platform.getApplicationArgs(), TalendDebugHandler.TALEND_DEBUG);
     }
+    
+    public static boolean isJUnitTest() {
+        return Boolean.getBoolean("junit_test"); //$NON-NLS-1$
+    }
+
 
     /**
      * Answer the file associated with name. This handles the case of running as a plugin and running standalone which

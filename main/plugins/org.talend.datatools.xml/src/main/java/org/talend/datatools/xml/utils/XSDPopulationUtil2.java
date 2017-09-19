@@ -225,15 +225,7 @@ public class XSDPopulationUtil2 implements IXSDPopulationUtil {
                 partNode.setValue(originalTreeNode.getValue());
                 partNode.setType(ATreeNode.ELEMENT_TYPE);
                 partNode.setDataType(originalTreeNode.getDataType());
-                // for TUP-18382 should reuse children for different parent nodes
-                // need every node of ATreeNode to be unique.
-                List<ATreeNode> children = new ArrayList<>();
-                for (Object child : originalTreeNode.getChildren()) {
-                    if (child instanceof ATreeNode) {
-                        children.add(((ATreeNode) child).copy());
-                    }
-                }
-                partNode.addChild(children.toArray());
+                partNode.addChild(originalTreeNode.getChildren());
                 parentNode.addChild(partNode);
                 return;
             }

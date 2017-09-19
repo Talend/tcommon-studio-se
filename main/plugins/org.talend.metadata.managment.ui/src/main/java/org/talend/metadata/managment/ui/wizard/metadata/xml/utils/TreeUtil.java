@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -895,9 +896,8 @@ public class TreeUtil {
 
     public static FOXTreeNode cloneATreeNode(ATreeNode aNode, boolean isXsd) {
         List<ATreeNode> aNodes = NodeCreationObserver.getList();
-        FOXTreeNode rootFNode = null;
-        for (int i= 0; i< aNodes.size(); i++) {
-            ATreeNode treeNode = aNodes.get(i);
+        Map<ATreeNode,FOXTreeNode> mapOldToNewNode = new HashMap<>();
+        for (ATreeNode treeNode : aNodes) {
             if (isXsd && treeNode.getValue() instanceof String) {
                 String currentPath = treeNode.getValue() + "[" + treeNode.getDataType() + "]";
                 if (treeNode.getParent() != null) {
@@ -938,21 +938,16 @@ public class TreeUtil {
             }
             node.setDataMaxLength(treeNode.getDataMaxLength());
             node.setPrecisionValue(treeNode.getPrecisionValue());
-            if (treeNode.getFoxTreeNode() == null) {
-                treeNode.setFoxTreeNode(node);
-            }
-            if (treeNode.getParent() != null && treeNode.getParent().getFoxTreeNode() != null) {
-                ((FOXTreeNode) treeNode.getParent().getFoxTreeNode()).addChild(node);
-            } 
+            mapOldToNewNode.put(treeNode, node);
         }
-        for (ATreeNode treeNode: aNodes) {
-            FOXTreeNode fNode = (FOXTreeNode) treeNode.getFoxTreeNode();
-            if ( treeNode.getParent() != null && fNode.getParent() == null) {
-                ((FOXTreeNode) treeNode.getParent().getFoxTreeNode()).addChild(fNode);
+        for (ATreeNode treeNode : aNodes) {
+            FOXTreeNode current = mapOldToNewNode.get(treeNode);
+            for (Object childObject : treeNode.getChildren()) {
+                ATreeNode childNode = (ATreeNode) childObject;
+                current.addChild(mapOldToNewNode.get(childNode));
             }
         }
-        rootFNode = (FOXTreeNode) aNode.getFoxTreeNode();
-        return rootFNode;
+        return mapOldToNewNode.get(aNode);
     }
 
     public static FOXTreeNode getRootFOXTreeNode(FOXTreeNode node) {

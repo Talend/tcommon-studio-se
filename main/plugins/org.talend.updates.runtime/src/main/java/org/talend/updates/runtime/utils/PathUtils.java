@@ -22,6 +22,7 @@ import java.util.regex.Pattern;
 import org.eclipse.core.runtime.Platform;
 import org.talend.commons.runtime.service.ComponentsInstallComponent;
 import org.talend.commons.runtime.service.PatchComponent;
+import org.talend.commons.utils.resource.FileExtensions;
 
 /**
  * created by ycbai on 2017年5月23日 Detailled comment
@@ -95,7 +96,12 @@ public class PathUtils {
         if (compFile == null) {
             return null;
         }
-        return URI.create("jar:" + compFile.toURI().toString() + "!/"); //$NON-NLS-1$ //$NON-NLS-2$
+        final String name = compFile.getName();
+
+        if (name.endsWith(FileExtensions.JAR_FILE_SUFFIX) || name.endsWith(FileExtensions.ZIP_FILE_SUFFIX)) {
+            return URI.create("jar:" + compFile.toURI().toString() + "!/");
+        }
+        return null;
     }
 
     public static File getCompFileFromP2RepURI(URI p2RepURI) throws MalformedURLException {

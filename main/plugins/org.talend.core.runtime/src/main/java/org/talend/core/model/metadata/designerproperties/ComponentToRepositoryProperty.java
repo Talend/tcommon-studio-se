@@ -530,8 +530,7 @@ public class ComponentToRepositoryProperty {
         if ("PASSWORD".equals(param.getRepositoryValue())) { //$NON-NLS-1$
             String value = getParameterValue(connection, node, param);
             if (value != null) {
-                String pwd = TalendQuoteUtils.checkAndRemoveBackslashes(value);
-                connection.setRawPassword(TalendQuoteUtils.removeQuotes(pwd));
+                connection.setRawPassword(TalendQuoteUtils.removeQuotes(value));
             }
         }
         if ("SERVER_NAME".equals(param.getRepositoryValue())) { //$NON-NLS-1$

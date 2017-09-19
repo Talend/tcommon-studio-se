@@ -123,6 +123,8 @@ public class ProcessorUtilities {
 
     private static boolean exportAsOSGI = false;
 
+    private static boolean exportJobAsMicroService = false;
+
     private static IDesignerCoreService designerCoreService = (IDesignerCoreService) GlobalServiceRegister.getDefault()
             .getService(IDesignerCoreService.class);
 
@@ -1843,6 +1845,14 @@ public class ProcessorUtilities {
 
     public static void setExportAsOSGI(boolean toOSGI) {
         exportAsOSGI = toOSGI;
+    }
+
+    public static boolean isExportJobAsMicroService() {
+        return exportJobAsMicroService;
+    }
+
+    public static void setExportJobAsMicroSerivce(boolean toMicroService) {
+        exportJobAsMicroService = toMicroService;
     }
 
     /**

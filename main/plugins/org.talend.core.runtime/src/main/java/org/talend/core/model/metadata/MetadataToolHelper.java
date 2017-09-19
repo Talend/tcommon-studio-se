@@ -547,8 +547,8 @@ public final class MetadataToolHelper {
      * @param target
      */
     public static void copyTable(String dbmsId, IMetadataTable source, IMetadataTable target) {
-        setDBType(source, dbmsId);
         copyTable(source, target);
+        setDBType(target, dbmsId);
     }
 
     /**

@@ -106,8 +106,8 @@ public final class ElementParameterParser {
      * @return
      */
     public static boolean canEncryptValue(String value) {
-        return value != null
-                && value.startsWith("\"") && value.endsWith("\"") && TalendQuoteUtils.filterQuote(value).length() == 0;//$NON-NLS-1$//$NON-NLS-2$
+        return value != null && value.startsWith("\"") && value.endsWith("\"") //$NON-NLS-1$//$NON-NLS-2$
+                && TalendQuoteUtils.filterQuote(value).length() == 0;
     }
 
     public static String getEncryptedValue(final IElement node, final String parameterName) {
@@ -128,7 +128,6 @@ public final class ElementParameterParser {
             try {
                 String removeQuotes = TalendQuoteUtils.removeQuotes(value);
                 removeQuotes = TalendQuoteUtils.checkSlashAndRemoveQuotation(removeQuotes);
-                removeQuotes = TalendQuoteUtils.checkAndRemoveBackslashes(removeQuotes);
                 return TalendQuoteUtils.addQuotes(PasswordEncryptUtil.encryptPasswordHex(removeQuotes),
                         TalendQuoteUtils.QUOTATION_MARK);
             } catch (Exception e) {
@@ -147,8 +146,8 @@ public final class ElementParameterParser {
             return null;
         } else {
             if (ElementParameterParser.canEncrypt(node, parameterName)) {
-                return "routines.system.PasswordEncryptUtil.decryptPassword(" + ElementParameterParser.getEncryptedValue(node, parameterName) //$NON-NLS-1$
-                        + ")"; //$NON-NLS-1$
+                return "routines.system.PasswordEncryptUtil.decryptPassword(" //$NON-NLS-1$
+                        + ElementParameterParser.getEncryptedValue(node, parameterName) + ")"; //$NON-NLS-1$
             } else {
                 return ElementParameterParser.getValue(node, parameterName);
             }
@@ -174,7 +173,7 @@ public final class ElementParameterParser {
             return null;
         } else {
             String linkedNodeName = ElementParameterParser.getValue(node, parameterName);
-            //when linked node in joblet, can be found in generating node list only
+            // when linked node in joblet, can be found in generating node list only
             java.util.List<? extends INode> allGeneratingNodes = ((INode) node).getProcess().getGeneratingNodes();
             if (allGeneratingNodes != null && allGeneratingNodes.size() > 0) {
                 for (INode linkedNode : allGeneratingNodes) {
@@ -390,7 +389,8 @@ public final class ElementParameterParser {
                         newLine.put(items[i], replacedValue);
                     } else {
                         newLine.put(items[i], (String) o);
-                        if ("".equals(o) && param.getListItemsValue() != null && param.getListItemsValue()[i] instanceof IElementParameter) { //$NON-NLS-1$
+                        if ("".equals(o) && param.getListItemsValue() != null //$NON-NLS-1$
+                                && param.getListItemsValue()[i] instanceof IElementParameter) {
                             IElementParameter tmpParam = (IElementParameter) param.getListItemsValue()[i];
                             if (tmpParam.getListItemsValue() != null && tmpParam.getListItemsValue().length > 0) {
                                 newLine.put(items[i], (String) tmpParam.getListItemsValue()[0]);

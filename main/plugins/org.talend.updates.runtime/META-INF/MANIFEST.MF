@@ -33,4 +33,5 @@ Export-Package: org.talend.updates.runtime.engine,
  org.talend.updates.runtime.engine.component,
  org.talend.updates.runtime.engine.factory,
  org.talend.updates.runtime.model,
- org.talend.updates.runtime.ui
+ org.talend.updates.runtime.ui,
+ org.talend.updates.runtime.utils

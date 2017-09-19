@@ -92,7 +92,7 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature {
 
     public ComponentP2ExtraFeature(File componentZipFile) {
         this(new ComponentIndexManager().create(componentZipFile));
-        this.repositoryURI = URI.create("jar:" + componentZipFile.toURI().toString() + "!/"); //$NON-NLS-1$ //$NON-NLS-2$
+        this.repositoryURI = PathUtils.getP2RepURIFromCompFile(componentZipFile);
     }
 
     public ComponentP2ExtraFeature(String name, String version, String description, String product, String mvnURI, String p2IuId) {
