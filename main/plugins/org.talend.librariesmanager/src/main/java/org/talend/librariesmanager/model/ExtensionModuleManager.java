@@ -58,6 +58,14 @@ public class ExtensionModuleManager {
 
     public final static String BUNDLEID_ATTR = "bundleID"; //$NON-NLS-1$
 
+    public final static String DEPENDENCY_TYPE_ATTR = "dependencyType";
+
+    public final static String DEPENDENCY_TYPE_NONE = "NONE";
+
+    public final static String DEPENDENCY_TYPE_TOP = "TOP";
+
+    public final static String DEPENDENCY_TYPE_CHILD = "CHILD";
+
     public final static String DESC_ATTR = "description"; //$NON-NLS-1$
 
     public final static String PATH_SEP = "/"; //$NON-NLS-1$

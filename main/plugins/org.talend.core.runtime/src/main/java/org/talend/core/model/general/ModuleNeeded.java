@@ -76,6 +76,8 @@ public class ModuleNeeded {
 
     private String mavenUri;
 
+    private EDependencyType dependencyType = EDependencyType.NONE;
+
     private boolean dynamic;
 
     private Map<String, Object> extraAttributes = new HashMap<>();
@@ -611,4 +613,17 @@ public class ModuleNeeded {
         return this.extraAttributes;
     }
 
+    public EDependencyType getDependencyType() {
+        return this.dependencyType;
+    }
+
+    public void setDependencyType(EDependencyType dependencyType) {
+        this.dependencyType = dependencyType;
+    }
+
+    public static enum EDependencyType {
+        NONE,
+        TOP,
+        CHILD
+    }
 }
