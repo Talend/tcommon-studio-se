@@ -47,7 +47,6 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.runtime.model.repository.ERepositoryStatus;
 import org.talend.commons.utils.generation.JavaUtils;
-import org.talend.commons.utils.io.FilesUtils;
 import org.talend.commons.utils.time.TimeMeasure;
 import org.talend.core.CorePlugin;
 import org.talend.core.GlobalServiceRegister;
@@ -96,6 +95,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 import org.talend.repository.documentation.ExportFileResource;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IRepositoryService;
+import org.talend.utils.io.FilesUtils;
 
 /**
  * DOC nrousseau class global comment. Detailled comment <br/>
