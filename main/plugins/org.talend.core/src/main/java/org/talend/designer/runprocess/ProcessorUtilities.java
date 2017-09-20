@@ -15,11 +15,13 @@ package org.talend.designer.runprocess;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -36,6 +38,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.ui.IEditorPart;
 import org.talend.commons.CommonsPlugin;
@@ -47,6 +50,7 @@ import org.talend.commons.utils.generation.JavaUtils;
 import org.talend.commons.utils.time.TimeMeasure;
 import org.talend.core.CorePlugin;
 import org.talend.core.GlobalServiceRegister;
+import org.talend.core.ITDQItemService;
 import org.talend.core.PluginChecker;
 import org.talend.core.context.Context;
 import org.talend.core.context.RepositoryContext;
@@ -78,6 +82,7 @@ import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.core.runtime.process.LastGenerationInfo;
 import org.talend.core.runtime.process.TalendProcessArgumentConstant;
 import org.talend.core.runtime.process.TalendProcessOptionConstants;
+import org.talend.core.runtime.repository.build.BuildExportManager;
 import org.talend.core.services.ISVNProviderService;
 import org.talend.core.ui.IJobletProviderService;
 import org.talend.core.ui.ITestContainerProviderService;
@@ -87,8 +92,10 @@ import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
+import org.talend.repository.documentation.ExportFileResource;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IRepositoryService;
+import org.talend.utils.io.FilesUtils;
 
 /**
  * DOC nrousseau class global comment. Detailled comment <br/>
@@ -518,6 +525,8 @@ public class ProcessorUtilities {
         setNeededResources(argumentsMap, jobInfo);
 
         processor.setArguments(argumentsMap);
+
+        copyDQDroolsToSrc(selectedProcessItem);
         // generate the code of the father after the childrens
         // so the code won't have any error during the check, and it will help to check
         // if the generation is really needed.
@@ -913,6 +922,8 @@ public class ProcessorUtilities {
 
             processor.setArguments(argumentsMap);
 
+            copyDQDroolsToSrc(selectedProcessItem);
+
             generateContextInfo(jobInfo, selectedContextName, statistics, trace, needContext, progressMonitor, currentProcess,
                     currentJobName, processor, isMainJob, codeGenerationNeeded);
 
@@ -963,6 +974,59 @@ public class ProcessorUtilities {
         if (isMainJob) {
             LastGenerationInfo.getInstance().setLastMainJob(generatedJobInfo);
         }
+    }
+
+    /**
+     * 
+     * copy the current item's drools file from 'workspace/metadata/survivorship' to '.Java/src/resources'
+     * 
+     * @param processItem
+     */
+    private static void copyDQDroolsToSrc(ProcessItem processItem) {
+        // 1.TDQ-12474 copy the "metadata/survivorship/rulePackage" to ".Java/src/main/resources/". so that it will be used by
+        // maven command 'include-survivorship-rules' to export.
+        // 2.TDQ-14308 current drools file in 'src/resourcesmetadata/survivorship/' should be included to job jar.
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ITDQItemService.class)) {
+            ITDQItemService tdqItemService = (ITDQItemService) GlobalServiceRegister.getDefault().getService(
+                    ITDQItemService.class);
+            if (tdqItemService == null) {
+                return;
+            }
+            try {
+                ExportFileResource resouece = new ExportFileResource();
+                BuildExportManager.getInstance().exportDependencies(resouece, processItem);
+                if (resouece.getAllResources().isEmpty()) {
+                    return;
+                }
+                final Iterator<String> relativepath = resouece.getRelativePathList().iterator();
+                String pathStr = "metadata/survivorship"; //$NON-NLS-1$
+                IRunProcessService runProcessService = CorePlugin.getDefault().getRunProcessService();
+                ITalendProcessJavaProject talendProcessJavaProject = runProcessService.getTalendProcessJavaProject();
+                IFolder targetFolder = talendProcessJavaProject.getResourcesFolder();
+                if (targetFolder.exists()) {
+                    IFolder survFolder = targetFolder.getFolder(new Path(pathStr));
+                    // only copy self job rules, clear the 'survivorship' folder before copy.
+                    if (survFolder.exists()) {
+                        survFolder.delete(true, null);
+                    }
+                    while (relativepath.hasNext()) {
+                        String relativePath = relativepath.next();
+                        Set<URL> sources = resouece.getResourcesByRelativePath(relativePath);
+                        for (URL sourceUrl : sources) {
+                            File currentResource = new File(org.talend.commons.utils.io.FilesUtils.getFileRealPath(sourceUrl
+                                    .getPath()));
+                            if (currentResource.exists()) {
+                                FilesUtils.copyDirectory(currentResource, new File(targetFolder.getLocation().toPortableString()
+                                        + File.separator + pathStr));
+                            }
+                        }
+                    }
+                }
+            } catch (Exception exc) {
+                log.error(exc);
+            }
+        }
+
     }
 
     /**
