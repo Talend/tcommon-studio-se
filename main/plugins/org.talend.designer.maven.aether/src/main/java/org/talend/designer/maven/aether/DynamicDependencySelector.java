@@ -30,6 +30,8 @@ public class DynamicDependencySelector implements DependencySelector {
 
     private IDynamicMonitor monitor;
 
+    private String tabStr = "";
+
     public DependencySelector getProxy() {
         return this.proxy;
     }
@@ -51,11 +53,11 @@ public class DynamicDependencySelector implements DependencySelector {
         boolean result = proxy.selectDependency(dependency);
         if (monitor != null) {
             try {
-                String message = "";
+                String message = getTabStr();
                 if (result) {
-                    message = "Collect: ";
+                    message = message + "Collect: ";
                 } else {
-                    message = "Ignore: ";
+                    message = message + "Ignore: ";
                 }
                 message = message + dependency.toString();
                 monitor.writeMessage(message + "\n");
@@ -82,19 +84,29 @@ public class DynamicDependencySelector implements DependencySelector {
         this.monitor = monitor;
     }
 
+    public String getTabStr() {
+        return this.tabStr;
+    }
+
+    public void setTabStr(String tabStr) {
+        this.tabStr = tabStr;
+    }
+
     @Override
     public DependencySelector deriveChildSelector(DependencyCollectionContext context) {
         DependencySelector result = proxy.deriveChildSelector(context);
         // System.out.println("deriveChildSelector: " + context.toString());
+
         DynamicDependencySelector selector = new DynamicDependencySelector();
         selector.setParentSelector(this);
         selector.setProxy(result);
         selector.setContext(context);
         selector.setMonitor(monitor);
+        selector.setTabStr(getTabStr() + "\t");
 
         if (monitor != null) {
             try {
-                String message = "\n=== Collect dependencies for " + context.getDependency().toString() + " ===";
+                String message = getTabStr() + "=== Collect dependencies for " + context.getDependency().toString() + " ===";
                 monitor.writeMessage(message + "\n");
             } catch (Exception e) {
                 e.printStackTrace();
