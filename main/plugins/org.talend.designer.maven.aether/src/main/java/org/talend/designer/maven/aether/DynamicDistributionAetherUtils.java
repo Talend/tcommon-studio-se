@@ -13,7 +13,9 @@
 package org.talend.designer.maven.aether;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +28,7 @@ import org.eclipse.aether.artifact.DefaultArtifact;
 import org.eclipse.aether.collection.CollectRequest;
 import org.eclipse.aether.collection.DependencySelector;
 import org.eclipse.aether.connector.basic.BasicRepositoryConnectorFactory;
+import org.eclipse.aether.graph.Exclusion;
 import org.eclipse.aether.impl.DefaultServiceLocator;
 import org.eclipse.aether.repository.LocalRepository;
 import org.eclipse.aether.repository.RemoteRepository;
@@ -48,8 +51,14 @@ public class DynamicDistributionAetherUtils {
 
     private static Map<String, RepositorySystemSession> sessionMap = new HashMap<>();
 
-    public static DependencyNode collectDepencencies(String remoteUrl, String localPath, String groupId, String artifactId,
-            String version, String classifier, String scope, IDynamicMonitor monitor) throws Exception {
+    public static DependencyNode collectDepencencies(String remoteUrl, String localPath, DependencyNode dependencyNode,
+            IDynamicMonitor monitor) throws Exception {
+
+        String groupId = dependencyNode.getGroupId();
+        String artifactId = dependencyNode.getArtifactId();
+        String classifier = dependencyNode.getClassifier();
+        String version = dependencyNode.getVersion();
+        String scope = dependencyNode.getScope();
 
         if (scope == null) {
             scope = JavaScopes.COMPILE;
@@ -70,6 +79,24 @@ public class DynamicDistributionAetherUtils {
 
         org.eclipse.aether.graph.Dependency dependency = new org.eclipse.aether.graph.Dependency(
                 new DefaultArtifact(groupId, artifactId, classifier, null, version), scope);
+
+        List<ExclusionNode> exclusionNodes = dependencyNode.getExclusions();
+        if (exclusionNodes != null && !exclusionNodes.isEmpty()) {
+            Collection<Exclusion> newExclusions = new LinkedHashSet<>();
+            Collection<Exclusion> exclusions = dependency.getExclusions();
+            newExclusions.addAll(exclusions);
+            for (ExclusionNode exclusionNode : exclusionNodes) {
+                String exclusionGroupId = exclusionNode.getGroupId();
+                String exclusionArtifactId = exclusionNode.getArtifactId();
+                String exclusionClassifier = exclusionNode.getClassifier();
+                String exclusionExtension = exclusionNode.getExtension();
+                Exclusion exclusion = new Exclusion(exclusionGroupId, exclusionArtifactId, exclusionClassifier,
+                        exclusionExtension);
+                newExclusions.add(exclusion);
+            }
+            dependency = dependency.setExclusions(newExclusions);
+        }
+
         RemoteRepository central = new RemoteRepository.Builder("central", "default",
                 remoteUrl).build();
 
@@ -174,13 +201,16 @@ public class DynamicDistributionAetherUtils {
         LocalRepository localRepo = new LocalRepository(repositoryPath);
         session.setLocalRepositoryManager(system.newLocalRepositoryManager(session, localRepo));
 
-        DependencySelector depFilter = session.getDependencySelector();
-        DynamicDependencySelector selector = new DynamicDependencySelector();
-        selector.setProxy(depFilter);
+        DependencySelector defaultSelector = session.getDependencySelector();
+        DynamicDependencySelector newSelector = new DynamicDependencySelector();
+        newSelector.setProxy(defaultSelector);
+        newSelector.setMonitor(monitor);
+        session.setDependencySelector(newSelector);
 
-        selector.setMonitor(monitor);
-
-        session.setDependencySelector(selector);
+        // DependencyManager defaultDependencyManager = session.getDependencyManager();
+        // DynamicDependencyManager newDependencyManager = new DynamicDependencyManager();
+        // newDependencyManager.setProxy(defaultDependencyManager);
+        // session.setDependencyManager(newDependencyManager);
 
         return session;
     }

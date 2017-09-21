@@ -124,16 +124,10 @@
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="dependencyType" type="string">
+         <attribute name="excludeDependencies" type="boolean">
             <annotation>
                <documentation>
-                  To show the jar is top/base jar or dependency/child jar;
-
-
-Available values:
-NONE	=&gt; Default value, to compatible with old versions
-TOP		=&gt; top/base jar, will be added into the pom.xml of job
-CHILD	=&gt; dependency/child jar, won&apos;t be added into the pom.xml of job
+                  true: will add exclusion *:* in the dependence of pom.xml
                </documentation>
             </annotation>
          </attribute>

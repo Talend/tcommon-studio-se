@@ -12,28 +12,19 @@
 // ============================================================================
 package org.talend.designer.maven.aether;
 
-import java.util.List;
 
 /**
  * DOC cmeng  class global comment. Detailled comment
  */
-public class DependencyNode {
+public class ExclusionNode {
 
     private String groupId;
 
     private String artifactId;
 
-    private String version;
-
     private String classifier;
 
     private String extension;
-
-    private String scope;
-
-    private List<ExclusionNode> exclusions;
-
-    private List<DependencyNode> dependencies;
 
     public String getGroupId() {
         return this.groupId;
@@ -51,14 +42,6 @@ public class DependencyNode {
         this.artifactId = artifactId;
     }
 
-    public String getVersion() {
-        return this.version;
-    }
-
-    public void setVersion(String version) {
-        this.version = version;
-    }
-
     public String getClassifier() {
         return this.classifier;
     }
@@ -73,44 +56,6 @@ public class DependencyNode {
 
     public void setExtension(String extension) {
         this.extension = extension;
-    }
-
-    public String getScope() {
-        return this.scope;
-    }
-
-    public void setScope(String scope) {
-        this.scope = scope;
-    }
-
-    public List<DependencyNode> getDependencies() {
-        return this.dependencies;
-    }
-
-    public void setDependencies(List<DependencyNode> dependencies) {
-        this.dependencies = dependencies;
-    }
-
-    public List<ExclusionNode> getExclusions() {
-        return this.exclusions;
-    }
-
-    public void setExclusions(List<ExclusionNode> exclusions) {
-        this.exclusions = exclusions;
-    }
-
-    public String getJarName() {
-        String jarname = getArtifactId() + "-" + getVersion();
-        String classifier = getClassifier();
-        if (classifier != null && !classifier.isEmpty()) {
-            jarname = jarname + "-" + classifier;
-        }
-        String extension = getExtension();
-        if (extension == null || extension.isEmpty()) {
-            extension = "jar";
-        }
-        jarname = jarname + "." + extension;
-        return jarname;
     }
 
 }

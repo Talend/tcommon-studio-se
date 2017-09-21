@@ -12,9 +12,15 @@
 // ============================================================================
 package org.talend.designer.maven.aether;
 
+import java.util.Collection;
+import java.util.LinkedHashSet;
+
+import org.codehaus.plexus.util.StringUtils;
+import org.eclipse.aether.artifact.Artifact;
 import org.eclipse.aether.collection.DependencyCollectionContext;
 import org.eclipse.aether.collection.DependencySelector;
 import org.eclipse.aether.graph.Dependency;
+import org.eclipse.aether.graph.Exclusion;
 
 
 /**
@@ -28,9 +34,82 @@ public class DynamicDependencySelector implements DependencySelector {
 
     private DependencyCollectionContext context;
 
+    Collection<Exclusion> exclusions = new LinkedHashSet<>();
+
     private IDynamicMonitor monitor;
 
     private String tabStr = "";
+
+    private boolean printCollectDetails = false;
+
+    @Override
+    public boolean selectDependency(Dependency dependency) {
+
+        boolean result = proxy.selectDependency(dependency);
+        if (printDetails()) {
+            try {
+                String message = getTabStr();
+                if (result) {
+                    message = message + "Collect: ";
+                } else {
+                    message = message + "Ignore: ";
+                }
+                message = message + dependency.toString();
+                monitor.writeMessage(message + "\n");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public DependencySelector deriveChildSelector(DependencyCollectionContext context) {
+        DependencySelector result = proxy.deriveChildSelector(context);
+        // System.out.println("deriveChildSelector: " + context.toString());
+        DynamicDependencySelector selector = null;
+        if (result != null) {
+            selector = new DynamicDependencySelector();
+            selector.setParentSelector(this);
+            selector.setProxy(result);
+            selector.setContext(context);
+            selector.setMonitor(monitor);
+            selector.setTabStr(getTabStr() + "\t");
+
+            if (printDetails()) {
+                try {
+                    String message = getTabStr() + "=== Collect dependencies for " + context.getDependency().toString() + " ===";
+                    monitor.writeMessage(message + "\n");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return selector;
+    }
+
+    private boolean isExcluded(Dependency dependency) {
+        boolean excluded = false;
+        if (exclusions != null && !exclusions.isEmpty()) {
+            Artifact artifact = dependency.getArtifact();
+            String artGroupId = artifact.getGroupId();
+            String artArtifactId = artifact.getArtifactId();
+            String artClassifier = artifact.getClassifier();
+            String artExtension = artifact.getExtension();
+
+            for (Exclusion exclusion : exclusions) {
+                String groupId = exclusion.getGroupId();
+                String artifactId = exclusion.getArtifactId();
+                String classifier = exclusion.getClassifier();
+                String extension = exclusion.getExtension();
+                if (StringUtils.isNotEmpty(groupId)) {
+
+                }
+            }
+        }
+        return excluded;
+    }
 
     public DependencySelector getProxy() {
         return this.proxy;
@@ -46,26 +125,6 @@ public class DynamicDependencySelector implements DependencySelector {
 
     public void setParentSelector(DynamicDependencySelector parentSelector) {
         this.parentSelector = parentSelector;
-    }
-
-    @Override
-    public boolean selectDependency(Dependency dependency) {
-        boolean result = proxy.selectDependency(dependency);
-        if (monitor != null) {
-            try {
-                String message = getTabStr();
-                if (result) {
-                    message = message + "Collect: ";
-                } else {
-                    message = message + "Ignore: ";
-                }
-                message = message + dependency.toString();
-                monitor.writeMessage(message + "\n");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return result;
     }
 
     public DependencyCollectionContext getContext() {
@@ -92,28 +151,12 @@ public class DynamicDependencySelector implements DependencySelector {
         this.tabStr = tabStr;
     }
 
-    @Override
-    public DependencySelector deriveChildSelector(DependencyCollectionContext context) {
-        DependencySelector result = proxy.deriveChildSelector(context);
-        // System.out.println("deriveChildSelector: " + context.toString());
-
-        DynamicDependencySelector selector = new DynamicDependencySelector();
-        selector.setParentSelector(this);
-        selector.setProxy(result);
-        selector.setContext(context);
-        selector.setMonitor(monitor);
-        selector.setTabStr(getTabStr() + "\t");
-
-        if (monitor != null) {
-            try {
-                String message = getTabStr() + "=== Collect dependencies for " + context.getDependency().toString() + " ===";
-                monitor.writeMessage(message + "\n");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+    private boolean printDetails() {
+        if (printCollectDetails && monitor != null) {
+            return true;
+        } else {
+            return false;
         }
-
-        return selector;
     }
 
     public String getPath() {

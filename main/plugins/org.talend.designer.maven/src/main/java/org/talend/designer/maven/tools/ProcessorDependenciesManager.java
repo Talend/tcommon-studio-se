@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.maven.model.Dependency;
+import org.apache.maven.model.Exclusion;
 import org.apache.maven.model.Model;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.talend.core.model.general.ModuleNeeded;
@@ -54,6 +55,12 @@ public class ProcessorDependenciesManager {
                     dependency = PomUtil.createModuleDependency(module.getMavenUri(true));
                 }
                 if (dependency != null) {
+                    if (module.isExcludeDependencies()) {
+                        Exclusion exclusion = new Exclusion();
+                        exclusion.setGroupId("*"); //$NON-NLS-1$
+                        exclusion.setArtifactId("*"); //$NON-NLS-1$
+                        dependency.addExclusion(exclusion);
+                    }
                     neededDependencies.add(dependency);
                 }
             }

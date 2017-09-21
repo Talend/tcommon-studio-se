@@ -58,7 +58,7 @@ public class ExtensionModuleManager {
 
     public final static String BUNDLEID_ATTR = "bundleID"; //$NON-NLS-1$
 
-    public final static String DEPENDENCY_TYPE_ATTR = "dependencyType";
+    public final static String EXCLUDE_DEPENDENCIES_ATTR = "excludeDependencies";
 
     public final static String DEPENDENCY_TYPE_NONE = "NONE";
 

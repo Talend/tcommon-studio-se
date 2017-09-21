@@ -70,7 +70,7 @@ public class ModuleNeeded {
 
     private String mavenUri;
 
-    private EDependencyType dependencyType = EDependencyType.NONE;
+    private boolean excludeDependencies = false;
 
     private boolean dynamic;
 
@@ -560,17 +560,13 @@ public class ModuleNeeded {
         return this.extraAttributes;
     }
 
-    public EDependencyType getDependencyType() {
-        return this.dependencyType;
+    public boolean isExcludeDependencies() {
+        return this.excludeDependencies;
     }
 
-    public void setDependencyType(EDependencyType dependencyType) {
-        this.dependencyType = dependencyType;
+    public void setExcludeDependencies(boolean excludeDependencies) {
+        this.excludeDependencies = excludeDependencies;
     }
 
-    public static enum EDependencyType {
-        NONE,
-        TOP,
-        CHILD
-    }
+
 }

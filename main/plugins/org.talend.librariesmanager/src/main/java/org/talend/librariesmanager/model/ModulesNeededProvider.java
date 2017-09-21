@@ -24,8 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Priority;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
@@ -39,7 +37,6 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.XMLParserPoolImpl;
 import org.talend.commons.exception.CommonExceptionHandler;
-import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.runtime.model.repository.ERepositoryStatus;
 import org.talend.commons.utils.workbench.extensions.ExtensionImplementationProvider;
@@ -732,18 +729,8 @@ public class ModulesNeededProvider {
         module.setId(id);
         module.setBundleName(current.getAttribute(ExtensionModuleManager.BUNDLEID_ATTR));
         module.setMavenUri(mvn_rui);
-        String dependencyTypeString = current.getAttribute(ExtensionModuleManager.DEPENDENCY_TYPE_ATTR);
-        if (StringUtils.isNotEmpty(dependencyTypeString)) {
-            dependencyTypeString = dependencyTypeString.toUpperCase();
-            ModuleNeeded.EDependencyType dependencyType = ModuleNeeded.EDependencyType.valueOf(dependencyTypeString);
-            if (dependencyType == null) {
-                ExceptionHandler.process(new Exception(
-                        Messages.getString("ModulesNeededProvider.dependencyType.unknown", dependencyTypeString, mvn_rui)),
-                        Priority.WARN);
-            } else {
-                module.setDependencyType(dependencyType);
-            }
-        }
+        String excludeDependencies = current.getAttribute(ExtensionModuleManager.EXCLUDE_DEPENDENCIES_ATTR);
+        module.setExcludeDependencies(Boolean.valueOf(excludeDependencies));
         return module;
     }
 
