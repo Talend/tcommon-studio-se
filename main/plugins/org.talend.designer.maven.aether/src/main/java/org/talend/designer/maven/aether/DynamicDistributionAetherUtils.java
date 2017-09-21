@@ -39,6 +39,9 @@ import org.eclipse.aether.spi.connector.transport.TransporterFactory;
 import org.eclipse.aether.transport.file.FileTransporterFactory;
 import org.eclipse.aether.transport.http.HttpTransporterFactory;
 import org.eclipse.aether.util.artifact.JavaScopes;
+import org.eclipse.aether.util.graph.selector.AndDependencySelector;
+import org.eclipse.aether.util.graph.selector.OptionalDependencySelector;
+import org.eclipse.aether.util.graph.selector.ScopeDependencySelector;
 import org.eclipse.aether.version.Version;
 import org.eclipse.core.runtime.CoreException;
 
@@ -197,11 +200,12 @@ public class DynamicDistributionAetherUtils {
             throws CoreException {
         DefaultRepositorySystemSession session = MavenRepositorySystemUtils.newSession();
 
-        // LocalRepository localRepo = new LocalRepository(MavenPlugin.getMaven().getLocalRepositoryPath());
         LocalRepository localRepo = new LocalRepository(repositoryPath);
         session.setLocalRepositoryManager(system.newLocalRepositoryManager(session, localRepo));
 
-        DependencySelector defaultSelector = session.getDependencySelector();
+        DependencySelector defaultSelector = new AndDependencySelector(
+                new DependencySelector[] { new ScopeDependencySelector(new String[] { JavaScopes.TEST, JavaScopes.PROVIDED }),
+                        new OptionalDependencySelector(), new DynamicExclusionDependencySelector() });
         DynamicDependencySelector newSelector = new DynamicDependencySelector();
         newSelector.setProxy(defaultSelector);
         newSelector.setMonitor(monitor);
