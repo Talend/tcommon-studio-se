@@ -10,7 +10,7 @@
 // 9 rue Pages 92150 Suresnes, France
 //
 // ============================================================================
-package org.talend.designer.maven.aether;
+package org.talend.designer.maven.aether.selector;
 
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -21,6 +21,7 @@ import org.eclipse.aether.collection.DependencyCollectionContext;
 import org.eclipse.aether.collection.DependencySelector;
 import org.eclipse.aether.graph.Dependency;
 import org.eclipse.aether.graph.Exclusion;
+import org.talend.designer.maven.aether.IDynamicMonitor;
 
 
 /**

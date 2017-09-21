@@ -10,7 +10,7 @@
 // 9 rue Pages 92150 Suresnes, France
 //
 // ============================================================================
-package org.talend.designer.maven.aether;
+package org.talend.designer.maven.aether.util;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -44,6 +44,11 @@ import org.eclipse.aether.util.graph.selector.OptionalDependencySelector;
 import org.eclipse.aether.util.graph.selector.ScopeDependencySelector;
 import org.eclipse.aether.version.Version;
 import org.eclipse.core.runtime.CoreException;
+import org.talend.designer.maven.aether.IDynamicMonitor;
+import org.talend.designer.maven.aether.node.DependencyNode;
+import org.talend.designer.maven.aether.node.ExclusionNode;
+import org.talend.designer.maven.aether.selector.DynamicDependencySelector;
+import org.talend.designer.maven.aether.selector.DynamicExclusionDependencySelector;
 
 /**
  * DOC cmeng  class global comment. Detailled comment
