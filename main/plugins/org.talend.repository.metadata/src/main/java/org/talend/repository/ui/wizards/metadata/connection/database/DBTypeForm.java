@@ -77,9 +77,7 @@ public class DBTypeForm {
     }
     
     public void initialize() {
-        if(!isCreation){
-            this.dbType = getConnectionDBType();
-        }
+        this.dbType = getConnectionDBType();
         addDBSelectCombo();
         EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(getConnectionDBType());
         if (template != null) {
