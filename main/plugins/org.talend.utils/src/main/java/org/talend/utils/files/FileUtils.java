@@ -172,6 +172,9 @@ public final class FileUtils {
                         if (name == null) {
                             return false;
                         }
+                        if (thatInfo.getPrefix() == null) {
+                            return name.endsWith(thatInfo.getSuffix());
+                        }
                         return name.startsWith(thatInfo.getPrefix()) && name.endsWith(thatInfo.getSuffix());
                     }
                 }));

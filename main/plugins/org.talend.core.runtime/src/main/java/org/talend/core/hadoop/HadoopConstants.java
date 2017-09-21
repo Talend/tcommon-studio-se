@@ -27,6 +27,8 @@ public class HadoopConstants {
 
     public static final String SPARK_MODE_YARN_CLIENT = "YARN_CLIENT";
 
+    public static final String SPARK_MODE_YARN_CLUSTER = "YARN_CLUSTER";
+
     public static final String FRAMEWORK = "FRAMEWORK";
 
     public static final String FRAMEWORK_STORM = "Storm";
@@ -58,5 +60,4 @@ public class HadoopConstants {
     public static final String IS_HADOOP_CUSTOM_CONFS = "IS_HADOOP_CUSTOM_CONFS";
 
     public static final String IS_DYNAMIC_JAR = "IS_DYNAMIC_JAR";
-
 }
