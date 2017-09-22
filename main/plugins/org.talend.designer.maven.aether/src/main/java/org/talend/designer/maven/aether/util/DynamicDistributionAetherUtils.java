@@ -12,6 +12,8 @@
 // ============================================================================
 package org.talend.designer.maven.aether.util;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -112,7 +114,15 @@ public class DynamicDistributionAetherUtils {
         collectRequest.setRoot(dependency);
         collectRequest.addRepository(central);
 
+        monitor.writeMessage("\n\n=== Start to collect dependecies of " + dependency.toString() + " ===\n");
         org.eclipse.aether.graph.DependencyNode node = repoSystem.collectDependencies(session, collectRequest).getRoot();
+        if (node != null) {
+            monitor.writeMessage("=== Collected dependencies:\n");
+            monitor.writeMessage(buildDependencyTreeString(node, "    "));
+            monitor.writeMessage("\n");
+        } else {
+            monitor.writeMessage("No dependencies collected.");
+        }
 
         DependencyNode convertedNode = convert(node);
 
@@ -224,4 +234,36 @@ public class DynamicDistributionAetherUtils {
         return session;
     }
 
+    public static String buildDependencyTreeString(org.eclipse.aether.graph.DependencyNode node, String tab) throws Exception {
+        String result = ""; //$NON-NLS-1$
+        StringWriter strWriter = null;
+        PrintWriter printWriter = null;
+        try {
+            strWriter = new StringWriter();
+            printWriter = new PrintWriter(strWriter);
+            node.accept(new ConsoleDependencyGraphDumper(printWriter, tab));
+            printWriter.flush();
+            strWriter.flush();
+            StringBuffer buffer = strWriter.getBuffer();
+            if (buffer != null) {
+                result = buffer.toString();
+            }
+            return result;
+        } finally {
+            if (printWriter != null) {
+                try {
+                    printWriter.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (strWriter != null) {
+                try {
+                    strWriter.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 }
