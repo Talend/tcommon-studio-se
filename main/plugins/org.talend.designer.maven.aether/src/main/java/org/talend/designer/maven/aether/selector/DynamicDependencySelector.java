@@ -15,8 +15,6 @@ package org.talend.designer.maven.aether.selector;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 
-import org.codehaus.plexus.util.StringUtils;
-import org.eclipse.aether.artifact.Artifact;
 import org.eclipse.aether.collection.DependencyCollectionContext;
 import org.eclipse.aether.collection.DependencySelector;
 import org.eclipse.aether.graph.Dependency;
@@ -88,28 +86,6 @@ public class DynamicDependencySelector implements DependencySelector {
         }
 
         return selector;
-    }
-
-    private boolean isExcluded(Dependency dependency) {
-        boolean excluded = false;
-        if (exclusions != null && !exclusions.isEmpty()) {
-            Artifact artifact = dependency.getArtifact();
-            String artGroupId = artifact.getGroupId();
-            String artArtifactId = artifact.getArtifactId();
-            String artClassifier = artifact.getClassifier();
-            String artExtension = artifact.getExtension();
-
-            for (Exclusion exclusion : exclusions) {
-                String groupId = exclusion.getGroupId();
-                String artifactId = exclusion.getArtifactId();
-                String classifier = exclusion.getClassifier();
-                String extension = exclusion.getExtension();
-                if (StringUtils.isNotEmpty(groupId)) {
-
-                }
-            }
-        }
-        return excluded;
     }
 
     public DependencySelector getProxy() {

@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.maven.repository.internal.MavenRepositorySystemUtils;
+import org.codehaus.plexus.util.StringUtils;
 import org.eclipse.aether.DefaultRepositorySystemSession;
 import org.eclipse.aether.RepositorySystem;
 import org.eclipse.aether.RepositorySystemSession;
@@ -96,12 +97,7 @@ public class DynamicDistributionAetherUtils {
             Collection<Exclusion> exclusions = dependency.getExclusions();
             newExclusions.addAll(exclusions);
             for (ExclusionNode exclusionNode : exclusionNodes) {
-                String exclusionGroupId = exclusionNode.getGroupId();
-                String exclusionArtifactId = exclusionNode.getArtifactId();
-                String exclusionClassifier = exclusionNode.getClassifier();
-                String exclusionExtension = exclusionNode.getExtension();
-                Exclusion exclusion = new Exclusion(exclusionGroupId, exclusionArtifactId, exclusionClassifier,
-                        exclusionExtension);
+                Exclusion exclusion = buildExclusion(exclusionNode);
                 newExclusions.add(exclusion);
             }
             dependency = dependency.setExclusions(newExclusions);
@@ -232,6 +228,23 @@ public class DynamicDistributionAetherUtils {
         // session.setDependencyManager(newDependencyManager);
 
         return session;
+    }
+
+    private static Exclusion buildExclusion(ExclusionNode exclusionNode) throws Exception {
+        Exclusion exclusion = null;
+
+        String exclusionGroupId = exclusionNode.getGroupId();
+        String exclusionArtifactId = exclusionNode.getArtifactId();
+        String exclusionClassifier = exclusionNode.getClassifier();
+        String exclusionExtension = exclusionNode.getExtension();
+        String exclusionVersion = exclusionNode.getVersion();
+        if (StringUtils.isNotEmpty(exclusionVersion)) {
+            throw new UnsupportedOperationException(
+                    "Currently don't support to exclude special version, please support it if needed.");
+        }
+        exclusion = new Exclusion(exclusionGroupId, exclusionArtifactId, exclusionClassifier, exclusionExtension);
+
+        return exclusion;
     }
 
     public static String buildDependencyTreeString(org.eclipse.aether.graph.DependencyNode node, String tab) throws Exception {

@@ -26,6 +26,8 @@ public class ExclusionNode {
 
     private String extension;
 
+    private String version;
+
     public String getGroupId() {
         return this.groupId;
     }
@@ -56,6 +58,14 @@ public class ExclusionNode {
 
     public void setExtension(String extension) {
         this.extension = extension;
+    }
+
+    public String getVersion() {
+        return this.version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
     }
 
 }

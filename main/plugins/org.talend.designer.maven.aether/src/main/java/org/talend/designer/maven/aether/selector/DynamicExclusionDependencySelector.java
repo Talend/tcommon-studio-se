@@ -31,7 +31,7 @@ import org.eclipse.aether.graph.Exclusion;
 /**
  * ExclusionDependencySelector which support regular expressions
  */
-public final class DynamicExclusionDependencySelector implements DependencySelector {
+public class DynamicExclusionDependencySelector implements DependencySelector {
 
     private final Exclusion[] exclusions;
 
