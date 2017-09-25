@@ -12,17 +12,15 @@
 // ============================================================================
 package org.talend.commons.utils.network;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.net.Authenticator;
 import java.net.HttpURLConnection;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.net.URL;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.regex.Matcher;
+import java.net.UnknownHostException;
+import java.util.Enumeration;
 import java.util.regex.Pattern;
 
 /**
@@ -79,4 +77,40 @@ public class NetworkUtil {
         return null;
     }
 
+    public static boolean isSelfAddress(String addr) {
+        if (addr == null || addr.isEmpty()) {
+            return false; // ?
+        }
+
+        try {
+            final InetAddress sourceAddress = InetAddress.getByName(addr);
+            if (sourceAddress.isLoopbackAddress()) {
+                // final String hostAddress = sourceAddress.getHostAddress();
+                // // if addr is localhost, will be 127.0.0.1 also
+                // if (hostAddress.equals("127.0.0.1") || hostAddress.equals("localhost") ) {
+                return true;
+                // }
+            } else {
+                // check all ip configs
+                InetAddress curAddr = null;
+                Enumeration<NetworkInterface> netInterfaces = NetworkInterface.getNetworkInterfaces();
+                while (netInterfaces.hasMoreElements()) {
+                    NetworkInterface ni = netInterfaces.nextElement();
+                    Enumeration<InetAddress> address = ni.getInetAddresses();
+                    while (address.hasMoreElements()) {
+                        curAddr = address.nextElement();
+                        if (addr.equals(curAddr.getHostAddress())) {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+        } catch (SocketException e) {
+            e.printStackTrace();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
