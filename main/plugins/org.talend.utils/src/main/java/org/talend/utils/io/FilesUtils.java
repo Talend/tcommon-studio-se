@@ -28,6 +28,9 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.DigestInputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -39,6 +42,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
+import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 import org.talend.utils.sugars.ReturnCode;
 
@@ -128,7 +133,7 @@ public final class FilesUtils {
                 }
             }
         }
-        
+
         File[] files = source.listFiles(fileFilter);
         if (files != null) {
             for (File current : files) {
@@ -413,11 +418,26 @@ public final class FilesUtils {
 
     public static long getChecksumAlder32(File file) throws IOException {
         BufferedInputStream bufferedInputStream = null;
-        CheckedInputStream cis = null;
         try {
             bufferedInputStream = new BufferedInputStream(new FileInputStream(file));
+            return getChecksumAlder32(bufferedInputStream);
+        } catch (IOException e) {
+            throw e;
+        } finally {
+            if (bufferedInputStream != null) {
+                bufferedInputStream.close();
+            }
+        }
+    }
+
+    public static long getChecksumAlder32(InputStream inputStream) throws IOException {
+        if (inputStream == null) {
+            return 0;
+        }
+        CheckedInputStream cis = null;
+        try {
             // Compute Adler-32 checksum
-            cis = new CheckedInputStream(bufferedInputStream, new Adler32());
+            cis = new CheckedInputStream(inputStream, new Adler32());
             byte[] tempBuf = new byte[128];
             while (cis.read(tempBuf) >= 0) {
                 // do nothing
@@ -426,11 +446,64 @@ public final class FilesUtils {
         } catch (IOException e) {
             throw e;
         } finally {
-            if (bufferedInputStream != null) {
-                bufferedInputStream.close();
-            }
             if (cis != null) {
                 cis.close();
+            }
+        }
+    }
+
+    public static String getFileMD5(File inputFile) throws IOException {
+        if (inputFile == null || !inputFile.exists()) {
+            return null;
+        }
+
+        return getStreamMD5(new FileInputStream(inputFile));
+    }
+
+    public static String getFileMD5Hex(File inputFile) throws IOException {
+        if (inputFile == null || !inputFile.exists()) {
+            return null;
+        }
+
+        final FileInputStream inputStream = new FileInputStream(inputFile);
+        try {
+            return getStreamMD5Hex(inputStream);
+        } finally {
+            inputStream.close();
+        }
+    }
+
+    public static String getStreamMD5Hex(InputStream inputStream) throws IOException {
+        if (inputStream == null) {
+            return null;
+        }
+        return DigestUtils.md5Hex(inputStream);
+    }
+
+    public static String getStreamMD5(InputStream inputStream) throws IOException {
+        if (inputStream == null) {
+            return null;
+        }
+        int bufferSize = 256 * 1024;
+        DigestInputStream digestInputStream = null;
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance("MD5"); //$NON-NLS-1$
+            digestInputStream = new DigestInputStream(inputStream, messageDigest);
+            byte[] buffer = new byte[bufferSize];
+            while (digestInputStream.read(buffer) > 0)
+                ;
+            messageDigest = digestInputStream.getMessageDigest();
+            return new String(Hex.encodeHex(messageDigest.digest()));
+        } catch (NoSuchAlgorithmException e) {
+            return null;
+        } finally {
+            try {
+                digestInputStream.close();
+            } catch (Exception e) {
+            }
+            try {
+                inputStream.close();
+            } catch (Exception e) {
             }
         }
     }

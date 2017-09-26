@@ -32,6 +32,8 @@ import org.talend.repository.model.RepositoryConstants;
  */
 public class TalendLibsServerManager {
 
+    public static final String KEY_LIB_REPO_URL = "org.talend.libraries.repo.url";
+
     private static String NEXUS_USER = "nexus.user";
 
     private static String NEXUS_PASSWORD = "nexus.password";
@@ -169,7 +171,7 @@ public class TalendLibsServerManager {
 
     public NexusServerBean getTalentArtifactServer() {
         NexusServerBean serverBean = new NexusServerBean();
-        serverBean.setServer(System.getProperty("org.talend.libraries.repo.url", TALEND_LIB_SERVER));
+        serverBean.setServer(System.getProperty(KEY_LIB_REPO_URL, TALEND_LIB_SERVER));
         serverBean.setUserName(TALEND_LIB_USER);
         serverBean.setPassword(TALEND_LIB_PASSWORD);
         serverBean.setRepositoryId(TALEND_LIB_REPOSITORY);
