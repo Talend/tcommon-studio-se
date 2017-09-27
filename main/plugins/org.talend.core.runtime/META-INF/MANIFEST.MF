@@ -52,6 +52,7 @@ Export-Package: org.talend.commons.utils.generation,
  org.talend.core.prefs,
  org.talend.core.repository,
  org.talend.core.runtime,
+ org.talend.core.runtime.dynamic,
  org.talend.core.runtime.evaluator,
  org.talend.core.runtime.hd,
  org.talend.core.runtime.hd.hive,
@@ -117,7 +118,8 @@ Require-Bundle: org.eclipse.jdt.core,
  org.ops4j.pax.url.mvn,
  org.talend.components.api,
  org.apache.servicemix.bundles.avro,
- jackson-core-asl
+ jackson-core-asl,
+ org.talend.libraries.jackson
 Bundle-Activator: org.talend.core.runtime.CoreRuntimePlugin
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .,
