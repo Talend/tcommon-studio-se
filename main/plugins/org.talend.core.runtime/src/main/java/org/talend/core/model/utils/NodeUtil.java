@@ -950,10 +950,10 @@ public class NodeUtil {
         String result = "";
         int leftQuotes = original.indexOf("\"");
         int rightQuotes = original.indexOf("\"", leftQuotes + 1);
-        int fakeRightQuotes = getFakeRithtQuotes( original,leftQuotes);
+        int fakeRightQuotes = getFakeRightQuotes( original,leftQuotes);
         while (rightQuotes == fakeRightQuotes + 1) {
             rightQuotes = original.indexOf("\"", rightQuotes + 1);
-            fakeRightQuotes = getFakeRithtQuotes( original,fakeRightQuotes);
+            fakeRightQuotes = getFakeRightQuotes( original,fakeRightQuotes);
         }
         int leftPrev = 0;
         while (leftQuotes >= 0 && rightQuotes > leftQuotes) {
@@ -968,10 +968,10 @@ public class NodeUtil {
             leftQuotes = original.indexOf("\"", rightQuotes + 1);
             leftPrev = rightQuotes + 1;
             rightQuotes = original.indexOf("\"", leftQuotes + 1);
-            fakeRightQuotes = getFakeRithtQuotes( original,leftQuotes);
+            fakeRightQuotes = getFakeRightQuotes( original,leftQuotes);
             while (rightQuotes == fakeRightQuotes + 1) {
                 rightQuotes = original.indexOf("\"", rightQuotes + 1);
-                fakeRightQuotes = getFakeRithtQuotes( original,fakeRightQuotes);
+                fakeRightQuotes = getFakeRightQuotes( original,fakeRightQuotes);
             }
         }
         result += original.substring(leftPrev);
@@ -982,7 +982,7 @@ public class NodeUtil {
      * This method would avoid get wrong fakeRithQuotes index, like:
      * "\"\\\\\"" the right quote is not fake one.
      */
-    private static int getFakeRithtQuotes(String original, int fromIdex) {
+    private static int getFakeRightQuotes(String original, int fromIdex) {
         int fakeRightQuotes = original.indexOf("\\\"", fromIdex + 1);
         String quoteStr = "\\\"";
         int count = 0;
