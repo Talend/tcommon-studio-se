@@ -164,7 +164,7 @@ public enum EDatabaseConnTemplate {
     SAPHana(new DbConnStr(EDatabaseTypeName.SAPHana, //
             "jdbc:sap://<host>:<port>?<property>", //$NON-NLS-1$
             "30015", //$NON-NLS-1$
-            "encrypt=true&validateCertificate=false")), //$NON-NLS-1$
+            "")), //$NON-NLS-1$
 
     PARACCEL(new DbConnStr(EDatabaseTypeName.PARACCEL, //
             "jdbc:paraccel://<host>:<port>/<sid>", //$NON-NLS-1$
