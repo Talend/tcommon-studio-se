@@ -374,15 +374,20 @@ public class RemoteModulesHelper {
         String name = null;
         String type = null;
 
+        /**
+         * For mvnUri with repository url, we can download it from the specified repository url dirrectly, so should
+         * enable to download automatically instead of manually
+         */
         if (StringUtils.isNotEmpty(mvnUri)) {
             MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(mvnUri);
-            name = parseMvnUrl.getArtifactId();
-            type = parseMvnUrl.getType();
-            if (type == null) {
-                type = MavenConstants.TYPE_JAR;
+            String repoUrl = parseMvnUrl.getRepositoryUrl();
+            if (StringUtils.isNotEmpty(repoUrl)) {
+                type = parseMvnUrl.getType();
+                if (type == null) {
+                    type = MavenConstants.TYPE_JAR;
+                }
+                m.resolveDistribution(type);
             }
-            m.setName(name + "." + type);//$NON-NLS-1$
-            m.resolveDistribution(type);
         }
 
         if (contextMap != null) {
