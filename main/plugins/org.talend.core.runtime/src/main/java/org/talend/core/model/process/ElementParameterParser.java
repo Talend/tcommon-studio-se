@@ -278,7 +278,18 @@ public final class ElementParameterParser {
 
         return result;
     }
-
+    
+    /**
+     * To check if the {@link IElement} contains the parameter
+     * @param element the {@link IElement} to be checked
+     * @param param the name of parameter to be verified
+     * @return a boolean value, <code>true</code> or <code>false</code>
+     */
+    public static boolean exist(final IElement element, final String param) {
+    	List<? extends IElementParameter> params = element.getElementParametersWithChildrens();
+    	return params.stream().anyMatch((x) -> x.getVariableName() != null && x.getVariableName().contains(param));
+    }
+    
     /**
      * Only work with one element.
      *
@@ -291,12 +302,11 @@ public final class ElementParameterParser {
             return null;
         }
 
-        List<IElementParameter> params = (List<IElementParameter>) element.getElementParametersWithChildrens();
+        List<? extends IElementParameter> params = element.getElementParametersWithChildrens();
         if (params != null && !params.isEmpty()) {
             for (int i = 0; i < params.size(); i++) {
                 IElementParameter param = params.get(i);
-                if (text.indexOf(param.getVariableName()) != -1
-                        || (param.getVariableName() != null && param.getVariableName().contains(text))) {
+                if (param.getVariableName() != null && param.getVariableName().contains(text)) {
                     if (param.getFieldType() == EParameterFieldType.TABLE) {
                         return createTableValues((List<Map<String, Object>>) param.getValue(), param);
                     }
