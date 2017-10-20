@@ -15,15 +15,28 @@ package org.talend.designer.runprocess;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.talend.core.model.components.EComponentType;
+import org.talend.core.model.components.IComponent;
 import org.talend.core.model.general.ModuleNeeded;
+import org.talend.core.model.metadata.IMetadataColumn;
+import org.talend.core.model.metadata.IMetadataTable;
+import org.talend.core.model.metadata.types.JavaTypesManager;
+import org.talend.core.model.process.EParameterFieldType;
+import org.talend.core.model.process.IElementParameter;
 import org.talend.core.model.process.INode;
+import org.talend.core.model.process.IProcess;
 import org.talend.core.model.process.JobInfo;
 import org.talend.core.model.runprocess.shadow.ObjectElementParameter;
 import org.talend.core.runtime.process.LastGenerationInfo;
@@ -262,4 +275,169 @@ public class ProcessorUtilitiesTest {
         assertJobModules(childJobInfo);
     }
 
+    @Test
+    public void test_hasMetadataDynamic_noNodes() {
+        IProcess proc = mock(IProcess.class);
+        when(proc.getGeneratingNodes()).thenReturn(Collections.emptyList());
+
+        assertFalse("No any node in job, not metadata dynamic", ProcessorUtilities.hasMetadataDynamic(proc, null));
+    }
+
+    @Test
+    public void test_hasMetadataDynamic_GenericComp() {
+        IProcess proc = mock(IProcess.class);
+
+        INode genericNode = mock(INode.class);
+        List nodes = new ArrayList();
+        nodes.add(genericNode);
+        when(proc.getGeneratingNodes()).thenReturn(nodes);
+
+        IComponent comp = mock(IComponent.class);
+        when(genericNode.getComponent()).thenReturn(comp);
+        when(comp.getComponentType()).thenReturn(EComponentType.GENERIC);
+
+        assertTrue("Has one generic component of node in job, should be metadata dynamic",
+                ProcessorUtilities.hasMetadataDynamic(proc, null));
+    }
+
+    @Test
+    public void test_hasMetadataDynamic_noDBNode() {
+        IProcess proc = mock(IProcess.class);
+
+        List nodes = new ArrayList();
+
+        INode normalNode = mock(INode.class);
+        nodes.add(normalNode);
+        when(proc.getGeneratingNodes()).thenReturn(nodes);
+
+        IComponent comp = mock(IComponent.class);
+        when(normalNode.getComponent()).thenReturn(comp);
+        when(comp.getComponentType()).thenReturn(EComponentType.EMF);
+
+        // empty parameters
+        when(normalNode.getElementParameters()).thenReturn(Collections.emptyList());
+        assertFalse("no DB node in job, not metadata dynamic", ProcessorUtilities.hasMetadataDynamic(proc, null));
+
+        List params = new ArrayList();
+        when(normalNode.getElementParameters()).thenReturn(params);
+
+        IElementParameter typeParam = mock(IElementParameter.class);
+        params.add(typeParam);
+
+        // not TYPE parameter
+        when(typeParam.getName()).thenReturn("ABC");
+        assertFalse("no DB node in job, not metadata dynamic", ProcessorUtilities.hasMetadataDynamic(proc, null));
+
+        // not TEXT field
+        when(typeParam.getName()).thenReturn("TYPE");
+        when(typeParam.getFieldType()).thenReturn(EParameterFieldType.BUTTON);
+        assertFalse("no DB node in job, not metadata dynamic", ProcessorUtilities.hasMetadataDynamic(proc, null));
+
+        // null value
+        when(typeParam.getFieldType()).thenReturn(EParameterFieldType.TEXT);
+        assertFalse("no DB node in job, not metadata dynamic", ProcessorUtilities.hasMetadataDynamic(proc, null));
+
+        // empty value
+        when(typeParam.getValue()).thenReturn("");
+        assertFalse("no DB node in job, not metadata dynamic", ProcessorUtilities.hasMetadataDynamic(proc, null));
+    }
+
+    @Test
+    public void test_hasMetadataDynamic_BDNodeWithoutDynamicType() {
+        IProcess proc = mock(IProcess.class);
+
+        List nodes = new ArrayList();
+
+        INode dbNode = mock(INode.class);
+        nodes.add(dbNode);
+        when(proc.getGeneratingNodes()).thenReturn(nodes);
+
+        IComponent comp = mock(IComponent.class);
+        when(dbNode.getComponent()).thenReturn(comp);
+        when(comp.getComponentType()).thenReturn(EComponentType.EMF);
+
+        List params = new ArrayList();
+        when(dbNode.getElementParameters()).thenReturn(params);
+
+        // TYPE parameter
+        IElementParameter typeParam = mock(IElementParameter.class);
+        params.add(typeParam);
+        when(typeParam.getName()).thenReturn("TYPE");
+        when(typeParam.getFieldType()).thenReturn(EParameterFieldType.TEXT);
+        when(typeParam.getValue()).thenReturn("MySQL");
+
+        // empty table list
+        when(dbNode.getMetadataList()).thenReturn(Collections.emptyList());
+        assertFalse("DB node in job with out metadata dynamic", ProcessorUtilities.hasMetadataDynamic(proc, null));
+
+        List metadataList = new ArrayList<>();
+        when(dbNode.getMetadataList()).thenReturn(metadataList);
+
+        IMetadataTable table = mock(IMetadataTable.class);
+        metadataList.add(table);
+
+        // empty table
+        when(table.getListColumns()).thenReturn(Collections.emptyList());
+        assertFalse("DB node in job with out metadata dynamic", ProcessorUtilities.hasMetadataDynamic(proc, null));
+
+        List columnsList = new ArrayList<>();
+        when(table.getListColumns()).thenReturn(columnsList);
+
+        IMetadataColumn column1 = mock(IMetadataColumn.class);
+        columnsList.add(column1);
+
+        IMetadataColumn column2 = mock(IMetadataColumn.class);
+        columnsList.add(column2);
+
+        // non-dynamic
+        when(column1.getTalendType()).thenReturn(JavaTypesManager.INTEGER.getId());
+        when(column2.getTalendType()).thenReturn(JavaTypesManager.STRING.getId());
+        assertFalse("DB node in job with out metadata dynamic", ProcessorUtilities.hasMetadataDynamic(proc, null));
+
+    }
+
+    @Test
+    public void test_hasMetadataDynamic_DynamicTalendType() {
+        IProcess proc = mock(IProcess.class);
+
+        List nodes = new ArrayList();
+
+        INode dbNode = mock(INode.class);
+        nodes.add(dbNode);
+        when(proc.getGeneratingNodes()).thenReturn(nodes);
+
+        IComponent comp = mock(IComponent.class);
+        when(dbNode.getComponent()).thenReturn(comp);
+        when(comp.getComponentType()).thenReturn(EComponentType.EMF);
+
+        List params = new ArrayList();
+        when(dbNode.getElementParameters()).thenReturn(params);
+
+        // TYPE parameter
+        IElementParameter typeParam = mock(IElementParameter.class);
+        params.add(typeParam);
+        when(typeParam.getName()).thenReturn("TYPE");
+        when(typeParam.getFieldType()).thenReturn(EParameterFieldType.TEXT);
+        when(typeParam.getValue()).thenReturn("MySQL");
+
+        List metadataList = new ArrayList<>();
+        when(dbNode.getMetadataList()).thenReturn(metadataList);
+
+        IMetadataTable table = mock(IMetadataTable.class);
+        metadataList.add(table);
+
+        List columnsList = new ArrayList<>();
+        when(table.getListColumns()).thenReturn(columnsList);
+
+        IMetadataColumn column1 = mock(IMetadataColumn.class);
+        columnsList.add(column1);
+
+        IMetadataColumn column2 = mock(IMetadataColumn.class);
+        columnsList.add(column2);
+
+        // non-dynamic
+        when(column1.getTalendType()).thenReturn(JavaTypesManager.INTEGER.getId());
+        when(column2.getTalendType()).thenReturn("id_Dynamic");
+        assertTrue("DB node in job. shoud be metadata dynamic", ProcessorUtilities.hasMetadataDynamic(proc, null));
+    }
 }
