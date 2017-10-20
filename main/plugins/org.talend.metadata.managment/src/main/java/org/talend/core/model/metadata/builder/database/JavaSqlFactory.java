@@ -61,11 +61,10 @@ public final class JavaSqlFactory {
     }
 
     /**
-     * Method "createConnection" returns the connection with {@link ReturnCode#getObject()} if {@link ReturnCode#isOk()}
-     * is true. This is the behaviour when everything goes ok.
+     * Method "createConnection" returns the connection with {@link ReturnCode#getObject()} if {@link ReturnCode#isOk()} is true.
+     * This is the behaviour when everything goes ok.
      * <p>
-     * When something goes wrong, {@link ReturnCode#isOk()} is false and {@link ReturnCode#getMessage()} gives the error
-     * message.
+     * When something goes wrong, {@link ReturnCode#isOk()} is false and {@link ReturnCode#getMessage()} gives the error message.
      * <p>
      * The created connection must be closed by the caller. (use {@link ConnectionUtils#closeConnection(Connection)})
      * 
@@ -112,11 +111,10 @@ public final class JavaSqlFactory {
     }
 
     /**
-     * Method "createConnection" returns the connection with {@link ReturnCode#getObject()} if {@link ReturnCode#isOk()}
-     * is true. This is the behaviour when everything goes ok.
+     * Method "createConnection" returns the connection with {@link ReturnCode#getObject()} if {@link ReturnCode#isOk()} is true.
+     * This is the behaviour when everything goes ok.
      * <p>
-     * When something goes wrong, {@link ReturnCode#isOk()} is false and {@link ReturnCode#getMessage()} gives the error
-     * message.
+     * When something goes wrong, {@link ReturnCode#isOk()} is false and {@link ReturnCode#getMessage()} gives the error message.
      * <p>
      * The created connection must be closed by the caller. (use {@link ConnectionUtils#closeConnection(Connection)})
      * 
@@ -196,15 +194,20 @@ public final class JavaSqlFactory {
      * @return username of the connection or null
      */
     public static String getUsername(Connection conn) {
+        String userName = "";//$NON-NLS-1$
         DatabaseConnection dbConn = SwitchHelpers.DATABASECONNECTION_SWITCH.doSwitch(conn);
         if (dbConn != null) {
-            return getOriginalValueConnection(dbConn).getUsername();
+            userName = getOriginalValueConnection(dbConn).getUsername();
+        } else {
+            MDMConnection mdmConn = SwitchHelpers.MDMCONNECTION_SWITCH.doSwitch(conn);
+            if (mdmConn != null) {
+                userName = mdmConn.getUsername();
+            }
         }
-        MDMConnection mdmConn = SwitchHelpers.MDMCONNECTION_SWITCH.doSwitch(conn);
-        if (mdmConn != null) {
-            return mdmConn.getUsername();
+        if (userName == null) {
+            userName = "";//$NON-NLS-1$
         }
-        return null;
+        return userName;
     }
 
     /**

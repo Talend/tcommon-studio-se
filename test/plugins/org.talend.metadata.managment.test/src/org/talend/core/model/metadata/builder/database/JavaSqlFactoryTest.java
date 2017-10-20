@@ -43,4 +43,22 @@ public class JavaSqlFactoryTest {
 
     }
 
+    /**
+     * Test method for
+     * {@link org.talend.core.model.metadata.builder.database.JavaSqlFactory#getUsername(org.talend.core.model.metadata.builder.connection.Connection)}
+     * .
+     */
+    @Test
+    public void testGetUsername() {
+        DatabaseConnection conn = ConnectionPackage.eINSTANCE.getConnectionFactory().createDatabaseConnection();
+        String userName = JavaSqlFactory.getUsername(conn);
+        assertEquals("", userName); //$NON-NLS-1$
+        conn.setUsername(""); //$NON-NLS-1$
+        userName = JavaSqlFactory.getUsername(conn);
+        assertEquals("", userName); //$NON-NLS-1$
+        conn.setUsername("talend4ever"); //$NON-NLS-1$
+        userName = JavaSqlFactory.getUsername(conn);
+        assertEquals("talend4ever", userName); //$NON-NLS-1$
+
+    }
 }
