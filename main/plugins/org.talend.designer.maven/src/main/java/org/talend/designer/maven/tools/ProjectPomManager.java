@@ -13,6 +13,7 @@
 package org.talend.designer.maven.tools;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -34,6 +35,7 @@ import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.template.MavenTemplateManager;
 import org.talend.designer.maven.utils.PomIdsHelper;
 import org.talend.designer.maven.utils.PomUtil;
+import org.talend.designer.runprocess.IMavenProcessor;
 import org.talend.designer.runprocess.IProcessor;
 import org.talend.repository.ProjectManager;
 
@@ -214,10 +216,21 @@ public class ProjectPomManager {
             final String jobGroupPrefix = PomIdsHelper.getJobGroupId((String) null);
             // org.talend.test
             final String testGroupPrefix = PomIdsHelper.getTestGroupId((String) null);
+
+            // TUP-18769
+            List<String> childrenJobDependencies = new ArrayList<String>();
+            if (processor instanceof IMavenProcessor) {
+                String[] childrenJobDependencies2 = ((IMavenProcessor) processor).getChildrenJobDependencies();
+                if (childrenJobDependencies2 != null) {
+                    childrenJobDependencies.addAll(Arrays.asList(childrenJobDependencies2));
+                }
+            }
+
             Iterator<Dependency> iterator = withoutChildrenJobDependencies.iterator();
             while (iterator.hasNext()) {
                 Dependency d = iterator.next();
-                if (d.getGroupId().startsWith(jobGroupPrefix) || d.getGroupId().startsWith(testGroupPrefix)) {
+                if (d.getGroupId().startsWith(jobGroupPrefix) || d.getGroupId().startsWith(testGroupPrefix)
+                        || childrenJobDependencies.contains(PomUtil.generateMvnUrl(d))) {
                     // remove the children job's dependencies
                     iterator.remove();
                 }

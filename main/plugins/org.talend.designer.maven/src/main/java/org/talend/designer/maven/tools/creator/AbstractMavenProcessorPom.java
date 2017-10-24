@@ -13,6 +13,7 @@
 package org.talend.designer.maven.tools.creator;
 
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -44,6 +45,7 @@ import org.talend.designer.maven.template.ETalendMavenVariables;
 import org.talend.designer.maven.tools.ProcessorDependenciesManager;
 import org.talend.designer.maven.utils.PomIdsHelper;
 import org.talend.designer.maven.utils.PomUtil;
+import org.talend.designer.runprocess.IMavenProcessor;
 import org.talend.designer.runprocess.IProcessor;
 import org.talend.designer.runprocess.ProcessorException;
 import org.talend.repository.ProjectManager;
@@ -169,10 +171,13 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
         try {
             getProcessorDependenciesManager().updateDependencies(null, model);
 
+            IProcessor processor = getJobProcessor();
+            Set<String> childrenJobDependencies = new LinkedHashSet<String>();
             // add children jobs in dependencies
             final List<Dependency> dependencies = model.getDependencies();
-            String parentId = getJobProcessor().getProperty().getId();
-            final Set<JobInfo> clonedChildrenJobInfors = getJobProcessor().getBuildChildrenJobs();
+            String parentId = processor.getProperty().getId();
+            final Set<JobInfo> clonedChildrenJobInfors = processor.getBuildChildrenJobs();
+
             for (JobInfo jobInfo : clonedChildrenJobInfors) {
                 if (jobInfo.getFatherJobInfo() != null && jobInfo.getFatherJobInfo().getJobId().equals(parentId)) {
                     if (!validChildrenJob(jobInfo)) {
@@ -187,7 +192,7 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
 
                     // try to get the pom version of children job and load from the pom file.
                     String childPomFileName = PomUtil.getPomFileName(jobInfo.getJobName(), jobInfo.getJobVersion());
-                    IProject codeProject = getJobProcessor().getCodeProject();
+                    IProject codeProject = processor.getCodeProject();
                     try {
                         codeProject.refreshLocal(IResource.DEPTH_ONE, null); // is it ok or needed here ???
                     } catch (CoreException e) {
@@ -208,10 +213,15 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
                     }
 
                     Dependency d = PomUtil.createDependency(groupId, artifactId, version, null);
+                    childrenJobDependencies.add(PomUtil.generateMvnUrl(d));
                     dependencies.add(d);
                 }
-            }
 
+            }
+            if (processor instanceof IMavenProcessor) {
+                ((IMavenProcessor) processor).setChildrenJobDependencies(childrenJobDependencies
+                        .toArray(new String[childrenJobDependencies.size()]));
+            }
         } catch (ProcessorException e) {
             ExceptionHandler.process(e);
         }
