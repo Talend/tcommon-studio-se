@@ -14,6 +14,7 @@ package org.talend.designer.maven.tools;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -136,9 +137,11 @@ public class MavenPomSynchronizer {
         String jobInfoContent = MavenTemplateManager.getProjectSettingValue(IProjectSettingPreferenceConstants.TEMPLATE_JOB_INFO,
                 templateParameters);
 
-        MavenTemplateManager.saveContent(shFile, shContent, overwrite);
-        MavenTemplateManager.saveContent(batFile, batContent, overwrite);
-        MavenTemplateManager.saveContent(infoFile, jobInfoContent, overwrite);
+        Charset charset = Charset.forName(TalendMavenConstants.DEFAULT_ENCODING);
+
+        MavenTemplateManager.saveContent(shFile, shContent, charset, overwrite);
+        MavenTemplateManager.saveContent(batFile, batContent, charset, overwrite);
+        MavenTemplateManager.saveContent(infoFile, jobInfoContent, charset, overwrite);
     }
 
     /**

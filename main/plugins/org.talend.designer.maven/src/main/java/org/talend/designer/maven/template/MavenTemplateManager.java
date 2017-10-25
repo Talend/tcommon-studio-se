@@ -13,13 +13,20 @@
 package org.talend.designer.maven.template;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
 import java.io.StringWriter;
+import java.io.Writer;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -31,7 +38,6 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.generation.JavaUtils;
@@ -125,9 +131,10 @@ public class MavenTemplateManager {
         for (String bundleName : templateManagerMap.keySet()) {
             AbstractMavenTemplateManager templateManager = templateManagerMap.get(bundleName);
             try {
-                InputStream steam = templateManager.readProjectSettingStream(key, parameters);
-                if (steam != null) {
-                    String content = MavenTemplateManager.getContentFromInputStream(steam);
+                InputStream stream = templateManager.readProjectSettingStream(key, parameters);
+                if (stream != null) {
+                    Reader r = new BufferedReader(new InputStreamReader(stream, TalendMavenConstants.DEFAULT_ENCODING));
+                    String content = MavenTemplateManager.getContentFromReader(r);
                     if (content != null) {
                         return content;
                     }
@@ -175,8 +182,29 @@ public class MavenTemplateManager {
         return null;
     }
 
+    public static String getContentFromReader(Reader r) throws IOException {
+        if (r != null) {
+            try {
+                StringWriter sw = new StringWriter(1024);
+                char[] buffer = new char[1024];
+                int n;
+                while ((n = r.read(buffer)) != -1) {
+                    sw.write(buffer, 0, n);
+                }
+                return sw.toString();
+            } finally {
+                r.close();
+            }
+        }
+        return null;
+    }
+
     public static void saveContent(IFile targetFile, String content, boolean overwrite) throws CoreException {
-        ByteArrayInputStream source = new ByteArrayInputStream(content.getBytes());
+        saveContent(targetFile, content, Charset.defaultCharset(), overwrite);
+    }
+
+    public static void saveContent(IFile targetFile, String content, Charset charset, boolean overwrite) throws CoreException {
+        ByteArrayInputStream source = new ByteArrayInputStream(content.getBytes(charset));
         if (targetFile.exists()) {
             targetFile.setContents(source, true, false, new NullProgressMonitor());
         } else {
@@ -196,9 +224,9 @@ public class MavenTemplateManager {
         }
 
         if (content != null) {
-            FileWriter writer = null;
+            Writer writer = null;
             try {
-                writer = new FileWriter(targetFile);
+                writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(targetFile)));
                 writer.write(content);
                 writer.flush();
             } finally {
