@@ -273,8 +273,10 @@ public class ProcessorUtilities {
         }
 
         IRunProcessService service = CorePlugin.getDefault().getRunProcessService();
-        IProcessor processor = service.createCodeProcessor(process, curProperty, ((RepositoryContext) CorePlugin.getContext()
-                .getProperty(Context.REPOSITORY_CONTEXT_KEY)).getProject().getLanguage(), true);
+        IProcessor processor = service.createCodeProcessor(process, curProperty,
+                ((RepositoryContext) CorePlugin.getContext().getProperty(Context.REPOSITORY_CONTEXT_KEY)).getProject()
+                        .getLanguage(),
+                true);
         return processor;
     }
 
@@ -372,9 +374,8 @@ public class ProcessorUtilities {
         return false;
     }
 
-    private static IProcessor generateCode(IProcessor processor2, JobInfo jobInfo, String selectedContextName,
-            boolean statistics, boolean trace, boolean needContext, int option, IProgressMonitor progressMonitor)
-            throws ProcessorException {
+    private static IProcessor generateCode(IProcessor processor2, JobInfo jobInfo, String selectedContextName, boolean statistics,
+            boolean trace, boolean needContext, int option, IProgressMonitor progressMonitor) throws ProcessorException {
         needContextInCurrentGeneration = needContext;
         if (progressMonitor == null) {
             progressMonitor = new NullProgressMonitor();
@@ -500,23 +501,25 @@ public class ProcessorUtilities {
         Set<ModuleNeeded> neededLibraries = CorePlugin.getDefault().getDesignerCoreService()
                 .getNeededLibrariesForProcess(currentProcess, false);
         if (neededLibraries != null) {
-            Set<ModuleNeeded> adjustClassPath = new HashSet<ModuleNeeded>(neededLibraries);
-            for (IClasspathAdjuster adjuster : classPathAdjusters) {
-                adjuster.collectInfo(currentProcess, neededLibraries);
-                adjustClassPath = adjuster.adjustClassPath(adjustClassPath);
-            }
-
             LastGenerationInfo.getInstance().setModulesNeededWithSubjobPerJob(jobInfo.getJobId(), jobInfo.getJobVersion(),
-                    adjustClassPath);
-            LastGenerationInfo.getInstance().setModulesNeededPerJob(jobInfo.getJobId(), jobInfo.getJobVersion(), adjustClassPath);
+                    neededLibraries);
+            LastGenerationInfo.getInstance().setModulesNeededPerJob(jobInfo.getJobId(), jobInfo.getJobVersion(), neededLibraries);
 
-            // must install the needed libraries before generate codes with poms.
-            CorePlugin.getDefault().getRunProcessService()
-                    .updateLibraries(adjustClassPath, currentProcess, retrievedJarsForCurrentBuild);
         }
         resetRunJobComponentParameterForContextApply(jobInfo, currentProcess, selectedContextName);
 
         generateNodeInfo(jobInfo, selectedContextName, statistics, needContext, option, progressMonitor, currentProcess);
+
+        Set<ModuleNeeded> finalLibs = LastGenerationInfo.getInstance().getModulesNeededWithSubjobPerJob(jobInfo.getJobId(),
+                jobInfo.getJobVersion());
+        Set<ModuleNeeded> adjustClassPath = new HashSet<ModuleNeeded>(finalLibs);
+        for (IClasspathAdjuster adjuster : classPathAdjusters) {
+            adjuster.collectInfo(currentProcess, neededLibraries);
+            adjustClassPath = adjuster.adjustClassPath(adjustClassPath);
+            LastGenerationInfo.getInstance().setModulesNeededWithSubjobPerJob(jobInfo.getJobId(), jobInfo.getJobVersion(),
+                    adjustClassPath);
+            LastGenerationInfo.getInstance().setModulesNeededPerJob(jobInfo.getJobId(), jobInfo.getJobVersion(), adjustClassPath);
+        }
 
         final Map<String, Object> argumentsMap = new HashMap<String, Object>();
         argumentsMap.put(TalendProcessArgumentConstant.ARG_ENABLE_STATS, statistics);
@@ -575,8 +578,8 @@ public class ProcessorUtilities {
         // update calss path before export pigudf
         Set<ModuleNeeded> neededModules = LastGenerationInfo.getInstance().getModulesNeededWithSubjobPerJob(jobInfo.getJobId(),
                 jobInfo.getJobVersion());
-        Set<String> pigudfNeededWithSubjobPerJob = LastGenerationInfo.getInstance().getPigudfNeededWithSubjobPerJob(
-                jobInfo.getJobId(), jobInfo.getJobVersion());
+        Set<String> pigudfNeededWithSubjobPerJob = LastGenerationInfo.getInstance()
+                .getPigudfNeededWithSubjobPerJob(jobInfo.getJobId(), jobInfo.getJobVersion());
         String pigModuleName = null;
         if (selectedProcessItem != null && !pigudfNeededWithSubjobPerJob.isEmpty()) {
             CorePlugin.getDefault().getRunProcessService().updateLibraries(neededModules, currentProcess);
@@ -883,27 +886,34 @@ public class ProcessorUtilities {
             Set<ModuleNeeded> neededLibraries = CorePlugin.getDefault().getDesignerCoreService()
                     .getNeededLibrariesForProcess(currentProcess, false);
             if (neededLibraries != null) {
-                Set<ModuleNeeded> adjustClassPath = new HashSet<ModuleNeeded>(neededLibraries);
-                for (IClasspathAdjuster adjuster : classPathAdjusters) {
-                    adjuster.collectInfo(currentProcess, neededLibraries);
-                    adjustClassPath = adjuster.adjustClassPath(adjustClassPath);
-                }
-
                 if (isNeedLoadmodules) {
-                    LastGenerationInfo.getInstance().setModulesNeededWithSubjobPerJob(jobInfo.getJobId(),
-                            jobInfo.getJobVersion(), adjustClassPath);
+                    LastGenerationInfo.getInstance().setModulesNeededWithSubjobPerJob(jobInfo.getJobId(), jobInfo.getJobVersion(),
+                            neededLibraries);
                 }
                 LastGenerationInfo.getInstance().setModulesNeededPerJob(jobInfo.getJobId(), jobInfo.getJobVersion(),
-                        adjustClassPath);
+                        neededLibraries);
 
-                // must install the needed libraries before generate codes with poms.
-                CorePlugin.getDefault().getRunProcessService()
-                        .updateLibraries(adjustClassPath, currentProcess, retrievedJarsForCurrentBuild);
             }
             resetRunJobComponentParameterForContextApply(jobInfo, currentProcess, selectedContextName);
 
             generateNodeInfo(jobInfo, selectedContextName, statistics, needContext, option, progressMonitor, currentProcess);
             TimeMeasure.step(idTimer, "generateNodeInfo");
+
+            Set<ModuleNeeded> finalLibs = LastGenerationInfo.getInstance().getModulesNeededWithSubjobPerJob(jobInfo.getJobId(),
+                    jobInfo.getJobVersion());
+            Set<ModuleNeeded> adjustClassPath = new HashSet<ModuleNeeded>(finalLibs);
+            for (IClasspathAdjuster adjuster : classPathAdjusters) {
+                adjuster.collectInfo(currentProcess, neededLibraries);
+                adjustClassPath = adjuster.adjustClassPath(adjustClassPath);
+                LastGenerationInfo.getInstance().setModulesNeededWithSubjobPerJob(jobInfo.getJobId(), jobInfo.getJobVersion(),
+                        adjustClassPath);
+                LastGenerationInfo.getInstance().setModulesNeededPerJob(jobInfo.getJobId(), jobInfo.getJobVersion(),
+                        adjustClassPath);
+            }
+
+            // must install the needed libraries before generate codes with poms.
+            CorePlugin.getDefault().getRunProcessService().updateLibraries(adjustClassPath, currentProcess,
+                    retrievedJarsForCurrentBuild);
 
             Map<String, Object> argumentsMap = jobInfo.getArgumentsMap();
             if (argumentsMap != null) {
@@ -1091,8 +1101,8 @@ public class ProcessorUtilities {
             // handle subjob in joblet. see bug 004937: tRunJob in a Joblet
             for (INode node : currentProcess.getGeneratingNodes()) {
                 String componentName = node.getComponent().getName();
-                if ((node != null) && (componentName.equals("tRunJob") || componentName.equals("cTalendJob") //$NON-NLS-1$  //$NON-NLS-2$
-                || "Routelets".equals(node.getComponent().getOriginalFamilyName()))) { //$NON-NLS-1$
+                if ((node != null) && (componentName.equals("tRunJob") || componentName.equals("cTalendJob") //$NON-NLS-1$ //$NON-NLS-2$
+                        || "Routelets".equals(node.getComponent().getOriginalFamilyName()))) { //$NON-NLS-1$
                     // if the cTalendJob is configured by external Jar, then ignore it
                     if ("cTalendJob".equals(componentName)) { //$NON-NLS-1$
                         if ((Boolean) node.getElementParameter("FROM_EXTERNAL_JAR").getValue()) { //$NON-NLS-1$
@@ -1100,10 +1110,6 @@ public class ProcessorUtilities {
                         }
                     }
                     // IElementParameter indepPara = node.getElementParameter("USE_INDEPENDENT_PROCESS");
-                    boolean isNeedLoadmodules = true;
-                    // if (indepPara != null) {
-                    // isNeedLoadmodules = !(boolean) indepPara.getValue();
-                    // }
                     IElementParameter processIdparam = node.getElementParameter("PROCESS_TYPE_PROCESS"); //$NON-NLS-1$
                     // feature 19312
                     final String jobIds = (String) processIdparam.getValue();
@@ -1126,11 +1132,6 @@ public class ProcessorUtilities {
 
                             subJobInfo.setFatherJobInfo(jobInfo);
                             if (!jobList.contains(subJobInfo)) {
-                                if (!isNeedLoadmodules) {
-                                    LastGenerationInfo.getInstance().setModulesNeededWithSubjobPerJob(subJobInfo.getJobId(),
-                                            subJobInfo.getJobVersion(), Collections.<ModuleNeeded> emptySet());
-                                }
-
                                 if (jobInfo.isApplyContextToChildren()) {
                                     subJobInfo.setApplyContextToChildren(jobInfo.isApplyContextToChildren());
                                     // see bug 0003862: Export job with the flag "Apply to children" if the child don't
@@ -1154,8 +1155,8 @@ public class ProcessorUtilities {
                                     subJobOption |= GENERATE_TESTS;
                                 }
                                 // children won't have stats / traces
-                                generateCode(subJobInfo, selectedContextName, statistics, false, properties, isNeedLoadmodules,
-                                        subJobOption, progressMonitor);
+                                generateCode(subJobInfo, selectedContextName, statistics, false, properties, true, subJobOption,
+                                        progressMonitor);
 
                                 if (!BitwiseOptionUtils.containOption(option, GENERATE_WITH_FIRST_CHILD)) {
                                     currentProcess.setNeedRegenerateCode(true);
@@ -1214,13 +1215,13 @@ public class ProcessorUtilities {
 
                 Set<String> subjobRoutineModules = generationInfo.getRoutinesNeededWithSubjobPerJob(subJobInfo.getJobId(),
                         subJobInfo.getJobVersion());
-                generationInfo.getRoutinesNeededWithSubjobPerJob(jobInfo.getJobId(), jobInfo.getJobVersion()).addAll(
-                        subjobRoutineModules);
+                generationInfo.getRoutinesNeededWithSubjobPerJob(jobInfo.getJobId(), jobInfo.getJobVersion())
+                        .addAll(subjobRoutineModules);
 
                 Set<String> subjobPigUDFModules = generationInfo.getPigudfNeededWithSubjobPerJob(subJobInfo.getJobId(),
                         subJobInfo.getJobVersion());
-                generationInfo.getPigudfNeededWithSubjobPerJob(jobInfo.getJobId(), jobInfo.getJobVersion()).addAll(
-                        subjobPigUDFModules);
+                generationInfo.getPigudfNeededWithSubjobPerJob(jobInfo.getJobId(), jobInfo.getJobVersion())
+                        .addAll(subjobPigUDFModules);
 
             }
         }
@@ -1299,8 +1300,8 @@ public class ProcessorUtilities {
      * @param version null if no specific version required
      * @throws ProcessorException
      */
-    public static IProcessor generateCode(String processId, String contextName, String version, boolean statistics,
-            boolean trace, boolean applyContextToChildren, IProgressMonitor... monitors) throws ProcessorException {
+    public static IProcessor generateCode(String processId, String contextName, String version, boolean statistics, boolean trace,
+            boolean applyContextToChildren, IProgressMonitor... monitors) throws ProcessorException {
         IProgressMonitor monitor = null;
         if (monitors == null) {
             monitor = new NullProgressMonitor();
@@ -1354,8 +1355,8 @@ public class ProcessorUtilities {
         }
 
         JobInfo jobInfo = new JobInfo(process, contextName, version);
-        jobInfo.setApplyContextToChildren(ProcessUtils.isOptionChecked(argumentsMap,
-                TalendProcessArgumentConstant.ARG_ENABLE_APPLY_CONTEXT_TO_CHILDREN));
+        jobInfo.setApplyContextToChildren(
+                ProcessUtils.isOptionChecked(argumentsMap, TalendProcessArgumentConstant.ARG_ENABLE_APPLY_CONTEXT_TO_CHILDREN));
         jobInfo.setArgumentsMap(argumentsMap);
 
         boolean statistics = ProcessUtils.isOptionChecked(argumentsMap, TalendProcessArgumentConstant.ARG_ENABLE_STATS);
@@ -1604,9 +1605,8 @@ public class ProcessorUtilities {
      * @deprecated seems never use this one
      */
     @Deprecated
-    public static String[] getCommandLine(String targetPlatform, boolean externalUse, ProcessItem processItem,
-            String contextName, boolean needContext, int statisticPort, int tracePort, String... codeOptions)
-            throws ProcessorException {
+    public static String[] getCommandLine(String targetPlatform, boolean externalUse, ProcessItem processItem, String contextName,
+            boolean needContext, int statisticPort, int tracePort, String... codeOptions) throws ProcessorException {
         IProcess currentProcess = null;
         IDesignerCoreService service = CorePlugin.getDefault().getDesignerCoreService();
 
@@ -1624,9 +1624,8 @@ public class ProcessorUtilities {
      * @deprecated seems never use this one
      */
     @Deprecated
-    public static String[] getCommandLine(String targetPlatform, boolean externalUse, IProcess currentProcess,
-            String contextName, boolean needContext, int statisticPort, int tracePort, String... codeOptions)
-            throws ProcessorException {
+    public static String[] getCommandLine(String targetPlatform, boolean externalUse, IProcess currentProcess, String contextName,
+            boolean needContext, int statisticPort, int tracePort, String... codeOptions) throws ProcessorException {
         Property curProperty = null;
         if (currentProcess instanceof IProcess2) {
             curProperty = ((IProcess2) currentProcess).getProperty();
@@ -1648,8 +1647,8 @@ public class ProcessorUtilities {
     }
 
     public static String[] getCommandLine(boolean oldBuildJob, String targetPlatform, boolean externalUse,
-            IProcess currentProcess, Property property, String contextName, boolean needContext, int statisticPort,
-            int tracePort, String... codeOptions) throws ProcessorException {
+            IProcess currentProcess, Property property, String contextName, boolean needContext, int statisticPort, int tracePort,
+            String... codeOptions) throws ProcessorException {
         if (currentProcess == null) {
             return new String[] {};
         }
@@ -1782,8 +1781,8 @@ public class ProcessorUtilities {
             } else {
                 // for joblet node
                 if (PluginChecker.isJobLetPluginLoaded()) {
-                    IJobletProviderService service = (IJobletProviderService) GlobalServiceRegister.getDefault().getService(
-                            IJobletProviderService.class);
+                    IJobletProviderService service = (IJobletProviderService) GlobalServiceRegister.getDefault()
+                            .getService(IJobletProviderService.class);
                     if (service != null) {
                         ProcessType jobletProcess = service.getJobletProcess(node);
                         if (jobletProcess != null) {
@@ -1899,8 +1898,8 @@ public class ProcessorUtilities {
 
     public static File getJavaProjectLibFolder() {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
-            IRunProcessService processService = (IRunProcessService) GlobalServiceRegister.getDefault().getService(
-                    IRunProcessService.class);
+            IRunProcessService processService = (IRunProcessService) GlobalServiceRegister.getDefault()
+                    .getService(IRunProcessService.class);
             return processService.getJavaProjectLibFolder();
         }
         return null;
