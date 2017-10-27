@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -248,6 +248,10 @@ public final class ContextParameterUtils {
      * only for new script code and the first variables. and if there is no variable in code, return null.
      */
     public static String getVariableFromCode(String code) {
+        return getVariableFromCode(code, JAVA_NEW_CONTEXT_PREFIX);
+    }
+
+    public static String getVariableFromCode(String code, String prefix) {
         if (code == null) {
             return null;
         }
@@ -255,7 +259,7 @@ public final class ContextParameterUtils {
         String pattern = null;
         String varPattern = "(.+?)"; //$NON-NLS-1$
         String wordPattern = "\\b"; //$NON-NLS-1$
-        pattern = wordPattern + replaceCharForRegex(JAVA_NEW_CONTEXT_PREFIX) + varPattern + wordPattern;
+        pattern = wordPattern + replaceCharForRegex(prefix) + varPattern + wordPattern;
         if (pattern != null) {
             Pattern regex = Pattern.compile(pattern, Pattern.CANON_EQ);
             Matcher regexMatcher = regex.matcher(code);
@@ -310,6 +314,16 @@ public final class ContextParameterUtils {
         str = str.trim();
         String nonQuoteStr = TalendQuoteUtils.filterQuote(str);
         return getVariableFromCode(nonQuoteStr) != null;
+    }
+
+
+    public static boolean containCodeVariable(String str, String varPrefix) {
+        if (str == null) {
+            return false;
+        }
+        str = str.trim();
+        String nonQuoteStr = TalendQuoteUtils.filterQuote(str);
+        return getVariableFromCode(nonQuoteStr, varPrefix) != null;
     }
 
     /**

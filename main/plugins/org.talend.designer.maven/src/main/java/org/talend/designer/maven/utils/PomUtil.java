@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -15,6 +15,7 @@ package org.talend.designer.maven.utils;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -28,8 +29,10 @@ import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -76,6 +79,7 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
+import org.xml.sax.SAXException;
 
 /**
  * created by ggu on 6 Feb 2015 Detailled comment
@@ -668,5 +672,35 @@ public class PomUtil {
             jobVersion = "${project.version}";
         }
         return jobVersion;
+    }
+
+    public static Document loadAssemblyFile(IProgressMonitor monitor, IFile assemblyFile) throws ParserConfigurationException,
+            SAXException, IOException {
+        final File file = assemblyFile.getLocation().toFile();
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        Document document = db.parse(file);
+        return document;
+    }
+
+    public static void saveAssemblyFile(IProgressMonitor monitor, IFile assemblyFile, Document document)
+            throws TransformerException, IOException {
+        final File file = assemblyFile.getLocation().toFile();
+        TransformerFactory transFactory = TransformerFactory.newInstance();
+        Transformer transFormer = transFactory.newTransformer();
+        transFormer.setOutputProperty(OutputKeys.INDENT, "yes");
+        FileOutputStream output = null;
+        try {
+            output = new FileOutputStream(file);
+            transFormer.transform(new DOMSource(document), new StreamResult(output));
+        } finally {
+            if (output != null) {
+                try {
+                    output.close();
+                } catch (IOException e) {
+                    ExceptionHandler.process(e);
+                }
+            }
+        }
     }
 }

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Postgresql Plug-in
 Bundle-SymbolicName: org.talend.libraries.jdbc.postgresql
-Bundle-Version: 6.5.0.qualifier
+Bundle-Version: 7.0.1.qualifier
 Bundle-Vendor: .Talend SA.
 Bundle-ClassPath: lib/postgresql-8.1-405.jdbc3.jar,
  .

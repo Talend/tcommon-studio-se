@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -171,6 +171,9 @@ public final class FileUtils {
                     public boolean accept(File dir, String name) {
                         if (name == null) {
                             return false;
+                        }
+                        if (thatInfo.getPrefix() == null) {
+                            return name.endsWith(thatInfo.getSuffix());
                         }
                         return name.startsWith(thatInfo.getPrefix()) && name.endsWith(thatInfo.getSuffix());
                     }

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.core.runtime.maven;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.Assert;
 import org.talend.commons.exception.ExceptionHandler;
 
@@ -173,11 +174,20 @@ public class MavenUrlHelper {
      * mvn:groupId/artifactId/version/packaging/classifier
      */
     public static String generateMvnUrl(String groupId, String artifactId, String version, String packaging, String classifier) {
+        return generateMvnUrl(null, groupId, artifactId, version, packaging, classifier);
+    }
+
+    public static String generateMvnUrl(String repositoryId, String groupId, String artifactId, String version, String packaging,
+            String classifier) {
         Assert.isNotNull(groupId);
         Assert.isNotNull(artifactId);
 
         StringBuffer mvnUrl = new StringBuffer(100);
         mvnUrl.append(MVN_PROTOCOL);
+
+        if (StringUtils.isNotEmpty(repositoryId)) {
+            mvnUrl.append(repositoryId).append(REPO_SEPERATOR);
+        }
 
         mvnUrl.append(groupId);
         mvnUrl.append(SEPERATOR);

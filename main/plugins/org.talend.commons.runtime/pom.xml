@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.talend.studio</groupId>
     <artifactId>tcommon-studio-se</artifactId>
-    <version>6.5.0-SNAPSHOT</version>
+    <version>7.0.1-SNAPSHOT</version>
     <relativePath>../../../</relativePath>
   </parent>
   <artifactId>org.talend.commons.runtime</artifactId>
@@ -21,15 +21,6 @@
             <phase>deploy</phase>
           </execution>
         </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.eclipse.tycho</groupId>
-        <artifactId>tycho-compiler-plugin</artifactId>
-        <version>${tycho.version}</version>
-        <configuration>
-          <source>1.7</source>
-          <target>1.7</target>
-        </configuration>
       </plugin>
 	</plugins>
   </build>

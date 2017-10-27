@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -399,8 +399,6 @@ public class MetadataDialog extends Dialog {
             inputMetaView.initGraphicComponents();
             inputMetaView.getExtendedTableViewer().setCommandStack(commandStack);
 
-            inputMetaView.setGridDataSize(size.x / 2 - 50, size.y - 150);
-
             Label label1 = new Label(compositesSachForm.getMidComposite(), SWT.NONE);
             GridDataFactory.swtDefaults().hint(42, 18).applyTo(label1);
             Composite buttonComposite = new Composite(compositesSachForm.getMidComposite(), SWT.BORDER);
@@ -546,7 +544,6 @@ public class MetadataDialog extends Dialog {
             initializeMetadataTableView(outputMetaView, outputNode, outputMetaTable);
             outputMetaView.initGraphicComponents();
             outputMetaView.getExtendedTableViewer().setCommandStack(commandStack);
-            outputMetaView.setGridDataSize(size.x / 2 - 50, size.y - 150);
             // see bug 7471,add a listener for outputView
             outputMetaView.getMetadataTableEditor().addModifiedBeanListener(new IModifiedBeanListener<IMetadataColumn>() {
 

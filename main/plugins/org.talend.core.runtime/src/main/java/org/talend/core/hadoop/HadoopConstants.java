@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -26,6 +26,8 @@ public class HadoopConstants {
     public static final String SPARK_MODE_CLUSTER = "CLUSTER";
 
     public static final String SPARK_MODE_YARN_CLIENT = "YARN_CLIENT";
+
+    public static final String SPARK_MODE_YARN_CLUSTER = "YARN_CLUSTER";
 
     public static final String FRAMEWORK = "FRAMEWORK";
 
@@ -58,5 +60,4 @@ public class HadoopConstants {
     public static final String IS_HADOOP_CUSTOM_CONFS = "IS_HADOOP_CUSTOM_CONFS";
 
     public static final String IS_DYNAMIC_JAR = "IS_DYNAMIC_JAR";
-
 }

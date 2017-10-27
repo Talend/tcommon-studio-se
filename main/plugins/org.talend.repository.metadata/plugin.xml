@@ -408,5 +408,22 @@
          </DBType>
       </RepositoryComponent>
    </extension>
+   
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.talend.core.prefs"
+            class="org.talend.repository.metadata.preferences.DatabasePreferencePage"
+            id="org.talend.repository.metadata.preferences.DatabasePreferencePage"
+            name="Database">
+      </page>
+      
+      <page
+            category="org.talend.repository.metadata.preferences.DatabasePreferencePage"
+            class="org.talend.repository.metadata.preferences.TeradataPreferencePage"
+            id="org.talend.repository.metadata.preferences.TeradataPreferencePage"
+            name="Teradata">
+      </page>
+   </extension>
 
 </plugin>

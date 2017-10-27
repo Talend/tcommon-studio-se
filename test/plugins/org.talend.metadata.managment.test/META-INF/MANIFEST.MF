@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: org.talend.metadata.managment.test
 Bundle-SymbolicName: org.talend.metadata.managment.test
-Bundle-Version: 6.5.0.qualifier
+Bundle-Version: 7.0.1.qualifier
 Fragment-Host: org.talend.metadata.managment
 Require-Bundle: org.talend.testutils,
  org.talend.libraries.jdbc.mysql,

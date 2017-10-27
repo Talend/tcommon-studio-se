@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Test
 Bundle-SymbolicName: org.talend.librariesmanager.ui.test
-Bundle-Version: 6.5.0.qualifier
+Bundle-Version: 7.0.1.qualifier
 Fragment-Host: org.talend.librariesmanager.ui
 Bundle-ClassPath: .
 Require-Bundle: org.junit,

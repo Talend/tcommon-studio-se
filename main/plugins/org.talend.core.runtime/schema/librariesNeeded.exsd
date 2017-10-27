@@ -124,6 +124,13 @@
                </documentation>
             </annotation>
          </attribute>
+         <attribute name="excludeDependencies" type="boolean">
+            <annotation>
+               <documentation>
+                  true: will add exclusion *:* in the dependence of pom.xml
+               </documentation>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 

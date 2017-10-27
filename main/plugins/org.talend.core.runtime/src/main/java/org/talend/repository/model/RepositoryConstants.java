@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -125,7 +125,7 @@ public class RepositoryConstants {
         }
         // GLIU: add for TESB-3837
         else if (type != null && "SERVICES".equals(type.getType())) { //$NON-NLS-1$
-            return SERVICES_NAME_PATTERN;
+            return CODE_ITEM_PATTERN;
         } else if (type != null && type.getType() != null && type.getType().startsWith("MDM.")) { //$NON-NLS-1$
             return MDM_ITEM_PATTERN;
         } else {

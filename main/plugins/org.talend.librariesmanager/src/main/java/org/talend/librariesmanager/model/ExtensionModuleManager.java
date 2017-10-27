@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -57,6 +57,14 @@ public class ExtensionModuleManager {
     public final static String MVN_URI_ATTR = "mvn_uri"; //$NON-NLS-1$
 
     public final static String BUNDLEID_ATTR = "bundleID"; //$NON-NLS-1$
+
+    public final static String EXCLUDE_DEPENDENCIES_ATTR = "excludeDependencies";
+
+    public final static String DEPENDENCY_TYPE_NONE = "NONE";
+
+    public final static String DEPENDENCY_TYPE_TOP = "TOP";
+
+    public final static String DEPENDENCY_TYPE_CHILD = "CHILD";
 
     public final static String DESC_ATTR = "description"; //$NON-NLS-1$
 

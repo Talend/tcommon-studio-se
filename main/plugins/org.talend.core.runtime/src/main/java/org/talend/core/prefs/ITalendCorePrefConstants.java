@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -191,4 +191,13 @@ public interface ITalendCorePrefConstants {
     public static final String NEXUS_TIMEOUT = "NEXUS_TIMEOUT"; //$NON-NLS-1$
 
     public static final String NEXUS_REFRESH_FREQUENCY = "NEXUS_REFRESH_FREQUENCY"; //$NON-NLS-1$
+
+    /**
+     * AutoMap algorithm weight
+     */
+
+    public static final String LEVENSHTEIN_WEIGHT = "LEVENSHTEIN_WEIGHT"; //$NON-NLS-1$
+
+    public static final String JACCARD_WEIGHT = "JACCARD_WEIGHT"; //$NON-NLS-1$
+
 }

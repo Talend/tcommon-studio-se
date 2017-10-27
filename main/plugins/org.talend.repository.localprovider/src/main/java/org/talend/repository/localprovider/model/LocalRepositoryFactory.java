@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -2334,22 +2334,16 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
     @Override
     public void save(Project project, Item item) throws PersistenceException {
 
-        boolean isSameResourceSet = true;
-        ResourceSet resourceSet = xmiResourceManager.getResourceSet();
-        try {
-            ResourceSet projectResourceSet = project.getEmfProject().eResource().getResourceSet();
-            ResourceSet defaultResourceSet = xmiResourceManager.getResourceSet();
-            if (projectResourceSet != null) {
-                resourceSet = projectResourceSet;
-            }
-            isSameResourceSet = (projectResourceSet == defaultResourceSet);
-        } catch (Exception e) {
-            ExceptionHandler.process(e);
+        ResourceSet resourceSet = null;
+        Resource resource = item.eResource();
+        if (resource != null) {
+            resourceSet = resource.getResourceSet();
         }
-        if (isSameResourceSet) {
-            xmiResourceManager.getAffectedResources(item.getProperty()); // only call this will force to load all sub
-                                                                         // items in case some are not loaded
+        if (resourceSet == null) {
+            resourceSet = xmiResourceManager.getResourceSet();
         }
+        // only call this will force to load all sub items in case some are not loaded
+        xmiResourceManager.getAffectedResources(resourceSet, item.getProperty());
 
         computePropertyMaxInformationLevel(item.getProperty());
         item.getProperty().setModificationDate(new Date());

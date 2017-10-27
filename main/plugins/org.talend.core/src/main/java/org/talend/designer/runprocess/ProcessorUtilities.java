@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -15,11 +15,13 @@ package org.talend.designer.runprocess;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -36,6 +38,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.ui.IEditorPart;
 import org.talend.commons.CommonsPlugin;
@@ -47,6 +50,7 @@ import org.talend.commons.utils.generation.JavaUtils;
 import org.talend.commons.utils.time.TimeMeasure;
 import org.talend.core.CorePlugin;
 import org.talend.core.GlobalServiceRegister;
+import org.talend.core.ITDQItemService;
 import org.talend.core.PluginChecker;
 import org.talend.core.context.Context;
 import org.talend.core.context.RepositoryContext;
@@ -54,9 +58,11 @@ import org.talend.core.i18n.Messages;
 import org.talend.core.language.ECodeLanguage;
 import org.talend.core.language.LanguageManager;
 import org.talend.core.model.components.ComponentCategory;
+import org.talend.core.model.components.EComponentType;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.metadata.IMetadataColumn;
 import org.talend.core.model.metadata.IMetadataTable;
+import org.talend.core.model.process.EParameterFieldType;
 import org.talend.core.model.process.IContext;
 import org.talend.core.model.process.IElementParameter;
 import org.talend.core.model.process.INode;
@@ -74,11 +80,11 @@ import org.talend.core.model.repository.RepositoryManager;
 import org.talend.core.model.repository.job.JobResource;
 import org.talend.core.model.repository.job.JobResourceManager;
 import org.talend.core.model.utils.JavaResourcesHelper;
-import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.core.runtime.process.LastGenerationInfo;
 import org.talend.core.runtime.process.TalendProcessArgumentConstant;
 import org.talend.core.runtime.process.TalendProcessOptionConstants;
+import org.talend.core.runtime.repository.build.BuildExportManager;
 import org.talend.core.services.ISVNProviderService;
 import org.talend.core.ui.IJobletProviderService;
 import org.talend.core.ui.ITestContainerProviderService;
@@ -88,8 +94,10 @@ import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
+import org.talend.repository.documentation.ExportFileResource;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IRepositoryService;
+import org.talend.utils.io.FilesUtils;
 
 /**
  * DOC nrousseau class global comment. Detailled comment <br/>
@@ -122,6 +130,8 @@ public class ProcessorUtilities {
     private static boolean needContextInCurrentGeneration = true;
 
     private static boolean exportAsOSGI = false;
+
+    private static boolean exportJobAsMicroService = false;
 
     private static IDesignerCoreService designerCoreService = (IDesignerCoreService) GlobalServiceRegister.getDefault()
             .getService(IDesignerCoreService.class);
@@ -374,8 +384,8 @@ public class ProcessorUtilities {
         }
 
         boolean isMainJob = false;
+        List<IClasspathAdjuster> classPathAdjusters = ClasspathAdjusterProvider.getClasspathAdjuster();
         if (jobInfo.getFatherJobInfo() == null) {
-
             // In order to avoid eclipse to compile the code at each change in the workspace, we deactivate the
             // auto-build feature during the whole build time.
             // It will be reactivated at the end if the auto-build is activated in the workspace preferences.
@@ -392,15 +402,19 @@ public class ProcessorUtilities {
 
             isMainJob = true;
             codeModified = false;
-            TalendLibsServerManager.getInstance().checkAndUpdateNexusServer();
 
             // this cache only keep the last main job's generation, so clear it since we regenerate a new job.
             LastGenerationInfo.getInstance().getLastGeneratedjobs().clear();
+            LastGenerationInfo.getInstance().getHighPriorityModuleNeeded().clear();
             retrievedJarsForCurrentBuild.clear();
 
             // if it's the father, reset the processMap to ensure to have a good
             // code generation
             ItemCacheManager.clearCache();
+
+            for (IClasspathAdjuster adjuster : classPathAdjusters) {
+                adjuster.initialize();
+            }
         }
 
         IProcess currentProcess = null;
@@ -441,11 +455,6 @@ public class ProcessorUtilities {
             }
         } else {
             currentProcess = jobInfo.getProcess();
-        }
-
-        List<IClasspathAdjuster> classPathAdjusters = ClasspathAdjusterProvider.getClasspathAdjuster();
-        for (IClasspathAdjuster adjuster : classPathAdjusters) {
-            adjuster.initialize();
         }
 
         IProcessor processor = null;
@@ -518,6 +527,8 @@ public class ProcessorUtilities {
         setNeededResources(argumentsMap, jobInfo);
 
         processor.setArguments(argumentsMap);
+
+        copyDQDroolsToSrc(selectedProcessItem);
         // generate the code of the father after the childrens
         // so the code won't have any error during the check, and it will help to check
         // if the generation is really needed.
@@ -601,11 +612,15 @@ public class ProcessorUtilities {
     public static boolean hasMetadataDynamic(IProcess currentProcess, JobInfo jobInfo) {
         boolean hasDynamicMetadata = false;
         out: for (INode node : (List<? extends INode>) currentProcess.getGeneratingNodes()) {
+            if (node.getComponent() != null && node.getComponent().getComponentType() == EComponentType.GENERIC) {
+                // generic component, true always
+                return true;
+            }
             // to check if node is db component , maybe need modification
             boolean isDbNode = false;
             for (IElementParameter param : (List<? extends IElementParameter>) node.getElementParameters()) {
-                if ("TYPE".equals(param.getName()) && "TEXT".equals(param.getFieldType().getName()) && param.getValue() != null
-                        && !"".equals(param.getValue())) {
+                if ("TYPE".equals(param.getName()) && EParameterFieldType.TEXT == param.getFieldType()
+                        && param.getValue() != null && !"".equals(param.getValue())) {
                     isDbNode = true;
                     break;
                 }
@@ -760,19 +775,23 @@ public class ProcessorUtilities {
                 return null;
             }
             boolean isMainJob = false;
+            List<IClasspathAdjuster> classPathAdjusters = ClasspathAdjusterProvider.getClasspathAdjuster();
             if (jobInfo.getFatherJobInfo() == null) {
                 isMainJob = true;
                 codeModified = false;
 
                 // this cache only keep the last main job's generation, so clear it since we regenerate a new job.
                 LastGenerationInfo.getInstance().getLastGeneratedjobs().clear();
+                LastGenerationInfo.getInstance().getHighPriorityModuleNeeded().clear();
                 retrievedJarsForCurrentBuild.clear();
-
-                TalendLibsServerManager.getInstance().checkAndUpdateNexusServer();
 
                 // if it's the father, reset the processMap to ensure to have a good
                 // code generation
                 ItemCacheManager.clearCache();
+
+                for (IClasspathAdjuster adjuster : classPathAdjusters) {
+                    adjuster.initialize();
+                }
             }
 
             IProcess currentProcess = null;
@@ -813,11 +832,6 @@ public class ProcessorUtilities {
                 }
             } else {
                 currentProcess = jobInfo.getProcess();
-            }
-
-            List<IClasspathAdjuster> classPathAdjusters = ClasspathAdjusterProvider.getClasspathAdjuster();
-            for (IClasspathAdjuster adjuster : classPathAdjusters) {
-                adjuster.initialize();
             }
 
             IProcessor processor = null;
@@ -914,6 +928,8 @@ public class ProcessorUtilities {
 
             processor.setArguments(argumentsMap);
 
+            copyDQDroolsToSrc(selectedProcessItem);
+
             generateContextInfo(jobInfo, selectedContextName, statistics, trace, needContext, progressMonitor, currentProcess,
                     currentJobName, processor, isMainJob, codeGenerationNeeded);
 
@@ -964,6 +980,60 @@ public class ProcessorUtilities {
         if (isMainJob) {
             LastGenerationInfo.getInstance().setLastMainJob(generatedJobInfo);
         }
+    }
+
+    /**
+     * 
+     * copy the current item's drools file from 'workspace/metadata/survivorship' to '.Java/src/resources'
+     * 
+     * @param processItem
+     */
+    private static void copyDQDroolsToSrc(ProcessItem processItem) {
+        // 1.TDQ-12474 copy the "metadata/survivorship/rulePackage" to ".Java/src/main/resources/". so that it will be
+        // used by
+        // maven command 'include-survivorship-rules' to export.
+        // 2.TDQ-14308 current drools file in 'src/resourcesmetadata/survivorship/' should be included to job jar.
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ITDQItemService.class)) {
+            ITDQItemService tdqItemService = (ITDQItemService) GlobalServiceRegister.getDefault().getService(
+                    ITDQItemService.class);
+            if (tdqItemService == null) {
+                return;
+            }
+            try {
+                ExportFileResource resouece = new ExportFileResource();
+                BuildExportManager.getInstance().exportDependencies(resouece, processItem);
+                if (resouece.getAllResources().isEmpty()) {
+                    return;
+                }
+                final Iterator<String> relativepath = resouece.getRelativePathList().iterator();
+                String pathStr = "metadata/survivorship"; //$NON-NLS-1$
+                IRunProcessService runProcessService = CorePlugin.getDefault().getRunProcessService();
+                ITalendProcessJavaProject talendProcessJavaProject = runProcessService.getTalendProcessJavaProject();
+                IFolder targetFolder = talendProcessJavaProject.getResourcesFolder();
+                if (targetFolder.exists()) {
+                    IFolder survFolder = targetFolder.getFolder(new Path(pathStr));
+                    // only copy self job rules, clear the 'survivorship' folder before copy.
+                    if (survFolder.exists()) {
+                        survFolder.delete(true, null);
+                    }
+                    while (relativepath.hasNext()) {
+                        String relativePath = relativepath.next();
+                        Set<URL> sources = resouece.getResourcesByRelativePath(relativePath);
+                        for (URL sourceUrl : sources) {
+                            File currentResource = new File(org.talend.commons.utils.io.FilesUtils.getFileRealPath(sourceUrl
+                                    .getPath()));
+                            if (currentResource.exists()) {
+                                FilesUtils.copyDirectory(currentResource, new File(targetFolder.getLocation().toPortableString()
+                                        + File.separator + pathStr));
+                            }
+                        }
+                    }
+                }
+            } catch (Exception exc) {
+                log.error(exc);
+            }
+        }
+
     }
 
     /**
@@ -1842,6 +1912,14 @@ public class ProcessorUtilities {
 
     public static void setExportAsOSGI(boolean toOSGI) {
         exportAsOSGI = toOSGI;
+    }
+
+    public static boolean isExportJobAsMicroService() {
+        return exportJobAsMicroService;
+    }
+
+    public static void setExportJobAsMicroSerivce(boolean toMicroService) {
+        exportJobAsMicroService = toMicroService;
     }
 
     /**

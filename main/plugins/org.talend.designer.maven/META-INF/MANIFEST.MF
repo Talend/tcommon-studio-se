@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Designer Maven
 Bundle-SymbolicName: org.talend.designer.maven;singleton:=true
-Bundle-Version: 6.5.0.qualifier
+Bundle-Version: 7.0.1.qualifier
 Bundle-Activator: org.talend.designer.maven.DesignerMavenPlugin
 Bundle-Vendor: .Talend SA.
 Require-Bundle: org.eclipse.core.runtime,

@@ -12,7 +12,10 @@
 // ============================================================================
 package org.talend.updates.runtime.utils;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -55,15 +58,32 @@ public class PathUtilsTest {
     }
 
     @Test
-    public void testGetP2RepURIFromCompFile() throws IOException {
+    public void testGetP2RepURIFromCompFile_null() throws IOException {
         URI p2RepURI = PathUtils.getP2RepURIFromCompFile(null);
         assertNull(p2RepURI);
+    }
 
-        File compFile = File.createTempFile("testcomp", null); //$NON-NLS-1$
-        p2RepURI = PathUtils.getP2RepURIFromCompFile(compFile);
+    @Test
+    public void testGetP2RepURIFromCompFile_zip() throws IOException {
+        File compFile = new File("/tmp/testcomp.zip");
+        URI p2RepURI = PathUtils.getP2RepURIFromCompFile(compFile);
         URI expectURI = URI.create("jar:" + compFile.toURI().toString() + "!/"); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(expectURI, p2RepURI);
+    }
 
+    @Test
+    public void testGetP2RepURIFromCompFile_jar() throws IOException {
+        File compFile = new File("/tmp/testcomp.jar");
+        URI p2RepURI = PathUtils.getP2RepURIFromCompFile(compFile);
+        URI expectURI = URI.create("jar:" + compFile.toURI().toString() + "!/"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(expectURI, p2RepURI);
+    }
+
+    @Test
+    public void testGetP2RepURIFromCompFile_other() throws IOException {
+        File compFile = File.createTempFile("testcomp.text", null); //$NON-NLS-1$
+        URI p2RepURI = PathUtils.getP2RepURIFromCompFile(compFile);
+        assertNull(p2RepURI);
         compFile.delete();
     }
 

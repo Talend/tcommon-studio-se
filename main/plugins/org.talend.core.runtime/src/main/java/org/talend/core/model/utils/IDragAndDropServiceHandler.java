@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -121,4 +121,6 @@ public interface IDragAndDropServiceHandler {
     public boolean isGenericRepositoryValue(List<ComponentProperties> componentProperties, String paramName);
 
     public Object getGenericRepositoryValue(List<ComponentProperties> componentProperties, String paramName);
+    
+    public boolean isGenericPropertiesValue(String paramName);
 }

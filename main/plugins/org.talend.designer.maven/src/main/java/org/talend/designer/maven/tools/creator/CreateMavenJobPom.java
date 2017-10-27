@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -14,25 +14,17 @@ package org.talend.designer.maven.tools.creator;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
@@ -72,6 +64,7 @@ import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.template.ETalendMavenVariables;
 import org.talend.designer.maven.template.MavenTemplateManager;
 import org.talend.designer.maven.tools.MavenPomSynchronizer;
+import org.talend.designer.maven.utils.PomIdsHelper;
 import org.talend.designer.maven.utils.PomUtil;
 import org.talend.designer.runprocess.IProcessor;
 import org.talend.repository.ProjectManager;
@@ -447,13 +440,49 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
     protected void afterCreate(IProgressMonitor monitor) throws Exception {
         setPomForHDInsight(monitor);
 
+        // check for children jobs
+        Set<String> childrenGroupIds = new HashSet<>();
+        final Set<JobInfo> clonedChildrenJobInfors = getJobProcessor().getBuildChildrenJobs();
+        // main job built, should never be in the children list, even if recursive
+        clonedChildrenJobInfors.remove(LastGenerationInfo.getInstance().getLastMainJob());
+
+        for (JobInfo child : clonedChildrenJobInfors) {
+            if (child.getFatherJobInfo() != null) {
+                Property childProperty = null;
+                ProcessItem childItem = child.getProcessItem();
+                if (childItem != null) {
+                    childProperty = childItem.getProperty();
+                } else {
+                    String jobId = child.getJobId();
+                    if (jobId != null) {
+                        IProxyRepositoryFactory proxyRepositoryFactory = CoreRuntimePlugin.getInstance()
+                                .getProxyRepositoryFactory();
+                        IRepositoryViewObject specificVersion = proxyRepositoryFactory.getSpecificVersion(jobId,
+                                child.getJobVersion(), true);
+                        if (specificVersion != null) {
+                            childProperty = specificVersion.getProperty();
+                        }
+                    }
+                }
+
+                if (childProperty != null) {
+                    final String childGroupId = PomIdsHelper.getJobGroupId(childProperty);
+                    if (childGroupId != null) {
+                        childrenGroupIds.add(childGroupId);
+                    }
+                }
+            }
+        }
+
+        generateAssemblyFile(monitor, clonedChildrenJobInfors);
+
         final IProcess process = getJobProcessor().getProcess();
         Map<String, Object> args = new HashMap<String, Object>();
         args.put(IPomJobExtension.KEY_PROCESS, process);
+        args.put(IPomJobExtension.KEY_ASSEMBLY_FILE, getAssemblyFile());
+        args.put(IPomJobExtension.KEY_CHILDREN_JOBS_GROUP_IDS, childrenGroupIds);
 
         PomJobExtensionRegistry.getInstance().updatePom(monitor, getPomFile(), args);
-
-        generateAssemblyFile(monitor);
 
         // generate routines
         MavenPomSynchronizer pomSync = new MavenPomSynchronizer(this.getJobProcessor());
@@ -499,7 +528,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         }
     }
 
-    protected void generateAssemblyFile(IProgressMonitor monitor) throws Exception {
+    protected void generateAssemblyFile(IProgressMonitor monitor, final Set<JobInfo> clonedChildrenJobInfors) throws Exception {
         IFile assemblyFile = this.getAssemblyFile();
         if (assemblyFile != null) {
 
@@ -539,23 +568,20 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
 
             if (set) {
                 // add children resources in assembly.
-                addChildrenJobsInAssembly(monitor, assemblyFile);
+                addChildrenJobsInAssembly(monitor, assemblyFile, clonedChildrenJobInfors);
             }
         }
     }
 
     @SuppressWarnings("nls")
-    protected void addChildrenJobsInAssembly(IProgressMonitor monitor, IFile assemblyFile) throws Exception {
+    protected void addChildrenJobsInAssembly(IProgressMonitor monitor, IFile assemblyFile,
+            final Set<JobInfo> clonedChildrenJobInfors) throws Exception {
         if (!assemblyFile.exists()) {
             return;
         }
-        final File file = assemblyFile.getLocation().toFile();
-        // assemblyFile
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        DocumentBuilder db = dbf.newDocumentBuilder();
-        Document document = db.parse(file);
+        Document document = PomUtil.loadAssemblyFile(monitor, assemblyFile);
         if (document == null) {
-            throw new IOException("Can't parse the file: " + file);
+            throw new IOException("Can't parse the file: " + assemblyFile.getLocation());
         }
 
         // files
@@ -570,10 +596,6 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
 
         List<String> childrenPomsIncludes = new ArrayList<String>();
         List<String> childrenFolderResourcesIncludes = new ArrayList<String>();
-
-        final Set<JobInfo> clonedChildrenJobInfors = getJobProcessor().getBuildChildrenJobs();
-        // main job built, should never be in the children list, even if recursive
-        clonedChildrenJobInfors.remove(LastGenerationInfo.getInstance().getLastMainJob());
 
         for (JobInfo child : clonedChildrenJobInfors) {
             if (child.getFatherJobInfo() != null) {
@@ -632,18 +654,9 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
                 addAssemblyFileSets(fileSetsElem, "${contexts.running.dir}", "${talend.job.name}", false,
                         childrenFolderResourcesIncludes, null, null, null, null, false, "add children context files for running.");
             }
-            TransformerFactory transFactory = TransformerFactory.newInstance();
-            Transformer transFormer = transFactory.newTransformer();
-            transFormer.setOutputProperty(OutputKeys.INDENT, "yes");
-            FileOutputStream output = null;
-            try {
-                output = new FileOutputStream(file);
-                transFormer.transform(new DOMSource(document), new StreamResult(output));
-            } finally {
-                if (output != null) {
-                    output.close();
-                }
-            }
+
+            PomUtil.saveAssemblyFile(monitor, assemblyFile, document);
+
             // clean for children poms
             cleanChildrenPomSettings(monitor, childrenPomsIncludes);
         }

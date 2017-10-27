@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName Nl Fragment
 Bundle-SymbolicName: org.talend.model.edit.nl
-Bundle-Version: 6.5.0.qualifier
+Bundle-Version: 7.0.1.qualifier
 Fragment-Host: org.talend.model.edit
 Bundle-Localization: plugin
 Bundle-Vendor: %providerName

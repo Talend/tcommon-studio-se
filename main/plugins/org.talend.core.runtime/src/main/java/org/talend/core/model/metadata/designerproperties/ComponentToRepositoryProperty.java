@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -530,8 +530,7 @@ public class ComponentToRepositoryProperty {
         if ("PASSWORD".equals(param.getRepositoryValue())) { //$NON-NLS-1$
             String value = getParameterValue(connection, node, param);
             if (value != null) {
-                String pwd = TalendQuoteUtils.checkAndRemoveBackslashes(value);
-                connection.setRawPassword(TalendQuoteUtils.removeQuotes(pwd));
+                connection.setRawPassword(TalendQuoteUtils.removeQuotes(value));
             }
         }
         if ("SERVER_NAME".equals(param.getRepositoryValue())) { //$NON-NLS-1$

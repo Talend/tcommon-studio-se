@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -14,8 +14,7 @@ package org.talend.core.model.utils;
 
 import java.util.ArrayList;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
 import org.talend.commons.utils.PasswordEncryptUtil;
 import org.talend.core.model.context.JobContextParameter;
@@ -29,6 +28,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
 import org.talend.repository.ProjectManager;
 import org.talend.utils.security.CryptoHelper;
+
 
 /**
  * DOC cmeng class global comment. Detailled comment
@@ -441,7 +441,7 @@ public class ParameterValueUtilTest {
     @Test
     public void testRenameValues4FunctionsExceptGlobalMap() {
         String testString = "\"Hello \" + context.getProperty(\"World\") + property.get(\"World\") + globalMap.get(\"World\") + context.getProperty(\"World2\") + property.get(\"World2\") + globalMap.get(\"World2\")";
-        String expectedValue = "\"Hello \" + context.getProperty(\"World1\") + property.get(\"World1\") + globalMap.get(\"World1\") + context.getProperty(\"World2\") + property.get(\"World2\") + globalMap.get(\"World12\")";
+        String expectedValue = "\"Hello \" + context.getProperty(\"World1\") + property.get(\"World1\") + globalMap.get(\"World1\") + context.getProperty(\"World2\") + property.get(\"World2\") + globalMap.get(\"World2\")";
         String resultValue = ParameterValueUtil.renameValues(testString, "World", "World1", false);
         Assert.assertTrue(expectedValue.equals(resultValue));
     }
@@ -449,7 +449,7 @@ public class ParameterValueUtilTest {
     @Test
     public void testRenameValues4ComplexFunctions() {
         String testString = "var1.function1.getProperty(\"key\", var1.function2.getProperty(globalMap.get(var1.globalMap.get(globalMap.get(\"key\"))), var1.globalMap.get(\"key\"))) + var1.function1.getProperty(\"key1\", var1.function2.getProperty(globalMap.get(var1.globalMap.get(globalMap.get(\"key1\"))), var1.globalMap.get(var1.function3().globalMap.get() + \"key1\", \"key1\", var1.function4(\"key1\", globalMap.put(key, \"key1\")), var1.function5(globalMap.put(key.key.key.getProperty(getProperty(\"key1\")), key1))), var1.globalMap.get(\"key1\"))) + var1.function1.getProperty(\"key2\", var1.function2.getProperty(globalMap.get(var1.globalMap.get(globalMap.get(\"key2\"))), var1.globalMap.get(\"key2\")))";
-        String expectedValue = "var1.function1.getProperty(\"k\", var1.function2.getProperty(globalMap.get(var1.globalMap.get(globalMap.get(\"k\"))), var1.globalMap.get(\"k\"))) + var1.function1.getProperty(\"key1\", var1.function2.getProperty(globalMap.get(var1.globalMap.get(globalMap.get(\"k1\"))), var1.globalMap.get(var1.function3().globalMap.get() + \"key1\", \"key1\", var1.function4(\"key1\", globalMap.put(k, \"k1\")), var1.function5(globalMap.put(k.key.key.getProperty(getProperty(\"key1\")), key1))), var1.globalMap.get(\"key1\"))) + var1.function1.getProperty(\"key2\", var1.function2.getProperty(globalMap.get(var1.globalMap.get(globalMap.get(\"k2\"))), var1.globalMap.get(\"key2\")))";
+        String expectedValue = "var1.function1.getProperty(\"k\", var1.function2.getProperty(globalMap.get(var1.globalMap.get(globalMap.get(\"k\"))), var1.globalMap.get(\"k\"))) + var1.function1.getProperty(\"key1\", var1.function2.getProperty(globalMap.get(var1.globalMap.get(globalMap.get(\"key1\"))), var1.globalMap.get(var1.function3().globalMap.get() + \"key1\", \"key1\", var1.function4(\"key1\", globalMap.put(k, \"key1\")), var1.function5(globalMap.put(k.key.key.getProperty(getProperty(\"key1\")), key1))), var1.globalMap.get(\"key1\"))) + var1.function1.getProperty(\"key2\", var1.function2.getProperty(globalMap.get(var1.globalMap.get(globalMap.get(\"key2\"))), var1.globalMap.get(\"key2\")))";
         String resultValue = ParameterValueUtil.renameValues(testString, "key", "k", false);
         Assert.assertTrue(expectedValue.equals(resultValue));
     }
@@ -470,6 +470,22 @@ public class ParameterValueUtilTest {
         Assert.assertTrue("testRenameValues4SQLAndGlobleMap", expectRetValue.equals(retValue));
     }
 
+    @Test
+    public void testRenameValues4SQLAndGlobleMap_full() {
+        // case
+        // "select A.id, A.name form "+context.table+" A where A.name=
+        // "+((String)globalMap.get("tFileList_1_CURRENT_FILE"))
+        String testString = "\"select A.id, A.name form \"+context.table+\" A where A.name= \"+((String)globalMap.get(\"tFileList_1_CURRENT_FILE\"))";
+        String expectRetValue = "\"select A.id, A.name form \"+context.table123+\" A where A.name= \"+((String)globalMap.get(\"tFileList_1_CURRENT_FILE\"))";
+        // if flag is false, means is from SQL. but when replace the globlemap, will be problem.
+        String retValue = ParameterValueUtil.renameValues(testString, "context.table", "context.table123", false);
+        Assert.assertTrue("testRenameValues4SQLAndGlobleMap", expectRetValue.equals(retValue));
+
+        expectRetValue = "\"select A.id, A.name form \"+context.table+\" A where A.name= \"+((String)globalMap.get(\"tFileList_2_CURRENT_FILE\"))";
+        // if flag is false, means is from SQL. but when replace the globlemap, will be problem.
+        retValue = ParameterValueUtil.renameValues(testString, "tFileList_1_CURRENT_FILE", "tFileList_2_CURRENT_FILE", false);
+        Assert.assertTrue("testRenameValues4SQLAndGlobleMap", expectRetValue.equals(retValue));
+    }
     @Test
     public void testRenameJavaCode() {
         String testString = "\tSystem.out.println(\"=====\");\n\tout.a = b;\n\tout = obj1;";
@@ -1173,7 +1189,7 @@ public class ParameterValueUtilTest {
                 + "\"Process_Apache_Tag_Sever_Logs_1_ip_detected_logs.ip_address\"/* ip_detected_logs.ip_address */,\r\n"
                 + "var1.function2.getProperty(globalMap.get( // globalMap.get( ip_detected_logs.ip_address ) /* ip_detected_logs.ip_address */\r\n"
                 + "var1.globalMap.get(globalMap.get(\"Process_Apache_Tag_Sever_Logs_1_ip_detected_logs.ip_address\"))),\r\n"
-                + "var1.globalMap.get(\"Process_Apache_Tag_Sever_Logs_1_ip_detected_logs.ip_address\"))) + var1.function1.getProperty(\"ip_detected_logs.ip_address1\", var1.function2.getProperty(globalMap.get(var1.globalMap.get(globalMap.get(\"Process_Apache_Tag_Sever_Logs_1_ip_detected_logs.ip_address1\"))), var1.globalMap.get(var1.function3().globalMap.get() + \"ip_detected_logs.ip_address1\", \"ip_detected_logs.ip_address1\", var1.function4(\"ip_detected_logs.ip_address1\", globalMap.put(Process_Apache_Tag_Sever_Logs_1_ip_detected_logs.ip_address, \"Process_Apache_Tag_Sever_Logs_1_ip_detected_logs.ip_address1\")), var1.function5(globalMap.put(Process_Apache_Tag_Sever_Logs_1_ip_detected_logs.ip_address.ip_detected_logs.ip_address.ip_detected_logs.ip_address.getProperty(getProperty(\"ip_detected_logs.ip_address1\")), ip_detected_logs.ip_address1))), var1.globalMap.get(\"ip_detected_logs.ip_address1\"))) + var1.function1.getProperty(\"ip_detected_logs.ip_address2\", var1.function2.getProperty(globalMap.get(var1.globalMap.get(globalMap.get(\"Process_Apache_Tag_Sever_Logs_1_ip_detected_logs.ip_address2\"))), var1.globalMap.get(\"ip_detected_logs.ip_address2\")))\r\n"
+                + "var1.globalMap.get(\"Process_Apache_Tag_Sever_Logs_1_ip_detected_logs.ip_address\"))) + var1.function1.getProperty(\"ip_detected_logs.ip_address1\", var1.function2.getProperty(globalMap.get(var1.globalMap.get(globalMap.get(\"ip_detected_logs.ip_address1\"))), var1.globalMap.get(var1.function3().globalMap.get() + \"ip_detected_logs.ip_address1\", \"ip_detected_logs.ip_address1\", var1.function4(\"ip_detected_logs.ip_address1\", globalMap.put(Process_Apache_Tag_Sever_Logs_1_ip_detected_logs.ip_address, \"ip_detected_logs.ip_address1\")), var1.function5(globalMap.put(Process_Apache_Tag_Sever_Logs_1_ip_detected_logs.ip_address.ip_detected_logs.ip_address.ip_detected_logs.ip_address.getProperty(getProperty(\"ip_detected_logs.ip_address1\")), ip_detected_logs.ip_address1))), var1.globalMap.get(\"ip_detected_logs.ip_address1\"))) + var1.function1.getProperty(\"ip_detected_logs.ip_address2\", var1.function2.getProperty(globalMap.get(var1.globalMap.get(globalMap.get(\"ip_detected_logs.ip_address2\"))), var1.globalMap.get(\"ip_detected_logs.ip_address2\")))\r\n"
                 + "\r\n" + "//Set values in output row.\r"
                 + "Process_Apache_Tag_Sever_Logs_1_ip_detected_logs.ip_address = ipAddress;//*Set values in output row.\r"
                 + "\r\n" + "//ip_detected_logs.ip_address = ipAddress.\n"

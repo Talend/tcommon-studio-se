@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Import&Export Items UI
 Bundle-Vendor: .Talend SA.
 Bundle-SymbolicName: org.talend.repository.items.importexport.ui;singleton:=true
-Bundle-Version: 6.5.0.qualifier
+Bundle-Version: 7.0.1.qualifier
 Bundle-Activator: org.talend.repository.items.importexport.ui.ImportExportUiActivator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.ide,

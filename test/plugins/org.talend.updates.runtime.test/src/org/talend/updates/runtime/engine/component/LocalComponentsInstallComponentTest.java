@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -486,7 +486,7 @@ public class LocalComponentsInstallComponentTest {
         final File patchFile = new File(patchesFolder, testDataFile.getName());
         FilesUtils.copyFile(testDataFile, patchFile);
 
-        final URI patchURI = URI.create("jar:" + patchFile.toURI().toString() + "!/"); //$NON-NLS-1$ //$NON-NLS-2$
+        final URI patchURI = PathUtils.getP2RepURIFromCompFile(patchFile);
 
         LocalComponentsInstallComponent installComp = new LocalComponentsInstallComponentTestClass() {
 

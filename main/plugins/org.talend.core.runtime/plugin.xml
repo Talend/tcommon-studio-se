@@ -17,6 +17,7 @@
    <extension-point id="org.talend.migration.task.type.extension" name="Migration task type extension" schema="schema/migrationTaskTypeExtension.exsd"/>
    <extension-point id="migration_check" name="migration_check" schema="schema/migration_check.exsd"/>
    <extension-point id="hadoopConnectionCreator" name="Hadoop Connection Creator" schema="schema/hadoopConnectionCreator.exsd"/>
+   <extension-point id="artifact_handler" name="Artifact Repository Handler" schema="schema/artifact_handler.exsd"/>
    <extension
          point="org.eclipse.ui.views">
                <category

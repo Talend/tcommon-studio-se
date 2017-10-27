@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Glazedlist
 Bundle-SymbolicName: org.talend.libraries.nattable.glazedlist
-Bundle-Version: 6.5.0.qualifier
+Bundle-Version: 7.0.1.qualifier
 Bundle-ClassPath: .,lib/glazedlists_java15-1.9.0.jar
 Fragment-Host: org.talend.libraries.nattable
 Eclipse-BundleShape: dir

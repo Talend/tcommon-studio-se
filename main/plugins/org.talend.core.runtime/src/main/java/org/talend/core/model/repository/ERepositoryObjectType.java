@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -1422,6 +1422,15 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
         }
         if (ERepositoryObjectType.SPARK_STREAMING_JOBLET != null) {
             allTypes.add(ERepositoryObjectType.SPARK_STREAMING_JOBLET);
+        }
+        return allTypes;
+    }
+    
+    public static List<ERepositoryObjectType> getAllTypesOfTestContainer() {
+        List<ERepositoryObjectType> allTypes = new ArrayList<ERepositoryObjectType>();
+
+        if (ERepositoryObjectType.TEST_CONTAINER != null) {
+            allTypes.add(ERepositoryObjectType.TEST_CONTAINER);
         }
         return allTypes;
     }

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -231,11 +231,14 @@ public class TableToTreeLinker<D1, D2> extends BgDrawableComposite implements IB
             Rectangle tableItemBounds = tableItem.getBounds();
 
             int yStraight = sourceToCommonPoint.y + treeItemHeight / 2 + tableItemBounds.y;
-
-            pointStartStraight.x = sourceToCommonPoint.x + tableItemBounds.x + tableItemBounds.width;
-            pointStartStraight.y = yStraight;
-
             pointEndStraight.x = sourceToCommonPoint.x + xStartBezierLink;
+            if (Platform.OS_MACOSX.equals(Platform.getOS())) {
+                pointStartStraight.x = sourceToCommonPoint.x + tableItem.getParent().getBounds().width;
+                pointEndStraight.x = pointStartStraight.x;
+            } else {
+                pointStartStraight.x = sourceToCommonPoint.x + tableItemBounds.x + tableItemBounds.width;
+            }
+            pointStartStraight.y = yStraight;
             pointEndStraight.y = yStraight;
 
             TreeItem treeItem = getFirstVisibleTreeItemOfPath(extremity2.getDataItem());
@@ -310,7 +313,9 @@ public class TableToTreeLinker<D1, D2> extends BgDrawableComposite implements IB
                 if (Platform.OS_LINUX.equals(Platform.getOS())) {
                     pointEndCentralCurve.y = pointEndCentralCurve.y - tableItem.getBounds().height;
                 }
-
+                if (Platform.OS_MACOSX.equals(Platform.getOS())) {
+                    pointEndCentralCurve.y = pointEndCentralCurve.y + tableItem.getBounds(0).height;
+                }
                 drawableLink.setPoint1(pointEndStraight);
                 drawableLink.setPoint2(pointEndCentralCurve);
 

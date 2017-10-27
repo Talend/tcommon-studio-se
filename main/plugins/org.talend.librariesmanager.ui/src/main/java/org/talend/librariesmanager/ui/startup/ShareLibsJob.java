@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -43,7 +43,7 @@ public class ShareLibsJob extends Job {
      */
     @Override
     protected IStatus run(IProgressMonitor monitor) {
-        ShareLibsOnStartup shareLib = new ShareLibsOnStartup();
+        ShareMavenArtifactsOnStartup shareLib = new ShareMavenArtifactsOnStartup();
         return shareLib.shareLibs(this, monitor);
     }
 

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -82,6 +82,7 @@ import org.talend.core.model.utils.CloneConnectionUtils;
 import org.talend.core.model.utils.ContextParameterUtils;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.runtime.CoreRuntimePlugin;
+import org.talend.core.runtime.services.IGenericWizardService;
 import org.talend.core.service.INOSQLService;
 import org.talend.core.ui.CoreUIPlugin;
 import org.talend.core.ui.context.ContextManagerHelper;
@@ -674,14 +675,23 @@ public final class ConnectionContextHelper {
         if (connection != null && connection.isContextMode()) {
             // get the context variables from the node parameters.
             Set<String> neededVars = retrieveContextVar(elementParameters, connection, category);
-            if (neededVars != null && !neededVars.isEmpty()) {
+            boolean isGeneric = isGenericConnection(connection);
+            if (neededVars != null && !neededVars.isEmpty() || isGeneric) {
                 ContextItem contextItem = ContextUtils.getContextItemById2(connection.getContextId());
                 if (contextItem != null) {
                     // find added variables
-                    Set<String> addedVars = checkAndAddContextVariables(contextItem, neededVars, process.getContextManager(),
-                            false);
+                    Set<String> tempVars = null;
+                    if(isGeneric){
+                        tempVars = checkAndAddContextVariables(contextItem, process.getContextManager(),
+                                false);
+                    }else{
+                        tempVars = checkAndAddContextVariables(contextItem, neededVars, process.getContextManager(),
+                                false);
+                    }
+                    Set<String> addedVars = tempVars; 
+                    
                     if (addedVars != null && !addedVars.isEmpty()
-                            && !isAddContextVar(contextItem, process.getContextManager(), neededVars)) {
+                            && (isGeneric || !isAddContextVar(contextItem, process.getContextManager(), neededVars))) {
                         AtomicBoolean added = new AtomicBoolean();
                         if (ignoreContextMode) {
                             addContextVarForJob(process, contextItem, addedVars);
@@ -1031,6 +1041,17 @@ public final class ConnectionContextHelper {
     public static Set<String> retrieveContextVar(List<? extends IElementParameter> elementParameters, Connection connection,
             EComponentCategory category) {
         return retrieveContextVar(elementParameters, connection, category, false);
+    }
+    
+    public static boolean isGenericConnection(Connection connection){
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericWizardService.class)) {
+            IGenericWizardService wizardService = (IGenericWizardService) GlobalServiceRegister.getDefault().getService(
+                    IGenericWizardService.class);
+            if (wizardService != null) {
+                return wizardService.isGenericConnection(connection);
+            }
+        }
+        return false;
     }
 
     public static Set<String> retrieveContextVar(List<? extends IElementParameter> elementParameters, Connection connection,
@@ -1575,6 +1596,37 @@ public final class ConnectionContextHelper {
             final IContextManager ctxManager, boolean added) {
         return checkAndAddContextVariables(contextItem.getContext(), contextItem.getDefaultContext(), contextItem.getProperty()
                 .getId(), neededVars, ctxManager, added);
+    }
+    
+    public static Set<String> checkAndAddContextVariables(final ContextItem contextItem,
+            final IContextManager ctxManager, boolean added) {
+        List<ContextType> contexts = contextItem.getContext();
+        String defaultContextName = contextItem.getDefaultContext();
+        String contextItemId = contextItem.getProperty().getId();
+        Set<String> addedVars = new HashSet<String>();
+        for (IContext context : ctxManager.getListContext()) {
+            ContextType type = ContextUtils.getContextTypeByName(contexts, context.getName(), defaultContextName);
+            if (type != null) {
+                for (ContextParameterType param :(List<ContextParameterType>)type.getContextParameter()){
+                    if (context.getContextParameter(param.getName()) != null) {
+                        continue;
+                    }
+                    if(added){
+                        JobContextParameter contextParam = new JobContextParameter();
+
+                        ContextUtils.updateParameter(param, contextParam);
+                        if (contextItemId != null) {
+                            contextParam.setSource(contextItemId);
+                        }
+                        contextParam.setContext(context);
+
+                        context.getContextParameterList().add(contextParam);
+                    }
+                    addedVars.add(param.getName());
+                }
+            }
+        }
+        return addedVars;
     }
 
     /**

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -17,8 +17,11 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.database.conn.version.EDatabaseVersion4Drivers;
+import org.talend.core.model.repository.ERepositoryObjectType;
+import org.talend.core.runtime.services.IGenericDBService;
 
 /**
  * cli class global comment. Detailled comment
@@ -159,8 +162,9 @@ public enum EDatabaseConnTemplate {
             "8591")), //$NON-NLS-1$
     // "jdbc:sap://talendhana.cld.sr:30015";
     SAPHana(new DbConnStr(EDatabaseTypeName.SAPHana, //
-            "jdbc:sap://<host>:<port>", //$NON-NLS-1$
-            "30015")), //$NON-NLS-1$
+            "jdbc:sap://<host>:<port>?<property>", //$NON-NLS-1$
+            "30015", //$NON-NLS-1$
+            "")), //$NON-NLS-1$
 
     PARACCEL(new DbConnStr(EDatabaseTypeName.PARACCEL, //
             "jdbc:paraccel://<host>:<port>/<sid>", //$NON-NLS-1$
@@ -176,7 +180,7 @@ public enum EDatabaseConnTemplate {
             "5480")), //$NON-NLS-1$
 
     VERTICA(new DbConnStr(EDatabaseTypeName.VERTICA, //
-            "jdbc:vertica://<host>:<port>/<sid>", //$NON-NLS-1$
+            "jdbc:vertica://<host>:<port>/<sid>?<property>", //$NON-NLS-1$
             "5433")), //$NON-NLS-1$
 
     GENERAL_JDBC(new DbConnStrForGeneralJDBC(EDatabaseTypeName.GENERAL_JDBC, //
@@ -288,6 +292,20 @@ public enum EDatabaseConnTemplate {
     private static List<String> getDBTypes(boolean sort, boolean all, boolean display) {
         EDatabaseConnTemplate[] values = EDatabaseConnTemplate.values();
         List<String> databaseType = new ArrayList<String>(values.length);
+        
+        List<ERepositoryObjectType> extraTypes = new ArrayList<ERepositoryObjectType>();
+        IGenericDBService dbService = null;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
+            dbService = (IGenericDBService) GlobalServiceRegister.getDefault().getService(
+                    IGenericDBService.class);
+        }
+        if(dbService != null){
+            extraTypes.addAll(dbService.getExtraTypes());
+        }
+        
+        for(ERepositoryObjectType type : extraTypes){
+            databaseType.add(type.getType());
+        }
         for (EDatabaseConnTemplate temp : values) {
             String typeName = getDBTypeName(temp, display);
             if (typeName != null && !databaseType.contains(typeName)) {
@@ -370,6 +388,7 @@ public enum EDatabaseConnTemplate {
             case EXASOL:
             case ACCESS:
             case REDSHIFT:
+            case SAPHana:
                 return true;
             default:
             }

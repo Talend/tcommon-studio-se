@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -56,7 +56,7 @@ public final class JavaUtils {
 
     public static final String DEFAULT_VERSION = JavaCore.VERSION_1_8;
 
-    public static final List<String> AVAILABLE_VERSIONS = Arrays.asList( JavaCore.VERSION_1_7, JavaCore.VERSION_1_8 );
+    public static final List<String> AVAILABLE_VERSIONS = Arrays.asList(JavaCore.VERSION_1_8 );
     
     public static final String PROCESSOR_TYPE = "javaProcessor"; //$NON-NLS-1$
 

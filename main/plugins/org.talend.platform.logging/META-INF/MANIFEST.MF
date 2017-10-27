@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Logging Plug-in
 Bundle-SymbolicName: org.talend.platform.logging
-Bundle-Version: 6.5.0.qualifier
+Bundle-Version: 7.0.1.qualifier
 Bundle-Activator: org.talend.platform.logging.Activator
 Bundle-Vendor: .Talend SA.
 Require-Bundle: org.eclipse.ui,

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Core UI Test
 Bundle-SymbolicName: org.talend.core.ui.test
-Bundle-Version: 6.5.0.qualifier
+Bundle-Version: 7.0.1.qualifier
 Fragment-Host: org.talend.core.ui
 Require-Bundle: org.talend.testutils
 Import-Package: org.talend.repository.items.importexport.handlers,
