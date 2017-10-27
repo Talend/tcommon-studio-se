@@ -102,6 +102,8 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
 
     private String urlToUse;
 
+    private String defaultURI;
+
     private String moduleName = "";
 
     private String cusormURIValue = "";
@@ -547,6 +549,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         String originalURI = null;
         String customURI = null;
         originalURI = mavenURIComposite.defaultUriTxt.getText().trim();
+        defaultURI = originalURI;
         if (mavenURIComposite.useCustomBtn.getSelection()) {
             customURI = MavenUrlHelper.addTypeForMavenUri(mavenURIComposite.customUriText.getText().trim(), moduleName);
         }
@@ -591,14 +594,16 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         String oldCustomUri = testModule.getCustomMavenUri();
         boolean saveCustomMap = !StringUtils.equals(customURI, oldCustomUri);
         Set<String> modulesNeededNames = ModulesNeededProvider.getAllManagedModuleNames();
+        boolean isCutomJar = !ModulesNeededProvider.getAllModuleNamesFromIndex().contains(moduleName);
+        if (isCutomJar && customURI == null) {
+            // key and value will be the same for custom jar if without custom uri
+            customURI = urlToUse;
+        }
         if (!modulesNeededNames.contains(moduleName)) {
             ModulesNeededProvider.addUnknownModules(moduleName, originalURI, false);
-            // key and value will be the same for custom jar if without custom uri
             saveCustomMap = true;
-            if (customURI == null) {
-                customURI = urlToUse;
-            }
         }
+
         // change the custom uri
         if (saveCustomMap) {
             testModule.setCustomMavenUri(customURI);
@@ -624,7 +629,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
      */
     @Override
     public String getMavenURI() {
-        return urlToUse;
+        return defaultURI;
     }
 
     /*

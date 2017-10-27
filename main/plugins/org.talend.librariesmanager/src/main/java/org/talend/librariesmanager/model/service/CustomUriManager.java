@@ -160,6 +160,7 @@ public class CustomUriManager {
             File file = new File(getResourcePath(), CUSTOM_URI_MAP);
             long modifyDate = file.lastModified();
             if (modifyDate > lastModified) {
+                customURIObject.clear();
                 JSONObject loadResources = loadResources(getResourcePath(), CUSTOM_URI_MAP);
                 customURIObject.putAll(loadResources);
                 lastModified = modifyDate;

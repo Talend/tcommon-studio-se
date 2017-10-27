@@ -365,7 +365,7 @@ public class ModuleNeeded {
             hashCode *= this.getModuleLocaion().hashCode();
         }
 
-        hashCode *= this.getMavenUri().hashCode();
+        hashCode *= this.getDefaultMavenURI().hashCode();
 
         return hashCode;
     }
@@ -449,7 +449,7 @@ public class ModuleNeeded {
         }
 
         // maven uri
-        if (!other.getMavenUri().equals(this.getMavenUri())) {
+        if (!other.getDefaultMavenURI().equals(this.getDefaultMavenURI())) {
             return false;
         }
 

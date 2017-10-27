@@ -339,14 +339,15 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                 }
 
             }
-            if (jarFile == null) {
-                jarFile = getJarFile(jarNeeded);
-            }
         } catch (Exception e) {
             CommonExceptionHandler.process(new Exception(getClass().getSimpleName() + " resolve " + module.getModuleName()
                     + " failed !"));
         }
         try {
+            // try the jar name if can't get jar with uri.
+            if (jarFile == null) {
+                jarFile = getJarFile(jarNeeded);
+            }
             if (jarFile == null) {
                 if (showDialog && !CommonsPlugin.isHeadless()) {
                     // popup dialog if needed to download the jar.

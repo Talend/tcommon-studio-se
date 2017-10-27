@@ -82,6 +82,7 @@ import org.talend.designer.core.model.utils.emf.component.IMPORTType;
 import org.talend.designer.core.model.utils.emf.talendfile.RoutinesParameterType;
 import org.talend.librariesmanager.i18n.Messages;
 import org.talend.librariesmanager.model.service.CustomUriManager;
+import org.talend.librariesmanager.model.service.LibrariesIndexManager;
 import org.talend.librariesmanager.prefs.LibrariesManagerUtils;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
@@ -172,6 +173,7 @@ public class ModulesNeededProvider {
                 }
                 // Custom URI Mapping
                 Set<String> modulesNeededMVNURIs = getModulesNeededDefaultMVNURIs();
+                CustomUriManager.getInstance().reloadCustomMapping();
                 for (String mvnURIKey : new HashSet<String>(CustomUriManager.getInstance().keySet())) {
                     if (!modulesNeededMVNURIs.contains(mvnURIKey)) {
                         // use the key(defulat value) to create the unknown module ,no need to set the custom maven uri
@@ -232,6 +234,13 @@ public class ModulesNeededProvider {
         for (ModuleNeeded m : getAllManagedModules()) {
             moduleNames.add(m.getModuleName());
         }
+        return moduleNames;
+    }
+
+    public static Set<String> getAllModuleNamesFromIndex() {
+        Set<String> moduleNames = new HashSet<String>();
+        moduleNames.addAll(LibrariesIndexManager.getInstance().getMavenLibIndex().getJarsToRelativePath().keySet());
+        moduleNames.addAll(LibrariesIndexManager.getInstance().getStudioLibIndex().getJarsToRelativePath().keySet());
         return moduleNames;
     }
 
@@ -653,14 +662,16 @@ public class ModulesNeededProvider {
     }
 
     private static Set<ModuleNeeded> createModuleNeededFromRoutine(RoutineItem routine) {
+        String label = ERepositoryObjectType.getItemType(routine).getLabel();
+        String context = label + " " + routine.getProperty().getLabel();
         Set<ModuleNeeded> importNeedsList = new HashSet<ModuleNeeded>();
         if (routine != null) {
             EList imports = routine.getImports();
             for (Object o : imports) {
                 IMPORTType currentImport = (IMPORTType) o;
                 // FIXME SML i18n
-                ModuleNeeded toAdd = new ModuleNeeded("Routine " + currentImport.getNAME(), currentImport.getMODULE(), //$NON-NLS-1$
-                        currentImport.getMESSAGE(), currentImport.isREQUIRED());
+                ModuleNeeded toAdd = new ModuleNeeded(context, currentImport.getMODULE(), currentImport.getMESSAGE(),
+                        currentImport.isREQUIRED());
                 toAdd.setMavenUri(currentImport.getMVN());
                 // toAdd.setStatus(ELibraryInstallStatus.INSTALLED);
                 importNeedsList.add(toAdd);
@@ -947,12 +958,34 @@ public class ModulesNeededProvider {
     }
 
     public static Set<ModuleNeeded> updateModulesNeededForRoutine(RoutineItem routineItem) {
+        String label = ERepositoryObjectType.getItemType(routineItem).getLabel();
+        String currentContext = label + " " + routineItem.getProperty().getLabel();
         Set<ModuleNeeded> modulesNeeded = createModuleNeededFromRoutine(routineItem);
-        getModulesNeeded().addAll(modulesNeeded);
+        Set<String> routinModuleNames = new HashSet<String>();
         for (ModuleNeeded module : modulesNeeded) {
-            ModuleNeeded unKnownModule = createUnknownModule(module.getModuleName(), module.getMavenUri());
-            getAllManagedModules().remove(unKnownModule);
+            routinModuleNames.add(module.getModuleName());
         }
+        // remove old modules from the two lists
+        Set<ModuleNeeded> oldModules = new HashSet<ModuleNeeded>();
+        for (ModuleNeeded existingModule : getModulesNeeded()) {
+            if (currentContext.equals(existingModule.getContext())
+                    || (ModuleNeeded.UNKNOWN.equals(existingModule.getContext()) && routinModuleNames.contains(existingModule
+                            .getModuleName()))) {
+                oldModules.add(existingModule);
+            }
+        }
+        getModulesNeeded().removeAll(oldModules);
+        oldModules = new HashSet<ModuleNeeded>();
+        for (ModuleNeeded existingModule : getAllManagedModules()) {
+            if (currentContext.equals(existingModule.getContext())
+                    || (ModuleNeeded.UNKNOWN.equals(existingModule.getContext()) && routinModuleNames.contains(existingModule
+                            .getModuleName()))) {
+                oldModules.add(existingModule);
+            }
+        }
+        getAllManagedModules().removeAll(oldModules);
+
+        getModulesNeeded().addAll(modulesNeeded);
         getAllManagedModules().addAll(modulesNeeded);
         return modulesNeeded;
     }
