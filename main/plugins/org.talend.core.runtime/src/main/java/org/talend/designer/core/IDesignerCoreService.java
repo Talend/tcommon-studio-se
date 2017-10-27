@@ -186,5 +186,9 @@ public interface IDesignerCoreService extends IService {
 
     public int getTACConnectionTimeout();
 
+    public void setTACConnectionTimeout(int timeout);
+
     public int getTACReadTimeout();
+
+    public void setTACReadTimeout(int timeout);
 }
