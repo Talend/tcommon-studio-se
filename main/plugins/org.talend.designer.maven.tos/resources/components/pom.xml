@@ -96,6 +96,11 @@
             <artifactId>components-api</artifactId>
             <version>${components.version}</version>
         </dependency>
+		<dependency>
+			<groupId>org.talend.components</groupId>
+			<artifactId>components-google-drive-runtime</artifactId>
+			<version>${components.version}</version>
+		</dependency>
         <dependency>
             <groupId>biz.aQute.bnd</groupId>
             <artifactId>annotation</artifactId>
