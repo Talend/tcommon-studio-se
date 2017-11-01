@@ -890,7 +890,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
             }
 
             // the case for mssql
-            if (MetadataConnectionUtils.isMssql(dbJDBCMetadata) && dbJDBCMetadata.getDatabaseMajorVersion() > 8
+            // seems schema is supported since SqlServer 2005
+            if (MetadataConnectionUtils.isMssql(dbJDBCMetadata) && dbJDBCMetadata.getDatabaseMajorVersion() < 9
                     && dbJDBCMetadata.getDriverMajorVersion() > 1) {
                 if (catalogName != null && catalogName != schemaName) {
                     schemaName = catalogName;
