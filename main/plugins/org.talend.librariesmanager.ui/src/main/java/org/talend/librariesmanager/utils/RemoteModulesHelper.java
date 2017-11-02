@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
@@ -267,14 +268,13 @@ public class RemoteModulesHelper {
             String description = artifact.getDescription();
             String license = artifact.getLicense();
             String license_url = artifact.getLicenseUrl();
-            String packaging = artifact.getType();
             String url = null;
             if (artifact.getUrl() != null && !"".equals(artifact.getUrl())) {
                 url = artifact.getUrl();
             }
             ModuleToInstall m = new ModuleToInstall();
             m.setName(artifactId + "." + packageName);
-            String mvnUri = MavenUrlHelper.generateMvnUrl(artifact.getGroupId(), artifactId, version, packaging,
+            String mvnUri = MavenUrlHelper.generateMvnUrl(artifact.getGroupId(), artifactId, version, packageName,
                     artifact.getClassifier());
             m.setMavenUri(mvnUri);
             m.setLicenseType(license);
@@ -282,7 +282,7 @@ public class RemoteModulesHelper {
             m.setDescription(description);
             m.setUrl_description(url);
             m.setUrl_download(url);
-            if (artifact.getType() == null || "".equals(artifact.getType()) //$NON-NLS-1$
+            if (StringUtils.isEmpty(artifact.getType()) //$NON-NLS-1$
                     || MavenConstants.PACKAGING_POM.equals(artifact.getType())) {
                 m.setDistribution(MavenConstants.DOWNLOAD_MANUAL);
             } else {
