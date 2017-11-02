@@ -285,8 +285,6 @@ public class RemoteModulesHelper {
             if (StringUtils.isEmpty(artifact.getType()) //$NON-NLS-1$
                     || MavenConstants.PACKAGING_POM.equals(artifact.getType())) {
                 m.setDistribution(MavenConstants.DOWNLOAD_MANUAL);
-            } else {
-                m.setDistribution(artifact.getType());
             }
             if (theCache == localCache) {
                 m.setFromCustomNexus(true);
