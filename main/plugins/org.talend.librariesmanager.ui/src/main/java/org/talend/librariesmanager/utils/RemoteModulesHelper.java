@@ -256,37 +256,36 @@ public class RemoteModulesHelper {
 
     private void addModulesToCache(List<MavenArtifact> searchResults, Map<String, ModuleToInstall> theCache) {
         for (MavenArtifact artifact : searchResults) {
-            if (!StringUtils.isEmpty(artifact.getType()) && !MavenConstants.PACKAGING_POM.equals(artifact.getType())) {
-                String artifactId = artifact.getArtifactId();
-                String packageName = artifact.getType();
-                if (packageName == null) {
-                    packageName = MavenConstants.TYPE_JAR;
-                }
-                String version = artifact.getVersion();
-                String description = artifact.getDescription();
-                String license = artifact.getLicense();
-                String license_url = artifact.getLicenseUrl();
-                String packaging = artifact.getType();
-                String url = null;
-                if (artifact.getUrl() != null && !"".equals(artifact.getUrl())) {
-                    url = artifact.getUrl();
-                }
-                ModuleToInstall m = new ModuleToInstall();
-                m.setName(artifactId + "." + packageName);
-                String mvnUri = MavenUrlHelper.generateMvnUrl(artifact.getGroupId(), artifactId, version, packaging,
-                        artifact.getClassifier());
-                m.setMavenUri(mvnUri);
-                m.setLicenseType(license);
-                m.setLicenseUrl(license_url);
-                m.setDescription(description);
-                m.setUrl_description(url);
-                m.setUrl_download(url);
-
-                if (theCache == localCache) {
-                    m.setFromCustomNexus(true);
-                }
-                theCache.put(mvnUri, m);
+            String artifactId = artifact.getArtifactId();
+            String packageName = artifact.getType();
+            if (packageName == null) {
+                packageName = MavenConstants.TYPE_JAR;
             }
+            String version = artifact.getVersion();
+            String description = artifact.getDescription();
+            String license = artifact.getLicense();
+            String license_url = artifact.getLicenseUrl();
+            String url = null;
+            if (artifact.getUrl() != null && !"".equals(artifact.getUrl())) {
+                url = artifact.getUrl();
+            }
+            ModuleToInstall m = new ModuleToInstall();
+            m.setName(artifactId + "." + packageName);
+            String mvnUri = MavenUrlHelper.generateMvnUrl(artifact.getGroupId(), artifactId, version, packageName,
+                    artifact.getClassifier());
+            m.setMavenUri(mvnUri);
+            m.setLicenseType(license);
+            m.setLicenseUrl(license_url);
+            m.setDescription(description);
+            m.setUrl_description(url);
+            m.setUrl_download(url);
+            if (StringUtils.isEmpty(artifact.getType()) || MavenConstants.PACKAGING_POM.equals(artifact.getType())) {
+                m.setDistribution(MavenConstants.DOWNLOAD_MANUAL);
+            }
+            if (theCache == localCache) {
+                m.setFromCustomNexus(true);
+            }
+            theCache.put(mvnUri, m);
         }
     }
 
