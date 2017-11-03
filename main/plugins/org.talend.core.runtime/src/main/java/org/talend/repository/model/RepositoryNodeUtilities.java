@@ -484,6 +484,7 @@ public class RepositoryNodeUtilities {
 
             ERepositoryObjectType tmpType = null;
             if (curType == ERepositoryObjectType.METADATA_CON_TABLE || curType == ERepositoryObjectType.METADATA_CON_VIEW
+                    || curType == ERepositoryObjectType.METADATA_CON_CALCULATION_VIEW
                     || curType == ERepositoryObjectType.METADATA_CON_SYNONYM
                     || curType == ERepositoryObjectType.METADATA_CON_QUERY
                     || curType == ERepositoryObjectType.METADATA_CONNECTIONS
