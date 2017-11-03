@@ -169,6 +169,11 @@ public class MavenUrlHelper {
         return generateMvnUrlForJarName(jarName, true, true);
     }
 
+    public static String generateMvnUrl(MavenArtifact artifact) {
+        return generateMvnUrl(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(), artifact.getType(),
+                artifact.getClassifier());
+    }
+
     /**
      * 
      * mvn:groupId/artifactId/version/packaging/classifier

@@ -595,4 +595,51 @@ public class PomUtilTest {
         jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, jobProperty);
         Assert.assertEquals("0.1", jobVersion);
     }
+
+    @Test
+    public void testGetArtifactPath() {
+        MavenArtifact artifact = new MavenArtifact();
+        artifact.setGroupId("org.talend.libraries");
+        artifact.setArtifactId("test");
+        artifact.setVersion("1.0.0");
+        String artifactPath = PomUtil.getArtifactPath(artifact);
+        String expectedPath = "org/talend/libraries/test/1.0.0/test-1.0.0.jar";
+        Assert.assertEquals(artifactPath, expectedPath);
+
+        artifact.setGroupId("org.talend.libraries");
+        artifact.setArtifactId("test");
+        artifact.setVersion("1.0.0");
+        artifact.setType("exe");
+        artifactPath = PomUtil.getArtifactPath(artifact);
+        expectedPath = "org/talend/libraries/test/1.0.0/test-1.0.0.exe";
+        Assert.assertEquals(artifactPath, expectedPath);
+
+        artifact.setGroupId("org.talend.libraries");
+        artifact.setArtifactId("test");
+        artifact.setVersion("1.0.0");
+        artifact.setClassifier("jdk");
+        artifact.setType("exe");
+        artifactPath = PomUtil.getArtifactPath(artifact);
+        expectedPath = "org/talend/libraries/test/1.0.0/test-1.0.0-jdk.exe";
+        Assert.assertEquals(artifactPath, expectedPath);
+
+    }
+
+    @Test
+    public void getAbsArtifactPath() {
+        MavenArtifact artifact = new MavenArtifact();
+        artifact.setGroupId("org.talend.libraries");
+        artifact.setArtifactId("getAbsArtifactPath");
+        artifact.setVersion("1.0.0");
+        String absArtifactPath = PomUtil.getAbsArtifactPath(artifact);
+        Assert.assertNull(absArtifactPath);
+
+        artifact.setGroupId("org.apache.commons");
+        artifact.setArtifactId("commons-lang3");
+        artifact.setVersion("3.4");
+        artifact.setType("jar");
+        absArtifactPath = PomUtil.getAbsArtifactPath(artifact);
+        Assert.assertNotNull(absArtifactPath);
+        Assert.assertTrue(new File(absArtifactPath).exists());
+    }
 }

@@ -50,7 +50,6 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.m2e.core.MavenPlugin;
-import org.eclipse.m2e.core.embedder.IMaven;
 import org.eclipse.m2e.core.embedder.MavenModelManager;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
@@ -58,6 +57,7 @@ import org.talend.commons.utils.VersionUtils;
 import org.talend.commons.utils.generation.JavaUtils;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.GlobalServiceRegister;
+import org.talend.core.ILibraryManagerService;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.process.IProcess;
 import org.talend.core.model.process.JobInfo;
@@ -65,6 +65,7 @@ import org.talend.core.model.process.ProcessUtils;
 import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.utils.JavaResourcesHelper;
+import org.talend.core.nexus.TalendMavenResolver;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.maven.MavenUrlHelper;
@@ -378,36 +379,72 @@ public class PomUtil {
         return null;
     }
 
+    /**
+     * 
+     * Get artifact relative path
+     * 
+     * @param artifact
+     * @return
+     */
     public static String getArtifactPath(MavenArtifact artifact) {
-        IMaven maven = MavenPlugin.getMaven();
-        String artifactPath = null;
-        try {
-            artifactPath = maven.getArtifactPath(maven.getLocalRepository(), artifact.getGroupId(), artifact.getArtifactId(),
-                    artifact.getVersion(), artifact.getType(), artifact.getClassifier());
-        } catch (CoreException e) {
-            ExceptionHandler.process(e);
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(artifact.getGroupId().replaceAll("\\.", "/"));
+
+        buffer.append("/");
+        buffer.append(artifact.getArtifactId());
+
+        if (artifact.getVersion() != null) {
+            buffer.append("/");
+            buffer.append(artifact.getVersion());
         }
-        return artifactPath;
+
+        buffer.append("/");
+        buffer.append(artifact.getArtifactId());
+        if (artifact.getVersion() != null) {
+            buffer.append("-");
+            buffer.append(artifact.getVersion());
+        }
+        if (artifact.getClassifier() != null) {
+            buffer.append("-");
+            buffer.append(artifact.getClassifier());
+        }
+        if (artifact.getType() != null) {
+            buffer.append(".");
+            buffer.append(artifact.getType());
+        } else {
+            // add default extension
+            buffer.append(".jar");
+        }
+        return buffer.toString();
     }
 
+    /**
+     * Get absolute path for installed artifact
+     * 
+     * @param artifact
+     * @return installed artifact absolute path , it will return null if artifact is not installed.
+     */
     public static String getAbsArtifactPath(MavenArtifact artifact) {
         if (artifact == null) {
             return null;
         }
-        IMaven maven = MavenPlugin.getMaven();
-        String artifactPath = getArtifactPath(artifact);
-        if (artifactPath == null) {
-            return null;
+        String mvnUri = MavenUrlHelper.generateMvnUrl(artifact);
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerService.class)) {
+            ILibraryManagerService librariesService = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
+                    ILibraryManagerService.class);
+            return librariesService.getJarPathFromMaven(mvnUri);
+        } else {
+            String localMavenUri = mvnUri.replace("mvn:", "mvn:" + MavenConstants.LOCAL_RESOLUTION_URL + "!"); //$NON-NLS-1$ //$NON-NLS-2$
+            File resolve = null;
+            try {
+                resolve = TalendMavenResolver.getMavenResolver().resolve(localMavenUri);
+            } catch (IOException | RuntimeException e) {
+                resolve = null;
+            }
+            if (resolve != null) {
+                return resolve.getAbsolutePath();
+            }
         }
-        String localRepositoryPath = maven.getLocalRepositoryPath();
-        if (!localRepositoryPath.endsWith("/") && !localRepositoryPath.endsWith("\\")) {
-            localRepositoryPath = localRepositoryPath + "/";
-        }
-        File file = new File(localRepositoryPath + artifactPath);
-        if (file.exists()) {
-            return file.getAbsolutePath();
-        }
-
         return null;
     }
 
