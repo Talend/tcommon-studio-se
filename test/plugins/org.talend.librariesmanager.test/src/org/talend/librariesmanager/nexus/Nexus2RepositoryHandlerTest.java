@@ -16,7 +16,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.talend.core.nexus.NexusServerBean;
 import org.talend.core.nexus.NexusServerBean.NexusType;
-import org.talend.librariesmanager.nexus.Nexus2RepositoryHandler;
 
 /**
  * created by wchen on Aug 18, 2017 Detailled comment
@@ -34,9 +33,9 @@ public class Nexus2RepositoryHandlerTest {
         Nexus2RepositoryHandler handler = new Nexus2RepositoryHandler();
         handler.setArtifactServerBean(serverBean);
         String releaseUrl = handler.getRepositoryURL(true);
-        Assert.assertEquals("http://localhost:8081/nexus/content/repositories/release-repository", releaseUrl);
+        Assert.assertEquals("http://localhost:8081/nexus/content/repositories/release-repository/", releaseUrl);
         String snapshotUrl = handler.getRepositoryURL(false);
-        Assert.assertEquals("http://localhost:8081/nexus/content/repositories/snapshot-repository", snapshotUrl);
+        Assert.assertEquals("http://localhost:8081/nexus/content/repositories/snapshot-repository/", snapshotUrl);
     }
 
 }

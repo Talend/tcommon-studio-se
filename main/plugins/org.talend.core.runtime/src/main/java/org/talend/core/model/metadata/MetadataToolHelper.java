@@ -434,7 +434,7 @@ public final class MetadataToolHelper {
      * 
      * 
      */
-    private static String mapSpecialChar(String columnName) {
+    private  static String mapSpecialChar(String columnName) {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IRoutinesService.class)) {
             IRoutinesService service = (IRoutinesService) GlobalServiceRegister.getDefault().getService(IRoutinesService.class);
             if (service != null) {
@@ -1405,6 +1405,7 @@ public final class MetadataToolHelper {
             }
             newColumn.setLabel(label2);
             newColumn.setPattern(column.getPattern());
+            
             if (column.getLength() < 0) {
                 newColumn.setLength(null);
             } else {
@@ -1427,12 +1428,12 @@ public final class MetadataToolHelper {
                         newColumn.setCustom(Boolean.valueOf(tv.getValue()));
                     } else if (DiSchemaConstants.TALEND6_IS_READ_ONLY.equals(additionalTag)) {
                         newColumn.setReadOnly(Boolean.valueOf(tv.getValue()));
-                    } else {
+                    }else {
                         newColumn.getAdditionalField().put(additionalTag, tv.getValue());
                     }
                 }
             }
-
+            
             newColumn.setNullable(column.isNullable());
             if (column.getPrecision() < 0) {
                 newColumn.setPrecision(null);

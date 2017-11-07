@@ -13,13 +13,13 @@
 package org.talend.librariesmanager.ui.actions;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.Action;
 import org.eclipse.swt.SWT;
@@ -32,15 +32,15 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.ui.runtime.image.ECoreImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.commons.utils.io.FilesUtils;
-import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.general.ModuleToInstall;
-import org.talend.core.model.general.Project;
+import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.designer.runprocess.IRunProcessService;
+import org.talend.librariesmanager.model.ModulesNeededProvider;
+import org.talend.librariesmanager.model.service.CustomUriManager;
 import org.talend.librariesmanager.ui.LibManagerUiPlugin;
 import org.talend.librariesmanager.ui.i18n.Messages;
-import org.talend.repository.ProjectManager;
 
 /**
  * Imports the external jar files into talend.
@@ -67,7 +67,6 @@ public class ImportExternalJarAction extends Action {
      */
     @Override
     public void run() {
-
         handleImportJarDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell());
     }
 
@@ -87,45 +86,45 @@ public class ImportExternalJarAction extends Action {
         fileDialog.open();
         final String path = fileDialog.getFilterPath();
         final String[] fileNames = fileDialog.getFileNames();
-
         BusyIndicator.showWhile(Display.getDefault(), new Runnable() {
 
             @Override
             public void run() {
-                String moduleName = null;
-                String mvnUri = null;
-                if (module != null) {
-                    moduleName = module.getName();
-                    mvnUri = module.getMavenUri();
-                }
-                for (int i = 0; i < fileNames.length; i++) {
-                    String fileName = fileNames[i];
-                    File file = new File(path + File.separatorChar + fileName);
-                    File tempFile = null;
-                    try {
-                        if (moduleName != null && fileNames.length == 1 && !file.isDirectory()
-                                && !file.getName().equals(moduleName)) {
-                            Project project = ProjectManager.getInstance().getCurrentProject();
-                            IProject fsProject = ResourceUtils.getProject(project);
-                            IFolder tmpFolder = fsProject.getFolder("temp");
-                            if (!tmpFolder.exists()) {
-                                tmpFolder.create(true, true, null);
+                Set<String> modulesNeededNames = ModulesNeededProvider.getAllManagedModuleNames();
+                if (fileNames.length > 0) {
+                    boolean modified = false;
+                    if (fileNames.length > 1) {
+                        for (String fileName : fileNames) {
+                            File file = new File(path + File.separatorChar + fileName);
+                            try {
+                                String mvnUri = null;
+                                if (module != null && module.getName().equals(fileName)) {
+                                    mvnUri = module.getMavenUri();
+                                }
+                                modified = installFile(modulesNeededNames, file, file.getName(), mvnUri) || modified;
+                            } catch (Exception e) {
+                                ExceptionHandler.process(e);
+                                continue;
                             }
-                            tempFile = new File(tmpFolder.getLocation().toPortableString(), moduleName);
-                            FilesUtils.copyFile(file, tempFile);
-                            file = tempFile;
-                            fileNames[i] = file.getName();
                         }
-
-                        LibManagerUiPlugin.getDefault().getLibrariesService().deployLibrary(file.toURL(), mvnUri);
-                        if (tempFile != null) {
-                            FilesUtils.deleteFile(tempFile, true);
+                    } else {
+                        File file = new File(path + File.separatorChar + fileNames[0]);
+                        String mvnUri = null;
+                        String moduleName = file.getName();
+                        if (module != null) {
+                            mvnUri = module.getMavenUri();
+                            // in case selected file name is not the same as module name
+                            moduleName = module.getName();
+                            fileNames[0] = moduleName;
                         }
-                    } catch (Exception e) {
-                        ExceptionHandler.process(e);
-                        continue;
+                        try {
+                            modified = installFile(modulesNeededNames, file, moduleName, mvnUri) || modified;
+                        } catch (Exception e) {
+                            ExceptionHandler.process(e);
+                        }
                     }
                 }
+                LibManagerUiPlugin.getDefault().getLibrariesService().checkLibraries();
                 // only clean the existed one
                 cleanupLib(new HashSet<String>(Arrays.asList(fileNames)));
             }
@@ -133,15 +132,17 @@ public class ImportExternalJarAction extends Action {
         return fileNames;
     }
 
-    // private void emptyLibs() {
-    // if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibrariesService.class)) {
-    // ILibrariesService libService = (ILibrariesService) GlobalServiceRegister.getDefault().getService(
-    // ILibrariesService.class);
-    // if (libService != null) {
-    // libService.cleanLibs();
-    // }
-    // }
-    // }
+    private boolean installFile(Set<String> modulesNeededNames, File file, String moduleName, String mvnURI)
+            throws MalformedURLException, IOException {
+        LibManagerUiPlugin.getDefault().getLibrariesService().deployLibrary(file.toURL(), mvnURI, false);
+        if (!modulesNeededNames.contains(moduleName)) {
+            String mavenUri = MavenUrlHelper.generateMvnUrlForJarName(moduleName, true, true);
+            CustomUriManager.getInstance().put(mavenUri, mavenUri);
+            ModulesNeededProvider.addUnknownModules(moduleName, mavenUri, true);
+            return true;
+        }
+        return false;
+    }
 
     public static void cleanupLib(Set<String> installedModule) {
         for (String jarName : installedModule) {

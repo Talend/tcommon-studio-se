@@ -598,16 +598,18 @@ public class RemoteModulesHelper {
     public RemoteModulesFetchRunnable getNotInstalledModulesRunnable(List<ModuleNeeded> neededModules,
             List<ModuleToInstall> toInstall, boolean collectModulesWithJarName) {
         Map<String, List<ModuleNeeded>> contextMap = new HashMap<String, List<ModuleNeeded>>();
-
+        ILibraryManagerService librairesManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
+                ILibraryManagerService.class);
         // collect mvnuri and modules incase many modules have the same mvnuri
         final Iterator<ModuleNeeded> iterator = neededModules.iterator();
         while (iterator.hasNext()) {
             ModuleNeeded module = iterator.next();
-            String mvnUri = module.getMavenUri();
-            if (mvnUri == null) {
+            String mvnUri = null;
+            if (module.getCustomMavenUri() != null) {
+                mvnUri = module.getCustomMavenUri();
+            } else if (module.getMavenURIFromConfiguration() == null
+                    && librairesManagerService.getMavenUriFromIndex(module.getModuleName()) != null) {
                 Set<String> urisFromIndex = new HashSet<String>();
-                ILibraryManagerService librairesManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault()
-                        .getService(ILibraryManagerService.class);
                 final String mavenUriFromIndex = librairesManagerService.getMavenUriFromIndex(module.getModuleName());
                 if (mavenUriFromIndex != null) {
                     final String[] split = mavenUriFromIndex.split(MavenUrlHelper.MVN_INDEX_SPLITER);
@@ -615,28 +617,26 @@ public class RemoteModulesHelper {
                         urisFromIndex.add(fromIndex);
                     }
                 }
-                if (urisFromIndex.isEmpty()) {
-                    mvnUri = module.getMavenUri(true);
-                } else {
-                    // add all mvnuris from index to try to download
-                    for (String uri : urisFromIndex) {
-                        if (uri != null) {
-                            uri = addTypeForMavenUri(uri, module.getModuleName());
-                            ModuleNeeded newModule = new ModuleNeeded(null, module.getModuleName(), null, true);
-                            newModule.setMavenUri(uri);
-                            if (!contextMap.keySet().contains(uri)) {
-                                List<ModuleNeeded> modules = new ArrayList<ModuleNeeded>();
-                                modules.add(module);
-                                contextMap.put(uri, modules);
-                            } else {
-                                contextMap.get(uri).add(module);
-                            }
+                // add all mvnuris from index to try to download
+                for (String uri : urisFromIndex) {
+                    if (uri != null) {
+                        uri = MavenUrlHelper.addTypeForMavenUri(uri, module.getModuleName());
+                        ModuleNeeded newModule = new ModuleNeeded(null, module.getModuleName(), null, true);
+                        newModule.setMavenUri(uri);
+                        if (!contextMap.keySet().contains(uri)) {
+                            List<ModuleNeeded> modules = new ArrayList<ModuleNeeded>();
+                            modules.add(module);
+                            contextMap.put(uri, modules);
+                        } else {
+                            contextMap.get(uri).add(module);
                         }
                     }
                 }
+            } else {
+                mvnUri = module.getDefaultMavenURI();
             }
             if (mvnUri != null) {
-                mvnUri = addTypeForMavenUri(mvnUri, module.getModuleName());
+                mvnUri = MavenUrlHelper.addTypeForMavenUri(mvnUri, module.getModuleName());
                 if (!contextMap.keySet().contains(mvnUri)) {
                     List<ModuleNeeded> modules = new ArrayList<ModuleNeeded>();
                     modules.add(module);
@@ -649,19 +649,6 @@ public class RemoteModulesHelper {
         // fetch the jars which are not in cache.
         return createRemoteModuleFetchRunnable(contextMap, toInstall, collectModulesWithJarName);
 
-    }
-
-    private String addTypeForMavenUri(String uri, String moduleName) {
-        // make sure that mvn uri have the package
-        MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(uri, false);
-        if (parseMvnUrl != null && parseMvnUrl.getType() == null) {
-            if (moduleName.lastIndexOf(".") != -1) {
-                parseMvnUrl.setType(moduleName.substring(moduleName.lastIndexOf(".") + 1, moduleName.length()));
-                uri = MavenUrlHelper.generateMvnUrl(parseMvnUrl.getGroupId(), parseMvnUrl.getArtifactId(),
-                        parseMvnUrl.getVersion(), parseMvnUrl.getType(), parseMvnUrl.getClassifier());
-            }
-        }
-        return uri;
     }
 
     public RemoteModulesFetchRunnable getNotInstalledModulesRunnable(List<ModuleNeeded> neededModules,

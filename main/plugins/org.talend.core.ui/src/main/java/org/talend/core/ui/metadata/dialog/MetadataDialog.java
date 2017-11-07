@@ -48,6 +48,7 @@ import org.talend.commons.ui.swt.tableviewer.IModifiedBeanListener;
 import org.talend.commons.ui.swt.tableviewer.ModifiedBeanEvent;
 import org.talend.commons.ui.swt.tableviewer.TableViewerCreator;
 import org.talend.core.database.EDatabaseTypeName;
+import org.talend.core.model.components.EComponentType;
 import org.talend.core.model.metadata.Dbms;
 import org.talend.core.model.metadata.IMetadataColumn;
 import org.talend.core.model.metadata.IMetadataTable;
@@ -195,7 +196,9 @@ public class MetadataDialog extends Dialog {
         boolean isSAPELT = false;
         boolean hasRepositoryDbSchema = false;
         boolean isEBCDIC = false;
+        boolean isNewFram = false;
         if (node != null && node.getComponent() != null) {
+            isNewFram = node.getComponent().getComponentType()==EComponentType.GENERIC;
             eltComponent = node.isELTComponent();
             isEBCDIC = node.getComponent().getName().contains("EBCDIC");
             isSAPELT = node.getComponent().getName().startsWith("tELTSAP");
@@ -273,7 +276,9 @@ public class MetadataDialog extends Dialog {
         } else {
             eltComponent = false;
         }
-
+        if(isNewFram){
+            dbComponent = true;
+        }
         metaView.setShowDbTypeColumn(hasMappingType || eltComponent, false, hasMappingType
                 || (dbComponent && !hasRepositoryDbSchema));
         metaView.setShowDbColumnName(dbComponent, hasMappingType || (dbComponent && !hasRepositoryDbSchema));

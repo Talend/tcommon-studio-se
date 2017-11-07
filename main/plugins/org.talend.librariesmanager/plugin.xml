@@ -24,6 +24,13 @@
             uri="www.talend.com/librariesindex">
       </package>
    </extension>
+
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated librariesindex -->
+      <parser
+            type="librariesindex"
+            class="org.talend.librariesmanager.emf.librariesindex.util.LibrariesindexResourceFactoryImpl"/>
+   </extension>
    <extension
          point="org.talend.core.systemRoutineLibrary">
       <systemRoutine

@@ -59,9 +59,9 @@ public class NexusDownloadHelperWithProgress extends DownloadHelperWithProgress 
                 final NexusServerBean customNexusServer = new NexusServerBean(false);
                 customNexusServer.setServer(repositoryUrl);
                 progressMonitor.subTask("Downloading " + toInstall.getName() + ": " + mvnUri + " from " + repositoryUrl);
-                ILibraryManagerService libManager = (ILibraryManagerService) GlobalServiceRegister.getDefault()
-                        .getService(ILibraryManagerService.class);
-                resolved = libManager.resolveJar(manager, customNexusServer, mvnUri);
+                ILibraryManagerService libManager = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
+                        ILibraryManagerService.class);
+                resolved = libManager.resolveJar(customNexusServer, mvnUri);
                 if (resolved != null && resolved.exists()) {
                     return;
                 }
@@ -76,7 +76,7 @@ public class NexusDownloadHelperWithProgress extends DownloadHelperWithProgress 
                         + customNexusServer.getServer());
                 ILibraryManagerService libManager = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
                         ILibraryManagerService.class);
-                resolved = libManager.resolveJar(manager, customNexusServer, mvnUri);
+                resolved = libManager.resolveJar(customNexusServer, mvnUri);
             }
         }
         if (resolved != null && resolved.exists()) {

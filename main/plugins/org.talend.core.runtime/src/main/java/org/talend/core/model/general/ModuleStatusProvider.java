@@ -33,22 +33,20 @@ public class ModuleStatusProvider {
 
     private static Map<String, ELibraryInstallStatus> deployStatusMap = new HashMap<String, ELibraryInstallStatus>();
 
-    /**
-     * Getter for statusMap.
-     * 
-     * @return the statusMap
-     */
-    public static Map<String, ELibraryInstallStatus> getStatusMap() {
-        return statusMap;
+    public static void putStatus(String mvnURI, ELibraryInstallStatus status) {
+        statusMap.put(mvnURI, status);
     }
 
-    /**
-     * Getter for deployStatusMap.
-     * 
-     * @return the deployStatusMap
-     */
-    public static Map<String, ELibraryInstallStatus> getDeployStatusMap() {
-        return deployStatusMap;
+    public static ELibraryInstallStatus getStatus(String key) {
+        return statusMap.get(key);
+    }
+
+    public static void putDeployStatus(String mvnURI, ELibraryInstallStatus status) {
+        deployStatusMap.put(mvnURI, status);
+    }
+
+    public static ELibraryInstallStatus getDeployStatus(String key) {
+        return deployStatusMap.get(key);
     }
 
     public static void reset() {

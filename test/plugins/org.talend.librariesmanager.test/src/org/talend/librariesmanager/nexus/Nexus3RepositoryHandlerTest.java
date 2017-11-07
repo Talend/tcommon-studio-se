@@ -30,12 +30,12 @@ public class Nexus3RepositoryHandlerTest {
         serverBean.setRepositoryId("release-repository");
         serverBean.setSnapshotRepId("snapshot-repository");
         serverBean.setType(NexusType.NEXUS_3.name());
-        Nexus2RepositoryHandler handler = new Nexus2RepositoryHandler();
+        Nexus3RepositoryHandler handler = new Nexus3RepositoryHandler();
         handler.setArtifactServerBean(serverBean);
         String releaseUrl = handler.getRepositoryURL(true);
-        Assert.assertEquals("http://localhost:8081/nexus/repository/release-repository", releaseUrl);
+        Assert.assertEquals("http://localhost:8081/repository/release-repository/", releaseUrl);
         String snapshotUrl = handler.getRepositoryURL(false);
-        Assert.assertEquals("http://localhost:8081/nexus/repository/snapshot-repository", snapshotUrl);
+        Assert.assertEquals("http://localhost:8081/repository/snapshot-repository/", snapshotUrl);
     }
 
 }

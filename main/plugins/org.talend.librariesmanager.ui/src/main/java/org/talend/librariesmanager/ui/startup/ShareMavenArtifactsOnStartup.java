@@ -54,7 +54,7 @@ public class ShareMavenArtifactsOnStartup extends ShareLibrareisHelper {
                 return null;
             }
 
-            final String jarPathFromMaven = librariesService.getJarPathFromMaven(module.getMavenUri(true));
+            final String jarPathFromMaven = librariesService.getJarPathFromMaven(module.getMavenUri());
             if (jarPathFromMaven == null) {
                 continue;
             }

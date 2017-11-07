@@ -22,7 +22,6 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
-import org.talend.commons.exception.BusinessException;
 import org.talend.commons.ui.gmf.util.DisplayUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
@@ -136,39 +135,37 @@ public class InitializeMissingJarHandler implements IStartup, Observer {
             if (!new File(jarMissingEvent.getExpectedLibFolder(), moduleName).exists()) {
                 // check that library is already available and registered but not deployed to maven.
                 try {
-                    if (librariesService != null) {
-                        if (librariesService.getLibraryStatus(moduleName) == ELibraryInstallStatus.INSTALLED) {
-                            // lib exist so deploy it
-                            List<ModuleNeeded> allModuleNeeded = ModulesNeededProvider.getModulesNeededForName(moduleName);
-                            for (ModuleNeeded sameModule : allModuleNeeded) {
-                                String moduleLocation = sameModule.getModuleLocaion();
-                                if (sameModule.getStatus() == ELibraryInstallStatus.INSTALLED && moduleLocation != null
-                                        && !moduleLocation.isEmpty()) {
-                                    URI uri = new URI(moduleLocation);
-                                    URL url = FileLocator.toFileURL(uri.toURL());
-                                    if ("file".equals(url.getProtocol())) { //$NON-NLS-1$
-                                        // TUP-4968 using 'URIUtil.toURI(url)' supports a path with special chars(like as space).
-                                        libraryManagerService.deploy(URIUtil.toURI(url), null);
-                                        installed = true;
-                                    }// else not a file so keep going
-                                    break;
-                                }// else not an installed module or no url so keep so keep looking
+                    if (module.getStatus() == ELibraryInstallStatus.INSTALLED
+                            && module.getDeployStatus() == ELibraryInstallStatus.NOT_DEPLOYED) {
+                        // lib exist so deploy it
+                        List<ModuleNeeded> allModuleNeeded = ModulesNeededProvider.getModulesNeededForName(moduleName);
+                        for (ModuleNeeded sameModule : allModuleNeeded) {
+                            String moduleLocation = sameModule.getModuleLocaion();
+                            if (sameModule.getStatus() == ELibraryInstallStatus.INSTALLED && moduleLocation != null
+                                    && !moduleLocation.isEmpty()) {
+                                URI uri = new URI(moduleLocation);
+                                URL url = FileLocator.toFileURL(uri.toURL());
+                                if ("file".equals(url.getProtocol())) { //$NON-NLS-1$
+                                    // TUP-4968 using 'URIUtil.toURI(url)' supports a path with special chars(like
+                                    // as space).
+                                    libraryManagerService.deploy(URIUtil.toURI(url), module.getMavenUri());
+                                    installed = true;
+                                }// else not a file so keep going
+                                break;
+                            }// else not an installed module or no url so keep so keep looking
+                        }
+                        if (PluginChecker.isSVNProviderPluginLoaded()) {
+                            ISVNProviderServiceInCoreRuntime svnService = (ISVNProviderServiceInCoreRuntime) GlobalServiceRegister
+                                    .getDefault().getService(ISVNProviderServiceInCoreRuntime.class);
+                            if (svnService != null && svnService.isSvnLibSetupOnTAC()) {
+                                svnService.syncLibs(null);
                             }
-                            if (PluginChecker.isSVNProviderPluginLoaded()) {
-                                ISVNProviderServiceInCoreRuntime svnService = (ISVNProviderServiceInCoreRuntime) GlobalServiceRegister
-                                        .getDefault().getService(ISVNProviderServiceInCoreRuntime.class);
-                                if (svnService != null && svnService.isSvnLibSetupOnTAC()) {
-                                    svnService.syncLibs(null);
-                                }
-                            }
-                        } else {
-                            // try to retreive again incase it exist on custom nexus
-                            final boolean retrieve = libraryManagerService.retrieve(module, null, false);
-                            installed = retrieve;
-                        }// else no installed so keep going and ask the user
-                    }
-                } catch (BusinessException e) {
-                    log.warn("Could not get installade status for library:" + moduleName, e);
+                        }
+                    } else {
+                        // try to retreive again incase it exist on custom nexus
+                        final boolean retrieve = libraryManagerService.retrieve(module, null, false);
+                        installed = retrieve;
+                    }// else no installed so keep going and ask the user
                 } catch (URISyntaxException e) {
                     log.warn("Could not get installade status for library:" + moduleName, e);
                 } catch (IOException e) {

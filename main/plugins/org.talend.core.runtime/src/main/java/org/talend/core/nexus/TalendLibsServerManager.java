@@ -80,7 +80,7 @@ public class TalendLibsServerManager {
 
     private long softWareLastTimeInMillis = 0;
 
-    private int timeGap = 5 * 60 * 1000;
+    private int timeGap = 30 * 60 * 1000;
 
     public static synchronized TalendLibsServerManager getInstance() {
         if (manager == null) {
@@ -139,6 +139,9 @@ public class TalendLibsServerManager {
                             System.setProperty(NEXUS_LIB_SNAPSHOT_REPO, snapshotRepId);
                         }
                     }
+                }
+                if (nexus_url == null) {
+                    return null;
                 }
                 NexusServerBean serverBean = new NexusServerBean();
                 serverBean.setServer(nexus_url);

@@ -79,6 +79,8 @@ public interface DiSchemaConstants {
 
     /** cf TDKN-36. to link to the custom fields of the studio */
     public final static String TALEND6_COLUMN_CUSTOM = SchemaConstants.TALEND_FIELD_GENERATED;
+    
+    public final static String AVRO_TECHNICAL_KEY = "AVRO_TECHNICAL_KEY";
 
     public final static String TALEND6_COLUMN_ORIGINAL_DB_COLUMN_NAME = SchemaConstants.TALEND_COLUMN_DB_COLUMN_NAME;
 

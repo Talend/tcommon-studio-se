@@ -14,8 +14,10 @@ package org.talend.librariesmanager.ui.views;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
@@ -29,11 +31,17 @@ import org.eclipse.ui.contexts.IContextActivation;
 import org.eclipse.ui.contexts.IContextService;
 import org.talend.commons.ui.runtime.swt.tableviewer.TableViewerCreatorNotModifiable.LAYOUT_MODE;
 import org.talend.commons.ui.runtime.swt.tableviewer.TableViewerCreatorNotModifiable.SORT;
+import org.talend.commons.ui.runtime.swt.tableviewer.behavior.CellEditorValueAdapter;
+import org.talend.commons.ui.runtime.swt.tableviewer.celleditor.CellEditorDialogBehavior;
 import org.talend.commons.ui.swt.tableviewer.TableViewerCreator;
 import org.talend.commons.ui.swt.tableviewer.TableViewerCreatorColumn;
 import org.talend.commons.utils.data.bean.IBeanPropertyAccessors;
+import org.talend.core.GlobalServiceRegister;
+import org.talend.core.ILibraryManagerService;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.librariesmanager.model.ModulesNeededProvider;
+import org.talend.librariesmanager.ui.dialogs.CustomURITextCellEditor;
+import org.talend.librariesmanager.ui.dialogs.InstallModuleDialog;
 import org.talend.librariesmanager.ui.i18n.Messages;
 
 /**
@@ -94,16 +102,13 @@ public class ModulesViewComposite extends Composite {
 
             @Override
             public String get(ModuleNeeded bean) {
-                String str = null;
+                String str = bean.getContext();
                 switch (bean.getStatus()) {
                 case INSTALLED:
                     str = Messages.getString("ModulesViewComposite.hint.installed"); //$NON-NLS-1$
                     break;
                 case NOT_INSTALLED:
                     str = Messages.getString("ModulesViewComposite.hint.notInstalled"); //$NON-NLS-1$
-                    break;
-                case UNUSED:
-                    str = "Unused"; //$NON-NLS-1$
                     break;
                 default:
                     str = Messages.getString("ModulesViewComposite.hint.unknown"); //$NON-NLS-1$
@@ -152,52 +157,85 @@ public class ModulesViewComposite extends Composite {
             public void set(ModuleNeeded bean, String value) {
             }
         });
-
         column.setModifiable(false);
         column.setWeight(6);
 
         column = new TableViewerCreatorColumn(tableViewerCreator);
-        column.setTitle(Messages.getString("ModulesViewComposite.Required.TitleText")); //$NON-NLS-1$
-
+        column.setSortable(true);
+        column.setTitle(Messages.getString("ModulesViewComposite.MavenUri")); //$NON-NLS-1$
         column.setBeanPropertyAccessors(new IBeanPropertyAccessors<ModuleNeeded, String>() {
 
             @Override
             public String get(ModuleNeeded bean) {
-                return bean.getInformationMsg();
+                return bean.getMavenUri();
             }
 
             @Override
             public void set(ModuleNeeded bean, String value) {
+                boolean modified = false;
+                String defaultURI = bean.getDefaultMavenURI();
+                String oldCustomURI = bean.getCustomMavenUri();
+                if (defaultURI.equals(value)) {
+                    if (bean.getCustomMavenUri() != null) {
+                        modified = true;
+                    }
+                    bean.setCustomMavenUri(null);
+                } else if (!value.equals(oldCustomURI)) {
+                    bean.setCustomMavenUri(value);
+                    modified = true;
+                }
+                if (modified) {
+                    ILibraryManagerService libManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault()
+                            .getService(ILibraryManagerService.class);
+                    libManagerService.saveCustomMavenURIMap();
+                    tableViewerCreator.getTableViewer().refresh();
+                }
+            }
+        });
+        CellEditorDialogBehavior behavior = new CellEditorDialogBehavior();
+        final CustomURITextCellEditor cellEditor = new CustomURITextCellEditor(tableViewerCreator.getTable(), behavior);
+        InstallModuleDialog dialog = new InstallModuleDialog(tableViewerCreator.getTable().getShell(), cellEditor);
+        behavior.setCellEditorDialog(dialog);
+        column.setCellEditor(cellEditor, new CellEditorValueAdapter() {
+
+            @Override
+            public Object getCellEditorTypedValue(CellEditor cellEditor, Object originalTypedValue) {
+                return super.getCellEditorTypedValue(cellEditor, originalTypedValue);
+            }
+
+            @Override
+            public String getColumnText(CellEditor cellEditor, Object bean, Object cellEditorTypedValue) {
+                return super.getColumnText(cellEditor, bean, cellEditorTypedValue);
+            }
+
+            @Override
+            public Object getOriginalTypedValue(CellEditor cellEditor, Object cellEditorTypedValue) {
+                return super.getOriginalTypedValue(cellEditor, cellEditorTypedValue);
+            }
+
+        });
+        cellEditor.getTextControl().addFocusListener(new FocusListener() {
+
+            @Override
+            public void focusLost(FocusEvent e) {
+            }
+
+            @Override
+            public void focusGained(FocusEvent e) {
+                ModuleNeeded currentModifiedEntry = (ModuleNeeded) tableViewerCreator.getModifiedObjectInfo()
+                        .getCurrentModifiedBean();
+                cellEditor.setModule(currentModifiedEntry);
             }
         });
 
         column.setModifiable(true);
         column.setWeight(10);
 
-        column = new TableViewerCreatorColumn(tableViewerCreator);
-        column.setTitle(Messages.getString("ModulesViewComposite.Required.Title")); //$NON-NLS-1$
-        column.setImageProvider(new RequiredImageProvider());
-        column.setSortable(true);
-        column.setDisplayedValue(""); //$NON-NLS-1$
-        column.setBeanPropertyAccessors(new IBeanPropertyAccessors<ModuleNeeded, String>() {
-
-            @Override
-            public String get(ModuleNeeded bean) {
-                return String.valueOf(bean.isRequired());
-            }
-
-            @Override
-            public void set(ModuleNeeded bean, String value) {
-            }
-        });
-
-        column.setModifiable(false);
-        column.setWeight(2);
         // need check it's ok to remove, or caused bug
         // removed by TUP-833
         // IComponentsFactory compFac = ComponentsFactoryProvider.getInstance();
         // compFac.getComponents();
-        List<ModuleNeeded> modules = ModulesNeededProvider.getModulesNeeded();
+        Set<ModuleNeeded> modules = ModulesNeededProvider.getModulesNeeded();
 
         tableViewerCreator.init(filterHidenModule(modules));
 
@@ -221,6 +259,8 @@ public class ModulesViewComposite extends Composite {
             }
         };
 
+        TableViewerProvideFilterWrapper.wrapViewer(tableViewerCreator.getTableViewer());
+
         parent.addFocusListener(fl);
         rightPartComposite.addFocusListener(fl);
         tableViewerCreator.getTableViewer().getTable().addFocusListener(fl);
@@ -232,7 +272,7 @@ public class ModulesViewComposite extends Composite {
      * @param modules
      * @return
      */
-    private List filterHidenModule(List<ModuleNeeded> modules) {
+    private List filterHidenModule(Set<ModuleNeeded> modules) {
         List<ModuleNeeded> list = new ArrayList<ModuleNeeded>();
         for (ModuleNeeded module : modules) {
             if (module.isShow()) {
@@ -259,8 +299,7 @@ public class ModulesViewComposite extends Composite {
      */
     public void refresh() {
         List<ModuleNeeded> modulesNeeded = new ArrayList<ModuleNeeded>();
-        modulesNeeded.addAll(ModulesNeededProvider.getModulesNeeded());
-        modulesNeeded.addAll(ModulesNeededProvider.getUnUsedModules());
+        modulesNeeded.addAll(ModulesNeededProvider.getAllManagedModules());
         ModulesViewComposite.getTableViewerCreator().init(modulesNeeded);
         tableViewerCreator.getTableViewer().refresh();
     }

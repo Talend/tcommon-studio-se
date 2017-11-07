@@ -14,7 +14,9 @@ package org.talend.core.model.metadata;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
@@ -27,6 +29,7 @@ import org.talend.core.language.ECodeLanguage;
 import org.talend.core.language.LanguageManager;
 import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
+import org.talend.core.model.metadata.builder.connection.MetadataColumn;
 import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.core.model.metadata.builder.connection.QueriesConnection;
 import org.talend.core.model.metadata.builder.connection.SAPConnection;
@@ -44,8 +47,10 @@ import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.helper.PackageHelper;
 import org.talend.cwm.helper.SAPBWTableHelper;
+import org.talend.cwm.helper.TaggedValueHelper;
+import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
 import org.talend.repository.model.IProxyRepositoryFactory;
-
+import orgomg.cwm.objectmodel.core.TaggedValue;
 import orgomg.cwm.resource.record.RecordFactory;
 import orgomg.cwm.resource.record.RecordFile;
 
@@ -572,6 +577,107 @@ public class MetadataToolHelperTest {
         assertEquals(SAPBWTableHelper.IO_INNERTYPE_HIERARCHY, innerType);
         assertEquals(test, "TEST");
     }
+    
+    /**
+     * Test method for
+     * {@link org.talend.core.model.metadata.MetadataToolHelper#convert(org.talend.core.model.metadata.builder.connection.MetadataTable old)}
+     * 
+     */
+    @Test
+    public void testConvert(){
+        IProxyRepositoryFactory factory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
+        MetadataColumn creatMetadataColumn = ConnectionFactory.eINSTANCE.createMetadataColumn();
+        creatMetadataColumn.setId(factory.getNextId());
+        creatMetadataColumn.setLabel("long");
+        creatMetadataColumn.setName("long");
+        TaggedValue tv = TaggedValueHelper.createTaggedValue(DiSchemaConstants.AVRO_TECHNICAL_KEY, "long");
+        creatMetadataColumn.getTaggedValue().add(tv);
+        inputTable.getColumns().add(creatMetadataColumn);
+        
+        
+        creatMetadataColumn = ConnectionFactory.eINSTANCE.createMetadataColumn();
+        creatMetadataColumn.setId(factory.getNextId());
+        creatMetadataColumn.setLabel("A");
+        creatMetadataColumn.setName("A");
+        tv = TaggedValueHelper.createTaggedValue(DiSchemaConstants.AVRO_TECHNICAL_KEY, "A");
+        creatMetadataColumn.getTaggedValue().add(tv);
+        inputTable.getColumns().add(creatMetadataColumn);
+        
+        creatMetadataColumn = ConnectionFactory.eINSTANCE.createMetadataColumn();
+        creatMetadataColumn.setId(factory.getNextId());
+        creatMetadataColumn.setLabel("B");
+        creatMetadataColumn.setName("B");
+        tv = TaggedValueHelper.createTaggedValue(DiSchemaConstants.AVRO_TECHNICAL_KEY, "B");
+        creatMetadataColumn.getTaggedValue().add(tv);
+        inputTable.getColumns().add(creatMetadataColumn);
+        
+        creatMetadataColumn = ConnectionFactory.eINSTANCE.createMetadataColumn();
+        creatMetadataColumn.setId(factory.getNextId());
+        creatMetadataColumn.setLabel("_234");
+        creatMetadataColumn.setName("1234");
+        tv = TaggedValueHelper.createTaggedValue(DiSchemaConstants.AVRO_TECHNICAL_KEY, "1234");
+        creatMetadataColumn.getTaggedValue().add(tv);
+        inputTable.getColumns().add(creatMetadataColumn);
+        
+        creatMetadataColumn = ConnectionFactory.eINSTANCE.createMetadataColumn();
+        creatMetadataColumn.setId(factory.getNextId());
+        creatMetadataColumn.setLabel(MetadataToolHelper.validateColumnName("中文", 0));
+        creatMetadataColumn.setName("中文");
+        tv = TaggedValueHelper.createTaggedValue(DiSchemaConstants.AVRO_TECHNICAL_KEY, "中文");
+        creatMetadataColumn.getTaggedValue().add(tv);
+        inputTable.getColumns().add(creatMetadataColumn);
+        
+        creatMetadataColumn = ConnectionFactory.eINSTANCE.createMetadataColumn();
+        creatMetadataColumn.setId(factory.getNextId());
+        creatMetadataColumn.setLabel(MetadataToolHelper.validateColumnName("TEST", 0));
+        creatMetadataColumn.setName("TEST");
+        tv = TaggedValueHelper.createTaggedValue(DiSchemaConstants.AVRO_TECHNICAL_KEY, "TEST");
+        creatMetadataColumn.getTaggedValue().add(tv);
+        inputTable.getColumns().add(creatMetadataColumn);
+        
+        List<String> labels = new ArrayList<String>();
+        for(MetadataColumn c:inputTable.getColumns()){
+            labels.add(c.getLabel());
+        }
+        creatMetadataColumn = ConnectionFactory.eINSTANCE.createMetadataColumn();
+        creatMetadataColumn.setId(factory.getNextId());
+        creatMetadataColumn.setLabel("TEST1");
+        creatMetadataColumn.setName("TEST");
+        tv = TaggedValueHelper.createTaggedValue(DiSchemaConstants.AVRO_TECHNICAL_KEY, "TEST");
+        creatMetadataColumn.getTaggedValue().add(tv);
+        inputTable.getColumns().add(creatMetadataColumn);
+        
+        IEclipsePreferences coreUIPluginNode = new InstanceScope().getNode(ITalendCorePrefConstants.CoreUIPlugin_ID);
+        coreUIPluginNode.putBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, true);
+        IMetadataTable targetTable = MetadataToolHelper.convert(inputTable);
+        assertTrue(targetTable.getListColumns().get(0).getLabel().equals("_long"));
+        assertTrue(targetTable.getListColumns().get(0).getOriginalDbColumnName().equals("long"));
+        assertTrue(targetTable.getListColumns().get(0).getAdditionalField().get(DiSchemaConstants.AVRO_TECHNICAL_KEY).equals("long"));
+        
+        assertTrue(targetTable.getListColumns().get(1).getLabel().equals("A"));
+        assertTrue(targetTable.getListColumns().get(1).getOriginalDbColumnName().equals("A"));
+        assertTrue(targetTable.getListColumns().get(1).getAdditionalField().get(DiSchemaConstants.AVRO_TECHNICAL_KEY).equals("A"));
+        
+        assertTrue(targetTable.getListColumns().get(2).getLabel().equals("B"));
+        assertTrue(targetTable.getListColumns().get(2).getOriginalDbColumnName().equals("B"));
+        assertTrue(targetTable.getListColumns().get(2).getAdditionalField().get(DiSchemaConstants.AVRO_TECHNICAL_KEY).equals("B"));
+        
+        assertTrue(targetTable.getListColumns().get(3).getLabel().equals("_234"));
+        assertTrue(targetTable.getListColumns().get(3).getOriginalDbColumnName().equals("1234"));
+        assertTrue(targetTable.getListColumns().get(3).getAdditionalField().get(DiSchemaConstants.AVRO_TECHNICAL_KEY).equals("1234"));
+        
+        assertTrue(targetTable.getListColumns().get(4).getLabel().equals("中文"));
+        assertTrue(targetTable.getListColumns().get(4).getOriginalDbColumnName().equals("中文"));
+        assertTrue(targetTable.getListColumns().get(4).getAdditionalField().get(DiSchemaConstants.AVRO_TECHNICAL_KEY).equals("中文"));
+        
+        assertTrue(targetTable.getListColumns().get(5).getLabel().equals("TEST"));
+        assertTrue(targetTable.getListColumns().get(5).getOriginalDbColumnName().equals("TEST"));
+        assertTrue(targetTable.getListColumns().get(5).getAdditionalField().get(DiSchemaConstants.AVRO_TECHNICAL_KEY).equals("TEST"));
+        
+        assertTrue(targetTable.getListColumns().get(6).getLabel().equals("TEST1"));
+        assertTrue(targetTable.getListColumns().get(6).getOriginalDbColumnName().equals("TEST"));
+        assertTrue(targetTable.getListColumns().get(6).getAdditionalField().get(DiSchemaConstants.AVRO_TECHNICAL_KEY).equals("TEST"));
+    }
 
     @Test
     public void testCopyMetadataTableAndMappingDBType() {
@@ -579,22 +685,22 @@ public class MetadataToolHelperTest {
         IMetadataTable source = new org.talend.core.model.metadata.MetadataTable();
         IMetadataTable target = new org.talend.core.model.metadata.MetadataTable();
         source.setDbms("sap_id");
-        IMetadataColumn column = new MetadataColumn();
+        IMetadataColumn column = new org.talend.core.model.metadata.MetadataColumn();
         column.setLabel("S1"); //$NON-NLS-1$
         column.setTalendType(JavaTypesManager.STRING.getId());
         column.setType("STRING");
         source.getListColumns().add(column);
-        column = new MetadataColumn();
+        column = new org.talend.core.model.metadata.MetadataColumn();
         column.setLabel("S2"); //$NON-NLS-1$
         column.setTalendType(JavaTypesManager.SHORT.getId());
         column.setType("SHORT");
         source.getListColumns().add(column);
-        column = new MetadataColumn();
+        column = new org.talend.core.model.metadata.MetadataColumn();
         column.setLabel("S3"); //$NON-NLS-1$
         column.setTalendType(JavaTypesManager.FLOAT.getId());
         column.setType("FLOAT");
         source.getListColumns().add(column);
-        column = new MetadataColumn();
+        column = new org.talend.core.model.metadata.MetadataColumn();
         column.setLabel("S4"); //$NON-NLS-1$
         column.setTalendType(JavaTypesManager.BIGDECIMAL.getId());
         column.setType("BIG_DECIMAL");

@@ -27,9 +27,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -45,7 +43,6 @@ import org.talend.commons.exception.SystemException;
 import org.talend.commons.runtime.xml.XmlUtil;
 import org.talend.commons.ui.runtime.image.OverlayImageProvider;
 import org.talend.commons.utils.generation.JavaUtils;
-import org.talend.commons.utils.io.FilesUtils;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.model.general.LibraryInfo;
 import org.talend.core.model.general.Project;
@@ -360,6 +357,8 @@ public class CoreService implements ICoreService {
         try {
             URL url = MetadataTalendType.getProjectForderURLOfMappingsFile();
             if (url != null && GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
+                // set the project mappings url
+                System.setProperty("talend.mappings.url", url.toString()); //$NON-NLS-1$
                 IRunProcessService runProcessService = (IRunProcessService) GlobalServiceRegister.getDefault().getService(
                         IRunProcessService.class);
                 if (runProcessService != null) {
@@ -398,7 +397,7 @@ public class CoreService implements ICoreService {
             ExceptionHandler.process(e);
         }
     }
-    
+
     @Override
     public void syncMappingsFileFromSystemToProject() {
         RepositoryWorkUnit workUnit = new RepositoryWorkUnit("Sync mapping files from system to project") { //$NON-NLS-1$
@@ -424,7 +423,7 @@ public class CoreService implements ICoreService {
         workUnit.setAvoidUnloadResources(true);
         ProxyRepositoryFactory.getInstance().executeRepositoryWorkUnit(workUnit);
     }
-    
+
     public String getTargetName(File file) {
         String targetName = file.getName();
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();

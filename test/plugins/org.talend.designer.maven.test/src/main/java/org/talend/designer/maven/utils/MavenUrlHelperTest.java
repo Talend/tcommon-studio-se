@@ -233,4 +233,27 @@ public class MavenUrlHelperTest {
         String mvnUrl = MavenUrlHelper.generateMvnUrl("org.talend", "test", null, null, "source");
         Assert.assertEquals("mvn:org.talend/test///source", mvnUrl);
     }
+
+    @Test
+    public void testAddTypeForMavenUri() {
+        String moduleName = "test.jar";
+        String mvnURI = "mvn:org.talend/test/6.0/jar";
+        String mvnURIWithType = MavenUrlHelper.addTypeForMavenUri(mvnURI, moduleName);
+        Assert.assertEquals(mvnURIWithType, "mvn:org.talend/test/6.0/jar");
+
+        moduleName = "test.exe";
+        mvnURI = "mvn:org.talend/test/6.0";
+        mvnURIWithType = MavenUrlHelper.addTypeForMavenUri(mvnURI, moduleName);
+        Assert.assertEquals(mvnURIWithType, "mvn:org.talend/test/6.0/exe");
+
+        moduleName = "test";
+        mvnURI = "mvn:org.talend/test/6.0";
+        mvnURIWithType = MavenUrlHelper.addTypeForMavenUri(mvnURI, moduleName);
+        Assert.assertEquals(mvnURIWithType, "mvn:org.talend/test/6.0/jar");
+
+        moduleName = "test.jar";
+        mvnURI = "mvn:org.talend.libraries/abc/6.0.0-SNAPSHOT/zip";
+        mvnURIWithType = MavenUrlHelper.addTypeForMavenUri(mvnURI, moduleName);
+        Assert.assertEquals(mvnURIWithType, "mvn:org.talend.libraries/abc/6.0.0-SNAPSHOT/zip");
+    }
 }

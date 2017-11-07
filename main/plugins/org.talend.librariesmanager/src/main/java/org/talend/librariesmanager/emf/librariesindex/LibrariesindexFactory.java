@@ -35,6 +35,15 @@ public interface LibrariesindexFactory extends EFactory {
     LibrariesIndex createLibrariesIndex();
 
     /**
+     * Returns a new object of class '<em>Custom URI Map</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Custom URI Map</em>'.
+     * @generated
+     */
+    CustomURIMap createCustomURIMap();
+
+    /**
      * Returns the package supported by this factory.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

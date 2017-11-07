@@ -93,7 +93,7 @@ public abstract class ShareLibrareisHelper {
                     // if already eixst in lib svn , don't replace it .
                     if (!target.exists()) {
                         try {
-                            MavenArtifact artifact = MavenUrlHelper.parseMvnUrl(next.getMavenUri(true));
+                            MavenArtifact artifact = MavenUrlHelper.parseMvnUrl(next.getMavenUri());
                             if (artifact != null) {
                                 // to .m2
                                 shareToRepository(file, artifact);
@@ -169,7 +169,7 @@ public abstract class ShareLibrareisHelper {
                         ModuleNeeded next = iterator.next();
                         File file = filesToShare.get(next);
                         String name = file.getName();
-                        MavenArtifact artifact = MavenUrlHelper.parseMvnUrl(next.getMavenUri(true));
+                        MavenArtifact artifact = MavenUrlHelper.parseMvnUrl(next.getMavenUri());
                         if (artifact == null) {
                             continue;
                         }

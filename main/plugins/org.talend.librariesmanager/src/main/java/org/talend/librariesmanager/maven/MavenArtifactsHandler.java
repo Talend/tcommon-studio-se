@@ -27,7 +27,6 @@ import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.utils.PomUtil;
-import org.talend.librariesmanager.model.service.LibrariesIndexManager;
 import org.talend.utils.io.FilesUtils;
 
 /**
@@ -70,37 +69,23 @@ public class MavenArtifactsHandler {
      * Deploy the lib with fixed pom file. if not set, will generate a default one.
      */
     public void install(String mavenUri, String libPath, String pomPath, boolean deploy) throws Exception {
-        MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(mavenUri);
-        if (parseMvnUrl != null && libPath != null && libPath.length() > 0) {
+        MavenArtifact artifact = MavenUrlHelper.parseMvnUrl(mavenUri);
+        if (artifact != null && libPath != null && libPath.length() > 0) {
             File libFile = new File(libPath);
             if (!libFile.exists()) {
                 return;
             }
-            // check if already exist in nexus server with this mvnUri
-            // if (!parseMvnUrl.getVersion().endsWith(MavenUrlHelper.VERSION_SNAPSHOT)) {
-            // NexusServerBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
-            // IRepositoryArtifactHandler hander =
-            // RepositoryArtifactHandlerManager.getRepositoryHandler(customNexusServer);
-            // if (hander != null) {
-            // List<MavenArtifact> search = hander.search(parseMvnUrl.getGroupId(), parseMvnUrl.getArtifactId(),
-            // parseMvnUrl.getVersion(), true, false);
-            // if (search.size() == 1 && !"pom".equals(search.get(0).getType())) {
-            // throw new Exception("Artifact already deployed with maven uri" + mavenUri
-            // + " , please try to use custom maven uri to deploy agian! ");
-            // }
-            // }
-            // }
 
             // lib
-            String artifactType = parseMvnUrl.getType();
+            String artifactType = artifact.getType();
             if (artifactType == null || "".equals(artifactType)) {
                 artifactType = TalendMavenConstants.PACKAGING_JAR;
             }
-            TalendMavenResolver.upload(parseMvnUrl.getGroupId(), parseMvnUrl.getArtifactId(), parseMvnUrl.getClassifier(),
-                    artifactType, parseMvnUrl.getVersion(), libFile);
+            TalendMavenResolver.upload(artifact.getGroupId(), artifact.getArtifactId(), artifact.getClassifier(), artifactType,
+                    artifact.getVersion(), libFile);
 
-            ModuleStatusProvider.getDeployStatusMap().put(mavenUri, ELibraryInstallStatus.DEPLOYED);
-            ModuleStatusProvider.getStatusMap().put(mavenUri, ELibraryInstallStatus.INSTALLED);
+            ModuleStatusProvider.putDeployStatus(mavenUri, ELibraryInstallStatus.DEPLOYED);
+            ModuleStatusProvider.putStatus(mavenUri, ELibraryInstallStatus.INSTALLED);
 
             // pom
             boolean generated = false;
@@ -112,25 +97,23 @@ public class MavenArtifactsHandler {
                 }
             }
             if (pomFile == null) {
-                pomFile = new File(PomUtil.generatePom2(parseMvnUrl));
+                pomFile = new File(PomUtil.generatePom2(artifact));
                 generated = true;
             }
 
             String pomType = TalendMavenConstants.PACKAGING_POM;
             if (pomFile != null && pomFile.exists()) {
-                TalendMavenResolver.upload(parseMvnUrl.getGroupId(), parseMvnUrl.getArtifactId(), parseMvnUrl.getClassifier(),
-                        pomType, parseMvnUrl.getVersion(), pomFile);
+                TalendMavenResolver.upload(artifact.getGroupId(), artifact.getArtifactId(), artifact.getClassifier(), pomType,
+                        artifact.getVersion(), pomFile);
             }
 
             if (deploy) {
-                deploy(libFile, parseMvnUrl);
+                deploy(libFile, artifact);
             }
             if (generated) { // only for generate pom
                 FilesUtils.deleteFolder(pomFile.getParentFile(), true);
             }
 
-            // TUP-18405, record the install module
-            LibrariesIndexManager.getInstance().getMavenLibIndex().getJarsToRelativePath().put(libFile.getName(), mavenUri);
         }
     }
 

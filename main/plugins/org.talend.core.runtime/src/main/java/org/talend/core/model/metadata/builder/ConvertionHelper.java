@@ -23,6 +23,8 @@ import java.util.Set;
 import org.eclipse.emf.common.util.EMap;
 import org.talend.commons.runtime.model.components.IComponentConstants;
 import org.talend.commons.utils.resource.FileExtensions;
+import org.talend.core.GlobalServiceRegister;
+import org.talend.core.ICoreService;
 import org.talend.core.IRepositoryContextService;
 import org.talend.core.database.EDatabase4DriverClassName;
 import org.talend.core.database.EDatabaseTypeName;
@@ -34,6 +36,7 @@ import org.talend.core.model.metadata.IMetadataColumn;
 import org.talend.core.model.metadata.IMetadataConnection;
 import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.core.model.metadata.MetadataTalendType;
+import org.talend.core.model.metadata.MetadataToolAvroHelper;
 import org.talend.core.model.metadata.MetadataToolHelper;
 import org.talend.core.model.metadata.builder.connection.AbstractMetadataObject;
 import org.talend.core.model.metadata.builder.connection.Connection;
@@ -404,11 +407,12 @@ public final class ConvertionHelper {
             if (column.getTaggedValue().size() > 0) {
                 for (TaggedValue tv : column.getTaggedValue()) {
                     String additionalTag = tv.getTag();
+                    String additionaValue = tv.getValue();
                     if (additionalTag.startsWith(IConvertionConstants.ADDITIONAL_FIELD_PREFIX)) {
                         String[] splits = additionalTag.split(":");
                         additionalTag = splits[1];
                     }
-                    newColumn.getAdditionalField().put(additionalTag, tv.getValue());
+                    newColumn.getAdditionalField().put(additionalTag, additionaValue);
                 }
             }
             newColumn.setNullable(column.isNullable());
@@ -532,6 +536,7 @@ public final class ConvertionHelper {
      * @return
      */
     public static MetadataTable convert(IMetadataTable old) {
+        ICoreService coreService = (ICoreService) GlobalServiceRegister.getDefault().getService(ICoreService.class);
         MetadataTable result = ConnectionFactory.eINSTANCE.createMetadataTable();
         result.setComment(old.getComment());
         result.setId(old.getId());
@@ -544,7 +549,9 @@ public final class ConvertionHelper {
             newColumn.setComment(column.getComment());
             newColumn.setDefaultValue(column.getDefault());
             newColumn.setKey(column.isKey());
+            
             newColumn.setLabel(column.getLabel());
+            
             newColumn.setPattern(column.getPattern());
             if (column.getLength() == null || column.getLength() < 0) {
                 newColumn.setLength(-1);

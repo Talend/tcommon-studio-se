@@ -15,7 +15,6 @@ package org.talend.core.model.general;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.Path;
@@ -23,7 +22,6 @@ import org.osgi.framework.Version;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
 import org.talend.core.model.process.IElementParameter;
-import org.talend.core.nexus.TalendMavenResolver;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
@@ -57,16 +55,18 @@ public class ModuleNeeded {
 
     private String bundleVersion;
 
-    private ELibraryInstallStatus status = ELibraryInstallStatus.UNKNOWN;
+    private ELibraryInstallStatus status = ELibraryInstallStatus.NOT_INSTALLED;
 
     // status installed in maven
-    private ELibraryInstallStatus installStatus = ELibraryInstallStatus.UNKNOWN;
+    private ELibraryInstallStatus installStatus = ELibraryInstallStatus.NOT_DEPLOYED;
 
     private boolean isShow = true;
 
     List<String> installURL;
 
     private String moduleLocaion;
+
+    private String mavenUriFromConfiguration;
 
     private String mavenUri;
 
@@ -80,6 +80,11 @@ public class ModuleNeeded {
 
     public static final String QUOTATION_MARK = "\""; //$NON-NLS-1$
 
+    public static final String UNKNOWN = "Unknown";
+
+    ILibraryManagerService libManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
+            ILibraryManagerService.class);
+
     /**
      * DOC smallet ModuleNeeded class global comment. Detailled comment <br/>
      *
@@ -87,9 +92,7 @@ public class ModuleNeeded {
      *
      */
     public enum ELibraryInstallStatus {
-        UNKNOWN,
         INSTALLED,
-        UNUSED,
         NOT_INSTALLED,
         DEPLOYED,
         NOT_DEPLOYED;
@@ -107,16 +110,7 @@ public class ModuleNeeded {
      * @param status
      */
     public ModuleNeeded(String context, String moduleName, String informationMsg, boolean required) {
-        this(context, moduleName, informationMsg, required, null, null, null, ELibraryInstallStatus.UNKNOWN);
-    }
-
-    public ModuleNeeded(String context, String moduleName, String informationMsg, boolean required, ELibraryInstallStatus status) {
-        this(context, moduleName, informationMsg, required, null, null, null, status);
-    }
-
-    public ModuleNeeded(String context, String moduleName, String informationMsg, boolean required, List<String> installURL,
-            String requiredIf, String mavenUrl) {
-        this(context, moduleName, informationMsg, required, installURL, requiredIf, mavenUrl, ELibraryInstallStatus.UNKNOWN);
+        this(context, moduleName, informationMsg, required, null, null, null);
     }
 
     /**
@@ -128,7 +122,7 @@ public class ModuleNeeded {
      * @param mvnUri
      */
     public ModuleNeeded(String context, String informationMsg, boolean required, String mvnUri) {
-        this(context, null, informationMsg, required, null, null, mvnUri, ELibraryInstallStatus.UNKNOWN);
+        this(context, null, informationMsg, required, null, null, mvnUri);
         MavenArtifact mavenArtifact = MavenUrlHelper.parseMvnUrl(mvnUri);
         if (MavenConstants.DEFAULT_LIB_GROUP_ID.equals(mavenArtifact.getGroupId())
                 || StringUtils.isEmpty(mavenArtifact.getVersion())) {
@@ -140,7 +134,7 @@ public class ModuleNeeded {
     }
 
     public ModuleNeeded(String context, String moduleName, String informationMsg, boolean required, List<String> installURL,
-            String requiredIf, String mavenUrl, ELibraryInstallStatus status) {
+            String requiredIf, String mavenUrl) {
         super();
         this.context = context;
         setModuleName(moduleName);
@@ -148,7 +142,6 @@ public class ModuleNeeded {
         this.required = required;
         this.installURL = installURL;
         this.requiredIf = requiredIf;
-        this.status = status;
         setMavenUri(mavenUrl);
     }
 
@@ -251,51 +244,22 @@ public class ModuleNeeded {
     }
 
     public ELibraryInstallStatus getStatus() {
-        String mvnUriStatusKey = getMavenUri(true);
-        final ELibraryInstallStatus eLibraryInstallStatus = ModuleStatusProvider.getStatusMap().get(mvnUriStatusKey);
-        if (eLibraryInstallStatus != null) {
-            return eLibraryInstallStatus;
-        } else if (mvnUriStatusKey != null) {
-            // compute the status of the lib.
-            // first use the Library manager service
-            ILibraryManagerService libManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
-                    ILibraryManagerService.class);
-            Set<String> existLibraries = libManagerService.list();
-            if (existLibraries.contains(getModuleName())) {
-                status = ELibraryInstallStatus.INSTALLED;
-                ModuleStatusProvider.getStatusMap().put(mvnUriStatusKey, status);
-            } else {// then try to resolve locally
-                resolveStatusLocally(mvnUriStatusKey);
-            }
-
-        }
+        ILibraryManagerService libManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
+                ILibraryManagerService.class);
+        libManagerService.checkModuleStatus(this);
+        String mvnUriStatusKey = getMavenUri();
+        this.status = ModuleStatusProvider.getStatus(mvnUriStatusKey);
         return this.status;
     }
 
     public ELibraryInstallStatus getDeployStatus() {
-        String mvnUriStatusKey = getMavenUri(true);
-        final ELibraryInstallStatus eLibraryDeployStatus = ModuleStatusProvider.getDeployStatusMap().get(mvnUriStatusKey);
-        if (eLibraryDeployStatus != null) {
-            return eLibraryDeployStatus;
-        } else if (mvnUriStatusKey != null) {
-            resolveStatusLocally(mvnUriStatusKey);
-        }
-        return this.installStatus;
-    }
+        ILibraryManagerService libManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
+                ILibraryManagerService.class);
+        libManagerService.checkModuleStatus(this);
+        String mvnUriStatusKey = getMavenUri();
 
-    private void resolveStatusLocally(String mvnUriStatusKey) {
-        // then try to resolve locally
-        String localMavenUri = mvnUriStatusKey.replace("mvn:", "mvn:" + MavenConstants.LOCAL_RESOLUTION_URL + "!"); //$NON-NLS-1$ //$NON-NLS-2$
-        try {
-            TalendMavenResolver.getMavenResolver().resolve(localMavenUri);
-            status = ELibraryInstallStatus.INSTALLED;
-            installStatus = ELibraryInstallStatus.DEPLOYED;
-        } catch (Exception e) {
-            status = ELibraryInstallStatus.NOT_INSTALLED;
-            installStatus = ELibraryInstallStatus.NOT_DEPLOYED;
-        }
-        ModuleStatusProvider.getStatusMap().put(mvnUriStatusKey, status);
-        ModuleStatusProvider.getDeployStatusMap().put(mvnUriStatusKey, installStatus);
+        this.installStatus = ModuleStatusProvider.getDeployStatus(mvnUriStatusKey);
+        return this.installStatus;
     }
 
     /**
@@ -370,7 +334,10 @@ public class ModuleNeeded {
     }
 
     public String getModuleLocaion() {
-        return this.moduleLocaion;
+        if (this.moduleLocaion == null) {
+            moduleLocaion = libManagerService.getPlatformURLFromIndex(moduleName);
+        }
+        return moduleLocaion;
     }
 
     public void setModuleLocaion(String moduleLocaion) {
@@ -394,9 +361,12 @@ public class ModuleNeeded {
         if (this.getBundleVersion() != null) {
             hashCode *= this.getBundleVersion().hashCode();
         }
+        if (this.getModuleLocaion() != null) {
+            hashCode *= this.getModuleLocaion().hashCode();
+        }
 
-        hashCode *= new Boolean(this.isRequired()).hashCode();
-        hashCode *= new Boolean(this.isMrRequired()).hashCode();
+        hashCode *= this.getDefaultMavenURI().hashCode();
+
         return hashCode;
     }
 
@@ -452,6 +422,19 @@ public class ModuleNeeded {
             }
         }
 
+        // Module context
+        if (other.getContext() == null) {
+            if (this.getContext() != null) {
+                return false;
+            }
+        } else {
+            if (this.getContext() == null) {
+                return false;
+            } else if (!other.getContext().equals(this.getContext())) {
+                return false;
+            }
+        }
+
         // Module Location
         if (other.getModuleLocaion() == null) {
             if (this.getModuleLocaion() != null) {
@@ -465,62 +448,89 @@ public class ModuleNeeded {
             }
         }
 
-        if (other.isRequired() != this.isRequired()) {
+        // maven uri
+        if (!other.getDefaultMavenURI().equals(this.getDefaultMavenURI())) {
             return false;
         }
 
-        if (other.isMrRequired() != this.isMrRequired()) {
-            return false;
-        }
         return true;
+
     }
 
-    public String getMavenUri(boolean autoGenerate) {
-        if (autoGenerate && (mavenUri == null || "".equals(mavenUri))) { //$NON-NLS-1$
-            // get the latest snapshot maven uri from index as default
-            ILibraryManagerService libManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
-                    ILibraryManagerService.class);
-            String mvnUrisFromIndex = libManagerService.getMavenUriFromIndex(getModuleName());
-            if (mvnUrisFromIndex != null) {
-                final String[] split = mvnUrisFromIndex.split(MavenUrlHelper.MVN_INDEX_SPLITER);
-                String maxVerstion = null;
-                for (String mvnUri : split) {
-                    if (maxVerstion == null) {
-                        maxVerstion = mvnUri;
-                    } else {
-                        MavenArtifact lastArtifact = MavenUrlHelper.parseMvnUrl(maxVerstion);
-                        MavenArtifact currentArtifact = MavenUrlHelper.parseMvnUrl(mvnUri);
-                        if (lastArtifact != null && currentArtifact != null) {
-                            String lastV = lastArtifact.getVersion();
-                            lastV = lastV.replace(MavenConstants.SNAPSHOT, "");
-                            String currentV = currentArtifact.getVersion();
-                            currentV = currentV.replace(MavenConstants.SNAPSHOT, "");
-                            if (!lastV.equals(currentV)) {
-                                Version lastVersion = new Version(lastV);
-                                Version currentVersion = new Version(currentV);
-                                if (currentVersion.compareTo(lastVersion) > 0) {
-                                    maxVerstion = mvnUri;
-                                }
-                            }
-                        }
-                    }
+    /**
+     * Get the maven uri from talend configuration: component-IMPORT or librariesNeeded extension
+     */
+    public String getMavenURIFromConfiguration() {
+        return this.mavenUriFromConfiguration;
+    }
 
-                }
-                mavenUri = addTypeForMavenUri(maxVerstion, getModuleName());
-            } else {
-                mavenUri = MavenUrlHelper.generateMvnUrlForJarName(getModuleName(), true, true);
-            }
-        }
+    /**
+     * Get the maven uri from talend configuration or generate a default one if <mavenUriFromConfiguration> is null
+     */
+    public String getDefaultMavenURI() {
+        mavenUri = initURI();
         return mavenUri;
     }
 
     /**
-     * Getter for mavenUriSnapshot.
-     *
-     * @return the mavenUriSnapshot
+     * 
+     * Get the maven URI with priority:custom URI ,URI from configuration, generated by default
+     * 
+     * @return
      */
     public String getMavenUri() {
-        return getMavenUri(false);
+        if (getCustomMavenUri() != null) {
+            return getCustomMavenUri();
+        }
+        mavenUri = initURI();
+        return mavenUri;
+    }
+
+    /**
+     * 
+     * DOC wchen Comment method "initURI".
+     * 
+     * @return
+     */
+    private String initURI() {
+        if (mavenUri == null) {
+            if (StringUtils.isEmpty(mavenUriFromConfiguration)) {
+                // get the latest snapshot maven uri from index as default
+                String mvnUrisFromIndex = libManagerService.getMavenUriFromIndex(getModuleName());
+                if (mvnUrisFromIndex != null) {
+                    final String[] split = mvnUrisFromIndex.split(MavenUrlHelper.MVN_INDEX_SPLITER);
+                    String maxVerstion = null;
+                    for (String mvnUri : split) {
+                        if (maxVerstion == null) {
+                            maxVerstion = mvnUri;
+                        } else {
+                            MavenArtifact lastArtifact = MavenUrlHelper.parseMvnUrl(maxVerstion);
+                            MavenArtifact currentArtifact = MavenUrlHelper.parseMvnUrl(mvnUri);
+                            if (lastArtifact != null && currentArtifact != null) {
+                                String lastV = lastArtifact.getVersion();
+                                lastV = lastV.replace(MavenConstants.SNAPSHOT, "");
+                                String currentV = currentArtifact.getVersion();
+                                currentV = currentV.replace(MavenConstants.SNAPSHOT, "");
+                                if (!lastV.equals(currentV)) {
+                                    Version lastVersion = new Version(lastV);
+                                    Version currentVersion = new Version(currentV);
+                                    if (currentVersion.compareTo(lastVersion) > 0) {
+                                        maxVerstion = mvnUri;
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+                    mavenUri = MavenUrlHelper.addTypeForMavenUri(maxVerstion, getModuleName());
+                } else {
+                    mavenUri = MavenUrlHelper.generateMvnUrlForJarName(getModuleName(), true, true);
+                }
+            } else {
+                mavenUri = mavenUriFromConfiguration;
+            }
+        }
+        return mavenUri;
     }
 
     /**
@@ -529,23 +539,7 @@ public class ModuleNeeded {
      * @param mavenUrl the mavenUrl to set
      */
     public void setMavenUri(String mavenUri) {
-        this.mavenUri = addTypeForMavenUri(mavenUri, getModuleName());
-    }
-
-    private String addTypeForMavenUri(String uri, String moduleName) {
-        // make sure that mvn uri have the package
-        MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(uri, false);
-        if (parseMvnUrl != null && parseMvnUrl.getType() == null) {
-            if (moduleName != null && moduleName.lastIndexOf(".") != -1) {
-                parseMvnUrl.setType(moduleName.substring(moduleName.lastIndexOf(".") + 1, moduleName.length()));
-            } else {
-                // set jar by default
-                parseMvnUrl.setType(MavenConstants.TYPE_JAR);
-            }
-            uri = MavenUrlHelper.generateMvnUrl(parseMvnUrl.getRepositoryUrl(), parseMvnUrl.getGroupId(),
-                    parseMvnUrl.getArtifactId(), parseMvnUrl.getVersion(), parseMvnUrl.getType(), parseMvnUrl.getClassifier());
-        }
-        return uri;
+        this.mavenUriFromConfiguration = MavenUrlHelper.addTypeForMavenUri(mavenUri, getModuleName());
     }
 
     public boolean isDynamic() {
@@ -560,6 +554,21 @@ public class ModuleNeeded {
         return this.extraAttributes;
     }
 
+    public String getCustomMavenUri() {
+        String originalURI = initURI();
+        String customURI = libManagerService.getCustomMavenURI(originalURI);
+        if (!originalURI.equals(customURI)) {
+            return customURI;
+        } else {
+            return null;
+        }
+    }
+
+    public void setCustomMavenUri(String customURI) {
+        String customURIWithType = MavenUrlHelper.addTypeForMavenUri(customURI, getModuleName());
+        libManagerService.setCustomMavenURI(getDefaultMavenURI(), customURIWithType);
+    }
+
     public boolean isExcludeDependencies() {
         return this.excludeDependencies;
     }
@@ -567,6 +576,5 @@ public class ModuleNeeded {
     public void setExcludeDependencies(boolean excludeDependencies) {
         this.excludeDependencies = excludeDependencies;
     }
-
 
 }

@@ -51,9 +51,7 @@ public interface ILibraryManagerService extends IService {
      * @param monitorWrap
      */
     public void deploy(URI jarFileUri, IProgressMonitor... monitorWrap);
-    
-    public void deploy(Collection<URI> jarFileUris, IProgressMonitor... monitorWrap);
-    
+
     public void deploy(URI jarFileUri, String mavenUri, IProgressMonitor... monitorWrap);
 
     /**
@@ -63,7 +61,7 @@ public interface ILibraryManagerService extends IService {
      * @param libsToRelativePath
      * @param monitorWrap
      */
-    public void deploy(Map<String, String> libsToRelativePath, IProgressMonitor... monitorWrap);
+    public void savePlatfromURLIndex(Map<String, String> libsToRelativePath, IProgressMonitor... monitorWrap);
 
     /**
      * 
@@ -72,9 +70,9 @@ public interface ILibraryManagerService extends IService {
      * @param libsToMavenUri
      * @param monitorWrap
      */
-    public void deployMavenIndex(Map<String, String> libsToMavenUri, IProgressMonitor... monitorWrap);
+    public void saveMavenIndex(Map<String, String> libsToMavenUri, IProgressMonitor... monitorWrap);
 
-    public void deployComponentAndExtensionLibs(IProgressMonitor... monitorWrap);
+    public void createModulesIndexFromComponentAndExtension(IProgressMonitor... monitorWrap);
 
     /**
      * DOC ycbai Comment method "retrieve".
@@ -99,8 +97,6 @@ public interface ILibraryManagerService extends IService {
             IProgressMonitor... monitorWrap);
 
     public boolean retrieve(ModuleNeeded module, String pathToStore, boolean showDialog, IProgressMonitor... monitorWrap);
-    
-    public boolean retrieve(ModuleNeeded module, String pathToStore, boolean showDialog, NexusServerBean bean, IProgressMonitor... monitorWrap);
 
     /**
      * 
@@ -113,8 +109,9 @@ public interface ILibraryManagerService extends IService {
      * @throws Exception
      * @throws IOException
      */
-    public File resolveJar(TalendLibsServerManager manager, final NexusServerBean customNexusServer, String uri)
-            throws Exception, IOException;
+    public File resolveJar(final NexusServerBean customNexusServer, String uri) throws Exception, IOException;
+
+    public File resolveStatusLocally(String mvnUriStatusKey);
 
     /**
      * List all the jars (or other files) available.
@@ -150,13 +147,6 @@ public interface ILibraryManagerService extends IService {
     public boolean checkJarInstalledFromPlatform(String uriPath);
 
     /**
-     * By default the return value from the list function will be refreshed only if any new jar is deployed or deleted.<br>
-     * Call this function will force the list update on the next call.<br>
-     * Mostly usefull for SVN libraries, after a SVN Update, this will force to refresh the current list of jars
-     */
-    public void forceListUpdate();
-
-    /**
      * @return true if svn share lib folder are set, otherwise return false.
      */
     public boolean isSvnLibSetup();
@@ -169,6 +159,14 @@ public interface ILibraryManagerService extends IService {
     public void synToLocalMaven();
 
     public String getMavenUriFromIndex(String jarName);
+
+    public void setCustomMavenURI(String orignalURI, String customURI);
+
+    public String getCustomMavenURI(String orignalURI);
+
+    public void saveCustomMavenURIMap();
+
+    public String getPlatformURLFromIndex(String jarName);
 
     /**
      * DOC ycbai Comment method "isJarExistInLibFolder".
@@ -205,5 +203,7 @@ public interface ILibraryManagerService extends IService {
      * @return
      */
     public boolean isJarNeedToBeDeployed(File jarFile);
+
+    public void checkModuleStatus(ModuleNeeded module);
 
 }

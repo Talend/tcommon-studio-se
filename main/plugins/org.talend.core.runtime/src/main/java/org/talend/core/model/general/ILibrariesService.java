@@ -56,12 +56,14 @@ public interface ILibrariesService extends IService {
     public List<URL> getTalendRoutines();
 
     public String getPerlLibrariesPath();
-    
+
     public void deployLibrary(URL source, boolean reset) throws IOException;
 
     public void deployLibrary(URL source) throws IOException;
-    
+
     public void deployLibrary(URL source, String mavenUri) throws IOException;
+
+    public void deployLibrary(URL source, String mavenUri, boolean refresh) throws IOException;
 
     public void deployLibrarys(URL[] source) throws IOException;
 
@@ -75,14 +77,23 @@ public interface ILibrariesService extends IService {
 
     public URL getSqlPatternTemplate();
 
+    /**
+     * 
+     * DOC wchen Comment method "getLibraryStatus".
+     * 
+     * @deprecated better call the function getLibraryStatus(String libName, String mvnURI)
+     * @param libName
+     * @return
+     * @throws BusinessException
+     */
+    @Deprecated
     public ELibraryInstallStatus getLibraryStatus(String libName) throws BusinessException;
+
+    public ELibraryInstallStatus getLibraryStatus(String libName, String mvnURI);
 
     public List<Problem> getProblems(INode node, IElement element);
 
     public void syncLibraries(IProgressMonitor... monitorWrap);
-
-    @Deprecated
-    public void syncLibrariesFromApp(IProgressMonitor... monitorWrap);
 
     @Deprecated
     public void syncLibrariesFromLibs(IProgressMonitor... monitorWrap);
@@ -104,7 +115,7 @@ public interface ILibrariesService extends IService {
     Set<ModuleNeeded> getCodesModuleNeededs(ERepositoryObjectType type);
 
     List<ModuleNeeded> getModuleNeeded(String id, boolean isGroup);
-    
+
     public void deployProjectLibrary(File source) throws IOException;
 
     /**
@@ -117,4 +128,5 @@ public interface ILibrariesService extends IService {
 
         public void afterChangingLibraries();
     }
+
 }

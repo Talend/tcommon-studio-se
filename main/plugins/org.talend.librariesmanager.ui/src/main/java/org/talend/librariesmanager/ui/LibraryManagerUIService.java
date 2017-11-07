@@ -21,6 +21,7 @@ import java.util.Set;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
+import org.talend.commons.ui.swt.dialogs.IConfigModuleDialog;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
 import org.talend.core.ILibraryManagerUIService;
@@ -35,6 +36,7 @@ import org.talend.core.model.routines.RoutinesUtil;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.librariesmanager.model.ModulesNeededProvider;
 import org.talend.librariesmanager.prefs.LibrariesManagerUtils;
+import org.talend.librariesmanager.ui.dialogs.ConfigModuleDialog;
 import org.talend.librariesmanager.ui.i18n.Messages;
 import org.talend.librariesmanager.ui.service.RoutineProviderManager;
 import org.talend.librariesmanager.utils.ModulesInstaller;
@@ -184,4 +186,7 @@ public class LibraryManagerUIService implements ILibraryManagerUIService {
                                 "ArtifactsDeployer.uploadJarEncounterMvnRepositroySameName.MessageContent", originalJarFileName, mvnUrlForJarName));//$NON-NLS-1$
     }
 
+    public IConfigModuleDialog getConfigModuleDialog(Shell parentShell, String initValue) {
+        return new ConfigModuleDialog(parentShell, initValue);
+    }
 }

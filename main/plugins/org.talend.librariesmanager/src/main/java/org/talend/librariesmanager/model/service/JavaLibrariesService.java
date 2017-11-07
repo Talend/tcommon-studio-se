@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -162,25 +161,6 @@ public class JavaLibrariesService extends AbstractLibrariesService {
         return toReturn;
     }
 
-    @Override
-    public void checkInstalledLibraries() {
-        // check and install system jars for routines
-        repositoryBundleService.installModules(ModulesNeededProvider.getSystemRunningModules(), null);
-        Set<String> existLibraries = repositoryBundleService.list();
-        List<String> modulesNeededNames = ModulesNeededProvider.getModulesNeededNames();
-        ModulesNeededProvider.getUnUsedModules().clear();
-        for (String library : existLibraries) {
-            if (!modulesNeededNames.contains(library)) {
-                ModulesNeededProvider.userAddUnusedModules("Unknown", library); //$NON-NLS-1$
-            }
-        }
-    }
-
-    @Override
-    public void syncLibrariesFromApp(IProgressMonitor... monitorWrap) {
-        // do nothing
-    }
-
     private File getStorageDirectory() {
         String librariesPath = LibrariesManagerUtils.getLibrariesPath(ECodeLanguage.JAVA);
         File storageDir = new File(librariesPath);
@@ -221,11 +201,11 @@ public class JavaLibrariesService extends AbstractLibrariesService {
         // if clean the component cache, it will automatically recheck all libs still.
         if (!repositoryBundleService.isInitialized()) {
             // 2. Components libraries and libraries from extension
-            repositoryBundleService.deployComponentAndExtensionLibs(monitorWrap);
+            repositoryBundleService.createModulesIndexFromComponentAndExtension(monitorWrap);
             repositoryBundleService.setInitialized();
         }
 
-        checkInstalledLibraries();
+        repositoryBundleService.installModules(ModulesNeededProvider.getSystemRunningModules(), null);
 
         // clean the temp library of job needed in .java\lib
         cleanLibs();

@@ -824,7 +824,20 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                     }
                     schemaRs = dbJDBCMetadata.getSchemas(catalog.getName(), schemaPattern);
                 } else {
-                    schemaRs = dbJDBCMetadata.getSchemas();
+                    try {
+                        String schemaPattern = null;
+                        if (!schemaFilter.isEmpty()) {
+                            schemaPattern = schemaFilter.get(0);
+                        }
+                        schemaRs = dbJDBCMetadata.getSchemas(catalog.getName(), schemaPattern);
+                        if (schemaRs == null) {
+                            schemaRs = dbJDBCMetadata.getSchemas();
+                        }
+                    } catch (Throwable t) {
+                        // some drivers don't support getSchemas(catalog, pattern), if exception occurs, just try again
+                        // with getSchemas()
+                        schemaRs = dbJDBCMetadata.getSchemas();
+                    }
                 }
             } catch (SQLException e) {
                 if (log.isDebugEnabled()) {
@@ -890,10 +903,16 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
             }
 
             // the case for mssql
-            if (MetadataConnectionUtils.isMssql(dbJDBCMetadata) && dbJDBCMetadata.getDatabaseMajorVersion() > 8
-                    && dbJDBCMetadata.getDriverMajorVersion() > 1) {
-                if (catalogName != null && catalogName != schemaName) {
-                    schemaName = catalogName;
+            if (MetadataConnectionUtils.isMssql(dbJDBCMetadata)) {
+                // seems schema is supported since SqlServer 2005
+                if (dbJDBCMetadata.getDatabaseMajorVersion() < 9 && dbJDBCMetadata.getDriverMajorVersion() > 1) {
+                    if (catalogName != null && !catalogName.equals(schemaName)) {
+                        schemaName = catalogName;
+                    }
+                } else {
+                    if (catalogName != null && !catalogName.equals(catalog.getName())) {
+                        return null;
+                    }
                 }
             }
             if (!MetadataConnectionUtils.isMssql(dbJDBCMetadata.getConnection()) && catalogName != null

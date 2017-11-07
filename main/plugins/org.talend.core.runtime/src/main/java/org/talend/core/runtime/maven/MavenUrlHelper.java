@@ -169,6 +169,11 @@ public class MavenUrlHelper {
         return generateMvnUrlForJarName(jarName, true, true);
     }
 
+    public static String generateMvnUrl(MavenArtifact artifact) {
+        return generateMvnUrl(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(), artifact.getType(),
+                artifact.getClassifier());
+    }
+
     /**
      * 
      * mvn:groupId/artifactId/version/packaging/classifier
@@ -217,6 +222,22 @@ public class MavenUrlHelper {
         }
 
         return mvnUrl.toString();
+    }
+
+    public static String addTypeForMavenUri(String uri, String moduleName) {
+        // make sure that mvn uri have the package
+        MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(uri, false);
+        if (parseMvnUrl != null && parseMvnUrl.getType() == null) {
+            if (moduleName != null && moduleName.lastIndexOf(".") != -1) {
+                parseMvnUrl.setType(moduleName.substring(moduleName.lastIndexOf(".") + 1, moduleName.length()));
+            } else {
+                // set jar by default
+                parseMvnUrl.setType(MavenConstants.TYPE_JAR);
+            }
+            uri = MavenUrlHelper.generateMvnUrl(parseMvnUrl.getGroupId(), parseMvnUrl.getArtifactId(), parseMvnUrl.getVersion(),
+                    parseMvnUrl.getType(), parseMvnUrl.getClassifier());
+        }
+        return uri;
     }
 
 }

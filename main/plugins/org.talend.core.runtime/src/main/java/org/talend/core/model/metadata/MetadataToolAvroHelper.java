@@ -27,6 +27,9 @@ import org.apache.avro.SchemaBuilder.PropBuilder;
 import org.apache.avro.SchemaBuilder.RecordBuilder;
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.emf.common.util.EList;
+import org.talend.commons.utils.data.list.UniqueStringGenerator;
+import org.talend.core.GlobalServiceRegister;
+import org.talend.core.ICoreService;
 import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
 import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.core.model.metadata.types.JavaTypesManager;
@@ -132,8 +135,18 @@ public final class MetadataToolAvroHelper {
      */
     private static FieldAssembler<Schema> convertToAvro(FieldAssembler<Schema> fa,
             org.talend.core.model.metadata.builder.connection.MetadataColumn in) {
-        FieldBuilder<Schema> fb = fa.name(in.getLabel());
+        ICoreService coreService = (ICoreService) GlobalServiceRegister.getDefault().getService(ICoreService.class);
+        String label = in.getLabel(); 
+        if (label != null && coreService != null) {
+            if (coreService.isKeyword(label)) {
+                label = "_" + label; //$NON-NLS-1$
+            }
+        }
+        
+        FieldBuilder<Schema> fb = fa.name(label);
         copyColumnProperties(fb, in);
+        
+        fb.prop(DiSchemaConstants.TALEND6_LABEL, label);
 
         Object defaultValue = null;
         Expression initialValue = in.getInitialValue();
@@ -331,8 +344,9 @@ public final class MetadataToolAvroHelper {
             String additionalTag = tv.getTag();
             if (DiSchemaConstants.TALEND6_IS_READ_ONLY.equals(additionalTag)) {
                 builder.prop(DiSchemaConstants.TALEND6_IS_READ_ONLY, tv.getValue());
-            } else
-            if (tv.getValue() != null) {
+            }else if(DiSchemaConstants.AVRO_TECHNICAL_KEY.equals(additionalTag)){
+                builder.prop(DiSchemaConstants.AVRO_TECHNICAL_KEY, tv.getValue());
+            }else if (tv.getValue() != null) {
                 builder.prop(DiSchemaConstants.TALEND6_ADDITIONAL_PROPERTIES + additionalTag, tv.getValue());
             }
         }
@@ -428,7 +442,7 @@ public final class MetadataToolAvroHelper {
         // Add the columns.
         List<org.talend.core.model.metadata.builder.connection.MetadataColumn> columns = new ArrayList<>(in.getFields().size());
         for (Schema.Field f : in.getFields()) {
-            columns.add(convertFromAvro(f));
+            columns.add(convertFromAvro(f, table));
         }
         boolean isDynamic = AvroUtils.isIncludeAllFields(in);
         if (isDynamic) {
@@ -516,6 +530,29 @@ public final class MetadataToolAvroHelper {
         }
 
         col.setTalendType("id_Dynamic"); //$NON-NLS-1$
+        return col;
+    }
+    
+    public static org.talend.core.model.metadata.builder.connection.MetadataColumn convertFromAvro(Schema.Field field, MetadataTable metadataTable) {
+        org.talend.core.model.metadata.builder.connection.MetadataColumn col = convertFromAvro(field);
+        if(metadataTable == null){
+            return col;
+        }
+        List<String> labels = new ArrayList<String>();
+        for(org.talend.core.model.metadata.builder.connection.MetadataColumn column:metadataTable.getColumns()){
+            labels.add(column.getLabel());
+        }
+        String label = col.getLabel();
+        ICoreService coreService = (ICoreService) GlobalServiceRegister.getDefault().getService(ICoreService.class);
+        if(coreService != null && coreService.isKeyword(label)){
+            label = "_"+label;
+        }
+        label = MetadataToolHelper.validateColumnName(label, metadataTable.getColumns().size(), labels);
+        col.setLabel(label);
+        
+        TaggedValue tv = TaggedValueHelper.createTaggedValue(DiSchemaConstants.AVRO_TECHNICAL_KEY, field.name());
+        col.getTaggedValue().add(tv);
+        
         return col;
     }
 
@@ -956,4 +993,5 @@ public final class MetadataToolAvroHelper {
     // }
     // return schema;
     // }
+    
 }

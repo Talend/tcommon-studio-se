@@ -67,7 +67,6 @@ import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.browser.IWebBrowser;
-import org.talend.commons.exception.BusinessException;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.commons.ui.runtime.image.ECoreImage;
 import org.talend.commons.ui.runtime.image.EImage;
@@ -88,7 +87,6 @@ import org.talend.core.model.general.ModuleStatusProvider;
 import org.talend.core.model.general.ModuleToInstall;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.designer.core.IDesignerCoreService;
-import org.talend.librariesmanager.model.ModulesNeededProvider;
 import org.talend.librariesmanager.ui.LibManagerUiPlugin;
 import org.talend.librariesmanager.ui.actions.ImportExternalJarAction;
 import org.talend.librariesmanager.ui.i18n.Messages;
@@ -177,10 +175,10 @@ public class ExternalModulesInstallDialog extends TitleAreaDialog implements IMo
         tableViewerCreator.createTable();
 
         createJarNameColumn();
-        createModuleNameColumn();
         createContextColumn();
         createRequiredColumn();
         createLicenseColumn();
+        createMavenURIColumn();
 
         urlcolumn = createMoreInformationColumn();
 
@@ -290,17 +288,17 @@ public class ExternalModulesInstallDialog extends TitleAreaDialog implements IMo
     /**
      * DOC sgandon Comment method "createModuleNameColumn".
      */
-    public void createModuleNameColumn() {
+    public void createMavenURIColumn() {
         TableViewerCreatorColumn<ModuleToInstall, String> column = new TableViewerCreatorColumn<ModuleToInstall, String>(
                 tableViewerCreator);
-        column.setTitle(Messages.getString("ExternalModulesInstallDialog_ColumnModuleName")); //$NON-NLS-1$
-        column.setToolTipHeader(Messages.getString("ExternalModulesInstallDialog_ColumnModuleName")); //$NON-NLS-1$
+        column.setTitle(Messages.getString("ExternalModulesInstallDialog.mvnuri_columnModuleName")); //$NON-NLS-1$
+        column.setToolTipHeader(Messages.getString("ExternalModulesInstallDialog.mvnuri_columnModuleName")); //$NON-NLS-1$
         column.setSortable(true);
         column.setBeanPropertyAccessors(new IBeanPropertyAccessors<ModuleToInstall, String>() {
 
             @Override
             public String get(ModuleToInstall bean) {
-                return bean.getDescription();
+                return bean.getMavenUri();
             }
 
             @Override
@@ -308,7 +306,7 @@ public class ExternalModulesInstallDialog extends TitleAreaDialog implements IMo
                 // read only
             }
         });
-        column.setWeight(4);
+        column.setWeight(6);
         column.setModifiable(false);
     }
 
@@ -335,7 +333,7 @@ public class ExternalModulesInstallDialog extends TitleAreaDialog implements IMo
         });
 
         column.setModifiable(false);
-        column.setWeight(5);
+        column.setWeight(4);
     }
 
     /**
@@ -417,7 +415,7 @@ public class ExternalModulesInstallDialog extends TitleAreaDialog implements IMo
         column.setToolTipHeader(Messages.getString("ExternalModulesInstallDialog_ColumnUrl")); //$NON-NLS-1$
         column.setModifiable(false);
         column.setSortable(true);
-        column.setWeight(7);
+        column.setWeight(4);
         // set bean property accessor to allow sort by url name
         column.setBeanPropertyAccessors(new IBeanPropertyAccessors<ModuleToInstall, String>() {
 
@@ -586,7 +584,7 @@ public class ExternalModulesInstallDialog extends TitleAreaDialog implements IMo
                                             service.refreshComponentView();
                                         }
                                     }
-                                    ModulesNeededProvider.fireChangedLibrariesListener();
+                                    LibManagerUiPlugin.getDefault().getLibrariesService().checkLibraries();
                                 }
                             }
                         });
@@ -625,11 +623,7 @@ public class ExternalModulesInstallDialog extends TitleAreaDialog implements IMo
             if (obj instanceof ModuleToInstall) {
                 final ModuleToInstall data = (ModuleToInstall) obj;
                 boolean isInstalled = false;
-                try {
-                    isInstalled = librariesService.getLibraryStatus(data.getName()) == ELibraryInstallStatus.INSTALLED;
-                } catch (BusinessException e1) {// log the error and consider as unsinstalled
-                    log.error(e1);
-                }
+                isInstalled = librariesService.getLibraryStatus(data.getName(), data.getMavenUri()) == ELibraryInstallStatus.INSTALLED;
                 boolean hasDownloadUrl = data.getUrl_description() != null;
                 if (!MavenConstants.DOWNLOAD_MANUAL.equals(data.getDistribution())) {// add the button to download
                     final Button button = new Button(table, SWT.FLAT);
@@ -936,7 +930,7 @@ public class ExternalModulesInstallDialog extends TitleAreaDialog implements IMo
                     service.refreshComponentView();
                 }
             }
-            ModulesNeededProvider.fireChangedLibrariesListener();
+            LibManagerUiPlugin.getDefault().getLibrariesService().checkLibraries();
         }
     }
 
@@ -952,7 +946,7 @@ public class ExternalModulesInstallDialog extends TitleAreaDialog implements IMo
         for (ModuleToInstall module : theInputList) {
             if (!MavenConstants.DOWNLOAD_MANUAL.equals(module.getDistribution())
                     && !jarsInstalledSuccuss.contains(module.getName())
-                    && ELibraryInstallStatus.INSTALLED != ModuleStatusProvider.getStatusMap().get(module.getMavenUri())) {
+                    && ELibraryInstallStatus.INSTALLED != ModuleStatusProvider.getStatus(module.getMavenUri())) {
                 toInstall.add(module);
             }
         }

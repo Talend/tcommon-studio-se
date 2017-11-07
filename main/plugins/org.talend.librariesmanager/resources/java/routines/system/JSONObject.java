@@ -982,7 +982,7 @@ public class JSONObject {
         char c = 0;
         int i;
         int len = string.length();
-        StringBuffer sb = new StringBuffer(len + 4);
+        StringBuilder sb = new StringBuilder(len + 4);
         String t;
 
         sb.append('"');
@@ -1150,7 +1150,7 @@ public class JSONObject {
     public String toString() {
         try {
             Iterator keys = keys();
-            StringBuffer sb = new StringBuffer("{");
+            StringBuilder sb = new StringBuilder("{");
 
             while (keys.hasNext()) {
                 if (sb.length() > 1) {
@@ -1200,7 +1200,7 @@ public class JSONObject {
             return "{}";
         }
         Iterator keys = sortedKeys();
-        StringBuffer sb = new StringBuffer("{");
+        StringBuilder sb = new StringBuilder("{");
         int newindent = indent + indentFactor;
         Object o;
         if (n == 1) {
@@ -1614,7 +1614,7 @@ class JSONTokener {
      */
     public String nextString(char quote) throws JSONException {
         char c;
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         for (;;) {
             c = next();
             switch (c) {
@@ -1669,7 +1669,7 @@ class JSONTokener {
      * @return A string.
      */
     public String nextTo(char d) throws JSONException {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         for (;;) {
             char c = next();
             if (c == d || c == 0 || c == '\n' || c == '\r') {
@@ -1691,7 +1691,7 @@ class JSONTokener {
      */
     public String nextTo(String delimiters) throws JSONException {
         char c;
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         for (;;) {
             c = next();
             if (delimiters.indexOf(c) >= 0 || c == 0 || c == '\n' || c == '\r') {
@@ -1736,7 +1736,7 @@ class JSONTokener {
          * Accumulate characters until we reach the end of the text or a formatting character.
          */
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         while (c >= ' ' && ",:]}/\\\"[{;=#".indexOf(c) < 0) {
             sb.append(c);
             c = next();
@@ -1799,40 +1799,6 @@ class JSONTokener {
      */
     public String toString() {
         return " at " + index + " [character " + this.character + " line " + this.line + "]";
-    }
-}
-
-/**
- * The JSONException is thrown by the JSON.org classes when things are amiss.
- * 
- * @author JSON.org
- * @version 2008-09-18
- */
-class JSONException extends Exception {
-
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 0;
-
-    private Throwable cause;
-
-    /**
-     * Constructs a JSONException with an explanatory message.
-     * 
-     * @param message Detail about the reason for the exception.
-     */
-    public JSONException(String message) {
-        super(message);
-    }
-
-    public JSONException(Throwable t) {
-        super(t.getMessage());
-        this.cause = t;
-    }
-
-    public Throwable getCause() {
-        return this.cause;
     }
 }
 
@@ -2113,7 +2079,7 @@ class JSONArray {
      */
     public String join(String separator) throws JSONException {
         int len = length();
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < len; i += 1) {
             if (i > 0) {
@@ -2561,7 +2527,7 @@ class JSONArray {
             return "[]";
         }
         int i;
-        StringBuffer sb = new StringBuffer("[");
+        StringBuilder sb = new StringBuilder("[");
         if (len == 1) {
             sb.append(JSONObject.valueToString(this.myArrayList.get(0), indentFactor, indent));
         } else {

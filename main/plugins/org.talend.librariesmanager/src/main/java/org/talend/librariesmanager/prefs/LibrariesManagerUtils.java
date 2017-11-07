@@ -66,7 +66,7 @@ public class LibrariesManagerUtils {
     public static List<ModuleNeeded> getNotInstalledModules(List<ModuleNeeded> modules) {
         List<ModuleNeeded> updatedModules = new ArrayList<ModuleNeeded>();
         // get module from provider incase it is rested
-        List<ModuleNeeded> modulesNeeded = ModulesNeededProvider.getModulesNeeded();
+        Set<ModuleNeeded> modulesNeeded = ModulesNeededProvider.getModulesNeeded();
         if (modules != null) {
             for (ModuleNeeded module : modules) {
                 for (ModuleNeeded fromProvider : modulesNeeded) {

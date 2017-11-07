@@ -52,7 +52,6 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.designer.runprocess.IRunProcessService;
-import org.talend.librariesmanager.i18n.Messages;
 import org.talend.librariesmanager.model.ExtensionModuleManager;
 import org.talend.librariesmanager.model.ModulesNeededProvider;
 import org.talend.librariesmanager.prefs.LibrariesManagerUtils;
@@ -69,10 +68,8 @@ public abstract class AbstractLibrariesService implements ILibrariesService {
 
     private static Logger log = Logger.getLogger(AbstractLibrariesService.class);
 
-    private final List<IChangedLibrariesListener> listeners = new ArrayList<IChangedLibrariesListener>();
-
-    private ILibraryManagerService repositoryBundleService = (ILibraryManagerService) GlobalServiceRegister.getDefault()
-            .getService(ILibraryManagerService.class);
+    private ILibraryManagerService localLibraryManager = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
+            ILibraryManagerService.class);
 
     // protected String LIBS = "libs";
 
@@ -82,59 +79,65 @@ public abstract class AbstractLibrariesService implements ILibrariesService {
     @Override
     public abstract URL getBeanTemplate();
 
+    /**
+     * 
+     * DOC wchen Comment method "getLibraryStatus".
+     * 
+     * @deprecated better call the function getLibraryStatus(String libName, String mvnURI)
+     * @param libName
+     * @return
+     * @throws BusinessException
+     */
+    @Deprecated
     @Override
     public ELibraryInstallStatus getLibraryStatus(String libName) throws BusinessException {
-        for (ModuleNeeded current : ModulesNeededProvider.getModulesNeeded()) {
-            if (current.getModuleName().equals(libName)) {
-                return current.getStatus();
-            }
-        }
-        throw new BusinessException(Messages.getString("ModulesNeededProvider.Module.Exception", libName)); //$NON-NLS-1$
+        ModuleNeeded testModule = new ModuleNeeded("", libName, "", true);
+        return testModule.getStatus();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.talend.core.model.general.ILibrariesService#getLibraryStatus(java.lang.String, java.lang.String)
+     */
+    @Override
+    public ELibraryInstallStatus getLibraryStatus(String libName, String mvnURI) {
+        ModuleNeeded testModule = new ModuleNeeded("", libName, "", true);
+        testModule.setMavenUri(mvnURI);
+        return testModule.getStatus();
     }
 
     @Override
     public void deployLibrary(URL source) throws IOException {
         deployLibrary(source, null, true);
     }
-    
+
     @Override
     public void deployLibrary(URL source, String mavenUri) throws IOException {
         deployLibrary(source, mavenUri, true);
     }
-    
-    public void deployLibrary(URL source, boolean reset) throws IOException {
-        deployLibrary(source, null, reset);
+
+    @Override
+    public void deployLibrary(URL source, boolean refresh) throws IOException {
+        deployLibrary(source, null, refresh);
     }
 
-    private void deployLibrary(URL source, String mavenUri, boolean reset) throws IOException {
-
-        // fix for bug 0020953
-        // if jdk is not 1.5, need decode %20 for space.
-
+    @Override
+    public void deployLibrary(URL source, String mavenUri, boolean refresh) throws IOException {
         String decode = null;
         if (source.getFile().contains("%20")) {
             decode = URLDecoder.decode(source.getFile(), "UTF-8");
         } else {
             decode = source.getFile();
         }
-
         final File sourceFile = new File(decode);
-        final File targetFile = new File(
-                LibrariesManagerUtils.getLibrariesPath(ECodeLanguage.JAVA) + File.separatorChar + sourceFile.getName());
 
-        if (!repositoryBundleService.contains(source.getFile())) {
-            repositoryBundleService.deploy(sourceFile.toURI(), mavenUri);
-            if (PluginChecker.isSVNProviderPluginLoaded()) {
-                ISVNProviderServiceInCoreRuntime svnService = (ISVNProviderServiceInCoreRuntime) GlobalServiceRegister
-                        .getDefault().getService(ISVNProviderServiceInCoreRuntime.class);
-                if (svnService != null && svnService.isSvnLibSetupOnTAC()) {
-                    svnService.syncLibs(null);
-                }
-            }
+        localLibraryManager.deploy(sourceFile.toURI(), mavenUri);
+
+        refreshLocal(new String[] { sourceFile.getName() });
+        if (refresh) {
+            checkLibraries();
         }
-
-        ModulesNeededProvider.userAddImportModules(targetFile.getPath(), sourceFile.getName(), ELibraryInstallStatus.INSTALLED);
-        resetAndRefreshLocal(new String[] { sourceFile.getName() }, reset);
 
     }
 
@@ -146,7 +149,8 @@ public abstract class AbstractLibrariesService implements ILibrariesService {
             namse[i] = new File(url.toString()).getName();
             deployLibrary(url, false);
         }
-        resetAndRefreshLocal(namse, true);
+        refreshLocal(namse);
+        checkLibraries();
     }
 
     private RepositoryContext getRepositoryContext() {
@@ -154,11 +158,7 @@ public abstract class AbstractLibrariesService implements ILibrariesService {
         return (RepositoryContext) ctx.getProperty(Context.REPOSITORY_CONTEXT_KEY);
     }
 
-    private void resetAndRefreshLocal(final String names[], boolean reset) {
-        if (reset) {
-            resetModulesNeeded();
-        }
-
+    private void refreshLocal(final String names[]) {
         // for feature 12877
         Project currentProject = ProjectManager.getInstance().getCurrentProject();
         final String projectLabel = currentProject.getTechnicalLabel();
@@ -166,7 +166,7 @@ public abstract class AbstractLibrariesService implements ILibrariesService {
         // synchronize .Java project for all new jars.
         try {
             for (String name : names) {
-                String jarPath = repositoryBundleService.getJarPath(name);
+                String jarPath = localLibraryManager.getJarPath(name);
                 if (jarPath != null) {
                     File source = new File(jarPath);
                     if (source.exists()) {
@@ -278,26 +278,21 @@ public abstract class AbstractLibrariesService implements ILibrariesService {
 
     @Override
     public void checkLibraries() {
-        this.checkInstalledLibraries();
         fireLibrariesChanges();
     }
 
-    public abstract void checkInstalledLibraries();
-
     @Override
     public void addChangeLibrariesListener(IChangedLibrariesListener listener) {
-        listeners.add(listener);
+        ModulesNeededProvider.addChangeLibrariesListener(listener);
     }
 
     @Override
     public void removeChangeLibrariesListener(IChangedLibrariesListener listener) {
-        listeners.remove(listener);
+        ModulesNeededProvider.removeChangeLibrariesListener(listener);
     }
 
     private void fireLibrariesChanges() {
-        for (IChangedLibrariesListener current : listeners) {
-            current.afterChangingLibraries();
-        }
+        ModulesNeededProvider.fireLibrariesChanges();
     }
 
     /*
@@ -340,12 +335,12 @@ public abstract class AbstractLibrariesService implements ILibrariesService {
     public List<ModuleNeeded> getModuleNeeded(String id, boolean isGroup) {
         return ExtensionModuleManager.getInstance().getModuleNeeded(id, isGroup);
     }
-    
+
     @Override
     public void deployProjectLibrary(File source) throws IOException {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerService.class)) {
-            ILibraryManagerService librairesService = (ILibraryManagerService) GlobalServiceRegister.getDefault()
-                    .getService(ILibraryManagerService.class);
+            ILibraryManagerService librairesService = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
+                    ILibraryManagerService.class);
             if (librairesService != null) {
                 File sourceFile = new File(librairesService.getJarPath(source.getName()));
                 if (sourceFile.exists()) {

@@ -18,6 +18,7 @@ import java.sql.DatabaseMetaData;
 import java.sql.Driver;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -34,6 +35,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.EMap;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -74,6 +76,7 @@ import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.commons.ui.runtime.image.EImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.commons.ui.swt.dialogs.ErrorDialogWidthDetailArea;
+import org.talend.commons.ui.swt.dialogs.IConfigModuleDialog;
 import org.talend.commons.ui.swt.formtools.Form;
 import org.talend.commons.ui.swt.formtools.LabelledCombo;
 import org.talend.commons.ui.swt.formtools.LabelledDirectoryField;
@@ -84,6 +87,7 @@ import org.talend.commons.ui.utils.PathUtils;
 import org.talend.commons.ui.utils.loader.MyURLClassLoader;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
+import org.talend.core.ILibraryManagerUIService;
 import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.database.conn.ConnParameterKeys;
 import org.talend.core.database.conn.DatabaseConnStrUtil;
@@ -125,7 +129,6 @@ import org.talend.core.runtime.hd.IHDistributionVersion;
 import org.talend.core.runtime.hd.hive.HiveMetadataHelper;
 import org.talend.core.ui.CoreUIPlugin;
 import org.talend.core.ui.branding.IBrandingService;
-import org.talend.core.ui.metadata.celleditor.ModuleListDialog;
 import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
@@ -5336,32 +5339,31 @@ public class DatabaseForm extends AbstractForm {
 
             @Override
             public void widgetSelected(SelectionEvent e) {
-                String value = generalJdbcDriverjarText.getText();
-                if (value != null && value.length() > 0) {
-                    IPath path = Path.fromOSString(value);
-                    if (path.lastSegment() != null) {
-                        value = path.lastSegment();
-                    }
+                String driverStr = generalJdbcDriverjarText.getText();
+                String values[] = new String[0];
+                if (driverStr != null && driverStr.length() > 0) {
+                    values = driverStr.split(";");
                 }
-                ModuleListDialog dialog = new ModuleListDialog(getShell(), value, null, true);
-
-                if (dialog.open() == Window.OK) {
-                    if (dialog.getSelecteModuleArray() != null) {
-                        String[] moduleArray = dialog.getSelecteModuleArray();
-                        StringBuffer modeleList = new StringBuffer();
-                        for (int i = 0; i < moduleArray.length; i++) {
-                            String module = moduleArray[i];
-                            modeleList.append(module);
-                            if (i < moduleArray.length - 1) {
-                                modeleList.append(";");
-                            }
+                List<String> asList = new ArrayList<String>(Arrays.asList(values));
+                if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerUIService.class)) {
+                    ILibraryManagerUIService libUiService = (ILibraryManagerUIService) GlobalServiceRegister.getDefault()
+                            .getService(ILibraryManagerUIService.class);
+                    IConfigModuleDialog dialog = libUiService.getConfigModuleDialog(getShell(), null);
+                    if (dialog.open() == IDialogConstants.OK_ID) {
+                        String selecteModule = dialog.getModuleName();
+                        if (selecteModule != null && !asList.contains(selecteModule)) {
+                            asList.add(selecteModule);
                         }
-                        generalJdbcDriverjarText.setText(modeleList.toString());
-                    } else if (dialog.getSelecteModule() != null) {
-                        String selecteModule = dialog.getSelecteModule();
-                        generalJdbcDriverjarText.setText(selecteModule);
                     }
                 }
+                StringBuffer result = new StringBuffer();
+                for (int i = 0; i < asList.size(); i++) {
+                    result.append(asList.get(i));
+                    if (i < asList.size() - 1) {
+                        result.append(";");
+                    }
+                }
+                generalJdbcDriverjarText.setText(result.toString());
             }
 
         });
@@ -7047,8 +7049,8 @@ public class DatabaseForm extends AbstractForm {
     }
 
     /**
-     * Registers a listener for the text widget of metastore connection url, it invokes {@link #doMetastoreConnURLModify()()} when
-     * the text contents is changed. Added by Marvin Wang on Oct 17, 2012.
+     * Registers a listener for the text widget of metastore connection url, it invokes
+     * {@link #doMetastoreConnURLModify()()} when the text contents is changed. Added by Marvin Wang on Oct 17, 2012.
      */
     private void regHiveRelatedWidgetMetastoreConnURLListener() {
         metastoreConnURLTxt.getTextControl().addModifyListener(new ModifyListener() {
@@ -7879,10 +7881,10 @@ public class DatabaseForm extends AbstractForm {
     }
 
     /**
-     * Invokes this method to handle the status of other widgets, for hive the following widgets need to handle: <li>The text
-     * widget of userName, variable is <code>usernameText</code>.</li> <li>The text widget of password, variable is
-     * <code>passwordText</code>.</li> <li>The text widget of database, variable is <code>sidOrDatabaseText</code>.</li> <li>The
-     * text widget of schema, variable is <code>schemaText</code>.</li> All these will be hidden when the
+     * Invokes this method to handle the status of other widgets, for hive the following widgets need to handle: <li>The
+     * text widget of userName, variable is <code>usernameText</code>.</li> <li>The text widget of password, variable is
+     * <code>passwordText</code>.</li> <li>The text widget of database, variable is <code>sidOrDatabaseText</code>.</li>
+     * <li>The text widget of schema, variable is <code>schemaText</code>.</li> All these will be hidden when the
      * current db type is <code>Hive</code> and the current hive mode is <code>STANDALONE</code>. Otherwise, all will be
      * visible when the current db type is <code>Hive</code> and the current hive mode is <code>EMBEDDED</code>. Added
      * by Marvin Wang on Oct 17, 2012.
@@ -8090,8 +8092,8 @@ public class DatabaseForm extends AbstractForm {
     }
 
     /**
-     * Indentifies the hive mode selected in hive mode combo is standalone or embedded. If embedded, return <code>true</code>,
-     * <code>false</code> otherwise.
+     * Indentifies the hive mode selected in hive mode combo is standalone or embedded. If embedded, return
+     * <code>true</code>, <code>false</code> otherwise.
      * 
      * @return
      */

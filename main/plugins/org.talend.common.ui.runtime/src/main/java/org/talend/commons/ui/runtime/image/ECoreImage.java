@@ -153,6 +153,7 @@ public enum ECoreImage implements IImage {
     MODULE_UNKNOWN_ICON("/icons1/unknown.gif"), //$NON-NLS-1$
     MODULE_REQUIRED_ICON("/icons1/checked.gif"), //$NON-NLS-1$
     MODULE_NOTREQUIRED_ICON("/icons1/empty.gif"), //$NON-NLS-1$
+    MODULE_CUSTOM_OVERLAY("/icons1/custom_overlay.gif"),
 
     LOCKED_USER_OVERLAY("/icons1/locked_green_overlay.gif"), //$NON-NLS-1$
     LOCKED_OTHER_OVERLAY("/icons1/locked_red_overlay.gif"), //$NON-NLS-1$

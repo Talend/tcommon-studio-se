@@ -14,6 +14,7 @@ package org.talend.librariesmanager.model;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
@@ -37,8 +39,10 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.XMLParserPoolImpl;
 import org.talend.commons.exception.CommonExceptionHandler;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.runtime.model.repository.ERepositoryStatus;
+import org.talend.commons.utils.io.FilesUtils;
 import org.talend.commons.utils.workbench.extensions.ExtensionImplementationProvider;
 import org.talend.commons.utils.workbench.extensions.ExtensionPointLimiterImpl;
 import org.talend.commons.utils.workbench.extensions.IExtensionPointLimiter;
@@ -58,7 +62,7 @@ import org.talend.core.model.components.ComponentManager;
 import org.talend.core.model.components.IComponent;
 import org.talend.core.model.components.IComponentsFactory;
 import org.talend.core.model.components.IComponentsService;
-import org.talend.core.model.general.ILibrariesService;
+import org.talend.core.model.general.ILibrariesService.IChangedLibrariesListener;
 import org.talend.core.model.general.LibraryInfo;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
@@ -71,10 +75,15 @@ import org.talend.core.model.properties.RoutineItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.routines.IRoutinesProvider;
+import org.talend.core.runtime.maven.MavenArtifact;
+import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.core.utils.TalendCacheUtils;
 import org.talend.designer.core.model.utils.emf.component.IMPORTType;
 import org.talend.designer.core.model.utils.emf.talendfile.RoutinesParameterType;
 import org.talend.librariesmanager.i18n.Messages;
+import org.talend.librariesmanager.model.service.CustomUriManager;
+import org.talend.librariesmanager.model.service.LibrariesIndexManager;
+import org.talend.librariesmanager.prefs.LibrariesManagerUtils;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IRepositoryService;
@@ -97,9 +106,12 @@ public class ModulesNeededProvider {
      */
     private static final String PLUGINS_CONTEXT_KEYWORD = "plugin:";
 
-    private static List<ModuleNeeded> componentImportNeedsList = new ArrayList<ModuleNeeded>();;
+    private static Set<ModuleNeeded> componentImportNeedsList = new HashSet<ModuleNeeded>();
 
-    private static List<ModuleNeeded> unUsedModules = new ArrayList<ModuleNeeded>();
+    /**
+     * a module list include modules needed and unused.
+     */
+    private static Set<ModuleNeeded> allManagedModules = new HashSet<ModuleNeeded>();
 
     private static boolean isCreated = false;
 
@@ -109,6 +121,8 @@ public class ModulesNeededProvider {
 
     private static final String TALEND_FILE_NAME = "cache";
 
+    private static final List<IChangedLibrariesListener> listeners = new ArrayList<IChangedLibrariesListener>();
+
     private static IRepositoryService service = null;
     static {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IRepositoryService.class)) {
@@ -116,62 +130,65 @@ public class ModulesNeededProvider {
         }
     }
 
-    public static List<ModuleNeeded> getModulesNeeded() {
-        // TimeMeasure.measureActive = true;
-        // TimeMeasure.display = true;
-        //        TimeMeasure.begin(Messages.getString("ModulesNeededProvider.0")); //$NON-NLS-1$
+    private static ILibraryManagerService libManagerService = null;
+    static {
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerService.class)) {
+            libManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
+                    ILibraryManagerService.class);
+        }
+    }
 
-        /*
-         * TimeMeasure.begin("ModulesNeededProvider.getModulesNeededForRoutines");
-         * TimeMeasure.pause("ModulesNeededProvider.getModulesNeededForRoutines");
-         * 
-         * TimeMeasure.begin("ModulesNeededProvider.getModulesNeededForComponents");
-         * TimeMeasure.pause("ModulesNeededProvider.getModulesNeededForComponents");
-         * 
-         * TimeMeasure.begin("ModulesNeededProvider.getModulesNeededForApplication");
-         * TimeMeasure.pause("ModulesNeededProvider.getModulesNeededForApplication");
-         * 
-         * TimeMeasure.begin("ModulesNeededProvider.getModulesNeededForJobs");
-         * TimeMeasure.pause("ModulesNeededProvider.getModulesNeededForJobs");
-         */
+    public static Set<ModuleNeeded> getModulesNeeded() {
         if (componentImportNeedsList.isEmpty()) {
-            // TimeMeasure.step("ModulesNeededProvider.getModulesNeededForRoutines");
             componentImportNeedsList.addAll(getRunningModules());
-            //            TimeMeasure.step(Messages.getString("ModulesNeededProvider.1"), "ModulesNeededProvider.getModulesNeededForRoutines"); //$NON-NLS-1$ //$NON-NLS-2$
-
-            // TimeMeasure.begin("ModulesNeededProvider.getModulesNeededForApplication");
             componentImportNeedsList.addAll(getModulesNeededForApplication());
             if (PluginChecker.isMetadataPluginLoaded()) {
                 componentImportNeedsList.addAll(getModulesNeededForDBConnWizard());
             }
-            //            TimeMeasure.step("ModulesNeededProvider.getAllMoudlesNeeded", "ModulesNeededProvider.getModulesNeededForApplication"); //$NON-NLS-1$ //$NON-NLS-2$
-
-            // TimeMeasure.resume("ModulesNeededProvider.getModulesNeededForJobs");
-            // if (LanguageManager.getCurrentLanguage().equals(ECodeLanguage.JAVA)) {
-            // componentImportNeedsList.addAll(getModulesNeededForJobs());
-            // }
-            //            TimeMeasure.step("ModulesNeededProvider.getAllMoudlesNeeded", "ModulesNeededProvider.getModulesNeededForJobs"); //$NON-NLS-1$ //$NON-NLS-2$
-
-            // TimeMeasure.resume("ModulesNeededProvider.getModulesNeededForComponents");
-            // MOD qiongli TOP NO nedd to add the related components ModuleNeeded
             if (!org.talend.commons.utils.platform.PluginChecker.isOnlyTopLoaded()) {
                 componentImportNeedsList.addAll(getModulesNeededForComponents());
             }
-            //            TimeMeasure.step("ModulesNeededProvider.getAllMoudlesNeeded", "ModulesNeededProvider.getModulesNeededForComponents"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
-        /*
-         * TimeMeasure.end("ModulesNeededProvider.getModulesNeededForRoutines");
-         * 
-         * TimeMeasure.end("ModulesNeededProvider.getModulesNeededForComponents");
-         * 
-         * TimeMeasure.end("ModulesNeededProvider.getModulesNeededForApplication");
-         * 
-         * TimeMeasure.end("ModulesNeededProvider.getModulesNeededForJobs");
-         */// TimeMeasure.measureActive = false;
-           // TimeMeasure.display = false;
-           //        TimeMeasure.end("ModulesNeededProvider.getAllMoudlesNeeded"); //$NON-NLS-1$
         return componentImportNeedsList;
+    }
+
+    public static Set<ModuleNeeded> getAllManagedModules() {
+        if (allManagedModules.isEmpty()) {
+            allManagedModules.addAll(getModulesNeeded());
+            try {
+                // get moudles installed but not used by any component/routine......
+                Set<String> modulesNeededNames = getModulesNeededNames();
+                // lib/java
+                String librariesPath = LibrariesManagerUtils.getLibrariesPath(ECodeLanguage.JAVA);
+                File libJavaDir = new File(librariesPath);
+                if (libJavaDir.exists()) {
+                    List<File> jarFiles = FilesUtils.getJarFilesFromFolder(libJavaDir, null);
+                    for (File jarFile : jarFiles) {
+                        if (!modulesNeededNames.contains(jarFile.getName())) {
+                            addUnknownModules(jarFile.getName(), null, false);
+
+                        }
+                    }
+                }
+                // Custom URI Mapping
+                Set<String> modulesNeededMVNURIs = getModulesNeededDefaultMVNURIs();
+                CustomUriManager.getInstance().reloadCustomMapping();
+                for (String mvnURIKey : new HashSet<String>(CustomUriManager.getInstance().keySet())) {
+                    if (!modulesNeededMVNURIs.contains(mvnURIKey)) {
+                        // use the key(defulat value) to create the unknown module ,no need to set the custom maven uri
+                        // ,it can be get from the index
+                        MavenArtifact artifact = MavenUrlHelper.parseMvnUrl(mvnURIKey);
+                        addUnknownModules(artifact.getArtifactId() + "." + artifact.getType(), mvnURIKey, false);
+                    }
+                }
+            } catch (MalformedURLException e) {
+                ExceptionHandler.process(e);
+            }
+
+        }
+
+        return allManagedModules;
     }
 
     /**
@@ -182,7 +199,7 @@ public class ModulesNeededProvider {
      */
     public static List<ModuleNeeded> getModulesNeededForName(String moduleName) {
         ArrayList<ModuleNeeded> modulesMatching = new ArrayList<ModuleNeeded>();
-        for (ModuleNeeded modNeed : getModulesNeeded()) {
+        for (ModuleNeeded modNeed : getAllManagedModules()) {
             if (moduleName.equals(modNeed.getModuleName())) {
                 modulesMatching.add(modNeed);
             }
@@ -193,7 +210,7 @@ public class ModulesNeededProvider {
     public static ModuleNeeded getModuleNeededById(String id) {
         ModuleNeeded result = null;
 
-        List<ModuleNeeded> modulesNeeded = getModulesNeeded();
+        Set<ModuleNeeded> modulesNeeded = getModulesNeeded();
         for (ModuleNeeded moduleNeeded : modulesNeeded) {
             if (id.equals(moduleNeeded.getId())) {
                 result = moduleNeeded;
@@ -204,16 +221,40 @@ public class ModulesNeededProvider {
         return result;
     }
 
-    public static List<String> getModulesNeededNames() {
-        List<String> componentImportNeedsListNames = new ArrayList<String>();
+    public static Set<String> getModulesNeededNames() {
+        Set<String> componentImportNeedsListNames = new HashSet<String>();
         for (ModuleNeeded m : getModulesNeeded()) {
             componentImportNeedsListNames.add(m.getModuleName());
         }
         return componentImportNeedsListNames;
     }
 
+    public static Set<String> getAllManagedModuleNames() {
+        Set<String> moduleNames = new HashSet<String>();
+        for (ModuleNeeded m : getAllManagedModules()) {
+            moduleNames.add(m.getModuleName());
+        }
+        return moduleNames;
+    }
+
+    public static Set<String> getAllModuleNamesFromIndex() {
+        Set<String> moduleNames = new HashSet<String>();
+        moduleNames.addAll(LibrariesIndexManager.getInstance().getMavenLibIndex().getJarsToRelativePath().keySet());
+        moduleNames.addAll(LibrariesIndexManager.getInstance().getStudioLibIndex().getJarsToRelativePath().keySet());
+        return moduleNames;
+    }
+
+    public static Set<String> getModulesNeededDefaultMVNURIs() {
+        Set<String> mvnURIs = new HashSet<String>();
+        for (ModuleNeeded m : getModulesNeeded()) {
+            mvnURIs.add(m.getDefaultMavenURI());
+        }
+        return mvnURIs;
+    }
+
     public static void reset() {
-        componentImportNeedsList.clear();
+        getModulesNeeded().clear();
+        getAllManagedModules().clear();
     }
 
     /**
@@ -224,18 +265,19 @@ public class ModulesNeededProvider {
     public static void resetCurrentJobNeededModuleList(IProcess process) {
         // Step 1: remove all modules for current job;
         List<ModuleNeeded> moduleForCurrentJobList = new ArrayList<ModuleNeeded>(5);
-        for (ModuleNeeded module : componentImportNeedsList) {
+        for (ModuleNeeded module : getModulesNeeded()) {
             if (module.getContext().equals("Job " + process.getName())) { //$NON-NLS-1$
                 moduleForCurrentJobList.add(module);
             }
         }
-        componentImportNeedsList.removeAll(moduleForCurrentJobList);
+        getModulesNeeded().removeAll(moduleForCurrentJobList);
+        getAllManagedModules().removeAll(moduleForCurrentJobList);
 
         Set<String> neededLibraries = process.getNeededLibraries(false);
         if (neededLibraries != null) {
             for (String neededLibrary : neededLibraries) {
                 boolean alreadyInImports = false;
-                for (ModuleNeeded module : componentImportNeedsList) {
+                for (ModuleNeeded module : getModulesNeeded()) {
                     if (module.getModuleName().equals(neededLibrary)) {
                         alreadyInImports = true;
                     }
@@ -248,18 +290,8 @@ public class ModulesNeededProvider {
                 ModuleNeeded toAdd = new ModuleNeeded("Job " + process.getName(), neededLibrary, //$NON-NLS-1$
                         "Required for the job " + process.getName() + ".", true); //$NON-NLS-1$ //$NON-NLS-2$
 
-                componentImportNeedsList.add(toAdd);
-
-                // Step 3: remove added modules from unusedModule list
-                ModuleNeeded unusedModule = null;
-                for (ModuleNeeded module : unUsedModules) {
-                    if (module.getModuleName().equals(neededLibrary)) {
-                        unusedModule = module;
-                    }
-                }
-                if (unusedModule != null) {
-                    unUsedModules.remove(unusedModule);
-                }
+                getModulesNeeded().add(toAdd);
+                getAllManagedModules().add(toAdd);
             }
         }
     }
@@ -311,20 +343,6 @@ public class ModulesNeededProvider {
     public static void collectModuleNeeded(String context, IMPORTType importType, List<ModuleNeeded> importNeedsList) {
         List<ModuleNeeded> importModuleFromExtension = ExtensionModuleManager.getInstance().getModuleNeededForComponent(context,
                 importType);
-        // filter modules configured in extension but jar do not exsit in the UrlPath
-        ILibraryManagerService libManagerService = null;
-        if (importType.getMODULEGROUP() == null
-                && GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerService.class)) {
-            libManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
-                    ILibraryManagerService.class);
-            final Iterator<ModuleNeeded> iterator = importModuleFromExtension.iterator();
-            while (iterator.hasNext()) {
-                final ModuleNeeded next = iterator.next();
-                if (next.getModuleLocaion() != null && !libManagerService.checkJarInstalledFromPlatform(next.getModuleLocaion())) {
-                    iterator.remove();
-                }
-            }
-        }
         boolean foundModule = importModuleFromExtension.size() > 0;
         if (!foundModule) { // If cannot find the jar from extension point then do it like before.
             createModuleNeededForComponent(context, importType, importNeedsList);
@@ -643,15 +661,18 @@ public class ModulesNeededProvider {
         return new ArrayList<ModuleNeeded>(importNeedsList);
     }
 
-    private static List<ModuleNeeded> createModuleNeededFromRoutine(RoutineItem routine) {
-        List<ModuleNeeded> importNeedsList = new ArrayList<ModuleNeeded>();
+    private static Set<ModuleNeeded> createModuleNeededFromRoutine(RoutineItem routine) {
+        String label = ERepositoryObjectType.getItemType(routine).getLabel();
+        String context = label + " " + routine.getProperty().getLabel();
+        Set<ModuleNeeded> importNeedsList = new HashSet<ModuleNeeded>();
         if (routine != null) {
             EList imports = routine.getImports();
             for (Object o : imports) {
                 IMPORTType currentImport = (IMPORTType) o;
                 // FIXME SML i18n
-                ModuleNeeded toAdd = new ModuleNeeded("Routine " + currentImport.getNAME(), currentImport.getMODULE(), //$NON-NLS-1$
-                        currentImport.getMESSAGE(), currentImport.isREQUIRED());
+                ModuleNeeded toAdd = new ModuleNeeded(context, currentImport.getMODULE(), currentImport.getMESSAGE(),
+                        currentImport.isREQUIRED());
+                toAdd.setMavenUri(currentImport.getMVN());
                 // toAdd.setStatus(ELibraryInstallStatus.INSTALLED);
                 importNeedsList.add(toAdd);
             }
@@ -725,9 +746,14 @@ public class ModulesNeededProvider {
         uripath = ExtensionModuleManager.getInstance().getFormalModulePath(uripath, current);
         String mvn_rui = current.getAttribute(ExtensionModuleManager.MVN_URI_ATTR);
         ModuleNeeded module = new ModuleNeeded(context, name, message, required);
-        module.setModuleLocaion(uripath);
+        if (uripath != null && libManagerService.checkJarInstalledFromPlatform(uripath)) {
+            module.setModuleLocaion(uripath);
+        }
         module.setId(id);
         module.setBundleName(current.getAttribute(ExtensionModuleManager.BUNDLEID_ATTR));
+        if (!StringUtils.isEmpty(mvn_rui)) {
+            module.setMavenUri(mvn_rui);
+        }
         module.setMavenUri(mvn_rui);
         String excludeDependencies = current.getAttribute(ExtensionModuleManager.EXCLUDE_DEPENDENCIES_ATTR);
         module.setExcludeDependencies(Boolean.valueOf(excludeDependencies));
@@ -873,46 +899,31 @@ public class ModulesNeededProvider {
         return uninstalledModules;
     }
 
-    /**
-     * qiang.zhang Comment method "getImportModules".
-     * 
-     * @param name
-     * @param context
-     */
-    public static void userAddImportModules(String context, String name, ELibraryInstallStatus status) {
-        boolean required = true;
-        String message = Messages.getString("ModulesNeededProvider.importModule"); //$NON-NLS-1$
-        ModuleNeeded needed = new ModuleNeeded(context, name, message, required, status);
-        componentImportNeedsList.add(needed);
+    public static void addUnknownModules(String name, String mvnURI, boolean fireLibraryChange) {
+        getAllManagedModules().add(createUnknownModule(name, mvnURI));
+        if (fireLibraryChange) {
+            fireLibrariesChanges();
+        }
     }
 
-    public static void userAddUnusedModules(String context, String name) {
-        boolean required = false;
-        String message = Messages.getString("ModulesNeededProvider.unusedModule"); //$NON-NLS-1$
-        ModuleNeeded needed = new ModuleNeeded(context, name, message, required, ELibraryInstallStatus.UNUSED);
-        unUsedModules.add(needed);
+    private static ModuleNeeded createUnknownModule(String name, String mvnURI) {
+        String message = ModuleNeeded.UNKNOWN;
+        ModuleNeeded unknownModule = new ModuleNeeded(message, name, message, false);
+        unknownModule.setMavenUri(mvnURI);
+        return unknownModule;
     }
 
     public static void userRemoveUnusedModules(String urlOrName) {
         ModuleNeeded needed = null;
-        for (ModuleNeeded module : unUsedModules) {
+        for (ModuleNeeded module : allManagedModules) {
             if (module.getModuleName().equals(urlOrName) || module.getContext().equals(urlOrName)) {
                 needed = module;
                 break;
             }
         }
         if (needed != null) {
-            unUsedModules.remove(needed);
+            getAllManagedModules().remove(needed);
         }
-    }
-
-    /**
-     * Getter for unUsedModules.
-     * 
-     * @return the unUsedModules
-     */
-    public static List<ModuleNeeded> getUnUsedModules() {
-        return unUsedModules;
     }
 
     public static Set<ModuleNeeded> getSystemRunningModules() {
@@ -946,19 +957,51 @@ public class ModulesNeededProvider {
         return codesModules;
     }
 
-    private static List<ILibrariesService.IChangedLibrariesListener> changedLibrariesListeners = new ArrayList<ILibrariesService.IChangedLibrariesListener>();
+    public static Set<ModuleNeeded> updateModulesNeededForRoutine(RoutineItem routineItem) {
+        String label = ERepositoryObjectType.getItemType(routineItem).getLabel();
+        String currentContext = label + " " + routineItem.getProperty().getLabel();
+        Set<ModuleNeeded> modulesNeeded = createModuleNeededFromRoutine(routineItem);
+        Set<String> routinModuleNames = new HashSet<String>();
+        for (ModuleNeeded module : modulesNeeded) {
+            routinModuleNames.add(module.getModuleName());
+        }
+        // remove old modules from the two lists
+        Set<ModuleNeeded> oldModules = new HashSet<ModuleNeeded>();
+        for (ModuleNeeded existingModule : getModulesNeeded()) {
+            if (currentContext.equals(existingModule.getContext())
+                    || (ModuleNeeded.UNKNOWN.equals(existingModule.getContext()) && routinModuleNames.contains(existingModule
+                            .getModuleName()))) {
+                oldModules.add(existingModule);
+            }
+        }
+        getModulesNeeded().removeAll(oldModules);
+        oldModules = new HashSet<ModuleNeeded>();
+        for (ModuleNeeded existingModule : getAllManagedModules()) {
+            if (currentContext.equals(existingModule.getContext())
+                    || (ModuleNeeded.UNKNOWN.equals(existingModule.getContext()) && routinModuleNames.contains(existingModule
+                            .getModuleName()))) {
+                oldModules.add(existingModule);
+            }
+        }
+        getAllManagedModules().removeAll(oldModules);
 
-    public static boolean addChangedLibrariesListener(ILibrariesService.IChangedLibrariesListener listener) {
-        return changedLibrariesListeners.add(listener);
+        getModulesNeeded().addAll(modulesNeeded);
+        getAllManagedModules().addAll(modulesNeeded);
+        return modulesNeeded;
     }
 
-    public static boolean removeChangedLibrariesListener(ILibrariesService.IChangedLibrariesListener listener) {
-        return changedLibrariesListeners.remove(listener);
+    public static void addChangeLibrariesListener(IChangedLibrariesListener listener) {
+        listeners.add(listener);
     }
 
-    public static void fireChangedLibrariesListener() {
-        for (ILibrariesService.IChangedLibrariesListener listener : changedLibrariesListeners) {
-            listener.afterChangingLibraries();
+    public static void removeChangeLibrariesListener(IChangedLibrariesListener listener) {
+        listeners.remove(listener);
+    }
+
+    public static void fireLibrariesChanges() {
+        for (IChangedLibrariesListener current : listeners) {
+            current.afterChangingLibraries();
         }
     }
+
 }

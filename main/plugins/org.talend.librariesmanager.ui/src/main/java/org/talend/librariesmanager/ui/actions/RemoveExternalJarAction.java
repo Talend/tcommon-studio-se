@@ -30,7 +30,6 @@ import org.eclipse.ui.PlatformUI;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.general.ModuleNeeded;
-import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.librariesmanager.ui.LibManagerUiPlugin;
@@ -74,7 +73,7 @@ public class RemoveExternalJarAction extends Action {
                     TableItem[] selection = ModulesViewComposite.getTableViewerCreator().getTable().getSelection();
                     for (TableItem tableItem : selection) {
                         ModuleNeeded needed = (ModuleNeeded) tableItem.getData();
-                        if (needed.getStatus() == ELibraryInstallStatus.UNUSED) {
+                        if (ModuleNeeded.UNKNOWN.equals(needed.getContext())) {
                             modules.add(needed);
                         } else {
                             setEnabled(false);

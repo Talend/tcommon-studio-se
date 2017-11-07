@@ -15,10 +15,6 @@ package org.talend.librariesmanager.ui.views;
 import java.util.List;
 
 import org.eclipse.core.commands.IHandler;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -31,7 +27,8 @@ import org.talend.core.model.general.ILibrariesService.IChangedLibrariesListener
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.librariesmanager.ui.LibManagerUiPlugin;
 import org.talend.librariesmanager.ui.actions.CheckModulesAction;
-import org.talend.librariesmanager.ui.actions.DownloadExternalJarAction;
+import org.talend.librariesmanager.ui.actions.ExportCustomSettingsAction;
+import org.talend.librariesmanager.ui.actions.ImportCustomSettingsAction;
 import org.talend.librariesmanager.ui.actions.ImportExternalJarAction;
 import org.talend.librariesmanager.ui.actions.RemoveExternalJarAction;
 
@@ -71,6 +68,7 @@ public class ModulesView extends ViewPart {
         modulesViewComposite = new ModulesViewComposite(parent);
         makeActions();
         contributeToActionBars();
+        modulesViewComposite.refresh();
 
         changedLibrariesListener = new IChangedLibrariesListener() {
 
@@ -86,15 +84,7 @@ public class ModulesView extends ViewPart {
             }
         };
         LibManagerUiPlugin.getDefault().getLibrariesService().addChangeLibrariesListener(changedLibrariesListener);
-        Job job = new Job("check libraries") {
-			
-			@Override
-			protected IStatus run(IProgressMonitor monitor) {
-				LibManagerUiPlugin.getDefault().getLibrariesService().checkLibraries();
-				return Status.OK_STATUS;
-			}
-		};
-		job.schedule();
+
     }
 
     @Override
@@ -134,12 +124,14 @@ public class ModulesView extends ViewPart {
 
     private void fillLocalToolBar(IToolBarManager manager) {
         manager.add(checkAction);
+        ImportCustomSettingsAction importSettingAction = new ImportCustomSettingsAction();
+        manager.add(importSettingAction);
+        ExportCustomSettingsAction exportSettingAction = new ExportCustomSettingsAction();
+        manager.add(exportSettingAction);
         RemoveExternalJarAction removeAction = new RemoveExternalJarAction();
         manager.add(removeAction);
         ImportExternalJarAction importAction = new ImportExternalJarAction();
         manager.add(importAction);
-        DownloadExternalJarAction downloadAcion = new DownloadExternalJarAction();
-        manager.add(downloadAcion);
         return;
     }
 

@@ -97,6 +97,7 @@
 					<dbType type="CHAR"/>
 					<dbType type="NCHAR"/>
 					<dbType type="LONG"/>
+					<dbtype type="CLOB"/>
 				</talendType>
 			</talendToDbTypes>
 			<dbToTalendTypes><!-- Adviced mappings  -->

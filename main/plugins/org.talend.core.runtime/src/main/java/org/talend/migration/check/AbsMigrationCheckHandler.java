@@ -157,7 +157,7 @@ public abstract class AbsMigrationCheckHandler implements IMigrationCheckHandler
         return hasCompilationError;
     }
 
-    protected void checkModules(Set<String> neededLibraries, List<ModuleNeeded> allModulesWithStatus, MigrateItemInfo itemInfo) {
+    protected void checkModules(Set<String> neededLibraries, Set<ModuleNeeded> allModulesWithStatus, MigrateItemInfo itemInfo) {
         // check libraries status
         if (neededLibraries == null || neededLibraries.isEmpty()) {
             return;
