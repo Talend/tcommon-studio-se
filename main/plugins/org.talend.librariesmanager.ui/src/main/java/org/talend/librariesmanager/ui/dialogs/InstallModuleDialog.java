@@ -240,7 +240,7 @@ public class InstallModuleDialog extends TitleAreaDialog implements ICellEditorD
         }
     }
 
-    protected boolean checkInstalledStatusInMaven() {
+    private boolean checkInstalledStatusInMaven() {
         String uri = null;
         if (useCustomBtn.getSelection()) {
             uri = MavenUrlHelper.addTypeForMavenUri(customUriText.getText().trim(), moduleName);
@@ -272,8 +272,7 @@ public class InstallModuleDialog extends TitleAreaDialog implements ICellEditorD
         warningLayoutData.exclude = true;
     }
 
-    @Override
-    public void layoutWarningComposite(boolean exclude, String defaultMavenURI) {
+    private void layoutWarningComposite(boolean exclude, String defaultMavenURI) {
         warningLayoutData.exclude = exclude;
         warningLabel.setText(Messages.getString("InstallModuleDialog.warning", defaultMavenURI));
         warningLabel.getParent().getParent().layout();
@@ -303,14 +302,7 @@ public class InstallModuleDialog extends TitleAreaDialog implements ICellEditorD
         });
     }
 
-    /**
-     * 
-     * DOC wchen Comment method "checkInstallCompositeError".
-     * 
-     * @return false if has error
-     */
-    @Override
-    public boolean checkFieldsError() {
+    private boolean checkFieldsError() {
         String originalText = defaultUriTxt.getText().trim();
         String customURIWithType = MavenUrlHelper.addTypeForMavenUri(customUriText.getText(), moduleName);
         ELibraryInstallStatus status = null;
