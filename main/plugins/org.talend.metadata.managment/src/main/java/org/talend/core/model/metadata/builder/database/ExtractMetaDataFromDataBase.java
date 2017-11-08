@@ -26,8 +26,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import metadata.managment.i18n.Messages;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
@@ -63,6 +61,8 @@ import org.talend.metadata.managment.repository.ManagerConnection;
 import org.talend.utils.sql.ConnectionUtils;
 import org.talend.utils.sql.metadata.constants.GetTable;
 
+import metadata.managment.i18n.Messages;
+
 /**
  * DOC cantoine. Extract Meta Data Table. Contains all the Table and Metadata about a DB Connection. <br/>
  * 
@@ -86,6 +86,7 @@ public class ExtractMetaDataFromDataBase {
         TABLETYPE_BASE_TABLE("BASE TABLE"), //for mariadb //$NON-NLS-1$ 
         TABLETYPE_VIEW("VIEW"), //$NON-NLS-1$
         TABLETYPE_SYNONYM("SYNONYM"), //$NON-NLS-1$
+        TABLETYPE_CALCULATION_VIEW("CALCULATION VIEW"), //$NON-NLS-1$
         TABLETYPE_ALL_SYNONYM("ALL_SYNONYM"), //$NON-NLS-1$
         TABLETYPE_ALIAS("ALIAS"), //$NON-NLS-1$
         TABLETYPE_EXTERNAL_TABLE("EXTERNAL TABLE"), //$NON-NLS-1$ //Added by Marvin Wang on Feb. 5, 2012 for bug TDI-24413.

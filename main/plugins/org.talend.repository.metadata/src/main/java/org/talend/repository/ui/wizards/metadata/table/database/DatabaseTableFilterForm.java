@@ -64,6 +64,8 @@ public class DatabaseTableFilterForm extends AbstractForm {
 
     private Button synonymCheck;
 
+    private Button calculationViewCheck;
+
     // hide for the bug 7959
 
     private Button publicSynonymCheck;
@@ -116,6 +118,8 @@ public class DatabaseTableFilterForm extends AbstractForm {
             getTableInfoParameters().changeType(ETableTypes.MANAGED_TABLE, tableCheck.getSelection());
             getTableInfoParameters().changeType(ETableTypes.INDEX_TABLE, tableCheck.getSelection());
             getTableInfoParameters().changeType(ETableTypes.VIRTUAL_VIEW, viewCheck.getSelection());
+        } else if (EDatabaseTypeName.SAPHana.getDisplayName().equals(metadataconnection.getDbType())) {
+            getTableInfoParameters().changeType(ETableTypes.TABLETYPE_CALCULATION_VIEW, calculationViewCheck.getSelection());
         }
         // hide for the bug 7959
         if (isOracle()) {
@@ -144,10 +148,11 @@ public class DatabaseTableFilterForm extends AbstractForm {
         tableCheck.setEnabled(getTableInfoParameters().isUsedName());
         viewCheck.setEnabled(getTableInfoParameters().isUsedName());
         synonymCheck.setEnabled(getTableInfoParameters().isUsedName());
-
         if (isOracle()) {
             publicSynonymCheck.setEnabled(getTableInfoParameters().isUsedName());
             ExtractMetaDataUtils.getInstance().setUseAllSynonyms(publicSynonymCheck.getSelection());
+        } else if (EDatabaseTypeName.SAPHana.getDisplayName().equals(metadataconnection.getDbType())) {
+            calculationViewCheck.setEnabled(getTableInfoParameters().isUsedName());
         }
 
         removeButton.setEnabled(getTableInfoParameters().isUsedName());
@@ -270,7 +275,7 @@ public class DatabaseTableFilterForm extends AbstractForm {
         Group typesFilter = new Group(composite2, SWT.NONE);
         typesFilter.setText(Messages.getString("DatabaseTableFilterForm.selectType")); //$NON-NLS-1$
         gridLayout = new GridLayout();
-        gridLayout.numColumns = 3;
+        gridLayout.numColumns = 4;
 
         typesFilter.setLayout(gridLayout);
 
@@ -292,6 +297,10 @@ public class DatabaseTableFilterForm extends AbstractForm {
             publicSynonymCheck.setText(Messages.getString("DatabaseTableFilterForm.allSynonyms")); //$NON-NLS-1$
             publicSynonymCheck.setSelection(false);
             // ExtractMetaDataUtils.setVale(publicSynonymCheck.getSelection());
+        } else if (EDatabaseTypeName.SAPHana.getDisplayName().equals(metadataconnection.getDbType())) {
+            calculationViewCheck = new Button(typesFilter, SWT.CHECK);
+            calculationViewCheck.setText(Messages.getString("DatabaseTableFilterForm.calculationView")); //$NON-NLS-1$
+            calculationViewCheck.setSelection(true);
         }
 
         Composite namecomposite = new Composite(composite2, SWT.NONE);
@@ -373,6 +382,10 @@ public class DatabaseTableFilterForm extends AbstractForm {
         usedSql.setEnabled(false);
         sqllabel.setEnabled(false);
         sqlFilter.setEnabled(false);
+        if (EDatabaseTypeName.SAPHana.getDisplayName().equals(metadataconnection.getDbType())) {
+            calculationViewCheck.setEnabled(false);
+            calculationViewCheck.setSelection(false);
+        }
     }
 
     /**
@@ -460,6 +473,16 @@ public class DatabaseTableFilterForm extends AbstractForm {
 
                         synonymCheck.setEnabled(true);
                     }
+                }
+
+            });
+        } else if (EDatabaseTypeName.SAPHana.getDisplayName().equals(metadataconnection.getDbType())) {
+            calculationViewCheck.addSelectionListener(new SelectionAdapter() {
+
+                @Override
+                public void widgetSelected(SelectionEvent e) {
+                    getTableInfoParameters().changeType(ETableTypes.TABLETYPE_CALCULATION_VIEW,
+                            calculationViewCheck.getSelection());
                 }
 
             });

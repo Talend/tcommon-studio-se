@@ -104,6 +104,7 @@ import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.helper.PackageHelper;
 import org.talend.cwm.helper.SchemaHelper;
 import org.talend.cwm.helper.TableHelper;
+import org.talend.cwm.helper.TaggedValueHelper;
 import org.talend.cwm.relational.RelationalFactory;
 import org.talend.cwm.relational.TdColumn;
 import org.talend.cwm.relational.TdTable;
@@ -118,8 +119,10 @@ import org.talend.metadata.managment.utils.MetadataConnectionUtils;
 import org.talend.repository.metadata.i18n.Messages;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.utils.sql.ConnectionUtils;
+
 import orgomg.cwm.objectmodel.core.CoreFactory;
 import orgomg.cwm.objectmodel.core.ModelElement;
+import orgomg.cwm.objectmodel.core.TaggedValue;
 import orgomg.cwm.resource.relational.Catalog;
 import orgomg.cwm.resource.relational.NamedColumnSet;
 import orgomg.cwm.resource.relational.Schema;
@@ -1558,8 +1561,10 @@ public class SelectorTableForm extends AbstractForm {
                             dbtable = RelationalFactory.eINSTANCE.createTdTable();
                         }
                         dbtable.setComment(comment);
-                        TableHelper.setComment(comment, dbtable);
-                        dbtable.getTaggedValue().addAll(table.getTaggedValue());
+                        EList<TaggedValue> tvs = table.getTaggedValue();
+                        for (TaggedValue tv : tvs) {
+                            TaggedValueHelper.setTaggedValue(dbtable, tv.getTag(), tv.getValue());
+                        }
                         dbtable.setTableType(type);
                         String lableName = MetadataToolHelper.validateTableName(table.getName());
                         dbtable.setLabel(lableName);

@@ -29,12 +29,12 @@ import org.talend.fakejdbc.FakeDatabaseMetaData;
  */
 public class SAPHanaDataBaseMetadata extends FakeDatabaseMetaData {
 
-    private static final String[] TABLE_META = { "ID", "TABLE_SCHEM", "TABLE_NAME", "TABLE_TYPE", "REMARKS" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+    private static final String[] TABLE_META = { "ID", "TABLE_SCHEM", "TABLE_NAME", "TABLE_TYPE", "REMARKS", "TABLE_CAT" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 
     private static final String[] COLUMN_META = { "TABLE_NAME", "COLUMN_NAME", "TYPE_NAME", "COLUMN_SIZE", "DECIMAL_DIGITS", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
             "IS_NULLABLE", "REMARKS", "COLUMN_DEF", "NUM_PREC_RADIX" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
-    private static final String[] NEEDED_TYPES = { "TABLE", "VIEW", "SYNONYM" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    private static final String[] NEEDED_TYPES = { "TABLE", "VIEW", "SYNONYM", "CALCULATION VIEW" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$
 
     private Connection connection;
 
@@ -83,12 +83,14 @@ public class SAPHanaDataBaseMetadata extends FakeDatabaseMetaData {
         String[] s1 = new String[] { "TABLE" }; //$NON-NLS-1$
         String[] s2 = new String[] { "VIEW" }; //$NON-NLS-1$
         String[] s3 = new String[] { "SYNONYM" }; //$NON-NLS-1$
+        String[] s4 = new String[] { "CALCULATION VIEW" }; //$NON-NLS-1$
 
         List<String[]> list = new ArrayList<String[]>();
 
         list.add(s1);
         list.add(s2);
         list.add(s3);
+        list.add(s4);
 
         SAPHanaResultSet tableResultSet = new SAPHanaResultSet();
         tableResultSet.setMetadata(new String[] { "TABLE_TYPE" }); //$NON-NLS-1$
@@ -136,48 +138,53 @@ public class SAPHanaDataBaseMetadata extends FakeDatabaseMetaData {
             if (ArrayUtils.contains(neededTypes, type)) {
                 // check if the type is contained is in the types needed.
                 // since sybase can return some system views as "SYSTEM VIEW" instead of "VIEW/TABLE" from the request.
-                String[] r = new String[] { id, schema, name, type, remarks };
+                String[] r = new String[] { id, schema, name, type, remarks, null };
                 list.add(r);
             }
         }
-        // For Calculation View
-        String sqlcv = "SELECT CATALOG_NAME, CUBE_NAME, COLUMN_OBJECT,CUBE_TYPE,DESCRIPTION from _SYS_BI.BIMC_CUBES"; //$NON-NLS-1$
-        ResultSet rscv = null;
-        Statement stmtcv = null;
-        List<String[]> listcv = new ArrayList<String[]>();
-        try {
-            stmtcv = connection.createStatement();
-            rscv = stmtcv.executeQuery(sqlcv);
-            while (rscv.next()) {
-                String catalogName = rscv.getString("CATALOG_NAME"); //$NON-NLS-1$
-                if (catalogName != null) {
-                    catalogName = catalogName.trim();
-                }
-                String cubeName = rscv.getString("CUBE_NAME"); //$NON-NLS-1$
-                if (cubeName != null) {
-                    cubeName = cubeName.trim();
-                }
-                String columnObject = rscv.getString("COLUMN_OBJECT"); //$NON-NLS-1$
-                if (columnObject != null) {
-                    columnObject = columnObject.trim();
-                }
-                String id = ""; //$NON-NLS-1$
-                String type = rscv.getString("CUBE_TYPE"); //$NON-NLS-1$
-                String remarks = rscv.getString("DESCRIPTION"); //$NON-NLS-1$
 
-                String[] r = new String[] { id, catalogName, columnObject, type, remarks };
-                listcv.add(r);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } finally {
+        // For Calculation View
+        if (ArrayUtils.contains(neededTypes, NEEDED_TYPES[3])) {
+            // check if the type is contained is in the types needed.
+            String sqlcv = "SELECT CATALOG_NAME,SCHEMA_NAME,CUBE_NAME, COLUMN_OBJECT,CUBE_TYPE,DESCRIPTION from _SYS_BI.BIMC_CUBES"; //$NON-NLS-1$
+            ResultSet rscv = null;
+            Statement stmtcv = null;
+            List<String[]> listcv = new ArrayList<String[]>();
             try {
-                rscv.close();
-                stmtcv.close();
-            } catch (Exception e) {
+                stmtcv = connection.createStatement();
+                rscv = stmtcv.executeQuery(sqlcv);
+                while (rscv.next()) {
+                    String catalogName = rscv.getString("CATALOG_NAME"); //$NON-NLS-1$
+                    if (catalogName != null) {
+                        catalogName = catalogName.trim();
+                    }
+                    String schemaName = rscv.getString("SCHEMA_NAME"); //$NON-NLS-1$
+                    if (schemaName != null) {
+                        schemaName = schemaName.trim();
+                    }
+                    String cubeName = rscv.getString("CUBE_NAME"); //$NON-NLS-1$
+                    if (cubeName != null) {
+                        cubeName = cubeName.trim();
+                    }
+                    String id = ""; //$NON-NLS-1$
+                    // String type = rscv.getString("CUBE_TYPE"); //$NON-NLS-1$
+
+                    String remarks = rscv.getString("DESCRIPTION"); //$NON-NLS-1$
+
+                    String[] r = new String[] { id, schemaName, cubeName, NEEDED_TYPES[3], remarks, catalogName };
+                    listcv.add(r);
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            } finally {
+                try {
+                    rscv.close();
+                    stmtcv.close();
+                } catch (Exception e) {
+                }
             }
+            list.addAll(listcv);
         }
-        list.addAll(listcv);
         SAPHanaResultSet tableResultSet = new SAPHanaResultSet();
         tableResultSet.setMetadata(TABLE_META);
         tableResultSet.setData(list);
@@ -291,10 +298,10 @@ public class SAPHanaDataBaseMetadata extends FakeDatabaseMetaData {
             } catch (Exception e) {
             }
         }
-        
+
         // For Calculation View
         if (!load) {
-            String sqlcv = "SELECT * from " + tableNamePattern; //$NON-NLS-1$
+            String sqlcv = "SELECT * from \"" + schemaPattern + "\".\"" + catalog + "/" + tableNamePattern + "\""; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
             ResultSet rscv = null;
             Statement stmtcv = null;
             List<String[]> listcv = new ArrayList<String[]>();
@@ -342,7 +349,7 @@ public class SAPHanaDataBaseMetadata extends FakeDatabaseMetaData {
             }
             list.addAll(listcv);
         }
-        
+
         SAPHanaResultSet tableResultSet = new SAPHanaResultSet();
         tableResultSet.setMetadata(COLUMN_META);
         tableResultSet.setData(list);

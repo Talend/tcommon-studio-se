@@ -42,7 +42,7 @@ public class MetadataManager {
 
     public static final String TYPE_SYNONYM = "SYNONYM"; //$NON-NLS-1$
 
-    public static final String TYPE_CALCULATION_VIEW = "CALCULATION_VIEW"; //$NON-NLS-1$
+    public static final String TYPE_CALCULATION_VIEW = "CALCULATION VIEW"; //$NON-NLS-1$
 
     public static final String TYPE_ALIAS = "ALIAS"; //$NON-NLS-1$
 
