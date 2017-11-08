@@ -14,7 +14,6 @@ package org.talend.commons.ui.swt.dialogs;
 
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.widgets.Shell;
 import org.talend.commons.ui.utils.image.ColorUtils;
 
 /**
@@ -30,13 +29,5 @@ public interface IConfigModuleDialog {
     public String getMavenURI();
 
     public int open();
-
-    public void setMessage(String newMessage, int newType);
-
-    public Shell getShell();
-
-    public void layoutWarningComposite(boolean exclude, String defaultMvnURI);
-
-    public boolean checkFieldsError();
 
 }
