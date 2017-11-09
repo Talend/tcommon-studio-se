@@ -170,8 +170,9 @@ public class SAPHanaDataBaseMetadata extends FakeDatabaseMetaData {
                     // String type = rscv.getString("CUBE_TYPE"); //$NON-NLS-1$
 
                     String remarks = rscv.getString("DESCRIPTION"); //$NON-NLS-1$
+                    String name = catalogName + "/" + cubeName;//$NON-NLS-1$
 
-                    String[] r = new String[] { id, schemaName, cubeName, NEEDED_TYPES[3], remarks, catalogName };
+                    String[] r = new String[] { id, schemaName, name, NEEDED_TYPES[3], remarks, catalogName };
                     listcv.add(r);
                 }
             } catch (SQLException e) {
