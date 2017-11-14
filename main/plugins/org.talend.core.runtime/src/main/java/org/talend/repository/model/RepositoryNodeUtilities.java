@@ -604,7 +604,8 @@ public class RepositoryNodeUtilities {
 
         if (innerIOType == null || SAPBWTableHelper.isInnerIOType(innerIOType)) {
             for (IRepositoryNode node : realNode.getChildren()) {
-                if (node.getLabel().equals(Messages.getString("RepositoryContentProvider.repositoryLabel.sapTable")) //$NON-NLS-1$
+                if (node.getLabel().equals(Messages.getString("RepositoryContentProvider.repositoryLabel.sapContentExtractor")) //$NON-NLS-1$
+                        || node.getLabel().equals(Messages.getString("RepositoryContentProvider.repositoryLabel.sapTable")) //$NON-NLS-1$
                         || node.getLabel().equals(Messages.getString("RepositoryContentProvider.repositoryLabel.sapDataSource")) //$NON-NLS-1$
                         || node.getLabel().equals(Messages.getString("RepositoryContentProvider.repositoryLabel.sapDSO")) //$NON-NLS-1$
                         || node.getLabel().equals(Messages.getString("RepositoryContentProvider.repositoryLabel.sapInfoCube")) //$NON-NLS-1$

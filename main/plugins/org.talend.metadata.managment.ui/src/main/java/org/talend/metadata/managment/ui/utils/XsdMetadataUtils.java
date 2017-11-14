@@ -365,6 +365,7 @@ public final class XsdMetadataUtils {
         if (node.getChildren().length > 0) {
             for (Object curNode : node.getChildren()) {
                 if (!path.contains("/" + (String) node.getValue() + "/")) { //$NON-NLS-1$ //$NON-NLS-2$
+                    System.out.println(path + '/' + node.getValue());
                     fillRootInfo(connection, (ATreeNode) curNode, path + '/' + node.getValue(), subElementsInLoop);
                 }
             }

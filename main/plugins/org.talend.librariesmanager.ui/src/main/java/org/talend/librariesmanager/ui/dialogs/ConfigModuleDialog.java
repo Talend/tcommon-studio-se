@@ -895,7 +895,8 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
     }
 
     private void setupMavenURIByModuleName(String moduleName) {
-        if (StringUtils.isEmpty(moduleName)) {
+        ModuleNeeded moduel = new ModuleNeeded("", moduleName, "", true);
+        if (StringUtils.isEmpty(moduel.getModuleName())) {
             defaultUriTxt.setText("");
             useCustomBtn.setSelection(false);
             customUriText.setEnabled(false);
@@ -904,7 +905,6 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
             cusormURIValue = "";
             return;
         }
-        ModuleNeeded moduel = new ModuleNeeded("", moduleName, "", true);
         defaultURIValue = moduel.getDefaultMavenURI();
         cusormURIValue = moduel.getCustomMavenUri();
         if (cusormURIValue == null) {
@@ -915,7 +915,6 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         useCustomBtn.setSelection(useCustom);
         // customUriText.setEnabled(useCustom);
         customUriText.setText(cusormURIValue);
-
     }
 
 }

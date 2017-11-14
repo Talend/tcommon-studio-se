@@ -265,14 +265,13 @@ public class RemoteModulesHelper {
             String description = artifact.getDescription();
             String license = artifact.getLicense();
             String license_url = artifact.getLicenseUrl();
-            String packaging = artifact.getType();
             String url = null;
             if (artifact.getUrl() != null && !"".equals(artifact.getUrl())) {
                 url = artifact.getUrl();
             }
             ModuleToInstall m = new ModuleToInstall();
             m.setName(artifactId + "." + packageName);
-            String mvnUri = MavenUrlHelper.generateMvnUrl(artifact.getGroupId(), artifactId, version, packaging,
+            String mvnUri = MavenUrlHelper.generateMvnUrl(artifact.getGroupId(), artifactId, version, packageName,
                     artifact.getClassifier());
             m.setMavenUri(mvnUri);
             m.setLicenseType(license);
@@ -280,10 +279,9 @@ public class RemoteModulesHelper {
             m.setDescription(description);
             m.setUrl_description(url);
             m.setUrl_download(url);
-
-            String artifactType = artifact.getType();
-            m.resolveDistribution(artifactType);
-
+            if (StringUtils.isEmpty(artifact.getType()) || MavenConstants.PACKAGING_POM.equals(artifact.getType())) {
+                m.setDistribution(MavenConstants.DOWNLOAD_MANUAL);
+            }
             if (theCache == localCache) {
                 m.setFromCustomNexus(true);
             }
@@ -368,26 +366,24 @@ public class RemoteModulesHelper {
      */
     private ModuleToInstall createUnavailableModuleToInstall(String mvnUri, Map<String, List<ModuleNeeded>> contextMap) {
         ModuleToInstall m = new ModuleToInstall();
-        m.setDistribution(MavenConstants.DOWNLOAD_MANUAL);
         m.setMavenUri(mvnUri);
         setContext(m, mvnUri, contextMap);
         String name = null;
-        String type = null;
 
         /**
          * For mvnUri with repository url, we can download it from the specified repository url dirrectly, so should
          * enable to download automatically instead of manually
          */
+        boolean downloadManual = true;
         if (StringUtils.isNotEmpty(mvnUri)) {
             MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(mvnUri);
             String repoUrl = parseMvnUrl.getRepositoryUrl();
             if (StringUtils.isNotEmpty(repoUrl)) {
-                type = parseMvnUrl.getType();
-                if (type == null) {
-                    type = MavenConstants.TYPE_JAR;
-                }
-                m.resolveDistribution(type);
+                downloadManual = false;
             }
+        }
+        if (downloadManual) {
+            m.setDistribution(MavenConstants.DOWNLOAD_MANUAL);
         }
 
         if (contextMap != null) {

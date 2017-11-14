@@ -143,8 +143,11 @@ public class TalendDate {
 
     public synchronized static String formatDateInUTC(String pattern, java.util.Date date) {
         DateFormat format = FastDateParser.getInstance(pattern);
+        TimeZone originalTZ = format.getTimeZone();
         format.setTimeZone(TimeZone.getTimeZone("UTC"));
-        return format.format(date);
+        String dateStr = format.format(date);
+        format.setTimeZone(originalTZ);
+        return dateStr;
     }
 
     /**
@@ -947,9 +950,11 @@ public class TalendDate {
                 }
             }
             DateFormat df = FastDateParser.getInstance(pattern);
+            TimeZone originalTZ = df.getTimeZone();
             df.setTimeZone(TimeZone.getTimeZone("UTC"));
             df.setLenient(isLenient);
             Date d = df.parse(stringDate);
+            df.setTimeZone(originalTZ);
             if (hasZone) {
                 int offset = df.getCalendar().get(Calendar.ZONE_OFFSET);
                 char sign = offset >= 0 ? '+' : '-';
