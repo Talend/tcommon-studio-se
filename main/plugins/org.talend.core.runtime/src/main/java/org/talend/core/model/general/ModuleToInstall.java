@@ -15,8 +15,6 @@ package org.talend.core.model.general;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.talend.core.runtime.maven.MavenConstants;
-
 /**
  * created by WCHEN on 2012-9-17 Detailled comment
  * 
@@ -155,17 +153,6 @@ public class ModuleToInstall {
      */
     public void setDistribution(String distribution) {
         this.distribution = distribution;
-    }
-
-    public void resolveDistribution(String artifactType) {
-        String distribution = MavenConstants.DOWNLOAD_MANUAL;
-        if (artifactType == null || "".equals(artifactType) //$NON-NLS-1$
-                || MavenConstants.PACKAGING_POM.equals(artifactType)) {
-            distribution = MavenConstants.DOWNLOAD_MANUAL;
-        } else {
-            distribution = artifactType;
-        }
-        setDistribution(distribution);
     }
 
     @Override

@@ -125,7 +125,7 @@ public class RepositoryConstants {
         }
         // GLIU: add for TESB-3837
         else if (type != null && "SERVICES".equals(type.getType())) { //$NON-NLS-1$
-            return CODE_ITEM_PATTERN;
+            return SERVICES_NAME_PATTERN;
         } else if (type != null && type.getType() != null && type.getType().startsWith("MDM.")) { //$NON-NLS-1$
             return MDM_ITEM_PATTERN;
         } else {
