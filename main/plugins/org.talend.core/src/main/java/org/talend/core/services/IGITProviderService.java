@@ -34,4 +34,6 @@ public interface IGITProviderService extends IService {
 
     public void gitEclipseHandlerDelete(IProject eclipseProject, Project currentProject, String filePath);
 
+    public void clean();
+
 }
