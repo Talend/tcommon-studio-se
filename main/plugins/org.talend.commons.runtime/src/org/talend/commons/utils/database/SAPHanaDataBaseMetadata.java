@@ -302,7 +302,7 @@ public class SAPHanaDataBaseMetadata extends FakeDatabaseMetaData {
 
         // For Calculation View
         if (!load) {
-            String sqlcv = "SELECT * from \"" + schemaPattern + "\".\"" + catalog + "/" + tableNamePattern + "\""; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+            String sqlcv = "SELECT * from \"" + schemaPattern + "\".\"" + tableNamePattern + "\""; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             ResultSet rscv = null;
             Statement stmtcv = null;
             List<String[]> listcv = new ArrayList<String[]>();
