@@ -138,7 +138,7 @@ public class ModuleMavenURIUtils {
 
         if (!deployStatus[0]) {
             ModuleStatusProvider.putDeployStatus(mvnURI, ELibraryInstallStatus.NOT_DEPLOYED);
-            ModuleStatusProvider.putStatus(mvnURI, ELibraryInstallStatus.NOT_INSTALLED);
+            // ModuleStatusProvider.putStatus(mvnURI, ELibraryInstallStatus.NOT_INSTALLED);
         }
 
         return deployStatus[0];

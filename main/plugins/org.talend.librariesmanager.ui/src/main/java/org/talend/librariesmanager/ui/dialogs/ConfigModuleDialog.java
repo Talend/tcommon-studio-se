@@ -299,7 +299,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
             setupMavenURIByModuleName(moduleName);
             useCustomBtn.setEnabled(false);
             customUriText.setEnabled(false);
-            setMessage(Messages.getString("ConfigModuleDialog.message"), IMessageProvider.INFORMATION);
+            setMessage(Messages.getString("ConfigModuleDialog.message", moduleName), IMessageProvider.INFORMATION);
             getButton(IDialogConstants.OK_ID).setEnabled(true);
         }
     }
@@ -362,6 +362,9 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                 File file = new File(jarPathTxt.getText());
                 moduleName = file.getName();
                 setupMavenURIByModuleName(moduleName);
+                if (useCustomBtn.getSelection()) {
+                    customUriText.setEnabled(true);
+                }
                 checkErrorForInstall();
             }
         });
@@ -423,13 +426,36 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                     customUriText.setText("");
                     return;
                 }
-                moduleName = MavenUrlHelper.generateModuleNameByMavenURI(uri);
-                setupMavenURIByModuleName(moduleName);
-                // set current uri as new cusotm uri
-                if (!uri.equals(defaultUriTxt.getText().trim())) {
-                    customUriText.setText(uri);
-                    useCustomBtn.setSelection(true);
-                    layoutWarningComposite(false, defaultUriTxt.getText().trim());
+                ModuleNeeded testModule = new ModuleNeeded("", "", true, uri);
+                moduleName = testModule.getModuleName();
+                uri = testModule.getDefaultMavenURI();
+                ModuleNeeded found = null;
+                for (ModuleNeeded module : ModulesNeededProvider.getAllManagedModules()) {
+                    if (moduleName.equals(module.getModuleName())) {
+                        found = module;
+                        break;
+                    }
+                }
+                if (found != null) {
+                    String defualtURIFromModule = found.getDefaultMavenURI();
+                    String customURIFromModule = found.getCustomMavenUri();
+                    defaultUriTxt.setText(defualtURIFromModule);
+                    if (uri.equalsIgnoreCase(defualtURIFromModule) && customURIFromModule != null) {
+                        useCustomBtn.setSelection(false);
+                        customUriText.setText("");
+                        layoutWarningComposite(false, defaultUriTxt.getText().trim());
+                    } else if (!uri.equals(defualtURIFromModule)
+                            || (customURIFromModule != null && !customURIFromModule.equals(uri))) {
+                        customUriText.setText(uri);
+                        useCustomBtn.setSelection(true);
+                        layoutWarningComposite(false, defaultUriTxt.getText().trim());
+                    }
+                } else {
+                    setupMavenURIByModuleName(moduleName);
+                    if (!uri.equals(defaultUriTxt.getText())) {
+                        customUriText.setText(uri);
+                        useCustomBtn.setSelection(true);
+                    }
                 }
                 checkInstallStatusErrorForFindExisting();
             }
@@ -592,14 +618,14 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         if (deployed) {
             setMessage(Messages.getString("InstallModuleDialog.error.jarexsit"), IMessageProvider.ERROR);
         } else {
-            checkErrorForInstall();
+            setMessage(Messages.getString("ConfigModuleDialog.install.message", moduleName), IMessageProvider.INFORMATION);
         }
     }
 
     private void handleDetectPressedForFindExsting() {
         boolean deployed = checkInstalledStatusInMaven();
         if (deployed) {
-            setMessage(Messages.getString("ConfigModuleDialog.message"), IMessageProvider.INFORMATION);
+            setMessage(Messages.getString("ConfigModuleDialog.message", moduleName), IMessageProvider.INFORMATION);
         } else {
             setMessage(Messages.getString("ConfigModuleDialog.jarNotInstalled.error"), IMessageProvider.ERROR);
         }
@@ -621,7 +647,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
 
     private void handleButtonPressed() {
         FileDialog dialog = new FileDialog(getShell());
-        dialog.setText(Messages.getString("InstallModuleDialog.title")); //$NON-NLS-1$
+        dialog.setText(Messages.getString("ConfigModuleDialog.install.message", moduleName)); //$NON-NLS-1$
 
         String filePath = this.jarPathTxt.getText().trim();
         if (filePath.length() == 0) {
@@ -666,7 +692,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
 
         }
 
-        setMessage(Messages.getString("ConfigModuleDialog.message"), IMessageProvider.INFORMATION);
+        setMessage(Messages.getString("ConfigModuleDialog.message", moduleName), IMessageProvider.INFORMATION);
         getButton(IDialogConstants.OK_ID).setEnabled(true);
         return true;
     }
@@ -754,7 +780,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                 return false;
             }
         }
-        setMessage(Messages.getString("ConfigModuleDialog.message"), IMessageProvider.INFORMATION);
+        setMessage(Messages.getString("ConfigModuleDialog.message", moduleName), IMessageProvider.INFORMATION);
         return true;
     }
 
