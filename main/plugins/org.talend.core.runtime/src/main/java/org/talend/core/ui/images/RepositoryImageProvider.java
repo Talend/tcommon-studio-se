@@ -67,7 +67,8 @@ public class RepositoryImageProvider {
             return ECoreImage.METADATA_COLUMN_ICON;
         } else if (type == ERepositoryObjectType.METADATA_CON_QUERY) {
             return ECoreImage.METADATA_QUERY_ICON;
-        } else if (type == ERepositoryObjectType.METADATA_CON_VIEW) {
+        } else if (type == ERepositoryObjectType.METADATA_CON_VIEW
+                || type == ERepositoryObjectType.METADATA_CON_CALCULATION_VIEW) {
             return ECoreImage.METADATA_VIEW_ICON;
         } else if (type == ERepositoryObjectType.METADATA_CON_SYNONYM) {
             return ECoreImage.METADATA_SYNONYM_ICON;

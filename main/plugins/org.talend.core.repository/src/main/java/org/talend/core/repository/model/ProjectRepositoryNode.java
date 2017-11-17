@@ -1541,6 +1541,14 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
                     Messages.getString("ProjectRepositoryNode.synonymSchemas"), ECoreImage.FOLDER_CLOSE_ICON); //$NON-NLS-1$
             node.getChildren().add(synonymsNode);
 
+            // 4.CALCULATION VIEWS:
+            RepositoryNode calculationViewsNode = new StableRepositoryNode(node,
+                    Messages.getString("ProjectRepositoryNode.calculationViewSchemas"), ECoreImage.FOLDER_CLOSE_ICON); //$NON-NLS-1$
+            if (PluginChecker.isTIS() && EDatabaseTypeName.SAPHana.getDisplayName()
+                    .equals(((DatabaseConnection) metadataConnection).getDatabaseType())) {
+                node.getChildren().add(calculationViewsNode);
+            }
+
             DatabaseConnection dbconn = (DatabaseConnection) metadataConnection;
             List<MetadataTable> allTables = ConnectionHelper.getTablesWithOrders(dbconn);
 
@@ -1574,6 +1582,9 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
 
                     } else if (typeTable.equals(MetadataManager.TYPE_SYNONYM)) {
                         createTable(synonymsNode, repObj, metadataTable, ERepositoryObjectType.METADATA_CON_TABLE,
+                                validationRules);
+                    } else if (typeTable.equals(MetadataManager.TYPE_CALCULATION_VIEW)) {
+                        createTable(calculationViewsNode, repObj, metadataTable, ERepositoryObjectType.METADATA_CON_TABLE,
                                 validationRules);
                     }
                     // bug 0017782 ,db2's SYNONYM need to convert to ALIAS;
