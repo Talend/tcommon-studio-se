@@ -14,6 +14,7 @@ package org.talend.updates.runtime.engine.factory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -47,12 +48,18 @@ public class PluginRequiredMissingJarsExtraUpdatesFactory extends AbstractExtraU
     @Override
     public void retrieveUninstalledExtraFeatures(IProgressMonitor monitor, Set<ExtraFeature> uninstalledExtraFeatures)
             throws Exception {
-
+        Date date1 = new Date();
+        log.warn("Begin PluginRequiredMissingJarsExtraUpdatesFactory");
         SubMonitor mainSubMonitor = SubMonitor.convert(monitor, 2);
 
         // get all misssing jars
         List<ModuleNeeded> allUninstalledModules = ModulesNeededProvider
                 .getAllNoInstalledModulesNeededExtensionsForPlugin(mainSubMonitor.newChild(1));
+
+        Date date2 = new Date();
+        log.warn("PluginRequiredMissingJarsExtraUpdatesFactory--get unistalledModulesNeeded :"
+                + (date2.getTime() - date1.getTime()));
+
         if (monitor.isCanceled()) {
             return;
         }// else keep going
@@ -74,6 +81,12 @@ public class PluginRequiredMissingJarsExtraUpdatesFactory extends AbstractExtraU
                 return;
             }
         }// else all data already fetched so keep going
+        Date date3 = new Date();
+        log.warn("PluginRequiredMissingJarsExtraUpdatesFactory--search avalable from remote :"
+                + (date3.getTime() - date2.getTime()));
+
+        log.warn("End PluginRequiredMissingJarsExtraUpdatesFactory:" + (date3.getTime() - date1.getTime()));
+
         if (mainSubMonitor.isCanceled()) {
             return;
         }// else keep going.

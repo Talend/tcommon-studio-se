@@ -915,7 +915,6 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         useCustomBtn.setSelection(useCustom);
         // customUriText.setEnabled(useCustom);
         customUriText.setText(cusormURIValue);
-
     }
 
 }
