@@ -64,6 +64,9 @@
 				<dbType type="DateTimeOffset">
 					<talendType type="id_Date" default="true" />
 				</dbType>
+				<dbType type="Date">
+					<talendType type="id_Date" default="true" />
+				</dbType>
 				<dbType type="Decimal">
 					<talendType type="id_BigDecimal" default="true" />
 				</dbType>
