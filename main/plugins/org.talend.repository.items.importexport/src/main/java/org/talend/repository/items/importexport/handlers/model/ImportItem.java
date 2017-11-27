@@ -158,7 +158,7 @@ public class ImportItem {
 
     public boolean isValid() {
         // TODO mhelleboid split validation in two steps to be able to filter a valid item and avoid adding an error
-        return errors.isEmpty() || !isIgnore();
+        return errors.isEmpty() && !isIgnore();
     }
 
     /**
