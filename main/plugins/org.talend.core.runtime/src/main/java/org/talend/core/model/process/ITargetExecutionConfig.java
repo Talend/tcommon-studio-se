@@ -52,5 +52,4 @@ public interface ITargetExecutionConfig extends IServerConfiguration {
 	public boolean isActiveServer();
 	
 	public String getEncryptedPassword();
-
 }
