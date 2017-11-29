@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -58,18 +59,27 @@ public class DownloadHelper implements IDownloadHelper {
 
             bis = new BufferedInputStream(connection.getInputStream());
             bos = new BufferedOutputStream(new FileOutputStream(destination));
-            fireDownloadStart(connection.getContentLength());
+            int contentLength = connection.getContentLength();
+            fireDownloadStart(contentLength);
 
+            int refreshInterval = 1000;
+            if (contentLength < BUFFER_SIZE * 10) {
+                refreshInterval = contentLength / 200;
+            }
             byte[] buf = new byte[BUFFER_SIZE];
-            int bytesDownloaded = 0;
             int bytesRead = -1;
+            long startTime = new Date().getTime();
+            int byteReadInloop = 0;
             while ((bytesRead = bis.read(buf)) != -1) {
                 bos.write(buf, 0, bytesRead);
-                bytesDownloaded += bytesRead;
-
-                fireDownloadProgress(bytesRead);
+                long currentTime = new Date().getTime();
+                byteReadInloop = byteReadInloop + bytesRead;
+                if (currentTime - startTime > refreshInterval) {
+                    startTime = currentTime;
+                    fireDownloadProgress(byteReadInloop);
+                    byteReadInloop = 0;
+                }
                 if (isCancel()) {
-                    // cacel download process
                     return;
                 }
             }

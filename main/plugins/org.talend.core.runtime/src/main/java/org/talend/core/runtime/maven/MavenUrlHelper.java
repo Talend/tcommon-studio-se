@@ -234,10 +234,23 @@ public class MavenUrlHelper {
                 // set jar by default
                 parseMvnUrl.setType(MavenConstants.TYPE_JAR);
             }
-            uri = MavenUrlHelper.generateMvnUrl(parseMvnUrl.getGroupId(), parseMvnUrl.getArtifactId(), parseMvnUrl.getVersion(),
-                    parseMvnUrl.getType(), parseMvnUrl.getClassifier());
+            uri = MavenUrlHelper.generateMvnUrl(parseMvnUrl.getRepositoryUrl(), parseMvnUrl.getGroupId(),
+                    parseMvnUrl.getArtifactId(), parseMvnUrl.getVersion(), parseMvnUrl.getType(), parseMvnUrl.getClassifier());
         }
         return uri;
+    }
+
+    public static String generateModuleNameByMavenURI(String uri) {
+        MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(uri, true);
+        if (parseMvnUrl == null) {
+            return null;
+        }
+        String moduleName = parseMvnUrl.getArtifactId() + "-" + parseMvnUrl.getVersion();
+        if (parseMvnUrl.getClassifier() != null) {
+            moduleName = moduleName + "-" + parseMvnUrl.getClassifier();
+        }
+        moduleName = moduleName + "." + parseMvnUrl.getType();
+        return moduleName;
     }
 
 }

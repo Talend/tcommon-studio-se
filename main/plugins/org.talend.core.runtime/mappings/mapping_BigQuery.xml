@@ -72,7 +72,7 @@
                     <talendType type="id_String" />
                 </dbType>
                 <dbType type="BYTES">
-                    <talendType type="id_Bytes" default="true" />
+                    <talendType type="id_byte[]" default="true" />
                 </dbType>
                 <dbType type="INTEGER">
                     <talendType type="id_Long" default="true" />

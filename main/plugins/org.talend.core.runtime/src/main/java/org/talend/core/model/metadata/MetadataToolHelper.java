@@ -848,6 +848,9 @@ public final class MetadataToolHelper {
     }
 
     public static ConnectionItem getConnectionItemFromRepository(String metaRepositoryid) {
+        if (metaRepositoryid == null) {
+            return null;
+        }
         String connectionId = metaRepositoryid;
         // some calls can be done either with only the connection Id or with
         // informations from query or table

@@ -156,8 +156,10 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
             "METADATA_COLUMN", true, 27, new String[] { PROD_DI }, new String[] {}, false);
 
     // feature 0006484 add
-    //    public final static ERepositoryObjectType METADATA_FILE_RULES = new ERepositoryObjectType("repository.metadataFileRules", //$NON-NLS-1$
-    //            "metadata/rules", "METADATA_FILE_RULES", 28, true, "repository.metadataFileRules.alias", new String[] { PROD_DI }, //$NON-NLS-1$
+    // public final static ERepositoryObjectType METADATA_FILE_RULES = new
+    // ERepositoryObjectType("repository.metadataFileRules", //$NON-NLS-1$
+    // "metadata/rules", "METADATA_FILE_RULES", 28, true, "repository.metadataFileRules.alias", new String[] { PROD_DI
+    // }, //$NON-NLS-1$
     // new String[] {});
 
     public final static ERepositoryObjectType METADATA_FILE_LINKRULES = new ERepositoryObjectType(
@@ -165,7 +167,7 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
             "repository.metadataLinkFileRules.alias", new String[] { PROD_DI }, new String[] {});
 
     // public final static ERepositoryObjectType METADATA_RULES_MANAGEMENT = new ERepositoryObjectType(
-    //            "repository.metadataRulesManagement", "", "METADATA_RULES_MANAGEMENT", 30, true, //$NON-NLS-1$ //$NON-NLS-2$
+    // "repository.metadataRulesManagement", "", "METADATA_RULES_MANAGEMENT", 30, true, //$NON-NLS-1$ //$NON-NLS-2$
     // "repository.metadataRulesManagement.alias", new String[] { PROD_DI }, new String[] {}, false);
 
     // 0015169 added
@@ -180,8 +182,7 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
     public final static ERepositoryObjectType FOLDER = new ERepositoryObjectType("repository.folder", "", "FOLDER", true, 50, //$NON-NLS-1$
             new String[] { PROD_DI }, new String[] {}, false);
 
-    public final static ERepositoryObjectType REFERENCED_PROJECTS = new ERepositoryObjectType(
-            "repository.referencedProjects", "", //$NON-NLS-1$ //$NON-NLS-2$
+    public final static ERepositoryObjectType REFERENCED_PROJECTS = new ERepositoryObjectType("repository.referencedProjects", "", //$NON-NLS-1$ //$NON-NLS-2$
             "REFERENCED_PROJECTS", 51, true, "repository.referencedProjects.alias", new String[] { PROD_DI, PROD_DQ },
             new String[] {}, false);
 
@@ -201,8 +202,7 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
             "TDQ_Data Profiling/Reports", "TDQ_REPORT_ELEMENT", 64, true, "repository.tdqelement.report.alias", //$NON-NLS-1$
             new String[] { PROD_DQ }, new String[] {});
 
-    public final static ERepositoryObjectType TDQ_INDICATOR_ELEMENT = new ERepositoryObjectType(
-            "repository.tdqelement.indicator", //$NON-NLS-1$
+    public final static ERepositoryObjectType TDQ_INDICATOR_ELEMENT = new ERepositoryObjectType("repository.tdqelement.indicator", //$NON-NLS-1$
             "TDQ_Libraries/Indicators", "TDQ_INDICATOR_ELEMENT", 66, true, "repository.tdqelement.indicator.alias", //$NON-NLS-1$
             new String[] { PROD_DQ }, new String[] {});
 
@@ -252,8 +252,7 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
             "TDQ_Libraries/Rules/Parser", "TDQ_RULES_PARSER", 81, true, "repository.rulesParser.alias", new String[] { PROD_DQ }, //$NON-NLS-1$
             new String[] {}, false);
 
-    public final static ERepositoryObjectType TDQ_RULES_MATCHER = new ERepositoryObjectType(
-            "repository.rulesMatcher", //$NON-NLS-1$
+    public final static ERepositoryObjectType TDQ_RULES_MATCHER = new ERepositoryObjectType("repository.rulesMatcher", //$NON-NLS-1$
             "TDQ_Libraries/Rules/Match", "TDQ_RULES_MATCHER", 82, true, "repository.rulesMatcher.alias", new String[] { PROD_DQ }, //$NON-NLS-1$
             new String[] {}, false);
 
@@ -358,6 +357,13 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
 
     public final static ERepositoryObjectType METADATA_SAP_TABLE = new ERepositoryObjectType("repository.SAPTable", //$NON-NLS-1$
             "METADATA_SAP_TABLE", 104, true, true, new String[] { PROD_DI }, new String[] {}, false);
+
+    public final static ERepositoryObjectType METADATA_SAP_CONTENT_EXTRACTOR = new ERepositoryObjectType("repository.SAPTable", //$NON-NLS-1$
+            "METADATA_SAP_CONTENT_EXTRACTOR", 105, true, true, new String[] { PROD_DI }, new String[] {}, false);
+
+    public final static ERepositoryObjectType METADATA_CON_CALCULATION_VIEW = new ERepositoryObjectType(
+            "repository.metadataCalculationView", "METADATA_CON_CALCULATION_VIEW", 106, true, true, new String[] { PROD_DI },
+            new String[] {}, false);
 
     private String label;
 
@@ -876,8 +882,8 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
         } else if (type.getType().equals("TEST_CONTAINER")) {
             return "test case";
         } else if (GlobalServiceRegister.getDefault().isServiceRegistered(ICamelDesignerCoreService.class)) {
-            ICamelDesignerCoreService camelService = (ICamelDesignerCoreService) GlobalServiceRegister.getDefault().getService(
-                    ICamelDesignerCoreService.class);
+            ICamelDesignerCoreService camelService = (ICamelDesignerCoreService) GlobalServiceRegister.getDefault()
+                    .getService(ICamelDesignerCoreService.class);
             String deleteFolderName = camelService.getDeleteFolderName(type);
             if (deleteFolderName != null) {
                 return deleteFolderName;
@@ -1425,7 +1431,7 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
         }
         return allTypes;
     }
-    
+
     public static List<ERepositoryObjectType> getAllTypesOfTestContainer() {
         List<ERepositoryObjectType> allTypes = new ArrayList<ERepositoryObjectType>();
 

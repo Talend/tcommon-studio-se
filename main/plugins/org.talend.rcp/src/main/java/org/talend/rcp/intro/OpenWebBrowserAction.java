@@ -12,11 +12,14 @@
 // ============================================================================
 package org.talend.rcp.intro;
 
+import java.net.URLDecoder;
 import java.util.Properties;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.swt.program.Program;
 import org.eclipse.ui.intro.IIntroSite;
 import org.eclipse.ui.intro.config.IIntroAction;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ui.branding.IBrandingService;
 
@@ -86,6 +89,16 @@ public class OpenWebBrowserAction implements IIntroAction {
                 Program.launch(TRAINNING_URL);
             } else if ("showTalendHelpCenter".equals(type.toString())) {
                 Program.launch(TALEND_HELP_CENTER);
+            } else if ("showUrl".equals(type.toString())) { //$NON-NLS-1$
+                String url = (String) params.get("url"); //$NON-NLS-1$
+                if (StringUtils.isNotEmpty(url)) {
+                    try {
+                        url = URLDecoder.decode(url, "UTF-8"); //$NON-NLS-1$
+                    } catch (Exception e) {
+                        ExceptionHandler.process(e);
+                    }
+                    Program.launch(url);
+                }
             }
         }
     }

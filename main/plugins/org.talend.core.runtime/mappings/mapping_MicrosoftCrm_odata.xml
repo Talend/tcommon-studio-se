@@ -6,6 +6,7 @@
 			<dbType type="Binary" ignoreLen="true" ignorePre="true" />
 			<dbType type="Collection" ignorePre="true" />
 			<dbType type="DateTimeOffset" ignorePre="true" ignoreLen="true"/>
+			<dbType type="Date" ignorePre="true" ignoreLen="true"/>
 			<dbType type="Decimal" defaultLength="20" defaultPrecision="10" preBeforelen="false" />
 			<dbType type="Double" defaultLength="20" defaultPrecision="10" />
 			<dbType type="Guid" ignorePre="true" default="true" defaultLength="100" />
@@ -28,6 +29,7 @@
 				<talendType type="id_Character" />
 				<talendType type="id_Date">
 				    <dbType type="DateTimeOffset" default="true" />
+				    <dbType type="Date" />
 				</talendType>
 				<talendType type="id_BigDecimal">
 				    <dbType type="Decimal" default="true" />
@@ -60,6 +62,9 @@
                     <talendType type="id_List" default="true" />
                 </dbType>
 				<dbType type="DateTimeOffset">
+					<talendType type="id_Date" default="true" />
+				</dbType>
+				<dbType type="Date">
 					<talendType type="id_Date" default="true" />
 				</dbType>
 				<dbType type="Decimal">

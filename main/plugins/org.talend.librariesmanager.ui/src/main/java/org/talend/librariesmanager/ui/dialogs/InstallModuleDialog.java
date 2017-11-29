@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.TimeoutException;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
@@ -46,15 +47,30 @@ import org.talend.commons.ui.runtime.image.EImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.commons.ui.swt.dialogs.IConfigModuleDialog;
 import org.talend.core.model.general.ModuleNeeded;
+import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
+import org.talend.core.model.general.ModuleStatusProvider;
+import org.talend.core.nexus.NexusServerBean;
+import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.librariesmanager.ui.LibManagerUiPlugin;
 import org.talend.librariesmanager.ui.i18n.Messages;
+import org.talend.librariesmanager.utils.ModuleMavenURIUtils;
 
 /**
  * created by wchen on Aug 16, 2017 Detailled comment
  *
  */
 public class InstallModuleDialog extends TitleAreaDialog implements ICellEditorDialog, IConfigModuleDialog {
+
+    private Text defaultUriTxt;
+
+    private Button copyURIButton;
+
+    private Text customUriText;
+
+    private Button useCustomBtn;
+
+    private Button detectButton;
 
     private Label warningLabel;
 
@@ -63,8 +79,6 @@ public class InstallModuleDialog extends TitleAreaDialog implements ICellEditorD
     private Text jarPathTxt;
 
     private Button browseButton;
-
-    private MavenURIComposite installNewRUIComposite;
 
     private ModuleNeeded module;
 
@@ -75,6 +89,8 @@ public class InstallModuleDialog extends TitleAreaDialog implements ICellEditorD
     private String cusormURIValue = "";
 
     private String defaultURIValue = "";
+
+    private final String MVNURI_TEMPLET = "mvn:<groupid>/<artifactId>/<version>/<type>";
 
     /**
      * DOC wchen InstallModuleDialog constructor comment.
@@ -111,10 +127,127 @@ public class InstallModuleDialog extends TitleAreaDialog implements ICellEditorD
 
         createWarningLabel(container);
         createJarPathComposite(container);
-        installNewRUIComposite = new MavenURIComposite(this, moduleName, defaultURIValue, cusormURIValue);
-        installNewRUIComposite.createMavenURIComposite(container);
+        createMavenURIComposite(container);
 
         return parent;
+    }
+
+    private void createMavenURIComposite(Composite composite) {
+        Label label2 = new Label(composite, SWT.NONE);
+        label2.setText(Messages.getString("InstallModuleDialog.originalUri"));
+        defaultUriTxt = new Text(composite, SWT.BORDER);
+        GridData gdData = new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL);
+        defaultUriTxt.setLayoutData(gdData);
+        defaultUriTxt.setEnabled(false);
+        defaultUriTxt.setBackground(composite.getBackground());
+        defaultUriTxt.setText(defaultURIValue);
+
+        copyURIButton = new Button(composite, SWT.NONE);
+        copyURIButton.setToolTipText(Messages.getString("InstallModuleDialog.copyURIBtn"));
+        copyURIButton.setImage(ImageProvider.getImage(EImage.COPY_ICON));
+
+        Composite customContainter = new Composite(composite, SWT.NONE);
+        customContainter.setLayoutData(new GridData());
+        GridLayout layout = new GridLayout();
+        layout.marginTop = 0;
+        layout.marginLeft = 0;
+        layout.marginRight = 0;
+        // layout.numColumns = 2;
+        customContainter.setLayout(layout);
+
+        useCustomBtn = new Button(customContainter, SWT.CHECK);
+        gdData = new GridData();
+        useCustomBtn.setLayoutData(gdData);
+        useCustomBtn.setSelection(!MVNURI_TEMPLET.equals(cusormURIValue));
+        useCustomBtn.setText(Messages.getString("InstallModuleDialog.customUri"));
+
+        customUriText = new Text(composite, SWT.BORDER);
+        gdData = new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL);
+        gdData.horizontalSpan = 2;
+        customUriText.setLayoutData(gdData);
+        customUriText.setEnabled(useCustomBtn.getSelection());
+        if (customUriText.isEnabled()) {
+            customUriText.setText(cusormURIValue);
+        }
+
+        detectButton = new Button(composite, SWT.NONE);
+        detectButton.setText(Messages.getString("InstallModuleDialog.detectButton.text"));
+        gdData = new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL);
+        gdData.horizontalSpan = 3;
+        detectButton.setLayoutData(gdData);
+
+        useCustomBtn.addSelectionListener(new SelectionAdapter() {
+
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                // show the warning if useCustomBtn select/deselect
+                layoutWarningComposite(false, defaultUriTxt.getText());
+                if (useCustomBtn.getSelection()) {
+                    customUriText.setEnabled(true);
+                    if ("".equals(customUriText.getText())) {
+                        customUriText.setText(cusormURIValue);
+                    }
+                } else {
+                    customUriText.setEnabled(false);
+                }
+                checkFieldsError();
+            }
+        });
+
+        customUriText.addModifyListener(new ModifyListener() {
+
+            @Override
+            public void modifyText(ModifyEvent e) {
+                checkFieldsError();
+            }
+        });
+
+        detectButton.addSelectionListener(new SelectionAdapter() {
+
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                handleDetectPressed();
+            }
+        });
+        copyURIButton.addSelectionListener(new SelectionAdapter() {
+
+            /*
+             * (non-Javadoc)
+             * 
+             * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
+             */
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                ModuleMavenURIUtils.copyDefaultMavenURI(defaultUriTxt.getText());
+            }
+        });
+    }
+
+    private void handleDetectPressed() {
+        boolean deployed = checkInstalledStatusInMaven();
+        if (!"".equals(jarPathTxt.getText())) {
+            if (deployed) {
+                setMessage(Messages.getString("InstallModuleDialog.error.jarexsit"), IMessageProvider.ERROR);
+            } else {
+                setMessage(Messages.getString("ConfigModuleDialog.message"), IMessageProvider.INFORMATION);
+            }
+        } else {
+            if (deployed) {
+                setMessage(Messages.getString("ConfigModuleDialog.message"), IMessageProvider.INFORMATION);
+            } else {
+                setMessage(Messages.getString("InstallModuleDialog.error.notInstalled"), IMessageProvider.WARNING);
+            }
+        }
+    }
+
+    private boolean checkInstalledStatusInMaven() {
+        String uri = null;
+        if (useCustomBtn.getSelection()) {
+            uri = MavenUrlHelper.addTypeForMavenUri(customUriText.getText().trim(), moduleName);
+        } else {
+            uri = defaultUriTxt.getText().trim();
+        }
+        return ModuleMavenURIUtils.checkInstalledStatus(uri);
     }
 
     private void createWarningLabel(Composite container) {
@@ -139,8 +272,7 @@ public class InstallModuleDialog extends TitleAreaDialog implements ICellEditorD
         warningLayoutData.exclude = true;
     }
 
-    @Override
-    public void layoutWarningComposite(boolean exclude, String defaultMavenURI) {
+    private void layoutWarningComposite(boolean exclude, String defaultMavenURI) {
         warningLayoutData.exclude = exclude;
         warningLabel.setText(Messages.getString("InstallModuleDialog.warning", defaultMavenURI));
         warningLabel.getParent().getParent().layout();
@@ -170,24 +302,54 @@ public class InstallModuleDialog extends TitleAreaDialog implements ICellEditorD
         });
     }
 
-    /**
-     * 
-     * DOC wchen Comment method "checkInstallCompositeError".
-     * 
-     * @return false if has error
-     */
-    @Override
-    public boolean checkFieldsError() {
-        if (!new File(jarPathTxt.getText()).exists()) {
-            setMessage(Messages.getString("InstallModuleDialog.error.jarPath"), IMessageProvider.ERROR);
-            return false;
+    private boolean checkFieldsError() {
+        String originalText = defaultUriTxt.getText().trim();
+        String customURIWithType = MavenUrlHelper.addTypeForMavenUri(customUriText.getText(), moduleName);
+        ELibraryInstallStatus status = null;
+        String mvnURI2Detect = "";
+        if (useCustomBtn.getSelection()) {
+            // if use custom uri:validate custom uri + check deploy status
+            String errorMessage = ModuleMavenURIUtils.validateCustomMvnURI(originalText, customURIWithType);
+            if (errorMessage != null) {
+                detectButton.setEnabled(false);
+                setMessage(errorMessage, IMessageProvider.ERROR);
+                return false;
+            }
+            detectButton.setEnabled(true);
+
+            status = ModuleStatusProvider.getDeployStatus(customURIWithType);
+            mvnURI2Detect = customURIWithType;
+        } else {
+            status = ModuleStatusProvider.getDeployStatus(originalText);
+            mvnURI2Detect = originalText;
         }
-        boolean statuOK = installNewRUIComposite.checkFieldsError();
-        if (!statuOK) {
-            return false;
+
+        if (!"".equals(jarPathTxt.getText())) {
+            if (!new File(jarPathTxt.getText()).exists()) {
+                setMessage(Messages.getString("InstallModuleDialog.error.jarPath"), IMessageProvider.ERROR);
+                return false;
+            }
+            if (status == ELibraryInstallStatus.DEPLOYED) {
+                setMessage(Messages.getString("InstallModuleDialog.error.jarexsit"), IMessageProvider.ERROR);
+                return false;
+            }
+            // check deploy status from remote
+            boolean statusOK = checkDetectButtonStatus(status, mvnURI2Detect);
+            if (!statusOK) {
+                return false;
+            }
         }
 
         setMessage(Messages.getString("InstallModuleDialog.message"), IMessageProvider.INFORMATION);
+        return true;
+    }
+
+    private boolean checkDetectButtonStatus(ELibraryInstallStatus localStatus, String mavenURI) {
+        NexusServerBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
+        if (customNexusServer != null || localStatus == null) {
+            setMessage(Messages.getString("InstallModuleDialog.error.detectMvnURI", mavenURI), IMessageProvider.ERROR);
+            return false;
+        }
         return true;
     }
 
@@ -214,7 +376,8 @@ public class InstallModuleDialog extends TitleAreaDialog implements ICellEditorD
     @Override
     protected Control createContents(Composite parent) {
         Control control = super.createContents(parent);
-        setMessage(Messages.getString("InstallModuleDialog.error.jarPath"), IMessageProvider.ERROR);
+        setMessage(Messages.getString("InstallModuleDialog.message"), IMessageProvider.INFORMATION);
+        getButton(IDialogConstants.OK_ID).setEnabled(false);
         return control;
     }
 
@@ -250,7 +413,9 @@ public class InstallModuleDialog extends TitleAreaDialog implements ICellEditorD
         this.moduleName = module.getModuleName();
         this.defaultURIValue = module.getDefaultMavenURI();
         this.cusormURIValue = module.getCustomMavenUri();
-
+        if (StringUtils.isEmpty(this.cusormURIValue)) {
+            this.cusormURIValue = MVNURI_TEMPLET;
+        }
         open();
     }
 
@@ -262,16 +427,16 @@ public class InstallModuleDialog extends TitleAreaDialog implements ICellEditorD
     @Override
     protected void okPressed() {
         String newMVNURI = null;
-        if (installNewRUIComposite.useCustomBtn.getSelection()) {
-            newMVNURI = MavenUrlHelper.addTypeForMavenUri(installNewRUIComposite.customUriText.getText().trim(), moduleName);
+        if (useCustomBtn.getSelection()) {
+            newMVNURI = MavenUrlHelper.addTypeForMavenUri(customUriText.getText().trim(), moduleName);
             if (cellEditor != null) {
                 cellEditor.setConsumerExpression(newMVNURI);
                 cellEditor.fireApplyEditorValue();
             }
         } else {
-            newMVNURI = installNewRUIComposite.defaultUriTxt.getText().trim();
+            newMVNURI = defaultUriTxt.getText().trim();
             if (cellEditor != null) {
-                cellEditor.setConsumerExpression(installNewRUIComposite.defaultUriTxt.getText());
+                cellEditor.setConsumerExpression(defaultUriTxt.getText());
                 cellEditor.fireApplyEditorValue();
             }
         }

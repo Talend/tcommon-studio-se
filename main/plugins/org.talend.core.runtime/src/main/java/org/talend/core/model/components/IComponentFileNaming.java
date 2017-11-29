@@ -23,4 +23,6 @@ import org.talend.core.model.temp.ECodePart;
 public interface IComponentFileNaming {
 
     public String getJetFileName(IComponent component, String languageSuffix, ECodePart codePart);
+
+    public String getJetFileName(String filePrefix, String languageSuffix, ECodePart codePart);
 }

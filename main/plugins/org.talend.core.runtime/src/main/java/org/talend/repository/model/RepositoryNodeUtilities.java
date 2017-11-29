@@ -484,6 +484,7 @@ public class RepositoryNodeUtilities {
 
             ERepositoryObjectType tmpType = null;
             if (curType == ERepositoryObjectType.METADATA_CON_TABLE || curType == ERepositoryObjectType.METADATA_CON_VIEW
+                    || curType == ERepositoryObjectType.METADATA_CON_CALCULATION_VIEW
                     || curType == ERepositoryObjectType.METADATA_CON_SYNONYM
                     || curType == ERepositoryObjectType.METADATA_CON_QUERY
                     || curType == ERepositoryObjectType.METADATA_CONNECTIONS
@@ -604,7 +605,8 @@ public class RepositoryNodeUtilities {
 
         if (innerIOType == null || SAPBWTableHelper.isInnerIOType(innerIOType)) {
             for (IRepositoryNode node : realNode.getChildren()) {
-                if (node.getLabel().equals(Messages.getString("RepositoryContentProvider.repositoryLabel.sapTable")) //$NON-NLS-1$
+                if (node.getLabel().equals(Messages.getString("RepositoryContentProvider.repositoryLabel.sapContentExtractor")) //$NON-NLS-1$
+                        || node.getLabel().equals(Messages.getString("RepositoryContentProvider.repositoryLabel.sapTable")) //$NON-NLS-1$
                         || node.getLabel().equals(Messages.getString("RepositoryContentProvider.repositoryLabel.sapDataSource")) //$NON-NLS-1$
                         || node.getLabel().equals(Messages.getString("RepositoryContentProvider.repositoryLabel.sapDSO")) //$NON-NLS-1$
                         || node.getLabel().equals(Messages.getString("RepositoryContentProvider.repositoryLabel.sapInfoCube")) //$NON-NLS-1$

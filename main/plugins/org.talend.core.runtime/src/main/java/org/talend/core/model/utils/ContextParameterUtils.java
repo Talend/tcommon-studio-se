@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.PatternCompiler;
@@ -489,6 +490,13 @@ public final class ContextParameterUtils {
             newName = LINE + name;
         }
         return newName;
+    }
+
+    public static void unescapeValue(IContextParameter param) {
+        String value = param.getValue();
+        value = TalendQuoteUtils.removeQuotesIfExist(value);
+        value = StringEscapeUtils.unescapeJava(value);
+        param.setValue(value);
     }
 
 }

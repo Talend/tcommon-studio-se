@@ -78,7 +78,7 @@ public class TalendForgeDialog extends TrayDialog {
     @Override
     protected void configureShell(final Shell newShell) {
         super.configureShell(newShell);
-        newShell.setText(Messages.getString("TalendForgeDialog.newProjectTitle")); //$NON-NLS-1$
+        newShell.setText(Messages.getString("TalendForgeDialog.newProjectTitle1")); //$NON-NLS-1$
     }
 
     @Override

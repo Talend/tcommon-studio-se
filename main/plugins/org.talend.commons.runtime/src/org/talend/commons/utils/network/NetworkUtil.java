@@ -43,7 +43,7 @@ public class NetworkUtil {
             return false;
         }
         try {
-            URL url = new URL("https://www.talendforge.org"); //$NON-NLS-1$
+            URL url = new URL("https://www.talend.com"); //$NON-NLS-1$
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setConnectTimeout(4000);
             conn.setReadTimeout(4000);
