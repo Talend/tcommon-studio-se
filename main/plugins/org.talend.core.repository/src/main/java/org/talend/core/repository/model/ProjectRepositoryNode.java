@@ -1658,16 +1658,19 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
             node.getChildren().add(iDocNode);
             createSAPIDocNodes(repObj, metadataConnection, iDocNode);
 
-            // 4. BW DataSource:
+            // 4. BW AdvancedDataStoreObject:
+            createSAPBWAdvancedDataStoreObjectNodes(repObj, metadataConnection, node, validationRules);
+
+            // 5. BW DataSource:
             createSAPBWDataSourceNodes(repObj, metadataConnection, node, validationRules);
 
-            // 5. BW DataStoreObject:
+            // 6. BW DataStoreObject:
             createSAPBWDataStoreObjectNodes(repObj, metadataConnection, node, validationRules);
 
-            // 6. BW InfoCube:
+            // 7. BW InfoCube:
             createSAPBWInfoCubeNodes(repObj, metadataConnection, node, validationRules);
 
-            // 7. BW InfoObject:
+            // 8. BW InfoObject:
             createSAPBWInfoObjectNodes(repObj, metadataConnection, node, validationRules);
 
             // 8. BW Business Content Extractor:
@@ -1711,6 +1714,28 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
         }
         createTables(tableContainer, repObj, tables, ERepositoryObjectType.METADATA_CON_TABLE, validationRules);
 
+    }
+
+    private void createSAPBWAdvancedDataStoreObjectNodes(IRepositoryViewObject repObj, Connection metadataConnection,
+            RepositoryNode node, List<IRepositoryViewObject> validationRules) {
+        StableRepositoryNode container = new StableRepositoryNode(node,
+                Messages.getString("ProjectRepositoryNode.sapBWAdvancedDataStoreObject"), ECoreImage.FOLDER_CLOSE_ICON); //$NON-NLS-1$
+        container.setChildrenObjectType(ERepositoryObjectType.METADATA_CON_TABLE);
+        container.setProperties(EProperties.CONTENT_TYPE, ERepositoryObjectType.METADATA_SAP_BW_ADVANCEDDATASTOREOBJECT);
+
+        IRepositoryNode cacheNode = nodeCache.getCache(container);
+        if (cacheNode != null && cacheNode instanceof StableRepositoryNode) {
+            container = (StableRepositoryNode) cacheNode;
+            container.getChildren().clear();
+        } else {
+            nodeCache.addCache(container, true);
+        }
+        node.getChildren().add(container);
+
+        EList<SAPBWTable> advancedDataStoreObjects = ((SAPConnection) metadataConnection).getBWAdvancedDataStoreObjects();
+        EList tables = new BasicEList();
+        tables.addAll(advancedDataStoreObjects);
+        createTables(container, repObj, tables, ERepositoryObjectType.METADATA_CON_TABLE, validationRules);
     }
 
     private void createSAPBWDataSourceNodes(IRepositoryViewObject repObj, Connection metadataConnection, RepositoryNode node,

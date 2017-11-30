@@ -13,6 +13,8 @@ import org.talend.core.model.metadata.builder.connection.SAPConnection;
 public class SAPBWTableHelper {
     
     // bw object type
+    public static final String TYPE_ADVANCEDDATASTOREOBJECT = "AdvancedDataStoreObject"; //$NON-NLS-1$
+
     public static final String TYPE_DATASOURCE = "DataSource"; //$NON-NLS-1$
 
     public static final String TYPE_DATASTOREOBJECT = "DataStoreObject"; //$NON-NLS-1$
@@ -53,6 +55,9 @@ public class SAPBWTableHelper {
     public static List<SAPBWTable> getBWTableList(Connection connection, String bwTableType) {
         List<SAPBWTable> bwTables;
         switch (bwTableType) {
+        case TYPE_ADVANCEDDATASTOREOBJECT:
+            bwTables = ((SAPConnection) connection).getBWAdvancedDataStoreObjects();
+            break;
         case TYPE_DATASOURCE:
             bwTables = ((SAPConnection) connection).getBWDataSources();
             break;

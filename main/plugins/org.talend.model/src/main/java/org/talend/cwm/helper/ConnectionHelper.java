@@ -41,6 +41,7 @@ import org.talend.cwm.xml.TdXmlElementType;
 import org.talend.cwm.xml.TdXmlSchema;
 import org.talend.utils.security.CryptoHelper;
 import org.talend.utils.sql.ConnectionUtils;
+
 import orgomg.cwm.foundation.softwaredeployment.Component;
 import orgomg.cwm.foundation.softwaredeployment.DataManager;
 import orgomg.cwm.objectmodel.core.ModelElement;
@@ -65,7 +66,8 @@ public class ConnectionHelper {
     public static final String DOT_STRING = "."; //$NON-NLS-1$
 
     // MOD xqliu 2011-07-04 feature 22201
-    //public static final String PASSPHRASE = "99ZwBDt1L9yMX2ApJx fnv94o99OeHbCGuIHTy22 V9O6cZ2i374fVjdV76VX9g49DG1r3n90hT5c1"; //$NON-NLS-1$
+    // public static final String PASSPHRASE = "99ZwBDt1L9yMX2ApJx fnv94o99OeHbCGuIHTy22
+    // V9O6cZ2i374fVjdV76VX9g49DG1r3n90hT5c1"; //$NON-NLS-1$
     public static final String PASSPHRASE = ConnectionUtils.PASSPHRASE;
 
     // ~
@@ -228,8 +230,8 @@ public class ConnectionHelper {
      * @return true if the value was not set before.
      */
     public static boolean setIdentifierQuoteString(String identifierQuoteString, Connection dataProvider) {
-        return TaggedValueHelper
-                .setTaggedValue(dataProvider, TaggedValueHelper.DB_IDENTIFIER_QUOTE_STRING, identifierQuoteString);
+        return TaggedValueHelper.setTaggedValue(dataProvider, TaggedValueHelper.DB_IDENTIFIER_QUOTE_STRING,
+                identifierQuoteString);
     }
 
     /**
@@ -968,6 +970,7 @@ public class ConnectionHelper {
             for (Package pack : new ArrayList<Package>(packages)) {
                 PackageHelper.getAllTables(pack, result);
             }
+            result.addAll(((SAPConnection) connection).getBWAdvancedDataStoreObjects());
             result.addAll(((SAPConnection) connection).getBWDataSources());
             result.addAll(((SAPConnection) connection).getBWDataStoreObjects());
             result.addAll(((SAPConnection) connection).getBWInfoCubes());

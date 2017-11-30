@@ -541,6 +541,9 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
      */
     public final static ERepositoryObjectType PROCESS_SPARKSTREAMING = ERepositoryObjectType.valueOf("PROCESS_SPARKSTREAMING");
 
+    public final static ERepositoryObjectType METADATA_SAP_BW_ADVANCEDDATASTOREOBJECT = ERepositoryObjectType
+            .valueOf("METADATA_SAP_BW_ADVANCEDDATASTOREOBJECT"); //$NON-NLS-1$
+
     public final static ERepositoryObjectType METADATA_SAP_BW_DATASOURCE = ERepositoryObjectType
             .valueOf("METADATA_SAP_BW_DATASOURCE"); //$NON-NLS-1$
 

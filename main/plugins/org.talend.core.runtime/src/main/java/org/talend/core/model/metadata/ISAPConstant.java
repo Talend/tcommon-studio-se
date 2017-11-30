@@ -86,4 +86,16 @@ public interface ISAPConstant {
 
     public static final String OUTPUT_XML_META_NAME = PARAM_OUTPUT + SCHEMA_SUFIX;
 
+    // Hana database properties
+    public static final String PROP_USE_HANA = "db.useHana";//$NON-NLS-1$
+
+    public static final String PROP_DB_HOST = "db.host";//$NON-NLS-1$
+
+    public static final String PROP_DB_PORT = "db.port";//$NON-NLS-1$
+
+    public static final String PROP_DB_SCHEMA = "db.schema";//$NON-NLS-1$
+
+    public static final String PROP_DB_USERNAME = "db.username";//$NON-NLS-1$
+
+    public static final String PROP_DB_PASSWORD = "db.password";//$NON-NLS-1$
 }
