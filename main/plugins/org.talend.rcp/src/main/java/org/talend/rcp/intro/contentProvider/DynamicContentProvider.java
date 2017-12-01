@@ -32,6 +32,7 @@ import org.talend.commons.utils.VersionUtils;
 import org.talend.commons.utils.network.NetworkUtil;
 import org.talend.core.CorePlugin;
 import org.talend.core.GlobalServiceRegister;
+import org.talend.core.PluginChecker;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
@@ -116,7 +117,7 @@ public class DynamicContentProvider extends IntroProvider {
             if (latestItems.size() == 0) {
                 parent.appendChild(dom.createTextNode(Messages.getString("DynamicContentProvider.analysis"))); //$NON-NLS-1$
             }
-        } else if ("ALWAYS_WELCOME".equals(id)) { //$NON-NLS-1$
+        } else if ("ALWAYS_WELCOME".equals(id) && PluginChecker.isTIS()) { //$NON-NLS-1$
             creatAlwaysWelcome(dom, parent);
         } else if ("CUSTOMER_PAGE".equals(id)) { //$NON-NLS-1$
             createNewsPage(dom, parent);
@@ -252,7 +253,7 @@ public class DynamicContentProvider extends IntroProvider {
 
     protected void createTopMessage(Document dom, Element parent) {
         Element topMessageElem = dom.createElement("div"); //$NON-NLS-1$
-        topMessageElem.setAttribute("style", "position: absolute;left: 615px;top: 39px;width: 170px;"); //$NON-NLS-1$//$NON-NLS-2$
+        topMessageElem.setAttribute("style", "position: absolute;left: 660px;top: 22px;width: 200px;text-align: center;line-height: 28px;letter-spacing: 1px;"); //$NON-NLS-1$//$NON-NLS-2$
         parent.appendChild(topMessageElem);
 
         Element ticHrefElem = dom.createElement("a"); //$NON-NLS-1$
@@ -264,7 +265,7 @@ public class DynamicContentProvider extends IntroProvider {
         }
         ticHrefElem.setAttribute("href", OPEN_IN_BROWSER_URL + url); //$NON-NLS-1$
         ticHrefElem.setAttribute("style", //$NON-NLS-1$
-                "color: white;font-size: 15px;font-family: Calibri, Candara, Segoe, Segoe UI, Optima, Arial, sans-serif;font-weight: bold;text-decoration: none;"); //$NON-NLS-1$
+                "color: #c3d600;font-size: 20px;text-decoration: none;font-family: Calibri, Candara, Segoe, Segoe UI, Optima, Arial, sans-serif;"); //$NON-NLS-1$
         topMessageElem.appendChild(ticHrefElem);
 
         Text tryCloudTextNode = dom.createTextNode(Messages.getString("DynamicContentProvider.tryCloud")); //$NON-NLS-1$
