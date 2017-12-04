@@ -16,8 +16,6 @@ import static org.junit.Assert.*;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.talend.core.model.context.JobContextParameter;
-import org.talend.core.model.process.IContextParameter;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
@@ -164,27 +162,6 @@ public class ContextParameterUtilsTest {
         assertEquals("abc_de", ContextParameterUtils.getValidParameterName("abc_de"));
         assertEquals("abc_de", ContextParameterUtils.getValidParameterName("abc-de"));
         assertEquals("_int", ContextParameterUtils.getValidParameterName("int"));
-    }
-
-    @Test
-    public void testUnescapeValue() {
-        IContextParameter param = new JobContextParameter();
-        param.setName("test");
-        param.setValue("\"\\r\\n\"");
-        ContextParameterUtils.unescapeValue(param);
-        assertEquals("\r\n", param.getValue());
-
-        param.setValue("\\r\\n");
-        ContextParameterUtils.unescapeValue(param);
-        assertEquals("\r\n", param.getValue());
-
-        param.setValue("\"\r\n\"");
-        ContextParameterUtils.unescapeValue(param);
-        assertEquals("\r\n", param.getValue());
-
-        param.setValue("\r\n");
-        ContextParameterUtils.unescapeValue(param);
-        assertEquals("\r\n", param.getValue());
     }
 
 }
