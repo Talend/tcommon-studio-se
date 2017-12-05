@@ -26,6 +26,10 @@
     <logger name="org.ops4j.pax.url.mvn.internal.config.MavenRepositoryURL" additivity="true"> <level value="error" /> </logger>
     <logger name="org.ops4j.pax.url.mvn.internal.AetherBasedResolver" additivity="true"> <level value="error" /> </logger>
     <logger name="shaded.org.eclipse.aether.internal.impl.WarnChecksumPolicy" additivity="true"> <level value="error" /> </logger>
+    <logger name="org.talend.components.api.service.internal.osgi.DefinitionRegistryOsgi" additivity="true"> <level value="error" /> </logger>
+    <logger name="org.talend.components.api.service.common.DefinitionRegistry" additivity="true"> <level value="error" /> </logger>
+    <logger name="org.talend.components.api.service.context.osgi.GlobalContextOsgi" additivity="true"> <level value="error" /> </logger>
+    <logger name="org.eclipse.m2e.core.internal.lifecyclemapping.LifecycleMappingFactory" additivity="true"> <level value="error" /> </logger>
 	<logger name="org.hibernate" additivity="true"> <level value="error" /> </logger>
 	<logger name="com.mchange" additivity="true"> <level value="warn" /> </logger>
 	<logger name="net.sf.ehcache" additivity="true"> <level value="warn" /> </logger>

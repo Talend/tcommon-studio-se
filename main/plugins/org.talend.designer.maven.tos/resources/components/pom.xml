@@ -38,6 +38,11 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.talend.components</groupId>
+			<artifactId>components-couchbase</artifactId>
+			<version>${components.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.talend.components</groupId>
 			<artifactId>components-salesforce-runtime</artifactId>
 			<version>${components.version}</version>
 		</dependency>

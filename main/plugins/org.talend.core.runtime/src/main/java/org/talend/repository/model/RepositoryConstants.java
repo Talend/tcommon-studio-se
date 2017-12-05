@@ -81,6 +81,8 @@ public class RepositoryConstants {
 
     public static final String REPOSITORY_REMOTE_ID = "remote"; //$NON-NLS-1$
 
+    public static final String REPOSITORY_CLOUD_ID = "cloud"; //$NON-NLS-1$
+
     public static final String REPOSITORY_URL = "url"; //$NON-NLS-1$
 
     public static final String TDQ_ALL_ITEM_PATTERN = ".*"; //$NON-NLS-1$

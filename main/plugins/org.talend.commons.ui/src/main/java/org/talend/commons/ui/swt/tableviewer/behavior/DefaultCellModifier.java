@@ -94,7 +94,7 @@ public class DefaultCellModifier implements ICellModifier {
             modifiedObjectInfo.setPreviousPropertyBeanValue(returnValue);
             // System.out.println("getValue : value=" + returnValue);
         }
-        return returnValue;
+        return returnValue == null ? "" : returnValue;
     }
 
     /*

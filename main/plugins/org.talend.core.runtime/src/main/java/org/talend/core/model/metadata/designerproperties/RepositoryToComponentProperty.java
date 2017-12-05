@@ -90,6 +90,7 @@ import org.talend.core.service.IMetadataManagmentUiService;
 import org.talend.core.utils.KeywordsValidator;
 import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.cwm.helper.ConnectionHelper;
+import org.talend.cwm.helper.TaggedValueHelper;
 
 /**
  * DOC nrousseau class global comment. Detailled comment <br/>
@@ -406,8 +407,42 @@ public class RepositoryToComponentProperty {
                 }
             }
             return values;
+        } else if ("SAPHANA_HOST".equals(value)) { //$NON-NLS-1$
+            String dbHost = TaggedValueHelper.getValueString(ISAPConstant.PROP_DB_HOST, connection);
+            if (isContextMode(connection, dbHost)) {
+                return dbHost;
+            } else {
+                return TalendQuoteUtils.addQuotes(dbHost);
+            }
+        } else if ("SAPHANA_PORT".equals(value)) { //$NON-NLS-1$
+            String dbPort = TaggedValueHelper.getValueString(ISAPConstant.PROP_DB_PORT, connection);
+            if (isContextMode(connection, dbPort)) {
+                return dbPort;
+            } else {
+                return TalendQuoteUtils.addQuotes(dbPort);
+            }
+        } else if ("SAPHANA_TABLESCHEMA".equals(value)) { //$NON-NLS-1$
+            String dbSchema = TaggedValueHelper.getValueString(ISAPConstant.PROP_DB_SCHEMA, connection);
+            if (isContextMode(connection, dbSchema)) {
+                return dbSchema;
+            } else {
+                return TalendQuoteUtils.addQuotes(dbSchema);
+            }
+        } else if ("SAPHANA_USER".equals(value)) { //$NON-NLS-1$
+            String dbUsername = TaggedValueHelper.getValueString(ISAPConstant.PROP_DB_USERNAME, connection);
+            if (isContextMode(connection, dbUsername)) {
+                return dbUsername;
+            } else {
+                return TalendQuoteUtils.addQuotes(dbUsername);
+            }
+        } else if ("SAPHANA_PASS".equals(value)) { //$NON-NLS-1$
+            String dbPassword = TaggedValueHelper.getValueString(ISAPConstant.PROP_DB_PASSWORD, connection);
+            if (isContextMode(connection, dbPassword)) {
+                return dbPassword;
+            } else {
+                return TalendQuoteUtils.addQuotes(connection.getValue(dbPassword, false));
+            }
         }
-
         return null;
     }
 
@@ -479,7 +514,7 @@ public class RepositoryToComponentProperty {
         }
         // for bug TDI-8662 . should be careful that connection.getModuleName() will always get the latest name of the
         // module which was the last one be retrived
-        //        else if ("CUSTOM_MODULE_NAME".equals(value)) { //$NON-NLS-1$
+        // else if ("CUSTOM_MODULE_NAME".equals(value)) { //$NON-NLS-1$
         // return TalendQuoteUtils.addQuotes(connection.getModuleName());
         // }
         else if ("MODULENAME".equals(value)) { //$NON-NLS-1$
@@ -589,7 +624,8 @@ public class RepositoryToComponentProperty {
         return null;
     }
 
-    private static SalesforceModuleUnit getSaleforceModuleUnitByTable(IMetadataTable table, EList<SalesforceModuleUnit> moduleList) {
+    private static SalesforceModuleUnit getSaleforceModuleUnitByTable(IMetadataTable table,
+            EList<SalesforceModuleUnit> moduleList) {
         for (SalesforceModuleUnit unit : moduleList) {
             if (table.getLabel().equals(unit.getModuleName())) {
                 return unit;
@@ -1207,11 +1243,11 @@ public class RepositoryToComponentProperty {
         if (value.equals("HBASE_MASTER_PRINCIPAL")) {
             String hbaseMasterPrinc = null;
             if (EDatabaseTypeName.HBASE.getDisplayName().equals(databaseType)) {
-                hbaseMasterPrinc = connection.getParameters().get(
-                        ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MASTERPRINCIPAL);
+                hbaseMasterPrinc = connection.getParameters()
+                        .get(ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MASTERPRINCIPAL);
             } else if (EDatabaseTypeName.MAPRDB.getDisplayName().equals(databaseType)) {
-                hbaseMasterPrinc = connection.getParameters().get(
-                        ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MASTERPRINCIPAL);
+                hbaseMasterPrinc = connection.getParameters()
+                        .get(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MASTERPRINCIPAL);
             }
             return getAppropriateValue(connection, hbaseMasterPrinc);
         }
@@ -1219,11 +1255,11 @@ public class RepositoryToComponentProperty {
         if (value.equals("HBASE_REGIONSERVER_PRINCIPAL")) {
             String hbaseRegPrinc = null;
             if (EDatabaseTypeName.HBASE.getDisplayName().equals(databaseType)) {
-                hbaseRegPrinc = connection.getParameters().get(
-                        ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_REGIONSERVERPRINCIPAL);
+                hbaseRegPrinc = connection.getParameters()
+                        .get(ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_REGIONSERVERPRINCIPAL);
             } else if (EDatabaseTypeName.MAPRDB.getDisplayName().equals(databaseType)) {
-                hbaseRegPrinc = connection.getParameters().get(
-                        ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_REGIONSERVERPRINCIPAL);
+                hbaseRegPrinc = connection.getParameters()
+                        .get(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_REGIONSERVERPRINCIPAL);
             }
             return getAppropriateValue(connection, hbaseRegPrinc);
         }
@@ -1231,11 +1267,11 @@ public class RepositoryToComponentProperty {
         if (value.equals("USE_MAPRTICKET")) {
             String useMaprTValue = null;
             if (EDatabaseTypeName.HBASE.getDisplayName().equals(databaseType)) {
-                useMaprTValue = connection.getParameters().get(
-                        ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_USE_MAPRTICKET);
+                useMaprTValue = connection.getParameters()
+                        .get(ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_USE_MAPRTICKET);
             } else if (EDatabaseTypeName.MAPRDB.getDisplayName().equals(databaseType)) {
-                useMaprTValue = connection.getParameters().get(
-                        ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_USE_MAPRTICKET);
+                useMaprTValue = connection.getParameters()
+                        .get(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_USE_MAPRTICKET);
             } else if (EDatabaseTypeName.HIVE.getDisplayName().equals(databaseType)) {
                 useMaprTValue = connection.getParameters()
                         .get(ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_USE_MAPRTICKET);
@@ -1254,36 +1290,36 @@ public class RepositoryToComponentProperty {
             return getAppropriateValue(connection, connUserName);
         }
         if (value.equals("MAPRTICKET_USERNAME")) {
-            String maprticket_Username = connection.getParameters().get(
-                    ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_USERNAME);
+            String maprticket_Username = connection.getParameters()
+                    .get(ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_USERNAME);
             return getAppropriateValue(connection, maprticket_Username);
         }
 
         if (value.equals("MAPRTICKET_PASSWORD")) {
             String maprticket_Password = null;
             if (EDatabaseTypeName.HBASE.getDisplayName().equals(databaseType)) {
-                maprticket_Password = connection.getParameters().get(
-                        ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MAPRTICKET_PASSWORD);
+                maprticket_Password = connection.getParameters()
+                        .get(ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MAPRTICKET_PASSWORD);
             } else if (EDatabaseTypeName.MAPRDB.getDisplayName().equals(databaseType)) {
-                maprticket_Password = connection.getParameters().get(
-                        ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MAPRTICKET_PASSWORD);
+                maprticket_Password = connection.getParameters()
+                        .get(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MAPRTICKET_PASSWORD);
             } else if (EDatabaseTypeName.HIVE.getDisplayName().equals(databaseType)) {
-                maprticket_Password = connection.getParameters().get(
-                        ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_MAPRTICKET_PASSWORD);
+                maprticket_Password = connection.getParameters()
+                        .get(ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_MAPRTICKET_PASSWORD);
             }
             return getAppropriateValue(connection, maprticket_Password);
         }
         if (value.equals("MAPRTICKET_CLUSTER")) {
             String maprticket_Cluster = null;
             if (EDatabaseTypeName.HBASE.getDisplayName().equals(databaseType)) {
-                maprticket_Cluster = connection.getParameters().get(
-                        ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MAPRTICKET_CLUSTER);
+                maprticket_Cluster = connection.getParameters()
+                        .get(ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MAPRTICKET_CLUSTER);
             } else if (EDatabaseTypeName.MAPRDB.getDisplayName().equals(databaseType)) {
-                maprticket_Cluster = connection.getParameters().get(
-                        ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MAPRTICKET_CLUSTER);
+                maprticket_Cluster = connection.getParameters()
+                        .get(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MAPRTICKET_CLUSTER);
             } else if (EDatabaseTypeName.HIVE.getDisplayName().equals(databaseType)) {
-                maprticket_Cluster = connection.getParameters().get(
-                        ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_MAPRTICKET_CLUSTER);
+                maprticket_Cluster = connection.getParameters()
+                        .get(ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_MAPRTICKET_CLUSTER);
             }
             return getAppropriateValue(connection, maprticket_Cluster);
         }
@@ -1307,8 +1343,8 @@ public class RepositoryToComponentProperty {
         }
 
         if (value.equals("SET_HADOOP_LOGIN")) {
-            String setMapRHadoopLogin = connection.getParameters().get(
-                    ConnParameterKeys.CONN_PARA_KEY_MAPRTICKET_SETMAPRHADOOPLOGIN);
+            String setMapRHadoopLogin = connection.getParameters()
+                    .get(ConnParameterKeys.CONN_PARA_KEY_MAPRTICKET_SETMAPRHADOOPLOGIN);
             return Boolean.parseBoolean(setMapRHadoopLogin);
         }
         if (value.equals("HADOOP_LOGIN")) {
@@ -1396,8 +1432,8 @@ public class RepositoryToComponentProperty {
         }
 
         if (value.equals("SSL_TRUST_STORE_PASSWORD") && EDatabaseTypeName.HIVE.getDisplayName().equals(databaseType)) {
-            return getAppropriateValue(connection, connection.getValue(
-                    connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_SSL_TRUST_STORE_PASSWORD), false));
+            return getAppropriateValue(connection, connection
+                    .getValue(connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_SSL_TRUST_STORE_PASSWORD), false));
         }
 
         if (value.equals("HADOOP_CUSTOM_JARS")) {
@@ -1636,8 +1672,8 @@ public class RepositoryToComponentProperty {
     private static boolean isContextMode(Connection connection, String value) {
         IMetadataManagmentUiService mmService = null;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IMetadataManagmentUiService.class)) {
-            mmService = (IMetadataManagmentUiService) GlobalServiceRegister.getDefault().getService(
-                    IMetadataManagmentUiService.class);
+            mmService = (IMetadataManagmentUiService) GlobalServiceRegister.getDefault()
+                    .getService(IMetadataManagmentUiService.class);
         }
         if (mmService != null) {
             return mmService.isContextMode(connection, value);
@@ -1737,7 +1773,7 @@ public class RepositoryToComponentProperty {
      *
      */
     private static Object getEBCDICFieldValue(EbcdicConnection connection, String value) {
-        //        if ("XC2J_FILE".equals(value)) { //$NON-NLS-1$
+        // if ("XC2J_FILE".equals(value)) { //$NON-NLS-1$
         // if (isContextMode(connection, connection.getFilePath())) {
         // return connection.getMidFile();
         // } else {
@@ -1923,8 +1959,8 @@ public class RepositoryToComponentProperty {
                 Path p = new Path(connection.getXmlFilePath());
                 if ((p.toPortableString()).endsWith("xsd")) { //$NON-NLS-1$
                     if (GlobalServiceRegister.getDefault().isServiceRegistered(IMetadataManagmentUiService.class)) {
-                        IMetadataManagmentUiService mmUIService = (IMetadataManagmentUiService) GlobalServiceRegister
-                                .getDefault().getService(IMetadataManagmentUiService.class);
+                        IMetadataManagmentUiService mmUIService = (IMetadataManagmentUiService) GlobalServiceRegister.getDefault()
+                                .getService(IMetadataManagmentUiService.class);
                         String newPath = mmUIService.getAndOpenXSDFileDialog(p);
                         if (newPath != null) {
                             return TalendQuoteUtils.addQuotes(newPath);
@@ -2084,19 +2120,20 @@ public class RepositoryToComponentProperty {
                 // String label = metadataColumn.getLabel();
                 // String tagName = schema.getTagName();
                 // if (label.equals(tagName)
-                //                            || (label.length() > 1 && label.startsWith("_") && label.substring(1).equals(tagName) && KeywordsValidator //$NON-NLS-1$
+                // || (label.length() > 1 && label.startsWith("_") && label.substring(1).equals(tagName) &&
+                // KeywordsValidator //$NON-NLS-1$
                 // .isKeyword(tagName))) {
                 // Map<String, Object> map = new HashMap<String, Object>();
-                //                        map.put("SCHEMA_COLUMN", tagName); //$NON-NLS-1$
-                //                        map.put("QUERY", TalendQuoteUtils.addQuotes(schema.getRelativeXPathQuery())); //$NON-NLS-1$
+                // map.put("SCHEMA_COLUMN", tagName); //$NON-NLS-1$
+                // map.put("QUERY", TalendQuoteUtils.addQuotes(schema.getRelativeXPathQuery())); //$NON-NLS-1$
                 // tableInfo.add(map);
                 // }
                 // }
                 // }
                 // for (SchemaTarget schema : schemaTargets) {
                 // Map<String, Object> map = new HashMap<String, Object>();
-                //                    map.put("SCHEMA_COLUMN", schema.getTagName()); //$NON-NLS-1$
-                //                    map.put("QUERY", TalendQuoteUtils.addQuotes(schema.getRelativeXPathQuery())); //$NON-NLS-1$
+                // map.put("SCHEMA_COLUMN", schema.getTagName()); //$NON-NLS-1$
+                // map.put("QUERY", TalendQuoteUtils.addQuotes(schema.getRelativeXPathQuery())); //$NON-NLS-1$
                 // tableInfo.add(map);
                 // }
 
@@ -2291,8 +2328,8 @@ public class RepositoryToComponentProperty {
                         IMetadataManagmentService mmService = (IMetadataManagmentService) GlobalServiceRegister.getDefault()
                                 .getService(IMetadataManagmentService.class);
                         IMetadataTable convert = mmService.convertMetadataTable(repTable);
-                        String uinqueTableName = node.getProcess().generateUniqueConnectionName(
-                                MultiSchemasUtil.getConnectionBaseName(repTable.getLabel()));
+                        String uinqueTableName = node.getProcess()
+                                .generateUniqueConnectionName(MultiSchemasUtil.getConnectionBaseName(repTable.getLabel()));
                         convert.setTableName(uinqueTableName);
                         // IProxyRepositoryFactory factory =
                         // CorePlugin.getDefault().getRepositoryService().getProxyRepositoryFactory();
@@ -2482,8 +2519,8 @@ public class RepositoryToComponentProperty {
             if (isContextMode(connection, connection.getBindPassword())) {
                 return connection.getBindPassword();
             } else {
-                return TalendQuoteUtils.addQuotes(connection.getValue(connection.getBindPassword(), false)).replaceAll(
-                        "\\\\", "\\\\\\\\"); //$NON-NLS-1$ //$NON-NLS-2$
+                return TalendQuoteUtils.addQuotes(connection.getValue(connection.getBindPassword(), false)).replaceAll("\\\\", //$NON-NLS-1$
+                        "\\\\\\\\"); //$NON-NLS-1$
             }
         }
         if (value.equals("FILTER")) { //$NON-NLS-1$

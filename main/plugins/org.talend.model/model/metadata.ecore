@@ -363,6 +363,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="jcoVersion" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="additionalProperties" upperBound="-1"
         eType="#//AdditionalConnectionProperty" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="BWAdvancedDataStoreObjects"
+        upperBound="-1" eType="#//SAPBWTable" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="BWDataSources" upperBound="-1"
         eType="#//SAPBWTable" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="BWDataStoreObjects" upperBound="-1"

@@ -25,7 +25,6 @@ import org.talend.commons.utils.workbench.extensions.ExtensionPointLimiterImpl;
 import org.talend.commons.utils.workbench.extensions.IExtensionPointLimiter;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ui.branding.IBrandingService;
-import org.talend.repository.model.RepositoryConstants;
 
 /**
  * Provides, using extension points, implementation of many factories.
@@ -56,6 +55,14 @@ public class RepositoryFactoryProvider {
 
             for (IConfigurationElement current : extension) {
                 try {
+                    String only4TalendStr = current.getAttribute("only4Talend"); //$NON-NLS-1$
+                    if (Boolean.valueOf(only4TalendStr)) {
+                        IBrandingService brandingService = (IBrandingService) GlobalServiceRegister.getDefault()
+                                .getService(IBrandingService.class);
+                        if (!brandingService.isPoweredbyTalend()) {
+                            continue;
+                        }
+                    }
                     IRepositoryFactory currentAction = (IRepositoryFactory) current.createExecutableExtension("class"); //$NON-NLS-1$
                     currentAction.setId(current.getAttribute("id")); //$NON-NLS-1$
                     currentAction.setName(current.getAttribute("name")); //$NON-NLS-1$
@@ -66,6 +73,7 @@ public class RepositoryFactoryProvider {
                     for (IConfigurationElement currentLoginField : current.getChildren("loginField")) { //$NON-NLS-1$
                         DynamicFieldBean key = new DynamicFieldBean(currentLoginField.getAttribute("id"), //$NON-NLS-1$
                                 currentLoginField.getAttribute("name"), //$NON-NLS-1$
+                                currentLoginField.getAttribute("defaultValue"), //$NON-NLS-1$
                                 new Boolean(currentLoginField.getAttribute("required")), //$NON-NLS-1$
                                 new Boolean(currentLoginField.getAttribute("password"))); //$NON-NLS-1$
                         currentAction.getFields().add(key);

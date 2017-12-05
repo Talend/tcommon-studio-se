@@ -45,6 +45,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 
 /**
  * DOC WCHEN keep this class for old branding system before feature TDI-18168
@@ -52,6 +53,10 @@ import org.w3c.dom.NodeList;
 public class DynamicContentProvider extends IntroProvider {
 
     public static final String ONLINE_PAGE_URL = "https://www.talend.com/builtin_news/index.php"; //$NON-NLS-1$
+
+    public static final String CLOUD_PAGE_URL = "https://www.talend.com/builtin_news/oss/"; //$NON-NLS-1$
+
+    public static final String TRY_CLOUD_URL = "https://integrationcloud.talend.com"; //$NON-NLS-1$
 
     private static final String LEVEL_SEPARATOR = "."; //$NON-NLS-1$
 
@@ -111,7 +116,11 @@ public class DynamicContentProvider extends IntroProvider {
         } else if ("ALWAYS_WELCOME".equals(id)) { //$NON-NLS-1$
             creatAlwaysWelcome(dom, parent);
         } else if ("CUSTOMER_PAGE".equals(id)) { //$NON-NLS-1$
-            createOnlinePage(dom, parent);
+            createNewsPage(dom, parent);
+        } else if ("INTEGRATION_CLOUD".equals(id)) { //$NON-NLS-1$
+            createCloudPage(dom, parent);
+        } else if ("TOP_MESSAGE".equals(id)) { //$NON-NLS-1$
+            createTopMessage(dom, parent);
         }
 
         for (IRepositoryViewObject object : latestItems) {
@@ -144,9 +153,9 @@ public class DynamicContentProvider extends IntroProvider {
         parent.appendChild(input);
     }
 
-    protected String getOnlinePageURL() {
+    protected String getOnlinePageURL(String onlinePage) {
         StringBuffer url = new StringBuffer();
-        url.append(ONLINE_PAGE_URL);
+        url.append(onlinePage);
         // edition
         String edition = null;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IBrandingService.class)) {
@@ -182,14 +191,22 @@ public class DynamicContentProvider extends IntroProvider {
         return url.toString();
     }
 
-    protected void createOnlinePage(Document dom, Element parent) {
+    protected void createNewsPage(Document dom, Element parent) {
+        createOnlinePage(dom, parent, ONLINE_PAGE_URL, Messages.getString("DynamicContentProvider.TalendNewsTitle")); //$NON-NLS-1$
+    }
+
+    protected void createCloudPage(Document dom, Element parent) {
+        createOnlinePage(dom, parent, CLOUD_PAGE_URL, Messages.getString("DynamicContentProvider.TalendIntegrationCloud")); //$NON-NLS-1$
+    }
+
+    protected void createOnlinePage(Document dom, Element parent, String onlinePageUrl, String title) {
         if (!NetworkUtil.isNetworkValid()) {
             setDIVStyle(dom, false);
             return;
         }
         HttpURLConnection urlConnection = null;
         try {
-            URL url = new URL(getOnlinePageURL());
+            URL url = new URL(getOnlinePageURL(onlinePageUrl));
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET"); //$NON-NLS-1$
             urlConnection.setDoOutput(true);
@@ -217,17 +234,33 @@ public class DynamicContentProvider extends IntroProvider {
 
         Element spanElem = dom.createElement("span"); //$NON-NLS-1$
         spanElem.setAttribute("class", "style_1 style_2 style_3"); //$NON-NLS-1$ //$NON-NLS-2$
-        spanElem.appendChild(dom.createTextNode(Messages.getString("DynamicContentProvider.TalendNewsTitle"))); //$NON-NLS-1$
+        spanElem.appendChild(dom.createTextNode(title));
         div.appendChild(spanElem);
         div.appendChild(dom.createElement("br")); //$NON-NLS-1$
 
         Element iFrame = dom.createElement("iframe"); //$NON-NLS-1$
-        iFrame.setAttribute("src", getOnlinePageURL()); //$NON-NLS-1$
+        iFrame.setAttribute("src", getOnlinePageURL(onlinePageUrl)); //$NON-NLS-1$
         iFrame.setAttribute("frameborder", "0"); //$NON-NLS-1$ //$NON-NLS-2$
         iFrame.setAttribute("width", "240px"); //$NON-NLS-1$ //$NON-NLS-2$
         iFrame.setAttribute("height", "370px"); //$NON-NLS-1$ //$NON-NLS-2$
         iFrame.appendChild(dom.createTextNode(" ")); //$NON-NLS-1$
         div.appendChild(iFrame);
+    }
+
+    protected void createTopMessage(Document dom, Element parent) {
+        Element topMessageElem = dom.createElement("div"); //$NON-NLS-1$
+        topMessageElem.setAttribute("style", "position: absolute;left: 615px;top: 39px;width: 170px;"); //$NON-NLS-1$//$NON-NLS-2$
+        parent.appendChild(topMessageElem);
+
+        Element ticHrefElem = dom.createElement("a"); //$NON-NLS-1$
+        ticHrefElem.setAttribute("href", TRY_CLOUD_URL); //$NON-NLS-1$
+        ticHrefElem.setAttribute("target", "_blank"); //$NON-NLS-1$ //$NON-NLS-2$
+        ticHrefElem.setAttribute("style", //$NON-NLS-1$
+                "color: white;font-size: 15px;font-family: Calibri, Candara, Segoe, Segoe UI, Optima, Arial, sans-serif;font-weight: bold;text-decoration: none;"); //$NON-NLS-1$
+        topMessageElem.appendChild(ticHrefElem);
+
+        Text tryCloudTextNode = dom.createTextNode(Messages.getString("DynamicContentProvider.tryCloud")); //$NON-NLS-1$
+        ticHrefElem.appendChild(tryCloudTextNode);
     }
 
     protected void setTDAttribute(Element tdElem) {

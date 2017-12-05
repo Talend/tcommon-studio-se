@@ -389,8 +389,8 @@ public class RemoteModulesHelper {
             m.setName(name + "." + type);//$NON-NLS-1$
 
         }
-        ExceptionHandler.log("The download URL for " + name + " is not available (" + mvnUri + ")");//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         if (CommonsPlugin.isDebugMode()) {
+            ExceptionHandler.log("The download URL for " + name + " is not available (" + mvnUri + ")");//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             appendToLogFile(mvnUri + "\n");//$NON-NLS-1$
         }
 

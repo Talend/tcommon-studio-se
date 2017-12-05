@@ -24,14 +24,21 @@ public class DynamicFieldBean {
 
     private String name;
 
+    private String defaultValue;
+
     private boolean required;
 
     private boolean password;
 
     public DynamicFieldBean(String id, String name, boolean required, boolean password) {
+        this(id, name, null, required, password);
+    }
+
+    public DynamicFieldBean(String id, String name, String defaultValue, boolean required, boolean password) {
         super();
         this.id = id;
         this.name = name;
+        this.defaultValue = defaultValue;
         this.required = required;
         this.password = password;
     }
@@ -66,6 +73,14 @@ public class DynamicFieldBean {
 
     public void setPassword(boolean password) {
         this.password = password;
+    }
+
+    public String getDefaultValue() {
+        return this.defaultValue;
+    }
+
+    public void setDefaultValue(String defaultValue) {
+        this.defaultValue = defaultValue;
     }
 
 }

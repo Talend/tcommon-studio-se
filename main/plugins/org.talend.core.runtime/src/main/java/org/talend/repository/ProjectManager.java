@@ -78,6 +78,8 @@ public final class ProjectManager {
     private Project currentProject;
 
     private Map<String, String> mapProjectUrlToBranchUrl = new HashMap<String, String>();
+    
+	private static final Map<String, Integer> projectLabelToIdMap = new HashMap<String, Integer>();
 
     private Map<String, List<FolderItem>> foldersMap = new HashMap<String, List<FolderItem>>();
     
@@ -316,7 +318,7 @@ public final class ProjectManager {
             }
             if (object instanceof Item) {
                 if (((Item) object).getParent() == null) { // may be a routelet from reference project
-                    org.talend.core.model.properties.Project refProject = getRouteletReferenceProject((Item)object);
+                    org.talend.core.model.properties.Project refProject = getProjectFromItemWithoutParent((Item)object);
                     if (refProject != null) {
                         return refProject;
                     }
@@ -335,12 +337,11 @@ public final class ProjectManager {
     }
 
     /*
-     * returns reference project where the given routelet comes from, or null
-     * in case if the routelet is from the current project
+     * Returns the project name found from the current path if the parent is null
      */
-    private org.talend.core.model.properties.Project getRouteletReferenceProject(Item item) {
+    private org.talend.core.model.properties.Project getProjectFromItemWithoutParent(Item item) {
 
-        final String URI_PREFIX = "platform:/resource/";
+        final String URI_PREFIX = "platform:/resource/"; //$NON-NLS-1$
 
         org.talend.core.model.properties.ItemState state = item.getState();
 
@@ -352,21 +353,19 @@ public final class ProjectManager {
                 }
                 String eProxyUriString = eProxyUri.toString();
                 if (eProxyUriString != null && eProxyUriString.startsWith(URI_PREFIX)) {
+                    
                     String tmpString = eProxyUriString.substring(URI_PREFIX.length());
-                    if (!tmpString.contains("/routelets/")) {
-                        return null;
-                    }
-                    String projectLabel = tmpString.substring(0, tmpString.indexOf("/"));
+                    String projectLabel = tmpString.substring(0, tmpString.indexOf("/")); //$NON-NLS-1$
 
                     if (currentProject == null) {
                         initCurrentProject();
                     }
 
-                    if (currentProject.getLabel().equalsIgnoreCase(projectLabel)) {
+                    if (currentProject.getTechnicalLabel().equalsIgnoreCase(projectLabel)) {
                         return currentProject.getEmfProject();
                     }
                     for (Project project : getAllReferencedProjects()) {
-                        if (project.getLabel().equalsIgnoreCase(projectLabel)) {
+                        if (project.getTechnicalLabel().equalsIgnoreCase(projectLabel)) {
                             return project.getEmfProject();
                         }
                     }
@@ -950,5 +949,20 @@ public final class ProjectManager {
         }
 
         return list;
-    }    
+    } 
+
+	public static void clearCachedProjectIds() {
+		projectLabelToIdMap.clear();
+	}
+
+	public static void cacheProjectId(String projectLabel, Integer projectId) {
+		projectLabelToIdMap.put(projectLabel, projectId);
+	}
+
+	public static String getCachedProjectId(String projectLabel) {
+		if (projectLabelToIdMap.get(projectLabel) != null) {
+			return String.valueOf(projectLabelToIdMap.get(projectLabel));
+		}
+		return null;
+	}
 }
