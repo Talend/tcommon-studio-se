@@ -2822,7 +2822,6 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
                 for (IRepositoryContentHandler handler : RepositoryContentManager.getHandlers()) {
                     itemResource = handler.create(project2, item, classifierID, path);
                     if (itemResource != null) {
-                        screenshotsResource = handler.createScreenShotResource(project2, item, classifierID, path);
                         created = true;
                         break;
                     }
