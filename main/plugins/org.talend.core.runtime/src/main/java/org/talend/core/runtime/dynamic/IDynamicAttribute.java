@@ -29,6 +29,8 @@ public interface IDynamicAttribute {
 
     public Object removeAttribute(String key);
 
+    public int getChildIndex(IDynamicAttribute child);
+
     public String getTagName();
 
     public JSONObject toXmlJson() throws Exception;

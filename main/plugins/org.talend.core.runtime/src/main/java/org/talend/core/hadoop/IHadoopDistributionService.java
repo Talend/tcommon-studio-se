@@ -16,6 +16,7 @@ import java.util.Map;
 
 import org.talend.core.IService;
 import org.talend.core.runtime.hd.IDistributionsManager;
+import org.talend.core.runtime.hd.IDynamicDistributionManager;
 import org.talend.core.runtime.hd.IHDistribution;
 import org.talend.core.runtime.hd.IHDistributionVersion;
 
@@ -125,4 +126,6 @@ public interface IHadoopDistributionService extends IService {
      * @return
      */
     boolean doSupportMapRTicket(IHDistributionVersion distributionVersion);
+
+    IDynamicDistributionManager getDynamicDistributionManager();
 }

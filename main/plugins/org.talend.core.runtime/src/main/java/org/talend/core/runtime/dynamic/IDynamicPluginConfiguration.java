@@ -41,6 +41,8 @@ public interface IDynamicPluginConfiguration extends IDynamicAttribute {
 
     public static final String ATTR_SERVICES = "services"; //$NON-NLS-1$
 
+    public static final String ATTR_TEMPLATE_ID = "templateId"; //$NON-NLS-1$
+
     public String getId();
 
     public void setId(String id);
@@ -78,6 +80,10 @@ public interface IDynamicPluginConfiguration extends IDynamicAttribute {
     public List<String> getServices();
 
     public void setServices(List<String> services);
+
+    public String getTemplateId();
+
+    public void setTemplateId(String templateId);
 
     public String toXmlString() throws Exception;
 

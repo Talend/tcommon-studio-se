@@ -23,7 +23,15 @@ public interface IDynamicPlugin extends IDynamicAttribute {
 
     public IDynamicExtension addExtension(IDynamicExtension extension);
 
-    public IDynamicExtension removeExtension(String extensionPoint);
+    public IDynamicExtension addExtension(int index, IDynamicExtension extension);
+
+    /**
+     * may have extensions with different id while same extension point
+     * 
+     * @param extensionPoint
+     * @return
+     */
+    public List<IDynamicExtension> removeExtensions(String extensionPoint);
 
     public IDynamicExtension getExtension(String extensionPoint, String extensionId, boolean createIfNotExist);
 

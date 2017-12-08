@@ -29,14 +29,12 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.talend.commons.exception.ExceptionHandler;
-import org.talend.core.GlobalServiceRegister;
-import org.talend.core.model.general.ILibrariesService;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * DOC cmeng  class global comment. Detailled comment
+ * DOC cmeng class global comment. Detailled comment
  */
 public class DynamicServiceUtil {
 
@@ -45,16 +43,31 @@ public class DynamicServiceUtil {
         return (ServiceRegistration<T>) context.registerService(clazzes, service, properties);
     }
 
-    public static <T> void unregistOSGiService(ServiceRegistration<T> serviceRegistration)
-            throws Exception {
+    public static <T> void unregistOSGiService(ServiceRegistration<T> serviceRegistration) throws Exception {
         serviceRegistration.unregister();
     }
 
+    /**
+     * Don't forget to clean cache if needed
+     * 
+     * @param bundle
+     * @param plugin
+     * @return
+     * @throws Exception
+     */
     public static boolean addContribution(Bundle bundle, IDynamicPlugin plugin) throws Exception {
         String xml = plugin.toXmlString();
         return addContribution(bundle, xml);
     }
 
+    /**
+     * Don't forget to clean cache if needed
+     * 
+     * @param bundle
+     * @param xmlStr
+     * @return
+     * @throws Exception
+     */
     public static boolean addContribution(Bundle bundle, String xmlStr) throws Exception {
 
         ByteArrayInputStream is = new ByteArrayInputStream(xmlStr.getBytes("UTF-8")); //$NON-NLS-1$
@@ -65,7 +78,6 @@ public class DynamicServiceUtil {
             IContributor contributor = ContributorFactoryOSGi.createContributor(bundle);
 
             boolean succeed = extensionRegistry.addContribution(is, contributor, false, null, null, userToken);
-            getLibrariesService().resetModulesNeeded();
             return succeed;
         } finally {
             try {
@@ -77,7 +89,13 @@ public class DynamicServiceUtil {
 
     }
 
-    public static boolean removeContribution(IDynamicPlugin plugin) {
+    /**
+     * Don't forget to clean cache if needed
+     * 
+     * @param plugin
+     * @return
+     */
+    public static boolean removeContribution(IDynamicPlugin plugin) throws Exception {
         boolean succeed = true;
 
         List<IDynamicExtension> extensions = plugin.getAllExtensions();
@@ -92,20 +110,22 @@ public class DynamicServiceUtil {
                     succeed = false;
                 }
             }
-            getLibrariesService().resetModulesNeeded();
         }
 
         return succeed;
     }
 
-    public static boolean removeExtension(String extensionPointId, String extensionId) {
+    public static boolean removeExtension(String extensionPointId, String extensionId) throws Exception {
         IExtensionRegistry extensionRegistry = RegistryFactory.getRegistry();
         Object userToken = ((ExtensionRegistry) extensionRegistry).getTemporaryUserToken();
         return removeExtension(extensionRegistry, userToken, extensionPointId, extensionId);
     }
 
     public static boolean removeExtension(IExtensionRegistry extensionRegistry, Object userToken, String extensionPointId,
-            String extensionId) {
+            String extensionId) throws Exception {
+        if (!extensionId.contains(".")) { //$NON-NLS-1$
+            throw new Exception("Extenison point id MUST contain one DOT, otherwise can't remove successfully!");
+        }
         IExtension extension = extensionRegistry.getExtension(extensionPointId, extensionId);
         if (extension != null) {
             return extensionRegistry.removeExtension(extension, userToken);
@@ -150,7 +170,4 @@ public class DynamicServiceUtil {
         }
     }
 
-    public static ILibrariesService getLibrariesService() {
-        return (ILibrariesService) GlobalServiceRegister.getDefault().getService(ILibrariesService.class);
-    }
 }

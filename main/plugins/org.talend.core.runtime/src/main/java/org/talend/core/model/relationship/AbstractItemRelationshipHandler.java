@@ -24,21 +24,6 @@ import org.talend.core.model.properties.Item;
  */
 public abstract class AbstractItemRelationshipHandler implements IItemRelationshipHandler {
 
-    /**
-     * If not valid, no relations to return
-     * 
-     * @param baseItem
-     * @return
-     */
-    protected abstract boolean valid(Item baseItem);
-
-    /**
-     * get the base item's relation type
-     * 
-     * @return
-     */
-    protected abstract String getBaseItemType(Item baseItem);
-
     /*
      * (non-Javadoc)
      * 
@@ -74,4 +59,5 @@ public abstract class AbstractItemRelationshipHandler implements IItemRelationsh
      * @return
      */
     protected abstract Set<Relation> collect(Item baseItem);
+
 }

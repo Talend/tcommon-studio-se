@@ -582,7 +582,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
             }
             boolean found = false;
             if (moduleNeeded != null) {
-                found = retrieve(moduleNeeded, pathToStore, showDialog, monitorWrap);
+                found = retrieve(moduleNeeded, pathToStore, false, monitorWrap);
             } else {
                 found = retrieve(jar, pathToStore, false, monitorWrap);
             }

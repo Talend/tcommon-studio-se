@@ -428,7 +428,7 @@ public class PomUtil {
         if (artifact == null) {
             return null;
         }
-        String mvnUri = MavenUrlHelper.generateMvnUrl(artifact);
+        String mvnUri = MavenUrlHelper.generateMvnUrl(artifact, true);
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerService.class)) {
             ILibraryManagerService librariesService = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
                     ILibraryManagerService.class);

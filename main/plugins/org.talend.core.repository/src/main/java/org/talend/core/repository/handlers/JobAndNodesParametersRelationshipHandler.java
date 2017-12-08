@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.core.repository.handlers;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -27,6 +28,7 @@ import org.talend.core.model.relationship.IParameterRelationshipHandler;
 import org.talend.core.model.relationship.Relation;
 import org.talend.core.model.relationship.RelationshipItemBuilder;
 import org.talend.core.model.relationship.RelationshipRegistryReader;
+import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
@@ -36,7 +38,8 @@ import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
  */
 public class JobAndNodesParametersRelationshipHandler implements IItemRelationshipHandler {
 
-    protected boolean valid(Item baseItem) {
+    @Override
+    public boolean valid(Item baseItem) {
         if (baseItem instanceof ProcessItem) {
             return true;
         }
@@ -46,7 +49,8 @@ public class JobAndNodesParametersRelationshipHandler implements IItemRelationsh
         return false;
     }
 
-    protected String getBaseItemType(Item baseItem) {
+    @Override
+    public String getBaseItemType(Item baseItem) {
         if (baseItem instanceof ProcessItem) {
             return RelationshipItemBuilder.JOB_RELATION;
         }
@@ -142,4 +146,10 @@ public class JobAndNodesParametersRelationshipHandler implements IItemRelationsh
         }
         return parametersMap;
     }
+
+    @Override
+    public Collection<ERepositoryObjectType> getSupportReoObjTypes(String relationType) {
+        return Collections.emptySet();
+    }
+
 }

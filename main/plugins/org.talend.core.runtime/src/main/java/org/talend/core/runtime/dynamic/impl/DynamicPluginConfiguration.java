@@ -77,6 +77,16 @@ public class DynamicPluginConfiguration extends AbstractDynamicElement implement
     }
 
     @Override
+    public String getTemplateId() {
+        return (String) getAttribute(ATTR_TEMPLATE_ID);
+    }
+
+    @Override
+    public void setTemplateId(String templateId) {
+        setAttribute(ATTR_TEMPLATE_ID, templateId);
+    }
+
+    @Override
     public String getRepository() {
         return (String) getAttribute(ATTR_REPOSITORY);
     }

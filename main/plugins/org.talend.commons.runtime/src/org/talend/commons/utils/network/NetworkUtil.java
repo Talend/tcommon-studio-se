@@ -18,6 +18,7 @@ import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.net.URI;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Enumeration;
@@ -75,6 +76,25 @@ public class NetworkUtil {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * encode url
+     * 
+     * @param urlStr url not encoded yet!
+     * @return
+     * @throws Exception
+     */
+    public static URL encodeUrl(String urlStr) throws Exception {
+        try {
+            // String decodedURL = URLDecoder.decode(urlStr, "UTF-8"); //$NON-NLS-1$
+            URL url = new URL(urlStr);
+            URI uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(),
+                    url.getRef());
+            return uri.toURL();
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
     public static boolean isSelfAddress(String addr) {
