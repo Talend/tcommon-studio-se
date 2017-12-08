@@ -128,4 +128,6 @@ public interface IRepositoryService extends IService {
 
     public void openProjectSettingDialog(final String pageId);
 
+    public boolean askRetryForNetworkIssue(Throwable ex);
+
 }

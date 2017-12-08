@@ -290,10 +290,8 @@
 		var value = document.getElementById('name2').value;
 
 		var isOK = false;
-		if (value != "") {
-			if (value.replace(/^\w+$/g, "") == "" ){
-				isOK = true;
-			}
+		if (trimStr(value) != "") {
+			isOK = true;
 		}
 
 	    if (isOK){

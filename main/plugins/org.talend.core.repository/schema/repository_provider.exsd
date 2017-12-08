@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.talend.designer.core">
+<schema targetNamespace="org.talend.designer.core" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
          <meta.schema plugin="org.talend.designer.core" id="providers_repository" name="Repository provider"/>
@@ -11,6 +11,11 @@
    </annotation>
 
    <element name="extension">
+      <annotation>
+         <appInfo>
+            <meta.element />
+         </appInfo>
+      </annotation>
       <complexType>
          <sequence>
             <element ref="RepositoryFactory" minOccurs="1" maxOccurs="unbounded"/>
@@ -87,6 +92,13 @@
                </documentation>
             </annotation>
          </attribute>
+         <attribute name="only4Talend" type="boolean">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 
@@ -117,6 +129,13 @@
             </annotation>
          </attribute>
          <attribute name="password" type="boolean" use="default" value="false">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="defaultValue" type="string">
             <annotation>
                <documentation>
                   

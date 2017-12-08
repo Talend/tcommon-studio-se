@@ -316,6 +316,12 @@ public final class ProjectManager {
                 return getProject(((Property) object).getItem());
             }
             if (object instanceof Item) {
+                if (((Item) object).getParent() == null) { // may be a routelet from reference project
+                    org.talend.core.model.properties.Project refProject = getProjectFromItemWithoutParent((Item)object);
+                    if (refProject != null) {
+                        return refProject;
+                    }
+                }
                 return getProject(((Item) object).getParent());
             }
         }
@@ -325,6 +331,46 @@ public final class ProjectManager {
         if (p != null) {
             return p.getEmfProject();
         }
+        return null;
+    }
+
+    /*
+     * Returns the project name found from the current path if the parent is null
+     */
+    private org.talend.core.model.properties.Project getProjectFromItemWithoutParent(Item item) {
+
+        final String URI_PREFIX = "platform:/resource/"; //$NON-NLS-1$
+
+        org.talend.core.model.properties.ItemState state = item.getState();
+
+        if ( state != null) {
+            if (state instanceof org.eclipse.emf.ecore.impl.EObjectImpl) {
+                org.eclipse.emf.common.util.URI eProxyUri = ((org.eclipse.emf.ecore.impl.EObjectImpl)state).eProxyURI();
+                if (eProxyUri == null) {
+                    return null;
+                }
+                String eProxyUriString = eProxyUri.toString();
+                if (eProxyUriString != null && eProxyUriString.startsWith(URI_PREFIX)) {
+                    
+                    String tmpString = eProxyUriString.substring(URI_PREFIX.length());
+                    String projectLabel = tmpString.substring(0, tmpString.indexOf("/")); //$NON-NLS-1$
+
+                    if (currentProject == null) {
+                        initCurrentProject();
+                    }
+
+                    if (currentProject.getTechnicalLabel().equalsIgnoreCase(projectLabel)) {
+                        return currentProject.getEmfProject();
+                    }
+                    for (Project project : getAllReferencedProjects()) {
+                        if (project.getTechnicalLabel().equalsIgnoreCase(projectLabel)) {
+                            return project.getEmfProject();
+                        }
+                    }
+                }
+            }
+        }
+
         return null;
     }
 
