@@ -152,7 +152,9 @@ public class DynamicContentProviderGeneric extends DynamicContentProvider {
             input.appendChild(dom.createTextNode(Messages.getString("DynamicContentProvider.isDisplayTitle")));
             parent.appendChild(input);
         } else if ("CUSTOMER_PAGE".equals(id)) {
-            createOnlinePage(dom, parent);
+            createNewsPage(dom, parent);
+        } else if ("INTEGRATION_CLOUD".equals(id)) { //$NON-NLS-1$
+            createCloudPage(dom, parent);
         } else if ("CREATE_NEW_ITEM".equals(id)) {
             Element td = dom.createElement("td");
             setTDStyle(td);

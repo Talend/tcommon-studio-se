@@ -26,6 +26,7 @@ import org.eclipse.emf.common.util.EMap;
  *   <li>{@link org.talend.core.model.metadata.builder.connection.SAPConnection#getIDocs <em>IDocs</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.SAPConnection#getJcoVersion <em>Jco Version</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.SAPConnection#getAdditionalProperties <em>Additional Properties</em>}</li>
+ *   <li>{@link org.talend.core.model.metadata.builder.connection.SAPConnection#getBWAdvancedDataStoreObjects <em>BW Advanced Data Store Objects</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.SAPConnection#getBWDataSources <em>BW Data Sources</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.SAPConnection#getBWDataStoreObjects <em>BW Data Store Objects</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.SAPConnection#getBWInfoCubes <em>BW Info Cubes</em>}</li>
@@ -290,6 +291,22 @@ public interface SAPConnection extends Connection {
      * @generated
      */
     EList<AdditionalConnectionProperty> getAdditionalProperties();
+
+    /**
+     * Returns the value of the '<em><b>BW Advanced Data Store Objects</b></em>' containment reference list.
+     * The list contents are of type {@link org.talend.core.model.metadata.builder.connection.SAPBWTable}.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>BW Advanced Data Store Objects</em>' containment reference list isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>BW Advanced Data Store Objects</em>' containment reference list.
+     * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getSAPConnection_BWAdvancedDataStoreObjects()
+     * @model containment="true" resolveProxies="true"
+     * @generated
+     */
+    EList<SAPBWTable> getBWAdvancedDataStoreObjects();
 
     /**
      * Returns the value of the '<em><b>BW Data Sources</b></em>' containment reference list.

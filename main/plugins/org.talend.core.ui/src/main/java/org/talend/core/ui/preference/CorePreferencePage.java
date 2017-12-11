@@ -30,6 +30,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.PlatformUI;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ICoreService;
+import org.talend.core.PluginChecker;
 import org.talend.core.model.xml.XmlArray;
 import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.core.ui.i18n.Messages;
@@ -77,7 +78,9 @@ public class CorePreferencePage extends FieldEditorPreferencePage implements IWo
                 Messages.getString("CorePreferencePage.temporaryFiles"), fieldEditorParent); //$NON-NLS-1$
         addField(filePathTemp);
         FileFieldEditor javaInterpreter = new FileFieldEditor(ITalendCorePrefConstants.JAVA_INTERPRETER,
-                Messages.getString("CorePreferencePage.javaInterpreter"), true, fieldEditorParent) {; //$NON-NLS-1$
+                Messages.getString("CorePreferencePage.javaInterpreter"), true, fieldEditorParent) {
+//$NON-NLS-0$
+            ;
 
             @Override
             protected boolean checkState() {
@@ -102,10 +105,12 @@ public class CorePreferencePage extends FieldEditorPreferencePage implements IWo
                 Messages.getString("CorePreferencePage.iReportPath"), fieldEditorParent); //$NON-NLS-1$
         addField(ireportPath);
 
-        BooleanFieldEditor alwaysWelcome = new BooleanFieldEditor(ITalendCorePrefConstants.ALWAYS_WELCOME,
-                Messages.getString("CorePreferencePage.alwaysWelcome.v2"), //$NON-NLS-1$
-                fieldEditorParent);
-        addField(alwaysWelcome);
+        if (PluginChecker.isTIS()) {
+            BooleanFieldEditor alwaysWelcome = new BooleanFieldEditor(ITalendCorePrefConstants.ALWAYS_WELCOME,
+                    Messages.getString("CorePreferencePage.alwaysWelcome.v2"), //$NON-NLS-1$
+                    fieldEditorParent);
+            addField(alwaysWelcome);
+        }
 
         alwaysAskAtStartup = new BooleanFieldEditor(ITalendCorePrefConstants.LOGON_DIALOG_ALWAYS_ASK_ME_AT_STARTUP,
                 Messages.getString("CorePreferencePage.alwaysAskAtStartup"), //$NON-NLS-1$

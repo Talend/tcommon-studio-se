@@ -12,10 +12,13 @@
 // ============================================================================
 package org.talend.commons.ui.gmf.util;
 
+import java.util.concurrent.Semaphore;
+
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+import org.talend.commons.exception.ExceptionHandler;
 
 /**
  * Utility methods to work with Display object
@@ -97,6 +100,55 @@ public class DisplayUtils {
         while (getDisplay().readAndDispatch()) {
             ;
         }
+    }
+
+    /**
+     * Simply run in a new created UI thread<br>
+     * <br>
+     * <b>NOTE!!</b> The runnable should be simple, can <b>NOT</b> call any UI element belongs to other UI thread.
+     * 
+     * @param runnable
+     * @throws Exception
+     */
+    public static void syncExecInNewUIThread(Runnable runnable) throws Exception {
+        final Semaphore semaphore = new Semaphore(1, true);
+        semaphore.acquire();
+        Thread thread = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                Display display = new Display();
+                try {
+                    Thread currentThread = Thread.currentThread();
+                    boolean releasedLock = false;
+                    while (!currentThread.isInterrupted()) {
+                        if (!display.readAndDispatch()) {
+                            if (!releasedLock) {
+                                semaphore.release();
+                                releasedLock = true;
+                            }
+                            Thread.sleep(50);
+                        }
+                    }
+                } catch (InterruptedException e) {
+                    // ignore
+                } catch (Exception e) {
+                    ExceptionHandler.process(e);
+                } finally {
+                    if (semaphore.availablePermits() <= 0) {
+                        semaphore.release();
+                    }
+                    display.dispose();
+                }
+            }
+        });
+        thread.start();
+
+        semaphore.acquire();
+        semaphore.release();
+        Display display = Display.findDisplay(thread);
+        display.syncExec(runnable);
+        thread.interrupt();
     }
 
 }

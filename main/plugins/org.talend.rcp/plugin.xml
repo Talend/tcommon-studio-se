@@ -210,7 +210,7 @@
    </menuContribution>
 </extension>
 <extension
-               point="org.eclipse.ui.activities">
+      point="org.eclipse.ui.activities">
             <activity
                   id="org.talend.rcp.branding.activity.hideMenu"
                   name="hideMenus">
@@ -222,6 +222,10 @@
             <activity
                   id="org.talend.rcp.branding.activity.hidePerspective"
                   name="hidePerspective">
+            </activity>
+            <activity
+                  id="org.talend.rcp.branding.activity.hideImportMenus"
+                  name="hideImportMenus">
             </activity>
             <activity
                   id="org.talend.rcp.branding.activity.hideMenuForTOS"
@@ -336,6 +340,14 @@
             <activityPatternBinding
                   activityId="org.talend.rcp.branding.activity.hideMenuForTOS"
                   pattern=".*/org.eclipse.equinox.p2.ui.sdk.install">
+            </activityPatternBinding>
+            <activityPatternBinding
+                  activityId="org.talend.rcp.branding.activity.hideImportMenus"
+                  pattern="org.eclipse.ui.ide/org.eclipse.ui.wizards.import.FileSystem">
+            </activityPatternBinding>
+            <activityPatternBinding
+                  activityId="org.talend.rcp.branding.activity.hideImportMenus"
+                  pattern="org.eclipse.ui.ide/org.eclipse.ui.wizards.import.ZipFile">
             </activityPatternBinding>
      </extension>
 <extension

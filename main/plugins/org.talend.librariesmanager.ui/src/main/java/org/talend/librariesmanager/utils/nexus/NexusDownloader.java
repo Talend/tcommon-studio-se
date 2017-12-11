@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
@@ -103,19 +104,30 @@ public class NexusDownloader implements IDownloadHelper {
                 int contentLength = connection.getContentLength();
                 fireDownloadStart(contentLength);
 
+                int refreshInterval = 1000;
+                if (contentLength < BUFFER_SIZE * 10) {
+                    refreshInterval = contentLength / 200;
+                }
                 int bytesDownloaded = 0;
                 byte[] buf = new byte[BUFFER_SIZE];
                 int bytesRead = -1;
+                long startTime = new Date().getTime();
+                int byteReadInloop = 0;
                 while ((bytesRead = bis.read(buf)) != -1) {
                     bos.write(buf, 0, bytesRead);
-                    fireDownloadProgress(bytesRead);
+                    long currentTime = new Date().getTime();
+                    byteReadInloop = byteReadInloop + bytesRead;
+                    if (currentTime - startTime > refreshInterval) {
+                        startTime = currentTime;
+                        fireDownloadProgress(byteReadInloop);
+                        byteReadInloop = 0;
+                    }
                     bytesDownloaded += bytesRead;
                     if (isCancel()) {
                         return;
                     }
                 }
                 bos.flush();
-                bos.close();
                 if (bytesDownloaded == contentLength) {
                     MavenArtifactsHandler deployer = new MavenArtifactsHandler();
                     deployer.install(downloadedFile.getAbsolutePath(), mavenUri);

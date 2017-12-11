@@ -53,6 +53,12 @@
             mvn_uri="mvn:org.talend.libraries/spark-cassandra-connector-assembly-2.0.2-patched-20170519/6.0.0"
             name="spark-cassandra-connector-assembly-2.0.2-patched-20170519.jar">
       </libraryNeeded>
+      <libraryNeeded
+            context="plugin:org.talend.libraries.apache.cassandra"
+            id="spark-cassandra-connector-assembly-2.0.5-patched-20171023.jar"
+            mvn_uri="mvn:org.talend.libraries/spark-cassandra-connector-assembly-2.0.5-patched-20171023/6.0.0"
+            name="spark-cassandra-connector-assembly-2.0.5-patched-20171023.jar">
+      </libraryNeeded>
    </extension>
 
 </plugin>

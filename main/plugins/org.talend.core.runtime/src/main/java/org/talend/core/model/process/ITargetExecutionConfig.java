@@ -43,4 +43,14 @@ public interface ITargetExecutionConfig extends IServerConfiguration {
 	public String getRunAsUser();
 	
 	public void setRunAsUser(String runAsUser);
+
+	// If the remote id is not null means this execution configuration from TAC
+	public Integer getRemoteId();
+
+	public boolean isVirtualServer();
+	
+	public boolean isActiveServer();
+	
+	public String getEncryptedPassword();
+
 }

@@ -5616,13 +5616,22 @@ public interface ConnectionPackage extends EPackage {
     int SAP_CONNECTION__ADDITIONAL_PROPERTIES = CONNECTION_FEATURE_COUNT + 10;
 
     /**
+     * The feature id for the '<em><b>BW Advanced Data Store Objects</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SAP_CONNECTION__BW_ADVANCED_DATA_STORE_OBJECTS = CONNECTION_FEATURE_COUNT + 11;
+
+    /**
      * The feature id for the '<em><b>BW Data Sources</b></em>' containment reference list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int SAP_CONNECTION__BW_DATA_SOURCES = CONNECTION_FEATURE_COUNT + 11;
+    int SAP_CONNECTION__BW_DATA_SOURCES = CONNECTION_FEATURE_COUNT + 12;
 
     /**
      * The feature id for the '<em><b>BW Data Store Objects</b></em>' containment reference list.
@@ -5631,7 +5640,7 @@ public interface ConnectionPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int SAP_CONNECTION__BW_DATA_STORE_OBJECTS = CONNECTION_FEATURE_COUNT + 12;
+    int SAP_CONNECTION__BW_DATA_STORE_OBJECTS = CONNECTION_FEATURE_COUNT + 13;
 
     /**
      * The feature id for the '<em><b>BW Info Cubes</b></em>' containment reference list.
@@ -5640,7 +5649,7 @@ public interface ConnectionPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int SAP_CONNECTION__BW_INFO_CUBES = CONNECTION_FEATURE_COUNT + 13;
+    int SAP_CONNECTION__BW_INFO_CUBES = CONNECTION_FEATURE_COUNT + 14;
 
     /**
      * The feature id for the '<em><b>BW Info Objects</b></em>' containment reference list.
@@ -5649,7 +5658,7 @@ public interface ConnectionPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int SAP_CONNECTION__BW_INFO_OBJECTS = CONNECTION_FEATURE_COUNT + 14;
+    int SAP_CONNECTION__BW_INFO_OBJECTS = CONNECTION_FEATURE_COUNT + 15;
 
     /**
      * The number of structural features of the '<em>SAP Connection</em>' class.
@@ -5658,7 +5667,7 @@ public interface ConnectionPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int SAP_CONNECTION_FEATURE_COUNT = CONNECTION_FEATURE_COUNT + 15;
+    int SAP_CONNECTION_FEATURE_COUNT = CONNECTION_FEATURE_COUNT + 16;
 
     /**
      * The meta object id for the '{@link org.talend.core.model.metadata.builder.connection.impl.SAPFunctionUnitImpl <em>SAP Function Unit</em>}' class.
@@ -21666,6 +21675,17 @@ public interface ConnectionPackage extends EPackage {
     EReference getSAPConnection_AdditionalProperties();
 
     /**
+     * Returns the meta object for the containment reference list '{@link org.talend.core.model.metadata.builder.connection.SAPConnection#getBWAdvancedDataStoreObjects <em>BW Advanced Data Store Objects</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference list '<em>BW Advanced Data Store Objects</em>'.
+     * @see org.talend.core.model.metadata.builder.connection.SAPConnection#getBWAdvancedDataStoreObjects()
+     * @see #getSAPConnection()
+     * @generated
+     */
+    EReference getSAPConnection_BWAdvancedDataStoreObjects();
+
+    /**
      * Returns the meta object for the containment reference list '{@link org.talend.core.model.metadata.builder.connection.SAPConnection#getBWDataSources <em>BW Data Sources</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -26137,6 +26157,14 @@ public interface ConnectionPackage extends EPackage {
          * @generated
          */
         EReference SAP_CONNECTION__ADDITIONAL_PROPERTIES = eINSTANCE.getSAPConnection_AdditionalProperties();
+
+        /**
+         * The meta object literal for the '<em><b>BW Advanced Data Store Objects</b></em>' containment reference list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference SAP_CONNECTION__BW_ADVANCED_DATA_STORE_OBJECTS = eINSTANCE.getSAPConnection_BWAdvancedDataStoreObjects();
 
         /**
          * The meta object literal for the '<em><b>BW Data Sources</b></em>' containment reference list feature.

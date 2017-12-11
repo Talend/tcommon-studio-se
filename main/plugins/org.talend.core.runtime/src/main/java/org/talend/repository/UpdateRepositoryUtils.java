@@ -21,9 +21,11 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.core.GlobalServiceRegister;
+import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.core.model.metadata.MetadataToolHelper;
 import org.talend.core.model.metadata.builder.connection.Connection;
+import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.core.model.metadata.builder.connection.QueriesConnection;
 import org.talend.core.model.metadata.builder.connection.Query;
@@ -318,8 +320,8 @@ public final class UpdateRepositoryUtils {
                 // Generic
                 IGenericWizardService wizardService = null;
                 if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericWizardService.class)) {
-                    wizardService = (IGenericWizardService) GlobalServiceRegister.getDefault().getService(
-                            IGenericWizardService.class);
+                    wizardService = (IGenericWizardService) GlobalServiceRegister.getDefault()
+                            .getService(IGenericWizardService.class);
                 }
                 if (wizardService != null) {
                     Property property = ((ConnectionItem) item).getProperty();
@@ -411,7 +413,19 @@ public final class UpdateRepositoryUtils {
                 Object tableObject = tables.get(0);
                 if (tableObject instanceof MetadataTable) {
                     for (MetadataTable table : tables) {
+                        boolean has = false;
                         if (table.getLabel().equals(tableLable)) {
+                            has = true;
+                        }
+                        if (connection instanceof DatabaseConnection) {
+                            DatabaseConnection dbConnection = (DatabaseConnection) connection;
+                            if (EDatabaseTypeName.SAPHana.getDisplayName().equals(dbConnection.getDatabaseType())) {
+                                if (table.getName().equals(tableLable)) {
+                                    has = true;
+                                }
+                            }
+                        }
+                        if (has) {
                             if (GlobalServiceRegister.getDefault().isServiceRegistered(IMetadataManagmentService.class)) {
                                 IMetadataManagmentService mmService = (IMetadataManagmentService) GlobalServiceRegister
                                         .getDefault().getService(IMetadataManagmentService.class);

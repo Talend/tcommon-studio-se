@@ -31,7 +31,7 @@ import org.talend.commons.ui.swt.tableviewer.TableViewerCreator;
  */
 public abstract class AbstractPreferenceTableEditorView<B> extends FieldEditor {
 
-    private AbstractDataTableEditorView<B> tableEditorView;
+    protected AbstractDataTableEditorView<B> tableEditorView;
 
     private AbstractPreferencesHelperForTable preferencesHelper;
 

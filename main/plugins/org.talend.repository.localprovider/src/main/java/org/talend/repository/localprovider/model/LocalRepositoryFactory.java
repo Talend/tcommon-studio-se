@@ -2435,6 +2435,19 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
             case PropertiesPackage.EDIFACT_CONNECTION_ITEM:
                 itemResource = save(resourceSet, (EDIFACTConnectionItem) item);
                 break;
+            case PropertiesPackage.CONNECTION_ITEM:
+                // connection item may be used by extention point
+                boolean created = false;
+                for (IRepositoryContentHandler handler : RepositoryContentManager.getHandlers()) {
+                    itemResource = handler.save(item);
+                    if (itemResource != null) {
+                        created = true;
+                        break;
+                    }
+                }
+                if (created) {
+                    break;
+                }
             default:
                 throw new UnsupportedOperationException();
             }
@@ -2804,6 +2817,20 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
             case PropertiesPackage.EDIFACT_CONNECTION_ITEM:// gldu add for 19384
                 itemResource = create(project2, (EDIFACTConnectionItem) item, ERepositoryObjectType.METADATA_EDIFACT, path);
                 break;
+            case PropertiesPackage.CONNECTION_ITEM:
+                // connection item may be used by extention point
+                final int classifierID = eClass.getClassifierID();
+                boolean created = false;
+                for (IRepositoryContentHandler handler : RepositoryContentManager.getHandlers()) {
+                    itemResource = handler.create(project2, item, classifierID, path);
+                    if (itemResource != null) {
+                        created = true;
+                        break;
+                    }
+                }
+                if (created) {
+                    break;
+                }
             default:
 
                 throw new UnsupportedOperationException();

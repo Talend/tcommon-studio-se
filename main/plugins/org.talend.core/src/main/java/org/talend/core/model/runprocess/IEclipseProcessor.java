@@ -26,4 +26,6 @@ public interface IEclipseProcessor {
     public ILaunchConfiguration debug() throws ProcessorException;
 
     public void setTargetExecutionConfig(ITargetExecutionConfig serverConfiguration);
+    
+    public ITargetExecutionConfig getTargetExecutionConfig();
 }

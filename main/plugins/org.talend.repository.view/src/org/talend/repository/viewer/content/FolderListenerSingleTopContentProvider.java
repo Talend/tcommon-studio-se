@@ -227,8 +227,12 @@ public abstract class FolderListenerSingleTopContentProvider extends SingleTopLe
             }
         }
 
+        clearCache();
+        super.dispose();
+    }
+
+    public void clearCache() {
         // to help garbage collection
         topLevelNodeToPathMap.clear();
-        super.dispose();
     }
 }

@@ -255,5 +255,26 @@ public class MavenUrlHelperTest {
         mvnURI = "mvn:org.talend.libraries/abc/6.0.0-SNAPSHOT/zip";
         mvnURIWithType = MavenUrlHelper.addTypeForMavenUri(mvnURI, moduleName);
         Assert.assertEquals(mvnURIWithType, "mvn:org.talend.libraries/abc/6.0.0-SNAPSHOT/zip");
+
+        moduleName = "hadoop-client-2.6.0-cdh5.10.1.jar";
+        mvnURI = "mvn:http://localhost:8081/nexus/content/repositories/central!org.apache.hadoop/hadoop-client/2.6.0-cdh5.10.1";
+        mvnURIWithType = MavenUrlHelper.addTypeForMavenUri(mvnURI, moduleName);
+        Assert.assertEquals(mvnURIWithType,
+                "mvn:http://localhost:8081/nexus/content/repositories/central!org.apache.hadoop/hadoop-client/2.6.0-cdh5.10.1/jar");
+    }
+
+    @Test
+    public void testGenerateModuleNameByMavenURI() {
+        String mvnURI = "mvn:org.talend/test/6.0";
+        String moduleName = MavenUrlHelper.generateModuleNameByMavenURI(mvnURI);
+        Assert.assertEquals(moduleName, "test-6.0.jar");
+
+        mvnURI = "mvn:org.talend/test/6.0/exe";
+        moduleName = MavenUrlHelper.generateModuleNameByMavenURI(mvnURI);
+        Assert.assertEquals(moduleName, "test-6.0.exe");
+
+        mvnURI = "mvn:http://localhost:8081/nexus/content/repositories/central!org.apache.hadoop/hadoop-client/2.6.0-cdh5.10.1";
+        moduleName = MavenUrlHelper.generateModuleNameByMavenURI(mvnURI);
+        Assert.assertEquals(moduleName, "hadoop-client-2.6.0-cdh5.10.1.jar");
     }
 }

@@ -37,8 +37,6 @@ import java.util.regex.Pattern;
 import java.util.zip.CRC32;
 import java.util.zip.CheckedInputStream;
 
-import metadata.managment.i18n.Messages;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IProject;
@@ -49,6 +47,7 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.database.AS400DatabaseMetaData;
 import org.talend.commons.utils.database.DB2ForZosDataBaseMetadata;
 import org.talend.commons.utils.database.EXASOLDatabaseMetaData;
+import org.talend.commons.utils.database.SAPHanaDataBaseMetadata;
 import org.talend.commons.utils.database.SASDataBaseMetadata;
 import org.talend.commons.utils.database.SybaseDatabaseMetaData;
 import org.talend.commons.utils.database.SybaseIQDatabaseMetaData;
@@ -83,6 +82,8 @@ import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IMetadataService;
 import org.talend.utils.exceptions.MissingDriverException;
 import org.talend.utils.sql.ConnectionUtils;
+
+import metadata.managment.i18n.Messages;
 import orgomg.cwm.objectmodel.core.Expression;
 
 /**
@@ -275,6 +276,8 @@ public class ExtractMetaDataUtils {
                     dbMetaData = createAS400FakeDatabaseMetaData(conn);
                 } else if (EDatabaseTypeName.EXASOL.getXmlName().equals(dbType)) {
                     dbMetaData = createEXASOLFakeDatabaseMetaData(conn);
+                } else if (EDatabaseTypeName.SAPHana.getXmlName().equals(dbType)) {
+                    dbMetaData = createSAPHanaFakeDatabaseMetaData(conn);
                 } else {
                     dbMetaData = conn.getMetaData();
                 }
@@ -332,7 +335,7 @@ public class ExtractMetaDataUtils {
         String dbType = metadataConnection.getDbType();
         boolean isSqlMode = metadataConnection.isSqlMode();
         String dbVersion = metadataConnection.getDbVersionString();
-        if (EDatabaseTypeName.IBMDB2ZOS.getXmlName().equals(dbType)) {
+        if (EDatabaseTypeName.IBMDB2ZOS.getXmlName().equals(dbType) || EDatabaseTypeName.SAPHana.getXmlName().equals(dbType)) {
             return true;
         } else if (EDatabaseTypeName.TERADATA.getXmlName().equals(dbType) && isSqlMode) {
             return true;
@@ -397,6 +400,11 @@ public class ExtractMetaDataUtils {
 
     private DatabaseMetaData createTeradataFakeDatabaseMetaData(Connection conn) {
         TeradataDataBaseMetadata tmd = new TeradataDataBaseMetadata(conn);
+        return tmd;
+    }
+
+    private DatabaseMetaData createSAPHanaFakeDatabaseMetaData(Connection conn) {
+        SAPHanaDataBaseMetadata tmd = new SAPHanaDataBaseMetadata(conn);
         return tmd;
     }
 
@@ -945,6 +953,7 @@ public class ExtractMetaDataUtils {
                             && (EDatabaseVersion4Drivers.VERTICA_6.getVersionValue().equals(dbVersion)
                                     || EDatabaseVersion4Drivers.VERTICA_5_1.getVersionValue().equals(dbVersion)
                                     || EDatabaseVersion4Drivers.VERTICA_6_1_X.getVersionValue().equals(dbVersion) || EDatabaseVersion4Drivers.VERTICA_7
+                                    .getVersionValue().equals(dbVersion) || EDatabaseVersion4Drivers.VERTICA_9
                                     .getVersionValue().equals(dbVersion))) {
                         driverClassName = EDatabase4DriverClassName.VERTICA2.getDriverClass();
                     } else if (EDatabaseTypeName.MYSQL.getXmlName().equals(dbType)

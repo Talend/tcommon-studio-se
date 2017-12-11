@@ -177,6 +177,7 @@ public class RepositoryLabelProvider extends LabelProvider implements IColorProv
                     || repositoryObjectType == ERepositoryObjectType.METADATA_CON_SYNONYM
                     || repositoryObjectType == ERepositoryObjectType.METADATA_CON_TABLE
                     || repositoryObjectType == ERepositoryObjectType.METADATA_CON_VIEW
+                    || repositoryObjectType == ERepositoryObjectType.METADATA_CON_CALCULATION_VIEW
                     || repositoryObjectType == ERepositoryObjectType.METADATA_CON_CDC
                     || repositoryObjectType == ERepositoryObjectType.METADATA_CON_CDC
                     || repositoryObjectType == ERepositoryObjectType.METADATA_SAP_IDOC
@@ -413,6 +414,7 @@ public class RepositoryLabelProvider extends LabelProvider implements IColorProv
                     || repositoryObjectType == ERepositoryObjectType.SNIPPETS
                     || repositoryObjectType == ERepositoryObjectType.METADATA_CON_SYNONYM
                     || repositoryObjectType == ERepositoryObjectType.METADATA_CON_VIEW
+                    || repositoryObjectType == ERepositoryObjectType.METADATA_CON_CALCULATION_VIEW
                     || repositoryObjectType == ERepositoryObjectType.JOB_DOC
                     || repositoryObjectType == ERepositoryObjectType.JOBLET_DOC) {
                 return ImageProvider.getImage(nodeIcon);

@@ -225,4 +225,8 @@ public interface IComponent {
     boolean isSupportDbType();
 
     boolean isAllowedPropagated();
+
+    String getTemplateFolder();
+
+    String getTemplateNamePrefix();
 }

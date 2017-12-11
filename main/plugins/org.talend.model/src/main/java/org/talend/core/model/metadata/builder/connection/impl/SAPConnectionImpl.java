@@ -51,6 +51,7 @@ import org.talend.core.model.metadata.builder.connection.SAPIDocUnit;
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.SAPConnectionImpl#getIDocs <em>IDocs</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.SAPConnectionImpl#getJcoVersion <em>Jco Version</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.SAPConnectionImpl#getAdditionalProperties <em>Additional Properties</em>}</li>
+ *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.SAPConnectionImpl#getBWAdvancedDataStoreObjects <em>BW Advanced Data Store Objects</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.SAPConnectionImpl#getBWDataSources <em>BW Data Sources</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.SAPConnectionImpl#getBWDataStoreObjects <em>BW Data Store Objects</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.SAPConnectionImpl#getBWInfoCubes <em>BW Info Cubes</em>}</li>
@@ -251,6 +252,16 @@ public class SAPConnectionImpl extends ConnectionImpl implements SAPConnection {
      * @ordered
      */
     protected EList<AdditionalConnectionProperty> additionalProperties;
+
+    /**
+     * The cached value of the '{@link #getBWAdvancedDataStoreObjects() <em>BW Advanced Data Store Objects</em>}' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getBWAdvancedDataStoreObjects()
+     * @generated
+     * @ordered
+     */
+    protected EList<SAPBWTable> bwAdvancedDataStoreObjects;
 
     /**
      * The cached value of the '{@link #getBWDataSources() <em>BW Data Sources</em>}' containment reference list.
@@ -530,6 +541,19 @@ public class SAPConnectionImpl extends ConnectionImpl implements SAPConnection {
      * <!-- end-user-doc -->
      * @generated
      */
+    public EList<SAPBWTable> getBWAdvancedDataStoreObjects() {
+        if (bwAdvancedDataStoreObjects == null) {
+            bwAdvancedDataStoreObjects = new EObjectContainmentEList.Resolving<SAPBWTable>(SAPBWTable.class, this,
+                    ConnectionPackage.SAP_CONNECTION__BW_ADVANCED_DATA_STORE_OBJECTS);
+        }
+        return bwAdvancedDataStoreObjects;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EList<SAPBWTable> getBWDataSources() {
         if (bwDataSources == null) {
             bwDataSources = new EObjectContainmentEList.Resolving<SAPBWTable>(SAPBWTable.class, this,
@@ -606,6 +630,8 @@ public class SAPConnectionImpl extends ConnectionImpl implements SAPConnection {
             return ((InternalEList<?>) getIDocs()).basicRemove(otherEnd, msgs);
         case ConnectionPackage.SAP_CONNECTION__ADDITIONAL_PROPERTIES:
             return ((InternalEList<?>) getAdditionalProperties()).basicRemove(otherEnd, msgs);
+        case ConnectionPackage.SAP_CONNECTION__BW_ADVANCED_DATA_STORE_OBJECTS:
+            return ((InternalEList<?>) getBWAdvancedDataStoreObjects()).basicRemove(otherEnd, msgs);
         case ConnectionPackage.SAP_CONNECTION__BW_DATA_SOURCES:
             return ((InternalEList<?>) getBWDataSources()).basicRemove(otherEnd, msgs);
         case ConnectionPackage.SAP_CONNECTION__BW_DATA_STORE_OBJECTS:
@@ -648,6 +674,8 @@ public class SAPConnectionImpl extends ConnectionImpl implements SAPConnection {
             return getJcoVersion();
         case ConnectionPackage.SAP_CONNECTION__ADDITIONAL_PROPERTIES:
             return getAdditionalProperties();
+        case ConnectionPackage.SAP_CONNECTION__BW_ADVANCED_DATA_STORE_OBJECTS:
+            return getBWAdvancedDataStoreObjects();
         case ConnectionPackage.SAP_CONNECTION__BW_DATA_SOURCES:
             return getBWDataSources();
         case ConnectionPackage.SAP_CONNECTION__BW_DATA_STORE_OBJECTS:
@@ -704,6 +732,10 @@ public class SAPConnectionImpl extends ConnectionImpl implements SAPConnection {
         case ConnectionPackage.SAP_CONNECTION__ADDITIONAL_PROPERTIES:
             getAdditionalProperties().clear();
             getAdditionalProperties().addAll((Collection<? extends AdditionalConnectionProperty>) newValue);
+            return;
+        case ConnectionPackage.SAP_CONNECTION__BW_ADVANCED_DATA_STORE_OBJECTS:
+            getBWAdvancedDataStoreObjects().clear();
+            getBWAdvancedDataStoreObjects().addAll((Collection<? extends SAPBWTable>) newValue);
             return;
         case ConnectionPackage.SAP_CONNECTION__BW_DATA_SOURCES:
             getBWDataSources().clear();
@@ -766,6 +798,9 @@ public class SAPConnectionImpl extends ConnectionImpl implements SAPConnection {
         case ConnectionPackage.SAP_CONNECTION__ADDITIONAL_PROPERTIES:
             getAdditionalProperties().clear();
             return;
+        case ConnectionPackage.SAP_CONNECTION__BW_ADVANCED_DATA_STORE_OBJECTS:
+            getBWAdvancedDataStoreObjects().clear();
+            return;
         case ConnectionPackage.SAP_CONNECTION__BW_DATA_SOURCES:
             getBWDataSources().clear();
             return;
@@ -813,6 +848,8 @@ public class SAPConnectionImpl extends ConnectionImpl implements SAPConnection {
             return JCO_VERSION_EDEFAULT == null ? jcoVersion != null : !JCO_VERSION_EDEFAULT.equals(jcoVersion);
         case ConnectionPackage.SAP_CONNECTION__ADDITIONAL_PROPERTIES:
             return additionalProperties != null && !additionalProperties.isEmpty();
+        case ConnectionPackage.SAP_CONNECTION__BW_ADVANCED_DATA_STORE_OBJECTS:
+            return bwAdvancedDataStoreObjects != null && !bwAdvancedDataStoreObjects.isEmpty();
         case ConnectionPackage.SAP_CONNECTION__BW_DATA_SOURCES:
             return bwDataSources != null && !bwDataSources.isEmpty();
         case ConnectionPackage.SAP_CONNECTION__BW_DATA_STORE_OBJECTS:

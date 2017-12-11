@@ -132,4 +132,6 @@ public interface IRepositoryService extends IService {
     
     public List<String> getProjectBranch(Project project) throws JSONException;
 
+    public boolean askRetryForNetworkIssue(Throwable ex);
+
 }

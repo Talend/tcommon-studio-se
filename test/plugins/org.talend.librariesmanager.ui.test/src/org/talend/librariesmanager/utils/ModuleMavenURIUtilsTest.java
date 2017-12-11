@@ -21,7 +21,7 @@ import org.talend.librariesmanager.ui.i18n.Messages;
  * created by wchen on Sep 8, 2017 Detailled comment
  *
  */
-public class CustomMavenURIValidatorTest {
+public class ModuleMavenURIUtilsTest {
 
     @Test
     public void testValidateCustomMvnURI() throws MalformedPatternException {
@@ -30,35 +30,35 @@ public class CustomMavenURIValidatorTest {
 
         String originalURI = "mvn:org.talend.libraries/test/6.0.0";
         String customURI = "mvn:org.talend.libraries/test/6.0.0";
-        String result = CustomMavenURIValidator.validateCustomMvnURI(originalURI, customURI);
+        String result = ModuleMavenURIUtils.validateCustomMvnURI(originalURI, customURI);
         Assert.assertEquals(result, errorMessage1);
 
         customURI = "mvn:org.talend.libraries/test/6.0";
-        result = CustomMavenURIValidator.validateCustomMvnURI(originalURI, customURI);
+        result = ModuleMavenURIUtils.validateCustomMvnURI(originalURI, customURI);
         Assert.assertNull(result);
 
         customURI = "mvn:org.talend.libraries/test/6.0.0/exe";
-        result = CustomMavenURIValidator.validateCustomMvnURI(originalURI, customURI);
+        result = ModuleMavenURIUtils.validateCustomMvnURI(originalURI, customURI);
         Assert.assertNull(result);
 
         customURI = "mvn:org.talend.libraries/test/6.0.0-SNAPSHOT";
-        result = CustomMavenURIValidator.validateCustomMvnURI(originalURI, customURI);
+        result = ModuleMavenURIUtils.validateCustomMvnURI(originalURI, customURI);
         Assert.assertNull(result);
 
         customURI = "mvn:org.talend.libraries/test/6.0.0-SNAPSHOT/jar";
-        result = CustomMavenURIValidator.validateCustomMvnURI(originalURI, customURI);
+        result = ModuleMavenURIUtils.validateCustomMvnURI(originalURI, customURI);
         Assert.assertNull(result);
 
         customURI = "mvn:org.talend.libraries/";
-        result = CustomMavenURIValidator.validateCustomMvnURI(originalURI, customURI);
+        result = ModuleMavenURIUtils.validateCustomMvnURI(originalURI, customURI);
         Assert.assertEquals(result, errorMessage2);
 
         customURI = "mvn:org.talend.libraries/test";
-        result = CustomMavenURIValidator.validateCustomMvnURI(originalURI, customURI);
+        result = ModuleMavenURIUtils.validateCustomMvnURI(originalURI, customURI);
         Assert.assertEquals(result, errorMessage2);
 
         customURI = "mvn:org.talend.libraries/test/6";
-        result = CustomMavenURIValidator.validateCustomMvnURI(originalURI, customURI);
+        result = ModuleMavenURIUtils.validateCustomMvnURI(originalURI, customURI);
         Assert.assertEquals(result, errorMessage2);
 
     }
