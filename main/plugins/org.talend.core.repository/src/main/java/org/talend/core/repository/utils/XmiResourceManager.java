@@ -47,6 +47,7 @@ import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.XMLParserPoolImpl;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.runtime.model.emf.EmfHelper;
+import org.talend.commons.runtime.model.emf.provider.EmfResourcesFactoryReader;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.GlobalServiceRegister;
@@ -148,6 +149,16 @@ public class XmiResourceManager {
     }
 
     public Property loadProperty(IResource iResource) {
+        final Map<Object, Object> oldLoadOptions = new HashMap<Object, Object>(resourceSet.getLoadOptions());
+        try {
+            return doLoadProperty(iResource);
+        } finally {
+            resourceSet.getLoadOptions().clear();
+            resourceSet.getLoadOptions().putAll(oldLoadOptions);
+        }
+    }
+
+    private Property doLoadProperty(IResource iResource) {
 
         Property property = null;
         // force unload old version, or the UI won't be synchronized all the time to the current file.
@@ -177,6 +188,8 @@ public class XmiResourceManager {
                 }
             }
         }
+        Map options = EmfResourcesFactoryReader.INSTANCE.getLoadOptions(propertyUri);
+        resourceSet.getLoadOptions().putAll(options);
 
         Resource propertyResource = resourceSet.getResource(propertyUri, true);
 

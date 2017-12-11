@@ -88,6 +88,8 @@ public class ImportItem {
 
     private boolean isSystemItem = false;
 
+    private boolean ignore = false;
+
     public ImportItem(IPath path) {
         this.path = path;
     }
@@ -138,6 +140,14 @@ public class ImportItem {
         return path;
     }
 
+    public boolean isIgnore() {
+        return ignore;
+    }
+
+    public void setIgnore(boolean ignore) {
+        this.ignore = ignore;
+    }
+
     public void addError(String message) {
         errors.add(message);
     }
@@ -148,7 +158,7 @@ public class ImportItem {
 
     public boolean isValid() {
         // TODO mhelleboid split validation in two steps to be able to filter a valid item and avoid adding an error
-        return errors.isEmpty();
+        return errors.isEmpty() && !isIgnore();
     }
 
     /**
@@ -190,27 +200,27 @@ public class ImportItem {
      * DOC hcw ImportItem class global comment. Detailled comment
      */
     public enum State {
-                       /**
-                        * only name existed
-                        */
-                       NAME_EXISTED,
+        /**
+         * only name existed
+         */
+        NAME_EXISTED,
 
-                       /**
-                        * only id existed
-                        */
-                       ID_EXISTED,
+        /**
+         * only id existed
+         */
+        ID_EXISTED,
 
-                       NON_EXISTED,
+        NON_EXISTED,
 
-                       /**
-                        * only one existed item with same name and same id
-                        */
-                       NAME_AND_ID_EXISTED,
+        /**
+         * only one existed item with same name and same id
+         */
+        NAME_AND_ID_EXISTED,
 
-                       /**
-                        * one existed item with same name, while another existed item with same id
-                        */
-                       NAME_AND_ID_EXISTED_BOTH
+        /**
+         * one existed item with same name, while another existed item with same id
+         */
+        NAME_AND_ID_EXISTED_BOTH
     }
 
     public State getState() {

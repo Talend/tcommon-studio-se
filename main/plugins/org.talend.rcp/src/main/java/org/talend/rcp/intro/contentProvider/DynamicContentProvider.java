@@ -297,7 +297,7 @@ public class DynamicContentProvider extends IntroProvider {
                         if (modificationDate2 == null) {
                             modificationDate2 = data[j - 1].getCreationDate();
                         }
-                        if (modificationDate.after(modificationDate2)) {
+                        if (modificationDate != null && modificationDate2 != null && modificationDate.after(modificationDate2)) {
                             IRepositoryViewObject temp = data[j - 1];
                             data[j - 1] = data[j];
                             data[j] = temp;

@@ -299,9 +299,9 @@ public class ProcessorUtilities {
                 return true;
             }
 
-            Date modificationDate = process.getProperty().getModificationDate();
+            Date modificationDate = process.getModificationDate();
             Date originalDate = designerCoreService.getLastGeneratedJobsDateMap().get(jobInfo.getJobId());
-            if (originalDate == null || modificationDate.compareTo(originalDate) != 0) {
+            if (originalDate == null || modificationDate == null || modificationDate.compareTo(originalDate) != 0) {
                 if (jobInfo.getFatherJobInfo() != null) {
                     jobInfo.getFatherJobInfo().setForceRegenerate(true);
                 }
@@ -713,7 +713,7 @@ public class ProcessorUtilities {
             processor.generateCode(statistics, trace, true, option);
             if (currentProcess instanceof IProcess2 && ((IProcess2) currentProcess).getProperty() != null) {
                 designerCoreService.getLastGeneratedJobsDateMap().put(currentProcess.getId(),
-                        ((IProcess2) currentProcess).getProperty().getModificationDate());
+                        ((IProcess2) currentProcess).getModificationDate());
             }
             Integer infos = new Integer(0);
             infos += statistics ? GENERATED_WITH_STATS : 0;

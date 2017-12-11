@@ -35,10 +35,18 @@ public interface IRepositoryObject extends IRepositoryViewObject {
 
     public void setStatusCode(String statusCode);
 
+    /**
+     * won't set the date any more, it will be deal with when save file
+     */
+    @Deprecated
     public void setCreationDate(Date value);
 
     public void setDescription(String value);
 
+    /**
+     * won't set the date any more, it will be deal with when save file
+     */
+    @Deprecated
     public void setModificationDate(Date value);
 
     public void setPurpose(String value);
