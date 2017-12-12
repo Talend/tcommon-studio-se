@@ -13,6 +13,7 @@
 package org.talend.core.model.process;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -999,8 +1000,16 @@ public abstract class AbstractNode implements INode {
 
     @Override
     public void removeOutput(IConnection connection) {
-        // TODO Auto-generated method stub
-
+        Iterator<IMetadataTable> it = this.getMetadataList().iterator();
+        boolean found = false;
+        while (it.hasNext() && !found) {
+            IMetadataTable table = it.next();
+            if (table.getTableName().equals(connection.getMetaName())) {
+                it.remove();
+                found = true;
+            }
+        }
+        getProcess().removeUniqueConnectionName(connection.getName());
     }
 
     @Override
