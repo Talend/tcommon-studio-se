@@ -289,6 +289,12 @@ public class RelationshipItemBuilder {
         }
         return new ArrayList<Relation>(relations);
     }
+    
+    public void load() {
+        if (!loaded) {
+            loadRelations();
+        }
+    }
 
     /**
      * 
@@ -561,8 +567,7 @@ public class RelationshipItemBuilder {
 
         loadRelations(currentProjectItemsRelations, getAimProject());
 
-        List<Project> referencedProjects = ProjectManager.getInstance().getReferencedProjects(getProxyRepositoryFactory(),
-                getAimProject());
+        List<Project> referencedProjects = ProjectManager.getInstance().getAllReferencedProjects();
         for (Project p : referencedProjects) {
             loadRelations(referencesItemsRelations, p);
         }

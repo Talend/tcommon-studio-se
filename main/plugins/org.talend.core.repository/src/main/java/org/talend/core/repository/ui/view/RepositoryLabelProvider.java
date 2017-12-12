@@ -227,6 +227,15 @@ public class RepositoryLabelProvider extends LabelProvider implements IColorProv
             }
 
             return label;
+        } else if (node.getType() == ENodeType.REFERENCED_PROJECT) {
+            String label = node.getLabel();
+            String branch = ProjectManager.getInstance()
+                    .getMainProjectBranch(ProjectManager.getInstance().getProjectFromProjectLabel(label));
+            branch = ProjectManager.getCleanBranchName(branch);
+            if (branch != null && branch.length() > 0) {
+                return label + "/" + branch; //$NON-NLS-1$ 
+            }
+            return label;
         } else {
             String label = node.getLabel();
             return label;

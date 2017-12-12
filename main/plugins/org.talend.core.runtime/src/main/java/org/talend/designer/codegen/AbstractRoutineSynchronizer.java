@@ -101,7 +101,7 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
                 beansList.put(key, (RoutineItem) obj.getProperty().getItem());
             }
         }
-        for (ProjectReference projectReference : (Collection<ProjectReference>) project.getEmfProject().getReferencedProjects()) {
+        for (ProjectReference projectReference : project.getProjectReferenceList()) {
             getReferencedProjectRoutine(beansList, new Project(projectReference.getReferencedProject()), routineType);
         }
     }

@@ -753,8 +753,8 @@ public class DeleteAction extends AContextualAction {
             }
             String parentBranch = ProjectManager.getInstance().getMainProjectBranch(parentProject);
 
-            EList referencedProjects = parentProject.getEmfProject().getReferencedProjects();
-            for (ProjectReference pRef : (List<ProjectReference>) referencedProjects) {
+            List<ProjectReference> referencedProjects = parentProject.getProjectReferenceList();
+            for (ProjectReference pRef : referencedProjects) {
                 if (pRef.getBranch() != null && !parentBranch.equals(pRef.getBranch())) {
                     continue;
                 }

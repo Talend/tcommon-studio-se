@@ -24,7 +24,6 @@ import java.util.Set;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.emf.ecore.EObject;
-import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.GlobalServiceRegister;
@@ -41,7 +40,6 @@ import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.repository.RepositoryManager;
 import org.talend.core.model.repository.SVNConstant;
 import org.talend.core.model.utils.TalendPropertiesUtil;
-import org.talend.core.prefs.PreferenceManipulator;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.ui.IReferencedProjectService;
 import org.talend.repository.model.IProxyRepositoryFactory;
@@ -68,9 +66,9 @@ public final class ProjectManager {
     public static final String NAME_BRANCHES = SVNConstant.NAME_BRANCHES;
 
     public static final String NAME_TAGS = SVNConstant.NAME_TAGS;
-    
+
     public static final String BRANCHES_PREFIX = "branches/";
-    
+
     public static final String ORIGIN_PREFIX = "origin/";
 
     private static ProjectManager singleton;
@@ -80,22 +78,16 @@ public final class ProjectManager {
     private Map<String, String> mapProjectUrlToBranchUrl = new HashMap<String, String>();
 
     private Map<String, List<FolderItem>> foldersMap = new HashMap<String, List<FolderItem>>();
-    
-    private JSONObject allLocalRefBranchSetting = null;
 
     private Set<String> beforeLogonRecords;
 
     private Set<String> logonRecords;
 
     private Set<String> migrationRecords;
-    
+
     private Set<Object> updatedRemoteHandlerRecords;
 
-    private Map<String, List<ProjectReference>> allTACProjectProjectReferenceSetting = new HashMap<String, List<ProjectReference>>();
-
     private ProjectManager() {
-        PreferenceManipulator prefManipulator = new PreferenceManipulator();
-        allLocalRefBranchSetting = prefManipulator.getAllLocalRefBranchSetting();
         beforeLogonRecords = new HashSet<String>();
         logonRecords = new HashSet<String>();
         migrationRecords = new HashSet<String>();
@@ -126,6 +118,7 @@ public final class ProjectManager {
 
         return null;
     }
+
     public Project getProjectFromProjectTechLabel(String label) {
         if (currentProject == null) {
             initCurrentProject();
@@ -149,73 +142,27 @@ public final class ProjectManager {
             RepositoryContext repositoryContext = (RepositoryContext) ctx.getProperty(Context.REPOSITORY_CONTEXT_KEY);
             if (repositoryContext != null) {
                 currentProject = repositoryContext.getProject();
-                if (currentProject != null) {
-                    resolveRefProject(currentProject.getEmfProject());
-                }
                 return;
             }
         }
         currentProject = null;
     }
 
-    @SuppressWarnings("unchecked")
-    private void resolveRefProject(org.talend.core.model.properties.Project p) {
-        Context ctx = CoreRuntimePlugin.getInstance().getContext();
-        if (p != null && ctx != null) {
-            String parentBranch = ProjectManager.getInstance().getMainProjectBranch(p);
-            if (parentBranch != null) {
-                for (ProjectReference pr : (List<ProjectReference>) p.getReferencedProjects()) {
-                    if (ProjectManager.validReferenceProject(p, pr)) {
-                        resolveRefProject(pr.getReferencedProject()); // only to resolve all
-                    }
-                }
-            }
-        }
-    }
+    private void resolveSubRefProject(org.talend.core.model.properties.Project p, List<Project> allReferencedprojects,
+            Set<String> resolvedProjectLabels) {
 
-    @SuppressWarnings("unchecked")
-    private void resolveSubRefProject(org.talend.core.model.properties.Project p, List<Project> allReferencedprojects) {
         Context ctx = CoreRuntimePlugin.getInstance().getContext();
         if (ctx != null && p != null) {
             String parentBranch = ProjectManager.getInstance().getMainProjectBranch(p);
             if (parentBranch != null) {
-                for (ProjectReference pr : (List<ProjectReference>) p.getReferencedProjects()) {
-                    if (ProjectManager.validReferenceProject(p, pr)) {
+                resolvedProjectLabels.add(p.getTechnicalLabel());
+                for (ProjectReference pr : new Project(p).getProjectReferenceList()) {
+                    if (ProjectManager.validReferenceProject(p, pr)
+                            && !resolvedProjectLabels.contains(pr.getReferencedProject().getTechnicalLabel())) {
                         Project project = new Project(pr.getReferencedProject(), false);
                         allReferencedprojects.add(project);
-                        resolveSubRefProject(pr.getReferencedProject(), allReferencedprojects); // only to resolve all
+                        resolveSubRefProject(pr.getReferencedProject(), allReferencedprojects, resolvedProjectLabels); // only to resolve all
                     }
-                }
-            }
-        }
-    }
-
-    /**
-     *
-     * retrieve the referenced projects of current project.
-     */
-    public void retrieveReferencedProjects(List<Project> referencedprojects) {
-        referencedprojects.clear();
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IProxyRepositoryService.class)) {
-            IProxyRepositoryService service = (IProxyRepositoryService) GlobalServiceRegister.getDefault().getService(
-                    IProxyRepositoryService.class);
-            IProxyRepositoryFactory factory = service.getProxyRepositoryFactory();
-            if (factory != null) {
-                retrieveReferencedProjects(factory, this.getCurrentProject(), referencedprojects);
-            }
-        }
-    }
-
-    public void retrieveReferencedProjects(IProxyRepositoryFactory proxyRepositoryFactory, Project mainProject,
-            List<Project> referencedprojects) {
-        referencedprojects.clear();
-        if (proxyRepositoryFactory != null) {
-            List<org.talend.core.model.properties.Project> rProjects = proxyRepositoryFactory.getReferencedProjects(mainProject);
-            if (rProjects != null) {
-                for (org.talend.core.model.properties.Project p : rProjects) {
-                    Project project = new Project(p);
-                    resolveRefProject(p);
-                    referencedprojects.add(project);
                 }
             }
         }
@@ -240,15 +187,7 @@ public final class ProjectManager {
      * return the referenced projects of current project.
      */
     public List<Project> getReferencedProjects() {
-        List<Project> referencedprojects = new ArrayList<Project>();
-        retrieveReferencedProjects(referencedprojects);
-        return referencedprojects;
-    }
-
-    public List<Project> getReferencedProjects(IProxyRepositoryFactory proxyRepositoryFactory, Project project) {
-        List<Project> referencedprojects = new ArrayList<Project>();
-        retrieveReferencedProjects(proxyRepositoryFactory, project, referencedprojects);
-        return referencedprojects;
+        return getReferencedProjects(currentProject);
     }
 
     /**
@@ -263,17 +202,17 @@ public final class ProjectManager {
                 // just return an empty list in this case.
                 return allReferencedprojects;
             }
-            IProxyRepositoryService service = (IProxyRepositoryService) GlobalServiceRegister.getDefault().getService(
-                    IProxyRepositoryService.class);
+            IProxyRepositoryService service = (IProxyRepositoryService) GlobalServiceRegister.getDefault()
+                    .getService(IProxyRepositoryService.class);
             IProxyRepositoryFactory factory = service.getProxyRepositoryFactory();
             if (factory != null) {
                 List<org.talend.core.model.properties.Project> rProjects = factory
                         .getReferencedProjects(this.getCurrentProject());
                 if (rProjects != null) {
                     for (org.talend.core.model.properties.Project p : rProjects) {
-                        Project project = new Project(p, false);
+                        Project project = new Project(p);
                         allReferencedprojects.add(project);
-                        resolveSubRefProject(p, allReferencedprojects);
+                        resolveSubRefProject(p, allReferencedprojects, new HashSet<String>());
                     }
                 }
             }
@@ -285,17 +224,12 @@ public final class ProjectManager {
      *
      * return the referenced projects of the project.
      */
-    @SuppressWarnings("unchecked")
     public List<Project> getReferencedProjects(Project project) {
-        Context ctx = CoreRuntimePlugin.getInstance().getContext();
-        if (project != null && ctx != null) {
-            if (project.equals(this.currentProject)) {
-                return getReferencedProjects();
-            }
+        if (project != null) {
             List<Project> refProjects = new ArrayList<Project>();
-            for (ProjectReference refProject : (List<ProjectReference>) project.getEmfProject().getReferencedProjects()) {
+            for (ProjectReference refProject : project.getProjectReferenceList()) {
                 if (ProjectManager.validReferenceProject(project.getEmfProject(), refProject)) {
-                    refProjects.add(new Project(refProject.getReferencedProject(), false));
+                    refProjects.add(new Project(getProject(refProject.getReferencedProject()), false));
                 }
             }
             return refProjects;
@@ -443,8 +377,8 @@ public final class ProjectManager {
         if (node != null) {
             Project curP = getCurrentProject();
             if (PluginChecker.isRefProjectLoaded()) {
-                IReferencedProjectService service = (IReferencedProjectService) GlobalServiceRegister.getDefault().getService(
-                        IReferencedProjectService.class);
+                IReferencedProjectService service = (IReferencedProjectService) GlobalServiceRegister.getDefault()
+                        .getService(IReferencedProjectService.class);
                 if (service != null && service.isMergeRefProject() && curP != null) {
                     IRepositoryViewObject object = node.getObject();
                     if (object == null) {
@@ -710,7 +644,6 @@ public final class ProjectManager {
      * Expected to be called when logoff project, to clear all infos in memory.
      */
     public void clearAll() {
-        getAllReferencedProjects().clear();
         mapProjectUrlToBranchUrl.clear();
         clearFolderCache();
     }
@@ -738,151 +671,21 @@ public final class ProjectManager {
         }
         return projectType;
     }
-    
-    public void setLocalRefBranch(org.talend.core.model.properties.Project mainProject, String targetName,
-            List<ProjectReference> projectReferenceList) {
-        if (mainProject == null || targetName == null) {
-            return;
-        }
-        String projectBranchId = getProjectBranchId(mainProject, targetName);
-        try {
-            JSONObject projectRefSetting = null;
-            if (!allLocalRefBranchSetting.isNull(projectBranchId)) {
-                projectRefSetting = allLocalRefBranchSetting.getJSONObject(projectBranchId);
-            } else {
-                projectRefSetting = new JSONObject();
-                allLocalRefBranchSetting.put(projectBranchId, projectRefSetting);
-            }
-            for (ProjectReference projectReference : projectReferenceList) {
-                projectRefSetting.put(projectReference.getReferencedProject().getTechnicalLabel(),
-                        projectReference.getReferencedBranch());
-                projectRefSetting.put(mainProject.getTechnicalLabel(), projectReference.getBranch());
-            }
-            // Save to file
-            PreferenceManipulator prefManipulator = new PreferenceManipulator();
-            prefManipulator.setAllLocalRefBranchSetting(allLocalRefBranchSetting);
-            allLocalRefBranchSetting = prefManipulator.getAllLocalRefBranchSetting();
-        } catch (JSONException e) {
-            ExceptionHandler.process(e);
-        }
-    }
-    
-    public void copyLocalRefBranchFromOtherBranch(org.talend.core.model.properties.Project mainProject, String targetBranch,
-            String sourceBranch) {
-        if (mainProject == null || targetBranch == null) {
-            return;
-        }
-        String projectBranchId = getProjectBranchId(mainProject, sourceBranch);
-        try {
-            JSONObject projectRefSetting = null;
-            if (!allLocalRefBranchSetting.isNull(projectBranchId)) {
-                projectRefSetting = allLocalRefBranchSetting.getJSONObject(projectBranchId);
-                String targetBranchId = getProjectBranchId(mainProject, targetBranch);
-                allLocalRefBranchSetting.put(targetBranchId, projectRefSetting);
-                // Save to file
-                PreferenceManipulator prefManipulator = new PreferenceManipulator();
-                prefManipulator.setAllLocalRefBranchSetting(allLocalRefBranchSetting);
-                allLocalRefBranchSetting = prefManipulator.getAllLocalRefBranchSetting();
-            }
-        } catch (JSONException e) {
-            ExceptionHandler.process(e);
-        }
-    }
-
-    public void deleteLocalRefBranchSetting(org.talend.core.model.properties.Project mainProject, String mainBranch) {
-        if (mainProject == null || mainBranch == null) {
-            return;
-        }
-
-        String projectBranchId = getProjectBranchId(mainProject, mainBranch);
-        if (!allLocalRefBranchSetting.isNull(projectBranchId)) {
-            allLocalRefBranchSetting.remove(projectBranchId);
-            
-            PreferenceManipulator prefManipulator = new PreferenceManipulator();
-            prefManipulator.setAllLocalRefBranchSetting(allLocalRefBranchSetting);
-            allLocalRefBranchSetting = prefManipulator.getAllLocalRefBranchSetting();
-        }
-    }
-
-    private String getProjectBranchId(org.talend.core.model.properties.Project mainProject, String mainBranch) {
-        StringBuffer sb = new StringBuffer();
-        String branchName = getFormatedBranchName(mainBranch);
-        sb.append(mainProject.getTechnicalLabel()).append("@").append(branchName);
-        return sb.toString();
-    }
-    
-    public boolean hasLocalRefBranchSetting(org.talend.core.model.properties.Project mainProject, String mainBranch) {
-        if (mainProject == null || mainBranch == null) {
-            return false;
-        }
-
-        String projectBranchId = getProjectBranchId(mainProject, mainBranch);
-        if (!allLocalRefBranchSetting.isNull(projectBranchId)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    public String getLocalProjectReferenceBranch(org.talend.core.model.properties.Project mainProject, String mainBranch,
-            ProjectReference projectReference) {
-        if (mainProject == null || mainBranch == null) {
-            return null;
-        }
-
-        String projectBranchId = getProjectBranchId(mainProject, mainBranch);
-        JSONObject projectRefSetting = null;
-        try {
-            if (!allLocalRefBranchSetting.isNull(projectBranchId)) {
-                projectRefSetting = allLocalRefBranchSetting.getJSONObject(projectBranchId);
-                if (projectRefSetting != null
-                        && !projectRefSetting.isNull(projectReference.getReferencedProject().getTechnicalLabel())) {
-                    return projectRefSetting.getString(projectReference.getProject().getTechnicalLabel());
-                }
-            }
-        } catch (JSONException e) {
-            ExceptionHandler.process(e);
-        }
-        return null;
-    }
-    
-    public String getLocalProjectReferenceReferenceBranch(org.talend.core.model.properties.Project mainProject, String mainBranch,
-            ProjectReference projectReference) {
-        if (mainProject == null || mainBranch == null) {
-            return null;
-        }
-
-        String projectBranchId = getProjectBranchId(mainProject, mainBranch);
-        JSONObject projectRefSetting = null;
-        try {
-            if (!allLocalRefBranchSetting.isNull(projectBranchId)) {
-                projectRefSetting = allLocalRefBranchSetting.getJSONObject(projectBranchId);
-                if (projectRefSetting != null
-                        && !projectRefSetting.isNull(projectReference.getReferencedProject().getTechnicalLabel())) {
-                    return projectRefSetting.getString(projectReference.getReferencedProject().getTechnicalLabel());
-                }
-            }
-        } catch (JSONException e) {
-            ExceptionHandler.process(e);
-        }
-        return null;
-    }
 
     public static boolean validReferenceProject(org.talend.core.model.properties.Project mainProject,
             ProjectReference projectReference) {
         if (mainProject == null || projectReference == null) {
             return false;
         }
-
+        if (mainProject.getTechnicalLabel().equals(projectReference.getReferencedProject().getTechnicalLabel())) {
+            return false;
+        }
         String branchForMainProject = ProjectManager.getInstance().getMainProjectBranch(mainProject);
-        String rBranch4Local = ProjectManager.getInstance().getLocalProjectReferenceBranch(mainProject, branchForMainProject, projectReference);
-        String rRefBranch4Local = ProjectManager.getInstance().getLocalProjectReferenceReferenceBranch(mainProject, branchForMainProject, projectReference);
-        
-        return validReferenceProject(branchForMainProject, rBranch4Local, rRefBranch4Local, projectReference);
+
+        return validReferenceProject(branchForMainProject, projectReference);
     }
 
-    public static boolean validReferenceProject(String branchForMainProject, String rBranch4Local, String refBranch4Local,
-            ProjectReference projectReference) {
+    public static boolean validReferenceProject(String branchForMainProject, ProjectReference projectReference) {
         if (projectReference == null) {
             return false;
         }
@@ -892,16 +695,10 @@ public final class ProjectManager {
                         || branchForMainProject.equals(ORIGIN_PREFIX + projectReference.getBranch())))) {
             return true;
         }
-        if (projectReference.getBranch() != null && projectReference.getReferencedBranch() != null) {
-            if (getCleanBranchName(projectReference.getBranch()).equals(getCleanBranchName(rBranch4Local))
-                    && getCleanBranchName(projectReference.getReferencedBranch()).equals(getCleanBranchName(refBranch4Local))) {
-                return true;
-            }
-        }
 
         return false;
     }
-    
+
     public static String getCleanBranchName(String branchName) {
         if (branchName == null) {
             return null;
@@ -930,22 +727,4 @@ public final class ProjectManager {
     public Set<Object> getUpdatedRemoteHandlerRecords() {
         return this.updatedRemoteHandlerRecords;
     }
-
-    public Map<String, List<ProjectReference>> getAllTACProjectProjectReferenceSetting() {
-        return allTACProjectProjectReferenceSetting;
-    }
-    
-    public List<ProjectReference> getTACProjectReferenceList(Project mainProject, String branchName) {
-        List<ProjectReference> list = new ArrayList<ProjectReference>();
-        List<ProjectReference> allProjectReferenceList = allTACProjectProjectReferenceSetting.get(mainProject.getTechnicalLabel());
-        if (allProjectReferenceList != null) {
-            for (ProjectReference projectReference : allProjectReferenceList) {
-                if (projectReference.getBranch().equals(branchName)) {
-                    list.add(projectReference);
-                }
-            }
-        }
-
-        return list;
-    }    
 }

@@ -227,8 +227,8 @@ public final class RetrieveItemsUtil {
             if (ctx != null) {
                 String parentBranch = ProjectManager.getInstance().getMainProjectBranch(project);
 
-                EList refProjects = project.getEmfProject().getReferencedProjects();
-                for (ProjectReference pRef : (List<ProjectReference>) refProjects) {
+                List<ProjectReference> refProjects = project.getProjectReferenceList();
+                for (ProjectReference pRef : refProjects) {
                     if (pRef.getBranch() == null || parentBranch.equals(pRef.getBranch())) {
                         Project refP = new Project(pRef.getReferencedProject());
                         retrieveItems(factory, refP, type, withLastVersion, withDeleted, withLocked, withRefProject, results);

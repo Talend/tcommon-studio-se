@@ -93,7 +93,7 @@ public class DynamicContentProvider extends IntroProvider {
             if (latestItems.size() == 0) {
                 parent.appendChild(dom.createTextNode(Messages.getString("DynamicContentProvider.services"))); //$NON-NLS-1$
             }
-        } else if (ERepositoryObjectType.PROCESS_ROUTE != null && ERepositoryObjectType.PROCESS_ROUTE.name().equals(id)) { //$NON-NLS-1$
+        } else if (ERepositoryObjectType.PROCESS_ROUTE != null && ERepositoryObjectType.PROCESS_ROUTE.name().equals(id)) { // $NON-NLS-1$
             latestItems = getLatestModifiedItems(ERepositoryObjectType.PROCESS_ROUTE, 8);
             url = "http://org.eclipse.ui.intro/runAction?pluginId=org.talend.camel.designer&" //$NON-NLS-1$
                     + "class=org.talend.camel.designer.ui.EditCamelProcess&" //$NON-NLS-1$
@@ -163,8 +163,8 @@ public class DynamicContentProvider extends IntroProvider {
         // edition
         String edition = null;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IBrandingService.class)) {
-            IBrandingService brandingService = (IBrandingService) GlobalServiceRegister.getDefault().getService(
-                    IBrandingService.class);
+            IBrandingService brandingService = (IBrandingService) GlobalServiceRegister.getDefault()
+                    .getService(IBrandingService.class);
             edition = brandingService.getAcronym();
         }
         // version
@@ -200,7 +200,7 @@ public class DynamicContentProvider extends IntroProvider {
     }
 
     protected void createCloudPage(Document dom, Element parent) {
-        createOnlinePage(dom, parent, CLOUD_PAGE_URL, Messages.getString("DynamicContentProvider.TalendIntegrationCloud")); //$NON-NLS-1$
+        createOnlinePage(dom, parent, CLOUD_PAGE_URL, null);
     }
 
     protected void createOnlinePage(Document dom, Element parent, String onlinePageUrl, String title) {
@@ -236,12 +236,14 @@ public class DynamicContentProvider extends IntroProvider {
         div.setAttribute("style", "overflow:auto;height:400px;width:260px;padding-left:20px;"); //$NON-NLS-1$ //$NON-NLS-2$
         tdElem.appendChild(div);
 
-        Element spanElem = dom.createElement("span"); //$NON-NLS-1$
-        spanElem.setAttribute("class", "style_1 style_2 style_3"); //$NON-NLS-1$ //$NON-NLS-2$
-        spanElem.appendChild(dom.createTextNode(title));
-        div.appendChild(spanElem);
-        div.appendChild(dom.createElement("br")); //$NON-NLS-1$
-
+        if (title != null) {
+            Element spanElem = dom.createElement("span"); //$NON-NLS-1$
+            spanElem.setAttribute("class", "style_1 style_2 style_3"); //$NON-NLS-1$ //$NON-NLS-2$
+            spanElem.appendChild(dom.createTextNode(title));
+            div.appendChild(spanElem);
+            div.appendChild(dom.createElement("br")); //$NON-NLS-1$
+        }
+        
         Element iFrame = dom.createElement("iframe"); //$NON-NLS-1$
         iFrame.setAttribute("src", getOnlinePageURL(onlinePageUrl)); //$NON-NLS-1$
         iFrame.setAttribute("frameborder", "0"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -253,7 +255,8 @@ public class DynamicContentProvider extends IntroProvider {
 
     protected void createTopMessage(Document dom, Element parent) {
         Element topMessageElem = dom.createElement("div"); //$NON-NLS-1$
-        topMessageElem.setAttribute("style", "position: absolute;left: 660px;top: 22px;width: 200px;text-align: center;line-height: 28px;letter-spacing: 1px;"); //$NON-NLS-1$//$NON-NLS-2$
+        topMessageElem.setAttribute("style", //$NON-NLS-1$
+                "position: absolute;left: 660px;top: 22px;width: 200px;text-align: center;line-height: 28px;letter-spacing: 1px;"); //$NON-NLS-1$
         parent.appendChild(topMessageElem);
 
         Element ticHrefElem = dom.createElement("a"); //$NON-NLS-1$

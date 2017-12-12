@@ -917,10 +917,10 @@ public abstract class AbstractEMFRepositoryFactory extends AbstractRepositoryFac
         } else {
             allVersion.addAll(getAllVersion(project, property.getId(), false));
         }
-        if (allVersion.size() == 0 && project.getEmfProject().getReferencedProjects().size() > 0) {
+        if (allVersion.size() == 0 && project.getProjectReferenceList().size() > 0) {
             String parentBranch = ProjectManager.getInstance().getMainProjectBranch(project);
 
-            for (ProjectReference refProject : (List<ProjectReference>) project.getEmfProject().getReferencedProjects()) {
+            for (ProjectReference refProject : project.getProjectReferenceList()) {
                 if (refProject.getBranch() != null && !parentBranch.equals(refProject.getBranch())) {
                     continue;
                 }

@@ -282,7 +282,7 @@ public class MavenCommandLauncher {
         // if (launchConfiguration instanceof ILaunchConfigurationWorkingCopy) {
         // ILaunchConfigurationWorkingCopy copiedConfig = (ILaunchConfigurationWorkingCopy) launchConfiguration;
         // }
-        TalendLauncherWaiter talendWaiter = new TalendLauncherWaiter(launchConfiguration);
+        TalendLauncherWaiter talendWaiter = new TalendLauncherWaiter(launchConfiguration, monitor);
 
         final ILaunch launch = buildAndLaunch(launchConfiguration, launcherMode, monitor);
         talendWaiter.waitFinish(launch);
@@ -346,9 +346,12 @@ public class MavenCommandLauncher {
 
         private boolean launchFinished = false;
 
-        public TalendLauncherWaiter(ILaunchConfiguration launchConfig) {
+        private IProgressMonitor monitor;
+        
+        public TalendLauncherWaiter(ILaunchConfiguration launchConfig, IProgressMonitor monitor) {
             super();
             this.launchConfig = launchConfig;
+            this.monitor = monitor;
             DebugPlugin.getDefault().addDebugEventListener(this);
         }
 
@@ -382,6 +385,9 @@ public class MavenCommandLauncher {
                         if (launch.getProcesses()[0].isTerminated()) {
                             break;
                         }
+                    }
+                    if (monitor != null && monitor.isCanceled()) {
+                        break;
                     }
                 }
             } catch (InterruptedException e) {
