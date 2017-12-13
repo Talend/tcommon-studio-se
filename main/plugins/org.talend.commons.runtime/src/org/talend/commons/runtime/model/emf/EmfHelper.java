@@ -206,10 +206,8 @@ public class EmfHelper {
         if (resource.getURI() == null) {
             return;
         }
-        Map options = EmfResourcesFactoryReader.INSTANCE.getSaveOptions(resource);
+        Map<String, Object> options = EmfResourcesFactoryReader.INSTANCE.getSaveOptions(resource);
 
-        options.put(XMLResource.OPTION_ENCODING, "UTF-8"); //$NON-NLS-1$
-        options.put(XMLResource.OPTION_ESCAPE_USING_CDATA, Boolean.TRUE);
         try {
             if (outputStream == null) {
                 resource.save(options);

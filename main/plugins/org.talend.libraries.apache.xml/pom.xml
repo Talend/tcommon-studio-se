@@ -1,12 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>org.talend.studio</groupId>
-    <artifactId>tcommon-studio-se</artifactId>
-    <version>7.0.1-SNAPSHOT</version>
-    <relativePath>../../../</relativePath>
-  </parent>
-  <artifactId>org.talend.libraries.apache.xml</artifactId>
-  <packaging>eclipse-plugin</packaging>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.talend.studio</groupId>
+		<artifactId>tcommon-studio-se</artifactId>
+		<version>7.0.1-SNAPSHOT</version>
+		<relativePath>../../../</relativePath>
+	</parent>
+	<artifactId>org.talend.libraries.apache.xml</artifactId>
+	<packaging>eclipse-plugin</packaging>
+	
+	<properties>
+		<xmlrpc.version>3.0</xmlrpc.version>
+	</properties>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.8</version>
+				<executions>
+					<execution>
+						<id>copy-maven-repository</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.basedir}/lib</outputDirectory>
+							<artifactItems>
+								<artifactItem>
+									<groupId>org.apache.santuario</groupId>
+									<artifactId>xmlsec</artifactId>
+									<version>2.1.0</version>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.apache.ws.xmlschema</groupId>
+									<artifactId>xmlschema-core</artifactId>
+									<version>2.0.1</version>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.apache.xmlrpc</groupId>
+									<artifactId>xmlrpc-common</artifactId>
+									<version>${xmlrpc.version}</version>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.apache.xmlrpc</groupId>
+									<artifactId>xmlrpc-client</artifactId>
+									<version>${xmlrpc.version}</version>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>
