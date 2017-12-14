@@ -331,7 +331,8 @@ public class SelectRepositoryContextDialog extends SelectionDialog {
             ContextParameterType param = (ContextParameterType) obj;
             treeViewer.setGrayed(param, false);
             if (helper.existParameterForJob(param)) {
-                treeViewer.setChecked(param, true); // checked always
+                //lead to TUP-19089
+                //treeViewer.setChecked(param, true); // checked always 
             } else {
                 ContextParameterType existedParam = hasSelectedParam(param);
                 if (existedParam != null && selectedContextName != null) {
