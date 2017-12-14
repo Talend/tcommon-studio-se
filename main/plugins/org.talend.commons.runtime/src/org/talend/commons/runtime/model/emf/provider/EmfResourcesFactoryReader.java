@@ -171,6 +171,7 @@ public class EmfResourcesFactoryReader extends ExtensionRegistryReader {
                     createProvider(saveOptionsBeans, element);
                 }
             });
+            return true;
         }
         if ("loadOption".equals(element.getName())) { //$NON-NLS-1$
             SafeRunner.run(new RegistrySafeRunnable() {
@@ -180,6 +181,7 @@ public class EmfResourcesFactoryReader extends ExtensionRegistryReader {
                     createProvider(loadOptionsBeans, element);
                 }
             });
+            return true;
         }
         if ("resourceHandler".equals(element.getName())) { //$NON-NLS-1$
             SafeRunner.run(new RegistrySafeRunnable() {
@@ -199,6 +201,7 @@ public class EmfResourcesFactoryReader extends ExtensionRegistryReader {
 
                 }
             });
+            return true;
         }
         return false;
     }

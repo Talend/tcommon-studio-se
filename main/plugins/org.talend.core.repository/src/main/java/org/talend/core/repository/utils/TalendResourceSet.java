@@ -12,7 +12,9 @@
 // ============================================================================
 package org.talend.core.repository.utils;
 
+import java.io.IOException;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +28,7 @@ import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.emf.ecore.util.NotifyingInternalEListImpl;
+import org.talend.commons.runtime.model.emf.provider.EmfResourcesFactoryReader;
 
 /**
  * created by nrousseau on Aug 7, 2013<br>
@@ -118,6 +121,21 @@ public class TalendResourceSet extends ResourceSetImpl {
         }
 
         return null;
+    }
+
+    @Override
+    protected void demandLoad(Resource resource) throws IOException {
+        final Map<Object, Object> old = new HashMap<Object, Object>(getLoadOptions());
+        try {
+            Map<String, Object> options = EmfResourcesFactoryReader.INSTANCE.getLoadOptions(resource);
+            getLoadOptions().putAll(options);
+
+            super.demandLoad(resource);
+
+        } finally {
+            getLoadOptions().clear();
+            getLoadOptions().putAll(old);
+        }
     }
 
     /**
