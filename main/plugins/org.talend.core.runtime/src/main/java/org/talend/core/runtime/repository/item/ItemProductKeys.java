@@ -36,10 +36,12 @@ public enum ItemProductKeys {
     }
 
     public String getCreatedKey() {
+        // should be same as the PropertyImpl.getCreationDate()
         return "created_" + getKey();
     }
 
     public String getModifiedKey() {
+        // should be same as the PropertyImpl.getModificationDate()
         return "modified_" + getKey();
     }
 

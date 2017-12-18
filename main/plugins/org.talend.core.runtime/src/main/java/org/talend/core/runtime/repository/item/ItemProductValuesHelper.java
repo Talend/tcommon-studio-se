@@ -24,6 +24,7 @@ import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.properties.Project;
 import org.talend.core.model.properties.Property;
 import org.talend.core.ui.branding.IBrandingService;
+import org.talend.cwm.helper.ResourceHelper;
 import org.talend.repository.ProjectManager;
 
 /**
@@ -35,7 +36,7 @@ public final class ItemProductValuesHelper {
     /*
      * 2017-10-09T14:30:19.367+0800
      */
-    public static final SimpleDateFormat DATEFORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+    public static final SimpleDateFormat DATEFORMAT = ResourceHelper.DATEFORMAT;
 
     public static String getCurDateTime() {
         return DATEFORMAT.format(new Date());
