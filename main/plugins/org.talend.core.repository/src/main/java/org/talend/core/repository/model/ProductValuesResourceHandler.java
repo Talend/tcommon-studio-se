@@ -60,10 +60,6 @@ public class ProductValuesResourceHandler extends ResourceHandler {
                     // generally, work for modification in studio
                     ItemProductValuesHelper.setValuesWhenModify(prop, saveDate);
                 }
-
-                // always remove the date when save
-                prop.setCreationDate(null);
-                prop.setModificationDate(null);
             }
         }
     }
