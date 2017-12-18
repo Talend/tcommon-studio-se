@@ -12,21 +12,9 @@
 // ============================================================================
 package org.talend.commons.runtime.model.emf.provider;
 
-/**
- * DOC ggu class global comment. Detailled comment
- */
-public abstract class OptionProvider implements IOptionProvider {
+public interface IOptionProvider {
 
-    public abstract String getName();
+    String getName();
 
-    public abstract Object getValue();
-
-    public boolean checkSave(Object resource) {
-        return true; // nothing to check by default
-    }
-
-    public boolean checkLoad(Object resource) {
-        return true; // nothing to check by default
-    }
-
+    Object getValue();
 }

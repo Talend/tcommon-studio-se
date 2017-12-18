@@ -1004,13 +1004,12 @@ public class ImportItemsWizardPage extends WizardPage {
                     }
                     final ResourceOption importOption = ResourceOption.ITEM_IMPORTATION;
                     try {
-                        EmfResourcesFactoryReader.INSTANCE.getSaveOptionsProviders().put(importOption.getName(),
-                                importOption.getProvider());
+                        EmfResourcesFactoryReader.INSTANCE.addOption(importOption, false);
 
                         importManager.importItemRecords(monitor, resManager, checkedItemRecords, overwrite,
                                 nodesBuilder.getAllImportItemRecords(), destinationPath);
                     } finally {
-                        EmfResourcesFactoryReader.INSTANCE.getSaveOptionsProviders().remove(importOption.getName());
+                        EmfResourcesFactoryReader.INSTANCE.removOption(importOption, false);
                     }
                     Display.getDefault().syncExec(new Runnable() {
 

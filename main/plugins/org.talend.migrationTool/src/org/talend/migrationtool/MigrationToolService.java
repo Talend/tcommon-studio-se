@@ -109,13 +109,12 @@ public class MigrationToolService implements IMigrationToolService {
     public void executeMigrationTasksForImport(Project project, Item item, List<MigrationTask> migrationTasksToApply,
             final IProgressMonitor monitor) throws Exception {
         final ResourceOption migrationOption = ResourceOption.MIGRATION;
-        final String optionName = migrationOption.getName();
         try {
-            EmfResourcesFactoryReader.INSTANCE.getSaveOptionsProviders().put(optionName, migrationOption.getProvider());
+            EmfResourcesFactoryReader.INSTANCE.addOption(migrationOption, false);
 
             delegateExecuteMigrationTasksForImport(project, item, migrationTasksToApply, monitor);
         } finally {
-            EmfResourcesFactoryReader.INSTANCE.getSaveOptionsProviders().remove(optionName);
+            EmfResourcesFactoryReader.INSTANCE.removOption(migrationOption, false);
         }
     }
 
@@ -182,13 +181,12 @@ public class MigrationToolService implements IMigrationToolService {
     @Override
     public void executeMigrationTasksForLogon(final Project project, final boolean beforeLogon, final IProgressMonitor monitorWrap) {
         final ResourceOption migrationOption = ResourceOption.MIGRATION;
-        final String optionName = migrationOption.getName();
         try {
-            EmfResourcesFactoryReader.INSTANCE.getSaveOptionsProviders().put(optionName, migrationOption.getProvider());
+            EmfResourcesFactoryReader.INSTANCE.addOption(migrationOption, false);
 
             delateExecuteMigrationTasksForLogon(project, beforeLogon, monitorWrap);
         } finally {
-            EmfResourcesFactoryReader.INSTANCE.getSaveOptionsProviders().remove(optionName);
+            EmfResourcesFactoryReader.INSTANCE.removOption(migrationOption, false);
         }
     }
 

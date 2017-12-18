@@ -41,6 +41,8 @@ import org.eclipse.ui.views.properties.PropertySheet;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.LoginException;
 import org.talend.commons.exception.PersistenceException;
+import org.talend.commons.runtime.model.emf.provider.EmfResourcesFactoryReader;
+import org.talend.commons.runtime.model.emf.provider.ResourceOption;
 import org.talend.commons.ui.swt.actions.ITreeContextualAction;
 import org.talend.commons.utils.VersionUtils;
 import org.talend.core.GlobalServiceRegister;
@@ -602,6 +604,16 @@ public abstract class AContextualAction extends Action implements ITreeContextua
 
     @Override
     public void run() {
+        final ResourceOption usingOption = ResourceOption.USING;
+        try {
+            EmfResourcesFactoryReader.INSTANCE.addOption(usingOption, true);
+            delegateRun();
+        } finally {
+            EmfResourcesFactoryReader.INSTANCE.removOption(usingOption, true);
+        }
+    }
+
+    public void delegateRun() {
         String name = "User action : " + getText(); //$NON-NLS-1$
 
         oldItem = null;

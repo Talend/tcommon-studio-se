@@ -15,12 +15,13 @@ package org.talend.commons.runtime.model.emf.provider;
 /**
  * DOC ggu class global comment. Detailled comment
  */
-public enum ResourceOption {
+public enum ResourceOption implements IOptionProvider {
 
     CREATATION,
     MIGRATION,
     ITEM_IMPORTATION,
-    DEMO_IMPORTATION, ;
+    DEMO_IMPORTATION,
+    USING, ;
 
     private final OptionProvider provider;
 
@@ -54,6 +55,11 @@ public enum ResourceOption {
 
     private String getName0() {
         return ("option_" + name()).toLowerCase();
+    }
+
+    @Override
+    public Object getValue() {
+        return getProvider();
     }
 
 }

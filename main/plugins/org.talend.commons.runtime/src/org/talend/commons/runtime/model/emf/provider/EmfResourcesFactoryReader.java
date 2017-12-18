@@ -157,6 +157,29 @@ public class EmfResourcesFactoryReader extends ExtensionRegistryReader {
         return loadOptionsProviders;
     }
 
+    /**
+     * if load is false, will be for saving option.
+     */
+    public void addOption(IOptionProvider option, boolean load) {
+        final Object value = option.getValue();
+        if (value instanceof OptionProvider) {
+            OptionProvider provider = (OptionProvider) value;
+            if (load) {
+                getLoadOptionsProviders().put(option.getName(), provider);
+            } else {
+                getSaveOptionsProviders().put(option.getName(), provider);
+            }
+        }
+    }
+
+    public void removOption(IOptionProvider option, boolean load) {
+        if (load) {
+            getLoadOptionsProviders().remove(option.getName());
+        } else {
+            getSaveOptionsProviders().remove(option.getName());
+        }
+    }
+
     public ResourceHandler[] getResourceHandlers() {
         return resourceHandlers.values().toArray(new ResourceHandler[resourceHandlers.size()]);
     }

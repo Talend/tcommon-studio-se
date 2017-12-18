@@ -2676,12 +2676,11 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
     @Override
     public void create(Project project, Item item, IPath path, boolean... isImportItem) throws PersistenceException {
         final ResourceOption creatation = ResourceOption.CREATATION;
-        final String optionName = creatation.getName();
-        EmfResourcesFactoryReader.INSTANCE.getSaveOptionsProviders().put(optionName, creatation.getProvider());
+        EmfResourcesFactoryReader.INSTANCE.addOption(creatation, false);
         try {
             delegateCreate(project, item, path, isImportItem);
         } finally {
-            EmfResourcesFactoryReader.INSTANCE.getSaveOptionsProviders().remove(optionName);
+            EmfResourcesFactoryReader.INSTANCE.removOption(creatation, false);
         }
     }
 
