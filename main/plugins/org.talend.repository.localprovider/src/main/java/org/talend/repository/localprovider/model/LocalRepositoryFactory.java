@@ -2355,6 +2355,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         }
 
         computePropertyMaxInformationLevel(item.getProperty());
+        item.getProperty().setModificationDate(new Date());
         Resource itemResource = null;
         Resource screenshotResource = null;
         EClass eClass = item.eClass();
@@ -2684,6 +2685,9 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         }
         if (item.getProperty().getAuthor() == null) {
             item.getProperty().setAuthor(getRepositoryContext().getUser());
+        }
+        if (item.getProperty().getCreationDate() == null) {
+            item.getProperty().setCreationDate(new Date());
         }
 
         ItemState itemState = PropertiesFactory.eINSTANCE.createItemState();

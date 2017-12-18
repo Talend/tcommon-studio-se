@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.core.runtime.repository.item;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
@@ -75,7 +76,7 @@ public final class ItemProductValuesHelper {
         additionalProperties.put(ItemProductKeys.VERSION.getCreatedKey(), VersionUtils.getDisplayVersion());
         additionalProperties.put(ItemProductKeys.DATE.getCreatedKey(), DATEFORMAT.format(date));
 
-        property.setCreationDate(null);
+        property.setCreationDate(date); // use same date
 
         return true;
     }
@@ -104,7 +105,7 @@ public final class ItemProductValuesHelper {
         additionalProperties.put(ItemProductKeys.VERSION.getModifiedKey(), VersionUtils.getDisplayVersion());
         additionalProperties.put(ItemProductKeys.DATE.getModifiedKey(), DATEFORMAT.format(date));
 
-        property.setModificationDate(null);
+        property.setModificationDate(date); // use same date
 
         return true;
     }
@@ -153,6 +154,12 @@ public final class ItemProductValuesHelper {
         if (existed(property)) { // if existed, nothing to do
             return;
         }
+        Date date;
+        try {
+            date = DATEFORMAT.parse(datetime);
+        } catch (ParseException e) {
+            date = new Date();
+        }
         EMap additionalProperties = property.getAdditionalProperties();
 
         //
@@ -163,8 +170,8 @@ public final class ItemProductValuesHelper {
             additionalProperties.put(ItemProductKeys.DATE.getCreatedKey(), DATEFORMAT.format(creationDate));
         } else {
             additionalProperties.put(ItemProductKeys.DATE.getCreatedKey(), datetime);
+            property.setCreationDate(date); // use same date
         }
-        property.setCreationDate(null); // move the date to additional properties
 
         //
         Date modificationDate = property.getModificationDate();
@@ -174,8 +181,8 @@ public final class ItemProductValuesHelper {
             additionalProperties.put(ItemProductKeys.DATE.getModifiedKey(), DATEFORMAT.format(modificationDate));
         } else {
             additionalProperties.put(ItemProductKeys.DATE.getModifiedKey(), datetime);
+            property.setModificationDate(date); // use same date
         }
-        property.setModificationDate(null); // move the date to additional properties
 
     }
 
