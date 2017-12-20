@@ -19,6 +19,7 @@ import org.talend.core.runtime.util.GenericTypeUtils;
 import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.daikon.properties.property.Property;
 import org.talend.daikon.properties.property.PropertyValueEvaluator;
+import org.talend.daikon.properties.property.StringProperty;
 
 /**
  * created by ycbai on 2016年9月19日 Detailled comment
@@ -46,6 +47,13 @@ public abstract class AbstractPropertyValueEvaluator implements PropertyValueEva
                 return 0;
             }
         }
+        
+        if (property instanceof StringProperty) {
+            if (property.getPossibleValues() != null && !property.getPossibleValues().isEmpty()) {
+                return TalendQuoteUtils.removeQuotes(stringValue);
+            }
+        }
+        
         if (GenericTypeUtils.isEnumType(property)) {
             List<?> possibleValues = property.getPossibleValues();
             if (possibleValues != null) {
