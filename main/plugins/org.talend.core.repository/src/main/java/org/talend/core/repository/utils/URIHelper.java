@@ -33,9 +33,14 @@ public class URIHelper {
     public static IFile getFile(URI uri) {
         if (uri != null) {
             IPath path = convert(uri);
-            if (path != null) {
-                return ResourcesPlugin.getWorkspace().getRoot().getFile(path);
-            }
+            return getFile(path);
+        }
+        return null;
+    }
+
+    public static IFile getFile(IPath path) {
+        if (path != null) {
+            return ResourcesPlugin.getWorkspace().getRoot().getFile(path);
         }
         return null;
     }
