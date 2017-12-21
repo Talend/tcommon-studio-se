@@ -34,6 +34,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
@@ -480,9 +481,18 @@ public class ImportExportHandlersManager {
 
                         @Override
                         public void run(final IProgressMonitor monitor) throws CoreException {
-                            // pre import
-                            preImport(monitor, resManager, checkedItemRecords.toArray(new ImportItem[0]), allImportItemRecords);
-
+                            try {
+                                // pre import
+                                preImport(monitor, resManager, checkedItemRecords.toArray(new ImportItem[0]),
+                                        allImportItemRecords);
+                            } catch (IllegalArgumentException e) {
+                                if (e.getCause() instanceof OperationCanceledException) {
+                                    throw e; // if invalid project, with cancel
+                                }
+                            }
+                            if (monitor.isCanceled()) {
+                                return;
+                            }
                             final IProxyRepositoryFactory factory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
 
                             // bug 10520

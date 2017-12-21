@@ -12,8 +12,6 @@
 // ============================================================================
 package org.talend.core.hadoop.creator;
 
-import java.util.Date;
-
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.utils.VersionUtils;
@@ -48,7 +46,6 @@ public abstract class AbstractHadoopConnectionCreator implements IHadoopConnecti
     protected void setPropertyParameters(Property connectionProperty) {
         connectionProperty.setDisplayName(relativeHadoopClusterItem.getProperty().getLabel() + "_" + getTypeName()); //$NON-NLS-1$
         connectionProperty.setLabel(connectionProperty.getDisplayName());
-        connectionProperty.setModificationDate(new Date());
         connectionProperty.setAuthor(((RepositoryContext) CoreRuntimePlugin.getInstance().getContext()
                 .getProperty(Context.REPOSITORY_CONTEXT_KEY)).getUser());
         connectionProperty.setVersion(VersionUtils.DEFAULT_VERSION);

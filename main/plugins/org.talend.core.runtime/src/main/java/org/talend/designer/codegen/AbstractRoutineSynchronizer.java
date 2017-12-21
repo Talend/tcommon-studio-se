@@ -41,11 +41,14 @@ import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.PigudfItem;
 import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.ProjectReference;
+import org.talend.core.model.properties.Property;
 import org.talend.core.model.properties.RoutineItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.utils.JavaResourcesHelper;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
+import org.talend.core.runtime.repository.item.ItemProductKeys;
+import org.talend.core.runtime.util.ItemDateParser;
 import org.talend.core.ui.branding.IBrandingService;
 import org.talend.designer.core.ICamelDesignerCoreService;
 import org.talend.designer.runprocess.IRunProcessService;
@@ -70,7 +73,7 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ICamelDesignerCoreService.class)) {
             ICamelDesignerCoreService service = (ICamelDesignerCoreService) GlobalServiceRegister.getDefault().getService(
                     ICamelDesignerCoreService.class);
-                return getAll(service.getBeansType());
+            return getAll(service.getBeansType());
         }
         return Collections.emptyList();
     }
@@ -101,7 +104,7 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
                 beansList.put(key, (RoutineItem) obj.getProperty().getItem());
             }
         }
-        for (ProjectReference projectReference : (Collection<ProjectReference>) project.getEmfProject().getReferencedProjects()) {
+        for (ProjectReference projectReference : project.getProjectReferenceList()) {
             getReferencedProjectRoutine(beansList, new Project(projectReference.getReferencedProject()), routineType);
         }
     }
@@ -129,7 +132,7 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
         final String jobName = item.getProperty().getLabel();
         final String folderName = JavaResourcesHelper.getJobFolderName(jobName, item.getProperty().getVersion());
         return talendProcessJavaProject.getSrcFolder().getFile(
-            JavaResourcesHelper.getProjectFolderName(item) + '/' + folderName + '/' + jobName + JavaUtils.JAVA_EXTENSION);
+                JavaResourcesHelper.getProjectFolderName(item) + '/' + folderName + '/' + jobName + JavaUtils.JAVA_EXTENSION);
     }
 
     @Override
@@ -147,9 +150,9 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
         if (item instanceof RoutineItem) {
             final RoutineItem routineItem = (RoutineItem) item;
             final IProject project = ResourcesPlugin.getWorkspace().getRoot()
-                .getProject(ProjectManager.getInstance().getProject(routineItem).getTechnicalLabel());
-            IFolder folder = project.getFolder(ERepositoryObjectType.getFolderName(ERepositoryObjectType
-                .getItemType(routineItem)));
+                    .getProject(ProjectManager.getInstance().getProject(routineItem).getTechnicalLabel());
+            IFolder folder = project
+                    .getFolder(ERepositoryObjectType.getFolderName(ERepositoryObjectType.getItemType(routineItem)));
             IPath ipath = RepositoryNodeUtilities.getPath(routineItem.getProperty().getId());
             if (ipath == null)
                 return null;
@@ -158,7 +161,7 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
                 folder = folder.getFolder(folderPath);
             }
             final String fileName = routineItem.getProperty().getLabel() + '_' + routineItem.getProperty().getVersion()
-                + JavaUtils.ITEM_EXTENSION;
+                    + JavaUtils.ITEM_EXTENSION;
             return folder.getFile(fileName);
         }
         return null;
@@ -201,45 +204,49 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
             if (file == null) {
                 return;
             }
-            if(routineItem.eResource() == null){
+            if (routineItem.eResource() == null) {
                 return;
             }
-            if (routineItem.getProperty().getModificationDate() != null) {
-                long modificationItemDate = routineItem.getProperty().getModificationDate().getTime();
+            Property property = routineItem.getProperty();
+            Date modifiedDate = ItemDateParser.parseAdditionalDate(property, ItemProductKeys.DATE.getModifiedKey());
+            if (modifiedDate != null) {
+                long modificationItemDate = modifiedDate.getTime();
                 long modificationFileDate = file.getModificationStamp();
                 if (modificationItemDate <= modificationFileDate) {
                     return;
                 }
-            } else {
-                routineItem.getProperty().setModificationDate(new Date());
             }
 
             if (copyToTemp) {
-                String uri = routineItem.eResource().getURI().trimFileExtension().appendFileExtension(FileExtensions.ITEM_EXTENSION).toPlatformString(false);
+                String uri = routineItem.eResource().getURI().trimFileExtension()
+                        .appendFileExtension(FileExtensions.ITEM_EXTENSION).toPlatformString(false);
                 File itemFile = ResourcesPlugin.getWorkspace().getRoot().getLocation().append(uri).toFile();
                 byte[] buf = routineItem.getContent().getInnerContent();
                 String charset = null;
-                if(itemFile.exists()){
+                if (itemFile.exists()) {
                     charset = CharsetToolkit.getCharset(itemFile);
-                }else{
+                } else {
                     charset = System.getProperty("file.encoding");
                 }
                 String routineContent = new String(buf, charset);
                 // see 14713
                 if (routineContent.contains("%GENERATED_LICENSE%")) { //$NON-NLS-1$
-                    IBrandingService service = (IBrandingService) GlobalServiceRegister.getDefault().getService(IBrandingService.class);
+                    IBrandingService service = (IBrandingService) GlobalServiceRegister.getDefault().getService(
+                            IBrandingService.class);
                     String routineHeader = service.getRoutineLicenseHeader(VersionUtils.getVersion());
                     routineContent = routineContent.replace("%GENERATED_LICENSE%", routineHeader); //$NON-NLS-1$
                 }// end
-                String label = routineItem.getProperty().getLabel();
+                String label = property.getLabel();
                 if (!label.equals(ITalendSynchronizer.TEMPLATE) && routineContent != null) {
                     routineContent = routineContent.replaceAll(ITalendSynchronizer.TEMPLATE, label);
                     // routineContent = renameRoutinePackage(routineItem,
                     // routineContent);
                     if (!file.exists()) {
-                        file.create(new ByteArrayInputStream(routineContent.getBytes(System.getProperty("file.encoding"))), true, null);
+                        file.create(new ByteArrayInputStream(routineContent.getBytes(System.getProperty("file.encoding"))), true,
+                                null);
                     } else {
-                        file.setContents(new ByteArrayInputStream(routineContent.getBytes(System.getProperty("file.encoding"))), true, false, null);
+                        file.setContents(new ByteArrayInputStream(routineContent.getBytes(System.getProperty("file.encoding"))),
+                                true, false, null);
                     }
                 }
             }
@@ -283,13 +290,14 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
     }
 
     private Date getRefDate(RoutineItem routineItem) {
+        Property property = routineItem.getProperty();
         if (routineItem.isBuiltIn()) {
             // FIXME mhelleboid for now, routines are deleted and recreated on
             // project logon
             // change this code, if one day routines are updated
-            return routineItem.getProperty().getCreationDate();
+            return ItemDateParser.parseAdditionalDate(property, ItemProductKeys.DATE.getCreatedKey());
         } else {
-            return routineItem.getProperty().getModificationDate();
+            return ItemDateParser.parseAdditionalDate(property, ItemProductKeys.DATE.getModifiedKey());
         }
 
     }
@@ -349,6 +357,5 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
             syncRoutine(beanItem, true);
         }
     }
-
 
 }

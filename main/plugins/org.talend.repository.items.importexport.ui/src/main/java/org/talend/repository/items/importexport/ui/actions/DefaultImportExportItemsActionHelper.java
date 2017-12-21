@@ -16,11 +16,13 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.items.importexport.ui.handlers.IImportExportItemsActionHelper;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IRepositoryNode.ENodeType;
+import org.talend.repository.model.IRepositoryNode.EProperties;
 import org.talend.repository.model.RepositoryNode;
 
 /**
@@ -80,6 +82,9 @@ public class DefaultImportExportItemsActionHelper implements IImportExportItemsA
                             enabled = true;
                             // if folder is logic deleted, disable it.
                             if (repositoryNode.getObject() != null && repositoryNode.getObject().isDeleted()) {
+                                enabled = false;
+                            }
+                            if (ERepositoryObjectType.REFERENCED_PROJECTS.equals(repositoryNode.getProperties(EProperties.CONTENT_TYPE))) {
                                 enabled = false;
                             }
                         }

@@ -274,8 +274,8 @@ public abstract class AbstractEMFRepositoryFactory extends AbstractRepositoryFac
         }
 
         for (IRepositoryViewObject current : list) {
-            if ((name.equalsIgnoreCase(current.getProperty().getLabel()) || name.equalsIgnoreCase(current.getProperty().getDisplayName()))
-                    && item.getProperty().getId() != current.getProperty().getId()) {
+            if ((name.equalsIgnoreCase(current.getProperty().getLabel()) || name.equalsIgnoreCase(current.getProperty()
+                    .getDisplayName())) && item.getProperty().getId() != current.getProperty().getId()) {
                 // To check SQLPattern in same path. see bug 0005038: unable to add a SQLPattern into repository.
                 if (!isAllowMultipleName || current.getProperty().getItem().getState().getPath().equals(path)) {
                     return false;
@@ -729,6 +729,7 @@ public abstract class AbstractEMFRepositoryFactory extends AbstractRepositoryFac
             if (!version.equals(project.getEmfProject().getProductVersion())) {
                 project.getEmfProject().setProductVersion(version);
                 project.getEmfProject().getFolders().clear();
+                saveProject(project);
             }
         }
         // saveProject();
@@ -896,7 +897,7 @@ public abstract class AbstractEMFRepositoryFactory extends AbstractRepositoryFac
         getAllVersions(project, property, allVersion);
         for (IRepositoryViewObject repositoryObject : allVersion) {
             Property uptodateProperty = repositoryObject.getProperty();
-            if (uptodateProperty!=null&&uptodateProperty.getVersion().equals(property.getVersion())) {
+            if (uptodateProperty != null && uptodateProperty.getVersion().equals(property.getVersion())) {
                 return uptodateProperty;
             }
         }
@@ -917,10 +918,10 @@ public abstract class AbstractEMFRepositoryFactory extends AbstractRepositoryFac
         } else {
             allVersion.addAll(getAllVersion(project, property.getId(), false));
         }
-        if (allVersion.size() == 0 && project.getEmfProject().getReferencedProjects().size() > 0) {
+        if (allVersion.size() == 0 && project.getProjectReferenceList().size() > 0) {
             String parentBranch = ProjectManager.getInstance().getMainProjectBranch(project);
 
-            for (ProjectReference refProject : (List<ProjectReference>) project.getEmfProject().getReferencedProjects()) {
+            for (ProjectReference refProject : project.getProjectReferenceList()) {
                 if (refProject.getBranch() != null && !parentBranch.equals(refProject.getBranch())) {
                     continue;
                 }
@@ -1031,8 +1032,8 @@ public abstract class AbstractEMFRepositoryFactory extends AbstractRepositoryFac
     @Override
     public void afterLogon(IProgressMonitor monitor) {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
-            IRunProcessService runProcessService = (IRunProcessService) GlobalServiceRegister.getDefault()
-                    .getService(IRunProcessService.class);
+            IRunProcessService runProcessService = (IRunProcessService) GlobalServiceRegister.getDefault().getService(
+                    IRunProcessService.class);
             try {
                 runProcessService.getTalendProcessJavaProject().cleanMavenFiles(monitor);
                 TimeMeasure.step("logOnProject", "clean Maven files"); //$NON-NLS-1$ //$NON-NLS-2$

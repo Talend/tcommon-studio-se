@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Common Runtime Plug-in
-Bundle-SymbolicName: org.talend.commons.runtime
+Bundle-SymbolicName: org.talend.commons.runtime;singleton:=true
 Bundle-Version: 7.0.1.qualifier
 Require-Bundle: org.apache.log4j;visibility:=reexport,
  org.apache.commons.beanutils,
@@ -18,9 +18,11 @@ Export-Package: org.talend.commons,
  org.talend.commons.i18n,
  org.talend.commons.i18n.internal,
  org.talend.commons.runtime.debug,
+ org.talend.commons.runtime.extension,
  org.talend.commons.runtime.helper,
  org.talend.commons.runtime.model.components,
  org.talend.commons.runtime.model.emf,
+ org.talend.commons.runtime.model.emf.provider,
  org.talend.commons.runtime.model.expressionbuilder,
  org.talend.commons.runtime.model.repository,
  org.talend.commons.runtime.service,

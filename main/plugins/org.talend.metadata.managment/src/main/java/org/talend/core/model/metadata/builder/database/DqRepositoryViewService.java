@@ -22,13 +22,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import metadata.managment.i18n.Messages;
-
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.talend.commons.exception.PersistenceException;
@@ -38,8 +35,8 @@ import org.talend.core.model.general.Project;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.metadata.builder.database.ExtractMetaDataFromDataBase.ETableTypes;
+import org.talend.core.model.properties.ProjectReference;
 import org.talend.core.model.properties.Property;
-import org.talend.core.model.properties.impl.ProjectReferenceImpl;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
@@ -57,6 +54,8 @@ import org.talend.metadata.managment.model.MetadataFillFactory;
 import org.talend.metadata.managment.utils.MetadataConnectionUtils;
 import org.talend.utils.sql.ConnectionUtils;
 import org.talend.utils.sugars.TypedReturnCode;
+
+import metadata.managment.i18n.Messages;
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.objectmodel.core.Package;
 import orgomg.cwm.objectmodel.core.TaggedValue;
@@ -441,7 +440,7 @@ public final class DqRepositoryViewService {
         if (isLocal || isReference) {
             return false;
         }
-        EList<ProjectReferenceImpl> referencedProjects = project.getEmfProject().getReferencedProjects();
+        List<ProjectReference> referencedProjects = project.getProjectReferenceList();
         if (referencedProjects.size() > 0) {
             boolean isFromReferenceProject = iteration2FindReferenceProject(referencedProjects, currentResourceProjectName);
             if (isFromReferenceProject) {
@@ -457,15 +456,14 @@ public final class DqRepositoryViewService {
      * @param projectRef
      * @param currentResourceProjectName
      */
-    private static boolean iteration2FindReferenceProject(EList<ProjectReferenceImpl> referencedProjects,
+    private static boolean iteration2FindReferenceProject(List<ProjectReference> referencedProjects,
             String currentResourceProjectName) {
-        for (ProjectReferenceImpl currprojectRef : referencedProjects) {
+        for (ProjectReference currprojectRef : referencedProjects) {
             String label = currprojectRef.getReferencedProject().getLabel();
             if (StringUtils.equalsIgnoreCase(currentResourceProjectName, label)) {
                 return true;
             }
-            boolean isFromReferenceProject = iteration2FindReferenceProject(currprojectRef.getReferencedProject()
-                    .getReferencedProjects(), currentResourceProjectName);
+            boolean isFromReferenceProject = iteration2FindReferenceProject(new Project(currprojectRef.getReferencedProject()).getProjectReferenceList(), currentResourceProjectName);
             if (isFromReferenceProject) {
                 return true;
             }

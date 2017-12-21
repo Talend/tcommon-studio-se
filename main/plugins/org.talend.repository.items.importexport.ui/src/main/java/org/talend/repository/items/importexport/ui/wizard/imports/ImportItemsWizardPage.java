@@ -67,6 +67,8 @@ import org.eclipse.ui.internal.wizards.datatransfer.TarException;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.LoginException;
 import org.talend.commons.exception.PersistenceException;
+import org.talend.commons.runtime.model.emf.provider.EmfResourcesFactoryReader;
+import org.talend.commons.runtime.model.emf.provider.ResourceOption;
 import org.talend.commons.runtime.model.repository.ERepositoryStatus;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.PluginChecker;
@@ -1000,9 +1002,16 @@ public class ImportItemsWizardPage extends WizardPage {
                             }
                         }
                     }
-                    importManager.importItemRecords(monitor, resManager, checkedItemRecords, overwrite,
-                            nodesBuilder.getAllImportItemRecords(), destinationPath);
+                    final ResourceOption importOption = ResourceOption.ITEM_IMPORTATION;
+                    try {
+                        EmfResourcesFactoryReader.INSTANCE.getSaveOptionsProviders().put(importOption.getName(),
+                                importOption.getProvider());
 
+                        importManager.importItemRecords(monitor, resManager, checkedItemRecords, overwrite,
+                                nodesBuilder.getAllImportItemRecords(), destinationPath);
+                    } finally {
+                        EmfResourcesFactoryReader.INSTANCE.getSaveOptionsProviders().remove(importOption.getName());
+                    }
                     Display.getDefault().syncExec(new Runnable() {
 
                         @Override

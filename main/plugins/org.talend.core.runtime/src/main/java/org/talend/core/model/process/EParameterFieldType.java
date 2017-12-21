@@ -112,6 +112,8 @@ public enum EParameterFieldType {
     SYNC_NEXUS_BUTTON,
     CHECK_NEXUS_BUTTON,
     PATTERN_PROPERTY,//yyin, added TDQ-13437
+
+    TACOKIT_GUESS_SCHEMA,
     ;
 
     public String getName() {

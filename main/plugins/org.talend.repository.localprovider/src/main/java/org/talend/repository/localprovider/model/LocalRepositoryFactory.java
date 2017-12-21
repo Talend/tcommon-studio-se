@@ -76,6 +76,8 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.LoginException;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.exception.ResourceNotFoundException;
+import org.talend.commons.runtime.model.emf.provider.EmfResourcesFactoryReader;
+import org.talend.commons.runtime.model.emf.provider.ResourceOption;
 import org.talend.commons.runtime.model.repository.ERepositoryStatus;
 import org.talend.commons.ui.runtime.image.ImageUtils;
 import org.talend.commons.utils.VersionUtils;
@@ -166,7 +168,6 @@ import org.talend.repository.localprovider.exceptions.IncorrectFileException;
 import org.talend.repository.localprovider.i18n.Messages;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryConstants;
-
 import orgomg.cwm.foundation.businessinformation.BusinessinformationPackage;
 
 /**
@@ -821,12 +822,13 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
     @Override
     public void saveProject(Project project) throws PersistenceException {
         for (EReference reference : project.getEmfProject().eClass().getEAllReferences()) {
-            if (reference.getName().equals("folders")) {
+            if (reference.getName().equals("folders") || reference.getName().equals("availableRefProject")) {
                 if (!reference.isTransient()) {
                     reference.setTransient(true);
                 }
             }
         }
+
         Resource projectResource = project.getEmfProject().eResource();
         if (projectResource == null) {
             if (project.getEmfProject() != null && project.getEmfProject().eIsProxy()) {
@@ -1106,12 +1108,13 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
     }
 
     /**
-     * @see org.talend.core.model.repository.factories.IRepositoryFactory#readProject(java.lang.String, java.lang.String,
-     * java.lang.String)
+     * @see org.talend.core.model.repository.factories.IRepositoryFactory#readProject(java.lang.String,
+     * java.lang.String, java.lang.String)
      */
     @Override
     public Project[] readProject() throws PersistenceException {
-        return readProjects(true);
+        Project[] projects = readProjects(true);
+        return projects;
     }
 
     @Override
@@ -1649,7 +1652,8 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
     }
 
     @Override
-    public void deleteObjectPhysical(Project project, IRepositoryViewObject objToDelete, boolean isDeleteOnRemote) throws PersistenceException {
+    public void deleteObjectPhysical(Project project, IRepositoryViewObject objToDelete, boolean isDeleteOnRemote)
+            throws PersistenceException {
         deleteObjectPhysical(project, objToDelete, null, isDeleteOnRemote);
     }
 
@@ -1678,7 +1682,8 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
                         || currentVersion.getRepositoryObjectType() == ERepositoryObjectType.JOBLET
                         || currentVersion.getRepositoryObjectType() == ERepositoryObjectType.SPARK_JOBLET
                         || currentVersion.getRepositoryObjectType() == ERepositoryObjectType.SPARK_STREAMING_JOBLET) {
-                    if (coreSerivce.isAlreadyBuilt(project)) {
+                    Project currentProject = ProjectManager.getInstance().getCurrentProject();
+                    if (coreSerivce.isAlreadyBuilt(project) && currentProject != null) {
                         if (currentVersion.getProperty() != null) {
                             coreSerivce.removeItemRelations(currentVersion.getProperty().getItem());
                         }
@@ -2346,7 +2351,6 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         xmiResourceManager.getAffectedResources(resourceSet, item.getProperty());
 
         computePropertyMaxInformationLevel(item.getProperty());
-        item.getProperty().setModificationDate(new Date());
         Resource itemResource = null;
         Resource screenshotResource = null;
         EClass eClass = item.eClass();
@@ -2433,6 +2437,19 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
             case PropertiesPackage.EDIFACT_CONNECTION_ITEM:
                 itemResource = save(resourceSet, (EDIFACTConnectionItem) item);
                 break;
+            case PropertiesPackage.CONNECTION_ITEM:
+                // connection item may be used by extention point
+                boolean created = false;
+                for (IRepositoryContentHandler handler : RepositoryContentManager.getHandlers()) {
+                    itemResource = handler.save(item);
+                    if (itemResource != null) {
+                        created = true;
+                        break;
+                    }
+                }
+                if (created) {
+                    break;
+                }
             default:
                 throw new UnsupportedOperationException();
             }
@@ -2554,7 +2571,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
                     xmlResource.setID(connectionItem.getConnection(), EcoreUtil.generateUUID());
                 }
             }
-            
+
             return newItem;
         } catch (IOException e) {
             // e.printStackTrace();
@@ -2578,7 +2595,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
             newRefItem.setContent(byarray);
         }
     }
-    
+
     private void copyIcon(Item originalItem, Item newItem) throws PersistenceException {
         if (!(newItem instanceof JobletProcessItem)) {
             return;
@@ -2658,6 +2675,17 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
     @Override
     public void create(Project project, Item item, IPath path, boolean... isImportItem) throws PersistenceException {
+        final ResourceOption creatation = ResourceOption.CREATATION;
+        final String optionName = creatation.getName();
+        EmfResourcesFactoryReader.INSTANCE.getSaveOptionsProviders().put(optionName, creatation.getProvider());
+        try {
+            delegateCreate(project, item, path, isImportItem);
+        } finally {
+            EmfResourcesFactoryReader.INSTANCE.getSaveOptionsProviders().remove(optionName);
+        }
+    }
+
+    private void delegateCreate(Project project, Item item, IPath path, boolean... isImportItem) throws PersistenceException {
         computePropertyMaxInformationLevel(item.getProperty());
 
         if (item.getProperty().getVersion() == null) {
@@ -2665,14 +2693,6 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         }
         if (item.getProperty().getAuthor() == null) {
             item.getProperty().setAuthor(getRepositoryContext().getUser());
-        }
-
-        if (item.getProperty().getCreationDate() == null) {
-            item.getProperty().setCreationDate(new Date());
-        }
-
-        if (item.getProperty().getModificationDate() == null) {
-            item.getProperty().setModificationDate(item.getProperty().getCreationDate());
         }
 
         ItemState itemState = PropertiesFactory.eINSTANCE.createItemState();
@@ -2802,6 +2822,20 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
             case PropertiesPackage.EDIFACT_CONNECTION_ITEM:// gldu add for 19384
                 itemResource = create(project2, (EDIFACTConnectionItem) item, ERepositoryObjectType.METADATA_EDIFACT, path);
                 break;
+            case PropertiesPackage.CONNECTION_ITEM:
+                // connection item may be used by extention point
+                final int classifierID = eClass.getClassifierID();
+                boolean created = false;
+                for (IRepositoryContentHandler handler : RepositoryContentManager.getHandlers()) {
+                    itemResource = handler.create(project2, item, classifierID, path);
+                    if (itemResource != null) {
+                        created = true;
+                        break;
+                    }
+                }
+                if (created) {
+                    break;
+                }
             default:
 
                 throw new UnsupportedOperationException();
@@ -2867,6 +2901,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         if (isImportItem.length == 0 || !isImportItem[0]) {
             saveProject(project);
         }
+
     }
 
     private List<Resource> getReferenceFilesResources(Item item, Resource propertyResource, boolean needLoad) {
@@ -3121,6 +3156,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         if (project.getEmfProject().eResource() == null) {
             IProject iProject = ResourceUtils.getProject(getRepositoryContext().getProject());
             project.setEmfProject(xmiResourceManager.loadProject(iProject));
+            getRepositoryContext().getProject().setEmfProject(project.getEmfProject());
         }
 
         super.logOnProject(project);
@@ -3128,6 +3164,8 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         if (!doesLoggedUserExist() && project.isMainProject()) {
             createUser(project);
         }
+
+        initProjectRepository(project, null);
 
         IProject project2 = ResourceUtils.getProject(project);
         createFolders(project2, project.getEmfProject());
@@ -3208,14 +3246,12 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
     @Override
     public List<org.talend.core.model.properties.Project> getReferencedProjects(Project project) {
-        String parentBranch = getRepositoryContext().getFields()
-                .get(IProxyRepositoryFactory.BRANCH_SELECTION + "_" + getRepositoryContext().getProject().getTechnicalLabel());
+        String parentBranch = getRepositoryContext().getFields().get(
+                IProxyRepositoryFactory.BRANCH_SELECTION + "_" + getRepositoryContext().getProject().getTechnicalLabel());
         List<org.talend.core.model.properties.Project> refProjectList = new ArrayList<org.talend.core.model.properties.Project>();
-        for (ProjectReference refProject : (List<ProjectReference>) project.getEmfProject().getReferencedProjects()) {
-            String rBranch = ProjectManager.getInstance().getLocalProjectReferenceBranch(project.getEmfProject(), parentBranch, refProject);
-            String refBranch4Local = ProjectManager.getInstance().getLocalProjectReferenceReferenceBranch(project.getEmfProject(), parentBranch, refProject);
-            if (ProjectManager.validReferenceProject(parentBranch, rBranch, refBranch4Local, refProject)) {
-                refProjectList.add(refProject.getReferencedProject());
+        for (ProjectReference refProject : project.getProjectReferenceList()) {
+            if (ProjectManager.validReferenceProject(parentBranch, refProject)) {
+                refProjectList.add(new Project(refProject.getReferencedProject()).getEmfProject());
             }
         }
         return refProjectList;
@@ -3441,7 +3477,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
     }
 
     @Override
-    public void executeMigrations(Project mainProject, boolean beforeLogon, SubMonitor monitorWrap) {
+    public void executeMigrations(Project mainProject, boolean beforeLogon, SubMonitor monitorWrap) throws PersistenceException {
         IMigrationToolService service = (IMigrationToolService) GlobalServiceRegister.getDefault().getService(
                 IMigrationToolService.class);
         service.executeMigrationTasksForLogon(mainProject, beforeLogon, monitorWrap);
@@ -3491,6 +3527,9 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
     }
 
+    public void initProjectRepository(Project project, String branchForMainProject) throws PersistenceException {
+    }
+
     protected void notifyProjectReload(org.talend.core.model.properties.Project project) {
         Bundle bundle = FrameworkUtil.getBundle(this.getClass());
         if (bundle != null) {
@@ -3509,5 +3548,9 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
                 eventAdmin.sendEvent(lockEvent);
             }
         }// else no bundle for this, should never happend.
+    }
+
+    public byte[] getReferenceSettingContent(Project project, String branch) throws PersistenceException {
+        return null;
     }
 }

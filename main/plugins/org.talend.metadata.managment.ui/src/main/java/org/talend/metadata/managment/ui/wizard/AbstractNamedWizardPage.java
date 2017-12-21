@@ -12,7 +12,6 @@
 // ============================================================================
 package org.talend.metadata.managment.ui.wizard;
 
-import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -37,31 +36,30 @@ import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryConstants;
 
-
 /**
- * created by nrousseau on Jun 24, 2016
- * Detailled comment
+ * created by nrousseau on Jun 24, 2016 Detailled comment
  *
  */
 public abstract class AbstractNamedWizardPage extends WizardPage {
 
     protected IStatus nameStatus;
-    
+
     protected List<IRepositoryViewObject> listExistingObjects;
-    
+
     protected boolean retrieveNameFinished = false;
 
     protected boolean nameModifiedByUser = false;
 
     /**
      * DOC nrousseau AbstractNamedWizardPage constructor comment.
+     * 
      * @param pageName
      */
     protected AbstractNamedWizardPage(String pageName) {
-        super(pageName);        
+        super(pageName);
         nameStatus = createOkStatus();
     }
-    
+
     protected static IStatus createOkStatus() {
         return new Status(IStatus.OK, CoreRepositoryPlugin.PLUGIN_ID, IStatus.OK, "", null); //$NON-NLS-1$
     }
@@ -70,18 +68,15 @@ public abstract class AbstractNamedWizardPage extends WizardPage {
         return new Status(severity, CoreRepositoryPlugin.PLUGIN_ID, IStatus.OK, message, null);
     }
 
-    
     public abstract ERepositoryObjectType getRepositoryObjectType();
 
-
     protected void evaluateName(String name) {
-        //TUP-4619 check more about '\t' name issue here and avoid NPE error
+        // TUP-4619 check more about '\t' name issue here and avoid NPE error
         if (name == null || name.length() == 0 || StringUtils.trimToNull(name) == null) {
             nameStatus = createStatus(IStatus.ERROR, Messages.getString("PropertiesWizardPage.NameEmptyError")); //$NON-NLS-1$
         } else if (name.startsWith(" ") //$NON-NLS-1$
                 || name.startsWith("\t") //$NON-NLS-1$
-                || !Pattern.matches(RepositoryConstants.getPattern(getRepositoryObjectType()), name)
-                || name.trim().contains(" ") //$NON-NLS-1$
+                || !Pattern.matches(RepositoryConstants.getPattern(getRepositoryObjectType()), name) || name.trim().contains(" ") //$NON-NLS-1$
                 || name.trim().contains("\t")) { // $NON-NLS-2$
             nameStatus = createStatus(IStatus.ERROR, Messages.getString("PropertiesWizardPage.NameFormatError")); //$NON-NLS-1$
         } else if (isKeywords(name) || "java".equalsIgnoreCase(name)) {//$NON-NLS-1$
@@ -104,21 +99,19 @@ public abstract class AbstractNamedWizardPage extends WizardPage {
         if (getProperty() != null && nameStatus.getSeverity() == IStatus.OK) {
             getProperty().setLabel(getPropertyLabel(StringUtils.trimToNull(name)));
             getProperty().setDisplayName(StringUtils.trimToNull(name));
-            getProperty().setModificationDate(new Date());
         }
         updatePageStatus();
     }
-    
+
     protected String getPropertyLabel(String name) {
         return name;
     }
-    
+
     public abstract Property getProperty();
-    
+
     protected IStatus[] getStatuses() {
         return new IStatus[] { nameStatus };
     };
-
 
     protected void updatePageComplete() {
         setMessage(findMostSevere());
@@ -154,7 +147,7 @@ public abstract class AbstractNamedWizardPage extends WizardPage {
             setErrorMessage(null);
         }
     }
-    
+
     /**
      * 
      * DOC ggu Comment method "isKeywords".
@@ -172,7 +165,7 @@ public abstract class AbstractNamedWizardPage extends WizardPage {
         }
         return false;
     }
-    
+
     @SuppressWarnings("unchecked")
     public boolean isValid(String itemName) {
 

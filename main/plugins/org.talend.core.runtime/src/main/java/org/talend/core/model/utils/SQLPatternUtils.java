@@ -14,7 +14,6 @@ package org.talend.core.model.utils;
 
 import java.util.List;
 
-import org.eclipse.emf.common.util.EList;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.runtime.model.repository.ERepositoryStatus;
@@ -97,10 +96,10 @@ public final class SQLPatternUtils {
             }
             String parentBranch = ProjectManager.getInstance().getMainProjectBranch(project);
 
-            List<ProjectReference> referencedProjects = project.getEmfProject().getReferencedProjects();
+            List<ProjectReference> referencedProjects = project.getProjectReferenceList();
             for (ProjectReference referenced : referencedProjects) {
                 org.talend.core.model.properties.Project referencedEmfProject = referenced.getReferencedProject();
-                EList refeInRef = referencedEmfProject.getReferencedProjects();
+                List<ProjectReference> refeInRef = new Project(referencedEmfProject).getProjectReferenceList();
                 if (referenced.getBranch() != null && !parentBranch.equals(referenced.getBranch())) {
                     continue;
                 }

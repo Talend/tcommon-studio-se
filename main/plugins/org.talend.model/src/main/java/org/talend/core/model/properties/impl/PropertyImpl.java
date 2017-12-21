@@ -6,6 +6,7 @@
  */
 package org.talend.core.model.properties.impl;
 
+import java.text.ParseException;
 import java.util.Collection;
 import java.util.Date;
 
@@ -27,6 +28,7 @@ import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.PropertiesPackage;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.properties.User;
+import org.talend.cwm.helper.ResourceHelper;
 
 /**
  * <!-- begin-user-doc -->
@@ -423,9 +425,19 @@ public class PropertyImpl extends EObjectImpl implements Property {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     public Date getCreationDate() {
+        if (creationDate == null) {
+            Object dateObj = this.getAdditionalProperties().get("created_date");
+            if (dateObj != null) {
+                try {
+                    return ResourceHelper.DATEFORMAT.parse(dateObj.toString());
+                } catch (ParseException e) {
+                    //
+                }
+            }
+        }
         return creationDate;
     }
 
@@ -444,9 +456,19 @@ public class PropertyImpl extends EObjectImpl implements Property {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     public Date getModificationDate() {
+        if (modificationDate == null) {
+            Object dateObj = this.getAdditionalProperties().get("modified_date");
+            if (dateObj != null) {
+                try {
+                    return ResourceHelper.DATEFORMAT.parse(dateObj.toString());
+                } catch (ParseException e) {
+                    //
+                }
+            }
+        }
         return modificationDate;
     }
 

@@ -145,10 +145,11 @@ public class AddRepositoryContextGroupCommand extends Command {
         }
 
         // for Parameter
-        if (modelManager == null || helper == null || parameterList == null || parameterList.isEmpty() || manager == null) {
+        if (modelManager == null || helper == null || parameterList == null || manager == null) {
             return;
         }
         newAddParameter.clear();
+        List<IContextParameter> existParas = new ArrayList<>(defaultContext.getContextParameterList());
         for (ContextParameterType defaultContextParamType : parameterList) {
             ContextItem contextItem = (ContextItem) helper.getParentContextItem(defaultContextParamType);
             if (contextItem == null) {
@@ -157,6 +158,7 @@ public class AddRepositoryContextGroupCommand extends Command {
 
             IContextParameter paramExisted = helper.getExistedContextParameter(defaultContextParamType.getName());
             if (paramExisted != null) {
+                existParas.remove(paramExisted);
                 // existed.
                 if (!paramExisted.isBuiltIn() && contextItem.getProperty().getId().equals(paramExisted.getSource())) {
                     // update the parameter.
@@ -174,6 +176,16 @@ public class AddRepositoryContextGroupCommand extends Command {
             }
             monitor.worked(1);
         }
+        
+        //remove the params which is unchecked
+        for(IContextParameter param : existParas){
+            if (param.isBuiltIn()){
+                continue;
+            }
+            new ContextRemoveParameterCommand(manager, param.getName(), param.getSource())
+            .execute();
+        }
+        
     }
 
     /**

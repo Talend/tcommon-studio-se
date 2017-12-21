@@ -1,0 +1,9 @@
+{
+  "reference_projects" : [ {
+    "project" : "PROJECT_R",
+    "branch" : "tags/tag1"
+  }, {
+    "project" : "PROJECT_R1",
+    "branch" : "master"
+  } ]
+}

@@ -15,7 +15,6 @@ package org.talend.metadata.managment.ui.wizard;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -153,7 +152,7 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
     private Item item;
 
     private HashMap<String, Boolean> folderItems;
-    
+
     protected IProcessConvertService converter;// Just for the page which would like to convert self to another process.
 
     // private Button convertBtn;// For convertation between M/R job and common job
@@ -407,7 +406,7 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
         nameText = new Text(parent, SWT.BORDER);
         nameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         nameText.setEditable(!readOnly);
-        
+
         createFrameworkPart(parent);
 
         // Purpose
@@ -532,10 +531,10 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
         // Added by Marvin Wang on Jan. 29, 2013.
         createBottomPart(parent);
     }
-    
+
     /**
-     * This method is used to create the Job type and Framework part for any properties wizard page which extends this page. Added by
-     * hwang on Aug. 8, 2016.
+     * This method is used to create the Job type and Framework part for any properties wizard page which extends this
+     * page. Added by hwang on Aug. 8, 2016.
      * 
      * @param parent
      */
@@ -869,7 +868,7 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
                             try {
                                 folderItems = factory.getFolderItems(type);
                             } catch (PersistenceException e) {
-                                 e.printStackTrace();
+                                e.printStackTrace();
                             }
                         }
                         if (element instanceof Folder) {
@@ -1064,7 +1063,6 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
                         if (property != null && nameStatus.getSeverity() == IStatus.OK) {
                             property.setDisplayName(StringUtils.trimToNull(nameText.getText()));
                             property.setLabel(getPropertyLabel(StringUtils.trimToNull(nameText.getText())));
-                            property.setModificationDate(new Date());
                         }
 
                     } else {
@@ -1095,7 +1093,6 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
                     commentStatus = createStatus(IStatus.WARNING, Messages.getString("PropertiesWizardPage.EmptyDescWarning")); //$NON-NLS-1$
                 }
                 property.setPurpose(StringUtils.trimToNull(purposeText.getText()));
-                property.setModificationDate(new Date());
                 updatePageStatus();
             }
         });
@@ -1110,7 +1107,6 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
                     commentStatus = createOkStatus();
                 }
                 property.setDescription(StringUtils.trimToNull(descriptionText.getText()));
-                property.setModificationDate(new Date());
                 updatePageStatus();
             }
         });
@@ -1127,8 +1123,6 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
                     version = VersionUtils.upMajor(version);
                     versionText.setText(version);
                     property.setVersion(version);
-                    property.setCreationDate(new Date());
-                    property.setModificationDate(new Date());
                     updatePageStatus();
                 }
             });
@@ -1144,8 +1138,6 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
                     version = VersionUtils.upMinor(version);
                     versionText.setText(version);
                     property.setVersion(version);
-                    property.setCreationDate(new Date());
-                    property.setModificationDate(new Date());
                     updatePageStatus();
                 }
             });
@@ -1156,7 +1148,6 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
             @Override
             public void modifyText(ModifyEvent e) {
                 property.setStatusCode(statusHelper.getStatusCode(statusText.getText()));
-                property.setModificationDate(new Date());
                 updatePageStatus();
             }
 

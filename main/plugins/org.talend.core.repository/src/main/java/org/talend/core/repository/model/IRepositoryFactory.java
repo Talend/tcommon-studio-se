@@ -304,6 +304,8 @@ public interface IRepositoryFactory {
     public boolean setAuthorByLogin(Item item, String login) throws PersistenceException;
 
     public Property getUptodateProperty(Project project, Property property) throws PersistenceException;
+    
+    public void initProjectRepository(Project project, String branchForMainProject) throws PersistenceException;
 
     public void beforeLogon(Project project) throws PersistenceException, LoginException;
 
@@ -389,7 +391,7 @@ public interface IRepositoryFactory {
 
     public boolean canUnlock(Item item) throws PersistenceException;
 
-    public void executeMigrations(Project mainProject, boolean beforeLogon, SubMonitor monitorWrap);
+    public void executeMigrations(Project mainProject, boolean beforeLogon, SubMonitor monitorWrap) throws PersistenceException;
 
     public RootContainer<String, IRepositoryViewObject> getRootContainerFromType(Project project, ERepositoryObjectType type);
 
@@ -428,4 +430,6 @@ public interface IRepositoryFactory {
     public List<ILockBean> getAllRemoteLocks();
 
     public void loadProjectAndSetContext(IProject eclipseProject) throws PersistenceException;
+    
+    public byte[] getReferenceSettingContent(Project project, String branch) throws PersistenceException;
 }

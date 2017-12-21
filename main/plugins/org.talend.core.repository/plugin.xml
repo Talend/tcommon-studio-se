@@ -699,6 +699,21 @@
       </parameterHandler>
       
    </extension>
+   <extension
+         point="org.talend.commons.runtime.emfResourcesProvider">
+      <saveOption
+            id="save.option.resource.handler"
+            provider="org.talend.core.repository.model.ResourceHandlerOptionProvider">
+      </saveOption>
+      <loadOption
+            id="load.option.resource.handler"
+            provider="org.talend.core.repository.model.ResourceHandlerOptionProvider">
+      </loadOption>
+      <resourceHandler
+            handler="org.talend.core.repository.model.ProductValuesResourceHandler"
+            id="resource.handler.product.values">
+      </resourceHandler>
+   </extension>
 
 
 </plugin>

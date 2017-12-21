@@ -15,6 +15,7 @@ package org.talend.commons.utils.data.container;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.talend.commons.exception.BusinessException;
@@ -255,7 +256,7 @@ public class Container<K, V> {
 
     public Container<K, V> getSubContainer(String containerLabel) {
         for (Container<K, V> current : subContainer) {
-            if (current.getLabel() == containerLabel) {
+            if (StringUtils.equals(current.getLabel(), containerLabel)) {
                 return current;
             }
         }

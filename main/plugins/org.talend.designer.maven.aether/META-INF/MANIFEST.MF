@@ -18,9 +18,9 @@ Bundle-ClassPath: .,
  lib/maven-aether-provider-3.2.1.jar,
  lib/maven-model-3.2.1.jar,
  lib/maven-model-builder-3.2.1.jar,
- lib/plexus-utils-3.0.17.jar,
+ lib/maven-repository-metadata-3.2.1.jar,
  lib/plexus-interpolation-1.19.jar,
- lib/maven-repository-metadata-3.2.1.jar
+ lib/plexus-utils-3.0.17.jar
 Export-Package: org.talend.designer.maven.aether,
  org.talend.designer.maven.aether.node,
  org.talend.designer.maven.aether.selector,

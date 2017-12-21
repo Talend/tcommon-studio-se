@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.emf.common.util.EMap;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 import org.talend.commons.exception.PersistenceException;
@@ -52,6 +53,8 @@ import org.talend.core.model.properties.LinkDocumentationItem;
 import org.talend.core.model.properties.PropertiesFactory;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.properties.User;
+import org.talend.core.runtime.repository.item.ItemProductKeys;
+import org.talend.core.runtime.util.ItemDateParser;
 import org.talend.core.ui.IJobletProviderService;
 import org.talend.core.ui.ISparkJobletProviderService;
 import org.talend.core.ui.ISparkStreamingJobletProviderService;
@@ -62,7 +65,6 @@ import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IProxyRepositoryService;
 import org.talend.repository.model.IRepositoryNode;
-
 import orgomg.cwm.objectmodel.core.Package;
 import orgomg.cwm.resource.relational.Catalog;
 
@@ -116,17 +118,19 @@ public class RepositoryViewObject implements IRepositoryViewObject {
     private static final String DI = "DI";
 
     private static final String TIP = "same name item with other project";
-    
+
     private String framework;
 
     private boolean avoidGuiInfos;
 
+    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+
     public RepositoryViewObject(Property property, boolean avoidGuiInfos) {
         this.id = property.getId();
         this.author = property.getAuthor();
-        this.creationDate = property.getCreationDate();
+        this.creationDate = ItemDateParser.parseAdditionalDate(property, ItemProductKeys.DATE.getCreatedKey());
         this.description = property.getDescription();
-        this.modificationDate = property.getModificationDate();
+        this.modificationDate = ItemDateParser.parseAdditionalDate(property, ItemProductKeys.DATE.getModifiedKey());
         this.label = property.getLabel();
         this.displayName = property.getDisplayName();
         this.purpose = property.getPurpose();
@@ -137,9 +141,14 @@ public class RepositoryViewObject implements IRepositoryViewObject {
         org.talend.core.model.properties.Project emfproject = ProjectManager.getInstance().getProject(property.getItem());
         this.projectLabel = emfproject.getLabel();
         this.path = property.getItem().getState().getPath();
-        if (property.getAdditionalProperties() != null
-                && property.getAdditionalProperties().containsKey("FRAMEWORK")) { //$NON-NLS-1$
-            setFramework((String) property.getAdditionalProperties().get("FRAMEWORK")); //$NON-NLS-1$
+        EMap additionalProperties2 = property.getAdditionalProperties();
+        if (additionalProperties2 != null) {
+            for (Object key : additionalProperties2.keySet()) {
+                this.additionalProperties.put(key.toString(), additionalProperties2.get(key));
+            }
+        }
+        if (additionalProperties2 != null && additionalProperties2.containsKey("FRAMEWORK")) { //$NON-NLS-1$
+            setFramework((String) additionalProperties2.get("FRAMEWORK")); //$NON-NLS-1$
         } else {
             setFramework(null);
         }
@@ -212,19 +221,19 @@ public class RepositoryViewObject implements IRepositoryViewObject {
         return image;
     }
 
-    public static Image getDefaultJobletImage(Item item ) {
+    public static Image getDefaultJobletImage(Item item) {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ISparkJobletProviderService.class)) {
-            ISparkJobletProviderService sparkJobletService = (ISparkJobletProviderService) GlobalServiceRegister
-                    .getDefault().getService(ISparkJobletProviderService.class);
+            ISparkJobletProviderService sparkJobletService = (ISparkJobletProviderService) GlobalServiceRegister.getDefault()
+                    .getService(ISparkJobletProviderService.class);
             if (sparkJobletService != null && sparkJobletService.isSparkJobletItem(item)) {
-                return  ImageProvider.getImage(ECoreImage.SPARK_JOBLET_COMPONENT_ICON);
+                return ImageProvider.getImage(ECoreImage.SPARK_JOBLET_COMPONENT_ICON);
             }
         }
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ISparkStreamingJobletProviderService.class)) {
             ISparkStreamingJobletProviderService sparkStreamingJobletService = (ISparkStreamingJobletProviderService) GlobalServiceRegister
                     .getDefault().getService(ISparkStreamingJobletProviderService.class);
             if (sparkStreamingJobletService != null && sparkStreamingJobletService.isSparkStreamingJobletItem(item)) {
-                return  ImageProvider.getImage(ECoreImage.SPARK_STREAMING_JOBLET_COMPONENT_ICON);
+                return ImageProvider.getImage(ECoreImage.SPARK_STREAMING_JOBLET_COMPONENT_ICON);
             }
         }
         return ImageProvider.getImage(ECoreImage.JOBLET_COMPONENT_ICON);
@@ -304,6 +313,10 @@ public class RepositoryViewObject implements IRepositoryViewObject {
         return this.version;
     }
 
+    public Map<String, Object> getAdditionalProperties() {
+        return additionalProperties;
+    }
+
     @Override
     public Property getProperty() {
         exception = null;
@@ -329,9 +342,9 @@ public class RepositoryViewObject implements IRepositoryViewObject {
             modified = factory.isModified(property);
             this.id = property.getId();
             this.author = property.getAuthor();
-            this.creationDate = property.getCreationDate();
+            this.creationDate = ItemDateParser.parseAdditionalDate(property, ItemProductKeys.DATE.getCreatedKey());
             this.description = property.getDescription();
-            this.modificationDate = property.getModificationDate();
+            this.modificationDate = ItemDateParser.parseAdditionalDate(property, ItemProductKeys.DATE.getModifiedKey());
             this.label = property.getLabel();
             this.displayName = property.getDisplayName();
             this.purpose = property.getPurpose();
@@ -343,8 +356,7 @@ public class RepositoryViewObject implements IRepositoryViewObject {
             repositoryStatus = factory.getStatus(property.getItem());
             InformationLevel informationLevel = property.getMaxInformationLevel();
             informationStatus = factory.getStatus(informationLevel);
-            if (property.getAdditionalProperties() != null
-                    && property.getAdditionalProperties().containsKey("FRAMEWORK")) { //$NON-NLS-1$
+            if (property.getAdditionalProperties() != null && property.getAdditionalProperties().containsKey("FRAMEWORK")) { //$NON-NLS-1$
                 setFramework((String) property.getAdditionalProperties().get("FRAMEWORK")); //$NON-NLS-1$
             } else {
                 setFramework(null);
@@ -432,19 +444,23 @@ public class RepositoryViewObject implements IRepositoryViewObject {
 
     }
 
+    @SuppressWarnings("unchecked")
     public RepositoryViewObject cloneNewObject() {
         RepositoryViewObject object = null;
         try {
             Property connectionProperty = PropertiesFactory.eINSTANCE.createProperty();
             connectionProperty.setAuthor(getAuthor());
-            connectionProperty.setCreationDate(getCreationDate());
+            // connectionProperty.setCreationDate(getCreationDate());
             connectionProperty.setDescription(getDescription());
             connectionProperty.setId(getId());
             connectionProperty.setLabel(getLabel());
-            connectionProperty.setModificationDate(getModificationDate());
+            // connectionProperty.setModificationDate(getModificationDate());
             connectionProperty.setPurpose(getPurpose());
             connectionProperty.setStatusCode(getStatusCode());
             connectionProperty.setVersion(getVersion());
+
+            connectionProperty.getAdditionalProperties().putAll(getProperty().getAdditionalProperties());
+
             final Item oldItem = getProperty().getItem();
             DatabaseConnectionItem newItem = null;
             if (oldItem instanceof DatabaseConnectionItem) {
@@ -684,6 +700,7 @@ public class RepositoryViewObject implements IRepositoryViewObject {
 
     /**
      * Getter for framework.
+     * 
      * @return the framework
      */
     public String getFramework() {
@@ -692,6 +709,7 @@ public class RepositoryViewObject implements IRepositoryViewObject {
 
     /**
      * Sets the framework.
+     * 
      * @param framework the framework to set
      */
     public void setFramework(String framework) {

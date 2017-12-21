@@ -245,8 +245,9 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
         }
 
         // Reference Projects
-        if (PluginChecker.isRefProjectLoaded() && getParent() != this && project != null
-                && project.getEmfProject().getReferencedProjects().size() > 0) {
+        if (PluginChecker.isRefProjectLoaded() && getParent() != this && project != null && !project.isLocal()
+                && (project.equals(ProjectManager.getInstance().getCurrentProject())
+                        || project.getProjectReferenceList().size() > 0)) {
             refProject = new RepositoryNode(null, this, ENodeType.SYSTEM_FOLDER);
             refProject.setProperties(EProperties.LABEL, ERepositoryObjectType.REFERENCED_PROJECTS);
             refProject.setProperties(EProperties.CONTENT_TYPE, ERepositoryObjectType.REFERENCED_PROJECTS);
@@ -453,25 +454,23 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
     public void initializeChildren(Object parent) {
         initializeChildren(project, parent);
         if (PluginChecker.isRefProjectLoaded() && getMergeRefProject()) {
-            intitializeRefProject(project.getEmfProject(), parent);
+            intitializeRefProject(project, parent);
         }
     }
 
-    private void intitializeRefProject(Project project, Object parent) {
+    private void intitializeRefProject(org.talend.core.model.general.Project project, Object parent) {
         if (parent instanceof IRepositoryNode && ((IRepositoryNode) parent).isBin()) {
             return; // don't check the deleted item for ref-projects
         }
-        for (ProjectReference refProject : (List<ProjectReference>) project.getReferencedProjects()) {
-            if (ProjectManager.validReferenceProject(project, refProject)) {
-                Project p = refProject.getReferencedProject();
-                // no need caching
-                /*
-                 * List<Project> list = nodeAndProject.get(parent); if (list == null) { list = new ArrayList<Project>();
-                 * nodeAndProject.put(parent, list); } if (list.contains(p)) { return; } else { list.add(p); }
-                 */
-                initializeChildren(new org.talend.core.model.general.Project(p), parent);
-                intitializeRefProject(p, parent);
-            }
+        for (ProjectReference refProject : project.getProjectReferenceList()) {
+            Project p = refProject.getReferencedProject();
+            // no need caching
+            /*
+             * List<Project> list = nodeAndProject.get(parent); if (list == null) { list = new ArrayList<Project>();
+             * nodeAndProject.put(parent, list); } if (list.contains(p)) { return; } else { list.add(p); }
+             */
+            initializeChildren(new org.talend.core.model.general.Project(p), parent);
+            intitializeRefProject(new org.talend.core.model.general.Project(p), parent);
         }
 
     }
@@ -1236,7 +1235,7 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
 
     private void handleReferenced(RepositoryNode parent) {
         if (parent.getType().equals(ENodeType.SYSTEM_FOLDER)) {
-            for (ProjectReference refProject : (List<ProjectReference>) project.getEmfProject().getReferencedProjects()) {
+            for (ProjectReference refProject : project.getProjectReferenceList()) {
                 if (ProjectManager.validReferenceProject(project.getEmfProject(), refProject)) {
                     Project emfProject = refProject.getReferencedProject();
                     ProjectRepositoryNode referencedProjectNode = new ProjectRepositoryNode(

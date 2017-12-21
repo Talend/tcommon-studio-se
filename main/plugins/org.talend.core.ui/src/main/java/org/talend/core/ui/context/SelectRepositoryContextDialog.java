@@ -62,6 +62,7 @@ import org.talend.core.model.process.IContextParameter;
 import org.talend.core.model.properties.ContextItem;
 import org.talend.core.model.properties.Project;
 import org.talend.core.ui.context.cmd.AddRepositoryContextGroupCommand;
+import org.talend.core.ui.editor.command.ContextRemoveParameterCommand;
 import org.talend.core.ui.i18n.Messages;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
@@ -157,17 +158,6 @@ public class SelectRepositoryContextDialog extends SelectionDialog {
         treeViewer.getTree().setLayoutData(new GridData(GridData.FILL_BOTH));
         addTreeListener();
         updateTreeCheckedState();
-
-        TreeItem[] items = treeViewer.getTree().getItems();
-        for (TreeItem item : items) {
-            if (item.getChecked()) {
-                item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
-                TreeItem[] subItems = item.getItems();
-                for (TreeItem subitem : subItems) {
-                    subitem.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
-                }
-            }
-        }
     }
 
     private void createButtons(Composite parent) {
@@ -331,7 +321,7 @@ public class SelectRepositoryContextDialog extends SelectionDialog {
             ContextParameterType param = (ContextParameterType) obj;
             treeViewer.setGrayed(param, false);
             if (helper.existParameterForJob(param)) {
-                treeViewer.setChecked(param, true); // checked always
+                treeViewer.setChecked(param, checked); // checked always
             } else {
                 ContextParameterType existedParam = hasSelectedParam(param);
                 if (existedParam != null && selectedContextName != null) {
@@ -528,6 +518,17 @@ public class SelectRepositoryContextDialog extends SelectionDialog {
             progressDialog(selectedItems, contextGoupNameSet, getSelectedContextParameterType());
 
             modelManager.refresh();
+        }else{
+            IContext defaultContext = manager.getDefaultContext();
+            List<IContextParameter> existParas = new ArrayList<>(defaultContext.getContextParameterList());
+          //remove the params which is unchecked
+            for(IContextParameter param : existParas){
+                if (param.isBuiltIn()){
+                    continue;
+                }
+                new ContextRemoveParameterCommand(manager, param.getName(), param.getSource())
+                .execute();
+            }
         }
 
         super.okPressed();

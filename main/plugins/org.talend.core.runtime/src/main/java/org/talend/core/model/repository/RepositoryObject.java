@@ -37,13 +37,14 @@ import org.talend.core.model.properties.ItemState;
 import org.talend.core.model.properties.PropertiesFactory;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.properties.User;
+import org.talend.core.runtime.repository.item.ItemProductKeys;
+import org.talend.core.runtime.util.ItemDateParser;
 import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.helper.PackageHelper;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IProxyRepositoryService;
 import org.talend.repository.model.IRepositoryNode;
-
 import orgomg.cwm.objectmodel.core.Package;
 import orgomg.cwm.resource.relational.Catalog;
 
@@ -116,7 +117,7 @@ public class RepositoryObject implements IRepositoryObject {
 
     @Override
     public Date getCreationDate() {
-        return this.property.getCreationDate();
+        return ItemDateParser.parseAdditionalDate(property, ItemProductKeys.DATE.getCreatedKey());
     }
 
     @Override
@@ -131,7 +132,7 @@ public class RepositoryObject implements IRepositoryObject {
 
     @Override
     public Date getModificationDate() {
-        return this.property.getModificationDate();
+        return ItemDateParser.parseAdditionalDate(property, ItemProductKeys.DATE.getModifiedKey());
     }
 
     @Override
@@ -165,7 +166,7 @@ public class RepositoryObject implements IRepositoryObject {
 
     @Override
     public void setCreationDate(Date value) {
-        this.property.setCreationDate(value);
+        // this.property.setCreationDate(value);
     }
 
     @Override
@@ -180,7 +181,7 @@ public class RepositoryObject implements IRepositoryObject {
 
     @Override
     public void setModificationDate(Date value) {
-        this.property.setModificationDate(value);
+        // this.property.setModificationDate(value);
     }
 
     @Override
@@ -220,12 +221,11 @@ public class RepositoryObject implements IRepositoryObject {
         try {
             Property connectionProperty = PropertiesFactory.eINSTANCE.createProperty();
             connectionProperty.setAuthor(getAuthor());
-            connectionProperty.setCreationDate(getCreationDate());
+            connectionProperty.getAdditionalProperties().addAll(property.getAdditionalProperties());
             connectionProperty.setDescription(getDescription());
             connectionProperty.setId(getId());
             connectionProperty.setLabel(getLabel());
             connectionProperty.setDisplayName(getDisplayName());
-            connectionProperty.setModificationDate(getModificationDate());
             connectionProperty.setPurpose(getPurpose());
             connectionProperty.setStatusCode(getStatusCode());
             connectionProperty.setVersion(getVersion());
