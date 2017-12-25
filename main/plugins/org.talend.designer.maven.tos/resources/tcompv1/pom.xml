@@ -63,6 +63,11 @@
 		</dependency>
         <dependency>
             <groupId>org.talend.sdk.component</groupId>
+            <artifactId>component-server</artifactId>
+            <version>${tcomp.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.talend.sdk.component</groupId>
             <artifactId>component-runtime-design-extension</artifactId>
             <version>${tcomp.version}</version>
         </dependency>
