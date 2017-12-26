@@ -24,6 +24,12 @@
         </dependency>
         <dependency>
             <groupId>org.talend.studio</groupId>
+            <artifactId>studio-tcompv1-dependencies</artifactId>
+            <version>${project.version}</version>
+            <type>pom</type>
+        </dependency>
+        <dependency>
+            <groupId>org.talend.studio</groupId>
             <artifactId>studio-surefire-dependencies</artifactId>
             <version>${project.version}</version>
             <type>pom</type>
