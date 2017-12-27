@@ -13,22 +13,26 @@
 package org.talend.librariesmanager.maven;
 
 import java.io.File;
+import java.net.URI;
 import java.net.URL;
 import java.util.Map;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.StatusLine;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpHead;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.ops4j.pax.url.mvn.MavenResolver;
+import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.general.INexusService;
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.model.general.ModuleStatusProvider;
+import org.talend.core.nexus.HttpClientTransport;
 import org.talend.core.nexus.NexusConstants;
 import org.talend.core.nexus.NexusServerBean;
 import org.talend.core.nexus.TalendLibsServerManager;
@@ -200,27 +204,20 @@ public class ArtifactsDeployer {
         target = target + artifactPath;
         URL targetURL = new URL(target);
 
-        DefaultHttpClient httpClient = new DefaultHttpClient();
-        try {
-            HttpHead httpHead = null;
-            HttpResponse response = null;
-            StatusLine statusLine = null;
-            if (targetURL.getFile() != null && !targetURL.getFile().endsWith("SNAPSHOT.jar")) {
-                httpClient.getCredentialsProvider().setCredentials(new AuthScope(targetURL.getHost(), targetURL.getPort()),
-                        new UsernamePasswordCredentials(nexusServer.getUserName(), nexusServer.getPassword()));
-                httpHead = new HttpHead(targetURL.toString());
-                response = httpClient.execute(httpHead);
-                statusLine = response.getStatusLine();
-                int responseResult = statusLine.getStatusCode();
-                if (responseResult == 200) {
+        if (targetURL.getFile() != null && !artifact.getVersion().endsWith(MavenUrlHelper.VERSION_SNAPSHOT)
+                && isAvailable(artifact)) {
+            NullProgressMonitor monitor = new NullProgressMonitor();
+            new HttpClientTransport(nexusServer.getRepositoryURI(), nexusServer.getUserName(), nexusServer.getPassword()) {
+
+                @Override
+                protected HttpResponse execute(IProgressMonitor monitor, DefaultHttpClient httpClient, URI targetURI)
+                        throws Exception {
                     HttpDelete httpDelete = new HttpDelete(targetURL.toString());
-                    httpClient.execute(httpDelete);
+                    HttpResponse execute = httpClient.execute(httpDelete);
+                    return execute;
                 }
-            }
-        } catch (Exception e) {
-            throw new Exception(targetURL.toString(), e);
-        } finally {
-            httpClient.getConnectionManager().shutdown();
+            }.doRequest(monitor, artifact);
+
         }
     }
 
@@ -238,28 +235,38 @@ public class ArtifactsDeployer {
         }
     }
 
-    // private void install(String path, MavenArtifact artifact) {
-    // StringBuffer command = new StringBuffer();
-    // // mvn -Dfile=E:\studio_code\.metadata\aaabbbb\lib\java\ojdbc6.jar -DgroupId=org.talend.libraries
-    // // -DartifactId=ojdbc6 -Dversion=1.0.0 -Dpackaging=jar
-    // // -B install:install-file
-    // command.append(" mvn ");
-    // command.append(" -Dfile=");
-    // command.append(path);
-    // command.append(" -DgroupId=");
-    // command.append(artifact.getGroupId());
-    // command.append(" -DartifactId=");
-    // command.append(artifact.getArtifactId());
-    // command.append(" -Dversion=");
-    // command.append(artifact.getVersion());
-    // command.append(" -Dpackaging=");
-    // command.append(artifact.getType());
-    // command.append(" -B install:install-file");
-    // try {
-    // Runtime.getRuntime().exec("cmd /c " + command.toString());
-    // } catch (IOException e) {
-    // ExceptionHandler.process(e);
-    // }
-    // }
+    private boolean isAvailable(final MavenArtifact artifact) {
+        boolean[] available = { false };
+        NullProgressMonitor monitor = new NullProgressMonitor();
+        try {
+            new HttpClientTransport(nexusServer.getRepositoryURI(), nexusServer.getUserName(), nexusServer.getPassword()) {
+
+                @Override
+                protected HttpResponse execute(IProgressMonitor monitor, DefaultHttpClient httpClient, URI targetURI)
+                        throws Exception {
+                    if (monitor.isCanceled()) {
+                        throw new OperationCanceledException();
+                    }
+                    HttpGet httpGet = new HttpGet(targetURI);
+                    HttpResponse response = httpClient.execute(httpGet);
+                    final int statusCode = response.getStatusLine().getStatusCode();
+                    if (statusCode == HttpStatus.SC_OK) { // 200
+                        available[0] = true;
+                    }
+                    return response;
+                }
+
+                public void processResponseCode(HttpResponse response) throws org.talend.commons.exception.BusinessException {
+                };
+            }.doRequest(monitor, artifact);
+
+            return available[0];
+        } catch (Exception e) {
+            if (CommonsPlugin.isDebugMode()) {
+                ExceptionHandler.process(e);
+            }
+        }
+        return available[0];
+    }
 
 }

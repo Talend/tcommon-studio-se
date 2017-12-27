@@ -28,6 +28,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.talend.commons.exception.BusinessException;
 import org.talend.commons.utils.resource.FileExtensions;
+import org.talend.core.nexus.HttpClientTransport;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.updates.runtime.engine.component.ComponentNexusP2ExtraFeature;
 
@@ -130,7 +131,7 @@ public class HttpClientTransportTest {
             }
 
             @Override
-            void processResponseCode(HttpResponse response) throws BusinessException {
+            public void processResponseCode(HttpResponse response) throws BusinessException {
                 // nothing to do
             }
 
@@ -162,7 +163,7 @@ public class HttpClientTransportTest {
             }
 
             @Override
-            void processResponseCode(HttpResponse response) throws BusinessException {
+            public void processResponseCode(HttpResponse response) throws BusinessException {
                 // nothing to do
             }
 
@@ -198,7 +199,7 @@ public class HttpClientTransportTest {
             }
 
             @Override
-            void processResponseCode(HttpResponse response) throws BusinessException {
+            public void processResponseCode(HttpResponse response) throws BusinessException {
                 // nothing to do
             }
 
@@ -222,7 +223,7 @@ public class HttpClientTransportTest {
             }
 
             @Override
-            void processResponseCode(HttpResponse response) throws BusinessException {
+            public void processResponseCode(HttpResponse response) throws BusinessException {
                 // nothing to do
             }
 
@@ -246,7 +247,7 @@ public class HttpClientTransportTest {
             }
 
             @Override
-            void processResponseCode(HttpResponse response) throws BusinessException {
+            public void processResponseCode(HttpResponse response) throws BusinessException {
                 // nothing to do
             }
 
@@ -270,7 +271,7 @@ public class HttpClientTransportTest {
             }
 
             @Override
-            void processResponseCode(HttpResponse response) throws BusinessException {
+            public void processResponseCode(HttpResponse response) throws BusinessException {
                 // nothing to do
             }
 
@@ -294,7 +295,7 @@ public class HttpClientTransportTest {
             }
 
             @Override
-            void processResponseCode(HttpResponse response) throws BusinessException {
+            public void processResponseCode(HttpResponse response) throws BusinessException {
                 // nothing to do
             }
 
