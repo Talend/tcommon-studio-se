@@ -693,7 +693,13 @@ public class MetadataDialog extends Dialog {
      */
     @Override
     protected void okPressed() {
-        // TODO Auto-generated method stub
+        // ComboEditor focus lost
+        if (inputMetaView != null) {
+            inputMetaView.notifyFocusLost();
+        }
+        if (outputMetaView != null) {
+            outputMetaView.notifyFocusLost();
+        }
         super.okPressed();
         IMetadataTable outputTable = getOutputMetaData();
         IMetadataTable inputTable = getInputMetaData();
