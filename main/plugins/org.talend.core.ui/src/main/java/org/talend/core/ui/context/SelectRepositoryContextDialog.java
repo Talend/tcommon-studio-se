@@ -22,6 +22,7 @@ import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.gef.commands.Command;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
@@ -478,16 +479,7 @@ public class SelectRepositoryContextDialog extends SelectionDialog {
                 // modelManager,
                 // helper, paramTypeList);
 
-                if (modelManager.getCommandStack() != null) {
-
-                    modelManager.getCommandStack().execute(addGroupCmd);
-
-                    // modelManager.getCommandStack().execute(addVarCmd);
-
-                } else {
-                    addGroupCmd.execute();
-                    // addVarCmd.execute();
-                }
+                execCommand(addGroupCmd);
 
                 monitor.done();
 
@@ -500,6 +492,14 @@ public class SelectRepositoryContextDialog extends SelectionDialog {
             MessageBoxExceptionHandler.process(e.getTargetException(), getParentShell());
         } catch (InterruptedException e) {
             // Nothing to do
+        }
+    }
+
+    private void execCommand(Command cmd) {
+        if (modelManager.getCommandStack() != null) {
+            modelManager.getCommandStack().execute(cmd);
+        } else {
+            cmd.execute();
         }
     }
 
@@ -517,19 +517,20 @@ public class SelectRepositoryContextDialog extends SelectionDialog {
             }
             progressDialog(selectedItems, contextGoupNameSet, getSelectedContextParameterType());
 
-            modelManager.refresh();
-        }else{
+        } else {
             IContext defaultContext = manager.getDefaultContext();
             List<IContextParameter> existParas = new ArrayList<>(defaultContext.getContextParameterList());
-          //remove the params which is unchecked
-            for(IContextParameter param : existParas){
-                if (param.isBuiltIn()){
+            // remove the params which is unchecked
+            for (IContextParameter param : existParas) {
+                if (param.isBuiltIn()) {
                     continue;
                 }
-                new ContextRemoveParameterCommand(manager, param.getName(), param.getSource())
-                .execute();
+                ContextRemoveParameterCommand cmd = new ContextRemoveParameterCommand(manager, param.getName(), param.getSource());
+                execCommand(cmd);
             }
         }
+
+        modelManager.refresh();
 
         super.okPressed();
 
