@@ -253,4 +253,35 @@ public class MavenUrlHelper {
         return moduleName;
     }
 
+    public static String getArtifactPath(MavenArtifact artifact) {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(artifact.getGroupId().replaceAll("\\.", "/"));
+
+        buffer.append("/");
+        buffer.append(artifact.getArtifactId());
+
+        if (artifact.getVersion() != null) {
+            buffer.append("/");
+            buffer.append(artifact.getVersion());
+        }
+
+        buffer.append("/");
+        buffer.append(artifact.getArtifactId());
+        if (artifact.getVersion() != null) {
+            buffer.append("-");
+            buffer.append(artifact.getVersion());
+        }
+        if (artifact.getClassifier() != null) {
+            buffer.append("-");
+            buffer.append(artifact.getClassifier());
+        }
+        if (artifact.getType() != null) {
+            buffer.append(".");
+            buffer.append(artifact.getType());
+        } else {
+            // add default extension
+            buffer.append(".jar");
+        }
+        return buffer.toString();
+    }
 }

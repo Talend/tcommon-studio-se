@@ -99,7 +99,7 @@ public class ComponentsNexusInstallFactory extends AbstractExtraUpdatesFactory {
 
         NexusComponentsTransport transport = new NexusComponentsTransport(defaultFeature.getNexusURL(),
                 defaultFeature.getNexusUser(), defaultFeature.getNexusPass());
-        if (transport.isAvailable()) {
+        if (transport.isAvailable(monitor, defaultFeature.getIndexArtifact())) {
             if (monitor.isCanceled()) {
                 throw new OperationCanceledException();
             }

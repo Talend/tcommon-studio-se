@@ -102,7 +102,7 @@ public class RepositorySystemFactory {
         }
 
         Authentication auth = new AuthenticationBuilder().addUsername(userName).addPassword(password).build();
-        RemoteRepository distRepo = new RemoteRepository.Builder(repositoryId, "default", repositoryUrl).setAuthentication(auth)
+        RemoteRepository distRepo = new RemoteRepository.Builder("nexus", "default", repositoryUrl).setAuthentication(auth)
                 .build();
 
         deployRequest.setRepository(distRepo);

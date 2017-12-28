@@ -19,12 +19,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.Authenticator;
-import java.net.HttpURLConnection;
-import java.net.PasswordAuthentication;
 import java.net.URI;
+import java.net.URISyntaxException;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
 import org.apache.http.HttpEntity;
@@ -38,20 +35,19 @@ import org.apache.http.entity.FileEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.dom4j.Document;
-import org.dom4j.io.SAXReader;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.BusinessException;
 import org.talend.commons.exception.ExceptionHandler;
-import org.talend.commons.utils.network.NetworkUtil;
+import org.talend.core.nexus.HttpClientTransport;
+import org.talend.core.nexus.NexusConstants;
 import org.talend.core.nexus.NexusServerUtils;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.utils.PomUtil;
-import org.talend.updates.runtime.engine.HttpClientTransport;
 
 public class NexusComponentsTransport {
 
@@ -103,21 +99,6 @@ public class NexusComponentsTransport {
         downloadFile(monitor, artifact, target);
     }
 
-    private void setAuthenticator() {
-        if (StringUtils.isNotEmpty(getNexusUser())) {
-            Authenticator.setDefault(new Authenticator() {
-
-                @Override
-                protected PasswordAuthentication getPasswordAuthentication() {
-                    final String nexusPassStr = getNexusPassStr();
-                    return new PasswordAuthentication(getNexusUser(), nexusPassStr != null ? nexusPassStr.toCharArray()
-                            : new char[0]);
-                }
-
-            });
-        }
-    }
-
     public void downloadFile(IProgressMonitor monitor, MavenArtifact artifact, File target) throws Exception {
         if (monitor == null) {
             monitor = new NullProgressMonitor();
@@ -129,70 +110,76 @@ public class NexusComponentsTransport {
         if (reletivePath == null) {
             return;
         }
+        final boolean success[] = { false };
 
-        final Authenticator defaultAuthenticator = NetworkUtil.getDefaultAuthenticator();
+        URI targetURI = getTargetURI(getNexusURL(), reletivePath);
+        new HttpClientTransport(getNexusURL(), getNexusUser(), getNexusPassStr()) {
 
-        boolean success = false;
-
-        BufferedInputStream bis = null;
-        BufferedOutputStream bos = null;
-        HttpURLConnection httpURLConnection = null;
-        try {
-            setAuthenticator();
-
-            httpURLConnection = NexusServerUtils.getHttpURLConnection(getNexusURL(), reletivePath, getNexusUser(),
-                    getNexusPassStr());
-
-            if (monitor.isCanceled()) {
-                throw new OperationCanceledException();
-            }
-
-            InputStream inputStream = httpURLConnection.getInputStream();
-            bis = new BufferedInputStream(inputStream);
-            bos = new BufferedOutputStream(new FileOutputStream(target));
-
-            byte[] buf = new byte[BUFFER_SIZE];
-            int bytesRead = -1;
-            while ((bytesRead = bis.read(buf)) != -1) {
+            @Override
+            protected HttpResponse execute(IProgressMonitor monitor, DefaultHttpClient httpClient, URI targetURI)
+                    throws Exception {
                 if (monitor.isCanceled()) {
                     throw new OperationCanceledException();
                 }
-                bos.write(buf, 0, bytesRead);
-            }
-            bos.flush();
-            success = true;
-        } finally {
-            //
-            if (bis != null) {
-                try {
-                    bis.close();
-                } catch (IOException e) {
-                    ExceptionHandler.process(e);
+                HttpResponse response = httpGet(monitor, httpClient, targetURI);
+                if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                    // final String fileName = getFileName(response);
+                    BufferedInputStream bis = null;
+                    BufferedOutputStream bos = null;
+                    try {
+                        HttpEntity entity = response.getEntity();
+                        InputStream inputStream = entity.getContent();
+
+                        bis = new BufferedInputStream(inputStream);
+                        bos = new BufferedOutputStream(new FileOutputStream(target));
+
+                        byte[] buf = new byte[BUFFER_SIZE];
+                        int bytesRead = -1;
+                        while ((bytesRead = bis.read(buf)) != -1) {
+                            if (monitor.isCanceled()) {
+                                throw new OperationCanceledException();
+                            }
+                            bos.write(buf, 0, bytesRead);
+                        }
+                        bos.flush();
+                        success[0] = true;
+                    } finally {
+                        //
+                        if (bis != null) {
+                            try {
+                                bis.close();
+                            } catch (IOException e) {
+                                ExceptionHandler.process(e);
+                            }
+                        }
+
+                        //
+                        if (bos != null) {
+                            try {
+                                bos.close();
+                            } catch (IOException e) {
+                                ExceptionHandler.process(e);
+                            }
+                        }
+
+                        // delete the failed file
+                        if (!success[0] && target.exists() && target.isFile()) {
+                            target.delete();
+                        }
+
+                    }
                 }
+                return response;
             }
+        }.doRequest(monitor, targetURI);
 
-            //
-            if (bos != null) {
-                try {
-                    bos.close();
-                } catch (IOException e) {
-                    ExceptionHandler.process(e);
-                }
-            }
+    }
 
-            //
-            if (httpURLConnection != null) {
-                httpURLConnection.disconnect();
-            }
-
-            // delete the failed file
-            if (!success && target.exists() && target.isFile()) {
-                target.delete();
-            }
-
-            // set back
-            Authenticator.setDefault(defaultAuthenticator);
+    private URI getTargetURI(String nexusUrl, String relativePath) throws URISyntaxException {
+        if (!nexusUrl.endsWith(NexusConstants.SLASH)) {
+            nexusUrl = nexusUrl + NexusConstants.SLASH;
         }
+        return new URI(nexusUrl + relativePath);
     }
 
     public Document downloadXMLDocument(IProgressMonitor monitor, MavenArtifact artifact) throws Exception {
@@ -202,49 +189,14 @@ public class NexusComponentsTransport {
         if (artifact == null) {
             return null;
         }
-        final String reletivePath = PomUtil.getArtifactPath(artifact);
-        if (reletivePath == null) {
+        final String relativePath = PomUtil.getArtifactPath(artifact);
+        if (relativePath == null) {
             return null;
         }
 
-        final Authenticator defaultAuthenticator = NetworkUtil.getDefaultAuthenticator();
-
-        BufferedInputStream bis = null;
-        HttpURLConnection httpURLConnection = null;
-        try {
-            setAuthenticator();
-
-            httpURLConnection = NexusServerUtils.getHttpURLConnection(getNexusURL(), reletivePath, getNexusUser(),
-                    getNexusPassStr());
-
-            if (monitor.isCanceled()) {
-                throw new OperationCanceledException();
-            }
-
-            InputStream inputStream = httpURLConnection.getInputStream();
-            bis = new BufferedInputStream(inputStream);
-            SAXReader saxReader = new SAXReader();
-
-            Document document = saxReader.read(bis);
-            return document;
-        } finally {
-            //
-            if (bis != null) {
-                try {
-                    bis.close();
-                } catch (IOException e) {
-                    ExceptionHandler.process(e);
-                }
-            }
-
-            //
-            if (httpURLConnection != null) {
-                httpURLConnection.disconnect();
-            }
-
-            // set back
-            Authenticator.setDefault(defaultAuthenticator);
-        }
+        URI requestURI = getTargetURI(getNexusURL(), relativePath);
+        Document document = NexusServerUtils.downloadDocument(requestURI, getNexusUser(), getNexusPassStr());
+        return document;
 
     }
 
