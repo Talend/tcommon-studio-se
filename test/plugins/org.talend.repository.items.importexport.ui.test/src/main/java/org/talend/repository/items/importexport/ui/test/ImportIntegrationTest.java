@@ -23,9 +23,12 @@ import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
@@ -84,16 +87,44 @@ public class ImportIntegrationTest {
     @AfterClass
     public static void relogonOriginalProject() throws Exception {
         if (originalProject != null) {
-            ProxyRepositoryFactory.getInstance().logOnProject(originalProject, new NullProgressMonitor());
+            IWorkspaceRunnable runnable = new IWorkspaceRunnable() {
+
+                @Override
+                public void run(IProgressMonitor monitor) throws CoreException {
+                    try {
+                        ProxyRepositoryFactory.getInstance().logOnProject(originalProject, new NullProgressMonitor());
+                    } catch (Exception e) {
+                        throw new CoreException(new org.eclipse.core.runtime.Status(IStatus.ERROR,
+                                "org.talend.repository.svnprovider.test", e.getMessage(), e)); //$NON-NLS-1$
+                    }
+                }
+            };
+
+            ResourcesPlugin.getWorkspace().run(runnable, ResourcesPlugin.getWorkspace().getRoot(), IWorkspace.AVOID_UPDATE,
+                    new NullProgressMonitor());
         }
         originalProject = null;
     }
 
     @Before
     public void beforeTest() throws PersistenceException, CoreException, LoginException {
-        ProxyRepositoryFactory.getInstance().logOffProject();
-        createTempProject();
-        ProxyRepositoryFactory.getInstance().logOnProject(sampleProject, new NullProgressMonitor());
+        IWorkspaceRunnable runnable = new IWorkspaceRunnable() {
+
+            @Override
+            public void run(IProgressMonitor monitor) throws CoreException {
+                try {
+                    ProxyRepositoryFactory.getInstance().logOffProject();
+                    createTempProject();
+                    ProxyRepositoryFactory.getInstance().logOnProject(sampleProject, new NullProgressMonitor());
+                } catch (Exception e) {
+                    throw new CoreException(new org.eclipse.core.runtime.Status(IStatus.ERROR,
+                            "org.talend.repository.svnprovider.test", e.getMessage(), e)); //$NON-NLS-1$
+                }
+            }
+        };
+
+        ResourcesPlugin.getWorkspace().run(runnable, ResourcesPlugin.getWorkspace().getRoot(), IWorkspace.AVOID_UPDATE,
+                new NullProgressMonitor());
     }
 
     @After
@@ -328,7 +359,8 @@ public class ImportIntegrationTest {
         return importItems;
     }
 
-    @Test @Ignore
+    @Test
+    @Ignore
     public void testItemSameNameDifferentId() throws Exception {
         initialize();
 
@@ -487,7 +519,8 @@ public class ImportIntegrationTest {
      * @throws Exception
      */
     @SuppressWarnings("null")
-    @Test @Ignore
+    @Test
+    @Ignore
     public void testItemDifferentNameSameIdWithDep2() throws Exception {
         List<ImportItem> importItems = getImportItems5();
         manager.importItemRecords(new NullProgressMonitor(), resManager, importItems, true,
@@ -624,7 +657,8 @@ public class ImportIntegrationTest {
      * @throws Exception
      */
     @SuppressWarnings("null")
-    @Test @Ignore
+    @Test
+    @Ignore
     public void testItemSameNameDifferentIdWithDep() throws Exception {
         List<ImportItem> importItems = getImportItems6();
         manager.importItemRecords(new NullProgressMonitor(), resManager, importItems, true,
@@ -789,7 +823,8 @@ public class ImportIntegrationTest {
         return importItems;
     }
 
-    @Test @Ignore
+    @Test
+    @Ignore
     public void testDuplicateIdInSameImport() throws Exception {
         List<ImportItem> importItems = getImportItems7();
         manager.importItemRecords(new NullProgressMonitor(), resManager, importItems, false,
