@@ -15,8 +15,6 @@ package org.talend.core.model.general;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.Path;
@@ -230,8 +228,15 @@ public class ModuleNeeded {
             String mn = moduleName.replace(QUOTATION_MARK, "").replace(SINGLE_QUOTE, ""); //$NON-NLS-1$ //$NON-NLS-2$
             if (mn.indexOf("\\") != -1 || (mn.indexOf("/") != -1 && mn.endsWith(".jar"))) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                 mn = new Path(mn).lastSegment();
-            }else if(mn.indexOf("/") != -1){
-                mn = mn.split("/")[1]+".jar";//$NON-NLS-1$
+            } else if (mn.indexOf("/") != -1) {
+                MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(moduleName);
+                // incase the module name is a maven uri for tcomp
+                if (parseMvnUrl != null) {
+                    mn = parseMvnUrl.getFileName();
+                    setMavenUri(moduleName);
+                } else {
+                    mn = mn.split("/")[1] + ".jar";//$NON-NLS-1$
+                }
             }
             this.moduleName = mn;
         } else {
