@@ -27,7 +27,7 @@ public class XMILoadException extends XMIException {
     private final int evenType;
 
     public XMILoadException(String message, int evenType, Resource res) {
-        super(message, res != null ? res.getURI().toString() : null, 0, 0);
+        super(message, res != null && res.getURI() != null ? res.getURI().toString() : null, 0, 0);
         this.evenType = evenType;
         this.resource = res;
     }

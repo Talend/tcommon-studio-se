@@ -199,4 +199,10 @@ public class FileResourcesUnityManager extends FilesManager {
             }
         }
     }
+
+    @Override
+    public Object getRoot() {
+        return this.tmpResWorkFolder;
+    }
+
 }

@@ -16,9 +16,7 @@ import java.io.File;
 import java.util.List;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.Resource.Diagnostic;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -44,7 +42,6 @@ import org.eclipse.ui.views.properties.PropertySheet;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.LoginException;
 import org.talend.commons.exception.PersistenceException;
-import org.talend.commons.exception.XMILoadException;
 import org.talend.commons.runtime.model.emf.provider.EmfResourcesFactoryReader;
 import org.talend.commons.runtime.model.emf.provider.ResourceOption;
 import org.talend.commons.ui.swt.actions.ITreeContextualAction;
@@ -62,6 +59,7 @@ import org.talend.core.model.repository.RepositoryViewObject;
 import org.talend.core.model.utils.RepositoryManagerHelper;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.i18n.Messages;
+import org.talend.core.runtime.util.EmfResourceUtil;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.RepositoryWorkUnit;
 import org.talend.repository.model.IProxyRepositoryFactory;
@@ -645,15 +643,7 @@ public abstract class AContextualAction extends Action implements ITreeContextua
                     // only avoid NPE if item has been deleted in svn
                     if (property != null) {
                         Resource res = property.eResource();
-                        if (res != null) {
-                            final EList<Diagnostic> errors = res.getErrors();
-                            for (Diagnostic d : errors) {
-                                // invalid
-                                if (d instanceof XMILoadException && ((XMILoadException) d).getEvenType() == 403) {
-                                    forceReadonly = true;
-                                }
-                            }
-                        }
+                        forceReadonly = EmfResourceUtil.hasInvalidFlag(res);
 
                         doRun();
                     }
