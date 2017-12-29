@@ -3,14 +3,9 @@
  */
 package org.talend.core.model.metadata.builder.database;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.*;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.*;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -19,8 +14,6 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import junit.framework.Assert;
 
 import org.junit.After;
 import org.junit.Before;
@@ -36,6 +29,8 @@ import org.talend.core.model.metadata.IMetadataConnection;
 import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.metadata.builder.connection.MetadataColumn;
+
+import junit.framework.Assert;
 import orgomg.cwm.objectmodel.core.Expression;
 
 /**
@@ -186,6 +181,7 @@ public class ExtractMetaDataUtilsTest {
 
     private List<EDatabaseTypeName> getNeedFakeTypes() {
         List<EDatabaseTypeName> neededList = new ArrayList<EDatabaseTypeName>();
+        neededList.add(EDatabaseTypeName.IBMDB2);
         neededList.add(EDatabaseTypeName.IBMDB2ZOS);
         neededList.add(EDatabaseTypeName.TERADATA); // need isSqlMode
         neededList.add(EDatabaseTypeName.SAS);
