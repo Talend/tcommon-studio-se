@@ -111,10 +111,12 @@ public class MigrationToolService implements IMigrationToolService {
         final ResourceOption migrationOption = ResourceOption.MIGRATION;
         try {
             EmfResourcesFactoryReader.INSTANCE.addOption(migrationOption, false);
+            EmfResourcesFactoryReader.INSTANCE.addOption(migrationOption, true);
 
             delegateExecuteMigrationTasksForImport(project, item, migrationTasksToApply, monitor);
         } finally {
             EmfResourcesFactoryReader.INSTANCE.removOption(migrationOption, false);
+            EmfResourcesFactoryReader.INSTANCE.removOption(migrationOption, true);
         }
     }
 
@@ -183,10 +185,12 @@ public class MigrationToolService implements IMigrationToolService {
         final ResourceOption migrationOption = ResourceOption.MIGRATION;
         try {
             EmfResourcesFactoryReader.INSTANCE.addOption(migrationOption, false);
+            EmfResourcesFactoryReader.INSTANCE.addOption(migrationOption, true);
 
             delateExecuteMigrationTasksForLogon(project, beforeLogon, monitorWrap);
         } finally {
             EmfResourcesFactoryReader.INSTANCE.removOption(migrationOption, false);
+            EmfResourcesFactoryReader.INSTANCE.removOption(migrationOption, true);
         }
     }
 
