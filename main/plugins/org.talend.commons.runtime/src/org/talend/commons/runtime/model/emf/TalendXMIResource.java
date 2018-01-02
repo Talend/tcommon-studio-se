@@ -29,6 +29,7 @@ import org.eclipse.emf.ecore.xmi.impl.SAXXMIHandler;
 import org.eclipse.emf.ecore.xmi.impl.XMILoadImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMISaveImpl;
+import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -86,6 +87,39 @@ public class TalendXMIResource extends XMIResourceImpl {
             @Override
             protected DefaultHandler makeDefaultHandler() {
                 return new SAXXMIHandler(resource, helper, options) {
+
+                    @Override
+                    public void startElement(String uri, String localName, String name, Attributes attributes)
+                            throws SAXException {
+                        if (NS_DS_VALUE.equals(uri)) {
+                            return; // need ignore for ds
+                        }
+                        super.startElement(uri, localName, name, attributes);
+                    }
+
+                    @Override
+                    public void startElement(String uri, String localName, String name) {
+                        if (NS_DS_VALUE.equals(uri)) {
+                            return; // need ignore for ds
+                        }
+                        super.startElement(uri, localName, name);
+                    }
+
+                    @Override
+                    public void endElement(String uri, String localName, String name) {
+                        if (NS_DS_VALUE.equals(uri)) {
+                            return; // need ignore for ds
+                        }
+                        super.endElement(uri, localName, name);
+                    }
+
+                    @Override
+                    protected void processElement(String name, String prefix, String localName) {
+                        if (NS_DS.equals(prefix) && NS_DS_VALUE.equals(helper.getURI(NS_DS))) {
+                            return; // need ignore for ds
+                        }
+                        super.processElement(name, prefix, localName);
+                    }
 
                     @Override
                     protected EObject createObjectByType(String prefix, String name, boolean top) {

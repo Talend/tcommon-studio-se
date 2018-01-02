@@ -20,8 +20,7 @@ public enum ResourceOption implements IOptionProvider {
     CREATATION,
     MIGRATION,
     ITEM_IMPORTATION,
-    DEMO_IMPORTATION,
-    USING, ;
+    DEMO_IMPORTATION, ;
 
     private final OptionProvider provider;
 

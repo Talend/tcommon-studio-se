@@ -16,7 +16,6 @@ import java.io.File;
 import java.util.List;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -42,8 +41,6 @@ import org.eclipse.ui.views.properties.PropertySheet;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.LoginException;
 import org.talend.commons.exception.PersistenceException;
-import org.talend.commons.runtime.model.emf.provider.EmfResourcesFactoryReader;
-import org.talend.commons.runtime.model.emf.provider.ResourceOption;
 import org.talend.commons.ui.swt.actions.ITreeContextualAction;
 import org.talend.commons.utils.VersionUtils;
 import org.talend.core.GlobalServiceRegister;
@@ -59,7 +56,7 @@ import org.talend.core.model.repository.RepositoryViewObject;
 import org.talend.core.model.utils.RepositoryManagerHelper;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.i18n.Messages;
-import org.talend.core.runtime.util.EmfResourceUtil;
+import org.talend.core.ui.IHeaderFooterProviderService;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.RepositoryWorkUnit;
 import org.talend.repository.model.IProxyRepositoryFactory;
@@ -104,8 +101,6 @@ public abstract class AContextualAction extends Action implements ITreeContextua
     private Item oldItem;
 
     private IRepositoryNode node;
-
-    protected boolean forceReadonly;
 
     @Override
     public boolean isEditAction() {
@@ -608,16 +603,6 @@ public abstract class AContextualAction extends Action implements ITreeContextua
 
     @Override
     public void run() {
-        final ResourceOption usingOption = ResourceOption.USING;
-        try {
-            EmfResourcesFactoryReader.INSTANCE.addOption(usingOption, true);
-            delegateRun();
-        } finally {
-            EmfResourcesFactoryReader.INSTANCE.removOption(usingOption, true);
-        }
-    }
-
-    public void delegateRun() {
         String name = "User action : " + getText(); //$NON-NLS-1$
 
         oldItem = null;
@@ -630,6 +615,17 @@ public abstract class AContextualAction extends Action implements ITreeContextua
                 Property oldProperty = node.getObject().getProperty();
                 if (oldProperty != null) {
                     oldItem = oldProperty.getItem();
+
+                    if (GlobalServiceRegister.getDefault().isServiceRegistered(IHeaderFooterProviderService.class)) {
+                        IHeaderFooterProviderService service = (IHeaderFooterProviderService) GlobalServiceRegister.getDefault()
+                                .getService(IHeaderFooterProviderService.class);
+                        if (!service.validItem(oldItem)) {
+                            MessageDialog.openError(Display.getCurrent().getActiveShell(),
+                                    Messages.getString("AContextualAction.InvalidTitle"),
+                                    Messages.getString("AContextualAction.InvalidMessage"));
+                            return;
+                        }
+                    }
                 }
             }
         }
@@ -642,9 +638,6 @@ public abstract class AContextualAction extends Action implements ITreeContextua
                     Property property = node.getObject().getProperty();
                     // only avoid NPE if item has been deleted in svn
                     if (property != null) {
-                        Resource res = property.eResource();
-                        forceReadonly = EmfResourceUtil.hasInvalidFlag(res);
-
                         doRun();
                     }
                 } else {
