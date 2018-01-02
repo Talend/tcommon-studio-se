@@ -69,7 +69,9 @@ public abstract class AbstractDataCleaner {
 
     public void stop() {
         stop = true;
-        threadCleaner.interrupt();
+        if (threadCleaner != null) {
+            threadCleaner.interrupt();
+        }
     }
 
     private void cleanLoop() {
