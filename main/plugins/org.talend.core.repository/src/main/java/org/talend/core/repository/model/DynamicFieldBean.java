@@ -30,17 +30,20 @@ public class DynamicFieldBean {
 
     private boolean password;
 
+    private boolean readonly;
+
     public DynamicFieldBean(String id, String name, boolean required, boolean password) {
-        this(id, name, null, required, password);
+        this(id, name, null, required, password, false);
     }
 
-    public DynamicFieldBean(String id, String name, String defaultValue, boolean required, boolean password) {
+    public DynamicFieldBean(String id, String name, String defaultValue, boolean required, boolean password, boolean readonly) {
         super();
         this.id = id;
         this.name = name;
         this.defaultValue = defaultValue;
         this.required = required;
         this.password = password;
+        this.readonly = readonly;
     }
 
     public String getId() {
@@ -81,6 +84,14 @@ public class DynamicFieldBean {
 
     public void setDefaultValue(String defaultValue) {
         this.defaultValue = defaultValue;
+    }
+
+    public boolean isReadonly() {
+        return this.readonly;
+    }
+
+    public void setReadonly(boolean readonly) {
+        this.readonly = readonly;
     }
 
 }
