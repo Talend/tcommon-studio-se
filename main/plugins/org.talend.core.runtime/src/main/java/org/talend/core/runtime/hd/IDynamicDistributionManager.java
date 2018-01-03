@@ -33,7 +33,7 @@ public interface IDynamicDistributionManager {
 
     public boolean isLoaded();
 
-    public boolean isBuildinDynamicDistribution(String dynamicDistributionId);
+    public boolean isBuiltinDynamicDistribution(String dynamicDistributionId);
 
     public boolean isUsersDynamicDistribution(String dynamicDistributionId);
 
