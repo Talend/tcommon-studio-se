@@ -721,11 +721,15 @@ public class ImportItemsWizardPage extends WizardPage {
 
                 @Override
                 public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+                    final ResourceOption importOption = ResourceOption.ITEM_IMPORTATION;
                     try {
+                        EmfResourcesFactoryReader.INSTANCE.addOption(importOption, true);
                         List<ImportItem> items = importManager.populateImportingItems(resManager, overwrite, monitor, true);
                         nodesBuilder.addItems(items);
                     } catch (Exception e) {
                         ExceptionHandler.process(e);
+                    } finally {
+                        EmfResourcesFactoryReader.INSTANCE.removOption(importOption, true);
                     }
                 }
 

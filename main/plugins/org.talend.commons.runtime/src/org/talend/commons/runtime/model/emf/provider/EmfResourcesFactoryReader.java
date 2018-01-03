@@ -149,6 +149,10 @@ public class EmfResourcesFactoryReader extends ExtensionRegistryReader {
         return saveOptionsProviders;
     }
 
+    public boolean existedOption(ResourceOption option) {
+        return existedSaveOption(option) || existedLoadOption(option);
+    }
+
     public boolean existedSaveOption(ResourceOption option) {
         return getSaveOptionsProviders().containsKey(option.getName());
     }
@@ -176,12 +180,22 @@ public class EmfResourcesFactoryReader extends ExtensionRegistryReader {
         }
     }
 
+    public void addOption(IOptionProvider option) {
+        addOption(option, true);
+        addOption(option, false);
+    }
+
     public void removOption(IOptionProvider option, boolean load) {
         if (load) {
             getLoadOptionsProviders().remove(option.getName());
         } else {
             getSaveOptionsProviders().remove(option.getName());
         }
+    }
+
+    public void removOption(IOptionProvider option) {
+        removOption(option, true);
+        removOption(option, false);
     }
 
     public ResourceHandler[] getResourceHandlers() {
