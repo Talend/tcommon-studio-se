@@ -72,7 +72,7 @@ public class NexusDownloadHelperWithProgress extends DownloadHelperWithProgress 
                         ILibraryManagerService.class);
                 // seems the customNexusServer is not used in resolveJar function, so still need to provide
                 // user/password in the mvn uri
-                String decryptedMvnUri = MavenUrlHelper.generateMvnUrl(mArtifact, false);
+                String decryptedMvnUri = MavenUrlHelper.generateMvnUrl(mArtifact);
                 resolved = libManager.resolveJar(customNexusServer, decryptedMvnUri);
                 if (resolved != null && resolved.exists()) {
                     return;

@@ -428,13 +428,26 @@ public class PomUtil {
         if (artifact == null) {
             return null;
         }
-        String mvnUri = MavenUrlHelper.generateMvnUrl(artifact, true);
+        String mvnUri = MavenUrlHelper.generateMvnUrl(artifact);
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerService.class)) {
             ILibraryManagerService librariesService = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
                     ILibraryManagerService.class);
             return librariesService.getJarPathFromMaven(mvnUri);
         } else {
-            String localMavenUri = mvnUri.replace("mvn:", "mvn:" + MavenConstants.LOCAL_RESOLUTION_URL + "!"); //$NON-NLS-1$ //$NON-NLS-2$
+            String localMavenUri = null;
+            try {
+                MavenArtifact localMvnArtifact = artifact.clone();
+                localMvnArtifact.setRepositoryUrl(MavenConstants.LOCAL_RESOLUTION_URL);
+                localMvnArtifact.setUsername(null);
+                localMvnArtifact.setPassword(null);
+                localMavenUri = MavenUrlHelper.generateMvnUrl(localMvnArtifact);
+            } catch (CloneNotSupportedException e1) {
+                ExceptionHandler.process(e1);
+            }
+            if (localMavenUri == null) {
+                localMavenUri = mvnUri.replace("mvn:", "mvn:" + MavenConstants.LOCAL_RESOLUTION_URL + "!"); //$NON-NLS-1$ //$NON-NLS-2$
+            }
+
             File resolve = null;
             try {
                 resolve = TalendMavenResolver.getMavenResolver().resolve(localMavenUri);

@@ -216,8 +216,12 @@ public class MavenUrlHelper {
         return generateMvnUrlForJarName(jarName, true, true);
     }
 
+    public static String generateMvnUrl(MavenArtifact mArt) {
+        return generateMvnUrl(mArt, false);
+    }
+
     /**
-     * normally just encrpyt the password except tring to download
+     * The generated mvn url is only used to display on UI
      * 
      * @param mArt
      * @param encryptPassword
@@ -319,7 +323,7 @@ public class MavenUrlHelper {
                 // set jar by default
                 parseMvnUrl.setType(MavenConstants.TYPE_JAR);
             }
-            uri = MavenUrlHelper.generateMvnUrl(parseMvnUrl, true);
+            uri = MavenUrlHelper.generateMvnUrl(parseMvnUrl);
         }
         return uri;
     }
