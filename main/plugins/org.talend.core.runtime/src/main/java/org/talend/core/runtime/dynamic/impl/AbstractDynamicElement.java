@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.talend.core.runtime.dynamic.IDynamicAttribute;
 import org.talend.core.runtime.i18n.Messages;
 
@@ -133,6 +134,15 @@ public abstract class AbstractDynamicElement implements IDynamicAttribute {
                 attributeMap.put(key, value);
             }
         }
+    }
+
+    @Override
+    public String toString() {
+        String id = (String) getAttribute("id"); //$NON-NLS-1$
+        if (StringUtils.isNotEmpty(id)) {
+            return id;
+        }
+        return super.toString();
     }
 
     protected Object convert2JsonValue(String key) throws Exception {
