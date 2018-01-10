@@ -3168,13 +3168,18 @@ public class DatabaseForm extends AbstractForm {
         maprTPasswordForHiveTxt.setEditable(!isContextMode());
         maprTClusterForHiveTxt.setEditable(!isContextMode());
         maprTDurationForHiveTxt.setEditable(!isContextMode());
-
         if (isContextMode()) {
-            trustStorePassword.getTextControl().setEchoChar('\0');
             maprTPasswordForHiveTxt.getTextControl().setEchoChar('\0');
         } else {
-            trustStorePassword.getTextControl().setEchoChar('*');
             maprTPasswordForHiveTxt.getTextControl().setEchoChar('*');
+        }
+    }
+
+    private void adaptHiveDBHadoopPartEditable() {
+        if (isContextMode()) {
+            trustStorePassword.getTextControl().setEchoChar('\0');
+        } else {
+            trustStorePassword.getTextControl().setEchoChar('*');
         }
     }
 
@@ -6886,6 +6891,7 @@ public class DatabaseForm extends AbstractForm {
         }
         if (isHiveDBConnSelected()) {
             adaptHadoopLinkedPartToReadOnly();
+            adaptHiveDBHadoopPartEditable();
             updateHadoopProperties(!isContextMode());
         }
         if (isHBaseDBConnSelected()) {
