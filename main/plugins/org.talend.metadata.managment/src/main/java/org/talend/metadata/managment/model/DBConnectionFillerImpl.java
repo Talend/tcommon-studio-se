@@ -1507,7 +1507,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                         }
                         column.setPrecision(decimalDigits);
                         // Teradata SQL Mode no need this column
-                        if (!MetadataConnectionUtils.isTeradataSQLMode(iMetadataConnection)) {
+                        if (!MetadataConnectionUtils.isTeradataSQLMode(iMetadataConnection)
+                                && !(dbJDBCMetadata instanceof DB2ForZosDataBaseMetadata)) {
                             numPrecRadix = getIntFromResultSet(columns, GetColumn.NUM_PREC_RADIX.name());
                         }
                     } catch (Exception e1) {

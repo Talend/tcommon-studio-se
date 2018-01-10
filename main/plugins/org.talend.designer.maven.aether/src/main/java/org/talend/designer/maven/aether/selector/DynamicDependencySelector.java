@@ -20,6 +20,7 @@ import org.eclipse.aether.collection.DependencySelector;
 import org.eclipse.aether.graph.Dependency;
 import org.eclipse.aether.graph.Exclusion;
 import org.talend.designer.maven.aether.IDynamicMonitor;
+import org.talend.designer.maven.aether.util.DynamicDistributionAetherUtils;
 
 
 /**
@@ -39,10 +40,14 @@ public class DynamicDependencySelector implements DependencySelector {
 
     private String tabStr = "";
 
-    private boolean printCollectDetails = false;
-
     @Override
     public boolean selectDependency(Dependency dependency) {
+
+        try {
+            DynamicDistributionAetherUtils.checkCancelOrNot(monitor);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
         boolean result = proxy.selectDependency(dependency);
         if (printDetails()) {
@@ -64,6 +69,13 @@ public class DynamicDependencySelector implements DependencySelector {
 
     @Override
     public DependencySelector deriveChildSelector(DependencyCollectionContext context) {
+
+        try {
+            DynamicDistributionAetherUtils.checkCancelOrNot(monitor);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
         DependencySelector result = proxy.deriveChildSelector(context);
         // System.out.println("deriveChildSelector: " + context.toString());
         DynamicDependencySelector selector = null;
@@ -129,7 +141,7 @@ public class DynamicDependencySelector implements DependencySelector {
     }
 
     private boolean printDetails() {
-        if (printCollectDetails && monitor != null) {
+        if (monitor != null) {
             return true;
         } else {
             return false;

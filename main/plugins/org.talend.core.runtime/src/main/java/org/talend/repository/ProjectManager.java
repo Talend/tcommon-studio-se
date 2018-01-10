@@ -76,6 +76,8 @@ public final class ProjectManager {
     private Project currentProject;
 
     private Map<String, String> mapProjectUrlToBranchUrl = new HashMap<String, String>();
+    
+	private static final Map<String, Integer> projectLabelToIdMap = new HashMap<String, Integer>();
 
     private Map<String, List<FolderItem>> foldersMap = new HashMap<String, List<FolderItem>>();
 
@@ -727,4 +729,19 @@ public final class ProjectManager {
     public Set<Object> getUpdatedRemoteHandlerRecords() {
         return this.updatedRemoteHandlerRecords;
     }
+
+	public static void clearCachedProjectIds() {
+		projectLabelToIdMap.clear();
+	}
+
+	public static void cacheProjectId(String projectLabel, Integer projectId) {
+		projectLabelToIdMap.put(projectLabel, projectId);
+	}
+
+	public static String getCachedProjectId(String projectLabel) {
+		if (projectLabelToIdMap.get(projectLabel) != null) {
+			return String.valueOf(projectLabelToIdMap.get(projectLabel));
+		}
+		return null;
+	}
 }

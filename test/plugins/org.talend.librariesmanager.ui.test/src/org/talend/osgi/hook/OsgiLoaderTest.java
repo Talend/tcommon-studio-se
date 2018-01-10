@@ -12,7 +12,12 @@
 // ============================================================================
 package org.talend.osgi.hook;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
@@ -52,6 +57,8 @@ import org.talend.osgi.hook.notification.JarMissingObservable.JarMissingEvent;
  *
  */
 public class OsgiLoaderTest {
+
+    private static final String PATH_RES = "/resources/plugins/";
 
     /**
      * created by sgandon on 1 juin 2015 Detailled comment
@@ -193,13 +200,13 @@ public class OsgiLoaderTest {
 
     @BeforeClass
     public static void staticInit() throws IOException {
-        FRAGMENT_WITH_LIB_FOLDER_URL = FileLocator
-                .toFileURL(OsgiLoaderTest.class.getResource("/plugins/" + FRAGMENT_WITH_LIB)).toExternalForm(); //$NON-NLS-1$
-        BUNDLE_NO_LIB_FOLDER_URL = FileLocator
-                .toFileURL(OsgiLoaderTest.class.getResource("/plugins/" + BUNDLE_NO_LIB)).toExternalForm(); //$NON-NLS-1$
-        BUNDLE_CALLING_LIB_FOLDER_URL = FileLocator
-                .toFileURL(OsgiLoaderTest.class.getResource("/plugins/" + BUNDLE_CALLING_LIB)).toExternalForm(); //$NON-NLS-1$
-        LIB_POM_URL = FileLocator.toFileURL(OsgiLoaderTest.class.getResource("/plugins/pom.xml")).toExternalForm(); //$NON-NLS-1$
+        FRAGMENT_WITH_LIB_FOLDER_URL = FileLocator.toFileURL(OsgiLoaderTest.class.getResource(PATH_RES + FRAGMENT_WITH_LIB))
+                .toExternalForm(); //$NON-NLS-1$
+        BUNDLE_NO_LIB_FOLDER_URL = FileLocator.toFileURL(OsgiLoaderTest.class.getResource(PATH_RES + BUNDLE_NO_LIB))
+                .toExternalForm(); //$NON-NLS-1$
+        BUNDLE_CALLING_LIB_FOLDER_URL = FileLocator.toFileURL(OsgiLoaderTest.class.getResource(PATH_RES + BUNDLE_CALLING_LIB))
+                .toExternalForm(); //$NON-NLS-1$
+        LIB_POM_URL = FileLocator.toFileURL(OsgiLoaderTest.class.getResource(PATH_RES + "/pom.xml")).toExternalForm(); //$NON-NLS-1$
     }
 
     @Before

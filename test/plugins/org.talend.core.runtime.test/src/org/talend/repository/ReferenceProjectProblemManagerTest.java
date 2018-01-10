@@ -29,9 +29,10 @@ import org.talend.core.model.properties.impl.PropertiesFactoryImpl;
 //
 // ============================================================================
 public class ReferenceProjectProblemManagerTest {
+
     @Rule
-    private ExpectedException thrown= ExpectedException.none();
-    
+    public ExpectedException thrown = ExpectedException.none();
+
     @Test
     public void testCheckCycleReference() {
         Map<String, List<ProjectReference>> referenceMap = new HashMap<String, List<ProjectReference>>();
@@ -56,7 +57,7 @@ public class ReferenceProjectProblemManagerTest {
         r0List.add(getProjectReferenceInstance("R", "master"));
         assertTrue(!ReferenceProjectProblemManager.checkCycleReference(referenceMap));
     }
-    
+
     @Test
     public void testCheckMoreThanOneBranch() throws BusinessException {
         Map<String, List<ProjectReference>> referenceMap = new HashMap<String, List<ProjectReference>>();

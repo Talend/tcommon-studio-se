@@ -14,9 +14,12 @@ package org.talend.core.runtime.dynamic.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
+import org.apache.commons.lang3.StringUtils;
 import org.talend.core.runtime.dynamic.IDynamicConfiguration;
 import org.talend.core.runtime.dynamic.IDynamicExtension;
 import org.talend.core.runtime.dynamic.IDynamicPlugin;
@@ -61,12 +64,19 @@ public class DynamicPlugin extends AbstractDynamicElement implements IDynamicPlu
     }
 
     @Override
-    public IDynamicExtension removeExtension(String extensionPoint) {
-        IDynamicExtension extension = extensionMap.remove(extensionPoint);
-        if (extension != null) {
-            super.getChildren().remove(extension);
+    public List<IDynamicExtension> removeExtensions(String extensionPoint) {
+        List<IDynamicExtension> removedExtensions = new ArrayList<>();
+        Iterator<Entry<String, IDynamicExtension>> iter = extensionMap.entrySet().iterator();
+        while (iter.hasNext()) {
+            Entry<String, IDynamicExtension> entry = iter.next();
+            IDynamicExtension value = entry.getValue();
+            if (StringUtils.equals(value.getExtensionPoint(), extensionPoint)) {
+                iter.remove();
+                super.getChildren().remove(value);
+                removedExtensions.add(value);
+            }
         }
-        return extension;
+        return removedExtensions;
     }
 
     /**
@@ -98,6 +108,28 @@ public class DynamicPlugin extends AbstractDynamicElement implements IDynamicPlu
         }
     }
 
+    @Override
+    public IDynamicExtension addExtension(int index, IDynamicExtension extension) {
+        String point = extension.getExtensionPoint();
+        String id = extension.getExtensionId();
+        if (point == null || point.isEmpty() || id == null || id.isEmpty()) {
+            throw new RuntimeException(Messages.getString("DynamicPlugin.addExtension.empty")); //$NON-NLS-1$
+        }
+        String key = getKey(point, id);
+        IDynamicExtension existingExtension = extensionMap.get(key);
+        if (existingExtension != null) {
+            List<IDynamicConfiguration> configurations = extension.getConfigurations();
+            if (configurations != null && !configurations.isEmpty()) {
+                existingExtension.getConfigurations().addAll(configurations);
+            }
+            return existingExtension;
+        } else {
+            super.addChild(index, (AbstractDynamicElement) extension);
+            extensionMap.put(key, extension);
+            return extension;
+        }
+    }
+
     private String getKey(String extensionPoint, String extensionId) {
         return extensionPoint + "/" + extensionId; //$NON-NLS-1$
     }
@@ -123,7 +155,7 @@ public class DynamicPlugin extends AbstractDynamicElement implements IDynamicPlu
         }
         this.pluginConfiguration = (DynamicPluginConfiguration) pluginConfiguration;
         if (this.pluginConfiguration != null) {
-            super.addChild(this.pluginConfiguration);
+            super.addChild(0, this.pluginConfiguration);
         }
     }
 

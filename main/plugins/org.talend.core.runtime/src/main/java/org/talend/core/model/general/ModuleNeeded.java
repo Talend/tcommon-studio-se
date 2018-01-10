@@ -352,6 +352,9 @@ public class ModuleNeeded {
     @Override
     public int hashCode() {
         int hashCode = 31;
+        if (this.getId() != null) {
+            hashCode *= this.getId().hashCode();
+        }
         if (this.getModuleName() != null) {
             hashCode *= this.getModuleName().hashCode();
         }
@@ -508,12 +511,10 @@ public class ModuleNeeded {
                             MavenArtifact currentArtifact = MavenUrlHelper.parseMvnUrl(mvnUri);
                             if (lastArtifact != null && currentArtifact != null) {
                                 String lastV = lastArtifact.getVersion();
-                                lastV = lastV.replace(MavenConstants.SNAPSHOT, "");
                                 String currentV = currentArtifact.getVersion();
-                                currentV = currentV.replace(MavenConstants.SNAPSHOT, "");
                                 if (!lastV.equals(currentV)) {
-                                    Version lastVersion = new Version(lastV);
-                                    Version currentVersion = new Version(currentV);
+                                    Version lastVersion = getVerstion(lastArtifact);
+                                    Version currentVersion = getVerstion(currentArtifact);
                                     if (currentVersion.compareTo(lastVersion) > 0) {
                                         maxVerstion = mvnUri;
                                     }
@@ -531,6 +532,21 @@ public class ModuleNeeded {
             }
         }
         return mavenUri;
+    }
+
+    private Version getVerstion(MavenArtifact artifact) {
+        String versionStr = artifact.getVersion();
+        int index = versionStr.indexOf("-");
+        if (index != -1) {
+            versionStr = versionStr.split("-")[0];
+        }
+        Version version = null;
+        try {
+            version = new Version(versionStr);
+        } catch (Exception e) {
+            version = new Version(0, 0, 0);
+        }
+        return version;
     }
 
     /**

@@ -27,6 +27,8 @@ import org.eclipse.aether.collection.DependencyCollectionContext;
 import org.eclipse.aether.collection.DependencySelector;
 import org.eclipse.aether.graph.Dependency;
 import org.eclipse.aether.graph.Exclusion;
+import org.talend.designer.maven.aether.IDynamicMonitor;
+import org.talend.designer.maven.aether.util.DynamicDistributionAetherUtils;
 
 /**
  * ExclusionDependencySelector which support regular expressions
@@ -38,6 +40,8 @@ public class DynamicExclusionDependencySelector implements DependencySelector {
     private int hashCode;
 
     private Map<String, Pattern> patternMap = new HashMap<String, Pattern>();
+
+    private IDynamicMonitor monitor;
 
     public DynamicExclusionDependencySelector() {
         exclusions = new Exclusion[0];
@@ -123,6 +127,13 @@ public class DynamicExclusionDependencySelector implements DependencySelector {
 
     @Override
     public DependencySelector deriveChildSelector(DependencyCollectionContext context) {
+
+        try {
+            DynamicDistributionAetherUtils.checkCancelOrNot(monitor);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
         Dependency dependency = context.getDependency();
         Collection<Exclusion> exclusions = dependency != null ? dependency.getExclusions() : null;
         if ((exclusions == null) || (exclusions.isEmpty())) {
@@ -158,12 +169,21 @@ public class DynamicExclusionDependencySelector implements DependencySelector {
         }
 
         DynamicExclusionDependencySelector newSelector = new DynamicExclusionDependencySelector(merged);
+        newSelector.setMonitor(monitor);
 
         if (patternMap != null && !patternMap.isEmpty()) {
             newSelector.patternMap.putAll(patternMap);
         }
 
         return newSelector;
+    }
+
+    public IDynamicMonitor getMonitor() {
+        return this.monitor;
+    }
+
+    public void setMonitor(IDynamicMonitor monitor) {
+        this.monitor = monitor;
     }
 
     @Override

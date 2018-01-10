@@ -22,6 +22,7 @@ Bundle-ClassPath: .,
  lib/plexus-interpolation-1.19.jar,
  lib/plexus-utils-3.0.17.jar
 Export-Package: org.talend.designer.maven.aether,
+ org.talend.designer.maven.aether.comparator,
  org.talend.designer.maven.aether.node,
  org.talend.designer.maven.aether.selector,
  org.talend.designer.maven.aether.util

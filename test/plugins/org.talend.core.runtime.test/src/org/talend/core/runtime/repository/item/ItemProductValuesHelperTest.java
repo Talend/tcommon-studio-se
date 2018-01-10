@@ -14,6 +14,7 @@ package org.talend.core.runtime.repository.item;
 
 import static org.hamcrest.CoreMatchers.anything;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -27,6 +28,7 @@ import java.util.Date;
 import java.util.Map;
 
 import org.eclipse.emf.common.util.EMap;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.talend.commons.utils.VersionUtils;
@@ -45,10 +47,28 @@ public class ItemProductValuesHelperTest {
 
     static IBrandingService brandingService = null;
 
+    private Property prop;
+
     @BeforeClass
     public static void setup() {
         brandingService = (IBrandingService) GlobalServiceRegister.getDefault().getService(IBrandingService.class);
         assertNotNull(brandingService);
+    }
+
+    @Before
+    public void init() {
+        prop = PropertiesFactory.eINSTANCE.createProperty();
+
+        Date createdDate = new Date();
+        try {
+            Thread.sleep(100);// make sure the date is different
+        } catch (InterruptedException e) {
+            //
+        }
+        Date modifiedDate = new Date();
+
+        prop.setCreationDate(createdDate);
+        prop.setModificationDate(modifiedDate);
     }
 
     @Test
@@ -64,7 +84,6 @@ public class ItemProductValuesHelperTest {
 
     @Test
     public void test_existed_others() {
-        Property prop = PropertiesFactory.eINSTANCE.createProperty();
         EMap additionalProp = prop.getAdditionalProperties();
 
         additionalProp.put("ABC", "XYZ");
@@ -74,7 +93,6 @@ public class ItemProductValuesHelperTest {
 
     @Test
     public void test_existed_modifiedKey() {
-        Property prop = PropertiesFactory.eINSTANCE.createProperty();
         EMap additionalProp = prop.getAdditionalProperties();
 
         additionalProp.put(ItemProductKeys.FULLNAME.getModifiedKey(), "TOS");
@@ -84,7 +102,6 @@ public class ItemProductValuesHelperTest {
 
     @Test
     public void test_existed_createdKey() {
-        Property prop = PropertiesFactory.eINSTANCE.createProperty();
         EMap additionalProp = prop.getAdditionalProperties();
 
         additionalProp.put(ItemProductKeys.FULLNAME.getCreatedKey(), "TOS");
@@ -94,7 +111,6 @@ public class ItemProductValuesHelperTest {
 
     @Test
     public void test_existed_importKey() {
-        Property prop = PropertiesFactory.eINSTANCE.createProperty();
         EMap additionalProp = prop.getAdditionalProperties();
 
         additionalProp.put(ItemProductKeys.FULLNAME.getImportKey(), "TOS");
@@ -104,7 +120,6 @@ public class ItemProductValuesHelperTest {
 
     @Test
     public void test_existed_all() {
-        Property prop = PropertiesFactory.eINSTANCE.createProperty();
         EMap additionalProp = prop.getAdditionalProperties();
 
         additionalProp.put(ItemProductKeys.FULLNAME.getModifiedKey(), "TP");
@@ -125,7 +140,6 @@ public class ItemProductValuesHelperTest {
     }
 
     private void doTestSetValuesWhenCreate(Date date) {
-        Property prop = PropertiesFactory.eINSTANCE.createProperty();
         EMap additionalProp = prop.getAdditionalProperties();
         boolean set = ItemProductValuesHelper.setValuesWhenCreate(prop, date);
         assertTrue(set);
@@ -147,7 +161,6 @@ public class ItemProductValuesHelperTest {
     }
 
     private void doTestSetValuesWhenModify(Date date) {
-        Property prop = PropertiesFactory.eINSTANCE.createProperty();
         boolean set = ItemProductValuesHelper.setValuesWhenModify(prop, date);
         assertTrue(set);
 
@@ -159,7 +172,6 @@ public class ItemProductValuesHelperTest {
 
     @Test
     public void test_setValuesWhenMigrate_exist() {
-        Property prop = PropertiesFactory.eINSTANCE.createProperty();
         prop.getAdditionalProperties().put(ItemProductKeys.FULLNAME.getModifiedKey(), "xxxx");
 
         boolean set = ItemProductValuesHelper.setValuesWhenMigrate(prop, null);
@@ -173,7 +185,6 @@ public class ItemProductValuesHelperTest {
         Project project = PropertiesFactory.eINSTANCE.createProject();
         project.setProductVersion("Talend Open Studio for Big Data-6.5.1.20171110_1941");
 
-        Property prop = PropertiesFactory.eINSTANCE.createProperty();
         boolean set = ItemProductValuesHelper.setValuesWhenMigrate(prop, project);
         assertTrue(set);
         EMap additionalProp = prop.getAdditionalProperties();
@@ -181,12 +192,12 @@ public class ItemProductValuesHelperTest {
         assertThat(additionalProp.get(ItemProductKeys.FULLNAME.getCreatedKey()), equalTo(productFullname));
         assertThat(additionalProp.get(ItemProductKeys.VERSION.getCreatedKey()), equalTo(productVersion));
         assertThat(additionalProp.get(ItemProductKeys.DATE.getCreatedKey()), anything());
-        assertThat(prop.getCreationDate(), nullValue());
+        assertThat(prop.getCreationDate(), notNullValue());
 
         assertThat(additionalProp.get(ItemProductKeys.FULLNAME.getModifiedKey()), equalTo(productFullname));
         assertThat(additionalProp.get(ItemProductKeys.VERSION.getModifiedKey()), equalTo(productVersion));
         assertThat(additionalProp.get(ItemProductKeys.DATE.getModifiedKey()), anything());
-        assertThat(prop.getModificationDate(), nullValue());
+        assertThat(prop.getModificationDate(), notNullValue());
     }
 
     @Test
@@ -200,7 +211,6 @@ public class ItemProductValuesHelperTest {
         String productVersion = productValues.get(productFullname);
 
         //
-        Property prop = PropertiesFactory.eINSTANCE.createProperty();
         boolean set = ItemProductValuesHelper.setValuesWhenMigrate(prop, null);
         assertTrue(set);
 
@@ -208,12 +218,12 @@ public class ItemProductValuesHelperTest {
         assertThat(additionalProp.get(ItemProductKeys.FULLNAME.getCreatedKey()), equalTo(productFullname));
         assertThat(additionalProp.get(ItemProductKeys.VERSION.getCreatedKey()), equalTo(productVersion));
         assertThat(additionalProp.get(ItemProductKeys.DATE.getCreatedKey()), anything());
-        assertThat(prop.getCreationDate(), nullValue());
+        assertThat(prop.getCreationDate(), notNullValue());
 
         assertThat(additionalProp.get(ItemProductKeys.FULLNAME.getModifiedKey()), equalTo(productFullname));
         assertThat(additionalProp.get(ItemProductKeys.VERSION.getModifiedKey()), equalTo(productVersion));
         assertThat(additionalProp.get(ItemProductKeys.DATE.getModifiedKey()), anything());
-        assertThat(prop.getModificationDate(), nullValue());
+        assertThat(prop.getModificationDate(), notNullValue());
 
     }
 
@@ -224,19 +234,8 @@ public class ItemProductValuesHelperTest {
         Project project = PropertiesFactory.eINSTANCE.createProject();
         project.setProductVersion("Talend Open Studio for Big Data-6.5.1.20171110_1941");
 
-        Property prop = PropertiesFactory.eINSTANCE.createProperty();
-
-        Date createdDate = new Date();
-        try {
-            Thread.sleep(100);// make sure the date is different
-        } catch (InterruptedException e) {
-            //
-        }
-        Date modifiedDate = new Date();
-
-        prop.setCreationDate(createdDate);
-        prop.setModificationDate(modifiedDate);
-
+        Date createdDate = prop.getCreationDate();
+        Date modifiedDate = prop.getModificationDate();
         boolean set = ItemProductValuesHelper.setValuesWhenMigrate(prop, project);
         assertTrue(set);
 
@@ -245,13 +244,13 @@ public class ItemProductValuesHelperTest {
         assertThat(additionalProp.get(ItemProductKeys.VERSION.getCreatedKey()), equalTo(productVersion));
         assertThat(additionalProp.get(ItemProductKeys.DATE.getCreatedKey()),
                 equalTo(ItemProductValuesHelper.DATEFORMAT.format(createdDate)));
-        assertThat(prop.getCreationDate(), nullValue());
+        assertThat(prop.getCreationDate(), equalTo(createdDate));
 
         assertThat(additionalProp.get(ItemProductKeys.FULLNAME.getModifiedKey()), equalTo(productFullname));
         assertThat(additionalProp.get(ItemProductKeys.VERSION.getModifiedKey()), equalTo(productVersion));
         assertThat(additionalProp.get(ItemProductKeys.DATE.getModifiedKey()),
                 equalTo(ItemProductValuesHelper.DATEFORMAT.format(modifiedDate)));
-        assertThat(prop.getModificationDate(), nullValue());
+        assertThat(prop.getModificationDate(), equalTo(modifiedDate));
     }
 
     @Test
@@ -270,8 +269,6 @@ public class ItemProductValuesHelperTest {
 
     @Test
     public void test_setValuesWhenImport_empty() {
-        Property prop = PropertiesFactory.eINSTANCE.createProperty();
-
         Project project = PropertiesFactory.eINSTANCE.createProject();
         project.setProductVersion("");
 
@@ -293,7 +290,6 @@ public class ItemProductValuesHelperTest {
         Project project = PropertiesFactory.eINSTANCE.createProject();
         project.setProductVersion("Talend Open Studio for Big Data-6.5.1.20171110_1941");
 
-        Property prop = PropertiesFactory.eINSTANCE.createProperty();
         boolean set = ItemProductValuesHelper.setValuesWhenImport(prop, project);
         assertTrue(set);
 
@@ -301,17 +297,17 @@ public class ItemProductValuesHelperTest {
         assertThat(additionalProp.get(ItemProductKeys.FULLNAME.getImportKey()), equalTo(productFullname));
         assertThat(additionalProp.get(ItemProductKeys.VERSION.getImportKey()), equalTo(productVersion));
         assertThat(additionalProp.get(ItemProductKeys.DATE.getImportKey()), anything());
-        assertThat(prop.getCreationDate(), nullValue());
+        assertThat(prop.getCreationDate(), notNullValue());
 
         assertThat(additionalProp.get(ItemProductKeys.FULLNAME.getCreatedKey()), equalTo(productFullname));
         assertThat(additionalProp.get(ItemProductKeys.VERSION.getCreatedKey()), equalTo(productVersion));
         assertThat(additionalProp.get(ItemProductKeys.DATE.getCreatedKey()), anything());
-        assertThat(prop.getCreationDate(), nullValue());
+        assertThat(prop.getCreationDate(), notNullValue());
 
         assertThat(additionalProp.get(ItemProductKeys.FULLNAME.getModifiedKey()), equalTo(productFullname));
         assertThat(additionalProp.get(ItemProductKeys.VERSION.getModifiedKey()), equalTo(productVersion));
         assertThat(additionalProp.get(ItemProductKeys.DATE.getModifiedKey()), anything());
-        assertThat(prop.getModificationDate(), nullValue());
+        assertThat(prop.getModificationDate(), notNullValue());
     }
 
     @Test
@@ -321,7 +317,6 @@ public class ItemProductValuesHelperTest {
         Project project = PropertiesFactory.eINSTANCE.createProject();
         project.setProductVersion("Talend Open Studio for Big Data-6.5.1.20171110_1941");
 
-        Property prop = PropertiesFactory.eINSTANCE.createProperty();
         EMap additionalProp = prop.getAdditionalProperties();
         additionalProp.put(ItemProductKeys.FULLNAME.getModifiedKey(), "XXXX"); // set flag to avoid migrating
 
@@ -335,12 +330,12 @@ public class ItemProductValuesHelperTest {
         assertThat(additionalProp.get(ItemProductKeys.FULLNAME.getCreatedKey()), nullValue());
         assertThat(additionalProp.get(ItemProductKeys.VERSION.getCreatedKey()), nullValue());
         assertThat(additionalProp.get(ItemProductKeys.DATE.getCreatedKey()), nullValue());
-        assertThat(prop.getCreationDate(), nullValue());
+        assertThat(prop.getCreationDate(), notNullValue());
 
         assertThat(additionalProp.get(ItemProductKeys.FULLNAME.getModifiedKey()), equalTo("XXXX"));
         assertThat(additionalProp.get(ItemProductKeys.VERSION.getModifiedKey()), nullValue());
         assertThat(additionalProp.get(ItemProductKeys.DATE.getModifiedKey()), anything());
-        assertThat(prop.getModificationDate(), nullValue());
+        assertThat(prop.getModificationDate(), notNullValue());
     }
 
     @Test

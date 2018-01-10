@@ -164,8 +164,8 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
     private boolean fullLogonFinished;
 
     private final ProjectManager projectManager;
-    
-    private Map<String, org.talend.core.model.properties.Project> emfProjectContentMap = new HashMap<String,org.talend.core.model.properties.Project>();
+
+    private Map<String, org.talend.core.model.properties.Project> emfProjectContentMap = new HashMap<String, org.talend.core.model.properties.Project>();
 
     @Override
     public synchronized void addPropertyChangeListener(PropertyChangeListener l) {
@@ -361,14 +361,12 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 throw new IllegalArgumentException(Messages.getString(
                         "ProxyRepositoryFactory.illegalArgumentException.labeAlreadyInUse", new String[] { name })); //$NON-NLS-1$
             } else {
+
                 Display display = Display.getCurrent();
                 if (display == null) {
                     display = Display.getDefault();
                 }
-                Shell currentShell = display.getActiveShell();
-                if (currentShell == null) {
-                    currentShell = new Shell();
-                }
+
                 ITDQRepositoryService tdqRepService = null;
 
                 if (GlobalServiceRegister.getDefault().isServiceRegistered(ITDQRepositoryService.class)) {
@@ -386,14 +384,32 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                         isThrow = false;
                     }
                 } else {
-                    MessageBox box = new MessageBox(currentShell, SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
-                    box.setText(Messages.getString("ProxyRepositoryFactory.JobNameErroe")); //$NON-NLS-1$
-                    box.setMessage(Messages.getString("ProxyRepositoryFactory.Label") + " " + name + " " + Messages.getString("ProxyRepositoryFactory.ReplaceJob")); //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
+                    final Display tmpDisplay = display;
+                    final boolean[] ok = new boolean[1];
+                    tmpDisplay.syncExec(new Runnable() {
 
-                    if (box.open() == SWT.OK) {
+                        @Override
+                        public void run() {
+                            Shell currentShell = tmpDisplay.getActiveShell();
+                            if (currentShell == null) {
+                                currentShell = new Shell();
+                            }
+                            MessageBox box = new MessageBox(currentShell, SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
+                            box.setText(Messages.getString("ProxyRepositoryFactory.JobNameErroe")); //$NON-NLS-1$
+                            box.setMessage(Messages.getString("ProxyRepositoryFactory.Label") + " " + name + " " + Messages.getString("ProxyRepositoryFactory.ReplaceJob")); //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
+
+                            if (box.open() == SWT.OK) {
+
+                                ok[0] = true;
+                            }
+                        }
+                    });
+
+                    if (ok[0]) {
                         deleteObjectPhysical(duplicateNameObject);
                         isThrow = false;
                     }
+
                 }
                 if (isThrow) {
                     throw new TalendInternalPersistenceException(Messages.getString(
@@ -1895,7 +1911,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 ProjectManager.getInstance().getBeforeLogonRecords().clear();
                 ProjectManager.getInstance().getUpdatedRemoteHandlerRecords().clear();
                 // Check reference project setting problems
-                checkReferenceProjectsProblems(project);               
+                checkReferenceProjectsProblems(project);
                 // monitorWrap.worked(1);
                 TimeMeasure.step("logOnProject", "beforeLogon"); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -2040,9 +2056,8 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
             throw e;
         }
     }
-    
-    private void checkReferenceProjectsProblems(Project project)
-            throws BusinessException, PersistenceException {
+
+    private void checkReferenceProjectsProblems(Project project) throws BusinessException, PersistenceException {
         if (ReferenceProjectProblemManager.getInstance().getInvalidProjectReferenceSet().size() > 0) {
             StringBuffer sb = new StringBuffer();
             for (String technicalLabel : ReferenceProjectProblemManager.getInstance().getInvalidProjectReferenceSet()) {

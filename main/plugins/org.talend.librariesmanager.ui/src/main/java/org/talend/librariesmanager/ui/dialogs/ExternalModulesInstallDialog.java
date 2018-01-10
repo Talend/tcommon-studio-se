@@ -298,7 +298,7 @@ public class ExternalModulesInstallDialog extends TitleAreaDialog implements IMo
 
             @Override
             public String get(ModuleToInstall bean) {
-                return bean.getMavenUri();
+                return bean.toString();
             }
 
             @Override

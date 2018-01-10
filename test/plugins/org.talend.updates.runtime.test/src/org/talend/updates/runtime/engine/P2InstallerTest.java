@@ -62,6 +62,7 @@ public class P2InstallerTest {
         // change contents
         PrintWriter pw = new PrintWriter(new FileWriter(configrationFile, true));
         try {
+            pw.println();
             pw.println("test123=abc");
         } finally {
             pw.close();

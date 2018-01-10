@@ -10,7 +10,7 @@
 // 9 rue Pages 92150 Suresnes, France
 //
 // ============================================================================
-package org.talend.updates.runtime.engine;
+package org.talend.core.nexus;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -26,9 +26,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.talend.commons.exception.BusinessException;
-import org.talend.core.nexus.NexusConstants;
 import org.talend.core.runtime.maven.MavenArtifact;
-import org.talend.designer.maven.utils.PomUtil;
+import org.talend.core.runtime.maven.MavenUrlHelper;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -55,7 +54,7 @@ public abstract class HttpClientTransport {
         if (baseRepoURI == null) {
             throw new IllegalArgumentException("Must provide the nexus base repository uri");
         }
-        String artifactPath = PomUtil.getArtifactPath(artifact);
+        String artifactPath = MavenUrlHelper.getArtifactPath(artifact);
         if (artifactPath == null) {
             return null;
         }
@@ -99,7 +98,7 @@ public abstract class HttpClientTransport {
         }
     }
 
-    void processResponseCode(HttpResponse response) throws BusinessException {
+    public void processResponseCode(HttpResponse response) throws BusinessException {
         StatusLine statusLine = response.getStatusLine();
         int responseCode = statusLine.getStatusCode();
         if (responseCode > 399) {

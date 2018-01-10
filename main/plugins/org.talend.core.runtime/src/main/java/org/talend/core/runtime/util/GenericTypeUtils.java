@@ -76,4 +76,16 @@ public class GenericTypeUtils {
         return TypeUtils.toString(Object.class).equals(property.getType());
     }
 
+    public static boolean isLongType(Property<?> property) {
+        return TypeUtils.toString(Long.class).equals(property.getType());
+    }
+
+    public static boolean isFloatType(Property<?> property) {
+        return TypeUtils.toString(Float.class).equals(property.getType());
+    }
+
+    public static boolean isDoubleType(Property<?> property) {
+        return TypeUtils.toString(Double.class).equals(property.getType());
+    }
+
 }

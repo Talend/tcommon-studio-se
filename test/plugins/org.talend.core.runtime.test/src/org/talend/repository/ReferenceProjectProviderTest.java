@@ -1,19 +1,18 @@
 package org.talend.repository;
-
-// ============================================================================
+//============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+//Copyright (C) 2006-2016 Talend Inc. - www.talend.com
 //
-// This source code is available under agreement available at
-// %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
+//This source code is available under agreement available at
+//%InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
 //
-// You should have received a copy of the agreement
-// along with this program; if not, write to Talend SA
-// 9 rue Pages 92150 Suresnes, France
+//You should have received a copy of the agreement
+//along with this program; if not, write to Talend SA
+//9 rue Pages 92150 Suresnes, France
 //
-// ============================================================================
-import static org.junit.Assert.assertEquals;
+//============================================================================
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -63,24 +62,18 @@ public class ReferenceProjectProviderTest {
         provider.saveSettings();
     }
 
-    @Test
-    public void testGetProjectReference() throws Exception {
-        Project project = getTestProject();
-        String branchName = "master";
-        ReferenceProjectProvider provider = new TestBaseReferenceProjectProvider(project, branchName);
-        provider.loadSettings();
-        if (provider.getProjectReference().size() == 0) {
-            testSaveProjectReferenceSetting();
-        }
-        List<ProjectReference> list = provider.getProjectReference();
-        ProjectReference pr1 = list.get(0);
-        assertEquals(refProjectName1, pr1.getReferencedProject().getTechnicalLabel());
-        assertEquals(refProjectBranch1, pr1.getReferencedBranch());
-        ProjectReference pr2 = list.get(1);
-        assertEquals(refProjectName2, pr2.getReferencedProject().getTechnicalLabel());
-        assertEquals(refProjectBranch2, pr2.getReferencedBranch());
-        assertNotNull(provider.getProjectReference());
-    }
+	@Test
+	public void testIsHasConfigurationFile() throws Exception {
+		Project project = getTestProject();
+		String branchName = "master";
+		ReferenceProjectProvider provider = new TestBaseReferenceProjectProvider(project, branchName);
+		provider.loadSettings();
+		if (!provider.isHasConfigurationFile()) {
+			testSaveProjectReferenceSetting();
+			provider.loadSettings();
+		}
+		assertTrue(provider.isHasConfigurationFile());
+	}
 
     @Test
     public void testSetProjectReference() throws Exception {

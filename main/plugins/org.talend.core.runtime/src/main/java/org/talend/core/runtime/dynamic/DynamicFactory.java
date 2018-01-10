@@ -50,6 +50,11 @@ public class DynamicFactory {
         return new DynamicPluginConfiguration();
     }
 
+    public IDynamicPluginConfiguration createDynamicPluginConfiguration(String jsonString) throws Exception {
+        JSONObject json = new JSONObject(jsonString);
+        return DynamicPluginConfiguration.fromXmlJson(json);
+    }
+
     public IDynamicExtension createDynamicExtension() {
         return new DynamicExtension();
     }

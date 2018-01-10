@@ -12,6 +12,7 @@
     <modules>
         <module>unzip/pom.xml</module>
         <module>components/pom.xml</module>
+        <module>tcompv1/pom.xml</module>
         <module>surefire/pom.xml</module>
         <module>zip/pom.xml</module>
     </modules>

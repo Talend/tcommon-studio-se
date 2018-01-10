@@ -12,7 +12,8 @@
 // ============================================================================
 package org.talend.updates.runtime.nexus.component;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,9 +41,9 @@ import org.junit.Test;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.BusinessException;
 import org.talend.commons.utils.resource.BundleFileUtil;
+import org.talend.core.nexus.HttpClientTransport;
 import org.talend.core.nexus.NexusServerBean;
 import org.talend.core.runtime.maven.MavenArtifact;
-import org.talend.updates.runtime.engine.HttpClientTransport;
 import org.talend.updates.runtime.engine.P2InstallerTest;
 import org.talend.utils.io.FilesUtils;
 
@@ -103,8 +104,7 @@ public class NexusComponentsTransportTest {
     public void test_uploadXml_myServerInReleaseRepo_IntegrationTest() throws Exception {
         final NexusServerBean nexusServerBean = IntegrationTestHelper.getNexusServerReleaseBean();
         NexusComponentsTransportTestClass myNexusTransport = new NexusComponentsTransportTestClass(
-                nexusServerBean.getRepositoryURI(), nexusServerBean.getUserName(), nexusServerBean.getPassword()
-                        .toCharArray());
+                nexusServerBean.getRepositoryURI(), nexusServerBean.getUserName(), nexusServerBean.getPassword().toCharArray());
         if (!CommonsPlugin.isDebugMode() && !myNexusTransport.isAvailable()) {
             return; // if not debug, won't do test
         }
@@ -191,8 +191,7 @@ public class NexusComponentsTransportTest {
     public void test_uploadZip_myServerInReleaseRepo_IntegrationTest() throws Exception {
         final NexusServerBean nexusServerBean = IntegrationTestHelper.getNexusServerReleaseBean();
         NexusComponentsTransportTestClass myNexusTransport = new NexusComponentsTransportTestClass(
-                nexusServerBean.getRepositoryURI(), nexusServerBean.getUserName(), nexusServerBean.getPassword()
-                        .toCharArray());
+                nexusServerBean.getRepositoryURI(), nexusServerBean.getUserName(), nexusServerBean.getPassword().toCharArray());
         if (!CommonsPlugin.isDebugMode() && !myNexusTransport.isAvailable()) {
             return; // if not debug, won't do test
         }

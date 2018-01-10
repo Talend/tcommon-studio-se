@@ -353,25 +353,31 @@ public class Project {
         // project.setExchangeUser(exchangeUser);
     }
     
-    public List<ProjectReference> getProjectReferenceList() {
-        List<ProjectReference> projectReferenceList = new ArrayList<ProjectReference>();
-        if (!isLocal()) {
-            if (referenceProjectProvider == null) {
-                referenceProjectProvider = new ReferenceProjectProvider(project);
-                try {
-                    referenceProjectProvider.initSettings();
-                } catch (BusinessException | PersistenceException e) {
-                    ExceptionHandler.process(e);
-                }
-            }
-            try {
-                projectReferenceList.addAll(referenceProjectProvider.getProjectReference());
-            } catch (PersistenceException e) {
-                ExceptionHandler.process(e);
-            }
-        }
-        return projectReferenceList;
-    }
+	public List<ProjectReference> getProjectReferenceList() {
+		return getProjectReferenceList(false);
+	}
+
+	public List<ProjectReference> getProjectReferenceList(boolean isIgnoreProjectNotExist) {
+		List<ProjectReference> projectReferenceList = new ArrayList<ProjectReference>();
+		if (!isLocal()) {
+			if (referenceProjectProvider == null) {
+				referenceProjectProvider = new ReferenceProjectProvider(project);
+				try {
+					referenceProjectProvider.initSettings();
+				} catch (BusinessException | PersistenceException e) {
+					if (!isIgnoreProjectNotExist) {
+						ExceptionHandler.process(e);
+					}
+				}
+			}
+			try {
+				projectReferenceList.addAll(referenceProjectProvider.getProjectReference());
+			} catch (PersistenceException e) {
+				ExceptionHandler.process(e);
+			}
+		}
+		return projectReferenceList;
+	}
 
     public void saveProjectReferenceList(List<ProjectReference> projectReferenceList) throws PersistenceException, IOException {
         if (referenceProjectProvider == null) {
