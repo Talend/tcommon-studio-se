@@ -15,6 +15,11 @@ package org.talend.core.model.general;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
+import org.talend.commons.exception.ExceptionHandler;
+import org.talend.core.runtime.maven.MavenArtifact;
+import org.talend.core.runtime.maven.MavenUrlHelper;
+
 /**
  * created by WCHEN on 2012-9-17 Detailled comment
  * 
@@ -158,15 +163,41 @@ public class ModuleToInstall {
     @Override
     public String toString() {
         if (getMavenUris().isEmpty()) {
-            return getMavenUri() == null ? "" : getMavenUri();
+            String mavenUri = getMavenUri();
+            if (StringUtils.isNotEmpty(mavenUri)) {
+                try {
+                    mavenUri = removeAuthenrizationInfo(mavenUri);
+                } catch (Exception e) {
+                    ExceptionHandler.process(e);
+                    mavenUri = e.getMessage();
+                }
+            }
+            return mavenUri;
         } else {
             String toString = "";
             for (String uri : getMavenUris()) {
+                if (StringUtils.isNotEmpty(uri)) {
+                    try {
+                        uri = removeAuthenrizationInfo(uri);
+                    } catch (Exception e) {
+                        ExceptionHandler.process(e);
+                        uri = e.getMessage();
+                    }
+                }
                 toString = toString + uri + ";";
             }
             toString = toString.substring(0, toString.length() - 1);
             return toString;
         }
+    }
+
+    public static String removeAuthenrizationInfo(String mavenUri) throws Exception {
+        MavenArtifact ma = MavenUrlHelper.parseMvnUrl(mavenUri);
+        ma.setUsername(""); //$NON-NLS-1$
+        ma.setPassword(""); //$NON-NLS-1$
+        String newUri = MavenUrlHelper.generateMvnUrl(ma.getRepositoryUrl(), ma.getGroupId(), ma.getArtifactId(), ma.getVersion(),
+                ma.getType(), ma.getClassifier());
+        return newUri;
     }
 
     /**

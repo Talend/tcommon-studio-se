@@ -16,6 +16,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
+import org.talend.core.runtime.maven.MavenArtifact;
+import org.talend.core.runtime.maven.MavenUrlHelper;
 
 /**
  * created by wchen on 2015年11月25日 Detailled comment
@@ -34,23 +36,42 @@ public class ModuleStatusProvider {
     private static Map<String, ELibraryInstallStatus> deployStatusMap = new HashMap<String, ELibraryInstallStatus>();
 
     public static void putStatus(String mvnURI, ELibraryInstallStatus status) {
-        statusMap.put(mvnURI, status);
+        statusMap.put(getKey(mvnURI), status);
     }
 
     public static ELibraryInstallStatus getStatus(String key) {
-        return statusMap.get(key);
+        return statusMap.get(getKey(key));
     }
 
     public static void putDeployStatus(String mvnURI, ELibraryInstallStatus status) {
-        deployStatusMap.put(mvnURI, status);
+        deployStatusMap.put(getKey(mvnURI), status);
     }
 
     public static ELibraryInstallStatus getDeployStatus(String key) {
-        return deployStatusMap.get(key);
+        return deployStatusMap.get(getKey(key));
     }
 
     public static void reset() {
         statusMap.clear();
         deployStatusMap.clear();
+    }
+
+    /**
+     * Get the map key
+     * 
+     * @param mvnURI
+     * @return a key without user/password/repositoryURL, since they may be different
+     */
+    public static String getKey(String mvnURI) {
+        String key = null;
+        MavenArtifact ma = MavenUrlHelper.parseMvnUrl(mvnURI, false);
+        if (ma != null) {
+            // the key doesn't need the user/password/repositoryURL, since they may be different
+            key = MavenUrlHelper.generateMvnUrl(ma.getGroupId(), ma.getArtifactId(), ma.getVersion(), ma.getType(),
+                    ma.getClassifier());
+        } else {
+            key = mvnURI;
+        }
+        return key;
     }
 }

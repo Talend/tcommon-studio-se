@@ -27,6 +27,10 @@ public class ExtendedComboBoxCellEditor extends ComboBoxCellEditor {
         super(parent, items);
     }
 
+    public ExtendedComboBoxCellEditor(Composite parent, String[] items, int style) {
+        super(parent, items, style);
+    }
+
     @Override
     public void focusLost() {
         super.focusLost();

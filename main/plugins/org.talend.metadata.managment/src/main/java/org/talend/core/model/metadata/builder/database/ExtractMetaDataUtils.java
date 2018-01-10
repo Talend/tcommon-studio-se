@@ -250,7 +250,8 @@ public class ExtractMetaDataUtils {
                 // MOD sizhaoliu 2012-5-21 TDQ-4884
                 if (MSSQL_CONN_CLASS.equals(conn.getClass().getName())) {
                     dbMetaData = createJtdsDatabaseMetaData(conn);
-                } else if (EDatabaseTypeName.IBMDB2ZOS.getXmlName().equals(dbType)) {
+                } else if (EDatabaseTypeName.IBMDB2ZOS.getXmlName().equals(dbType)
+                        || EDatabaseTypeName.IBMDB2.getXmlName().equals(dbType)) {
                     dbMetaData = createDB2ForZosFakeDatabaseMetaData(conn);
                 } else if (EDatabaseTypeName.TERADATA.getXmlName().equals(dbType) && isSqlMode) {
                     dbMetaData = createTeradataFakeDatabaseMetaData(conn);
@@ -335,7 +336,8 @@ public class ExtractMetaDataUtils {
         String dbType = metadataConnection.getDbType();
         boolean isSqlMode = metadataConnection.isSqlMode();
         String dbVersion = metadataConnection.getDbVersionString();
-        if (EDatabaseTypeName.IBMDB2ZOS.getXmlName().equals(dbType) || EDatabaseTypeName.SAPHana.getXmlName().equals(dbType)) {
+        if (EDatabaseTypeName.IBMDB2.getXmlName().equals(dbType) || EDatabaseTypeName.IBMDB2ZOS.getXmlName().equals(dbType)
+                || EDatabaseTypeName.SAPHana.getXmlName().equals(dbType)) {
             return true;
         } else if (EDatabaseTypeName.TERADATA.getXmlName().equals(dbType) && isSqlMode) {
             return true;

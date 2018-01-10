@@ -68,6 +68,7 @@ import org.talend.core.model.metadata.connection.hive.HiveModeInfo;
 import org.talend.core.model.properties.ConnectionItem;
 import org.talend.core.model.properties.PropertiesFactory;
 import org.talend.core.model.properties.Property;
+import org.talend.core.model.relationship.RelationshipItemBuilder;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.update.RepositoryUpdateManager;
@@ -99,6 +100,7 @@ import org.talend.utils.json.JSONException;
 import org.talend.utils.json.JSONObject;
 import org.talend.utils.sql.ConnectionUtils;
 import org.talend.utils.sugars.ReturnCode;
+
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.objectmodel.core.Package;
 import orgomg.cwm.resource.relational.Catalog;
@@ -562,6 +564,7 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
             }
 
             refreshHadoopCluster();
+            RelationshipItemBuilder.getInstance().addOrUpdateItem(connectionItem);
 
             return true;
         } else {
@@ -735,7 +738,7 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
             connectionProperty.setDisplayName(connectionItem.getConnection().getLabel());
         }
         ReturnCode retCode = tdqCompareService.reloadDatabase(connectionItem);
-        connection = (DatabaseConnection) connectionItem.getConnection();
+        connection = connectionItem.getConnection();
         if (isNameModified) {
             connectionProperty.setLabel(tempName);
             connectionProperty.setDisplayName(tempName);

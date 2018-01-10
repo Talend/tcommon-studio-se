@@ -117,7 +117,7 @@ public final class ProjectPreferenceManager {
         return projectScope;
     }
 
-    private IPath getLocation() {
+    public IPath getLocation() {
         return getProjectScope().getLocation().append(getQualifier()).addFileExtension(PREFS_FILE_EXTENSION);
     }
 

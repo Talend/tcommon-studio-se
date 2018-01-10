@@ -12,9 +12,13 @@
 // ============================================================================
 package org.talend.core.model.relationship;
 
+import java.util.Collection;
+import java.util.Collections;
+
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.JobletProcessItem;
 import org.talend.core.model.properties.ProcessItem;
+import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 
 /**
@@ -28,7 +32,7 @@ public abstract class AbstractJobItemRelationshipHandler extends AbstractItemRel
      * @see org.talend.core.model.relationship.AbstractRelationshipHandler#valid(org.talend.core.model.properties.Item)
      */
     @Override
-    protected boolean valid(Item baseItem) {
+    public boolean valid(Item baseItem) {
         if (baseItem instanceof ProcessItem) {
             return true;
         }
@@ -46,7 +50,7 @@ public abstract class AbstractJobItemRelationshipHandler extends AbstractItemRel
      * .Item)
      */
     @Override
-    protected String getBaseItemType(Item baseItem) {
+    public String getBaseItemType(Item baseItem) {
         if (baseItem instanceof ProcessItem) {
             return RelationshipItemBuilder.JOB_RELATION;
         }
@@ -65,6 +69,17 @@ public abstract class AbstractJobItemRelationshipHandler extends AbstractItemRel
             return ((JobletProcessItem) baseItem).getJobletProcess();
         }
         return null;
+    }
+
+    @Override
+    public Collection<ERepositoryObjectType> getSupportReoObjTypes(String relationType) {
+        if (RelationshipItemBuilder.JOB_RELATION.equals(relationType)) {
+            return ERepositoryObjectType.getAllTypesOfProcess();
+        } else if (RelationshipItemBuilder.JOBLET_RELATION.equals(relationType)) {
+            return ERepositoryObjectType.getAllTypesOfJoblet();
+        } else {
+            return Collections.emptySet();
+        }
     }
 
 }

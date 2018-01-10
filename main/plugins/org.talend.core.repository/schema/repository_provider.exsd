@@ -99,6 +99,13 @@
                </documentation>
             </annotation>
          </attribute>
+         <attribute name="only4Oem" type="boolean">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 
@@ -136,6 +143,13 @@
             </annotation>
          </attribute>
          <attribute name="defaultValue" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="readonly" type="boolean">
             <annotation>
                <documentation>
                   

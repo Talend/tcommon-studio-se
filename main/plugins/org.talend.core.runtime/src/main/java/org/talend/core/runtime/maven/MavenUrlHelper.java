@@ -12,9 +12,14 @@
 // ============================================================================
 package org.talend.core.runtime.maven;
 
+import java.net.URI;
+import java.net.URL;
+import java.net.URLDecoder;
+
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.Assert;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.utils.security.CryptoHelper;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -38,6 +43,12 @@ public class MavenUrlHelper {
 
     public static final String VERSION_SNAPSHOT = "SNAPSHOT";
 
+    public static final String USER_PASSWORD_SEPARATOR = "@";
+
+    public static final String USER_PASSWORD_SPLITER = ":";
+
+    private static CryptoHelper cryptoHelper;
+
     public static MavenArtifact parseMvnUrl(String mvnUrl) {
         return parseMvnUrl(mvnUrl, true);
     }
@@ -52,9 +63,45 @@ public class MavenUrlHelper {
             String substring = mvnUrl.substring(MVN_PROTOCOL.length());
 
             // repo
-            int repoUrlIndex = substring.indexOf(REPO_SEPERATOR);
+            int repoUrlIndex = substring.lastIndexOf(REPO_SEPERATOR);
             if (repoUrlIndex > 0) { // has repo url
-                artifact.setRepositoryUrl(substring.substring(0, repoUrlIndex));
+                String repoWithUserPwd = substring.substring(0, repoUrlIndex);
+                String repoUrl = repoWithUserPwd;
+                try {
+                    URI repoWithUserPwdURI = new URI(repoWithUserPwd);
+                    String userPassword = repoWithUserPwdURI.getUserInfo();
+                    URI repoWithoutUserPwdURI = new URI(repoWithUserPwdURI.getScheme(), null, repoWithUserPwdURI.getHost(),
+                            repoWithUserPwdURI.getPort(), repoWithUserPwdURI.getPath(), repoWithUserPwdURI.getQuery(),
+                            repoWithUserPwdURI.getFragment());
+                    repoUrl = repoWithoutUserPwdURI.toString();
+                    try {
+                        repoUrl = URLDecoder.decode(repoUrl, "UTF-8");
+                    } catch (Exception e) {
+                        // nothing to do
+                    }
+
+                    // username and password
+                    if (StringUtils.isNotEmpty(userPassword)) {
+                        int splitIndex = userPassword.indexOf(USER_PASSWORD_SPLITER);
+                        if (0 < splitIndex) {
+                            artifact.setUsername(userPassword.substring(0, splitIndex));
+                            if (splitIndex < userPassword.length() - 1) {
+                                String password = userPassword.substring(splitIndex + 1);
+                                if (password != null) {
+                                    String decryptedPassword = decryptPassword(password);
+                                    if (decryptedPassword != null) {
+                                        password = decryptedPassword;
+                                    }
+                                }
+                                artifact.setPassword(password);
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    ExceptionHandler.process(e);
+                }
+
+                artifact.setRepositoryUrl(repoUrl);
                 substring = substring.substring(repoUrlIndex + 1);
             }
             String[] segments = substring.split(SEPERATOR);
@@ -169,9 +216,20 @@ public class MavenUrlHelper {
         return generateMvnUrlForJarName(jarName, true, true);
     }
 
-    public static String generateMvnUrl(MavenArtifact artifact) {
-        return generateMvnUrl(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(), artifact.getType(),
-                artifact.getClassifier());
+    public static String generateMvnUrl(MavenArtifact mArt) {
+        return generateMvnUrl(mArt, false);
+    }
+
+    /**
+     * The generated mvn url is only used to display on UI
+     * 
+     * @param mArt
+     * @param encryptPassword
+     * @return
+     */
+    public static String generateMvnUrl(MavenArtifact mArt, boolean encryptPassword) {
+        return generateMvnUrl(mArt.getUsername(), mArt.getPassword(), mArt.getRepositoryUrl(), mArt.getGroupId(),
+                mArt.getArtifactId(), mArt.getVersion(), mArt.getType(), mArt.getClassifier(), encryptPassword);
     }
 
     /**
@@ -184,6 +242,11 @@ public class MavenUrlHelper {
 
     public static String generateMvnUrl(String repositoryId, String groupId, String artifactId, String version, String packaging,
             String classifier) {
+        return generateMvnUrl(null, null, repositoryId, groupId, artifactId, version, packaging, classifier, true);
+    }
+
+    public static String generateMvnUrl(String username, String password, String repositoryId, String groupId, String artifactId,
+            String version, String packaging, String classifier, boolean encryptPassword) {
         Assert.isNotNull(groupId);
         Assert.isNotNull(artifactId);
 
@@ -191,7 +254,33 @@ public class MavenUrlHelper {
         mvnUrl.append(MVN_PROTOCOL);
 
         if (StringUtils.isNotEmpty(repositoryId)) {
-            mvnUrl.append(repositoryId).append(REPO_SEPERATOR);
+            String repositoryUrl = repositoryId;
+            if (StringUtils.isNotEmpty(username)) {
+                if (password == null) {
+                    password = "";
+                }
+                if (encryptPassword) {
+                    password = encryptPassword(password);
+                }
+                String usernamePassword = username + USER_PASSWORD_SPLITER + password;
+                try {
+                    URL repoWithoutUserPasswordUrl = new URL(repositoryId);
+                    if (repoWithoutUserPasswordUrl != null) {
+                        if (StringUtils.isEmpty(repoWithoutUserPasswordUrl.getHost())) {
+                            throw new Exception("Bad url, can't resolve it: " + repositoryId);
+                        } else {
+                            URI repoWithUserPasswordURI = new URI(repoWithoutUserPasswordUrl.getProtocol(), usernamePassword,
+                                    repoWithoutUserPasswordUrl.getHost(), repoWithoutUserPasswordUrl.getPort(),
+                                    repoWithoutUserPasswordUrl.getPath(), repoWithoutUserPasswordUrl.getQuery(),
+                                    repoWithoutUserPasswordUrl.getRef());
+                            repositoryUrl = repoWithUserPasswordURI.toString();
+                        }
+                    }
+                } catch (Exception e) {
+                    ExceptionHandler.process(e);
+                }
+            }
+            mvnUrl.append(repositoryUrl).append(REPO_SEPERATOR);
         }
 
         mvnUrl.append(groupId);
@@ -234,10 +323,24 @@ public class MavenUrlHelper {
                 // set jar by default
                 parseMvnUrl.setType(MavenConstants.TYPE_JAR);
             }
-            uri = MavenUrlHelper.generateMvnUrl(parseMvnUrl.getRepositoryUrl(), parseMvnUrl.getGroupId(),
-                    parseMvnUrl.getArtifactId(), parseMvnUrl.getVersion(), parseMvnUrl.getType(), parseMvnUrl.getClassifier());
+            uri = MavenUrlHelper.generateMvnUrl(parseMvnUrl);
         }
         return uri;
+    }
+
+    private static CryptoHelper getCryptoHelper() {
+        if (cryptoHelper == null) {
+            cryptoHelper = CryptoHelper.getDefault();
+        }
+        return cryptoHelper;
+    }
+
+    public static String encryptPassword(String password) {
+        return getCryptoHelper().encrypt(password);
+    }
+
+    public static String decryptPassword(String password) {
+        return getCryptoHelper().decrypt(password);
     }
 
     public static String generateModuleNameByMavenURI(String uri) {
@@ -245,12 +348,7 @@ public class MavenUrlHelper {
         if (parseMvnUrl == null) {
             return null;
         }
-        String moduleName = parseMvnUrl.getArtifactId() + "-" + parseMvnUrl.getVersion();
-        if (parseMvnUrl.getClassifier() != null) {
-            moduleName = moduleName + "-" + parseMvnUrl.getClassifier();
-        }
-        moduleName = moduleName + "." + parseMvnUrl.getType();
-        return moduleName;
+        return parseMvnUrl.getFileName();
     }
 
     public static String getArtifactPath(MavenArtifact artifact) {

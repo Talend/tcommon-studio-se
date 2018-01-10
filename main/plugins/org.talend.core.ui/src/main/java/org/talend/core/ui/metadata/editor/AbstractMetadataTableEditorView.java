@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
@@ -37,6 +36,7 @@ import org.talend.commons.ui.runtime.swt.tableviewer.behavior.ColumnCellModifier
 import org.talend.commons.ui.runtime.swt.tableviewer.behavior.IColumnColorProvider;
 import org.talend.commons.ui.runtime.swt.tableviewer.behavior.IColumnImageProvider;
 import org.talend.commons.ui.runtime.swt.tableviewer.behavior.IColumnLabelProvider;
+import org.talend.commons.ui.runtime.swt.tableviewer.celleditor.ExtendedComboBoxCellEditor;
 import org.talend.commons.ui.swt.advanced.dataeditor.AbstractDataTableEditorView;
 import org.talend.commons.ui.swt.advanced.dataeditor.ExtendedToolbarView;
 import org.talend.commons.ui.swt.extended.table.ExtendedTableModel;
@@ -812,6 +812,10 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
 
     protected abstract IBeanPropertyAccessors<B, String> getDbColumnNameAccessor();
 
+    protected ExtendedComboBoxCellEditor talendTypeComboEditor;
+
+    protected ExtendedComboBoxCellEditor dbTypeComboEditor;
+
     /**
      * DOC amaumont Comment method "initTalendTypeColumn".
      * 
@@ -855,11 +859,11 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
         column.setModifiable(!isReadOnly());
         column.setWeight(10);
         column.setMinimumWidth(30);
-        ComboBoxCellEditor typeComboEditor = new ComboBoxCellEditor(tableViewerCreator.getTable(), arrayTalendTypes,
+        talendTypeComboEditor = new ExtendedComboBoxCellEditor(tableViewerCreator.getTable(), arrayTalendTypes,
                 SWT.READ_ONLY);
-        CCombo typeCombo = (CCombo) typeComboEditor.getControl();
+        CCombo typeCombo = (CCombo) talendTypeComboEditor.getControl();
         typeCombo.setEditable(false);
-        column.setCellEditor(typeComboEditor, comboValueAdapter);
+        column.setCellEditor(talendTypeComboEditor, comboValueAdapter);
         return column;
     }
 
@@ -893,11 +897,10 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
             arrayDbTypes = MetadataTalendType.getDbTypes(getCurrentDbms());
             // System.out.println("currentDbms:" + getCurrentDbms() + "
             // dbTypes:" + arrayDbTypes);
-            ComboBoxCellEditor typeComboEditor = new ComboBoxCellEditor(tableViewerCreator.getTable(), arrayDbTypes,
-                    SWT.READ_ONLY);
-            CCombo typeCombo = (CCombo) typeComboEditor.getControl();
+            dbTypeComboEditor = new ExtendedComboBoxCellEditor(tableViewerCreator.getTable(), arrayDbTypes, SWT.READ_ONLY);
+            CCombo typeCombo = (CCombo) dbTypeComboEditor.getControl();
             typeCombo.setEditable(false);
-            column.setCellEditor(typeComboEditor, comboValueAdapter);
+            column.setCellEditor(dbTypeComboEditor, comboValueAdapter);
         } else {
             column.setColorProvider(new IColumnColorProvider() {
 
@@ -924,6 +927,15 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
      * @return
      */
     protected abstract IBeanPropertyAccessors getDbTypeAccessor();
+
+    public void notifyFocusLost() {
+        if (talendTypeComboEditor != null) {
+            talendTypeComboEditor.focusLost();
+        }
+        if (dbTypeComboEditor != null) {
+            dbTypeComboEditor.focusLost();
+        }
+    }
 
     /*
      * (non-Javadoc)

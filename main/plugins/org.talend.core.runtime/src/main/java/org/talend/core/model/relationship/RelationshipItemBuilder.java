@@ -13,6 +13,7 @@
 package org.talend.core.model.relationship;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -29,7 +30,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
-import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.ItemRelation;
@@ -41,7 +41,6 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.i18n.Messages;
-import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
@@ -77,6 +76,10 @@ public class RelationshipItemBuilder {
 
     public static final String JOBLET_RELATION = "joblet"; //$NON-NLS-1$
 
+    public static final String HADOOP_CLUSTER_RELATION = "hadoopCluster"; //$NON-NLS-1$
+
+    public static final String DB_CONNECTION_RELATION = "dbConnection"; //$NON-NLS-1$
+
     public static final String SERVICES_RELATION = "services"; //$NON-NLS-1$
 
     public static final String PROPERTY_RELATION = "property"; //$NON-NLS-1$
@@ -104,6 +107,8 @@ public class RelationshipItemBuilder {
     public static final String PATTERN_RELATION = "pattern"; //$NON-NLS-1$
 
     public static final String RESOURCE_RELATION = "resource";
+
+    public static final String DYNAMIC_DISTRIBUTION_RELATION = "dynamicDistribution"; //$NON-NLS-1$
 
     /*
      * 
@@ -709,38 +714,40 @@ public class RelationshipItemBuilder {
     }
 
     private String getTypeFromItem(Item item) {
-        String type = null;
-        boolean isTestContainer = false;
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
-            ITestContainerProviderService testContainerService = (ITestContainerProviderService) GlobalServiceRegister
-                    .getDefault().getService(ITestContainerProviderService.class);
-            if (testContainerService != null ) {
-                isTestContainer = testContainerService.isTestContainerItem(item);
+        IItemRelationshipHandler[] itemRelationshipHandlers = RelationshipRegistryReader.getInstance()
+                .getItemRelationshipHandlers();
+        Set<String> baseTypes = new HashSet<>();
+        for (IItemRelationshipHandler handler : itemRelationshipHandlers) {
+            String baseItemType = handler.getBaseItemType(item);
+            if (StringUtils.isNotEmpty(baseItemType)) {
+                baseTypes.add(baseItemType);
             }
         }
-        if (item instanceof ProcessItem) {
-            type = JOB_RELATION;
-        } else if (item instanceof JobletProcessItem) {
-            type = JOBLET_RELATION;
-        }else if(isTestContainer){
-            type = TEST_RELATION;
-        }else {
+        if (baseTypes.isEmpty()) {
             throw new RuntimeException(Messages.getString("RelationshipItemBuilder.unexpect.item", item.getClass().getName())); //$NON-NLS-1$
         }
+        if (1 == baseTypes.size()) {
+            return baseTypes.iterator().next();
+        }
+        if (baseTypes.contains(TEST_RELATION)) {
+            return TEST_RELATION;
+        }
 
-        return type;
+        throw new RuntimeException(Messages.getString("RelationshipItemBuilder.unexpect.typesConflict", item.getClass().getName(), //$NON-NLS-1$
+                baseTypes.toString()));
     }
 
     public List<ERepositoryObjectType> getSupportRepObjTypes(String relationType) {
-        if (JOB_RELATION.equals(relationType)) {
-            return ERepositoryObjectType.getAllTypesOfProcess();
-        } else if (JOBLET_RELATION.equals(relationType)) {
-            return ERepositoryObjectType.getAllTypesOfJoblet();
-        }  else if (TEST_RELATION.equals(relationType)) {
-            return ERepositoryObjectType.getAllTypesOfTestContainer();
-        } else {
-            throw new RuntimeException(Messages.getString("RelationshipItemBuilder.unexpect.relation", relationType)); //$NON-NLS-1$
+        IItemRelationshipHandler[] itemRelationshipHandlers = RelationshipRegistryReader.getInstance()
+                .getItemRelationshipHandlers();
+        Set<ERepositoryObjectType> repTypes = new HashSet<>();
+        for (IItemRelationshipHandler handler : itemRelationshipHandlers) {
+            Collection<ERepositoryObjectType> supportReoObjTypes = handler.getSupportReoObjTypes(relationType);
+            if (supportReoObjTypes != null && !supportReoObjTypes.isEmpty()) {
+                repTypes.addAll(supportReoObjTypes);
+            }
         }
+        return new ArrayList<>(repTypes);
     }
 
     private void clearItemsRelations(Item baseItem) {
@@ -926,18 +933,17 @@ public class RelationshipItemBuilder {
     }
 
     public boolean supportRelation(Item item) {
-        ERepositoryObjectType itemType = ERepositoryObjectType.getItemType(item);
-
-        List<ERepositoryObjectType> supportTypes = getSupportTypes();
-
-        if (supportTypes != null && supportTypes.contains(itemType)) {
-            return true;
+        IItemRelationshipHandler[] itemRelationshipHandlers = RelationshipRegistryReader.getInstance()
+                .getItemRelationshipHandlers();
+        for (IItemRelationshipHandler handler : itemRelationshipHandlers) {
+            if (handler.valid(item)) {
+                return true;
+            }
         }
-
         return false;
     }
 
-    public List<ERepositoryObjectType> getSupportTypes() {
+    private List<ERepositoryObjectType> getSupportTypes() {
         List<ERepositoryObjectType> supportTypes = new ArrayList<ERepositoryObjectType>();
 
         List<ERepositoryObjectType> processTypes = getSupportRepObjTypes(JOB_RELATION);

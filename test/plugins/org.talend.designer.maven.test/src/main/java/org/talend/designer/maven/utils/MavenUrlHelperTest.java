@@ -277,4 +277,43 @@ public class MavenUrlHelperTest {
         moduleName = MavenUrlHelper.generateModuleNameByMavenURI(mvnURI);
         Assert.assertEquals(moduleName, "hadoop-client-2.6.0-cdh5.10.1.jar");
     }
+
+    @Test
+    public void testUserPasswordForMavenUri() {
+        final String group = "group";
+        final String artifact = "artifact";
+        final String version = "7.0";
+        final String repository = "http://localhost:8080/nexus";
+        final String username = "user";
+        final String password = "p@s:wo!d";
+        final String mvnUrl = MavenUrlHelper.MVN_PROTOCOL + "http://" + username + ":" + MavenUrlHelper.encryptPassword(password)
+                + MavenUrlHelper.USER_PASSWORD_SEPARATOR + "localhost:8080/nexus" + MavenUrlHelper.REPO_SEPERATOR + group
+                + MavenUrlHelper.SEPERATOR + artifact + MavenUrlHelper.SEPERATOR + version;
+
+        String url = MavenUrlHelper.generateMvnUrl(username, password, repository, group, artifact, version, null, null, true);
+
+        Assert.assertEquals(mvnUrl, url);
+
+        MavenArtifact ma = MavenUrlHelper.parseMvnUrl(url);
+
+        Assert.assertEquals(repository, ma.getRepositoryUrl());
+        Assert.assertEquals(username, ma.getUsername());
+        Assert.assertEquals(password, ma.getPassword());
+        Assert.assertEquals(group, ma.getGroupId());
+        Assert.assertEquals(artifact, ma.getArtifactId());
+        Assert.assertEquals(version, ma.getVersion());
+
+        final String repository2 = "http://user2:password2@localhost:8080/nexus";
+        url = MavenUrlHelper.generateMvnUrl(username, password, repository2, group, artifact, version, null, null, true);
+        Assert.assertEquals(mvnUrl, url);
+
+        ma = MavenUrlHelper.parseMvnUrl(url);
+
+        Assert.assertEquals(repository, ma.getRepositoryUrl());
+        Assert.assertEquals(username, ma.getUsername());
+        Assert.assertEquals(password, ma.getPassword());
+        Assert.assertEquals(group, ma.getGroupId());
+        Assert.assertEquals(artifact, ma.getArtifactId());
+        Assert.assertEquals(version, ma.getVersion());
+    }
 }

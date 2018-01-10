@@ -24,10 +24,6 @@ public interface ITargetExecutionConfig extends IServerConfiguration {
 
     public void setFileTransferPort(int transferFilePort);
 
-    public IServerConfiguration getCommandlineServerConfig();
-
-    public void setCommandlineServerConfig(IServerConfiguration cmdLineServer);
-
     public void setUseSSL(boolean useSSL);
 
     public boolean useSSL();
