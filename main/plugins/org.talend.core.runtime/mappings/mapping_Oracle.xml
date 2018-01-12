@@ -75,7 +75,7 @@
 					<dbType type="INTEGER"/>
 					<dbType type="PLS_INTEGER"/>
 				</talendType>
-				<talendType type="id_Long">
+				<talendType type="id_Float">
 					<dbType type="NUMBER" default="true"/>
 					<dbType type="REAL"/>
 				</talendType>
@@ -146,7 +146,7 @@
 					<talendType type="id_Integer" default="true" />
 				</dbType>
 				<dbType type="REAL">
-					<talendType type="id_Long" default="true" />
+					<talendType type="id_Float" default="true" />
 				</dbType>
 				<dbType type="FLOAT">
 					<talendType type="id_Float" default="true" />
