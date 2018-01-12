@@ -126,6 +126,16 @@
             <artifactId>httpclient</artifactId>
             <version>4.5.1</version>
         </dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-core-asl</artifactId>
+			<version>1.9.14-TALEND</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>1.9.14-TALEND</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
