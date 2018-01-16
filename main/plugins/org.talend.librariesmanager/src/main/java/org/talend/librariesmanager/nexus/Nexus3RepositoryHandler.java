@@ -149,6 +149,9 @@ public class Nexus3RepositoryHandler extends AbstractArtifactRepositoryHandler {
                 ContentType.create(ContentType.APPLICATION_JSON.getMimeType(), StandardCharsets.UTF_8));
         HttpResponse response = request.execute().returnResponse();
         String content = EntityUtils.toString(response.getEntity());
+        if (content.isEmpty()) {
+            return resultList;
+        }
         JSONObject responseObject = new JSONObject().fromObject(content);
         String resultStr = responseObject.getString("result");
         JSONArray resultArray = null;
