@@ -56,7 +56,9 @@ public enum ETalendMavenVariables {
     JobShClasspath,
     JobShAddition,
     Framework,
-    TalendJobVersion
+    TalendJobVersion,
+    RoutineGroupId,
+    PigudfGroupId
     //
     ;
 

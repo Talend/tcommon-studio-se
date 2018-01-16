@@ -84,4 +84,13 @@ public final class ItemResourceUtil {
         return null;
     }
 
+    public static IPath getItemRelativePath(Property p) {
+        IPath itemLocationPath = getItemLocationPath(p);
+        IFolder objectTypeFolder = getObjectTypeFolder(p);
+        if (itemLocationPath != null && objectTypeFolder != null) {
+            return itemLocationPath.removeLastSegments(1).makeRelativeTo(objectTypeFolder.getLocation());
+        }
+        return null;
+    }
+
 }
