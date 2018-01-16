@@ -494,6 +494,8 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
     public final static ERepositoryObjectType METADATA_FILE_HL7 = ERepositoryObjectType.valueOf("METADATA_FILE_HL7");
 
     public final static ERepositoryObjectType METADATA_EDIFACT = ERepositoryObjectType.valueOf("METADATA_EDIFACT");
+    
+    public final static ERepositoryObjectType JDBC = ERepositoryObjectType.valueOf("JDBC");
 
     /**
      * Rules
