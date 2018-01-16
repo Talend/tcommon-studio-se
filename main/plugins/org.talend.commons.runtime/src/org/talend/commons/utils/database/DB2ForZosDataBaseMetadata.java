@@ -348,7 +348,15 @@ public class DB2ForZosDataBaseMetadata extends PackageFakeDatabaseMetadata {
                 // For real db2 for zos, should use these code.
                 String tableName = rs.getString("TBNAME"); //$NON-NLS-1$
                 String columnName = rs.getString("NAME"); //$NON-NLS-1$
-                String typeName = rs.getString("COLTYPE"); //$NON-NLS-1$
+                String typeName = null;
+                try {
+                    typeName = rs.getString("TYPENAME"); //$NON-NLS-1$
+                    if (typeName == null) {
+                        typeName = rs.getString("COLTYPE"); //$NON-NLS-1$
+                    }
+                } catch (Exception e) {
+                    typeName = rs.getString("COLTYPE"); //$NON-NLS-1$
+                }
                 String columnSize = rs.getString("LENGTH"); //$NON-NLS-1$
                 String decimalDigits = rs.getString("SCALE"); //$NON-NLS-1$
                 String isNullable;

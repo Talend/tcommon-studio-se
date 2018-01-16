@@ -15,13 +15,12 @@ package org.talend.metadata.managment.connection.manager;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.SQLException;
+import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-
-import metadata.managment.i18n.Messages;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -34,10 +33,14 @@ import org.talend.core.database.EDatabase4DriverClassName;
 import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.database.conn.ConnParameterKeys;
 import org.talend.core.hadoop.IHadoopDistributionService;
+import org.talend.core.hadoop.conf.EHadoopConfProperties;
 import org.talend.core.model.metadata.IMetadataConnection;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.hd.IHDistribution;
 import org.talend.core.runtime.hd.IHDistributionVersion;
+import org.talend.core.utils.ReflectionUtils;
+
+import metadata.managment.i18n.Messages;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -77,6 +80,19 @@ public class ImpalaConnectionManager extends DataBaseConnectionManager {
                     // 2. Fetch the HiveDriver from the new classloader
                     Class<?> driver = Class.forName(EDatabase4DriverClassName.IMPALA.getDriverClass(), true, impalaClassLoader);
                     Driver hiveDriver = (Driver) driver.newInstance();
+
+                    Map<String, Object> otherParametersMap = metadataConn.getOtherParameters();
+                    if (otherParametersMap != null) {
+                        boolean useKerb = Boolean
+                                .valueOf((String) otherParametersMap.get(ConnParameterKeys.CONN_PARA_KEY_USE_KRB));
+                        if (useKerb) {
+                            Object conf = Class.forName("org.apache.hadoop.conf.Configuration", true, impalaClassLoader) //$NON-NLS-1$
+                                    .newInstance();
+                            EHadoopConfProperties.AUTHENTICATION.set(conf, "KERBEROS"); //$NON-NLS-1$
+                            ReflectionUtils.invokeStaticMethod("org.apache.hadoop.security.UserGroupInformation", //$NON-NLS-1$
+                                    impalaClassLoader, "setConfiguration", new Object[] { conf }); //$NON-NLS-1$
+                        }
+                    }
 
                     // 3. Try to connect by driver
                     Properties info = new Properties();
