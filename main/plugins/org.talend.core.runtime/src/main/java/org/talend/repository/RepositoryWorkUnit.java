@@ -44,6 +44,8 @@ public abstract class RepositoryWorkUnit<T> {
     private boolean avoidUpdateLocks;
 
     private boolean refreshRepository = true; // added for TDI-27085
+    
+    private boolean isForcePushImmediately = false;
 
     /**
      * Usefull for some save only actions, where we're sure everything is up to date.
@@ -211,5 +213,12 @@ public abstract class RepositoryWorkUnit<T> {
     public void setAvoidUpdateLocks(boolean avoidUpdateLocks) {
         this.avoidUpdateLocks = avoidUpdateLocks;
     }
-    
+
+	public boolean isForcePushImmediately() {
+		return isForcePushImmediately;
+	}
+
+	public void setForcePushImmediately(boolean isForcePushImmediately) {
+		this.isForcePushImmediately = isForcePushImmediately;
+	}
 }

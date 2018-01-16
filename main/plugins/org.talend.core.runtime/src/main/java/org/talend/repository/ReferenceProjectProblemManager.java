@@ -75,25 +75,31 @@ public class ReferenceProjectProblemManager {
         return checkCycleReference(projectRefMap);
     }
 
-    private static List<ProjectReference> readProjectReferenceSetting(ProjectReference projetReference)
-            throws PersistenceException, BusinessException {
-        byte[] configContent = null;
-        Project referencedProject = new Project(projetReference.getReferencedProject());
-        IProxyRepositoryService service = (IProxyRepositoryService) GlobalServiceRegister.getDefault()
-                .getService(IProxyRepositoryService.class);
-        IProxyRepositoryFactory factory = service.getProxyRepositoryFactory();
-        if (factory != null) {
-            configContent = factory.getReferenceSettingContent(referencedProject, projetReference.getReferencedBranch());
-            if (configContent != null && configContent.length > 0) {
-                ReferenceProjectProvider privoder = new ReferenceProjectProvider(referencedProject.getEmfProject(),
-                        configContent);
-                privoder.initSettings();
-                return privoder.getProjectReference();
-            }
-        }
+	public static List<ProjectReference> readProjectReferenceSetting(ProjectReference projetReference)
+			throws PersistenceException, BusinessException {
+		return readProjectReferenceSetting(projetReference.getReferencedProject(),
+				projetReference.getReferencedBranch());
+	}
 
-        return new ArrayList<ProjectReference>();
-    }
+	public static List<ProjectReference> readProjectReferenceSetting(
+			org.talend.core.model.properties.Project emfProject, String branch)
+			throws PersistenceException, BusinessException {
+		byte[] configContent = null;
+		Project referencedProject = new Project(emfProject);
+		IProxyRepositoryService service = (IProxyRepositoryService) GlobalServiceRegister.getDefault()
+				.getService(IProxyRepositoryService.class);
+		IProxyRepositoryFactory factory = service.getProxyRepositoryFactory();
+		if (factory != null) {
+			configContent = factory.getReferenceSettingContent(referencedProject, branch);
+			if (configContent != null && configContent.length > 0) {
+				ReferenceProjectProvider privoder = new ReferenceProjectProvider(referencedProject.getEmfProject(),
+						configContent);
+				privoder.initSettings();
+				return privoder.getProjectReference();
+			}
+		}
+		return new ArrayList<ProjectReference>();
+	}
 
     public static List<ProjectReference> getAllReferenceProject(ProjectReference projectReference,
             Map<String, List<ProjectReference>> projectRefMap, Set<String> addedSet, boolean isReadFromRepository)
