@@ -82,6 +82,7 @@ import org.talend.core.repository.model.ProjectRepositoryNode;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.repository.ui.actions.metadata.AbstractCreateAction;
 import org.talend.core.runtime.CoreRuntimePlugin;
+import org.talend.core.runtime.services.IGenericDBService;
 import org.talend.core.service.ISAPProviderService;
 import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.helper.PackageHelper;
@@ -1034,10 +1035,24 @@ public abstract class AbstractCreateTableAction extends AbstractCreateAction {
                                     }
                                 }
                             }
+                            boolean isTcomDB = false;
+                            IGenericDBService dbService = null;
+                            if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
+                                dbService = (IGenericDBService) GlobalServiceRegister.getDefault().getService(
+                                        IGenericDBService.class);
+                            }
+                            if(dbService != null){
+                                for(ERepositoryObjectType type : dbService.getExtraTypes()){
+                                    if(type.getLabel().equals(metadataConnection.getDbType())){
+                                        isTcomDB = true;
+                                    }
+                                }
+                            }
                             if (!metadataConnection.getDbType().equals(EDatabaseConnTemplate.GODBC.getDBDisplayName())
                                     && !metadataConnection.getDbType().equals(EDatabaseConnTemplate.ACCESS.getDBDisplayName())
                                     && !metadataConnection.getDbType().equals(
-                                            EDatabaseConnTemplate.GENERAL_JDBC.getDBDisplayName())) {
+                                            EDatabaseConnTemplate.GENERAL_JDBC.getDBDisplayName())
+                                    && !isTcomDB) {
                                 // TODO 1. To identify if it is hive connection.
                                 String hiveMode = (String) metadataConnection
                                         .getParameter(ConnParameterKeys.CONN_PARA_KEY_HIVE_MODE);

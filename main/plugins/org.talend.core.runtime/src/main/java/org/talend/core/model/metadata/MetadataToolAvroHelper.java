@@ -35,6 +35,7 @@ import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.core.model.metadata.types.JavaTypesManager;
 import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.cwm.helper.TaggedValueHelper;
+import org.talend.cwm.relational.RelationalFactory;
 import org.talend.daikon.avro.AvroUtils;
 import org.talend.daikon.avro.LogicalTypeUtils;
 import org.talend.daikon.avro.SchemaConstants;
@@ -564,14 +565,9 @@ public final class MetadataToolAvroHelper {
 
         return col;
     }
-
-    /**
-     * @param in A field from an incoming schema
-     * @return A MetadataColumn containing all the information from the Schema, including any information included the
-     * schema as JSON property annotations for Talend 6 generated schemas.
-     */
-    public static org.talend.core.model.metadata.builder.connection.MetadataColumn convertFromAvro(Schema.Field field) {
-        org.talend.core.model.metadata.builder.connection.MetadataColumn col = ConnectionFactory.eINSTANCE.createMetadataColumn();
+    
+    public static org.talend.core.model.metadata.builder.connection.MetadataColumn convertFromAvro(Schema.Field field,
+            org.talend.core.model.metadata.builder.connection.MetadataColumn col){
         Schema in = field.schema();
 
         // Set the defaults values to the name (the only information guaranteed to be available in every field).
@@ -723,6 +719,27 @@ public final class MetadataToolAvroHelper {
         }
 
         return col;
+    
+    }
+
+    /**
+     * @param in A field from an incoming schema
+     * @return A MetadataColumn containing all the information from the Schema, including any information included the
+     * schema as JSON property annotations for Talend 6 generated schemas.
+     */
+    public static org.talend.core.model.metadata.builder.connection.MetadataColumn convertFromAvro(Schema.Field field) {
+        org.talend.core.model.metadata.builder.connection.MetadataColumn col = ConnectionFactory.eINSTANCE.createMetadataColumn();
+        return convertFromAvro(field, col);
+    }
+    
+    /**
+     * @param in A field from an incoming schema
+     * @return A MetadataColumn containing all the information from the Schema, including any information included the
+     * schema as JSON property annotations for Talend 6 generated schemas.
+     */
+    public static org.talend.core.model.metadata.builder.connection.MetadataColumn convertFromAvroToTdColumn(Schema.Field field) {
+        org.talend.core.model.metadata.builder.connection.MetadataColumn col = RelationalFactory.eINSTANCE.createTdColumn();
+        return convertFromAvro(field, col);
     }
 
     // /**

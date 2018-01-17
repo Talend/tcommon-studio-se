@@ -741,6 +741,15 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
     }
 
     /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getConnection_CompProperties() {
+        return (EAttribute) connectionEClass.getEStructuralFeatures().get(5);
+    }
+
+    /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
      */
@@ -4374,6 +4383,7 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
         createEAttribute(connectionEClass, CONNECTION__CONTEXT_MODE);
         createEAttribute(connectionEClass, CONNECTION__CONTEXT_ID);
         createEAttribute(connectionEClass, CONNECTION__CONTEXT_NAME);
+        createEAttribute(connectionEClass, CONNECTION__COMP_PROPERTIES);
 
         metadataColumnEClass = createEClass(METADATA_COLUMN);
         createEAttribute(metadataColumnEClass, METADATA_COLUMN__SOURCE_TYPE);
@@ -4990,6 +5000,8 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
         initEAttribute(getConnection_ContextId(), ecorePackage.getEString(), "ContextId", null, 0, 1, Connection.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getConnection_ContextName(), ecorePackage.getEString(), "contextName", null, 0, 1, Connection.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getConnection_CompProperties(), ecorePackage.getEString(), "compProperties", null, 0, 1, Connection.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         addEOperation(connectionEClass, theCorePackage.getString(), "getConnectionTypeName", 0, 1, IS_UNIQUE, IS_ORDERED);

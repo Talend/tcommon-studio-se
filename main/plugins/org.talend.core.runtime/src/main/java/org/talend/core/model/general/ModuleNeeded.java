@@ -15,6 +15,8 @@ package org.talend.core.model.general;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.Path;
@@ -226,8 +228,10 @@ public class ModuleNeeded {
     public void setModuleName(String moduleName) {
         if (moduleName != null) {
             String mn = moduleName.replace(QUOTATION_MARK, "").replace(SINGLE_QUOTE, ""); //$NON-NLS-1$ //$NON-NLS-2$
-            if (mn.indexOf("\\") != -1 || mn.indexOf("/") != -1) { //$NON-NLS-1$ //$NON-NLS-2$
+            if (mn.indexOf("\\") != -1 || (mn.indexOf("/") != -1 && mn.endsWith(".jar"))) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                 mn = new Path(mn).lastSegment();
+            }else if(mn.indexOf("/") != -1){
+                mn = mn.split("/")[1]+".jar";//$NON-NLS-1$
             }
             this.moduleName = mn;
         } else {
@@ -573,7 +577,7 @@ public class ModuleNeeded {
     public String getCustomMavenUri() {
         String originalURI = initURI();
         String customURI = libManagerService.getCustomMavenURI(originalURI);
-        if (!originalURI.equals(customURI)) {
+        if (originalURI != null && !originalURI.equals(customURI)) {
             return customURI;
         } else {
             return null;

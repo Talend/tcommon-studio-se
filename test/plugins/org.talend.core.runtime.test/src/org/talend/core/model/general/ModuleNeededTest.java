@@ -152,4 +152,38 @@ public class ModuleNeededTest {
         }
 
     }
+    
+    @Test
+    public void testSetModuleName() {
+        String moduleValue = "mysql-connector-java-5.1.30-bin";
+        ModuleNeeded moduleNeeded = new ModuleNeeded(null, moduleValue, null, true);
+        moduleNeeded.setModuleName(moduleValue);
+        Assert.assertEquals(moduleNeeded.getModuleName(),moduleValue);
+        
+        moduleValue = "mvn:org.talend.libraries/6.0.0/mysql-connector-java-5.1.30-bin.jar";
+        moduleNeeded.setModuleName(moduleValue);
+        Assert.assertEquals(moduleNeeded.getModuleName(),"mysql-connector-java-5.1.30-bin.jar");
+        
+        moduleValue = "mvn:org.talend.libraries\\6.0.0\\mysql-connector-java-5.1.30-bin";
+        moduleNeeded.setModuleName(moduleValue);
+        Assert.assertEquals(moduleNeeded.getModuleName(),"mysql-connector-java-5.1.30-bin");
+        
+        moduleValue = "mvn:org.talend.libraries/mysql-connector-java-5.1.30-bin/6.0.0";
+        moduleNeeded.setModuleName(moduleValue);
+        Assert.assertEquals(moduleNeeded.getModuleName(),"mysql-connector-java-5.1.30-bin.jar");
+        
+        moduleValue = "mvn:org.talend.libraries/mysql-connector-java-5.1.30-bin";
+        moduleNeeded.setModuleName(moduleValue);
+        Assert.assertEquals(moduleNeeded.getModuleName(),"mysql-connector-java-5.1.30-bin.jar");
+        
+        moduleValue = "mysql-connector-java-5.1.30-bin.jar";
+        moduleNeeded.setModuleName(moduleValue);
+        Assert.assertEquals(moduleNeeded.getModuleName(),"mysql-connector-java-5.1.30-bin.jar");
+        
+        moduleValue = "mvn:org.talend.libraries/mysql-connector-java-5.1.30-bin/6.0.0/jar";
+        moduleNeeded.setModuleName(moduleValue);
+        Assert.assertEquals(moduleNeeded.getModuleName(),"mysql-connector-java-5.1.30-bin.jar");
+        
+    }
+    
 }

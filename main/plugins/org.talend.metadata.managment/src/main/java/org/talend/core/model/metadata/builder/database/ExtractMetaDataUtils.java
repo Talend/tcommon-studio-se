@@ -1030,6 +1030,23 @@ public class ExtractMetaDataUtils {
                             jarPathList.add(driverJarPathArg);
                         }
                     }
+                }else if(driverJarPathArg.contains("/")){
+                    if (driverJarPathArg.contains(";")) {
+                        String jars[] = driverJarPathArg.split(";");
+                        for (String jar : jars) {
+                            String jarName = jar.split("/")[1]+".jar";
+                            if (!new File(getJavaLibPath() + jarName).exists()) {
+                                librairesManagerService.retrieve(jarName, getJavaLibPath(), new NullProgressMonitor());
+                            }
+                            jarPathList.add(getJavaLibPath() + jarName);
+                        }
+                    }else{
+                        String jarName = driverJarPathArg.split("/")[1]+".jar";
+                        if (!new File(getJavaLibPath() + jarName).exists()) {
+                            librairesManagerService.retrieve(jarName, getJavaLibPath(), new NullProgressMonitor());
+                        }
+                        jarPathList.add(getJavaLibPath() + jarName);
+                    }
                 } else {
                     if (driverJarPathArg.contains(";")) {
                         String jars[] = driverJarPathArg.split(";");

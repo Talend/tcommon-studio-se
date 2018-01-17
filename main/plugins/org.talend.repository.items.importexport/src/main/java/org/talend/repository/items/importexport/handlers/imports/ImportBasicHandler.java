@@ -89,6 +89,7 @@ import org.talend.core.model.utils.MigrationUtil;
 import org.talend.core.repository.constants.FileConstants;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.runtime.CoreRuntimePlugin;
+import org.talend.core.runtime.services.IGenericDBService;
 import org.talend.core.runtime.services.IGenericWizardService;
 import org.talend.core.utils.WorkspaceUtils;
 import org.talend.designer.business.model.business.BusinessPackage;
@@ -382,7 +383,15 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
                             current.getProperty());
                     if (isInCurrentProject && isSameName(importItem, current)) {
                         itemWithSameNameObj = current;
-                        isSameRepositoryType = isSameRepType(current.getRepositoryObjectType(), importItem.getRepositoryType());
+                        ERepositoryObjectType repType = current.getRepositoryObjectType();
+                        IGenericDBService dbService = null;
+                        if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
+                            dbService = (IGenericDBService) GlobalServiceRegister.getDefault().getService(IGenericDBService.class);
+                        }
+                        if (dbService != null && dbService.getExtraTypes().contains(repType)) {
+                            repType = dbService.getExtraDBType(repType);
+                        }
+                        isSameRepositoryType = isSameRepType(repType, importItem.getRepositoryType());
                     }
                 }
             }
@@ -486,6 +495,13 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
         ) {
             ERepositoryObjectType importType = importItem.getRepositoryType();
             ERepositoryObjectType repType = repObject.getRepositoryObjectType();
+            IGenericDBService dbService = null;
+            if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
+                dbService = (IGenericDBService) GlobalServiceRegister.getDefault().getService(IGenericDBService.class);
+            }
+            if (dbService != null && dbService.getExtraTypes().contains(repType)) {
+                repType = dbService.getExtraDBType(repType);
+            }
             // if support mult name
             if (importType != null && importType.equals(repType) && importType.isAllowMultiName()) {
                 String importPath = importItem.getProperty().getItem().getState().getPath();

@@ -910,13 +910,22 @@ public interface ConnectionPackage extends EPackage {
     int CONNECTION__CONTEXT_NAME = ABSTRACT_METADATA_OBJECT_FEATURE_COUNT + 15;
 
     /**
+     * The feature id for the '<em><b>Comp Properties</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int CONNECTION__COMP_PROPERTIES = ABSTRACT_METADATA_OBJECT_FEATURE_COUNT + 16;
+
+    /**
      * The number of structural features of the '<em>Connection</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      * 
      * @generated
      * @ordered
      */
-    int CONNECTION_FEATURE_COUNT = ABSTRACT_METADATA_OBJECT_FEATURE_COUNT + 16;
+    int CONNECTION_FEATURE_COUNT = ABSTRACT_METADATA_OBJECT_FEATURE_COUNT + 17;
 
     /**
      * The meta object id for the '{@link org.talend.core.model.metadata.builder.connection.impl.MetadataColumnImpl <em>Metadata Column</em>}' class.
@@ -2239,6 +2248,15 @@ public interface ConnectionPackage extends EPackage {
     int FILE_CONNECTION__CONTEXT_NAME = CONNECTION__CONTEXT_NAME;
 
     /**
+     * The feature id for the '<em><b>Comp Properties</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int FILE_CONNECTION__COMP_PROPERTIES = CONNECTION__COMP_PROPERTIES;
+
+    /**
      * The feature id for the '<em><b>Server</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
@@ -2779,6 +2797,15 @@ public interface ConnectionPackage extends EPackage {
      * @ordered
      */
     int DELIMITED_FILE_CONNECTION__CONTEXT_NAME = FILE_CONNECTION__CONTEXT_NAME;
+
+    /**
+     * The feature id for the '<em><b>Comp Properties</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DELIMITED_FILE_CONNECTION__COMP_PROPERTIES = FILE_CONNECTION__COMP_PROPERTIES;
 
     /**
      * The feature id for the '<em><b>Server</b></em>' attribute.
@@ -3340,6 +3367,15 @@ public interface ConnectionPackage extends EPackage {
     int POSITIONAL_FILE_CONNECTION__CONTEXT_NAME = FILE_CONNECTION__CONTEXT_NAME;
 
     /**
+     * The feature id for the '<em><b>Comp Properties</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int POSITIONAL_FILE_CONNECTION__COMP_PROPERTIES = FILE_CONNECTION__COMP_PROPERTIES;
+
+    /**
      * The feature id for the '<em><b>Server</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
@@ -3880,6 +3916,15 @@ public interface ConnectionPackage extends EPackage {
      * @ordered
      */
     int EBCDIC_CONNECTION__CONTEXT_NAME = FILE_CONNECTION__CONTEXT_NAME;
+
+    /**
+     * The feature id for the '<em><b>Comp Properties</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int EBCDIC_CONNECTION__COMP_PROPERTIES = FILE_CONNECTION__COMP_PROPERTIES;
 
     /**
      * The feature id for the '<em><b>Server</b></em>' attribute.
@@ -4467,6 +4512,15 @@ public interface ConnectionPackage extends EPackage {
     int MDM_CONNECTION__CONTEXT_NAME = CONNECTION__CONTEXT_NAME;
 
     /**
+     * The feature id for the '<em><b>Comp Properties</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int MDM_CONNECTION__COMP_PROPERTIES = CONNECTION__COMP_PROPERTIES;
+
+    /**
      * The feature id for the '<em><b>Username</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
@@ -4932,6 +4986,15 @@ public interface ConnectionPackage extends EPackage {
      * @ordered
      */
     int DATABASE_CONNECTION__CONTEXT_NAME = CONNECTION__CONTEXT_NAME;
+
+    /**
+     * The feature id for the '<em><b>Comp Properties</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATABASE_CONNECTION__COMP_PROPERTIES = CONNECTION__COMP_PROPERTIES;
 
     /**
      * The feature id for the '<em><b>Database Type</b></em>' attribute.
@@ -5521,6 +5584,15 @@ public interface ConnectionPackage extends EPackage {
      * @ordered
      */
     int SAP_CONNECTION__CONTEXT_NAME = CONNECTION__CONTEXT_NAME;
+
+    /**
+     * The feature id for the '<em><b>Comp Properties</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SAP_CONNECTION__COMP_PROPERTIES = CONNECTION__COMP_PROPERTIES;
 
     /**
      * The feature id for the '<em><b>Host</b></em>' attribute.
@@ -7716,6 +7788,15 @@ public interface ConnectionPackage extends EPackage {
     int REGEXP_FILE_CONNECTION__CONTEXT_NAME = FILE_CONNECTION__CONTEXT_NAME;
 
     /**
+     * The feature id for the '<em><b>Comp Properties</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int REGEXP_FILE_CONNECTION__COMP_PROPERTIES = FILE_CONNECTION__COMP_PROPERTIES;
+
+    /**
      * The feature id for the '<em><b>Server</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
@@ -8265,6 +8346,15 @@ public interface ConnectionPackage extends EPackage {
      * @ordered
      */
     int XML_FILE_CONNECTION__CONTEXT_NAME = CONNECTION__CONTEXT_NAME;
+
+    /**
+     * The feature id for the '<em><b>Comp Properties</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int XML_FILE_CONNECTION__COMP_PROPERTIES = CONNECTION__COMP_PROPERTIES;
 
     /**
      * The feature id for the '<em><b>Xsd File Path</b></em>' attribute.
@@ -9097,6 +9187,15 @@ public interface ConnectionPackage extends EPackage {
     int LDIF_FILE_CONNECTION__CONTEXT_NAME = CONNECTION__CONTEXT_NAME;
 
     /**
+     * The feature id for the '<em><b>Comp Properties</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int LDIF_FILE_CONNECTION__COMP_PROPERTIES = CONNECTION__COMP_PROPERTIES;
+
+    /**
      * The feature id for the '<em><b>Value</b></em>' attribute list.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
@@ -9512,6 +9611,15 @@ public interface ConnectionPackage extends EPackage {
      * @ordered
      */
     int FILE_EXCEL_CONNECTION__CONTEXT_NAME = FILE_CONNECTION__CONTEXT_NAME;
+
+    /**
+     * The feature id for the '<em><b>Comp Properties</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int FILE_EXCEL_CONNECTION__COMP_PROPERTIES = FILE_CONNECTION__COMP_PROPERTIES;
 
     /**
      * The feature id for the '<em><b>Server</b></em>' attribute.
@@ -10195,6 +10303,15 @@ public interface ConnectionPackage extends EPackage {
     int GENERIC_SCHEMA_CONNECTION__CONTEXT_NAME = CONNECTION__CONTEXT_NAME;
 
     /**
+     * The feature id for the '<em><b>Comp Properties</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int GENERIC_SCHEMA_CONNECTION__COMP_PROPERTIES = CONNECTION__COMP_PROPERTIES;
+
+    /**
      * The feature id for the '<em><b>Mapping Type Used</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      * 
@@ -10587,6 +10704,15 @@ public interface ConnectionPackage extends EPackage {
      * @ordered
      */
     int LDAP_SCHEMA_CONNECTION__CONTEXT_NAME = CONNECTION__CONTEXT_NAME;
+
+    /**
+     * The feature id for the '<em><b>Comp Properties</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int LDAP_SCHEMA_CONNECTION__COMP_PROPERTIES = CONNECTION__COMP_PROPERTIES;
 
     /**
      * The feature id for the '<em><b>Host</b></em>' attribute.
@@ -11153,6 +11279,15 @@ public interface ConnectionPackage extends EPackage {
     int WSDL_SCHEMA_CONNECTION__CONTEXT_NAME = CONNECTION__CONTEXT_NAME;
 
     /**
+     * The feature id for the '<em><b>Comp Properties</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int WSDL_SCHEMA_CONNECTION__COMP_PROPERTIES = CONNECTION__COMP_PROPERTIES;
+
+    /**
      * The feature id for the '<em><b>WSDL</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
@@ -11662,6 +11797,15 @@ public interface ConnectionPackage extends EPackage {
      * @ordered
      */
     int SALESFORCE_SCHEMA_CONNECTION__CONTEXT_NAME = CONNECTION__CONTEXT_NAME;
+
+    /**
+     * The feature id for the '<em><b>Comp Properties</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SALESFORCE_SCHEMA_CONNECTION__COMP_PROPERTIES = CONNECTION__COMP_PROPERTIES;
 
     /**
      * The feature id for the '<em><b>Web Service Url</b></em>' attribute.
@@ -13931,6 +14075,15 @@ public interface ConnectionPackage extends EPackage {
     int HL7_CONNECTION__CONTEXT_NAME = FILE_CONNECTION__CONTEXT_NAME;
 
     /**
+     * The feature id for the '<em><b>Comp Properties</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int HL7_CONNECTION__COMP_PROPERTIES = FILE_CONNECTION__COMP_PROPERTIES;
+
+    /**
      * The feature id for the '<em><b>Server</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
@@ -14507,6 +14660,15 @@ public interface ConnectionPackage extends EPackage {
      * @ordered
      */
     int HEADER_FOOTER_CONNECTION__CONTEXT_NAME = CONNECTION__CONTEXT_NAME;
+
+    /**
+     * The feature id for the '<em><b>Comp Properties</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int HEADER_FOOTER_CONNECTION__COMP_PROPERTIES = CONNECTION__COMP_PROPERTIES;
 
     /**
      * The feature id for the '<em><b>Is Header</b></em>' attribute.
@@ -15348,6 +15510,15 @@ public interface ConnectionPackage extends EPackage {
     int FTP_CONNECTION__CONTEXT_NAME = CONNECTION__CONTEXT_NAME;
 
     /**
+     * The feature id for the '<em><b>Comp Properties</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int FTP_CONNECTION__COMP_PROPERTIES = CONNECTION__COMP_PROPERTIES;
+
+    /**
      * The feature id for the '<em><b>Host</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -15925,6 +16096,15 @@ public interface ConnectionPackage extends EPackage {
     int BRMS_CONNECTION__CONTEXT_NAME = CONNECTION__CONTEXT_NAME;
 
     /**
+     * The feature id for the '<em><b>Comp Properties</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int BRMS_CONNECTION__COMP_PROPERTIES = CONNECTION__COMP_PROPERTIES;
+
+    /**
      * The feature id for the '<em><b>Xml Field</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -16411,6 +16591,15 @@ public interface ConnectionPackage extends EPackage {
      * @ordered
      */
     int VALIDATION_RULES_CONNECTION__CONTEXT_NAME = CONNECTION__CONTEXT_NAME;
+
+    /**
+     * The feature id for the '<em><b>Comp Properties</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int VALIDATION_RULES_CONNECTION__COMP_PROPERTIES = CONNECTION__COMP_PROPERTIES;
 
     /**
      * The feature id for the '<em><b>Is Select</b></em>' attribute.
@@ -17034,6 +17223,15 @@ public interface ConnectionPackage extends EPackage {
      * @ordered
      */
     int EDIFACT_CONNECTION__CONTEXT_NAME = CONNECTION__CONTEXT_NAME;
+
+    /**
+     * The feature id for the '<em><b>Comp Properties</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int EDIFACT_CONNECTION__COMP_PROPERTIES = CONNECTION__COMP_PROPERTIES;
 
     /**
      * The feature id for the '<em><b>Xml Name</b></em>' attribute.
@@ -20477,6 +20675,17 @@ public interface ConnectionPackage extends EPackage {
      * @generated
      */
     EAttribute getConnection_ContextName();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.talend.core.model.metadata.builder.connection.Connection#getCompProperties <em>Comp Properties</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Comp Properties</em>'.
+     * @see org.talend.core.model.metadata.builder.connection.Connection#getCompProperties()
+     * @see #getConnection()
+     * @generated
+     */
+    EAttribute getConnection_CompProperties();
 
     /**
      * Returns the meta object for class '{@link org.talend.core.model.metadata.builder.connection.MetadataColumn <em>Metadata Column</em>}'.
@@ -25259,6 +25468,14 @@ public interface ConnectionPackage extends EPackage {
          * @generated
          */
         EAttribute CONNECTION__CONTEXT_NAME = eINSTANCE.getConnection_ContextName();
+
+        /**
+         * The meta object literal for the '<em><b>Comp Properties</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute CONNECTION__COMP_PROPERTIES = eINSTANCE.getConnection_CompProperties();
 
         /**
          * The meta object literal for the '{@link org.talend.core.model.metadata.builder.connection.impl.MetadataColumnImpl <em>Metadata Column</em>}' class.

@@ -39,6 +39,7 @@ import org.talend.core.model.metadata.IConvertionConstants;
 import org.talend.core.model.metadata.IMetadataColumn;
 import org.talend.core.model.metadata.IMetadataConnection;
 import org.talend.core.model.metadata.IMetadataTable;
+import org.talend.core.model.metadata.MetadataManager;
 import org.talend.core.model.metadata.MetadataTalendType;
 import org.talend.core.model.metadata.MetadataToolHelper;
 import org.talend.core.model.metadata.builder.connection.AbstractMetadataObject;
@@ -56,6 +57,7 @@ import org.talend.core.utils.KeywordsValidator;
 import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.helper.SAPBWTableHelper;
 import org.talend.cwm.helper.TaggedValueHelper;
+import org.talend.cwm.relational.RelationalFactory;
 import org.talend.model.bridge.ReponsitoryContextBridge;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
@@ -540,16 +542,28 @@ public final class ConvertionHelper {
      * @param metadataTable
      * @return
      */
-    public static MetadataTable convert(IMetadataTable old) {
-        ICoreService coreService = (ICoreService) GlobalServiceRegister.getDefault().getService(ICoreService.class);
-        MetadataTable result = ConnectionFactory.eINSTANCE.createMetadataTable();
+    public static MetadataTable convert(IMetadataTable old, String type) {
+        MetadataTable result = null;
+        if(type == null){
+            result = ConnectionFactory.eINSTANCE.createMetadataTable();;
+        }else if(type.equals(MetadataManager.TYPE_TABLE)){
+            result = RelationalFactory.eINSTANCE.createTdTable();
+        }else if(type.equals(MetadataManager.TYPE_VIEW)){
+            result = RelationalFactory.eINSTANCE.createTdView();
+        }
         result.setComment(old.getComment());
         result.setId(old.getId());
         result.setLabel(old.getLabel());
         result.setSourceName(old.getTableName());
+        result.setTableType(old.getTableType());
         List<MetadataColumn> columns = new ArrayList<MetadataColumn>(old.getListColumns().size());
         for (IMetadataColumn column : old.getListColumns()) {
-            MetadataColumn newColumn = ConnectionFactory.eINSTANCE.createMetadataColumn();
+            MetadataColumn newColumn = null;
+            if(type == null){
+                newColumn = ConnectionFactory.eINSTANCE.createMetadataColumn();
+            }else if(type.equals(MetadataManager.TYPE_TABLE) || type.equals(MetadataManager.TYPE_VIEW)){
+                newColumn = RelationalFactory.eINSTANCE.createTdColumn();
+            }
             columns.add(newColumn);
             newColumn.setComment(column.getComment());
             newColumn.setDefaultValue(column.getDefault());
@@ -595,6 +609,11 @@ public final class ConvertionHelper {
         }
         result.getColumns().addAll(columns);
         return result;
+    
+    }
+    
+    public static MetadataTable convert(IMetadataTable old) {
+        return convert(old, null);
     }
 
     private static void addTaggedValue(MetadataColumn column, String tag, String value) {
@@ -615,8 +634,10 @@ public final class ConvertionHelper {
         String schema = metadataConnection.getSchema();
         String dbType = metadataConnection.getDbType();
         String url = metadataConnection.getUrl();
+        String jdbcName = EDatabaseTypeName.GENERAL_JDBC.getProduct();
         String generalJDBCDisplayName = EDatabaseConnTemplate.GENERAL_JDBC.getDBDisplayName();
-        if (generalJDBCDisplayName.equals(dbType) && url.contains("oracle")) {//$NON-NLS-1$
+        boolean isJDBC = jdbcName.equals(dbType) || generalJDBCDisplayName.equals(dbType);
+        if (isJDBC && url.contains("oracle")) {//$NON-NLS-1$
             schema = metadataConnection.getUsername().toUpperCase();
         }
         return schema;

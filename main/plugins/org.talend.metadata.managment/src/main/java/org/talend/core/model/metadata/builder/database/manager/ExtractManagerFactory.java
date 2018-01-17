@@ -42,7 +42,21 @@ public final class ExtractManagerFactory {
                 break;
             }
         }
-        return create(dbType);
+        ExtractManager manager = create(dbType);
+        if(manager != null){
+            return manager;
+        }
+        return createExtraManager(displayName);
+    }
+    
+    public static ExtractManager createExtraManager(String displayName){
+        if (displayName == null) {
+            return null;
+        }
+        if(displayName.equals(EDatabaseTypeName.GENERAL_JDBC.getProduct())){
+            return new GeneralJDBCExtractManager();
+        }
+        return null;
     }
 
     public static ExtractManager create(EDatabaseTypeName dbType) {

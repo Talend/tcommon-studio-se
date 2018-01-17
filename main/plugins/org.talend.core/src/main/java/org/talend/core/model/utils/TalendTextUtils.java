@@ -329,8 +329,8 @@ public class TalendTextUtils {
      * @return
      */
     private static boolean isIBMDB2ContainLowerCase(String dbType, String fieldName) {
-        if (dbType.equals(EDatabaseTypeName.IBMDB2.getDisplayName())
-                || dbType.equals(EDatabaseTypeName.IBMDB2ZOS.getDisplayName())) {
+        if (dbType != null && (dbType.equals(EDatabaseTypeName.IBMDB2.getDisplayName())
+                || dbType.equals(EDatabaseTypeName.IBMDB2ZOS.getDisplayName()))) {
             String temp = removeQuotes(fieldName);
             Pattern pattern = Pattern.compile("^.*[a-z]+.*$"); //$NON-NLS-1$
             Matcher matcher = pattern.matcher(temp);

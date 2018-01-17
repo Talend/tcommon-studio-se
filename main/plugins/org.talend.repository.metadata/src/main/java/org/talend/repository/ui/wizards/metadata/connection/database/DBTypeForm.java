@@ -67,6 +67,8 @@ public class DBTypeForm {
     
     private String dbType;
     
+    private ConnectionItem oriConnItem;
+    
     public DBTypeForm(DatabaseWizardPage wizardPage, Composite parent, ConnectionItem connectionItem,int style, boolean readOnly, boolean isCreation) {
         this.parent = parent;
         this.wizardPage = wizardPage;
@@ -87,6 +89,9 @@ public class DBTypeForm {
         }
         addListerner();
         adaptFormToReadOnly();
+        if(!isCreation){
+            this.oriConnItem = connectionItem;
+        }
     }
     
     private void adaptFormToReadOnly() {
@@ -243,8 +248,13 @@ public class DBTypeForm {
             if(dbService == null){
                 return;
             }
-            connection = dbService.createGenericConnection();
-            connectionItem = dbService.createGenericConnectionItem();
+            if(!isCreation && dbType.equals(oriConnItem.getTypeName())){
+                connectionItem = oriConnItem;
+                connection = oriConnItem.getConnection();
+                return;
+            }
+            connection = ConnectionFactory.eINSTANCE.createDatabaseConnection();
+            connectionItem = PropertiesFactory.eINSTANCE.createDatabaseConnectionItem();
         }else{
             connection = ConnectionFactory.eINSTANCE.createDatabaseConnection(); 
             connectionItem = PropertiesFactory.eINSTANCE.createDatabaseConnectionItem();
@@ -272,32 +282,13 @@ public class DBTypeForm {
     }
     
     private String getConnectionDBType(){
-        if(wizardPage.isTCOMDB(dbType) || wizardPage.isGenericConn(connectionItem)){
-            IGenericDBService dbService = null;
-            if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
-                dbService = (IGenericDBService) GlobalServiceRegister.getDefault().getService(
-                        IGenericDBService.class);
-            }
-            if(dbService != null){
-                return dbService.getGenericConnectionType(connectionItem);
-            }
-        }
         return ((DatabaseConnection)connectionItem.getConnection()).getDatabaseType();
     }
 
     
     private void setConnectionDBType(String type){
-        if(wizardPage.isTCOMDB(type)){
-            IGenericDBService dbService = null;
-            if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
-                dbService = (IGenericDBService) GlobalServiceRegister.getDefault().getService(
-                        IGenericDBService.class);
-            }
-            if(dbService != null){
-                dbService.setGenericConnectionType(type, connectionItem);
-                return;
-            }
-        }else if(connectionItem.getConnection() instanceof DatabaseConnection){
+        if(connectionItem.getConnection() instanceof DatabaseConnection){
+            connectionItem.setTypeName(type);
             ((DatabaseConnection)connectionItem.getConnection()).setDatabaseType(type);
         }
     }

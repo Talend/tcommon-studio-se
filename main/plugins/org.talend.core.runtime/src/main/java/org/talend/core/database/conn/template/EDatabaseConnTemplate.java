@@ -291,7 +291,7 @@ public enum EDatabaseConnTemplate {
     @SuppressWarnings("unchecked")
     private static List<String> getDBTypes(boolean sort, boolean all, boolean display) {
         EDatabaseConnTemplate[] values = EDatabaseConnTemplate.values();
-        List<String> databaseType = new ArrayList<String>(values.length);
+        List<String> databaseType = new ArrayList<String>();
         
         List<ERepositoryObjectType> extraTypes = new ArrayList<ERepositoryObjectType>();
         IGenericDBService dbService = null;
@@ -307,6 +307,9 @@ public enum EDatabaseConnTemplate {
             databaseType.add(type.getType());
         }
         for (EDatabaseConnTemplate temp : values) {
+            if(temp == EDatabaseConnTemplate.GENERAL_JDBC){
+                continue;
+            }
             String typeName = getDBTypeName(temp, display);
             if (typeName != null && !databaseType.contains(typeName)) {
                 databaseType.add(typeName);
