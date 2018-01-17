@@ -93,7 +93,7 @@ public enum EParameterFieldType {
     HADOOP_DISTRIBUTION,
     HADOOP_LIBRARIES,
     DATA_PREP_ID, // wchen added for TDI-33791
-    DP_VERSION,  // hwang added for TUP-16686
+    DP_VERSION, // hwang added for TUP-16686
     FETCH_SCHEMA, // TDI-33791
     DATA_SET_ID,
 
@@ -107,14 +107,15 @@ public enum EParameterFieldType {
 
     CAMPAIGN_CHOOSER, // pwlin added for TDS components
 
-    GROUPING_CAMPAIGN_CHOOSER,// htyin added for DQ Matching components
-    MULTI_PATTERN,//yyin added TDQ-13437
+    GROUPING_CAMPAIGN_CHOOSER, // htyin added for DQ Matching components
+    MULTI_PATTERN, // yyin added TDQ-13437
     SYNC_NEXUS_BUTTON,
     CHECK_NEXUS_BUTTON,
-    PATTERN_PROPERTY,//yyin, added TDQ-13437
+    PATTERN_PROPERTY, // yyin, added TDQ-13437
 
-    TACOKIT_GUESS_SCHEMA,
-    ;
+    UNIFIED_COMPONENTS,
+
+    TACOKIT_GUESS_SCHEMA;
 
     public String getName() {
         return toString();

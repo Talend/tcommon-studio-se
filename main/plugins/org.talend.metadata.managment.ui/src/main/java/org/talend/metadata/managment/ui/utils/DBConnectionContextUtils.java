@@ -37,6 +37,7 @@ import org.talend.core.model.context.ContextUtils;
 import org.talend.core.model.metadata.Dbms;
 import org.talend.core.model.metadata.IMetadataConnection;
 import org.talend.core.model.metadata.MetadataTalendType;
+import org.talend.core.model.metadata.builder.ConvertionHelper;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
@@ -55,6 +56,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.metadata.managment.repository.ManagerConnection;
 import org.talend.metadata.managment.ui.model.IConnParamName;
 import org.talend.model.bridge.ReponsitoryContextBridge;
+
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.resource.relational.Catalog;
 import orgomg.cwm.resource.relational.Schema;
@@ -122,6 +124,12 @@ public final class DBConnectionContextUtils {
         Znode_Parent,
         // impala
         ImpalaPrincipal,
+
+        // Oracle Custom SSL Encryption
+        SSLTrustStorePath,
+        SSLTrustStorePassword,
+        SSLKeyStorePath,
+        SSLKeyStorePassword,
     }
 
     static List<IContextParameter> getDBVariables(String prefixName, DatabaseConnection conn, Set<IConnParamName> paramSet) {
@@ -345,6 +353,24 @@ public final class DBConnectionContextUtils {
                     }
                     value = conn.getParameters().get(key);
                     ConnectionContextHelper.createParameters(varList, paramName, value, JavaTypesManager.LONG);
+                    break;
+                case SSLTrustStorePath:
+                    value = conn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_SSL_TRUST_STORE_PATH);
+                    ConnectionContextHelper.createParameters(varList, paramName, value);
+                    break;
+                case SSLTrustStorePassword:
+                    value = conn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_SSL_TRUST_STORE_PASSWORD);
+                    value = conn.getValue(value, false);
+                    ConnectionContextHelper.createParameters(varList, paramName, value, JavaTypesManager.PASSWORD);
+                    break;
+                case SSLKeyStorePath:
+                    value = conn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_SSL_KEY_STORE_PATH);
+                    ConnectionContextHelper.createParameters(varList, paramName, value);
+                    break;
+                case SSLKeyStorePassword:
+                    value = conn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_SSL_KEY_STORE_PASSWORD);
+                    value = conn.getValue(value, false);
+                    ConnectionContextHelper.createParameters(varList, paramName, value, JavaTypesManager.PASSWORD);
                     break;
                 default:
                 }
@@ -703,6 +729,22 @@ public final class DBConnectionContextUtils {
             conn.getParameters().put(ConnParameterKeys.IMPALA_AUTHENTICATION_PRINCIPLA,
                     ContextParameterUtils.getNewScriptCode(originalVariableName, LANGUAGE));
             break;
+        case SSLTrustStorePath:
+            conn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_SSL_TRUST_STORE_PATH,
+                    ContextParameterUtils.getNewScriptCode(originalVariableName, LANGUAGE));
+            break;
+        case SSLTrustStorePassword:
+            conn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_SSL_TRUST_STORE_PASSWORD,
+                    ContextParameterUtils.getNewScriptCode(originalVariableName, LANGUAGE));
+            break;
+        case SSLKeyStorePath:
+            conn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_SSL_KEY_STORE_PATH,
+                    ContextParameterUtils.getNewScriptCode(originalVariableName, LANGUAGE));
+            break;
+        case SSLKeyStorePassword:
+            conn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_SSL_KEY_STORE_PASSWORD,
+                    ContextParameterUtils.getNewScriptCode(originalVariableName, LANGUAGE));
+            break;
         default:
         }
     }
@@ -765,6 +807,9 @@ public final class DBConnectionContextUtils {
 
         if (dbConn.getProductId().equals(EDatabaseTypeName.ORACLEFORSID.getProduct())) {
             schemaOracle = schemaOracle.toUpperCase();
+        }
+        if (EDatabaseTypeName.ORACLE_CUSTOM.getDisplayName().equals(dbConn.getDatabaseType())) {
+            additionParam = ConvertionHelper.convertAdditionalParameters(dbConn);
         }
         // set the value
         managerConnection.setValue(0, dbType, urlConnection, server, username, password, sidOrDatabase, port, filePath,
@@ -1168,6 +1213,34 @@ public final class DBConnectionContextUtils {
             }
         }
 
+        if (EDatabaseTypeName.ORACLE_CUSTOM.equals(EDatabaseTypeName.getTypeFromDbType(dbConn.getDatabaseType()))) {
+            String trustStorePath = cloneConn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_SSL_TRUST_STORE_PATH);
+            if (trustStorePath != null) {
+                cloneConn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_SSL_TRUST_STORE_PATH,
+                        getOriginalValue(hadoopClusterContextType, contextType, trustStorePath));
+            }
+
+            String trustStorePassword = cloneConn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_SSL_TRUST_STORE_PASSWORD);
+            if (trustStorePassword != null) {
+                cloneConn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_SSL_TRUST_STORE_PASSWORD, cloneConn.getValue(
+                        cloneConn.getValue(getOriginalValue(hadoopClusterContextType, contextType, trustStorePassword), false),
+                        true));
+            }
+
+            String keyStorePath = cloneConn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_SSL_KEY_STORE_PATH);
+            if (keyStorePath != null) {
+                cloneConn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_SSL_KEY_STORE_PATH,
+                        getOriginalValue(hadoopClusterContextType, contextType, keyStorePath));
+            }
+
+            String keyStorePassword = cloneConn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_SSL_KEY_STORE_PASSWORD);
+            if (keyStorePassword != null) {
+                cloneConn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_SSL_KEY_STORE_PASSWORD, cloneConn.getValue(
+                        cloneConn.getValue(getOriginalValue(hadoopClusterContextType, contextType, keyStorePassword), false),
+                        true));
+            }
+        }
+
         // Added 20130311 TDQ-7000, when it is context mode and not general jdbc, reset the url.
         if (contextType != null
                 && !EDatabaseTypeName.GENERAL_JDBC.equals(EDatabaseTypeName.getTypeFromDbType(dbConn.getDatabaseType()))) {
@@ -1462,6 +1535,24 @@ public final class DBConnectionContextUtils {
             String impalaPrin = conn.getParameters().get(ConnParameterKeys.IMPALA_AUTHENTICATION_PRINCIPLA);
             conn.getParameters().put(ConnParameterKeys.IMPALA_AUTHENTICATION_PRINCIPLA,
                     ContextParameterUtils.getOriginalValue(contextType, impalaPrin));
+        }
+
+        if (EDatabaseTypeName.ORACLE_CUSTOM.equals(EDatabaseTypeName.getTypeFromDbType(conn.getDatabaseType()))) {
+            String sslTrustStorePath = conn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_SSL_TRUST_STORE_PATH);
+            conn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_SSL_TRUST_STORE_PATH,
+                    ContextParameterUtils.getOriginalValue(contextType, sslTrustStorePath));
+
+            String sslTrustStorePassword = conn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_SSL_TRUST_STORE_PASSWORD);
+            conn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_SSL_TRUST_STORE_PASSWORD,
+                    conn.getValue(ContextParameterUtils.getOriginalValue(contextType, sslTrustStorePassword), true));
+
+            String sslKeyStorePath = conn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_SSL_KEY_STORE_PATH);
+            conn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_SSL_KEY_STORE_PATH,
+                    ContextParameterUtils.getOriginalValue(contextType, sslKeyStorePath));
+
+            String sslKeyStorePassword = conn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_SSL_KEY_STORE_PASSWORD);
+            conn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_SSL_KEY_STORE_PASSWORD,
+                    conn.getValue(ContextParameterUtils.getOriginalValue(contextType, sslKeyStorePassword), true));
         }
         // revert the context value in the hadoop properties dialog if it is hive or hbase
         String hadoopPropertiesJson = transformContextModeToOriginal(getHiveOrHbaseHadoopProperties(conn), contextType);

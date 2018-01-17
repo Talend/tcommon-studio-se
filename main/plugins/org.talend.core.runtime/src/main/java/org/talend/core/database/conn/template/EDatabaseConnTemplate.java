@@ -380,6 +380,7 @@ public enum EDatabaseConnTemplate {
                 // for feature 10655
             case ORACLEFORSID:
             case ORACLESN:
+            case ORACLE_CUSTOM:
             case ORACLE_OCI:
             case SYBASEASE:
             case HSQLDB_IN_PROGRESS: // for feature 11674
