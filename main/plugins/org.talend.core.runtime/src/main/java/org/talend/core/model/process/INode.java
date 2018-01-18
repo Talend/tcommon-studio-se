@@ -39,6 +39,8 @@ public interface INode extends IElement {
 
     public static final String RELOAD_NEW = "param.new "; //$NON-NLS-1$
 
+    public static final String OLD_UNIFIED_COMPONENT = "old.unified.component"; //$NON-NLS-1$
+
     /**
      * Returns the label of the node.
      * 

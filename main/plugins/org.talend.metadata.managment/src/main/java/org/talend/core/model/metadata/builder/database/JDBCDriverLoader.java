@@ -14,6 +14,7 @@ package org.talend.core.model.metadata.builder.database;
 
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.security.Provider;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.util.ArrayList;
@@ -27,6 +28,8 @@ import org.apache.commons.collections.map.MultiKeyMap;
 import org.talend.commons.utils.encoding.CharsetToolkit;
 import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.database.conn.version.EDatabaseVersion4Drivers;
+import org.talend.core.prefs.SSLPreferenceConstants;
+import org.talend.core.utils.ReflectionUtils;
 import org.talend.utils.sql.ConnectionUtils;
 
 /**
@@ -160,11 +163,17 @@ public class JDBCDriverLoader {
                 }
             }
 
-            if (additionalParams != null && !"".equals(additionalParams) && dbType.toUpperCase().contains("ORACLE")) {
+            if (additionalParams != null && !"".equals(additionalParams) && dbType.toUpperCase().contains("ORACLE")) {//$NON-NLS-1$//$NON-NLS-2$
+                if (additionalParams.contains(SSLPreferenceConstants.TRUSTSTORE_TYPE)) {
+                    System.setProperty("jsse.enableCBCProtection", "false");//$NON-NLS-1$//$NON-NLS-2$
+                    Object pki = ReflectionUtils.newInstance("oracle.security.pki.OraclePKIProvider", loader, //$NON-NLS-1$
+                            new Object[] {});
+                    ReflectionUtils.invokeStaticMethod("java.security.Security", "insertProviderAt", //$NON-NLS-1$//$NON-NLS-2$
+                            new Object[] { pki, 3 }, Provider.class, int.class);
+                }
                 additionalParams = additionalParams.replaceAll("&", "\n");//$NON-NLS-1$//$NON-NLS-2$
                 info.load(new java.io.ByteArrayInputStream(additionalParams.getBytes()));
                 connection = wapperDriver.connect(url, info);
-
             } else {
                 if (ConnectionUtils.isHsql(url)) {
                     url = ConnectionUtils.addShutDownForHSQLUrl(url, additionalParams);

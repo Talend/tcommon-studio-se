@@ -13,6 +13,7 @@
 package org.talend.repository.ui.wizards.metadata.connection.database;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.DatabaseMetaData;
 import java.sql.Driver;
@@ -24,6 +25,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Properties;
 import java.util.concurrent.Callable;
 import java.util.regex.Pattern;
 
@@ -122,6 +124,7 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.utils.ContextParameterUtils;
 import org.talend.core.prefs.ITalendCorePrefConstants;
+import org.talend.core.prefs.SSLPreferenceConstants;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.hd.IHDistribution;
@@ -248,6 +251,18 @@ public class DatabaseForm extends AbstractForm {
     private LabelledFileField trustStorePath;
 
     private LabelledText trustStorePassword;
+
+    private Composite sslClientAuthComposite;
+
+    private Button needClientAuth;
+
+    private Composite sslKeyStoreComposite;
+
+    private LabelledFileField keyStorePath;
+
+    private LabelledText keyStorePassword;
+
+    private Button disableCBCProtection;
 
     /**
      * Fields for general jdbc
@@ -604,6 +619,8 @@ public class DatabaseForm extends AbstractForm {
                 doRemoveHiveSetup();
                 initHiveInfo();
                 doHiveDBTypeSelected();
+            } else if (isOracleCustomDBConnSelected()) {
+                initOracleCustomEncryptionInfo();
             } else {
                 doHiveDBTypeNotSelected();
             }
@@ -1001,7 +1018,7 @@ public class DatabaseForm extends AbstractForm {
 
         createHadoopUIContentsForHiveEmbedded(typeDbCompositeParent);
         createMetastoreUIContentsForHiveEmbedded(typeDbCompositeParent);
-        createEncryptionGroupForHive(typeDbCompositeParent);
+        createEncryptionGroup(typeDbCompositeParent);
         createTableInfoPartForHbase(typeDbCompositeParent);
         createTableInfoPartForMaprdb(typeDbCompositeParent);
         createZnodeParent(typeDbCompositeParent);
@@ -1250,16 +1267,16 @@ public class DatabaseForm extends AbstractForm {
         initForImpalaAuthentication();
     }
 
-    private void createEncryptionGroupForHive(Composite parent) {
+    private void createEncryptionGroup(Composite parent) {
         encryptionGrp = new Group(parent, SWT.NONE);
         GridLayout parentLayout = (GridLayout) parent.getLayout();
-        encryptionGrp.setText(Messages.getString("DatabaseForm.hive.encryption")); //$NON-NLS-1$
+        encryptionGrp.setText(Messages.getString("DatabaseForm.encryption")); //$NON-NLS-1$
         GridDataFactory.fillDefaults().span(parentLayout.numColumns, 1).align(SWT.FILL, SWT.BEGINNING).grab(true, false)
                 .applyTo(encryptionGrp);
         encryptionGrp.setLayout(new GridLayout(1, true));
 
         useSSLEncryption = new Button(encryptionGrp, SWT.CHECK);
-        useSSLEncryption.setText(Messages.getString("DatabaseForm.hive.encryption.useSSLEncryption")); //$NON-NLS-1$
+        useSSLEncryption.setText(Messages.getString("DatabaseForm.encryption.useSSLEncryption")); //$NON-NLS-1$
         GridData gridData = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_CENTER);
         gridData.horizontalSpan = 1;
         useSSLEncryption.setLayoutData(gridData);
@@ -1268,50 +1285,120 @@ public class DatabaseForm extends AbstractForm {
         gridData = new GridData(GridData.FILL_BOTH);
         gridData.horizontalSpan = 1;
         sslEncryptionDetailComposite.setLayoutData(gridData);
-        GridLayout sslEncryptionDetailLayout = new GridLayout(2, true);
+        GridLayout sslEncryptionDetailLayout = new GridLayout(1, true);
         sslEncryptionDetailComposite.setLayout(sslEncryptionDetailLayout);
 
-        Composite leftHalfPart = new Composite(sslEncryptionDetailComposite, SWT.NONE);
+        Composite sslTrustStoreComposite = new Composite(sslEncryptionDetailComposite, SWT.NONE);
+        gridData = new GridData(GridData.FILL_BOTH);
+        gridData.horizontalSpan = 1;
+        sslTrustStoreComposite.setLayoutData(gridData);
+        GridLayout sslTrustStoreLayout = new GridLayout(2, true);
+        sslTrustStoreComposite.setLayout(sslTrustStoreLayout);
+
+        Composite leftHalfPart = new Composite(sslTrustStoreComposite, SWT.NONE);
         gridData = new GridData(GridData.FILL_BOTH);
         gridData.verticalAlignment = GridData.VERTICAL_ALIGN_CENTER;
         leftHalfPart.setLayoutData(gridData);
         leftHalfPart.setLayout(new GridLayout(3, false));
         trustStorePath = new LabelledFileField(leftHalfPart,
-                Messages.getString("DatabaseForm.hive.encryption.useSSLEncryption.trustStorePath"), null, 1);
+                Messages.getString("DatabaseForm.encryption.useSSLEncryption.trustStorePath"), null, 1); //$NON-NLS-1$
 
-        Composite rightHalfPart = new Composite(sslEncryptionDetailComposite, SWT.NONE);
+        Composite rightHalfPart = new Composite(sslTrustStoreComposite, SWT.NONE);
         gridData = new GridData(GridData.FILL_BOTH);
         gridData.verticalAlignment = GridData.VERTICAL_ALIGN_CENTER;
         rightHalfPart.setLayoutData(gridData);
         rightHalfPart.setLayout(new GridLayout(2, false));
         trustStorePassword = new LabelledText(rightHalfPart,
-                Messages.getString("DatabaseForm.hive.encryption.useSSLEncryption.trustStorePassword"), 1, //$NON-NLS-1$
+                Messages.getString("DatabaseForm.encryption.useSSLEncryption.trustStorePassword"), 1, //$NON-NLS-1$
                 SWT.PASSWORD | SWT.SINGLE | SWT.BORDER);
 
+        sslClientAuthComposite = new Composite(sslEncryptionDetailComposite, SWT.NONE);
+        gridData = new GridData(GridData.FILL_BOTH);
+        gridData.horizontalSpan = 1;
+        sslClientAuthComposite.setLayoutData(gridData);
+        GridLayout sslClientAuthLayout = new GridLayout(1, true);
+        sslClientAuthComposite.setLayout(sslClientAuthLayout);
+
+        needClientAuth = new Button(sslClientAuthComposite, SWT.CHECK);
+        needClientAuth.setText(Messages.getString("DatabaseForm.encryption.useSSLEncryption.needClientAuth")); //$NON-NLS-1$
+        gridData = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_CENTER);
+        gridData.horizontalSpan = 1;
+        needClientAuth.setLayoutData(gridData);
+
+        sslKeyStoreComposite = new Composite(sslClientAuthComposite, SWT.NONE);
+        gridData = new GridData(GridData.FILL_BOTH);
+        gridData.horizontalSpan = 1;
+        sslKeyStoreComposite.setLayoutData(gridData);
+        GridLayout sslKeyStoreLayout = new GridLayout(2, true);
+        sslKeyStoreComposite.setLayout(sslKeyStoreLayout);
+
+        leftHalfPart = new Composite(sslKeyStoreComposite, SWT.NONE);
+        gridData = new GridData(GridData.FILL_BOTH);
+        gridData.verticalAlignment = GridData.VERTICAL_ALIGN_CENTER;
+        leftHalfPart.setLayoutData(gridData);
+        leftHalfPart.setLayout(new GridLayout(3, false));
+        keyStorePath = new LabelledFileField(leftHalfPart,
+                Messages.getString("DatabaseForm.encryption.useSSLEncryption.keyStorePath"), null, 1); //$NON-NLS-1$
+
+        rightHalfPart = new Composite(sslKeyStoreComposite, SWT.NONE);
+        gridData = new GridData(GridData.FILL_BOTH);
+        gridData.verticalAlignment = GridData.VERTICAL_ALIGN_CENTER;
+        rightHalfPart.setLayoutData(gridData);
+        rightHalfPart.setLayout(new GridLayout(2, false));
+        keyStorePassword = new LabelledText(rightHalfPart,
+                Messages.getString("DatabaseForm.encryption.useSSLEncryption.keyStorePassword"), 1, //$NON-NLS-1$
+                SWT.PASSWORD | SWT.SINGLE | SWT.BORDER);
+
+        disableCBCProtection = new Button(sslClientAuthComposite, SWT.CHECK);
+        disableCBCProtection.setText(Messages.getString("DatabaseForm.encryption.useSSLEncryption.disableCBCProtection")); //$NON-NLS-1$
+        gridData = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_CENTER);
+        gridData.horizontalSpan = 1;
+        disableCBCProtection.setLayoutData(gridData);
         addListenersForEncryptionGroup();
     }
 
     private void updateSSLEncryptionDetailsDisplayStatus() {
-        boolean isSupport = isSupportHiveTrustStore();
-        GridData hadoopData = (GridData) sslEncryptionDetailComposite.getLayoutData();
-        hadoopData.exclude = !isSupport;
-        sslEncryptionDetailComposite.setVisible(isSupport);
+        boolean isSupportSSLKeyStore = isSupportSSLKeyStore();
+        GridData hadoopData = (GridData) sslKeyStoreComposite.getLayoutData();
+        hadoopData.exclude = !isSupportSSLKeyStore;
+        sslKeyStoreComposite.setVisible(isSupportSSLKeyStore);
+
+        boolean isSupportSSLClientAuth = isSupportSSLClientAuth();
+        hadoopData = (GridData) sslClientAuthComposite.getLayoutData();
+        hadoopData.exclude = !isSupportSSLClientAuth;
+        sslClientAuthComposite.setVisible(isSupportSSLClientAuth);
+
+        boolean isSupportSSLTrustStore = isSupportSSLTrustStore();
+        hadoopData = (GridData) sslEncryptionDetailComposite.getLayoutData();
+        hadoopData.exclude = !isSupportSSLTrustStore;
+        sslEncryptionDetailComposite.setVisible(isSupportSSLTrustStore);
         sslEncryptionDetailComposite.setLayoutData(hadoopData);
         sslEncryptionDetailComposite.getParent().getParent().layout();
 
-        setHiveTrustStoreParameters(!isSupport);
+        setSSLTrustStoreParameters(!isSupportSSLTrustStore);
+        setSSLKeyStoreParameters(!isSupportSSLKeyStore);
         String url = getStringConnection();
         urlConnectionStringText.setText(url);
         getConnection().setURL(url);
     }
 
-    private void setHiveTrustStoreParameters(boolean shouldRemove) {
+    private void setSSLTrustStoreParameters(boolean shouldRemove) {
         if (shouldRemove) {
             getConnection().getParameters().removeKey(ConnParameterKeys.CONN_PARA_KEY_SSL_TRUST_STORE_PATH);
             getConnection().getParameters().removeKey(ConnParameterKeys.CONN_PARA_KEY_SSL_TRUST_STORE_PASSWORD);
         } else {
             updateTrustStorePathParameter();
             updateTrustStorePasswordParameter();
+        }
+    }
+
+    private void setSSLKeyStoreParameters(boolean shouldRemove) {
+        if (shouldRemove) {
+            getConnection().getParameters().removeKey(ConnParameterKeys.CONN_PARA_KEY_SSL_KEY_STORE_PATH);
+            getConnection().getParameters().removeKey(ConnParameterKeys.CONN_PARA_KEY_SSL_KEY_STORE_PASSWORD);
+        } else {
+            updateKeyStorePathParameter();
+            updateKeyStorePasswordParameter();
         }
     }
 
@@ -1749,10 +1836,10 @@ public class DatabaseForm extends AbstractForm {
     }
 
     private void showIfSupportEncryption() {
-        setHidHiveEncryption(!isSupportHiveEncryption());
+        setHideSSLEncryption(!isSupportSSLEncryption());
     }
 
-    private boolean isSupportHiveEncryption() {
+    private boolean isSupportSSLEncryption() {
         if (isHiveDBConnSelected()) {
             IHDistribution hiveDistribution = getCurrentHiveDistribution(true);
             if (hiveDistribution != null) {
@@ -1770,16 +1857,18 @@ public class DatabaseForm extends AbstractForm {
                 }
                 return true;
             }
+        } else if (isOracleCustomDBConnSelected()) {
+            return true;
         }
         return false;
     }
 
-    private boolean isSupportHiveTrustStore() {
+    private boolean isSupportSSLTrustStore() {
         if (isHiveDBConnSelected()) {
             // if (!useSSLEncryption.isVisible()) {
             // return false;
             // }
-            if (!isSupportHiveEncryption()) {
+            if (!isSupportSSLEncryption()) {
                 return false;
             }
             if (!useSSLEncryption.getSelection()) {
@@ -1798,24 +1887,47 @@ public class DatabaseForm extends AbstractForm {
                     return true;
                 }
             }
+        } else if (isOracleCustomDBConnSelected()) {
+            return useSSLEncryption.getSelection();
         }
         return false;
     }
 
-    private void setHidHiveEncryption(boolean hide) {
+    private boolean isSupportSSLClientAuth() {
+        if (isOracleCustomDBConnSelected()) {
+            return useSSLEncryption.getSelection();
+        }
+        return false;
+    }
+
+    private boolean isSupportSSLKeyStore() {
+        if (isOracleCustomDBConnSelected()) {
+            return useSSLEncryption.getSelection() && needClientAuth.getSelection();
+        }
+        return false;
+    }
+
+    private void setHideSSLEncryption(boolean hide) {
         GridData hadoopData = (GridData) encryptionGrp.getLayoutData();
         hadoopData.exclude = hide;
         encryptionGrp.setVisible(!hide);
         encryptionGrp.setLayoutData(hadoopData);
         encryptionGrp.getParent().layout();
-        setHiveTrustStoreParameters(hide);
+        setSSLTrustStoreParameters(hide);
+        setSSLKeyStoreParameters(hide);
         if (hide) {
             getConnection().getParameters().removeKey(ConnParameterKeys.CONN_PARA_KEY_USE_SSL);
+            getConnection().getParameters().removeKey(ConnParameterKeys.CONN_PARA_KEY_NEED_CLIENT_AUTH);
+            getConnection().getParameters().removeKey(ConnParameterKeys.CONN_PARA_KEY_DISABLE_CBC_PROTECTION);
         } else {
             getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_USE_SSL,
                     String.valueOf(useSSLEncryption.getSelection()));
+            getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_NEED_CLIENT_AUTH,
+                    String.valueOf(needClientAuth.getSelection()));
+            getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_DISABLE_CBC_PROTECTION,
+                    String.valueOf(disableCBCProtection.getSelection()));
         }
-        if (isHiveDBConnSelected()) {
+        if (isHiveDBConnSelected() || isOracleCustomDBConnSelected()) {
             String url = getStringConnection();
             urlConnectionStringText.setText(url);
             getConnection().setURL(url);
@@ -2573,6 +2685,64 @@ public class DatabaseForm extends AbstractForm {
                 }
             }
         });
+
+        needClientAuth.addSelectionListener(new SelectionAdapter() {
+
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                if (!isContextMode()) {
+                    getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_NEED_CLIENT_AUTH,
+                            String.valueOf(needClientAuth.getSelection()));
+                    updateSSLEncryptionDetailsDisplayStatus();
+                    urlConnectionStringText.setText(getStringConnection());
+                }
+            }
+
+        });
+        keyStorePath.addModifyListener(new ModifyListener() {
+
+            @Override
+            public void modifyText(ModifyEvent e) {
+                if (!isContextMode()) {
+                    updateKeyStorePathParameter();
+                    urlConnectionStringText.setText(getStringConnection());
+                }
+            }
+        });
+        keyStorePath.setAfterSetNewValueCallable(new Callable<Void>() {
+
+            @Override
+            public Void call() throws Exception {
+                if (!isContextMode()) {
+                    updateKeyStorePathParameter();
+                    urlConnectionStringText.setText(getStringConnection());
+                }
+                return null;
+            }
+        });
+        keyStorePassword.addModifyListener(new ModifyListener() {
+
+            @Override
+            public void modifyText(ModifyEvent e) {
+                if (!isContextMode()) {
+                    updateKeyStorePasswordParameter();
+                }
+            }
+        });
+
+        disableCBCProtection.addSelectionListener(new SelectionAdapter() {
+
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                if (!isContextMode()) {
+                    getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_DISABLE_CBC_PROTECTION,
+                            String.valueOf(disableCBCProtection.getSelection()));
+                    updateSSLEncryptionDetailsDisplayStatus();
+                    urlConnectionStringText.setText(getStringConnection());
+                }
+            }
+
+        });
     }
 
     private void updateTrustStorePathParameter() {
@@ -2582,6 +2752,18 @@ public class DatabaseForm extends AbstractForm {
     private void updateTrustStorePasswordParameter() {
         getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_SSL_TRUST_STORE_PASSWORD,
                 getConnection().getValue(trustStorePassword.getText(), true));
+        String url = getStringConnection();
+        urlConnectionStringText.setText(url);
+        getConnection().setURL(url);
+    }
+
+    private void updateKeyStorePathParameter() {
+        getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_SSL_KEY_STORE_PATH, keyStorePath.getText());
+    }
+
+    private void updateKeyStorePasswordParameter() {
+        getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_SSL_KEY_STORE_PASSWORD,
+                getConnection().getValue(keyStorePassword.getText(), true));
         String url = getStringConnection();
         urlConnectionStringText.setText(url);
         getConnection().setURL(url);
@@ -2986,13 +3168,18 @@ public class DatabaseForm extends AbstractForm {
         maprTPasswordForHiveTxt.setEditable(!isContextMode());
         maprTClusterForHiveTxt.setEditable(!isContextMode());
         maprTDurationForHiveTxt.setEditable(!isContextMode());
-
         if (isContextMode()) {
-            trustStorePassword.getTextControl().setEchoChar('\0');
             maprTPasswordForHiveTxt.getTextControl().setEchoChar('\0');
         } else {
-            trustStorePassword.getTextControl().setEchoChar('*');
             maprTPasswordForHiveTxt.getTextControl().setEchoChar('*');
+        }
+    }
+
+    private void adaptHiveDBHadoopPartEditable() {
+        if (isContextMode()) {
+            trustStorePassword.getTextControl().setEchoChar('\0');
+        } else {
+            trustStorePassword.getTextControl().setEchoChar('*');
         }
     }
 
@@ -3056,6 +3243,23 @@ public class DatabaseForm extends AbstractForm {
     private void adaptImpalaHadoopPartEditable() {
         useKerberosForImpala.setEnabled(!isContextMode());
         impalaPrincipalTxt.setEditable(!isContextMode());
+    }
+
+    private void adaptOracleCustomPartEditable() {
+        useSSLEncryption.setEnabled(!isContextMode());
+        trustStorePath.setEditable(!isContextMode());
+        trustStorePassword.setEditable(!isContextMode());
+        needClientAuth.setEnabled(!isContextMode());
+        keyStorePath.setEditable(!isContextMode());
+        keyStorePassword.setEditable(!isContextMode());
+        disableCBCProtection.setEnabled(!isContextMode());
+        if (isContextMode()) {
+            trustStorePassword.getTextControl().setEchoChar('\0');
+            keyStorePassword.getTextControl().setEchoChar('\0');
+        } else {
+            trustStorePassword.getTextControl().setEchoChar('*');
+            keyStorePassword.getTextControl().setEchoChar('*');
+        }
     }
 
     private void updateHadoopProperties(boolean isEditable) {
@@ -3772,7 +3976,7 @@ public class DatabaseForm extends AbstractForm {
             }
         }
         final ManagerConnection managerConnection = new ManagerConnection();
-
+        StringBuffer sgb = new StringBuffer();
         if (isContextMode()) { // context mode
             String connectionTypeName = connectionItem.getConnection().getConnectionTypeName();
             if (connectionTypeName.equals(EDatabaseConnTemplate.HBASE.getDBDisplayName())
@@ -3838,6 +4042,34 @@ public class DatabaseForm extends AbstractForm {
                     }
                 }
             } else {
+                if (isOracleCustomDBConnSelected()) {
+                    if (useSSLEncryption.getSelection()) {
+                        String additionParamStr = additionParamText.getText();
+                        Properties info = new Properties();
+                        if (StringUtils.isNotEmpty(additionParamStr)) {
+                            try {
+                                String additionals = additionParamStr.replaceAll("&", "\n");//$NON-NLS-1$//$NON-NLS-2$
+                                info.load(new java.io.ByteArrayInputStream(additionals.getBytes()));
+                            } catch (IOException e) {
+                                // Do nothing
+                            }
+                        }
+                        ConvertionHelper.updateAdditionParam(sgb, info, SSLPreferenceConstants.TRUSTSTORE_TYPE,
+                                SSLPreferenceConstants.KEYSTORE_TYPES[2]);
+                        ConvertionHelper.updateAdditionParam(sgb, info, SSLPreferenceConstants.TRUSTSTORE_FILE,
+                                trustStorePath.getText());
+                        ConvertionHelper.updateAdditionParam(sgb, info, SSLPreferenceConstants.TRUSTSTORE_PASSWORD,
+                                trustStorePassword.getText());
+                        if (needClientAuth.getSelection()) {
+                            ConvertionHelper.updateAdditionParam(sgb, info, SSLPreferenceConstants.KEYSTORE_TYPE,
+                                    SSLPreferenceConstants.KEYSTORE_TYPES[2]);
+                            ConvertionHelper.updateAdditionParam(sgb, info, SSLPreferenceConstants.KEYSTORE_FILE,
+                                    keyStorePath.getText());
+                            ConvertionHelper.updateAdditionParam(sgb, info, SSLPreferenceConstants.KEYSTORE_PASSWORD,
+                                    keyStorePassword.getText());
+                        }
+                    }
+                }
                 EDatabaseVersion4Drivers version = EDatabaseVersion4Drivers.indexOfByVersionDisplay(versionStr);
                 if (version != null) {
                     versionStr = version.getVersionValue();
@@ -3853,7 +4085,8 @@ public class DatabaseForm extends AbstractForm {
                     : urlConnectionStringText.getText(), serverText.getText(), isGeneralJDBC() ? generalJdbcUserText.getText()
                     : usernameText.getText(), isGeneralJDBC() ? generalJdbcPasswordText.getText() : passwordText.getText(),
                     sidOrDatabaseText.getText(), portText.getText(), fileField.getText(), datasourceText.getText(),
-                    isGeneralJDBC() ? jDBCschemaText.getText() : schemaText.getText(), additionParamText.getText(),
+                    isGeneralJDBC() ? jDBCschemaText.getText() : schemaText.getText(),
+                    additionParamText.getText() + sgb.toString(),
                     generalJdbcClassNameText.getText(), generalJdbcDriverjarText.getText(),
                     enableDbVersion() ? versionStr : null, metadataconnection.getOtherParameters());
 
@@ -4435,6 +4668,9 @@ public class DatabaseForm extends AbstractForm {
                     }
                     urlConnectionStringText.setText(getStringConnection());
                     checkFieldsValue();
+                }
+                if (EDatabaseTypeName.ORACLE_CUSTOM.getDisplayName().equals(getConnectionDBType())) {
+                    initOracleCustomEncryptionInfo();
                 }
             }
         });
@@ -5450,6 +5686,15 @@ public class DatabaseForm extends AbstractForm {
         return EDatabaseTypeName.IMPALA.getDisplayName().equals(getConnectionDBType());
     }
 
+    private boolean isOracleCustomDBConnSelected() {
+        if (EDatabaseTypeName.ORACLE_CUSTOM.getDisplayName().equals(getConnectionDBType())) {
+            if (EDatabaseVersion4Drivers.ORACLE_12.name().equals(getConnection().getDbVersionString())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * Ensures that fields are set. Update checkEnable / use to checkConnection().
      */
@@ -6258,6 +6503,7 @@ public class DatabaseForm extends AbstractForm {
         collectHBaseContextParams();
         collectMaprdbContextParams();
         collectImpalaContextParams();
+        collectOracleCustomContextParams();
     }
 
     private void collectHiveContextParams() {
@@ -6282,7 +6528,7 @@ public class DatabaseForm extends AbstractForm {
             addContextParams(EDBParamName.HiveKeyTabPrincipal, isHivePrincipal && useKeyTab.getSelection());
             addContextParams(EDBParamName.HiveKeyTab, isHivePrincipal && useKeyTab.getSelection());
             addContextParams(EDBParamName.hiveAdditionalJDBCParameters, isSupportHiveAdditionalSettings());
-            boolean addSSLEncryptionContext = isSupportHiveEncryption() && isSupportHiveTrustStore();
+            boolean addSSLEncryptionContext = isSupportSSLEncryption() && isSupportSSLTrustStore();
             addContextParams(EDBParamName.hiveSSLTrustStorePath, addSSLEncryptionContext);
             addContextParams(EDBParamName.hiveSSLTrustStorePassword, addSSLEncryptionContext);
 
@@ -6346,6 +6592,24 @@ public class DatabaseForm extends AbstractForm {
             addContextParams(EDBParamName.Port, true);
             addContextParams(EDBParamName.Database, true);
             addContextParams(EDBParamName.ImpalaPrincipal, useKerberosForImpala.getSelection());
+        }
+    }
+
+    private void collectOracleCustomContextParams() {
+        // recollect context params for Oracle Custom
+        if (isOracleCustomDBConnSelected()) {
+            getConetxtParams().clear();
+            addContextParams(EDBParamName.Server, true);
+            addContextParams(EDBParamName.Password, true);
+            addContextParams(EDBParamName.Login, true);
+            addContextParams(EDBParamName.Schema, true);
+            addContextParams(EDBParamName.AdditionalParams, true);
+            boolean addSSLEncryptionContext = isSupportSSLEncryption() && isSupportSSLTrustStore();
+            addContextParams(EDBParamName.SSLTrustStorePath, addSSLEncryptionContext);
+            addContextParams(EDBParamName.SSLTrustStorePassword, addSSLEncryptionContext);
+            boolean addSSLClientAuthContext = isSupportSSLEncryption() && isSupportSSLClientAuth();
+            addContextParams(EDBParamName.SSLKeyStorePath, addSSLClientAuthContext);
+            addContextParams(EDBParamName.SSLKeyStorePassword, addSSLClientAuthContext);
         }
     }
 
@@ -6627,6 +6891,7 @@ public class DatabaseForm extends AbstractForm {
         }
         if (isHiveDBConnSelected()) {
             adaptHadoopLinkedPartToReadOnly();
+            adaptHiveDBHadoopPartEditable();
             updateHadoopProperties(!isContextMode());
         }
         if (isHBaseDBConnSelected()) {
@@ -6640,6 +6905,9 @@ public class DatabaseForm extends AbstractForm {
         if (isImpalaDBConnSelected()) {
             adaptImpalaHadoopPartEditable();
             updateHadoopProperties(!isContextMode());
+        }
+        if (isOracleCustomDBConnSelected()) {
+            adaptOracleCustomPartEditable();
         }
     }
 
@@ -6894,6 +7162,40 @@ public class DatabaseForm extends AbstractForm {
         updateYarnStatus();
 
         updateYarnInfo(hiveDistribution, hdVersion);
+        showIfSupportEncryption();
+        updateSSLEncryptionDetailsDisplayStatus();
+    }
+
+    protected void initOracleCustomEncryptionInfo() {
+        DatabaseConnection connection = getConnection();
+        boolean useSSL = Boolean.parseBoolean(connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_USE_SSL));
+        String trustStorePathStr = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_SSL_TRUST_STORE_PATH);
+        String trustStorePasswordStr = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_SSL_TRUST_STORE_PASSWORD);
+        useSSLEncryption.setSelection(useSSL);
+        trustStorePath.setText(trustStorePathStr == null ? "" : trustStorePathStr); //$NON-NLS-1$
+        if (trustStorePasswordStr == null) {
+            trustStorePasswordStr = ""; //$NON-NLS-1$
+        } else {
+            trustStorePasswordStr = connection.getValue(trustStorePasswordStr, false);
+        }
+        trustStorePassword.setText(trustStorePasswordStr);
+
+        boolean sslClientAuth = Boolean
+                .parseBoolean(connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_NEED_CLIENT_AUTH));
+        String keyStorePathStr = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_SSL_KEY_STORE_PATH);
+        String keyStorePasswordStr = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_SSL_KEY_STORE_PASSWORD);
+        needClientAuth.setSelection(sslClientAuth);
+        keyStorePath.setText(keyStorePathStr == null ? "" : keyStorePathStr); //$NON-NLS-1$
+        if (keyStorePasswordStr == null) {
+            keyStorePasswordStr = ""; //$NON-NLS-1$
+        } else {
+            keyStorePasswordStr = connection.getValue(keyStorePasswordStr, false);
+        }
+        keyStorePassword.setText(keyStorePasswordStr);
+
+        boolean disableCBC = Boolean
+                .parseBoolean(connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_DISABLE_CBC_PROTECTION));
+        disableCBCProtection.setSelection(disableCBC);
         showIfSupportEncryption();
         updateSSLEncryptionDetailsDisplayStatus();
     }
