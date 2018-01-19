@@ -147,6 +147,14 @@ public class PomIdsHelper {
         return getTestGroupId((String) null);
     }
 
+    public static String getTestGroupIdPrefix() {
+        return getGroupId(null, TalendMavenConstants.DEFAULT_TEST, null);
+    }
+
+    public static String getJobGroupIdPrefix() {
+        return getGroupId(null, TalendMavenConstants.DEFAULT_JOB, null);
+    }
+
     /**
      * @return "org.talend.job.<projectName>".
      */
