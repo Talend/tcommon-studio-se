@@ -27,6 +27,7 @@ import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.repository.model.IMetadataService;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IRepositoryService;
+import org.w3c.dom.css.CSSStyleDeclaration;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -148,6 +149,22 @@ public class CoreUIPlugin extends AbstractUIPlugin {
 
     public static void setCSSClass(Object widget, String className) {
         setCSSClass(widget, className, true);
+    }
+
+    public static String removeCSSAttribute(Object widget, String attr) {
+        CSSStyleDeclaration cssStyleDeclaration = getCSSStyleDeclaration(widget);
+        if (cssStyleDeclaration != null) {
+            return cssStyleDeclaration.removeProperty(attr);
+        }
+        return null;
+    }
+
+    private static CSSStyleDeclaration getCSSStyleDeclaration(Object widget) {
+        IStylingEngine cssStylingEngine = getCSSStylingEngine();
+        if (cssStylingEngine != null) {
+            return cssStylingEngine.getStyle(widget);
+        }
+        return null;
     }
 
 }
