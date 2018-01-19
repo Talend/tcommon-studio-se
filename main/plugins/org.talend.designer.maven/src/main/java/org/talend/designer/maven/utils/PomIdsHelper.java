@@ -227,6 +227,9 @@ public class PomIdsHelper {
             }
             return groupId;
         }
+        if (property == null) {
+            return groupId;
+        }
         // only for job
         String suffix = getJobFolderSuffix(property); //$NON-NLS-1$
         if (!StringUtils.isEmpty(suffix)) {
@@ -244,6 +247,13 @@ public class PomIdsHelper {
 
     public static String getDefaultProjetGroupId(String projectName) {
         return PREFIX_DEFAULT_GROUPID + projectName.toLowerCase();    
+    }
+
+    public static boolean isValidGroupId(String text) {
+        if (text != null && text.matches("[\\w\\.]+")) { //$NON-NLS-1$
+            return true;
+        }
+        return false;
     }
 
     private static ProjectPreferenceManager getPreferenceManager(Project project) {
