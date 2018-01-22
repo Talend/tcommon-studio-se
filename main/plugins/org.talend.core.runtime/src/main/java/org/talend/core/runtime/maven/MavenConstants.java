@@ -23,8 +23,12 @@ public interface MavenConstants {
     static final String NAME_USER_VERSION = "USER_VERSION";
     
     static final String NAME_PUBLISH_AS_SNAPSHOT = "PUBLISH_AS_SNAPSHOT";
-    
+
     static final String PROJECT_VERSION = "PROJECT_VERSION";
+
+    static final String PROJECT_GROUPID = "PROJECT_GROUPID";
+
+    static final String APPEND_FOLDER_TO_GROUPID = "APPEND_FOLDER_TO_GROUPID";
 
     static final String TYPE_JAR = "jar";
 

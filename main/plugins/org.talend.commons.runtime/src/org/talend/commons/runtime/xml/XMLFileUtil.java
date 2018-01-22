@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -37,49 +38,52 @@ import org.xml.sax.SAXException;
  * DOC ggu class global comment. Detailled comment
  */
 public final class XMLFileUtil {
+	private static final TransformerFactory TRANSFORMER_FACTORY = TransformerFactory.newInstance();
+	private static final DocumentBuilderFactory DOCBUILDER_FACTORY = DocumentBuilderFactory.newInstance();
+	static {
+		TRANSFORMER_FACTORY.setAttribute(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+		DOCBUILDER_FACTORY.setAttribute(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+		DOCBUILDER_FACTORY.setNamespaceAware(true);
+	}
 
-    public static Document loadDoc(InputStream stream) throws ParserConfigurationException, SAXException, IOException {
-        try {
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            dbf.setNamespaceAware(true);
-            DocumentBuilder db = dbf.newDocumentBuilder();
-            return db.parse(stream);
-        } finally {
-            try {
-                stream.close();
-            } catch (IOException e) {
-                //
-            }
-        }
-    }
+	public static Document loadDoc(InputStream stream) throws ParserConfigurationException, SAXException, IOException {
+		try {
+			DocumentBuilder db = DOCBUILDER_FACTORY.newDocumentBuilder();
+			return db.parse(stream);
+		} finally {
+			try {
+				stream.close();
+			} catch (IOException e) {
+				//
+			}
+		}
+	}
 
-    public static Document loadDoc(File file) throws ParserConfigurationException, SAXException, IOException {
-        return loadDoc(new BufferedInputStream(new FileInputStream(file)));
-    }
+	public static Document loadDoc(File file) throws ParserConfigurationException, SAXException, IOException {
+		return loadDoc(new BufferedInputStream(new FileInputStream(file)));
+	}
 
-    public static void saveDoc(Document doc, OutputStream output) throws TransformerException {
-        try {
-            TransformerFactory tf = TransformerFactory.newInstance();
-            Transformer transformer = tf.newTransformer();
-            transformer.transform(new DOMSource(doc), new StreamResult(output));
-        } finally {
-            try {
-                output.close();
-            } catch (IOException e) {
-                //
-            }
-        }
-    }
+	public static void saveDoc(Document doc, OutputStream output) throws TransformerException {
+		try {
+			Transformer transformer = TRANSFORMER_FACTORY.newTransformer();
+			transformer.transform(new DOMSource(doc), new StreamResult(output));
+		} finally {
+			try {
+				output.close();
+			} catch (IOException e) {
+				//
+			}
+		}
+	}
 
-    public static void saveDoc(Document doc, File file) throws IOException, TransformerException {
-        file.getParentFile().mkdirs();
-        saveDoc(doc, new FileOutputStream(file));
-    }
+	public static void saveDoc(Document doc, File file) throws IOException, TransformerException {
+		file.getParentFile().mkdirs();
+		saveDoc(doc, new FileOutputStream(file));
+	}
 
-    public static void consoleDoc(Document doc) throws TransformerException {
-        TransformerFactory tf = TransformerFactory.newInstance();
-        Transformer transformer = tf.newTransformer();
-        transformer.transform(new DOMSource(doc), new StreamResult(System.out));
-    }
+	public static void consoleDoc(Document doc) throws TransformerException {
+		Transformer transformer = TRANSFORMER_FACTORY.newTransformer();
+		transformer.transform(new DOMSource(doc), new StreamResult(System.out));
+	}
 
 }

@@ -210,6 +210,10 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
                 jobInfoProp.getProperty(JobInfoProperties.PROJECT_NAME, project.getTechnicalLabel()));
         checkPomProperty(properties, "talend.project.name.lowercase", ETalendMavenVariables.ProjectName,
                 jobInfoProp.getProperty(JobInfoProperties.PROJECT_NAME, project.getTechnicalLabel()).toLowerCase());
+        checkPomProperty(properties, "talend.routine.groupid", ETalendMavenVariables.RoutineGroupId,
+                PomIdsHelper.getCodesGroupId(TalendMavenConstants.DEFAULT_CODE));
+        checkPomProperty(properties, "talend.pigudf.groupid", ETalendMavenVariables.PigudfGroupId,
+                PomIdsHelper.getCodesGroupId(TalendMavenConstants.DEFAULT_PIGUDF));
         checkPomProperty(properties, "talend.project.id", ETalendMavenVariables.ProjectId,
                 jobInfoProp.getProperty(JobInfoProperties.PROJECT_ID, String.valueOf(project.getId())));
         checkPomProperty(properties, "talend.project.branch", ETalendMavenVariables.ProjectBranch,
