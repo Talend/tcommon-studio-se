@@ -24,7 +24,7 @@
 				<talendType type="id_Byte">
 					<dbType type="NUMBER" default="true" />					
 				</talendType>
-				<talendType type="id_Byte[]">
+				<talendType type="id_byte[]">
 					<dbType type="BINARY" default="true"/>
 				</talendType>
 				<talendType type="id_Character">
@@ -59,7 +59,7 @@
 			</talendToDbTypes>
 			<dbToTalendTypes><!-- Adviced mappings  -->
 				<dbType type="BINARY">
-					<talendType type="id_Byte[]" default="true" />
+					<talendType type="id_byte[]" default="true" />
 				</dbType>
 				<dbType type="BOOLEAN">
 					<talendType type="id_Boolean" default="true" />
