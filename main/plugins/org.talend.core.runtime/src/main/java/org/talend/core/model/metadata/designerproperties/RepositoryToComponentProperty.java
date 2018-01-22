@@ -2884,7 +2884,7 @@ public class RepositoryToComponentProperty {
         return null;
     }
 
-    private static Object addQuotesIfNecessary(Connection connection, String value) {
+    public static Object addQuotesIfNecessary(Connection connection, String value) {
         if (!isContextMode(connection, value)) {
             if (!value.startsWith(TalendQuoteUtils.QUOTATION_MARK) && !value.endsWith(TalendQuoteUtils.QUOTATION_MARK)) {
                 return TalendQuoteUtils.addQuotes(value);
