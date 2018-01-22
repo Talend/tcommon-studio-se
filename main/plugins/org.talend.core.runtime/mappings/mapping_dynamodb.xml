@@ -14,59 +14,46 @@
 			<talendToDbTypes><!-- Adviced mappings  -->
 				<talendType type="id_List">
 					<dbType type="LIST" default="true"/>	
-					<dbType type="OBJECT"/>
 				</talendType>
 				<talendType type="id_BigDecimal">
 					<dbType type="NUMBER" default="true"/>		
-					<dbType type="OBJECT"/>
 				</talendType>
 				<talendType type="id_Boolean">	
 					<dbType type="BOOLEAN" default="true"/>
-					<dbType type="OBJECT"/>
 				</talendType>
 				<talendType type="id_Byte">
 					<dbType type="NUMBER" default="true" />					
-					<dbType type="OBJECT"/>
 				</talendType>
 				<talendType type="id_Byte[]">
 					<dbType type="BINARY" default="true"/>
-					<dbType type="OBJECT"/>
 				</talendType>
 				<talendType type="id_Character">
 					<dbType type="NUMBER"/>
-					<dbType type="OBJECT"/>
 					<dbType type="STRING" default="true"/>
 				</talendType>
 				<talendType type="id_Date">
-					<dbType type="OBJECT"/>
 					<dbType type="STRING" default="true"/>
 				</talendType>
 				<talendType type="id_Double">
 					<dbType type="NUMBER" default="true"/>
-					<dbType type="OBJECT"/>
 				</talendType>
 				<talendType type="id_Float">
 					<dbType type="NUMBER" default="true"/>
-					<dbType type="OBJECT"/>
 				</talendType>
 				<talendType type="id_Integer">
 					<dbType type="NUMBER" default="true"/>
-					<dbType type="OBJECT"/>
 				</talendType>
 				<talendType type="id_Long">
 					<dbType type="NUMBER" default="true"/>
-					<dbType type="OBJECT"/>
 				</talendType>
 				<talendType type="id_Object">
 					<dbType type="OBJECT" default="true"/>
 				</talendType>
 				<talendType type="id_Short">
 					<dbType type="NUMBER" default="true"/>
-					<dbType type="OBJECT"/>
 				</talendType>
 				<talendType type="id_String">
 					<dbType type="JSON"/>
-					<dbType type="OBJECT"/>
 					<dbType type="STRING" default="true"/>
 				</talendType>
 			</talendToDbTypes>
