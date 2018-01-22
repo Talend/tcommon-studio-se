@@ -84,6 +84,7 @@
 				</dbType>
 				<dbType type="STRING">
 					<talendType type="id_String" default="true" />
+					<talendType type="id_Date" default="true" />
 				</dbType>
 			</dbToTalendTypes>
 		</language>
