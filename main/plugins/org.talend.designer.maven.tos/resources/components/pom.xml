@@ -81,6 +81,11 @@
 			<artifactId>components-marketo-runtime</artifactId>
 			<version>${components.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.talend.components</groupId>
+			<artifactId>components-googledrive-runtime</artifactId>
+			<version>${components.version}</version>
+		</dependency>
         <dependency>
             <groupId>org.talend.components</groupId>
             <artifactId>components-common</artifactId>
