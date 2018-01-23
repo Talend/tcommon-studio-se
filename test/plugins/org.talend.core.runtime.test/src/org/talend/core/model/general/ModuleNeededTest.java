@@ -159,23 +159,11 @@ public class ModuleNeededTest {
         ModuleNeeded moduleNeeded = new ModuleNeeded(null, moduleValue, null, true);
         moduleNeeded.setModuleName(moduleValue);
         Assert.assertEquals(moduleValue, moduleNeeded.getModuleName());
-                        
-        moduleValue = "mvn:org.talend.libraries/mysql-connector-java-5.1.30-bin/6.0.0";
-        moduleNeeded.setModuleName(moduleValue);
-        Assert.assertEquals("mysql-connector-java-5.1.30-bin.jar", moduleNeeded.getModuleName());
-        
-        moduleValue = "mvn:org.talend.libraries/mysql-connector-java-5.1.30-bin";
-        moduleNeeded.setModuleName(moduleValue);
-        Assert.assertEquals("mysql-connector-java-5.1.30-bin.jar", moduleNeeded.getModuleName());
+
         
         moduleValue = "mysql-connector-java-5.1.30-bin.jar";
         moduleNeeded.setModuleName(moduleValue);
         Assert.assertEquals("mysql-connector-java-5.1.30-bin.jar", moduleNeeded.getModuleName());
-        
-        moduleValue = "mvn:org.talend.libraries/mysql-connector-java-5.1.30-bin/6.0.0/jar";
-        moduleNeeded.setModuleName(moduleValue);
-        Assert.assertEquals("mysql-connector-java-5.1.30-bin.jar", moduleNeeded.getModuleName());
-        
     }
     
 }

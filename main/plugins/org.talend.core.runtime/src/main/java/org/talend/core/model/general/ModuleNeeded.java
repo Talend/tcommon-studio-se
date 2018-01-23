@@ -139,12 +139,30 @@ public class ModuleNeeded {
             String requiredIf, String mavenUrl) {
         super();
         this.context = context;
-        setModuleName(moduleName);
         this.informationMsg = informationMsg;
         this.required = required;
         this.installURL = installURL;
         this.requiredIf = requiredIf;
-        setMavenUri(mavenUrl);
+        String name = moduleName;
+        String uri = mavenUrl;
+        if(moduleName !=null){
+            // in case the param moduleName is a maven uri
+            MavenArtifact artifact = MavenUrlHelper.parseMvnUrl(moduleName);
+            if(artifact !=null){
+                name =artifact.getFileName();
+                if(mavenUrl ==null){
+                    uri =  moduleName;
+                }
+            }
+        }
+        if(mavenUrl !=null && moduleName ==null){
+            MavenArtifact artifact = MavenUrlHelper.parseMvnUrl(mavenUrl);
+            if(artifact !=null){
+                name =   artifact.getFileName();
+            }
+        }
+        setModuleName(name);
+        setMavenUri(uri);
     }
 
     public String getRequiredIf() {
@@ -227,17 +245,11 @@ public class ModuleNeeded {
 
     public void setModuleName(String moduleName) {
         if (moduleName != null) {
-            this.moduleName = MavenUrlHelper.generateModuleNameByMavenURI(moduleName);
-            if (this.moduleName != null) {
-                // in case we passed as parameter a full mvn uri as module name
-                this.mavenUri = moduleName;
-            } else {
-                String mn = moduleName.replace(QUOTATION_MARK, "").replace(SINGLE_QUOTE, ""); //$NON-NLS-1$ //$NON-NLS-2$
-                if (mn.indexOf("\\") != -1 || mn.indexOf("/") != -1) { //$NON-NLS-1$ //$NON-NLS-2$
-                    mn = new Path(mn).lastSegment();
-                }
-                this.moduleName = mn;
+            String mn = moduleName.replace(QUOTATION_MARK, "").replace(SINGLE_QUOTE, ""); //$NON-NLS-1$ //$NON-NLS-2$
+            if (mn.indexOf("\\") != -1 || mn.indexOf("/") != -1) { //$NON-NLS-1$ //$NON-NLS-2$
+                mn = new Path(mn).lastSegment();
             }
+            this.moduleName = mn;
         } else {
             this.moduleName = moduleName;
         }
@@ -564,6 +576,7 @@ public class ModuleNeeded {
      */
     public void setMavenUri(String mavenUri) {
         this.mavenUriFromConfiguration = MavenUrlHelper.addTypeForMavenUri(mavenUri, getModuleName());
+        System.out.println(mavenUriFromConfiguration);
     }
 
     public boolean isDynamic() {
