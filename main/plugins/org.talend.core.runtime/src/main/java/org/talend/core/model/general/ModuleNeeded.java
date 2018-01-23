@@ -576,7 +576,6 @@ public class ModuleNeeded {
      */
     public void setMavenUri(String mavenUri) {
         this.mavenUriFromConfiguration = MavenUrlHelper.addTypeForMavenUri(mavenUri, getModuleName());
-        System.out.println(mavenUriFromConfiguration);
     }
 
     public boolean isDynamic() {
