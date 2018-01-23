@@ -38,6 +38,10 @@ public class NexusServerBean {
             }
             return null;
         }
+        
+        public String getRepType() {
+            return this.repType;
+        }
     }
 
     private String server;

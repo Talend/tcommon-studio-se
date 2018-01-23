@@ -50,6 +50,9 @@ public interface IRepositoryArtifactHandler {
     public void deploy(File content, String groupId, String artifactId, String classifier, String extension, String version)
             throws Exception;
 
+    public void deployWithPOM(File content, File pomFile, String groupId, String artifactId, String classifier, String extension, String version)
+            throws Exception;
+    
     public void updateMavenResolver(Dictionary<String, String> props);
 
     public File resolve(String mvnUrl) throws Exception;

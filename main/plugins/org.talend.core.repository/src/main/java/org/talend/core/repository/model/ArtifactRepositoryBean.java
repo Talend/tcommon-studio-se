@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.core.repository.model;
 
+import org.talend.core.nexus.NexusServerBean;
 import org.talend.utils.string.StringUtilities;
 
 /**
@@ -34,6 +35,8 @@ public class ArtifactRepositoryBean implements IArtifactRepositoryBean {
     private String nexusDefaultSnapshotRepo = ""; //$NON-NLS-1$
 
     private String nexusDefaultGroupID = ""; //$NON-NLS-1$
+    
+    private String nexusType = NexusServerBean.NexusType.NEXUS_2.name(); //$NON-NLS-1$
 
     @Override
     public String getNexusUrl() {
@@ -129,6 +132,14 @@ public class ArtifactRepositoryBean implements IArtifactRepositoryBean {
 
     public void setNexusDefaultGroupID(String nexusDefaultGroupID) {
         this.nexusDefaultGroupID = nexusDefaultGroupID;
+    }
+
+    public String getNexusType() {
+        return nexusType;
+    }
+
+    public void setNexusType(String nexusType) {
+        this.nexusType = nexusType;
     }
 
 }

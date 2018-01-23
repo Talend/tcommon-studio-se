@@ -110,4 +110,35 @@ public class RepositorySystemFactory {
         system.deploy(session, deployRequest);
     }
 
+    public static void deployWithPOM(File content, File pomFile, String localRepository, String repositoryId, String repositoryUrl, String userName,
+            String password, String groupId, String artifactId, String classifier, String extension, String version)
+            throws Exception {
+        DefaultRepositorySystemSession session = null;
+        if (system == null) {
+            system = newRepositorySystem();
+        }
+        session = newRepositorySystemSession(localRepository);
+
+        DeployRequest deployRequest = new DeployRequest();
+        Artifact jarArtifact = new DefaultArtifact(groupId, artifactId, classifier, extension, version);
+        jarArtifact = jarArtifact.setFile(content);
+        deployRequest.addArtifact(jarArtifact);
+
+        String strClassifier = classifier == null ? "" : ("-" + classifier);
+        String pomPath = localRepository + "/" + groupId.replaceAll("\\.", "/") + "/" + artifactId + "/" + version + "/"
+                + artifactId + "-" + version + strClassifier + "." + "pom";
+        if (pomFile.exists()) {
+            Artifact pomArtifact = new SubArtifact(jarArtifact, "", "pom");
+            pomArtifact = pomArtifact.setFile(pomFile);
+            deployRequest.addArtifact(pomArtifact);
+        }
+
+        Authentication auth = new AuthenticationBuilder().addUsername(userName).addPassword(password).build();
+        RemoteRepository distRepo = new RemoteRepository.Builder(repositoryId, "default", repositoryUrl).setAuthentication(auth)
+                .build();
+
+        deployRequest.setRepository(distRepo);
+
+        system.deploy(session, deployRequest);
+    }
 }

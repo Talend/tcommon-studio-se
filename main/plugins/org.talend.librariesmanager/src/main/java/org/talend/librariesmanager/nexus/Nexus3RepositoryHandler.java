@@ -206,4 +206,21 @@ public class Nexus3RepositoryHandler extends AbstractArtifactRepositoryHandler {
         return REP_PREFIX_PATH;
     }
 
+    @Override
+    public void deployWithPOM(File content, File pomFile, String groupId, String artifactId, String classifier, String extension,
+            String version) throws Exception {
+        String repositoryId = "";
+        boolean isRelease = !version.endsWith(MavenUrlHelper.VERSION_SNAPSHOT);
+        if (isRelease) {
+            repositoryId = serverBean.getRepositoryId();
+        } else {
+            repositoryId = serverBean.getSnapshotRepId();
+        }
+        String repositoryurl = getRepositoryURL(isRelease);
+        String localRepository = MavenPlugin.getMaven().getLocalRepositoryPath();
+        RepositorySystemFactory.deployWithPOM(content, pomFile, localRepository, repositoryId, repositoryurl, serverBean.getUserName(),
+                serverBean.getPassword(), groupId, artifactId, classifier, extension, version);
+
+    }
+
 }
