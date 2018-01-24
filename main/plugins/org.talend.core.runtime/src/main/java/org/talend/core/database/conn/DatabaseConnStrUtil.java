@@ -12,19 +12,25 @@
 // ============================================================================
 package org.talend.core.database.conn;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.MatchResult;
 import org.apache.oro.text.regex.Pattern;
 import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.database.conn.template.DbConnStrForHive;
 import org.talend.core.database.conn.template.EDatabaseConnTemplate;
 import org.talend.core.database.conn.version.EDatabaseVersion4Drivers;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.metadata.connection.hive.HiveModeInfo;
+import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.utils.ContextParameterUtils;
+import org.talend.core.runtime.services.IGenericDBService;
 import org.talend.core.utils.TalendQuoteUtils;
 
 /**
@@ -369,7 +375,8 @@ public class DatabaseConnStrUtil {
     public static String getURLString(DatabaseConnection conn) {
         // mzhao 2012-06-25 bug TDI-21552 , context url of generic JDBC cannot be replanced correctly, here
         // just return the origin url.
-        if (conn.getDatabaseType().equals(EDatabaseTypeName.GENERAL_JDBC.getDisplayName())) {
+        String databaseType = conn.getDatabaseType();
+        if (isTCOMType(databaseType) || databaseType.equals(EDatabaseTypeName.GENERAL_JDBC.getDisplayName())) {
             return conn.getURL();
         }
         return getURLString(false, conn);
@@ -482,5 +489,27 @@ public class DatabaseConnStrUtil {
             System.out.println(temp.getUrlTemplate(null));
             System.out.println(temp.getUrlPattern(null));
         }
+    }
+
+    /**
+     * 
+     * @param dbType
+     * @return
+     */
+    public static boolean isTCOMType(String dbType) {
+        List<ERepositoryObjectType> extraTypes = new ArrayList<>();
+        IGenericDBService dbService = null;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
+            dbService = (IGenericDBService) GlobalServiceRegister.getDefault().getService(IGenericDBService.class);
+        }
+        if (dbService != null) {
+            extraTypes.addAll(dbService.getExtraTypes());
+        }
+        for (ERepositoryObjectType type : extraTypes) {
+            if (type.getType().equals(dbType)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
+import org.talend.commons.utils.platform.PluginChecker;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.database.conn.version.EDatabaseVersion4Drivers;
@@ -307,7 +308,8 @@ public enum EDatabaseConnTemplate {
             databaseType.add(type.getType());
         }
         for (EDatabaseConnTemplate temp : values) {
-            if(temp == EDatabaseConnTemplate.GENERAL_JDBC){
+            // The 'GENERAL_JDBC' only for TOP
+            if (temp == EDatabaseConnTemplate.GENERAL_JDBC && !PluginChecker.isOnlyTopLoaded()) {
                 continue;
             }
             String typeName = getDBTypeName(temp, display);
