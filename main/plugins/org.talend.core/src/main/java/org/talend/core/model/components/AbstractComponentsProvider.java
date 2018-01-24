@@ -137,4 +137,12 @@ public abstract class AbstractComponentsProvider {
         this.contributer = contributer;
     }
 
+    public boolean isCustom() {
+        return false;
+    }
+
+    public String getComponentsBundle() {
+        return null;
+    }
+
 }

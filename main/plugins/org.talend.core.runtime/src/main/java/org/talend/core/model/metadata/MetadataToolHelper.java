@@ -1385,6 +1385,7 @@ public final class MetadataToolHelper {
             sourceName = old.getLabel();
         }
         result.setTableName(sourceName);
+        result.setTableType(old.getTableType());
         List<IMetadataColumn> columns = new ArrayList<IMetadataColumn>(old.getColumns().size());
         for (TaggedValue tv : old.getTaggedValue()) {
             if (DiSchemaConstants.TALEND6_IS_READ_ONLY.equals(tv.getTag())) {

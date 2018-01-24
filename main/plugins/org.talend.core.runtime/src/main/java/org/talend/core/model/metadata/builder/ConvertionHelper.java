@@ -12,14 +12,17 @@
 // ============================================================================
 package org.talend.core.model.metadata.builder;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Properties;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.emf.common.util.EMap;
 import org.talend.commons.runtime.model.components.IComponentConstants;
 import org.talend.commons.utils.resource.FileExtensions;
@@ -28,6 +31,7 @@ import org.talend.core.ICoreService;
 import org.talend.core.IRepositoryContextService;
 import org.talend.core.database.EDatabase4DriverClassName;
 import org.talend.core.database.EDatabaseTypeName;
+import org.talend.core.database.conn.ConnParameterKeys;
 import org.talend.core.database.conn.template.EDatabaseConnTemplate;
 import org.talend.core.model.metadata.Dbms;
 import org.talend.core.model.metadata.DiSchemaConstants;
@@ -35,8 +39,8 @@ import org.talend.core.model.metadata.IConvertionConstants;
 import org.talend.core.model.metadata.IMetadataColumn;
 import org.talend.core.model.metadata.IMetadataConnection;
 import org.talend.core.model.metadata.IMetadataTable;
+import org.talend.core.model.metadata.MetadataManager;
 import org.talend.core.model.metadata.MetadataTalendType;
-import org.talend.core.model.metadata.MetadataToolAvroHelper;
 import org.talend.core.model.metadata.MetadataToolHelper;
 import org.talend.core.model.metadata.builder.connection.AbstractMetadataObject;
 import org.talend.core.model.metadata.builder.connection.Connection;
@@ -47,13 +51,16 @@ import org.talend.core.model.metadata.builder.connection.MDMConnection;
 import org.talend.core.model.metadata.builder.connection.MetadataColumn;
 import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.core.model.metadata.builder.connection.SAPBWTable;
+import org.talend.core.prefs.SSLPreferenceConstants;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.utils.KeywordsValidator;
 import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.helper.SAPBWTableHelper;
 import org.talend.cwm.helper.TaggedValueHelper;
+import org.talend.cwm.relational.RelationalFactory;
 import org.talend.model.bridge.ReponsitoryContextBridge;
 import org.talend.repository.model.IProxyRepositoryFactory;
+
 import orgomg.cwm.objectmodel.core.TaggedValue;
 
 /**
@@ -535,16 +542,28 @@ public final class ConvertionHelper {
      * @param metadataTable
      * @return
      */
-    public static MetadataTable convert(IMetadataTable old) {
-        ICoreService coreService = (ICoreService) GlobalServiceRegister.getDefault().getService(ICoreService.class);
-        MetadataTable result = ConnectionFactory.eINSTANCE.createMetadataTable();
+    public static MetadataTable convert(IMetadataTable old, String type) {
+        MetadataTable result = null;
+        if(type == null){
+            result = ConnectionFactory.eINSTANCE.createMetadataTable();;
+        }else if(type.equals(MetadataManager.TYPE_TABLE)){
+            result = RelationalFactory.eINSTANCE.createTdTable();
+        }else if(type.equals(MetadataManager.TYPE_VIEW)){
+            result = RelationalFactory.eINSTANCE.createTdView();
+        }
         result.setComment(old.getComment());
         result.setId(old.getId());
         result.setLabel(old.getLabel());
         result.setSourceName(old.getTableName());
+        result.setTableType(old.getTableType());
         List<MetadataColumn> columns = new ArrayList<MetadataColumn>(old.getListColumns().size());
         for (IMetadataColumn column : old.getListColumns()) {
-            MetadataColumn newColumn = ConnectionFactory.eINSTANCE.createMetadataColumn();
+            MetadataColumn newColumn = null;
+            if(type == null){
+                newColumn = ConnectionFactory.eINSTANCE.createMetadataColumn();
+            }else if(type.equals(MetadataManager.TYPE_TABLE) || type.equals(MetadataManager.TYPE_VIEW)){
+                newColumn = RelationalFactory.eINSTANCE.createTdColumn();
+            }
             columns.add(newColumn);
             newColumn.setComment(column.getComment());
             newColumn.setDefaultValue(column.getDefault());
@@ -590,6 +609,11 @@ public final class ConvertionHelper {
         }
         result.getColumns().addAll(columns);
         return result;
+    
+    }
+    
+    public static MetadataTable convert(IMetadataTable old) {
+        return convert(old, null);
     }
 
     private static void addTaggedValue(MetadataColumn column, String tag, String value) {
@@ -610,8 +634,10 @@ public final class ConvertionHelper {
         String schema = metadataConnection.getSchema();
         String dbType = metadataConnection.getDbType();
         String url = metadataConnection.getUrl();
+        String jdbcName = EDatabaseTypeName.GENERAL_JDBC.getProduct();
         String generalJDBCDisplayName = EDatabaseConnTemplate.GENERAL_JDBC.getDBDisplayName();
-        if (generalJDBCDisplayName.equals(dbType) && url.contains("oracle")) {//$NON-NLS-1$
+        boolean isJDBC = jdbcName.equals(dbType) || generalJDBCDisplayName.equals(dbType);
+        if (isJDBC && url.contains("oracle")) {//$NON-NLS-1$
             schema = metadataConnection.getUsername().toUpperCase();
         }
         return schema;
@@ -634,5 +660,58 @@ public final class ConvertionHelper {
             }
         }
         return null;
+    }
+
+    public static String convertAdditionalParameters(DatabaseConnection dbConn) {
+        DatabaseConnection origValueConn = dbConn;
+        if (dbConn.isContextMode()) {
+            IRepositoryContextService repContextService = CoreRuntimePlugin.getInstance().getRepositoryContextService();
+            if (repContextService != null) {
+                String contextName = dbConn.getContextName();
+                if (contextName == null) {
+                    origValueConn = repContextService.cloneOriginalValueConnection(dbConn, true);
+                } else {
+                    origValueConn = repContextService.cloneOriginalValueConnection(dbConn, false, contextName);
+                }
+            }
+        }
+        StringBuffer sgb = new StringBuffer();
+        String additionParamStr = origValueConn.getAdditionalParams();
+        if (EDatabaseTypeName.ORACLE_CUSTOM.getDisplayName().equals(origValueConn.getDatabaseType())) {
+            Properties info = new Properties();
+            if (StringUtils.isNotEmpty(additionParamStr)) {
+                try {
+                    String additionals = additionParamStr.replaceAll("&", "\n");//$NON-NLS-1$//$NON-NLS-2$
+                    info.load(new java.io.ByteArrayInputStream(additionals.getBytes()));
+                } catch (IOException e) {
+                    // Do nothing
+                }
+            }
+            boolean useSSL = Boolean.valueOf(origValueConn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_USE_SSL));
+            boolean needClientAuth = Boolean
+                    .valueOf(origValueConn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_NEED_CLIENT_AUTH));
+            if (useSSL) {
+                updateAdditionParam(sgb, info, SSLPreferenceConstants.TRUSTSTORE_TYPE, SSLPreferenceConstants.KEYSTORE_TYPES[2]);
+                updateAdditionParam(sgb, info, SSLPreferenceConstants.TRUSTSTORE_FILE,
+                        origValueConn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_SSL_TRUST_STORE_PATH));
+                updateAdditionParam(sgb, info, SSLPreferenceConstants.TRUSTSTORE_PASSWORD, origValueConn.getValue(
+                        origValueConn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_SSL_TRUST_STORE_PASSWORD), false));
+                if (needClientAuth) {
+                    updateAdditionParam(sgb, info, SSLPreferenceConstants.KEYSTORE_TYPE,
+                            SSLPreferenceConstants.KEYSTORE_TYPES[2]);
+                    updateAdditionParam(sgb, info, SSLPreferenceConstants.KEYSTORE_FILE,
+                            origValueConn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_SSL_KEY_STORE_PATH));
+                    updateAdditionParam(sgb, info, SSLPreferenceConstants.KEYSTORE_PASSWORD, origValueConn.getValue(
+                            origValueConn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_SSL_KEY_STORE_PASSWORD), false));
+                }
+            }
+        }
+        return additionParamStr + sgb.toString();
+    }
+
+    public static void updateAdditionParam(StringBuffer sgb, Properties info, String key, String value) {
+        if (!info.containsKey(key)) {
+            sgb.append("&").append(key).append("=").append(value);//$NON-NLS-1$ //$NON-NLS-2$
+        }
     }
 }

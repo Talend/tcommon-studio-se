@@ -32,6 +32,7 @@ import org.talend.core.model.general.Project;
 import org.talend.core.model.properties.BRMSConnectionItem;
 import org.talend.core.model.properties.BusinessProcessItem;
 import org.talend.core.model.properties.CSVFileConnectionItem;
+import org.talend.core.model.properties.ConnectionItem;
 import org.talend.core.model.properties.ContextItem;
 import org.talend.core.model.properties.DatabaseConnectionItem;
 import org.talend.core.model.properties.DelimitedFileConnectionItem;
@@ -1175,8 +1176,11 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
         for (IRepositoryContentHandler handler : RepositoryContentManager.getHandlers()) {
             type = handler.getRepositoryObjectType(item);
             if (type != null) {
-                break;
+                return type;
             }
+        }
+        if(item instanceof ConnectionItem){
+            type = ERepositoryObjectType.getType(((ConnectionItem)item).getTypeName());
         }
         return type;
     }

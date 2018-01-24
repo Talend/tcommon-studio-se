@@ -56,6 +56,7 @@ import org.talend.core.model.repository.RepositoryViewObject;
 import org.talend.core.model.utils.RepositoryManagerHelper;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.i18n.Messages;
+import org.talend.core.ui.IHeaderFooterProviderService;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.RepositoryWorkUnit;
 import org.talend.repository.model.IProxyRepositoryFactory;
@@ -614,6 +615,17 @@ public abstract class AContextualAction extends Action implements ITreeContextua
                 Property oldProperty = node.getObject().getProperty();
                 if (oldProperty != null) {
                     oldItem = oldProperty.getItem();
+
+                    if (GlobalServiceRegister.getDefault().isServiceRegistered(IHeaderFooterProviderService.class)) {
+                        IHeaderFooterProviderService service = (IHeaderFooterProviderService) GlobalServiceRegister.getDefault()
+                                .getService(IHeaderFooterProviderService.class);
+                        if (!service.validItem(oldItem)) {
+                            MessageDialog.openError(Display.getCurrent().getActiveShell(),
+                                    Messages.getString("AContextualAction.InvalidTitle"),
+                                    Messages.getString("AContextualAction.InvalidMessage"));
+                            return;
+                        }
+                    }
                 }
             }
         }
@@ -622,13 +634,10 @@ public abstract class AContextualAction extends Action implements ITreeContextua
 
             @Override
             protected void run() throws LoginException, PersistenceException {
-                boolean exist = false;
                 if (node != null && node.getObject() != null) {
                     Property property = node.getObject().getProperty();
                     // only avoid NPE if item has been deleted in svn
                     if (property != null) {
-                        exist = true;
-
                         doRun();
                     }
                 } else {

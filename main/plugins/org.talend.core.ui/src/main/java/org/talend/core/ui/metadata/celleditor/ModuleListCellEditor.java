@@ -37,6 +37,7 @@ import org.talend.core.model.process.IElement;
 import org.talend.core.model.process.IElementParameter;
 import org.talend.core.model.process.INode;
 import org.talend.core.model.process.IProcess2;
+import org.talend.core.runtime.services.IGenericDBService;
 import org.talend.core.ui.CoreUIPlugin;
 import org.talend.core.ui.process.IGEFProcess;
 import org.talend.core.ui.services.IDesignerCoreUIService;
@@ -266,6 +267,7 @@ public class ModuleListCellEditor extends DialogCellEditor {
                     line.put(columnName, value);
                 }
             }
+            param.setValue(values);
             // CorePlugin.getDefault().getLibrariesService().resetModulesNeeded();
         }
 

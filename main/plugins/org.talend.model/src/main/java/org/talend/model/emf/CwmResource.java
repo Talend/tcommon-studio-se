@@ -13,7 +13,9 @@
 package org.talend.model.emf;
 
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
+import org.eclipse.emf.ecore.xmi.XMLLoad;
+import org.eclipse.emf.ecore.xmi.XMLSave;
+import org.talend.commons.runtime.model.emf.TalendXMIResource;
 
 /**
  * @author scorreia
@@ -22,7 +24,7 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
  * 
  * See http://serdom.szn.pl/ser/?p=6
  */
-public class CwmResource extends XMIResourceImpl {
+public class CwmResource extends TalendXMIResource {
 
     public static final String ENCODING = "UTF-8"; //$NON-NLS-1$
 
@@ -44,6 +46,17 @@ public class CwmResource extends XMIResourceImpl {
     protected void init() {
         encoding = ENCODING;
         xmlVersion = "1.0";
+    }
+
+    @Override
+    protected XMLLoad createXMLLoad() {
+        // return delegateCreateXMLLoad();
+        return super.createXMLLoad(); // reuse the same SAXXMIHandler to ignore some elements and namespace.
+    }
+
+    @Override
+    protected XMLSave createXMLSave() {
+        return delegateCreateXMLSave();
     }
 
 }

@@ -50,6 +50,9 @@ public class ClassLoaderFactory {
 
     private static IConfigurationElement[] configurationElements = null;
 
+    /**
+     * <font color="red"><b>use me by {@link getClassLoaderMap} method!!!</b></font></br>
+     */
     private static Map<String, DynamicClassLoader> classLoadersMap = null;
 
     public final static String SEPARATOR = ";"; //$NON-NLS-1$
@@ -75,10 +78,7 @@ public class ClassLoaderFactory {
     }
 
     public static DynamicClassLoader getClassLoader(String index, boolean showDownloadIfNotExist) {
-        if (isCacheChanged()) {
-            init();
-        }
-        DynamicClassLoader classLoader = classLoadersMap.get(index);
+        DynamicClassLoader classLoader = getClassLoaderMap().get(index);
         if (classLoader == null) {
             classLoader = findLoader(index, null, showDownloadIfNotExist);
         }
@@ -87,10 +87,7 @@ public class ClassLoaderFactory {
     }
 
     public static DynamicClassLoader getClassLoader(String index, ClassLoader parentClassLoader) {
-        if (isCacheChanged()) {
-            init();
-        }
-        DynamicClassLoader classLoader = classLoadersMap.get(index);
+        DynamicClassLoader classLoader = getClassLoaderMap().get(index);
         if (classLoader == null) {
             classLoader = findLoader(index, parentClassLoader, true);
         }
@@ -153,7 +150,7 @@ public class ClassLoaderFactory {
     private static DynamicClassLoader createCustomClassLoader(String index, Set<String> libraries) {
         DynamicClassLoader classLoader = new DynamicClassLoader();
         loadLibraries(classLoader, libraries.toArray(new String[0]), true);
-        classLoadersMap.put(index, classLoader);
+        getClassLoaderMap().put(index, classLoader);
 
         return classLoader;
     }
@@ -224,7 +221,7 @@ public class ClassLoaderFactory {
             }
             if (putInCache) {
                 // if any libraries can't be retreived , do not put it in cache
-                classLoadersMap.put(index, classLoader);
+                getClassLoaderMap().put(index, classLoader);
             }
             return classLoader;
         }
@@ -361,6 +358,9 @@ public class ClassLoaderFactory {
     }
 
     private static boolean isCacheChanged() {
+        if (classLoadersMap == null) {
+            return true;
+        }
         if (configurationElements == null) {
             return true;
         }
@@ -372,5 +372,12 @@ public class ClassLoaderFactory {
             }
         }
         return false;
+    }
+
+    private static Map<String, DynamicClassLoader> getClassLoaderMap() {
+        if (isCacheChanged()) {
+            init();
+        }
+        return classLoadersMap;
     }
 }

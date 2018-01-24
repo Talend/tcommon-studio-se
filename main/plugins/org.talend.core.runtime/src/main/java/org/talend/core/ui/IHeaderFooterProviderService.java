@@ -13,12 +13,14 @@
 package org.talend.core.ui;
 
 import org.talend.core.IProviderService;
+import org.talend.core.model.properties.Item;
 
 /**
  * DOC nrousseau class global comment. Detailled comment
  */
 public interface IHeaderFooterProviderService extends IProviderService {
 
-    public boolean isVisible();
+    boolean isVisible();
 
+    boolean validItem(Item item);
 }

@@ -325,6 +325,11 @@ public final class RepositoryComponentManager {
                                             return setting;
                                         }
                                     }
+                                    // mr process only support old jdbc component, but we need to make the new
+                                    // connection be able to d&d to mr
+                                    if ("JDBC".equals(dbConnection.getDatabaseType()) && dbType == EDatabaseTypeName.GENERAL_JDBC) {
+                                        return setting;
+                                    }
                                 }
                             }
                         } else if (clazz.isAssignableFrom(ProcessItem.class)) {
@@ -343,8 +348,9 @@ public final class RepositoryComponentManager {
         return null;
 
     }
-    
-    public static List<IComponent> filterNeededComponents(Item item, RepositoryNode seletetedNode, ERepositoryObjectType type, boolean isCurrentPeoject, String projectName) {
+
+    public static List<IComponent> filterNeededComponents(Item item, RepositoryNode seletetedNode, ERepositoryObjectType type,
+            boolean isCurrentPeoject, String projectName) {
 
         if (!GlobalServiceRegister.getDefault().isServiceRegistered(IComponentsService.class)) {
             return Collections.emptyList();
@@ -371,9 +377,9 @@ public final class RepositoryComponentManager {
                 if (repositoryType == null) {
                     continue;
                 }
-                if((type == ERepositoryObjectType.JOBLET || type == ERepositoryObjectType.SPARK_JOBLET 
-                		|| type == ERepositoryObjectType.SPARK_STREAMING_JOBLET ) && !isCurrentPeoject && projectName!=null){
-                	repositoryType = projectName +":"+ repositoryType; //$NON-NLS-1$
+                if ((type == ERepositoryObjectType.JOBLET || type == ERepositoryObjectType.SPARK_JOBLET || type == ERepositoryObjectType.SPARK_STREAMING_JOBLET)
+                        && !isCurrentPeoject && projectName != null) {
+                    repositoryType = projectName + ":" + repositoryType; //$NON-NLS-1$
                 }
                 if (!exceptedComponents.contains(component)
                         && filter.except(item, type, seletetedNode, component, repositoryType)) {
@@ -390,11 +396,11 @@ public final class RepositoryComponentManager {
         neededComponents.removeAll(exceptedComponents);
 
         return sortFilteredComponnents(item, seletetedNode, type, neededComponents);
-    
+
     }
 
     public static List<IComponent> filterNeededComponents(Item item, RepositoryNode seletetedNode, ERepositoryObjectType type) {
-    	return filterNeededComponents(item, seletetedNode, type, true, null);
+        return filterNeededComponents(item, seletetedNode, type, true, null);
     }
 
     private static List<IComponent> sortFilteredComponnents(Item item, RepositoryNode seletetedNode, ERepositoryObjectType type,

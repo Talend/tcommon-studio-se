@@ -47,7 +47,6 @@ import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.XMLParserPoolImpl;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.runtime.model.emf.EmfHelper;
-import org.talend.commons.runtime.model.emf.provider.EmfResourcesFactoryReader;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.GlobalServiceRegister;
@@ -188,9 +187,6 @@ public class XmiResourceManager {
                 }
             }
         }
-        Map options = EmfResourcesFactoryReader.INSTANCE.getLoadOptions(propertyUri);
-        resourceSet.getLoadOptions().putAll(options);
-
         Resource propertyResource = resourceSet.getResource(propertyUri, true);
 
         property = (Property) EcoreUtil

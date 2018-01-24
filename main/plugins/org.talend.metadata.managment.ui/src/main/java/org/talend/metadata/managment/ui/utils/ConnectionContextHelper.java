@@ -127,6 +127,8 @@ public final class ConnectionContextHelper {
     public static final String DOT = "."; //$NON-NLS-1$
 
     public static IContextManager contextManager;
+    
+    public static ContextType context;
 
     /**
      * 
@@ -282,7 +284,9 @@ public final class ConnectionContextHelper {
         Connection conn = connectionItem.getConnection();
 
         List<IContextParameter> varList = null;
-        if (conn instanceof DatabaseConnection) {
+        if(conn.getCompProperties() != null){
+            varList = ExtendedNodeConnectionContextUtils.getContextVariables(label, conn, paramSet);
+        }else if (conn instanceof DatabaseConnection) {
             varList = DBConnectionContextUtils.getDBVariables(label, (DatabaseConnection) conn, paramSet);
         } else if (conn instanceof FileConnection) {
             varList = FileConnectionContextUtils.getFileVariables(label, (FileConnection) conn, paramSet);
@@ -410,8 +414,9 @@ public final class ConnectionContextHelper {
         }
 
         Connection conn = connectionItem.getConnection();
-
-        if (conn instanceof DatabaseConnection) {
+        if(conn.getCompProperties() != null){
+            ExtendedNodeConnectionContextUtils.setConnectionPropertiesForContextMode(defaultContextName, conn, paramSet);
+        }else if (conn instanceof DatabaseConnection) {
             DBConnectionContextUtils.setPropertiesForContextMode(defaultContextName, (DatabaseConnection) conn, contextItem,
                     paramSet, map);
             // DBConnectionContextUtils.updateConnectionParam((DatabaseConnection) conn, map);
@@ -456,8 +461,9 @@ public final class ConnectionContextHelper {
             selItem = modelMap.keySet().iterator().next();
         }
         Connection conn = connectionItem.getConnection();
-
-        if (conn instanceof DatabaseConnection) {
+        if(conn.getCompProperties() != null){
+            ExtendedNodeConnectionContextUtils.setConnectionPropertiesForExistContextMode(conn, paramSet, modelMap);
+        }else if (conn instanceof DatabaseConnection) {
             DBConnectionContextUtils.setPropertiesForExistContextMode((DatabaseConnection) conn, paramSet, modelMap);
         } else if (conn instanceof FileConnection) {
             FileConnectionContextUtils.setPropertiesForExistContextMode((FileConnection) conn, paramSet, modelMap);
@@ -492,7 +498,7 @@ public final class ConnectionContextHelper {
         createParameters(varList, paramName, value, null);
     }
 
-    public static void createParameters(List<IContextParameter> varList, String paramName, String value, JavaType type) {
+    public static void createParameters(List<IContextParameter> varList, String paramName, Object value, JavaType type) {
         if (varList == null || paramName == null) {
             return;
         }
@@ -534,8 +540,11 @@ public final class ConnectionContextHelper {
         }
 
         contextParam.setPrompt(paramName + "?"); //$NON-NLS-1$
-        if (value != null) {
-            contextParam.setValue(value);
+        if (value != null && value instanceof String) {
+            contextParam.setValue((String)value);
+        }else if(value != null && value instanceof List){
+            String [] strvalue = (String[]) ((List)value).toArray(new String[0]);
+            contextParam.setValueList(strvalue);
         }
         contextParam.setComment(EMPTY);
         varList.add(contextParam);
@@ -1962,7 +1971,9 @@ public final class ConnectionContextHelper {
             return;
         }
         Connection conn = connItem.getConnection();
-        if (conn instanceof DatabaseConnection) {
+        if(conn.getCompProperties() != null){
+            ExtendedNodeConnectionContextUtils.revertPropertiesForContextMode(conn, contextType);
+        }else if (conn instanceof DatabaseConnection) {
             DBConnectionContextUtils.revertPropertiesForContextMode((DatabaseConnection) conn, contextType);
         } else if (conn instanceof FileConnection) {
             FileConnectionContextUtils.revertPropertiesForContextMode((FileConnection) conn, contextType);

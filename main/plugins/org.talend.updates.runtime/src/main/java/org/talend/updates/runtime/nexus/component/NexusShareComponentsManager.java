@@ -111,7 +111,7 @@ public class NexusShareComponentsManager {
         }
 
         final MavenArtifact indexArtifact = getIndexArtifact();
-        File indexFile = new File(getWorkFolder(), getIndexArtifact().getFileName());
+        File indexFile = new File(getWorkFolder(), getIndexArtifact().getFileName(false));
 
         try {
             nexusTransport.doHttpDownload(monitor, indexFile, indexArtifact);
@@ -199,7 +199,7 @@ public class NexusShareComponentsManager {
                 return false;
             }
         } else { // create new
-            indexFile = new File(getWorkFolder(), indexArtifact.getFileName());
+            indexFile = new File(getWorkFolder(), indexArtifact.getFileName(false));
             boolean created = indexManager.createIndexFile(indexFile, compIndexBean);
             if (!created) {
                 return false;

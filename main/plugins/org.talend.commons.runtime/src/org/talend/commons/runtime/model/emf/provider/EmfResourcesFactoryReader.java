@@ -149,12 +149,53 @@ public class EmfResourcesFactoryReader extends ExtensionRegistryReader {
         return saveOptionsProviders;
     }
 
+    public boolean existedOption(ResourceOption option) {
+        return existedSaveOption(option) || existedLoadOption(option);
+    }
+
     public boolean existedSaveOption(ResourceOption option) {
         return getSaveOptionsProviders().containsKey(option.getName());
     }
 
     public Map<String, OptionProvider> getLoadOptionsProviders() {
         return loadOptionsProviders;
+    }
+
+    public boolean existedLoadOption(ResourceOption option) {
+        return getLoadOptionsProviders().containsKey(option.getName());
+    }
+
+    /**
+     * if load is false, will be for saving option.
+     */
+    public void addOption(IOptionProvider option, boolean load) {
+        final Object value = option.getValue();
+        if (value instanceof OptionProvider) {
+            OptionProvider provider = (OptionProvider) value;
+            if (load) {
+                getLoadOptionsProviders().put(option.getName(), provider);
+            } else {
+                getSaveOptionsProviders().put(option.getName(), provider);
+            }
+        }
+    }
+
+    public void addOption(IOptionProvider option) {
+        addOption(option, true);
+        addOption(option, false);
+    }
+
+    public void removOption(IOptionProvider option, boolean load) {
+        if (load) {
+            getLoadOptionsProviders().remove(option.getName());
+        } else {
+            getSaveOptionsProviders().remove(option.getName());
+        }
+    }
+
+    public void removOption(IOptionProvider option) {
+        removOption(option, true);
+        removOption(option, false);
     }
 
     public ResourceHandler[] getResourceHandlers() {
@@ -171,6 +212,7 @@ public class EmfResourcesFactoryReader extends ExtensionRegistryReader {
                     createProvider(saveOptionsBeans, element);
                 }
             });
+            return true;
         }
         if ("loadOption".equals(element.getName())) { //$NON-NLS-1$
             SafeRunner.run(new RegistrySafeRunnable() {
@@ -180,6 +222,7 @@ public class EmfResourcesFactoryReader extends ExtensionRegistryReader {
                     createProvider(loadOptionsBeans, element);
                 }
             });
+            return true;
         }
         if ("resourceHandler".equals(element.getName())) { //$NON-NLS-1$
             SafeRunner.run(new RegistrySafeRunnable() {
@@ -199,6 +242,7 @@ public class EmfResourcesFactoryReader extends ExtensionRegistryReader {
 
                 }
             });
+            return true;
         }
         return false;
     }

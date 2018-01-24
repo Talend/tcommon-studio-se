@@ -73,6 +73,7 @@ import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.metadata.builder.connection.MetadataColumn;
 import org.talend.core.model.metadata.connection.hive.HiveModeInfo;
 import org.talend.core.model.metadata.types.JavaTypesManager;
+import org.talend.core.prefs.SSLPreferenceConstants;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.designer.core.IDesignerCoreService;
@@ -114,6 +115,9 @@ public class ExtractMetaDataUtils {
     private final Map<String, DriverShim> DRIVER_CACHE = new HashMap<String, DriverShim>();
 
     private boolean ignoreTimeout = false;
+
+    private String[] ORACLE_SSL_JARS = new String[] { "oraclepki-12.2.0.1.jar", "osdt_cert-12.2.0.1.jar", //$NON-NLS-1$//$NON-NLS-2$
+            "osdt_core-12.2.0.1.jar" }; //$NON-NLS-1$
 
     private ExtractMetaDataUtils() {
     }
@@ -944,6 +948,12 @@ public class ExtractMetaDataUtils {
             if ((driverJarPathArg == null || driverJarPathArg.equals(""))) { //$NON-NLS-1$
                 List<String> driverNames = EDatabaseVersion4Drivers.getDrivers(dbType, dbVersion);
                 if (driverNames != null) {
+                    if (EDatabaseTypeName.ORACLE_CUSTOM.getDisplayName().equals(dbType)
+                            && StringUtils.isNotEmpty(additionalParams)) {
+                        if (additionalParams.contains(SSLPreferenceConstants.TRUSTSTORE_TYPE)) {
+                             driverNames.addAll(Arrays.asList(ORACLE_SSL_JARS));
+                        }
+                    }
                     // fix for TUP-857 , to retreive needed jar one time
                     librairesManagerService.retrieve(driverNames, getJavaLibPath(), new NullProgressMonitor());
                     for (String jar : driverNames) {
@@ -1019,6 +1029,23 @@ public class ExtractMetaDataUtils {
                             // } else {
                             jarPathList.add(driverJarPathArg);
                         }
+                    }
+                }else if(driverJarPathArg.contains("/")){
+                    if (driverJarPathArg.contains(";")) {
+                        String jars[] = driverJarPathArg.split(";");
+                        for (String jar : jars) {
+                            String jarName = jar.split("/")[1]+".jar";
+                            if (!new File(getJavaLibPath() + jarName).exists()) {
+                                librairesManagerService.retrieve(jarName, getJavaLibPath(), new NullProgressMonitor());
+                            }
+                            jarPathList.add(getJavaLibPath() + jarName);
+                        }
+                    }else{
+                        String jarName = driverJarPathArg.split("/")[1]+".jar";
+                        if (!new File(getJavaLibPath() + jarName).exists()) {
+                            librairesManagerService.retrieve(jarName, getJavaLibPath(), new NullProgressMonitor());
+                        }
+                        jarPathList.add(getJavaLibPath() + jarName);
                     }
                 } else {
                     if (driverJarPathArg.contains(";")) {

@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
+import org.talend.commons.utils.platform.PluginChecker;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.database.conn.version.EDatabaseVersion4Drivers;
@@ -291,7 +292,7 @@ public enum EDatabaseConnTemplate {
     @SuppressWarnings("unchecked")
     private static List<String> getDBTypes(boolean sort, boolean all, boolean display) {
         EDatabaseConnTemplate[] values = EDatabaseConnTemplate.values();
-        List<String> databaseType = new ArrayList<String>(values.length);
+        List<String> databaseType = new ArrayList<String>();
         
         List<ERepositoryObjectType> extraTypes = new ArrayList<ERepositoryObjectType>();
         IGenericDBService dbService = null;
@@ -307,6 +308,10 @@ public enum EDatabaseConnTemplate {
             databaseType.add(type.getType());
         }
         for (EDatabaseConnTemplate temp : values) {
+            // The 'GENERAL_JDBC' only for TOP
+            if (temp == EDatabaseConnTemplate.GENERAL_JDBC && !PluginChecker.isOnlyTopLoaded()) {
+                continue;
+            }
             String typeName = getDBTypeName(temp, display);
             if (typeName != null && !databaseType.contains(typeName)) {
                 databaseType.add(typeName);
@@ -380,6 +385,7 @@ public enum EDatabaseConnTemplate {
                 // for feature 10655
             case ORACLEFORSID:
             case ORACLESN:
+            case ORACLE_CUSTOM:
             case ORACLE_OCI:
             case SYBASEASE:
             case HSQLDB_IN_PROGRESS: // for feature 11674

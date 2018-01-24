@@ -30,6 +30,8 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.metadata.IMetadataConnection;
+import org.talend.core.model.metadata.MetadataTalendType;
+import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.process.EComponentCategory;
 import org.talend.core.model.properties.ConnectionItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
@@ -272,6 +274,16 @@ public class DatabaseWizardPage extends WizardPage {
             databaseForm.setVisible(false);
             setControl(dynamicForm);
             resetDynamicConnectionItem(connItem);
+            String product = dbTypeForm.getDBType();
+            ((DatabaseConnection)connItem.getConnection()).setProductId(product);
+            String mapping = null;
+            if (MetadataTalendType.getDefaultDbmsFromProduct(product) != null) {
+                mapping = MetadataTalendType.getDefaultDbmsFromProduct(product).getId();
+            }
+            if (mapping == null) {
+                mapping = "mysql_id"; // default value //$NON-NLS-1$
+            }
+            ((DatabaseConnection)connItem.getConnection()).setDbmsId(mapping);
         }else{
             databaseForm.setVisible(true);
             if(dynamicParentForm != null && !dynamicParentForm.isDisposed()){

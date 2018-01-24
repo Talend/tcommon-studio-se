@@ -48,11 +48,11 @@ public class LinksToolbarItem extends ContributionItem {
 
     // private static final String SHARE_URL = "<a href=\"http://www.talendforge.org/exchange/\">Share</a>"; //$NON-NLS-1$
 
-    private static final String UPGRADE_URL = "<a href=\"http://www.talend.com/products/why-upgrade/\">Upgrade!</a>"; //$NON-NLS-1$
-
     private static final String EXCHANGE_URL = "<a href=\"http://www.talendforge.org/exchange/index.php\">Exchange</a>"; //$NON-NLS-1$
 
     private static final String VIDEOS_URL = "<a href=\"https://www.talendforge.org/tutorials\">Videos</a>"; //$NON-NLS-1$
+
+    private static final String CLOUD_URL = "<a href=\"https://iam.integrationcloud.talend.com/idp/federation/up/login\">Cloud</a>"; //$NON-NLS-1$
 
     private static ImageRegistry registry = new ImageRegistry();
 
@@ -134,31 +134,7 @@ public class LinksToolbarItem extends ContributionItem {
             }
         });
 
-        if (!PluginChecker.isTIS()) {
-            // 3.upgrade
-            Label upgradeLabel = new Label(composite, SWT.NONE);
-
-            if (registry.get("wizard") == null) { //$NON-NLS-1$
-                registry.put("wizard", Activator.getImageDescriptor("icons/wizard.png").createImage()); //$NON-NLS-1$ //$NON-NLS-2$
-            }
-            upgradeLabel.setImage(registry.get("wizard")); //$NON-NLS-1$
-            Link upgrade = new Link(composite, SWT.NONE);
-            GridData upgradeGd = new GridData(SWT.FILL, SWT.FILL, true, true);
-            upgradeLabel.setLayoutData(upgradeGd);
-            upgrade.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
-            upgrade.setText(UPGRADE_URL);
-            upgrade.setToolTipText(Messages.getString("LinksToolbarItem_11")); //$NON-NLS-1$
-
-            upgrade.addListener(SWT.Selection, new Listener() {
-
-                @Override
-                public void handleEvent(Event event) {
-                    openBrower(event.text);
-                }
-            });
-        }
-
-        // 4. Link to Talend Exchange
+        // 3. Link to Talend Exchange
         if (PluginChecker.isExchangeSystemLoaded() && !TalendPropertiesUtil.isHideExchange()) {
             Label exchangeLabel = new Label(composite, SWT.NONE);
 
@@ -183,7 +159,7 @@ public class LinksToolbarItem extends ContributionItem {
             });
         }
 
-        // 5.videos
+        // 4.videos
         Label videosLabel = new Label(composite, SWT.NONE);
 
         if (registry.get("videos") == null) { //$NON-NLS-1$
@@ -207,6 +183,30 @@ public class LinksToolbarItem extends ContributionItem {
                 service.openTutorialsDialog();
             }
         });
+
+        if (!PluginChecker.isTIS()) {
+            // 5.cloud
+            Label cloudLabel = new Label(composite, SWT.NONE);
+
+            if (registry.get("cloud") == null) { //$NON-NLS-1$
+                registry.put("cloud", Activator.getImageDescriptor("icons/cloud.png").createImage()); //$NON-NLS-1$ //$NON-NLS-2$
+            }
+            cloudLabel.setImage(registry.get("cloud")); //$NON-NLS-1$
+            Link cloud = new Link(composite, SWT.NONE);
+            GridData cloudGd = new GridData(SWT.FILL, SWT.FILL, true, true);
+            cloudLabel.setLayoutData(cloudGd);
+            cloud.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
+            cloud.setText(CLOUD_URL);
+            cloud.setToolTipText(Messages.getString("LinksToolbarItem_cloud")); //$NON-NLS-1$
+
+            cloud.addListener(SWT.Selection, new Listener() {
+
+                @Override
+                public void handleEvent(Event event) {
+                    openBrower(event.text);
+                }
+            });
+        }
         return composite;
     }
 

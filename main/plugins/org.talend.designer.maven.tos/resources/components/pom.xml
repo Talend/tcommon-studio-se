@@ -48,6 +48,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.talend.components</groupId>
+			<artifactId>components-jdbc-runtime</artifactId>
+			<version>${components.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.talend.components</groupId>
 			<artifactId>components-splunk</artifactId>
 			<version>${components.version}</version>
 		</dependency>
@@ -79,6 +84,16 @@
 		<dependency>
 			<groupId>org.talend.components</groupId>
 			<artifactId>components-marketo-runtime</artifactId>
+			<version>${components.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.talend.components</groupId>
+			<artifactId>components-googledrive-runtime</artifactId>
+			<version>${components.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.talend.components</groupId>
+			<artifactId>components-marklogic-runtime</artifactId>
 			<version>${components.version}</version>
 		</dependency>
         <dependency>
@@ -126,6 +141,16 @@
             <artifactId>httpclient</artifactId>
             <version>4.5.1</version>
         </dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-core-asl</artifactId>
+			<version>1.9.14-TALEND</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>1.9.14-TALEND</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

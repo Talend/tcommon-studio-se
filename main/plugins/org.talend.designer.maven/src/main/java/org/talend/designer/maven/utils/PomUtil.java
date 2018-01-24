@@ -245,6 +245,7 @@ public class PomUtil {
     /**
      * 
      * According to the process, generate the groud id, like org.talend.process.di.demo.
+     * @deprecated
      */
     public static String generateGroupId(final IProcessor jProcessor) {
         final Property property = jProcessor.getProperty();
@@ -254,6 +255,7 @@ public class PomUtil {
         return generateGroupId(projectFolderName, process.getComponentsType());
     }
 
+    @Deprecated
     public static String generateGroupId(String projectFolderName, String type) {
         String groupId = JavaResourcesHelper.getGroupName(projectFolderName);
 
@@ -263,6 +265,7 @@ public class PomUtil {
         return groupId;
     }
 
+    @Deprecated
     public static String generateGroupId(final JobInfo jobInfo) {
         ProcessItem processItem = jobInfo.getProcessItem();
         if (processItem != null) {

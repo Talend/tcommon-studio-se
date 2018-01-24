@@ -221,17 +221,45 @@ public final class ComponentUtilities {
         }
         return isVisible;
     }
-    
+
     @SuppressWarnings("unchecked")
-	public static List<ConnectionType> getNodeOutputConnections(NodeType node) {
+    public static List<ConnectionType> getNodeOutputConnections(NodeType node) {
+        return getNodeConnections(node, ConnectorType.OUTPUT);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static List<ConnectionType> getNodeInputConnections(NodeType node) {
+        return getNodeConnections(node, ConnectorType.INPUT);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static List<ConnectionType> getNodeConnections(NodeType node, ConnectorType connectorType) {
         ProcessType processType = getNodeProcessType(node);
         String nodeUniqueName = getNodeUniqueName(node);
         List<ConnectionType> connList = new ArrayList<ConnectionType>();
-        for (ConnectionType conn : (List<ConnectionType>) processType.getConnection()) {
-            if (conn.getSource().equals(nodeUniqueName)) {
-                connList.add(conn);
+        switch (connectorType) {
+        case INPUT: {
+            for (ConnectionType conn : (List<ConnectionType>) processType.getConnection()) {
+                if (conn.getTarget().equals(nodeUniqueName)) {
+                    connList.add(conn);
+                }
             }
+            break;
+        }
+        case OUTPUT: {
+            for (ConnectionType conn : (List<ConnectionType>) processType.getConnection()) {
+                if (conn.getSource().equals(nodeUniqueName)) {
+                    connList.add(conn);
+                }
+            }
+        }
         }
         return connList;
     }
+
+    private enum ConnectorType {
+        INPUT,
+        OUTPUT
+    }
+
 }

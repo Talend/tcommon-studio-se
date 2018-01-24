@@ -89,7 +89,7 @@ public class RepositoryComponentSetting implements IComponentName {
         return defaultComponent;
     }
 
-    void setDefaultComponent(String defaultComponent) {
+    public void setDefaultComponent(String defaultComponent) {
         this.defaultComponent = defaultComponent;
     }
 
@@ -153,14 +153,17 @@ public class RepositoryComponentSetting implements IComponentName {
         return this.getName();
     }
 
+    @Override
     public String getDefaultComponentName() {
         return this.getDefaultComponent();
     }
 
+    @Override
     public String getInputComponentName() {
         return this.getInputComponent();
     }
 
+    @Override
     public String getOutPutComponentName() {
         return this.getOutputComponent();
     }

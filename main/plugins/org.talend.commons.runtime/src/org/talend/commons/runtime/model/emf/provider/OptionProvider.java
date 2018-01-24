@@ -15,7 +15,7 @@ package org.talend.commons.runtime.model.emf.provider;
 /**
  * DOC ggu class global comment. Detailled comment
  */
-public abstract class OptionProvider {
+public abstract class OptionProvider implements IOptionProvider {
 
     public abstract String getName();
 

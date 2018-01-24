@@ -13,23 +13,36 @@
 package org.talend.commons.runtime.model.emf;
 
 import java.util.Map;
+import java.util.UUID;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EFactory;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.xmi.XMLLoad;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.XMLSave;
+import org.eclipse.emf.ecore.xmi.impl.SAXXMIHandler;
 import org.eclipse.emf.ecore.xmi.impl.XMILoadImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMISaveImpl;
+import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * DOC ggu class global comment. Detailled comment
  */
 public class TalendXMIResource extends XMIResourceImpl {
+
+    protected final static String ATT_ID = "Id"; //$NON-NLS-1$
+
+    protected final static String NS_DS = "ds"; //$NON-NLS-1$
+
+    protected final static String NS_DS_VALUE = "http://www.w3.org/2000/09/xmldsig#"; //$NON-NLS-1$
 
     public TalendXMIResource() {
         super();
@@ -49,6 +62,14 @@ public class TalendXMIResource extends XMIResourceImpl {
      */
     @Override
     protected XMLLoad createXMLLoad() {
+        return createCustomXMLLoad();
+    }
+
+    protected XMLLoad delegateCreateXMLLoad() {
+        return super.createXMLLoad();
+    }
+
+    protected XMLLoad createCustomXMLLoad() {
         return new XMILoadImpl(createXMLHelper()) {
 
             /*
@@ -62,6 +83,83 @@ public class TalendXMIResource extends XMIResourceImpl {
                 // talend instead of the one by default in the JRE
                 return new org.apache.xerces.jaxp.SAXParserFactoryImpl().newSAXParser();
             }
+
+            @Override
+            protected DefaultHandler makeDefaultHandler() {
+                return new SAXXMIHandler(resource, helper, options) {
+
+                    @Override
+                    public void startElement(String uri, String localName, String name, Attributes attributes)
+                            throws SAXException {
+                        if (NS_DS_VALUE.equals(uri)) {
+                            return; // need ignore for ds
+                        }
+                        super.startElement(uri, localName, name, attributes);
+                    }
+
+                    @Override
+                    public void startElement(String uri, String localName, String name) {
+                        if (NS_DS_VALUE.equals(uri)) {
+                            return; // need ignore for ds
+                        }
+                        super.startElement(uri, localName, name);
+                    }
+
+                    @Override
+                    public void endElement(String uri, String localName, String name) {
+                        if (NS_DS_VALUE.equals(uri)) {
+                            return; // need ignore for ds
+                        }
+                        super.endElement(uri, localName, name);
+                    }
+
+                    @Override
+                    protected void processElement(String name, String prefix, String localName) {
+                        if (NS_DS.equals(prefix) && NS_DS_VALUE.equals(helper.getURI(NS_DS))) {
+                            return; // need ignore for ds
+                        }
+                        super.processElement(name, prefix, localName);
+                    }
+
+                    @Override
+                    protected EObject createObjectByType(String prefix, String name, boolean top) {
+                        if (NS_DS.equals(prefix) && NS_DS_VALUE.equals(helper.getURI(NS_DS))) {
+                            return null; // need ignore for ds
+                        }
+                        return super.createObjectByType(prefix, name, top);
+                    }
+
+                    protected EFactory getFactoryForPrefix(String prefix) {
+                        if (NS_DS.equals(prefix) && NS_DS_VALUE.equals(helper.getURI(NS_DS))) {
+                            return null; // need ignore for ds
+                        }
+                        return super.getFactoryForPrefix(prefix);
+                    }
+
+                    @Override
+                    protected EPackage getPackageForURI(String uriString) {
+                        if (uriString != null && uriString.equals(NS_DS_VALUE)) {
+                            return null; // need ignore for ds
+                        }
+                        return super.getPackageForURI(uriString);
+                    }
+
+                    @Override
+                    protected void setAttribValue(EObject object, String name, String value) {
+                        if (ATT_ID.equals(name)) {
+                            try {
+                                UUID.fromString(value);
+                                return; // valid UUID value, so need ignore
+                            } catch (IllegalArgumentException e) {
+                                //
+                            }
+                        }
+                        super.setAttribValue(object, name, value);
+                    }
+
+                };
+            }
+
         };
     }
 
@@ -73,6 +171,14 @@ public class TalendXMIResource extends XMIResourceImpl {
      */
     @Override
     protected XMLSave createXMLSave() {
+        return createCustomXMLSave();
+    }
+
+    protected XMLSave delegateCreateXMLSave() {
+        return super.createXMLSave();
+    }
+
+    protected XMLSave createCustomXMLSave() {
         return new XMISaveImpl(createXMLHelper()) {
 
             /*

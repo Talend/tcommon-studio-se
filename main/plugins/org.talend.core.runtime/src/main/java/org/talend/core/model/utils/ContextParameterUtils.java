@@ -12,11 +12,22 @@
 // ============================================================================
 package org.talend.core.model.utils;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.script.Bindings;
+import javax.script.ScriptContext;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.oro.text.regex.MalformedPatternException;
@@ -26,15 +37,18 @@ import org.apache.oro.text.regex.Perl5Matcher;
 import org.apache.oro.text.regex.Perl5Substitution;
 import org.apache.oro.text.regex.Util;
 import org.talend.commons.utils.PasswordEncryptUtil;
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.language.ECodeLanguage;
 import org.talend.core.model.context.ContextUtils;
 import org.talend.core.model.context.UpdateContextVariablesHelper;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.types.ContextParameterJavaTypeManager;
 import org.talend.core.model.metadata.types.JavaType;
+import org.talend.core.model.metadata.types.JavaTypesManager;
 import org.talend.core.model.process.IContext;
 import org.talend.core.model.process.IContextManager;
 import org.talend.core.model.process.IContextParameter;
+import org.talend.core.runtime.services.IGenericDBService;
 import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
@@ -61,6 +75,8 @@ public final class ContextParameterUtils {
     private static final String LINE = "_"; //$NON-NLS-1$
 
     private static final String EMPTY = ""; //$NON-NLS-1$
+    
+    private static final List<String> EMPTY_LIST = new ArrayList<String>(); 
 
     private static final String NON_CONTEXT_PATTERN = "[^a-zA-Z0-9_]"; //$NON-NLS-1$
 
@@ -185,7 +201,107 @@ public final class ContextParameterUtils {
 
         }
     }
+    
+    private static ScriptEngine engine = new ScriptEngineManager().getEngineByName("JavaScript");
+    
+    public static String convertContext2Literal4AnyVar(final String code, final IContext context) {
+      if (code == null) {
+          return null;
+      }
+      
+      if (!containNewContext(code)) {
+          return code;
+      }
+      
+      Object result = code;
+      
+      if(engine == null) {
+        engine = new ScriptEngineManager().getEngineByName("JavaScript");
+      }
+      
+      if(engine == null) {
+        throw new RuntimeException("can't find the script engine");
+      }
+      
+      Bindings binding = engine.getBindings(ScriptContext.ENGINE_SCOPE);
+      if(binding!=null) {
+        binding.clear();
+        Map<String, Object> varMap = getVarMapForScriptEngine(context);
+        binding.put("context", varMap);
+      }
+      try {
+        String replacement = " ";
+        result = engine.eval(code.replace("\r\n", replacement).replace("\n", replacement).replace("\r", replacement));
+      } catch(Exception e) {
+        //ignore the exception
+      }
+      
+      return result.toString();
+    }
+    
+    private static Map<String, Object> getVarMapForScriptEngine(final IContext context) {
+      Map<String, Object> result = new HashMap<>();
+      
+      //TODO process the link case like : context.var1 = context.var2, context.var2 = "value", then get context.var1 = "value"
+      //Why we don't do it now? In fact, it's simple, but i think it's not necessary, sometimes, we do lots of code for only 1/10000000000 usage
+      List<IContextParameter> parameterList = context.getContextParameterList();
+      if(parameterList == null) {
+        return result;
+      }
+      
+      for(IContextParameter parameter : parameterList) {
+        result.put(parameter.getName(), parameter.getValue());
+      }
+      
+      return result;
+    }
+    
+    public static List parseScriptContextCodeList(Object storedValue, IContext context, boolean isDrivers) {
+        if (storedValue == null) {
+            return EMPTY_LIST;
+        }
+        if(storedValue instanceof String){
+            List<String> values = Arrays.asList(((String)storedValue).split(";"));
+            return getMVNValues(values);
+        }
+        String code = String.valueOf(storedValue);
+        if (!isContainContextParam(code)) {
+            return (List)storedValue;
+        } else {
+            String paraName = ContextParameterUtils.getVariableFromCode(code);
+            IContextParameter param = context.getContextParameter(paraName);
+            if (param != null) {
+                String value = param.getValue();
+                if (value == null || code.equals(String.valueOf(value))) {
+                    return EMPTY_LIST;
+                }
+                return parseScriptContextCodeList(value, context, isDrivers);// Multi-layer
+            }
 
+        }
+        return EMPTY_LIST;
+    }
+    
+    private static List<String> getMVNValues(List<String> values){
+        List<String> mvnValues = new ArrayList<>();
+        IGenericDBService dbService = null;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
+            dbService = (IGenericDBService) GlobalServiceRegister.getDefault().getService(
+                    IGenericDBService.class);
+        }
+        for(String value : values){
+            try {
+                new URL(value);
+                mvnValues.add(value);
+            } catch (MalformedURLException e) {
+                if(dbService != null){
+                    mvnValues.add(dbService.getMVNPath(value));
+                }
+            }
+        }
+        return mvnValues;
+    }
+    
     private static String getContextString(String code) {
         if (code != null) {
             if (containOldContext(code)) {
@@ -402,6 +518,7 @@ public final class ContextParameterUtils {
                 }
                 if (param != null) {
                     String value2 = param.getRawValue();
+                    
                     if (value2 != null) {
                         // return TalendTextUtils.removeQuotes(value2); //some value can't be removed for quote
                         return value2;
@@ -411,6 +528,36 @@ public final class ContextParameterUtils {
             }
         }
         return value;
+    }
+    
+    public static List<String> getOriginalList(ContextType contextType, final String value) {
+        if (value == null) {
+            return EMPTY_LIST;
+        }
+        if (contextType != null && ContextParameterUtils.isContainContextParam(value)) {
+            String var = ContextParameterUtils.getVariableFromCode(value);
+            if (var != null) {
+                ContextParameterType param = null;
+                for (ContextParameterType paramType : (List<ContextParameterType>) contextType.getContextParameter()) {
+                    if (paramType.getName().equals(var)) {
+                        param = paramType;
+                        break;
+                    }
+                }
+                if (param != null) {
+                    String value2 = param.getRawValue();
+                    
+                    if (value2 != null) {
+                        if(JavaTypesManager.STRING.getId().equals(param.getType())){
+                            List<String> values = Arrays.asList(value2.split(";"));
+                            return values;
+                        }
+                    }
+                }
+                return EMPTY_LIST;
+            }
+        }
+        return EMPTY_LIST;
     }
 
     /**

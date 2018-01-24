@@ -68,8 +68,8 @@ public class RepositorySystemFactory {
         DefaultRepositorySystemSession repositorySystemSession = sessions.get(localRepo);
         if (repositorySystemSession == null) {
             repositorySystemSession = MavenRepositorySystemUtils.newSession();
-            repositorySystemSession.setLocalRepositoryManager(system
-                    .newLocalRepositoryManager(repositorySystemSession, localRepo));
+            repositorySystemSession
+                    .setLocalRepositoryManager(system.newLocalRepositoryManager(repositorySystemSession, localRepo));
             repositorySystemSession.setTransferListener(new ChainedTransferListener());
             repositorySystemSession.setRepositoryListener(new ChainedRepositoryListener());
         }
@@ -77,9 +77,9 @@ public class RepositorySystemFactory {
         return repositorySystemSession;
     }
 
-    public static void deploy(File content, String localRepository, String repositoryId, String repositoryUrl, String userName,
-            String password, String groupId, String artifactId, String classifier, String extension, String version)
-            throws Exception {
+    private static void doDeploy(File content, File pomFile, String localRepository, String repositoryId, String repositoryUrl,
+            String userName, String password, String groupId, String artifactId, String classifier, String extension,
+            String version) throws Exception {
         DefaultRepositorySystemSession session = null;
         if (system == null) {
             system = newRepositorySystem();
@@ -91,10 +91,13 @@ public class RepositorySystemFactory {
         jarArtifact = jarArtifact.setFile(content);
         deployRequest.addArtifact(jarArtifact);
 
-        String strClassifier = classifier == null ? "" : ("-" + classifier);
-        String pomPath = localRepository + "/" + groupId.replaceAll("\\.", "/") + "/" + artifactId + "/" + version + "/"
-                + artifactId + "-" + version + strClassifier + "." + "pom";
-        File pomFile = new File(pomPath);
+        // try to find the pom file
+        if (pomFile == null) {
+            String strClassifier = classifier == null ? "" : ("-" + classifier);
+            String pomPath = localRepository + "/" + groupId.replaceAll("\\.", "/") + "/" + artifactId + "/" + version + "/"
+                    + artifactId + "-" + version + strClassifier + "." + "pom";
+            pomFile = new File(pomPath);
+        }
         if (pomFile.exists()) {
             Artifact pomArtifact = new SubArtifact(jarArtifact, "", "pom");
             pomArtifact = pomArtifact.setFile(pomFile);
@@ -110,4 +113,18 @@ public class RepositorySystemFactory {
         system.deploy(session, deployRequest);
     }
 
+    public static void deploy(File content, String localRepository, String repositoryId, String repositoryUrl, String userName,
+            String password, String groupId, String artifactId, String classifier, String extension, String version)
+            throws Exception {
+
+        doDeploy(content, null, localRepository, repositoryId, repositoryUrl, userName, password, groupId, artifactId, classifier,
+                extension, version);
+    }
+
+    public static void deployWithPOM(File content, File pomFile, String localRepository, String repositoryId,
+            String repositoryUrl, String userName, String password, String groupId, String artifactId, String classifier,
+            String extension, String version) throws Exception {
+        doDeploy(content, pomFile, localRepository, repositoryId, repositoryUrl, userName, password, groupId, artifactId,
+                classifier, extension, version);
+    }
 }

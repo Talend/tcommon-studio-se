@@ -21,8 +21,27 @@ import org.apache.commons.lang3.StringUtils;
 public class NexusServerBean {
 
     public enum NexusType {
-        NEXUS_2,
-        NEXUS_3;
+        NEXUS_2("NEXUS"),
+        NEXUS_3("NEXUS 3");
+
+        String repType;
+
+        NexusType(String repType) {
+            this.repType = repType;
+        }
+
+        public static NexusType getByRepType(String typeFromTAC) {
+            for (NexusType type : NexusType.values()) {
+                if (type.repType.equals(typeFromTAC)) {
+                    return type;
+                }
+            }
+            return null;
+        }
+        
+        public String getRepType() {
+            return this.repType;
+        }
     }
 
     private String server;

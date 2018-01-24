@@ -56,7 +56,6 @@ public class RecycleBinViewerFilter extends ViewerFilter {
             if (isUnderRecycleBinNode(node)) { // olny process the nodes are under Recycle Bin.
                 ERepositoryObjectType contextType = findRealContextType(node);
                 if (contextType != null) { // don't check the SubItems, like schema, query, etc.
-                    contextType = ERepositoryObjectType.METADATA_CONNECTIONS;
                     IRepositoryNode contextNode = node.getRoot().getRootRepositoryNode(contextType);
                     Set contentExtensions = navigatorContentService.findContentExtensionsByTriggerPoint(contextNode);
                     if (contentExtensions.isEmpty()) { // deactive or invisible
@@ -134,6 +133,9 @@ public class RecycleBinViewerFilter extends ViewerFilter {
                     if (property != null) {
                         try {
                             itemType = ERepositoryObjectType.getItemType(property.getItem());
+                            if(isExtraType(itemType)){
+                                itemType = ERepositoryObjectType.METADATA_CONNECTIONS;
+                            }
                         } catch (IllegalStateException e) { // can't find the item type.
                             // nothing to do
                         }
@@ -146,7 +148,7 @@ public class RecycleBinViewerFilter extends ViewerFilter {
         return contentType;
     }
     
-    private ERepositoryObjectType getNodeType(final RepositoryNode node){
+    private boolean isExtraType(ERepositoryObjectType type){
         List<ERepositoryObjectType> extraTypes = new ArrayList<ERepositoryObjectType>();
         IGenericDBService dbService = null;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
@@ -155,9 +157,13 @@ public class RecycleBinViewerFilter extends ViewerFilter {
         }
         if(dbService != null){
             extraTypes.addAll(dbService.getExtraTypes());
-        }
-        ERepositoryObjectType contentType = node.getObjectType();
-        if(contentType != null && extraTypes.contains(contentType)){
+        } 
+        return extraTypes.contains(type);
+    }
+    
+    private ERepositoryObjectType getNodeType(final RepositoryNode node){
+                ERepositoryObjectType contentType = node.getObjectType();
+        if(contentType != null && isExtraType(contentType)){
             return node.getContentType();
         }
         if (node.getType() == ENodeType.REPOSITORY_ELEMENT) {

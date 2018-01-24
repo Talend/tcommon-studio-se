@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.repository.items.importexport.handlers;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -78,6 +79,7 @@ import org.talend.repository.items.importexport.manager.ChangeIdManager;
 import org.talend.repository.items.importexport.manager.ResourcesManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryConstants;
+import org.talend.utils.io.FilesUtils;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -766,6 +768,16 @@ public class ImportExportHandlersManager {
         } finally {
             // cache
             importCacheHelper.afterImportItems();
+
+            //
+            final Object root = resManager.getRoot();
+            if (root instanceof File) {
+                final File workingFolder = (File) root;
+                File tmpdir = new File(System.getProperty("java.io.tmpdir")); //$NON-NLS-1$
+                if (workingFolder.toString().startsWith(tmpdir.toString())) { // remove from temp
+                    FilesUtils.deleteFolder(workingFolder, true);
+                }
+            }
             //
             TimeMeasure.end("importItemRecords"); //$NON-NLS-1$
             TimeMeasure.display = false;

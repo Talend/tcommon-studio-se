@@ -22,10 +22,13 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.talend.components.api.properties.ComponentProperties;
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.database.EDatabase4DriverClassName;
 import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.database.conn.DatabaseConnStrUtil;
 import org.talend.core.database.conn.version.EDatabaseVersion4Drivers;
+import org.talend.core.model.components.EComponentType;
 import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.core.model.metadata.MetadataTalendType;
 import org.talend.core.model.metadata.builder.ConvertionHelper;
@@ -66,6 +69,7 @@ import org.talend.core.model.repository.DragAndDropManager;
 import org.talend.core.model.utils.ContextParameterUtils;
 import org.talend.core.model.utils.IDragAndDropServiceHandler;
 import org.talend.core.runtime.i18n.Messages;
+import org.talend.core.runtime.services.IGenericDBService;
 import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.helper.PackageHelper;
@@ -124,14 +128,18 @@ public class ComponentToRepositoryProperty {
             // see bug in 18011, set url and driver_jar.
             setDatabaseType(conn, node);
             conn.setURL(DatabaseConnStrUtil.getURLString(conn));
+            setGenericRepositoryValue(conn, node);
 
             // see bug in feature 5998, set dbmsId.
             String repositoryType = node.getElementParameter("PROPERTY_TYPE").getRepositoryValue(); //$NON-NLS-1$
+            if(repositoryType == null && node.getElementParameter("PROPERTY_TYPE").getParentParameter() != null){
+                repositoryType = node.getElementParameter("PROPERTY_TYPE").getParentParameter().getRepositoryValue();//$NON-NLS-1$
+            }
             if (repositoryType.startsWith("DATABASE") && repositoryType.contains(":")) { //$NON-NLS-1$ //$NON-NLS-2$
                 String product = repositoryType.substring(repositoryType.indexOf(":") + 1); //$NON-NLS-1$
                 // see bug in feature 17761.
                 if (product.equals(EDatabaseTypeName.GENERAL_JDBC.getProduct())) {
-                    String driverClass = getParameterValue(conn, node, node.getElementParameter("DRIVER_CLASS")); //$NON-NLS-1$
+                    String driverClass = getParameterValue(conn, node, node.getElementParameter("connection.driverClass")); //$NON-NLS-1$
                     List<EDatabase4DriverClassName> driverClasses = EDatabase4DriverClassName.indexOfByDriverClass(driverClass);
                     if (driverClasses.size() > 0) { // use the first one
                         product = driverClasses.get(0).getDbType().getProduct();
@@ -170,7 +178,7 @@ public class ComponentToRepositoryProperty {
             return;
         } else if (connection instanceof XmlFileConnection) {
             setXmlFileValue((XmlFileConnection) connection, node, param);
-        } else if (connection instanceof DatabaseConnection) {
+        } else if ((connection instanceof DatabaseConnection) && connection.getCompProperties() == null) {
             setDatabaseValue((DatabaseConnection) connection, node, param);
         } else if (connection instanceof EbcdicConnection) {
             setEbcdicValue((EbcdicConnection) connection, node, param);
@@ -233,7 +241,8 @@ public class ComponentToRepositoryProperty {
                         value = getContextOriginalValue(connection, node, value);
                     }
                     return value;
-                } else if (o instanceof List && param.getName().equals("DRIVER_JAR")) {
+                } else if (o instanceof List && (param.getName().equals("DRIVER_JAR") 
+                        || param.getName().equals("connection.driverTable"))) {
                     List<Map<String, Object>> list = (List<Map<String, Object>>) o;
                     String userDir = System.getProperty("user.dir"); //$NON-NLS-1$
                     String pathSeparator = System.getProperty("file.separator"); //$NON-NLS-1$
@@ -300,6 +309,35 @@ public class ComponentToRepositoryProperty {
         }
         return null;
     }
+    
+    private static void setGenericRepositoryValue(DatabaseConnection connection, INode node){
+        if(node.getComponent().getComponentType() != EComponentType.GENERIC){
+            return;
+        }
+        if(connection.getCompProperties() == null){
+            connection.setCompProperties("");
+        }
+        IGenericDBService dbService = null;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
+            dbService = (IGenericDBService) GlobalServiceRegister.getDefault().getService(
+                    IGenericDBService.class);
+        }
+        if(dbService == null){
+            return;
+        }
+        dbService.setPropertyTaggedValue(node.getComponentProperties());
+        List<ComponentProperties> componentProperties = new ArrayList<>();
+        componentProperties.add(node.getComponentProperties());
+        for (IElementParameter param : node.getElementParameters()) {
+            boolean isGenericRepositoryValue = RepositoryToComponentProperty.isGenericRepositoryValue(connection,
+                    componentProperties, param.getName());
+            if (param.getRepositoryValue() == null && isGenericRepositoryValue ) {
+                param.setRepositoryValue(param.getName());
+                param.setRepositoryValueUsed(true);
+            }
+        }
+        dbService.convertPropertiesToDBElements(node.getComponentProperties().getProperties("connection"), connection);
+    }
 
     /**
      * 
@@ -325,7 +363,7 @@ public class ComponentToRepositoryProperty {
                 }
                 // jdbc
                 if (para.getRepositoryValue().endsWith(EDatabaseTypeName.GENERAL_JDBC.getProduct())) {
-                    connection.setDatabaseType(EDatabaseTypeName.GENERAL_JDBC.getDisplayName());
+                    connection.setDatabaseType(EDatabaseTypeName.GENERAL_JDBC.getProduct());
                     connection.setProductId(EDatabaseTypeName.GENERAL_JDBC.getProduct());
                 }
                 // vertica output component have no TYPE ElementParameter .

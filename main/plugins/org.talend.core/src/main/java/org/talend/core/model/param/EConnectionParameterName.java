@@ -34,7 +34,14 @@ public enum EConnectionParameterName {
     LOCAL_SERVICE_NAME("Local Service Name"),
     URL("Url"), //$NON-NLS-1$
     HTTPS("https"), //$NON-NLS-1$
-    DBPATH("DBPATH");//$NON-NLS-1$
+    DBPATH("DBPATH"),//$NON-NLS-1$
+    
+    GENERIC_TABLENAME("tableSelection.tablename"),//$NON-NLS-1$
+    GENERIC_USERNAME("connection.userPassword.userId"),//$NON-NLS-1$
+    GENERIC_PASSWORD("connection.userPassword.password"),//$NON-NLS-1$
+    GENERIC_URL("connection.jdbcUrl"),//$NON-NLS-1$
+    GENERIC_DRIVER_JAR("connection.driverTable"),//$NON-NLS-1$
+    GENERIC_DRIVER_CLASS("connection.driverClass");//$NON-NLS-1$
 
     private String displayName;
 

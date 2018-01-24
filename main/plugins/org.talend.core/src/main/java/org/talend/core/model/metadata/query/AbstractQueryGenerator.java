@@ -141,6 +141,9 @@ public abstract class AbstractQueryGenerator implements IQueryGenerator {
     protected String getDBTableName(IElement elem) {
         if (elem != null) { // for job settings extra.(feature 2710)
             IElementParameter param = elem.getElementParameterFromField(EParameterFieldType.DBTABLE);
+            if(param == null){
+                param = elem.getElementParameterFromField(EParameterFieldType.NAME_SELECTION_REFERENCE);
+            }
             if (param != null) {
                 if (param.isShow(elem.getElementParameters())) {
                     String value = (String) param.getValue();

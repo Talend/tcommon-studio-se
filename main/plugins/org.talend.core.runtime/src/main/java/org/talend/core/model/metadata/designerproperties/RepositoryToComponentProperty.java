@@ -112,7 +112,7 @@ public class RepositoryToComponentProperty {
         if (connection instanceof XmlFileConnection) {
             return getXmlFileValue((XmlFileConnection) connection, value);
         }
-        if (connection instanceof DatabaseConnection) {
+        if (connection != null && connection.getCompProperties() == null && (connection instanceof DatabaseConnection)) {
             return getDatabaseValue((DatabaseConnection) connection, value, table, targetComponent);
         }
 
@@ -1423,19 +1423,44 @@ public class RepositoryToComponentProperty {
                     connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_ADDITIONAL_JDBC_SETTINGS));
         }
 
-        if (value.equals("USE_SSL") && EDatabaseTypeName.HIVE.getDisplayName().equals(databaseType)) {
+        if (value.equals("USE_SSL") && (EDatabaseTypeName.HIVE.getDisplayName().equals(databaseType)
+                || EDatabaseTypeName.ORACLE_CUSTOM.getDisplayName().equals(databaseType))) {
             String message = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_USE_SSL);
             return Boolean.parseBoolean(message);
         }
 
-        if (value.equals("SSL_TRUST_STORE") && EDatabaseTypeName.HIVE.getDisplayName().equals(databaseType)) {
+        if ((value.equals("SSL_TRUST_STORE") || value.equals("SSL_TRUSTSERVER_TRUSTSTORE"))
+                && (EDatabaseTypeName.HIVE.getDisplayName().equals(databaseType)
+                || EDatabaseTypeName.ORACLE_CUSTOM.getDisplayName().equals(databaseType))) {
             return getAppropriateValue(connection,
                     connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_SSL_TRUST_STORE_PATH));
         }
 
-        if (value.equals("SSL_TRUST_STORE_PASSWORD") && EDatabaseTypeName.HIVE.getDisplayName().equals(databaseType)) {
+        if ((value.equals("SSL_TRUST_STORE_PASSWORD") || value.equals("SSL_TRUSTSERVER_PASSWORD"))
+                && (EDatabaseTypeName.HIVE.getDisplayName().equals(databaseType)
+                || EDatabaseTypeName.ORACLE_CUSTOM.getDisplayName().equals(databaseType))) {
             return getAppropriateValue(connection, connection
                     .getValue(connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_SSL_TRUST_STORE_PASSWORD), false));
+        }
+        
+        if (value.equals("NEED_CLIENT_AUTH") && EDatabaseTypeName.ORACLE_CUSTOM.getDisplayName().equals(databaseType)) {
+            String message = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_NEED_CLIENT_AUTH);
+            return Boolean.parseBoolean(message);
+        }
+
+        if (value.equals("SSL_KEYSTORE") && EDatabaseTypeName.ORACLE_CUSTOM.getDisplayName().equals(databaseType)) {
+            return getAppropriateValue(connection,
+                    connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_SSL_KEY_STORE_PATH));
+        }
+
+        if (value.equals("DISABLE_CBC_PROTECTION") && EDatabaseTypeName.ORACLE_CUSTOM.getDisplayName().equals(databaseType)) {
+            String message = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_DISABLE_CBC_PROTECTION);
+            return Boolean.parseBoolean(message);
+        }
+
+        if (value.equals("SSL_KEYSTORE_PASSWORD") && EDatabaseTypeName.ORACLE_CUSTOM.getDisplayName().equals(databaseType)) {
+            return getAppropriateValue(connection, connection
+                    .getValue(connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_SSL_KEY_STORE_PASSWORD), false));
         }
 
         if (value.equals("HADOOP_CUSTOM_JARS")) {
@@ -2859,7 +2884,7 @@ public class RepositoryToComponentProperty {
         return null;
     }
 
-    private static Object addQuotesIfNecessary(Connection connection, String value) {
+    public static Object addQuotesIfNecessary(Connection connection, String value) {
         if (!isContextMode(connection, value)) {
             if (!value.startsWith(TalendQuoteUtils.QUOTATION_MARK) && !value.endsWith(TalendQuoteUtils.QUOTATION_MARK)) {
                 return TalendQuoteUtils.addQuotes(value);

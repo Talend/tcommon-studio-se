@@ -380,13 +380,15 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
             databaseWizardPage.setDescription(Messages.getString("DatabaseWizardPage.descriptionCreate.Step2")); //$NON-NLS-1$
             databaseWizardPage.setPageComplete(false);
         } else {
+            boolean isTCOM = databaseWizardPage.isTCOMDB(connectionItem.getTypeName());
+            
             propertiesWizardPage.setTitle(Messages.getString("DatabaseWizardPage.titleUpdate.Step1")); //$NON-NLS-1$
             propertiesWizardPage.setDescription(Messages.getString("DatabaseWizardPage.descriptionUpdate.Step1")); //$NON-NLS-1$
-            propertiesWizardPage.setPageComplete(isRepositoryObjectEditable());
+            propertiesWizardPage.setPageComplete(isRepositoryObjectEditable() && !isTCOM);
 
             databaseWizardPage.setTitle(Messages.getString("DatabaseWizardPage.titleUpdate.Step2")); //$NON-NLS-1$
             databaseWizardPage.setDescription(Messages.getString("DatabaseWizardPage.descriptionUpdate.Step2")); //$NON-NLS-1$
-            databaseWizardPage.setPageComplete(isRepositoryObjectEditable());
+            databaseWizardPage.setPageComplete(isRepositoryObjectEditable() && !isTCOM);
         }
         addPage(propertiesWizardPage);
         addPage(databaseWizardPage);
@@ -420,24 +422,17 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
     @Override
     public boolean performFinish() {
         if (databaseWizardPage.isPageComplete()) {
-            // DatabaseForm form = (DatabaseForm) databaseWizardPage.getControl();
-            // List<HashMap<String, Object>> properties = form.getProperties();
-            // try {
-            // connection.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HBASE_PROPERTIES,
-            // getHadoopPropertiesString(properties));
-            // } catch (JSONException e1) {
-            // String detailError = e1.toString();
-            //                new ErrorDialogWidthDetailArea(getShell(), PID, Messages.getString("CommonWizard.persistenceException"), //$NON-NLS-1$
-            // detailError);
-            //                log.error(Messages.getString("CommonWizard.persistenceException") + "\n" + detailError); //$NON-NLS-1$ //$NON-NLS-2$
-            // return false;
-            // }
             /*
              * if create connection in TOS with context model,should use the original value when create catalog or //
              * schema,see bug 0016636,using metadataConnection can be sure that all the values has been parse to
              * original. hywang
              */
             deleteSwitchTypeNode();
+            // use the context group of selected on check button to check the selection in perform finish.
+            String contextName = null;
+            if (databaseWizardPage.getSelectedContextType() != null) {
+                contextName = databaseWizardPage.getSelectedContextType().getName();
+            }
             if(isTCOMType(getDBType(connectionItem))){
                 IGenericDBService dbService = null;
                 if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
@@ -448,7 +443,8 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
                     return false;
                 }
                 try {
-                    dbService.dbWizardPerformFinish(connectionItem, databaseWizardPage.getForm(), isCreation(), pathToSave, new ArrayList<IMetadataTable>());
+                    dbService.dbWizardPerformFinish(connectionItem, databaseWizardPage.getForm(), isCreation(), pathToSave, new ArrayList<IMetadataTable>(),contextName);
+                    closeLockStrategy();
                 } catch (CoreException e) {
                     new ErrorDialogWidthDetailArea(getShell(), PID, Messages.getString("CommonWizard.persistenceException"), //$NON-NLS-1$
                             e.toString());
@@ -499,11 +495,7 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
         
             // ~19528
 
-            // use the context group of selected on check button to check the selection in perform finish.
-            String contextName = null;
-            if (databaseWizardPage.getSelectedContextType() != null) {
-                contextName = databaseWizardPage.getSelectedContextType().getName();
-            }
+        
             IMetadataConnection metadataConnection = null;
             if (contextName == null) {
                 metadataConnection = ConvertionHelper.convert(connection, true);
@@ -893,6 +885,7 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
         this.connection = connectionItem.getConnection();
         this.connectionItem = connectionItem;
         this.connectionProperty = connectionItem.getProperty();
+        propertiesWizardPage.setProperty(this.connectionProperty);
     }
 
     /**
@@ -1100,14 +1093,6 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
         if(item.getConnection() instanceof DatabaseConnection){
             return ((DatabaseConnection)item.getConnection()).getDatabaseType();
         }
-        IGenericDBService dbService = null;
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
-            dbService = (IGenericDBService) GlobalServiceRegister.getDefault().getService(
-                    IGenericDBService.class);
-        }
-        if(dbService != null){
-            return dbService.getGenericConnectionType(item);
-        }
-        return null;
+        return item.getTypeName();
     }
 }

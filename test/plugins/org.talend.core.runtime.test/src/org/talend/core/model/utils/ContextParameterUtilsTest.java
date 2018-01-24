@@ -14,8 +14,17 @@ package org.talend.core.model.utils;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
+import org.talend.core.model.context.JobContext;
+import org.talend.core.model.context.JobContextManager;
+import org.talend.core.model.context.JobContextParameter;
+import org.talend.core.model.metadata.types.JavaTypesManager;
+import org.talend.core.model.process.IContext;
+import org.talend.core.model.process.IContextParameter;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
@@ -162,6 +171,70 @@ public class ContextParameterUtilsTest {
         assertEquals("abc_de", ContextParameterUtils.getValidParameterName("abc_de"));
         assertEquals("abc_de", ContextParameterUtils.getValidParameterName("abc-de"));
         assertEquals("_int", ContextParameterUtils.getValidParameterName("int"));
+    }
+    
+    @Test
+    public void testGetOriginalList() {
+        ContextType contextType = createContextType("TEST");
+        ContextParameterType param1 = createContextParameterType("Copy_of_jdbc14_drivers", "mvn:org.talend.libraries/mysql-connector-java-5.1.30-bin/6.0.0");
+        param1.setType(JavaTypesManager.STRING.getId());
+        contextType.getContextParameter().add(param1);
+        
+        List<String> values = ContextParameterUtils.getOriginalList(contextType, "context.Copy_of_jdbc14_drivers");
+        assertTrue(values.size() == 1);
+        assertTrue(values.get(0).equals("mvn:org.talend.libraries/mysql-connector-java-5.1.30-bin/6.0.0"));
+        
+        contextType = createContextType("TEST");
+        param1 = createContextParameterType("Copy_of_jdbc14_drivers", "mvn:org.talend.libraries/mysql-connector-java-5.1.30-bin/6.0.0;mvn:org.talend.libraries/mysql-connector-java-5.1.40-bin/6.0.0");
+        param1.setType(JavaTypesManager.STRING.getId());
+        contextType.getContextParameter().add(param1);
+        
+        values = ContextParameterUtils.getOriginalList(contextType, "[context.Copy_of_jdbc14_drivers]");
+        assertTrue(values.size() == 2);
+        assertTrue(values.get(1).equals("mvn:org.talend.libraries/mysql-connector-java-5.1.40-bin/6.0.0"));
+        
+        values = ContextParameterUtils.getOriginalList(contextType, null);
+        assertTrue(values.size() == 0);
+        
+        values = ContextParameterUtils.getOriginalList(contextType, "[context.Copy_of_jdbc14]");
+        assertTrue(values.size() == 0);
+    }
+    
+    @Test
+    public void testParseScriptContextCodeList(){
+        JobContextManager contextManager = new JobContextManager();
+        // create context group
+        IContext testGroup = new JobContext("Test");
+        contextManager.getListContext().add(testGroup);
+
+        // create context parameters
+        IContextParameter contextParam = contextParam = new JobContextParameter();
+        contextParam.setName("jdbc1_drivers");
+        contextParam.setType(JavaTypesManager.STRING.getId());//id_List Of Value
+        contextParam.setValue("mvn:org.talend.libraries/mysql-connector-java-5.1.30-bin/6.0.0;mvn:org.talend.libraries/mysql-connector-java-5.1.40-bin/6.0.0");
+//        contextParam.setValue("mvn:org.talend.libraries/mysql-connector-java-5.1.30-bin/6.0.0;mvn:org.talend.libraries/mysql-connector-java-5.1.40-bin/6.0.0");
+        testGroup.getContextParameterList().add(contextParam);
+
+        contextParam = new JobContextParameter();
+        contextParam.setName("jdbc1_drivers2");
+        contextParam.setType(JavaTypesManager.STRING.getId());//id_List Of Value
+        contextParam.setValue("mvn:org.talend.libraries/mysql-connector-java-5.1.30-bin/6.0.0");
+        String [] vs2 = {"mvn:org.talend.libraries/mysql-connector-java-5.1.30-bin/6.0.0"};
+        contextParam.setValueList(vs2);
+        testGroup.getContextParameterList().add(contextParam);
+        
+        List<String> l = new ArrayList<String>();
+        l.add("context.jdbc1_drivers");
+        List v1 = ContextParameterUtils.parseScriptContextCodeList(l, testGroup, true);
+        assertTrue(v1.size() == 2);
+        assertTrue(v1.get(0).equals("mvn:org.talend.libraries/mysql-connector-java-5.1.30-bin/6.0.0"));
+        assertTrue(v1.get(1).equals("mvn:org.talend.libraries/mysql-connector-java-5.1.40-bin/6.0.0"));
+        
+        l = new ArrayList<String>();
+        l.add("context.jdbc1_drivers2");
+        List v2 = ContextParameterUtils.parseScriptContextCodeList(l, testGroup, true);
+        assertTrue(v2.size() == 1);
+        assertTrue(v2.get(0).equals("mvn:org.talend.libraries/mysql-connector-java-5.1.30-bin/6.0.0"));
     }
 
 }

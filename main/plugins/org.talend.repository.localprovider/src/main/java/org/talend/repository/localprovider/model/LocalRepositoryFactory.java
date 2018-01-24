@@ -1766,7 +1766,14 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         IProject fsProject = ResourceUtils.getProject(project);
         List<IRepositoryViewObject> allRepositoryViewObject = new ArrayList<IRepositoryViewObject>();
         for (IRepositoryViewObject objToMove : objToMoves) {
-            String folderName = ERepositoryObjectType.getFolderName(objToMove.getRepositoryObjectType()) + IPath.SEPARATOR
+            ERepositoryObjectType type = null;
+            if(objToMove.getRepositoryNode() != null){
+                type = objToMove.getRepositoryNode().getContentType();
+            }
+            if(type == null){
+                type = objToMove.getRepositoryObjectType();
+            }
+            String folderName = ERepositoryObjectType.getFolderName(type) + IPath.SEPARATOR
                     + newPath;
             IFolder folder = ResourceUtils.getFolder(fsProject, folderName, true);
             parentPath = folder.getFullPath();
@@ -1854,7 +1861,11 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
     public void moveObject(IRepositoryViewObject objToMove, IPath newPath) throws PersistenceException {
         Project project = getRepositoryContext().getProject();
         IProject fsProject = ResourceUtils.getProject(project);
-        String folderName = ERepositoryObjectType.getFolderName(objToMove.getRepositoryObjectType()) + IPath.SEPARATOR + newPath;
+        ERepositoryObjectType repObjectType = objToMove.getRepositoryObjectType();
+        if ("JDBC".equals(repObjectType.getLabel())) {
+            repObjectType = objToMove.getRepositoryNode().getContentType();
+        }
+        String folderName = ERepositoryObjectType.getFolderName(repObjectType) + IPath.SEPARATOR + newPath;
         IFolder folder = ResourceUtils.getFolder(fsProject, folderName, true);
 
         ERepositoryObjectType itemType = ERepositoryObjectType.getItemType(objToMove.getProperty().getItem());
@@ -1878,7 +1889,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
             if (currentItem.getParent() instanceof FolderItem) {
                 ((FolderItem) currentItem.getParent()).getChildren().remove(currentItem);
             }
-            FolderItem newFolderItem = getFolderItem(project, objToMove.getRepositoryObjectType(), newPath);
+            FolderItem newFolderItem = getFolderItem(project, repObjectType, newPath);
             newFolderItem.getChildren().add(currentItem);
             currentItem.setParent(newFolderItem);
 
@@ -2116,6 +2127,19 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         itemResource.getContents().add(item.getNotationHolder());
         item.computeNotationHolder();
 
+        return itemResource;
+    }
+    
+    private Resource create(IProject project, ConnectionItem item, IPath path) throws PersistenceException {
+        XmiResourceManager xmiResourceManager = ProxyRepositoryFactory.getInstance().getRepositoryFactoryFromProvider()
+                .getResourceManager();
+        Resource itemResource = null;
+        ERepositoryObjectType repObjType = ERepositoryObjectType.getType(item.getTypeName());
+        if (repObjType != null) {
+            itemResource = xmiResourceManager.createItemResource(project, item, path, repObjType, false);
+            MetadataManager.addContents(item, itemResource);
+            itemResource.getContents().add(item.getConnection());
+        }
         return itemResource;
     }
 
@@ -2437,6 +2461,10 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
             case PropertiesPackage.EDIFACT_CONNECTION_ITEM:
                 itemResource = save(resourceSet, (EDIFACTConnectionItem) item);
                 break;
+                //TUP-18461 JDBC
+//            case PropertiesPackage.CONNECTION_ITEM:
+//                itemResource = save(resourceSet, (ConnectionItem)item);
+//                break;
             case PropertiesPackage.CONNECTION_ITEM:
                 // connection item may be used by extention point
                 boolean created = false;
@@ -2676,12 +2704,11 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
     @Override
     public void create(Project project, Item item, IPath path, boolean... isImportItem) throws PersistenceException {
         final ResourceOption creatation = ResourceOption.CREATATION;
-        final String optionName = creatation.getName();
-        EmfResourcesFactoryReader.INSTANCE.getSaveOptionsProviders().put(optionName, creatation.getProvider());
+        EmfResourcesFactoryReader.INSTANCE.addOption(creatation, false);
         try {
             delegateCreate(project, item, path, isImportItem);
         } finally {
-            EmfResourcesFactoryReader.INSTANCE.getSaveOptionsProviders().remove(optionName);
+            EmfResourcesFactoryReader.INSTANCE.removOption(creatation, false);
         }
     }
 
@@ -2823,6 +2850,9 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
                 itemResource = create(project2, (EDIFACTConnectionItem) item, ERepositoryObjectType.METADATA_EDIFACT, path);
                 break;
             case PropertiesPackage.CONNECTION_ITEM:
+              //TUP-18461 JDBC
+//                itemResource = create(project2, (ConnectionItem) item, path);
+//                break;
                 // connection item may be used by extention point
                 final int classifierID = eClass.getClassifierID();
                 boolean created = false;

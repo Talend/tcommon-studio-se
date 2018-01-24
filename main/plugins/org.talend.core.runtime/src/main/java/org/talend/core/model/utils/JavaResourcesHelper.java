@@ -129,6 +129,7 @@ public class JavaResourcesHelper {
      * project name is "Test". will return "org.talend.test".
      * 
      * If other branding, like "Camel", will return "org.camel.test".
+     * @deprecated
      */
     public static String getGroupName(String projectName) {
 
@@ -143,6 +144,7 @@ public class JavaResourcesHelper {
      * return the getGroupName with project "Test", and item name "TestJob".
      * 
      * something like: "org.talend.test.testjob".
+     * @deprecated
      */
     public static String getGroupItemName(String projectName, String itemName) {
         if (itemName == null) {

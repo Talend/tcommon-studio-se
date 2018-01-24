@@ -122,4 +122,12 @@
            target="dummy.uri">
     </mapping>
   </extension>
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated properties -->
+      <package
+            uri="http://www.talend.org/properties"
+            class="org.talend.core.model.properties.PropertiesPackage"
+            genModel="model/properties.genmodel"/>
+   </extension>
+
 </plugin>

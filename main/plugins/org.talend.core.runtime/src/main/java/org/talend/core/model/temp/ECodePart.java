@@ -21,6 +21,8 @@ package org.talend.core.model.temp;
  */
 public enum ECodePart {
     MAIN("main"), //$NON-NLS-1$
+    PROCESS_DATA_BEGIN("process_data_begin"), //$NON-NLS-1$
+    PROCESS_DATA_END("process_data_end"), //$NON-NLS-1$
     BEGIN("begin"), //$NON-NLS-1$
     END("end"), //$NON-NLS-1$
     FINALLY("finally"), //$NON-NLS-1$

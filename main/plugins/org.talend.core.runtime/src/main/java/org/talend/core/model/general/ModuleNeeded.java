@@ -15,6 +15,8 @@ package org.talend.core.model.general;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.Path;
@@ -82,8 +84,8 @@ public class ModuleNeeded {
 
     public static final String UNKNOWN = "Unknown";
 
-    ILibraryManagerService libManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
-            ILibraryManagerService.class);
+    ILibraryManagerService libManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault()
+            .getService(ILibraryManagerService.class);
 
     /**
      * DOC smallet ModuleNeeded class global comment. Detailled comment <br/>
@@ -137,12 +139,30 @@ public class ModuleNeeded {
             String requiredIf, String mavenUrl) {
         super();
         this.context = context;
-        setModuleName(moduleName);
         this.informationMsg = informationMsg;
         this.required = required;
         this.installURL = installURL;
         this.requiredIf = requiredIf;
-        setMavenUri(mavenUrl);
+        String name = moduleName;
+        String uri = mavenUrl;
+        if(moduleName !=null){
+            // in case the param moduleName is a maven uri
+            MavenArtifact artifact = MavenUrlHelper.parseMvnUrl(moduleName);
+            if(artifact !=null){
+                name =artifact.getFileName();
+                if(mavenUrl ==null){
+                    uri =  moduleName;
+                }
+            }
+        }
+        if(mavenUrl !=null && moduleName ==null){
+            MavenArtifact artifact = MavenUrlHelper.parseMvnUrl(mavenUrl);
+            if(artifact !=null){
+                name =   artifact.getFileName();
+            }
+        }
+        setModuleName(name);
+        setMavenUri(uri);
     }
 
     public String getRequiredIf() {
@@ -244,8 +264,8 @@ public class ModuleNeeded {
     }
 
     public ELibraryInstallStatus getStatus() {
-        ILibraryManagerService libManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
-                ILibraryManagerService.class);
+        ILibraryManagerService libManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault()
+                .getService(ILibraryManagerService.class);
         libManagerService.checkModuleStatus(this);
         String mvnUriStatusKey = getMavenUri();
         this.status = ModuleStatusProvider.getStatus(mvnUriStatusKey);
@@ -253,8 +273,8 @@ public class ModuleNeeded {
     }
 
     public ELibraryInstallStatus getDeployStatus() {
-        ILibraryManagerService libManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
-                ILibraryManagerService.class);
+        ILibraryManagerService libManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault()
+                .getService(ILibraryManagerService.class);
         libManagerService.checkModuleStatus(this);
         String mvnUriStatusKey = getMavenUri();
 
@@ -573,7 +593,7 @@ public class ModuleNeeded {
     public String getCustomMavenUri() {
         String originalURI = initURI();
         String customURI = libManagerService.getCustomMavenURI(originalURI);
-        if (!originalURI.equals(customURI)) {
+        if (originalURI != null && !originalURI.equals(customURI)) {
             return customURI;
         } else {
             return null;

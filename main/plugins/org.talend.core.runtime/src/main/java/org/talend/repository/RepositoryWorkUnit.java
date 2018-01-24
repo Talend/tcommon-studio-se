@@ -211,5 +211,4 @@ public abstract class RepositoryWorkUnit<T> {
     public void setAvoidUpdateLocks(boolean avoidUpdateLocks) {
         this.avoidUpdateLocks = avoidUpdateLocks;
     }
-    
 }

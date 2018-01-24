@@ -32,6 +32,7 @@ import org.talend.core.database.conn.version.EDatabaseVersion4Drivers;
 import org.talend.core.exception.WarningSQLException;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.metadata.IMetadataConnection;
+import org.talend.core.model.metadata.builder.ConvertionHelper;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.metadata.builder.database.ExtractMetaDataFromDataBase;
 import org.talend.core.model.metadata.builder.database.JavaSqlFactory;
@@ -377,6 +378,11 @@ public class ManagerConnection {
                     log.error(Messages.getString("CommonWizard.exception") + "\n" + e.toString()); //$NON-NLS-1$ //$NON-NLS-2$
                 }
             } else {
+                if (metadataConnection.getCurrentConnection() != null
+                        && metadataConnection.getCurrentConnection() instanceof DatabaseConnection) {
+                    DatabaseConnection conn = (DatabaseConnection) metadataConnection.getCurrentConnection();
+                    metadataConnection.setAdditionalParams(ConvertionHelper.convertAdditionalParameters(conn));
+                }
                 testConnection = ExtractMetaDataFromDataBase.testConnection(metadataConnection.getDbType(),
                         metadataConnection.getUrl(), metadataConnection.getUsername(), metadataConnection.getPassword(),
                         metadataConnection.getSchema(), metadataConnection.getDriverClass(),

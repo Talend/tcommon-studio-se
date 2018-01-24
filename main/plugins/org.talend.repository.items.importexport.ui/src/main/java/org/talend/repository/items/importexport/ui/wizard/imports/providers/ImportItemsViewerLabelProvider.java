@@ -20,6 +20,7 @@ import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.RepositoryNodeProviderRegistryReader;
+import org.talend.core.runtime.services.IGenericDBService;
 import org.talend.core.runtime.services.IGenericWizardService;
 import org.talend.core.ui.images.CoreImageProvider;
 import org.talend.repository.items.importexport.wizard.models.FolderImportNode;
@@ -77,6 +78,15 @@ public class ImportItemsViewerLabelProvider extends LabelProvider {
         } else if (element instanceof ERepositoryObjectType) {
             ERepositoryObjectType itemType = (ERepositoryObjectType) element;
             if (itemType != null) {
+                IGenericDBService dbService = null;
+                if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
+                    dbService = (IGenericDBService) GlobalServiceRegister.getDefault().getService(
+                            IGenericDBService.class);
+                }
+                if(dbService != null && dbService.getExtraTypes().contains(itemType)){
+                    itemType = dbService.getExtraDBType(itemType);
+                }
+                
                 Image image = null;
                 IGenericWizardService wizardService = null;
                 if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericWizardService.class)) {
