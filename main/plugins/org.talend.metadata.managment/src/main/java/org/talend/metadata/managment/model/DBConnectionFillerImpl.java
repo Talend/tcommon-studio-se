@@ -1545,6 +1545,9 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
 
                     DatabaseConnection dbConnection = (DatabaseConnection) ConnectionHelper.getConnection(colSet);
                     String dbmsId = dbConnection == null ? null : dbConnection.getDbmsId();
+                    if(EDatabaseTypeName.GENERAL_JDBC.getXMLType().equals(dbConnection.getDatabaseType())&&(dbmsId ==null||"".equals(dbmsId) )){
+                        dbmsId ="mysql_id";
+                    }
                     if (dbmsId != null) {
                         MappingTypeRetriever mappingTypeRetriever = MetadataTalendType.getMappingTypeRetriever(dbmsId);
                         if (mappingTypeRetriever == null) {
