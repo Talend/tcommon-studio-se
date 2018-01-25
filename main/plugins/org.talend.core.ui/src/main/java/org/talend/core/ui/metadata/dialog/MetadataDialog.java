@@ -48,7 +48,9 @@ import org.talend.commons.ui.swt.tableviewer.IModifiedBeanListener;
 import org.talend.commons.ui.swt.tableviewer.ModifiedBeanEvent;
 import org.talend.commons.ui.swt.tableviewer.TableViewerCreator;
 import org.talend.core.database.EDatabaseTypeName;
+import org.talend.core.model.components.AbstractLayerComponent;
 import org.talend.core.model.components.EComponentType;
+import org.talend.core.model.components.IComponent;
 import org.talend.core.model.metadata.Dbms;
 import org.talend.core.model.metadata.IMetadataColumn;
 import org.talend.core.model.metadata.IMetadataTable;
@@ -197,12 +199,13 @@ public class MetadataDialog extends Dialog {
         boolean hasRepositoryDbSchema = false;
         boolean isEBCDIC = false;
         boolean isNewFram = false;
-        if (node != null && node.getComponent() != null) {
-            isNewFram = node.getComponent().getComponentType()==EComponentType.GENERIC;
+        IComponent component = node.getComponent();
+        if (node != null && component != null) {
+            isNewFram = component.getComponentType() == EComponentType.GENERIC;
             eltComponent = node.isELTComponent();
-            isEBCDIC = node.getComponent().getName().contains("EBCDIC");
-            isSAPELT = node.getComponent().getName().startsWith("tELTSAP");
-            if (node.getComponent().isSupportDbType() || node.getComponent().getOriginalFamilyName().startsWith(DATABASE_LABEL)
+            isEBCDIC = component.getName().contains("EBCDIC");
+            isSAPELT = component.getName().startsWith("tELTSAP");
+            if (component.isSupportDbType() || component.getOriginalFamilyName().startsWith(DATABASE_LABEL)
                     || eltComponent || isEBCDIC) {
                 dbComponent = !isEBCDIC;
                 for (IElementParameter currentParam : node.getElementParameters()) {
@@ -279,9 +282,13 @@ public class MetadataDialog extends Dialog {
         if(isNewFram){
             dbComponent = true;
         }
+        boolean activeDbColumns = dbComponent;
+        if (component instanceof AbstractLayerComponent) {
+            activeDbColumns = activeDbColumns || AbstractLayerComponent.class.cast(component).isActiveDbColumns();
+        }
         metaView.setShowDbTypeColumn(hasMappingType || eltComponent, false, hasMappingType
                 || (dbComponent && !hasRepositoryDbSchema));
-        metaView.setShowDbColumnName(dbComponent, hasMappingType || (dbComponent && !hasRepositoryDbSchema));
+        metaView.setShowDbColumnName(activeDbColumns, hasMappingType || (activeDbColumns && !hasRepositoryDbSchema));
 
         // hide the talend type for ELT components
         metaView.setShowTalendTypeColumn(!eltComponent || isSAPELT);
