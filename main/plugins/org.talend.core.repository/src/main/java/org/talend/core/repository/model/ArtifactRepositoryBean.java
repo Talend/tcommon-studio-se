@@ -16,13 +16,14 @@ import org.talend.core.nexus.NexusServerBean;
 import org.talend.utils.string.StringUtilities;
 
 /**
- * created by cmeng on Mar 2, 2017
- * Detailled comment
+ * created by cmeng on Mar 2, 2017 Detailled comment
  *
  */
 public class ArtifactRepositoryBean implements IArtifactRepositoryBean {
 
-    protected static final String REPO_MIDDLE_PATH = "/content/repositories/"; //$NON-NLS-1$
+    protected static final String REPO2_MIDDLE_PATH = "/content/repositories/"; //$NON-NLS-1$
+
+    protected static final String REPO3_MIDDLE_PATH = "/repository/"; //$NON-NLS-1$
 
     private String nexusUrl = ""; //$NON-NLS-1$
 
@@ -35,8 +36,8 @@ public class ArtifactRepositoryBean implements IArtifactRepositoryBean {
     private String nexusDefaultSnapshotRepo = ""; //$NON-NLS-1$
 
     private String nexusDefaultGroupID = ""; //$NON-NLS-1$
-    
-    private String nexusType = NexusServerBean.NexusType.NEXUS_2.name(); //$NON-NLS-1$
+
+    private String nexusType = NexusServerBean.NexusType.NEXUS_2.name(); // $NON-NLS-1$
 
     @Override
     public String getNexusUrl() {
@@ -83,7 +84,8 @@ public class ArtifactRepositoryBean implements IArtifactRepositoryBean {
         if (releaseRepo.isEmpty()) {
             return serverUrl;
         }
-        return serverUrl + REPO_MIDDLE_PATH + releaseRepo;
+        return nexusType.equals("NEXUS 3") ? serverUrl + REPO3_MIDDLE_PATH + releaseRepo
+                : serverUrl + REPO2_MIDDLE_PATH + releaseRepo;
     }
 
     @Override
@@ -113,7 +115,9 @@ public class ArtifactRepositoryBean implements IArtifactRepositoryBean {
         if (snapshotRepo.isEmpty()) {
             return serverUrl;
         }
-        return serverUrl + REPO_MIDDLE_PATH + snapshotRepo;
+
+        return nexusType.equals("NEXUS 3") ? serverUrl + REPO3_MIDDLE_PATH + snapshotRepo
+                : serverUrl + REPO2_MIDDLE_PATH + snapshotRepo;
     }
 
     @Override
