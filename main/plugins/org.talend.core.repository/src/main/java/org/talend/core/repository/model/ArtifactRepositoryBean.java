@@ -134,6 +134,7 @@ public class ArtifactRepositoryBean implements IArtifactRepositoryBean {
         this.nexusDefaultGroupID = nexusDefaultGroupID;
     }
 
+    @Override
     public String getNexusType() {
         return nexusType;
     }

@@ -35,4 +35,6 @@ public interface IArtifactRepositoryBean {
     public String getNexusDefaultSnapshotRepo();
 
     public String getNexusDefaultGroupID();
+    
+    public String getNexusType();
 }
