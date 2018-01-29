@@ -947,7 +947,7 @@ public class NodeUtil {
         if (original == null || original.trim().length() == 0) {
             return original;
         }
-        String result = "";
+        StringBuilder result = new StringBuilder();
         int leftQuotes = original.indexOf("\"");
         int rightQuotes = original.indexOf("\"", leftQuotes + 1);
         int fakeRightQuotes = getFakeRightQuotes( original,leftQuotes);
@@ -956,14 +956,25 @@ public class NodeUtil {
             fakeRightQuotes = getFakeRightQuotes( original,fakeRightQuotes);
         }
         int leftPrev = 0;
-        while (leftQuotes >= 0 && rightQuotes > leftQuotes) {
-            if (leftQuotes > leftPrev) {
-                result += original.substring(leftPrev, leftQuotes);
-            }
-            // System.out.println("leftQuote="+leftQuotes + ", rightQuote="+rightQuotes);
-            if (leftQuotes < rightQuotes) {
-                result += original.substring(leftQuotes, rightQuotes + 1).replace("\r", "").replace("\n", "\\n");
-            }
+		while (leftQuotes >= 0 && rightQuotes > leftQuotes) {
+			if (leftQuotes > leftPrev) {//Outside of double quote
+				result.append(original.substring(leftPrev, leftQuotes));
+
+			}
+			if (leftQuotes < rightQuotes) {//Inside of double quote
+				//split string for better appearance and avoid compile error when string exceed 64k
+				int current = leftQuotes;
+				while (rightQuotes + 1 - current > 120) {
+					int Offset = 120;
+					while (original.charAt(current + Offset - 1) == '\\') {//avoid split special character e.g. \"
+						Offset--;
+					}
+					result.append(original.substring(current, current + Offset).replace("\r", "").replace("\n", "\\n")).append("\"\n+\"");
+					current += Offset;
+					Offset = 120;
+				}
+				result.append(original.substring(current, rightQuotes + 1).replace("\r", "").replace("\n", "\\n"));
+			}
 
             leftQuotes = original.indexOf("\"", rightQuotes + 1);
             leftPrev = rightQuotes + 1;
@@ -974,8 +985,8 @@ public class NodeUtil {
                 fakeRightQuotes = getFakeRightQuotes( original,fakeRightQuotes);
             }
         }
-        result += original.substring(leftPrev);
-        return result;
+        result.append( original.substring(leftPrev));
+        return result.toString();
     }
     
     /**
