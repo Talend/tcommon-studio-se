@@ -23,6 +23,7 @@ import org.talend.designer.core.model.utils.emf.component.HEADERType;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.designer.core.model.utils.emf.component.impl.HEADERTypeImpl#getSIGNATURE <em>SIGNATURE</em>}</li>
  *   <li>{@link org.talend.designer.core.model.utils.emf.component.impl.HEADERTypeImpl#getFORMAT <em>FORMAT</em>}</li>
@@ -60,8 +61,8 @@ import org.talend.designer.core.model.utils.emf.component.HEADERType;
  *   <li>{@link org.talend.designer.core.model.utils.emf.component.impl.HEADERTypeImpl#getINPUTTYPE <em>INPUTTYPE</em>}</li>
  *   <li>{@link org.talend.designer.core.model.utils.emf.component.impl.HEADERTypeImpl#getOUTPUTTYPE <em>OUTPUTTYPE</em>}</li>
  *   <li>{@link org.talend.designer.core.model.utils.emf.component.impl.HEADERTypeImpl#isSPARKACTION <em>SPARKACTION</em>}</li>
+ *   <li>{@link org.talend.designer.core.model.utils.emf.component.impl.HEADERTypeImpl#isACTIVE_DB_COLUMNS <em>ACTIVE DB COLUMNS</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -919,6 +920,35 @@ public class HEADERTypeImpl extends EObjectImpl implements HEADERType {
      * @ordered
      */
     protected boolean sPARKACTIONESet;
+
+    /**
+     * The default value of the '{@link #isACTIVE_DB_COLUMNS() <em>ACTIVE DB COLUMNS</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #isACTIVE_DB_COLUMNS()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean ACTIVE_DB_COLUMNS_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isACTIVE_DB_COLUMNS() <em>ACTIVE DB COLUMNS</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #isACTIVE_DB_COLUMNS()
+     * @generated
+     * @ordered
+     */
+    protected boolean aCTIVE_DB_COLUMNS = ACTIVE_DB_COLUMNS_EDEFAULT;
+
+    /**
+     * This is true if the ACTIVE DB COLUMNS attribute has been set.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    protected boolean aCTIVE_DB_COLUMNSESet;
 
     /**
      * <!-- begin-user-doc -->
@@ -1991,6 +2021,52 @@ public class HEADERTypeImpl extends EObjectImpl implements HEADERType {
      * <!-- end-user-doc -->
      * @generated
      */
+    public boolean isACTIVE_DB_COLUMNS() {
+        return aCTIVE_DB_COLUMNS;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setACTIVE_DB_COLUMNS(boolean newACTIVE_DB_COLUMNS) {
+        boolean oldACTIVE_DB_COLUMNS = aCTIVE_DB_COLUMNS;
+        aCTIVE_DB_COLUMNS = newACTIVE_DB_COLUMNS;
+        boolean oldACTIVE_DB_COLUMNSESet = aCTIVE_DB_COLUMNSESet;
+        aCTIVE_DB_COLUMNSESet = true;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, ComponentPackage.HEADER_TYPE__ACTIVE_DB_COLUMNS, oldACTIVE_DB_COLUMNS, aCTIVE_DB_COLUMNS, !oldACTIVE_DB_COLUMNSESet));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void unsetACTIVE_DB_COLUMNS() {
+        boolean oldACTIVE_DB_COLUMNS = aCTIVE_DB_COLUMNS;
+        boolean oldACTIVE_DB_COLUMNSESet = aCTIVE_DB_COLUMNSESet;
+        aCTIVE_DB_COLUMNS = ACTIVE_DB_COLUMNS_EDEFAULT;
+        aCTIVE_DB_COLUMNSESet = false;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.UNSET, ComponentPackage.HEADER_TYPE__ACTIVE_DB_COLUMNS, oldACTIVE_DB_COLUMNS, ACTIVE_DB_COLUMNS_EDEFAULT, oldACTIVE_DB_COLUMNSESet));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public boolean isSetACTIVE_DB_COLUMNS() {
+        return aCTIVE_DB_COLUMNSESet;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public String getTYPE() {
         return tYPE;
     }
@@ -2208,6 +2284,8 @@ public class HEADERTypeImpl extends EObjectImpl implements HEADERType {
                 return getOUTPUTTYPE();
             case ComponentPackage.HEADER_TYPE__SPARKACTION:
                 return isSPARKACTION() ? Boolean.TRUE : Boolean.FALSE;
+            case ComponentPackage.HEADER_TYPE__ACTIVE_DB_COLUMNS:
+                return isACTIVE_DB_COLUMNS() ? Boolean.TRUE : Boolean.FALSE;
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -2326,6 +2404,9 @@ public class HEADERTypeImpl extends EObjectImpl implements HEADERType {
                 return;
             case ComponentPackage.HEADER_TYPE__SPARKACTION:
                 setSPARKACTION(((Boolean)newValue).booleanValue());
+                return;
+            case ComponentPackage.HEADER_TYPE__ACTIVE_DB_COLUMNS:
+                setACTIVE_DB_COLUMNS(((Boolean)newValue).booleanValue());
                 return;
         }
         super.eSet(featureID, newValue);
@@ -2446,6 +2527,9 @@ public class HEADERTypeImpl extends EObjectImpl implements HEADERType {
             case ComponentPackage.HEADER_TYPE__SPARKACTION:
                 unsetSPARKACTION();
                 return;
+            case ComponentPackage.HEADER_TYPE__ACTIVE_DB_COLUMNS:
+                unsetACTIVE_DB_COLUMNS();
+                return;
         }
         super.eUnset(featureID);
     }
@@ -2529,6 +2613,8 @@ public class HEADERTypeImpl extends EObjectImpl implements HEADERType {
                 return OUTPUTTYPE_EDEFAULT == null ? oUTPUTTYPE != null : !OUTPUTTYPE_EDEFAULT.equals(oUTPUTTYPE);
             case ComponentPackage.HEADER_TYPE__SPARKACTION:
                 return isSetSPARKACTION();
+            case ComponentPackage.HEADER_TYPE__ACTIVE_DB_COLUMNS:
+                return isSetACTIVE_DB_COLUMNS();
         }
         return super.eIsSet(featureID);
     }
@@ -2612,6 +2698,8 @@ public class HEADERTypeImpl extends EObjectImpl implements HEADERType {
         result.append(oUTPUTTYPE);
         result.append(", sPARKACTION: ");
         if (sPARKACTIONESet) result.append(sPARKACTION); else result.append("<unset>");
+        result.append(", aCTIVE_DB_COLUMNS: ");
+        if (aCTIVE_DB_COLUMNSESet) result.append(aCTIVE_DB_COLUMNS); else result.append("<unset>");
         result.append(')');
         return result.toString();
     }

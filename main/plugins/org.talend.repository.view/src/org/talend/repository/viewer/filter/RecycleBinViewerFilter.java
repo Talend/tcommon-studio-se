@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -12,17 +12,21 @@
 // ============================================================================
 package org.talend.repository.viewer.filter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.ui.navigator.INavigatorContentService;
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.hadoop.IHadoopClusterService;
 import org.talend.core.hadoop.repository.HadoopRepositoryUtil;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IExtendedRepositoryNodeHandler;
 import org.talend.core.model.repository.RepositoryContentManager;
+import org.talend.core.runtime.services.IGenericDBService;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.IRepositoryNode.ENodeType;
 import org.talend.repository.model.RepositoryNode;
@@ -117,15 +121,7 @@ public class RecycleBinViewerFilter extends ViewerFilter {
             }
         }
 
-        ERepositoryObjectType contentType = null;
-        // elements
-        if (node.getType() == ENodeType.REPOSITORY_ELEMENT) {
-            contentType = node.getObjectType();
-        }
-        //
-        if (contentType == null) {
-            contentType = node.getContentType();
-        }
+        ERepositoryObjectType contentType = getNodeType(node);
         // bin is null
         if (contentType != null) {
             // SubItems
@@ -137,6 +133,9 @@ public class RecycleBinViewerFilter extends ViewerFilter {
                     if (property != null) {
                         try {
                             itemType = ERepositoryObjectType.getItemType(property.getItem());
+                            if(isExtraType(itemType)){
+                                itemType = ERepositoryObjectType.METADATA_CONNECTIONS;
+                            }
                         } catch (IllegalStateException e) { // can't find the item type.
                             // nothing to do
                         }
@@ -146,6 +145,33 @@ public class RecycleBinViewerFilter extends ViewerFilter {
             }
         }
 
+        return contentType;
+    }
+    
+    private boolean isExtraType(ERepositoryObjectType type){
+        List<ERepositoryObjectType> extraTypes = new ArrayList<ERepositoryObjectType>();
+        IGenericDBService dbService = null;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
+            dbService = (IGenericDBService) GlobalServiceRegister.getDefault().getService(
+                    IGenericDBService.class);
+        }
+        if(dbService != null){
+            extraTypes.addAll(dbService.getExtraTypes());
+        } 
+        return extraTypes.contains(type);
+    }
+    
+    private ERepositoryObjectType getNodeType(final RepositoryNode node){
+                ERepositoryObjectType contentType = node.getObjectType();
+        if(contentType != null && isExtraType(contentType)){
+            return node.getContentType();
+        }
+        if (node.getType() == ENodeType.REPOSITORY_ELEMENT) {
+            contentType = node.getObjectType();
+        }
+        if (contentType == null) {
+            contentType = node.getContentType();
+        }
         return contentType;
     }
 }

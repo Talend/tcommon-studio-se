@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -19,6 +19,7 @@ import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.language.LanguageManager;
 import org.talend.core.model.metadata.query.GenerateQueryFactory;
 import org.talend.core.model.metadata.query.IQueryGenerator;
+import org.talend.core.model.param.EConnectionParameterName;
 import org.talend.core.model.process.EParameterFieldType;
 import org.talend.core.model.process.Element;
 import org.talend.core.model.process.IElement;
@@ -405,6 +406,9 @@ public class QueryUtil {
     private static String getDbTableName(IElement node) {
         if (node != null) { // for job settings extra.(feature 2710)
             IElementParameter param = node.getElementParameterFromField(EParameterFieldType.DBTABLE);
+            if(param == null){
+                param = node.getElementParameterFromField(EParameterFieldType.NAME_SELECTION_REFERENCE);
+            }
             if (param != null && param.isShow(node.getElementParameters())) {
                 return (String) param.getValue();
             }

@@ -2,7 +2,7 @@
 <feature
       id="org.talend.core.feature"
       label="Core Feature"
-      version="6.4.0.qualifier"
+      version="7.0.1.qualifier"
       provider-name=".Talend SA.">
 
    <description url="http://www.talend.com/online/featuresdescription.html#core-feature">
@@ -366,6 +366,76 @@
 
    <plugin
          id="org.ops4j.pax.url.mvn"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+         
+   <plugin
+         id="org.apache.httpcomponents.httpcore"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.httpcomponents.httpclient"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.aether.api"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+ 
+    <plugin
+         id="org.eclipse.aether.connector.basic"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>  
+
+    <plugin
+         id="org.eclipse.aether.impl"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/> 
+         
+    <plugin
+         id="org.eclipse.aether.spi"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>  
+ 
+     <plugin
+         id="org.eclipse.aether.transport.file"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+         
+     <plugin
+         id="org.eclipse.aether.transport.http"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+     <plugin
+         id="org.eclipse.aether.util"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+     <plugin
+         id="org.talend.designer.maven.aether"
          download-size="0"
          install-size="0"
          version="0.0.0"

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -64,8 +64,16 @@ public class BufferedOutput extends java.io.Writer {
         nChars = sz;
         nextChar = 0;
 
-        lineSeparator = (String) java.security.AccessController.doPrivileged(new sun.security.action.GetPropertyAction(
-                "line.separator")); //$NON-NLS-1$
+        lineSeparator = java.security.AccessController.doPrivileged(
+            new java.security.PrivilegedAction<String>() {
+
+              @Override
+              public String run() {
+                return System.getProperty("line.separator"); //$NON-NLS-1$
+              }
+              
+            }
+        );
     }
 
     /** Check to make sure that the stream has not been closed */

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -180,7 +180,7 @@ public class HadoopRepositoryUtil {
         }
         ContextType contextType = null;
         if (mmUIService != null) {
-            contextType = mmUIService.getContextTypeForContextMode(connection, connection.getContextName(), false);
+            contextType = mmUIService.getContextTypeForContextMode(connection, null, true);
         }
         if (useOriginalValue && contextType != null) {
             properties = getHadoopPropertiesWithOriginalValue(propertiesJsonStr, contextType, includeQuotes);

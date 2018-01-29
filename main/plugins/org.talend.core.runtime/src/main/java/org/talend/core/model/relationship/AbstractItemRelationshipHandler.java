@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -23,21 +23,6 @@ import org.talend.core.model.properties.Item;
  * DOC ggu class global comment. Detailled comment
  */
 public abstract class AbstractItemRelationshipHandler implements IItemRelationshipHandler {
-
-    /**
-     * If not valid, no relations to return
-     * 
-     * @param baseItem
-     * @return
-     */
-    protected abstract boolean valid(Item baseItem);
-
-    /**
-     * get the base item's relation type
-     * 
-     * @return
-     */
-    protected abstract String getBaseItemType(Item baseItem);
 
     /*
      * (non-Javadoc)
@@ -74,4 +59,5 @@ public abstract class AbstractItemRelationshipHandler implements IItemRelationsh
      * @return
      */
     protected abstract Set<Relation> collect(Item baseItem);
+
 }

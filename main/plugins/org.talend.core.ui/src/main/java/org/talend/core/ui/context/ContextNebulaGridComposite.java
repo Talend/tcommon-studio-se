@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -618,6 +618,9 @@ public class ContextNebulaGridComposite extends AbstractContextTabEditComposite 
 
     private void initializeContextCombo() {
         IContextManager contextManager = getContextManager();
+        if (contextsCombo == null) {
+            return;
+        }
         if (contextsCombo.getItems().length > 0) {
             contextsCombo.removeAll();
         }

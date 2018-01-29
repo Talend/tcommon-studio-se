@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -13,14 +13,17 @@
 package org.talend.core.ui.metadata.celleditor;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.jar.Attributes;
+import java.util.jar.JarFile;
+import java.util.jar.Manifest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
@@ -50,11 +53,11 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.ui.runtime.image.EImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.commons.ui.swt.formtools.LabelledFileField;
+import org.talend.commons.ui.swt.formtools.LabelledText;
 import org.talend.commons.utils.io.FilesUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
 import org.talend.core.model.general.ILibrariesService;
-import org.talend.core.model.general.INexusService;
 import org.talend.core.model.process.IElementParameter;
 import org.talend.core.ui.i18n.Messages;
 
@@ -64,8 +67,8 @@ import org.talend.core.ui.i18n.Messages;
 public class ModuleListDialog extends Dialog {
 
     private String selecteModule;
-    
-    private String version;
+
+    private String selectedJarPath,selectedJarVersion;
 
     private Button innerBtn, extBtn, addBtn, delBtn;;
 
@@ -73,7 +76,7 @@ public class ModuleListDialog extends Dialog {
 
     private LabelledFileField selectField;
 
-    private boolean isInner,selectChanged;
+    private boolean isInner, selectChanged;
 
     private boolean isJDBCCreate = false;
 
@@ -84,6 +87,8 @@ public class ModuleListDialog extends Dialog {
     private String[] moduleNameArray = null;
 
     private List<String> jarsList = new ArrayList<String>();
+
+    private LabelledText versionLabel;
 
     public ModuleListDialog(Shell parentShell, String selecteModule, IElementParameter param, boolean isJDBCCreate) {
         super(parentShell);
@@ -166,6 +171,25 @@ public class ModuleListDialog extends Dialog {
         selectField = new LabelledFileField(c,
                 Messages.getString("ModuleListCellEditor.selectLabel"), FilesUtils.getAcceptJARFilesSuffix()); //$NON-NLS-1$
 
+        if(param != null){
+            
+            IElementParameter componentName = param.getElement().getElementParameter("COMPONENT_NAME");
+            
+            if (componentName!=null && "cConfig".equals(componentName.getValue())) {
+                versionLabel = new LabelledText(c, "Version");
+                IElementParameter param = this.param.getElement().getElementParameter("DRIVER_JAR");
+                List jars = (List) param.getValue();
+                for (int i = 0; i < jars.size(); i++) {
+                    Map<String, String> jar = (Map) jars.get(i);
+                    if (selecteModule.equals(jar.get("JAR_NAME"))) {
+                        selectField.setText(selecteModule.equals("\"newLine\"") ? "" : selecteModule);
+                        versionLabel.setText(String.valueOf(jar.get("JAR_NEXUS_VERSION")));
+                        break;
+                    }
+                }
+            }
+        }
+        
         addListeners();
         // checkField(true); // init
         jarsViewer.getList().setSelection(new String[] { selecteModule });
@@ -208,6 +232,26 @@ public class ModuleListDialog extends Dialog {
                 if (selectField.getText().trim().length() <= 0) {
                     getOKButton().setEnabled(false);
                 } else {
+                    String version = "0.0.1-SNAPSHOT";
+                    
+                    try {
+                        
+                        Manifest manifest = new JarFile(selectField.getText()).getManifest();
+                        Attributes mainAttribs = manifest.getMainAttributes();
+                        
+                        if(StringUtils.isNotBlank(mainAttribs.getValue("Bundle-Version"))){
+                            version = mainAttribs.getValue("Bundle-Version");
+                        }else if(StringUtils.isNotBlank(mainAttribs.getValue("Implementation-Version"))){
+                            version = mainAttribs.getValue("Implementation-Version");
+                        }
+                    } catch (Exception eee) {
+                        
+                    }
+                    
+                    if(versionLabel !=null ){
+                        versionLabel.setText(version);
+                    }
+                    
                     getOKButton().setEnabled(true);
                 }
             }
@@ -316,18 +360,22 @@ public class ModuleListDialog extends Dialog {
     public String getSelecteModule() {
         return this.selecteModule;
     }
-    
+
     public void setSelecteModule(String val) {
-    	selectChanged = true;
+        selectChanged = true;
         this.selecteModule = val;
     }
-    
-    public boolean isSelectChanged(){
-    	return this.selectChanged;
+
+    public boolean isSelectChanged() {
+        return this.selectChanged;
+    }
+
+    public String getSelectedJarPath() {
+        return this.selectedJarPath;
     }
     
-    public String getSelectedVersion() {
-        return this.version;
+    public String getSelectedJarVersion() {
+        return this.selectedJarVersion;
     }
 
     public boolean isInner() {
@@ -367,16 +415,27 @@ public class ModuleListDialog extends Dialog {
                     if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibrariesService.class)) {
                         ILibrariesService service = (ILibrariesService) GlobalServiceRegister.getDefault().getService(
                                 ILibrariesService.class);
-                        service.deployLibrary(path.toFile().toURI().toURL());
+                        
+                        if (param != null) {
+                            
+                            IElementParameter componentName = param.getElement().getElementParameter("COMPONENT_NAME");
+                            
+                            if(componentName !=null && "cConfig".equals(componentName.getValue())){
+                                selectedJarPath = jarPath;
+                                selectedJarVersion = versionLabel.getText();
+                            }else{
+                                service.deployLibrary(path.toFile().toURI().toURL());
+                            }
+                        }else{
+                            service.deployLibrary(path.toFile().toURI().toURL());
+                        }
+                        
                     }
-                    
-                    if(param != null && param.getElement().getElementName().startsWith("cConfig")){
-                    	version = jarPath;
-                    }
-                } catch (IOException ee) {
+
+                } catch (Exception ee) {
                     ExceptionHandler.process(ee);
                 }
-                
+
                 setSelecteModule(lastSegment);
                 jarNames[i] = lastSegment;
             }

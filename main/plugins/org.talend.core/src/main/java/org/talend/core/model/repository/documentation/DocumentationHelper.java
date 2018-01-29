@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -35,6 +35,7 @@ import org.talend.core.model.repository.documentation.generation.DocumentationPa
 import org.talend.core.model.utils.RepositoryManagerHelper;
 import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.core.repository.model.ProjectRepositoryNode;
+import org.talend.core.repository.utils.RepositoryNodeManager;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.documentation.ExportFileResource;
 import org.talend.repository.model.IProxyRepositoryFactory;
@@ -197,14 +198,25 @@ public class DocumentationHelper {
             }
         }
         Object[] nodes = node.getChildren().toArray();
+        if (nodes == null || nodes.length == 0) {
+            nodes = RepositoryNodeManager.findChildrenFromRepository(node);
+        }
         if (nodes.length <= 0) {
             return;
         }
         for (Object node2 : nodes) {
-
-            String label = ((RepositoryNode) node2).getProperties(EProperties.LABEL).toString();
-            String version = ""; //$NON-NLS-1$
+            String label = null;
+            Object properties = ((RepositoryNode) node2).getProperties(EProperties.LABEL);
             IRepositoryViewObject object = ((RepositoryNode) node2).getObject();
+            if (properties != null) {
+                label = properties.toString();
+            } else if (object != null) {
+                label = object.getLabel();
+            }
+            if (label == null) {
+                label = ((RepositoryNode) node2).getLabel();
+            }
+            String version = ""; //$NON-NLS-1$
             if (((RepositoryNode) node2).getType() != ENodeType.SIMPLE_FOLDER && object != null) {
                 version = object.getProperty().getVersion();
             }

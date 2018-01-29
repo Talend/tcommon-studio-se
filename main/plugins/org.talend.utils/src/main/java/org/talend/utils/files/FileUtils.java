@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 
 import org.talend.utils.string.StringUtilities;
 import org.talend.utils.sugars.ReturnCode;
@@ -171,12 +172,41 @@ public final class FileUtils {
                         if (name == null) {
                             return false;
                         }
+                        if (thatInfo.getPrefix() == null) {
+                            return name.endsWith(thatInfo.getSuffix());
+                        }
                         return name.startsWith(thatInfo.getPrefix()) && name.endsWith(thatInfo.getSuffix());
                     }
                 }));
             }
         }
         return files;
+    }
+
+    /**
+     * Iterates over a folder files (not recursive) and delete those for which the filename matches the condition given
+     * in the {@link Function}
+     * 
+     * @param folder the folder in which to delete the files
+     * @param func a {@link Function} that will be used to filter on the files to delete, according to their name
+     */
+    public static void deleteFiles(final File folder, final Function<String, Boolean> func) {
+        if (folder != null && func != null) {
+            if (folder.exists()) {
+                FilenameFilter filter = new FilenameFilter() {
+
+                    @Override
+                    public boolean accept(File _dir, String name) {
+                        return func.apply(name);
+                    }
+
+                };
+                List<File> filesToRemove = getAllFilesFromFolder(folder, filter);
+                for (File fileToRemove : filesToRemove) {
+                    fileToRemove.delete();
+                }
+            }
+        }
     }
 
     /**

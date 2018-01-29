@@ -16,6 +16,7 @@
    <extension-point id="java_type" name="Java Type" schema="schema/java_type.exsd"/>
    <extension-point id="org.talend.designer.core.ui.editorHandler" name="org.talend.designer.core.ui.editorHandler" schema="schema/org.talend.designer.core.ui.editor.handler.exsd"/>
    <extension-point id="componentFilter" name="Component filter" schema="schema/componentFilter.exsd"/>
+   <extension-point id="classpath_adjuster" name="classpath_adjuster" schema="schema/classpath_adjuster.exsd"/>
 	
    <extension
          point="org.eclipse.core.runtime.preferences">

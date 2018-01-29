@@ -13,6 +13,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
+import org.talend.librariesmanager.emf.librariesindex.*;
 import org.talend.librariesmanager.emf.librariesindex.LibrariesIndex;
 import org.talend.librariesmanager.emf.librariesindex.LibrariesindexFactory;
 import org.talend.librariesmanager.emf.librariesindex.LibrariesindexPackage;
@@ -32,7 +33,7 @@ public class LibrariesindexFactoryImpl extends EFactoryImpl implements Libraries
      */
     public static LibrariesindexFactory init() {
         try {
-            LibrariesindexFactory theLibrariesindexFactory = (LibrariesindexFactory)EPackage.Registry.INSTANCE.getEFactory("www.talend.com/librariesindex"); 
+            LibrariesindexFactory theLibrariesindexFactory = (LibrariesindexFactory)EPackage.Registry.INSTANCE.getEFactory(LibrariesindexPackage.eNS_URI);
             if (theLibrariesindexFactory != null) {
                 return theLibrariesindexFactory;
             }
@@ -63,6 +64,7 @@ public class LibrariesindexFactoryImpl extends EFactoryImpl implements Libraries
         switch (eClass.getClassifierID()) {
             case LibrariesindexPackage.LIBRARIES_INDEX: return createLibrariesIndex();
             case LibrariesindexPackage.JAR_TO_RELATIVE_PATH: return (EObject)createjarToRelativePath();
+            case LibrariesindexPackage.CUSTOM_URI_MAP: return createCustomURIMap();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -86,6 +88,16 @@ public class LibrariesindexFactoryImpl extends EFactoryImpl implements Libraries
     public Map.Entry<String, String> createjarToRelativePath() {
         jarToRelativePathImpl jarToRelativePath = new jarToRelativePathImpl();
         return jarToRelativePath;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public CustomURIMap createCustomURIMap() {
+        CustomURIMapImpl customURIMap = new CustomURIMapImpl();
+        return customURIMap;
     }
 
     /**

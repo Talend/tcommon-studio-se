@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -141,6 +141,9 @@ public abstract class AbstractQueryGenerator implements IQueryGenerator {
     protected String getDBTableName(IElement elem) {
         if (elem != null) { // for job settings extra.(feature 2710)
             IElementParameter param = elem.getElementParameterFromField(EParameterFieldType.DBTABLE);
+            if(param == null){
+                param = elem.getElementParameterFromField(EParameterFieldType.NAME_SELECTION_REFERENCE);
+            }
             if (param != null) {
                 if (param.isShow(elem.getElementParameters())) {
                     String value = (String) param.getValue();

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.gef.commands.Command;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.DialogCellEditor;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.window.Window;
@@ -27,12 +28,16 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 import org.talend.commons.ui.swt.advanced.dataeditor.AbstractDataTableEditorView;
+import org.talend.commons.ui.swt.dialogs.IConfigModuleDialog;
 import org.talend.commons.ui.swt.extended.table.AbstractExtendedTableViewer;
 import org.talend.commons.ui.swt.tableviewer.TableViewerCreator;
+import org.talend.core.GlobalServiceRegister;
+import org.talend.core.ILibraryManagerUIService;
 import org.talend.core.model.process.IElement;
 import org.talend.core.model.process.IElementParameter;
 import org.talend.core.model.process.INode;
 import org.talend.core.model.process.IProcess2;
+import org.talend.core.runtime.services.IGenericDBService;
 import org.talend.core.ui.CoreUIPlugin;
 import org.talend.core.ui.process.IGEFProcess;
 import org.talend.core.ui.services.IDesignerCoreUIService;
@@ -62,18 +67,18 @@ public class ModuleListCellEditor extends DialogCellEditor {
         defaultLabel.setFont(cell.getFont());
         defaultLabel.setBackground(cell.getBackground());
         defaultLabel.addFocusListener(new FocusAdapter() {
-        	
-        	private String memo="";
-        	
-        	@Override
-        	public void focusGained(FocusEvent e) {
-        		memo = defaultLabel.getText();
-        		super.focusGained(e);
-        	}
+
+            private String memo = "";
+
+            @Override
+            public void focusGained(FocusEvent e) {
+                memo = defaultLabel.getText();
+                super.focusGained(e);
+            }
 
             @Override
             public void focusLost(FocusEvent e) {
-            	
+
                 String newValue = defaultLabel.getText();
                 if (newValue == null || newValue.trim().equals("")) { //$NON-NLS-1$
                     defaultLabel.setText(oldValue);
@@ -161,22 +166,40 @@ public class ModuleListCellEditor extends DialogCellEditor {
     @Override
     protected Object openDialogBox(Control cellEditorWindow) {
         String value = (String) getValue();
-        ModuleListDialog dialog = new ModuleListDialog(cellEditorWindow.getShell(), value, this.param, false);
-        if (dialog.open() == Window.OK) {
-            String selecteModule = dialog.getSelecteModule();
-            if (selecteModule != null && (value == null || !value.equals(selecteModule) || dialog.isSelectChanged())) {
-            	setModuleValue(selecteModule,dialog.getSelectedVersion());
-                return selecteModule;
+        // TODO for cConfig , keep the same dialog as before ,need esb team help to check latter
+        IElementParameter componentName = param.getElement().getElementParameter("COMPONENT_NAME");
+        if (componentName != null && "cConfig".equals(componentName.getValue())) {
+            ModuleListDialog dialog = new ModuleListDialog(cellEditorWindow.getShell(), value, this.param, false);
+            if (dialog.open() == Window.OK) {
+                String selecteModule = dialog.getSelecteModule();
+                if (selecteModule != null && (value == null || !value.equals(selecteModule) || dialog.isSelectChanged())) {
+                    setModuleValue(selecteModule, dialog.getSelectedJarPath(), dialog.getSelectedJarVersion());
+                    return selecteModule;
+                }
+            }
+        } else {
+            if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerUIService.class)) {
+                ILibraryManagerUIService libUiService = (ILibraryManagerUIService) GlobalServiceRegister.getDefault().getService(
+                        ILibraryManagerUIService.class);
+                IConfigModuleDialog dialog = libUiService.getConfigModuleDialog(cellEditorWindow.getShell(), value);
+                if (dialog.open() == IDialogConstants.OK_ID) {
+                    String selecteModule = dialog.getModuleName();
+                    if (selecteModule != null && (value == null || !value.equals(selecteModule))) {
+                        setModuleValue(selecteModule, null, null);
+                        return selecteModule;
+                    }
+                }
             }
         }
         return null;
     }
-    
-    private void setModuleValue(String newValue,String newVersion) {
+
+    private void setModuleValue(String newValue, String newVal, String nexusVersion) {
         int index = 0;
         if (getTableViewer() != null) {
-            if (getTableViewer().getTable() != null && !getTableViewer().getTable().isDisposed())
+            if (getTableViewer().getTable() != null && !getTableViewer().getTable().isDisposed()) {
                 index = getTableViewer().getTable().getSelectionIndex();
+            }
         } else {
             return;
         }
@@ -191,10 +214,13 @@ public class ModuleListCellEditor extends DialogCellEditor {
         //
         executeCommand(new ModelChangeCommand(tableParam, param.getName(), newValue, index));
 
-        if(newVersion!=null){
-        	executeCommand(new ModelChangeCommand(tableParam, "JAR_VERSION", newVersion, index));
+        if (newVal != null) {
+            executeCommand(new ModelChangeCommand(tableParam, "JAR_PATH", newVal, index));
         }
-        
+        if (nexusVersion != null) {
+            executeCommand(new ModelChangeCommand(tableParam, "JAR_NEXUS_VERSION", nexusVersion, index));
+        }
+
         oldValue = newValue;
         if (getTableViewer() != null) {
             getTableViewer().refresh(true);
@@ -202,7 +228,7 @@ public class ModuleListCellEditor extends DialogCellEditor {
     }
 
     private void setModuleValue(String newValue) {
-    	setModuleValue(newValue, null);
+        setModuleValue(newValue, null, null);
     }
 
     /**
@@ -241,6 +267,7 @@ public class ModuleListCellEditor extends DialogCellEditor {
                     line.put(columnName, value);
                 }
             }
+            param.setValue(values);
             // CorePlugin.getDefault().getLibrariesService().resetModulesNeeded();
         }
 

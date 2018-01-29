@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.cwm.helper;
 
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
@@ -26,6 +27,8 @@ import org.eclipse.emf.ecore.xmi.XMLResource;
  * Helper on resources.
  */
 public final class ResourceHelper {
+
+    public static final SimpleDateFormat DATEFORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 
     private ResourceHelper() {
     }

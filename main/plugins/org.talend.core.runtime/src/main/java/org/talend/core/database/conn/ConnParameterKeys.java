@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -59,6 +59,14 @@ public class ConnParameterKeys {
     public static final String CONN_PARA_KEY_SSL_TRUST_STORE_PATH = "CONN_PARA_KEY_SSL_TRUST_STORE_PATH"; //$NON-NLS-1$
 
     public static final String CONN_PARA_KEY_SSL_TRUST_STORE_PASSWORD = "CONN_PARA_KEY_SSL_TRUST_STORE_PASSWORD"; //$NON-NLS-1$
+
+    public static final String CONN_PARA_KEY_NEED_CLIENT_AUTH = "CONN_PARA_KEY_NEED_CLIENT_AUTH";//$NON-NLS-1$
+
+    public static final String CONN_PARA_KEY_SSL_KEY_STORE_PATH = "CONN_PARA_KEY_SSL_KEY_STORE_PATH"; //$NON-NLS-1$
+
+    public static final String CONN_PARA_KEY_SSL_KEY_STORE_PASSWORD = "CONN_PARA_KEY_SSL_KEY_STORE_PASSWORD"; //$NON-NLS-1$
+
+    public static final String CONN_PARA_KEY_DISABLE_CBC_PROTECTION = "CONN_PARA_KEY_DISABLE_CBC_PROTECTION";//$NON-NLS-1$
 
     public static final String CONN_PARA_KEY_KEYTAB_PRINCIPAL = "CONN_PARA_KEY_KEYTAB_PRINCIPLA";//$NON-NLS-1$
 

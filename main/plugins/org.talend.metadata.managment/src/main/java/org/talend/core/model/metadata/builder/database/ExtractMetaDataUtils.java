@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -37,8 +37,6 @@ import java.util.regex.Pattern;
 import java.util.zip.CRC32;
 import java.util.zip.CheckedInputStream;
 
-import metadata.managment.i18n.Messages;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IProject;
@@ -49,6 +47,7 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.database.AS400DatabaseMetaData;
 import org.talend.commons.utils.database.DB2ForZosDataBaseMetadata;
 import org.talend.commons.utils.database.EXASOLDatabaseMetaData;
+import org.talend.commons.utils.database.SAPHanaDataBaseMetadata;
 import org.talend.commons.utils.database.SASDataBaseMetadata;
 import org.talend.commons.utils.database.SybaseDatabaseMetaData;
 import org.talend.commons.utils.database.SybaseIQDatabaseMetaData;
@@ -74,6 +73,7 @@ import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.metadata.builder.connection.MetadataColumn;
 import org.talend.core.model.metadata.connection.hive.HiveModeInfo;
 import org.talend.core.model.metadata.types.JavaTypesManager;
+import org.talend.core.prefs.SSLPreferenceConstants;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.designer.core.IDesignerCoreService;
@@ -83,6 +83,8 @@ import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IMetadataService;
 import org.talend.utils.exceptions.MissingDriverException;
 import org.talend.utils.sql.ConnectionUtils;
+
+import metadata.managment.i18n.Messages;
 import orgomg.cwm.objectmodel.core.Expression;
 
 /**
@@ -113,6 +115,9 @@ public class ExtractMetaDataUtils {
     private final Map<String, DriverShim> DRIVER_CACHE = new HashMap<String, DriverShim>();
 
     private boolean ignoreTimeout = false;
+
+    private String[] ORACLE_SSL_JARS = new String[] { "oraclepki-12.2.0.1.jar", "osdt_cert-12.2.0.1.jar", //$NON-NLS-1$//$NON-NLS-2$
+            "osdt_core-12.2.0.1.jar" }; //$NON-NLS-1$
 
     private ExtractMetaDataUtils() {
     }
@@ -249,7 +254,8 @@ public class ExtractMetaDataUtils {
                 // MOD sizhaoliu 2012-5-21 TDQ-4884
                 if (MSSQL_CONN_CLASS.equals(conn.getClass().getName())) {
                     dbMetaData = createJtdsDatabaseMetaData(conn);
-                } else if (EDatabaseTypeName.IBMDB2ZOS.getXmlName().equals(dbType)) {
+                } else if (EDatabaseTypeName.IBMDB2ZOS.getXmlName().equals(dbType)
+                        || EDatabaseTypeName.IBMDB2.getXmlName().equals(dbType)) {
                     dbMetaData = createDB2ForZosFakeDatabaseMetaData(conn);
                 } else if (EDatabaseTypeName.TERADATA.getXmlName().equals(dbType) && isSqlMode) {
                     dbMetaData = createTeradataFakeDatabaseMetaData(conn);
@@ -275,6 +281,8 @@ public class ExtractMetaDataUtils {
                     dbMetaData = createAS400FakeDatabaseMetaData(conn);
                 } else if (EDatabaseTypeName.EXASOL.getXmlName().equals(dbType)) {
                     dbMetaData = createEXASOLFakeDatabaseMetaData(conn);
+                } else if (EDatabaseTypeName.SAPHana.getXmlName().equals(dbType)) {
+                    dbMetaData = createSAPHanaFakeDatabaseMetaData(conn);
                 } else {
                     dbMetaData = conn.getMetaData();
                 }
@@ -332,7 +340,8 @@ public class ExtractMetaDataUtils {
         String dbType = metadataConnection.getDbType();
         boolean isSqlMode = metadataConnection.isSqlMode();
         String dbVersion = metadataConnection.getDbVersionString();
-        if (EDatabaseTypeName.IBMDB2ZOS.getXmlName().equals(dbType)) {
+        if (EDatabaseTypeName.IBMDB2.getXmlName().equals(dbType) || EDatabaseTypeName.IBMDB2ZOS.getXmlName().equals(dbType)
+                || EDatabaseTypeName.SAPHana.getXmlName().equals(dbType)) {
             return true;
         } else if (EDatabaseTypeName.TERADATA.getXmlName().equals(dbType) && isSqlMode) {
             return true;
@@ -397,6 +406,11 @@ public class ExtractMetaDataUtils {
 
     private DatabaseMetaData createTeradataFakeDatabaseMetaData(Connection conn) {
         TeradataDataBaseMetadata tmd = new TeradataDataBaseMetadata(conn);
+        return tmd;
+    }
+
+    private DatabaseMetaData createSAPHanaFakeDatabaseMetaData(Connection conn) {
+        SAPHanaDataBaseMetadata tmd = new SAPHanaDataBaseMetadata(conn);
         return tmd;
     }
 
@@ -934,6 +948,12 @@ public class ExtractMetaDataUtils {
             if ((driverJarPathArg == null || driverJarPathArg.equals(""))) { //$NON-NLS-1$
                 List<String> driverNames = EDatabaseVersion4Drivers.getDrivers(dbType, dbVersion);
                 if (driverNames != null) {
+                    if (EDatabaseTypeName.ORACLE_CUSTOM.getDisplayName().equals(dbType)
+                            && StringUtils.isNotEmpty(additionalParams)) {
+                        if (additionalParams.contains(SSLPreferenceConstants.TRUSTSTORE_TYPE)) {
+                             driverNames.addAll(Arrays.asList(ORACLE_SSL_JARS));
+                        }
+                    }
                     // fix for TUP-857 , to retreive needed jar one time
                     librairesManagerService.retrieve(driverNames, getJavaLibPath(), new NullProgressMonitor());
                     for (String jar : driverNames) {
@@ -945,6 +965,7 @@ public class ExtractMetaDataUtils {
                             && (EDatabaseVersion4Drivers.VERTICA_6.getVersionValue().equals(dbVersion)
                                     || EDatabaseVersion4Drivers.VERTICA_5_1.getVersionValue().equals(dbVersion)
                                     || EDatabaseVersion4Drivers.VERTICA_6_1_X.getVersionValue().equals(dbVersion) || EDatabaseVersion4Drivers.VERTICA_7
+                                    .getVersionValue().equals(dbVersion) || EDatabaseVersion4Drivers.VERTICA_9
                                     .getVersionValue().equals(dbVersion))) {
                         driverClassName = EDatabase4DriverClassName.VERTICA2.getDriverClass();
                     } else if (EDatabaseTypeName.MYSQL.getXmlName().equals(dbType)
@@ -1008,6 +1029,23 @@ public class ExtractMetaDataUtils {
                             // } else {
                             jarPathList.add(driverJarPathArg);
                         }
+                    }
+                }else if(driverJarPathArg.contains("/")){
+                    if (driverJarPathArg.contains(";")) {
+                        String jars[] = driverJarPathArg.split(";");
+                        for (String jar : jars) {
+                            String jarName = jar.split("/")[1]+".jar";
+                            if (!new File(getJavaLibPath() + jarName).exists()) {
+                                librairesManagerService.retrieve(jarName, getJavaLibPath(), new NullProgressMonitor());
+                            }
+                            jarPathList.add(getJavaLibPath() + jarName);
+                        }
+                    }else{
+                        String jarName = driverJarPathArg.split("/")[1]+".jar";
+                        if (!new File(getJavaLibPath() + jarName).exists()) {
+                            librairesManagerService.retrieve(jarName, getJavaLibPath(), new NullProgressMonitor());
+                        }
+                        jarPathList.add(getJavaLibPath() + jarName);
                     }
                 } else {
                     if (driverJarPathArg.contains(";")) {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -25,6 +25,7 @@ import org.talend.core.model.properties.Item;
 import org.talend.core.model.repository.EPackageType;
 import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.xml.TdXmlSchema;
+
 import orgomg.cwm.foundation.softwaredeployment.Component;
 import orgomg.cwm.objectmodel.core.Dependency;
 import orgomg.cwm.objectmodel.core.ModelElement;
@@ -40,6 +41,8 @@ public class MetadataManager {
     public static final String TYPE_VIEW = "VIEW"; //$NON-NLS-1$
 
     public static final String TYPE_SYNONYM = "SYNONYM"; //$NON-NLS-1$
+
+    public static final String TYPE_CALCULATION_VIEW = "CALCULATION VIEW"; //$NON-NLS-1$
 
     public static final String TYPE_ALIAS = "ALIAS"; //$NON-NLS-1$
 

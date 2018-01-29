@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -51,15 +51,19 @@ public class IODataComponent {
     public IODataComponent(IConnection connection) {
         super();
         this.connection = connection;
-        this.newMetadataTable = connection.getMetadataTable().clone();
-        this.connMetadataTable = connection.getMetadataTable().clone();
+        if (connection != null && connection.getMetadataTable() != null) {
+            this.newMetadataTable = connection.getMetadataTable().clone();
+            this.connMetadataTable = connection.getMetadataTable().clone();
+        }
     }
 
     public IODataComponent(IConnection connection, IMetadataTable clonedTable) {
         super();
         this.connection = connection;
         this.newMetadataTable = clonedTable;
-        this.connMetadataTable = connection.getMetadataTable().clone();
+        if (connection != null && connection.getMetadataTable() != null) {
+            this.connMetadataTable = connection.getMetadataTable().clone();
+        }
     }
 
     @Override

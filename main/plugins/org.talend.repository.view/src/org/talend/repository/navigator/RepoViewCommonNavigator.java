@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -846,6 +846,7 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
     public void refreshView() {
 
         refresh(true);
+        refreshContentDescription();
 
         List<IProcess2> openedProcessList = RepositoryManagerHelper.getOpenedProcess(RepositoryUpdateManager.getEditors());
         List<UpdateResult> updateAllResults = new ArrayList<UpdateResult>();

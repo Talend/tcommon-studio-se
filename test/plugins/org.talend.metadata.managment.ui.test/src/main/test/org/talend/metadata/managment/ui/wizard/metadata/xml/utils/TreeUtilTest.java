@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2014 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -27,6 +27,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.talend.commons.runtime.xml.XmlUtil;
 import org.talend.datatools.xml.utils.ATreeNode;
+import org.talend.datatools.xml.utils.NodeCreationObserver;
 import org.talend.datatools.xml.utils.OdaException;
 import org.talend.datatools.xml.utils.SchemaPopulationUtil;
 import org.talend.datatools.xml.utils.XSDPopulationUtil2;
@@ -105,7 +106,44 @@ public class TreeUtilTest {
         assertEquals("BinaryObjectType", list.get(8).getLabel());
         assertEquals("IdentifierType", list.get(9).getLabel());
     }
-    
+
+    @Test
+    public void testCloneATreeNode2() throws Exception {
+        NodeCreationObserver.start();
+        ATreeNode parent = new ATreeNode() {
+        };
+        parent.setValue("parent"); //$NON-NLS-1$
+        ATreeNode child1 = new ATreeNode() {
+        };
+        child1.setValue("child1"); //$NON-NLS-1$
+        parent.addChild(child1);
+        ATreeNode subchild1 = new ATreeNode() {
+        };
+        subchild1.setValue("subchild1"); //$NON-NLS-1$
+        child1.addChild(subchild1);
+        ATreeNode child2 = new ATreeNode() {
+        };
+        child2.setValue("child2"); //$NON-NLS-1$
+        parent.addChild(child2);
+        
+        // add again the same child1/subchild1 to the tree on child2.
+        child2.addChild(child1);
+        NodeCreationObserver.stop();
+        
+        FOXTreeNode root = TreeUtil.cloneATreeNode(parent, true);
+        assertEquals(2, root.getChildren().size());
+        assertEquals("child1", root.getChildren().get(0).getLabel());
+        assertEquals("child2", root.getChildren().get(1).getLabel());
+        assertEquals(1, root.getChildren().get(0).getChildren().size());
+        assertEquals("subchild1", root.getChildren().get(0).getChildren().get(0).getLabel());
+        
+        assertEquals(1, root.getChildren().get(1).getChildren().size());
+        assertEquals("child1", root.getChildren().get(1).getChildren().get(0).getLabel());
+
+        assertEquals(1, root.getChildren().get(1).getChildren().get(0).getChildren().size());
+        assertEquals("subchild1", root.getChildren().get(1).getChildren().get(0).getChildren().get(0).getLabel());
+    }
+
     private String getTreeValues(ATreeNode treeNode) {
         String treeValues = treeNode.toString();
         for (Object child : treeNode.getChildren()) {
@@ -114,5 +152,25 @@ public class TreeUtilTest {
             }
         }
         return treeValues;
+    }
+
+    @Test
+    public void getXSDPopulationUtil2AttributeType() throws URISyntaxException, IOException, OdaException {
+        File file = new File(FileLocator
+                .toFileURL(this.getClass().getClassLoader().getResource("resources/test_xsdAttribute_type.xsd")).toURI());//$NON-NLS-1$
+        XSDPopulationUtil2 populator = XSDUtils.getXsdHander(file);
+        XSDSchema xsdSchema = TreeUtil.getXSDSchema(populator, file.getPath(), "http://www.domain.com/");//$NON-NLS-1$
+        Assert.assertNotNull(xsdSchema);
+        List<ATreeNode> allRootNodes = populator.getAllRootNodes(xsdSchema);
+        for (ATreeNode rootTreeNode : allRootNodes) {
+            ATreeNode treeNode = SchemaPopulationUtil.getSchemaTree(populator, xsdSchema, rootTreeNode);
+            FOXTreeNode root = TreeUtil.cloneATreeNode(treeNode, true);
+            assertNotNull(root);
+            List<FOXTreeNode> list = root.getChildren();
+            assertTrue(list != null && list.size() == 3);
+            assertEquals("id_Integer", list.get(0).getDataType()); //$NON-NLS-1$
+            assertEquals("id_Long", list.get(1).getDataType());//$NON-NLS-1$
+            assertEquals("id_String", list.get(2).getDataType());//$NON-NLS-1$
+        }
     }
 }

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -141,6 +141,40 @@ public class DynamicClassLoader extends URLClassLoader {
         loader.setLibStorePath(libPath);
 
         return loader;
+    }
+
+    public static DynamicClassLoader updateBaseLoader(DynamicClassLoader baseLoader, String[] addedJars)
+            throws MalformedURLException {
+        if (baseLoader == null) {
+            baseLoader = new DynamicClassLoader();
+        }
+        if (addedJars == null) {
+            addedJars = new String[0];
+        }
+        String libPath = baseLoader.getLibStorePath();
+        if (libPath == null) {
+            libPath = ClassLoaderFactory.getLibPath();
+        }
+        updateBaseLoaderURLs(baseLoader, addedJars, libPath);
+        baseLoader.setLibStorePath(libPath);
+        return baseLoader;
+    }
+
+    private static void updateBaseLoaderURLs(DynamicClassLoader baseLoader, String[] jars, String libPath)
+            throws MalformedURLException {
+        Set<String> libraries = baseLoader.getLibraries();
+        for (String jarName : jars) {
+            ILibraryManagerService librairesService = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
+                    ILibraryManagerService.class);
+            librairesService.retrieve(jarName, libPath, true, new NullProgressMonitor());
+            String jarPath = libPath + PATH_SEPARATOR + jarName;
+            File jarFile = new File(jarPath);
+            if (jarFile.exists()) {
+                if (!libraries.contains(jarName)) {
+                    baseLoader.addLibrary(jarFile.getAbsolutePath());
+                }
+            }
+        }
     }
 
     private static void updateLoaderURLs(List<URL> urlList, String libPath, String[] jars, boolean added)

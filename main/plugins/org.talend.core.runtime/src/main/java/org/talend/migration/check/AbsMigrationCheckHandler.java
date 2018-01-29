@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -30,6 +30,8 @@ import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.runtime.CoreRuntimePlugin;
+import org.talend.core.runtime.repository.item.ItemProductKeys;
+import org.talend.core.runtime.util.ItemDateParser;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
@@ -105,9 +107,9 @@ public abstract class AbsMigrationCheckHandler implements IMigrationCheckHandler
     protected MigrateItemInfo getItemInfo(Property property) {
         MigrateItemInfo itemInfo = new MigrateItemInfo();
         itemInfo.setAuthor(property.getAuthor().getLogin());
-        itemInfo.setCreated(property.getCreationDate());
+        itemInfo.setCreated(ItemDateParser.parseAdditionalDate(property, ItemProductKeys.DATE.getCreatedKey()));
         itemInfo.setLabel(property.getLabel());
-        itemInfo.setLast_modified(property.getModificationDate());
+        itemInfo.setLast_modified(ItemDateParser.parseAdditionalDate(property, ItemProductKeys.DATE.getModifiedKey()));
         itemInfo.setType(getType());
         itemInfo.setType_name(getName());
         itemInfo.setVersion(property.getVersion());
@@ -157,7 +159,7 @@ public abstract class AbsMigrationCheckHandler implements IMigrationCheckHandler
         return hasCompilationError;
     }
 
-    protected void checkModules(Set<String> neededLibraries, List<ModuleNeeded> allModulesWithStatus, MigrateItemInfo itemInfo) {
+    protected void checkModules(Set<String> neededLibraries, Set<ModuleNeeded> allModulesWithStatus, MigrateItemInfo itemInfo) {
         // check libraries status
         if (neededLibraries == null || neededLibraries.isEmpty()) {
             return;

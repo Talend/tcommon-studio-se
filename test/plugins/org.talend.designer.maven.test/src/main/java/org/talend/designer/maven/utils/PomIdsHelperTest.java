@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -12,11 +12,18 @@
 // ============================================================================
 package org.talend.designer.maven.utils;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Assert;
 import org.junit.Test;
+import org.talend.commons.utils.VersionUtils;
+import org.talend.core.model.general.Project;
 import org.talend.core.model.process.JobInfo;
 import org.talend.core.model.properties.PropertiesFactory;
 import org.talend.core.model.properties.Property;
+import org.talend.core.runtime.maven.MavenConstants;
+import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
+import org.talend.designer.maven.DesignerMavenPlugin;
 import org.talend.repository.ProjectManager;
 
 /**
@@ -24,34 +31,17 @@ import org.talend.repository.ProjectManager;
  */
 public class PomIdsHelperTest {
 
+
     @Test
     public void test_getProjectGroupId_empty() {
-        String projectGroupId = PomIdsHelper.getProjectGroupId(null);
+        Project currentProject = ProjectManager.getInstance().getCurrentProject();
+        String expectValue = "org.talend.master";
+        if (currentProject != null) {
+            expectValue = expectValue + '.' + currentProject.getTechnicalLabel().toLowerCase();
+        }
+        String projectGroupId = PomIdsHelper.getProjectGroupId();
         Assert.assertNotNull(projectGroupId);
-        Assert.assertEquals("org.talend.master", projectGroupId);
-
-        projectGroupId = PomIdsHelper.getProjectGroupId("");
-        Assert.assertNotNull(projectGroupId);
-        Assert.assertEquals("org.talend.master", projectGroupId);
-
-        projectGroupId = PomIdsHelper.getProjectGroupId("   ");
-        Assert.assertNotNull(projectGroupId);
-        Assert.assertEquals("org.talend.master", projectGroupId);
-    }
-
-    @Test
-    public void test_getProjectGroupId() {
-        String projectGroupId = PomIdsHelper.getProjectGroupId("abc");
-        Assert.assertNotNull(projectGroupId);
-        Assert.assertEquals("org.talend.master.abc", projectGroupId);
-
-        projectGroupId = PomIdsHelper.getProjectGroupId("ABC");
-        Assert.assertNotNull(projectGroupId);
-        Assert.assertEquals("org.talend.master.abc", projectGroupId);
-
-        projectGroupId = PomIdsHelper.getProjectGroupId(" Abc  ");
-        Assert.assertNotNull(projectGroupId);
-        Assert.assertEquals("org.talend.master.abc", projectGroupId);
+        Assert.assertEquals(expectValue, projectGroupId);
     }
 
     @Test
@@ -199,4 +189,28 @@ public class PomIdsHelperTest {
         Assert.assertEquals("Wo_rld_", jobArtifactId);
     }
 
+    @Test
+    public void testGetProjectVersion() {
+        assertEquals(PomUtil.getDefaultMavenVersion(), PomIdsHelper.getProjectVersion());
+        ProjectPreferenceManager projectPreferenceManager = DesignerMavenPlugin.getPlugin().getProjectPreferenceManager();
+        projectPreferenceManager.setValue(MavenConstants.PROJECT_VERSION, "1.1.0");
+        projectPreferenceManager.setValue(MavenConstants.NAME_PUBLISH_AS_SNAPSHOT, true);
+        assertEquals("1.1.0-SNAPSHOT", PomIdsHelper.getProjectVersion());
+        projectPreferenceManager.setValue(MavenConstants.NAME_PUBLISH_AS_SNAPSHOT, false);
+        assertEquals("1.1.0", PomIdsHelper.getProjectVersion());
+    }
+    
+    @Test
+    public void testGetJobVersion() {
+        Property property = PropertiesFactory.eINSTANCE.createProperty();
+        // test default
+        property.setVersion("2.1");
+        assertEquals(VersionUtils.getPublishVersion("2.1"), PomIdsHelper.getJobVersion(property));
+        // test custom version
+        property.getAdditionalProperties().put(MavenConstants.NAME_USER_VERSION, "1.1.0");
+        assertEquals("1.1.0", PomIdsHelper.getJobVersion(property));
+        // test custom version with snapshot
+        property.getAdditionalProperties().put(MavenConstants.NAME_PUBLISH_AS_SNAPSHOT, "true");
+        assertEquals("1.1.0-SNAPSHOT", PomIdsHelper.getJobVersion(property));
+    }
 }

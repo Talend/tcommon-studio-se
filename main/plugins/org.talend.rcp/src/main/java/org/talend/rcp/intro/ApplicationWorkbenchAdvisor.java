@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -95,7 +95,6 @@ public class ApplicationWorkbenchAdvisor extends IDEWorkbenchAdvisor {
     @SuppressWarnings("restriction")
     @Override
     public void preStartup() {
-        super.preStartup();
 
         // Fix bug 329,control the startup sequence of the plugin.
         // Promise the following plugin register themselves before system loaded.
@@ -118,6 +117,8 @@ public class ApplicationWorkbenchAdvisor extends IDEWorkbenchAdvisor {
                 log.error("Error while execution a login task.", e); //$NON-NLS-1$
             }
         }
+
+        super.preStartup();
 
     }
 

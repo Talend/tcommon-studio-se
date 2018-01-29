@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -101,6 +101,11 @@ public class CommonsPlugin implements BundleActivator {
     public static boolean isDebugMode() {
         return ArrayUtils.contains(Platform.getApplicationArgs(), TalendDebugHandler.TALEND_DEBUG);
     }
+    
+    public static boolean isJUnitTest() {
+        return Boolean.getBoolean("junit_test"); //$NON-NLS-1$
+    }
+
 
     /**
      * Answer the file associated with name. This handles the case of running as a plugin and running standalone which

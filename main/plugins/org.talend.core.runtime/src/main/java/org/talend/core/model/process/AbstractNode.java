@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -82,6 +82,8 @@ public abstract class AbstractNode implements INode {
     private INode designSubjobStartNode;
 
     private boolean isVirtualGenerateNode;
+    
+    private INode realGraphicalNode;
 
     private EConnectionType virtualLinkTo;
 
@@ -1294,4 +1296,11 @@ public abstract class AbstractNode implements INode {
         return componentProperties;
     }
 
+    public INode getRealGraphicalNode() {
+        return realGraphicalNode;
+    }
+  
+    public void setRealGraphicalNode(INode realGraphicalNode) {
+        this.realGraphicalNode = realGraphicalNode;
+    }
 }

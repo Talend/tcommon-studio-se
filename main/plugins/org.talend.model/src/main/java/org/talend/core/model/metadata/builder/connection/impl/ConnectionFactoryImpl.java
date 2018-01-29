@@ -818,8 +818,8 @@ public class ConnectionFactoryImpl extends EFactoryImpl implements ConnectionFac
     public FileFormat createFileFormatFromString(EDataType eDataType, String initialValue) {
         FileFormat result = FileFormat.get(initialValue);
         if (result == null)
-            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '"
-                    + eDataType.getName() + "'");
+            throw new IllegalArgumentException(
+                    "The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
         return result;
     }
 
@@ -838,8 +838,8 @@ public class ConnectionFactoryImpl extends EFactoryImpl implements ConnectionFac
     public FieldSeparator createFieldSeparatorFromString(EDataType eDataType, String initialValue) {
         FieldSeparator result = FieldSeparator.get(initialValue);
         if (result == null)
-            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '"
-                    + eDataType.getName() + "'");
+            throw new IllegalArgumentException(
+                    "The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
         return result;
     }
 
@@ -858,8 +858,8 @@ public class ConnectionFactoryImpl extends EFactoryImpl implements ConnectionFac
     public Escape createEscapeFromString(EDataType eDataType, String initialValue) {
         Escape result = Escape.get(initialValue);
         if (result == null)
-            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '"
-                    + eDataType.getName() + "'");
+            throw new IllegalArgumentException(
+                    "The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
         return result;
     }
 
@@ -878,8 +878,8 @@ public class ConnectionFactoryImpl extends EFactoryImpl implements ConnectionFac
     public RowSeparator createRowSeparatorFromString(EDataType eDataType, String initialValue) {
         RowSeparator result = RowSeparator.get(initialValue);
         if (result == null)
-            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '"
-                    + eDataType.getName() + "'");
+            throw new IllegalArgumentException(
+                    "The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
         return result;
     }
 
@@ -898,8 +898,8 @@ public class ConnectionFactoryImpl extends EFactoryImpl implements ConnectionFac
     public MDMConnectionProtocol createMDMConnectionProtocolFromString(EDataType eDataType, String initialValue) {
         MDMConnectionProtocol result = MDMConnectionProtocol.get(initialValue);
         if (result == null)
-            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '"
-                    + eDataType.getName() + "'");
+            throw new IllegalArgumentException(
+                    "The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
         return result;
     }
 
@@ -918,8 +918,8 @@ public class ConnectionFactoryImpl extends EFactoryImpl implements ConnectionFac
     public MdmConceptType createMdmConceptTypeFromString(EDataType eDataType, String initialValue) {
         MdmConceptType result = MdmConceptType.get(initialValue);
         if (result == null)
-            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '"
-                    + eDataType.getName() + "'");
+            throw new IllegalArgumentException(
+                    "The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
         return result;
     }
 
@@ -938,8 +938,8 @@ public class ConnectionFactoryImpl extends EFactoryImpl implements ConnectionFac
     public RuleType createRuleTypeFromString(EDataType eDataType, String initialValue) {
         RuleType result = RuleType.get(initialValue);
         if (result == null)
-            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '"
-                    + eDataType.getName() + "'");
+            throw new IllegalArgumentException(
+                    "The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
         return result;
     }
 
@@ -958,8 +958,8 @@ public class ConnectionFactoryImpl extends EFactoryImpl implements ConnectionFac
     public Function createFunctionFromString(EDataType eDataType, String initialValue) {
         Function result = Function.get(initialValue);
         if (result == null)
-            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '"
-                    + eDataType.getName() + "'");
+            throw new IllegalArgumentException(
+                    "The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
         return result;
     }
 
@@ -978,8 +978,8 @@ public class ConnectionFactoryImpl extends EFactoryImpl implements ConnectionFac
     public Operator createOperatorFromString(EDataType eDataType, String initialValue) {
         Operator result = Operator.get(initialValue);
         if (result == null)
-            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '"
-                    + eDataType.getName() + "'");
+            throw new IllegalArgumentException(
+                    "The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
         return result;
     }
 
@@ -998,8 +998,8 @@ public class ConnectionFactoryImpl extends EFactoryImpl implements ConnectionFac
     public LogicalOperator createLogicalOperatorFromString(EDataType eDataType, String initialValue) {
         LogicalOperator result = LogicalOperator.get(initialValue);
         if (result == null)
-            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '"
-                    + eDataType.getName() + "'");
+            throw new IllegalArgumentException(
+                    "The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
         return result;
     }
 

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -27,10 +28,12 @@ import org.eclipse.ui.PlatformUI;
 import org.ops4j.pax.url.mvn.Handler;
 import org.talend.commons.ui.runtime.exception.MessageBoxExceptionHandler;
 import org.talend.core.GlobalServiceRegister;
-import org.talend.core.ILibraryManagerService;
+import org.talend.core.model.general.ILibrariesService;
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.model.general.ModuleStatusProvider;
 import org.talend.core.model.general.ModuleToInstall;
+import org.talend.core.runtime.maven.MavenArtifact;
+import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.librariesmanager.ui.LibManagerUiPlugin;
 import org.talend.librariesmanager.ui.i18n.Messages;
 import org.talend.librariesmanager.ui.wizards.AcceptModuleLicensesWizard;
@@ -65,7 +68,7 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
         if (checkAndAcceptLicenses(subMonitor)) {
             downLoad(subMonitor);
         }
-        System.out.println("**Downlaod finished");
+        System.out.println("**Download finished");
         if (monitor != null) {
             monitor.setCanceled(subMonitor.isCanceled());
             monitor.done();
@@ -82,28 +85,37 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
         for (final ModuleToInstall module : toDownload) {
             if (!monitor.isCanceled() && !connectionTimeOut) {
                 monitor.subTask(module.getName());
-                boolean accepted;
+                boolean canDownload;
                 try {
                     // check license
                     boolean isLicenseAccepted = module.isFromCustomNexus()
-                            || (LibManagerUiPlugin.getDefault().getPreferenceStore().contains(module.getLicenseType())
-                                    && LibManagerUiPlugin.getDefault().getPreferenceStore().getBoolean(module.getLicenseType()));
-                    accepted = isLicenseAccepted;
-                    if (!accepted) {
+                            || (LibManagerUiPlugin.getDefault().getPreferenceStore().contains(module.getLicenseType()) && LibManagerUiPlugin
+                                    .getDefault().getPreferenceStore().getBoolean(module.getLicenseType()));
+
+                    boolean hasRepositoryUrl = false;
+                    String moduleMvnUri = module.getMavenUri();
+                    MavenArtifact mavenArtifact = MavenUrlHelper.parseMvnUrl(moduleMvnUri, false);
+                    if (mavenArtifact != null) {
+                        String repositoryUrl = mavenArtifact.getRepositoryUrl();
+                        hasRepositoryUrl = StringUtils.isNotEmpty(repositoryUrl);
+                    }
+
+                    canDownload = isLicenseAccepted | hasRepositoryUrl;
+                    if (!canDownload) {
                         subMonitor.worked(1);
                         continue;
                     }
                     NexusDownloadHelperWithProgress downloader = new NexusDownloadHelperWithProgress(module);
                     if (!module.getMavenUris().isEmpty()) {
                         for (String mvnUri : module.getMavenUris()) {
-                            if (ELibraryInstallStatus.INSTALLED == ModuleStatusProvider.getStatusMap().get(mvnUri)) {
+                            if (ELibraryInstallStatus.INSTALLED == ModuleStatusProvider.getStatus(mvnUri)) {
                                 continue;
                             }
                             downloader.download(new URL(null, mvnUri, new Handler()), null, subMonitor.newChild(1));
 
                         }
                     } else {
-                        if (ELibraryInstallStatus.INSTALLED == ModuleStatusProvider.getStatusMap().get(module.getMavenUri())) {
+                        if (ELibraryInstallStatus.INSTALLED == ModuleStatusProvider.getStatus(module.getMavenUri())) {
                             continue;
                         }
                         downloader.download(new URL(null, module.getMavenUri(), new Handler()), null, subMonitor.newChild(1));
@@ -117,17 +129,15 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
                     MessageBoxExceptionHandler.process(new Exception("Download " + module.getName() + " failed!", e));
                     continue;
                 }
-                accepted = false;
+                canDownload = false;
             } else {
                 downloadFailed.add(module.getName());
             }
+            ILibrariesService librariesService = (ILibrariesService) GlobalServiceRegister.getDefault().getService(
+                    ILibrariesService.class);
+            librariesService.checkLibraries();
         }
-        // reset the module install status
-        if (!installedModules.isEmpty()) {
-            ILibraryManagerService libraryManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault()
-                    .getService(ILibraryManagerService.class);
-            libraryManagerService.forceListUpdate();
-        }
+
     }
 
     protected boolean hasLicensesToAccept() {
@@ -159,8 +169,8 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
                 @Override
                 public void run() {
                     AcceptModuleLicensesWizard licensesWizard = new AcceptModuleLicensesWizard(toDownload);
-                    AcceptModuleLicensesWizardDialog wizardDialog = new AcceptModuleLicensesWizardDialog(
-                            PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), licensesWizard, toDownload, monitor);
+                    AcceptModuleLicensesWizardDialog wizardDialog = new AcceptModuleLicensesWizardDialog(PlatformUI
+                            .getWorkbench().getActiveWorkbenchWindow().getShell(), licensesWizard, toDownload, monitor);
                     wizardDialog.setPageSize(700, 380);
                     wizardDialog.create();
                     if (wizardDialog.open() != Window.OK) {

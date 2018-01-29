@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -37,6 +37,8 @@ import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.talend.commons.exception.PersistenceException;
+import org.talend.commons.runtime.model.emf.provider.EmfResourcesFactoryReader;
+import org.talend.commons.runtime.model.emf.provider.ResourceOption;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.commons.ui.runtime.exception.MessageBoxExceptionHandler;
 import org.talend.commons.utils.VersionUtils;
@@ -106,6 +108,20 @@ public class MigrationToolService implements IMigrationToolService {
     @Override
     public void executeMigrationTasksForImport(Project project, Item item, List<MigrationTask> migrationTasksToApply,
             final IProgressMonitor monitor) throws Exception {
+        final ResourceOption migrationOption = ResourceOption.MIGRATION;
+        try {
+            EmfResourcesFactoryReader.INSTANCE.addOption(migrationOption, false);
+            EmfResourcesFactoryReader.INSTANCE.addOption(migrationOption, true);
+
+            delegateExecuteMigrationTasksForImport(project, item, migrationTasksToApply, monitor);
+        } finally {
+            EmfResourcesFactoryReader.INSTANCE.removOption(migrationOption, false);
+            EmfResourcesFactoryReader.INSTANCE.removOption(migrationOption, true);
+        }
+    }
+
+    private void delegateExecuteMigrationTasksForImport(Project project, Item item, List<MigrationTask> migrationTasksToApply,
+            final IProgressMonitor monitor) throws Exception {
         if (item == null || migrationTasksToApply == null) {
             return;
         }
@@ -166,6 +182,20 @@ public class MigrationToolService implements IMigrationToolService {
 
     @Override
     public void executeMigrationTasksForLogon(final Project project, final boolean beforeLogon, final IProgressMonitor monitorWrap) {
+        final ResourceOption migrationOption = ResourceOption.MIGRATION;
+        try {
+            EmfResourcesFactoryReader.INSTANCE.addOption(migrationOption, false);
+            EmfResourcesFactoryReader.INSTANCE.addOption(migrationOption, true);
+
+            delateExecuteMigrationTasksForLogon(project, beforeLogon, monitorWrap);
+        } finally {
+            EmfResourcesFactoryReader.INSTANCE.removOption(migrationOption, false);
+            EmfResourcesFactoryReader.INSTANCE.removOption(migrationOption, true);
+        }
+    }
+
+    private void delateExecuteMigrationTasksForLogon(final Project project, final boolean beforeLogon,
+            final IProgressMonitor monitorWrap) {
         String taskDesc = "Migration tool: project [" + project.getLabel() + "] tasks"; //$NON-NLS-1$ //$NON-NLS-2$
         log.trace(taskDesc);
 

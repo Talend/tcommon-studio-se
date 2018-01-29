@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -14,40 +14,29 @@ package org.talend.updates.runtime.engine.component;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.eclipse.equinox.p2.core.ProvisionException;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.runtime.service.ComponentsInstallComponent;
-import org.talend.commons.runtime.service.PatchComponent;
-import org.talend.commons.runtime.utils.io.FileCopyUtils;
 import org.talend.commons.utils.resource.UpdatesHelper;
-import org.talend.librariesmanager.prefs.LibrariesManagerUtils;
-import org.talend.updates.runtime.engine.InstalledUnit;
-import org.talend.updates.runtime.engine.P2Installer;
-import org.talend.updates.runtime.maven.MavenRepoSynchronizer;
-import org.talend.utils.io.FilesUtils;
+import org.talend.updates.runtime.nexus.component.ComponentIndexBean;
+import org.talend.updates.runtime.nexus.component.ComponentIndexManager;
+import org.talend.updates.runtime.utils.PathUtils;
 
 /**
  * DOC ggu class global comment. Detailled comment
  */
 public class LocalComponentsInstallComponent implements ComponentsInstallComponent {
 
-    private boolean needRelaunch;
-
-    private String installedMessage;
-
-    private String failureMessage;
+    protected InstallComponentMessages messages = new InstallComponentMessages();
 
     private File userComponentFolder = null;
 
@@ -62,27 +51,28 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
         this.isLogin = login;
     }
 
+    @Override
     public boolean needRelaunch() {
-        return needRelaunch;
+        return messages.isNeedRestart();
     }
 
+    @Override
     public List<File> getFailedComponents() {
         if (failedComponents == null) {
-            failedComponents = new ArrayList<File>();
+            failedComponents = new ArrayList<>();
         }
         return failedComponents;
     }
 
     private void reset() {
-        needRelaunch = false;
         if (failedComponents != null) {
             failedComponents.clear();
         }
-        failedComponents = new ArrayList<File>();
-        installedMessage = null;
-        failureMessage = null;
+        failedComponents = new ArrayList<>();
+        messages.reset();
     }
 
+    @Override
     public void setComponentFolder(File componentFolder) {
         this.userComponentFolder = componentFolder;
     }
@@ -119,24 +109,13 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
      * same as PatchLocalInstallerManager.getInstallingPatchesFolder
      */
     protected File getPatchesFolder() {
-        try {
-            return new File(Platform.getInstallLocation().getDataArea(PatchComponent.FOLDER_PATCHES).getPath());
-        } catch (IOException e) {
-            //
-        }
-        return new File(System.getProperty("user.dir") + '/' + PatchComponent.FOLDER_PATCHES); //$NON-NLS-1$
-    }
-
-    public File getTempM2RepoFolder() {
-        if (tmpM2RepoFolder == null) {
-            tmpM2RepoFolder = new File(getPatchesFolder().getParentFile(), "m2temp"); //$NON-NLS-1$
-        }
-        return tmpM2RepoFolder;
+        return PathUtils.getPatchesFolder();
     }
 
     /**
      * If have patches to be installed, will ask restart.
      */
+    @Override
     public boolean install() {
         if (Platform.inDevelopmentMode()) { // for dev, no need install patches.
             return false;
@@ -148,47 +127,12 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
         reset();
 
         try {
-            Map<File, Set<InstalledUnit>> successUnits = new HashMap<File, Set<InstalledUnit>>();
-
-            successUnits.putAll(installFromFolder(getUserComponentFolder()));
+            installFromFolder(getUserComponentFolder());
             if (isLogin) { // try to install the components from patches folder.
                 // because in patches folder, will do after install user components.
-                successUnits.putAll(installFromFolder(getPatchesFolder()));
+                installFromFolder(getPatchesFolder());
             }
-
-            if (!successUnits.isEmpty()) { // have one component install ok.
-                needRelaunch = true;
-            }
-            // messages
-            StringBuffer messages = new StringBuffer(100);
-            if (successUnits.isEmpty()) {
-                installedMessage = null; // no message
-            } else {
-                messages.append("Installed success components:\n");
-                List<File> succussFiles = new ArrayList(successUnits.keySet());
-                Collections.sort(succussFiles);
-
-                for (File f : succussFiles) {
-                    messages.append("\n  file: " + f.getName());
-                    messages.append('\n');
-                    Set<InstalledUnit> set = successUnits.get(f);
-                    for (InstalledUnit unit : set) {
-                        messages.append("  > bundle:" + unit.getBundle() + " , version=" + unit.getVersion());
-                        messages.append('\n');
-                    }
-                }
-                installedMessage = messages.toString();
-            }
-            if (getFailedComponents() != null && !getFailedComponents().isEmpty()) {
-                StringBuffer failureMessages = new StringBuffer(200);
-                failureMessages.append("[ERROR] Some components are not installed successfully:");
-                for (File f : getFailedComponents()) {
-                    failureMessages.append(f.getName() + ',' + ' ');
-                }
-                this.failureMessage = failureMessages.toString();
-            }
-
-            return !successUnits.isEmpty();
+            return getFailureMessage() == null && getInstalledMessages() != null;
         } catch (Exception e) {
             if (!CommonsPlugin.isHeadless()) {
                 // make sure to popup error dialog for studio
@@ -198,11 +142,11 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
         return false;
     }
 
-    protected Map<File, Set<InstalledUnit>> installFromFolder(final File componentBaseFolder) {
+    protected void installFromFolder(final File componentBaseFolder) {
         if (componentBaseFolder == null || !componentBaseFolder.exists() || !componentBaseFolder.isDirectory()) {
-            return Collections.emptyMap();
+            return;
         }
-        Map<File, Set<InstalledUnit>> successUnits = new HashMap<File, Set<InstalledUnit>>();
+        final ComponentIndexManager indexManager = new ComponentIndexManager();
 
         final File[] updateFiles = componentBaseFolder.listFiles(); // no children folders recursively.
         if (updateFiles != null && updateFiles.length > 0) {
@@ -210,12 +154,21 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
                 // must be file, and update site.
                 if (f.isFile() && UpdatesHelper.isComponentUpdateSite(f)) {
                     try {
-                        P2Installer installer = createInstaller();
-                        final Set<InstalledUnit> installed = installer.installPatchFile(f, true);
-                        if (installed != null && !installed.isEmpty()) { // install success
-                            successUnits.put(f, installed);
-
-                            afterInstall(componentBaseFolder, f);
+                        // get ComponentP2ExtraFeature from update site file
+                        ComponentIndexBean indexBean = indexManager.create(f);
+                        if (indexBean == null) {
+                            getFailedComponents().add(f);
+                            continue;
+                        }
+                        ComponentP2ExtraFeature feature = createComponentFeature(f);
+                        feature.setLogin(isLogin);
+                        NullProgressMonitor progressMonitor = new NullProgressMonitor();
+                        // boolean installedBefore = feature.isInstalled(progressMonitor);
+                        if (feature.canBeInstalled(progressMonitor)) {
+                            List<URI> repoUris = new ArrayList<>(1);
+                            repoUris.add(PathUtils.getP2RepURIFromCompFile(f));
+                            messages.analyzeStatus(feature.install(progressMonitor, repoUris));
+                            messages.setNeedRestart(feature.needRestart());
                         }
                     } catch (Exception e) { // sometime, if reinstall it, will got one exception also.
                         // won't block others to install.
@@ -227,91 +180,20 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
                 }
             }
         }
-
-        return successUnits;
     }
 
-    protected P2Installer createInstaller() {
-        return new P2Installer() {
-
-            public Set<InstalledUnit> installPatchFolder(File updatesiteFolder, boolean keepChangeConfigIni) throws IOException,
-                    ProvisionException {
-                final Set<InstalledUnit> installed = super.installPatchFolder(updatesiteFolder, keepChangeConfigIni);
-                if (!installed.isEmpty()) { // install success
-                    // sync the component libraries
-                    syncLibraries(updatesiteFolder);
-                    syncM2Repository(updatesiteFolder);
-                }
-                return installed;
-            }
-
-            protected File[] findUpdateFolders(File baseFolder) {
-                if (UpdatesHelper.isComponentUpdateSite(baseFolder)) {
-                    return new File[] { baseFolder };
-                }
-                return new File[0];
-            }
-        };
-    }
-
-    protected void afterInstall(final File componentBaseFolder, File f) throws IOException {
-        if (f == null || !f.exists() || !f.isFile()) {
-            return;
-        }
-        // try to move install success to installed folder
-        final File installedComponentFolder = new File(componentBaseFolder, FOLDER_INSTALLED);
-        if (!installedComponentFolder.exists()) {
-            installedComponentFolder.mkdirs();
-        }
-        FilesUtils.copyFile(f, new File(installedComponentFolder, f.getName()));
-        f.delete(); // delete original file.
-    }
-
-    void syncLibraries(File updatesiteFolder) throws IOException {
-        if (updatesiteFolder.exists() && updatesiteFolder.isDirectory()) {
-            // sync to product lib/java
-            final File productLibFolder = new File(LibrariesManagerUtils.getLibrariesPath());
-            File updatesiteLibFolder = new File(updatesiteFolder, LibrariesManagerUtils.LIB_JAVA_SUB_FOLDER);
-            if (updatesiteLibFolder.exists()) {
-                final File[] listFiles = updatesiteLibFolder.listFiles();
-                if (listFiles != null && listFiles.length > 0) {
-                    if (!productLibFolder.exists()) {
-                        productLibFolder.mkdirs();
-                    }
-                    FilesUtils.copyFolder(updatesiteLibFolder, productLibFolder, false, null, null, false);
-                }
-            }
-        }
-    }
-
-    void syncM2Repository(File updatesiteFolder) throws IOException {
-        // sync to the local m2 repository, if need try to deploy to remote TAC Nexus.
-        File updatesiteLibFolder = new File(updatesiteFolder, FOLDER_M2_REPOSITORY); // m2/repositroy
-        if (updatesiteLibFolder.exists() && updatesiteFolder.isDirectory()) {
-            final File[] listFiles = updatesiteLibFolder.listFiles();
-            if (listFiles != null && listFiles.length > 0) {
-                // if have remote nexus, install component too early and before logon project , will cause the problem
-                // (TUP-17604)
-                if (isLogin) {
-                    // prepare to install lib after logon. so copy all to temp folder
-                    FileCopyUtils.copyFolder(updatesiteLibFolder, new File(getTempM2RepoFolder(), FOLDER_M2_REPOSITORY));
-                } else {
-                    // install to local and try to deploy to remote nexus
-                    MavenRepoSynchronizer synchronizer = new MavenRepoSynchronizer(updatesiteLibFolder);
-                    synchronizer.sync();
-                }
-            }
-        }
+    protected ComponentP2ExtraFeature createComponentFeature(File f) {
+        return new ComponentLocalP2ExtraFeature(f);
     }
 
     @Override
     public String getInstalledMessages() {
-        return installedMessage;
+        return messages.getInstalledMessage();
     }
 
     @Override
     public String getFailureMessage() {
-        return failureMessage;
+        return messages.getFailureMessage();
     }
 
 }

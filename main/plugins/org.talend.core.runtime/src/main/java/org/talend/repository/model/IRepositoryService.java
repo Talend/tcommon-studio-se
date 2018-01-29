@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorPart;
 import org.talend.core.IService;
 import org.talend.core.model.components.IComponentsFactory;
+import org.talend.core.model.general.Project;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.process.IContextManager;
 import org.talend.core.model.process.IContextParameter;
@@ -40,6 +41,7 @@ import org.talend.repository.IRepositoryChangedListener;
 import org.talend.repository.IRepositoryElementDelta;
 import org.talend.repository.ui.actions.AContextualAction;
 import org.talend.repository.ui.views.IRepositoryView;
+import org.talend.utils.json.JSONException;
 
 /**
  * DOC qian class global comment. Interface for RepositoryService. <br/>
@@ -127,5 +129,9 @@ public interface IRepositoryService extends IService {
     public RepositoryNode getRepNodeFromRepReviewDialog(Shell parentShell, ERepositoryObjectType type, String repositoryType);
 
     public void openProjectSettingDialog(final String pageId);
+    
+    public List<String> getProjectBranch(Project project) throws JSONException;
+
+    public boolean askRetryForNetworkIssue(Throwable ex);
 
 }

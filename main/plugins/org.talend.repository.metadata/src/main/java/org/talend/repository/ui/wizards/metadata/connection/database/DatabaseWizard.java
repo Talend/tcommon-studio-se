@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -23,6 +23,7 @@ import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.EMap;
@@ -34,6 +35,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWizard;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.ui.runtime.image.ECoreImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
@@ -52,7 +54,9 @@ import org.talend.core.hadoop.IHadoopClusterService;
 import org.talend.core.hadoop.IHadoopDistributionService;
 import org.talend.core.hadoop.repository.HadoopRepositoryUtil;
 import org.talend.core.model.metadata.IMetadataConnection;
+import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.core.model.metadata.builder.ConvertionHelper;
+import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.metadata.builder.database.ExtractMetaDataFromDataBase;
@@ -64,6 +68,7 @@ import org.talend.core.model.metadata.connection.hive.HiveModeInfo;
 import org.talend.core.model.properties.ConnectionItem;
 import org.talend.core.model.properties.PropertiesFactory;
 import org.talend.core.model.properties.Property;
+import org.talend.core.model.relationship.RelationshipItemBuilder;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.update.RepositoryUpdateManager;
@@ -73,6 +78,7 @@ import org.talend.core.repository.utils.AbstractResourceChangesService;
 import org.talend.core.repository.utils.TDQServiceRegister;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.hd.IHDistribution;
+import org.talend.core.runtime.services.IGenericDBService;
 import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.helper.SwitchHelpers;
 import org.talend.designer.core.IDesignerCoreService;
@@ -94,6 +100,7 @@ import org.talend.utils.json.JSONException;
 import org.talend.utils.json.JSONObject;
 import org.talend.utils.sql.ConnectionUtils;
 import org.talend.utils.sugars.ReturnCode;
+
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.objectmodel.core.Package;
 import orgomg.cwm.resource.relational.Catalog;
@@ -111,7 +118,7 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
     private DatabaseWizardPage databaseWizardPage;
 
     // TODO Remove this refrence, use connectionItem (at super class) instead.
-    private DatabaseConnection connection;
+    private Connection connection;
 
     private Property connectionProperty;
 
@@ -139,6 +146,8 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
     private IProxyRepositoryFactory repFactory;
 
     private String propertyId;
+    
+    private ConnectionItem originalConnectionItem;
 
     /**
      * Constructor for DatabaseWizard. Analyse Iselection to extract DatabaseConnection and the pathToSave. Start the
@@ -187,7 +196,7 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
             break;
 
         case REPOSITORY_ELEMENT:
-            connection = (DatabaseConnection) ((ConnectionItem) node.getObject().getProperty().getItem()).getConnection();
+            connection = ((ConnectionItem) node.getObject().getProperty().getItem()).getConnection();
             connectionProperty = node.getObject().getProperty();
             connectionItem = (ConnectionItem) node.getObject().getProperty().getItem();
             propertyId = connectionProperty.getId();
@@ -204,15 +213,16 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
             this.originalPurpose = this.connectionItem.getProperty().getPurpose();
             this.originalStatus = this.connectionItem.getProperty().getStatusCode();
 
-            if (this.connection != null) {
-                this.originalSid = this.connection.getSID();
-                this.originalUiSchema = this.connection.getUiSchema();
+            if (this.connection != null && (this.connection instanceof DatabaseConnection)) {
+                this.originalSid = ((DatabaseConnection)this.connection).getSID();
+                this.originalUiSchema = ((DatabaseConnection)this.connection).getUiSchema();
             }
         }
 
         repFactory = ProxyRepositoryFactory.getInstance();
         if (creation) {
             propertyId = repFactory.getNextId();
+            connectionProperty.setId(propertyId);
         } else {
             propertyId = connectionProperty.getId();
         }
@@ -220,6 +230,7 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
 
         // initialize the context mode
         ConnectionContextHelper.checkContextMode(connectionItem);
+        this.originalConnectionItem = connectionItem;
     }
 
     /**
@@ -260,7 +271,7 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
             break;
 
         case REPOSITORY_ELEMENT:
-            connection = (DatabaseConnection) ((ConnectionItem) node.getObject().getProperty().getItem()).getConnection();
+            connection = ((ConnectionItem) node.getObject().getProperty().getItem()).getConnection();
             connectionProperty = node.getObject().getProperty();
             connectionItem = (ConnectionItem) node.getObject().getProperty().getItem();
 
@@ -277,16 +288,19 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
             this.originalPurpose = this.connectionItem.getProperty().getPurpose();
             this.originalStatus = this.connectionItem.getProperty().getStatusCode();
 
-            if (this.connection != null) {
-                this.originalSid = this.connection.getSID();
-                this.originalUiSchema = this.connection.getUiSchema();
+            if (this.getDatabaseConnection() != null) {
+                this.originalSid = this.getDatabaseConnection().getSID();
+                this.originalUiSchema = this.getDatabaseConnection().getUiSchema();
             }
         }
-        originalHCId = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HADOOP_CLUSTER_ID);
+        if(getDatabaseConnection() != null){
+            originalHCId = getDatabaseConnection().getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HADOOP_CLUSTER_ID);
+        }
 
         repFactory = ProxyRepositoryFactory.getInstance();
         if (creation) {
             propertyId = repFactory.getNextId();
+            connectionProperty.setId(propertyId);
         } else {
             propertyId = connectionProperty.getId();
         }
@@ -294,6 +308,7 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
 
         // initialize the context mode
         ConnectionContextHelper.checkContextMode(connectionItem);
+        this.originalConnectionItem = connectionItem;
     }
 
     /**
@@ -313,14 +328,19 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
             Map<String, String> parameters) {
         this(workbench, creation, node, existingNames);
         initConnection(parameters);
-        originalHCId = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HADOOP_CLUSTER_ID);
+        if(getDatabaseConnection() != null){
+            originalHCId = getDatabaseConnection().getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HADOOP_CLUSTER_ID);
+        }
     }
 
     private void initConnection(Map<String, String> parameters) {
         if (parameters == null || parameters.size() == 0) {
             return;
         }
-        EMap<String, String> connParameters = connection.getParameters();
+        if(getDatabaseConnection() == null){
+            return;
+        }
+        EMap<String, String> connParameters = getDatabaseConnection().getParameters();
         Iterator<Entry<String, String>> iter = parameters.entrySet().iterator();
         while (iter.hasNext()) {
             Map.Entry<String, String> entry = iter.next();
@@ -360,13 +380,15 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
             databaseWizardPage.setDescription(Messages.getString("DatabaseWizardPage.descriptionCreate.Step2")); //$NON-NLS-1$
             databaseWizardPage.setPageComplete(false);
         } else {
+            boolean isTCOM = databaseWizardPage.isTCOMDB(connectionItem.getTypeName());
+            
             propertiesWizardPage.setTitle(Messages.getString("DatabaseWizardPage.titleUpdate.Step1")); //$NON-NLS-1$
             propertiesWizardPage.setDescription(Messages.getString("DatabaseWizardPage.descriptionUpdate.Step1")); //$NON-NLS-1$
-            propertiesWizardPage.setPageComplete(isRepositoryObjectEditable());
+            propertiesWizardPage.setPageComplete(isRepositoryObjectEditable() && !isTCOM);
 
             databaseWizardPage.setTitle(Messages.getString("DatabaseWizardPage.titleUpdate.Step2")); //$NON-NLS-1$
             databaseWizardPage.setDescription(Messages.getString("DatabaseWizardPage.descriptionUpdate.Step2")); //$NON-NLS-1$
-            databaseWizardPage.setPageComplete(isRepositoryObjectEditable());
+            databaseWizardPage.setPageComplete(isRepositoryObjectEditable() && !isTCOM);
         }
         addPage(propertiesWizardPage);
         addPage(databaseWizardPage);
@@ -400,39 +422,53 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
     @Override
     public boolean performFinish() {
         if (databaseWizardPage.isPageComplete()) {
-            // DatabaseForm form = (DatabaseForm) databaseWizardPage.getControl();
-            // List<HashMap<String, Object>> properties = form.getProperties();
-            // try {
-            // connection.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HBASE_PROPERTIES,
-            // getHadoopPropertiesString(properties));
-            // } catch (JSONException e1) {
-            // String detailError = e1.toString();
-            //                new ErrorDialogWidthDetailArea(getShell(), PID, Messages.getString("CommonWizard.persistenceException"), //$NON-NLS-1$
-            // detailError);
-            //                log.error(Messages.getString("CommonWizard.persistenceException") + "\n" + detailError); //$NON-NLS-1$ //$NON-NLS-2$
-            // return false;
-            // }
             /*
              * if create connection in TOS with context model,should use the original value when create catalog or //
              * schema,see bug 0016636,using metadataConnection can be sure that all the values has been parse to
              * original. hywang
              */
-
+            deleteSwitchTypeNode();
+            // use the context group of selected on check button to check the selection in perform finish.
+            String contextName = null;
+            if (databaseWizardPage.getSelectedContextType() != null) {
+                contextName = databaseWizardPage.getSelectedContextType().getName();
+            }
+            if(isTCOMType(getDBType(connectionItem))){
+                IGenericDBService dbService = null;
+                if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
+                    dbService = (IGenericDBService) GlobalServiceRegister.getDefault().getService(
+                            IGenericDBService.class);
+                }
+                if(dbService == null){
+                    return false;
+                }
+                try {
+                    dbService.dbWizardPerformFinish(connectionItem, databaseWizardPage.getForm(), isCreation(), pathToSave, new ArrayList<IMetadataTable>(),contextName);
+                    closeLockStrategy();
+                } catch (CoreException e) {
+                    new ErrorDialogWidthDetailArea(getShell(), PID, Messages.getString("CommonWizard.persistenceException"), //$NON-NLS-1$
+                            e.toString());
+                    log.error(Messages.getString("CommonWizard.persistenceException") + "\n" + e.toString()); //$NON-NLS-1$ //$NON-NLS-2$
+                    return false;
+                }
+                return true;
+            }
+            
             // MOD by gdbu 2011-3-24 bug 19528
-            EDatabaseTypeName dbType = EDatabaseTypeName.getTypeFromDbType(connection.getDatabaseType());
+            EDatabaseTypeName dbType = EDatabaseTypeName.getTypeFromDbType(getDBType(connectionItem));
             if (dbType != EDatabaseTypeName.GENERAL_JDBC) {
-                String driverClass = ExtractMetaDataUtils.getInstance().getDriverClassByDbType(connection.getDatabaseType());
+                String driverClass = ExtractMetaDataUtils.getInstance().getDriverClassByDbType(getDBType(connectionItem));
                 DatabaseConnection dbConnection = (DatabaseConnection) connectionItem.getConnection();
+                String dbVersion = dbConnection.getDbVersionString();
                 // feature TDI-22108
                 if (EDatabaseTypeName.VERTICA.equals(dbType)
-                        && (EDatabaseVersion4Drivers.VERTICA_6.getVersionValue().equals(connection.getDbVersionString())
-                                || EDatabaseVersion4Drivers.VERTICA_5_1.getVersionValue().equals(connection.getDbVersionString())
-                                || EDatabaseVersion4Drivers.VERTICA_6_1_X.getVersionValue().equals(
-                                        connection.getDbVersionString()) || EDatabaseVersion4Drivers.VERTICA_7.getVersionValue()
-                                .equals(connection.getDbVersionString()))) {
+                        && (EDatabaseVersion4Drivers.VERTICA_6.getVersionValue().equals(dbVersion)
+                                || EDatabaseVersion4Drivers.VERTICA_5_1.getVersionValue().equals(dbVersion)
+                                || EDatabaseVersion4Drivers.VERTICA_6_1_X.getVersionValue().equals(dbVersion) || EDatabaseVersion4Drivers.VERTICA_7
+                                .getVersionValue().equals(dbVersion) || EDatabaseVersion4Drivers.VERTICA_9
+                                .getVersionValue().equals(dbVersion))) {
                     driverClass = EDatabase4DriverClassName.VERTICA2.getDriverClass();
-                }
-                if (EDatabaseTypeName.IMPALA.equals(dbType)) {
+                } else if (EDatabaseTypeName.IMPALA.equals(dbType)) {
                     IHadoopDistributionService hadoopService = getHadoopDistributionService();
                     if (hadoopService != null) {
                         String distributionName = dbConnection.getParameters().get(
@@ -444,20 +480,22 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
                                     ConnParameterKeys.CONN_PARA_KEY_IMPALA_VERSION));
                         }
                     }
-                }
-                if (EDatabaseTypeName.MYSQL.equals(dbType)
-                        && (EDatabaseVersion4Drivers.MARIADB.getVersionValue().equals(connection.getDbVersionString()))) {
+                } else if (EDatabaseTypeName.MYSQL.equals(dbType)
+                        && (EDatabaseVersion4Drivers.MARIADB.getVersionValue().equals(dbVersion))) {
                     driverClass = EDatabase4DriverClassName.MARIADB.getDriverClass();
+                } else if (EDatabaseTypeName.MSSQL.equals(dbType)
+                        && EDatabaseVersion4Drivers.MSSQL_PROP.getVersionValue().equals(dbVersion)) {
+                    driverClass = EDatabase4DriverClassName.MSSQL2.getDriverClass();
+                } else if (EDatabaseTypeName.SYBASEASE.equals(dbType)
+                        && EDatabaseVersion4Drivers.SYBASEIQ_16.getVersionValue().equals(dbVersion)) {
+                    driverClass = EDatabase4DriverClassName.SYBASEIQ_16.getDriverClass();
                 }
                 dbConnection.setDriverClass(driverClass);
             }
+        
             // ~19528
 
-            // use the context group of selected on check button to check the selection in perform finish.
-            String contextName = null;
-            if (databaseWizardPage.getSelectedContextType() != null) {
-                contextName = databaseWizardPage.getSelectedContextType().getName();
-            }
+        
             IMetadataConnection metadataConnection = null;
             if (contextName == null) {
                 metadataConnection = ConvertionHelper.convert(connection, true);
@@ -472,14 +510,14 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
                         .getService(ITDQRepositoryService.class);
             }
 
-            if (!connection.isContextMode()) {
-                handleUppercase(connection, metadataConnection);
+            if (getDatabaseConnection() !=null && !connection.isContextMode()) {
+                handleUppercase(getDatabaseConnection(), metadataConnection);
             }
             try {
                 // TODO use seperate subclass to handle the create and update logic , using a varable "creation" is not
                 // a good practice.
-                if (creation) {
-                    handleCreation(connection, metadataConnection, tdqRepService);
+                if (creation && getDatabaseConnection() != null) {
+                    handleCreation(getDatabaseConnection(), metadataConnection, tdqRepService);
                 } else {
                     Boolean isSuccess = handleUpdate(metadataConnection, tdqRepService);
                     if (!isSuccess) {
@@ -518,11 +556,50 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
             }
 
             refreshHadoopCluster();
+            RelationshipItemBuilder.getInstance().addOrUpdateItem(connectionItem);
 
             return true;
         } else {
             return false;
         }
+    }
+    
+    private void deleteSwitchTypeNode(){
+        if(isCreation()){
+            return;
+        }
+        if(originalConnectionItem == null){
+            return;
+        }
+        if(isTCOMType(getDBType(originalConnectionItem)) != isTCOMType(getDBType(connectionItem))){
+            creation = true;
+            try {
+                if(repositoryObject != null){
+                    repFactory.deleteObjectPhysical(repositoryObject);
+                }
+            } catch (PersistenceException e) {
+                ExceptionHandler.process(e);
+            }
+        }
+        
+    }
+    
+    private boolean isTCOMType(String dbType){
+        List<ERepositoryObjectType> extraTypes = new ArrayList<ERepositoryObjectType>();
+        IGenericDBService dbService = null;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
+            dbService = (IGenericDBService) GlobalServiceRegister.getDefault().getService(
+                    IGenericDBService.class);
+        }
+        if(dbService != null){
+            extraTypes.addAll(dbService.getExtraTypes());
+        }
+        for(ERepositoryObjectType type:extraTypes){
+            if(type.getType().equals(dbType)){
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -653,7 +730,7 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
             connectionProperty.setDisplayName(connectionItem.getConnection().getLabel());
         }
         ReturnCode retCode = tdqCompareService.reloadDatabase(connectionItem);
-        connection = (DatabaseConnection) connectionItem.getConnection();
+        connection = connectionItem.getConnection();
         if (isNameModified) {
             connectionProperty.setLabel(tempName);
             connectionProperty.setDisplayName(tempName);
@@ -662,9 +739,9 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
             return Boolean.FALSE;
         } else {
             // Update the software system.
-            if (tdqRepService != null) {
+            if (tdqRepService != null && getDatabaseConnection() != null) {
                 // Update software system when TDQ service available.
-                tdqRepService.publishSoftwareSystemUpdateEvent(connection);
+                tdqRepService.publishSoftwareSystemUpdateEvent(getDatabaseConnection());
             }
 
         }
@@ -706,8 +783,8 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
         List<Schema> schemas = ConnectionHelper.getSchema(connection);
         if (catalogs.isEmpty() && schemas.isEmpty()) {
             IDBMetadataProvider extractor = ExtractMetaDataFromDataBase.getProviderByDbType(metadataConnection.getDbType());
-            if (extractor != null && type.isUseProvider()) {
-                extractor.fillConnection(connection);
+            if (extractor != null && type.isUseProvider() && getDatabaseConnection() != null) {
+                extractor.fillConnection(getDatabaseConnection());
                 repFactory.save(connectionItem);
             }
         }
@@ -751,8 +828,8 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
 
     private void refreshHadoopCluster() {
         IHadoopClusterService hadoopClusterService = HadoopRepositoryUtil.getHadoopClusterService();
-        if (hadoopClusterService != null) {
-            String hcId = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HADOOP_CLUSTER_ID);
+        if (hadoopClusterService != null && getDatabaseConnection() != null) {
+            String hcId = getDatabaseConnection().getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HADOOP_CLUSTER_ID);
             if (hcId != null) {
                 hadoopClusterService.refreshCluster(hcId);
             } else if (originalHCId != null) {
@@ -789,15 +866,26 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
     @Override
     public boolean performCancel() {
         if (!creation) {
+            connectionItem = originalConnectionItem;
             connectionItem.getProperty().setVersion(this.originalVersion);
             connectionItem.getProperty().setDisplayName(this.originaleObjectLabel);
             connectionItem.getProperty().setDescription(this.originalDescription);
             connectionItem.getProperty().setPurpose(this.originalPurpose);
             connectionItem.getProperty().setStatusCode(this.originalStatus);
-            DBConnectionContextUtils.setDatabaseConnectionParameter((DatabaseConnection) connectionItem.getConnection(),
-                    databaseWizardPage.getMetadataConnection());
+            
+            if(connectionItem.getConnection() instanceof DatabaseConnection){
+                DBConnectionContextUtils.setDatabaseConnectionParameter((DatabaseConnection) connectionItem.getConnection(),
+                        databaseWizardPage.getMetadataConnection());
+            }
         }
         return super.performCancel();
+    }
+    
+    public void setNewConnectionItem(ConnectionItem connectionItem){
+        this.connection = connectionItem.getConnection();
+        this.connectionItem = connectionItem;
+        this.connectionProperty = connectionItem.getProperty();
+        propertiesWizardPage.setProperty(this.connectionProperty);
     }
 
     /**
@@ -992,5 +1080,19 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
             return;
         }
         super.closeLockStrategy();
+    }
+    
+    private DatabaseConnection getDatabaseConnection(){
+        if(connection instanceof DatabaseConnection){
+            return (DatabaseConnection)connection;
+        }
+        return null;
+    }
+    
+    private String getDBType(ConnectionItem item){
+        if(item.getConnection() instanceof DatabaseConnection){
+            return ((DatabaseConnection)item.getConnection()).getDatabaseType();
+        }
+        return item.getTypeName();
     }
 }

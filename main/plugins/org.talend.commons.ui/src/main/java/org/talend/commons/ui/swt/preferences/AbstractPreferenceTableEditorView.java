@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -31,7 +31,7 @@ import org.talend.commons.ui.swt.tableviewer.TableViewerCreator;
  */
 public abstract class AbstractPreferenceTableEditorView<B> extends FieldEditor {
 
-    private AbstractDataTableEditorView<B> tableEditorView;
+    protected AbstractDataTableEditorView<B> tableEditorView;
 
     private AbstractPreferencesHelperForTable preferencesHelper;
 

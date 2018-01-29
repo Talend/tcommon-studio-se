@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -89,6 +89,7 @@ import org.talend.core.model.utils.MigrationUtil;
 import org.talend.core.repository.constants.FileConstants;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.runtime.CoreRuntimePlugin;
+import org.talend.core.runtime.services.IGenericDBService;
 import org.talend.core.runtime.services.IGenericWizardService;
 import org.talend.core.utils.WorkspaceUtils;
 import org.talend.designer.business.model.business.BusinessPackage;
@@ -362,39 +363,42 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
             IRepositoryViewObject itemWithSameIdObj = null;
             IRepositoryViewObject itemWithSameNameObj = null;
 
-            List<IRepositoryViewObject> repViewObjectList = null;
-
             List<ERepositoryObjectType> allTypesOfProcess = ERepositoryObjectType.getAllTypesOfProcess();
             if (allTypesOfProcess.contains(itemType)) {
                 for (ERepositoryObjectType curProcessType : allTypesOfProcess) {
                     repObjectcache.initialize(curProcessType);
                 }
-                Map<ERepositoryObjectType, List<IRepositoryViewObject>> itemsMap = repObjectcache.getItemsFromRepository();
-                repViewObjectList = new LinkedList<IRepositoryViewObject>();
-                for (ERepositoryObjectType curProcessType : allTypesOfProcess) {
-                    List<IRepositoryViewObject> itemList = itemsMap.get(curProcessType);
-                    if (itemList != null) {
-                        repViewObjectList.addAll(itemList);
-                    }
-                }
             } else {
                 repObjectcache.initialize(itemType);
-                repViewObjectList = repObjectcache.getItemsFromRepository().get(itemType);
             }
 
-            Iterator<IRepositoryViewObject> repoViewObjectIter = repViewObjectList.iterator();
             boolean isSameRepositoryType = true;
             org.talend.core.model.general.Project currentProject = ProjectManager.getInstance().getCurrentProject();
-            while (repoViewObjectIter.hasNext()) {
-                IRepositoryViewObject current = repoViewObjectIter.next();
-                final Property property = importItem.getProperty();
-                if (property != null) {
+            Map<String, List<IRepositoryViewObject>> nameCache = repObjectcache.getNameItemChache();
+            final Property property = importItem.getProperty();
+            List<IRepositoryViewObject> nameItems = nameCache.get(property.getLabel());
+            if (nameItems != null) {
+                for (IRepositoryViewObject current : nameItems) {
                     boolean isInCurrentProject = ProjectManager.getInstance().isInMainProject(currentProject,
                             current.getProperty());
                     if (isInCurrentProject && isSameName(importItem, current)) {
                         itemWithSameNameObj = current;
-                        isSameRepositoryType = isSameRepType(current.getRepositoryObjectType(), importItem.getRepositoryType());
+                        ERepositoryObjectType repType = current.getRepositoryObjectType();
+                        IGenericDBService dbService = null;
+                        if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
+                            dbService = (IGenericDBService) GlobalServiceRegister.getDefault().getService(IGenericDBService.class);
+                        }
+                        if (dbService != null && dbService.getExtraTypes().contains(repType)) {
+                            repType = dbService.getExtraDBType(repType);
+                        }
+                        isSameRepositoryType = isSameRepType(repType, importItem.getRepositoryType());
                     }
+                }
+            }
+            Map<String, List<IRepositoryViewObject>> idCache = repObjectcache.getIdItemChache();
+            List<IRepositoryViewObject> idItems = idCache.get(property.getId());
+            if (idItems != null) {
+                for (IRepositoryViewObject current : idItems) {
                     if (property.getId() != null && property.getId().equals(current.getId())) {
                         itemWithSameIdObj = current;
                     }
@@ -491,6 +495,13 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
         ) {
             ERepositoryObjectType importType = importItem.getRepositoryType();
             ERepositoryObjectType repType = repObject.getRepositoryObjectType();
+            IGenericDBService dbService = null;
+            if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
+                dbService = (IGenericDBService) GlobalServiceRegister.getDefault().getService(IGenericDBService.class);
+            }
+            if (dbService != null && dbService.getExtraTypes().contains(repType)) {
+                repType = dbService.getExtraDBType(repType);
+            }
             // if support mult name
             if (importType != null && importType.equals(repType) && importType.isAllowMultiName()) {
                 String importPath = importItem.getProperty().getItem().getState().getPath();

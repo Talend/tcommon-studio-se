@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -21,6 +21,8 @@ import org.eclipse.core.runtime.IContributor;
 import org.talend.commons.utils.workbench.extensions.ExtensionImplementationProvider;
 import org.talend.commons.utils.workbench.extensions.ExtensionPointLimiterImpl;
 import org.talend.commons.utils.workbench.extensions.IExtensionPointLimiter;
+import org.talend.core.GlobalServiceRegister;
+import org.talend.core.ILibraryManagerService;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.designer.core.model.utils.emf.component.IMPORTType;
 import org.talend.librariesmanager.i18n.Messages;
@@ -58,6 +60,14 @@ public class ExtensionModuleManager {
 
     public final static String BUNDLEID_ATTR = "bundleID"; //$NON-NLS-1$
 
+    public final static String EXCLUDE_DEPENDENCIES_ATTR = "excludeDependencies";
+
+    public final static String DEPENDENCY_TYPE_NONE = "NONE";
+
+    public final static String DEPENDENCY_TYPE_TOP = "TOP";
+
+    public final static String DEPENDENCY_TYPE_CHILD = "CHILD";
+
     public final static String DESC_ATTR = "description"; //$NON-NLS-1$
 
     public final static String PATH_SEP = "/"; //$NON-NLS-1$
@@ -70,7 +80,13 @@ public class ExtensionModuleManager {
 
     private static ExtensionModuleManager manager = new ExtensionModuleManager();
 
+    private ILibraryManagerService libManagerService;
+
     private ExtensionModuleManager() {
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerService.class)) {
+            libManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
+                    ILibraryManagerService.class);
+        }
     }
 
     public static synchronized final ExtensionModuleManager getInstance() {
@@ -119,8 +135,11 @@ public class ExtensionModuleManager {
             moduleNeeded.setMrRequired(importType.isMRREQUIRED());
             moduleNeeded.setRequiredIf(importType.getREQUIREDIF());
             moduleNeeded.setShow(importType.isSHOW());
-            if (StringUtils.isEmpty(moduleNeeded.getMavenUri())) {
+            if (!StringUtils.isEmpty(importType.getMVN())) {
                 moduleNeeded.setMavenUri(importType.getMVN());
+            }
+            if (importType.getUrlPath() != null && libManagerService.checkJarInstalledFromPlatform(importType.getUrlPath())) {
+                moduleNeeded.setModuleLocaion(importType.getUrlPath());
             }
             ModulesNeededProvider.initBundleID(importType, moduleNeeded);
             importNeedsList.add(moduleNeeded);

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -25,6 +25,7 @@ import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.process.IProcess;
 import org.talend.core.model.properties.ConnectionItem;
+import org.talend.core.model.properties.ContextItem;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryTypeProcessor;
@@ -260,5 +261,7 @@ public interface IHadoopClusterService extends IService {
     public String getRepositoryTypeOfHadoopSubItem(Item subItem);
 
     public boolean isUseDynamicConfJar(String id);
+
+    public boolean updateConfJarsByContextGroup(ContextItem contextItem, Map<String, String> contextGroupRanamedMap);
 
 }

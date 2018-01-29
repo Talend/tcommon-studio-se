@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -80,6 +80,12 @@ public class RepositoryConstants {
     public static final String REPOSITORY_LOCAL_ID = "local"; //$NON-NLS-1$
 
     public static final String REPOSITORY_REMOTE_ID = "remote"; //$NON-NLS-1$
+
+    public static final String REPOSITORY_CLOUD_US_ID = "cloud_us"; //$NON-NLS-1$
+
+    public static final String REPOSITORY_CLOUD_EU_ID = "cloud_eu"; //$NON-NLS-1$
+
+    public static final String REPOSITORY_CLOUD_CUSTOM_ID = "cloud_custom"; //$NON-NLS-1$
 
     public static final String REPOSITORY_URL = "url"; //$NON-NLS-1$
 

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -38,6 +38,8 @@ public interface INode extends IElement {
     public static final String RELOAD_PARAMETER_CONNECTORS = "param.connectors"; //$NON-NLS-1$
 
     public static final String RELOAD_NEW = "param.new "; //$NON-NLS-1$
+
+    public static final String OLD_UNIFIED_COMPONENT = "old.unified.component"; //$NON-NLS-1$
 
     /**
      * Returns the label of the node.

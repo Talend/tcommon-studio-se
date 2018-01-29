@@ -8,11 +8,9 @@
             <dbType type="BYTE" defaultLength="1" ignorePre="true" />
             <dbType type="DATE" ignorePre="true" />
             <dbType type="DOUBLE"  ignorePre="true" ignoreLen="true"/>
-            <dbType type="FLOAT"  ignorePre="true" ignoreLen="true"/>
             <dbType type="INTEGER"  ignorePre="true" ignoreLen="true"/>
             <dbType type="RAW"  ignorePre="true" />
             <dbType type="SHORT"  ignorePre="true" ignoreLen="true"/>
-            <dbType type="LONG"  ignorePre="true" ignoreLen="true"/>
             <dbType type="STRING" ignorePre="true" />
             <dbType type="TIME" ignoreLen="true" ignorePre="true" />
         </dbTypes>
@@ -39,13 +37,13 @@
                     <dbType type="DOUBLE" default="true"/>
                 </talendType>    
                 <talendType type="id_Float">
-                    <dbType type="FLOAT" default="true"/>
+                    <dbType type="DOUBLE" default="true"/>
                 </talendType>
                 <talendType type="id_Integer">
                     <dbType type="INTEGER" default="true"/>
                 </talendType>
                 <talendType type="id_Long">
-                	<dbType type="LONG" default="true"/>
+                	<dbType type="BIG_INTEGER" default="true"/>
                 </talendType>
                 <talendType type="id_Object">
                     <dbType type="BIG_INTEGER"/>
@@ -74,9 +72,6 @@
                 <dbType type="DOUBLE">
                     <talendType type="id_Double" default="true"/>
                 </dbType> 
-                <dbType type="FLOAT">
-                    <talendType type="id_Float" default="true"/>
-                </dbType>
                 <dbType type="INTEGER">
                     <talendType type="id_Integer" default="true" />
                 </dbType>
@@ -85,9 +80,6 @@
                 </dbType>
                 <dbType type="SHORT">
                     <talendType type="id_Short" default="true" />
-                </dbType>
-                <dbType type="LONG">
-                    <talendType type="id_Long" default="true" />
                 </dbType>
                 <dbType type="STRING">
                     <talendType type="id_String" default="true" />

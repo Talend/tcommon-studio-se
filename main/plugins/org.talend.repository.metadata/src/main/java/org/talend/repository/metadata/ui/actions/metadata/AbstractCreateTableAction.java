@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -78,9 +78,11 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryContentHandler;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.repository.RepositoryContentManager;
+import org.talend.core.repository.model.ProjectRepositoryNode;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.repository.ui.actions.metadata.AbstractCreateAction;
 import org.talend.core.runtime.CoreRuntimePlugin;
+import org.talend.core.runtime.services.IGenericDBService;
 import org.talend.core.service.ISAPProviderService;
 import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.helper.PackageHelper;
@@ -138,9 +140,17 @@ public abstract class AbstractCreateTableAction extends AbstractCreateAction {
     protected void handleWizard(RepositoryNode node, WizardDialog wizardDialog) {
         wizardDialog.setPageSize(WIZARD_WIDTH, WIZARD_HEIGHT);
         wizardDialog.create();
-        wizardDialog.open();
+        int result = wizardDialog.open();
         IRepositoryView viewPart = getViewPart();
         if (viewPart != null) {
+            if (WizardDialog.CANCEL == result) {
+                RepositoryNode rootNode = ProjectRepositoryNode.getInstance().getRootRepositoryNode(node, false);
+                if (rootNode != null) {
+                    rootNode.getChildren().clear();
+                    rootNode.setInitialized(false);
+                    viewPart.refresh(rootNode);
+                }
+            }
             viewPart.expand(node, true);
         }
         ERepositoryObjectType nodeType = (ERepositoryObjectType) node.getProperties(EProperties.CONTENT_TYPE);
@@ -169,6 +179,16 @@ public abstract class AbstractCreateTableAction extends AbstractCreateAction {
                 viewPart.expand(node, true);
             }
             refresh(node);
+        } else {
+            IRepositoryView viewPart = getViewPart();
+            if (viewPart != null) {
+                RepositoryNode rootNode = ProjectRepositoryNode.getInstance().getRootRepositoryNode(node, false);
+                if (rootNode != null) {
+                    rootNode.getChildren().clear();
+                    rootNode.setInitialized(false);
+                    viewPart.refresh(rootNode);
+                }
+            }
         }
     }
 
@@ -961,22 +981,24 @@ public abstract class AbstractCreateTableAction extends AbstractCreateAction {
             ERepositoryObjectType nodeType = (ERepositoryObjectType) node.getProperties(EProperties.CONTENT_TYPE);
             String metadataTableLabel = (String) node.getProperties(EProperties.LABEL);
 
-            DatabaseConnectionItem item = null;
+            DatabaseConnectionItem connItem = null;
+            Item item = node.getObject().getProperty().getItem();
+            if(!(item instanceof DatabaseConnectionItem)){
+                return;
+            }
+            connItem = (DatabaseConnectionItem) item;
+            connection = (DatabaseConnection) connItem.getConnection();
             if (nodeType == ERepositoryObjectType.METADATA_CON_TABLE) {
-                item = (DatabaseConnectionItem) node.getObject().getProperty().getItem();
-                connection = (DatabaseConnection) item.getConnection();
                 metadataTable = TableHelper.findByLabel(connection, metadataTableLabel);
                 creation = false;
             } else if (nodeType == ERepositoryObjectType.METADATA_CONNECTIONS) {
-                item = (DatabaseConnectionItem) node.getObject().getProperty().getItem();
-                connection = (DatabaseConnection) item.getConnection();
                 creation = true;
             } else {
                 return;
             }
 
-            initContextMode(item);
-            openDatabaseTableWizard(item, metadataTable, forceReadOnly, node, creation);
+            initContextMode(connItem);
+            openDatabaseTableWizard(connItem, metadataTable, forceReadOnly, node, creation);
         }
     }
 
@@ -1013,10 +1035,24 @@ public abstract class AbstractCreateTableAction extends AbstractCreateAction {
                                     }
                                 }
                             }
+                            boolean isTcomDB = false;
+                            IGenericDBService dbService = null;
+                            if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
+                                dbService = (IGenericDBService) GlobalServiceRegister.getDefault().getService(
+                                        IGenericDBService.class);
+                            }
+                            if(dbService != null){
+                                for(ERepositoryObjectType type : dbService.getExtraTypes()){
+                                    if(type.getLabel().equals(metadataConnection.getDbType())){
+                                        isTcomDB = true;
+                                    }
+                                }
+                            }
                             if (!metadataConnection.getDbType().equals(EDatabaseConnTemplate.GODBC.getDBDisplayName())
                                     && !metadataConnection.getDbType().equals(EDatabaseConnTemplate.ACCESS.getDBDisplayName())
                                     && !metadataConnection.getDbType().equals(
-                                            EDatabaseConnTemplate.GENERAL_JDBC.getDBDisplayName())) {
+                                            EDatabaseConnTemplate.GENERAL_JDBC.getDBDisplayName())
+                                    && !isTcomDB) {
                                 // TODO 1. To identify if it is hive connection.
                                 String hiveMode = (String) metadataConnection
                                         .getParameter(ConnParameterKeys.CONN_PARA_KEY_HIVE_MODE);

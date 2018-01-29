@@ -13,6 +13,7 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.designer.core.model.utils.emf.component.HEADERType#getSIGNATURE <em>SIGNATURE</em>}</li>
  *   <li>{@link org.talend.designer.core.model.utils.emf.component.HEADERType#getFORMAT <em>FORMAT</em>}</li>
@@ -50,8 +51,8 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link org.talend.designer.core.model.utils.emf.component.HEADERType#getINPUTTYPE <em>INPUTTYPE</em>}</li>
  *   <li>{@link org.talend.designer.core.model.utils.emf.component.HEADERType#getOUTPUTTYPE <em>OUTPUTTYPE</em>}</li>
  *   <li>{@link org.talend.designer.core.model.utils.emf.component.HEADERType#isSPARKACTION <em>SPARKACTION</em>}</li>
+ *   <li>{@link org.talend.designer.core.model.utils.emf.component.HEADERType#isACTIVE_DB_COLUMNS <em>ACTIVE DB COLUMNS</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.talend.designer.core.model.utils.emf.component.ComponentPackage#getHEADERType()
  * @model extendedMetaData="name='HEADER_._type' kind='elementOnly'"
@@ -1312,6 +1313,61 @@ public interface HEADERType extends EObject {
      * @generated
      */
     boolean isSetSPARKACTION();
+
+    /**
+     * Returns the value of the '<em><b>ACTIVE DB COLUMNS</b></em>' attribute.
+     * The default value is <code>"false"</code>.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>ACTIVE DB COLUMNS</em>' attribute isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>ACTIVE DB COLUMNS</em>' attribute.
+     * @see #isSetACTIVE_DB_COLUMNS()
+     * @see #unsetACTIVE_DB_COLUMNS()
+     * @see #setACTIVE_DB_COLUMNS(boolean)
+     * @see org.talend.designer.core.model.utils.emf.component.ComponentPackage#getHEADERType_ACTIVE_DB_COLUMNS()
+     * @model default="false" unsettable="true" dataType="org.eclipse.emf.ecore.xml.type.Boolean"
+     *        extendedMetaData="kind='attribute' name='ACTIVE_DB_COLUMNS' namespace='##targetNamespace'"
+     * @generated
+     */
+    boolean isACTIVE_DB_COLUMNS();
+
+    /**
+     * Sets the value of the '{@link org.talend.designer.core.model.utils.emf.component.HEADERType#isACTIVE_DB_COLUMNS <em>ACTIVE DB COLUMNS</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>ACTIVE DB COLUMNS</em>' attribute.
+     * @see #isSetACTIVE_DB_COLUMNS()
+     * @see #unsetACTIVE_DB_COLUMNS()
+     * @see #isACTIVE_DB_COLUMNS()
+     * @generated
+     */
+    void setACTIVE_DB_COLUMNS(boolean value);
+
+    /**
+     * Unsets the value of the '{@link org.talend.designer.core.model.utils.emf.component.HEADERType#isACTIVE_DB_COLUMNS <em>ACTIVE DB COLUMNS</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #isSetACTIVE_DB_COLUMNS()
+     * @see #isACTIVE_DB_COLUMNS()
+     * @see #setACTIVE_DB_COLUMNS(boolean)
+     * @generated
+     */
+    void unsetACTIVE_DB_COLUMNS();
+
+    /**
+     * Returns whether the value of the '{@link org.talend.designer.core.model.utils.emf.component.HEADERType#isACTIVE_DB_COLUMNS <em>ACTIVE DB COLUMNS</em>}' attribute is set.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return whether the value of the '<em>ACTIVE DB COLUMNS</em>' attribute is set.
+     * @see #unsetACTIVE_DB_COLUMNS()
+     * @see #isACTIVE_DB_COLUMNS()
+     * @see #setACTIVE_DB_COLUMNS(boolean)
+     * @generated
+     */
+    boolean isSetACTIVE_DB_COLUMNS();
 
     /**
      * Returns the value of the '<em><b>TYPE</b></em>' attribute.

@@ -77,6 +77,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//Connection/ContextMode"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//Connection/ContextId"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//Connection/contextName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//Connection/compProperties"/>
       <genOperations ecoreOperation="metadata.ecore#//Connection/getConnectionTypeName"/>
     </genClasses>
     <genClasses ecoreClass="metadata.ecore#//MetadataColumn">
@@ -199,6 +200,7 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference metadata.ecore#//SAPConnection/IDocs"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//SAPConnection/jcoVersion"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference metadata.ecore#//SAPConnection/additionalProperties"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference metadata.ecore#//SAPConnection/BWAdvancedDataStoreObjects"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference metadata.ecore#//SAPConnection/BWDataSources"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference metadata.ecore#//SAPConnection/BWDataStoreObjects"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference metadata.ecore#//SAPConnection/BWInfoCubes"/>

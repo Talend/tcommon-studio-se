@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -23,4 +23,6 @@ import org.talend.core.model.temp.ECodePart;
 public interface IComponentFileNaming {
 
     public String getJetFileName(IComponent component, String languageSuffix, ECodePart codePart);
+
+    public String getJetFileName(String filePrefix, String languageSuffix, ECodePart codePart);
 }

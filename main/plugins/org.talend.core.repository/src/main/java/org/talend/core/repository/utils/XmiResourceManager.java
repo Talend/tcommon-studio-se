@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -148,6 +148,16 @@ public class XmiResourceManager {
     }
 
     public Property loadProperty(IResource iResource) {
+        final Map<Object, Object> oldLoadOptions = new HashMap<Object, Object>(resourceSet.getLoadOptions());
+        try {
+            return doLoadProperty(iResource);
+        } finally {
+            resourceSet.getLoadOptions().clear();
+            resourceSet.getLoadOptions().putAll(oldLoadOptions);
+        }
+    }
+
+    private Property doLoadProperty(IResource iResource) {
 
         Property property = null;
         // force unload old version, or the UI won't be synchronized all the time to the current file.
@@ -177,7 +187,6 @@ public class XmiResourceManager {
                 }
             }
         }
-
         Resource propertyResource = resourceSet.getResource(propertyUri, true);
 
         property = (Property) EcoreUtil

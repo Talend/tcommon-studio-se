@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -13,11 +13,11 @@
 package org.talend.core.repository;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -325,6 +325,11 @@ public final class RepositoryComponentManager {
                                             return setting;
                                         }
                                     }
+                                    // mr process only support old jdbc component, but we need to make the new
+                                    // connection be able to d&d to mr
+                                    if ("JDBC".equals(dbConnection.getDatabaseType()) && dbType == EDatabaseTypeName.GENERAL_JDBC) {
+                                        return setting;
+                                    }
                                 }
                             }
                         } else if (clazz.isAssignableFrom(ProcessItem.class)) {
@@ -343,15 +348,16 @@ public final class RepositoryComponentManager {
         return null;
 
     }
-    
-    public static List<IComponent> filterNeededComponents(Item item, RepositoryNode seletetedNode, ERepositoryObjectType type, boolean isCurrentPeoject, String projectName) {
+
+    public static List<IComponent> filterNeededComponents(Item item, RepositoryNode seletetedNode, ERepositoryObjectType type,
+            boolean isCurrentPeoject, String projectName) {
 
         if (!GlobalServiceRegister.getDefault().isServiceRegistered(IComponentsService.class)) {
             return Collections.emptyList();
         }
         IComponentsService service = (IComponentsService) GlobalServiceRegister.getDefault().getService(IComponentsService.class);
 
-        Set<IComponent> components = service.getComponentsFactory().getComponents();
+        Collection<IComponent> components = service.getComponentsFactory().readComponents();
         List<IComponent> neededComponents = new ArrayList<IComponent>();
         List<IComponent> exceptedComponents = new ArrayList<IComponent>();
 
@@ -371,9 +377,9 @@ public final class RepositoryComponentManager {
                 if (repositoryType == null) {
                     continue;
                 }
-                if((type == ERepositoryObjectType.JOBLET || type == ERepositoryObjectType.SPARK_JOBLET 
-                		|| type == ERepositoryObjectType.SPARK_STREAMING_JOBLET ) && !isCurrentPeoject && projectName!=null){
-                	repositoryType = projectName +":"+ repositoryType; //$NON-NLS-1$
+                if ((type == ERepositoryObjectType.JOBLET || type == ERepositoryObjectType.SPARK_JOBLET || type == ERepositoryObjectType.SPARK_STREAMING_JOBLET)
+                        && !isCurrentPeoject && projectName != null) {
+                    repositoryType = projectName + ":" + repositoryType; //$NON-NLS-1$
                 }
                 if (!exceptedComponents.contains(component)
                         && filter.except(item, type, seletetedNode, component, repositoryType)) {
@@ -390,11 +396,11 @@ public final class RepositoryComponentManager {
         neededComponents.removeAll(exceptedComponents);
 
         return sortFilteredComponnents(item, seletetedNode, type, neededComponents);
-    
+
     }
 
     public static List<IComponent> filterNeededComponents(Item item, RepositoryNode seletetedNode, ERepositoryObjectType type) {
-    	return filterNeededComponents(item, seletetedNode, type, true, null);
+        return filterNeededComponents(item, seletetedNode, type, true, null);
     }
 
     private static List<IComponent> sortFilteredComponnents(Item item, RepositoryNode seletetedNode, ERepositoryObjectType type,

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,6 +22,8 @@ public enum EHadoopDistributions {
     HORTONWORKS("HortonWorks"), //$NON-NLS-1$
 
     CLOUDERA("Cloudera"), //$NON-NLS-1$
+
+    ALTUS("Altus"), //$NON-NLS-1$
 
     MAPR("MapR"), //$NON-NLS-1$
 

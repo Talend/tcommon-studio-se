@@ -13,6 +13,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
+import org.talend.librariesmanager.emf.librariesindex.CustomURIMap;
 import org.talend.librariesmanager.emf.librariesindex.LibrariesIndex;
 import org.talend.librariesmanager.emf.librariesindex.LibrariesindexFactory;
 import org.talend.librariesmanager.emf.librariesindex.LibrariesindexPackage;
@@ -37,6 +38,13 @@ public class LibrariesindexPackageImpl extends EPackageImpl implements Libraries
      * @generated
      */
     private EClass jarToRelativePathEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass customURIMapEClass = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with
@@ -158,6 +166,24 @@ public class LibrariesindexPackageImpl extends EPackageImpl implements Libraries
      * <!-- end-user-doc -->
      * @generated
      */
+    public EClass getCustomURIMap() {
+        return customURIMapEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getCustomURIMap_UriMap() {
+        return (EReference)customURIMapEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public LibrariesindexFactory getLibrariesindexFactory() {
         return (LibrariesindexFactory)getEFactoryInstance();
     }
@@ -188,6 +214,9 @@ public class LibrariesindexPackageImpl extends EPackageImpl implements Libraries
         jarToRelativePathEClass = createEClass(JAR_TO_RELATIVE_PATH);
         createEAttribute(jarToRelativePathEClass, JAR_TO_RELATIVE_PATH__KEY);
         createEAttribute(jarToRelativePathEClass, JAR_TO_RELATIVE_PATH__VALUE);
+
+        customURIMapEClass = createEClass(CUSTOM_URI_MAP);
+        createEReference(customURIMapEClass, CUSTOM_URI_MAP__URI_MAP);
     }
 
     /**
@@ -228,6 +257,9 @@ public class LibrariesindexPackageImpl extends EPackageImpl implements Libraries
         initEAttribute(getjarToRelativePath_Key(), ecorePackage.getEString(), "key", null, 0, 1, Map.Entry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getjarToRelativePath_Value(), ecorePackage.getEString(), "value", null, 0, 1, Map.Entry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+        initEClass(customURIMapEClass, CustomURIMap.class, "CustomURIMap", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEReference(getCustomURIMap_UriMap(), this.getjarToRelativePath(), null, "uriMap", null, 0, -1, CustomURIMap.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
         // Create resource
         createResource(eNS_URI);
 
@@ -243,7 +275,7 @@ public class LibrariesindexPackageImpl extends EPackageImpl implements Libraries
      * @generated
      */
     protected void createMapEntryAnnotations() {
-        String source = "MapEntry";		
+        String source = "MapEntry";	
         addAnnotation
           (jarToRelativePathEClass, 
            source, 

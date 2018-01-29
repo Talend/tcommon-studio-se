@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ecore:EPackage xmi:version="2.0"
-    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="librariesindex"
-    nsURI="www.talend.com/librariesindex" nsPrefix="librariesindex">
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="librariesindex" nsURI="www.talend.com/librariesindex" nsPrefix="librariesindex">
   <eClassifiers xsi:type="ecore:EClass" name="LibrariesIndex">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="initialized" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="jarsToRelativePath" upperBound="-1"
@@ -12,5 +10,9 @@
     <eAnnotations source="MapEntry"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="key" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CustomURIMap">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="uriMap" upperBound="-1"
+        eType="#//jarToRelativePath" containment="true"/>
   </eClassifiers>
 </ecore:EPackage>

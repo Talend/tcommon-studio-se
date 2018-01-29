@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -21,8 +21,6 @@ import java.util.List;
 public interface ComponentsInstallComponent extends P2InstallComponent {
 
     String FOLDER_COMPS = "components"; //$NON-NLS-1$
-
-    String FOLDER_INSTALLED = "installed"; //$NON-NLS-1$
 
     String FOLDER_M2_REPOSITORY = "m2/repository"; //$NON-NLS-1$
 

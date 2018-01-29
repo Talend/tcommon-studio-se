@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.core.ui.component.settings;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -64,8 +65,9 @@ public class ComponentsSettingsHelper {
         }
         hiddenComponents = new HashMap<String, Map<String, Set<String>>>();
         EList list = emfProject.getComponentsSettings();
+        Collection<IComponent> componentList = ComponentsFactoryProvider.getInstance().readComponents();
 
-        for (IComponent component : ComponentsFactoryProvider.getInstance().getComponents()) {
+        for (IComponent component : componentList) {
             if (component.isTechnical() || component.getComponentType() == EComponentType.JOBLET) {
                 continue;
             }
@@ -117,7 +119,7 @@ public class ComponentsSettingsHelper {
         }
 
         displayedFamilies = new HashMap<String, Set<String>>();
-        for (IComponent component : ComponentsFactoryProvider.getInstance().getComponents()) {
+        for (IComponent component : componentList) {
             if (component.isTechnical() || component.getComponentType() == EComponentType.JOBLET) {
                 continue;
             }

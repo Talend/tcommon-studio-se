@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -20,6 +20,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.talend.core.runtime.CoreRuntimePlugin;
+import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
 
 public class JavaUtilsTest {
 
@@ -32,7 +33,7 @@ public class JavaUtilsTest {
         eclipsePreferences = InstanceScope.INSTANCE.getNode(JavaCore.PLUGIN_ID);
         originalCompliance = eclipsePreferences.get(JavaCore.COMPILER_COMPLIANCE, JavaCore.VERSION_1_8);
     }
-
+    
     @Test
     public void testUpdateProjectJavaVersion() {
         JavaUtils.updateProjectJavaVersion(JavaCore.VERSION_1_6);

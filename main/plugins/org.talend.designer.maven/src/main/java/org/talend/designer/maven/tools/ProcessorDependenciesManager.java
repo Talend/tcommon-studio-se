@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.maven.model.Dependency;
+import org.apache.maven.model.Exclusion;
 import org.apache.maven.model.Model;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.talend.core.model.general.ModuleNeeded;
@@ -51,9 +52,15 @@ public class ProcessorDependenciesManager {
             for (ModuleNeeded module : neededLibraries) {
                 Dependency dependency = null;
                 if (module.getDeployStatus() == ELibraryInstallStatus.DEPLOYED) {
-                    dependency = PomUtil.createModuleDependency(module.getMavenUri(true));
+                    dependency = PomUtil.createModuleDependency(module.getMavenUri());
                 }
                 if (dependency != null) {
+                    if (module.isExcludeDependencies()) {
+                        Exclusion exclusion = new Exclusion();
+                        exclusion.setGroupId("*"); //$NON-NLS-1$
+                        exclusion.setArtifactId("*"); //$NON-NLS-1$
+                        dependency.addExclusion(exclusion);
+                    }
                     neededDependencies.add(dependency);
                 }
             }

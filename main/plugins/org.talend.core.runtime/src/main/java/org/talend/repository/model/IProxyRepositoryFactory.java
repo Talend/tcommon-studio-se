@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -260,6 +260,9 @@ public interface IProxyRepositoryFactory {
      */
     public abstract List<IRepositoryViewObject> getAllVersion(Project project, String id, boolean avoidSaveProject)
             throws PersistenceException;
+
+    public abstract List<IRepositoryViewObject> getAllVersion(Project project, String id, String folderPath,
+            ERepositoryObjectType type) throws PersistenceException;
 
     public abstract List<IRepositoryViewObject> getAllVersion(String id) throws PersistenceException;
 
@@ -522,4 +525,9 @@ public interface IProxyRepositoryFactory {
 
     public abstract HashMap<String, Boolean> getFolderItems(ERepositoryObjectType type) throws PersistenceException;
 
+    public void updateEmfProjectContent(org.talend.core.model.properties.Project project);
+
+    public org.talend.core.model.properties.Project getEmfProjectContent(String technicalLabel) throws PersistenceException;
+    
+    public byte[] getReferenceSettingContent(Project project, String branch) throws PersistenceException;
 }

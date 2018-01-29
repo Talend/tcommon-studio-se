@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -40,6 +39,7 @@ import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMLResourceFactoryImpl;
 import org.talend.commons.exception.PersistenceException;
+import org.talend.commons.runtime.model.emf.provider.EmfResourcesFactoryReader;
 
 /***/
 public class EmfHelper {
@@ -206,10 +206,8 @@ public class EmfHelper {
         if (resource.getURI() == null) {
             return;
         }
+        Map<String, Object> options = EmfResourcesFactoryReader.INSTANCE.getSaveOptions(resource);
 
-        HashMap options = new HashMap(2);
-        options.put(XMLResource.OPTION_ENCODING, "UTF-8"); //$NON-NLS-1$
-        options.put(XMLResource.OPTION_ESCAPE_USING_CDATA, Boolean.TRUE);
         try {
             if (outputStream == null) {
                 resource.save(options);

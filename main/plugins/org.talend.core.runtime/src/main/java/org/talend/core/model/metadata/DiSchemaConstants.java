@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -79,6 +79,8 @@ public interface DiSchemaConstants {
 
     /** cf TDKN-36. to link to the custom fields of the studio */
     public final static String TALEND6_COLUMN_CUSTOM = SchemaConstants.TALEND_FIELD_GENERATED;
+    
+    public final static String AVRO_TECHNICAL_KEY = "AVRO_TECHNICAL_KEY";
 
     public final static String TALEND6_COLUMN_ORIGINAL_DB_COLUMN_NAME = SchemaConstants.TALEND_COLUMN_DB_COLUMN_NAME;
 

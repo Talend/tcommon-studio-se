@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.repository.items.importexport.handlers;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,6 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Priority;
 import org.eclipse.core.resources.IWorkspace;
@@ -33,6 +35,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
@@ -76,6 +79,7 @@ import org.talend.repository.items.importexport.manager.ChangeIdManager;
 import org.talend.repository.items.importexport.manager.ResourcesManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryConstants;
+import org.talend.utils.io.FilesUtils;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -257,10 +261,25 @@ public class ImportExportHandlersManager {
             // add empty folders for TUP-2716
             List<IPath> emptyFolders = resManager.getEmptyFolders();
             if (!emptyFolders.isEmpty()) {
+                Set<String> toIgnore = new HashSet<String>();
                 DynaEnum<? extends DynaEnum<?>>[] values = ERepositoryObjectType.values();
-                ERepositoryObjectType folderType = null;
                 for (IPath folder : emptyFolders) {
+                    ERepositoryObjectType folderType = null;
                     if (folder.segmentCount() < 1) {
+                        continue;
+                    }
+                    if (".svn".equals(folder.lastSegment())) {
+                        toIgnore.add(folder.toPortableString());
+                        continue;
+                    }
+                    boolean isChildOfIgnored = false;
+                    for (String pathToIgnore : toIgnore) {
+                        if (folder.toPortableString().startsWith(pathToIgnore)) {
+                            isChildOfIgnored = true;
+                            break;
+                        }
+                    }
+                    if (isChildOfIgnored) {
                         continue;
                     }
                     IPath folderPathToCheck = folder.removeFirstSegments(1);
@@ -301,6 +320,18 @@ public class ImportExportHandlersManager {
                             }
                         }
                     }
+                    String pattern = null;
+                    if (folderType != null && folderType.isDQItemType()) {
+                        pattern = RepositoryConstants.TDQ_ALL_ITEM_PATTERN;
+                    } else if (folderType == ERepositoryObjectType.METADATA_FILE_XML) {
+                        pattern = RepositoryConstants.SIMPLE_FOLDER_PATTERN;
+                    } else {
+                        pattern = RepositoryConstants.FOLDER_PATTERN;
+                    }
+                    if (!Pattern.matches(pattern, folder.lastSegment())) {
+                        toIgnore.add(folder.toPortableString());
+                        continue;
+                    }
                     if (folderType != null) {
                         IPath typePath = new Path(folderType.getFolder());
                         IPath folderPath = folder.removeFirstSegments(1 + typePath.segmentCount()).removeLastSegments(1)
@@ -324,7 +355,6 @@ public class ImportExportHandlersManager {
                         createFolderItem.setState(createStatus);
                         items.add(folderItem);
                         folderItem.setProperty(property);
-                        folderType = null;
                     }
                 }
 
@@ -453,9 +483,18 @@ public class ImportExportHandlersManager {
 
                         @Override
                         public void run(final IProgressMonitor monitor) throws CoreException {
-                            // pre import
-                            preImport(monitor, resManager, checkedItemRecords.toArray(new ImportItem[0]), allImportItemRecords);
-
+                            try {
+                                // pre import
+                                preImport(monitor, resManager, checkedItemRecords.toArray(new ImportItem[0]),
+                                        allImportItemRecords);
+                            } catch (IllegalArgumentException e) {
+                                if (e.getCause() instanceof OperationCanceledException) {
+                                    throw e; // if invalid project, with cancel
+                                }
+                            }
+                            if (monitor.isCanceled()) {
+                                return;
+                            }
                             final IProxyRepositoryFactory factory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
 
                             // bug 10520
@@ -524,13 +563,6 @@ public class ImportExportHandlersManager {
                                         Messages.getString("ImportExportHandlersManager_importingItemsError"), e)); //$NON-NLS-1$
                             }
 
-                            if (PluginChecker.isJobLetPluginLoaded()) {
-                                IJobletProviderService service = (IJobletProviderService) GlobalServiceRegister.getDefault()
-                                        .getService(IJobletProviderService.class);
-                                if (service != null) {
-                                    service.loadComponentsFromProviders();
-                                }
-                            }
                             ImportCacheHelper.getInstance().checkDeletedFolders();
                             ImportCacheHelper.getInstance().checkDeletedItems();
                             monitor.done();
@@ -611,7 +643,7 @@ public class ImportExportHandlersManager {
                                 final Set<String> overwriteDeletedItems, final Set<String> idDeletedBeforeImport)
                                 throws Exception {
                             boolean hasJoblet = false;
-                            boolean reloadJoblet = false;
+                            boolean jobletReloaded = false;
                             for (ImportItem itemRecord : processingItemRecords) {
                                 if (monitor.isCanceled()) {
                                     return;
@@ -619,18 +651,22 @@ public class ImportExportHandlersManager {
                                 if (itemRecord.isImported()) {
                                     continue; // have imported
                                 }
+
                                 if ((ERepositoryObjectType.JOBLET == itemRecord.getRepositoryType())
+                                        || (ERepositoryObjectType.PROCESS_ROUTELET == itemRecord.getRepositoryType())
                                         || (ERepositoryObjectType.SPARK_JOBLET == itemRecord.getRepositoryType())
                                         || (ERepositoryObjectType.SPARK_STREAMING_JOBLET == itemRecord.getRepositoryType())) {
                                     hasJoblet = true;
                                 }
-                                if (hasJoblet) {
+                                if (hasJoblet && !jobletReloaded) {
                                     if (ERepositoryObjectType.JOBLET != itemRecord.getRepositoryType()
+                                            && ERepositoryObjectType.PROCESS_ROUTELET != itemRecord.getRepositoryType()
                                             && ERepositoryObjectType.SPARK_JOBLET != itemRecord.getRepositoryType()
                                             && ERepositoryObjectType.SPARK_STREAMING_JOBLET != itemRecord.getRepositoryType()) {
-                                        // fix for TUP-3032 load joblet process before import job in order to build
-                                        // items relationship
-                                        reloadJoblet = true;
+                                        // fix for TUP-3032 ,processingItemRecords is a sorted list with joblet before
+                                        // jobs . we should load joblet component before import jobs to build the
+                                        // relationship.
+                                        jobletReloaded = true;
                                         if (PluginChecker.isJobLetPluginLoaded()) {
                                             IJobletProviderService jobletService = (IJobletProviderService) GlobalServiceRegister
                                                     .getDefault().getService(IJobletProviderService.class);
@@ -693,7 +729,7 @@ public class ImportExportHandlersManager {
 
                             }
 
-                            if (hasJoblet && !reloadJoblet && PluginChecker.isJobLetPluginLoaded()) {
+                            if (hasJoblet && !jobletReloaded && PluginChecker.isJobLetPluginLoaded()) {
                                 IJobletProviderService jobletService = (IJobletProviderService) GlobalServiceRegister
                                         .getDefault().getService(IJobletProviderService.class);
                                 if (jobletService != null) {
@@ -732,6 +768,16 @@ public class ImportExportHandlersManager {
         } finally {
             // cache
             importCacheHelper.afterImportItems();
+
+            //
+            final Object root = resManager.getRoot();
+            if (root instanceof File) {
+                final File workingFolder = (File) root;
+                File tmpdir = new File(System.getProperty("java.io.tmpdir")); //$NON-NLS-1$
+                if (workingFolder.toString().startsWith(tmpdir.toString())) { // remove from temp
+                    FilesUtils.deleteFolder(workingFolder, true);
+                }
+            }
             //
             TimeMeasure.end("importItemRecords"); //$NON-NLS-1$
             TimeMeasure.display = false;

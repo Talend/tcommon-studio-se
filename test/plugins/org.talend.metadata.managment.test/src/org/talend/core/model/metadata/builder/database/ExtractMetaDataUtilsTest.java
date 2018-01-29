@@ -15,8 +15,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.Assert;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,6 +30,7 @@ import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.metadata.builder.connection.MetadataColumn;
 
+import junit.framework.Assert;
 import orgomg.cwm.objectmodel.core.Expression;
 
 /**
@@ -182,10 +181,13 @@ public class ExtractMetaDataUtilsTest {
 
     private List<EDatabaseTypeName> getNeedFakeTypes() {
         List<EDatabaseTypeName> neededList = new ArrayList<EDatabaseTypeName>();
+        neededList.add(EDatabaseTypeName.IBMDB2);
         neededList.add(EDatabaseTypeName.IBMDB2ZOS);
         neededList.add(EDatabaseTypeName.TERADATA); // need isSqlMode
         neededList.add(EDatabaseTypeName.SAS);
         neededList.add(EDatabaseTypeName.AS400);
+        neededList.add(EDatabaseTypeName.EXASOL);
+        neededList.add(EDatabaseTypeName.SAPHana);
         return neededList;
     }
 
@@ -376,27 +378,6 @@ public class ExtractMetaDataUtilsTest {
                 }
             }
         }
-    }
-
-    @Test
-    public void testNeedFakeDatabaseMetaData() {
-        // test null type
-        Assert.assertFalse(extractMetaManger.needFakeDatabaseMetaData(null, false));
-
-        //
-        List<EDatabaseTypeName> neededList = getNeedFakeTypes();
-        for (EDatabaseTypeName type : neededList) {
-            Assert.assertTrue(extractMetaManger.needFakeDatabaseMetaData(type.getXmlName(), true));
-        }
-        // special for TERADATA
-        Assert.assertFalse(extractMetaManger.needFakeDatabaseMetaData(EDatabaseTypeName.TERADATA.getXmlName(), false));
-
-        for (EDatabaseTypeName type : EDatabaseTypeName.values()) {
-            if (!neededList.contains(type)) {
-                Assert.assertFalse(extractMetaManger.needFakeDatabaseMetaData(type.getXmlName(), false));
-            }
-        }
-
     }
 
     @Test

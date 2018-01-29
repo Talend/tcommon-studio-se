@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -12,6 +12,8 @@
 // ============================================================================
 package org.talend.core;
 
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IWorkbenchPart;
 import org.talend.core.model.process.INode;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.repository.ERepositoryObjectType;
@@ -55,4 +57,10 @@ public interface IESBService extends IService {
     public void copyDataServiceRelateJob(Item newItem);
 
     public IXSDPopulationUtil getXSDPopulationUtil();
+    
+    public boolean isWSDLEditor(IWorkbenchPart part);
+    
+    public Item getWSDLEditorItem(IWorkbenchPart part);
+    
+    public boolean executeCommand(IEditorPart editorPart, Object cmd);
 }

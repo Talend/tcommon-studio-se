@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -16,6 +16,7 @@ import java.io.File;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.talend.core.model.general.Project;
+import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.repository.model.RepositoryNode;
 
 /**
@@ -32,5 +33,19 @@ public interface IGenerateAllDocumentation {
     public void setProject(Project project);
 
     public void setRootNode(RepositoryNode jobletNode);
+
+    public void setGenerateVersions(boolean generateAllVersions);
+
+    public boolean isGenerateAllVersions();
+
+    public File getGeneratedDocHTML();
+
+    public ERepositoryObjectType getDocumentObjectType();
+
+    public ERepositoryObjectType getItemType();
+
+    public String getHTMLFileName();
+
+    public IDocumentationGenerator getHTMLGenerator();
 
 }

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -975,7 +975,8 @@ public final class ProcessUtils {
             if (pt.getName().equals("DISTRIBUTION")) { //$NON-NLS-1$
                 String value = pt.getValue();
                 if ("MICROSOFT_HD_INSIGHT".equals(value) //$NON-NLS-1$
-                        || "GOOGLE_CLOUD_DATAPROC".equals(value)) { //$NON-NLS-1$
+                        || "GOOGLE_CLOUD_DATAPROC".equals(value) //$NON-NLS-1$
+                        || "CLOUDERA_ALTUS".equals(value)) { //$NON-NLS-1$
                     return true;
                 }
             }

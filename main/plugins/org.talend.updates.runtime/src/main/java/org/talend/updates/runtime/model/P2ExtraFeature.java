@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -47,6 +47,7 @@ import org.eclipse.equinox.p2.operations.UpdateOperation;
 import org.eclipse.equinox.p2.query.IQuery;
 import org.eclipse.equinox.p2.query.IQueryResult;
 import org.eclipse.equinox.p2.query.QueryUtil;
+import org.eclipse.equinox.p2.repository.IRepositoryManager;
 import org.eclipse.equinox.p2.repository.artifact.IArtifactRepositoryManager;
 import org.eclipse.equinox.p2.repository.metadata.IMetadataRepositoryManager;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -65,12 +66,12 @@ import org.talend.utils.json.JSONObject;
 /**
  * created by sgandon on 19 févr. 2013 This class represent an extra feature defined in the License in the document :
  * https://wiki.talend.com/x/YoVL
- * 
+ *
  */
 public class P2ExtraFeature implements ExtraFeature {
 
-    private static Logger log = Logger.getLogger(P2ExtraFeature.class);
-    
+    protected static Logger log = Logger.getLogger(P2ExtraFeature.class);
+
     protected String p2IuId;// p2 installable unit id
 
     protected String baseRepoUriStr;// default url of the remote repo where to look for the feature to install
@@ -81,12 +82,12 @@ public class P2ExtraFeature implements ExtraFeature {
 
     protected String version;// version of the p2 IU
 
-    Boolean isInstalled;// true is already installed in the current Studio
+    protected Boolean isInstalled;// true is already installed in the current Studio
 
     protected boolean mustBeInstalled;
 
     protected boolean useLegacyP2Install;
-    
+
     protected FeatureCategory parentCategory;
 
     protected P2ExtraFeature() {
@@ -109,7 +110,7 @@ public class P2ExtraFeature implements ExtraFeature {
 
     /**
      * check if the current p2 profile contains the P2 Installable Unit or not
-     * 
+     *
      * @param p2IuId2, never null
      * @return true if unit is installed or false in any other cases (even errors or canceled)
      * @throws ProvisionException
@@ -144,6 +145,7 @@ public class P2ExtraFeature implements ExtraFeature {
             IProfile profile = null;
             // there seems to be a bug because if the agent is created too quickly then the profile is empty.
             // so we loop until we get a proper profile
+            final String p2ProfileId = getP2ProfileId();
             do {
                 try {
                     Thread.sleep(50);
@@ -155,11 +157,11 @@ public class P2ExtraFeature implements ExtraFeature {
                 }
                 agent = agentProvider.createAgent(getP2AgentUri());
                 IProfileRegistry profRegistry = (IProfileRegistry) agent.getService(IProfileRegistry.SERVICE_NAME);
-                profile = profRegistry.getProfile(getP2ProfileId());
-            } while (profile != null && profile.getTimestamp() == 0 && !interrupted && !progress.isCanceled());
+                profile = profRegistry.getProfile(p2ProfileId);
+            } while (profile != null && profile.getTimestamp() == 0 && !interrupted && !subMonitor.isCanceled());
 
             if (profile == null || subMonitor.isCanceled()) {
-                throw new ProvisionException("Could not find the p2 profile named _SELF_"); //$NON-NLS-1$
+                throw new ProvisionException("Could not find the p2 profile named " + p2ProfileId); //$NON-NLS-1$
             }
             subMonitor.worked(1);
             IQueryResult<IInstallableUnit> iuQueryResult = profile.available(iuQuery, subMonitor.newChild(1));
@@ -176,7 +178,7 @@ public class P2ExtraFeature implements ExtraFeature {
 
     /**
      * created for JUnit test so that profile Id can be changed by overriding
-     * 
+     *
      * @return
      */
     public String getP2ProfileId() {
@@ -185,7 +187,7 @@ public class P2ExtraFeature implements ExtraFeature {
 
     /**
      * create for JUnit test so that URI can be change to some other P2 repo
-     * 
+     *
      * @return null for using the current defined area, but may be overriden ot point to another area for JUnitTests
      */
     public URI getP2AgentUri() {
@@ -194,7 +196,7 @@ public class P2ExtraFeature implements ExtraFeature {
 
     /**
      * Getter for p2 installable unit id.
-     * 
+     *
      * @return the p2 installable unit id.
      */
     public String getP2IuId() {
@@ -203,7 +205,7 @@ public class P2ExtraFeature implements ExtraFeature {
 
     /**
      * Sets the p2 installable unit id.
-     * 
+     *
      * @param p2IuId the p2 installable unit id to set
      */
     public void setP2IuId(String p2IuId) {
@@ -256,8 +258,8 @@ public class P2ExtraFeature implements ExtraFeature {
             } // else legacy p2 install will update the config.ini
             doInstallStatus = doInstall(progress, allRepoUris);
         } catch (IOException e) {
-            throw new P2ExtraFeatureException(
-                    new ProvisionException(Messages.createErrorStatus(e, "ExtraFeaturesFactory.restore.config.error"))); //$NON-NLS-1$
+            throw new P2ExtraFeatureException(new ProvisionException(Messages.createErrorStatus(e,
+                    "ExtraFeaturesFactory.restore.config.error"))); //$NON-NLS-1$
         } finally {
             if (doInstallStatus != null && doInstallStatus.isOK()) {
                 afterInstall();
@@ -268,19 +270,19 @@ public class P2ExtraFeature implements ExtraFeature {
                 try {
                     copyConfigFile(configIniBackupFile);
                 } catch (IOException e) {
-                    throw new P2ExtraFeatureException(
-                            new ProvisionException(Messages.createErrorStatus(e, "ExtraFeaturesFactory.back.config.error"))); //$NON-NLS-1$
+                    throw new P2ExtraFeatureException(new ProvisionException(Messages.createErrorStatus(e,
+                            "ExtraFeaturesFactory.back.config.error"))); //$NON-NLS-1$
                 }
             }
         }
         return doInstallStatus;
     }
-    
+
     protected void afterInstall() {
-        
+
     }
 
-    private void storeInstalledFeatureMessage() {
+    protected void storeInstalledFeatureMessage() {
         IPreferenceStore preferenceStore = PlatformUI.getPreferenceStore();
         String addons = preferenceStore.getString("ADDONS"); //$NON-NLS-1$
         JSONObject allAddons = null;
@@ -298,7 +300,7 @@ public class P2ExtraFeature implements ExtraFeature {
         }
     }
 
-    IStatus doInstall(IProgressMonitor progress, List<URI> allRepoUris) throws P2ExtraFeatureException {
+    protected IStatus doInstall(IProgressMonitor progress, List<URI> allRepoUris) throws P2ExtraFeatureException {
         SubMonitor subMonitor = SubMonitor.convert(progress, 5);
         subMonitor.setTaskName(Messages.getString("ExtraFeature.installing.feature", getName())); //$NON-NLS-1$
         // reset isInstalled to make is compute the next time is it used
@@ -350,8 +352,8 @@ public class P2ExtraFeature implements ExtraFeature {
             IPhaseSet talendPhaseSet = PhaseSetFactory
                     .createDefaultPhaseSetExcluding(new String[] { PhaseSetFactory.PHASE_CHECK_TRUST });
 
-            ProfileModificationJob provisioningJob = (ProfileModificationJob) installOperation
-                    .getProvisioningJob(subMonitor.newChild(1));
+            ProfileModificationJob provisioningJob = (ProfileModificationJob) installOperation.getProvisioningJob(subMonitor
+                    .newChild(1));
             if (subMonitor.isCanceled()) {
                 return Messages.createCancelStatus("user.cancel.installation.of.feature", //$NON-NLS-1$
                         getName());
@@ -383,11 +385,11 @@ public class P2ExtraFeature implements ExtraFeature {
 
     /**
      * DOC sgandon Comment method "removeAllRepositories".
-     * 
+     *
      * @param agent
      * @param allRepoUris
      */
-    private void removeAllRepositories(IProvisioningAgent agent, List<URI> allRepoUris) {
+    protected void removeAllRepositories(IProvisioningAgent agent, List<URI> allRepoUris) {
         // get the repository managers and remove all repositories
         IMetadataRepositoryManager metadataManager = (IMetadataRepositoryManager) agent
                 .getService(IMetadataRepositoryManager.SERVICE_NAME);
@@ -403,14 +405,14 @@ public class P2ExtraFeature implements ExtraFeature {
     /**
      * add the feauture repo URI to the p2 engine and return the P2 installable units by looking at each repo
      * sequentially.
-     * 
+     *
      * @param agent
      * @return the metadata repo to install anything in it.
      * @throws URISyntaxException if the feature remote p2 site uri is bad
      * @throws OperationCanceledException if installation was canceled
      * @throws ProvisionException if p2 repository could not be loaded
      */
-    private Set<IInstallableUnit> getInstallableIU(IProvisioningAgent agent, List<URI> allRepoUris, IProgressMonitor progress)
+    protected Set<IInstallableUnit> getInstallableIU(IProvisioningAgent agent, List<URI> allRepoUris, IProgressMonitor progress)
             throws URISyntaxException, ProvisionException, OperationCanceledException {
 
         if (allRepoUris.isEmpty()) {// if repo list is empty use the default URI
@@ -426,6 +428,14 @@ public class P2ExtraFeature implements ExtraFeature {
 
         // create the feature query
         IQuery<IInstallableUnit> iuQuery = QueryUtil.createLatestQuery(QueryUtil.createIUQuery(getP2IuId()));
+
+        // remove existing repositories
+        for (URI existingRepUri : metadataManager.getKnownRepositories(IRepositoryManager.REPOSITORIES_ALL)) {
+            metadataManager.removeRepository(existingRepUri);
+        }
+        for (URI existingRepUri : artifactManager.getKnownRepositories(IRepositoryManager.REPOSITORIES_ALL)) {
+            metadataManager.removeRepository(existingRepUri);
+        }
 
         for (URI repoUri : allRepoUris) {
             metadataManager.addRepository(repoUri);
@@ -487,29 +497,29 @@ public class P2ExtraFeature implements ExtraFeature {
 
     /**
      * this is the base URI set in the license.
-     * 
+     *
      * @return the defaultRepoUriStr
      */
     public String getBaseRepoUriString() {
         return this.baseRepoUriStr;
     }
-    
+
     public URI getP2RepositoryURI() {
-        return getP2RepositoryURI(null,false);
+        return getP2RepositoryURI(null, false);
     }
 
-    public URI getP2RepositoryURI(String key,boolean isTOS) {
+    public URI getP2RepositoryURI(String key, boolean isTOS) {
         String uriString = getBaseRepoUriString();
-        if(key==null){
+        if (key == null) {
             key = "talend.p2.repo.url"; //$NON-NLS-1$
         }
         String p2RepoUrlFromProp = System.getProperty(key);
-        if (!isTOS&&p2RepoUrlFromProp != null) {
+        if (!isTOS && p2RepoUrlFromProp != null) {
             uriString = p2RepoUrlFromProp;
         } else {
             org.osgi.framework.Version studioVersion = new org.osgi.framework.Version(VersionUtils.getTalendVersion());
             String version = studioVersion.getMajor() + "." + studioVersion.getMinor() + "." + studioVersion.getMicro();
-            if(uriString==null){
+            if (uriString == null) {
                 return URI.create(version);
             }
             uriString = uriString + (uriString.endsWith("/") ? "" : "/") + version; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -519,7 +529,7 @@ public class P2ExtraFeature implements ExtraFeature {
 
     /**
      * Created for JUnit test so that external P2 data area does not depend on absolute location
-     * 
+     *
      * @param agent
      * @param agentProvider
      * @throws ProvisionException
@@ -553,7 +563,7 @@ public class P2ExtraFeature implements ExtraFeature {
     /**
      * Check that the remote update site has a different version from the one already installed. If that is the case
      * then a new instance of P2ExtraFeature is create, it returns null otherwhise.
-     * 
+     *
      * @param progress
      * @return a new P2ExtraFeature if the update site contains a new version of the feature or null.
      */
@@ -565,7 +575,7 @@ public class P2ExtraFeature implements ExtraFeature {
     /**
      * Check that the remote update site has a different version from the one already installed. If that is the case
      * then a new instance of P2ExtraFeature is create, it returns null otherwhise.
-     * 
+     *
      * @param allRepoUrisn list of the repos to look for an update
      * @param progress
      * @return a new P2ExtraFeature if the update site contains a new version of the feature or null.
@@ -654,7 +664,7 @@ public class P2ExtraFeature implements ExtraFeature {
 
     /**
      * DOC sgandon Comment method "copy".
-     * 
+     *
      * @param p2ExtraFeature
      * @param p2ExtraFeatureUpdate
      */
@@ -670,7 +680,7 @@ public class P2ExtraFeature implements ExtraFeature {
 
     /**
      * Getter for useLegacyP2Install.
-     * 
+     *
      * @return the useLegacyP2Install
      */
     public boolean isUseLegacyP2Install() {
@@ -679,12 +689,12 @@ public class P2ExtraFeature implements ExtraFeature {
 
     /**
      * copy the config.ini to a temporary file or vise versa is toRestore is not null
-     * 
+     *
      * @param toResore file to be copied to config.ini
      * @return the temporary file to restore or null if toRestore is not null
      * @throws IOException
      */
-    private File copyConfigFile(File toResore) throws IOException {
+    protected File copyConfigFile(File toResore) throws IOException {
         File tempFile = null;
         try {
             URL configLocation = new URL("platform:/config/config.ini"); //$NON-NLS-1$
@@ -707,31 +717,52 @@ public class P2ExtraFeature implements ExtraFeature {
         return true;
     }
 
-    
     /**
      * Sets the name.
+     * 
      * @param name the name to set
      */
     public void setName(String name) {
         this.name = name;
     }
 
-    
     /**
      * Getter for parentCategory.
+     * 
      * @return the parentCategory
      */
     public FeatureCategory getParentCategory() {
         return this.parentCategory;
     }
 
-    
     /**
      * Sets the parentCategory.
+     * 
      * @param parentCategory the parentCategory to set
      */
     public void setParentCategory(FeatureCategory parentCategory) {
         this.parentCategory = parentCategory;
+    }
+
+    public P2ExtraFeature getInstalledFeature(IProgressMonitor progress) throws P2ExtraFeatureException {
+        P2ExtraFeature extraFeature = null;
+        try {
+            if (!this.isInstalled(progress)) { // new
+                extraFeature = this;
+            } else {// else already installed so try to find updates
+                ExtraFeature updateFeature = this.createFeatureIfUpdates(progress);
+                if (updateFeature != null && updateFeature instanceof P2ExtraFeature) {
+                    extraFeature = (P2ExtraFeature) updateFeature;
+                }
+            }
+        } catch (Exception e) {
+            throw new P2ExtraFeatureException(e);
+        }
+        return extraFeature;
+    }
+
+    public boolean canBeInstalled(IProgressMonitor progress) throws P2ExtraFeatureException {
+        return getInstalledFeature(progress) != null;
     }
 
 }

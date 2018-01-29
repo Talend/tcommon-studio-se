@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -12,10 +12,12 @@
 // ============================================================================
 package org.talend.core.model.relationship;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
 import org.talend.core.model.properties.Item;
+import org.talend.core.model.repository.ERepositoryObjectType;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -29,4 +31,22 @@ public interface IItemRelationshipHandler {
      * @return
      */
     Map<Relation, Set<Relation>> find(Item baseItem);
+
+    /**
+     * If not valid, no relations to return
+     * 
+     * @param baseItem
+     * @return
+     */
+    boolean valid(Item baseItem);
+
+    /**
+     * get the base item's relation type
+     * 
+     * @return
+     */
+    String getBaseItemType(Item baseItem);
+
+    Collection<ERepositoryObjectType> getSupportReoObjTypes(String relationType);
+
 }

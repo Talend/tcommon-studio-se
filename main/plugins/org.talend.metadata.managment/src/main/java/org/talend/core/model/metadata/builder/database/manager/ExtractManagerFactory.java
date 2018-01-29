@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -42,7 +42,21 @@ public final class ExtractManagerFactory {
                 break;
             }
         }
-        return create(dbType);
+        ExtractManager manager = create(dbType);
+        if(manager != null){
+            return manager;
+        }
+        return createExtraManager(displayName);
+    }
+    
+    public static ExtractManager createExtraManager(String displayName){
+        if (displayName == null) {
+            return null;
+        }
+        if(displayName.equals(EDatabaseTypeName.GENERAL_JDBC.getProduct())){
+            return new GeneralJDBCExtractManager();
+        }
+        return null;
     }
 
     public static ExtractManager create(EDatabaseTypeName dbType) {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -81,6 +81,7 @@ import org.talend.core.repository.ui.dialog.DuplicateDialog;
 import org.talend.core.repository.ui.dialog.PastSelectorDialog;
 import org.talend.core.repository.utils.ConvertJobsUtil;
 import org.talend.core.runtime.CoreRuntimePlugin;
+import org.talend.core.service.ICoreUIService;
 import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.core.utils.KeywordsValidator;
 import org.talend.designer.codegen.ICodeGeneratorService;
@@ -163,6 +164,7 @@ public class DuplicateAction extends AContextualAction {
                             || node.getProperties(EProperties.CONTENT_TYPE) == ERepositoryObjectType.METADATA_CON_TABLE
                             || node.getProperties(EProperties.CONTENT_TYPE) == ERepositoryObjectType.METADATA_CON_VIEW
                             || node.getProperties(EProperties.CONTENT_TYPE) == ERepositoryObjectType.METADATA_CON_SYNONYM
+                            || node.getProperties(EProperties.CONTENT_TYPE) == ERepositoryObjectType.METADATA_CON_CALCULATION_VIEW
                             || node.getProperties(EProperties.CONTENT_TYPE) == ERepositoryObjectType.METADATA_SAP_FUNCTION
                             || node.getProperties(EProperties.CONTENT_TYPE) == ERepositoryObjectType.METADATA_SALESFORCE_MODULE
                             || node.getProperties(EProperties.CONTENT_TYPE) == ERepositoryObjectType.METADATA_SAP_IDOC
@@ -286,7 +288,16 @@ public class DuplicateAction extends AContextualAction {
                     }
                 }
                 ConvertJobsUtil.updateFramework(newCreatedItem, frameworkNewValue);
-
+                if (isNeedConvert && (newCreatedItem instanceof JobletProcessItem)) {
+                    if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreUIService.class)) {
+                        ICoreUIService coreUIService = (ICoreUIService) GlobalServiceRegister.getDefault().getService(
+                                ICoreUIService.class);
+                        if (coreUIService != null) {
+                            coreUIService.loadComponentsFromProviders(type);
+                            coreUIService.updatePalette();
+                        }
+                    }
+                }
                 if (!isNewItemCreated) {
                     // save the modifications
                     IWorkspaceRunnable runnable = new IWorkspaceRunnable() {

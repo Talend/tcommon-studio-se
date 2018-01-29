@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -67,9 +67,29 @@ public class GenericTypeUtils {
     public static boolean isIntegerType(Property<?> property) {
         return TypeUtils.toString(Integer.class).equals(property.getType());
     }
+    
+    public static boolean isListStringType(Property<?> property) {
+        return TypeUtils.toString(LIST_STRING_TYPE.getType()).equals(property.getType());
+    }
+    
+    public static boolean isListType(Property<?> property) {
+        return property.getType().startsWith("java.util.List");
+    }
 
     public static boolean isObjectType(Property<?> property) {
         return TypeUtils.toString(Object.class).equals(property.getType());
+    }
+
+    public static boolean isLongType(Property<?> property) {
+        return TypeUtils.toString(Long.class).equals(property.getType());
+    }
+
+    public static boolean isFloatType(Property<?> property) {
+        return TypeUtils.toString(Float.class).equals(property.getType());
+    }
+
+    public static boolean isDoubleType(Property<?> property) {
+        return TypeUtils.toString(Double.class).equals(property.getType());
     }
 
 }

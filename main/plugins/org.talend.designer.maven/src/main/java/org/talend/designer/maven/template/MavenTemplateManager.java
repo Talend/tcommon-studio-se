@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -271,7 +271,7 @@ public class MavenTemplateManager {
     private static Model getDefaultCodeProjectTemplateModel(String projectTechName) {
         Model templateCodeProjectMOdel = new Model();
 
-        templateCodeProjectMOdel.setGroupId(PomIdsHelper.getProjectGroupId(projectTechName));
+        templateCodeProjectMOdel.setGroupId(PomIdsHelper.getProjectGroupId());
         templateCodeProjectMOdel.setArtifactId(PomIdsHelper.getProjectArtifactId());
         templateCodeProjectMOdel.setVersion(PomIdsHelper.getProjectVersion());
         templateCodeProjectMOdel.setPackaging(TalendMavenConstants.PACKAGING_POM);

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -346,11 +346,11 @@ public final class MetadataToolHelper {
 
         boolean isKeyword = KeywordsValidator.isKeyword(originalTableName);
 
-        // boolean isAllowSpecific = isAllowSpecificCharacters();
+        boolean isAllowSpecific = isAllowSpecificCharacters();
 
         for (int i = 0; i < originalTableName.length(); i++) {
             Character car = originalTableName.charAt(i);
-            if (car.toString().getBytes().length == 1) {
+            if (car.toString().getBytes().length == 1 || !isAllowSpecific) {
                 if (((car >= 'a') && (car <= 'z')) || ((car >= 'A') && (car <= 'Z')) || car == '_'
                         || ((car >= '0') && (car <= '9') && (i != 0))) {
                     tableName += car;
@@ -434,7 +434,7 @@ public final class MetadataToolHelper {
      * 
      * 
      */
-    private static String mapSpecialChar(String columnName) {
+    private  static String mapSpecialChar(String columnName) {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IRoutinesService.class)) {
             IRoutinesService service = (IRoutinesService) GlobalServiceRegister.getDefault().getService(IRoutinesService.class);
             if (service != null) {
@@ -547,8 +547,8 @@ public final class MetadataToolHelper {
      * @param target
      */
     public static void copyTable(String dbmsId, IMetadataTable source, IMetadataTable target) {
-        setDBType(source, dbmsId);
         copyTable(source, target);
+        setDBType(target, dbmsId);
     }
 
     /**
@@ -848,6 +848,9 @@ public final class MetadataToolHelper {
     }
 
     public static ConnectionItem getConnectionItemFromRepository(String metaRepositoryid) {
+        if (metaRepositoryid == null) {
+            return null;
+        }
         String connectionId = metaRepositoryid;
         // some calls can be done either with only the connection Id or with
         // informations from query or table
@@ -1382,6 +1385,7 @@ public final class MetadataToolHelper {
             sourceName = old.getLabel();
         }
         result.setTableName(sourceName);
+        result.setTableType(old.getTableType());
         List<IMetadataColumn> columns = new ArrayList<IMetadataColumn>(old.getColumns().size());
         for (TaggedValue tv : old.getTaggedValue()) {
             if (DiSchemaConstants.TALEND6_IS_READ_ONLY.equals(tv.getTag())) {
@@ -1405,6 +1409,7 @@ public final class MetadataToolHelper {
             }
             newColumn.setLabel(label2);
             newColumn.setPattern(column.getPattern());
+            
             if (column.getLength() < 0) {
                 newColumn.setLength(null);
             } else {
@@ -1427,12 +1432,12 @@ public final class MetadataToolHelper {
                         newColumn.setCustom(Boolean.valueOf(tv.getValue()));
                     } else if (DiSchemaConstants.TALEND6_IS_READ_ONLY.equals(additionalTag)) {
                         newColumn.setReadOnly(Boolean.valueOf(tv.getValue()));
-                    } else {
+                    }else {
                         newColumn.getAdditionalField().put(additionalTag, tv.getValue());
                     }
                 }
             }
-
+            
             newColumn.setNullable(column.isNullable());
             if (column.getPrecision() < 0) {
                 newColumn.setPrecision(null);

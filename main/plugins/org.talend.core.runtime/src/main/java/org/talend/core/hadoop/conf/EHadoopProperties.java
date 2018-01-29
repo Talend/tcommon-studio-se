@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -83,6 +83,24 @@ public enum EHadoopProperties {
     GOOGLE_REGION,
 
     GOOGLE_JARS_BUCKET,
+
+    HD_WEBHCAT_HOSTNAME,
+
+    HD_WEBHCAT_PORT,
+
+    HD_WEBHCAT_USERNAME,
+
+    HD_INSIGHT_USERNAME,
+
+    HD_AZURE_HOSTNAME,
+
+    HD_AZURE_CONTAINER,
+
+    HD_AZURE_USERNAME,
+
+    HD_AZURE_DEPLOYBOLB,
+
+    HD_JOB_RESULT_FOLDER,
     ;
 
     public String getName() {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -12,12 +12,20 @@
 // ============================================================================
 package org.talend.designer.maven.utils;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.talend.commons.utils.VersionUtils;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.process.JobInfo;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.utils.JavaResourcesHelper;
+import org.talend.core.repository.utils.ItemResourceUtil;
 import org.talend.core.runtime.maven.MavenConstants;
+import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
+import org.talend.designer.maven.DesignerMavenPlugin;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.repository.ProjectManager;
 
@@ -25,6 +33,10 @@ import org.talend.repository.ProjectManager;
  * DOC ggu class global comment. Detailled comment
  */
 public class PomIdsHelper {
+    
+    public static final String PREFIX_DEFAULT_GROUPID = "org.example."; //$NON-NLS-1$
+    
+    private static Map<String, ProjectPreferenceManager> preferenceManagers = new HashMap<>();
 
     /**
      * @return "org.talend.master.<ProjectName>", like "org.talend.master.test".
@@ -33,12 +45,13 @@ public class PomIdsHelper {
      * 
      * always depend on current project.
      */
-    public static String getProjectGroupId(String projectTechName) {
-        if (projectTechName != null && !projectTechName.trim().isEmpty()) {
-            return JavaResourcesHelper.getGroupName(TalendMavenConstants.DEFAULT_MASTER + '.'
-                    + projectTechName.trim().toLowerCase());
-        }
-        return JavaResourcesHelper.getGroupName(TalendMavenConstants.DEFAULT_MASTER);
+    public static String getProjectGroupId() {
+        // FIXME should use getProjectGroupId(Project project)
+        return getGroupId(ProjectManager.getInstance().getCurrentProject(), null, null);
+    }
+    
+    public static String getProjectGroupId(Project project) {
+        return getGroupId(project, null, null);
     }
 
     /**
@@ -54,7 +67,16 @@ public class PomIdsHelper {
      * 
      */
     public static String getProjectVersion() {
-        return PomUtil.getDefaultMavenVersion();
+        ProjectPreferenceManager projectPreferenceManager = DesignerMavenPlugin.getPlugin().getProjectPreferenceManager();
+        String projectVersion = projectPreferenceManager.getValue(MavenConstants.PROJECT_VERSION);
+        if (StringUtils.isBlank(projectVersion)){
+            projectVersion = PomUtil.getDefaultMavenVersion();
+        }
+        boolean useSnapshot = projectPreferenceManager.getBoolean(MavenConstants.NAME_PUBLISH_AS_SNAPSHOT);
+        if (useSnapshot) {
+            projectVersion += "-SNAPSHOT"; //$NON-NLS-1$
+        }
+        return projectVersion;
     }
 
     /**
@@ -69,17 +91,19 @@ public class PomIdsHelper {
         return getCodesGroupId(currentProject != null ? currentProject.getTechnicalLabel() : null, baseName);
     }
 
+    // FIXME use getCodesGroupId(Project project, String baseName)
     public static String getCodesGroupId(String projectTechName, String baseName) {
+        final Project currentProject = ProjectManager.getInstance().getCurrentProject();
         if (projectTechName == null) { // try current one
-            final Project currentProject = ProjectManager.getInstance().getCurrentProject();
             if (currentProject != null) {
                 projectTechName = currentProject.getTechnicalLabel();
             }
         }
-        if (projectTechName != null && !projectTechName.trim().isEmpty()) {
-            return JavaResourcesHelper.getGroupName(baseName + '.' + projectTechName.trim().toLowerCase());
-        }
-        return JavaResourcesHelper.getGroupName(baseName);
+        return getGroupId(currentProject, baseName, null);
+    }
+
+    public static String getCodesGroupId(Project project, String baseName) {
+        return getGroupId(project, baseName, null);
     }
 
     /**
@@ -87,7 +111,7 @@ public class PomIdsHelper {
      * 
      */
     public static String getCodesVersion() {
-        return PomUtil.getDefaultMavenVersion();
+        return getProjectVersion();
     }
 
     /**
@@ -100,28 +124,35 @@ public class PomIdsHelper {
         return JavaResourcesHelper.getGroupName(TalendMavenConstants.DEFAULT_JOB);
     }
 
+    /**
+     * @deprecated use getJobGroupId() instead
+     */
     public static String getTestGroupId(String name) {
         if (name != null && !name.trim().isEmpty()) {
             return JavaResourcesHelper.getGroupName(TalendMavenConstants.DEFAULT_TEST + '.' + name.trim().toLowerCase());
         }
         return JavaResourcesHelper.getGroupName(TalendMavenConstants.DEFAULT_TEST);
     }
-
+    
+    /**
+     * @deprecated use getJobGroupId() instead
+     */
     public static String getTestGroupId(Property property) {
         if (property != null) {
-            final org.talend.core.model.properties.Project project = ProjectManager.getInstance().getProject(property);
-            if (project != null) {
-                if (project != null) {
-                    final Project currentProject = ProjectManager.getInstance().getCurrentProject();
-                    if (currentProject.getTechnicalLabel().equals(project.getTechnicalLabel())) {
-                        return getTestGroupId(project.getTechnicalLabel());
-                    } else { // reference project
-                        return getTestGroupId(currentProject.getTechnicalLabel() + '.' + project.getTechnicalLabel());
-                    }
-                }
+            Project currentProject = ProjectManager.getInstance().getCurrentProject();
+            if (currentProject != null) {
+                return getTestGroupId(currentProject.getTechnicalLabel());
             }
         }
         return getTestGroupId((String) null);
+    }
+
+    public static String getTestGroupIdPrefix() {
+        return getGroupId(null, TalendMavenConstants.DEFAULT_TEST, null);
+    }
+
+    public static String getJobGroupIdPrefix() {
+        return getGroupId(null, TalendMavenConstants.DEFAULT_JOB, null);
     }
 
     /**
@@ -135,17 +166,14 @@ public class PomIdsHelper {
                     return groupId;
                 }
             }
-            final org.talend.core.model.properties.Project project = ProjectManager.getInstance().getProject(property);
-            if (project != null) {
-                final Project currentProject = ProjectManager.getInstance().getCurrentProject();
-                if (currentProject.getTechnicalLabel().equals(project.getTechnicalLabel())) {
-                    return getJobGroupId(project.getTechnicalLabel());
-                } else { // reference project
-                    return getJobGroupId(currentProject.getTechnicalLabel() + '.' + project.getTechnicalLabel());
-                }
-            }
+            Project project = ProjectManager.getInstance().getCurrentProject();
+            // FIXME 
+            // String projectName = ProjectManager.getInstance().getProject(property).getTechnicalLabel();
+            // Project project = ProjectManager.getInstance().getProjectFromProjectTechLabel(projectName);
+            return getGroupId(project, TalendMavenConstants.DEFAULT_JOB, property);
         }
-        return getJobGroupId((String) null);
+        // should never be null.
+        return null;
     }
 
     /**
@@ -169,16 +197,21 @@ public class PomIdsHelper {
      * @return "<jobVersion>-<projectName>".
      */
     public static String getJobVersion(Property property) {
+        String version = null;
         if (property != null) {
+            boolean useSnapshot = false;
             if (property.getAdditionalProperties() != null) {
-                String version = (String) property.getAdditionalProperties().get(MavenConstants.NAME_USER_VERSION);
-                if (version != null) {
-                    return version;
-                }
+                version = (String) property.getAdditionalProperties().get(MavenConstants.NAME_USER_VERSION);
+                useSnapshot = property.getAdditionalProperties().containsKey(MavenConstants.NAME_PUBLISH_AS_SNAPSHOT);
             }
-            return VersionUtils.getPublishVersion(property.getVersion());
+            if (version == null) {
+                version = VersionUtils.getPublishVersion(property.getVersion());
+            }
+            if (useSnapshot) {
+                version += MavenConstants.SNAPSHOT;
+            }
         }
-        return null;
+        return version;
     }
 
     public static String getJobVersion(JobInfo jobInfo) {
@@ -186,6 +219,65 @@ public class PomIdsHelper {
             return jobInfo.getJobVersion();
         }
         return null;
+    }
+
+    private static String getGroupId(Project project, String baseName, Property property) {
+        // codes, test, job
+        if (project == null) {
+            project = ProjectManager.getInstance().getCurrentProject();
+        }
+        ProjectPreferenceManager manager = getPreferenceManager(project);
+        String groupId = manager.getValue(MavenConstants.PROJECT_GROUPID);
+        boolean appendFolderName = manager.getBoolean(MavenConstants.APPEND_FOLDER_TO_GROUPID);
+        if (!appendFolderName) {
+            if (baseName != null) {
+                groupId += "." + baseName; //$NON-NLS-1$
+            }
+            return groupId;
+        }
+        if (property == null) {
+            return groupId;
+        }
+        // only for job
+        String suffix = getJobFolderSuffix(property); //$NON-NLS-1$
+        if (!StringUtils.isEmpty(suffix)) {
+            groupId += "." + suffix; //$NON-NLS-1$
+        }
+        return groupId;
+    }
+    
+    private static String getJobFolderSuffix(Property property) {
+        String suffix = ItemResourceUtil.getItemRelativePath(property).toPortableString();
+        suffix = StringUtils.strip(suffix, "/"); //$NON-NLS-1$
+        suffix = StringUtils.replace(suffix, "/", "."); //$NON-NLS-1$  //$NON-NLS-2$
+        return suffix;
+    }
+
+    public static String getDefaultProjetGroupId(String projectName) {
+        return PREFIX_DEFAULT_GROUPID + projectName.toLowerCase();    
+    }
+
+    public static boolean isValidGroupId(String text) {
+        if (text != null && text.matches("[\\w\\.]+")) { //$NON-NLS-1$
+            return true;
+        }
+        return false;
+    }
+
+    private static ProjectPreferenceManager getPreferenceManager(Project project) {
+        String projectName = project.getTechnicalLabel();
+        if (!preferenceManagers.containsKey(projectName)) {
+            ProjectPreferenceManager preferenceManager = new ProjectPreferenceManager(project, DesignerMavenPlugin.PLUGIN_ID);
+            IPreferenceStore preferenceStore = preferenceManager.getPreferenceStore();
+            if (StringUtils.isEmpty(preferenceStore.getDefaultString(MavenConstants.PROJECT_GROUPID))
+                    && StringUtils.isEmpty(preferenceStore.getString(MavenConstants.PROJECT_GROUPID))) {
+                preferenceStore.setDefault(MavenConstants.PROJECT_GROUPID, getDefaultProjetGroupId(projectName));
+                preferenceManager.save();
+            }
+            preferenceManagers.put(projectName, preferenceManager);
+            return preferenceManager;
+        }
+        return preferenceManagers.get(projectName);
     }
 
 }

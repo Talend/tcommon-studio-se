@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -48,6 +48,9 @@ import org.talend.commons.ui.swt.tableviewer.IModifiedBeanListener;
 import org.talend.commons.ui.swt.tableviewer.ModifiedBeanEvent;
 import org.talend.commons.ui.swt.tableviewer.TableViewerCreator;
 import org.talend.core.database.EDatabaseTypeName;
+import org.talend.core.model.components.AbstractLayerComponent;
+import org.talend.core.model.components.EComponentType;
+import org.talend.core.model.components.IComponent;
 import org.talend.core.model.metadata.Dbms;
 import org.talend.core.model.metadata.IMetadataColumn;
 import org.talend.core.model.metadata.IMetadataTable;
@@ -195,11 +198,14 @@ public class MetadataDialog extends Dialog {
         boolean isSAPELT = false;
         boolean hasRepositoryDbSchema = false;
         boolean isEBCDIC = false;
-        if (node != null && node.getComponent() != null) {
+        boolean isNewFram = false;
+        IComponent component = node.getComponent();
+        if (node != null && component != null) {
+            isNewFram = component.getComponentType() == EComponentType.GENERIC;
             eltComponent = node.isELTComponent();
-            isEBCDIC = node.getComponent().getName().contains("EBCDIC");
-            isSAPELT = node.getComponent().getName().startsWith("tELTSAP");
-            if (node.getComponent().isSupportDbType() || node.getComponent().getOriginalFamilyName().startsWith(DATABASE_LABEL)
+            isEBCDIC = component.getName().contains("EBCDIC");
+            isSAPELT = component.getName().startsWith("tELTSAP");
+            if (component.isSupportDbType() || component.getOriginalFamilyName().startsWith(DATABASE_LABEL)
                     || eltComponent || isEBCDIC) {
                 dbComponent = !isEBCDIC;
                 for (IElementParameter currentParam : node.getElementParameters()) {
@@ -273,10 +279,16 @@ public class MetadataDialog extends Dialog {
         } else {
             eltComponent = false;
         }
-
+        if(isNewFram){
+            dbComponent = true;
+        }
+        boolean activeDbColumns = dbComponent;
+        if (component instanceof AbstractLayerComponent) {
+            activeDbColumns = activeDbColumns || AbstractLayerComponent.class.cast(component).isActiveDbColumns();
+        }
         metaView.setShowDbTypeColumn(hasMappingType || eltComponent, false, hasMappingType
                 || (dbComponent && !hasRepositoryDbSchema));
-        metaView.setShowDbColumnName(dbComponent, hasMappingType || (dbComponent && !hasRepositoryDbSchema));
+        metaView.setShowDbColumnName(activeDbColumns, hasMappingType || (activeDbColumns && !hasRepositoryDbSchema));
 
         // hide the talend type for ELT components
         metaView.setShowTalendTypeColumn(!eltComponent || isSAPELT);
@@ -393,8 +405,6 @@ public class MetadataDialog extends Dialog {
             initializeMetadataTableView(inputMetaView, inputNode, inputMetaTable);
             inputMetaView.initGraphicComponents();
             inputMetaView.getExtendedTableViewer().setCommandStack(commandStack);
-
-            inputMetaView.setGridDataSize(size.x / 2 - 50, size.y - 150);
 
             Label label1 = new Label(compositesSachForm.getMidComposite(), SWT.NONE);
             GridDataFactory.swtDefaults().hint(42, 18).applyTo(label1);
@@ -541,7 +551,6 @@ public class MetadataDialog extends Dialog {
             initializeMetadataTableView(outputMetaView, outputNode, outputMetaTable);
             outputMetaView.initGraphicComponents();
             outputMetaView.getExtendedTableViewer().setCommandStack(commandStack);
-            outputMetaView.setGridDataSize(size.x / 2 - 50, size.y - 150);
             // see bug 7471,add a listener for outputView
             outputMetaView.getMetadataTableEditor().addModifiedBeanListener(new IModifiedBeanListener<IMetadataColumn>() {
 
@@ -691,7 +700,13 @@ public class MetadataDialog extends Dialog {
      */
     @Override
     protected void okPressed() {
-        // TODO Auto-generated method stub
+        // ComboEditor focus lost
+        if (inputMetaView != null) {
+            inputMetaView.notifyFocusLost();
+        }
+        if (outputMetaView != null) {
+            outputMetaView.notifyFocusLost();
+        }
         super.okPressed();
         IMetadataTable outputTable = getOutputMetaData();
         IMetadataTable inputTable = getInputMetaData();

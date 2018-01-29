@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -15,6 +15,7 @@ package org.talend.librariesmanager.utils.nexus;
 import java.io.File;
 import java.net.URL;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
@@ -23,6 +24,8 @@ import org.talend.core.download.IDownloadHelper;
 import org.talend.core.model.general.ModuleToInstall;
 import org.talend.core.nexus.NexusServerBean;
 import org.talend.core.nexus.TalendLibsServerManager;
+import org.talend.core.runtime.maven.MavenArtifact;
+import org.talend.core.runtime.maven.MavenUrlHelper;
 
 /**
  * created by wchen on Apr 24, 2015 Detailled comment
@@ -45,16 +48,47 @@ public class NexusDownloadHelperWithProgress extends DownloadHelperWithProgress 
     @Override
     public void download(URL componentUrl, File destination, IProgressMonitor progressMonitor) throws Exception {
         File resolved = null;
-        if (toInstall.isFromCustomNexus()) {
+        boolean downloadFromCustomNexus = toInstall.isFromCustomNexus();
+
+        String mvnUri = componentUrl.toExternalForm();
+        MavenArtifact mArtifact = MavenUrlHelper.parseMvnUrl(mvnUri, false);
+        if (mArtifact != null) {
+            String repositoryUrl = mArtifact.getRepositoryUrl();
+            if (StringUtils.isNotEmpty(repositoryUrl)) {
+                // TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
+                final NexusServerBean customNexusServer = new NexusServerBean(false);
+                customNexusServer.setServer(repositoryUrl);
+                String username = mArtifact.getUsername();
+                String password = mArtifact.getPassword();
+                if (StringUtils.isNotEmpty(username)) {
+                    customNexusServer.setUserName(username);
+                    customNexusServer.setPassword(password);
+                }
+                String resolvedMvnUri = MavenUrlHelper.generateMvnUrl(mArtifact.getGroupId(), mArtifact.getArtifactId(),
+                        mArtifact.getVersion(), mArtifact.getType(), mArtifact.getClassifier());
+                progressMonitor.subTask(
+                        "Downloading " + toInstall.getName() + ": " + resolvedMvnUri + " from " + customNexusServer.getServer());
+                ILibraryManagerService libManager = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
+                        ILibraryManagerService.class);
+                // seems the customNexusServer is not used in resolveJar function, so still need to provide
+                // user/password in the mvn uri
+                String decryptedMvnUri = MavenUrlHelper.generateMvnUrl(mArtifact);
+                resolved = libManager.resolveJar(customNexusServer, decryptedMvnUri);
+                if (resolved != null && resolved.exists()) {
+                    return;
+                }
+            }
+        }
+        if (downloadFromCustomNexus) {
             TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
             final NexusServerBean customNexusServer = manager.getCustomNexusServer();
             if (customNexusServer != null) {
-                String mvnUri = componentUrl.toExternalForm();
+                // String mvnUri = componentUrl.toExternalForm();
                 progressMonitor.subTask("Downloading " + toInstall.getName() + ": " + mvnUri + " from "
                         + customNexusServer.getServer());
                 ILibraryManagerService libManager = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
                         ILibraryManagerService.class);
-                resolved = libManager.resolveJar(manager, customNexusServer, mvnUri);
+                resolved = libManager.resolveJar(customNexusServer, mvnUri);
             }
         }
         if (resolved != null && resolved.exists()) {

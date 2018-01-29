@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -753,8 +753,8 @@ public class DeleteAction extends AContextualAction {
             }
             String parentBranch = ProjectManager.getInstance().getMainProjectBranch(parentProject);
 
-            EList referencedProjects = parentProject.getEmfProject().getReferencedProjects();
-            for (ProjectReference pRef : (List<ProjectReference>) referencedProjects) {
+            List<ProjectReference> referencedProjects = parentProject.getProjectReferenceList();
+            for (ProjectReference pRef : referencedProjects) {
                 if (pRef.getBranch() != null && !parentBranch.equals(pRef.getBranch())) {
                     continue;
                 }

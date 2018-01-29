@@ -37,6 +37,7 @@ import orgomg.cwm.objectmodel.core.Namespace;
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Connection</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.ConnectionImpl#getOwnedElement <em>Owned Element</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.ConnectionImpl#getImportedElement <em>Imported Element</em>}</li>
@@ -54,8 +55,8 @@ import orgomg.cwm.objectmodel.core.Namespace;
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.ConnectionImpl#isContextMode <em>Context Mode</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.ConnectionImpl#getContextId <em>Context Id</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.ConnectionImpl#getContextName <em>Context Name</em>}</li>
+ *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.ConnectionImpl#getCompProperties <em>Comp Properties</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -268,6 +269,26 @@ public class ConnectionImpl extends AbstractMetadataObjectImpl implements Connec
      * @ordered
      */
     protected String contextName = CONTEXT_NAME_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getCompProperties() <em>Comp Properties</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getCompProperties()
+     * @generated
+     * @ordered
+     */
+    protected static final String COMP_PROPERTIES_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getCompProperties() <em>Comp Properties</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getCompProperties()
+     * @generated
+     * @ordered
+     */
+    protected String compProperties = COMP_PROPERTIES_EDEFAULT;
 
     protected boolean readOnly = false;
 
@@ -559,8 +580,8 @@ public class ConnectionImpl extends AbstractMetadataObjectImpl implements Connec
                 NotificationChain msgs = oldQueries.eInverseRemove(this, ConnectionPackage.QUERIES_CONNECTION__CONNECTION,
                         QueriesConnection.class, null);
                 if (newQueries.eInternalContainer() == null) {
-                    msgs = newQueries.eInverseAdd(this, ConnectionPackage.QUERIES_CONNECTION__CONNECTION,
-                            QueriesConnection.class, msgs);
+                    msgs = newQueries.eInverseAdd(this, ConnectionPackage.QUERIES_CONNECTION__CONNECTION, QueriesConnection.class,
+                            msgs);
                 }
                 if (msgs != null)
                     msgs.dispatch();
@@ -679,6 +700,28 @@ public class ConnectionImpl extends AbstractMetadataObjectImpl implements Connec
     }
 
     /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public String getCompProperties() {
+        return compProperties;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setCompProperties(String newCompProperties) {
+        String oldCompProperties = compProperties;
+        compProperties = newCompProperties;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.CONNECTION__COMP_PROPERTIES,
+                    oldCompProperties, compProperties));
+    }
+
+    /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * 
      * @generated NOT
@@ -720,8 +763,8 @@ public class ConnectionImpl extends AbstractMetadataObjectImpl implements Connec
             return ((InternalEList<InternalEObject>) (InternalEList<?>) getResourceConnection()).basicAdd(otherEnd, msgs);
         case ConnectionPackage.CONNECTION__QUERIES:
             if (queries != null)
-                msgs = ((InternalEObject) queries).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
-                        - ConnectionPackage.CONNECTION__QUERIES, null, msgs);
+                msgs = ((InternalEObject) queries).eInverseRemove(this,
+                        EOPPOSITE_FEATURE_BASE - ConnectionPackage.CONNECTION__QUERIES, null, msgs);
             return basicSetQueries((QueriesConnection) otherEnd, msgs);
         }
         return super.eInverseAdd(otherEnd, featureID, msgs);
@@ -766,8 +809,8 @@ public class ConnectionImpl extends AbstractMetadataObjectImpl implements Connec
     public NotificationChain eBasicRemoveFromContainerFeature(NotificationChain msgs) {
         switch (eContainerFeatureID()) {
         case ConnectionPackage.CONNECTION__MACHINE:
-            return eInternalContainer().eInverseRemove(this, SoftwaredeploymentPackage.MACHINE__DEPLOYED_COMPONENT,
-                    Machine.class, msgs);
+            return eInternalContainer().eInverseRemove(this, SoftwaredeploymentPackage.MACHINE__DEPLOYED_COMPONENT, Machine.class,
+                    msgs);
         }
         return super.eBasicRemoveFromContainerFeature(msgs);
     }
@@ -815,6 +858,8 @@ public class ConnectionImpl extends AbstractMetadataObjectImpl implements Connec
             return getContextId();
         case ConnectionPackage.CONNECTION__CONTEXT_NAME:
             return getContextName();
+        case ConnectionPackage.CONNECTION__COMP_PROPERTIES:
+            return getCompProperties();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -882,6 +927,9 @@ public class ConnectionImpl extends AbstractMetadataObjectImpl implements Connec
         case ConnectionPackage.CONNECTION__CONTEXT_NAME:
             setContextName((String) newValue);
             return;
+        case ConnectionPackage.CONNECTION__COMP_PROPERTIES:
+            setCompProperties((String) newValue);
+            return;
         }
         super.eSet(featureID, newValue);
     }
@@ -941,6 +989,9 @@ public class ConnectionImpl extends AbstractMetadataObjectImpl implements Connec
         case ConnectionPackage.CONNECTION__CONTEXT_NAME:
             setContextName(CONTEXT_NAME_EDEFAULT);
             return;
+        case ConnectionPackage.CONNECTION__COMP_PROPERTIES:
+            setCompProperties(COMP_PROPERTIES_EDEFAULT);
+            return;
         }
         super.eUnset(featureID);
     }
@@ -984,6 +1035,8 @@ public class ConnectionImpl extends AbstractMetadataObjectImpl implements Connec
             return CONTEXT_ID_EDEFAULT == null ? contextId != null : !CONTEXT_ID_EDEFAULT.equals(contextId);
         case ConnectionPackage.CONNECTION__CONTEXT_NAME:
             return CONTEXT_NAME_EDEFAULT == null ? contextName != null : !CONTEXT_NAME_EDEFAULT.equals(contextName);
+        case ConnectionPackage.CONNECTION__COMP_PROPERTIES:
+            return COMP_PROPERTIES_EDEFAULT == null ? compProperties != null : !COMP_PROPERTIES_EDEFAULT.equals(compProperties);
         }
         return super.eIsSet(featureID);
     }
@@ -1132,6 +1185,8 @@ public class ConnectionImpl extends AbstractMetadataObjectImpl implements Connec
         result.append(contextId);
         result.append(", contextName: ");
         result.append(contextName);
+        result.append(", compProperties: ");
+        result.append(compProperties);
         result.append(')');
         return result.toString();
     }

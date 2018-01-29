@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -128,7 +128,5 @@ public final class UpdatesConstants {
     public static final String MONITOR_IS_CANCELED = "MONITOR_IS_CANCELED"; //$NON-NLS-1$
 
     public static final String REPOSITORY_SCHEMA_TYPE = "REPOSITORY_SCHEMA_TYPE";
-
-    public static final String CHANGED_BY_USER = "CHANGED_BY_USER"; //$NON-NLS-1$
 
 }

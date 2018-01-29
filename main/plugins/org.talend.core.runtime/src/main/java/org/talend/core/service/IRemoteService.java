@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -24,13 +24,14 @@ import org.talend.utils.json.JSONObject;
  */
 public interface IRemoteService extends IService {
 
-    public JSONObject getLicenseKey(String user, String password, String url, String projectLabel)
-            throws PersistenceException, LoginException;
+    public JSONObject getLicenseKey(String user, String password, String url, String projectLabel) throws PersistenceException,
+            LoginException;
 
-    public NexusServerBean getUpdateRepositoryUrl(String user, String password, String url)
-            throws PersistenceException, LoginException;
+    public NexusServerBean getUpdateRepositoryUrl(String user, String password, String url) throws PersistenceException,
+            LoginException;
 
-    public NexusServerBean getLibNexusServer(String user, String password, String url)
-            throws PersistenceException, LoginException, JSONException;
+    public NexusServerBean getLibNexusServer(String user, String password, String url) throws PersistenceException,
+            LoginException, JSONException;
 
+    boolean isAuthorized(String value);
 }

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -20,9 +20,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.jar.JarEntry;
+import java.util.jar.JarInputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-import java.util.zip.ZipInputStream;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -33,6 +34,8 @@ import org.eclipse.core.runtime.Path;
 public class UpdatesHelper {
 
     public static final String FOLDER_PLUGINS = "plugins";
+
+    public static final String FOLDER_OSGI_INF = "OSGI-INF";
 
     public static final String FILE_ARTIFACTS = "artifacts.xml";
 
@@ -51,6 +54,8 @@ public class UpdatesHelper {
     public static final String FILE_ECLIPSE_PRODUCT = ".eclipseproduct";
 
     public static final String COMPONENT_SUFFIX = "_java.xml";
+
+    public static final String NEW_COMPONENT_PREFIX = "installer$$";
 
     public static boolean existArtifacts(File base) {
         return new File(base, FILE_ARTIFACTS).exists() || new File(base, FILE_JAR_ARTIFACTS).exists()
@@ -239,19 +244,20 @@ public class UpdatesHelper {
 
     }
 
-    private static boolean isComponentJar(InputStream inputStream) {
+    public static boolean isComponentJar(InputStream inputStream) {
         if (inputStream != null) {
-            ZipInputStream zipStream = new ZipInputStream(inputStream);
-            ZipEntry entry = null;
+            JarInputStream jarStream = null;
             try {
-                while ((entry = zipStream.getNextEntry()) != null) {
-                    IPath path = new Path(entry.getName());
-                    String xmlName = path.lastSegment();
+                jarStream = new JarInputStream(inputStream);
+                JarEntry jarEntry = null;
+                while ((jarEntry = jarStream.getNextJarEntry()) != null) {
+                    IPath entryPath = new Path(jarEntry.getName());
+                    String xmlName = entryPath.lastSegment();
                     // OSGI-INF/installer$$XXXX.xml
-                    if (xmlName.endsWith(FileExtensions.XML_FILE_SUFFIX) && xmlName.startsWith("installer$$")
-                            && path.segmentCount() > 1) {
-                        String osgiInfFolder = path.removeLastSegments(1).lastSegment();
-                        if (osgiInfFolder.equals("OSGI-INF")) {
+                    if (xmlName.endsWith(FileExtensions.XML_FILE_SUFFIX) && xmlName.startsWith(NEW_COMPONENT_PREFIX)
+                            && entryPath.segmentCount() > 1) {
+                        String osgiInfFolder = entryPath.removeLastSegments(1).lastSegment();
+                        if (osgiInfFolder.equals(FOLDER_OSGI_INF)) {
                             return true;
                         }
                     }
@@ -259,6 +265,14 @@ public class UpdatesHelper {
                 }
             } catch (IOException e) {
                 //
+            } finally {
+                try {
+                    if (jarStream != null) {
+                        jarStream.close();
+                    }
+                } catch (IOException e) {
+                    //
+                }
             }
         }
         return false;

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -46,21 +46,25 @@ public class LogLoadedComponentsAction extends Action implements IWorkbenchWindo
     @Override
     public void run() {
         IComponentsFactory componentsFactory = ComponentsFactoryProvider.getInstance();
-        for (IComponent component : componentsFactory.getComponents()) {
+        for (IComponent component : componentsFactory.readComponents()) {
             log.info(Messages.getString("LogLoadedComponentsAction.componentLog", component.getName())); //$NON-NLS-1$
         }
     }
 
+    @Override
     public void dispose() {
     }
 
+    @Override
     public void init(IWorkbenchWindow window) {
     }
 
+    @Override
     public void run(IAction action) {
         run();
     }
 
+    @Override
     public void selectionChanged(IAction action, ISelection selection) {
     }
 }

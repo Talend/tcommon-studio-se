@@ -135,6 +135,35 @@ public interface LibrariesindexPackage extends EPackage {
 
 
     /**
+     * The meta object id for the '{@link org.talend.librariesmanager.emf.librariesindex.impl.CustomURIMapImpl <em>Custom URI Map</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.talend.librariesmanager.emf.librariesindex.impl.CustomURIMapImpl
+     * @see org.talend.librariesmanager.emf.librariesindex.impl.LibrariesindexPackageImpl#getCustomURIMap()
+     * @generated
+     */
+    int CUSTOM_URI_MAP = 2;
+
+    /**
+     * The feature id for the '<em><b>Uri Map</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int CUSTOM_URI_MAP__URI_MAP = 0;
+
+    /**
+     * The number of structural features of the '<em>Custom URI Map</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int CUSTOM_URI_MAP_FEATURE_COUNT = 1;
+
+
+    /**
      * Returns the meta object for class '{@link org.talend.librariesmanager.emf.librariesindex.LibrariesIndex <em>Libraries Index</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -199,6 +228,27 @@ public interface LibrariesindexPackage extends EPackage {
      * @generated
      */
     EAttribute getjarToRelativePath_Value();
+
+    /**
+     * Returns the meta object for class '{@link org.talend.librariesmanager.emf.librariesindex.CustomURIMap <em>Custom URI Map</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Custom URI Map</em>'.
+     * @see org.talend.librariesmanager.emf.librariesindex.CustomURIMap
+     * @generated
+     */
+    EClass getCustomURIMap();
+
+    /**
+     * Returns the meta object for the map '{@link org.talend.librariesmanager.emf.librariesindex.CustomURIMap#getUriMap <em>Uri Map</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the map '<em>Uri Map</em>'.
+     * @see org.talend.librariesmanager.emf.librariesindex.CustomURIMap#getUriMap()
+     * @see #getCustomURIMap()
+     * @generated
+     */
+    EReference getCustomURIMap_UriMap();
 
     /**
      * Returns the factory that creates the instances of the model.
@@ -273,6 +323,24 @@ public interface LibrariesindexPackage extends EPackage {
          * @generated
          */
         EAttribute JAR_TO_RELATIVE_PATH__VALUE = eINSTANCE.getjarToRelativePath_Value();
+
+        /**
+         * The meta object literal for the '{@link org.talend.librariesmanager.emf.librariesindex.impl.CustomURIMapImpl <em>Custom URI Map</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see org.talend.librariesmanager.emf.librariesindex.impl.CustomURIMapImpl
+         * @see org.talend.librariesmanager.emf.librariesindex.impl.LibrariesindexPackageImpl#getCustomURIMap()
+         * @generated
+         */
+        EClass CUSTOM_URI_MAP = eINSTANCE.getCustomURIMap();
+
+        /**
+         * The meta object literal for the '<em><b>Uri Map</b></em>' map feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference CUSTOM_URI_MAP__URI_MAP = eINSTANCE.getCustomURIMap_UriMap();
 
     }
 

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -12,8 +12,6 @@
 // ============================================================================
 package org.talend.updates.runtime.model;
 
-import org.eclipse.equinox.p2.core.ProvisionException;
-
 /**
  * created by ggu on Jul 17, 2014 Detailled comment
  *
@@ -24,10 +22,10 @@ public class P2ExtraFeatureException extends Exception {
 
     /**
      * DOC sgandon ExtraFeatureException constructor comment.
-     * 
+     *
      * @param e
      */
-    public P2ExtraFeatureException(ProvisionException e) {
+    public P2ExtraFeatureException(Exception e) {
         super(e);
     }
 

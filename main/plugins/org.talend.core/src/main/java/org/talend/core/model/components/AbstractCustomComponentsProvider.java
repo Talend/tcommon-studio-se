@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -21,7 +21,6 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.io.FilesUtils;
 import org.talend.commons.utils.resource.UpdatesHelper;
 import org.talend.core.i18n.Messages;
-import org.talend.utils.json.JSONObject;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -41,15 +40,6 @@ public abstract class AbstractCustomComponentsProvider extends AbstractComponent
         }
 
     };
-
-    protected JSONObject needInstalledNewCFComponents;
-
-    public JSONObject getNeedInstalledNewCFComponents() {
-        if (needInstalledNewCFComponents == null) {
-            needInstalledNewCFComponents = new JSONObject();
-        }
-        return needInstalledNewCFComponents;
-    }
 
     @Override
     public void preComponentsLoad() throws IOException {

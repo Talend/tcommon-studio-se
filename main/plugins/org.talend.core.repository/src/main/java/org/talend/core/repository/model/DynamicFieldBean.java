@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -24,16 +24,26 @@ public class DynamicFieldBean {
 
     private String name;
 
+    private String defaultValue;
+
     private boolean required;
 
     private boolean password;
 
+    private boolean readonly;
+
     public DynamicFieldBean(String id, String name, boolean required, boolean password) {
+        this(id, name, null, required, password, false);
+    }
+
+    public DynamicFieldBean(String id, String name, String defaultValue, boolean required, boolean password, boolean readonly) {
         super();
         this.id = id;
         this.name = name;
+        this.defaultValue = defaultValue;
         this.required = required;
         this.password = password;
+        this.readonly = readonly;
     }
 
     public String getId() {
@@ -66,6 +76,22 @@ public class DynamicFieldBean {
 
     public void setPassword(boolean password) {
         this.password = password;
+    }
+
+    public String getDefaultValue() {
+        return this.defaultValue;
+    }
+
+    public void setDefaultValue(String defaultValue) {
+        this.defaultValue = defaultValue;
+    }
+
+    public boolean isReadonly() {
+        return this.readonly;
+    }
+
+    public void setReadonly(boolean readonly) {
+        this.readonly = readonly;
     }
 
 }

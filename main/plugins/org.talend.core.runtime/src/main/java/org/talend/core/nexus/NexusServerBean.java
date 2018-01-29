@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -12,23 +12,51 @@
 // ============================================================================
 package org.talend.core.nexus;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * created by wchen on 2015-5-12 Detailled comment
  *
  */
 public class NexusServerBean {
 
-    String server;
+    public enum NexusType {
+        NEXUS_2("NEXUS"),
+        NEXUS_3("NEXUS 3");
 
-    String userName;
+        String repType;
 
-    String password;
+        NexusType(String repType) {
+            this.repType = repType;
+        }
 
-    String repositoryId;
+        public static NexusType getByRepType(String typeFromTAC) {
+            for (NexusType type : NexusType.values()) {
+                if (type.repType.equals(typeFromTAC)) {
+                    return type;
+                }
+            }
+            return null;
+        }
+        
+        public String getRepType() {
+            return this.repType;
+        }
+    }
 
-    boolean official;
+    private String server;
 
-    String snapshotRepId;
+    private String userName;
+
+    private String password;
+
+    private String repositoryId;
+
+    private boolean official;
+
+    private String snapshotRepId;
+
+    private String type = NexusType.NEXUS_2.name();
 
     public NexusServerBean() {
     }
@@ -39,7 +67,7 @@ public class NexusServerBean {
 
     /**
      * Getter for server.
-     * 
+     *
      * @return the server
      */
     public String getServer() {
@@ -48,7 +76,7 @@ public class NexusServerBean {
 
     /**
      * Sets the server.
-     * 
+     *
      * @param server the server to set
      */
     public void setServer(String server) {
@@ -57,7 +85,7 @@ public class NexusServerBean {
 
     /**
      * Getter for userName.
-     * 
+     *
      * @return the userName
      */
     public String getUserName() {
@@ -66,7 +94,7 @@ public class NexusServerBean {
 
     /**
      * Sets the userName.
-     * 
+     *
      * @param userName the userName to set
      */
     public void setUserName(String userName) {
@@ -75,7 +103,7 @@ public class NexusServerBean {
 
     /**
      * Getter for password.
-     * 
+     *
      * @return the password
      */
     public String getPassword() {
@@ -84,7 +112,7 @@ public class NexusServerBean {
 
     /**
      * Sets the password.
-     * 
+     *
      * @param password the password to set
      */
     public void setPassword(String password) {
@@ -93,7 +121,7 @@ public class NexusServerBean {
 
     /**
      * Getter for repositoryId.
-     * 
+     *
      * @return the repositoryId
      */
     public String getRepositoryId() {
@@ -102,7 +130,7 @@ public class NexusServerBean {
 
     /**
      * Sets the repositoryId.
-     * 
+     *
      * @param repositoryId the repositoryId to set
      */
     public void setRepositoryId(String repositoryId) {
@@ -111,7 +139,7 @@ public class NexusServerBean {
 
     /**
      * Getter for snapshotRepId.
-     * 
+     *
      * @return the snapshotRepId
      */
     public String getSnapshotRepId() {
@@ -120,7 +148,7 @@ public class NexusServerBean {
 
     /**
      * Sets the snapshotRepId.
-     * 
+     *
      * @param snapshotRepId the snapshotRepId to set
      */
     public void setSnapshotRepId(String snapshotRepId) {
@@ -129,7 +157,7 @@ public class NexusServerBean {
 
     /**
      * Getter for official.
-     * 
+     *
      * @return the official
      */
     public boolean isOfficial() {
@@ -138,11 +166,57 @@ public class NexusServerBean {
 
     /**
      * Sets the official.
-     * 
+     *
      * @param official the official to set
      */
     public void setOfficial(boolean official) {
         this.official = official;
+    }
+
+    /**
+     * Getter for type.
+     * 
+     * @return the type
+     */
+    public String getType() {
+        return this.type;
+    }
+
+    /**
+     * Sets the type.
+     * 
+     * @param type the type to set
+     */
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getRepositoryURI() {
+        return getRepositoryURI(true);
+    }
+
+    public String getRepositoryURI(boolean isRelease) {
+        if (StringUtils.isEmpty(this.server)) {
+            return null; // no server, no uri
+        }
+        IRepositoryArtifactHandler repositoryHandler = RepositoryArtifactHandlerManager.getRepositoryHandler(this);
+        if (repositoryHandler != null) {
+            return repositoryHandler.getRepositoryURL(isRelease);
+        } else {
+            String repId = "";
+            if (isRelease) {
+                repId = repositoryId;
+            } else {
+                repId = snapshotRepId;
+            }
+            String repositoryBaseURI = this.server;
+            if (repositoryBaseURI.endsWith(NexusConstants.SLASH)) {
+                repositoryBaseURI = repositoryBaseURI.substring(0, repositoryBaseURI.length() - 1);
+            }
+            repositoryBaseURI += NexusConstants.CONTENT_REPOSITORIES;
+            repositoryBaseURI += repId + NexusConstants.SLASH;
+            return repositoryBaseURI;
+        }
     }
 
     @Override
@@ -154,6 +228,7 @@ public class NexusServerBean {
         result = prime * result + ((password == null) ? 0 : password.hashCode());
         result = prime * result + ((repositoryId == null) ? 0 : repositoryId.hashCode());
         result = prime * result + ((snapshotRepId == null) ? 0 : snapshotRepId.hashCode());
+        result = prime * result + ((type == null) ? 0 : type.hashCode());
         return result;
     }
 
@@ -209,6 +284,14 @@ public class NexusServerBean {
                 return false;
             }
         } else if (!snapshotRepId.equals(other.snapshotRepId)) {
+            return false;
+        }
+
+        if (type == null) {
+            if (other.type != null) {
+                return false;
+            }
+        } else if (!type.equals(other.type)) {
             return false;
         }
 

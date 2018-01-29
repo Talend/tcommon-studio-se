@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -64,6 +64,8 @@ public class DatabaseTableFilterForm extends AbstractForm {
 
     private Button synonymCheck;
 
+    private Button calculationViewCheck;
+
     // hide for the bug 7959
 
     private Button publicSynonymCheck;
@@ -111,10 +113,14 @@ public class DatabaseTableFilterForm extends AbstractForm {
         getTableInfoParameters().changeType(ETableTypes.TABLETYPE_EXTERNAL_TABLE, tableCheck.getSelection());
         getTableInfoParameters().changeType(ETableTypes.TABLETYPE_VIEW, viewCheck.getSelection());
         getTableInfoParameters().changeType(ETableTypes.TABLETYPE_SYNONYM, synonymCheck.getSelection());
-        getTableInfoParameters().changeType(ETableTypes.EXTERNAL_TABLE, tableCheck.getSelection());
-        getTableInfoParameters().changeType(ETableTypes.MANAGED_TABLE, tableCheck.getSelection());
-        getTableInfoParameters().changeType(ETableTypes.INDEX_TABLE, tableCheck.getSelection());
-        getTableInfoParameters().changeType(ETableTypes.VIRTUAL_VIEW, viewCheck.getSelection());
+        if (EDatabaseTypeName.HIVE.getDisplayName().equals(metadataconnection.getDbType())) {
+            getTableInfoParameters().changeType(ETableTypes.EXTERNAL_TABLE, tableCheck.getSelection());
+            getTableInfoParameters().changeType(ETableTypes.MANAGED_TABLE, tableCheck.getSelection());
+            getTableInfoParameters().changeType(ETableTypes.INDEX_TABLE, tableCheck.getSelection());
+            getTableInfoParameters().changeType(ETableTypes.VIRTUAL_VIEW, viewCheck.getSelection());
+        } else if (EDatabaseTypeName.SAPHana.getDisplayName().equals(metadataconnection.getDbType())) {
+            getTableInfoParameters().changeType(ETableTypes.TABLETYPE_CALCULATION_VIEW, calculationViewCheck.getSelection());
+        }
         // hide for the bug 7959
         if (isOracle()) {
             getTableInfoParameters().changeType(ETableTypes.TABLETYPE_ALL_SYNONYM, publicSynonymCheck.getSelection());
@@ -142,10 +148,11 @@ public class DatabaseTableFilterForm extends AbstractForm {
         tableCheck.setEnabled(getTableInfoParameters().isUsedName());
         viewCheck.setEnabled(getTableInfoParameters().isUsedName());
         synonymCheck.setEnabled(getTableInfoParameters().isUsedName());
-
         if (isOracle()) {
             publicSynonymCheck.setEnabled(getTableInfoParameters().isUsedName());
             ExtractMetaDataUtils.getInstance().setUseAllSynonyms(publicSynonymCheck.getSelection());
+        } else if (EDatabaseTypeName.SAPHana.getDisplayName().equals(metadataconnection.getDbType())) {
+            calculationViewCheck.setEnabled(getTableInfoParameters().isUsedName());
         }
 
         removeButton.setEnabled(getTableInfoParameters().isUsedName());
@@ -268,7 +275,7 @@ public class DatabaseTableFilterForm extends AbstractForm {
         Group typesFilter = new Group(composite2, SWT.NONE);
         typesFilter.setText(Messages.getString("DatabaseTableFilterForm.selectType")); //$NON-NLS-1$
         gridLayout = new GridLayout();
-        gridLayout.numColumns = 3;
+        gridLayout.numColumns = 4;
 
         typesFilter.setLayout(gridLayout);
 
@@ -290,6 +297,10 @@ public class DatabaseTableFilterForm extends AbstractForm {
             publicSynonymCheck.setText(Messages.getString("DatabaseTableFilterForm.allSynonyms")); //$NON-NLS-1$
             publicSynonymCheck.setSelection(false);
             // ExtractMetaDataUtils.setVale(publicSynonymCheck.getSelection());
+        } else if (EDatabaseTypeName.SAPHana.getDisplayName().equals(metadataconnection.getDbType())) {
+            calculationViewCheck = new Button(typesFilter, SWT.CHECK);
+            calculationViewCheck.setText(Messages.getString("DatabaseTableFilterForm.calculationView")); //$NON-NLS-1$
+            calculationViewCheck.setSelection(true);
         }
 
         Composite namecomposite = new Composite(composite2, SWT.NONE);
@@ -371,6 +382,10 @@ public class DatabaseTableFilterForm extends AbstractForm {
         usedSql.setEnabled(false);
         sqllabel.setEnabled(false);
         sqlFilter.setEnabled(false);
+        if (EDatabaseTypeName.SAPHana.getDisplayName().equals(metadataconnection.getDbType())) {
+            calculationViewCheck.setEnabled(false);
+            calculationViewCheck.setSelection(false);
+        }
     }
 
     /**
@@ -409,9 +424,11 @@ public class DatabaseTableFilterForm extends AbstractForm {
                 // types are reqired, it could invoke like
                 // "DatabaseTableWizardPage.getTableInfoParameters().getTypes()".
                 getTableInfoParameters().changeType(ETableTypes.TABLETYPE_EXTERNAL_TABLE, tableCheck.getSelection());
-                getTableInfoParameters().changeType(ETableTypes.EXTERNAL_TABLE, tableCheck.getSelection());
-                getTableInfoParameters().changeType(ETableTypes.MANAGED_TABLE, tableCheck.getSelection());
-                getTableInfoParameters().changeType(ETableTypes.INDEX_TABLE, tableCheck.getSelection());
+                if (EDatabaseTypeName.HIVE.getDisplayName().equals(metadataconnection.getDbType())) {
+                    getTableInfoParameters().changeType(ETableTypes.EXTERNAL_TABLE, tableCheck.getSelection());
+                    getTableInfoParameters().changeType(ETableTypes.MANAGED_TABLE, tableCheck.getSelection());
+                    getTableInfoParameters().changeType(ETableTypes.INDEX_TABLE, tableCheck.getSelection());
+                }
             }
 
         });
@@ -456,6 +473,16 @@ public class DatabaseTableFilterForm extends AbstractForm {
 
                         synonymCheck.setEnabled(true);
                     }
+                }
+
+            });
+        } else if (EDatabaseTypeName.SAPHana.getDisplayName().equals(metadataconnection.getDbType())) {
+            calculationViewCheck.addSelectionListener(new SelectionAdapter() {
+
+                @Override
+                public void widgetSelected(SelectionEvent e) {
+                    getTableInfoParameters().changeType(ETableTypes.TABLETYPE_CALCULATION_VIEW,
+                            calculationViewCheck.getSelection());
                 }
 
             });
@@ -675,4 +702,5 @@ public class DatabaseTableFilterForm extends AbstractForm {
         }
         return false;
     }
+
 }

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -33,6 +33,7 @@ import org.talend.core.model.general.Project;
 import org.talend.core.model.metadata.IMetadataConnection;
 import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.core.model.process.IConnection;
+import org.talend.core.model.process.IContextManager;
 import org.talend.core.model.process.IElementParameter;
 import org.talend.core.model.process.INode;
 import org.talend.core.model.process.IProcess;
@@ -65,6 +66,8 @@ public interface IDesignerCoreService extends IService {
 
     // item will be ProcessItem of JobletProcessItem
     public IProcess getProcessFromItem(Item item);
+
+    public IContextManager getProcessContextFromItem(Item item);
 
     public List<IProcess2> getOpenedProcess(IEditorReference[] reference);
 
@@ -162,6 +165,8 @@ public interface IDesignerCoreService extends IService {
 
     public void switchToCurJobSettingsView();
 
+    public void switchToCurProcessView();
+
     /**
      * When database connection is renamed, refresh the connection label in the component view of job.
      *
@@ -175,7 +180,15 @@ public interface IDesignerCoreService extends IService {
 
     public int getDBConnectionTimeout();
 
+    public int getHBaseOrMaprDBScanLimit();
+
     public Reader getJavadocContentAccessContentReader(IMember member) throws JavaModelException;
 
     public int getTACConnectionTimeout();
+
+    public void setTACConnectionTimeout(int timeout);
+
+    public int getTACReadTimeout();
+
+    public void setTACReadTimeout(int timeout);
 }

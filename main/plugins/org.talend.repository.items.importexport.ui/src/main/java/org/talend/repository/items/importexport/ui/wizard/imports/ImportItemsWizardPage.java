@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -60,11 +60,15 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.TreeItem;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.internal.wizards.datatransfer.TarException;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.LoginException;
 import org.talend.commons.exception.PersistenceException;
+import org.talend.commons.runtime.model.emf.provider.EmfResourcesFactoryReader;
+import org.talend.commons.runtime.model.emf.provider.ResourceOption;
 import org.talend.commons.runtime.model.repository.ERepositoryStatus;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.PluginChecker;
@@ -75,6 +79,8 @@ import org.talend.core.model.utils.TalendPropertiesUtil;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.service.IExchangeService;
 import org.talend.core.ui.advanced.composite.FilteredCheckboxTree;
+import org.talend.core.ui.component.ComponentPaletteUtilities;
+import org.talend.designer.core.IMultiPageTalendEditor;
 import org.talend.repository.items.importexport.handlers.ImportExportHandlersManager;
 import org.talend.repository.items.importexport.handlers.imports.ImportCacheHelper;
 import org.talend.repository.items.importexport.handlers.model.EmptyFolderImportItem;
@@ -715,11 +721,15 @@ public class ImportItemsWizardPage extends WizardPage {
 
                 @Override
                 public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+                    final ResourceOption importOption = ResourceOption.ITEM_IMPORTATION;
                     try {
+                        EmfResourcesFactoryReader.INSTANCE.addOption(importOption, true);
                         List<ImportItem> items = importManager.populateImportingItems(resManager, overwrite, monitor, true);
                         nodesBuilder.addItems(items);
                     } catch (Exception e) {
                         ExceptionHandler.process(e);
+                    } finally {
+                        EmfResourcesFactoryReader.INSTANCE.removOption(importOption, true);
                     }
                 }
 
@@ -996,8 +1006,33 @@ public class ImportItemsWizardPage extends WizardPage {
                             }
                         }
                     }
-                    importManager.importItemRecords(monitor, resManager, checkedItemRecords, overwrite,
-                            nodesBuilder.getAllImportItemRecords(), destinationPath);
+                    final ResourceOption importOption = ResourceOption.ITEM_IMPORTATION;
+                    try {
+                        EmfResourcesFactoryReader.INSTANCE.addOption(importOption, false);
+
+                        importManager.importItemRecords(monitor, resManager, checkedItemRecords, overwrite,
+                                nodesBuilder.getAllImportItemRecords(), destinationPath);
+                    } finally {
+                        EmfResourcesFactoryReader.INSTANCE.removOption(importOption, false);
+                    }
+                    Display.getDefault().syncExec(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            IWorkbenchWindow activeWorkbenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+                            if (activeWorkbenchWindow != null && activeWorkbenchWindow.getActivePage() != null) {
+                                IEditorPart activeEditor = activeWorkbenchWindow.getActivePage().getActiveEditor();
+                                if (activeEditor instanceof IMultiPageTalendEditor) {
+                                    IMultiPageTalendEditor multiPageTEditor = (IMultiPageTalendEditor) activeEditor;
+                                    multiPageTEditor.changePaletteComponentHandler();
+                                    ComponentPaletteUtilities.updateFromRepositoryType(ERepositoryObjectType
+                                            .getItemType(((IMultiPageTalendEditor) activeEditor).getProcess().getProperty()
+                                                    .getItem()));
+                                }
+                            }
+                        }
+                    });
+
                 }
             };
 

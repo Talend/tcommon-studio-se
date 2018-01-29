@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -26,7 +26,6 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.equinox.p2.core.ProvisionException;
-import org.talend.commons.CommonsPlugin;
 import org.talend.commons.runtime.helper.LocalComponentInstallHelper;
 import org.talend.commons.runtime.service.ComponentsInstallComponent;
 import org.talend.commons.utils.VersionUtils;
@@ -189,6 +188,7 @@ public class NewComponentsInstallFactory extends AbstractExtraUpdatesFactory {
                     }
                 }
             } finally {
+                FilesUtils.deleteFolder(getWorkFolder(), true);
                 installComponent.setComponentFolder(null); // set back
             }
         }
@@ -205,9 +205,7 @@ public class NewComponentsInstallFactory extends AbstractExtraUpdatesFactory {
         @Override
         protected void afterInstall() {
             if (getWorkFolder() != null) {
-                if (!CommonsPlugin.isDebugMode()) { // if debug, keep the files.
-                    FilesUtils.deleteFolder(getWorkFolder(), true);
-                }
+                FilesUtils.deleteFolder(getWorkFolder(), true);
             }
         }
 

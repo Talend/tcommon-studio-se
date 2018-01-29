@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Core Runtime Plug-in
 Bundle-SymbolicName: org.talend.core.runtime;singleton:=true
-Bundle-Version: 6.4.0.qualifier
+Bundle-Version: 7.0.1.qualifier
 Bundle-Localization: plugin
 Bundle-Vendor: .Talend SA.
 Export-Package: org.talend.commons.utils.generation,
@@ -52,6 +52,7 @@ Export-Package: org.talend.commons.utils.generation,
  org.talend.core.prefs,
  org.talend.core.repository,
  org.talend.core.runtime,
+ org.talend.core.runtime.dynamic,
  org.talend.core.runtime.evaluator,
  org.talend.core.runtime.hd,
  org.talend.core.runtime.hd.hive,
@@ -62,6 +63,7 @@ Export-Package: org.talend.commons.utils.generation,
  org.talend.core.runtime.repository,
  org.talend.core.runtime.repository.build,
  org.talend.core.runtime.repository.demo,
+ org.talend.core.runtime.repository.item,
  org.talend.core.runtime.repository.selection,
  org.talend.core.runtime.schedulingrule,
  org.talend.core.runtime.services,
@@ -70,6 +72,7 @@ Export-Package: org.talend.commons.utils.generation,
  org.talend.core.sqlbuilder.util,
  org.talend.core.ui,
  org.talend.core.ui.branding,
+ org.talend.core.ui.check,
  org.talend.core.ui.images,
  org.talend.core.ui.metadata.celleditor,
  org.talend.core.ui.rule,
@@ -116,7 +119,8 @@ Require-Bundle: org.eclipse.jdt.core,
  org.ops4j.pax.url.mvn,
  org.talend.components.api,
  org.apache.servicemix.bundles.avro,
- jackson-core-asl
+ jackson-core-asl,
+ org.talend.libraries.jackson
 Bundle-Activator: org.talend.core.runtime.CoreRuntimePlugin
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .,

@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<genmodel:GenModel xmi:version="2.0"
-    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
-    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.talend.model/src/main/java"
-    editDirectory="/org.talend.model.edit/src" editorDirectory="/org.talend.model.editor/src"
-    modelPluginID="org.talend.model" modelName="Properties" importerID="org.eclipse.emf.importer.ecore"
-    usedGenPackages="Business.genmodel#//business Component.genmodel#//component ../../org.talend.cwm.mip/model/cwm_mip.genmodel#//orgomg platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore joblet.genmodel#//model metadata.genmodel#//connection platform:/plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation TalendFile.genmodel#//talendfile">
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.talend.model/src/main/java" editDirectory="/org.talend.model.edit/src"
+    editorDirectory="/org.talend.model.editor/src" modelPluginID="org.talend.model"
+    modelName="Properties" importerID="org.eclipse.emf.importer.ecore" usedGenPackages="Business.genmodel#//business Component.genmodel#//component ../../org.talend.cwm.mip/model/cwm_mip.genmodel#//orgomg platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore joblet.genmodel#//model metadata.genmodel#//connection platform:/plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation TalendFile.genmodel#//talendfile">
   <foreignModel>properties.ecore</foreignModel>
   <genPackages prefix="Properties" basePackage="org.talend.core.model" disposableProviderFactory="true"
       ecorePackage="properties.ecore#/">
@@ -68,6 +66,7 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference properties.ecore#//Project/exchangeUser"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//Project/migrationTasks"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference properties.ecore#//Project/migrationTask"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//Project/bigData"/>
     </genClasses>
     <genClasses ecoreClass="properties.ecore#//ProjectComponentAuthorisation">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference properties.ecore#//ProjectComponentAuthorisation/project"/>
@@ -147,6 +146,7 @@
     </genClasses>
     <genClasses ecoreClass="properties.ecore#//ConnectionItem">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference properties.ecore#//ConnectionItem/connection"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//ConnectionItem/typeName"/>
     </genClasses>
     <genClasses ecoreClass="properties.ecore#//SnippetVariable">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//SnippetVariable/name"/>

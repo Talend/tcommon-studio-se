@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -29,6 +29,8 @@ import org.osgi.framework.Bundle;
 import org.talend.commons.utils.resource.FileExtensions;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
+import org.talend.core.ISVNProviderServiceInCoreRuntime;
+import org.talend.core.PluginChecker;
 import org.talend.core.model.general.LibraryInfo;
 
 /**
@@ -36,15 +38,15 @@ import org.talend.core.model.general.LibraryInfo;
  */
 public class RoutineLibraryMananger {
 
-    private static final String EXTENSION_POINT_ID = "org.talend.core.systemRoutineLibrary"; //$NON-NLS-1$
+    public static final String EXTENSION_POINT_ID = "org.talend.core.systemRoutineLibrary"; //$NON-NLS-1$
 
     private static final String LIB_FOLDER = "/lib"; //$NON-NLS-1$
 
-    private static final String LIBRARY_ELE = "library"; //$NON-NLS-1$
+    public static final String LIBRARY_ELE = "library"; //$NON-NLS-1$
 
-    private static final String NAME_ATTR = "name"; //$NON-NLS-1$
+    public static final String NAME_ATTR = "name"; //$NON-NLS-1$
 
-    private static final String BUNDLE_ID = "bundleId"; //$NON-NLS-1$
+    public static final String BUNDLE_ID = "bundleId"; //$NON-NLS-1$
 
     protected static Logger log = Logger.getLogger(RoutineLibraryMananger.class.getName());
 
@@ -98,6 +100,14 @@ public class RoutineLibraryMananger {
                                 }
                             }
                         }
+                    }
+                }
+
+                if (PluginChecker.isSVNProviderPluginLoaded()) {
+                    ISVNProviderServiceInCoreRuntime svnService = (ISVNProviderServiceInCoreRuntime) GlobalServiceRegister
+                            .getDefault().getService(ISVNProviderServiceInCoreRuntime.class);
+                    if (svnService != null && svnService.isSvnLibSetupOnTAC()) {
+                        svnService.syncLibs(null);
                     }
                 }
             }

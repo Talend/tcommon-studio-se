@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -12,7 +12,10 @@
 // ============================================================================
 package org.talend.core.ui;
 
+import org.eclipse.jface.action.IAction;
 import org.talend.core.IService;
+import org.talend.core.model.repository.ERepositoryObjectType;
+import org.talend.repository.model.RepositoryNode;
 
 /**
  * created by cmeng on Nov 23, 2015 Detailled comment
@@ -21,4 +24,6 @@ import org.talend.core.IService;
 public interface IRouteletService extends IService {
 
     public String getRouteletEditorId();
+
+    public IAction getEditProcessAction(RepositoryNode result, ERepositoryObjectType type);
 }

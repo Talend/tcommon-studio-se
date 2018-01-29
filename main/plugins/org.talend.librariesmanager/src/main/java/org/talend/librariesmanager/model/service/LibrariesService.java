@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -49,6 +49,11 @@ public class LibrariesService implements ILibrariesService {
     }
 
     @Override
+    public void deployLibrary(URL source, boolean reset) throws IOException {
+        this.getLibrariesService().deployLibrary(source, reset);
+    }
+
+    @Override
     public void deployLibrary(URL source) throws IOException {
         this.getLibrariesService().deployLibrary(source);
     }
@@ -63,9 +68,24 @@ public class LibrariesService implements ILibrariesService {
         return null;
     }
 
+    /**
+     * 
+     * DOC wchen Comment method "getLibraryStatus".
+     * 
+     * @deprecated better call the function getLibraryStatus(String libName, String mvnURI)
+     * @param libName
+     * @return
+     * @throws BusinessException
+     */
+    @Deprecated
     @Override
     public ELibraryInstallStatus getLibraryStatus(String libName) throws BusinessException {
         return this.getLibrariesService().getLibraryStatus(libName);
+    }
+
+    @Override
+    public ELibraryInstallStatus getLibraryStatus(String libName, String mvnURI) {
+        return this.getLibrariesService().getLibraryStatus(libName, mvnURI);
     }
 
     @Override
@@ -206,17 +226,6 @@ public class LibrariesService implements ILibrariesService {
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * org.talend.core.model.general.ILibrariesService#syncLibrariesFromApp(org.eclipse.core.runtime.IProgressMonitor[])
-     */
-    @Override
-    public void syncLibrariesFromApp(IProgressMonitor... monitorWrap) {
-        this.getLibrariesService().syncLibrariesFromApp(monitorWrap);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
      * @see org.talend.core.model.general.ILibrariesService#cleanLibs()
      */
     @Override
@@ -233,15 +242,25 @@ public class LibrariesService implements ILibrariesService {
     public List<ModuleNeeded> getModuleNeeded(String id, boolean isGroup) {
         return getLibrariesService().getModuleNeeded(id, isGroup);
     }
-    
+
     @Override
-    public void deployProjectLibrary(File source) throws IOException{
-       this.getLibrariesService().deployProjectLibrary(source);
+    public void deployProjectLibrary(File source) throws IOException {
+        this.getLibrariesService().deployProjectLibrary(source);
     }
 
     @Override
-    public boolean isMavenArtifactAvailable(String mvnUri) {
-        return getLibrariesService().isMavenArtifactAvailable(mvnUri);
+    public void deployLibrary(URL source, String mavenUri) throws IOException {
+        getLibrariesService().deployLibrary(source, mavenUri);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.talend.core.model.general.ILibrariesService#deployLibrary(java.net.URL, java.lang.String, boolean)
+     */
+    @Override
+    public void deployLibrary(URL source, String mavenUri, boolean refresh) throws IOException {
+        getLibrariesService().deployLibrary(source, mavenUri, refresh);
     }
 
 }

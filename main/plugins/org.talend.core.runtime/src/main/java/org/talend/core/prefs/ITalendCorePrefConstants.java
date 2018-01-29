@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -82,8 +82,10 @@ public interface ITalendCorePrefConstants {
     public static final String DEACTIVE_REPOSITORY_UPDATE = "DEACTIVE_REPOSITORY_UPDATE"; //$NON-NLS-1$
 
     public static final String DB_CONNECTION_TIMEOUT_ACTIVED = "db_conn_timeout_actived"; //$NON-NLS-1$
-
+    
     public static final String DB_CONNECTION_TIMEOUT = "db_conn_timeout"; //$NON-NLS-1$
+
+    public static final String HBASE_OR_MAPRDB_SCAN_LIMIT = "hbase_or_maprdb_scan_limit"; //$NON-NLS-1$
 
     public static final String DOC_USER_LOGO = "doc_user_logo"; //$NON-NLS-1$
 
@@ -182,9 +184,20 @@ public interface ITalendCorePrefConstants {
      */
     public static final String PERFORMANCE_TAC_CONNECTION_TIMEOUT = "PERFORMANCE_TAC_CONNECTION_TIMEOUT"; //$NON-NLS-1$
 
+    public static final String PERFORMANCE_TAC_READ_TIMEOUT = "PERFORMANCE_TAC_READ_TIMEOUT"; //$NON-NLS-1$
+
     public static final String PERFORMANCE_JAVA_PROCESS_CODE_FORMATE_TIMEOUT = "PERFORMANCE_JAVA_PROCESS_CODE_FORMATE_TIMEOUT"; //$NON-NLS-1$
 
     public static final String NEXUS_TIMEOUT = "NEXUS_TIMEOUT"; //$NON-NLS-1$
 
     public static final String NEXUS_REFRESH_FREQUENCY = "NEXUS_REFRESH_FREQUENCY"; //$NON-NLS-1$
+
+    /**
+     * AutoMap algorithm weight
+     */
+
+    public static final String LEVENSHTEIN_WEIGHT = "LEVENSHTEIN_WEIGHT"; //$NON-NLS-1$
+
+    public static final String JACCARD_WEIGHT = "JACCARD_WEIGHT"; //$NON-NLS-1$
+
 }

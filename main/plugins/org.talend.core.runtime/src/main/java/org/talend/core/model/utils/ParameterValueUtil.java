@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -287,7 +287,7 @@ public final class ParameterValueUtil {
                 // get the const string
                 subString = value.substring(start, end);
                 if (!commentStringSet.contains(start + ":" + (end - 1)) && start < methodMaxIndex) { //$NON-NLS-1$
-                    subString = subString.replaceAll(oldName, newName);
+                    subString = doSubStringReplace(oldName, newName, subString);
                 }
             } else {
                 // get the varible string, do replace, then append it
@@ -309,7 +309,7 @@ public final class ParameterValueUtil {
                     Point funcNameArea = function.getNameArea();
                     String functionName = value.substring(funcNameArea.x, funcNameArea.y);
                     if (functionName.matches("^globalMap\\..+")) { //$NON-NLS-1$
-                        subString = subString.replaceAll(oldName, newName);
+                        subString = doSubStringReplace(oldName, newName, subString);
                     } else {
                         if (subString.equals("\"" + oldName + "\"")) { //$NON-NLS-1$ //$NON-NLS-2$
                             subString = "\"" + newName + "\""; //$NON-NLS-1$ //$NON-NLS-2$
@@ -332,6 +332,28 @@ public final class ParameterValueUtil {
         }
 
         return strBuffer.toString();
+    }
+
+    public static String doSubStringReplace(String oldName, String newName, String subString) {
+        String newStr = subString.replaceAll("\\b" + oldName + "\\b", newName);//$NON-NLS-1$ //$NON-NLS-2$
+        if (!oldName.contains(".") && newStr.equals(subString)) { // not connection and replace failure //$NON-NLS-1$
+            boolean haveQuotes = subString.startsWith("\""); //$NON-NLS-1$
+            boolean replaced = false;
+            if (haveQuotes) {
+                subString = subString.substring(1);
+            }
+            if (subString.startsWith(oldName + '_')) { // start with unique name
+                newStr = newName + subString.substring(oldName.length());
+                replaced = true;
+            } else if (subString.startsWith(oldName + '.')) { // only connection name
+                newStr = newName + subString.substring(oldName.length());
+                replaced = true;
+            }
+            if (haveQuotes && replaced) {
+                newStr = "\"" + newStr; //$NON-NLS-1$
+            }
+        }
+        return newStr;
     }
 
     /**
@@ -489,8 +511,8 @@ public final class ParameterValueUtil {
      * @param vStart
      * @param vEnd
      */
-    private static String doVaribleReplace(String oldName, String newName, String value, List<FunctionInfo> functions,
-            int vStart, int vEnd) {
+    private static String doVaribleReplace(String oldName, String newName, String value, List<FunctionInfo> functions, int vStart,
+            int vEnd) {
         if (value.trim().isEmpty()) {
             return value;
         }
@@ -616,7 +638,7 @@ public final class ParameterValueUtil {
 
     private static int calcMethodArea(String varibleString, String wholeString, int beginIndex, List<FunctionInfo> functions) {
         // globalMap.get(...)
-        //        String regex = "\\b\\S*\\s*\\.\\s*\\S*\\s*\\(\\z"; //$NON-NLS-1$
+        // String regex = "\\b\\S*\\s*\\.\\s*\\S*\\s*\\(\\z"; //$NON-NLS-1$
         // maybe get(...) also is target
         String regex = "\\b[\\w\\.]*?\\s*\\("; //$NON-NLS-1$
 
@@ -822,7 +844,7 @@ public final class ParameterValueUtil {
             Object docValue = param.getValue();
             if (docValue != null) {
                 if ((param.getRepositoryValue() != null && param.getRepositoryValue().toUpperCase().contains("PASSWORD") //$NON-NLS-1$
-                || EParameterFieldType.PASSWORD.equals(param.getFieldType()))//
+                        || EParameterFieldType.PASSWORD.equals(param.getFieldType()))//
                         && !ContextParameterUtils.containContextVariables((String) docValue)) {
 
                     if (isHidePassword()) { // if hide will display the *

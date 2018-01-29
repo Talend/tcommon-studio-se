@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -24,10 +24,6 @@ public interface ITargetExecutionConfig extends IServerConfiguration {
 
     public void setFileTransferPort(int transferFilePort);
 
-    public IServerConfiguration getCommandlineServerConfig();
-
-    public void setCommandlineServerConfig(IServerConfiguration cmdLineServer);
-
     public void setUseSSL(boolean useSSL);
 
     public boolean useSSL();
@@ -43,4 +39,13 @@ public interface ITargetExecutionConfig extends IServerConfiguration {
 	public String getRunAsUser();
 	
 	public void setRunAsUser(String runAsUser);
+
+	// If the remote id is not null means this execution configuration from TAC
+	public Integer getRemoteId();
+
+	public boolean isVirtualServer();
+	
+	public boolean isActiveServer();
+	
+	public String getEncryptedPassword();
 }

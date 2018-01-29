@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -17,6 +17,7 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -43,6 +44,7 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.emf.common.util.EMap;
 import org.eclipse.m2e.core.MavenPlugin;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -66,8 +68,7 @@ import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.librariesmanager.emf.librariesindex.LibrariesIndex;
-import org.talend.librariesmanager.maven.ArtifactsDeployer;
-import org.talend.librariesmanager.model.ModulesNeededProvider;
+import org.talend.librariesmanager.maven.MavenArtifactsHandler;
 import org.talend.librariesmanager.prefs.LibrariesManagerUtils;
 import org.talend.repository.ProjectManager;
 
@@ -104,7 +105,7 @@ public class LocalLibraryManagerTest {
 
     /**
      * Test method for
-     * {@link org.talend.librariesmanager.model.service.LocalLibraryManagerTest#deploy(java.net.URI, org.eclipse.core.runtime.IProgressMonitor[])}
+     * {@link org.talend.librariesmanager.model.service.LocalLibraryManagerTest#savePlatfromURLIndex(java.net.URI, org.eclipse.core.runtime.IProgressMonitor[])}
      * .
      *
      * @throws IOException
@@ -310,57 +311,6 @@ public class LocalLibraryManagerTest {
         assertTrue(missJars.size() == 0);
     }
 
-    @Test @Ignore
-    public void testUnusedJars() throws URISyntaxException {
-
-        Bundle currentBundle = Platform.getBundle("org.talend.librariesmanager"); //$NON-NLS-1$
-        Bundle[] bundles = currentBundle.getBundleContext().getBundles();
-        Long totalSize = 0L;
-        StringBuffer strBuff = new StringBuffer();
-        List<String> neededJars = new ArrayList<String>();
-        ModulesNeededProvider.reset();
-        for (ModuleNeeded module : ModulesNeededProvider.getModulesNeeded()) {
-            if (module.getStatus() != ELibraryInstallStatus.UNUSED) {
-                neededJars.add(module.getModuleName());
-            }
-        }
-        for (Bundle bundle : bundles) {
-            String name = bundle.getSymbolicName();
-            if (name.startsWith("org.talend.libraries")) {
-                String classpath = bundle.getHeaders().get("Bundle-ClassPath");
-                List<URL> urls = FilesUtils.getFilesFromFolder(bundle, "/lib", ".jar", true, true);
-                for (URL url : urls) {
-                    String jarFile = new Path(url.getFile()).lastSegment();
-                    if (!neededJars.contains(jarFile) && (classpath == null || !classpath.contains(jarFile))) {
-                        File file = new File(url.toURI());
-                        Long fileSize = file.length();
-                        String path = url.getPath().substring(url.getPath().indexOf("/plugins/") + 9);
-                        strBuff.append(path + " : " + fileSize + "\n");
-                        totalSize += fileSize;
-                    }
-
-                }
-            }
-            if (name.contains(".components.")) {
-                List<URL> urls = FilesUtils.getFilesFromFolder(bundle, "/components", ".jar", true, true);
-                for (URL url : urls) {
-                    String jarFile = new Path(url.getFile()).lastSegment();
-                    if (!neededJars.contains(jarFile)) {
-                        File file = new File(url.toURI());
-                        Long fileSize = file.length();
-                        String path = url.getPath().substring(url.getPath().indexOf("/plugins/") + 9);
-                        strBuff.append(path + " : " + fileSize + "\n");
-                        totalSize += fileSize;
-                    }
-                }
-            }
-        }
-
-        if (strBuff.length() != 0) {
-            fail("Unused jars still in product (total byte size: " + totalSize + "):\n" + strBuff);
-        }
-    }
-
     /**
      * Test method for
      * {@link org.talend.librariesmanager.model.service.LocalLibraryManagerTest#delete(java.lang.String)}.
@@ -420,7 +370,7 @@ public class LocalLibraryManagerTest {
         modules.add(module5);
 
         // deploy to local maven
-        libraryManagerService.deployModules(modules, new NullProgressMonitor());
+        libraryManagerService.installModules(modules, new NullProgressMonitor());
 
         boolean retrieve1 = libraryManagerService.retrieve(module1, null, false, null);
         assertTrue(retrieve1);
@@ -450,7 +400,8 @@ public class LocalLibraryManagerTest {
         node.putInt(ITalendCorePrefConstants.NEXUS_REFRESH_FREQUENCY, originalValue);
     }
 
-    @Test @Ignore
+    @Test
+    @Ignore
     public void testRetrieveFromRemote() throws Exception {
         ILibraryManagerService libraryManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
                 ILibraryManagerService.class);
@@ -509,17 +460,12 @@ public class LocalLibraryManagerTest {
             }
 
             // install to nexus
-            ArtifactsDeployer deployer = new ArtifactsDeployer();
-            MavenArtifact artifact = MavenUrlHelper.parseMvnUrl(module1.getMavenUri(true));
-            deployer.installToRemote(new File(FileLocator.toFileURL(entry1).getFile()), artifact, artifact.getType());
-            artifact = MavenUrlHelper.parseMvnUrl(module2.getMavenUri(true));
-            deployer.installToRemote(new File(FileLocator.toFileURL(entry2).getFile()), artifact, artifact.getType());
-            artifact = MavenUrlHelper.parseMvnUrl(module3.getMavenUri(true));
-            deployer.installToRemote(new File(FileLocator.toFileURL(entry3).getFile()), artifact, artifact.getType());
-            artifact = MavenUrlHelper.parseMvnUrl(module4.getMavenUri(true));
-            deployer.installToRemote(new File(FileLocator.toFileURL(entry4).getFile()), artifact, artifact.getType());
-            artifact = MavenUrlHelper.parseMvnUrl(module5.getMavenUri(true));
-            deployer.installToRemote(new File(FileLocator.toFileURL(entry5).getFile()), artifact, artifact.getType());
+            MavenArtifactsHandler deployer = new MavenArtifactsHandler();
+            deployer.install(FileLocator.toFileURL(entry1).getFile(), module1.getMavenUri());
+            deployer.install(FileLocator.toFileURL(entry2).getFile(), module2.getMavenUri());
+            deployer.install(FileLocator.toFileURL(entry3).getFile(), module3.getMavenUri());
+            deployer.install(FileLocator.toFileURL(entry4).getFile(), module4.getMavenUri());
+            deployer.install(FileLocator.toFileURL(entry5).getFile(), module5.getMavenUri());
 
             boolean retrieve1 = libraryManagerService.retrieve(module1, null, false, null);
             assertTrue(retrieve1);
@@ -604,7 +550,8 @@ public class LocalLibraryManagerTest {
         assertFalse(lm.isResolveAllowed("a")); //$NON-NLS-1$
     }
 
-    @Test @Ignore
+    @Test
+    @Ignore
     public void testNexusUpdateJar() throws Exception {
         String uri = "mvn:org.talend.libraries/test/6.0.0-SNAPSHOT/jar";
         TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
@@ -636,19 +583,20 @@ public class LocalLibraryManagerTest {
                 artifact.getArtifactId(), artifact.getVersion(), artifact.getType());
         assertEquals(originalSHA1, remoteSha1);
         // deploy the new jar to nexus (without update the local jar)
-        new ArtifactsDeployer().installToRemote(newJarFile, artifact, "jar");
+        new MavenArtifactsHandler().install(newJarFile.getAbsolutePath(), uri);
         remoteSha1 = NexusServerUtils.resolveSha1(customNexusServer.getServer(), customNexusServer.getUserName(),
                 customNexusServer.getPassword(), customNexusServer.getSnapshotRepId(), artifact.getGroupId(),
                 artifact.getArtifactId(), artifact.getVersion(), artifact.getType());
         assertEquals(newJarSHA1, remoteSha1);
 
-        File resolvedFile = localLibraryManager.resolveJar(manager, customNexusServer, uri);
+        File resolvedFile = localLibraryManager.resolveJar(customNexusServer, uri);
         assertNotNull(resolvedFile);
         String finalJarSHA1 = getSha1(resolvedFile);
         assertEquals(newJarSHA1, finalJarSHA1);
     }
 
-    @Test @Ignore
+    @Test
+    @Ignore
     public void testNexusInstallNewJar() throws Exception {
         String uri = "mvn:org.talend.libraries/test/6.0.0-SNAPSHOT/jar";
         TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
@@ -674,19 +622,20 @@ public class LocalLibraryManagerTest {
         URL entry = bundle.getEntry("/lib/old/test.jar");
         File originalJarFile = new File(FileLocator.toFileURL(entry).getFile());
         // deploy the new jar to nexus (without update the local jar)
-        new ArtifactsDeployer().installToRemote(originalJarFile, artifact, "jar");
+        new MavenArtifactsHandler().install(FileLocator.toFileURL(entry).getFile(), uri);
         String originalSHA1 = getSha1(originalJarFile);
 
         // jar should not exist still on local
         assertNull(localLibraryManager.getJarPathFromMaven(uri));
 
-        File resolvedFile = localLibraryManager.resolveJar(manager, customNexusServer, uri);
+        File resolvedFile = localLibraryManager.resolveJar(customNexusServer, uri);
         assertNotNull(resolvedFile);
         String finalJarSHA1 = getSha1(resolvedFile);
         assertEquals(originalSHA1, finalJarSHA1);
     }
 
-    @Test @Ignore
+    @Test
+    @Ignore
     public void testResolveSha1NotExist() throws Exception {
         String uri = "mvn:org.talend.libraries/not-existing/6.0.0-SNAPSHOT/jar";
         TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
@@ -727,7 +676,8 @@ public class LocalLibraryManagerTest {
         assertFalse(localLibraryManager.isJarExistInLibFolder(testJarFile));
     }
 
-    @Test @Ignore
+    @Test
+    @Ignore
     public void testIsLocalJarSameAsNexus() throws IOException {
         String uri = "mvn:org.talend.libraries/test/6.0.0-SNAPSHOT/jar";
         TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
@@ -758,6 +708,41 @@ public class LocalLibraryManagerTest {
         assertFalse(localLibraryManager.isLocalJarSameAsNexus(manager, customNexusServer, testJarName));
     }
 
+    @Test
+    public void testIsJarNeedToBeDeployed() throws Exception {
+        assertFalse(localLibraryManager.isSvnLibSetup());
+        Field field = null;
+        Boolean originValue = null;
+        TalendLibsServerManager libServerManager = TalendLibsServerManager.getInstance();
+        if (libServerManager.getCustomNexusServer() != null) {
+            field = TalendLibsServerManager.class.getDeclaredField("lastConnectionValid");
+            field.setAccessible(true);
+            originValue = (Boolean) field.get(libServerManager);
+            field.set(libServerManager, false);
+            assertNull(libServerManager.getCustomNexusServer());
+        }
+        String uri = "mvn:org.talend.libraries/test/6.0.0-SNAPSHOT/jar";
+        String localJarPath = localLibraryManager.getJarPathFromMaven(uri);
+        // force to delete the jar to have a valid test
+        if (localJarPath != null) {
+            org.talend.utils.io.FilesUtils.deleteFolder(new File(localJarPath).getParentFile(), true);
+        }
+        // jar should not exist anymore
+        assertNull(localLibraryManager.getJarPathFromMaven(uri));
+
+        String testJarName = "test.jar";
+        File jarFile = new File(getTmpFolder(), testJarName);
+        FileUtils.writeStringToFile(jarFile, "Hello");
+        assertTrue(localLibraryManager.isJarNeedToBeDeployed(jarFile));
+
+        localLibraryManager.deploy(jarFile.toURI(), null);
+        assertFalse(localLibraryManager.isJarNeedToBeDeployed(jarFile));
+
+        if (field != null) {
+            field.set(libServerManager, originValue);
+        }
+    }
+
     private File getTmpFolder() {
         Project project = ProjectManager.getInstance().getCurrentProject();
         IProject physProject;
@@ -771,6 +756,26 @@ public class LocalLibraryManagerTest {
         tmpFolderPath = tmpFolderPath + "/testLib"; //$NON-NLS-1$
 
         return new File(tmpFolderPath);
+    }
+
+    @Test
+    public void testCheckModuleStatus() throws URISyntaxException, IOException {
+        // test a existing apach jar
+        String urlPath = "platform:/plugin/org.talend.libraries.apache.common/lib/commons-lang3-3.0.jar";
+        String mvnURI = "mvn:org.talend.libraries/commons-lang3-3.0/6.0.0/jar";
+        ModuleNeeded module = new ModuleNeeded("test", "commons-lang3-3.0.jar", "test", true, null, null, mvnURI);
+        module.setModuleLocaion(urlPath);
+        localLibraryManager.checkModuleStatus(module);
+        Assert.assertEquals(module.getStatus(), ELibraryInstallStatus.INSTALLED);
+
+        Bundle bundle = Platform.getBundle("org.talend.librariesmanager.test");
+        URL entry = bundle.getEntry("/lib/test_jar1.jar");
+        ModuleNeeded module2 = new ModuleNeeded("module context", "test_jar1.jar", "test", true, null, null,
+                "mvn:org.apache/test_jar1/6.0.0-SNAPSHOT/jar");
+        localLibraryManager.deploy(FileLocator.toFileURL(entry).toURI(), module2.getMavenUri());
+        Assert.assertEquals(module2.getStatus(), ELibraryInstallStatus.INSTALLED);
+        Assert.assertEquals(module2.getDeployStatus(), ELibraryInstallStatus.DEPLOYED);
+
     }
 
 }

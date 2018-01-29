@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -25,7 +25,8 @@ import org.talend.core.database.conn.DatabaseConnConstants;
 public enum EDatabaseVersion4Drivers {
     // access
     ACCESS_JDBC(new DbVersion4Drivers(EDatabaseTypeName.ACCESS, new String[] {
-            "jackcess-2.1.0.jar", "ucanaccess-2.0.9.5.jar", "commons-lang-2.6.jar", "commons-logging-1.1.1.jar", "hsqldb.jar" })), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            "jackcess-2.1.0.jar", "ucanaccess-2.0.9.5.jar", "commons-lang-2.6.jar", "commons-logging-1.1.1.jar", "hsqldb.jar", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            "jackcess-encrypt-2.1.0.jar", "bcprov-jdk15on-1.51.jar", "talend-ucanaccess-utils-1.0.0.jar" })),
     ACCESS_2003(new DbVersion4Drivers(EDatabaseTypeName.ACCESS, "Access 2003", "Access_2003")), //$NON-NLS-1$ //$NON-NLS-2$
     ACCESS_2007(new DbVersion4Drivers(EDatabaseTypeName.ACCESS, "Access 2007", "Access_2007")), //$NON-NLS-1$ //$NON-NLS-2$
     // oracle
@@ -60,7 +61,8 @@ public enum EDatabaseVersion4Drivers {
     JAVADB_EMBEDED(new DbVersion4Drivers(EDatabaseTypeName.JAVADB_EMBEDED, "derby.jar")), //$NON-NLS-1$
     SQLITE(new DbVersion4Drivers(EDatabaseTypeName.SQLITE, "sqlitejdbc-v056.jar")), //$NON-NLS-1$
     FIREBIRD(new DbVersion4Drivers(EDatabaseTypeName.FIREBIRD, "jaybird-full-2.1.1.jar")), //$NON-NLS-1$
-    TERADATA(new DbVersion4Drivers(EDatabaseTypeName.TERADATA, new String[] { "terajdbc4.jar", "tdgssconfig.jar" })), //$NON-NLS-1$ //$NON-NLS-2$ 
+    TERADATA(new DbVersion4Drivers(EDatabaseTypeName.TERADATA,
+            new String[] { "terajdbc4-15.10.00.14.jar", "tdgssconfig-15.10.00.14.jar" })), //$NON-NLS-1$ //$NON-NLS-2$
     JAVADB_DERBYCLIENT(new DbVersion4Drivers(EDatabaseTypeName.JAVADB_DERBYCLIENT, "derbyclient.jar")), //$NON-NLS-1$
     NETEZZA(new DbVersion4Drivers(EDatabaseTypeName.NETEZZA, "nzjdbc.jar")), //$NON-NLS-1$
     INFORMIX(new DbVersion4Drivers(EDatabaseTypeName.INFORMIX, "ifxjdbc.jar")), //$NON-NLS-1$
@@ -80,7 +82,8 @@ public enum EDatabaseVersion4Drivers {
             "Microsoft SQL Server 2012", "Microsoft SQL Server 2012", "jtds-1.3.1-patch.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     MSSQL_PROP(new DbVersion4Drivers(EDatabaseTypeName.MSSQL,
             "Microsoft", "MSSQL_PROP", "mssql-jdbc.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-
+    
+    VERTICA_9(new DbVersion4Drivers(EDatabaseTypeName.VERTICA, "VERTICA 9.0", "VERTICA_9_0", "vertica-jdbc-9.0.0-0.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     VERTICA_7(new DbVersion4Drivers(EDatabaseTypeName.VERTICA, "VERTICA 7.0.x", "VERTICA_7_0_X", "vertica-jdbc-7.0.1-0.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     VERTICA_6_1_X(new DbVersion4Drivers(EDatabaseTypeName.VERTICA, "VERTICA 6.1.x", "VERTICA_6_1_X", "vertica-jdk5-6.1.2-0.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     VERTICA_6(new DbVersion4Drivers(EDatabaseTypeName.VERTICA, "VERTICA 6.0", "VERTICA_6_0", "vertica-jdk5-6.0.0-0.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -152,7 +155,7 @@ public enum EDatabaseVersion4Drivers {
 
     MAPRDB(new DbVersion4Drivers(EDatabaseTypeName.MAPRDB, new String[] {})),
 
-    REDSHIFT(new DbVersion4Drivers(EDatabaseTypeName.REDSHIFT, "RedshiftJDBC41-1.2.1.1001.jar")), //$NON-NLS-1$
+    REDSHIFT(new DbVersion4Drivers(EDatabaseTypeName.REDSHIFT, "RedshiftJDBC41-1.2.10.1009.jar")), //$NON-NLS-1$
 
     AMAZON_AURORA(new DbVersion4Drivers(EDatabaseTypeName.AMAZON_AURORA, "mysql-connector-java-5.1.30-bin.jar")); //$NON-NLS-1$
 

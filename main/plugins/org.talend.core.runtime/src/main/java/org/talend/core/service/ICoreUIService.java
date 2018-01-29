@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -19,6 +19,7 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.talend.commons.ui.swt.actions.ITreeContextualAction;
 import org.talend.core.IService;
+import org.talend.core.model.repository.ERepositoryObjectType;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -44,4 +45,6 @@ public interface ICoreUIService extends IService {
     void syncAllRules();
 
     String getPreferenceValue(String key);
+    
+    void loadComponentsFromProviders(ERepositoryObjectType type);
 }

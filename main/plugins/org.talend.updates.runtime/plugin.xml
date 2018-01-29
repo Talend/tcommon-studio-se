@@ -66,6 +66,14 @@
             class="org.talend.updates.runtime.login.SyncComponentMavenRepoLoginTask"
             priority="normal">
       </loginTask>
+      <loginTask
+            class="org.talend.updates.runtime.login.DeployComponentsToLocalNexusLoginTask"
+            priority="normal">
+      </loginTask>
+      <loginTask
+            class=" org.talend.updates.runtime.login.InstallLocalNexusComponentsLoginTask"
+            priority="normal">
+      </loginTask>
    </extension>
 
 </plugin>

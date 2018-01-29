@@ -12,5 +12,11 @@
             class="org.talend.designer.maven.setting.DefaultMavenTemplateManager">
       </TemplateManager>
    </extension>
+   <extension
+         point="org.talend.designer.maven.mavenPomJob">
+      <pomJobExtension
+            class="org.talend.designer.maven.tools.creator.UpdatePomAndAssemblyForChildrenJobs">
+      </pomJobExtension>
+   </extension>
 
 </plugin>

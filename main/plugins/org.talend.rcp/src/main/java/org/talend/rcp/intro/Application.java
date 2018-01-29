@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -18,6 +18,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -153,6 +154,9 @@ public class Application implements IApplication {
                         needRelaunch = true;
                     }
                 }
+                if (StringUtils.isNotEmpty(patchComponent.getFailureMessage())) {
+                    log.log(Level.ERROR, patchComponent.getFailureMessage());
+                }
             }
 
             final ComponentsInstallComponent installComponent = LocalComponentInstallHelper.getComponent();
@@ -169,6 +173,9 @@ public class Application implements IApplication {
                         if (installComponent.needRelaunch()) {
                             needRelaunch = true;
                         }
+                    }
+                    if (StringUtils.isNotEmpty(installComponent.getFailureMessage())) {
+                        log.log(Level.ERROR, installComponent.getFailureMessage());
                     }
                 } finally {
                     installComponent.setLogin(false);

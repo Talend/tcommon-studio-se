@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -17,8 +17,12 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
+import org.talend.commons.utils.platform.PluginChecker;
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.database.conn.version.EDatabaseVersion4Drivers;
+import org.talend.core.model.repository.ERepositoryObjectType;
+import org.talend.core.runtime.services.IGenericDBService;
 
 /**
  * cli class global comment. Detailled comment
@@ -82,7 +86,8 @@ public enum EDatabaseConnTemplate {
             "jdbc:odbc:<datasource>")), //$NON-NLS-1$
 
     ACCESS(new DbConnStr(EDatabaseTypeName.ACCESS, //
-            "jdbc:ucanaccess://<filename>;<property>", null, "memory=false")), //$NON-NLS-1$
+            "jdbc:ucanaccess://<filename>;<property>", null, //$NON-NLS-1$
+            "jackcessOpener=org.talend.ucanaccess.encrypt.CryptCodecOpener;memory=false")),
 
     SYBASEASE(new DbConnStr(EDatabaseTypeName.SYBASEASE, //
             "jdbc:sybase:Tds:<host>:<port>/<sid>?<property>", //$NON-NLS-1$ 
@@ -158,8 +163,9 @@ public enum EDatabaseConnTemplate {
             "8591")), //$NON-NLS-1$
     // "jdbc:sap://talendhana.cld.sr:30015";
     SAPHana(new DbConnStr(EDatabaseTypeName.SAPHana, //
-            "jdbc:sap://<host>:<port>", //$NON-NLS-1$
-            "30015")), //$NON-NLS-1$
+            "jdbc:sap://<host>:<port>?<property>", //$NON-NLS-1$
+            "30015", //$NON-NLS-1$
+            "")), //$NON-NLS-1$
 
     PARACCEL(new DbConnStr(EDatabaseTypeName.PARACCEL, //
             "jdbc:paraccel://<host>:<port>/<sid>", //$NON-NLS-1$
@@ -175,7 +181,7 @@ public enum EDatabaseConnTemplate {
             "5480")), //$NON-NLS-1$
 
     VERTICA(new DbConnStr(EDatabaseTypeName.VERTICA, //
-            "jdbc:vertica://<host>:<port>/<sid>", //$NON-NLS-1$
+            "jdbc:vertica://<host>:<port>/<sid>?<property>", //$NON-NLS-1$
             "5433")), //$NON-NLS-1$
 
     GENERAL_JDBC(new DbConnStrForGeneralJDBC(EDatabaseTypeName.GENERAL_JDBC, //
@@ -286,8 +292,26 @@ public enum EDatabaseConnTemplate {
     @SuppressWarnings("unchecked")
     private static List<String> getDBTypes(boolean sort, boolean all, boolean display) {
         EDatabaseConnTemplate[] values = EDatabaseConnTemplate.values();
-        List<String> databaseType = new ArrayList<String>(values.length);
+        List<String> databaseType = new ArrayList<String>();
+        
+        List<ERepositoryObjectType> extraTypes = new ArrayList<ERepositoryObjectType>();
+        IGenericDBService dbService = null;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
+            dbService = (IGenericDBService) GlobalServiceRegister.getDefault().getService(
+                    IGenericDBService.class);
+        }
+        if(dbService != null){
+            extraTypes.addAll(dbService.getExtraTypes());
+        }
+        
+        for(ERepositoryObjectType type : extraTypes){
+            databaseType.add(type.getType());
+        }
         for (EDatabaseConnTemplate temp : values) {
+            // The 'GENERAL_JDBC' only for TOP
+            if (temp == EDatabaseConnTemplate.GENERAL_JDBC && !PluginChecker.isOnlyTopLoaded()) {
+                continue;
+            }
             String typeName = getDBTypeName(temp, display);
             if (typeName != null && !databaseType.contains(typeName)) {
                 databaseType.add(typeName);
@@ -361,6 +385,7 @@ public enum EDatabaseConnTemplate {
                 // for feature 10655
             case ORACLEFORSID:
             case ORACLESN:
+            case ORACLE_CUSTOM:
             case ORACLE_OCI:
             case SYBASEASE:
             case HSQLDB_IN_PROGRESS: // for feature 11674
@@ -369,6 +394,7 @@ public enum EDatabaseConnTemplate {
             case EXASOL:
             case ACCESS:
             case REDSHIFT:
+            case SAPHana:
                 return true;
             default:
             }

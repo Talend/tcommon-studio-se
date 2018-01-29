@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.talend.studio</groupId>
 		<artifactId>tcommon-studio-se</artifactId>
-		<version>6.4.0-SNAPSHOT</version>
+		<version>7.0.1-SNAPSHOT</version>
 		<relativePath>../../../</relativePath>
 	</parent>
 	<artifactId>org.talend.designer.maven.tos</artifactId>
@@ -19,6 +19,12 @@
         <dependency>
             <groupId>org.talend.studio</groupId>
             <artifactId>studio-components-dependencies</artifactId>
+            <version>${project.version}</version>
+            <type>pom</type>
+        </dependency>
+        <dependency>
+            <groupId>org.talend.studio</groupId>
+            <artifactId>studio-tcompv1-dependencies</artifactId>
             <version>${project.version}</version>
             <type>pom</type>
         </dependency>

@@ -1,0 +1,94 @@
+<mapping>
+	<dbms product="DYNAMODB" id="dynamodb_id" label="Mapping DynamoDB" default="true">
+		<dbTypes>
+			<dbType type="BINARY" ignoreLen="true" ignorePre="true"/>
+			<dbType type="BOOLEAN" ignoreLen="true" ignorePre="true"/>
+			<dbType type="JSON" ignoreLen="true" ignorePre="true"/>
+			<dbType type="LIST" ignoreLen="true" ignorePre="true"/>
+			<dbType type="NUMBER" ignoreLen="true" ignorePre="true"/>
+			<dbType type="OBJECT" ignoreLen="true" ignorePre="true"/>
+			<dbType type="STRING" ignoreLen="true" ignorePre="true"/>
+		</dbTypes>
+
+		<language name="java">
+			<talendToDbTypes><!-- Adviced mappings  -->
+				<talendType type="id_List">
+					<dbType type="LIST" default="true"/>	
+				</talendType>
+				<talendType type="id_BigDecimal">
+					<dbType type="NUMBER" default="true"/>		
+				</talendType>
+				<talendType type="id_Boolean">	
+					<dbType type="BOOLEAN" default="true"/>
+				</talendType>
+				<talendType type="id_Byte">
+					<dbType type="NUMBER" default="true" />					
+				</talendType>
+				<talendType type="id_byte[]">
+					<dbType type="BINARY" default="true"/>
+				</talendType>
+				<talendType type="id_Character">
+					<dbType type="NUMBER"/>
+					<dbType type="STRING" default="true"/>
+				</talendType>
+				<talendType type="id_Date">
+					<dbType type="STRING" default="true"/>
+				</talendType>
+				<talendType type="id_Double">
+					<dbType type="NUMBER" default="true"/>
+				</talendType>
+				<talendType type="id_Float">
+					<dbType type="NUMBER" default="true"/>
+				</talendType>
+				<talendType type="id_Integer">
+					<dbType type="NUMBER" default="true"/>
+				</talendType>
+				<talendType type="id_Long">
+					<dbType type="NUMBER" default="true"/>
+				</talendType>
+				<talendType type="id_Object">
+					<dbType type="OBJECT" default="true"/>
+				</talendType>
+				<talendType type="id_Short">
+					<dbType type="NUMBER" default="true"/>
+				</talendType>
+				<talendType type="id_String">
+					<dbType type="JSON"/>
+					<dbType type="STRING" default="true"/>
+				</talendType>
+			</talendToDbTypes>
+			<dbToTalendTypes><!-- Adviced mappings  -->
+				<dbType type="BINARY">
+					<talendType type="id_byte[]" default="true" />
+				</dbType>
+				<dbType type="BOOLEAN">
+					<talendType type="id_Boolean" default="true" />
+				</dbType>
+				<dbType type="JSON">
+					<talendType type="id_String" default="true" />
+				</dbType>
+				<dbType type="LIST">
+					<talendType type="id_List" default="true" />
+				</dbType>
+				<dbType type="NUMBER">
+					<talendType type="id_BigDecimal" default="true"/>
+					<talendType type="id_Byte"/>
+					<talendType type="id_Character"/>
+					<talendType type="id_Double"/>
+					<talendType type="id_Float"/>
+					<talendType type="id_Integer"/>
+					<talendType type="id_Short"/>
+				</dbType>
+				<dbType type="OBJECT">
+					<talendType type="id_Object" default="true" />
+				</dbType>
+				<dbType type="STRING">
+					<talendType type="id_String" default="true" />
+					<talendType type="id_Date" default="true" />
+				</dbType>
+			</dbToTalendTypes>
+		</language>
+	</dbms>
+
+</mapping>
+

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -43,6 +43,16 @@ import org.talend.repository.model.IProxyRepositoryFactory;
  * 
  */
 public class RepositoryUpdateManagerHelper {
+
+    private RepositoryUpdateManager manager;
+
+    public RepositoryUpdateManagerHelper() {
+        this(null);
+    }
+
+    public RepositoryUpdateManagerHelper(RepositoryUpdateManager manager) {
+        this.manager = manager;
+    }
 
     protected boolean enableCheckItem() {
         return false; // by default, no items
@@ -213,6 +223,9 @@ public class RepositoryUpdateManagerHelper {
                     result.setJob(null);
                 }
                 result.setObjectId(item.getProperty().getId());
+                if (manager != null) {
+                    result.setRepositoryUpdateManager(manager);
+                }
             }
 
             process2.dispose();
@@ -260,6 +273,7 @@ public class RepositoryUpdateManagerHelper {
         }
         List<IRepositoryViewObject> processRep = new ArrayList<IRepositoryViewObject>();
         try {
+
             ERepositoryObjectType jobType = ERepositoryObjectType.PROCESS;
             if (jobType != null) {
                 processRep.addAll(factory.getAll(jobType, true));
@@ -268,6 +282,25 @@ public class RepositoryUpdateManagerHelper {
             if (jobletType != null) {
                 processRep.addAll(factory.getAll(jobletType, true));
             }
+
+            ERepositoryObjectType processMr = ERepositoryObjectType.PROCESS_MR;
+            if (processMr != null) {
+                processRep.addAll(factory.getAll(processMr, true));
+            }
+            ERepositoryObjectType processStrom = ERepositoryObjectType.PROCESS_STORM;
+            if (processStrom != null) {
+                processRep.addAll(factory.getAll(processStrom, true));
+            }
+
+            ERepositoryObjectType sparkJoblet = ERepositoryObjectType.SPARK_JOBLET;
+            if (sparkJoblet != null) {
+                processRep.addAll(factory.getAll(sparkJoblet, true));
+            }
+            ERepositoryObjectType sparkStreamJoblet = ERepositoryObjectType.SPARK_STREAMING_JOBLET;
+            if (sparkStreamJoblet != null) {
+                processRep.addAll(factory.getAll(sparkStreamJoblet, true));
+            }
+
         } catch (PersistenceException e) {
             ExceptionHandler.process(e);
         }

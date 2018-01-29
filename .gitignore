@@ -6,3 +6,4 @@ classes/
 dist/
 .settings/
 *.iml
+.idea

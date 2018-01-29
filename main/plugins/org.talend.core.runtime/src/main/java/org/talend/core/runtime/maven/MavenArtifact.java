@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -13,18 +13,19 @@
 package org.talend.core.runtime.maven;
 
 import org.apache.commons.lang3.StringUtils;
+import org.talend.core.nexus.TalendMavenResolver;
 
 /**
  * DOC ggu class global comment. Detailled comment
  */
-public class MavenArtifact {
+public class MavenArtifact implements Cloneable {
 
     private static final char GROUP_SEPARATOR = '.';
 
     private static final char ARTIFACT_SEPARATOR = '-';
 
     private String repositoryUrl, groupId, artifactId, version, type, classifier, description, url, license, licenseUrl,
-            distribution;
+            distribution, username, password;
 
     public String getRepositoryUrl() {
         return repositoryUrl;
@@ -114,6 +115,22 @@ public class MavenArtifact {
         this.distribution = distribution;
     }
 
+    public String getUsername() {
+        return this.username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return this.password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     /**
      * 
      * DOC ggu Comment method "getFileName".
@@ -121,9 +138,22 @@ public class MavenArtifact {
      * @return if need full path, try PomUtil.getArtifactPath
      */
     public String getFileName() {
+        return getFileName(true);
+    }
+    
+    /**
+     * 
+     * DOC ggu Comment method "getFileName".
+     * 
+     * @return if need full path, try PomUtil.getArtifactPath
+     */
+    public String getFileName(boolean stripVersion) {
         StringBuilder name = new StringBuilder(128);
 
-        name.append(getArtifactId()).append(ARTIFACT_SEPARATOR).append(getVersion());
+        name.append(getArtifactId());
+        if (!stripVersion || !MavenConstants.DEFAULT_LIB_GROUP_ID.equals(getGroupId())) {
+            name.append(ARTIFACT_SEPARATOR).append(getVersion());
+        }
         if (StringUtils.isNotEmpty(getClassifier())) {
             name.append(ARTIFACT_SEPARATOR).append(getClassifier());
         }
@@ -131,7 +161,7 @@ public class MavenArtifact {
         if (StringUtils.isNotEmpty(getType())) {
             name.append(getType());
         } else {
-            name.append("jar"); // by default
+            name.append(MavenConstants.TYPE_JAR);
         }
         return name.toString();
     }
@@ -248,6 +278,22 @@ public class MavenArtifact {
             return false;
         }
         return true;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return "MavenArtifact [groupId=" + this.groupId + ", artifactId=" + this.artifactId + ", version=" + this.version + "]";
+
+    }
+
+    @Override
+    public MavenArtifact clone() throws CloneNotSupportedException {
+        return (MavenArtifact) super.clone();
     }
 
 }

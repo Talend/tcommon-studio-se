@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -13,6 +13,7 @@
 package org.talend.core.model.components;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -41,11 +42,25 @@ public interface IComponentsFactory {
 
     public void resetCache();
 
-    public void resetSpecificComponents(); // mainly to reload only joblets
+    /**
+     * mainly reload joblets or generic component
+     */
+    public void resetSpecificComponents();
 
     public int size();
 
+    /**
+     * Only use it if you want to modify(add/remove) the list! and don't forget to use synchronize block!!<br/>
+     * Use readComponents() if you only want to iterate/read the list.
+     */
     public Set<IComponent> getComponents();
+
+    /**
+     * Get a readonly components collection to avoid ConcurrentModificationException caused by multiple thread
+     * access;<br/>
+     * If want to modify(add/remove) the list, please use getComponents().
+     */
+    public Collection<IComponent> readComponents();
 
     public Map<String, Map<String, Set<IComponent>>> getComponentNameMap();
 
@@ -78,7 +93,7 @@ public interface IComponentsFactory {
     public IComponent get(String name);
 
     public IComponent get(String name, String paletteType);
-    
+
     public IComponent getJobletComponent(String name, String paletteType);
 
     public List<String> getSkeletons();

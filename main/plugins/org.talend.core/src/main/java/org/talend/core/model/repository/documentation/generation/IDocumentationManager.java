@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -14,6 +14,7 @@ package org.talend.core.model.repository.documentation.generation;
 
 import java.util.List;
 
+import org.talend.core.repository.document.IDocumentationGenerator;
 import org.talend.repository.documentation.ExportFileResource;
 
 /**

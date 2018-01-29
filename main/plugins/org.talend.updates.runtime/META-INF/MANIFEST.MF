@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Updates Runtime
 Bundle-SymbolicName: org.talend.updates.runtime;singleton:=true
-Bundle-Version: 6.4.0.qualifier
+Bundle-Version: 7.0.1.qualifier
 Bundle-Vendor: .Talend SA.
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui,
@@ -25,11 +25,13 @@ Require-Bundle: org.eclipse.core.runtime,
  org.talend.librariesmanager.ui,
  org.talend.librariesmanager,
  org.talend.designer.maven,
- org.talend.libraries.dom4j-jaxen
+ org.talend.libraries.dom4j-jaxen,
+ org.talend.libraries.apache.http
 Bundle-ActivationPolicy: lazy
 Service-Component: OSGI-INF/components_install.xml
 Export-Package: org.talend.updates.runtime.engine,
  org.talend.updates.runtime.engine.component,
  org.talend.updates.runtime.engine.factory,
  org.talend.updates.runtime.model,
- org.talend.updates.runtime.ui
+ org.talend.updates.runtime.ui,
+ org.talend.updates.runtime.utils

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Libraries Manager UI plug-in
 Bundle-SymbolicName: org.talend.librariesmanager.ui;singleton:=true
-Bundle-Version: 6.4.0.qualifier
+Bundle-Version: 7.0.1.qualifier
 Bundle-Activator: org.talend.librariesmanager.ui.LibManagerUiPlugin
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime,
@@ -10,9 +10,9 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jdt.core,
  org.eclipse.ui.workbench,
  org.eclipse.gef,
+ org.ops4j.pax.url.mvn,
  org.talend.libraries.dom4j-jaxen,
  org.talend.libraries.apache.http,
- org.ops4j.pax.url.mvn,
  org.talend.commons.ui,
  org.talend.core.runtime,
  org.talend.librariesmanager,

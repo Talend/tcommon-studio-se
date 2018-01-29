@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -55,7 +55,7 @@ public abstract class AbstractJobDeleteListener implements PropertyChangeListene
     protected Project getProject(IRepositoryObject repositoryObject) {
         String projectLabel = repositoryObject.getProjectLabel();
         Project currentProject = ProjectManager.getInstance().getCurrentProject();
-        if (currentProject.getTechnicalLabel().equalsIgnoreCase(projectLabel)) {
+        if (currentProject != null && currentProject.getTechnicalLabel().equalsIgnoreCase(projectLabel)) {
             return currentProject;
         }
         {
@@ -65,8 +65,8 @@ public abstract class AbstractJobDeleteListener implements PropertyChangeListene
              */
             // Project project = ProjectManager.getInstance().getProjectFromProjectLabel(projectLabel);
         }
-        org.talend.core.model.properties.Project emfProject = ProjectManager.getInstance()
-                .getProject(repositoryObject.getProperty());
+        org.talend.core.model.properties.Project emfProject = ProjectManager.getInstance().getProject(
+                repositoryObject.getProperty());
         Project project = new Project(emfProject);
         return project;
     }

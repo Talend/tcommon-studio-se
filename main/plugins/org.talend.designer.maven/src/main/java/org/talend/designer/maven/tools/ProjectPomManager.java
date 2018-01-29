@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -210,10 +210,8 @@ public class ProjectPomManager {
             Model jobModel = MODEL_MANAGER.readMavenModel(basePomFile);
 
             List<Dependency> withoutChildrenJobDependencies = new ArrayList<Dependency>(jobModel.getDependencies());
-            // org.talend.job
-            final String jobGroupPrefix = PomIdsHelper.getJobGroupId((String) null);
-            // org.talend.test
-            final String testGroupPrefix = PomIdsHelper.getTestGroupId((String) null);
+            final String jobGroupPrefix = PomIdsHelper.getJobGroupIdPrefix();
+            final String testGroupPrefix = PomIdsHelper.getTestGroupIdPrefix();
             Iterator<Dependency> iterator = withoutChildrenJobDependencies.iterator();
             while (iterator.hasNext()) {
                 Dependency d = iterator.next();

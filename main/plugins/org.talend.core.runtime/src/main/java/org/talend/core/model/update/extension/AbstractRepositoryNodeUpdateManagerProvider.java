@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -90,7 +90,7 @@ public abstract class AbstractRepositoryNodeUpdateManagerProvider extends Abstra
     }
 
     @Override
-    protected List<UpdateResult> retrieveUpdateResults(IProgressMonitor monitor, IStructuredSelection selection) {
+    public List<UpdateResult> retrieveUpdateResults(IProgressMonitor monitor, IStructuredSelection selection) {
         if (selection != null) {
             Object node = selection.getFirstElement();
             if (node != null && node instanceof IRepositoryNode) {

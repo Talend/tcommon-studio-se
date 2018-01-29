@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -17,6 +17,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.talend.commons.runtime.model.repository.ERepositoryStatus;
 import org.talend.commons.ui.runtime.image.ECoreImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.core.model.metadata.builder.connection.CDCConnection;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
@@ -36,6 +37,7 @@ import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.repository.model.repositoryObject.MetadataColumnRepositoryObject;
 import org.talend.core.repository.model.repositoryObject.MetadataTableRepositoryObject;
+import org.talend.core.runtime.services.IGenericDBService;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.metadata.i18n.Messages;
 import org.talend.repository.model.IProxyRepositoryFactory;
@@ -131,7 +133,15 @@ public class CreateTableAction extends AbstractCreateTableAction {
             }
             ConnectionItem connectionItem = (ConnectionItem) object.getProperty().getItem();
             nodeType = ERepositoryObjectType.getItemType(connectionItem);
-
+        }
+        
+        IGenericDBService dbService = null;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
+            dbService = (IGenericDBService) GlobalServiceRegister.getDefault().getService(
+                    IGenericDBService.class);
+        }
+        if(dbService != null && dbService.getExtraTypes().contains(nodeType)){
+            nodeType = dbService.getExtraDBType(nodeType);
         }
 
         if (ERepositoryObjectType.METADATA_FILE_POSITIONAL.equals(nodeType)) {

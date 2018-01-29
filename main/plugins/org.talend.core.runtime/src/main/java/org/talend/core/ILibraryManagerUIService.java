@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.swt.widgets.Shell;
+import org.talend.commons.ui.swt.dialogs.IConfigModuleDialog;
 import org.talend.core.language.ECodeLanguage;
 import org.talend.core.model.general.LibraryInfo;
 import org.talend.core.model.general.ModuleNeeded;
@@ -50,4 +52,6 @@ public interface ILibraryManagerUIService extends IService {
     public boolean isModuleInstalledForBundle(String bundleName);
 
     public boolean confirmDialog(String originalJarFileName);
+
+    public IConfigModuleDialog getConfigModuleDialog(Shell parentShell, String initValue);
 }

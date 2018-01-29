@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -36,6 +36,8 @@ public class P2InstallerTest {
 
     public static final String TEST_COMP_MYJIRA = "resources/components/components-myjira-0.16.0-SNAPSHOT-updatesite.zip";
 
+    public static final String TEST_COMP_FAKE_MYJIRA = "resources/components/components-myjira-0.16.0-SNAPSHOT-fake.zip";
+
     class P2InstallerTestClass extends P2Installer {
 
         protected Set<InstalledUnit> installPatchRepository(File metadataRepository, File artifactRepository)
@@ -60,6 +62,7 @@ public class P2InstallerTest {
         // change contents
         PrintWriter pw = new PrintWriter(new FileWriter(configrationFile, true));
         try {
+            pw.println();
             pw.println("test123=abc");
         } finally {
             pw.close();

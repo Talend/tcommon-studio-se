@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -45,6 +45,10 @@ public interface FileExtensions {
 
     String XML_EXTENSION = "xml"; //$NON-NLS-1$
 
+    String ZIP_EXTENSION = "zip"; //$NON-NLS-1$
+
+    String JAR_EXTENSION = "jar"; //$NON-NLS-1$
+
     /*
      * file suffix
      */
@@ -54,13 +58,13 @@ public interface FileExtensions {
 
     String SCREENSHOT_FILE_SUFFIX = '.' + SCREENSHOT_EXTENSION;
 
-    String ZIP_FILE_SUFFIX = ".zip"; //$NON-NLS-1$
+    String ZIP_FILE_SUFFIX = '.' + ZIP_EXTENSION;
 
     String TAR_FILE_SUFFIX = ".tar"; //$NON-NLS-1$
 
     String TAR_GZ_FILE_SUFFIX = ".tar.gz"; //$NON-NLS-1$
 
-    String JAR_FILE_SUFFIX = ".jar"; //$NON-NLS-1$
+    String JAR_FILE_SUFFIX = '.' + JAR_EXTENSION;
 
     String WAR_FILE_SUFFIX = ".war"; //$NON-NLS-1$
 
@@ -76,5 +80,5 @@ public interface FileExtensions {
 
     String WSDL_FILE_SUFFIX = ".wsdl"; //$NON-NLS-1$
 
-    String XML_FILE_SUFFIX = ".xml"; //$NON-NLS-1$
+    String XML_FILE_SUFFIX = '.' + XML_EXTENSION;
 }

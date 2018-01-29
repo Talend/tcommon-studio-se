@@ -485,7 +485,7 @@ public class StringHandling {
 
     }
 
-	public String RTRIM(String value) {
+	public static String RTRIM(String value) {
 		return RTRIM(value, null);
 	}
 	
@@ -509,10 +509,11 @@ public class StringHandling {
          }
          
          if (isVacant(second_string)) {
-             StringBuilder result = new StringBuilder(first_string);
+             StringBuilder result = new StringBuilder();
              for (int i = OriginLength; i < length; i++) {
                  result.append(" ");
              }
+             result.append(first_string);
              return result.toString();
          } else {
              StringBuilder result = new StringBuilder(second_string);
@@ -523,6 +524,10 @@ public class StringHandling {
              return first_string;
          }
     }
+    
+	public static String LPAD(String first_string, int length) {
+		return LPAD(first_string, length, null);
+	}
 	
 	/**
 	 * 
@@ -557,7 +562,7 @@ public class StringHandling {
         return result.toString();
 	}
 
-	public String RPAD(String first_string, int length) {
+	public static String RPAD(String first_string, int length) {
 		return RPAD(first_string, length, null);
 	}
 	

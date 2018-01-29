@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,6 +22,11 @@ import org.talend.core.model.properties.Item;
  */
 public interface ITDQPatternService extends ITDQService {
 
+    static final String PATTERN_NAME = "PATTERN_NAME";
+
+    static final String PATTERN_REGEX = "PATTERN_REGEX";
+
+    static final String PATTERN_ID = "PATTERN_ID";
     /**
      * This method is used in tis to get the patterns value in TDQ.
      * 

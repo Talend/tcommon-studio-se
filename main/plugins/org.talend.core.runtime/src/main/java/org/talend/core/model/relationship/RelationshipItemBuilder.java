@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -13,6 +13,7 @@
 package org.talend.core.model.relationship;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -75,6 +76,10 @@ public class RelationshipItemBuilder {
 
     public static final String JOBLET_RELATION = "joblet"; //$NON-NLS-1$
 
+    public static final String HADOOP_CLUSTER_RELATION = "hadoopCluster"; //$NON-NLS-1$
+
+    public static final String DB_CONNECTION_RELATION = "dbConnection"; //$NON-NLS-1$
+
     public static final String SERVICES_RELATION = "services"; //$NON-NLS-1$
 
     public static final String PROPERTY_RELATION = "property"; //$NON-NLS-1$
@@ -102,6 +107,8 @@ public class RelationshipItemBuilder {
     public static final String PATTERN_RELATION = "pattern"; //$NON-NLS-1$
 
     public static final String RESOURCE_RELATION = "resource";
+
+    public static final String DYNAMIC_DISTRIBUTION_RELATION = "dynamicDistribution"; //$NON-NLS-1$
 
     /*
      * 
@@ -286,6 +293,12 @@ public class RelationshipItemBuilder {
             relations.addAll(itemsRelations);
         }
         return new ArrayList<Relation>(relations);
+    }
+    
+    public void load() {
+        if (!loaded) {
+            loadRelations();
+        }
     }
 
     /**
@@ -559,8 +572,7 @@ public class RelationshipItemBuilder {
 
         loadRelations(currentProjectItemsRelations, getAimProject());
 
-        List<Project> referencedProjects = ProjectManager.getInstance().getReferencedProjects(getProxyRepositoryFactory(),
-                getAimProject());
+        List<Project> referencedProjects = ProjectManager.getInstance().getAllReferencedProjects();
         for (Project p : referencedProjects) {
             loadRelations(referencesItemsRelations, p);
         }
@@ -702,16 +714,40 @@ public class RelationshipItemBuilder {
     }
 
     private String getTypeFromItem(Item item) {
-        String type = null;
-
-        if (item instanceof ProcessItem) {
-            type = JOB_RELATION;
+        IItemRelationshipHandler[] itemRelationshipHandlers = RelationshipRegistryReader.getInstance()
+                .getItemRelationshipHandlers();
+        Set<String> baseTypes = new HashSet<>();
+        for (IItemRelationshipHandler handler : itemRelationshipHandlers) {
+            String baseItemType = handler.getBaseItemType(item);
+            if (StringUtils.isNotEmpty(baseItemType)) {
+                baseTypes.add(baseItemType);
+            }
         }
-        if (item instanceof JobletProcessItem) {
-            type = JOBLET_RELATION;
+        if (baseTypes.isEmpty()) {
+            throw new RuntimeException(Messages.getString("RelationshipItemBuilder.unexpect.item", item.getClass().getName())); //$NON-NLS-1$
+        }
+        if (1 == baseTypes.size()) {
+            return baseTypes.iterator().next();
+        }
+        if (baseTypes.contains(TEST_RELATION)) {
+            return TEST_RELATION;
         }
 
-        return type;
+        throw new RuntimeException(Messages.getString("RelationshipItemBuilder.unexpect.typesConflict", item.getClass().getName(), //$NON-NLS-1$
+                baseTypes.toString()));
+    }
+
+    public List<ERepositoryObjectType> getSupportRepObjTypes(String relationType) {
+        IItemRelationshipHandler[] itemRelationshipHandlers = RelationshipRegistryReader.getInstance()
+                .getItemRelationshipHandlers();
+        Set<ERepositoryObjectType> repTypes = new HashSet<>();
+        for (IItemRelationshipHandler handler : itemRelationshipHandlers) {
+            Collection<ERepositoryObjectType> supportReoObjTypes = handler.getSupportReoObjTypes(relationType);
+            if (supportReoObjTypes != null && !supportReoObjTypes.isEmpty()) {
+                repTypes.addAll(supportReoObjTypes);
+            }
+        }
+        return new ArrayList<>(repTypes);
     }
 
     private void clearItemsRelations(Item baseItem) {
@@ -897,18 +933,35 @@ public class RelationshipItemBuilder {
     }
 
     public boolean supportRelation(Item item) {
-        ERepositoryObjectType itemType = ERepositoryObjectType.getItemType(item);
-        if (ERepositoryObjectType.getAllTypesOfProcess().contains(itemType)) {
-            return true;
-        } else if (ERepositoryObjectType.JOBLET != null && itemType == ERepositoryObjectType.JOBLET) {
-            return true;
-        } else if (ERepositoryObjectType.SPARK_JOBLET != null && itemType == ERepositoryObjectType.SPARK_JOBLET) {
-            return true;
-        } else if (ERepositoryObjectType.SPARK_STREAMING_JOBLET != null
-                && itemType == ERepositoryObjectType.SPARK_STREAMING_JOBLET) {
-            return true;
+        IItemRelationshipHandler[] itemRelationshipHandlers = RelationshipRegistryReader.getInstance()
+                .getItemRelationshipHandlers();
+        for (IItemRelationshipHandler handler : itemRelationshipHandlers) {
+            if (handler.valid(item)) {
+                return true;
+            }
         }
         return false;
+    }
+
+    private List<ERepositoryObjectType> getSupportTypes() {
+        List<ERepositoryObjectType> supportTypes = new ArrayList<ERepositoryObjectType>();
+
+        List<ERepositoryObjectType> processTypes = getSupportRepObjTypes(JOB_RELATION);
+        if (processTypes != null && !processTypes.isEmpty()) {
+            supportTypes.addAll(processTypes);
+        }
+
+        List<ERepositoryObjectType> jobletTypes = getSupportRepObjTypes(JOBLET_RELATION);
+        if (jobletTypes != null && !jobletTypes.isEmpty()) {
+            supportTypes.addAll(jobletTypes);
+        }
+        
+        List<ERepositoryObjectType> testTypes = getSupportRepObjTypes(TEST_RELATION);
+        if (testTypes != null && !testTypes.isEmpty()) {
+            supportTypes.addAll(testTypes);
+        }
+
+        return supportTypes;
     }
 
     public void addOrUpdateItem(Item item) {
@@ -998,6 +1051,17 @@ public class RelationshipItemBuilder {
             if (itemRelations.containsKey(relation)) {
                 itemRelations.get(relation).clear();
                 itemRelations.remove(relation);
+                saveRelations();
+            }
+        }
+    }
+
+    public void removeItemRelations(Relation relation, boolean save) {
+        Map<Relation, Set<Relation>> itemRelations = getCurrentProjectItemsRelations();
+        if (itemRelations != null && itemRelations.containsKey(relation)) {
+            itemRelations.get(relation).clear();
+            itemRelations.remove(relation);
+            if (save) {
                 saveRelations();
             }
         }

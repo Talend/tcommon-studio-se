@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -30,7 +30,7 @@ public interface IMavenUIService extends IService {
 
     void checkUserSettings(IProgressMonitor monitor);
 
-    void updateMavenResolver(boolean setupRemoteRepository);
+    void updateMavenResolver(boolean setupCustomLibNexus);
 
     void addMavenConfigurationChangeListener();
 

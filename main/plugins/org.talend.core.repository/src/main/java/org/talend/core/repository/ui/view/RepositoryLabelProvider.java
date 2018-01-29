@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -12,7 +12,6 @@
 // ============================================================================
 package org.talend.core.repository.ui.view;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -178,6 +177,7 @@ public class RepositoryLabelProvider extends LabelProvider implements IColorProv
                     || repositoryObjectType == ERepositoryObjectType.METADATA_CON_SYNONYM
                     || repositoryObjectType == ERepositoryObjectType.METADATA_CON_TABLE
                     || repositoryObjectType == ERepositoryObjectType.METADATA_CON_VIEW
+                    || repositoryObjectType == ERepositoryObjectType.METADATA_CON_CALCULATION_VIEW
                     || repositoryObjectType == ERepositoryObjectType.METADATA_CON_CDC
                     || repositoryObjectType == ERepositoryObjectType.METADATA_CON_CDC
                     || repositoryObjectType == ERepositoryObjectType.METADATA_SAP_IDOC
@@ -226,6 +226,15 @@ public class RepositoryLabelProvider extends LabelProvider implements IColorProv
 
             }
 
+            return label;
+        } else if (node.getType() == ENodeType.REFERENCED_PROJECT) {
+            String label = node.getLabel();
+            String branch = ProjectManager.getInstance()
+                    .getMainProjectBranch(ProjectManager.getInstance().getProjectFromProjectLabel(label));
+            branch = ProjectManager.getCleanBranchName(branch);
+            if (branch != null && branch.length() > 0) {
+                return label + "/" + branch; //$NON-NLS-1$ 
+            }
             return label;
         } else {
             String label = node.getLabel();
@@ -405,6 +414,7 @@ public class RepositoryLabelProvider extends LabelProvider implements IColorProv
                     || repositoryObjectType == ERepositoryObjectType.SNIPPETS
                     || repositoryObjectType == ERepositoryObjectType.METADATA_CON_SYNONYM
                     || repositoryObjectType == ERepositoryObjectType.METADATA_CON_VIEW
+                    || repositoryObjectType == ERepositoryObjectType.METADATA_CON_CALCULATION_VIEW
                     || repositoryObjectType == ERepositoryObjectType.JOB_DOC
                     || repositoryObjectType == ERepositoryObjectType.JOBLET_DOC) {
                 return ImageProvider.getImage(nodeIcon);

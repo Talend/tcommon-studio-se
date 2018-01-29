@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -40,6 +40,7 @@ import org.talend.core.GlobalServiceRegister;
 import org.talend.core.IRepositoryContextService;
 import org.talend.core.database.EDatabase4DriverClassName;
 import org.talend.core.database.EDatabaseTypeName;
+import org.talend.core.database.conn.version.EDatabaseVersion4Drivers;
 import org.talend.core.model.metadata.IMetadataConnection;
 import org.talend.core.model.metadata.builder.ConvertionHelper;
 import org.talend.core.model.metadata.builder.MetadataConnection;
@@ -177,6 +178,11 @@ public class MetadataConnectionUtils {
             java.sql.Connection sqlConn = null;
             List<Object> list = new ArrayList<Object>();
             try {
+                if (metadataBean.getCurrentConnection() != null
+                        && metadataBean.getCurrentConnection() instanceof DatabaseConnection) {
+                    DatabaseConnection conn = (DatabaseConnection) metadataBean.getCurrentConnection();
+                    metadataBean.setAdditionalParams(ConvertionHelper.convertAdditionalParameters(conn));
+                }
                 list = ExtractMetaDataUtils.getInstance().connect(metadataBean.getDbType(), metadataBean.getUrl(),
                         metadataBean.getUsername(), metadataBean.getPassword(), metadataBean.getDriverClass(),
                         metadataBean.getDriverJarPath(), metadataBean.getDbVersionString(), metadataBean.getAdditionalParams());
@@ -294,7 +300,7 @@ public class MetadataConnectionUtils {
 
                 }
             }// ~
-
+            additionalParams = ConvertionHelper.convertAdditionalParameters(databaseConnection);
             metadataConnection.setAdditionalParams(additionalParams);
             metadataConnection.setDbVersionString(dbVersionString);
             metadataConnection.setDatabase(dataBase);
@@ -498,6 +504,18 @@ public class MetadataConnectionUtils {
             if (EDatabaseTypeName.GENERAL_JDBC.getDisplayName().equals(dbConn.getDatabaseType())) {
                 if (dbConn.getDriverClass() != null
                         && dbConn.getDriverClass().startsWith(DatabaseConstant.ODBC_ORACLE_PRODUCT_NAME)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean isOracleCustomSSL(Connection connection) {
+        if (connection != null && connection instanceof DatabaseConnection) {
+            DatabaseConnection dbConn = (DatabaseConnection) connection;
+            if (EDatabaseTypeName.ORACLE_CUSTOM.getDisplayName().equals(dbConn.getDatabaseType())) {
+                if (EDatabaseVersion4Drivers.ORACLE_12.name().equals(dbConn.getDbVersionString())) {
                     return true;
                 }
             }
@@ -1200,6 +1218,10 @@ public class MetadataConnectionUtils {
             }
         }
         return false;
+    }
+
+    public static void setDerbyDriver(Driver driver) {
+        derbyDriver = driver;
     }
 
     public static Driver getDerbyDriver() {
