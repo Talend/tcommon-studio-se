@@ -230,11 +230,11 @@ public class InstallModuleDialog extends TitleAreaDialog implements ICellEditorD
             if (deployed) {
                 setMessage(Messages.getString("InstallModuleDialog.error.jarexsit"), IMessageProvider.ERROR);
             } else {
-                setMessage(MessageFormat.format(Messages.getString("ConfigModuleDialog.message"), this.moduleName), IMessageProvider.INFORMATION);
+                setMessage(Messages.getString("ConfigModuleDialog.message",this.moduleName), IMessageProvider.INFORMATION);
             }
         } else {
             if (deployed) {
-                setMessage(MessageFormat.format(Messages.getString("ConfigModuleDialog.message"), this.moduleName), IMessageProvider.INFORMATION);
+                setMessage(Messages.getString("ConfigModuleDialog.message",this.moduleName), IMessageProvider.INFORMATION);
             } else {
                 setMessage(Messages.getString("InstallModuleDialog.error.notInstalled"), IMessageProvider.WARNING);
             }
