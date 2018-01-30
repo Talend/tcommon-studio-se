@@ -10,11 +10,11 @@
 	</parent>
 	<artifactId>org.talend.libraries.apache.xml</artifactId>
 	<packaging>eclipse-plugin</packaging>
-	
+
 	<properties>
 		<xmlrpc.version>3.0</xmlrpc.version>
 	</properties>
-	
+
 	<build>
 		<plugins>
 			<plugin>
@@ -32,9 +32,25 @@
 							<outputDirectory>${project.basedir}/lib</outputDirectory>
 							<artifactItems>
 								<artifactItem>
-									<groupId>org.apache.santuario</groupId>
-									<artifactId>xmlsec</artifactId>
-									<version>2.1.0</version>
+									<groupId>org.apache.xmlbeans</groupId>
+									<artifactId>xmlbeans</artifactId>
+									<version>2.3.0</version>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.apache.xmlbeans</groupId>
+									<artifactId>xmlbeans</artifactId>
+									<version>2.6.0</version>
+								</artifactItem>
+								<artifactItem>
+									<groupId>xerces</groupId>
+									<artifactId>xercesImpl</artifactId>
+									<version>2.4.0</version>
+								</artifactItem>
+								<artifactItem>
+									<!-- same as  xercesImpl.jar-->
+									<groupId>xerces</groupId>
+									<artifactId>xercesImpl</artifactId>
+									<version>2.9.0</version>
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.apache.ws.xmlschema</groupId>
