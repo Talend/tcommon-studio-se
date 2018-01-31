@@ -12,24 +12,21 @@
 // ============================================================================
 package org.talend.repository.viewer.filter;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.ui.navigator.INavigatorContentService;
-import org.talend.core.GlobalServiceRegister;
 import org.talend.core.hadoop.IHadoopClusterService;
 import org.talend.core.hadoop.repository.HadoopRepositoryUtil;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IExtendedRepositoryNodeHandler;
 import org.talend.core.model.repository.RepositoryContentManager;
-import org.talend.core.runtime.services.IGenericDBService;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.IRepositoryNode.ENodeType;
 import org.talend.repository.model.RepositoryNode;
+import org.talend.repository.model.RepositoryNodeUtilities;
 import org.talend.repository.model.nodes.IProjectRepositoryNode;
 import org.talend.repository.viewer.ui.provider.INavigatorContentServiceProvider;
 
@@ -141,23 +138,11 @@ public class RecycleBinViewerFilter extends ViewerFilter {
                 contentType = itemType;
             }
         }
-        if (isExtraType(contentType)) {
+        if (RepositoryNodeUtilities.isGenericDBExtraType(contentType)) {
             contentType = ERepositoryObjectType.METADATA_CONNECTIONS;
         }
 
         return contentType;
-    }
-
-    private boolean isExtraType(ERepositoryObjectType type) {
-        List<ERepositoryObjectType> extraTypes = new ArrayList<ERepositoryObjectType>();
-        IGenericDBService dbService = null;
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
-            dbService = (IGenericDBService) GlobalServiceRegister.getDefault().getService(IGenericDBService.class);
-        }
-        if (dbService != null) {
-            extraTypes.addAll(dbService.getExtraTypes());
-        }
-        return extraTypes.contains(type);
     }
 
     private ERepositoryObjectType getNodeType(final RepositoryNode node) {

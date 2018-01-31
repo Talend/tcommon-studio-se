@@ -105,6 +105,7 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryConstants;
 import org.talend.repository.model.RepositoryNode;
+import org.talend.repository.model.RepositoryNodeUtilities;
 import org.talend.repository.model.StableRepositoryNode;
 import org.talend.repository.model.nodes.IProjectRepositoryNode;
 import org.talend.utils.sql.ConnectionUtils;
@@ -750,6 +751,9 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
      * @return
      */
     private RepositoryNode getFolder(ERepositoryObjectType currentType, String path, List<IRepositoryNode> rootNodes) {
+        if (RepositoryNodeUtilities.isGenericDBExtraType(currentType)) {
+            currentType = ERepositoryObjectType.METADATA_CONNECTIONS;
+        }
         if (path == null || path.isEmpty()) {
             return null;
         }
