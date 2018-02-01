@@ -145,6 +145,16 @@ public final class ConnectionUtils {
     }
 
     /**
+     * from the database type to check whether it is JDBC
+     * 
+     * @param dbType
+     * @return
+     */
+    public static boolean isJDBCType(String dbType) {
+        return "JDBC".equals(dbType); //$NON-NLS-1$
+    }
+
+    /**
      * if the url include "sybase", return true, else return false
      * 
      * @param url

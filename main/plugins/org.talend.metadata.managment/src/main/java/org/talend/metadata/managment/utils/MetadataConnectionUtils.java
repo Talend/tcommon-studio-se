@@ -51,6 +51,7 @@ import org.talend.core.model.metadata.builder.connection.MetadataColumn;
 import org.talend.core.model.metadata.builder.database.DriverShim;
 import org.talend.core.model.metadata.builder.database.ExtractMetaDataUtils;
 import org.talend.core.model.metadata.builder.database.IDriverService;
+import org.talend.core.model.metadata.builder.database.JavaSqlFactory;
 import org.talend.core.model.properties.ConnectionItem;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.runtime.CoreRuntimePlugin;
@@ -71,7 +72,6 @@ import org.talend.utils.exceptions.MissingDriverException;
 import org.talend.utils.sql.ConnectionUtils;
 import org.talend.utils.sugars.ReturnCode;
 import org.talend.utils.sugars.TypedReturnCode;
-
 import orgomg.cwm.foundation.softwaredeployment.DataProvider;
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.objectmodel.core.Package;
@@ -901,59 +901,85 @@ public class MetadataConnectionUtils {
     public static List<String> getPackageFilter(Connection connection, DatabaseMetaData dbMetaData, boolean isCatalog) {
         List<String> packageFilter = new ArrayList<String>();
         try {
-            if (isMdmConnection(connection)) {
-                // MDMConnection mdmConnection = (MDMConnection) connection;
-            } else {
-                DatabaseConnection dbConnection = (DatabaseConnection) connection;
-                // MOD qiongli 2011-9-23 handle context mod.
-                IRepositoryContextService repositoryContextService = null;
-                DatabaseConnection origValueConn = null;
-                if (dbConnection.isContextMode()) {
-                    repositoryContextService = CoreRuntimePlugin.getInstance().getRepositoryContextService();
-                    if (repositoryContextService != null) {
-                        // get the original value and select the defalut context
-                        String contextName = dbConnection.getContextName();
-                        origValueConn = repositoryContextService.cloneOriginalValueConnection(dbConnection,
-                                contextName == null ? true : false, contextName);
+            DatabaseConnection dbConnection = (DatabaseConnection) connection;
+            // MOD qiongli 2011-9-23 handle context mod.
+            IRepositoryContextService repositoryContextService = null;
+            DatabaseConnection origValueConn = null;
+            if (dbConnection.isContextMode()) {
+                repositoryContextService = CoreRuntimePlugin.getInstance().getRepositoryContextService();
+                if (repositoryContextService != null) {
+                    // get the original value and select the defalut context
+                    String contextName = dbConnection.getContextName();
+                    origValueConn =
+                            repositoryContextService.cloneOriginalValueConnection(dbConnection,
+                                    contextName == null ? true : false, contextName);
+                }
+            }
+            String databaseType = dbConnection.getDatabaseType();
+            if (ConnectionUtils.isJDBCType(databaseType)) {// get package filter from 'java.sql.Connection'
+                String jdbcPackageFilter = getJdbcPackageFilter(connection, isCatalog);
+                if (!StringUtils.isBlank(jdbcPackageFilter)) {
+                    packageFilter.add(jdbcPackageFilter);
+                }
+                return packageFilter;
+            }
+            if (isCatalog) {
+                boolean isHsql = databaseType.equals(EDatabaseTypeName.HSQLDB_IN_PROGRESS.getDisplayName());
+                boolean isInformix = databaseType.equalsIgnoreCase(EDatabaseTypeName.INFORMIX.name());
+                if (dbMetaData.supportsCatalogsInIndexDefinitions() && !isHsql || isInformix) {
+                    String sid = dbConnection.getSID();
+                    if (origValueConn != null) {
+                        sid = origValueConn.getSID();
+                    }
+                    if (!StringUtils.isEmpty(sid) && !packageFilter.contains(sid)) {
+                        packageFilter.add(sid);
                     }
                 }
-                if (isCatalog) {
-                    boolean isHsql = dbConnection.getDatabaseType().equals(EDatabaseTypeName.HSQLDB_IN_PROGRESS.getDisplayName());
-                    boolean isInformix = dbConnection.getDatabaseType().equalsIgnoreCase(EDatabaseTypeName.INFORMIX.name());
-                    if (dbMetaData.supportsCatalogsInIndexDefinitions() && !isHsql || isInformix) {
-                        String sid = dbConnection.getSID();
-                        if (origValueConn != null) {
-                            sid = origValueConn.getSID();
-                        }
-                        if (!StringUtils.isEmpty(sid) && !packageFilter.contains(sid)) {
-                            packageFilter.add(sid);
-                        }
+            } else {
+                String uiSchema = null;
+                if (dbMetaData.supportsSchemasInIndexDefinitions()) {
+                    uiSchema = dbConnection.getUiSchema();
+                    if (origValueConn != null) {
+                        uiSchema = origValueConn.getUiSchema();
                     }
-                } else {
-                    String uiSchema = null;
-                    if (dbMetaData.supportsSchemasInIndexDefinitions()) {
-                        uiSchema = dbConnection.getUiSchema();
-                        if (origValueConn != null) {
-                            uiSchema = origValueConn.getUiSchema();
-                        }
-
-                    }
-                    // TDQ-12219 consider the schema from SID or Database.
-                    if (uiSchema == null
-                            && ManagerConnection.isSchemaFromSidOrDatabase(EDatabaseTypeName.getTypeFromDbType(dbConnection
-                                    .getDatabaseType()))) {
-                        uiSchema = dbConnection.getSID();
-                        dbConnection.setUiSchema(uiSchema);
-                    }
-                    if (!StringUtils.isEmpty(uiSchema) && !packageFilter.contains(uiSchema)) {
-                        packageFilter.add(uiSchema);
-                    }
+                }
+                // TDQ-12219 consider the schema from SID or Database.
+                if (uiSchema == null
+                        && ManagerConnection.isSchemaFromSidOrDatabase(EDatabaseTypeName
+                                .getTypeFromDbType(databaseType))) {
+                    uiSchema = dbConnection.getSID();
+                    dbConnection.setUiSchema(uiSchema);
+                }
+                if (!StringUtils.isEmpty(uiSchema) && !packageFilter.contains(uiSchema)) {
+                    packageFilter.add(uiSchema);
                 }
             }
         } catch (SQLException e) {
             log.error(e, e);
         }
         return packageFilter;
+    }
+
+    /**
+     * 
+     * @param connection
+     * @param isCatalog
+     * @return a filter package, maybe null
+     * @throws SQLException
+     */
+    private static String getJdbcPackageFilter(Connection connection, boolean isCatalog) throws SQLException {
+        java.sql.Connection sqlconnection = null;
+        try {
+            sqlconnection = JavaSqlFactory.createConnection((Connection) connection).getObject();
+            if (sqlconnection != null) {
+                return isCatalog ? sqlconnection.getCatalog() : sqlconnection.getSchema();
+            }
+        } finally {
+            if (sqlconnection != null) {
+                sqlconnection.close();
+            }
+        }
+        return null;
     }
 
     public static boolean isMdmConnection(DataProvider dataprovider) {
