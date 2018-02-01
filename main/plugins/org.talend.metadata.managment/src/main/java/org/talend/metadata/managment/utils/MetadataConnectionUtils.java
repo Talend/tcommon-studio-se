@@ -964,7 +964,7 @@ public class MetadataConnectionUtils {
      * 
      * @param connection
      * @param isCatalog
-     * @return a filter package, maybe null
+     * @return get current Catalog or Schema as a filter package, maybe null
      * @throws SQLException
      */
     private static String getJdbcPackageFilter(Connection connection, boolean isCatalog) throws SQLException {
