@@ -990,7 +990,12 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                         if (platformPath != null) {
                             resolvedJar = new File(platformPath);
                         }
-                    } else {
+                    }
+                    /**
+                     * if not found from moduleLocation, need to try to find it from lib/java, since the moduleLocation
+                     * may be not exist for some reasons
+                     */
+                    if (resolvedJar == null) {
                         // check the lib/java
                         List<File> jarFiles;
                         try {
