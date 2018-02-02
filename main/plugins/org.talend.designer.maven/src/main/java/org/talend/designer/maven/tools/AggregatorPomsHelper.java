@@ -63,7 +63,6 @@ import org.talend.designer.maven.utils.PomUtil;
 import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.RepositoryWorkUnit;
-import org.talend.repository.model.IRepositoryService;
 import org.talend.repository.model.RepositoryConstants;
 
 /**
@@ -247,7 +246,8 @@ public class AggregatorPomsHelper {
                 try {
                     List<String> modules = new ArrayList<>();
                     for (ProjectReference reference : references) {
-                        String modulePath = getRefProjectAsModulePath(reference.getReferencedProject().getTechnicalLabel());
+                        String refProjectTechName = reference.getReferencedProject().getTechnicalLabel();
+                        String modulePath = "../../" + refProjectTechName + "/" + TalendJavaProjectConstants.DIR_POMS; //$NON-NLS-1$ //$NON-NLS-2$
                         modules.add(modulePath);
                     }
 
@@ -277,30 +277,6 @@ public class AggregatorPomsHelper {
         };
         workUnit.setAvoidUnloadResources(true);
         ProxyRepositoryFactory.getInstance().executeRepositoryWorkUnit(workUnit);
-    }
-
-    private static String getRefProjectAsModulePath(String projectTechName) {
-        String modulePath = null;
-        IPath basePath = null;
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IRepositoryService.class)) {
-            IRepositoryService service = (IRepositoryService) GlobalServiceRegister.getDefault()
-                    .getService(IRepositoryService.class);
-            if (service.isGIT()) {
-                modulePath = "../../../../"; //$NON-NLS-1$
-                basePath = ResourcesPlugin.getWorkspace().getRoot().getLocation().append("/.repositories"); //$NON-NLS-1$
-            } else if (service.isSVN()) {
-                modulePath = "../../"; //$NON-NLS-1$
-                basePath = ResourcesPlugin.getWorkspace().getRoot().getLocation();
-            }
-        }
-        if (modulePath == null || basePath == null) {
-            return null;
-        }
-        IFolder refPomsFolder = new AggregatorPomsHelper(projectTechName).getProjectPomsFolder();
-        IPath relativePath = refPomsFolder.getLocation().makeRelativeTo(basePath);
-        modulePath += relativePath.toPortableString();
-
-        return modulePath;
     }
 
     public static void addToParentModules(IFile pomFile) throws Exception {
