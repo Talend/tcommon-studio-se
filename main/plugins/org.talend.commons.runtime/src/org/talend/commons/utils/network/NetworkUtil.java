@@ -84,8 +84,7 @@ public class NetworkUtil {
 
     public static void loadAuthenticator() {
         // get parameter from System.properties.
-        String proxySet = System.getProperty("http.proxySet"); //$NON-NLS-1$
-        if (Boolean.TRUE.toString().equals(proxySet)) {
+        if (Boolean.getBoolean("http.proxySet")) {//$NON-NLS-1$
             // authentification for the url by using username and password
             Authenticator.setDefault(new Authenticator() {
 
@@ -123,8 +122,7 @@ public class NetworkUtil {
         String osName = System.getProperty("os.name");//$NON-NLS-1$
         String osNameLC = osName == null ? null : osName.toLowerCase();
         boolean windows = osName != null && osNameLC.indexOf("windows") >= 0;//$NON-NLS-1$
-        String proxySet = System.getProperty("http.proxySet"); //$NON-NLS-1$
-        if (windows && Boolean.TRUE.toString().equals(proxySet)) {
+        if (windows && Boolean.getBoolean("http.proxySet")) {//$NON-NLS-1$
             FileCopyUtils.copy(srcFilePath + "\\servers", destFilePath + "\\servers");//$NON-NLS-1$//$NON-NLS-2$
         }
     }
