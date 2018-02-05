@@ -20,6 +20,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.talend.repository.ProjectManager;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -50,7 +51,8 @@ public abstract class AbstractProjectSettingPage extends FieldEditorPreferencePa
     protected IPreferenceStore doGetPreferenceStore() {
         String preferenceName = getPreferenceName();
         if (preferenceName != null) {
-            ProjectPreferenceManager projectPreferenceManager = new ProjectPreferenceManager(preferenceName);
+            ProjectPreferenceManager projectPreferenceManager = new ProjectPreferenceManager(ProjectManager.getInstance()
+                    .getCurrentProject(), preferenceName, false);
             // set the project preference
             return projectPreferenceManager.getPreferenceStore();
         }

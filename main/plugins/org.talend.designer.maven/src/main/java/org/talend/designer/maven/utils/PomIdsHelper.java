@@ -33,9 +33,9 @@ import org.talend.repository.ProjectManager;
  * DOC ggu class global comment. Detailled comment
  */
 public class PomIdsHelper {
-    
+
     public static final String PREFIX_DEFAULT_GROUPID = "org.example."; //$NON-NLS-1$
-    
+
     private static Map<String, ProjectPreferenceManager> preferenceManagers = new HashMap<>();
 
     /**
@@ -49,7 +49,7 @@ public class PomIdsHelper {
         // FIXME should use getProjectGroupId(Project project)
         return getGroupId(ProjectManager.getInstance().getCurrentProject(), null, null);
     }
-    
+
     public static String getProjectGroupId(Project project) {
         return getGroupId(project, null, null);
     }
@@ -69,7 +69,7 @@ public class PomIdsHelper {
     public static String getProjectVersion() {
         ProjectPreferenceManager projectPreferenceManager = DesignerMavenPlugin.getPlugin().getProjectPreferenceManager();
         String projectVersion = projectPreferenceManager.getValue(MavenConstants.PROJECT_VERSION);
-        if (StringUtils.isBlank(projectVersion)){
+        if (StringUtils.isBlank(projectVersion)) {
             projectVersion = PomUtil.getDefaultMavenVersion();
         }
         boolean useSnapshot = projectPreferenceManager.getBoolean(MavenConstants.NAME_PUBLISH_AS_SNAPSHOT);
@@ -133,7 +133,7 @@ public class PomIdsHelper {
         }
         return JavaResourcesHelper.getGroupName(TalendMavenConstants.DEFAULT_TEST);
     }
-    
+
     /**
      * @deprecated use getJobGroupId() instead
      */
@@ -167,7 +167,7 @@ public class PomIdsHelper {
                 }
             }
             Project project = ProjectManager.getInstance().getCurrentProject();
-            // FIXME 
+            // FIXME
             // String projectName = ProjectManager.getInstance().getProject(property).getTechnicalLabel();
             // Project project = ProjectManager.getInstance().getProjectFromProjectTechLabel(projectName);
             return getGroupId(project, TalendMavenConstants.DEFAULT_JOB, property);
@@ -245,7 +245,7 @@ public class PomIdsHelper {
         }
         return groupId;
     }
-    
+
     private static String getJobFolderSuffix(Property property) {
         String suffix = ItemResourceUtil.getItemRelativePath(property).toPortableString();
         suffix = StringUtils.strip(suffix, "/"); //$NON-NLS-1$
@@ -254,7 +254,7 @@ public class PomIdsHelper {
     }
 
     public static String getDefaultProjetGroupId(String projectName) {
-        return PREFIX_DEFAULT_GROUPID + projectName.toLowerCase();    
+        return PREFIX_DEFAULT_GROUPID + projectName.toLowerCase();
     }
 
     public static boolean isValidGroupId(String text) {
@@ -267,7 +267,8 @@ public class PomIdsHelper {
     private static ProjectPreferenceManager getPreferenceManager(Project project) {
         String projectName = project.getTechnicalLabel();
         if (!preferenceManagers.containsKey(projectName)) {
-            ProjectPreferenceManager preferenceManager = new ProjectPreferenceManager(project, DesignerMavenPlugin.PLUGIN_ID);
+            ProjectPreferenceManager preferenceManager = new ProjectPreferenceManager(project, DesignerMavenPlugin.PLUGIN_ID,
+                    false);
             IPreferenceStore preferenceStore = preferenceManager.getPreferenceStore();
             if (StringUtils.isEmpty(preferenceStore.getDefaultString(MavenConstants.PROJECT_GROUPID))
                     && StringUtils.isEmpty(preferenceStore.getString(MavenConstants.PROJECT_GROUPID))) {
