@@ -30,7 +30,6 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.eclipse.m2e.core.embedder.IMaven;
 import org.eclipse.m2e.core.embedder.MavenModelManager;
-import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
@@ -267,7 +266,7 @@ public class BuildCacheManager {
                 }
             }
             if (modulePath == null || basePath == null) {
-                ExceptionHandler.process(new Exception("modulePath or basePath can not be null!")); //$NON-NLS-1$
+                throw new RuntimeException("modulePath or basePath can not be null!"); //$NON-NLS-1$
             }
         } else {
             modulePath = ""; //$NON-NLS-1$
