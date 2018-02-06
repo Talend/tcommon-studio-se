@@ -439,7 +439,6 @@ public class MetadataToolAvroHelperTest {
            + "{\"name\":\"TEST\",\"type\":[\"string\",\"null\"],\"AVRO_TECHNICAL_KEY\":\"TEST\",\"di.column.talendType\":\"id_String\",\"talend.field.pattern\":\"\",\"di.table.label\":\"TEST\",\"talend.field.precision\":\"0\",\"di.table.comment\":\"\",\"di.column.id\":\"666666\",\"talend.field.dbColumnName\":\"TEST\",\"di.column.isNullable\":\"true\",\"talend.field.length\":\"0\",\"di.column.relationshipType\":\"\",\"di.column.originalLength\":\"0\",\"di.column.relatedEntity\":\"\"},"
            + "{\"name\":\"TEST1\",\"type\":[\"string\",\"null\"],\"AVRO_TECHNICAL_KEY\":\"TEST1\",\"di.column.talendType\":\"id_String\",\"talend.field.pattern\":\"\",\"di.table.label\":\"TEST1\",\"talend.field.precision\":\"0\",\"di.table.comment\":\"\",\"di.column.id\":\"777777\",\"talend.field.dbColumnName\":\"TEST\",\"di.column.isNullable\":\"true\",\"talend.field.length\":\"0\",\"di.column.relationshipType\":\"\",\"di.column.originalLength\":\"0\",\"di.column.relatedEntity\":\"\"}],"
            + "\"di.table.comment\":\"\",\"di.table.name\":\"table1\",\"di.table.label\":\"table1\"}";
-        System.out.println(schema.toString());
         assertTrue(schema.toString().equals(s));
     }
 }
