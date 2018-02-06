@@ -192,7 +192,7 @@ public class MetadataToolAvroHelperTest {
         assertEquals(map.size() + 1, table.getColumns().size());
         int i = 0;
         for (String talendType : map.keySet()) {
-            assertThat(table.getColumns().get(i).getLabel(), is(talendType));
+            assertThat(table.getColumns().get(i).getLabel(), is(talendType.replace('[', '_').replace(']', '_')));
             assertThat(table.getColumns().get(i).getTalendType(), is(talendType));
             assertThat(table.getColumns().get(i).getPattern(), is("")); //$NON-NLS-1$
             assertThat(table.getColumns().get(i).getLength(), is(-1L));
@@ -435,10 +435,11 @@ public class MetadataToolAvroHelperTest {
            + "{\"name\":\"A\",\"type\":[\"string\",\"null\"],\"AVRO_TECHNICAL_KEY\":\"A\",\"di.column.talendType\":\"id_String\",\"talend.field.pattern\":\"\",\"di.table.label\":\"A\",\"talend.field.precision\":\"0\",\"di.table.comment\":\"\",\"di.column.id\":\"222222\",\"talend.field.dbColumnName\":\"A\",\"di.column.isNullable\":\"true\",\"talend.field.length\":\"0\",\"di.column.relationshipType\":\"\",\"di.column.originalLength\":\"0\",\"di.column.relatedEntity\":\"\"},"
            + "{\"name\":\"B\",\"type\":[\"string\",\"null\"],\"AVRO_TECHNICAL_KEY\":\"B\",\"di.column.talendType\":\"id_String\",\"talend.field.pattern\":\"\",\"di.table.label\":\"B\",\"talend.field.precision\":\"0\",\"di.table.comment\":\"\",\"di.column.id\":\"333333\",\"talend.field.dbColumnName\":\"B\",\"di.column.isNullable\":\"true\",\"talend.field.length\":\"0\",\"di.column.relationshipType\":\"\",\"di.column.originalLength\":\"0\",\"di.column.relatedEntity\":\"\"},"
            + "{\"name\":\"_234\",\"type\":[\"string\",\"null\"],\"AVRO_TECHNICAL_KEY\":\"1234\",\"di.column.talendType\":\"id_String\",\"talend.field.pattern\":\"\",\"di.table.label\":\"_234\",\"talend.field.precision\":\"0\",\"di.table.comment\":\"\",\"di.column.id\":\"444444\",\"talend.field.dbColumnName\":\"1234\",\"di.column.isNullable\":\"true\",\"talend.field.length\":\"0\",\"di.column.relationshipType\":\"\",\"di.column.originalLength\":\"0\",\"di.column.relatedEntity\":\"\"},"
-           + "{\"name\":\"Column4\",\"type\":[\"string\",\"null\"],\"AVRO_TECHNICAL_KEY\":\"中文\",\"di.column.talendType\":\"id_String\",\"talend.field.pattern\":\"\",\"di.table.label\":\"Column4\",\"talend.field.precision\":\"0\",\"di.table.comment\":\"\",\"di.column.id\":\"555555\",\"talend.field.dbColumnName\":\"中文\",\"di.column.isNullable\":\"true\",\"talend.field.length\":\"0\",\"di.column.relationshipType\":\"\",\"di.column.originalLength\":\"0\",\"di.column.relatedEntity\":\"\"},"
+           + "{\"name\":\"中文\",\"type\":[\"string\",\"null\"],\"AVRO_TECHNICAL_KEY\":\"中文\",\"di.column.talendType\":\"id_String\",\"talend.field.pattern\":\"\",\"di.table.label\":\"中文\",\"talend.field.precision\":\"0\",\"di.table.comment\":\"\",\"di.column.id\":\"555555\",\"talend.field.dbColumnName\":\"中文\",\"di.column.isNullable\":\"true\",\"talend.field.length\":\"0\",\"di.column.relationshipType\":\"\",\"di.column.originalLength\":\"0\",\"di.column.relatedEntity\":\"\"},"
            + "{\"name\":\"TEST\",\"type\":[\"string\",\"null\"],\"AVRO_TECHNICAL_KEY\":\"TEST\",\"di.column.talendType\":\"id_String\",\"talend.field.pattern\":\"\",\"di.table.label\":\"TEST\",\"talend.field.precision\":\"0\",\"di.table.comment\":\"\",\"di.column.id\":\"666666\",\"talend.field.dbColumnName\":\"TEST\",\"di.column.isNullable\":\"true\",\"talend.field.length\":\"0\",\"di.column.relationshipType\":\"\",\"di.column.originalLength\":\"0\",\"di.column.relatedEntity\":\"\"},"
            + "{\"name\":\"TEST1\",\"type\":[\"string\",\"null\"],\"AVRO_TECHNICAL_KEY\":\"TEST1\",\"di.column.talendType\":\"id_String\",\"talend.field.pattern\":\"\",\"di.table.label\":\"TEST1\",\"talend.field.precision\":\"0\",\"di.table.comment\":\"\",\"di.column.id\":\"777777\",\"talend.field.dbColumnName\":\"TEST\",\"di.column.isNullable\":\"true\",\"talend.field.length\":\"0\",\"di.column.relationshipType\":\"\",\"di.column.originalLength\":\"0\",\"di.column.relatedEntity\":\"\"}],"
            + "\"di.table.comment\":\"\",\"di.table.name\":\"table1\",\"di.table.label\":\"table1\"}";
+        System.out.println(schema.toString());
         assertTrue(schema.toString().equals(s));
     }
 }
