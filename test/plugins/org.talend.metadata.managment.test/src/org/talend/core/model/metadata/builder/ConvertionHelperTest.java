@@ -12,7 +12,10 @@
 // ============================================================================
 package org.talend.core.model.metadata.builder;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -23,7 +26,6 @@ import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.emf.common.util.EList;
 import org.junit.Test;
 import org.talend.core.IRepositoryContextService;
-import org.talend.core.model.metadata.DiSchemaConstants;
 import org.talend.core.model.metadata.IMetadataColumn;
 import org.talend.core.model.metadata.IMetadataConnection;
 import org.talend.core.model.metadata.IMetadataTable;
@@ -210,7 +212,7 @@ public class ConvertionHelperTest {
             if (columnName.equals(newColumn.getLabel())) {
                 EList<TaggedValue> taggedValues = newColumn.getTaggedValue();
                 for (TaggedValue taggedValue : taggedValues) {
-                    if (DiSchemaConstants.TALEND6_IS_READ_ONLY.equals(taggedValue.getTag())) {
+                    if ("AVRO_TECHNICAL_KEY".equals(taggedValue.getTag())) {
                         return Boolean.valueOf(taggedValue.getValue());
                     }
                 }
