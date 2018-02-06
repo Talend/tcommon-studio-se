@@ -61,21 +61,6 @@
       </libraryNeeded>
       <libraryNeeded
             context="plugin:org.talend.libraries.mdm"
-            mvn_uri="mvn:org.talend.libraries/jaxb-core-2.2.11/6.0.0"
-            name="jaxb-core-2.2.11.jar"
-            required="true"
-            uripath="platform:/plugin/org.talend.libraries.apache.cxf/lib/jaxb-core-2.2.11.jar">
-      </libraryNeeded>
-      <libraryNeeded
-            context="plugin:org.talend.libraries.mdm"
-            id="jaxb-impl-2.2.11.jar"
-            mvn_uri="mvn:org.talend.libraries/jaxb-impl-2.2.11/6.0.0"
-            name="jaxb-impl-2.2.11.jar"
-            required="true"
-            uripath="platform:/plugin/org.talend.libraries.apache.cxf/lib/jaxb-impl-2.2.11.jar">
-      </libraryNeeded>
-      <libraryNeeded
-            context="plugin:org.talend.libraries.mdm"
             mvn_uri="mvn:org.talend.libraries/stax2-api-3.1.1/6.0.0"
             name="stax2-api-3.1.1.jar"
             required="true"
@@ -90,10 +75,21 @@
       </libraryNeeded>
       <libraryNeeded
             context="plugin:org.talend.libraries.mdm"
-            mvn_uri="mvn:org.talend.libraries/neethi-3.0.3/6.0.0"
+            mvn_uri="mvn:com.sun.xml.bind/jaxb-core/2.2.11"
+            name="jaxb-core-2.2.11.jar"
+            required="true">
+      </libraryNeeded>
+      <libraryNeeded
+            context="plugin:org.talend.libraries.mdm"
+            mvn_uri="mvn:com.sun.xml.bind/jaxb-impl/2.2.11"
+            name="jaxb-impl-2.2.11.jar"
+            required="true">
+      </libraryNeeded>
+      <libraryNeeded
+            context="plugin:org.talend.libraries.mdm"
+            mvn_uri="mvn:org.apache.neethi/neethi/3.0.3"
             name="neethi-3.0.3.jar"
-            required="true"
-            uripath="platform:/plugin/org.talend.libraries.apache.cxf/lib/neethi-3.0.3.jar">
+            required="true">
       </libraryNeeded>
    </extension>
 
