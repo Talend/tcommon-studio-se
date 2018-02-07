@@ -98,4 +98,22 @@ public class BigDataBasicUtil {
         }
         return false;
     }
+    
+    public static String getDynamicDistributionCacheVersion() {
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IHadoopDistributionService.class)) {
+            IHadoopDistributionService hdService = (IHadoopDistributionService) GlobalServiceRegister.getDefault()
+                    .getService(IHadoopDistributionService.class);
+            if (hdService != null) {
+                IDynamicDistributionManager ddManager = hdService.getDynamicDistributionManager();
+                if (ddManager != null && ddManager.isLoaded()) {
+                    try {
+                       return ddManager.getDynamicDistributionCacheVersion();
+                    } catch (Exception e) {
+                        ExceptionHandler.process(e);
+                    }
+                }
+            }
+        }
+        return null;
+    }
 }
