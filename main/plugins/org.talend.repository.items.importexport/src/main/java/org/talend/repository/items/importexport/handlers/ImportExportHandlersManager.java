@@ -635,18 +635,6 @@ public class ImportExportHandlersManager {
                             } catch (Exception e) {
                                 ExceptionHandler.process(e);
                             }
-
-                            fireImportChange(importedItemRecords);
-
-                            unloadImportItems(allImportItemRecords);
-                        }
-
-                        private void fireImportChange(List<ImportItem> importedItemRecords) {
-                            Set<Item> importedItems = new HashSet<>();
-                            for (ImportItem importedItem : importedItemRecords) {
-                                importedItems.add(importedItem.getItem());
-                            }
-                            ProxyRepositoryFactory.getInstance().fireRepositoryPropertyChange(ERepositoryActionName.IMPORT.getName(), null, importedItems);
                         }
 
                         private void importItemRecordsWithRelations(final IProgressMonitor monitor,
@@ -771,6 +759,11 @@ public class ImportExportHandlersManager {
             ProxyRepositoryFactory.getInstance().executeRepositoryWorkUnit(repositoryWorkUnit);
 
             progressMonitor.done();
+            
+            // fire import event out of workspace runnable
+            fireImportChange(ImportCacheHelper.getInstance().getImportedItemRecords());
+
+            unloadImportItems(allImportItemRecords);
 
             if (ImportCacheHelper.getInstance().hasImportingError()) {
                 throw new InvocationTargetException(new CoreException(
@@ -796,6 +789,14 @@ public class ImportExportHandlersManager {
             TimeMeasure.displaySteps = false;
             TimeMeasure.measureActive = false;
         }
+    }
+
+    private void fireImportChange(List<ImportItem> importedItemRecords) {
+        Set<Item> importedItems = new HashSet<>();
+        for (ImportItem importedItem : importedItemRecords) {
+            importedItems.add(importedItem.getItem());
+        }
+        ProxyRepositoryFactory.getInstance().fireRepositoryPropertyChange(ERepositoryActionName.IMPORT.getName(), null, importedItems);
     }
 
     /**
