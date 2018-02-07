@@ -54,6 +54,9 @@ public interface ILibraryManagerService extends IService {
 
     public void deploy(URI jarFileUri, String mavenUri, IProgressMonitor... monitorWrap);
 
+    public void deploy(URI jarFileUri, String mavenUri, boolean updateNexusJar, IProgressMonitor... monitorWrap);
+
+
     /**
      * 
      * DOC wchen Comment method "deploy".Deploy moduleName:platformUri index to LibrariesIndex.xml

@@ -145,6 +145,11 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 
     @Override
     public void deploy(URI jarFileUri, String mavenUri, IProgressMonitor... monitorWrap) {
+      deploy(jarFileUri, mavenUri, true, monitorWrap);
+    }
+
+    @Override
+    public void deploy(URI jarFileUri, String mavenUri, boolean updateNexusJar, IProgressMonitor... monitorWrap) {
         if (jarFileUri.isOpaque()) {
             return;
         }
@@ -152,7 +157,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
         if (file == null || !file.exists()) {
             return;
         }
-        install(file, mavenUri, true, monitorWrap);
+        install(file, mavenUri, updateNexusJar, monitorWrap);
         // deploy to configuration/lib/java if tac still use the svn lib
         try {
             if (isSvnLibSetup()) {

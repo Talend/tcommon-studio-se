@@ -964,14 +964,22 @@ public class NodeUtil {
 			if (leftQuotes < rightQuotes) {//Inside of double quote
 				//split string for better appearance and avoid compile error when string exceed 64k
 				int current = leftQuotes;
+				int Offset = 120;
+				int count = 0;
 				while (rightQuotes + 1 - current > 120) {
-					int Offset = 120;
 					while (original.charAt(current + Offset - 1) == '\\') {//avoid split special character e.g. \"
 						Offset--;
 					}
-					result.append(original.substring(current, current + Offset).replace("\r", "").replace("\n", "\\n")).append("\"\n+\"");
+					
+					if(count>500){//This is the code that really solve TDI-39968 others are only for good appearance.
+						result.append(original.substring(current, current + Offset).replace("\r", "").replace("\n", "\\n")).append("\" + new String()\n+\"");
+						count = 0;
+					}else{
+						result.append(original.substring(current, current + Offset).replace("\r", "").replace("\n", "\\n")).append("\"\n+\"");
+					}
 					current += Offset;
 					Offset = 120;
+					count++;
 				}
 				result.append(original.substring(current, rightQuotes + 1).replace("\r", "").replace("\n", "\\n"));
 			}
