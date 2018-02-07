@@ -236,9 +236,6 @@ public class DBTypeForm {
     }
     
     private void reCreateConnection(){
-        String name = connectionItem.getProperty().getLabel();
-        String id = connectionItem.getProperty().getId();
-        Connection connection = null;
         if(wizardPage.isTCOMDB(dbType)){
             IGenericDBService dbService = null;
             if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
@@ -250,31 +247,9 @@ public class DBTypeForm {
             }
             if(!isCreation && dbType.equals(oriConnItem.getTypeName())){
                 connectionItem = oriConnItem;
-                connection = oriConnItem.getConnection();
                 return;
             }
-            connection = ConnectionFactory.eINSTANCE.createDatabaseConnection();
-            connectionItem = PropertiesFactory.eINSTANCE.createDatabaseConnectionItem();
-        }else{
-            connection = ConnectionFactory.eINSTANCE.createDatabaseConnection(); 
-            connectionItem = PropertiesFactory.eINSTANCE.createDatabaseConnectionItem();
         }
-        Property property = PropertiesFactory.eINSTANCE.createProperty();
-        property.setAuthor(((RepositoryContext) CoreRuntimePlugin.getInstance().getContext()
-                .getProperty(Context.REPOSITORY_CONTEXT_KEY)).getUser());
-        if(id == null){
-            id = ProxyRepositoryFactory.getInstance().getNextId();
-        }
-        property.setId(id);
-        property.setVersion(VersionUtils.DEFAULT_VERSION);
-        property.setStatusCode(""); //$NON-NLS-1$
-        
-        property.setLabel(StringUtils.trimToNull(name));
-        property.setDisplayName(StringUtils.trimToNull(name));
-        property.setModificationDate(new Date());
-        
-        connectionItem.setProperty(property);
-        connectionItem.setConnection(connection);
     }
     
     public String getDBType(){
