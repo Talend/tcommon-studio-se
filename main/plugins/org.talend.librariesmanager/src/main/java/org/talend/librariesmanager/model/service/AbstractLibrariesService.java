@@ -124,6 +124,10 @@ public abstract class AbstractLibrariesService implements ILibrariesService {
 
     @Override
     public void deployLibrary(URL source, String mavenUri, boolean refresh) throws IOException {
+        deployLibrary(source, mavenUri, refresh, true);
+    }
+
+    public void deployLibrary(URL source, String mavenUri, boolean refresh, boolean updateNexusJar) throws IOException {
         String decode = null;
         if (source.getFile().contains("%20")) {
             decode = URLDecoder.decode(source.getFile(), "UTF-8");
@@ -132,13 +136,12 @@ public abstract class AbstractLibrariesService implements ILibrariesService {
         }
         final File sourceFile = new File(decode);
 
-        localLibraryManager.deploy(sourceFile.toURI(), mavenUri);
+        localLibraryManager.deploy(sourceFile.toURI(), mavenUri, updateNexusJar);
 
         refreshLocal(new String[] { sourceFile.getName() });
         if (refresh) {
             checkLibraries();
         }
-
     }
 
     @Override

@@ -47,6 +47,7 @@ import org.talend.commons.runtime.service.ComponentsInstallComponent;
 import org.talend.commons.runtime.service.PatchComponent;
 import org.talend.commons.ui.runtime.update.PreferenceKeys;
 import org.talend.commons.ui.swt.dialogs.ErrorDialogWidthDetailArea;
+import org.talend.commons.utils.network.NetworkUtil;
 import org.talend.commons.utils.system.EclipseCommandLine;
 import org.talend.core.BrandingChecker;
 import org.talend.core.GlobalServiceRegister;
@@ -61,6 +62,7 @@ import org.talend.core.utils.StudioSSLContextProvider;
 import org.talend.rcp.i18n.Messages;
 import org.talend.registration.RegistrationPlugin;
 import org.talend.registration.license.LicenseManagement;
+import org.talend.registration.register.proxy.HttpProxyUtil;
 import org.talend.registration.wizards.license.LicenseWizard;
 import org.talend.registration.wizards.license.LicenseWizardDialog;
 import org.talend.repository.ProjectManager;
@@ -108,6 +110,8 @@ public class Application implements IApplication {
             }
 
             StudioSSLContextProvider.setSSLSystemProperty();
+            HttpProxyUtil.initializeHttpProxy();
+            NetworkUtil.loadAuthenticator();
 
             // setup MavenResolver properties
             // before set, must check user setting first.

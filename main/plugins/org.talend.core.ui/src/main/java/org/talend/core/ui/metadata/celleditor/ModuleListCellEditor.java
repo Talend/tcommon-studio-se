@@ -205,7 +205,7 @@ public class ModuleListCellEditor extends DialogCellEditor {
         }
         // enable to refresh component setting after change modules.
         IElement element = this.tableParam.getElement();
-        if (element != null) {
+        if (element != null && !"cConfig".equals(element.getElementParameter("COMPONENT_NAME").getValue())) {
             IElementParameter updateComponentsParam = element.getElementParameter("UPDATE_COMPONENTS"); //$NON-NLS-1$
             if (updateComponentsParam != null) {
                 updateComponentsParam.setValue(Boolean.TRUE);
