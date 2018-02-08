@@ -21,6 +21,8 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.intro.IIntroManager;
+import org.eclipse.ui.intro.IIntroPart;
 import org.talend.presentation.onboarding.exceptions.OnBoardingExceptionHandler;
 import org.talend.presentation.onboarding.i18n.Messages;
 import org.talend.presentation.onboarding.ui.managers.OnBoardingManager;
@@ -69,6 +71,21 @@ public class OnBoardingHandler extends AbstractHandler {
         if (!isAgree) {
             return null;
         }
+        Display.getDefault().syncExec(new Runnable() {
+
+            @Override
+            public void run() {
+                IWorkbenchWindow workbenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+                IIntroManager introManager = workbenchWindow.getWorkbench().getIntroManager();
+                if (introManager.hasIntro()) {
+                    IIntroPart introPart = introManager.getIntro();
+                    if (introPart != null) {
+                        introManager.closeIntro(introPart);
+                    }
+                }
+            }
+        });
+
         IWorkbenchWindow workbenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
         String currentPerspectiveId = OnBoardingUtils.getCurrentSelectedPerspectiveId(workbenchWindow);
         try {
