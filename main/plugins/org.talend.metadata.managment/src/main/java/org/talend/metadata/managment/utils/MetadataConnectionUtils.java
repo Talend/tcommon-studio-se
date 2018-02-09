@@ -901,57 +901,59 @@ public class MetadataConnectionUtils {
     public static List<String> getPackageFilter(Connection connection, DatabaseMetaData dbMetaData, boolean isCatalog) {
         List<String> packageFilter = new ArrayList<String>();
         try {
-            DatabaseConnection dbConnection = (DatabaseConnection) connection;
-            // MOD qiongli 2011-9-23 handle context mod.
-            IRepositoryContextService repositoryContextService = null;
-            DatabaseConnection origValueConn = null;
-            if (dbConnection.isContextMode()) {
-                repositoryContextService = CoreRuntimePlugin.getInstance().getRepositoryContextService();
-                if (repositoryContextService != null) {
-                    // get the original value and select the defalut context
-                    String contextName = dbConnection.getContextName();
-                    origValueConn =
-                            repositoryContextService.cloneOriginalValueConnection(dbConnection,
-                                    contextName == null ? true : false, contextName);
-                }
-            }
-            String databaseType = dbConnection.getDatabaseType();
-            if (ConnectionUtils.isJDBCType(databaseType)) {// get package filter from 'java.sql.Connection'
-                String jdbcPackageFilter = getJdbcPackageFilter(connection, isCatalog);
-                if (!StringUtils.isBlank(jdbcPackageFilter)) {
-                    packageFilter.add(jdbcPackageFilter);
-                }
-                return packageFilter;
-            }
-            if (isCatalog) {
-                boolean isHsql = databaseType.equals(EDatabaseTypeName.HSQLDB_IN_PROGRESS.getDisplayName());
-                boolean isInformix = databaseType.equalsIgnoreCase(EDatabaseTypeName.INFORMIX.name());
-                if (dbMetaData.supportsCatalogsInIndexDefinitions() && !isHsql || isInformix) {
-                    String sid = dbConnection.getSID();
-                    if (origValueConn != null) {
-                        sid = origValueConn.getSID();
-                    }
-                    if (!StringUtils.isEmpty(sid) && !packageFilter.contains(sid)) {
-                        packageFilter.add(sid);
+            DatabaseConnection dbConnection = SwitchHelpers.DATABASECONNECTION_SWITCH.doSwitch(connection);
+            if (dbConnection != null) {
+                // MOD qiongli 2011-9-23 handle context mod.
+                IRepositoryContextService repositoryContextService = null;
+                DatabaseConnection origValueConn = null;
+                if (dbConnection.isContextMode()) {
+                    repositoryContextService = CoreRuntimePlugin.getInstance().getRepositoryContextService();
+                    if (repositoryContextService != null) {
+                        // get the original value and select the defalut context
+                        String contextName = dbConnection.getContextName();
+                        origValueConn =
+                                repositoryContextService.cloneOriginalValueConnection(dbConnection,
+                                        contextName == null ? true : false, contextName);
                     }
                 }
-            } else {
-                String uiSchema = null;
-                if (dbMetaData.supportsSchemasInIndexDefinitions()) {
-                    uiSchema = dbConnection.getUiSchema();
-                    if (origValueConn != null) {
-                        uiSchema = origValueConn.getUiSchema();
+                String databaseType = dbConnection.getDatabaseType();
+                if (ConnectionUtils.isJDBCType(databaseType)) {// get package filter from 'java.sql.Connection'
+                    String jdbcPackageFilter = getJdbcPackageFilter(connection, isCatalog);
+                    if (!StringUtils.isBlank(jdbcPackageFilter)) {
+                        packageFilter.add(jdbcPackageFilter);
                     }
+                    return packageFilter;
                 }
-                // TDQ-12219 consider the schema from SID or Database.
-                if (uiSchema == null
-                        && ManagerConnection.isSchemaFromSidOrDatabase(EDatabaseTypeName
-                                .getTypeFromDbType(databaseType))) {
-                    uiSchema = dbConnection.getSID();
-                    dbConnection.setUiSchema(uiSchema);
-                }
-                if (!StringUtils.isEmpty(uiSchema) && !packageFilter.contains(uiSchema)) {
-                    packageFilter.add(uiSchema);
+                if (isCatalog) {
+                    boolean isHsql = databaseType.equals(EDatabaseTypeName.HSQLDB_IN_PROGRESS.getDisplayName());
+                    boolean isInformix = databaseType.equalsIgnoreCase(EDatabaseTypeName.INFORMIX.name());
+                    if (dbMetaData.supportsCatalogsInIndexDefinitions() && !isHsql || isInformix) {
+                        String sid = dbConnection.getSID();
+                        if (origValueConn != null) {
+                            sid = origValueConn.getSID();
+                        }
+                        if (!StringUtils.isEmpty(sid) && !packageFilter.contains(sid)) {
+                            packageFilter.add(sid);
+                        }
+                    }
+                } else {
+                    String uiSchema = null;
+                    if (dbMetaData.supportsSchemasInIndexDefinitions()) {
+                        uiSchema = dbConnection.getUiSchema();
+                        if (origValueConn != null) {
+                            uiSchema = origValueConn.getUiSchema();
+                        }
+                    }
+                    // TDQ-12219 consider the schema from SID or Database.
+                    if (uiSchema == null
+                            && ManagerConnection.isSchemaFromSidOrDatabase(EDatabaseTypeName
+                                    .getTypeFromDbType(databaseType))) {
+                        uiSchema = dbConnection.getSID();
+                        dbConnection.setUiSchema(uiSchema);
+                    }
+                    if (!StringUtils.isEmpty(uiSchema) && !packageFilter.contains(uiSchema)) {
+                        packageFilter.add(uiSchema);
+                    }
                 }
             }
         } catch (SQLException e) {
