@@ -170,4 +170,9 @@ public interface ITalendProcessJavaProject {
      */
     IFolder getBundleResourcesFolder();
 
+    /**
+     * DOC zwxue Comment method "buildWholeCodeProject".
+     */
+    void buildWholeCodeProject();
+
 }

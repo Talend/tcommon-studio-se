@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -41,6 +43,7 @@ import org.talend.core.runtime.util.ItemDateParser;
 import org.talend.designer.maven.launch.MavenPomCommandLauncher;
 import org.talend.designer.maven.model.BuildCacheInfo;
 import org.talend.designer.maven.model.TalendMavenConstants;
+import org.talend.designer.maven.utils.MavenProjectUtils;
 import org.talend.designer.maven.utils.PomUtil;
 import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.repository.ProjectManager;
@@ -64,6 +67,8 @@ public class BuildCacheManager {
     private Set<String> currentmodules = new HashSet<>();
 
     private Set<ITalendProcessJavaProject> subjobProjects = new HashSet<>();
+
+    private List<ITalendProcessJavaProject> subjobMavenProjects = new LinkedList<>();
 
     private Map<ERepositoryObjectType, Date> codesLastChangeCache = new HashMap<>();
 
@@ -110,19 +115,28 @@ public class BuildCacheManager {
     public void putCache(Property property) {
         currentCache.put(getKey(property), generateCacheInfo(property));
         currentmodules.add(getModulePath(property));
-        subjobProjects.add(getTalendJobJavaProject(property));
+        ITalendProcessJavaProject subjobProject = getTalendJobJavaProject(property);
+        subjobProjects.add(subjobProject);
+        if (MavenProjectUtils.hasMavenNature(subjobProject.getProject())) {
+            subjobMavenProjects.add(subjobProject);
+        }
     }
 
     public void removeCache(Property property) {
         currentCache.remove(getKey(property));
         currentmodules.remove(getModulePath(property));
-        subjobProjects.remove(getTalendJobJavaProject(property));
+        ITalendProcessJavaProject subjobProject = getTalendJobJavaProject(property);
+        subjobProjects.remove(subjobProject);
+        if (MavenProjectUtils.hasMavenNature(subjobProject.getProject())) {
+            subjobMavenProjects.remove(subjobProject);
+        }
     }
 
     public void clearCurrentCache() {
         currentCache.clear();
         currentmodules.clear();
         subjobProjects.clear();
+        subjobMavenProjects.clear();
         aggregatorPomsHelper = new AggregatorPomsHelper();
     }
 
@@ -167,6 +181,12 @@ public class BuildCacheManager {
                 // better do restore right after aggregator build.
                 restoreSubjobPoms();
             }
+        }
+    }
+
+    public void buildAllSubjobMavenProjects() {
+        for (ITalendProcessJavaProject subjobMavenProject : subjobMavenProjects) {
+            subjobMavenProject.buildWholeCodeProject();
         }
     }
 
