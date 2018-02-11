@@ -167,4 +167,13 @@ public class CreateMavenStandardJobOSGiPom extends CreateMavenJobPom {
             }
         }
     }
+    
+    /* (non-Javadoc)
+     * @see org.talend.designer.maven.tools.creator.CreateMavenJobPom#afterCreate(org.eclipse.core.runtime.IProgressMonitor)
+     */
+    @Override
+    protected void afterCreate(IProgressMonitor monitor) throws Exception {
+        PomUtil.backupPomFile(getJobProcessor().getTalendJavaProject());
+        super.afterCreate(monitor);
+    }
 }
