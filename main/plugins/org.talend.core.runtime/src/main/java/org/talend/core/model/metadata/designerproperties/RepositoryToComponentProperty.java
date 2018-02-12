@@ -2765,7 +2765,7 @@ public class RepositoryToComponentProperty {
             }
         }
 
-        if (value.equals("KEYSTROE_PASS")) {
+        if (value.equals("KEYSTORE_PASS")) {
             if (isContextMode(connection, connection.getKeystorePassword())) {
                 return connection.getKeystorePassword();
             } else {
