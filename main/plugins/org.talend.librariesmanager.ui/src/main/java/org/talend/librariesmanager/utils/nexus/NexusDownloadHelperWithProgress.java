@@ -26,6 +26,7 @@ import org.talend.core.nexus.NexusServerBean;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
+import org.talend.librariesmanager.nexus.utils.NexusDownloader;
 
 /**
  * created by wchen on Apr 24, 2015 Detailled comment

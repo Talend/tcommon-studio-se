@@ -10,7 +10,7 @@
 // 9 rue Pages 92150 Suresnes, France
 //
 // ============================================================================
-package org.talend.librariesmanager.utils.nexus;
+package org.talend.librariesmanager.nexus.utils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -67,6 +67,8 @@ public class NexusDownloader implements IDownloadHelper {
 
     private static final int BUFFER_SIZE = 8192;
 
+    private NexusServerBean nexusServer;
+
     /*
      * (non-Javadoc)
      * 
@@ -74,8 +76,6 @@ public class NexusDownloader implements IDownloadHelper {
      */
     @Override
     public void download(URL url, File desc) throws Exception {
-        TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
-        final NexusServerBean talendlibServer = manager.getTalentArtifactServer();
         String mavenUri = url.toExternalForm();
         MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(mavenUri);
         if (parseMvnUrl != null) {
@@ -97,8 +97,7 @@ public class NexusDownloader implements IDownloadHelper {
             File downloadedFile = new File(tempFolder, name);
 
             NullProgressMonitor monitor = new NullProgressMonitor();
-            new HttpClientTransport(talendlibServer.getRepositoryURI(), talendlibServer.getUserName(),
-                    talendlibServer.getPassword()) {
+            new HttpClientTransport(nexusServer.getRepositoryURI(), nexusServer.getUserName(), nexusServer.getPassword()) {
 
                 @Override
                 protected HttpResponse execute(IProgressMonitor monitor, DefaultHttpClient httpClient, URI targetURI)
@@ -142,7 +141,7 @@ public class NexusDownloader implements IDownloadHelper {
                             bos.flush();
                             if (bytesDownloaded == contentLength) {
                                 MavenArtifactsHandler deployer = new MavenArtifactsHandler();
-                                deployer.install(downloadedFile.getAbsolutePath(), mavenUri);
+                                deployer.install(downloadedFile.getAbsolutePath(), mavenUri, nexusServer.isOfficial());
 
                                 if (PluginChecker.isSVNProviderPluginLoaded()) {
                                     File libFile = new File(LibrariesManagerUtils.getLibrariesPath(ECodeLanguage.JAVA));
@@ -273,4 +272,14 @@ public class NexusDownloader implements IDownloadHelper {
         fListeners.remove(listener);
     }
 
+    public NexusServerBean getNexusServer() {
+        if (this.nexusServer == null) {
+            return TalendLibsServerManager.getInstance().getTalentArtifactServer();
+        }
+        return this.nexusServer;
+    }
+
+    public void setTalendlibServer(NexusServerBean talendlibServer) {
+        this.nexusServer = talendlibServer;
+    }
 }

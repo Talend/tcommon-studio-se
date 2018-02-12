@@ -29,6 +29,7 @@ Export-Package: org.talend.librariesmanager.emf.librariesindex,
  org.talend.librariesmanager.maven,
  org.talend.librariesmanager.model,
  org.talend.librariesmanager.model.service,
+ org.talend.librariesmanager.nexus.utils,
  org.talend.librariesmanager.prefs,
  routines,
  routines.system
