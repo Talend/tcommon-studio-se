@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -21,31 +21,31 @@ import org.apache.maven.model.Model;
 import org.eclipse.core.resources.IFile;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
+import org.talend.core.model.properties.Property;
 import org.talend.core.runtime.projectsetting.IProjectSettingTemplateConstants;
 import org.talend.designer.maven.utils.PomUtil;
-import org.talend.designer.runprocess.IProcessor;
 
 /**
  * DOC ggu class global comment. Detailled comment
  */
 public abstract class AbstractMavenCodesTemplatePom extends AbstractMavenGeneralTemplatePom {
 
-    private IProcessor processor;
+    private Property property;
 
     public AbstractMavenCodesTemplatePom(IFile pomFile) {
         super(pomFile, IProjectSettingTemplateConstants.POM_CODES_TEMPLATE_FILE_NAME);
     }
 
-    public IProcessor getProcessor() {
-        return processor;
+    public Property getProperty() {
+        return property;
     }
 
-    public void setProcessor(IProcessor processor) {
-        this.processor = processor;
+    public void setProperty(Property property) {
+        this.property = property;
     }
 
     protected String getProjectName() {
-        return PomUtil.getProjectNameFromTemplateParameter(PomUtil.getTemplateParameters(processor));
+        return PomUtil.getProjectNameFromTemplateParameter(PomUtil.getTemplateParameters(property));
     }
 
     @Override
@@ -54,19 +54,13 @@ public abstract class AbstractMavenCodesTemplatePom extends AbstractMavenGeneral
 
         this.setGroupId(templateModel.getGroupId());
         this.setArtifactId(templateModel.getArtifactId());
-        String version;
-        if (getDeployVersion() != null) {
-            version = getDeployVersion();
-        } else {
-            version = templateModel.getVersion();
-        }
-        this.setVersion(version);
+        this.setVersion(templateModel.getVersion());
         this.setName(templateModel.getName());
 
         setAttributes(templateModel);
         addProperties(templateModel);
 
-        PomUtil.checkParent(templateModel, this.getPomFile(), this.processor, getDeployVersion());
+        PomUtil.checkParent(templateModel, this.getPomFile(), property);
 
         addDependencies(templateModel);
 

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -32,6 +32,7 @@ import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.repository.IRepositoryViewObject;
+import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 
 /**
@@ -83,7 +84,7 @@ public interface ICoreService extends IService {
 
     public void syncLibraries(IProgressMonitor... monitorWrap);
 
-    public void syncLog4jSettings();
+    public void syncLog4jSettings(ITalendProcessJavaProject talendJavaProject);
 
     public void removeJobLaunch(IRepositoryViewObject objToDelete);
 
@@ -115,7 +116,7 @@ public interface ICoreService extends IService {
 
     public String validateValueForDBType(String columnName);
 
-    public void synchronizeMapptingXML();
+    public void synchronizeMapptingXML(ITalendProcessJavaProject talendJavaProject);
 
     public IPreferenceStore getPreferenceStore();
 

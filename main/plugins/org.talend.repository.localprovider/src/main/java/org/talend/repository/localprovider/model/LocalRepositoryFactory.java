@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -769,19 +769,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         try {
             // existed infor in .metadata, but not exist the .project
             if (prj.exists() && !prj.getFile(IProjectDescription.DESCRIPTION_FILE_NAME).getLocation().toFile().exists()) {
-                File projectFolder = prj.getLocation().toFile();
-                File bakFolder = new File(projectFolder.getParentFile(), technicalLabel + "_bak");
-                boolean renamed = false;
-                try {
-                    renamed = projectFolder.renameTo(bakFolder);
-                    if (renamed) {
-                        prj.delete(true, monitor);// remove first, and will re-create later.
-                    }
-                } finally {
-                    if (renamed) {// rename back
-                        bakFolder.renameTo(projectFolder);
-                    }
-                }
+                prj.delete(false, true, monitor);// delete project logically(only clean .metadata)
             }
 
             IProjectDescription desc = null;

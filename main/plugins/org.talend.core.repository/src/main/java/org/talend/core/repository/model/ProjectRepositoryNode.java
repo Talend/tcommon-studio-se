@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -38,6 +38,7 @@ import org.talend.commons.ui.runtime.exception.RuntimeExceptionHandler;
 import org.talend.commons.ui.runtime.image.ECoreImage;
 import org.talend.commons.ui.runtime.repository.IExtendRepositoryNode;
 import org.talend.commons.utils.data.container.Container;
+import org.talend.commons.utils.data.container.RootContainer;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.PluginChecker;
 import org.talend.core.database.EDatabaseTypeName;
@@ -147,6 +148,8 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
     private List<FolderItem> delFolderItems = new ArrayList<FolderItem>();
 
     private ProjectRepositoryNodeCache nodeCache;
+
+    private int options = IRepositoryFactory.OPTION_ONLY_LAST_VERSION | IRepositoryFactory.OPTION_DYNAMIC_OBJECTS;
 
     /**
      * DOC nrousseau ProjectRepositoryNode constructor comment.
@@ -534,7 +537,8 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
                 RepositoryNode repositoryNode = (RepositoryNode) parent;
                 ERepositoryObjectType contentType = repositoryNode.getContentType();
                 if (contentType != null && contentType.isResourceItem()) {
-                    convert(newProject, factory.getMetadata(newProject, contentType, true), repositoryNode, contentType);
+                    RootContainer<String, IRepositoryViewObject> container = factory.getObjectFromFolder(newProject, contentType, null, options);
+                    convert(newProject, container, repositoryNode, contentType);
                     addExtraChildren(contentType, newProject,repositoryNode);
                 }
             }
@@ -2280,4 +2284,9 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
     public IRepositoryNode removeCache(String key) {
         return nodeCache.removeCache(key);
     }
+    
+    public void setOptions(int options) {
+        this.options = options;
+    }
+    
 }

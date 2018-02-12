@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -27,6 +27,11 @@ public interface IClasspathAdjuster {
 
     public void collectInfo(IProcess process, Set<ModuleNeeded> modules);
 
+    @Deprecated
     public Set<ModuleNeeded> adjustClassPath(Set<ModuleNeeded> modulesToAjust);
 
+    default public Set<ModuleNeeded> adjustClassPath(IProcess process, Set<ModuleNeeded> modulesToAjust) 
+    {
+        return adjustClassPath(modulesToAjust);//modulesToAjust;
+    };
 }

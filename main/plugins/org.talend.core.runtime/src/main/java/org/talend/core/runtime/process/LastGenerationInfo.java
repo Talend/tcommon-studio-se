@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -46,6 +46,8 @@ public class LastGenerationInfo {
     private static LastGenerationInfo instance;
 
     private JobInfo lastMainJob;
+    
+    private JobInfo currentBuildJob;
 
     private Set<JobInfo> lastGeneratedjobs; // main job + child jobs
 
@@ -210,6 +212,21 @@ public class LastGenerationInfo {
     public void setLastMainJob(JobInfo lastMainJob) {
         this.lastMainJob = lastMainJob;
     }
+    
+    public JobInfo getCurrentBuildJob() {
+        return currentBuildJob;
+    }
+
+    public boolean isCurrentMainJob() {
+        if (lastMainJob != null && currentBuildJob != null && lastMainJob.equals(currentBuildJob)) {
+            return true;
+        }
+        return false;
+    }
+
+    public void setCurrentBuildJob(JobInfo currentBuildJob) {
+        this.currentBuildJob = currentBuildJob;
+    }
 
     /**
      * Getter for lastGeneratedjobs.
@@ -328,6 +345,12 @@ public class LastGenerationInfo {
         String key = jobId + "_" + jobVersion; //$NON-NLS-1$
         pigudfNeededWithSubjobPerJob.put(key, new HashSet<String>(modulesNeeded));
     }
+    
+    public void clearModulesNeededWithSubjobPerJob() {
+        if (!modulesNeededWithSubjobPerJob.isEmpty()) {
+            modulesNeededWithSubjobPerJob.clear();
+        }
+    }
 
     public void clean() {
         modulesNeededPerJob.clear();
@@ -345,5 +368,6 @@ public class LastGenerationInfo {
 
         lastMainJob = null;
         lastGeneratedjobs.clear();
+        currentBuildJob = null;
     }
 }

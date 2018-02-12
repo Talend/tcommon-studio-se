@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -25,6 +25,8 @@ import org.talend.commons.utils.generation.JavaUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
+import org.talend.core.runtime.process.ITalendProcessJavaProject;
+import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IRepositoryService;
 import org.talend.repository.model.RepositoryConstants;
@@ -105,5 +107,14 @@ public class RoutineFunctionParser extends AbstractTalendFunctionParser {
     @Override
     protected String getPackageFragment() {
         return JavaUtils.JAVA_ROUTINES_DIRECTORY;
+    }
+
+    @Override
+    protected ITalendProcessJavaProject getTalendCodeProject() {
+        if(GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
+            IRunProcessService service = (IRunProcessService) GlobalServiceRegister.getDefault().getService(IRunProcessService.class);
+            return service.getTalendCodeJavaProject(ERepositoryObjectType.ROUTINES);
+        }
+        return null;
     }
 }

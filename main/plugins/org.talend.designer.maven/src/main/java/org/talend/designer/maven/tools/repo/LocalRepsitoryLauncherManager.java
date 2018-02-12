@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -20,6 +20,7 @@ import java.util.List;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.m2e.actions.MavenLaunchConstants;
 import org.talend.core.runtime.maven.MavenArtifact;
@@ -190,6 +191,11 @@ public class LocalRepsitoryLauncherManager extends LocalRepositoryManager {
                 protected void setProjectConfiguration(ILaunchConfigurationWorkingCopy workingCopy, IContainer basedir) {
                     super.setProjectConfiguration(workingCopy, basedir);
                     workingCopy.setAttribute(MavenLaunchConstants.ATTR_PROPERTIES, properties);
+                }
+
+                @Override
+                protected ILaunchConfiguration createLaunchConfiguration() {
+                    return null;
                 }
 
             };

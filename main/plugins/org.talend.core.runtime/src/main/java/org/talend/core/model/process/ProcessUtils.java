@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -884,11 +884,11 @@ public final class ProcessUtils {
     public static boolean isRequiredBeans(IProcess process) {
         boolean needBeans = false;
         if (process == null) {
-            needBeans = true; // only check have the pigudf items.
+            needBeans = true; // only check have the beans items.
         } else {
             if (process instanceof IProcess2) {
                 Property property = ((IProcess2) process).getProperty();
-                if (property != null) { // same as isStandardJob in JavaProcessor
+                if (property != null && property.getItem() != null) { // same as isStandardJob in JavaProcessor
                     ERepositoryObjectType itemType = ERepositoryObjectType.getItemType(property.getItem());
                     // route job
                     if (itemType != null && itemType.equals(ERepositoryObjectType.PROCESS_ROUTE)) {

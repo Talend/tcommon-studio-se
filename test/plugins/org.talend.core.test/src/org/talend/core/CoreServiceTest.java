@@ -52,7 +52,8 @@ public class CoreServiceTest {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
             IRunProcessService runProcessService = (IRunProcessService) GlobalServiceRegister.getDefault()
                     .getService(IRunProcessService.class);
-            talendProcessJavaProject = runProcessService.getTalendProcessJavaProject();
+            talendProcessJavaProject = runProcessService.getTempJavaProject();
+            //TODO create a temp job code project
         }
     }
 
@@ -80,11 +81,11 @@ public class CoreServiceTest {
         IFolder resourceMappingFolder = talendProcessJavaProject.getResourceSubFolder(null, JavaUtils.JAVA_XML_MAPPING);
         String projectMappingFolder = MetadataTalendType.getProjectForderURLOfMappingsFile().getPath();
 
-        service.synchronizeMapptingXML();
+        service.synchronizeMapptingXML(talendProcessJavaProject);
 
         modifyTargetFolder(resourceMappingFolder);
 
-        service.synchronizeMapptingXML();
+        service.synchronizeMapptingXML(talendProcessJavaProject);
 
         validateConsistence(projectMappingFolder, resourceMappingFolder.getLocation().toPortableString());
     }
@@ -106,9 +107,9 @@ public class CoreServiceTest {
         log4jStrFromSettings = getFileContent(tmpFile);
         tmpFile.delete(true, null);
 
-        service.syncLog4jSettings();
+        service.syncLog4jSettings(talendProcessJavaProject);
 
-        IFolder resourceFolder = talendProcessJavaProject.getResourcesFolder();
+        IFolder resourceFolder = talendProcessJavaProject.getExternalResourcesFolder();
         IFile log4jFile = resourceFolder.getFile("log4j.xml");
         if (log4jFile.exists()) {
             String content = "test modification";
@@ -116,7 +117,7 @@ public class CoreServiceTest {
             log4jFile.setContents(in, true, false, null);
         }
 
-        service.syncLog4jSettings();
+        service.syncLog4jSettings(talendProcessJavaProject);
 
         String log4jStrFromResouce = getFileContent(log4jFile);
         

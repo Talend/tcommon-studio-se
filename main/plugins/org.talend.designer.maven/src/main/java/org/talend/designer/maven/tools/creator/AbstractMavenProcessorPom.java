@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -32,6 +32,7 @@ import org.talend.commons.exception.PersistenceException;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.process.IProcess;
 import org.talend.core.model.process.JobInfo;
+import org.talend.core.model.process.ProcessUtils;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.Project;
 import org.talend.core.model.properties.Property;
@@ -40,6 +41,7 @@ import org.talend.core.model.utils.JavaResourcesHelper;
 import org.talend.core.runtime.projectsetting.IProjectSettingTemplateConstants;
 import org.talend.core.runtime.repository.build.IMavenPomCreator;
 import org.talend.core.ui.ITestContainerProviderService;
+import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.template.ETalendMavenVariables;
 import org.talend.designer.maven.tools.ProcessorDependenciesManager;
 import org.talend.designer.maven.utils.PomIdsHelper;
@@ -103,17 +105,15 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
     protected void setAttributes(Model model) {
         //
         final IProcessor jProcessor = getJobProcessor();
-        final IProcess process = jProcessor.getProcess();
-        final Property property = jProcessor.getProperty();
-
-        Property jobProperty = null;
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
-            ITestContainerProviderService service = (ITestContainerProviderService) GlobalServiceRegister.getDefault()
-                    .getService(ITestContainerProviderService.class);
-            if (service.isTestContainerProcess(process)) {
+        IProcess process = jProcessor.getProcess();
+        Property property = jProcessor.getProperty();
+        
+        if (ProcessUtils.isTestContainer(process)) {
+            if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
+                ITestContainerProviderService testService = (ITestContainerProviderService) GlobalServiceRegister.getDefault().getService(ITestContainerProviderService.class);
                 try {
-                    // for test container need to inherit version from job.
-                    jobProperty = service.getParentJobItem(property.getItem()).getProperty();
+                    property = testService.getParentJobItem(property.getItem()).getProperty();
+                    process = testService.getParentJobProcess(process);
                 } catch (PersistenceException e) {
                     ExceptionHandler.process(e);
                 }
@@ -122,13 +122,10 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
 
         Map<ETalendMavenVariables, String> variablesValuesMap = new HashMap<ETalendMavenVariables, String>();
         // no need check property is null or not, because if null, will get default ids.
-        variablesValuesMap.put(ETalendMavenVariables.JobGroupId,
-                PomIdsHelper.getJobGroupId(jobProperty == null ? property : jobProperty));
+        variablesValuesMap.put(ETalendMavenVariables.JobGroupId, PomIdsHelper.getJobGroupId(property));
         variablesValuesMap.put(ETalendMavenVariables.JobArtifactId, PomIdsHelper.getJobArtifactId(property));
-        variablesValuesMap.put(
-                ETalendMavenVariables.JobVersion,
-                getDeployVersion() != null ? getDeployVersion() : PomIdsHelper.getJobVersion(jobProperty == null ? property
-                        : jobProperty));
+        variablesValuesMap.put(ETalendMavenVariables.JobVersion,PomIdsHelper.getJobVersion(property));
+        variablesValuesMap.put(ETalendMavenVariables.TalendJobVersion, property.getVersion());
         final String jobName = JavaResourcesHelper.escapeFileName(process.getName());
         variablesValuesMap.put(ETalendMavenVariables.JobName, jobName);
 
@@ -158,7 +155,7 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
     protected Model createModel() {
         Model model = super.createModel();
         if (model != null) {
-            PomUtil.checkParent(model, this.getPomFile(), jobProcessor, getDeployVersion());
+            PomUtil.checkParent(model, this.getPomFile(), jobProcessor.getProperty());
 
             addDependencies(model);
         }
@@ -168,9 +165,38 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
     protected void addDependencies(Model model) {
         try {
             getProcessorDependenciesManager().updateDependencies(null, model);
-
-            // add children jobs in dependencies
+            
             final List<Dependency> dependencies = model.getDependencies();
+
+            // add codes to dependencies
+            // String projectTechName = ProjectManager.getInstance().getProject(getJobProcessor().getProperty()).getTechnicalLabel();
+            // always use codes of main project for ref project
+            String projectTechName = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
+            String codeVersion = PomIdsHelper.getCodesVersion();
+            
+            // routines
+            String routinesGroupId = PomIdsHelper.getCodesGroupId(projectTechName, TalendMavenConstants.DEFAULT_CODE);
+            String routinesArtifactId = TalendMavenConstants.DEFAULT_ROUTINES_ARTIFACT_ID;
+            Dependency routinesDependency = PomUtil.createDependency(routinesGroupId, routinesArtifactId, codeVersion, null);
+            dependencies.add(routinesDependency);
+            
+            // pigudfs
+            if (ProcessUtils.isRequiredPigUDFs(jobProcessor.getProcess())) {
+                String pigudfsGroupId = PomIdsHelper.getCodesGroupId(projectTechName, TalendMavenConstants.DEFAULT_PIGUDF);
+                String pigudfsArtifactId = TalendMavenConstants.DEFAULT_PIGUDFS_ARTIFACT_ID;
+                Dependency pigudfsDependency = PomUtil.createDependency(pigudfsGroupId, pigudfsArtifactId, codeVersion, null);
+                dependencies.add(pigudfsDependency);
+            }
+            
+            // beans
+            if (ProcessUtils.isRequiredBeans(jobProcessor.getProcess())) {
+                String beansGroupId = PomIdsHelper.getCodesGroupId(projectTechName, TalendMavenConstants.DEFAULT_BEAN);
+                String beansArtifactId = TalendMavenConstants.DEFAULT_BEANS_ARTIFACT_ID;
+                Dependency beansDependency = PomUtil.createDependency(beansGroupId, beansArtifactId, codeVersion, null);
+                dependencies.add(beansDependency);
+            }
+            
+            // add children jobs in dependencies
             String parentId = getJobProcessor().getProperty().getId();
             final Set<JobInfo> clonedChildrenJobInfors = getJobProcessor().getBuildChildrenJobs();
             for (JobInfo jobInfo : clonedChildrenJobInfors) {
@@ -178,12 +204,10 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
                     if (!validChildrenJob(jobInfo)) {
                         continue;
                     }
-                    String groupId = model.getGroupId();
+                    Property property = jobInfo.getProcessItem().getProperty();
+                    String groupId = PomIdsHelper.getJobGroupId(property);
                     String artifactId = PomIdsHelper.getJobArtifactId(jobInfo);
-                    String version = PomIdsHelper.getJobVersion(jobInfo);
-                    if (getDeployVersion() != null) {
-                        version = getDeployVersion();
-                    }
+                    String version = PomIdsHelper.getJobVersion(property);
 
                     // try to get the pom version of children job and load from the pom file.
                     String childPomFileName = PomUtil.getPomFileName(jobInfo.getJobName(), jobInfo.getJobVersion());

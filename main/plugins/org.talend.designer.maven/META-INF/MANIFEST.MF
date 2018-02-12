@@ -33,5 +33,4 @@ Export-Package: org.talend.designer.maven,
  org.talend.designer.maven.template,
  org.talend.designer.maven.tools,
  org.talend.designer.maven.tools.creator,
- org.talend.designer.maven.tools.repo,
  org.talend.designer.maven.utils

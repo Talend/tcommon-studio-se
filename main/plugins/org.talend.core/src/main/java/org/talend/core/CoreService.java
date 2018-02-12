@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -58,7 +58,6 @@ import org.talend.core.model.properties.Item;
 import org.talend.core.model.relationship.RelationshipItemBuilder;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.repository.RepositoryManager;
-import org.talend.core.model.repository.ResourceModelUtils;
 import org.talend.core.model.routines.RoutineLibraryMananger;
 import org.talend.core.model.utils.ContextParameterUtils;
 import org.talend.core.model.utils.JavaResourcesHelper;
@@ -353,41 +352,34 @@ public class CoreService implements ICoreService {
     }
 
     @Override
-    public void synchronizeMapptingXML() {
+    public void synchronizeMapptingXML(ITalendProcessJavaProject talendJavaProject) {
         try {
+            if (talendJavaProject == null) {
+                return;
+            }
             URL url = MetadataTalendType.getProjectForderURLOfMappingsFile();
-            if (url != null && GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
-                // set the project mappings url
+            if (url != null) {
+            	// set the project mappings url
                 System.setProperty("talend.mappings.url", url.toString()); //$NON-NLS-1$
-                IRunProcessService runProcessService = (IRunProcessService) GlobalServiceRegister.getDefault().getService(
-                        IRunProcessService.class);
-                if (runProcessService != null) {
-                    ITalendProcessJavaProject talendProcessJavaProject = runProcessService.getTalendProcessJavaProject();
-                    if (talendProcessJavaProject == null) {
-                        return;
-                    }
-                    IFolder xmlMappingFolder = talendProcessJavaProject.getResourceSubFolder(null, JavaUtils.JAVA_XML_MAPPING);
-
-                    File mappingSource = new File(url.getPath());
-                    FilenameFilter filter = new FilenameFilter() {
-
-                        @Override
-                        public boolean accept(File dir, String name) {
-                            if (XmlUtil.isXMLFile(name)) {
-                                return true;
-                            }
-                            return false;
+                IFolder xmlMappingFolder = talendJavaProject.getResourceSubFolder(null, JavaUtils.JAVA_XML_MAPPING);
+                
+                File mappingSource = new File(url.getPath());
+                FilenameFilter filter = new FilenameFilter() {
+                    
+                    @Override
+                    public boolean accept(File dir, String name) {
+                        if (XmlUtil.isXMLFile(name)) {
+                            return true;
                         }
-                    };
-
-                    for (File file : mappingSource.listFiles(filter)) {
-                        String targetName = getTargetName(file);
-                        IFile targetFile = xmlMappingFolder.getFile(targetName);
-                        copyFile(file, targetFile);
+                        return false;
                     }
-
+                };
+                
+                for (File file : mappingSource.listFiles(filter)) {
+                    String targetName = getTargetName(file);
+                    IFile targetFile = xmlMappingFolder.getFile(targetName);
+                    copyFile(file, targetFile);
                 }
-
             }
         } catch (CoreException e) {
             ExceptionHandler.process(e);
@@ -494,7 +486,7 @@ public class CoreService implements ICoreService {
     }
 
     @Override
-    public void syncLog4jSettings() {
+    public void syncLog4jSettings(ITalendProcessJavaProject talendJavaProject) {
         Project project = ProjectManager.getInstance().getCurrentProject();
         String log = "Sync log4j settings"; //$NON-NLS-1$ 
         final RepositoryWorkUnit repositoryWorkUnit = new RepositoryWorkUnit(project, log) {
@@ -513,8 +505,7 @@ public class CoreService implements ICoreService {
                         if (!prefSettingFolder.exists()) {
                             prefSettingFolder.create(true, true, null);
                         }
-                        service.updateLogFiles(ResourceModelUtils.getProject(ProjectManager.getInstance().getCurrentProject()),
-                                false);
+                        service.updateLogFiles(talendJavaProject, false);
                     } catch (PersistenceException e) {
                         e.printStackTrace();
                     } catch (CoreException e) {
@@ -525,4 +516,5 @@ public class CoreService implements ICoreService {
         };
         ProxyRepositoryFactory.getInstance().executeRepositoryWorkUnit(repositoryWorkUnit);
     }
+
 }

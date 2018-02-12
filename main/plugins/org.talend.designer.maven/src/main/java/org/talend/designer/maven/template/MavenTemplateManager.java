@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -20,21 +20,30 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.apache.maven.model.Activation;
+import org.apache.maven.model.Build;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Plugin;
+import org.apache.maven.model.PluginExecution;
+import org.apache.maven.model.Profile;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.commons.utils.VersionUtils;
 import org.talend.commons.utils.generation.JavaUtils;
+import org.talend.core.PluginChecker;
 import org.talend.core.model.general.Project;
 import org.talend.core.runtime.projectsetting.IProjectSettingPreferenceConstants;
 import org.talend.core.runtime.projectsetting.IProjectSettingTemplateConstants;
@@ -212,6 +221,46 @@ public class MavenTemplateManager {
     public static Model getCodeProjectTemplateModel() {
         return getCodeProjectTemplateModel(null); // by default will be current project.
     }
+    
+    public static Model addCIBuilder(Model model) {
+        if (!PluginChecker.isTIS()) {
+            return model;
+        }
+        if (!model.getProfiles().isEmpty()) {
+            Profile toDelete = null;
+            for (Profile profile : model.getProfiles()) {
+                if ("ci-builder".equals(profile.getId())) {
+                    toDelete = profile;
+                    break;
+                }
+            }
+            if (toDelete != null) {
+                model.getProfiles().remove(toDelete);
+            }
+        }
+        Profile profile = new Profile();
+        profile.setId("ci-builder");
+        Activation activation = new Activation();
+        activation.setActiveByDefault(true);
+        profile.setActivation(activation);
+        model.addProfile(profile);
+
+        Plugin plugin = new Plugin();
+        profile.setBuild(new Build());
+        profile.getBuild().addPlugin(plugin);
+        plugin.setGroupId(TalendMavenConstants.DEFAULT_GROUP_ID);
+        plugin.setArtifactId("ci.builder"); //$NON-NLS-1$
+        plugin.setVersion(VersionUtils.getTalendVersion());
+
+        List<PluginExecution> executions = new ArrayList<>();
+        PluginExecution pe = new PluginExecution();
+        pe.setPhase("generate-sources"); //$NON-NLS-1$
+        pe.addGoal("generate"); //$NON-NLS-1$
+        executions.add(pe);
+        plugin.setExecutions(executions);
+        
+        return model;
+    }
 
     /**
      * Try to load the project template from bundle, if load failed, use default instead.
@@ -240,7 +289,12 @@ public class MavenTemplateManager {
                 model.setName(ETalendMavenVariables.replaceVariables(model.getName(), variablesValuesMap));
                 
                 setJavaVersionForModel(model, variablesValuesMap);
-                
+
+                addCIBuilder(model);
+
+                Properties properties = model.getProperties();
+                properties.put("talend.project.name", projectTechName); //$NON-NLS-1$
+
                 return model;
             }
         } catch (Exception e) {
@@ -270,10 +324,9 @@ public class MavenTemplateManager {
 
     private static Model getDefaultCodeProjectTemplateModel(String projectTechName) {
         Model templateCodeProjectMOdel = new Model();
-
-        templateCodeProjectMOdel.setGroupId(PomIdsHelper.getProjectGroupId());
+        templateCodeProjectMOdel.setGroupId(PomIdsHelper.getProjectGroupId(projectTechName));
         templateCodeProjectMOdel.setArtifactId(PomIdsHelper.getProjectArtifactId());
-        templateCodeProjectMOdel.setVersion(PomIdsHelper.getProjectVersion());
+        templateCodeProjectMOdel.setVersion(PomIdsHelper.getProjectVersion(projectTechName));
         templateCodeProjectMOdel.setPackaging(TalendMavenConstants.PACKAGING_POM);
 
         return templateCodeProjectMOdel;
@@ -357,5 +410,36 @@ public class MavenTemplateManager {
             ExceptionHandler.process(e);
         }
         return defaultModel; // if error, try to use default model
+    }
+
+    public static Model getAggregatorFolderTemplateModel(IFile pomFile, String groupId, String artifactId, String projectTechName)
+            throws Exception {
+        Model model = new Model();
+        model.setModelVersion("4.0.0"); //$NON-NLS-1$
+        model.setGroupId(groupId);
+        model.setArtifactId(artifactId);
+        model.setVersion(PomIdsHelper.getProjectVersion());
+        model.setPackaging(TalendMavenConstants.PACKAGING_POM);
+        model.setName(projectTechName + " " + artifactId); //$NON-NLS-1$
+        updateAggregatorPomModules(model, pomFile, false);
+        
+        return model;
+    }
+    
+    public static void updateAggregatorPomModules(Model model, IFile pomFile, boolean save) throws Exception {
+        List<String> modules = new ArrayList<>();
+        IResource[] members = pomFile.getParent().members();
+        for (IResource member : members) {
+            if (member instanceof IFolder) {
+                IFile modulePom = ((IFolder) member).getFile(TalendMavenConstants.POM_FILE_NAME);
+                if (modulePom.exists()) {
+                    modules.add(member.getName() + "/" + modulePom.getName()); //$NON-NLS-1$
+                }
+            }
+        }
+        model.setModules(modules);
+        if (save) {
+            PomUtil.savePom(null, model, pomFile);
+        }
     }
 }

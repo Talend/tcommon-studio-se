@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -11,6 +11,7 @@
 // ============================================================================
 package org.talend.designer.maven.utils;
 
+import org.apache.maven.model.Model;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
@@ -20,6 +21,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.m2e.core.internal.IMavenConstants;
+import org.talend.core.model.general.TalendJobNature;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.tools.creator.CreateMavenCodeProject;
 
@@ -29,20 +31,47 @@ import org.talend.designer.maven.tools.creator.CreateMavenCodeProject;
  */
 public final class TalendCodeProjectUtil {
 
+    /**
+     * a temp maven java project, actually only used for compilation by jdt, any settings in pom.xml won't take affect.
+     */
     public static IProject initCodeProject(IProgressMonitor monitor) throws Exception {
         IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 
         IProject codeProject = root.getProject(TalendMavenConstants.PROJECT_NAME);
 
         if (!codeProject.exists() || needRecreate(monitor, codeProject)) {
-            // if existed, must delete it first, else when do CreateMavenCodeProject will cause problem.
+            // if existed, must delete it first, else when do CreateMavenCodeProject will cause problem. for .metadata
             if (codeProject.exists()) {
                 if (codeProject.isOpen()) {
                     codeProject.close(monitor);
                 }
                 codeProject.delete(true, true, monitor);
             }
-            CreateMavenCodeProject createProject = new CreateMavenCodeProject(codeProject);
+            CreateMavenCodeProject createProject = new CreateMavenCodeProject(codeProject, true) {
+
+                @Override
+                protected Model createModel() {
+                    Model templateModel = new Model();
+                    templateModel.setModelVersion("4.0.0"); //$NON-NLS-1$
+                    templateModel.setGroupId("org.talend.temp.project"); //$NON-NLS-1$
+                    templateModel.setArtifactId(TalendMavenConstants.PROJECT_NAME);
+                    templateModel.setVersion(PomIdsHelper.getProjectVersion());
+                    templateModel.setPackaging(TalendMavenConstants.PACKAGING_JAR);
+
+                    return templateModel;
+                }
+
+                @Override
+                protected void afterCreate(IProgressMonitor monitor, IResource res) throws Exception {
+                    IProject p = res.getProject();
+                    if (!p.isOpen()) {
+                        p.open(monitor);
+                    }
+                    addTalendNature(p, TalendJobNature.ID, monitor);
+                }
+
+            };
+            createProject.setProjectLocation(root.getLocation().append(TalendMavenConstants.PROJECT_NAME));
             createProject.create(monitor);
             codeProject = createProject.getProject();
         }
@@ -58,7 +87,7 @@ public final class TalendCodeProjectUtil {
     }
 
     @SuppressWarnings("restriction")
-    private static boolean needRecreate(IProgressMonitor monitor, IProject codeProject) throws CoreException {
+    public static boolean needRecreate(IProgressMonitor monitor, IProject codeProject) throws CoreException {
         if (codeProject.exists()) { // exist the project for workspace metadata.
 
             // If the project is not existed physically (in disk). sometime, because delete it manually. Then finally,
@@ -97,10 +126,6 @@ public final class TalendCodeProjectUtil {
             if (!codeProject.getFile(TalendMavenConstants.POM_FILE_NAME).exists()) {
                 return true;
             }
-
-            // FIXME pom is not "pom" packaging?
-            // will change to "pom" packaging when ProjectPomManager.updateAttributes. so no need check.
-
         }
         return false;
     }

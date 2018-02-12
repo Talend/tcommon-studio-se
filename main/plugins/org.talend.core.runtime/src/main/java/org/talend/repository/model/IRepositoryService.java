@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -133,5 +133,9 @@ public interface IRepositoryService extends IService {
     public List<String> getProjectBranch(Project project) throws JSONException;
 
     public boolean askRetryForNetworkIssue(Throwable ex);
+
+    boolean isSVN();
+
+    boolean isGIT();
 
 }

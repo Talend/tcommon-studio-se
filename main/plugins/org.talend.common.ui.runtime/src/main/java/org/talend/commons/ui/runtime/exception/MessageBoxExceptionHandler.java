@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -44,7 +44,7 @@ public final class MessageBoxExceptionHandler {
      * @param ex - exception to log
      */
     public static void process(final Throwable ex) {
-        if (CommonUIPlugin.isFullyHeadless()) {
+        if (CommonUIPlugin.isFullyHeadless() || CommonsPlugin.isJUnitTest()) {
             CommonExceptionHandler.process(ex);
             return;
         }
@@ -65,7 +65,7 @@ public final class MessageBoxExceptionHandler {
     public static void process(Throwable ex, Shell shell) {
         CommonExceptionHandler.process(ex);
 
-        if (CommonsPlugin.isHeadless()) {
+        if (CommonsPlugin.isHeadless() || CommonsPlugin.isJUnitTest()) {
             return;
         }
 

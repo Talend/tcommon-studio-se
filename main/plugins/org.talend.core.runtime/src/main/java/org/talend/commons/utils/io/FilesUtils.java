@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -15,6 +15,8 @@ package org.talend.commons.utils.io;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
@@ -58,6 +60,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.osgi.framework.Bundle;
 import org.talend.commons.exception.CommonExceptionHandler;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.i18n.internal.Messages;
 import org.talend.commons.utils.StringUtils;
 import org.talend.commons.utils.encoding.CharsetToolkit;
@@ -1184,6 +1187,49 @@ public class FilesUtils {
         // delete all
         for (IResource resource : existedSameFiles) {
             resource.delete(true, monitor);
+        }
+    }
+
+    public static String readFileContent(IFile file) {
+        String content = null;
+        InputStream in = null;
+        ByteArrayOutputStream bos = null;
+        try {
+            in = file.getContents();
+            bos = new ByteArrayOutputStream();
+            byte[] buffers = new byte[1024];
+            int count = 0;
+            while((count = in.read(buffers))>0){
+                bos.write(buffers, 0, count);
+            }
+            content = new String(bos.toByteArray(), "UTF-8"); //$NON-NLS-1$
+        } catch (Exception e) {
+            ExceptionHandler.process(e);
+        } finally {
+            try {
+                if (in != null) {
+                    in.close();
+                }
+                if (bos != null) {
+                    bos.close();
+                }
+            } catch (IOException e) {
+                //
+            }
+        }
+        return content;
+    }
+    
+    public static void writeContentToFile(String content, IFile file) {
+        InputStream source = new ByteArrayInputStream(content.getBytes());
+        try {
+            if (!file.exists()) {
+                file.create(source, true, null);
+            } else {
+                file.setContents(source, true, false, null);
+            }
+        } catch (Exception e) {
+            ExceptionHandler.process(e);
         }
     }
 

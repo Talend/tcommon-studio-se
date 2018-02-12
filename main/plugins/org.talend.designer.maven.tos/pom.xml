@@ -40,4 +40,10 @@
             <version>${project.version}</version>
             <type>pom</type>
         </dependency>
+        <dependency>
+			<groupId>org.talend.studio</groupId>
+			<artifactId>studio-maven-repository-build</artifactId>
+			<version>${project.version}</version>
+			<type>pom</type>
+		</dependency>
     </dependencies></project>

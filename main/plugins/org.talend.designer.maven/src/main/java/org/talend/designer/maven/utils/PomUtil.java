@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -12,11 +12,17 @@
 // ============================================================================
 package org.talend.designer.maven.utils;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -53,6 +59,7 @@ import org.eclipse.m2e.core.MavenPlugin;
 import org.eclipse.m2e.core.embedder.MavenModelManager;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
+import org.talend.commons.runtime.utils.io.IOUtils;
 import org.talend.commons.utils.VersionUtils;
 import org.talend.commons.utils.generation.JavaUtils;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
@@ -69,11 +76,11 @@ import org.talend.core.nexus.TalendMavenResolver;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.maven.MavenUrlHelper;
-import org.talend.core.runtime.process.TalendProcessArgumentConstant;
+import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.core.ui.branding.IBrandingService;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.template.MavenTemplateManager;
-import org.talend.designer.maven.tools.repo.LocalRepositoryManager;
+import org.talend.designer.maven.tools.ProcessorDependenciesManager;
 import org.talend.designer.runprocess.IProcessor;
 import org.talend.repository.ProjectManager;
 import org.w3c.dom.Attr;
@@ -109,6 +116,45 @@ public class PomUtil {
             pomFile.setContents(source, true, false, monitor);
         } else {
             pomFile.create(source, true, monitor);
+        }
+    }
+
+    public static void savePom(IProgressMonitor monitor, Model model, File pomFile) throws Exception {
+        if (monitor == null) {
+            monitor = new NullProgressMonitor();
+        }
+        if (pomFile == null) {
+            throw new NullPointerException("the output file is null.");
+        }
+        
+        ByteArrayOutputStream buf = new ByteArrayOutputStream();
+        MavenPlugin.getMaven().writeModel(model, buf);
+        
+        ByteArrayInputStream source = new ByteArrayInputStream(buf.toByteArray());
+        BufferedWriter bw = new BufferedWriter(new FileWriter(pomFile, false));
+        
+        BufferedReader br = new BufferedReader(new InputStreamReader(source));
+        if (!pomFile.exists()) {
+            pomFile.createNewFile();
+        }
+        try {
+            String line = null;
+            while ((line = br.readLine()) != null) {
+                bw.write(line);
+                bw.newLine();
+            }
+        } finally {
+            safeClose(br);
+            safeClose(bw);
+        }
+    }
+
+    private static void safeClose(Closeable stream) {
+        try {
+            if (stream != null)
+                stream.close();
+        } catch (IOException e) {
+            //ignore
         }
     }
 
@@ -179,7 +225,7 @@ public class PomUtil {
      * @param curModel
      * @param curPomFile
      */
-    public static void checkParent(Model curModel, IFile curPomFile, IProcessor processor, String specialVersion) {
+    public static void checkParent(Model curModel, IFile curPomFile, Property property) {
         Parent parent = curModel.getParent();
         if (parent == null) {
             parent = new Parent();
@@ -187,19 +233,27 @@ public class PomUtil {
         } else {
             // TODO, if existed, maybe just replace, not overwrite
         }
-        final Map<String, Object> templateParameters = PomUtil.getTemplateParameters(processor);
+        final Map<String, Object> templateParameters = PomUtil.getTemplateParameters(property);
         Model codeProjectTemplateModel = MavenTemplateManager.getCodeProjectTemplateModel(templateParameters);
-
-        if (specialVersion != null) {
-            codeProjectTemplateModel.setVersion(specialVersion);
-        }
 
         parent.setGroupId(codeProjectTemplateModel.getGroupId());
         parent.setArtifactId(codeProjectTemplateModel.getArtifactId());
         parent.setVersion(codeProjectTemplateModel.getVersion());
+        
+        String relativePath = getPomRelativePath(curPomFile.getLocation().toFile(), "poms"); //$NON-NLS-1$
+        parent.setRelativePath(relativePath);
 
-        parent.setRelativePath("./" + TalendMavenConstants.POM_FILE_NAME);
+    }
 
+    public static String getPomRelativePath(File file, String baseFolder) {
+        String path = "../"; //$NON-NLS-1$
+        // TODO should not allow user-defined folder named poms.
+        if (file != null && !file.getParentFile().getName().equals(baseFolder)) {
+            path += getPomRelativePath(file.getParentFile(), baseFolder);
+        } else {
+            path = ""; //$NON-NLS-1$
+        }
+        return path;
     }
 
     /**
@@ -344,13 +398,6 @@ public class PomUtil {
         return null;
     }
 
-    public static void installJar(LocalRepositoryManager repoManager, File libFile, MavenArtifact artifact) throws Exception {
-        // in lib/java, and not existed in m2/repo
-        if (libFile.exists() && !PomUtil.isAvailable(artifact)) {
-            repoManager.install(libFile, artifact);
-        }
-    }
-
     /**
      * 
      * Try to find the template files form the path which based on root container first. if not found, will try to find
@@ -420,7 +467,13 @@ public class PomUtil {
         }
         return buffer.toString();
     }
-
+    
+    public static String getAbsArtifactPathAsCP(MavenArtifact artifact) {
+        String repoPath = MavenPlugin.getMaven().getLocalRepositoryPath();
+        String artifactPath = getArtifactPath(artifact);
+        return repoPath + "/" + artifactPath; //$NON-NLS-1$
+    }
+    
     /**
      * Get absolute path for installed artifact
      * 
@@ -693,40 +746,6 @@ public class PomUtil {
         return projectName;
     }
 
-    /**
-     * If no deploy version or custom version, will use pom variable. Else, will use the setting version directly.
-     */
-    public static String getJobVersionForPomProperty(Map<String, Object> argumentsMap, Property curProperty) {
-        return getJobVersionForPomProperty(argumentsMap, curProperty, curProperty);
-    }
-
-    public static String getJobVersionForPomProperty(Map<String, Object> argumentsMap, Property jobProperty, Property curProperty) {
-        String deployVersion = null;
-        if (argumentsMap != null) {
-            final Object value = argumentsMap.get(TalendProcessArgumentConstant.ARG_DEPLOY_VERSION);
-            if (value != null && StringUtils.isNotBlank(value.toString())) {
-                deployVersion = value.toString();
-            }
-        }
-        String customVersion = null;
-        if (jobProperty != null && jobProperty.getAdditionalProperties() != null) {
-            final Object value = jobProperty.getAdditionalProperties().get(MavenConstants.NAME_USER_VERSION);
-            if (value != null && StringUtils.isNotBlank(value.toString())) {
-                customVersion = value.toString();
-            }
-        }
-
-        String jobVersion;
-        if (curProperty != null && (deployVersion != null || customVersion != null)) {// have set special version
-            // if set special version, set the literal value of job.
-            jobVersion = curProperty.getVersion();
-        } else {
-            // if no special version, will reuse the project version of pom for variable.
-            jobVersion = "${project.version}";
-        }
-        return jobVersion;
-    }
-
     public static Document loadAssemblyFile(IProgressMonitor monitor, IFile assemblyFile) throws ParserConfigurationException,
             SAXException, IOException {
         final File file = assemblyFile.getLocation().toFile();
@@ -756,4 +775,103 @@ public class PomUtil {
             }
         }
     }
+    
+    public static void updatePomDependenciesFromProcessor(IProcessor processor) throws Exception {
+        // .Java project
+        IFile pomFile = processor.getTalendJavaProject().getProjectPom();
+        // add routines dependency
+        Model model = MODEL_MANAGER.readMavenModel(pomFile);
+        List<Dependency> dependencies = model.getDependencies();
+        if (dependencies == null) {
+            dependencies = new ArrayList<>();
+        } else {
+            dependencies.clear();
+        }
+        String projectTechName = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
+        String codeVersion = PomIdsHelper.getCodesVersion();
+        String routinesGroupId = PomIdsHelper.getCodesGroupId(projectTechName, TalendMavenConstants.DEFAULT_CODE);
+        String routinesArtifactId = TalendMavenConstants.DEFAULT_ROUTINES_ARTIFACT_ID;
+        Dependency routinesDependency = createDependency(routinesGroupId, routinesArtifactId, codeVersion, null);
+        dependencies.add(routinesDependency);
+        // add dependencies from process
+        ProcessorDependenciesManager manager = new ProcessorDependenciesManager(processor);
+        manager.updateDependencies(null, model);
+        
+        savePom(null, model, pomFile);
+    }
+
+    public static void backupPomFile(ITalendProcessJavaProject talendProject) {
+        IProject project = talendProject.getProject();
+        IFile backFile = project.getFile(TalendMavenConstants.POM_BACKUP_FILE_NAME);
+        IFile pomFile = project.getFile(TalendMavenConstants.POM_FILE_NAME);
+        try {
+            if (backFile.exists()) {
+                backFile.delete(true, false, null);
+            }
+            pomFile.copy(backFile.getFullPath(), true, null);
+        } catch (CoreException e) {
+            ExceptionHandler.process(e);
+        }
+    }
+
+    public static void restorePomFile(ITalendProcessJavaProject talendProject) {
+        IProject project = talendProject.getProject();
+        IFile backFile = project.getFile(TalendMavenConstants.POM_BACKUP_FILE_NAME);
+        IFile pomFile = project.getFile(TalendMavenConstants.POM_FILE_NAME);
+        boolean isChanged = false;
+        try {
+            if (backFile.exists()) {
+                if (pomFile.exists()) {
+                    isChanged = !IOUtils.contentEquals(backFile.getContents(), pomFile.getContents());
+                    if (isChanged) {
+                        pomFile.delete(true, false, null);
+                    }
+                } else {
+                    isChanged = true;
+                }
+                if (isChanged) {
+                    backFile.copy(pomFile.getFullPath(), true, null);
+                }
+            }
+        } catch (CoreException | IOException e) {
+            ExceptionHandler.process(e);
+        } finally {
+            try {
+                if (backFile.exists()) {
+                    backFile.delete(true, false, null);
+                }
+            } catch (CoreException e) {
+                System.gc();
+                try {
+                    backFile.delete(true, false, null);
+                } catch (CoreException e1) {
+                    //
+                }
+            }
+        }
+    }
+
+    public static void cleanLastUpdatedFile(final File file) {
+        if (file != null && file.exists()) {
+            if (file.isDirectory()) {
+                File[] list = file.listFiles(lastUpdatedFilter);
+                if (list != null) {
+                    for (File f : list) {
+                        cleanLastUpdatedFile(f);
+                    }
+                }
+            } else if (file.isFile() && lastUpdatedFilter.accept(file)) {
+                file.delete();
+            }
+        }
+    }
+
+    private final static FileFilter lastUpdatedFilter = new FileFilter() {
+
+        @Override
+        public boolean accept(File pathname) {
+            return pathname.isDirectory() || pathname.getName().endsWith(".lastUpdated") //$NON-NLS-1$
+                    || pathname.getName().equals("m2e-lastUpdated.properties"); //$NON-NLS-1$
+        }
+    };
 }

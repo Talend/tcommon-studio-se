@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -629,7 +629,7 @@ public class FilteredCheckboxTree extends Composite {
         checkedElements.addAll(checked);
     }
 
-    private void collectLeafNodes(TreeItem[] roots, Set checked, Set unchecked) {
+    protected void collectLeafNodes(TreeItem[] roots, Set checked, Set unchecked) {
         for (TreeItem item : roots) {
             TreeItem[] children = item.getItems();
             if (children == null || children.length == 0) {
@@ -671,7 +671,7 @@ public class FilteredCheckboxTree extends Composite {
         restoreCheckedElements();
     }
 
-    protected void restoreCheckedElements() {
+    public void restoreCheckedElements() {
         // restore checked leaf nodes
         Object[] checked = getCheckedLeafNodes();
         getViewer().setCheckedElements(checked);

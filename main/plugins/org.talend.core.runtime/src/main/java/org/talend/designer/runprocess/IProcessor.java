@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -315,5 +315,9 @@ public interface IProcessor {
      * Clean the working directory which can be created by the run method.
      */
     void cleanWorkingDirectory() throws SecurityException;
+
+    void setSkipClasspathJar(boolean skipClasspathJar);
+
+    boolean isSkipClasspathJar();
 
 }

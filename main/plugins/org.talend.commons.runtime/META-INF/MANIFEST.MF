@@ -12,7 +12,8 @@ Require-Bundle: org.apache.log4j;visibility:=reexport,
  org.eclipse.emf.ecore.xmi,
  org.talend.libraries.apache,
  org.apache.xerces,
- com.ibm.icu
+ com.ibm.icu,
+ org.apache.commons.io
 Export-Package: org.talend.commons,
  org.talend.commons.exception,
  org.talend.commons.i18n,

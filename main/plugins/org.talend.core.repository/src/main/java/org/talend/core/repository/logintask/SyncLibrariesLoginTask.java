@@ -56,7 +56,6 @@ public class SyncLibrariesLoginTask extends AbstractLoginTask implements IRunnab
         if (monitor != null && monitor.isCanceled()) {
             throw new OperationCanceledException(""); //$NON-NLS-1$
         }
-        coreService.synchronizeMapptingXML();
 
         if (monitor != null && monitor.isCanceled()) {
             throw new OperationCanceledException(""); //$NON-NLS-1$

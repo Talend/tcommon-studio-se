@@ -9,4 +9,11 @@
             serviceId="IImportExportServices">
       </Service>
    </extension>
+   <extension
+         point="org.talend.core.runtime.buildExport_provider">
+      <resourcesProvider
+            id="org.talend.repository.items.sync.children.contexts"
+            provider="org.talend.repository.items.importexport.handlers.exports.SyncChildrenContextsResourcesProvider">
+      </resourcesProvider>
+   </extension>
 </plugin>

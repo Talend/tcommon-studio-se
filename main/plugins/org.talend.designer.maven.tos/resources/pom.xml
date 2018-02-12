@@ -10,6 +10,7 @@
 	<artifactId>studio-maven-repository-tos</artifactId>
 	<packaging>pom</packaging>
     <modules>
+        <module>build/pom.xml</module>
         <module>unzip/pom.xml</module>
         <module>components/pom.xml</module>
         <module>tcompv1/pom.xml</module>

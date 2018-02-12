@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -115,7 +115,7 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
     }
 
     protected IFile getRoutineFile(RoutineItem routineItem) throws SystemException {
-        ITalendProcessJavaProject talendProcessJavaProject = getRunProcessService().getTalendProcessJavaProject();
+        ITalendProcessJavaProject talendProcessJavaProject = getRunProcessService().getTalendCodeJavaProject(ERepositoryObjectType.getItemType(routineItem));
         if (talendProcessJavaProject == null) {
             return null;
         }
@@ -125,7 +125,7 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
     }
 
     private IFile getProcessFile(ProcessItem item) throws SystemException {
-        final ITalendProcessJavaProject talendProcessJavaProject = getRunProcessService().getTalendProcessJavaProject();
+        final ITalendProcessJavaProject talendProcessJavaProject = getRunProcessService().getTalendJobJavaProject(item.getProperty());
         if (talendProcessJavaProject == null) {
             return null;
         }
@@ -259,7 +259,7 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
     public void deleteRoutinefile(IRepositoryViewObject objToDelete) {
         Item item = objToDelete.getProperty().getItem();
         try {
-            ITalendProcessJavaProject talendProcessJavaProject = getRunProcessService().getTalendProcessJavaProject();
+            ITalendProcessJavaProject talendProcessJavaProject = getRunProcessService().getTalendCodeJavaProject(ERepositoryObjectType.getItemType(item));
             if (talendProcessJavaProject == null) {
                 return;
             }

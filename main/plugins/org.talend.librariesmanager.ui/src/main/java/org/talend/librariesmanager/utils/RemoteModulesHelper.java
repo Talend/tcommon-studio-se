@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -240,8 +240,8 @@ public class RemoteModulesHelper {
                         if (jarsToCheck.endsWith(",")) {
                             jarsToCheck = jarsToCheck.substring(0, jarsToCheck.length() - 1);
                         }
-                        List<MavenArtifact> searchResults = talendRepositoryHander
-                                .search(groupId, jarsToCheck, null, true, false);
+                        List<MavenArtifact> searchResults = talendRepositoryHander.search(groupId, jarsToCheck, null, true,
+                                false);
                         monitor.worked(10);
                         addModulesToCache(searchResults, remoteCache);
 
@@ -353,7 +353,9 @@ public class RemoteModulesHelper {
         // site.
         for (String mvnUri : unavailableModules) {
             ModuleToInstall m = createUnavailableModuleToInstall(mvnUri, contextMap);
-            toInstall2.add(m);
+            if (m != null) {
+                toInstall2.add(m);
+            }
         }
     }
 
@@ -377,6 +379,9 @@ public class RemoteModulesHelper {
         boolean downloadManual = true;
         if (StringUtils.isNotEmpty(mvnUri)) {
             MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(mvnUri);
+            if (parseMvnUrl == null) {
+                return null;
+            }
             String repoUrl = parseMvnUrl.getRepositoryUrl();
             if (StringUtils.isNotEmpty(repoUrl)) {
                 downloadManual = false;
@@ -594,8 +599,8 @@ public class RemoteModulesHelper {
     public RemoteModulesFetchRunnable getNotInstalledModulesRunnable(List<ModuleNeeded> neededModules,
             List<ModuleToInstall> toInstall, boolean collectModulesWithJarName) {
         Map<String, List<ModuleNeeded>> contextMap = new HashMap<String, List<ModuleNeeded>>();
-        ILibraryManagerService librairesManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
-                ILibraryManagerService.class);
+        ILibraryManagerService librairesManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault()
+                .getService(ILibraryManagerService.class);
         // collect mvnuri and modules incase many modules have the same mvnuri
         final Iterator<ModuleNeeded> iterator = neededModules.iterator();
         while (iterator.hasNext()) {

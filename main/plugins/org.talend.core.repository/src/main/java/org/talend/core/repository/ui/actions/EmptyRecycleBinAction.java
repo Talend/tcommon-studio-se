@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -21,6 +21,7 @@ import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -61,6 +62,7 @@ import org.talend.core.repository.ui.dialog.ItemReferenceDialog;
 import org.talend.core.repository.utils.AbstractResourceChangesService;
 import org.talend.core.repository.utils.RepositoryNodeDeleteManager;
 import org.talend.core.repository.utils.TDQServiceRegister;
+import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.designer.core.ICamelDesignerCoreService;
 import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.repository.ProjectManager;
@@ -220,7 +222,8 @@ public class EmptyRecycleBinAction extends AContextualAction {
             if (forceBuild) {
                 IRunProcessService service = (IRunProcessService) GlobalServiceRegister.getDefault().getService(
                         IRunProcessService.class);
-                service.buildJavaProject();
+                ITalendProcessJavaProject routineProject = service.getTalendCodeJavaProject(ERepositoryObjectType.ROUTINES);
+                routineProject.buildModules(new NullProgressMonitor(), null, null);
             }
 
         } catch (Exception e) {

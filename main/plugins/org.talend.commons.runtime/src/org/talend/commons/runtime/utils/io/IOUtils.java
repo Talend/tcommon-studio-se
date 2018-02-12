@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -51,6 +51,27 @@ public class IOUtils {
             }
         }
         return unitCRC;
+    }
+
+    public static boolean contentEquals(InputStream input1, InputStream input2) throws IOException {
+        try {
+            return org.apache.commons.io.IOUtils.contentEquals(input1, input2);
+        } finally {
+            if (input1 != null) {
+                try {
+                    input1.close();
+                } catch (IOException e) {
+                    //
+                }
+            }
+            if (input2 != null) {
+                try {
+                    input2.close();
+                } catch (IOException e) {
+                    //
+                }
+            }
+        }
     }
 
 }

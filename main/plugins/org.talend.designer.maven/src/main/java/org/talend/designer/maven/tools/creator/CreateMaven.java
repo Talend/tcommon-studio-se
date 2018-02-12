@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -18,7 +18,6 @@ import java.util.Properties;
 import org.apache.maven.model.Model;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.talend.core.model.process.ProcessUtils;
-import org.talend.core.runtime.process.TalendProcessArgumentConstant;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.template.ETalendMavenVariables;
 import org.talend.designer.maven.utils.PomUtil;
@@ -105,16 +104,6 @@ public abstract class CreateMaven {
         return ProcessUtils.getOptionValue(getArgumentsMap(), key, (String) null);
     }
 
-    protected String getDeployVersion() {
-        if (argumentsMap != null) {
-            String deployVersion = (String) argumentsMap.get(TalendProcessArgumentConstant.ARG_DEPLOY_VERSION);
-            if (deployVersion != null) {
-                return deployVersion;
-            }
-        }
-        return null;
-    }
-    
     @Override
     public String toString() {
         return "groupId=" + groupId + ", artifactId=" + artifactId + ", version=" + version;

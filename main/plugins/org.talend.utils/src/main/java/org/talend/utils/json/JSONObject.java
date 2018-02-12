@@ -117,7 +117,7 @@ public class JSONObject {
     /**
      * The map where the JSONObject's properties are kept.
      */
-    private Map map;
+    protected Map map;
 
     /**
      * It is sometimes more convenient and less ambiguous to have a <code>NULL</code> object than to use Java's

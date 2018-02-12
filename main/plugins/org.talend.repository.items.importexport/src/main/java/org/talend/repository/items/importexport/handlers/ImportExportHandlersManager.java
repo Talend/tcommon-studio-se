@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -66,6 +66,7 @@ import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.ui.IJobletProviderService;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.RepositoryWorkUnit;
+import org.talend.repository.documentation.ERepositoryActionName;
 import org.talend.repository.items.importexport.handlers.imports.IImportItemsHandler;
 import org.talend.repository.items.importexport.handlers.imports.IImportResourcesHandler;
 import org.talend.repository.items.importexport.handlers.imports.ImportBasicHandler;
@@ -634,7 +635,6 @@ public class ImportExportHandlersManager {
                             } catch (Exception e) {
                                 ExceptionHandler.process(e);
                             }
-                            unloadImportItems(allImportItemRecords);
                         }
 
                         private void importItemRecordsWithRelations(final IProgressMonitor monitor,
@@ -759,6 +759,11 @@ public class ImportExportHandlersManager {
             ProxyRepositoryFactory.getInstance().executeRepositoryWorkUnit(repositoryWorkUnit);
 
             progressMonitor.done();
+            
+            // fire import event out of workspace runnable
+            fireImportChange(ImportCacheHelper.getInstance().getImportedItemRecords());
+
+            unloadImportItems(allImportItemRecords);
 
             if (ImportCacheHelper.getInstance().hasImportingError()) {
                 throw new InvocationTargetException(new CoreException(
@@ -784,6 +789,14 @@ public class ImportExportHandlersManager {
             TimeMeasure.displaySteps = false;
             TimeMeasure.measureActive = false;
         }
+    }
+
+    private void fireImportChange(List<ImportItem> importedItemRecords) {
+        Set<Item> importedItems = new HashSet<>();
+        for (ImportItem importedItem : importedItemRecords) {
+            importedItems.add(importedItem.getItem());
+        }
+        ProxyRepositoryFactory.getInstance().fireRepositoryPropertyChange(ERepositoryActionName.IMPORT.getName(), null, importedItems);
     }
 
     /**

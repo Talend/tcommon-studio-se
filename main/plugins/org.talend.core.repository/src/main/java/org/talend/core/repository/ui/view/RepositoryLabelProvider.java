@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -89,6 +89,8 @@ public class RepositoryLabelProvider extends LabelProvider implements IColorProv
 
     private IRepositoryView view;
 
+    private static boolean refreshProperty = true;
+
     public RepositoryLabelProvider(IRepositoryView view) {
         super();
         this.view = view;
@@ -163,7 +165,9 @@ public class RepositoryLabelProvider extends LabelProvider implements IColorProv
         if (node.getType() == ENodeType.REPOSITORY_ELEMENT || node.getType() == ENodeType.SIMPLE_FOLDER) {
             IRepositoryViewObject object = node.getObject();
             String label = ""; //$NON-NLS-1$
-            object.getProperty();
+            if (refreshProperty) {
+                object.getProperty();
+            }
             if (object.isModified()) {
                 label = "> "; //$NON-NLS-1$
             }
@@ -520,6 +524,10 @@ public class RepositoryLabelProvider extends LabelProvider implements IColorProv
         default:
             return JFaceResources.getFontRegistry().defaultFont();
         }
+    }
+    
+    public static void setRefresh(boolean refresh) {
+        refreshProperty = refresh;
     }
 
 }

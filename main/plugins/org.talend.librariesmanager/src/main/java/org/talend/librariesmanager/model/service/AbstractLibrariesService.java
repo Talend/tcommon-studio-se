@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,6 +22,7 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -50,7 +51,6 @@ import org.talend.core.model.process.Problem;
 import org.talend.core.model.process.Problem.ProblemStatus;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.runtime.CoreRuntimePlugin;
-import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.librariesmanager.model.ExtensionModuleManager;
 import org.talend.librariesmanager.model.ModulesNeededProvider;
@@ -226,20 +226,16 @@ public abstract class AbstractLibrariesService implements ILibrariesService {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
             IRunProcessService processService = (IRunProcessService) GlobalServiceRegister.getDefault().getService(
                     IRunProcessService.class);
-            ITalendProcessJavaProject talendProcessJavaProject = processService.getTalendProcessJavaProject();
-            if (talendProcessJavaProject != null) {
-                IFolder javaLibFolder = talendProcessJavaProject.getLibFolder();
-                if (javaLibFolder.exists()) {
-                    File libFolder = javaLibFolder.getLocation().toFile();
-                    for (File externalLib : libFolder.listFiles(FilesUtils.getAcceptJARFilesFilter())) {
-                        if (externalLib.getName().equals(lib.getName())) {
-                            FilesUtils.copyFile(lib, externalLib);
-                        }
+            IFolder javaLibFolder = processService.getJavaProjectLibFolder();
+            if (javaLibFolder.exists()) {
+                File libFolder = javaLibFolder.getLocation().toFile();
+                for (File externalLib : libFolder.listFiles(FilesUtils.getAcceptJARFilesFilter())) {
+                    if (externalLib.getName().equals(lib.getName())) {
+                        FilesUtils.copyFile(lib, externalLib);
                     }
                 }
             }
         }
-
     }
 
     protected void addResolvedClasspathPath(String libName) {
@@ -315,16 +311,17 @@ public abstract class AbstractLibrariesService implements ILibrariesService {
     @Override
     public void cleanLibs() {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
-            IRunProcessService processService = (IRunProcessService) GlobalServiceRegister.getDefault().getService(
-                    IRunProcessService.class);
-            ITalendProcessJavaProject talendProcessJavaProject = processService.getTalendProcessJavaProject();
-            if (talendProcessJavaProject != null) {
-                IFolder libFolder = talendProcessJavaProject.getLibFolder();
-                try {
-                    talendProcessJavaProject.cleanFolder(null, libFolder);
-                } catch (CoreException e) {
-                    ExceptionHandler.process(e);
+            IRunProcessService processService = (IRunProcessService) GlobalServiceRegister.getDefault()
+                    .getService(IRunProcessService.class);
+            IFolder libFolder = processService.getJavaProjectLibFolder();
+            try {
+                if (libFolder != null && libFolder.exists()) {
+                    for (IResource file : libFolder.members()) {
+                        file.delete(true, null);
+                    }
                 }
+            } catch (CoreException e) {
+                ExceptionHandler.process(e);
             }
         }
     }

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -12,8 +12,6 @@
 // ============================================================================
 package org.talend.core.runtime.process;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Properties;
 
 import org.talend.commons.CommonsPlugin;
@@ -35,7 +33,7 @@ public class JobInfoProperties extends Properties {
 
     private static final long serialVersionUID = -1522349324061260504L;
 
-    public static final SimpleDateFormat DATAFORMAT = new SimpleDateFormat("yyyy-MM-dd HHmmssSSS"); //$NON-NLS-1$
+    public static final String JOB_DATE_FORMAT = "yyyy-MM-dd HHmmssSSS"; //$NON-NLS-1$
 
     private static final String UNDER_LINE_CHAR = "_"; //$NON-NLS-1$
 
@@ -108,7 +106,6 @@ public class JobInfoProperties extends Properties {
         setProperty(JOB_TYPE, jobType);
         setProperty(JOB_VERSION, jobInfo.getJobVersion());
         setProperty(CONTEXT_NAME, this.contextName);
-        setProperty(DATE, DATAFORMAT.format(new Date()));
 
         setProperty(APPLY_CONTEXY_CHILDREN, String.valueOf(applyContextToChild));
         if (CommonsPlugin.isHeadless()) {

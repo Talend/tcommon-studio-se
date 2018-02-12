@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -13,6 +13,7 @@
 package org.talend.designer.maven.tools;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,8 +23,13 @@ import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Exclusion;
 import org.apache.maven.model.Model;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.talend.commons.exception.PersistenceException;
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.general.ModuleNeeded;
-import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
+import org.talend.core.model.process.IProcess;
+import org.talend.core.model.properties.ProcessItem;
+import org.talend.core.ui.ITestContainerProviderService;
+import org.talend.designer.core.IDesignerCoreService;
 import org.talend.designer.maven.utils.PomUtil;
 import org.talend.designer.runprocess.IProcessor;
 import org.talend.designer.runprocess.ProcessorException;
@@ -46,14 +52,12 @@ public class ProcessorDependenciesManager {
     public boolean updateDependencies(IProgressMonitor progressMonitor, Model model) throws ProcessorException {
         try {
             List neededDependencies = new ArrayList<Dependency>();
-
-            // add the job modules.
-            Set<ModuleNeeded> neededLibraries = processor.getNeededModules();
+            Set<ModuleNeeded> neededLibraries = getAllModuleNeededWithTestCase();
             for (ModuleNeeded module : neededLibraries) {
                 Dependency dependency = null;
-                if (module.getDeployStatus() == ELibraryInstallStatus.DEPLOYED) {
-                    dependency = PomUtil.createModuleDependency(module.getMavenUri());
-                }
+                // if (module.getDeployStatus() == ELibraryInstallStatus.DEPLOYED) {
+                // }
+                dependency = PomUtil.createModuleDependency(module.getMavenUri());
                 if (dependency != null) {
                     if (module.isExcludeDependencies()) {
                         Exclusion exclusion = new Exclusion();
@@ -140,4 +144,48 @@ public class ProcessorDependenciesManager {
         return changed;
     }
 
+    private Set<ModuleNeeded> getAllModuleNeededWithTestCase() throws PersistenceException {
+        // add the job modules.
+        Set<ModuleNeeded> neededLibraries;
+        boolean hasTestCase = false;
+        List<ProcessItem> testContainers = null;
+        ProcessItem item = null;
+        if (processor.getProperty() != null && processor.getProperty().getItem() instanceof ProcessItem) {
+            item = (ProcessItem) processor.getProperty().getItem();
+        }
+        ITestContainerProviderService testContainerService = null;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
+            testContainerService = (ITestContainerProviderService) GlobalServiceRegister.getDefault()
+                    .getService(ITestContainerProviderService.class);
+            if (item != null) {
+                boolean isTestCase = testContainerService.isTestContainerItem(item);
+                if (isTestCase) {
+                    item = (ProcessItem) testContainerService.getParentJobItem(item);
+                }
+                testContainers = testContainerService.getAllTestContainers(item);
+                if (testContainers != null && !testContainers.isEmpty()) {
+                    hasTestCase = true;
+                }
+            }
+        }
+        if (hasTestCase) {
+            neededLibraries = new HashSet<>();
+            IProcess jobProcess = getDesignerCoreService().getProcessFromProcessItem(item);
+            neededLibraries.addAll(jobProcess.getNeededModules(false));
+            for (ProcessItem testcaseItem : testContainers) {
+                IProcess testcaseProcess = getDesignerCoreService().getProcessFromProcessItem(testcaseItem);
+                neededLibraries.addAll(testcaseProcess.getNeededModules(false));
+            }
+        } else {
+            neededLibraries = processor.getNeededModules();
+        }
+        return neededLibraries;
+    }
+
+    private IDesignerCoreService getDesignerCoreService() {
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IDesignerCoreService.class)) {
+            return (IDesignerCoreService) GlobalServiceRegister.getDefault().getService(IDesignerCoreService.class);
+        }
+        return null;
+    }
 }

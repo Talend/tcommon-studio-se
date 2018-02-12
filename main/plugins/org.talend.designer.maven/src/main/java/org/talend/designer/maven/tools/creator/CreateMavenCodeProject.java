@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -13,16 +13,15 @@
 package org.talend.designer.maven.tools.creator;
 
 import java.io.File;
-import java.io.FileFilter;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
+import java.util.List;
 
 import org.apache.maven.model.Model;
-import org.apache.maven.project.MavenProject;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Assert;
@@ -31,26 +30,20 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.SubProgressMonitor;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.eclipse.jdt.core.IClasspathEntry;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.m2e.core.MavenPlugin;
-import org.eclipse.m2e.core.embedder.IMaven;
-import org.eclipse.m2e.core.embedder.MavenModelManager;
-import org.eclipse.m2e.core.project.IProjectConfigurationManager;
-import org.eclipse.m2e.core.project.ProjectImportConfiguration;
-import org.osgi.service.prefs.BackingStoreException;
+import org.eclipse.m2e.core.internal.Messages;
+import org.eclipse.m2e.core.internal.project.ProjectConfigurationManager;
+import org.eclipse.osgi.util.NLS;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.core.model.general.TalendJobNature;
 import org.talend.core.runtime.projectsetting.IProjectSettingTemplateConstants;
-import org.talend.designer.maven.DesignerMavenPlugin;
 import org.talend.designer.maven.model.MavenSystemFolders;
 import org.talend.designer.maven.model.ProjectSystemFolder;
+import org.talend.designer.maven.model.TalendJavaProjectConstants;
 import org.talend.designer.maven.model.TalendMavenConstants;
-import org.talend.designer.maven.template.MavenTemplateManager;
-import org.talend.designer.maven.utils.PomUtil;
+import org.talend.designer.maven.tools.AggregatorPomsHelper;
+import org.talend.designer.maven.utils.MavenProjectUtils;
+import org.talend.designer.maven.utils.PomIdsHelper;
 
 /**
  * created by ggu on 22 Jan 2015 Detailled comment
@@ -62,10 +55,21 @@ public class CreateMavenCodeProject extends AbstractMavenGeneralTemplatePom {
 
     private IProject project;
 
+    private IFile pomFile;
+
+    private IPath location;
+
+    private boolean enbleMavenNature;
+
     public CreateMavenCodeProject(IProject project) {
+        this(project, true);
+    }
+
+    public CreateMavenCodeProject(IProject project, boolean enbleMavenNature) {
         super(project.getFile(TalendMavenConstants.POM_FILE_NAME), IProjectSettingTemplateConstants.PROJECT_TEMPLATE_FILE_NAME);
         Assert.isNotNull(project);
         this.project = project;
+        this.enbleMavenNature = enbleMavenNature;
     }
 
     public IProject getProject() {
@@ -74,18 +78,13 @@ public class CreateMavenCodeProject extends AbstractMavenGeneralTemplatePom {
 
     @Override
     protected Model createModel() {
-        Model templateModel = MavenTemplateManager.getCodeProjectTemplateModel();
-
-        // The groupId and artifactId are temp, will change it after create project.
-        setGroupId(project.getName());
-        setArtifactId(project.getName());
-        setVersion(templateModel.getVersion());
-        // Must be jar, if pom, won't create the classpath or such for jdt.
-        setPackaging(TalendMavenConstants.PACKAGING_JAR);
-
-        setAttributes(templateModel);
-        addProperties(templateModel);
-
+        // temp model.
+        Model templateModel = new Model();
+        templateModel.setModelVersion("4.0.0"); //$NON-NLS-1$
+        templateModel.setGroupId("org.talend.temp.job"); //$NON-NLS-1$
+        templateModel.setArtifactId(TalendJavaProjectConstants.TEMP_POM_ARTIFACT_ID);
+        templateModel.setVersion(PomIdsHelper.getProjectVersion());
+        templateModel.setPackaging(TalendMavenConstants.PACKAGING_JAR);
         return templateModel;
     }
 
@@ -96,6 +95,14 @@ public class CreateMavenCodeProject extends AbstractMavenGeneralTemplatePom {
      */
     protected IPath getBaseLocation() {
         return ResourcesPlugin.getWorkspace().getRoot().getLocation();
+    }
+
+    public void setProjectLocation(IPath location) {
+        this.location = location;
+    }
+
+    public void setPomFile(IFile pomFile) {
+        this.pomFile = pomFile;
     }
 
     /**
@@ -119,7 +126,7 @@ public class CreateMavenCodeProject extends AbstractMavenGeneralTemplatePom {
      * can do something before create operation.
      */
     protected void beforeCreate(IProgressMonitor monitor, IResource res) throws Exception {
-        cleanLastUpdatedFiles();
+        //
     }
 
     /**
@@ -131,13 +138,9 @@ public class CreateMavenCodeProject extends AbstractMavenGeneralTemplatePom {
         if (!p.isOpen()) {
             p.open(monitor);
         }
-        convertJavaProjectToPom(monitor, p);
-        changeClasspath(monitor, p);
-
-        IJavaProject javaProject = JavaCore.create(p);
-        clearProjectIndenpendComplianceSettings(javaProject);
-        // unregist listeners, release resources
-        javaProject.close();
+        addTalendNature(p, TalendJobNature.ID, monitor);
+        // convertJavaProjectToPom(monitor, p);
+        AggregatorPomsHelper.addToParentModules(pomFile);
     }
 
     @Override
@@ -148,188 +151,106 @@ public class CreateMavenCodeProject extends AbstractMavenGeneralTemplatePom {
         }
         IProgressMonitor subMonitor = new SubProgressMonitor(pMoniter, 100);
 
-        final Model model = createModel();
-        final ProjectImportConfiguration importConfiguration = new ProjectImportConfiguration();
-        final IProject p = importConfiguration.getProject(ResourcesPlugin.getWorkspace().getRoot(), model);
-        final IPath location = getBaseLocation();
-        final String[] folders = getFolders();
+        IProject p = ResourcesPlugin.getWorkspace().getRoot().getProject(project.getName());
 
         beforeCreate(subMonitor, p);
+
         subMonitor.worked(10);
 
-        IProjectConfigurationManager projectConfigurationManager = MavenPlugin.getProjectConfigurationManager();
-        projectConfigurationManager.createSimpleProject(p, location.append(p.getName()), model, folders, importConfiguration,
-                subMonitor);
+        createSimpleProject(subMonitor, p);
 
         subMonitor.worked(80);
 
         afterCreate(subMonitor, p);
+
+        project = p;
+
         subMonitor.done();
-
-        // update the project
-        this.project = p;
     }
 
-    private void convertJavaProjectToPom(IProgressMonitor monitor, IProject p) {
+    public static void addTalendNature(IProject project, String natureId, IProgressMonitor monitor) throws CoreException {
+        if (!project.hasNature(natureId)) {
+            IProjectDescription description = project.getDescription();
+            String[] prevNatures = description.getNatureIds();
+            String[] newNatures = new String[prevNatures.length + 1];
+            System.arraycopy(prevNatures, 0, newNatures, 1, prevNatures.length);
+            newNatures[0] = natureId;
+            description.setNatureIds(newNatures);
+            project.setDescription(description, monitor);
+        }
+    }
+
+    @SuppressWarnings("restriction")
+    private void createSimpleProject(IProgressMonitor monitor, IProject p) throws CoreException {
+        final String[] directories = getFolders();
+
+        String projectName = p.getName();
+        monitor.beginTask(NLS.bind(Messages.ProjectConfigurationManager_task_creating, projectName), 5);
+
+        monitor.subTask(Messages.ProjectConfigurationManager_task_creating_workspace);
+        IProjectDescription description = ResourcesPlugin.getWorkspace().newProjectDescription(projectName);
+        description.setLocation(location);
+        p.create(description, monitor);
+        p.open(monitor);
+        monitor.worked(1);
+
+        hideNestedProjectsFromParents(Collections.singletonList(p));
+
+        monitor.worked(1);
+
+        monitor.subTask(Messages.ProjectConfigurationManager_task_creating_pom);
         IFile pomFile = p.getFile(TalendMavenConstants.POM_FILE_NAME);
-        if (pomFile.exists()) {
-            try {
-                MavenModelManager mavenModelManager = MavenPlugin.getMavenModelManager();
-                MavenProject mavenProject = mavenModelManager.readMavenProject(pomFile, monitor);
-                if (mavenProject != null) {
-                    Model model = mavenProject.getOriginalModel();
-                    // if not pom, change to pom
-                    if (!TalendMavenConstants.PACKAGING_POM.equals(model.getPackaging())) {
+        if (!pomFile.exists()) {
+            // always use temp model to avoid classpath problem?
+            Model model = createModel();
+            MavenPlugin.getMavenModelManager().createMavenModel(pomFile, model);
+        }
+        monitor.worked(1);
 
-                        Model codeProjectTemplateModel = MavenTemplateManager.getCodeProjectTemplateModel();
-                        model.setGroupId(codeProjectTemplateModel.getGroupId());
-                        model.setArtifactId(codeProjectTemplateModel.getArtifactId());
-                        model.setVersion(codeProjectTemplateModel.getVersion());
-                        model.setName(codeProjectTemplateModel.getName());
-                        model.setPackaging(codeProjectTemplateModel.getPackaging());
+        monitor.subTask(Messages.ProjectConfigurationManager_task_creating_folders);
+        for (int i = 0; i < directories.length; i++) {
+            ProjectConfigurationManager.createFolder(p.getFolder(directories[i]), false);
+        }
+        monitor.worked(1);
 
-                        PomUtil.savePom(monitor, model, pomFile);
+        monitor.subTask(Messages.ProjectConfigurationManager_task_creating_project);
 
-                        p.refreshLocal(IResource.DEPTH_ONE, monitor);
-                    }
-                }
-            } catch (Exception e) {
-                ExceptionHandler.process(e);
-            }
+        if (enbleMavenNature) {
+            MavenProjectUtils.enableMavenNature(monitor, p);
+        }
+        monitor.worked(1);
 
+        if (this.pomFile == null) {
+            this.pomFile = pomFile;
         }
     }
 
-    public static void changeClasspath(IProgressMonitor monitor, IProject p) {
-        try {
-            IJavaProject javaProject = JavaCore.create(p);
-            IClasspathEntry[] rawClasspathEntries = javaProject.getRawClasspath();
-            boolean changed = false;
+    private void hideNestedProjectsFromParents(List<IProject> projects) {
 
-            for (int index = 0; index < rawClasspathEntries.length; index++) {
-                IClasspathEntry entry = rawClasspathEntries[index];
-
-                IClasspathEntry newEntry = null;
-                if (entry.getEntryKind() == IClasspathEntry.CPE_SOURCE) {
-                    IPath path = entry.getPath();
-                    if (p.getFullPath().isPrefixOf(path)) {
-                        path = path.removeFirstSegments(1);
-                    }
-
-                    // src/main/resources, in order to removing the 'excluding="**"'.
-                    if (MavenSystemFolders.RESOURCES.getPath().equals(path.toString())) {
-                        newEntry = JavaCore.newSourceEntry(entry.getPath(), new IPath[0], new IPath[0], //
-                                entry.getOutputLocation(), entry.getExtraAttributes());
-                    }
-
-                    // src/test/resources, in order to removing the 'excluding="**"'.
-                    if (MavenSystemFolders.RESOURCES_TEST.getPath().equals(path.toString())) {
-                        newEntry = JavaCore.newSourceEntry(entry.getPath(), new IPath[0], new IPath[0], //
-                                entry.getOutputLocation(), entry.getExtraAttributes());
-                    }
-
-                } else if (entry.getEntryKind() == IClasspathEntry.CPE_CONTAINER) {
-                    // remove the special version of jre in container.
-                    IPath defaultJREContainerPath = JavaRuntime.newDefaultJREContainerPath();
-                    if (defaultJREContainerPath.isPrefixOf(entry.getPath())) {
-                        // JavaRuntime.getDefaultJREContainerEntry(); //missing properties
-                        newEntry = JavaCore.newContainerEntry(defaultJREContainerPath, entry.getAccessRules(),
-                                entry.getExtraAttributes(), entry.isExported());
-                    }
-                }
-                if (newEntry != null) {
-                    rawClasspathEntries[index] = newEntry;
-                    changed = true;
-                }
-
-            }
-            if (changed) {
-                javaProject.setRawClasspath(rawClasspathEntries, monitor);
-            }
-        } catch (CoreException e) {
-            ExceptionHandler.process(e);
-        }
-    }
-
-    /**
-     * 
-     * FIXME, Maybe need find another way to remove the lastUpdated files. seems the
-     * MavenUpdateRequest.isForceDependencyUpdate is not useful when create this .Java project.
-     */
-    private void cleanLastUpdatedFiles() {
-        final IMaven maven = MavenPlugin.getMaven();
-        String localRepositoryPath = maven.getLocalRepositoryPath();
-        if (localRepositoryPath == null) {
+        if (!MavenPlugin.getMavenConfiguration().isHideFoldersOfNestedProjects()) {
             return;
         }
-        File localRepoFolder = new File(localRepositoryPath);
-        cleanLastUpdatedFile(localRepoFolder);
-    }
 
-    private final static FileFilter lastUpdatedFilter = new FileFilter() {
+        // Prevent child project folders from showing up in parent project folders.
 
-        @Override
-        public boolean accept(File pathname) {
-            return pathname.isDirectory() || pathname.getName().endsWith(".lastUpdated") //$NON-NLS-1$
-                    || pathname.getName().equals("m2e-lastUpdated.properties"); //$NON-NLS-1$
+        HashMap<File, IProject> projectFileMap = new HashMap<File, IProject>();
+
+        for (IProject project : projects) {
+            projectFileMap.put(project.getLocation().toFile(), project);
         }
-    };
-
-    private void cleanLastUpdatedFile(final File file) {
-        if (file != null && file.exists()) {
-            if (file.isDirectory()) {
-                File[] list = file.listFiles(lastUpdatedFilter);
-                if (list != null) {
-                    for (File f : list) {
-                        cleanLastUpdatedFile(f);
-                    }
-                }
-            } else if (file.isFile() && lastUpdatedFilter.accept(file)) {
-                file.delete();
+        for (IProject project : projects) {
+            File projectFile = project.getLocation().toFile();
+            IProject physicalParentProject = projectFileMap.get(projectFile.getParentFile());
+            if (physicalParentProject == null) {
+                continue;
             }
-        }
-    }
-
-    /**
-     * Clear compliance settings from project, and set them into Eclipse compliance settings
-     * 
-     * @param javaProject
-     */
-    private static void clearProjectIndenpendComplianceSettings(IJavaProject javaProject) {
-
-        Map<String, String> projectComplianceOptions = javaProject.getOptions(false);
-        if (projectComplianceOptions == null || projectComplianceOptions.isEmpty()) {
-            return;
-        }
-        String compilerCompliance = javaProject.getOption(JavaCore.COMPILER_COMPLIANCE, false);
-        // clear compliance settings from project
-        Set<String> keySet = projectComplianceOptions.keySet();
-        for (String key : keySet) {
-            javaProject.setOption(key, null);
-        }
-
-        IEclipsePreferences pluginPreferences = InstanceScope.INSTANCE.getNode(DesignerMavenPlugin.PLUGIN_ID);
-        boolean isAlreadySetEclipsePreferences = pluginPreferences.getBoolean(IS_ALREADY_SET_ECLIPSE_COMPLIANCE, false);
-        // if already setted them, then can't modify them anymore since user can customize them.
-        if (!isAlreadySetEclipsePreferences) {
-            pluginPreferences.putBoolean(IS_ALREADY_SET_ECLIPSE_COMPLIANCE, true);
-            if (compilerCompliance != null) {
-                IEclipsePreferences eclipsePreferences = InstanceScope.INSTANCE.getNode(JavaCore.PLUGIN_ID);
-                // set compliance settings to Eclipse
-                Map<String, String> complianceOptions = new HashMap<String, String>();
-                JavaCore.setComplianceOptions(compilerCompliance, complianceOptions);
-                if (!complianceOptions.isEmpty()) {
-                    Set<Entry<String, String>> entrySet = complianceOptions.entrySet();
-                    for (Entry<String, String> entry : entrySet) {
-                        eclipsePreferences.put(entry.getKey(), entry.getValue());
-                    }
-                }
+            IFolder folder = physicalParentProject.getFolder(projectFile.getName());
+            if (folder.exists()) {
                 try {
-                    // save changes
-                    eclipsePreferences.flush();
-                    pluginPreferences.flush();
-                } catch (BackingStoreException e) {
-                    ExceptionHandler.process(e);
+                    folder.setHidden(true);
+                } catch (Exception ex) {
+                    // log.error("Failed to hide resource; " + resource.getLocation().toOSString(), ex);
+                    ExceptionHandler.process(ex);
                 }
             }
         }

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -21,8 +21,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
@@ -46,6 +44,7 @@ import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventConstants;
 import org.osgi.service.event.EventHandler;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.repository.CoreRepositoryPlugin;
@@ -58,6 +57,7 @@ import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.view.sorter.IRepositoryNodeSorter;
 import org.talend.repository.view.sorter.RepositoryNodeSorterRegister;
+import org.talend.repository.view.util.RepoViewRefreshHelper;
 import org.talend.repository.viewer.content.listener.IRefreshNodePerspectiveListener;
 import org.talend.repository.viewer.ui.provider.INavigatorContentServiceProvider;
 
@@ -414,13 +414,21 @@ public class RepoViewCommonViewer extends CommonViewer implements INavigatorCont
 
             @Override
             public void run() {
+                RepoViewRefreshHelper helper = new RepoViewRefreshHelper();
                 for (String fileUpdated : fileList) {
                     XmiResourceManager xrm = new XmiResourceManager();
                     if (xrm.isPropertyFile(fileUpdated)) {
-                        IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(fileUpdated));
-                        if (file != null && file.isAccessible()) {
-                            Property property = xrm.loadProperty(file);
-                            refreshNodeFromProperty(property);
+                        IFile file = helper.getValidResourceFile(fileUpdated);
+                        if (file != null) {
+                            try {
+                                Property property = xrm.loadProperty(file);
+                                if (property != null) {
+                                    refreshNodeFromProperty(property);
+                                }
+                            } catch (Throwable e) {
+                                // if have error still, just log it
+                                ExceptionHandler.process(e);
+                            }
                         }
                     }
                 }

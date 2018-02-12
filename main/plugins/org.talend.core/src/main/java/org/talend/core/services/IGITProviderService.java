@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -15,6 +15,7 @@ package org.talend.core.services;
 import java.util.Collection;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.talend.commons.exception.PersistenceException;
@@ -43,5 +44,7 @@ public interface IGITProviderService extends IService {
     public void reloadDynamicDistributions(IProgressMonitor monitor) throws Exception;
 
     public void clean();
+
+    void createOrUpdateGitIgnoreFile(IProject eclipseProject) throws CoreException;
 
 }

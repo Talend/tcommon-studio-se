@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -17,10 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -29,18 +26,20 @@ import java.util.Set;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.maven.model.Activation;
+import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.model.PluginExecution;
 import org.apache.maven.model.Profile;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.m2e.core.MavenPlugin;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.utils.VersionUtils;
 import org.talend.core.GlobalServiceRegister;
-import org.talend.core.ICoreService;
 import org.talend.core.model.process.IContext;
 import org.talend.core.model.process.IProcess;
 import org.talend.core.model.process.IProcess2;
@@ -49,15 +48,15 @@ import org.talend.core.model.process.ProcessUtils;
 import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.Project;
 import org.talend.core.model.properties.Property;
-import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.repository.SVNConstant;
 import org.talend.core.model.utils.JavaResourcesHelper;
-import org.talend.core.runtime.CoreRuntimePlugin;
+import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.process.JobInfoProperties;
 import org.talend.core.runtime.process.LastGenerationInfo;
 import org.talend.core.runtime.process.TalendProcessArgumentConstant;
 import org.talend.core.runtime.projectsetting.IProjectSettingPreferenceConstants;
 import org.talend.core.runtime.projectsetting.IProjectSettingTemplateConstants;
+import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.maven.model.TalendMavenConstants;
@@ -68,12 +67,7 @@ import org.talend.designer.maven.utils.PomIdsHelper;
 import org.talend.designer.maven.utils.PomUtil;
 import org.talend.designer.runprocess.IProcessor;
 import org.talend.repository.ProjectManager;
-import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.utils.io.FilesUtils;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 /**
  * created by ggu on 4 Feb 2015 Detailled comment
@@ -171,9 +165,22 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         Properties properties = model.getProperties();
 
         final IProcessor jProcessor = getJobProcessor();
-        final IProcess process = jProcessor.getProcess();
+        IProcess process = jProcessor.getProcess();
         final IContext context = jProcessor.getContext();
-        final Property property = jProcessor.getProperty();
+        Property property = jProcessor.getProperty();
+
+        if (ProcessUtils.isTestContainer(process)) {
+            if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
+                ITestContainerProviderService testService = (ITestContainerProviderService) GlobalServiceRegister.getDefault()
+                        .getService(ITestContainerProviderService.class);
+                try {
+                    property = testService.getParentJobItem(property.getItem()).getProperty();
+                    process = testService.getParentJobProcess(process);
+                } catch (PersistenceException e) {
+                    ExceptionHandler.process(e);
+                }
+            }
+        }
 
         // same as JavaProcessor.initCodePath
         String jobClassPackageFolder = JavaResourcesHelper.getJobClassPackageFolder(property.getItem());
@@ -224,8 +231,8 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
 
         checkPomProperty(properties, "talend.job.version", ETalendMavenVariables.TalendJobVersion, property.getVersion());
 
-        checkPomProperty(properties, "talend.job.date", ETalendMavenVariables.JobDate,
-                jobInfoProp.getProperty(JobInfoProperties.DATE, JobInfoProperties.DATAFORMAT.format(new Date())));
+        checkPomProperty(properties, "maven.build.timestamp.format", ETalendMavenVariables.JobDateFormat,
+                JobInfoProperties.JOB_DATE_FORMAT);
 
         checkPomProperty(properties, "talend.job.context", ETalendMavenVariables.JobContext,
                 jobInfoProp.getProperty(JobInfoProperties.CONTEXT_NAME, context.getName()));
@@ -402,11 +409,6 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         if (isOptionChecked(TalendProcessArgumentConstant.ARG_NEED_XMLMAPPINGS)) {
             setDefaultActivationForProfile(model, TalendMavenConstants.PROFILE_INCLUDE_XMLMAPPINGS, true);
             setDefaultActivationForProfile(model, TalendMavenConstants.PROFILE_INCLUDE_RUNNING_XMLMAPPINGS, true);
-            if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreService.class)) {
-                ICoreService coreService = (ICoreService) GlobalServiceRegister.getDefault().getService(ICoreService.class);
-                coreService.synchronizeMapptingXML();
-                coreService.syncLog4jSettings();
-            }
         }
         // rules
         if (isOptionChecked(TalendProcessArgumentConstant.ARG_NEED_RULES)) {
@@ -444,57 +446,55 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
     protected void afterCreate(IProgressMonitor monitor) throws Exception {
         setPomForHDInsight(monitor);
 
-        // check for children jobs
-        Set<String> childrenGroupIds = new HashSet<>();
-        final Set<JobInfo> clonedChildrenJobInfors = getJobProcessor().getBuildChildrenJobs();
-        // main job built, should never be in the children list, even if recursive
-        clonedChildrenJobInfors.remove(LastGenerationInfo.getInstance().getLastMainJob());
+        // // check for children jobs
+        // Set<String> childrenGroupIds = new HashSet<>();
+        // final Set<JobInfo> clonedChildrenJobInfors = getJobProcessor().getBuildChildrenJobs();
+        // // main job built, should never be in the children list, even if recursive
+        // clonedChildrenJobInfors.remove(LastGenerationInfo.getInstance().getLastMainJob());
 
-        for (JobInfo child : clonedChildrenJobInfors) {
-            if (child.getFatherJobInfo() != null) {
-                Property childProperty = null;
-                ProcessItem childItem = child.getProcessItem();
-                if (childItem != null) {
-                    childProperty = childItem.getProperty();
-                } else {
-                    String jobId = child.getJobId();
-                    if (jobId != null) {
-                        IProxyRepositoryFactory proxyRepositoryFactory = CoreRuntimePlugin.getInstance()
-                                .getProxyRepositoryFactory();
-                        IRepositoryViewObject specificVersion = proxyRepositoryFactory.getSpecificVersion(jobId,
-                                child.getJobVersion(), true);
-                        if (specificVersion != null) {
-                            childProperty = specificVersion.getProperty();
-                        }
-                    }
-                }
+        // for (JobInfo child : clonedChildrenJobInfors) {
+        // if (child.getFatherJobInfo() != null) {
+        // Property childProperty = null;
+        // ProcessItem childItem = child.getProcessItem();
+        // if (childItem != null) {
+        // childProperty = childItem.getProperty();
+        // } else {
+        // String jobId = child.getJobId();
+        // if (jobId != null) {
+        // IProxyRepositoryFactory proxyRepositoryFactory = CoreRuntimePlugin.getInstance()
+        // .getProxyRepositoryFactory();
+        // IRepositoryViewObject specificVersion = proxyRepositoryFactory.getSpecificVersion(jobId,
+        // child.getJobVersion(), true);
+        // if (specificVersion != null) {
+        // childProperty = specificVersion.getProperty();
+        // }
+        // }
+        // }
+        //
+        // if (childProperty != null) {
+        // final String childGroupId = PomIdsHelper.getJobGroupId(childProperty);
+        // if (childGroupId != null) {
+        // childrenGroupIds.add(childGroupId);
+        // }
+        // }
+        // }
+        // }
 
-                if (childProperty != null) {
-                    final String childGroupId = PomIdsHelper.getJobGroupId(childProperty);
-                    if (childGroupId != null) {
-                        childrenGroupIds.add(childGroupId);
-                    }
-                }
-            }
-        }
+        generateAssemblyFile(monitor, null);
 
-        generateAssemblyFile(monitor, clonedChildrenJobInfors);
+        // final IProcess process = getJobProcessor().getProcess();
+        // Map<String, Object> args = new HashMap<String, Object>();
+        // args.put(IPomJobExtension.KEY_PROCESS, process);
+        // args.put(IPomJobExtension.KEY_ASSEMBLY_FILE, getAssemblyFile());
+        // args.put(IPomJobExtension.KEY_CHILDREN_JOBS_GROUP_IDS, childrenGroupIds);
+        //
+        // PomJobExtensionRegistry.getInstance().updatePom(monitor, getPomFile(), args);
 
-        final IProcess process = getJobProcessor().getProcess();
-        Map<String, Object> args = new HashMap<String, Object>();
-        args.put(IPomJobExtension.KEY_PROCESS, process);
-        args.put(IPomJobExtension.KEY_ASSEMBLY_FILE, getAssemblyFile());
-        args.put(IPomJobExtension.KEY_CHILDREN_JOBS_GROUP_IDS, childrenGroupIds);
-
-        PomJobExtensionRegistry.getInstance().updatePom(monitor, getPomFile(), args);
-
-        // generate routines
         MavenPomSynchronizer pomSync = new MavenPomSynchronizer(this.getJobProcessor());
-        pomSync.setArgumentsMap(getArgumentsMap());
-        if (needSyncCodesPoms()) {
-            // only sync pom for main job
-            pomSync.syncCodesPoms(monitor, getJobProcessor(), true);
-        }
+        // if (needSyncCodesPoms()) {
+        // // only sync pom for main job
+        // pomSync.syncCodesPoms(monitor, getJobProcessor(), true);
+        // }
         // because need update the latest content for templates.
         pomSync.syncTemplates(true);
 
@@ -535,14 +535,6 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
     protected void generateAssemblyFile(IProgressMonitor monitor, final Set<JobInfo> clonedChildrenJobInfors) throws Exception {
         IFile assemblyFile = this.getAssemblyFile();
         if (assemblyFile != null) {
-
-            try {
-                checkCreatingFile(monitor, assemblyFile);
-            } catch (Exception e) {
-                ExceptionHandler.process(e);
-                return;
-            }
-
             boolean set = false;
             // read template from project setting
             try {
@@ -564,279 +556,91 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
                     } else {
                         assemblyFile.create(source, true, monitor);
                     }
+                    updateDependencySet(assemblyFile);
                     set = true;
                 }
             } catch (Exception e) {
                 ExceptionHandler.process(e);
             }
-
-            if (set) {
-                // add children resources in assembly.
-                addChildrenJobsInAssembly(monitor, assemblyFile, clonedChildrenJobInfors);
-            }
         }
     }
 
-    @SuppressWarnings("nls")
-    protected void addChildrenJobsInAssembly(IProgressMonitor monitor, IFile assemblyFile,
-            final Set<JobInfo> clonedChildrenJobInfors) throws Exception {
-        if (!assemblyFile.exists()) {
-            return;
+    public void updateDependencySet(IFile assemblyFile) {
+        final String SEPARATOR = System.getProperty("line.separator"); //$NON-NLS-1$
+
+        String talendlibIncludesTag = "<!--@TalendLibIncludes@-->"; //$NON-NLS-1$
+        String _3rdlibExcludesTag = "<!--@3rdPartyLibIncludes@-->"; //$NON-NLS-1$
+        String jobIncludesTag = "<!--@JobIncludes@-->"; //$NON-NLS-1$
+
+        StringBuilder talendlibIncludes = new StringBuilder();
+        StringBuilder _3rdPartylibExcludes = new StringBuilder();
+        StringBuilder jobIncludes = new StringBuilder();
+        
+        // add children jobs
+        Set<JobInfo> childrenJobInfo = getJobProcessor().getBuildChildrenJobs();
+        Set<String> childrenCoordinate = new HashSet<>();
+        for (JobInfo jobInfo : childrenJobInfo) {
+            Property property = jobInfo.getProcessItem().getProperty();
+            String groupId = PomIdsHelper.getJobGroupId(property);
+            String artifactId = PomIdsHelper.getJobArtifactId(jobInfo);
+            String coordinate = groupId + ":" + artifactId; //$NON-NLS-1$
+            addItem(jobIncludes, coordinate, SEPARATOR);
+            childrenCoordinate.add(coordinate);
         }
-        Document document = PomUtil.loadAssemblyFile(monitor, assemblyFile);
-        if (document == null) {
-            throw new IOException("Can't parse the file: " + assemblyFile.getLocation());
-        }
-
-        // files
-        Node filesElem = getElement(document.getDocumentElement(), "files", 1);
-
-        // fileSets
-        Node fileSetsElem = getElement(document.getDocumentElement(), "fileSets", 1);
-        if (fileSetsElem == null) {
-            fileSetsElem = document.createElement("fileSets");
-            document.appendChild(fileSetsElem);
-        }
-
-        List<String> childrenPomsIncludes = new ArrayList<String>();
-        List<String> childrenFolderResourcesIncludes = new ArrayList<String>();
-
-        for (JobInfo child : clonedChildrenJobInfors) {
-            if (child.getFatherJobInfo() != null) {
-
-                String jobClassPackageFolder = null;
-                if (child.getProcessItem() != null) {
-                    jobClassPackageFolder = JavaResourcesHelper.getJobClassPackageFolder(child.getProcessItem());
-                } else {
-                    String projectName = null;
-                    String jobId = child.getJobId();
-                    if (jobId != null) {
-                        IProxyRepositoryFactory proxyRepositoryFactory = CoreRuntimePlugin.getInstance()
-                                .getProxyRepositoryFactory();
-                        IRepositoryViewObject lastVersion = proxyRepositoryFactory.getLastVersion(jobId);
-                        if (lastVersion != null) {
-                            Property property = lastVersion.getProperty();
-                            if (property != null) {
-                                Project project = ProjectManager.getInstance().getProject(property.getItem());
-                                projectName = project.getTechnicalLabel();
-                            }
-                        }
+        // add parent job
+        Property parentProperty = this.getJobProcessor().getProperty();
+        String parentCoordinate = PomIdsHelper.getJobGroupId(parentProperty) + ":" //$NON-NLS-1$
+                + PomIdsHelper.getJobArtifactId(parentProperty);
+        addItem(jobIncludes, parentCoordinate, SEPARATOR);
+        
+        
+        try {
+            Model model = MavenPlugin.getMavenModelManager().readMavenModel(getPomFile());
+            List<Dependency> dependencies = model.getDependencies();
+            // add talend libraries and codes
+            Set<String> talendLibCoordinate = new HashSet<>();
+            String projectGroupId = PomIdsHelper.getProjectGroupId();
+            for (Dependency dependency : dependencies) {
+                String dependencyGroupId = dependency.getGroupId();
+                String coordinate = dependencyGroupId + ":" + dependency.getArtifactId(); //$NON-NLS-1$
+                if (!childrenCoordinate.contains(coordinate)) {
+                    if (MavenConstants.DEFAULT_LIB_GROUP_ID.equals(dependencyGroupId) || dependencyGroupId.startsWith(projectGroupId)) {
+                        addItem(talendlibIncludes, coordinate, SEPARATOR);
+                        talendLibCoordinate.add(coordinate);
                     }
-                    if (projectName == null) {// use current one
-                        projectName = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
-                    }
-                    jobClassPackageFolder = JavaResourcesHelper.getJobClassPackageFolder(projectName, child.getJobName(),
-                            child.getJobVersion());
                 }
-                // children poms
-                childrenPomsIncludes.add(PomUtil.getPomFileName(child.getJobName(), child.getJobVersion()));
-
-                if (!child.isTestContainer()) { // for test, it have add the in assembly, so no need.
-                    // conext resources
-                    childrenFolderResourcesIncludes.add(jobClassPackageFolder + "/**"); // add all context
+            }
+            // add 3rd party libraries
+            for (Dependency dependency : dependencies) {
+                String coordinate = dependency.getGroupId() + ":" + dependency.getArtifactId(); //$NON-NLS-1$
+                if (!childrenCoordinate.contains(coordinate) && !talendLibCoordinate.contains(coordinate)) {
+                    addItem(_3rdPartylibExcludes, coordinate, SEPARATOR);
                 }
-
             }
-        }
-        /*
-         * FIXME, if change the profiles setting for directory, must need change this parts.
-         */
-        if (!clonedChildrenJobInfors.isEmpty()) {
-            // poms
-            addAssemblyFileSets(fileSetsElem, "${poms.dir}", "${talend.job.name}", false, childrenPomsIncludes, null, null, null,
-                    null, false, "add children pom files.");
-
-            if (!childrenFolderResourcesIncludes.isEmpty()) { // only for standard job, not for test.
-                // src
-                addAssemblyFileSets(fileSetsElem, "${sourcecodes.dir}", "${talend.job.name}/src/main/java/", false,
-                        childrenFolderResourcesIncludes, null, null, null, null, false, "add children src resources files.");
-
-                // contexts
-                addAssemblyFileSets(fileSetsElem, "${resources.dir}", "${talend.job.name}/src/main/resources/", false,
-                        childrenFolderResourcesIncludes, null, null, null, null, false,
-                        "add children context files to resources.");
-                addAssemblyFileSets(fileSetsElem, "${contexts.running.dir}", "${talend.job.name}", false,
-                        childrenFolderResourcesIncludes, null, null, null, null, false, "add children context files for running.");
+            if (_3rdPartylibExcludes.length() == 0) {
+                addItem(_3rdPartylibExcludes, "null:null", SEPARATOR); //$NON-NLS-1$
             }
-
-            PomUtil.saveAssemblyFile(monitor, assemblyFile, document);
-
-            // clean for children poms
-            cleanChildrenPomSettings(monitor, childrenPomsIncludes);
+        } catch (CoreException e) {
+            ExceptionHandler.process(e);
         }
-
+        
+        String talendLibIncludesStr = StringUtils.removeEnd(talendlibIncludes.toString(), SEPARATOR);
+        String _3rdPartylibExcludesStr = StringUtils.removeEnd(_3rdPartylibExcludes.toString(), SEPARATOR);
+        String jobIncludesStr = StringUtils.removeEnd(jobIncludes.toString(), SEPARATOR);
+        String content = org.talend.commons.utils.io.FilesUtils.readFileContent(assemblyFile);
+        content = StringUtils.replaceEach(content, new String[] { talendlibIncludesTag, _3rdlibExcludesTag, jobIncludesTag },
+                new String[] { talendLibIncludesStr, _3rdPartylibExcludesStr, jobIncludesStr });
+        org.talend.commons.utils.io.FilesUtils.writeContentToFile(content, assemblyFile);
     }
 
-    protected void cleanChildrenPomSettings(IProgressMonitor monitor, List<String> childrenPomsIncludes) throws Exception {
-        for (String childPomFile : childrenPomsIncludes) {
-            IFile childPom = assemblyFile.getProject().getFile(childPomFile);
-            if (childPom.exists()) {
-                Model childModel = MODEL_MANAGER.readMavenModel(childPom);
-                List<Plugin> childPlugins = new ArrayList<Plugin>(childModel.getBuild().getPlugins());
-                Iterator<Plugin> childIterator = childPlugins.iterator();
-                while (childIterator.hasNext()) {
-                    Plugin p = childIterator.next();
-                    if (p.getArtifactId().equals("maven-assembly-plugin")) { //$NON-NLS-1$
-                        // must remove the assembly plugins for children poms, else will be some errors.
-                        childIterator.remove();
-                    } else if (p.getArtifactId().equals("maven-antrun-plugin")) { //$NON-NLS-1$
-                        // because no assembly, so no need copy the scripts and rename it.
-                        childIterator.remove();
-                    }
-
-                }
-
-                childModel.getBuild().setPlugins(childPlugins);
-
-                /*
-                 * FIXME, Won't have assembly, maybe also move the profiles, because so far, the profiles are useful for
-                 * assembly only. If later, the profiles will use by other tasks, should remove this codes.
-                 */
-                childModel.getProfiles().clear();
-
-                PomUtil.savePom(monitor, childModel, childPom);
-            }
+    private void addItem(StringBuilder builder, String coordinate, String separator) {
+        if(builder.length() > 0) {
+            builder.append("\t\t\t\t"); //$NON-NLS-1$
         }
-    }
-
-    private Node getElement(Node parent, String elemName, int level) {
-        NodeList childrenNodeList = parent.getChildNodes();
-        for (int i = 0; i < childrenNodeList.getLength(); i++) {
-            Node child = childrenNodeList.item(i);
-            if (child != null && child.getNodeType() == Node.ELEMENT_NODE) {
-                if (child.getNodeName().equals(elemName)) {
-                    return child;
-                }
-            }
-            if (level > 1) {
-                Node element = getElement(child, elemName, --level);
-                if (element != null) {
-                    return element;
-                }
-            }
-        }
-        return null;
-    }
-
-    @SuppressWarnings("nls")
-    private void addAssemblyFiles(Node filesElem, String source, String outputDirectory, String destName, String fileMode,
-            String lineEnding, boolean filtered, String comment) {
-        Assert.isNotNull(filesElem);
-        Assert.isNotNull(source);
-        Assert.isNotNull(outputDirectory);
-
-        Document doc = filesElem.getOwnerDocument();
-
-        Element fileEle = doc.createElement("file");
-        filesElem.appendChild(fileEle);
-
-        if (comment != null) {
-            fileEle.appendChild(doc.createComment(comment));
-        }
-
-        Element sourceElement = doc.createElement("source");
-        sourceElement.setTextContent(source);
-        fileEle.appendChild(sourceElement);
-
-        Element outputDirectoryElement = doc.createElement("outputDirectory");
-        outputDirectoryElement.setTextContent(outputDirectory);
-        fileEle.appendChild(outputDirectoryElement);
-
-        if (destName != null) { // if not set, will be same as source
-            Element destNameElement = doc.createElement("destName");
-            destNameElement.setTextContent(destName);
-            fileEle.appendChild(destNameElement);
-        }
-        if (fileMode != null) {
-            Element fileModeElement = doc.createElement("fileMode");
-            fileModeElement.setTextContent(fileMode);
-            fileEle.appendChild(fileModeElement);
-        }
-        if (lineEnding != null) {
-            Element lineEndingElement = doc.createElement("lineEnding");
-            lineEndingElement.setTextContent(lineEnding);
-            fileEle.appendChild(lineEndingElement);
-        }
-        if (filtered) { // by default is false
-            Element filteredElement = doc.createElement("filtered");
-            filteredElement.setTextContent(Boolean.TRUE.toString());
-            fileEle.appendChild(filteredElement);
-        }
-    }
-
-    @SuppressWarnings("nls")
-    private void addAssemblyFileSets(Node fileSetsNode, String directory, String outputDirectory, boolean useDefaultExcludes,
-            List<String> includes, List<String> excludes, String fileMode, String directoryMode, String lineEnding,
-            boolean filtered, String comment) {
-        Assert.isNotNull(fileSetsNode);
-        Assert.isNotNull(outputDirectory);
-        Assert.isNotNull(directory);
-
-        Document doc = fileSetsNode.getOwnerDocument();
-
-        Element fileSetEle = doc.createElement("fileSet");
-        fileSetsNode.appendChild(fileSetEle);
-
-        if (comment != null) {
-            fileSetEle.appendChild(doc.createComment(comment));
-        }
-
-        Element outputDirectoryElement = doc.createElement("outputDirectory");
-        outputDirectoryElement.setTextContent(outputDirectory);
-        fileSetEle.appendChild(outputDirectoryElement);
-
-        Element directoryElement = doc.createElement("directory");
-        directoryElement.setTextContent(directory);
-        fileSetEle.appendChild(directoryElement);
-
-        if (useDefaultExcludes) { // false by default
-            Element useDefaultExcludesElement = doc.createElement("useDefaultExcludes");
-            useDefaultExcludesElement.setTextContent(Boolean.TRUE.toString());
-            fileSetEle.appendChild(useDefaultExcludesElement);
-        }
-
-        if (includes != null && !includes.isEmpty()) {
-
-            Element includesEle = doc.createElement("includes");
-            fileSetEle.appendChild(includesEle);
-            for (String in : includes) {
-                Element includeElement = doc.createElement("include");
-                includeElement.setTextContent(in);
-                includesEle.appendChild(includeElement);
-            }
-        }
-
-        if (excludes != null && !excludes.isEmpty()) {
-            Element excludesEle = doc.createElement("excludes");
-            fileSetEle.appendChild(excludesEle);
-            for (String ex : excludes) {
-                Element excludeElement = doc.createElement("exclude");
-                excludeElement.setTextContent(ex);
-                excludesEle.appendChild(excludeElement);
-
-            }
-        }
-        if (fileMode != null) {
-            Element fileModeElement = doc.createElement("fileMode");
-            fileModeElement.setTextContent(fileMode);
-            fileSetEle.appendChild(fileModeElement);
-        }
-        if (directoryMode != null) {
-            Element directoryModeElement = doc.createElement("directoryMode");
-            directoryModeElement.setTextContent(directoryMode);
-            fileSetEle.appendChild(directoryModeElement);
-        }
-
-        if (lineEnding != null) {
-            Element lineEndingElement = doc.createElement("lineEnding");
-            lineEndingElement.setTextContent(lineEnding);
-            fileSetEle.appendChild(lineEndingElement);
-        }
-        if (filtered) { // by default is false
-            Element filteredElement = doc.createElement("filtered");
-            filteredElement.setTextContent(Boolean.TRUE.toString());
-            fileSetEle.appendChild(filteredElement);
-        }
+        builder.append("<include>"); //$NON-NLS-1$
+        builder.append(coordinate);
+        builder.append("</include>"); //$NON-NLS-1$
+        builder.append(separator);
     }
 
 }

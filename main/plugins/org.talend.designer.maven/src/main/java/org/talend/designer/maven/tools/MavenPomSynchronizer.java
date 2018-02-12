@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -25,18 +25,20 @@ import org.apache.maven.model.Model;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.eclipse.m2e.core.embedder.MavenModelManager;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.commons.utils.generation.JavaUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.general.ILibrariesService;
 import org.talend.core.model.process.IProcess;
 import org.talend.core.model.process.ProcessUtils;
-import org.talend.core.model.properties.Item;
-import org.talend.core.model.properties.Project;
 import org.talend.core.model.properties.Property;
+import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.core.runtime.process.TalendProcessArgumentConstant;
 import org.talend.core.runtime.projectsetting.IProjectSettingPreferenceConstants;
@@ -44,12 +46,11 @@ import org.talend.core.runtime.projectsetting.IProjectSettingTemplateConstants;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.template.MavenTemplateManager;
 import org.talend.designer.maven.tools.creator.CreateMavenBeanPom;
-import org.talend.designer.maven.tools.creator.CreateMavenBundleTemplatePom;
 import org.talend.designer.maven.tools.creator.CreateMavenPigUDFPom;
 import org.talend.designer.maven.tools.creator.CreateMavenRoutinePom;
 import org.talend.designer.maven.utils.PomUtil;
 import org.talend.designer.runprocess.IProcessor;
-import org.talend.repository.ProjectManager;
+import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.utils.io.FilesUtils;
 
 /**
@@ -60,62 +61,58 @@ public class MavenPomSynchronizer {
 
     private final ITalendProcessJavaProject codeProject;
 
-    private final IProcessor processor;
+    private IRunProcessService runProcessService;
 
-    private Map<String, Object> argumentsMap = new HashMap<String, Object>();
+    private static boolean isListenerAdded;
 
     public MavenPomSynchronizer(IProcessor processor) {
-        super();
-        this.processor = processor;
-        this.codeProject = this.processor.getTalendJavaProject();
+        this(processor.getTalendJavaProject());
     }
 
     public MavenPomSynchronizer(ITalendProcessJavaProject codeProject) {
         super();
-        this.processor = null;
         this.codeProject = codeProject;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
+            runProcessService = (IRunProcessService) GlobalServiceRegister.getDefault().getService(IRunProcessService.class);
+        }
     }
 
     /**
      * generate routine pom.
      */
-    public void syncRoutinesPom(IProcessor processor,boolean overwrite) throws Exception {
-        // pom_routines.xml
-        IFile routinesPomFile = codeProject.getProject().getFile(
-                PomUtil.getPomFileName(TalendMavenConstants.DEFAULT_ROUTINES_ARTIFACT_ID));
+    @Deprecated
+    public void syncRoutinesPom(Property property, boolean overwrite) throws Exception {
+        ITalendProcessJavaProject routineProject = runProcessService.getTalendCodeJavaProject(ERepositoryObjectType.ROUTINES);
+        IFile routinesPomFile = routineProject.getProjectPom();
         // generate new one
         CreateMavenRoutinePom createTemplatePom = new CreateMavenRoutinePom(routinesPomFile);
-        createTemplatePom.setProcessor(processor);
-        createTemplatePom.setArgumentsMap(getArgumentsMap());
+        createTemplatePom.setProperty(property);
         createTemplatePom.setOverwrite(overwrite);
         createTemplatePom.create(null);
     }
 
-    public void syncBeansPom(IProcessor processor,boolean overwrite) throws Exception {
-        // pom_beans.xml
-        IFile beansPomFile = codeProject.getProject().getFile(
-                PomUtil.getPomFileName(TalendMavenConstants.DEFAULT_BEANS_ARTIFACT_ID));
+    @Deprecated
+    public void syncBeansPom(Property property, boolean overwrite) throws Exception {
+        ITalendProcessJavaProject beansProject = runProcessService
+                .getTalendCodeJavaProject(ERepositoryObjectType.valueOf("BEANS")); //$NON-NLS-1$
+        IFile beansPomFile = beansProject.getProjectPom();
         // generate new one
         CreateMavenBeanPom createTemplatePom = new CreateMavenBeanPom(beansPomFile);
-        createTemplatePom.setProcessor(processor);
-        createTemplatePom.setArgumentsMap(getArgumentsMap());
+        createTemplatePom.setProperty(property);
         createTemplatePom.setOverwrite(overwrite);
         createTemplatePom.create(null);
     }
 
-    public void syncPigUDFsPom(IProcessor processor,boolean overwrite) throws Exception {
-        // pom_pigudfs.xml
-        IFile beansPomFile = codeProject.getProject().getFile(
-                PomUtil.getPomFileName(TalendMavenConstants.DEFAULT_PIGUDFS_ARTIFACT_ID));
+    @Deprecated
+    public void syncPigUDFsPom(Property property, boolean overwrite) throws Exception {
+        ITalendProcessJavaProject pigudfsProject = runProcessService.getTalendCodeJavaProject(ERepositoryObjectType.PIG_UDF);
+        IFile pigudfPomFile = pigudfsProject.getProjectPom();
         // generate new one
-        CreateMavenPigUDFPom createTemplatePom = new CreateMavenPigUDFPom(beansPomFile);
-        createTemplatePom.setProcessor(processor);
-        createTemplatePom.setArgumentsMap(getArgumentsMap());
+        CreateMavenPigUDFPom createTemplatePom = new CreateMavenPigUDFPom(pigudfPomFile);
+        createTemplatePom.setProperty(property);
         createTemplatePom.setOverwrite(overwrite);
         createTemplatePom.create(null);
     }
-
-
 
     /**
      * 
@@ -128,7 +125,7 @@ public class MavenPomSynchronizer {
         IFile batFile = templateFolder.getFile(IProjectSettingTemplateConstants.JOB_RUN_BAT_TEMPLATE_FILE_NAME);
         IFile infoFile = templateFolder.getFile(IProjectSettingTemplateConstants.JOB_INFO_TEMPLATE_FILE_NAME);
 
-        final Map<String, Object> templateParameters = PomUtil.getTemplateParameters(processor);
+        final Map<String, Object> templateParameters = PomUtil.getTemplateParameters(codeProject.getPropery());
         String shContent = MavenTemplateManager.getProjectSettingValue(IProjectSettingPreferenceConstants.TEMPLATE_SH,
                 templateParameters);
         String batContent = MavenTemplateManager.getProjectSettingValue(IProjectSettingPreferenceConstants.TEMPLATE_BAT,
@@ -195,20 +192,40 @@ public class MavenPomSynchronizer {
      * another cleaning up for sources codes or such in @see DeleteAllJobWhenStartUp.
      */
     public void cleanMavenFiles(IProgressMonitor monitor) throws Exception {
+        IProject jProject = codeProject.getProject();
+        if (!jProject.isOpen()) {
+            jProject.open(monitor);
+        }
+        // empty the src/main/java...
+        IFolder srcFolder = codeProject.getSrcFolder();
+        codeProject.cleanFolder(monitor, srcFolder);
 
-        // remove all job poms
-        FilenameFilter filter = new FilenameFilter() {
+        // empty resources
+        IFolder resourcesFolder = codeProject.getExternalResourcesFolder();
+        codeProject.cleanFolder(monitor, resourcesFolder);
 
-            @Override
-            public boolean accept(File dir, String name) {
-                // pom_xxx.xml
-                return name.startsWith(TalendMavenConstants.POM_NAME + '_') && name.endsWith(TalendMavenConstants.XML_EXT);
-            }
-        };
-        cleanupContainer(codeProject.getProject(), filter);
+        // empty the outputs, target
+        IFolder targetFolder = codeProject.getTargetFolder();
+        codeProject.cleanFolder(monitor, targetFolder);
+
+        // empty the src/test/java
+        IFolder testSrcFolder = codeProject.getTestSrcFolder();
+        codeProject.cleanFolder(monitor, testSrcFolder);
+
+        // empty the src/test/java (main for contexts)
+        IFolder testResourcesFolder = codeProject.getTestResourcesFolder();
+        codeProject.cleanFolder(monitor, testResourcesFolder);
+
+        // rules
+        IFolder rulesResFolder = codeProject.getResourceSubFolder(monitor, JavaUtils.JAVA_RULES_DIRECTORY);
+        codeProject.cleanFolder(monitor, rulesResFolder);
+
+        // sqltemplate
+        IFolder sqlTemplateResFolder = codeProject.getResourceSubFolder(monitor, JavaUtils.JAVA_SQLPATTERNS_DIRECTORY);
+        codeProject.cleanFolder(monitor, sqlTemplateResFolder);
 
         // clean all assemblies in src/main/assemblies
-        fullCleanupContainer(codeProject.getAssembliesFolder());
+        // fullCleanupContainer(codeProject.getAssembliesFolder());
 
         // clean all items in src/main/items
         fullCleanupContainer(codeProject.getItemsFolder());
@@ -217,31 +234,30 @@ public class MavenPomSynchronizer {
         fullCleanupContainer(codeProject.getTestsFolder());
 
         codeProject.getProject().refreshLocal(IResource.DEPTH_ONE, monitor);
-        
-        // when clean, regenerate it.
-        updateCodesPomWithProject(monitor);
 
-        // try to compile it.
-        final Map<String, Object> argumentsMap = new HashMap<String, Object>();
-        argumentsMap.put(TalendProcessArgumentConstant.ARG_GOAL, TalendMavenConstants.GOAL_COMPILE);
-        codeProject.buildModules(monitor, null, argumentsMap);
+        if (!isListenerAdded) {
+            synchronized (this) {
+                if (!isListenerAdded) {
+                    if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibrariesService.class)) {
+                        ILibrariesService libService = (ILibrariesService) GlobalServiceRegister.getDefault()
+                                .getService(ILibrariesService.class);
+                        libService.addChangeLibrariesListener(new ILibrariesService.IChangedLibrariesListener() {
 
-        //
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibrariesService.class)) {
-            ILibrariesService libService = (ILibrariesService) GlobalServiceRegister.getDefault().getService(
-                    ILibrariesService.class);
-            libService.addChangeLibrariesListener(new ILibrariesService.IChangedLibrariesListener() {
+                            @Override
+                            public void afterChangingLibraries() {
+                                try {
+                                    // update the dependencies
+                                    AggregatorPomsHelper.updateCodeProjects(monitor);
+                                } catch (Exception e) {
+                                    ExceptionHandler.process(e);
+                                }
+                            }
+                        });
 
-                @Override
-                public void afterChangingLibraries() {
-                    try {
-                        // update the dependencies
-                        updateCodesPomWithProject(null);
-                    } catch (Exception e) {
-                        ExceptionHandler.process(e);
                     }
+                    isListenerAdded = true;
                 }
-            });
+            }
 
         }
     }
@@ -271,36 +287,44 @@ public class MavenPomSynchronizer {
         }
     }
 
+    @Deprecated
     public void syncCodesPoms(IProgressMonitor monitor, IProcessor processor, boolean overwrite) throws Exception {
-        final IProcess process =processor!=null? processor.getProcess():null;
-        
-        syncRoutinesPom(processor,overwrite);
+        final IProcess process = processor != null ? processor.getProcess() : null;
+        Property property = null;
+        if (processor != null) {
+            property = processor.getProperty();
+        }
+
+        syncRoutinesPom(property, overwrite);
         // PigUDFs
         if (ProcessUtils.isRequiredPigUDFs(process)) {
-            syncPigUDFsPom(processor,overwrite);
+            syncPigUDFsPom(property, overwrite);
         }
         // Beans
         if (ProcessUtils.isRequiredBeans(process)) {
-            syncBeansPom(processor,overwrite);
+            syncBeansPom(property, overwrite);
         }
     }
 
-    private void updateCodesPomWithProject(IProgressMonitor monitor) throws Exception {
-        syncCodesPoms(monitor,null,  true);
-        // finally, update project
-        regenerateMainProjectPom(monitor, processor);
+    private static File findTestContextFile(File file) {
+        if (file != null) {
+            if (file.getName().endsWith(JavaUtils.JAVA_CONTEXT_EXTENSION)
+                    && file.getParentFile().getName().equals(JavaUtils.JAVA_CONTEXTS_DIRECTORY)) {
+                return file;
+            }
+            if (file.isDirectory()) {
+                File[] listFiles = file.listFiles();
+                if (listFiles != null) {
+                    for (File f : listFiles) {
+                        File contextFile = findTestContextFile(f);
+                        if (contextFile != null) {
+                            return contextFile;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
     }
 
-    public void regenerateMainProjectPom(IProgressMonitor monitor, IProcessor processor) throws Exception {
-        ProjectPomManager projectManager = new ProjectPomManager(codeProject.getProject());
-        projectManager.update(monitor, processor);
-    }
-
-    public Map<String, Object> getArgumentsMap() {
-        return argumentsMap;
-    }
-
-    public void setArgumentsMap(Map<String, Object> argumentsMap) {
-        this.argumentsMap = argumentsMap;
-    }
 }
