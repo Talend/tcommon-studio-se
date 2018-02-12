@@ -604,6 +604,9 @@ public class ProcessorUtilities {
             try {
                 URL url = MetadataTalendType.getProjectForderURLOfMappingsFile();
                 if (url != null) {
+                    // set the project mappings url
+                    System.setProperty("talend.mappings.url", url.toString()); //$NON-NLS-1$
+
                     IFolder xmlMappingFolder = jobInfo.getProcessor().getTalendJavaProject().getResourceSubFolder(null, JavaUtils.JAVA_XML_MAPPING);
                     if (xmlMappingFolder.members().length == 0 && GlobalServiceRegister.getDefault().isServiceRegistered(ICoreService.class)) {
                         ICoreService coreService = (ICoreService) GlobalServiceRegister.getDefault().getService(ICoreService.class);
