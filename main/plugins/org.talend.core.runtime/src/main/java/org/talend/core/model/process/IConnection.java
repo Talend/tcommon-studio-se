@@ -34,6 +34,8 @@ public interface IConnection extends IElement {
 
     public static final String TRACE_SCHEMA_COLUMN_CONDITION = "TRACE_COLUMN_CONDITION"; //$NON-NLS-1$
 
+    public static final String EVENT_UPDATE_INPUT_CONNECTION = "EVENT_UPDATE_INPUT_CONNECTION"; //$NON-NLS-1$
+
     String getCondition();
 
     /**
