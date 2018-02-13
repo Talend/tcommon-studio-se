@@ -97,8 +97,8 @@ public class NexusDownloader implements IDownloadHelper {
             File downloadedFile = new File(tempFolder, name);
 
             NullProgressMonitor monitor = new NullProgressMonitor();
-            nexusServer = getNexusServer();
-            new HttpClientTransport(nexusServer.getRepositoryURI(), nexusServer.getUserName(), nexusServer.getPassword()) {
+            NexusServerBean nServer = getNexusServer();
+            new HttpClientTransport(nServer.getRepositoryURI(), nServer.getUserName(), nServer.getPassword()) {
 
                 @Override
                 protected HttpResponse execute(IProgressMonitor monitor, DefaultHttpClient httpClient, URI targetURI)
@@ -142,7 +142,7 @@ public class NexusDownloader implements IDownloadHelper {
                             bos.flush();
                             if (bytesDownloaded == contentLength) {
                                 MavenArtifactsHandler deployer = new MavenArtifactsHandler();
-                                deployer.install(downloadedFile.getAbsolutePath(), mavenUri, nexusServer.isOfficial());
+                                deployer.install(downloadedFile.getAbsolutePath(), mavenUri, nServer.isOfficial());
 
                                 if (PluginChecker.isSVNProviderPluginLoaded()) {
                                     File libFile = new File(LibrariesManagerUtils.getLibrariesPath(ECodeLanguage.JAVA));
