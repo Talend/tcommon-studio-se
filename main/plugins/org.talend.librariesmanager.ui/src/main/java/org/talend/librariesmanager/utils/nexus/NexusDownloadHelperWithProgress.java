@@ -59,6 +59,7 @@ public class NexusDownloadHelperWithProgress extends DownloadHelperWithProgress 
                 // TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
                 final NexusServerBean customNexusServer = new NexusServerBean(false);
                 customNexusServer.setServer(repositoryUrl);
+                customNexusServer.setAbsoluteURL(true);
                 String username = mArtifact.getUsername();
                 String password = mArtifact.getPassword();
                 if (StringUtils.isNotEmpty(username)) {

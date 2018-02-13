@@ -38,7 +38,7 @@ public class NexusServerBean {
             }
             return null;
         }
-        
+
         public String getRepType() {
             return this.repType;
         }
@@ -57,6 +57,8 @@ public class NexusServerBean {
     private String snapshotRepId;
 
     private String type = NexusType.NEXUS_2.name();
+
+    private boolean isAbsoluteURL = false;
 
     public NexusServerBean() {
     }
@@ -199,6 +201,9 @@ public class NexusServerBean {
         if (StringUtils.isEmpty(this.server)) {
             return null; // no server, no uri
         }
+        if (isAbsoluteURL()) {
+            return this.server;
+        }
         IRepositoryArtifactHandler repositoryHandler = RepositoryArtifactHandlerManager.getRepositoryHandler(this);
         if (repositoryHandler != null) {
             return repositoryHandler.getRepositoryURL(isRelease);
@@ -214,7 +219,11 @@ public class NexusServerBean {
                 repositoryBaseURI = repositoryBaseURI.substring(0, repositoryBaseURI.length() - 1);
             }
             repositoryBaseURI += NexusConstants.CONTENT_REPOSITORIES;
-            repositoryBaseURI += repId + NexusConstants.SLASH;
+            if (StringUtils.isNotBlank(repId)) {
+                repositoryBaseURI += repId + NexusConstants.SLASH;
+            } else if (!repositoryBaseURI.endsWith(NexusConstants.SLASH)) {
+                repositoryBaseURI += NexusConstants.SLASH;
+            }
             return repositoryBaseURI;
         }
     }
@@ -297,5 +306,13 @@ public class NexusServerBean {
 
         return true;
 
+    }
+
+    public boolean isAbsoluteURL() {
+        return this.isAbsoluteURL;
+    }
+
+    public void setAbsoluteURL(boolean isAbsoluteURL) {
+        this.isAbsoluteURL = isAbsoluteURL;
     }
 }

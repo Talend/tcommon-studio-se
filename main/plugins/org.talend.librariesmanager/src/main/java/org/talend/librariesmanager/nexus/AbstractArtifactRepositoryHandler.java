@@ -16,6 +16,7 @@ import java.io.File;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
+import org.apache.commons.lang3.StringUtils;
 import org.talend.core.nexus.IRepositoryArtifactHandler;
 import org.talend.core.nexus.NexusConstants;
 import org.talend.core.nexus.NexusServerBean;
@@ -117,7 +118,11 @@ public abstract class AbstractArtifactRepositoryHandler implements IRepositoryAr
             repositoryBaseURI = repositoryBaseURI.substring(0, repositoryBaseURI.length() - 1);
         }
         repositoryBaseURI += getRepositoryPrefixPath();
-        repositoryBaseURI += repositoryId + NexusConstants.SLASH;
+        if (StringUtils.isNotBlank(repositoryId)) {
+            repositoryBaseURI += repositoryId + NexusConstants.SLASH;
+        } else if (!repositoryBaseURI.endsWith(NexusConstants.SLASH)) {
+            repositoryBaseURI += NexusConstants.SLASH;
+        }
         return repositoryBaseURI;
     }
 
