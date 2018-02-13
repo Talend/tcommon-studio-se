@@ -97,6 +97,7 @@ public class NexusDownloader implements IDownloadHelper {
             File downloadedFile = new File(tempFolder, name);
 
             NullProgressMonitor monitor = new NullProgressMonitor();
+            nexusServer = getNexusServer();
             new HttpClientTransport(nexusServer.getRepositoryURI(), nexusServer.getUserName(), nexusServer.getPassword()) {
 
                 @Override
