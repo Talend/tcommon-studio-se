@@ -1492,6 +1492,10 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                             // the sql
                             // data type it is null and results in a NPE
                         }
+                    }else if(MetadataConnectionUtils.isSnowflake(dbJDBCMetadata)){
+                    	if(MetadataConnectionUtils.getSnowflakeDBTypeMap().containsKey(typeName)){
+                    		typeName = MetadataConnectionUtils.getSnowflakeDBTypeMap().get(typeName);
+                    	}
                     }
                     try {
                         int column_size = getIntFromResultSet(columns, GetColumn.COLUMN_SIZE.name());

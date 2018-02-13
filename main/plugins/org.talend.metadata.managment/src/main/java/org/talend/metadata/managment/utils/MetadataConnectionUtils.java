@@ -87,6 +87,8 @@ public class MetadataConnectionUtils {
 
     // MOD mzhao 2009-06-05 Bug 7571
     private static final Map<String, Driver> DRIVER_CACHE = new HashMap<String, Driver>();
+    
+    private static final Map<String, String> SNOWFLACK_DBTYPEMap = new HashMap<String, String>();
 
     private static final SimpleDateFormat SMPL_DATE_FMT = new SimpleDateFormat("yyyyMMddhhmmss"); //$NON-NLS-1$
 
@@ -521,6 +523,28 @@ public class MetadataConnectionUtils {
             }
         }
         return false;
+    }
+    
+    public static Map<String, String> getSnowflakeDBTypeMap(){
+    	if(SNOWFLACK_DBTYPEMap.isEmpty()){
+    		SNOWFLACK_DBTYPEMap.put("TIMESTAMPLTZ", "TIMESTAMP_LTZ");
+    		SNOWFLACK_DBTYPEMap.put("TIMESTAMPNTZ", "TIMESTAMP_NTZ");
+    		SNOWFLACK_DBTYPEMap.put("TIMESTAMPTZ", "TIMESTAMP_TZ");
+    	}
+    	return SNOWFLACK_DBTYPEMap;
+    }
+    
+    public static boolean isSnowflake(DatabaseMetaData connectionMetadata) throws SQLException {
+        if (connectionMetadata.getDatabaseProductName() != null) {
+            if ("Snowflake".equals(connectionMetadata.getDatabaseProductName().trim())) { //$NON-NLS-1$
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public static boolean isSnowflake(java.sql.Connection connection) throws SQLException {
+        return isSnowflake(ExtractMetaDataUtils.getInstance().getConnectionMetadata(connection));
     }
 
     public static boolean isMssql(DatabaseMetaData connectionMetadata) throws SQLException {
