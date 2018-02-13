@@ -12,16 +12,17 @@
 // ============================================================================
 package org.talend.core.runtime;
 
-
 /**
  * DOC cmeng  class global comment. Detailled comment
  */
 public interface IAdditionalInfo {
 
-    Object getInfo(String key);
+    Object getInfo(final String key);
 
-    void setInfo(String key, Object value);
+    void putInfo(final String key, final Object value);
 
-    void onEvent(String event, Object... parameters);
+    void onEvent(final String event, final Object... parameters);
+
+    void cloneAddionalInfoTo(final IAdditionalInfo targetAdditionalInfo);
 
 }
