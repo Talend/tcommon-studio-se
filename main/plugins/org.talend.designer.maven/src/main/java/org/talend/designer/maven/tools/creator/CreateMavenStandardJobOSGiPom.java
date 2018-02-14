@@ -16,6 +16,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -93,7 +94,7 @@ public class CreateMavenStandardJobOSGiPom extends CreateMavenJobPom {
      */
     @Override
     public Map<String, Object> getArgumentsMap() {
-        Map<String, Object> argumentsMap = super.getArgumentsMap();
+        Map<String, Object> argumentsMap = new HashMap<String, Object>(super.getArgumentsMap());
         argumentsMap.put(TalendProcessArgumentConstant.ARG_GENERATE_OPTION,
                 TalendProcessOptionConstants.GENERATE_WITHOUT_COMPILING);
         return argumentsMap;
@@ -151,8 +152,7 @@ public class CreateMavenStandardJobOSGiPom extends CreateMavenJobPom {
                 String content = MavenTemplateManager.getTemplateContent(templateFile,
                         IProjectSettingPreferenceConstants.TEMPLATE_ROUTE_ASSEMBLY, JOB_TEMPLATE_BUNDLE,
                         IProjectSettingTemplateConstants.PATH_OSGI_BUNDLE + '/'
-                                + IProjectSettingTemplateConstants.ASSEMBLY_JOB_TEMPLATE_FILE_NAME,
-                        templateParameters);
+                                + IProjectSettingTemplateConstants.ASSEMBLY_JOB_TEMPLATE_FILE_NAME, templateParameters);
                 if (content != null) {
                     ByteArrayInputStream source = new ByteArrayInputStream(content.getBytes());
                     if (assemblyFile.exists()) {
@@ -167,9 +167,12 @@ public class CreateMavenStandardJobOSGiPom extends CreateMavenJobPom {
             }
         }
     }
-    
-    /* (non-Javadoc)
-     * @see org.talend.designer.maven.tools.creator.CreateMavenJobPom#afterCreate(org.eclipse.core.runtime.IProgressMonitor)
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.talend.designer.maven.tools.creator.CreateMavenJobPom#afterCreate(org.eclipse.core.runtime.IProgressMonitor)
      */
     @Override
     protected void afterCreate(IProgressMonitor monitor) throws Exception {

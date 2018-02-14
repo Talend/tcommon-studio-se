@@ -12,14 +12,17 @@
 // ============================================================================
 package org.talend.designer.maven.tools;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.apache.maven.model.Model;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.junit.Test;
 import org.talend.core.model.properties.PropertiesFactory;
@@ -36,7 +39,8 @@ public class AggregatorPomsHelperTest {
     public void testAddToAndRemoveFromParentModules() throws Exception {
         String projectTechName = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
         IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-        IFolder pomsFolder = root.getFolder(new Path(projectTechName + "/" + TalendJavaProjectConstants.DIR_POMS));
+        final IProject project = root.getProject(projectTechName);
+        IFolder pomsFolder = project.getFolder(TalendJavaProjectConstants.DIR_POMS);
         IFolder jobFolder = pomsFolder.getFolder("jobs").getFolder("process").getFolder("job1");
         if (!jobFolder.exists()) {
             jobFolder.create(true, true, null);
@@ -44,16 +48,16 @@ public class AggregatorPomsHelperTest {
         IFile jobPom = jobFolder.getFile("pom.xml");
         AggregatorPomsHelper.addToParentModules(jobPom);
 
-        IFile processPom = pomsFolder.getFolder("jobs").getFolder("process").getFile("pom.xml");
-        Model model = MavenPlugin.getMavenModelManager().readMavenModel(processPom);
+        IFile projectPom = pomsFolder.getFile("pom.xml");
+        Model model = MavenPlugin.getMavenModelManager().readMavenModel(projectPom);
         assertNotNull(model.getModules());
-        assertTrue(model.getModules().contains("job1/pom.xml"));
+        assertTrue(model.getModules().contains("jobs/process/job1"));
 
         AggregatorPomsHelper.removeFromParentModules(jobPom);
 
-        model = MavenPlugin.getMavenModelManager().readMavenModel(processPom);
+        model = MavenPlugin.getMavenModelManager().readMavenModel(projectPom);
         assertNotNull(model.getModules());
-        assertFalse(model.getModules().contains("job1/pom.xml"));
+        assertFalse(model.getModules().contains("jobs/process/job1"));
     }
 
     @Test
@@ -63,7 +67,7 @@ public class AggregatorPomsHelperTest {
         property.setLabel("Job1");
         property.setVersion("1.0");
         String jobProjectName = new AggregatorPomsHelper(projectTechName).getJobProjectName(property);
-        assertEquals("AUTO_LOGIN_PROJECT_JOB1_1.0", jobProjectName);
+        assertEquals(projectTechName + "_JOB1_1.0", jobProjectName);
     }
 
     @Test
@@ -80,7 +84,7 @@ public class AggregatorPomsHelperTest {
         String id = "abcde-_e";
         String version = "1.0";
         String jobProjectId = AggregatorPomsHelper.getJobProjectId(projectTechName, id, version);
-        assertEquals("AUTO_LOGIN_PROJECT|abcde-_e|1.0", jobProjectId);
+        assertEquals(projectTechName + "|abcde-_e|1.0", jobProjectId);
     }
 
 }
