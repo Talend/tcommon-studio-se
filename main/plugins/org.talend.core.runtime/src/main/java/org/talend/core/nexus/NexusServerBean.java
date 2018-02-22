@@ -39,6 +39,14 @@ public class NexusServerBean {
             return null;
         }
 
+        public static NexusType getByNexusType(String nexusType) {
+            NexusType type = valueOf(nexusType);
+            if (type == null) {
+                type = NexusType.NEXUS_3;
+            }
+            return type;
+        }
+
         public String getRepType() {
             return this.repType;
         }
