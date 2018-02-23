@@ -42,7 +42,7 @@ public class NexusServerBean {
         public static NexusType getByNexusType(String nexusType) {
             NexusType type = valueOf(nexusType);
             if (type == null) {
-                type = NexusType.NEXUS_3;
+                type = NexusType.NEXUS_2;
             }
             return type;
         }
