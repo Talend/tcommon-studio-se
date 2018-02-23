@@ -1811,14 +1811,15 @@ public class ProcessorUtilities {
                 continue;
             }
             boolean isCTalendJob = "cTalendJob".equalsIgnoreCase(node.getComponentName());
-            if ("tRunJob".equalsIgnoreCase(node.getComponentName()) || isCTalendJob) { //$NON-NLS-1$
+            boolean isRoutelet = isRouteletNode(node);
+            if ("tRunJob".equalsIgnoreCase(node.getComponentName()) || isCTalendJob || isRoutelet) { //$NON-NLS-1$
 
                 String jobIds = getParameterValue(node.getElementParameter(),
-                        isCTalendJob ? "SELECTED_JOB_NAME:PROCESS_TYPE_PROCESS" : "PROCESS:PROCESS_TYPE_PROCESS"); //$NON-NLS-1$
+                        isCTalendJob ? "SELECTED_JOB_NAME:PROCESS_TYPE_PROCESS" : "PROCESS"+(isRoutelet?"_TYPE":"")+":PROCESS_TYPE_PROCESS"); //$NON-NLS-1$
                 String jobContext = getParameterValue(node.getElementParameter(),
-                        isCTalendJob ? "SELECTED_JOB_NAME:PROCESS_TYPE_CONTEXT" : "PROCESS:PROCESS_TYPE_CONTEXT"); //$NON-NLS-1$
+                        isCTalendJob ? "SELECTED_JOB_NAME:PROCESS_TYPE_CONTEXT" : "PROCESS"+(isRoutelet?"_TYPE":"")+":PROCESS_TYPE_CONTEXT"); //$NON-NLS-1$
                 String jobVersion = getParameterValue(node.getElementParameter(),
-                        isCTalendJob ? "SELECTED_JOB_NAME:PROCESS_TYPE_VERSION" : "PROCESS:PROCESS_TYPE_VERSION"); //$NON-NLS-1$
+                        isCTalendJob ? "SELECTED_JOB_NAME:PROCESS_TYPE_VERSION" : "PROCESS"+(isRoutelet?"_TYPE":"")+":PROCESS_TYPE_VERSION"); //$NON-NLS-1$
                 // feature 19312
                 String[] jobsArr = jobIds.split(ProcessorUtilities.COMMA);
                 for (String jobId : jobsArr) {
@@ -1871,6 +1872,16 @@ public class ProcessorUtilities {
             }
         }
         return jobInfos;
+    }
+    
+    private static boolean isRouteletNode(NodeType node) {
+        String jobIds = getParameterValue(node.getElementParameter(), "PROCESS_TYPE:PROCESS_TYPE_PROCESS");
+        String jobVersion = getParameterValue(node.getElementParameter(),"PROCESS_TYPE:PROCESS_TYPE_VERSION"); //$NON-NLS-1$
+        ProcessItem processItem = ItemCacheManager.getProcessItem(jobIds, jobVersion);
+        if(processItem != null) {
+        	return ERepositoryObjectType.getType(processItem.getProperty()).equals(ERepositoryObjectType.PROCESS_ROUTELET);
+        }
+        return false;
     }
 
     public static Set<JobInfo> getChildrenJobInfo(ProcessItem processItem) {
