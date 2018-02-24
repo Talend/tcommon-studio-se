@@ -113,14 +113,11 @@ import org.talend.core.model.repository.RepositoryViewObject;
 import org.talend.core.repository.CoreRepositoryPlugin;
 import org.talend.core.repository.constants.Constant;
 import org.talend.core.repository.constants.FileConstants;
-import org.talend.core.repository.document.IDocumentationService;
-import org.talend.core.repository.document.IGenerateAllDocumentation;
 import org.talend.core.repository.i18n.Messages;
 import org.talend.core.repository.recyclebin.RecycleBinManager;
 import org.talend.core.repository.utils.RepositoryPathProvider;
 import org.talend.core.repository.utils.XmiResourceManager;
 import org.talend.core.runtime.CoreRuntimePlugin;
-import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.core.runtime.repository.item.ItemProductKeys;
 import org.talend.core.runtime.services.IMavenUIService;
 import org.talend.core.runtime.util.ItemDateParser;
@@ -137,6 +134,7 @@ import org.talend.repository.documentation.ERepositoryActionName;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryConstants;
 import org.talend.utils.io.FilesUtils;
+
 import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
@@ -1898,6 +1896,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.logonInProgress"), 1); //$NON-NLS-1$
                 project.setReferenceProjectProvider(null);
                 initEmfProjectContent();
+                project.setEmfProject(getEmfProjectContent(project.getTechnicalLabel()));
                 getRepositoryContext().setProject(project);
 
                 currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);
