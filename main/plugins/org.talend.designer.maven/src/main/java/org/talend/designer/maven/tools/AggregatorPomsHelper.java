@@ -162,23 +162,7 @@ public class AggregatorPomsHelper {
         try {
             ITalendProcessJavaProject codeProject = getCodesProject(codeType);
             updateCodeProjectPom(monitor, codeType, codeProject.getProjectPom());
-            Job job = new Job("Install " + codeType.getLabel()) {
-
-                @Override
-                protected IStatus run(IProgressMonitor monitor) {
-                    try {
-                        buildAndInstallCodesProject(monitor, codeType);
-                        return org.eclipse.core.runtime.Status.OK_STATUS;
-                    } catch (Exception e) {
-                        return new org.eclipse.core.runtime.Status(IStatus.ERROR, DesignerMavenPlugin.PLUGIN_ID, 1,
-                                e.getMessage(), e);
-                    }
-                }
-
-            };
-            job.setUser(false);
-            job.setPriority(Job.INTERACTIVE);
-            job.schedule();
+            buildAndInstallCodesProject(monitor, codeType);
         } catch (Exception e) {
             ExceptionHandler.process(e);
         }
@@ -219,17 +203,35 @@ public class AggregatorPomsHelper {
         createTemplatePom.create(monitor);
     }
 
-    public static void buildAndInstallCodesProject(IProgressMonitor monitor, ERepositoryObjectType codeType) throws Exception {
+    public static void buildAndInstallCodesProject(IProgressMonitor monitor, ERepositoryObjectType codeType)
+            throws Exception {
         if (!BuildCacheManager.getInstance().isCodesBuild(codeType)) {
-            ITalendProcessJavaProject codeProject = getCodesProject(codeType);
+            Job job = new Job("Install " + codeType.getLabel()) {
 
-            codeProject.buildModules(new NullProgressMonitor(), null, null);
+                @Override
+                protected IStatus run(IProgressMonitor monitor) {
+                    try {
+                        ITalendProcessJavaProject codeProject = getCodesProject(codeType);
 
-            Map<String, Object> argumentsMap = new HashMap<>();
-            argumentsMap.put(TalendProcessArgumentConstant.ARG_GOAL, TalendMavenConstants.GOAL_INSTALL);
-            argumentsMap.put(TalendProcessArgumentConstant.ARG_PROGRAM_ARGUMENTS, "-Dmaven.main.skip=true"); //$NON-NLS-1$
-            codeProject.buildModules(new NullProgressMonitor(), null, argumentsMap);
-            BuildCacheManager.getInstance().updateCodeLastBuildDate(codeType);
+                        codeProject.buildModules(new NullProgressMonitor(), null, null);
+
+                        Map<String, Object> argumentsMap = new HashMap<>();
+                        argumentsMap.put(TalendProcessArgumentConstant.ARG_GOAL, TalendMavenConstants.GOAL_INSTALL);
+                        argumentsMap.put(TalendProcessArgumentConstant.ARG_PROGRAM_ARGUMENTS, "-Dmaven.main.skip=true"); //$NON-NLS-1$
+                        codeProject.buildModules(new NullProgressMonitor(), null, argumentsMap);
+                        BuildCacheManager.getInstance().updateCodeLastBuildDate(codeType);
+
+                        return org.eclipse.core.runtime.Status.OK_STATUS;
+                    } catch (Exception e) {
+                        return new org.eclipse.core.runtime.Status(IStatus.ERROR, DesignerMavenPlugin.PLUGIN_ID, 1,
+                                e.getMessage(), e);
+                    }
+                }
+
+            };
+            job.setUser(false);
+            job.setPriority(Job.INTERACTIVE);
+            job.schedule();
         }
     }
 
@@ -332,6 +334,14 @@ public class AggregatorPomsHelper {
             }
         }
         if (parentPomFolder != null) {
+            if (!parentPomFolder.exists()) {
+                if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
+                    IRunProcessService runProcessService = (IRunProcessService) GlobalServiceRegister.getDefault()
+                            .getService(IRunProcessService.class);
+                    runProcessService.initMavenJavaProject(new NullProgressMonitor(),
+                            ProjectManager.getInstance().getCurrentProject());
+                }
+            }
             try {
                 for (IResource file : parentPomFolder.members()) {
                     if (file.getName().equals(TalendMavenConstants.POM_FILE_NAME)) {

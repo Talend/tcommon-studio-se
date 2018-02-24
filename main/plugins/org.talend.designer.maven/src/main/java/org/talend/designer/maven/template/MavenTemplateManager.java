@@ -185,11 +185,13 @@ public class MavenTemplateManager {
     }
 
     public static void saveContent(IFile targetFile, String content, boolean overwrite) throws CoreException {
-        ByteArrayInputStream source = new ByteArrayInputStream(content.getBytes());
-        if (targetFile.exists()) {
-            targetFile.setContents(source, true, false, new NullProgressMonitor());
-        } else {
-            targetFile.create(source, true, new NullProgressMonitor());
+        if (content != null) {
+            ByteArrayInputStream source = new ByteArrayInputStream(content.getBytes());
+            if (targetFile.exists()) {
+                targetFile.setContents(source, true, false, new NullProgressMonitor());
+            } else {
+                targetFile.create(source, true, new NullProgressMonitor());
+            }
         }
     }
 
