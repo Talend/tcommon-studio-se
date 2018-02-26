@@ -13,6 +13,7 @@
 
   <properties>
     <tcomp.version>1.0.0-SNAPSHOT</tcomp.version>
+    <tcomp-api.version>1.0.0-SNAPSHOT</tcomp.version>
     <slf4j.version>1.7.25</slf4j.version>
   </properties>
   <repositories>
@@ -62,7 +63,7 @@
     <dependency>
       <groupId>org.talend.sdk.component</groupId>
       <artifactId>component-api</artifactId>
-      <version>${tcomp.version}</version>
+      <version>${tcomp-api.version}</version>
     </dependency>
     <dependency>
       <groupId>org.talend.sdk.component</groupId>
@@ -93,16 +94,6 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
       <version>${slf4j.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.talend.ui</groupId>
-      <artifactId>talend-icon</artifactId>
-      <version>0.127.0</version>
-    </dependency>
-    <dependency>
-      <groupId>org.webjars</groupId>
-      <artifactId>swagger-ui</artifactId>
-      <version>3.2.2</version>
     </dependency>
     <dependency>
       <groupId>commons-cli</groupId>
