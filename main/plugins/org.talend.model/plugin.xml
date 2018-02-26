@@ -48,13 +48,6 @@
     <package uri="business"
       class="org.talend.designer.business.model.business.BusinessPackage"
       genModel="model/Business.genmodel" />
-    <package class="org.talend.core.model.properties.PropertiesPackage"
-      genModel="model/properties.genmodel"
-      uri="http://www.talend.org/properties" />
-    <package
-          class="org.talend.designer.core.model.utils.emf.talendfile.TalendFilePackage"
-          genModel="model/TalendFile.genmodel"
-          uri="platform:/resource/org.talend.model/model/TalendFile.xsd"/>
     <package
           class="org.talend.designer.joblet.model.JobletPackage"
           genModel="model/joblet.genmodel"
