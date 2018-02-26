@@ -637,10 +637,12 @@ public class ProcessorUtilities {
             // to check if node is db component , maybe need modification
             boolean isDbNode = false;
             for (IElementParameter param : (List<? extends IElementParameter>) node.getElementParameters()) {
-                if ("TYPE".equals(param.getName()) && EParameterFieldType.TEXT == param.getFieldType()
-                        && param.getValue() != null && !"".equals(param.getValue())) {
-                    isDbNode = true;
-                    break;
+                if(EParameterFieldType.TEXT == param.getFieldType() && param.getValue() != null){
+                    if(("TYPE".equals(param.getName()) && !"".equals(param.getValue())) || 
+                            ("FAMILY".equals(param.getName()) && param.getValue().toString().startsWith("Database"))){
+                        isDbNode = true;
+                        break;
+                    }
                 }
             }
             if (isDbNode) {
