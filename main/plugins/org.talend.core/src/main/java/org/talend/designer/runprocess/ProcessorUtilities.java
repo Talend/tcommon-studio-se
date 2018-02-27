@@ -111,6 +111,8 @@ public class ProcessorUtilities {
 
     private static Logger log = Logger.getLogger(ProcessorUtilities.class);
 
+    public static final String PROP_MAPPINGS_URL = "talend.mappings.url"; //$NON-NLS-1$
+
     public static final int GENERATE_MAIN_ONLY = TalendProcessOptionConstants.GENERATE_MAIN_ONLY;
 
     public static final int GENERATE_WITH_FIRST_CHILD = TalendProcessOptionConstants.GENERATE_WITH_FIRST_CHILD;
@@ -605,11 +607,14 @@ public class ProcessorUtilities {
                 URL url = MetadataTalendType.getProjectForderURLOfMappingsFile();
                 if (url != null) {
                     // set the project mappings url
-                    System.setProperty("talend.mappings.url", url.toString()); //$NON-NLS-1$
+                    System.setProperty(ProcessorUtilities.PROP_MAPPINGS_URL, url.toString()); //$NON-NLS-1$
 
-                    IFolder xmlMappingFolder = jobInfo.getProcessor().getTalendJavaProject().getResourceSubFolder(null, JavaUtils.JAVA_XML_MAPPING);
-                    if (xmlMappingFolder.members().length == 0 && GlobalServiceRegister.getDefault().isServiceRegistered(ICoreService.class)) {
-                        ICoreService coreService = (ICoreService) GlobalServiceRegister.getDefault().getService(ICoreService.class);
+                    IFolder xmlMappingFolder = jobInfo.getProcessor().getTalendJavaProject()
+                            .getResourceSubFolder(null, JavaUtils.JAVA_XML_MAPPING);
+                    if (xmlMappingFolder.members().length == 0
+                            && GlobalServiceRegister.getDefault().isServiceRegistered(ICoreService.class)) {
+                        ICoreService coreService = (ICoreService) GlobalServiceRegister.getDefault().getService(
+                                ICoreService.class);
                         coreService.synchronizeMapptingXML(jobInfo.getProcessor().getTalendJavaProject());
                     }
                 }
@@ -629,6 +634,16 @@ public class ProcessorUtilities {
 
     public static boolean hasMetadataDynamic(IProcess currentProcess, JobInfo jobInfo) {
         boolean hasDynamicMetadata = false;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IDesignerCoreService.class)) {
+            IDesignerCoreService designerCoreService = (IDesignerCoreService) GlobalServiceRegister.getDefault().getService(
+                    IDesignerCoreService.class);
+            for (INode node : currentProcess.getGraphicalNodes()) {
+                if (designerCoreService.isDelegateNode(node)) { // for jdbc, currently
+                    return true;
+                }
+            }
+        }
+
         out: for (INode node : (List<? extends INode>) currentProcess.getGeneratingNodes()) {
             if (node.getComponent() != null && node.getComponent().getComponentType() == EComponentType.GENERIC) {
                 // generic component, true always
@@ -662,7 +677,7 @@ public class ProcessorUtilities {
         jobInfo.setProcess(null);
         jobInfo.setProcessor(null);
         progressMonitor.subTask(Messages.getString("ProcessorUtilities.finalizeBuild") + currentJobName); //$NON-NLS-1$
-        
+
         final String timeMeasureGenerateCodesId = "Generate job source codes for " //$NON-NLS-1$
                 + (jobInfo.getJobName() != null ? jobInfo.getJobName() : jobInfo.getJobId());
         TimeMeasure.step(timeMeasureGenerateCodesId, "Generated all source codes with children jobs (if have)");
@@ -674,7 +689,7 @@ public class ProcessorUtilities {
             }
             TimeMeasure.step(timeMeasureGenerateCodesId, "Compile all source codes");
             processor.syntaxCheck();
-            
+
             // TDI-36930, just after compile, need check the compile errors first.
             // only check current build
             if (isMainJob) {
@@ -943,7 +958,7 @@ public class ProcessorUtilities {
             setNeededResources(argumentsMap, jobInfo);
 
             processor.setArguments(argumentsMap);
-            
+
             copyDQDroolsToSrc(selectedProcessItem);
 
             generateContextInfo(jobInfo, selectedContextName, statistics, trace, needContext, progressMonitor, currentProcess,
@@ -1023,7 +1038,8 @@ public class ProcessorUtilities {
                 final Iterator<String> relativepath = resouece.getRelativePathList().iterator();
                 String pathStr = "metadata/survivorship"; //$NON-NLS-1$
                 IRunProcessService runProcessService = CorePlugin.getDefault().getRunProcessService();
-                ITalendProcessJavaProject talendProcessJavaProject = runProcessService.getTalendJobJavaProject(processItem.getProperty());
+                ITalendProcessJavaProject talendProcessJavaProject = runProcessService.getTalendJobJavaProject(processItem
+                        .getProperty());
                 IFolder targetFolder = talendProcessJavaProject.getExternalResourcesFolder();
                 if (targetFolder.exists()) {
                     IFolder survFolder = targetFolder.getFolder(new Path(pathStr));
@@ -1230,18 +1246,16 @@ public class ProcessorUtilities {
         LastGenerationInfo generationInfo = LastGenerationInfo.getInstance();
         Set<ModuleNeeded> subjobModules = generationInfo.getModulesNeededWithSubjobPerJob(subJobInfo.getJobId(),
                 subJobInfo.getJobVersion());
-        generationInfo.getModulesNeededWithSubjobPerJob(jobInfo.getJobId(), jobInfo.getJobVersion())
-                .addAll(subjobModules);
+        generationInfo.getModulesNeededWithSubjobPerJob(jobInfo.getJobId(), jobInfo.getJobVersion()).addAll(subjobModules);
 
         Set<String> subjobRoutineModules = generationInfo.getRoutinesNeededWithSubjobPerJob(subJobInfo.getJobId(),
                 subJobInfo.getJobVersion());
-        generationInfo.getRoutinesNeededWithSubjobPerJob(jobInfo.getJobId(), jobInfo.getJobVersion()).addAll(
-                subjobRoutineModules);
+        generationInfo.getRoutinesNeededWithSubjobPerJob(jobInfo.getJobId(), jobInfo.getJobVersion())
+                .addAll(subjobRoutineModules);
 
         Set<String> subjobPigUDFModules = generationInfo.getPigudfNeededWithSubjobPerJob(subJobInfo.getJobId(),
                 subJobInfo.getJobVersion());
-        generationInfo.getPigudfNeededWithSubjobPerJob(jobInfo.getJobId(), jobInfo.getJobVersion()).addAll(
-                subjobPigUDFModules);
+        generationInfo.getPigudfNeededWithSubjobPerJob(jobInfo.getJobId(), jobInfo.getJobVersion()).addAll(subjobPigUDFModules);
     }
 
     /**
@@ -1500,7 +1514,7 @@ public class ProcessorUtilities {
         }
 
         CorePlugin.getDefault().getRunProcessService().buildCodesJavaProject(progressMonitor);
- 
+
         // achen modify to fix 0006107
         ProcessItem pItem = null;
 
@@ -1581,20 +1595,20 @@ public class ProcessorUtilities {
     }
 
     /**
-    *
-    * jet code generator to get original classpath
-    */
+     *
+     * jet code generator to get original classpath
+     */
     public static String[] getCommandLine(String targetPlatform, boolean externalUse, String processId, String contextName,
             int statisticPort, int tracePort, String... codeOptions) throws ProcessorException {
         return getCommandLine(targetPlatform, true, externalUse, processId, contextName, statisticPort, tracePort, codeOptions);
     }
 
     /**
-    *
-    * jet code generator to especially for tRunJob to get classpath with classpath.jar
-    */
-    public static String[] getCommandLine(String targetPlatform, boolean skipClasspathJar, boolean externalUse, String processId, String contextName,
-            int statisticPort, int tracePort, String... codeOptions) throws ProcessorException {
+     *
+     * jet code generator to especially for tRunJob to get classpath with classpath.jar
+     */
+    public static String[] getCommandLine(String targetPlatform, boolean skipClasspathJar, boolean externalUse, String processId,
+            String contextName, int statisticPort, int tracePort, String... codeOptions) throws ProcessorException {
 
         IProcessor processor = findProcessorFromJobList(processId, contextName, null);
         if (processor != null && targetPlatform.equals(processor.getTargetPlatform())) {
@@ -1618,8 +1632,8 @@ public class ProcessorUtilities {
             return new String[] {};
         }
         // because all jobs are based one new way, set the flag "oldBuildJob" to false.
-        return getCommandLine(false, skipClasspathJar, targetPlatform, externalUse, process, selectedProcessItem.getProperty(), contextName, true,
-                statisticPort, tracePort, codeOptions);
+        return getCommandLine(false, skipClasspathJar, targetPlatform, externalUse, process, selectedProcessItem.getProperty(),
+                contextName, true, statisticPort, tracePort, codeOptions);
     }
 
     /**
@@ -1685,12 +1699,13 @@ public class ProcessorUtilities {
     public static String[] getCommandLine(boolean oldBuildJob, String targetPlatform, boolean externalUse,
             IProcess currentProcess, Property property, String contextName, boolean needContext, int statisticPort,
             int tracePort, String... codeOptions) throws ProcessorException {
-        return getCommandLine(oldBuildJob, false, targetPlatform, externalUse, currentProcess, property, contextName, needContext, statisticPort, tracePort, codeOptions);
+        return getCommandLine(oldBuildJob, false, targetPlatform, externalUse, currentProcess, property, contextName,
+                needContext, statisticPort, tracePort, codeOptions);
     }
 
-    public static String[] getCommandLine(boolean oldBuildJob, boolean skipClasspathJar, String targetPlatform, boolean externalUse,
-            IProcess currentProcess, Property property, String contextName, boolean needContext, int statisticPort,
-            int tracePort, String... codeOptions) throws ProcessorException {
+    public static String[] getCommandLine(boolean oldBuildJob, boolean skipClasspathJar, String targetPlatform,
+            boolean externalUse, IProcess currentProcess, Property property, String contextName, boolean needContext,
+            int statisticPort, int tracePort, String... codeOptions) throws ProcessorException {
         if (currentProcess == null) {
             return new String[] {};
         }
@@ -1705,10 +1720,10 @@ public class ProcessorUtilities {
         processor.setOldBuildJob(oldBuildJob);
         return processor.getCommandLine(needContext, externalUse, statisticPort, tracePort, codeOptions);
     }
-    
-    public static String[] getCommandLine(boolean oldBuildJob, String targetPlatform, boolean externalUse,
-            IProcessor processor, Property property, String contextName, boolean needContext, int statisticPort,
-            int tracePort, String... codeOptions) throws ProcessorException {
+
+    public static String[] getCommandLine(boolean oldBuildJob, String targetPlatform, boolean externalUse, IProcessor processor,
+            Property property, String contextName, boolean needContext, int statisticPort, int tracePort, String... codeOptions)
+            throws ProcessorException {
         processor.setTargetPlatform(targetPlatform);
         processor.setOldBuildJob(oldBuildJob);
         return processor.getCommandLine(needContext, externalUse, statisticPort, tracePort, codeOptions);
@@ -1814,12 +1829,15 @@ public class ProcessorUtilities {
             boolean isRoutelet = isRouteletNode(node);
             if ("tRunJob".equalsIgnoreCase(node.getComponentName()) || isCTalendJob || isRoutelet) { //$NON-NLS-1$
 
-                String jobIds = getParameterValue(node.getElementParameter(),
-                        isCTalendJob ? "SELECTED_JOB_NAME:PROCESS_TYPE_PROCESS" : "PROCESS"+(isRoutelet?"_TYPE":"")+":PROCESS_TYPE_PROCESS"); //$NON-NLS-1$
-                String jobContext = getParameterValue(node.getElementParameter(),
-                        isCTalendJob ? "SELECTED_JOB_NAME:PROCESS_TYPE_CONTEXT" : "PROCESS"+(isRoutelet?"_TYPE":"")+":PROCESS_TYPE_CONTEXT"); //$NON-NLS-1$
-                String jobVersion = getParameterValue(node.getElementParameter(),
-                        isCTalendJob ? "SELECTED_JOB_NAME:PROCESS_TYPE_VERSION" : "PROCESS"+(isRoutelet?"_TYPE":"")+":PROCESS_TYPE_VERSION"); //$NON-NLS-1$
+                String jobIds = getParameterValue(
+                        node.getElementParameter(),
+                        isCTalendJob ? "SELECTED_JOB_NAME:PROCESS_TYPE_PROCESS" : "PROCESS" + (isRoutelet ? "_TYPE" : "") + ":PROCESS_TYPE_PROCESS"); //$NON-NLS-1$
+                String jobContext = getParameterValue(
+                        node.getElementParameter(),
+                        isCTalendJob ? "SELECTED_JOB_NAME:PROCESS_TYPE_CONTEXT" : "PROCESS" + (isRoutelet ? "_TYPE" : "") + ":PROCESS_TYPE_CONTEXT"); //$NON-NLS-1$
+                String jobVersion = getParameterValue(
+                        node.getElementParameter(),
+                        isCTalendJob ? "SELECTED_JOB_NAME:PROCESS_TYPE_VERSION" : "PROCESS" + (isRoutelet ? "_TYPE" : "") + ":PROCESS_TYPE_VERSION"); //$NON-NLS-1$
                 // feature 19312
                 String[] jobsArr = jobIds.split(ProcessorUtilities.COMMA);
                 for (String jobId : jobsArr) {
@@ -1873,13 +1891,13 @@ public class ProcessorUtilities {
         }
         return jobInfos;
     }
-    
+
     private static boolean isRouteletNode(NodeType node) {
         String jobIds = getParameterValue(node.getElementParameter(), "PROCESS_TYPE:PROCESS_TYPE_PROCESS");
-        String jobVersion = getParameterValue(node.getElementParameter(),"PROCESS_TYPE:PROCESS_TYPE_VERSION"); //$NON-NLS-1$
+        String jobVersion = getParameterValue(node.getElementParameter(), "PROCESS_TYPE:PROCESS_TYPE_VERSION"); //$NON-NLS-1$
         ProcessItem processItem = ItemCacheManager.getProcessItem(jobIds, jobVersion);
-        if(processItem != null) {
-        	return ERepositoryObjectType.getType(processItem.getProperty()).equals(ERepositoryObjectType.PROCESS_ROUTELET);
+        if (processItem != null) {
+            return ERepositoryObjectType.getType(processItem.getProperty()).equals(ERepositoryObjectType.PROCESS_ROUTELET);
         }
         return false;
     }
@@ -1971,7 +1989,6 @@ public class ProcessorUtilities {
         }
         return null;
     }
-    
 
     public static String getJavaProjectLibFolderPath() {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {

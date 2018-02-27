@@ -74,6 +74,7 @@ import org.talend.designer.codegen.ITalendSynchronizer;
 import org.talend.designer.core.IDesignerCoreService;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 import org.talend.designer.runprocess.IRunProcessService;
+import org.talend.designer.runprocess.ProcessorUtilities;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.RepositoryWorkUnit;
 import org.talend.repository.model.RepositoryConstants;
@@ -359,13 +360,13 @@ public class CoreService implements ICoreService {
             }
             URL url = MetadataTalendType.getProjectForderURLOfMappingsFile();
             if (url != null) {
-            	// set the project mappings url
-                System.setProperty("talend.mappings.url", url.toString()); //$NON-NLS-1$
+                // set the project mappings url
+                System.setProperty(ProcessorUtilities.PROP_MAPPINGS_URL, url.toString()); //$NON-NLS-1$
                 IFolder xmlMappingFolder = talendJavaProject.getResourceSubFolder(null, JavaUtils.JAVA_XML_MAPPING);
-                
+
                 File mappingSource = new File(url.getPath());
                 FilenameFilter filter = new FilenameFilter() {
-                    
+
                     @Override
                     public boolean accept(File dir, String name) {
                         if (XmlUtil.isXMLFile(name)) {
@@ -374,7 +375,7 @@ public class CoreService implements ICoreService {
                         return false;
                     }
                 };
-                
+
                 for (File file : mappingSource.listFiles(filter)) {
                     String targetName = getTargetName(file);
                     IFile targetFile = xmlMappingFolder.getFile(targetName);
