@@ -298,7 +298,7 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
         }
     }
 
-    public void collectRepositoryNodes(IRepositoryNode curParentNode) {
+    private void collectRepositoryNodes(IRepositoryNode curParentNode) {
         if (repositoryNodeMap == null) {
             repositoryNodeMap = new HashMap<String, RepositoryNode>();
         }
@@ -306,7 +306,7 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
         collectRepositoryNodes(curParentNode.getChildren());
     }
 
-    private void collectRepositoryNodes(List<IRepositoryNode> nodes) {
+    public void collectRepositoryNodes(List<IRepositoryNode> nodes) {
 
         if (nodes != null) {
             for (IRepositoryNode node : nodes) {
