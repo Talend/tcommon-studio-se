@@ -101,4 +101,6 @@ public interface IRepositoryNode {
      * @return
      */
     public String getDisplayText();
+
+    public boolean shouldCollectRepositoryNode();
 }

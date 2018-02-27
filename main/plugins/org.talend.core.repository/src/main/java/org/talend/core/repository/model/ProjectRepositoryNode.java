@@ -298,7 +298,7 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
         }
     }
 
-    private void collectRepositoryNodes(IRepositoryNode curParentNode) {
+    public void collectRepositoryNodes(IRepositoryNode curParentNode) {
         if (repositoryNodeMap == null) {
             repositoryNodeMap = new HashMap<String, RepositoryNode>();
         }
@@ -310,7 +310,7 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
 
         if (nodes != null) {
             for (IRepositoryNode node : nodes) {
-                if (node.getParent() instanceof ProjectRepositoryNode) { // root node of type
+                if (node.shouldCollectRepositoryNode()) {
                     ERepositoryObjectType roType = (ERepositoryObjectType) node.getProperties(EProperties.CONTENT_TYPE);
                     if (roType != null) { // bin is null
                         String typeName = roType.name();

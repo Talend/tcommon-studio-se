@@ -563,4 +563,10 @@ public class RepositoryNode implements IRepositoryNode, IActionFilter {
     public String getDisplayText() {
         return getLabel();
     }
+
+    @Override
+    public boolean shouldCollectRepositoryNode() {
+        // root node of type
+        return this.getParent() instanceof IProjectRepositoryNode;
+    }
 }
