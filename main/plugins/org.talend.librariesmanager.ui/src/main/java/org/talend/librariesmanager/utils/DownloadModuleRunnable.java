@@ -48,6 +48,8 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
 
     protected Set<String> installedModules;
 
+    private boolean checkLibraries;
+
     /**
      * DOC sgandon DownloadModuleRunnable constructor comment.
      * 
@@ -58,6 +60,12 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
         this.toDownload = toDownload;
         downloadFailed = new HashSet<String>();
         installedModules = new HashSet<String>();
+        checkLibraries = true;
+    }
+
+    public DownloadModuleRunnable(List<ModuleToInstall> toDownload, boolean checkLibraries) {
+        this(toDownload);
+        this.checkLibraries = checkLibraries;
     }
 
     @Override
@@ -89,8 +97,8 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
                 try {
                     // check license
                     boolean isLicenseAccepted = module.isFromCustomNexus()
-                            || (LibManagerUiPlugin.getDefault().getPreferenceStore().contains(module.getLicenseType()) && LibManagerUiPlugin
-                                    .getDefault().getPreferenceStore().getBoolean(module.getLicenseType()));
+                            || (LibManagerUiPlugin.getDefault().getPreferenceStore().contains(module.getLicenseType())
+                                    && LibManagerUiPlugin.getDefault().getPreferenceStore().getBoolean(module.getLicenseType()));
 
                     boolean hasRepositoryUrl = false;
                     String moduleMvnUri = module.getMavenUri();
@@ -133,11 +141,12 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
             } else {
                 downloadFailed.add(module.getName());
             }
-            ILibrariesService librariesService = (ILibrariesService) GlobalServiceRegister.getDefault().getService(
-                    ILibrariesService.class);
+        }
+        if (checkLibraries) {
+            ILibrariesService librariesService = (ILibrariesService) GlobalServiceRegister.getDefault()
+                    .getService(ILibrariesService.class);
             librariesService.checkLibraries();
         }
-
     }
 
     protected boolean hasLicensesToAccept() {
@@ -169,8 +178,8 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
                 @Override
                 public void run() {
                     AcceptModuleLicensesWizard licensesWizard = new AcceptModuleLicensesWizard(toDownload);
-                    AcceptModuleLicensesWizardDialog wizardDialog = new AcceptModuleLicensesWizardDialog(PlatformUI
-                            .getWorkbench().getActiveWorkbenchWindow().getShell(), licensesWizard, toDownload, monitor);
+                    AcceptModuleLicensesWizardDialog wizardDialog = new AcceptModuleLicensesWizardDialog(
+                            PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), licensesWizard, toDownload, monitor);
                     wizardDialog.setPageSize(700, 380);
                     wizardDialog.create();
                     if (wizardDialog.open() != Window.OK) {

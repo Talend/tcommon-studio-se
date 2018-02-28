@@ -998,6 +998,9 @@ public class ExternalModulesInstallDialog extends TitleAreaDialog implements IMo
                                 }
                             }
                         }
+                        ILibrariesService librariesService = (ILibrariesService) GlobalServiceRegister.getDefault().getService(
+                                ILibrariesService.class);
+                        librariesService.checkLibraries();
                     }
                 });
             }
