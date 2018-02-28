@@ -17,13 +17,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
@@ -90,9 +88,9 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
     public String getWindowsClasspath() {
         return this.windowsClasspath;
     }
-    
+
     public String getWindowsClasspathForPs1() {
-    	return "\'" + getWindowsClasspath() + "\'";
+        return "\'" + getWindowsClasspath() + "\'";
     }
 
     public void setWindowsClasspath(String windowsClasspath) {
@@ -374,7 +372,8 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         checkPomProperty(properties, "talend.job.sh.addition", ETalendMavenVariables.JobShAddition,
                 unixScriptAdditionValue.toString());
 
-        checkPomProperty(properties, "talend.job.ps1.classpath", ETalendMavenVariables.JobBatClasspath, getWindowsClasspathForPs1());
+        checkPomProperty(properties, "talend.job.ps1.classpath", ETalendMavenVariables.JobBatClasspath,
+                getWindowsClasspathForPs1());
 
         String finalNameStr = JavaResourcesHelper.getJobJarName(property.getLabel(), property.getVersion());
         checkPomProperty(properties, "talend.job.finalName", ETalendMavenVariables.JobFinalName, finalNameStr);
@@ -586,7 +585,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         StringBuilder talendlibIncludes = new StringBuilder();
         StringBuilder _3rdPartylibExcludes = new StringBuilder();
         StringBuilder jobIncludes = new StringBuilder();
-        
+
         // add children jobs
         Set<JobInfo> childrenJobInfo = getJobProcessor().getBuildChildrenJobs();
         Set<String> childrenCoordinate = new HashSet<>();
@@ -603,8 +602,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         String parentCoordinate = PomIdsHelper.getJobGroupId(parentProperty) + ":" //$NON-NLS-1$
                 + PomIdsHelper.getJobArtifactId(parentProperty);
         addItem(jobIncludes, parentCoordinate, SEPARATOR);
-        
-        
+
         try {
             Model model = MavenPlugin.getMavenModelManager().readMavenModel(getPomFile());
             List<Dependency> dependencies = model.getDependencies();
@@ -615,7 +613,8 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
                 String dependencyGroupId = dependency.getGroupId();
                 String coordinate = dependencyGroupId + ":" + dependency.getArtifactId(); //$NON-NLS-1$
                 if (!childrenCoordinate.contains(coordinate)) {
-                    if (MavenConstants.DEFAULT_LIB_GROUP_ID.equals(dependencyGroupId) || dependencyGroupId.startsWith(projectGroupId)) {
+                    if (MavenConstants.DEFAULT_LIB_GROUP_ID.equals(dependencyGroupId)
+                            || dependencyGroupId.startsWith(projectGroupId)) {
                         addItem(talendlibIncludes, coordinate, SEPARATOR);
                         talendLibCoordinate.add(coordinate);
                     }
@@ -628,13 +627,13 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
                     addItem(_3rdPartylibExcludes, coordinate, SEPARATOR);
                 }
             }
-            if (_3rdPartylibExcludes.length() == 0) {
-                addItem(_3rdPartylibExcludes, "null:null", SEPARATOR); //$NON-NLS-1$
-            }
+            // if (_3rdPartylibExcludes.length() == 0) {
+            //                addItem(_3rdPartylibExcludes, "null:null", SEPARATOR); //$NON-NLS-1$
+            // }
         } catch (CoreException e) {
             ExceptionHandler.process(e);
         }
-        
+
         String talendLibIncludesStr = StringUtils.removeEnd(talendlibIncludes.toString(), SEPARATOR);
         String _3rdPartylibExcludesStr = StringUtils.removeEnd(_3rdPartylibExcludes.toString(), SEPARATOR);
         String jobIncludesStr = StringUtils.removeEnd(jobIncludes.toString(), SEPARATOR);
@@ -645,7 +644,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
     }
 
     private void addItem(StringBuilder builder, String coordinate, String separator) {
-        if(builder.length() > 0) {
+        if (builder.length() > 0) {
             builder.append("\t\t\t\t"); //$NON-NLS-1$
         }
         builder.append("<include>"); //$NON-NLS-1$

@@ -28,7 +28,10 @@ import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.process.IProcess;
+import org.talend.core.model.process.JobInfo;
 import org.talend.core.model.properties.ProcessItem;
+import org.talend.core.model.properties.Property;
+import org.talend.core.runtime.process.LastGenerationInfo;
 import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.designer.core.IDesignerCoreService;
 import org.talend.designer.maven.utils.PomUtil;
@@ -53,12 +56,19 @@ public class ProcessorDependenciesManager {
     public boolean updateDependencies(IProgressMonitor progressMonitor, Model model) throws ProcessorException {
         try {
             List neededDependencies = new ArrayList<Dependency>();
-            Set<ModuleNeeded> neededLibraries = getAllModuleNeededWithTestCase();
+            Set<ModuleNeeded> neededLibraries = getAllDependenciesModuleNeededs();
+            Set<String> uniquDependenciesSet = new HashSet<>();
+
             for (ModuleNeeded module : neededLibraries) {
                 Dependency dependency = null;
                 // if (module.getDeployStatus() == ELibraryInstallStatus.DEPLOYED) {
                 // }
-                dependency = PomUtil.createModuleDependency(module.getMavenUri());
+                final String mavenUri = module.getMavenUri();
+                if (uniquDependenciesSet.contains(mavenUri)) {
+                    continue; // must be same GAV, avoid the different other attrs for modules
+                }
+                uniquDependenciesSet.add(mavenUri);
+                dependency = PomUtil.createModuleDependency(mavenUri);
                 if (dependency != null) {
                     if (module.isExcludeDependencies()) {
                         Exclusion exclusion = new Exclusion();
@@ -72,7 +82,7 @@ public class ProcessorDependenciesManager {
 
             java.util.Collections.sort(neededDependencies);
 
-            return updateDependencies(progressMonitor, model, neededDependencies, false);
+            return updateDependencies(progressMonitor, model, neededDependencies, true);
 
         } catch (Exception e) {
             throw new ProcessorException(e);
@@ -145,45 +155,56 @@ public class ProcessorDependenciesManager {
         return changed;
     }
 
-    private Set<ModuleNeeded> getAllModuleNeededWithTestCase() throws PersistenceException {
+    private Set<ModuleNeeded> getAllDependenciesModuleNeededs() throws PersistenceException {
         // add the job modules.
-        Set<ModuleNeeded> neededLibraries;
-        boolean hasTestCase = false;
-        List<ProcessItem> testContainers = null;
-        ProcessItem item = null;
-        if (processor.getProperty() != null && processor.getProperty().getItem() instanceof ProcessItem) {
-            item = (ProcessItem) processor.getProperty().getItem();
+        Set<ModuleNeeded> neededLibraries = new HashSet<>();
+
+        // add libs for current processor
+        neededLibraries.addAll(processor.getNeededModules());
+
+        // force adding all dependencies of children jobs
+        final Set<JobInfo> buildChildrenJobs = processor.getBuildChildrenJobs();
+        for (JobInfo childJob : buildChildrenJobs) {
+            Set<ModuleNeeded> childJobModules = LastGenerationInfo.getInstance().getModulesNeededWithSubjobPerJob(
+                    childJob.getJobId(), childJob.getJobVersion());
+            neededLibraries.addAll(childJobModules);
         }
-        ITestContainerProviderService testContainerService = null;
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
-            testContainerService = (ITestContainerProviderService) GlobalServiceRegister.getDefault()
-                    .getService(ITestContainerProviderService.class);
-            if (item != null) {
-                boolean isTestCase = testContainerService.isTestContainerItem(item);
-                if (isTestCase) {
-                    item = (ProcessItem) testContainerService.getParentJobItem(item);
+
+        // add all test cases libs
+        final Property currentProperty = processor.getProperty();
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)
+                && currentProperty != null && currentProperty.getItem() instanceof ProcessItem) {
+            ITestContainerProviderService testContainerService = (ITestContainerProviderService) GlobalServiceRegister
+                    .getDefault().getService(ITestContainerProviderService.class);
+            ProcessItem currentItem = (ProcessItem) currentProperty.getItem();
+
+            List<ProcessItem> testContainers;
+            if (testContainerService.isTestContainerItem(currentItem)) {
+                ProcessItem parentJobItem = (ProcessItem) testContainerService.getParentJobItem(currentItem);
+                testContainers = testContainerService.getAllTestContainers(parentJobItem);
+            } else {
+                testContainers = testContainerService.getAllTestContainers(currentItem);
+            }
+
+            if (testContainers != null && !testContainers.isEmpty()) {
+                for (ProcessItem testcaseItem : testContainers) {
+                    final Property testcaseProperty = testcaseItem.getProperty();
+                    if (currentProperty.getId().equals(testcaseProperty.getId())
+                            && currentProperty.getVersion().equals(testcaseProperty.getVersion())) {
+                        continue; // ignore, same test case with current item.
+                    }
+                    IProcess testcaseProcess = getDesignerCoreService().getProcessFromProcessItem(testcaseItem);
+                    neededLibraries.addAll(testcaseProcess.getNeededModules(true)); // maybe test case without children
                 }
-                testContainers = testContainerService.getAllTestContainers(item);
-                if (testContainers != null && !testContainers.isEmpty()) {
-                    hasTestCase = true;
-                }
             }
         }
-        if (hasTestCase) {
-            neededLibraries = new HashSet<>();
-            IProcess jobProcess = getDesignerCoreService().getProcessFromProcessItem(item);
-            neededLibraries.addAll(jobProcess.getNeededModules(false));
-            for (ProcessItem testcaseItem : testContainers) {
-                IProcess testcaseProcess = getDesignerCoreService().getProcessFromProcessItem(testcaseItem);
-                neededLibraries.addAll(testcaseProcess.getNeededModules(false));
-            }
-            if(GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerService.class)) {
-            	ILibraryManagerService repositoryBundleService = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(ILibraryManagerService.class);
-            	repositoryBundleService.installModules(neededLibraries, null);
-            }
-        } else {
-            neededLibraries = processor.getNeededModules();
+
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerService.class)) {
+            ILibraryManagerService repositoryBundleService = (ILibraryManagerService) GlobalServiceRegister.getDefault()
+                    .getService(ILibraryManagerService.class);
+            repositoryBundleService.installModules(neededLibraries, null);
         }
+
         return neededLibraries;
     }
 
