@@ -160,6 +160,7 @@ public class CreateMavenStandardJobOSGiPom extends CreateMavenJobPom {
                     } else {
                         assemblyFile.create(source, true, monitor);
                     }
+                    updateDependencySet(assemblyFile);
                     set = true;
                 }
             } catch (Exception e) {
