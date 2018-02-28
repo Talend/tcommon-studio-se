@@ -205,41 +205,47 @@ public class AggregatorPomsHelper {
     }
 
     public static void buildAndInstallCodesProject(IProgressMonitor monitor, ERepositoryObjectType codeType) throws Exception {
-        buildAndInstallCodesProject(monitor, codeType, true);
+        buildAndInstallCodesProject(monitor, codeType, true, false);
     }
 
-    public static void buildAndInstallCodesProject(IProgressMonitor monitor, ERepositoryObjectType codeType, boolean install)
+    public static void buildAndInstallCodesProject(IProgressMonitor monitor, ERepositoryObjectType codeType, boolean install, boolean forceBuild)
             throws Exception {
-        Job job = new Job("Install " + codeType.getLabel()) {
-
-            @Override
-            protected IStatus run(IProgressMonitor monitor) {
-                try {
-                    if (!BuildCacheManager.getInstance().isCodesBuild(codeType)) {
-                        ITalendProcessJavaProject codeProject = getCodesProject(codeType);
-                        codeProject.buildModules(monitor, null, null);
-                        if (install) {
-                            Map<String, Object> argumentsMap = new HashMap<>();
-                            argumentsMap.put(TalendProcessArgumentConstant.ARG_GOAL, TalendMavenConstants.GOAL_INSTALL);
-                            argumentsMap.put(TalendProcessArgumentConstant.ARG_PROGRAM_ARGUMENTS, "-Dmaven.main.skip=true"); //$NON-NLS-1$
-                            codeProject.buildModules(monitor, null, argumentsMap);
-                            BuildCacheManager.getInstance().updateCodeLastBuildDate(codeType);
-                        }
-                    }
-                    return org.eclipse.core.runtime.Status.OK_STATUS;
-                } catch (Exception e) {
-                    return new org.eclipse.core.runtime.Status(IStatus.ERROR, DesignerMavenPlugin.PLUGIN_ID, 1, e.getMessage(),
-                            e);
-                }
-            }
-
-        };
-        job.setUser(false);
-        job.setPriority(Job.INTERACTIVE);
         if (!CommonsPlugin.isHeadless()) {
+            Job job = new Job("Install " + codeType.getLabel()) {
+
+                @Override
+                protected IStatus run(IProgressMonitor monitor) {
+                    try {
+                        build(codeType, install, forceBuild, monitor);
+                        return org.eclipse.core.runtime.Status.OK_STATUS;
+                    } catch (Exception e) {
+                        return new org.eclipse.core.runtime.Status(IStatus.ERROR, DesignerMavenPlugin.PLUGIN_ID, 1,
+                                e.getMessage(), e);
+                    }
+                }
+
+            };
+            job.setUser(false);
+            job.setPriority(Job.INTERACTIVE);
             job.schedule();
         } else {
-            job.join();
+            synchronized (codeType) {
+                build(codeType, install, forceBuild, monitor);
+            }
+        }
+    }
+
+    private static void build(ERepositoryObjectType codeType, boolean install, boolean forceBuild, IProgressMonitor monitor) throws Exception {
+        if (forceBuild || !BuildCacheManager.getInstance().isCodesBuild(codeType)) {
+            ITalendProcessJavaProject codeProject = getCodesProject(codeType);
+            codeProject.buildModules(monitor, null, null);
+            if (install) {
+                Map<String, Object> argumentsMap = new HashMap<>();
+                argumentsMap.put(TalendProcessArgumentConstant.ARG_GOAL, TalendMavenConstants.GOAL_INSTALL);
+                argumentsMap.put(TalendProcessArgumentConstant.ARG_PROGRAM_ARGUMENTS, "-Dmaven.main.skip=true"); //$NON-NLS-1$
+                codeProject.buildModules(monitor, null, argumentsMap);
+                BuildCacheManager.getInstance().updateCodeLastBuildDate(codeType);
+            }
         }
     }
 
