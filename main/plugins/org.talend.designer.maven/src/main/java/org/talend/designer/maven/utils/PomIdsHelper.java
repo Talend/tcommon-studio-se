@@ -255,7 +255,7 @@ public class PomIdsHelper {
             IPreferenceStore preferenceStore = preferenceManager.getPreferenceStore();
             if (StringUtils.isEmpty(preferenceStore.getDefaultString(MavenConstants.PROJECT_GROUPID))
                     && StringUtils.isEmpty(preferenceStore.getString(MavenConstants.PROJECT_GROUPID))) {
-                preferenceStore.setDefault(MavenConstants.PROJECT_GROUPID, getDefaultProjetGroupId(projectTechName));
+                preferenceStore.setValue(MavenConstants.PROJECT_GROUPID, getDefaultProjetGroupId(projectTechName));
                 preferenceManager.save();
             }
             preferenceManagers.put(projectTechName, preferenceManager);

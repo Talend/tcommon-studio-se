@@ -108,7 +108,7 @@ public final class ProjectPreferenceManager {
         this.qualifier = fileName;
         this.project = project;
         this.projectScope = new ProjectScope(project);
-        this.store = new ScopedPreferenceStore(this.projectScope, this.qualifier, project.getName()+"."+this.qualifier); //$NON-NLS-1$
+        this.store = new ScopedPreferenceStore(this.projectScope, this.qualifier);
     }
 
     private void addPropertyChangeListener() {
