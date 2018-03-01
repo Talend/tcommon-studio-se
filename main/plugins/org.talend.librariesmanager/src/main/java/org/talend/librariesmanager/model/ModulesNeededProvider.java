@@ -122,6 +122,10 @@ public class ModulesNeededProvider {
     private static final String TALEND_FILE_NAME = "cache";
 
     private static final List<IChangedLibrariesListener> listeners = new ArrayList<IChangedLibrariesListener>();
+    
+    private static final String CAMEL_VERSION = "2.20.1";
+    
+    private static final String SPRING_VERSION = "4.3.10.RELEASE";
 
     private static IRepositoryService service = null;
     static {
@@ -481,6 +485,17 @@ public class ModulesNeededProvider {
             // route do not save any relateionship with beans , so add all for now
             Set<ModuleNeeded> modulesNeededForBean = ModulesNeededProvider.getCodesModuleNeededs(
                     ERepositoryObjectType.getType("BEANS"), false);
+            // minimal set of dependencies which are required by "empty" ROUTE / ROUTELET
+            modulesNeeded.add(new ModuleNeeded(null, "camel-core-" + CAMEL_VERSION + ".jar", 
+            		null, false));
+            modulesNeeded.add(new ModuleNeeded(null, "camel-spring-" + CAMEL_VERSION + ".jar",
+            		null, false));
+            modulesNeeded.add(new ModuleNeeded(null, "spring-context-" + SPRING_VERSION + ".jar",
+            		null, false));
+            modulesNeeded.add(new ModuleNeeded(null, "spring-beans-" + SPRING_VERSION + ".jar",
+            		null, false));
+            modulesNeeded.add(new ModuleNeeded(null, "spring-core-" + SPRING_VERSION + ".jar", 
+            		null, false));
             modulesNeeded.addAll(modulesNeededForBean);
         }
         return modulesNeeded;
