@@ -507,7 +507,13 @@ public class ProcessorUtilities {
         if (neededLibraries != null) {
             Set<ModuleNeeded> adjustClassPath = new HashSet<ModuleNeeded>(neededLibraries);
             for (IClasspathAdjuster adjuster : classPathAdjusters) {
-                adjuster.collectInfo(currentProcess, neededLibraries);
+            	if (adjuster.needPreProcessing(currentProcess)) {
+            		// perform pre processing
+            		// collect info on all job/subjobs
+            		preProcessAdjuster(adjuster, jobInfo, currentProcess, neededLibraries, option, new ArrayList<>());
+            	} else {
+            		adjuster.collectInfo(currentProcess, neededLibraries, false);
+            	}
                 adjustClassPath = adjuster.adjustClassPath(currentProcess, adjustClassPath);
             }
 
@@ -952,7 +958,13 @@ public class ProcessorUtilities {
             if (neededLibraries != null) {
                 Set<ModuleNeeded> adjustClassPath = new HashSet<ModuleNeeded>(neededLibraries);
                 for (IClasspathAdjuster adjuster : classPathAdjusters) {
-                    adjuster.collectInfo(currentProcess, neededLibraries);
+                	if (adjuster.needPreProcessing(currentProcess)) {
+                		// perform pre processing
+                		// collect info on all job/subjobs
+                		preProcessAdjuster(adjuster, jobInfo, currentProcess, neededLibraries, option, new ArrayList<>());
+                	} else {
+                		adjuster.collectInfo(currentProcess, neededLibraries, false);
+                	}
                     adjustClassPath = adjuster.adjustClassPath(currentProcess, adjustClassPath);
                 }
 
@@ -1018,6 +1030,82 @@ public class ProcessorUtilities {
         }
     }
 
+    private static IProcess getProcess(JobInfo jobInfo) {
+
+        ProcessItem selectedProcessItem = null;
+        
+        if (jobInfo.getJobVersion() == null) {
+            selectedProcessItem = ItemCacheManager.getProcessItem(jobInfo.getJobId());
+        }
+
+        if (selectedProcessItem == null && jobInfo.getJobVersion() != null) {
+            selectedProcessItem = ItemCacheManager.getProcessItem(jobInfo.getJobId(), jobInfo.getJobVersion());
+        }
+
+        if (selectedProcessItem == null) {
+            return null;
+        }
+  
+        IDesignerCoreService service = CorePlugin.getDefault().getDesignerCoreService();
+        return service.getProcessFromProcessItem(selectedProcessItem);
+         
+    }
+    
+    private static void preProcessAdjuster(IClasspathAdjuster adjuster, JobInfo jobInfo, 
+    		int option, List<JobInfo> visitedJobList) throws ProcessorException {
+    	// first get the process
+    	IProcess process = getProcess(jobInfo);
+    	// then get the needed libraries
+    	if (process != null) {
+    		Set<ModuleNeeded> neededLibraries = CorePlugin.getDefault().getDesignerCoreService()
+    				.getNeededLibrariesForProcess(process, false);
+    		preProcessAdjuster(adjuster, jobInfo, process, neededLibraries, option, visitedJobList);
+    	}
+    }
+    	
+    private static void preProcessAdjuster(IClasspathAdjuster adjuster, JobInfo jobInfo, 
+    		IProcess currentProcess, Set<ModuleNeeded> neededLibraries, 
+    		int option, List<JobInfo> visitedJobList) throws ProcessorException {
+    	if (neededLibraries != null) {
+			adjuster.collectInfo(currentProcess, neededLibraries, true);
+		}
+		visitedJobList.add(jobInfo);
+		if (!BitwiseOptionUtils.containOption(option, GENERATE_MAIN_ONLY)) {
+			preProcessAdjusterOnSubJobs(adjuster, jobInfo, currentProcess, option, visitedJobList);
+		}
+    }
+    
+    private static void preProcessAdjusterOnSubJobs(IClasspathAdjuster adjuster, JobInfo jobInfo, 
+    		IProcess currentProcess, 
+    		int option, List<JobInfo> visitedJobList) throws ProcessorException {
+    	for (INode node : currentProcess.getGeneratingNodes()) {
+            String componentName = node.getComponent().getName();
+            if (node != null && componentName.equals("tRunJob")) {
+            	IElementParameter processIdparam = node.getElementParameter("PROCESS_TYPE_PROCESS"); //$NON-NLS-1$
+                final String jobIds = (String) processIdparam.getValue();
+                for (String jobId : jobIds.split(ProcessorUtilities.COMMA)) {
+                    if (StringUtils.isNotEmpty(jobId)) {
+                    	String context = (String) node.getElementParameter("PROCESS_TYPE_CONTEXT").getValue(); //$NON-NLS-1$
+                        String version = (String) node.getElementParameter("PROCESS_TYPE_VERSION").getValue(); //$NON-NLS-1$
+                        JobInfo subJobInfo = new JobInfo(jobId, context, version);
+                        // get processitem from job
+                        final ProcessItem processItem = ItemCacheManager.getProcessItem(jobId, version);
+                        if (processItem == null) {
+                            throw new ProcessorException(node.getUniqueName()
+                                    + " not setup or child job not found in the job:" + currentProcess.getName());
+                        }
+                        subJobInfo.setJobVersion(processItem.getProperty().getVersion());
+                        subJobInfo.setJobName(processItem.getProperty().getLabel());
+
+                        if (!visitedJobList.contains(subJobInfo)) {
+                        	preProcessAdjuster(adjuster, subJobInfo, option, visitedJobList);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     private static void generateJobInfo(JobInfo jobInfo, boolean isMainJob, IProcess currentProcess,
             ProcessItem selectedProcessItem) {
         if (!CommonsPlugin.isHeadless()) {

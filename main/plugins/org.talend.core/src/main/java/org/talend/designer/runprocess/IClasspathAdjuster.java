@@ -25,7 +25,14 @@ public interface IClasspathAdjuster {
 
     public void initialize();
 
+    public boolean needPreProcessing(IProcess process);
+    
+    @Deprecated
     public void collectInfo(IProcess process, Set<ModuleNeeded> modules);
+    
+    default public void collectInfo(IProcess process, Set<ModuleNeeded> modules, boolean preProcessing) {
+    	collectInfo(process, modules);
+    }
 
     @Deprecated
     public Set<ModuleNeeded> adjustClassPath(Set<ModuleNeeded> modulesToAjust);
