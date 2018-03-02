@@ -12,7 +12,12 @@
 // ============================================================================
 package org.talend.metadata.managment.ui.wizard;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IWorkspace;
@@ -40,12 +45,14 @@ import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.commons.ui.runtime.exception.MessageBoxExceptionHandler;
 import org.talend.commons.ui.runtime.image.EImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
+import org.talend.commons.utils.VersionUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ICoreService;
 import org.talend.core.IESBService;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.ItemState;
+import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.relationship.RelationshipItemBuilder;
 import org.talend.core.model.repository.ERepositoryObjectType;
@@ -53,6 +60,7 @@ import org.talend.core.model.repository.IRepositoryObject;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.repository.RepositoryObject;
 import org.talend.core.runtime.CoreRuntimePlugin;
+import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.expressionbuilder.ExpressionPersistance;
 import org.talend.metadata.managment.ui.i18n.Messages;
 import org.talend.repository.ProjectManager;
@@ -290,6 +298,34 @@ public class PropertiesWizard extends Wizard {
 
                     if (!originalVersion.equals(object.getVersion())) {
                         RelationshipItemBuilder.getInstance().addOrUpdateItem(object.getProperty().getItem());
+                        //add for tup-18925 job's testcase also should change version
+                        List<ProcessItem> testcaseList = new ArrayList<ProcessItem>();
+                        if(GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
+                        	ITestContainerProviderService testContainer = (ITestContainerProviderService) GlobalServiceRegister.getDefault().getService(ITestContainerProviderService.class);
+                        	List<ProcessItem> allTestCase = testContainer.getAllTestContainers((ProcessItem) object.getProperty().getItem());
+                        	Map<String,List<ProcessItem>> testcaseMap = new HashMap<String, List<ProcessItem>>();
+                    		for (ProcessItem testCaseItem : allTestCase) {
+                    			String testId = testCaseItem.getProperty().getId();
+                    			if(testcaseMap.get(testId)==null) {
+                    				testcaseMap.put(testId, new ArrayList<ProcessItem>());
+                    			}
+                    			testcaseMap.get(testId).add(testCaseItem);
+                    		}
+                    		for (String id : testcaseMap.keySet()) {
+                    			ProcessItem maxVersionTest = Collections.max(testcaseMap.get(id), new Comparator<ProcessItem>() {
+                    				
+                    				public int compare(ProcessItem o1, ProcessItem o2) {
+                    					return VersionUtils.compareTo(o1.getProperty().getVersion(), o2.getProperty().getVersion());
+                    				}
+                    			});
+                    			testcaseList.add(maxVersionTest);
+                    		}
+                        }
+                        for (ProcessItem item : testcaseList) {
+                        	item.getProperty().setVersion(object.getVersion());
+                        	proxyRepositoryFactory.save(ProjectManager.getInstance().getCurrentProject(), item.getProperty());
+            			}
+                        //end of tup-18925
                     }
                     proxyRepositoryFactory.saveProject(ProjectManager.getInstance().getCurrentProject());
                     if (GlobalServiceRegister.getDefault().isServiceRegistered(IESBService.class)) {

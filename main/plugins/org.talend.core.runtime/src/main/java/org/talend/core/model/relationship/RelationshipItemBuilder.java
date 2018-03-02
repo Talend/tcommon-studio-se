@@ -467,6 +467,15 @@ public class RelationshipItemBuilder {
         itemToTest.setId(itemId);
         itemToTest.setType(relationType);
         itemToTest.setVersion(version);
+        if(!itemsRelations.containsKey(itemToTest)) {
+        	try {
+				Item item = proxyRepositoryFactory.getLastVersion(itemId).getProperty().getItem();
+				addOrUpdateItem(item,false);
+			} catch (PersistenceException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
         if (itemsRelations.containsKey(itemToTest)) {
             Set<Relation> relations = itemsRelations.get(itemToTest);
             for (Relation relatedItem : relations) {
