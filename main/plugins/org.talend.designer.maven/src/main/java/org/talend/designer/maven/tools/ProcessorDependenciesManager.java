@@ -28,6 +28,7 @@ import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.process.IProcess;
+import org.talend.core.model.process.IProcess2;
 import org.talend.core.model.process.JobInfo;
 import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.Property;
@@ -81,8 +82,12 @@ public class ProcessorDependenciesManager {
             }
 
             java.util.Collections.sort(neededDependencies);
-
-            return updateDependencies(progressMonitor, model, neededDependencies, true);
+            boolean fresh = false;
+            if (processor.getProperty() != null && processor.getProperty().getItem() != null && processor.getProcess() instanceof IProcess2) {
+                // is standard job.
+                fresh = true;
+            }
+            return updateDependencies(progressMonitor, model, neededDependencies, fresh);
 
         } catch (Exception e) {
             throw new ProcessorException(e);
