@@ -12,10 +12,10 @@
   <packaging>pom</packaging>
 
   <properties>
-    <tcomp.version>1.0.0-SNAPSHOT</tcomp.version>
-    <tcomp-api.version>1.0.0-SNAPSHOT</tcomp-api.version>
+    <tcomp.version>0.0.1</tcomp.version>
     <slf4j.version>1.7.25</slf4j.version>
   </properties>
+
   <repositories>
     <repository>
       <id>talend_open</id>
@@ -62,11 +62,6 @@
   <dependencies>
     <dependency>
       <groupId>org.talend.sdk.component</groupId>
-      <artifactId>component-api</artifactId>
-      <version>${tcomp-api.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.talend.sdk.component</groupId>
       <artifactId>component-server</artifactId>
       <version>${tcomp.version}</version>
     </dependency>
@@ -101,6 +96,7 @@
       <version>1.4</version>
     </dependency>
   </dependencies>
+
   <build>
     <plugins>
       <plugin>
