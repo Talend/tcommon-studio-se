@@ -122,10 +122,6 @@ public class ModulesNeededProvider {
     private static final String TALEND_FILE_NAME = "cache";
 
     private static final List<IChangedLibrariesListener> listeners = new ArrayList<IChangedLibrariesListener>();
-    
-    private static final String CAMEL_VERSION = "2.20.1";
-    
-    private static final String SPRING_VERSION = "4.3.10.RELEASE";
 
     private static IRepositoryService service = null;
     static {
@@ -485,18 +481,8 @@ public class ModulesNeededProvider {
             // route do not save any relateionship with beans , so add all for now
             Set<ModuleNeeded> modulesNeededForBean = ModulesNeededProvider.getCodesModuleNeededs(
                     ERepositoryObjectType.getType("BEANS"), false);
-            // minimal set of dependencies which are required by "empty" ROUTE / ROUTELET
-            modulesNeeded.add(new ModuleNeeded(null, "camel-core-" + CAMEL_VERSION + ".jar", 
-            		null, false));
-            modulesNeeded.add(new ModuleNeeded(null, "camel-spring-" + CAMEL_VERSION + ".jar",
-            		null, false));
-            modulesNeeded.add(new ModuleNeeded(null, "spring-context-" + SPRING_VERSION + ".jar",
-            		null, false));
-            modulesNeeded.add(new ModuleNeeded(null, "spring-beans-" + SPRING_VERSION + ".jar",
-            		null, false));
-            modulesNeeded.add(new ModuleNeeded(null, "spring-core-" + SPRING_VERSION + ".jar", 
-            		null, false));
             modulesNeeded.addAll(modulesNeededForBean);
+            modulesNeeded.addAll(getModulesNeededForRoutes());
         }
         return modulesNeeded;
     }
@@ -715,6 +701,31 @@ public class ModulesNeededProvider {
         }
         return importNeedsList;
     }
+    
+    public static ModuleNeeded getComponentModuleById(String palettType, String moduleId) {
+    	if (service != null) {
+        	for(IComponent c : service.getComponentsFactory().getComponents()) {
+        		for(ModuleNeeded m: c.getModulesNeeded()) {
+        			String pt = c.getPaletteType();
+        			if((palettType == null || palettType.equalsIgnoreCase(pt)) 
+        					&& m.getId() != null && m.getId().equalsIgnoreCase(moduleId)) {
+        				return m;
+        			}
+        		}
+        	}
+        }
+    	return null;
+    }
+    
+    public static List<ModuleNeeded> getModulesNeededForRoutes() {
+        List<ModuleNeeded> importNeedsList = new ArrayList<ModuleNeeded>();
+        importNeedsList.add(getComponentModuleById("CAMEL", "camel-core"));
+        importNeedsList.add(getComponentModuleById("CAMEL", "camel-spring"));
+        importNeedsList.add(getComponentModuleById("CAMEL", "spring-context"));
+        importNeedsList.add(getComponentModuleById("CAMEL", "spring-beans"));
+        importNeedsList.add(getComponentModuleById("CAMEL", "spring-core"));
+        return importNeedsList;
+    }    
 
     private static void getRefRoutines(List<IRepositoryViewObject> routines,
              Project mainProject, ERepositoryObjectType type) {
