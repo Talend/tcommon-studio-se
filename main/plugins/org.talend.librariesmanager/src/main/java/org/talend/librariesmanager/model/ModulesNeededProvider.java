@@ -703,18 +703,18 @@ public class ModulesNeededProvider {
     }
     
     public static ModuleNeeded getComponentModuleById(String palettType, String moduleId) {
-    	if (service != null) {
-        	for(IComponent c : service.getComponentsFactory().getComponents()) {
-        		for(ModuleNeeded m: c.getModulesNeeded()) {
-        			String pt = c.getPaletteType();
-        			if((palettType == null || palettType.equalsIgnoreCase(pt)) 
-        					&& m.getId() != null && m.getId().equalsIgnoreCase(moduleId)) {
-        				return m;
-        			}
-        		}
-        	}
+        if (service != null) {
+            for(IComponent c : service.getComponentsFactory().getComponents()) {
+                for(ModuleNeeded m: c.getModulesNeeded()) {
+                    String pt = c.getPaletteType();
+                    if((palettType == null || palettType.equalsIgnoreCase(pt)) 
+                       && m.getId() != null && m.getId().equalsIgnoreCase(moduleId)) {
+                       return m;
+                    }
+                }
+            }
         }
-    	return null;
+        return null;
     }
     
     public static List<ModuleNeeded> getModulesNeededForRoutes() {
