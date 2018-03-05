@@ -472,8 +472,7 @@ public class RelationshipItemBuilder {
 				Item item = proxyRepositoryFactory.getLastVersion(itemId).getProperty().getItem();
 				addOrUpdateItem(item,false);
 			} catch (PersistenceException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				log.error(e.getMessage());
 			}
         }
         if (itemsRelations.containsKey(itemToTest)) {
