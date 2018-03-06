@@ -12,16 +12,43 @@
 // ============================================================================
 package org.talend.designer.maven.ui.setting.project.page;
 
-import org.talend.core.runtime.projectsetting.EmptyProjectSettingPage;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.talend.commons.exception.ExceptionHandler;
+import org.talend.core.runtime.projectsetting.AbstractProjectSettingPage;
+import org.talend.designer.maven.tools.AggregatorPomsHelper;
 
 /**
  * DOC ggu class global comment. Detailled comment
  */
-public class MavenProjectSettingPage extends EmptyProjectSettingPage {
+public class MavenProjectSettingPage extends AbstractProjectSettingPage {
 
     public MavenProjectSettingPage() {
-        super();
+        noDefaultAndApplyButton();
+    }
 
+    @Override
+    protected void createFieldEditors() {
+        Composite parent = getFieldEditorParent();
+        parent.setLayout(new GridLayout());
+        Button button = new Button(parent, SWT.NONE);
+        button.setText("Synchronize all poms"); //$NON-NLS-1$
+        button.addSelectionListener(new SelectionAdapter() {
+
+            @Override
+            public void widgetSelected(SelectionEvent event) {
+                try {
+                    new AggregatorPomsHelper().syncAllPoms();
+                } catch (Exception e) {
+                    ExceptionHandler.process(e);
+                }
+            }
+
+        });
     }
 
 }

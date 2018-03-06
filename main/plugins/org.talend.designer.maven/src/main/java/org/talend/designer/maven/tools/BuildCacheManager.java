@@ -219,7 +219,12 @@ public class BuildCacheManager {
     public void clearCache(ERepositoryObjectType codeType) {
         codesLastBuildCache.remove(codeType);
     }
-    
+
+    public void clearCache() {
+        cache.clear();
+        codesLastBuildCache.clear();
+    }
+
     public boolean isCodesBuild(ERepositoryObjectType codeType) {
         Date lastBuildDate = codesLastBuildCache.get(codeType);
         if (lastBuildDate == null) {

@@ -15,6 +15,7 @@ package org.talend.designer.maven.tools;
 import static org.talend.designer.maven.model.TalendJavaProjectConstants.*;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +28,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -34,16 +36,23 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.m2e.core.MavenPlugin;
+import org.eclipse.swt.widgets.Display;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.process.ProcessUtils;
+import org.talend.core.model.properties.Item;
+import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.ProjectReference;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
+import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.repository.utils.ItemResourceUtil;
 import org.talend.core.runtime.maven.MavenConstants;
@@ -81,14 +90,21 @@ public class AggregatorPomsHelper {
         this.projectTechName = projectTechName;
     }
 
-    public void createRootPom(IFolder folder, IProgressMonitor monitor) throws Exception {
+    public void createRootPom(IFolder folder, List<String> modules, boolean force, IProgressMonitor monitor) throws Exception {
         IFile pomFile = folder.getFile(TalendMavenConstants.POM_FILE_NAME);
-        if (!pomFile.exists()) {
+        if (force || !pomFile.exists()) {
             Map<String, Object> parameters = new HashMap<String, Object>();
             parameters.put(MavenTemplateManager.KEY_PROJECT_NAME, projectTechName);
             Model model = MavenTemplateManager.getCodeProjectTemplateModel(parameters);
+            if (modules != null && !modules.isEmpty()) {
+                model.setModules(modules);
+            }
             PomUtil.savePom(monitor, model, pomFile);
         }
+    }
+
+    public void createRootPom(IFolder folder, IProgressMonitor monitor) throws Exception {
+        createRootPom(folder, null, false, monitor);
     }
 
     public void installRootPom(boolean current) throws Exception {
@@ -209,12 +225,12 @@ public class AggregatorPomsHelper {
         buildAndInstallCodesProject(monitor, codeType, true, false);
     }
 
-    public static void buildAndInstallCodesProject(IProgressMonitor monitor, ERepositoryObjectType codeType, boolean install, boolean forceBuild)
-            throws Exception {
-        if (forceBuild || !BuildCacheManager.getInstance().isCodesBuild(codeType)) {            
+    public static void buildAndInstallCodesProject(IProgressMonitor monitor, ERepositoryObjectType codeType, boolean install,
+            boolean forceBuild) throws Exception {
+        if (forceBuild || !BuildCacheManager.getInstance().isCodesBuild(codeType)) {
             if (!CommonsPlugin.isHeadless()) {
                 Job job = new Job("Install " + codeType.getLabel()) {
-    
+
                     @Override
                     protected IStatus run(IProgressMonitor monitor) {
                         try {
@@ -225,7 +241,7 @@ public class AggregatorPomsHelper {
                                     e.getMessage(), e);
                         }
                     }
-    
+
                 };
                 job.setUser(false);
                 job.setPriority(Job.INTERACTIVE);
@@ -238,7 +254,8 @@ public class AggregatorPomsHelper {
         }
     }
 
-    private static void build(ERepositoryObjectType codeType, boolean install, boolean forceBuild, IProgressMonitor monitor) throws Exception {
+    private static void build(ERepositoryObjectType codeType, boolean install, boolean forceBuild, IProgressMonitor monitor)
+            throws Exception {
         if (forceBuild || !BuildCacheManager.getInstance().isCodesBuild(codeType)) {
             ITalendProcessJavaProject codeProject = getCodesProject(codeType);
             codeProject.buildModules(monitor, null, null);
@@ -462,6 +479,193 @@ public class AggregatorPomsHelper {
         Model model = MavenPlugin.getMavenModelManager().readMavenModel(jobProject.getProjectPom());
         boolean useTempPom = TalendJavaProjectConstants.TEMP_POM_ARTIFACT_ID.equals(model.getArtifactId());
         jobProject.setUseTempPom(useTempPom);
+    }
+
+    public void syncAllPoms() throws Exception {
+        IRunnableWithProgress runnableWithProgress = new IRunnableWithProgress() {
+
+            @Override
+            public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+                RepositoryWorkUnit<Object> workUnit = new RepositoryWorkUnit<Object>("Synchronize all poms") { //$NON-NLS-1$
+
+                    @Override
+                    protected void run() {
+                        final IWorkspaceRunnable op = new IWorkspaceRunnable() {
+
+                            @Override
+                            public void run(final IProgressMonitor monitor) throws CoreException {
+                                try {
+                                    IRunProcessService runProcessService = getRunProcessService();
+                                    List<IRepositoryViewObject> objects = null;
+                                    if (runProcessService != null) {
+                                        objects = ProxyRepositoryFactory.getInstance().getAll(ERepositoryObjectType.PROCESS);
+                                    }
+                                    BuildCacheManager.getInstance().clearCache();
+                                    int size = 3 + (objects == null ? 0 : objects.size());
+                                    monitor.setTaskName("Synchronize all poms"); //$NON-NLS-1$
+                                    monitor.beginTask("", size); //$NON-NLS-1$
+                                    // codes pom
+                                    monitor.subTask("Synchronize code poms"); //$NON-NLS-1$
+                                    updateCodeProjects(monitor);
+                                    monitor.worked(1);
+                                    if (monitor.isCanceled()) {
+                                        return;
+                                    }
+                                    // all jobs pom
+                                    List<String> modules = new ArrayList<>();
+                                    if (objects != null) {
+                                        for (IRepositoryViewObject object : objects) {
+                                            if (object.getProperty() != null && object.getProperty().getItem() != null
+                                                    && object.getProperty().getItem() instanceof ProcessItem) {
+                                                ProcessItem processItem = (ProcessItem) object.getProperty().getItem();
+                                                if (ProjectManager.getInstance().isInCurrentMainProject(processItem)) {
+                                                    monitor.subTask("Synchronize job pom: " + processItem.getProperty().getLabel() //$NON-NLS-1$
+                                                            + "_" + processItem.getProperty().getVersion()); //$NON-NLS-1$
+                                                    runProcessService.generateJobPom(processItem);
+                                                    ITalendProcessJavaProject jobProject = runProcessService
+                                                            .getTalendJobJavaProject(processItem.getProperty());
+                                                    modules.add(getModulePath(jobProject));
+                                                }
+                                            }
+                                            monitor.worked(1);
+                                            if (monitor.isCanceled()) {
+                                                return;
+                                            }
+                                        }
+                                    }
+                                    // project pom
+                                    monitor.subTask("Synchronize project pom"); //$NON-NLS-1$
+                                    collectModules(modules);
+                                    createRootPom(getProjectPomsFolder(), modules, true, monitor);
+                                    monitor.worked(1);
+                                    monitor.subTask("Install project pom"); //$NON-NLS-1$
+                                    installRootPom(true);
+                                    monitor.worked(1);
+                                    if (monitor.isCanceled()) {
+                                        return;
+                                    }
+                                    monitor.done();
+                                } catch (Exception e) {
+                                    ExceptionHandler.process(e);
+                                }
+                            }
+
+                        };
+                        IWorkspace workspace = ResourcesPlugin.getWorkspace();
+                        try {
+                            ISchedulingRule schedulingRule = workspace.getRoot();
+                            // the update the project files need to be done in the workspace runnable to avoid
+                            // all
+                            // notification
+                            // of changes before the end of the modifications.
+                            workspace.run(op, schedulingRule, IWorkspace.AVOID_UPDATE, monitor);
+                        } catch (CoreException e) {
+                            ExceptionHandler.process(e);
+                        }
+                    }
+
+                };
+                workUnit.setAvoidUnloadResources(true);
+                ProxyRepositoryFactory.getInstance().executeRepositoryWorkUnit(workUnit);
+            }
+        };
+        new ProgressMonitorDialog(Display.getDefault().getActiveShell()).run(true, true, runnableWithProgress);
+    }
+
+    public void syncJobPoms(List<Item> jobItems) throws Exception {
+        IRunnableWithProgress runnableWithProgress = new IRunnableWithProgress() {
+
+            @Override
+            public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+                RepositoryWorkUnit<Object> workUnit = new RepositoryWorkUnit<Object>("Synchronize job poms") { //$NON-NLS-1$
+
+                    @Override
+                    protected void run() {
+                        final IWorkspaceRunnable op = new IWorkspaceRunnable() {
+
+                            @Override
+                            public void run(final IProgressMonitor monitor) throws CoreException {
+                                try {
+                                    monitor.setTaskName("Synchronize job poms"); //$NON-NLS-1$
+                                    monitor.beginTask("", jobItems.size()); //$NON-NLS-1$
+                                    IRunProcessService runProcessService = getRunProcessService();
+                                    for (Item item : jobItems) {
+                                        if (item instanceof ProcessItem) {
+                                            ProcessItem processItem = (ProcessItem) item;
+                                            if (ProjectManager.getInstance().isInCurrentMainProject(processItem)) {
+                                                monitor.subTask("Synchronize job pom: " + processItem.getProperty().getLabel() //$NON-NLS-1$
+                                                        + "_" + processItem.getProperty().getVersion()); //$NON-NLS-1$
+                                                runProcessService.generateJobPom(processItem);
+                                            }
+                                        }
+                                        monitor.worked(1);
+                                        if (monitor.isCanceled()) {
+                                            return;
+                                        }
+                                    }
+                                    monitor.done();
+                                } catch (Exception e) {
+                                    ExceptionHandler.process(e);
+                                }
+                            }
+                        };
+                        IWorkspace workspace = ResourcesPlugin.getWorkspace();
+                        try {
+                            ISchedulingRule schedulingRule = workspace.getRoot();
+                            // the update the project files need to be done in the workspace runnable to avoid
+                            // all
+                            // notification
+                            // of changes before the end of the modifications.
+                            workspace.run(op, schedulingRule, IWorkspace.AVOID_UPDATE, monitor);
+                        } catch (CoreException e) {
+                            ExceptionHandler.process(e);
+                        }
+                    }
+
+                };
+                workUnit.setAvoidUnloadResources(true);
+                ProxyRepositoryFactory.getInstance().executeRepositoryWorkUnit(workUnit);
+            }
+        };
+        new ProgressMonitorDialog(Display.getDefault().getActiveShell()).run(true, true, runnableWithProgress);
+    }
+
+    private String getModulePath(ITalendProcessJavaProject project) {
+        IFile pomFile = project.getProjectPom();
+        IFile parentPom = getProjectPomsFolder().getFile(TalendMavenConstants.POM_FILE_NAME);
+        if (parentPom != null) {
+            IPath relativePath = pomFile.getParent().getLocation().makeRelativeTo(parentPom.getParent().getLocation());
+            return relativePath.toPortableString();
+        }
+        return null;
+    }
+
+    private void collectModules(List<String> modules) {
+        IRunProcessService service = getRunProcessService();
+        if (service != null) {
+            modules.add(getModulePath(service.getTalendCodeJavaProject(ERepositoryObjectType.ROUTINES)));
+            if (ProcessUtils.isRequiredPigUDFs(null)) {
+                modules.add(getModulePath(service.getTalendCodeJavaProject(ERepositoryObjectType.PIG_UDF)));
+            }
+            if (ProcessUtils.isRequiredBeans(null)) {
+                modules.add(getModulePath(service.getTalendCodeJavaProject(ERepositoryObjectType.valueOf("BEANS")))); //$NON-NLS-1$
+            }
+        }
+        List<ProjectReference> references = ProjectManager.getInstance().getCurrentProject().getProjectReferenceList(true);
+        for (ProjectReference reference : references) {
+            String refProjectTechName = reference.getReferencedProject().getTechnicalLabel();
+            String modulePath = "../../" + refProjectTechName + "/" + TalendJavaProjectConstants.DIR_POMS; //$NON-NLS-1$ //$NON-NLS-2$
+            modules.add(modulePath);
+        }
+    }
+
+    private static IRunProcessService getRunProcessService() {
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
+            IRunProcessService runProcessService = (IRunProcessService) GlobalServiceRegister.getDefault()
+                    .getService(IRunProcessService.class);
+            return runProcessService;
+        }
+        return null;
     }
 
 }
