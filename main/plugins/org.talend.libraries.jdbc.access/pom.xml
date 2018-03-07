@@ -19,9 +19,10 @@
         <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-clean-plugin</artifactId>
+            <version>3.0.0</version>
             <configuration>
                 <filesets>
-                	<fileset>
+                    <fileset>
                         <directory>${libs.dir}</directory>
                         <includes>
                             <include>talend-ucanaccess-utils-*.jar</include>
