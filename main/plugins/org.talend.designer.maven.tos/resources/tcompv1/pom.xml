@@ -67,12 +67,12 @@
     </dependency>
     <dependency>
       <groupId>org.talend.sdk.component</groupId>
-      <artifactId>component-runtime-design-extension</artifactId>
+      <artifactId>component-runtime-di</artifactId>
       <version>${tcomp.version}</version>
     </dependency>
     <dependency>
       <groupId>org.talend.sdk.component</groupId>
-      <artifactId>component-runtime-di</artifactId>
+      <artifactId>slf4j-standard</artifactId>
       <version>${tcomp.version}</version>
     </dependency>
     <dependency>
