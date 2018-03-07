@@ -510,7 +510,7 @@ public class AggregatorPomsHelper {
                                     monitor.beginTask("", size); //$NON-NLS-1$
                                     // codes pom
                                     monitor.subTask("Synchronize code poms"); //$NON-NLS-1$
-                                    updateCodeProjects(monitor);
+                                    updateCodeProjects(monitor, true);
                                     monitor.worked(1);
                                     if (monitor.isCanceled()) {
                                         return;
