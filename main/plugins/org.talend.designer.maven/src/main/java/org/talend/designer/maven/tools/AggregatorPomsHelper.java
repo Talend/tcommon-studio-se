@@ -143,16 +143,20 @@ public class AggregatorPomsHelper {
     }
 
     public static void updateCodeProjects(IProgressMonitor monitor) {
+    	updateCodeProjects(monitor, false);
+    }
+    
+    public static void updateCodeProjects(IProgressMonitor monitor, boolean forceBuild) {
         RepositoryWorkUnit workUnit = new RepositoryWorkUnit<Object>("update code project") { //$NON-NLS-1$
 
             @Override
             protected void run() {
-                updateCodeProject(monitor, ERepositoryObjectType.ROUTINES);
+                updateCodeProject(monitor, ERepositoryObjectType.ROUTINES, forceBuild);
                 if (ProcessUtils.isRequiredPigUDFs(null)) {
-                    updateCodeProject(monitor, ERepositoryObjectType.PIG_UDF);
+                    updateCodeProject(monitor, ERepositoryObjectType.PIG_UDF, forceBuild);
                 }
                 if (ProcessUtils.isRequiredBeans(null)) {
-                    updateCodeProject(monitor, ERepositoryObjectType.valueOf("BEANS")); //$NON-NLS-1$
+                    updateCodeProject(monitor, ERepositoryObjectType.valueOf("BEANS"), forceBuild); //$NON-NLS-1$
                 }
             }
         };
@@ -160,11 +164,11 @@ public class AggregatorPomsHelper {
         ProxyRepositoryFactory.getInstance().executeRepositoryWorkUnit(workUnit);
     }
 
-    private static void updateCodeProject(IProgressMonitor monitor, ERepositoryObjectType codeType) {
+    private static void updateCodeProject(IProgressMonitor monitor, ERepositoryObjectType codeType, boolean forceBuild) {
         try {
             ITalendProcessJavaProject codeProject = getCodesProject(codeType);
             updateCodeProjectPom(monitor, codeType, codeProject.getProjectPom());
-            buildAndInstallCodesProject(monitor, codeType);
+            buildAndInstallCodesProject(monitor, codeType, true, forceBuild);
         } catch (Exception e) {
             ExceptionHandler.process(e);
         }
