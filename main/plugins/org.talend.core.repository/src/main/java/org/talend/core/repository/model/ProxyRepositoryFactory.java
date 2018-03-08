@@ -1393,7 +1393,12 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
     public void save(Project project, Item item, boolean... isMigrationTask) throws PersistenceException {
         this.repositoryFactoryFromProvider.save(project, item);
         if (isMigrationTask == null || isMigrationTask.length == 0 || !isMigrationTask[0]) {
-            fireRepositoryPropertyChange(ERepositoryActionName.SAVE.getName(), null, item);
+            boolean avoidGenerateProm = false;
+            if (isMigrationTask.length == 2) {
+                avoidGenerateProm = isMigrationTask[1];
+            }
+            fireRepositoryPropertyChange(ERepositoryActionName.SAVE.getName(), avoidGenerateProm, item);
+
         }
     }
 
@@ -2372,10 +2377,12 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
         return repositoryFactoryFromProvider.getAllRemoteLocks();
     }
 
+    @Override
     public void updateEmfProjectContent(org.talend.core.model.properties.Project project) {
         emfProjectContentMap.put(project.getTechnicalLabel(), project);
     }
 
+    @Override
     public org.talend.core.model.properties.Project getEmfProjectContent(String technicalLabel) throws PersistenceException {
         org.talend.core.model.properties.Project emfProject = emfProjectContentMap.get(technicalLabel);
         if (emfProject != null && emfProject.eResource() == null) {
@@ -2389,6 +2396,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
         return emfProject;
     }
 
+    @Override
     public byte[] getReferenceSettingContent(Project project, String branch) throws PersistenceException {
         return repositoryFactoryFromProvider.getReferenceSettingContent(project, branch);
     }
