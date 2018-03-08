@@ -211,7 +211,13 @@ public class PomIdsHelper {
         if (baseName == null && property == null) {
             return groupId;
         }
-        //codes, job
+        // codes
+        if (baseName.equals(TalendMavenConstants.DEFAULT_CODE) || baseName.equals(TalendMavenConstants.DEFAULT_PIGUDF)
+                || baseName.equals(TalendMavenConstants.DEFAULT_BEAN)) {
+            groupId += "." + baseName; //$NON-NLS-1$
+            return groupId;
+        }
+        // only for job
         boolean appendFolderName = manager.getBoolean(MavenConstants.APPEND_FOLDER_TO_GROUPID);
         if (!appendFolderName) {
             if (baseName != null) {
@@ -219,9 +225,8 @@ public class PomIdsHelper {
             }
             return groupId;
         }
-        // only for job
         if (property != null) {
-            String suffix = getJobFolderSuffix(property); //$NON-NLS-1$
+            String suffix = getJobFolderSuffix(property); // $NON-NLS-1$
             if (!StringUtils.isEmpty(suffix)) {
                 groupId += "." + suffix; //$NON-NLS-1$
             }
@@ -232,7 +237,7 @@ public class PomIdsHelper {
     private static String getJobFolderSuffix(Property property) {
         String suffix = ItemResourceUtil.getItemRelativePath(property).toPortableString();
         suffix = StringUtils.strip(suffix, "/"); //$NON-NLS-1$
-        suffix = StringUtils.replace(suffix, "/", "."); //$NON-NLS-1$  //$NON-NLS-2$
+        suffix = StringUtils.replace(suffix, "/", "."); //$NON-NLS-1$ //$NON-NLS-2$
         return suffix;
     }
 
