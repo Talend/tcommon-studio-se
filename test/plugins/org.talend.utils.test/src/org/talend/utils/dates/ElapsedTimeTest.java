@@ -23,8 +23,6 @@ import java.util.GregorianCalendar;
 
 import junit.framework.TestCase;
 
-import org.talend.utils.dates.ElapsedTime;
-
 /**
  * @author S. Correia These tests show that the conception of a constant unit of day fails. The constant
  * ElapsedTimeTest#MILLISEC_PER_DAY cannot be viewed as the day length.
@@ -263,7 +261,7 @@ public class ElapsedTimeTest extends TestCase {
             { { 0, 0, 200 }, { 0, 8, 8 } } // e.g. input 200 hours -> expected 8 days, 8 hours
             , { { 0, 50, 2 }, { 1, 19, 2 } }, { { 34, 4, 45 }, { 34, 5, 21 } }, { { 124, 0, 0 }, { 124, 0, 0 } },
             { { 0, 1235, 0 }, { 40, 19, 0 } }, { { 0, 4445, 0 }, { 146, 3, 0 } }, { { 149, 4445, 0 }, { 295, 1, 0 } },
-            { { 23456, 4445, 5653 }, { 23609, 23, 14 } }, { { 3, 4445, 56 }, { 149, 3, 8 } },
+            { { 23456, 4445, 5653 }, { 23609, 23, 13 } }, { { 3, 4445, 56 }, { 149, 3, 8 } },
             { { 0, 0, 12454546 }, { 17049, 22, 10 } } };
 
     private void fieldDaysDifference(int days) {
