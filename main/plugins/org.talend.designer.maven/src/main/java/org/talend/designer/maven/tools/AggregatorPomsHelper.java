@@ -372,14 +372,6 @@ public class AggregatorPomsHelper {
             }
         }
         if (parentPomFolder != null) {
-            if (!parentPomFolder.exists()) {
-                if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
-                    IRunProcessService runProcessService = (IRunProcessService) GlobalServiceRegister.getDefault()
-                            .getService(IRunProcessService.class);
-                    runProcessService.initMavenJavaProject(new NullProgressMonitor(),
-                            ProjectManager.getInstance().getCurrentProject());
-                }
-            }
             try {
                 for (IResource file : parentPomFolder.members()) {
                     if (file.getName().equals(TalendMavenConstants.POM_FILE_NAME)) {
