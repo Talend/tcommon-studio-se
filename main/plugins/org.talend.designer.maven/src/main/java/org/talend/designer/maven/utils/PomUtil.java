@@ -51,10 +51,17 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceRuleFactory;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceRunnable;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.jobs.ISchedulingRule;
+import org.eclipse.core.runtime.jobs.MultiRule;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.eclipse.m2e.core.embedder.MavenModelManager;
 import org.talend.commons.exception.ExceptionHandler;
@@ -301,6 +308,7 @@ public class PomUtil {
      * According to the process, generate the groud id, like org.talend.process.di.demo.
      * @deprecated
      */
+    @Deprecated
     public static String generateGroupId(final IProcessor jProcessor) {
         final Property property = jProcessor.getProperty();
         final IProcess process = jProcessor.getProcess();
@@ -801,54 +809,99 @@ public class PomUtil {
     }
 
     public static void backupPomFile(ITalendProcessJavaProject talendProject) {
-        IProject project = talendProject.getProject();
-        IFile backFile = project.getFile(TalendMavenConstants.POM_BACKUP_FILE_NAME);
-        IFile pomFile = project.getFile(TalendMavenConstants.POM_FILE_NAME);
+        final IProject project = talendProject.getProject();
+        final IFile backFile = project.getFile(TalendMavenConstants.POM_BACKUP_FILE_NAME);
+        final IFile pomFile = project.getFile(TalendMavenConstants.POM_FILE_NAME);
         try {
-            if (backFile.exists()) {
-                backFile.delete(true, false, null);
-            }
-            pomFile.copy(backFile.getFullPath(), true, null);
-        } catch (CoreException e) {
+            updateFilesInWorkspaceRunnable(null, new IWorkspaceRunnable() {
+
+                @Override
+                public void run(IProgressMonitor monitor) throws CoreException {
+                    try {
+                        if (backFile.exists()) {
+                            backFile.delete(true, false, null);
+                        }
+                        pomFile.copy(backFile.getFullPath(), true, null);
+                    } catch (CoreException e) {
+                        ExceptionHandler.process(e);
+                    }
+                }
+            }, backFile, pomFile);
+        } catch (Exception e) {
             ExceptionHandler.process(e);
         }
     }
 
     public static void restorePomFile(ITalendProcessJavaProject talendProject) {
-        IProject project = talendProject.getProject();
-        IFile backFile = project.getFile(TalendMavenConstants.POM_BACKUP_FILE_NAME);
-        IFile pomFile = project.getFile(TalendMavenConstants.POM_FILE_NAME);
-        boolean isChanged = false;
+        final IProject project = talendProject.getProject();
+        final IFile backFile = project.getFile(TalendMavenConstants.POM_BACKUP_FILE_NAME);
+        final IFile pomFile = project.getFile(TalendMavenConstants.POM_FILE_NAME);
         try {
-            if (backFile.exists()) {
-                if (pomFile.exists()) {
-                    isChanged = !IOUtils.contentEquals(backFile.getContents(), pomFile.getContents());
-                    if (isChanged) {
-                        pomFile.delete(true, false, null);
+            updateFilesInWorkspaceRunnable(null, new IWorkspaceRunnable() {
+
+                @Override
+                public void run(IProgressMonitor monitor) throws CoreException {
+                    boolean isChanged = false;
+                    try {
+                        if (backFile.exists()) {
+                            if (pomFile.exists()) {
+                                isChanged = !IOUtils.contentEquals(backFile.getContents(), pomFile.getContents());
+                                if (isChanged) {
+                                    pomFile.delete(true, false, null);
+                                }
+                            } else {
+                                isChanged = true;
+                            }
+                            if (isChanged) {
+                                backFile.copy(pomFile.getFullPath(), true, null);
+                            }
+                        }
+                    } catch (CoreException | IOException e) {
+                        ExceptionHandler.process(e);
+                    } finally {
+                        try {
+                            if (backFile.exists()) {
+                                backFile.delete(true, false, null);
+                            }
+                        } catch (CoreException e) {
+                            System.gc();
+                            try {
+                                backFile.delete(true, false, null);
+                            } catch (CoreException e1) {
+                                //
+                            }
+                        }
                     }
-                } else {
-                    isChanged = true;
                 }
-                if (isChanged) {
-                    backFile.copy(pomFile.getFullPath(), true, null);
+            }, pomFile, backFile);
+        } catch (Exception e) {
+            ExceptionHandler.process(e);
+        }
+
+    }
+
+    private static void updateFilesInWorkspaceRunnable(IProgressMonitor monitor, IWorkspaceRunnable runnable,
+            IResource... resources) throws Exception {
+        ISchedulingRule rule = null;
+        if (resources != null && 0 < resources.length) {
+            IResourceRuleFactory ruleFactory = ResourcesPlugin.getWorkspace().getRuleFactory();
+            List<ISchedulingRule> resourceRules = new ArrayList<>();
+            for (IResource resource : resources) {
+                if (resource != null) {
+                    // use refresh rule instead of modify rule
+                    ISchedulingRule modifyRule = ruleFactory.refreshRule(resource);
+                    if (modifyRule != null) {
+                        resourceRules.add(modifyRule);
+                    } else {
+                        resourceRules.add(resource);
+                    }
                 }
             }
-        } catch (CoreException | IOException e) {
-            ExceptionHandler.process(e);
-        } finally {
-            try {
-                if (backFile.exists()) {
-                    backFile.delete(true, false, null);
-                }
-            } catch (CoreException e) {
-                System.gc();
-                try {
-                    backFile.delete(true, false, null);
-                } catch (CoreException e1) {
-                    //
-                }
+            if (!resourceRules.isEmpty()) {
+                rule = new MultiRule(resourceRules.toArray(new ISchedulingRule[0]));
             }
         }
+        ResourcesPlugin.getWorkspace().run(runnable, rule, IWorkspace.AVOID_UPDATE, monitor);
     }
 
     public static void cleanLastUpdatedFile(final File file) {
