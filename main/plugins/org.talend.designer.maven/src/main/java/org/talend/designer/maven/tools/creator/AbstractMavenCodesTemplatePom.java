@@ -13,6 +13,7 @@
 package org.talend.designer.maven.tools.creator;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -71,14 +72,24 @@ public abstract class AbstractMavenCodesTemplatePom extends AbstractMavenGeneral
 
     protected void addDependencies(Model model) {
         Set<ModuleNeeded> runningModules = getDependenciesModules();
-        if (runningModules != null) {
+        Set<ModuleNeeded> needModules = new HashSet<ModuleNeeded>();
+        Set<String> uniquDependenciesSet = new HashSet<String>();
+        for (ModuleNeeded module : runningModules) {
+        	final String mavenUri = module.getMavenUri();
+            if (uniquDependenciesSet.contains(mavenUri)) {
+                continue; 
+            }
+            uniquDependenciesSet.add(mavenUri);
+            needModules.add(module);
+		}
+        if (needModules != null) {
             List<Dependency> existedDependencies = model.getDependencies();
             if (existedDependencies == null) {
                 existedDependencies = new ArrayList<Dependency>();
                 model.setDependencies(existedDependencies);
             }
 
-            for (ModuleNeeded module : runningModules) {
+            for (ModuleNeeded module : needModules) {
                 Dependency dependency = null;
                 // TDI-37032 add dependency only if jar avialable in maven
                 if (module.getDeployStatus() == ELibraryInstallStatus.DEPLOYED) {
