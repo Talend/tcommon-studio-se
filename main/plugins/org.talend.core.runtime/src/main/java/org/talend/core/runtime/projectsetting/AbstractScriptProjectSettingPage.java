@@ -65,6 +65,10 @@ public abstract class AbstractScriptProjectSettingPage extends AbstractProjectSe
 
     protected abstract String getHeadTitle();
 
+    protected StyledText getScriptTxt() {
+        return scriptTxt;
+    }
+
     @Override
     protected Control createContents(Composite p) {
         Composite parent = (Composite) super.createContents(p);
