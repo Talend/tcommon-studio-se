@@ -1394,7 +1394,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
         this.repositoryFactoryFromProvider.save(project, item);
         if (isMigrationTask == null || isMigrationTask.length == 0 || !isMigrationTask[0]) {
             boolean avoidGenerateProm = false;
-            if (isMigrationTask.length == 2) {
+            if (isMigrationTask != null && isMigrationTask.length == 2) {
                 avoidGenerateProm = isMigrationTask[1];
             }
             fireRepositoryPropertyChange(ERepositoryActionName.SAVE.getName(), avoidGenerateProm, item);
