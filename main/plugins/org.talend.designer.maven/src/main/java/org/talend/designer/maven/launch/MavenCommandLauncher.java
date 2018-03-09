@@ -167,7 +167,7 @@ public abstract class MavenCommandLauncher {
             workingCopy.setAttribute(RefreshUtil.ATTR_REFRESH_SCOPE, RefreshUtil.MEMENTO_SELECTED_PROJECT);
             workingCopy.setAttribute(RefreshUtil.ATTR_REFRESH_RECURSIVE, true);
             if (CommonsPlugin.isHeadless() && !CommonsPlugin.isESBMicorservice()) {
-                workingCopy.setAttribute(MavenLaunchConstants.ATTR_OFFLINE, true);
+                //workingCopy.setAttribute(MavenLaunchConstants.ATTR_OFFLINE, true);
             }
 
             // seems no need refresh project, so won't set it.
