@@ -238,6 +238,10 @@ public class PomIdsHelper {
         if (property != null) {
             String suffix = getJobFolderSuffix(property); // $NON-NLS-1$
             if (!StringUtils.isEmpty(suffix)) {
+                boolean skipBaseGroupId = manager.getBoolean(MavenConstants.SKIP_BASE_GROUPID);
+                if (skipBaseGroupId) {
+                    return suffix;
+                }
                 groupId += "." + suffix; //$NON-NLS-1$
             }
         }

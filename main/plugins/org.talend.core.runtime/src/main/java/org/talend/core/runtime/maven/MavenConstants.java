@@ -30,6 +30,8 @@ public interface MavenConstants {
 
     static final String APPEND_FOLDER_TO_GROUPID = "APPEND_FOLDER_TO_GROUPID";
 
+    static final String SKIP_BASE_GROUPID = "SKIP_BASE_GROUPID";
+
     static final String TYPE_JAR = "jar";
 
     static final String DEFAULT_GROUP_ID = "org.talend";

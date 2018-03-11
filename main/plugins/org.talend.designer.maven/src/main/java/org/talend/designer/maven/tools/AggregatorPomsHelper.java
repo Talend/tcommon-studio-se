@@ -494,7 +494,7 @@ public class AggregatorPomsHelper {
                                     IRunProcessService runProcessService = getRunProcessService();
                                     List<IRepositoryViewObject> objects = null;
                                     if (runProcessService != null) {
-                                        objects = ProxyRepositoryFactory.getInstance().getAll(ERepositoryObjectType.PROCESS);
+                                        objects = ProxyRepositoryFactory.getInstance().getAll(ERepositoryObjectType.PROCESS, true, true);
                                     }
                                     BuildCacheManager.getInstance().clearCache();
                                     int size = 3 + (objects == null ? 0 : objects.size());

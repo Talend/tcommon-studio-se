@@ -21,6 +21,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.runtime.projectsetting.AbstractProjectSettingPage;
 import org.talend.designer.maven.tools.AggregatorPomsHelper;
+import org.talend.designer.maven.ui.i18n.Messages;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -36,7 +37,7 @@ public class MavenProjectSettingPage extends AbstractProjectSettingPage {
         Composite parent = getFieldEditorParent();
         parent.setLayout(new GridLayout());
         Button button = new Button(parent, SWT.NONE);
-        button.setText("Synchronize all poms"); //$NON-NLS-1$
+        button.setText(Messages.getString("ProjectPomProjectSettingPage.syncAllPomsButtonText")); //$NON-NLS-1$
         button.addSelectionListener(new SelectionAdapter() {
 
             @Override
