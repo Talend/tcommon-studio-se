@@ -13,6 +13,7 @@
 package org.talend.librariesmanager.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -78,7 +79,14 @@ public class ExtensionModuleManager {
 
     public final static String DEFAULT_LIB_FOLDER = "lib"; //$NON-NLS-1$
 
-    private static ExtensionModuleManager manager = new ExtensionModuleManager();
+
+    public final static IExtensionPointLimiter extensionPoint = new ExtensionPointLimiterImpl(EXT_ID, MODULE_GROUP_ELE);
+
+    public final static List<IConfigurationElement> extension = ExtensionImplementationProvider.getInstanceV2(extensionPoint);
+
+    public final static HashMap<String, List<ModuleNeeded>> groupMapLibrary = new HashMap<String, List<ModuleNeeded>>();
+
+    private static final ExtensionModuleManager manager = new ExtensionModuleManager();
 
     private ILibraryManagerService libManagerService;
 
@@ -89,7 +97,7 @@ public class ExtensionModuleManager {
         }
     }
 
-    public static synchronized final ExtensionModuleManager getInstance() {
+    public static final ExtensionModuleManager getInstance() {
         return manager;
     }
 
@@ -183,12 +191,26 @@ public class ExtensionModuleManager {
         return moduleNeeded;
     }
 
+    /**
+     * 
+     * DOC xlwang Comment method "collectGroupModules".
+     * 
+     * @param groupId
+     * @param importNeedsList
+     */
     private void collectGroupModules(String groupId, List<ModuleNeeded> importNeedsList) {
+        if (groupMapLibrary.containsKey(groupId)) {
+            importNeedsList = groupMapLibrary.get(groupId);
+        } else {
+            checkGroupModules(groupId, importNeedsList);
+            groupMapLibrary.put(groupId, importNeedsList);
+        }
+    }
+
+    private void checkGroupModules(String groupId, List<ModuleNeeded> importNeedsList) {
         if (groupId == null || importNeedsList == null) {
             return;
         }
-        IExtensionPointLimiter extensionPoint = new ExtensionPointLimiterImpl(EXT_ID, MODULE_GROUP_ELE);
-        List<IConfigurationElement> extension = ExtensionImplementationProvider.getInstanceV2(extensionPoint);
         for (IConfigurationElement configElement : extension) {
             String moduleGroupId = configElement.getAttribute(ID_ATTR);
             if (groupId.equals(moduleGroupId)) {
