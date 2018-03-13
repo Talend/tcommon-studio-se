@@ -232,7 +232,7 @@ public class PomUtil {
      * @param curModel
      * @param curPomFile
      */
-    public static void checkParent(Model curModel, IFile curPomFile, Property property) {
+    public static void checkParent(Model curModel, IFile curPomFile, Map<String, Object> templateParameters) {
         Parent parent = curModel.getParent();
         if (parent == null) {
             parent = new Parent();
@@ -240,7 +240,6 @@ public class PomUtil {
         } else {
             // TODO, if existed, maybe just replace, not overwrite
         }
-        final Map<String, Object> templateParameters = PomUtil.getTemplateParameters(property);
         Model codeProjectTemplateModel = MavenTemplateManager.getCodeProjectTemplateModel(templateParameters);
 
         parent.setGroupId(codeProjectTemplateModel.getGroupId());

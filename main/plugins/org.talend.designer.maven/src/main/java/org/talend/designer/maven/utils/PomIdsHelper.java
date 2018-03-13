@@ -106,7 +106,17 @@ public class PomIdsHelper {
      * 
      */
     public static String getCodesVersion() {
-        return getProjectVersion();
+        return getCodesVersion(null);
+    }
+
+    public static String getCodesVersion(String projectTechName) {
+        if (projectTechName == null) {
+            Project currentProject = ProjectManager.getInstance().getCurrentProject();
+            if (currentProject != null) {
+                projectTechName = currentProject.getTechnicalLabel();
+            }
+        }
+        return getProjectVersion(projectTechName);
     }
 
     @Deprecated
@@ -272,11 +282,13 @@ public class PomIdsHelper {
             ProjectPreferenceManager preferenceManager = new ProjectPreferenceManager(project, DesignerMavenPlugin.PLUGIN_ID,
                     false);
             IPreferenceStore preferenceStore = preferenceManager.getPreferenceStore();
-            if (StringUtils.isEmpty(preferenceStore.getDefaultString(MavenConstants.PROJECT_GROUPID))
-                    && StringUtils.isEmpty(preferenceStore.getString(MavenConstants.PROJECT_GROUPID))) {
+            if (StringUtils.isEmpty(preferenceStore.getString(MavenConstants.PROJECT_GROUPID))) {
                 preferenceStore.setValue(MavenConstants.PROJECT_GROUPID, getDefaultProjetGroupId(projectTechName));
-                preferenceManager.save();
             }
+            if (StringUtils.isEmpty(preferenceStore.getString(MavenConstants.PROJECT_VERSION))) {
+                preferenceStore.setValue(MavenConstants.PROJECT_VERSION, PomUtil.getDefaultMavenVersion());
+            }
+            preferenceManager.save();
             preferenceManagers.put(projectTechName, preferenceManager);
             return preferenceManager;
         }

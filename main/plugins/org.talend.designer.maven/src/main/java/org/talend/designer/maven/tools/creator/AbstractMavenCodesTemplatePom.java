@@ -13,8 +13,10 @@
 package org.talend.designer.maven.tools.creator;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.maven.model.Dependency;
@@ -24,6 +26,7 @@ import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.model.properties.Property;
 import org.talend.core.runtime.projectsetting.IProjectSettingTemplateConstants;
+import org.talend.designer.maven.template.MavenTemplateManager;
 import org.talend.designer.maven.utils.PomUtil;
 
 /**
@@ -32,6 +35,8 @@ import org.talend.designer.maven.utils.PomUtil;
 public abstract class AbstractMavenCodesTemplatePom extends AbstractMavenGeneralTemplatePom {
 
     private Property property;
+
+    private String projectName;
 
     public AbstractMavenCodesTemplatePom(IFile pomFile) {
         super(pomFile, IProjectSettingTemplateConstants.POM_CODES_TEMPLATE_FILE_NAME);
@@ -46,7 +51,11 @@ public abstract class AbstractMavenCodesTemplatePom extends AbstractMavenGeneral
     }
 
     protected String getProjectName() {
-        return PomUtil.getProjectNameFromTemplateParameter(PomUtil.getTemplateParameters(property));
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
     }
 
     @Override
@@ -61,7 +70,9 @@ public abstract class AbstractMavenCodesTemplatePom extends AbstractMavenGeneral
         setAttributes(templateModel);
         addProperties(templateModel);
 
-        PomUtil.checkParent(templateModel, this.getPomFile(), property);
+        Map<String, Object> templateParameters = new HashMap<>();
+        templateParameters.put(MavenTemplateManager.KEY_PROJECT_NAME, projectName);
+        PomUtil.checkParent(templateModel, this.getPomFile(), templateParameters);
 
         addDependencies(templateModel);
 
@@ -75,13 +86,13 @@ public abstract class AbstractMavenCodesTemplatePom extends AbstractMavenGeneral
         Set<ModuleNeeded> needModules = new HashSet<ModuleNeeded>();
         Set<String> uniquDependenciesSet = new HashSet<String>();
         for (ModuleNeeded module : runningModules) {
-        	final String mavenUri = module.getMavenUri();
+            final String mavenUri = module.getMavenUri();
             if (uniquDependenciesSet.contains(mavenUri)) {
-                continue; 
+                continue;
             }
             uniquDependenciesSet.add(mavenUri);
             needModules.add(module);
-		}
+        }
         if (needModules != null) {
             List<Dependency> existedDependencies = model.getDependencies();
             if (existedDependencies == null) {

@@ -254,7 +254,7 @@ public class MavenPomSynchronizer {
                             public void afterChangingLibraries() {
                                 try {
                                     // update the dependencies
-                                    AggregatorPomsHelper.updateCodeProjects(monitor);
+                                    new AggregatorPomsHelper().updateCodeProjects(monitor);
                                 } catch (Exception e) {
                                     ExceptionHandler.process(e);
                                 }

@@ -61,24 +61,24 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
 
     private static Map<String, Date> id2date = new HashMap<String, Date>();
 
-    protected Collection<RoutineItem> getRoutines() throws SystemException {
-        return getAll(ERepositoryObjectType.ROUTINES);
+    protected Collection<RoutineItem> getRoutines(boolean syncRef) throws SystemException {
+        return getAll(ERepositoryObjectType.ROUTINES, syncRef);
     }
 
-    protected Collection<RoutineItem> getAllPigudf() throws SystemException {
-        return getAll(ERepositoryObjectType.PIG_UDF);
+    protected Collection<RoutineItem> getAllPigudf(boolean syncRef) throws SystemException {
+        return getAll(ERepositoryObjectType.PIG_UDF, syncRef);
     }
 
-    protected Collection<RoutineItem> getBeans() throws SystemException {
+    protected Collection<RoutineItem> getBeans(boolean syncRef) throws SystemException {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ICamelDesignerCoreService.class)) {
             ICamelDesignerCoreService service = (ICamelDesignerCoreService) GlobalServiceRegister.getDefault().getService(
                     ICamelDesignerCoreService.class);
-            return getAll(service.getBeansType());
+            return getAll(service.getBeansType(), syncRef);
         }
         return Collections.emptyList();
     }
 
-    private static Collection<RoutineItem> getAll(ERepositoryObjectType type) throws SystemException {
+    private Collection<RoutineItem> getAll(ERepositoryObjectType type, boolean syncRef) throws SystemException {
         // remove routine with same name in reference project
         final Map<String, RoutineItem> beansList = new HashMap<String, RoutineItem>();
         for (IRepositoryViewObject obj : getRepositoryService().getProxyRepositoryFactory().getAll(type)) {
@@ -86,7 +86,7 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
         }
 
         for (Project project : ProjectManager.getInstance().getReferencedProjects()) {
-            getReferencedProjectRoutine(beansList, project, type);
+            getReferencedProjectRoutine(beansList, project, type, syncRef);
         }
         return beansList.values();
     }
@@ -95,18 +95,31 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
         return (IRepositoryService) GlobalServiceRegister.getDefault().getService(IRepositoryService.class);
     }
 
-    private static void getReferencedProjectRoutine(final Map<String, RoutineItem> beansList, final Project project,
-            ERepositoryObjectType routineType) throws SystemException {
+    private void getReferencedProjectRoutine(final Map<String, RoutineItem> beansList, final Project project,
+            ERepositoryObjectType routineType, boolean syncRef) throws SystemException {
         for (IRepositoryViewObject obj : getRepositoryService().getProxyRepositoryFactory().getAll(project, routineType)) {
             final String key = obj.getProperty().getLabel();
             // it does not have a routine with same name
             if (!beansList.containsKey(key)) {
                 beansList.put(key, (RoutineItem) obj.getProperty().getItem());
             }
+            if (syncRef) {
+                // sync routine
+                syncRoutine((RoutineItem) obj.getProperty().getItem(), false, true, true);
+            }
         }
+        if (syncRef) {
+            // sync system routine
+            syncSystemRoutine(project);
+        }
+
         for (ProjectReference projectReference : project.getProjectReferenceList()) {
-            getReferencedProjectRoutine(beansList, new Project(projectReference.getReferencedProject()), routineType);
+            getReferencedProjectRoutine(beansList, new Project(projectReference.getReferencedProject()), routineType, syncRef);
         }
+    }
+
+    protected void syncSystemRoutine(Project project) throws SystemException {
+        //
     }
 
     private static IRunProcessService getRunProcessService() {
@@ -115,7 +128,18 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
     }
 
     protected IFile getRoutineFile(RoutineItem routineItem) throws SystemException {
-        ITalendProcessJavaProject talendProcessJavaProject = getRunProcessService().getTalendCodeJavaProject(ERepositoryObjectType.getItemType(routineItem));
+        return getRoutineFile(routineItem, true);
+    }
+
+    protected IFile getRoutineFile(RoutineItem routineItem, boolean currentProject) throws SystemException {
+        Project project;
+        if (currentProject) {
+            project = ProjectManager.getInstance().getCurrentProject();
+        } else {
+            String projectTechName = ProjectManager.getInstance().getProject(routineItem).getTechnicalLabel();
+            project = ProjectManager.getInstance().getProjectFromProjectTechLabel(projectTechName);
+        }
+        ITalendProcessJavaProject talendProcessJavaProject = getRunProcessService().getTalendCodeJavaProject(ERepositoryObjectType.getItemType(routineItem), project);
         if (talendProcessJavaProject == null) {
             return null;
         }
@@ -169,38 +193,45 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
 
     @Override
     public void syncRoutine(RoutineItem routineItem, boolean copyToTemp) throws SystemException {
-        syncRoutine(routineItem, copyToTemp, false);
+        syncRoutine(routineItem, true, copyToTemp, false);
     }
 
     @Override
     public void syncRoutine(RoutineItem routineItem, boolean copyToTemp, boolean forceUpdate) throws SystemException {
+        syncRoutine(routineItem, true, copyToTemp, forceUpdate);
+    }
+
+    @Override
+    public void syncRoutine(RoutineItem routineItem, boolean currentProject, boolean copyToTemp, boolean forceUpdate) throws SystemException {
         boolean needSync = false;
         if (routineItem != null) {
             if (forceUpdate || !isRoutineUptodate(routineItem)) {
                 needSync = true;
             } else {
-                IFile file = getFile(routineItem);
+                IFile file = getRoutineFile(routineItem, currentProject);
                 if (file != null && !file.exists()) {
                     needSync = true;
                 }
             }
         }
         if (needSync) {
-            doSyncRoutine(routineItem, copyToTemp);
-            setRoutineAsUptodate(routineItem);
+            doSyncRoutine(routineItem, currentProject, copyToTemp);
+            if (currentProject) {
+                setRoutineAsUptodate(routineItem);
+            }
         }
     }
 
     public void syncRoutine(RoutineItem routineItem) throws SystemException {
         if (routineItem != null) {
-            doSyncRoutine(routineItem, true);
+            doSyncRoutine(routineItem, true, true);
             setRoutineAsUptodate(routineItem);
         }
     }
 
-    private void doSyncRoutine(RoutineItem routineItem, boolean copyToTemp) throws SystemException {
+    private void doSyncRoutine(RoutineItem routineItem, boolean currentProject, boolean copyToTemp) throws SystemException {
         try {
-            IFile file = getRoutineFile(routineItem);
+            IFile file = getRoutineFile(routineItem, currentProject);
             if (file == null) {
                 return;
             }
@@ -342,8 +373,8 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
 
     @Override
     public void syncAllBeansForLogOn() throws SystemException {
-        for (RoutineItem beanItem : getBeans()) {
-            syncRoutine(beanItem, true, true);
+        for (RoutineItem beanItem : getBeans(true)) {
+            syncRoutine(beanItem, true, true, true);
         }
     }
 
@@ -353,7 +384,7 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
 
     @Override
     public void syncAllBeans() throws SystemException {
-        for (RoutineItem beanItem : getBeans()) {
+        for (RoutineItem beanItem : getBeans(false)) {
             syncRoutine(beanItem, true);
         }
     }

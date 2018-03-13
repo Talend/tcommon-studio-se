@@ -29,6 +29,7 @@ import org.talend.core.ITDQItemService;
 import org.talend.core.PluginChecker;
 import org.talend.core.hadoop.IHadoopClusterService;
 import org.talend.core.hadoop.repository.HadoopRepositoryUtil;
+import org.talend.core.model.general.Project;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.JobletProcessItem;
 import org.talend.core.model.properties.ProcessItem;
@@ -57,6 +58,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 import org.talend.designer.core.model.utils.emf.talendfile.RoutinesParameterType;
 import org.talend.designer.runprocess.ItemCacheManager;
+import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IProxyRepositoryService;
 
@@ -882,6 +884,10 @@ public final class ProcessUtils {
     }
 
     public static boolean isRequiredBeans(IProcess process) {
+        return isRequiredBeans(process, ProjectManager.getInstance().getCurrentProject());
+    }
+
+    public static boolean isRequiredBeans(IProcess process, Project project) {
         boolean needBeans = false;
         if (process == null) {
             needBeans = true; // only check have the beans items.
@@ -905,7 +911,7 @@ public final class ProcessUtils {
             ERepositoryObjectType beansType = ERepositoryObjectType.valueOf("BEANS"); //$NON-NLS-1$
             try {
                 IProxyRepositoryFactory factory = service.getProxyRepositoryFactory();
-                List<IRepositoryViewObject> all = factory.getAll(beansType);
+                List<IRepositoryViewObject> all = factory.getAll(project, beansType);
                 if (!all.isEmpty()) { // has bean
                     return true;
                 }
@@ -917,6 +923,10 @@ public final class ProcessUtils {
     }
 
     public static boolean isRequiredPigUDFs(IProcess process) {
+        return isRequiredPigUDFs(process, ProjectManager.getInstance().getCurrentProject());
+    }
+
+    public static boolean isRequiredPigUDFs(IProcess process, Project project) {
         boolean needPigUDF = false;
         if (process == null) {
             needPigUDF = true; // only check have the pigudf items.
@@ -940,7 +950,7 @@ public final class ProcessUtils {
                     IProxyRepositoryService.class);
             IProxyRepositoryFactory factory = service.getProxyRepositoryFactory();
             try {
-                List<IRepositoryViewObject> pigUdfsObjects = factory.getAll(ERepositoryObjectType.PIG_UDF);
+                List<IRepositoryViewObject> pigUdfsObjects = factory.getAll(project, ERepositoryObjectType.PIG_UDF);
                 if (!pigUdfsObjects.isEmpty()) {
                     /*
                      * FIXME, don't know need check the this api or not. seem it's not useful. so return true so far

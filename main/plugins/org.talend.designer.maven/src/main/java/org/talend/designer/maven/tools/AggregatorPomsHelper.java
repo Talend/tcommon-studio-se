@@ -90,7 +90,8 @@ public class AggregatorPomsHelper {
         this.projectTechName = projectTechName;
     }
 
-    public void createRootPom(IFolder folder, List<String> modules, boolean force, IProgressMonitor monitor) throws Exception {
+    public void createRootPom(IFolder folder, List<String> modules, boolean force, IProgressMonitor monitor)
+            throws Exception {
         IFile pomFile = folder.getFile(TalendMavenConstants.POM_FILE_NAME);
         if (force || !pomFile.exists()) {
             Map<String, Object> parameters = new HashMap<String, Object>();
@@ -158,11 +159,11 @@ public class AggregatorPomsHelper {
         return null;
     }
 
-    public static void updateCodeProjects(IProgressMonitor monitor) {
-    	updateCodeProjects(monitor, false);
+    public void updateCodeProjects(IProgressMonitor monitor) {
+        updateCodeProjects(monitor, false);
     }
-    
-    public static void updateCodeProjects(IProgressMonitor monitor, boolean forceBuild) {
+
+    public void updateCodeProjects(IProgressMonitor monitor, boolean forceBuild) {
         RepositoryWorkUnit workUnit = new RepositoryWorkUnit<Object>("update code project") { //$NON-NLS-1$
 
             @Override
@@ -180,7 +181,7 @@ public class AggregatorPomsHelper {
         ProxyRepositoryFactory.getInstance().executeRepositoryWorkUnit(workUnit);
     }
 
-    private static void updateCodeProject(IProgressMonitor monitor, ERepositoryObjectType codeType, boolean forceBuild) {
+    private void updateCodeProject(IProgressMonitor monitor, ERepositoryObjectType codeType, boolean forceBuild) {
         try {
             ITalendProcessJavaProject codeProject = getCodesProject(codeType);
             updateCodeProjectPom(monitor, codeType, codeProject.getProjectPom());
@@ -190,7 +191,7 @@ public class AggregatorPomsHelper {
         }
     }
 
-    public static void updateCodeProjectPom(IProgressMonitor monitor, ERepositoryObjectType type, IFile pomFile)
+    public void updateCodeProjectPom(IProgressMonitor monitor, ERepositoryObjectType type, IFile pomFile)
             throws Exception {
         if (type != null) {
             if (ERepositoryObjectType.ROUTINES == type) {
@@ -210,18 +211,21 @@ public class AggregatorPomsHelper {
         }
     }
 
-    public static void createRoutinesPom(IFile pomFile, IProgressMonitor monitor) throws Exception {
+    public void createRoutinesPom(IFile pomFile, IProgressMonitor monitor) throws Exception {
         CreateMavenRoutinePom createTemplatePom = new CreateMavenRoutinePom(pomFile);
+        createTemplatePom.setProjectName(projectTechName);
         createTemplatePom.create(monitor);
     }
 
-    public static void createPigUDFsPom(IFile pomFile, IProgressMonitor monitor) throws Exception {
+    public void createPigUDFsPom(IFile pomFile, IProgressMonitor monitor) throws Exception {
         CreateMavenPigUDFPom createTemplatePom = new CreateMavenPigUDFPom(pomFile);
+        createTemplatePom.setProjectName(projectTechName);
         createTemplatePom.create(monitor);
     }
 
-    public static void createBeansPom(IFile pomFile, IProgressMonitor monitor) throws Exception {
+    public void createBeansPom(IFile pomFile, IProgressMonitor monitor) throws Exception {
         CreateMavenBeanPom createTemplatePom = new CreateMavenBeanPom(pomFile);
+        createTemplatePom.setProjectName(projectTechName);
         createTemplatePom.create(monitor);
     }
 
@@ -278,44 +282,36 @@ public class AggregatorPomsHelper {
     }
 
     public static void updateRefProjectModules(List<ProjectReference> references) {
-        RepositoryWorkUnit workUnit = new RepositoryWorkUnit<Object>("update ref project modules in project pom") { //$NON-NLS-1$
+        try {
+            List<String> modules = new ArrayList<>();
+            for (ProjectReference reference : references) {
+                String refProjectTechName = reference.getReferencedProject().getTechnicalLabel();
+                String modulePath = "../../" + refProjectTechName + "/" + TalendJavaProjectConstants.DIR_POMS; //$NON-NLS-1$ //$NON-NLS-2$
+                modules.add(modulePath);
+            }
 
-            @Override
-            protected void run() {
-                try {
-                    List<String> modules = new ArrayList<>();
-                    for (ProjectReference reference : references) {
-                        String refProjectTechName = reference.getReferencedProject().getTechnicalLabel();
-                        String modulePath = "../../" + refProjectTechName + "/" + TalendJavaProjectConstants.DIR_POMS; //$NON-NLS-1$ //$NON-NLS-2$
-                        modules.add(modulePath);
-                    }
+            Project mainProject = ProjectManager.getInstance().getCurrentProject();
+            IFolder mainPomsFolder = new AggregatorPomsHelper(mainProject.getTechnicalLabel()).getProjectPomsFolder();
+            IFile mainPomFile = mainPomsFolder.getFile(TalendMavenConstants.POM_FILE_NAME);
 
-                    Project mainProject = ProjectManager.getInstance().getCurrentProject();
-                    IFolder mainPomsFolder = new AggregatorPomsHelper(mainProject.getTechnicalLabel()).getProjectPomsFolder();
-                    IFile mainPomFile = mainPomsFolder.getFile(TalendMavenConstants.POM_FILE_NAME);
-
-                    Model model = MavenPlugin.getMavenModelManager().readMavenModel(mainPomFile);
-                    List<String> oldModules = model.getModules();
-                    if (oldModules == null) {
-                        oldModules = new ArrayList<>();
-                    }
-                    ListIterator<String> iterator = oldModules.listIterator();
-                    while (iterator.hasNext()) {
-                        String modulePath = iterator.next();
-                        if (modulePath.startsWith("../../")) { //$NON-NLS-1$
-                            iterator.remove();
-                        }
-                    }
-                    oldModules.addAll(modules);
-
-                    PomUtil.savePom(null, model, mainPomFile);
-                } catch (Exception e) {
-                    ExceptionHandler.process(e);
+            Model model = MavenPlugin.getMavenModelManager().readMavenModel(mainPomFile);
+            List<String> oldModules = model.getModules();
+            if (oldModules == null) {
+                oldModules = new ArrayList<>();
+            }
+            ListIterator<String> iterator = oldModules.listIterator();
+            while (iterator.hasNext()) {
+                String modulePath = iterator.next();
+                if (modulePath.startsWith("../../")) { //$NON-NLS-1$
+                    iterator.remove();
                 }
             }
-        };
-        workUnit.setAvoidUnloadResources(true);
-        ProxyRepositoryFactory.getInstance().executeRepositoryWorkUnit(workUnit);
+            oldModules.addAll(modules);
+
+            PomUtil.savePom(null, model, mainPomFile);
+        } catch (Exception e) {
+            ExceptionHandler.process(e);
+        }
     }
 
     public static void addToParentModules(IFile pomFile) throws Exception {
@@ -434,6 +430,20 @@ public class AggregatorPomsHelper {
         return getProjectPomsFolder().getFolder(DIR_CODES);
     }
 
+    public IFolder getCodeFolder(ERepositoryObjectType codeType) {
+        IFolder codesFolder = getCodesFolder();
+        if (codeType == ERepositoryObjectType.ROUTINES) {
+            return codesFolder.getFolder(DIR_ROUTINES);
+        }
+        if (codeType == ERepositoryObjectType.PIG_UDF) {
+            return codesFolder.getFolder(DIR_PIGUDFS);
+        }
+        if (codeType == ERepositoryObjectType.valueOf("BEANS")) { //$NON-NLS-1$
+            return codesFolder.getFolder(DIR_BEANS);
+        }
+        return null;
+    }
+
     public IFolder getProcessFolder(ERepositoryObjectType type) {
         return getProcessesFolder().getFolder(type.getFolder());
     }
@@ -469,6 +479,10 @@ public class AggregatorPomsHelper {
     public static String getJobProjectId(Property property) {
         String _projectTechName = ProjectManager.getInstance().getProject(property).getTechnicalLabel();
         return getJobProjectId(_projectTechName, property.getId(), property.getVersion());
+    }
+
+    public static String getCodeProjectId(ERepositoryObjectType codeType, String projectTechName) {
+        return projectTechName + "|" + codeType.name(); //$NON-NLS-1$
     }
 
     public static void checkJobPomCreation(ITalendProcessJavaProject jobProject) throws CoreException {

@@ -155,7 +155,8 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
     protected Model createModel() {
         Model model = super.createModel();
         if (model != null) {
-            PomUtil.checkParent(model, this.getPomFile(), jobProcessor.getProperty());
+            Map<String, Object> templateParameters = PomUtil.getTemplateParameters(jobProcessor.getProperty());
+            PomUtil.checkParent(model, this.getPomFile(), templateParameters);
 
             addDependencies(model);
         }
@@ -169,10 +170,8 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
             final List<Dependency> dependencies = model.getDependencies();
 
             // add codes to dependencies
-            // String projectTechName = ProjectManager.getInstance().getProject(getJobProcessor().getProperty()).getTechnicalLabel();
-            // always use codes of main project for ref project
-            String projectTechName = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
-            String codeVersion = PomIdsHelper.getCodesVersion();
+            String projectTechName = ProjectManager.getInstance().getProject(getJobProcessor().getProperty()).getTechnicalLabel();
+            String codeVersion = PomIdsHelper.getCodesVersion(projectTechName);
             
             // routines
             String routinesGroupId = PomIdsHelper.getCodesGroupId(projectTechName, TalendMavenConstants.DEFAULT_CODE);

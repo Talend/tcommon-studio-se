@@ -616,7 +616,8 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
 
             // add talend libraries and codes
             Set<String> talendLibCoordinate = new HashSet<>();
-            String projectGroupId = PomIdsHelper.getProjectGroupId();
+            String projectTechName = ProjectManager.getInstance().getProject(parentProperty).getTechnicalLabel();
+            String projectGroupId = PomIdsHelper.getProjectGroupId(projectTechName);
             for (Dependency dependency : dependencies) {
                 String dependencyGroupId = dependency.getGroupId();
                 String coordinate = dependencyGroupId + ":" + dependency.getArtifactId(); //$NON-NLS-1$
