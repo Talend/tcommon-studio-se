@@ -92,6 +92,7 @@ public abstract class AbstractArtifactRepositoryHandler implements IRepositoryAr
             props.put(PAX_PID + '.' + PROPERTY_REPOSITORIES, repositories);
         }
         props.put("org.ops4j.pax.url.mvn.globalUpdatePolicy", "always");
+        props.put("org.ops4j.pax.url.mvn.proxySupport", "true");
         try {
             TalendMavenResolver.updateMavenResolver(props);
         } catch (Exception e) {

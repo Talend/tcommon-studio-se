@@ -46,7 +46,6 @@ import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.emf.common.util.EMap;
-import org.ops4j.pax.url.mvn.Handler;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
@@ -83,7 +82,6 @@ import org.talend.designer.maven.utils.PomUtil;
 import org.talend.librariesmanager.maven.MavenArtifactsHandler;
 import org.talend.librariesmanager.model.ExtensionModuleManager;
 import org.talend.librariesmanager.model.ModulesNeededProvider;
-import org.talend.librariesmanager.nexus.utils.NexusDownloader;
 import org.talend.librariesmanager.prefs.LibrariesManagerUtils;
 import org.talend.osgi.hook.notification.JarMissingObservable;
 
@@ -444,13 +442,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
      */
     @Override
     public File resolveJar(final NexusServerBean customNexusServer, String uri) throws Exception, IOException {
-        File resolvedFile = null;
-        //
-        NexusDownloader nexusDownloader = new NexusDownloader();
-        nexusDownloader.setTalendlibServer(customNexusServer);
-        nexusDownloader.download(new URL(null, uri, new Handler()), null);
-
-        resolvedFile = TalendMavenResolver.resolve(uri);
+        File resolvedFile = TalendMavenResolver.resolve(uri);
         if (resolvedFile != null) {
             // reset module status
             ModuleStatusProvider.putStatus(uri, ELibraryInstallStatus.INSTALLED);
