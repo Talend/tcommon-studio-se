@@ -2130,7 +2130,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
         }
         IRunProcessService runProcessService = getRunProcessService();
         if (runProcessService != null) {
-            runProcessService.deleteEclipseProjects();
+            runProcessService.clearProjectRelatedSettings();
         }
         ReferenceProjectProvider.clearTacReferenceList();
         ReferenceProjectProblemManager.getInstance().clearAll();

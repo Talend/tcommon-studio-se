@@ -15,7 +15,6 @@ package org.talend.designer.maven.tools;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -35,15 +34,15 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.generation.JavaUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.general.ILibrariesService;
+import org.talend.core.model.general.ILibrariesService.IChangedLibrariesListener;
 import org.talend.core.model.process.IProcess;
 import org.talend.core.model.process.ProcessUtils;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
+import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
-import org.talend.core.runtime.process.TalendProcessArgumentConstant;
 import org.talend.core.runtime.projectsetting.IProjectSettingPreferenceConstants;
 import org.talend.core.runtime.projectsetting.IProjectSettingTemplateConstants;
-import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.template.MavenTemplateManager;
 import org.talend.designer.maven.tools.creator.CreateMavenBeanPom;
 import org.talend.designer.maven.tools.creator.CreateMavenPigUDFPom;
@@ -64,6 +63,10 @@ public class MavenPomSynchronizer {
     private IRunProcessService runProcessService;
 
     private static boolean isListenerAdded;
+
+    private static Object lock = new Object();
+
+    private static IChangedLibrariesListener changedLibrariesListener;
 
     public MavenPomSynchronizer(IProcessor processor) {
         this(processor.getTalendJavaProject());
@@ -242,30 +245,57 @@ public class MavenPomSynchronizer {
 
         codeProject.getProject().refreshLocal(IResource.DEPTH_ONE, monitor);
 
+    }
+
+    public static void addChangeLibrariesListener() {
         if (!isListenerAdded) {
-            synchronized (this) {
+            synchronized (lock) {
                 if (!isListenerAdded) {
+                    if (!ProxyRepositoryFactory.getInstance().isFullLogonFinished()) {
+                        return;
+                    }
                     if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibrariesService.class)) {
                         ILibrariesService libService = (ILibrariesService) GlobalServiceRegister.getDefault()
                                 .getService(ILibrariesService.class);
-                        libService.addChangeLibrariesListener(new ILibrariesService.IChangedLibrariesListener() {
+                        if (changedLibrariesListener == null) {
+                            changedLibrariesListener = new ILibrariesService.IChangedLibrariesListener() {
 
-                            @Override
-                            public void afterChangingLibraries() {
-                                try {
-                                    // update the dependencies
-                                    new AggregatorPomsHelper().updateCodeProjects(monitor);
-                                } catch (Exception e) {
-                                    ExceptionHandler.process(e);
+                                @Override
+                                public void afterChangingLibraries() {
+                                    try {
+                                        // update the dependencies
+                                        new AggregatorPomsHelper().updateCodeProjects(new NullProgressMonitor());
+                                    } catch (Exception e) {
+                                        ExceptionHandler.process(e);
+                                    }
                                 }
-                            }
-                        });
-
+                            };
+                        }
+                        libService.addChangeLibrariesListener(changedLibrariesListener);
                     }
                     isListenerAdded = true;
                 }
             }
 
+        }
+    }
+
+    public static void removeChangeLibrariesListener() {
+        if (isListenerAdded) {
+            synchronized (lock) {
+                if (isListenerAdded) {
+                    if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibrariesService.class)) {
+                        ILibrariesService libService = (ILibrariesService) GlobalServiceRegister
+                                .getDefault()
+                                .getService(ILibrariesService.class);
+                        if (changedLibrariesListener != null) {
+                            libService.removeChangeLibrariesListener(changedLibrariesListener);
+                        }
+                    }
+                    isListenerAdded = false;
+                }
+
+            }
         }
     }
 

@@ -276,6 +276,10 @@ public class PomIdsHelper {
         return false;
     }
 
+    public static void resetPreferencesManagers() {
+        preferenceManagers.clear();
+    }
+
     private static ProjectPreferenceManager getPreferenceManager(String projectTechName) {
         if (!preferenceManagers.containsKey(projectTechName)) {
             Project project = ProjectManager.getInstance().getProjectFromProjectTechLabel(projectTechName);

@@ -215,7 +215,7 @@ public interface IRunProcessService extends IService {
 
     ITalendProcessJavaProject getTempJavaProject();
 
-    void deleteEclipseProjects();
+    void clearProjectRelatedSettings();
 
     boolean isExportConfig();
 
