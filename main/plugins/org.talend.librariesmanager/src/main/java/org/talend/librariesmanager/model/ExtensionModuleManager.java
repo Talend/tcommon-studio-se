@@ -87,16 +87,16 @@ public class ExtensionModuleManager {
     public final static String DEFAULT_LIB_FOLDER = "lib"; //$NON-NLS-1$
 
     // cache
-    public List<IConfigurationElement> moduleGroupElementsCache = null;
+    private List<IConfigurationElement> moduleGroupElementsCache;
 
-    public List<IConfigurationElement> moduleElementsCache = null;
-    
-    public Map<String, List<ModuleNeeded>> groupMapLibraryCache = new HashMap<String, List<ModuleNeeded>>();
+    private List<IConfigurationElement> moduleElementsCache;
 
-    public Map<String, ModuleNeeded> modulesNameLibraryCache = new HashMap<String, ModuleNeeded>();
+    private Map<String, List<ModuleNeeded>> groupMapLibraryCache;
 
-    public Map<String, ModuleNeeded> modulesIdLibraryCache = new HashMap<String, ModuleNeeded>();
-    
+    private Map<String, ModuleNeeded> modulesNameLibraryCache;
+
+    private Map<String, ModuleNeeded> modulesIdLibraryCache;
+
     private static ExtensionModuleManager manager = null;
 
     private ILibraryManagerService libManagerService;
@@ -106,6 +106,11 @@ public class ExtensionModuleManager {
             libManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
                     ILibraryManagerService.class);
         }
+        moduleGroupElementsCache = new ArrayList<>();
+        moduleElementsCache = new ArrayList<>();
+        groupMapLibraryCache = new HashMap<>();
+        modulesNameLibraryCache = new HashMap<>();
+        modulesIdLibraryCache = new HashMap<>();
     }
 
     public static final ExtensionModuleManager getInstance() {
@@ -236,12 +241,12 @@ public class ExtensionModuleManager {
         groupMapLibraryCache.clear();
         modulesNameLibraryCache.clear();
         modulesIdLibraryCache.clear();
-        moduleGroupElementsCache = null; // moduleGroupElemCache
-        moduleElementsCache = null;// moduleElemCache
+        moduleGroupElementsCache.clear();
+        moduleElementsCache.clear();
     }
 
     private List<IConfigurationElement> getModuleElementsCache() {
-        if (moduleElementsCache == null) {
+        if (moduleElementsCache == null || moduleElementsCache.isEmpty()) {
             IExtensionPointLimiter extensionPointLibraryNeeded = new ExtensionPointLimiterImpl(EXT_ID, MODULE_ELE);
             moduleElementsCache = ExtensionImplementationProvider.getInstanceV2(extensionPointLibraryNeeded);
         }
@@ -249,7 +254,7 @@ public class ExtensionModuleManager {
     }
 
     private List<IConfigurationElement> getModuleGroupElementsCache() {
-        if (moduleGroupElementsCache == null) {
+        if (moduleGroupElementsCache == null || moduleGroupElementsCache.isEmpty()) {
             IExtensionPointLimiter extensionPointLibraryNeededGroup = new ExtensionPointLimiterImpl(EXT_ID, MODULE_GROUP_ELE);
             moduleGroupElementsCache = ExtensionImplementationProvider.getInstanceV2(extensionPointLibraryNeededGroup);
         }
@@ -257,29 +262,30 @@ public class ExtensionModuleManager {
     }
 
     private Map<String, ModuleNeeded> getModuleIdMapCache() {
-        if (modulesIdLibraryCache == null || modulesIdLibraryCache.isEmpty()) {
-            initModuleGroupMapCache();
+        if (modulesIdLibraryCache.isEmpty()) {
+            initSigleModuleMapCache();
         }
         return modulesIdLibraryCache;
     }
 
     private Map<String, ModuleNeeded> getModuleNameMapCache() {
-        if (modulesNameLibraryCache == null || modulesNameLibraryCache.isEmpty()) {
-            initModuleGroupMapCache();
+        if (modulesNameLibraryCache.isEmpty()) {
+            initSigleModuleMapCache();
         }
         return modulesNameLibraryCache;
     }
 
     private Map<String, List<ModuleNeeded>> getModuleGroupMapCache() {
-        if (groupMapLibraryCache == null || groupMapLibraryCache.isEmpty()) {
+        if (groupMapLibraryCache.isEmpty()) {
             initGroupMapLibraryCache();
         }
         return groupMapLibraryCache;
     }
 
-    private void initModuleGroupMapCache() {
+    private void initSigleModuleMapCache() {
         ModuleNeeded moduleNeeded = null;
-        for (IConfigurationElement configElement : moduleElementsCache) {
+        List<IConfigurationElement> extension = getModuleElementsCache();
+        for (IConfigurationElement configElement : extension) {
             String moduleId = configElement.getAttribute(ID_ATTR);
             String moduleName = configElement.getAttribute(NAME_ATTR);
             moduleNeeded = ModulesNeededProvider.createModuleNeededInstance(configElement);
@@ -288,7 +294,7 @@ public class ExtensionModuleManager {
                     modulesNameLibraryCache.put(moduleName, moduleNeeded);
                 }
                 if (StringUtils.isNotBlank(moduleId)) {
-                    modulesNameLibraryCache.put(moduleId, moduleNeeded);
+                    modulesIdLibraryCache.put(moduleId, moduleNeeded);
                 }
             }
         }
@@ -312,8 +318,8 @@ public class ExtensionModuleManager {
                         otherGroupList.add(eleName);
                     }
                 }
-                groupContainOthers.put(moduleGroupId,otherGroupList);//cache the sub group
-                groupMapLibraryCache.put(moduleGroupId, importNeedsList);//cache the library
+                groupContainOthers.put(moduleGroupId, otherGroupList); // cache the sub group
+                groupMapLibraryCache.put(moduleGroupId, importNeedsList); // cache the library
             }
         }
 
@@ -342,11 +348,8 @@ public class ExtensionModuleManager {
             }
             resultMap.put(groupName, newLibs);
         }
-        for (Map.Entry<String, List<ModuleNeeded>> entry : groupMapLibraryCache.entrySet()) {
-            String groupName = entry.getKey();
-            if (!resultMap.containsKey(groupName)) {
-                groupMapLibraryCache.put(groupName, new ArrayList<ModuleNeeded>(resultMap.get(groupName)));// replace
-            }
+        for (Map.Entry<String, Set<ModuleNeeded>> entry : resultMap.entrySet()) {
+            groupMapLibraryCache.put(entry.getKey(), new ArrayList<ModuleNeeded>(entry.getValue()));
         }
 
     }
@@ -354,7 +357,7 @@ public class ExtensionModuleManager {
     static Set<ModuleNeeded> getLibs(String groupName, Map<String, List<String>> groupContainOthers,
             Map<String, List<ModuleNeeded>> groupMapLibraryCache, Set<String> recordedGroups) {
         if (recordedGroups.contains(groupName)) {
-            ExceptionHandler.log("Module group [" + groupName + "] was cycle referenced!");
+            ExceptionHandler.log(Messages.getString("ExtensionModuleManager.moduleGroup.cycleReference", groupName));
             return Collections.EMPTY_SET;
         }
         recordedGroups.add(groupName);
