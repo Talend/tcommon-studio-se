@@ -284,10 +284,10 @@ public class ExtensionModuleManager {
             String moduleName = configElement.getAttribute(NAME_ATTR);
             moduleNeeded = ModulesNeededProvider.createModuleNeededInstance(configElement);
             if (moduleNeeded != null) {
-                if (StringUtils.isBlank(moduleName)) {
+                if (StringUtils.isNotBlank(moduleName)) {
                     modulesNameLibraryCache.put(moduleName, moduleNeeded);
                 }
-                if (StringUtils.isBlank(moduleId)) {
+                if (StringUtils.isNotBlank(moduleId)) {
                     modulesNameLibraryCache.put(moduleId, moduleNeeded);
                 }
             }
