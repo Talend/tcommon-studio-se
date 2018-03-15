@@ -24,6 +24,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.EMap;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -32,6 +35,7 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.PlatformUI;
+import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.core.GlobalServiceRegister;
@@ -318,7 +322,7 @@ public abstract class RepositoryUpdateManager {
         if (checked) {
             final List<UpdateResult> results = new ArrayList<UpdateResult>();
             boolean cancelable = !needForcePropagation();
-            IRunnableWithProgress runnable = new IRunnableWithProgress() {
+            final IRunnableWithProgress runnable = new IRunnableWithProgress() {
 
                 @SuppressWarnings("unchecked")
                 @Override
@@ -332,9 +336,38 @@ public abstract class RepositoryUpdateManager {
             };
 
             try {
-                // final ProgressMonitorJobsDialog dialog = new ProgressMonitorJobsDialog(null);
-                final ProgressMonitorDialog dialog = new ProgressMonitorDialog(null);
-                dialog.run(true, cancelable, runnable);
+                if (CommonsPlugin.isHeadless() || Display.getCurrent() == null) {
+                    final InvocationTargetException invocationTargetEx[] = new InvocationTargetException[1];
+                    final InterruptedException interruptedEx[] = new InterruptedException[1];
+                    Job updatingJob = new Job(Messages.getString("RepositoryUpdateManager.job.title")) { //$NON-NLS-1$
+
+                        @Override
+                        protected IStatus run(IProgressMonitor monitor) {
+                            try {
+                                runnable.run(monitor);
+                            } catch (InvocationTargetException e) {
+                                invocationTargetEx[0] = e;
+                            } catch (InterruptedException e) {
+                                interruptedEx[0] = e;
+                            }
+
+                            return Status.OK_STATUS;
+                        }
+                    };
+                    updatingJob.setUser(false);
+                    updatingJob.schedule();
+                    updatingJob.join();
+                    if (invocationTargetEx[0] != null) {
+                        throw invocationTargetEx[0];
+                    }
+                    if (interruptedEx[0] != null) {
+                        throw interruptedEx[0];
+                    }
+                } else {
+                    // final ProgressMonitorJobsDialog dialog = new ProgressMonitorJobsDialog(null);
+                    final ProgressMonitorDialog dialog = new ProgressMonitorDialog(null);
+                    dialog.run(true, cancelable, runnable);
+                }
 
                 // PlatformUI.getWorkbench().getProgressService().run(true, true, runnable);
             } catch (InvocationTargetException e) {
@@ -1429,17 +1462,20 @@ public abstract class RepositoryUpdateManager {
         return updateDBConnection(connection, show, false);
     }
 
+    public static boolean updateDBConnection(ConnectionItem connectionItem, boolean show, final boolean onlySimpleShow) {
+        return updateDBConnection(connectionItem, RelationshipItemBuilder.LATEST_VERSION, show, onlySimpleShow);
+    }
+
     /**
      * 
      * ggu Comment method "updateQuery".
      * 
      * if show is false, will work for context menu action.
      */
-    public static boolean updateDBConnection(ConnectionItem connectionItem, boolean show, final boolean onlySimpleShow) {
-        List<IRepositoryViewObject> updateList = new ArrayList<IRepositoryViewObject>();
-        IProxyRepositoryFactory factory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
+    public static boolean updateDBConnection(ConnectionItem connectionItem, String version, boolean show,
+            final boolean onlySimpleShow) {
         List<Relation> relations = RelationshipItemBuilder.getInstance().getItemsRelatedTo(connectionItem.getProperty().getId(),
-                RelationshipItemBuilder.LATEST_VERSION, RelationshipItemBuilder.PROPERTY_RELATION);
+                version, RelationshipItemBuilder.PROPERTY_RELATION);
 
         RepositoryUpdateManager repositoryUpdateManager = new RepositoryUpdateManager(connectionItem, relations) {
 

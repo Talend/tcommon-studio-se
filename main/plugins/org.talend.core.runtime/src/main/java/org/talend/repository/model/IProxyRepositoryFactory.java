@@ -505,6 +505,8 @@ public interface IProxyRepositoryFactory {
 
     public boolean isModified(Object property);
 
+    public boolean isFullLogonFinished();
+
     /**
      * DOC nrousseau Comment method "getObjectFromFolder".
      * 

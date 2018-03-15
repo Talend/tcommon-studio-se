@@ -2052,9 +2052,10 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                     }
                 }
 
-                fullLogonFinished = true;
-                this.repositoryFactoryFromProvider.afterLogon(monitor);
                 if (GlobalServiceRegister.getDefault().isServiceRegistered(ITaCoKitService.class)) {
+                    /**
+                     * Execute TaCoKit migration before fullLogonFinished
+                     */
                     ITaCoKitService tacokitService = (ITaCoKitService) GlobalServiceRegister.getDefault()
                             .getService(ITaCoKitService.class);
                     try {
@@ -2063,6 +2064,8 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                         ExceptionHandler.process(e);
                     }
                 }
+                fullLogonFinished = true;
+                this.repositoryFactoryFromProvider.afterLogon(monitor);
             } finally {
                 TimeMeasure.end("logOnProject"); //$NON-NLS-1$
                 TimeMeasure.display = false;
@@ -2261,6 +2264,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
      * 
      * @return the fullLogonFinished
      */
+    @Override
     public boolean isFullLogonFinished() {
         return this.fullLogonFinished;
     }
