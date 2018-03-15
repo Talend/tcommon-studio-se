@@ -44,7 +44,10 @@ import org.eclipse.m2e.core.MavenPlugin;
 import org.eclipse.swt.widgets.Display;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.commons.exception.PersistenceException;
 import org.talend.core.GlobalServiceRegister;
+import org.talend.core.context.Context;
+import org.talend.core.context.RepositoryContext;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.process.ProcessUtils;
 import org.talend.core.model.properties.Item;
@@ -55,6 +58,7 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.repository.utils.ItemResourceUtil;
+import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
@@ -282,6 +286,9 @@ public class AggregatorPomsHelper {
     }
 
     public static void updateRefProjectModules(List<ProjectReference> references) {
+        if (!needUpdateRefProjectModules()) {
+            return;
+        }
         try {
             List<String> modules = new ArrayList<>();
             for (ProjectReference reference : references) {
@@ -661,12 +668,49 @@ public class AggregatorPomsHelper {
                 modules.add(getModulePath(service.getTalendCodeJavaProject(ERepositoryObjectType.valueOf("BEANS")))); //$NON-NLS-1$
             }
         }
-        List<ProjectReference> references = ProjectManager.getInstance().getCurrentProject().getProjectReferenceList(true);
-        for (ProjectReference reference : references) {
-            String refProjectTechName = reference.getReferencedProject().getTechnicalLabel();
-            String modulePath = "../../" + refProjectTechName + "/" + TalendJavaProjectConstants.DIR_POMS; //$NON-NLS-1$ //$NON-NLS-2$
-            modules.add(modulePath);
+        if (needUpdateRefProjectModules()) {
+            List<ProjectReference> references = ProjectManager.getInstance().getCurrentProject().getProjectReferenceList(true);
+            for (ProjectReference reference : references) {
+                String refProjectTechName = reference.getReferencedProject().getTechnicalLabel();
+                String modulePath = "../../" + refProjectTechName + "/" + TalendJavaProjectConstants.DIR_POMS; //$NON-NLS-1$ //$NON-NLS-2$
+                modules.add(modulePath);
+            }
+        } else {
+            Project mainProject = ProjectManager.getInstance().getCurrentProject();
+            IFolder mainPomsFolder = new AggregatorPomsHelper(mainProject.getTechnicalLabel()).getProjectPomsFolder();
+            IFile mainPomFile = mainPomsFolder.getFile(TalendMavenConstants.POM_FILE_NAME);
+            try {
+                Model model = MavenPlugin.getMavenModelManager().readMavenModel(mainPomFile);
+                List<String> oldModules = model.getModules();
+                if (oldModules != null) {
+                    for (String modulePath : oldModules) {
+                        if (modulePath.startsWith("../../")) { //$NON-NLS-1$
+                            modules.add(modulePath);
+                        }
+                    }
+                }
+            } catch (CoreException e) {
+                ExceptionHandler.process(e);
+            }
         }
+    }
+
+    public static boolean needUpdateRefProjectModules() {
+        try {
+            boolean isLocalProject = ProxyRepositoryFactory.getInstance().isLocalConnectionProvider();
+            boolean isOffline = false;
+            if (!isLocalProject) {
+                RepositoryContext repositoryContext = (RepositoryContext) CoreRuntimePlugin
+                        .getInstance()
+                        .getContext()
+                        .getProperty(Context.REPOSITORY_CONTEXT_KEY);
+                isOffline = repositoryContext.isOffline();
+            }
+            return !isLocalProject && !isOffline;
+        } catch (PersistenceException e) {
+            ExceptionHandler.process(e);
+        }
+        return false;
     }
 
     private static IRunProcessService getRunProcessService() {

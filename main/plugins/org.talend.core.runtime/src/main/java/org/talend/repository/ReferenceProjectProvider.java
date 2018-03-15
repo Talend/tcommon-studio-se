@@ -12,9 +12,8 @@ package org.talend.repository;
 // 9 rue Pages 92150 Suresnes, France
 //
 // ============================================================================
-import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,7 +23,9 @@ import java.util.Map;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.talend.commons.exception.BusinessException;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.model.properties.Project;
@@ -149,22 +150,22 @@ public class ReferenceProjectProvider implements IReferenceProjectProvider {
 
     @Override
     public void saveSettings() throws PersistenceException, IOException {
-        File file = getConfigurationFile();
-        if (!file.getParentFile().exists()) {
-            file.getParentFile().mkdirs();
-        }
+        IProject iProject = ResourceUtils.getProject(project.getTechnicalLabel());
+        IFile file = iProject.getFolder(CONFIGURATION_FOLDER_NAME).getFile(CONFIGURATION_FILE_NAME);
         if (referenceProjectConfig == null) {
             referenceProjectConfig = new ReferenceProjectConfiguration();
         }
         ObjectMapper objectMapper = new ObjectMapper();
         String content = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(referenceProjectConfig);
-        BufferedWriter bw = null;
+        ByteArrayInputStream source = new ByteArrayInputStream(content.getBytes());
         try {
-            bw = new BufferedWriter(new FileWriter(file));
-            bw.write(content);
-        } finally {
-            bw.flush();
-            bw.close();
+            if (!file.exists()) {
+                file.create(source, true, null);
+            } else {
+                file.setContents(source, true, false, null);
+            }
+        } catch (Exception e) {
+            ExceptionHandler.process(e);
         }
     }
 
