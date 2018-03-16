@@ -93,9 +93,9 @@ public class ExtensionModuleManager {
 
     private Map<String, List<ModuleNeeded>> groupMapLibraryCache;
 
-    private Map<String, ModuleNeeded> modulesNameLibraryCache;
+    private Map<String, List<ModuleNeeded>> modulesNameLibraryCache;
 
-    private Map<String, ModuleNeeded> modulesIdLibraryCache;
+    private Map<String, List<ModuleNeeded>> modulesIdLibraryCache;
 
     private static ExtensionModuleManager manager = null;
 
@@ -180,9 +180,25 @@ public class ExtensionModuleManager {
         if (id == null || importNeedsList == null) {
             return;
         }
-        ModuleNeeded moduleNeeded = this.getModuleIdMapCache().get(id);
+        /**
+         * There are many modules with same Id and Name, To keep same result with previous version, here just pick the
+         * first finded one;<br/>
+         * Later maybe we can try to choose a better one, such as ModuleNeeded with moduleLocaion specified, but here I
+         * am not sure whether the moduleLocation exists or not
+         */
+
+        ModuleNeeded moduleNeeded = null;
+        Map<String, List<ModuleNeeded>> idCache = this.getModuleIdMapCache();
+        List<ModuleNeeded> idModules = idCache.get(id);
+        if (idModules != null && !idModules.isEmpty()) {
+            moduleNeeded = idModules.get(0);
+        }
         if (moduleNeeded == null) {
-            moduleNeeded = this.getModuleNameMapCache().get(id);
+            Map<String, List<ModuleNeeded>> nameCache = this.getModuleNameMapCache();
+            List<ModuleNeeded> nameModules = nameCache.get(id);
+            if (nameModules != null && !nameModules.isEmpty()) {
+                moduleNeeded = nameModules.get(0);
+            }
         }
         if (moduleNeeded != null) {
             importNeedsList.add(moduleNeeded);
@@ -261,14 +277,14 @@ public class ExtensionModuleManager {
         return moduleGroupElementsCache;
     }
 
-    private Map<String, ModuleNeeded> getModuleIdMapCache() {
+    private Map<String, List<ModuleNeeded>> getModuleIdMapCache() {
         if (modulesIdLibraryCache.isEmpty()) {
             initSigleModuleMapCache();
         }
         return modulesIdLibraryCache;
     }
 
-    private Map<String, ModuleNeeded> getModuleNameMapCache() {
+    private Map<String, List<ModuleNeeded>> getModuleNameMapCache() {
         if (modulesNameLibraryCache.isEmpty()) {
             initSigleModuleMapCache();
         }
@@ -283,18 +299,29 @@ public class ExtensionModuleManager {
     }
 
     private void initSigleModuleMapCache() {
-        ModuleNeeded moduleNeeded = null;
+        modulesIdLibraryCache.clear();
+        modulesNameLibraryCache.clear();
         List<IConfigurationElement> extension = getModuleElementsCache();
         for (IConfigurationElement configElement : extension) {
             String moduleId = configElement.getAttribute(ID_ATTR);
             String moduleName = configElement.getAttribute(NAME_ATTR);
-            moduleNeeded = ModulesNeededProvider.createModuleNeededInstance(configElement);
+            ModuleNeeded moduleNeeded = ModulesNeededProvider.createModuleNeededInstance(configElement);
             if (moduleNeeded != null) {
                 if (StringUtils.isNotBlank(moduleName)) {
-                    modulesNameLibraryCache.put(moduleName, moduleNeeded);
+                    List<ModuleNeeded> moduleList = modulesNameLibraryCache.get(moduleName);
+                    if (moduleList == null) {
+                        moduleList = new ArrayList<>();
+                        modulesNameLibraryCache.put(moduleName, moduleList);
+                    }
+                    moduleList.add(moduleNeeded);
                 }
                 if (StringUtils.isNotBlank(moduleId)) {
-                    modulesIdLibraryCache.put(moduleId, moduleNeeded);
+                    List<ModuleNeeded> moduleList = modulesIdLibraryCache.get(moduleId);
+                    if (moduleList == null) {
+                        moduleList = new ArrayList<>();
+                        modulesIdLibraryCache.put(moduleId, moduleList);
+                    }
+                    moduleList.add(moduleNeeded);
                 }
             }
         }
@@ -305,20 +332,23 @@ public class ExtensionModuleManager {
         List<IConfigurationElement> extension = getModuleGroupElementsCache();
         Map<String, List<String>> groupContainOthers = new HashMap<String, List<String>>();
         for (IConfigurationElement configElement : extension) {
-            List<ModuleNeeded> importNeedsList = new LinkedList<ModuleNeeded>();
-            ArrayList<String> otherGroupList = new ArrayList<String>();
             String moduleGroupId = configElement.getAttribute(ID_ATTR);
             if (moduleGroupId != null && !moduleGroupId.isEmpty()) {
+                List<ModuleNeeded> importNeedsList = new LinkedList<ModuleNeeded>();
+                ArrayList<String> otherGroupList = new ArrayList<String>();
                 IConfigurationElement[] childrenEle = configElement.getChildren();
                 for (IConfigurationElement childEle : childrenEle) {
                     String eleName = childEle.getName();
+                    String id = childEle.getAttribute(ID_ATTR);
                     if (LIBRARY_ELE.equals(eleName)) {
-                        collectSingleModule(childEle.getAttribute(ID_ATTR), importNeedsList);
+                        collectSingleModule(id, importNeedsList);
                     } else if (GROUP_ELE.equals(eleName)) {
-                        otherGroupList.add(eleName);
+                        otherGroupList.add(id);
                     }
                 }
-                groupContainOthers.put(moduleGroupId, otherGroupList); // cache the sub group
+                if (!otherGroupList.isEmpty()) {
+                    groupContainOthers.put(moduleGroupId, otherGroupList); // cache the sub group
+                }
                 groupMapLibraryCache.put(moduleGroupId, importNeedsList); // cache the library
             }
         }
