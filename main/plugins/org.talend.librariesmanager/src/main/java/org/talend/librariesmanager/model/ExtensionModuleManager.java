@@ -357,7 +357,7 @@ public class ExtensionModuleManager {
 
     }
 
-    public void getGroupLibrary(Map<String, List<String>> groupContainOthers,
+    private void getGroupLibrary(Map<String, List<String>> groupContainOthers,
             Map<String, List<ModuleNeeded>> groupMapLibraryCache) {
         Map<String, Set<ModuleNeeded>> resultMap = new LinkedHashMap<>();
         for (Map.Entry<String, List<String>> entry : groupContainOthers.entrySet()) {
@@ -384,7 +384,7 @@ public class ExtensionModuleManager {
 
     }
 
-    static Set<ModuleNeeded> getLibs(String groupName, Map<String, List<String>> groupContainOthers,
+    private Set<ModuleNeeded> getLibs(String groupName, Map<String, List<String>> groupContainOthers,
             Map<String, List<ModuleNeeded>> groupMapLibraryCache, Set<String> recordedGroups) {
         if (recordedGroups.contains(groupName)) {
             ExceptionHandler.log(Messages.getString("ExtensionModuleManager.moduleGroup.cycleReference", groupName));
