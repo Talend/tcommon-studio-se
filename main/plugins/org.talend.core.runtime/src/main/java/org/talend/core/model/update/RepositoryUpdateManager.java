@@ -24,9 +24,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.EMap;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -109,6 +107,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.designer.runprocess.ItemCacheManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
+import org.talend.repository.model.IProxyRepositoryService;
 import org.talend.repository.model.IRepositoryService;
 import org.talend.repository.model.RepositoryNode;
 
@@ -337,32 +336,7 @@ public abstract class RepositoryUpdateManager {
 
             try {
                 if (CommonsPlugin.isHeadless() || Display.getCurrent() == null) {
-                    final InvocationTargetException invocationTargetEx[] = new InvocationTargetException[1];
-                    final InterruptedException interruptedEx[] = new InterruptedException[1];
-                    Job updatingJob = new Job(Messages.getString("RepositoryUpdateManager.job.title")) { //$NON-NLS-1$
-
-                        @Override
-                        protected IStatus run(IProgressMonitor monitor) {
-                            try {
-                                runnable.run(monitor);
-                            } catch (InvocationTargetException e) {
-                                invocationTargetEx[0] = e;
-                            } catch (InterruptedException e) {
-                                interruptedEx[0] = e;
-                            }
-
-                            return Status.OK_STATUS;
-                        }
-                    };
-                    updatingJob.setUser(false);
-                    updatingJob.schedule();
-                    updatingJob.join();
-                    if (invocationTargetEx[0] != null) {
-                        throw invocationTargetEx[0];
-                    }
-                    if (interruptedEx[0] != null) {
-                        throw interruptedEx[0];
-                    }
+                    runnable.run(new NullProgressMonitor());
                 } else {
                     // final ProgressMonitorJobsDialog dialog = new ProgressMonitorJobsDialog(null);
                     final ProgressMonitorDialog dialog = new ProgressMonitorDialog(null);
@@ -1128,6 +1102,9 @@ public abstract class RepositoryUpdateManager {
     }
 
     public static IEditorReference[] getEditors() {
+        if (CommonsPlugin.isHeadless() || !getProxyRepositoryFactory().isFullLogonFinished()) {
+            return new IEditorReference[0];
+        }
         final List<IEditorReference> list = new ArrayList<IEditorReference>();
         Display.getDefault().syncExec(new Runnable() {
 
@@ -2451,6 +2428,11 @@ public abstract class RepositoryUpdateManager {
 
         };
         return repositoryUpdateManager.doWork(true, false);
+    }
+
+    private static IProxyRepositoryFactory getProxyRepositoryFactory() {
+        return ((IProxyRepositoryService) GlobalServiceRegister.getDefault().getService(IProxyRepositoryService.class))
+                .getProxyRepositoryFactory();
     }
 
 }
