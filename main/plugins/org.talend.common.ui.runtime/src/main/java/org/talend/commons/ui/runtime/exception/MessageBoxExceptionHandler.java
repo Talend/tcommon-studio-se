@@ -89,11 +89,13 @@ public final class MessageBoxExceptionHandler {
         String title = Messages.getString("commons.error"); //$NON-NLS-1$
         String msg = Messages.getString("exception.errorOccured", ex.getMessage()); //$NON-NLS-1$
         //add for tup-19726/19790, as for exception detailMessage will show more details on log area.
-        String cause = Messages.getString("exception.errorOccured", ex.getCause()!=null?ex.getCause():ex.getMessage()); //$NON-NLS-1$
+        if(ex.getCause()!=null) {
+        	msg = Messages.getString("exception.errorOccured", ex.getCause().getMessage()); //$NON-NLS-1$
+        }
         Priority priority = CommonExceptionHandler.getPriority(ex);
 
         if (priority == Level.FATAL || priority == Level.ERROR) {
-            ExceptionMessageDialog.openError(shell, title, cause, ex);
+            ExceptionMessageDialog.openError(shell, title, msg, ex);
         } else if (priority == Level.WARN) {
             ExceptionMessageDialog.openWarning(shell, title, msg, ex);
         } else if (priority == Level.INFO) {
