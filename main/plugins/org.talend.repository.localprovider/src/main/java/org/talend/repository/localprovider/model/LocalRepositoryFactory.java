@@ -598,12 +598,15 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
                                     avoidSaveProject, true));
                         } else if (!(curItem instanceof FolderItem)) {
                             if (property.eResource() != null) {
+                            	propertyFounds.add(property.eResource().getURI().lastSegment());
                                 if (id == null || id.equals(property.getId())) {
                                     if (withDeleted || !property.getItem().getState().isDeleted()) {
+                                    	if(property.eResource().getResourceSet() == null){
+                                    		ProxyRepositoryFactory.getInstance().reload(property);
+                                    	}
                                         toReturn.add(new RepositoryObject(property));
                                     }
                                 }
-                                propertyFounds.add(property.eResource().getURI().lastSegment());
                                 property.getItem().setParent(currentFolderItem);
                                 addToHistory(id, type, property.getItem().getState().getPath());
                             } else {
