@@ -15,6 +15,7 @@ package org.talend.core.repository.model;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Dictionary;
@@ -80,6 +81,7 @@ import org.talend.core.context.RepositoryContext;
 import org.talend.core.exception.TalendInternalPersistenceException;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.Project;
+import org.talend.core.model.metadata.MetadataTalendType;
 import org.talend.core.model.metadata.builder.connection.AbstractMetadataObject;
 import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.core.model.migration.IMigrationToolService;
@@ -134,7 +136,6 @@ import org.talend.repository.documentation.ERepositoryActionName;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryConstants;
 import org.talend.utils.io.FilesUtils;
-
 import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
@@ -2028,7 +2029,17 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                     coreService.syncLog4jSettings(null);
                     TimeMeasure.step("logOnProject", "sync log4j"); //$NON-NLS-1$ //$NON-NLS-2$
                 }
-                
+
+                try {
+                    URL url = MetadataTalendType.getProjectForderURLOfMappingsFile();
+                    if (url != null) {
+                        // set the project mappings url
+                        System.setProperty("talend.mappings.url", url.toString()); // $NON-NLS-1$
+                    }
+                } catch (SystemException e) {
+                    // ignore
+                }
+
                 if (runProcessService != null) {
                     runProcessService.initializeRootPoms();
 
