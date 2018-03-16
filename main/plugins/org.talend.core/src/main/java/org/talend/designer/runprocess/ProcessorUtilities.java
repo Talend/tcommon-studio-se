@@ -1365,7 +1365,10 @@ public class ProcessorUtilities {
     public static IProcessor generateCode(ProcessItem process, String contextName, boolean statistics, boolean trace,
             boolean applyContextToChildren, IProgressMonitor... monitors) throws ProcessorException {
         IProgressMonitor monitor = null;
-        if (monitors == null) {
+        if (monitors != null && monitors.length > 0) {
+            monitor = monitors[0];
+        }
+        if (monitor == null) {
             monitor = new NullProgressMonitor();
         }
         JobInfo jobInfo = new JobInfo(process, contextName);
