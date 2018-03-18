@@ -797,7 +797,9 @@ public class ProcessorUtilities {
 
     private static IProcessor generateCode(JobInfo jobInfo, String selectedContextName, boolean statistics, boolean trace,
             boolean needContext, int option, IProgressMonitor progressMonitor) throws ProcessorException {
-        CorePlugin.getDefault().getRunProcessService().buildCodesJavaProject(progressMonitor);
+        if (!BitwiseOptionUtils.containOption(option, GENERATE_WITHOUT_COMPILING)) {
+            CorePlugin.getDefault().getRunProcessService().buildCodesJavaProject(progressMonitor);
+        }
         return generateCode(jobInfo, selectedContextName, statistics, trace, needContext, true, option, progressMonitor);
     }
 
