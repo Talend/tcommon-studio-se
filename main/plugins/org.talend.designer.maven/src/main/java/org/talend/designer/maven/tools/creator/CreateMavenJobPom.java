@@ -503,7 +503,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         //
         // PomJobExtensionRegistry.getInstance().updatePom(monitor, getPomFile(), args);
 
-        MavenPomSynchronizer pomSync = new MavenPomSynchronizer(this.getJobProcessor());
+        MavenPomSynchronizer pomSync = new MavenPomSynchronizer(this.getJobProcessor(), this.getPomFile());
         // if (needSyncCodesPoms()) {
         // // only sync pom for main job
         // pomSync.syncCodesPoms(monitor, getJobProcessor(), true);

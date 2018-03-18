@@ -67,14 +67,20 @@ public class MavenPomSynchronizer {
     private static Object lock = new Object();
 
     private static IChangedLibrariesListener changedLibrariesListener;
+    
+    private IFile projectPomFile;
 
-    public MavenPomSynchronizer(IProcessor processor) {
+    public MavenPomSynchronizer(IProcessor processor, IFile pomFile) {
         this(processor.getTalendJavaProject());
+        this.projectPomFile = pomFile;
     }
 
     public MavenPomSynchronizer(ITalendProcessJavaProject codeProject) {
         super();
         this.codeProject = codeProject;
+        if (codeProject != null) {
+            projectPomFile = codeProject.getProjectPom();
+        }
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
             runProcessService = (IRunProcessService) GlobalServiceRegister.getDefault().getService(IRunProcessService.class);
         }
@@ -122,29 +128,31 @@ public class MavenPomSynchronizer {
      * sync the bat/sh/jobInfo to resources template folder.
      */
     public void syncTemplates(boolean overwrite) throws Exception {
-        IFolder templateFolder = codeProject.getTemplatesFolder();
+        if (codeProject != null) {
+            IFolder templateFolder = codeProject.getTemplatesFolder();
 
-        IFile shFile = templateFolder.getFile(IProjectSettingTemplateConstants.JOB_RUN_SH_TEMPLATE_FILE_NAME);
-        IFile batFile = templateFolder.getFile(IProjectSettingTemplateConstants.JOB_RUN_BAT_TEMPLATE_FILE_NAME);
-        IFile psFile = templateFolder.getFile(IProjectSettingTemplateConstants.JOB_RUN_PS_TEMPLATE_FILE_NAME);
-        IFile infoFile = templateFolder.getFile(IProjectSettingTemplateConstants.JOB_INFO_TEMPLATE_FILE_NAME);
+            IFile shFile = templateFolder.getFile(IProjectSettingTemplateConstants.JOB_RUN_SH_TEMPLATE_FILE_NAME);
+            IFile batFile = templateFolder.getFile(IProjectSettingTemplateConstants.JOB_RUN_BAT_TEMPLATE_FILE_NAME);
+            IFile psFile = templateFolder.getFile(IProjectSettingTemplateConstants.JOB_RUN_PS_TEMPLATE_FILE_NAME);
+            IFile infoFile = templateFolder.getFile(IProjectSettingTemplateConstants.JOB_INFO_TEMPLATE_FILE_NAME);
 
-        Property property = codeProject.getPropery();
-        if (property != null) {
-            final Map<String, Object> templateParameters = PomUtil.getTemplateParameters(property);
-            String shContent = MavenTemplateManager.getProjectSettingValue(IProjectSettingPreferenceConstants.TEMPLATE_SH,
-                    templateParameters);
-            String batContent = MavenTemplateManager.getProjectSettingValue(IProjectSettingPreferenceConstants.TEMPLATE_BAT,
-                    templateParameters);
-            String psContent = MavenTemplateManager.getProjectSettingValue(IProjectSettingPreferenceConstants.TEMPLATE_PS,
-                    templateParameters);
-            String jobInfoContent = MavenTemplateManager.getProjectSettingValue(IProjectSettingPreferenceConstants.TEMPLATE_JOB_INFO,
-                    templateParameters);
-    
-            MavenTemplateManager.saveContent(shFile, shContent, overwrite);
-            MavenTemplateManager.saveContent(batFile, batContent, overwrite);
-            MavenTemplateManager.saveContent(psFile, psContent, overwrite);
-            MavenTemplateManager.saveContent(infoFile, jobInfoContent, overwrite);
+            Property property = codeProject.getPropery();
+            if (property != null) {
+                final Map<String, Object> templateParameters = PomUtil.getTemplateParameters(property);
+                String shContent = MavenTemplateManager.getProjectSettingValue(IProjectSettingPreferenceConstants.TEMPLATE_SH,
+                        templateParameters);
+                String batContent = MavenTemplateManager.getProjectSettingValue(IProjectSettingPreferenceConstants.TEMPLATE_BAT,
+                        templateParameters);
+                String psContent = MavenTemplateManager.getProjectSettingValue(IProjectSettingPreferenceConstants.TEMPLATE_PS,
+                        templateParameters);
+                String jobInfoContent = MavenTemplateManager
+                        .getProjectSettingValue(IProjectSettingPreferenceConstants.TEMPLATE_JOB_INFO, templateParameters);
+
+                MavenTemplateManager.saveContent(shFile, shContent, overwrite);
+                MavenTemplateManager.saveContent(batFile, batContent, overwrite);
+                MavenTemplateManager.saveContent(psFile, psContent, overwrite);
+                MavenTemplateManager.saveContent(infoFile, jobInfoContent, overwrite);
+            }
         }
     }
 
@@ -153,8 +161,6 @@ public class MavenPomSynchronizer {
      * add the job to the pom modules list of project.
      */
     public void addChildModules(boolean removeOld, String... childModules) throws Exception {
-        IFile projectPomFile = codeProject.getProjectPom();
-
         MavenModelManager mavenModelManager = MavenPlugin.getMavenModelManager();
         Model projModel = mavenModelManager.readMavenModel(projectPomFile);
         List<String> modules = projModel.getModules();
@@ -285,8 +291,7 @@ public class MavenPomSynchronizer {
             synchronized (lock) {
                 if (isListenerAdded) {
                     if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibrariesService.class)) {
-                        ILibrariesService libService = (ILibrariesService) GlobalServiceRegister
-                                .getDefault()
+                        ILibrariesService libService = (ILibrariesService) GlobalServiceRegister.getDefault()
                                 .getService(ILibrariesService.class);
                         if (changedLibrariesListener != null) {
                             libService.removeChangeLibrariesListener(changedLibrariesListener);
