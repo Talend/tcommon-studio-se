@@ -113,7 +113,7 @@ public class ExtensionModuleManager {
         modulesIdLibraryCache = new HashMap<>();
     }
 
-    public static final ExtensionModuleManager getInstance() {
+    synchronized public static final ExtensionModuleManager getInstance() {
         if (manager == null) {
             manager = new ExtensionModuleManager();
         }
