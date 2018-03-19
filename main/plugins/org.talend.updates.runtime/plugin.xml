@@ -71,7 +71,7 @@
             priority="normal">
       </loginTask>
       <loginTask
-            class=" org.talend.updates.runtime.login.InstallLocalNexusComponentsLoginTask"
+            class="org.talend.updates.runtime.login.InstallLocalNexusComponentsLoginTask"
             priority="normal">
       </loginTask>
    </extension>
