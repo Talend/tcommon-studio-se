@@ -39,7 +39,7 @@ public class RepositoryContext {
     private boolean forceReadOnly = false;
 
     private boolean editableAsReadOnly = false;
-    
+
     private boolean noUpdateWhenLogon = false;
 
     private Map<String, String> fields;
@@ -71,12 +71,18 @@ public class RepositoryContext {
         // if the new user have no svn authentification, but old instance of user have svn authentification
         // we force the new instance to set the svn infos.
         String oldAuthentification = null;
-        if (this.user != null && user != null && StringUtils.equals(this.user.getLogin(), user.getLogin())
+        if (this.user != null && user != null
+                && (StringUtils.equals(this.user.getLogin(), user.getLogin())
+                        || StringUtils.equals(this.user.getLogin(), user.getLdapLogin())
+                        || StringUtils.equals(this.user.getLdapLogin(), user.getLogin()))
                 && user.getAuthenticationInfo() == null) {
             oldAuthentification = this.user.getAuthenticationInfo();
         }
         String oldGitAuthentification = null;
-        if (this.user != null && user != null && StringUtils.equals(this.user.getLogin(), user.getLogin())
+        if (this.user != null && user != null
+                && (StringUtils.equals(this.user.getLogin(), user.getLogin())
+                        || StringUtils.equals(this.user.getLogin(), user.getLdapLogin())
+                        || StringUtils.equals(this.user.getLdapLogin(), user.getLogin()))
                 && user.getGitAuthenticationInfo() == null) {
             oldGitAuthentification = this.user.getGitAuthenticationInfo();
         }
