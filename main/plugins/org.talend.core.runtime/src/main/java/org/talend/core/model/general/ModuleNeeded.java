@@ -12,11 +12,10 @@
 // ============================================================================
 package org.talend.core.model.general;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.Path;
@@ -163,6 +162,37 @@ public class ModuleNeeded {
         }
         setModuleName(name);
         setMavenUri(uri);
+    }
+
+    @Override
+    public ModuleNeeded clone() {
+        ModuleNeeded cloned = new ModuleNeeded(context, moduleName, informationMsg, mrRequired, installURL, requiredIf, mavenUri);
+        cloned.bundleName = bundleName;
+        cloned.bundleVersion = bundleVersion;
+        cloned.context = context;
+        cloned.dynamic = dynamic;
+        cloned.excludeDependencies = cloned.excludeDependencies;
+        if (extraAttributes != null && !extraAttributes.isEmpty()) {
+            cloned.extraAttributes = new HashMap<>(extraAttributes);
+        }
+        cloned.id = id;
+        cloned.informationMsg = informationMsg;
+        cloned.installStatus = installStatus;
+        if (installURL != null && !installURL.isEmpty()) {
+            cloned.installURL = new ArrayList<>(installURL);
+        }
+        cloned.isShow = isShow;
+        cloned.libManagerService = libManagerService;
+        cloned.mavenUri = mavenUri;
+        cloned.mavenUriFromConfiguration = mavenUriFromConfiguration;
+        cloned.moduleLocaion = moduleLocaion;
+        cloned.moduleName = moduleName;
+        cloned.mrRequired = mrRequired;
+        cloned.required = required;
+        cloned.requiredIf = requiredIf;
+        cloned.status = status;
+
+        return cloned;
     }
 
     public String getRequiredIf() {

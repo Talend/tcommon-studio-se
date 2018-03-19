@@ -135,17 +135,27 @@ public class ExtensionModuleManager {
     }
 
     public List<ModuleNeeded> getModuleNeeded(String id, boolean isGroup) {
-        List<ModuleNeeded> importNeedsList = new ArrayList<ModuleNeeded>();
+        List<ModuleNeeded> cachedList = new ArrayList<ModuleNeeded>();
         if (id == null) {
-            return importNeedsList;
+            return cachedList;
         }
         if (isGroup) {
-            collectGroupModules(id, importNeedsList);
+            collectGroupModules(id, cachedList);
         } else {
-            collectSingleModule(id, importNeedsList);
+            collectSingleModule(id, cachedList);
+        }
+        List<ModuleNeeded> clonedList = new ArrayList<>();
+        if (cachedList != null && !cachedList.isEmpty()) {
+            for (ModuleNeeded cache : cachedList) {
+                ModuleNeeded cloned = null;
+                if (cache != null) {
+                    cloned = cache.clone();
+                }
+                clonedList.add(cloned);
+            }
         }
 
-        return importNeedsList;
+        return clonedList;
     }
 
     public List<ModuleNeeded> getModuleNeededForComponent(String context, IMPORTType importType) {
@@ -186,6 +196,10 @@ public class ExtensionModuleManager {
     }
 
 
+    /**
+     * <font color="red">DON'T forget to clone the results if you may modify it!!! since the results may be from
+     * cache</font>
+     */
     private void collectSingleModule(String id, List<ModuleNeeded> importNeedsList) {
         if (id == null || importNeedsList == null) {
             return;
@@ -216,10 +230,8 @@ public class ExtensionModuleManager {
     }
 
     /**
-     * DOC xlwang Comment method "collectGroupModules".
-     * 
-     * @param groupId
-     * @param importNeedsList
+     * <font color="red">DON'T forget to clone the results if you may modify it!!! since the results may be from
+     * cache</font>
      */
     private void collectGroupModules(String groupId, List<ModuleNeeded> importNeedsList) {
         List<ModuleNeeded> list = this.getModuleGroupMapCache().get(groupId);
