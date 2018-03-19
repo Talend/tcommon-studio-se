@@ -23,8 +23,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.model.Activation;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
@@ -33,6 +33,7 @@ import org.apache.maven.model.PluginExecution;
 import org.apache.maven.model.Profile;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.m2e.core.MavenPlugin;
@@ -54,6 +55,7 @@ import org.talend.core.model.utils.JavaResourcesHelper;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.maven.MavenUrlHelper;
+import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.core.runtime.process.JobInfoProperties;
 import org.talend.core.runtime.process.LastGenerationInfo;
 import org.talend.core.runtime.process.TalendProcessArgumentConstant;
@@ -65,10 +67,10 @@ import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.template.ETalendMavenVariables;
 import org.talend.designer.maven.template.MavenTemplateManager;
-import org.talend.designer.maven.tools.MavenPomSynchronizer;
 import org.talend.designer.maven.utils.PomIdsHelper;
 import org.talend.designer.maven.utils.PomUtil;
 import org.talend.designer.runprocess.IProcessor;
+import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.repository.ProjectManager;
 import org.talend.utils.io.FilesUtils;
 
@@ -191,8 +193,6 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
 
         // same as JavaProcessor.initCodePath
         String jobClassPackageFolder = JavaResourcesHelper.getJobClassPackageFolder(property.getItem());
-        String jobClassPackage = JavaResourcesHelper.getJobClassPackageName(property.getItem());
-        String jobFolderName = JavaResourcesHelper.getJobFolderName(property.getLabel(), property.getVersion());
 
         Project project = ProjectManager.getInstance().getProject(property);
         if (project == null) { // current project
@@ -204,7 +204,6 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         }
 
         checkPomProperty(properties, "talend.job.path", ETalendMavenVariables.JobPath, jobClassPackageFolder);
-        checkPomProperty(properties, "talend.job.package", ETalendMavenVariables.JobPackage, jobClassPackage);
 
         /*
          * for jobInfo.properties
@@ -254,133 +253,14 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
             }
             checkPomProperty(properties, "talend.job.framework", ETalendMavenVariables.Framework, framework); //$NON-NLS-1$
         }
-
-        // checkPomProperty(properties, "talend.job.class", ETalendMavenVariables.JobClass, jProcessor.getMainClass());
-        checkPomProperty(properties, "talend.job.class", ETalendMavenVariables.JobClass,
-                "${talend.job.package}.${talend.job.name}");
-
         checkPomProperty(properties, "talend.job.stat", ETalendMavenVariables.JobStat,
                 jobInfoProp.getProperty(JobInfoProperties.ADD_STATIC_CODE, Boolean.FALSE.toString()));
         checkPomProperty(properties, "talend.job.applyContextToChildren", ETalendMavenVariables.JobApplyContextToChildren,
                 jobInfoProp.getProperty(JobInfoProperties.APPLY_CONTEXY_CHILDREN, Boolean.FALSE.toString()));
         checkPomProperty(properties, "talend.product.version", ETalendMavenVariables.ProductVersion,
                 jobInfoProp.getProperty(JobInfoProperties.COMMANDLINE_VERSION, VersionUtils.getVersion()));
-        /*
-         * for bat/sh in assembly
-         */
-        StringBuffer windowsScriptAdditionValue = new StringBuffer(50);
-        StringBuffer unixScriptAdditionValue = new StringBuffer(50);
-
-        //
-        addScriptAddition(windowsScriptAdditionValue, this.getWindowsScriptAddition());
-        addScriptAddition(unixScriptAdditionValue, this.getUnixScriptAddition());
-
-        // context
-        if (isOptionChecked(TalendProcessArgumentConstant.ARG_NEED_CONTEXT)) {
-            final String contextPart = TalendProcessArgumentConstant.CMD_ARG_CONTEXT_NAME + contextName;
-            addScriptAddition(windowsScriptAdditionValue, contextPart);
-            addScriptAddition(unixScriptAdditionValue, contextPart);
-        }
-        // context params
-        List paramsList = ProcessUtils.getOptionValue(getArgumentsMap(), TalendProcessArgumentConstant.ARG_CONTEXT_PARAMS,
-                (List) null);
-        if (paramsList != null && !paramsList.isEmpty()) {
-            StringBuffer contextParamPart = new StringBuffer(100);
-            // do codes same as JobScriptsManager.getSettingContextParametersValue
-            for (Object param : paramsList) {
-                if (param instanceof ContextParameterType) {
-                    ContextParameterType contextParamType = (ContextParameterType) param;
-                    contextParamPart.append(' ');
-                    contextParamPart.append(TalendProcessArgumentConstant.CMD_ARG_CONTEXT_PARAMETER);
-                    contextParamPart.append(' ');
-                    contextParamPart.append(contextParamType.getName());
-                    contextParamPart.append('=');
-
-                    String value = contextParamType.getRawValue();
-                    if (!contextParamType.getType().equals("id_Password")) { //$NON-NLS-1$
-                        value = StringEscapeUtils.escapeJava(value);
-                    }
-                    if (value == null) {
-                        contextParamPart.append((String) null);
-                    } else {
-                        value = TalendQuoteUtils.addPairQuotesIfNotExist(value);
-                        contextParamPart.append(value);
-                    }
-                }
-            }
-            if (contextParamPart.length() > 0) {
-                addScriptAddition(windowsScriptAdditionValue, contextParamPart.toString());
-                addScriptAddition(unixScriptAdditionValue, contextParamPart.toString());
-            }
-        }
-
-        // log4j level
-        if (isOptionChecked(TalendProcessArgumentConstant.ARG_ENABLE_LOG4J)
-                && isOptionChecked(TalendProcessArgumentConstant.ARG_NEED_LOG4J_LEVEL)) {
-            String log4jLevel = getOptionString(TalendProcessArgumentConstant.ARG_LOG4J_LEVEL);
-            if (StringUtils.isNotEmpty(log4jLevel)) {
-                String log4jLevelPart = log4jLevel;
-                if (!log4jLevel.startsWith(TalendProcessArgumentConstant.CMD_ARG_LOG4J_LEVEL)) {
-                    log4jLevelPart = TalendProcessArgumentConstant.CMD_ARG_LOG4J_LEVEL + log4jLevel;
-                }
-                addScriptAddition(windowsScriptAdditionValue, log4jLevelPart);
-                addScriptAddition(unixScriptAdditionValue, log4jLevelPart);
-            }
-        }
-
-        // stats
-        if (isOptionChecked(TalendProcessArgumentConstant.ARG_ENABLE_STATS)) {
-            String statsPort = getOptionString(TalendProcessArgumentConstant.ARG_PORT_STATS);
-            if (StringUtils.isNotEmpty(statsPort)) {
-                String statsPortPart = TalendProcessArgumentConstant.CMD_ARG_STATS_PORT + statsPort;
-                addScriptAddition(windowsScriptAdditionValue, statsPortPart);
-                addScriptAddition(unixScriptAdditionValue, statsPortPart);
-            }
-        }
-        // tracs
-        if (isOptionChecked(TalendProcessArgumentConstant.ARG_ENABLE_TRACS)) {
-            String tracPort = getOptionString(TalendProcessArgumentConstant.ARG_PORT_TRACS);
-            if (StringUtils.isNotEmpty(tracPort)) {
-                String tracPortPart = TalendProcessArgumentConstant.CMD_ARG_TRACE_PORT + tracPort;
-                addScriptAddition(windowsScriptAdditionValue, tracPortPart);
-                addScriptAddition(unixScriptAdditionValue, tracPortPart);
-            }
-        }
-        // watch
-        String watchParam = getOptionString(TalendProcessArgumentConstant.ARG_ENABLE_WATCH);
-        if (StringUtils.isNotEmpty(watchParam)) {
-            addScriptAddition(windowsScriptAdditionValue, TalendProcessArgumentConstant.CMD_ARG_WATCH);
-            addScriptAddition(unixScriptAdditionValue, TalendProcessArgumentConstant.CMD_ARG_WATCH);
-        }
-
-        String[] jvmArgs = jProcessor.getJVMArgs();
-        StringBuilder jvmArgsStr = new StringBuilder();
-        StringBuilder jvmArgsStrPs1 = new StringBuilder();
-        if (jvmArgs != null && jvmArgs.length > 0) {
-            for (String arg : jvmArgs) {
-                jvmArgsStr.append(arg + " ");
-                jvmArgsStrPs1.append("\'" + arg + "\' ");
-            }
-        }
-
-        checkPomProperty(properties, "talend.job.jvmargs", ETalendMavenVariables.JobJvmArgs, jvmArgsStr.toString());
-        checkPomProperty(properties, "talend.job.jvmargs.ps1", ETalendMavenVariables.JobJvmArgs, jvmArgsStrPs1.toString());
-
-        checkPomProperty(properties, "talend.job.bat.classpath", ETalendMavenVariables.JobBatClasspath,
-                this.getWindowsClasspath());
-        checkPomProperty(properties, "talend.job.bat.addition", ETalendMavenVariables.JobBatAddition,
-                windowsScriptAdditionValue.toString());
-
-        checkPomProperty(properties, "talend.job.sh.classpath", ETalendMavenVariables.JobShClasspath, this.getUnixClasspath());
-        checkPomProperty(properties, "talend.job.sh.addition", ETalendMavenVariables.JobShAddition,
-                unixScriptAdditionValue.toString());
-
-        checkPomProperty(properties, "talend.job.ps1.classpath", ETalendMavenVariables.JobBatClasspath,
-                getWindowsClasspathForPs1());
-
         String finalNameStr = JavaResourcesHelper.getJobJarName(property.getLabel(), property.getVersion());
         checkPomProperty(properties, "talend.job.finalName", ETalendMavenVariables.JobFinalName, finalNameStr);
-
     }
 
     private void addScriptAddition(StringBuffer scripts, String value) {
@@ -503,13 +383,12 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         //
         // PomJobExtensionRegistry.getInstance().updatePom(monitor, getPomFile(), args);
 
-        MavenPomSynchronizer pomSync = new MavenPomSynchronizer(this.getJobProcessor(), this.getPomFile());
-        // if (needSyncCodesPoms()) {
-        // // only sync pom for main job
-        // pomSync.syncCodesPoms(monitor, getJobProcessor(), true);
-        // }
-        // because need update the latest content for templates.
-        pomSync.syncTemplates(true);
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
+            IRunProcessService service = (IRunProcessService) GlobalServiceRegister.getDefault().getService(IRunProcessService.class);
+            if (!service.isGeneratePomOnly()) {
+                generateTemplates(true);
+            }
+        }
 
     }
 
@@ -577,6 +456,155 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
                 ExceptionHandler.process(e);
             }
         }
+    }
+
+    public void generateTemplates(boolean overwrite) throws Exception {
+        IProcessor processor = getJobProcessor();
+        if (processor == null) {
+            return;
+        }
+        ITalendProcessJavaProject codeProject = getJobProcessor().getTalendJavaProject();
+        if (codeProject == null) {
+            return;
+        }
+        Property property = codeProject.getPropery();
+        if (property == null) {
+            return;
+        }
+        String contextName = getOptionString(TalendProcessArgumentConstant.ARG_CONTEXT_NAME);
+        if (contextName == null) {
+            contextName = processor.getContext().getName();
+        }
+        String jobClass = JavaResourcesHelper.getJobClassPackageName(property.getItem()) + "." + property.getLabel();
+
+        StringBuffer windowsScriptAdditionValue = new StringBuffer(50);
+        StringBuffer unixScriptAdditionValue = new StringBuffer(50);
+
+        addScriptAddition(windowsScriptAdditionValue, this.getWindowsScriptAddition());
+        addScriptAddition(unixScriptAdditionValue, this.getUnixScriptAddition());
+
+        // context
+        if (isOptionChecked(TalendProcessArgumentConstant.ARG_NEED_CONTEXT)) {
+            final String contextPart = TalendProcessArgumentConstant.CMD_ARG_CONTEXT_NAME + contextName;
+            addScriptAddition(windowsScriptAdditionValue, contextPart);
+            addScriptAddition(unixScriptAdditionValue, contextPart);
+        }
+        // context params
+        List paramsList = ProcessUtils.getOptionValue(getArgumentsMap(),
+                TalendProcessArgumentConstant.ARG_CONTEXT_PARAMS, (List) null);
+        if (paramsList != null && !paramsList.isEmpty()) {
+            StringBuffer contextParamPart = new StringBuffer(100);
+            // do codes same as JobScriptsManager.getSettingContextParametersValue
+            for (Object param : paramsList) {
+                if (param instanceof ContextParameterType) {
+                    ContextParameterType contextParamType = (ContextParameterType) param;
+                    contextParamPart.append(' ');
+                    contextParamPart.append(TalendProcessArgumentConstant.CMD_ARG_CONTEXT_PARAMETER);
+                    contextParamPart.append(' ');
+                    contextParamPart.append(contextParamType.getName());
+                    contextParamPart.append('=');
+
+                    String value = contextParamType.getRawValue();
+                    if (!contextParamType.getType().equals("id_Password")) { //$NON-NLS-1$
+                        value = StringEscapeUtils.escapeJava(value);
+                    }
+                    if (value == null) {
+                        contextParamPart.append((String) null);
+                    } else {
+                        value = TalendQuoteUtils.addPairQuotesIfNotExist(value);
+                        contextParamPart.append(value);
+                    }
+                }
+            }
+            if (contextParamPart.length() > 0) {
+                addScriptAddition(windowsScriptAdditionValue, contextParamPart.toString());
+                addScriptAddition(unixScriptAdditionValue, contextParamPart.toString());
+            }
+        }
+        // log4j level
+        if (isOptionChecked(TalendProcessArgumentConstant.ARG_ENABLE_LOG4J)
+                && isOptionChecked(TalendProcessArgumentConstant.ARG_NEED_LOG4J_LEVEL)) {
+            String log4jLevel = getOptionString(TalendProcessArgumentConstant.ARG_LOG4J_LEVEL);
+            if (StringUtils.isNotEmpty(log4jLevel)) {
+                String log4jLevelPart = log4jLevel;
+                if (!log4jLevel.startsWith(TalendProcessArgumentConstant.CMD_ARG_LOG4J_LEVEL)) {
+                    log4jLevelPart = TalendProcessArgumentConstant.CMD_ARG_LOG4J_LEVEL + log4jLevel;
+                }
+                addScriptAddition(windowsScriptAdditionValue, log4jLevelPart);
+                addScriptAddition(unixScriptAdditionValue, log4jLevelPart);
+            }
+        }
+        // stats
+        if (isOptionChecked(TalendProcessArgumentConstant.ARG_ENABLE_STATS)) {
+            String statsPort = getOptionString(TalendProcessArgumentConstant.ARG_PORT_STATS);
+            if (StringUtils.isNotEmpty(statsPort)) {
+                String statsPortPart = TalendProcessArgumentConstant.CMD_ARG_STATS_PORT + statsPort;
+                addScriptAddition(windowsScriptAdditionValue, statsPortPart);
+                addScriptAddition(unixScriptAdditionValue, statsPortPart);
+            }
+        }
+        // tracs
+        if (isOptionChecked(TalendProcessArgumentConstant.ARG_ENABLE_TRACS)) {
+            String tracPort = getOptionString(TalendProcessArgumentConstant.ARG_PORT_TRACS);
+            if (StringUtils.isNotEmpty(tracPort)) {
+                String tracPortPart = TalendProcessArgumentConstant.CMD_ARG_TRACE_PORT + tracPort;
+                addScriptAddition(windowsScriptAdditionValue, tracPortPart);
+                addScriptAddition(unixScriptAdditionValue, tracPortPart);
+            }
+        }
+        // watch
+        String watchParam = getOptionString(TalendProcessArgumentConstant.ARG_ENABLE_WATCH);
+        if (StringUtils.isNotEmpty(watchParam)) {
+            addScriptAddition(windowsScriptAdditionValue, TalendProcessArgumentConstant.CMD_ARG_WATCH);
+            addScriptAddition(unixScriptAdditionValue, TalendProcessArgumentConstant.CMD_ARG_WATCH);
+        }
+        String[] jvmArgs = processor.getJVMArgs();
+        StringBuilder jvmArgsStr = new StringBuilder();
+        StringBuilder jvmArgsStrPs1 = new StringBuilder();
+        if (jvmArgs != null && jvmArgs.length > 0) {
+            for (String arg : jvmArgs) {
+                jvmArgsStr.append(arg + " "); //$NON-NLS-1$
+                jvmArgsStrPs1.append("\'" + arg + "\' "); //$NON-NLS-1$ //$NON-NLS-2$
+            }
+        }
+        final Map<String, Object> templateParameters = PomUtil.getTemplateParameters(property);
+        String batContent = MavenTemplateManager.getProjectSettingValue(IProjectSettingPreferenceConstants.TEMPLATE_BAT,
+                templateParameters);
+        batContent = StringUtils.replaceEach(batContent,
+                new String[] { "${talend.job.jvmargs}", "${talend.job.bat.classpath}", "${talend.job.class}",
+        "${talend.job.bat.addition}" },
+                new String[] { jvmArgsStr.toString(), getUnixClasspath(), jobClass,
+                        unixScriptAdditionValue.toString() });
+        
+        String shContent = MavenTemplateManager.getProjectSettingValue(IProjectSettingPreferenceConstants.TEMPLATE_SH,
+                templateParameters);
+        shContent = StringUtils.replaceEach(shContent,
+                new String[] { "${talend.job.jvmargs}", "${talend.job.sh.classpath}", "${talend.job.class}",
+                        "${talend.job.sh.addition}" },
+                new String[] { jvmArgsStr.toString(), getWindowsClasspath(), jobClass,
+                        windowsScriptAdditionValue.toString() });
+
+        String psContent = MavenTemplateManager.getProjectSettingValue(IProjectSettingPreferenceConstants.TEMPLATE_PS,
+                templateParameters);
+        psContent = StringUtils.replaceEach(psContent,
+                new String[] { "${talend.job.jvmargs.ps1}", "${talend.job.ps1.classpath}", "${talend.job.class}",
+                        "${talend.job.bat.addition}" },
+                new String[] { jvmArgsStrPs1.toString(), getWindowsClasspathForPs1(), jobClass,
+                        windowsScriptAdditionValue.toString() });
+
+        String jobInfoContent = MavenTemplateManager
+                .getProjectSettingValue(IProjectSettingPreferenceConstants.TEMPLATE_JOB_INFO, templateParameters);
+
+        IFolder templateFolder = codeProject.getTemplatesFolder();
+        IFile shFile = templateFolder.getFile(IProjectSettingTemplateConstants.JOB_RUN_SH_TEMPLATE_FILE_NAME);
+        IFile batFile = templateFolder.getFile(IProjectSettingTemplateConstants.JOB_RUN_BAT_TEMPLATE_FILE_NAME);
+        IFile psFile = templateFolder.getFile(IProjectSettingTemplateConstants.JOB_RUN_PS_TEMPLATE_FILE_NAME);
+        IFile infoFile = templateFolder.getFile(IProjectSettingTemplateConstants.JOB_INFO_TEMPLATE_FILE_NAME);
+
+        MavenTemplateManager.saveContent(batFile, batContent, overwrite);
+        MavenTemplateManager.saveContent(shFile, shContent, overwrite);
+        MavenTemplateManager.saveContent(psFile, psContent, overwrite);
+        MavenTemplateManager.saveContent(infoFile, jobInfoContent, overwrite);
     }
 
     public void updateDependencySet(IFile assemblyFile) {

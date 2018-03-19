@@ -17,7 +17,6 @@ import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.maven.model.Model;
@@ -35,21 +34,10 @@ import org.talend.commons.utils.generation.JavaUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.general.ILibrariesService;
 import org.talend.core.model.general.ILibrariesService.IChangedLibrariesListener;
-import org.talend.core.model.process.IProcess;
-import org.talend.core.model.process.ProcessUtils;
-import org.talend.core.model.properties.Property;
-import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
-import org.talend.core.runtime.projectsetting.IProjectSettingPreferenceConstants;
-import org.talend.core.runtime.projectsetting.IProjectSettingTemplateConstants;
-import org.talend.designer.maven.template.MavenTemplateManager;
-import org.talend.designer.maven.tools.creator.CreateMavenBeanPom;
-import org.talend.designer.maven.tools.creator.CreateMavenPigUDFPom;
-import org.talend.designer.maven.tools.creator.CreateMavenRoutinePom;
 import org.talend.designer.maven.utils.PomUtil;
 import org.talend.designer.runprocess.IProcessor;
-import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.utils.io.FilesUtils;
 
 /**
@@ -59,8 +47,6 @@ import org.talend.utils.io.FilesUtils;
 public class MavenPomSynchronizer {
 
     private final ITalendProcessJavaProject codeProject;
-
-    private IRunProcessService runProcessService;
 
     private static boolean isListenerAdded;
 
@@ -80,79 +66,6 @@ public class MavenPomSynchronizer {
         this.codeProject = codeProject;
         if (codeProject != null) {
             projectPomFile = codeProject.getProjectPom();
-        }
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
-            runProcessService = (IRunProcessService) GlobalServiceRegister.getDefault().getService(IRunProcessService.class);
-        }
-    }
-
-    /**
-     * generate routine pom.
-     */
-    @Deprecated
-    public void syncRoutinesPom(Property property, boolean overwrite) throws Exception {
-        ITalendProcessJavaProject routineProject = runProcessService.getTalendCodeJavaProject(ERepositoryObjectType.ROUTINES);
-        IFile routinesPomFile = routineProject.getProjectPom();
-        // generate new one
-        CreateMavenRoutinePom createTemplatePom = new CreateMavenRoutinePom(routinesPomFile);
-        createTemplatePom.setProperty(property);
-        createTemplatePom.setOverwrite(overwrite);
-        createTemplatePom.create(null);
-    }
-
-    @Deprecated
-    public void syncBeansPom(Property property, boolean overwrite) throws Exception {
-        ITalendProcessJavaProject beansProject = runProcessService
-                .getTalendCodeJavaProject(ERepositoryObjectType.valueOf("BEANS")); //$NON-NLS-1$
-        IFile beansPomFile = beansProject.getProjectPom();
-        // generate new one
-        CreateMavenBeanPom createTemplatePom = new CreateMavenBeanPom(beansPomFile);
-        createTemplatePom.setProperty(property);
-        createTemplatePom.setOverwrite(overwrite);
-        createTemplatePom.create(null);
-    }
-
-    @Deprecated
-    public void syncPigUDFsPom(Property property, boolean overwrite) throws Exception {
-        ITalendProcessJavaProject pigudfsProject = runProcessService.getTalendCodeJavaProject(ERepositoryObjectType.PIG_UDF);
-        IFile pigudfPomFile = pigudfsProject.getProjectPom();
-        // generate new one
-        CreateMavenPigUDFPom createTemplatePom = new CreateMavenPigUDFPom(pigudfPomFile);
-        createTemplatePom.setProperty(property);
-        createTemplatePom.setOverwrite(overwrite);
-        createTemplatePom.create(null);
-    }
-
-    /**
-     * 
-     * sync the bat/sh/jobInfo to resources template folder.
-     */
-    public void syncTemplates(boolean overwrite) throws Exception {
-        if (codeProject != null) {
-            IFolder templateFolder = codeProject.getTemplatesFolder();
-
-            IFile shFile = templateFolder.getFile(IProjectSettingTemplateConstants.JOB_RUN_SH_TEMPLATE_FILE_NAME);
-            IFile batFile = templateFolder.getFile(IProjectSettingTemplateConstants.JOB_RUN_BAT_TEMPLATE_FILE_NAME);
-            IFile psFile = templateFolder.getFile(IProjectSettingTemplateConstants.JOB_RUN_PS_TEMPLATE_FILE_NAME);
-            IFile infoFile = templateFolder.getFile(IProjectSettingTemplateConstants.JOB_INFO_TEMPLATE_FILE_NAME);
-
-            Property property = codeProject.getPropery();
-            if (property != null) {
-                final Map<String, Object> templateParameters = PomUtil.getTemplateParameters(property);
-                String shContent = MavenTemplateManager.getProjectSettingValue(IProjectSettingPreferenceConstants.TEMPLATE_SH,
-                        templateParameters);
-                String batContent = MavenTemplateManager.getProjectSettingValue(IProjectSettingPreferenceConstants.TEMPLATE_BAT,
-                        templateParameters);
-                String psContent = MavenTemplateManager.getProjectSettingValue(IProjectSettingPreferenceConstants.TEMPLATE_PS,
-                        templateParameters);
-                String jobInfoContent = MavenTemplateManager
-                        .getProjectSettingValue(IProjectSettingPreferenceConstants.TEMPLATE_JOB_INFO, templateParameters);
-
-                MavenTemplateManager.saveContent(shFile, shContent, overwrite);
-                MavenTemplateManager.saveContent(batFile, batContent, overwrite);
-                MavenTemplateManager.saveContent(psFile, psContent, overwrite);
-                MavenTemplateManager.saveContent(infoFile, jobInfoContent, overwrite);
-            }
         }
     }
 
@@ -326,25 +239,6 @@ public class MavenPomSynchronizer {
                     f.delete();
                 }
             }
-        }
-    }
-
-    @Deprecated
-    public void syncCodesPoms(IProgressMonitor monitor, IProcessor processor, boolean overwrite) throws Exception {
-        final IProcess process = processor != null ? processor.getProcess() : null;
-        Property property = null;
-        if (processor != null) {
-            property = processor.getProperty();
-        }
-
-        syncRoutinesPom(property, overwrite);
-        // PigUDFs
-        if (ProcessUtils.isRequiredPigUDFs(process)) {
-            syncPigUDFsPom(property, overwrite);
-        }
-        // Beans
-        if (ProcessUtils.isRequiredBeans(process)) {
-            syncBeansPom(property, overwrite);
         }
     }
 

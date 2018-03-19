@@ -223,4 +223,6 @@ public interface IRunProcessService extends IService {
     
     void initializeRootPoms();
 
+    boolean isGeneratePomOnly();
+
 }

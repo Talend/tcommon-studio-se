@@ -752,6 +752,8 @@ public class ImportExportHandlersManager {
                             ExceptionHandler.process(e);
                         }
                     }
+                    // fire import event out of workspace runnable
+                    fireImportChange(ImportCacheHelper.getInstance().getImportedItemRecords());
                 }
             };
             repositoryWorkUnit.setAvoidUnloadResources(true);
@@ -760,8 +762,6 @@ public class ImportExportHandlersManager {
 
             progressMonitor.done();
             
-            // fire import event out of workspace runnable
-            fireImportChange(ImportCacheHelper.getInstance().getImportedItemRecords());
 
             unloadImportItems(allImportItemRecords);
 
