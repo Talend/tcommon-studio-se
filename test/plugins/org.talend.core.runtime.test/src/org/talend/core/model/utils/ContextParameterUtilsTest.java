@@ -236,5 +236,25 @@ public class ContextParameterUtilsTest {
         assertTrue(v2.size() == 1);
         assertTrue(v2.get(0).equals("mvn:org.talend.libraries/mysql-connector-java-5.1.30-bin/6.0.0"));
     }
+    
+    @Test
+    public void testIsDynamic() {
+    	assertFalse(ContextParameterUtils.isDynamic(null));
+    	assertFalse(ContextParameterUtils.isDynamic(""));
+    	assertFalse(ContextParameterUtils.isDynamic("singleString"));
+    	assertFalse(ContextParameterUtils.isDynamic("multi words string"));
+    	assertFalse(ContextParameterUtils.isDynamic("\"singleStringWithQuotes\""));
+    	assertFalse(ContextParameterUtils.isDynamic("\"multi words string with quotes\""));
+    	assertFalse(ContextParameterUtils.isDynamic("\"context.var\""));
+    	assertFalse(ContextParameterUtils.isDynamic("\"globalMap.get(\"key\")\""));
+    	assertTrue(ContextParameterUtils.isDynamic("context.var"));
+    	assertTrue(ContextParameterUtils.isDynamic("\"const\" + context.var"));
+    	assertTrue(ContextParameterUtils.isDynamic("context.var + \"const\""));
+    	assertTrue(ContextParameterUtils.isDynamic("\"const\" + context.var + \"const\""));
+    	assertTrue(ContextParameterUtils.isDynamic("\"const\"+context.var+\"const\""));
+    	assertTrue(ContextParameterUtils.isDynamic("((String)globalMap.get(\"key\"))"));
+    	assertTrue(ContextParameterUtils.isDynamic("\"const\" + ((String)globalMap.get(\"key\")) + \"const\""));
+    	assertTrue(ContextParameterUtils.isDynamic("\"const\"+((String)globalMap.get(\"key\"))+\"const\""));
+    }
 
 }

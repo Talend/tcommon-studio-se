@@ -637,5 +637,29 @@ public final class ContextParameterUtils {
         }
         return newName;
     }
+    
+    /**
+     * Checks whether incoming Parameter {@code value} is dynamic.
+     * ElementParameter (aka Component property) accepts simple Java expression as its value.
+     * This expression may be "static", when it is Java literal like 10 or "abc". Also it may be "dynamic". E.g. "const" + context.var.
+     * Javajet components remain user's input unchanged, thus it is required to add quotes, when user sets string literal value.
+     * TCOMP/TaCoKit components allow user to miss quotes, but this feature requires to check expression and to add quotes in case it is static.
+     * 
+     * This implementation checks if {@code value} contains {@code context} or {@code globalMap} values.
+     * TODO dynamic values are not limited to context or globalMap. Following cases should be covered by this method too:
+     * 1. "const" + 10
+     * 2. routines method calls
+     * 3. connection name ("row1") usage in Parameter values
+     * Probably method should be moved to more appropriate class
+     * 
+     * @param value Parameter value to check
+     * @return true if value is dynamic
+     */
+    public static boolean isDynamic(final String value) {
+    	if (value == null || value.isEmpty()) {
+    		return false;
+    	}
+    	return isContainContextParam(value) || containCodeVariable(value, "globalMap.");
+    }
 
 }
