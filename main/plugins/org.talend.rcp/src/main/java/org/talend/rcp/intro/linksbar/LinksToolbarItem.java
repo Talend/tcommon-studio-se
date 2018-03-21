@@ -52,7 +52,7 @@ public class LinksToolbarItem extends ContributionItem {
 
     private static final String VIDEOS_URL = "<a href=\"https://www.talendforge.org/tutorials\">Videos</a>"; //$NON-NLS-1$
 
-    private static final String CLOUD_URL = "<a href=\"https://iam.integrationcloud.talend.com/idp/federation/up/login\">Cloud</a>"; //$NON-NLS-1$
+    private static final String CLOUD_URL = "<a href=\"https://iam.cloud.talend.com/idp/trial-registration?utm_medium=studio&utm_source=toolbar&utm_campaign=tosdi\">Cloud</a>"; //$NON-NLS-1$
 
     private static ImageRegistry registry = new ImageRegistry();
 
