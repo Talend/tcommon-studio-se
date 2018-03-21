@@ -137,6 +137,8 @@ public interface IProcessor {
      */
     public IPath getCodePath();
 
+    public IPath getSrcCodePath();
+
     /**
      * Getter for contextPath.
      * 
@@ -293,11 +295,11 @@ public interface IProcessor {
     String[] getJVMArgs();
 
     Set<ModuleNeeded> getNeededModules();
-    
+
     Set<ModuleNeeded> getNeededModules(boolean withChildrenJobs);
 
     Set<JobInfo> getBuildChildrenJobs();
-    
+
     Set<JobInfo> getBuildChildrenJobs(boolean firstChildOnly);
 
     /**

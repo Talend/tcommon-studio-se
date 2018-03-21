@@ -23,4 +23,6 @@ public interface IMavenPomCreator {
 
     // only need to syncCodesPoms for main job
     void setSyncCodesPoms(boolean isMainJob);
+
+    public void setHasLoopDependency(boolean hasLoopDependency);
 }

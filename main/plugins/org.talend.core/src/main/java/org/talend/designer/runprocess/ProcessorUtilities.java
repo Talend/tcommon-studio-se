@@ -61,6 +61,7 @@ import org.talend.core.language.LanguageManager;
 import org.talend.core.model.components.ComponentCategory;
 import org.talend.core.model.components.EComponentType;
 import org.talend.core.model.general.ModuleNeeded;
+import org.talend.core.model.general.Project;
 import org.talend.core.model.metadata.IMetadataColumn;
 import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.core.model.metadata.MetadataTalendType;
@@ -76,12 +77,15 @@ import org.talend.core.model.process.ReplaceNodesInProcessProvider;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.Property;
+import org.talend.core.model.relationship.Relation;
+import org.talend.core.model.relationship.RelationshipItemBuilder;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.repository.RepositoryManager;
 import org.talend.core.model.repository.job.JobResource;
 import org.talend.core.model.repository.job.JobResourceManager;
 import org.talend.core.model.utils.JavaResourcesHelper;
+import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.core.runtime.process.LastGenerationInfo;
 import org.talend.core.runtime.process.TalendProcessArgumentConstant;
@@ -96,6 +100,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
+import org.talend.repository.ProjectManager;
 import org.talend.repository.documentation.ExportFileResource;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IRepositoryService;
@@ -249,8 +254,9 @@ public class ProcessorUtilities {
     public static String getCodeLocation() {
         return codeLocation;
     }
+
     private static boolean generatePomOnly = false;
-    
+
     public static void setGeneratePomOnly(boolean generatePomOnly) {
         ProcessorUtilities.generatePomOnly = generatePomOnly;
     }
@@ -429,6 +435,12 @@ public class ProcessorUtilities {
             for (IClasspathAdjuster adjuster : classPathAdjusters) {
                 adjuster.initialize();
             }
+            Relation mainRelation = new Relation();
+            mainRelation.setId(jobInfo.getJobId());
+            mainRelation.setVersion(jobInfo.getJobVersion());
+            mainRelation.setType(RelationshipItemBuilder.JOB_RELATION);
+            hasLoopDependency = checkLoopDependencies(mainRelation);
+
         }
 
         IProcess currentProcess = null;
@@ -528,13 +540,14 @@ public class ProcessorUtilities {
         generateNodeInfo(jobInfo, selectedContextName, statistics, needContext, option, progressMonitor, currentProcess);
 
         if (neededLibraries != null) {
-                Set<ModuleNeeded> adjustClassPath = new HashSet<>(LastGenerationInfo.getInstance().getModulesNeededWithSubjobPerJob(jobInfo.getJobId(), jobInfo.getJobVersion()));
-                for (IClasspathAdjuster adjuster : classPathAdjusters) {
-                    adjuster.collectInfo(currentProcess, adjustClassPath);
-                    adjustClassPath = adjuster.adjustClassPath(currentProcess, adjustClassPath);
-                }
-                LastGenerationInfo.getInstance().setModulesNeededWithSubjobPerJob(jobInfo.getJobId(), jobInfo.getJobVersion(),
-                        adjustClassPath);
+            Set<ModuleNeeded> adjustClassPath = new HashSet<>(LastGenerationInfo.getInstance()
+                    .getModulesNeededWithSubjobPerJob(jobInfo.getJobId(), jobInfo.getJobVersion()));
+            for (IClasspathAdjuster adjuster : classPathAdjusters) {
+                adjuster.collectInfo(currentProcess, adjustClassPath);
+                adjustClassPath = adjuster.adjustClassPath(currentProcess, adjustClassPath);
+            }
+            LastGenerationInfo.getInstance().setModulesNeededWithSubjobPerJob(jobInfo.getJobId(), jobInfo.getJobVersion(),
+                    adjustClassPath);
         }
         final Map<String, Object> argumentsMap = new HashMap<String, Object>();
         argumentsMap.put(TalendProcessArgumentConstant.ARG_ENABLE_STATS, statistics);
@@ -565,6 +578,74 @@ public class ProcessorUtilities {
         generateBuildInfo(jobInfo, progressMonitor, isMainJob, currentProcess, currentJobName, processor, option);
 
         return processor;
+    }
+
+    private static boolean checkLoopDependencies(Relation mainJobInfo) throws ProcessorException {
+        List<Relation> itemsJobRelatedTo = getItemsRelation(mainJobInfo);
+        List<Relation> relationChecked = new ArrayList<>();
+        relationChecked.add(mainJobInfo);
+        return checkLoopDependencies(mainJobInfo, itemsJobRelatedTo, relationChecked);
+    }
+
+    private static boolean checkLoopDependencies(Relation mainRelation, List<Relation> itemsJobRelatedTo,
+            List<Relation> relationChecked) throws ProcessorException {
+        boolean hasDependency = false;
+        for (Relation relation : itemsJobRelatedTo) {
+            hasDependency = relation.getId().equals(mainRelation.getId())
+                    && relation.getVersion().equals(mainRelation.getVersion());
+            if (!hasDependency) {
+                List<Relation> itemsChildJob = getItemsRelation(relation);
+                if (!relationChecked.contains(relation)) {
+                    relationChecked.add(relation);
+                    hasDependency = checkLoopDependencies(mainRelation, itemsChildJob, relationChecked);
+                }
+                if (!hasDependency) {
+                    for (Relation childRelation : itemsChildJob) {
+                        hasDependency = checkLoopDependencies(childRelation);
+                        if (hasDependency) {
+                            break;
+                        }
+                    }
+                }
+            }
+            if (hasDependency) {
+                break;
+            }
+        }
+
+        return hasDependency;
+    }
+
+    private static List<Relation> getItemsRelation(Relation mainJobInfo) throws ProcessorException {
+        List<Relation> itemsJobRelatedTo = new ArrayList<Relation>();
+        try {
+            List<Project> allProjects = new ArrayList<Project>();
+            allProjects.add(ProjectManager.getInstance().getCurrentProject());
+            allProjects.addAll(ProjectManager.getInstance().getAllReferencedProjects());
+            RelationshipItemBuilder instance = RelationshipItemBuilder.getInstance();
+            if (instance != null) {
+                itemsJobRelatedTo.addAll(instance.getItemsChildRelatedTo(mainJobInfo.getId(), mainJobInfo.getVersion(),
+                        mainJobInfo.getType(), RelationshipItemBuilder.JOB_RELATION));
+                itemsJobRelatedTo.addAll(instance.getItemsChildRelatedTo(mainJobInfo.getId(), mainJobInfo.getVersion(),
+                        mainJobInfo.getType(), RelationshipItemBuilder.JOBLET_RELATION));
+                for (Relation relation : itemsJobRelatedTo) {
+                    if (relation.getVersion().equals(RelationshipItemBuilder.LATEST_VERSION)) {
+                        for (Project project : allProjects) {
+                            IRepositoryViewObject lastVersion = ProxyRepositoryFactory.getInstance().getLastVersion(project,
+                                    relation.getId());
+                            if (lastVersion != null) {
+                                relation.setVersion(lastVersion.getVersion());
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (PersistenceException e) {
+            throw new ProcessorException(e);
+        }
+
+        return itemsJobRelatedTo;
     }
 
     private static void setNeededResources(final Map<String, Object> argumentsMap, JobInfo jobInfo) {
@@ -689,6 +770,11 @@ public class ProcessorUtilities {
 
     private static void generateBuildInfo(JobInfo jobInfo, IProgressMonitor progressMonitor, boolean isMainJob,
             IProcess currentProcess, String currentJobName, IProcessor processor, int option) throws ProcessorException {
+        IFile pomFile = jobInfo.getProcessor().getTalendJavaProject().getProjectPom();
+        IFile codeFile = jobInfo.getProcessor().getTalendJavaProject().getProject()
+                .getFile(jobInfo.getProcessor().getSrcCodePath());
+        jobInfo.setPomFile(pomFile);
+        jobInfo.setCodeFile(codeFile);
         jobInfo.setProcess(null);
         jobInfo.setProcessor(null);
         progressMonitor.subTask(Messages.getString("ProcessorUtilities.finalizeBuild") + currentJobName); //$NON-NLS-1$
@@ -698,7 +784,14 @@ public class ProcessorUtilities {
         TimeMeasure.step(timeMeasureGenerateCodesId, "Generated all source codes with children jobs (if have)");
         if (codeModified && !BitwiseOptionUtils.containOption(option, GENERATE_WITHOUT_COMPILING)) {
             try {
-                processor.build(progressMonitor);
+                if (isMainJob && hasLoopDependency) {
+                    IRunProcessService service = CorePlugin.getDefault().getRunProcessService();
+                    service.handleJobDependencyLoop(jobInfo, jobList, progressMonitor);
+
+                }
+                if (!hasLoopDependency || (isMainJob && hasLoopDependency)) {
+                    processor.build(progressMonitor);
+                }
             } catch (Exception e) {
                 throw new ProcessorException(e);
             }
@@ -848,6 +941,12 @@ public class ProcessorUtilities {
                 for (IClasspathAdjuster adjuster : classPathAdjusters) {
                     adjuster.initialize();
                 }
+
+                Relation mainRelation = new Relation();
+                mainRelation.setId(jobInfo.getJobId());
+                mainRelation.setVersion(jobInfo.getJobVersion());
+                mainRelation.setType(RelationshipItemBuilder.JOB_RELATION);
+                hasLoopDependency = checkLoopDependencies(mainRelation);
             }
 
             IProcess currentProcess = null;
@@ -949,7 +1048,8 @@ public class ProcessorUtilities {
             if (neededLibraries != null) {
                 LastGenerationInfo.getInstance().setModulesNeededWithSubjobPerJob(jobInfo.getJobId(), jobInfo.getJobVersion(),
                         neededLibraries);
-                LastGenerationInfo.getInstance().setModulesNeededPerJob(jobInfo.getJobId(), jobInfo.getJobVersion(), neededLibraries);
+                LastGenerationInfo.getInstance().setModulesNeededPerJob(jobInfo.getJobId(), jobInfo.getJobVersion(),
+                        neededLibraries);
                 // must install the needed libraries before generate codes with poms.
                 CorePlugin.getDefault().getRunProcessService().updateLibraries(neededLibraries, currentProcess,
                         retrievedJarsForCurrentBuild);
@@ -962,7 +1062,8 @@ public class ProcessorUtilities {
 
             if (neededLibraries != null) {
                 if (isNeedLoadmodules) {
-                    Set<ModuleNeeded> adjustClassPath = new HashSet<>(LastGenerationInfo.getInstance().getModulesNeededWithSubjobPerJob(jobInfo.getJobId(), jobInfo.getJobVersion()));
+                    Set<ModuleNeeded> adjustClassPath = new HashSet<>(LastGenerationInfo.getInstance()
+                            .getModulesNeededWithSubjobPerJob(jobInfo.getJobId(), jobInfo.getJobVersion()));
                     for (IClasspathAdjuster adjuster : classPathAdjusters) {
                         adjuster.collectInfo(currentProcess, adjustClassPath);
                         adjustClassPath = adjuster.adjustClassPath(currentProcess, adjustClassPath);
@@ -1330,6 +1431,8 @@ public class ProcessorUtilities {
 
     static List<JobInfo> jobList = new ArrayList<JobInfo>();
 
+    static boolean hasLoopDependency = false;
+
     /**
      * This function will generate the code of the process and all of this sub process.
      *
@@ -1345,9 +1448,11 @@ public class ProcessorUtilities {
             monitor = new NullProgressMonitor();
         }
         jobList.clear();
+        hasLoopDependency = false;
         JobInfo jobInfo = new JobInfo(processName, contextName, version);
         IProcessor process = generateCode(jobInfo, contextName, statistics, trace, true, GENERATE_ALL_CHILDS, monitor);
         jobList.clear();
+        hasLoopDependency = false;
         return process;
     }
 
@@ -1368,8 +1473,10 @@ public class ProcessorUtilities {
         JobInfo jobInfo = new JobInfo(processId, contextName, version);
         jobInfo.setApplyContextToChildren(applyContextToChildren);
         jobList.clear();
+        hasLoopDependency = false;
         IProcessor process = generateCode(jobInfo, contextName, statistics, trace, true, GENERATE_ALL_CHILDS, monitor);
         jobList.clear();
+        hasLoopDependency = false;
         return process;
     }
 
@@ -1385,8 +1492,10 @@ public class ProcessorUtilities {
         JobInfo jobInfo = new JobInfo(process, contextName);
         jobInfo.setApplyContextToChildren(applyContextToChildren);
         jobList.clear();
+        hasLoopDependency = false;
         IProcessor result = generateCode(jobInfo, contextName, statistics, trace, true, GENERATE_ALL_CHILDS, monitor);
         jobList.clear();
+        hasLoopDependency = false;
         return result;
     }
 
@@ -1402,8 +1511,10 @@ public class ProcessorUtilities {
         JobInfo jobInfo = new JobInfo(process, contextName, version);
         jobInfo.setApplyContextToChildren(applyContextToChildren);
         jobList.clear();
+        hasLoopDependency = false;
         IProcessor result = generateCode(jobInfo, contextName, statistics, trace, needContext, GENERATE_ALL_CHILDS, monitor);
         jobList.clear();
+        hasLoopDependency = false;
         return result;
     }
 
@@ -1427,8 +1538,10 @@ public class ProcessorUtilities {
         int option = ProcessUtils.getOptionValue(argumentsMap, TalendProcessArgumentConstant.ARG_GENERATE_OPTION, 0);
 
         jobList.clear();
+        hasLoopDependency = false;
         IProcessor result = generateCode(jobInfo, contextName, statistics, trace, needContext, option, monitor);
         jobList.clear();
+        hasLoopDependency = false;
         return result;
     }
 
@@ -1447,8 +1560,10 @@ public class ProcessorUtilities {
             jobInfo.setContext(context);
             jobInfo.setApplyContextToChildren(applyContextToChildren);
             jobList.clear();
+            hasLoopDependency = false;
             result = generateCode(jobInfo, contextName, statistics, trace, true, GENERATE_ALL_CHILDS, monitor);
             jobList.clear();
+            hasLoopDependency = false;
         }
         return result;
     }
@@ -1456,8 +1571,10 @@ public class ProcessorUtilities {
     public static IProcessor generateCode(ProcessItem process, String contextName, boolean statistics, boolean trace)
             throws ProcessorException {
         jobList.clear();
+        hasLoopDependency = false;
         IProcessor returnValue = generateCode(process, contextName, statistics, trace, false);
         jobList.clear();
+        hasLoopDependency = false;
         return returnValue;
     }
 
@@ -1487,17 +1604,21 @@ public class ProcessorUtilities {
         }
         jobInfo.setApplyContextToChildren(applyToChildren);
         jobList.clear();
+        hasLoopDependency = false;
         IProcessor genCode = generateCode(jobInfo, context.getName(), statistics, trace, contextProperties, GENERATE_ALL_CHILDS,
                 new NullProgressMonitor());
         jobList.clear();
+        hasLoopDependency = false;
         return genCode;
     }
 
     public static IProcessor generateCode(IProcess process, IContext context, boolean statistics, boolean trace,
             boolean properties) throws ProcessorException {
         jobList.clear();
+        hasLoopDependency = false;
         IProcessor returnValue = generateCode(process, context, statistics, trace, properties, new NullProgressMonitor());
         jobList.clear();
+        hasLoopDependency = false;
         return returnValue;
     }
 
@@ -1527,9 +1648,11 @@ public class ProcessorUtilities {
             jobInfo = new JobInfo(process, context);
         }
         jobList.clear();
+        hasLoopDependency = false;
         IProcessor genCode = generateCode(jobInfo, context.getName(), statistics, trace, properties, GENERATE_ALL_CHILDS,
                 progressMonitor);
         jobList.clear();
+        hasLoopDependency = false;
         return genCode;
     }
 
@@ -1573,9 +1696,11 @@ public class ProcessorUtilities {
         TimeMeasure.begin(timeMeasureGenerateCodesId);
 
         jobList.clear();
+        hasLoopDependency = false;
         IProcessor genCode = generateCode(processor, jobInfo, context.getName(), statistics, trace, properties,
                 GENERATE_ALL_CHILDS, progressMonitor);
         jobList.clear();
+        hasLoopDependency = false;
 
         TimeMeasure.end(timeMeasureGenerateCodesId);
         // if active before, not disable and active still.
@@ -1600,9 +1725,11 @@ public class ProcessorUtilities {
         // achen modify to fix 0006107
         JobInfo jobInfo = new JobInfo(process, context);
         jobList.clear();
+        hasLoopDependency = false;
         IProcessor genCode = generateCode(jobInfo, context.getName(), statistics, trace, properties, option,
                 new NullProgressMonitor());
         jobList.clear();
+        hasLoopDependency = false;
         return genCode;
     }
 
@@ -1766,20 +1893,29 @@ public class ProcessorUtilities {
     public static String[] getMainCommand(String processName, String processVersion, String contextName, int statisticPort,
             int tracePort, String... codeOptions) throws ProcessorException {
         IProcessor processor = findProcessorFromJobList(processName, contextName, processVersion);
+        IProcess currentProcess = null;
+        Property property = null;
         if (processor == null) {
-            IProcess currentProcess = null;
             ProcessItem selectedProcessItem = null;
             selectedProcessItem = ItemCacheManager.getProcessItem(processName, processVersion);
             if (selectedProcessItem != null) {
                 IDesignerCoreService service = CorePlugin.getDefault().getDesignerCoreService();
                 currentProcess = service.getProcessFromProcessItem(selectedProcessItem);
+                property = selectedProcessItem.getProperty();
             }
             if (currentProcess == null) {
                 return new String[] {};
             }
-            IContext currentContext = getContext(currentProcess, contextName);
-            processor = getProcessor(currentProcess, selectedProcessItem.getProperty(), currentContext);
+
+        } else if (processor.getMainClass() == null) {
+            currentProcess = processor.getProcess();
+            property = processor.getProperty();
         }
+        if (currentProcess != null) {
+            IContext currentContext = getContext(currentProcess, contextName);
+            processor = getProcessor(currentProcess, property, currentContext);
+        }
+
         String[] cmd = new String[] { processor.getMainClass() };
         if (codeOptions != null) {
             for (String string : codeOptions) {
@@ -1836,7 +1972,8 @@ public class ProcessorUtilities {
     }
 
     // see bug 0004939: making tRunjobs work loop will cause a error of "out of memory" .
-    private static Set<JobInfo> getAllJobInfo(ProcessType ptype, JobInfo parentJobInfo, Set<JobInfo> jobInfos, boolean firstChildOnly) {
+    private static Set<JobInfo> getAllJobInfo(ProcessType ptype, JobInfo parentJobInfo, Set<JobInfo> jobInfos,
+            boolean firstChildOnly) {
         if (ptype == null) {
             return jobInfos;
         }
@@ -1937,6 +2074,7 @@ public class ProcessorUtilities {
     public static Set<JobInfo> getChildrenJobInfo(ProcessItem processItem) {
         return getChildrenJobInfo(processItem, false);
     }
+
     public static Set<JobInfo> getChildrenJobInfo(ProcessItem processItem, boolean firstChildOnly) {
         // delegate to the new method, prevent dead loop method call. see bug 0004939: making tRunjobs work loop will
         // cause a error of "out of memory" .
@@ -2048,6 +2186,15 @@ public class ProcessorUtilities {
 
     public static void setExportJobAsMicroSerivce(boolean toMicroService) {
         exportJobAsMicroService = toMicroService;
+    }
+
+    /**
+     * Getter for hasLoopDependency.
+     * 
+     * @return the hasLoopDependency
+     */
+    public static boolean hasLoopDependency() {
+        return hasLoopDependency;
     }
 
     /**

@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.designer.runprocess;
 
+import java.util.List;
 import java.util.Set;
 
 import org.apache.log4j.Level;
@@ -32,6 +33,7 @@ import org.talend.core.model.general.Project;
 import org.talend.core.model.process.IContext;
 import org.talend.core.model.process.IProcess;
 import org.talend.core.model.process.IProcess2;
+import org.talend.core.model.process.JobInfo;
 import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.properties.RoutineItem;
@@ -193,6 +195,7 @@ public interface IRunProcessService extends IService {
     /**
      * @deprecated use {@link IRunProcessService#getTalendJobJavaProject(Property)} instead
      */
+    @Deprecated
     ITalendProcessJavaProject getTalendProcessJavaProject();
 
     ProjectPreferenceManager getProjectPreferenceManager();
@@ -220,9 +223,12 @@ public interface IRunProcessService extends IService {
     boolean isExportConfig();
 
     void generateJobPom(ProcessItem processItem);
-    
+
     void initializeRootPoms();
 
     boolean isGeneratePomOnly();
+
+    public void handleJobDependencyLoop(JobInfo mainJobInfo, List<JobInfo> listJobs, IProgressMonitor progressMonitor)
+            throws Exception;
 
 }

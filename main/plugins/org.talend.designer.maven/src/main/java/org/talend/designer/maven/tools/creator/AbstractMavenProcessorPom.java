@@ -65,6 +65,8 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
 
     private boolean syncCodesPoms;
 
+    private boolean hasLoopDependency;
+
     public AbstractMavenProcessorPom(IProcessor jobProcessor, IFile pomFile, String bundleTemplateName) {
         super(pomFile, IProjectSettingTemplateConstants.PATH_STANDALONE + '/' + bundleTemplateName);
         Assert.isNotNull(jobProcessor);
@@ -232,7 +234,6 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
                         }
                     }
 
-
                     Dependency d = PomUtil.createDependency(groupId, artifactId, version, null);
                     dependencies.add(d);
                 }
@@ -259,5 +260,23 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
 
     public boolean needSyncCodesPoms() {
         return this.syncCodesPoms;
+    }
+
+    /**
+     * Sets the hasLoopDependency.
+     * 
+     * @param hasLoopDependency the hasLoopDependency to set
+     */
+    public void setHasLoopDependency(boolean hasLoopDependency) {
+        this.hasLoopDependency = hasLoopDependency;
+    }
+
+    /**
+     * Getter for hasLoopDependency.
+     * 
+     * @return the hasLoopDependency
+     */
+    public boolean hasLoopDependency() {
+        return this.hasLoopDependency;
     }
 }

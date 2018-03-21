@@ -294,7 +294,7 @@ public class RelationshipItemBuilder {
         }
         return new ArrayList<Relation>(relations);
     }
-    
+
     public void load() {
         if (!loaded) {
             loadRelations();
@@ -344,8 +344,8 @@ public class RelationshipItemBuilder {
 
                             if (!LATEST_VERSION.equals(version) && LATEST_VERSION.equals(curVersion)) {
                                 try {
-                                    IRepositoryViewObject latest = getProxyRepositoryFactory()
-                                            .getLastVersion(getAimProject(), id);
+                                    IRepositoryViewObject latest = getProxyRepositoryFactory().getLastVersion(getAimProject(),
+                                            id);
                                     if (latest != null) {
                                         curVersion = latest.getVersion();
                                     }
@@ -372,7 +372,8 @@ public class RelationshipItemBuilder {
         return relations;
     }
 
-    private Set<Relation> getItemsHaveRelationWithJob(Map<Relation, Set<Relation>> itemsRelations, String itemId, String version) {
+    private Set<Relation> getItemsHaveRelationWithJob(Map<Relation, Set<Relation>> itemsRelations, String itemId,
+            String version) {
         Set<Relation> relations = new HashSet<Relation>();
 
         for (Relation baseItem : itemsRelations.keySet()) {
@@ -447,11 +448,12 @@ public class RelationshipItemBuilder {
             loadRelations();
         }
         Set<Relation> relations = new HashSet<Relation>();
-        Set<Relation> itemsRelations = getItemsJobRelatedTo(currentProjectItemsRelations, itemId, version, relationType);
+        Set<Relation> itemsRelations = getItemsJobRelatedTo(currentProjectItemsRelations, itemId, version, relationType,
+                relationType);
         if (itemsRelations != null) {
             relations.addAll(itemsRelations);
         }
-        itemsRelations = getItemsJobRelatedTo(referencesItemsRelations, itemId, version, relationType);
+        itemsRelations = getItemsJobRelatedTo(referencesItemsRelations, itemId, version, relationType, relationType);
         if (itemsRelations != null) {
             relations.addAll(itemsRelations);
         }
@@ -459,7 +461,7 @@ public class RelationshipItemBuilder {
     }
 
     private Set<Relation> getItemsJobRelatedTo(Map<Relation, Set<Relation>> itemsRelations, String itemId, String version,
-            String relationType) {
+            String relationType, String relationTypeTofind) {
 
         Relation itemToTest = new Relation();
         Set<Relation> jobRelations = new HashSet<Relation>();
@@ -467,18 +469,18 @@ public class RelationshipItemBuilder {
         itemToTest.setId(itemId);
         itemToTest.setType(relationType);
         itemToTest.setVersion(version);
-        if(!itemsRelations.containsKey(itemToTest)) {
-        	try {
-				Item item = proxyRepositoryFactory.getLastVersion(itemId).getProperty().getItem();
-				addOrUpdateItem(item,false);
-			} catch (PersistenceException e) {
-				log.error(e.getMessage());
-			}
+        if (!itemsRelations.containsKey(itemToTest)) {
+            try {
+                Item item = proxyRepositoryFactory.getLastVersion(itemId).getProperty().getItem();
+                addOrUpdateItem(item, false);
+            } catch (PersistenceException e) {
+                log.error(e.getMessage());
+            }
         }
         if (itemsRelations.containsKey(itemToTest)) {
             Set<Relation> relations = itemsRelations.get(itemToTest);
             for (Relation relatedItem : relations) {
-                if (relatedItem.getType().equals(relationType)) {
+                if (relatedItem.getType().equals(relationTypeTofind)) {
                     jobRelations.add(relatedItem);
                 }
             }
@@ -486,6 +488,34 @@ public class RelationshipItemBuilder {
         }
 
         return jobRelations;
+    }
+
+    /**
+     * 
+     * DOC wchen Comment method "getItemsChildRelatedTo". look for all <relationTypeTofind> child items used by the main
+     * <itemId>
+     * 
+     * @param itemId
+     * @param version
+     * @param relationType
+     * @param relationTypeTofind
+     * @return
+     */
+    public List<Relation> getItemsChildRelatedTo(String itemId, String version, String relationType, String relationTypeTofind) {
+        if (!loaded) {
+            loadRelations();
+        }
+        Set<Relation> relations = new HashSet<Relation>();
+        Set<Relation> itemsRelations = getItemsJobRelatedTo(currentProjectItemsRelations, itemId, version, relationType,
+                relationTypeTofind);
+        if (itemsRelations != null) {
+            relations.addAll(itemsRelations);
+        }
+        itemsRelations = getItemsJobRelatedTo(referencesItemsRelations, itemId, version, relationType, relationTypeTofind);
+        if (itemsRelations != null) {
+            relations.addAll(itemsRelations);
+        }
+        return new ArrayList<Relation>(relations);
     }
 
     public static void destroy(Project project) throws Exception {
@@ -963,7 +993,7 @@ public class RelationshipItemBuilder {
         if (jobletTypes != null && !jobletTypes.isEmpty()) {
             supportTypes.addAll(jobletTypes);
         }
-        
+
         List<ERepositoryObjectType> testTypes = getSupportRepObjTypes(TEST_RELATION);
         if (testTypes != null && !testTypes.isEmpty()) {
             supportTypes.addAll(testTypes);
