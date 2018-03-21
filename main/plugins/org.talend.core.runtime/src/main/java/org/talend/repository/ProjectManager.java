@@ -21,10 +21,10 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.emf.ecore.EObject;
-import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.GlobalServiceRegister;
@@ -42,8 +42,8 @@ import org.talend.core.model.repository.RepositoryManager;
 import org.talend.core.model.repository.SVNConstant;
 import org.talend.core.model.utils.TalendPropertiesUtil;
 import org.talend.core.runtime.CoreRuntimePlugin;
+import org.talend.core.runtime.util.URIHelper;
 import org.talend.core.ui.IReferencedProjectService;
-import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IProxyRepositoryService;
 import org.talend.repository.model.IRepositoryNode;
@@ -254,14 +254,11 @@ public final class ProjectManager {
                 return getProject(((Property) object).getItem());
             }
             if (object instanceof Item) {
-                if (((Item) object).getParent() == null) {
-                    Item jobItem = getTestCaseParentItem((Item) object);
-                    if (jobItem != null) {
-                        return getProject(jobItem.getParent());
+                if (((Item) object).getParent() == null) { // may be a testcase/routelet from reference project
+                    org.talend.core.model.properties.Project refProject = getProjectFromItemWithoutParent2((Item) object);
+                    if (refProject == null) {
+                        refProject = getProjectFromItemWithoutParent((Item)object);
                     }
-                }
-                if (((Item) object).getParent() == null) { // may be a routelet from reference project
-                    org.talend.core.model.properties.Project refProject = getProjectFromItemWithoutParent((Item)object);
                     if (refProject != null) {
                         return refProject;
                     }
@@ -274,6 +271,26 @@ public final class ProjectManager {
         Project p = getCurrentProject();
         if (p != null) {
             return p.getEmfProject();
+        }
+        return null;
+    }
+
+    private org.talend.core.model.properties.Project getProjectFromItemWithoutParent2(Item item) {
+        if (item.eResource() == null || item.eResource().getURI() == null) {
+            return null;
+        }
+        IFile itemFile = URIHelper.getFile(URIHelper.convert(item.eResource().getURI()));
+        String projectLabel = itemFile.getProject().getName();
+        if (currentProject == null) {
+            initCurrentProject();
+        }
+        if (currentProject.getTechnicalLabel().equalsIgnoreCase(projectLabel)) {
+            return currentProject.getEmfProject();
+        }
+        for (Project project : getAllReferencedProjects()) {
+            if (project.getTechnicalLabel().equalsIgnoreCase(projectLabel)) {
+                return project.getEmfProject();
+            }
         }
         return null;
     }
@@ -327,12 +344,6 @@ public final class ProjectManager {
                 return getProject(project, ((Property) object).getItem());
             }
             if (object instanceof Item) {
-                if (((Item) object).getParent() == null) {
-                    Item jobItem = getTestCaseParentItem((Item) object);
-                    if (jobItem != null) {
-                        return getProject(project, jobItem.getParent());
-                    }
-                }
                 return getProject(project, ((Item) object).getParent());
             }
         }
@@ -340,20 +351,6 @@ public final class ProjectManager {
         // default
         if (project != null) {
             return project.getEmfProject();
-        }
-        return null;
-    }
-
-    public Item getTestCaseParentItem(Item item) {
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
-            ITestContainerProviderService testContainerService = (ITestContainerProviderService) GlobalServiceRegister.getDefault().getService(ITestContainerProviderService.class);
-            if (testContainerService.isTestContainerItem(item)) {
-                try {
-                    return testContainerService.getParentJobItem(item);
-                } catch (PersistenceException e) {
-                    ExceptionHandler.process(e);
-                }
-            }
         }
         return null;
     }
