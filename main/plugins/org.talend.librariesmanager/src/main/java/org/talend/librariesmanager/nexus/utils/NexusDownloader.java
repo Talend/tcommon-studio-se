@@ -31,16 +31,11 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
-import org.talend.core.GlobalServiceRegister;
-import org.talend.core.ISVNProviderServiceInCoreRuntime;
-import org.talend.core.PluginChecker;
 import org.talend.core.context.Context;
 import org.talend.core.context.RepositoryContext;
 import org.talend.core.download.DownloadListener;
 import org.talend.core.download.IDownloadHelper;
-import org.talend.core.language.ECodeLanguage;
 import org.talend.core.model.general.Project;
 import org.talend.core.nexus.HttpClientTransport;
 import org.talend.core.nexus.NexusServerBean;
@@ -50,9 +45,7 @@ import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.librariesmanager.maven.MavenArtifactsHandler;
-import org.talend.librariesmanager.prefs.LibrariesManagerUtils;
 import org.talend.repository.ProjectManager;
-import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.utils.io.FilesUtils;
 
 /**
@@ -143,34 +136,6 @@ public class NexusDownloader implements IDownloadHelper {
                             if (bytesDownloaded == contentLength) {
                                 MavenArtifactsHandler deployer = new MavenArtifactsHandler();
                                 deployer.install(downloadedFile.getAbsolutePath(), mavenUri, nServer.isOfficial());
-
-                                if (PluginChecker.isSVNProviderPluginLoaded()) {
-                                    File libFile = new File(LibrariesManagerUtils.getLibrariesPath(ECodeLanguage.JAVA));
-                                    ISVNProviderServiceInCoreRuntime service = (ISVNProviderServiceInCoreRuntime) GlobalServiceRegister
-                                            .getDefault().getService(ISVNProviderServiceInCoreRuntime.class);
-                                    if (service != null && service.isSvnLibSetupOnTAC()
-                                            && service.isInSvn(libFile.getAbsolutePath())) {
-                                        File target = new File(libFile.getAbsolutePath(), downloadedFile.getName());
-                                        FilesUtils.copyFile(downloadedFile, target);
-                                        // check local or remote
-                                        boolean localConnectionProvider = true;
-                                        IProxyRepositoryFactory proxyRepositoryFactory = CoreRuntimePlugin.getInstance()
-                                                .getProxyRepositoryFactory();
-                                        if (proxyRepositoryFactory != null) {
-                                            try {
-                                                localConnectionProvider = proxyRepositoryFactory.isLocalConnectionProvider();
-                                            } catch (PersistenceException e) {
-                                                //
-                                            }
-                                        }
-                                        if (!localConnectionProvider && !getRepositoryContext().isOffline()) {
-                                            List jars = new ArrayList();
-                                            jars.add(target.getAbsolutePath());
-                                            service.deployNewJar(jars);
-                                        }
-                                    }
-
-                                }
                             }
                             fireDownloadComplete();
                         } finally {

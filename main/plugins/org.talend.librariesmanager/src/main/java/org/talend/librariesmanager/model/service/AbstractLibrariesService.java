@@ -156,15 +156,9 @@ public abstract class AbstractLibrariesService implements ILibrariesService {
         checkLibraries();
     }
 
-    private RepositoryContext getRepositoryContext() {
-        Context ctx = CoreRuntimePlugin.getInstance().getContext();
-        return (RepositoryContext) ctx.getProperty(Context.REPOSITORY_CONTEXT_KEY);
-    }
-
     private void refreshLocal(final String names[]) {
         // for feature 12877
         Project currentProject = ProjectManager.getInstance().getCurrentProject();
-        final String projectLabel = currentProject.getTechnicalLabel();
 
         // synchronize .Java project for all new jars.
         try {
@@ -180,36 +174,6 @@ public abstract class AbstractLibrariesService implements ILibrariesService {
         } catch (IOException e) {
             CommonExceptionHandler.process(e);
         }
-
-        // if svn libs setup from tac then ...
-        if (PluginChecker.isSVNProviderPluginLoaded()) {
-            ISVNProviderServiceInCoreRuntime service = (ISVNProviderServiceInCoreRuntime) GlobalServiceRegister.getDefault()
-                    .getService(ISVNProviderServiceInCoreRuntime.class);
-            if (service != null) {
-                File libFile = new File(LibrariesManagerUtils.getLibrariesPath(ECodeLanguage.JAVA));
-                // check local or remote
-                boolean localConnectionProvider = true;
-                IProxyRepositoryFactory proxyRepositoryFactory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
-                if (proxyRepositoryFactory != null) {
-                    try {
-                        localConnectionProvider = proxyRepositoryFactory.isLocalConnectionProvider();
-                    } catch (PersistenceException e) {
-                        //
-                    }
-                }
-                if (!localConnectionProvider && service.isSvnLibSetupOnTAC() && service.isInSvn(libFile.getAbsolutePath())
-                        && !getRepositoryContext().isOffline()) {
-                    List<String> jars = new ArrayList<String>();
-                    for (String name : names) {
-                        jars.add(libFile.getAbsolutePath() + File.separatorChar + name);
-                    }
-                    service.deployNewJar(jars);
-                    return;
-                }
-            }
-
-        }
-
     }
 
     /**

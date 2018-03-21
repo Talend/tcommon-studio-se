@@ -150,11 +150,6 @@ public interface ILibraryManagerService extends IService {
     public boolean checkJarInstalledFromPlatform(String uriPath);
 
     /**
-     * @return true if svn share lib folder are set, otherwise return false.
-     */
-    public boolean isSvnLibSetup();
-
-    /**
      * deploy jars from lib/java to local maven if any jar already exist in maven and need update , for jars that not
      * exist in maven won't be deploy by this funciton , those jars should be deploy when it is needed Comment method
      * "synToLocalMaven".

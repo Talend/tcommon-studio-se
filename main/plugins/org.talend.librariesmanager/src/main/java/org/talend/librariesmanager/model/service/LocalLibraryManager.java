@@ -56,10 +56,6 @@ import org.talend.commons.utils.io.FilesUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
 import org.talend.core.ILibraryManagerUIService;
-import org.talend.core.ISVNProviderServiceInCoreRuntime;
-import org.talend.core.PluginChecker;
-import org.talend.core.context.Context;
-import org.talend.core.context.RepositoryContext;
 import org.talend.core.language.ECodeLanguage;
 import org.talend.core.model.components.ComponentProviderInfo;
 import org.talend.core.model.components.IComponent;
@@ -74,7 +70,6 @@ import org.talend.core.nexus.NexusServerUtils;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.nexus.TalendMavenResolver;
 import org.talend.core.prefs.ITalendCorePrefConstants;
-import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.maven.MavenUrlHelper;
@@ -158,23 +153,6 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
             return;
         }
         install(file, mavenUri, updateNexusJar, monitorWrap);
-        // deploy to configuration/lib/java if tac still use the svn lib
-        try {
-            if (isSvnLibSetup()) {
-                String installLocation = getStorageDirectory().getAbsolutePath();
-                if (file.isDirectory()) {
-                    FilesUtils.copyFolder(new File(jarFileUri), getStorageDirectory(), false,
-                            FilesUtils.getExcludeSystemFilesFilter(), FilesUtils.getAcceptJARFilesFilter(), false, monitorWrap);
-                } else {
-                    File target = new File(installLocation, file.getName());
-                    FilesUtils.copyFile(file, target);
-                }
-            }
-        } catch (IOException e) {
-            CommonExceptionHandler.process(e);
-        } catch (Exception e) {
-            CommonExceptionHandler.process(e);
-        }
     }
 
     /**
@@ -266,28 +244,6 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
             checkJarInstalledInMaven(uri);
         }
 
-    }
-
-    @Override
-    public boolean isSvnLibSetup() {
-        if (PluginChecker.isSVNProviderPluginLoaded()) {
-            try {
-                Context ctx = CoreRuntimePlugin.getInstance().getContext();
-                RepositoryContext context = (RepositoryContext) ctx.getProperty(Context.REPOSITORY_CONTEXT_KEY);
-                if (!CoreRuntimePlugin.getInstance().getProxyRepositoryFactory().isLocalConnectionProvider()
-                        && !context.isOffline()) {
-                    ISVNProviderServiceInCoreRuntime service = (ISVNProviderServiceInCoreRuntime) GlobalServiceRegister
-                            .getDefault().getService(ISVNProviderServiceInCoreRuntime.class);
-                    if (service != null && service.isSvnLibSetupOnTAC()) {
-                        return true;
-                    }
-                }
-            } catch (Exception e) {
-                ExceptionHandler.process(e);
-                return false;
-            }
-        }
-        return false;
     }
 
     /*
@@ -1221,13 +1177,6 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                     ExceptionHandler.process(e);
                 }
             }
-            if (PluginChecker.isSVNProviderPluginLoaded()) {
-                ISVNProviderServiceInCoreRuntime svnService = (ISVNProviderServiceInCoreRuntime) GlobalServiceRegister
-                        .getDefault().getService(ISVNProviderServiceInCoreRuntime.class);
-                if (svnService != null && svnService.isSvnLibSetupOnTAC()) {
-                    svnService.syncLibs(null);
-                }
-            }
         }
     }
 
@@ -1565,10 +1514,6 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 
     @Override
     public boolean isJarNeedToBeDeployed(File jarFile) {
-        if (isSvnLibSetup() && !isJarExistInLibFolder(jarFile)) {
-            return true;
-        }
-
         if (TalendLibsServerManager.getInstance().getCustomNexusServer() != null && !isLocalJarSameAsNexus(jarFile.getName())) {
             return true;
         }

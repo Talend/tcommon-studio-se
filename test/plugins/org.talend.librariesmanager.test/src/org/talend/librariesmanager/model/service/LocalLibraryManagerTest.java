@@ -710,7 +710,6 @@ public class LocalLibraryManagerTest {
 
     @Test
     public void testIsJarNeedToBeDeployed() throws Exception {
-        assertFalse(localLibraryManager.isSvnLibSetup());
         Field field = null;
         Boolean originValue = null;
         TalendLibsServerManager libServerManager = TalendLibsServerManager.getInstance();
