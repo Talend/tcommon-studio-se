@@ -31,6 +31,7 @@ import org.talend.core.PluginChecker;
 import org.talend.core.model.utils.TalendPropertiesUtil;
 import org.talend.core.service.IExchangeService;
 import org.talend.core.service.ITutorialsService;
+import org.talend.core.ui.branding.IBrandingService;
 import org.talend.rcp.Activator;
 import org.talend.rcp.i18n.Messages;
 
@@ -52,7 +53,7 @@ public class LinksToolbarItem extends ContributionItem {
 
     private static final String VIDEOS_URL = "<a href=\"https://www.talendforge.org/tutorials\">Videos</a>"; //$NON-NLS-1$
 
-    private static final String CLOUD_URL = "<a href=\"https://iam.cloud.talend.com/idp/trial-registration?utm_medium=studio&utm_source=toolbar&utm_campaign=tosdi\">Cloud</a>"; //$NON-NLS-1$
+    private static final String CLOUD_URL = "<a href=\"https://iam.cloud.talend.com/idp/trial-registration?utm_medium=studio&utm_source=toolbar&utm_campaign=dynamic_acronym\">Cloud</a>"; //$NON-NLS-1$
 
     private static ImageRegistry registry = new ImageRegistry();
 
@@ -196,7 +197,15 @@ public class LinksToolbarItem extends ContributionItem {
             GridData cloudGd = new GridData(SWT.FILL, SWT.FILL, true, true);
             cloudLabel.setLayoutData(cloudGd);
             cloud.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
-            cloud.setText(CLOUD_URL);
+            String url = CLOUD_URL;
+            // dynamic acronym
+            if (GlobalServiceRegister.getDefault().isServiceRegistered(IBrandingService.class)) {
+                IBrandingService brandingService = (IBrandingService) GlobalServiceRegister.getDefault()
+                        .getService(IBrandingService.class);
+                String edition = brandingService.getAcronym();
+                url = url.replace("dynamic_acronym", edition);//$NON-NLS-1$
+            }
+            cloud.setText(url);
             cloud.setToolTipText(Messages.getString("LinksToolbarItem_cloud")); //$NON-NLS-1$
 
             cloud.addListener(SWT.Selection, new Listener() {
