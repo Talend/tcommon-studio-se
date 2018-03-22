@@ -761,7 +761,7 @@ public class ProcessorUtilities {
             int option = TalendProcessOptionConstants.GENERATE_WITHOUT_FORMAT;
             if (isMain) {
                 // only format for main job
-                option = 0;
+                option = TalendProcessOptionConstants.GENERATE_IS_MAINJOB;
             }
             processor.generateCode(statistics, trace, true, option);
             if (currentProcess instanceof IProcess2 && ((IProcess2) currentProcess).getProperty() != null) {
