@@ -50,4 +50,17 @@ public class TalendJavaProjectConstants {
     
     public static final String TEMP_POM_ARTIFACT_ID = "temp_job_pom"; //$NON-NLS-1$
 
+    /*
+     * 0. unknown 1. import 2. sync 4. saveAndCreate 8. properties changed
+     */
+    public static final int GEN_UNKNOWN = 0x0;
+
+    public static final int GEN_IMPORT = 0x1;
+
+    public static final int GEN_SYNC = 0x2;
+
+    public static final int GEN_SAVE_AND_CREATE = 0x4;
+
+    public static final int GEN_PROPERTIES_CHANGED = 0x8;
+
 }
