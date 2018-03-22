@@ -32,6 +32,18 @@ public interface TalendProcessOptionConstants {
 
     public static final int GENERATE_WITHOUT_FORMAT = 1 << 6;
 
+    public static final int GENERATE_POM_ONLY = 1 << 7;
+
+    /**
+     * for recursive job.
+     */
+    public static final int GENERATE_IS_MAINJOB = 1 << 8;
+
+    /**
+     * for ESB bundle.
+     */
+    public static final int GENERATE_NO_CODEGEN = 1 << 9;
+
     /**
      * clean options
      */
