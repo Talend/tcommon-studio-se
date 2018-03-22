@@ -294,9 +294,7 @@ public interface IProcessor {
 
     String[] getJVMArgs();
 
-    Set<ModuleNeeded> getNeededModules();
-
-    Set<ModuleNeeded> getNeededModules(boolean withChildrenJobs);
+    Set<ModuleNeeded> getNeededModules(int options);
 
     Set<JobInfo> getBuildChildrenJobs();
 

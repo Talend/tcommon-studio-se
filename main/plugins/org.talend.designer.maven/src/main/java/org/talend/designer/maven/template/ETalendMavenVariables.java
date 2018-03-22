@@ -39,6 +39,11 @@ public enum ETalendMavenVariables {
     JobArtifactId,
     JobVersion,
 
+    JobletGroupId,
+    JobletArtifactId,
+    JobletVersion,
+    JobletName,
+
     JobId,
     JobName,
     JobType,

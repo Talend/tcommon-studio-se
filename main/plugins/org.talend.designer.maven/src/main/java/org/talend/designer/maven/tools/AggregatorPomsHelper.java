@@ -51,7 +51,6 @@ import org.talend.core.context.RepositoryContext;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.process.ProcessUtils;
 import org.talend.core.model.properties.Item;
-import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.ProjectReference;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.relationship.Relation;
@@ -66,6 +65,7 @@ import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.core.runtime.process.TalendProcessArgumentConstant;
 import org.talend.core.runtime.services.IFilterService;
+import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.designer.core.ICamelDesignerCoreService;
 import org.talend.designer.maven.DesignerMavenPlugin;
 import org.talend.designer.maven.launch.MavenPomCommandLauncher;
@@ -336,18 +336,13 @@ public class AggregatorPomsHelper {
             }
         }
 
-		IFilterService filterService = null;
-		if (GlobalServiceRegister.getDefault().isServiceRegistered(IFilterService.class)) {
-			filterService = (IFilterService) GlobalServiceRegister.getDefault().getService(IFilterService.class);
-		}
-		if (filterService != null && property != null) {
-			if (!filterService.checkFilterContent(PomIdsHelper.getPomFilter())) {
-				throw new Exception("filter_parse_error");
-			}
-			if (!filterService.isFilterAccepted(property.getItem(), PomIdsHelper.getPomFilter())) {
-				return;
-			}
-		}
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IFilterService.class)) {
+            IFilterService filterService =
+                    (IFilterService) GlobalServiceRegister.getDefault().getService(IFilterService.class);
+            if (property != null && !filterService.isFilterAccepted(property.getItem(), PomIdsHelper.getPomFilter())) {
+                return;
+            }
+        }
 		IFile parentPom = getParentModulePomFile(pomFile);
 		if (parentPom != null) {
 			IPath relativePath = pomFile.getParent().getLocation().makeRelativeTo(parentPom.getParent().getLocation());
@@ -509,6 +504,37 @@ public class AggregatorPomsHelper {
         return projectTechName + "|" + id + "|" + version; //$NON-NLS-1$ //$NON-NLS-2$
     }
 
+    public static IFolder getItemPomFolder(Property property) throws Exception {
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
+            ITestContainerProviderService testContainerService = (ITestContainerProviderService) GlobalServiceRegister
+                    .getDefault()
+                    .getService(ITestContainerProviderService.class);
+            if (testContainerService.isTestContainerItem(property.getItem())) {
+                Item jobItem = testContainerService.getParentJobItem(property.getItem());
+                if (jobItem != null) {
+                    property = jobItem.getProperty();
+                }
+            }
+        }
+        String projectTechName = ProjectManager.getInstance().getProject(property).getTechnicalLabel();
+        AggregatorPomsHelper helper = new AggregatorPomsHelper(projectTechName);
+        IPath itemRelativePath = ItemResourceUtil.getItemRelativePath(property);
+        String jobFolderName = AggregatorPomsHelper.getJobProjectFolderName(property);
+        ERepositoryObjectType type = ERepositoryObjectType.getItemType(property.getItem());
+        IFolder jobFolder = helper.getProcessFolder(type).getFolder(itemRelativePath).getFolder(jobFolderName);
+        createFoldersIfNeeded(jobFolder);
+        return jobFolder;
+    }
+
+    private static void createFoldersIfNeeded(IFolder folder) throws CoreException {
+        if (!folder.exists()) {
+            if (folder.getParent() instanceof IFolder) {
+                createFoldersIfNeeded((IFolder) folder.getParent());
+            }
+            folder.create(true, true, null);
+        }
+    }
+
     public static String getJobProjectId(Property property) {
         String _projectTechName = ProjectManager.getInstance().getProject(property).getTechnicalLabel();
         return getJobProjectId(_projectTechName, property.getId(), property.getVersion());
@@ -525,12 +551,6 @@ public class AggregatorPomsHelper {
     }
     
     public void syncAllPoms() throws Exception {
-    	if(GlobalServiceRegister.getDefault().isServiceRegistered(IFilterService.class)) {
-    		IFilterService filterService = (IFilterService) GlobalServiceRegister.getDefault().getService(IFilterService.class);
-    		if(filterService.checkFilterContent(PomIdsHelper.getPomFilter())) {
-    			throw new Exception("filter_parse_error");
-    		}
-    	}
     	
         IRunnableWithProgress runnableWithProgress = new IRunnableWithProgress() {
 
@@ -546,9 +566,12 @@ public class AggregatorPomsHelper {
                             public void run(final IProgressMonitor monitor) throws CoreException {
                                 try {
                                     IRunProcessService runProcessService = getRunProcessService();
-                                    List<IRepositoryViewObject> objects = null;
+                                    List<IRepositoryViewObject> objects = new ArrayList<>();
                                     if (runProcessService != null) {
-                                        objects = ProxyRepositoryFactory.getInstance().getAll(ERepositoryObjectType.PROCESS, true, true);
+                                        for (ERepositoryObjectType type : ERepositoryObjectType.getAllTypesOfProcess2()) {
+                                            objects.addAll(
+                                                    ProxyRepositoryFactory.getInstance().getAll(type, true, true));
+                                        }
                                     }
                                     BuildCacheManager.getInstance().clearCache();
                                     int size = 3 + (objects == null ? 0 : objects.size());
@@ -568,22 +591,25 @@ public class AggregatorPomsHelper {
                                     	if(GlobalServiceRegister.getDefault().isServiceRegistered(IFilterService.class)) {
                                     		filterService = (IFilterService) GlobalServiceRegister.getDefault().getService(IFilterService.class);
                                     	}
+                                        String pomFilter = PomIdsHelper.getPomFilter();
                                         for (IRepositoryViewObject object : objects) {
-                                        	if(filterService!=null) {
-                                        		if (!filterService.isFilterAccepted(object.getProperty().getItem(), PomIdsHelper.getPomFilter())) {
+                                            if (filterService != null) {
+                                                if (!filterService.isFilterAccepted(object.getProperty().getItem(),
+                                                        pomFilter)) {
                                                     continue;
                                                 }
-                                        	}
-                                            if (object.getProperty() != null && object.getProperty().getItem() != null
-                                                    && object.getProperty().getItem() instanceof ProcessItem) {
-                                                ProcessItem processItem = (ProcessItem) object.getProperty().getItem();
-                                                if (ProjectManager.getInstance().isInCurrentMainProject(processItem)) {
-                                                    monitor.subTask("Synchronize job pom: " + processItem.getProperty().getLabel() //$NON-NLS-1$
-                                                            + "_" + processItem.getProperty().getVersion()); //$NON-NLS-1$
-                                                    runProcessService.generateJobPom(processItem);
-                                                    ITalendProcessJavaProject jobProject = runProcessService
-                                                            .getTalendJobJavaProject(processItem.getProperty());
-                                                    modules.add(getModulePath(jobProject));
+                                            }
+                                            if (object.getProperty() != null
+                                                    && object.getProperty().getItem() != null) {
+                                                Item item = object.getProperty().getItem();
+                                                if (ProjectManager.getInstance().isInCurrentMainProject(item)) {
+                                                    monitor.subTask(
+                                                            "Synchronize job pom: " + item.getProperty().getLabel() //$NON-NLS-1$
+                                                                    + "_" + item.getProperty().getVersion()); //$NON-NLS-1$
+                                                    runProcessService.generatePom(item);
+                                                    IFile pomFile = getItemPomFolder(item.getProperty())
+                                                            .getFile(TalendMavenConstants.POM_FILE_NAME);
+                                                    modules.add(getModulePath(pomFile));
                                                 }
                                             }
                                             monitor.worked(1);
@@ -649,13 +675,10 @@ public class AggregatorPomsHelper {
                                     monitor.beginTask("", jobItems.size()); //$NON-NLS-1$
                                     IRunProcessService runProcessService = getRunProcessService();
                                     for (Item item : jobItems) {
-                                        if (item instanceof ProcessItem) {
-                                            ProcessItem processItem = (ProcessItem) item;
-                                            if (ProjectManager.getInstance().isInCurrentMainProject(processItem)) {
-                                                monitor.subTask("Synchronize job pom: " + processItem.getProperty().getLabel() //$NON-NLS-1$
-                                                        + "_" + processItem.getProperty().getVersion()); //$NON-NLS-1$
-                                                runProcessService.generateJobPom(processItem);
-                                            }
+                                        if (ProjectManager.getInstance().isInCurrentMainProject(item)) {
+                                            monitor.subTask("Synchronize job pom: " + item.getProperty().getLabel() //$NON-NLS-1$
+                                                    + "_" + item.getProperty().getVersion()); //$NON-NLS-1$
+                                            runProcessService.generatePom(item);
                                         }
                                         monitor.worked(1);
                                         if (monitor.isCanceled()) {
@@ -689,8 +712,7 @@ public class AggregatorPomsHelper {
         new ProgressMonitorDialog(Display.getDefault().getActiveShell()).run(true, true, runnableWithProgress);
     }
 
-    private String getModulePath(ITalendProcessJavaProject project) {
-        IFile pomFile = project.getProjectPom();
+    private String getModulePath(IFile pomFile) {
         IFile parentPom = getProjectPomsFolder().getFile(TalendMavenConstants.POM_FILE_NAME);
         if (parentPom != null) {
             IPath relativePath = pomFile.getParent().getLocation().makeRelativeTo(parentPom.getParent().getLocation());
@@ -702,12 +724,14 @@ public class AggregatorPomsHelper {
     private void collectModules(List<String> modules) {
         IRunProcessService service = getRunProcessService();
         if (service != null) {
-            modules.add(getModulePath(service.getTalendCodeJavaProject(ERepositoryObjectType.ROUTINES)));
+            modules.add(getModulePath(service.getTalendCodeJavaProject(ERepositoryObjectType.ROUTINES).getProjectPom()));
             if (ProcessUtils.isRequiredPigUDFs(null)) {
-                modules.add(getModulePath(service.getTalendCodeJavaProject(ERepositoryObjectType.PIG_UDF)));
+                modules.add(getModulePath(service.getTalendCodeJavaProject(ERepositoryObjectType.PIG_UDF).getProjectPom()));
             }
             if (ProcessUtils.isRequiredBeans(null)) {
-                modules.add(getModulePath(service.getTalendCodeJavaProject(ERepositoryObjectType.valueOf("BEANS")))); //$NON-NLS-1$
+                modules.add(getModulePath(service
+                        .getTalendCodeJavaProject(ERepositoryObjectType.valueOf("BEANS")) //$NON-NLS-1$
+                        .getProjectPom()));
             }
         }
         if (needUpdateRefProjectModules()) {

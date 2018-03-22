@@ -265,12 +265,12 @@ public class RepositoryObjectTypeBuildProviderTest {
         }
 
         @Override
-        public Set<String> getNeededLibraries(boolean withChildrens) {
+        public Set<String> getNeededLibraries(int options) {
             return null;
         }
 
         @Override
-        public Set<ModuleNeeded> getNeededModules(boolean withChildrens) {
+        public Set<ModuleNeeded> getNeededModules(int options) {
             return null;
         }
 

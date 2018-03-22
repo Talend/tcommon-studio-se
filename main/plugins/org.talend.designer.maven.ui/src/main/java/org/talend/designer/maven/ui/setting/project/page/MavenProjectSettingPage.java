@@ -63,14 +63,14 @@ public class MavenProjectSettingPage extends AbstractProjectSettingPage {
 
 		preferenceStore = getPreferenceStore();
 		Label filterLabel = new Label(parent, SWT.NONE);
-		filterLabel.setText(Messages.getString("ProjectPomProjectSettingPage_FilterPomLabel"));
+        filterLabel.setText(Messages.getString("ProjectPomProjectSettingPage_FilterPomLabel")); //$NON-NLS-1$
 		filterText = new Text(parent, SWT.BORDER);
 		filterText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-		if (StringUtils.isBlank(preferenceStore.getString(MavenConstants.POM_FILTER))) {
-			filterText.setText("");
-		} else {
-			filterText.setText(preferenceStore.getString(MavenConstants.POM_FILTER));
+        filter = preferenceStore.getString(MavenConstants.POM_FILTER);
+        if (StringUtils.isBlank(filter)) {
+            filter = ""; //$NON-NLS-1$
 		}
+        filterText.setText(filter);
 		filterText.addModifyListener(new ModifyListener() {
 
 			@Override
@@ -84,7 +84,7 @@ public class MavenProjectSettingPage extends AbstractProjectSettingPage {
 						setValid(true);
 						button.setEnabled(true);
 					} else {
-						setErrorMessage(Messages.getString("ProjectPomProjectSettingPage_FilterErrorMessage"));
+                        setErrorMessage(Messages.getString("ProjectPomProjectSettingPage_FilterErrorMessage")); //$NON-NLS-1$
 						setValid(false);
 						button.setEnabled(false);
 					}
@@ -101,8 +101,8 @@ public class MavenProjectSettingPage extends AbstractProjectSettingPage {
 					new AggregatorPomsHelper().syncAllPoms();
 				} catch (Exception e) {
 					ExceptionHandler.process(e);
-					if ("filter_parse_error".equals(e.getMessage())) {
-						setErrorMessage(Messages.getString("ProjectPomProjectSettingPage_FilterErrorMessage"));
+                    if ("filter_parse_error".equals(e.getMessage())) { //$NON-NLS-1$
+                        setErrorMessage(Messages.getString("ProjectPomProjectSettingPage_FilterErrorMessage")); //$NON-NLS-1$
 					}
 				}
 			}

@@ -88,7 +88,13 @@ public interface IJobletProviderService extends IService {
 
     public void updateParametersFromJoblet(INode node, IComponent newComponent);
 
+    public ProcessType getJobletProcess(Item item);
+
     public ProcessType getJobletProcess(NodeType node);
+
+    public ProcessType getJobletProcess(IComponent component);
+
+    public IComponent getJobletComponent(NodeType node);
 
     public IEditorPart openJobletItem(JobletProcessItem item);
 

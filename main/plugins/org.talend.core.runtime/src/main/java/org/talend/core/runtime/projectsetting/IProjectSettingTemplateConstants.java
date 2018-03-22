@@ -48,7 +48,8 @@ public interface IProjectSettingTemplateConstants {
 
     final static String POM_JOB_TEMPLATE_FILE_NAME = "pom_job_template.xml";
 
-    // TODO remove route test template
+    final static String POM_JOBLET_TEMPLATE_FILE_NAME = "pom_joblet_template.xml";
+
     final static String POM_TEST_ROUTE_TEMPLATE_FILE_NAME = "pom_test_route_template.xml";
 
     final static String ASSEMBLY_JOB_TEMPLATE_FILE_NAME = "assembly_job_template.xml";

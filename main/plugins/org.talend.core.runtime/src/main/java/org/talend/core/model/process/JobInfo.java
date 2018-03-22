@@ -54,10 +54,23 @@ public class JobInfo {
 
     private IFile codeFile;
 
+    private Property jobletProperty;
+
+    private boolean isJoblet;
+
     public JobInfo(String jobId, String contextName, String version) {
         this.jobId = jobId;
         this.contextName = contextName;
         this.jobVersion = version;
+    }
+
+    public JobInfo(Property jobletProperty, String contextName) {
+        this.jobId = jobletProperty.getId();
+        this.jobName = jobletProperty.getLabel();
+        this.jobVersion = jobletProperty.getVersion();
+        this.contextName = contextName;
+        this.jobletProperty = jobletProperty;
+        isJoblet = true;
     }
 
     /**
@@ -476,6 +489,14 @@ public class JobInfo {
      */
     public void setCodeFile(IFile codeFile) {
         this.codeFile = codeFile;
+    }
+
+    public Property getJobletProperty() {
+        return jobletProperty;
+    }
+
+    public boolean isJoblet() {
+        return isJoblet;
     }
 
 }

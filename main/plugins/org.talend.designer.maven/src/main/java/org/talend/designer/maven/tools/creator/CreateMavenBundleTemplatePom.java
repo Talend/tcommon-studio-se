@@ -23,12 +23,9 @@ import org.eclipse.m2e.core.MavenPlugin;
 import org.eclipse.m2e.core.embedder.MavenModelManager;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.io.FilesUtils;
-import org.talend.core.GlobalServiceRegister;
 import org.talend.core.PluginChecker;
 import org.talend.designer.maven.template.MavenTemplateManager;
 import org.talend.designer.maven.utils.PomUtil;
-import org.talend.repository.RepositoryWorkUnit;
-import org.talend.repository.model.IRepositoryService;
 
 /**
  * created by ggu on 2 Feb 2015 Detailled comment

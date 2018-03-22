@@ -77,6 +77,7 @@ import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.routines.IRoutinesProvider;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
+import org.talend.core.runtime.process.TalendProcessOptionConstants;
 import org.talend.core.utils.TalendCacheUtils;
 import org.talend.designer.core.model.utils.emf.component.IMPORTType;
 import org.talend.designer.core.model.utils.emf.talendfile.RoutinesParameterType;
@@ -276,7 +277,7 @@ public class ModulesNeededProvider {
         getModulesNeeded().removeAll(moduleForCurrentJobList);
         getAllManagedModules().removeAll(moduleForCurrentJobList);
 
-        Set<String> neededLibraries = process.getNeededLibraries(false);
+        Set<String> neededLibraries = process.getNeededLibraries(TalendProcessOptionConstants.MODULES_DEFAULT);
         if (neededLibraries != null) {
             for (String neededLibrary : neededLibraries) {
                 boolean alreadyInImports = false;

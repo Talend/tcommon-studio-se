@@ -23,6 +23,7 @@ import org.talend.core.IESBService;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.process.JobInfo;
 import org.talend.core.model.properties.Property;
+import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.utils.JavaResourcesHelper;
 import org.talend.core.repository.utils.ItemResourceUtil;
 import org.talend.core.runtime.maven.MavenConstants;
@@ -151,6 +152,33 @@ public class PomIdsHelper {
         }
 
         return null;
+    }
+
+    public static String getJobletGroupId(Property property) {
+        String projectTechName = ProjectManager.getInstance().getProject(property).getTechnicalLabel();
+        ERepositoryObjectType jobletType = ERepositoryObjectType.getType(property);
+        return "org.talend." + projectTechName + "." + getJobletBaseName(jobletType); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    public static String getJobletBaseName(ERepositoryObjectType jobletType) {
+        if (jobletType == ERepositoryObjectType.JOBLET) {
+            return "joblet"; //$NON-NLS-1$
+        }
+        if (jobletType == ERepositoryObjectType.SPARK_JOBLET) {
+            return "sparkjoblet"; //$NON-NLS-1$
+        }
+        if (jobletType == ERepositoryObjectType.SPARK_STREAMING_JOBLET) {
+            return "sparkstreamingjoblet"; //$NON-NLS-1$
+        }
+        return null;
+    }
+
+    public static String getJobletArtifactId(Property property) {
+        return getJobArtifactId(property);
+    }
+
+    public static String getJobletVersion(Property property) {
+        return VersionUtils.getPublishVersion(property.getVersion());
     }
 
     /**

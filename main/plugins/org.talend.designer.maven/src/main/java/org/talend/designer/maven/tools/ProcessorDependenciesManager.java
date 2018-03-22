@@ -30,10 +30,9 @@ import org.talend.core.ILibraryManagerService;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.process.IProcess;
 import org.talend.core.model.process.IProcess2;
-import org.talend.core.model.process.JobInfo;
 import org.talend.core.model.properties.ProcessItem;
-import org.talend.core.model.properties.Property;
 import org.talend.core.runtime.process.LastGenerationInfo;
+import org.talend.core.runtime.process.TalendProcessOptionConstants;
 import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.designer.core.IDesignerCoreService;
 import org.talend.designer.maven.utils.PomUtil;
@@ -189,14 +188,14 @@ public class ProcessorDependenciesManager {
         Collection<ModuleNeeded> modulesNeeded = LastGenerationInfo.getInstance().getModulesNeededPerJob(
                 processor.getProcess().getId(), processor.getProcess().getVersion());
         if (modulesNeeded.isEmpty()) {
-            modulesNeeded = processor.getNeededModules(false);
+            modulesNeeded = processor.getNeededModules(TalendProcessOptionConstants.MODULES_WITH_JOBLET);
         }
         neededLibraries.addAll(modulesNeeded);
         if (hasTestCase) {
             if (testContainers != null) {
                 for (ProcessItem testcaseItem : testContainers) {
                     IProcess testcaseProcess = getDesignerCoreService().getProcessFromProcessItem(testcaseItem);
-                    neededLibraries.addAll(testcaseProcess.getNeededModules(false));
+                    neededLibraries.addAll(testcaseProcess.getNeededModules(TalendProcessOptionConstants.MODULES_DEFAULT));
                 }
             }
             if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerService.class)) {

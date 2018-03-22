@@ -42,12 +42,20 @@ public class TalendJavaProjectConstants {
 
     public static final String DIR_PROCESS_SERVICES = "services"; //$NON-NLS-1$
 
+    public static final String DIR_JOBLETS = "joblets"; //$NON-NLS-1$
+
+    public static final String DIR_JOBLETS_SPARK = "joblets_spark"; //$NON-NLS-1$
+
+    public static final String DIR_JOBLETS_SPARK_STREAMING = "joblets_spark_streaming"; //$NON-NLS-1$
+
+    public static final String DIR_ROUTELETS = "routelets"; //$NON-NLS-1$
+
     public static final String CLASSPATH_FILE_NAME = ".classpath"; //$NON-NLS-1$
 
     public static final String PROJECT_FILE_NAME = ".project"; //$NON-NLS-1$
-    
+
     public static final String FILE_POM_CI_BUILDER = "sources-generator.pom"; //$NON-NLS-1$
-    
+
     public static final String TEMP_POM_ARTIFACT_ID = "temp_job_pom"; //$NON-NLS-1$
 
 }

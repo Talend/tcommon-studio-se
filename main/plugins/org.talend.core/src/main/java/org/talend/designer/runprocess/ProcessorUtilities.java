@@ -61,6 +61,7 @@ import org.talend.core.language.ECodeLanguage;
 import org.talend.core.language.LanguageManager;
 import org.talend.core.model.components.ComponentCategory;
 import org.talend.core.model.components.EComponentType;
+import org.talend.core.model.components.IComponent;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.metadata.IMetadataColumn;
@@ -2055,15 +2056,25 @@ public class ProcessorUtilities {
                     IJobletProviderService service = (IJobletProviderService) GlobalServiceRegister.getDefault()
                             .getService(IJobletProviderService.class);
                     if (service != null) {
-                        ProcessType jobletProcess = service.getJobletProcess(node);
-                        if (jobletProcess != null) {
-                            getAllJobInfo(jobletProcess, parentJobInfo, jobInfos, firstChildOnly);
+                        IComponent jobletComponent = service.getJobletComponent(node);
+                        ProcessType jobletProcess = service.getJobletProcess(jobletComponent);
+                        if (jobletComponent != null) {
+                            if (!firstChildOnly) {
+                                getAllJobInfo(jobletProcess, parentJobInfo, jobInfos, firstChildOnly);
+                            } else {
+                                Property property = service.getJobletComponentItem(jobletComponent);
+                                JobInfo jobInfo = new JobInfo(property, jobletProcess.getDefaultContext());
+                                if (!jobInfos.contains(jobInfo)) {
+                                    jobInfos.add(jobInfo);
+                                    jobInfo.setFatherJobInfo(parentJobInfo);
+                                }
+                            }
                         }
                     }
                 }
             }
         }
-        if (!parentJobInfo.isTestContainer()
+        if (!parentJobInfo.isTestContainer() && !parentJobInfo.isJoblet()
                 && GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
             ITestContainerProviderService testContainerService = (ITestContainerProviderService) GlobalServiceRegister
                     .getDefault().getService(ITestContainerProviderService.class);
@@ -2102,11 +2113,24 @@ public class ProcessorUtilities {
         return getChildrenJobInfo(processItem, false);
     }
 
-    public static Set<JobInfo> getChildrenJobInfo(ProcessItem processItem, boolean firstChildOnly) {
+    public static Set<JobInfo> getChildrenJobInfo(Item processItem, boolean firstChildOnly) {
         // delegate to the new method, prevent dead loop method call. see bug 0004939: making tRunjobs work loop will
         // cause a error of "out of memory" .
-        JobInfo parentJobInfo = new JobInfo(processItem, processItem.getProcess().getDefaultContext());
-
+        JobInfo parentJobInfo = null;
+        ProcessType processType = null;
+        if (processItem instanceof ProcessItem) {
+            parentJobInfo = new JobInfo((ProcessItem) processItem,
+                    ((ProcessItem) processItem).getProcess().getDefaultContext());
+            processType = ((ProcessItem) processItem).getProcess();
+        } else {
+            if (GlobalServiceRegister.getDefault().isServiceRegistered(IJobletProviderService.class)) {
+                IJobletProviderService jobletService = (IJobletProviderService) GlobalServiceRegister.getDefault().getService(IJobletProviderService.class);
+                if (jobletService.isJobletItem(processItem)) {
+                    processType = jobletService.getJobletProcess(processItem);
+                    parentJobInfo = new JobInfo(processItem.getProperty(), processType.getDefaultContext());
+                }
+            }
+        }
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
             ITestContainerProviderService testContainerService = (ITestContainerProviderService) GlobalServiceRegister
                     .getDefault().getService(ITestContainerProviderService.class);
@@ -2114,8 +2138,10 @@ public class ProcessorUtilities {
                 parentJobInfo.setTestContainer(true);
             }
         }
-        return getAllJobInfo(processItem.getProcess(), parentJobInfo, new HashSet<JobInfo>(), firstChildOnly);
-
+        if (parentJobInfo != null && processType != null) {
+            return getAllJobInfo(processType, parentJobInfo, new HashSet<JobInfo>(), firstChildOnly);
+        }
+        return new HashSet<JobInfo>();
     }
 
     /**

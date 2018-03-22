@@ -27,6 +27,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.ecore.EObject;
 import org.talend.core.AbstractDQModelService;
 import org.talend.core.GlobalServiceRegister;
+import org.talend.core.IESBService;
 import org.talend.core.PluginChecker;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.properties.BRMSConnectionItem;
@@ -1422,10 +1423,37 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
         if (ERepositoryObjectType.PROCESS_ROUTE != null) {
             allTypes.add(ERepositoryObjectType.PROCESS_ROUTE);
         }
+        // FIXME move to getAllTypesOfProcess2()
         if (ERepositoryObjectType.PROCESS_ROUTELET != null) {
             allTypes.add(ERepositoryObjectType.PROCESS_ROUTELET);
         }
 
+        return allTypes;
+    }
+
+    /**
+     * DOC zwxue Comment method "getAllTypesOfProcess2".
+     * for types have pom.
+     * @return
+     */
+    public static List<ERepositoryObjectType> getAllTypesOfProcess2() {
+        List<ERepositoryObjectType> allTypes = getAllTypesOfProcess();
+        if (ERepositoryObjectType.JOBLET != null) {
+            allTypes.add(ERepositoryObjectType.JOBLET);
+        }
+        if (ERepositoryObjectType.SPARK_JOBLET != null) {
+            allTypes.add(ERepositoryObjectType.SPARK_JOBLET);
+        }
+        if (ERepositoryObjectType.SPARK_STREAMING_JOBLET != null) {
+            allTypes.add(ERepositoryObjectType.SPARK_STREAMING_JOBLET);
+        }
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IESBService.class)) {
+            IESBService esbService = (IESBService) GlobalServiceRegister.getDefault().getService(IESBService.class);
+            ERepositoryObjectType serviceType = esbService.getServicesType();
+            if (serviceType != null) {
+                allTypes.add(serviceType);
+            }
+        }
         return allTypes;
     }
 

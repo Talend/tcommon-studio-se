@@ -34,7 +34,7 @@ import org.talend.core.model.process.IContext;
 import org.talend.core.model.process.IProcess;
 import org.talend.core.model.process.IProcess2;
 import org.talend.core.model.process.JobInfo;
-import org.talend.core.model.properties.ProcessItem;
+import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.properties.RoutineItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
@@ -222,7 +222,7 @@ public interface IRunProcessService extends IService {
 
     boolean isExportConfig();
 
-    void generateJobPom(ProcessItem processItem);
+    void generatePom(Item item);
 
     void initializeRootPoms();
 

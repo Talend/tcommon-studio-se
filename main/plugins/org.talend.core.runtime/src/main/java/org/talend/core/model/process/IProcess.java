@@ -92,9 +92,9 @@ public interface IProcess extends IElement {
      */
     public IConnection[] getAllConnections(String filter);
 
-    public Set<String> getNeededLibraries(boolean withChildrens);
+    public Set<String> getNeededLibraries(int options);
 
-    public Set<ModuleNeeded> getNeededModules(boolean withChildrens);
+    public Set<ModuleNeeded> getNeededModules(int options);
 
     public Set<String> getNeededRoutines();
 

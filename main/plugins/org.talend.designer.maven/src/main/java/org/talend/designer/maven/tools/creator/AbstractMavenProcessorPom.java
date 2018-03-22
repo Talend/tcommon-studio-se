@@ -12,7 +12,6 @@
 // ============================================================================
 package org.talend.designer.maven.tools.creator;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,8 +43,8 @@ import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.utils.JavaResourcesHelper;
 import org.talend.core.runtime.maven.MavenArtifact;
+import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.maven.MavenUrlHelper;
-import org.talend.core.runtime.process.LastGenerationInfo;
 import org.talend.core.runtime.projectsetting.IProjectSettingTemplateConstants;
 import org.talend.core.runtime.repository.build.IMavenPomCreator;
 import org.talend.core.ui.ITestContainerProviderService;
@@ -254,18 +253,30 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
             }
 
             // add children jobs in dependencies
-            String parentId = getJobProcessor().getProperty().getId();
-            final Set<JobInfo> clonedChildrenJobInfors = getJobProcessor().getBuildChildrenJobs(true);
-            for (JobInfo jobInfo : clonedChildrenJobInfors) {
-                if (jobInfo.getFatherJobInfo() != null && jobInfo.getFatherJobInfo().getJobId().equals(parentId)) {
-                    if (!validChildrenJob(jobInfo)) {
-                        continue;
-                    }
-                    Property property = jobInfo.getProcessItem().getProperty();
-                    String groupId = PomIdsHelper.getJobGroupId(property);
-                    String artifactId = PomIdsHelper.getJobArtifactId(jobInfo);
-                    String version = PomIdsHelper.getJobVersion(property);
+            addChildrenDependencies(dependencies);
+        } catch (ProcessorException e) {
+            ExceptionHandler.process(e);
+        }
+    }
 
+    protected void addChildrenDependencies(final List<Dependency> dependencies) {
+        String parentId = getJobProcessor().getProperty().getId();
+        final Set<JobInfo> clonedChildrenJobInfors = getJobProcessor().getBuildChildrenJobs(true);
+        for (JobInfo jobInfo : clonedChildrenJobInfors) {
+            if (jobInfo.getFatherJobInfo() != null && jobInfo.getFatherJobInfo().getJobId().equals(parentId)) {
+                if (!validChildrenJob(jobInfo)) {
+                    continue;
+                }
+                Property property;
+                String groupId;
+                String artifactId;
+                String version;
+                String type = null;
+                if (!jobInfo.isJoblet()) {
+                    property = jobInfo.getProcessItem().getProperty();
+                    groupId = PomIdsHelper.getJobGroupId(property);
+                    artifactId = PomIdsHelper.getJobArtifactId(jobInfo);
+                    version = PomIdsHelper.getJobVersion(property);
                     // try to get the pom version of children job and load from the pom file.
                     String childPomFileName = PomUtil.getPomFileName(jobInfo.getJobName(), jobInfo.getJobVersion());
                     IProject codeProject = getJobProcessor().getCodeProject();
@@ -288,14 +299,16 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
                             }
                         }
                     }
-
-                    Dependency d = PomUtil.createDependency(groupId, artifactId, version, null);
-                    dependencies.add(d);
+                } else {
+                    property = jobInfo.getJobletProperty();
+                    groupId = PomIdsHelper.getJobletGroupId(property);
+                    artifactId = PomIdsHelper.getJobletArtifactId(property);
+                    version = PomIdsHelper.getJobletVersion(property);
+                    type = MavenConstants.PACKAGING_POM;
                 }
+                Dependency d = PomUtil.createDependency(groupId, artifactId, version, type);
+                dependencies.add(d);
             }
-
-        } catch (ProcessorException e) {
-            ExceptionHandler.process(e);
         }
     }
 

@@ -113,6 +113,8 @@ public class PluginChecker {
 
     public static final String EXPORT_ROUTE_PLUGIN_ID = "org.talend.resources.export.route"; //$NON-NLS-1$
 
+    public static final String ROUTELET_PLUGIN_ID = "org.talend.repository.routelets"; //$NON-NLS-1$
+
     public static final String SERVICE_PLUGIN_ID = "org.talend.repository.services"; //$NON-NLS-1$
 
     public static final String EXPORT_JOB_PLUGIN_ID = "org.talend.resources.export.job"; //$NON-NLS-1$
@@ -343,6 +345,10 @@ public class PluginChecker {
 
     public static boolean isServiceLoaded() {
         return isPluginLoaded(SERVICE_PLUGIN_ID);
+    }
+
+    public static boolean isRouteletLoaded() {
+        return isPluginLoaded(ROUTELET_PLUGIN_ID);
     }
 
     public static String getBundlePath(String bundleName) {
