@@ -810,6 +810,17 @@ public class PomUtil {
         savePom(null, model, pomFile);
     }
 
+    /**
+     * 
+     * DOC wchen Comment : when build job with subjob loop dependecies , all source code will be generated in main job
+     * and the pom of main will remove subjob in dependency but add all dependencies from child pom
+     * 
+     * @param mainJobPom
+     * @param childJobPoms
+     * @param childJobRUL
+     * @param monitor
+     * @throws Exception
+     */
     public static void updateMainJobDependencies(IFile mainJobPom, List<IFile> childJobPoms, Set<String> childJobRUL,
             IProgressMonitor monitor) throws Exception {
         Map<String, Dependency> codesDependencies = new LinkedHashMap<String, Dependency>();

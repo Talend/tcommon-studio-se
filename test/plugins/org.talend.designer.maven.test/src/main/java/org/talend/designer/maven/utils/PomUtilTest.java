@@ -15,9 +15,13 @@ package org.talend.designer.maven.utils;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.model.Dependency;
@@ -467,7 +471,7 @@ public class PomUtilTest {
         IFile routinePom = pomsFolder.getFolder("code").getFolder("routines").getFile("pom.xml");
         String relativePath = PomUtil.getPomRelativePath(routinePom.getLocation().toFile(), "poms");
         assertEquals("../../", relativePath);
-        
+
         IFolder jobFolder = pomsFolder.getFolder("jobs").getFolder("process").getFolder("relativeTest");
         if (!jobFolder.exists()) {
             jobFolder.create(true, true, null);
@@ -479,9 +483,9 @@ public class PomUtilTest {
         model.setArtifactId("testRelative");
         model.setVersion("1.0.0");
         PomUtil.savePom(null, model, jobPom);
-        
+
         assertTrue(jobPom.exists());
-        
+
         relativePath = PomUtil.getPomRelativePath(jobPom.getLocation().toFile(), "poms");
         assertEquals("../../../", relativePath);
     }
@@ -531,5 +535,76 @@ public class PomUtilTest {
         absArtifactPath = PomUtil.getAbsArtifactPath(artifact);
         Assert.assertNotNull(absArtifactPath);
         Assert.assertTrue(new File(absArtifactPath).exists());
+    }
+
+    @Test
+    public void testUpdateMainJobDependencies() throws Exception {
+        String projectTechName = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
+        IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+        IFolder pomsFolder = root.getFolder(new Path(projectTechName + "/" + TalendJavaProjectConstants.DIR_POMS));
+        IFolder testFolder = pomsFolder.getFolder("jobs").getFolder("process").getFolder("UpdateMainJobDependencies");
+        if (testFolder.exists()) {
+            testFolder.delete(true, null);
+        }
+        testFolder.create(true, true, null);
+        // create test depdenency: main_job==>subJob1==>subJob2==>main_job
+        IFolder mainFolder = testFolder.getFolder("main_job");
+        mainFolder.create(true, true, null);
+        IFile mainPom = mainFolder.getFile("pom.xml");
+        Model modelMain = creatModel("main_job");
+        String mainDepStr = "mvn:org.talend.libraries/mainDep/6.0.0/jar";
+        Dependency mainDep = PomUtil.createModuleDependency(mainDepStr);
+        modelMain.getDependencies().add(mainDep);
+        Dependency mainDep_subjob1 = PomUtil.createModuleDependency("mvn:org.talend.test/subJob1/1.0.0/jar");
+        modelMain.getDependencies().add(mainDep_subjob1);
+        PomUtil.savePom(null, modelMain, mainPom);
+
+        IFolder subjob1Folder = testFolder.getFolder("subjob1");
+        subjob1Folder.create(true, true, null);
+        IFile subjob1Pom = subjob1Folder.getFile("pom.xml");
+        Model modelSubjob1 = creatModel("subjob1");
+        String subjob1DepStr = "mvn:org.talend.libraries/subjob1Dep/6.0.0/jar";
+        Dependency subjob1Dep = PomUtil.createModuleDependency(subjob1DepStr);
+        modelSubjob1.getDependencies().add(subjob1Dep);
+        Dependency subjob1Dep_subjob2 = PomUtil.createModuleDependency("mvn:org.talend.test/subJob2/1.0.0/jar");
+        modelSubjob1.getDependencies().add(subjob1Dep_subjob2);
+        PomUtil.savePom(null, modelSubjob1, subjob1Pom);
+
+        IFolder subjob2Folder = testFolder.getFolder("subjob2");
+        subjob2Folder.create(true, true, null);
+        IFile subjob2Pom = subjob2Folder.getFile("pom.xml");
+        Model modelSubjob2 = creatModel("subjob2");
+        String subjob2DepStr = "mvn:org.talend.libraries/subjob2Dep/6.0.0/jar";
+        Dependency subjob2Dep = PomUtil.createModuleDependency(subjob2DepStr);
+        modelSubjob2.getDependencies().add(subjob2Dep);
+        Dependency subjob2Dep_mainjob = PomUtil.createModuleDependency("mvn:org.talend.test/main_job/1.0.0/jar");
+        modelSubjob2.getDependencies().add(subjob2Dep_mainjob);
+        PomUtil.savePom(null, modelSubjob2, subjob2Pom);
+
+        List<IFile> subjobPoms = new ArrayList<IFile>();
+        subjobPoms.add(subjob1Pom);
+        subjobPoms.add(subjob2Pom);
+        Set<String> subjobURLs = new HashSet<String>();
+        subjobURLs.add("mvn:org.talend.test/subJob1/1.0.0/jar");
+        subjobURLs.add("mvn:org.talend.test/subJob2/1.0.0/jar");
+        subjobURLs.add("mvn:org.talend.test/main_job/1.0.0/jar");
+        PomUtil.updateMainJobDependencies(mainPom, subjobPoms, subjobURLs, null);
+
+        modelMain = MavenPlugin.getMavenModelManager().readMavenModel(mainPom);
+        Assert.assertEquals(modelMain.getDependencies().size(), 3);
+        Assert.assertEquals(PomUtil.generateMvnUrl(modelMain.getDependencies().get(0)), mainDepStr);
+        Assert.assertEquals(PomUtil.generateMvnUrl(modelMain.getDependencies().get(1)), subjob1DepStr);
+        Assert.assertEquals(PomUtil.generateMvnUrl(modelMain.getDependencies().get(2)), subjob2DepStr);
+
+        testFolder.delete(true, null);
+    }
+
+    private Model creatModel(String artifactId) {
+        Model model = new Model();
+        model.setModelVersion("4.0.0");
+        model.setGroupId("org.talend.test");
+        model.setArtifactId(artifactId);
+        model.setVersion("1.0.0");
+        return model;
     }
 }
