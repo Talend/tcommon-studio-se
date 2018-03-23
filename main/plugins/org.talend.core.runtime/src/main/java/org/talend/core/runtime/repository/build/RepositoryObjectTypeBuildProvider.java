@@ -12,11 +12,14 @@
 // ============================================================================
 package org.talend.core.runtime.repository.build;
 
+import java.util.List;
 import java.util.Map;
 
 import org.talend.core.model.process.IProcess2;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.Property;
+import org.talend.core.model.relationship.Relation;
+import org.talend.core.model.relationship.RelationshipItemBuilder;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 
@@ -65,4 +68,22 @@ public abstract class RepositoryObjectTypeBuildProvider extends AbstractBuildPro
     }
 
     protected abstract ERepositoryObjectType getObjectType();
+
+    /**
+     * Find service relation for ESB data service
+     * 
+     * @param property
+     * @return
+     */
+    public boolean isServiceOperation(Property property) {
+        List<Relation> relations = RelationshipItemBuilder.getInstance().getItemsRelatedTo(property.getId(),
+                property.getVersion(), RelationshipItemBuilder.JOB_RELATION);
+
+        for (Relation relation : relations) {
+            if (RelationshipItemBuilder.SERVICES_RELATION.equals(relation.getType())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
