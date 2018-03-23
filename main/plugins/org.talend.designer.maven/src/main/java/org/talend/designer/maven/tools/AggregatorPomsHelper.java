@@ -63,6 +63,7 @@ import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.core.runtime.process.TalendProcessArgumentConstant;
+import org.talend.core.runtime.services.IFilterService;
 import org.talend.designer.core.ICamelDesignerCoreService;
 import org.talend.designer.maven.DesignerMavenPlugin;
 import org.talend.designer.maven.launch.MavenPomCommandLauncher;
@@ -321,21 +322,40 @@ public class AggregatorPomsHelper {
         }
     }
 
-    public static void addToParentModules(IFile pomFile) throws Exception {
-        IFile parentPom = getParentModulePomFile(pomFile);
-        if (parentPom != null) {
-            IPath relativePath = pomFile.getParent().getLocation().makeRelativeTo(parentPom.getParent().getLocation());
-            Model model = MavenPlugin.getMaven().readModel(parentPom.getContents());
-            List<String> modules = model.getModules();
-            if (modules == null) {
-                modules = new ArrayList<>();
-                model.setModules(modules);
-            }
-            if (!modules.contains(relativePath.toPortableString())) {
-                modules.add(relativePath.toPortableString());
-                PomUtil.savePom(null, model, parentPom);
-            }
-        }
+    public static void addToParentModules(IFile pomFile, Property property) throws Exception {
+		IFilterService filterService = null;
+		if (GlobalServiceRegister.getDefault().isServiceRegistered(IFilterService.class)) {
+			filterService = (IFilterService) GlobalServiceRegister.getDefault().getService(IFilterService.class);
+		}
+		if (filterService != null && property != null) {
+			if (filterService.checkFilterContent(PomIdsHelper.getPomFilter())) {
+				throw new Exception("filter_parse_error");
+			}
+			if (!filterService.isFilterAccepted(property.getItem(), PomIdsHelper.getPomFilter())) {
+				return;
+			}
+			Model thisModel = MavenPlugin.getMaven().readModel(pomFile.getContents());
+			List<IRepositoryViewObject> allItem = ProxyRepositoryFactory.getInstance()
+					.getAll(ERepositoryObjectType.PROCESS, true);
+			for (IRepositoryViewObject object : allItem) {
+				if (object.getProperty().getId().equals(thisModel.getProperties().get("talend.job.id"))) {
+				}
+			}
+		}
+		IFile parentPom = getParentModulePomFile(pomFile);
+		if (parentPom != null) {
+			IPath relativePath = pomFile.getParent().getLocation().makeRelativeTo(parentPom.getParent().getLocation());
+			Model model = MavenPlugin.getMaven().readModel(parentPom.getContents());
+			List<String> modules = model.getModules();
+			if (modules == null) {
+				modules = new ArrayList<>();
+				model.setModules(modules);
+			}
+			if (!modules.contains(relativePath.toPortableString())) {
+				modules.add(relativePath.toPortableString());
+				PomUtil.savePom(null, model, parentPom);
+			}
+		}
     }
 
     public static void removeFromParentModules(IFile pomFile) throws Exception {
@@ -497,8 +517,15 @@ public class AggregatorPomsHelper {
         boolean useTempPom = TalendJavaProjectConstants.TEMP_POM_ARTIFACT_ID.equals(model.getArtifactId());
         jobProject.setUseTempPom(useTempPom);
     }
-
+    
     public void syncAllPoms() throws Exception {
+    	if(GlobalServiceRegister.getDefault().isServiceRegistered(IFilterService.class)) {
+    		IFilterService filterService = (IFilterService) GlobalServiceRegister.getDefault().getService(IFilterService.class);
+    		if(filterService.checkFilterContent(PomIdsHelper.getPomFilter())) {
+    			throw new Exception("filter_parse_error");
+    		}
+    	}
+    	
         IRunnableWithProgress runnableWithProgress = new IRunnableWithProgress() {
 
             @Override
@@ -531,7 +558,16 @@ public class AggregatorPomsHelper {
                                     // all jobs pom
                                     List<String> modules = new ArrayList<>();
                                     if (objects != null) {
+                                    	IFilterService filterService = null;
+                                    	if(GlobalServiceRegister.getDefault().isServiceRegistered(IFilterService.class)) {
+                                    		filterService = (IFilterService) GlobalServiceRegister.getDefault().getService(IFilterService.class);
+                                    	}
                                         for (IRepositoryViewObject object : objects) {
+                                        	if(filterService!=null) {
+                                        		if (!filterService.isFilterAccepted(object.getProperty().getItem(), PomIdsHelper.getPomFilter())) {
+                                                    continue;
+                                                }
+                                        	}
                                             if (object.getProperty() != null && object.getProperty().getItem() != null
                                                     && object.getProperty().getItem() instanceof ProcessItem) {
                                                 ProcessItem processItem = (ProcessItem) object.getProperty().getItem();
