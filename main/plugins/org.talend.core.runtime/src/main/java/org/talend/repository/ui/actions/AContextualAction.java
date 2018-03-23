@@ -615,17 +615,6 @@ public abstract class AContextualAction extends Action implements ITreeContextua
                 Property oldProperty = node.getObject().getProperty();
                 if (oldProperty != null) {
                     oldItem = oldProperty.getItem();
-
-                    if (GlobalServiceRegister.getDefault().isServiceRegistered(IHeaderFooterProviderService.class)) {
-                        IHeaderFooterProviderService service = (IHeaderFooterProviderService) GlobalServiceRegister.getDefault()
-                                .getService(IHeaderFooterProviderService.class);
-                        if (!service.validItem(oldItem)) {
-                            MessageDialog.openError(Display.getCurrent().getActiveShell(),
-                                    Messages.getString("AContextualAction.InvalidTitle"),
-                                    Messages.getString("AContextualAction.InvalidMessage"));
-                            return;
-                        }
-                    }
                 }
             }
         }
