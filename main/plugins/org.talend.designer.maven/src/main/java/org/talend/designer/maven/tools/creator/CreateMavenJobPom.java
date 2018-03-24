@@ -337,52 +337,8 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
 
     @Override
     protected void afterCreate(IProgressMonitor monitor) throws Exception {
-        setPomForHDInsight(monitor);
-
-        // // check for children jobs
-        // Set<String> childrenGroupIds = new HashSet<>();
-        // final Set<JobInfo> clonedChildrenJobInfors = getJobProcessor().getBuildChildrenJobs();
-        // // main job built, should never be in the children list, even if recursive
-        // clonedChildrenJobInfors.remove(LastGenerationInfo.getInstance().getLastMainJob());
-
-        // for (JobInfo child : clonedChildrenJobInfors) {
-        // if (child.getFatherJobInfo() != null) {
-        // Property childProperty = null;
-        // ProcessItem childItem = child.getProcessItem();
-        // if (childItem != null) {
-        // childProperty = childItem.getProperty();
-        // } else {
-        // String jobId = child.getJobId();
-        // if (jobId != null) {
-        // IProxyRepositoryFactory proxyRepositoryFactory = CoreRuntimePlugin.getInstance()
-        // .getProxyRepositoryFactory();
-        // IRepositoryViewObject specificVersion = proxyRepositoryFactory.getSpecificVersion(jobId,
-        // child.getJobVersion(), true);
-        // if (specificVersion != null) {
-        // childProperty = specificVersion.getProperty();
-        // }
-        // }
-        // }
-        //
-        // if (childProperty != null) {
-        // final String childGroupId = PomIdsHelper.getJobGroupId(childProperty);
-        // if (childGroupId != null) {
-        // childrenGroupIds.add(childGroupId);
-        // }
-        // }
-        // }
-        // }
-
         generateAssemblyFile(monitor, null);
-
-        // final IProcess process = getJobProcessor().getProcess();
-        // Map<String, Object> args = new HashMap<String, Object>();
-        // args.put(IPomJobExtension.KEY_PROCESS, process);
-        // args.put(IPomJobExtension.KEY_ASSEMBLY_FILE, getAssemblyFile());
-        // args.put(IPomJobExtension.KEY_CHILDREN_JOBS_GROUP_IDS, childrenGroupIds);
-        //
-        // PomJobExtensionRegistry.getInstance().updatePom(monitor, getPomFile(), args);
-
+        
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
             IRunProcessService service = (IRunProcessService) GlobalServiceRegister.getDefault()
                     .getService(IRunProcessService.class);
@@ -391,38 +347,6 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
             }
         }
 
-    }
-
-    private void setPomForHDInsight(IProgressMonitor monitor) {
-        if (ProcessUtils.jarNeedsToContainContext()) {
-            try {
-                Model model = MODEL_MANAGER.readMavenModel(getPomFile());
-                List<Plugin> plugins = new ArrayList<Plugin>(model.getBuild().getPlugins());
-                out: for (Plugin plugin : plugins) {
-                    if (plugin.getArtifactId().equals("maven-jar-plugin")) { //$NON-NLS-1$
-                        List<PluginExecution> pluginExecutions = plugin.getExecutions();
-                        for (PluginExecution pluginExecution : pluginExecutions) {
-                            if (pluginExecution.getId().equals("default-jar")) { //$NON-NLS-1$
-                                Object object = pluginExecution.getConfiguration();
-                                if (object instanceof Xpp3Dom) {
-                                    Xpp3Dom configNode = (Xpp3Dom) object;
-                                    Xpp3Dom includesNode = configNode.getChild("includes"); //$NON-NLS-1$
-                                    Xpp3Dom includeNode = new Xpp3Dom("include"); //$NON-NLS-1$
-                                    includeNode.setValue("${talend.job.path}/contexts/*.properties"); //$NON-NLS-1$
-                                    includesNode.addChild(includeNode);
-
-                                    model.getBuild().setPlugins(plugins);
-                                    PomUtil.savePom(monitor, model, getPomFile());
-                                    break out;
-                                }
-                            }
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                ExceptionHandler.process(e);
-            }
-        }
     }
 
     protected void generateAssemblyFile(IProgressMonitor monitor, final Set<JobInfo> clonedChildrenJobInfors) throws Exception {

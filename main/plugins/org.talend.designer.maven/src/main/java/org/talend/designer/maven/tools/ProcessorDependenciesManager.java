@@ -13,6 +13,7 @@
 package org.talend.designer.maven.tools;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -185,7 +186,12 @@ public class ProcessorDependenciesManager {
                 }
             }
         }
-        neededLibraries.addAll(processor.getNeededModules(false));
+        Collection<ModuleNeeded> modulesNeeded = LastGenerationInfo.getInstance().getModulesNeededPerJob(
+                processor.getProcess().getId(), processor.getProcess().getVersion());
+        if (modulesNeeded.isEmpty()) {
+            modulesNeeded = processor.getNeededModules(false);
+        }
+        neededLibraries.addAll(modulesNeeded);
         if (hasTestCase) {
             if (testContainers != null) {
                 for (ProcessItem testcaseItem : testContainers) {
