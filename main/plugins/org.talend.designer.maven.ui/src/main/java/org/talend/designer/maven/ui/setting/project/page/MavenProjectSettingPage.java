@@ -73,7 +73,21 @@ public class MavenProjectSettingPage extends AbstractProjectSettingPage {
 			
 			@Override
 			public void modifyText(ModifyEvent e) {
-				preferenceStore.setValue(MavenConstants.POM_FILTER, filterText.getText());
+				if(GlobalServiceRegister.getDefault().isServiceRegistered(IFilterService.class)) {
+					IFilterService service = (IFilterService) GlobalServiceRegister.getDefault().getService(IFilterService.class);
+					if(StringUtils.isBlank(filterText.getText())||service.checkFilterContent(filterText.getText())){
+						setErrorMessage(null);
+						preferenceStore.setValue(MavenConstants.POM_FILTER, filterText.getText());
+						setValid(true);
+						button.setEnabled(true);
+					}else {
+						setErrorMessage(Messages.getString("ProjectPomProjectSettingPage_FilterErrorMessage"));
+						setValid(false);
+						button.setEnabled(false);
+					}
+				}else {
+					setErrorMessage(Messages.getString("ProjectPomProjectSettingPage_FilterServiceErrorMessage"));
+				}
 			}
 		});
         
@@ -96,26 +110,6 @@ public class MavenProjectSettingPage extends AbstractProjectSettingPage {
         
     }
 
-	@Override
-	public boolean performOk() {
-		super.performOk();
-		try {
-			if(GlobalServiceRegister.getDefault().isServiceRegistered(IFilterService.class)) {
-				IFilterService service = (IFilterService) GlobalServiceRegister.getDefault().getService(IFilterService.class);
-				if(!service.checkFilterContent(filterText.getText())){
-					setErrorMessage(Messages.getString("ProjectPomProjectSettingPage_FilterErrorMessage"));
-					return false;
-				}
-			}else {
-				setErrorMessage(Messages.getString("ProjectPomProjectSettingPage_FilterServiceErrorMessage"));
-				return false;
-			}
-		} catch (Exception e) {
-			ExceptionHandler.process(e);
-            return false;
-		}
-		return true;
-	}
     
     
 
