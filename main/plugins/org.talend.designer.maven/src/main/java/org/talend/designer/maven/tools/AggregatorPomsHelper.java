@@ -328,7 +328,7 @@ public class AggregatorPomsHelper {
 			filterService = (IFilterService) GlobalServiceRegister.getDefault().getService(IFilterService.class);
 		}
 		if (filterService != null && property != null) {
-			if (filterService.checkFilterContent(PomIdsHelper.getPomFilter())) {
+			if (!filterService.checkFilterContent(PomIdsHelper.getPomFilter())) {
 				throw new Exception("filter_parse_error");
 			}
 			if (!filterService.isFilterAccepted(property.getItem(), PomIdsHelper.getPomFilter())) {

@@ -102,15 +102,16 @@ public class MavenProjectSettingPage extends AbstractProjectSettingPage {
 		try {
 			if(GlobalServiceRegister.getDefault().isServiceRegistered(IFilterService.class)) {
 				IFilterService service = (IFilterService) GlobalServiceRegister.getDefault().getService(IFilterService.class);
-				service.checkFilterContent(filterText.getText());
+				if(!service.checkFilterContent(filterText.getText())){
+					setErrorMessage(Messages.getString("ProjectPomProjectSettingPage_FilterErrorMessage"));
+					return false;
+				}
 			}else {
 				setErrorMessage(Messages.getString("ProjectPomProjectSettingPage_FilterServiceErrorMessage"));
+				return false;
 			}
 		} catch (Exception e) {
 			ExceptionHandler.process(e);
-            if("filter_parse_error".equals(e.getMessage())) {
-            	setErrorMessage(Messages.getString("ProjectPomProjectSettingPage_FilterErrorMessage"));
-            }
             return false;
 		}
 		return true;
