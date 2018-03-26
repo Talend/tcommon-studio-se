@@ -353,6 +353,15 @@ public class XSDPopulationUtil2 implements IXSDPopulationUtil {
             handleOptionalAttribute(node, xsdParticle);
             for (Object element : xsdModelGroup.getParticles()) {
                 XSDParticle childParticle = (XSDParticle) element;
+                XSDTerm xsdTermChild = childParticle.getTerm();
+                if (xsdTermChild instanceof XSDElementDeclaration) {
+                    XSDElementDeclaration xsdElementDeclarationParticle = (XSDElementDeclaration) xsdTermChild;
+                    String elementName = xsdElementDeclarationParticle.getName();
+                    boolean containsPath = currentPath.contains("/" + elementName + "/");//$NON-NLS-1$//$NON-NLS-2$
+                    if (containsPath) {
+                        break;
+                    }
+                }
                 addParticleDetail(xsdSchema, childParticle, node, currentPath);
             }
         }
