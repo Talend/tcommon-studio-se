@@ -38,79 +38,84 @@ import org.talend.designer.maven.ui.i18n.Messages;
  * DOC ggu class global comment. Detailled comment
  */
 public class MavenProjectSettingPage extends AbstractProjectSettingPage {
-	
+
 	private Text filterText;
-	
+
+	private String filter;
+
 	private IPreferenceStore preferenceStore;
 
-    public MavenProjectSettingPage() {
-        noDefaultAndApplyButton();
-    }
-    
-    @Override
-    protected String getPreferenceName() {
-        return DesignerMavenPlugin.PLUGIN_ID;
-    }
+	public MavenProjectSettingPage() {
+		noDefaultAndApplyButton();
+	}
 
-    @Override
-    protected void createFieldEditors() {
-        Composite parent = getFieldEditorParent();
-        parent.setLayout(new GridLayout());
-        Button button = new Button(parent, SWT.NONE);
-        button.setText(Messages.getString("ProjectPomProjectSettingPage.syncAllPomsButtonText")); //$NON-NLS-1$
-        
-        preferenceStore = getPreferenceStore();
-        Label filterLabel = new Label(parent, SWT.NONE);
-        filterLabel.setText(Messages.getString("ProjectPomProjectSettingPage_FilterPomLabel"));
-        filterText = new Text(parent, SWT.BORDER);
-        filterText.setLayoutData(new GridData(SWT.FILL,SWT.CENTER,true,false));
-        if(StringUtils.isBlank(preferenceStore.getString(MavenConstants.POM_FILTER))) {
-        	filterText.setText("");
-        }else {
-        	filterText.setText(preferenceStore.getString(MavenConstants.POM_FILTER));
-        }
-        filterText.addModifyListener(new ModifyListener() {
-			
+	@Override
+	protected String getPreferenceName() {
+		return DesignerMavenPlugin.PLUGIN_ID;
+	}
+
+	@Override
+	protected void createFieldEditors() {
+		Composite parent = getFieldEditorParent();
+		parent.setLayout(new GridLayout());
+		Button button = new Button(parent, SWT.NONE);
+		button.setText(Messages.getString("ProjectPomProjectSettingPage.syncAllPomsButtonText")); //$NON-NLS-1$
+
+		preferenceStore = getPreferenceStore();
+		Label filterLabel = new Label(parent, SWT.NONE);
+		filterLabel.setText(Messages.getString("ProjectPomProjectSettingPage_FilterPomLabel"));
+		filterText = new Text(parent, SWT.BORDER);
+		filterText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		if (StringUtils.isBlank(preferenceStore.getString(MavenConstants.POM_FILTER))) {
+			filterText.setText("");
+		} else {
+			filterText.setText(preferenceStore.getString(MavenConstants.POM_FILTER));
+		}
+		filterText.addModifyListener(new ModifyListener() {
+
 			@Override
 			public void modifyText(ModifyEvent e) {
-				if(GlobalServiceRegister.getDefault().isServiceRegistered(IFilterService.class)) {
-					IFilterService service = (IFilterService) GlobalServiceRegister.getDefault().getService(IFilterService.class);
-					if(StringUtils.isBlank(filterText.getText())||service.checkFilterContent(filterText.getText())){
+				if (GlobalServiceRegister.getDefault().isServiceRegistered(IFilterService.class)) {
+					IFilterService service = (IFilterService) GlobalServiceRegister.getDefault()
+							.getService(IFilterService.class);
+					if (StringUtils.isBlank(filterText.getText()) || service.checkFilterContent(filterText.getText())) {
 						setErrorMessage(null);
-						preferenceStore.setValue(MavenConstants.POM_FILTER, filterText.getText());
+						filter = filterText.getText();
 						setValid(true);
 						button.setEnabled(true);
-					}else {
+					} else {
 						setErrorMessage(Messages.getString("ProjectPomProjectSettingPage_FilterErrorMessage"));
 						setValid(false);
 						button.setEnabled(false);
 					}
-				}else {
-					setErrorMessage(Messages.getString("ProjectPomProjectSettingPage_FilterServiceErrorMessage"));
 				}
 			}
 		});
-        
-        button.addSelectionListener(new SelectionAdapter() {
 
-            @Override
-            public void widgetSelected(SelectionEvent event) {
-                try {
-                    new AggregatorPomsHelper().syncAllPoms();
-                } catch (Exception e) {
-                    ExceptionHandler.process(e);
-                    if("filter_parse_error".equals(e.getMessage())) {
-                    	setErrorMessage(Messages.getString("ProjectPomProjectSettingPage_FilterErrorMessage"));
-                    }
-                }
-            }
+		button.addSelectionListener(new SelectionAdapter() {
 
-        });
-        
-        
-    }
+			@Override
+			public void widgetSelected(SelectionEvent event) {
+				try {
+					preferenceStore.setValue(MavenConstants.POM_FILTER, filter);
+					new AggregatorPomsHelper().syncAllPoms();
+				} catch (Exception e) {
+					ExceptionHandler.process(e);
+					if ("filter_parse_error".equals(e.getMessage())) {
+						setErrorMessage(Messages.getString("ProjectPomProjectSettingPage_FilterErrorMessage"));
+					}
+				}
+			}
 
-    
-    
+		});
+
+	}
+
+	@Override
+	public boolean performOk() {
+		boolean ok = super.performOk();
+		preferenceStore.setValue(MavenConstants.POM_FILTER, filter);
+		return ok;
+	}
 
 }
