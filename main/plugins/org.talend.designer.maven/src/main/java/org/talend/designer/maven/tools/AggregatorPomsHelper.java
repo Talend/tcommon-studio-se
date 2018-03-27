@@ -334,13 +334,6 @@ public class AggregatorPomsHelper {
 			if (!filterService.isFilterAccepted(property.getItem(), PomIdsHelper.getPomFilter())) {
 				return;
 			}
-			Model thisModel = MavenPlugin.getMaven().readModel(pomFile.getContents());
-			List<IRepositoryViewObject> allItem = ProxyRepositoryFactory.getInstance()
-					.getAll(ERepositoryObjectType.PROCESS, true);
-			for (IRepositoryViewObject object : allItem) {
-				if (object.getProperty().getId().equals(thisModel.getProperties().get("talend.job.id"))) {
-				}
-			}
 		}
 		IFile parentPom = getParentModulePomFile(pomFile);
 		if (parentPom != null) {
