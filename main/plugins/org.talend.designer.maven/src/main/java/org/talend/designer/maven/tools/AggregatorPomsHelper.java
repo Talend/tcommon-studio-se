@@ -54,6 +54,8 @@ import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.ProjectReference;
 import org.talend.core.model.properties.Property;
+import org.talend.core.model.relationship.Relation;
+import org.talend.core.model.relationship.RelationshipItemBuilder;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
@@ -323,6 +325,15 @@ public class AggregatorPomsHelper {
     }
 
     public static void addToParentModules(IFile pomFile, Property property) throws Exception {
+        // Check relation for ESB service job, should not be added into main pom
+        List<Relation> relations = RelationshipItemBuilder.getInstance().getItemsRelatedTo(property.getId(),
+                property.getVersion(), RelationshipItemBuilder.JOB_RELATION);
+        for (Relation relation : relations) {
+            if (RelationshipItemBuilder.SERVICES_RELATION.equals(relation.getType())) {
+                return;
+            }
+        }
+
 		IFilterService filterService = null;
 		if (GlobalServiceRegister.getDefault().isServiceRegistered(IFilterService.class)) {
 			filterService = (IFilterService) GlobalServiceRegister.getDefault().getService(IFilterService.class);
