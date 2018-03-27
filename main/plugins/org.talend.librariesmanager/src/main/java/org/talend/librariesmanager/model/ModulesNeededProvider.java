@@ -736,6 +736,15 @@ public class ModulesNeededProvider {
         return importNeedsList;
     }
 
+    public static List<ModuleNeeded> getModulesNeededForBeans() {
+        List<ModuleNeeded> importNeedsList = getModulesNeededForRoutes();
+        
+        importNeedsList.add(getComponentModuleById("CAMEL", "camel-cxf"));
+        importNeedsList.add(getComponentModuleById("CAMEL", "cxf-core"));
+        importNeedsList.add(getComponentModuleById("CAMEL", "javax.ws.rs-api"));
+        return importNeedsList;
+    }
+
     private static void getRefRoutines(List<IRepositoryViewObject> routines, Project mainProject, ERepositoryObjectType type) {
         if (service != null) {
             IProxyRepositoryFactory repositoryFactory = service.getProxyRepositoryFactory();
