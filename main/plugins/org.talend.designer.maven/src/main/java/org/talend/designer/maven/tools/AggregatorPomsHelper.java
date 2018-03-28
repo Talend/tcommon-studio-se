@@ -573,7 +573,7 @@ public class AggregatorPomsHelper {
                                                     ProxyRepositoryFactory.getInstance().getAll(type, true, true));
                                         }
                                     }
-                                    BuildCacheManager.getInstance().clearCache();
+                                    BuildCacheManager.getInstance().clearAllCaches();
                                     int size = 3 + (objects == null ? 0 : objects.size());
                                     monitor.setTaskName("Synchronize all poms"); //$NON-NLS-1$
                                     monitor.beginTask("", size); //$NON-NLS-1$

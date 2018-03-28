@@ -94,7 +94,7 @@ public interface IJobletProviderService extends IService {
 
     public ProcessType getJobletProcess(IComponent component);
 
-    public IComponent getJobletComponent(NodeType node);
+    public IComponent getJobletComponent(NodeType node, String paletteType);
 
     public IEditorPart openJobletItem(JobletProcessItem item);
 

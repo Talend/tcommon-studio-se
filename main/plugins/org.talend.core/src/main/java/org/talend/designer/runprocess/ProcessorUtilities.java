@@ -56,6 +56,7 @@ import org.talend.core.ITDQItemService;
 import org.talend.core.PluginChecker;
 import org.talend.core.context.Context;
 import org.talend.core.context.RepositoryContext;
+import org.talend.core.hadoop.HadoopConstants;
 import org.talend.core.i18n.Messages;
 import org.talend.core.language.ECodeLanguage;
 import org.talend.core.language.LanguageManager;
@@ -2007,6 +2008,15 @@ public class ProcessorUtilities {
         }
         // trunjob component
         EList<NodeType> nodes = ptype.getNode();
+        String paletteType = null;
+        String frameWork = ptype.getFramework();
+        if (frameWork == null) {
+            paletteType = ComponentCategory.CATEGORY_4_DI.getName();
+        } else if (frameWork.equals(HadoopConstants.FRAMEWORK_SPARK)) {
+            paletteType = ComponentCategory.CATEGORY_4_SPARK.getName();
+        } else if (frameWork.equals(HadoopConstants.FRAMEWORK_SPARK_STREAMING)) {
+            paletteType = ComponentCategory.CATEGORY_4_SPARKSTREAMING.getName();
+        }
         for (NodeType node : nodes) {
             boolean activate = true;
             // check if node is active at least.
@@ -2056,7 +2066,7 @@ public class ProcessorUtilities {
                     IJobletProviderService service = (IJobletProviderService) GlobalServiceRegister.getDefault()
                             .getService(IJobletProviderService.class);
                     if (service != null) {
-                        IComponent jobletComponent = service.getJobletComponent(node);
+                        IComponent jobletComponent = service.getJobletComponent(node, paletteType);
                         ProcessType jobletProcess = service.getJobletProcess(jobletComponent);
                         if (jobletComponent != null) {
                             if (!firstChildOnly) {

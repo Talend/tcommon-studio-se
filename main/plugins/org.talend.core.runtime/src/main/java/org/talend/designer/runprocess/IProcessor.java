@@ -298,7 +298,7 @@ public interface IProcessor {
 
     Set<JobInfo> getBuildChildrenJobs();
 
-    Set<JobInfo> getBuildChildrenJobs(boolean firstChildOnly);
+    Set<JobInfo> getBuildFirstChildrenJobs();
 
     /**
      * used for old build job system. after maven build, can be removed.

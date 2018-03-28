@@ -261,7 +261,7 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
 
     protected void addChildrenDependencies(final List<Dependency> dependencies) {
         String parentId = getJobProcessor().getProperty().getId();
-        final Set<JobInfo> clonedChildrenJobInfors = getJobProcessor().getBuildChildrenJobs(true);
+        final Set<JobInfo> clonedChildrenJobInfors = getJobProcessor().getBuildFirstChildrenJobs();
         for (JobInfo jobInfo : clonedChildrenJobInfors) {
             if (jobInfo.getFatherJobInfo() != null && jobInfo.getFatherJobInfo().getJobId().equals(parentId)) {
                 if (!validChildrenJob(jobInfo)) {

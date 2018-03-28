@@ -60,16 +60,31 @@ public class BuildCacheManager {
 
     private static BuildCacheManager instance;
 
-    private Map<String, BuildCacheInfo> cache = new HashMap<>();
+    /**
+     * job cache
+     */
+    private Map<String, BuildCacheInfo> jobCache = new HashMap<>();
 
-    private Map<String, BuildCacheInfo> currentCache = new HashMap<>();
+    private Map<String, BuildCacheInfo> currentJobCache = new HashMap<>();
 
-    private Set<String> currentmodules = new HashSet<>();
+    private Set<String> currentJobmodules = new HashSet<>();
 
     private Set<ITalendProcessJavaProject> subjobProjects = new HashSet<>();
 
     private List<ITalendProcessJavaProject> subjobMavenProjects = new LinkedList<>();
 
+    /**
+     * joblet cache
+     */
+    private Map<String, Date> jobletCache = new HashMap<>();
+
+    private Map<String, Date> currentJobletCache = new HashMap<>();
+
+    private Set<String> currentJobletmodules = new HashSet<>();
+
+    /**
+     * routines, pigudfs, beans cache
+     */
     private Map<ERepositoryObjectType, Date> codesLastChangeCache = new HashMap<>();
 
     private Map<ERepositoryObjectType, Date> codesLastBuildCache = new HashMap<>();
@@ -90,7 +105,7 @@ public class BuildCacheManager {
     }
 
     public boolean isJobBuild(Property property) {
-        BuildCacheInfo cacheInfo = cache.get(getKey(property));
+        BuildCacheInfo cacheInfo = jobCache.get(getKey(property));
         if (cacheInfo == null) {
             return false;
         }
@@ -112,9 +127,9 @@ public class BuildCacheManager {
         return currentBuildType.equals(cachedBuildType);
     }
 
-    public void putCache(Property property) {
-        currentCache.put(getKey(property), generateCacheInfo(property));
-        currentmodules.add(getModulePath(property));
+    public void putJobCache(Property property) {
+        currentJobCache.put(getKey(property), generateCacheInfo(property));
+        currentJobmodules.add(getModulePath(property));
         ITalendProcessJavaProject subjobProject = getTalendJobJavaProject(property);
         subjobProjects.add(subjobProject);
         if (MavenProjectUtils.hasMavenNature(subjobProject.getProject())) {
@@ -122,9 +137,9 @@ public class BuildCacheManager {
         }
     }
 
-    public void removeCache(Property property) {
-        currentCache.remove(getKey(property));
-        currentmodules.remove(getModulePath(property));
+    public void removeJobCache(Property property) {
+        currentJobCache.remove(getKey(property));
+        currentJobmodules.remove(getModulePath(property));
         ITalendProcessJavaProject subjobProject = getTalendJobJavaProject(property);
         subjobProjects.remove(subjobProject);
         if (MavenProjectUtils.hasMavenNature(subjobProject.getProject())) {
@@ -132,16 +147,37 @@ public class BuildCacheManager {
         }
     }
 
+    public boolean isJobletBuild(Property property) {
+        Date cachedTimestamp = jobletCache.get(getKey(property));
+        if (cachedTimestamp == null) {
+            return false;
+        }
+        Date currentTimeStamp = getTimestamp(property);
+        return currentTimeStamp.compareTo(cachedTimestamp) == 0;
+    }
+
+    public void putJobletCache(Property property) {
+        currentJobletCache.put(getKey(property), getTimestamp(property));
+        currentJobletmodules.add(getModulePath(property));
+    }
+
     public void clearCurrentCache() {
-        currentCache.clear();
-        currentmodules.clear();
+        // clean job cache
+        currentJobCache.clear();
+        currentJobmodules.clear();
         subjobProjects.clear();
         subjobMavenProjects.clear();
+
+        // clean joblet cache
+        // currentJobletCache.clear();
+        // currentJobletmodules.clear();
+
         aggregatorPomsHelper = new AggregatorPomsHelper();
     }
 
     public void performBuildSuccess() {
-        cache.putAll(currentCache);
+        jobCache.putAll(currentJobCache);
+        jobletCache.putAll(currentJobletCache);
         clearCurrentCache();
     }
 
@@ -196,7 +232,7 @@ public class BuildCacheManager {
      * @return
      */
     public boolean needTempAggregator() {
-        return !currentmodules.isEmpty();
+        return !currentJobmodules.isEmpty() || !currentJobletmodules.isEmpty();
     }
 
     public void updateCodesLastChangeDate(ERepositoryObjectType codeType, Property property) {
@@ -216,12 +252,13 @@ public class BuildCacheManager {
         codesLastBuildCache.put(codeType, cacheLastChangeDate);
     }
 
-    public void clearCache(ERepositoryObjectType codeType) {
+    public void clearCodesCache(ERepositoryObjectType codeType) {
         codesLastBuildCache.remove(codeType);
     }
 
-    public void clearCache() {
-        cache.clear();
+    public void clearAllCaches() {
+        jobCache.clear();
+        jobletCache.clear();
         codesLastBuildCache.clear();
     }
 
@@ -246,7 +283,8 @@ public class BuildCacheManager {
         model.setVersion("7.0.0"); //$NON-NLS-1$
         model.setPackaging(TalendMavenConstants.PACKAGING_POM);
         model.setModules(new ArrayList<String>());
-        model.getModules().addAll(currentmodules);
+        model.getModules().addAll(currentJobmodules);
+        model.getModules().addAll(currentJobletmodules);
 
         PomUtil.savePom(null, model, pomFile);
     }
