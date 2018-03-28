@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.talend.studio</groupId>
+		<artifactId>studio-maven-repository-tos</artifactId>
+		<version>7.0.1-SNAPSHOT</version>
+		<relativePath>../../../</relativePath>
+	</parent>
+	<artifactId>spring-boot-maven-plugin-1-5-9-RELEASE-tos</artifactId>
+	<packaging>pom</packaging>
+	<properties>
+		<!-- Dependency versions -->
+		<features-maven-plugin.version>2.2.9</features-maven-plugin.version>
+		<maven-install-plugin.version>2.5.1</maven-install-plugin.version>
+		<plexus-utils.version>2.1</plexus-utils.version>
+	</properties>
+	<dependencies>
+	
+		<!-- Required by MS packaging for Jobs -->
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-maven-plugin</artifactId>
+			<version>1.5.9.RELEASE</version>
+		</dependency>
+		
+				<dependency>
+			<groupId>com.fasterxml.jackson</groupId>
+			<artifactId>jackson-bom</artifactId>
+			<version>2.8.10</version>
+			<type>pom</type>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-framework-bom</artifactId>
+			<version>4.3.13.RELEASE	</version>
+			<type>pom</type>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-releasetrain</artifactId>
+			<version>Ingalls-SR9</version>
+			<type>pom</type>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.integration</groupId>
+			<artifactId>spring-integration-bom</artifactId>
+			<version>4.3.12.RELEASE</version>
+			<type>pom</type>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<version>1.5.9.RELEASE</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+			<version>1.5.9.RELEASE</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-1.2-api</artifactId>
+			<version>2.7</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-log4j2</artifactId>
+			<version>1.5.9.RELEASE</version>
+		</dependency>
+		
+		<!-- Required for MS packaging for Routes -->
+		
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-spring-boot</artifactId>
+			<version>2.20.1</version>
+		</dependency>
+
+	</dependencies>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.8</version>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<addParentPoms>true</addParentPoms>
+							<copyPom>true</copyPom>
+							<includeScope>compile</includeScope>
+							<outputDirectory>${basedir}/../../../tmp/repository</outputDirectory>
+							<useRepositoryLayout>true</useRepositoryLayout>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
