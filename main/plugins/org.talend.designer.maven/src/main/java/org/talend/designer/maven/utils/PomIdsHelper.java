@@ -45,12 +45,15 @@ public class PomIdsHelper {
      * get current project groupId.
      */
     public static String getProjectGroupId() {
-        String projectTechName = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
-        return getGroupId(projectTechName, null, null);
+        return getProjectGroupId(null);
     }
 
     public static String getProjectGroupId(String projectTechName) {
-        return getGroupId(projectTechName, null, null);
+        if (projectTechName == null) {
+            projectTechName = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
+        }
+        String groupId = getPreferenceManager(projectTechName).getValue(MavenConstants.PROJECT_GROUPID);
+        return groupId;
     }
 
     /**
@@ -88,8 +91,7 @@ public class PomIdsHelper {
      * get current project codes groupId.
      */
     public static String getCodesGroupId(String baseName) {
-        final Project currentProject = ProjectManager.getInstance().getCurrentProject();
-        return getCodesGroupId(currentProject != null ? currentProject.getTechnicalLabel() : null, baseName);
+        return getCodesGroupId(null, baseName);
     }
 
     public static String getCodesGroupId(String projectTechName, String baseName) {
@@ -99,7 +101,10 @@ public class PomIdsHelper {
                 projectTechName = currentProject.getTechnicalLabel();
             }
         }
-        return getGroupId(projectTechName, baseName, null);
+        ProjectPreferenceManager manager = getPreferenceManager(projectTechName);
+        String groupId = manager.getValue(MavenConstants.PROJECT_GROUPID);
+        groupId += "." + baseName; //$NON-NLS-1$
+        return groupId;
     }
 
     /**
@@ -156,19 +161,22 @@ public class PomIdsHelper {
 
     public static String getJobletGroupId(Property property) {
         String projectTechName = ProjectManager.getInstance().getProject(property).getTechnicalLabel();
+        ProjectPreferenceManager manager = getPreferenceManager(projectTechName);
+        String groupId = manager.getValue(MavenConstants.PROJECT_GROUPID);
         ERepositoryObjectType jobletType = ERepositoryObjectType.getType(property);
-        return "org.talend." + projectTechName + "." + getJobletBaseName(jobletType); //$NON-NLS-1$ //$NON-NLS-2$
+        groupId += "." + getJobletBaseName(jobletType); //$NON-NLS-1$
+        return groupId;
     }
 
     public static String getJobletBaseName(ERepositoryObjectType jobletType) {
         if (jobletType == ERepositoryObjectType.JOBLET) {
-            return "joblet"; //$NON-NLS-1$
+            return TalendMavenConstants.DEFAULT_JOBLET;
         }
         if (jobletType == ERepositoryObjectType.SPARK_JOBLET) {
-            return "sparkjoblet"; //$NON-NLS-1$
+            return TalendMavenConstants.DEFAULT_SPARK_JOBLET;
         }
         if (jobletType == ERepositoryObjectType.SPARK_STREAMING_JOBLET) {
-            return "sparkstreamingjoblet"; //$NON-NLS-1$
+            return TalendMavenConstants.DEFAULT_SPARK_STREAMING_JOBLET;
         }
         return null;
     }
@@ -261,17 +269,7 @@ public class PomIdsHelper {
         }
         ProjectPreferenceManager manager = getPreferenceManager(projectTechName);
         String groupId = manager.getValue(MavenConstants.PROJECT_GROUPID);
-        // project
-        if (baseName == null && property == null) {
-            return groupId;
-        }
-        // codes
-        if (baseName.equals(TalendMavenConstants.DEFAULT_CODE) || baseName.equals(TalendMavenConstants.DEFAULT_PIGUDF)
-                || baseName.equals(TalendMavenConstants.DEFAULT_BEAN)) {
-            groupId += "." + baseName; //$NON-NLS-1$
-            return groupId;
-        }
-        // only for job
+        // job
         boolean appendFolderName = manager.getBoolean(MavenConstants.APPEND_FOLDER_TO_GROUPID);
         if (!appendFolderName) {
             if (baseName != null) {

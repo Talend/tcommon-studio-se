@@ -142,6 +142,12 @@ public interface TalendMavenConstants {
 
     static final String DEFAULT_JOB = "job";
 
+    static final String DEFAULT_JOBLET = "joblet";
+
+    static final String DEFAULT_SPARK_JOBLET = "sparkjoblet";
+
+    static final String DEFAULT_SPARK_STREAMING_JOBLET = "sparkstreamingjoblet";
+
     static final String DEFAULT_TEST = "test";
 
     static final String DEFAULT_MASTER = "master";

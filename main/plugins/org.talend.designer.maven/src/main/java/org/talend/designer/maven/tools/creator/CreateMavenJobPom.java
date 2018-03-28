@@ -568,6 +568,9 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
             String projectTechName = ProjectManager.getInstance().getProject(parentProperty).getTechnicalLabel();
             String projectGroupId = PomIdsHelper.getProjectGroupId(projectTechName);
             for (Dependency dependency : dependencies) {
+                if (MavenConstants.PACKAGING_POM.equals(dependency.getType())) {
+                    continue;
+                }
                 String dependencyGroupId = dependency.getGroupId();
                 String coordinate = dependencyGroupId + ":" + dependency.getArtifactId(); //$NON-NLS-1$
                 if (!childrenCoordinate.contains(coordinate)) {
@@ -581,13 +584,16 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
             // add 3rd party libraries
             Set<String> _3rdDepLib = new HashSet<>();
             for (Dependency dependency : dependencies) {
+                if (MavenConstants.PACKAGING_POM.equals(dependency.getType())) {
+                    continue;
+                }
                 String coordinate = dependency.getGroupId() + ":" + dependency.getArtifactId(); //$NON-NLS-1$
                 if (!childrenCoordinate.contains(coordinate) && !talendLibCoordinate.contains(coordinate)) {
                     _3rdDepLib.add(coordinate);
                     addItem(_3rdPartylibExcludes, coordinate, SEPARATOR);
                 }
             }
-            // add missing modules from the job generation of childrens
+            // add missing modules from the job generation of children
             for (ModuleNeeded moduleNeeded : fullModulesList) {
                 MavenArtifact artifact = MavenUrlHelper.parseMvnUrl(moduleNeeded.getMavenUri());
                 String coordinate = artifact.getGroupId() + ":" + artifact.getArtifactId(); //$NON-NLS-1$
