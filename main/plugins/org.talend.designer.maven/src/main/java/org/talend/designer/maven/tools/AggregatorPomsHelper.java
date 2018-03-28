@@ -324,6 +324,18 @@ public class AggregatorPomsHelper {
         }
     }
 
+    public static void addToParentModules(IFile pomFile) throws Exception {
+        Model model = MavenPlugin.getMaven().readModel(pomFile.getContents());
+        String id = model.getProperties().getProperty("talend.job.id");
+        String version = model.getProperties().getProperty("talend.job.version");
+        if (id != null && version != null) {
+            IRepositoryViewObject object = ProxyRepositoryFactory.getInstance().getSpecificVersion(id, version, false);
+            addToParentModules(pomFile, object.getProperty());
+        } else {
+            addToParentModules(pomFile, null);
+        }
+    }
+    
     public static void addToParentModules(IFile pomFile, Property property) throws Exception {
         // Check relation for ESB service job, should not be added into main pom
         if (property != null) {
