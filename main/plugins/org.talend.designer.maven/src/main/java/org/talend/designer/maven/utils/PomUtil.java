@@ -856,6 +856,16 @@ public class PomUtil {
         final IProject project = talendProject.getProject();
         final IFile backFile = project.getFile(TalendMavenConstants.POM_BACKUP_FILE_NAME);
         final IFile pomFile = project.getFile(TalendMavenConstants.POM_FILE_NAME);
+        backupPomFile(pomFile, backFile);
+    }
+
+    public static void backupPomFile(IFolder jobPomFolder) {
+        final IFile backFile = jobPomFolder.getFile(TalendMavenConstants.POM_BACKUP_FILE_NAME);
+        final IFile pomFile = jobPomFolder.getFile(TalendMavenConstants.POM_FILE_NAME);
+        backupPomFile(pomFile, backFile);
+    }
+
+    private static void backupPomFile(IFile pomFile, IFile backFile) {
         try {
             updateFilesInWorkspaceRunnable(null, new IWorkspaceRunnable() {
 

@@ -27,16 +27,19 @@ import org.apache.maven.model.PluginExecution;
 import org.apache.maven.model.Profile;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.PluginChecker;
 import org.talend.core.model.process.JobInfo;
+import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.core.runtime.process.TalendProcessArgumentConstant;
 import org.talend.core.runtime.process.TalendProcessOptionConstants;
 import org.talend.core.runtime.projectsetting.IProjectSettingPreferenceConstants;
 import org.talend.core.runtime.projectsetting.IProjectSettingTemplateConstants;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.template.MavenTemplateManager;
+import org.talend.designer.maven.tools.AggregatorPomsHelper;
 import org.talend.designer.maven.utils.PomUtil;
 import org.talend.designer.runprocess.IProcessor;
 import org.talend.utils.io.FilesUtils;
@@ -177,7 +180,13 @@ public class CreateMavenStandardJobOSGiPom extends CreateMavenJobPom {
      */
     @Override
     protected void afterCreate(IProgressMonitor monitor) throws Exception {
-        PomUtil.backupPomFile(getJobProcessor().getTalendJavaProject());
+        ITalendProcessJavaProject jobProject = getJobProcessor().getTalendJavaProject();
+        if (jobProject != null) {
+            PomUtil.backupPomFile(jobProject);
+        } else {
+            IFolder jobPomFolder = AggregatorPomsHelper.getItemPomFolder(getJobProcessor().getProperty());
+            PomUtil.backupPomFile(jobPomFolder);
+        }
         super.afterCreate(monitor);
     }
 }
