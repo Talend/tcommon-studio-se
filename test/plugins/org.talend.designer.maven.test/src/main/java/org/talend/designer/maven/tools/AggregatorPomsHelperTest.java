@@ -90,7 +90,7 @@ public class AggregatorPomsHelperTest {
         	 Model jobModel = new Model();
         	 jobModel.setModelVersion("4.0.0"); 
         	 jobModel.setGroupId("org.example.aa"); 
-        	 jobModel.setArtifactId(projectModel.getGroupId());
+        	 jobModel.setArtifactId(projectModel.getArtifactId());
         	 jobModel.setVersion(projectModel.getVersion());
         	 jobModel.setPackaging(TalendMavenConstants.PACKAGING_JAR);
              MavenPlugin.getMavenModelManager().createMavenModel(jobPom, jobModel);
