@@ -35,15 +35,47 @@
             <type>pom</type>
         </dependency>
         <dependency>
-            <groupId>org.talend.studio</groupId>
-            <artifactId>studio-maven-repository-zip</artifactId>
-            <version>${project.version}</version>
-            <type>pom</type>
-        </dependency>
-        <dependency>
 			<groupId>org.talend.studio</groupId>
 			<artifactId>studio-maven-repository-build</artifactId>
 			<version>${project.version}</version>
 			<type>pom</type>
 		</dependency>
-    </dependencies></project>
+		<dependency>
+			<groupId>org.talend.studio</groupId>
+			<artifactId>features-maven-plugin-2-2-9-tos</artifactId>
+			<version>${project.version}</version>
+			<type>pom</type>
+		</dependency>		
+		<dependency>
+			<groupId>org.talend.studio</groupId>
+			<artifactId>maven-bundle-plugin-2-3-7-tos</artifactId>
+			<version>${project.version}</version>
+			<type>pom</type>
+		</dependency>
+		<dependency>
+			<groupId>org.talend.studio</groupId>
+			<artifactId>maven-bundle-plugin-2-5-3-tos</artifactId>
+			<version>${project.version}</version>
+			<type>pom</type>
+		</dependency>
+		<dependency>
+			<groupId>org.talend.studio</groupId>
+			<artifactId>maven-install-plugin-2-5-1-tos</artifactId>
+			<version>${project.version}</version>
+			<type>pom</type>
+		</dependency>
+		<dependency>
+			<groupId>org.talend.studio</groupId>
+			<artifactId>spring-boot-maven-plugin-1-5-9-RELEASE-tos</artifactId>
+			<version>${project.version}</version>
+			<type>pom</type>
+		</dependency>
+        <dependency>
+            <groupId>org.talend.studio</groupId>
+            <artifactId>studio-maven-repository-zip</artifactId>
+            <version>${project.version}</version>
+            <type>pom</type>
+        </dependency>
+	</dependencies>
+</project>
+
