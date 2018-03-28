@@ -436,22 +436,6 @@ public class ProcessorUtilities {
             for (IClasspathAdjuster adjuster : classPathAdjusters) {
                 adjuster.initialize();
             }
-            Relation mainRelation = new Relation();
-            mainRelation.setId(jobInfo.getJobId());
-            mainRelation.setVersion(jobInfo.getJobVersion());
-            mainRelation.setType(RelationshipItemBuilder.JOB_RELATION);
-            hasLoopDependency = checkLoopDependencies(mainRelation);
-
-            // clean the previous code in case it has deleted subjob
-            try {
-                IPath codePath = processor2.getSrcCodePath().removeLastSegments(2);
-                IFolder srcFolder = processor2.getTalendJavaProject().getProject().getFolder(codePath);
-                for (IResource resource : srcFolder.members()) {
-                    resource.delete(true, progressMonitor);
-                }
-            } catch (CoreException e) {
-                ExceptionHandler.process(e);
-            }
         }
 
         IProcess currentProcess = null;
@@ -505,6 +489,25 @@ public class ProcessorUtilities {
             }
         }
         jobInfo.setProcessor(processor);
+
+        if (isMainJob && selectedProcessItem != null) {
+            Relation mainRelation = new Relation();
+            mainRelation.setId(jobInfo.getJobId());
+            mainRelation.setVersion(jobInfo.getJobVersion());
+            mainRelation.setType(RelationshipItemBuilder.JOB_RELATION);
+            hasLoopDependency = checkLoopDependencies(mainRelation);
+            // clean the previous code in case it has deleted subjob
+            try {
+                IPath codePath = processor.getSrcCodePath().removeLastSegments(2);
+                IFolder srcFolder = processor.getTalendJavaProject().getProject().getFolder(codePath);
+                for (IResource resource : srcFolder.members()) {
+                    resource.delete(true, progressMonitor);
+                }
+            } catch (CoreException e) {
+                ExceptionHandler.process(e);
+            }
+        }
+
         // processor.cleanBeforeGenerate(TalendProcessOptionConstants.CLEAN_JAVA_CODES |
         // TalendProcessOptionConstants.CLEAN_CONTEXTS
         // | TalendProcessOptionConstants.CLEAN_DATA_SETS);
@@ -952,13 +955,6 @@ public class ProcessorUtilities {
                 for (IClasspathAdjuster adjuster : classPathAdjusters) {
                     adjuster.initialize();
                 }
-
-                Relation mainRelation = new Relation();
-                mainRelation.setId(jobInfo.getJobId());
-                mainRelation.setVersion(jobInfo.getJobVersion());
-                mainRelation.setType(RelationshipItemBuilder.JOB_RELATION);
-                hasLoopDependency = checkLoopDependencies(mainRelation);
-
             }
 
             IProcess currentProcess = null;
@@ -1008,7 +1004,12 @@ public class ProcessorUtilities {
                 processor = getProcessor(currentProcess, selectedProcessItem.getProperty());
             }
 
-            if (isMainJob) {
+            if (isMainJob && selectedProcessItem != null) {
+                Relation mainRelation = new Relation();
+                mainRelation.setId(jobInfo.getJobId());
+                mainRelation.setVersion(jobInfo.getJobVersion());
+                mainRelation.setType(RelationshipItemBuilder.JOB_RELATION);
+                hasLoopDependency = checkLoopDependencies(mainRelation);
                 // clean the previous code in case it has deleted subjob
                 try {
                     IPath codePath = processor.getSrcCodePath().removeLastSegments(2);

@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.designer.maven.tools.creator;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +20,9 @@ import java.util.Set;
 
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
+import org.apache.maven.model.Plugin;
+import org.apache.maven.model.PluginExecution;
+import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -30,6 +34,7 @@ import org.eclipse.core.runtime.Path;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.core.GlobalServiceRegister;
+import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.process.IProcess;
 import org.talend.core.model.process.JobInfo;
 import org.talend.core.model.process.ProcessUtils;
@@ -38,6 +43,9 @@ import org.talend.core.model.properties.Project;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.utils.JavaResourcesHelper;
+import org.talend.core.runtime.maven.MavenArtifact;
+import org.talend.core.runtime.maven.MavenUrlHelper;
+import org.talend.core.runtime.process.LastGenerationInfo;
 import org.talend.core.runtime.projectsetting.IProjectSettingTemplateConstants;
 import org.talend.core.runtime.repository.build.IMavenPomCreator;
 import org.talend.core.ui.ITestContainerProviderService;
@@ -46,6 +54,7 @@ import org.talend.designer.maven.template.ETalendMavenVariables;
 import org.talend.designer.maven.tools.ProcessorDependenciesManager;
 import org.talend.designer.maven.utils.PomIdsHelper;
 import org.talend.designer.maven.utils.PomUtil;
+import org.talend.designer.runprocess.IBigDataProcessor;
 import org.talend.designer.runprocess.IProcessor;
 import org.talend.designer.runprocess.ProcessorException;
 import org.talend.repository.ProjectManager;
@@ -160,10 +169,56 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
         if (model != null) {
             Map<String, Object> templateParameters = PomUtil.getTemplateParameters(jobProcessor.getProperty());
             PomUtil.checkParent(model, this.getPomFile(), templateParameters);
-
+            setupShade(model);
             addDependencies(model);
         }
         return model;
+    }
+
+    protected void setupShade(Model model) {
+        if (jobProcessor instanceof IBigDataProcessor) {
+            IBigDataProcessor bigDataProcessor = (IBigDataProcessor) jobProcessor;
+            if (bigDataProcessor.needsShade()) {
+                List<Plugin> plugins = model.getBuild().getPlugins();
+                Plugin shade = null;
+                for (Plugin plugin : plugins) {
+                    if (plugin.getArtifactId().equals("maven-shade-plugin")) { //$NON-NLS-1$
+                        shade = plugin;
+                        break;
+                    }
+                }
+                if (shade != null) {
+                    plugins.remove(shade);
+                }
+                shade = new Plugin();
+                shade.setGroupId("org.apache.maven.plugins"); //$NON-NLS-1$
+                shade.setArtifactId("maven-shade-plugin"); //$NON-NLS-1$
+                shade.setVersion("3.1.0"); //$NON-NLS-1$
+                List<PluginExecution> executions = shade.getExecutions();
+                PluginExecution execution = new PluginExecution();
+                executions.add(execution);
+                execution.addGoal("shade"); //$NON-NLS-1$
+                Xpp3Dom configuration = new Xpp3Dom("configuration"); //$NON-NLS-1$
+                execution.setConfiguration(configuration);
+                Xpp3Dom minimizeJar = new Xpp3Dom("minimizeJar"); //$NON-NLS-1$
+                minimizeJar.setValue("true"); //$NON-NLS-1$
+                configuration.addChild(minimizeJar);
+                Xpp3Dom artifactSet = new Xpp3Dom("artifactSet"); //$NON-NLS-1$
+                configuration.addChild(artifactSet);
+                Xpp3Dom excludes = new Xpp3Dom("excludes"); //$NON-NLS-1$
+                if (!bigDataProcessor.getShadedModulesExclude().isEmpty()) {
+                    artifactSet.addChild(excludes);
+                }
+
+                for (ModuleNeeded module : bigDataProcessor.getShadedModulesExclude()) {
+                    Xpp3Dom include = new Xpp3Dom("exclude"); //$NON-NLS-1$
+                    excludes.addChild(include);
+                    MavenArtifact mvnArtifact = MavenUrlHelper.parseMvnUrl(module.getMavenUri());
+                    include.setValue(mvnArtifact.getGroupId() + ":" + mvnArtifact.getArtifactId()); //$NON-NLS-1$
+                }
+                plugins.add(shade);
+            }
+        }
     }
 
     protected void addDependencies(Model model) {

@@ -144,20 +144,20 @@ public class ModuleNeeded {
         this.requiredIf = requiredIf;
         String name = moduleName;
         String uri = mavenUrl;
-        if(moduleName !=null){
+        if (moduleName != null) {
             // in case the param moduleName is a maven uri
             MavenArtifact artifact = MavenUrlHelper.parseMvnUrl(moduleName);
-            if(artifact !=null){
-                name =artifact.getFileName();
-                if(mavenUrl ==null){
-                    uri =  moduleName;
+            if (artifact != null) {
+                name = artifact.getFileName();
+                if (mavenUrl == null) {
+                    uri = moduleName;
                 }
             }
         }
-        if(mavenUrl !=null && moduleName ==null){
+        if (mavenUrl != null && moduleName == null) {
             MavenArtifact artifact = MavenUrlHelper.parseMvnUrl(mavenUrl);
-            if(artifact !=null){
-                name =   artifact.getFileName();
+            if (artifact != null) {
+                name = artifact.getFileName();
             }
         }
         setModuleName(name);
@@ -549,39 +549,53 @@ public class ModuleNeeded {
         if (mavenUri == null) {
             if (StringUtils.isEmpty(mavenUriFromConfiguration)) {
                 // get the latest snapshot maven uri from index as default
-                String mvnUrisFromIndex = libManagerService.getMavenUriFromIndex(getModuleName());
+                String mvnUrisFromIndex = getGuessMavenUri();
                 if (mvnUrisFromIndex != null) {
-                    final String[] split = mvnUrisFromIndex.split(MavenUrlHelper.MVN_INDEX_SPLITER);
-                    String maxVerstion = null;
-                    for (String mvnUri : split) {
-                        if (maxVerstion == null) {
-                            maxVerstion = mvnUri;
-                        } else {
-                            MavenArtifact lastArtifact = MavenUrlHelper.parseMvnUrl(maxVerstion);
-                            MavenArtifact currentArtifact = MavenUrlHelper.parseMvnUrl(mvnUri);
-                            if (lastArtifact != null && currentArtifact != null) {
-                                String lastV = lastArtifact.getVersion();
-                                String currentV = currentArtifact.getVersion();
-                                if (!lastV.equals(currentV)) {
-                                    Version lastVersion = getVerstion(lastArtifact);
-                                    Version currentVersion = getVerstion(currentArtifact);
-                                    if (currentVersion.compareTo(lastVersion) > 0) {
-                                        maxVerstion = mvnUri;
-                                    }
-                                }
-                            }
-                        }
-
-                    }
-                    mavenUri = MavenUrlHelper.addTypeForMavenUri(maxVerstion, getModuleName());
+                    mavenUri = MavenUrlHelper.addTypeForMavenUri(mvnUrisFromIndex, getModuleName());
                 } else {
                     mavenUri = MavenUrlHelper.generateMvnUrlForJarName(getModuleName(), true, true);
                 }
             } else {
                 mavenUri = mavenUriFromConfiguration;
             }
+        } else if (mavenUriFromConfiguration == null) {
+            // in case the index is created after module loaded
+            String mvnUrisFromIndex = getGuessMavenUri();
+            if (mvnUrisFromIndex != null && !mavenUri.equals(mvnUrisFromIndex)) {
+                mavenUri = MavenUrlHelper.addTypeForMavenUri(mvnUrisFromIndex, getModuleName());
+            }
         }
         return mavenUri;
+    }
+
+    private String getGuessMavenUri() {
+        // get the latest snapshot maven uri from index as default
+        String maxVerstion = null;
+        String mvnUrisFromIndex = libManagerService.getMavenUriFromIndex(getModuleName());
+        if (mvnUrisFromIndex != null) {
+            final String[] split = mvnUrisFromIndex.split(MavenUrlHelper.MVN_INDEX_SPLITER);
+            for (String mvnUri : split) {
+                if (maxVerstion == null) {
+                    maxVerstion = mvnUri;
+                } else {
+                    MavenArtifact lastArtifact = MavenUrlHelper.parseMvnUrl(maxVerstion);
+                    MavenArtifact currentArtifact = MavenUrlHelper.parseMvnUrl(mvnUri);
+                    if (lastArtifact != null && currentArtifact != null) {
+                        String lastV = lastArtifact.getVersion();
+                        String currentV = currentArtifact.getVersion();
+                        if (!lastV.equals(currentV)) {
+                            Version lastVersion = getVerstion(lastArtifact);
+                            Version currentVersion = getVerstion(currentArtifact);
+                            if (currentVersion.compareTo(lastVersion) > 0) {
+                                maxVerstion = mvnUri;
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+        return maxVerstion;
     }
 
     private Version getVerstion(MavenArtifact artifact) {

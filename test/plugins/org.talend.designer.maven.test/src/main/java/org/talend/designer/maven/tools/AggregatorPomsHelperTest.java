@@ -46,7 +46,10 @@ public class AggregatorPomsHelperTest {
             jobFolder.create(true, true, null);
         }
         IFile jobPom = jobFolder.getFile("pom.xml");
-        AggregatorPomsHelper.addToParentModules(jobPom);
+        Property property = PropertiesFactory.eINSTANCE.createProperty();
+        property.setLabel("Job1");
+        property.setVersion("1.0");
+        AggregatorPomsHelper.addToParentModules(jobPom,null);
 
         IFile projectPom = pomsFolder.getFile("pom.xml");
         Model model = MavenPlugin.getMavenModelManager().readMavenModel(projectPom);

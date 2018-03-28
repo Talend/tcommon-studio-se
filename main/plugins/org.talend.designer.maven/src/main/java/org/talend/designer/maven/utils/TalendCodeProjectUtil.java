@@ -47,7 +47,7 @@ public final class TalendCodeProjectUtil {
                 }
                 codeProject.delete(true, true, monitor);
             }
-            CreateMavenCodeProject createProject = new CreateMavenCodeProject(codeProject, true) {
+            CreateMavenCodeProject createProject = new CreateMavenCodeProject(codeProject, null, true) {
 
                 @Override
                 protected Model createModel() {

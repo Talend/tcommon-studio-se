@@ -36,6 +36,7 @@ import org.eclipse.m2e.core.internal.project.ProjectConfigurationManager;
 import org.eclipse.osgi.util.NLS;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.model.general.TalendJobNature;
+import org.talend.core.model.properties.Property;
 import org.talend.core.runtime.projectsetting.IProjectSettingTemplateConstants;
 import org.talend.designer.maven.model.MavenSystemFolders;
 import org.talend.designer.maven.model.ProjectSystemFolder;
@@ -55,20 +56,19 @@ public class CreateMavenCodeProject extends AbstractMavenGeneralTemplatePom {
 
     private IProject project;
 
+    private Property property;
+
     private IFile pomFile;
 
     private IPath location;
 
     private boolean enbleMavenNature;
 
-    public CreateMavenCodeProject(IProject project) {
-        this(project, true);
-    }
-
-    public CreateMavenCodeProject(IProject project, boolean enbleMavenNature) {
+    public CreateMavenCodeProject(IProject project, Property property, boolean enbleMavenNature) {
         super(project.getFile(TalendMavenConstants.POM_FILE_NAME), IProjectSettingTemplateConstants.PROJECT_TEMPLATE_FILE_NAME);
         Assert.isNotNull(project);
         this.project = project;
+        this.property = property;
         this.enbleMavenNature = enbleMavenNature;
     }
 
@@ -140,7 +140,7 @@ public class CreateMavenCodeProject extends AbstractMavenGeneralTemplatePom {
         }
         addTalendNature(p, TalendJobNature.ID, monitor);
         // convertJavaProjectToPom(monitor, p);
-        AggregatorPomsHelper.addToParentModules(pomFile);
+        AggregatorPomsHelper.addToParentModules(pomFile, property);
     }
 
     @Override

@@ -220,6 +220,12 @@ public class PomIdsHelper {
         }
         return null;
     }
+    
+    public static String getPomFilter() {
+    	String projectTechName = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
+    	ProjectPreferenceManager manager = getPreferenceManager(projectTechName);
+    	return manager.getValue(MavenConstants.POM_FILTER);
+    }
 
     private static String getGroupId(String projectTechName, String baseName, Property property) {
         if (projectTechName == null) {
