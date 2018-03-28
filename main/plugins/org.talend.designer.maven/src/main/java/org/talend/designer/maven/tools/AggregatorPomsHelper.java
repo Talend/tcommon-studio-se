@@ -121,6 +121,9 @@ public class AggregatorPomsHelper {
     }
 
     public void installPom(IFile pomFile, boolean current) throws Exception {
+        if (!pomFile.exists()) {
+            return;
+        }
         Model model = MavenPlugin.getMaven().readModel(pomFile.getLocation().toFile());
         if (!isPomInstalled(model.getGroupId(), model.getArtifactId(), model.getVersion())) {
             MavenPomCommandLauncher launcher = new MavenPomCommandLauncher(pomFile, TalendMavenConstants.GOAL_INSTALL);
