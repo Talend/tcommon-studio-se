@@ -564,8 +564,14 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
             Model model = MavenPlugin.getMavenModelManager().readMavenModel(getPomFile());
             List<Dependency> dependencies = model.getDependencies();
 
-            Set<ModuleNeeded> fullModulesList = LastGenerationInfo.getInstance()
-                    .getModulesNeededWithSubjobPerJob(parentProperty.getId(), parentProperty.getVersion());
+            Set<JobInfo> allJobs = LastGenerationInfo.getInstance().getLastGeneratedjobs();
+            Set<ModuleNeeded> fullModulesList = new HashSet<>();
+            for (JobInfo jobInfo : allJobs) {
+                fullModulesList.addAll(LastGenerationInfo
+                        .getInstance()
+                        .getModulesNeededWithSubjobPerJob(
+                        jobInfo.getJobId(), jobInfo.getJobVersion()));
+            }
 
             // add talend libraries and codes
             Set<String> talendLibCoordinate = new HashSet<>();
