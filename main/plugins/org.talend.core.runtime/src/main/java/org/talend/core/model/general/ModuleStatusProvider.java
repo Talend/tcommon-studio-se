@@ -43,6 +43,10 @@ public class ModuleStatusProvider {
         return statusMap.get(getKey(key));
     }
 
+    public static void resetStatus(String key) {
+        statusMap.remove(getKey(key));
+    }
+
     public static void putDeployStatus(String mvnURI, ELibraryInstallStatus status) {
         deployStatusMap.put(getKey(mvnURI), status);
     }

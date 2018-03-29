@@ -140,7 +140,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 
     @Override
     public void deploy(URI jarFileUri, String mavenUri, IProgressMonitor... monitorWrap) {
-      deploy(jarFileUri, mavenUri, true, monitorWrap);
+        deploy(jarFileUri, mavenUri, true, monitorWrap);
     }
 
     @Override
@@ -301,8 +301,8 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 
             }
         } catch (Exception e) {
-            CommonExceptionHandler.process(new Exception(getClass().getSimpleName() + " resolve " + module.getModuleName()
-                    + " failed !"));
+            CommonExceptionHandler
+                    .process(new Exception(getClass().getSimpleName() + " resolve " + module.getModuleName() + " failed !"));
         }
         try {
             // try the jar name if can't get jar with uri.
@@ -325,8 +325,8 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                     }
                     // jar found > reset the modules just after install the jars
                     if (refresh && GlobalServiceRegister.getDefault().isServiceRegistered(ILibrariesService.class)) {
-                        ILibrariesService librariesService = (ILibrariesService) GlobalServiceRegister.getDefault().getService(
-                                ILibrariesService.class);
+                        ILibrariesService librariesService = (ILibrariesService) GlobalServiceRegister.getDefault()
+                                .getService(ILibrariesService.class);
                         librariesService.checkLibraries();
                     }
                 }
@@ -554,8 +554,8 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
         }
         if (showDialog && !modulesNotFound.isEmpty() && !CommonsPlugin.isHeadless()) {
             if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerUIService.class)) {
-                ILibraryManagerUIService libUiService = (ILibraryManagerUIService) GlobalServiceRegister.getDefault().getService(
-                        ILibraryManagerUIService.class);
+                ILibraryManagerUIService libUiService = (ILibraryManagerUIService) GlobalServiceRegister.getDefault()
+                        .getService(ILibraryManagerUIService.class);
                 libUiService.installModules(modulesNotFound);
                 List<ModuleNeeded> retrievedModules = new ArrayList<>(modulesNotFound);
                 modulesNotFound.clear();
@@ -571,8 +571,8 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                 }
                 if (needResetModulesNeeded) {
                     if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibrariesService.class)) {
-                        ILibrariesService librariesService = (ILibrariesService) GlobalServiceRegister.getDefault().getService(
-                                ILibrariesService.class);
+                        ILibrariesService librariesService = (ILibrariesService) GlobalServiceRegister.getDefault()
+                                .getService(ILibrariesService.class);
                         librariesService.checkLibraries();
                     }
                 }
@@ -615,8 +615,8 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
         }
         if (showDialog && !jarNotFound.isEmpty() && !CommonsPlugin.isHeadless()) {
             if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerUIService.class)) {
-                ILibraryManagerUIService libUiService = (ILibraryManagerUIService) GlobalServiceRegister.getDefault().getService(
-                        ILibraryManagerUIService.class);
+                ILibraryManagerUIService libUiService = (ILibraryManagerUIService) GlobalServiceRegister.getDefault()
+                        .getService(ILibraryManagerUIService.class);
                 libUiService.installModules(jarNotFound);
                 modulesNeeded = new HashSet<ModuleNeeded>(jarNotFound);
                 jarNotFound.clear();
@@ -632,8 +632,8 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                 }
                 if (needResetModulesNeeded) {
                     if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibrariesService.class)) {
-                        ILibrariesService librariesService = (ILibrariesService) GlobalServiceRegister.getDefault().getService(
-                                ILibrariesService.class);
+                        ILibrariesService librariesService = (ILibrariesService) GlobalServiceRegister.getDefault()
+                                .getService(ILibrariesService.class);
                         librariesService.checkLibraries();
                     }
                 }
@@ -977,6 +977,21 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                     ModuleStatusProvider.putStatus(mvnUriStatusKey, ELibraryInstallStatus.NOT_INSTALLED);
                 }
             }
+        } else if (status == ELibraryInstallStatus.NOT_INSTALLED) {
+            // fix for cached ModuleNeeded with status NOT_INSTALLED
+            File resolvedJar = null;
+            if (module.getModuleLocaion() != null) {
+                // check from platfrom
+                String platformPath = getJarPathFromPlatform(module.getModuleLocaion());
+                if (platformPath != null) {
+                    resolvedJar = new File(platformPath);
+                }
+                if (resolvedJar != null) {
+                    ModuleStatusProvider.putStatus(mvnUriStatusKey, ELibraryInstallStatus.INSTALLED);
+                } else {
+                    ModuleStatusProvider.putStatus(mvnUriStatusKey, ELibraryInstallStatus.NOT_INSTALLED);
+                }
+            }
         }
     }
 
@@ -1152,8 +1167,8 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                                     continue;
                                 } else {
                                     if (CommonsPlugin.isDebugMode()) {
-                                        CommonExceptionHandler.warn(name + " is duplicated, locations:" + path + " and:"
-                                                + moduleLocation);
+                                        CommonExceptionHandler
+                                                .warn(name + " is duplicated, locations:" + path + " and:" + moduleLocation);
                                     }
                                     continue;
                                 }
@@ -1274,8 +1289,8 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
         boolean modified = false;
         for (String key : libsMavenUriToDeploy.keySet()) {
             String mvnUri = libsMavenUriToDeploy.get(key);
-            if (!jarsToMavenuri.containsKey(key) || mvnUri != null && jarsToMavenuri.containsKey(key)
-                    && !mvnUri.equals(jarsToMavenuri.get(key))) {
+            if (!jarsToMavenuri.containsKey(key)
+                    || mvnUri != null && jarsToMavenuri.containsKey(key) && !mvnUri.equals(jarsToMavenuri.get(key))) {
                 String valueFromIndex = jarsToMavenuri.get(key);
                 if (valueFromIndex == null) {
                     jarsToMavenuri.put(key, mvnUri);
@@ -1310,8 +1325,8 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
         if (missingJarObservable == null) {
             BundleContext bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
             if (bundleContext != null) {
-                ServiceReference<?> serviceReference = bundleContext.getServiceReference(JarMissingObservable.class
-                        .getCanonicalName());
+                ServiceReference<?> serviceReference = bundleContext
+                        .getServiceReference(JarMissingObservable.class.getCanonicalName());
                 if (serviceReference != null) {
                     missingJarObservable = (JarMissingObservable) bundleContext.getService(serviceReference);
                 } else {// could not find the hook registry service so log it
@@ -1474,7 +1489,8 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
     }
 
     @Override
-    public boolean isLocalJarSameAsNexus(TalendLibsServerManager manager, final NexusServerBean customNexusServer, String jarUri) {
+    public boolean isLocalJarSameAsNexus(TalendLibsServerManager manager, final NexusServerBean customNexusServer,
+            String jarUri) {
         if (manager == null || customNexusServer == null || jarUri == null) {
             return false;
         }

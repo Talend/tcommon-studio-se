@@ -386,11 +386,18 @@ public class ModuleNeeded {
     public String getModuleLocaion() {
         if (this.moduleLocaion == null) {
             moduleLocaion = libManagerService.getPlatformURLFromIndex(moduleName);
+            // fix for cached ModuleNeeded with status NOT_INSTALLED
+            if (moduleLocaion != null && ELibraryInstallStatus.NOT_INSTALLED == ModuleStatusProvider.getStatus(getMavenUri())) {
+                ModuleStatusProvider.resetStatus(getMavenUri());
+            }
         }
         return moduleLocaion;
     }
 
     public void setModuleLocaion(String moduleLocaion) {
+        if (moduleLocaion != null && ELibraryInstallStatus.NOT_INSTALLED == ModuleStatusProvider.getStatus(getMavenUri())) {
+            ModuleStatusProvider.resetStatus(getMavenUri());
+        }
         this.moduleLocaion = moduleLocaion;
     }
 
