@@ -139,6 +139,7 @@ import org.talend.repository.documentation.ERepositoryActionName;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryConstants;
 import org.talend.utils.io.FilesUtils;
+
 import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
@@ -592,7 +593,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
         if (type == ERepositoryObjectType.PROCESS) {
             fireRepositoryPropertyChange(ERepositoryActionName.FOLDER_DELETE.getName(), path, type);
         }
-        if (type == ERepositoryObjectType.JOBLET) {
+        if (ERepositoryObjectType.getAllTypesOfJoblet().contains(type)) {
             fireRepositoryPropertyChange(ERepositoryActionName.JOBLET_FOLDER_DELETE.getName(), path, type);
         }
     }
@@ -640,8 +641,9 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
             fireRepositoryPropertyChange(ERepositoryActionName.FOLDER_MOVE.getName(), new IPath[] { sourcePath, targetPath },
                     type);
         }
-        if (type == ERepositoryObjectType.JOBLET) {
-            fireRepositoryPropertyChange(ERepositoryActionName.JOBLET_FOLDER_MOVE.getName(), sourcePath, targetPath);
+        if (ERepositoryObjectType.getAllTypesOfJoblet().contains(type)) {
+            fireRepositoryPropertyChange(ERepositoryActionName.JOBLET_FOLDER_MOVE.getName(),
+                    new IPath[] { sourcePath, targetPath }, type);
         }
         this.repositoryFactoryFromProvider.updateItemsPath(type, targetPath.append(sourcePath.lastSegment()));
     }
