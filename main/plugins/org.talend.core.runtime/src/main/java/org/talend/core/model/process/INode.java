@@ -37,6 +37,10 @@ public interface INode extends IElement {
 
     public static final String RELOAD_PARAMETER_CONNECTORS = "param.connectors"; //$NON-NLS-1$
 
+    public static final String SWITCH_NODE_CONNECTORS = "connectors.switch"; //$NON-NLS-1$
+
+    public static final String SWITCH_NODE_METADATA_LIST = "metadataList.switch"; //$NON-NLS-1$
+
     public static final String RELOAD_NEW = "param.new "; //$NON-NLS-1$
 
     public static final String OLD_UNIFIED_COMPONENT = "old.unified.component"; //$NON-NLS-1$
