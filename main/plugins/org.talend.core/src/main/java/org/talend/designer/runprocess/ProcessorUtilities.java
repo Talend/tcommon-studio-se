@@ -2015,14 +2015,14 @@ public class ProcessorUtilities {
         }
         // trunjob component
         EList<NodeType> nodes = ptype.getNode();
-        String paletteType = null;
+        String jobletPaletteType = null;
         String frameWork = ptype.getFramework();
         if (frameWork == null) {
-            paletteType = ComponentCategory.CATEGORY_4_DI.getName();
+            jobletPaletteType = ComponentCategory.CATEGORY_4_DI.getName();
         } else if (frameWork.equals(HadoopConstants.FRAMEWORK_SPARK)) {
-            paletteType = ComponentCategory.CATEGORY_4_SPARK.getName();
+            jobletPaletteType = ComponentCategory.CATEGORY_4_SPARK.getName();
         } else if (frameWork.equals(HadoopConstants.FRAMEWORK_SPARK_STREAMING)) {
-            paletteType = ComponentCategory.CATEGORY_4_SPARKSTREAMING.getName();
+            jobletPaletteType = ComponentCategory.CATEGORY_4_SPARKSTREAMING.getName();
         }
         for (NodeType node : nodes) {
             boolean activate = true;
@@ -2069,11 +2069,11 @@ public class ProcessorUtilities {
                 }
             } else {
                 // for joblet node
-                if (PluginChecker.isJobLetPluginLoaded()) {
+                if (jobletPaletteType != null && PluginChecker.isJobLetPluginLoaded()) {
                     IJobletProviderService service = (IJobletProviderService) GlobalServiceRegister.getDefault()
                             .getService(IJobletProviderService.class);
                     if (service != null) {
-                        IComponent jobletComponent = service.getJobletComponent(node, paletteType);
+                        IComponent jobletComponent = service.getJobletComponent(node, jobletPaletteType);
                         ProcessType jobletProcess = service.getJobletProcess(jobletComponent);
                         if (jobletComponent != null) {
                             if (!firstChildOnly) {
