@@ -161,11 +161,8 @@ public class PomIdsHelper {
 
     public static String getJobletGroupId(Property property) {
         String projectTechName = ProjectManager.getInstance().getProject(property).getTechnicalLabel();
-        ProjectPreferenceManager manager = getPreferenceManager(projectTechName);
-        String groupId = manager.getValue(MavenConstants.PROJECT_GROUPID);
         ERepositoryObjectType jobletType = ERepositoryObjectType.getType(property);
-        groupId += "." + getJobletBaseName(jobletType); //$NON-NLS-1$
-        return groupId;
+        return getGroupId(projectTechName, getJobletBaseName(jobletType), property);
     }
 
     public static String getJobletBaseName(ERepositoryObjectType jobletType) {
@@ -269,7 +266,7 @@ public class PomIdsHelper {
         }
         ProjectPreferenceManager manager = getPreferenceManager(projectTechName);
         String groupId = manager.getValue(MavenConstants.PROJECT_GROUPID);
-        // job
+        // job and joblet
         boolean appendFolderName = manager.getBoolean(MavenConstants.APPEND_FOLDER_TO_GROUPID);
         if (!appendFolderName) {
             if (baseName != null) {

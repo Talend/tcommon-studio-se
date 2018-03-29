@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import org.apache.maven.model.Model;
 import org.eclipse.core.resources.IFile;
@@ -105,6 +106,18 @@ public class CreateMavenJobletPom extends AbstractMavenProcessorPom {
         if (this.getDesc() != null) {
             model.setDescription(this.getDesc());
         }
+    }
+
+    @Override
+    protected void addProperties(Model model) {
+        super.addProperties(model);
+
+        Properties properties = model.getProperties();
+        Property property = getJobProcessor().getProperty();
+
+        checkPomProperty(properties, "talend.joblet.id", ETalendMavenVariables.JobletId, property.getId()); //$NON-NLS-1$
+        checkPomProperty(properties, "talend.joblet.version", ETalendMavenVariables.JobletVersion, //$NON-NLS-1$
+                property.getVersion());
     }
 
     @Override

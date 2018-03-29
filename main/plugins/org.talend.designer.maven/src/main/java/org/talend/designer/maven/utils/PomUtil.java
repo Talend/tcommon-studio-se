@@ -85,6 +85,7 @@ import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.core.ui.branding.IBrandingService;
+import org.talend.designer.maven.model.TalendJavaProjectConstants;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.template.MavenTemplateManager;
 import org.talend.designer.maven.tools.ProcessorDependenciesManager;
@@ -247,12 +248,19 @@ public class PomUtil {
         parent.setArtifactId(codeProjectTemplateModel.getArtifactId());
         parent.setVersion(codeProjectTemplateModel.getVersion());
 
-        String relativePath = getPomRelativePath(curPomFile.getLocation().toFile(), "poms"); //$NON-NLS-1$
+        String relativePath = getPomRelativePath(curPomFile.getLocation().toFile());
         parent.setRelativePath(relativePath);
 
     }
 
+    public static String getPomRelativePath(File file) {
+        return getPomRelativePath(file, TalendJavaProjectConstants.DIR_POMS);
+    }
+
     public static String getPomRelativePath(File file, String baseFolder) {
+        if (baseFolder == null) {
+            baseFolder = TalendJavaProjectConstants.DIR_POMS;
+        }
         String path = "../"; //$NON-NLS-1$
         // TODO should not allow user-defined folder named poms.
         if (file != null && !file.getParentFile().getName().equals(baseFolder)) {

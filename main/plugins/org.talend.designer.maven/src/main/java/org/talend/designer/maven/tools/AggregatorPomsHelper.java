@@ -342,7 +342,7 @@ public class AggregatorPomsHelper {
             addToParentModules(pomFile, null);
         }
     }
-    
+
     public static void addToParentModules(IFile pomFile, Property property) throws Exception {
         // Check relation for ESB service job, should not be added into main pom
         if (property != null) {
@@ -427,6 +427,49 @@ public class AggregatorPomsHelper {
             }
         }
         return parentPom;
+    }
+
+    public static void updateGroupIdAndRelativePath(IFile pomFile) throws Exception {
+        Property property = null;
+        Model model = MavenPlugin.getMavenModelManager().readMavenModel(pomFile);
+        String id = model.getProperties().getProperty("talend.job.id"); //$NON-NLS-1$
+        String version = model.getProperties().getProperty("talend.job.version"); //$NON-NLS-1$
+        if (id == null && version == null) {
+            id = model.getProperties().getProperty("talend.joblet.id"); //$NON-NLS-1$
+            version = model.getProperties().getProperty("talend.joblet.version"); //$NON-NLS-1$
+        }
+        if (id != null && version != null) {
+            IRepositoryViewObject object = ProxyRepositoryFactory.getInstance().getSpecificVersion(id, version, false);
+            property = object.getProperty();
+        }
+        updateGroupIdAndRelativePath(pomFile, property);
+    }
+
+    public static void updateGroupIdAndRelativePath(IFile pomFile, Property property) throws Exception {
+        Model model = MavenPlugin.getMavenModelManager().readMavenModel(pomFile);
+        boolean needUpdate = false;
+        if (model.getParent() != null) {
+            String relativePath = PomUtil.getPomRelativePath(pomFile.getLocation().toFile());
+            if (!relativePath.equals(model.getParent().getRelativePath())) {
+                model.getParent().setRelativePath(relativePath);
+                needUpdate = true;
+            }
+        }
+        if (property != null) {
+            String groupId = null;
+            if (ERepositoryObjectType.getAllTypesOfJoblet().contains(ERepositoryObjectType.getType(property))) {
+                groupId = PomIdsHelper.getJobletGroupId(property);
+            } else {
+                groupId = PomIdsHelper.getJobGroupId(property);
+            }
+            if (groupId != null && !groupId.equals(model.getGroupId())) {
+                model.setGroupId(groupId);
+                needUpdate = true;
+            }
+        }
+        if (needUpdate) {
+            PomUtil.savePom(null, model, pomFile);
+        }
     }
 
     public void refreshAggregatorFolderPom(IFile pomFile) throws Exception {
@@ -611,9 +654,13 @@ public class AggregatorPomsHelper {
                                     		filterService = (IFilterService) GlobalServiceRegister.getDefault().getService(IFilterService.class);
                                     	}
                                         String pomFilter = PomIdsHelper.getPomFilter();
+                                        List<ERepositoryObjectType> allJobletTypes =
+                                                ERepositoryObjectType.getAllTypesOfJoblet();
                                         for (IRepositoryViewObject object : objects) {
                                             if (filterService != null) {
-                                                if (!filterService.isFilterAccepted(object.getProperty().getItem(),
+                                                if (!allJobletTypes.contains(object.getRepositoryObjectType())
+                                                        && !filterService.isFilterAccepted(
+                                                                object.getProperty().getItem(),
                                                         pomFilter)) {
                                                     continue;
                                                 }
