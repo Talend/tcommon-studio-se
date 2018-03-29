@@ -195,7 +195,7 @@ public class AggregatorPomsHelper {
         try {
             ITalendProcessJavaProject codeProject = getCodesProject(codeType);
             updateCodeProjectPom(monitor, codeType, codeProject.getProjectPom());
-            buildAndInstallCodesProject(monitor, codeType, true, forceBuild);
+            buildAndInstallCodesProject(monitor, codeType, true, forceBuild, true);
         } catch (Exception e) {
             ExceptionHandler.process(e);
         }
@@ -240,11 +240,11 @@ public class AggregatorPomsHelper {
     }
 
     public static void buildAndInstallCodesProject(IProgressMonitor monitor, ERepositoryObjectType codeType) throws Exception {
-        buildAndInstallCodesProject(monitor, codeType, true, false);
+        buildAndInstallCodesProject(monitor, codeType, true, false, false);
     }
 
     public static void buildAndInstallCodesProject(IProgressMonitor monitor, ERepositoryObjectType codeType, boolean install,
-            boolean forceBuild) throws Exception {
+            boolean forceBuild, boolean schedule) throws Exception {
         if (forceBuild || !BuildCacheManager.getInstance().isCodesBuild(codeType)) {
             if (!CommonsPlugin.isHeadless()) {
                 Job job = new Job("Install " + codeType.getLabel()) {
@@ -263,7 +263,11 @@ public class AggregatorPomsHelper {
                 };
                 job.setUser(false);
                 job.setPriority(Job.INTERACTIVE);
-                job.schedule();
+                if (schedule) {
+                    job.schedule();
+                } else {
+                    job.join();
+                }
             } else {
                 synchronized (codeType) {
                     build(codeType, install, forceBuild, monitor);
