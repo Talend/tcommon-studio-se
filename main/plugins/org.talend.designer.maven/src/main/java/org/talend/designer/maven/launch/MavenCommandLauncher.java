@@ -331,6 +331,9 @@ public abstract class MavenCommandLauncher {
 
     protected ILaunch buildAndLaunch(ILaunchConfiguration configuration, String mode, IProgressMonitor monitor)
             throws CoreException {
+        if (monitor == null) {
+            monitor = new NullProgressMonitor();
+        }
         monitor.beginTask("", 1); //$NON-NLS-1$
         try {
             MavenLaunchDelegate mvld = new TalendMavenLaunchDelegate();
