@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.talend.commons.exception.ExceptionHandler;
 
@@ -84,14 +83,12 @@ public class TalendProxySelector extends ProxySelector {
     public List<Proxy> select(final URI uri) {
         final Set<Proxy> resultFromProviders = new HashSet<>();
         List<IProxySelectorProvider> providers = getProxySelectorProviders();
-        final AtomicBoolean handled = new AtomicBoolean(false);
         if (providers != null) {
             providers.stream().forEach(p -> {
                 if (instance == p) {
                     return;
                 }
                 if (p.canHandle(uri)) {
-                    handled.set(true);
                     try {
                         List<Proxy> proxys = p.select(uri);
                         if (proxys != null && !proxys.isEmpty()) {
@@ -107,11 +104,6 @@ public class TalendProxySelector extends ProxySelector {
 
         if (resultFromProviders != null && !resultFromProviders.isEmpty()) {
             result.addAll(resultFromProviders);
-        }
-
-        if (handled.get()) {
-            // if handled, just return the list no matter empty or not
-            return result;
         }
 
         ProxySelector defaultProxySelector = getDefaultProxySelector();
