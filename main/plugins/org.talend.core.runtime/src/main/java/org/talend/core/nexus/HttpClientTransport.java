@@ -183,11 +183,18 @@ public abstract class HttpClientTransport {
                 String schema = uri.getScheme();
                 if (schema != null && schema.toLowerCase().startsWith("socket")) { //$NON-NLS-1$
                     try {
-                        URI newUri = new URI("http", uri.getUserInfo(), uri.getHost(), uri.getPort(), uri.getPath(),
+                        URI newUri = new URI("https", uri.getUserInfo(), uri.getHost(), uri.getPort(), uri.getPath(),
                                 uri.getQuery(), uri.getFragment());
                         List<Proxy> proxys = TalendProxySelector.getInstance().getDefaultProxySelector().select(newUri);
                         if (proxys != null && !proxys.isEmpty()) {
                             newProxys.addAll(proxys);
+                        } else {
+                            newUri = new URI("http", uri.getUserInfo(), uri.getHost(), uri.getPort(), uri.getPath(),
+                                    uri.getQuery(), uri.getFragment());
+                            proxys = TalendProxySelector.getInstance().getDefaultProxySelector().select(newUri);
+                            if (proxys != null && !proxys.isEmpty()) {
+                                newProxys.addAll(proxys);
+                            }
                         }
                     } catch (URISyntaxException e) {
                         ExceptionHandler.process(e);
