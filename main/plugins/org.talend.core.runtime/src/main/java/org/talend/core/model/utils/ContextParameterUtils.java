@@ -262,7 +262,10 @@ public final class ContextParameterUtils {
         }
         if(storedValue instanceof String){
             List<String> values = Arrays.asList(((String)storedValue).split(";"));
-            return getMVNValues(values);
+            if(isDrivers){
+            	return getMVNValues(values);
+            }
+            return values;
         }
         String code = String.valueOf(storedValue);
         if (!isContainContextParam(code)) {
