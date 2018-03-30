@@ -67,7 +67,7 @@ public class NexusServerUtils {
      * @param password
      * @return
      */
-    private static int getTimeout() {
+    public static int getTimeout() {
         IEclipsePreferences node = InstanceScope.INSTANCE.getNode(ORG_TALEND_DESIGNER_CORE);
         int timeout = node.getInt(ITalendCorePrefConstants.NEXUS_TIMEOUT, 10000);
         return timeout;

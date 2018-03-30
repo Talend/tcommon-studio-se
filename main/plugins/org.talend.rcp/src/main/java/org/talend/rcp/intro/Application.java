@@ -48,6 +48,7 @@ import org.talend.commons.runtime.service.PatchComponent;
 import org.talend.commons.ui.runtime.update.PreferenceKeys;
 import org.talend.commons.ui.swt.dialogs.ErrorDialogWidthDetailArea;
 import org.talend.commons.utils.network.NetworkUtil;
+import org.talend.commons.utils.network.TalendProxySelector;
 import org.talend.commons.utils.system.EclipseCommandLine;
 import org.talend.core.BrandingChecker;
 import org.talend.core.GlobalServiceRegister;
@@ -111,6 +112,7 @@ public class Application implements IApplication {
 
             StudioSSLContextProvider.setSSLSystemProperty();
             HttpProxyUtil.initializeHttpProxy();
+            TalendProxySelector.getInstance();
             NetworkUtil.loadAuthenticator();
 
             // setup MavenResolver properties

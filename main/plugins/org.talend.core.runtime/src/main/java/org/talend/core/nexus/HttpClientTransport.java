@@ -17,11 +17,9 @@ import java.net.InetSocketAddress;
 import java.net.PasswordAuthentication;
 import java.net.Proxy;
 import java.net.Proxy.Type;
-import java.net.ProxySelector;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -33,10 +31,15 @@ import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.conn.params.ConnRoutePNames;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.CoreConnectionPNames;
+import org.apache.http.params.HttpParams;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.talend.commons.exception.BusinessException;
+import org.talend.commons.exception.ExceptionHandler;
+import org.talend.commons.utils.network.TalendProxySelector;
+import org.talend.commons.utils.network.TalendProxySelector.IProxySelectorProvider;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 
@@ -82,7 +85,7 @@ public abstract class HttpClientTransport {
         doRequest(monitor, createURI(artifact));
     }
 
-    public void doRequest(IProgressMonitor monitor, URI requestURI) throws Exception {
+    public void doRequest(IProgressMonitor monitor, final URI requestURI) throws Exception {
         if (monitor == null) {
             monitor = new NullProgressMonitor();
         }
@@ -94,23 +97,18 @@ public abstract class HttpClientTransport {
         }
         DefaultHttpClient httpClient = new DefaultHttpClient();
 
-        /**
-         * Normally the default proxySelector is EclipseProxySelector
-         */
-        final ProxySelector proxySelector = AccessController.doPrivileged(new PrivilegedAction<ProxySelector>() {
-
-            @Override
-            public ProxySelector run() {
-                return ProxySelector.getDefault();
-            }
-        });
+        IProxySelectorProvider proxySelectorProvider = null;
         try {
             if (StringUtils.isNotBlank(username)) { // set username
                 httpClient.getCredentialsProvider().setCredentials(new AuthScope(requestURI.getHost(), requestURI.getPort()),
                         new UsernamePasswordCredentials(username, password));
             }
+            int timeout = NexusServerUtils.getTimeout();
+            HttpParams params = httpClient.getParams();
+            params.setIntParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, timeout);
+            params.setIntParameter(CoreConnectionPNames.SO_TIMEOUT, timeout);
 
-            configureProxy(httpClient, requestURI);
+            proxySelectorProvider = addProxy(httpClient, requestURI);
             HttpResponse response = execute(monitor, httpClient, requestURI);
 
             processResponseCode(response);
@@ -121,66 +119,94 @@ public abstract class HttpClientTransport {
             throw new Exception(requestURI.toString(), e);
         } finally {
             httpClient.getConnectionManager().shutdown();
-            AccessController.doPrivileged(new PrivilegedAction<Void>() {
-
-                @Override
-                public Void run() {
-                    ProxySelector.setDefault(proxySelector);
-                    return null;
-                }
-            });
+            removeProxy(proxySelectorProvider);
         }
     }
 
-    private void configureProxy(final DefaultHttpClient httpClient, URI requestURI) {
-        if (Boolean.valueOf(System.getProperty(PROP_PROXY_HTTP_CLIENT_USE_DEFAULT_SETTINGS, Boolean.FALSE.toString()))) {
-            return;
+    private IProxySelectorProvider addProxy(final DefaultHttpClient httpClient, URI requestURI) {
+        IProxySelectorProvider proxySelectorProvider = null;
+        try {
+            if (Boolean.valueOf(System.getProperty(PROP_PROXY_HTTP_CLIENT_USE_DEFAULT_SETTINGS, Boolean.FALSE.toString()))) {
+                return proxySelectorProvider;
+            }
+            final List<Proxy> proxyList = TalendProxySelector.getInstance().getDefaultProxySelector().select(requestURI);
+            Proxy usedProxy = null;
+            if (proxyList != null && !proxyList.isEmpty()) {
+                usedProxy = proxyList.get(0);
+            }
+
+            if (usedProxy != null) {
+                if (Type.DIRECT.equals(usedProxy.type())) {
+                    return proxySelectorProvider;
+                }
+                final Proxy finalProxy = usedProxy;
+                InetSocketAddress address = (InetSocketAddress) finalProxy.address();
+                PasswordAuthentication proxyAuthentication = Authenticator.requestPasswordAuthentication(address.getHostName(),
+                        address.getAddress(), address.getPort(), "Http Proxy", "Http proxy authentication", null);
+                String proxyUser = proxyAuthentication.getUserName();
+                String proxyPassword = new String(proxyAuthentication.getPassword());
+                String proxyServer = address.getHostName();
+                int proxyPort = address.getPort();
+                httpClient.getCredentialsProvider().setCredentials(new AuthScope(proxyServer, proxyPort),
+                        new UsernamePasswordCredentials(proxyUser, proxyPassword));
+                HttpHost proxyHost = new HttpHost(proxyServer, proxyPort);
+                httpClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxyHost);
+                proxySelectorProvider = createProxySelectorProvider();
+            }
+            return proxySelectorProvider;
+        } finally {
+            if (proxySelectorProvider != null) {
+                TalendProxySelector.getInstance().addProxySelectorProvider(proxySelectorProvider);
+            }
         }
-        /**
-         * Get proxy configured in Eclipse preference
-         */
-        ProxySelector proxySelector = AccessController.doPrivileged(new PrivilegedAction<ProxySelector>() {
+    }
+
+    private void removeProxy(IProxySelectorProvider proxySelectorProvider) {
+        if (proxySelectorProvider != null) {
+            TalendProxySelector.getInstance().removeProxySelectorProvider(proxySelectorProvider);
+        }
+    }
+
+    private IProxySelectorProvider createProxySelectorProvider() {
+        IProxySelectorProvider proxySelectorProvider = new TalendProxySelector.AbstractProxySelectorProvider() {
+
+            private Thread currentThread = Thread.currentThread();
 
             @Override
-            public ProxySelector run() {
-                return ProxySelector.getDefault();
-            }
-        });
-        final List<Proxy> proxyList = proxySelector.select(requestURI);
-        Proxy usedProxy = null;
-        if (proxyList != null && !proxyList.isEmpty()) {
-            usedProxy = proxyList.get(0);
-        }
+            public List<Proxy> select(URI uri) {
+                // return Collections.EMPTY_LIST;
 
-        if (usedProxy != null) {
-            if (Type.DIRECT.equals(usedProxy.type())) {
-                return;
-            }
-            final Proxy finalProxy = usedProxy;
-            InetSocketAddress address = (InetSocketAddress) finalProxy.address();
-            PasswordAuthentication proxyAuthentication = Authenticator.requestPasswordAuthentication(address.getHostName(),
-                    address.getAddress(), address.getPort(), "Http Proxy", "Http proxy authentication", null);
-            String proxyUser = proxyAuthentication.getUserName();
-            String proxyPassword = new String(proxyAuthentication.getPassword());
-            String proxyServer = address.getHostName();
-            int proxyPort = address.getPort();
-            httpClient.getCredentialsProvider().setCredentials(new AuthScope(proxyServer, proxyPort),
-                    new UsernamePasswordCredentials(proxyUser, proxyPassword));
-            HttpHost proxyHost = new HttpHost(proxyServer, proxyPort);
-            httpClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxyHost);
-
-            /**
-             * set default proxySelector to null, since the EclipseProxySelector will use SOCKS proxy instead of HTTP
-             */
-            AccessController.doPrivileged(new PrivilegedAction<Void>() {
-
-                @Override
-                public Void run() {
-                    ProxySelector.setDefault(null);
-                    return null;
+                List<Proxy> newProxys = new ArrayList<>();
+                if (uri == null) {
+                    return newProxys;
                 }
-            });
-        }
+                String schema = uri.getScheme();
+                if (schema != null && schema.toLowerCase().startsWith("socket")) { //$NON-NLS-1$
+                    try {
+                        URI newUri = new URI("http", uri.getUserInfo(), uri.getHost(), uri.getPort(), uri.getPath(),
+                                uri.getQuery(), uri.getFragment());
+                        List<Proxy> proxys = TalendProxySelector.getInstance().getDefaultProxySelector().select(newUri);
+                        if (proxys != null && !proxys.isEmpty()) {
+                            newProxys.addAll(proxys);
+                        }
+                    } catch (URISyntaxException e) {
+                        ExceptionHandler.process(e);
+                    }
+                }
+                return newProxys;
+
+            }
+
+            @Override
+            public boolean canHandle(URI uri) {
+                if (Thread.currentThread() == currentThread) {
+                    return true;
+                }
+                return false;
+            }
+
+        };
+        return proxySelectorProvider;
     }
 
     public void processResponseCode(HttpResponse response) throws BusinessException {
