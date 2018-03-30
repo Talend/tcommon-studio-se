@@ -22,6 +22,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.xmi.XMLLoad;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.XMLSave;
@@ -140,6 +141,15 @@ public class TalendXMIResource extends XMIResourceImpl {
                             return null; // need ignore
                         }
                         return super.getPackageForURI(uriString);
+                    }
+
+                    @Override
+                    protected void setFeatureValue(EObject object, EStructuralFeature feature, Object value,
+                            int position) {
+                        if (feature == null) {
+                            return; // no feature to match for emf
+                        }
+                        super.setFeatureValue(object, feature, value, position);
                     }
 
                 };

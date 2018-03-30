@@ -14,6 +14,7 @@ package org.talend.repository.localprovider.model;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.talend.model.emf.CwmResourceFactory;
 
 /**
  * 
@@ -27,9 +28,10 @@ public class ResourcesFactoryInitializer {
      * Initialize *ResourcesFactory instances required to load Talend *.properties files.
      */
     public static void initResourceFactories() {
+        // EmfFileResourceUtil use CwmResourceFactory for project and properties ????
         Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("properties", new PropertiesProjectResourcesFactory());
         Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("project", new PropertiesProjectResourcesFactory());
-        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("item", new XMIResourceFactoryImpl());
+        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("item", new CwmResourceFactory());
         Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("screenshot", new XMIResourceFactoryImpl());
     }
 
