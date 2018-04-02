@@ -171,23 +171,26 @@ public class BuildCacheManager {
         currentJobmodules.clear();
         subjobProjects.clear();
         subjobMavenProjects.clear();
-
-        // clean joblet cache
-        // currentJobletCache.clear();
-        // currentJobletmodules.clear();
-
         aggregatorPomsHelper = new AggregatorPomsHelper();
+    }
+
+    public void clearCurrentJobletCache() {
+        // clean joblet cache
+        currentJobletCache.clear();
+        currentJobletmodules.clear();
     }
 
     public void performBuildSuccess() {
         jobCache.putAll(currentJobCache);
         jobletCache.putAll(currentJobletCache);
         clearCurrentCache();
+        clearCurrentJobletCache();
     }
 
     public void performBuildFailure() {
         restoreSubjobPoms();
         clearCurrentCache();
+        clearCurrentJobletCache();
     }
 
     public void build(IProgressMonitor monitor, Map<String, Object> argumentsMap) throws Exception {
