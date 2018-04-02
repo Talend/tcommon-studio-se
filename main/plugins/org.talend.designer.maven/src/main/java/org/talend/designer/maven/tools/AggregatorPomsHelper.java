@@ -246,13 +246,13 @@ public class AggregatorPomsHelper {
     public static void buildAndInstallCodesProject(IProgressMonitor monitor, ERepositoryObjectType codeType, boolean install,
             boolean forceBuild, boolean schedule) throws Exception {
         if (forceBuild || !BuildCacheManager.getInstance().isCodesBuild(codeType)) {
-            if (!CommonsPlugin.isHeadless()) {
+            if (!CommonsPlugin.isHeadless() && schedule) {
                 Job job = new Job("Install " + codeType.getLabel()) {
 
                     @Override
                     protected IStatus run(IProgressMonitor monitor) {
                         try {
-                            build(codeType, install, forceBuild, monitor);
+                            build(codeType, install, monitor);
                             return org.eclipse.core.runtime.Status.OK_STATUS;
                         } catch (Exception e) {
                             return new org.eclipse.core.runtime.Status(IStatus.ERROR, DesignerMavenPlugin.PLUGIN_ID, 1,
@@ -263,31 +263,25 @@ public class AggregatorPomsHelper {
                 };
                 job.setUser(false);
                 job.setPriority(Job.INTERACTIVE);
-                if (schedule) {
-                    job.schedule();
-                } else {
-                    job.join();
-                }
+                job.schedule();
             } else {
                 synchronized (codeType) {
-                    build(codeType, install, forceBuild, monitor);
+                    build(codeType, install, monitor);
                 }
             }
         }
     }
 
-    private static void build(ERepositoryObjectType codeType, boolean install, boolean forceBuild, IProgressMonitor monitor)
+    private static void build(ERepositoryObjectType codeType, boolean install, IProgressMonitor monitor)
             throws Exception {
-        if (forceBuild || !BuildCacheManager.getInstance().isCodesBuild(codeType)) {
-            ITalendProcessJavaProject codeProject = getCodesProject(codeType);
-            codeProject.buildModules(monitor, null, null);
-            if (install) {
-                Map<String, Object> argumentsMap = new HashMap<>();
-                argumentsMap.put(TalendProcessArgumentConstant.ARG_GOAL, TalendMavenConstants.GOAL_INSTALL);
-                argumentsMap.put(TalendProcessArgumentConstant.ARG_PROGRAM_ARGUMENTS, "-Dmaven.main.skip=true"); //$NON-NLS-1$
-                codeProject.buildModules(monitor, null, argumentsMap);
-                BuildCacheManager.getInstance().updateCodeLastBuildDate(codeType);
-            }
+        ITalendProcessJavaProject codeProject = getCodesProject(codeType);
+        codeProject.buildModules(monitor, null, null);
+        if (install) {
+            Map<String, Object> argumentsMap = new HashMap<>();
+            argumentsMap.put(TalendProcessArgumentConstant.ARG_GOAL, TalendMavenConstants.GOAL_INSTALL);
+            argumentsMap.put(TalendProcessArgumentConstant.ARG_PROGRAM_ARGUMENTS, "-Dmaven.main.skip=true"); //$NON-NLS-1$
+            codeProject.buildModules(monitor, null, argumentsMap);
+            BuildCacheManager.getInstance().updateCodeLastBuildDate(codeType);
         }
     }
 

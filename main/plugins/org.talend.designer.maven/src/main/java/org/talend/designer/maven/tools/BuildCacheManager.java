@@ -242,10 +242,10 @@ public class BuildCacheManager {
         return !currentJobmodules.isEmpty() || !currentJobletmodules.isEmpty();
     }
 
-    public void updateCodesLastChangeDate(ERepositoryObjectType codeType, Property property) {
-        Date currentLastChangeDate = getTimestamp(property);
+    public void updateCodesLastChangeDate(ERepositoryObjectType codeType) {
+        Date currentLastChangeDate = new Date();
         Date cacheLastChangeDate = codesLastChangeCache.get(codeType);
-        if (cacheLastChangeDate == null || currentLastChangeDate.compareTo(cacheLastChangeDate) != 0) {
+        if (cacheLastChangeDate == null || currentLastChangeDate.compareTo(cacheLastChangeDate) > 0) {
             codesLastChangeCache.put(codeType, currentLastChangeDate);
         }
     }
