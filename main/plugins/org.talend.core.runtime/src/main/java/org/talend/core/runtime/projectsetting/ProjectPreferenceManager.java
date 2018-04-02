@@ -60,15 +60,22 @@ public final class ProjectPreferenceManager {
 
     static {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
-            runProcessService = (IRunProcessService) GlobalServiceRegister.getDefault().getService(IRunProcessService.class);
+            runProcessService =
+                    (IRunProcessService) GlobalServiceRegister.getDefault().getService(IRunProcessService.class);
         }
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IRepositoryService.class)) {
-            repositoryService = (IRepositoryService) GlobalServiceRegister.getDefault().getService(IRepositoryService.class);
+            repositoryService =
+                    (IRepositoryService) GlobalServiceRegister.getDefault().getService(IRepositoryService.class);
         }
     }
 
     public ProjectPreferenceManager(String fileName) {
         this(ProjectManager.getInstance().getCurrentProject(), fileName);
+        isCurrentProject = true;
+    }
+
+    public ProjectPreferenceManager(String fileName, boolean addListener) {
+        this(ProjectManager.getInstance().getCurrentProject(), fileName, addListener);
         isCurrentProject = true;
     }
 
@@ -113,7 +120,8 @@ public final class ProjectPreferenceManager {
 
     private void addPropertyChangeListener() {
         if (repositoryService != null) {
-            repositoryService.getProxyRepositoryFactory().addPropertyChangeListener(new ProjectPreferenceReloadListener());
+            repositoryService.getProxyRepositoryFactory().addPropertyChangeListener(
+                    new ProjectPreferenceReloadListener());
         }
     }
 
