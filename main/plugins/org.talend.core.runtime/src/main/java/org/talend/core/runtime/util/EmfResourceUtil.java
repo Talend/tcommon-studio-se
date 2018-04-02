@@ -107,7 +107,7 @@ public class EmfResourceUtil {
         if (type == V_INVALID) {
             return true;
         }
-        for (int i = 1; i <= 5; i++) { // support 5 types
+        for (int i = 1; i <= 31; i++) {
             if (type >> i == V_INVALID) {
                 return true;
             }

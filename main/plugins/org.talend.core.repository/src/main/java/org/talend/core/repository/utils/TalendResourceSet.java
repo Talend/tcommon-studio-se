@@ -28,6 +28,8 @@ import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.emf.ecore.util.NotifyingInternalEListImpl;
+import org.eclipse.emf.ecore.xmi.XMLResource;
+import org.eclipse.emf.ecore.xmi.impl.XMLParserPoolImpl;
 import org.talend.commons.runtime.model.emf.provider.EmfResourcesFactoryReader;
 
 /**
@@ -45,6 +47,16 @@ import org.talend.commons.runtime.model.emf.provider.EmfResourcesFactoryReader;
  * To ensure that there will be no concurrent access while using the list.
  */
 public class TalendResourceSet extends ResourceSetImpl {
+
+    public TalendResourceSet() {
+        super();
+
+        getLoadOptions().put(XMLResource.OPTION_DEFER_ATTACHMENT, Boolean.TRUE);
+        getLoadOptions().put(XMLResource.OPTION_DEFER_IDREF_RESOLUTION, Boolean.TRUE);
+        getLoadOptions().put(XMLResource.OPTION_USE_PARSER_POOL, new XMLParserPoolImpl());
+        getLoadOptions().put(XMLResource.OPTION_USE_XML_NAME_TO_FEATURE_MAP, new HashMap<Object, Object>());
+        getLoadOptions().put(XMLResource.OPTION_USE_DEPRECATED_METHODS, Boolean.FALSE);
+    }
 
     /*
      * (non-Javadoc)
@@ -109,7 +121,8 @@ public class TalendResourceSet extends ResourceSetImpl {
         if (loadOnDemand) {
             Resource resource = demandCreateResource(uri);
             if (resource == null) {
-                throw new RuntimeException("Cannot create a resource for '" + uri + "'; a registered resource factory is needed");
+                throw new RuntimeException("Cannot create a resource for '" + uri
+                        + "'; a registered resource factory is needed");
             }
 
             demandLoadHelper(resource);
@@ -141,8 +154,8 @@ public class TalendResourceSet extends ResourceSetImpl {
     /**
      * A notifying list implementation for supporting {@link ResourceSet#getResources}.
      */
-    private class SynchronizedResourcesEList<E extends Object & Resource> extends NotifyingInternalEListImpl<E> implements
-            InternalEList<E> {
+    private class SynchronizedResourcesEList<E extends Object & Resource> extends NotifyingInternalEListImpl<E>
+            implements InternalEList<E> {
 
         /*
          * (non-Javadoc)

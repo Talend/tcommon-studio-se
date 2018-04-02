@@ -123,6 +123,10 @@ public class BuildCacheManager {
         if (cachedBuildType == null || currentBuildType == null) {
             return false;
         }
+        // child job of route
+        if("ROUTE".equalsIgnoreCase(currentBuildType)) {
+        	return false;
+        }
 
         return currentBuildType.equals(cachedBuildType);
     }

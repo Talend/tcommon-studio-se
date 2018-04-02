@@ -22,5 +22,4 @@ public interface IHeaderFooterProviderService extends IProviderService {
 
     boolean isVisible();
 
-    boolean validItem(Item item);
 }

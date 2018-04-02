@@ -101,12 +101,7 @@ public class XmiResourceManager {
     }
 
     public void resetResourceSet() {
-        resourceSet = new TalendResourceSet();
-        resourceSet.getLoadOptions().put(XMLResource.OPTION_DEFER_ATTACHMENT, Boolean.TRUE);
-        resourceSet.getLoadOptions().put(XMLResource.OPTION_DEFER_IDREF_RESOLUTION, Boolean.TRUE);
-        resourceSet.getLoadOptions().put(XMLResource.OPTION_USE_PARSER_POOL, new XMLParserPoolImpl());
-        resourceSet.getLoadOptions().put(XMLResource.OPTION_USE_XML_NAME_TO_FEATURE_MAP, new HashMap<Object, Object>());
-        resourceSet.getLoadOptions().put(XMLResource.OPTION_USE_DEPRECATED_METHODS, Boolean.FALSE);
+        resourceSet = new TalendResourceSet();      
         resourcesMap.clear();
         resourceSet.setURIResourceMap(resourcesMap);
 

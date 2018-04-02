@@ -13,7 +13,9 @@
 package org.talend.designer.maven.tools;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -25,12 +27,15 @@ import org.apache.maven.model.Exclusion;
 import org.apache.maven.model.Model;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.talend.commons.exception.PersistenceException;
+import org.talend.commons.utils.VersionUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.process.IProcess;
 import org.talend.core.model.process.IProcess2;
 import org.talend.core.model.properties.ProcessItem;
+import org.talend.core.model.repository.IRepositoryViewObject;
+import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.runtime.process.LastGenerationInfo;
 import org.talend.core.runtime.process.TalendProcessOptionConstants;
 import org.talend.core.ui.ITestContainerProviderService;
@@ -164,7 +169,7 @@ public class ProcessorDependenciesManager {
     private Set<ModuleNeeded> getAllModuleNeededWithTestCase() throws PersistenceException {
         // add the job modules.
         Set<ModuleNeeded> neededLibraries = new HashSet<>();
-        boolean hasTestCase = false;
+        boolean needTestCase = false;
         List<ProcessItem> testContainers = null;
         ProcessItem item = null;
         if (processor.getProperty() != null && processor.getProperty().getItem() instanceof ProcessItem) {
@@ -176,12 +181,23 @@ public class ProcessorDependenciesManager {
                     .getService(ITestContainerProviderService.class);
             if (item != null) {
                 boolean isTestCase = testContainerService.isTestContainerItem(item);
+                boolean isLatestJob = false;
                 if (isTestCase) {
                     item = (ProcessItem) testContainerService.getParentJobItem(item);
+                } else {
+                    IRepositoryViewObject object =
+                            ProxyRepositoryFactory.getInstance().getLastVersion(item.getProperty().getId());
+                    String latestVersion = object.getVersion();
+                    if (VersionUtils.compareTo(item.getProperty().getVersion(), latestVersion) == 0) {
+                        isLatestJob = true;
+                    }
                 }
-                testContainers = testContainerService.getAllTestContainers(item);
-                if (testContainers != null && !testContainers.isEmpty()) {
-                    hasTestCase = true;
+                if (isTestCase || isLatestJob) {
+                    testContainers = testContainerService.getAllTestContainers(item);
+                    getAllLatestTestContainers(testContainers);
+                    if (testContainers != null && !testContainers.isEmpty()) {
+                        needTestCase = true;
+                    }
                 }
             }
         }
@@ -191,20 +207,45 @@ public class ProcessorDependenciesManager {
             modulesNeeded = processor.getNeededModules(TalendProcessOptionConstants.MODULES_WITH_JOBLET);
         }
         neededLibraries.addAll(modulesNeeded);
-        if (hasTestCase) {
-            if (testContainers != null) {
-                for (ProcessItem testcaseItem : testContainers) {
-                    IProcess testcaseProcess = getDesignerCoreService().getProcessFromProcessItem(testcaseItem);
-                    neededLibraries.addAll(testcaseProcess.getNeededModules(TalendProcessOptionConstants.MODULES_DEFAULT));
-                }
+        if (needTestCase) {
+            for (ProcessItem testcaseItem : testContainers) {
+                IProcess testcaseProcess = getDesignerCoreService().getProcessFromProcessItem(testcaseItem);
+                neededLibraries.addAll(testcaseProcess.getNeededModules(TalendProcessOptionConstants.MODULES_DEFAULT));
             }
-            if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerService.class)) {
-                ILibraryManagerService repositoryBundleService = (ILibraryManagerService) GlobalServiceRegister.getDefault()
-                        .getService(ILibraryManagerService.class);
-                repositoryBundleService.installModules(neededLibraries, null);
+            for (ModuleNeeded moduleNeeded : neededLibraries) {
+                if ("junit.jar".equals(moduleNeeded.getModuleName())) { //$NON-NLS-1$
+                    if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerService.class)) {
+                        ILibraryManagerService repositoryBundleService = (ILibraryManagerService) GlobalServiceRegister
+                                .getDefault()
+                                .getService(ILibraryManagerService.class);
+                        repositoryBundleService.installModules(Arrays.asList(moduleNeeded), null);
+                    }
+                    break;
+                }
             }
         }
         return neededLibraries;
+    }
+
+    private void getAllLatestTestContainers(List<ProcessItem> testContainers) {
+        Map<String, ProcessItem> latestTestContainers = new HashMap<>();
+        if (testContainers != null) {
+            for (ProcessItem item : testContainers) {
+                String id = item.getProperty().getId();
+                ProcessItem latestItem = latestTestContainers.get(id);
+                if (latestItem == null) {
+                    latestTestContainers.put(id, item);
+                } else {
+                    String currentVersion = item.getProperty().getVersion();
+                    String latestVersion = latestItem.getProperty().getVersion();
+                    if (VersionUtils.compareTo(currentVersion, latestVersion) > 0) {
+                        latestTestContainers.put(id, item);
+                    }
+                }
+            }
+            testContainers.clear();
+            testContainers.addAll(latestTestContainers.values());
+        }
     }
 
     private IDesignerCoreService getDesignerCoreService() {

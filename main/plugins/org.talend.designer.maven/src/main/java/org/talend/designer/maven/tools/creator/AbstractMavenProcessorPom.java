@@ -199,9 +199,12 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
                 execution.addGoal("shade"); //$NON-NLS-1$
                 Xpp3Dom configuration = new Xpp3Dom("configuration"); //$NON-NLS-1$
                 execution.setConfiguration(configuration);
-                Xpp3Dom minimizeJar = new Xpp3Dom("minimizeJar"); //$NON-NLS-1$
-                minimizeJar.setValue("true"); //$NON-NLS-1$
-                configuration.addChild(minimizeJar);
+                // disable the setup of minimize jar for now, as it could cause some other issues
+                // like for example a Class.forName("oracle...." as there is no direct class dependency
+
+                // Xpp3Dom minimizeJar = new Xpp3Dom("minimizeJar"); //$NON-NLS-1$
+                // minimizeJar.setValue("true"); //$NON-NLS-1$
+                // configuration.addChild(minimizeJar);
                 Xpp3Dom artifactSet = new Xpp3Dom("artifactSet"); //$NON-NLS-1$
                 configuration.addChild(artifactSet);
                 Xpp3Dom excludes = new Xpp3Dom("excludes"); //$NON-NLS-1$

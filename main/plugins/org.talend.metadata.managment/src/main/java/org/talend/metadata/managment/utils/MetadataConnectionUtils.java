@@ -72,6 +72,7 @@ import org.talend.utils.exceptions.MissingDriverException;
 import org.talend.utils.sql.ConnectionUtils;
 import org.talend.utils.sugars.ReturnCode;
 import org.talend.utils.sugars.TypedReturnCode;
+
 import orgomg.cwm.foundation.softwaredeployment.DataProvider;
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.objectmodel.core.Package;
@@ -996,9 +997,17 @@ public class MetadataConnectionUtils {
     private static String getJdbcPackageFilter(Connection connection, boolean isCatalog) throws SQLException {
         java.sql.Connection sqlconnection = null;
         try {
-            sqlconnection = JavaSqlFactory.createConnection((Connection) connection).getObject();
+            sqlconnection = JavaSqlFactory.createConnection(connection).getObject();
             if (sqlconnection != null) {
-                return isCatalog ? sqlconnection.getCatalog() : sqlconnection.getSchema();
+                if (isCatalog) {
+                    return sqlconnection.getCatalog();
+                } else {
+                    try {
+                        return sqlconnection.getSchema();
+                    } catch (AbstractMethodError e) {
+                        // some old driver do not support this method , if don't support then we won't do the filter
+                    }
+                }
             }
         } finally {
             if (sqlconnection != null) {
