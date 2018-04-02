@@ -78,13 +78,15 @@ public class MavenProjectSettingPage extends AbstractProjectSettingPage {
 				if (GlobalServiceRegister.getDefault().isServiceRegistered(IFilterService.class)) {
 					IFilterService service = (IFilterService) GlobalServiceRegister.getDefault()
 							.getService(IFilterService.class);
-					if (StringUtils.isBlank(filterText.getText()) || service.checkFilterContent(filterText.getText())) {
+                    String filterError = service.checkFilterError(filterText.getText());
+                    if (StringUtils.isBlank(filterText.getText()) || filterError == null) {
 						setErrorMessage(null);
 						filter = filterText.getText();
 						setValid(true);
 						button.setEnabled(true);
 					} else {
-                        setErrorMessage(Messages.getString("ProjectPomProjectSettingPage_FilterErrorMessage")); //$NON-NLS-1$
+                        setErrorMessage(
+                                Messages.getString("ProjectPomProjectSettingPage_FilterErrorMessage", filterError));
 						setValid(false);
 						button.setEnabled(false);
 					}
