@@ -414,7 +414,7 @@ public class AggregatorPomsHelper {
                 return null;
             }
         }
-        if (parentPomFolder != null) {
+        if (parentPomFolder != null && parentPomFolder.exists()) {
             try {
                 for (IResource file : parentPomFolder.members()) {
                     if (file.getName().equals(TalendMavenConstants.POM_FILE_NAME)) {
