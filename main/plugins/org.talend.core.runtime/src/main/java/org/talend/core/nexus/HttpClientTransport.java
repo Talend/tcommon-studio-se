@@ -141,14 +141,20 @@ public abstract class HttpClientTransport {
                 }
                 final Proxy finalProxy = usedProxy;
                 InetSocketAddress address = (InetSocketAddress) finalProxy.address();
-                PasswordAuthentication proxyAuthentication = Authenticator.requestPasswordAuthentication(address.getHostName(),
-                        address.getAddress(), address.getPort(), "Http Proxy", "Http proxy authentication", null);
-                String proxyUser = proxyAuthentication.getUserName();
-                String proxyPassword = new String(proxyAuthentication.getPassword());
                 String proxyServer = address.getHostName();
                 int proxyPort = address.getPort();
-                httpClient.getCredentialsProvider().setCredentials(new AuthScope(proxyServer, proxyPort),
-                        new UsernamePasswordCredentials(proxyUser, proxyPassword));
+                PasswordAuthentication proxyAuthentication = Authenticator.requestPasswordAuthentication(proxyServer,
+                        address.getAddress(), proxyPort, "Http Proxy", "Http proxy authentication", null);
+                if (proxyAuthentication != null) {
+                    String proxyUser = proxyAuthentication.getUserName();
+                    String proxyPassword = "";
+                    char[] passwordChars = proxyAuthentication.getPassword();
+                    if (passwordChars != null) {
+                        proxyPassword = new String(passwordChars);
+                    }
+                    httpClient.getCredentialsProvider().setCredentials(new AuthScope(proxyServer, proxyPort),
+                            new UsernamePasswordCredentials(proxyUser, proxyPassword));
+                }
                 HttpHost proxyHost = new HttpHost(proxyServer, proxyPort);
                 httpClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxyHost);
                 proxySelectorProvider = createProxySelectorProvider();
