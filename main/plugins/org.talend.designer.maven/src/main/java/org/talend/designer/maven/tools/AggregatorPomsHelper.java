@@ -364,6 +364,9 @@ public class AggregatorPomsHelper {
         }
 		IFile parentPom = getParentModulePomFile(pomFile);
 		if (parentPom != null) {
+            if (!parentPom.isSynchronized(IResource.DEPTH_ZERO)) {
+                parentPom.refreshLocal(IResource.DEPTH_ZERO, null);
+            }
 			IPath relativePath = pomFile.getParent().getLocation().makeRelativeTo(parentPom.getParent().getLocation());
 			Model model = MavenPlugin.getMaven().readModel(parentPom.getContents());
 			List<String> modules = model.getModules();
