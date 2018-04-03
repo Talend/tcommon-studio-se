@@ -597,13 +597,10 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
                             toReturn.addAll(getSerializableFromFolder(project, curItem, id, type, allVersion, true, withDeleted,
                                     avoidSaveProject, true));
                         } else if (!(curItem instanceof FolderItem)) {
-                            if (property.eResource() != null) {
-                            	propertyFounds.add(property.eResource().getURI().lastSegment());
+                            if (property.eResource() != null && property.eResource().getResourceSet() != null) {
+                                propertyFounds.add(property.eResource().getURI().lastSegment());
                                 if (id == null || id.equals(property.getId())) {
                                     if (withDeleted || !property.getItem().getState().isDeleted()) {
-                                    	if(property.eResource().getResourceSet() == null){
-                                    		ProxyRepositoryFactory.getInstance().reload(property);
-                                    	}
                                         toReturn.add(new RepositoryObject(property));
                                     }
                                 }
