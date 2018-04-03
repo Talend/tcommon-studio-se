@@ -77,6 +77,8 @@ public class XSDPopulationUtil2 implements IXSDPopulationUtil {
 
     protected ResourceSet resourceSet;
 
+    private int containsIndex = 0;
+
     public XSDPopulationUtil2() {
         resourceSet = new ResourceSetImpl();
     }
@@ -361,6 +363,23 @@ public class XSDPopulationUtil2 implements IXSDPopulationUtil {
             handleOptionalAttribute(node, xsdParticle);
             for (Object element : xsdModelGroup.getParticles()) {
                 XSDParticle childParticle = (XSDParticle) element;
+                XSDTerm xsdTermChild = childParticle.getTerm();
+                if (xsdTermChild instanceof XSDElementDeclaration) {
+                    XSDElementDeclaration xsdElementDeclarationParticle = (XSDElementDeclaration) xsdTermChild;
+                    String elementName = xsdElementDeclarationParticle.getName();
+                    boolean containsPath = currentPath.contains("/" + elementName + "/");//$NON-NLS-1$//$NON-NLS-2$
+                    String[] paths = currentPath.split("/");//$NON-NLS-1$
+                    Set pathSet = new HashSet(Arrays.asList(paths));
+                    if (paths.length != pathSet.size()) {
+                        break;
+                    }
+                    if (containsPath) {
+                        containsIndex++;
+                        if (containsIndex >= 2) {
+                            break;
+                        }
+                    }
+                }
                 addParticleDetail(xsdSchema, childParticle, node, currentPath);
             }
         }
@@ -411,7 +430,7 @@ public class XSDPopulationUtil2 implements IXSDPopulationUtil {
             for (Iterator i = all.iterator(); i.hasNext();) {
                 XSDElementDeclaration xsdElementDeclaration = (XSDElementDeclaration) i.next();
                 String elementName = xsdElementDeclaration.getName();
-
+                containsIndex = 0;
                 ATreeNode node = new ATreeNode();
                 String prefix = null;
                 String namespace = xsdElementDeclaration.getTargetNamespace();
@@ -503,6 +522,7 @@ public class XSDPopulationUtil2 implements IXSDPopulationUtil {
                     if (!elementName.equals(selectedNode.getValue())) {
                         continue;
                     }
+                    containsIndex = 0;
                     ATreeNode node = new ATreeNode();
                     node.setValue(elementName);
                     node.setType(ATreeNode.ELEMENT_TYPE);
