@@ -212,16 +212,10 @@ public class ProcessorDependenciesManager {
                 IProcess testcaseProcess = getDesignerCoreService().getProcessFromProcessItem(testcaseItem);
                 neededLibraries.addAll(testcaseProcess.getNeededModules(TalendProcessOptionConstants.MODULES_DEFAULT));
             }
-            for (ModuleNeeded moduleNeeded : neededLibraries) {
-                if ("junit.jar".equals(moduleNeeded.getModuleName())) { //$NON-NLS-1$
-                    if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerService.class)) {
-                        ILibraryManagerService repositoryBundleService = (ILibraryManagerService) GlobalServiceRegister
-                                .getDefault()
-                                .getService(ILibraryManagerService.class);
-                        repositoryBundleService.installModules(Arrays.asList(moduleNeeded), null);
-                    }
-                    break;
-                }
+            if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerService.class)) {
+                ILibraryManagerService repositoryBundleService = (ILibraryManagerService) GlobalServiceRegister.getDefault()
+                        .getService(ILibraryManagerService.class);
+                repositoryBundleService.installModules(neededLibraries, null);
             }
         }
         return neededLibraries;
