@@ -20,6 +20,8 @@ package org.talend.core.model.utils;
  */
 public final class TalendPropertiesUtil {
 
+    public static final String PROD_APP = "talend.product.app";
+
     public static boolean isEnabled(String key) {
         String value = System.getProperty(key);
         return Boolean.parseBoolean(value);
@@ -74,4 +76,7 @@ public final class TalendPropertiesUtil {
         return isEnabled("USE_BROWSER"); //$NON-NLS-1$
     }
 
+    public static String getProductApp() {
+        return System.getProperty(PROD_APP);
+    }
 }

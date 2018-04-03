@@ -53,6 +53,7 @@ import org.talend.commons.utils.system.EclipseCommandLine;
 import org.talend.core.BrandingChecker;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.migration.IMigrationToolService;
+import org.talend.core.model.utils.TalendPropertiesUtil;
 import org.talend.core.repository.CoreRepositoryPlugin;
 import org.talend.core.runtime.services.IMavenUIService;
 import org.talend.core.services.ICoreTisService;
@@ -78,7 +79,8 @@ public class Application implements IApplication {
     /**
      * 
      */
-    private static final String TALEND_FORCE_INITIAL_WORKSPACE_PROMPT_SYS_PROP = "talend.force.initial.workspace.prompt"; //$NON-NLS-1$
+    private static final String TALEND_FORCE_INITIAL_WORKSPACE_PROMPT_SYS_PROP =
+            "talend.force.initial.workspace.prompt"; //$NON-NLS-1$
 
     private static Logger log = Logger.getLogger(Application.class);
 
@@ -90,8 +92,9 @@ public class Application implements IApplication {
     @SuppressWarnings("restriction")
     @Override
     public Object start(IApplicationContext context) throws Exception {
+        System.setProperty(TalendPropertiesUtil.PROD_APP, this.getClass().getName());
+        
         Display display = PlatformUI.createDisplay();
-
         try {
             // TUP-5816 don't put any code ahead of this part unless you make sure it won't trigger workspace
             // initialization.
@@ -118,8 +121,8 @@ public class Application implements IApplication {
             // setup MavenResolver properties
             // before set, must check user setting first.
             if (GlobalServiceRegister.getDefault().isServiceRegistered(IMavenUIService.class)) {
-                IMavenUIService mavenUIService = (IMavenUIService) GlobalServiceRegister.getDefault().getService(
-                        IMavenUIService.class);
+                IMavenUIService mavenUIService =
+                        (IMavenUIService) GlobalServiceRegister.getDefault().getService(IMavenUIService.class);
                 if (mavenUIService != null) {
                     mavenUIService.checkUserSettings(new NullProgressMonitor());
                     mavenUIService.updateMavenResolver(false);
@@ -141,8 +144,8 @@ public class Application implements IApplication {
             // openLicenseAndRegister(shell);
             // }
 
-            IMigrationToolService service = (IMigrationToolService) GlobalServiceRegister.getDefault().getService(
-                    IMigrationToolService.class);
+            IMigrationToolService service =
+                    (IMigrationToolService) GlobalServiceRegister.getDefault().getService(IMigrationToolService.class);
             service.executeWorspaceTasks();
             // saveConnectionBean(email);
 
@@ -195,8 +198,8 @@ public class Application implements IApplication {
             boolean logUserOnProject = logUserOnProject(display.getActiveShell());
             if (LoginHelper.isRestart && LoginHelper.isAutoLogonFailed) {
                 setRelaunchData();
-                EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(EclipseCommandLine.TALEND_PROJECT_TYPE_COMMAND,
-                        null, true);
+                EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(
+                        EclipseCommandLine.TALEND_PROJECT_TYPE_COMMAND, null, true);
                 return IApplication.EXIT_RELAUNCH;
             }
             try {
@@ -219,8 +222,8 @@ public class Application implements IApplication {
 
             boolean afterUpdate = false;
             if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreTisService.class)) {
-                ICoreTisService tisService = (ICoreTisService) GlobalServiceRegister.getDefault().getService(
-                        ICoreTisService.class);
+                ICoreTisService tisService =
+                        (ICoreTisService) GlobalServiceRegister.getDefault().getService(ICoreTisService.class);
                 afterUpdate = tisService.needRestartAfterUpdate();
             }
 
@@ -234,14 +237,15 @@ public class Application implements IApplication {
                 return IApplication.EXIT_RESTART;
             }
 
-            IBrandingService brandingService = (IBrandingService) GlobalServiceRegister.getDefault().getService(
-                    IBrandingService.class);
+            IBrandingService brandingService =
+                    (IBrandingService) GlobalServiceRegister.getDefault().getService(IBrandingService.class);
 
             // for talend product only to add the links on the left of the coolbar
             // other products will simply reuse the default presentation factory.
             if (brandingService.isPoweredbyTalend()) {
                 // setup the presentation factory, which is defined in the plugin.xml of the org.talend.rcp
-                store.putValue(IWorkbenchPreferenceConstants.PRESENTATION_FACTORY_ID, "org.talend.rcp.presentationfactory"); //$NON-NLS-1$
+                store.putValue(IWorkbenchPreferenceConstants.PRESENTATION_FACTORY_ID,
+                        "org.talend.rcp.presentationfactory"); //$NON-NLS-1$
             }
             // clean the clearPersistedState if branding or project type change
             String lastProjectType = store.getString("last_started_project_type");
@@ -265,8 +269,8 @@ public class Application implements IApplication {
                 // relaunch
                 EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(EclipseCommandLine.TALEND_RELOAD_COMMAND,
                         Boolean.FALSE.toString(), false);
-                EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(EclipseCommandLine.TALEND_PROJECT_TYPE_COMMAND,
-                        null, true);
+                EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(
+                        EclipseCommandLine.TALEND_PROJECT_TYPE_COMMAND, null, true);
                 // if relaunch, should delete the "disableLoginDialog" argument in eclipse data for bug TDI-19214
                 EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(
                         EclipseCommandLine.TALEND_DISABLE_LOGINDIALOG_COMMAND, null, true, true);
@@ -293,8 +297,8 @@ public class Application implements IApplication {
         EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(EclipseCommandLine.TALEND_RELOAD_COMMAND,
                 Boolean.TRUE.toString(), false);
         // if relaunch, should delete the "disableLoginDialog" argument in eclipse data for bug TDI-19214
-        EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(EclipseCommandLine.TALEND_DISABLE_LOGINDIALOG_COMMAND, null,
-                true);
+        EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(
+                EclipseCommandLine.TALEND_DISABLE_LOGINDIALOG_COMMAND, null, true);
     }
 
     /**
@@ -324,8 +328,8 @@ public class Application implements IApplication {
                 try {
                     LicenseManagement.acceptLicense();
                 } catch (BusinessException e) {
-                    ErrorDialogWidthDetailArea errorDialog = new ErrorDialogWidthDetailArea(shell, RegistrationPlugin.PLUGIN_ID,
-                            "", e.getMessage()); //$NON-NLS-1$
+                    ErrorDialogWidthDetailArea errorDialog =
+                            new ErrorDialogWidthDetailArea(shell, RegistrationPlugin.PLUGIN_ID, "", e.getMessage()); //$NON-NLS-1$
                     System.exit(0);
                 }
 
@@ -447,8 +451,9 @@ public class Application implements IApplication {
             // okay to use the shell now - this is the splash shell
             ChooseWorkspaceDialog chooseWorkspaceDialog = new ChooseWorkspaceDialog(shell, launchData, false, true);
             // fix bug TUP-3165
-            boolean isDisableLoginDialog = ArrayUtils.contains(Platform.getApplicationArgs(),
-                    EclipseCommandLine.TALEND_DISABLE_LOGINDIALOG_COMMAND);
+            boolean isDisableLoginDialog =
+                    ArrayUtils.contains(Platform.getApplicationArgs(),
+                            EclipseCommandLine.TALEND_DISABLE_LOGINDIALOG_COMMAND);
             if (isDisableLoginDialog) {
                 chooseWorkspaceDialog.setForceHide(true);
             }
@@ -491,7 +496,8 @@ public class Application implements IApplication {
     }
 
     private boolean logUserOnProject(Shell shell) {
-        IRepositoryService service = (IRepositoryService) GlobalServiceRegister.getDefault().getService(IRepositoryService.class);
+        IRepositoryService service =
+                (IRepositoryService) GlobalServiceRegister.getDefault().getService(IRepositoryService.class);
         return service.openLoginDialog(shell);
     }
 
