@@ -14,6 +14,8 @@
   <properties>
     <tcomp.version>0.0.5</tcomp.version>
     <slf4j.version>1.7.25</slf4j.version>
+    <cxf.version>3.2.4</cxf.version>
+    <tomcat.version>9.0.6</tomcat.version>
   </properties>
 
   <repositories>
@@ -94,6 +96,60 @@
       <groupId>commons-cli</groupId>
       <artifactId>commons-cli</artifactId>
       <version>1.4</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-frontend-jaxrs</artifactId>
+      <version>${cxf.version}</version>
+      <exclusions>
+          <exclusion>
+              <groupId>javax.ws.rs</groupId>
+              <artifactId>javax.ws.rs-api</artifactId>
+          </exclusion>
+          <exclusion>
+              <groupId>javax.annotation</groupId>
+              <artifactId>javax.annotation-api</artifactId>
+          </exclusion>
+          <exclusion>
+              <groupId>com.fasterxml.woodstox</groupId>
+              <artifactId>woodstox-core</artifactId>
+          </exclusion>
+          <exclusion>
+              <groupId>org.apache.ws.xmlschema</groupId>
+              <artifactId>xmlschema-core</artifactId>
+          </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-integration-cdi</artifactId>
+      <version>${cxf.version}</version>
+      <exclusions>
+          <exclusion>
+              <groupId>javax.enterprise</groupId>
+              <artifactId>cdi-api</artifactId>
+          </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-rs-client</artifactId>
+      <version>${cxf.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.tomcat</groupId>
+      <artifactId>tomcat-jaspic-api</artifactId>
+      <version>${tomcat.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.tomcat</groupId>
+      <artifactId>tomcat-jni</artifactId>
+      <version>${tomcat.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.tomcat</groupId>
+      <artifactId>tomcat-catalina</artifactId>
+      <version>${tomcat.version}</version>
     </dependency>
   </dependencies>
 
