@@ -279,7 +279,15 @@ public final class ProjectManager {
         if (item.eResource() == null || item.eResource().getURI() == null) {
             return null;
         }
-        IFile itemFile = URIHelper.getFile(URIHelper.convert(item.eResource().getURI()));
+        IFile itemFile = null;
+        try {
+            itemFile = URIHelper.getFile(URIHelper.convert(item.eResource().getURI()));
+        } catch (Exception e) {
+            //
+        }
+        if (itemFile == null) {
+            return null;
+        }
         String projectLabel = itemFile.getProject().getName();
         if (currentProject == null) {
             initCurrentProject();
