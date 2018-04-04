@@ -14,6 +14,7 @@ package org.talend.core.service;
 
 import org.talend.core.IService;
 import org.talend.core.model.process.IExternalNode;
+import org.talend.designer.core.model.utils.emf.talendfile.AbstractExternalData;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 
 /**
@@ -24,4 +25,6 @@ public interface IDbMapService extends IService {
     public boolean isDbMapComponent(IExternalNode node);
     
     public void updateEMFDBMapData(NodeType nodeType, String oldValue, String newValue);
+
+    public void undoConnectionDelete(IExternalNode node, AbstractExternalData oldEmfData, String connectionLabel);
 }
