@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.maven.model.Model;
 import org.eclipse.core.resources.IContainer;
@@ -46,8 +47,11 @@ import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.core.GlobalServiceRegister;
+import org.talend.core.ILibraryManagerService;
 import org.talend.core.context.Context;
 import org.talend.core.context.RepositoryContext;
+import org.talend.core.model.general.ILibrariesService;
+import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.process.ProcessUtils;
 import org.talend.core.model.properties.Item;
@@ -217,6 +221,34 @@ public class AggregatorPomsHelper {
                         createBeansPom(pomFile, monitor);
                     }
                 }
+            }
+        }
+    }
+
+    public static void updateAllCodesProjectNeededModules(IProgressMonitor monitor) {
+        updateCodesProjectNeededModulesByType(ERepositoryObjectType.ROUTINES, monitor);
+        if (ProcessUtils.isRequiredPigUDFs(null)) {
+            updateCodesProjectNeededModulesByType(ERepositoryObjectType.PIG_UDF, monitor);
+        }
+        if (ProcessUtils.isRequiredBeans(null)) {
+            updateCodesProjectNeededModulesByType(ERepositoryObjectType.valueOf("BEANS"), monitor); //$NON-NLS-1$
+        }
+    }
+
+    private static void updateCodesProjectNeededModulesByType(ERepositoryObjectType codeType,
+            IProgressMonitor monitor) {
+        Set<ModuleNeeded> neededModules = null;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibrariesService.class)) {
+            ILibrariesService librariesService =
+                    (ILibrariesService) GlobalServiceRegister.getDefault().getService(ILibrariesService.class);
+            neededModules = librariesService.getCodesModuleNeededs(codeType);
+        }
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerService.class)) {
+            ILibraryManagerService repositoryBundleService = (ILibraryManagerService) GlobalServiceRegister
+                    .getDefault()
+                    .getService(ILibraryManagerService.class);
+            if (neededModules != null && !neededModules.isEmpty()) {
+                repositoryBundleService.installModules(neededModules, monitor);
             }
         }
     }
