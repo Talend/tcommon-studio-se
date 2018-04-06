@@ -704,7 +704,9 @@ public class AggregatorPomsHelper {
                                                     runProcessService.generatePom(item);
                                                     IFile pomFile = getItemPomFolder(item.getProperty())
                                                             .getFile(TalendMavenConstants.POM_FILE_NAME);
-                                                    modules.add(getModulePath(pomFile));
+                                                    if (pomFile.exists()) {
+                                                        modules.add(getModulePath(pomFile));
+                                                    }
                                                 }
                                             }
                                             monitor.worked(1);
