@@ -189,7 +189,12 @@ public class RemoteModulesHelper {
                     .getRepositoryHandler(customNexusServer);
             if (customerRepHandler != null) {
                 for (String groupId : groupIds) {
-                    List<MavenArtifact> searchResults = customerRepHandler.search(groupId, null, null, true, true);
+                    List<MavenArtifact> searchResults = customerRepHandler.search(groupId, null, null, true, false);
+                    monitor.worked(10);
+                    addModulesToCache(searchResults, localCache);
+                }
+                for (String groupId : snapshotgroupIds) {
+                    List<MavenArtifact> searchResults = customerRepHandler.search(groupId, null, null, false, true);
                     monitor.worked(10);
                     addModulesToCache(searchResults, localCache);
                 }
@@ -283,7 +288,7 @@ public class RemoteModulesHelper {
             m.setDescription(description);
             m.setUrl_description(url);
             m.setUrl_download(url);
-            if (StringUtils.isEmpty(artifact.getType()) || MavenConstants.PACKAGING_POM.equals(artifact.getType())) {
+            if (MavenConstants.PACKAGING_POM.equals(artifact.getType())) {
                 m.setDistribution(MavenConstants.DOWNLOAD_MANUAL);
             }
             if (theCache == localCache) {
