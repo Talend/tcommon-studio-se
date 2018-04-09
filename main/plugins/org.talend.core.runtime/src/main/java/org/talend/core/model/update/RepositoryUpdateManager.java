@@ -21,8 +21,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.EList;
@@ -1070,8 +1072,20 @@ public abstract class RepositoryUpdateManager {
     }
 
     private void updateHadoopPropertiesForDbConnection(DatabaseConnection dbConn, String oldValue, String newValue) {
-        String databaseType = dbConn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_DB_TYPE);
         EMap<String, String> parameters = dbConn.getParameters();
+        if (parameters == null || parameters.isEmpty()) {
+            return;
+        }
+
+        for (Entry<String, String> entry : parameters.entrySet()) {
+            if (entry != null) {
+                String value = entry.getValue();
+                if (StringUtils.equals(value, oldValue)) {
+                    entry.setValue(newValue);
+                }
+            }
+        }
+        String databaseType = parameters.get(ConnParameterKeys.CONN_PARA_KEY_DB_TYPE);
         String hadoopProperties = "";
         if (databaseType != null) {
             if (EDatabaseConnTemplate.HIVE.getDBDisplayName().equals(databaseType)) {
