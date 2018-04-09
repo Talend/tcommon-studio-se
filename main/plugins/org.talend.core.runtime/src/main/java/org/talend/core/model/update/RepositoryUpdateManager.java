@@ -704,7 +704,7 @@ public abstract class RepositoryUpdateManager {
                                     // propagated to metadata db.
                                     dbConn.setUiSchema(newValue);
                                 } else {
-                                    updateHadoopPropertiesForDbConnection(dbConn, oldValue, newValue);
+                                    updateParameters(dbConn, oldValue, newValue);
                                 }
                                 factory.save(item);
                             }
@@ -1071,20 +1071,24 @@ public abstract class RepositoryUpdateManager {
 
     }
 
-    private void updateHadoopPropertiesForDbConnection(DatabaseConnection dbConn, String oldValue, String newValue) {
+    private void updateParameters(DatabaseConnection dbConn, String oldValue, String newValue) {
         EMap<String, String> parameters = dbConn.getParameters();
-        if (parameters == null || parameters.isEmpty()) {
-            return;
-        }
-
-        for (Entry<String, String> entry : parameters.entrySet()) {
-            if (entry != null) {
-                String value = entry.getValue();
-                if (StringUtils.equals(value, oldValue)) {
-                    entry.setValue(newValue);
+        if (parameters != null && !parameters.isEmpty()) {
+            for (Entry<String, String> entry : parameters.entrySet()) {
+                if (entry != null) {
+                    String value = entry.getValue();
+                    if (StringUtils.equals(value, oldValue)) {
+                        entry.setValue(newValue);
+                    }
                 }
             }
         }
+
+        updateHadoopPropertiesForDbConnection(dbConn, oldValue, newValue);
+    }
+
+    private void updateHadoopPropertiesForDbConnection(DatabaseConnection dbConn, String oldValue, String newValue) {
+        EMap<String, String> parameters = dbConn.getParameters();
         String databaseType = parameters.get(ConnParameterKeys.CONN_PARA_KEY_DB_TYPE);
         String hadoopProperties = "";
         if (databaseType != null) {
