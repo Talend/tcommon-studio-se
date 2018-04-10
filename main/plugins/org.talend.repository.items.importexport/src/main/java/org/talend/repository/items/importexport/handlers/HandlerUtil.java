@@ -70,12 +70,15 @@ public final class HandlerUtil {
     public static IPath getValidProjectFilePath(ResourcesManager collector, IPath path) {
         IPath projectFilePath = path.removeLastSegments(1);
 
-        while (projectFilePath.lastSegment() != null
-                && !collector.getPaths().contains(projectFilePath.append(FileConstants.LOCAL_PROJECT_FILENAME))) {
+        IPath finalpath = null;
+        while (projectFilePath.lastSegment() != null) {
+            if (collector.getPaths().contains(projectFilePath.append(FileConstants.LOCAL_PROJECT_FILENAME))) {
+                finalpath = projectFilePath;
+            }
             projectFilePath = projectFilePath.removeLastSegments(1);
         }
-        if (collector.getPaths().contains(projectFilePath.append(FileConstants.LOCAL_PROJECT_FILENAME))) {
-            return projectFilePath.append(FileConstants.LOCAL_PROJECT_FILENAME);
+        if (finalpath != null && collector.getPaths().contains(finalpath.append(FileConstants.LOCAL_PROJECT_FILENAME))) {
+            return finalpath.append(FileConstants.LOCAL_PROJECT_FILENAME);
         }
         return null;
     }
