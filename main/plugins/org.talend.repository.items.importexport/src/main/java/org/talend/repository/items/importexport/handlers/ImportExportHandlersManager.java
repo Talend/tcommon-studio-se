@@ -230,9 +230,11 @@ public class ImportExportHandlersManager {
                 if (monitor.isCanceled()) {
                     return Collections.emptyList();
                 }
-                int pomsPositon = HandlerUtil.getValidProjectFilePath(resManager, path).segmentCount() - 1;
-                if ("poms".equals(Arrays.asList(path.segments()).get(pomsPositon))) {
-                    skipList.add(path);
+                if (HandlerUtil.getValidProjectFilePath(resManager, path) != null) {
+                    int pomsPositon = HandlerUtil.getValidProjectFilePath(resManager, path).segmentCount() - 1;
+                    if ("poms".equals(Arrays.asList(path.segments()).get(pomsPositon))) {
+                        skipList.add(path);
+                    }
                 }
             }
             resourcesPathsList.removeAll(skipList);
