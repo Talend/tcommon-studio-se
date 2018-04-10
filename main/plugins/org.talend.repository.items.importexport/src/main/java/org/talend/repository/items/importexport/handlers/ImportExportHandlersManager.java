@@ -224,13 +224,15 @@ public class ImportExportHandlersManager {
             // remove done list
             resourcesPathsList.removeAll(doneList);
             //
-            // add for TUP-19934,skip the pom folder
+            // add for TUP-19934,skip the poms folder which under project folder
+            File root = (File) resManager.getRoot();
+            IPath rootPath = new Path(root.getPath());
             List<IPath> skipList = new ArrayList<IPath>();
             for (IPath path : resourcesPathsList) {
                 if (monitor.isCanceled()) {
                     return Collections.emptyList();
                 }
-                if (Arrays.asList(path.segments()).contains("poms")) {
+                if ("poms".equals(Arrays.asList(path.segments()).get(rootPath.segmentCount()))) {
                     skipList.add(path);
                 }
             }
