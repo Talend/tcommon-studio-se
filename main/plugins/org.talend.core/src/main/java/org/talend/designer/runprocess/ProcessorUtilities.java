@@ -1206,7 +1206,7 @@ public class ProcessorUtilities {
                 IRunProcessService runProcessService = CorePlugin.getDefault().getRunProcessService();
                 ITalendProcessJavaProject talendProcessJavaProject = runProcessService
                         .getTalendJobJavaProject(processItem.getProperty());
-                IFolder targetFolder = talendProcessJavaProject.getExternalResourcesFolder();
+                IFolder targetFolder = talendProcessJavaProject.getResourcesFolder();
                 if (targetFolder.exists()) {
                     IFolder survFolder = targetFolder.getFolder(new Path(pathStr));
                     // only copy self job rules, clear the 'survivorship' folder before copy.
