@@ -288,7 +288,7 @@ public class RemoteModulesHelper {
             m.setDescription(description);
             m.setUrl_description(url);
             m.setUrl_download(url);
-            if (MavenConstants.PACKAGING_POM.equals(artifact.getType())) {
+            if (StringUtils.isEmpty(artifact.getType()) || MavenConstants.PACKAGING_POM.equals(artifact.getType())) {
                 m.setDistribution(MavenConstants.DOWNLOAD_MANUAL);
             }
             if (theCache == localCache) {
