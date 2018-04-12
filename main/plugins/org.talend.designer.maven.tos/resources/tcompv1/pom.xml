@@ -11,7 +11,7 @@
   <packaging>pom</packaging>
 
   <properties>
-    <tcomp.version>0.0.5</tcomp.version>
+    <tcomp.version>0.0.6</tcomp.version>
     <slf4j.version>1.7.25</slf4j.version>
     <cxf.version>3.2.4</cxf.version>
     <tomcat.version>9.0.6</tomcat.version>
