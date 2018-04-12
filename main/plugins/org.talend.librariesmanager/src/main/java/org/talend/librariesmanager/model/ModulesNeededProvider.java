@@ -277,13 +277,17 @@ public class ModulesNeededProvider {
         getModulesNeeded().removeAll(moduleForCurrentJobList);
         getAllManagedModules().removeAll(moduleForCurrentJobList);
 
-        Set<String> neededLibraries = process.getNeededLibraries(TalendProcessOptionConstants.MODULES_DEFAULT);
+        Set<ModuleNeeded> neededLibraries = process.getNeededModules(TalendProcessOptionConstants.MODULES_DEFAULT);
+
         if (neededLibraries != null) {
-            for (String neededLibrary : neededLibraries) {
+            for (ModuleNeeded neededLibrary : neededLibraries) {
                 boolean alreadyInImports = false;
                 for (ModuleNeeded module : getModulesNeeded()) {
-                    if (module.getModuleName().equals(neededLibrary)) {
-                        alreadyInImports = true;
+                    if (module.getModuleName().equals(neededLibrary.getModuleName())) {
+                        if (StringUtils.equals(module.getMavenUri(), neededLibrary.getMavenUri())) {
+                            alreadyInImports = true;
+                            break;
+                        }
                     }
                 }
                 if (alreadyInImports) {
@@ -291,12 +295,26 @@ public class ModulesNeededProvider {
                 }
 
                 // Step 2: re-add specific modules
-                ModuleNeeded toAdd = new ModuleNeeded("Job " + process.getName(), neededLibrary, //$NON-NLS-1$
-                        "Required for the job " + process.getName() + ".", true); //$NON-NLS-1$ //$NON-NLS-2$
+                ModuleNeeded toAdd = null;
+
+                if (neededLibrary.getMavenUri() != null) {
+                    toAdd = new ModuleNeeded("Job " + process.getName(), "Required for the job " + process.getName() + ".", true,
+                            neededLibrary.getMavenUri());
+
+                    toAdd.setCustomMavenUri(neededLibrary.getMavenUri());
+
+                } else {
+                    toAdd = new ModuleNeeded("Job " + process.getName(), neededLibrary.getModuleName(), //$NON-NLS-1$
+                            "Required for the job " + process.getName() + ".", true); //$NON-NLS-1$ //$NON-NLS-2$
+                }
 
                 getModulesNeeded().add(toAdd);
                 getAllManagedModules().add(toAdd);
             }
+
+            ILibraryManagerService libManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault()
+                    .getService(ILibraryManagerService.class);
+            libManagerService.saveCustomMavenURIMap();
         }
     }
 

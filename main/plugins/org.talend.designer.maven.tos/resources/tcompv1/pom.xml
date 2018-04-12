@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.talend.studio</groupId>
     <artifactId>studio-maven-repository-tos</artifactId>
-    <version>7.0.1-SNAPSHOT</version>
+    <version>7.1.0-SNAPSHOT</version>
     <relativePath>../</relativePath>
   </parent>
   <artifactId>studio-tcompv1-dependencies</artifactId>
   <packaging>pom</packaging>
 
   <properties>
-    <tcomp.version>0.0.5</tcomp.version>
+    <tcomp.version>0.0.6</tcomp.version>
     <slf4j.version>1.7.25</slf4j.version>
     <cxf.version>3.2.4</cxf.version>
     <tomcat.version>9.0.6</tomcat.version>

@@ -560,10 +560,6 @@ public class MigrationToolService implements IMigrationToolService {
             }
         }
         ProductVersion productVersion = ProductVersion.fromString(VersionUtils.getTalendVersion());
-        if (topTaskBreaks.compareTo(topTaskVersion) > 0) {
-            log.error("Wrong migration task version setup for " + taskId + " break version should be less or equal compare to the migration task version"); //$NON-NLS-1$  //$NON-NLS-2$
-            return false;
-        }
         if (topTaskBreaks.compareTo(productVersion) >= 0) {
             int dataVersionMajor = topTaskVersion.getMajor();
             int dataVersionMinor = topTaskVersion.getMinor();

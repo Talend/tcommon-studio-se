@@ -27,6 +27,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.GlobalServiceRegister;
+import org.talend.core.PluginChecker;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.projectsetting.AbstractProjectSettingPage;
 import org.talend.core.runtime.services.IFilterService;
@@ -56,6 +57,9 @@ public class MavenProjectSettingPage extends AbstractProjectSettingPage {
 
 	@Override
 	protected void createFieldEditors() {
+        if (!PluginChecker.isTIS()) {
+            return;
+        }
 		Composite parent = getFieldEditorParent();
 		parent.setLayout(new GridLayout());
 		Button button = new Button(parent, SWT.NONE);
@@ -70,6 +74,11 @@ public class MavenProjectSettingPage extends AbstractProjectSettingPage {
         if (StringUtils.isBlank(filter)) {
             filter = ""; //$NON-NLS-1$
 		}
+
+        Label filterExampleLable = new Label(parent, SWT.NONE);
+        filterExampleLable.setText(Messages.getString("MavenProjectSettingPage.filterExampleMessage")); //$NON-NLS-1$
+        filterExampleLable.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+
         filterText.setText(filter);
 		filterText.addModifyListener(new ModifyListener() {
 

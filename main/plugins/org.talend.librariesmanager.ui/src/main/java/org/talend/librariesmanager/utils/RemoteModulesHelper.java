@@ -189,7 +189,12 @@ public class RemoteModulesHelper {
                     .getRepositoryHandler(customNexusServer);
             if (customerRepHandler != null) {
                 for (String groupId : groupIds) {
-                    List<MavenArtifact> searchResults = customerRepHandler.search(groupId, null, null, true, true);
+                    List<MavenArtifact> searchResults = customerRepHandler.search(groupId, null, null, true, false);
+                    monitor.worked(10);
+                    addModulesToCache(searchResults, localCache);
+                }
+                for (String groupId : snapshotgroupIds) {
+                    List<MavenArtifact> searchResults = customerRepHandler.search(groupId, null, null, false, true);
                     monitor.worked(10);
                     addModulesToCache(searchResults, localCache);
                 }
