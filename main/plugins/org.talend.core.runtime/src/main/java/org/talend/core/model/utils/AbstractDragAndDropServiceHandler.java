@@ -34,7 +34,7 @@ public abstract class AbstractDragAndDropServiceHandler implements IDragAndDropS
      */
     @Override
     public Object getComponentValue(Connection connection, String value, IMetadataTable table) {
-        return getComponentValue(connection, value, table, null);
+        return getComponentValue(connection, value, table, null, null);
     }
 
     /*
