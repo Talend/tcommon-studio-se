@@ -35,8 +35,6 @@ import org.apache.maven.model.PluginExecution;
 import org.apache.maven.model.Profile;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.m2e.core.MavenPlugin;
@@ -414,34 +412,4 @@ public class MavenTemplateManager {
         return defaultModel; // if error, try to use default model
     }
 
-    public static Model getAggregatorFolderTemplateModel(IFile pomFile, String groupId, String artifactId, String projectTechName)
-            throws Exception {
-        Model model = new Model();
-        model.setModelVersion("4.0.0"); //$NON-NLS-1$
-        model.setGroupId(groupId);
-        model.setArtifactId(artifactId);
-        model.setVersion(PomIdsHelper.getProjectVersion());
-        model.setPackaging(TalendMavenConstants.PACKAGING_POM);
-        model.setName(projectTechName + " " + artifactId); //$NON-NLS-1$
-        updateAggregatorPomModules(model, pomFile, false);
-
-        return model;
-    }
-
-    public static void updateAggregatorPomModules(Model model, IFile pomFile, boolean save) throws Exception {
-        List<String> modules = new ArrayList<>();
-        IResource[] members = pomFile.getParent().members();
-        for (IResource member : members) {
-            if (member instanceof IFolder) {
-                IFile modulePom = ((IFolder) member).getFile(TalendMavenConstants.POM_FILE_NAME);
-                if (modulePom.exists()) {
-                    modules.add(member.getName() + "/" + modulePom.getName()); //$NON-NLS-1$
-                }
-            }
-        }
-        model.setModules(modules);
-        if (save) {
-            PomUtil.savePom(null, model, pomFile);
-        }
-    }
 }

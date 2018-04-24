@@ -54,6 +54,7 @@ public class TalendJavaProjectConstants {
 
     public static final String PROJECT_FILE_NAME = ".project"; //$NON-NLS-1$
 
+    @Deprecated
     public static final String FILE_POM_CI_BUILDER = "sources-generator.pom"; //$NON-NLS-1$
 
     public static final String TEMP_POM_ARTIFACT_ID = "temp_job_pom"; //$NON-NLS-1$

@@ -2053,7 +2053,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 }
 
                 if (runProcessService != null) {
-                    runProcessService.initializeRootPoms();
+                    runProcessService.initializeRootPoms(monitor);
 
                     TimeMeasure.step("logOnProject", "install / setup root poms"); //$NON-NLS-1$ //$NON-NLS-2$
                 }
