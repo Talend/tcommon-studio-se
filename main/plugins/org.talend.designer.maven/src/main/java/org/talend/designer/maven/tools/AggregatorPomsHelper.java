@@ -12,7 +12,13 @@
 // ============================================================================
 package org.talend.designer.maven.tools;
 
-import static org.talend.designer.maven.model.TalendJavaProjectConstants.*;
+import static org.talend.designer.maven.model.TalendJavaProjectConstants.DIR_AGGREGATORS;
+import static org.talend.designer.maven.model.TalendJavaProjectConstants.DIR_BEANS;
+import static org.talend.designer.maven.model.TalendJavaProjectConstants.DIR_CODES;
+import static org.talend.designer.maven.model.TalendJavaProjectConstants.DIR_JOBS;
+import static org.talend.designer.maven.model.TalendJavaProjectConstants.DIR_PIGUDFS;
+import static org.talend.designer.maven.model.TalendJavaProjectConstants.DIR_POMS;
+import static org.talend.designer.maven.model.TalendJavaProjectConstants.DIR_ROUTINES;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -481,6 +487,11 @@ public class AggregatorPomsHelper {
             String relativePath = PomUtil.getPomRelativePath(pomFile.getLocation().toFile());
             if (!relativePath.equals(model.getParent().getRelativePath())) {
                 model.getParent().setRelativePath(relativePath);
+                needUpdate = true;
+            }
+            String rootPomPath = model.getProperties().getProperty("talend.rootpom.path");
+            if (!relativePath.equals(rootPomPath)) {
+                model.getProperties().setProperty("talend.rootpom.path", relativePath);
                 needUpdate = true;
             }
         }
