@@ -65,6 +65,8 @@ public class PomIdsHelperTest {
 
     private List<Property> testJobs;
 
+    private String projectName;
+
     @Before
     public void setUp() {
         testJobs = new ArrayList<>();
@@ -76,6 +78,8 @@ public class PomIdsHelperTest {
         defaultAppendFolder = projectPreferenceManager.getBoolean(MavenConstants.APPEND_FOLDER_TO_GROUPID);
         defaultSkipBaseGroupId = projectPreferenceManager.getBoolean(MavenConstants.SKIP_BASE_GROUPID);
         defaultPomFilter = projectPreferenceManager.getValue(MavenConstants.POM_FILTER);
+
+        projectName = ProjectManager.getInstance().getCurrentProject().getLabel().toLowerCase();
     }
 
     @Test
@@ -111,7 +115,7 @@ public class PomIdsHelperTest {
 
     @Test
     public void test_getCodesGroupId() {
-        assertEquals("org.example.auto_login_project.abc", PomIdsHelper.getCodesGroupId("abc"));
+        assertEquals("org.example." + projectName + ".abc", PomIdsHelper.getCodesGroupId("abc"));
 
         projectPreferenceManager.setValue(MavenConstants.PROJECT_GROUPID, "org.example.test");
         assertEquals("org.example.test.abc", PomIdsHelper.getCodesGroupId("abc"));
@@ -139,24 +143,24 @@ public class PomIdsHelperTest {
     @Test
     public void testGetJobGroupIdDefault() {
         Property property = PropertiesFactory.eINSTANCE.createProperty();
-        property.setLabel("testJob");
+        property.setLabel("testGroupIdChangeDefaultJob");
         property.setVersion("0.1");
-        assertEquals("org.example.auto_login_project.job", PomIdsHelper.getJobGroupId(property));
+        assertEquals("org.example." + projectName + ".job", PomIdsHelper.getJobGroupId(property));
     }
 
     @Test
     public void testGetJobGroupIdCustom() throws Exception {
         Property property1 = PropertiesFactory.eINSTANCE.createProperty();
-        property1.setLabel("testJob2");
+        property1.setLabel("testGroupIdChangeCustomJob1");
         property1.setVersion("0.1");
         property1.getAdditionalProperties().put(MavenConstants.NAME_GROUP_ID, "org.example.test");
         assertEquals("org.example.test", PomIdsHelper.getJobGroupId(property1));
 
         projectPreferenceManager.setValue(MavenConstants.APPEND_FOLDER_TO_GROUPID, true);
-        Property property2 = createJobProperty("testJob2", "0.1", "", true);
-        assertEquals("org.example.auto_login_project", PomIdsHelper.getJobGroupId(property2));
-        Property property3 = createJobProperty("testJob3", "0.1", "f1/f2", true);
-        assertEquals("org.example.auto_login_project.f1.f2", PomIdsHelper.getJobGroupId(property3));
+        Property property2 = createJobProperty("testGroupIdChangeCustomJob2", "0.1", "", true);
+        assertEquals("org.example." + projectName + "", PomIdsHelper.getJobGroupId(property2));
+        Property property3 = createJobProperty("testGroupIdChangeCustomJob3", "0.1", "f1/f2", true);
+        assertEquals("org.example." + projectName + ".f1.f2", PomIdsHelper.getJobGroupId(property3));
         projectPreferenceManager.setValue(MavenConstants.SKIP_BASE_GROUPID, true);
         assertEquals("f1.f2", PomIdsHelper.getJobGroupId(property3));
     }
@@ -247,21 +251,20 @@ public class PomIdsHelperTest {
 
     @Test
     public void testGetJobletGroupId() throws Exception {
-        Property property1 = PropertiesFactory.eINSTANCE.createProperty();
-        JobletProcessItem jobletItem = PropertiesFactory.eINSTANCE.createJobletProcessItem();
-        property1.setItem(jobletItem);
-        assertEquals("org.example.auto_login_project.joblet", PomIdsHelper.getJobletGroupId(property1));
+        Property property1 = createJobletProperty("testGroupIdChangeJoblet1", "0.1", "", false);
+        assertEquals("org.example." + projectName + ".joblet", PomIdsHelper.getJobletGroupId(property1));
 
         projectPreferenceManager.setValue(MavenConstants.PROJECT_GROUPID, "org.example.test");
         assertEquals("org.example.test.joblet", PomIdsHelper.getJobletGroupId(property1));
 
+        Property property2 = createJobletProperty("testGroupIdChangeJoblet2", "0.1", "", true);
         projectPreferenceManager.setValue(MavenConstants.APPEND_FOLDER_TO_GROUPID, true);
-        Property property2 = createJobletProperty("testJoblet2", "0.1", "", true);
         assertEquals("org.example.test", PomIdsHelper.getJobletGroupId(property2));
 
-        Property property3 = createJobletProperty("testJoblet3", "0.1", "f1/f2", true);
+        Property property3 = createJobletProperty("testGroupIdChangeJoblet3", "0.1", "f1/f2", true);
         projectPreferenceManager.setValue(MavenConstants.APPEND_FOLDER_TO_GROUPID, true);
         assertEquals("org.example.test.f1.f2", PomIdsHelper.getJobletGroupId(property3));
+
         projectPreferenceManager.setValue(MavenConstants.SKIP_BASE_GROUPID, true);
         assertEquals("f1.f2", PomIdsHelper.getJobletGroupId(property3));
     }

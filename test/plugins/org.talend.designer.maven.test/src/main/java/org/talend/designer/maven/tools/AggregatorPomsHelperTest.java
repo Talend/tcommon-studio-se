@@ -29,6 +29,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.util.EMap;
@@ -196,38 +197,38 @@ public class AggregatorPomsHelperTest {
     @Test
     public void testGetCodeFolder() {
         IFolder routinesFolder = helper.getCodeFolder(ERepositoryObjectType.ROUTINES);
-        assertEquals("/AUTO_LOGIN_PROJECT/poms/code/routines", routinesFolder.getFullPath().toPortableString());
+        assertEquals("/" + projectTechName + "/poms/code/routines", routinesFolder.getFullPath().toPortableString());
     }
 
     @Test
     public void testGetProcessFolder() {
         IFolder processFolder = helper.getProcessFolder(ERepositoryObjectType.PROCESS);
-        assertEquals("/AUTO_LOGIN_PROJECT/poms/jobs/process", processFolder.getFullPath().toPortableString());
+        assertEquals("/" + projectTechName + "/poms/jobs/process", processFolder.getFullPath().toPortableString());
 
         IFolder processMRFolder = helper.getProcessFolder(ERepositoryObjectType.PROCESS_MR);
-        assertEquals("/AUTO_LOGIN_PROJECT/poms/jobs/process_mr", processMRFolder.getFullPath().toPortableString());
+        assertEquals("/" + projectTechName + "/poms/jobs/process_mr", processMRFolder.getFullPath().toPortableString());
 
         IFolder processStormFolder = helper.getProcessFolder(ERepositoryObjectType.PROCESS_STORM);
-        assertEquals("/AUTO_LOGIN_PROJECT/poms/jobs/process_storm", processStormFolder.getFullPath().toPortableString());
+        assertEquals("/" + projectTechName + "/poms/jobs/process_storm", processStormFolder.getFullPath().toPortableString());
 
         IFolder jobletFolder = helper.getProcessFolder(ERepositoryObjectType.JOBLET);
-        assertEquals("/AUTO_LOGIN_PROJECT/poms/jobs/joblets", jobletFolder.getFullPath().toPortableString());
+        assertEquals("/" + projectTechName + "/poms/jobs/joblets", jobletFolder.getFullPath().toPortableString());
 
         IFolder sparkJobletFolder = helper.getProcessFolder(ERepositoryObjectType.SPARK_JOBLET);
-        assertEquals("/AUTO_LOGIN_PROJECT/poms/jobs/joblets_spark", sparkJobletFolder.getFullPath().toPortableString());
+        assertEquals("/" + projectTechName + "/poms/jobs/joblets_spark", sparkJobletFolder.getFullPath().toPortableString());
 
         IFolder sparkStrJobletFolder = helper.getProcessFolder(ERepositoryObjectType.SPARK_STREAMING_JOBLET);
-        assertEquals("/AUTO_LOGIN_PROJECT/poms/jobs/joblets_spark_streaming",
+        assertEquals("/" + projectTechName + "/poms/jobs/joblets_spark_streaming",
                 sparkStrJobletFolder.getFullPath().toPortableString());
 
         IFolder routeFolder = helper.getProcessFolder(ERepositoryObjectType.PROCESS_ROUTE);
-        assertEquals("/AUTO_LOGIN_PROJECT/poms/jobs/routes", routeFolder.getFullPath().toPortableString());
+        assertEquals("/" + projectTechName + "/poms/jobs/routes", routeFolder.getFullPath().toPortableString());
 
         IFolder routeletFolder = helper.getProcessFolder(ERepositoryObjectType.PROCESS_ROUTELET);
-        assertEquals("/AUTO_LOGIN_PROJECT/poms/jobs/routelets", routeletFolder.getFullPath().toPortableString());
+        assertEquals("/" + projectTechName + "/poms/jobs/routelets", routeletFolder.getFullPath().toPortableString());
 
         IFolder serviceFolder = helper.getProcessFolder(ERepositoryObjectType.valueOf("SERVICES"));
-        assertEquals("/AUTO_LOGIN_PROJECT/poms/jobs/services", serviceFolder.getFullPath().toPortableString());
+        assertEquals("/" + projectTechName + "/poms/jobs/services", serviceFolder.getFullPath().toPortableString());
 
     }
 
@@ -235,19 +236,19 @@ public class AggregatorPomsHelperTest {
     public void testGetItemPomFolder() throws Exception {
         Property property = createJobProperty("testItemFolderJob", "0.1", false);
         IFolder folder = AggregatorPomsHelper.getItemPomFolder(property);
-        assertEquals("/AUTO_LOGIN_PROJECT/poms/jobs/process/testitemfolderjob_0.1", folder.getFullPath().toPortableString());
+        assertEquals("/" + projectTechName + "/poms/jobs/process/testitemfolderjob_0.1", folder.getFullPath().toPortableString());
         folder = AggregatorPomsHelper.getItemPomFolder(property, "0.2");
-        assertEquals("/AUTO_LOGIN_PROJECT/poms/jobs/process/testitemfolderjob_0.2", folder.getFullPath().toPortableString());
+        assertEquals("/" + projectTechName + "/poms/jobs/process/testitemfolderjob_0.2", folder.getFullPath().toPortableString());
     }
 
     @Test
     public void testGetCodeProjectId() {
         String routinesId = AggregatorPomsHelper.getCodeProjectId(ERepositoryObjectType.ROUTINES, projectTechName);
-        assertEquals("AUTO_LOGIN_PROJECT|ROUTINES", routinesId);
+        assertEquals(projectTechName + "|ROUTINES", routinesId);
         String pidUdfsId = AggregatorPomsHelper.getCodeProjectId(ERepositoryObjectType.PIG_UDF, projectTechName);
-        assertEquals("AUTO_LOGIN_PROJECT|PIG_UDF", pidUdfsId);
+        assertEquals(projectTechName + "|PIG_UDF", pidUdfsId);
         String beansId = AggregatorPomsHelper.getCodeProjectId(ERepositoryObjectType.valueOf("BEANS"), projectTechName);
-        assertEquals("AUTO_LOGIN_PROJECT|BEANS", beansId);
+        assertEquals(projectTechName + "|BEANS", beansId);
     }
 
     @Test
@@ -300,13 +301,13 @@ public class AggregatorPomsHelperTest {
 
         List<String> modules = new ArrayList<>();
         modules.add("code/routines");
-        modules.add("jobs/process/testjob1_0.1");
+        modules.add("jobs/process/testsyncalljob1_0.1");
 
-        Property jobProperty = createJobProperty("testJob1", "0.1", true);
+        Property jobProperty = createJobProperty("testSyncAllJob1", "0.1", true);
         String jobGroupId = PomIdsHelper.getJobGroupId(jobProperty);
         String jobVersion = PomIdsHelper.getJobVersion(jobProperty);
 
-        helper.syncAllPoms();
+        helper.syncAllPomsWithoutProgress(new NullProgressMonitor());
 
         // check project pom.
         IFile projectPomFile = new AggregatorPomsHelper().getProjectRootPom();
@@ -342,7 +343,7 @@ public class AggregatorPomsHelperTest {
     @Test
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public void testSyncAllPomsByJobLevelChange() throws Exception {
-        Property jobProperty = createJobProperty("testJob2", "0.1", false);
+        Property jobProperty = createJobProperty("testSyncAllJob2", "0.1", false);
         EMap additionalProperties = jobProperty.getAdditionalProperties();
         String customJobGroupId = "org.example.testJob";
         String customJobVersion = "8.8.0";
@@ -350,7 +351,7 @@ public class AggregatorPomsHelperTest {
         additionalProperties.put(MavenConstants.NAME_USER_VERSION, customJobVersion);
         ProxyRepositoryFactory.getInstance().create(jobProperty.getItem(), new Path(""));
 
-        helper.syncAllPoms();
+        helper.syncAllPomsWithoutProgress(new NullProgressMonitor());
 
         IFile jobPomFile = runProcessService.getTalendJobJavaProject(jobProperty).getProjectPom();
         validatePomContent(jobPomFile.getLocation().toFile(), customJobGroupId, defaultProjectGroupId, customJobVersion,
@@ -437,7 +438,7 @@ public class AggregatorPomsHelperTest {
         projectPreferenceManager.setValue(MavenConstants.POM_FILTER, "");
         // reset all poms.
         if (needResetPom) {
-            helper.syncAllPoms();
+            helper.syncAllPomsWithoutProgress(new NullProgressMonitor());
             needResetPom = false;
         }
     }
