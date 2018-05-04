@@ -30,6 +30,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -99,7 +100,12 @@ public class AggregatorPomsHelper {
     }
 
     public AggregatorPomsHelper(String projectTechName) {
+        Assert.isNotNull(projectTechName);
         this.projectTechName = projectTechName;
+    }
+
+    public String getProjectTechName() {
+        return projectTechName;
     }
 
     public void createRootPom(List<String> modules, boolean force, IProgressMonitor monitor)
