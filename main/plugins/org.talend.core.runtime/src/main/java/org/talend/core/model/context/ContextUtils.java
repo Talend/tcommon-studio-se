@@ -499,13 +499,19 @@ public class ContextUtils {
             // return false;
             // }
             if (sourceParam.getComment() == null) {
-                sourceParam.setComment("");
+                sourceParam.setComment(""); //$NON-NLS-1$
             }
             if (targetParamType.getComment() == null) {
-                targetParamType.setComment("");
+                targetParamType.setComment(""); //$NON-NLS-1$
             }
             if (!sourceParam.getComment().equals(targetParamType.getComment())) {
                 return false;
+            }
+            if (sourceParam.getPrompt() == null) {
+                sourceParam.setPrompt(""); //$NON-NLS-1$
+            }
+            if (targetParamType.getPrompt() == null) {
+                targetParamType.setPrompt(""); //$NON-NLS-1$
             }
             if (!sourceParam.getPrompt().equals(targetParamType.getPrompt())) {
                 return false;
