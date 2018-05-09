@@ -33,7 +33,7 @@
                                 <artifactItem>
                                     <groupId>org.talend.studio</groupId>
                                     <artifactId>studio-maven-repository</artifactId>
-                                    <version>7.0.1.v20180126</version>
+                                    <version>7.0.1.v20180509</version>
                                     <type>zip</type>
                                     <overWrite>true</overWrite>
                                     <outputDirectory>${project.basedir}/../repository</outputDirectory>
