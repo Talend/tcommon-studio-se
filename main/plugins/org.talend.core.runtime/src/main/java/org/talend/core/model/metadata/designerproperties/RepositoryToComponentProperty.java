@@ -1423,6 +1423,11 @@ public class RepositoryToComponentProperty {
                     connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_ADDITIONAL_JDBC_SETTINGS));
         }
 
+        if (value.equals("THRIFTPORT") && EDatabaseTypeName.HIVE.getDisplayName().equals(databaseType)) {
+            return getAppropriateValue(connection,
+                    connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_THRIFTPORT));
+        }
+
         if (value.equals("USE_SSL") && (EDatabaseTypeName.HIVE.getDisplayName().equals(databaseType)
                 || EDatabaseTypeName.ORACLE_CUSTOM.getDisplayName().equals(databaseType))) {
             String message = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_USE_SSL);
