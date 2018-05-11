@@ -6068,6 +6068,8 @@ public class DatabaseForm extends AbstractForm {
         }
     }
 
+    private static String DEFAULT_HIVE_METASTORE_PORT = "9083";
+
     /**
      * SetEditable fields.
      * 
@@ -6223,6 +6225,13 @@ public class DatabaseForm extends AbstractForm {
             setHideThriftMetastoreInfoWidgets(!isHive);
 
             urlConnectionStringText.setEditable(!visible);
+
+            if (isHive) {
+                String metastoreport = getConnection().getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_THRIFTPORT);
+                if (metastoreport == null || "".equals(metastoreport)) {
+                    metastorePort.setText(DEFAULT_HIVE_METASTORE_PORT);
+                }
+            }
             // schemaText.hide();
             boolean schemaTextIsShow = true;
             if (template == EDatabaseConnTemplate.MSSQL) {
