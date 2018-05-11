@@ -47,6 +47,7 @@ import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.Project;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.utils.JavaResourcesHelper;
+import org.talend.core.repository.utils.ItemResourceUtil;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.maven.MavenUrlHelper;
@@ -197,6 +198,12 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         }
 
         checkPomProperty(properties, "talend.job.path", ETalendMavenVariables.JobPath, jobClassPackageFolder);
+        String jobFolder = ItemResourceUtil.getItemRelativePath(property).toPortableString();
+        if (!StringUtils.isEmpty(jobFolder)) {
+            // like f1/f2/f3/
+            jobFolder = StringUtils.strip(jobFolder, "/") + "/";
+        }
+        checkPomProperty(properties, "talend.job.folder", ETalendMavenVariables.JobFolder, jobFolder);
 
         /*
          * for jobInfo.properties
