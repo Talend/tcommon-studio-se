@@ -49,7 +49,7 @@ import org.talend.utils.io.FilesUtils;
  */
 public class ArtifactsDeployer {
 
-    private static final String SLASH = "/";//$NON-NLS-1$ 
+    private static final String SLASH = "/";//$NON-NLS-1$
 
     private boolean remoteNexusChecked = false;
 
@@ -176,8 +176,8 @@ public class ArtifactsDeployer {
 
             if (GlobalServiceRegister.getDefault().isServiceRegistered(INexusService.class)) {
                 INexusService nexusService = (INexusService) GlobalServiceRegister.getDefault().getService(INexusService.class);
-                nexusService.upload(nexusServer, artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(), content
-                        .toURI().toURL());
+                nexusService.upload(nexusServer, artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(),
+                        content.toURI().toURL());
             }
 
         } catch (Exception e) {
@@ -195,6 +195,9 @@ public class ArtifactsDeployer {
             }
         }
         String target = repositoryUrl;
+        String[] split = target.split("://");//$NON-NLS-1$
+        target = split[0] + "://" + nexusServer.getUserName() + ":" + nexusServer.getPassword() + "@"//$NON-NLS-1$
+                + split[1];
         if (artifact.getVersion() != null && artifact.getVersion().endsWith(MavenConstants.SNAPSHOT)) {
             target = target + nexusServer.getSnapshotRepId() + NexusConstants.SLASH;
         } else {
