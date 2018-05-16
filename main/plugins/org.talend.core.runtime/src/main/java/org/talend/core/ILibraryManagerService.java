@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -53,6 +53,9 @@ public interface ILibraryManagerService extends IService {
     public void deploy(URI jarFileUri, IProgressMonitor... monitorWrap);
 
     public void deploy(URI jarFileUri, String mavenUri, IProgressMonitor... monitorWrap);
+
+    public void deploy(URI jarFileUri, String mavenUri, boolean updateNexusJar, IProgressMonitor... monitorWrap);
+
 
     /**
      * 
@@ -145,11 +148,6 @@ public interface ILibraryManagerService extends IService {
     public Set<String> list(boolean withComponent, IProgressMonitor... monitorWrap);
 
     public boolean checkJarInstalledFromPlatform(String uriPath);
-
-    /**
-     * @return true if svn share lib folder are set, otherwise return false.
-     */
-    public boolean isSvnLibSetup();
 
     /**
      * deploy jars from lib/java to local maven if any jar already exist in maven and need update , for jars that not

@@ -68,6 +68,7 @@
 				</talendType>
 				<talendType type="id_Float">
 					<dbType type="FLOAT" default="true"/>
+					<dbType type="REAL"/>
 					<dbType type="BINARY_FLOAT"/>
 				</talendType>
 				<talendType type="id_Integer">
@@ -77,7 +78,6 @@
 				</talendType>
 				<talendType type="id_Long">
 					<dbType type="NUMBER" default="true"/>
-					<dbType type="REAL"/>
 				</talendType>
 				<talendType type="id_Object">
 					<dbType type="BLOB" default="true"/>
@@ -146,7 +146,7 @@
 					<talendType type="id_Integer" default="true" />
 				</dbType>
 				<dbType type="REAL">
-					<talendType type="id_Long" default="true" />
+					<talendType type="id_Float" default="true" />
 				</dbType>
 				<dbType type="FLOAT">
 					<talendType type="id_Float" default="true" />

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -15,7 +15,7 @@ package org.talend.commons.runtime.model.emf.provider;
 /**
  * DOC ggu class global comment. Detailled comment
  */
-public enum ResourceOption {
+public enum ResourceOption implements IOptionProvider {
 
     CREATATION,
     MIGRATION,
@@ -54,6 +54,11 @@ public enum ResourceOption {
 
     private String getName0() {
         return ("option_" + name()).toLowerCase();
+    }
+
+    @Override
+    public Object getValue() {
+        return getProvider();
     }
 
 }

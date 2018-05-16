@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -1385,6 +1385,7 @@ public final class MetadataToolHelper {
             sourceName = old.getLabel();
         }
         result.setTableName(sourceName);
+        result.setTableType(old.getTableType());
         List<IMetadataColumn> columns = new ArrayList<IMetadataColumn>(old.getColumns().size());
         for (TaggedValue tv : old.getTaggedValue()) {
             if (DiSchemaConstants.TALEND6_IS_READ_ONLY.equals(tv.getTag())) {

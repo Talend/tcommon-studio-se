@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,6 +22,7 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -50,7 +51,6 @@ import org.talend.core.model.process.Problem;
 import org.talend.core.model.process.Problem.ProblemStatus;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.runtime.CoreRuntimePlugin;
-import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.librariesmanager.model.ExtensionModuleManager;
 import org.talend.librariesmanager.model.ModulesNeededProvider;
@@ -124,6 +124,10 @@ public abstract class AbstractLibrariesService implements ILibrariesService {
 
     @Override
     public void deployLibrary(URL source, String mavenUri, boolean refresh) throws IOException {
+        deployLibrary(source, mavenUri, refresh, true);
+    }
+
+    public void deployLibrary(URL source, String mavenUri, boolean refresh, boolean updateNexusJar) throws IOException {
         String decode = null;
         if (source.getFile().contains("%20")) {
             decode = URLDecoder.decode(source.getFile(), "UTF-8");
@@ -132,13 +136,12 @@ public abstract class AbstractLibrariesService implements ILibrariesService {
         }
         final File sourceFile = new File(decode);
 
-        localLibraryManager.deploy(sourceFile.toURI(), mavenUri);
+        localLibraryManager.deploy(sourceFile.toURI(), mavenUri, updateNexusJar);
 
         refreshLocal(new String[] { sourceFile.getName() });
         if (refresh) {
             checkLibraries();
         }
-
     }
 
     @Override
@@ -153,15 +156,9 @@ public abstract class AbstractLibrariesService implements ILibrariesService {
         checkLibraries();
     }
 
-    private RepositoryContext getRepositoryContext() {
-        Context ctx = CoreRuntimePlugin.getInstance().getContext();
-        return (RepositoryContext) ctx.getProperty(Context.REPOSITORY_CONTEXT_KEY);
-    }
-
     private void refreshLocal(final String names[]) {
         // for feature 12877
         Project currentProject = ProjectManager.getInstance().getCurrentProject();
-        final String projectLabel = currentProject.getTechnicalLabel();
 
         // synchronize .Java project for all new jars.
         try {
@@ -177,36 +174,6 @@ public abstract class AbstractLibrariesService implements ILibrariesService {
         } catch (IOException e) {
             CommonExceptionHandler.process(e);
         }
-
-        // if svn libs setup from tac then ...
-        if (PluginChecker.isSVNProviderPluginLoaded()) {
-            ISVNProviderServiceInCoreRuntime service = (ISVNProviderServiceInCoreRuntime) GlobalServiceRegister.getDefault()
-                    .getService(ISVNProviderServiceInCoreRuntime.class);
-            if (service != null) {
-                File libFile = new File(LibrariesManagerUtils.getLibrariesPath(ECodeLanguage.JAVA));
-                // check local or remote
-                boolean localConnectionProvider = true;
-                IProxyRepositoryFactory proxyRepositoryFactory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
-                if (proxyRepositoryFactory != null) {
-                    try {
-                        localConnectionProvider = proxyRepositoryFactory.isLocalConnectionProvider();
-                    } catch (PersistenceException e) {
-                        //
-                    }
-                }
-                if (!localConnectionProvider && service.isSvnLibSetupOnTAC() && service.isInSvn(libFile.getAbsolutePath())
-                        && !getRepositoryContext().isOffline()) {
-                    List<String> jars = new ArrayList<String>();
-                    for (String name : names) {
-                        jars.add(libFile.getAbsolutePath() + File.separatorChar + name);
-                    }
-                    service.deployNewJar(jars);
-                    return;
-                }
-            }
-
-        }
-
     }
 
     /**
@@ -223,20 +190,16 @@ public abstract class AbstractLibrariesService implements ILibrariesService {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
             IRunProcessService processService = (IRunProcessService) GlobalServiceRegister.getDefault().getService(
                     IRunProcessService.class);
-            ITalendProcessJavaProject talendProcessJavaProject = processService.getTalendProcessJavaProject();
-            if (talendProcessJavaProject != null) {
-                IFolder javaLibFolder = talendProcessJavaProject.getLibFolder();
-                if (javaLibFolder.exists()) {
-                    File libFolder = javaLibFolder.getLocation().toFile();
-                    for (File externalLib : libFolder.listFiles(FilesUtils.getAcceptJARFilesFilter())) {
-                        if (externalLib.getName().equals(lib.getName())) {
-                            FilesUtils.copyFile(lib, externalLib);
-                        }
+            IFolder javaLibFolder = processService.getJavaProjectLibFolder();
+            if (javaLibFolder.exists()) {
+                File libFolder = javaLibFolder.getLocation().toFile();
+                for (File externalLib : libFolder.listFiles(FilesUtils.getAcceptJARFilesFilter())) {
+                    if (externalLib.getName().equals(lib.getName())) {
+                        FilesUtils.copyFile(lib, externalLib);
                     }
                 }
             }
         }
-
     }
 
     protected void addResolvedClasspathPath(String libName) {
@@ -273,6 +236,7 @@ public abstract class AbstractLibrariesService implements ILibrariesService {
     public void resetModulesNeeded() {
         ModulesNeededProvider.reset();
         ModuleStatusProvider.reset();
+        ModulesNeededProvider.getModulesNeeded().clear();
         checkLibraries();
     }
 
@@ -305,23 +269,22 @@ public abstract class AbstractLibrariesService implements ILibrariesService {
     @Override
     public void updateModulesNeededForCurrentJob(IProcess process) {
         ModulesNeededProvider.resetCurrentJobNeededModuleList(process);
-        checkLibraries();
-
     }
 
     @Override
     public void cleanLibs() {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
-            IRunProcessService processService = (IRunProcessService) GlobalServiceRegister.getDefault().getService(
-                    IRunProcessService.class);
-            ITalendProcessJavaProject talendProcessJavaProject = processService.getTalendProcessJavaProject();
-            if (talendProcessJavaProject != null) {
-                IFolder libFolder = talendProcessJavaProject.getLibFolder();
-                try {
-                    talendProcessJavaProject.cleanFolder(null, libFolder);
-                } catch (CoreException e) {
-                    ExceptionHandler.process(e);
+            IRunProcessService processService = (IRunProcessService) GlobalServiceRegister.getDefault()
+                    .getService(IRunProcessService.class);
+            IFolder libFolder = processService.getJavaProjectLibFolder();
+            try {
+                if (libFolder != null && libFolder.exists()) {
+                    for (IResource file : libFolder.members()) {
+                        file.delete(true, null);
+                    }
                 }
+            } catch (CoreException e) {
+                ExceptionHandler.process(e);
             }
         }
     }

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -60,6 +60,14 @@ public class ConnParameterKeys {
 
     public static final String CONN_PARA_KEY_SSL_TRUST_STORE_PASSWORD = "CONN_PARA_KEY_SSL_TRUST_STORE_PASSWORD"; //$NON-NLS-1$
 
+    public static final String CONN_PARA_KEY_NEED_CLIENT_AUTH = "CONN_PARA_KEY_NEED_CLIENT_AUTH";//$NON-NLS-1$
+
+    public static final String CONN_PARA_KEY_SSL_KEY_STORE_PATH = "CONN_PARA_KEY_SSL_KEY_STORE_PATH"; //$NON-NLS-1$
+
+    public static final String CONN_PARA_KEY_SSL_KEY_STORE_PASSWORD = "CONN_PARA_KEY_SSL_KEY_STORE_PASSWORD"; //$NON-NLS-1$
+
+    public static final String CONN_PARA_KEY_DISABLE_CBC_PROTECTION = "CONN_PARA_KEY_DISABLE_CBC_PROTECTION";//$NON-NLS-1$
+
     public static final String CONN_PARA_KEY_KEYTAB_PRINCIPAL = "CONN_PARA_KEY_KEYTAB_PRINCIPLA";//$NON-NLS-1$
 
     public static final String CONN_PARA_KEY_KEYTAB = "CONN_PARA_KEY_KEYTAB";//$NON-NLS-1$
@@ -118,6 +126,8 @@ public class ConnParameterKeys {
     public static final String CONN_PARA_KEY_HIVE_JDBC_PROPERTIES = "CONN_PARA_KEY_HIVE_JDBC_PROPERTIES"; //$NON-NLS-1$
 
     public static final String CONN_PARA_KEY_HIVE_ADDITIONAL_JDBC_SETTINGS = "CONN_PARA_KEY_HIVE_ADDITIONAL_JDBC_SETTINGS"; //$NON-NLS-1$
+
+    public static final String CONN_PARA_KEY_HIVE_THRIFTPORT = "CONN_PARA_KEY_HIVE_THRIFTPORT"; //$NON-NLS-1$
 
     public static final String HIVE_AUTHENTICATION_HIVEPRINCIPLA = "HIVE_AUTHENTICATION_HIVEPRINCIPLA";//$NON-NLS-1$
 

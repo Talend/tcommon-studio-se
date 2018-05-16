@@ -110,417 +110,417 @@ import org.talend.core.model.properties.XmlFileConnectionItem;
 public class PropertiesAdapterFactory extends AdapterFactoryImpl {
 
     /**
-	 * The cached model package.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * @generated
-	 */
+     * The cached model package.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @generated
+     */
     protected static PropertiesPackage modelPackage;
 
     /**
-	 * Creates an instance of the adapter factory.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * @generated
-	 */
+     * Creates an instance of the adapter factory.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @generated
+     */
     public PropertiesAdapterFactory() {
-		if (modelPackage == null) {
-			modelPackage = PropertiesPackage.eINSTANCE;
-		}
-	}
+        if (modelPackage == null) {
+            modelPackage = PropertiesPackage.eINSTANCE;
+        }
+    }
 
     /**
-	 * Returns whether this factory is applicable for the type of the object.
-	 * <!-- begin-user-doc --> This
+     * Returns whether this factory is applicable for the type of the object.
+     * <!-- begin-user-doc --> This
      * implementation returns <code>true</code> if the object is either the model's package or is an instance object of
      * the model. <!-- end-user-doc -->
-	 * @return whether this factory is applicable for the type of the object.
-	 * @generated
-	 */
+     * @return whether this factory is applicable for the type of the object.
+     * @generated
+     */
     public boolean isFactoryForType(Object object) {
-		if (object == modelPackage) {
-			return true;
-		}
-		if (object instanceof EObject) {
-			return ((EObject)object).eClass().getEPackage() == modelPackage;
-		}
-		return false;
-	}
+        if (object == modelPackage) {
+            return true;
+        }
+        if (object instanceof EObject) {
+            return ((EObject)object).eClass().getEPackage() == modelPackage;
+        }
+        return false;
+    }
 
     /**
-	 * The switch that delegates to the <code>createXXX</code> methods.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * @generated
-	 */
+     * The switch that delegates to the <code>createXXX</code> methods.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @generated
+     */
     protected PropertiesSwitch modelSwitch = new PropertiesSwitch() {
-			public Object caseProject(Project object) {
-				return createProjectAdapter();
-			}
-			public Object caseProjectComponentAuthorisation(ProjectComponentAuthorisation object) {
-				return createProjectComponentAuthorisationAdapter();
-			}
-			public Object caseProjectReference(ProjectReference object) {
-				return createProjectReferenceAdapter();
-			}
-			public Object caseStatus(Status object) {
-				return createStatusAdapter();
-			}
-			public Object caseItemState(ItemState object) {
-				return createItemStateAdapter();
-			}
-			public Object caseProperty(Property object) {
-				return createPropertyAdapter();
-			}
-			public Object caseItem(Item object) {
-				return createItemAdapter();
-			}
-			public Object caseLinkDocumentationItem(LinkDocumentationItem object) {
-				return createLinkDocumentationItemAdapter();
-			}
-			public Object caseLinkType(LinkType object) {
-				return createLinkTypeAdapter();
-			}
-			public Object caseBusinessProcessItem(BusinessProcessItem object) {
-				return createBusinessProcessItemAdapter();
-			}
-			public Object caseFileItem(FileItem object) {
-				return createFileItemAdapter();
-			}
-			public Object caseByteArray(ByteArray object) {
-				return createByteArrayAdapter();
-			}
-			public Object caseDocumentationItem(DocumentationItem object) {
-				return createDocumentationItemAdapter();
-			}
-			public Object caseRoutineItem(RoutineItem object) {
-				return createRoutineItemAdapter();
-			}
-			public Object caseConnectionItem(ConnectionItem object) {
-				return createConnectionItemAdapter();
-			}
-			public Object caseSnippetVariable(SnippetVariable object) {
-				return createSnippetVariableAdapter();
-			}
-			public Object caseSnippetItem(SnippetItem object) {
-				return createSnippetItemAdapter();
-			}
-			public Object caseDelimitedFileConnectionItem(DelimitedFileConnectionItem object) {
-				return createDelimitedFileConnectionItemAdapter();
-			}
-			public Object casePositionalFileConnectionItem(PositionalFileConnectionItem object) {
-				return createPositionalFileConnectionItemAdapter();
-			}
-			public Object caseRegExFileConnectionItem(RegExFileConnectionItem object) {
-				return createRegExFileConnectionItemAdapter();
-			}
-			public Object caseCSVFileConnectionItem(CSVFileConnectionItem object) {
-				return createCSVFileConnectionItemAdapter();
-			}
-			public Object caseDatabaseConnectionItem(DatabaseConnectionItem object) {
-				return createDatabaseConnectionItemAdapter();
-			}
-			public Object caseSAPConnectionItem(SAPConnectionItem object) {
-				return createSAPConnectionItemAdapter();
-			}
-			public Object caseXmlFileConnectionItem(XmlFileConnectionItem object) {
-				return createXmlFileConnectionItemAdapter();
-			}
-			public Object caseLdifFileConnectionItem(LdifFileConnectionItem object) {
-				return createLdifFileConnectionItemAdapter();
-			}
-			public Object caseExcelFileConnectionItem(ExcelFileConnectionItem object) {
-				return createExcelFileConnectionItemAdapter();
-			}
-			public Object caseEbcdicConnectionItem(EbcdicConnectionItem object) {
-				return createEbcdicConnectionItemAdapter();
-			}
-			public Object caseMDMConnectionItem(MDMConnectionItem object) {
-				return createMDMConnectionItemAdapter();
-			}
-			public Object caseValidationRulesConnectionItem(ValidationRulesConnectionItem object) {
-				return createValidationRulesConnectionItemAdapter();
-			}
-			public Object caseProcessItem(ProcessItem object) {
-				return createProcessItemAdapter();
-			}
-			public Object caseUserRole(UserRole object) {
-				return createUserRoleAdapter();
-			}
-			public Object caseUser(User object) {
-				return createUserAdapter();
-			}
-			public Object caseFolderItem(FolderItem object) {
-				return createFolderItemAdapter();
-			}
-			public Object caseComponent(Component object) {
-				return createComponentAdapter();
-			}
-			public Object caseNotationHolder(NotationHolder object) {
-				return createNotationHolderAdapter();
-			}
-			public Object caseUserProjectAuthorization(UserProjectAuthorization object) {
-				return createUserProjectAuthorizationAdapter();
-			}
-			public Object caseContextItem(ContextItem object) {
-				return createContextItemAdapter();
-			}
-			public Object caseSpagoBiServer(SpagoBiServer object) {
-				return createSpagoBiServerAdapter();
-			}
-			public Object caseLicense(License object) {
-				return createLicenseAdapter();
-			}
-			public Object caseGenericSchemaConnectionItem(GenericSchemaConnectionItem object) {
-				return createGenericSchemaConnectionItemAdapter();
-			}
-			public Object caseUserModuleAuthorization(UserModuleAuthorization object) {
-				return createUserModuleAuthorizationAdapter();
-			}
-			public Object caseLDAPSchemaConnectionItem(LDAPSchemaConnectionItem object) {
-				return createLDAPSchemaConnectionItemAdapter();
-			}
-			public Object caseSalesforceSchemaConnectionItem(SalesforceSchemaConnectionItem object) {
-				return createSalesforceSchemaConnectionItemAdapter();
-			}
-			public Object caseDashboardConnection(DashboardConnection object) {
-				return createDashboardConnectionAdapter();
-			}
-			public Object caseExecutionTriggerable(ExecutionTriggerable object) {
-				return createExecutionTriggerableAdapter();
-			}
-			public Object caseExecutionPlan(ExecutionPlan object) {
-				return createExecutionPlanAdapter();
-			}
-			public Object caseExecutionPlanPart(ExecutionPlanPart object) {
-				return createExecutionPlanPartAdapter();
-			}
-			public Object caseExecutionPlanPrm(ExecutionPlanPrm object) {
-				return createExecutionPlanPrmAdapter();
-			}
-			public Object caseExecutionPlanPartCmdPrm(ExecutionPlanPartCmdPrm object) {
-				return createExecutionPlanPartCmdPrmAdapter();
-			}
-			public Object caseExecutionPlanPartJobPrm(ExecutionPlanPartJobPrm object) {
-				return createExecutionPlanPartJobPrmAdapter();
-			}
-			public Object caseExecutionTask(ExecutionTask object) {
-				return createExecutionTaskAdapter();
-			}
-			public Object caseExecutionTaskProperties(ExecutionTaskProperties object) {
-				return createExecutionTaskPropertiesAdapter();
-			}
-			public Object caseExecutionTaskCmdPrm(ExecutionTaskCmdPrm object) {
-				return createExecutionTaskCmdPrmAdapter();
-			}
-			public Object caseExecutionTaskJobPrm(ExecutionTaskJobPrm object) {
-				return createExecutionTaskJobPrmAdapter();
-			}
-			public Object caseTaskExecutionHistory(TaskExecutionHistory object) {
-				return createTaskExecutionHistoryAdapter();
-			}
-			public Object casePlanExecutionHistory(PlanExecutionHistory object) {
-				return createPlanExecutionHistoryAdapter();
-			}
-			public Object caseTalendTrigger(TalendTrigger object) {
-				return createTalendTriggerAdapter();
-			}
-			public Object caseCronTalendTrigger(CronTalendTrigger object) {
-				return createCronTalendTriggerAdapter();
-			}
-			public Object caseCronUITalendTrigger(CronUITalendTrigger object) {
-				return createCronUITalendTriggerAdapter();
-			}
-			public Object caseSimpleTalendTrigger(SimpleTalendTrigger object) {
-				return createSimpleTalendTriggerAdapter();
-			}
-			public Object caseFileTrigger(FileTrigger object) {
-				return createFileTriggerAdapter();
-			}
-			public Object caseFileTriggerMask(FileTriggerMask object) {
-				return createFileTriggerMaskAdapter();
-			}
-			public Object caseExecutionServer(ExecutionServer object) {
-				return createExecutionServerAdapter();
-			}
-			public Object caseExecutionVirtualServer(ExecutionVirtualServer object) {
-				return createExecutionVirtualServerAdapter();
-			}
-			public Object caseJobletProcessItem(JobletProcessItem object) {
-				return createJobletProcessItemAdapter();
-			}
-			public Object caseJobDocumentationItem(JobDocumentationItem object) {
-				return createJobDocumentationItemAdapter();
-			}
-			public Object caseJobletDocumentationItem(JobletDocumentationItem object) {
-				return createJobletDocumentationItemAdapter();
-			}
-			public Object caseWSDLSchemaConnectionItem(WSDLSchemaConnectionItem object) {
-				return createWSDLSchemaConnectionItemAdapter();
-			}
-			public Object caseSchemaInformation(SchemaInformation object) {
-				return createSchemaInformationAdapter();
-			}
-			public Object caseInformation(Information object) {
-				return createInformationAdapter();
-			}
-			public Object caseSQLPatternItem(SQLPatternItem object) {
-				return createSQLPatternItemAdapter();
-			}
-			public Object caseComponentSetting(ComponentSetting object) {
-				return createComponentSettingAdapter();
-			}
-			public Object caseStatAndLogsSettings(StatAndLogsSettings object) {
-				return createStatAndLogsSettingsAdapter();
-			}
-			public Object caseImplicitContextSettings(ImplicitContextSettings object) {
-				return createImplicitContextSettingsAdapter();
-			}
-			public Object caseSoaOperation(SoaOperation object) {
-				return createSoaOperationAdapter();
-			}
-			public Object caseSoaInputParameter(SoaInputParameter object) {
-				return createSoaInputParameterAdapter();
-			}
-			public Object caseSoaService(SoaService object) {
-				return createSoaServiceAdapter();
-			}
-			public Object caseRulesItem(RulesItem object) {
-				return createRulesItemAdapter();
-			}
-			public Object caseUserRight(UserRight object) {
-				return createUserRightAdapter();
-			}
-			public Object caseRoleRight(RoleRight object) {
-				return createRoleRightAdapter();
-			}
-			public Object caseSVGBusinessProcessItem(SVGBusinessProcessItem object) {
-				return createSVGBusinessProcessItemAdapter();
-			}
-			public Object caseLinkRulesItem(LinkRulesItem object) {
-				return createLinkRulesItemAdapter();
-			}
-			public Object caseItemRelations(ItemRelations object) {
-				return createItemRelationsAdapter();
-			}
-			public Object caseItemRelation(ItemRelation object) {
-				return createItemRelationAdapter();
-			}
-			public Object caseNotification(Notification object) {
-				return createNotificationAdapter();
-			}
-			public Object caseHL7ConnectionItem(HL7ConnectionItem object) {
-				return createHL7ConnectionItemAdapter();
-			}
-			public Object caseUserRoleReference(UserRoleReference object) {
-				return createUserRoleReferenceAdapter();
-			}
-			public Object caseHeaderFooterConnectionItem(HeaderFooterConnectionItem object) {
-				return createHeaderFooterConnectionItemAdapter();
-			}
-			public Object caseFTPConnectionItem(FTPConnectionItem object) {
-				return createFTPConnectionItemAdapter();
-			}
-			public Object caseCustomComponentSetting(CustomComponentSetting object) {
-				return createCustomComponentSettingAdapter();
-			}
-			public Object caseTDQItem(TDQItem object) {
-				return createTDQItemAdapter();
-			}
-			public Object caseBRMSConnectionItem(BRMSConnectionItem object) {
-				return createBRMSConnectionItemAdapter();
-			}
-			public Object caseJobScriptItem(JobScriptItem object) {
-				return createJobScriptItemAdapter();
-			}
-			public Object caseEDIFACTConnectionItem(EDIFACTConnectionItem object) {
-				return createEDIFACTConnectionItemAdapter();
-			}
-			public Object caseTechnicalVariable(TechnicalVariable object) {
-				return createTechnicalVariableAdapter();
-			}
-			public Object caseReferenceFileItem(ReferenceFileItem object) {
-				return createReferenceFileItemAdapter();
-			}
-			public Object caseReferenceItem(ReferenceItem object) {
-				return createReferenceItemAdapter();
-			}
-			public Object caseExchangeUser(ExchangeUser object) {
-				return createExchangeUserAdapter();
-			}
-			public Object caseArtifactNotification(ArtifactNotification object) {
-				return createArtifactNotificationAdapter();
-			}
-			public Object caseAdditionalInfoMap(Map.Entry object) {
-				return createAdditionalInfoMapAdapter();
-			}
-			public Object caseMigrationTask(MigrationTask object) {
-				return createMigrationTaskAdapter();
-			}
-			public Object casePigudfItem(PigudfItem object) {
-				return createPigudfItemAdapter();
-			}
-			public Object defaultCase(EObject object) {
-				return createEObjectAdapter();
-			}
-		};
+            public Object caseProject(Project object) {
+                return createProjectAdapter();
+            }
+            public Object caseProjectComponentAuthorisation(ProjectComponentAuthorisation object) {
+                return createProjectComponentAuthorisationAdapter();
+            }
+            public Object caseProjectReference(ProjectReference object) {
+                return createProjectReferenceAdapter();
+            }
+            public Object caseStatus(Status object) {
+                return createStatusAdapter();
+            }
+            public Object caseItemState(ItemState object) {
+                return createItemStateAdapter();
+            }
+            public Object caseProperty(Property object) {
+                return createPropertyAdapter();
+            }
+            public Object caseItem(Item object) {
+                return createItemAdapter();
+            }
+            public Object caseLinkDocumentationItem(LinkDocumentationItem object) {
+                return createLinkDocumentationItemAdapter();
+            }
+            public Object caseLinkType(LinkType object) {
+                return createLinkTypeAdapter();
+            }
+            public Object caseBusinessProcessItem(BusinessProcessItem object) {
+                return createBusinessProcessItemAdapter();
+            }
+            public Object caseFileItem(FileItem object) {
+                return createFileItemAdapter();
+            }
+            public Object caseByteArray(ByteArray object) {
+                return createByteArrayAdapter();
+            }
+            public Object caseDocumentationItem(DocumentationItem object) {
+                return createDocumentationItemAdapter();
+            }
+            public Object caseRoutineItem(RoutineItem object) {
+                return createRoutineItemAdapter();
+            }
+            public Object caseConnectionItem(ConnectionItem object) {
+                return createConnectionItemAdapter();
+            }
+            public Object caseSnippetVariable(SnippetVariable object) {
+                return createSnippetVariableAdapter();
+            }
+            public Object caseSnippetItem(SnippetItem object) {
+                return createSnippetItemAdapter();
+            }
+            public Object caseDelimitedFileConnectionItem(DelimitedFileConnectionItem object) {
+                return createDelimitedFileConnectionItemAdapter();
+            }
+            public Object casePositionalFileConnectionItem(PositionalFileConnectionItem object) {
+                return createPositionalFileConnectionItemAdapter();
+            }
+            public Object caseRegExFileConnectionItem(RegExFileConnectionItem object) {
+                return createRegExFileConnectionItemAdapter();
+            }
+            public Object caseCSVFileConnectionItem(CSVFileConnectionItem object) {
+                return createCSVFileConnectionItemAdapter();
+            }
+            public Object caseDatabaseConnectionItem(DatabaseConnectionItem object) {
+                return createDatabaseConnectionItemAdapter();
+            }
+            public Object caseSAPConnectionItem(SAPConnectionItem object) {
+                return createSAPConnectionItemAdapter();
+            }
+            public Object caseXmlFileConnectionItem(XmlFileConnectionItem object) {
+                return createXmlFileConnectionItemAdapter();
+            }
+            public Object caseLdifFileConnectionItem(LdifFileConnectionItem object) {
+                return createLdifFileConnectionItemAdapter();
+            }
+            public Object caseExcelFileConnectionItem(ExcelFileConnectionItem object) {
+                return createExcelFileConnectionItemAdapter();
+            }
+            public Object caseEbcdicConnectionItem(EbcdicConnectionItem object) {
+                return createEbcdicConnectionItemAdapter();
+            }
+            public Object caseMDMConnectionItem(MDMConnectionItem object) {
+                return createMDMConnectionItemAdapter();
+            }
+            public Object caseValidationRulesConnectionItem(ValidationRulesConnectionItem object) {
+                return createValidationRulesConnectionItemAdapter();
+            }
+            public Object caseProcessItem(ProcessItem object) {
+                return createProcessItemAdapter();
+            }
+            public Object caseUserRole(UserRole object) {
+                return createUserRoleAdapter();
+            }
+            public Object caseUser(User object) {
+                return createUserAdapter();
+            }
+            public Object caseFolderItem(FolderItem object) {
+                return createFolderItemAdapter();
+            }
+            public Object caseComponent(Component object) {
+                return createComponentAdapter();
+            }
+            public Object caseNotationHolder(NotationHolder object) {
+                return createNotationHolderAdapter();
+            }
+            public Object caseUserProjectAuthorization(UserProjectAuthorization object) {
+                return createUserProjectAuthorizationAdapter();
+            }
+            public Object caseContextItem(ContextItem object) {
+                return createContextItemAdapter();
+            }
+            public Object caseSpagoBiServer(SpagoBiServer object) {
+                return createSpagoBiServerAdapter();
+            }
+            public Object caseLicense(License object) {
+                return createLicenseAdapter();
+            }
+            public Object caseGenericSchemaConnectionItem(GenericSchemaConnectionItem object) {
+                return createGenericSchemaConnectionItemAdapter();
+            }
+            public Object caseUserModuleAuthorization(UserModuleAuthorization object) {
+                return createUserModuleAuthorizationAdapter();
+            }
+            public Object caseLDAPSchemaConnectionItem(LDAPSchemaConnectionItem object) {
+                return createLDAPSchemaConnectionItemAdapter();
+            }
+            public Object caseSalesforceSchemaConnectionItem(SalesforceSchemaConnectionItem object) {
+                return createSalesforceSchemaConnectionItemAdapter();
+            }
+            public Object caseDashboardConnection(DashboardConnection object) {
+                return createDashboardConnectionAdapter();
+            }
+            public Object caseExecutionTriggerable(ExecutionTriggerable object) {
+                return createExecutionTriggerableAdapter();
+            }
+            public Object caseExecutionPlan(ExecutionPlan object) {
+                return createExecutionPlanAdapter();
+            }
+            public Object caseExecutionPlanPart(ExecutionPlanPart object) {
+                return createExecutionPlanPartAdapter();
+            }
+            public Object caseExecutionPlanPrm(ExecutionPlanPrm object) {
+                return createExecutionPlanPrmAdapter();
+            }
+            public Object caseExecutionPlanPartCmdPrm(ExecutionPlanPartCmdPrm object) {
+                return createExecutionPlanPartCmdPrmAdapter();
+            }
+            public Object caseExecutionPlanPartJobPrm(ExecutionPlanPartJobPrm object) {
+                return createExecutionPlanPartJobPrmAdapter();
+            }
+            public Object caseExecutionTask(ExecutionTask object) {
+                return createExecutionTaskAdapter();
+            }
+            public Object caseExecutionTaskProperties(ExecutionTaskProperties object) {
+                return createExecutionTaskPropertiesAdapter();
+            }
+            public Object caseExecutionTaskCmdPrm(ExecutionTaskCmdPrm object) {
+                return createExecutionTaskCmdPrmAdapter();
+            }
+            public Object caseExecutionTaskJobPrm(ExecutionTaskJobPrm object) {
+                return createExecutionTaskJobPrmAdapter();
+            }
+            public Object caseTaskExecutionHistory(TaskExecutionHistory object) {
+                return createTaskExecutionHistoryAdapter();
+            }
+            public Object casePlanExecutionHistory(PlanExecutionHistory object) {
+                return createPlanExecutionHistoryAdapter();
+            }
+            public Object caseTalendTrigger(TalendTrigger object) {
+                return createTalendTriggerAdapter();
+            }
+            public Object caseCronTalendTrigger(CronTalendTrigger object) {
+                return createCronTalendTriggerAdapter();
+            }
+            public Object caseCronUITalendTrigger(CronUITalendTrigger object) {
+                return createCronUITalendTriggerAdapter();
+            }
+            public Object caseSimpleTalendTrigger(SimpleTalendTrigger object) {
+                return createSimpleTalendTriggerAdapter();
+            }
+            public Object caseFileTrigger(FileTrigger object) {
+                return createFileTriggerAdapter();
+            }
+            public Object caseFileTriggerMask(FileTriggerMask object) {
+                return createFileTriggerMaskAdapter();
+            }
+            public Object caseExecutionServer(ExecutionServer object) {
+                return createExecutionServerAdapter();
+            }
+            public Object caseExecutionVirtualServer(ExecutionVirtualServer object) {
+                return createExecutionVirtualServerAdapter();
+            }
+            public Object caseJobletProcessItem(JobletProcessItem object) {
+                return createJobletProcessItemAdapter();
+            }
+            public Object caseJobDocumentationItem(JobDocumentationItem object) {
+                return createJobDocumentationItemAdapter();
+            }
+            public Object caseJobletDocumentationItem(JobletDocumentationItem object) {
+                return createJobletDocumentationItemAdapter();
+            }
+            public Object caseWSDLSchemaConnectionItem(WSDLSchemaConnectionItem object) {
+                return createWSDLSchemaConnectionItemAdapter();
+            }
+            public Object caseSchemaInformation(SchemaInformation object) {
+                return createSchemaInformationAdapter();
+            }
+            public Object caseInformation(Information object) {
+                return createInformationAdapter();
+            }
+            public Object caseSQLPatternItem(SQLPatternItem object) {
+                return createSQLPatternItemAdapter();
+            }
+            public Object caseComponentSetting(ComponentSetting object) {
+                return createComponentSettingAdapter();
+            }
+            public Object caseStatAndLogsSettings(StatAndLogsSettings object) {
+                return createStatAndLogsSettingsAdapter();
+            }
+            public Object caseImplicitContextSettings(ImplicitContextSettings object) {
+                return createImplicitContextSettingsAdapter();
+            }
+            public Object caseSoaOperation(SoaOperation object) {
+                return createSoaOperationAdapter();
+            }
+            public Object caseSoaInputParameter(SoaInputParameter object) {
+                return createSoaInputParameterAdapter();
+            }
+            public Object caseSoaService(SoaService object) {
+                return createSoaServiceAdapter();
+            }
+            public Object caseRulesItem(RulesItem object) {
+                return createRulesItemAdapter();
+            }
+            public Object caseUserRight(UserRight object) {
+                return createUserRightAdapter();
+            }
+            public Object caseRoleRight(RoleRight object) {
+                return createRoleRightAdapter();
+            }
+            public Object caseSVGBusinessProcessItem(SVGBusinessProcessItem object) {
+                return createSVGBusinessProcessItemAdapter();
+            }
+            public Object caseLinkRulesItem(LinkRulesItem object) {
+                return createLinkRulesItemAdapter();
+            }
+            public Object caseItemRelations(ItemRelations object) {
+                return createItemRelationsAdapter();
+            }
+            public Object caseItemRelation(ItemRelation object) {
+                return createItemRelationAdapter();
+            }
+            public Object caseNotification(Notification object) {
+                return createNotificationAdapter();
+            }
+            public Object caseHL7ConnectionItem(HL7ConnectionItem object) {
+                return createHL7ConnectionItemAdapter();
+            }
+            public Object caseUserRoleReference(UserRoleReference object) {
+                return createUserRoleReferenceAdapter();
+            }
+            public Object caseHeaderFooterConnectionItem(HeaderFooterConnectionItem object) {
+                return createHeaderFooterConnectionItemAdapter();
+            }
+            public Object caseFTPConnectionItem(FTPConnectionItem object) {
+                return createFTPConnectionItemAdapter();
+            }
+            public Object caseCustomComponentSetting(CustomComponentSetting object) {
+                return createCustomComponentSettingAdapter();
+            }
+            public Object caseTDQItem(TDQItem object) {
+                return createTDQItemAdapter();
+            }
+            public Object caseBRMSConnectionItem(BRMSConnectionItem object) {
+                return createBRMSConnectionItemAdapter();
+            }
+            public Object caseJobScriptItem(JobScriptItem object) {
+                return createJobScriptItemAdapter();
+            }
+            public Object caseEDIFACTConnectionItem(EDIFACTConnectionItem object) {
+                return createEDIFACTConnectionItemAdapter();
+            }
+            public Object caseTechnicalVariable(TechnicalVariable object) {
+                return createTechnicalVariableAdapter();
+            }
+            public Object caseReferenceFileItem(ReferenceFileItem object) {
+                return createReferenceFileItemAdapter();
+            }
+            public Object caseReferenceItem(ReferenceItem object) {
+                return createReferenceItemAdapter();
+            }
+            public Object caseExchangeUser(ExchangeUser object) {
+                return createExchangeUserAdapter();
+            }
+            public Object caseArtifactNotification(ArtifactNotification object) {
+                return createArtifactNotificationAdapter();
+            }
+            public Object caseAdditionalInfoMap(Map.Entry object) {
+                return createAdditionalInfoMapAdapter();
+            }
+            public Object caseMigrationTask(MigrationTask object) {
+                return createMigrationTaskAdapter();
+            }
+            public Object casePigudfItem(PigudfItem object) {
+                return createPigudfItemAdapter();
+            }
+            public Object defaultCase(EObject object) {
+                return createEObjectAdapter();
+            }
+        };
 
     /**
-	 * Creates an adapter for the <code>target</code>.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * @param target the object to adapt.
-	 * @return the adapter for the <code>target</code>.
-	 * @generated
-	 */
+     * Creates an adapter for the <code>target</code>.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @param target the object to adapt.
+     * @return the adapter for the <code>target</code>.
+     * @generated
+     */
     public Adapter createAdapter(Notifier target) {
-		return (Adapter)modelSwitch.doSwitch((EObject)target);
-	}
+        return (Adapter)modelSwitch.doSwitch((EObject)target);
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.Project <em>Project</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.Project <em>Project</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
      * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.Project
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.Project
+     * @generated
+     */
     public Adapter createProjectAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ProjectComponentAuthorisation <em>Project Component Authorisation</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ProjectComponentAuthorisation <em>Project Component Authorisation</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
      * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.ProjectComponentAuthorisation
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.ProjectComponentAuthorisation
+     * @generated
+     */
     public Adapter createProjectComponentAuthorisationAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ProjectReference <em>Project Reference</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we can
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ProjectReference <em>Project Reference</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.ProjectReference
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.ProjectReference
+     * @generated
+     */
     public Adapter createProjectReferenceAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.Status <em>Status</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.Status <em>Status</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
      * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.Status
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.Status
+     * @generated
+     */
     public Adapter createStatusAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
      * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ItemState
@@ -533,20 +533,20 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createItemStateAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.Property <em>Property</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.Property <em>Property</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's
      * useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.Property
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.Property
+     * @generated
+     */
     public Adapter createPropertyAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
      * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.Item <em>Item</em>}'. <!--
@@ -558,21 +558,21 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createItemAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.LinkDocumentationItem <em>Link Documentation Item</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.LinkDocumentationItem <em>Link Documentation Item</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we
      * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.LinkDocumentationItem
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.LinkDocumentationItem
+     * @generated
+     */
     public Adapter createLinkDocumentationItemAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
      * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.LinkType
@@ -585,21 +585,21 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createLinkTypeAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.BusinessProcessItem <em>Business Process Item</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we can
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.BusinessProcessItem <em>Business Process Item</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.BusinessProcessItem
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.BusinessProcessItem
+     * @generated
+     */
     public Adapter createBusinessProcessItemAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
      * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.FileItem
@@ -612,8 +612,8 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createFileItemAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
      * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ByteArray
@@ -626,21 +626,21 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createByteArrayAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.DocumentationItem <em>Documentation Item</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we can
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.DocumentationItem <em>Documentation Item</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.DocumentationItem
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.DocumentationItem
+     * @generated
+     */
     public Adapter createDocumentationItemAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
      * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.RoutineItem
@@ -653,34 +653,34 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createRoutineItemAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ConnectionItem <em>Connection Item</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we can
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ConnectionItem <em>Connection Item</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.ConnectionItem
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.ConnectionItem
+     * @generated
+     */
     public Adapter createConnectionItemAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.SnippetVariable <em>Snippet Variable</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we can
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.SnippetVariable <em>Snippet Variable</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.SnippetVariable
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.SnippetVariable
+     * @generated
+     */
     public Adapter createSnippetVariableAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
      * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.SnippetItem
@@ -693,163 +693,163 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createSnippetItemAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.DelimitedFileConnectionItem <em>Delimited File Connection Item</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.DelimitedFileConnectionItem <em>Delimited File Connection Item</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
      * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.DelimitedFileConnectionItem
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.DelimitedFileConnectionItem
+     * @generated
+     */
     public Adapter createDelimitedFileConnectionItemAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.PositionalFileConnectionItem <em>Positional File Connection Item</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.PositionalFileConnectionItem <em>Positional File Connection Item</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
      * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.PositionalFileConnectionItem
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.PositionalFileConnectionItem
+     * @generated
+     */
     public Adapter createPositionalFileConnectionItemAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.RegExFileConnectionItem <em>Reg Ex File Connection Item</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.RegExFileConnectionItem <em>Reg Ex File Connection Item</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that
      * we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.RegExFileConnectionItem
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.RegExFileConnectionItem
+     * @generated
+     */
     public Adapter createRegExFileConnectionItemAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.CSVFileConnectionItem <em>CSV File Connection Item</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.CSVFileConnectionItem <em>CSV File Connection Item</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we
      * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.CSVFileConnectionItem
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.CSVFileConnectionItem
+     * @generated
+     */
     public Adapter createCSVFileConnectionItemAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.DatabaseConnectionItem <em>Database Connection Item</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.DatabaseConnectionItem <em>Database Connection Item</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we
      * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.DatabaseConnectionItem
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.DatabaseConnectionItem
+     * @generated
+     */
     public Adapter createDatabaseConnectionItemAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.SAPConnectionItem <em>SAP Connection Item</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we can
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.SAPConnectionItem <em>SAP Connection Item</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.SAPConnectionItem
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.SAPConnectionItem
+     * @generated
+     */
     public Adapter createSAPConnectionItemAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.XmlFileConnectionItem <em>Xml File Connection Item</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.XmlFileConnectionItem <em>Xml File Connection Item</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we
      * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.XmlFileConnectionItem
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.XmlFileConnectionItem
+     * @generated
+     */
     public Adapter createXmlFileConnectionItemAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.LdifFileConnectionItem <em>Ldif File Connection Item</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.LdifFileConnectionItem <em>Ldif File Connection Item</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we
      * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.LdifFileConnectionItem
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.LdifFileConnectionItem
+     * @generated
+     */
     public Adapter createLdifFileConnectionItemAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ExcelFileConnectionItem <em>Excel File Connection Item</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ExcelFileConnectionItem <em>Excel File Connection Item</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that
      * we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.ExcelFileConnectionItem
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.ExcelFileConnectionItem
+     * @generated
+     */
     public Adapter createExcelFileConnectionItemAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.EbcdicConnectionItem <em>Ebcdic Connection Item</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.EbcdicConnectionItem <em>Ebcdic Connection Item</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we
      * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.EbcdicConnectionItem
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.EbcdicConnectionItem
+     * @generated
+     */
     public Adapter createEbcdicConnectionItemAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.MDMConnectionItem <em>MDM Connection Item</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we can
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.MDMConnectionItem <em>MDM Connection Item</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.MDMConnectionItem
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.MDMConnectionItem
+     * @generated
+     */
     public Adapter createMDMConnectionItemAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ValidationRulesConnectionItem <em>Validation Rules Connection Item</em>}'.
-	 * <!-- begin-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ValidationRulesConnectionItem <em>Validation Rules Connection Item</em>}'.
+     * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.ValidationRulesConnectionItem
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.ValidationRulesConnectionItem
+     * @generated
+     */
     public Adapter createValidationRulesConnectionItemAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
      * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ProcessItem
@@ -862,8 +862,8 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createProcessItemAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
      * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.UserRole
@@ -876,8 +876,8 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createUserRoleAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
      * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.User <em>User</em>}'. <!--
@@ -889,8 +889,8 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createUserAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
      * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.FolderItem
@@ -903,8 +903,8 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createFolderItemAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
      * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.Component
@@ -917,34 +917,34 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createComponentAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.NotationHolder <em>Notation Holder</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we can
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.NotationHolder <em>Notation Holder</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.NotationHolder
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.NotationHolder
+     * @generated
+     */
     public Adapter createNotationHolderAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.UserProjectAuthorization <em>User Project Authorization</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.UserProjectAuthorization <em>User Project Authorization</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that
      * we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.UserProjectAuthorization
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.UserProjectAuthorization
+     * @generated
+     */
     public Adapter createUserProjectAuthorizationAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
      * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ContextItem
@@ -957,124 +957,124 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createContextItemAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.SpagoBiServer <em>Spago Bi Server</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we can
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.SpagoBiServer <em>Spago Bi Server</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.SpagoBiServer
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.SpagoBiServer
+     * @generated
+     */
     public Adapter createSpagoBiServerAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.License <em>License</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.License <em>License</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
      * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.License
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.License
+     * @generated
+     */
     public Adapter createLicenseAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.GenericSchemaConnectionItem <em>Generic Schema Connection Item</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.GenericSchemaConnectionItem <em>Generic Schema Connection Item</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
      * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.GenericSchemaConnectionItem
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.GenericSchemaConnectionItem
+     * @generated
+     */
     public Adapter createGenericSchemaConnectionItemAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.UserModuleAuthorization <em>User Module Authorization</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.UserModuleAuthorization <em>User Module Authorization</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we
      * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.UserModuleAuthorization
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.UserModuleAuthorization
+     * @generated
+     */
     public Adapter createUserModuleAuthorizationAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.LDAPSchemaConnectionItem <em>LDAP Schema Connection Item</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.LDAPSchemaConnectionItem <em>LDAP Schema Connection Item</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that
      * we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.LDAPSchemaConnectionItem
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.LDAPSchemaConnectionItem
+     * @generated
+     */
     public Adapter createLDAPSchemaConnectionItemAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.SalesforceSchemaConnectionItem <em>Salesforce Schema Connection Item</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.SalesforceSchemaConnectionItem <em>Salesforce Schema Connection Item</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so
      * that we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.SalesforceSchemaConnectionItem
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.SalesforceSchemaConnectionItem
+     * @generated
+     */
     public Adapter createSalesforceSchemaConnectionItemAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.DashboardConnection <em>Dashboard Connection</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we can
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.DashboardConnection <em>Dashboard Connection</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.DashboardConnection
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.DashboardConnection
+     * @generated
+     */
     public Adapter createDashboardConnectionAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ExecutionTriggerable <em>Execution Triggerable</em>}'.
-	 * <!-- begin-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ExecutionTriggerable <em>Execution Triggerable</em>}'.
+     * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.ExecutionTriggerable
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.ExecutionTriggerable
+     * @generated
+     */
     public Adapter createExecutionTriggerableAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ExecutionServer <em>Execution Server</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we can
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ExecutionServer <em>Execution Server</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.ExecutionServer
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.ExecutionServer
+     * @generated
+     */
     public Adapter createExecutionServerAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
      * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ExecutionTask
@@ -1087,48 +1087,48 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createExecutionTaskAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ExecutionTaskProperties <em>Execution Task Properties</em>}'.
-	 * <!-- begin-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ExecutionTaskProperties <em>Execution Task Properties</em>}'.
+     * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.ExecutionTaskProperties
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.ExecutionTaskProperties
+     * @generated
+     */
     public Adapter createExecutionTaskPropertiesAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ExecutionTaskCmdPrm <em>Execution Task Cmd Prm</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ExecutionTaskCmdPrm <em>Execution Task Cmd Prm</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we
      * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.ExecutionTaskCmdPrm
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.ExecutionTaskCmdPrm
+     * @generated
+     */
     public Adapter createExecutionTaskCmdPrmAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ExecutionTaskJobPrm <em>Execution Task Job Prm</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ExecutionTaskJobPrm <em>Execution Task Job Prm</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we
      * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.ExecutionTaskJobPrm
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.ExecutionTaskJobPrm
+     * @generated
+     */
     public Adapter createExecutionTaskJobPrmAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
      * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.TalendTrigger
@@ -1141,60 +1141,60 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createTalendTriggerAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.CronTalendTrigger <em>Cron Talend Trigger</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we can
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.CronTalendTrigger <em>Cron Talend Trigger</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.CronTalendTrigger
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.CronTalendTrigger
+     * @generated
+     */
     public Adapter createCronTalendTriggerAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.CronUITalendTrigger <em>Cron UI Talend Trigger</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.CronUITalendTrigger <em>Cron UI Talend Trigger</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we
      * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.CronUITalendTrigger
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.CronUITalendTrigger
+     * @generated
+     */
     public Adapter createCronUITalendTriggerAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.SimpleTalendTrigger <em>Simple Talend Trigger</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we can
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.SimpleTalendTrigger <em>Simple Talend Trigger</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.SimpleTalendTrigger
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.SimpleTalendTrigger
+     * @generated
+     */
     public Adapter createSimpleTalendTriggerAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ExecutionVirtualServer <em>Execution Virtual Server</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ExecutionVirtualServer <em>Execution Virtual Server</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we
      * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.ExecutionVirtualServer
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.ExecutionVirtualServer
+     * @generated
+     */
     public Adapter createExecutionVirtualServerAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
      * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.FileTrigger
@@ -1207,86 +1207,86 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createFileTriggerAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.FileTriggerMask <em>File Trigger Mask</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we can
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.FileTriggerMask <em>File Trigger Mask</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.FileTriggerMask
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.FileTriggerMask
+     * @generated
+     */
     public Adapter createFileTriggerMaskAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.JobletProcessItem <em>Joblet Process Item</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we can
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.JobletProcessItem <em>Joblet Process Item</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.JobletProcessItem
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.JobletProcessItem
+     * @generated
+     */
     public Adapter createJobletProcessItemAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.JobDocumentationItem <em>Job Documentation Item</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.JobDocumentationItem <em>Job Documentation Item</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we
      * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.JobDocumentationItem
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.JobDocumentationItem
+     * @generated
+     */
     public Adapter createJobDocumentationItemAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.JobletDocumentationItem <em>Joblet Documentation Item</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.JobletDocumentationItem <em>Joblet Documentation Item</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we
      * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.JobletDocumentationItem
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.JobletDocumentationItem
+     * @generated
+     */
     public Adapter createJobletDocumentationItemAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.WSDLSchemaConnectionItem <em>WSDL Schema Connection Item</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.WSDLSchemaConnectionItem <em>WSDL Schema Connection Item</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that
      * we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.WSDLSchemaConnectionItem
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.WSDLSchemaConnectionItem
+     * @generated
+     */
     public Adapter createWSDLSchemaConnectionItemAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.SchemaInformation <em>Schema Information</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we can
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.SchemaInformation <em>Schema Information</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.SchemaInformation
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.SchemaInformation
+     * @generated
+     */
     public Adapter createSchemaInformationAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
      * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.Information
@@ -1299,60 +1299,60 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createInformationAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.SQLPatternItem <em>SQL Pattern Item</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we can
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.SQLPatternItem <em>SQL Pattern Item</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.SQLPatternItem
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.SQLPatternItem
+     * @generated
+     */
     public Adapter createSQLPatternItemAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ComponentSetting <em>Component Setting</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we can
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ComponentSetting <em>Component Setting</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.ComponentSetting
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.ComponentSetting
+     * @generated
+     */
     public Adapter createComponentSettingAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.StatAndLogsSettings <em>Stat And Logs Settings</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.StatAndLogsSettings <em>Stat And Logs Settings</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we
      * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.StatAndLogsSettings
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.StatAndLogsSettings
+     * @generated
+     */
     public Adapter createStatAndLogsSettingsAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ImplicitContextSettings <em>Implicit Context Settings</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ImplicitContextSettings <em>Implicit Context Settings</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we
      * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.ImplicitContextSettings
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.ImplicitContextSettings
+     * @generated
+     */
     public Adapter createImplicitContextSettingsAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
      * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.SoaOperation
@@ -1365,21 +1365,21 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createSoaOperationAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.SoaInputParameter <em>Soa Input Parameter</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we can
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.SoaInputParameter <em>Soa Input Parameter</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.SoaInputParameter
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.SoaInputParameter
+     * @generated
+     */
     public Adapter createSoaInputParameterAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
      * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.SoaService
@@ -1392,8 +1392,8 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createSoaServiceAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
      * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.RulesItem
@@ -1406,8 +1406,8 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createRulesItemAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
      * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.UserRight
@@ -1420,8 +1420,8 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createUserRightAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
      * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.RoleRight
@@ -1434,34 +1434,34 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createRoleRightAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.SVGBusinessProcessItem <em>SVG Business Process Item</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.SVGBusinessProcessItem <em>SVG Business Process Item</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we
      * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.SVGBusinessProcessItem
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.SVGBusinessProcessItem
+     * @generated
+     */
     public Adapter createSVGBusinessProcessItemAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.LinkRulesItem <em>Link Rules Item</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we can
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.LinkRulesItem <em>Link Rules Item</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.LinkRulesItem
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.LinkRulesItem
+     * @generated
+     */
     public Adapter createLinkRulesItemAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
      * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ItemRelations
@@ -1474,8 +1474,8 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createItemRelationsAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
      * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ItemRelation
@@ -1488,8 +1488,8 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createItemRelationAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
      * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.Notification
@@ -1502,245 +1502,245 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createNotificationAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.HL7ConnectionItem <em>HL7 Connection Item</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we can
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.HL7ConnectionItem <em>HL7 Connection Item</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.HL7ConnectionItem
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.HL7ConnectionItem
+     * @generated
+     */
     public Adapter createHL7ConnectionItemAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.UserRoleReference <em>User Role Reference</em>}'.
-	 * <!-- begin-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.UserRoleReference <em>User Role Reference</em>}'.
+     * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.UserRoleReference
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.UserRoleReference
+     * @generated
+     */
     public Adapter createUserRoleReferenceAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.HeaderFooterConnectionItem <em>Header Footer Connection Item</em>}'.
-	 * <!-- begin-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.HeaderFooterConnectionItem <em>Header Footer Connection Item</em>}'.
+     * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.HeaderFooterConnectionItem
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.HeaderFooterConnectionItem
+     * @generated
+     */
     public Adapter createHeaderFooterConnectionItemAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.FTPConnectionItem <em>FTP Connection Item</em>}'.
-	 * <!-- begin-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.FTPConnectionItem <em>FTP Connection Item</em>}'.
+     * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.FTPConnectionItem
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.FTPConnectionItem
+     * @generated
+     */
     public Adapter createFTPConnectionItemAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.CustomComponentSetting <em>Custom Component Setting</em>}'.
-	 * <!-- begin-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.CustomComponentSetting <em>Custom Component Setting</em>}'.
+     * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.CustomComponentSetting
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.CustomComponentSetting
+     * @generated
+     */
     public Adapter createCustomComponentSettingAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.TDQItem <em>TDQ Item</em>}'.
-	 * <!-- begin-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.TDQItem <em>TDQ Item</em>}'.
+     * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.TDQItem
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.TDQItem
+     * @generated
+     */
     public Adapter createTDQItemAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.BRMSConnectionItem <em>BRMS Connection Item</em>}'.
-	 * <!-- begin-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.BRMSConnectionItem <em>BRMS Connection Item</em>}'.
+     * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.BRMSConnectionItem
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.BRMSConnectionItem
+     * @generated
+     */
     public Adapter createBRMSConnectionItemAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.JobScriptItem <em>Job Script Item</em>}'.
-	 * <!-- begin-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.JobScriptItem <em>Job Script Item</em>}'.
+     * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.JobScriptItem
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.JobScriptItem
+     * @generated
+     */
     public Adapter createJobScriptItemAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.EDIFACTConnectionItem <em>EDIFACT Connection Item</em>}'.
-	 * <!-- begin-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.EDIFACTConnectionItem <em>EDIFACT Connection Item</em>}'.
+     * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.EDIFACTConnectionItem
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.EDIFACTConnectionItem
+     * @generated
+     */
     public Adapter createEDIFACTConnectionItemAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.TechnicalVariable <em>Technical Variable</em>}'.
-	 * <!-- begin-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.TechnicalVariable <em>Technical Variable</em>}'.
+     * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.TechnicalVariable
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.TechnicalVariable
+     * @generated
+     */
     public Adapter createTechnicalVariableAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ReferenceItem <em>Reference Item</em>}'.
-	 * <!-- begin-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ReferenceItem <em>Reference Item</em>}'.
+     * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.ReferenceItem
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.ReferenceItem
+     * @generated
+     */
     public Adapter createReferenceItemAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ExchangeUser <em>Exchange User</em>}'.
-	 * <!-- begin-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ExchangeUser <em>Exchange User</em>}'.
+     * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.ExchangeUser
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.ExchangeUser
+     * @generated
+     */
     public Adapter createExchangeUserAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ArtifactNotification <em>Artifact Notification</em>}'.
-	 * <!-- begin-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ArtifactNotification <em>Artifact Notification</em>}'.
+     * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.ArtifactNotification
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.ArtifactNotification
+     * @generated
+     */
     public Adapter createArtifactNotificationAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link java.util.Map.Entry <em>Additional Info Map</em>}'.
-	 * <!-- begin-user-doc -->
+     * Creates a new adapter for an object of class '{@link java.util.Map.Entry <em>Additional Info Map</em>}'.
+     * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see java.util.Map.Entry
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see java.util.Map.Entry
+     * @generated
+     */
     public Adapter createAdditionalInfoMapAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.MigrationTask <em>Migration Task</em>}'.
-	 * <!-- begin-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.MigrationTask <em>Migration Task</em>}'.
+     * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.MigrationTask
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.MigrationTask
+     * @generated
+     */
     public Adapter createMigrationTaskAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.PigudfItem <em>Pigudf Item</em>}'.
-	 * <!-- begin-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.PigudfItem <em>Pigudf Item</em>}'.
+     * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.PigudfItem
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.PigudfItem
+     * @generated
+     */
     public Adapter createPigudfItemAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ReferenceFileItem <em>Reference File Item</em>}'.
-	 * <!-- begin-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ReferenceFileItem <em>Reference File Item</em>}'.
+     * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.ReferenceFileItem
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.ReferenceFileItem
+     * @generated
+     */
     public Adapter createReferenceFileItemAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
      * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ExecutionPlan
@@ -1753,101 +1753,101 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createExecutionPlanAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ExecutionPlanPart <em>Execution Plan Part</em>}'.
-	 * <!-- begin-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ExecutionPlanPart <em>Execution Plan Part</em>}'.
+     * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.ExecutionPlanPart
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.ExecutionPlanPart
+     * @generated
+     */
     public Adapter createExecutionPlanPartAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ExecutionPlanPrm <em>Execution Plan Prm</em>}'.
-	 * <!-- begin-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ExecutionPlanPrm <em>Execution Plan Prm</em>}'.
+     * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.ExecutionPlanPrm
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.ExecutionPlanPrm
+     * @generated
+     */
     public Adapter createExecutionPlanPrmAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ExecutionPlanPartCmdPrm <em>Execution Plan Part Cmd Prm</em>}'.
-	 * <!-- begin-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ExecutionPlanPartCmdPrm <em>Execution Plan Part Cmd Prm</em>}'.
+     * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.ExecutionPlanPartCmdPrm
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.ExecutionPlanPartCmdPrm
+     * @generated
+     */
     public Adapter createExecutionPlanPartCmdPrmAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ExecutionPlanPartJobPrm <em>Execution Plan Part Job Prm</em>}'.
-	 * <!-- begin-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.ExecutionPlanPartJobPrm <em>Execution Plan Part Job Prm</em>}'.
+     * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.ExecutionPlanPartJobPrm
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.ExecutionPlanPartJobPrm
+     * @generated
+     */
     public Adapter createExecutionPlanPartJobPrmAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.TaskExecutionHistory <em>Task Execution History</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.TaskExecutionHistory <em>Task Execution History</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we
      * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.TaskExecutionHistory
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.TaskExecutionHistory
+     * @generated
+     */
     public Adapter createTaskExecutionHistoryAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.PlanExecutionHistory <em>Plan Execution History</em>}'.
-	 * <!-- begin-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.PlanExecutionHistory <em>Plan Execution History</em>}'.
+     * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.talend.core.model.properties.PlanExecutionHistory
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.PlanExecutionHistory
+     * @generated
+     */
     public Adapter createPlanExecutionHistoryAdapter() {
-		return null;
-	}
+        return null;
+    }
 
     /**
-	 * Creates a new adapter for the default case.
-	 * <!-- begin-user-doc --> This default implementation returns null.
+     * Creates a new adapter for the default case.
+     * <!-- begin-user-doc --> This default implementation returns null.
      * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @generated
+     */
     public Adapter createEObjectAdapter() {
-		return null;
-	}
+        return null;
+    }
 
 } // PropertiesAdapterFactory

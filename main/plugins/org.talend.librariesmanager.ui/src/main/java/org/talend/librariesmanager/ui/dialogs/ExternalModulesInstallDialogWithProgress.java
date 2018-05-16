@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -47,6 +47,7 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.system.EclipseCommandLine;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.ModuleToInstall;
+import org.talend.librariesmanager.ui.LibManagerUiPlugin;
 import org.talend.librariesmanager.utils.DownloadModuleRunnableWithLicenseDialog;
 import org.talend.librariesmanager.utils.RemoteModulesHelper;
 
@@ -313,6 +314,7 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
                 stopped(state);
             }
             activeRunningOperations--;
+            LibManagerUiPlugin.getDefault().getLibrariesService().checkLibraries();
         }
     }
 

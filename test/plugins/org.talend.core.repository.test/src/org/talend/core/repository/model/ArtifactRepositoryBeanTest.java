@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -32,7 +32,7 @@ public class ArtifactRepositoryBeanTest {
         ArtifactRepositoryBean bean = new ArtifactRepositoryBean();
         bean.setNexusUrl(NEXUS_SERVER);
         bean.setNexusDefaultReleaseRepo(RELEASE);
-        String expect = NEXUS_SERVER + ArtifactRepositoryBean.REPO_MIDDLE_PATH + RELEASE;
+        String expect = NEXUS_SERVER + ArtifactRepositoryBean.REPO2_MIDDLE_PATH + RELEASE;
         assertTrue(expect.equals(bean.getNexusDefaultReleaseRepoUrl()));
     }
 
@@ -42,7 +42,7 @@ public class ArtifactRepositoryBeanTest {
         ArtifactRepositoryBean bean = new ArtifactRepositoryBean();
         bean.setNexusUrl(NEXUS_SERVER + "/");
         bean.setNexusDefaultReleaseRepo(RELEASE);
-        String expect = NEXUS_SERVER + ArtifactRepositoryBean.REPO_MIDDLE_PATH + RELEASE;
+        String expect = NEXUS_SERVER + ArtifactRepositoryBean.REPO2_MIDDLE_PATH + RELEASE;
         assertTrue(expect.equals(bean.getNexusDefaultReleaseRepoUrl()));
     }
 
@@ -52,7 +52,7 @@ public class ArtifactRepositoryBeanTest {
         ArtifactRepositoryBean bean = new ArtifactRepositoryBean();
         bean.setNexusUrl(NEXUS_SERVER + "//");
         bean.setNexusDefaultReleaseRepo(RELEASE);
-        String expect = NEXUS_SERVER + ArtifactRepositoryBean.REPO_MIDDLE_PATH + RELEASE;
+        String expect = NEXUS_SERVER + ArtifactRepositoryBean.REPO2_MIDDLE_PATH + RELEASE;
         assertTrue(expect.equals(bean.getNexusDefaultReleaseRepoUrl()));
     }
 
@@ -62,7 +62,7 @@ public class ArtifactRepositoryBeanTest {
         ArtifactRepositoryBean bean = new ArtifactRepositoryBean();
         bean.setNexusUrl(NEXUS_SERVER);
         bean.setNexusDefaultReleaseRepo("/" + RELEASE);
-        String expect = NEXUS_SERVER + ArtifactRepositoryBean.REPO_MIDDLE_PATH + RELEASE;
+        String expect = NEXUS_SERVER + ArtifactRepositoryBean.REPO2_MIDDLE_PATH + RELEASE;
         assertTrue(expect.equals(bean.getNexusDefaultReleaseRepoUrl()));
     }
 
@@ -72,7 +72,7 @@ public class ArtifactRepositoryBeanTest {
         ArtifactRepositoryBean bean = new ArtifactRepositoryBean();
         bean.setNexusUrl(NEXUS_SERVER);
         bean.setNexusDefaultReleaseRepo("//" + RELEASE);
-        String expect = NEXUS_SERVER + ArtifactRepositoryBean.REPO_MIDDLE_PATH + RELEASE;
+        String expect = NEXUS_SERVER + ArtifactRepositoryBean.REPO2_MIDDLE_PATH + RELEASE;
         assertTrue(expect.equals(bean.getNexusDefaultReleaseRepoUrl()));
     }
 
@@ -82,7 +82,7 @@ public class ArtifactRepositoryBeanTest {
         ArtifactRepositoryBean bean = new ArtifactRepositoryBean();
         bean.setNexusUrl(NEXUS_SERVER + "/");
         bean.setNexusDefaultReleaseRepo("/" + RELEASE);
-        String expect = NEXUS_SERVER + ArtifactRepositoryBean.REPO_MIDDLE_PATH + RELEASE;
+        String expect = NEXUS_SERVER + ArtifactRepositoryBean.REPO2_MIDDLE_PATH + RELEASE;
         assertTrue(expect.equals(bean.getNexusDefaultReleaseRepoUrl()));
     }
 
@@ -92,14 +92,14 @@ public class ArtifactRepositoryBeanTest {
         ArtifactRepositoryBean bean = new ArtifactRepositoryBean();
         bean.setNexusUrl(NEXUS_SERVER + "//");
         bean.setNexusDefaultReleaseRepo("//" + RELEASE);
-        String expect = NEXUS_SERVER + ArtifactRepositoryBean.REPO_MIDDLE_PATH + RELEASE;
+        String expect = NEXUS_SERVER + ArtifactRepositoryBean.REPO2_MIDDLE_PATH + RELEASE;
         assertTrue(expect.equals(bean.getNexusDefaultReleaseRepoUrl()));
     }
 
     @Test
     public void testGetNexusDefaultReleaseRepoUrl8() {
         final String RELEASE = "release";
-        final String FULL_RELEASE_URL = NEXUS_SERVER + ArtifactRepositoryBean.REPO_MIDDLE_PATH + RELEASE;
+        final String FULL_RELEASE_URL = NEXUS_SERVER + ArtifactRepositoryBean.REPO2_MIDDLE_PATH + RELEASE;
         ArtifactRepositoryBean bean = new ArtifactRepositoryBean();
         bean.setNexusUrl(null);
         bean.setNexusDefaultReleaseRepo(FULL_RELEASE_URL);
@@ -110,7 +110,7 @@ public class ArtifactRepositoryBeanTest {
     @Test
     public void testGetNexusDefaultReleaseRepoUrl9() {
         final String RELEASE = "release";
-        final String FULL_RELEASE_URL = NEXUS_SERVER + ArtifactRepositoryBean.REPO_MIDDLE_PATH + RELEASE;
+        final String FULL_RELEASE_URL = NEXUS_SERVER + ArtifactRepositoryBean.REPO2_MIDDLE_PATH + RELEASE;
         ArtifactRepositoryBean bean = new ArtifactRepositoryBean();
         bean.setNexusUrl(FULL_RELEASE_URL);
         bean.setNexusDefaultReleaseRepo(null);
@@ -124,7 +124,7 @@ public class ArtifactRepositoryBeanTest {
         ArtifactRepositoryBean bean = new ArtifactRepositoryBean();
         bean.setNexusUrl(NEXUS_SERVER);
         bean.setNexusDefaultSnapshotRepo(SNAPSHOT);
-        String expect = NEXUS_SERVER + ArtifactRepositoryBean.REPO_MIDDLE_PATH + SNAPSHOT;
+        String expect = NEXUS_SERVER + ArtifactRepositoryBean.REPO2_MIDDLE_PATH + SNAPSHOT;
         assertTrue(expect.equals(bean.getNexusDefaultSnapshotRepoUrl()));
     }
 
@@ -134,7 +134,7 @@ public class ArtifactRepositoryBeanTest {
         ArtifactRepositoryBean bean = new ArtifactRepositoryBean();
         bean.setNexusUrl(NEXUS_SERVER + "/");
         bean.setNexusDefaultSnapshotRepo(SNAPSHOT);
-        String expect = NEXUS_SERVER + ArtifactRepositoryBean.REPO_MIDDLE_PATH + SNAPSHOT;
+        String expect = NEXUS_SERVER + ArtifactRepositoryBean.REPO2_MIDDLE_PATH + SNAPSHOT;
         assertTrue(expect.equals(bean.getNexusDefaultSnapshotRepoUrl()));
     }
 
@@ -144,7 +144,7 @@ public class ArtifactRepositoryBeanTest {
         ArtifactRepositoryBean bean = new ArtifactRepositoryBean();
         bean.setNexusUrl(NEXUS_SERVER + "//");
         bean.setNexusDefaultSnapshotRepo(SNAPSHOT);
-        String expect = NEXUS_SERVER + ArtifactRepositoryBean.REPO_MIDDLE_PATH + SNAPSHOT;
+        String expect = NEXUS_SERVER + ArtifactRepositoryBean.REPO2_MIDDLE_PATH + SNAPSHOT;
         assertTrue(expect.equals(bean.getNexusDefaultSnapshotRepoUrl()));
     }
 
@@ -154,7 +154,7 @@ public class ArtifactRepositoryBeanTest {
         ArtifactRepositoryBean bean = new ArtifactRepositoryBean();
         bean.setNexusUrl(NEXUS_SERVER);
         bean.setNexusDefaultSnapshotRepo("/" + SNAPSHOT);
-        String expect = NEXUS_SERVER + ArtifactRepositoryBean.REPO_MIDDLE_PATH + SNAPSHOT;
+        String expect = NEXUS_SERVER + ArtifactRepositoryBean.REPO2_MIDDLE_PATH + SNAPSHOT;
         assertTrue(expect.equals(bean.getNexusDefaultSnapshotRepoUrl()));
     }
 
@@ -164,7 +164,7 @@ public class ArtifactRepositoryBeanTest {
         ArtifactRepositoryBean bean = new ArtifactRepositoryBean();
         bean.setNexusUrl(NEXUS_SERVER);
         bean.setNexusDefaultSnapshotRepo("//" + SNAPSHOT);
-        String expect = NEXUS_SERVER + ArtifactRepositoryBean.REPO_MIDDLE_PATH + SNAPSHOT;
+        String expect = NEXUS_SERVER + ArtifactRepositoryBean.REPO2_MIDDLE_PATH + SNAPSHOT;
         assertTrue(expect.equals(bean.getNexusDefaultSnapshotRepoUrl()));
     }
 
@@ -174,7 +174,7 @@ public class ArtifactRepositoryBeanTest {
         ArtifactRepositoryBean bean = new ArtifactRepositoryBean();
         bean.setNexusUrl(NEXUS_SERVER + "/");
         bean.setNexusDefaultSnapshotRepo("/" + SNAPSHOT);
-        String expect = NEXUS_SERVER + ArtifactRepositoryBean.REPO_MIDDLE_PATH + SNAPSHOT;
+        String expect = NEXUS_SERVER + ArtifactRepositoryBean.REPO2_MIDDLE_PATH + SNAPSHOT;
         assertTrue(expect.equals(bean.getNexusDefaultSnapshotRepoUrl()));
     }
 
@@ -184,14 +184,14 @@ public class ArtifactRepositoryBeanTest {
         ArtifactRepositoryBean bean = new ArtifactRepositoryBean();
         bean.setNexusUrl(NEXUS_SERVER + "//");
         bean.setNexusDefaultSnapshotRepo("//" + SNAPSHOT);
-        String expect = NEXUS_SERVER + ArtifactRepositoryBean.REPO_MIDDLE_PATH + SNAPSHOT;
+        String expect = NEXUS_SERVER + ArtifactRepositoryBean.REPO2_MIDDLE_PATH + SNAPSHOT;
         assertTrue(expect.equals(bean.getNexusDefaultSnapshotRepoUrl()));
     }
 
     @Test
     public void testGetNexusDefaultSnapshotRepoUrl8() {
         final String SNAPSHOT = "snapshot";
-        String FULL_RELEASE_URL = NEXUS_SERVER + ArtifactRepositoryBean.REPO_MIDDLE_PATH + SNAPSHOT;
+        String FULL_RELEASE_URL = NEXUS_SERVER + ArtifactRepositoryBean.REPO2_MIDDLE_PATH + SNAPSHOT;
         ArtifactRepositoryBean bean = new ArtifactRepositoryBean();
         bean.setNexusUrl(null);
         bean.setNexusDefaultSnapshotRepo(FULL_RELEASE_URL);
@@ -202,7 +202,7 @@ public class ArtifactRepositoryBeanTest {
     @Test
     public void testGetNexusDefaultSnapshotRepoUrl9() {
         final String SNAPSHOT = "snapshot";
-        String FULL_RELEASE_URL = NEXUS_SERVER + ArtifactRepositoryBean.REPO_MIDDLE_PATH + SNAPSHOT;
+        String FULL_RELEASE_URL = NEXUS_SERVER + ArtifactRepositoryBean.REPO2_MIDDLE_PATH + SNAPSHOT;
         ArtifactRepositoryBean bean = new ArtifactRepositoryBean();
         bean.setNexusUrl(FULL_RELEASE_URL);
         bean.setNexusDefaultSnapshotRepo(null);

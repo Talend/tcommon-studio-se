@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -389,29 +389,28 @@ public class ImportItemsWizardPage extends WizardPage {
         Composite buttonsComposite = new Composite(listComposite, SWT.NONE);
         GridLayout layout = new GridLayout();
         layout.marginWidth = 0;
-        layout.marginHeight = 25;
+        layout.marginHeight = 0;
+        layout.marginTop = 26;
         buttonsComposite.setLayout(layout);
 
         buttonsComposite.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
 
-        Button refresh = new Button(buttonsComposite, SWT.PUSH);
-        refresh.setText(Messages.getString("ImportItemsWizardPage_refreshButtonText")); //$NON-NLS-1$
-        refresh.addSelectionListener(new SelectionAdapter() {
-
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                if (itemFromDirectoryRadio.getSelection()) {
-                    updateItemsList(directoryPathField.getText().trim(), true, true);
-                } else {
-                    updateItemsList(archivePathField.getText().trim(), false, true);
-                }
-            }
-        });
-        setButtonLayoutData(refresh);
-        // hide for current version ,enable it later if needed.
-        refresh.setVisible(false);
-
-        new Label(buttonsComposite, SWT.NONE);
+//        Button refresh = new Button(buttonsComposite, SWT.PUSH);
+//        refresh.setText(Messages.getString("ImportItemsWizardPage_refreshButtonText")); //$NON-NLS-1$
+//        refresh.addSelectionListener(new SelectionAdapter() {
+//
+//            @Override
+//            public void widgetSelected(SelectionEvent e) {
+//                if (itemFromDirectoryRadio.getSelection()) {
+//                    updateItemsList(directoryPathField.getText().trim(), true, true);
+//                } else {
+//                    updateItemsList(archivePathField.getText().trim(), false, true);
+//                }
+//            }
+//        });
+//        setButtonLayoutData(refresh);
+//        // hide for current version ,enable it later if needed.
+//        refresh.setVisible(false);
 
         Button selectAll = new Button(buttonsComposite, SWT.PUSH);
         selectAll.setText(Messages.getString("ImportItemsWizardPage_selectButtonText")); //$NON-NLS-1$
@@ -446,8 +445,6 @@ public class ImportItemsWizardPage extends WizardPage {
             }
         });
         setButtonLayoutData(deselectAll);
-
-        new Label(buttonsComposite, SWT.NONE);
 
         Button expandAll = new Button(buttonsComposite, SWT.PUSH);
         expandAll.setText(Messages.getString("ImportItemsWizardPage_expandAllButtonText")); //$NON-NLS-1$
@@ -721,11 +718,15 @@ public class ImportItemsWizardPage extends WizardPage {
 
                 @Override
                 public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+                    final ResourceOption importOption = ResourceOption.ITEM_IMPORTATION;
                     try {
+                        EmfResourcesFactoryReader.INSTANCE.addOption(importOption, true);
                         List<ImportItem> items = importManager.populateImportingItems(resManager, overwrite, monitor, true);
                         nodesBuilder.addItems(items);
                     } catch (Exception e) {
                         ExceptionHandler.process(e);
+                    } finally {
+                        EmfResourcesFactoryReader.INSTANCE.removOption(importOption, true);
                     }
                 }
 
@@ -1004,13 +1005,12 @@ public class ImportItemsWizardPage extends WizardPage {
                     }
                     final ResourceOption importOption = ResourceOption.ITEM_IMPORTATION;
                     try {
-                        EmfResourcesFactoryReader.INSTANCE.getSaveOptionsProviders().put(importOption.getName(),
-                                importOption.getProvider());
+                        EmfResourcesFactoryReader.INSTANCE.addOption(importOption, false);
 
                         importManager.importItemRecords(monitor, resManager, checkedItemRecords, overwrite,
                                 nodesBuilder.getAllImportItemRecords(), destinationPath);
                     } finally {
-                        EmfResourcesFactoryReader.INSTANCE.getSaveOptionsProviders().remove(importOption.getName());
+                        EmfResourcesFactoryReader.INSTANCE.removOption(importOption, false);
                     }
                     Display.getDefault().syncExec(new Runnable() {
 

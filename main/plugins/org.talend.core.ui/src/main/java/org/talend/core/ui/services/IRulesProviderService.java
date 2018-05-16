@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -25,6 +25,7 @@ import org.talend.core.model.process.INode;
 import org.talend.core.model.process.IProcess;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.RulesItem;
+import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 
 /**
@@ -36,13 +37,17 @@ public interface IRulesProviderService extends IService {
 
     public void syncRule(Item item) throws SystemException;
 
+    public void syncRule(Item item, ITalendProcessJavaProject talendJavaProject) throws SystemException;
+
     public IFile getRuleFile(Item item, String extension) throws SystemException;
 
-    public IFile getFinalRuleFile(Item item, String processLabelAndVersion) throws CoreException;
+    public IFile getRuleFile(Item item, String extension, ITalendProcessJavaProject talendJavaProject) throws SystemException;
+
+    public IFile getFinalRuleFile(Item item, String processLabelAndVersion, ITalendProcessJavaProject talendJavaProject) throws CoreException;
 
     public void addRule(Item item, String ruleName, String condition, String outputId);
 
-    public void generateFinalRuleFiles(String currentJavaProject, IProcess process) throws PersistenceException, SystemException,
+    public void generateFinalRuleFiles(String currentJavaProject, IProcess process, ITalendProcessJavaProject talendJavaProject) throws PersistenceException, SystemException,
             IOException, CoreException;
 
     public boolean isRuleComponent(INode node);

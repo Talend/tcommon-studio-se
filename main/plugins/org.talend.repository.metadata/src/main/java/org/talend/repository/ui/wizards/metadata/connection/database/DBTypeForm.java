@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -67,6 +67,8 @@ public class DBTypeForm {
     
     private String dbType;
     
+    private ConnectionItem oriConnItem;
+    
     public DBTypeForm(DatabaseWizardPage wizardPage, Composite parent, ConnectionItem connectionItem,int style, boolean readOnly, boolean isCreation) {
         this.parent = parent;
         this.wizardPage = wizardPage;
@@ -87,6 +89,9 @@ public class DBTypeForm {
         }
         addListerner();
         adaptFormToReadOnly();
+        if(!isCreation){
+            this.oriConnItem = connectionItem;
+        }
     }
     
     private void adaptFormToReadOnly() {
@@ -231,9 +236,6 @@ public class DBTypeForm {
     }
     
     private void reCreateConnection(){
-        String name = connectionItem.getProperty().getLabel();
-        String id = connectionItem.getProperty().getId();
-        Connection connection = null;
         if(wizardPage.isTCOMDB(dbType)){
             IGenericDBService dbService = null;
             if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
@@ -243,28 +245,11 @@ public class DBTypeForm {
             if(dbService == null){
                 return;
             }
-            connection = dbService.createGenericConnection();
-            connectionItem = dbService.createGenericConnectionItem();
-        }else{
-            connection = ConnectionFactory.eINSTANCE.createDatabaseConnection(); 
-            connectionItem = PropertiesFactory.eINSTANCE.createDatabaseConnectionItem();
+            if(!isCreation && dbType.equals(oriConnItem.getTypeName())){
+                connectionItem = oriConnItem;
+                return;
+            }
         }
-        Property property = PropertiesFactory.eINSTANCE.createProperty();
-        property.setAuthor(((RepositoryContext) CoreRuntimePlugin.getInstance().getContext()
-                .getProperty(Context.REPOSITORY_CONTEXT_KEY)).getUser());
-        if(id == null){
-            id = ProxyRepositoryFactory.getInstance().getNextId();
-        }
-        property.setId(id);
-        property.setVersion(VersionUtils.DEFAULT_VERSION);
-        property.setStatusCode(""); //$NON-NLS-1$
-        
-        property.setLabel(StringUtils.trimToNull(name));
-        property.setDisplayName(StringUtils.trimToNull(name));
-        property.setModificationDate(new Date());
-        
-        connectionItem.setProperty(property);
-        connectionItem.setConnection(connection);
     }
     
     public String getDBType(){
@@ -272,32 +257,13 @@ public class DBTypeForm {
     }
     
     private String getConnectionDBType(){
-        if(wizardPage.isTCOMDB(dbType) || wizardPage.isGenericConn(connectionItem)){
-            IGenericDBService dbService = null;
-            if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
-                dbService = (IGenericDBService) GlobalServiceRegister.getDefault().getService(
-                        IGenericDBService.class);
-            }
-            if(dbService != null){
-                return dbService.getGenericConnectionType(connectionItem);
-            }
-        }
         return ((DatabaseConnection)connectionItem.getConnection()).getDatabaseType();
     }
 
     
     private void setConnectionDBType(String type){
-        if(wizardPage.isTCOMDB(type)){
-            IGenericDBService dbService = null;
-            if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
-                dbService = (IGenericDBService) GlobalServiceRegister.getDefault().getService(
-                        IGenericDBService.class);
-            }
-            if(dbService != null){
-                dbService.setGenericConnectionType(type, connectionItem);
-                return;
-            }
-        }else if(connectionItem.getConnection() instanceof DatabaseConnection){
+        if(connectionItem.getConnection() instanceof DatabaseConnection){
+            connectionItem.setTypeName(type);
             ((DatabaseConnection)connectionItem.getConnection()).setDatabaseType(type);
         }
     }

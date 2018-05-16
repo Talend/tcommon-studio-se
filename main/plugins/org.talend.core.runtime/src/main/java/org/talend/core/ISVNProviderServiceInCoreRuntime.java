@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -12,26 +12,14 @@
 // ============================================================================
 package org.talend.core;
 
-import java.util.List;
-
-import org.eclipse.core.runtime.IProgressMonitor;
-
 /**
  * DOC zwzhao class global comment. Detailled comment
  */
 public interface ISVNProviderServiceInCoreRuntime extends IService {
-
-    public boolean isSvnLibSetupOnTAC();
-
-    public boolean deployNewJar(List jars);
 
     public boolean isInSvn(String filePath);
 
     public boolean doUpdateAndCommit(String filePath);
 
     public void createFolderAndLinkToSvn(String filePath);
-
-    public boolean update();
-
-    public void syncLibs(IProgressMonitor monitor);
 }

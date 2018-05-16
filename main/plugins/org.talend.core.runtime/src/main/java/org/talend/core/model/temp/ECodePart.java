@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -21,7 +21,12 @@ package org.talend.core.model.temp;
  */
 public enum ECodePart {
     MAIN("main"), //$NON-NLS-1$
+    PROCESS_DATA_BEGIN("process_data_begin"), //$NON-NLS-1$
+    PROCESS_DATA_END("process_data_end"), //$NON-NLS-1$
     BEGIN("begin"), //$NON-NLS-1$
+    END_HEAD("end_head"), //$NON-NLS-1$
+    END_BODY("end_body"), //$NON-NLS-1$
+    END_TAIL("end_tail"), //$NON-NLS-1$
     END("end"), //$NON-NLS-1$
     FINALLY("finally"), //$NON-NLS-1$
     MRCODE("mrcode"), //$NON-NLS-1$

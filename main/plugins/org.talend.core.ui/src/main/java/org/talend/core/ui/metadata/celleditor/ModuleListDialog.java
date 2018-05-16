@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -421,8 +421,15 @@ public class ModuleListDialog extends Dialog {
                             IElementParameter componentName = param.getElement().getElementParameter("COMPONENT_NAME");
                             
                             if(componentName !=null && "cConfig".equals(componentName.getValue())){
+                                String versionType = ".SNAPSHOT";
                                 selectedJarPath = jarPath;
-                                selectedJarVersion = versionLabel.getText();
+                                String selectedJarVersionTmp = versionLabel.getText();
+                                if (StringUtils.endsWithIgnoreCase(selectedJarVersionTmp, versionType)) {
+                                    selectedJarVersionTmp = selectedJarVersionTmp.replace(versionType, "-SNAPSHOT");
+                                }
+
+                                selectedJarVersion = selectedJarVersionTmp;
+
                             }else{
                                 service.deployLibrary(path.toFile().toURI().toURL());
                             }

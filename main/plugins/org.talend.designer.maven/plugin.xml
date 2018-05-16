@@ -18,5 +18,12 @@
             class="org.talend.designer.maven.tools.creator.UpdatePomAndAssemblyForChildrenJobs">
       </pomJobExtension>
    </extension>
+   <extension
+         point="org.talend.core.repository.login.task">
+      <loginTask
+            class="org.talend.designer.maven.logintask.CleanMavenLastUpdateFilesLoginTask"
+            priority="lowest">
+      </loginTask>
+   </extension>
 
 </plugin>

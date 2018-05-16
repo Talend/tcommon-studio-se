@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -27,6 +27,7 @@ import org.talend.core.model.general.ILibrariesService.IChangedLibrariesListener
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.librariesmanager.ui.LibManagerUiPlugin;
 import org.talend.librariesmanager.ui.actions.CheckModulesAction;
+import org.talend.librariesmanager.ui.actions.DownloadExternalJarAction;
 import org.talend.librariesmanager.ui.actions.ExportCustomSettingsAction;
 import org.talend.librariesmanager.ui.actions.ImportCustomSettingsAction;
 import org.talend.librariesmanager.ui.actions.ImportExternalJarAction;
@@ -132,6 +133,8 @@ public class ModulesView extends ViewPart {
         manager.add(removeAction);
         ImportExternalJarAction importAction = new ImportExternalJarAction();
         manager.add(importAction);
+        DownloadExternalJarAction downloadAcion = new DownloadExternalJarAction(this);
+        manager.add(downloadAcion);
         return;
     }
 
@@ -158,5 +161,9 @@ public class ModulesView extends ViewPart {
                 }
             }
         }
+    }
+    
+    public TableItem [] getSelection(){
+    	return modulesViewComposite.getTableViewerCreator().getTable().getSelection();
     }
 }

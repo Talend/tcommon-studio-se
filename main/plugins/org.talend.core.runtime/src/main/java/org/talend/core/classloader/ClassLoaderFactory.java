@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -32,6 +32,7 @@ import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
 import org.talend.core.database.conn.ConnParameterKeys;
+import org.talend.core.hadoop.BigDataBasicUtil;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.metadata.IMetadataConnection;
@@ -66,6 +67,8 @@ public class ClassLoaderFactory {
     public final static String LIB_ATTR = "libraries"; //$NON-NLS-1$
 
     public final static String PARENT_ATTR = "parent"; //$NON-NLS-1$
+
+    public static String cacheVersion;
 
     /**
      * DOC ycbai Comment method "getClassLoader".
@@ -314,7 +317,7 @@ public class ClassLoaderFactory {
             String jarsStr = (String) metadataConn.getParameter(ConnParameterKeys.CONN_PARA_KEY_HADOOP_CUSTOM_JARS);
             moduleList = jarsStr.split(";"); //$NON-NLS-1$
         } else {
-            String index = "HIVE" + KEY_SEPARATOR + distroKey + KEY_SEPARATOR + distroVersion + KEY_SEPARATOR + hiveModel; //$NON-NLS-1$  //$NON-NLS-2$  //$NON-NLS-3$ //$NON-NLS-4$ 
+            String index = "HIVE" + KEY_SEPARATOR + distroKey + KEY_SEPARATOR + distroVersion + KEY_SEPARATOR + hiveModel; //$NON-NLS-1$  
             moduleList = getDriverModuleList(index);
         }
         return moduleList;
@@ -371,12 +374,16 @@ public class ClassLoaderFactory {
                 }
             }
         }
+        if (cacheVersion != null && !cacheVersion.equals(BigDataBasicUtil.getDynamicDistributionCacheVersion())) {
+            return true;
+        }
         return false;
     }
 
     private static Map<String, DynamicClassLoader> getClassLoaderMap() {
         if (isCacheChanged()) {
             init();
+            cacheVersion = BigDataBasicUtil.getDynamicDistributionCacheVersion();
         }
         return classLoadersMap;
     }

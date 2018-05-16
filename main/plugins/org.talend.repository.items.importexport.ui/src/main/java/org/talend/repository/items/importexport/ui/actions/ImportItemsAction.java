@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -24,8 +24,6 @@ import org.eclipse.ui.PlatformUI;
 import org.talend.commons.ui.runtime.image.EImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.core.GlobalServiceRegister;
-import org.talend.core.runtime.process.ITalendProcessJavaProject;
-import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.repository.items.importexport.ui.handlers.IImportExportItemsActionHelper;
 import org.talend.repository.items.importexport.ui.handlers.manager.ImportExportUiHandlersManager;
 import org.talend.repository.items.importexport.ui.i18n.Messages;
@@ -86,14 +84,14 @@ public class ImportItemsAction extends AContextualAction implements IWorkbenchWi
             // }
 
             // update routines
-            if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
-                IRunProcessService service = (IRunProcessService) GlobalServiceRegister.getDefault().getService(
-                        IRunProcessService.class);
-                ITalendProcessJavaProject talendProcessJavaProject = service.getTalendProcessJavaProject();
-                if (talendProcessJavaProject != null) {
-                    talendProcessJavaProject.updateRoutinesPom(true, true);
-                }
-            }
+//            if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
+//                IRunProcessService service = (IRunProcessService) GlobalServiceRegister.getDefault().getService(
+//                        IRunProcessService.class);
+//                ITalendProcessJavaProject talendProcessJavaProject = service.getTalendProcessJavaProject();
+//                if (talendProcessJavaProject != null) {
+//                    talendProcessJavaProject.updateRoutinesPom(true, true);
+//                }
+//            }
         }
     }
 

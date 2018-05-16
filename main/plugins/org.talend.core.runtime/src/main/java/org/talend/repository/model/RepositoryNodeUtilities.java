@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -50,6 +50,7 @@ import org.talend.core.model.repository.ISubRepositoryObject;
 import org.talend.core.model.utils.RepositoryManagerHelper;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.i18n.Messages;
+import org.talend.core.runtime.services.IGenericDBService;
 import org.talend.core.runtime.services.IGenericWizardService;
 import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.cwm.helper.SAPBWTableHelper;
@@ -952,5 +953,17 @@ public class RepositoryNodeUtilities {
         }
 
         return null;
+    }
+
+    public static boolean isGenericDBExtraType(ERepositoryObjectType type) {
+        List<ERepositoryObjectType> extraTypes = new ArrayList<ERepositoryObjectType>();
+        IGenericDBService dbService = null;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
+            dbService = (IGenericDBService) GlobalServiceRegister.getDefault().getService(IGenericDBService.class);
+        }
+        if (dbService != null) {
+            extraTypes.addAll(dbService.getExtraTypes());
+        }
+        return extraTypes.contains(type);
     }
 }

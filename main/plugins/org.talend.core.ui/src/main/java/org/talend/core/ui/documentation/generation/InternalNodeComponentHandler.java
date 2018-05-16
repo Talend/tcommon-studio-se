@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Element;
 import org.talend.core.model.genhtml.HTMLDocUtils;
 import org.talend.core.model.genhtml.IHTMLDocConstants;
@@ -197,6 +198,9 @@ public class InternalNodeComponentHandler extends AbstractComponentHandler {
                     value = ParameterValueUtil.getValue4Doc(elemparameter).toString();
                 } else {
                     name = elemparameter.getDisplayName();
+                    if (StringUtils.isEmpty(name)) {
+                        name = elemparameter.getName();
+                    }
                 }
                 Element columnElement = parametersElement.addElement("column"); //$NON-NLS-1$
                 columnElement.addAttribute("name", HTMLDocUtils.checkString(name)); //$NON-NLS-1$

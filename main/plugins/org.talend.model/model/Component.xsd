@@ -161,6 +161,8 @@
 			<xsd:element ecore:name="fORMAT" minOccurs="0" name="FORMAT"
 				type="FORMAT_._type" />
 		</xsd:sequence>
+		<xsd:attribute ecore:name="aCTIVE_DB_COLUMNS" name="ACTIVE_DB_COLUMNS"
+			type="xsd:boolean" />
 		<xsd:attribute ecore:name="aUTHOR" name="AUTHOR" type="xsd:string"
 			use="required" />
 		<xsd:attribute ecore:name="cOMBINE" name="COMBINE" type="xsd:string" />

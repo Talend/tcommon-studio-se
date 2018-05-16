@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -100,8 +100,8 @@ import org.talend.cwm.helper.TaggedValueHelper;
  */
 public class RepositoryToComponentProperty {
 
-    public static Object getValue(Connection connection, String value, IMetadataTable table, String targetComponent) {
-
+    public static Object getValue(Connection connection, String value, IMetadataTable table, String targetComponent, Map<Object, Object> contextMap) {
+        
         if (connection instanceof HL7Connection) {
             return getHL7Value((HL7Connection) connection, value);
         }
@@ -112,7 +112,7 @@ public class RepositoryToComponentProperty {
         if (connection instanceof XmlFileConnection) {
             return getXmlFileValue((XmlFileConnection) connection, value);
         }
-        if (connection instanceof DatabaseConnection) {
+        if (connection != null && connection.getCompProperties() == null && (connection instanceof DatabaseConnection)) {
             return getDatabaseValue((DatabaseConnection) connection, value, table, targetComponent);
         }
 
@@ -155,7 +155,7 @@ public class RepositoryToComponentProperty {
 
         for (IDragAndDropServiceHandler handler : DragAndDropManager.getHandlers()) {
             if (handler.canHandle(connection)) {
-                return handler.getComponentValue(connection, value, table, targetComponent);
+                return handler.getComponentValue(connection, value, table, targetComponent, contextMap);
             }
         }
         return null;
@@ -163,7 +163,7 @@ public class RepositoryToComponentProperty {
     }
 
     public static Object getValue(Connection connection, String value, IMetadataTable table) {
-        return getValue(connection, value, table, null);
+        return getValue(connection, value, table, null, null);
     }
 
     /**
@@ -1423,19 +1423,49 @@ public class RepositoryToComponentProperty {
                     connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_ADDITIONAL_JDBC_SETTINGS));
         }
 
-        if (value.equals("USE_SSL") && EDatabaseTypeName.HIVE.getDisplayName().equals(databaseType)) {
+        if (value.equals("THRIFTPORT") && EDatabaseTypeName.HIVE.getDisplayName().equals(databaseType)) {
+            return getAppropriateValue(connection,
+                    connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_THRIFTPORT));
+        }
+
+        if (value.equals("USE_SSL") && (EDatabaseTypeName.HIVE.getDisplayName().equals(databaseType)
+                || EDatabaseTypeName.ORACLE_CUSTOM.getDisplayName().equals(databaseType))) {
             String message = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_USE_SSL);
             return Boolean.parseBoolean(message);
         }
 
-        if (value.equals("SSL_TRUST_STORE") && EDatabaseTypeName.HIVE.getDisplayName().equals(databaseType)) {
+        if ((value.equals("SSL_TRUST_STORE") || value.equals("SSL_TRUSTSERVER_TRUSTSTORE"))
+                && (EDatabaseTypeName.HIVE.getDisplayName().equals(databaseType)
+                || EDatabaseTypeName.ORACLE_CUSTOM.getDisplayName().equals(databaseType))) {
             return getAppropriateValue(connection,
                     connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_SSL_TRUST_STORE_PATH));
         }
 
-        if (value.equals("SSL_TRUST_STORE_PASSWORD") && EDatabaseTypeName.HIVE.getDisplayName().equals(databaseType)) {
+        if ((value.equals("SSL_TRUST_STORE_PASSWORD") || value.equals("SSL_TRUSTSERVER_PASSWORD"))
+                && (EDatabaseTypeName.HIVE.getDisplayName().equals(databaseType)
+                || EDatabaseTypeName.ORACLE_CUSTOM.getDisplayName().equals(databaseType))) {
             return getAppropriateValue(connection, connection
                     .getValue(connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_SSL_TRUST_STORE_PASSWORD), false));
+        }
+        
+        if (value.equals("NEED_CLIENT_AUTH") && EDatabaseTypeName.ORACLE_CUSTOM.getDisplayName().equals(databaseType)) {
+            String message = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_NEED_CLIENT_AUTH);
+            return Boolean.parseBoolean(message);
+        }
+
+        if (value.equals("SSL_KEYSTORE") && EDatabaseTypeName.ORACLE_CUSTOM.getDisplayName().equals(databaseType)) {
+            return getAppropriateValue(connection,
+                    connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_SSL_KEY_STORE_PATH));
+        }
+
+        if (value.equals("DISABLE_CBC_PROTECTION") && EDatabaseTypeName.ORACLE_CUSTOM.getDisplayName().equals(databaseType)) {
+            String message = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_DISABLE_CBC_PROTECTION);
+            return Boolean.parseBoolean(message);
+        }
+
+        if (value.equals("SSL_KEYSTORE_PASSWORD") && EDatabaseTypeName.ORACLE_CUSTOM.getDisplayName().equals(databaseType)) {
+            return getAppropriateValue(connection, connection
+                    .getValue(connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_SSL_KEY_STORE_PASSWORD), false));
         }
 
         if (value.equals("HADOOP_CUSTOM_JARS")) {
@@ -2740,7 +2770,7 @@ public class RepositoryToComponentProperty {
             }
         }
 
-        if (value.equals("KEYSTROE_PASS")) {
+        if (value.equals("KEYSTORE_PASS")) {
             if (isContextMode(connection, connection.getKeystorePassword())) {
                 return connection.getKeystorePassword();
             } else {
@@ -2859,7 +2889,7 @@ public class RepositoryToComponentProperty {
         return null;
     }
 
-    private static Object addQuotesIfNecessary(Connection connection, String value) {
+    public static Object addQuotesIfNecessary(Connection connection, String value) {
         if (!isContextMode(connection, value)) {
             if (!value.startsWith(TalendQuoteUtils.QUOTATION_MARK) && !value.endsWith(TalendQuoteUtils.QUOTATION_MARK)) {
                 return TalendQuoteUtils.addQuotes(value);

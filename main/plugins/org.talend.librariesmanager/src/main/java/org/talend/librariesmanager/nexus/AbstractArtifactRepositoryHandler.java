@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2014 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -16,6 +16,7 @@ import java.io.File;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
+import org.apache.commons.lang3.StringUtils;
 import org.talend.core.nexus.IRepositoryArtifactHandler;
 import org.talend.core.nexus.NexusConstants;
 import org.talend.core.nexus.NexusServerBean;
@@ -91,6 +92,7 @@ public abstract class AbstractArtifactRepositoryHandler implements IRepositoryAr
             props.put(PAX_PID + '.' + PROPERTY_REPOSITORIES, repositories);
         }
         props.put("org.ops4j.pax.url.mvn.globalUpdatePolicy", "always");
+        props.put("org.ops4j.pax.url.mvn.proxySupport", "true");
         try {
             TalendMavenResolver.updateMavenResolver(props);
         } catch (Exception e) {
@@ -117,7 +119,11 @@ public abstract class AbstractArtifactRepositoryHandler implements IRepositoryAr
             repositoryBaseURI = repositoryBaseURI.substring(0, repositoryBaseURI.length() - 1);
         }
         repositoryBaseURI += getRepositoryPrefixPath();
-        repositoryBaseURI += repositoryId + NexusConstants.SLASH;
+        if (StringUtils.isNotBlank(repositoryId)) {
+            repositoryBaseURI += repositoryId + NexusConstants.SLASH;
+        } else if (!repositoryBaseURI.endsWith(NexusConstants.SLASH)) {
+            repositoryBaseURI += NexusConstants.SLASH;
+        }
         return repositoryBaseURI;
     }
 

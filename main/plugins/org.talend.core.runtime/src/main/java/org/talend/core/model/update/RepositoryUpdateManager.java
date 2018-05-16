@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -21,9 +21,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.EMap;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -32,6 +35,7 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.PlatformUI;
+import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.core.GlobalServiceRegister;
@@ -105,6 +109,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.designer.runprocess.ItemCacheManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
+import org.talend.repository.model.IProxyRepositoryService;
 import org.talend.repository.model.IRepositoryService;
 import org.talend.repository.model.RepositoryNode;
 
@@ -318,7 +323,7 @@ public abstract class RepositoryUpdateManager {
         if (checked) {
             final List<UpdateResult> results = new ArrayList<UpdateResult>();
             boolean cancelable = !needForcePropagation();
-            IRunnableWithProgress runnable = new IRunnableWithProgress() {
+            final IRunnableWithProgress runnable = new IRunnableWithProgress() {
 
                 @SuppressWarnings("unchecked")
                 @Override
@@ -332,9 +337,13 @@ public abstract class RepositoryUpdateManager {
             };
 
             try {
-                // final ProgressMonitorJobsDialog dialog = new ProgressMonitorJobsDialog(null);
-                final ProgressMonitorDialog dialog = new ProgressMonitorDialog(null);
-                dialog.run(true, cancelable, runnable);
+                if (CommonsPlugin.isHeadless() || Display.getCurrent() == null) {
+                    runnable.run(new NullProgressMonitor());
+                } else {
+                    // final ProgressMonitorJobsDialog dialog = new ProgressMonitorJobsDialog(null);
+                    final ProgressMonitorDialog dialog = new ProgressMonitorDialog(null);
+                    dialog.run(true, cancelable, runnable);
+                }
 
                 // PlatformUI.getWorkbench().getProgressService().run(true, true, runnable);
             } catch (InvocationTargetException e) {
@@ -695,7 +704,7 @@ public abstract class RepositoryUpdateManager {
                                     // propagated to metadata db.
                                     dbConn.setUiSchema(newValue);
                                 } else {
-                                    updateHadoopPropertiesForDbConnection(dbConn, oldValue, newValue);
+                                    updateParameters(dbConn, oldValue, newValue);
                                 }
                                 factory.save(item);
                             }
@@ -1062,9 +1071,25 @@ public abstract class RepositoryUpdateManager {
 
     }
 
-    private void updateHadoopPropertiesForDbConnection(DatabaseConnection dbConn, String oldValue, String newValue) {
-        String databaseType = dbConn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_DB_TYPE);
+    private void updateParameters(DatabaseConnection dbConn, String oldValue, String newValue) {
         EMap<String, String> parameters = dbConn.getParameters();
+        if (parameters != null && !parameters.isEmpty()) {
+            for (Entry<String, String> entry : parameters.entrySet()) {
+                if (entry != null) {
+                    String value = entry.getValue();
+                    if (StringUtils.equals(value, oldValue)) {
+                        entry.setValue(newValue);
+                    }
+                }
+            }
+        }
+
+        updateHadoopPropertiesForDbConnection(dbConn, oldValue, newValue);
+    }
+
+    private void updateHadoopPropertiesForDbConnection(DatabaseConnection dbConn, String oldValue, String newValue) {
+        EMap<String, String> parameters = dbConn.getParameters();
+        String databaseType = parameters.get(ConnParameterKeys.CONN_PARA_KEY_DB_TYPE);
         String hadoopProperties = "";
         if (databaseType != null) {
             if (EDatabaseConnTemplate.HIVE.getDBDisplayName().equals(databaseType)) {
@@ -1095,6 +1120,9 @@ public abstract class RepositoryUpdateManager {
     }
 
     public static IEditorReference[] getEditors() {
+        if (CommonsPlugin.isHeadless() || !getProxyRepositoryFactory().isFullLogonFinished()) {
+            return new IEditorReference[0];
+        }
         final List<IEditorReference> list = new ArrayList<IEditorReference>();
         Display.getDefault().syncExec(new Runnable() {
 
@@ -1429,17 +1457,20 @@ public abstract class RepositoryUpdateManager {
         return updateDBConnection(connection, show, false);
     }
 
+    public static boolean updateDBConnection(ConnectionItem connectionItem, boolean show, final boolean onlySimpleShow) {
+        return updateDBConnection(connectionItem, RelationshipItemBuilder.LATEST_VERSION, show, onlySimpleShow);
+    }
+
     /**
      * 
      * ggu Comment method "updateQuery".
      * 
      * if show is false, will work for context menu action.
      */
-    public static boolean updateDBConnection(ConnectionItem connectionItem, boolean show, final boolean onlySimpleShow) {
-        List<IRepositoryViewObject> updateList = new ArrayList<IRepositoryViewObject>();
-        IProxyRepositoryFactory factory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
+    public static boolean updateDBConnection(ConnectionItem connectionItem, String version, boolean show,
+            final boolean onlySimpleShow) {
         List<Relation> relations = RelationshipItemBuilder.getInstance().getItemsRelatedTo(connectionItem.getProperty().getId(),
-                RelationshipItemBuilder.LATEST_VERSION, RelationshipItemBuilder.PROPERTY_RELATION);
+                version, RelationshipItemBuilder.PROPERTY_RELATION);
 
         RepositoryUpdateManager repositoryUpdateManager = new RepositoryUpdateManager(connectionItem, relations) {
 
@@ -2415,6 +2446,11 @@ public abstract class RepositoryUpdateManager {
 
         };
         return repositoryUpdateManager.doWork(true, false);
+    }
+
+    private static IProxyRepositoryFactory getProxyRepositoryFactory() {
+        return ((IProxyRepositoryService) GlobalServiceRegister.getDefault().getService(IProxyRepositoryService.class))
+                .getProxyRepositoryFactory();
     }
 
 }

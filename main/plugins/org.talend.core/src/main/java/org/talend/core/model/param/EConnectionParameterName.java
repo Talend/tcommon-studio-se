@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -34,7 +34,14 @@ public enum EConnectionParameterName {
     LOCAL_SERVICE_NAME("Local Service Name"),
     URL("Url"), //$NON-NLS-1$
     HTTPS("https"), //$NON-NLS-1$
-    DBPATH("DBPATH");//$NON-NLS-1$
+    DBPATH("DBPATH"),//$NON-NLS-1$
+    
+    GENERIC_TABLENAME("tableSelection.tablename"),//$NON-NLS-1$
+    GENERIC_USERNAME("connection.userPassword.userId"),//$NON-NLS-1$
+    GENERIC_PASSWORD("connection.userPassword.password"),//$NON-NLS-1$
+    GENERIC_URL("connection.jdbcUrl"),//$NON-NLS-1$
+    GENERIC_DRIVER_JAR("connection.driverTable"),//$NON-NLS-1$
+    GENERIC_DRIVER_CLASS("connection.driverClass");//$NON-NLS-1$
 
     private String displayName;
 

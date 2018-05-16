@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -126,6 +126,23 @@ public class FormatterUtils {
         }
     }
 
+    /**
+     * in order to transform the number "1234567.89" to string 123,456.89
+     */
+    public static String format_Number(String s, String thousandsSeparator, String decimalSeparator) {
+        Character thousandsSeparatorChar = null;
+        if(thousandsSeparator!=null && !thousandsSeparator.isEmpty()) {
+            thousandsSeparatorChar = thousandsSeparator.charAt(0);
+        }
+        
+        Character decimalSeparatorChar = null;
+        if(decimalSeparator!=null && !decimalSeparator.isEmpty()) {
+            decimalSeparatorChar = decimalSeparator.charAt(0);
+        }
+        
+        return format_Number(s, thousandsSeparatorChar, decimalSeparatorChar);
+    }
+    
     /**
      * in order to transform the number "1234567.89" to string 123,456.89
      */

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -14,6 +14,7 @@ package org.talend.core.model.process;
 
 import java.util.Map;
 
+import org.eclipse.core.resources.IFile;
 import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.Property;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
@@ -46,13 +47,30 @@ public class JobInfo {
     private boolean testContainer = false;
 
     private Map<String, Object> argumentsMap;
-    
+
     private IProcessor processor;
+
+    private IFile pomFile;
+
+    private IFile codeFile;
+
+    private Property jobletProperty;
+
+    private boolean isJoblet;
 
     public JobInfo(String jobId, String contextName, String version) {
         this.jobId = jobId;
         this.contextName = contextName;
         this.jobVersion = version;
+    }
+
+    public JobInfo(Property jobletProperty, String contextName) {
+        this.jobId = jobletProperty.getId();
+        this.jobName = jobletProperty.getLabel();
+        this.jobVersion = jobletProperty.getVersion();
+        this.contextName = contextName;
+        this.jobletProperty = jobletProperty;
+        isJoblet = true;
     }
 
     /**
@@ -419,22 +437,66 @@ public class JobInfo {
         this.argumentsMap = argumentsMap;
     }
 
-    
     /**
      * Getter for processor.
+     * 
      * @return the processor
      */
     public IProcessor getProcessor() {
         return this.processor;
     }
 
-    
     /**
      * Sets the processor.
+     * 
      * @param processor the processor to set
      */
     public void setProcessor(IProcessor processor) {
         this.processor = processor;
+    }
+
+    /**
+     * Getter for pomFile.
+     * 
+     * @return the pomFile
+     */
+    public IFile getPomFile() {
+        return this.pomFile;
+    }
+
+    /**
+     * Sets the pomFile.
+     * 
+     * @param pomFile the pomFile to set
+     */
+    public void setPomFile(IFile pomFile) {
+        this.pomFile = pomFile;
+    }
+
+    /**
+     * Getter for codeFile.
+     * 
+     * @return the codeFile
+     */
+    public IFile getCodeFile() {
+        return this.codeFile;
+    }
+
+    /**
+     * Sets the codeFile.
+     * 
+     * @param codeFile the codeFile to set
+     */
+    public void setCodeFile(IFile codeFile) {
+        this.codeFile = codeFile;
+    }
+
+    public Property getJobletProperty() {
+        return jobletProperty;
+    }
+
+    public boolean isJoblet() {
+        return isJoblet;
     }
 
 }

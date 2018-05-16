@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -24,6 +24,10 @@ public class MavenSystemFolders {
     public static final ProjectSystemFolder JAVA_TEST = new ProjectSystemFolder("src/test/java", "target/test-classes");
 
     public static final ProjectSystemFolder RESOURCES = new ProjectSystemFolder("src/main/resources", "target/classes");
+
+    public static final ProjectSystemFolder EXT_RESOURCES = new ProjectSystemFolder("src/main/ext-resources", "target/classes");
+    
+    public static final ProjectSystemFolder BUNDLE_RESOURCES = new ProjectSystemFolder("src/main/bundle-resources", "target/classes");
 
     public static final ProjectSystemFolder RESOURCES_TEST = new ProjectSystemFolder("src/test/resources", "target/test-classes");
 

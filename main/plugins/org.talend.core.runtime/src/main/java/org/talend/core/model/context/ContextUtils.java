@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -499,13 +499,19 @@ public class ContextUtils {
             // return false;
             // }
             if (sourceParam.getComment() == null) {
-                sourceParam.setComment("");
+                sourceParam.setComment(""); //$NON-NLS-1$
             }
             if (targetParamType.getComment() == null) {
-                targetParamType.setComment("");
+                targetParamType.setComment(""); //$NON-NLS-1$
             }
             if (!sourceParam.getComment().equals(targetParamType.getComment())) {
                 return false;
+            }
+            if (sourceParam.getPrompt() == null) {
+                sourceParam.setPrompt(""); //$NON-NLS-1$
+            }
+            if (targetParamType.getPrompt() == null) {
+                targetParamType.setPrompt(""); //$NON-NLS-1$
             }
             if (!sourceParam.getPrompt().equals(targetParamType.getPrompt())) {
                 return false;

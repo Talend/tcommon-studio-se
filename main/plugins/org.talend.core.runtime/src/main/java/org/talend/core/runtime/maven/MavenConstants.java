@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -23,8 +23,14 @@ public interface MavenConstants {
     static final String NAME_USER_VERSION = "USER_VERSION";
     
     static final String NAME_PUBLISH_AS_SNAPSHOT = "PUBLISH_AS_SNAPSHOT";
-    
+
     static final String PROJECT_VERSION = "PROJECT_VERSION";
+
+    static final String PROJECT_GROUPID = "PROJECT_GROUPID";
+
+    static final String APPEND_FOLDER_TO_GROUPID = "APPEND_FOLDER_TO_GROUPID";
+
+    static final String SKIP_BASE_GROUPID = "SKIP_BASE_GROUPID";
 
     static final String TYPE_JAR = "jar";
 
@@ -33,6 +39,8 @@ public interface MavenConstants {
     static final String DEFAULT_VERSION = "6.0.0";
 
     static final String SNAPSHOT = "-SNAPSHOT";
+    
+    static final String POM_FILTER = "POM_FILTER";
 
     /*
      * for lib

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -18,7 +18,6 @@ import java.util.List;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.MigrationTask;
@@ -26,6 +25,7 @@ import org.talend.core.model.properties.Project;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
+import org.talend.core.repository.utils.TalendResourceSet;
 import org.talend.core.ui.branding.IBrandingService;
 import org.talend.repository.items.importexport.handlers.imports.IImportItemsHandler;
 
@@ -35,7 +35,7 @@ public class ImportItem {
 
     private String itemName;
 
-    private ResourceSet resourceSet = new ResourceSetImpl();
+    private ResourceSet resourceSet = new TalendResourceSet();
 
     private Property property;
 

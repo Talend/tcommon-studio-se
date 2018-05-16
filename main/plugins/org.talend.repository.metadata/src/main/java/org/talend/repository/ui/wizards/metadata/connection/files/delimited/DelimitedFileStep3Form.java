@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -183,6 +183,7 @@ public class DelimitedFileStep3Form extends AbstractDelimitedFileStepForm {
         // metadataNameText : Event modifyText
         metadataNameText.addModifyListener(new ModifyListener() {
 
+            @Override
             public void modifyText(final ModifyEvent e) {
                 MetadataToolHelper.validateSchema(metadataNameText.getText());
                 metadataTable.setLabel(metadataNameText.getText());
@@ -201,6 +202,7 @@ public class DelimitedFileStep3Form extends AbstractDelimitedFileStepForm {
         // metadataCommentText : Event modifyText
         metadataCommentText.addModifyListener(new ModifyListener() {
 
+            @Override
             public void modifyText(final ModifyEvent e) {
                 metadataTable.setComment(metadataCommentText.getText());
             }
@@ -209,6 +211,7 @@ public class DelimitedFileStep3Form extends AbstractDelimitedFileStepForm {
         // add listener to tableMetadata (listen the event of the toolbars)
         tableEditorView.getMetadataEditor().addAfterOperationListListener(new IListenableListListener() {
 
+            @Override
             public void handleEvent(ListenableListEvent event) {
                 checkFieldsValue();
             }
@@ -361,7 +364,7 @@ public class DelimitedFileStep3Form extends AbstractDelimitedFileStepForm {
         tableEditorView.getMetadataEditor().removeAll();
 
         List<MetadataColumn> columns = GuessSchemaUtil.guessSchemaFromArray(csvArray, getConnection().isFirstLineCaption(),
-                tableEditorView, 1);
+                getConnection().getEncoding(), tableEditorView, 1);
         tableEditorView.getMetadataEditor().addAll(columns);
 
         checkFieldsValue();

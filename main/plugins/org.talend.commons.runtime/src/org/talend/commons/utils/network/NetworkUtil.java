@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -17,12 +17,16 @@ import java.net.Authenticator;
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
+import java.net.PasswordAuthentication;
 import java.net.SocketException;
 import java.net.URI;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Enumeration;
 import java.util.regex.Pattern;
+
+import org.apache.commons.lang.StringUtils;
+import org.talend.commons.runtime.utils.io.FileCopyUtils;
 
 /**
  * ggu class global comment. Detailled comment
@@ -76,6 +80,51 @@ public class NetworkUtil {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static void loadAuthenticator() {
+        // get parameter from System.properties.
+        if (Boolean.getBoolean("http.proxySet")) {//$NON-NLS-1$
+            // authentification for the url by using username and password
+            Authenticator.setDefault(new Authenticator() {
+
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    String httpProxyUser = System.getProperty("http.proxyUser"); //$NON-NLS-1$
+                    String httpProxyPassword = System.getProperty("http.proxyPassword"); //$NON-NLS-1$
+                    String httpsProxyUser = System.getProperty("https.proxyUser"); //$NON-NLS-1$
+                    String httpsProxyPassword = System.getProperty("https.proxyPassword"); //$NON-NLS-1$
+                    String proxyUser = null;
+                    char[] proxyPassword = new char[0];
+                    if (StringUtils.isNotEmpty(httpProxyUser)) {
+                        proxyUser = httpProxyUser;
+                        if (StringUtils.isNotEmpty(httpProxyPassword)) {
+                            proxyPassword = httpProxyPassword.toCharArray();
+                        }
+                    } else if (StringUtils.isNotEmpty(httpsProxyUser)) {
+                        proxyUser = httpsProxyUser;
+                        if (StringUtils.isNotEmpty(httpsProxyPassword)) {
+                            proxyPassword = httpsProxyPassword.toCharArray();
+                        }
+                    }
+                    return new PasswordAuthentication(proxyUser, proxyPassword);
+                }
+
+            });
+        } else {
+            Authenticator.setDefault(null);
+        }
+    }
+
+    public static void updateSvnkitConfigureFile(String srcFilePath, String destFilePath) {
+        // SVNFileUtil getSystemApplicationDataPath C:\ProgramData\\Application Data
+        // Note:ProgramData:Starting with Windows 10,this setting can no longer be used in provisioning packages.
+        String osName = System.getProperty("os.name");//$NON-NLS-1$
+        String osNameLC = osName == null ? null : osName.toLowerCase();
+        boolean windows = osName != null && osNameLC.indexOf("windows") >= 0;//$NON-NLS-1$
+        if (windows && Boolean.getBoolean("http.proxySet")) {//$NON-NLS-1$
+            FileCopyUtils.copy(srcFilePath + "\\servers", destFilePath + "\\servers");//$NON-NLS-1$//$NON-NLS-2$
+        }
     }
 
     /**

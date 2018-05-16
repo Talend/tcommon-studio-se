@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -12,7 +12,7 @@
 // ============================================================================
 package org.talend.core.runtime.preference;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotEquals;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -69,20 +69,21 @@ public class ProjectPreferenceManagerTest {
     @Test
     public void testCurrentProject() {
         Project currentProject = ProjectManager.getInstance().getCurrentProject();
-        testExist(new ProjectPreferenceManager('A' + getTestQualifier(currentProject.getTechnicalLabel())));
+        testExist(new ProjectPreferenceManager(ProjectManager.getInstance().getCurrentProject(),
+                'A' + getTestQualifier(currentProject.getTechnicalLabel()), false));
     }
 
     @Test
     public void testCurrentProject2() {
         Project currentProject = ProjectManager.getInstance().getCurrentProject();
-        testExist(new ProjectPreferenceManager(currentProject, 'B' + getTestQualifier(currentProject.getTechnicalLabel())));
+        testExist(new ProjectPreferenceManager(currentProject, 'B' + getTestQualifier(currentProject.getTechnicalLabel()), false));
     }
 
     @Test
     public void testCurrentProject3() throws PersistenceException {
         Project currentProject = ProjectManager.getInstance().getCurrentProject();
         IProject project = ResourceUtils.getProject(currentProject);
-        testExist(new ProjectPreferenceManager(project, 'C' + getTestQualifier(currentProject.getTechnicalLabel())));
+        testExist(new ProjectPreferenceManager(project, 'C' + getTestQualifier(currentProject.getTechnicalLabel()), false));
     }
 
     private void testExist(ProjectPreferenceManager manager) {
@@ -96,7 +97,8 @@ public class ProjectPreferenceManagerTest {
     @Ignore
     public void testStringValue() {
         String testQualifier = getTestQualifier("TEST");
-        ProjectPreferenceManager projectPrefManager = new ProjectPreferenceManager(testQualifier);
+        ProjectPreferenceManager projectPrefManager = new ProjectPreferenceManager(ProjectManager.getInstance()
+                .getCurrentProject(), testQualifier, false);
         projectPrefManager.setValue("abc", "xyz");
         projectPrefManager.setValue("key", "123");
         Assert.assertEquals("xyz", projectPrefManager.getValue("abc"));
@@ -104,7 +106,8 @@ public class ProjectPreferenceManagerTest {
         Assert.assertNull(projectPrefManager.getValue("xxx"));
         testExist(projectPrefManager);
 
-        ProjectPreferenceManager readProjectPrefManager = new ProjectPreferenceManager(testQualifier);
+        ProjectPreferenceManager readProjectPrefManager = new ProjectPreferenceManager(ProjectManager.getInstance()
+                .getCurrentProject(), testQualifier, false);
         Assert.assertTrue(readProjectPrefManager.exist());
         Assert.assertEquals("xyz", readProjectPrefManager.getValue("abc"));
         Assert.assertEquals("123", readProjectPrefManager.getValue("key"));
@@ -116,7 +119,8 @@ public class ProjectPreferenceManagerTest {
     @Ignore
     public void testIntValue() {
         String testQualifier = getTestQualifier("TEST");
-        ProjectPreferenceManager projectPrefManager = new ProjectPreferenceManager(testQualifier);
+        ProjectPreferenceManager projectPrefManager = new ProjectPreferenceManager(ProjectManager.getInstance()
+                .getCurrentProject(), testQualifier, false);
         projectPrefManager.setValue("abc", 1);
         projectPrefManager.setValue("key", 2);
         Assert.assertEquals(1, projectPrefManager.getInt("abc"));
@@ -124,7 +128,8 @@ public class ProjectPreferenceManagerTest {
         Assert.assertEquals(-1, projectPrefManager.getInt("xxx"));
         testExist(projectPrefManager);
 
-        ProjectPreferenceManager readProjectPrefManager = new ProjectPreferenceManager(testQualifier);
+        ProjectPreferenceManager readProjectPrefManager = new ProjectPreferenceManager(ProjectManager.getInstance()
+                .getCurrentProject(), testQualifier, false);
         Assert.assertTrue(readProjectPrefManager.exist());
         Assert.assertEquals(1, readProjectPrefManager.getInt("abc"));
         Assert.assertEquals(2, readProjectPrefManager.getInt("key"));
@@ -135,7 +140,8 @@ public class ProjectPreferenceManagerTest {
     @Test
     public void testBooleanValue() {
         String testQualifier = getTestQualifier("TEST");
-        ProjectPreferenceManager projectPrefManager = new ProjectPreferenceManager(testQualifier);
+        ProjectPreferenceManager projectPrefManager = new ProjectPreferenceManager(ProjectManager.getInstance()
+                .getCurrentProject(), testQualifier, false);
         projectPrefManager.setValue("abc", true);
         projectPrefManager.setValue("key", false);
         Assert.assertEquals(true, projectPrefManager.getBoolean("abc"));
@@ -143,17 +149,19 @@ public class ProjectPreferenceManagerTest {
         Assert.assertEquals(false, projectPrefManager.getBoolean("xxx"));
         testExist(projectPrefManager);
 
-        ProjectPreferenceManager readProjectPrefManager = new ProjectPreferenceManager(testQualifier);
+        ProjectPreferenceManager readProjectPrefManager = new ProjectPreferenceManager(ProjectManager.getInstance()
+                .getCurrentProject(), testQualifier, false);
         Assert.assertTrue(readProjectPrefManager.exist());
         Assert.assertEquals(true, readProjectPrefManager.getBoolean("abc"));
         Assert.assertEquals(false, readProjectPrefManager.getBoolean("key"));
         Assert.assertEquals(false, readProjectPrefManager.getBoolean("xxx"));
 
     }
-    
+
     @Test
     public void testReload() {
         String testQualifier = getTestQualifier("TEST");
+        // if reload must set isCurrentProject
         ProjectPreferenceManager projectPrefManager = new ProjectPreferenceManager(testQualifier);
         IPreferenceStore originalStore = projectPrefManager.getPreferenceStore();
         ProjectScope originalScope = projectPrefManager.getProjectScope();

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -12,10 +12,12 @@
 // ============================================================================
 package org.talend.metadata.managment.ui.wizard.metadata.connection;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.language.ECodeLanguage;
 import org.talend.core.language.LanguageManager;
@@ -43,15 +45,20 @@ public class GuessSchemaUtil {
 
     public static List<MetadataColumn> guessDbSchemaFromArray(final CsvArray csvArray, boolean isFirstLineCaption,
             MetadataEmfTableEditorView tableEditorView, int header) {
-        return guessSchemaFromArray(csvArray, isFirstLineCaption, tableEditorView, header, true);
+        return guessSchemaFromArray(csvArray, isFirstLineCaption, null, tableEditorView, header, true);
     }
 
     public static List<MetadataColumn> guessSchemaFromArray(final CsvArray csvArray, boolean isFirstLineCaption,
             MetadataEmfTableEditorView tableEditorView, int header) {
-        return guessSchemaFromArray(csvArray, isFirstLineCaption, tableEditorView, header, false);
+        return guessSchemaFromArray(csvArray, isFirstLineCaption, null, tableEditorView, header, false);
     }
 
-    private static List<MetadataColumn> guessSchemaFromArray(final CsvArray csvArray, boolean isFirstLineCaption,
+    public static List<MetadataColumn> guessSchemaFromArray(final CsvArray csvArray, boolean isFirstLineCaption, String encoding,
+            MetadataEmfTableEditorView tableEditorView, int header) {
+        return guessSchemaFromArray(csvArray, isFirstLineCaption, encoding, tableEditorView, header, false);
+    }
+
+    private static List<MetadataColumn> guessSchemaFromArray(final CsvArray csvArray, boolean isFirstLineCaption, String encoding,
             MetadataEmfTableEditorView tableEditorView, int header, boolean useTdColumn) {
         List<MetadataColumn> columns = new ArrayList<MetadataColumn>();
 
@@ -94,10 +101,10 @@ public class GuessSchemaUtil {
                             if (fields[i] != null && !("").equals(fields[i])) { //$NON-NLS-1$
                                 label[i] = fields[i].trim().replaceAll(" ", "_"); //$NON-NLS-1$ //$NON-NLS-2$
                             } else {
-                                label[i] = DEFAULT_LABEL + " " + i; //$NON-NLS-1$ 
+                                label[i] = DEFAULT_LABEL + " " + i; //$NON-NLS-1$
                             }
                         } else {
-                            label[i] = DEFAULT_LABEL + " " + i; //$NON-NLS-1$ 
+                            label[i] = DEFAULT_LABEL + " " + i; //$NON-NLS-1$
                         }
                     }
                 }
@@ -156,8 +163,16 @@ public class GuessSchemaUtil {
                                             PerlDataTypeHelper.getTalendTypeOfValue(value));
                                 }
                             }
-                            if (lengthValue < value.length()) {
-                                lengthValue = value.length();
+                            int currentLength = value.length();
+                            if (encoding != null) {
+                                try {
+                                    currentLength = value.getBytes(encoding).length;
+                                } catch (UnsupportedEncodingException e) {
+                                    ExceptionHandler.process(e);
+                                }
+                            }
+                            if (lengthValue < currentLength) {
+                                lengthValue = currentLength;
                             }
                             int positionDecimal = 0;
                             if (value.indexOf(',') > -1) {
@@ -181,8 +196,8 @@ public class GuessSchemaUtil {
                                 if (preferenceStore.getString(MetadataTypeLengthConstants.VALUE_DEFAULT_LENGTH) != null
                                         && !preferenceStore.getString(MetadataTypeLengthConstants.VALUE_DEFAULT_LENGTH)
                                                 .equals("")) { //$NON-NLS-1$
-                                    lengthValue = Integer.parseInt(preferenceStore
-                                            .getString(MetadataTypeLengthConstants.VALUE_DEFAULT_LENGTH));
+                                    lengthValue = Integer.parseInt(
+                                            preferenceStore.getString(MetadataTypeLengthConstants.VALUE_DEFAULT_LENGTH));
                                 }
                             }
 
@@ -212,8 +227,8 @@ public class GuessSchemaUtil {
                         metadataColumn.setPrecision(0);
                     }
                 } else {
-                    talendType = PerlTypesManager.getNewTypeName(MetadataTalendType.loadTalendType(globalType,
-                            "TALENDDEFAULT", false)); //$NON-NLS-1$
+                    talendType = PerlTypesManager
+                            .getNewTypeName(MetadataTalendType.loadTalendType(globalType, "TALENDDEFAULT", false)); //$NON-NLS-1$
                     if (globalType.equals("FLOAT") || globalType.equals("DOUBLE")) { //$NON-NLS-1$ //$NON-NLS-2$
                         metadataColumn.setPrecision(precisionValue);
                     } else {

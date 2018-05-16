@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -16,6 +16,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPart;
 import org.talend.core.model.process.INode;
 import org.talend.core.model.properties.Item;
+import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.utils.IXSDPopulationUtil;
 import org.talend.repository.model.IRepositoryNode;
@@ -57,10 +58,19 @@ public interface IESBService extends IService {
     public void copyDataServiceRelateJob(Item newItem);
 
     public IXSDPopulationUtil getXSDPopulationUtil();
-    
+
     public boolean isWSDLEditor(IWorkbenchPart part);
-    
+
     public Item getWSDLEditorItem(IWorkbenchPart part);
-    
+
     public boolean executeCommand(IEditorPart editorPart, Object cmd);
+
+    /**
+     * DOC dsergent Comment method "getDefaultGroupIdSuffix". Default group ids for deployment get a suffix according to
+     * the kind of process (TESB-21282)
+     * 
+     * @param property
+     * @return Appropriate suffix for group id: route, job or service
+     */
+    public String getDefaultGroupIdSuffix(Property property);
 }

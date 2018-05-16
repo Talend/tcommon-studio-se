@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -504,6 +504,8 @@ public interface IProxyRepositoryFactory {
     public void updateLockStatus() throws PersistenceException;
 
     public boolean isModified(Object property);
+
+    public boolean isFullLogonFinished();
 
     /**
      * DOC nrousseau Comment method "getObjectFromFolder".

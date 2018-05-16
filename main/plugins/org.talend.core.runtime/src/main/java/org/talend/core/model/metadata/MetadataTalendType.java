@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -51,6 +51,7 @@ import org.talend.core.model.metadata.types.JavaTypesManager;
 import org.talend.core.model.metadata.types.PerlTypesManager;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.i18n.Messages;
+import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.repository.ProjectManager;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -408,7 +409,7 @@ public final class MetadataTalendType {
         }
         Dbms[] allDbmsArray = getAllDbmsArray();
         for (Dbms dbms : allDbmsArray) {
-            if (dbmsId.equals(dbms.getId())) {
+            if (TalendQuoteUtils.removeQuotesIfExist(dbmsId).equals(dbms.getId())) {
                 return dbms;
             }
         }

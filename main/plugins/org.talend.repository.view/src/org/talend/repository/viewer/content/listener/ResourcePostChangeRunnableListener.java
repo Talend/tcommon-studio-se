@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -33,6 +33,7 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.Folder;
 import org.talend.core.model.repository.IRepositoryViewObject;
+import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.repository.utils.XmiResourceManager;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IRepositoryNode;
@@ -75,6 +76,9 @@ public class ResourcePostChangeRunnableListener implements IResourceChangeListen
      */
     @Override
     public void resourceChanged(IResourceChangeEvent event) {
+        if (!ProxyRepositoryFactory.getInstance().isFullLogonFinished()) {
+            return;
+        }
         if (viewer == null || resourcevisitors == null || resourcevisitors.isEmpty()) {
             return;
         }

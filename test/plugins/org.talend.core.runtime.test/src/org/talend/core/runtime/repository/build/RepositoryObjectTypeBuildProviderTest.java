@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -265,12 +265,12 @@ public class RepositoryObjectTypeBuildProviderTest {
         }
 
         @Override
-        public Set<String> getNeededLibraries(boolean withChildrens) {
+        public Set<String> getNeededLibraries(int options) {
             return null;
         }
 
         @Override
-        public Set<ModuleNeeded> getNeededModules(boolean withChildrens) {
+        public Set<ModuleNeeded> getNeededModules(int options) {
             return null;
         }
 

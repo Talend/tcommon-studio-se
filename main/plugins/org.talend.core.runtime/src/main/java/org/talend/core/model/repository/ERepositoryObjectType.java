@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -27,11 +27,13 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.ecore.EObject;
 import org.talend.core.AbstractDQModelService;
 import org.talend.core.GlobalServiceRegister;
+import org.talend.core.IESBService;
 import org.talend.core.PluginChecker;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.properties.BRMSConnectionItem;
 import org.talend.core.model.properties.BusinessProcessItem;
 import org.talend.core.model.properties.CSVFileConnectionItem;
+import org.talend.core.model.properties.ConnectionItem;
 import org.talend.core.model.properties.ContextItem;
 import org.talend.core.model.properties.DatabaseConnectionItem;
 import org.talend.core.model.properties.DelimitedFileConnectionItem;
@@ -518,6 +520,11 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
      */
     public final static ERepositoryObjectType PROCESS_ROUTE = ERepositoryObjectType.valueOf("ROUTE"); //$NON-NLS-1$
 
+    /**
+     * <font color="red">This value may be <b>null</b> in some licenses, <b>should add NPE check</b></font>
+     */
+    public final static ERepositoryObjectType PROCESS_ROUTE_MICROSERVICE = ERepositoryObjectType.valueOf("ROUTE_MICROSERVICE"); //$NON-NLS-1$
+    
     /**
      * <font color="red">This value may be <b>null</b> in some licenses, <b>should add NPE check</b></font>
      */
@@ -1175,8 +1182,11 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
         for (IRepositoryContentHandler handler : RepositoryContentManager.getHandlers()) {
             type = handler.getRepositoryObjectType(item);
             if (type != null) {
-                break;
+                return type;
             }
+        }
+        if(item instanceof ConnectionItem){
+            type = ERepositoryObjectType.getType(((ConnectionItem)item).getTypeName());
         }
         return type;
     }
@@ -1413,10 +1423,37 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
         if (ERepositoryObjectType.PROCESS_ROUTE != null) {
             allTypes.add(ERepositoryObjectType.PROCESS_ROUTE);
         }
+        // FIXME move to getAllTypesOfProcess2()
         if (ERepositoryObjectType.PROCESS_ROUTELET != null) {
             allTypes.add(ERepositoryObjectType.PROCESS_ROUTELET);
         }
 
+        return allTypes;
+    }
+
+    /**
+     * DOC zwxue Comment method "getAllTypesOfProcess2".
+     * for types have pom.
+     * @return
+     */
+    public static List<ERepositoryObjectType> getAllTypesOfProcess2() {
+        List<ERepositoryObjectType> allTypes = getAllTypesOfProcess();
+        if (ERepositoryObjectType.JOBLET != null) {
+            allTypes.add(ERepositoryObjectType.JOBLET);
+        }
+        if (ERepositoryObjectType.SPARK_JOBLET != null) {
+            allTypes.add(ERepositoryObjectType.SPARK_JOBLET);
+        }
+        if (ERepositoryObjectType.SPARK_STREAMING_JOBLET != null) {
+            allTypes.add(ERepositoryObjectType.SPARK_STREAMING_JOBLET);
+        }
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IESBService.class)) {
+            IESBService esbService = (IESBService) GlobalServiceRegister.getDefault().getService(IESBService.class);
+            ERepositoryObjectType serviceType = esbService.getServicesType();
+            if (serviceType != null) {
+                allTypes.add(serviceType);
+            }
+        }
         return allTypes;
     }
 

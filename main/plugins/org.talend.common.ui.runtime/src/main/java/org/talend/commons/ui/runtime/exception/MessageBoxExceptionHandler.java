@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -44,7 +44,7 @@ public final class MessageBoxExceptionHandler {
      * @param ex - exception to log
      */
     public static void process(final Throwable ex) {
-        if (CommonUIPlugin.isFullyHeadless()) {
+        if (CommonUIPlugin.isFullyHeadless() || CommonsPlugin.isJUnitTest()) {
             CommonExceptionHandler.process(ex);
             return;
         }
@@ -65,7 +65,7 @@ public final class MessageBoxExceptionHandler {
     public static void process(Throwable ex, Shell shell) {
         CommonExceptionHandler.process(ex);
 
-        if (CommonsPlugin.isHeadless()) {
+        if (CommonsPlugin.isHeadless() || CommonsPlugin.isJUnitTest()) {
             return;
         }
 
@@ -88,6 +88,10 @@ public final class MessageBoxExceptionHandler {
         // TODO smallet use ErrorDialogWidthDetailArea ?
         String title = Messages.getString("commons.error"); //$NON-NLS-1$
         String msg = Messages.getString("exception.errorOccured", ex.getMessage()); //$NON-NLS-1$
+        //add for tup-19726/19790, as for exception detailMessage will show more details on log area.
+        if(ex.getCause()!=null) {
+        	msg = Messages.getString("exception.errorOccured", ex.getCause().getMessage()); //$NON-NLS-1$
+        }
         Priority priority = CommonExceptionHandler.getPriority(ex);
 
         if (priority == Level.FATAL || priority == Level.ERROR) {

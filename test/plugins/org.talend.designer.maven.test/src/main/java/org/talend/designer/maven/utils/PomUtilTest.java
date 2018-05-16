@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -12,24 +12,32 @@
 // ============================================================================
 package org.talend.designer.maven.utils;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.junit.Assert;
 import org.junit.Test;
 import org.ops4j.pax.url.mvn.MavenResolver;
-import org.talend.commons.utils.VersionUtils;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.properties.PropertiesFactory;
@@ -37,7 +45,7 @@ import org.talend.core.model.properties.Property;
 import org.talend.core.nexus.TalendMavenResolver;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
-import org.talend.core.runtime.process.TalendProcessArgumentConstant;
+import org.talend.designer.maven.model.TalendJavaProjectConstants;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.template.MavenTemplateManager;
 import org.talend.designer.runprocess.IProcessor;
@@ -456,144 +464,30 @@ public class PomUtilTest {
     }
 
     @Test
-    public void test_getJobVersionForPomProperty_null() {
-        String jobVersion = PomUtil.getJobVersionForPomProperty(null, null, null);
-        Assert.assertEquals("${project.version}", jobVersion);
+    public void testGetPomRelativePath() throws Exception {
+        String projectTechName = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
+        IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+        IFolder pomsFolder = root.getFolder(new Path(projectTechName + "/" + TalendJavaProjectConstants.DIR_POMS));
+        IFile routinePom = pomsFolder.getFolder("code").getFolder("routines").getFile("pom.xml");
+        String relativePath = PomUtil.getPomRelativePath(routinePom.getLocation().toFile(), "poms");
+        assertEquals("../../", relativePath);
 
-        jobVersion = PomUtil.getJobVersionForPomProperty(Collections.emptyMap(), null, null);
-        Assert.assertEquals("${project.version}", jobVersion);
+        IFolder jobFolder = pomsFolder.getFolder("jobs").getFolder("process").getFolder("relativeTest");
+        if (!jobFolder.exists()) {
+            jobFolder.create(true, true, null);
+        }
+        IFile jobPom = jobFolder.getFile("pom.xml");
+        Model model = new Model();
+        model.setModelVersion("4.0.0");
+        model.setGroupId("org.talend.test");
+        model.setArtifactId("testRelative");
+        model.setVersion("1.0.0");
+        PomUtil.savePom(null, model, jobPom);
 
-        Map<String, Object> argumentsMap = new HashMap<String, Object>();
-        argumentsMap.put(TalendProcessArgumentConstant.ARG_DEPLOY_VERSION, "1.1");
+        assertTrue(jobPom.exists());
 
-        final Property property = PropertiesFactory.eINSTANCE.createProperty();
-        property.setVersion(VersionUtils.DEFAULT_VERSION);
-
-        jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, property, null);
-        Assert.assertEquals("${project.version}", jobVersion);
-
-        property.getAdditionalProperties().put(MavenConstants.NAME_USER_VERSION, "1.2");
-        jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, property, null);
-        Assert.assertEquals("${project.version}", jobVersion);
-    }
-
-    @Test
-    public void test_getJobVersionForPomProperty_arguments_empty() {
-        final Property property = PropertiesFactory.eINSTANCE.createProperty();
-        property.setVersion(VersionUtils.DEFAULT_VERSION);
-        Map<String, Object> argumentsMap = new HashMap<String, Object>();
-
-        String jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, property); // not set
-        Assert.assertEquals("${project.version}", jobVersion);
-
-        jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, null, property); // not set
-        Assert.assertEquals("${project.version}", jobVersion);
-
-        argumentsMap.put(TalendProcessArgumentConstant.ARG_DEPLOY_VERSION, null); // null
-        jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, property);
-        Assert.assertEquals("${project.version}", jobVersion);
-
-        jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, null, property);
-        Assert.assertEquals("${project.version}", jobVersion);
-
-        argumentsMap.put(TalendProcessArgumentConstant.ARG_DEPLOY_VERSION, ""); // empty
-        jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, property);
-        Assert.assertEquals("${project.version}", jobVersion);
-
-        jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, null, property);
-        Assert.assertEquals("${project.version}", jobVersion);
-
-        argumentsMap.put(TalendProcessArgumentConstant.ARG_DEPLOY_VERSION, "    "); // spaces
-        jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, property);
-        Assert.assertEquals("${project.version}", jobVersion);
-
-        jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, null, property);
-        Assert.assertEquals("${project.version}", jobVersion);
-    }
-
-    @Test
-    public void test_getJobVersionForPomProperty_arguments() {
-        final Property property = PropertiesFactory.eINSTANCE.createProperty();
-        property.setVersion(VersionUtils.DEFAULT_VERSION);
-        Map<String, Object> argumentsMap = new HashMap<String, Object>();
-        argumentsMap.put(TalendProcessArgumentConstant.ARG_DEPLOY_VERSION, "0.2");
-
-        String jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, property);
-        Assert.assertEquals("0.1", jobVersion); // the real job version
-
-        jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, null, property);
-        Assert.assertEquals("0.1", jobVersion);
-    }
-
-    @Test
-    public void test_getJobVersionForPomProperty_property_empty() {
-        final Property jobProperty = PropertiesFactory.eINSTANCE.createProperty();
-        jobProperty.setVersion(VersionUtils.DEFAULT_VERSION);
-        Map<String, Object> argumentsMap = new HashMap<String, Object>();
-
-        String jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, jobProperty); // not set
-        Assert.assertEquals("${project.version}", jobVersion);
-
-        jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, jobProperty, null);
-        Assert.assertEquals("${project.version}", jobVersion);
-
-        jobProperty.getAdditionalProperties().put(MavenConstants.NAME_USER_VERSION, null); // null
-        jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, jobProperty);
-        Assert.assertEquals("${project.version}", jobVersion);
-
-        jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, jobProperty, null);
-        Assert.assertEquals("${project.version}", jobVersion);
-
-        jobProperty.getAdditionalProperties().put(MavenConstants.NAME_USER_VERSION, ""); // empty
-        jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, jobProperty);
-        Assert.assertEquals("${project.version}", jobVersion);
-
-        jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, jobProperty, null);
-        Assert.assertEquals("${project.version}", jobVersion);
-
-        jobProperty.getAdditionalProperties().put(MavenConstants.NAME_USER_VERSION, "   ");// spaces
-        jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, jobProperty);
-        Assert.assertEquals("${project.version}", jobVersion);
-
-        jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, jobProperty, null);
-        Assert.assertEquals("${project.version}", jobVersion);
-    }
-
-    @Test
-    public void test_getJobVersionForPomProperty_property() {
-        final Property jobProperty = PropertiesFactory.eINSTANCE.createProperty();
-        jobProperty.setVersion(VersionUtils.DEFAULT_VERSION);
-        jobProperty.getAdditionalProperties().put(MavenConstants.NAME_USER_VERSION, "1.0");
-
-        String jobVersion = PomUtil.getJobVersionForPomProperty(Collections.emptyMap(), jobProperty);
-        Assert.assertEquals("0.1", jobVersion);
-
-        jobVersion = PomUtil.getJobVersionForPomProperty(null, jobProperty); // no arguments
-        Assert.assertEquals("0.1", jobVersion);
-
-        Property curProperty = PropertiesFactory.eINSTANCE.createProperty();
-        curProperty.setVersion("1.3");
-
-        jobVersion = PomUtil.getJobVersionForPomProperty(null, jobProperty, curProperty);
-        Assert.assertEquals("1.3", jobVersion);
-    }
-
-    @Test
-    public void test_getJobVersionForPomProperty_arguments_property() {
-        final Property jobProperty = PropertiesFactory.eINSTANCE.createProperty();
-        jobProperty.setVersion(VersionUtils.DEFAULT_VERSION);
-        jobProperty.getAdditionalProperties().put(MavenConstants.NAME_USER_VERSION, "1.0");
-        Map<String, Object> argumentsMap = new HashMap<String, Object>();
-        argumentsMap.put(TalendProcessArgumentConstant.ARG_DEPLOY_VERSION, "0.2");
-
-        Property curProperty = PropertiesFactory.eINSTANCE.createProperty();
-        curProperty.setVersion("1.3");
-
-        String jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, jobProperty, curProperty);
-        Assert.assertEquals("1.3", jobVersion);
-
-        jobVersion = PomUtil.getJobVersionForPomProperty(argumentsMap, jobProperty);
-        Assert.assertEquals("0.1", jobVersion);
+        relativePath = PomUtil.getPomRelativePath(jobPom.getLocation().toFile(), "poms");
+        assertEquals("../../../", relativePath);
     }
 
     @Test
@@ -641,5 +535,76 @@ public class PomUtilTest {
         absArtifactPath = PomUtil.getAbsArtifactPath(artifact);
         Assert.assertNotNull(absArtifactPath);
         Assert.assertTrue(new File(absArtifactPath).exists());
+    }
+
+    @Test
+    public void testUpdateMainJobDependencies() throws Exception {
+        String projectTechName = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
+        IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+        IFolder pomsFolder = root.getFolder(new Path(projectTechName + "/" + TalendJavaProjectConstants.DIR_POMS));
+        IFolder testFolder = pomsFolder.getFolder("jobs").getFolder("process").getFolder("UpdateMainJobDependencies");
+        if (testFolder.exists()) {
+            testFolder.delete(true, null);
+        }
+        testFolder.create(true, true, null);
+        // create test depdenency: main_job==>subJob1==>subJob2==>main_job
+        IFolder mainFolder = testFolder.getFolder("main_job");
+        mainFolder.create(true, true, null);
+        IFile mainPom = mainFolder.getFile("pom.xml");
+        Model modelMain = creatModel("main_job");
+        String mainDepStr = "mvn:org.talend.libraries/mainDep/6.0.0/jar";
+        Dependency mainDep = PomUtil.createModuleDependency(mainDepStr);
+        modelMain.getDependencies().add(mainDep);
+        Dependency mainDep_subjob1 = PomUtil.createModuleDependency("mvn:org.talend.test/subJob1/1.0.0/jar");
+        modelMain.getDependencies().add(mainDep_subjob1);
+        PomUtil.savePom(null, modelMain, mainPom);
+
+        IFolder subjob1Folder = testFolder.getFolder("subjob1");
+        subjob1Folder.create(true, true, null);
+        IFile subjob1Pom = subjob1Folder.getFile("pom.xml");
+        Model modelSubjob1 = creatModel("subjob1");
+        String subjob1DepStr = "mvn:org.talend.libraries/subjob1Dep/6.0.0/jar";
+        Dependency subjob1Dep = PomUtil.createModuleDependency(subjob1DepStr);
+        modelSubjob1.getDependencies().add(subjob1Dep);
+        Dependency subjob1Dep_subjob2 = PomUtil.createModuleDependency("mvn:org.talend.test/subJob2/1.0.0/jar");
+        modelSubjob1.getDependencies().add(subjob1Dep_subjob2);
+        PomUtil.savePom(null, modelSubjob1, subjob1Pom);
+
+        IFolder subjob2Folder = testFolder.getFolder("subjob2");
+        subjob2Folder.create(true, true, null);
+        IFile subjob2Pom = subjob2Folder.getFile("pom.xml");
+        Model modelSubjob2 = creatModel("subjob2");
+        String subjob2DepStr = "mvn:org.talend.libraries/subjob2Dep/6.0.0/jar";
+        Dependency subjob2Dep = PomUtil.createModuleDependency(subjob2DepStr);
+        modelSubjob2.getDependencies().add(subjob2Dep);
+        Dependency subjob2Dep_mainjob = PomUtil.createModuleDependency("mvn:org.talend.test/main_job/1.0.0/jar");
+        modelSubjob2.getDependencies().add(subjob2Dep_mainjob);
+        PomUtil.savePom(null, modelSubjob2, subjob2Pom);
+
+        List<IFile> subjobPoms = new ArrayList<IFile>();
+        subjobPoms.add(subjob1Pom);
+        subjobPoms.add(subjob2Pom);
+        Set<String> subjobURLs = new HashSet<String>();
+        subjobURLs.add("mvn:org.talend.test/subJob1/1.0.0/jar");
+        subjobURLs.add("mvn:org.talend.test/subJob2/1.0.0/jar");
+        subjobURLs.add("mvn:org.talend.test/main_job/1.0.0/jar");
+        PomUtil.updateMainJobDependencies(mainPom, subjobPoms, subjobURLs, null);
+
+        modelMain = MavenPlugin.getMavenModelManager().readMavenModel(mainPom);
+        Assert.assertEquals(modelMain.getDependencies().size(), 3);
+        Assert.assertEquals(PomUtil.generateMvnUrl(modelMain.getDependencies().get(0)), mainDepStr);
+        Assert.assertEquals(PomUtil.generateMvnUrl(modelMain.getDependencies().get(1)), subjob1DepStr);
+        Assert.assertEquals(PomUtil.generateMvnUrl(modelMain.getDependencies().get(2)), subjob2DepStr);
+
+        testFolder.delete(true, null);
+    }
+
+    private Model creatModel(String artifactId) {
+        Model model = new Model();
+        model.setModelVersion("4.0.0");
+        model.setGroupId("org.talend.test");
+        model.setArtifactId(artifactId);
+        model.setVersion("1.0.0");
+        return model;
     }
 }

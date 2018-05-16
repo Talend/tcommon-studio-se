@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -33,6 +33,8 @@ public interface IConnection extends IElement {
     public static final String TRACE_SCHEMA_COLUMN_CHECKED = "TRACE_COLUMN_CHECKED"; //$NON-NLS-1$
 
     public static final String TRACE_SCHEMA_COLUMN_CONDITION = "TRACE_COLUMN_CONDITION"; //$NON-NLS-1$
+
+    public static final String EVENT_UPDATE_INPUT_CONNECTION = "EVENT_UPDATE_INPUT_CONNECTION"; //$NON-NLS-1$
 
     String getCondition();
 

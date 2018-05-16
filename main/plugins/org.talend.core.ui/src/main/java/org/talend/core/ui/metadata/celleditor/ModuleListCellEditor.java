@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -37,6 +37,7 @@ import org.talend.core.model.process.IElement;
 import org.talend.core.model.process.IElementParameter;
 import org.talend.core.model.process.INode;
 import org.talend.core.model.process.IProcess2;
+import org.talend.core.runtime.services.IGenericDBService;
 import org.talend.core.ui.CoreUIPlugin;
 import org.talend.core.ui.process.IGEFProcess;
 import org.talend.core.ui.services.IDesignerCoreUIService;
@@ -204,7 +205,9 @@ public class ModuleListCellEditor extends DialogCellEditor {
         }
         // enable to refresh component setting after change modules.
         IElement element = this.tableParam.getElement();
-        if (element != null) {
+        boolean isNotCConfig = element.getElementParameter("COMPONENT_NAME") == null ? 
+                true : !"cConfig".equals(element.getElementParameter("COMPONENT_NAME").getValue());
+        if (element != null && isNotCConfig) {
             IElementParameter updateComponentsParam = element.getElementParameter("UPDATE_COMPONENTS"); //$NON-NLS-1$
             if (updateComponentsParam != null) {
                 updateComponentsParam.setValue(Boolean.TRUE);
@@ -266,6 +269,7 @@ public class ModuleListCellEditor extends DialogCellEditor {
                     line.put(columnName, value);
                 }
             }
+            param.setValue(values);
             // CorePlugin.getDefault().getLibrariesService().resetModulesNeeded();
         }
 

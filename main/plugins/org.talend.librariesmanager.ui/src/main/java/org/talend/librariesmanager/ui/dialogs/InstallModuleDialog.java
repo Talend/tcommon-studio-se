@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2014 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -15,6 +15,7 @@ package org.talend.librariesmanager.ui.dialogs;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.text.MessageFormat;
 import java.util.concurrent.TimeoutException;
 
 import org.apache.commons.lang.StringUtils;
@@ -229,11 +230,11 @@ public class InstallModuleDialog extends TitleAreaDialog implements ICellEditorD
             if (deployed) {
                 setMessage(Messages.getString("InstallModuleDialog.error.jarexsit"), IMessageProvider.ERROR);
             } else {
-                setMessage(Messages.getString("ConfigModuleDialog.message"), IMessageProvider.INFORMATION);
+                setMessage(Messages.getString("ConfigModuleDialog.message",this.moduleName), IMessageProvider.INFORMATION);
             }
         } else {
             if (deployed) {
-                setMessage(Messages.getString("ConfigModuleDialog.message"), IMessageProvider.INFORMATION);
+                setMessage(Messages.getString("ConfigModuleDialog.message",this.moduleName), IMessageProvider.INFORMATION);
             } else {
                 setMessage(Messages.getString("InstallModuleDialog.error.notInstalled"), IMessageProvider.WARNING);
             }

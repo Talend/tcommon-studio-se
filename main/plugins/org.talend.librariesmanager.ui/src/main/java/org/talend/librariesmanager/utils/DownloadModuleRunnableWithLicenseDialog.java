@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -33,7 +33,7 @@ public class DownloadModuleRunnableWithLicenseDialog extends DownloadModuleRunna
      * DOC sgandon DownloadModuleRunnableWithLicenseDialog constructor comment.
      */
     public DownloadModuleRunnableWithLicenseDialog(List<ModuleToInstall> toDownload, Shell shell) {
-        super(toDownload);
+        super(toDownload, false);
         this.shell = shell;
 
     }

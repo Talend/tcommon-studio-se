@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2014 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -50,6 +50,9 @@ public interface IRepositoryArtifactHandler {
     public void deploy(File content, String groupId, String artifactId, String classifier, String extension, String version)
             throws Exception;
 
+    public void deployWithPOM(File content, File pomFile, String groupId, String artifactId, String classifier, String extension, String version)
+            throws Exception;
+    
     public void updateMavenResolver(Dictionary<String, String> props);
 
     public File resolve(String mvnUrl) throws Exception;

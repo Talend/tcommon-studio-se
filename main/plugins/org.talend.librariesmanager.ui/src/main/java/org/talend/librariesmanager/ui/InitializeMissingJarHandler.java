@@ -154,13 +154,6 @@ public class InitializeMissingJarHandler implements IStartup, Observer {
                                 break;
                             }// else not an installed module or no url so keep so keep looking
                         }
-                        if (PluginChecker.isSVNProviderPluginLoaded()) {
-                            ISVNProviderServiceInCoreRuntime svnService = (ISVNProviderServiceInCoreRuntime) GlobalServiceRegister
-                                    .getDefault().getService(ISVNProviderServiceInCoreRuntime.class);
-                            if (svnService != null && svnService.isSvnLibSetupOnTAC()) {
-                                svnService.syncLibs(null);
-                            }
-                        }
                     } else {
                         // try to retreive again incase it exist on custom nexus
                         final boolean retrieve = libraryManagerService.retrieve(module, null, false);

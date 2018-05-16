@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2014 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -17,9 +17,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.Header;
@@ -38,13 +35,16 @@ import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.designer.maven.aether.RepositorySystemFactory;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
 /**
  * created by wchen on Aug 2, 2017 Detailled comment
  *
  */
 public class Nexus3RepositoryHandler extends AbstractArtifactRepositoryHandler {
 
-    private String SEARCH_SERVICE = "service/siesta/rest/v1/script/search/run";
+    private String SEARCH_SERVICE = "service/rest/v1/script/search/run";
 
     private String REP_PREFIX_PATH = "/repository/";
 
@@ -149,6 +149,9 @@ public class Nexus3RepositoryHandler extends AbstractArtifactRepositoryHandler {
                 ContentType.create(ContentType.APPLICATION_JSON.getMimeType(), StandardCharsets.UTF_8));
         HttpResponse response = request.execute().returnResponse();
         String content = EntityUtils.toString(response.getEntity());
+        if (content.isEmpty()) {
+            return resultList;
+        }
         JSONObject responseObject = new JSONObject().fromObject(content);
         String resultStr = responseObject.getString("result");
         JSONArray resultArray = null;
@@ -166,6 +169,7 @@ public class Nexus3RepositoryHandler extends AbstractArtifactRepositoryHandler {
                 artifact.setVersion(jsonObject.getString("version"));
                 artifact.setType(jsonObject.getString("extension"));
                 artifact.setDescription(jsonObject.getString("description"));
+                artifact.setLastUpdated(jsonObject.getString("last_updated"));
                 // artifact.setLicense(jsonObject.getString("license"));
                 // artifact.setLicenseUrl(jsonObject.getString("licenseUrl"));
                 // artifact.setUrl(jsonObject.getString("url"));
@@ -201,6 +205,23 @@ public class Nexus3RepositoryHandler extends AbstractArtifactRepositoryHandler {
     @Override
     protected String getRepositoryPrefixPath() {
         return REP_PREFIX_PATH;
+    }
+
+    @Override
+    public void deployWithPOM(File content, File pomFile, String groupId, String artifactId, String classifier, String extension,
+            String version) throws Exception {
+        String repositoryId = "";
+        boolean isRelease = !version.endsWith(MavenUrlHelper.VERSION_SNAPSHOT);
+        if (isRelease) {
+            repositoryId = serverBean.getRepositoryId();
+        } else {
+            repositoryId = serverBean.getSnapshotRepId();
+        }
+        String repositoryurl = getRepositoryURL(isRelease);
+        String localRepository = MavenPlugin.getMaven().getLocalRepositoryPath();
+        RepositorySystemFactory.deployWithPOM(content, pomFile, localRepository, repositoryId, repositoryurl,
+                serverBean.getUserName(), serverBean.getPassword(), groupId, artifactId, classifier, extension, version);
+
     }
 
 }

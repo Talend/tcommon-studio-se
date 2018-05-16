@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -55,8 +55,6 @@ public interface TalendProcessArgumentConstant {
     static final String ARG_ENABLE_WATCH = "ENABLE_WATCH";
 
     static final String ARG_NEED_PIGUDFS = "NEED_PIGUDFS";
-
-    static final String ARG_DEPLOY_VERSION = "DEPLOY_VERSION";
 
     static final String ARG_BUILD_TYPE = "BUILD_TYPE";
 

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -32,6 +32,18 @@ public interface TalendProcessOptionConstants {
 
     public static final int GENERATE_WITHOUT_FORMAT = 1 << 6;
 
+    public static final int GENERATE_POM_ONLY = 1 << 7;
+
+    /**
+     * for recursive job.
+     */
+    public static final int GENERATE_IS_MAINJOB = 1 << 8;
+
+    /**
+     * for ESB bundle.
+     */
+    public static final int GENERATE_NO_CODEGEN = 1 << 9;
+
     /**
      * clean options
      */
@@ -40,4 +52,19 @@ public interface TalendProcessOptionConstants {
     public static final int CLEAN_CONTEXTS = 1 << 1;
 
     public static final int CLEAN_DATA_SETS = 1 << 2;
+
+    /**
+     * generate modules options
+     */
+    public static final int MODULES_DEFAULT = 1;
+
+    public static final int MODULES_WITH_CHILDREN = 1 << 1;
+
+    public static final int MODULES_WITH_INDEPENDENT = 1 << 2;
+
+    // include joblet module but without joblet's dependencies
+    public static final int MODULES_WITH_JOBLET = 1 << 3;
+
+    public static final int MODULES_FOR_MR = 1 << 4;
+
 }

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.repository.items.importexport.handlers;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -65,6 +66,7 @@ import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.ui.IJobletProviderService;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.RepositoryWorkUnit;
+import org.talend.repository.documentation.ERepositoryActionName;
 import org.talend.repository.items.importexport.handlers.imports.IImportItemsHandler;
 import org.talend.repository.items.importexport.handlers.imports.IImportResourcesHandler;
 import org.talend.repository.items.importexport.handlers.imports.ImportBasicHandler;
@@ -78,6 +80,7 @@ import org.talend.repository.items.importexport.manager.ChangeIdManager;
 import org.talend.repository.items.importexport.manager.ResourcesManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryConstants;
+import org.talend.utils.io.FilesUtils;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -221,6 +224,22 @@ public class ImportExportHandlersManager {
             // remove done list
             resourcesPathsList.removeAll(doneList);
             //
+            // add for TUP-19934,skip the poms folder which under project folder
+            List<IPath> skipList = new ArrayList<IPath>();
+            for (IPath path : resourcesPathsList) {
+                if (monitor.isCanceled()) {
+                    return Collections.emptyList();
+                }
+                IPath projectFilePath = HandlerUtil.getValidProjectFilePath(resManager, path);
+                if (projectFilePath != null) {
+                    IPath pomPath = projectFilePath.removeLastSegments(1).append("poms");
+                    if (pomPath.isPrefixOf(path)) {
+                        skipList.add(path);
+                    }
+                }
+            }
+            resourcesPathsList.removeAll(skipList);
+
             for (IPath path : resourcesPathsList) {
                 if (monitor.isCanceled()) {
                     return Collections.emptyList(); //
@@ -632,7 +651,6 @@ public class ImportExportHandlersManager {
                             } catch (Exception e) {
                                 ExceptionHandler.process(e);
                             }
-                            unloadImportItems(allImportItemRecords);
                         }
 
                         private void importItemRecordsWithRelations(final IProgressMonitor monitor,
@@ -750,6 +768,8 @@ public class ImportExportHandlersManager {
                             ExceptionHandler.process(e);
                         }
                     }
+                    // fire import event out of workspace runnable
+                    fireImportChange(ImportCacheHelper.getInstance().getImportedItemRecords());
                 }
             };
             repositoryWorkUnit.setAvoidUnloadResources(true);
@@ -757,6 +777,9 @@ public class ImportExportHandlersManager {
             ProxyRepositoryFactory.getInstance().executeRepositoryWorkUnit(repositoryWorkUnit);
 
             progressMonitor.done();
+            
+
+            unloadImportItems(allImportItemRecords);
 
             if (ImportCacheHelper.getInstance().hasImportingError()) {
                 throw new InvocationTargetException(new CoreException(
@@ -766,12 +789,30 @@ public class ImportExportHandlersManager {
         } finally {
             // cache
             importCacheHelper.afterImportItems();
+
+            //
+            final Object root = resManager.getRoot();
+            if (root instanceof File) {
+                final File workingFolder = (File) root;
+                File tmpdir = new File(System.getProperty("java.io.tmpdir")); //$NON-NLS-1$
+                if (workingFolder.toString().startsWith(tmpdir.toString())) { // remove from temp
+                    FilesUtils.deleteFolder(workingFolder, true);
+                }
+            }
             //
             TimeMeasure.end("importItemRecords"); //$NON-NLS-1$
             TimeMeasure.display = false;
             TimeMeasure.displaySteps = false;
             TimeMeasure.measureActive = false;
         }
+    }
+
+    private void fireImportChange(List<ImportItem> importedItemRecords) {
+        Set<Item> importedItems = new HashSet<>();
+        for (ImportItem importedItem : importedItemRecords) {
+            importedItems.add(importedItem.getItem());
+        }
+        ProxyRepositoryFactory.getInstance().fireRepositoryPropertyChange(ERepositoryActionName.IMPORT.getName(), null, importedItems);
     }
 
     /**

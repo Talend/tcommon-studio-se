@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -21,8 +21,35 @@ import org.apache.commons.lang3.StringUtils;
 public class NexusServerBean {
 
     public enum NexusType {
-        NEXUS_2,
-        NEXUS_3;
+        NEXUS_2("NEXUS"),
+        NEXUS_3("NEXUS 3");
+
+        String repType;
+
+        NexusType(String repType) {
+            this.repType = repType;
+        }
+
+        public static NexusType getByRepType(String typeFromTAC) {
+            for (NexusType type : NexusType.values()) {
+                if (type.repType.equals(typeFromTAC)) {
+                    return type;
+                }
+            }
+            return null;
+        }
+
+        public static NexusType getByNexusType(String nexusType) {
+            NexusType type = valueOf(nexusType);
+            if (type == null) {
+                type = NexusType.NEXUS_2;
+            }
+            return type;
+        }
+
+        public String getRepType() {
+            return this.repType;
+        }
     }
 
     private String server;
@@ -38,6 +65,8 @@ public class NexusServerBean {
     private String snapshotRepId;
 
     private String type = NexusType.NEXUS_2.name();
+
+    private boolean isAbsoluteURL = false;
 
     public NexusServerBean() {
     }
@@ -180,6 +209,9 @@ public class NexusServerBean {
         if (StringUtils.isEmpty(this.server)) {
             return null; // no server, no uri
         }
+        if (isAbsoluteURL()) {
+            return this.server;
+        }
         IRepositoryArtifactHandler repositoryHandler = RepositoryArtifactHandlerManager.getRepositoryHandler(this);
         if (repositoryHandler != null) {
             return repositoryHandler.getRepositoryURL(isRelease);
@@ -195,7 +227,11 @@ public class NexusServerBean {
                 repositoryBaseURI = repositoryBaseURI.substring(0, repositoryBaseURI.length() - 1);
             }
             repositoryBaseURI += NexusConstants.CONTENT_REPOSITORIES;
-            repositoryBaseURI += repId + NexusConstants.SLASH;
+            if (StringUtils.isNotBlank(repId)) {
+                repositoryBaseURI += repId + NexusConstants.SLASH;
+            } else if (!repositoryBaseURI.endsWith(NexusConstants.SLASH)) {
+                repositoryBaseURI += NexusConstants.SLASH;
+            }
             return repositoryBaseURI;
         }
     }
@@ -278,5 +314,13 @@ public class NexusServerBean {
 
         return true;
 
+    }
+
+    public boolean isAbsoluteURL() {
+        return this.isAbsoluteURL;
+    }
+
+    public void setAbsoluteURL(boolean isAbsoluteURL) {
+        this.isAbsoluteURL = isAbsoluteURL;
     }
 }

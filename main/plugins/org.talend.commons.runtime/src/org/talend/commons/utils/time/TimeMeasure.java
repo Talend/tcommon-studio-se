@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -19,6 +19,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.talend.commons.CommonsPlugin;
+import org.talend.commons.runtime.debug.TalendDebugHandler;
+
 /**
  * Timer to measure elapsed time of any process or between steps.
  * 
@@ -26,7 +29,7 @@ import java.util.Map;
  * 
  */
 public class TimeMeasure {
-
+    
     // PTODO create junit test class
     private static HashMap<String, TimeStack> timers;
 
@@ -68,16 +71,20 @@ public class TimeMeasure {
         init();
         if (timers.containsKey(idTimer)) {
             if (display) {
-                System.out.println(indent(indent) + "Warning (start): timer " + idTimer + " already exists"); //$NON-NLS-1$  //$NON-NLS-2$
+                log(indent(indent) + "Warning (start): timer " + idTimer + " already exists"); //$NON-NLS-1$  //$NON-NLS-2$
             }
         } else {
             indent++;
             TimeStack times = new TimeStack();
             timers.put(idTimer, times);
             if (display) {
-                System.out.println(indent(indent) + "Start '" + idTimer + "' ..."); //$NON-NLS-1$  //$NON-NLS-2$
+                log(indent(indent) + "Start '" + idTimer + "' ..."); //$NON-NLS-1$  //$NON-NLS-2$
             }
         }
+    }
+    
+    private static void log (String message) {
+        TalendDebugHandler.debug(message);
     }
 
     /**
@@ -94,7 +101,7 @@ public class TimeMeasure {
         init();
         if (!timers.containsKey(idTimer)) {
             if (display) {
-                System.out.println(indent(indent) + "Warning (end): timer " + idTimer + " doesn't exist"); //$NON-NLS-1$  //$NON-NLS-2$
+                log(indent(indent) + "Warning (end): timer " + idTimer + " doesn't exist"); //$NON-NLS-1$  //$NON-NLS-2$
             }
             return -1;
         } else {
@@ -102,7 +109,7 @@ public class TimeMeasure {
             timers.remove(idTimer);
             long elapsedTimeSinceLastRequest = timeStack.getLastStepElapsedTime();
             if (display && displaySteps) {
-                System.out.println(indent(indent) + "End '" + idTimer + "', elapsed time since last request: " //$NON-NLS-1$  //$NON-NLS-2$
+                log(indent(indent) + "End '" + idTimer + "', elapsed time since last request: " //$NON-NLS-1$  //$NON-NLS-2$
                         + elapsedTimeSinceLastRequest + " ms "); //$NON-NLS-1$
             }
             long totalElapsedTime = timeStack.getTotalElapsedTime();
@@ -112,12 +119,11 @@ public class TimeMeasure {
                     Runtime.getRuntime().gc();
                     long usedMemory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
 
-                    System.out.println(indent(indent)
+                    log(indent(indent)
                             + "End '" + idTimer + "', total elapsed time: " + totalElapsedTime + " ms, " //$NON-NLS-1$  //$NON-NLS-2$  //$NON-NLS-3$
                             + " current memory [" + usedMemory + "] bytes"); //$NON-NLS-1$  //$NON-NLS-2$
                 } else {
-                    System.out
-                            .println(indent(indent) + "End '" + idTimer + "', total elapsed time: " + totalElapsedTime + " ms "); //$NON-NLS-1$  //$NON-NLS-2$  //$NON-NLS-3$
+                    log(indent(indent) + "End '" + idTimer + "', total elapsed time: " + totalElapsedTime + " ms "); //$NON-NLS-1$  //$NON-NLS-2$  //$NON-NLS-3$
                 }
             }
             indent--;
@@ -143,7 +149,7 @@ public class TimeMeasure {
         init();
         if (!timers.containsKey(idTimer)) {
             if (display) {
-                System.out.println(indent(indent) + "Warning (end): timer " + idTimer + " does'nt exist"); //$NON-NLS-1$  //$NON-NLS-2$
+                log(indent(indent) + "Warning (end): timer " + idTimer + " does'nt exist"); //$NON-NLS-1$  //$NON-NLS-2$
             }
             return -1;
         } else {
@@ -154,10 +160,10 @@ public class TimeMeasure {
                     Runtime.getRuntime().gc();
                     long usedMemory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
 
-                    System.out.println(indent(indent) + "-> '" + idTimer + "', elapsed time since start: " + time + " ms," //$NON-NLS-1$  //$NON-NLS-2$  //$NON-NLS-3$
+                    log(indent(indent) + "-> '" + idTimer + "', elapsed time since start: " + time + " ms," //$NON-NLS-1$  //$NON-NLS-2$  //$NON-NLS-3$
                             + " current memory [" + usedMemory + "] bytes"); //$NON-NLS-1$  //$NON-NLS-2$
                 } else {
-                    System.out.println(indent(indent) + "-> '" + idTimer + "', elapsed time since start: " + time + " ms "); //$NON-NLS-1$  //$NON-NLS-2$  //$NON-NLS-3$
+                    log(indent(indent) + "-> '" + idTimer + "', elapsed time since start: " + time + " ms "); //$NON-NLS-1$  //$NON-NLS-2$  //$NON-NLS-3$
                 }
             }
             return time;
@@ -178,7 +184,7 @@ public class TimeMeasure {
         init();
         if (!timers.containsKey(idTimer)) {
             if (display) {
-                System.out.println(indent(indent) + "Warning (end): timer " + idTimer + " does'nt exist"); //$NON-NLS-1$  //$NON-NLS-2$
+                log(indent(indent) + "Warning (end): timer " + idTimer + " does'nt exist"); //$NON-NLS-1$  //$NON-NLS-2$
             }
             return -1;
         } else {
@@ -200,11 +206,11 @@ public class TimeMeasure {
                 }
                 String timerStepName = idTimer + "', step name '" + stepName; //$NON-NLS-1$
                 if (printMemoryUsed) {
-                    System.out.println(indent(indent)
+                    log(indent(indent)
                             + "-> '" + timerStepName + "', elapsed time since previous step: " + time + " ms," + //$NON-NLS-1$  //$NON-NLS-2$  //$NON-NLS-3$
                             " current memory [" + usedMemory + "] bytes"); //$NON-NLS-1$  //$NON-NLS-2$
                 } else {
-                    System.out.println(indent(indent)
+                    log(indent(indent)
                             + "-> '" + timerStepName + "', elapsed time since previous step: " + time + " ms"); //$NON-NLS-1$  //$NON-NLS-2$  //$NON-NLS-3$
                 }
                 if (isLogToFile) {
@@ -260,7 +266,7 @@ public class TimeMeasure {
         init();
         if (!timers.containsKey(idTimer)) {
             if (display) {
-                System.out.println(indent(indent) + "Warning (end): timer " + idTimer + " does'nt exist"); //$NON-NLS-1$  //$NON-NLS-2$
+                log(indent(indent) + "Warning (end): timer " + idTimer + " does'nt exist"); //$NON-NLS-1$  //$NON-NLS-2$
             }
             return;
         } else {
@@ -281,7 +287,7 @@ public class TimeMeasure {
         if (!timers.containsKey(idTimer)) {
             begin(idTimer);
             // if (display) {
-            //                System.out.println(indent(indent) + "Warning (end): timer " + idTimer + " does'nt exist"); //$NON-NLS-1$  //$NON-NLS-2$
+            //                log(indent(indent) + "Warning (end): timer " + idTimer + " does'nt exist"); //$NON-NLS-1$  //$NON-NLS-2$
             // }
             return;
         } else {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -58,7 +58,7 @@ public class JavaResourcesHelper {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
             IRunProcessService service = (IRunProcessService) GlobalServiceRegister.getDefault().getService(
                     IRunProcessService.class);
-            ITalendProcessJavaProject talendProcessJavaProject = service.getTalendProcessJavaProject();
+            ITalendProcessJavaProject talendProcessJavaProject = service.getTempJavaProject();
             if (talendProcessJavaProject != null) {
                 IProject project = talendProcessJavaProject.getProject();
                 IResource resource = project.findMember(path);
@@ -129,6 +129,7 @@ public class JavaResourcesHelper {
      * project name is "Test". will return "org.talend.test".
      * 
      * If other branding, like "Camel", will return "org.camel.test".
+     * @deprecated
      */
     public static String getGroupName(String projectName) {
 
@@ -143,6 +144,7 @@ public class JavaResourcesHelper {
      * return the getGroupName with project "Test", and item name "TestJob".
      * 
      * something like: "org.talend.test.testjob".
+     * @deprecated
      */
     public static String getGroupItemName(String projectName, String itemName) {
         if (itemName == null) {

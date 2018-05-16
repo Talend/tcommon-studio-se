@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -12,13 +12,15 @@
 // ============================================================================
 package org.talend.designer.runprocess;
 
-import java.io.File;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.log4j.Level;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -27,11 +29,15 @@ import org.talend.core.IService;
 import org.talend.core.language.ECodeLanguage;
 import org.talend.core.language.ICodeProblemsChecker;
 import org.talend.core.model.general.ModuleNeeded;
+import org.talend.core.model.general.Project;
 import org.talend.core.model.process.IContext;
 import org.talend.core.model.process.IProcess;
 import org.talend.core.model.process.IProcess2;
+import org.talend.core.model.process.JobInfo;
+import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.properties.RoutineItem;
+import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
 
@@ -175,14 +181,21 @@ public interface IRunProcessService extends IService {
      *
      * @param project
      */
-    public void updateLogFiles(IProject project, boolean isLogForJob);
+    public void updateLogFiles(ITalendProcessJavaProject talendJavaProject, boolean isLogForJob);
 
     public String getLogTemplate(String path);
 
     public boolean isJobRunning();
 
+    @Deprecated
     public void buildJavaProject();
 
+    public void buildCodesJavaProject(IProgressMonitor monitor);
+
+    /**
+     * @deprecated use {@link IRunProcessService#getTalendJobJavaProject(Property)} instead
+     */
+    @Deprecated
     ITalendProcessJavaProject getTalendProcessJavaProject();
 
     ProjectPreferenceManager getProjectPreferenceManager();
@@ -193,6 +206,29 @@ public interface IRunProcessService extends IService {
 
     void storeProjectPreferences(IPreferenceStore preferenceStore);
 
-    public File getJavaProjectLibFolder();
+    public IFolder getJavaProjectLibFolder();
+
+    void initMavenJavaProject(IProgressMonitor monitor, Project project);
+
+    ITalendProcessJavaProject getTalendCodeJavaProject(ERepositoryObjectType type);
+
+    ITalendProcessJavaProject getTalendCodeJavaProject(ERepositoryObjectType type, Project project);
+
+    ITalendProcessJavaProject getTalendJobJavaProject(Property property);
+
+    ITalendProcessJavaProject getTempJavaProject();
+
+    void clearProjectRelatedSettings();
+
+    boolean isExportConfig();
+
+    void generatePom(Item item);
+
+    void initializeRootPoms(IProgressMonitor monitor);
+
+    boolean isGeneratePomOnly();
+
+    public void handleJobDependencyLoop(JobInfo mainJobInfo, List<JobInfo> listJobs, IProgressMonitor progressMonitor)
+            throws Exception;
 
 }

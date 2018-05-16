@@ -5,11 +5,6 @@
 	<artifactId>@ProjectArtifactId@</artifactId>
 	<version>@ProjectVersion@</version>
 	<packaging>pom</packaging>
-
-	<modules>
-		<!-- jobs with some codes modules -->
-	</modules>
-
 	<name>@ProjectName@ Codes Master</name>
 	<url>http://www.talend.org/</url>
 
@@ -17,36 +12,41 @@
 		<encoding>UTF-8</encoding>
 	</properties>
 
-	<dependencies>
-		<!-- some dependencies will be here to resolve the compile errors. -->
-	</dependencies>
-
 	<build>
 		<pluginManagement>
 			<plugins>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-clean-plugin</artifactId>
-					<version>2.6.1</version>
+					<version>3.0.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>2.5.1</version>
+					<version>3.6.1</version>
 					<configuration>
 						<source>@JavaVersion@</source>
 						<target>@JavaVersion@</target>
+						<compilerId>jdt</compilerId>
 					</configuration>
+					<dependencies>
+						<!-- This dependency provides the implementation of compiler "jdt": -->
+						<dependency>
+							<groupId>org.eclipse.tycho</groupId>
+							<artifactId>tycho-compiler-jdt</artifactId>
+							<version>1.0.0</version>
+						</dependency>
+					</dependencies>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
-					<version>2.7</version>
+					<version>3.0.2</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
-					<version>2.6</version>
+					<version>3.0.2</version>
 					<configuration>
 						<archive>
 							<addMavenDescriptor>false</addMavenDescriptor>
@@ -56,12 +56,12 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-assembly-plugin</artifactId>
-					<version>2.5.5</version>
+					<version>3.0.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.12.4</version>
+					<version>2.20</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>

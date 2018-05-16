@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -43,6 +43,7 @@ import org.talend.core.model.process.IElementParameter;
 import org.talend.core.model.process.INode;
 import org.talend.core.model.process.INodeConnector;
 import org.talend.core.model.process.IProcess;
+import org.talend.core.runtime.IAdditionalInfo;
 import org.talend.designer.core.ICamelDesignerCoreService;
 
 /**
@@ -324,7 +325,11 @@ public class NodeUtil {
             for (int i = 0; i < incomingConnections.size(); i++) {
 
                 IConnection connection = incomingConnections.get(i);
-                if (connectorName.equals(connection.getConnectorName())) {
+                String inputName = null;
+                if (IAdditionalInfo.class.isInstance(connection)) {
+                    inputName = (String) IAdditionalInfo.class.cast(connection).getInfo("INPUT_NAME");
+                }
+                if (connectorName.equals(connection.getConnectorName()) || connectorName.equals(inputName)) {
                     conns.add(connection);
                 }
             }
@@ -947,7 +952,7 @@ public class NodeUtil {
         if (original == null || original.trim().length() == 0) {
             return original;
         }
-        String result = "";
+        StringBuilder result = new StringBuilder();
         int leftQuotes = original.indexOf("\"");
         int rightQuotes = original.indexOf("\"", leftQuotes + 1);
         int fakeRightQuotes = getFakeRightQuotes( original,leftQuotes);
@@ -956,14 +961,33 @@ public class NodeUtil {
             fakeRightQuotes = getFakeRightQuotes( original,fakeRightQuotes);
         }
         int leftPrev = 0;
-        while (leftQuotes >= 0 && rightQuotes > leftQuotes) {
-            if (leftQuotes > leftPrev) {
-                result += original.substring(leftPrev, leftQuotes);
-            }
-            // System.out.println("leftQuote="+leftQuotes + ", rightQuote="+rightQuotes);
-            if (leftQuotes < rightQuotes) {
-                result += original.substring(leftQuotes, rightQuotes + 1).replace("\r", "").replace("\n", "\\n");
-            }
+		while (leftQuotes >= 0 && rightQuotes > leftQuotes) {
+			if (leftQuotes > leftPrev) {//Outside of double quote
+				result.append(original.substring(leftPrev, leftQuotes));
+
+			}
+			if (leftQuotes < rightQuotes) {//Inside of double quote
+				//split string for better appearance and avoid compile error when string exceed 64k
+				int current = leftQuotes;
+				int Offset = 120;
+				int count = 0;
+				while (rightQuotes + 1 - current > 120) {
+					while (original.charAt(current + Offset - 1) == '\\') {//avoid split special character e.g. \"
+						Offset--;
+					}
+					
+					if(count>500){//This is the code that really solve TDI-39968 others are only for good appearance.
+						result.append(original.substring(current, current + Offset).replace("\r", "").replace("\n", "\\n")).append("\" + new String()\n+\"");
+						count = 0;
+					}else{
+						result.append(original.substring(current, current + Offset).replace("\r", "").replace("\n", "\\n")).append("\"\n+\"");
+					}
+					current += Offset;
+					Offset = 120;
+					count++;
+				}
+				result.append(original.substring(current, rightQuotes + 1).replace("\r", "").replace("\n", "\\n"));
+			}
 
             leftQuotes = original.indexOf("\"", rightQuotes + 1);
             leftPrev = rightQuotes + 1;
@@ -974,8 +998,8 @@ public class NodeUtil {
                 fakeRightQuotes = getFakeRightQuotes( original,fakeRightQuotes);
             }
         }
-        result += original.substring(leftPrev);
-        return result;
+        result.append( original.substring(leftPrev));
+        return result.toString();
     }
     
     /**

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -40,6 +40,7 @@ import org.talend.core.GlobalServiceRegister;
 import org.talend.core.IRepositoryContextService;
 import org.talend.core.database.EDatabase4DriverClassName;
 import org.talend.core.database.EDatabaseTypeName;
+import org.talend.core.database.conn.version.EDatabaseVersion4Drivers;
 import org.talend.core.model.metadata.IMetadataConnection;
 import org.talend.core.model.metadata.builder.ConvertionHelper;
 import org.talend.core.model.metadata.builder.MetadataConnection;
@@ -50,6 +51,7 @@ import org.talend.core.model.metadata.builder.connection.MetadataColumn;
 import org.talend.core.model.metadata.builder.database.DriverShim;
 import org.talend.core.model.metadata.builder.database.ExtractMetaDataUtils;
 import org.talend.core.model.metadata.builder.database.IDriverService;
+import org.talend.core.model.metadata.builder.database.JavaSqlFactory;
 import org.talend.core.model.properties.ConnectionItem;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.runtime.CoreRuntimePlugin;
@@ -86,6 +88,8 @@ public class MetadataConnectionUtils {
 
     // MOD mzhao 2009-06-05 Bug 7571
     private static final Map<String, Driver> DRIVER_CACHE = new HashMap<String, Driver>();
+    
+    private static final Map<String, String> SNOWFLACK_DBTYPEMap = new HashMap<String, String>();
 
     private static final SimpleDateFormat SMPL_DATE_FMT = new SimpleDateFormat("yyyyMMddhhmmss"); //$NON-NLS-1$
 
@@ -177,6 +181,11 @@ public class MetadataConnectionUtils {
             java.sql.Connection sqlConn = null;
             List<Object> list = new ArrayList<Object>();
             try {
+                if (metadataBean.getCurrentConnection() != null
+                        && metadataBean.getCurrentConnection() instanceof DatabaseConnection) {
+                    DatabaseConnection conn = (DatabaseConnection) metadataBean.getCurrentConnection();
+                    metadataBean.setAdditionalParams(ConvertionHelper.convertAdditionalParameters(conn));
+                }
                 list = ExtractMetaDataUtils.getInstance().connect(metadataBean.getDbType(), metadataBean.getUrl(),
                         metadataBean.getUsername(), metadataBean.getPassword(), metadataBean.getDriverClass(),
                         metadataBean.getDriverJarPath(), metadataBean.getDbVersionString(), metadataBean.getAdditionalParams());
@@ -294,7 +303,7 @@ public class MetadataConnectionUtils {
 
                 }
             }// ~
-
+            additionalParams = ConvertionHelper.convertAdditionalParameters(databaseConnection);
             metadataConnection.setAdditionalParams(additionalParams);
             metadataConnection.setDbVersionString(dbVersionString);
             metadataConnection.setDatabase(dataBase);
@@ -503,6 +512,40 @@ public class MetadataConnectionUtils {
             }
         }
         return false;
+    }
+
+    public static boolean isOracleCustomSSL(Connection connection) {
+        if (connection != null && connection instanceof DatabaseConnection) {
+            DatabaseConnection dbConn = (DatabaseConnection) connection;
+            if (EDatabaseTypeName.ORACLE_CUSTOM.getDisplayName().equals(dbConn.getDatabaseType())) {
+                if (EDatabaseVersion4Drivers.ORACLE_12.name().equals(dbConn.getDbVersionString())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    public static Map<String, String> getSnowflakeDBTypeMap(){
+    	if(SNOWFLACK_DBTYPEMap.isEmpty()){
+    		SNOWFLACK_DBTYPEMap.put("TIMESTAMPLTZ", "TIMESTAMP_LTZ");
+    		SNOWFLACK_DBTYPEMap.put("TIMESTAMPNTZ", "TIMESTAMP_NTZ");
+    		SNOWFLACK_DBTYPEMap.put("TIMESTAMPTZ", "TIMESTAMP_TZ");
+    	}
+    	return SNOWFLACK_DBTYPEMap;
+    }
+    
+    public static boolean isSnowflake(DatabaseMetaData connectionMetadata) throws SQLException {
+        if (connectionMetadata.getDatabaseProductName() != null) {
+            if ("Snowflake".equals(connectionMetadata.getDatabaseProductName().trim())) { //$NON-NLS-1$
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public static boolean isSnowflake(java.sql.Connection connection) throws SQLException {
+        return isSnowflake(ExtractMetaDataUtils.getInstance().getConnectionMetadata(connection));
     }
 
     public static boolean isMssql(DatabaseMetaData connectionMetadata) throws SQLException {
@@ -883,10 +926,8 @@ public class MetadataConnectionUtils {
     public static List<String> getPackageFilter(Connection connection, DatabaseMetaData dbMetaData, boolean isCatalog) {
         List<String> packageFilter = new ArrayList<String>();
         try {
-            if (isMdmConnection(connection)) {
-                // MDMConnection mdmConnection = (MDMConnection) connection;
-            } else {
-                DatabaseConnection dbConnection = (DatabaseConnection) connection;
+            DatabaseConnection dbConnection = SwitchHelpers.DATABASECONNECTION_SWITCH.doSwitch(connection);
+            if (dbConnection != null) {
                 // MOD qiongli 2011-9-23 handle context mod.
                 IRepositoryContextService repositoryContextService = null;
                 DatabaseConnection origValueConn = null;
@@ -895,13 +936,22 @@ public class MetadataConnectionUtils {
                     if (repositoryContextService != null) {
                         // get the original value and select the defalut context
                         String contextName = dbConnection.getContextName();
-                        origValueConn = repositoryContextService.cloneOriginalValueConnection(dbConnection,
-                                contextName == null ? true : false, contextName);
+                        origValueConn =
+                                repositoryContextService.cloneOriginalValueConnection(dbConnection,
+                                        contextName == null ? true : false, contextName);
                     }
                 }
+                String databaseType = dbConnection.getDatabaseType();
+                if (ConnectionUtils.isJDBCType(databaseType)) {// get package filter from 'java.sql.Connection'
+                    String jdbcPackageFilter = getJdbcPackageFilter(connection, isCatalog);
+                    if (!StringUtils.isBlank(jdbcPackageFilter)) {
+                        packageFilter.add(jdbcPackageFilter);
+                    }
+                    return packageFilter;
+                }
                 if (isCatalog) {
-                    boolean isHsql = dbConnection.getDatabaseType().equals(EDatabaseTypeName.HSQLDB_IN_PROGRESS.getDisplayName());
-                    boolean isInformix = dbConnection.getDatabaseType().equalsIgnoreCase(EDatabaseTypeName.INFORMIX.name());
+                    boolean isHsql = databaseType.equals(EDatabaseTypeName.HSQLDB_IN_PROGRESS.getDisplayName());
+                    boolean isInformix = databaseType.equalsIgnoreCase(EDatabaseTypeName.INFORMIX.name());
                     if (dbMetaData.supportsCatalogsInIndexDefinitions() && !isHsql || isInformix) {
                         String sid = dbConnection.getSID();
                         if (origValueConn != null) {
@@ -918,12 +968,11 @@ public class MetadataConnectionUtils {
                         if (origValueConn != null) {
                             uiSchema = origValueConn.getUiSchema();
                         }
-
                     }
                     // TDQ-12219 consider the schema from SID or Database.
                     if (uiSchema == null
-                            && ManagerConnection.isSchemaFromSidOrDatabase(EDatabaseTypeName.getTypeFromDbType(dbConnection
-                                    .getDatabaseType()))) {
+                            && ManagerConnection.isSchemaFromSidOrDatabase(EDatabaseTypeName
+                                    .getTypeFromDbType(databaseType))) {
                         uiSchema = dbConnection.getSID();
                         dbConnection.setUiSchema(uiSchema);
                     }
@@ -936,6 +985,36 @@ public class MetadataConnectionUtils {
             log.error(e, e);
         }
         return packageFilter;
+    }
+
+    /**
+     * 
+     * @param connection
+     * @param isCatalog
+     * @return get current Catalog or Schema as a filter package, maybe null
+     * @throws SQLException
+     */
+    private static String getJdbcPackageFilter(Connection connection, boolean isCatalog) throws SQLException {
+        java.sql.Connection sqlconnection = null;
+        try {
+            sqlconnection = JavaSqlFactory.createConnection(connection).getObject();
+            if (sqlconnection != null) {
+                if (isCatalog) {
+                    return sqlconnection.getCatalog();
+                } else {
+                    try {
+                        return sqlconnection.getSchema();
+                    } catch (AbstractMethodError e) {
+                        // some old driver do not support this method , if don't support then we won't do the filter
+                    }
+                }
+            }
+        } finally {
+            if (sqlconnection != null) {
+                sqlconnection.close();
+            }
+        }
+        return null;
     }
 
     public static boolean isMdmConnection(DataProvider dataprovider) {

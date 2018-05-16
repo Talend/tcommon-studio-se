@@ -2,7 +2,7 @@
 <feature
       id="org.talend.commons.feature"
       label="Commons Feature"
-      version="7.0.1.qualifier"
+      version="7.1.1.qualifier"
       provider-name=".Talend SA.">
 
    <description url="http://www.talend.com/online/featuresdescription.html#commons-feature">
@@ -128,6 +128,13 @@
          download-size="0"
          install-size="0"
          version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.fasterxml.jackson.core.jackson-databind"
+         download-size="0"
+         install-size="0"
+         version="2.9.4"
          unpack="false"/>
 
 </feature>

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -89,7 +89,7 @@ public class RepositoryComponentSetting implements IComponentName {
         return defaultComponent;
     }
 
-    void setDefaultComponent(String defaultComponent) {
+    public void setDefaultComponent(String defaultComponent) {
         this.defaultComponent = defaultComponent;
     }
 
@@ -153,14 +153,17 @@ public class RepositoryComponentSetting implements IComponentName {
         return this.getName();
     }
 
+    @Override
     public String getDefaultComponentName() {
         return this.getDefaultComponent();
     }
 
+    @Override
     public String getInputComponentName() {
         return this.getInputComponent();
     }
 
+    @Override
     public String getOutPutComponentName() {
         return this.getOutputComponent();
     }

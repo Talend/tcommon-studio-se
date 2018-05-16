@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -189,7 +189,12 @@ public class RemoteModulesHelper {
                     .getRepositoryHandler(customNexusServer);
             if (customerRepHandler != null) {
                 for (String groupId : groupIds) {
-                    List<MavenArtifact> searchResults = customerRepHandler.search(groupId, null, null, true, true);
+                    List<MavenArtifact> searchResults = customerRepHandler.search(groupId, null, null, true, false);
+                    monitor.worked(10);
+                    addModulesToCache(searchResults, localCache);
+                }
+                for (String groupId : snapshotgroupIds) {
+                    List<MavenArtifact> searchResults = customerRepHandler.search(groupId, null, null, false, true);
                     monitor.worked(10);
                     addModulesToCache(searchResults, localCache);
                 }
@@ -207,7 +212,7 @@ public class RemoteModulesHelper {
                     .getRepositoryHandler(talendServer);
             if (talendRepositoryHander != null) {
                 final Iterator<String> iterator = mavenUristoSearch.iterator();
-                Map<String, List<StringBuffer>> groupIdAndJarsToCheck = new HashMap<String, List<StringBuffer>>();
+                Map<String, List<StringBuffer>> groupIdAndJarsToCheck = new HashMap<>();
                 while (iterator.hasNext()) {
                     if (monitor.isCanceled()) {
                         break;
@@ -218,7 +223,7 @@ public class RemoteModulesHelper {
                         StringBuffer jarsToCheck = null;
                         List<StringBuffer> buffers = groupIdAndJarsToCheck.get(parseMvnUrl.getGroupId());
                         if (buffers == null) {
-                            buffers = new ArrayList<StringBuffer>();
+                            buffers = new ArrayList<>();
                             groupIdAndJarsToCheck.put(parseMvnUrl.getGroupId(), buffers);
                         }
                         if (buffers.isEmpty() || buffers.get(buffers.size() - 1).length() > 2000) {
@@ -227,8 +232,12 @@ public class RemoteModulesHelper {
                         } else {
                             jarsToCheck = buffers.get(buffers.size() - 1);
                         }
-                        jarsToCheck.append(parseMvnUrl.getArtifactId());
-                        jarsToCheck.append(",");
+                        if (parseMvnUrl.getArtifactId() != null && !parseMvnUrl.getArtifactId().contains("$")) { //$NON-NLS-1$
+                            jarsToCheck.append(parseMvnUrl.getArtifactId());
+                            jarsToCheck.append(","); //$NON-NLS-1$
+                        } else {
+                            ExceptionHandler.log("wrong setup of artifact, cf:" + parseMvnUrl.getArtifactId()); //$NON-NLS-1$
+                        }
 
                     }
 
@@ -240,8 +249,8 @@ public class RemoteModulesHelper {
                         if (jarsToCheck.endsWith(",")) {
                             jarsToCheck = jarsToCheck.substring(0, jarsToCheck.length() - 1);
                         }
-                        List<MavenArtifact> searchResults = talendRepositoryHander
-                                .search(groupId, jarsToCheck, null, true, false);
+                        List<MavenArtifact> searchResults = talendRepositoryHander.search(groupId, jarsToCheck, null, true,
+                                false);
                         monitor.worked(10);
                         addModulesToCache(searchResults, remoteCache);
 
@@ -353,7 +362,9 @@ public class RemoteModulesHelper {
         // site.
         for (String mvnUri : unavailableModules) {
             ModuleToInstall m = createUnavailableModuleToInstall(mvnUri, contextMap);
-            toInstall2.add(m);
+            if (m != null) {
+                toInstall2.add(m);
+            }
         }
     }
 
@@ -377,6 +388,9 @@ public class RemoteModulesHelper {
         boolean downloadManual = true;
         if (StringUtils.isNotEmpty(mvnUri)) {
             MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(mvnUri);
+            if (parseMvnUrl == null) {
+                return null;
+            }
             String repoUrl = parseMvnUrl.getRepositoryUrl();
             if (StringUtils.isNotEmpty(repoUrl)) {
                 downloadManual = false;
@@ -594,8 +608,8 @@ public class RemoteModulesHelper {
     public RemoteModulesFetchRunnable getNotInstalledModulesRunnable(List<ModuleNeeded> neededModules,
             List<ModuleToInstall> toInstall, boolean collectModulesWithJarName) {
         Map<String, List<ModuleNeeded>> contextMap = new HashMap<String, List<ModuleNeeded>>();
-        ILibraryManagerService librairesManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
-                ILibraryManagerService.class);
+        ILibraryManagerService librairesManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault()
+                .getService(ILibraryManagerService.class);
         // collect mvnuri and modules incase many modules have the same mvnuri
         final Iterator<ModuleNeeded> iterator = neededModules.iterator();
         while (iterator.hasNext()) {

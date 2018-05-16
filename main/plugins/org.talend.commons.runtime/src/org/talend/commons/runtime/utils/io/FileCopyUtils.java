@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -102,6 +102,18 @@ public class FileCopyUtils {
     }
 
     public static void copyFolder(File resFolder, File destFolder, boolean interruptable) throws Exception {
+        copyFolder(resFolder, destFolder, interruptable, true);
+    }
+
+    public static void syncFolder(File resFolder, File destFolder, boolean overwrite) {
+        try {
+            copyFolder(resFolder, destFolder, false, overwrite);
+        } catch (Exception e) {
+            ExceptionHandler.process(e);
+        }
+    }
+
+    public static void copyFolder(File resFolder, File destFolder, boolean interruptable, boolean overwrite) throws Exception {
         Thread currentThread = Thread.currentThread();
         if (interruptable && currentThread.isInterrupted()) {
             // we can judge this copy folder action is complete or not by this exception, rather than returning without
@@ -121,19 +133,25 @@ public class FileCopyUtils {
             temp = new File(resFolder, element);
 
             if (temp.isFile()) {
-                FileInputStream input = new FileInputStream(temp);
-                FileOutputStream output = new FileOutputStream(new File(destFolder, temp.getName()));
-                byte[] b = new byte[1024 * 5];
-                int len;
-                while ((len = input.read(b)) != -1) {
-                    if (interruptable && currentThread.isInterrupted()) {
-                        break;
+                final File outFile = new File(destFolder, temp.getName());
+                if (overwrite || !outFile.exists()) {
+                    FileInputStream input = new FileInputStream(temp);
+                    FileOutputStream output = new FileOutputStream(outFile);
+                    byte[] b = new byte[1024 * 5];
+                    int len;
+                    try {
+                        while ((len = input.read(b)) != -1) {
+                            if (interruptable && currentThread.isInterrupted()) {
+                                break;
+                            }
+                            output.write(b, 0, len);
+                        }
+                    } finally {
+                        output.flush();
+                        output.close();
+                        input.close();
                     }
-                    output.write(b, 0, len);
                 }
-                output.flush();
-                output.close();
-                input.close();
             }
             if (temp.isDirectory()) {
                 copyFolder(new File(resFolder, element), new File(destFolder, element), interruptable);

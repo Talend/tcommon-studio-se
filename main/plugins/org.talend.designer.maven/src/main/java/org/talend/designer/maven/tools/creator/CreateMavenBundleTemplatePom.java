@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -17,7 +17,6 @@ import java.io.InputStream;
 
 import org.apache.maven.model.Model;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.m2e.core.MavenPlugin;
@@ -26,6 +25,7 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.io.FilesUtils;
 import org.talend.core.PluginChecker;
 import org.talend.designer.maven.template.MavenTemplateManager;
+import org.talend.designer.maven.utils.PomUtil;
 
 /**
  * created by ggu on 2 Feb 2015 Detailled comment
@@ -153,26 +153,15 @@ public class CreateMavenBundleTemplatePom extends CreateMaven {
         if (curPomFile == null) {
             return;
         }
-        // if (!curPomFile.getName().equals(MavenConstants.POM_FILE_NAME)) {
-        // throw new IOException("Must be pom.xml, shouldn't be specially like: " + curPomFile);
-        // }
-
-        // curPomFile.getParent().refreshLocal(IResource.DEPTH_ONE, monitor);
-
-        try {
-            checkCreatingFile(monitor, curPomFile);
-        } catch (Exception e) {
-            ExceptionHandler.process(e);
-            return;
-        }
 
         Model model = createModel();
         if (model == null) {
             throw new Exception("Can't create the maven pom in file:" + curPomFile);
         }
-        MODEL_MANAGER.createMavenModel(curPomFile, model);
+        PomUtil.savePom(monitor, model, curPomFile);
 
         afterCreate(monitor);
+
     }
 
     protected void checkCreatingFile(IProgressMonitor monitor, IFile currentFile) throws Exception {
@@ -182,5 +171,5 @@ public class CreateMavenBundleTemplatePom extends CreateMaven {
     protected void afterCreate(IProgressMonitor monitor) throws Exception {
         // nothing to do
     }
-
+    
 }

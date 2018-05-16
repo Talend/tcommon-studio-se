@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -44,9 +44,8 @@ public abstract class AbstractMavenTemplateManager implements IExecutableExtensi
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * org.eclipse.core.runtime.IExecutableExtension#setInitializationData(org.eclipse.core.runtime.IConfigurationElement
-     * , java.lang.String, java.lang.Object)
+     * @see org.eclipse.core.runtime.IExecutableExtension#setInitializationData(org.eclipse.core.runtime.
+     * IConfigurationElement , java.lang.String, java.lang.Object)
      */
     @Override
     public void setInitializationData(IConfigurationElement config, String propertyName, Object data) throws CoreException {
@@ -78,8 +77,8 @@ public abstract class AbstractMavenTemplateManager implements IExecutableExtensi
         }
         URL templateUrl = bundle.getEntry(bundleTemplatePath);
         if (templateUrl == null) {
-            throw new IllegalArgumentException("Can't load the template via path " + bundleTemplatePath + " in bundle "
-                    + this.bundleName);
+            throw new IllegalArgumentException(
+                    "Can't load the template via path " + bundleTemplatePath + " in bundle " + this.bundleName);
         }
         return templateUrl.openStream();
     }
@@ -119,8 +118,23 @@ public abstract class AbstractMavenTemplateManager implements IExecutableExtensi
         }
         String value = projectPreferenceManager.getValue(projectSettingTemplateKey);
         if (value == null || value.length() == 0) {
-            throw new Exception("Can't find the value by key " + projectSettingTemplateKey + " in "
-                    + projectPreferenceManager.getQualifier());
+            if (parameters.containsKey(MavenTemplateManager.KEY_PROJECT_NAME)) {
+                // not the main project, means the reference project settings is not initialized (default values used)
+                // take directly the settings from the main project.
+                projectPreferenceManager = getProjectPreferenceManager();
+                if (projectPreferenceManager == null || projectSettingTemplateKey == null) {
+                    throw new NullPointerException();
+                }
+
+                if (projectSettingTemplateKey.length() == 0) {
+                    throw new IllegalArgumentException("The project setting key shoundn't be empty");
+                }
+                value = projectPreferenceManager.getValue(projectSettingTemplateKey);
+            }
+            if (value == null || value.length() == 0) {
+                throw new Exception("Can't find the value by key " + projectSettingTemplateKey + " in "
+                        + projectPreferenceManager.getQualifier());
+            }
         }
         return new ByteArrayInputStream(value.getBytes(TalendMavenConstants.DEFAULT_ENCODING));
     }

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -26,6 +26,7 @@ import org.talend.core.nexus.NexusServerBean;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
+import org.talend.librariesmanager.nexus.utils.NexusDownloader;
 
 /**
  * created by wchen on Apr 24, 2015 Detailled comment
@@ -58,6 +59,7 @@ public class NexusDownloadHelperWithProgress extends DownloadHelperWithProgress 
                 // TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
                 final NexusServerBean customNexusServer = new NexusServerBean(false);
                 customNexusServer.setServer(repositoryUrl);
+                customNexusServer.setAbsoluteURL(true);
                 String username = mArtifact.getUsername();
                 String password = mArtifact.getPassword();
                 if (StringUtils.isNotEmpty(username)) {

@@ -1364,6 +1364,15 @@ public class ComponentPackageImpl extends EPackageImpl implements ComponentPacka
      * <!-- end-user-doc -->
      * @generated
      */
+    public EAttribute getHEADERType_ACTIVE_DB_COLUMNS() {
+        return (EAttribute)headerTypeEClass.getEStructuralFeatures().get(36);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EAttribute getHEADERType_TYPE() {
         return (EAttribute)headerTypeEClass.getEStructuralFeatures().get(29);
     }
@@ -2651,6 +2660,7 @@ public class ComponentPackageImpl extends EPackageImpl implements ComponentPacka
         createEAttribute(headerTypeEClass, HEADER_TYPE__INPUTTYPE);
         createEAttribute(headerTypeEClass, HEADER_TYPE__OUTPUTTYPE);
         createEAttribute(headerTypeEClass, HEADER_TYPE__SPARKACTION);
+        createEAttribute(headerTypeEClass, HEADER_TYPE__ACTIVE_DB_COLUMNS);
 
         importsTypeEClass = createEClass(IMPORTS_TYPE);
         createEReference(importsTypeEClass, IMPORTS_TYPE__IMPORT);
@@ -2952,6 +2962,7 @@ public class ComponentPackageImpl extends EPackageImpl implements ComponentPacka
         initEAttribute(getHEADERType_INPUTTYPE(), theXMLTypePackage.getString(), "iNPUTTYPE", null, 0, 1, HEADERType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getHEADERType_OUTPUTTYPE(), theXMLTypePackage.getString(), "oUTPUTTYPE", null, 0, 1, HEADERType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getHEADERType_SPARKACTION(), theXMLTypePackage.getBoolean(), "sPARKACTION", "false", 0, 1, HEADERType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getHEADERType_ACTIVE_DB_COLUMNS(), theXMLTypePackage.getBoolean(), "aCTIVE_DB_COLUMNS", "false", 0, 1, HEADERType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(importsTypeEClass, IMPORTSType.class, "IMPORTSType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getIMPORTSType_IMPORT(), this.getIMPORTType(), null, "iMPORT", null, 0, -1, IMPORTSType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -4039,6 +4050,14 @@ public class ComponentPackageImpl extends EPackageImpl implements ComponentPacka
            new String[] {
              "kind", "attribute",
              "name", "SPARKACTION",
+             "namespace", "##targetNamespace"
+           });	
+        addAnnotation
+          (getHEADERType_ACTIVE_DB_COLUMNS(), 
+           source, 
+           new String[] {
+             "kind", "attribute",
+             "name", "ACTIVE_DB_COLUMNS",
              "namespace", "##targetNamespace"
            });	
         addAnnotation

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -20,6 +20,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.Action;
 import org.eclipse.swt.SWT;
@@ -35,7 +36,6 @@ import org.talend.commons.utils.io.FilesUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.general.ModuleToInstall;
 import org.talend.core.runtime.maven.MavenUrlHelper;
-import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.librariesmanager.model.ModulesNeededProvider;
 import org.talend.librariesmanager.model.service.CustomUriManager;
@@ -145,13 +145,13 @@ public class ImportExternalJarAction extends Action {
     }
 
     public static void cleanupLib(Set<String> installedModule) {
-        for (String jarName : installedModule) {
-            if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
-                IRunProcessService runProcessService = (IRunProcessService) GlobalServiceRegister.getDefault().getService(
-                        IRunProcessService.class);
-                ITalendProcessJavaProject talendProcessJavaProject = runProcessService.getTalendProcessJavaProject();
-                if (talendProcessJavaProject != null) {
-                    IFile jarFile = talendProcessJavaProject.getLibFolder().getFile(jarName);
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
+            IRunProcessService runProcessService = (IRunProcessService) GlobalServiceRegister.getDefault().getService(
+                    IRunProcessService.class);
+            IFolder libFolder = runProcessService.getJavaProjectLibFolder();
+            if (libFolder != null && libFolder.exists()) {
+                for (String jarName : installedModule) {
+                    IFile jarFile = libFolder.getFile(jarName);
                     if (jarFile.exists()) {
                         try {
                             jarFile.delete(true, null);
@@ -163,4 +163,5 @@ public class ImportExternalJarAction extends Action {
             }
         }
     }
+
 }

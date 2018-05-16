@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -30,7 +30,7 @@ public abstract class AbstractViewerProvider {
     }
 
     protected int getStyle() {
-        return SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL;
+        return SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER;
     }
 
     public TreeViewer createViewer(final Composite parent) {

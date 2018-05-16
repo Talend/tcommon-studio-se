@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -14,6 +14,7 @@ package org.talend.core.service;
 
 import org.talend.core.IService;
 import org.talend.core.model.process.IExternalNode;
+import org.talend.designer.core.model.utils.emf.talendfile.AbstractExternalData;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 
 /**
@@ -24,4 +25,6 @@ public interface IDbMapService extends IService {
     public boolean isDbMapComponent(IExternalNode node);
     
     public void updateEMFDBMapData(NodeType nodeType, String oldValue, String newValue);
+
+    public void undoConnectionDelete(IExternalNode node, AbstractExternalData oldEmfData, String connectionLabel);
 }

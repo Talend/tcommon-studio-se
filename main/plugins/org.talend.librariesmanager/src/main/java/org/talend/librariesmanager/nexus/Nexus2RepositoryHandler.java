@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2014 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -114,6 +114,25 @@ public class Nexus2RepositoryHandler extends AbstractArtifactRepositoryHandler {
     @Override
     public IRepositoryArtifactHandler clone() {
         return new Nexus2RepositoryHandler();
+    }
+
+    /* (non-Javadoc)
+     * @see org.talend.core.nexus.IRepositoryArtifactHandler#deployWithPOM(java.io.File, java.io.File, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+     */
+    @Override
+    public void deployWithPOM(File content, File pomFile, String groupId, String artifactId, String classifier, String extension,
+            String version) throws Exception {
+        String repositoryId = "";
+        boolean isRelease = !version.endsWith(MavenUrlHelper.VERSION_SNAPSHOT);
+        if (isRelease) {
+            repositoryId = serverBean.getRepositoryId();
+        } else {
+            repositoryId = serverBean.getSnapshotRepId();
+        }
+        String repositoryurl = getRepositoryURL(isRelease);
+        String localRepository = MavenPlugin.getMaven().getLocalRepositoryPath();
+        RepositorySystemFactory.deployWithPOM(content, pomFile, localRepository, repositoryId, repositoryurl, serverBean.getUserName(),
+                serverBean.getPassword(), groupId, artifactId, classifier, extension, version);
     }
 
 }

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -29,9 +29,11 @@ import org.talend.core.ITDQItemService;
 import org.talend.core.PluginChecker;
 import org.talend.core.hadoop.IHadoopClusterService;
 import org.talend.core.hadoop.repository.HadoopRepositoryUtil;
+import org.talend.core.model.general.Project;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.JobletProcessItem;
 import org.talend.core.model.properties.ProcessItem;
+import org.talend.core.model.properties.ProjectReference;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.properties.SQLPatternItem;
 import org.talend.core.model.relationship.Relation;
@@ -57,6 +59,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 import org.talend.designer.core.model.utils.emf.talendfile.RoutinesParameterType;
 import org.talend.designer.runprocess.ItemCacheManager;
+import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IProxyRepositoryService;
 
@@ -66,9 +69,7 @@ import org.talend.repository.model.IProxyRepositoryService;
 @SuppressWarnings("unchecked")
 public final class ProcessUtils {
 
-    private static boolean jarWithContext;
-
-    private static List<IProcess> fakeProcesses = new ArrayList<IProcess>();
+    private static List<IProcess> fakeProcesses = new ArrayList<>();
 
     private static IHadoopClusterService hadoopClusterService = null;
     static {
@@ -882,16 +883,21 @@ public final class ProcessUtils {
     }
 
     public static boolean isRequiredBeans(IProcess process) {
+        return isRequiredBeans(process, ProjectManager.getInstance().getCurrentProject());
+    }
+
+    public static boolean isRequiredBeans(IProcess process, Project project) {
         boolean needBeans = false;
         if (process == null) {
-            needBeans = true; // only check have the pigudf items.
+            needBeans = true; // only check have the beans items.
         } else {
             if (process instanceof IProcess2) {
                 Property property = ((IProcess2) process).getProperty();
-                if (property != null) { // same as isStandardJob in JavaProcessor
+                if (property != null && property.getItem() != null) { // same as isStandardJob in JavaProcessor
                     ERepositoryObjectType itemType = ERepositoryObjectType.getItemType(property.getItem());
                     // route job
-                    if (itemType != null && itemType.equals(ERepositoryObjectType.PROCESS_ROUTE)) {
+                    if (itemType != null && (itemType.equals(ERepositoryObjectType.PROCESS_ROUTE)
+                    		|| itemType.equals(ERepositoryObjectType.PROCESS_ROUTELET))) {
                         needBeans = true;
                     }
                 }
@@ -899,12 +905,17 @@ public final class ProcessUtils {
         }
 
         if (needBeans && GlobalServiceRegister.getDefault().isServiceRegistered(IProxyRepositoryService.class)) {
-            IProxyRepositoryService service = (IProxyRepositoryService) GlobalServiceRegister.getDefault().getService(
-                    IProxyRepositoryService.class);
+            IProxyRepositoryService service = (IProxyRepositoryService) GlobalServiceRegister.getDefault()
+                    .getService(IProxyRepositoryService.class);
             ERepositoryObjectType beansType = ERepositoryObjectType.valueOf("BEANS"); //$NON-NLS-1$
             try {
                 IProxyRepositoryFactory factory = service.getProxyRepositoryFactory();
-                List<IRepositoryViewObject> all = factory.getAll(beansType);
+                List<IRepositoryViewObject> all = factory.getAll(project, beansType);
+                List<ProjectReference> references = ProjectManager.getInstance().getCurrentProject()
+                        .getProjectReferenceList(true);
+                for (ProjectReference ref : references) {
+                    all.addAll(factory.getAll(new Project(ref.getReferencedProject()), beansType));
+                }
                 if (!all.isEmpty()) { // has bean
                     return true;
                 }
@@ -916,6 +927,10 @@ public final class ProcessUtils {
     }
 
     public static boolean isRequiredPigUDFs(IProcess process) {
+        return isRequiredPigUDFs(process, ProjectManager.getInstance().getCurrentProject());
+    }
+
+    public static boolean isRequiredPigUDFs(IProcess process, Project project) {
         boolean needPigUDF = false;
         if (process == null) {
             needPigUDF = true; // only check have the pigudf items.
@@ -939,7 +954,7 @@ public final class ProcessUtils {
                     IProxyRepositoryService.class);
             IProxyRepositoryFactory factory = service.getProxyRepositoryFactory();
             try {
-                List<IRepositoryViewObject> pigUdfsObjects = factory.getAll(ERepositoryObjectType.PIG_UDF);
+                List<IRepositoryViewObject> pigUdfsObjects = factory.getAll(project, ERepositoryObjectType.PIG_UDF);
                 if (!pigUdfsObjects.isEmpty()) {
                     /*
                      * FIXME, don't know need check the this api or not. seem it's not useful. so return true so far
@@ -957,30 +972,6 @@ public final class ProcessUtils {
             }
         }
 
-        return false;
-    }
-
-    public static boolean jarNeedsToContainContext() {
-        return jarWithContext;
-    }
-
-    public static void setJarWithContext(boolean jarWithContext) {
-        ProcessUtils.jarWithContext = jarWithContext;
-    }
-
-    /** Find the distribution where the generated jar rquired to have the context files inside **/
-    public static boolean needsToHaveContextInsideJar(ProcessItem processItem) {
-        EList<ElementParameterType> parameters = processItem.getProcess().getParameters().getElementParameter();
-        for (ElementParameterType pt : parameters) {
-            if (pt.getName().equals("DISTRIBUTION")) { //$NON-NLS-1$
-                String value = pt.getValue();
-                if ("MICROSOFT_HD_INSIGHT".equals(value) //$NON-NLS-1$
-                        || "GOOGLE_CLOUD_DATAPROC".equals(value) //$NON-NLS-1$
-                        || "CLOUDERA_ALTUS".equals(value)) { //$NON-NLS-1$
-                    return true;
-                }
-            }
-        }
         return false;
     }
 

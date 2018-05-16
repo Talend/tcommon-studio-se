@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -115,7 +115,7 @@ public class MavenRepoSynchronizerTest {
         // final String artifactPath = PomUtil.getArtifactPath(jarArtifact);
         // IPath libPath = new Path(localRepositoryPath).append(artifactPath);
         IPath libPath = new Path(localRepositoryPath).append(jarArtifact.getGroupId().replace(".", "/"))
-                .append(jarArtifact.getArtifactId()).append(jarArtifact.getVersion()).append(jarArtifact.getFileName());
+                .append(jarArtifact.getArtifactId()).append(jarArtifact.getVersion()).append(jarArtifact.getFileName(false));
         File libFile = libPath.toFile();
         if (libFile.exists()) {
             libFile.delete();

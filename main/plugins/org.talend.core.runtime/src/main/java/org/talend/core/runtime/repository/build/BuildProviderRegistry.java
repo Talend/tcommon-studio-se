@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -15,11 +15,9 @@ package org.talend.core.runtime.repository.build;
 /**
  * DOC ggu class global comment. Detailled comment
  */
-class BuildProviderRegistry {
+class BuildProviderRegistry extends BuildExtensionRegistry {
 
     AbstractBuildProvider provider;
-
-    String id, description, overrideId;
 
     int getOrder() {
         if (provider.buildType != null) {

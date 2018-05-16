@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.talend.studio</groupId>
     <artifactId>tcommon-studio-se</artifactId>
-    <version>7.0.1-SNAPSHOT</version>
+    <version>7.1.1-SNAPSHOT</version>
     <relativePath>../../../</relativePath>
   </parent>
   <artifactId>org.talend.libraries.jdbc.access</artifactId>
@@ -19,9 +19,10 @@
         <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-clean-plugin</artifactId>
+            <version>3.0.0</version>
             <configuration>
                 <filesets>
-                	<fileset>
+                    <fileset>
                         <directory>${libs.dir}</directory>
                         <includes>
                             <include>talend-ucanaccess-utils-*.jar</include>

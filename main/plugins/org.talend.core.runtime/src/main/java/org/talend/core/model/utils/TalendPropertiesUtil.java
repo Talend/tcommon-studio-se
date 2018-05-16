@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -19,6 +19,8 @@ package org.talend.core.model.utils;
  * 
  */
 public final class TalendPropertiesUtil {
+
+    public static final String PROD_APP = "talend.product.app";
 
     public static boolean isEnabled(String key) {
         String value = System.getProperty(key);
@@ -74,4 +76,7 @@ public final class TalendPropertiesUtil {
         return isEnabled("USE_BROWSER"); //$NON-NLS-1$
     }
 
+    public static String getProductApp() {
+        return System.getProperty(PROD_APP);
+    }
 }

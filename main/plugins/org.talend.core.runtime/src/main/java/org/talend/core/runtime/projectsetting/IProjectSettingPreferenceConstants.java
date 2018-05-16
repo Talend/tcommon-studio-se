@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -23,6 +23,8 @@ public interface IProjectSettingPreferenceConstants {
     public static final String TEMPLATE_SH = "template_sh_script";
 
     public static final String TEMPLATE_BAT = "template_bat_script";
+    
+    public static final String TEMPLATE_PS = "template_ps_script";
 
     /*
      * project
@@ -35,6 +37,8 @@ public interface IProjectSettingPreferenceConstants {
     public static final String TEMPLATE_STANDALONE_JOB_POM = "template_standalonejob_pom_maven_script";
 
     public static final String TEMPLATE_STANDALONE_JOB_ASSEMBLY = "template_standalonejob_assembly_maven_script";
+
+    public static final String TEMPLATE_ROUTE_ASSEMBLY = "template_route_assembly_maven_script";
 
     /*
      * OSGi Bundle

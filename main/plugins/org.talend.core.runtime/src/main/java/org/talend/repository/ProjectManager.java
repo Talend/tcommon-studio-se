@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -21,6 +21,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.emf.ecore.EObject;
@@ -41,6 +42,7 @@ import org.talend.core.model.repository.RepositoryManager;
 import org.talend.core.model.repository.SVNConstant;
 import org.talend.core.model.utils.TalendPropertiesUtil;
 import org.talend.core.runtime.CoreRuntimePlugin;
+import org.talend.core.runtime.util.URIHelper;
 import org.talend.core.ui.IReferencedProjectService;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IProxyRepositoryService;
@@ -129,7 +131,7 @@ public final class ProjectManager {
         if (currentProject.getTechnicalLabel().equals(label)) {
             return currentProject;
         }
-        for (Project project : getAllReferencedProjects()) {
+        for (Project project : getAllReferencedProjects(true)) {
             if (project.getTechnicalLabel().equals(label)) {
                 return project;
             }
@@ -151,19 +153,17 @@ public final class ProjectManager {
     }
 
     private void resolveSubRefProject(org.talend.core.model.properties.Project p, List<Project> allReferencedprojects,
-            Set<String> resolvedProjectLabels) {
-
-        Context ctx = CoreRuntimePlugin.getInstance().getContext();
-        if (ctx != null && p != null) {
+            Set<String> resolvedProjectLabels, boolean force) {
+        if (p != null) {
             String parentBranch = ProjectManager.getInstance().getMainProjectBranch(p);
-            if (parentBranch != null) {
+            if (parentBranch != null || force) {
                 resolvedProjectLabels.add(p.getTechnicalLabel());
                 for (ProjectReference pr : new Project(p).getProjectReferenceList()) {
                     if (ProjectManager.validReferenceProject(p, pr)
                             && !resolvedProjectLabels.contains(pr.getReferencedProject().getTechnicalLabel())) {
                         Project project = new Project(pr.getReferencedProject(), false);
                         allReferencedprojects.add(project);
-                        resolveSubRefProject(pr.getReferencedProject(), allReferencedprojects, resolvedProjectLabels); // only to resolve all
+                        resolveSubRefProject(pr.getReferencedProject(), allReferencedprojects, resolvedProjectLabels, force);
                     }
                 }
             }
@@ -192,11 +192,14 @@ public final class ProjectManager {
         return getReferencedProjects(currentProject);
     }
 
+    public List<Project> getAllReferencedProjects() {
+        return getAllReferencedProjects(false);
+    }
     /**
      *
      * return all the referenced projects of current project.
      */
-    public List<Project> getAllReferencedProjects() {
+    public List<Project> getAllReferencedProjects(boolean force) {
         List<Project> allReferencedprojects = new ArrayList<Project>();
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IProxyRepositoryService.class)) {
             if (this.getCurrentProject() == null) {
@@ -214,7 +217,7 @@ public final class ProjectManager {
                     for (org.talend.core.model.properties.Project p : rProjects) {
                         Project project = new Project(p);
                         allReferencedprojects.add(project);
-                        resolveSubRefProject(p, allReferencedprojects, new HashSet<String>());
+                        resolveSubRefProject(p, allReferencedprojects, new HashSet<String>(), force);
                     }
                 }
             }
@@ -252,8 +255,11 @@ public final class ProjectManager {
                 return getProject(((Property) object).getItem());
             }
             if (object instanceof Item) {
-                if (((Item) object).getParent() == null) { // may be a routelet from reference project
-                    org.talend.core.model.properties.Project refProject = getProjectFromItemWithoutParent((Item)object);
+                if (((Item) object).getParent() == null) { // may be a testcase/routelet from reference project
+                    org.talend.core.model.properties.Project refProject = getProjectFromItemWithoutParent2((Item) object);
+                    if (refProject == null) {
+                        refProject = getProjectFromItemWithoutParent((Item)object);
+                    }
                     if (refProject != null) {
                         return refProject;
                     }
@@ -266,6 +272,34 @@ public final class ProjectManager {
         Project p = getCurrentProject();
         if (p != null) {
             return p.getEmfProject();
+        }
+        return null;
+    }
+
+    private org.talend.core.model.properties.Project getProjectFromItemWithoutParent2(Item item) {
+        if (item.eResource() == null || item.eResource().getURI() == null) {
+            return null;
+        }
+        IFile itemFile = null;
+        try {
+            itemFile = URIHelper.getFile(URIHelper.convert(item.eResource().getURI()));
+        } catch (Exception e) {
+            //
+        }
+        if (itemFile == null) {
+            return null;
+        }
+        String projectLabel = itemFile.getProject().getName();
+        if (currentProject == null) {
+            initCurrentProject();
+        }
+        if (currentProject.getTechnicalLabel().equalsIgnoreCase(projectLabel)) {
+            return currentProject.getEmfProject();
+        }
+        for (Project project : getAllReferencedProjects()) {
+            if (project.getTechnicalLabel().equalsIgnoreCase(projectLabel)) {
+                return project.getEmfProject();
+            }
         }
         return null;
     }

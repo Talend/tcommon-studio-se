@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -14,17 +14,27 @@ package org.talend.commons.runtime.model.emf;
 
 import java.util.Map;
 
+import javax.xml.crypto.dsig.XMLSignature;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
+import org.apache.xerces.jaxp.SAXParserFactoryImpl;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EFactory;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.xmi.XMLLoad;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.XMLSave;
+import org.eclipse.emf.ecore.xmi.impl.SAXXMIHandler;
 import org.eclipse.emf.ecore.xmi.impl.XMILoadImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMISaveImpl;
+import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -49,6 +59,14 @@ public class TalendXMIResource extends XMIResourceImpl {
      */
     @Override
     protected XMLLoad createXMLLoad() {
+        return createCustomXMLLoad();
+    }
+
+    protected XMLLoad delegateCreateXMLLoad() {
+        return super.createXMLLoad();
+    }
+
+    protected XMLLoad createCustomXMLLoad() {
         return new XMILoadImpl(createXMLHelper()) {
 
             /*
@@ -58,10 +76,88 @@ public class TalendXMIResource extends XMIResourceImpl {
              */
             @Override
             protected SAXParser makeParser() throws ParserConfigurationException, SAXException {
-                // this is made to avoid the jdk 1.6 SAX parser bug so we instanciate the xercer lib bundled in
-                // talend instead of the one by default in the JRE
-                return new org.apache.xerces.jaxp.SAXParserFactoryImpl().newSAXParser();
+                final SAXParserFactory saxParserFactory = new SAXParserFactoryImpl();
+                // make sure the namespace for all elements when parse
+                saxParserFactory.setNamespaceAware(true);
+                return saxParserFactory.newSAXParser();
             }
+
+            @Override
+            protected DefaultHandler makeDefaultHandler() {
+                return new SAXXMIHandler(resource, helper, options) {
+
+                    private boolean needIgnoreXmlns(String uri) {
+                        return XMLSignature.XMLNS.equals(uri);
+                    }
+
+                    @Override
+                    public void startElement(String uri, String localName, String name, Attributes attributes)
+                            throws SAXException {
+                        if (needIgnoreXmlns(uri)) {
+                            return; // need ignore
+                        }
+                        super.startElement(uri, localName, name, attributes);
+                    }
+
+                    @Override
+                    public void startElement(String uri, String localName, String name) {
+                        if (needIgnoreXmlns(uri)) {
+                            return; // need ignore
+                        }
+                        super.startElement(uri, localName, name);
+                    }
+
+                    @Override
+                    protected void processElement(String name, String prefix, String localName) {
+                        if (needIgnoreXmlns(helper.getURI(prefix))) {
+                            return; // need ignore
+                        }
+                        super.processElement(name, prefix, localName);
+                    }
+
+                    @Override
+                    public void endElement(String uri, String localName, String name) {
+                        if (needIgnoreXmlns(uri)) {
+                            return; // need ignore
+                        }
+                        super.endElement(uri, localName, name);
+                    }
+
+                    @Override
+                    protected EObject createObjectByType(String prefix, String name, boolean top) {
+                        if (needIgnoreXmlns(helper.getURI(prefix))) {
+                            return null; // need ignore
+                        }
+                        return super.createObjectByType(prefix, name, top);
+                    }
+
+                    protected EFactory getFactoryForPrefix(String prefix) {
+                        if (needIgnoreXmlns(helper.getURI(prefix))) {
+                            return null; // need ignore
+                        }
+                        return super.getFactoryForPrefix(prefix);
+                    }
+
+                    @Override
+                    protected EPackage getPackageForURI(String uriString) {
+                        if (needIgnoreXmlns(uriString)) {
+                            return null; // need ignore
+                        }
+                        return super.getPackageForURI(uriString);
+                    }
+
+                    @Override
+                    protected void setFeatureValue(EObject object, EStructuralFeature feature, Object value,
+                            int position) {
+                        if (feature == null) {
+                            return; // no feature to match for emf
+                        }
+                        super.setFeatureValue(object, feature, value, position);
+                    }
+
+                };
+            }
+
         };
     }
 
@@ -73,6 +169,14 @@ public class TalendXMIResource extends XMIResourceImpl {
      */
     @Override
     protected XMLSave createXMLSave() {
+        return createCustomXMLSave();
+    }
+
+    protected XMLSave delegateCreateXMLSave() {
+        return super.createXMLSave();
+    }
+
+    protected XMLSave createCustomXMLSave() {
         return new XMISaveImpl(createXMLHelper()) {
 
             /*

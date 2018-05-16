@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -12,24 +12,21 @@
 // ============================================================================
 package org.talend.repository.viewer.filter;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.ui.navigator.INavigatorContentService;
-import org.talend.core.GlobalServiceRegister;
 import org.talend.core.hadoop.IHadoopClusterService;
 import org.talend.core.hadoop.repository.HadoopRepositoryUtil;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IExtendedRepositoryNodeHandler;
 import org.talend.core.model.repository.RepositoryContentManager;
-import org.talend.core.runtime.services.IGenericDBService;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.IRepositoryNode.ENodeType;
 import org.talend.repository.model.RepositoryNode;
+import org.talend.repository.model.RepositoryNodeUtilities;
 import org.talend.repository.model.nodes.IProjectRepositoryNode;
 import org.talend.repository.viewer.ui.provider.INavigatorContentServiceProvider;
 
@@ -56,7 +53,6 @@ public class RecycleBinViewerFilter extends ViewerFilter {
             if (isUnderRecycleBinNode(node)) { // olny process the nodes are under Recycle Bin.
                 ERepositoryObjectType contextType = findRealContextType(node);
                 if (contextType != null) { // don't check the SubItems, like schema, query, etc.
-                    contextType = ERepositoryObjectType.METADATA_CONNECTIONS;
                     IRepositoryNode contextNode = node.getRoot().getRootRepositoryNode(contextType);
                     Set contentExtensions = navigatorContentService.findContentExtensionsByTriggerPoint(contextNode);
                     if (contentExtensions.isEmpty()) { // deactive or invisible
@@ -142,29 +138,17 @@ public class RecycleBinViewerFilter extends ViewerFilter {
                 contentType = itemType;
             }
         }
+        if (RepositoryNodeUtilities.isGenericDBExtraType(contentType)) {
+            contentType = ERepositoryObjectType.METADATA_CONNECTIONS;
+        }
 
         return contentType;
     }
-    
-    private ERepositoryObjectType getNodeType(final RepositoryNode node){
-        List<ERepositoryObjectType> extraTypes = new ArrayList<ERepositoryObjectType>();
-        IGenericDBService dbService = null;
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
-            dbService = (IGenericDBService) GlobalServiceRegister.getDefault().getService(
-                    IGenericDBService.class);
-        }
-        if(dbService != null){
-            extraTypes.addAll(dbService.getExtraTypes());
-        }
-        ERepositoryObjectType contentType = node.getObjectType();
-        if(contentType != null && extraTypes.contains(contentType)){
-            return node.getContentType();
-        }
-        if (node.getType() == ENodeType.REPOSITORY_ELEMENT) {
+
+    private ERepositoryObjectType getNodeType(final RepositoryNode node) {
+        ERepositoryObjectType contentType = node.getContentType();
+        if (node.getType() == ENodeType.REPOSITORY_ELEMENT && node.getObjectType() != null) {
             contentType = node.getObjectType();
-        }
-        if (contentType == null) {
-            contentType = node.getContentType();
         }
         return contentType;
     }

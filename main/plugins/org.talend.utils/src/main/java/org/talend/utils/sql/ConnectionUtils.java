@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -142,6 +142,16 @@ public final class ConnectionUtils {
      */
     public static boolean isJDBCURL(String url) {
         return url != null && url.startsWith("jdbc:"); //$NON-NLS-1$
+    }
+
+    /**
+     * from the database type to check whether it is JDBC
+     * 
+     * @param dbType
+     * @return
+     */
+    public static boolean isJDBCType(String dbType) {
+        return "JDBC".equals(dbType); //$NON-NLS-1$
     }
 
     /**

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -49,8 +49,8 @@ public class SparkMetadataTalendTypeFilter extends MetadataTalendTypeFilter {
         COMPONENT_UNSUPPORTED_TYPES.put(INPUTCASSANDRA_COMPONENT_NAME, Arrays.asList(new String[] { "Object", "List", "Vector" })); //$NON-NLS-1$ //$NON-NLS-2$ 
         COMPONENT_UNSUPPORTED_TYPES.put(LOOKUPINPUTCASSANDRA_COMPONENT_NAME, Arrays.asList(new String[] { "Object", "List", "Vector" })); //$NON-NLS-1$ //$NON-NLS-2$ 
         COMPONENT_UNSUPPORTED_TYPES.put(OUTPUTCASSANDRA_COMPONENT_NAME, Arrays.asList(new String[] { "Object", "List", "Vector" })); //$NON-NLS-1$ //$NON-NLS-2$ 
-        COMPONENT_UNSUPPORTED_TYPES.put(INPUTKUDU_COMPONENT_NAME, Arrays.asList(new String[] { "Object", "List", "Vector", "byte[]" })); //$NON-NLS-1$ //$NON-NLS-2$ 
-        COMPONENT_UNSUPPORTED_TYPES.put(OUTPUTKUDU_COMPONENT_NAME, Arrays.asList(new String[] { "Object", "List", "Vector", "byte[]" })); //$NON-NLS-1$ //$NON-NLS-2$ 
+        COMPONENT_UNSUPPORTED_TYPES.put(INPUTKUDU_COMPONENT_NAME, Arrays.asList(new String[] { "Object", "List", "Vector", "byte[]", "BigDecimal" })); //$NON-NLS-1$ //$NON-NLS-2$ 
+        COMPONENT_UNSUPPORTED_TYPES.put(OUTPUTKUDU_COMPONENT_NAME, Arrays.asList(new String[] { "Object", "List", "Vector", "byte[]", "BigDecimal" })); //$NON-NLS-1$ //$NON-NLS-2$ 
     }
 
     public SparkMetadataTalendTypeFilter(String componentName) {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -23,10 +23,16 @@ import org.talend.designer.runprocess.IProcessor;
  */
 public interface IBuildJobHandler extends IBuildExportHandler {
 
+    /**
+     * @Deprecated move into prepare
+     */
     public IProcessor generateJobFiles(IProgressMonitor monitor) throws Exception;
 
     public void generateTestReports(IProgressMonitor monitor) throws Exception;
 
+    /**
+     * @Deprecated move into prepare
+     */
     public void generateItemFiles(boolean withDependencies, IProgressMonitor monitor) throws Exception;
 
     public IFile getJobTargetFile();

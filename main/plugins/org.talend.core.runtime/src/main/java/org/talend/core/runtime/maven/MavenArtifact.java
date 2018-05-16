@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -24,7 +24,15 @@ public class MavenArtifact implements Cloneable {
     private static final char ARTIFACT_SEPARATOR = '-';
 
     private String repositoryUrl, groupId, artifactId, version, type, classifier, description, url, license, licenseUrl,
-            distribution, username, password;
+            distribution, username, password, lastUpdated;
+
+    public String getLastUpdated() {
+        return this.lastUpdated;
+    }
+
+    public void setLastUpdated(String lastUpdated) {
+        this.lastUpdated = lastUpdated;
+    }
 
     public String getRepositoryUrl() {
         return repositoryUrl;
@@ -137,9 +145,22 @@ public class MavenArtifact implements Cloneable {
      * @return if need full path, try PomUtil.getArtifactPath
      */
     public String getFileName() {
+        return getFileName(true);
+    }
+    
+    /**
+     * 
+     * DOC ggu Comment method "getFileName".
+     * 
+     * @return if need full path, try PomUtil.getArtifactPath
+     */
+    public String getFileName(boolean stripVersion) {
         StringBuilder name = new StringBuilder(128);
 
-        name.append(getArtifactId()).append(ARTIFACT_SEPARATOR).append(getVersion());
+        name.append(getArtifactId());
+        if (!stripVersion || !MavenConstants.DEFAULT_LIB_GROUP_ID.equals(getGroupId())) {
+            name.append(ARTIFACT_SEPARATOR).append(getVersion());
+        }
         if (StringUtils.isNotEmpty(getClassifier())) {
             name.append(ARTIFACT_SEPARATOR).append(getClassifier());
         }
@@ -147,7 +168,7 @@ public class MavenArtifact implements Cloneable {
         if (StringUtils.isNotEmpty(getType())) {
             name.append(getType());
         } else {
-            name.append("jar"); // by default
+            name.append(MavenConstants.TYPE_JAR);
         }
         return name.toString();
     }

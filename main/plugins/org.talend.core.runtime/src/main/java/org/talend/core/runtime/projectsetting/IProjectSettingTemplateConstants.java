@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -48,11 +48,13 @@ public interface IProjectSettingTemplateConstants {
 
     final static String POM_JOB_TEMPLATE_FILE_NAME = "pom_job_template.xml";
 
-    final static String POM_TEST_TEMPLATE_FILE_NAME = "pom_test_template.xml";
+    final static String POM_JOBLET_TEMPLATE_FILE_NAME = "pom_joblet_template.xml";
 
     final static String POM_TEST_ROUTE_TEMPLATE_FILE_NAME = "pom_test_route_template.xml";
 
     final static String ASSEMBLY_JOB_TEMPLATE_FILE_NAME = "assembly_job_template.xml";
+
+    final static String ASSEMBLY_ROUTE_TEMPLATE_FILE_NAME = "assembly_route_template.xml";
 
     final static String PROJECT_TEMPLATE_FILE_NAME = "pom_project_template.xml";
 
@@ -62,6 +64,8 @@ public interface IProjectSettingTemplateConstants {
      * in runprocess bundle
      */
     final static String JOB_RUN_BAT_TEMPLATE_FILE_NAME = "Job_run_template.bat";
+    
+    final static String JOB_RUN_PS_TEMPLATE_FILE_NAME = "Job_run_template.ps1";
 
     final static String JOB_RUN_SH_TEMPLATE_FILE_NAME = "Job_run_template.sh";
 

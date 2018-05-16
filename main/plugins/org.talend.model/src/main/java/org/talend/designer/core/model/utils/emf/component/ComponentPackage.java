@@ -1240,13 +1240,22 @@ public interface ComponentPackage extends EPackage {
     int HEADER_TYPE__SPARKACTION = 35;
 
     /**
+     * The feature id for the '<em><b>ACTIVE DB COLUMNS</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int HEADER_TYPE__ACTIVE_DB_COLUMNS = 36;
+
+    /**
      * The number of structural features of the '<em>HEADER Type</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int HEADER_TYPE_FEATURE_COUNT = 36;
+    int HEADER_TYPE_FEATURE_COUNT = 37;
 
     /**
      * The meta object id for the '{@link org.talend.designer.core.model.utils.emf.component.impl.IMPORTSTypeImpl <em>IMPORTS Type</em>}' class.
@@ -3759,6 +3768,17 @@ public interface ComponentPackage extends EPackage {
     EAttribute getHEADERType_SPARKACTION();
 
     /**
+     * Returns the meta object for the attribute '{@link org.talend.designer.core.model.utils.emf.component.HEADERType#isACTIVE_DB_COLUMNS <em>ACTIVE DB COLUMNS</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>ACTIVE DB COLUMNS</em>'.
+     * @see org.talend.designer.core.model.utils.emf.component.HEADERType#isACTIVE_DB_COLUMNS()
+     * @see #getHEADERType()
+     * @generated
+     */
+    EAttribute getHEADERType_ACTIVE_DB_COLUMNS();
+
+    /**
      * Returns the meta object for the attribute '{@link org.talend.designer.core.model.utils.emf.component.HEADERType#getTYPE <em>TYPE</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -6076,6 +6096,14 @@ public interface ComponentPackage extends EPackage {
          * @generated
          */
         EAttribute HEADER_TYPE__SPARKACTION = eINSTANCE.getHEADERType_SPARKACTION();
+
+        /**
+         * The meta object literal for the '<em><b>ACTIVE DB COLUMNS</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute HEADER_TYPE__ACTIVE_DB_COLUMNS = eINSTANCE.getHEADERType_ACTIVE_DB_COLUMNS();
 
         /**
          * The meta object literal for the '<em><b>TYPE</b></em>' attribute feature.

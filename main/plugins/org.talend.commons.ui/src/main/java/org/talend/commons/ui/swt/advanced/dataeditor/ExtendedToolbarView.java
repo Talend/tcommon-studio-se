@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -264,7 +264,11 @@ public class ExtendedToolbarView extends AbstractExtendedToolbar {
     public void updateEnabledStateOfButtons() {
         List<ExtendedPushButton> buttons = getButtons();
         for (ExtendedPushButton button : buttons) {
-            button.getButton().setEnabled(button.getEnabledState() && !extendedTableViewer.isReadOnly());
+            boolean enabled = button.getEnabledState() && !extendedTableViewer.isReadOnly();
+            if (button == exportButton || button == saveAsGenericSchemaButton) {
+                enabled = button.getEnabledState();
+            }
+            button.getButton().setEnabled(enabled);
         }
     }
 

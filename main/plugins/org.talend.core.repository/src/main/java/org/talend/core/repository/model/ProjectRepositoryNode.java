@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -38,6 +38,7 @@ import org.talend.commons.ui.runtime.exception.RuntimeExceptionHandler;
 import org.talend.commons.ui.runtime.image.ECoreImage;
 import org.talend.commons.ui.runtime.repository.IExtendRepositoryNode;
 import org.talend.commons.utils.data.container.Container;
+import org.talend.commons.utils.data.container.RootContainer;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.PluginChecker;
 import org.talend.core.database.EDatabaseTypeName;
@@ -80,6 +81,7 @@ import org.talend.core.model.repository.RepositoryContentManager;
 import org.talend.core.model.repository.RepositoryManager;
 import org.talend.core.model.repository.RepositoryNodeProviderRegistryReader;
 import org.talend.core.model.repository.RepositoryViewObject;
+import org.talend.core.model.repository.SVNConstant;
 import org.talend.core.repository.i18n.Messages;
 import org.talend.core.repository.model.repositoryObject.MetadataColumnRepositoryObject;
 import org.talend.core.repository.model.repositoryObject.MetadataTableRepositoryObject;
@@ -105,6 +107,7 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryConstants;
 import org.talend.repository.model.RepositoryNode;
+import org.talend.repository.model.RepositoryNodeUtilities;
 import org.talend.repository.model.StableRepositoryNode;
 import org.talend.repository.model.nodes.IProjectRepositoryNode;
 import org.talend.utils.sql.ConnectionUtils;
@@ -146,6 +149,8 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
     private List<FolderItem> delFolderItems = new ArrayList<FolderItem>();
 
     private ProjectRepositoryNodeCache nodeCache;
+
+    private int options = IRepositoryFactory.OPTION_ONLY_LAST_VERSION | IRepositoryFactory.OPTION_DYNAMIC_OBJECTS;
 
     /**
      * DOC nrousseau ProjectRepositoryNode constructor comment.
@@ -302,11 +307,11 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
         collectRepositoryNodes(curParentNode.getChildren());
     }
 
-    private void collectRepositoryNodes(List<IRepositoryNode> nodes) {
+    public void collectRepositoryNodes(List<IRepositoryNode> nodes) {
 
         if (nodes != null) {
             for (IRepositoryNode node : nodes) {
-                if (node.getParent() instanceof ProjectRepositoryNode) { // root node of type
+                if (node.shouldCollectRepositoryNode()) {
                     ERepositoryObjectType roType = (ERepositoryObjectType) node.getProperties(EProperties.CONTENT_TYPE);
                     if (roType != null) { // bin is null
                         String typeName = roType.name();
@@ -533,7 +538,8 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
                 RepositoryNode repositoryNode = (RepositoryNode) parent;
                 ERepositoryObjectType contentType = repositoryNode.getContentType();
                 if (contentType != null && contentType.isResourceItem()) {
-                    convert(newProject, factory.getMetadata(newProject, contentType, true), repositoryNode, contentType);
+                    RootContainer<String, IRepositoryViewObject> container = factory.getObjectFromFolder(newProject, contentType, null, options);
+                    convert(newProject, container, repositoryNode, contentType);
                     addExtraChildren(contentType, newProject,repositoryNode);
                 }
             }
@@ -750,6 +756,9 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
      * @return
      */
     private RepositoryNode getFolder(ERepositoryObjectType currentType, String path, List<IRepositoryNode> rootNodes) {
+        if (RepositoryNodeUtilities.isGenericDBExtraType(currentType)) {
+            currentType = ERepositoryObjectType.METADATA_CONNECTIONS;
+        }
         if (path == null || path.isEmpty()) {
             return null;
         }
@@ -2110,10 +2119,20 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
 
     @Override
     public String getLabel() {
-        if (getProject() != null) {// compute branch url to add to the project label.
-            return getProject().getLabel();
+        String urlBranch = null;
+        if (ProjectManager.getInstance().getCurrentBranchURL(project) != null) {
+            String branch = ProjectManager.getInstance().getMainProjectBranch(project);
+            if ("".equals(branch) || branch == null) { //$NON-NLS-1$
+                branch = null;
+            }
+            if (!branch.contains(SVNConstant.NAME_TRUNK) && !branch.contains(SVNConstant.NAME_BRANCHES)
+                    && !branch.contains(SVNConstant.NAME_TAGS)) {
+                branch = null;
+            }
+            urlBranch = branch;
+
         }
-        return super.getLabel();
+        return getProject().getLabel() + (urlBranch != null && !"".equals(urlBranch) ? '(' + urlBranch + ')' : ""); //$NON-NLS-1$//$NON-NLS-2$
     }
 
     @Override
@@ -2276,4 +2295,9 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
     public IRepositoryNode removeCache(String key) {
         return nodeCache.removeCache(key);
     }
+    
+    public void setOptions(int options) {
+        this.options = options;
+    }
+    
 }

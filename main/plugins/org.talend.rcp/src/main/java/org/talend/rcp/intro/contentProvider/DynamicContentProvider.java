@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -60,7 +60,7 @@ public class DynamicContentProvider extends IntroProvider {
 
     public static final String CLOUD_PAGE_URL = "https://www.talend.com/builtin_news/oss/"; //$NON-NLS-1$
 
-    public static final String TRY_CLOUD_URL = "https://integrationcloud.talend.com"; //$NON-NLS-1$
+    public static final String TRY_CLOUD_URL = "https://iam.integrationcloud.talend.com/idp/trial-registration?utm_medium=studio&utm_source=banner&utm_campaign="; //$NON-NLS-1$
 
     private static final String LEVEL_SEPARATOR = "."; //$NON-NLS-1$
 
@@ -261,6 +261,16 @@ public class DynamicContentProvider extends IntroProvider {
 
         Element ticHrefElem = dom.createElement("a"); //$NON-NLS-1$
         String url = TRY_CLOUD_URL;
+        // edition
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IBrandingService.class)) {
+            IBrandingService brandingService = (IBrandingService) GlobalServiceRegister.getDefault()
+                    .getService(IBrandingService.class);
+            String edition = brandingService.getAcronym();
+            if (edition != null) {
+                url = url + edition;
+            }
+        }
+
         try {
             url = URLEncoder.encode(url, "UTF-8"); //$NON-NLS-1$
         } catch (Exception e) {

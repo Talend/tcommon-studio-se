@@ -15,6 +15,7 @@ import org.talend.commons.utils.time.TimeMeasure;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ICoreService;
 import org.talend.core.repository.i18n.Messages;
+import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.login.AbstractLoginTask;
 import org.talend.repository.ProjectManager;
 
@@ -56,16 +57,29 @@ public class SyncLibrariesLoginTask extends AbstractLoginTask implements IRunnab
         if (monitor != null && monitor.isCanceled()) {
             throw new OperationCanceledException(""); //$NON-NLS-1$
         }
-        coreService.synchronizeMapptingXML();
 
         if (monitor != null && monitor.isCanceled()) {
             throw new OperationCanceledException(""); //$NON-NLS-1$
         }
-
+        IRunProcessService runProcessService = getRunProcessService();
+        if (runProcessService != null) {
+            runProcessService.initializeRootPoms(monitor);
+        }
         TimeMeasure.end("SyncLibraries");
         TimeMeasure.display = false;
         TimeMeasure.displaySteps = false;
         TimeMeasure.measureActive = false;
+    }
+
+    /**
+     * DOC nrousseau Comment method "getRunProcessService".
+     * @return
+     */
+    private IRunProcessService getRunProcessService() {
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
+            return (IRunProcessService) GlobalServiceRegister.getDefault().getService(IRunProcessService.class);
+        }
+        return null;
     }
 
 }

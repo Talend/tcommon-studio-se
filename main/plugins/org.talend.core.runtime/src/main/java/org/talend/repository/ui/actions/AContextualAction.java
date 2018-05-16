@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -56,6 +56,7 @@ import org.talend.core.model.repository.RepositoryViewObject;
 import org.talend.core.model.utils.RepositoryManagerHelper;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.i18n.Messages;
+import org.talend.core.ui.IHeaderFooterProviderService;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.RepositoryWorkUnit;
 import org.talend.repository.model.IProxyRepositoryFactory;
@@ -622,13 +623,10 @@ public abstract class AContextualAction extends Action implements ITreeContextua
 
             @Override
             protected void run() throws LoginException, PersistenceException {
-                boolean exist = false;
                 if (node != null && node.getObject() != null) {
                     Property property = node.getObject().getProperty();
                     // only avoid NPE if item has been deleted in svn
                     if (property != null) {
-                        exist = true;
-
                         doRun();
                     }
                 } else {

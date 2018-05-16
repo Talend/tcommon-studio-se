@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -20,22 +20,28 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.apache.maven.model.Activation;
+import org.apache.maven.model.Build;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Plugin;
+import org.apache.maven.model.PluginExecution;
+import org.apache.maven.model.Profile;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.commons.utils.VersionUtils;
 import org.talend.commons.utils.generation.JavaUtils;
-import org.talend.core.model.general.Project;
+import org.talend.core.PluginChecker;
 import org.talend.core.runtime.projectsetting.IProjectSettingPreferenceConstants;
 import org.talend.core.runtime.projectsetting.IProjectSettingTemplateConstants;
 import org.talend.designer.maven.DesignerMavenPlugin;
@@ -176,11 +182,13 @@ public class MavenTemplateManager {
     }
 
     public static void saveContent(IFile targetFile, String content, boolean overwrite) throws CoreException {
-        ByteArrayInputStream source = new ByteArrayInputStream(content.getBytes());
-        if (targetFile.exists()) {
-            targetFile.setContents(source, true, false, new NullProgressMonitor());
-        } else {
-            targetFile.create(source, true, new NullProgressMonitor());
+        if (content != null) {
+            ByteArrayInputStream source = new ByteArrayInputStream(content.getBytes());
+            if (targetFile.exists()) {
+                targetFile.setContents(source, true, false, new NullProgressMonitor());
+            } else {
+                targetFile.create(source, true, new NullProgressMonitor());
+            }
         }
     }
 
@@ -213,6 +221,46 @@ public class MavenTemplateManager {
         return getCodeProjectTemplateModel(null); // by default will be current project.
     }
 
+    public static Model addCIBuilder(Model model) {
+        if (!PluginChecker.isTIS()) {
+            return model;
+        }
+        if (!model.getProfiles().isEmpty()) {
+            Profile toDelete = null;
+            for (Profile profile : model.getProfiles()) {
+                if ("ci-builder".equals(profile.getId())) {
+                    toDelete = profile;
+                    break;
+                }
+            }
+            if (toDelete != null) {
+                model.getProfiles().remove(toDelete);
+            }
+        }
+        Profile profile = new Profile();
+        profile.setId("ci-builder");
+        Activation activation = new Activation();
+        activation.setActiveByDefault(true);
+        profile.setActivation(activation);
+        model.addProfile(profile);
+
+        Plugin plugin = new Plugin();
+        profile.setBuild(new Build());
+        profile.getBuild().addPlugin(plugin);
+        plugin.setGroupId(TalendMavenConstants.DEFAULT_GROUP_ID);
+        plugin.setArtifactId("ci.builder"); //$NON-NLS-1$
+        plugin.setVersion(VersionUtils.getTalendVersion());
+
+        List<PluginExecution> executions = new ArrayList<>();
+        PluginExecution pe = new PluginExecution();
+        pe.setPhase("generate-sources"); //$NON-NLS-1$
+        pe.addGoal("generate"); //$NON-NLS-1$
+        executions.add(pe);
+        plugin.setExecutions(executions);
+
+        return model;
+    }
+
     /**
      * Try to load the project template from bundle, if load failed, use default instead.
      */
@@ -238,9 +286,14 @@ public class MavenTemplateManager {
                 model.setArtifactId(ETalendMavenVariables.replaceVariables(model.getArtifactId(), variablesValuesMap));
                 model.setVersion(ETalendMavenVariables.replaceVariables(model.getVersion(), variablesValuesMap));
                 model.setName(ETalendMavenVariables.replaceVariables(model.getName(), variablesValuesMap));
-                
+
                 setJavaVersionForModel(model, variablesValuesMap);
-                
+
+                addCIBuilder(model);
+
+                Properties properties = model.getProperties();
+                properties.put("talend.project.name", projectTechName); //$NON-NLS-1$
+
                 return model;
             }
         } catch (Exception e) {
@@ -270,10 +323,9 @@ public class MavenTemplateManager {
 
     private static Model getDefaultCodeProjectTemplateModel(String projectTechName) {
         Model templateCodeProjectMOdel = new Model();
-
-        templateCodeProjectMOdel.setGroupId(PomIdsHelper.getProjectGroupId());
+        templateCodeProjectMOdel.setGroupId(PomIdsHelper.getProjectGroupId(projectTechName));
         templateCodeProjectMOdel.setArtifactId(PomIdsHelper.getProjectArtifactId());
-        templateCodeProjectMOdel.setVersion(PomIdsHelper.getProjectVersion());
+        templateCodeProjectMOdel.setVersion(PomIdsHelper.getProjectVersion(projectTechName));
         templateCodeProjectMOdel.setPackaging(TalendMavenConstants.PACKAGING_POM);
 
         return templateCodeProjectMOdel;
@@ -282,30 +334,32 @@ public class MavenTemplateManager {
     public static Model getRoutinesTempalteModel(String projectTechName) {
         Model defaultModel = createDefaultCodesTempalteModel(
                 PomIdsHelper.getCodesGroupId(projectTechName, TalendMavenConstants.DEFAULT_CODE),
-                TalendMavenConstants.DEFAULT_ROUTINES_ARTIFACT_ID);
-        return getCodesModelFromGeneralTemplate(defaultModel, projectTechName, "Routines", JavaUtils.JAVA_ROUTINES_DIRECTORY); //$NON-NLS-1$
+                TalendMavenConstants.DEFAULT_ROUTINES_ARTIFACT_ID, PomIdsHelper.getCodesVersion(projectTechName));
+        return getCodesModelFromGeneralTemplate(defaultModel, projectTechName, "Routines", //$NON-NLS-1$
+                JavaUtils.JAVA_ROUTINES_DIRECTORY);
     }
 
     public static Model getBeansTempalteModel(String projectTechName) {
         Model defaultModel = createDefaultCodesTempalteModel(
                 PomIdsHelper.getCodesGroupId(projectTechName, TalendMavenConstants.DEFAULT_BEAN),
-                TalendMavenConstants.DEFAULT_BEANS_ARTIFACT_ID);
+                TalendMavenConstants.DEFAULT_BEANS_ARTIFACT_ID, PomIdsHelper.getCodesVersion(projectTechName));
         return getCodesModelFromGeneralTemplate(defaultModel, projectTechName, "Beans", JavaUtils.JAVA_BEANS_DIRECTORY); //$NON-NLS-1$
     }
 
     public static Model getPigUDFsTempalteModel(String projectTechName) {
         Model defaultModel = createDefaultCodesTempalteModel(
                 PomIdsHelper.getCodesGroupId(projectTechName, TalendMavenConstants.DEFAULT_PIGUDF),
-                TalendMavenConstants.DEFAULT_PIGUDFS_ARTIFACT_ID);
-        return getCodesModelFromGeneralTemplate(defaultModel, projectTechName, "PigUDFs", JavaUtils.JAVA_PIGUDF_DIRECTORY); //$NON-NLS-1$
+                TalendMavenConstants.DEFAULT_PIGUDFS_ARTIFACT_ID, PomIdsHelper.getCodesVersion(projectTechName));
+        return getCodesModelFromGeneralTemplate(defaultModel, projectTechName, "PigUDFs", //$NON-NLS-1$
+                JavaUtils.JAVA_PIGUDF_DIRECTORY);
     }
 
-    private static Model createDefaultCodesTempalteModel(String groupId, String artifactId) {
+    private static Model createDefaultCodesTempalteModel(String groupId, String artifactId, String version) {
         Model templateRoutinesModel = new Model();
 
         templateRoutinesModel.setGroupId(groupId);
         templateRoutinesModel.setArtifactId(artifactId);
-        templateRoutinesModel.setVersion(PomIdsHelper.getCodesVersion());
+        templateRoutinesModel.setVersion(version);
 
         return templateRoutinesModel;
     }
@@ -332,7 +386,6 @@ public class MavenTemplateManager {
                 variablesValuesMap.put(ETalendMavenVariables.CodesName, codesName);
                 variablesValuesMap.put(ETalendMavenVariables.CodesPackage, codesPackage);
 
-                Project currentProject = ProjectManager.getInstance().getCurrentProject();
                 variablesValuesMap.put(ETalendMavenVariables.ProjectName, projectTechName);
 
                 model.setGroupId(ETalendMavenVariables.replaceVariables(model.getGroupId(), variablesValuesMap));
@@ -358,4 +411,5 @@ public class MavenTemplateManager {
         }
         return defaultModel; // if error, try to use default model
     }
+
 }

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -36,7 +36,6 @@ import org.talend.core.model.metadata.types.JavaTypesManager;
 import org.talend.core.runtime.i18n.Messages;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.designer.core.IDesignerCoreService;
-import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.repository.ProjectManager;
 
 /**
@@ -62,12 +61,7 @@ public abstract class AbstractTalendFunctionParser extends AbstractFunctionParse
     @Override
     public void parse() {
         try {
-            if (!GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
-                return;
-            }
-            IRunProcessService runProcessService = (IRunProcessService) GlobalServiceRegister.getDefault().getService(
-                    IRunProcessService.class);
-            ITalendProcessJavaProject talendProcessJavaProject = runProcessService.getTalendProcessJavaProject();
+            ITalendProcessJavaProject talendProcessJavaProject = getTalendCodeProject();
             if (talendProcessJavaProject != null) {
                 IFolder srcFolder = talendProcessJavaProject.getSrcFolder();
                 IPackageFragmentRoot root = talendProcessJavaProject.getJavaProject().getPackageFragmentRoot(srcFolder);
@@ -98,6 +92,8 @@ public abstract class AbstractTalendFunctionParser extends AbstractFunctionParse
             ExceptionHandler.process(e);
         }
     }
+    
+    abstract protected ITalendProcessJavaProject getTalendCodeProject();
 
     protected void processSourceType(IMember member, String className, String fullName, String funcName, boolean isSystem) {
         if (member != null && GlobalServiceRegister.getDefault().isServiceRegistered(IDesignerCoreService.class)) {

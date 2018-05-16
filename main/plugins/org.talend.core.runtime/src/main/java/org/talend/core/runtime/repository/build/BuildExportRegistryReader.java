@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -39,7 +39,11 @@ public class BuildExportRegistryReader extends RegistryReader {
 
     Map<String, BuildProviderRegistry> buildProvidersMap;
 
+    Map<String, BuildResourcesProviderRegistry> buildResourcesProvidersMap;
+
     AbstractBuildProvider[] buildProviders;
+
+    IBuildResourcesProvider[] buildResourcesProviders;
 
     BuildExportRegistryReader() {
         super(FrameworkUtil.getBundle(BuildExportRegistryReader.class).getSymbolicName(), "buildExport_provider"); //$NON-NLS-1$
@@ -52,11 +56,13 @@ public class BuildExportRegistryReader extends RegistryReader {
 
                 dependenciesProviders = new ArrayList<IBuildExportDependenciesProvider>();
                 buildProvidersMap = new HashMap<String, BuildProviderRegistry>();
+                buildResourcesProvidersMap = new HashMap<String, BuildResourcesProviderRegistry>();
 
                 readRegistry();
                 dependenciesProviderArrays = dependenciesProviders.toArray(new IBuildExportDependenciesProvider[0]);
 
                 processBuildProviders();
+                processBuildResourcesProviders();
             }
         }
     }
@@ -73,17 +79,6 @@ public class BuildExportRegistryReader extends RegistryReader {
                 overrideIds.add(r.overrideId);
             }
         }
-
-        // filter override and sort via order.
-        // buildProviders = registries.stream().filter(r -> !overrideIds.contains(r.id)) // filter override
-        // .sorted(new Comparator<BuildProviderRegistry>() { // sort
-        //
-        // @Override
-        // public int compare(BuildProviderRegistry r1, BuildProviderRegistry r2) {
-        // return r1.getOrder() - r2.getOrder();
-        // }
-        //
-        // }).map(r -> r.provider).collect(Collectors.toList()).toArray(new AbstractBuildProvider[0]);
 
         List<BuildProviderRegistry> validRegistries = new ArrayList<BuildProviderRegistry>();
         for (BuildProviderRegistry r : registries) {
@@ -107,6 +102,33 @@ public class BuildExportRegistryReader extends RegistryReader {
         buildProviders = providers.toArray(new AbstractBuildProvider[0]);
     }
 
+    void processBuildResourcesProviders() {
+        final Collection<BuildResourcesProviderRegistry> registries = buildResourcesProvidersMap.values();
+
+        // collect override
+        // List<String> overrideIds=registries.stream().filter(r -> r.overrideId != null).map(r ->
+        // r.overrideId).collect(Collectors.toList());
+        List<String> overrideIds = new ArrayList<String>();
+        for (BuildResourcesProviderRegistry r : registries) {
+            if (r.overrideId != null) {
+                overrideIds.add(r.overrideId);
+            }
+        }
+
+        List<BuildResourcesProviderRegistry> validRegistries = new ArrayList<BuildResourcesProviderRegistry>();
+        for (BuildResourcesProviderRegistry r : registries) {
+            if (!overrideIds.contains(r.id)) { // filter override
+                validRegistries.add(r);
+            }
+        }
+
+        List<IBuildResourcesProvider> providers = new ArrayList<IBuildResourcesProvider>();
+        for (BuildResourcesProviderRegistry r : validRegistries) {
+            providers.add(r.provider);
+        }
+        buildResourcesProviders = providers.toArray(new IBuildResourcesProvider[0]);
+    }
+
     IBuildExportDependenciesProvider[] getDependenciesProviders() {
         init();
         return dependenciesProviderArrays;
@@ -115,6 +137,11 @@ public class BuildExportRegistryReader extends RegistryReader {
     AbstractBuildProvider[] getBuildProviders() {
         init();
         return buildProviders != null ? buildProviders : new AbstractBuildProvider[0];
+    }
+
+    IBuildResourcesProvider[] getResourcesProviders() {
+        init();
+        return buildResourcesProviders != null ? buildResourcesProviders : new IBuildResourcesProvider[0];
     }
 
     /*
@@ -179,6 +206,29 @@ public class BuildExportRegistryReader extends RegistryReader {
                         }
 
                         buildProvidersMap.put(resgistry.id, resgistry);
+                    } catch (Exception e) {
+                        ExceptionHandler.process(e);
+                    }
+                }
+
+            });
+            return true;
+
+        }
+        if ("resourcesProvider".equals(element.getName())) { //$NON-NLS-1$
+            SafeRunner.run(new RegistryReader.RegistrySafeRunnable() {
+
+                @Override
+                public void run() throws Exception {
+                    try {
+                        BuildResourcesProviderRegistry resgistry = new BuildResourcesProviderRegistry();
+                        resgistry.id = element.getAttribute("id"); //$NON-NLS-1$
+                        resgistry.description = element.getAttribute("description"); //$NON-NLS-1$
+                        resgistry.overrideId = element.getAttribute("override"); //$NON-NLS-1$
+
+                        resgistry.provider = (IBuildResourcesProvider) element.createExecutableExtension("provider"); //$NON-NLS-1$
+
+                        buildResourcesProvidersMap.put(resgistry.id, resgistry);
                     } catch (Exception e) {
                         ExceptionHandler.process(e);
                     }

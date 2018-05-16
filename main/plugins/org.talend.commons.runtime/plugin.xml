@@ -2,5 +2,16 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension-point id="emfResourcesProvider" name="EMF Resources Provider" schema="schema/emfResourcesProvider.exsd"/>
+   <extension
+         point="org.talend.commons.runtime.emfResourcesProvider">
+      <saveOption
+            id="save.option.encoding.utf8"
+            provider="org.talend.commons.runtime.model.emf.UTF8EncodingOptionProvider">
+      </saveOption>
+      <saveOption
+            id="save.option.using.cdata"
+            provider="org.talend.commons.runtime.model.UsingCdataOptionProvider">
+      </saveOption>
+   </extension>
 
 </plugin>

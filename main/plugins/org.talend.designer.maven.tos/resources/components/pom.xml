@@ -4,13 +4,13 @@
     <parent>
         <groupId>org.talend.studio</groupId>
         <artifactId>studio-maven-repository-tos</artifactId>
-        <version>7.0.1-SNAPSHOT</version>
+        <version>7.1.1-SNAPSHOT</version>
         <relativePath>../</relativePath>
     </parent>
 	<artifactId>studio-components-dependencies</artifactId>
 	<packaging>pom</packaging>
 	<properties>
-		<components.version>0.22.0-SNAPSHOT</components.version>
+		<components.version>0.24.0-SNAPSHOT</components.version>
 	</properties>
 	<repositories>
 		<repository>
@@ -48,6 +48,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.talend.components</groupId>
+			<artifactId>components-jdbc-runtime</artifactId>
+			<version>${components.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.talend.components</groupId>
 			<artifactId>components-splunk</artifactId>
 			<version>${components.version}</version>
 		</dependency>
@@ -79,6 +84,16 @@
 		<dependency>
 			<groupId>org.talend.components</groupId>
 			<artifactId>components-marketo-runtime</artifactId>
+			<version>${components.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.talend.components</groupId>
+			<artifactId>components-googledrive-runtime</artifactId>
+			<version>${components.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.talend.components</groupId>
+			<artifactId>components-marklogic-runtime</artifactId>
 			<version>${components.version}</version>
 		</dependency>
         <dependency>

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -41,6 +41,10 @@ public class ModuleStatusProvider {
 
     public static ELibraryInstallStatus getStatus(String key) {
         return statusMap.get(getKey(key));
+    }
+
+    public static void resetStatus(String key) {
+        statusMap.remove(getKey(key));
     }
 
     public static void putDeployStatus(String mvnURI, ELibraryInstallStatus status) {

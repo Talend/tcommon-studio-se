@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -1492,6 +1492,10 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                             // the sql
                             // data type it is null and results in a NPE
                         }
+                    }else if(MetadataConnectionUtils.isSnowflake(dbJDBCMetadata)){
+                    	if(MetadataConnectionUtils.getSnowflakeDBTypeMap().containsKey(typeName)){
+                    		typeName = MetadataConnectionUtils.getSnowflakeDBTypeMap().get(typeName);
+                    	}
                     }
                     try {
                         int column_size = getIntFromResultSet(columns, GetColumn.COLUMN_SIZE.name());
@@ -1545,6 +1549,9 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
 
                     DatabaseConnection dbConnection = (DatabaseConnection) ConnectionHelper.getConnection(colSet);
                     String dbmsId = dbConnection == null ? null : dbConnection.getDbmsId();
+                    if(EDatabaseTypeName.GENERAL_JDBC.getXMLType().equals(dbConnection.getDatabaseType())&&(dbmsId ==null||"".equals(dbmsId) )){
+                        dbmsId ="mysql_id";
+                    }
                     if (dbmsId != null) {
                         MappingTypeRetriever mappingTypeRetriever = MetadataTalendType.getMappingTypeRetriever(dbmsId);
                         if (mappingTypeRetriever == null) {

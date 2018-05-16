@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -96,5 +96,7 @@ public interface FileConstants {
     String META_INF_FOLDER_NAME = "META-INF"; //$NON-NLS-1$
 
     String BLUEPRINT_FOLDER_NAME = "OSGI-INF/blueprint"; //$NON-NLS-1$
+
+    String SPRING_FOLDER_NAME = "META-INF/spring"; //$NON-NLS-1$
 
 }

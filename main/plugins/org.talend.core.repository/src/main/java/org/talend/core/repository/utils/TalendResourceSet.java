@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -12,7 +12,9 @@
 // ============================================================================
 package org.talend.core.repository.utils;
 
+import java.io.IOException;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +28,9 @@ import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.emf.ecore.util.NotifyingInternalEListImpl;
+import org.eclipse.emf.ecore.xmi.XMLResource;
+import org.eclipse.emf.ecore.xmi.impl.XMLParserPoolImpl;
+import org.talend.commons.runtime.model.emf.provider.EmfResourcesFactoryReader;
 
 /**
  * created by nrousseau on Aug 7, 2013<br>
@@ -42,6 +47,16 @@ import org.eclipse.emf.ecore.util.NotifyingInternalEListImpl;
  * To ensure that there will be no concurrent access while using the list.
  */
 public class TalendResourceSet extends ResourceSetImpl {
+
+    public TalendResourceSet() {
+        super();
+
+        getLoadOptions().put(XMLResource.OPTION_DEFER_ATTACHMENT, Boolean.TRUE);
+        getLoadOptions().put(XMLResource.OPTION_DEFER_IDREF_RESOLUTION, Boolean.TRUE);
+        getLoadOptions().put(XMLResource.OPTION_USE_PARSER_POOL, new XMLParserPoolImpl());
+        getLoadOptions().put(XMLResource.OPTION_USE_XML_NAME_TO_FEATURE_MAP, new HashMap<Object, Object>());
+        getLoadOptions().put(XMLResource.OPTION_USE_DEPRECATED_METHODS, Boolean.FALSE);
+    }
 
     /*
      * (non-Javadoc)
@@ -106,7 +121,8 @@ public class TalendResourceSet extends ResourceSetImpl {
         if (loadOnDemand) {
             Resource resource = demandCreateResource(uri);
             if (resource == null) {
-                throw new RuntimeException("Cannot create a resource for '" + uri + "'; a registered resource factory is needed");
+                throw new RuntimeException("Cannot create a resource for '" + uri
+                        + "'; a registered resource factory is needed");
             }
 
             demandLoadHelper(resource);
@@ -120,11 +136,26 @@ public class TalendResourceSet extends ResourceSetImpl {
         return null;
     }
 
+    @Override
+    protected void demandLoad(Resource resource) throws IOException {
+        final Map<Object, Object> old = new HashMap<Object, Object>(getLoadOptions());
+        try {
+            Map<String, Object> options = EmfResourcesFactoryReader.INSTANCE.getLoadOptions(resource);
+            getLoadOptions().putAll(options);
+
+            super.demandLoad(resource);
+
+        } finally {
+            getLoadOptions().clear();
+            getLoadOptions().putAll(old);
+        }
+    }
+
     /**
      * A notifying list implementation for supporting {@link ResourceSet#getResources}.
      */
-    private class SynchronizedResourcesEList<E extends Object & Resource> extends NotifyingInternalEListImpl<E> implements
-            InternalEList<E> {
+    private class SynchronizedResourcesEList<E extends Object & Resource> extends NotifyingInternalEListImpl<E>
+            implements InternalEList<E> {
 
         /*
          * (non-Javadoc)

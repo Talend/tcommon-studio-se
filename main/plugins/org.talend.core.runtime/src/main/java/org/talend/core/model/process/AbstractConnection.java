@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -13,11 +13,13 @@
 package org.talend.core.model.process;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.talend.core.model.metadata.IMetadataTable;
+import org.talend.core.runtime.IAdditionalInfo;
 
 /**
  * DOC nrousseau class global comment. Detailled comment <br/>
@@ -25,7 +27,7 @@ import org.talend.core.model.metadata.IMetadataTable;
  * $Id$
  * 
  */
-public abstract class AbstractConnection implements IConnection {
+public abstract class AbstractConnection implements IConnection, IAdditionalInfo {
 
     private EConnectionType lineStyle;
 
@@ -61,6 +63,8 @@ public abstract class AbstractConnection implements IConnection {
     private int outputId;
 
     private boolean isMonitorConnection;
+
+    private Map<String, Object> additionalInfoMap = new HashMap<>();
 
     @Override
     public boolean isActivate() {
@@ -457,5 +461,30 @@ public abstract class AbstractConnection implements IConnection {
     @Override
     public void setForceReadOnly(boolean readOnly) {
 
+    }
+
+    @Override
+    public Object getInfo(String key) {
+        return additionalInfoMap.get(key);
+    }
+
+    @Override
+    public void putInfo(String key, Object value) {
+        additionalInfoMap.put(key, value);
+    }
+
+    @Override
+    public void onEvent(String event, Object... parameters) {
+        // nothing to do
+    }
+
+    @Override
+    public void cloneAddionalInfoTo(IAdditionalInfo targetAdditionalInfo) {
+        if (targetAdditionalInfo == null) {
+            return;
+        }
+        for (Map.Entry<String, Object> entry : additionalInfoMap.entrySet()) {
+            targetAdditionalInfo.putInfo(entry.getKey(), entry.getValue());
+        }
     }
 }

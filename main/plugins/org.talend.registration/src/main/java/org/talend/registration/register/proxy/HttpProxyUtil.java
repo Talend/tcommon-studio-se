@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.registration.register.proxy;
 
+import org.eclipse.core.internal.net.ProxyManager;
 import org.eclipse.core.net.proxy.IProxyData;
 import org.eclipse.core.net.proxy.IProxyService;
 import org.eclipse.core.runtime.CoreException;
@@ -55,6 +56,19 @@ public class HttpProxyUtil {
                     ExceptionHandler.process(e);
                 }
             }
+        }
+    }
+
+    public static void initializeHttpProxy() {
+        ProxyManager proxyManager = null;
+        IProxyService service = RegistrationPlugin.getDefault().getProxyService();
+        if (service != null && service instanceof ProxyManager) {
+            proxyManager = (ProxyManager) service;
+        }
+        if (proxyManager == null) {
+            proxyManager = (ProxyManager) ProxyManager.getProxyManager();
+        } else {
+            proxyManager.initialize();
         }
     }
 }

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -51,20 +51,22 @@ public final class ProjectPreferenceManager {
     private ProjectScope projectScope;
 
     private IPreferenceStore store;
-    
+
     private boolean isCurrentProject;
-    
+
     private static IRunProcessService runProcessService;
-    
+
     private static IRepositoryService repositoryService;
-    
+
     static {
-    	if(GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
-            runProcessService = (IRunProcessService) GlobalServiceRegister.getDefault().getService(IRunProcessService.class);
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
+            runProcessService =
+                    (IRunProcessService) GlobalServiceRegister.getDefault().getService(IRunProcessService.class);
         }
-    	if(GlobalServiceRegister.getDefault().isServiceRegistered(IRepositoryService.class)) {
-    		repositoryService = (IRepositoryService) GlobalServiceRegister.getDefault().getService(IRepositoryService.class);
-    	}
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IRepositoryService.class)) {
+            repositoryService =
+                    (IRepositoryService) GlobalServiceRegister.getDefault().getService(IRepositoryService.class);
+        }
     }
 
     public ProjectPreferenceManager(String fileName) {
@@ -72,7 +74,16 @@ public final class ProjectPreferenceManager {
         isCurrentProject = true;
     }
 
+    public ProjectPreferenceManager(String fileName, boolean addListener) {
+        this(ProjectManager.getInstance().getCurrentProject(), fileName, addListener);
+        isCurrentProject = true;
+    }
+
     public ProjectPreferenceManager(Project p, String fileName) {
+        this(p, fileName, true);
+    }
+
+    public ProjectPreferenceManager(Project p, String fileName, boolean addListener) {
         super();
         try {
             Assert.isNotNull(p);
@@ -81,13 +92,21 @@ public final class ProjectPreferenceManager {
         } catch (PersistenceException e) {
             ExceptionHandler.process(e);
         }
-        addPropertyChangeListener();
+        if (addListener) {
+            addPropertyChangeListener();
+        }
     }
 
     public ProjectPreferenceManager(IProject project, String fileName) {
+        this(project, fileName, true);
+    }
+
+    public ProjectPreferenceManager(IProject project, String fileName, boolean addListener) {
         super();
         init(project, fileName);
-        addPropertyChangeListener();
+        if (addListener) {
+            addPropertyChangeListener();
+        }
     }
 
     private void init(IProject project, String fileName) {
@@ -100,8 +119,9 @@ public final class ProjectPreferenceManager {
     }
 
     private void addPropertyChangeListener() {
-    	if (repositoryService != null) {
-        	repositoryService.getProxyRepositoryFactory().addPropertyChangeListener(new ProjectPreferenceReloadListener());
+        if (repositoryService != null) {
+            repositoryService.getProxyRepositoryFactory().addPropertyChangeListener(
+                    new ProjectPreferenceReloadListener());
         }
     }
 
@@ -183,27 +203,27 @@ public final class ProjectPreferenceManager {
             runProcessService.storeProjectPreferences(getPreferenceStore());
         }
     }
-    
+
     public void reload() {
-    	if (isCurrentProject) {
-    		try {
-    			Project currentProject = ProjectManager.getInstance().getCurrentProject();
-    			init(ResourceUtils.getProject(currentProject), qualifier);
-    		} catch (PersistenceException e) {
-    			ExceptionHandler.process(e);
-    		}
-    	}
+        if (isCurrentProject) {
+            try {
+                Project currentProject = ProjectManager.getInstance().getCurrentProject();
+                init(ResourceUtils.getProject(currentProject), qualifier);
+            } catch (PersistenceException e) {
+                ExceptionHandler.process(e);
+            }
+        }
     }
 
-	class ProjectPreferenceReloadListener implements PropertyChangeListener {
+    class ProjectPreferenceReloadListener implements PropertyChangeListener {
 
-		@Override
-		public void propertyChange(PropertyChangeEvent event) {
-			if (event.getPropertyName().equals(ERepositoryActionName.PROJECT_PREFERENCES_RELOAD.getName())) {
-				reload();
-			}
-		}
-		
-	}
+        @Override
+        public void propertyChange(PropertyChangeEvent event) {
+            if (event.getPropertyName().equals(ERepositoryActionName.PROJECT_PREFERENCES_RELOAD.getName())) {
+                reload();
+            }
+        }
+
+    }
 
 }
