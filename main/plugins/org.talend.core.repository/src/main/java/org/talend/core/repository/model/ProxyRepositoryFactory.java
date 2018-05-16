@@ -1862,8 +1862,8 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
         return this.repositoryFactoryFromProvider.getModulesNeededForJobs();
     }
 
-    private void initEmfProjectContent() throws PersistenceException, BusinessException {
-        getRepositoryContext().setProject(null);
+    @Override
+    public void initEmfProjectContent() throws PersistenceException, BusinessException {
         Project[] projects = readProject();
         emfProjectContentMap.clear();
         if (projects != null && projects.length > 0) {
@@ -1908,6 +1908,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 SubMonitor currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);
                 currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.logonInProgress"), 1); //$NON-NLS-1$
                 project.setReferenceProjectProvider(null);
+                getRepositoryContext().setProject(null);
                 initEmfProjectContent();
                 if (getEmfProjectContent(project.getTechnicalLabel()) != null) {
                     project.setEmfProject(getEmfProjectContent(project.getTechnicalLabel()));
