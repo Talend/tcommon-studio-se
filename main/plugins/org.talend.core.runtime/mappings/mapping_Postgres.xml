@@ -29,7 +29,7 @@
 			<dbType type="MACADDR" ignoreLen="true" ignorePre="true" />
 			<dbType type="MONEY" ignoreLen="true" ignorePre="true" />	
 			<dbType type="NAME" ignoreLen="true" ignorePre="true" />
-			<dbType type="NUMERIC" defaultLength="20" defaultPrecision="10"/>
+			<dbType type="NUMERIC" ignoreLen="true" defaultPrecision="10"/>
 			<dbType type="OID" ignoreLen="true" ignorePre="true"  />
 			<dbType type="OIDVECTOR" ignoreLen="true" ignorePre="true" />
 			<dbType type="PATH" ignoreLen="true" ignorePre="true" />
