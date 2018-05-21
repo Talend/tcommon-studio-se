@@ -389,29 +389,28 @@ public class ImportItemsWizardPage extends WizardPage {
         Composite buttonsComposite = new Composite(listComposite, SWT.NONE);
         GridLayout layout = new GridLayout();
         layout.marginWidth = 0;
-        layout.marginHeight = 25;
+        layout.marginHeight = 0;
+        layout.marginTop = 26;
         buttonsComposite.setLayout(layout);
 
         buttonsComposite.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
 
-        Button refresh = new Button(buttonsComposite, SWT.PUSH);
-        refresh.setText(Messages.getString("ImportItemsWizardPage_refreshButtonText")); //$NON-NLS-1$
-        refresh.addSelectionListener(new SelectionAdapter() {
-
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                if (itemFromDirectoryRadio.getSelection()) {
-                    updateItemsList(directoryPathField.getText().trim(), true, true);
-                } else {
-                    updateItemsList(archivePathField.getText().trim(), false, true);
-                }
-            }
-        });
-        setButtonLayoutData(refresh);
-        // hide for current version ,enable it later if needed.
-        refresh.setVisible(false);
-
-        new Label(buttonsComposite, SWT.NONE);
+//        Button refresh = new Button(buttonsComposite, SWT.PUSH);
+//        refresh.setText(Messages.getString("ImportItemsWizardPage_refreshButtonText")); //$NON-NLS-1$
+//        refresh.addSelectionListener(new SelectionAdapter() {
+//
+//            @Override
+//            public void widgetSelected(SelectionEvent e) {
+//                if (itemFromDirectoryRadio.getSelection()) {
+//                    updateItemsList(directoryPathField.getText().trim(), true, true);
+//                } else {
+//                    updateItemsList(archivePathField.getText().trim(), false, true);
+//                }
+//            }
+//        });
+//        setButtonLayoutData(refresh);
+//        // hide for current version ,enable it later if needed.
+//        refresh.setVisible(false);
 
         Button selectAll = new Button(buttonsComposite, SWT.PUSH);
         selectAll.setText(Messages.getString("ImportItemsWizardPage_selectButtonText")); //$NON-NLS-1$
@@ -446,8 +445,6 @@ public class ImportItemsWizardPage extends WizardPage {
             }
         });
         setButtonLayoutData(deselectAll);
-
-        new Label(buttonsComposite, SWT.NONE);
 
         Button expandAll = new Button(buttonsComposite, SWT.PUSH);
         expandAll.setText(Messages.getString("ImportItemsWizardPage_expandAllButtonText")); //$NON-NLS-1$

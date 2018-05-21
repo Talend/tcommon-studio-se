@@ -13,7 +13,6 @@
 package org.talend.core.runtime.maven;
 
 import org.apache.commons.lang3.StringUtils;
-import org.talend.core.nexus.TalendMavenResolver;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -25,7 +24,15 @@ public class MavenArtifact implements Cloneable {
     private static final char ARTIFACT_SEPARATOR = '-';
 
     private String repositoryUrl, groupId, artifactId, version, type, classifier, description, url, license, licenseUrl,
-            distribution, username, password;
+            distribution, username, password, lastUpdated;
+
+    public String getLastUpdated() {
+        return this.lastUpdated;
+    }
+
+    public void setLastUpdated(String lastUpdated) {
+        this.lastUpdated = lastUpdated;
+    }
 
     public String getRepositoryUrl() {
         return repositoryUrl;

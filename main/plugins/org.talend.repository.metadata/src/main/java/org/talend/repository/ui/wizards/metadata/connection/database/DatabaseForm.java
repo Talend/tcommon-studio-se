@@ -264,6 +264,8 @@ public class DatabaseForm extends AbstractForm {
 
     private Button disableCBCProtection;
 
+    private LabelledText metastorePort;
+
     /**
      * Fields for general jdbc
      */
@@ -1005,6 +1007,7 @@ public class DatabaseForm extends AbstractForm {
         additionParamText = new LabelledText(typeDbCompositeParent, Messages.getString("DatabaseForm.AddParams"), 2); //$NON-NLS-1$
         additionalJDBCSettingsText = new LabelledText(typeDbCompositeParent,
                 Messages.getString("DatabaseForm.hive.additionalJDBCSettings"), 2); //$NON-NLS-1$
+        metastorePort = new LabelledText(typeDbCompositeParent, Messages.getString("DatabaseForm.hiveThriftMetastore.port"), 2);
 
         String[] extensions = { "*.*" }; //$NON-NLS-1$
         fileField = new LabelledFileField(typeDbCompositeParent, Messages.getString("DatabaseForm.mdbFile"), extensions); //$NON-NLS-1$
@@ -3744,6 +3747,7 @@ public class DatabaseForm extends AbstractForm {
         setHideHadoopInfoWidgets(true);
     }
 
+
     /**
      * 
      * @param parent
@@ -4698,6 +4702,16 @@ public class DatabaseForm extends AbstractForm {
                     getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_ADDITIONAL_JDBC_SETTINGS,
                             additionalJDBCSettingsText.getText());
                     urlConnectionStringText.setText(getStringConnection());
+                }
+            }
+        });
+
+        metastorePort.addModifyListener(new ModifyListener() {
+
+            @Override
+            public void modifyText(ModifyEvent e) {
+                if (!isContextMode()) {
+                    getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_THRIFTPORT, metastorePort.getText());
                 }
             }
         });
@@ -6054,6 +6068,8 @@ public class DatabaseForm extends AbstractForm {
         }
     }
 
+    private static String DEFAULT_HIVE_METASTORE_PORT = "9083";
+
     /**
      * SetEditable fields.
      * 
@@ -6206,8 +6222,16 @@ public class DatabaseForm extends AbstractForm {
             showIfSupportEncryption();
             showIfAuthentication();
             hideHiveExecutionFields(!doSupportTez());
+            setHideThriftMetastoreInfoWidgets(!isHive);
 
             urlConnectionStringText.setEditable(!visible);
+
+            if (isHive) {
+                String metastoreport = getConnection().getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_THRIFTPORT);
+                if (metastoreport == null || "".equals(metastoreport)) {
+                    metastorePort.setText(DEFAULT_HIVE_METASTORE_PORT);
+                }
+            }
             // schemaText.hide();
             boolean schemaTextIsShow = true;
             if (template == EDatabaseConnTemplate.MSSQL) {
@@ -7054,6 +7078,7 @@ public class DatabaseForm extends AbstractForm {
         }
         String additionalJDBCSettings = connection.getParameters().get(
                 ConnParameterKeys.CONN_PARA_KEY_HIVE_ADDITIONAL_JDBC_SETTINGS);
+        String metadatastorePort = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_THRIFTPORT);
         boolean useSSL = Boolean.parseBoolean(connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_USE_SSL));
         String trustStorePathStr = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_SSL_TRUST_STORE_PATH);
         String trustStorePasswordStr = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_SSL_TRUST_STORE_PASSWORD);
@@ -7074,6 +7099,7 @@ public class DatabaseForm extends AbstractForm {
         driverClassTxt.setText(driverClass == null ? "" : driverClass);
         usernameTxt.setText(username == null ? "" : username);
         passwordTxt.setText(password == null ? "" : password);
+        metastorePort.setText(metadatastorePort == null ? "" : metadatastorePort);
         additionalJDBCSettingsText.setText(additionalJDBCSettings == null ? "" : additionalJDBCSettings);
         useSSLEncryption.setSelection(useSSL);
         trustStorePath.setText(trustStorePathStr == null ? "" : trustStorePathStr);
@@ -8273,6 +8299,14 @@ public class DatabaseForm extends AbstractForm {
         hadoopPropGrpGD.exclude = hide;
         nameNodeURLTxt.setHideWidgets(hide);
         jobTrackerURLTxt.setHideWidgets(hide);
+    }
+
+    private void setHideThriftMetastoreInfoWidgets(boolean hide) {
+        if (hide) {
+            metastorePort.hide();
+        } else {
+            metastorePort.show();
+        }
     }
 
     /**

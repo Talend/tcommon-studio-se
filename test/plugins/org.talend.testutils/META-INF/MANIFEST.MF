@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Mockito
 Bundle-SymbolicName: org.talend.testutils
-Bundle-Version: 7.1.0.qualifier
+Bundle-Version: 7.1.1.qualifier
 Bundle-ClassPath: .,
  lib/cglib-nodep-2.2.2.jar,
  lib/javassist-3.20.0-GA.jar,

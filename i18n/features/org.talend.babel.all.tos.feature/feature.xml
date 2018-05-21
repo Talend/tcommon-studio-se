@@ -2,7 +2,7 @@
 <feature
       id="org.talend.babel.all.tos.feature"
       label="Babel feature with all languages for TOS"
-      version="7.1.0.qualifier">
+      version="7.1.1.qualifier">
 
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]

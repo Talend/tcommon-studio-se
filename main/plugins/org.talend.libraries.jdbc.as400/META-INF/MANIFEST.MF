@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: As400 Plug-in
 Bundle-SymbolicName: org.talend.libraries.jdbc.as400;singleton:=true
-Bundle-Version: 7.1.0.qualifier
+Bundle-Version: 7.1.1.qualifier
 Export-Package: com.ibm.as400.access,
  com.ibm.as400.access.list,
  com.ibm.as400.data,

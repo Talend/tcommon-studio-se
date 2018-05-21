@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Cxf
 Bundle-SymbolicName: org.talend.libraries.apache.cxf;singleton:=true
-Bundle-Version: 7.1.0.qualifier
+Bundle-Version: 7.1.1.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: lib/javax.ws.rs-api-2.0-m10.jar,
  lib/neethi-3.0.1.jar,

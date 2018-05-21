@@ -13,6 +13,7 @@
 package org.talend.core.model.utils;
 
 import java.util.List;
+import java.util.Map;
 
 import org.talend.components.api.properties.ComponentProperties;
 import org.talend.core.model.components.IComponent;
@@ -49,7 +50,7 @@ public interface IDragAndDropServiceHandler {
      */
     public Object getComponentValue(Connection connection, String value, IMetadataTable table);
 
-    public Object getComponentValue(Connection connection, String value, IMetadataTable table, String targetComponent);
+    public Object getComponentValue(Connection connection, String value, IMetadataTable table, String targetComponent, Map<Object, Object> contextMap);
 
     /**
      * DOC hwang Comment method "filterNeededComponents".

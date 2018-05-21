@@ -421,8 +421,15 @@ public class ModuleListDialog extends Dialog {
                             IElementParameter componentName = param.getElement().getElementParameter("COMPONENT_NAME");
                             
                             if(componentName !=null && "cConfig".equals(componentName.getValue())){
+                                String versionType = ".SNAPSHOT";
                                 selectedJarPath = jarPath;
-                                selectedJarVersion = versionLabel.getText();
+                                String selectedJarVersionTmp = versionLabel.getText();
+                                if (StringUtils.endsWithIgnoreCase(selectedJarVersionTmp, versionType)) {
+                                    selectedJarVersionTmp = selectedJarVersionTmp.replace(versionType, "-SNAPSHOT");
+                                }
+
+                                selectedJarVersion = selectedJarVersionTmp;
+
                             }else{
                                 service.deployLibrary(path.toFile().toURI().toURL());
                             }

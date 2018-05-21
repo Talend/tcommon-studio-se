@@ -253,11 +253,11 @@ public class PomIdsHelper {
         }
         return null;
     }
-    
+
     public static String getPomFilter() {
-    	String projectTechName = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
-    	ProjectPreferenceManager manager = getPreferenceManager(projectTechName);
-    	return manager.getValue(MavenConstants.POM_FILTER);
+        String projectTechName = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
+        ProjectPreferenceManager manager = getPreferenceManager(projectTechName);
+        return manager.getValue(MavenConstants.POM_FILTER);
     }
 
     private static String getGroupId(String projectTechName, String baseName, Property property) {
@@ -320,6 +320,9 @@ public class PomIdsHelper {
             }
             if (StringUtils.isEmpty(preferenceStore.getString(MavenConstants.PROJECT_VERSION))) {
                 preferenceStore.setValue(MavenConstants.PROJECT_VERSION, PomUtil.getDefaultMavenVersion());
+            }
+            if (preferenceStore.getString(MavenConstants.POM_FILTER) == null) {
+                preferenceStore.setValue(MavenConstants.POM_FILTER, "");
             }
             preferenceManager.save();
             preferenceManagers.put(projectTechName, preferenceManager);

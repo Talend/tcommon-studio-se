@@ -100,8 +100,8 @@ import org.talend.cwm.helper.TaggedValueHelper;
  */
 public class RepositoryToComponentProperty {
 
-    public static Object getValue(Connection connection, String value, IMetadataTable table, String targetComponent) {
-
+    public static Object getValue(Connection connection, String value, IMetadataTable table, String targetComponent, Map<Object, Object> contextMap) {
+        
         if (connection instanceof HL7Connection) {
             return getHL7Value((HL7Connection) connection, value);
         }
@@ -155,7 +155,7 @@ public class RepositoryToComponentProperty {
 
         for (IDragAndDropServiceHandler handler : DragAndDropManager.getHandlers()) {
             if (handler.canHandle(connection)) {
-                return handler.getComponentValue(connection, value, table, targetComponent);
+                return handler.getComponentValue(connection, value, table, targetComponent, contextMap);
             }
         }
         return null;
@@ -163,7 +163,7 @@ public class RepositoryToComponentProperty {
     }
 
     public static Object getValue(Connection connection, String value, IMetadataTable table) {
-        return getValue(connection, value, table, null);
+        return getValue(connection, value, table, null, null);
     }
 
     /**
@@ -1421,6 +1421,11 @@ public class RepositoryToComponentProperty {
         if (value.equals("HIVE_ADDITIONAL_JDBC") && EDatabaseTypeName.HIVE.getDisplayName().equals(databaseType)) {
             return getAppropriateValue(connection,
                     connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_ADDITIONAL_JDBC_SETTINGS));
+        }
+
+        if (value.equals("THRIFTPORT") && EDatabaseTypeName.HIVE.getDisplayName().equals(databaseType)) {
+            return getAppropriateValue(connection,
+                    connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_THRIFTPORT));
         }
 
         if (value.equals("USE_SSL") && (EDatabaseTypeName.HIVE.getDisplayName().equals(databaseType)

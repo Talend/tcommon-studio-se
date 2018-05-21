@@ -327,7 +327,7 @@ public class BuildCacheManager {
     private String getModulePath(Property property) {
         String modulePath = null;
         IPath basePath = null;
-        IPath jobProjectPath = AggregatorPomsHelper.getJobProjectPath(property, null);
+        IPath jobProjectPath = AggregatorPomsHelper.getItemPomFolder(property).getLocation();
         if (!ProjectManager.getInstance().isInCurrentMainProject(property)) {
             if (GlobalServiceRegister.getDefault().isServiceRegistered(IRepositoryService.class)) {
                 IRepositoryService service = (IRepositoryService) GlobalServiceRegister.getDefault()

@@ -443,6 +443,8 @@ public interface IProxyRepositoryFactory {
 
     public List<ModuleNeeded> getModulesNeededForJobs() throws PersistenceException;
 
+    public void initEmfProjectContent() throws PersistenceException, BusinessException;
+
     public void forceCreate(Item item, IPath path) throws PersistenceException;
 
     public void forceCreate(Project project, Item item, IPath path) throws PersistenceException;

@@ -63,7 +63,7 @@ public class SyncLibrariesLoginTask extends AbstractLoginTask implements IRunnab
         }
         IRunProcessService runProcessService = getRunProcessService();
         if (runProcessService != null) {
-            runProcessService.initializeRootPoms();
+            runProcessService.initializeRootPoms(monitor);
         }
         TimeMeasure.end("SyncLibraries");
         TimeMeasure.display = false;

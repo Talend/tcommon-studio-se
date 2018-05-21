@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Axis2
 Bundle-SymbolicName: org.talend.libraries.apache.axis2
-Bundle-Version: 7.1.0.qualifier
+Bundle-Version: 7.1.1.qualifier
 Require-Bundle: org.eclipse.core.runtime,
  org.apache.commons.httpclient,
  javax.wsdl,

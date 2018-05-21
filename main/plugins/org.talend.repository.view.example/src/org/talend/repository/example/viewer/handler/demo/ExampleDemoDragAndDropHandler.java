@@ -15,6 +15,7 @@ package org.talend.repository.example.viewer.handler.demo;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.core.GlobalServiceRegister;
@@ -177,7 +178,7 @@ public class ExampleDemoDragAndDropHandler extends AbstractDragAndDropServiceHan
      * .connection.Connection, java.lang.String, org.talend.core.model.metadata.IMetadataTable, java.lang.String)
      */
     @Override
-    public Object getComponentValue(Connection connection, String value, IMetadataTable table, String targetComponent) {
+    public Object getComponentValue(Connection connection, String value, IMetadataTable table, String targetComponent, Map<Object, Object> contextMap) {
         // TODO Auto-generated method stub
         return null;
     }

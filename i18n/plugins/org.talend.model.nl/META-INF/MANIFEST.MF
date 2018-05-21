@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: org.talend.model.Nl Fragment
 Bundle-SymbolicName: org.talend.model.nl
-Bundle-Version: 7.1.0.qualifier
+Bundle-Version: 7.1.1.qualifier
 Bundle-Vendor: .Talend SA.
 Fragment-Host: org.talend.model
 Bundle-Localization: plugin

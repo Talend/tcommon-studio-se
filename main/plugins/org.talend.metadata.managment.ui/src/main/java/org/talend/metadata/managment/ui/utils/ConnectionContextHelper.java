@@ -1070,6 +1070,7 @@ public final class ConnectionContextHelper {
         }
         Set<String> addedVars = new HashSet<String>();
         String var = null;
+        Map<Object, Object> contextData = new HashMap<Object, Object>();
         for (IElementParameter param : elementParameters) {
             if (onlyConsiderShowedParam && !param.isShow(elementParameters)) {
                 continue;
@@ -1077,7 +1078,7 @@ public final class ConnectionContextHelper {
             if (category == null || category == param.getCategory()) {
                 String repositoryValue = param.getRepositoryValue();
                 if (repositoryValue != null) {
-                    Object objectValue = RepositoryToComponentProperty.getValue(connection, repositoryValue, null);
+                    Object objectValue = RepositoryToComponentProperty.getValue(connection, repositoryValue, null, null, contextData);
 
                     if (objectValue != null) {
                         if (objectValue instanceof List) {

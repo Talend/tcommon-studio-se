@@ -3,6 +3,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Jars
 Bundle-SymbolicName: org.talend.libraries.jfreechart.jars
 Bundle-ClassPath: .,lib/jcommon-1.0.15.jar,lib/jfreechart-1.0.13.jar,lib/jfreechart-1.0.12-swt.jar
-Bundle-Version: 7.1.0.qualifier
+Bundle-Version: 7.1.1.qualifier
 Fragment-Host: org.talend.libraries.jfreechart
 Eclipse-BundleShape: dir

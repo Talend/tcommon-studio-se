@@ -131,7 +131,7 @@ public final class ProjectManager {
         if (currentProject.getTechnicalLabel().equals(label)) {
             return currentProject;
         }
-        for (Project project : getAllReferencedProjects()) {
+        for (Project project : getAllReferencedProjects(true)) {
             if (project.getTechnicalLabel().equals(label)) {
                 return project;
             }
@@ -153,19 +153,17 @@ public final class ProjectManager {
     }
 
     private void resolveSubRefProject(org.talend.core.model.properties.Project p, List<Project> allReferencedprojects,
-            Set<String> resolvedProjectLabels) {
-
-        Context ctx = CoreRuntimePlugin.getInstance().getContext();
-        if (ctx != null && p != null) {
+            Set<String> resolvedProjectLabels, boolean force) {
+        if (p != null) {
             String parentBranch = ProjectManager.getInstance().getMainProjectBranch(p);
-            if (parentBranch != null) {
+            if (parentBranch != null || force) {
                 resolvedProjectLabels.add(p.getTechnicalLabel());
                 for (ProjectReference pr : new Project(p).getProjectReferenceList()) {
                     if (ProjectManager.validReferenceProject(p, pr)
                             && !resolvedProjectLabels.contains(pr.getReferencedProject().getTechnicalLabel())) {
                         Project project = new Project(pr.getReferencedProject(), false);
                         allReferencedprojects.add(project);
-                        resolveSubRefProject(pr.getReferencedProject(), allReferencedprojects, resolvedProjectLabels); // only to resolve all
+                        resolveSubRefProject(pr.getReferencedProject(), allReferencedprojects, resolvedProjectLabels, force);
                     }
                 }
             }
@@ -194,11 +192,14 @@ public final class ProjectManager {
         return getReferencedProjects(currentProject);
     }
 
+    public List<Project> getAllReferencedProjects() {
+        return getAllReferencedProjects(false);
+    }
     /**
      *
      * return all the referenced projects of current project.
      */
-    public List<Project> getAllReferencedProjects() {
+    public List<Project> getAllReferencedProjects(boolean force) {
         List<Project> allReferencedprojects = new ArrayList<Project>();
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IProxyRepositoryService.class)) {
             if (this.getCurrentProject() == null) {
@@ -216,7 +217,7 @@ public final class ProjectManager {
                     for (org.talend.core.model.properties.Project p : rProjects) {
                         Project project = new Project(p);
                         allReferencedprojects.add(project);
-                        resolveSubRefProject(p, allReferencedprojects, new HashSet<String>());
+                        resolveSubRefProject(p, allReferencedprojects, new HashSet<String>(), force);
                     }
                 }
             }

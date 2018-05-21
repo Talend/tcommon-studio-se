@@ -29,6 +29,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.exception.SystemException;
 import org.talend.commons.utils.VersionUtils;
 import org.talend.commons.utils.encoding.CharsetToolkit;
@@ -36,6 +37,8 @@ import org.talend.commons.utils.generation.JavaUtils;
 import org.talend.commons.utils.resource.FileExtensions;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.IService;
+import org.talend.core.context.Context;
+import org.talend.core.context.RepositoryContext;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.PigudfItem;
@@ -46,6 +49,7 @@ import org.talend.core.model.properties.RoutineItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.utils.JavaResourcesHelper;
+import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.core.runtime.repository.item.ItemProductKeys;
 import org.talend.core.runtime.util.ItemDateParser;
@@ -53,6 +57,7 @@ import org.talend.core.ui.branding.IBrandingService;
 import org.talend.designer.core.ICamelDesignerCoreService;
 import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.repository.ProjectManager;
+import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IRepositoryService;
 import org.talend.repository.model.RepositoryNodeUtilities;
 
@@ -373,7 +378,7 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
 
     @Override
     public void syncAllBeansForLogOn() throws SystemException {
-        for (RoutineItem beanItem : getBeans(true)) {
+        for (RoutineItem beanItem : getBeans(needSyncRefProject())) {
             syncRoutine(beanItem, true, true, true);
         }
     }
@@ -387,6 +392,27 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
         for (RoutineItem beanItem : getBeans(false)) {
             syncRoutine(beanItem, true);
         }
+    }
+
+    protected boolean needSyncRefProject() {
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IRepositoryService.class)) {
+            IRepositoryService repositoryService = (IRepositoryService) GlobalServiceRegister.getDefault()
+                    .getService(IRepositoryService.class);
+            IProxyRepositoryFactory repositoryFactory = repositoryService.getProxyRepositoryFactory();
+            try {
+                boolean isLocalProject = repositoryFactory.isLocalConnectionProvider();
+                boolean isOffline = false;
+                if (!isLocalProject) {
+                    RepositoryContext repositoryContext = (RepositoryContext) CoreRuntimePlugin.getInstance().getContext()
+                            .getProperty(Context.REPOSITORY_CONTEXT_KEY);
+                    isOffline = repositoryContext.isOffline();
+                }
+                return !isLocalProject && !isOffline;
+            } catch (PersistenceException e) {
+                ExceptionHandler.process(e);
+            }
+        }
+        return false;
     }
 
 }

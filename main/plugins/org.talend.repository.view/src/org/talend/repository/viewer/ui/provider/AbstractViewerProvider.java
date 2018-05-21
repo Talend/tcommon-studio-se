@@ -30,7 +30,7 @@ public abstract class AbstractViewerProvider {
     }
 
     protected int getStyle() {
-        return SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL;
+        return SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER;
     }
 
     public TreeViewer createViewer(final Composite parent) {

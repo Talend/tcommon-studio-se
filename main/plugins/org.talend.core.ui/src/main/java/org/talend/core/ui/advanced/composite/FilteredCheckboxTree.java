@@ -163,7 +163,7 @@ public class FilteredCheckboxTree extends Composite {
     }
 
     public FilteredCheckboxTree(Composite parent, int treeStyle) {
-        this(parent, SWT.NONE, new PatternFilter());
+        this(parent, treeStyle, new PatternFilter());
     }
 
     /**

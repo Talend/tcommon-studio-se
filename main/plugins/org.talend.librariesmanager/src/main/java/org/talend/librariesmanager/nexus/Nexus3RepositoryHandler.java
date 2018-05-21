@@ -169,6 +169,7 @@ public class Nexus3RepositoryHandler extends AbstractArtifactRepositoryHandler {
                 artifact.setVersion(jsonObject.getString("version"));
                 artifact.setType(jsonObject.getString("extension"));
                 artifact.setDescription(jsonObject.getString("description"));
+                artifact.setLastUpdated(jsonObject.getString("last_updated"));
                 // artifact.setLicense(jsonObject.getString("license"));
                 // artifact.setLicenseUrl(jsonObject.getString("licenseUrl"));
                 // artifact.setUrl(jsonObject.getString("url"));
