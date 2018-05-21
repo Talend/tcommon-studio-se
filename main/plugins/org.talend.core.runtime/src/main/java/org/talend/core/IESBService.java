@@ -15,6 +15,7 @@ package org.talend.core;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPart;
 import org.talend.core.model.process.INode;
+import org.talend.core.model.process.IProcess;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
@@ -23,7 +24,7 @@ import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
 
 /**
- * DOC nrousseau class global comment. Detailled comment
+ * DOC nrousseau class global comment. ESB SOAP Service
  */
 public interface IESBService extends IService {
 
@@ -73,4 +74,6 @@ public interface IESBService extends IService {
      * @return Appropriate suffix for group id: route, job or service
      */
     public String getDefaultGroupIdSuffix(Property property);
+    
+    public Object createJavaProcessor(IProcess process, Property property, boolean filenameFromLabel);
 }
