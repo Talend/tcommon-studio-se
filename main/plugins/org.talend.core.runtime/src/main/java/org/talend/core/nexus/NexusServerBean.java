@@ -22,7 +22,8 @@ public class NexusServerBean {
 
     public enum NexusType {
         NEXUS_2("NEXUS"),
-        NEXUS_3("NEXUS 3");
+        NEXUS_3("NEXUS 3"),
+        ARTIFACTORY("Artifactory");
 
         String repType;
 

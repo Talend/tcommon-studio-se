@@ -53,5 +53,9 @@
             class="org.talend.librariesmanager.nexus.Nexus3RepositoryHandler"
             type="NEXUS_3">
       </handler>
+      <handler
+            class="org.talend.librariesmanager.nexus.ArtifacoryRepositoryHandler"
+            type="ARTIFACTORY">
+      </handler>
    </extension>
 </plugin>
