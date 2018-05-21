@@ -10,7 +10,9 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jface.wizard.IWizard;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.PlatformUI;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.ui.runtime.image.IImage;
 import org.talend.core.model.metadata.builder.connection.MetadataTable;
@@ -201,4 +203,11 @@ public class ContextItem2JobDocExtContentHandler implements IRepositoryContentHa
         
     }
 
+    @Override
+    public int openWizardDialog(IRepositoryNode repoNode, IWizard wizard) {
+        WizardDialog wizardDialog = new WizardDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), wizard);
+        wizardDialog.setPageSize(780, 540);
+        wizardDialog.create();
+        return wizardDialog.open();
+    }
 }
