@@ -168,6 +168,7 @@ import org.talend.repository.localprovider.exceptions.IncorrectFileException;
 import org.talend.repository.localprovider.i18n.Messages;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryConstants;
+
 import orgomg.cwm.foundation.businessinformation.BusinessinformationPackage;
 
 /**
@@ -639,6 +640,9 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
                                     // no log anymore here since we add the log.error, it should be enough
                                 }
                                 if (property != null) {
+                                    if (property.eResource() != null && property.eResource().getResourceSet() == null) {
+                                        property = reload(property);
+                                    }
                                     if (property.getItem() == null || property.getItem().getState() == null) {
                                         if (type != null) {
                                             log.error("try to load wrong item:" + property.getLabel() + " / " + type);

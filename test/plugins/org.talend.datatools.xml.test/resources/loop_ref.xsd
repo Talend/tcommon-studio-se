@@ -1,0 +1,20 @@
+<xs:schema  version="1.1" elementFormDefault="qualified" xmlns="http://www.cargowise.com/Schemas/Universal/2011/11" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="Shipment">
+    <xs:all>
+      <xs:element name="CommercialInfo" minOccurs="0" type="CommercialInfo" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="CommercialInfo">
+    <xs:all>
+      <xs:element name="SubGroupCollection" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence> 
+            <xs:element name="Amount" minOccurs="1" type="xs:decimal" />
+            <xs:element name="SubGroup" minOccurs="0" maxOccurs="unbounded" type="CommercialInfo" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+
+</xs:schema>

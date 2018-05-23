@@ -552,8 +552,8 @@ public class TreeUtil {
         return getFoxTreeNodesForXmlMap(filePath, absoluteXPathQuery, false);
     }
 
-    private static void getFoxTreeNodesForXmlMap(String filePath, List<FOXTreeNode> list) throws OdaException,
-            URISyntaxException, IOException {
+    private static void getFoxTreeNodesForXmlMap(String filePath, List<FOXTreeNode> list)
+            throws OdaException, URISyntaxException, IOException {
         ATreeNode treeNode = SchemaPopulationUtil.getSchemaTree(filePath, true, 0);
         FOXTreeNode root = cloneATreeNode(treeNode, XmlUtil.isXSDFile(filePath));
         if (root instanceof Element) {
@@ -862,7 +862,8 @@ public class TreeUtil {
         return path;
     }
 
-    private static XSDSchema getSchemaFromZip(XSDPopulationUtil2 popUtil, String fileName) throws IOException, URISyntaxException {
+    private static XSDSchema getSchemaFromZip(XSDPopulationUtil2 popUtil, String fileName)
+            throws IOException, URISyntaxException {
         IPath path = getTempPath();
         path = path.append("unzip_" + new Path(fileName).lastSegment());
         String unzipPath = path.toPortableString();
@@ -896,7 +897,7 @@ public class TreeUtil {
 
     public static FOXTreeNode cloneATreeNode(ATreeNode aNode, boolean isXsd) {
         List<ATreeNode> aNodes = NodeCreationObserver.getList();
-        Map<ATreeNode,FOXTreeNode> mapOldToNewNode = new HashMap<>();
+        Map<ATreeNode, FOXTreeNode> mapOldToNewNode = new HashMap<>();
         for (ATreeNode treeNode : aNodes) {
             if (isXsd && treeNode.getValue() instanceof String) {
                 String currentPath = treeNode.getValue() + "[" + treeNode.getDataType() + "]";
@@ -947,7 +948,10 @@ public class TreeUtil {
                 current.addChild(mapOldToNewNode.get(childNode));
             }
         }
-        return mapOldToNewNode.get(aNode);
+        FOXTreeNode foxNode = mapOldToNewNode.get(aNode);
+        mapOldToNewNode.clear();
+        mapOldToNewNode = null;
+        return foxNode;
     }
 
     public static FOXTreeNode getRootFOXTreeNode(FOXTreeNode node) {

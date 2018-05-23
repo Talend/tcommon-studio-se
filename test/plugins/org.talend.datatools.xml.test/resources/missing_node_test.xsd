@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+ <xs:complexType name="CommercialInfo">
+    <xs:all>
+      <xs:element name="StudentCollection" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="PersonInfo" minOccurs="0" maxOccurs="unbounded" type="FullPersonInfo" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+
+       <xs:element name="TeacherCollection" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="PersonInfo" minOccurs="0" maxOccurs="unbounded" type="FullPersonInfo" />
+          </xs:sequence>
+        </xs:complexType>
+	</xs:element>
+    </xs:all>
+  </xs:complexType>
+
+
+<xs:complexType name="PersonInfo">
+  <xs:sequence>
+    <xs:element name="Firstname" type="xs:string"/>
+    <xs:element name="Lastname" type="xs:string"/>
+    <xs:element name="Hobby" minOccurs="0" maxOccurs="unbounded" type="Hobby" />
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="FullPersonInfo">
+  <xs:complexContent>
+    <xs:extension base="PersonInfo">
+      <xs:sequence>
+        <xs:element name="Address" type="xs:string"/>
+        <xs:element name="City" type="xs:string"/>
+        <xs:element name="Country" type="xs:string"/>
+      </xs:sequence>
+    </xs:extension>
+  </xs:complexContent>
+</xs:complexType>
+
+ <xs:complexType name="Hobby">
+           <xs:sequence>
+                    <xs:element maxOccurs="1" minOccurs="0" name="name" type="xs:string"/>
+            		<xs:element maxOccurs="1" minOccurs="1" name="AddInfo" type="AddInfo"/>
+            </xs:sequence>
+</xs:complexType>
+
+   <xs:complexType name="AddInfo">
+    <xs:all>
+      <xs:element name="Key" minOccurs="1">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="128" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Value" minOccurs="1">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="1024" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+
+</xs:schema>

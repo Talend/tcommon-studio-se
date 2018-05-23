@@ -168,6 +168,8 @@ public interface IRepositoryContentHandler {
     public IWizard newSchemaWizard(IWorkbench workbench, boolean creation, IRepositoryViewObject object,
             MetadataTable metadataTable, String[] existingNames, boolean forceReadOnly);
 
+    public int openWizardDialog(IRepositoryNode repoNode, IWizard wizard);
+
     /**
      * 
      * DOC ycbai Comment method "deleteNode".

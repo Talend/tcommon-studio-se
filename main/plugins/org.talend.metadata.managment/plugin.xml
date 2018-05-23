@@ -14,15 +14,15 @@
       <!-- Seems those 3 are not useful -->
       <classloader
             index="HIVE:HORTONWORKS:HDP_1_0:EMBEDDED"
-            libraries="hive-hbase-handler-0.9.0.jar;hbase-0.92.0.jar;hadoop-core-1.0.3.jar;commons-logging-1.0.4.jar;datanucleus-api-jdo-3.0.7.jar;datanucleus-core-3.0.9.jar;datanucleus-rdbms-3.0.8.jar;hive-builtins-0.9.0.jar;hive-exec-0.9.0_hdp.jar;hive-jdbc-0.9.0_hdp.jar;hive-metastore-0.9.0_hdp.jar;hive-service-0.9.0_hdp.jar;libfb303-0.7.0.jar;libthrift-0.7.0.jar;commons-lang-2.4.jar;antlr-runtime-3.0.1.jar;commons-dbcp-1.4.jar;commons-pool-1.5.4.jar;derby-10.4.2.0.jar;commons-configuration-1.6.jar;jdo2-api-2.3-ec.jar;log4j-1.2.16.jar;slf4j-api-1.6.1.jar;slf4j-log4j12-1.6.1.jar;jackson-core-asl-1.8.8.jar;jackson-mapper-asl-1.8.8.jar">
+            libraries="hive-hbase-handler-0.9.0.jar;hbase-0.92.0.jar;hadoop-core-1.0.3.jar;commons-logging-1.0.4.jar;datanucleus-api-jdo-3.0.7.jar;datanucleus-core-3.0.9.jar;datanucleus-rdbms-3.0.8.jar;hive-builtins-0.9.0.jar;hive-exec-0.9.0_hdp.jar;hive-jdbc-0.9.0_hdp.jar;hive-metastore-0.9.0_hdp.jar;hive-service-0.9.0_hdp.jar;libfb303-0.7.0.jar;libthrift-0.7.0.jar;commons-lang-2.4.jar;antlr-runtime-3.0.1.jar;commons-dbcp-1.4.jar;commons-pool-1.5.4.jar;derby-10.4.2.0.jar;commons-configuration-1.6.jar;jdo2-api-2.3-ec.jar;log4j-1.2.17.jar;slf4j-api-1.6.1.jar;slf4j-log4j12-1.6.1.jar;jackson-core-asl-1.8.8.jar;jackson-mapper-asl-1.8.8.jar">
       </classloader>
       <classloader
             index="HIVE:CLOUDERA:Cloudera_CDH3:STANDALONE"
-            libraries="hadoop-core-0.20.203.0.jar;log4j-1.2.16.jar;hive-exec-0.7.1.jar;hive-jdbc-0.7.1.jar;hive-metastore-0.7.1.jar;hive-service-0.7.1.jar;libfb303.jar;slf4j-api-1.6.1.jar;slf4j-log4j12-1.6.1.jar;commons-logging-1.1.1.jar;commons-logging-api-1.0.4.jar">
+            libraries="hadoop-core-0.20.203.0.jar;log4j-1.2.17.jar;hive-exec-0.7.1.jar;hive-jdbc-0.7.1.jar;hive-metastore-0.7.1.jar;hive-service-0.7.1.jar;libfb303.jar;slf4j-api-1.6.1.jar;slf4j-log4j12-1.6.1.jar;commons-logging-1.1.1.jar;commons-logging-api-1.0.4.jar">
       </classloader>
       <classloader
             index="HIVE:AMAZON_EMR:MapR_EMR:STANDALONE"
-            libraries="hadoop-core-0.20.203.0.jar;log4j-1.2.16.jar;hive-exec-0.7.1.jar;hive-jdbc-0.7.1.jar;hive-metastore-0.7.1.jar;hive-service-0.7.1.jar;libfb303.jar;slf4j-api-1.6.1.jar;slf4j-log4j12-1.6.1.jar;commons-logging-1.1.1.jar;commons-logging-api-1.0.4.jar">
+            libraries="hadoop-core-0.20.203.0.jar;log4j-1.2.17.jar;hive-exec-0.7.1.jar;hive-jdbc-0.7.1.jar;hive-metastore-0.7.1.jar;hive-service-0.7.1.jar;libfb303.jar;slf4j-api-1.6.1.jar;slf4j-log4j12-1.6.1.jar;commons-logging-1.1.1.jar;commons-logging-api-1.0.4.jar">
       </classloader>
       <!-- -->
       <classloader

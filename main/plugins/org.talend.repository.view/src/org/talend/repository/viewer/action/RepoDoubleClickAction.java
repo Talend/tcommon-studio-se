@@ -412,6 +412,10 @@ public class RepoDoubleClickAction extends Action {
                     && obj.getContentType().equals(ERepositoryObjectType.PROCESS_ROUTE) && isDITestCaseEditOrReadAction(current)) {
                 // TESB-17272: Cannot open route test case editor by double click
                 continue;
+            } else if (nodeType != null && obj.getContentType() != null
+                    && !obj.getContentType().equals(ERepositoryObjectType.PROCESS_ROUTE)
+                    && isRouteTestCaseEditOrReadAction(current)) {
+                continue;
             } else if (obj.getObject() != null
                     && current.getClassForDoubleClick().getSimpleName()
                             .equals(obj.getObject().getProperty().getItem().eClass().getName())) {
@@ -450,6 +454,11 @@ public class RepoDoubleClickAction extends Action {
 
         return "org.talend.testcontainer.core.ui.actions.EditTestContainer".equals(action.getId())
                 || "org.talend.testcontainer.core.ui.actions.ReadTestContainer".equals(action.getId());
+    }
+
+    private boolean isRouteTestCaseEditOrReadAction(ITreeContextualAction action) {
+        return "org.talend.camel.testcontainer.ui.actions.EditRouteTestContainer".equals(action.getId())
+                || "org.talend.camel.testcontainer.ui.actions.ReadRouteTestContainer".equals(action.getId());
     }
 
     // protected ISelection getSelection() {

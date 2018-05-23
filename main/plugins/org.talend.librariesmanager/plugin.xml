@@ -36,7 +36,7 @@
       <systemRoutine
             name="SharedDBConnectionLog4j">
          <library
-               name="log4j-1.2.16.jar">
+               name="log4j-1.2.17.jar">
             <bundleId
                   bundleId="">
             </bundleId>

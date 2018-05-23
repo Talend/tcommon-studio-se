@@ -3161,6 +3161,7 @@ public class DatabaseForm extends AbstractForm {
         passwordTxt.setEditable(!isContextMode());
         principalTxt.setEditable(!isContextMode());
         keytabTxt.setEditable(!isContextMode());
+        metastorePort.setEditable(!isContextMode());
         additionalJDBCSettingsText.setEditable(!isContextMode());
         useSSLEncryption.setEnabled(!isContextMode());
         trustStorePath.setEditable(!isContextMode());
@@ -6555,6 +6556,7 @@ public class DatabaseForm extends AbstractForm {
             boolean addSSLEncryptionContext = isSupportSSLEncryption() && isSupportSSLTrustStore();
             addContextParams(EDBParamName.hiveSSLTrustStorePath, addSSLEncryptionContext);
             addContextParams(EDBParamName.hiveSSLTrustStorePassword, addSSLEncryptionContext);
+            addContextParams(EDBParamName.HiveMetastorePort, true);
 
             addContextParams(EDBParamName.Username, !useKerberos.getSelection() && useMaprTForHive.getSelection());
             addContextParams(EDBParamName.Maprticket_Password, !useKerberos.getSelection() && useMaprTForHive.getSelection());

@@ -213,11 +213,13 @@ public class MetadataService implements IMetadataService {
             }
 
             // Handle the extention node wizards.
+            IRepositoryContentHandler repoContentHandler = null;
             if (relatedWizard == null) {
                 for (IRepositoryContentHandler handler : RepositoryContentManager.getHandlers()) {
                     if (handler.isRepObjType(objectType)) {
                         relatedWizard = handler.newWizard(PlatformUI.getWorkbench(), creation, realNode, null);
                         if (relatedWizard != null) {
+                            repoContentHandler = handler;
                             break;
                         }
                     }
@@ -236,11 +238,17 @@ public class MetadataService implements IMetadataService {
                 }
                 if (connItem != null && changed) {
                     // Open the Wizard
-                    WizardDialog wizardDialog = new WizardDialog(Display.getCurrent().getActiveShell(), relatedWizard);
-                    wizardDialog.setPageSize(780, 540);
-                    wizardDialog.create();
-                    if (wizardDialog.open() == wizardDialog.OK) {
-                        return connItem;
+                    if (repoContentHandler != null) {
+                        if (repoContentHandler.openWizardDialog(repoNode, relatedWizard) == WizardDialog.OK) {
+                            return connItem;
+                        }
+                    } else {
+                        WizardDialog wizardDialog = new WizardDialog(Display.getCurrent().getActiveShell(), relatedWizard);
+                        wizardDialog.setPageSize(780, 540);
+                        wizardDialog.create();
+                        if (wizardDialog.open() == WizardDialog.OK) {
+                            return connItem;
+                        }
                     }
                 }
             }

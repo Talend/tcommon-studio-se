@@ -1480,6 +1480,10 @@ public final class DBConnectionContextUtils {
             conn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_ADDITIONAL_JDBC_SETTINGS,
                     ContextParameterUtils.getOriginalValue(contextType, addtionalJDBCParameters));
 
+            String metastoreport = conn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_THRIFTPORT);
+            conn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_THRIFTPORT,
+                    ContextParameterUtils.getOriginalValue(contextType, metastoreport));
+
             String sslTrustStorePath = conn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_SSL_TRUST_STORE_PATH);
             conn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_SSL_TRUST_STORE_PATH,
                     ContextParameterUtils.getOriginalValue(contextType, sslTrustStorePath));
