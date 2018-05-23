@@ -65,7 +65,7 @@ import org.talend.core.model.general.ILibrariesService.IChangedLibrariesListener
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.model.general.ModuleStatusProvider;
-import org.talend.core.nexus.NexusServerBean;
+import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.NexusServerUtils;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.nexus.TalendMavenResolver;
@@ -282,7 +282,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
             jarFile = retrieveJarFromLocal(module);
             // retrieve form custom nexus server automatically
             TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
-            NexusServerBean customNexusServer = manager.getCustomNexusServer();
+            ArtifactRepositoryBean customNexusServer = manager.getCustomNexusServer();
             if (customNexusServer != null) {
                 Set<String> toResolve = guessMavenURI(module);
                 for (String uri : toResolve) {
@@ -397,7 +397,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
      * @throws IOException
      */
     @Override
-    public File resolveJar(final NexusServerBean customNexusServer, String uri) throws Exception, IOException {
+    public File resolveJar(final ArtifactRepositoryBean customNexusServer, String uri) throws Exception, IOException {
         File resolvedFile = TalendMavenResolver.resolve(uri);
         if (resolvedFile != null) {
             // reset module status
@@ -1484,12 +1484,12 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 
     private boolean isLocalJarSameAsNexus(String jarUri) {
         TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
-        final NexusServerBean customNexusServer = manager.getCustomNexusServer();
+        final ArtifactRepositoryBean customNexusServer = manager.getCustomNexusServer();
         return isLocalJarSameAsNexus(manager, customNexusServer, jarUri);
     }
 
     @Override
-    public boolean isLocalJarSameAsNexus(TalendLibsServerManager manager, final NexusServerBean customNexusServer,
+    public boolean isLocalJarSameAsNexus(TalendLibsServerManager manager, final ArtifactRepositoryBean customNexusServer,
             String jarUri) {
         if (manager == null || customNexusServer == null || jarUri == null) {
             return false;

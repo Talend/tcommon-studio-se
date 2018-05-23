@@ -24,7 +24,7 @@ import org.eclipse.m2e.core.embedder.MavenConfigurationChangeEvent;
 import org.eclipse.m2e.core.internal.preferences.MavenPreferenceConstants;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.nexus.IRepositoryArtifactHandler;
-import org.talend.core.nexus.NexusServerBean;
+import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.RepositoryArtifactHandlerManager;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.nexus.TalendMavenResolver;
@@ -71,7 +71,7 @@ public class MavenUIService implements IMavenUIService {
         Dictionary<String, String> props = getTalendMavenSetting();
         boolean updated = false;
         if (setupCustomLibNexus) {
-            NexusServerBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
+            ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
             IRepositoryArtifactHandler repositoryHandler = RepositoryArtifactHandlerManager
                     .getRepositoryHandler(customNexusServer);
             if (repositoryHandler != null) {

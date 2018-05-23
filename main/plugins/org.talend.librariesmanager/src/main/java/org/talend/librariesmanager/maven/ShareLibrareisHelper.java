@@ -27,7 +27,7 @@ import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.nexus.IRepositoryArtifactHandler;
-import org.talend.core.nexus.NexusServerBean;
+import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.RepositoryArtifactHandlerManager;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
@@ -52,7 +52,7 @@ public abstract class ShareLibrareisHelper {
             int searchLimit = 50;
             setJobName(job, Messages.getString("ShareLibsJob.message", TYPE_NEXUS));
             final List<MavenArtifact> searchResults = new ArrayList<MavenArtifact>();
-            NexusServerBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
+            ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
             IRepositoryArtifactHandler customerRepHandler = RepositoryArtifactHandlerManager
                     .getRepositoryHandler(customNexusServer);
             if (customerRepHandler != null) {

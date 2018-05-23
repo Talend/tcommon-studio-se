@@ -15,7 +15,7 @@ package org.talend.core.service;
 import org.talend.commons.exception.LoginException;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.core.IService;
-import org.talend.core.nexus.NexusServerBean;
+import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.utils.json.JSONException;
 import org.talend.utils.json.JSONObject;
 
@@ -27,10 +27,10 @@ public interface IRemoteService extends IService {
     public JSONObject getLicenseKey(String user, String password, String url, String projectLabel) throws PersistenceException,
             LoginException;
 
-    public NexusServerBean getUpdateRepositoryUrl(String user, String password, String url) throws PersistenceException,
+    public ArtifactRepositoryBean getUpdateRepositoryUrl(String user, String password, String url) throws PersistenceException,
             LoginException;
 
-    public NexusServerBean getLibNexusServer(String user, String password, String url) throws PersistenceException,
+    public ArtifactRepositoryBean getLibNexusServer(String user, String password, String url) throws PersistenceException,
             LoginException, JSONException;
 
     boolean isAuthorized(String value);

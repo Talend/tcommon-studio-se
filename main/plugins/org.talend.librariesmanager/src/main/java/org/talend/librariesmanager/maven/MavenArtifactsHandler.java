@@ -19,7 +19,7 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.model.general.ModuleStatusProvider;
 import org.talend.core.nexus.IRepositoryArtifactHandler;
-import org.talend.core.nexus.NexusServerBean;
+import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.RepositoryArtifactHandlerManager;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.nexus.TalendMavenResolver;
@@ -118,7 +118,7 @@ public class MavenArtifactsHandler {
     }
 
     public void deploy(File content, MavenArtifact artifact) throws Exception {
-        NexusServerBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
+        ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
         IRepositoryArtifactHandler hander = RepositoryArtifactHandlerManager.getRepositoryHandler(customNexusServer);
         if (hander != null) {
             hander.deploy(content, artifact.getGroupId(), artifact.getArtifactId(), artifact.getClassifier(), artifact.getType(),

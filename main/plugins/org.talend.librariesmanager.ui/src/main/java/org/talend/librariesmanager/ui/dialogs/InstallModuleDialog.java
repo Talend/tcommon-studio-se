@@ -50,7 +50,7 @@ import org.talend.commons.ui.swt.dialogs.IConfigModuleDialog;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.model.general.ModuleStatusProvider;
-import org.talend.core.nexus.NexusServerBean;
+import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.librariesmanager.ui.LibManagerUiPlugin;
@@ -346,7 +346,7 @@ public class InstallModuleDialog extends TitleAreaDialog implements ICellEditorD
     }
 
     private boolean checkDetectButtonStatus(ELibraryInstallStatus localStatus, String mavenURI) {
-        NexusServerBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
+        ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
         if (customNexusServer != null || localStatus == null) {
             setMessage(Messages.getString("InstallModuleDialog.error.detectMvnURI", mavenURI), IMessageProvider.ERROR);
             return false;

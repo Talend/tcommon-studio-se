@@ -25,7 +25,7 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.equinox.p2.metadata.IInstallableUnit;
 import org.eclipse.equinox.p2.metadata.Version;
-import org.talend.core.nexus.NexusServerBean;
+import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.designer.maven.utils.PomUtil;
 import org.talend.updates.runtime.i18n.Messages;
 import org.talend.updates.runtime.model.P2ExtraFeature;
@@ -45,13 +45,13 @@ public class ComponentNexusP2ExtraFeature extends ComponentP2ExtraFeature {
 
     private char[] nexusPass;
 
-    protected NexusServerBean serverSetting;
+    protected ArtifactRepositoryBean serverSetting;
 
     public ComponentNexusP2ExtraFeature() {
         super();
     }
 
-    public NexusServerBean getServerSetting() {
+    public ArtifactRepositoryBean getServerSetting() {
         if (serverSetting == null) {
             serverSetting = NexusServerManager.getInstance().getPropertyNexusServer();
         }
@@ -69,7 +69,7 @@ public class ComponentNexusP2ExtraFeature extends ComponentP2ExtraFeature {
 
     public String getNexusURL() {
         if (nexusURL == null && getServerSetting() != null) {
-            setNexusURL(getServerSetting().getRepositoryURI());
+            setNexusURL(getServerSetting().getRepositoryURL());
         }
         return nexusURL;
     }

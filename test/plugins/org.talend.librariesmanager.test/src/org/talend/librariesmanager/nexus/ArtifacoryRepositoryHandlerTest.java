@@ -23,8 +23,8 @@ import org.eclipse.core.runtime.Platform;
 import org.junit.Assert;
 import org.junit.Test;
 import org.osgi.framework.Bundle;
-import org.talend.core.nexus.NexusServerBean;
-import org.talend.core.nexus.NexusServerBean.NexusType;
+import org.talend.core.nexus.ArtifactRepositoryBean;
+import org.talend.core.nexus.ArtifactRepositoryBean.NexusType;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
 
@@ -36,7 +36,7 @@ public class ArtifacoryRepositoryHandlerTest {
 
     @Test
     public void testGetRepositoryURL() {
-        NexusServerBean serverBean = new NexusServerBean();
+        ArtifactRepositoryBean serverBean = new ArtifactRepositoryBean();
         serverBean.setServer("http://localhost:8081/artifactory");
         serverBean.setRepositoryId("talend-custom-libs-release");
         serverBean.setSnapshotRepId("snapshot-repository");
@@ -51,7 +51,7 @@ public class ArtifacoryRepositoryHandlerTest {
 
     @Test
     public void testSearch() throws Exception {
-        NexusServerBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
+        ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
         if (customNexusServer == null || !customNexusServer.getType().equals(NexusType.ARTIFACTORY.name())) {
             fail("Test not possible since Aritfactory is not setup");
         }

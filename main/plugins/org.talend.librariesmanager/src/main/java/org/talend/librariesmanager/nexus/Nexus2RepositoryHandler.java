@@ -116,8 +116,11 @@ public class Nexus2RepositoryHandler extends AbstractArtifactRepositoryHandler {
         return new Nexus2RepositoryHandler();
     }
 
-    /* (non-Javadoc)
-     * @see org.talend.core.nexus.IRepositoryArtifactHandler#deployWithPOM(java.io.File, java.io.File, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.talend.core.nexus.IRepositoryArtifactHandler#deployWithPOM(java.io.File, java.io.File, java.lang.String,
+     * java.lang.String, java.lang.String, java.lang.String, java.lang.String)
      */
     @Override
     public void deployWithPOM(File content, File pomFile, String groupId, String artifactId, String classifier, String extension,
@@ -131,8 +134,8 @@ public class Nexus2RepositoryHandler extends AbstractArtifactRepositoryHandler {
         }
         String repositoryurl = getRepositoryURL(isRelease);
         String localRepository = MavenPlugin.getMaven().getLocalRepositoryPath();
-        RepositorySystemFactory.deployWithPOM(content, pomFile, localRepository, repositoryId, repositoryurl, serverBean.getUserName(),
-                serverBean.getPassword(), groupId, artifactId, classifier, extension, version);
+        RepositorySystemFactory.deployWithPOM(content, pomFile, localRepository, repositoryId, repositoryurl,
+                serverBean.getUserName(), serverBean.getPassword(), groupId, artifactId, classifier, extension, version);
     }
 
 }

@@ -17,10 +17,11 @@ import java.util.Dictionary;
 import java.util.Hashtable;
 
 import org.apache.commons.lang3.StringUtils;
+import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.IRepositoryArtifactHandler;
 import org.talend.core.nexus.NexusConstants;
-import org.talend.core.nexus.NexusServerBean;
 import org.talend.core.nexus.TalendMavenResolver;
+import org.talend.utils.string.StringUtilities;
 
 /**
  * created by wchen on Aug 2, 2017 Detailled comment
@@ -32,7 +33,7 @@ public abstract class AbstractArtifactRepositoryHandler implements IRepositoryAr
 
     private String PROPERTY_REPOSITORIES = "repositories";
 
-    protected NexusServerBean serverBean;
+    protected ArtifactRepositoryBean serverBean;
 
     /*
      * (non-Javadoc)
@@ -40,7 +41,7 @@ public abstract class AbstractArtifactRepositoryHandler implements IRepositoryAr
      * @see org.talend.core.nexus.IArtifacRepositoryHandler#setArtifactServerBean(org.talend.core.nexus.NexusServerBean)
      */
     @Override
-    public void setArtifactServerBean(NexusServerBean serverBean) {
+    public void setArtifactServerBean(ArtifactRepositoryBean serverBean) {
         this.serverBean = serverBean;
     }
 
@@ -50,7 +51,7 @@ public abstract class AbstractArtifactRepositoryHandler implements IRepositoryAr
      * @return the serverBean
      */
     @Override
-    public NexusServerBean getArtifactServerBean() {
+    public ArtifactRepositoryBean getArtifactServerBean() {
         return this.serverBean;
     }
 
