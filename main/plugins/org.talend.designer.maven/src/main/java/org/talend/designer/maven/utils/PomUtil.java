@@ -861,6 +861,9 @@ public class PomUtil {
     }
 
     public static void backupPomFile(ITalendProcessJavaProject talendProject) {
+        if (talendProject == null) {
+            return;
+        }
         final IProject project = talendProject.getProject();
         final IFile backFile = project.getFile(TalendMavenConstants.POM_BACKUP_FILE_NAME);
         final IFile pomFile = project.getFile(TalendMavenConstants.POM_FILE_NAME);
