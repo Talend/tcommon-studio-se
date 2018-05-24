@@ -16,7 +16,6 @@ import java.io.File;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
-import org.apache.commons.lang3.StringUtils;
 import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.IRepositoryArtifactHandler;
 import org.talend.core.nexus.NexusConstants;
@@ -116,16 +115,32 @@ public abstract class AbstractArtifactRepositoryHandler implements IRepositoryAr
             repositoryId = serverBean.getSnapshotRepId();
         }
         String repositoryBaseURI = serverBean.getServer();
-        if (repositoryBaseURI.endsWith(NexusConstants.SLASH)) {
-            repositoryBaseURI = repositoryBaseURI.substring(0, repositoryBaseURI.length() - 1);
+        if (repositoryBaseURI == null) {
+            repositoryBaseURI = ""; //$NON-NLS-1$
         }
+        repositoryBaseURI = StringUtilities.removeEndingString(repositoryBaseURI, "/"); //$NON-NLS-1$
+        if (repositoryId == null) {
+            repositoryId = ""; //$NON-NLS-1$
+        }
+        if (repositoryBaseURI.isEmpty()) {
+            return addEndSlash(repositoryId);
+        }
+        repositoryId = StringUtilities.removeStartingString(repositoryId, "/"); //$NON-NLS-1$
+        if (repositoryId.isEmpty()) {
+            return addEndSlash(repositoryBaseURI);
+        }
+
         repositoryBaseURI += getRepositoryPrefixPath();
-        if (StringUtils.isNotBlank(repositoryId)) {
-            repositoryBaseURI += repositoryId + NexusConstants.SLASH;
-        } else if (!repositoryBaseURI.endsWith(NexusConstants.SLASH)) {
-            repositoryBaseURI += NexusConstants.SLASH;
+        repositoryBaseURI += repositoryId + NexusConstants.SLASH;
+
+        return addEndSlash(repositoryBaseURI);
+    }
+
+    private String addEndSlash(String URL) {
+        if (!URL.endsWith("/")) {
+            URL = URL + "/";
         }
-        return repositoryBaseURI;
+        return URL;
     }
 
     protected abstract String getRepositoryPrefixPath();

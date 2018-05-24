@@ -60,17 +60,17 @@ public class ArtifactRepositoryBean {
         }
     }
 
-    private String server;
+    private String server = "";
 
-    private String userName;
+    private String userName = "";
 
-    private String password;
+    private String password = "";
 
-    private String repositoryId;
+    private String repositoryId = "";
 
     private boolean official;
 
-    private String snapshotRepId;
+    private String snapshotRepId = "";
 
     private String nexusDefaultGroupID = ""; //$NON-NLS-1$
 

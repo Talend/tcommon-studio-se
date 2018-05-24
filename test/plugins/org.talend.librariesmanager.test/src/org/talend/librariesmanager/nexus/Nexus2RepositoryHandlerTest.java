@@ -65,6 +65,85 @@ public class Nexus2RepositoryHandlerTest {
     }
 
     @Test
+    public void testGetNexusDefaultReleaseRepoUrl3() {
+        final String RELEASE = "release";
+        ArtifactRepositoryBean bean = new ArtifactRepositoryBean();
+        bean.setServer(NEXUS_SERVER + "//");
+        bean.setRepositoryId(RELEASE);
+        Nexus2RepositoryHandler handler = new Nexus2RepositoryHandler();
+        String expect = NEXUS_SERVER + handler.getRepositoryPrefixPath() + RELEASE + "/";
+        assertTrue(expect.equals(bean.getRepositoryURL()));
+    }
+
+    @Test
+    public void testGetNexusDefaultReleaseRepoUrl4() {
+        final String RELEASE = "release";
+        ArtifactRepositoryBean bean = new ArtifactRepositoryBean();
+        bean.setServer(NEXUS_SERVER);
+        bean.setRepositoryId("/" + RELEASE);
+        Nexus2RepositoryHandler handler = new Nexus2RepositoryHandler();
+        String expect = NEXUS_SERVER + handler.getRepositoryPrefixPath() + RELEASE + "/";
+        assertTrue(expect.equals(bean.getRepositoryURL()));
+    }
+
+    @Test
+    public void testGetNexusDefaultReleaseRepoUrl5() {
+        final String RELEASE = "release";
+        ArtifactRepositoryBean bean = new ArtifactRepositoryBean();
+        bean.setServer(NEXUS_SERVER);
+        bean.setRepositoryId("//" + RELEASE);
+        Nexus2RepositoryHandler handler = new Nexus2RepositoryHandler();
+        String expect = NEXUS_SERVER + handler.getRepositoryPrefixPath() + RELEASE + "/";
+        assertTrue(expect.equals(bean.getRepositoryURL()));
+    }
+
+    @Test
+    public void testGetNexusDefaultReleaseRepoUrl6() {
+        final String RELEASE = "release";
+        ArtifactRepositoryBean bean = new ArtifactRepositoryBean();
+        bean.setServer(NEXUS_SERVER + "/");
+        bean.setRepositoryId("/" + RELEASE);
+        Nexus2RepositoryHandler handler = new Nexus2RepositoryHandler();
+        String expect = NEXUS_SERVER + handler.getRepositoryPrefixPath() + RELEASE + "/";
+        assertTrue(expect.equals(bean.getRepositoryURL()));
+    }
+
+    @Test
+    public void testGetNexusDefaultReleaseRepoUrl7() {
+        final String RELEASE = "release";
+        ArtifactRepositoryBean bean = new ArtifactRepositoryBean();
+        bean.setServer(NEXUS_SERVER + "//");
+        bean.setRepositoryId("//" + RELEASE);
+        Nexus2RepositoryHandler handler = new Nexus2RepositoryHandler();
+        String expect = NEXUS_SERVER + handler.getRepositoryPrefixPath() + RELEASE + "/";
+        assertTrue(expect.equals(bean.getRepositoryURL()));
+    }
+
+    @Test
+    public void testGetNexusDefaultReleaseRepoUrl8() {
+        final String RELEASE = "release";
+        Nexus2RepositoryHandler handler = new Nexus2RepositoryHandler();
+        final String FULL_RELEASE_URL = NEXUS_SERVER + handler.getRepositoryPrefixPath() + RELEASE + "/";
+        ArtifactRepositoryBean bean = new ArtifactRepositoryBean();
+        bean.setServer(null);
+        bean.setRepositoryId(FULL_RELEASE_URL);
+        String expect = FULL_RELEASE_URL;
+        assertTrue(expect.equals(bean.getRepositoryURL()));
+    }
+
+    @Test
+    public void testGetNexusDefaultReleaseRepoUrl9() {
+        final String RELEASE = "release";
+        Nexus2RepositoryHandler handler = new Nexus2RepositoryHandler();
+        final String FULL_RELEASE_URL = NEXUS_SERVER + handler.getRepositoryPrefixPath() + RELEASE + "/";
+        ArtifactRepositoryBean bean = new ArtifactRepositoryBean();
+        bean.setServer(FULL_RELEASE_URL);
+        bean.setRepositoryId(null);
+        String expect = FULL_RELEASE_URL;
+        assertTrue(expect.equals(bean.getRepositoryURL()));
+    }
+
+    @Test
     public void testGetNexusDefaultSnapshotRepoUrl1() {
         final String SNAPSHOT = "snapshot";
         ArtifactRepositoryBean bean = new ArtifactRepositoryBean();
@@ -83,6 +162,85 @@ public class Nexus2RepositoryHandlerTest {
         bean.setSnapshotRepId(SNAPSHOT);
         Nexus2RepositoryHandler handler = new Nexus2RepositoryHandler();
         String expect = NEXUS_SERVER + handler.getRepositoryPrefixPath() + SNAPSHOT + "/";
+        assertTrue(expect.equals(bean.getRepositoryURL(false)));
+    }
+
+    @Test
+    public void testGetNexusDefaultSnapshotRepoUrl3() {
+        final String SNAPSHOT = "snapshot";
+        ArtifactRepositoryBean bean = new ArtifactRepositoryBean();
+        bean.setServer(NEXUS_SERVER + "//");
+        bean.setSnapshotRepId(SNAPSHOT);
+        Nexus2RepositoryHandler handler = new Nexus2RepositoryHandler();
+        String expect = NEXUS_SERVER + handler.getRepositoryPrefixPath() + SNAPSHOT + "/";
+        assertTrue(expect.equals(bean.getRepositoryURL(false)));
+    }
+
+    @Test
+    public void testGetNexusDefaultSnapshotRepoUrl4() {
+        final String SNAPSHOT = "snapshot";
+        ArtifactRepositoryBean bean = new ArtifactRepositoryBean();
+        bean.setServer(NEXUS_SERVER);
+        bean.setSnapshotRepId("/" + SNAPSHOT);
+        Nexus2RepositoryHandler handler = new Nexus2RepositoryHandler();
+        String expect = NEXUS_SERVER + handler.getRepositoryPrefixPath() + SNAPSHOT + "/";
+        assertTrue(expect.equals(bean.getRepositoryURL(false)));
+    }
+
+    @Test
+    public void testGetNexusDefaultSnapshotRepoUrl5() {
+        final String SNAPSHOT = "snapshot";
+        ArtifactRepositoryBean bean = new ArtifactRepositoryBean();
+        bean.setServer(NEXUS_SERVER);
+        bean.setSnapshotRepId("//" + SNAPSHOT);
+        Nexus2RepositoryHandler handler = new Nexus2RepositoryHandler();
+        String expect = NEXUS_SERVER + handler.getRepositoryPrefixPath() + SNAPSHOT + "/";
+        assertTrue(expect.equals(bean.getRepositoryURL(false)));
+    }
+
+    @Test
+    public void testGetNexusDefaultSnapshotRepoUrl6() {
+        final String SNAPSHOT = "snapshot";
+        ArtifactRepositoryBean bean = new ArtifactRepositoryBean();
+        bean.setServer(NEXUS_SERVER + "/");
+        bean.setSnapshotRepId("/" + SNAPSHOT);
+        Nexus2RepositoryHandler handler = new Nexus2RepositoryHandler();
+        String expect = NEXUS_SERVER + handler.getRepositoryPrefixPath() + SNAPSHOT + "/";
+        assertTrue(expect.equals(bean.getRepositoryURL(false)));
+    }
+
+    @Test
+    public void testGetNexusDefaultSnapshotRepoUrl7() {
+        final String SNAPSHOT = "snapshot";
+        ArtifactRepositoryBean bean = new ArtifactRepositoryBean();
+        bean.setServer(NEXUS_SERVER + "//");
+        bean.setSnapshotRepId("//" + SNAPSHOT);
+        Nexus2RepositoryHandler handler = new Nexus2RepositoryHandler();
+        String expect = NEXUS_SERVER + handler.getRepositoryPrefixPath() + SNAPSHOT + "/";
+        assertTrue(expect.equals(bean.getRepositoryURL(false)));
+    }
+
+    @Test
+    public void testGetNexusDefaultSnapshotRepoUrl8() {
+        final String SNAPSHOT = "snapshot";
+        Nexus2RepositoryHandler handler = new Nexus2RepositoryHandler();
+        String FULL_RELEASE_URL = NEXUS_SERVER + handler.getRepositoryPrefixPath() + SNAPSHOT + "/";
+        ArtifactRepositoryBean bean = new ArtifactRepositoryBean();
+        bean.setServer(null);
+        bean.setSnapshotRepId(FULL_RELEASE_URL);
+        String expect = FULL_RELEASE_URL;
+        assertTrue(expect.equals(bean.getRepositoryURL(false)));
+    }
+
+    @Test
+    public void testGetNexusDefaultSnapshotRepoUrl9() {
+        final String SNAPSHOT = "snapshot";
+        Nexus2RepositoryHandler handler = new Nexus2RepositoryHandler();
+        String FULL_RELEASE_URL = NEXUS_SERVER + handler.getRepositoryPrefixPath() + SNAPSHOT + "/";
+        ArtifactRepositoryBean bean = new ArtifactRepositoryBean();
+        bean.setServer(FULL_RELEASE_URL);
+        bean.setSnapshotRepId(null);
+        String expect = FULL_RELEASE_URL;
         assertTrue(expect.equals(bean.getRepositoryURL(false)));
     }
 
