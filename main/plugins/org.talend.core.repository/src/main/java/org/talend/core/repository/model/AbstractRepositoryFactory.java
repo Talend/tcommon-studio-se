@@ -326,4 +326,14 @@ public abstract class AbstractRepositoryFactory implements IRepositoryFactory {
     public void setStorage(String storage) {
         this.storage = storage;
     }
+
+    @Override
+    public boolean isRepositoryBusy() {
+        return false;
+    }
+
+    @Override
+    public RepositoryWorkUnit getWorkUnitInProgress() {
+        return null;
+    }
 }
