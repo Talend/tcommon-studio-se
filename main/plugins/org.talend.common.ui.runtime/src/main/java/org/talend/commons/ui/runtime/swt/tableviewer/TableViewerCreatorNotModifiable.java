@@ -293,19 +293,20 @@ public class TableViewerCreatorNotModifiable<B> {
         this.compositeParent = compositeParent;
         this.emptyZoneColor = compositeParent.getDisplay().getSystemColor(SWT.COLOR_WHITE);
 
-        initLazyLoad();
     }
 
-    private void initLazyLoad() {
+    public static boolean getRecommandLazyLoad() {
+        boolean recommandLazyLoad = false;
         if (isLazyLoadingDisabled()) {
-            lazyLoad = false;
+            recommandLazyLoad = false;
         } else {
             if (EnvironmentUtils.isLinuxUnixSystem()) {
-                lazyLoad = false;
+                recommandLazyLoad = false;
             } else {
-                lazyLoad = true;
+                recommandLazyLoad = true;
             }
         }
+        return recommandLazyLoad;
     }
 
     /**
@@ -2214,7 +2215,7 @@ public class TableViewerCreatorNotModifiable<B> {
         // "disableLazyLoading" and if set to true we won't set virtual here. (user would set it manually).
     }
  
-    private boolean isLazyLoadingDisabled() {
+    public static boolean isLazyLoadingDisabled() {
         return Boolean.getBoolean("talend.table.disableLazyLoading"); //$NON-NLS-1$
     }
 }
