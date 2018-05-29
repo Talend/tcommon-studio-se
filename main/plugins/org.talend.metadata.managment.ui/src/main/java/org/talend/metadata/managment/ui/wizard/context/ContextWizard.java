@@ -353,8 +353,14 @@ public class ContextWizard extends CheckLastVersionRepositoryWizard implements I
                         (ITDQRepositoryService) GlobalServiceRegister.getDefault().getService(
                                 ITDQRepositoryService.class);
             }
-            if (tdqRepService != null && CoreRuntimePlugin.getInstance().isDataProfilePerspectiveSelected()) {
-                tdqRepService.refresh(contextItem);
+            if (tdqRepService != null) {
+                // udpate all ana/reports who used this context
+                if (!creation) {
+                    tdqRepService.updateAllContextInAnalysisAndReport(contextItem, (JobContextManager) contextManager);
+                }
+                if (CoreRuntimePlugin.getInstance().isDataProfilePerspectiveSelected()) {
+                    tdqRepService.refresh(contextItem);
+                }
             }
             return true;
         } else {

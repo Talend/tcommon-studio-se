@@ -422,18 +422,6 @@ public class ContextNebulaGridComposite extends AbstractContextTabEditComposite 
                                 jobContextManager.setModified(true);
                             }
 
-                            List<IContext> listContext = contextManager.getListContext();
-                            if (listContext != null) {
-                                for (IContext context : listContext) {
-                                    List<IContextParameter> contextParameterList = context.getContextParameterList();
-                                    if (contextParameterList != null) {
-                                        for (IContextParameter contextParameter : contextParameterList) {
-                                            contextParameter.setSource(IContextParameter.BUILT_IN);
-                                        }
-                                    }
-                                }
-                            }
-
                             contextManager.fireContextsChangedEvent();
                         }
                     }
