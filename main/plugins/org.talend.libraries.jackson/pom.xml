@@ -9,4 +9,52 @@
   </parent>
   <artifactId>org.talend.libraries.jackson</artifactId>
   <packaging>eclipse-plugin</packaging>
+  
+  <properties>
+    <libs.dir>${project.basedir}/libs</libs.dir>
+  </properties>
+  
+  <build>
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-clean-plugin</artifactId>
+      <version>3.1.0</version>
+      <configuration>
+        <filesets>
+          <fileset>
+            <directory>${libs.dir}</directory>
+            <includes>
+              <include>json-lib-*.jar</include>
+            </includes>
+          </fileset>
+        </filesets>
+      </configuration>
+    </plugin>
+	<plugin>
+	  <groupId>org.apache.maven.plugins</groupId>
+	  <artifactId>maven-dependency-plugin</artifactId>
+	  <version>3.1.1</version>
+	  <executions>
+	    <execution>
+		  <id>copy-jars</id>
+		  <phase>generate-sources</phase>
+		  <goals>
+			<goal>copy</goal>
+		  </goals>
+		  <configuration>
+		    <artifactItems>
+			  <artifactItem>
+			    <groupId>net.sf.json-lib</groupId>
+				<artifactId>json-lib</artifactId>
+				<version>2.4.1-talend</version>
+				<type>jar</type>
+				<overWrite>true</overWrite>
+				<outputDirectory>${libs.dir}</outputDirectory>
+			  </artifactItem>
+			</artifactItems>
+		  </configuration>
+		</execution>
+	  </executions>
+	</plugin>
+  </build>
 </project>
