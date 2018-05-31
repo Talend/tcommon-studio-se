@@ -77,6 +77,7 @@ import org.talend.commons.ui.runtime.thread.AsynchronousThreading;
 import org.talend.commons.ui.runtime.utils.TableUtils;
 import org.talend.commons.ui.runtime.ws.WindowSystem;
 import org.talend.commons.utils.data.list.ListenableList;
+import org.talend.commons.utils.system.EnvironmentUtils;
 import org.talend.libraries.ui.SWTFacade;
 
 /**
@@ -292,6 +293,20 @@ public class TableViewerCreatorNotModifiable<B> {
         this.compositeParent = compositeParent;
         this.emptyZoneColor = compositeParent.getDisplay().getSystemColor(SWT.COLOR_WHITE);
 
+    }
+
+    public static boolean getRecommandLazyLoad() {
+        boolean recommandLazyLoad = false;
+        if (isLazyLoadingDisabled()) {
+            recommandLazyLoad = false;
+        } else {
+            if (EnvironmentUtils.isLinuxUnixSystem()) {
+                recommandLazyLoad = false;
+            } else {
+                recommandLazyLoad = true;
+            }
+        }
+        return recommandLazyLoad;
     }
 
     /**
@@ -2191,11 +2206,16 @@ public class TableViewerCreatorNotModifiable<B> {
     }
 
     public void setLazyLoad(boolean lazyLoad) {
-        if (!Boolean.getBoolean("talend.table.disableLazyLoading")) {
+        if (isLazyLoadingDisabled()) {
+            this.lazyLoad = false;
+        } else {
             this.lazyLoad = lazyLoad;
         }
         // for bug TUP-15924, lazyload always be false by default,we have a system property like
         // "disableLazyLoading" and if set to true we won't set virtual here. (user would set it manually).
     }
  
+    public static boolean isLazyLoadingDisabled() {
+        return Boolean.getBoolean("talend.table.disableLazyLoading"); //$NON-NLS-1$
+    }
 }

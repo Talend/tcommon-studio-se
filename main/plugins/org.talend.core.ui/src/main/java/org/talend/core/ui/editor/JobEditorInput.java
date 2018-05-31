@@ -140,7 +140,7 @@ public abstract class JobEditorInput extends RepositoryEditorInput {
                 // factory.createProcess(project, loadedProcess, path);
             } else {
 
-                RepositoryWorkUnit rwu = new RepositoryWorkUnit("save process") {
+                RepositoryWorkUnit rwu = new RepositoryWorkUnit("save process : " + loadedProcess.getLabel()) {
 
                     @Override
                     protected void run() throws LoginException, PersistenceException {

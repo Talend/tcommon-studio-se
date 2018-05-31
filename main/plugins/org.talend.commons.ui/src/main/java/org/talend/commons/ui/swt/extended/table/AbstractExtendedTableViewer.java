@@ -248,6 +248,7 @@ public abstract class AbstractExtendedTableViewer<B> extends AbstractExtendedCon
         newTableViewerCreator.setBorderVisible(true);
         newTableViewerCreator.setFirstColumnMasked(true);
         // newTableViewerCreator.setUseCustomItemColoring(true);
+        newTableViewerCreator.setLazyLoad(TableViewerCreator.getRecommandLazyLoad());
         newTableViewerCreator.setFirstVisibleColumnIsSelection(false);
         newTableViewerCreator.setCheckboxInFirstColumn(false);
         newTableViewerCreator.setBgColorForEmptyArea(getParentComposite().getDisplay().getSystemColor(SWT.COLOR_WHITE));
