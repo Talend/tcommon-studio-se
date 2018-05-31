@@ -14,6 +14,7 @@ package org.talend.commons.ui.gmf.util;
 
 import java.util.concurrent.Semaphore;
 
+import org.eclipse.swt.graphics.DeviceData;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -111,23 +112,38 @@ public class DisplayUtils {
      * @throws Exception
      */
     public static void syncExecInNewUIThread(Runnable runnable) throws Exception {
+        syncExecInNewUIThread(runnable, null);
+    }
+
+    public static void syncExecInNewUIThread(Runnable runnable, DeviceData deviceData) throws Exception {
         final Semaphore semaphore = new Semaphore(1, true);
         semaphore.acquire();
         Thread thread = new Thread(new Runnable() {
 
             @Override
             public void run() {
-                Display display = new Display();
+                Display display = null;
+                if (deviceData == null) {
+                    display = new Display();
+                } else {
+                    display = new Display(deviceData);
+                }
                 try {
                     Thread currentThread = Thread.currentThread();
                     boolean releasedLock = false;
                     while (!currentThread.isInterrupted()) {
-                        if (!display.readAndDispatch()) {
-                            if (!releasedLock) {
-                                semaphore.release();
-                                releasedLock = true;
+                        try {
+                            if (!display.readAndDispatch()) {
+                                if (!releasedLock) {
+                                    semaphore.release();
+                                    releasedLock = true;
+                                }
+                                Thread.sleep(50);
                             }
-                            Thread.sleep(50);
+                        } catch (InterruptedException e) {
+                            throw e;
+                        } catch (Exception e) {
+                            ExceptionHandler.process(e);
                         }
                     }
                 } catch (InterruptedException e) {

@@ -13,7 +13,6 @@
 package org.talend.designer.maven.tools;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -108,8 +107,8 @@ public class ProcessorDependenciesManager {
      * @param fresh if true, will remove old dependencies, else will add the new dependencies in the head.
      * @return if there are some changes, will return true
      */
-    public static boolean updateDependencies(IProgressMonitor progressMonitor, Model model, List<Dependency> neededDependencies,
-            boolean fresh) throws ProcessorException {
+    public static boolean updateDependencies(IProgressMonitor progressMonitor, Model model,
+            List<Dependency> neededDependencies, boolean fresh) throws ProcessorException {
         boolean changed = false;
         try {
             List<Dependency> existedDependencies = model.getDependencies();
@@ -177,8 +176,8 @@ public class ProcessorDependenciesManager {
         }
         ITestContainerProviderService testContainerService = null;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
-            testContainerService = (ITestContainerProviderService) GlobalServiceRegister.getDefault()
-                    .getService(ITestContainerProviderService.class);
+            testContainerService = (ITestContainerProviderService) GlobalServiceRegister.getDefault().getService(
+                    ITestContainerProviderService.class);
             if (item != null) {
                 boolean isTestCase = testContainerService.isTestContainerItem(item);
                 boolean isLatestJob = false;
@@ -187,8 +186,8 @@ public class ProcessorDependenciesManager {
                 } else {
                     IRepositoryViewObject object =
                             ProxyRepositoryFactory.getInstance().getLastVersion(item.getProperty().getId());
-                    String latestVersion = object.getVersion();
-                    if (VersionUtils.compareTo(item.getProperty().getVersion(), latestVersion) == 0) {
+                    if (object != null
+                            && VersionUtils.compareTo(item.getProperty().getVersion(), object.getVersion()) == 0) {
                         isLatestJob = true;
                     }
                 }
@@ -213,8 +212,9 @@ public class ProcessorDependenciesManager {
                 neededLibraries.addAll(testcaseProcess.getNeededModules(TalendProcessOptionConstants.MODULES_DEFAULT));
             }
             if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerService.class)) {
-                ILibraryManagerService repositoryBundleService = (ILibraryManagerService) GlobalServiceRegister.getDefault()
-                        .getService(ILibraryManagerService.class);
+                ILibraryManagerService repositoryBundleService =
+                        (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
+                                ILibraryManagerService.class);
                 repositoryBundleService.installModules(neededLibraries, null);
             }
         }

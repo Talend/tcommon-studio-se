@@ -17,9 +17,6 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import org.eclipse.core.internal.registry.osgi.Activator;
 import org.eclipse.core.runtime.IBundleGroup;
 import org.eclipse.core.runtime.IBundleGroupProvider;
@@ -27,6 +24,9 @@ import org.eclipse.core.runtime.Platform;
 import org.junit.Test;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.FrameworkUtil;
+
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 /**
  * This class allows you harvest unit tests from resolved bundles based on filters you supply. It can harvest tests from
@@ -41,42 +41,6 @@ import org.osgi.framework.FrameworkUtil;
  *
  * <pre>
  *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- * 
- * 
  * public static Test suite() {
  * 
  *     TestSuite suite = new TestSuite(&quot;All Tests&quot;);
@@ -160,8 +124,8 @@ public class BundleTestCollector {
         Bundle currentBundle = FrameworkUtil.getBundle(this.getClass());
         // no check for null is done cause this should create an exception if
         // someone change the name of this bundle
-        collectClassesFromBundles(bundlePrefix, bundleSuffix, packagePrefixs, testClassFilter, useFragmentOnly, allTestClasses,
-                currentBundle.getBundleContext().getBundles());
+        collectClassesFromBundles(bundlePrefix, bundleSuffix, packagePrefixs, testClassFilter, useFragmentOnly,
+                allTestClasses, currentBundle.getBundleContext().getBundles());
         return allTestClasses.toArray(new Class[allTestClasses.size()]);
     }
 
@@ -186,7 +150,8 @@ public class BundleTestCollector {
             // @formatter:off
             if ((!useFragmentOnly || isFragment(bundle))
                     && (bundlePrefix == null || bundlePrefix.equals("") || isPrefix(bundle.getSymbolicName(), allBundlePrefixes))
-                    && (bundleSuffix == null || bundleSuffix.equals("") || isSuffix(bundle.getSymbolicName(), allBundleSuffixes))) {
+                    && (bundleSuffix == null || bundleSuffix.equals("")
+                            || isSuffix(bundle.getSymbolicName(), allBundleSuffixes))) {
                 // @formatter:on
                 List<Class<?>> testClasses = getTestClasesInBundle(bundle, packagePrefixs, testClassFilter);
                 allTestClasses.addAll(testClasses);
@@ -208,11 +173,11 @@ public class BundleTestCollector {
      * @return
      * @return list of test classes that match the roots and filter passed in
      */
-    public Class<?>[] collectTestsClasses(String featureNames, String bundlePrefix, String bundleSuffix, String packagePrefixs,
-            String testClassFilter, boolean useFragmentOnly) {
+    public Class<?>[] collectTestsClasses(String featureNames, String bundlePrefix, String bundleSuffix,
+            String packagePrefixs, String testClassFilter, boolean useFragmentOnly) {
         if (featureNames != null && !"".equals(featureNames)) {
-            return collectTestsClassesFromFeature(featureNames, bundlePrefix, bundleSuffix, packagePrefixs, testClassFilter,
-                    useFragmentOnly);
+            return collectTestsClassesFromFeature(featureNames, bundlePrefix, bundleSuffix, packagePrefixs,
+                    testClassFilter, useFragmentOnly);
         } else {
             return collectTestsClasses(bundlePrefix, bundleSuffix, packagePrefixs, testClassFilter, useFragmentOnly);
         }
@@ -231,8 +196,8 @@ public class BundleTestCollector {
             for (IBundleGroup bundleGroup : bundleGroups) {
                 if (Arrays.binarySearch(allFeatures, bundleGroup.getIdentifier()) >= 0) {
                     System.out.println("Looking for bundle in feature : " + bundleGroup.getIdentifier());
-                    collectClassesFromBundles(bundlePrefix, bundleSuffix, packagePrefixs, testClassFilter, useFragmentOnly,
-                            allTestClasses, bundleGroup.getBundles());
+                    collectClassesFromBundles(bundlePrefix, bundleSuffix, packagePrefixs, testClassFilter,
+                            useFragmentOnly, allTestClasses, bundleGroup.getBundles());
                 }
             }
         }
@@ -248,16 +213,16 @@ public class BundleTestCollector {
         List<Class<?>> testClassesInBundle = new ArrayList<Class<?>>();
         Bundle bundleHost = bundle;
         if (isFragment(bundle)) {// load the host bundle if it is a fragment
-            String hostName = (String) bundle.getHeaders().get("Fragment-Host"); //$NON-NLS-1$
+            String hostName = bundle.getHeaders().get("Fragment-Host"); //$NON-NLS-1$
             // should never be null
             bundleHost = Platform.getBundle(hostName.split(";")[0]);
             if (bundleHost == null) {
                 // use the store mechanisme to report error is
-                Class<?> messageTestCase = createCollectionErrorMessageTestCase("Failed to find host bundle named["
-                        + hostName.split(";")[0] + "].");
+                Class<?> messageTestCase = createCollectionErrorMessageTestCase(
+                        "Failed to find host bundle named[" + hostName.split(";")[0] + "].");
                 testClassesInBundle.add(messageTestCase);
                 return testClassesInBundle;
-            }// else keep going everything is fine
+            } // else keep going everything is fine
         }
         String[] allPrefixes = packagePrefix != null ? packagePrefix.split(",") : new String[0];
         if (bundle != null) {
@@ -304,15 +269,22 @@ public class BundleTestCollector {
                             if (!TestCase.class.isAssignableFrom(testClass) && !hasTestCaseMethods(testClass)) {
                                 testClass = null;
                                 if (Boolean.getBoolean(RECORD_NON_TEST_CLASSES_PROP)) {
-                                    StringBuffer mess = new StringBuffer().append("the class has not test case :[")
-                                            .append(testClassName).append("], bundle [").append(bundle.getSymbolicName())
+                                    StringBuffer mess = new StringBuffer()
+                                            .append("the class has not test case :[")
+                                            .append(testClassName)
+                                            .append("], bundle [")
+                                            .append(bundle.getSymbolicName())
                                             .append("]");
                                     testClass = createCollectionErrorMessageTestCase(mess.toString());
                                 }
-                            }// else testClass contains test case so keep going to record the test case
+                            } // else testClass contains test case so keep going to record the test case
                         } catch (ClassNotFoundException e) {
-                            StringBuffer mess = new StringBuffer().append("Failed to load class name [").append(testClassName)
-                                    .append("], bundle [").append(bundle.getSymbolicName()).append("]");
+                            StringBuffer mess = new StringBuffer()
+                                    .append("Failed to load class name [")
+                                    .append(testClassName)
+                                    .append("], bundle [")
+                                    .append(bundle.getSymbolicName())
+                                    .append("]");
                             testClass = createCollectionErrorMessageTestCase(mess.toString());
                         }
 
@@ -325,12 +297,14 @@ public class BundleTestCollector {
                     }
                 }
             } catch (IOException ioe) {
-                StringBuffer mess = new StringBuffer().append("Failed to load the build.properties file :")
-                        .append(ioe.getMessage()).append(bundle.getSymbolicName());
+                StringBuffer mess = new StringBuffer()
+                        .append("Failed to load the build.properties file :")
+                        .append(ioe.getMessage())
+                        .append(bundle.getSymbolicName());
                 testClassesInBundle.add(createCollectionErrorMessageTestCase(mess.toString()));
 
             }
-        }// else return an empty list
+        } // else return an empty list
         return testClassesInBundle;
     }
 
@@ -356,7 +330,7 @@ public class BundleTestCollector {
             }
         }
         for (String prefix : allPrefixes) {
-            if (testClassName.startsWith(prefix)) {
+            if (testClassName != null && testClassName.startsWith(prefix)) {
                 return true;
             }
         }
@@ -417,7 +391,7 @@ public class BundleTestCollector {
         for (Method method : clazz.getMethods()) {
             if (method.getAnnotation(Test.class) != null) {
                 return true;
-            }// else keep looking
+            } // else keep looking
         }
         return false;
     }
@@ -436,7 +410,7 @@ public class BundleTestCollector {
         if (!isErrorMessageTestCaseAlreadyReferenced) {
             errorMessageTestClass = ErrorMessageTestCase.class;
             isErrorMessageTestCaseAlreadyReferenced = true;
-        }// else class already referenced so we just add new informations
+        } // else class already referenced so we just add new informations
         ErrorMessageTestCase.addNewMessage(errorMessage);
         return errorMessageTestClass;
     }

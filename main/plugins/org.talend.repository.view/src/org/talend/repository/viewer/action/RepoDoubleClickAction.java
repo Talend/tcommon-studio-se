@@ -12,13 +12,26 @@
 // ============================================================================
 package org.talend.repository.viewer.action;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredViewer;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.DeviceData;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
+import org.talend.commons.exception.ExceptionHandler;
+import org.talend.commons.ui.gmf.util.DisplayUtils;
 import org.talend.commons.ui.swt.actions.ITreeContextualAction;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.metadata.IMetadataTable;
@@ -44,11 +57,14 @@ import org.talend.core.repository.model.repositoryObject.SAPIDocRepositoryObject
 import org.talend.core.repository.model.repositoryObject.SalesforceModuleRepositoryObject;
 import org.talend.core.runtime.services.IGenericWizardService;
 import org.talend.repository.ProjectManager;
+import org.talend.repository.RepositoryWorkUnit;
 import org.talend.repository.i18n.Messages;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IRepositoryNode.ENodeType;
 import org.talend.repository.model.IRepositoryNode.EProperties;
 import org.talend.repository.model.RepositoryNode;
+import org.talend.repository.ui.actions.AContextualAction;
+import org.talend.repository.viewer.ui.RunInBackgroundProgressMonitorDialog;
 
 /**
  * DOC smallet class global comment. Detailled comment <br/>
@@ -115,10 +131,134 @@ public class RepoDoubleClickAction extends Action {
         // } else {
         ITreeContextualAction actionToRun = getAction(node);
         if (actionToRun != null) {
-            actionToRun.init(null, (IStructuredSelection) selection);
-            actionToRun.run();
+            if (actionToRun instanceof AContextualAction) {
+                ((AContextualAction) actionToRun).setCurrentRepositoryNode(null);
+                ((AContextualAction) actionToRun).clearSelection4DoubleClick();
+            }
+            try {
+                actionToRun = actionToRun.clone();
+            } catch (CloneNotSupportedException e1) {
+                ExceptionHandler.process(e1);
+                return;
+            }
+            final ITreeContextualAction clonedAction = actionToRun;
+            clonedAction.init(null, (IStructuredSelection) selection);
+            if (clonedAction instanceof AContextualAction) {
+                ((AContextualAction) clonedAction).getCurrentRepositoryNode();
+                ((AContextualAction) clonedAction).getSelection();
+            }
+            executeAction(clonedAction);
             // showView();
             // }
+        }
+    }
+
+    private void executeAction(final ITreeContextualAction clonedAction) {
+        final ProxyRepositoryFactory repoFactory = ProxyRepositoryFactory.getInstance();
+        if (repoFactory.isRepositoryBusy()) {
+            final DeviceData deviceData = Display.getDefault().getDeviceData();
+            Shell workbenchShell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+            final Point location = workbenchShell.getLocation();
+            Thread thread = new Thread(new Runnable() {
+
+                @Override
+                public void run() {
+                    try {
+                        DisplayUtils.syncExecInNewUIThread(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                final RepositoryWorkUnit rwu = repoFactory.getWorkUnitInProgress();
+                                String name = null;
+                                if (rwu != null) {
+                                    name = rwu.getName();
+                                } else {
+                                    name = Messages.getString("RepoDoubleClickAction.unknown"); //$NON-NLS-1$
+                                }
+                                final String info = Messages.getString("RepoDoubleClickAction.wait4run", clonedAction.getText(), //$NON-NLS-1$
+                                        name);
+                                Shell shell = new Shell(SWT.ON_TOP);
+                                // in case they are in different screen
+                                shell.setLocation(location);
+                                final Job waitForRunJob = new Job(info) {
+
+                                    @Override
+                                    protected IStatus run(IProgressMonitor monitor) {
+                                        try {
+                                            while (repoFactory.isRepositoryBusy()) {
+                                                if (Thread.interrupted()) {
+                                                    throw new InterruptedException(
+                                                            Messages.getString("progress.interrupted") + " : " + info); //$NON-NLS-1$ //$NON-NLS-2$
+                                                }
+                                                if (monitor.isCanceled()) {
+                                                    throw new Exception(Messages.getString("progress.cancelled") + " : " + info); //$NON-NLS-1$ //$NON-NLS-2$
+                                                }
+                                                Thread.sleep(200);
+                                            }
+                                            Display.getDefault().asyncExec(new Runnable() {
+
+                                                @Override
+                                                public void run() {
+                                                    executeAction(clonedAction);
+                                                }
+                                            });
+                                        } catch (Exception e) {
+                                            ExceptionHandler.process(e);
+                                        }
+                                        return org.eclipse.core.runtime.Status.OK_STATUS;
+                                    }
+                                };
+                                RunInBackgroundProgressMonitorDialog dialog = new RunInBackgroundProgressMonitorDialog(shell);
+                                try {
+                                    waitForRunJob.schedule();
+                                    dialog.run(true, true, new IRunnableWithProgress() {
+
+                                        @Override
+                                        public void run(IProgressMonitor monitor)
+                                                throws InvocationTargetException, InterruptedException {
+                                            monitor.beginTask(info, IProgressMonitor.UNKNOWN);
+                                            try {
+                                                while (true) {
+                                                    if (monitor.isCanceled()) {
+                                                        waitForRunJob.cancel();
+                                                        break;
+                                                    }
+                                                    if (dialog.getUserChoice() != null) {
+                                                        if (dialog
+                                                                .getUserChoice() == RunInBackgroundProgressMonitorDialog.USER_CHOICE_CANCEL) {
+                                                            waitForRunJob.cancel();
+                                                        }
+                                                        break;
+                                                    }
+                                                    if (Thread.interrupted()) {
+                                                        throw new InterruptedException(
+                                                                Messages.getString("progress.interrupted") + " : " + info); //$NON-NLS-1$ //$NON-NLS-2$
+                                                    }
+                                                    if (waitForRunJob.getResult() != null) {
+                                                        break;
+                                                    }
+                                                }
+                                            } catch (Exception e) {
+                                                ExceptionHandler.process(e);
+                                            }
+                                        }
+                                    });
+                                } catch (Exception e) {
+                                    ExceptionHandler.process(e);
+                                } finally {
+                                    shell.dispose();
+                                }
+                            }
+                        }, deviceData);
+                    } catch (Exception e) {
+                        ExceptionHandler.process(e);
+                    }
+                }
+            });
+            thread.start();
+
+        } else {
+            clonedAction.run();
         }
     }
 

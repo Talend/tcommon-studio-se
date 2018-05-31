@@ -2460,4 +2460,12 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
     public byte[] getReferenceSettingContent(Project project, String branch) throws PersistenceException {
         return repositoryFactoryFromProvider.getReferenceSettingContent(project, branch);
     }
+
+    public boolean isRepositoryBusy() {
+        return repositoryFactoryFromProvider.isRepositoryBusy();
+    }
+
+    public RepositoryWorkUnit getWorkUnitInProgress() {
+        return repositoryFactoryFromProvider.getWorkUnitInProgress();
+    }
 }

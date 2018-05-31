@@ -63,7 +63,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.talend.components</groupId>
-			<artifactId>components-snowflake</artifactId>
+			<artifactId>components-snowflake-runtime</artifactId>
 			<version>${components.version}</version>
 		</dependency>
 		<dependency>

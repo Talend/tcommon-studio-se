@@ -27,17 +27,12 @@ public class WSDLLoaderTest {
 		String wsdlLocation = getClass().getResource("TestService.wsdl").toExternalForm();
 		String fileNameTemplate = "Test.%d.wsdl";
 		Map<String, InputStream> result = wsdlLoader.load(wsdlLocation, fileNameTemplate);
-		assertEquals(3, result.size());
+		assertEquals(2, result.size());
 		String resA = readWsdlStream(result.get(WSDLLoader.DEFAULT_FILENAME));
 		assertTrue(resA.indexOf("wsdl:import") > 0);
 		assertTrue(resA.indexOf("location=\"Test.0.wsdl\"") > 0);
 		String resB = readWsdlStream(result.get("Test.0.wsdl"));
-		assertTrue(resB.indexOf("wsdl:import") > 0);
-		assertTrue(resB.indexOf("location=\"Test.1.wsdl\"") > 0);
-		String resC = readWsdlStream(result.get("Test.1.wsdl"));
-		// assertTrue(resC.indexOf("wsdl:import") > 0);
-		// assertTrue(resC.indexOf("location=\"Test.0.wsdl\"") > 0);
-		assertEquals(resA, resC);
+		assertTrue(resB.indexOf("wsdl:import") < 0);
 	}
 
 	private String readWsdlStream(InputStream wsdlStream) throws Exception {
