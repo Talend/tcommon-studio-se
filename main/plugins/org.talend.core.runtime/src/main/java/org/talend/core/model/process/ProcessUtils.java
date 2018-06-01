@@ -20,7 +20,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.emf.common.util.EList;
+
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.utils.VersionUtils;
@@ -58,6 +58,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.MetadataType;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 import org.talend.designer.core.model.utils.emf.talendfile.RoutinesParameterType;
+import org.talend.designer.core.model.utils.emf.talendfile.impl.NodeTypeImpl;
 import org.talend.designer.runprocess.ItemCacheManager;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
@@ -71,10 +72,14 @@ public final class ProcessUtils {
 
     private static List<IProcess> fakeProcesses = new ArrayList<>();
 
+    private static EsbJobFlags esbJobFlags = new EsbJobFlags();
+
     private static IHadoopClusterService hadoopClusterService = null;
     static {
         hadoopClusterService = HadoopRepositoryUtil.getHadoopClusterService();
     }
+
+
 
     public static void clearFakeProcesses() {
         for (IProcess p : fakeProcesses) {
@@ -975,4 +980,129 @@ public final class ProcessUtils {
         return false;
     }
 
+    public static void clearEsbJobFlags() {
+        esbJobFlags.clear();
+    }
+
+    public static boolean isEsbJob(String processId, String version) {
+        if (processId == null || version == null) {
+            return false;
+        }
+
+        if (esbJobFlags.contains(processId, version)) {
+            return esbJobFlags.isEsbJob(processId, version);
+        }
+
+
+        ProcessItem jobObject = ItemCacheManager.getProcessItem(processId, version);
+        if (jobObject == null) {
+            esbJobFlags.putJob(processId, version, false);
+            return false;
+        }
+
+        List<NodeTypeImpl> nodes = jobObject.getProcess().getNode();
+
+        // Check if the job contains 'ESB components'
+        for(NodeTypeImpl node : nodes) {
+            if (isEsbComponentName(node.getComponentName())) {
+                esbJobFlags.putJob(processId, version, true);
+                return true;
+            }
+        }
+
+        // Check if joblets contain ESB components
+        IJobletProviderService jobletService = (IJobletProviderService) GlobalServiceRegister.getDefault().getService(
+                IJobletProviderService.class);
+        for(NodeTypeImpl node : nodes) {
+            if ("aJoblet".equals(node.getComponentName())) {
+                ProcessType jobletProcess = jobletService.getJobletProcess(node);
+                if (jobletProcess != null) {
+                    List<NodeTypeImpl> jobletNodes  = jobletProcess.getNode();
+                    for (NodeTypeImpl jobletNode : jobletNodes) {
+                        if (isEsbComponentName(jobletNode.getComponentName())) {
+                            esbJobFlags.putJob(processId, version, true);
+                            return true;
+                        }
+                    }
+                    for (NodeTypeImpl jobletNode : jobletNodes) {
+                        if ("tRunJob".equals(jobletNode.getComponentName()) && isSubjobEsb(node)) {
+                            esbJobFlags.putJob(processId, version, true);
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
+
+        //Check if subjobs of the given job contain ESB components
+        for(NodeTypeImpl node : nodes) {
+            if ("tRunJob".equals(node.getComponentName()) && isSubjobEsb(node)) {
+                esbJobFlags.putJob(processId, version, true);
+                return true;
+            }
+        }
+
+        esbJobFlags.putJob(processId, version, false);
+        return false;
+    }
+
+
+    private static boolean isSubjobEsb(NodeTypeImpl subjobNode) {
+        String childJobId = null;
+        String childJobVersion = null;
+        List<ElementParameterType> eleParams = (List<ElementParameterType>) subjobNode.getElementParameter();
+        for (ElementParameterType elementParameter : eleParams) {
+            if ("PROCESS:PROCESS_TYPE_PROCESS".equals(elementParameter.getName())) {
+                childJobId = elementParameter.getValue();
+            } else if ("PROCESS:PROCESS_TYPE_VERSION".equals(elementParameter.getName())) {
+                childJobVersion = elementParameter.getValue();
+            }
+        }
+        if (isEsbJob(childJobId, childJobVersion)) {
+            esbJobFlags.putJob(childJobId, childJobVersion, true);
+            return true;
+        }
+        return  false;
+    }
+
+    private static boolean isEsbComponentName(String componentName) {
+        final String[] esbComponents = {"tESBConsumer", "tESBProviderRequest", "tRouteInput"};
+        for (String esbComponentName : esbComponents) {
+            if (esbComponentName.equals(componentName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    private static class EsbJobFlags {
+
+        private Map<String, Boolean> esbJobFlags = new HashMap<String, Boolean>();
+
+        private String jobKey(String processId, String version) {
+            return processId + "_v_" + version;
+        }
+
+        public boolean contains(String processId, String version) {
+            return  esbJobFlags.containsKey(jobKey(processId, version));
+        }
+
+        public boolean isEsbJob(String processId, String version) {
+            if (contains(processId, version)) {
+                return  esbJobFlags.get(jobKey(processId,version));
+            } else {
+                return false;
+            }
+        }
+
+        public void putJob(String processId, String version, boolean isEsbJob) {
+            esbJobFlags.put(jobKey(processId, version), isEsbJob);
+        }
+
+        public void clear() {
+            esbJobFlags.clear();
+        }
+    }
 }
