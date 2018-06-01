@@ -123,7 +123,8 @@ public class AggregatorPomsHelper {
     }
 
     public void createRootPom(IProgressMonitor monitor) throws Exception {
-        createRootPom(null, false, monitor);
+        Model model = MavenPlugin.getMavenModelManager().readMavenModel(getProjectRootPom());
+        createRootPom(model.getModules(), true, monitor);
     }
 
     public void installRootPom(boolean force) throws Exception {
