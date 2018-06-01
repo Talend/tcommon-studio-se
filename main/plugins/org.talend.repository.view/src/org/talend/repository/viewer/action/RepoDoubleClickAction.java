@@ -63,7 +63,6 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IRepositoryNode.ENodeType;
 import org.talend.repository.model.IRepositoryNode.EProperties;
 import org.talend.repository.model.RepositoryNode;
-import org.talend.repository.ui.actions.AContextualAction;
 import org.talend.repository.viewer.ui.RunInBackgroundProgressMonitorDialog;
 
 /**
@@ -131,10 +130,6 @@ public class RepoDoubleClickAction extends Action {
         // } else {
         ITreeContextualAction actionToRun = getAction(node);
         if (actionToRun != null) {
-            if (actionToRun instanceof AContextualAction) {
-                ((AContextualAction) actionToRun).setCurrentRepositoryNode(null);
-                ((AContextualAction) actionToRun).clearSelection4DoubleClick();
-            }
             try {
                 actionToRun = actionToRun.clone();
             } catch (CloneNotSupportedException e1) {
@@ -143,10 +138,6 @@ public class RepoDoubleClickAction extends Action {
             }
             final ITreeContextualAction clonedAction = actionToRun;
             clonedAction.init(null, (IStructuredSelection) selection);
-            if (clonedAction instanceof AContextualAction) {
-                ((AContextualAction) clonedAction).getCurrentRepositoryNode();
-                ((AContextualAction) clonedAction).getSelection();
-            }
             executeAction(clonedAction);
             // showView();
             // }

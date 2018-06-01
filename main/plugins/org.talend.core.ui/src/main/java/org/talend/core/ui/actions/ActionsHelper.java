@@ -74,7 +74,15 @@ public class ActionsHelper {
             }
             Collections.sort(actionsToReturn, COMP);
         }
-        return actionsToReturn;
+        List<ITreeContextualAction> actions = new ArrayList<>();
+        for (ITreeContextualAction action : actionsToReturn) {
+            try {
+                actions.add(action.clone());
+            } catch (Exception e) {
+                org.talend.commons.exception.ExceptionHandler.process(e);
+            }
+        }
+        return actions;
     }
 
     public static MenuManager[] getRepositoryContextualsActionGroups() {
@@ -182,6 +190,7 @@ public class ActionsHelper {
          * 
          * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
          */
+        @Override
         public int compare(ITreeContextualAction o1, ITreeContextualAction o2) {
             Integer l1 = o1.getLevel();
             Integer l2 = o2.getLevel();

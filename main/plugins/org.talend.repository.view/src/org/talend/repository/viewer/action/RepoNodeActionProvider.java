@@ -32,6 +32,7 @@ import org.eclipse.ui.navigator.CommonActionProvider;
 import org.eclipse.ui.navigator.ICommonActionConstants;
 import org.eclipse.ui.navigator.ICommonActionExtensionSite;
 import org.eclipse.ui.navigator.ICommonViewerWorkbenchSite;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.ui.swt.actions.ITreeContextualAction;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.service.ICoreUIService;
@@ -104,10 +105,15 @@ public class RepoNodeActionProvider extends CommonActionProvider {
             Set<String> processedGroupIds) {
         ICommonViewerWorkbenchSite navWorkSite = ((ICommonViewerWorkbenchSite) getActionSite().getViewSite());
         for (ITreeContextualAction action : contextualsActions) {
-            if (navWorkSite != null && navWorkSite.getSite() != null) {
-                action.setWorkbenchPart(navWorkSite.getSite().getPart());
+            try {
+                action = action.clone();
+                if (navWorkSite != null && navWorkSite.getSite() != null) {
+                    action.setWorkbenchPart(navWorkSite.getSite().getPart());
+                }
+                checkAndAddActionInMenu(action, sel, manager, menuManagerGroups, processedGroupIds);
+            } catch (Exception e) {
+                ExceptionHandler.process(e);
             }
-            checkAndAddActionInMenu(action, sel, manager, menuManagerGroups, processedGroupIds);
         }
     }
 
