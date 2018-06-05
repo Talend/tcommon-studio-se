@@ -65,6 +65,8 @@ public class ModuleNeeded {
 
     List<String> installURL;
 
+    private String moduleLocaionFromConfiguration;
+
     private String moduleLocaion;
 
     private String mavenUriFromConfiguration;
@@ -185,7 +187,7 @@ public class ModuleNeeded {
         cloned.libManagerService = libManagerService;
         cloned.mavenUri = mavenUri;
         cloned.mavenUriFromConfiguration = mavenUriFromConfiguration;
-        cloned.moduleLocaion = moduleLocaion;
+        cloned.moduleLocaionFromConfiguration = moduleLocaionFromConfiguration;
         cloned.moduleName = moduleName;
         cloned.mrRequired = mrRequired;
         cloned.required = required;
@@ -383,9 +385,23 @@ public class ModuleNeeded {
         }
     }
 
+    /**
+     * Getter for moduleLocaionFromConfiguration.
+     * 
+     * @return the moduleLocaionFromConfiguration
+     */
+    public String getModuleLocaionFromConfiguration() {
+        return this.moduleLocaionFromConfiguration;
+    }
+
     public String getModuleLocaion() {
         if (this.moduleLocaion == null) {
-            moduleLocaion = libManagerService.getPlatformURLFromIndex(moduleName);
+            if (moduleLocaionFromConfiguration != null && moduleLocaionFromConfiguration.startsWith("platform:/")) {
+                moduleLocaion = moduleLocaionFromConfiguration;
+            } else {
+                boolean checkCustomURI = false;
+                moduleLocaion = libManagerService.getPlatformURLFromIndex(getMavenUri(checkCustomURI));
+            }
             // fix for cached ModuleNeeded with status NOT_INSTALLED
             if (moduleLocaion != null && ELibraryInstallStatus.NOT_INSTALLED == ModuleStatusProvider.getStatus(getMavenUri())) {
                 ModuleStatusProvider.resetStatus(getMavenUri());
@@ -398,7 +414,7 @@ public class ModuleNeeded {
         if (moduleLocaion != null && ELibraryInstallStatus.NOT_INSTALLED == ModuleStatusProvider.getStatus(getMavenUri())) {
             ModuleStatusProvider.resetStatus(getMavenUri());
         }
-        this.moduleLocaion = moduleLocaion;
+        this.moduleLocaionFromConfiguration = moduleLocaion;
     }
 
     /*
@@ -538,12 +554,16 @@ public class ModuleNeeded {
      * 
      * @return
      */
-    public String getMavenUri() {
-        if (getCustomMavenUri() != null) {
+    public String getMavenUri(boolean checkCustomURI) {
+        if (checkCustomURI && getCustomMavenUri() != null) {
             return getCustomMavenUri();
         }
         mavenUri = initURI();
         return mavenUri;
+    }
+
+    public String getMavenUri() {
+        return getMavenUri(true);
     }
 
     /**

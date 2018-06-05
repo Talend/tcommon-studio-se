@@ -26,4 +26,6 @@ public interface IComponentsService extends IService {
 
     public IComponentFileNaming getComponentFileNaming();
 
+    public String getPaletteByProvider(String componentProviderId);
+
 }
