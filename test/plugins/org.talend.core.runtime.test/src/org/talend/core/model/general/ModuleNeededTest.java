@@ -98,8 +98,8 @@ public class ModuleNeededTest {
                 .toURI();
         ModuleNeeded module1 = new ModuleNeeded("tMysqlInput", "tRowGenerator.xml", "description", false, null, null,
                 "mvn:org.talend.libraries/tRowGenerator/6.0.0");
-        ILibraryManagerService libService = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
-                ILibraryManagerService.class);
+        ILibraryManagerService libService = (ILibraryManagerService) GlobalServiceRegister.getDefault()
+                .getService(ILibraryManagerService.class);
         libService.deploy(testFileToDeploy, module1.getMavenUri());
         Assert.assertEquals(module1.getStatus(), ELibraryInstallStatus.INSTALLED);
         Assert.assertEquals(module1.getDeployStatus(), ELibraryInstallStatus.DEPLOYED);
@@ -125,12 +125,13 @@ public class ModuleNeededTest {
         String mavenURI = "mvn:org.talend.libraries/commons-logging-1.1.1-emr-2.4.0/6.0.0/jar";
         String customURI = "mvn:org.talend.libraries/commons-logging-emr/6.0.0/jar";
         String platformURL = "platform:/plugin/org.talend.libraries.hadoop/lib/commons-logging-1.1.1-emr-2.4.0.jar";
-        ILibraryManagerService libService = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
-                ILibraryManagerService.class);
+        ILibraryManagerService libService = (ILibraryManagerService) GlobalServiceRegister.getDefault()
+                .getService(ILibraryManagerService.class);
         ModuleNeeded module1 = new ModuleNeeded("", "commons-logging-1.1.1-emr-2.4.0.jar", "description", false, null, null,
                 mavenURI);
         module1.setModuleLocaion(platformURL);
-        if (ELibraryInstallStatus.NOT_INSTALLED == module1.getStatus() || !libService.checkJarInstalledFromPlatform(platformURL)) {
+        if (ELibraryInstallStatus.NOT_INSTALLED == module1.getStatus()
+                || !libService.checkJarInstalledFromPlatform(platformURL)) {
             fail("Please change an other jar installed in platform for test");
         }
         module1.setCustomMavenUri(customURI);
@@ -150,9 +151,8 @@ public class ModuleNeededTest {
         if (file.exists()) {
             FilesUtils.deleteFile(file.getParentFile().getParentFile(), true);
         }
-
     }
-    
+
     @Test
     public void testSetModuleName() {
         String moduleValue = "mysql-connector-java-5.1.30-bin";
@@ -160,10 +160,40 @@ public class ModuleNeededTest {
         moduleNeeded.setModuleName(moduleValue);
         Assert.assertEquals(moduleValue, moduleNeeded.getModuleName());
 
-        
         moduleValue = "mysql-connector-java-5.1.30-bin.jar";
         moduleNeeded.setModuleName(moduleValue);
         Assert.assertEquals("mysql-connector-java-5.1.30-bin.jar", moduleNeeded.getModuleName());
     }
-    
+
+    @Test
+    public void testGetModuleLocation() throws URISyntaxException, IOException {
+        ILibraryManagerService libService = (ILibraryManagerService) GlobalServiceRegister.getDefault()
+                .getService(ILibraryManagerService.class);
+        ModuleNeeded module1 = new ModuleNeeded("", "protobuf-java.jar", "", true);
+        module1.setMavenUri("mvn:com.google.protobuf/protobuf-java/2.6.1");
+
+        ModuleNeeded module2 = new ModuleNeeded("", "protobuf-java.jar", "", true);
+        module2.setMavenUri("mvn:org.talend.libraries/protobuf-java/6.0.0");
+        module2.setModuleLocaion("platform:/plugin/org.drools.eclipse/lib/protobuf-java.jar");
+
+        ModuleNeeded module3 = new ModuleNeeded("", "protobuf-java-6.0.0.jar", "", true);
+        module3.setMavenUri("mvn:org.talend.libraries/protobuf-java/6.0.0");
+
+        String module1Location = libService.getPlatformURLFromIndex(module1.getMavenUri());
+        Assert.assertNull(module1Location);
+        Assert.assertNull(module1.getModuleLocaion());
+
+        String module2Location = libService.getPlatformURLFromIndex(module2.getMavenUri());
+        Assert.assertNotNull(module2Location);
+        Assert.assertNotNull(module2.getModuleLocaion());
+
+        // module3 can get location from index because it's maven url is the same as module2
+        String module3Location = libService.getPlatformURLFromIndex(module3.getMavenUri());
+        Assert.assertNotNull(module3Location);
+        Assert.assertNotNull(module3.getModuleLocaion());
+
+        Assert.assertEquals(module2.getModuleLocaion(), module3.getModuleLocaion());
+
+    }
+
 }

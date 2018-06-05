@@ -1158,7 +1158,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                         iComponent = service.getComponentsFactory().get(componentDirectory.getName());
                     }
                     if (iComponent != null) {
-                        List<File> jarFiles = FilesUtils.getJarFilesFromFolder(file, null, "ext");
+                        List<File> jarFiles = FilesUtils.getJarFilesFromFolder(componentDirectory, null, "ext");
                         if (jarFiles.size() > 0) {
                             List<ModuleNeeded> modulesNeeded = iComponent.getModulesNeeded();
                             List<IMultipleComponentManager> multipleComponentManagers = iComponent.getMultipleComponentManagers();
