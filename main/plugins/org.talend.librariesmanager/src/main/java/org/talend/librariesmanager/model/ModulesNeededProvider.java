@@ -246,14 +246,7 @@ public class ModulesNeededProvider {
     public static Set<String> getAllModuleNamesFromIndex() {
         Set<String> moduleNames = new HashSet<String>();
         moduleNames.addAll(LibrariesIndexManager.getInstance().getMavenLibIndex().getJarsToRelativePath().keySet());
-        for (String platformURL : LibrariesIndexManager.getInstance().getStudioLibIndex().getJarsToRelativePath().values()) {
-            try{
-                File file = new File(platformURL);
-                moduleNames.add(file.getName());
-            }catch(Exception e){
-                continue;
-            }
-        }
+        moduleNames.addAll(LibrariesIndexManager.getInstance().getStudioLibIndex().getJarsToRelativePath().keySet());
         return moduleNames;
     }
 
@@ -712,10 +705,11 @@ public class ModulesNeededProvider {
                 IMPORTType currentImport = (IMPORTType) o;
                 boolean isRequired = currentImport.isREQUIRED();
                 // FIXME SML i18n
-                ModuleNeeded toAdd = new ModuleNeeded(context, currentImport.getMODULE(), currentImport.getMESSAGE(), isRequired);
+                ModuleNeeded toAdd = new ModuleNeeded(context, currentImport.getMODULE(), currentImport.getMESSAGE(),
+                        isRequired);
                 toAdd.setMavenUri(currentImport.getMVN());
                 if (!isRequired && "BeanItem".equals(routine.eClass().getName())) {
-                    toAdd.getExtraAttributes().put("IS_OSGI_EXCLUDED", Boolean.TRUE);
+                	toAdd.getExtraAttributes().put("IS_OSGI_EXCLUDED", Boolean.TRUE);
                 }
                 // toAdd.setStatus(ELibraryInstallStatus.INSTALLED);
                 importNeedsList.add(toAdd);

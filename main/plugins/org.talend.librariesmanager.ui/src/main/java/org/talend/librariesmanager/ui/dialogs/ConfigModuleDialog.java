@@ -124,8 +124,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
      */
     public ConfigModuleDialog(Shell parentShell, String initValue) {
         super(parentShell);
-        setShellStyle(
-                SWT.CLOSE | SWT.MAX | SWT.TITLE | SWT.BORDER | SWT.APPLICATION_MODAL | SWT.RESIZE | getDefaultOrientation());
+        setShellStyle(SWT.CLOSE | SWT.MAX | SWT.TITLE | SWT.BORDER | SWT.APPLICATION_MODAL | SWT.RESIZE | getDefaultOrientation());
         if (initValue != null && !"".equals(initValue)) {
             moduleName = initValue;
             ModuleNeeded testModuel = new ModuleNeeded("", initValue, "", true);
@@ -852,8 +851,8 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                     }
                 };
 
-                ProgressMonitorDialog dialog = new ProgressMonitorDialog(
-                        PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell());
+                ProgressMonitorDialog dialog = new ProgressMonitorDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+                        .getShell());
                 try {
                     dialog.run(true, true, acceptOursProgress);
                 } catch (Throwable e) {
@@ -881,8 +880,8 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         // change the custom uri
         if (saveCustomMap) {
             testModule.setCustomMavenUri(customURI);
-            ILibraryManagerService libManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault()
-                    .getService(ILibraryManagerService.class);
+            ILibraryManagerService libManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
+                    ILibraryManagerService.class);
             libManagerService.saveCustomMavenURIMap();
         }
 
