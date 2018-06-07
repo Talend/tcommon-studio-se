@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.model.Model;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -32,24 +33,23 @@ import org.eclipse.m2e.core.embedder.MavenModelManager;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.general.ILibrariesService;
+import org.talend.core.model.general.Project;
 import org.talend.core.model.process.IProcess;
 import org.talend.core.model.process.ProcessUtils;
-import org.talend.core.model.properties.Item;
-import org.talend.core.model.properties.Project;
-import org.talend.core.model.properties.Property;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.core.runtime.process.TalendProcessArgumentConstant;
 import org.talend.core.runtime.projectsetting.IProjectSettingPreferenceConstants;
 import org.talend.core.runtime.projectsetting.IProjectSettingTemplateConstants;
+import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.template.MavenTemplateManager;
 import org.talend.designer.maven.tools.creator.CreateMavenBeanPom;
-import org.talend.designer.maven.tools.creator.CreateMavenBundleTemplatePom;
 import org.talend.designer.maven.tools.creator.CreateMavenPigUDFPom;
 import org.talend.designer.maven.tools.creator.CreateMavenRoutinePom;
 import org.talend.designer.maven.utils.PomUtil;
 import org.talend.designer.runprocess.IProcessor;
 import org.talend.repository.ProjectManager;
+import org.talend.repository.model.RepositoryConstants;
 import org.talend.utils.io.FilesUtils;
 
 /**
@@ -135,7 +135,21 @@ public class MavenPomSynchronizer {
                 templateParameters);
         String jobInfoContent = MavenTemplateManager.getProjectSettingValue(IProjectSettingPreferenceConstants.TEMPLATE_JOB_INFO,
                 templateParameters);
-
+        String projectTechName = ProjectManager.getInstance().getProject(processor.getProperty()).getTechnicalLabel();
+        Project project = ProjectManager.getInstance()
+                .getProjectFromProjectTechLabel(projectTechName);
+        if (project == null) {
+            project = ProjectManager.getInstance().getCurrentProject();
+        }
+        String mainProjectBranch = ProjectManager.getInstance().getMainProjectBranch(project);
+        if (mainProjectBranch == null) {
+            ProjectPreferenceManager preferenceManager = new ProjectPreferenceManager(project, "org.talend.repository");
+            mainProjectBranch = preferenceManager.getValue(RepositoryConstants.PROJECT_BRANCH_ID);
+            if (mainProjectBranch == null) {
+                mainProjectBranch = "";
+            }
+        }
+        jobInfoContent = StringUtils.replace(jobInfoContent, "${talend.project.branch}", mainProjectBranch);
         MavenTemplateManager.saveContent(shFile, shContent, overwrite);
         MavenTemplateManager.saveContent(batFile, batContent, overwrite);
         MavenTemplateManager.saveContent(infoFile, jobInfoContent, overwrite);
