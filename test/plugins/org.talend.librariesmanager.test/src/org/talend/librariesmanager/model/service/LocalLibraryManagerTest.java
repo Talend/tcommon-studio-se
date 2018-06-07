@@ -202,9 +202,8 @@ public class LocalLibraryManagerTest {
         }
         // retrieve jar from the index.xml if not find in lib/java
         else {
-            ModuleNeeded module = new ModuleNeeded("", jarNeeded, "", true);
             EMap<String, String> jarsToRelative = LibrariesIndexManager.getInstance().getStudioLibIndex().getJarsToRelativePath();
-            String relativePath = jarsToRelative.get(module.getMavenUri());
+            String relativePath = jarsToRelative.get(jarNeeded);
             if (relativePath == null) {
                 return;
             }
@@ -244,7 +243,17 @@ public class LocalLibraryManagerTest {
      */
     @Test
     public void testList() throws MalformedURLException {
-        Set<String> names = localLibraryManager.list();
+        Set<String> names = new HashSet<String>();
+        List<File> jarFiles = FilesUtils.getJarFilesFromFolder(getStorageDirectory(), null);
+        if (jarFiles.size() > 0) {
+            for (File file : jarFiles) {
+                names.add(file.getName());
+            }
+        }
+
+        EMap<String, String> jarsToRelative = LibrariesIndexManager.getInstance().getStudioLibIndex().getJarsToRelativePath();
+        names.addAll(jarsToRelative.keySet());
+
         assertTrue(names.size() > 0);
 
     }
@@ -255,7 +264,16 @@ public class LocalLibraryManagerTest {
     @Test
     @Ignore
     public void testMissingJar() throws MalformedURLException {
-        Set<String> names = localLibraryManager.list();
+        Set<String> names = new HashSet<String>();
+        List<File> jarFiles = FilesUtils.getJarFilesFromFolder(getStorageDirectory(), null);
+        if (jarFiles.size() > 0) {
+            for (File file : jarFiles) {
+                names.add(file.getName());
+            }
+        }
+        EMap<String, String> jarsToRelative = LibrariesIndexManager.getInstance().getStudioLibIndex().getJarsToRelativePath();
+        names.addAll(jarsToRelative.keySet());
+
         List<String> allJars = new ArrayList<String>();
         EDatabaseVersion4Drivers[] values = EDatabaseVersion4Drivers.values();
         for (EDatabaseVersion4Drivers driver : values) {
@@ -761,21 +779,6 @@ public class LocalLibraryManagerTest {
     }
 
     @Test
-    public void checkJarInstalledFromPlatform() {
-        String url = "platform:/base/plugins/org.apache.commons.logging_1.2.0.jar";
-        boolean installStatus = localLibraryManager.checkJarInstalledFromPlatform(url);
-        Assert.assertTrue(installStatus);
-
-        url = "platform:/plugin/org.talend.libraries.apache.common/lib/commons-lang3-3.3.2.jar";
-        installStatus = localLibraryManager.checkJarInstalledFromPlatform(url);
-        Assert.assertTrue(installStatus);
-
-        url = "platform:/plugin/abcd/lib/commons-lang3-3.3.2.jar";
-        installStatus = localLibraryManager.checkJarInstalledFromPlatform(url);
-        Assert.assertFalse(installStatus);
-    }
-
-    @Test
     public void testStudioPlatformURLIndex() {
         EMap<String, String> jarsToRelativePath = LibrariesIndexManager.getInstance().getStudioLibIndex().getJarsToRelativePath();
         Set<String> keySet = jarsToRelativePath.keySet();
@@ -788,7 +791,7 @@ public class LocalLibraryManagerTest {
         Collection<String> values = jarsToRelativePath.values();
         for (String value : values) {
             // value must be platform url
-            Assert.assertTrue("The key is :" + value, value.startsWith("platform:/"));
+            Assert.assertTrue("The key is :" + value, value.startsWith("platform:/plugin/"));
         }
     }
 
