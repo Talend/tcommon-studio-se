@@ -30,6 +30,7 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.ISaveablePart2;
+import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
@@ -284,6 +285,18 @@ public abstract class AContextualAction extends Action implements ITreeContextua
             ISelection selection = ((IRepositoryView) activePart).getViewer().getSelection();
             if (!selection.isEmpty()) {
                 return ((IRepositoryView) activePart).getViewer().getSelection();
+            } else {
+                if (node != null) {
+                    selection = new StructuredSelection(node);
+                }
+                return selection;
+            }
+        }
+        if (activePart instanceof IViewPart) {
+            workbenchPart = activePart;
+            ISelection selection = ((IViewPart) activePart).getViewSite().getSelectionProvider().getSelection();
+            if (!selection.isEmpty()) {
+                return selection;
             } else {
                 if (node != null) {
                     selection = new StructuredSelection(node);
