@@ -116,7 +116,8 @@ public enum EParameterFieldType {
     UNIFIED_COMPONENTS,
 
     TACOKIT_GUESS_SCHEMA,
-    TACOKIT_BUTTON;
+    TACOKIT_BUTTON,
+    TACOKIT_VALUE_SELECTION;
 
     public String getName() {
         return toString();
