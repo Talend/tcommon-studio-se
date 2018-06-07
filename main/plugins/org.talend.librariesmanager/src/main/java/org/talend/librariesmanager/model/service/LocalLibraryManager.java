@@ -784,7 +784,6 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                 if (moduleLocation != null && moduleLocation.startsWith("platform:/")) {
                     if (checkJarInstalledFromPlatform(moduleLocation)) {
                         fileToDeploy = new File(studioJarInstalled.get(moduleLocation));
-                        found = true;
                     } else {
                         if (libIndex.containsKey(mavenUri)) {
                             String relativePath = libIndex.get(mavenUri);
@@ -796,7 +795,6 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                                 }
                                 moduleLocation = relativePath;
                                 fileToDeploy = new File(studioJarInstalled.get(moduleLocation));
-                                found = true;
                             }
                         }
                     }
@@ -804,7 +802,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                 if (!found) {
                     EMap<String, String> jarsToRelative = LibrariesIndexManager.getInstance().getStudioLibIndex()
                             .getJarsToRelativePath();
-                    String relativePath = jarsToRelative.get(mavenUri);
+                    String relativePath = jarsToRelative.get(module.getModuleName());
                     if (relativePath != null && checkJarInstalledFromPlatform(relativePath)) {
                         found = true;
                         fileToDeploy = new File(studioJarInstalled.get(relativePath));
@@ -1151,78 +1149,73 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 
                 };
                 File[] componentDirectories = file.listFiles(fileFilter);
-                if (componentDirectories != null) {
-                    for (File componentDirectory : componentDirectories) {
-                        String paletteByProvider = service.getPaletteByProvider(id);
-                        IComponent iComponent = null;
-                        if (paletteByProvider != null) {
-                            iComponent = service.getComponentsFactory().get(componentDirectory.getName(), paletteByProvider);
-                        } else {
-                            iComponent = service.getComponentsFactory().get(componentDirectory.getName());
-                        }
-                        if (iComponent != null) {
-                            List<File> jarFiles = FilesUtils.getJarFilesFromFolder(componentDirectory, null, "ext");
-                            if (jarFiles.size() > 0) {
-                                List<ModuleNeeded> modulesNeeded = iComponent.getModulesNeeded();
-                                List<IMultipleComponentManager> multipleComponentManagers = iComponent
-                                        .getMultipleComponentManagers();
-                                for (IMultipleComponentManager multipleComponentManager : multipleComponentManagers) {
-                                    List<IMultipleComponentItem> itemList = multipleComponentManager.getItemList();
-                                    for (IMultipleComponentItem item : itemList) {
-                                        if (paletteByProvider != null) {
-                                            iComponent = service.getComponentsFactory().get(item.getComponent(),
-                                                    paletteByProvider);
-                                        } else {
-                                            iComponent = service.getComponentsFactory().get(item.getComponent());
-                                        }
-                                        modulesNeeded.addAll(iComponent.getModulesNeeded());
+                for (File componentDirectory : componentDirectories) {
+                    String paletteByProvider = service.getPaletteByProvider(id);
+                    IComponent iComponent = null;
+                    if (paletteByProvider != null) {
+                        iComponent = service.getComponentsFactory().get(componentDirectory.getName(), paletteByProvider);
+                    } else {
+                        iComponent = service.getComponentsFactory().get(componentDirectory.getName());
+                    }
+                    if (iComponent != null) {
+                        List<File> jarFiles = FilesUtils.getJarFilesFromFolder(componentDirectory, null, "ext");
+                        if (jarFiles.size() > 0) {
+                            List<ModuleNeeded> modulesNeeded = iComponent.getModulesNeeded();
+                            List<IMultipleComponentManager> multipleComponentManagers = iComponent.getMultipleComponentManagers();
+                            for (IMultipleComponentManager multipleComponentManager : multipleComponentManagers) {
+                                List<IMultipleComponentItem> itemList = multipleComponentManager.getItemList();
+                                for (IMultipleComponentItem item : itemList) {
+                                    if (paletteByProvider != null) {
+                                        iComponent = service.getComponentsFactory().get(item.getComponent(), paletteByProvider);
+                                    } else {
+                                        iComponent = service.getComponentsFactory().get(item.getComponent());
+                                    }
+                                    modulesNeeded.addAll(iComponent.getModulesNeeded());
+                                }
+                            }
+                            for (File jarFile : jarFiles) {
+                                String name = jarFile.getName();
+                                ModuleNeeded findModule = null;
+                                for (ModuleNeeded module : modulesNeeded) {
+                                    if (module.getModuleName().equals(name)) {
+                                        findModule = module;
+                                        break;
                                     }
                                 }
-                                for (File jarFile : jarFiles) {
-                                    String name = jarFile.getName();
-                                    ModuleNeeded findModule = null;
-                                    for (ModuleNeeded module : modulesNeeded) {
-                                        if (module.getModuleName().equals(name)) {
-                                            findModule = module;
-                                            break;
+                                if (findModule != null) {
+                                    if ("org.talend.designer.components.model.UserComponentsProvider".equals(id)
+                                            || "org.talend.designer.components.exchange.ExchangeComponentsProvider".equals(id)) {
+                                        // deploy needed jars for User and Exchange component providers
+                                        try {
+                                            deploy(jarFile.toURI(), findModule.getMavenUri());
+                                        } catch (Exception e) {
+                                            ExceptionHandler.process(e);
+                                            continue;
                                         }
-                                    }
-                                    if (findModule != null) {
-                                        if ("org.talend.designer.components.model.UserComponentsProvider".equals(id)
-                                                || "org.talend.designer.components.exchange.ExchangeComponentsProvider"
-                                                        .equals(id)) {
-                                            // deploy needed jars for User and Exchange component providers
-                                            try {
-                                                deploy(jarFile.toURI(), findModule.getMavenUri());
-                                            } catch (Exception e) {
-                                                ExceptionHandler.process(e);
-                                                continue;
+                                    } else {
+                                        boolean checkCustomURI = false;
+                                        String mavenUri = findModule.getMavenUri(checkCustomURI);
+                                        int lengthBasePath = new Path(file.getParentFile().getAbsolutePath()).toPortableString()
+                                                .length();
+                                        String relativePath = new Path(jarFile.getAbsolutePath()).toPortableString()
+                                                .substring(lengthBasePath);
+                                        String platformLocation = "platform:/plugin/" + contributeID + relativePath;
+                                        if (findModule.getModuleLocaionFromConfiguration() != null
+                                                && !platformLocation.equals(findModule.getModuleLocaionFromConfiguration())) {
+                                            if (CommonsPlugin.isDebugMode()) {
+                                                CommonExceptionHandler.warn(mavenUri + " is duplicated, locations:"
+                                                        + findModule.getModuleLocaionFromConfiguration() + " and:"
+                                                        + platformLocation);
                                             }
                                         } else {
-                                            boolean checkCustomURI = false;
-                                            String mavenUri = findModule.getMavenUri(checkCustomURI);
-                                            int lengthBasePath = new Path(file.getParentFile().getAbsolutePath())
-                                                    .toPortableString().length();
-                                            String relativePath = new Path(jarFile.getAbsolutePath()).toPortableString()
-                                                    .substring(lengthBasePath);
-                                            String platformLocation = "platform:/plugin/" + contributeID + relativePath;
-                                            if (findModule.getModuleLocaionFromConfiguration() != null
-                                                    && !platformLocation.equals(findModule.getModuleLocaionFromConfiguration())) {
-                                                if (CommonsPlugin.isDebugMode()) {
-                                                    CommonExceptionHandler.warn(mavenUri + " is duplicated, locations:"
-                                                            + findModule.getModuleLocaionFromConfiguration() + " and:"
-                                                            + platformLocation);
-                                                }
-                                            } else {
-                                                platformURLMap.put(mavenUri, platformLocation);
-                                            }
-
+                                            platformURLMap.put(mavenUri, platformLocation);
                                         }
-                                    } else if (name.endsWith("jar") || name.endsWith("dll") || name.endsWith("exe")) {
-                                        // only log warning if file extension is jar/dll/exe
-                                        CommonExceptionHandler.warn("Library:" + name + " at location.\n"
-                                                + jarFile.getAbsolutePath() + "\n" + "was not used");
+
                                     }
+                                } else if (name.endsWith("jar") || name.endsWith("dll") || name.endsWith("exe")) {
+                                    // only log warning if file extension is jar/dll/exe
+                                    CommonExceptionHandler.warn("Library:" + name + " at location.\n" + jarFile.getAbsolutePath()
+                                            + "\n" + "was not used");
                                 }
                             }
                         }
