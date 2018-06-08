@@ -375,8 +375,18 @@ public class TableViewerCreatorNotModifiable<B> {
             tableEditorManager.init(this.listenableList);
         }
 
-        if (hasChanged && !isLazyLoad()) {
-            refreshTableEditorControls();
+        if (hasChanged) {
+            if (isLazyLoad()) {
+                TableItem[] items = this.table.getItems();
+                if (items != null && 0 < items.length) {
+                    for (TableItem item : items) {
+                        // call getText to trigger checkData for virtual table if needed
+                        item.getText();
+                    }
+                }
+            } else {
+                refreshTableEditorControls();
+            }
         }
 
     }
