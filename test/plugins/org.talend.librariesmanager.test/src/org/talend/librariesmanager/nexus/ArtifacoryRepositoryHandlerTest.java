@@ -21,6 +21,7 @@ import java.util.List;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.osgi.framework.Bundle;
 import org.talend.core.nexus.ArtifactRepositoryBean;
@@ -50,6 +51,7 @@ public class ArtifacoryRepositoryHandlerTest {
     }
 
     @Test
+    @Ignore
     public void testSearch() throws Exception {
         ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
         if (customNexusServer == null || !customNexusServer.getType().equals(NexusType.ARTIFACTORY.name())) {
