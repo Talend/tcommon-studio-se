@@ -14,8 +14,8 @@ package org.talend.librariesmanager.nexus;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.talend.core.nexus.NexusServerBean;
-import org.talend.core.nexus.NexusServerBean.NexusType;
+import org.talend.core.nexus.ArtifactRepositoryBean;
+import org.talend.core.nexus.ArtifactRepositoryBean.NexusType;
 
 /**
  * created by wchen on Aug 18, 2017 Detailled comment
@@ -25,7 +25,7 @@ public class Nexus3RepositoryHandlerTest {
 
     @Test
     public void testGetRepositoryURL() {
-        NexusServerBean serverBean = new NexusServerBean();
+        ArtifactRepositoryBean serverBean = new ArtifactRepositoryBean();
         serverBean.setServer("http://localhost:8081");
         serverBean.setRepositoryId("release-repository");
         serverBean.setSnapshotRepId("snapshot-repository");

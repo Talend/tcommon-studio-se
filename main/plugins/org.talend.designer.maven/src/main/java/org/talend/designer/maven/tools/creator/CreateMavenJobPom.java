@@ -46,7 +46,6 @@ import org.talend.core.model.process.ProcessUtils;
 import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.Project;
 import org.talend.core.model.properties.Property;
-import org.talend.core.model.repository.SVNConstant;
 import org.talend.core.model.utils.JavaResourcesHelper;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
@@ -57,6 +56,7 @@ import org.talend.core.runtime.process.LastGenerationInfo;
 import org.talend.core.runtime.process.TalendProcessArgumentConstant;
 import org.talend.core.runtime.projectsetting.IProjectSettingPreferenceConstants;
 import org.talend.core.runtime.projectsetting.IProjectSettingTemplateConstants;
+import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
 import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
@@ -68,6 +68,7 @@ import org.talend.designer.maven.utils.PomUtil;
 import org.talend.designer.runprocess.IProcessor;
 import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.repository.ProjectManager;
+import org.talend.repository.model.RepositoryConstants;
 import org.talend.utils.io.FilesUtils;
 
 /**
@@ -194,10 +195,6 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         if (project == null) { // current project
             project = ProjectManager.getInstance().getCurrentProject().getEmfProject();
         }
-        String mainProjectBranch = ProjectManager.getInstance().getMainProjectBranch(project);
-        if (mainProjectBranch == null) {
-            mainProjectBranch = SVNConstant.NAME_TRUNK;
-        }
 
         checkPomProperty(properties, "talend.job.path", ETalendMavenVariables.JobPath, jobClassPackageFolder);
 
@@ -225,8 +222,6 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
                 PomIdsHelper.getCodesGroupId(TalendMavenConstants.DEFAULT_PIGUDF));
         checkPomProperty(properties, "talend.project.id", ETalendMavenVariables.ProjectId,
                 jobInfoProp.getProperty(JobInfoProperties.PROJECT_ID, String.valueOf(project.getId())));
-        checkPomProperty(properties, "talend.project.branch", ETalendMavenVariables.ProjectBranch,
-                jobInfoProp.getProperty(JobInfoProperties.BRANCH, mainProjectBranch));
 
         checkPomProperty(properties, "talend.job.name", ETalendMavenVariables.JobName,
                 jobInfoProp.getProperty(JobInfoProperties.JOB_NAME, property.getLabel()));
@@ -524,6 +519,21 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
 
         String jobInfoContent = MavenTemplateManager.getProjectSettingValue(IProjectSettingPreferenceConstants.TEMPLATE_JOB_INFO,
                 templateParameters);
+        String projectTechName = ProjectManager.getInstance().getProject(property).getTechnicalLabel();
+        org.talend.core.model.general.Project project = ProjectManager.getInstance()
+                .getProjectFromProjectTechLabel(projectTechName);
+        if (project == null) {
+            project = ProjectManager.getInstance().getCurrentProject();
+        }
+        String mainProjectBranch = ProjectManager.getInstance().getMainProjectBranch(project);
+        if (mainProjectBranch == null) {
+            ProjectPreferenceManager preferenceManager = new ProjectPreferenceManager(project, "org.talend.repository", false);
+            mainProjectBranch = preferenceManager.getValue(RepositoryConstants.PROJECT_BRANCH_ID);
+            if (mainProjectBranch == null) {
+                mainProjectBranch = "";
+            }
+        }
+        jobInfoContent = StringUtils.replace(jobInfoContent, "${talend.project.branch}", mainProjectBranch);
 
         IFolder templateFolder = codeProject.getTemplatesFolder();
         IFile shFile = templateFolder.getFile(IProjectSettingTemplateConstants.JOB_RUN_SH_TEMPLATE_FILE_NAME);

@@ -26,7 +26,7 @@ import org.eclipse.core.runtime.SubMonitor;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.resource.UpdatesHelper;
-import org.talend.core.nexus.NexusServerBean;
+import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.updates.runtime.engine.component.ComponentNexusP2ExtraFeature;
@@ -37,7 +37,7 @@ import org.talend.utils.io.FilesUtils;
  */
 public class NexusShareComponentsManager {
 
-    private final NexusServerBean compNexusServer;
+    private final ArtifactRepositoryBean compNexusServer;
 
     private final ComponentIndexManager indexManager;
 
@@ -49,7 +49,7 @@ public class NexusShareComponentsManager {
      * for NexusServerBean, the repositoryId , userName and password are required.
      *
      */
-    public NexusShareComponentsManager(final NexusServerBean compNexusServer) {
+    public NexusShareComponentsManager(final ArtifactRepositoryBean compNexusServer) {
         this.compNexusServer = compNexusServer;
         this.indexManager = new ComponentIndexManager();
 
@@ -57,7 +57,7 @@ public class NexusShareComponentsManager {
     }
 
     NexusComponentsTransport createNexusComponentsTransport() {
-        return new NexusComponentsTransport(this.compNexusServer.getRepositoryURI(), this.compNexusServer.getUserName(),
+        return new NexusComponentsTransport(this.compNexusServer.getRepositoryURL(), this.compNexusServer.getUserName(),
                 this.compNexusServer.getPassword() != null ? this.compNexusServer.getPassword().toCharArray() : null);
     }
 

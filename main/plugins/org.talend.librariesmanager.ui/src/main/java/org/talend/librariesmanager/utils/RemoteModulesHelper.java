@@ -48,8 +48,8 @@ import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.ModuleToInstall;
+import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.IRepositoryArtifactHandler;
-import org.talend.core.nexus.NexusServerBean;
 import org.talend.core.nexus.RepositoryArtifactHandlerManager;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
@@ -183,19 +183,19 @@ public class RemoteModulesHelper {
                     }
                 }
 
-                NexusServerBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
+                ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
                 IRepositoryArtifactHandler customerRepHandler = RepositoryArtifactHandlerManager
                         .getRepositoryHandler(customNexusServer);
                 if (customerRepHandler != null) {
                     for (String groupId : groupIds) {
                         List<MavenArtifact> searchResults = customerRepHandler.search(groupId, null, null, true, false);
                         monitor.worked(10);
-                        addModulesToCache(searchResults, localCache);
+                        addModulesToCache(mavenUristoSearch, searchResults, localCache);
                     }
                     for (String groupId : snapshotgroupIds) {
                         List<MavenArtifact> searchResults = customerRepHandler.search(groupId, null, null, false, true);
                         monitor.worked(10);
-                        addModulesToCache(searchResults, localCache);
+                        addModulesToCache(mavenUristoSearch, searchResults, localCache);
                     }
                 }
 
@@ -206,7 +206,7 @@ public class RemoteModulesHelper {
 
         private void searchFromRemoteNexus(Set<String> mavenUristoSearch, IProgressMonitor monitor) {
             try {
-                NexusServerBean talendServer = TalendLibsServerManager.getInstance().getTalentArtifactServer();
+                ArtifactRepositoryBean talendServer = TalendLibsServerManager.getInstance().getTalentArtifactServer();
                 IRepositoryArtifactHandler talendRepositoryHander = RepositoryArtifactHandlerManager
                         .getRepositoryHandler(talendServer);
                 if (talendRepositoryHander != null) {
@@ -251,7 +251,7 @@ public class RemoteModulesHelper {
                             List<MavenArtifact> searchResults = talendRepositoryHander.search(groupId, jarsToCheck, null, true,
                                     false);
                             monitor.worked(10);
-                            addModulesToCache(searchResults, remoteCache);
+                            addModulesToCache(mavenUristoSearch, searchResults, remoteCache);
 
                         }
                     }
@@ -262,7 +262,8 @@ public class RemoteModulesHelper {
             }
         }
 
-        private void addModulesToCache(List<MavenArtifact> searchResults, Map<String, ModuleToInstall> theCache) {
+        private void addModulesToCache(Set<String> mavenUristoSearch, List<MavenArtifact> searchResults,
+                Map<String, ModuleToInstall> theCache) {
             for (MavenArtifact artifact : searchResults) {
                 String artifactId = artifact.getArtifactId();
                 String packageName = artifact.getType();
@@ -288,7 +289,11 @@ public class RemoteModulesHelper {
                     }
                 }
                 if (m.getName() == null) {
-                    m.setName(artifactId + "." + packageName);
+                    if (MavenConstants.DEFAULT_LIB_GROUP_ID.equals(artifact.getGroupId()) || StringUtils.isEmpty(version)) {
+                        m.setName(artifactId + "." + packageName);
+                    } else {
+                        m.setName(artifactId + "-" + version + "." + packageName);
+                    }
                 }
                 m.setLicenseType(license);
                 m.setLicenseUrl(license_url);

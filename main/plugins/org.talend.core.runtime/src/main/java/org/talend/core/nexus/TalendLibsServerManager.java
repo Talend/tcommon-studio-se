@@ -72,11 +72,11 @@ public class TalendLibsServerManager {
 
     private static TalendLibsServerManager manager = null;
 
-    private NexusServerBean artifactServerBean;
+    private ArtifactRepositoryBean artifactServerBean;
 
     private long artifactLastTimeInMillis = 0;
 
-    private NexusServerBean softWareUpdateServerBean;
+    private ArtifactRepositoryBean softWareUpdateServerBean;
 
     private long softWareLastTimeInMillis = 0;
 
@@ -89,7 +89,7 @@ public class TalendLibsServerManager {
         return manager;
     }
 
-    public NexusServerBean getCustomNexusServer() {
+    public ArtifactRepositoryBean getCustomNexusServer() {
         if (!org.talend.core.PluginChecker.isCoreTISPluginLoaded()) {
             return null;
         }
@@ -123,9 +123,9 @@ public class TalendLibsServerManager {
 
                     if (adminUrl != null && !"".equals(adminUrl)
                             && GlobalServiceRegister.getDefault().isServiceRegistered(IRemoteService.class)) {
-                        IRemoteService remoteService = (IRemoteService) GlobalServiceRegister.getDefault().getService(
-                                IRemoteService.class);
-                        NexusServerBean bean = remoteService.getLibNexusServer(userName, password, adminUrl);
+                        IRemoteService remoteService = (IRemoteService) GlobalServiceRegister.getDefault()
+                                .getService(IRemoteService.class);
+                        ArtifactRepositoryBean bean = remoteService.getLibNexusServer(userName, password, adminUrl);
                         if (bean != null) {
                             serverType = bean.getType();
                             nexus_url = bean.getServer();
@@ -144,7 +144,7 @@ public class TalendLibsServerManager {
                 if (nexus_url == null) {
                     return null;
                 }
-                NexusServerBean serverBean = new NexusServerBean();
+                ArtifactRepositoryBean serverBean = new ArtifactRepositoryBean();
                 serverBean.setServer(nexus_url);
                 serverBean.setUserName(nexus_user);
                 serverBean.setPassword(nexus_pass);
@@ -156,8 +156,8 @@ public class TalendLibsServerManager {
                 if (repHander.checkConnection()) {
                     artifactServerBean = serverBean;
                     if (GlobalServiceRegister.getDefault().isServiceRegistered(IMavenUIService.class)) {
-                        IMavenUIService mavenUIService = (IMavenUIService) GlobalServiceRegister.getDefault().getService(
-                                IMavenUIService.class);
+                        IMavenUIService mavenUIService = (IMavenUIService) GlobalServiceRegister.getDefault()
+                                .getService(IMavenUIService.class);
                         if (mavenUIService != null) {
                             mavenUIService.updateMavenResolver(true);
                         }
@@ -173,8 +173,8 @@ public class TalendLibsServerManager {
 
     }
 
-    public NexusServerBean getTalentArtifactServer() {
-        NexusServerBean serverBean = new NexusServerBean();
+    public ArtifactRepositoryBean getTalentArtifactServer() {
+        ArtifactRepositoryBean serverBean = new ArtifactRepositoryBean();
         serverBean.setServer(System.getProperty(KEY_LIB_REPO_URL, TALEND_LIB_SERVER));
         serverBean.setUserName(TALEND_LIB_USER);
         serverBean.setPassword(TALEND_LIB_PASSWORD);
@@ -198,16 +198,16 @@ public class TalendLibsServerManager {
      * @param password
      * @return
      */
-    public NexusServerBean getSoftwareUpdateNexusServer(String adminUrl, String userName, String password) {
+    public ArtifactRepositoryBean getSoftwareUpdateNexusServer(String adminUrl, String userName, String password) {
         try {
             Date date = new Date();
             if (softWareUpdateServerBean == null && date.getTime() - softWareLastTimeInMillis > timeGap) {
                 softWareLastTimeInMillis = date.getTime();
                 if (adminUrl != null && !"".equals(adminUrl)
                         && GlobalServiceRegister.getDefault().isServiceRegistered(IRemoteService.class)) {
-                    IRemoteService remoteService = (IRemoteService) GlobalServiceRegister.getDefault().getService(
-                            IRemoteService.class);
-                    NexusServerBean serverBean = remoteService.getUpdateRepositoryUrl(userName, password, adminUrl);
+                    IRemoteService remoteService = (IRemoteService) GlobalServiceRegister.getDefault()
+                            .getService(IRemoteService.class);
+                    ArtifactRepositoryBean serverBean = remoteService.getUpdateRepositoryUrl(userName, password, adminUrl);
                     IRepositoryArtifactHandler repHander = RepositoryArtifactHandlerManager.getRepositoryHandler(serverBean);
                     if (repHander.checkConnection(true, false)) {
                         softWareUpdateServerBean = serverBean;

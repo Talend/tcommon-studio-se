@@ -61,7 +61,7 @@ import org.talend.core.model.components.IComponentsService;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.model.general.Project;
-import org.talend.core.nexus.NexusServerBean;
+import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.NexusServerUtils;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.prefs.ITalendCorePrefConstants;
@@ -388,7 +388,7 @@ public class LocalLibraryManagerTest {
         ILibraryManagerService libraryManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault()
                 .getService(ILibraryManagerService.class);
         TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
-        final NexusServerBean customNexusServer = manager.getCustomNexusServer();
+        final ArtifactRepositoryBean customNexusServer = manager.getCustomNexusServer();
         if (customNexusServer == null) {
             fail("Test not possible since Nexus is not setup");
         }
@@ -537,7 +537,7 @@ public class LocalLibraryManagerTest {
     public void testNexusUpdateJar() throws Exception {
         String uri = "mvn:org.talend.libraries/test/6.0.0-SNAPSHOT/jar";
         TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
-        final NexusServerBean customNexusServer = manager.getCustomNexusServer();
+        final ArtifactRepositoryBean customNexusServer = manager.getCustomNexusServer();
         if (customNexusServer == null) {
             fail("Test not possible since Nexus is not setup");
         }
@@ -582,7 +582,7 @@ public class LocalLibraryManagerTest {
     public void testNexusInstallNewJar() throws Exception {
         String uri = "mvn:org.talend.libraries/test/6.0.0-SNAPSHOT/jar";
         TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
-        final NexusServerBean customNexusServer = manager.getCustomNexusServer();
+        final ArtifactRepositoryBean customNexusServer = manager.getCustomNexusServer();
         if (customNexusServer == null) {
             fail("Test not possible since Nexus is not setup");
         }
@@ -621,7 +621,7 @@ public class LocalLibraryManagerTest {
     public void testResolveSha1NotExist() throws Exception {
         String uri = "mvn:org.talend.libraries/not-existing/6.0.0-SNAPSHOT/jar";
         TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
-        final NexusServerBean customNexusServer = manager.getCustomNexusServer();
+        final ArtifactRepositoryBean customNexusServer = manager.getCustomNexusServer();
         if (customNexusServer == null) {
             fail("Test not possible since Nexus is not setup");
         }
@@ -663,7 +663,7 @@ public class LocalLibraryManagerTest {
     public void testIsLocalJarSameAsNexus() throws IOException {
         String uri = "mvn:org.talend.libraries/test/6.0.0-SNAPSHOT/jar";
         TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
-        final NexusServerBean customNexusServer = manager.getCustomNexusServer();
+        final ArtifactRepositoryBean customNexusServer = manager.getCustomNexusServer();
         if (customNexusServer == null) {
             fail("Test not possible since Nexus is not setup");
         }

@@ -57,7 +57,7 @@ public class RepositoryArtifactHandlerManager {
         }
     }
 
-    public static IRepositoryArtifactHandler getRepositoryHandler(NexusServerBean serverBean) {
+    public static IRepositoryArtifactHandler getRepositoryHandler(ArtifactRepositoryBean serverBean) {
         initHandlers();
         if (serverBean != null) {
             IRepositoryArtifactHandler repHandler = handlers.get(serverBean.getType());
