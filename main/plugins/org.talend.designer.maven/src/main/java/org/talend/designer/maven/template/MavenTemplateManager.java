@@ -293,6 +293,7 @@ public class MavenTemplateManager {
 
                 Properties properties = model.getProperties();
                 properties.put("talend.project.name", projectTechName); //$NON-NLS-1$
+                properties.put("talend.version", VersionUtils.getTalendVersion()); //$NON-NLS-1$
 
                 return model;
             }

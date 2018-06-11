@@ -66,4 +66,14 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+	<profiles>
+		<profile>
+			<id>cloud-publisher</id>
+			<properties>
+				<service.url></service.url>
+				<service.username></service.username>
+				<service.password></service.password>
+			</properties>
+		</profile>
+	</profiles>
 </project>
