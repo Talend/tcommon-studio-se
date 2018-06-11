@@ -116,6 +116,8 @@ public interface TalendMavenConstants {
 
     static final String PROFILE_CI_BUILDER = "ci-builder";
 
+    static final String PROFILE_DOCKER = "docker";
+
     /**
      * argments
      */

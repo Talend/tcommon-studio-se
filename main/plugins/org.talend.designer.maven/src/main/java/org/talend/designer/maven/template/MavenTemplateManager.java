@@ -20,19 +20,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.apache.maven.model.Activation;
-import org.apache.maven.model.Build;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Plugin;
-import org.apache.maven.model.PluginExecution;
-import org.apache.maven.model.Profile;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
@@ -41,12 +35,12 @@ import org.eclipse.m2e.core.MavenPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.VersionUtils;
 import org.talend.commons.utils.generation.JavaUtils;
-import org.talend.core.PluginChecker;
 import org.talend.core.runtime.projectsetting.IProjectSettingPreferenceConstants;
 import org.talend.core.runtime.projectsetting.IProjectSettingTemplateConstants;
 import org.talend.designer.maven.DesignerMavenPlugin;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.setting.project.IProjectSettingManagerProvider;
+import org.talend.designer.maven.tools.extension.PomExtensionRegistry;
 import org.talend.designer.maven.utils.PomIdsHelper;
 import org.talend.designer.maven.utils.PomUtil;
 import org.talend.repository.ProjectManager;
@@ -221,46 +215,6 @@ public class MavenTemplateManager {
         return getCodeProjectTemplateModel(null); // by default will be current project.
     }
 
-    public static Model addCIBuilder(Model model) {
-        if (!PluginChecker.isTIS()) {
-            return model;
-        }
-        if (!model.getProfiles().isEmpty()) {
-            Profile toDelete = null;
-            for (Profile profile : model.getProfiles()) {
-                if ("ci-builder".equals(profile.getId())) {
-                    toDelete = profile;
-                    break;
-                }
-            }
-            if (toDelete != null) {
-                model.getProfiles().remove(toDelete);
-            }
-        }
-        Profile profile = new Profile();
-        profile.setId("ci-builder");
-        Activation activation = new Activation();
-        activation.setActiveByDefault(true);
-        profile.setActivation(activation);
-        model.addProfile(profile);
-
-        Plugin plugin = new Plugin();
-        profile.setBuild(new Build());
-        profile.getBuild().addPlugin(plugin);
-        plugin.setGroupId(TalendMavenConstants.DEFAULT_GROUP_ID);
-        plugin.setArtifactId("ci.builder"); //$NON-NLS-1$
-        plugin.setVersion(VersionUtils.getTalendVersion());
-
-        List<PluginExecution> executions = new ArrayList<>();
-        PluginExecution pe = new PluginExecution();
-        pe.setPhase("generate-sources"); //$NON-NLS-1$
-        pe.addGoal("generate"); //$NON-NLS-1$
-        executions.add(pe);
-        plugin.setExecutions(executions);
-
-        return model;
-    }
-
     /**
      * Try to load the project template from bundle, if load failed, use default instead.
      */
@@ -289,10 +243,11 @@ public class MavenTemplateManager {
 
                 setJavaVersionForModel(model, variablesValuesMap);
 
-                addCIBuilder(model);
+                PomExtensionRegistry.getInstance().updateProjectPom(model);
 
                 Properties properties = model.getProperties();
                 properties.put("talend.project.name", projectTechName); //$NON-NLS-1$
+                properties.put("talend.version", VersionUtils.getTalendVersion()); //$NON-NLS-1$
 
                 return model;
             }
