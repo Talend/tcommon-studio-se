@@ -31,7 +31,6 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.util.EMap;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.junit.After;
@@ -324,13 +323,6 @@ public class AggregatorPomsHelperTest {
         validatePomContent(routinePomFile.getLocation().toFile(), routineGroupId, routineVersion);
 
         // check routine install result.
-        while (true) {
-            Job[] jobs = Job.getJobManager().find(AggregatorPomsHelper.FAMILY_UPDATE_CODES);
-            if (jobs.length == 0) {
-                break;
-            }
-            Thread.sleep(100);
-        }
         File installedRoutinePom = getInstalledFileFromLocalRepo(routineGroupId,
                 TalendMavenConstants.DEFAULT_ROUTINES_ARTIFACT_ID, routineVersion, MavenConstants.PACKAGING_POM);
         assertNotNull(installedRoutinePom);
