@@ -406,9 +406,12 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
 
         StringBuffer windowsScriptAdditionValue = new StringBuffer(50);
         StringBuffer unixScriptAdditionValue = new StringBuffer(50);
-
-        windowsScriptAdditionValue.append(this.getWindowsScriptAddition());
-        unixScriptAdditionValue.append(this.getUnixScriptAddition());
+        if (StringUtils.isNotEmpty(this.getWindowsScriptAddition())) {
+            windowsScriptAdditionValue.append(this.getWindowsScriptAddition());
+        }
+        if (StringUtils.isNotEmpty(this.getWindowsScriptAddition())) {
+            unixScriptAdditionValue.append(this.getUnixScriptAddition());
+        }
 
         // context
         if (isOptionChecked(TalendProcessArgumentConstant.ARG_NEED_CONTEXT)) {
