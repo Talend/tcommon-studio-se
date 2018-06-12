@@ -14,7 +14,6 @@
 			<dbType type="DECIMAL" defaultLength="20" defaultPrecision="10" />
 			<dbType type="DOUBLE PRECISION" ignoreLen="true" ignorePre="true" />
             <dbType type="UNSIGNED INT" ignoreLen="true" ignorePre="true" />
-            <dbType type="DOUBLE PRECIS" ignoreLen="true" ignorePre="true" />
 			<dbType type="FLOAT" ignoreLen="true" ignorePre="true" />
 			<dbType type="INT" ignoreLen="true" ignorePre="true" />
 			<dbType type="NUMERIC" defaultLength="20" defaultPrecision="10"/>
@@ -67,14 +66,12 @@
 				<talendType type="id_BigDecimal">
 					<dbType type="DECIMAL" default="true" />
 					<dbType type="DOUBLE PRECISION" />
-					<dbType type="DOUBLE PRECIS" />					
 					<dbType type="FLOAT" />	
 					<dbType type="REAL"/>	
 					<dbType type="NUMERIC"/>		
 				</talendType>
 				<talendType type="id_Double">
 					<dbType type="DOUBLE PRECISION" default="true" />
-					<dbType type="DOUBLE PRECIS" />
 					<dbType type="FLOAT" />	
 					<dbType type="DECIMAL"/>
 					<dbType type="REAL"/>	
@@ -83,7 +80,6 @@
 				<talendType type="id_Float">
 					<dbType type="FLOAT" default="true" />
 					<dbType type="DOUBLE PRECISION" />
-					<dbType type="DOUBLE PRECIS" />					
 					<dbType type="DECIMAL" />
 					<dbType type="NUMERIC"/>
 					<dbType type="REAL"/>
