@@ -295,6 +295,58 @@ public class RelationshipItemBuilder {
         return new ArrayList<Relation>(relations);
     }
 
+    public List<Relation> getAllVersionItemsRelatedTo(String itemId, String relationType, boolean withRefProject) {
+        if (!loaded) {
+            loadRelations();
+        }
+        List<IRepositoryViewObject> allVersion = null;
+        try {
+            allVersion = proxyRepositoryFactory.getAllVersion(itemId);
+        } catch (PersistenceException e) {
+            log.error(e);
+        }
+        Set<Relation> relations = new HashSet<Relation>();
+        Set<Relation> currentItemKeySet = currentProjectItemsRelations.keySet();
+        Set<Relation> refItemKeySet = referencesItemsRelations.keySet();
+        // in case there are some relations only with "Latest" version
+        Relation latestRelation = new Relation();
+        latestRelation.setId(itemId);
+        latestRelation.setType(relationType);
+        latestRelation.setVersion(LATEST_VERSION);
+        Relation tmpRelation = new Relation();
+        tmpRelation.setId(itemId);
+        tmpRelation.setType(relationType);
+        for (IRepositoryViewObject object : allVersion) {
+            tmpRelation.setVersion(object.getVersion());
+            if (currentItemKeySet.contains(tmpRelation)) {
+                relations.addAll(currentProjectItemsRelations.get(tmpRelation));
+            }
+            // in case one side has relation but other side don't have
+            for (Relation base : currentItemKeySet) {
+                for (Relation rely : currentProjectItemsRelations.get(base)) {
+                    if (rely.equals(tmpRelation) || rely.equals(latestRelation)) {
+                        relations.add(base);
+                        break;
+                    }
+                }
+            }
+            if (withRefProject && refItemKeySet.contains(tmpRelation)) {
+                relations.addAll(referencesItemsRelations.get(tmpRelation));
+                // in case one side has relation but other side don't have
+                for (Relation base : refItemKeySet) {
+                    for (Relation rely : referencesItemsRelations.get(base)) {
+                        if (rely.equals(tmpRelation) || rely.equals(latestRelation)) {
+                            relations.add(base);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        return new ArrayList<Relation>(relations);
+    }
+
     public void load() {
         if (!loaded) {
             loadRelations();
