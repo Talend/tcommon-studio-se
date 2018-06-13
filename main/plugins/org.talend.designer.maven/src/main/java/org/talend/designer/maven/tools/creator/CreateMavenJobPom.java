@@ -409,7 +409,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         if (StringUtils.isNotEmpty(this.getWindowsScriptAddition())) {
             windowsScriptAdditionValue.append(this.getWindowsScriptAddition());
         }
-        if (StringUtils.isNotEmpty(this.getWindowsScriptAddition())) {
+        if (StringUtils.isNotEmpty(this.getUnixScriptAddition())) {
             unixScriptAdditionValue.append(this.getUnixScriptAddition());
         }
 
