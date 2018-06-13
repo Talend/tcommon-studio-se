@@ -301,18 +301,13 @@ public class RelationshipItemBuilder {
         }
         List<IRepositoryViewObject> allVersion = null;
         try {
-            allVersion = proxyRepositoryFactory.getAllVersion(itemId);
+            allVersion = proxyRepositoryFactory.getAllVersion(getAimProject(), itemId, true);
         } catch (PersistenceException e) {
             log.error(e);
         }
         Set<Relation> relations = new HashSet<Relation>();
         Set<Relation> currentItemKeySet = currentProjectItemsRelations.keySet();
         Set<Relation> refItemKeySet = referencesItemsRelations.keySet();
-        // in case there are some relations only with "Latest" version
-        Relation latestRelation = new Relation();
-        latestRelation.setId(itemId);
-        latestRelation.setType(relationType);
-        latestRelation.setVersion(LATEST_VERSION);
         Relation tmpRelation = new Relation();
         tmpRelation.setId(itemId);
         tmpRelation.setType(relationType);
@@ -322,25 +317,11 @@ public class RelationshipItemBuilder {
                 relations.addAll(currentProjectItemsRelations.get(tmpRelation));
             }
             // in case one side has relation but other side don't have
-            for (Relation base : currentItemKeySet) {
-                for (Relation rely : currentProjectItemsRelations.get(base)) {
-                    if (rely.equals(tmpRelation) || rely.equals(latestRelation)) {
-                        relations.add(base);
-                        break;
-                    }
-                }
-            }
+            relations.addAll(getItemsHaveRelationWith(currentProjectItemsRelations, object.getId(), object.getVersion()));
             if (withRefProject && refItemKeySet.contains(tmpRelation)) {
                 relations.addAll(referencesItemsRelations.get(tmpRelation));
                 // in case one side has relation but other side don't have
-                for (Relation base : refItemKeySet) {
-                    for (Relation rely : referencesItemsRelations.get(base)) {
-                        if (rely.equals(tmpRelation) || rely.equals(latestRelation)) {
-                            relations.add(base);
-                            break;
-                        }
-                    }
-                }
+                relations.addAll(getItemsHaveRelationWith(referencesItemsRelations, object.getId(), object.getVersion()));
             }
         }
 
