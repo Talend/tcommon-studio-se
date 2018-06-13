@@ -316,14 +316,12 @@ public class RelationshipItemBuilder {
             if (currentItemKeySet.contains(tmpRelation)) {
                 relations.addAll(currentProjectItemsRelations.get(tmpRelation));
             }
-            // in case one side has relation but other side don't have
-            relations.addAll(getItemsHaveRelationWith(currentProjectItemsRelations, object.getId(), object.getVersion()));
             if (withRefProject && refItemKeySet.contains(tmpRelation)) {
                 relations.addAll(referencesItemsRelations.get(tmpRelation));
-                // in case one side has relation but other side don't have
-                relations.addAll(getItemsHaveRelationWith(referencesItemsRelations, object.getId(), object.getVersion()));
             }
         }
+        // in case one side has relation but other side don't have
+        relations.addAll(getItemsHaveRelationWith(itemId));
 
         return new ArrayList<Relation>(relations);
     }
