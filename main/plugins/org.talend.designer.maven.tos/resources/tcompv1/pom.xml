@@ -11,10 +11,10 @@
   <packaging>pom</packaging>
 
   <properties>
-    <tcomp.version>0.0.9</tcomp.version>
+    <tcomp.version>1.0.1-SNAPSHOT</tcomp.version>
     <slf4j.version>1.7.25</slf4j.version>
     <cxf.version>3.2.4</cxf.version>
-    <tomcat.version>9.0.7</tomcat.version>
+    <tomcat.version>9.0.8</tomcat.version>
   </properties>
 
   <repositories>
