@@ -21,7 +21,7 @@ import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.talend.core.model.general.ModuleNeeded;
-import org.talend.core.nexus.NexusServerBean;
+import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.TalendLibsServerManager;
 
 /**
@@ -112,7 +112,7 @@ public interface ILibraryManagerService extends IService {
      * @throws Exception
      * @throws IOException
      */
-    public File resolveJar(final NexusServerBean customNexusServer, String uri) throws Exception, IOException;
+    public File resolveJar(final ArtifactRepositoryBean customNexusServer, String uri) throws Exception, IOException;
 
     public File resolveStatusLocally(String mvnUriStatusKey);
 
@@ -188,7 +188,7 @@ public interface ILibraryManagerService extends IService {
      * @param jarUri
      * @return
      */
-    public boolean isLocalJarSameAsNexus(TalendLibsServerManager manager, final NexusServerBean customNexusServer, String jarUri);
+    public boolean isLocalJarSameAsNexus(TalendLibsServerManager manager, final ArtifactRepositoryBean customNexusServer, String jarUri);
 
     /**
      * DOC ycbai Comment method "isJarNeedToBeDeployed".

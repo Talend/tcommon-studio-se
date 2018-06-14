@@ -18,16 +18,20 @@ import org.apache.commons.lang3.StringUtils;
  * created by wchen on 2015-5-12 Detailled comment
  *
  */
-public class NexusServerBean {
+public class ArtifactRepositoryBean {
 
     public enum NexusType {
-        NEXUS_2("NEXUS"),
-        NEXUS_3("NEXUS 3");
+        NEXUS_2("NEXUS", "http://localhost:8081/nexus/"),
+        NEXUS_3("NEXUS 3", "http://localhost:8081/"),
+        ARTIFACTORY("Artifactory", "http://localhost:8081/artifactory/");
 
         String repType;
 
-        NexusType(String repType) {
+        String defaultURL;
+
+        NexusType(String repType, String defaultURL) {
             this.repType = repType;
+            this.defaultURL = defaultURL;
         }
 
         public static NexusType getByRepType(String typeFromTAC) {
@@ -50,28 +54,34 @@ public class NexusServerBean {
         public String getRepType() {
             return this.repType;
         }
+
+        public String getDefaultURL() {
+            return defaultURL;
+        }
     }
 
-    private String server;
+    private String server = "";
 
-    private String userName;
+    private String userName = "";
 
-    private String password;
+    private String password = "";
 
-    private String repositoryId;
+    private String repositoryId = "";
 
     private boolean official;
 
-    private String snapshotRepId;
+    private String snapshotRepId = "";
+
+    private String nexusDefaultGroupID = ""; //$NON-NLS-1$
 
     private String type = NexusType.NEXUS_2.name();
 
     private boolean isAbsoluteURL = false;
 
-    public NexusServerBean() {
+    public ArtifactRepositoryBean() {
     }
 
-    public NexusServerBean(Boolean official) {
+    public ArtifactRepositoryBean(Boolean official) {
         this.official = official;
     }
 
@@ -201,14 +211,11 @@ public class NexusServerBean {
         this.type = type;
     }
 
-    public String getRepositoryURI() {
-        return getRepositoryURI(true);
+    public String getRepositoryURL() {
+        return getRepositoryURL(true);
     }
 
-    public String getRepositoryURI(boolean isRelease) {
-        if (StringUtils.isEmpty(this.server)) {
-            return null; // no server, no uri
-        }
+    public String getRepositoryURL(boolean isRelease) {
         if (isAbsoluteURL()) {
             return this.server;
         }
@@ -245,6 +252,7 @@ public class NexusServerBean {
         result = prime * result + ((password == null) ? 0 : password.hashCode());
         result = prime * result + ((repositoryId == null) ? 0 : repositoryId.hashCode());
         result = prime * result + ((snapshotRepId == null) ? 0 : snapshotRepId.hashCode());
+        result = prime * result + ((nexusDefaultGroupID == null) ? 0 : nexusDefaultGroupID.hashCode());
         result = prime * result + ((type == null) ? 0 : type.hashCode());
         return result;
     }
@@ -263,10 +271,10 @@ public class NexusServerBean {
         if (obj == null) {
             return false;
         }
-        if (!(obj instanceof NexusServerBean)) {
+        if (!(obj instanceof ArtifactRepositoryBean)) {
             return false;
         }
-        NexusServerBean other = (NexusServerBean) obj;
+        ArtifactRepositoryBean other = (ArtifactRepositoryBean) obj;
         if (server == null) {
             if (other.server != null) {
                 return false;
@@ -304,6 +312,14 @@ public class NexusServerBean {
             return false;
         }
 
+        if (nexusDefaultGroupID == null) {
+            if (other.nexusDefaultGroupID != null) {
+                return false;
+            }
+        } else if (!nexusDefaultGroupID.equals(other.nexusDefaultGroupID)) {
+            return false;
+        }
+
         if (type == null) {
             if (other.type != null) {
                 return false;
@@ -314,6 +330,14 @@ public class NexusServerBean {
 
         return true;
 
+    }
+
+    public String getNexusDefaultGroupID() {
+        return this.nexusDefaultGroupID;
+    }
+
+    public void setNexusDefaultGroupID(String nexusDefaultGroupID) {
+        this.nexusDefaultGroupID = nexusDefaultGroupID;
     }
 
     public boolean isAbsoluteURL() {

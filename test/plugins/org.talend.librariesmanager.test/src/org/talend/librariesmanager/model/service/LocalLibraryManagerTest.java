@@ -61,7 +61,7 @@ import org.talend.core.model.components.IComponentsService;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.model.general.Project;
-import org.talend.core.nexus.NexusServerBean;
+import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.NexusServerUtils;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.prefs.ITalendCorePrefConstants;
@@ -201,15 +201,16 @@ public class LocalLibraryManagerTest {
         }
         // retrieve jar from the index.xml if not find in lib/java
         else {
+            ModuleNeeded module = new ModuleNeeded("", jarNeeded, "", true);
             EMap<String, String> jarsToRelative = LibrariesIndexManager.getInstance().getStudioLibIndex().getJarsToRelativePath();
-            String relativePath = jarsToRelative.get(jarNeeded);
+            String relativePath = jarsToRelative.get(module.getMavenUri());
             if (relativePath == null) {
                 return;
             }
             String bundleLocation = "";
             String jarLocation = "";
-            IComponentsService service = (IComponentsService) GlobalServiceRegister.getDefault().getService(
-                    IComponentsService.class);
+            IComponentsService service = (IComponentsService) GlobalServiceRegister.getDefault()
+                    .getService(IComponentsService.class);
             Map<String, File> componentsFolders = service.getComponentsFactory().getComponentsProvidersFolder();
             Set<String> contributeIdSet = componentsFolders.keySet();
             boolean jarFound = false;
@@ -225,8 +226,8 @@ public class LocalLibraryManagerTest {
             }
             sourcePath = jarLocation;
             if (!jarFound) {
-                CommonExceptionHandler.process(new Exception("Jar: " + jarNeeded + " not found, not in the plugins available:"
-                        + contributeIdSet));
+                CommonExceptionHandler.process(
+                        new Exception("Jar: " + jarNeeded + " not found, not in the plugins available:" + contributeIdSet));
                 return;
             }
             FilesUtils.copyFile(new File(jarLocation), new File(pathToStore, jarNeeded));
@@ -242,17 +243,7 @@ public class LocalLibraryManagerTest {
      */
     @Test
     public void testList() throws MalformedURLException {
-        Set<String> names = new HashSet<String>();
-        List<File> jarFiles = FilesUtils.getJarFilesFromFolder(getStorageDirectory(), null);
-        if (jarFiles.size() > 0) {
-            for (File file : jarFiles) {
-                names.add(file.getName());
-            }
-        }
-
-        EMap<String, String> jarsToRelative = LibrariesIndexManager.getInstance().getStudioLibIndex().getJarsToRelativePath();
-        names.addAll(jarsToRelative.keySet());
-
+        Set<String> names = localLibraryManager.list();
         assertTrue(names.size() > 0);
 
     }
@@ -263,16 +254,7 @@ public class LocalLibraryManagerTest {
     @Test
     @Ignore
     public void testMissingJar() throws MalformedURLException {
-        Set<String> names = new HashSet<String>();
-        List<File> jarFiles = FilesUtils.getJarFilesFromFolder(getStorageDirectory(), null);
-        if (jarFiles.size() > 0) {
-            for (File file : jarFiles) {
-                names.add(file.getName());
-            }
-        }
-        EMap<String, String> jarsToRelative = LibrariesIndexManager.getInstance().getStudioLibIndex().getJarsToRelativePath();
-        names.addAll(jarsToRelative.keySet());
-
+        Set<String> names = localLibraryManager.list();
         List<String> allJars = new ArrayList<String>();
         EDatabaseVersion4Drivers[] values = EDatabaseVersion4Drivers.values();
         for (EDatabaseVersion4Drivers driver : values) {
@@ -336,8 +318,8 @@ public class LocalLibraryManagerTest {
 
     @Test
     public void testRetrieveFromLocal() throws Exception {
-        ILibraryManagerService libraryManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
-                ILibraryManagerService.class);
+        ILibraryManagerService libraryManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault()
+                .getService(ILibraryManagerService.class);
         String baseLocation = "platform:/plugin/org.talend.librariesmanager.test/";
 
         IEclipsePreferences node = InstanceScope.INSTANCE.getNode(NexusServerUtils.ORG_TALEND_DESIGNER_CORE);
@@ -403,10 +385,10 @@ public class LocalLibraryManagerTest {
     @Test
     @Ignore
     public void testRetrieveFromRemote() throws Exception {
-        ILibraryManagerService libraryManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
-                ILibraryManagerService.class);
+        ILibraryManagerService libraryManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault()
+                .getService(ILibraryManagerService.class);
         TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
-        final NexusServerBean customNexusServer = manager.getCustomNexusServer();
+        final ArtifactRepositoryBean customNexusServer = manager.getCustomNexusServer();
         if (customNexusServer == null) {
             fail("Test not possible since Nexus is not setup");
         }
@@ -555,7 +537,7 @@ public class LocalLibraryManagerTest {
     public void testNexusUpdateJar() throws Exception {
         String uri = "mvn:org.talend.libraries/test/6.0.0-SNAPSHOT/jar";
         TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
-        final NexusServerBean customNexusServer = manager.getCustomNexusServer();
+        final ArtifactRepositoryBean customNexusServer = manager.getCustomNexusServer();
         if (customNexusServer == null) {
             fail("Test not possible since Nexus is not setup");
         }
@@ -600,7 +582,7 @@ public class LocalLibraryManagerTest {
     public void testNexusInstallNewJar() throws Exception {
         String uri = "mvn:org.talend.libraries/test/6.0.0-SNAPSHOT/jar";
         TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
-        final NexusServerBean customNexusServer = manager.getCustomNexusServer();
+        final ArtifactRepositoryBean customNexusServer = manager.getCustomNexusServer();
         if (customNexusServer == null) {
             fail("Test not possible since Nexus is not setup");
         }
@@ -639,7 +621,7 @@ public class LocalLibraryManagerTest {
     public void testResolveSha1NotExist() throws Exception {
         String uri = "mvn:org.talend.libraries/not-existing/6.0.0-SNAPSHOT/jar";
         TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
-        final NexusServerBean customNexusServer = manager.getCustomNexusServer();
+        final ArtifactRepositoryBean customNexusServer = manager.getCustomNexusServer();
         if (customNexusServer == null) {
             fail("Test not possible since Nexus is not setup");
         }
@@ -681,7 +663,7 @@ public class LocalLibraryManagerTest {
     public void testIsLocalJarSameAsNexus() throws IOException {
         String uri = "mvn:org.talend.libraries/test/6.0.0-SNAPSHOT/jar";
         TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
-        final NexusServerBean customNexusServer = manager.getCustomNexusServer();
+        final ArtifactRepositoryBean customNexusServer = manager.getCustomNexusServer();
         if (customNexusServer == null) {
             fail("Test not possible since Nexus is not setup");
         }

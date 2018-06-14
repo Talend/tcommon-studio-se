@@ -160,6 +160,8 @@ public class ProcessorUtilities {
 
     private static final Set<ModuleNeeded> retrievedJarsForCurrentBuild = new HashSet<ModuleNeeded>();
 
+    private static final Set<String> esbJobs = new HashSet<String>();
+
     public static void addOpenEditor(IEditorPart editor) {
         openedEditors.add(editor);
     }
@@ -1360,6 +1362,9 @@ public class ProcessorUtilities {
                         }
                     }
                 }
+                if (isEsbComponentName(componentName)) {
+                    addEsbJob(jobInfo);
+                }
             }
         }
     }
@@ -1484,6 +1489,7 @@ public class ProcessorUtilities {
             monitor = new NullProgressMonitor();
         }
         jobList.clear();
+        esbJobs.clear();
         hasLoopDependency = false;
         JobInfo jobInfo = new JobInfo(processName, contextName, version);
         IProcessor process = generateCode(jobInfo, contextName, statistics, trace, true, GENERATE_ALL_CHILDS, monitor);
@@ -1509,6 +1515,7 @@ public class ProcessorUtilities {
         JobInfo jobInfo = new JobInfo(processId, contextName, version);
         jobInfo.setApplyContextToChildren(applyContextToChildren);
         jobList.clear();
+        esbJobs.clear();
         hasLoopDependency = false;
         IProcessor process = generateCode(jobInfo, contextName, statistics, trace, true, GENERATE_ALL_CHILDS, monitor);
         jobList.clear();
@@ -1528,6 +1535,7 @@ public class ProcessorUtilities {
         JobInfo jobInfo = new JobInfo(process, contextName);
         jobInfo.setApplyContextToChildren(applyContextToChildren);
         jobList.clear();
+        esbJobs.clear();
         hasLoopDependency = false;
         IProcessor result = generateCode(jobInfo, contextName, statistics, trace, true, GENERATE_ALL_CHILDS, monitor);
         jobList.clear();
@@ -1547,6 +1555,7 @@ public class ProcessorUtilities {
         JobInfo jobInfo = new JobInfo(process, contextName, version);
         jobInfo.setApplyContextToChildren(applyContextToChildren);
         jobList.clear();
+        esbJobs.clear();
         hasLoopDependency = false;
         IProcessor result = generateCode(jobInfo, contextName, statistics, trace, needContext, GENERATE_ALL_CHILDS, monitor);
         jobList.clear();
@@ -1574,6 +1583,7 @@ public class ProcessorUtilities {
         int option = ProcessUtils.getOptionValue(argumentsMap, TalendProcessArgumentConstant.ARG_GENERATE_OPTION, 0);
 
         jobList.clear();
+        esbJobs.clear();
         hasLoopDependency = false;
         IProcessor result = generateCode(jobInfo, contextName, statistics, trace, needContext, option, monitor);
         jobList.clear();
@@ -1596,6 +1606,7 @@ public class ProcessorUtilities {
             jobInfo.setContext(context);
             jobInfo.setApplyContextToChildren(applyContextToChildren);
             jobList.clear();
+            esbJobs.clear();
             hasLoopDependency = false;
             result = generateCode(jobInfo, contextName, statistics, trace, true, GENERATE_ALL_CHILDS, monitor);
             jobList.clear();
@@ -1607,6 +1618,7 @@ public class ProcessorUtilities {
     public static IProcessor generateCode(ProcessItem process, String contextName, boolean statistics, boolean trace)
             throws ProcessorException {
         jobList.clear();
+        esbJobs.clear();
         hasLoopDependency = false;
         IProcessor returnValue = generateCode(process, contextName, statistics, trace, false);
         jobList.clear();
@@ -1640,6 +1652,7 @@ public class ProcessorUtilities {
         }
         jobInfo.setApplyContextToChildren(applyToChildren);
         jobList.clear();
+        esbJobs.clear();
         hasLoopDependency = false;
         IProcessor genCode = generateCode(jobInfo, context.getName(), statistics, trace, contextProperties, GENERATE_ALL_CHILDS,
                 new NullProgressMonitor());
@@ -1651,6 +1664,7 @@ public class ProcessorUtilities {
     public static IProcessor generateCode(IProcess process, IContext context, boolean statistics, boolean trace,
             boolean properties) throws ProcessorException {
         jobList.clear();
+        esbJobs.clear();
         hasLoopDependency = false;
         IProcessor returnValue = generateCode(process, context, statistics, trace, properties, new NullProgressMonitor());
         jobList.clear();
@@ -1684,6 +1698,7 @@ public class ProcessorUtilities {
             jobInfo = new JobInfo(process, context);
         }
         jobList.clear();
+        esbJobs.clear();
         hasLoopDependency = false;
         IProcessor genCode = generateCode(jobInfo, context.getName(), statistics, trace, properties, GENERATE_ALL_CHILDS,
                 progressMonitor);
@@ -1732,6 +1747,7 @@ public class ProcessorUtilities {
         TimeMeasure.begin(timeMeasureGenerateCodesId);
 
         jobList.clear();
+        esbJobs.clear();
         hasLoopDependency = false;
         IProcessor genCode = generateCode(processor, jobInfo, context.getName(), statistics, trace, properties,
                 GENERATE_ALL_CHILDS, progressMonitor);
@@ -1761,6 +1777,7 @@ public class ProcessorUtilities {
         // achen modify to fix 0006107
         JobInfo jobInfo = new JobInfo(process, context);
         jobList.clear();
+        esbJobs.clear();
         hasLoopDependency = false;
         IProcessor genCode = generateCode(jobInfo, context.getName(), statistics, trace, properties, option,
                 new NullProgressMonitor());
@@ -2037,6 +2054,11 @@ public class ProcessorUtilities {
             if (!activate) {
                 continue;
             }
+
+            if (isEsbComponentName(node.getComponentName())) {
+                addEsbJob(parentJobInfo);
+            }
+
             boolean isCTalendJob = "cTalendJob".equalsIgnoreCase(node.getComponentName());
             boolean isRoutelet = isRouteletNode(node);
             if ("tRunJob".equalsIgnoreCase(node.getComponentName()) || isCTalendJob || isRoutelet) { //$NON-NLS-1$
@@ -2316,6 +2338,37 @@ public class ProcessorUtilities {
      */
     public static boolean hadoopConfJarCanBeLoadedDynamically(Property property) {
         return doSupportDynamicHadoopConfLoading(property) && !isExportAsOSGI();
+    }
+
+
+    public static boolean isEsbJob(String processId, String version) {
+        return esbJobs.contains(esbJobKey(processId, version));
+    }
+
+    private static void addEsbJob(JobInfo jobInfo) {
+        if (esbJobs.contains(esbJobKey(jobInfo.getJobId(), jobInfo.getJobVersion()))) {
+            return;
+         }
+
+        esbJobs.add(esbJobKey(jobInfo.getJobId(), jobInfo.getJobVersion()));
+        if (jobInfo.getFatherJobInfo() != null) {
+            addEsbJob(jobInfo.getFatherJobInfo());
+        }
+    }
+
+    private static String esbJobKey(String processId, String version) {
+        return processId + "_" + version;
+    }
+
+    private static boolean isEsbComponentName(String componentName) {
+        if (componentName.equals("tESBConsumer")
+                || componentName.equals("tESBProviderRequest")
+                || componentName.equals("tRouteInput")
+                || componentName.equals("tESBProviderRequestIn")
+                || componentName.equals("tESBProviderRequestLoop")) {
+            return true;
+        }
+        return false;
     }
 
 }
