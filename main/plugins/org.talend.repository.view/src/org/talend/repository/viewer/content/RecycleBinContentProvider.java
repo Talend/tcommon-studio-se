@@ -129,7 +129,7 @@ public class RecycleBinContentProvider extends ProjectRepoDirectChildrenNodeCont
             } else if (resource.getType() == IResource.FOLDER) {
                 return false;
             } else if (resource.getType() == IResource.FILE) {
-                if (resource.getName().equals(RecycleBinManager.TALEND_RECYCLE_BIN_INDEX)
+                if (resource.getName().equals(FileConstants.TALEND_RECYCLE_BIN_INDEX)
                         || resource.getName().equals(FileConstants.LOCAL_PROJECT_FILENAME)) {
                     if (viewer != null && viewer.getControl() != null && !viewer.getTree().isDisposed()) {
                         viewer.getControl().getDisplay().asyncExec(new Runnable() {

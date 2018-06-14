@@ -53,6 +53,7 @@ import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.EMap;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
@@ -155,6 +156,7 @@ import org.talend.core.repository.model.VersionList;
 import org.talend.core.repository.recyclebin.RecycleBinManager;
 import org.talend.core.repository.ui.view.RepositoryLabelProvider;
 import org.talend.core.repository.utils.AbstractResourceChangesService;
+import org.talend.core.repository.utils.ProjectDataJsonProvider;
 import org.talend.core.repository.utils.ResourceFilenameHelper;
 import org.talend.core.repository.utils.RoutineUtils;
 import org.talend.core.repository.utils.TDQServiceRegister;
@@ -811,12 +813,31 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         return project;
     }
 
+    @SuppressWarnings("serial")
     @Override
     public void saveProject(Project project) throws PersistenceException {
+        Set<String> transientReferenceSet = new HashSet<String>();
+        transientReferenceSet.add(PropertiesPackage.eINSTANCE.getProject_Folders().getName());
+        transientReferenceSet.add(PropertiesPackage.eINSTANCE.getProject_AvailableRefProject().getName());
+        transientReferenceSet.add(PropertiesPackage.eINSTANCE.getProject_TechnicalStatus().getName());
+        transientReferenceSet.add(PropertiesPackage.eINSTANCE.getProject_DocumentationStatus().getName());
+        transientReferenceSet.add(PropertiesPackage.eINSTANCE.getProject_StatAndLogsSettings().getName());
+        transientReferenceSet.add(PropertiesPackage.eINSTANCE.getProject_ImplicitContextSettings().getName());
+        transientReferenceSet.add(PropertiesPackage.eINSTANCE.getProject_ItemsRelations().getName());
         for (EReference reference : project.getEmfProject().eClass().getEAllReferences()) {
-            if (reference.getName().equals("folders") || reference.getName().equals("availableRefProject")) {
+            if (transientReferenceSet.contains(reference.getName())) {
                 if (!reference.isTransient()) {
                     reference.setTransient(true);
+                }
+            }
+        }
+
+        Set<String> transientAttributeSet = new HashSet<String>();
+        transientAttributeSet.add(PropertiesPackage.eINSTANCE.getProject_DeletedFolders().getName());
+        for (EAttribute attribute : project.getEmfProject().eClass().getEAllAttributes()) {
+            if (transientAttributeSet.contains(attribute.getName())) {
+                if (!attribute.isTransient()) {
+                    attribute.setTransient(true);
                 }
             }
         }
@@ -836,6 +857,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         if (projectResource.isTrackingModification() && !projectResource.isModified()) {
             return;
         }
+
         // folder
         removeContentsFromProject(projectResource, PropertiesPackage.eINSTANCE.getFolderItem());
         // item state
@@ -856,9 +878,10 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
             }
         }
 
-        xmiResourceManager.saveResource(projectResource);
+        xmiResourceManager.saveResource(projectResource);  
+        ProjectDataJsonProvider.saveProjectData(project.getEmfProject());
     }
-
+    
     private void removeContentsFromProject(Resource projectResource, EClassifier type) {
         Collection<Object> contents = EcoreUtil.getObjectsByType(projectResource.getContents(), type);
         if (!contents.isEmpty()) {

@@ -13,7 +13,8 @@ Require-Bundle: org.eclipse.ui,
  org.apache.log4j,
  org.talend.libraries.apache,
  org.eclipse.osgi.services,
- org.eclipse.ui.navigator
+ org.eclipse.ui.navigator,
+ org.talend.libraries.jackson
 Export-Package: org.talend.core.repository,
  org.talend.core.repository.constants,
  org.talend.core.repository.document,

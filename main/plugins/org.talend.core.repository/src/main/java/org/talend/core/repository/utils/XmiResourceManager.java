@@ -43,8 +43,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.ecore.xmi.XMLResource;
-import org.eclipse.emf.ecore.xmi.impl.XMLParserPoolImpl;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.runtime.model.emf.EmfHelper;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
@@ -114,9 +112,11 @@ public class XmiResourceManager {
         }
 
         Resource resource = getResourceSet().getResource(uri, true);
-        Project emfProject = (Project) EcoreUtil
-                .getObjectByType(resource.getContents(), PropertiesPackage.eINSTANCE.getProject());
+        Project emfProject = (Project) EcoreUtil.getObjectByType(resource.getContents(),
+                PropertiesPackage.eINSTANCE.getProject());
         emfProject.eResource().setTrackingModification(true);
+
+        ProjectDataJsonProvider.loadProjectData(emfProject, project, ProjectDataJsonProvider.CONTENT_ALL);
 
         return emfProject;
     }
