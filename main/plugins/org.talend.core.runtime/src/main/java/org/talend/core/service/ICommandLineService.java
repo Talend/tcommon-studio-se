@@ -12,7 +12,10 @@
 // ============================================================================
 package org.talend.core.service;
 
+import java.util.Map;
+
 import org.talend.core.IService;
+import org.talend.utils.sugars.TypedReturnCode;
 
 /**
  * 
@@ -26,4 +29,10 @@ public interface ICommandLineService extends IService{
     public void generateAuditReport(String path);
 
     public void generateAuditReport(String path, String template);
+
+    public TypedReturnCode<java.sql.Connection> checkConnection(String url, String driver, String user, String password);
+
+    public Map<Integer, String> listAllHistoryAudits(String url, String driver, String user, String password);
+
+    public void populateHistoryAudit(Integer auditId, String url, String driver, String user, String password);
 }

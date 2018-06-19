@@ -756,7 +756,6 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
      */
     @Override
     public void installModules(Collection<ModuleNeeded> modules, IProgressMonitor monitorWrap) {
-        boolean modified = false;
         EMap<String, String> libIndex = LibrariesIndexManager.getInstance().getStudioLibIndex().getJarsToRelativePath();
         for (ModuleNeeded module : modules) {
             File fileToDeploy = null;
@@ -768,7 +767,10 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                 }
                 boolean found = false;
                 if (moduleLocation != null && moduleLocation.startsWith("platform:/")) {
-                    if (libIndex.containsKey(module.getModuleName())) {
+                    if (checkJarInstalledFromPlatform(moduleLocation)) {
+                        found = true;
+                        fileToDeploy = new File(studioJarInstalled.get(moduleLocation));
+                    } else if (libIndex.containsKey(module.getModuleName())) {
                         String relativePath = libIndex.get(module.getModuleName());
                         if (!relativePath.equals(moduleLocation)) {
                             if (!urlWarned.contains(moduleLocation)) {
@@ -777,13 +779,9 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                                 urlWarned.add(moduleLocation);
                             }
                             moduleLocation = relativePath;
+                            found = true;
+                            fileToDeploy = new File(studioJarInstalled.get(moduleLocation));
                         }
-                    }
-                    if (checkJarInstalledFromPlatform(moduleLocation)) {
-                        libIndex.put(module.getModuleName(), moduleLocation);
-                        modified = true;
-                        found = true;
-                        fileToDeploy = new File(studioJarInstalled.get(moduleLocation));
                     }
                 }
                 if (!found) {
@@ -818,9 +816,6 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
             }
         }
 
-        if (modified) {
-            LibrariesIndexManager.getInstance().saveStudioIndexResource();
-        }
     }
 
     @Override
