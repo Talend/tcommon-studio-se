@@ -24,7 +24,6 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -62,7 +61,7 @@ import org.talend.core.model.components.IComponentsService;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.model.general.Project;
-import org.talend.core.nexus.NexusServerBean;
+import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.NexusServerUtils;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.prefs.ITalendCorePrefConstants;
@@ -389,7 +388,7 @@ public class LocalLibraryManagerTest {
         ILibraryManagerService libraryManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault()
                 .getService(ILibraryManagerService.class);
         TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
-        final NexusServerBean customNexusServer = manager.getCustomNexusServer();
+        final ArtifactRepositoryBean customNexusServer = manager.getCustomNexusServer();
         if (customNexusServer == null) {
             fail("Test not possible since Nexus is not setup");
         }
@@ -538,7 +537,7 @@ public class LocalLibraryManagerTest {
     public void testNexusUpdateJar() throws Exception {
         String uri = "mvn:org.talend.libraries/test/6.0.0-SNAPSHOT/jar";
         TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
-        final NexusServerBean customNexusServer = manager.getCustomNexusServer();
+        final ArtifactRepositoryBean customNexusServer = manager.getCustomNexusServer();
         if (customNexusServer == null) {
             fail("Test not possible since Nexus is not setup");
         }
@@ -583,7 +582,7 @@ public class LocalLibraryManagerTest {
     public void testNexusInstallNewJar() throws Exception {
         String uri = "mvn:org.talend.libraries/test/6.0.0-SNAPSHOT/jar";
         TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
-        final NexusServerBean customNexusServer = manager.getCustomNexusServer();
+        final ArtifactRepositoryBean customNexusServer = manager.getCustomNexusServer();
         if (customNexusServer == null) {
             fail("Test not possible since Nexus is not setup");
         }
@@ -622,7 +621,7 @@ public class LocalLibraryManagerTest {
     public void testResolveSha1NotExist() throws Exception {
         String uri = "mvn:org.talend.libraries/not-existing/6.0.0-SNAPSHOT/jar";
         TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
-        final NexusServerBean customNexusServer = manager.getCustomNexusServer();
+        final ArtifactRepositoryBean customNexusServer = manager.getCustomNexusServer();
         if (customNexusServer == null) {
             fail("Test not possible since Nexus is not setup");
         }
@@ -664,7 +663,7 @@ public class LocalLibraryManagerTest {
     public void testIsLocalJarSameAsNexus() throws IOException {
         String uri = "mvn:org.talend.libraries/test/6.0.0-SNAPSHOT/jar";
         TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
-        final NexusServerBean customNexusServer = manager.getCustomNexusServer();
+        final ArtifactRepositoryBean customNexusServer = manager.getCustomNexusServer();
         if (customNexusServer == null) {
             fail("Test not possible since Nexus is not setup");
         }
@@ -758,38 +757,6 @@ public class LocalLibraryManagerTest {
         Assert.assertEquals(module2.getStatus(), ELibraryInstallStatus.INSTALLED);
         Assert.assertEquals(module2.getDeployStatus(), ELibraryInstallStatus.DEPLOYED);
 
-    }
-
-    @Test
-    public void checkJarInstalledFromPlatform() {
-        String url = "platform:/base/plugins/org.apache.commons.logging_1.2.0.jar";
-        boolean installStatus = localLibraryManager.checkJarInstalledFromPlatform(url);
-        Assert.assertTrue(installStatus);
-
-        url = "platform:/plugin/org.talend.libraries.apache.common/lib/commons-lang3-3.3.2.jar";
-        installStatus = localLibraryManager.checkJarInstalledFromPlatform(url);
-        Assert.assertTrue(installStatus);
-
-        url = "platform:/plugin/abcd/lib/commons-lang3-3.3.2.jar";
-        installStatus = localLibraryManager.checkJarInstalledFromPlatform(url);
-        Assert.assertFalse(installStatus);
-    }
-
-    @Test
-    public void testStudioPlatformURLIndex() {
-        EMap<String, String> jarsToRelativePath = LibrariesIndexManager.getInstance().getStudioLibIndex().getJarsToRelativePath();
-        Set<String> keySet = jarsToRelativePath.keySet();
-        Assert.assertTrue(!keySet.isEmpty());
-        for (String key : keySet) {
-            MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(key);
-            // key must be the maven url but not name
-            Assert.assertNotNull("The key is :" + key, parseMvnUrl);
-        }
-        Collection<String> values = jarsToRelativePath.values();
-        for (String value : values) {
-            // value must be platform url
-            Assert.assertTrue("The key is :" + value, value.startsWith("platform:/"));
-        }
     }
 
 }

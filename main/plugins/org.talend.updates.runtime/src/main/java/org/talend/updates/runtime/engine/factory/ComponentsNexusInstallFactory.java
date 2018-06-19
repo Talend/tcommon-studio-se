@@ -25,7 +25,7 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.SubMonitor;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
-import org.talend.core.nexus.NexusServerBean;
+import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.updates.runtime.engine.component.ComponentNexusP2ExtraFeature;
 import org.talend.updates.runtime.i18n.Messages;
 import org.talend.updates.runtime.model.ExtraFeature;
@@ -67,7 +67,7 @@ public class ComponentsNexusInstallFactory extends AbstractExtraUpdatesFactory {
         }
         try {
             ComponentNexusP2ExtraFeature lnFeature = new ComponentNexusP2ExtraFeature();
-            NexusServerBean localNexusServer = NexusServerManager.getInstance().getLocalNexusServer();
+            ArtifactRepositoryBean localNexusServer = NexusServerManager.getInstance().getLocalNexusServer();
             if (localNexusServer == null) {
                 return Collections.emptySet();
             }
@@ -75,7 +75,7 @@ public class ComponentsNexusInstallFactory extends AbstractExtraUpdatesFactory {
                 throw new OperationCanceledException();
             }
 
-            lnFeature.setNexusURL(localNexusServer.getRepositoryURI());
+            lnFeature.setNexusURL(localNexusServer.getRepositoryURL());
             lnFeature.setNexusUser(localNexusServer.getUserName());
             lnFeature.setNexusPass(localNexusServer.getPassword());
 

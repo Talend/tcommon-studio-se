@@ -28,7 +28,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.utils.resource.BundleFileUtil;
-import org.talend.core.nexus.NexusServerBean;
+import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.updates.runtime.engine.P2InstallerTest;
@@ -41,17 +41,17 @@ public class NexusShareComponentsManagerTest {
 
     class NexusShareComponentsManagerTestClass extends NexusShareComponentsManager {
 
-        public NexusShareComponentsManagerTestClass(NexusServerBean compNexusServer) {
+        public NexusShareComponentsManagerTestClass(ArtifactRepositoryBean compNexusServer) {
             super(compNexusServer);
         }
 
     }
 
-    static NexusServerBean serverBean;
+    static ArtifactRepositoryBean serverBean;
 
     @BeforeClass
     public static void parepare() {
-        serverBean = new NexusServerBean();
+        serverBean = new ArtifactRepositoryBean();
         serverBean.setServer("http://localhost:8081/nexus");
         serverBean.setUserName("");
         serverBean.setPassword("");
@@ -79,8 +79,8 @@ public class NexusShareComponentsManagerTest {
 
     @Test
     public void test_deployComponent_myServerInReleaseRepo_IntegrationTest() throws Exception {
-        final NexusServerBean nexusServerBean = IntegrationTestHelper.getNexusServerReleaseBean();
-        NexusShareComponentsManagerTestClass shareManager = new NexusShareComponentsManagerTestClass(nexusServerBean);
+        final ArtifactRepositoryBean artifactRepositoryBean = IntegrationTestHelper.getNexusServerReleaseBean();
+        NexusShareComponentsManagerTestClass shareManager = new NexusShareComponentsManagerTestClass(artifactRepositoryBean);
         final NexusComponentsTransport nexusTransport = shareManager.getNexusTransport();
         if (!CommonsPlugin.isDebugMode() && !nexusTransport.isAvailable()) {
             return; // if not debug, won't do test
@@ -259,7 +259,7 @@ public class NexusShareComponentsManagerTest {
 
             @Override
             NexusComponentsTransport createNexusComponentsTransport() {
-                return new NexusComponentsTransport(serverBean.getRepositoryURI(), serverBean.getUserName(),
+                return new NexusComponentsTransport(serverBean.getRepositoryURL(), serverBean.getUserName(),
                         serverBean.getPassword() != null ? serverBean.getPassword().toCharArray() : null) {
 
                     @Override
@@ -295,7 +295,7 @@ public class NexusShareComponentsManagerTest {
 
             @Override
             NexusComponentsTransport createNexusComponentsTransport() {
-                return new NexusComponentsTransport(serverBean.getRepositoryURI(), serverBean.getUserName(),
+                return new NexusComponentsTransport(serverBean.getRepositoryURL(), serverBean.getUserName(),
                         serverBean.getPassword() != null ? serverBean.getPassword().toCharArray() : null) {
 
                     @Override
@@ -332,7 +332,7 @@ public class NexusShareComponentsManagerTest {
 
             @Override
             NexusComponentsTransport createNexusComponentsTransport() {
-                return new NexusComponentsTransport(serverBean.getRepositoryURI(), serverBean.getUserName(),
+                return new NexusComponentsTransport(serverBean.getRepositoryURL(), serverBean.getUserName(),
                         serverBean.getPassword() != null ? serverBean.getPassword().toCharArray() : null) {
 
                     @Override
@@ -378,7 +378,7 @@ public class NexusShareComponentsManagerTest {
 
             @Override
             NexusComponentsTransport createNexusComponentsTransport() {
-                return new NexusComponentsTransport(serverBean.getRepositoryURI(), serverBean.getUserName(),
+                return new NexusComponentsTransport(serverBean.getRepositoryURL(), serverBean.getUserName(),
                         serverBean.getPassword() != null ? serverBean.getPassword().toCharArray() : null) {
 
                     @Override

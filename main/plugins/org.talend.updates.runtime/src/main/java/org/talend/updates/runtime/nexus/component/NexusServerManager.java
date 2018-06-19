@@ -14,7 +14,7 @@ package org.talend.updates.runtime.nexus.component;
 
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.general.INexusService;
-import org.talend.core.nexus.NexusServerBean;
+import org.talend.core.nexus.ArtifactRepositoryBean;
 
 /**
  * created by ycbai on 2017年5月22日 Detailled comment
@@ -44,7 +44,7 @@ public class NexusServerManager {
         return instance;
     }
 
-    public NexusServerBean getLocalNexusServer() {
+    public ArtifactRepositoryBean getLocalNexusServer() {
         INexusService nexusService = null;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(INexusService.class)) {
             nexusService = (INexusService) GlobalServiceRegister.getDefault().getService(INexusService.class);
@@ -56,7 +56,7 @@ public class NexusServerManager {
         return nexusService.getPublishNexusServerBean(repoId);
     }
 
-    public NexusServerBean getPropertyNexusServer() {
+    public ArtifactRepositoryBean getPropertyNexusServer() {
         if (!System.getProperties().containsKey(PROP_KEY_NEXUS_URL)) {
             return null; // if not set
         }
@@ -65,7 +65,7 @@ public class NexusServerManager {
         String nexusUser = System.getProperty(PROP_KEY_NEXUS_USER);
         String nexusPass = System.getProperty(PROP_KEY_NEXUS_PASS);
 
-        NexusServerBean serverBean = new NexusServerBean();
+        ArtifactRepositoryBean serverBean = new ArtifactRepositoryBean();
         serverBean.setServer(nexusUrl);
         serverBean.setRepositoryId(repoId);
         serverBean.setUserName(nexusUser);

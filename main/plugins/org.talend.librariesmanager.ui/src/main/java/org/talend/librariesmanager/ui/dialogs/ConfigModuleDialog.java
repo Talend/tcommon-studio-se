@@ -56,7 +56,7 @@ import org.talend.core.ILibraryManagerService;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.model.general.ModuleStatusProvider;
-import org.talend.core.nexus.NexusServerBean;
+import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.librariesmanager.model.ModulesNeededProvider;
@@ -124,8 +124,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
      */
     public ConfigModuleDialog(Shell parentShell, String initValue) {
         super(parentShell);
-        setShellStyle(
-                SWT.CLOSE | SWT.MAX | SWT.TITLE | SWT.BORDER | SWT.APPLICATION_MODAL | SWT.RESIZE | getDefaultOrientation());
+        setShellStyle(SWT.CLOSE | SWT.MAX | SWT.TITLE | SWT.BORDER | SWT.APPLICATION_MODAL | SWT.RESIZE | getDefaultOrientation());
         if (initValue != null && !"".equals(initValue)) {
             moduleName = initValue;
             ModuleNeeded testModuel = new ModuleNeeded("", initValue, "", true);
@@ -772,7 +771,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
             return false;
         }
         if (status != ELibraryInstallStatus.DEPLOYED) {
-            NexusServerBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
+            ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
             if (customNexusServer != null) {
                 setMessage(Messages.getString("InstallModuleDialog.error.detectMvnURI", mavenURI2Detect), IMessageProvider.ERROR);
                 return false;
@@ -786,7 +785,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
     }
 
     private boolean checkDetectButtonStatus(ELibraryInstallStatus localStatus, String mavenURI) {
-        NexusServerBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
+        ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
         if (customNexusServer != null || localStatus == null) {
             setMessage(Messages.getString("InstallModuleDialog.error.detectMvnURI", mavenURI), IMessageProvider.ERROR);
             return false;
@@ -852,8 +851,8 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                     }
                 };
 
-                ProgressMonitorDialog dialog = new ProgressMonitorDialog(
-                        PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell());
+                ProgressMonitorDialog dialog = new ProgressMonitorDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+                        .getShell());
                 try {
                     dialog.run(true, true, acceptOursProgress);
                 } catch (Throwable e) {
@@ -881,8 +880,8 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         // change the custom uri
         if (saveCustomMap) {
             testModule.setCustomMavenUri(customURI);
-            ILibraryManagerService libManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault()
-                    .getService(ILibraryManagerService.class);
+            ILibraryManagerService libManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
+                    ILibraryManagerService.class);
             libManagerService.saveCustomMavenURIMap();
         }
 

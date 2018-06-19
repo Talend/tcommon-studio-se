@@ -49,7 +49,7 @@ import org.talend.core.ILibraryManagerService;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.ModuleToInstall;
 import org.talend.core.nexus.IRepositoryArtifactHandler;
-import org.talend.core.nexus.NexusServerBean;
+import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.RepositoryArtifactHandlerManager;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
@@ -184,7 +184,7 @@ public class RemoteModulesHelper {
                 }
             }
 
-            NexusServerBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
+            ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
             IRepositoryArtifactHandler customerRepHandler = RepositoryArtifactHandlerManager
                     .getRepositoryHandler(customNexusServer);
             if (customerRepHandler != null) {
@@ -207,7 +207,7 @@ public class RemoteModulesHelper {
 
     private void searchFromRemoteNexus(Set<String> mavenUristoSearch, IProgressMonitor monitor) {
         try {
-            NexusServerBean talendServer = TalendLibsServerManager.getInstance().getTalentArtifactServer();
+            ArtifactRepositoryBean talendServer = TalendLibsServerManager.getInstance().getTalentArtifactServer();
             IRepositoryArtifactHandler talendRepositoryHander = RepositoryArtifactHandlerManager
                     .getRepositoryHandler(talendServer);
             if (talendRepositoryHander != null) {

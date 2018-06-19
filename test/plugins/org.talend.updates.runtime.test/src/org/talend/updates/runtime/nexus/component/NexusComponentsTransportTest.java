@@ -42,7 +42,7 @@ import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.BusinessException;
 import org.talend.commons.utils.resource.BundleFileUtil;
 import org.talend.core.nexus.HttpClientTransport;
-import org.talend.core.nexus.NexusServerBean;
+import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.updates.runtime.engine.P2InstallerTest;
 import org.talend.utils.io.FilesUtils;
@@ -74,7 +74,7 @@ public class NexusComponentsTransportTest {
         nexusTransport = new NexusComponentsTransportTestClass(nexusURL, nexusUser, nexusPass.toCharArray());
 
         // create without server, just want to get index artifact
-        NexusShareComponentsManager manager = new NexusShareComponentsManager(new NexusServerBean());
+        NexusShareComponentsManager manager = new NexusShareComponentsManager(new ArtifactRepositoryBean());
         indexArtifact = manager.getIndexArtifact();
     }
 
@@ -102,9 +102,9 @@ public class NexusComponentsTransportTest {
 
     @Test
     public void test_uploadXml_myServerInReleaseRepo_IntegrationTest() throws Exception {
-        final NexusServerBean nexusServerBean = IntegrationTestHelper.getNexusServerReleaseBean();
+        final ArtifactRepositoryBean artifactRepositoryBean = IntegrationTestHelper.getNexusServerReleaseBean();
         NexusComponentsTransportTestClass myNexusTransport = new NexusComponentsTransportTestClass(
-                nexusServerBean.getRepositoryURI(), nexusServerBean.getUserName(), nexusServerBean.getPassword().toCharArray());
+                artifactRepositoryBean.getRepositoryURL(), artifactRepositoryBean.getUserName(), artifactRepositoryBean.getPassword().toCharArray());
         if (!CommonsPlugin.isDebugMode() && !myNexusTransport.isAvailable()) {
             return; // if not debug, won't do test
         }
@@ -189,9 +189,9 @@ public class NexusComponentsTransportTest {
 
     @Test
     public void test_uploadZip_myServerInReleaseRepo_IntegrationTest() throws Exception {
-        final NexusServerBean nexusServerBean = IntegrationTestHelper.getNexusServerReleaseBean();
+        final ArtifactRepositoryBean artifactRepositoryBean = IntegrationTestHelper.getNexusServerReleaseBean();
         NexusComponentsTransportTestClass myNexusTransport = new NexusComponentsTransportTestClass(
-                nexusServerBean.getRepositoryURI(), nexusServerBean.getUserName(), nexusServerBean.getPassword().toCharArray());
+                artifactRepositoryBean.getRepositoryURL(), artifactRepositoryBean.getUserName(), artifactRepositoryBean.getPassword().toCharArray());
         if (!CommonsPlugin.isDebugMode() && !myNexusTransport.isAvailable()) {
             return; // if not debug, won't do test
         }

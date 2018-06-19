@@ -16,7 +16,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.talend.core.nexus.NexusServerBean;
+import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.updates.runtime.utils.PathUtils;
 import org.talend.utils.io.FilesUtils;
 
@@ -28,7 +28,7 @@ import org.talend.utils.io.FilesUtils;
 public class ComponentsDeploymentManager {
 
     public boolean deployComponentsToLocalNexus(IProgressMonitor progress, File componentZipFile) throws IOException {
-        NexusServerBean localNexusServer = NexusServerManager.getInstance().getLocalNexusServer();
+        ArtifactRepositoryBean localNexusServer = NexusServerManager.getInstance().getLocalNexusServer();
         if (localNexusServer == null) {
             return false;
         }

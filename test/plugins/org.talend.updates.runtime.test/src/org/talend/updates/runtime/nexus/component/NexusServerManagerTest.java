@@ -20,7 +20,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.general.INexusService;
-import org.talend.core.nexus.NexusServerBean;
+import org.talend.core.nexus.ArtifactRepositoryBean;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -64,7 +64,7 @@ public class NexusServerManagerTest {
 
     @Test
     public void test_getLocalNexusServer_local_defaultRepo() {
-        NexusServerBean localNexusServer = NexusServerManager.getInstance().getLocalNexusServer();
+        ArtifactRepositoryBean localNexusServer = NexusServerManager.getInstance().getLocalNexusServer();
         Assert.assertNotNull(localNexusServer);
 
         validateNexusServerInfo(getNexusServerInfo("releases"), localNexusServer);
@@ -74,7 +74,7 @@ public class NexusServerManagerTest {
     public void test_getLocalNexusServer_local_customRepo() {
         System.setProperty(NexusServerManager.PROP_KEY_NEXUS_REPOSITORY, "mytest");
 
-        NexusServerBean localNexusServer = NexusServerManager.getInstance().getLocalNexusServer();
+        ArtifactRepositoryBean localNexusServer = NexusServerManager.getInstance().getLocalNexusServer();
         Assert.assertNotNull(localNexusServer);
 
         validateNexusServerInfo(getNexusServerInfo("mytest"), localNexusServer);
@@ -84,23 +84,23 @@ public class NexusServerManagerTest {
     public void test_getLocalNexusServer_remote_customRepo() {
         System.setProperty(NexusServerManager.PROP_KEY_NEXUS_REPOSITORY, "myremote");
 
-        NexusServerBean localNexusServer = NexusServerManager.getInstance().getLocalNexusServer();
+        ArtifactRepositoryBean localNexusServer = NexusServerManager.getInstance().getLocalNexusServer();
         Assert.assertNotNull(localNexusServer);
 
         validateNexusServerInfo(getNexusServerInfo("myremote"), localNexusServer);
     }
 
-    private void validateNexusServerInfo(NexusServerBean expectNexusServerInfo, NexusServerBean localNexusServerInfo) {
+    private void validateNexusServerInfo(ArtifactRepositoryBean expectNexusServerInfo, ArtifactRepositoryBean localNexusServerInfo) {
         Assert.assertEquals(expectNexusServerInfo.getServer(), localNexusServerInfo.getServer());
         Assert.assertEquals(expectNexusServerInfo.getRepositoryId(), localNexusServerInfo.getRepositoryId());
-        Assert.assertEquals(expectNexusServerInfo.getRepositoryURI(), localNexusServerInfo.getRepositoryURI());
+        Assert.assertEquals(expectNexusServerInfo.getRepositoryURL(), localNexusServerInfo.getRepositoryURL());
         Assert.assertEquals(expectNexusServerInfo.getUserName(), localNexusServerInfo.getUserName());
         Assert.assertEquals(expectNexusServerInfo.getPassword(), localNexusServerInfo.getPassword());
     }
 
     @Test
     public void test_getPropertyNexusServer_notSetNexus() {
-        NexusServerBean propertyNexusServer = NexusServerManager.getInstance().getPropertyNexusServer();
+        ArtifactRepositoryBean propertyNexusServer = NexusServerManager.getInstance().getPropertyNexusServer();
         Assert.assertNull(propertyNexusServer);
     }
 
@@ -108,12 +108,12 @@ public class NexusServerManagerTest {
     public void test_getPropertyNexusServer_setNexusURLOnly() {
         System.setProperty(NexusServerManager.PROP_KEY_NEXUS_URL, "http://127.0.0.1:8081/nexus");
 
-        NexusServerBean propertyNexusServer = NexusServerManager.getInstance().getPropertyNexusServer();
+        ArtifactRepositoryBean propertyNexusServer = NexusServerManager.getInstance().getPropertyNexusServer();
         Assert.assertNotNull(propertyNexusServer);
 
         Assert.assertEquals("http://127.0.0.1:8081/nexus", propertyNexusServer.getServer());
         Assert.assertEquals("releases", propertyNexusServer.getRepositoryId());
-        Assert.assertEquals("http://127.0.0.1:8081/nexus/content/repositories/releases/", propertyNexusServer.getRepositoryURI());
+        Assert.assertEquals("http://127.0.0.1:8081/nexus/content/repositories/releases/", propertyNexusServer.getRepositoryURL());
         Assert.assertNull(propertyNexusServer.getUserName());
         Assert.assertNull(propertyNexusServer.getPassword());
     }
@@ -125,17 +125,17 @@ public class NexusServerManagerTest {
         System.setProperty(NexusServerManager.PROP_KEY_NEXUS_USER, "talend");
         System.setProperty(NexusServerManager.PROP_KEY_NEXUS_PASS, "1234");
 
-        NexusServerBean propertyNexusServer = NexusServerManager.getInstance().getPropertyNexusServer();
+        ArtifactRepositoryBean propertyNexusServer = NexusServerManager.getInstance().getPropertyNexusServer();
         Assert.assertNotNull(propertyNexusServer);
 
         Assert.assertEquals("http://127.0.0.1:8081/nexus", propertyNexusServer.getServer());
         Assert.assertEquals("mycomp", propertyNexusServer.getRepositoryId());
-        Assert.assertEquals("http://127.0.0.1:8081/nexus/content/repositories/mycomp/", propertyNexusServer.getRepositoryURI());
+        Assert.assertEquals("http://127.0.0.1:8081/nexus/content/repositories/mycomp/", propertyNexusServer.getRepositoryURL());
         Assert.assertEquals("talend", propertyNexusServer.getUserName());
         Assert.assertEquals("1234", propertyNexusServer.getPassword());
     }
 
-    public NexusServerBean getNexusServerInfo(String repoId) {
+    public ArtifactRepositoryBean getNexusServerInfo(String repoId) {
         INexusService nexusService = null;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(INexusService.class)) {
             nexusService = (INexusService) GlobalServiceRegister.getDefault().getService(INexusService.class);

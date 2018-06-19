@@ -35,8 +35,6 @@ public abstract class AbstractComponentsProvider {
 
     private String contributer;
 
-    private String paletteType;
-
     public String getId() {
         return id;
     }
@@ -82,8 +80,7 @@ public abstract class AbstractComponentsProvider {
         // }
         // } else {
         // logger.warn(Messages
-        // .getString("AbstractComponentsProvider.folderNotExist", externalComponentsLocation.toString()));
-        // //$NON-NLS-1$
+        //                        .getString("AbstractComponentsProvider.folderNotExist", externalComponentsLocation.toString())); //$NON-NLS-1$
         // }
         // }
     }
@@ -118,8 +115,8 @@ public abstract class AbstractComponentsProvider {
      * @return
      */
     public ResourceBundle getResourceBundle(String label) {
-        ILocalProviderService service = (ILocalProviderService) GlobalServiceRegister.getDefault()
-                .getService(ILocalProviderService.class);
+        ILocalProviderService service = (ILocalProviderService) GlobalServiceRegister.getDefault().getService(
+                ILocalProviderService.class);
         return service.getResourceBundle(label);
     }
 
@@ -146,24 +143,6 @@ public abstract class AbstractComponentsProvider {
 
     public String getComponentsBundle() {
         return null;
-    }
-
-    /**
-     * Getter for paletteType.
-     * 
-     * @return the paletteType
-     */
-    public String getPaletteType() {
-        return this.paletteType;
-    }
-
-    /**
-     * Sets the paletteType.
-     * 
-     * @param paletteType the paletteType to set
-     */
-    public void setPaletteType(String paletteType) {
-        this.paletteType = paletteType;
     }
 
 }

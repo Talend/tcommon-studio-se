@@ -12,7 +12,7 @@
 // ============================================================================
 package org.talend.updates.runtime.nexus.component;
 
-import org.talend.core.nexus.NexusServerBean;
+import org.talend.core.nexus.ArtifactRepositoryBean;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -22,8 +22,8 @@ public class IntegrationTestHelper {
     /**
      * this test is release nexus URI.
      */
-    public static NexusServerBean getNexusServerReleaseBean() {
-        NexusServerBean propertyNexusServer = NexusServerManager.getInstance().getPropertyNexusServer();
+    public static ArtifactRepositoryBean getNexusServerReleaseBean() {
+        ArtifactRepositoryBean propertyNexusServer = NexusServerManager.getInstance().getPropertyNexusServer();
         if (propertyNexusServer != null) { // reuse the property one
             return propertyNexusServer;
         }
@@ -32,7 +32,7 @@ public class IntegrationTestHelper {
         String nexusPass = "xxxx";
         String repositoryId = "components";
 
-        final NexusServerBean nexusServerBean = new NexusServerBean();
+        final ArtifactRepositoryBean nexusServerBean = new ArtifactRepositoryBean();
         nexusServerBean.setServer(nexusURL);
         nexusServerBean.setUserName(nexusUser);
         nexusServerBean.setPassword(nexusPass);
