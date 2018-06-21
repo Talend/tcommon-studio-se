@@ -26,9 +26,9 @@ public interface ICommandLineService extends IService{
 
     public void populateAudit(String url, String driver, String user, String password);
 
-    public void generateAuditReport(String path);
+    public boolean generateAuditReport(String path);
 
-    public void generateAuditReport(String path, String template);
+    public boolean generateAuditReport(String path, String template);
 
     public TypedReturnCode<java.sql.Connection> checkConnection(String version, String url, String driver, String user,
             String password);
