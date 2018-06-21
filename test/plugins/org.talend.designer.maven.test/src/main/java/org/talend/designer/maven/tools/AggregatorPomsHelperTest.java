@@ -31,7 +31,6 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.util.EMap;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.junit.After;
@@ -324,13 +323,6 @@ public class AggregatorPomsHelperTest {
         validatePomContent(routinePomFile.getLocation().toFile(), routineGroupId, routineVersion);
 
         // check routine install result.
-        while (true) {
-            Job[] jobs = Job.getJobManager().find(AggregatorPomsHelper.FAMILY_UPDATE_CODES);
-            if (jobs.length == 0) {
-                break;
-            }
-            Thread.sleep(100);
-        }
         File installedRoutinePom = getInstalledFileFromLocalRepo(routineGroupId,
                 TalendMavenConstants.DEFAULT_ROUTINES_ARTIFACT_ID, routineVersion, MavenConstants.PACKAGING_POM);
         assertNotNull(installedRoutinePom);
@@ -414,7 +406,22 @@ public class AggregatorPomsHelperTest {
             throws IOException {
         String projectMvnUrl = MavenUrlHelper.generateMvnUrl(groupId, artifactId, version, packaging, null);
         String projectLocalMavenUri = projectMvnUrl.replace("mvn:", "mvn:" + MavenConstants.LOCAL_RESOLUTION_URL + "!");
-        File installedFile = TalendMavenResolver.getMavenResolver().resolve(projectLocalMavenUri);
+        File installedFile = null;
+        try {
+            Thread.sleep(3000);
+            installedFile = TalendMavenResolver.getMavenResolver().resolve(projectLocalMavenUri);
+        } catch (IOException e) {
+            try {
+                Thread.sleep(3000);
+                installedFile = TalendMavenResolver.getMavenResolver().resolve(projectLocalMavenUri);
+            } catch (InterruptedException e1) {
+                //
+            } catch (IOException e1) {
+                throw e1;
+            }
+        } catch (InterruptedException e) {
+            //
+        }
         return installedFile;
     }
 

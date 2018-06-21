@@ -283,9 +283,11 @@ public class RemoteModulesHelper {
                         artifact.getClassifier());
                 m.setMavenUri(mvnUri);
                 List<ModuleNeeded> list = contextMap.get(mvnUri);
-                for (ModuleNeeded module : list) {
-                    if (mvnUri.equals(module.getMavenUri())) {
-                        m.setName(module.getModuleName());
+                if (list != null) {
+                    for (ModuleNeeded module : list) {
+                        if (mvnUri.equals(module.getMavenUri())) {
+                            m.setName(module.getModuleName());
+                        }
                     }
                 }
                 if (m.getName() == null) {

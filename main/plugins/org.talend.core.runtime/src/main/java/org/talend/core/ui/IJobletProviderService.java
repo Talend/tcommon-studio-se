@@ -143,4 +143,6 @@ public interface IJobletProviderService extends IService {
 
     public IComponent getUpdatedJobletComponent(IComponent component);
 
+    public void updateJobleModifiedRelated(Item item, String oldName, String newName);
+
 }
