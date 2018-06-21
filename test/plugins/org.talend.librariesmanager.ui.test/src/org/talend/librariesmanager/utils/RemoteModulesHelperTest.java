@@ -20,6 +20,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.junit.Assert;
 import org.junit.Test;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.ModuleToInstall;
@@ -58,10 +59,38 @@ public class RemoteModulesHelperTest {
         neededModules.add(m4);
         neededModules.add(m5);
         List<ModuleToInstall> toInstall1 = new ArrayList<ModuleToInstall>();
-        IRunnableWithProgress notInstalledModulesRunnable = RemoteModulesHelper.getInstance().getNotInstalledModulesRunnable(
-                neededModules, toInstall1, false);
+        IRunnableWithProgress notInstalledModulesRunnable = RemoteModulesHelper.getInstance()
+                .getNotInstalledModulesRunnable(neededModules, toInstall1, false);
         notInstalledModulesRunnable.run(new NullProgressMonitor());
         assertEquals(4, toInstall1.size());
+
+    }
+
+    @Test
+    public void testGetNotInstalledModulesRunnableListForModuleNameURL() throws InvocationTargetException, InterruptedException {
+        List<ModuleNeeded> neededModules = new ArrayList<ModuleNeeded>();
+        ModuleNeeded m1 = new ModuleNeeded("test", "protobuf-java-2.6.1.jar", "", true, null, null,
+                "mvn:com.google.protobuf/protobuf-java/2.6.1");
+        neededModules.add(m1);
+        List<ModuleToInstall> toInstall1 = new ArrayList<ModuleToInstall>();
+        IRunnableWithProgress notInstalledModulesRunnable = RemoteModulesHelper.getInstance()
+                .getNotInstalledModulesRunnable(neededModules, toInstall1, false);
+        notInstalledModulesRunnable.run(new NullProgressMonitor());
+        assertEquals(1, toInstall1.size());
+        Assert.assertEquals("protobuf-java-2.6.1.jar", toInstall1.get(0).getName());
+        Assert.assertEquals("mvn:com.google.protobuf/protobuf-java/2.6.1/jar", toInstall1.get(0).getMavenUri());
+
+        neededModules.clear();
+        ModuleNeeded m2 = new ModuleNeeded("test", "protobuf-java.jar", "", true, null, null,
+                "mvn:org.talend.libraries/protobuf-java/6.0.0");
+        neededModules.add(m2);
+        toInstall1 = new ArrayList<ModuleToInstall>();
+        notInstalledModulesRunnable = RemoteModulesHelper.getInstance().getNotInstalledModulesRunnable(neededModules, toInstall1,
+                false);
+        notInstalledModulesRunnable.run(new NullProgressMonitor());
+        assertEquals(1, toInstall1.size());
+        Assert.assertEquals("protobuf-java.jar", toInstall1.get(0).getName());
+        Assert.assertEquals("mvn:org.talend.libraries/protobuf-java/6.0.0/jar", toInstall1.get(0).getMavenUri());
 
     }
 }

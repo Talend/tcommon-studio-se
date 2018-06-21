@@ -17,15 +17,15 @@ import java.net.URL;
 import java.util.Map;
 
 import org.talend.core.IService;
-import org.talend.core.nexus.NexusServerBean;
+import org.talend.core.nexus.ArtifactRepositoryBean;
 
 public interface INexusService extends IService {
 
-    Map upload(NexusServerBean nexusServerBean, String groupId, String artifactId, String version, URL source);
+    Map upload(ArtifactRepositoryBean artifactRepositoryBean, String groupId, String artifactId, String version, URL source);
 
-    Map getMavenMetadata(NexusServerBean nexusServerBean, String groupId, String artifactId, String version);
+    Map getMavenMetadata(ArtifactRepositoryBean artifactRepositoryBean, String groupId, String artifactId, String version);
 
-    InputStream getContentInputStream(NexusServerBean nexusServerBean, String r, String g, String a, String v, String e);
+    InputStream getContentInputStream(ArtifactRepositoryBean artifactRepositoryBean, String r, String g, String a, String v, String e);
 
-    NexusServerBean getPublishNexusServerBean(String repositoryId);
+    ArtifactRepositoryBean getPublishNexusServerBean(String repositoryId);
 }

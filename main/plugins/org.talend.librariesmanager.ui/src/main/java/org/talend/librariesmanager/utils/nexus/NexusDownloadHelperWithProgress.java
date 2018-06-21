@@ -22,7 +22,7 @@ import org.talend.core.ILibraryManagerService;
 import org.talend.core.download.DownloadHelperWithProgress;
 import org.talend.core.download.IDownloadHelper;
 import org.talend.core.model.general.ModuleToInstall;
-import org.talend.core.nexus.NexusServerBean;
+import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
@@ -57,7 +57,7 @@ public class NexusDownloadHelperWithProgress extends DownloadHelperWithProgress 
             String repositoryUrl = mArtifact.getRepositoryUrl();
             if (StringUtils.isNotEmpty(repositoryUrl)) {
                 // TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
-                final NexusServerBean customNexusServer = new NexusServerBean(false);
+                final ArtifactRepositoryBean customNexusServer = new ArtifactRepositoryBean(false);
                 customNexusServer.setServer(repositoryUrl);
                 customNexusServer.setAbsoluteURL(true);
                 String username = mArtifact.getUsername();
@@ -83,7 +83,7 @@ public class NexusDownloadHelperWithProgress extends DownloadHelperWithProgress 
         }
         if (downloadFromCustomNexus) {
             TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
-            final NexusServerBean customNexusServer = manager.getCustomNexusServer();
+            final ArtifactRepositoryBean customNexusServer = manager.getCustomNexusServer();
             if (customNexusServer != null) {
                 // String mvnUri = componentUrl.toExternalForm();
                 progressMonitor.subTask("Downloading " + toInstall.getName() + ": " + mvnUri + " from "

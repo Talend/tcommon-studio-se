@@ -15,7 +15,6 @@ package org.talend.librariesmanager.model.service;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -60,16 +59,13 @@ import org.talend.core.ILibraryManagerUIService;
 import org.talend.core.language.ECodeLanguage;
 import org.talend.core.model.components.ComponentProviderInfo;
 import org.talend.core.model.components.IComponent;
-import org.talend.core.model.components.IComponentsFactory;
 import org.talend.core.model.components.IComponentsService;
-import org.talend.core.model.components.IMultipleComponentItem;
-import org.talend.core.model.components.IMultipleComponentManager;
 import org.talend.core.model.general.ILibrariesService;
 import org.talend.core.model.general.ILibrariesService.IChangedLibrariesListener;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.model.general.ModuleStatusProvider;
-import org.talend.core.nexus.NexusServerBean;
+import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.NexusServerUtils;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.nexus.TalendMavenResolver;
@@ -286,7 +282,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
             jarFile = retrieveJarFromLocal(module);
             // retrieve form custom nexus server automatically
             TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
-            NexusServerBean customNexusServer = manager.getCustomNexusServer();
+            ArtifactRepositoryBean customNexusServer = manager.getCustomNexusServer();
             if (customNexusServer != null) {
                 Set<String> toResolve = guessMavenURI(module);
                 for (String uri : toResolve) {
@@ -371,17 +367,6 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
         return jarFile;
     }
 
-    private Set<String> guessMavenURI(String jarNameOrMavenUri) {
-        Set<String> mvnUris = new HashSet<String>();
-        if (MavenUrlHelper.isMvnUrl(jarNameOrMavenUri)) {
-            mvnUris.add(jarNameOrMavenUri);
-        } else {
-            ModuleNeeded testModule = new ModuleNeeded("", jarNameOrMavenUri, "", true);
-            mvnUris.addAll(guessMavenURI(testModule));
-        }
-        return mvnUris;
-    }
-
     private Set<String> guessMavenURI(ModuleNeeded module) {
         String jarNeeded = module.getModuleName();
         EMap<String, String> mvnURIIndex = LibrariesIndexManager.getInstance().getMavenLibIndex().getJarsToRelativePath();
@@ -412,7 +397,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
      * @throws IOException
      */
     @Override
-    public File resolveJar(final NexusServerBean customNexusServer, String uri) throws Exception, IOException {
+    public File resolveJar(final ArtifactRepositoryBean customNexusServer, String uri) throws Exception, IOException {
         File resolvedFile = TalendMavenResolver.resolve(uri);
         if (resolvedFile != null) {
             // reset module status
@@ -783,19 +768,19 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                 boolean found = false;
                 if (moduleLocation != null && moduleLocation.startsWith("platform:/")) {
                     if (checkJarInstalledFromPlatform(moduleLocation)) {
+                        found = true;
                         fileToDeploy = new File(studioJarInstalled.get(moduleLocation));
-                    } else {
-                        if (libIndex.containsKey(mavenUri)) {
-                            String relativePath = libIndex.get(mavenUri);
-                            if (!relativePath.equals(moduleLocation)) {
-                                if (!urlWarned.contains(moduleLocation)) {
-                                    System.out.println(module.getModuleName() + " was already defined with:" + relativePath
-                                            + " but redefined now with:" + moduleLocation);
-                                    urlWarned.add(moduleLocation);
-                                }
-                                moduleLocation = relativePath;
-                                fileToDeploy = new File(studioJarInstalled.get(moduleLocation));
+                    } else if (libIndex.containsKey(module.getModuleName())) {
+                        String relativePath = libIndex.get(module.getModuleName());
+                        if (!relativePath.equals(moduleLocation)) {
+                            if (!urlWarned.contains(moduleLocation)) {
+                                System.out.println(module.getModuleName() + " was already defined with:" + relativePath
+                                        + " but redefined now with:" + moduleLocation);
+                                urlWarned.add(moduleLocation);
                             }
+                            moduleLocation = relativePath;
+                            found = true;
+                            fileToDeploy = new File(studioJarInstalled.get(moduleLocation));
                         }
                     }
                 }
@@ -853,15 +838,12 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                 libPath = file.getAbsolutePath();
             }
             // studio
-            Set<String> mvnUris = guessMavenURI(jarName);
             EMap<String, String> jarsToRelative = LibrariesIndexManager.getInstance().getStudioLibIndex().getJarsToRelativePath();
-            for (String mvnUri : mvnUris) {
-                String relativePath = jarsToRelative.get(mvnUri);
-                if (relativePath != null && relativePath.startsWith("platform:/")) { //$NON-NLS-1$
-                    boolean jarFound = checkJarInstalledFromPlatform(relativePath);
-                    if (jarFound) {
-                        libPath = studioJarInstalled.get(relativePath);
-                    }
+            String relativePath = jarsToRelative.get(jarName);
+            if (relativePath != null && relativePath.startsWith("platform:/")) { //$NON-NLS-1$
+                boolean jarFound = checkJarInstalledFromPlatform(relativePath);
+                if (jarFound) {
+                    libPath = studioJarInstalled.get(relativePath);
                 }
             }
         } catch (IOException e) {
@@ -884,7 +866,13 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
             return null;
         }
         String libPath = null;
-        Set<String> mvnUris = guessMavenURI(jarNameOrMavenUri);
+        Set<String> mvnUris = new HashSet<String>();
+        if (MavenUrlHelper.isMvnUrl(jarNameOrMavenUri)) {
+            mvnUris.add(jarNameOrMavenUri);
+        } else {
+            ModuleNeeded testModule = new ModuleNeeded("", jarNameOrMavenUri, "", true);
+            mvnUris.addAll(guessMavenURI(testModule));
+        }
         for (String uriToCheck : mvnUris) {
             if (checkJarInstalledInMaven(uriToCheck)) {
                 libPath = mavenJarInstalled.get(uriToCheck);
@@ -1132,103 +1120,74 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
      * @param platformURLMap
      */
     private void deployLibsFromComponentFolder(IComponentsService service, Map<String, String> platformURLMap) {
+        Set<File> needToDeploy = new HashSet<File>();
         List<ComponentProviderInfo> componentsFolders = service.getComponentsFactory().getComponentsProvidersInfo();
         for (ComponentProviderInfo providerInfo : componentsFolders) {
             String contributeID = providerInfo.getContributer();
             String id = providerInfo.getId();
             try {
                 File file = new File(providerInfo.getLocation());
-                // add jars to the platform url index from the components folder
-                FileFilter fileFilter = new FileFilter() {
-
-                    @Override
-                    public boolean accept(final File file) {
-                        return file.isDirectory() && file.getName().charAt(0) != '.'
-                                && !file.getName().equals(IComponentsFactory.EXTERNAL_COMPONENTS_INNER_FOLDER);
-                    }
-
-                };
-                File[] componentDirectories = file.listFiles(fileFilter);
-                for (File componentDirectory : componentDirectories) {
-                    String paletteByProvider = service.getPaletteByProvider(id);
-                    IComponent iComponent = null;
-                    if (paletteByProvider != null) {
-                        iComponent = service.getComponentsFactory().get(componentDirectory.getName(), paletteByProvider);
-                    } else {
-                        iComponent = service.getComponentsFactory().get(componentDirectory.getName());
-                    }
-                    if (iComponent != null) {
-                        List<File> jarFiles = FilesUtils.getJarFilesFromFolder(componentDirectory, null, "ext");
+                if ("org.talend.designer.components.model.UserComponentsProvider".equals(id)
+                        || "org.talend.designer.components.exchange.ExchangeComponentsProvider".equals(id)) {
+                    if (file.isDirectory()) {
+                        List<File> jarFiles = FilesUtils.getJarFilesFromFolder(file, null);
                         if (jarFiles.size() > 0) {
-                            List<ModuleNeeded> modulesNeeded = iComponent.getModulesNeeded();
-                            List<IMultipleComponentManager> multipleComponentManagers = iComponent.getMultipleComponentManagers();
-                            for (IMultipleComponentManager multipleComponentManager : multipleComponentManagers) {
-                                List<IMultipleComponentItem> itemList = multipleComponentManager.getItemList();
-                                for (IMultipleComponentItem item : itemList) {
-                                    if (paletteByProvider != null) {
-                                        iComponent = service.getComponentsFactory().get(item.getComponent(), paletteByProvider);
-                                    } else {
-                                        iComponent = service.getComponentsFactory().get(item.getComponent());
-                                    }
-                                    modulesNeeded.addAll(iComponent.getModulesNeeded());
-                                }
-                            }
                             for (File jarFile : jarFiles) {
                                 String name = jarFile.getName();
-                                ModuleNeeded findModule = null;
-                                for (ModuleNeeded module : modulesNeeded) {
-                                    if (module.getModuleName().equals(name)) {
-                                        findModule = module;
-                                        break;
-                                    }
+                                if (platformURLMap.get(name) != null) {
+                                    continue;
                                 }
-                                if (findModule != null) {
-                                    if ("org.talend.designer.components.model.UserComponentsProvider".equals(id)
-                                            || "org.talend.designer.components.exchange.ExchangeComponentsProvider".equals(id)) {
-                                        // deploy needed jars for User and Exchange component providers
-                                        try {
-                                            deploy(jarFile.toURI(), findModule.getMavenUri());
-                                        } catch (Exception e) {
-                                            ExceptionHandler.process(e);
-                                            continue;
-                                        }
-                                    } else {
-                                        boolean checkCustomURI = false;
-                                        String mavenUri = findModule.getMavenUri(checkCustomURI);
-                                        int lengthBasePath = new Path(file.getParentFile().getAbsolutePath()).toPortableString()
-                                                .length();
-                                        String relativePath = new Path(jarFile.getAbsolutePath()).toPortableString()
-                                                .substring(lengthBasePath);
-                                        String platformLocation = "platform:/plugin/" + contributeID + relativePath;
-                                        if (findModule.getModuleLocaionFromConfiguration() != null
-                                                && !platformLocation.equals(findModule.getModuleLocaionFromConfiguration())) {
-                                            if (CommonsPlugin.isDebugMode()) {
-                                                CommonExceptionHandler.warn(mavenUri + " is duplicated, locations:"
-                                                        + findModule.getModuleLocaionFromConfiguration() + " and:"
-                                                        + platformLocation);
-                                            }
-                                        } else {
-                                            platformURLMap.put(mavenUri, platformLocation);
-                                        }
-
-                                    }
-                                } else if (name.endsWith("jar") || name.endsWith("dll") || name.endsWith("exe")) {
-                                    // only log warning if file extension is jar/dll/exe
-                                    CommonExceptionHandler.warn("Library:" + name + " at location.\n" + jarFile.getAbsolutePath()
-                                            + "\n" + "was not used");
-                                }
+                                needToDeploy.add(jarFile);
                             }
                         }
+                    } else {
+                        if (platformURLMap.get(file.getName()) != null) {
+                            continue;
+                        }
+                        needToDeploy.add(file);
                     }
-
+                } else {
+                    // for other component provider ,add jars to the platform url index
+                    List<File> jarFiles = FilesUtils.getJarFilesFromFolder(file, null, "ext");
+                    if (jarFiles.size() > 0) {
+                        for (File jarFile : jarFiles) {
+                            String name = jarFile.getName();
+                            String path = platformURLMap.get(name);
+                            int lengthBasePath = new Path(file.getParentFile().getAbsolutePath()).toPortableString().length();
+                            String relativePath = new Path(jarFile.getAbsolutePath()).toPortableString()
+                                    .substring(lengthBasePath);
+                            String moduleLocation = "platform:/plugin/" + contributeID + relativePath;
+                            if (path != null) {
+                                if (path.equals(moduleLocation)) {
+                                    continue;
+                                } else {
+                                    if (CommonsPlugin.isDebugMode()) {
+                                        CommonExceptionHandler
+                                                .warn(name + " is duplicated, locations:" + path + " and:" + moduleLocation);
+                                    }
+                                    continue;
+                                }
+                            }
+                            platformURLMap.put(name, moduleLocation);
+                        }
+                    }
                 }
-
             } catch (Exception e) {
                 ExceptionHandler.process(e);
                 continue;
             }
         }
 
+        // deploy needed jars for User and Exchange component providers
+        if (!needToDeploy.isEmpty()) {
+            for (File file : needToDeploy) {
+                try {
+                    deploy(file.toURI());
+                } catch (Exception e) {
+                    ExceptionHandler.process(e);
+                }
+            }
+        }
     }
 
     private void warnDuplicated(List<ModuleNeeded> modules, Set<String> duplicates, String type) {
@@ -1252,7 +1211,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
             Set<String> duplicateLocationJar, Map<String, String> libsToMavenUri, Set<String> duplicateMavenUri) {
 
         for (ModuleNeeded module : modules) {
-            String moduleLocation = module.getModuleLocaionFromConfiguration();
+            String moduleLocation = module.getModuleLocaion();
             // take maven uri from configuration to save in the index , don't generate by module name automatically
             String mavenUrl = module.getMavenURIFromConfiguration();
             if (mavenUrl != null && mavenUrl.startsWith(MavenUrlHelper.MVN_PROTOCOL)) {
@@ -1277,16 +1236,14 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                 }
             }
             if (moduleLocation != null && moduleLocation.startsWith("platform:/")) {
-                boolean checkCustomURI = false;
-                String platformIndexKey = module.getMavenUri(checkCustomURI);
-                String relativePath = libsToRelativePath.get(platformIndexKey);
+                String relativePath = libsToRelativePath.get(module.getModuleName());
                 if (relativePath != null && !relativePath.equals(moduleLocation)) {
                     if (!duplicateLocationJar.contains(moduleLocation)) {
-                        duplicateLocationJar.add(platformIndexKey);
+                        duplicateLocationJar.add(module.getModuleName());
                     }
                 }
                 if (checkJarInstalledFromPlatform(moduleLocation)) {
-                    libsToRelativePath.put(platformIndexKey, moduleLocation);
+                    libsToRelativePath.put(module.getModuleName(), moduleLocation);
                 } else {
                     // fix the module location if not exist
                     module.setModuleLocaion(null);
@@ -1466,9 +1423,9 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
      * @see org.talend.core.ILibraryManagerService#getPlatformURLFromIndex(java.lang.String)
      */
     @Override
-    public String getPlatformURLFromIndex(String mavenURI) {
+    public String getPlatformURLFromIndex(String jarName) {
         EMap<String, String> platformURLMap = LibrariesIndexManager.getInstance().getStudioLibIndex().getJarsToRelativePath();
-        return platformURLMap.get(mavenURI);
+        return platformURLMap.get(jarName);
     }
 
     @Override
@@ -1522,12 +1479,12 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 
     private boolean isLocalJarSameAsNexus(String jarUri) {
         TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
-        final NexusServerBean customNexusServer = manager.getCustomNexusServer();
+        final ArtifactRepositoryBean customNexusServer = manager.getCustomNexusServer();
         return isLocalJarSameAsNexus(manager, customNexusServer, jarUri);
     }
 
     @Override
-    public boolean isLocalJarSameAsNexus(TalendLibsServerManager manager, final NexusServerBean customNexusServer,
+    public boolean isLocalJarSameAsNexus(TalendLibsServerManager manager, final ArtifactRepositoryBean customNexusServer,
             String jarUri) {
         if (manager == null || customNexusServer == null || jarUri == null) {
             return false;

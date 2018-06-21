@@ -24,7 +24,6 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -62,7 +61,7 @@ import org.talend.core.model.components.IComponentsService;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.model.general.Project;
-import org.talend.core.nexus.NexusServerBean;
+import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.NexusServerUtils;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.prefs.ITalendCorePrefConstants;
@@ -202,8 +201,9 @@ public class LocalLibraryManagerTest {
         }
         // retrieve jar from the index.xml if not find in lib/java
         else {
+            ModuleNeeded module = new ModuleNeeded("", jarNeeded, "", true);
             EMap<String, String> jarsToRelative = LibrariesIndexManager.getInstance().getStudioLibIndex().getJarsToRelativePath();
-            String relativePath = jarsToRelative.get(jarNeeded);
+            String relativePath = jarsToRelative.get(module.getMavenUri());
             if (relativePath == null) {
                 return;
             }
@@ -243,17 +243,7 @@ public class LocalLibraryManagerTest {
      */
     @Test
     public void testList() throws MalformedURLException {
-        Set<String> names = new HashSet<String>();
-        List<File> jarFiles = FilesUtils.getJarFilesFromFolder(getStorageDirectory(), null);
-        if (jarFiles.size() > 0) {
-            for (File file : jarFiles) {
-                names.add(file.getName());
-            }
-        }
-
-        EMap<String, String> jarsToRelative = LibrariesIndexManager.getInstance().getStudioLibIndex().getJarsToRelativePath();
-        names.addAll(jarsToRelative.keySet());
-
+        Set<String> names = localLibraryManager.list();
         assertTrue(names.size() > 0);
 
     }
@@ -264,16 +254,7 @@ public class LocalLibraryManagerTest {
     @Test
     @Ignore
     public void testMissingJar() throws MalformedURLException {
-        Set<String> names = new HashSet<String>();
-        List<File> jarFiles = FilesUtils.getJarFilesFromFolder(getStorageDirectory(), null);
-        if (jarFiles.size() > 0) {
-            for (File file : jarFiles) {
-                names.add(file.getName());
-            }
-        }
-        EMap<String, String> jarsToRelative = LibrariesIndexManager.getInstance().getStudioLibIndex().getJarsToRelativePath();
-        names.addAll(jarsToRelative.keySet());
-
+        Set<String> names = localLibraryManager.list();
         List<String> allJars = new ArrayList<String>();
         EDatabaseVersion4Drivers[] values = EDatabaseVersion4Drivers.values();
         for (EDatabaseVersion4Drivers driver : values) {
@@ -407,7 +388,7 @@ public class LocalLibraryManagerTest {
         ILibraryManagerService libraryManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault()
                 .getService(ILibraryManagerService.class);
         TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
-        final NexusServerBean customNexusServer = manager.getCustomNexusServer();
+        final ArtifactRepositoryBean customNexusServer = manager.getCustomNexusServer();
         if (customNexusServer == null) {
             fail("Test not possible since Nexus is not setup");
         }
@@ -556,7 +537,7 @@ public class LocalLibraryManagerTest {
     public void testNexusUpdateJar() throws Exception {
         String uri = "mvn:org.talend.libraries/test/6.0.0-SNAPSHOT/jar";
         TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
-        final NexusServerBean customNexusServer = manager.getCustomNexusServer();
+        final ArtifactRepositoryBean customNexusServer = manager.getCustomNexusServer();
         if (customNexusServer == null) {
             fail("Test not possible since Nexus is not setup");
         }
@@ -601,7 +582,7 @@ public class LocalLibraryManagerTest {
     public void testNexusInstallNewJar() throws Exception {
         String uri = "mvn:org.talend.libraries/test/6.0.0-SNAPSHOT/jar";
         TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
-        final NexusServerBean customNexusServer = manager.getCustomNexusServer();
+        final ArtifactRepositoryBean customNexusServer = manager.getCustomNexusServer();
         if (customNexusServer == null) {
             fail("Test not possible since Nexus is not setup");
         }
@@ -640,7 +621,7 @@ public class LocalLibraryManagerTest {
     public void testResolveSha1NotExist() throws Exception {
         String uri = "mvn:org.talend.libraries/not-existing/6.0.0-SNAPSHOT/jar";
         TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
-        final NexusServerBean customNexusServer = manager.getCustomNexusServer();
+        final ArtifactRepositoryBean customNexusServer = manager.getCustomNexusServer();
         if (customNexusServer == null) {
             fail("Test not possible since Nexus is not setup");
         }
@@ -682,7 +663,7 @@ public class LocalLibraryManagerTest {
     public void testIsLocalJarSameAsNexus() throws IOException {
         String uri = "mvn:org.talend.libraries/test/6.0.0-SNAPSHOT/jar";
         TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
-        final NexusServerBean customNexusServer = manager.getCustomNexusServer();
+        final ArtifactRepositoryBean customNexusServer = manager.getCustomNexusServer();
         if (customNexusServer == null) {
             fail("Test not possible since Nexus is not setup");
         }
@@ -776,23 +757,6 @@ public class LocalLibraryManagerTest {
         Assert.assertEquals(module2.getStatus(), ELibraryInstallStatus.INSTALLED);
         Assert.assertEquals(module2.getDeployStatus(), ELibraryInstallStatus.DEPLOYED);
 
-    }
-
-    @Test
-    public void testStudioPlatformURLIndex() {
-        EMap<String, String> jarsToRelativePath = LibrariesIndexManager.getInstance().getStudioLibIndex().getJarsToRelativePath();
-        Set<String> keySet = jarsToRelativePath.keySet();
-        Assert.assertTrue(!keySet.isEmpty());
-        for (String key : keySet) {
-            MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(key);
-            // key must be the maven url but not name
-            Assert.assertNotNull("The key is :" + key, parseMvnUrl);
-        }
-        Collection<String> values = jarsToRelativePath.values();
-        for (String value : values) {
-            // value must be platform url
-            Assert.assertTrue("The key is :" + value, value.startsWith("platform:/plugin/"));
-        }
     }
 
 }

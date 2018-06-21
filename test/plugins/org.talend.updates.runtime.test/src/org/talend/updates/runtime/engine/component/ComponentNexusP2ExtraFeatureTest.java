@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.Platform;
 import org.junit.Assert;
 import org.junit.Test;
 import org.talend.commons.CommonsPlugin;
-import org.talend.core.nexus.NexusServerBean;
+import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.updates.runtime.model.P2ExtraFeatureException;
 import org.talend.updates.runtime.nexus.component.NexusServerManager;
 
@@ -41,7 +41,7 @@ public class ComponentNexusP2ExtraFeatureTest {
         }
 
         @Override
-        public NexusServerBean getServerSetting() {
+        public ArtifactRepositoryBean getServerSetting() {
             // always the new one when test
             return NexusServerManager.getInstance().getPropertyNexusServer();
         }

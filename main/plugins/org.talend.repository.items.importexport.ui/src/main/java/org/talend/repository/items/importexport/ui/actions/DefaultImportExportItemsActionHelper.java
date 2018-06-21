@@ -78,7 +78,9 @@ public class DefaultImportExportItemsActionHelper implements IImportExportItemsA
                             && ProjectManager.getInstance().isInCurrentMainProject(repositoryNode)) {
                         // enable on folder
                         if (ENodeType.SYSTEM_FOLDER.equals(repositoryNode.getType())
-                                || ENodeType.SIMPLE_FOLDER.equals(repositoryNode.getType())) {
+                                || ENodeType.SIMPLE_FOLDER.equals(repositoryNode.getType())
+                                || ERepositoryObjectType.METADATA.equals(repositoryNode.getContentType())
+                                || ERepositoryObjectType.CODE.equals(repositoryNode.getContentType())) {
                             enabled = true;
                             // if folder is logic deleted, disable it.
                             if (repositoryNode.getObject() != null && repositoryNode.getObject().isDeleted()) {

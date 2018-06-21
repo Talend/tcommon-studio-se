@@ -38,7 +38,7 @@ import org.talend.core.download.DownloadListener;
 import org.talend.core.download.IDownloadHelper;
 import org.talend.core.model.general.Project;
 import org.talend.core.nexus.HttpClientTransport;
-import org.talend.core.nexus.NexusServerBean;
+import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.maven.MavenArtifact;
@@ -60,7 +60,7 @@ public class NexusDownloader implements IDownloadHelper {
 
     private static final int BUFFER_SIZE = 8192;
 
-    private NexusServerBean nexusServer;
+    private ArtifactRepositoryBean nexusServer;
 
     /*
      * (non-Javadoc)
@@ -90,8 +90,8 @@ public class NexusDownloader implements IDownloadHelper {
             File downloadedFile = new File(tempFolder, name);
 
             NullProgressMonitor monitor = new NullProgressMonitor();
-            NexusServerBean nServer = getNexusServer();
-            new HttpClientTransport(nServer.getRepositoryURI(), nServer.getUserName(), nServer.getPassword()) {
+            ArtifactRepositoryBean nServer = getNexusServer();
+            new HttpClientTransport(nServer.getRepositoryURL(), nServer.getUserName(), nServer.getPassword()) {
 
                 @Override
                 protected HttpResponse execute(IProgressMonitor monitor, DefaultHttpClient httpClient, URI targetURI)
@@ -238,14 +238,14 @@ public class NexusDownloader implements IDownloadHelper {
         fListeners.remove(listener);
     }
 
-    public NexusServerBean getNexusServer() {
+    public ArtifactRepositoryBean getNexusServer() {
         if (this.nexusServer == null) {
             return TalendLibsServerManager.getInstance().getTalentArtifactServer();
         }
         return this.nexusServer;
     }
 
-    public void setTalendlibServer(NexusServerBean talendlibServer) {
+    public void setTalendlibServer(ArtifactRepositoryBean talendlibServer) {
         this.nexusServer = talendlibServer;
     }
 }
