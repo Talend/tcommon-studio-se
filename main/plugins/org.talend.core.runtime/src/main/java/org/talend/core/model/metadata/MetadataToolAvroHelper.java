@@ -26,8 +26,9 @@ import org.apache.avro.SchemaBuilder.FieldBuilder;
 import org.apache.avro.SchemaBuilder.PropBuilder;
 import org.apache.avro.SchemaBuilder.RecordBuilder;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Level;
 import org.eclipse.emf.common.util.EList;
-import org.talend.commons.utils.data.list.UniqueStringGenerator;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ICoreService;
 import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
@@ -206,9 +207,10 @@ public final class MetadataToolAvroHelper {
                     || JavaTypesManager.CHARACTER.getId().equals(tt) || JavaTypesManager.PASSWORD.getId().equals(tt)) {
                 type = AvroUtils._string();
             }
-        } catch(NumberFormatException e) {
+        } catch(Exception e) {
             //ignore it now as we can't process the complex expression for the default value, and the default value is not useful for runtime like the old javajet tjdbcxxx
             //TODO support the expression calculate, not sure it's necessary and sometimes, more complex like globalMap.get(xxx) which only have meaning after running the job.
+            ExceptionHandler.process(e, Level.WARN);
         }
 
         // Types with Document/Unknown elements, store as binary
