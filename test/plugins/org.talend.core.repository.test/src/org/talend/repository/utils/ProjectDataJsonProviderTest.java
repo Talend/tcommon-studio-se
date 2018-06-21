@@ -35,6 +35,8 @@ import org.talend.core.model.general.TalendNature;
 import org.talend.core.model.properties.ImplicitContextSettings;
 import org.talend.core.model.properties.ItemRelation;
 import org.talend.core.model.properties.ItemRelations;
+import org.talend.core.model.properties.MigrationStatus;
+import org.talend.core.model.properties.MigrationTask;
 import org.talend.core.model.properties.PropertiesFactory;
 import org.talend.core.model.properties.StatAndLogsSettings;
 import org.talend.core.model.properties.Status;
@@ -69,6 +71,10 @@ public class ProjectDataJsonProviderTest {
     private int itemRelationCount = 8;
 
     private int deleteFolderCount = 5;
+
+    private int migrationTaskCount = 6;
+
+    private int migrationTasksCount = 9;
 
     @Before
     public void beforeTest() throws PersistenceException, CoreException {
@@ -148,6 +154,7 @@ public class ProjectDataJsonProviderTest {
         fillDocumentationStatus(sampleProject);
         fillItemRelations(sampleProject);
         fillDeleteFolders(sampleProject);
+        fillMigrationTasks(sampleProject);
     }
 
     private void checkResult(Project project, int checkContent) {
@@ -201,6 +208,27 @@ public class ProjectDataJsonProviderTest {
             for (int i = 0; i < deleteFolders.size(); i++) {
                 String deleteFolder = (String) deleteFolders.get(i);
                 assertEquals(deleteFolder, "deleteFolder_" + i);
+            }
+        }
+        if ((checkContent & ProjectDataJsonProvider.CONTENT_MIGRATIONTASK) > 0) {
+            EList migrationTask = sampleProject.getEmfProject().getMigrationTask();
+            assertEquals(this.migrationTaskCount, migrationTask.size());
+            for (int i = 0; i < migrationTaskCount; i++) {
+                MigrationTask task = (MigrationTask) migrationTask.get(i);
+                assertEquals("id_" + i, task.getId());
+                assertEquals("breaks_" + i, task.getBreaks());
+                assertEquals("version_" + i, task.getVersion());
+                if (i % 2 == 0) {
+                    assertEquals(MigrationStatus.OK_LITERAL.getLiteral(), task.getStatus().getLiteral());
+                } else {
+                    assertEquals(MigrationStatus.NOIMPACT_LITERAL.getLiteral(), task.getStatus().getLiteral());
+                }
+            }
+            EList migrationTasks = sampleProject.getEmfProject().getMigrationTasks();
+            assertEquals(this.migrationTasksCount, migrationTasks.size());
+            for (int i = 0; i < migrationTasksCount; i++) {
+                String task = (String) migrationTasks.get(i);
+                assertEquals("migration_task_" + i + 1, task);
             }
         }
     }
@@ -314,6 +342,20 @@ public class ProjectDataJsonProviderTest {
     private void fillDeleteFolders(Project project) {
         for (int i = 0; i < deleteFolderCount; i++) {
             project.getEmfProject().getDeletedFolders().add("deleteFolder_" + i);
+        }
+    }
+
+    private void fillMigrationTasks(Project project) {
+        for (int i = 0; i < this.migrationTaskCount; i++) {
+            MigrationTask task = PropertiesFactoryImpl.eINSTANCE.createMigrationTask();
+            task.setId("id_" + i);
+            task.setBreaks("breaks_" + i);
+            task.setVersion("version_" + i);
+            task.setStatus(i % 2 == 0 ? MigrationStatus.OK_LITERAL : MigrationStatus.NOIMPACT_LITERAL);
+            project.getEmfProject().getMigrationTask().add(task);
+        }
+        for (int i = 0; i < this.migrationTasksCount; i++) {
+            project.getEmfProject().getMigrationTasks().add("migration_task_" + i + 1);
         }
     }
 

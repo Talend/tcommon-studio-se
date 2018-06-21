@@ -27,6 +27,8 @@ import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.model.properties.ImplicitContextSettings;
 import org.talend.core.model.properties.ItemRelation;
 import org.talend.core.model.properties.ItemRelations;
+import org.talend.core.model.properties.MigrationStatus;
+import org.talend.core.model.properties.MigrationTask;
 import org.talend.core.model.properties.Project;
 import org.talend.core.model.properties.StatAndLogsSettings;
 import org.talend.core.model.properties.Status;
@@ -54,8 +56,10 @@ public class ProjectDataJsonProvider {
 
     public static int CONTENT_RECYCLEBIN = 4;
 
-    public static int CONTENT_ALL = 7;
-    
+    public static int CONTENT_MIGRATIONTASK = 8;
+
+    public static int CONTENT_ALL = 15;
+
     public static void saveProjectData(Project project) throws PersistenceException {
         saveProjectData(project, CONTENT_ALL);
     }
@@ -69,6 +73,9 @@ public class ProjectDataJsonProvider {
         }
         if ((saveContent & CONTENT_RECYCLEBIN) > 0) {
             RecycleBinManager.getInstance().saveRecycleBin(project);
+        }
+        if ((saveContent & CONTENT_MIGRATIONTASK) > 0) {
+            saveMigrationTaskSetting(project);
         }
     }
 
@@ -84,21 +91,13 @@ public class ProjectDataJsonProvider {
             // Force reload from file
             RecycleBinManager.getInstance().clearCache(project);
             RecycleBin recycleBin = RecycleBinManager.getInstance().getRecycleBin(project);
+            project.getDeletedFolders().clear();
             for (int i = 0; i < recycleBin.getDeletedFolders().size(); i++) {
-                String folder = (String) recycleBin.getDeletedFolders().get(i);
-                if (!project.getDeletedFolders().contains(folder)) {
-                    project.getDeletedFolders().add(folder);
-                }
+                project.getDeletedFolders().add((String) recycleBin.getDeletedFolders().get(i));
             }
-            // TODO --KK, After migration task finished, should open this
-            // List<String> removedList = new ArrayList<String>();
-            // for (int i = 0; i < project.getDeletedFolders().size(); i++) {
-            // String folder = (String) project.getDeletedFolders().get(i);
-            // if (!recycleBin.getDeletedFolders().contains(folder)) {
-            // removedList.add(folder);
-            // }
-            // }
-            // project.getDeletedFolders().removeAll(removedList);
+        }
+        if ((loadContent & CONTENT_MIGRATIONTASK) > 0) {
+            loadMigrationTaskSetting(project, projectContainer);
         }
     }
 
@@ -171,9 +170,49 @@ public class ProjectDataJsonProvider {
         }
     }
 
+    private static void loadMigrationTaskSetting(Project project, IContainer projectContainer) throws PersistenceException {
+        try {
+            File file = getLoadingConfigurationFile(projectContainer, FileConstants.MIGRATION_TASK_FILE_NAME);
+            MigrationTaskSetting migrationTaskSetting = null;
+            if (file != null && file.exists()) {
+                migrationTaskSetting = new ObjectMapper().readValue(file, MigrationTaskSetting.class);
+            }
+            if (migrationTaskSetting != null) {
+                project.getMigrationTask().clear();
+                project.getMigrationTasks().clear();
+                if (migrationTaskSetting.getMigrationTaskList() != null) {
+                    for (MigrationTaskJson json : migrationTaskSetting.getMigrationTaskList()) {
+                        project.getMigrationTask().add(json.toEmfObject());
+                    }
+                }
+                if (migrationTaskSetting.getMigrationTasksList() != null) {
+                    for (String oldTask : migrationTaskSetting.getMigrationTasksList()) {
+                        project.getMigrationTasks().add(oldTask);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            throw new PersistenceException(e);
+        }
+    }
+
+    private static void saveMigrationTaskSetting(Project project) throws PersistenceException {
+        MigrationTaskSetting migrationTaskSetting = new MigrationTaskSetting(project);
+        File file = getSavingConfigurationFile(project.getTechnicalLabel(), FileConstants.MIGRATION_TASK_FILE_NAME);
+        try {
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, migrationTaskSetting);
+        } catch (Exception e) {
+            throw new PersistenceException(e);
+        }
+    }
+
     private static File getSavingConfigurationFile(String technicalLabel, String fileName) throws PersistenceException {
         IProject iProject = ResourceUtils.getProject(technicalLabel);
-        IFolder folder = iProject.getFolder(FileConstants.CONFIGURATION_FOLDER_NAME);
+        IFolder folder = iProject.getFolder(FileConstants.SETTINGS_FOLDER_NAME);
         if (!folder.exists()) {
             ResourceUtils.createFolder(folder);
         }
@@ -183,9 +222,9 @@ public class ProjectDataJsonProvider {
 
     private static File getLoadingConfigurationFile(IContainer projectContainer, String fileName) throws PersistenceException {
         if (projectContainer != null) {
-            if (FileConstants.PROJECTSETTING_FILE_NAME.equals(fileName)
-                    || FileConstants.RELATIONSHIPS_FILE_NAME.equals(fileName)) {
-                IFolder folder = projectContainer.getFolder(new Path(FileConstants.CONFIGURATION_FOLDER_NAME));
+            if (FileConstants.PROJECTSETTING_FILE_NAME.equals(fileName) || FileConstants.RELATIONSHIPS_FILE_NAME.equals(fileName)
+                    || FileConstants.MIGRATION_TASK_FILE_NAME.equals(fileName)) {
+                IFolder folder = projectContainer.getFolder(new Path(FileConstants.SETTINGS_FOLDER_NAME));
                 if (folder != null) {
                     IFile file = folder.getFile(fileName);
                     if (file != null) {
@@ -832,4 +871,122 @@ class StatusJson {
         status.setCode(this.code);
         return status;
     }
+}
+
+@JsonInclude(Include.NON_NULL)
+class MigrationTaskSetting {
+
+    @JsonProperty("migrationTask")
+    private List<MigrationTaskJson> migrationTaskList;
+
+    @JsonProperty("migrationTasks")
+    private List<String> migrationTasksList;
+
+    public MigrationTaskSetting() {
+
+    }
+
+    public MigrationTaskSetting(Project project) {
+        if (project != null) {
+            if (project.getMigrationTask().size() > 0) {
+                migrationTaskList = new ArrayList<MigrationTaskJson>();
+                for (int i = 0; i < project.getMigrationTask().size(); i++) {
+                    MigrationTask task = (MigrationTask) project.getMigrationTask().get(i);
+                    migrationTaskList.add(new MigrationTaskJson(task));
+                }
+            }
+            if (project.getMigrationTasks().size() > 0) {
+                migrationTasksList = new ArrayList<String>();
+                for (int i = 0; i < project.getMigrationTasks().size(); i++) {
+                    String task = (String) project.getMigrationTasks().get(i);
+                    migrationTasksList.add(task);
+                }
+            }
+        }
+    }
+
+    public List<MigrationTaskJson> getMigrationTaskList() {
+        return migrationTaskList;
+    }
+
+    public void setMigrationTaskList(List<MigrationTaskJson> migrationTaskList) {
+        this.migrationTaskList = migrationTaskList;
+    }
+
+    public List<String> getMigrationTasksList() {
+        return migrationTasksList;
+    }
+
+    public void setMigrationTasksList(List<String> migrationTasksList) {
+        this.migrationTasksList = migrationTasksList;
+    }
+}
+
+@JsonInclude(Include.NON_NULL)
+class MigrationTaskJson {
+
+    @JsonProperty("id")
+    private String id;
+
+    @JsonProperty("breaks")
+    private String breaks;
+
+    @JsonProperty("version")
+    private String version;
+
+    @JsonProperty("status")
+    private String status;
+
+    public String getId() {
+        return id;
+    }
+
+    public MigrationTaskJson() {
+
+    }
+
+    public MigrationTaskJson(MigrationTask task) {
+        this.id = task.getId();
+        this.breaks = task.getBreaks();
+        this.version = task.getVersion();
+        this.status = task.getStatus().getLiteral();
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getBreaks() {
+        return breaks;
+    }
+
+    public void setBreaks(String breaks) {
+        this.breaks = breaks;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public MigrationTask toEmfObject() {
+        MigrationTask task = PropertiesFactoryImpl.eINSTANCE.createMigrationTask();
+        task.setId(getId());
+        task.setBreaks(getBreaks());
+        task.setVersion(getVersion());
+        task.setStatus(MigrationStatus.get(getStatus()));
+        return task;
+    }
+
 }

@@ -824,6 +824,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         transientReferenceSet.add(PropertiesPackage.eINSTANCE.getProject_StatAndLogsSettings().getName());
         transientReferenceSet.add(PropertiesPackage.eINSTANCE.getProject_ImplicitContextSettings().getName());
         transientReferenceSet.add(PropertiesPackage.eINSTANCE.getProject_ItemsRelations().getName());
+        transientReferenceSet.add(PropertiesPackage.eINSTANCE.getProject_MigrationTask().getName());
         for (EReference reference : project.getEmfProject().eClass().getEAllReferences()) {
             if (transientReferenceSet.contains(reference.getName())) {
                 if (!reference.isTransient()) {
@@ -834,6 +835,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
         Set<String> transientAttributeSet = new HashSet<String>();
         transientAttributeSet.add(PropertiesPackage.eINSTANCE.getProject_DeletedFolders().getName());
+        transientAttributeSet.add(PropertiesPackage.eINSTANCE.getProject_MigrationTasks().getName());
         for (EAttribute attribute : project.getEmfProject().eClass().getEAllAttributes()) {
             if (transientAttributeSet.contains(attribute.getName())) {
                 if (!attribute.isTransient()) {

@@ -23,13 +23,15 @@ public interface FileConstants {
 
     String LOCAL_PROJECT_FILENAME = "talend.project"; //$NON-NLS-1$
     
-    String CONFIGURATION_FOLDER_NAME = ".settings"; //$NON-NLS-1$
+    String SETTINGS_FOLDER_NAME = ".settings"; //$NON-NLS-1$
 
     String PROJECTSETTING_FILE_NAME = "project.settings"; //$NON-NLS-1$
 
     String RELATIONSHIPS_FILE_NAME = "relationship.index"; //$NON-NLS-1$
     
     String TALEND_RECYCLE_BIN_INDEX = "recycle_bin.index"; //$NON-NLS-1$
+    
+    String MIGRATION_TASK_FILE_NAME = "migration_task.index"; //$NON-NLS-1$
 
     String TDM_PROPS_FOLDER = RepositoryConstants.SETTING_DIRECTORY;
     
