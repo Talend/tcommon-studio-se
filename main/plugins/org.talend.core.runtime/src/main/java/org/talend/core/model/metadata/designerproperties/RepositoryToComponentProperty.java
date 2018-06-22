@@ -1423,6 +1423,16 @@ public class RepositoryToComponentProperty {
                     connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_ADDITIONAL_JDBC_SETTINGS));
         }
 
+        if (value.equals("ENABLE_HIVE_HA") && EDatabaseTypeName.HIVE.getDisplayName().equals(databaseType)) {
+            String enableHiveHa = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_ENABLE_HA);
+            return Boolean.parseBoolean(enableHiveHa);
+        }
+
+        if (value.equals("HIVE_METASTORE_URIS") && EDatabaseTypeName.HIVE.getDisplayName().equals(databaseType)) {
+            return getAppropriateValue(connection,
+                    connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_METASTORE_URIS));
+        }
+
         if (value.equals("THRIFTPORT") && EDatabaseTypeName.HIVE.getDisplayName().equals(databaseType)) {
             return getAppropriateValue(connection,
                     connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_THRIFTPORT));

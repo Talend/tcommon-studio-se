@@ -205,6 +205,14 @@ public class StandaloneConnectionContextUtils {
             cloneConn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_ADDITIONAL_JDBC_SETTINGS,
                     getOriginalValue(contextProperties, additionalJDBCSettings));
 
+            String hiveEnableHa = cloneConn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_ENABLE_HA);
+            cloneConn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_ENABLE_HA,
+                    getOriginalValue(contextProperties, hiveEnableHa));
+
+            String hiveMetastoreUris = cloneConn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_METASTORE_URIS);
+            cloneConn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_METASTORE_URIS,
+                    getOriginalValue(contextProperties, hiveMetastoreUris));
+
             String propertiesString = cloneConn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_PROPERTIES);
             cloneConn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_PROPERTIES,
                     getOriginalValue(contextProperties, propertiesString));
