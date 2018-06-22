@@ -58,7 +58,7 @@ public class ProjectDataJsonProviderTest {
 
     private int elementParameterTypeCount = 10;
 
-    private int routinesParameterTypeCount = 10;
+    private int routinesParameterTypeCount = 9;
 
     private int elementValueTypeCount = 6;
 
@@ -121,6 +121,8 @@ public class ProjectDataJsonProviderTest {
         checkResult(new Project(tempProject), ProjectDataJsonProvider.CONTENT_PROJECTSETTING);
         assertEquals(0, tempProject.getItemsRelations().size());
         assertEquals(0, tempProject.getDeletedFolders().size());
+        assertEquals(0, tempProject.getMigrationTask().size());
+        assertEquals(0, tempProject.getMigrationTasks().size());
 
         tempProject = PropertiesFactoryImpl.eINSTANCE.createProject();
         tempProject.setTechnicalLabel(sampleProject.getTechnicalLabel());
@@ -131,6 +133,8 @@ public class ProjectDataJsonProviderTest {
                 ProjectDataJsonProvider.CONTENT_PROJECTSETTING | ProjectDataJsonProvider.CONTENT_RELATIONSHIPS);
         assertEquals(itemRelationsCount, tempProject.getItemsRelations().size());
         assertEquals(0, tempProject.getDeletedFolders().size());
+        assertEquals(0, tempProject.getMigrationTask().size());
+        assertEquals(0, tempProject.getMigrationTasks().size());
 
         tempProject = PropertiesFactoryImpl.eINSTANCE.createProject();
         tempProject.setTechnicalLabel(sampleProject.getTechnicalLabel());
@@ -141,6 +145,37 @@ public class ProjectDataJsonProviderTest {
                 | ProjectDataJsonProvider.CONTENT_RELATIONSHIPS | ProjectDataJsonProvider.CONTENT_RECYCLEBIN);
         assertEquals(itemRelationsCount, tempProject.getItemsRelations().size());
         assertEquals(deleteFolderCount, tempProject.getDeletedFolders().size());
+        assertEquals(0, tempProject.getMigrationTask().size());
+        assertEquals(0, tempProject.getMigrationTasks().size());
+
+        tempProject = PropertiesFactoryImpl.eINSTANCE.createProject();
+        tempProject.setTechnicalLabel(sampleProject.getTechnicalLabel());
+        ProjectDataJsonProvider.loadProjectData(tempProject, physProject,
+                ProjectDataJsonProvider.CONTENT_PROJECTSETTING | ProjectDataJsonProvider.CONTENT_RELATIONSHIPS
+                        | ProjectDataJsonProvider.CONTENT_RECYCLEBIN | ProjectDataJsonProvider.CONTENT_MIGRATIONTASK);
+
+        checkResult(new Project(tempProject),
+                ProjectDataJsonProvider.CONTENT_PROJECTSETTING | ProjectDataJsonProvider.CONTENT_RELATIONSHIPS
+                        | ProjectDataJsonProvider.CONTENT_RECYCLEBIN | ProjectDataJsonProvider.CONTENT_MIGRATIONTASK);
+        assertEquals(itemRelationsCount, tempProject.getItemsRelations().size());
+        assertEquals(deleteFolderCount, tempProject.getDeletedFolders().size());
+        assertEquals(this.migrationTaskCount, tempProject.getMigrationTask().size());
+        assertEquals(this.migrationTasksCount, tempProject.getMigrationTasks().size());
+
+        tempProject = PropertiesFactoryImpl.eINSTANCE.createProject();
+        tempProject.setTechnicalLabel(sampleProject.getTechnicalLabel());
+        ProjectDataJsonProvider.loadProjectData(tempProject, physProject, ProjectDataJsonProvider.CONTENT_ALL);
+
+        checkResult(new Project(tempProject), ProjectDataJsonProvider.CONTENT_ALL);
+        assertEquals(itemRelationsCount, tempProject.getItemsRelations().size());
+        assertEquals(deleteFolderCount, tempProject.getDeletedFolders().size());
+        assertEquals(this.migrationTaskCount, tempProject.getMigrationTask().size());
+        assertEquals(this.migrationTasksCount, tempProject.getMigrationTasks().size());
+
+        assertEquals(
+                ProjectDataJsonProvider.CONTENT_PROJECTSETTING | ProjectDataJsonProvider.CONTENT_RELATIONSHIPS
+                        | ProjectDataJsonProvider.CONTENT_RECYCLEBIN | ProjectDataJsonProvider.CONTENT_MIGRATIONTASK,
+                ProjectDataJsonProvider.CONTENT_ALL);
     }
 
     private void prepareProjectData() {

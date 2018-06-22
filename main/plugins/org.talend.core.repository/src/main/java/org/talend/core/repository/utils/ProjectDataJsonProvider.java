@@ -138,7 +138,7 @@ public class ProjectDataJsonProvider {
     }
 
     private static void saveRelationShips(Project project) throws PersistenceException {
-        File file = getSavingConfigurationFile(project.getTechnicalLabel(), FileConstants.RELATIONSHIPS_FILE_NAME);
+        File file = getSavingConfigurationFile(project.getTechnicalLabel(), FileConstants.RELATIONSHIP_FILE_NAME);
         try {
             if (!file.exists()) {
                 file.createNewFile();
@@ -155,7 +155,7 @@ public class ProjectDataJsonProvider {
             // no need to overwrite
         };
         try {
-            File file = getLoadingConfigurationFile(projectContainer, FileConstants.RELATIONSHIPS_FILE_NAME);
+            File file = getLoadingConfigurationFile(projectContainer, FileConstants.RELATIONSHIP_FILE_NAME);
             List<ItemRelationsJson> itemRelationsJsons = null;
             if (file != null && file.exists()) {
                 itemRelationsJsons = new ObjectMapper().readValue(file, typeReference);
@@ -222,14 +222,11 @@ public class ProjectDataJsonProvider {
 
     private static File getLoadingConfigurationFile(IContainer projectContainer, String fileName) throws PersistenceException {
         if (projectContainer != null) {
-            if (FileConstants.PROJECTSETTING_FILE_NAME.equals(fileName) || FileConstants.RELATIONSHIPS_FILE_NAME.equals(fileName)
-                    || FileConstants.MIGRATION_TASK_FILE_NAME.equals(fileName)) {
-                IFolder folder = projectContainer.getFolder(new Path(FileConstants.SETTINGS_FOLDER_NAME));
-                if (folder != null) {
-                    IFile file = folder.getFile(fileName);
-                    if (file != null) {
-                        return new File(file.getLocationURI());
-                    }
+            IFolder folder = projectContainer.getFolder(new Path(FileConstants.SETTINGS_FOLDER_NAME));
+            if (folder != null) {
+                IFile file = folder.getFile(fileName);
+                if (file != null) {
+                    return new File(file.getLocationURI());
                 }
             }
         }
