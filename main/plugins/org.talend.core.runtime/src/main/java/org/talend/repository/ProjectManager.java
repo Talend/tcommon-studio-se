@@ -293,7 +293,7 @@ public final class ProjectManager {
         if (currentProject == null) {
             initCurrentProject();
         }
-        if (currentProject.getTechnicalLabel().equalsIgnoreCase(projectLabel)) {
+        if (currentProject != null && currentProject.getTechnicalLabel().equalsIgnoreCase(projectLabel)) {
             return currentProject.getEmfProject();
         }
         for (Project project : getAllReferencedProjects()) {
