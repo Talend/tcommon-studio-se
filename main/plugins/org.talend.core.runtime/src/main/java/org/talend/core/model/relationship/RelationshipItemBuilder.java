@@ -502,7 +502,7 @@ public class RelationshipItemBuilder {
         itemToTest.setVersion(version);
         if (!itemsRelations.containsKey(itemToTest)) {
             try {
-                Item item = proxyRepositoryFactory.getLastVersion(getAimProject(), itemId).getProperty().getItem();
+                Item item = proxyRepositoryFactory.getLastRefVersion(getAimProject(), itemId).getProperty().getItem();
                 addOrUpdateItem(item, false);
             } catch (PersistenceException e) {
                 log.error(e.getMessage());
