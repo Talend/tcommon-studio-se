@@ -13,6 +13,7 @@
 package org.talend.core.ui;
 
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -23,6 +24,7 @@ import org.eclipse.ui.IEditorPart;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.core.IService;
 import org.talend.core.model.components.IComponent;
+import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.process.INode;
 import org.talend.core.model.process.IProcess;
@@ -125,4 +127,7 @@ public interface ITestContainerProviderService extends IService {
     public List<ProcessItem> getTestContainersByVersion(ProcessItem item);
     
     boolean isTestContainerEditor(IEditorPart editor);
+
+    Set<ModuleNeeded> getAllJobTestcaseModules(ProcessItem item) throws PersistenceException;
+
 }
