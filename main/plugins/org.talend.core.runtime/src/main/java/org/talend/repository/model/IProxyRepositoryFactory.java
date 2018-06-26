@@ -273,6 +273,8 @@ public interface IProxyRepositoryFactory {
 
     public abstract IRepositoryViewObject getLastVersion(String id) throws PersistenceException;
 
+    public IRepositoryViewObject getLastRefVersion(Project project, String id) throws PersistenceException;
+
     public abstract IRepositoryViewObject getSpecificVersion(Project project, String id, String version, boolean avoidSaveProject)
             throws PersistenceException;
 
