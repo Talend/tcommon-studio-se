@@ -72,6 +72,8 @@ public final class ProjectManager {
     public static final String BRANCHES_PREFIX = "branches/";
     
     public static final String ORIGIN_PREFIX = "origin/";
+    
+    public static final String TAGS_PREFIX = "tags/";
 
     private static ProjectManager singleton;
 
@@ -959,6 +961,16 @@ public final class ProjectManager {
         }
         return branchName;
     }
+    
+    public static String getCleanTagName(String tagName) {
+        if (tagName == null) {
+            return null;
+        }
+        if (tagName.startsWith(TAGS_PREFIX)) {
+            return tagName.substring(TAGS_PREFIX.length());
+        }
+        return tagName;
+    }
 
     public Set<String> getBeforeLogonRecords() {
         return this.beforeLogonRecords;
@@ -993,6 +1005,12 @@ public final class ProjectManager {
 
         return list;
     } 
+    
+    public void addProjectReferenceToCache(Project mainProject, List<ProjectReference> projectReferenceList) {
+        List<ProjectReference> allProjectReferenceList = allTACProjectProjectReferenceSetting
+                .get(mainProject.getTechnicalLabel());
+        allProjectReferenceList.addAll(projectReferenceList);
+    }
 
 	public static void clearCachedProjectIds() {
 		projectLabelToIdMap.clear();
