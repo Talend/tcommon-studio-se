@@ -59,6 +59,8 @@ public enum ETalendMavenVariables {
     RoutineGroupId,
     PigudfGroupId
     //
+    , ProjectDistributionManagementRepositoryId, 
+    ProjectDistributionManagementRepositoryUrl
     ;
 
     public String getName() {
