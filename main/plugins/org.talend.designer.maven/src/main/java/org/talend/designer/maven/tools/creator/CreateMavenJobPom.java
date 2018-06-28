@@ -203,6 +203,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         if (!StringUtils.isEmpty(jobFolder)) {
             // like f1/f2/f3/
             jobFolder = StringUtils.strip(jobFolder, "/") + "/";
+            jobFolder = jobFolder.toLowerCase();
         }
         checkPomProperty(properties, "talend.job.folder", ETalendMavenVariables.JobFolder, jobFolder);
 
