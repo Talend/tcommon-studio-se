@@ -79,7 +79,7 @@ public class ProjectDataJsonProvider {
         }
     }
 
-    public static void loadProjectData(Project project, IProject sourceProject, int loadContent)
+    public static void loadProjectData(Project project, IContainer sourceProject, int loadContent)
             throws PersistenceException {
         if ((loadContent & CONTENT_PROJECTSETTING) > 0) {
             loadProjectSettings(project, sourceProject);
@@ -90,7 +90,7 @@ public class ProjectDataJsonProvider {
         if ((loadContent & CONTENT_RECYCLEBIN) > 0) {
             // Force reload from file
             RecycleBinManager.getInstance().clearCache(project);
-            RecycleBin recycleBin = RecycleBinManager.getInstance().getRecycleBin(project, sourceProject);
+            RecycleBin recycleBin = RecycleBinManager.getInstance().getRecycleBin(project);
             project.getDeletedFolders().clear();
             for (int i = 0; i < recycleBin.getDeletedFolders().size(); i++) {
                 project.getDeletedFolders().add((String) recycleBin.getDeletedFolders().get(i));
