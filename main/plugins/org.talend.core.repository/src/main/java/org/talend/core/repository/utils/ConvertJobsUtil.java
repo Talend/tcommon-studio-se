@@ -148,16 +148,23 @@ public class ConvertJobsUtil {
     }
 
     public static enum JobStreamingFramework {
-        STORMFRAMEWORK("Storm", "_STORM_STORM_FRAMEWORK_"), //$NON-NLS-1$ //$NON-NLS-2$
-        SPARKSTREAMINGFRAMEWORK("Spark Streaming", "_STORM_SPARKSTREAMING_FRAMEWORK_"); //$NON-NLS-1$ //$NON-NLS-2$
+        STORMFRAMEWORK("Storm", "Storm (Deprecated)", "_STORM_STORM_FRAMEWORK_"), //$NON-NLS-1$ //$NON-NLS-2$
+        SPARKSTREAMINGFRAMEWORK("Spark Streaming", "Spark Streaming", "_STORM_SPARKSTREAMING_FRAMEWORK_"); //$NON-NLS-1$ //$NON-NLS-2$
+
+        private String name;
 
         private String displayName;
 
         private String fileName;
 
-        JobStreamingFramework(String displayName, String fileName) {
+        JobStreamingFramework(String name, String displayName, String fileName) {
+            this.name = name;
             this.displayName = displayName;
             this.fileName = fileName;
+        }
+
+        public String getName() {
+            return this.name;
         }
 
         public String getDisplayName() {
@@ -183,6 +190,24 @@ public class ConvertJobsUtil {
             String[] dispalyNames = new String[1];
             dispalyNames[0] = framework;
             return dispalyNames;
+        }
+
+        public static String getDisplayName(String name) {
+            for (JobStreamingFramework value : values()) {
+                if (name == null || "".equals(name) || name.equals(value.getName())) { //$NON-NLS-1$
+                    return value.getDisplayName();
+                }
+            }
+            return null;
+        }
+
+        public static String getName(String displayName) {
+            for (JobStreamingFramework value : values()) {
+                if (displayName == null || "".equals(displayName) || displayName.equals(value.getDisplayName())) { //$NON-NLS-1$
+                    return value.getName();
+                }
+            }
+            return null;
         }
     }
 
@@ -334,8 +359,8 @@ public class ConvertJobsUtil {
         if (JobBatchFramework.MAPREDUCEFRAMEWORK.getDisplayName().equals(frameworkObj)
                 || JobBatchFramework.SPARKFRAMEWORK.getDisplayName().equals(frameworkObj)) {
             return JobType.BIGDATABATCH.getDisplayName();
-        } else if (JobStreamingFramework.STORMFRAMEWORK.getDisplayName().equals(frameworkObj)
-                || JobStreamingFramework.SPARKSTREAMINGFRAMEWORK.getDisplayName().equals(frameworkObj)) {
+        } else if (JobStreamingFramework.STORMFRAMEWORK.getName().equals(frameworkObj)
+                || JobStreamingFramework.SPARKSTREAMINGFRAMEWORK.getName().equals(frameworkObj)) {
             return JobType.BIGDATASTREAMING.getDisplayName();
         } else {
             return JobType.STANDARD.getDisplayName();
@@ -363,6 +388,17 @@ public class ConvertJobsUtil {
         } else {
             return new String[0];
         }
+    }
+
+    public static String convertFrameworkByJobType(String jobType, String framework, boolean toDisplayName) {
+        if (JobType.BIGDATASTREAMING.getDisplayName().equals(jobType) && framework != null) {
+            if (toDisplayName) {
+                return JobStreamingFramework.getDisplayName(framework);
+            } else {
+                return JobStreamingFramework.getName(framework);
+            }
+        }
+        return framework;
     }
 
     public static boolean isNeedConvert(Item originalItem, String newJobTypeValue, String newFrameworkValue) {
