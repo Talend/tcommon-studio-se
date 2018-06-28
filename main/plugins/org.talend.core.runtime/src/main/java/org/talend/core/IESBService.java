@@ -20,6 +20,7 @@ import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.utils.IXSDPopulationUtil;
+import org.talend.designer.runprocess.IProcessor;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
 
@@ -76,4 +77,14 @@ public interface IESBService extends IService {
     public String getDefaultGroupIdSuffix(Property property);
     
     public Object createJavaProcessor(IProcess process, Property property, boolean filenameFromLabel);
+
+    /**
+     * DOC sunchaoqun Comment method "createOSGIJavaProcessor".
+     * 
+     * @param process
+     * @param property
+     * @param filenameFromLabel
+     * @return
+     */
+    public IProcessor createOSGIJavaProcessor(IProcess process, Property property, boolean filenameFromLabel);
 }

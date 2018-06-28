@@ -43,7 +43,12 @@ public enum ECodePart {
     SPARKSTREAMINGCODE("sparkstreamingcode"), //$NON-NLS-1$
     SPARKSTREAMINGCONFIG("sparkstreamingconfig"), //$NON-NLS-1$
     SPARKSTREAMINGJOBFOOTER("sparkstreamingjobfooter"), //$NON-NLS-1$
-    SPARKSTREAMINGPOSTPROCESSING("sparkstreamingpostprocessing"); //$NON-NLS-1$
+    SPARKSTREAMINGPOSTPROCESSING("sparkstreamingpostprocessing"), //$NON-NLS-1$
+    /**
+     * This part is executed after the main for processors to handle batch processing.
+     * This part flush the remaining data that may not be processed in the main
+     */
+    PROCESS_RECORDS_END("process_records_end"); //$NON-NLS-1$
 
     private ECodePart(String name) {
         this.name = name;

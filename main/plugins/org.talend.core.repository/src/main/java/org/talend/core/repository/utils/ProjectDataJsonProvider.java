@@ -79,25 +79,25 @@ public class ProjectDataJsonProvider {
         }
     }
 
-    public static void loadProjectData(Project project, IContainer projectContainer, int loadContent)
+    public static void loadProjectData(Project project, IProject sourceProject, int loadContent)
             throws PersistenceException {
         if ((loadContent & CONTENT_PROJECTSETTING) > 0) {
-            loadProjectSettings(project, projectContainer);
+            loadProjectSettings(project, sourceProject);
         }
         if ((loadContent & CONTENT_RELATIONSHIPS) > 0) {
-            loadRelationShips(project, projectContainer);
+            loadRelationShips(project, sourceProject);
         }
         if ((loadContent & CONTENT_RECYCLEBIN) > 0) {
             // Force reload from file
             RecycleBinManager.getInstance().clearCache(project);
-            RecycleBin recycleBin = RecycleBinManager.getInstance().getRecycleBin(project);
+            RecycleBin recycleBin = RecycleBinManager.getInstance().getRecycleBin(project, sourceProject);
             project.getDeletedFolders().clear();
             for (int i = 0; i < recycleBin.getDeletedFolders().size(); i++) {
                 project.getDeletedFolders().add((String) recycleBin.getDeletedFolders().get(i));
             }
         }
         if ((loadContent & CONTENT_MIGRATIONTASK) > 0) {
-            loadMigrationTaskSetting(project, projectContainer);
+            loadMigrationTaskSetting(project, sourceProject);
         }
     }
 

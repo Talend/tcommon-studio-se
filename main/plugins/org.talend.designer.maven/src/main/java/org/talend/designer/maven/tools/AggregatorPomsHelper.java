@@ -737,6 +737,14 @@ public class AggregatorPomsHelper {
         int size = 3 + (objects == null ? 0 : objects.size());
         monitor.setTaskName("Synchronize all poms"); //$NON-NLS-1$
         monitor.beginTask("", size); //$NON-NLS-1$
+        // project pom
+        monitor.subTask("Synchronize project pom"); //$NON-NLS-1$
+        createRootPom(null, true, monitor);
+        installRootPom(true);
+        monitor.worked(1);
+        if (monitor.isCanceled()) {
+            return;
+        }
         // codes pom
         monitor.subTask("Synchronize code poms"); //$NON-NLS-1$
         updateCodeProjects(monitor, true);
@@ -784,12 +792,10 @@ public class AggregatorPomsHelper {
                 }
             }
         }
-        // project pom
-        monitor.subTask("Synchronize project pom"); //$NON-NLS-1$
+        // sync project pom again with all modules.
+        monitor.subTask("Synchronize project pom with modules"); //$NON-NLS-1$
         collectModules(modules);
         createRootPom(modules, true, monitor);
-        monitor.worked(1);
-        monitor.subTask("Install project pom"); //$NON-NLS-1$
         installRootPom(true);
         monitor.worked(1);
         if (monitor.isCanceled()) {

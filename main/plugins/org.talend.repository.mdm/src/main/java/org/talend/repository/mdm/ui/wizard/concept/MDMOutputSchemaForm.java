@@ -1061,8 +1061,9 @@ public class MDMOutputSchemaForm extends AbstractMDMFileStepForm {
             if (TreeUtil.findUpGroupNode(node) == null) {
                 TreeUtil.clearSubGroupNode(rootTreeData);
             }
-
-            TreeUtil.upsetMainNode(node);
+            if (node.isLoop()) {
+                TreeUtil.upsetMainNode(node);
+            }
         }
         updateConnection();
     }

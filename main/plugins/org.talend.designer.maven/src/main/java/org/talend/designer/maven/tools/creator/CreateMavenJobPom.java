@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.model.Activation;
@@ -237,6 +238,19 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
                 jobInfoProp.getProperty(JobInfoProperties.JOB_ID, process.getId()));
         checkPomProperty(properties, "talend.job.type", ETalendMavenVariables.JobType,
                 jobInfoProp.getProperty(JobInfoProperties.JOB_TYPE));
+
+        boolean publishAsSnapshot = BooleanUtils
+                .toBoolean((String) property.getAdditionalProperties().get(MavenConstants.NAME_PUBLISH_AS_SNAPSHOT));
+
+        checkPomProperty(properties, "project.distribution-management.repository.id",
+                ETalendMavenVariables.ProjectDistributionManagementRepositoryId,
+                publishAsSnapshot ? "${project.distributionManagement.snapshotRepository.id}"
+                        : "${project.distributionManagement.repository.id}");
+        checkPomProperty(properties, "project.distribution-management.repository.url",
+                ETalendMavenVariables.ProjectDistributionManagementRepositoryUrl,
+                publishAsSnapshot ? "${project.distributionManagement.snapshotRepository.url}"
+                        : "${project.distributionManagement.repository.url}");
+
         if (process instanceof IProcess2) {
             String framework = (String) ((IProcess2) process).getAdditionalProperties().get("FRAMEWORK"); //$NON-NLS-1$
             if (framework == null) {
