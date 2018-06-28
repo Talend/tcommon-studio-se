@@ -13,7 +13,7 @@
   <properties>
     <tcomp.version>1.0.1-SNAPSHOT</tcomp.version>
     <slf4j.version>1.7.25</slf4j.version>
-    <cxf.version>3.2.4</cxf.version>
+    <cxf.version>3.2.5</cxf.version>
     <tomcat.version>9.0.8</tomcat.version>
   </properties>
 
