@@ -223,9 +223,9 @@ public class MavenTemplateManager {
         return getCodeProjectTemplateModel(null); // by default will be current project.
     }
 
-    public static Model addCIBuilder(Model model) {
+    public static void addCIBuilder(Model model) {
         if (!PluginChecker.isTIS()) {
-            return model;
+            return;
         }
         if (!model.getProfiles().isEmpty()) {
             Profile toDelete = null;
@@ -259,8 +259,44 @@ public class MavenTemplateManager {
         pe.addGoal("generate"); //$NON-NLS-1$
         executions.add(pe);
         plugin.setExecutions(executions);
+    }
 
-        return model;
+    public static void addCloudPublisher(Model model) {
+        if (!PluginChecker.isTIS()) {
+            return;
+        }
+        final String PROFILE_ID = "cloud-publisher"; //$NON-NLS-1$
+        Iterator<Profile> iterator = model.getProfiles().iterator();
+        while (iterator.hasNext()) {
+            Profile profile = iterator.next();
+            if (PROFILE_ID.equals(profile.getId())) {
+                iterator.remove();
+            }
+        }
+
+        Profile profile = new Profile();
+        profile.setId(PROFILE_ID);
+        model.addProfile(profile);
+
+        Plugin plugin = new Plugin();
+        profile.setBuild(new Build());
+        profile.getBuild().addPlugin(plugin);
+        plugin.setGroupId(TalendMavenConstants.DEFAULT_GROUP_ID);
+        plugin.setArtifactId("cloud.publisher"); //$NON-NLS-1$
+        plugin.setVersion("${talend.version}"); //$NON-NLS-1$
+
+        // add executions
+        PluginExecution execution = new PluginExecution();
+        execution.setPhase("install"); //$NON-NLS-1$
+        execution.addGoal("publish"); //$NON-NLS-1$
+        plugin.getExecutions().add(execution);
+
+        // add configuration
+        Xpp3Dom confNode = new Xpp3Dom("configuration"); //$NON-NLS-1$
+        Xpp3Dom skipNode = new Xpp3Dom("skip"); //$NON-NLS-1$
+        skipNode.setValue("${maven.deploy.skip}"); //$NON-NLS-1$
+        confNode.addChild(skipNode);
+        plugin.setConfiguration(confNode);
     }
 
     /**
@@ -292,6 +328,7 @@ public class MavenTemplateManager {
                 setJavaVersionForModel(model, variablesValuesMap);
 
                 addCIBuilder(model);
+                addCloudPublisher(model);
 
                 Properties properties = model.getProperties();
                 properties.put("talend.project.name", projectTechName); //$NON-NLS-1$

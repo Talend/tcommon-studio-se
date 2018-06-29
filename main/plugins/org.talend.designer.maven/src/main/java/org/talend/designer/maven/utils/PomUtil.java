@@ -242,11 +242,10 @@ public class PomUtil {
         } else {
             // TODO, if existed, maybe just replace, not overwrite
         }
-        Model codeProjectTemplateModel = MavenTemplateManager.getCodeProjectTemplateModel(templateParameters);
-
-        parent.setGroupId(codeProjectTemplateModel.getGroupId());
-        parent.setArtifactId(codeProjectTemplateModel.getArtifactId());
-        parent.setVersion(codeProjectTemplateModel.getVersion());
+        String projectTechName = PomUtil.getProjectNameFromTemplateParameter(templateParameters);
+        parent.setGroupId(PomIdsHelper.getProjectGroupId(projectTechName));
+        parent.setArtifactId(PomIdsHelper.getProjectArtifactId());
+        parent.setVersion(PomIdsHelper.getProjectVersion(projectTechName));
 
         String relativePath = getPomRelativePath(curPomFile.getLocation().toFile());
         parent.setRelativePath(relativePath);
