@@ -13,14 +13,18 @@
 package org.talend.core.nexus;
 
 import org.apache.commons.lang3.StringUtils;
+import org.talend.utils.string.StringUtilities;
 
 /**
  * created by wchen on 2015-5-12 Detailled comment
  *
  */
 public class ArtifactRepositoryBean {
-
+    public static final String REPO2_MIDDLE_PATH = "/content/repositories/";
+    public static final String REPO3_MIDDLE_PATH = "/repository/";
+    public static final String ARTIFACT_MIDDLE_PATH = "/artifactory/";
     public enum NexusType {
+        
         NEXUS_2("NEXUS", "http://localhost:8081/nexus/"),
         NEXUS_3("NEXUS 3", "http://localhost:8081/"),
         ARTIFACTORY("Artifactory", "http://localhost:8081/artifactory/");
@@ -57,6 +61,37 @@ public class ArtifactRepositoryBean {
 
         public String getDefaultURL() {
             return defaultURL;
+        }
+        
+        public static String[] splitRepositoryUrl(String url, String repositoryType) {
+            String nexusUrl = url;
+            String repoId = "";
+            if (ArtifactRepositoryBean.NexusType.NEXUS_2.name().equalsIgnoreCase(repositoryType)
+                    || ArtifactRepositoryBean.NexusType.NEXUS_3.name().equalsIgnoreCase(repositoryType)) {
+                String middlePath = getNexusReposotiryMiddlePart(repositoryType);
+                String[] contents = url.split(middlePath);
+                if (contents.length == 2) {
+                    nexusUrl = contents[0];
+                    repoId = StringUtilities.removeEndingString(contents[1], "/");
+                }
+            } else if (ArtifactRepositoryBean.NexusType.ARTIFACTORY.name().equalsIgnoreCase(repositoryType)) {
+                int index = url.toLowerCase().indexOf(ARTIFACT_MIDDLE_PATH);
+                if (index > 0) {
+                    nexusUrl = url.substring(0, index + ARTIFACT_MIDDLE_PATH.length());
+                    repoId = StringUtilities.removeEndingString(url.substring(index + ARTIFACT_MIDDLE_PATH.length()), "/");
+                }
+            }
+            return new String[] { nexusUrl, repoId };
+        }
+
+        public static String getNexusReposotiryMiddlePart(String artifactType) {
+            if (ArtifactRepositoryBean.NexusType.NEXUS_2.name().equals(artifactType)) {
+                return REPO2_MIDDLE_PATH;
+            }
+            if (ArtifactRepositoryBean.NexusType.NEXUS_3.name().equals(artifactType)) {
+                return REPO3_MIDDLE_PATH;
+            }
+            return "";
         }
     }
 
