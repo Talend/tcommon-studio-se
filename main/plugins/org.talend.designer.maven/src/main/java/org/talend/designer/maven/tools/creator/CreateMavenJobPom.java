@@ -221,10 +221,9 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
                 isOptionChecked(TalendProcessArgumentConstant.ARG_ENABLE_APPLY_CONTEXT_TO_CHILDREN),
                 isOptionChecked(TalendProcessArgumentConstant.ARG_ENABLE_STATS));
 
-        checkPomProperty(properties, "talend.project.name", ETalendMavenVariables.ProjectName,
-                jobInfoProp.getProperty(JobInfoProperties.PROJECT_NAME, project.getTechnicalLabel()));
+        checkPomProperty(properties, "talend.project.name", ETalendMavenVariables.ProjectName, project.getTechnicalLabel());
         checkPomProperty(properties, "talend.project.name.lowercase", ETalendMavenVariables.ProjectName,
-                jobInfoProp.getProperty(JobInfoProperties.PROJECT_NAME, project.getTechnicalLabel()).toLowerCase());
+                project.getTechnicalLabel().toLowerCase());
         checkPomProperty(properties, "talend.routine.groupid", ETalendMavenVariables.RoutineGroupId,
                 PomIdsHelper.getCodesGroupId(TalendMavenConstants.DEFAULT_CODE));
         checkPomProperty(properties, "talend.pigudf.groupid", ETalendMavenVariables.PigudfGroupId,
