@@ -540,10 +540,13 @@ public class ProcessorUtilities {
             LastGenerationInfo.getInstance().setModulesNeededWithSubjobPerJob(jobInfo.getJobId(), jobInfo.getJobVersion(),
                     neededLibraries);
             LastGenerationInfo.getInstance().setModulesNeededPerJob(jobInfo.getJobId(), jobInfo.getJobVersion(), neededLibraries);
+
+            // get all job testcases needed modules
+            neededLibraries.addAll(getAllJobTestcaseModules(selectedProcessItem));
+
             // must install the needed libraries before generate codes with poms.
             CorePlugin.getDefault().getRunProcessService().updateLibraries(neededLibraries, currentProcess,
                     retrievedJarsForCurrentBuild);
-
         }
         resetRunJobComponentParameterForContextApply(jobInfo, currentProcess, selectedContextName);
 
@@ -579,7 +582,7 @@ public class ProcessorUtilities {
         // for testContainer dataSet
         generateDataSet(currentProcess, processor);
 
-        generatePigudfInfor(jobInfo, selectedProcessItem, currentProcess, processor, neededLibraries);
+        generatePigudfInfor(jobInfo, selectedProcessItem, currentProcess, processor);
 
         /*
          * Set classpath for current job. If current job include some child-jobs, the child job SHARE farther job
@@ -679,7 +682,7 @@ public class ProcessorUtilities {
     }
 
     private static void generatePigudfInfor(JobInfo jobInfo, ProcessItem selectedProcessItem, IProcess currentProcess,
-            IProcessor processor, Set<ModuleNeeded> neededLibraries) throws ProcessorException {
+            IProcessor processor) throws ProcessorException {
         // generate pigudf.jar before generate code
         // update calss path before export pigudf
         Set<ModuleNeeded> neededModules = LastGenerationInfo.getInstance().getModulesNeededWithSubjobPerJob(jobInfo.getJobId(),
@@ -1065,10 +1068,13 @@ public class ProcessorUtilities {
                         neededLibraries);
                 LastGenerationInfo.getInstance().setModulesNeededPerJob(jobInfo.getJobId(), jobInfo.getJobVersion(),
                         neededLibraries);
+
+                // get all job testcases needed modules
+                neededLibraries.addAll(getAllJobTestcaseModules(selectedProcessItem));
+
                 // must install the needed libraries before generate codes with poms.
                 CorePlugin.getDefault().getRunProcessService().updateLibraries(neededLibraries, currentProcess,
                         retrievedJarsForCurrentBuild);
-
             }
             resetRunJobComponentParameterForContextApply(jobInfo, currentProcess, selectedContextName);
 
@@ -1112,7 +1118,7 @@ public class ProcessorUtilities {
             // for testContainer dataSet
             generateDataSet(currentProcess, processor);
 
-            generatePigudfInfor(jobInfo, selectedProcessItem, currentProcess, processor, neededLibraries);
+            generatePigudfInfor(jobInfo, selectedProcessItem, currentProcess, processor);
 
             TimeMeasure.step(idTimer, "generateContextInfo");
 
@@ -1132,6 +1138,22 @@ public class ProcessorUtilities {
                 TimeMeasure.display = TimeMeasure.displaySteps = TimeMeasure.measureActive = false;
             }
         }
+    }
+
+    private static Set<ModuleNeeded> getAllJobTestcaseModules(ProcessItem selectedProcessItem) {
+        Set<ModuleNeeded> neededLibraries = new HashSet<>();
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
+            ITestContainerProviderService testcontainerService = (ITestContainerProviderService) GlobalServiceRegister
+                    .getDefault().getService(ITestContainerProviderService.class);
+            if (!testcontainerService.isTestContainerItem(selectedProcessItem)) {
+                try {
+                    neededLibraries.addAll(testcontainerService.getAllJobTestcaseModules(selectedProcessItem));
+                } catch (PersistenceException e) {
+                    ExceptionHandler.process(e);
+                }
+            }
+        }
+        return neededLibraries;
     }
 
     /**
