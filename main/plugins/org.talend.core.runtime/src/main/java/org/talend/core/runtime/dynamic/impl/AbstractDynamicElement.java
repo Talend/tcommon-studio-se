@@ -146,11 +146,27 @@ public abstract class AbstractDynamicElement implements IDynamicAttribute {
     }
 
     protected Object convert2JsonValue(String key) throws Exception {
-        return attributeMap.get(key);
+        Object value = getAttribute(key);
+        if (value instanceof List) {
+            value = new JSONArray((List) value);
+        }
+        return value;
     }
 
     protected Object readFromJsonValue(JSONObject json, String key) throws Exception {
-        return json.opt(key);
+        Object value = json.opt(key);
+        if (value instanceof JSONArray) {
+            List<String> list = new ArrayList<>();
+            JSONArray arr = (JSONArray) value;
+            if (arr != null && 0 < arr.length()) {
+                for (int i = 0; i < arr.length(); ++i) {
+                    String element = arr.getString(i);
+                    list.add(element);
+                }
+            }
+            value = list;
+        }
+        return value;
     }
 
     public static String getTagNameFrom(JSONObject xmlJson) throws Exception {

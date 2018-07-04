@@ -230,35 +230,39 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
             final List<Dependency> dependencies = model.getDependencies();
 
             // add codes to dependencies
-            String projectTechName = ProjectManager.getInstance().getProject(getJobProcessor().getProperty()).getTechnicalLabel();
-            String codeVersion = PomIdsHelper.getCodesVersion(projectTechName);
-
-            // routines
-            String routinesGroupId = PomIdsHelper.getCodesGroupId(projectTechName, TalendMavenConstants.DEFAULT_CODE);
-            String routinesArtifactId = TalendMavenConstants.DEFAULT_ROUTINES_ARTIFACT_ID;
-            Dependency routinesDependency = PomUtil.createDependency(routinesGroupId, routinesArtifactId, codeVersion, null);
-            dependencies.add(routinesDependency);
-
-            // pigudfs
-            if (ProcessUtils.isRequiredPigUDFs(jobProcessor.getProcess())) {
-                String pigudfsGroupId = PomIdsHelper.getCodesGroupId(projectTechName, TalendMavenConstants.DEFAULT_PIGUDF);
-                String pigudfsArtifactId = TalendMavenConstants.DEFAULT_PIGUDFS_ARTIFACT_ID;
-                Dependency pigudfsDependency = PomUtil.createDependency(pigudfsGroupId, pigudfsArtifactId, codeVersion, null);
-                dependencies.add(pigudfsDependency);
-            }
-
-            // beans
-            if (ProcessUtils.isRequiredBeans(jobProcessor.getProcess())) {
-                String beansGroupId = PomIdsHelper.getCodesGroupId(projectTechName, TalendMavenConstants.DEFAULT_BEAN);
-                String beansArtifactId = TalendMavenConstants.DEFAULT_BEANS_ARTIFACT_ID;
-                Dependency beansDependency = PomUtil.createDependency(beansGroupId, beansArtifactId, codeVersion, null);
-                dependencies.add(beansDependency);
-            }
+            addCodesDependencies(dependencies);
 
             // add children jobs in dependencies
             addChildrenDependencies(dependencies);
         } catch (ProcessorException e) {
             ExceptionHandler.process(e);
+        }
+    }
+
+    protected void addCodesDependencies(final List<Dependency> dependencies) {
+        String projectTechName = ProjectManager.getInstance().getProject(getJobProcessor().getProperty()).getTechnicalLabel();
+        String codeVersion = PomIdsHelper.getCodesVersion(projectTechName);
+
+        // routines
+        String routinesGroupId = PomIdsHelper.getCodesGroupId(projectTechName, TalendMavenConstants.DEFAULT_CODE);
+        String routinesArtifactId = TalendMavenConstants.DEFAULT_ROUTINES_ARTIFACT_ID;
+        Dependency routinesDependency = PomUtil.createDependency(routinesGroupId, routinesArtifactId, codeVersion, null);
+        dependencies.add(routinesDependency);
+
+        // pigudfs
+        if (ProcessUtils.isRequiredPigUDFs(jobProcessor.getProcess())) {
+            String pigudfsGroupId = PomIdsHelper.getCodesGroupId(projectTechName, TalendMavenConstants.DEFAULT_PIGUDF);
+            String pigudfsArtifactId = TalendMavenConstants.DEFAULT_PIGUDFS_ARTIFACT_ID;
+            Dependency pigudfsDependency = PomUtil.createDependency(pigudfsGroupId, pigudfsArtifactId, codeVersion, null);
+            dependencies.add(pigudfsDependency);
+        }
+
+        // beans
+        if (ProcessUtils.isRequiredBeans(jobProcessor.getProcess())) {
+            String beansGroupId = PomIdsHelper.getCodesGroupId(projectTechName, TalendMavenConstants.DEFAULT_BEAN);
+            String beansArtifactId = TalendMavenConstants.DEFAULT_BEANS_ARTIFACT_ID;
+            Dependency beansDependency = PomUtil.createDependency(beansGroupId, beansArtifactId, codeVersion, null);
+            dependencies.add(beansDependency);
         }
     }
 

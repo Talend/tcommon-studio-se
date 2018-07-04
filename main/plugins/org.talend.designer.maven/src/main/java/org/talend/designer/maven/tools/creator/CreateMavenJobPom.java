@@ -16,6 +16,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -31,9 +32,7 @@ import org.apache.maven.model.Model;
 import org.apache.maven.model.Profile;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.m2e.core.MavenPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.utils.VersionUtils;
@@ -55,6 +54,7 @@ import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.core.runtime.process.JobInfoProperties;
 import org.talend.core.runtime.process.LastGenerationInfo;
 import org.talend.core.runtime.process.TalendProcessArgumentConstant;
+import org.talend.core.runtime.process.TalendProcessOptionConstants;
 import org.talend.core.runtime.projectsetting.IProjectSettingPreferenceConstants;
 import org.talend.core.runtime.projectsetting.IProjectSettingTemplateConstants;
 import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
@@ -588,76 +588,86 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
                 childrenCoordinate.add(coordinate);
             }
         }
+
         // add parent job
         Property parentProperty = this.getJobProcessor().getProperty();
         String parentCoordinate = PomIdsHelper.getJobGroupId(parentProperty) + ":" //$NON-NLS-1$
                 + PomIdsHelper.getJobArtifactId(parentProperty);
         addItem(jobIncludes, parentCoordinate, SEPARATOR);
 
-        try {
-            Model model = MavenPlugin.getMavenModelManager().readMavenModel(getPomFile());
-            List<Dependency> dependencies = model.getDependencies();
-
-            Set<JobInfo> allJobs = LastGenerationInfo.getInstance().getLastGeneratedjobs();
-            Set<ModuleNeeded> fullModulesList = new HashSet<>();
-            for (JobInfo jobInfo : allJobs) {
-                fullModulesList.addAll(LastGenerationInfo
-                        .getInstance()
-                        .getModulesNeededWithSubjobPerJob(
-                        jobInfo.getJobId(), jobInfo.getJobVersion()));
+        // add talend libraries and codes
+        Set<String> talendLibCoordinate = new HashSet<>();
+        String projectTechName = ProjectManager.getInstance().getProject(parentProperty).getTechnicalLabel();
+        String projectGroupId = PomIdsHelper.getProjectGroupId(projectTechName);
+        // codes
+        List<Dependency> dependencies = new ArrayList<>();
+        addCodesDependencies(dependencies);
+        for (Dependency dependency : dependencies) {
+            String dependencyGroupId = dependency.getGroupId();
+            String coordinate = dependencyGroupId + ":" + dependency.getArtifactId(); //$NON-NLS-1$
+            addItem(talendlibIncludes, coordinate, SEPARATOR);
+            talendLibCoordinate.add(coordinate);
+        }
+        // libraries
+        dependencies.clear();
+        Set<ModuleNeeded> modules = getJobProcessor().getNeededModules(TalendProcessOptionConstants.MODULES_WITH_JOBLET);
+        for (ModuleNeeded module : modules) {
+            String mavenUri = module.getMavenUri();
+            Dependency dependency = PomUtil.createModuleDependency(mavenUri);
+            dependencies.add(dependency);
+        }
+        for (Dependency dependency : dependencies) {
+            if (MavenConstants.PACKAGING_POM.equals(dependency.getType())) {
+                continue;
             }
-
-            // add talend libraries and codes
-            Set<String> talendLibCoordinate = new HashSet<>();
-            String projectTechName = ProjectManager.getInstance().getProject(parentProperty).getTechnicalLabel();
-            String projectGroupId = PomIdsHelper.getProjectGroupId(projectTechName);
-            for (Dependency dependency : dependencies) {
-                if (MavenConstants.PACKAGING_POM.equals(dependency.getType())) {
-                    continue;
-                }
-                String dependencyGroupId = dependency.getGroupId();
-                String coordinate = dependencyGroupId + ":" + dependency.getArtifactId(); //$NON-NLS-1$
-                if (!childrenCoordinate.contains(coordinate)) {
-                    if (MavenConstants.DEFAULT_LIB_GROUP_ID.equals(dependencyGroupId)
-                            || dependencyGroupId.startsWith(projectGroupId)) {
-                        addItem(talendlibIncludes, coordinate, SEPARATOR);
-                        talendLibCoordinate.add(coordinate);
-                    }
+            String dependencyGroupId = dependency.getGroupId();
+            String coordinate = dependencyGroupId + ":" + dependency.getArtifactId(); //$NON-NLS-1$
+            if (!childrenCoordinate.contains(coordinate)) {
+                if (MavenConstants.DEFAULT_LIB_GROUP_ID.equals(dependencyGroupId)) {
+                    addItem(talendlibIncludes, coordinate, SEPARATOR);
+                    talendLibCoordinate.add(coordinate);
                 }
             }
-            // add 3rd party libraries
-            Set<String> _3rdDepLib = new HashSet<>();
-            for (Dependency dependency : dependencies) {
-                if (MavenConstants.PACKAGING_POM.equals(dependency.getType())) {
-                    continue;
-                }
-                String coordinate = dependency.getGroupId() + ":" + dependency.getArtifactId(); //$NON-NLS-1$
-                if (!childrenCoordinate.contains(coordinate) && !talendLibCoordinate.contains(coordinate)) {
-                    _3rdDepLib.add(coordinate);
+        }
+
+        // add 3rd party libraries
+        Set<String> _3rdDepLib = new HashSet<>();
+        for (Dependency dependency : dependencies) {
+            if (MavenConstants.PACKAGING_POM.equals(dependency.getType())) {
+                continue;
+            }
+            String coordinate = dependency.getGroupId() + ":" + dependency.getArtifactId(); //$NON-NLS-1$
+            if (!childrenCoordinate.contains(coordinate) && !talendLibCoordinate.contains(coordinate)) {
+                _3rdDepLib.add(coordinate);
+                addItem(_3rdPartylibExcludes, coordinate, SEPARATOR);
+            }
+        }
+
+        // add missing modules from the job generation of children
+        Set<JobInfo> allJobs = LastGenerationInfo.getInstance().getLastGeneratedjobs();
+        Set<ModuleNeeded> fullModulesList = new HashSet<>();
+        for (JobInfo jobInfo : allJobs) {
+            fullModulesList.addAll(LastGenerationInfo.getInstance().getModulesNeededWithSubjobPerJob(jobInfo.getJobId(),
+                    jobInfo.getJobVersion()));
+        }
+        for (ModuleNeeded moduleNeeded : fullModulesList) {
+            MavenArtifact artifact = MavenUrlHelper.parseMvnUrl(moduleNeeded.getMavenUri());
+            String coordinate = artifact.getGroupId() + ":" + artifact.getArtifactId(); //$NON-NLS-1$
+            if (!childrenCoordinate.contains(coordinate) && !talendLibCoordinate.contains(coordinate)
+                    && !_3rdDepLib.contains(coordinate)) {
+                if (MavenConstants.DEFAULT_LIB_GROUP_ID.equals(artifact.getGroupId())
+                        || artifact.getGroupId().startsWith(projectGroupId)) {
+                    addItem(talendlibIncludes, coordinate, SEPARATOR);
+                } else {
                     addItem(_3rdPartylibExcludes, coordinate, SEPARATOR);
                 }
             }
-            // add missing modules from the job generation of children
-            for (ModuleNeeded moduleNeeded : fullModulesList) {
-                MavenArtifact artifact = MavenUrlHelper.parseMvnUrl(moduleNeeded.getMavenUri());
-                String coordinate = artifact.getGroupId() + ":" + artifact.getArtifactId(); //$NON-NLS-1$
-                if (!childrenCoordinate.contains(coordinate) && !talendLibCoordinate.contains(coordinate)
-                        && !_3rdDepLib.contains(coordinate)) {
-                    if (MavenConstants.DEFAULT_LIB_GROUP_ID.equals(artifact.getGroupId())
-                            || artifact.getGroupId().startsWith(projectGroupId)) {
-                        addItem(talendlibIncludes, coordinate, SEPARATOR);
-                    } else {
-                        addItem(_3rdPartylibExcludes, coordinate, SEPARATOR);
-                    }
-                }
-            }
-            if (_3rdPartylibExcludes.length() == 0) {
-                // if removed, it might add many unwanted dependencies to the libs folder. (or we should simply remove
-                // the full empty block of dependencySet)
-                addItem(_3rdPartylibExcludes, "null:null", SEPARATOR); //$NON-NLS-1$
-            }
-        } catch (CoreException e) {
-            ExceptionHandler.process(e);
+        }
+
+        if (_3rdPartylibExcludes.length() == 0) {
+            // if removed, it might add many unwanted dependencies to the libs folder. (or we should simply remove
+            // the full empty block of dependencySet)
+            addItem(_3rdPartylibExcludes, "null:null", SEPARATOR); //$NON-NLS-1$
         }
 
         String talendLibIncludesStr = StringUtils.removeEnd(talendlibIncludes.toString(), SEPARATOR);

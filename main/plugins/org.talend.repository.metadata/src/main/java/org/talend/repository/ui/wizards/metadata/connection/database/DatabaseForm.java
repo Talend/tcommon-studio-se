@@ -532,6 +532,12 @@ public class DatabaseForm extends AbstractForm {
      */
     private boolean isDbPropertiesVisible = true;
 
+    private Group hiveMetastoreGroup;
+
+    private Button hiveEnableHaBtn;
+
+    private LabelledText hiveMetastoreUrisTxt;
+
     /**
      * Constructor to use by a Wizard to create a new database connection.
      * 
@@ -1007,7 +1013,6 @@ public class DatabaseForm extends AbstractForm {
         additionParamText = new LabelledText(typeDbCompositeParent, Messages.getString("DatabaseForm.AddParams"), 2); //$NON-NLS-1$
         additionalJDBCSettingsText = new LabelledText(typeDbCompositeParent,
                 Messages.getString("DatabaseForm.hive.additionalJDBCSettings"), 2); //$NON-NLS-1$
-        metastorePort = new LabelledText(typeDbCompositeParent, Messages.getString("DatabaseForm.hiveThriftMetastore.port"), 2);
 
         String[] extensions = { "*.*" }; //$NON-NLS-1$
         fileField = new LabelledFileField(typeDbCompositeParent, Messages.getString("DatabaseForm.mdbFile"), extensions); //$NON-NLS-1$
@@ -1026,6 +1031,7 @@ public class DatabaseForm extends AbstractForm {
         createTableInfoPartForMaprdb(typeDbCompositeParent);
         createZnodeParent(typeDbCompositeParent);
         createAuthenticationForHive(typeDbCompositeParent);
+        createHiveMetastore(typeDbCompositeParent);
         createAuthenticationForImpala(typeDbCompositeParent);
         createAuthenticationForHBase(typeDbCompositeParent);
         createAuthenticationForMaprdb(typeDbCompositeParent);
@@ -1496,6 +1502,27 @@ public class DatabaseForm extends AbstractForm {
         initForAuthentication();
     }
 
+    private void createHiveMetastore(Composite parent) {
+        GridLayout parentLayout = (GridLayout) parent.getLayout();
+        hiveMetastoreGroup = new Group(parent, SWT.NONE);
+        hiveMetastoreGroup.setText(Messages.getString("DatabaseForm.hive.metastore")); //$NON-NLS-1$
+        GridDataFactory.fillDefaults().span(parentLayout.numColumns, 1).align(SWT.FILL, SWT.BEGINNING).grab(true, false)
+                .applyTo(hiveMetastoreGroup);
+
+        GridLayout authLayout = new GridLayout(3, false);
+        authLayout.marginHeight = 0;
+        hiveMetastoreGroup.setLayout(authLayout);
+
+        hiveEnableHaBtn = new Button(hiveMetastoreGroup, SWT.CHECK);
+        hiveEnableHaBtn.setText(Messages.getString("DatabaseForm.hive.metastore.enableHa")); //$NON-NLS-1$
+        GridData data = new GridData(GridData.FILL_HORIZONTAL);
+        data.horizontalSpan = 3;
+        hiveEnableHaBtn.setLayoutData(data);
+
+        metastorePort = new LabelledText(hiveMetastoreGroup, Messages.getString("DatabaseForm.hiveThriftMetastore.port"), 2); //$NON-NLS-1$
+        hiveMetastoreUrisTxt = new LabelledText(hiveMetastoreGroup, Messages.getString("DatabaseForm.hive.metastore.uris"), 2); //$NON-NLS-1$
+    }
+
     private void createAuthenticationForHBase(Composite parent) {
         GridLayout parentLayout = (GridLayout) parent.getLayout();
         authenticationGrpForHBase = new Group(parent, SWT.NONE);
@@ -1803,6 +1830,22 @@ public class DatabaseForm extends AbstractForm {
 
     private void showIfAdditionalJDBCSettings() {
         setHidAdditionalJDBCSettings(!isSupportHiveAdditionalSettings());
+    }
+
+    private void showIfHiveMetastore() {
+        if (isHiveDBConnSelected()) {
+            hiveMetastoreGroup.setVisible(true);
+            if (hiveEnableHaBtn.getSelection()) {
+                hiveMetastoreUrisTxt.show();
+                metastorePort.hide();
+            } else {
+                hiveMetastoreUrisTxt.hide();
+                metastorePort.show();
+            }
+        } else {
+            hiveMetastoreGroup.setVisible(false);
+        }
+        hiveMetastoreGroup.layout();
     }
 
     private boolean isSupportHiveAdditionalSettings() {
@@ -3163,6 +3206,8 @@ public class DatabaseForm extends AbstractForm {
         keytabTxt.setEditable(!isContextMode());
         metastorePort.setEditable(!isContextMode());
         additionalJDBCSettingsText.setEditable(!isContextMode());
+        hiveEnableHaBtn.setEnabled(!isContextMode());
+        hiveMetastoreUrisTxt.setEnabled(!isContextMode());
         useSSLEncryption.setEnabled(!isContextMode());
         trustStorePath.setEditable(!isContextMode());
         trustStorePassword.setEditable(!isContextMode());
@@ -4707,6 +4752,29 @@ public class DatabaseForm extends AbstractForm {
             }
         });
 
+        hiveEnableHaBtn.addSelectionListener(new SelectionAdapter() {
+
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                if (!isContextMode()) {
+                    getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_ENABLE_HA,
+                            Boolean.toString(hiveEnableHaBtn.getSelection()));
+                    showIfHiveMetastore();
+                }
+            }
+        });
+
+        hiveMetastoreUrisTxt.addModifyListener(new ModifyListener() {
+
+            @Override
+            public void modifyText(ModifyEvent e) {
+                if (!isContextMode()) {
+                    getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_METASTORE_URIS,
+                            hiveMetastoreUrisTxt.getText());
+                }
+            }
+        });
+
         metastorePort.addModifyListener(new ModifyListener() {
 
             @Override
@@ -6220,10 +6288,10 @@ public class DatabaseForm extends AbstractForm {
             updateHadoopPropertiesFieldsState();
             updateHiveJDBCPropertiesFieldsState();
             showIfAdditionalJDBCSettings();
+            showIfHiveMetastore();
             showIfSupportEncryption();
             showIfAuthentication();
             hideHiveExecutionFields(!doSupportTez());
-            setHideThriftMetastoreInfoWidgets(!isHive);
 
             urlConnectionStringText.setEditable(!visible);
 
@@ -6556,7 +6624,9 @@ public class DatabaseForm extends AbstractForm {
             boolean addSSLEncryptionContext = isSupportSSLEncryption() && isSupportSSLTrustStore();
             addContextParams(EDBParamName.hiveSSLTrustStorePath, addSSLEncryptionContext);
             addContextParams(EDBParamName.hiveSSLTrustStorePassword, addSSLEncryptionContext);
-            addContextParams(EDBParamName.HiveMetastorePort, true);
+            boolean isEnableHiveHa = hiveEnableHaBtn.getSelection();
+            addContextParams(EDBParamName.hiveMetastoreUris, isEnableHiveHa);
+            addContextParams(EDBParamName.HiveMetastorePort, !isEnableHiveHa);
 
             addContextParams(EDBParamName.Username, !useKerberos.getSelection() && useMaprTForHive.getSelection());
             addContextParams(EDBParamName.Maprticket_Password, !useKerberos.getSelection() && useMaprTForHive.getSelection());
@@ -7080,6 +7150,8 @@ public class DatabaseForm extends AbstractForm {
         }
         String additionalJDBCSettings = connection.getParameters().get(
                 ConnParameterKeys.CONN_PARA_KEY_HIVE_ADDITIONAL_JDBC_SETTINGS);
+        String hiveEnableHa = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_ENABLE_HA);
+        String hiveMetastoreUris = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_METASTORE_URIS);
         String metadatastorePort = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_THRIFTPORT);
         boolean useSSL = Boolean.parseBoolean(connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_USE_SSL));
         String trustStorePathStr = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_SSL_TRUST_STORE_PATH);
@@ -7103,6 +7175,8 @@ public class DatabaseForm extends AbstractForm {
         passwordTxt.setText(password == null ? "" : password);
         metastorePort.setText(metadatastorePort == null ? "" : metadatastorePort);
         additionalJDBCSettingsText.setText(additionalJDBCSettings == null ? "" : additionalJDBCSettings);
+        hiveEnableHaBtn.setSelection(Boolean.valueOf(hiveEnableHa));
+        hiveMetastoreUrisTxt.setText(hiveMetastoreUris == null ? "" : hiveMetastoreUris);
         useSSLEncryption.setSelection(useSSL);
         trustStorePath.setText(trustStorePathStr == null ? "" : trustStorePathStr);
         if (trustStorePasswordStr == null) {
@@ -7284,6 +7358,7 @@ public class DatabaseForm extends AbstractForm {
             public void widgetSelected(SelectionEvent e) {
                 doHiveDistributionModify();
                 showIfAdditionalJDBCSettings();
+                showIfHiveMetastore();
                 showIfSupportEncryption();
                 showIfAuthentication();
                 hideHiveExecutionFields(!doSupportTez());
@@ -7302,6 +7377,7 @@ public class DatabaseForm extends AbstractForm {
             public void widgetSelected(SelectionEvent e) {
                 doHiveVersionModify();
                 showIfAdditionalJDBCSettings();
+                showIfHiveMetastore();
                 showIfSupportEncryption();
                 showIfAuthentication();
                 hideHiveExecutionFields(!doSupportTez());
@@ -7330,6 +7406,7 @@ public class DatabaseForm extends AbstractForm {
             public void widgetSelected(SelectionEvent e) {
                 doHiveModeModify();
                 showIfAdditionalJDBCSettings();
+                showIfHiveMetastore();
                 showIfSupportEncryption();
                 showIfAuthentication();
                 hideHiveExecutionFields(!doSupportTez());
@@ -7372,6 +7449,7 @@ public class DatabaseForm extends AbstractForm {
             public void widgetSelected(SelectionEvent e) {
                 doHiveServerSelected();
                 showIfAdditionalJDBCSettings();
+                showIfHiveMetastore();
                 showIfSupportEncryption();
                 showIfAuthentication();
             }
@@ -8301,14 +8379,6 @@ public class DatabaseForm extends AbstractForm {
         hadoopPropGrpGD.exclude = hide;
         nameNodeURLTxt.setHideWidgets(hide);
         jobTrackerURLTxt.setHideWidgets(hide);
-    }
-
-    private void setHideThriftMetastoreInfoWidgets(boolean hide) {
-        if (hide) {
-            metastorePort.hide();
-        } else {
-            metastorePort.show();
-        }
     }
 
     /**

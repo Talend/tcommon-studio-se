@@ -123,9 +123,19 @@ public class DynamicDistributionAetherUtils {
         }
         RemoteRepository central = builder.build();
 
+        /**
+         * Some repositories like Hortonworks don't contain some essential artifacts like org.apache:apache:pom:18<br/>
+         * So add one more talend repository to avoid this problem, but talend repository can't be the download url!(not
+         * support yet)
+         */
+        Builder talendRepoBuilder = new RemoteRepository.Builder("talend", "default", //$NON-NLS-1$ //$NON-NLS-2$
+                "https://repo.maven.apache.org/maven2"); //$NON-NLS-1$
+        RemoteRepository talendRepo = talendRepoBuilder.build();
+
         CollectRequest collectRequest = new CollectRequest();
         collectRequest.setRoot(dependency);
         collectRequest.addRepository(central);
+        collectRequest.addRepository(talendRepo);
 
         checkCancelOrNot(monitor);
         monitor.writeMessage("\n\n=== Start to collect dependecies of " + dependency.toString() + " ===\n");
@@ -138,7 +148,7 @@ public class DynamicDistributionAetherUtils {
             monitor.writeMessage("No dependencies collected.");
         }
 
-        DependencyNode convertedNode = convert(node);
+        DependencyNode convertedNode = convert(node, central);
 
         return convertedNode;
 
@@ -234,7 +244,15 @@ public class DynamicDistributionAetherUtils {
         }
     }
 
-    private static DependencyNode convert(org.eclipse.aether.graph.DependencyNode node) {
+    private static DependencyNode convert(org.eclipse.aether.graph.DependencyNode node, RemoteRepository remoteRepository)
+            throws Exception {
+        // List<RemoteRepository> repositories = node.getRepositories();
+        // if (repositories != null && !repositories.isEmpty()) {
+        // if (!repositories.contains(remoteRepository)) {
+        // throw new Exception("Bad remoteRepository: Jar must be able to be downloaded from user configured
+        // repository!"); //$NON-NLS-1$
+        // }
+        // }
         DependencyNode convertedNode = new DependencyNode();
 
         Artifact artifact = node.getArtifact();
@@ -250,7 +268,7 @@ public class DynamicDistributionAetherUtils {
 
         if (children != null) {
             for (org.eclipse.aether.graph.DependencyNode child : children) {
-                DependencyNode convertedChild = convert(child);
+                DependencyNode convertedChild = convert(child, remoteRepository);
                 convertedChildren.add(convertedChild);
             }
         }
