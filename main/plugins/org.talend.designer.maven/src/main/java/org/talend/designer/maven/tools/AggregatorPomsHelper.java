@@ -270,7 +270,7 @@ public class AggregatorPomsHelper {
     private static void build(ERepositoryObjectType codeType, boolean install, IProgressMonitor monitor)
             throws Exception {
         ITalendProcessJavaProject codeProject = getCodesProject(codeType);
-        codeProject.buildModules(monitor, null, null);
+        codeProject.buildWholeCodeProject();
         if (install) {
             Map<String, Object> argumentsMap = new HashMap<>();
             argumentsMap.put(TalendProcessArgumentConstant.ARG_GOAL, TalendMavenConstants.GOAL_INSTALL);

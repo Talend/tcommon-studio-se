@@ -119,6 +119,8 @@ public interface TalendMavenConstants {
     /**
      * argments
      */
+    static final String ARG_MAIN_SKIP = "-Dmaven.main.skip=true";
+
     static final String ARG_SKIPTESTS = "-Dmaven.test.skip=true";
     
     static final String ARG_TEST_FAILURE_IGNORE = "-Dmaven.test.failure.ignore=true";
