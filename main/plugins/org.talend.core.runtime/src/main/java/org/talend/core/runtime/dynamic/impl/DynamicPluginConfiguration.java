@@ -12,7 +12,6 @@
 // ============================================================================
 package org.talend.core.runtime.dynamic.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.talend.core.runtime.dynamic.IDynamicPluginConfiguration;
@@ -127,34 +126,6 @@ public class DynamicPluginConfiguration extends AbstractDynamicElement implement
         }
 
         return dynamicPluginConfiguration;
-    }
-
-    @Override
-    protected Object readFromJsonValue(JSONObject json, String key) throws Exception {
-        if (ATTR_SERVICES.equals(key)) {
-            List<String> services = new ArrayList<>();
-            JSONArray arr = json.optJSONArray(key);
-            if (arr != null && 0 < arr.length()) {
-                for (int i = 0; i < arr.length(); ++i) {
-                    String service = arr.getString(i);
-                    services.add(service);
-                }
-            }
-            return services;
-        } else {
-            return super.readFromJsonValue(json, key);
-        }
-    }
-
-    @Override
-    protected Object convert2JsonValue(String key) throws Exception {
-        if (ATTR_SERVICES.equals(key)) {
-            List<String> services = (List<String>) getAttribute(key);
-            JSONArray arr = new JSONArray(services);
-            return arr;
-        } else {
-            return super.convert2JsonValue(key);
-        }
     }
 
     @Override

@@ -771,6 +771,10 @@ public class AggregatorPomsHelper {
                         continue;
                     }
                 }
+                // filter esb data service node
+                if(isDataServiceOperation(object.getProperty())) {
+                    continue;
+                }
                 if (object.getProperty() != null
                         && object.getProperty().getItem() != null) {
                     Item item = object.getProperty().getItem();
@@ -802,6 +806,25 @@ public class AggregatorPomsHelper {
             return;
         }
         monitor.done();
+    }
+
+    /**
+     * Check if is a esb data service job
+     * 
+     * @param property
+     * @return
+     */
+    private boolean isDataServiceOperation(Property property) {
+        if (property != null) {
+            List<Relation> relations = RelationshipItemBuilder.getInstance().getItemsRelatedTo(property.getId(),
+                    property.getVersion(), RelationshipItemBuilder.JOB_RELATION);
+            for (Relation relation : relations) {
+                if (RelationshipItemBuilder.SERVICES_RELATION.equals(relation.getType())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private static ITalendProcessJavaProject getCodesProject(ERepositoryObjectType codeType) {
