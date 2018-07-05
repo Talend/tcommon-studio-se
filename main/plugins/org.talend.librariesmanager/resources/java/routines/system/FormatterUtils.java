@@ -296,6 +296,16 @@ public class FormatterUtils {
         return df.format(number);
     }
     
+    //overload it for performance to avoid auto convert to Double object
+    public static String formatNumber(double number) {
+        return df.format(number);
+    }
+    
+    //overload it for performance to avoid auto convert to Float object
+    public static String formatNumber(float number) {
+        return formatUnwithE(number);
+    }
+    
     /**
      * DOC Administrator Comment method "formatUnwithE". In java when double more than six decimal that use toString
      * will rentru contains E scientific natation.
