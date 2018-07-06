@@ -1261,6 +1261,30 @@ public class RepositoryToComponentProperty {
             return getAppropriateValue(connection, hbaseRegPrinc);
         }
 
+        if (value.equals("HBASEMASTER_PRINCIPAL")) {
+            String hbaseMasterPrinc = null;
+            if (EDatabaseTypeName.HBASE.getDisplayName().equals(databaseType)) {
+                hbaseMasterPrinc = connection.getParameters()
+                        .get(ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MASTERPRINCIPAL);
+            } else if (EDatabaseTypeName.MAPRDB.getDisplayName().equals(databaseType)) {
+                hbaseMasterPrinc = connection.getParameters()
+                        .get(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_MASTERPRINCIPAL);
+            }
+            return getAppropriateValue(connection, hbaseMasterPrinc);
+        }
+
+        if (value.equals("HBASEREIGONSERVER_PRINCIPAL")) {
+            String hbaseRegPrinc = null;
+            if (EDatabaseTypeName.HBASE.getDisplayName().equals(databaseType)) {
+                hbaseRegPrinc = connection.getParameters()
+                        .get(ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_REGIONSERVERPRINCIPAL);
+            } else if (EDatabaseTypeName.MAPRDB.getDisplayName().equals(databaseType)) {
+                hbaseRegPrinc = connection.getParameters()
+                        .get(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_AUTHENTICATION_REGIONSERVERPRINCIPAL);
+            }
+            return getAppropriateValue(connection, hbaseRegPrinc);
+        }
+
         if (value.equals("USE_MAPRTICKET")) {
             String useMaprTValue = null;
             if (EDatabaseTypeName.HBASE.getDisplayName().equals(databaseType)) {
