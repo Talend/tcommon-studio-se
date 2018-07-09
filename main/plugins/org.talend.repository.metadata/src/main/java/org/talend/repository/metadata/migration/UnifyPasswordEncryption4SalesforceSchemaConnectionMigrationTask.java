@@ -25,6 +25,7 @@ import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.SalesforceSchemaConnectionItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
+import org.talend.cwm.helper.ConnectionHelper;
 
 /**
  * created by ggu on Aug 29, 2014 Detailled comment
@@ -55,9 +56,11 @@ public class UnifyPasswordEncryption4SalesforceSchemaConnectionMigrationTask ext
                 try {
                     if (!ssConn.isContextMode()) {
                         // before this migration ,the pass is raw, didn't encrypt.
-                        ssConn.setPassword(ssConn.getValue(ssConn.getPassword(), true));
-                        ssConn.setProxyPassword(ssConn.getValue(ssConn.getProxyPassword(), true));
-                        ssConn.setConsumeSecret(ssConn.getValue(ssConn.getConsumeSecret(), true));
+                        ssConn.setPassword(ssConn.getValue(ConnectionHelper.getCleanPassword(ssConn.getPassword()), true));
+                        ssConn.setProxyPassword(
+                                ssConn.getValue(ConnectionHelper.getCleanPassword(ssConn.getProxyPassword()), true));
+                        ssConn.setConsumeSecret(
+                                ssConn.getValue(ConnectionHelper.getCleanPassword(ssConn.getConsumeSecret()), true));
                         factory.save(item, true);
                         return ExecutionResult.SUCCESS_NO_ALERT;
                     }
