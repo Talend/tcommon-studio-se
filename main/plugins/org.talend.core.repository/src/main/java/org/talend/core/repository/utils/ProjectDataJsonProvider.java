@@ -14,8 +14,10 @@ package org.talend.core.repository.utils;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -891,6 +893,17 @@ class MigrationTaskSetting {
                     MigrationTask task = (MigrationTask) project.getMigrationTask().get(i);
                     migrationTaskList.add(new MigrationTaskJson(task));
                 }
+                migrationTaskList.sort(new Comparator<MigrationTaskJson>() {
+
+                    @Override
+                    public int compare(MigrationTaskJson o1, MigrationTaskJson o2) {
+                        if (StringUtils.isNotEmpty(o1.getId()) && StringUtils.isNotEmpty(o2.getId())) {
+                            return o1.getId().compareTo(o2.getId());
+                        }
+                        return 0;
+                    }
+
+                });
             }
             if (project.getMigrationTasks().size() > 0) {
                 migrationTasksList = new ArrayList<String>();

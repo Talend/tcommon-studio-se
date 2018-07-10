@@ -696,6 +696,16 @@ public class RelationshipItemBuilder {
             return;
         }
         Project currentProject = getAimProject();
+        synchronizeItemRelationToProject(currentProject);
+        try {
+            getProxyRepositoryFactory().saveProject(currentProject);
+        } catch (PersistenceException e) {
+            ExceptionHandler.process(e);
+        }
+        modified = false;
+    }
+    
+    public void synchronizeItemRelationToProject(Project currentProject) {
         List<ItemRelations> oldRelations = new ArrayList<ItemRelations>(currentProject.getEmfProject().getItemsRelations());
         List<ItemRelations> usedList = new ArrayList<ItemRelations>();
         for (Relation relation : currentProjectItemsRelations.keySet()) {
@@ -773,13 +783,7 @@ public class RelationshipItemBuilder {
             }
         }
         oldRelations.removeAll(usedList);
-        currentProject.getEmfProject().getItemsRelations().removeAll(oldRelations);
-        try {
-            getProxyRepositoryFactory().saveProject(currentProject);
-        } catch (PersistenceException e) {
-            ExceptionHandler.process(e);
-        }
-        modified = false;
+        currentProject.getEmfProject().getItemsRelations().removeAll(oldRelations);  
     }
 
     private String getTypeFromItem(Item item) {

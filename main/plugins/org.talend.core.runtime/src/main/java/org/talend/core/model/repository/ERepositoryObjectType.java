@@ -96,6 +96,12 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
     
     public final static ERepositoryObjectType PROJECT_SETTING = new ERepositoryObjectType("repository.talend.project.setting", "",
             "PROJECT_SETTING", true, 1, new String[] { PROD_DI, PROD_DQ, PROD_MDM }, new String[] {}, false);
+    
+    public final static ERepositoryObjectType RELATION_SHIP = new ERepositoryObjectType("repository.talend.project.relationship", "",
+            "RELATION_SHIP", true, 1, new String[] { PROD_DI, PROD_DQ, PROD_MDM }, new String[] {}, false);
+    
+    public final static ERepositoryObjectType MIGRATION_TASK = new ERepositoryObjectType("repository.talend.project.migrationtask", "",
+            "MIGRATION_TASK", true, 1, new String[] { PROD_DI, PROD_DQ, PROD_MDM }, new String[] {}, false);
 
     public final static ERepositoryObjectType GIT_ROOT = new ERepositoryObjectType("repository.gitroot", "", "GIT_ROOT", true, 1,
             new String[] { PROD_DI, PROD_DQ }, new String[] {}, false);

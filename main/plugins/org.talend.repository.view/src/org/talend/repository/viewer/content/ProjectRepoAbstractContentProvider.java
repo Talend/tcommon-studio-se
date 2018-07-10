@@ -69,7 +69,7 @@ public abstract class ProjectRepoAbstractContentProvider extends FolderListenerS
         public void notifyChanged(Notification notification) {
             if (notification.getFeature() == PropertiesPackage.eINSTANCE.getProject_DeletedFolders()) {
                 if (viewer != null && viewer.getControl() != null) {
-                    viewer.getControl().getDisplay().asyncExec(new Runnable() {
+                    Display.getDefault().asyncExec(new Runnable() {
 
                         @Override
                         public void run() {

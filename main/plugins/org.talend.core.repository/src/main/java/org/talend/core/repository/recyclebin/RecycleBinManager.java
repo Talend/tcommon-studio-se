@@ -208,6 +208,12 @@ public class RecycleBinManager {
             // if there is any exception, just set a new resource
             projectRecyclebins.put(project.getTechnicalLabel(), RecycleBinFactory.eINSTANCE.createRecycleBin());
         }
+        // Synchronize delete folder to project
+        RecycleBin recycleBin = projectRecyclebins.get(project.getTechnicalLabel());
+        project.getDeletedFolders().clear();
+        for (String deletedFolder : recycleBin.getDeletedFolders()) {
+            project.getDeletedFolders().add(deletedFolder);
+        }    
     }
 
     public RecycleBin loadRecycleBin(IPath recycleBinIndexPath) throws Exception {
@@ -236,6 +242,7 @@ public class RecycleBinManager {
             resource.getContents().clear();
             RecycleBin recycleBin = projectRecyclebins.get(project.getTechnicalLabel());
             recycleBin.setLastUpdate(new Date());
+            // Synchronize delete folder to recycleBin
             recycleBin.getDeletedFolders().clear();
             for (int i = 0; i < project.getDeletedFolders().size(); i++) {
                 recycleBin.getDeletedFolders().add((String) project.getDeletedFolders().get(i));
