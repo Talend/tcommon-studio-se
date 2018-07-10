@@ -95,6 +95,7 @@ public class ExtendedNodeConnectionContextUtils {
         HCatalogDatabase,
         HcataLogRowSeparator,
         HcatalogFileSeparator,
+        HcatalogMetastore,
 
         // Hdfs param
         HdfsUser,

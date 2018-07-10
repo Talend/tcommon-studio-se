@@ -16,7 +16,9 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.charset.Charset;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Date;
+import java.util.Locale;
 
 import routines.TalendDate;
 
@@ -275,8 +277,35 @@ public class FormatterUtils {
         return returnString.toString();
     }
 
-    private static final DecimalFormat df = new DecimalFormat("#.###########################################################");
-
+    private static final DecimalFormat df = new DecimalFormat("#.####################################", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+    static {
+        df.setRoundingMode(RoundingMode.HALF_UP);
+    }
+    
+    /**
+     * the number format to avoid scientific notation and avoid locale-related and do best to keep precision
+     */
+    public static String formatNumber(Object number) {
+        if(number == null) {
+            return null;
+        }
+        //df.format(float/Float) will call Float.doubleValue, it will do some bad thing.
+        if(number instanceof Float) {
+            return formatUnwithE(number);
+        }
+        return df.format(number);
+    }
+    
+    //overload it for performance to avoid auto convert to Double object
+    public static String formatNumber(double number) {
+        return df.format(number);
+    }
+    
+    //overload it for performance to avoid auto convert to Float object
+    public static String formatNumber(float number) {
+        return formatUnwithE(number);
+    }
+    
     /**
      * DOC Administrator Comment method "formatUnwithE". In java when double more than six decimal that use toString
      * will rentru contains E scientific natation.

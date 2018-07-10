@@ -47,6 +47,7 @@ import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.Project;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.utils.JavaResourcesHelper;
+import org.talend.core.repository.utils.ItemResourceUtil;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.maven.MavenUrlHelper;
@@ -198,6 +199,13 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         }
 
         checkPomProperty(properties, "talend.job.path", ETalendMavenVariables.JobPath, jobClassPackageFolder);
+        String jobFolder = ItemResourceUtil.getItemRelativePath(property).toPortableString();
+        if (!StringUtils.isEmpty(jobFolder)) {
+            // like f1/f2/f3/
+            jobFolder = StringUtils.strip(jobFolder, "/") + "/";
+            jobFolder = jobFolder.toLowerCase();
+        }
+        checkPomProperty(properties, "talend.job.folder", ETalendMavenVariables.JobFolder, jobFolder);
 
         /*
          * for jobInfo.properties
@@ -213,10 +221,9 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
                 isOptionChecked(TalendProcessArgumentConstant.ARG_ENABLE_APPLY_CONTEXT_TO_CHILDREN),
                 isOptionChecked(TalendProcessArgumentConstant.ARG_ENABLE_STATS));
 
-        checkPomProperty(properties, "talend.project.name", ETalendMavenVariables.ProjectName,
-                jobInfoProp.getProperty(JobInfoProperties.PROJECT_NAME, project.getTechnicalLabel()));
+        checkPomProperty(properties, "talend.project.name", ETalendMavenVariables.ProjectName, project.getTechnicalLabel());
         checkPomProperty(properties, "talend.project.name.lowercase", ETalendMavenVariables.ProjectName,
-                jobInfoProp.getProperty(JobInfoProperties.PROJECT_NAME, project.getTechnicalLabel()).toLowerCase());
+                project.getTechnicalLabel().toLowerCase());
         checkPomProperty(properties, "talend.routine.groupid", ETalendMavenVariables.RoutineGroupId,
                 PomIdsHelper.getCodesGroupId(TalendMavenConstants.DEFAULT_CODE));
         checkPomProperty(properties, "talend.pigudf.groupid", ETalendMavenVariables.PigudfGroupId,

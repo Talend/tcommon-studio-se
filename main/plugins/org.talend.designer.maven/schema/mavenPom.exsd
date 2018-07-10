@@ -3,7 +3,7 @@
 <schema targetNamespace="org.talend.designer.maven" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="org.talend.designer.maven" id="mavenPomJob" name="mavenPomJob"/>
+         <meta.schema plugin="org.talend.designer.maven" id="mavenPom" name="mavenPom"/>
       </appinfo>
       <documentation>
          [Enter description of this extension point.]
@@ -17,8 +17,9 @@
          </appinfo>
       </annotation>
       <complexType>
-         <sequence minOccurs="1" maxOccurs="unbounded">
-            <element ref="pomJobExtension"/>
+         <sequence minOccurs="0" maxOccurs="unbounded">
+            <element ref="jobPomExtension" minOccurs="0" maxOccurs="unbounded"/>
+            <element ref="projectPomExtension" minOccurs="0" maxOccurs="unbounded"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -47,7 +48,7 @@
       </complexType>
    </element>
 
-   <element name="pomJobExtension">
+   <element name="jobPomExtension">
       <complexType>
          <attribute name="class" type="string">
             <annotation>
@@ -55,7 +56,22 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":org.talend.designer.maven.tools.creator.IPomJobExtension"/>
+                  <meta.attribute kind="java" basedOn=":org.talend.designer.maven.tools.extension.IJobPomExtension"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="projectPomExtension">
+      <complexType>
+         <attribute name="class" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn=":org.talend.designer.maven.tools.extension.IProjectPomExtension"/>
                </appinfo>
             </annotation>
          </attribute>

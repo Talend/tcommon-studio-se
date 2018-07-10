@@ -80,12 +80,28 @@ public class RepositoryContext {
                 && user.getGitAuthenticationInfo() == null) {
             oldGitAuthentification = this.user.getGitAuthenticationInfo();
         }
+        String oldLdapId = null;
+        if (this.user != null && user != null && StringUtils.equals(this.user.getLogin(), user.getLogin())
+                && user.getLdapId() == null) {
+            oldLdapId = this.user.getLdapId();
+        }
+        String oldLdaplogin = null;
+        if (this.user != null && user != null && StringUtils.equals(this.user.getLogin(), user.getLogin())
+                && user.getLdapLogin() == null) {
+            oldLdaplogin = this.user.getLdapLogin();
+        }
         this.user = user;
         if (oldAuthentification != null) {
             this.user.setAuthenticationInfo(oldAuthentification);
         }
         if (oldGitAuthentification != null) {
             this.user.setGitAuthenticationInfo(oldGitAuthentification);
+        }
+        if (oldLdapId != null) {
+            this.user.setLdapId(oldLdapId);
+        }
+        if (oldLdaplogin != null) {
+            this.user.setLdapLogin(oldLdaplogin);
         }
     }
 

@@ -10,7 +10,7 @@
 // 9 rue Pages 92150 Suresnes, France
 //
 // ============================================================================
-package org.talend.designer.maven.tools.creator;
+package org.talend.designer.maven.tools.extension;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -34,14 +34,16 @@ import org.w3c.dom.NodeList;
 
 /**
  * DOC ggu class global comment. Detailled comment
+ * 
+ * @deprecated
  */
-public class UpdatePomAndAssemblyForChildrenJobs implements IPomJobExtension {
+public class UpdatePomAndAssemblyForChildrenJobs implements IJobPomExtension {
 
     /*
      * (non-Javadoc)
      * 
      * @see
-     * org.talend.designer.maven.tools.creator.IPomJobExtension#updatePom(org.eclipse.core.runtime.IProgressMonitor,
+     * org.talend.designer.maven.tools.creator.IJobPomExtension#updatePom(org.eclipse.core.runtime.IProgressMonitor,
      * org.eclipse.core.resources.IFile, java.util.Map)
      */
     @SuppressWarnings("unchecked")

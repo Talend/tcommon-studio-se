@@ -51,7 +51,6 @@ import org.talend.core.model.metadata.builder.connection.MetadataColumn;
 import org.talend.core.model.metadata.builder.database.DriverShim;
 import org.talend.core.model.metadata.builder.database.ExtractMetaDataUtils;
 import org.talend.core.model.metadata.builder.database.IDriverService;
-import org.talend.core.model.metadata.builder.database.JavaSqlFactory;
 import org.talend.core.model.properties.ConnectionItem;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.runtime.CoreRuntimePlugin;
@@ -72,7 +71,6 @@ import org.talend.utils.exceptions.MissingDriverException;
 import org.talend.utils.sql.ConnectionUtils;
 import org.talend.utils.sugars.ReturnCode;
 import org.talend.utils.sugars.TypedReturnCode;
-
 import orgomg.cwm.foundation.softwaredeployment.DataProvider;
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.objectmodel.core.Package;
@@ -942,13 +940,6 @@ public class MetadataConnectionUtils {
                     }
                 }
                 String databaseType = dbConnection.getDatabaseType();
-                if (ConnectionUtils.isJDBCType(databaseType)) {// get package filter from 'java.sql.Connection'
-                    String jdbcPackageFilter = getJdbcPackageFilter(connection, isCatalog);
-                    if (!StringUtils.isBlank(jdbcPackageFilter)) {
-                        packageFilter.add(jdbcPackageFilter);
-                    }
-                    return packageFilter;
-                }
                 if (isCatalog) {
                     boolean isHsql = databaseType.equals(EDatabaseTypeName.HSQLDB_IN_PROGRESS.getDisplayName());
                     boolean isInformix = databaseType.equalsIgnoreCase(EDatabaseTypeName.INFORMIX.name());
@@ -985,36 +976,6 @@ public class MetadataConnectionUtils {
             log.error(e, e);
         }
         return packageFilter;
-    }
-
-    /**
-     * 
-     * @param connection
-     * @param isCatalog
-     * @return get current Catalog or Schema as a filter package, maybe null
-     * @throws SQLException
-     */
-    private static String getJdbcPackageFilter(Connection connection, boolean isCatalog) throws SQLException {
-        java.sql.Connection sqlconnection = null;
-        try {
-            sqlconnection = JavaSqlFactory.createConnection(connection).getObject();
-            if (sqlconnection != null) {
-                if (isCatalog) {
-                    return sqlconnection.getCatalog();
-                } else {
-                    try {
-                        return sqlconnection.getSchema();
-                    } catch (AbstractMethodError e) {
-                        // some old driver do not support this method , if don't support then we won't do the filter
-                    }
-                }
-            }
-        } finally {
-            if (sqlconnection != null) {
-                sqlconnection.close();
-            }
-        }
-        return null;
     }
 
     public static boolean isMdmConnection(DataProvider dataprovider) {

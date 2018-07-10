@@ -78,6 +78,7 @@ import org.talend.core.ICoreService;
 import org.talend.core.IESBService;
 import org.talend.core.ITDQRepositoryService;
 import org.talend.core.PluginChecker;
+import org.talend.core.context.CommandLineContext;
 import org.talend.core.context.Context;
 import org.talend.core.context.RepositoryContext;
 import org.talend.core.exception.TalendInternalPersistenceException;
@@ -1996,6 +1997,13 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                     throw new OperationCanceledException(""); //$NON-NLS-1$
                 }
                 
+                boolean isCommandLineLocalRefProject = false;
+                CommandLineContext commandLineContext = (CommandLineContext) CoreRuntimePlugin.getInstance().getContext()
+                        .getProperty(Context.COMMANDLINE_CONTEXT_KEY);
+                if (commandLineContext != null && commandLineContext.isLogonRefProject()) {
+                    isCommandLineLocalRefProject = true;
+                }
+
                 if (coreService != null) {
                     // clean workspace
                     currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.cleanWorkspace"), 1); //$NON-NLS-1$
@@ -2024,12 +2032,14 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                     currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);
                     currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.synch.repo.items"), 1); //$NON-NLS-1$
 
-                    try {
-                        coreService.syncAllRoutines();
-                        // PTODO need refactor later, this is not good, I think
-                        coreService.syncAllBeans();
-                    } catch (SystemException e1) {
-                        //
+                    if (!isCommandLineLocalRefProject) {
+                        try {
+                            coreService.syncAllRoutines();
+                            // PTODO need refactor later, this is not good, I think
+                            coreService.syncAllBeans();
+                        } catch (SystemException e1) {
+                            //
+                        }
                     }
                 }
                 if (monitor != null && monitor.isCanceled()) {
@@ -2060,7 +2070,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                     // ignore
                 }
 
-                if (runProcessService != null) {
+                if (runProcessService != null && !isCommandLineLocalRefProject) {
                     runProcessService.initializeRootPoms(monitor);
 
                     TimeMeasure.step("logOnProject", "install / setup root poms"); //$NON-NLS-1$ //$NON-NLS-2$

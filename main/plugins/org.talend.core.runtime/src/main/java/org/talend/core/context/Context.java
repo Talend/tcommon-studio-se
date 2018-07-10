@@ -33,6 +33,8 @@ public final class Context {
 
     public static final String REPOSITORY_CONTEXT_KEY = "repositoryContext"; //$NON-NLS-1$
 
+    public static final String COMMANDLINE_CONTEXT_KEY = "commandlineContext"; //$NON-NLS-1$
+
     private static final String BREAKPOINTS = "BREAKPOINTS"; //$NON-NLS-1$
 
     /**
