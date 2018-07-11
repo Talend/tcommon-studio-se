@@ -547,7 +547,7 @@ public class MigrationToolService implements IMigrationToolService {
         boolean needSave = false;
 
         if (storedMigrations.isEmpty() && !isEmptyProject) {
-            List<IProjectMigrationTask> allMigrations = new LinkedList<>();
+            List<IProjectMigrationTask> allMigrations = new LinkedList<IProjectMigrationTask>();
             if (toExecute != null) {
                 allMigrations.addAll(toExecute);
             }
@@ -584,10 +584,10 @@ public class MigrationToolService implements IMigrationToolService {
                     "org.talend.repository.storm.repository.migration.UnifyPasswordEncryption4ParametersInStormJobMigrationTask", //$NON-NLS-1$
 
                     /**
-                     * These two migrations don't have problem, so no need to re-execute.
+                     * These two migrations don't have the problem, re-execute anyway
                      */
-                    // "org.talend.repository.ftp.repository.migration.UnifyPasswordEncryption4FtpConnectionMigrationTask",
-                    // "org.talend.mdm.workbench.serverexplorer.migration.UnifyPasswordEncryption4MDMServerDefMigrationTask"
+                    "org.talend.repository.ftp.repository.migration.UnifyPasswordEncryption4FtpConnectionMigrationTask", //$NON-NLS-1$
+                    "org.talend.mdm.workbench.serverexplorer.migration.UnifyPasswordEncryption4MDMServerDefMigrationTask" //$NON-NLS-1$
 
             });
             Iterator<MigrationTask> iterator = storedMigrations.iterator();
