@@ -33,7 +33,7 @@ import org.talend.utils.ProductVersion;
  * DOC cmeng  class global comment. Detailled comment
  */
 @SuppressWarnings("nls")
-public class MigrationTaskValidator {
+public class MigrationTaskValidatorTest {
 
     private static final List<String> ignoreList = Arrays.asList(
             "org.talend.designer.core.ui.preferences.migration.ChangeMysqlVersionForProjectSetting",
@@ -43,7 +43,7 @@ public class MigrationTaskValidator {
             "org.talend.repository.model.migration.FixWrongDbTypesMigrationTask");
 
     @Test
-    public void validateMigrationTaskVersions() {
+    public void testValidateMigrationTaskVersions() {
         List<String> problemList = new ArrayList<>();
         List<IMigrationTask> migrationTasks = new LinkedList<>();
 
