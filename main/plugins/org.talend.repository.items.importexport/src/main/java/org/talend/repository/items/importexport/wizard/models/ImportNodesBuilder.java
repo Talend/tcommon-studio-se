@@ -295,6 +295,9 @@ public class ImportNodesBuilder {
                 return null;
             }
 
+            if ("JDBC".equals(curType.getType())) {
+                curType = ERepositoryObjectType.METADATA_CONNECTIONS;
+            }
             TypeImportNode typeImportNode = typeNodesChildrenMap.get(curType);
             if (typeImportNode != null) {
                 return typeImportNode;

@@ -16,7 +16,7 @@ package org.talend.cwm.indicator;
  * created by talend on Aug 22, 2014 Detailled comment
  * 
  */
-public interface DataValidation {
+public interface DataValidation extends IPropertyOrder {
 
     /**
      * 

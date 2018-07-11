@@ -25,6 +25,7 @@ import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.LDAPSchemaConnectionItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
+import org.talend.cwm.helper.ConnectionHelper;
 
 /**
  * created by ggu on Aug 29, 2014 Detailled comment
@@ -56,6 +57,7 @@ public class UnifyPasswordEncryption4LdapConnectionMigrationTask extends Abstrac
                     if (!ldapConn.isContextMode()) {
                         // before this migration ,the pass is raw, didn't encrypt.
                         String pass = ldapConn.getBindPassword();
+                        pass = ConnectionHelper.getCleanPassword(pass);
                         ldapConn.setBindPassword(ldapConn.getValue(pass, true));
                         factory.save(item, true);
                         return ExecutionResult.SUCCESS_NO_ALERT;

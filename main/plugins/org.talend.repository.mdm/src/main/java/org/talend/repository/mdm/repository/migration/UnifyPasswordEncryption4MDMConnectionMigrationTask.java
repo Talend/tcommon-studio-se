@@ -25,6 +25,7 @@ import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.MDMConnectionItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
+import org.talend.cwm.helper.ConnectionHelper;
 
 /**
  * created by ggu on Sep 1, 2014 Detailled comment
@@ -55,6 +56,7 @@ public class UnifyPasswordEncryption4MDMConnectionMigrationTask extends Abstract
                 try {
                     if (!mdmConn.isContextMode()) {
                         String pass = mdmConn.getPassword();
+                        pass = ConnectionHelper.getCleanPassword(pass);
                         // because before, it's raw value, so encrypt it directly.
                         mdmConn.setPassword(mdmConn.getValue(pass, true));
                         factory.save(item, true);

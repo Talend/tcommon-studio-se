@@ -19,10 +19,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.apache.log4j.Priority;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.VersionUtils;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
@@ -1082,6 +1085,32 @@ public class ConnectionHelper {
                 // get all packages owned by this package
                 result.addAll(PackageHelper.getOwnedElements(pack, theClass));
             }
+        }
+        return result;
+    }
+
+    public static String getCleanPassword(String password) {
+        String result = password;
+        try {
+            String tempValue = result;
+            int i = 0;
+            while (true) {
+                // normally there won't be dead loop, just in case it happens
+                if (10000000 < i) {
+                    ExceptionHandler.process(new Exception("Dead loop when executing migration!"), Priority.WARN); //$NON-NLS-1$
+                    break;
+                }
+
+                String originalValue = tempValue;
+                tempValue = getDecryptPassword(originalValue);
+                if (StringUtils.isBlank(tempValue)) {
+                    result = originalValue;
+                    break;
+                }
+                ++i;
+            }
+        } catch (Exception e) {
+            // ignore
         }
         return result;
     }

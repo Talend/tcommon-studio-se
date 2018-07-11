@@ -19,8 +19,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -36,6 +39,7 @@ import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.talend.commons.exception.LoginException;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.runtime.model.emf.provider.EmfResourcesFactoryReader;
 import org.talend.commons.runtime.model.emf.provider.ResourceOption;
@@ -84,7 +88,9 @@ public class MigrationToolService implements IMigrationToolService {
 
     private static Logger log = Logger.getLogger(MigrationToolService.class);
 
-    private static final String RELATION_TASK = "org.talend.repository.model.migration.AutoUpdateRelationsMigrationTask"; //$NON-NLS-1$ 
+    private static final String PROPERTIES_REDO_ENCRYPTION_MIGRATION_TASKS = "talend.property.migration.redoEncryption"; //$NON-NLS-1$
+
+    private static final String RELATION_TASK = "org.talend.repository.model.migration.AutoUpdateRelationsMigrationTask"; //$NON-NLS-1$
 
     private List<IProjectMigrationTask> doneThisSession;
 
@@ -196,17 +202,29 @@ public class MigrationToolService implements IMigrationToolService {
 
     private void delateExecuteMigrationTasksForLogon(final Project project, final boolean beforeLogon,
             final IProgressMonitor monitorWrap) {
-        String taskDesc = "Migration tool: project [" + project.getLabel() + "] tasks"; //$NON-NLS-1$ //$NON-NLS-2$
+        String logonDesc = null;
+        if (beforeLogon) {
+            logonDesc = "before logon"; //$NON-NLS-1$
+        } else {
+            logonDesc = "after logon"; //$NON-NLS-1$
+        }
+        String taskDesc = "Migration tool: " + logonDesc + " project [" + project.getLabel() + "] tasks"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         log.trace(taskDesc);
 
+        IRepositoryService service = (IRepositoryService) GlobalServiceRegister.getDefault().getService(IRepositoryService.class);
+        final IProxyRepositoryFactory repFactory = service.getProxyRepositoryFactory();
+        final IWorkspace workspace = ResourcesPlugin.getWorkspace();
+        final IProject fsProject = workspace.getRoot().getProject(project.getTechnicalLabel());
+
         final List<IProjectMigrationTask> toExecute = GetTasksHelper.getProjectTasks(beforeLogon);
-        final List<MigrationTask> done = new ArrayList<MigrationTask>(project.getEmfProject().getMigrationTask());
+        List<MigrationTask> storedMigrations = project.getEmfProject().getMigrationTask();
 
         if (beforeLogon) {
-            setMigrationOnNewProject(done.isEmpty());
+            checkMigrationList(monitorWrap, repFactory, project, fsProject, toExecute, storedMigrations);
         }
         sortMigrationTasks(toExecute);
 
+        final List<MigrationTask> done = new ArrayList<MigrationTask>(storedMigrations);
         int nbMigrationsToDo = 0;
         for (IProjectMigrationTask task : toExecute) {
             MigrationTask mgTask = MigrationUtil.findMigrationTask(done, task);
@@ -243,8 +261,6 @@ public class MigrationToolService implements IMigrationToolService {
         MigrationUtil.removeMigrationTaskById(done, "org.talend.repository.model.migration.FixProjectResourceLink");
 
         boolean haveAnyBinFolder = false; // to avoid some problems of migration, sometimes
-        IWorkspace workspace = ResourcesPlugin.getWorkspace();
-        IProject fsProject = workspace.getRoot().getProject(project.getTechnicalLabel());
         for (ERepositoryObjectType type : (ERepositoryObjectType[]) ERepositoryObjectType.values()) {
             if (!type.hasFolder()) {
                 continue;
@@ -264,8 +280,6 @@ public class MigrationToolService implements IMigrationToolService {
         }
 
         final SubProgressMonitor subProgressMonitor = new SubProgressMonitor(monitorWrap, toExecute.size());
-        IRepositoryService service = (IRepositoryService) GlobalServiceRegister.getDefault().getService(IRepositoryService.class);
-        final IProxyRepositoryFactory repFactory = service.getProxyRepositoryFactory();
 
         RepositoryWorkUnit repositoryWorkUnit = new RepositoryWorkUnit(project, taskDesc) {
 
@@ -504,6 +518,120 @@ public class MigrationToolService implements IMigrationToolService {
             setMigrationOnNewProject(false);
         }
         // repositoryWorkUnit.throwPersistenceExceptionIfAny();
+    }
+
+    private void checkMigrationList(final IProgressMonitor monitorWrap, final IProxyRepositoryFactory repFactory,
+            final Project project, final IProject fsProject, final List<IProjectMigrationTask> toExecute,
+            List<MigrationTask> storedMigrations) {
+        boolean isProcessFolderExist = false;
+        boolean isMetadataFolderExist = false;
+
+        String processFolderName = ERepositoryObjectType.getFolderName(ERepositoryObjectType.PROCESS);
+        if (StringUtils.isNotBlank(processFolderName)) {
+            IFolder processFolder = fsProject.getFolder(processFolderName);
+            if (processFolder != null) {
+                isProcessFolderExist = processFolder.exists();
+            }
+        }
+        String metadataFolderName = ERepositoryObjectType.getFolderName(ERepositoryObjectType.METADATA);
+        if (StringUtils.isNotBlank(metadataFolderName)) {
+            IFolder metadataFolder = fsProject.getFolder(metadataFolderName);
+            if (metadataFolder != null) {
+                isMetadataFolderExist = metadataFolder.exists();
+            }
+        }
+
+        boolean isEmptyProject = (!isProcessFolderExist && !isMetadataFolderExist);
+        setMigrationOnNewProject(isEmptyProject);
+
+        boolean needSave = false;
+
+        if (storedMigrations.isEmpty() && !isEmptyProject) {
+            List<IProjectMigrationTask> allMigrations = new LinkedList<IProjectMigrationTask>();
+            if (toExecute != null) {
+                allMigrations.addAll(toExecute);
+            }
+            List<IProjectMigrationTask> afterLogonMigrations = GetTasksHelper.getProjectTasks(false);
+            if (afterLogonMigrations != null) {
+                allMigrations.addAll(afterLogonMigrations);
+            }
+            sortMigrationTasks(allMigrations);
+            for (IProjectMigrationTask task : allMigrations) {
+                if (RELATION_TASK.equals(task.getId())) {
+                    continue;
+                }
+                task.setStatus(ExecutionResult.NOTHING_TO_DO);
+                storedMigrations.add(MigrationUtil.convertMigrationTask(task));
+            }
+            needSave = true;
+        }
+
+        if (!isEmptyProject && Boolean.valueOf(System.getProperty(PROPERTIES_REDO_ENCRYPTION_MIGRATION_TASKS))) {
+            List<String> encryptionTasks = Arrays.asList(new String[] {
+                    "org.talend.camel.designer.migration.UnifyPasswordEncryption4ParametersInRouteMigrationTask", //$NON-NLS-1$
+                    "org.talend.designer.joblet.repository.migration.UnifyPasswordEncryption4ParametersInJobletMigrationTask", //$NON-NLS-1$
+                    "org.talend.designer.mapreduce.repository.migration.UnifyPasswordEncryption4ParametersInMRJobMigrationTask", //$NON-NLS-1$
+                    "org.talend.repository.mdm.repository.migration.UnifyPasswordEncryption4MDMConnectionMigrationTask", //$NON-NLS-1$
+                    "org.talend.repository.model.migration.UnifyPasswordEncryption4ContextMigrationTask", //$NON-NLS-1$
+                    "org.talend.repository.model.migration.UnifyPasswordEncryption4DBConnectionMigrationTask", //$NON-NLS-1$
+                    "org.talend.repository.model.migration.UnifyPasswordEncryption4LdapConnectionMigrationTask", //$NON-NLS-1$
+                    "org.talend.repository.model.migration.UnifyPasswordEncryption4ParametersInJobMigrationTask", //$NON-NLS-1$
+                    "org.talend.repository.model.migration.UnifyPasswordEncryption4ProjectSettingsMigrationTask", //$NON-NLS-1$
+                    "org.talend.repository.model.migration.UnifyPasswordEncryption4SalesforceSchemaConnectionMigrationTask", //$NON-NLS-1$
+                    "org.talend.repository.model.migration.UnifyPasswordEncryption4WsdlConnectionMigrationTask", //$NON-NLS-1$
+                    "org.talend.repository.nosql.repository.migration.UnifyPasswordEncryption4NoSQLConnectionMigrationTask", //$NON-NLS-1$
+                    "org.talend.repository.sap.repository.migration.UnifyPasswordEncryption4SapConnectionMigrationTask", //$NON-NLS-1$
+                    "org.talend.repository.storm.repository.migration.UnifyPasswordEncryption4ParametersInStormJobMigrationTask", //$NON-NLS-1$
+
+                    /**
+                     * These two migrations don't have the problem, re-execute anyway
+                     */
+                    "org.talend.repository.ftp.repository.migration.UnifyPasswordEncryption4FtpConnectionMigrationTask", //$NON-NLS-1$
+                    "org.talend.mdm.workbench.serverexplorer.migration.UnifyPasswordEncryption4MDMServerDefMigrationTask" //$NON-NLS-1$
+
+            });
+            Iterator<MigrationTask> iterator = storedMigrations.iterator();
+            while (iterator.hasNext()) {
+                MigrationTask migrationTask = iterator.next();
+                if (encryptionTasks.contains(migrationTask.getId())) {
+                    iterator.remove();
+                }
+            }
+            needSave = true;
+        }
+        if (needSave) {
+            RepositoryWorkUnit repositoryWorkUnit = new RepositoryWorkUnit(project,
+                    "Migration tool: update project [" + project.getLabel() + "] tasks due to lost or user specify") { //$NON-NLS-1$ //$NON-NLS-2$
+
+                @Override
+                protected void run() throws LoginException, PersistenceException {
+                    final IWorkspaceRunnable op = new IWorkspaceRunnable() {
+
+                        @Override
+                        public void run(IProgressMonitor monitor) throws CoreException {
+                            try {
+                                repFactory.saveProject(project);
+                            } catch (PersistenceException e) {
+                                ExceptionHandler.process(e);
+                            }
+                        }
+
+                    };
+                    try {
+                        IWorkspace workspace1 = ResourcesPlugin.getWorkspace();
+                        ISchedulingRule schedulingRule = workspace1.getRoot();
+                        // the update the project files need to be done in the workspace runnable to
+                        // avoid all notification of changes before the end of the modifications.
+                        workspace1.run(op, schedulingRule, IWorkspace.AVOID_UPDATE, monitorWrap);
+                    } catch (CoreException e) {
+                        throw new PersistenceException(e);
+                    }
+                }
+
+            };
+            repositoryWorkUnit.setAvoidUnloadResources(true);
+            repFactory.executeRepositoryWorkUnit(repositoryWorkUnit);
+        }
     }
 
     private void appendToLogFile(Project sourceProject, String logTxt) {

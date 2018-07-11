@@ -25,6 +25,7 @@ import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.WSDLSchemaConnectionItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
+import org.talend.cwm.helper.ConnectionHelper;
 
 /**
  * created by ggu on Aug 29, 2014 Detailled comment
@@ -55,8 +56,9 @@ public class UnifyPasswordEncryption4WsdlConnectionMigrationTask extends Abstrac
                 try {
                     if (!wsdlConn.isContextMode()) {
                         // before this migration ,the password is raw, didn't encrypt.
-                        wsdlConn.setPassword(wsdlConn.getValue(wsdlConn.getPassword(), true));
-                        wsdlConn.setProxyPassword(wsdlConn.getValue(wsdlConn.getProxyPassword(), true));
+                        wsdlConn.setPassword(wsdlConn.getValue(ConnectionHelper.getCleanPassword(wsdlConn.getPassword()), true));
+                        wsdlConn.setProxyPassword(
+                                wsdlConn.getValue(ConnectionHelper.getCleanPassword(wsdlConn.getProxyPassword()), true));
                         factory.save(item, true);
                         return ExecutionResult.SUCCESS_NO_ALERT;
                     }
