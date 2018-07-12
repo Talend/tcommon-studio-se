@@ -44,6 +44,7 @@ import org.eclipse.ui.PlatformUI;
 import org.talend.commons.ui.runtime.image.ECoreImage;
 import org.talend.commons.ui.runtime.image.EImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
+import org.talend.commons.utils.platform.PluginChecker;
 import org.talend.commons.utils.threading.ExecutionLimiter;
 import org.talend.core.language.ECodeLanguage;
 import org.talend.core.language.LanguageManager;
@@ -233,7 +234,8 @@ public class ContextNebulaGridComposite extends AbstractContextTabEditComposite 
             buttonList.add(moveDownButton);
         }
 
-        if ((modelManager instanceof ContextComposite) && !((ContextComposite) modelManager).isRepositoryContext()) {
+        if ((modelManager instanceof ContextComposite) && !((ContextComposite) modelManager).isRepositoryContext()
+                && !PluginChecker.isOnlyTopLoaded()) {
             selectContextVariablesButton = createSelectContextVariablesPushButton(buttonsComp);
             buttonList.add(selectContextVariablesButton);
         }
