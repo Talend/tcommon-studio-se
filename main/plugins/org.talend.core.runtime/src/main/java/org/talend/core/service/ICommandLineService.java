@@ -26,7 +26,7 @@ public interface ICommandLineService extends IService{
 
     public void populateAudit(String url, String driver, String user, String password);
 
-    public boolean generateAuditReport(String path);
+    public Map<String, String> generateAuditReport(String path);
 
     public boolean generateAuditReport(String path, String template);
 
