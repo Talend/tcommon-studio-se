@@ -277,6 +277,11 @@ public class RunStat implements Runnable {
                     if (sb.getState() != RunStat.RUNNING) {
                         str += "|" + ((sb.getState() == RunStat.BEGIN) ? "start" : "stop"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                     }
+                    
+                    if(sb.getState() == RunStat.END) {
+                        //remove the stat object when end to avoid memory cost
+                        processStats.remove(curKey);
+                    }
                 }
             } else {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss.SSSZ");
