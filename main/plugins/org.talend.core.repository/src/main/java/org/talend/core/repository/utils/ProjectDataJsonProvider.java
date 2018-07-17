@@ -22,7 +22,7 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.emf.common.util.EList;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
@@ -81,13 +81,12 @@ public class ProjectDataJsonProvider {
         }
     }
 
-    public static void loadProjectData(Project project, IContainer sourceProject, int loadContent)
-            throws PersistenceException {
+    public static void loadProjectData(Project project, IPath projectFolderPath, int loadContent) throws PersistenceException {
         if ((loadContent & CONTENT_PROJECTSETTING) > 0) {
-            loadProjectSettings(project, sourceProject);
+            loadProjectSettings(project, projectFolderPath);
         }
         if ((loadContent & CONTENT_RELATIONSHIPS) > 0) {
-            loadRelationShips(project, sourceProject);
+            loadRelationShips(project, projectFolderPath);
         }
         if ((loadContent & CONTENT_RECYCLEBIN) > 0) {
             // Force reload from file
@@ -99,7 +98,75 @@ public class ProjectDataJsonProvider {
             }
         }
         if ((loadContent & CONTENT_MIGRATIONTASK) > 0) {
-            loadMigrationTaskSetting(project, sourceProject);
+            loadMigrationTaskSetting(project, projectFolderPath);
+        }
+    }
+
+    public static void loadProjectData(Project project, IContainer sourceProject, int loadContent) throws PersistenceException {
+        loadProjectData(project, sourceProject.getLocation(), loadContent);
+    }
+
+    private static void loadProjectSettings(Project project, IPath projectFolderPath) throws PersistenceException {
+        try {
+            File file = getLoadingConfigurationFile(projectFolderPath, FileConstants.PROJECTSETTING_FILE_NAME);
+            ProjectSettings projectSetting = null;
+            if (file != null && file.exists()) {
+                projectSetting = new ObjectMapper().readValue(file, ProjectSettings.class);
+            }
+            if (projectSetting != null) {
+                project.setImplicitContextSettings(getImplicitContextSettings(projectSetting.getImplicitContextSettingJson()));
+                project.setStatAndLogsSettings(getStatAndLogsSettings(projectSetting.getStatAndLogsSettingJson()));
+                loadTechnicalStatus(projectSetting.getTechnicalStatus(), project);
+                loadDocumentationStatus(projectSetting.getDocumentationStatus(), project);
+            }
+        } catch (Exception e) {
+            throw new PersistenceException(e);
+        }
+    }
+
+    private static void loadRelationShips(Project project, IPath projectFolderPath) throws PersistenceException {
+        TypeReference<List<ItemRelationsJson>> typeReference = new TypeReference<List<ItemRelationsJson>>() {
+            // no need to overwrite
+        };
+        try {
+            File file = getLoadingConfigurationFile(projectFolderPath, FileConstants.RELATIONSHIP_FILE_NAME);
+            List<ItemRelationsJson> itemRelationsJsons = null;
+            if (file != null && file.exists()) {
+                itemRelationsJsons = new ObjectMapper().readValue(file, typeReference);
+            }
+            if (itemRelationsJsons != null && itemRelationsJsons.size() > 0) {
+                for (ItemRelationsJson json : itemRelationsJsons) {
+                    project.getItemsRelations().add(json.toEmfObject());
+                }
+            }
+        } catch (Exception e) {
+            throw new PersistenceException(e);
+        }
+    }
+
+    private static void loadMigrationTaskSetting(Project project, IPath projectFolderPath) throws PersistenceException {
+        try {
+            File file = getLoadingConfigurationFile(projectFolderPath, FileConstants.MIGRATION_TASK_FILE_NAME);
+            MigrationTaskSetting migrationTaskSetting = null;
+            if (file != null && file.exists()) {
+                migrationTaskSetting = new ObjectMapper().readValue(file, MigrationTaskSetting.class);
+            }
+            if (migrationTaskSetting != null) {
+                project.getMigrationTask().clear();
+                project.getMigrationTasks().clear();
+                if (migrationTaskSetting.getMigrationTaskList() != null) {
+                    for (MigrationTaskJson json : migrationTaskSetting.getMigrationTaskList()) {
+                        project.getMigrationTask().add(json.toEmfObject());
+                    }
+                }
+                if (migrationTaskSetting.getMigrationTasksList() != null) {
+                    for (String oldTask : migrationTaskSetting.getMigrationTasksList()) {
+                        project.getMigrationTasks().add(oldTask);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            throw new PersistenceException(e);
         }
     }
 
@@ -121,24 +188,6 @@ public class ProjectDataJsonProvider {
         }
     }
 
-    private static void loadProjectSettings(Project project, IContainer projectContainer) throws PersistenceException {
-        try {
-            File file = getLoadingConfigurationFile(projectContainer, FileConstants.PROJECTSETTING_FILE_NAME);
-            ProjectSettings projectSetting = null;
-            if (file != null && file.exists()) {
-                projectSetting = new ObjectMapper().readValue(file, ProjectSettings.class);
-            }
-            if (projectSetting != null) {
-                project.setImplicitContextSettings(getImplicitContextSettings(projectSetting.getImplicitContextSettingJson()));
-                project.setStatAndLogsSettings(getStatAndLogsSettings(projectSetting.getStatAndLogsSettingJson()));
-                loadTechnicalStatus(projectSetting.getTechnicalStatus(), project);
-                loadDocumentationStatus(projectSetting.getDocumentationStatus(), project);
-            }
-        } catch (Exception e) {
-            throw new PersistenceException(e);
-        }
-    }
-
     private static void saveRelationShips(Project project) throws PersistenceException {
         File file = getSavingConfigurationFile(project.getTechnicalLabel(), FileConstants.RELATIONSHIP_FILE_NAME);
         try {
@@ -147,52 +196,6 @@ public class ProjectDataJsonProvider {
             }
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, project.getItemsRelations());
-        } catch (Exception e) {
-            throw new PersistenceException(e);
-        }
-    }
-
-    private static void loadRelationShips(Project project, IContainer projectContainer) throws PersistenceException {
-        TypeReference<List<ItemRelationsJson>> typeReference = new TypeReference<List<ItemRelationsJson>>() {
-            // no need to overwrite
-        };
-        try {
-            File file = getLoadingConfigurationFile(projectContainer, FileConstants.RELATIONSHIP_FILE_NAME);
-            List<ItemRelationsJson> itemRelationsJsons = null;
-            if (file != null && file.exists()) {
-                itemRelationsJsons = new ObjectMapper().readValue(file, typeReference);
-            }
-            if (itemRelationsJsons != null && itemRelationsJsons.size() > 0) {
-                for (ItemRelationsJson json : itemRelationsJsons) {
-                    project.getItemsRelations().add(json.toEmfObject());
-                }
-            }
-        } catch (Exception e) {
-            throw new PersistenceException(e);
-        }
-    }
-
-    private static void loadMigrationTaskSetting(Project project, IContainer projectContainer) throws PersistenceException {
-        try {
-            File file = getLoadingConfigurationFile(projectContainer, FileConstants.MIGRATION_TASK_FILE_NAME);
-            MigrationTaskSetting migrationTaskSetting = null;
-            if (file != null && file.exists()) {
-                migrationTaskSetting = new ObjectMapper().readValue(file, MigrationTaskSetting.class);
-            }
-            if (migrationTaskSetting != null) {
-                project.getMigrationTask().clear();
-                project.getMigrationTasks().clear();
-                if (migrationTaskSetting.getMigrationTaskList() != null) {
-                    for (MigrationTaskJson json : migrationTaskSetting.getMigrationTaskList()) {
-                        project.getMigrationTask().add(json.toEmfObject());
-                    }
-                }
-                if (migrationTaskSetting.getMigrationTasksList() != null) {
-                    for (String oldTask : migrationTaskSetting.getMigrationTasksList()) {
-                        project.getMigrationTasks().add(oldTask);
-                    }
-                }
-            }
         } catch (Exception e) {
             throw new PersistenceException(e);
         }
@@ -222,14 +225,12 @@ public class ProjectDataJsonProvider {
         return new File(file.getLocationURI());
     }
 
-    private static File getLoadingConfigurationFile(IContainer projectContainer, String fileName) throws PersistenceException {
-        if (projectContainer != null) {
-            IFolder folder = projectContainer.getFolder(new Path(FileConstants.SETTINGS_FOLDER_NAME));
-            if (folder != null) {
-                IFile file = folder.getFile(fileName);
-                if (file != null) {
-                    return new File(file.getLocationURI());
-                }
+    private static File getLoadingConfigurationFile(IPath projectPath, String fileName) throws PersistenceException {
+        if (projectPath != null) {
+            IPath settingFolderPath = projectPath.append(IPath.SEPARATOR + FileConstants.SETTINGS_FOLDER_NAME);
+            if (settingFolderPath.toFile().exists() && settingFolderPath.toFile().isDirectory()) {
+                IPath filePath = settingFolderPath.append(IPath.SEPARATOR + fileName);
+                return filePath.toFile();
             }
         }
         return null;

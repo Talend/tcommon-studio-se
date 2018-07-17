@@ -85,13 +85,13 @@ public class RecycleBinManager {
     }
 
     public void clearIndex(Project project) {
-        loadRecycleBin(project.getEmfProject());
+        loadRecycleBin(project.getEmfProject(), true);
         projectRecyclebins.get(project.getTechnicalLabel()).getDeletedItems().clear();
         saveRecycleBin(project.getEmfProject());
     }
 
     public List<IRepositoryViewObject> getDeletedObjects(Project project) {
-        loadRecycleBin(project.getEmfProject());
+        loadRecycleBin(project.getEmfProject(), true);
         List<IRepositoryViewObject> deletedObjects = new ArrayList<IRepositoryViewObject>();
         final EList<TalendItem> deletedItems = projectRecyclebins.get(project.getTechnicalLabel()).getDeletedItems();
         List<TalendItem> notDeletedItems = new ArrayList<TalendItem>();
@@ -138,7 +138,7 @@ public class RecycleBinManager {
     }
 
     public void addToRecycleBin(Project project, Item item, boolean skipAutoSave) {
-        loadRecycleBin(project.getEmfProject());
+        loadRecycleBin(project.getEmfProject(), true);
         boolean contains = false;
         for (TalendItem deletedItem : projectRecyclebins.get(project.getTechnicalLabel()).getDeletedItems()) {
             if (item.getProperty().getId().equals(deletedItem.getId())) {
@@ -163,7 +163,7 @@ public class RecycleBinManager {
     }
 
     public void removeFromRecycleBin(Project project, Item item, boolean skipAutoSave) {
-        loadRecycleBin(project.getEmfProject());
+        loadRecycleBin(project.getEmfProject(), true);
         TalendItem itemToDelete = null;
         for (TalendItem deletedItem : projectRecyclebins.get(project.getTechnicalLabel()).getDeletedItems()) {
             if (item.getProperty().getId().equals(deletedItem.getId())) {
@@ -184,11 +184,11 @@ public class RecycleBinManager {
     }
 
     public RecycleBin getRecycleBin(org.talend.core.model.properties.Project project) {
-        loadRecycleBin(project);
+        loadRecycleBin(project, true);
         return projectRecyclebins.get(project.getTechnicalLabel());
     }
 
-    private void loadRecycleBin(org.talend.core.model.properties.Project project) {
+    private void loadRecycleBin(org.talend.core.model.properties.Project project, boolean isSynchronizeToProject) {
         if (projectRecyclebins.get(project.getTechnicalLabel()) != null) {
             // already loaded, nothing to do. Don't do any force reload
             return;
@@ -209,11 +209,13 @@ public class RecycleBinManager {
             projectRecyclebins.put(project.getTechnicalLabel(), RecycleBinFactory.eINSTANCE.createRecycleBin());
         }
         // Synchronize delete folder to project
-        RecycleBin recycleBin = projectRecyclebins.get(project.getTechnicalLabel());
-        project.getDeletedFolders().clear();
-        for (String deletedFolder : recycleBin.getDeletedFolders()) {
-            project.getDeletedFolders().add(deletedFolder);
-        }    
+        if (isSynchronizeToProject) {
+            RecycleBin recycleBin = projectRecyclebins.get(project.getTechnicalLabel());
+            project.getDeletedFolders().clear();
+            for (String deletedFolder : recycleBin.getDeletedFolders()) {
+                project.getDeletedFolders().add(deletedFolder);
+            }  
+        } 
     }
 
     public RecycleBin loadRecycleBin(IPath recycleBinIndexPath) throws Exception {
@@ -232,7 +234,7 @@ public class RecycleBinManager {
 
     public void saveRecycleBin(org.talend.core.model.properties.Project project) {
         if (projectRecyclebins.get(project.getTechnicalLabel()) == null) {
-            loadRecycleBin(project);
+            loadRecycleBin(project, false);
         }
         try {
             Resource resource = getResource(project);

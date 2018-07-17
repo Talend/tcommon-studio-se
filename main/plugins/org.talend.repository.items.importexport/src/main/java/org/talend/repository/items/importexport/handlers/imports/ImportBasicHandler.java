@@ -14,6 +14,7 @@ package org.talend.repository.items.importexport.handlers.imports;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -87,6 +88,7 @@ import org.talend.core.model.repository.RepositoryViewObject;
 import org.talend.core.model.utils.MigrationUtil;
 import org.talend.core.repository.constants.FileConstants;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
+import org.talend.core.repository.utils.ProjectDataJsonProvider;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.services.IGenericDBService;
 import org.talend.core.runtime.services.IGenericWizardService;
@@ -607,12 +609,17 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
                 stream = manager.getStream(path, importItem);
                 Resource resource = createResource(importItem, path, false);
                 resource.load(stream, null);
+                Project project = (Project) EcoreUtil.getObjectByType(resource.getContents(), PropertiesPackage.eINSTANCE.getProject());
+                File parentFile = path.toFile().getParentFile();
+                if (parentFile.isDirectory()) {
+                     ProjectDataJsonProvider.loadProjectData(project, Path.fromPortableString(parentFile.getAbsolutePath()), ProjectDataJsonProvider.CONTENT_ALL);
+                }
                 // EmfHelper.loadResource(resource, stream, null);
                 pathWithProjects.put(path,
                         (Project) EcoreUtil.getObjectByType(resource.getContents(), PropertiesPackage.eINSTANCE.getProject()));
             }
             return pathWithProjects.get(path);
-        } catch (IOException e) {
+        } catch (IOException | PersistenceException e) {
             // ignore
             if (Platform.inDebugMode()) {
                 ExceptionHandler.process(e);
