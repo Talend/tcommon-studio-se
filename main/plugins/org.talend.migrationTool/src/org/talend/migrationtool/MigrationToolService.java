@@ -572,6 +572,11 @@ public class MigrationToolService implements IMigrationToolService {
                     "org.talend.designer.joblet.repository.migration.UnifyPasswordEncryption4ParametersInJobletMigrationTask", //$NON-NLS-1$
                     "org.talend.designer.mapreduce.repository.migration.UnifyPasswordEncryption4ParametersInMRJobMigrationTask", //$NON-NLS-1$
                     "org.talend.repository.mdm.repository.migration.UnifyPasswordEncryption4MDMConnectionMigrationTask", //$NON-NLS-1$
+                    "org.talend.repository.model.migration.EncryptDbPasswordforItemFileMigrationTask", //$NON-NLS-1$
+                    "org.talend.repository.model.migration.EncryptDbPasswordMigrationTask", //$NON-NLS-1$
+                    "org.talend.repository.model.migration.EncryptPasswordInComponentsMigrationTask", //$NON-NLS-1$
+                    "org.talend.repository.model.migration.EncryptPasswordInJobSettingsMigrationTask", //$NON-NLS-1$
+                    "org.talend.repository.model.migration.EncryptPasswordInProjectSettingsMigrationTask", //$NON-NLS-1$
                     "org.talend.repository.model.migration.UnifyPasswordEncryption4ContextMigrationTask", //$NON-NLS-1$
                     "org.talend.repository.model.migration.UnifyPasswordEncryption4DBConnectionMigrationTask", //$NON-NLS-1$
                     "org.talend.repository.model.migration.UnifyPasswordEncryption4LdapConnectionMigrationTask", //$NON-NLS-1$

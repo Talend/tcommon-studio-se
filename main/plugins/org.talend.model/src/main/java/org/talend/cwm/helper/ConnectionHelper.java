@@ -26,6 +26,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.commons.utils.PasswordEncryptUtil;
 import org.talend.commons.utils.VersionUtils;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
@@ -1090,21 +1091,59 @@ public class ConnectionHelper {
     }
 
     public static String getCleanPassword(String password) {
+        if (StringUtils.isBlank(password)) {
+            return password;
+        }
         String result = password;
         try {
             String tempValue = result;
             int i = 0;
             while (true) {
                 // normally there won't be dead loop, just in case it happens
-                if (10000000 < i) {
+                if (600 < i) {
                     ExceptionHandler.process(new Exception("Dead loop when executing migration!"), Priority.WARN); //$NON-NLS-1$
                     break;
                 }
 
+                boolean cleanFromNewWay = false;
                 String originalValue = tempValue;
-                tempValue = getDecryptPassword(originalValue);
-                if (StringUtils.isBlank(tempValue)) {
-                    result = originalValue;
+                try {
+                    tempValue = getDecryptPassword(originalValue);
+                    String encryptFromTempValue = getEncryptPassword(tempValue);
+                    if (!StringUtils.equals(originalValue, encryptFromTempValue)) {
+                        cleanFromNewWay = true;
+                    }
+                } catch (Exception e) {
+                    cleanFromNewWay = true;
+                } finally {
+                    if (cleanFromNewWay) {
+                        tempValue = originalValue;
+                    }
+                }
+
+                boolean cleanFromOldWay = false;
+                originalValue = tempValue;
+                try {
+                    tempValue = PasswordEncryptUtil.decryptPassword(originalValue);
+                    String encryptFromTempValue = PasswordEncryptUtil.encryptPassword(tempValue);
+                    // original password may end with "=Encrypt", eg:
+                    // UnifyPasswordEncryption4ProjectSettingsMigrationTask#reencryptValueIfNeeded
+                    if (!StringUtils.startsWith(originalValue, encryptFromTempValue)) {
+                        cleanFromOldWay = true;
+                    }
+                } catch (Exception e) {
+                    cleanFromOldWay = true;
+                } finally {
+                    if (cleanFromOldWay) {
+                        tempValue = originalValue;
+                    }
+                }
+
+                result = tempValue;
+                if (StringUtils.isBlank(result)) {
+                    break;
+                }
+                if (cleanFromNewWay && cleanFromOldWay) {
                     break;
                 }
                 ++i;
