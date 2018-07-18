@@ -66,6 +66,17 @@ public class RunStat implements Runnable {
         private long endTime = 0;
 
         private String exec = null;
+        
+        /**
+         * sometimes, we need to computer the connection execution time, so it need to 
+         * save both the connection start time and end time in one StatBean object, so after
+         * send "start" status StatBean, we need to keep it to set the end time when "end" status come, then do computer.
+         * 
+         * But for iterate connection case, no need connection execution time, so clear it from memory at once after send it, then avoid memory leak. 
+         * The field do for that.
+         * 
+         */
+        private boolean clearAfterSend;
 
         // feature:11356---1="Start Job" and 2="End job", default is -1
         private int jobStat = JOBDEFAULT;
@@ -143,6 +154,14 @@ public class RunStat implements Runnable {
 
         public String getItemId() {
             return itemId;
+        }
+        
+        public void setClearAfterSend(boolean clearAfterSend) {
+            this.clearAfterSend = clearAfterSend;
+        }
+        
+        public boolean isClearAfterSend() {
+            return clearAfterSend;
         }
 
     }
@@ -262,7 +281,7 @@ public class RunStat implements Runnable {
             StatBean sb = processStats.get(curKey);
             // it is connection
             int jobStat = sb.getJobStat();
-            if (jobStat == JOBDEFAULT) {
+            if (jobStat == JOBDEFAULT) {//it mean job is running here for connection status, not a good name
                 str = TYPE1_CONNECTION + "|" + rootPid + "|" + fatherPid + "|" + pid + "|" + sb.getConnectionId();
                 // str = sb.getConnectionId();
                 if (sb.getState() == RunStat.CLEAR) {
@@ -278,7 +297,7 @@ public class RunStat implements Runnable {
                         str += "|" + ((sb.getState() == RunStat.BEGIN) ? "start" : "stop"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                     }
                     
-                    if(sb.getState() == RunStat.END) {
+                    if(sb.isClearAfterSend()) {
                         //remove the stat object when end to avoid memory cost
                         processStats.remove(curKey);
                     }
@@ -373,8 +392,10 @@ public class RunStat implements Runnable {
         StatBean bean;
         String key = connectionId + "|" + mode;
 
+        boolean clearAfterSend = false;
         if (connectionId.startsWith("iterate")) {
             key = connectionId + "|" + mode + "|" + exec;
+            clearAfterSend = true;
         } else {
             if (connectionId.contains(".")) {
                 String firstKey = null;
@@ -408,6 +429,7 @@ public class RunStat implements Runnable {
         }
         bean.setState(mode);
         bean.setExec(exec);
+        bean.setClearAfterSend(clearAfterSend);
         processStats.put(key, bean);
 
         // Set a maximum interval for each update of 250ms.
@@ -446,6 +468,7 @@ public class RunStat implements Runnable {
         }
         bean.setState(mode);
         bean.setExec(exec);
+        bean.setClearAfterSend(true);
         processStats.put(key, bean);
 
         // Set a maximum interval for each update of 250ms.
