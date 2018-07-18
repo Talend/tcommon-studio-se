@@ -123,6 +123,8 @@ public class GetJarsToRegister {
             line = line.replace(libStringFinder, "../../../cache/lib/" + crc + "/" + jarName);
         } else if (line.toLowerCase().contains(libStringFinder2)) {
             line = line.toLowerCase().replace(libStringFinder2, "../../../cache/lib/" + crc + "/" + jarName);
+        } else if (line.toLowerCase().equals(jarName)) {
+            line = "../../../cache/lib/" + crc + "/" + jarName;
         } else if (line.contains(":$ROOT_PATH/" + jarName + ":")) {
             line = line.replace(":$ROOT_PATH/" + jarName + ":", ":$ROOT_PATH/../../../cache/lib/" + crc + "/" + jarName + ":");
         } else if (line.contains(";" + jarName + ";")) {
