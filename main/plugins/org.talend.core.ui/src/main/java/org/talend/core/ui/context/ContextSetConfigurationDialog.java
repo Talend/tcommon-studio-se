@@ -99,6 +99,7 @@ public class ContextSetConfigurationDialog extends ObjectSelectionDialog<IContex
         fTableViewer.refresh();
         ((CheckboxTableViewer) fTableViewer).addCheckStateListener(new ICheckStateListener() {
 
+            @Override
             public void checkStateChanged(CheckStateChangedEvent event) {
                 Object obj = event.getElement();
                 IContext defaultContext = manager.getContextManager().getDefaultContext();
@@ -148,6 +149,7 @@ public class ContextSetConfigurationDialog extends ObjectSelectionDialog<IContex
 
         IInputValidator validator = new IInputValidator() {
 
+            @Override
             public String isValid(String newText) {
                 return toValid(newText);
             }
@@ -215,6 +217,7 @@ public class ContextSetConfigurationDialog extends ObjectSelectionDialog<IContex
                 List<IContext> addGroupContext = jobContextManager.getAddGroupContext();
                 addGroupContext.add(newContext);
                 jobContextManager.setModified(true);
+                jobContextManager.setConfigContextGroup(true);
             }
         }
 
@@ -233,6 +236,7 @@ public class ContextSetConfigurationDialog extends ObjectSelectionDialog<IContex
          * 
          * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
          */
+        @Override
         public int compare(IContext o1, IContext o2) {
             String name1 = o1.getName().toUpperCase();
             String name2 = o2.getName().toUpperCase();
@@ -240,11 +244,13 @@ public class ContextSetConfigurationDialog extends ObjectSelectionDialog<IContex
         }
     }
 
+    @Override
     protected void removeSelectedContexts() {
         super.removeSelectedContexts();
         IContextManager contextManager = manager.getContextManager();
         JobContextManager jobContextManager = (JobContextManager) contextManager;
         jobContextManager.setModified(true);
+        jobContextManager.setConfigContextGroup(true);
         List<IContext> removeGroupContext = jobContextManager.getRemoveGroupContext();
         List dataList = getRemoveData();
         if (dataList == null) {
@@ -262,6 +268,7 @@ public class ContextSetConfigurationDialog extends ObjectSelectionDialog<IContex
 
         IInputValidator validator = new IInputValidator() {
 
+            @Override
             public String isValid(String newText) {
                 return toValid(newText);
             }
@@ -300,6 +307,7 @@ public class ContextSetConfigurationDialog extends ObjectSelectionDialog<IContex
             renameGroupContext.put(context, oldName);
         }
         jobContextManager.setModified(true);
+        jobContextManager.setConfigContextGroup(true);
     }
 
     /**

@@ -160,6 +160,8 @@ public abstract class RepositoryUpdateManager {
 
     private boolean checkAddContextGroup;
 
+    private boolean isConfigContextGroup;
+
     protected static boolean isAddColumn = false;
 
     static {
@@ -308,8 +310,10 @@ public abstract class RepositoryUpdateManager {
             } else if (parameter != null && !needForcePropagation()) {
                 // see feature 4786
                 IDesignerCoreService designerCoreService = CoreRuntimePlugin.getInstance().getDesignerCoreService();
-                boolean deactive = designerCoreService != null ? Boolean.parseBoolean(designerCoreService
-                        .getPreferenceStore(ITalendCorePrefConstants.DEACTIVE_REPOSITORY_UPDATE)) : true;
+                boolean deactive = designerCoreService != null
+                        ? Boolean.parseBoolean(
+                                designerCoreService.getPreferenceStore(ITalendCorePrefConstants.DEACTIVE_REPOSITORY_UPDATE))
+                        : true;
                 if (deactive) {
                     return false;
                 }
@@ -1043,8 +1047,8 @@ public abstract class RepositoryUpdateManager {
                 }
             }
             for (String updateType : UpdateRepositoryHelper.getAllHadoopConnectionTypes()) {
-                List<IRepositoryViewObject> hadoopConnList = factory.getAll(
-                        ERepositoryObjectType.valueOf(ERepositoryObjectType.class, updateType), true);
+                List<IRepositoryViewObject> hadoopConnList = factory
+                        .getAll(ERepositoryObjectType.valueOf(ERepositoryObjectType.class, updateType), true);
                 for (IRepositoryViewObject obj : hadoopConnList) {
                     Item item = obj.getProperty().getItem();
                     if (item instanceof ConnectionItem) {
@@ -1055,9 +1059,10 @@ public abstract class RepositoryUpdateManager {
                                 continue;
                             }
                             if (citem == contextItem) {
-                                if (GlobalServiceRegister.getDefault().isServiceRegistered(IRepositoryContextUpdateService.class)) {
-                                    IService service = GlobalServiceRegister.getDefault().getService(
-                                            IRepositoryContextUpdateService.class);
+                                if (GlobalServiceRegister.getDefault()
+                                        .isServiceRegistered(IRepositoryContextUpdateService.class)) {
+                                    IService service = GlobalServiceRegister.getDefault()
+                                            .getService(IRepositoryContextUpdateService.class);
                                     IRepositoryContextUpdateService repositoryContextUpdateService = (IRepositoryContextUpdateService) service;
                                     repositoryContextUpdateService.updateRelatedContextVariable(conn, oldValue, newValue);
                                 }
@@ -1190,6 +1195,7 @@ public abstract class RepositoryUpdateManager {
                     jobContextManager.setRepositoryRenamedMap(getContextRenamedMap());
                     jobContextManager.setNewParametersMap(getNewParametersMap());
                     Map<ContextItem, List<IContext>> repositoryAddGroupContext = getRepositoryAddGroupContext();
+                    jobContextManager.setConfigContextGroup(isConfigContextGroup);
 
                     if (checkAddContextGroup && repositoryAddGroupContext.isEmpty() && parameter instanceof ContextItem) {
                         List<IContext> addContextGroupList = new ArrayList<IContext>();
@@ -1234,8 +1240,8 @@ public abstract class RepositoryUpdateManager {
 
                             for (int j = 0; j < context.getContextParameterList().size(); j++) {
                                 IContextParameter param = context.getContextParameterList().get(j);
-                                IContextParameter contextParameter = jobContextManager.getDefaultContext().getContextParameter(
-                                        param.getName());
+                                IContextParameter contextParameter = jobContextManager.getDefaultContext()
+                                        .getContextParameter(param.getName());
                                 if (contextParameter != null && param.getName().equals(contextParameter.getName())
                                         && item.getProperty().getId().equals(contextParameter.getSource())) { // found
                                     IContextParameter clone = param.clone();
@@ -1387,8 +1393,8 @@ public abstract class RepositoryUpdateManager {
         }
         Item item = property.getItem();
         if (item != null && prefix.isEmpty() && GlobalServiceRegister.getDefault().isServiceRegistered(IMRProcessService.class)) {
-            IMRProcessService mrProcessService = (IMRProcessService) GlobalServiceRegister.getDefault().getService(
-                    IMRProcessService.class);
+            IMRProcessService mrProcessService = (IMRProcessService) GlobalServiceRegister.getDefault()
+                    .getService(IMRProcessService.class);
             if (mrProcessService.isMapReduceItem(item)) {
                 Object framework = BigDataBasicUtil.getFramework(item);
                 if (framework != null) {
@@ -1403,8 +1409,8 @@ public abstract class RepositoryUpdateManager {
         }
         if (item != null && prefix.isEmpty()
                 && GlobalServiceRegister.getDefault().isServiceRegistered(IStormProcessService.class)) {
-            IStormProcessService stormProcessService = (IStormProcessService) GlobalServiceRegister.getDefault().getService(
-                    IStormProcessService.class);
+            IStormProcessService stormProcessService = (IStormProcessService) GlobalServiceRegister.getDefault()
+                    .getService(IStormProcessService.class);
             if (stormProcessService.isStormItem(item)) {
                 Object framework = BigDataBasicUtil.getFramework(item);
                 if (framework != null) {
@@ -1538,8 +1544,8 @@ public abstract class RepositoryUpdateManager {
      */
     public static boolean updateFileConnection(ConnectionItem connection, List<IMetadataTable> oldMetadataTable) {
         if (oldMetadataTable != null) {
-            List<IMetadataTable> newMetadataTable = RepositoryUpdateManager.getConversionMetadataTables(connection
-                    .getConnection());
+            List<IMetadataTable> newMetadataTable = RepositoryUpdateManager
+                    .getConversionMetadataTables(connection.getConnection());
             isAddColumn = isAddColumn(newMetadataTable, oldMetadataTable);
         }
         return updateFileConnection(connection, true, false);
@@ -1785,8 +1791,8 @@ public abstract class RepositoryUpdateManager {
 
         if (!update) {
             if (oldMetadataTable != null) {
-                List<IMetadataTable> newMetadataTable = RepositoryUpdateManager.getConversionMetadataTables(
-                        connItem.getConnection(), bwTableType);
+                List<IMetadataTable> newMetadataTable = RepositoryUpdateManager
+                        .getConversionMetadataTables(connItem.getConnection(), bwTableType);
                 update = !RepositoryUpdateManager.sameAsMetadatTable(newMetadataTable, oldMetadataTable, oldTableMap);
                 isAddColumn = isAddColumn(newMetadataTable, oldMetadataTable);
             }
@@ -2272,6 +2278,7 @@ public abstract class RepositoryUpdateManager {
 
         };
         repositoryUpdateManager.checkAddContextGroup = detectAddContextGroup;
+        repositoryUpdateManager.isConfigContextGroup = repositoryContextManager.isConfigContextGroup();
         if (repositoryContextManager != null) {
             // add for bug 9119 context group
             Map<ContextItem, List<IContext>> repositoryContextGroupMap = new HashMap<ContextItem, List<IContext>>();
@@ -2390,8 +2397,8 @@ public abstract class RepositoryUpdateManager {
         tablesAll.addAll(functionUnit.getInputTables());
         for (org.talend.core.model.metadata.builder.connection.MetadataTable originalTable : tablesAll) {
             if (GlobalServiceRegister.getDefault().isServiceRegistered(IMetadataManagmentService.class)) {
-                IMetadataManagmentService service = (IMetadataManagmentService) GlobalServiceRegister.getDefault().getService(
-                        IMetadataManagmentService.class);
+                IMetadataManagmentService service = (IMetadataManagmentService) GlobalServiceRegister.getDefault()
+                        .getService(IMetadataManagmentService.class);
                 IMetadataTable conversionTable = service.convertMetadataTable(originalTable);
                 tables.add(conversionTable);
             }

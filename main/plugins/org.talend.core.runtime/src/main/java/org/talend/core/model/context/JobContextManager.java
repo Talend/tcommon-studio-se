@@ -85,6 +85,8 @@ public class JobContextManager implements IContextManager {
 
     private Map<IContext, String> renameGroupContext = new HashMap<IContext, String>();
 
+    private boolean isConfigContextGroup;
+
     // add this for remark
     private Map<ContextItem, List<IContext>> addContextGroupMap = new HashMap<ContextItem, List<IContext>>();
 
@@ -562,5 +564,13 @@ public class JobContextManager implements IContextManager {
             }
         }
         return false;
+    }
+
+    public boolean isConfigContextGroup() {
+        return isConfigContextGroup;
+    }
+
+    public void setConfigContextGroup(boolean isConfigContextGroup) {
+        this.isConfigContextGroup = isConfigContextGroup;
     }
 }
