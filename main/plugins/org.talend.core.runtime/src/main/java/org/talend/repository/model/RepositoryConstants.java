@@ -57,17 +57,19 @@ public class RepositoryConstants {
 
     public static final String ROUTINES_ITEM_PATTERN = "^[a-zA-Z\\_]+[a-zA-Z0-9\\_]*$"; //$NON-NLS-1$
 
-    //    public static final String SCHEMA_NAME_PATTERN = "^[a-zA-Z0-9\\_]*$";; //$NON-NLS-1$
+    // public static final String SCHEMA_NAME_PATTERN = "^[a-zA-Z0-9\\_]*$";; //$NON-NLS-1$
 
     public static final String COLUMN_NAME_PATTERN = "^[a-zA-Z_][a-zA-Z_0-9]*$"; //$NON-NLS-1$
 
-    //    public static final String REPOSITORY_SCHEMA_PATTERN = "^[a-zA-Z0-9\\_]+$"; //$NON-NLS-1$
+    // public static final String REPOSITORY_SCHEMA_PATTERN = "^[a-zA-Z0-9\\_]+$"; //$NON-NLS-1$
 
-    public static final String SIMPLE_FOLDER_PATTERN = "[a-zA-Z0-9\\_-]+$"; //$NON-NLS-1$ //this added for xml metadata folder
+    public static final String SIMPLE_FOLDER_PATTERN = "[a-zA-Z0-9\\_-]+$"; //$NON-NLS-1$ //this added for xml metadata
+                                                                            // folder
 
     public static final String FOLDER_PATTERN = "^[a-zA-Z]+[a-zA-Z0-9\\_]*$"; //$NON-NLS-1$
 
-    public static final String SVN_POMS_FILE_INCLUDE_PATTERN = "poms/.*(pom\\.xml|pom-bundle\\.xml|pom-feature\\.xml)"; //$NON-NLS-1$
+    public static final String SVN_POMS_FILE_INCLUDE_PATTERN =
+            "poms/.*(pom\\.xml|pom-bundle\\.xml|pom-feature\\.xml|pom-microservice\\.xml|pom-control-bundle\\.xml)"; //$NON-NLS-1$
 
     public static final String SVN_POMS_FOLDER_EXCLUDE_PATTERN = "poms/.*(/\\.settings|/src|/target|/tests)"; //$NON-NLS-1$
 
@@ -81,7 +83,8 @@ public class RepositoryConstants {
 
     public static final String PORT_ITEM_PATTERN = "^[0-9]"; //$NON-NLS-1$
 
-    public static final String MAIL_PATTERN = "(?:[a-zA-ZÀ-ÿ0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-ZÀ-ÿ0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-zA-ZÀ-ÿ0-9](?:[a-zA-ZÀ-ÿ0-9-]*[a-zA-ZÀ-ÿ0-9])?\\.)+[a-zA-ZÀ-ÿ0-9](?:[a-zA-ZÀ-ÿ0-9-]*[a-zA-ZÀ-ÿ0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-ZÀ-ÿ0-9-]*[a-zA-ZÀ-ÿ0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])"; //$NON-NLS-1$
+    public static final String MAIL_PATTERN =
+            "(?:[a-zA-ZÀ-ÿ0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-ZÀ-ÿ0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-zA-ZÀ-ÿ0-9](?:[a-zA-ZÀ-ÿ0-9-]*[a-zA-ZÀ-ÿ0-9])?\\.)+[a-zA-ZÀ-ÿ0-9](?:[a-zA-ZÀ-ÿ0-9-]*[a-zA-ZÀ-ÿ0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-ZÀ-ÿ0-9-]*[a-zA-ZÀ-ÿ0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])"; //$NON-NLS-1$
 
     public static final String NOT_SET_STATUS = "not_set_status"; //$NON-NLS-1$
 
@@ -106,35 +109,42 @@ public class RepositoryConstants {
 
     public static final String METADATA_NAME_PATTERN = ".*"; //$NON-NLS-1$
 
-    public static final String[] ITEM_FORBIDDEN_IN_LABEL = { "~", "!", "`", "#", "^", "&", "*", "\\", "/", "?", ":", ";", "\"", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$ //$NON-NLS-13$
-            ".", "(", ")", "，", "。", "'", "￥", "‘", "”", "、", "《", "，", "》", "<", ">", " " }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$ //$NON-NLS-13$ //$NON-NLS-14$ //$NON-NLS-15$ //$NON-NLS-16$
+    public static final String[] ITEM_FORBIDDEN_IN_LABEL =
+            { "~", "!", "`", "#", "^", "&", "*", "\\", "/", "?", ":", ";", "\"", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$ //$NON-NLS-13$
+                    ".", "(", ")", "，", "。", "'", "￥", "‘", "”", "、", "《", "，", "》", "<", ">", " " }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$ //$NON-NLS-13$ //$NON-NLS-14$ //$NON-NLS-15$ //$NON-NLS-16$
 
     public static String getPattern(ERepositoryObjectType type) {
         if (type == ERepositoryObjectType.FOLDER) {
             return FOLDER_PATTERN;
-        } else if (ERepositoryObjectType.getAllTypesOfProcess().contains(type) || type == ERepositoryObjectType.JOBLET || type == ERepositoryObjectType.JOB_SCRIPT) {
+        } else if (ERepositoryObjectType.getAllTypesOfProcess().contains(type) || type == ERepositoryObjectType.JOBLET
+                || type == ERepositoryObjectType.JOB_SCRIPT) {
             return CODE_ITEM_PATTERN;
         } else if (type == ERepositoryObjectType.ROUTINES || type == ERepositoryObjectType.PIG_UDF
                 || "BEANS".equals(type.getType())) {
             // for bug 10356
             return ROUTINES_ITEM_PATTERN;
         } else if (type == ERepositoryObjectType.TDQ_JRAXML_ELEMENT || type == ERepositoryObjectType.TDQ_DATA_PROFILING
-                || type == ERepositoryObjectType.TDQ_ANALYSIS_ELEMENT || type == ERepositoryObjectType.TDQ_REPORT_ELEMENT
-                || type == ERepositoryObjectType.TDQ_LIBRARIES || type == ERepositoryObjectType.TDQ_PATTERN_ELEMENT
-                || type == ERepositoryObjectType.TDQ_PATTERN_REGEX || type == ERepositoryObjectType.TDQ_PATTERN_SQL
+                || type == ERepositoryObjectType.TDQ_ANALYSIS_ELEMENT
+                || type == ERepositoryObjectType.TDQ_REPORT_ELEMENT || type == ERepositoryObjectType.TDQ_LIBRARIES
+                || type == ERepositoryObjectType.TDQ_PATTERN_ELEMENT || type == ERepositoryObjectType.TDQ_PATTERN_REGEX
+                || type == ERepositoryObjectType.TDQ_PATTERN_SQL
                 || type == ERepositoryObjectType.TDQ_SOURCE_FILE_ELEMENT || type == ERepositoryObjectType.TDQ_RULES
                 || type == ERepositoryObjectType.TDQ_RULES_SQL || type == ERepositoryObjectType.TDQ_INDICATOR_ELEMENT) {
             return TDQ_ALL_ITEM_PATTERN;
-        } else if (type == ERepositoryObjectType.METADATA_CONNECTIONS || type == ERepositoryObjectType.METADATA_FILE_DELIMITED
-                || type == ERepositoryObjectType.METADATA_FILE_POSITIONAL || type == ERepositoryObjectType.METADATA_FILE_REGEXP
-                || type == ERepositoryObjectType.METADATA_FILE_XML || type == ERepositoryObjectType.METADATA_FILE_EXCEL
-                || type == ERepositoryObjectType.METADATA_FILE_LDIF || type == ERepositoryObjectType.METADATA_LDAP_SCHEMA
+        } else if (type == ERepositoryObjectType.METADATA_CONNECTIONS
+                || type == ERepositoryObjectType.METADATA_FILE_DELIMITED
+                || type == ERepositoryObjectType.METADATA_FILE_POSITIONAL
+                || type == ERepositoryObjectType.METADATA_FILE_REGEXP || type == ERepositoryObjectType.METADATA_FILE_XML
+                || type == ERepositoryObjectType.METADATA_FILE_EXCEL || type == ERepositoryObjectType.METADATA_FILE_LDIF
+                || type == ERepositoryObjectType.METADATA_LDAP_SCHEMA
                 || type == ERepositoryObjectType.METADATA_SALESFORCE_SCHEMA
-                || type == ERepositoryObjectType.METADATA_GENERIC_SCHEMA || type == ERepositoryObjectType.METADATA_MDMCONNECTION
+                || type == ERepositoryObjectType.METADATA_GENERIC_SCHEMA
+                || type == ERepositoryObjectType.METADATA_MDMCONNECTION
                 || type == ERepositoryObjectType.METADATA_FILE_HL7 || type == ERepositoryObjectType.METADATA_FILE_RULES
-                || type == ERepositoryObjectType.METADATA_FILE_EBCDIC || type == ERepositoryObjectType.METADATA_WSDL_SCHEMA
-                || type == ERepositoryObjectType.METADATA_VALIDATION_RULES || type == ERepositoryObjectType.METADATA_FILE_FTP
-                || type == ERepositoryObjectType.METADATA_EDIFACT) {
+                || type == ERepositoryObjectType.METADATA_FILE_EBCDIC
+                || type == ERepositoryObjectType.METADATA_WSDL_SCHEMA
+                || type == ERepositoryObjectType.METADATA_VALIDATION_RULES
+                || type == ERepositoryObjectType.METADATA_FILE_FTP || type == ERepositoryObjectType.METADATA_EDIFACT) {
             return METADATA_NAME_PATTERN;
         }
         // GLIU: add for TESB-3837
