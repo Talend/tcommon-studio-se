@@ -123,6 +123,8 @@ public interface IGenericWizardService extends IService {
      */
     public List<ComponentProperties> getAllComponentProperties(Connection connection, String tableLabel);
 
+    public List<ComponentProperties> getAllComponentProperties(Connection connection, String tableLabel, boolean withEvaluator);
+
     /**
      * Get the new repository type (the type from component framework) by the old repository type name.
      *

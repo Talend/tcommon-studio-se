@@ -75,8 +75,8 @@ public final class ContextParameterUtils {
     private static final String LINE = "_"; //$NON-NLS-1$
 
     private static final String EMPTY = ""; //$NON-NLS-1$
-    
-    private static final List<String> EMPTY_LIST = new ArrayList<String>(); 
+
+    private static final List<String> EMPTY_LIST = new ArrayList<String>();
 
     private static final String NON_CONTEXT_PATTERN = "[^a-zA-Z0-9_]"; //$NON-NLS-1$
 
@@ -201,72 +201,74 @@ public final class ContextParameterUtils {
 
         }
     }
-    
+
     private static ScriptEngine engine = new ScriptEngineManager().getEngineByName("JavaScript");
-    
+
     public static String convertContext2Literal4AnyVar(final String code, final IContext context) {
-      if (code == null) {
-          return null;
-      }
-      
-      if (!containNewContext(code)) {
-          return code;
-      }
-      
-      Object result = code;
-      
-      if(engine == null) {
-        engine = new ScriptEngineManager().getEngineByName("JavaScript");
-      }
-      
-      if(engine == null) {
-        throw new RuntimeException("can't find the script engine");
-      }
-      
-      Bindings binding = engine.getBindings(ScriptContext.ENGINE_SCOPE);
-      if(binding!=null) {
-        binding.clear();
-        Map<String, Object> varMap = getVarMapForScriptEngine(context);
-        binding.put("context", varMap);
-      }
-      try {
-        String replacement = " ";
-        result = engine.eval(code.replace("\r\n", replacement).replace("\n", replacement).replace("\r", replacement));
-      } catch(Exception e) {
-        //ignore the exception
-      }
-      
-      return result.toString();
+        if (code == null) {
+            return null;
+        }
+
+        if (!containNewContext(code)) {
+            return code;
+        }
+
+        Object result = code;
+
+        if (engine == null) {
+            engine = new ScriptEngineManager().getEngineByName("JavaScript");
+        }
+
+        if (engine == null) {
+            throw new RuntimeException("can't find the script engine");
+        }
+
+        Bindings binding = engine.getBindings(ScriptContext.ENGINE_SCOPE);
+        if (binding != null) {
+            binding.clear();
+            Map<String, Object> varMap = getVarMapForScriptEngine(context);
+            binding.put("context", varMap);
+        }
+        try {
+            String replacement = " ";
+            result = engine.eval(code.replace("\r\n", replacement).replace("\n", replacement).replace("\r", replacement));
+        } catch (Exception e) {
+            // ignore the exception
+        }
+
+        return result == null ? null : result.toString();
     }
-    
+
     private static Map<String, Object> getVarMapForScriptEngine(final IContext context) {
-      Map<String, Object> result = new HashMap<>();
-      
-      //TODO process the link case like : context.var1 = context.var2, context.var2 = "value", then get context.var1 = "value"
-      //Why we don't do it now? In fact, it's simple, but i think it's not necessary, sometimes, we do lots of code for only 1/10000000000 usage
-      List<IContextParameter> parameterList = context.getContextParameterList();
-      if(parameterList == null) {
+        Map<String, Object> result = new HashMap<>();
+
+        // TODO process the link case like : context.var1 = context.var2, context.var2 = "value", then get context.var1
+        // = "value"
+        // Why we don't do it now? In fact, it's simple, but i think it's not necessary, sometimes, we do lots of code
+        // for only 1/10000000000 usage
+        List<IContextParameter> parameterList = context.getContextParameterList();
+        if (parameterList == null) {
+            return result;
+        }
+
+        for (IContextParameter parameter : parameterList) {
+            result.put(parameter.getName(), parameter.getValue());
+        }
+
         return result;
-      }
-      
-      for(IContextParameter parameter : parameterList) {
-        result.put(parameter.getName(), parameter.getValue());
-      }
-      
-      return result;
     }
-    
+
     public static List parseScriptContextCodeList(Object storedValue, IContext context, boolean isDrivers) {
         if (storedValue == null) {
             return EMPTY_LIST;
         }
-        if(storedValue instanceof String){
-            List<String> values = Arrays.asList(((String)storedValue).split(";"));
+        if (storedValue instanceof String) {
+            List<String> values = Arrays.asList(((String) storedValue).split(";"));
             return getMVNValues(values);
         }
         String code = String.valueOf(storedValue);
         if (!isContainContextParam(code)) {
-            return (List)storedValue;
+            return (List) storedValue;
         } else {
             String paraName = ContextParameterUtils.getVariableFromCode(code);
             IContextParameter param = context.getContextParameter(paraName);
@@ -281,27 +283,26 @@ public final class ContextParameterUtils {
         }
         return EMPTY_LIST;
     }
-    
-    private static List<String> getMVNValues(List<String> values){
+
+    private static List<String> getMVNValues(List<String> values) {
         List<String> mvnValues = new ArrayList<>();
         IGenericDBService dbService = null;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
-            dbService = (IGenericDBService) GlobalServiceRegister.getDefault().getService(
-                    IGenericDBService.class);
+            dbService = (IGenericDBService) GlobalServiceRegister.getDefault().getService(IGenericDBService.class);
         }
-        for(String value : values){
+        for (String value : values) {
             try {
                 new URL(value);
                 mvnValues.add(value);
             } catch (MalformedURLException e) {
-                if(dbService != null){
+                if (dbService != null) {
                     mvnValues.add(dbService.getMVNPath(value));
                 }
             }
         }
         return mvnValues;
     }
-    
+
     private static String getContextString(String code) {
         if (code != null) {
             if (containOldContext(code)) {
@@ -432,7 +433,6 @@ public final class ContextParameterUtils {
         return getVariableFromCode(nonQuoteStr) != null;
     }
 
-
     public static boolean containCodeVariable(String str, String varPrefix) {
         if (str == null) {
             return false;
@@ -518,7 +518,7 @@ public final class ContextParameterUtils {
                 }
                 if (param != null) {
                     String value2 = param.getRawValue();
-                    
+
                     if (value2 != null) {
                         // return TalendTextUtils.removeQuotes(value2); //some value can't be removed for quote
                         return value2;
@@ -529,7 +529,7 @@ public final class ContextParameterUtils {
         }
         return value;
     }
-    
+
     public static List<String> getOriginalList(ContextType contextType, final String value) {
         if (value == null) {
             return EMPTY_LIST;
@@ -546,9 +546,9 @@ public final class ContextParameterUtils {
                 }
                 if (param != null) {
                     String value2 = param.getRawValue();
-                    
+
                     if (value2 != null) {
-                        if(JavaTypesManager.STRING.getId().equals(param.getType())){
+                        if (JavaTypesManager.STRING.getId().equals(param.getType())) {
                             List<String> values = Arrays.asList(value2.split(";"));
                             return values;
                         }
@@ -637,29 +637,27 @@ public final class ContextParameterUtils {
         }
         return newName;
     }
-    
+
     /**
-     * Checks whether incoming Parameter {@code value} is dynamic.
-     * ElementParameter (aka Component property) accepts simple Java expression as its value.
-     * This expression may be "static", when it is Java literal like 10 or "abc". Also it may be "dynamic". E.g. "const" + context.var.
-     * Javajet components remain user's input unchanged, thus it is required to add quotes, when user sets string literal value.
-     * TCOMP/TaCoKit components allow user to miss quotes, but this feature requires to check expression and to add quotes in case it is static.
+     * Checks whether incoming Parameter {@code value} is dynamic. ElementParameter (aka Component property) accepts
+     * simple Java expression as its value. This expression may be "static", when it is Java literal like 10 or "abc".
+     * Also it may be "dynamic". E.g. "const" + context.var. Javajet components remain user's input unchanged, thus it
+     * is required to add quotes, when user sets string literal value. TCOMP/TaCoKit components allow user to miss
+     * quotes, but this feature requires to check expression and to add quotes in case it is static.
      * 
-     * This implementation checks if {@code value} contains {@code context} or {@code globalMap} values.
-     * TODO dynamic values are not limited to context or globalMap. Following cases should be covered by this method too:
-     * 1. "const" + 10
-     * 2. routines method calls
-     * 3. connection name ("row1") usage in Parameter values
-     * Probably method should be moved to more appropriate class
+     * This implementation checks if {@code value} contains {@code context} or {@code globalMap} values. TODO dynamic
+     * values are not limited to context or globalMap. Following cases should be covered by this method too: 1. "const"
+     * + 10 2. routines method calls 3. connection name ("row1") usage in Parameter values Probably method should be
+     * moved to more appropriate class
      * 
      * @param value Parameter value to check
      * @return true if value is dynamic
      */
     public static boolean isDynamic(final String value) {
-    	if (value == null || value.isEmpty()) {
-    		return false;
-    	}
-    	return isContainContextParam(value) || containCodeVariable(value, "globalMap.");
+        if (value == null || value.isEmpty()) {
+            return false;
+        }
+        return isContainContextParam(value) || containCodeVariable(value, "globalMap.");
     }
 
 }
