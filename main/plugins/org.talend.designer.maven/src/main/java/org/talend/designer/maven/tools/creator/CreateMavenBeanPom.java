@@ -15,6 +15,7 @@ package org.talend.designer.maven.tools.creator;
 import java.util.Collections;
 import java.util.Set;
 
+import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
 import org.eclipse.core.resources.IFile;
 import org.talend.core.GlobalServiceRegister;
@@ -22,7 +23,10 @@ import org.talend.core.ILibraryManagerService;
 import org.talend.core.model.general.ILibrariesService;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.repository.ERepositoryObjectType;
+import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.template.MavenTemplateManager;
+import org.talend.designer.maven.utils.PomIdsHelper;
+import org.talend.designer.maven.utils.PomUtil;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -56,4 +60,17 @@ public class CreateMavenBeanPom extends AbstractMavenCodesTemplatePom {
 
         return Collections.emptySet();
     }
+
+    @Override
+    protected void addDependencies(Model model) {
+        String projectTechName = getProjectName();
+        String codeVersion = PomIdsHelper.getCodesVersion(projectTechName);
+        String routinesGroupId = PomIdsHelper.getCodesGroupId(projectTechName, TalendMavenConstants.DEFAULT_CODE);
+        String routinesArtifactId = TalendMavenConstants.DEFAULT_ROUTINES_ARTIFACT_ID;
+        Dependency routinesDependency = PomUtil.createDependency(routinesGroupId, routinesArtifactId, codeVersion, null);
+        model.getDependencies().add(routinesDependency);
+
+        super.addDependencies(model);
+    }
+
 }
