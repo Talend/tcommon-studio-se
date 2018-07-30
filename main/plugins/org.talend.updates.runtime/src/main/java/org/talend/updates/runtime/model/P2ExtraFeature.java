@@ -17,20 +17,19 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.SubMonitor;
-import org.eclipse.core.runtime.URIUtil;
 import org.eclipse.equinox.p2.core.IProvisioningAgent;
 import org.eclipse.equinox.p2.core.IProvisioningAgentProvider;
 import org.eclipse.equinox.p2.core.ProvisionException;
@@ -59,6 +58,11 @@ import org.osgi.framework.ServiceReference;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.VersionUtils;
 import org.talend.updates.runtime.i18n.Messages;
+import org.talend.updates.runtime.service.ITaCoKitUpdateService;
+import org.talend.updates.runtime.service.ITaCoKitUpdateService.ICarInstallationResult;
+import org.talend.updates.runtime.utils.PathUtils;
+import org.talend.updates.runtime.utils.TaCoKitCarUtils;
+import org.talend.utils.files.FileUtils;
 import org.talend.utils.io.FilesUtils;
 import org.talend.utils.json.JSONException;
 import org.talend.utils.json.JSONObject;
@@ -89,6 +93,8 @@ public class P2ExtraFeature implements ExtraFeature {
     protected boolean useLegacyP2Install;
 
     protected FeatureCategory parentCategory;
+
+    protected boolean needRestart = true;
 
     protected P2ExtraFeature() {
         // do nothing be authorise subclasses to have a constructor
@@ -251,35 +257,57 @@ public class P2ExtraFeature implements ExtraFeature {
     public IStatus install(IProgressMonitor progress, List<URI> allRepoUris) throws P2ExtraFeatureException {
         IStatus doInstallStatus = null;
         File configIniBackupFile = null;
+        Map<File, File> unzippedPatches = null;
         try {
             if (!useLegacyP2Install) {
                 // backup the config.ini
                 configIniBackupFile = copyConfigFile(null);
             } // else legacy p2 install will update the config.ini
-            doInstallStatus = doInstall(progress, allRepoUris);
+            doInstallStatus = installP2(progress, allRepoUris);
+            if (doInstallStatus == null || !doInstallStatus.isOK()) {
+                return doInstallStatus;
+            }
+            unzippedPatches = unzipPatches(progress, allRepoUris);
+            storeInstalledFeatureMessage();
         } catch (IOException e) {
             throw new P2ExtraFeatureException(new ProvisionException(Messages.createErrorStatus(e,
                     "ExtraFeaturesFactory.restore.config.error"))); //$NON-NLS-1$
         } finally {
-            if (doInstallStatus != null && doInstallStatus.isOK()) {
-                afterInstall();
-                storeInstalledFeatureMessage();
+            try {
+                afterInstallP2(progress, unzippedPatches);
+            } catch (Exception e) {
+                ExceptionHandler.process(e);
             }
             // restore the config.ini
             if (configIniBackupFile != null) { // must existed backup file.
                 try {
                     copyConfigFile(configIniBackupFile);
                 } catch (IOException e) {
-                    throw new P2ExtraFeatureException(new ProvisionException(Messages.createErrorStatus(e,
-                            "ExtraFeaturesFactory.back.config.error"))); //$NON-NLS-1$
+                    throw new P2ExtraFeatureException(
+                            new ProvisionException(Messages.createErrorStatus(e, "ExtraFeaturesFactory.back.config.error"))); //$NON-NLS-1$
+                }
+            }
+            try {
+                afterRestoreConfigFile(progress, unzippedPatches);
+            } catch (Exception e) {
+                ExceptionHandler.process(e);
+            }
+            if (unzippedPatches != null && !unzippedPatches.isEmpty()) {
+                for (Map.Entry<File, File> patchEntry : unzippedPatches.entrySet()) {
+                    FilesUtils.deleteFolder(patchEntry.getValue(), true);
                 }
             }
         }
         return doInstallStatus;
     }
 
-    protected void afterInstall() {
+    protected void afterInstallP2(IProgressMonitor progress, Map<File, File> unzippedPatchMap) throws P2ExtraFeatureException {
 
+    }
+
+    protected void afterRestoreConfigFile(IProgressMonitor progress, Map<File, File> unzippedPatchMap)
+            throws P2ExtraFeatureException {
+        installCars(progress, unzippedPatchMap);
     }
 
     protected void storeInstalledFeatureMessage() {
@@ -300,7 +328,7 @@ public class P2ExtraFeature implements ExtraFeature {
         }
     }
 
-    protected IStatus doInstall(IProgressMonitor progress, List<URI> allRepoUris) throws P2ExtraFeatureException {
+    protected IStatus installP2(IProgressMonitor progress, List<URI> allRepoUris) throws P2ExtraFeatureException {
         SubMonitor subMonitor = SubMonitor.convert(progress, 5);
         subMonitor.setTaskName(Messages.getString("ExtraFeature.installing.feature", getName())); //$NON-NLS-1$
         // reset isInstalled to make is compute the next time is it used
@@ -697,16 +725,16 @@ public class P2ExtraFeature implements ExtraFeature {
     protected File copyConfigFile(File toResore) throws IOException {
         File tempFile = null;
         try {
-            URL configLocation = new URL("platform:/config/config.ini"); //$NON-NLS-1$
-            URL fileUrl = FileLocator.toFileURL(configLocation);
-            File configurationFile = URIUtil.toFile(new URI(fileUrl.getProtocol(), fileUrl.getPath(), fileUrl.getQuery()));
+            File configurationFile = PathUtils.getStudioConfigFile();
             if (toResore != null) {
                 FilesUtils.copyFile(new FileInputStream(toResore), configurationFile);
             } else {
                 tempFile = File.createTempFile("config.ini", null); //$NON-NLS-1$
                 FilesUtils.copyFile(new FileInputStream(configurationFile), tempFile);
             }
-        } catch (URISyntaxException e) {
+        } catch (IOException e) {
+            throw e;
+        } catch (Exception e) {
             throw new IOException(e);
         }
         return tempFile;
@@ -714,7 +742,11 @@ public class P2ExtraFeature implements ExtraFeature {
 
     @Override
     public boolean needRestart() {
-        return true;
+        return needRestart;
+    }
+
+    public void setNeedRestart(boolean needRestart) {
+        this.needRestart = needRestart;
     }
 
     /**
@@ -761,8 +793,71 @@ public class P2ExtraFeature implements ExtraFeature {
         return extraFeature;
     }
 
+    @Override
     public boolean canBeInstalled(IProgressMonitor progress) throws P2ExtraFeatureException {
         return getInstalledFeature(progress) != null;
+    }
+
+    protected Map<File, File> unzipPatches(IProgressMonitor progress, List<URI> allRepoUris) throws P2ExtraFeatureException {
+        if (allRepoUris == null || allRepoUris.size() == 0) {
+            return Collections.EMPTY_MAP;
+        }
+        if (progress.isCanceled()) {
+            throw new OperationCanceledException();
+        }
+        Map<File, File> unzippedMap = new HashMap<>();
+        progress.beginTask(Messages.getString("P2ExtraFeature.progress.unzipPatch"), allRepoUris.size()); //$NON-NLS-1$
+        try {
+            for (URI uri : allRepoUris) {
+                File compFile = PathUtils.getCompFileFromP2RepURI(uri);
+                if (compFile != null && compFile.exists()) {
+                    // sync the component libraries
+                    File tempUpdateSiteFolder = getTempUpdateSiteFolder();
+                    FilesUtils.unzip(compFile.getAbsolutePath(), tempUpdateSiteFolder.getAbsolutePath());
+                    unzippedMap.put(compFile, tempUpdateSiteFolder);
+                    progress.worked(1);
+                }
+            }
+            return unzippedMap;
+        } catch (Exception e) {
+            throw new P2ExtraFeatureException(e);
+        }
+    }
+
+    protected void installCars(IProgressMonitor progress, Map<File, File> unzippedPatchMap) throws P2ExtraFeatureException {
+        if (unzippedPatchMap == null || unzippedPatchMap.isEmpty()) {
+            return;
+        }
+        if (progress.isCanceled()) {
+            throw new OperationCanceledException();
+        }
+        try {
+            for (Map.Entry<File, File> patchEntry : unzippedPatchMap.entrySet()) {
+                File patchFile = patchEntry.getKey();
+                File unzippedPatchFolder = patchEntry.getValue();
+                installCars(progress, patchFile, unzippedPatchFolder);
+            }
+        } catch (Exception e) {
+            throw new P2ExtraFeatureException(e);
+        }
+    }
+
+    protected void installCars(IProgressMonitor progress, File zipFile, File unzippedFolder) throws Exception {
+        try {
+            File carFolder = new File(unzippedFolder, ITaCoKitUpdateService.FOLDER_CAR); // car
+            ICarInstallationResult result = TaCoKitCarUtils.installCars(carFolder, progress);
+            if (result != null) {
+                if (result.needRestart()) {
+                    setNeedRestart(result.needRestart());
+                }
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+    }
+
+    protected File getTempUpdateSiteFolder() {
+        return FileUtils.createTmpFolder("p2updatesite", null); //$NON-NLS-1$
     }
 
 }

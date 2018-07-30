@@ -115,7 +115,9 @@ public class NewComponentsInstallFactory extends AbstractExtraUpdatesFactory {
                 throw new P2ExtraFeatureException(new ProvisionException("Install failure", e));
             } finally {
                 subMonitor.setWorkRemaining(10);
-                afterInstall();
+                if (getWorkFolder() != null) {
+                    FilesUtils.deleteFolder(getWorkFolder(), true);
+                }
             }
         }
 
@@ -200,13 +202,6 @@ public class NewComponentsInstallFactory extends AbstractExtraUpdatesFactory {
         @Override
         public boolean needRestart() {
             return needRestart;
-        }
-
-        @Override
-        protected void afterInstall() {
-            if (getWorkFolder() != null) {
-                FilesUtils.deleteFolder(getWorkFolder(), true);
-            }
         }
 
     }

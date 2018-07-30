@@ -20,6 +20,7 @@ import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -58,7 +59,6 @@ import org.talend.updates.runtime.nexus.component.ComponentIndexManager;
 import org.talend.updates.runtime.nexus.component.ComponentsDeploymentManager;
 import org.talend.updates.runtime.utils.OsgiBundleInstaller;
 import org.talend.updates.runtime.utils.PathUtils;
-import org.talend.utils.files.FileUtils;
 import org.talend.utils.io.FilesUtils;
 
 /**
@@ -79,10 +79,8 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature {
 
     private File tmpM2RepoFolder;
 
-    private boolean needRestart = false;
-
     public ComponentP2ExtraFeature() {
-        //
+        needRestart = false;
     }
 
     public ComponentP2ExtraFeature(ComponentIndexBean indexBean) {
@@ -107,6 +105,7 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature {
         this.mustBeInstalled = false;
     }
 
+    @Override
     public String getP2ProfileId() {
         if (Platform.inDevelopmentMode()) {
             return "profile"; ////$NON-NLS-1$
@@ -159,43 +158,7 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature {
     }
 
     @Override
-    public boolean needRestart() {
-        return needRestart;
-    }
-
-    @Override
-    public IStatus install(IProgressMonitor progress, List<URI> allRepoUris) throws P2ExtraFeatureException {
-        IStatus doInstallStatus = null;
-        File configIniBackupFile = null;
-        try {
-            if (!useLegacyP2Install) {
-                // backup the config.ini
-                configIniBackupFile = copyConfigFile(null);
-            } // else legacy p2 install will update the config.ini
-            doInstallStatus = doInstall(progress, allRepoUris);
-        } catch (IOException e) {
-            throw new P2ExtraFeatureException(new ProvisionException(Messages.createErrorStatus(e,
-                    "ExtraFeaturesFactory.restore.config.error"))); //$NON-NLS-1$
-        } finally {
-            if (doInstallStatus != null && doInstallStatus.isOK()) {
-                afterInstall(progress, allRepoUris);
-                storeInstalledFeatureMessage();
-            }
-            // restore the config.ini
-            if (configIniBackupFile != null) { // must existed backup file.
-                try {
-                    copyConfigFile(configIniBackupFile);
-                } catch (IOException e) {
-                    throw new P2ExtraFeatureException(new ProvisionException(Messages.createErrorStatus(e,
-                            "ExtraFeaturesFactory.back.config.error"))); //$NON-NLS-1$
-                }
-            }
-        }
-        return doInstallStatus;
-    }
-
-    @Override
-    protected IStatus doInstall(IProgressMonitor progress, List<URI> allRepoUris) throws P2ExtraFeatureException {
+    protected IStatus installP2(IProgressMonitor progress, List<URI> allRepoUris) throws P2ExtraFeatureException {
         SubMonitor subMonitor = SubMonitor.convert(progress, 5);
         subMonitor.setTaskName(Messages.getString("ComponentP2ExtraFeature.installing.components", getName())); //$NON-NLS-1$
         // reset isInstalled to make is compute the next time is it used
@@ -284,51 +247,38 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature {
         return Messages.createOkStatus("sucessfull.install.of.components", getP2IuId(), getVersion()); //$NON-NLS-1$
     }
 
-    protected void afterInstall(IProgressMonitor progress, List<URI> allRepoUris) throws P2ExtraFeatureException {
-        if (allRepoUris == null || allRepoUris.size() == 0) {
-            return;
-        }
-        if (progress.isCanceled()) {
-            throw new OperationCanceledException();
-        }
-        try {
-            for (URI uri : allRepoUris) {
-                File compFile = PathUtils.getCompFileFromP2RepURI(uri);
-                if (compFile != null && compFile.exists()) {
-                    // sync the component libraries
-                    File tempUpdateSiteFolder = getTempUpdateSiteFolder();
-                    try {
-                        FilesUtils.unzip(compFile.getAbsolutePath(), tempUpdateSiteFolder.getAbsolutePath());
-                        progress.worked(1);
-
-                        syncLibraries(tempUpdateSiteFolder);
-                        progress.worked(1);
-
-                        syncM2Repository(tempUpdateSiteFolder);
-                        progress.worked(1);
-
-                        installAndStartComponent(tempUpdateSiteFolder);
-                        progress.worked(1);
-                    } finally {
-                        if (tempUpdateSiteFolder.exists()) {
-                            FilesUtils.deleteFolder(tempUpdateSiteFolder, true);
-                        }
-                    }
-                    // move to installed folder
-                    syncComponentsToInstalledFolder(progress, compFile);
-                }
-            }
-        } catch (Exception e) {
-            throw new P2ExtraFeatureException(e);
-        }
-    }
-
     @Override
     public URI getP2RepositoryURI() {
         if (this.repositoryURI != null) {
             return this.repositoryURI;
         }
         return super.getP2RepositoryURI();
+    }
+
+    @Override
+    protected void afterInstallP2(IProgressMonitor progress, Map<File, File> unzippedPatchMap) throws P2ExtraFeatureException {
+        super.afterInstallP2(progress, unzippedPatchMap);
+        for (Map.Entry<File, File> patchEntry : unzippedPatchMap.entrySet()) {
+            try {
+                syncOtherContent(progress, patchEntry.getKey(), patchEntry.getValue());
+            } catch (Exception e) {
+                throw new P2ExtraFeatureException(e);
+            }
+        }
+    }
+
+    protected void syncOtherContent(IProgressMonitor progress, File zipFile, File unzippedFolder) throws Exception {
+        syncLibraries(unzippedFolder);
+        progress.worked(1);
+
+        syncM2Repository(unzippedFolder);
+        progress.worked(1);
+
+        installAndStartComponent(unzippedFolder);
+        progress.worked(1);
+
+        // move to installed folder
+        syncComponentsToInstalledFolder(progress, zipFile);
     }
 
     protected void syncLibraries(File updatesiteFolder) throws IOException {
@@ -433,10 +383,6 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature {
             // don't block other, so catch the exception
             ExceptionHandler.process(e);
         }
-    }
-
-    protected File getTempUpdateSiteFolder() {
-        return FileUtils.createTmpFolder("p2updatesite", null); //$NON-NLS-1$
     }
 
 }

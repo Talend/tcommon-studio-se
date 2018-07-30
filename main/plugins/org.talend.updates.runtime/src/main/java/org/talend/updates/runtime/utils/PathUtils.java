@@ -13,13 +13,19 @@
 package org.talend.updates.runtime.utils;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.URIUtil;
 import org.talend.commons.runtime.service.ComponentsInstallComponent;
 import org.talend.commons.runtime.service.PatchComponent;
 import org.talend.commons.utils.resource.FileExtensions;
@@ -45,6 +51,22 @@ public class PathUtils {
     public static final String FOLDER_M2_REPOSITORY = ComponentsInstallComponent.FOLDER_M2_REPOSITORY;
 
     private static final String P2_REP_FILE_URI_PATTERN = "^jar:(.+)!\\/$"; //$NON-NLS-1$
+
+    public static File getStudioConfigFile() throws Exception {
+        URL configLocation = new URL("platform:/config/config.ini"); //$NON-NLS-1$
+        URL fileUrl = FileLocator.toFileURL(configLocation);
+        return URIUtil.toFile(new URI(fileUrl.getProtocol(), fileUrl.getPath(), fileUrl.getQuery()));
+    }
+
+    public static Properties readProperties(final File config) {
+        final Properties configuration = new Properties();
+        try (final InputStream stream = new FileInputStream(config)) {
+            configuration.load(stream);
+        } catch (final IOException e) {
+            throw new IllegalArgumentException(e);
+        }
+        return configuration;
+    }
 
     public static File getComponentsFolder() throws IOException {
         File componentsFolder = new File(Platform.getConfigurationLocation().getDataArea(FOLDER_COMPS).getPath());
@@ -96,9 +118,10 @@ public class PathUtils {
         if (compFile == null) {
             return null;
         }
-        final String name = compFile.getName();
+        final String name = compFile.getName().toLowerCase();
 
-        if (name.endsWith(FileExtensions.JAR_FILE_SUFFIX) || name.endsWith(FileExtensions.ZIP_FILE_SUFFIX)) {
+        if (name.endsWith(FileExtensions.JAR_FILE_SUFFIX) || name.endsWith(FileExtensions.ZIP_FILE_SUFFIX)
+                || name.endsWith(FileExtensions.CAR_FILE_SUFFIX)) {
             return URI.create("jar:" + compFile.toURI().toString() + "!/");
         }
         return null;

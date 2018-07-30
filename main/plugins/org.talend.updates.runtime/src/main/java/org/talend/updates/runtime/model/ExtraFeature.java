@@ -35,16 +35,6 @@ public interface ExtraFeature {
     public boolean isInstalled(IProgressMonitor progress) throws Exception;
 
     /**
-     * Check that the feature has an udpate with a version higher than the one already installed. If that is the case
-     * then a new instance of ExtraFeature is created, it returns null otherwhise.
-     * 
-     * @param progress
-     * 
-     * @return a new feature is an upate is available or null
-     */
-    public ExtraFeature createFeatureIfUpdates(IProgressMonitor progress) throws Exception;
-
-    /**
      * Getter for name.
      * 
      * @return the name
@@ -85,6 +75,25 @@ public interface ExtraFeature {
      * */
     public boolean mustBeInstalled();
     
+    default public boolean canBeInstalled(IProgressMonitor progress) throws P2ExtraFeatureException {
+        try {
+            return !isInstalled(progress);
+        } catch (Exception e) {
+            throw new P2ExtraFeatureException(e);
+        }
+    }
+
+    /**
+     * Check that the remote update site has a different version from the one already installed. If that is the case
+     * then a new instance of P2ExtraFeature is create, it returns null otherwhise.
+     *
+     * @param progress
+     * @return a new P2ExtraFeature if the update site contains a new version of the feature or null.
+     */
+    default public ExtraFeature createFeatureIfUpdates(IProgressMonitor progress) throws Exception {
+        return null;
+    }
+
     public boolean needRestart();
 
 }
