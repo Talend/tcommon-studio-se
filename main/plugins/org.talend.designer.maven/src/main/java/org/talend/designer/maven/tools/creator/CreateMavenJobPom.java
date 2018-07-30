@@ -32,6 +32,7 @@ import org.apache.maven.model.Model;
 import org.apache.maven.model.Profile;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
@@ -148,8 +149,8 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         try {
             final Map<String, Object> templateParameters = PomUtil.getTemplateParameters(getJobProcessor());
             return MavenTemplateManager.getTemplateStream(templateFile,
-                    IProjectSettingPreferenceConstants.TEMPLATE_STANDALONE_JOB_POM, JOB_TEMPLATE_BUNDLE, getBundleTemplatePath(),
-                    templateParameters);
+                    IProjectSettingPreferenceConstants.TEMPLATE_STANDALONE_JOB_POM, JOB_TEMPLATE_BUNDLE,
+                    getBundleTemplatePath(), templateParameters);
         } catch (Exception e) {
             throw new IOException(e);
         }
@@ -179,8 +180,9 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
 
         if (ProcessUtils.isTestContainer(process)) {
             if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
-                ITestContainerProviderService testService = (ITestContainerProviderService) GlobalServiceRegister.getDefault()
-                        .getService(ITestContainerProviderService.class);
+                ITestContainerProviderService testService =
+                        (ITestContainerProviderService) GlobalServiceRegister.getDefault().getService(
+                                ITestContainerProviderService.class);
                 try {
                     property = testService.getParentJobItem(property.getItem()).getProperty();
                     process = testService.getParentJobProcess(process);
@@ -199,8 +201,10 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         }
 
         checkPomProperty(properties, "talend.job.path", ETalendMavenVariables.JobPath, jobClassPackageFolder);
-        String jobFolder = ItemResourceUtil.getItemRelativePath(property).toPortableString();
-        if (!StringUtils.isEmpty(jobFolder)) {
+        IPath jobFolderPath = ItemResourceUtil.getItemRelativePath(property);
+        String jobFolder = "";
+        if (jobFolderPath != null && !StringUtils.isEmpty(jobFolderPath.toPortableString())) {
+            jobFolder = jobFolderPath.toPortableString();
             // like f1/f2/f3/
             jobFolder = StringUtils.strip(jobFolder, "/") + "/";
             jobFolder = jobFolder.toLowerCase();
@@ -221,7 +225,8 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
                 isOptionChecked(TalendProcessArgumentConstant.ARG_ENABLE_APPLY_CONTEXT_TO_CHILDREN),
                 isOptionChecked(TalendProcessArgumentConstant.ARG_ENABLE_STATS));
 
-        checkPomProperty(properties, "talend.project.name", ETalendMavenVariables.ProjectName, project.getTechnicalLabel());
+        checkPomProperty(properties, "talend.project.name", ETalendMavenVariables.ProjectName,
+                project.getTechnicalLabel());
         checkPomProperty(properties, "talend.project.name.lowercase", ETalendMavenVariables.ProjectName,
                 project.getTechnicalLabel().toLowerCase());
         checkPomProperty(properties, "talend.routine.groupid", ETalendMavenVariables.RoutineGroupId,
@@ -234,7 +239,8 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         checkPomProperty(properties, "talend.job.name", ETalendMavenVariables.JobName,
                 jobInfoProp.getProperty(JobInfoProperties.JOB_NAME, property.getLabel()));
 
-        checkPomProperty(properties, "talend.job.version", ETalendMavenVariables.TalendJobVersion, property.getVersion());
+        checkPomProperty(properties, "talend.job.version", ETalendMavenVariables.TalendJobVersion,
+                property.getVersion());
 
         checkPomProperty(properties, "maven.build.timestamp.format", ETalendMavenVariables.JobDateFormat,
                 JobInfoProperties.JOB_DATE_FORMAT);
@@ -267,14 +273,15 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         }
         checkPomProperty(properties, "talend.job.stat", ETalendMavenVariables.JobStat,
                 jobInfoProp.getProperty(JobInfoProperties.ADD_STATIC_CODE, Boolean.FALSE.toString()));
-        checkPomProperty(properties, "talend.job.applyContextToChildren", ETalendMavenVariables.JobApplyContextToChildren,
+        checkPomProperty(properties, "talend.job.applyContextToChildren",
+                ETalendMavenVariables.JobApplyContextToChildren,
                 jobInfoProp.getProperty(JobInfoProperties.APPLY_CONTEXY_CHILDREN, Boolean.FALSE.toString()));
         checkPomProperty(properties, "talend.product.version", ETalendMavenVariables.ProductVersion,
                 jobInfoProp.getProperty(JobInfoProperties.COMMANDLINE_VERSION, VersionUtils.getVersion()));
         String finalNameStr = JavaResourcesHelper.getJobJarName(property.getLabel(), property.getVersion());
         checkPomProperty(properties, "talend.job.finalName", ETalendMavenVariables.JobFinalName, finalNameStr);
-        
-        if(getJobProcessor() != null) {
+
+        if (getJobProcessor() != null) {
             String[] jvmArgs = getJobProcessor().getJVMArgs();
             if (jvmArgs != null && jvmArgs.length > 0) {
                 StringBuilder jvmArgsStr = new StringBuilder();
@@ -282,7 +289,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
                     jvmArgsStr.append(arg + " ");
                 }
                 checkPomProperty(properties, "talend.job.jvmargs", null, jvmArgsStr.toString());
-            }        	
+            }
         }
     }
 
@@ -361,10 +368,10 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
     @Override
     protected void afterCreate(IProgressMonitor monitor) throws Exception {
         generateAssemblyFile(monitor, null);
-        
+
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
-            IRunProcessService service = (IRunProcessService) GlobalServiceRegister.getDefault()
-                    .getService(IRunProcessService.class);
+            IRunProcessService service =
+                    (IRunProcessService) GlobalServiceRegister.getDefault().getService(IRunProcessService.class);
             if (!service.isGeneratePomOnly()) {
                 generateTemplates(true);
             }
@@ -372,7 +379,8 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
 
     }
 
-    protected void generateAssemblyFile(IProgressMonitor monitor, final Set<JobInfo> clonedChildrenJobInfors) throws Exception {
+    protected void generateAssemblyFile(IProgressMonitor monitor, final Set<JobInfo> clonedChildrenJobInfors)
+            throws Exception {
         IFile assemblyFile = this.getAssemblyFile();
         if (assemblyFile != null) {
             boolean set = false;
@@ -385,11 +393,13 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
                 }
 
                 final Map<String, Object> templateParameters = PomUtil.getTemplateParameters(getJobProcessor());
-                String content = MavenTemplateManager.getTemplateContent(templateFile,
-                        IProjectSettingPreferenceConstants.TEMPLATE_STANDALONE_JOB_ASSEMBLY, JOB_TEMPLATE_BUNDLE,
-                        IProjectSettingTemplateConstants.PATH_STANDALONE + '/'
-                                + IProjectSettingTemplateConstants.ASSEMBLY_JOB_TEMPLATE_FILE_NAME,
-                        templateParameters);
+                String content =
+                        MavenTemplateManager.getTemplateContent(templateFile,
+                                IProjectSettingPreferenceConstants.TEMPLATE_STANDALONE_JOB_ASSEMBLY,
+                                JOB_TEMPLATE_BUNDLE,
+                                IProjectSettingTemplateConstants.PATH_STANDALONE + '/'
+                                        + IProjectSettingTemplateConstants.ASSEMBLY_JOB_TEMPLATE_FILE_NAME,
+                                templateParameters);
                 if (content != null) {
                     ByteArrayInputStream source = new ByteArrayInputStream(content.getBytes());
                     if (assemblyFile.exists()) {
@@ -441,8 +451,8 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
             addScriptAddition(unixScriptAdditionValue, contextPart);
         }
         // context params
-        List paramsList = ProcessUtils.getOptionValue(getArgumentsMap(), TalendProcessArgumentConstant.ARG_CONTEXT_PARAMS,
-                (List) null);
+        List paramsList = ProcessUtils.getOptionValue(getArgumentsMap(),
+                TalendProcessArgumentConstant.ARG_CONTEXT_PARAMS, (List) null);
         if (paramsList != null && !paramsList.isEmpty()) {
             StringBuffer contextParamPart = new StringBuffer(100);
             // do codes same as JobScriptsManager.getSettingContextParametersValue
@@ -524,14 +534,16 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         batContent = StringUtils.replaceEach(batContent,
                 new String[] { "${talend.job.jvmargs}", "${talend.job.bat.classpath}", "${talend.job.class}",
                         "${talend.job.bat.addition}" },
-                new String[] { jvmArgsStr.toString().trim(), getWindowsClasspath(), jobClass, windowsScriptAdditionValue.toString() });
+                new String[] { jvmArgsStr.toString().trim(), getWindowsClasspath(), jobClass,
+                        windowsScriptAdditionValue.toString() });
 
         String shContent = MavenTemplateManager.getProjectSettingValue(IProjectSettingPreferenceConstants.TEMPLATE_SH,
                 templateParameters);
         shContent = StringUtils.replaceEach(shContent,
                 new String[] { "${talend.job.jvmargs}", "${talend.job.sh.classpath}", "${talend.job.class}",
                         "${talend.job.sh.addition}" },
-                new String[] { jvmArgsStr.toString().trim(), getUnixClasspath(), jobClass, unixScriptAdditionValue.toString() });
+                new String[] { jvmArgsStr.toString().trim(), getUnixClasspath(), jobClass,
+                        unixScriptAdditionValue.toString() });
 
         String psContent = MavenTemplateManager.getProjectSettingValue(IProjectSettingPreferenceConstants.TEMPLATE_PS,
                 templateParameters);
@@ -541,17 +553,18 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
                 new String[] { jvmArgsStrPs1.toString().trim(), getWindowsClasspathForPs1(), jobClass,
                         windowsScriptAdditionValue.toString() });
 
-        String jobInfoContent = MavenTemplateManager.getProjectSettingValue(IProjectSettingPreferenceConstants.TEMPLATE_JOB_INFO,
-                templateParameters);
+        String jobInfoContent = MavenTemplateManager
+                .getProjectSettingValue(IProjectSettingPreferenceConstants.TEMPLATE_JOB_INFO, templateParameters);
         String projectTechName = ProjectManager.getInstance().getProject(property).getTechnicalLabel();
-        org.talend.core.model.general.Project project = ProjectManager.getInstance()
-                .getProjectFromProjectTechLabel(projectTechName);
+        org.talend.core.model.general.Project project =
+                ProjectManager.getInstance().getProjectFromProjectTechLabel(projectTechName);
         if (project == null) {
             project = ProjectManager.getInstance().getCurrentProject();
         }
         String mainProjectBranch = ProjectManager.getInstance().getMainProjectBranch(project);
         if (mainProjectBranch == null) {
-            ProjectPreferenceManager preferenceManager = new ProjectPreferenceManager(project, "org.talend.repository", false);
+            ProjectPreferenceManager preferenceManager =
+                    new ProjectPreferenceManager(project, "org.talend.repository", false);
             mainProjectBranch = preferenceManager.getValue(RepositoryConstants.PROJECT_BRANCH_ID);
             if (mainProjectBranch == null) {
                 mainProjectBranch = "";
@@ -617,7 +630,8 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         }
         // libraries
         dependencies.clear();
-        Set<ModuleNeeded> modules = getJobProcessor().getNeededModules(TalendProcessOptionConstants.MODULES_WITH_JOBLET);
+        Set<ModuleNeeded> modules =
+                getJobProcessor().getNeededModules(TalendProcessOptionConstants.MODULES_WITH_JOBLET);
         for (ModuleNeeded module : modules) {
             String mavenUri = module.getMavenUri();
             Dependency dependency = PomUtil.createModuleDependency(mavenUri);
@@ -681,7 +695,8 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         String _3rdPartylibExcludesStr = StringUtils.removeEnd(_3rdPartylibExcludes.toString(), SEPARATOR);
         String jobIncludesStr = StringUtils.removeEnd(jobIncludes.toString(), SEPARATOR);
         String content = org.talend.commons.utils.io.FilesUtils.readFileContent(assemblyFile);
-        content = StringUtils.replaceEach(content, new String[] { talendlibIncludesTag, _3rdlibExcludesTag, jobIncludesTag },
+        content = StringUtils.replaceEach(content,
+                new String[] { talendlibIncludesTag, _3rdlibExcludesTag, jobIncludesTag },
                 new String[] { talendLibIncludesStr, _3rdPartylibExcludesStr, jobIncludesStr });
         org.talend.commons.utils.io.FilesUtils.writeContentToFile(content, assemblyFile);
     }
