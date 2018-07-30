@@ -171,7 +171,7 @@ public class ModuleNeeded {
         cloned.bundleVersion = bundleVersion;
         cloned.context = context;
         cloned.dynamic = dynamic;
-        cloned.excludeDependencies = cloned.excludeDependencies;
+        cloned.excludeDependencies = excludeDependencies;
         if (extraAttributes != null && !extraAttributes.isEmpty()) {
             cloned.extraAttributes = new HashMap<>(extraAttributes);
         }
