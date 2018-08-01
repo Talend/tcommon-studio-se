@@ -8,7 +8,7 @@ Eclipse-BundleShape: dir
 Bundle-ClassPath: ./,
  lib/httpclient-4.2.5.jar,
  lib/httpcore-4.2.5.jar,
- lib/fluent-hc-4.2.6.jar
+ lib/fluent-hc-4.5.5.jar
 Export-Package: org.apache.http,
  org.apache.http.annotation,
  org.apache.http.auth,
