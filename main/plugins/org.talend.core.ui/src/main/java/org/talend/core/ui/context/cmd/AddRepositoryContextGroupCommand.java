@@ -13,6 +13,7 @@
 package org.talend.core.ui.context.cmd;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -20,12 +21,15 @@ import java.util.Set;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.gef.commands.Command;
+import org.talend.core.model.context.ContextUtils;
 import org.talend.core.model.context.JobContext;
 import org.talend.core.model.context.JobContextParameter;
 import org.talend.core.model.process.IContext;
 import org.talend.core.model.process.IContextManager;
 import org.talend.core.model.process.IContextParameter;
 import org.talend.core.model.properties.ContextItem;
+import org.talend.core.model.properties.Item;
+import org.talend.core.model.properties.JobletProcessItem;
 import org.talend.core.ui.context.ContextManagerHelper;
 import org.talend.core.ui.context.IContextModelManager;
 import org.talend.core.ui.editor.command.ContextRemoveParameterCommand;
@@ -90,8 +94,9 @@ public class AddRepositoryContextGroupCommand extends Command {
             List<String> contextNames = new ArrayList<String>();
             for (ContextType context : (List<ContextType>) item.getContext()) {
                 String repContextName = context.getName();
-                if (repContextName != null)
+                if (repContextName != null) {
                     contextNames.add(repContextName.toLowerCase());
+                }
             }
             Iterator<IContext> iterator = manager.getListContext().iterator();
             // TODO Remove the contexts except "default" and matched to repository without case sensitive.
@@ -101,8 +106,8 @@ public class AddRepositoryContextGroupCommand extends Command {
                 // if not select new default context, will not delete the default context for job.
                 if (name != null) {
                     if (contextNames.contains(name.toLowerCase())
-                            || (!isJobContextExistInRepository(nameSet, item.getDefaultContext()) && name.toLowerCase().equals(
-                                    defaultContext.getName().toLowerCase()))) {
+                            || (!isJobContextExistInRepository(nameSet, item.getDefaultContext())
+                                    && name.toLowerCase().equals(defaultContext.getName().toLowerCase()))) {
                         continue;
                     }
 
@@ -176,16 +181,29 @@ public class AddRepositoryContextGroupCommand extends Command {
             }
             monitor.worked(1);
         }
-        
-        //remove the params which is unchecked
-        for(IContextParameter param : existParas){
-            if (param.isBuiltIn()){
+
+        // remove the params which is unchecked
+        Set<String> jobletIds = new HashSet<String>();
+        Set<String> chekedIds = new HashSet<String>();
+        for (IContextParameter param : existParas) {
+            if (param.isBuiltIn()) {
                 continue;
             }
-            new ContextRemoveParameterCommand(manager, param.getName(), param.getSource())
-            .execute();
+            String sourceId = param.getSource();
+            if (!chekedIds.contains(sourceId)) {
+                chekedIds.add(sourceId);
+                Item repositoryContextItemById = ContextUtils.getRepositoryContextItemById(sourceId);
+                if (repositoryContextItemById instanceof JobletProcessItem) {
+                    jobletIds.add(sourceId);
+                    continue;
+                }
+            }
+            if (jobletIds.contains(sourceId)) {
+                continue;
+            }
+            new ContextRemoveParameterCommand(manager, param.getName(), param.getSource()).execute();
         }
-        
+
     }
 
     /**
@@ -196,8 +214,9 @@ public class AddRepositoryContextGroupCommand extends Command {
         while (it.hasNext()) {
             String selectedName = it.next();
             if (selectedName != null && defaultContextName != null) {
-                if (selectedName.toLowerCase().equals(defaultContextName.toLowerCase()))
+                if (selectedName.toLowerCase().equals(defaultContextName.toLowerCase())) {
                     return true;
+                }
             }
         }
         return false;

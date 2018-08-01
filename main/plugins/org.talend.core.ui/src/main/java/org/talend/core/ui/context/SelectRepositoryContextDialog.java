@@ -46,21 +46,22 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.dialogs.SelectionDialog;
 import org.talend.commons.ui.runtime.exception.MessageBoxExceptionHandler;
 import org.talend.commons.ui.runtime.image.ECoreImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.commons.ui.swt.dialogs.ProgressDialog;
 import org.talend.commons.ui.swt.formtools.Form;
+import org.talend.core.model.context.ContextUtils;
 import org.talend.core.model.process.IContext;
 import org.talend.core.model.process.IContextManager;
 import org.talend.core.model.process.IContextParameter;
 import org.talend.core.model.properties.ContextItem;
+import org.talend.core.model.properties.Item;
+import org.talend.core.model.properties.JobletProcessItem;
 import org.talend.core.model.properties.Project;
 import org.talend.core.ui.context.cmd.AddRepositoryContextGroupCommand;
 import org.talend.core.ui.editor.command.ContextRemoveParameterCommand;
@@ -188,8 +189,8 @@ public class SelectRepositoryContextDialog extends SelectionDialog {
                     return;
                 }
                 if (selection.getFirstElement() instanceof ContextItem) {
-                    ShowSelectedContextDialog showDialog = new ShowSelectedContextDialog((ContextItem) selection
-                            .getFirstElement(), getParentShell());
+                    ShowSelectedContextDialog showDialog = new ShowSelectedContextDialog(
+                            (ContextItem) selection.getFirstElement(), getParentShell());
                     showDialog.open();
                 }
             }
@@ -330,13 +331,11 @@ public class SelectRepositoryContextDialog extends SelectionDialog {
                     if (showWarning) {
                         String message = null;
                         if (helper.existParameterForJob(existedParam)) {
-                            message = Messages
-                                    .getString(
-                                            "SelectRepositoryContextDialog.ExistenceMessage", existedParam.getName(), selectedContextName); //$NON-NLS-1$
+                            message = Messages.getString("SelectRepositoryContextDialog.ExistenceMessage", existedParam.getName(), //$NON-NLS-1$
+                                    selectedContextName);
                         } else {
-                            message = Messages
-                                    .getString(
-                                            "SelectRepositoryContextDialog.DuplicationMessage", existedParam.getName(), selectedContextName); //$NON-NLS-1$
+                            message = Messages.getString("SelectRepositoryContextDialog.DuplicationMessage", //$NON-NLS-1$
+                                    existedParam.getName(), selectedContextName);
                         }
                         MessageDialog.openWarning(getParentShell(), WARNING_TITLE, message);
                     }
@@ -370,8 +369,8 @@ public class SelectRepositoryContextDialog extends SelectionDialog {
 
         for (Object sibling : siblings) {
             if (sibling instanceof ContextParameterType) {
-                IContextParameter existedContextParameter = helper.getExistedContextParameter(((ContextParameterType) sibling)
-                        .getName());
+                IContextParameter existedContextParameter = helper
+                        .getExistedContextParameter(((ContextParameterType) sibling).getName());
                 if (existedContextParameter != null && existedContextParameter.isBuiltIn()) {
                     num++;
                     continue;
@@ -509,8 +508,8 @@ public class SelectRepositoryContextDialog extends SelectionDialog {
         if (selectedItems != null && !selectedItems.isEmpty()) {
             Set<String> contextGoupNameSet = new HashSet<String>();
             if (checkShowContextGroup(manager, selectedItems)) {
-                SelectRepositoryContextGroupDialog groupDialog = new SelectRepositoryContextGroupDialog(getParentShell(),
-                        manager, helper, selectedItems);
+                SelectRepositoryContextGroupDialog groupDialog = new SelectRepositoryContextGroupDialog(getParentShell(), manager,
+                        helper, selectedItems);
                 if (Dialog.OK == groupDialog.open()) {
                     contextGoupNameSet = groupDialog.getSelectedContextGroupName();
                 }
@@ -521,11 +520,25 @@ public class SelectRepositoryContextDialog extends SelectionDialog {
             IContext defaultContext = manager.getDefaultContext();
             List<IContextParameter> existParas = new ArrayList<>(defaultContext.getContextParameterList());
             // remove the params which is unchecked
+            Set<String> jobletIds = new HashSet<String>();
+            Set<String> chekedIds = new HashSet<String>();
             for (IContextParameter param : existParas) {
                 if (param.isBuiltIn()) {
                     continue;
                 }
-                ContextRemoveParameterCommand cmd = new ContextRemoveParameterCommand(manager, param.getName(), param.getSource());
+                String sourceId = param.getSource();
+                if (!chekedIds.contains(sourceId)) {
+                    chekedIds.add(sourceId);
+                    Item repositoryContextItemById = ContextUtils.getRepositoryContextItemById(sourceId);
+                    if (repositoryContextItemById instanceof JobletProcessItem) {
+                        jobletIds.add(sourceId);
+                        continue;
+                    }
+                }
+                if (jobletIds.contains(sourceId)) {
+                    continue;
+                }
+                ContextRemoveParameterCommand cmd = new ContextRemoveParameterCommand(manager, param.getName(), sourceId);
                 execCommand(cmd);
             }
         }
