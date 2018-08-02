@@ -33,6 +33,7 @@ import org.apache.commons.collections.map.LRUMap;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.core.runtime.Path;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.core.i18n.Messages;
 
 /**
  * This class is used for transfering XML file to HTML file.
@@ -82,10 +83,11 @@ public class HTMLHandler {
 
             newMainHTMLWriter = new BufferedWriter(new FileWriter(newMainHTMLFile));
             String lineStr = ""; //$NON-NLS-1$
+            String ended = Messages.getString("HTMLDocGenerator.ended");
             while ((lineStr = mainHTMLReader.readLine()) != null) {
                 newMainHTMLWriter.write(lineStr);
                 for (String key : htmlFileMap.keySet()) {
-                    String compareStr = "<!--" + key + "ended-->"; // tMap_1ended--> //$NON-NLS-1$ //$NON-NLS-2$
+                    String compareStr = "<!--" + key + ended+"-->"; // tMap_1ended--> //$NON-NLS-1$ //$NON-NLS-2$
                     if (lineStr.indexOf(compareStr) != -1) {
 
                         if (htmlFileMap.get(key) instanceof URL) {
