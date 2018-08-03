@@ -136,6 +136,8 @@ public class CreateMavenStandardJobOSGiPom extends CreateMavenJobPom {
             }
         }
 
+        model.setName(model.getName() + " Bundle");
+
         return model;
     }
 
@@ -152,10 +154,10 @@ public class CreateMavenStandardJobOSGiPom extends CreateMavenJobPom {
                 }
 
                 final Map<String, Object> templateParameters = PomUtil.getTemplateParameters(getJobProcessor());
-                String content = MavenTemplateManager.getTemplateContent(templateFile,
-                        null, JOB_TEMPLATE_BUNDLE,
+                String content = MavenTemplateManager.getTemplateContent(templateFile, null, JOB_TEMPLATE_BUNDLE,
                         IProjectSettingTemplateConstants.PATH_OSGI_BUNDLE + '/'
-                                + IProjectSettingTemplateConstants.ASSEMBLY_JOB_TEMPLATE_FILE_NAME, templateParameters);
+                                + IProjectSettingTemplateConstants.ASSEMBLY_JOB_TEMPLATE_FILE_NAME,
+                        templateParameters);
                 if (content != null) {
                     ByteArrayInputStream source = new ByteArrayInputStream(content.getBytes());
                     if (assemblyFile.exists()) {
