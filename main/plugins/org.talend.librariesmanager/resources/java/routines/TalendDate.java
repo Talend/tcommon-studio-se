@@ -249,12 +249,7 @@ public class TalendDate {
             return false;
         }
 
-        String formatDate = sdf.format(testDate);
-        if (formatDate.equalsIgnoreCase(stringDate) || formatDate.length() == stringDate.length()) {
-            return true;
-        }
-
-        return false;
+        return stringDate.equalsIgnoreCase(sdf.format(testDate));
     }
 
     /**
