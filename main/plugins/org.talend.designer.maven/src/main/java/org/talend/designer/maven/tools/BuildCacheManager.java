@@ -328,12 +328,19 @@ public class BuildCacheManager {
         String modulePath = null;
         IPath basePath = null;
         IPath jobProjectPath = AggregatorPomsHelper.getItemPomFolder(property).getLocation();
-        if (!ProjectManager.getInstance().isInCurrentMainProject(property)) {
+        ProjectManager proManager = ProjectManager.getInstance();
+        if (!proManager.isInCurrentMainProject(property)) {
             if (GlobalServiceRegister.getDefault().isServiceRegistered(IRepositoryService.class)) {
                 IRepositoryService service = (IRepositoryService) GlobalServiceRegister.getDefault()
                         .getService(IRepositoryService.class);
                 if (service.isGIT()) {
-                    modulePath = "../../../../"; //$NON-NLS-1$
+                    String refProjectTechName = proManager.getCurrentProject().getTechnicalLabel();
+                    String mainProjectBranch = proManager.getMainProjectBranch(refProjectTechName);
+                    if ("master".equals(mainProjectBranch)) {
+                        modulePath = "../../../../"; //$NON-NLS-1$
+                    } else {
+                        modulePath = "../../../../../"; //$NON-NLS-1$
+                    }
                     basePath = ResourcesPlugin.getWorkspace().getRoot().getLocation().append("/.repositories"); //$NON-NLS-1$
                 } else if (service.isSVN()) {
                     modulePath = "../../"; //$NON-NLS-1$
