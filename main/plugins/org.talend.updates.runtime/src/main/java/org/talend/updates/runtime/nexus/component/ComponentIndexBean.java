@@ -131,6 +131,10 @@ public class ComponentIndexBean implements Cloneable {
         return new String[0];
     }
 
+    public String getImageMvnURI() {
+        return getValue(ComponentIndexNames.image_mvn_uri);
+    }
+
     public String getMvnURI() {
         return getValue(ComponentIndexNames.mvn_uri);
     }

@@ -21,7 +21,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.IService;
-import org.talend.updates.runtime.model.ITaCoKitCarFeature;
+import org.talend.updates.runtime.model.interfaces.ITaCoKitCarFeature;
 
 /**
  * DOC cmeng  class global comment. Detailled comment

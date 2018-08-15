@@ -10,19 +10,17 @@
 // 9 rue Pages 92150 Suresnes, France
 //
 // ============================================================================
-package org.talend.updates.runtime.model;
+package org.talend.updates.runtime.ui.feature.model;
 
-import java.io.File;
+import org.talend.updates.runtime.model.ExtraFeature;
 
 /**
  * DOC cmeng  class global comment. Detailled comment
  */
-public interface ITaCoKitCarFeature extends ExtraFeature, Comparable<Object> {
+public interface IFeatureItem {
 
-    File getCarFile();
+    String getTitle();
 
-    void setAutoReloadAfterInstalled(boolean autoReload);
-
-    boolean isAutoReloadAfterInstalled();
+    ExtraFeature getFeature();
 
 }

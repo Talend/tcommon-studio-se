@@ -43,7 +43,6 @@ import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.runtime.utils.io.FileCopyUtils;
-import org.talend.commons.utils.VersionUtils;
 import org.talend.commons.utils.resource.FileExtensions;
 import org.talend.commons.utils.resource.UpdatesHelper;
 import org.talend.core.runtime.maven.MavenArtifact;
@@ -54,6 +53,7 @@ import org.talend.updates.runtime.maven.MavenRepoSynchronizer;
 import org.talend.updates.runtime.model.P2ExtraFeature;
 import org.talend.updates.runtime.model.P2ExtraFeatureException;
 import org.talend.updates.runtime.model.UpdateSiteLocationType;
+import org.talend.updates.runtime.model.interfaces.IP2ComponentFeature;
 import org.talend.updates.runtime.nexus.component.ComponentIndexBean;
 import org.talend.updates.runtime.nexus.component.ComponentIndexManager;
 import org.talend.updates.runtime.nexus.component.ComponentsDeploymentManager;
@@ -65,13 +65,9 @@ import org.talend.utils.io.FilesUtils;
  * created by ycbai on 2017年5月18日 Detailled comment
  *
  */
-public class ComponentP2ExtraFeature extends P2ExtraFeature {
+public class ComponentP2ExtraFeature extends P2ExtraFeature implements IP2ComponentFeature {
 
-    public static final String INDEX = "index"; //$NON-NLS-1$
-
-    public static final String COMPONENT_GROUP_ID = "org.talend.components"; //$NON-NLS-1$
-
-    private String product, mvnURI;
+    private String product, mvnURI, imageMvnURI;
 
     private URI repositoryURI;
 
@@ -84,8 +80,8 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature {
     }
 
     public ComponentP2ExtraFeature(ComponentIndexBean indexBean) {
-        this(indexBean.getName(), indexBean.getVersion(), indexBean.getDescription(), indexBean.getProduct(), indexBean
-                .getMvnURI(), indexBean.getBundleId());
+        this(indexBean.getName(), indexBean.getVersion(), indexBean.getDescription(), indexBean.getProduct(),
+                indexBean.getMvnURI(), indexBean.getImageMvnURI(), indexBean.getBundleId());
     }
 
     public ComponentP2ExtraFeature(File componentZipFile) {
@@ -93,12 +89,14 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature {
         this.repositoryURI = PathUtils.getP2RepURIFromCompFile(componentZipFile);
     }
 
-    public ComponentP2ExtraFeature(String name, String version, String description, String product, String mvnURI, String p2IuId) {
+    public ComponentP2ExtraFeature(String name, String version, String description, String product, String mvnURI,
+            String imageMvnURI, String p2IuId) {
         this.name = name;
         this.version = version;
         this.description = description;
         this.product = product;
         this.mvnURI = mvnURI;
+        this.imageMvnURI = imageMvnURI;
         this.p2IuId = p2IuId;
 
         this.useLegacyP2Install = true; // enable to modify the config.ini
@@ -119,30 +117,8 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature {
         return EnumSet.of(UpdateSiteLocationType.DEFAULT_REPO);
     }
 
-    public MavenArtifact getIndexArtifact() {
-        MavenArtifact artifact = new MavenArtifact();
-        artifact.setGroupId(COMPONENT_GROUP_ID);
-        artifact.setArtifactId(INDEX);
-        artifact.setVersion(getTalendVersionStr());
-        artifact.setType(FileExtensions.XML_EXTENSION);
-        return artifact;
-    }
-
     public MavenArtifact getArtifact() {
         return MavenUrlHelper.parseMvnUrl(mvnURI);
-    }
-
-    protected String getTalendVersionStr() {
-        org.osgi.framework.Version studioVersion = new org.osgi.framework.Version(VersionUtils.getTalendVersion());
-
-        StringBuffer result = new StringBuffer();
-        result.append(studioVersion.getMajor());
-        result.append('.');
-        result.append(studioVersion.getMinor());
-        result.append('.');
-        result.append(studioVersion.getMicro());
-
-        return result.toString();
     }
 
     public String getProduct() {
@@ -151,6 +127,10 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature {
 
     public String getMvnURI() {
         return mvnURI;
+    }
+
+    public String getImageMvnURI() {
+        return imageMvnURI;
     }
 
     public void setLogin(boolean isLogin) {

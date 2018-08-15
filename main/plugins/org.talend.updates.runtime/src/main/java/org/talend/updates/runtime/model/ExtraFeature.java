@@ -12,12 +12,14 @@
 // ============================================================================
 package org.talend.updates.runtime.model;
 
+import java.io.File;
 import java.net.URI;
 import java.util.EnumSet;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.swt.graphics.Image;
 
 /**
  * created by sgandon on 24 sept. 2013 Interface used for element to be installed after the Studio is launched.
@@ -96,4 +98,22 @@ public interface ExtraFeature {
 
     public boolean needRestart();
 
+    default public Image getImage(IProgressMonitor monitor) throws Exception {
+        return null;
+    }
+
+    default public File downloadImage(IProgressMonitor monitor) throws Exception {
+        return null;
+    }
+
+    default public void addCallBack(ICallBack callBack) {
+    }
+
+    default public void remoteCallBack(ICallBack callBack) {
+    }
+
+    public static interface ICallBack {
+
+        File downloadImage(IProgressMonitor monitor);
+    }
 }

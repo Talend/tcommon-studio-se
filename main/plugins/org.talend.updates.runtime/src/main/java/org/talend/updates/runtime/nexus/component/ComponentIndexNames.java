@@ -24,6 +24,7 @@ public enum ComponentIndexNames {
     version(true),
     mvn_uri(true),
 
+    image_mvn_uri,
     product,
     description,
     license_uri,

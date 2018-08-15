@@ -38,6 +38,10 @@ public abstract class AbstractExtraUpdatesFactory {
         return acronym;
     }
 
+    public void retrieveAllExtraFeatures(IProgressMonitor monitor, Set<ExtraFeature> features) throws Exception {
+        throw new UnsupportedOperationException("Unsupported operation, please check");
+    }
+
     public abstract void retrieveUninstalledExtraFeatures(IProgressMonitor monitor, Set<ExtraFeature> uninstalledExtraFeatures)
             throws Exception;
 

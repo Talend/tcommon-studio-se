@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.updates.runtime.engine.factory.AbstractExtraUpdatesFactory;
+import org.talend.updates.runtime.engine.factory.ComponentsNexusInstallFactory;
 import org.talend.updates.runtime.model.ExtraFeature;
 
 /**
@@ -49,6 +50,22 @@ public class ExtraFeaturesUpdatesFactory {
                     factory.retrieveUninstalledExtraFeatures(monitor, uninstalledExtraFeatures);
                 } catch (Exception e) {
                     ExceptionHandler.process(e);
+                }
+            }
+        }
+    }
+
+    public void retrieveAllComponentFeatures(IProgressMonitor monitor, Set<ExtraFeature> allFeatures) {
+        Assert.isNotNull(allFeatures);
+        AbstractExtraUpdatesFactory[] updatesFactories = updatesFactoryReader.getUpdatesFactories();
+        if (updatesFactories != null) {
+            for (AbstractExtraUpdatesFactory factory : updatesFactories) {
+                if (factory instanceof ComponentsNexusInstallFactory) {
+                    try {
+                        factory.retrieveAllExtraFeatures(monitor, allFeatures);
+                    } catch (Exception e) {
+                        ExceptionHandler.process(e);
+                    }
                 }
             }
         }

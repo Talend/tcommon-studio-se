@@ -12,13 +12,16 @@
 // ============================================================================
 package org.talend.updates.runtime.engine.factory;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.dom4j.Document;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
@@ -26,9 +29,12 @@ import org.eclipse.core.runtime.SubMonitor;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.nexus.ArtifactRepositoryBean;
+import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.updates.runtime.engine.component.ComponentNexusP2ExtraFeature;
+import org.talend.updates.runtime.engine.component.ComponentP2ExtraFeature;
 import org.talend.updates.runtime.i18n.Messages;
 import org.talend.updates.runtime.model.ExtraFeature;
+import org.talend.updates.runtime.model.ExtraFeature.ICallBack;
 import org.talend.updates.runtime.model.FeatureCategory;
 import org.talend.updates.runtime.model.P2ExtraFeature;
 import org.talend.updates.runtime.model.P2ExtraFeatureException;
@@ -44,14 +50,26 @@ public class ComponentsNexusInstallFactory extends AbstractExtraUpdatesFactory {
 
     private ComponentIndexManager indexManager = new ComponentIndexManager();
 
+    private String nexusURL, nexusUser;
+
+    private char[] nexusPass;
+
+    protected ArtifactRepositoryBean serverSetting;
+
     public ComponentsNexusInstallFactory() {
         super();
     }
 
+    public ArtifactRepositoryBean getServerSetting() {
+        if (serverSetting == null) {
+            serverSetting = NexusServerManager.getInstance().getPropertyNexusServer();
+        }
+        return serverSetting;
+    }
+
     protected Set<P2ExtraFeature> getAllExtraFeatures(IProgressMonitor monitor) {
         try {
-            ComponentNexusP2ExtraFeature defaultFeature = new ComponentNexusP2ExtraFeature();
-            return retrieveComponentsFromIndex(monitor, defaultFeature);
+            return retrieveComponentsFromIndex(monitor, getServerSetting());
         } catch (Exception e) {
             if (CommonsPlugin.isDebugMode()) {
                 ExceptionHandler.process(e);
@@ -66,7 +84,6 @@ public class ComponentsNexusInstallFactory extends AbstractExtraUpdatesFactory {
             progress = new NullProgressMonitor();
         }
         try {
-            ComponentNexusP2ExtraFeature lnFeature = new ComponentNexusP2ExtraFeature();
             ArtifactRepositoryBean localNexusServer = NexusServerManager.getInstance().getLocalNexusServer();
             if (localNexusServer == null) {
                 return Collections.emptySet();
@@ -75,11 +92,7 @@ public class ComponentsNexusInstallFactory extends AbstractExtraUpdatesFactory {
                 throw new OperationCanceledException();
             }
 
-            lnFeature.setNexusURL(localNexusServer.getRepositoryURL());
-            lnFeature.setNexusUser(localNexusServer.getUserName());
-            lnFeature.setNexusPass(localNexusServer.getPassword());
-
-            return retrieveComponentsFromIndex(monitor, lnFeature);
+            return retrieveComponentsFromIndex(monitor, localNexusServer);
         } catch (Exception e) {
             if (CommonsPlugin.isDebugMode()) {
                 ExceptionHandler.process(e);
@@ -89,7 +102,7 @@ public class ComponentsNexusInstallFactory extends AbstractExtraUpdatesFactory {
     }
 
     protected Set<P2ExtraFeature> retrieveComponentsFromIndex(IProgressMonitor monitor,
-            ComponentNexusP2ExtraFeature defaultFeature) throws Exception {
+            ArtifactRepositoryBean artifactBean) throws Exception {
         if (monitor == null) {
             monitor = new NullProgressMonitor();
         }
@@ -97,28 +110,56 @@ public class ComponentsNexusInstallFactory extends AbstractExtraUpdatesFactory {
             throw new OperationCanceledException();
         }
 
-        NexusComponentsTransport transport = new NexusComponentsTransport(defaultFeature.getNexusURL(),
-                defaultFeature.getNexusUser(), defaultFeature.getNexusPass());
-        if (transport.isAvailable(monitor, defaultFeature.getIndexArtifact())) {
+        char[] passwordChars = null;
+        String password = artifactBean.getPassword();
+        if (password != null) {
+            passwordChars = password.toCharArray();
+        }
+        final NexusComponentsTransport transport = new NexusComponentsTransport(artifactBean.getRepositoryURL(),
+                artifactBean.getUserName(), passwordChars);
+        if (transport.isAvailable(monitor, getIndexArtifact())) {
             if (monitor.isCanceled()) {
                 throw new OperationCanceledException();
             }
-            final Document doc = transport.downloadXMLDocument(monitor, defaultFeature.getIndexArtifact());
+            final Document doc = transport.downloadXMLDocument(monitor, getIndexArtifact());
 
             if (monitor.isCanceled()) {
                 throw new OperationCanceledException();
             }
-            final Set<P2ExtraFeature> p2Features = createFeatures(defaultFeature, doc);
+            final Set<P2ExtraFeature> p2Features = createFeatures(artifactBean, doc);
+            if (p2Features != null) {
+                for (P2ExtraFeature p2Feature : p2Features) {
+                    p2Feature.addCallBack(new ICallBack() {
+                        
+                        @Override
+                        public File downloadImage(IProgressMonitor monitor) {
+                            if (p2Feature instanceof ComponentNexusP2ExtraFeature) {
+                                String imageMvnURI = ((ComponentP2ExtraFeature) p2Feature).getImageMvnURI();
+                                if (StringUtils.isNotBlank(imageMvnURI)) {
+                                    try {
+                                        File tmpImageFile = File.createTempFile("Talend_feature_", ".png"); //$NON-NLS-1$ //$NON-NLS-2$
+                                        transport.downloadFile(monitor, imageMvnURI, tmpImageFile);
+                                        return tmpImageFile;
+                                    } catch (Exception e) {
+                                        ExceptionHandler.process(e);
+                                    }
+                                }
+                            }
+                            return null;
+                        }
+                    });
+                }
+            }
             return p2Features;
         }
         return Collections.emptySet();
     }
 
-    Set<P2ExtraFeature> createFeatures(ComponentNexusP2ExtraFeature defaultFeature, Document doc) {
+    Set<P2ExtraFeature> createFeatures(ArtifactRepositoryBean serverBean, Document doc) {
         if (doc == null) {
             return Collections.emptySet();
         }
-        Set<P2ExtraFeature> p2Features = new LinkedHashSet<P2ExtraFeature>();
+        Set<P2ExtraFeature> p2Features = new LinkedHashSet<>();
         if (doc != null) {
             final List<ComponentIndexBean> indexBeans = indexManager.parse(doc);
             for (ComponentIndexBean b : indexBeans) {
@@ -132,9 +173,7 @@ public class ComponentsNexusInstallFactory extends AbstractExtraUpdatesFactory {
 
                 final ComponentNexusP2ExtraFeature cnFeature = createComponentFeature(b);
                 // use same url and user with index
-                cnFeature.setNexusURL(defaultFeature.getNexusURL());
-                cnFeature.setNexusUser(defaultFeature.getNexusUser());
-                cnFeature.setNexusPass(defaultFeature.getNexusPass());
+                cnFeature.setServerBean(serverBean);
 
                 p2Features.add(cnFeature);
             }
@@ -144,6 +183,15 @@ public class ComponentsNexusInstallFactory extends AbstractExtraUpdatesFactory {
 
     protected ComponentNexusP2ExtraFeature createComponentFeature(ComponentIndexBean b) {
         return new ComponentNexusP2ExtraFeature(b);
+    }
+
+    @Override
+    public void retrieveAllExtraFeatures(IProgressMonitor monitor, Set<ExtraFeature> features) throws Exception {
+        Assert.isNotNull(features);
+        Set<P2ExtraFeature> allExtraFeatures = getAllExtraFeatures(monitor);
+        if (allExtraFeatures != null && !allExtraFeatures.isEmpty()) {
+            features.addAll(allExtraFeatures);
+        }
     }
 
     @Override
@@ -174,6 +222,10 @@ public class ComponentsNexusInstallFactory extends AbstractExtraUpdatesFactory {
             category.setName(Messages.getString("ComponentsNexusInstallFactory.categorytitile", componentsSize)); //$NON-NLS-1$
             addToSet(uninstalledExtraFeatures, category);
         }
+    }
+
+    public MavenArtifact getIndexArtifact() {
+        return indexManager.getIndexArtifact();
     }
 
 }

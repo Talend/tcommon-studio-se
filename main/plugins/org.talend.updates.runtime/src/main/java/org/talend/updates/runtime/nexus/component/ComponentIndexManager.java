@@ -43,13 +43,19 @@ import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.resource.FileExtensions;
 import org.talend.commons.utils.resource.UpdatesHelper;
+import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.updates.runtime.utils.JarMenifestUtil;
+import org.talend.updates.runtime.utils.PathUtils;
 
 /**
  * DOC ggu class global comment. Detailled comment
  */
 public class ComponentIndexManager {
+
+    public static final String INDEX = "index"; //$NON-NLS-1$
+
+    public static final String COMPONENT_GROUP_ID = "org.talend.components"; //$NON-NLS-1$
 
     public static final String ELEM_COMPONENTS = "components"; //$NON-NLS-1$
 
@@ -108,6 +114,7 @@ public class ComponentIndexManager {
             readAttribute(ComponentIndexNames.bundle_id, element, indexBean);
             readAttribute(ComponentIndexNames.version, element, indexBean);
             readAttribute(ComponentIndexNames.mvn_uri, element, indexBean);
+            readAttribute(ComponentIndexNames.image_mvn_uri, element, indexBean);
             readAttribute(ComponentIndexNames.product, element, indexBean);
             readAttribute(ComponentIndexNames.license_uri, element, indexBean);
 
@@ -423,6 +430,15 @@ public class ComponentIndexManager {
             }
         }
         return null;
+    }
+
+    public MavenArtifact getIndexArtifact() {
+        MavenArtifact artifact = new MavenArtifact();
+        artifact.setGroupId(COMPONENT_GROUP_ID);
+        artifact.setArtifactId(INDEX);
+        artifact.setVersion(PathUtils.getTalendVersionStr());
+        artifact.setType(FileExtensions.XML_EXTENSION);
+        return artifact;
     }
 
 }

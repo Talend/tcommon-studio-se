@@ -28,6 +28,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.URIUtil;
 import org.talend.commons.runtime.service.ComponentsInstallComponent;
 import org.talend.commons.runtime.service.PatchComponent;
+import org.talend.commons.utils.VersionUtils;
 import org.talend.commons.utils.resource.FileExtensions;
 
 /**
@@ -139,4 +140,16 @@ public class PathUtils {
         return new File(URI.create(filePath).toURL().getFile());
     }
 
+    public static String getTalendVersionStr() {
+        org.osgi.framework.Version studioVersion = new org.osgi.framework.Version(VersionUtils.getTalendVersion());
+
+        StringBuffer result = new StringBuffer();
+        result.append(studioVersion.getMajor());
+        result.append('.');
+        result.append(studioVersion.getMinor());
+        result.append('.');
+        result.append(studioVersion.getMicro());
+
+        return result.toString();
+    }
 }

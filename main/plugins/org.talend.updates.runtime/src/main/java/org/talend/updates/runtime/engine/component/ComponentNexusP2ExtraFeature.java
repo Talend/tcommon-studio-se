@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
@@ -32,7 +31,6 @@ import org.talend.updates.runtime.model.P2ExtraFeature;
 import org.talend.updates.runtime.model.P2ExtraFeatureException;
 import org.talend.updates.runtime.nexus.component.ComponentIndexBean;
 import org.talend.updates.runtime.nexus.component.NexusComponentsTransport;
-import org.talend.updates.runtime.nexus.component.NexusServerManager;
 import org.talend.updates.runtime.utils.PathUtils;
 import org.talend.utils.io.FilesUtils;
 
@@ -41,21 +39,10 @@ import org.talend.utils.io.FilesUtils;
  */
 public class ComponentNexusP2ExtraFeature extends ComponentP2ExtraFeature {
 
-    private String nexusURL, nexusUser;
-
-    private char[] nexusPass;
-
-    protected ArtifactRepositoryBean serverSetting;
+    private ArtifactRepositoryBean serverBean;
 
     public ComponentNexusP2ExtraFeature() {
         super();
-    }
-
-    public ArtifactRepositoryBean getServerSetting() {
-        if (serverSetting == null) {
-            serverSetting = NexusServerManager.getInstance().getPropertyNexusServer();
-        }
-        return serverSetting;
     }
 
     public ComponentNexusP2ExtraFeature(ComponentIndexBean indexBean) {
@@ -63,53 +50,8 @@ public class ComponentNexusP2ExtraFeature extends ComponentP2ExtraFeature {
     }
 
     public ComponentNexusP2ExtraFeature(String name, String version, String description, String product, String mvnURI,
-            String p2IuId) {
-        super(name, version, description, product, mvnURI, p2IuId);
-    }
-
-    public String getNexusURL() {
-        if (nexusURL == null && getServerSetting() != null) {
-            setNexusURL(getServerSetting().getRepositoryURL());
-        }
-        return nexusURL;
-    }
-
-    public void setNexusURL(String nexusURL) {
-        this.nexusURL = nexusURL;
-        this.baseRepoUriStr = nexusURL; // same url
-    }
-
-    public String getNexusUser() {
-        if (nexusUser == null && getServerSetting() != null) {
-            setNexusUser(getServerSetting().getUserName());
-        }
-        return nexusUser;
-    }
-
-    public void setNexusUser(String nexusUser) {
-        this.nexusUser = nexusUser;
-    }
-
-    public char[] getNexusPass() {
-        if (nexusPass == null && getServerSetting() != null) {
-            final String pass = getServerSetting().getPassword();
-            if (StringUtils.isNotEmpty(pass)) {
-                setNexusPass(pass.toCharArray());
-            }
-        }
-        return nexusPass;
-    }
-
-    public void setNexusPass(char[] nexusPass) {
-        this.nexusPass = nexusPass;
-    }
-
-    public void setNexusPass(String nexusPass) {
-        if (StringUtils.isNotEmpty(nexusPass)) {
-            setNexusPass(nexusPass.toCharArray());
-        } else {
-            setNexusPass((char[]) null);
-        }
+            String imageMvnURI, String p2IuId) {
+        super(name, version, description, product, mvnURI, imageMvnURI, p2IuId);
     }
 
     @Override
@@ -162,7 +104,14 @@ public class ComponentNexusP2ExtraFeature extends ComponentP2ExtraFeature {
         final File target = new File(workFolder, compFileName);
 
         try {
-            NexusComponentsTransport transport = new NexusComponentsTransport(getNexusURL(), getNexusUser(), getNexusPass());
+            ArtifactRepositoryBean serverBean = getServerBean();
+            char[] passwordChars = null;
+            String password = serverBean.getPassword();
+            if (password != null) {
+                passwordChars = password.toCharArray();
+            }
+            NexusComponentsTransport transport = new NexusComponentsTransport(serverBean.getRepositoryURL(),
+                    serverBean.getUserName(), passwordChars);
             transport.downloadFile(monitor, getMvnURI(), target);
 
             if (monitor.isCanceled()) {
@@ -183,6 +132,14 @@ public class ComponentNexusP2ExtraFeature extends ComponentP2ExtraFeature {
                 target.delete();
             }
         }
+    }
+
+    public ArtifactRepositoryBean getServerBean() {
+        return this.serverBean;
+    }
+
+    public void setServerBean(ArtifactRepositoryBean artifactBean) {
+        this.serverBean = artifactBean;
     }
 
 }

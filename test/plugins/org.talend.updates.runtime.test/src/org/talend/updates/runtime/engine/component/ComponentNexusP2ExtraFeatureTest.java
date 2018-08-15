@@ -32,12 +32,12 @@ public class ComponentNexusP2ExtraFeatureTest {
         }
 
         public ComponentNexusP2ExtraFeatureTestClass(String name, String version, String p2IuId) {
-            this(name, version, null, null, null, p2IuId);
+            this(name, version, null, null, null, null, p2IuId);
         }
 
         public ComponentNexusP2ExtraFeatureTestClass(String name, String version, String description, String product,
-                String mvnURI, String p2IuId) {
-            super(name, version, description, product, mvnURI, p2IuId);
+                String mvnURI, String imageMvnURI, String p2IuId) {
+            super(name, version, description, product, mvnURI, imageMvnURI, p2IuId);
         }
 
         @Override

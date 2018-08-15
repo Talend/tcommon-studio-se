@@ -29,7 +29,6 @@ import org.talend.commons.utils.resource.UpdatesHelper;
 import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
-import org.talend.updates.runtime.engine.component.ComponentNexusP2ExtraFeature;
 import org.talend.utils.io.FilesUtils;
 
 /**
@@ -87,8 +86,7 @@ public class NexusShareComponentsManager {
     }
 
     public MavenArtifact getIndexArtifact() {
-        final MavenArtifact indexArtifact = new ComponentNexusP2ExtraFeature().getIndexArtifact();
-        return indexArtifact;
+        return indexManager.getIndexArtifact();
     }
 
     public List<ComponentIndexBean> retrieveComponents(IProgressMonitor monitor) {
