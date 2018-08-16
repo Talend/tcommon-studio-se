@@ -502,8 +502,11 @@ public class RelationshipItemBuilder {
         itemToTest.setVersion(version);
         if (!itemsRelations.containsKey(itemToTest)) {
             try {
-                Item item = proxyRepositoryFactory.getLastRefVersion(getAimProject(), itemId).getProperty().getItem();
-                addOrUpdateItem(item, false);
+                IRepositoryViewObject object = proxyRepositoryFactory.getLastRefVersion(getAimProject(), itemId);
+                if (object != null) {
+                    Item item = object.getProperty().getItem();
+                    addOrUpdateItem(item, false);
+                }
             } catch (PersistenceException e) {
                 log.error(e.getMessage());
             }
