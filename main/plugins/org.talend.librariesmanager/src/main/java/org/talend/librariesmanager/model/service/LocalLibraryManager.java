@@ -1437,10 +1437,9 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
      * @see org.talend.core.model.general.ILibrariesService#saveCustomMavenURIMap()
      */
     @Override
-    public void saveCustomMavenURIMap() {
-        CustomUriManager.getInstance().saveCustomURIMap();
+    public void saveCustomMavenURIMap(boolean needWriteToJsonFile ) {
+        CustomUriManager.getInstance().saveCustomURIMap(needWriteToJsonFile);
     }
-
     /*
      * (non-Javadoc)
      * 

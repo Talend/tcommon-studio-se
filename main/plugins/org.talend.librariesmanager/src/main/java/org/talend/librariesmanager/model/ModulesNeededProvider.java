@@ -319,7 +319,7 @@ public class ModulesNeededProvider {
 
             ILibraryManagerService libManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault()
                     .getService(ILibraryManagerService.class);
-            libManagerService.saveCustomMavenURIMap();
+            libManagerService.saveCustomMavenURIMap(false);
         }
     }
 

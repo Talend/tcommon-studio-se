@@ -162,7 +162,7 @@ public interface ILibraryManagerService extends IService {
 
     public String getCustomMavenURI(String orignalURI);
 
-    public void saveCustomMavenURIMap();
+    public void saveCustomMavenURIMap(boolean needWriteToJsonFile);
 
     public String getPlatformURLFromIndex(String jarName);
 

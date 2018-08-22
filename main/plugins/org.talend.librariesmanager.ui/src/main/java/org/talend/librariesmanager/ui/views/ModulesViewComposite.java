@@ -187,7 +187,7 @@ public class ModulesViewComposite extends Composite {
                 if (modified) {
                     ILibraryManagerService libManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault()
                             .getService(ILibraryManagerService.class);
-                    libManagerService.saveCustomMavenURIMap();
+                    libManagerService.saveCustomMavenURIMap(true);
                     tableViewerCreator.getTableViewer().refresh();
                 }
             }
