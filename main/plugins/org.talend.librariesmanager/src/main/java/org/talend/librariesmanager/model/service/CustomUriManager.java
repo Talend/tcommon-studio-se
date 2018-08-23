@@ -92,13 +92,15 @@ public class CustomUriManager {
         }
     }
 
-    public void saveCustomURIMap() {
+    public void saveCustomURIMap(boolean needWriteToJsonfile) {
         final RepositoryWorkUnit repositoryWorkUnit = new RepositoryWorkUnit(ProjectManager.getInstance().getCurrentProject(),
                 "Save custom maven uri map") {
 
             @Override
             public void run() throws PersistenceException, LoginException {
-                saveResource(customURIObject, getResourcePath(), CUSTOM_URI_MAP, false);
+            	if(needWriteToJsonfile) {
+                    saveResource(customURIObject, getResourcePath(), CUSTOM_URI_MAP, false);
+            	}
             }
         };
         IProxyRepositoryFactory factory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
@@ -148,7 +150,7 @@ public class CustomUriManager {
         if (loadResources != null) {
             customURIObject.putAll(loadResources);
         }
-        saveCustomURIMap();
+        saveCustomURIMap(true);
     }
 
     public void exportSettings(String filePath, String fileName) {
@@ -159,7 +161,7 @@ public class CustomUriManager {
         try {
             File file = new File(getResourcePath(), CUSTOM_URI_MAP);
             long modifyDate = file.lastModified();
-            if (modifyDate > lastModified) {
+            if (true) {
                 customURIObject.clear();
                 JSONObject loadResources = loadResources(getResourcePath(), CUSTOM_URI_MAP);
                 customURIObject.putAll(loadResources);
