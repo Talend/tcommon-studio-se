@@ -874,16 +874,16 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         }
         if (!modulesNeededNames.contains(moduleName)) {
             ModulesNeededProvider.addUnknownModules(moduleName, originalURI, false);
-            saveCustomMap = true;
+//            saveCustomMap = true;
         }
 
         // change the custom uri
-        if (saveCustomMap) {
-            testModule.setCustomMavenUri(customURI);
-            ILibraryManagerService libManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
-                    ILibraryManagerService.class);
-            libManagerService.saveCustomMavenURIMap();
-        }
+//        if (saveCustomMap) {
+//            testModule.setCustomMavenUri(customURI);
+//            ILibraryManagerService libManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
+//                    ILibraryManagerService.class);
+//            libManagerService.saveCustomMavenURIMap();
+//        }
 
         LibManagerUiPlugin.getDefault().getLibrariesService().checkLibraries();
         setReturnCode(OK);
