@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -375,7 +376,10 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
             org.talend.core.model.general.Project currentProject = ProjectManager.getInstance().getCurrentProject();
             Map<String, List<IRepositoryViewObject>> nameCache = repObjectcache.getNameItemChache();
             final Property property = importItem.getProperty();
-            List<IRepositoryViewObject> nameItems = nameCache.get(property.getLabel());
+            List<IRepositoryViewObject> nameItems = nameCache.keySet().stream()
+                    .filter(name -> name.equalsIgnoreCase(property.getLabel())).flatMap(key -> nameCache.get(key).stream())
+                    .collect(Collectors.toList());
+
             if (nameItems != null) {
                 for (IRepositoryViewObject current : nameItems) {
                     boolean isInCurrentProject = ProjectManager.getInstance().isInMainProject(currentProject,
