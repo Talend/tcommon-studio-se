@@ -12,14 +12,18 @@
 // ============================================================================
 package org.talend.updates.runtime.model;
 
-import java.io.File;
 import java.net.URI;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.swt.graphics.Image;
+import org.talend.updates.runtime.feature.model.Category;
+import org.talend.updates.runtime.feature.model.Type;
+import org.talend.updates.runtime.storage.IFeatureStorage;
 
 /**
  * created by sgandon on 24 sept. 2013 Interface used for element to be installed after the Studio is launched.
@@ -77,7 +81,9 @@ public interface ExtraFeature {
      * */
     public boolean mustBeInstalled();
     
-    default public boolean canBeInstalled(IProgressMonitor progress) throws P2ExtraFeatureException {
+    boolean needRestart();
+
+    default boolean canBeInstalled(IProgressMonitor progress) throws ExtraFeatureException {
         try {
             return !isInstalled(progress);
         } catch (Exception e) {
@@ -92,28 +98,60 @@ public interface ExtraFeature {
      * @param progress
      * @return a new P2ExtraFeature if the update site contains a new version of the feature or null.
      */
-    default public ExtraFeature createFeatureIfUpdates(IProgressMonitor progress) throws Exception {
+    default ExtraFeature createFeatureIfUpdates(IProgressMonitor progress) throws Exception {
         return null;
     }
 
-    public boolean needRestart();
+    default ExtraFeature getInstalledFeature(IProgressMonitor progress) throws ExtraFeatureException {
+        return this;
+    }
 
-    default public Image getImage(IProgressMonitor monitor) throws Exception {
+    default Image getImage(IProgressMonitor monitor) throws Exception {
         return null;
     }
 
-    default public File downloadImage(IProgressMonitor monitor) throws Exception {
+    default String getImageMvnUri() {
         return null;
     }
 
-    default public void addCallBack(ICallBack callBack) {
+    default String getMvnUri() {
+        return null;
     }
 
-    default public void remoteCallBack(ICallBack callBack) {
+    default FeatureCategory getParentCategory() {
+        return null;
     }
 
-    public static interface ICallBack {
+    /**
+     * Sets the parentCategory.
+     * 
+     * @param parentCategory the parentCategory to set
+     */
+    default void setParentCategory(FeatureCategory parentCategory) {
+        // nothing to do
+    }
 
-        File downloadImage(IProgressMonitor monitor);
+    default String getCompatibleStudioVersion() {
+        return null;
+    }
+
+    default Collection<Type> getTypes() {
+        return Collections.EMPTY_LIST;
+    }
+
+    default Collection<Category> getCategories() {
+        return Collections.EMPTY_LIST;
+    }
+
+    default boolean isDegradable() {
+        return false;
+    }
+
+    default IFeatureStorage getStorage() {
+        return null;
+    }
+
+    default void setStorage(IFeatureStorage storage) {
+        // nothing to do
     }
 }

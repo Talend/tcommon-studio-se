@@ -22,15 +22,16 @@ import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.login.AbstractLoginTask;
 import org.talend.updates.runtime.engine.component.ComponentNexusP2ExtraFeature;
 import org.talend.updates.runtime.engine.component.InstallComponentMessages;
 import org.talend.updates.runtime.engine.factory.ComponentsNexusInstallFactory;
 import org.talend.updates.runtime.model.ExtraFeature;
+import org.talend.updates.runtime.model.ExtraFeatureException;
 import org.talend.updates.runtime.model.FeatureCategory;
-import org.talend.updates.runtime.model.P2ExtraFeature;
-import org.talend.updates.runtime.model.P2ExtraFeatureException;
 import org.talend.updates.runtime.nexus.component.ComponentIndexBean;
+import org.talend.updates.runtime.storage.impl.NexusFeatureStorage;
 import org.talend.updates.runtime.utils.OsgiBundleInstaller;
 
 /**
@@ -44,13 +45,14 @@ public class InstallLocalNexusComponentsLoginTask extends AbstractLoginTask {
     class ComponentsLocalNexusInstallFactory extends ComponentsNexusInstallFactory {
 
         @Override
-        protected Set<P2ExtraFeature> getAllExtraFeatures(IProgressMonitor monitor) {
+        protected Set<ExtraFeature> getAllExtraFeatures(IProgressMonitor monitor) {
             return getLocalNexusFeatures(monitor); // only get from local nexus
         }
 
         @Override
-        protected ComponentNexusP2ExtraFeature createComponentFeature(ComponentIndexBean b) {
-            return new ComponentNexusP2ExtraFeature(b) {
+        protected ComponentNexusP2ExtraFeature createComponentFeature(IProgressMonitor monitor, ArtifactRepositoryBean serverBean,
+                ComponentIndexBean b) {
+            ComponentNexusP2ExtraFeature feature = new ComponentNexusP2ExtraFeature(b) {
 
                 @Override
                 protected void syncComponentsToInstalledFolder(IProgressMonitor progress, File downloadedCompFile) {
@@ -64,6 +66,8 @@ public class InstallLocalNexusComponentsLoginTask extends AbstractLoginTask {
                 }
 
             };
+            feature.setStorage(new NexusFeatureStorage(serverBean, b.getMvnURI(), b.getImageMvnURI()));
+            return feature;
         }
 
     }
@@ -107,7 +111,7 @@ public class InstallLocalNexusComponentsLoginTask extends AbstractLoginTask {
     }
 
     private void install(IProgressMonitor monitor, ExtraFeature feature, InstallComponentMessages messages)
-            throws P2ExtraFeatureException {
+            throws ExtraFeatureException {
         if (feature instanceof FeatureCategory) {
             Set<ExtraFeature> children = ((FeatureCategory) feature).getChildren();
             for (ExtraFeature f : children) {

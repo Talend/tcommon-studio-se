@@ -69,6 +69,8 @@ public class FeatureListNavigator extends AbstractControlListItem<IFeatureNaviga
 
     private Label pagesLabel;
 
+    private Label curPageLabel;
+
     private StyledText totalText;
 
     public FeatureListNavigator(Composite parent, int style, FeaturesManagerRuntimeData runtimeData, IFeatureNavigator element) {
@@ -111,6 +113,7 @@ public class FeatureListNavigator extends AbstractControlListItem<IFeatureNaviga
         previousPageButton = new Button(prevNextPanel, SWT.NONE);
         previousPageButton.setText(Messages.getString("ComponentsManager.form.navigator.previousPage")); //$NON-NLS-1$
         previousPageButton.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
+        curPageLabel = new Label(prevNextPanel, SWT.NONE);
         nextPageButton = new Button(prevNextPanel, SWT.NONE);
         nextPageButton.setText(Messages.getString("ComponentsManager.form.navigator.next")); //$NON-NLS-1$
         nextPageButton.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
@@ -174,6 +177,11 @@ public class FeatureListNavigator extends AbstractControlListItem<IFeatureNaviga
         previousPageButton.setLayoutData(formData);
         formData = new FormData();
         formData.left = new FormAttachment(previousPageButton, horizonAlignWidth, SWT.RIGHT);
+        formData.top = new FormAttachment(previousPageButton, 0, SWT.CENTER);
+        curPageLabel.setLayoutData(formData);
+        formData = new FormData();
+        formData.left = new FormAttachment(curPageLabel, horizonAlignWidth, SWT.RIGHT);
+        formData.top = new FormAttachment(curPageLabel, 0, SWT.CENTER);
         formData.width = preNexBtnWidth;
         formData.right = new FormAttachment(100, 0);
         nextPageButton.setLayoutData(formData);
@@ -409,6 +417,7 @@ public class FeatureListNavigator extends AbstractControlListItem<IFeatureNaviga
         totalText.setText(totalLabel + " " + totalSize); //$NON-NLS-1$
         totalText.setStyleRange(totalStyleRange);
 
+        curPageLabel.setText("[" + getDefaultPage() + "]"); //$NON-NLS-1$ //$NON-NLS-2$
         currentPageText.setText("" + getDefaultPage()); //$NON-NLS-1$
 
         pagesLabel.setText("/" + searchResult.getTotalPageSize()); //$NON-NLS-1$

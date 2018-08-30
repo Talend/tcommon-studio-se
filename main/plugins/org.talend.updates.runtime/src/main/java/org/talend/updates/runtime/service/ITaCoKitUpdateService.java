@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.IService;
 import org.talend.updates.runtime.model.interfaces.ITaCoKitCarFeature;
+import org.talend.updates.runtime.nexus.component.ComponentIndexBean;
 
 /**
  * DOC cmeng  class global comment. Detailled comment
@@ -31,6 +32,8 @@ public interface ITaCoKitUpdateService extends IService {
     public static final String FOLDER_CAR = "car"; //$NON-NLS-1$
 
     ITaCoKitCarFeature generateExtraFeature(File file, IProgressMonitor monitor) throws Exception;
+
+    ITaCoKitCarFeature generateExtraFeature(ComponentIndexBean indexBean, IProgressMonitor monitor) throws Exception;
 
     ICarInstallationResult installCars(Collection<File> files, IProgressMonitor monitor) throws Exception;
 

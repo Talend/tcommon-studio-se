@@ -12,6 +12,10 @@
 // ============================================================================
 package org.talend.updates.runtime.feature.model;
 
+import java.util.Arrays;
+import java.util.Collection;
+
+import org.apache.commons.lang.StringUtils;
 import org.talend.updates.runtime.i18n.Messages;
 
 /**
@@ -20,6 +24,8 @@ import org.talend.updates.runtime.i18n.Messages;
 public class Category {
 
     public static final Category ALL = new Category(Messages.getString("FeaturesManager.Category.all"), ""); //$NON-NLS-1$
+
+    private static final Collection<Category> categories = Arrays.asList(ALL);
 
     private String label;
 
@@ -36,5 +42,17 @@ public class Category {
 
     public String getKeyWord() {
         return this.keyword;
+    }
+
+    public static Category valueOf(String str) {
+        if (StringUtils.isBlank(str)) {
+            return ALL;
+        }
+        for (Category c : categories) {
+            if (str.equalsIgnoreCase(c.getKeyWord())) {
+                return c;
+            }
+        }
+        return null;
     }
 }

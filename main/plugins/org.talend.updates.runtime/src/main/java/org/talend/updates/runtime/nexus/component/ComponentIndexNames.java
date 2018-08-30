@@ -29,6 +29,10 @@ public enum ComponentIndexNames {
     description,
     license_uri,
     license,
+    types,
+    categories,
+    degradable,
+    compatibleStudioVersion,
     //
     ;
 

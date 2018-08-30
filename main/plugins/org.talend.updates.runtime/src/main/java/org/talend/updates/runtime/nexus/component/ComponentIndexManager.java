@@ -117,6 +117,10 @@ public class ComponentIndexManager {
             readAttribute(ComponentIndexNames.image_mvn_uri, element, indexBean);
             readAttribute(ComponentIndexNames.product, element, indexBean);
             readAttribute(ComponentIndexNames.license_uri, element, indexBean);
+            readAttribute(ComponentIndexNames.compatibleStudioVersion, element, indexBean);
+            readAttribute(ComponentIndexNames.types, element, indexBean);
+            readAttribute(ComponentIndexNames.categories, element, indexBean);
+            readAttribute(ComponentIndexNames.degradable, element, indexBean);
 
             readChildContent(ComponentIndexNames.description, element, indexBean);
             readChildContent(ComponentIndexNames.license, element, indexBean);
@@ -276,6 +280,11 @@ public class ComponentIndexManager {
             case mvn_uri:
             case license_uri:
             case product:
+            case image_mvn_uri:
+            case types:
+            case categories:
+            case degradable:
+            case compatibleStudioVersion:
             default:
                 // attribute
                 component.add(docFactory.createAttribute(component, in.getName(), value));

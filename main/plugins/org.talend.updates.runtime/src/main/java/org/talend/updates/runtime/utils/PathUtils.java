@@ -19,17 +19,23 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.URIUtil;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.runtime.service.ComponentsInstallComponent;
 import org.talend.commons.runtime.service.PatchComponent;
 import org.talend.commons.utils.VersionUtils;
 import org.talend.commons.utils.resource.FileExtensions;
+import org.talend.updates.runtime.feature.model.Category;
+import org.talend.updates.runtime.feature.model.Type;
 
 /**
  * created by ycbai on 2017年5月23日 Detailled comment
@@ -151,5 +157,41 @@ public class PathUtils {
         result.append(studioVersion.getMicro());
 
         return result.toString();
+    }
+
+    public static Collection<Type> convert2Types(String types) {
+        Collection<Type> typeList = new ArrayList<>();
+        if (StringUtils.isNotBlank(types)) {
+            String[] splitStrs = types.split(",");
+            if (splitStrs != null && 0 < splitStrs.length) {
+                for (String str : splitStrs) {
+                    Type t = Type.valueOf(str.trim());
+                    if (t != null) {
+                        typeList.add(t);
+                    } else {
+                        ExceptionHandler.process(new Exception("Can't resolve feature type: " + str));
+                    }
+                }
+            }
+        }
+        return typeList;
+    }
+
+    public static Collection<Category> convert2Categories(String categories) {
+        Collection<Category> categoryList = new ArrayList<>();
+        if (StringUtils.isNotBlank(categories)) {
+            String[] splitStrs = categories.split(",");
+            if (splitStrs != null && 0 < splitStrs.length) {
+                for (String str : splitStrs) {
+                    Category c = Category.valueOf(str.trim());
+                    if (c != null) {
+                        categoryList.add(c);
+                    } else {
+                        ExceptionHandler.process(new Exception("Can't resolve feature category: " + str));
+                    }
+                }
+            }
+        }
+        return categoryList;
     }
 }

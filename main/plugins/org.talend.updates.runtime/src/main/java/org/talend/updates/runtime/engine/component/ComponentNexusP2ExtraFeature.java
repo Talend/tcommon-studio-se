@@ -13,33 +13,32 @@
 package org.talend.updates.runtime.engine.component;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.equinox.p2.metadata.IInstallableUnit;
 import org.eclipse.equinox.p2.metadata.Version;
-import org.talend.core.nexus.ArtifactRepositoryBean;
-import org.talend.designer.maven.utils.PomUtil;
+import org.talend.updates.runtime.feature.model.Category;
+import org.talend.updates.runtime.feature.model.Type;
 import org.talend.updates.runtime.i18n.Messages;
+import org.talend.updates.runtime.model.ExtraFeature;
+import org.talend.updates.runtime.model.ExtraFeatureException;
 import org.talend.updates.runtime.model.P2ExtraFeature;
 import org.talend.updates.runtime.model.P2ExtraFeatureException;
 import org.talend.updates.runtime.nexus.component.ComponentIndexBean;
-import org.talend.updates.runtime.nexus.component.NexusComponentsTransport;
 import org.talend.updates.runtime.utils.PathUtils;
-import org.talend.utils.io.FilesUtils;
 
 /**
  * DOC ggu class global comment. Detailled comment
  */
 public class ComponentNexusP2ExtraFeature extends ComponentP2ExtraFeature {
-
-    private ArtifactRepositoryBean serverBean;
 
     public ComponentNexusP2ExtraFeature() {
         super();
@@ -49,13 +48,15 @@ public class ComponentNexusP2ExtraFeature extends ComponentP2ExtraFeature {
         super(indexBean);
     }
 
-    public ComponentNexusP2ExtraFeature(String name, String version, String description, String product, String mvnURI,
-            String imageMvnURI, String p2IuId) {
-        super(name, version, description, product, mvnURI, imageMvnURI, p2IuId);
+    public ComponentNexusP2ExtraFeature(String name, String version, String description, String mvnUri, String imageMvnUri,
+            String product, String compatibleStudioVersion, String p2IuId, Collection<Type> types,
+            Collection<Category> categories, boolean degradable) {
+        super(p2IuId, name, version, description, mvnUri, imageMvnUri, product, compatibleStudioVersion, types, categories,
+                degradable);
     }
 
     @Override
-    public P2ExtraFeature getInstalledFeature(IProgressMonitor progress) throws P2ExtraFeatureException {
+    public ExtraFeature getInstalledFeature(IProgressMonitor progress) throws ExtraFeatureException {
         P2ExtraFeature extraFeature = null;
         try {
             if (!this.isInstalled(progress)) {
@@ -75,7 +76,7 @@ public class ComponentNexusP2ExtraFeature extends ComponentP2ExtraFeature {
                 }
             }
         } catch (Exception e) {
-            throw new P2ExtraFeatureException(e);
+            throw new ExtraFeatureException(e);
         }
         return extraFeature;
     }
@@ -89,57 +90,21 @@ public class ComponentNexusP2ExtraFeature extends ComponentP2ExtraFeature {
         if (monitor.isCanceled()) {
             throw new OperationCanceledException();
         }
-        final File workFolder = PathUtils.getComponentsDownloadedFolder();
-        FilesUtils.deleteFolder(workFolder, false); // empty the folder
-        if (!workFolder.exists()) {
-            workFolder.mkdirs();
-        }
-
-        String reletivePath = PomUtil.getArtifactPath(getArtifact());
-        if (reletivePath == null) {
-            return Messages.createErrorStatus(null, "Can't install"); //$NON-NLS-1$
-        }
-
-        String compFileName = new Path(reletivePath).lastSegment();
-        final File target = new File(workFolder, compFileName);
 
         try {
-            ArtifactRepositoryBean serverBean = getServerBean();
-            char[] passwordChars = null;
-            String password = serverBean.getPassword();
-            if (password != null) {
-                passwordChars = password.toCharArray();
+            File featureFile = getStorage().getFeatureFile(monitor);
+            if (featureFile == null || !featureFile.exists()) {
+                throw new IOException(Messages.getString("failed.install.of.feature", "Download failure for " + getName())); //$NON-NLS-1$ //$NON-NLS-2$
             }
-            NexusComponentsTransport transport = new NexusComponentsTransport(serverBean.getRepositoryURL(),
-                    serverBean.getUserName(), passwordChars);
-            transport.downloadFile(monitor, getMvnURI(), target);
-
-            if (monitor.isCanceled()) {
-                throw new OperationCanceledException();
-            }
-            if (!target.exists()) {
-                return Messages.createErrorStatus(null, "failed.install.of.feature", "Download the failure for " + getMvnURI()); //$NON-NLS-1$ //$NON-NLS-2$
-            }
-
             List<URI> repoUris = new ArrayList<>(1);
-            repoUris.add(PathUtils.getP2RepURIFromCompFile(target));
+            repoUris.add(PathUtils.getP2RepURIFromCompFile(featureFile));
 
             return super.install(monitor, repoUris);
         } catch (Exception e) {
             return Messages.createErrorStatus(e);
         } finally {
-            if (target.exists()) {
-                target.delete();
-            }
+            // nothing to do
         }
-    }
-
-    public ArtifactRepositoryBean getServerBean() {
-        return this.serverBean;
-    }
-
-    public void setServerBean(ArtifactRepositoryBean artifactBean) {
-        this.serverBean = artifactBean;
     }
 
 }

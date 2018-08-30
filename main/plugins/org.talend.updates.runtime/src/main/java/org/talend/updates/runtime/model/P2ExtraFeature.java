@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -54,6 +55,8 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.updates.runtime.feature.model.Category;
+import org.talend.updates.runtime.feature.model.Type;
 import org.talend.updates.runtime.i18n.Messages;
 import org.talend.updates.runtime.service.ITaCoKitUpdateService;
 import org.talend.updates.runtime.service.ITaCoKitUpdateService.ICarInstallationResult;
@@ -71,8 +74,19 @@ import org.talend.utils.json.JSONObject;
  */
 public class P2ExtraFeature extends AbstractExtraFeature {
 
-    protected P2ExtraFeature() {
-        // do nothing be authorise subclasses to have a constructor
+    private String baseRepoUriStr;// default url of the remote repo where to look for the feature to install
+
+    public P2ExtraFeature() {
+        this(null, null, null, null, null, null, null, null, null, null, null, false, null, false, false);
+    }
+
+    public P2ExtraFeature(String p2IuId, String name, String version, String description, String mvnUri, String imageMvnUri,
+            String product, String compatibleStudioVersion, FeatureCategory parentCategory, Collection<Type> types,
+            Collection<Category> categories, boolean degradable, String baseRepoUriStr, boolean mustBeInstalled,
+            boolean useLegacyP2Install) {
+        super(p2IuId, name, version, description, mvnUri, imageMvnUri, product, compatibleStudioVersion, parentCategory, types,
+                categories, degradable, mustBeInstalled, useLegacyP2Install);
+        this.baseRepoUriStr = baseRepoUriStr;
     }
 
     /*
@@ -175,18 +189,53 @@ public class P2ExtraFeature extends AbstractExtraFeature {
         return null;
     }
 
+    public URI getP2RepositoryURI() {
+        return getP2RepositoryURI(null, false);
+    }
+
+    /**
+     * this is the base URI set in the license.
+     *
+     * @return the defaultRepoUriStr
+     */
+    public String getBaseRepoUriString() {
+        return this.baseRepoUriStr;
+    }
+
+    public void setBaseRepoUriString(String baseRepoUriStr) {
+        this.baseRepoUriStr = baseRepoUriStr;
+    }
+
+    public URI getP2RepositoryURI(String key, boolean isTOS) {
+        String uriString = getBaseRepoUriString();
+        if (key == null) {
+            key = "talend.p2.repo.url"; //$NON-NLS-1$
+        }
+        String p2RepoUrlFromProp = System.getProperty(key);
+        if (!isTOS && p2RepoUrlFromProp != null) {
+            uriString = p2RepoUrlFromProp;
+        } else {
+            String version = PathUtils.getTalendVersionStr();
+            if (uriString == null) {
+                return URI.create(version);
+            }
+            uriString = uriString + (uriString.endsWith("/") ? "" : "/") + version; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        }
+        return URI.create(uriString);
+    }
+
     /*
      * (non-Javadoc)
      * 
      * @see org.talend.updates.model.ExtraFeature#install(org.eclipse.core.runtime.IProgressMonitor, java.util.List)
      */
     @Override
-    public IStatus install(IProgressMonitor progress, List<URI> allRepoUris) throws P2ExtraFeatureException {
+    public IStatus install(IProgressMonitor progress, List<URI> allRepoUris) throws ExtraFeatureException {
         IStatus doInstallStatus = null;
         File configIniBackupFile = null;
         Map<File, File> unzippedPatches = null;
         try {
-            if (!useLegacyP2Install) {
+            if (!isUseLegacyP2Install()) {
                 // backup the config.ini
                 configIniBackupFile = copyConfigFile(null);
             } // else legacy p2 install will update the config.ini
@@ -197,8 +246,8 @@ public class P2ExtraFeature extends AbstractExtraFeature {
             unzippedPatches = unzipPatches(progress, allRepoUris);
             storeInstalledFeatureMessage();
         } catch (IOException e) {
-            throw new P2ExtraFeatureException(new ProvisionException(Messages.createErrorStatus(e,
-                    "ExtraFeaturesFactory.restore.config.error"))); //$NON-NLS-1$
+            throw new ExtraFeatureException(
+                    new ProvisionException(Messages.createErrorStatus(e, "ExtraFeaturesFactory.restore.config.error"))); //$NON-NLS-1$
         } finally {
             try {
                 afterInstallP2(progress, unzippedPatches);
@@ -259,7 +308,7 @@ public class P2ExtraFeature extends AbstractExtraFeature {
         SubMonitor subMonitor = SubMonitor.convert(progress, 5);
         subMonitor.setTaskName(Messages.getString("ExtraFeature.installing.feature", getName())); //$NON-NLS-1$
         // reset isInstalled to make is compute the next time is it used
-        isInstalled = null;
+        setIsInstalled(null);
         // we are not using this bundles context caus it fails to be aquired in junit test
         Bundle bundle = FrameworkUtil.getBundle(org.eclipse.equinox.p2.query.QueryUtil.class);
         BundleContext context = bundle.getBundleContext();
@@ -507,13 +556,21 @@ public class P2ExtraFeature extends AbstractExtraFeature {
                 return null;
             } // else at least one udpate is availalble.
               // take the first update.
-            p2ExtraFeatureUpdate.version = selectedUpdates[0].replacement.getVersion().getOriginal();
+            p2ExtraFeatureUpdate.setVersion(selectedUpdates[0].replacement.getVersion().getOriginal());
             return p2ExtraFeatureUpdate;
         } finally {
             if (agent != null) {// agent creation did not fail
                 removeAllRepositories(agent, allRepoUris);
                 agent.stop();
             }
+        }
+    }
+
+    @Override
+    public void copyFieldInto(AbstractExtraFeature p2ExtraFeatureUpdate) {
+        super.copyFieldInto(p2ExtraFeatureUpdate);
+        if (p2ExtraFeatureUpdate instanceof P2ExtraFeature) {
+            ((P2ExtraFeature) p2ExtraFeatureUpdate).baseRepoUriStr = baseRepoUriStr;
         }
     }
 
@@ -542,29 +599,27 @@ public class P2ExtraFeature extends AbstractExtraFeature {
         return tempFile;
     }
 
-    public P2ExtraFeature getInstalledFeature(IProgressMonitor progress) throws P2ExtraFeatureException {
-        P2ExtraFeature extraFeature = null;
+    @Override
+    public ExtraFeature getInstalledFeature(IProgressMonitor progress) throws ExtraFeatureException {
+        ExtraFeature extraFeature = null;
         try {
             if (!this.isInstalled(progress)) { // new
                 extraFeature = this;
             } else {// else already installed so try to find updates
-                ExtraFeature updateFeature = this.createFeatureIfUpdates(progress);
-                if (updateFeature != null && updateFeature instanceof P2ExtraFeature) {
-                    extraFeature = (P2ExtraFeature) updateFeature;
-                }
+                extraFeature = this.createFeatureIfUpdates(progress);
             }
         } catch (Exception e) {
-            throw new P2ExtraFeatureException(e);
+            throw new ExtraFeatureException(e);
         }
         return extraFeature;
     }
 
     @Override
-    public boolean canBeInstalled(IProgressMonitor progress) throws P2ExtraFeatureException {
+    public boolean canBeInstalled(IProgressMonitor progress) throws ExtraFeatureException {
         return getInstalledFeature(progress) != null;
     }
 
-    protected Map<File, File> unzipPatches(IProgressMonitor progress, List<URI> allRepoUris) throws P2ExtraFeatureException {
+    protected Map<File, File> unzipPatches(IProgressMonitor progress, List<URI> allRepoUris) throws ExtraFeatureException {
         if (allRepoUris == null || allRepoUris.size() == 0) {
             return Collections.EMPTY_MAP;
         }

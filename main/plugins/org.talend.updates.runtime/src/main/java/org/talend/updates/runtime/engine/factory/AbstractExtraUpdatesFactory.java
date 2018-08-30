@@ -20,7 +20,6 @@ import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ui.branding.IBrandingService;
 import org.talend.updates.runtime.model.ExtraFeature;
 import org.talend.updates.runtime.model.FeatureCategory;
-import org.talend.updates.runtime.model.P2ExtraFeature;
 
 /**
  * created by ggu on Jul 17, 2014 Detailled comment
@@ -67,7 +66,7 @@ public abstract class AbstractExtraUpdatesFactory {
         }
     }
 
-    protected void addToCategory(FeatureCategory category, P2ExtraFeature extraF) {
+    protected void addToCategory(FeatureCategory category, ExtraFeature extraF) {
         if (category == null || extraF == null) {
             return;
         }

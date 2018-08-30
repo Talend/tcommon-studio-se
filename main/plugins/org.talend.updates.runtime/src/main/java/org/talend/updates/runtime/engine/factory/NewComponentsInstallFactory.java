@@ -56,13 +56,9 @@ public class NewComponentsInstallFactory extends AbstractExtraUpdatesFactory {
         private File workFolder;
 
         ComponentInstallP2ExtraFeature() {
-            name = Messages.getString("installing.new.components.name"); //$NON-NLS-1$
-            description = Messages.getString("installing.new.components.description"); //$NON-NLS-1$
-            version = VersionUtils.getDisplayVersion();
-
-            p2IuId = "org.talend.components." + System.currentTimeMillis(); // make sure it will do always.
-            useLegacyP2Install = true; // enable to modify the config.ini
-            mustBeInstalled = false;
+            super("org.talend.components." + System.currentTimeMillis(), Messages.getString("installing.new.components.name"),
+                    VersionUtils.getDisplayVersion(), Messages.getString("installing.new.components.description"), null, null,
+                    null, null, null, null, null, false, null, false, true);
         }
 
         @Override

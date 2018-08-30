@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
@@ -45,9 +46,9 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.runtime.utils.io.FileCopyUtils;
 import org.talend.commons.utils.resource.FileExtensions;
 import org.talend.commons.utils.resource.UpdatesHelper;
-import org.talend.core.runtime.maven.MavenArtifact;
-import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.librariesmanager.prefs.LibrariesManagerUtils;
+import org.talend.updates.runtime.feature.model.Category;
+import org.talend.updates.runtime.feature.model.Type;
 import org.talend.updates.runtime.i18n.Messages;
 import org.talend.updates.runtime.maven.MavenRepoSynchronizer;
 import org.talend.updates.runtime.model.P2ExtraFeature;
@@ -67,8 +68,6 @@ import org.talend.utils.io.FilesUtils;
  */
 public class ComponentP2ExtraFeature extends P2ExtraFeature implements IP2ComponentFeature {
 
-    private String product, mvnURI, imageMvnURI;
-
     private URI repositoryURI;
 
     private boolean isLogin;
@@ -76,12 +75,15 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature implements IP2Compon
     private File tmpM2RepoFolder;
 
     public ComponentP2ExtraFeature() {
-        needRestart = false;
+        this(null, null, null, null, null, null, null, null, null, null, false);
+        setNeedRestart(false);
     }
 
     public ComponentP2ExtraFeature(ComponentIndexBean indexBean) {
-        this(indexBean.getName(), indexBean.getVersion(), indexBean.getDescription(), indexBean.getProduct(),
-                indexBean.getMvnURI(), indexBean.getImageMvnURI(), indexBean.getBundleId());
+        this(indexBean.getName(), indexBean.getVersion(), indexBean.getDescription(), indexBean.getMvnURI(),
+                indexBean.getImageMvnURI(), indexBean.getProduct(), indexBean.getCompatibleStudioVersion(),
+                indexBean.getBundleId(), PathUtils.convert2Types(indexBean.getTypes()),
+                PathUtils.convert2Categories(indexBean.getCategories()), Boolean.valueOf(indexBean.getDegradable()));
     }
 
     public ComponentP2ExtraFeature(File componentZipFile) {
@@ -89,18 +91,11 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature implements IP2Compon
         this.repositoryURI = PathUtils.getP2RepURIFromCompFile(componentZipFile);
     }
 
-    public ComponentP2ExtraFeature(String name, String version, String description, String product, String mvnURI,
-            String imageMvnURI, String p2IuId) {
-        this.name = name;
-        this.version = version;
-        this.description = description;
-        this.product = product;
-        this.mvnURI = mvnURI;
-        this.imageMvnURI = imageMvnURI;
-        this.p2IuId = p2IuId;
-
-        this.useLegacyP2Install = true; // enable to modify the config.ini
-        this.mustBeInstalled = false;
+    public ComponentP2ExtraFeature(String name, String version, String description, String mvnUri, String imageMvnUri,
+            String product, String compatibleStudioVersion, String p2IuId, Collection<Type> types,
+            Collection<Category> categories, boolean degradable) {
+        super(p2IuId, name, version, description, mvnUri, imageMvnUri, product, compatibleStudioVersion, null, types, categories,
+                degradable, null, false, true);
     }
 
     @Override
@@ -117,22 +112,6 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature implements IP2Compon
         return EnumSet.of(UpdateSiteLocationType.DEFAULT_REPO);
     }
 
-    public MavenArtifact getArtifact() {
-        return MavenUrlHelper.parseMvnUrl(mvnURI);
-    }
-
-    public String getProduct() {
-        return product;
-    }
-
-    public String getMvnURI() {
-        return mvnURI;
-    }
-
-    public String getImageMvnURI() {
-        return imageMvnURI;
-    }
-
     public void setLogin(boolean isLogin) {
         this.isLogin = isLogin;
     }
@@ -142,7 +121,7 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature implements IP2Compon
         SubMonitor subMonitor = SubMonitor.convert(progress, 5);
         subMonitor.setTaskName(Messages.getString("ComponentP2ExtraFeature.installing.components", getName())); //$NON-NLS-1$
         // reset isInstalled to make is compute the next time is it used
-        isInstalled = null;
+        setIsInstalled(null);
         // we are not using this bundles context caus it fails to be aquired in junit test
         Bundle bundle = FrameworkUtil.getBundle(org.eclipse.equinox.p2.query.QueryUtil.class);
         BundleContext context = bundle.getBundleContext();
@@ -344,9 +323,9 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature implements IP2Compon
                 File bundleFile = new File(pluginsFolder, b.getName());
 
                 boolean started = OsgiBundleInstaller.installAndStartBundle(bundleFile);
-                needRestart = !started; // if not install, try to restart
+                setNeedRestart(!started); // if not install, try to restart
             } catch (Exception e) {
-                needRestart = true; // if install error, try to restart
+                setNeedRestart(true); // if install error, try to restart
                 ExceptionHandler.process(e);
                 return; // no need install others
             }

@@ -34,7 +34,11 @@ Service-Component: OSGI-INF/components_install.xml
 Export-Package: org.talend.updates.runtime.engine,
  org.talend.updates.runtime.engine.component,
  org.talend.updates.runtime.engine.factory,
+ org.talend.updates.runtime.feature.model,
  org.talend.updates.runtime.model,
+ org.talend.updates.runtime.model.interfaces,
+ org.talend.updates.runtime.nexus.component,
  org.talend.updates.runtime.service,
+ org.talend.updates.runtime.storage,
  org.talend.updates.runtime.ui,
  org.talend.updates.runtime.utils

@@ -10,7 +10,7 @@
 // 9 rue Pages 92150 Suresnes, France
 //
 // ============================================================================
-package org.talend.updates.runtime.model.interfaces;
+package org.talend.updates.runtime.storage;
 
 import java.io.File;
 
@@ -19,12 +19,10 @@ import org.eclipse.core.runtime.IProgressMonitor;
 /**
  * DOC cmeng  class global comment. Detailled comment
  */
-public interface ITaCoKitCarFeature extends IComponentFeature, Comparable<Object> {
+public interface IFeatureStorage {
 
-    File getCarFile(IProgressMonitor progress) throws Exception;
+    File getFeatureFile(IProgressMonitor monitor) throws Exception;
 
-    void setAutoReloadAfterInstalled(boolean autoReload);
-
-    boolean isAutoReloadAfterInstalled();
+    File getImageFile(IProgressMonitor monitor) throws Exception;
 
 }

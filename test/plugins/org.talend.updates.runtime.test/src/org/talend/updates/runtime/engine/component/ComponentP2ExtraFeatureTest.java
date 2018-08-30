@@ -68,7 +68,7 @@ public class ComponentP2ExtraFeatureTest {
     public void before() throws IOException {
         feature = new ComponentP2ExtraFeatureForJUnit("FileInput", "0.1.0", "", "tos_di,tos_bd,tp_bd",
                 "mvn:org.talend.components/components-file-definition/0.1.0/zip",
-                "mvn:org.talend.components/components-file-definition/0.1.0/image", "org.talend.components.file");
+                "mvn:org.talend.components/components-file-definition/0.1.0/png", "org.talend.components.file");
         tmpFolder = org.talend.utils.files.FileUtils.createTmpFolder("test", "comp"); //$NON-NLS-1$ //$NON-NLS-2$
         tempP2Folder = org.talend.utils.files.FileUtils.createTmpFolder("test", "p2"); //$NON-NLS-1$ //$NON-NLS-2$
     }
@@ -84,7 +84,7 @@ public class ComponentP2ExtraFeatureTest {
 
         public ComponentP2ExtraFeatureForJUnit(String name, String version, String description, String product, String mvnURI,
                 String imageMvnURI, String p2IuId) {
-            super(name, version, description, product, mvnURI, imageMvnURI, p2IuId);
+            super(name, version, description, mvnURI, imageMvnURI, product, null, p2IuId, null, null, false);
         }
 
     }
@@ -93,14 +93,14 @@ public class ComponentP2ExtraFeatureTest {
     public void testConstructor() {
         ComponentP2ExtraFeature extraFeature = new ComponentP2ExtraFeatureForJUnit("FileInput", "0.1.0", "File input components",
                 "tos_di,tos_bd,tp_bd", "mvn:org.talend.components/components-file-definition/0.1.0/zip",
-                "mvn:org.talend.components/components-file-definition/0.1.0/image",
+                "mvn:org.talend.components/components-file-definition/0.1.0/png",
                 "org.talend.components.file");
         assertEquals("FileInput", extraFeature.getName()); //$NON-NLS-1$
         assertEquals("0.1.0", extraFeature.getVersion()); //$NON-NLS-1$
         assertEquals("File input components", extraFeature.getDescription()); //$NON-NLS-1$
         assertEquals("tos_di,tos_bd,tp_bd", extraFeature.getProduct()); //$NON-NLS-1$
-        assertEquals("mvn:org.talend.components/components-file-definition/0.1.0/zip", extraFeature.getMvnURI()); //$NON-NLS-1$
-        assertEquals("mvn:org.talend.components/components-file-definition/0.1.0/image", extraFeature.getImageMvnURI()); //$NON-NLS-1$
+        assertEquals("mvn:org.talend.components/components-file-definition/0.1.0/zip", extraFeature.getMvnUri());
+        assertEquals("mvn:org.talend.components/components-file-definition/0.1.0/png", extraFeature.getImageMvnUri());
         assertEquals("org.talend.components.file", extraFeature.getP2IuId()); //$NON-NLS-1$
     }
 

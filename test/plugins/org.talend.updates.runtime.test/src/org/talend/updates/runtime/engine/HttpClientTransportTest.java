@@ -30,7 +30,7 @@ import org.talend.commons.exception.BusinessException;
 import org.talend.commons.utils.resource.FileExtensions;
 import org.talend.core.nexus.HttpClientTransport;
 import org.talend.core.runtime.maven.MavenArtifact;
-import org.talend.updates.runtime.engine.component.ComponentNexusP2ExtraFeature;
+import org.talend.updates.runtime.nexus.component.ComponentIndexManager;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -63,8 +63,8 @@ public class HttpClientTransportTest {
         HttpClientTransportTestClass transport = new HttpClientTransportTestClass(null, null, null);
 
         MavenArtifact artifact = new MavenArtifact();
-        artifact.setGroupId(ComponentNexusP2ExtraFeature.COMPONENT_GROUP_ID);
-        artifact.setArtifactId(ComponentNexusP2ExtraFeature.INDEX);
+        artifact.setGroupId(ComponentIndexManager.COMPONENT_GROUP_ID);
+        artifact.setArtifactId(ComponentIndexManager.INDEX);
         artifact.setVersion("6.4.1");
         artifact.setType(FileExtensions.XML_EXTENSION);
 
@@ -76,8 +76,8 @@ public class HttpClientTransportTest {
         HttpClientTransportTestClass transport = new HttpClientTransportTestClass("://abc", "admin", null);
 
         MavenArtifact artifact = new MavenArtifact();
-        artifact.setGroupId(ComponentNexusP2ExtraFeature.COMPONENT_GROUP_ID);
-        artifact.setArtifactId(ComponentNexusP2ExtraFeature.INDEX);
+        artifact.setGroupId(ComponentIndexManager.COMPONENT_GROUP_ID);
+        artifact.setArtifactId(ComponentIndexManager.INDEX);
         artifact.setVersion("6.4.1");
         artifact.setType(FileExtensions.XML_EXTENSION);
 
@@ -102,8 +102,8 @@ public class HttpClientTransportTest {
 
     private void doTestCreateURI(HttpClientTransport transport) throws URISyntaxException {
         MavenArtifact artifact = new MavenArtifact();
-        artifact.setGroupId(ComponentNexusP2ExtraFeature.COMPONENT_GROUP_ID);
-        artifact.setArtifactId(ComponentNexusP2ExtraFeature.INDEX);
+        artifact.setGroupId(ComponentIndexManager.COMPONENT_GROUP_ID);
+        artifact.setArtifactId(ComponentIndexManager.INDEX);
         artifact.setVersion("6.4.1");
         artifact.setType(FileExtensions.XML_EXTENSION);
 
@@ -138,8 +138,8 @@ public class HttpClientTransportTest {
         };
 
         MavenArtifact artifact = new MavenArtifact();
-        artifact.setGroupId(ComponentNexusP2ExtraFeature.COMPONENT_GROUP_ID);
-        artifact.setArtifactId(ComponentNexusP2ExtraFeature.INDEX);
+        artifact.setGroupId(ComponentIndexManager.COMPONENT_GROUP_ID);
+        artifact.setArtifactId(ComponentIndexManager.INDEX);
         artifact.setVersion("6.4.1");
         artifact.setType(FileExtensions.XML_EXTENSION);
 
@@ -174,8 +174,8 @@ public class HttpClientTransportTest {
 
     private void doTestRequest(HttpClientTransport transport) throws Exception {
         MavenArtifact artifact = new MavenArtifact();
-        artifact.setGroupId(ComponentNexusP2ExtraFeature.COMPONENT_GROUP_ID);
-        artifact.setArtifactId(ComponentNexusP2ExtraFeature.INDEX);
+        artifact.setGroupId(ComponentIndexManager.COMPONENT_GROUP_ID);
+        artifact.setArtifactId(ComponentIndexManager.INDEX);
         artifact.setVersion("6.4.1");
         artifact.setType(FileExtensions.XML_EXTENSION);
 

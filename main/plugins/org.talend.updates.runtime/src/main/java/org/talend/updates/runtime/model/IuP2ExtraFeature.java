@@ -21,17 +21,13 @@ import org.eclipse.equinox.p2.metadata.IInstallableUnit;
  */
 public class IuP2ExtraFeature extends P2ExtraFeature {
     
-    public IuP2ExtraFeature( String uri) {
-        baseRepoUriStr = uri;
+    public IuP2ExtraFeature(String uri) {
+        super(null, null, null, null, null, null, null, null, null, null, null, false, uri, false, false);
     }
 
     public IuP2ExtraFeature(IInstallableUnit iu, String uri) {
-        name = iu.getProperty(IInstallableUnit.PROP_NAME);
-        description = iu.getProperty(IInstallableUnit.PROP_DESCRIPTION);
-        version = iu.getVersion().getOriginal();
-        p2IuId = iu.getId();
-        baseRepoUriStr = uri;
-        useLegacyP2Install = true;
-
+        super(iu.getId(), iu.getProperty(IInstallableUnit.PROP_NAME), iu.getVersion().getOriginal(),
+                iu.getProperty(IInstallableUnit.PROP_DESCRIPTION), null, null, null, null, null, null, null, false, uri, false,
+                true);
     }
 }

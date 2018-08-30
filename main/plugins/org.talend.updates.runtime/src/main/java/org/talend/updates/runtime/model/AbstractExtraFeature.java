@@ -12,18 +12,15 @@
 // ============================================================================
 package org.talend.updates.runtime.model;
 
-import java.io.File;
-import java.net.URI;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.EnumSet;
-import java.util.LinkedList;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.graphics.Image;
-import org.talend.commons.exception.ExceptionHandler;
-import org.talend.commons.utils.VersionUtils;
+import org.talend.updates.runtime.feature.model.Category;
+import org.talend.updates.runtime.feature.model.Type;
+import org.talend.updates.runtime.storage.IFeatureStorage;
 import org.talend.updates.runtime.ui.ImageFactory;
 
 /**
@@ -33,31 +30,62 @@ public abstract class AbstractExtraFeature implements ExtraFeature {
 
     protected static Logger log = Logger.getLogger(AbstractExtraFeature.class);
 
-    protected String p2IuId;// p2 installable unit id
+    private String p2IuId;// p2 installable unit id
 
-    protected String baseRepoUriStr;// default url of the remote repo where to look for the feature to install
+    private String name;// name to be displayed to the user.
 
-    protected String name;// name to be displayed to the user.
+    private String description;// Description displayed to the user.
 
-    protected String description;// Description displayed to the user.
+    private String version;// version of the p2 IU
 
-    protected String version;// version of the p2 IU
+    private String product;
 
-    protected boolean mustBeInstalled;
+    private String mvnUri;
 
-    protected boolean useLegacyP2Install;
+    private String imageMvnUri;
 
-    protected Boolean isInstalled;// true is already installed in the current Studio
+    private String compatibleStudioVersion;
 
-    protected FeatureCategory parentCategory;
+    private boolean degradable;
 
-    protected boolean needRestart = true;
+    private boolean mustBeInstalled;
+
+    private boolean useLegacyP2Install;
+
+    private boolean needRestart = true;
+
+    private Boolean isInstalled;// true is already installed in the current Studio
+
+    private FeatureCategory parentCategory;
 
     private Image image;
 
+    private IFeatureStorage storage;
+
     private Object imageLock = new Object();
 
-    private List<ICallBack> callBacks = Collections.synchronizedList(new LinkedList<>());
+    private Collection<Type> types;
+
+    private Collection<Category> categories;
+
+    public AbstractExtraFeature(String p2IuId, String name, String version, String description, String mvnUri, String imageMvnUri,
+            String product, String compatibleStudioVersion, FeatureCategory parentCategory, Collection<Type> types,
+            Collection<Category> categories, boolean degradable, boolean mustBeInstalled, boolean useLegacyP2Install) {
+        this.p2IuId = p2IuId;
+        this.name = name;
+        this.version = version;
+        this.description = description;
+        this.mvnUri = mvnUri;
+        this.imageMvnUri = imageMvnUri;
+        this.product = product;
+        this.parentCategory = parentCategory;
+        this.mustBeInstalled = mustBeInstalled;
+        this.useLegacyP2Install = useLegacyP2Install;
+        this.compatibleStudioVersion = compatibleStudioVersion;
+        this.degradable = degradable;
+        this.types = types;
+        this.categories = categories;
+    }
 
     /**
      * Getter for p2 installable unit id.
@@ -87,9 +115,17 @@ public abstract class AbstractExtraFeature implements ExtraFeature {
         return this.description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public String getVersion() {
         return this.version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
     }
 
     @Override
@@ -110,11 +146,20 @@ public abstract class AbstractExtraFeature implements ExtraFeature {
         this.name = name;
     }
 
+    public String getProduct() {
+        return this.product;
+    }
+
+    public void setProduct(String product) {
+        this.product = product;
+    }
+
     /**
      * Getter for parentCategory.
      * 
      * @return the parentCategory
      */
+    @Override
     public FeatureCategory getParentCategory() {
         return this.parentCategory;
     }
@@ -124,6 +169,7 @@ public abstract class AbstractExtraFeature implements ExtraFeature {
      * 
      * @param parentCategory the parentCategory to set
      */
+    @Override
     public void setParentCategory(FeatureCategory parentCategory) {
         this.parentCategory = parentCategory;
     }
@@ -148,7 +194,7 @@ public abstract class AbstractExtraFeature implements ExtraFeature {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        P2ExtraFeature other = (P2ExtraFeature) obj;
+        AbstractExtraFeature other = (AbstractExtraFeature) obj;
         if (this.p2IuId == null) {
             if (other.p2IuId != null) {
                 return false;
@@ -167,51 +213,25 @@ public abstract class AbstractExtraFeature implements ExtraFeature {
     }
 
     /**
-     * this is the base URI set in the license.
-     *
-     * @return the defaultRepoUriStr
-     */
-    public String getBaseRepoUriString() {
-        return this.baseRepoUriStr;
-    }
-
-    public URI getP2RepositoryURI() {
-        return getP2RepositoryURI(null, false);
-    }
-
-    public URI getP2RepositoryURI(String key, boolean isTOS) {
-        String uriString = getBaseRepoUriString();
-        if (key == null) {
-            key = "talend.p2.repo.url"; //$NON-NLS-1$
-        }
-        String p2RepoUrlFromProp = System.getProperty(key);
-        if (!isTOS && p2RepoUrlFromProp != null) {
-            uriString = p2RepoUrlFromProp;
-        } else {
-            org.osgi.framework.Version studioVersion = new org.osgi.framework.Version(VersionUtils.getTalendVersion());
-            String version = studioVersion.getMajor() + "." + studioVersion.getMinor() + "." + studioVersion.getMicro();
-            if (uriString == null) {
-                return URI.create(version);
-            }
-            uriString = uriString + (uriString.endsWith("/") ? "" : "/") + version; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        }
-        return URI.create(uriString);
-    }
-
-    /**
      * DOC sgandon Comment method "copy".
      *
      * @param p2ExtraFeature
-     * @param p2ExtraFeatureUpdate
+     * @param feature
      */
-    public void copyFieldInto(AbstractExtraFeature p2ExtraFeatureUpdate) {
-        p2ExtraFeatureUpdate.name = name;
-        p2ExtraFeatureUpdate.description = description;
-        p2ExtraFeatureUpdate.version = version;
-        p2ExtraFeatureUpdate.p2IuId = p2IuId;
-        p2ExtraFeatureUpdate.baseRepoUriStr = baseRepoUriStr;
-        p2ExtraFeatureUpdate.mustBeInstalled = mustBeInstalled;
-        p2ExtraFeatureUpdate.useLegacyP2Install = useLegacyP2Install;
+    public void copyFieldInto(AbstractExtraFeature feature) {
+        feature.name = name;
+        feature.description = description;
+        feature.version = version;
+        feature.p2IuId = p2IuId;
+        feature.mustBeInstalled = mustBeInstalled;
+        feature.useLegacyP2Install = useLegacyP2Install;
+        feature.mvnUri = mvnUri;
+        feature.imageMvnUri = imageMvnUri;
+        feature.image = image;
+        feature.categories = categories;
+        feature.types = types;
+        feature.compatibleStudioVersion = compatibleStudioVersion;
+        feature.degradable = degradable;
     }
 
     @Override
@@ -224,6 +244,10 @@ public abstract class AbstractExtraFeature implements ExtraFeature {
         return mustBeInstalled;
     }
 
+    public void setMustBeInstalled(boolean mustBeInstalled) {
+        this.mustBeInstalled = mustBeInstalled;
+    }
+
     /**
      * Getter for useLegacyP2Install.
      *
@@ -233,8 +257,42 @@ public abstract class AbstractExtraFeature implements ExtraFeature {
         return this.useLegacyP2Install;
     }
 
-    protected List<ICallBack> getCallBacks() {
-        return callBacks;
+    public void setUseLegacyP2Install(boolean useLegacyP2Install) {
+        this.useLegacyP2Install = useLegacyP2Install;
+    }
+
+    public Boolean getIsInstalled() {
+        return this.isInstalled;
+    }
+
+    public void setIsInstalled(Boolean isInstalled) {
+        this.isInstalled = isInstalled;
+    }
+
+    @Override
+    public String getMvnUri() {
+        return this.mvnUri;
+    }
+
+    public void setMvnUri(String mvnUri) {
+        this.mvnUri = mvnUri;
+    }
+
+    @Override
+    public String getImageMvnUri() {
+        return this.imageMvnUri;
+    }
+
+    public void setImageMvnUri(String imageMvnUri) {
+        this.imageMvnUri = imageMvnUri;
+    }
+
+    public IFeatureStorage getStorage() {
+        return this.storage;
+    }
+
+    public void setStorage(IFeatureStorage storage) {
+        this.storage = storage;
     }
 
     @Override
@@ -242,38 +300,51 @@ public abstract class AbstractExtraFeature implements ExtraFeature {
         if (image != null) {
             return image;
         }
+        if (storage == null) {
+            return null;
+        }
 
         synchronized (imageLock) {
             if (image == null) {
-                image = ImageFactory.getInstance().createFeatureImage(downloadImage(monitor));
+                image = ImageFactory.getInstance().createFeatureImage(storage.getImageFile(monitor));
             }
         }
         return image;
     }
 
     @Override
-    public File downloadImage(IProgressMonitor monitor) throws Exception {
-        for (ICallBack callBack : getCallBacks()) {
-            try {
-                File imageFile = callBack.downloadImage(monitor);
-                if (imageFile != null) {
-                    return imageFile;
-                }
-            } catch (Exception e) {
-                ExceptionHandler.process(e);
-            }
-        }
-        return null;
+    public Collection<Category> getCategories() {
+        return this.categories;
+    }
+
+    public void setCategories(Collection<Category> categories) {
+        this.categories = categories;
     }
 
     @Override
-    public void addCallBack(ICallBack callBack) {
-        getCallBacks().add(callBack);
+    public Collection<Type> getTypes() {
+        return this.types;
+    }
+
+    public void setTypes(Collection<Type> types) {
+        this.types = types;
     }
 
     @Override
-    public void remoteCallBack(ICallBack callBack) {
-        getCallBacks().remove(callBack);
+    public boolean isDegradable() {
+        return this.degradable;
     }
 
+    public void setDegradable(boolean degradable) {
+        this.degradable = degradable;
+    }
+
+    @Override
+    public String getCompatibleStudioVersion() {
+        return this.compatibleStudioVersion;
+    }
+
+    public void setCompatibleStudioVersion(String compatibleStudioVersion) {
+        this.compatibleStudioVersion = compatibleStudioVersion;
+    }
 }

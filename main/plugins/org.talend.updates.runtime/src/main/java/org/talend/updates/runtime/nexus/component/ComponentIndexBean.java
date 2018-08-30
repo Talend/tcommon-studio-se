@@ -147,6 +147,22 @@ public class ComponentIndexBean implements Cloneable {
         return getValue(ComponentIndexNames.license_uri);
     }
 
+    public String getCompatibleStudioVersion() {
+        return getValue(ComponentIndexNames.compatibleStudioVersion);
+    }
+
+    public String getTypes() {
+        return getValue(ComponentIndexNames.types);
+    }
+
+    public String getCategories() {
+        return getValue(ComponentIndexNames.categories);
+    }
+
+    public String getDegradable() {
+        return getValue(ComponentIndexNames.degradable);
+    }
+
     public boolean validRequired() {
         for (ComponentIndexNames n : ComponentIndexNames.values()) {
             if (n.isRequired() && !settings.has(n.getName())) {
@@ -208,7 +224,7 @@ public class ComponentIndexBean implements Cloneable {
 
     @Override
     public String toString() {
-        return getName() + '|' + getBundleId() + '|' + getVersion();
+        return getName() + '|' + getBundleId() + '|' + getVersion() + '|' + getTypes();
     }
 
     @Override
