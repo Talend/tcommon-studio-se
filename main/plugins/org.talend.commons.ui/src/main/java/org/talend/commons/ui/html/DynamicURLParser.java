@@ -204,12 +204,12 @@ public class DynamicURLParser {
         try {
             for (int i = 0; i < len;) {
                 switch (encodedURL.charAt(i)) {
-                case '%':
-                    if (len >= i + 3) {
-                        os.write(Integer.parseInt(encodedURL.substring(i + 1, i + 3), 16));
-                    }
-                    i += 3;
-                    break;
+//                case '%':
+//                    if (len >= i + 3) {
+//                        os.write(Integer.parseInt(encodedURL.substring(i + 1, i + 3), 16));
+//                    }
+//                    i += 3;
+//                    break;
                 case '+': // exception from standard
                     os.write(' ');
                     i++;

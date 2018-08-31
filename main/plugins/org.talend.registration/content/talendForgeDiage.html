@@ -248,8 +248,14 @@
 		var password = document.getElementById('password1');
 		var pwd1ErrorHint = document.getElementById('pwd1ErrorHint');
 		var pwd1OKImage = document.getElementById('pwd1OKImage');
-		var regex = /^.+$/;
-		if (regex.test(password.value)){
+		
+		
+		var reg01 =new RegExp(/^(?=.*\d)(?=(.*[\#\@\%\*\!]){1})(?=.*[a-z])(?!.*\s).{8,}$/);
+		var reg02 =new RegExp(/^(?=.*\d)(?=(.*[\#\@\%\*\!]){1})(?=.*[A-Z])(?!.*\s).{8,}$/);
+		var reg03 =new RegExp(/^(?=(.*[\#\@\%\*\!]){1})(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{8,}$/);
+		var reg04 =new RegExp(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{8,}$/);
+		
+		if (reg01.test(password.value)||reg02.test(password.value)||reg03.test(password.value)||reg04.test(password.value)){
 	        pwd1ErrorHint.style.display = 'none';
 			pwd1OKImage.style.display = 'block';
 			isCreateAccountPasswordOK = true;
@@ -310,8 +316,12 @@
 		var password = document.getElementById('password3');
 		var passwordLoginErrorHint = document.getElementById('passwordLoginErrorHint');
 		var passwordLoginOKImage = document.getElementById('passwordLoginOKImage');
-		var regex = /^.+$/;
-		if (regex.test(password.value)){
+		var reg01 =new RegExp(/^(?=.*\d)(?=(.*[\#\@\%\*\!]){1})(?=.*[a-z])(?!.*\s).{8,}$/);
+		var reg02 =new RegExp(/^(?=.*\d)(?=(.*[\#\@\%\*\!]){1})(?=.*[A-Z])(?!.*\s).{8,}$/);
+		var reg03 =new RegExp(/^(?=(.*[\#\@\%\*\!]){1})(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{8,}$/);
+		var reg04 =new RegExp(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{8,}$/);
+		
+		if (reg01.test(password.value)||reg02.test(password.value)||reg03.test(password.value)||reg04.test(password.value)){
 	        passwordLoginErrorHint.style.display='none';
 			passwordLoginOKImage.style.display='block';
 			isLoginAccountPasswordOK = true;
@@ -426,6 +436,13 @@
                         <li style="font-size:12px;font-family:Arial"><internationalization id="TalendForgeDialog.labelMessageTwo_1" /> </li>
                         <br/><br/>
                         <li style="font-size:12px;font-family:Arial"><internationalization id="TalendForgeDialog.labelMessageThreeVer_1" /> </li>
+                          <br/><br/>
+                         <li style=" font-size:12px;font-family:Arial"><internationalization id="TalendForgeDialog.labelMessageOnePart_pass" /> </li>
+                          <br/><br/>
+                      <li style="margin-left:20px; font-size:12px;font-family:Arial"><internationalization id="TalendForgeDialog.labelMessageOnePart_pass01" /> </li>
+                       <li style="margin-left:20px; font-size:12px;font-family:Arial"><internationalization id="TalendForgeDialog.labelMessageOnePart_pass02" /> </li>
+                        <li style="margin-left:20px; font-size:12px;font-family:Arial"><internationalization id="TalendForgeDialog.labelMessageOnePart_pass03" /> </li>
+                        <li style="margin-left:20px; font-size:12px;font-family:Arial"><internationalization id="TalendForgeDialog.labelMessageOnePart_pass04" /> </li>
                         <br/>
                   </ul>
       </td>
@@ -448,6 +465,7 @@
 		  <tr><td colspan="2" class="navTopLine">
 			<table align="center" class="formClass">
 		  <tbody>
+		  
 		     <tr class="formHeaderClass"><td colspan="3" ></td></tr>
              <tr><td class="errorInfoClass"></td><td width="100%">
 
