@@ -122,6 +122,16 @@ public class PomExtensionRegistry {
             try {
                 projectPomExtension.updatePom(model);
             } catch (Exception e) {
+                log.error("Error Loading Maven P om Extension", e); //$NON-NLS-1$
+            }
+        }
+    }
+
+    public void updatePomTemplate(Model model) {
+        for (IProjectPomExtension projectPomExtension : getProjectPomExtensions()) {
+            try {
+                projectPomExtension.updatePomTemplate(model);
+            } catch (Exception e) {
                 log.error("Error Loading Maven Pom Extension", e); //$NON-NLS-1$
             }
         }

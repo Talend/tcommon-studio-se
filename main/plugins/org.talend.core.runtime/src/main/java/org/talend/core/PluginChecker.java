@@ -123,6 +123,8 @@ public class PluginChecker {
 
     public static final String IPAAS_PLUGIN_ID = "org.talend.designer.components.ipaas"; //$NON-NLS-1$
 
+    public static final String DOCKER_PLUGIN_ID = "org.talend.designer.docker"; //$NON-NLS-1$
+
     /**
      * Check if specific plug-in is loaded.
      * 
@@ -276,6 +278,10 @@ public class PluginChecker {
 
     public static boolean isRunRemotePluginLoaded() {
         return isPluginLoaded(RUNREMOTE_PLUGIN_ID);
+    }
+
+    public static boolean isDockerPluginLoaded() {
+        return isPluginLoaded(DOCKER_PLUGIN_ID);
     }
 
     public static boolean isIPaasPluginLoaded() {
