@@ -25,13 +25,15 @@ public class Type {
 
     public static final Type ALL = new Type(Messages.getString("FeaturesManager.Type.all"), ""); //$NON-NLS-1$ //$NON-NLS-2$
 
+    public static final Type P2 = new Type(Messages.getString("FeaturesManager.Type.p2"), "p2"); //$NON-NLS-1$ //$NON-NLS-2$
+
     public static final Type TCOMP = new Type(Messages.getString("FeaturesManager.Type.tcomp"), "tcomp"); //$NON-NLS-1$ //$NON-NLS-2$
 
     public static final Type TCOMP_V0 = new Type(Messages.getString("FeaturesManager.Type.tcompV0"), "tcompv0"); //$NON-NLS-1$ //$NON-NLS-2$
 
     public static final Type TCOMP_V1 = new Type(Messages.getString("FeaturesManager.Type.tcompV1"), "tcompv1"); //$NON-NLS-1$ //$NON-NLS-2$
 
-    private static final Collection<Type> types = Arrays.asList(ALL, TCOMP, TCOMP_V0, TCOMP_V1);
+    private static final Collection<Type> types = Arrays.asList(ALL, P2, TCOMP, TCOMP_V0, TCOMP_V1);
 
     private String keyword;
 
@@ -62,4 +64,7 @@ public class Type {
         return null;
     }
 
+    public static Collection<Type> getAllTypes() {
+        return types;
+    }
 }

@@ -23,6 +23,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.swt.graphics.Image;
 import org.talend.updates.runtime.feature.model.Category;
 import org.talend.updates.runtime.feature.model.Type;
+import org.talend.updates.runtime.model.InstallationStatus.Status;
 import org.talend.updates.runtime.storage.IFeatureStorage;
 
 /**
@@ -82,6 +83,10 @@ public interface ExtraFeature {
     public boolean mustBeInstalled();
     
     boolean needRestart();
+
+    default String getId() {
+        return getName();
+    }
 
     default boolean canBeInstalled(IProgressMonitor progress) throws ExtraFeatureException {
         try {
@@ -153,5 +158,17 @@ public interface ExtraFeature {
 
     default void setStorage(IFeatureStorage storage) {
         // nothing to do
+    }
+
+    default InstallationStatus getInstallationStatus(IProgressMonitor monitor) throws Exception {
+        if (canBeInstalled(monitor)) {
+            InstallationStatus status = new InstallationStatus(Status.INSTALLABLE);
+            status.setRequiredStudioVersion(getCompatibleStudioVersion());
+            return status;
+        } else {
+            InstallationStatus status = new InstallationStatus(Status.CANT_INSTALL);
+            status.setRequiredStudioVersion(getCompatibleStudioVersion());
+            return status;
+        }
     }
 }

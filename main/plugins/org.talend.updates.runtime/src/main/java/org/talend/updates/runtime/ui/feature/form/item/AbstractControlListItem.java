@@ -12,6 +12,11 @@
 // ============================================================================
 package org.talend.updates.runtime.ui.feature.form.item;
 
+import org.eclipse.jface.resource.FontDescriptor;
+import org.eclipse.jface.resource.FontRegistry;
+import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.talend.commons.ui.swt.listviewer.ControlListItem;
@@ -26,11 +31,14 @@ public abstract class AbstractControlListItem<T> extends ControlListItem<T> {
 
     private FeaturesManagerRuntimeData runtimeData;
 
+    private T featureItem;
+
     private Composite panel;
 
     public AbstractControlListItem(Composite parent, int style, FeaturesManagerRuntimeData runtimeData, T element) {
         super(parent, style, element);
         this.runtimeData = runtimeData;
+        this.featureItem = element;
         init();
     }
 
@@ -59,6 +67,10 @@ public abstract class AbstractControlListItem<T> extends ControlListItem<T> {
         // nothing to do
     }
 
+    public void reload() {
+        // nothing to do
+    }
+
     protected void addListeners() {
         // nothing to do
     }
@@ -74,6 +86,10 @@ public abstract class AbstractControlListItem<T> extends ControlListItem<T> {
 
     protected void clearError() {
         // nothing to do
+    }
+
+    protected T getFeatureItem() {
+        return featureItem;
     }
 
     public FeaturesManagerRuntimeData getRuntimeData() {
@@ -100,4 +116,24 @@ public abstract class AbstractControlListItem<T> extends ControlListItem<T> {
         return panel;
     }
 
+    protected Font getTitleFont() {
+        final String titleFontKey = AbstractControlListItem.class.getName() + ".titleFont"; //$NON-NLS-1$
+        FontRegistry fontRegistry = JFaceResources.getFontRegistry();
+        if (!fontRegistry.hasValueFor(titleFontKey)) {
+            FontDescriptor fontDescriptor = FontDescriptor.createFrom(JFaceResources.getDialogFont()).setHeight(12)
+                    .setStyle(SWT.BOLD);
+            fontRegistry.put(titleFontKey, fontDescriptor.getFontData());
+        }
+        return fontRegistry.get(titleFontKey);
+    }
+
+    protected Font getInstallButtonFont() {
+        final String installBtnFontKey = AbstractControlListItem.class.getName() + ".installButtonFont"; //$NON-NLS-1$
+        FontRegistry fontRegistry = JFaceResources.getFontRegistry();
+        if (!fontRegistry.hasValueFor(installBtnFontKey)) {
+            FontDescriptor fontDescriptor = FontDescriptor.createFrom(JFaceResources.getDialogFont()).setStyle(SWT.BOLD);
+            fontRegistry.put(installBtnFontKey, fontDescriptor.getFontData());
+        }
+        return fontRegistry.get(installBtnFontKey);
+    }
 }

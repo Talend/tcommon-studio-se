@@ -77,8 +77,8 @@ public class FeatureListProgress extends AbstractControlListItem<IFeatureProgres
     }
 
     @Override
-    protected void refresh() {
-        super.refresh();
+    protected void initData() {
+        super.initData();
         getData().setProgressMonitor(getProgressMonitor());
     }
 

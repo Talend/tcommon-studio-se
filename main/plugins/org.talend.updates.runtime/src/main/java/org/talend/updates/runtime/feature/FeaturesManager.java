@@ -15,24 +15,45 @@ package org.talend.updates.runtime.feature;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ThreadPoolExecutor;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.equinox.p2.metadata.IInstallableUnit;
+import org.eclipse.equinox.p2.metadata.Version;
+import org.talend.commons.exception.ExceptionHandler;
+import org.talend.commons.utils.threading.TalendCustomThreadPoolExecutor;
 import org.talend.updates.runtime.engine.ExtraFeaturesUpdatesFactory;
+import org.talend.updates.runtime.engine.P2Manager;
 import org.talend.updates.runtime.feature.model.Category;
 import org.talend.updates.runtime.feature.model.Type;
 import org.talend.updates.runtime.model.ExtraFeature;
+import org.talend.updates.runtime.service.ITaCoKitUpdateService;
 
 /**
  * DOC cmeng  class global comment. Detailled comment
  */
 public class FeaturesManager {
 
-    private List<ExtraFeature> featuresCache;
+    private final Object searchThreadPoolExecutorLock = new Object();
 
-    private List<ExtraFeature> updatesCache;
+    private final Object updateThreadPoolExecutorLock = new Object();
+
+    private final Object featuresCacheLock = new Object();
+
+    private TalendCustomThreadPoolExecutor searchThreadPoolExecutor;
+
+    private TalendCustomThreadPoolExecutor updateThreadPoolExecutor;
+
+    private List<ExtraFeature> featuresCache;
 
     private ExtraFeaturesUpdatesFactory extraFeaturesFactory;
 
@@ -43,33 +64,163 @@ public class FeaturesManager {
 
     public SearchResult searchFeatures(IProgressMonitor monitor, SearchOption searchOption)
             throws Exception {
-        if (searchOption.isClearCache()) {
-            Set<ExtraFeature> componentFeatures = new LinkedHashSet<>();
-            getExtraFeatureFactory().retrieveAllComponentFeatures(monitor, componentFeatures);
-            featuresCache.clear();
-            featuresCache = new ArrayList<>(componentFeatures);
+        /**
+         * Currently we only support NEXUS, so can use featuresCache, later we may need to change the logic here to
+         * support other server types
+         */
+        // if (searchOption.isClearCache()) {
+        // featuresCache.clear();
+        // }
+        List<ExtraFeature> features = getFeaturesCache(monitor);
+        String keyword = searchOption.getKeyword();
+        List<ExtraFeature> filteredFeatures = new LinkedList<>();
+        if (features != null) {
+            Type type = searchOption.getType();
+            Category category = searchOption.getCategory();
+            if (type == Type.ALL && category == Category.ALL && StringUtils.isBlank(keyword)) {
+                filteredFeatures.addAll(features);
+            } else {
+                Iterator<ExtraFeature> iterator = features.iterator();
+                while (iterator.hasNext()) {
+                    ExtraFeature next = iterator.next();
+                    if (type != Type.ALL) {
+                        if (!next.getTypes().contains(type)) {
+                            continue;
+                        }
+                    }
+                    if (category != Category.ALL) {
+                        if (!next.getCategories().contains(category)) {
+                            continue;
+                        }
+                    }
+                    if (StringUtils.isBlank(keyword)) {
+                        filteredFeatures.add(next);
+                    } else {
+                        if (next.getName().toLowerCase().contains(keyword)
+                                || next.getDescription().toLowerCase().contains(keyword)) {
+                            filteredFeatures.add(next);
+                        }
+                    }
+                }
+            }
         }
         int page = searchOption.getPage();
         int pageSize = searchOption.getPageSize();
         int start = page * pageSize;
         int end = start + pageSize;
-        ExtraFeature[] copyOfRange = Arrays.copyOfRange(featuresCache.toArray(new ExtraFeature[0]), start, end);
+        ExtraFeature[] copyOfRange = Arrays.copyOfRange(filteredFeatures.toArray(new ExtraFeature[0]), start, end);
         SearchOption option = searchOption.clone();
         option.setClearCache(false);
         SearchResult result = new SearchResult(option, Arrays.asList(copyOfRange));
-        result.setTotalSize(featuresCache.size());
+        result.setTotalSize(filteredFeatures.size());
         result.setPageSize(pageSize);
         result.setCurrentPage(page);
         return result;
     }
 
-    private Collection<InstalledFeature> getInstalledFeatures(IProgressMonitor monitor) {
-        Collection<InstalledFeature> installedFeatures = null;
-        return installedFeatures;
+    private List<ExtraFeature> getFeaturesCache(IProgressMonitor monitor) throws Exception {
+        if (featuresCache == null || featuresCache.isEmpty()) {
+            synchronized (featuresCacheLock) {
+                if (featuresCache == null || featuresCache.isEmpty()) {
+                    featuresCache = new ArrayList<>(retrieveAllOfficalFeatures(monitor));
+                }
+            }
+        }
+        return featuresCache;
     }
 
-    public SearchResult checkUpdates(IProgressMonitor monitor, SearchOption searchOption) {
-        SearchResult result = null;
+    /**
+     * All offical features from server, except third part features such as exchange.
+     */
+    private Collection<ExtraFeature> retrieveAllOfficalFeatures(IProgressMonitor monitor) throws Exception {
+        Set<ExtraFeature> componentFeatures = new LinkedHashSet<>();
+
+        // currently we only support component, change it when we want to support other types.
+        getExtraFeatureFactory().retrieveAllComponentFeatures(monitor, componentFeatures);
+
+        return new LinkedList<>(componentFeatures);
+    }
+
+    private Collection<ExtraFeature> getUpdates(IProgressMonitor monitor) throws Exception {
+        Collection<ExtraFeature> updates = new LinkedList<>();
+        List<ExtraFeature> features = getFeaturesCache(monitor);
+        try {
+            Collection<ExtraFeature> p2Updates = getP2Updates(monitor, features);
+            if (p2Updates != null) {
+                updates.addAll(p2Updates);
+            }
+        } catch (Exception e) {
+            ExceptionHandler.process(e);
+        }
+        try {
+            Collection<ExtraFeature> tcompv1Updates = getTCompv1Updates(monitor, features);
+            if (tcompv1Updates != null) {
+                updates.addAll(tcompv1Updates);
+            }
+        } catch (Exception e) {
+            ExceptionHandler.process(e);
+        }
+        return updates;
+    }
+
+    private Collection<ExtraFeature> getP2Updates(IProgressMonitor monitor, Collection<ExtraFeature> features) throws Exception {
+        Collection<ExtraFeature> p2Updates = new LinkedList<>();
+        if (features != null && !features.isEmpty()) {
+            Collection<IInstallableUnit> installedP2Features = P2Manager.getInstance().getInstalledP2Features(monitor);
+            Map<String, IInstallableUnit> installedMap = new HashMap<>();
+            for (IInstallableUnit iu : installedP2Features) {
+                String key = iu.getId();
+                if (installedMap.containsKey(key)) {
+                    IInstallableUnit existedIU = installedMap.get(key);
+                    Version existedVersion = null;
+                    Version newVersion = null;
+                    if (existedIU != null) {
+                        existedVersion = existedIU.getVersion();
+                    }
+                    if (iu != null) {
+                        newVersion = iu.getVersion();
+                    }
+                    ExceptionHandler.log(key + " has multiple versions: " + existedVersion + ", " + newVersion);
+                }
+                installedMap.put(key, iu);
+            }
+            for (ExtraFeature feature : features) {
+                if (feature.getTypes().contains(Type.TCOMP_V1)) {
+                    continue;
+                }
+                IInstallableUnit iu = installedMap.get(feature.getId());
+                if (iu != null) {
+                    Version iuVersion = iu.getVersion();
+                    Version featVersion = Version.create(feature.getVersion());
+                    if (0 < featVersion.compareTo(iuVersion)) {
+                        p2Updates.add(feature);
+                    }
+                }
+            }
+        }
+        return p2Updates;
+    }
+
+    private Collection<ExtraFeature> getTCompv1Updates(IProgressMonitor monitor, Collection<ExtraFeature> features)
+            throws Exception {
+        ITaCoKitUpdateService instance = ITaCoKitUpdateService.getInstance();
+        if (instance != null) {
+            return instance.filterUpdatableFeatures(features, monitor);
+        } else {
+            return Collections.EMPTY_SET;
+        }
+    }
+
+    public SearchResult searchUpdates(IProgressMonitor monitor, SearchOption searchOption) throws Exception {
+        Collection<ExtraFeature> installedFeatures = null;
+        // if (searchOption.isClearCache()) {
+        // updatesCache.clear();
+        // }
+        installedFeatures = getUpdates(monitor);
+        SearchResult result = new SearchResult(searchOption, installedFeatures);
+        result.setTotalSize(installedFeatures.size());
+        result.setPageSize(installedFeatures.size());
+        result.setCurrentPage(0);
         return result;
     }
 
@@ -77,8 +228,71 @@ public class FeaturesManager {
         return this.extraFeaturesFactory;
     }
 
-    public static class InstalledFeature {
+    private TalendCustomThreadPoolExecutor createThreadPoolExecutor() {
+        return new TalendCustomThreadPoolExecutor(60);
+    }
 
+    public ThreadPoolExecutor getSearchThreadPoolExecutor() {
+        if (searchThreadPoolExecutor != null) {
+            return searchThreadPoolExecutor;
+        }
+        synchronized (searchThreadPoolExecutorLock) {
+            if (searchThreadPoolExecutor == null) {
+                searchThreadPoolExecutor = createThreadPoolExecutor();
+            }
+        }
+        return searchThreadPoolExecutor;
+    }
+
+    public ThreadPoolExecutor getUpdateThreadPoolExecutor() {
+        if (updateThreadPoolExecutor != null) {
+            return updateThreadPoolExecutor;
+        }
+        synchronized (updateThreadPoolExecutorLock) {
+            if (updateThreadPoolExecutor == null) {
+                updateThreadPoolExecutor = createThreadPoolExecutor();
+            }
+        }
+        return updateThreadPoolExecutor;
+    }
+
+    public void clearAllThreadPool() {
+        clearSearchThreadPool();
+        clearUpdateThreadPool();
+    }
+
+    public void clearSearchThreadPool() {
+        if (searchThreadPoolExecutor != null) {
+            synchronized (searchThreadPoolExecutorLock) {
+                if (searchThreadPoolExecutor != null) {
+                    TalendCustomThreadPoolExecutor tmp = searchThreadPoolExecutor;
+                    searchThreadPoolExecutor = null;
+                    tmp.clearThreads();
+                }
+            }
+        }
+    }
+
+    public void clearUpdateThreadPool() {
+        if (updateThreadPoolExecutor != null) {
+            synchronized (updateThreadPoolExecutorLock) {
+                if (updateThreadPoolExecutor != null) {
+                    TalendCustomThreadPoolExecutor tmp = updateThreadPoolExecutor;
+                    updateThreadPoolExecutor = null;
+                    tmp.clearThreads();
+                }
+            }
+        }
+    }
+
+    public void clear() {
+        clearAllThreadPool();
+        synchronized (featuresCacheLock) {
+            if (featuresCache != null) {
+                featuresCache.clear();
+            }
+        }
+        P2Manager.getInstance().clear();
     }
 
     public static class SearchOption implements Cloneable {

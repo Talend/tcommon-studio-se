@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.IService;
+import org.talend.updates.runtime.model.ExtraFeature;
 import org.talend.updates.runtime.model.interfaces.ITaCoKitCarFeature;
 import org.talend.updates.runtime.nexus.component.ComponentIndexBean;
 
@@ -38,6 +39,9 @@ public interface ITaCoKitUpdateService extends IService {
     ICarInstallationResult installCars(Collection<File> files, IProgressMonitor monitor) throws Exception;
 
     ICarInstallationResult installCarFeatures(Collection<ITaCoKitCarFeature> features, IProgressMonitor monitor) throws Exception;
+
+    Collection<ExtraFeature> filterUpdatableFeatures(Collection<ExtraFeature> features, IProgressMonitor monitor)
+            throws Exception;
 
     boolean isCar(File file, IProgressMonitor monitor) throws Exception;
 

@@ -18,10 +18,10 @@ import java.util.EnumSet;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.graphics.Image;
+import org.talend.updates.runtime.feature.ImageFactory;
 import org.talend.updates.runtime.feature.model.Category;
 import org.talend.updates.runtime.feature.model.Type;
 import org.talend.updates.runtime.storage.IFeatureStorage;
-import org.talend.updates.runtime.ui.ImageFactory;
 
 /**
  * DOC cmeng  class global comment. Detailled comment
@@ -85,6 +85,11 @@ public abstract class AbstractExtraFeature implements ExtraFeature {
         this.degradable = degradable;
         this.types = types;
         this.categories = categories;
+    }
+
+    @Override
+    public String getId() {
+        return getP2IuId();
     }
 
     /**
@@ -287,10 +292,12 @@ public abstract class AbstractExtraFeature implements ExtraFeature {
         this.imageMvnUri = imageMvnUri;
     }
 
+    @Override
     public IFeatureStorage getStorage() {
         return this.storage;
     }
 
+    @Override
     public void setStorage(IFeatureStorage storage) {
         this.storage = storage;
     }

@@ -55,4 +55,8 @@ public class Category {
         }
         return null;
     }
+
+    public static Collection<Category> getAllCategories() {
+        return categories;
+    }
 }

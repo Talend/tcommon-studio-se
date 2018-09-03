@@ -27,9 +27,19 @@ import org.talend.updates.runtime.i18n.Messages;
  */
 public class UIUtils {
 
-    private static FormColors formColors = new FormColors(Display.getDefault());
+    private static FormColors formColors;
+
+    private static final Object formColorsLock = new Object();
 
     public static FormColors getFormColors() {
+        if (formColors != null) {
+            return formColors;
+        }
+        synchronized (formColorsLock) {
+            if (formColors == null) {
+                formColors = new FormColors(Display.getDefault());
+            }
+        }
         return formColors;
     }
 
@@ -51,10 +61,17 @@ public class UIUtils {
     }
 
     public static void checkMonitor(IProgressMonitor monitor) throws Exception {
+        boolean isInterrupted = false;
         if (monitor != null) {
             if (monitor.isCanceled()) {
-                throw new InterruptedException(Messages.getString("UIUtils.exception.interrupt")); //$NON-NLS-1$
+                isInterrupted = true;
             }
+        }
+        if (Thread.currentThread().isInterrupted()) {
+            isInterrupted = true;
+        }
+        if (isInterrupted) {
+            throw new InterruptedException(Messages.getString("UIUtils.exception.interrupt")); //$NON-NLS-1$
         }
     }
 }

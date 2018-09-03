@@ -12,9 +12,10 @@
 // ============================================================================
 package org.talend.updates.runtime.ui.feature.model;
 
+
 /**
  * DOC cmeng  class global comment. Detailled comment
  */
-public interface IFeatureDetail extends IFeatureInfo {
+public interface IFeatureUpdate extends IFeatureInfo {
 
 }

@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
@@ -37,6 +38,7 @@ import org.eclipse.equinox.p2.engine.IProfile;
 import org.eclipse.equinox.p2.engine.IProfileRegistry;
 import org.eclipse.equinox.p2.engine.PhaseSetFactory;
 import org.eclipse.equinox.p2.metadata.IInstallableUnit;
+import org.eclipse.equinox.p2.metadata.Version;
 import org.eclipse.equinox.p2.operations.InstallOperation;
 import org.eclipse.equinox.p2.operations.ProfileModificationJob;
 import org.eclipse.equinox.p2.operations.ProvisioningSession;
@@ -55,9 +57,11 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.updates.runtime.engine.P2Manager;
 import org.talend.updates.runtime.feature.model.Category;
 import org.talend.updates.runtime.feature.model.Type;
 import org.talend.updates.runtime.i18n.Messages;
+import org.talend.updates.runtime.model.InstallationStatus.Status;
 import org.talend.updates.runtime.service.ITaCoKitUpdateService;
 import org.talend.updates.runtime.service.ITaCoKitUpdateService.ICarInstallationResult;
 import org.talend.updates.runtime.utils.PathUtils;
@@ -97,22 +101,11 @@ public class P2ExtraFeature extends AbstractExtraFeature {
     @Override
     public boolean isInstalled(IProgressMonitor progress) throws P2ExtraFeatureException {
         try {
-            return checkP2IuIsInstalled(getP2IuId(), progress);
-        } catch (ProvisionException e) {// just convert the exception
+            InstallationStatus installationStatus = getInstallationStatus(progress);
+            return installationStatus.getStatus().isInstalled();
+        } catch (Exception e) {// just convert the exception
             throw new P2ExtraFeatureException(e);
         }
-    }
-
-    /**
-     * check if the current p2 profile contains the P2 Installable Unit or not
-     *
-     * @param p2IuId2, never null
-     * @return true if unit is installed or false in any other cases (even errors or canceled)
-     * @throws ProvisionException
-     */
-    private boolean checkP2IuIsInstalled(String p2IuId2, IProgressMonitor progress) throws ProvisionException {
-        Set<IInstallableUnit> installedIUs = getInstalledIUs(p2IuId2, progress);
-        return !installedIUs.isEmpty();
     }
 
     public Set<IInstallableUnit> getInstalledIUs(String p2IuId2, IProgressMonitor progress) throws ProvisionException {
@@ -233,7 +226,7 @@ public class P2ExtraFeature extends AbstractExtraFeature {
     public IStatus install(IProgressMonitor progress, List<URI> allRepoUris) throws ExtraFeatureException {
         IStatus doInstallStatus = null;
         File configIniBackupFile = null;
-        Map<File, File> unzippedPatches = null;
+        Map<File, File> unzippedPatches = new HashMap<>();
         try {
             if (!isUseLegacyP2Install()) {
                 // backup the config.ini
@@ -249,10 +242,25 @@ public class P2ExtraFeature extends AbstractExtraFeature {
             throw new ExtraFeatureException(
                     new ProvisionException(Messages.createErrorStatus(e, "ExtraFeaturesFactory.restore.config.error"))); //$NON-NLS-1$
         } finally {
-            try {
-                afterInstallP2(progress, unzippedPatches);
-            } catch (Exception e) {
-                ExceptionHandler.process(e);
+            boolean isInstalled = false;
+            if (doInstallStatus != null) {
+                switch (doInstallStatus.getSeverity()) {
+                case IStatus.OK:
+                case IStatus.INFO:
+                case IStatus.WARNING:
+                    isInstalled = true;
+                    break;
+                default:
+                    isInstalled = false;
+                    break;
+                }
+            }
+            if (isInstalled) {
+                try {
+                    afterInstallP2(progress, unzippedPatches);
+                } catch (Exception e) {
+                    ExceptionHandler.process(e);
+                }
             }
             // restore the config.ini
             if (configIniBackupFile != null) { // must existed backup file.
@@ -263,10 +271,12 @@ public class P2ExtraFeature extends AbstractExtraFeature {
                             new ProvisionException(Messages.createErrorStatus(e, "ExtraFeaturesFactory.back.config.error"))); //$NON-NLS-1$
                 }
             }
-            try {
-                afterRestoreConfigFile(progress, unzippedPatches);
-            } catch (Exception e) {
-                ExceptionHandler.process(e);
+            if (isInstalled) {
+                try {
+                    afterRestoreConfigFile(progress, unzippedPatches);
+                } catch (Exception e) {
+                    ExceptionHandler.process(e);
+                }
             }
             if (unzippedPatches != null && !unzippedPatches.isEmpty()) {
                 for (Map.Entry<File, File> patchEntry : unzippedPatches.entrySet()) {
@@ -423,7 +433,7 @@ public class P2ExtraFeature extends AbstractExtraFeature {
             allRepoUris.add(getP2RepositoryURI());
         }
         SubMonitor subMonitor = SubMonitor.convert(progress, allRepoUris.size());
-        subMonitor.setTaskName(Messages.getString("ExtraFeature.searching.talend.features", getName())); //$NON-NLS-1$
+        subMonitor.setTaskName(Messages.getString("ExtraFeature.searching.talend.features.label", getName())); //$NON-NLS-1$
         // get the repository managers and add our repository
         IMetadataRepositoryManager metadataManager = (IMetadataRepositoryManager) agent
                 .getService(IMetadataRepositoryManager.SERVICE_NAME);
@@ -616,7 +626,12 @@ public class P2ExtraFeature extends AbstractExtraFeature {
 
     @Override
     public boolean canBeInstalled(IProgressMonitor progress) throws ExtraFeatureException {
-        return getInstalledFeature(progress) != null;
+        try {
+            InstallationStatus installationStatus = getInstallationStatus(progress);
+            return installationStatus.canBeInstalled();
+        } catch (Exception e) {
+            throw new ExtraFeatureException(e);
+        }
     }
 
     protected Map<File, File> unzipPatches(IProgressMonitor progress, List<URI> allRepoUris) throws ExtraFeatureException {
@@ -681,4 +696,43 @@ public class P2ExtraFeature extends AbstractExtraFeature {
         return FileUtils.createTmpFolder("p2updatesite", null); //$NON-NLS-1$
     }
 
+    @Override
+    public InstallationStatus getInstallationStatus(IProgressMonitor monitor) throws Exception {
+        Collection<IInstallableUnit> installedP2s = P2Manager.getInstance().getInstalledP2Feature(monitor, getP2IuId(), null);
+        if (installedP2s != null && !installedP2s.isEmpty()) {
+            String version = getVersion();
+            if (StringUtils.isNotBlank(version)) {
+                Version featVersion = Version.create(version);
+                if (featVersion != null) {
+                    Version installedLatestVersion = null;
+                    for (IInstallableUnit installedP2 : installedP2s) {
+                        Version installedVersion = installedP2.getVersion();
+                        if (installedVersion != null) {
+                            if (installedLatestVersion == null) {
+                                installedLatestVersion = installedVersion;
+                            } else {
+                                if (installedLatestVersion.compareTo(installedVersion) < 0) {
+                                    installedLatestVersion = installedVersion;
+                                }
+                            }
+                        }
+                    }
+                    if (featVersion.compareTo(installedLatestVersion) <= 0) {
+                        InstallationStatus status = new InstallationStatus(Status.INSTALLED);
+                        status.setInstalledVersion(installedLatestVersion.toString());
+                        status.setRequiredStudioVersion(getCompatibleStudioVersion());
+                        return status;
+                    } else {
+                        InstallationStatus status = new InstallationStatus(Status.UPDATABLE);
+                        status.setInstalledVersion(installedLatestVersion.toString());
+                        status.setRequiredStudioVersion(getCompatibleStudioVersion());
+                        return status;
+                    }
+                }
+            }
+        }
+        InstallationStatus status = new InstallationStatus(Status.INSTALLABLE);
+        status.setRequiredStudioVersion(getCompatibleStudioVersion());
+        return status;
+    }
 }

@@ -33,6 +33,8 @@ public class FeaturesManagerPage extends WizardPage {
 
     private FeaturesManagerRuntimeData runtimeData;
 
+    private FeaturesManagerForm managerForm;
+
     public FeaturesManagerPage(FeaturesManagerRuntimeData runtimeData) {
         super(Messages.getString("ComponentsManager.page.manager.title")); //$NON-NLS-1$
         setDescription(Messages.getString("ComponentsManager.page.manager.desc")); //$NON-NLS-1$
@@ -45,7 +47,15 @@ public class FeaturesManagerPage extends WizardPage {
         Composite panel = new Composite(parent, SWT.NONE);
         this.setControl(panel);
         panel.setLayout(new FillLayout());
-        FeaturesManagerForm form = new FeaturesManagerForm(panel, SWT.NONE, getRuntimeData());
+        managerForm = new FeaturesManagerForm(panel, SWT.NONE, getRuntimeData());
+    }
+
+    public boolean canFinish() {
+        if (managerForm != null) {
+            return managerForm.canFinish();
+        } else {
+            return false;
+        }
     }
 
     @Override

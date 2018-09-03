@@ -12,10 +12,15 @@
 // ============================================================================
 package org.talend.updates.runtime.ui.feature.form;
 
+import org.eclipse.jface.resource.FontDescriptor;
+import org.eclipse.jface.resource.FontRegistry;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.talend.updates.runtime.ui.feature.form.item.AbstractFeatureListInfoItem;
 import org.talend.updates.runtime.ui.feature.form.listener.ICheckListener;
 import org.talend.updates.runtime.ui.feature.model.runtime.FeaturesManagerRuntimeData;
 
@@ -59,6 +64,14 @@ public abstract class AbstractFeatureForm extends Composite {
         // nothing to do
     }
 
+    public void onTabSelected() {
+        // nothing to do
+    }
+
+    public boolean canFinish() {
+        return true;
+    }
+
     public ICheckListener getCheckListener() {
         return getRuntimeData().getCheckListener();
     }
@@ -71,7 +84,7 @@ public abstract class AbstractFeatureForm extends Composite {
         return 5;
     }
 
-    protected int getVersionAlignWidth() {
+    protected int getVerticalAlignHeight() {
         return 5;
     }
 
@@ -79,4 +92,13 @@ public abstract class AbstractFeatureForm extends Composite {
         return 100;
     }
 
+    protected Font getInstallButtonFont() {
+        final String installBtnFontKey = AbstractFeatureListInfoItem.class.getName() + ".installButtonFont"; //$NON-NLS-1$
+        FontRegistry fontRegistry = JFaceResources.getFontRegistry();
+        if (!fontRegistry.hasValueFor(installBtnFontKey)) {
+            FontDescriptor fontDescriptor = FontDescriptor.createFrom(JFaceResources.getDialogFont()).setStyle(SWT.BOLD);
+            fontRegistry.put(installBtnFontKey, fontDescriptor.getFontData());
+        }
+        return fontRegistry.get(installBtnFontKey);
+    }
 }

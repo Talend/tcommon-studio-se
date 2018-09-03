@@ -25,7 +25,7 @@ import org.talend.updates.runtime.ui.feature.model.IFeatureItem;
  */
 public class ModelAdapter {
 
-    public static Collection<IFeatureItem> convert(Collection<ExtraFeature> featureList) {
+    public static Collection<IFeatureItem> convert(Collection<ExtraFeature> featureList, boolean toUpdate) {
         if (featureList == null || featureList.isEmpty()) {
             return Collections.EMPTY_SET;
         }
@@ -34,7 +34,7 @@ public class ModelAdapter {
         Iterator<ExtraFeature> iterator = featureList.iterator();
         while (iterator.hasNext()) {
             ExtraFeature next = iterator.next();
-            IFeatureItem convert = convert(next);
+            IFeatureItem convert = convert(next, toUpdate);
             if (convert != null) {
                 featureItems.add(convert);
             }
@@ -43,11 +43,16 @@ public class ModelAdapter {
         return featureItems;
     }
 
-    public static IFeatureItem convert(ExtraFeature feature) {
+    public static IFeatureItem convert(ExtraFeature feature, boolean toUpdate) {
         if (feature == null) {
             return null;
         }
-        FeatureDetail featureItem = new FeatureDetail();
+        AbstractFeatureInfo featureItem = null;
+        if (toUpdate) {
+            featureItem = new FeatureUpdate();
+        } else {
+            featureItem = new FeatureDetail();
+        }
 
         featureItem.setFeature(feature);
         featureItem.setTitle(feature.getName());

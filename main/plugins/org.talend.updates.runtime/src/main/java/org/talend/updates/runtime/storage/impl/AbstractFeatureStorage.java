@@ -37,7 +37,7 @@ public abstract class AbstractFeatureStorage implements IFeatureStorage {
 
     final private Object imageFileLock = new Object();
 
-    private boolean autoCleanFiles = true;
+    private boolean autoCleanFiles = false;
 
     public File getFeatDownloadFolder() throws Exception {
         if (this.featDownloadFolder == null) {

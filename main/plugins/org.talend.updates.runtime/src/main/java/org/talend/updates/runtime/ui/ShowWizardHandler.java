@@ -62,7 +62,7 @@ public class ShowWizardHandler extends AbstractHandler {
 
     public void showComponentsManagerWizard(final Shell shell) {
         FeaturesManagerRuntimeData runtimeData = new FeaturesManagerRuntimeData();
-        runtimeData.setComponentsManager(new FeaturesManager());
+        runtimeData.setFeaturesManager(new FeaturesManager());
         FeaturesManagerWizard componentsManagerWizard = new FeaturesManagerWizard(runtimeData);
         componentsManagerWizard.show(shell);
     }

@@ -12,9 +12,18 @@
 // ============================================================================
 package org.talend.updates.runtime.ui.feature.model;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.swt.graphics.Image;
+
 /**
  * DOC cmeng  class global comment. Detailled comment
  */
-public interface IFeatureDetail extends IFeatureInfo {
+public interface IFeatureInfo extends IFeatureItem {
+    
+    String getDescription();
 
+    /**
+     * It may take long time
+     */
+    Image getImage(IProgressMonitor monitor) throws Exception;
 }

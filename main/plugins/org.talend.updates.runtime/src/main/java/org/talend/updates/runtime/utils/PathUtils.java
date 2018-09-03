@@ -29,6 +29,7 @@ import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.URIUtil;
+import org.eclipse.equinox.p2.metadata.Version;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.runtime.service.ComponentsInstallComponent;
 import org.talend.commons.runtime.service.PatchComponent;
@@ -193,5 +194,31 @@ public class PathUtils {
             }
         }
         return categoryList;
+    }
+
+    public static Version convert2Version(String vStr) throws Exception {
+        if (vStr == null) {
+            return null;
+        }
+        String[] split = vStr.split("\\.", 4); //$NON-NLS-1$
+        int length = split.length;
+        int major = 0;
+        if (0 < length) {
+            major = Integer.valueOf(split[0]);
+        }
+        int minor = 0;
+        if (1 < length) {
+            minor = Integer.valueOf(split[1]);
+        }
+        int micro = 0;
+        if (2 < length) {
+            micro = Integer.valueOf(split[2]);
+        }
+
+        String classifier = null;
+        if (3 < length) {
+            classifier = split[3];
+        }
+        return Version.createOSGi(major, minor, micro, classifier);
     }
 }

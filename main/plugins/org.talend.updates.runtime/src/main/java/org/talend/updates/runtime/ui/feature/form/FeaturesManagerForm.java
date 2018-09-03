@@ -15,11 +15,14 @@ package org.talend.updates.runtime.ui.feature.form;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.talend.updates.runtime.i18n.Messages;
 import org.talend.updates.runtime.ui.feature.model.runtime.FeaturesManagerRuntimeData;
@@ -45,6 +48,9 @@ public class FeaturesManagerForm extends AbstractFeatureForm {
         FormLayout layout = new FormLayout();
         this.setLayout(layout);
         addTabFolder();
+        tabFolder.setSelection(0);
+        onSwitchTab();
+        addListeners();
     }
 
     private void addTabFolder() {
@@ -77,8 +83,48 @@ public class FeaturesManagerForm extends AbstractFeatureForm {
     private void addInstalledTab() {
         updateTabItem = new CTabItem(tabFolder, SWT.NONE);
         updateTabItem.setText(Messages.getString("ComponentsManager.tab.label.update")); //$NON-NLS-1$
-        FeaturesInstalledForm installedForm = new FeaturesInstalledForm(tabFolder, SWT.NONE, getRuntimeData());
+        FeaturesUpdatesForm installedForm = new FeaturesUpdatesForm(tabFolder, SWT.NONE, getRuntimeData());
         updateTabItem.setControl(installedForm);
     }
 
+    @Override
+    protected void addListeners() {
+        tabFolder.addSelectionListener(new SelectionAdapter() {
+
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                onSwitchTab();
+            }
+        });
+    }
+
+    @Override
+    public boolean canFinish() {
+        boolean canFinish = true;
+
+        /**
+         * MUST check all tabs, since the canFinish method may trigger some essential actions
+         */
+        Control searchCtrl = searchTabItem.getControl();
+        if (searchCtrl instanceof AbstractFeatureForm) {
+            if (!((AbstractFeatureForm) searchCtrl).canFinish()) {
+                canFinish = false;
+            }
+        }
+        Control updateCtrl = updateTabItem.getControl();
+        if (updateCtrl instanceof AbstractFeatureForm) {
+            if (!((AbstractFeatureForm) updateCtrl).canFinish()) {
+                canFinish = false;
+            }
+        }
+        if (!canFinish) {
+            return canFinish;
+        }
+        return super.canFinish();
+    }
+
+    private void onSwitchTab() {
+        AbstractFeatureForm form = (AbstractFeatureForm) tabFolder.getSelection().getControl();
+        form.onTabSelected();
+    }
 }

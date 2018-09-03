@@ -12,12 +12,8 @@
 // ============================================================================
 package org.talend.updates.runtime.ui.feature.form.item;
 
-import org.eclipse.jface.resource.FontDescriptor;
-import org.eclipse.jface.resource.FontRegistry;
-import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -109,20 +105,9 @@ public class FeatureListTitle extends AbstractControlListItem<IFeatureTitle> {
     }
 
     @Override
-    protected void refresh() {
-        super.refresh();
+    protected void initData() {
+        super.initData();
         titleLabel.setText(getData().getTitle());
-    }
-
-    private Font getTitleFont() {
-        final String titleFontKey = this.getClass().getName() + ".titleFont"; //$NON-NLS-1$
-        FontRegistry fontRegistry = JFaceResources.getFontRegistry();
-        if (!fontRegistry.hasValueFor(titleFontKey)) {
-            FontDescriptor fontDescriptor = FontDescriptor.createFrom(JFaceResources.getDialogFont()).setHeight(12)
-                    .setStyle(SWT.BOLD);
-            fontRegistry.put(titleFontKey, fontDescriptor.getFontData());
-        }
-        return fontRegistry.get(titleFontKey);
     }
 
 }

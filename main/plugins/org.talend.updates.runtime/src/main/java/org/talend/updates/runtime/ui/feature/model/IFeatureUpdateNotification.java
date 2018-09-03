@@ -10,18 +10,14 @@
 // 9 rue Pages 92150 Suresnes, France
 //
 // ============================================================================
-package org.talend.updates.runtime.ui.feature.form;
+package org.talend.updates.runtime.ui.feature.model;
 
-import org.eclipse.swt.widgets.Composite;
-import org.talend.updates.runtime.ui.feature.model.runtime.FeaturesManagerRuntimeData;
 
 /**
  * DOC cmeng  class global comment. Detailled comment
  */
-public class FeaturesInstalledForm extends AbstractFeatureForm {
+public interface IFeatureUpdateNotification extends IFeatureItem {
 
-    public FeaturesInstalledForm(Composite parent, int style, FeaturesManagerRuntimeData runtimeData) {
-        super(parent, style, runtimeData);
-    }
+    String getDescription();
 
 }

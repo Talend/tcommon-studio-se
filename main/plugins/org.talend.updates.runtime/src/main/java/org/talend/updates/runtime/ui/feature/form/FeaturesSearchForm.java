@@ -25,7 +25,9 @@ import org.eclipse.jface.operation.ModalContext;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -43,31 +45,36 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.ui.runtime.image.ImageProvider;
+import org.talend.commons.ui.swt.listviewer.ControlListItem;
 import org.talend.updates.runtime.EUpdatesImage;
 import org.talend.updates.runtime.feature.FeaturesManager;
 import org.talend.updates.runtime.feature.FeaturesManager.SearchOption;
 import org.talend.updates.runtime.feature.FeaturesManager.SearchResult;
+import org.talend.updates.runtime.feature.ImageFactory;
 import org.talend.updates.runtime.feature.model.Category;
 import org.talend.updates.runtime.feature.model.Type;
 import org.talend.updates.runtime.i18n.Messages;
 import org.talend.updates.runtime.model.ExtraFeature;
-import org.talend.updates.runtime.ui.ImageFactory;
+import org.talend.updates.runtime.ui.feature.form.item.AbstractControlListItem;
 import org.talend.updates.runtime.ui.feature.form.item.FeatureListViewer;
+import org.talend.updates.runtime.ui.feature.job.FeaturesCheckUpdateJob;
 import org.talend.updates.runtime.ui.feature.model.IFeatureItem;
 import org.talend.updates.runtime.ui.feature.model.IFeatureNavigator;
 import org.talend.updates.runtime.ui.feature.model.IFeatureNavigator.INavigatorCallBack;
 import org.talend.updates.runtime.ui.feature.model.impl.FeatureNavigator;
 import org.talend.updates.runtime.ui.feature.model.impl.FeatureProgress;
 import org.talend.updates.runtime.ui.feature.model.impl.FeatureTitle;
+import org.talend.updates.runtime.ui.feature.model.impl.FeatureUpdateNotification;
 import org.talend.updates.runtime.ui.feature.model.impl.ModelAdapter;
 import org.talend.updates.runtime.ui.feature.model.runtime.FeaturesManagerRuntimeData;
+import org.talend.updates.runtime.ui.util.UIUtils;
 
 /**
  * DOC cmeng  class global comment. Detailled comment
  */
 public class FeaturesSearchForm extends AbstractFeatureForm {
 
-    private ComboViewer marketsComboViewer;
+    private ComboViewer typesComboViewer;
 
     private ComboViewer categoriesComboViewer;
 
@@ -79,14 +86,21 @@ public class FeaturesSearchForm extends AbstractFeatureForm {
 
     private FeatureListViewer featureListViewer;
 
+    private boolean firstShow;
+
     public FeaturesSearchForm(Composite parent, int style, FeaturesManagerRuntimeData runtimeData) {
         super(parent, style, runtimeData);
     }
 
     @Override
     protected void initControl(Composite parent) {
-        marketsComboViewer = new ComboViewer(parent, SWT.READ_ONLY);
+        super.initControl(parent);
+        typesComboViewer = new ComboViewer(parent, SWT.READ_ONLY);
+        typesComboViewer.setContentProvider(ArrayContentProvider.getInstance());
+        typesComboViewer.setLabelProvider(new TypeLabelProvider());
         categoriesComboViewer = new ComboViewer(parent, SWT.READ_ONLY);
+        categoriesComboViewer.setContentProvider(ArrayContentProvider.getInstance());
+        categoriesComboViewer.setLabelProvider(new CategoryLabelProvider());
         searchText = new Text(parent, SWT.BORDER);
 
         findLabel = new Label(parent, SWT.NONE);
@@ -102,11 +116,12 @@ public class FeaturesSearchForm extends AbstractFeatureForm {
 
     @Override
     protected void initLayout() {
+        super.initLayout();
         FormData formData = null;
 
         final int comboWidth = getComboWidth();
         final int horizonAlignWidth = getHorizonAlignWidth();
-        final int versionAlignWidth = getVersionAlignWidth();
+        final int versionAlignWidth = getVerticalAlignHeight();
 
         formData = new FormData();
         formData.top = new FormAttachment(0, versionAlignWidth);
@@ -119,19 +134,15 @@ public class FeaturesSearchForm extends AbstractFeatureForm {
         // formData.bottom = new FormAttachment(searchButton, 0, SWT.BOTTOM);
         formData.left = new FormAttachment(findLabel, horizonAlignWidth, SWT.RIGHT);
         formData.width = comboWidth;
-        marketsComboViewer.getControl().setLayoutData(formData);
-        marketsComboViewer.setContentProvider(ArrayContentProvider.getInstance());
-        marketsComboViewer.setLabelProvider(new TypeLabelProvider());
+        typesComboViewer.getControl().setLayoutData(formData);
 
         formData = new FormData();
-        formData.top = new FormAttachment(marketsComboViewer.getControl(), 0, SWT.CENTER);
+        formData.top = new FormAttachment(typesComboViewer.getControl(), 0, SWT.CENTER);
         // formData.top = new FormAttachment(searchButton, 0, SWT.TOP);
         // formData.bottom = new FormAttachment(searchButton, 0, SWT.BOTTOM);
-        formData.left = new FormAttachment(marketsComboViewer.getControl(), horizonAlignWidth, SWT.RIGHT);
+        formData.left = new FormAttachment(typesComboViewer.getControl(), horizonAlignWidth, SWT.RIGHT);
         formData.width = 100;
         categoriesComboViewer.getControl().setLayoutData(formData);
-        categoriesComboViewer.setContentProvider(ArrayContentProvider.getInstance());
-        categoriesComboViewer.setLabelProvider(new CategoryLabelProvider());
 
         formData = new FormData();
         formData.top = new FormAttachment(categoriesComboViewer.getControl(), 0, SWT.CENTER);
@@ -156,25 +167,38 @@ public class FeaturesSearchForm extends AbstractFeatureForm {
 
     @Override
     protected void initData() {
+        super.initData();
+        firstShow = true;
         updateSearchTooltip(null);
         featureListViewer.setCheckListener(getCheckListener());
 
-        List<Type> types = new ArrayList<>();
-        types.add(Type.ALL);
-        marketsComboViewer.setInput(types);
-        marketsComboViewer.setSelection(new StructuredSelection(Type.ALL));
+        typesComboViewer.setInput(Type.getAllTypes());
+        typesComboViewer.setSelection(new StructuredSelection(Type.ALL));
 
-        List<Category> categories = new ArrayList<>();
-        categories.add(Category.ALL);
-        categoriesComboViewer.setInput(categories);
+        categoriesComboViewer.setInput(Category.getAllCategories());
         categoriesComboViewer.setSelection(new StructuredSelection(Category.ALL));
 
-        doSearch();
-
+        // trigger to schedule
+        getRuntimeData().getCheckUpdateJob();
     }
 
     @Override
     protected void addListeners() {
+        super.addListeners();
+        typesComboViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+
+            @Override
+            public void selectionChanged(SelectionChangedEvent event) {
+                onTypesComboViewerChanged(event);
+            }
+        });
+        categoriesComboViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+
+            @Override
+            public void selectionChanged(SelectionChangedEvent event) {
+                onCategoriesComboViewerChanged(event);
+            }
+        });
         searchButton.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -198,11 +222,29 @@ public class FeaturesSearchForm extends AbstractFeatureForm {
         });
     }
 
+    @Override
+    public void onTabSelected() {
+        super.onTabSelected();
+        if (firstShow) {
+            doSearch();
+            firstShow = false;
+        }
+    }
+
+    private void onTypesComboViewerChanged(SelectionChangedEvent event) {
+        doSearch();
+    }
+
+    private void onCategoriesComboViewerChanged(SelectionChangedEvent event) {
+        doSearch();
+    }
+
     private void onSearchTextTraversed(TraverseEvent e) {
         if (e != null) {
             switch (e.detail) {
             case SWT.TRAVERSE_RETURN:
                 onSearchButtonSelected(null);
+                e.doit = false;
                 break;
             default:
                 // nothing to do
@@ -228,13 +270,15 @@ public class FeaturesSearchForm extends AbstractFeatureForm {
 
     private void doSearch(SearchOption searchOption) {
         final FeatureProgress progress = showProgress();
-        clearThreadPool();
         execute(new Runnable() {
 
             @Override
             public void run() {
+                final Thread thread = Thread.currentThread();
                 try {
-
+                    if (thread.isInterrupted()) {
+                        return;
+                    }
                     ModalContext.run(new IRunnableWithProgress() {
 
                         @Override
@@ -254,11 +298,12 @@ public class FeaturesSearchForm extends AbstractFeatureForm {
         List<IFeatureItem> features = new ArrayList<>();
         Collection<IFeatureItem> featureItems = Collections.EMPTY_SET;
         SearchResult searchResult = null;
-        FeaturesManager componentsManager = getRuntimeData().getComponentsManager();
+        FeaturesManager componentsManager = getRuntimeData().getFeaturesManager();
+
         try {
             searchResult = componentsManager.searchFeatures(monitor, searchOption);
             Collection<ExtraFeature> allComponentFeatures = searchResult.getCurrentPageResult();
-            featureItems = ModelAdapter.convert(allComponentFeatures);
+            featureItems = ModelAdapter.convert(allComponentFeatures, false);
         } catch (Exception e) {
             ExceptionHandler.process(e);
         }
@@ -280,6 +325,41 @@ public class FeaturesSearchForm extends AbstractFeatureForm {
             }
         }
 
+        if (searchOption.getType() == Type.ALL && searchOption.getCategory() == Category.ALL
+                && StringUtils.isBlank(searchOption.getKeyword())) {
+            try {
+                monitor.setTaskName(Messages.getString("ComponentsManager.form.install.label.progress.waitUpdate")); //$NON-NLS-1$
+                FeaturesCheckUpdateJob checkUpdateJob = getRuntimeData().getCheckUpdateJob();
+                while (true) {
+                    if (checkUpdateJob.isFinished()) {
+                        break;
+                    }
+                    UIUtils.checkMonitor(monitor);
+                    Thread.sleep(50);
+                }
+                Exception exception = checkUpdateJob.getException();
+                if (exception != null) {
+                    ExceptionHandler.process(exception);
+                }
+                SearchResult checkUpdateResult = checkUpdateJob.getSearchResult();
+                if (checkUpdateResult != null) {
+                    Collection<ExtraFeature> currentPageResult = checkUpdateResult.getCurrentPageResult();
+                    if (currentPageResult != null && !currentPageResult.isEmpty()) {
+                        FeatureUpdateNotification update = new FeatureUpdateNotification();
+                        update.setTitle(Messages.getString("ComponentsManager.form.showUpdate.label.title")); //$NON-NLS-1$
+                        update.setDescription(Messages.getString("ComponentsManager.form.showUpdate.label.description")); //$NON-NLS-1$
+                        features.add(update);
+                    }
+                }
+            } catch (InterruptedException e) {
+                // search function can skip the check udpate
+                monitor.setCanceled(false);
+                ExceptionHandler.process(e);
+            } catch (Exception e) {
+                ExceptionHandler.process(e);
+            }
+        }
+
         if (showTitleBar) {
             FeatureTitle title = new FeatureTitle();
             title.setTitle(titleMsg);
@@ -293,17 +373,14 @@ public class FeaturesSearchForm extends AbstractFeatureForm {
             features.add(navigator);
         }
 
-        if (monitor.isCanceled()) {
-            return;
-        }
         Display.getDefault().asyncExec(new Runnable() {
 
             @Override
             public void run() {
-                if (monitor.isCanceled()) {
-                    return;
+                if (!featureListViewer.getControl().isDisposed()) {
+                    featureListViewer.setInput(features);
                 }
-                featureListViewer.setInput(features);
+                checkStatus();
             }
         });
     }
@@ -338,13 +415,37 @@ public class FeaturesSearchForm extends AbstractFeatureForm {
         return navigator;
     }
 
+    @Override
+    public boolean canFinish() {
+        checkStatus();
+        return super.canFinish();
+    }
+
+    private void checkStatus() {
+        updateItemsStatus();
+    }
+
+    private void updateItemsStatus() {
+        if (featureListViewer.getControl().isDisposed()) {
+            return;
+        }
+        Collection<ControlListItem<?>> controlListItems = featureListViewer.getControlListItems();
+        if (controlListItems != null) {
+            for (ControlListItem<?> controlListItem : controlListItems) {
+                if (controlListItem instanceof AbstractControlListItem) {
+                    ((AbstractControlListItem) controlListItem).reload();
+                }
+            }
+        }
+    }
+
     private void updateSearchTooltip(ModifyEvent e) {
         searchButton
                 .setToolTipText(Messages.getString("ComponentsManager.form.install.label.toolTip.search", searchText.getText())); //$NON-NLS-1$
     }
 
     private Type getSelectedType() {
-        ISelection selection = marketsComboViewer.getSelection();
+        ISelection selection = typesComboViewer.getSelection();
         return (Type) ((StructuredSelection) selection).getFirstElement();
     }
 
@@ -353,20 +454,25 @@ public class FeaturesSearchForm extends AbstractFeatureForm {
         return (Category) ((StructuredSelection) selection).getFirstElement();
     }
 
-    private void clearThreadPool() {
-        ImageFactory.getInstance().clearThreadPool();
-    }
-
-    private void execute(Runnable runnable) {
-        ImageFactory.getInstance().getThreadPoolExecutor().execute(runnable);
-    }
-
     private FeatureProgress showProgress() {
         List<IFeatureItem> progressList = new ArrayList<>();
         final FeatureProgress progress = new FeatureProgress();
         progressList.add(progress);
         featureListViewer.setInput(progressList);
         return progress;
+    }
+
+    private void clear() {
+        ImageFactory.getInstance().disposeFeatureImages();
+        clearThreadPool();
+    }
+
+    private void clearThreadPool() {
+        getRuntimeData().getFeaturesManager().clearSearchThreadPool();
+    }
+
+    private void execute(Runnable run) {
+        getRuntimeData().getFeaturesManager().getSearchThreadPoolExecutor().execute(run);
     }
 
     private class CategoryLabelProvider extends LabelProvider {

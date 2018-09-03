@@ -10,18 +10,16 @@
 // 9 rue Pages 92150 Suresnes, France
 //
 // ============================================================================
-package org.talend.updates.runtime.ui;
+package org.talend.updates.runtime.feature;
 
 import java.io.File;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.ThreadPoolExecutor;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 import org.talend.commons.exception.ExceptionHandler;
-import org.talend.commons.utils.threading.TalendCustomThreadPoolExecutor;
 
 /**
  * DOC cmeng  class global comment. Detailled comment
@@ -30,56 +28,22 @@ public class ImageFactory {
 
     private static ImageFactory instance;
 
-    private static Object lock = new Object();
-
     private List<Image> loadedFeatureImages;
-
-    private TalendCustomThreadPoolExecutor threadPoolExecutor;
-
-    private Object threadPoolExecutorLock = new Object();
 
     private ImageFactory() {
         loadedFeatureImages = Collections.synchronizedList(new LinkedList<>());
-    }
-
-    private TalendCustomThreadPoolExecutor createThreadPoolExecutor() {
-        return new TalendCustomThreadPoolExecutor(60);
     }
 
     public static ImageFactory getInstance() {
         if (instance != null) {
             return instance;
         }
-        synchronized (lock) {
+        synchronized (ImageFactory.class) {
             if (instance == null) {
                 instance = new ImageFactory();
             }
         }
         return instance;
-    }
-
-    public ThreadPoolExecutor getThreadPoolExecutor() {
-        if (threadPoolExecutor != null) {
-            return threadPoolExecutor;
-        }
-        synchronized (threadPoolExecutorLock) {
-            if (threadPoolExecutor == null) {
-                threadPoolExecutor = createThreadPoolExecutor();
-            }
-        }
-        return threadPoolExecutor;
-    }
-
-    public void clearThreadPool() {
-        if (threadPoolExecutor != null) {
-            synchronized (threadPoolExecutorLock) {
-                if (threadPoolExecutor != null) {
-                    TalendCustomThreadPoolExecutor tmp = threadPoolExecutor;
-                    threadPoolExecutor = null;
-                    tmp.clearThreads();
-                }
-            }
-        }
     }
 
     /**

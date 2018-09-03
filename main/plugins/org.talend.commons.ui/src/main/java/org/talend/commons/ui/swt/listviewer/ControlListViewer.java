@@ -13,7 +13,9 @@
 package org.talend.commons.ui.swt.listviewer;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -326,7 +328,7 @@ public abstract class ControlListViewer extends StructuredViewer {
     }
 
     @Override
-    protected ControlListItem<?> doFindItem(Object element) {
+    public ControlListItem<?> doFindItem(Object element) {
         Control[] children = control.getChildren();
         for (Control child : children) {
             if (child.isDisposed() || child.getData() == null) {
@@ -346,6 +348,19 @@ public abstract class ControlListViewer extends StructuredViewer {
         }
         item.dispose();
         add(new Object[] { element });
+    }
+
+    public Collection<ControlListItem<?>> getControlListItems() {
+        Control[] children = control.getChildren();
+        Collection<ControlListItem<?>> itemList = new LinkedList<>();
+        if (children != null) {
+            for (Control ctrl : children) {
+                if (ctrl instanceof ControlListItem<?>) {
+                    itemList.add((ControlListItem<?>) ctrl);
+                }
+            }
+        }
+        return itemList;
     }
 
     @Override

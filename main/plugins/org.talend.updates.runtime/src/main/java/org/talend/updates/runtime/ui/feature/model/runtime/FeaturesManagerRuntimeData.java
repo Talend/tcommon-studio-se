@@ -12,24 +12,44 @@
 // ============================================================================
 package org.talend.updates.runtime.ui.feature.model.runtime;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+
 import org.talend.updates.runtime.feature.FeaturesManager;
+import org.talend.updates.runtime.model.ExtraFeature;
 import org.talend.updates.runtime.ui.feature.form.listener.ICheckListener;
+import org.talend.updates.runtime.ui.feature.job.FeaturesCheckUpdateJob;
 
 /**
  * DOC cmeng  class global comment. Detailled comment
  */
 public class FeaturesManagerRuntimeData {
 
-    private FeaturesManager componentsManager;
+    private FeaturesManager featuresManager;
 
     private ICheckListener checkListener;
 
-    public FeaturesManager getComponentsManager() {
-        return this.componentsManager;
+    private Collection<ExtraFeature> installedFeatures = Collections.synchronizedList(new ArrayList<>());
+
+    private FeaturesCheckUpdateJob checkUpdateJob;
+
+    private Object checkUpdateJobLock = new Object();
+
+    public FeaturesManager getFeaturesManager() {
+        return this.featuresManager;
     }
 
-    public void setComponentsManager(FeaturesManager componentsManager) {
-        this.componentsManager = componentsManager;
+    public void setFeaturesManager(FeaturesManager featuresManager) {
+        this.featuresManager = featuresManager;
+    }
+
+    public Collection<ExtraFeature> getInstalledFeatures() {
+        return this.installedFeatures;
+    }
+
+    public void setInstalledFeatures(Collection<ExtraFeature> installedFeatures) {
+        this.installedFeatures = installedFeatures;
     }
 
     public ICheckListener getCheckListener() {
@@ -38,6 +58,31 @@ public class FeaturesManagerRuntimeData {
 
     public void setCheckListener(ICheckListener checkListener) {
         this.checkListener = checkListener;
+    }
+
+    public FeaturesCheckUpdateJob getCheckUpdateJob() {
+        if (checkUpdateJob != null) {
+            return checkUpdateJob;
+        }
+        synchronized (checkUpdateJobLock) {
+            if (checkUpdateJob == null) {
+                checkUpdateJob = new FeaturesCheckUpdateJob(getFeaturesManager());
+                checkUpdateJob.schedule();
+            }
+        }
+        return checkUpdateJob;
+    }
+
+    public void recheckUpdate() {
+        if (checkUpdateJob == null) {
+            return;
+        }
+        synchronized (checkUpdateJobLock) {
+            if (checkUpdateJob != null) {
+                checkUpdateJob.cancel();
+                checkUpdateJob = null;
+            }
+        }
     }
 
 }

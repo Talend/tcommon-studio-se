@@ -405,8 +405,12 @@ public class FeatureListNavigator extends AbstractControlListItem<IFeatureNaviga
     }
 
     @Override
-    protected void refresh() {
-        super.refresh();
+    protected void initData() {
+        super.initData();
+        loadData();
+    }
+
+    private void loadData() {
         IFeatureNavigator navigator = getData();
 
         SearchResult searchResult = navigator.getSearchResult();
@@ -417,7 +421,7 @@ public class FeatureListNavigator extends AbstractControlListItem<IFeatureNaviga
         totalText.setText(totalLabel + " " + totalSize); //$NON-NLS-1$
         totalText.setStyleRange(totalStyleRange);
 
-        curPageLabel.setText("[" + getDefaultPage() + "]"); //$NON-NLS-1$ //$NON-NLS-2$
+        curPageLabel.setText("<" + getDefaultPage() + ">"); //$NON-NLS-1$ //$NON-NLS-2$
         currentPageText.setText("" + getDefaultPage()); //$NON-NLS-1$
 
         pagesLabel.setText("/" + searchResult.getTotalPageSize()); //$NON-NLS-1$

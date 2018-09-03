@@ -12,12 +12,29 @@
 // ============================================================================
 package org.talend.updates.runtime.ui.feature.model.impl;
 
-import org.talend.updates.runtime.ui.feature.model.IFeatureDetail;
-
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.swt.graphics.Image;
+import org.talend.updates.runtime.ui.feature.model.IFeatureInfo;
 
 /**
  * DOC cmeng  class global comment. Detailled comment
  */
-public class FeatureDetail extends AbstractFeatureInfo implements IFeatureDetail {
+public abstract class AbstractFeatureInfo extends AbstractFeatureItem implements IFeatureInfo {
+
+    private String description;
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String desc) {
+        this.description = desc;
+    }
+
+    @Override
+    public Image getImage(IProgressMonitor monitor) throws Exception {
+        return getFeature().getImage(monitor);
+    }
 
 }

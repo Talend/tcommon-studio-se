@@ -10,11 +10,24 @@
 // 9 rue Pages 92150 Suresnes, France
 //
 // ============================================================================
-package org.talend.updates.runtime.ui.feature.model;
+package org.talend.updates.runtime.ui.feature.model.impl;
+
+import org.talend.updates.runtime.ui.feature.model.IFeatureUpdateNotification;
 
 /**
  * DOC cmeng  class global comment. Detailled comment
  */
-public interface IFeatureDetail extends IFeatureInfo {
+public class FeatureUpdateNotification extends AbstractFeatureItem implements IFeatureUpdateNotification {
+
+    private String description;
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
 
 }
