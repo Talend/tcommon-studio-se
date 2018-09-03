@@ -94,7 +94,6 @@ import org.talend.core.runtime.process.LastGenerationInfo;
 import org.talend.core.runtime.process.TalendProcessArgumentConstant;
 import org.talend.core.runtime.process.TalendProcessOptionConstants;
 import org.talend.core.runtime.repository.build.BuildExportManager;
-import org.talend.core.service.IResourcesDependenciesService;
 import org.talend.core.services.ISVNProviderService;
 import org.talend.core.ui.IJobletProviderService;
 import org.talend.core.ui.ITestContainerProviderService;
@@ -598,7 +597,6 @@ public class ProcessorUtilities {
          */
         generateBuildInfo(jobInfo, progressMonitor, isMainJob, currentProcess, currentJobName, processor, option);
 
-        copyDependenciedResources(currentProcess);
 
         return processor;
     }
@@ -1264,51 +1262,6 @@ public class ProcessorUtilities {
             }
         }
 
-    }
-
-    /**
-     * For runtime resource file needed, copy the reource file to 'src\main\ext-resources' DOC jding Comment method
-     * "copyDependenciedResources".
-     * 
-     * @param currentProcess
-     */
-    private static void copyDependenciedResources(IProcess currentProcess) {
-        if (!(currentProcess instanceof IProcess2)) {
-            return;
-        }
-        IProcess2 process = (IProcess2) currentProcess;
-        String resources = (String) process.getAdditionalProperties().get("RESOURCES_PROP");
-        if (StringUtils.isBlank(resources)) {
-            return;
-        }
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IResourcesDependenciesService.class)) {
-            IResourcesDependenciesService resourcesService = (IResourcesDependenciesService) GlobalServiceRegister.getDefault()
-                    .getService(IResourcesDependenciesService.class);
-            if (resourcesService == null) {
-                return;
-            }
-            try {
-                for (String res : resources.split(",")) {
-                    String[] parts = res.split("\\|");
-                    if (parts.length > 1) {
-                        IRepositoryViewObject repoObject = null;
-                        if (RelationshipItemBuilder.LATEST_VERSION.equals(parts[1])) {
-
-                            repoObject = ProxyRepositoryFactory.getInstance().getLastVersion(parts[0]);
-
-                        } else {
-                            repoObject = ProxyRepositoryFactory.getInstance().getSpecificVersion(parts[0], parts[1], true);
-                        }
-                        if (repoObject != null) {
-                            resourcesService.copyToExtResourceFolder(repoObject, process.getLabel() + "_" + process.getVersion(),
-                                    parts[1]);
-                        }
-                    }
-                }
-            } catch (PersistenceException e) {
-                log.error(e);
-            }
-        }
     }
 
     /**
