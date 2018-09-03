@@ -138,6 +138,8 @@ public interface TalendMavenConstants {
 
     static final String DEFAULT_GROUP_ID = "org.talend";
 
+    static final String DEFAULT_CI_GROUP_ID = "org.talend.ci";
+
     static final String DEFAULT_VERSION = "6.0.0";
 
     static final String DEFAULT_CODE = "code";
