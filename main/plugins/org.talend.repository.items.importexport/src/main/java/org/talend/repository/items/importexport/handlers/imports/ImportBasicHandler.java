@@ -14,7 +14,6 @@ package org.talend.repository.items.importexport.handlers.imports;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -27,6 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -377,7 +377,10 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
             org.talend.core.model.general.Project currentProject = ProjectManager.getInstance().getCurrentProject();
             Map<String, List<IRepositoryViewObject>> nameCache = repObjectcache.getNameItemChache();
             final Property property = importItem.getProperty();
-            List<IRepositoryViewObject> nameItems = nameCache.get(property.getLabel());
+            List<IRepositoryViewObject> nameItems = nameCache.keySet().stream()
+                    .filter(name -> name.equalsIgnoreCase(property.getLabel())).flatMap(key -> nameCache.get(key).stream())
+                    .collect(Collectors.toList());
+
             if (nameItems != null) {
                 for (IRepositoryViewObject current : nameItems) {
                     boolean isInCurrentProject = ProjectManager.getInstance().isInMainProject(currentProject,
@@ -609,14 +612,12 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
                 stream = manager.getStream(path, importItem);
                 Resource resource = createResource(importItem, path, false);
                 resource.load(stream, null);
-                Project project = (Project) EcoreUtil.getObjectByType(resource.getContents(), PropertiesPackage.eINSTANCE.getProject());
-                File parentFile = path.toFile().getParentFile();
-                if (parentFile.isDirectory()) {
-                     ProjectDataJsonProvider.loadProjectData(project, Path.fromPortableString(parentFile.getAbsolutePath()), ProjectDataJsonProvider.CONTENT_ALL);
-                }
+                Project project = (Project) EcoreUtil.getObjectByType(resource.getContents(),
+                        PropertiesPackage.eINSTANCE.getProject());
+                IPath projectRootPath = path.removeLastSegments(1);
+                ProjectDataJsonProvider.loadProjectData(project, projectRootPath, manager);
                 // EmfHelper.loadResource(resource, stream, null);
-                pathWithProjects.put(path,
-                        (Project) EcoreUtil.getObjectByType(resource.getContents(), PropertiesPackage.eINSTANCE.getProject()));
+                pathWithProjects.put(path, project);
             }
             return pathWithProjects.get(path);
         } catch (IOException | PersistenceException e) {

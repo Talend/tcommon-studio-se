@@ -27,7 +27,6 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.talend.core.database.conn.DatabaseConnStrUtil;
-import org.talend.core.database.conn.version.EDatabaseVersion4Drivers;
 import org.talend.core.model.metadata.builder.database.PluginConstant;
 
 /**
@@ -196,24 +195,11 @@ public final class SupportDBUrlStore {
     public String getDBUrl(String dbType, String dbVersion, String host, String username, String password, String port,
             String dbName, String dataSource, String paramString) {
         if (SupportDBUrlType.isMssql(dbType)) {
-            // TDQ-12794: for mssql, because of some changes, we need to do like this
-            String versionStr = changeMSSQLVersion(dbVersion);
-            EDatabaseVersion4Drivers version = EDatabaseVersion4Drivers.indexOfByVersionDisplay(versionStr);
-            if (version != null) {
-                versionStr = version.getVersionValue();
-            }
-            return DatabaseConnStrUtil.getURLString(dbType, versionStr, host, username, password, port, dbName,
+            return DatabaseConnStrUtil.getURLString(dbType, dbVersion, host, username, password, port, dbName,
                     StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY, paramString);
         } else {
             return getDBUrl(dbType, host, port, dbName, StringUtils.EMPTY, paramString);
         }
-    }
-
-    public String changeMSSQLVersion(String version) {
-        if (version.equals(EDatabaseVersion4Drivers.MSSQL_2012.getVersionValue())) {
-            return EDatabaseVersion4Drivers.MSSQL.getVersionValue();
-        }
-        return version;
     }
 
     /**

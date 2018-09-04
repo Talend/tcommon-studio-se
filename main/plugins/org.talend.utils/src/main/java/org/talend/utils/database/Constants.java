@@ -27,7 +27,7 @@ public class Constants {
 
     public static final String JDBC_POSTGRESQL_URL = "jdbc:postgresql";
 
-    public static final String JDBC_MYSQL_DRIVER = "org.gjt.mm.mysql.Driver";
+    public static final String JDBC_MYSQL_DRIVER = "com.mysql.cj.jdbc.Driver";
 
     public static final String JDBC_MSSQL_DRIVER = "net.sourceforge.jtds.jdbc.Driver";
 

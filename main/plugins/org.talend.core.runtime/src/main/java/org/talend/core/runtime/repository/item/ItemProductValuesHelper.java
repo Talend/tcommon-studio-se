@@ -12,7 +12,7 @@
 // ============================================================================
 package org.talend.core.runtime.repository.item;
 
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -33,13 +33,12 @@ import org.talend.repository.ProjectManager;
 @SuppressWarnings({ "unchecked", "rawtypes", "nls" })
 public final class ItemProductValuesHelper {
 
-    /*
-     * 2017-10-09T14:30:19.367+0800
-     */
-    public static final SimpleDateFormat DATEFORMAT = ResourceHelper.DATEFORMAT;
+    public static DateFormat dateFormat() {
+        return ResourceHelper.dateFormat();
+    }
 
     public static String getCurDateTime() {
-        return DATEFORMAT.format(new Date());
+        return dateFormat().format(new Date());
     }
 
     public static boolean existed(Property property) {
@@ -74,7 +73,7 @@ public final class ItemProductValuesHelper {
 
         additionalProperties.put(ItemProductKeys.FULLNAME.getCreatedKey(), brandingService.getFullProductName());
         additionalProperties.put(ItemProductKeys.VERSION.getCreatedKey(), VersionUtils.getDisplayVersion());
-        additionalProperties.put(ItemProductKeys.DATE.getCreatedKey(), DATEFORMAT.format(date));
+        additionalProperties.put(ItemProductKeys.DATE.getCreatedKey(), dateFormat().format(date));
 
         property.setCreationDate(null);
 
@@ -103,7 +102,7 @@ public final class ItemProductValuesHelper {
 
         additionalProperties.put(ItemProductKeys.FULLNAME.getModifiedKey(), brandingService.getFullProductName());
         additionalProperties.put(ItemProductKeys.VERSION.getModifiedKey(), VersionUtils.getDisplayVersion());
-        additionalProperties.put(ItemProductKeys.DATE.getModifiedKey(), DATEFORMAT.format(date));
+        additionalProperties.put(ItemProductKeys.DATE.getModifiedKey(), dateFormat().format(date));
 
         property.setModificationDate(null);
 
@@ -161,7 +160,7 @@ public final class ItemProductValuesHelper {
         additionalProperties.put(ItemProductKeys.FULLNAME.getCreatedKey(), fullname);
         additionalProperties.put(ItemProductKeys.VERSION.getCreatedKey(), version);
         if (creationDate != null) {
-            additionalProperties.put(ItemProductKeys.DATE.getCreatedKey(), DATEFORMAT.format(creationDate));
+            additionalProperties.put(ItemProductKeys.DATE.getCreatedKey(), dateFormat().format(creationDate));
         } else {
             additionalProperties.put(ItemProductKeys.DATE.getCreatedKey(), datetime);
         }
@@ -172,7 +171,7 @@ public final class ItemProductValuesHelper {
         additionalProperties.put(ItemProductKeys.FULLNAME.getModifiedKey(), fullname);
         additionalProperties.put(ItemProductKeys.VERSION.getModifiedKey(), version);
         if (modificationDate != null) {
-            additionalProperties.put(ItemProductKeys.DATE.getModifiedKey(), DATEFORMAT.format(modificationDate));
+            additionalProperties.put(ItemProductKeys.DATE.getModifiedKey(), dateFormat().format(modificationDate));
         } else {
             additionalProperties.put(ItemProductKeys.DATE.getModifiedKey(), datetime);
         }

@@ -117,7 +117,7 @@ public class TalendTestCollector {
         });
 
         // log in console
-        StringBuffer classListMessage = new StringBuffer('\n' + allCollectedTestClasses.length
+        StringBuffer classListMessage = new StringBuffer("\n" + allCollectedTestClasses.length
                 + " Test classes will be tested : \n");
         for (Class<?> clazz : allCollectedTestClasses) {
             classListMessage.append(clazz.getName()).append('\n');

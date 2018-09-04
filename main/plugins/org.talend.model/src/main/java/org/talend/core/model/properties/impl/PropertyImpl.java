@@ -432,7 +432,7 @@ public class PropertyImpl extends EObjectImpl implements Property {
             Object dateObj = this.getAdditionalProperties().get("created_date");
             if (dateObj != null) {
                 try {
-                    return ResourceHelper.DATEFORMAT.parse(dateObj.toString());
+                    return ResourceHelper.dateFormat().parse(dateObj.toString());
                 } catch (ParseException e) {
                     //
                 }
@@ -463,7 +463,7 @@ public class PropertyImpl extends EObjectImpl implements Property {
             Object dateObj = this.getAdditionalProperties().get("modified_date");
             if (dateObj != null) {
                 try {
-                    return ResourceHelper.DATEFORMAT.parse(dateObj.toString());
+                    return ResourceHelper.dateFormat().parse(dateObj.toString());
                 } catch (ParseException e) {
                     //
                 }

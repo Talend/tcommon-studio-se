@@ -110,11 +110,10 @@ public class DatabaseTableFilterForm extends AbstractForm {
     public void initialize() {
         getTableInfoParameters().setSqlFiter(sqlFilter.getText());
         getTableInfoParameters().changeType(ETableTypes.TABLETYPE_TABLE, tableCheck.getSelection());
-        getTableInfoParameters().changeType(ETableTypes.TABLETYPE_EXTERNAL_TABLE, tableCheck.getSelection());
+        getTableInfoParameters().changeType(ETableTypes.EXTERNAL_TABLE, tableCheck.getSelection());
         getTableInfoParameters().changeType(ETableTypes.TABLETYPE_VIEW, viewCheck.getSelection());
         getTableInfoParameters().changeType(ETableTypes.TABLETYPE_SYNONYM, synonymCheck.getSelection());
         if (EDatabaseTypeName.HIVE.getDisplayName().equals(metadataconnection.getDbType())) {
-            getTableInfoParameters().changeType(ETableTypes.EXTERNAL_TABLE, tableCheck.getSelection());
             getTableInfoParameters().changeType(ETableTypes.MANAGED_TABLE, tableCheck.getSelection());
             getTableInfoParameters().changeType(ETableTypes.INDEX_TABLE, tableCheck.getSelection());
             getTableInfoParameters().changeType(ETableTypes.VIRTUAL_VIEW, viewCheck.getSelection());
@@ -423,9 +422,8 @@ public class DatabaseTableFilterForm extends AbstractForm {
                 // child like "HiveTableInfoParameters" could implement "getTypes()" to return the private types. When
                 // types are reqired, it could invoke like
                 // "DatabaseTableWizardPage.getTableInfoParameters().getTypes()".
-                getTableInfoParameters().changeType(ETableTypes.TABLETYPE_EXTERNAL_TABLE, tableCheck.getSelection());
+                getTableInfoParameters().changeType(ETableTypes.EXTERNAL_TABLE, tableCheck.getSelection());
                 if (EDatabaseTypeName.HIVE.getDisplayName().equals(metadataconnection.getDbType())) {
-                    getTableInfoParameters().changeType(ETableTypes.EXTERNAL_TABLE, tableCheck.getSelection());
                     getTableInfoParameters().changeType(ETableTypes.MANAGED_TABLE, tableCheck.getSelection());
                     getTableInfoParameters().changeType(ETableTypes.INDEX_TABLE, tableCheck.getSelection());
                 }

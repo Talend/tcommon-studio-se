@@ -39,7 +39,8 @@ public class ContextParameterJavaTypeManager {
     private static final JavaType[] JAVA_TYPES = new JavaType[] { JavaTypesManager.BOOLEAN, JavaTypesManager.CHARACTER,
             JavaTypesManager.DATE, JavaTypesManager.DOUBLE, JavaTypesManager.FLOAT, JavaTypesManager.INTEGER,
             JavaTypesManager.LONG, JavaTypesManager.SHORT, JavaTypesManager.STRING, JavaTypesManager.OBJECT,
-            JavaTypesManager.BIGDECIMAL, JavaTypesManager.FILE, JavaTypesManager.DIRECTORY, JavaTypesManager.VALUE_LIST,
+            JavaTypesManager.BIGDECIMAL, JavaTypesManager.FILE, JavaTypesManager.DIRECTORY, JavaTypesManager.RESOURCE,
+            JavaTypesManager.VALUE_LIST,
             JavaTypesManager.PASSWORD };
 
     public static final String PERL_FILE = JavaTypesManager.FILE.getLabel();

@@ -66,7 +66,9 @@ import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.model.general.ModuleStatusProvider;
 import org.talend.core.nexus.ArtifactRepositoryBean;
+import org.talend.core.nexus.IRepositoryArtifactHandler;
 import org.talend.core.nexus.NexusServerUtils;
+import org.talend.core.nexus.RepositoryArtifactHandlerManager;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.nexus.TalendMavenResolver;
 import org.talend.core.prefs.ITalendCorePrefConstants;
@@ -1180,6 +1182,28 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 
         // deploy needed jars for User and Exchange component providers
         if (!needToDeploy.isEmpty()) {
+            // search on nexus to avoid deploy the jar many times
+            Set<File> existFiles = new HashSet<File>();
+            ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
+            IRepositoryArtifactHandler customerRepHandler = RepositoryArtifactHandlerManager
+                    .getRepositoryHandler(customNexusServer);
+            if (customerRepHandler != null) {
+                List<MavenArtifact> searchResult = new ArrayList<>();
+                try {
+                    searchResult = customerRepHandler.search(MavenConstants.DEFAULT_LIB_GROUP_ID, null, null, true, true);
+                } catch (Exception e) {
+                    ExceptionHandler.process(e);
+                }
+                for (MavenArtifact artifact : searchResult) {
+                    for (File file : needToDeploy) {
+                        if (artifact.getFileName().equals(file.getName())) {
+                            existFiles.add(file);
+                        }
+                    }
+                }
+
+            }
+            needToDeploy.removeAll(existFiles);
             for (File file : needToDeploy) {
                 try {
                     deploy(file.toURI());

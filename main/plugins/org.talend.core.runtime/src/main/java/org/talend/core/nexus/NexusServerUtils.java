@@ -69,7 +69,7 @@ public class NexusServerUtils {
      */
     public static int getTimeout() {
         IEclipsePreferences node = InstanceScope.INSTANCE.getNode(ORG_TALEND_DESIGNER_CORE);
-        int timeout = node.getInt(ITalendCorePrefConstants.NEXUS_TIMEOUT, 10000);
+        int timeout = node.getInt(ITalendCorePrefConstants.NEXUS_TIMEOUT, 20000);
         return timeout;
     }
 
@@ -100,6 +100,7 @@ public class NexusServerUtils {
                 protected HttpResponse execute(IProgressMonitor monitor, DefaultHttpClient httpClient, URI targetURI)
                         throws Exception {
                     httpClient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, getTimeout());
+                    httpClient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, getTimeout());
                     HttpHead httpHead = new HttpHead(targetURI);
                     HttpResponse response = httpClient.execute(httpHead);
                     if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {

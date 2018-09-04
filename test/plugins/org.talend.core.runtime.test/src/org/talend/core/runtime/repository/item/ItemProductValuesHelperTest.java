@@ -12,17 +12,8 @@
 // ============================================================================
 package org.talend.core.runtime.repository.item;
 
-import static org.hamcrest.CoreMatchers.anything;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 import java.util.Date;
 import java.util.Map;
@@ -243,13 +234,13 @@ public class ItemProductValuesHelperTest {
         assertThat(additionalProp.get(ItemProductKeys.FULLNAME.getCreatedKey()), equalTo(productFullname));
         assertThat(additionalProp.get(ItemProductKeys.VERSION.getCreatedKey()), equalTo(productVersion));
         assertThat(additionalProp.get(ItemProductKeys.DATE.getCreatedKey()),
-                equalTo(ItemProductValuesHelper.DATEFORMAT.format(createdDate)));
+                equalTo(ItemProductValuesHelper.dateFormat().format(createdDate)));
         assertThat(prop.getCreationDate(), equalTo(createdDate));
 
         assertThat(additionalProp.get(ItemProductKeys.FULLNAME.getModifiedKey()), equalTo(productFullname));
         assertThat(additionalProp.get(ItemProductKeys.VERSION.getModifiedKey()), equalTo(productVersion));
         assertThat(additionalProp.get(ItemProductKeys.DATE.getModifiedKey()),
-                equalTo(ItemProductValuesHelper.DATEFORMAT.format(modifiedDate)));
+                equalTo(ItemProductValuesHelper.dateFormat().format(modifiedDate)));
         assertThat(prop.getModificationDate(), equalTo(modifiedDate));
     }
 

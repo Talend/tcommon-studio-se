@@ -130,6 +130,7 @@
          download-size="28"
          install-size="60"
          version="1.5.0.20140606-0033"
+         fragment="true"
          unpack="false"/>
 
    <plugin

@@ -13,6 +13,10 @@
 package org.talend.core.repository.utils;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -23,7 +27,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.emf.common.util.EList;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.model.properties.ImplicitContextSettings;
@@ -52,15 +55,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ProjectDataJsonProvider {
 
-    public static int CONTENT_PROJECTSETTING = 1;
+    public static final int CONTENT_PROJECTSETTING = 1;
 
-    public static int CONTENT_RELATIONSHIPS = 2;
+    public static final int CONTENT_RELATIONSHIPS = 2;
 
-    public static int CONTENT_RECYCLEBIN = 4;
+    public static final int CONTENT_RECYCLEBIN = 4;
 
-    public static int CONTENT_MIGRATIONTASK = 8;
+    public static final int CONTENT_MIGRATIONTASK = 8;
 
-    public static int CONTENT_ALL = 15;
+    public static final int CONTENT_ALL = 15;
 
     public static void saveProjectData(Project project) throws PersistenceException {
         saveProjectData(project, CONTENT_ALL);
@@ -105,13 +108,43 @@ public class ProjectDataJsonProvider {
     public static void loadProjectData(Project project, IContainer sourceProject, int loadContent) throws PersistenceException {
         loadProjectData(project, sourceProject.getLocation(), loadContent);
     }
+    
+    public static void loadProjectData(Project project, IPath projectRootPath, InputStreamProvider inputStreamProvider)
+            throws PersistenceException, IOException {
+        IPath settingFolderPath = projectRootPath.append(FileConstants.SETTINGS_FOLDER_NAME);
+        IPath projectSettingPath = settingFolderPath.append(FileConstants.PROJECTSETTING_FILE_NAME);
+        InputStream input = inputStreamProvider.getStream(projectSettingPath);
+        if (input != null) {
+            ProjectDataJsonProvider.loadProjectSettings(project, input);
+        }
+        IPath relationShipPath = settingFolderPath.append(FileConstants.RELATIONSHIP_FILE_NAME);
+        input = inputStreamProvider.getStream(relationShipPath);
+        if (input != null) {
+            ProjectDataJsonProvider.loadRelationShips(project, input);
+        }
+        IPath migrationTaskPath = settingFolderPath.append(FileConstants.MIGRATION_TASK_FILE_NAME);
+        input = inputStreamProvider.getStream(migrationTaskPath);
+        if (input != null) {
+            ProjectDataJsonProvider.loadMigrationTaskSetting(project, input);
+        }
+    }
 
     private static void loadProjectSettings(Project project, IPath projectFolderPath) throws PersistenceException {
+        File file = getLoadingConfigurationFile(projectFolderPath, FileConstants.PROJECTSETTING_FILE_NAME);
+        if (file != null && file.exists()) {
+            try {
+                loadProjectSettings(project, new FileInputStream(file));
+            } catch (FileNotFoundException e) {
+                throw new PersistenceException(e);
+            }
+        }
+    }
+
+    public static void loadProjectSettings(Project project, InputStream input) throws PersistenceException {
         try {
-            File file = getLoadingConfigurationFile(projectFolderPath, FileConstants.PROJECTSETTING_FILE_NAME);
             ProjectSettings projectSetting = null;
-            if (file != null && file.exists()) {
-                projectSetting = new ObjectMapper().readValue(file, ProjectSettings.class);
+            if (input != null) {
+                projectSetting = new ObjectMapper().readValue(input, ProjectSettings.class);
             }
             if (projectSetting != null) {
                 project.setImplicitContextSettings(getImplicitContextSettings(projectSetting.getImplicitContextSettingJson()));
@@ -121,18 +154,30 @@ public class ProjectDataJsonProvider {
             }
         } catch (Exception e) {
             throw new PersistenceException(e);
+        } finally {
+            closeInputStream(input);
         }
     }
 
     private static void loadRelationShips(Project project, IPath projectFolderPath) throws PersistenceException {
+        File file = getLoadingConfigurationFile(projectFolderPath, FileConstants.RELATIONSHIP_FILE_NAME);
+        if (file != null && file.exists()) {
+            try {
+                loadRelationShips(project, new FileInputStream(file));
+            } catch (FileNotFoundException e) {
+                throw new PersistenceException(e);
+            }
+        }
+    }
+
+    public static void loadRelationShips(Project project, InputStream input) throws PersistenceException {
         TypeReference<List<ItemRelationsJson>> typeReference = new TypeReference<List<ItemRelationsJson>>() {
             // no need to overwrite
         };
         try {
-            File file = getLoadingConfigurationFile(projectFolderPath, FileConstants.RELATIONSHIP_FILE_NAME);
             List<ItemRelationsJson> itemRelationsJsons = null;
-            if (file != null && file.exists()) {
-                itemRelationsJsons = new ObjectMapper().readValue(file, typeReference);
+            if (input != null) {
+                itemRelationsJsons = new ObjectMapper().readValue(input, typeReference);
             }
             if (itemRelationsJsons != null && itemRelationsJsons.size() > 0) {
                 for (ItemRelationsJson json : itemRelationsJsons) {
@@ -141,15 +186,27 @@ public class ProjectDataJsonProvider {
             }
         } catch (Exception e) {
             throw new PersistenceException(e);
+        } finally {
+            closeInputStream(input);
         }
     }
 
     private static void loadMigrationTaskSetting(Project project, IPath projectFolderPath) throws PersistenceException {
+        File file = getLoadingConfigurationFile(projectFolderPath, FileConstants.MIGRATION_TASK_FILE_NAME);
+        if (file != null && file.exists()) {
+            try {
+                loadMigrationTaskSetting(project, new FileInputStream(file));
+            } catch (FileNotFoundException e) {
+                throw new PersistenceException(e);
+            }
+        }
+    }
+
+    public static void loadMigrationTaskSetting(Project project, InputStream input) throws PersistenceException {
         try {
-            File file = getLoadingConfigurationFile(projectFolderPath, FileConstants.MIGRATION_TASK_FILE_NAME);
             MigrationTaskSetting migrationTaskSetting = null;
-            if (file != null && file.exists()) {
-                migrationTaskSetting = new ObjectMapper().readValue(file, MigrationTaskSetting.class);
+            if (input != null) {
+                migrationTaskSetting = new ObjectMapper().readValue(input, MigrationTaskSetting.class);
             }
             if (migrationTaskSetting != null) {
                 project.getMigrationTask().clear();
@@ -167,6 +224,18 @@ public class ProjectDataJsonProvider {
             }
         } catch (Exception e) {
             throw new PersistenceException(e);
+        } finally {
+            closeInputStream(input);
+        }
+    }
+
+    private static void closeInputStream(InputStream input) {
+        if (input != null) {
+            try {
+                input.close();
+            } catch (IOException e) {
+                // Ignore
+            }
         }
     }
 
@@ -266,7 +335,7 @@ public class ProjectDataJsonProvider {
         return null;
     }
 
-    protected static List<StatusJson> getTechnicalStatusJson(EList technicalStatus) {
+    protected static List<StatusJson> getTechnicalStatusJson(List technicalStatus) {
         if (technicalStatus != null && technicalStatus.size() > 0) {
             List<StatusJson> list = new ArrayList<StatusJson>(technicalStatus.size());
             for (int i = 0; i < technicalStatus.size(); i++) {
@@ -287,7 +356,7 @@ public class ProjectDataJsonProvider {
         }
     }
 
-    protected static List<StatusJson> getDocumentationJson(EList documentationStatus) {
+    protected static List<StatusJson> getDocumentationJson(List documentationStatus) {
         if (documentationStatus != null && documentationStatus.size() > 0) {
             List<StatusJson> list = new ArrayList<StatusJson>(documentationStatus.size());
             for (int i = 0; i < documentationStatus.size(); i++) {
@@ -308,7 +377,7 @@ public class ProjectDataJsonProvider {
         }
     }
 
-    protected static List<ItemRelationsJson> getItemRelationsJson(EList itemsRelations) {
+    protected static List<ItemRelationsJson> getItemRelationsJson(List itemsRelations) {
         if (itemsRelations.size() > 0) {
             List<ItemRelationsJson> list = new ArrayList<ItemRelationsJson>(itemsRelations.size());
             for (int i = 0; i < itemsRelations.size(); i++) {

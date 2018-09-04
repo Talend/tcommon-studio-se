@@ -66,6 +66,8 @@ public final class JavaTypesManager {
 
     public static final JavaType FILE = new JavaType(String.class, true, "File"); //$NON-NLS-1$
 
+    public static final JavaType RESOURCE = new JavaType(String.class, true, "Resource"); //$NON-NLS-1$
+
     public static final JavaType DIRECTORY = new JavaType(String.class, true, "Directory"); //$NON-NLS-1$
 
     public static final JavaType VALUE_LIST = new JavaType(String.class, true, "List Of Value"); //$NON-NLS-1$
@@ -180,6 +182,7 @@ public final class JavaTypesManager {
         }
 
         idToJavaType.put(PASSWORD.getId(), PASSWORD);
+        idToJavaType.put(RESOURCE.getId(), RESOURCE);
     }
 
     /**

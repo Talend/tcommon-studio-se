@@ -55,6 +55,8 @@ import org.eclipse.aether.version.Version;
 import org.eclipse.aether.version.VersionConstraint;
 import org.eclipse.aether.version.VersionScheme;
 import org.eclipse.core.runtime.CoreException;
+import org.talend.core.nexus.ArtifactRepositoryBean;
+import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.designer.maven.aether.DummyDynamicMonitor;
 import org.talend.designer.maven.aether.IDynamicMonitor;
 import org.talend.designer.maven.aether.node.DependencyNode;
@@ -117,7 +119,7 @@ public class DynamicDistributionAetherUtils {
         }
 
         Builder builder = new RemoteRepository.Builder("central", "default", remoteUrl); //$NON-NLS-1$ //$NON-NLS-2$
-        if (StringUtils.isNotEmpty(username)) {
+        if (StringUtils.isNotBlank(username)) {
             Authentication auth = new AuthenticationBuilder().addUsername(username).addPassword(password).build();
             builder = builder.setAuthentication(auth);
         }
@@ -125,11 +127,18 @@ public class DynamicDistributionAetherUtils {
 
         /**
          * Some repositories like Hortonworks don't contain some essential artifacts like org.apache:apache:pom:18<br/>
-         * So add one more talend repository to avoid this problem, but talend repository can't be the download url!(not
+         * So add one more talend repository to avoid this problem, but talend repository CAN'T be the download url!(not
          * support yet)
          */
+        ArtifactRepositoryBean talendArtifactServer = TalendLibsServerManager.getInstance().getTalentArtifactServer();
         Builder talendRepoBuilder = new RemoteRepository.Builder("talend", "default", //$NON-NLS-1$ //$NON-NLS-2$
-                "https://repo.maven.apache.org/maven2"); //$NON-NLS-1$
+                talendArtifactServer.getRepositoryURL());
+        String talendUsername = talendArtifactServer.getUserName();
+        if (StringUtils.isNotBlank(talendUsername)) {
+            Authentication talendAuth = new AuthenticationBuilder().addUsername(talendUsername)
+                    .addPassword(talendArtifactServer.getPassword()).build();
+            talendRepoBuilder = talendRepoBuilder.setAuthentication(talendAuth);
+        }
         RemoteRepository talendRepo = talendRepoBuilder.build();
 
         CollectRequest collectRequest = new CollectRequest();
