@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="resources" nsURI="http://www.talend.org/ResourcesProperties"
+    nsPrefix="ResourcesProperties">
+  <eClassifiers xsi:type="ecore:EClass" name="ResourceItem" eSuperTypes="properties.ecore#//FileItem">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="bindingExtension" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+  </eClassifiers>
+</ecore:EPackage>
