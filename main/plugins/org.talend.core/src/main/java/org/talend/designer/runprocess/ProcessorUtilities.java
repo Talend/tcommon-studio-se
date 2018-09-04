@@ -94,6 +94,7 @@ import org.talend.core.runtime.process.LastGenerationInfo;
 import org.talend.core.runtime.process.TalendProcessArgumentConstant;
 import org.talend.core.runtime.process.TalendProcessOptionConstants;
 import org.talend.core.runtime.repository.build.BuildExportManager;
+import org.talend.core.service.IResourcesDependenciesService;
 import org.talend.core.services.ISVNProviderService;
 import org.talend.core.ui.IJobletProviderService;
 import org.talend.core.ui.ITestContainerProviderService;
@@ -597,6 +598,7 @@ public class ProcessorUtilities {
          */
         generateBuildInfo(jobInfo, progressMonitor, isMainJob, currentProcess, currentJobName, processor, option);
 
+        copyDependenciedResources(currentProcess);
 
         return processor;
     }
@@ -1134,6 +1136,8 @@ public class ProcessorUtilities {
             generateBuildInfo(jobInfo, progressMonitor, isMainJob, currentProcess, currentJobName, processor, option);
             TimeMeasure.step(idTimer, "generateBuildInfo");
 
+            copyDependenciedResources(currentProcess);
+
             return processor;
         } finally {
             TimeMeasure.end(timeMeasureGenerateCodesId);
@@ -1262,6 +1266,65 @@ public class ProcessorUtilities {
             }
         }
 
+    }
+
+    /**
+     * For child job runtime resource file needed, copy the reource file to 'src\main\ext-resources' DOC jding Comment
+     * method "copyDependenciedResources".
+     * 
+     * @param currentProcess
+     */
+    private static void copyDependenciedResources(IProcess currentProcess) {
+        if (!(currentProcess instanceof IProcess2)) {
+            return;
+        }
+        IProcess2 process = (IProcess2) currentProcess;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IResourcesDependenciesService.class)) {
+            IResourcesDependenciesService resourcesService = (IResourcesDependenciesService) GlobalServiceRegister.getDefault()
+                    .getService(IResourcesDependenciesService.class);
+            if (resourcesService == null) {
+                return;
+            }
+            Item rootItem = process.getProperty().getItem();
+            Set<JobInfo> childrenJobInfo = getChildrenJobInfo(rootItem, false);
+            for (JobInfo jobInfo : childrenJobInfo) {
+                Property property = jobInfo.getProcessItem().getProperty();
+                String resources = (String) property.getAdditionalProperties().get("RESOURCES_PROP");
+                if (StringUtils.isBlank(resources)) {
+                    continue;
+                }
+                try {
+                    for (String res : resources.split(",")) {
+                        String[] parts = res.split("\\|");
+                        if (parts.length > 1) {
+                            IRepositoryViewObject repoObject = null;
+                            if (RelationshipItemBuilder.LATEST_VERSION.equals(parts[1])) {
+                                repoObject = ProxyRepositoryFactory.getInstance().getLastVersion(parts[0]);
+                            } else {
+                                repoObject = ProxyRepositoryFactory.getInstance().getSpecificVersion(parts[0], parts[1], true);
+                            }
+                            if (repoObject != null) {
+                                StringBuffer joblabel = new StringBuffer();
+                                if (StringUtils.isNotBlank(property.getItem().getState().getPath())) {
+                                    joblabel.append(property.getItem().getState().getPath() + "/");
+                                }
+                                joblabel.append(property.getLabel() + "_" + property.getVersion());
+                                StringBuffer rootjoblabel = new StringBuffer();
+                                if (StringUtils.isNotBlank(rootItem.getState().getPath())) {
+                                    rootjoblabel.append(rootItem.getState().getPath() + "/");
+                                }
+                                rootjoblabel
+                                        .append(rootItem.getProperty().getLabel() + "_" + rootItem.getProperty().getVersion());
+                                resourcesService.copyToExtResourceFolder(repoObject, joblabel.toString(), parts[1],
+                                        rootjoblabel.toString());
+                            }
+                        }
+                    }
+                } catch (PersistenceException e) {
+                    log.error(e);
+                }
+            }
+        }
     }
 
     /**
