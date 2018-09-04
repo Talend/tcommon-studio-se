@@ -68,6 +68,8 @@ public interface IHTMLDocConstants {
 
     public static final String TMAP_XSL_FILE_PATH = "resources/tMap.xsl"; //$NON-NLS-1$
 
+    public static final String TXMLMAP_XSL_FILE_PATH = "resources/tXMLMap.xsl"; //$NON-NLS-1$
+
     public static final String MAPPERCOMPONENT_XSL_FILE_PATH = "resources/mapperComponent.xsl"; //$NON-NLS-1$
 
     public static final String TROWGENERATOR_XSL_FILE_PATH = "resources/tRowGenerator.xsl"; //$NON-NLS-1$

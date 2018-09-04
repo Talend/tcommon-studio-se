@@ -38,7 +38,7 @@ public class ItemDateParser {
             return null;
         }
         try {
-            Date date = ItemProductValuesHelper.DATEFORMAT.parse(object.toString());
+            Date date = ItemProductValuesHelper.dateFormat().parse(object.toString());
             return date;
         } catch (ParseException e) {
             //
@@ -59,7 +59,7 @@ public class ItemDateParser {
         }
 
         try {
-            Date date = ItemProductValuesHelper.DATEFORMAT.parse(object.toString());
+            Date date = ItemProductValuesHelper.dateFormat().parse(object.toString());
             return date;
         } catch (ParseException e) {
             //
