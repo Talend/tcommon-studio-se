@@ -70,12 +70,10 @@ public class NexusDownloadHelperWithProgress extends DownloadHelperWithProgress 
                         mArtifact.getVersion(), mArtifact.getType(), mArtifact.getClassifier());
                 progressMonitor.subTask(
                         "Downloading " + toInstall.getName() + ": " + resolvedMvnUri + " from " + customNexusServer.getServer());
-                ILibraryManagerService libManager = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
-                        ILibraryManagerService.class);
                 // seems the customNexusServer is not used in resolveJar function, so still need to provide
                 // user/password in the mvn uri
                 String decryptedMvnUri = MavenUrlHelper.generateMvnUrl(mArtifact);
-                resolved = libManager.resolveJar(customNexusServer, decryptedMvnUri);
+                resolved = resolveJar(customNexusServer, decryptedMvnUri);
                 if (resolved != null && resolved.exists()) {
                     return;
                 }
@@ -88,15 +86,35 @@ public class NexusDownloadHelperWithProgress extends DownloadHelperWithProgress 
                 // String mvnUri = componentUrl.toExternalForm();
                 progressMonitor.subTask("Downloading " + toInstall.getName() + ": " + mvnUri + " from "
                         + customNexusServer.getServer());
-                ILibraryManagerService libManager = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
-                        ILibraryManagerService.class);
-                resolved = libManager.resolveJar(customNexusServer, mvnUri);
+                resolved = resolveJar(customNexusServer, mvnUri);
             }
         }
         if (resolved != null && resolved.exists()) {
             return;
         }
         super.download(componentUrl, destination, progressMonitor);
+    }
+
+    private File resolveJar(ArtifactRepositoryBean customNexusServer, String decryptedMvnUri) throws Exception {
+        ILibraryManagerService libManager = (ILibraryManagerService) GlobalServiceRegister.getDefault()
+                .getService(ILibraryManagerService.class);
+        File resolved = null;
+        try {
+            resolved = libManager.resolveJar(customNexusServer, decryptedMvnUri);
+        } catch (Exception e) {
+            // hide the user/password in the error
+            String account = customNexusServer.getUserName() + ":" + customNexusServer.getPassword() + "@";
+            String message = e.getMessage();
+            message = message.replaceAll(account, "");
+            Exception cause = null;
+            if (e.getCause() != null) {
+                String causeMessage = e.getCause().getMessage();
+                causeMessage = causeMessage.replaceAll(causeMessage, "");
+                cause = new Exception(causeMessage);
+            }
+            throw new Exception(message, cause);
+        }
+        return resolved;
     }
 
     /*

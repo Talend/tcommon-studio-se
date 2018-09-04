@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.cwm.helper;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 
@@ -28,9 +29,22 @@ import org.eclipse.emf.ecore.xmi.XMLResource;
  */
 public final class ResourceHelper {
 
-    public static final SimpleDateFormat DATEFORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+    public static final ThreadLocal<DateFormat> threadLocal = new ThreadLocal<DateFormat>() {
+
+        @Override
+        protected DateFormat initialValue() {
+            // 2017-10-09T14:30:19.367+0800
+            return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        }
+    };
+
+    // public static final SimpleDateFormat DATEFORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 
     private ResourceHelper() {
+    }
+
+    public static DateFormat dateFormat() {
+        return threadLocal.get();
     }
 
     /**
