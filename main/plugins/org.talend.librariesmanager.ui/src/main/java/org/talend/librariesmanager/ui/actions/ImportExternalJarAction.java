@@ -137,9 +137,6 @@ public class ImportExternalJarAction extends Action {
         LibManagerUiPlugin.getDefault().getLibrariesService().deployLibrary(file.toURL(), mvnURI, false);
         if (!modulesNeededNames.contains(moduleName)) {
             String mavenUri = MavenUrlHelper.generateMvnUrlForJarName(moduleName, true, true);
-//            if(ModulesNeededProvider.getAllModuleNamesFromIndex().contains(moduleName)) {
-//            	CustomUriManager.getInstance().put(mavenUri, mavenUri);
-//            }
             ModulesNeededProvider.addUnknownModules(moduleName, mavenUri, true);
             return true;
         }
