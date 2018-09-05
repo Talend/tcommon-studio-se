@@ -71,6 +71,8 @@ public interface TalendMavenConstants {
 
     static final String GOAL_INSTALL = "install";
 
+    static final String GOAL_DEPLOY = "deploy";
+
     /**
      * Profiles
      */
