@@ -1304,19 +1304,14 @@ public class ProcessorUtilities {
                                 repoObject = ProxyRepositoryFactory.getInstance().getSpecificVersion(parts[0], parts[1], true);
                             }
                             if (repoObject != null) {
-                                StringBuffer joblabel = new StringBuffer();
-                                if (StringUtils.isNotBlank(property.getItem().getState().getPath())) {
-                                    joblabel.append(property.getItem().getState().getPath() + "/");
-                                }
-                                joblabel.append(property.getLabel() + "_" + property.getVersion());
                                 StringBuffer rootjoblabel = new StringBuffer();
                                 if (StringUtils.isNotBlank(rootItem.getState().getPath())) {
                                     rootjoblabel.append(rootItem.getState().getPath() + "/");
                                 }
                                 rootjoblabel
                                         .append(rootItem.getProperty().getLabel() + "_" + rootItem.getProperty().getVersion());
-                                resourcesService.copyToExtResourceFolder(repoObject, joblabel.toString(), parts[1],
-                                        rootjoblabel.toString());
+                                resourcesService.copyToExtResourceFolder(repoObject, property.getId(), property.getVersion(),
+                                        parts[1], rootjoblabel.toString());
                             }
                         }
                     }

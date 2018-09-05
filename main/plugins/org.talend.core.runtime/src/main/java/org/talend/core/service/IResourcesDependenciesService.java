@@ -6,7 +6,8 @@ import org.talend.core.model.repository.IRepositoryViewObject;
 
 public interface IResourcesDependenciesService extends IService {
 
-    public void copyToExtResourceFolder(IRepositoryViewObject repoObject, String jobLabel, String version, String rootJobLabel);
+    public void copyToExtResourceFolder(IRepositoryViewObject repoObject, String jobId, String jobVersion, String version,
+            String rootJobLabel);
 
     public String getResourcePathForContext(IProcess process, String contextName);
 
