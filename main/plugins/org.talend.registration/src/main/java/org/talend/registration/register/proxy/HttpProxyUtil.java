@@ -67,8 +67,6 @@ public class HttpProxyUtil {
         }
         if (proxyManager == null) {
             proxyManager = (ProxyManager) ProxyManager.getProxyManager();
-        }
-        if (!(Boolean.getBoolean("http.proxySet") || Boolean.getBoolean("https.proxySet"))) { //$NON-NLS-1$//$NON-NLS-2$
             proxyManager.initialize();
         }
     }
