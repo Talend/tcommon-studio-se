@@ -41,7 +41,7 @@ public class TrackerUtil {
 		return "GPN:Talend"; //$NON-NLS-1$
 	}
 
-	public static String getStrVersion() {
+	public static String getVersion() {
 		String strVersion = VersionUtils.getDisplayVersion();
 		Version version = new Version(strVersion);
 		return getStrVersion(version);
