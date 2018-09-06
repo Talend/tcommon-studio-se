@@ -30,7 +30,7 @@ import org.xml.sax.SAXException;
 
 public class ParserUtils {
 
-    public static List parseTo_List(String s) {
+    public static List<String> parseTo_List(String s) {
         return parseTo_List(s, null);
     }
 
@@ -231,25 +231,25 @@ public class ParserUtils {
         return result.toString();
     }
 
-	public static BigDecimal parseTo_BigDecimal(String s) {
-		if (s == null) {
-			return null;
-		}
-		try {
-			return new BigDecimal(s);
-			
-		} catch (NumberFormatException nfe) {
-			
-			if (nfe.getMessage() == null) {
-				
-				throw new NumberFormatException("Incorrect input \""+s+"\" for BigDecimal.");
-				
-			} else {
-				
-				throw nfe;
-			}
-		}
-	}
+    public static BigDecimal parseTo_BigDecimal(String s) {
+        if (s == null) {
+            return null;
+        }
+        try {
+            return new BigDecimal(s);
+
+        } catch (NumberFormatException nfe) {
+
+            if (nfe.getMessage() == null) {
+
+                throw new NumberFormatException("Incorrect input \"" + s + "\" for BigDecimal.");
+
+            } else {
+
+                throw nfe;
+            }
+        }
+    }
 
     public static routines.system.Document parseTo_Document(String s) throws org.dom4j.DocumentException {
         return parseTo_Document(s, false);
@@ -271,8 +271,8 @@ public class ParserUtils {
             reader.setEntityResolver(new EntityResolver() {
 
                 public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
-                    return new org.xml.sax.InputSource(new java.io.ByteArrayInputStream("<?xml version='1.0' encoding='UTF-8'?>"
-                            .getBytes()));
+                    return new org.xml.sax.InputSource(new java.io.ByteArrayInputStream(
+                            "<?xml version='1.0' encoding='UTF-8'?>".getBytes()));
                 }
             });
         }
@@ -285,46 +285,64 @@ public class ParserUtils {
         return theDoc;
     }
 
-    public synchronized static java.util.Date parseTo_Date(String s, String pattern) {
-        // check the parameter for supporting " ","2007-09-13"," 2007-09-13 "
-        if (s != null) {
-            s = s.trim();
+    /**
+     * parse epoch time to {@link java.util.Date}
+     */
+    public static java.util.Date parseTo_Date(Long epoch) throws NumberFormatException {
+        return new java.util.Date(epoch * 1000);
+    }
+
+    public static java.util.Date parseTo_Date(String epoch) {
+        try{
+            return parseTo_Date(Long.parseLong(epoch));
+        } catch (NumberFormatException e) {
+            Double epochDouble = Double.parseDouble(epoch);
+            if (epochDouble.doubleValue() == epochDouble.longValue()) {
+                return parseTo_Date(epochDouble.longValue());
+            }
+            throw e;
         }
-        if (s == null || s.length() == 0) {
+    }
+
+    /**
+     * convert a date in String format to a {@link java.util.Date}
+     * 
+     * @param dateString could be common representation like "2007-09-13"
+     * @param pattern
+     * @return
+     */
+    public static java.util.Date parseTo_Date(String dateString, String pattern) {
+        // check the parameter for supporting " ","2007-09-13"," 2007-09-13 "
+        if (dateString == null || dateString.length() == 0) {
             return null;
         }
+        dateString = dateString.trim();
         if (pattern == null) {
             pattern = Constant.dateDefaultPattern;
         }
         java.util.Date date = null;
-        // try {
-        // date = FastDateParser.getInstance(pattern).parse(s);
-        // } catch (java.text.ParseException e) {
-        // e.printStackTrace();
-        // System.err.println("Current string to parse '" + s + "'");
-        // }
         // add by wliu for special pattern:yyyy-MM-dd'T'HH:mm:ss'000Z'---------start
         if (pattern.equals("yyyy-MM-dd'T'HH:mm:ss'000Z'")) {
-            if (!s.endsWith("000Z")) {
-                throw new RuntimeException("Unparseable date: \"" + s + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+            if (!dateString.endsWith("000Z")) {
+                throw new RuntimeException("Unparseable date: \"" + dateString + "\"");
             }
             pattern = "yyyy-MM-dd'T'HH:mm:ss";
-            s = s.substring(0, s.lastIndexOf("000Z"));
+            dateString = dateString.substring(0, dateString.lastIndexOf("000Z"));
         }
         // add by wliu -------------------------------------------------------end
         DateFormat format = FastDateParser.getInstance(pattern);
         ParsePosition pp = new ParsePosition(0);
         pp.setIndex(0);
 
-        date = format.parse(s, pp);
-        if (pp.getIndex() != s.length() || date == null) {
-            throw new RuntimeException("Unparseable date: \"" + s + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+        date = format.parse(dateString, pp);
+        if (pp.getIndex() != dateString.length() || date == null) {
+            throw new RuntimeException("Unparseable date: \"" + dateString + "\"");
         }
 
         return date;
     }
 
-    public synchronized static java.util.Date parseTo_Date(String s, String pattern, boolean lenient) {
+    public static java.util.Date parseTo_Date(String s, String pattern, boolean lenient) {
         // check the parameter for supporting " ","2007-09-13"," 2007-09-13 "
         if (s != null) {
             s = s.trim();

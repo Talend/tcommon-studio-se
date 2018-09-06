@@ -878,7 +878,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         }
 
         // change the custom uri
-        if (saveCustomMap) {
+        if (saveCustomMap&&ModulesNeededProvider.getAllModuleNamesFromIndex().contains(moduleName)) {
             testModule.setCustomMavenUri(customURI);
             ILibraryManagerService libManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
                     ILibraryManagerService.class);

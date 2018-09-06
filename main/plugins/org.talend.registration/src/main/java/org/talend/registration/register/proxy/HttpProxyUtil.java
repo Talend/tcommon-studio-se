@@ -67,7 +67,6 @@ public class HttpProxyUtil {
         }
         if (proxyManager == null) {
             proxyManager = (ProxyManager) ProxyManager.getProxyManager();
-        } else {
             proxyManager.initialize();
         }
     }

@@ -193,9 +193,9 @@
 
 	 function getCreateAccountUrl(){
 		var urlPartConstant = "http://org.eclipse.ui.intro/runAction?pluginId=org.talend.registration&amp;class=org.talend.registration.wizards.register.ui.htmlcontent.TalendForgeRegistAction&amp;id=org.talend.registration.wizards.register.ui.htmlcontent.TalendForgeRegistAction&amp;type=CREATE_ACCOUNT&amp;";
-		var urlPartName = "USER_NAME="+document.getElementById("name1").value+"&amp;";
+		var urlPartName = "USER_NAME="+encodeURIComponent(document.getElementById("name1").value)+"&amp;";
 		var urlPartEmail = "EMAIL="+document.getElementById("email").value+"&amp;";
-		var urlPasswrod = "PASSWORD="+document.getElementById("password1").value+"&amp;";
+		var urlPasswrod = "PASSWORD="+encodeURIComponent(document.getElementById("password1").value)+"&amp;";
 	    var urlCountry = "COUNTRY="+document.getElementById("countrylistid").value+"&amp;";
 		var urlImporve = "IS_HELP_IMPROVE="+document.getElementById("improve").checked;
 		var url = urlPartConstant+urlPartName+urlPartEmail+urlPasswrod+urlCountry+urlImporve;
@@ -204,8 +204,8 @@
 
 	 function getLoginAccountUrl(){
         var urlPartConstant = "http://org.eclipse.ui.intro/runAction?pluginId=org.talend.registration&amp;class=org.talend.registration.wizards.register.ui.htmlcontent.TalendForgeRegistAction&amp;id=org.talend.registration.wizards.register.ui.htmlcontent.TalendForgeRegistAction&amp;type=USE_EXSITING_ACCOUNT&amp;";
-        var urlPartName = "USER_NAME="+document.getElementById("name2").value+"&amp;";
-        var urlPasswrod = "PASSWORD="+document.getElementById("password3").value+"&amp;";
+        var urlPartName = "USER_NAME="+encodeURIComponent(document.getElementById("name2").value)+"&amp;";
+        var urlPasswrod = "PASSWORD="+encodeURIComponent(document.getElementById("password3").value)+"&amp;";
         var urlImporve = "IS_HELP_IMPROVE="+document.getElementById("improve2").checked;
         var url = urlPartConstant+urlPartName+urlPasswrod+urlImporve;
         return url;

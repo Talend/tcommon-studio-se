@@ -1949,7 +1949,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                     currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);
                     currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.synchronizeLibraries"), 1); //$NON-NLS-1$
                     coreService.syncLibraries(currentMonitor);
-                    TimeMeasure.step("SyncLibraries", "sync components libraries"); //$NON-NLS-1$
+                    TimeMeasure.step("logOnProject", "Sync components libraries"); //$NON-NLS-1$
                 }
 
                 currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);

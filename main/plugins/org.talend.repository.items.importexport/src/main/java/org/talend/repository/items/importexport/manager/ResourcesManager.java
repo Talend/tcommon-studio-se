@@ -24,11 +24,12 @@ import java.util.Set;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.talend.core.repository.utils.InputStreamProvider;
 import org.talend.repository.items.importexport.handlers.model.ImportItem;
 
 /**
  */
-public abstract class ResourcesManager {
+public abstract class ResourcesManager implements InputStreamProvider {
 
     protected Map<IPath, Object> path2Object = new HashMap<IPath, Object>();
 
@@ -51,7 +52,10 @@ public abstract class ResourcesManager {
     }
 
     final public InputStream getStream(IPath path) throws IOException {
-        return getStream(path, null);
+        if (path2Object.get(path) != null) {
+            return getStream(path, null);
+        }
+        return null;
     }
 
     public void addFolder(String path) {
