@@ -12,16 +12,24 @@
 // ============================================================================
 package org.talend.updates.runtime.ui.startup;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IStartup;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.ui.gmf.util.DisplayUtils;
+import org.talend.updates.runtime.Constants;
 import org.talend.updates.runtime.feature.FeaturesManager;
 import org.talend.updates.runtime.feature.FeaturesManager.SearchResult;
 import org.talend.updates.runtime.model.ExtraFeature;
+import org.talend.updates.runtime.preference.UpdatesRuntimePreference;
+import org.talend.updates.runtime.preference.UpdatesRuntimePreferenceConstants;
 import org.talend.updates.runtime.ui.feature.job.FeaturesCheckUpdateJob;
 import org.talend.updates.runtime.ui.feature.model.runtime.FeaturesManagerRuntimeData;
 import org.talend.updates.runtime.ui.feature.wizard.dialog.FeaturesUpdateNotificationDialog;
@@ -37,9 +45,15 @@ public class FeatureCheckUpdateStartup implements IStartup {
         if (CommonsPlugin.isHeadless()) {
             return;
         }
+
+        if (!needCheckUpdate()) {
+            return;
+        }
+
         final FeaturesManagerRuntimeData runtimeData = new FeaturesManagerRuntimeData();
         runtimeData.setFeaturesManager(new FeaturesManager());
         FeaturesCheckUpdateJob job = runtimeData.getCheckUpdateJob();
+        boolean checkUpdateSucceed = false;
         try {
             job.join();
             Exception exception = job.getException();
@@ -61,10 +75,43 @@ public class FeatureCheckUpdateStartup implements IStartup {
                     showNotificationDialog(runtimeData);
                 }
             });
+            checkUpdateSucceed = true;
+        } catch (Exception e) {
+            ExceptionHandler.process(e);
+        } finally {
+            if (checkUpdateSucceed) {
+                saveCurrentCheckUpdateTime();
+            }
+        }
+
+    }
+
+    private boolean needCheckUpdate() {
+        if (Boolean.getBoolean(Constants.ATTR_FORCE_CHECK_UPDATE)) {
+            return true;
+        }
+        try {
+            Date lastCheckUpdateTime = UpdatesRuntimePreference.getInstance()
+                    .getDate(UpdatesRuntimePreferenceConstants.LAST_CHECK_UPDATE_TIME);
+            if (lastCheckUpdateTime == null) {
+                return true;
+            }
+            LocalDate lastLocalDate = lastCheckUpdateTime.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            LocalDate currentLocalDate = Calendar.getInstance().getTime().toInstant().atZone(ZoneId.systemDefault())
+                    .toLocalDate();
+            long days = ChronoUnit.DAYS.between(lastLocalDate, currentLocalDate);
+            if (14 < days) {
+                return true;
+            }
         } catch (Exception e) {
             ExceptionHandler.process(e);
         }
+        return false;
+    }
 
+    private void saveCurrentCheckUpdateTime() {
+        UpdatesRuntimePreference.getInstance().setDate(UpdatesRuntimePreferenceConstants.LAST_CHECK_UPDATE_TIME,
+                Calendar.getInstance().getTime());
     }
 
     private void showNotificationDialog(FeaturesManagerRuntimeData runtimeData) {

@@ -42,3 +42,4 @@ Export-Package: org.talend.updates.runtime.engine,
  org.talend.updates.runtime.storage,
  org.talend.updates.runtime.ui,
  org.talend.updates.runtime.utils
+Bundle-Activator: org.talend.updates.runtime.UpdatesRuntimePlugin
