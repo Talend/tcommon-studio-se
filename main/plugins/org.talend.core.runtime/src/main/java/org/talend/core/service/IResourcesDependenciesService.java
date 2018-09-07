@@ -9,6 +9,7 @@ public interface IResourcesDependenciesService extends IService {
     public void copyToExtResourceFolder(IRepositoryViewObject repoObject, String jobId, String jobVersion, String version,
             String rootJobLabel);
 
-    public String getResourcePathForContext(IProcess process, String contextName);
+    public String getResourcePathForContext(IProcess process, String resourceContextValue);
 
+    public void refreshDependencyViewer();
 }
