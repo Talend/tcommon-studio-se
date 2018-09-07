@@ -345,9 +345,7 @@ public class FeaturesSearchForm extends AbstractFeatureForm {
                 if (checkUpdateResult != null) {
                     Collection<ExtraFeature> currentPageResult = checkUpdateResult.getCurrentPageResult();
                     if (currentPageResult != null && !currentPageResult.isEmpty()) {
-                        FeatureUpdateNotification update = new FeatureUpdateNotification();
-                        update.setTitle(Messages.getString("ComponentsManager.form.showUpdate.label.title")); //$NON-NLS-1$
-                        update.setDescription(Messages.getString("ComponentsManager.form.showUpdate.label.description")); //$NON-NLS-1$
+                        FeatureUpdateNotification update = getRuntimeData().getFeaturesManager().createUpdateNotificationItem();
                         features.add(update);
                     }
                 }
@@ -359,6 +357,8 @@ public class FeaturesSearchForm extends AbstractFeatureForm {
                 ExceptionHandler.process(e);
             }
         }
+
+        monitor.setTaskName(Messages.getString("ComponentsManager.form.install.label.generatingResult")); //$NON-NLS-1$
 
         if (showTitleBar) {
             FeatureTitle title = new FeatureTitle();

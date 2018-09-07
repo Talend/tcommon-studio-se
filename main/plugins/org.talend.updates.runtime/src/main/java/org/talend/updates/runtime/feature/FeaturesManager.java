@@ -18,6 +18,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,16 +28,21 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.equinox.p2.metadata.IInstallableUnit;
 import org.eclipse.equinox.p2.metadata.Version;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.threading.TalendCustomThreadPoolExecutor;
+import org.talend.updates.runtime.Constants;
 import org.talend.updates.runtime.engine.ExtraFeaturesUpdatesFactory;
 import org.talend.updates.runtime.engine.P2Manager;
 import org.talend.updates.runtime.feature.model.Category;
 import org.talend.updates.runtime.feature.model.Type;
+import org.talend.updates.runtime.i18n.Messages;
 import org.talend.updates.runtime.model.ExtraFeature;
 import org.talend.updates.runtime.service.ITaCoKitUpdateService;
+import org.talend.updates.runtime.ui.feature.model.impl.FeatureUpdateNotification;
 
 /**
  * DOC cmeng  class global comment. Detailled comment
@@ -142,7 +148,7 @@ public class FeaturesManager {
     }
 
     private Collection<ExtraFeature> getUpdates(IProgressMonitor monitor) throws Exception {
-        Collection<ExtraFeature> updates = new LinkedList<>();
+        List<ExtraFeature> updates = new LinkedList<>();
         List<ExtraFeature> features = getFeaturesCache(monitor);
         try {
             Collection<ExtraFeature> p2Updates = getP2Updates(monitor, features);
@@ -160,6 +166,7 @@ public class FeaturesManager {
         } catch (Exception e) {
             ExceptionHandler.process(e);
         }
+        Collections.sort(updates);
         return updates;
     }
 
@@ -212,16 +219,60 @@ public class FeaturesManager {
     }
 
     public SearchResult searchUpdates(IProgressMonitor monitor, SearchOption searchOption) throws Exception {
-        Collection<ExtraFeature> installedFeatures = null;
+        Collection<ExtraFeature> updates = null;
         // if (searchOption.isClearCache()) {
         // updatesCache.clear();
         // }
-        installedFeatures = getUpdates(monitor);
-        SearchResult result = new SearchResult(searchOption, installedFeatures);
-        result.setTotalSize(installedFeatures.size());
-        result.setPageSize(installedFeatures.size());
+        updates = getUpdates(monitor);
+        SearchResult result = new SearchResult(searchOption, updates);
+        result.setTotalSize(updates.size());
+        result.setPageSize(updates.size());
         result.setCurrentPage(0);
         return result;
+    }
+
+    public Map<ExtraFeature, IStatus> installUpdates(IProgressMonitor monitor) throws Exception {
+        SearchOption option = new SearchOption(Type.ALL, Category.ALL, ""); //$NON-NLS-1$
+        SearchResult searchResult = searchUpdates(monitor, option);
+        // keep the order
+        Map<ExtraFeature, IStatus> resultMap = new LinkedHashMap<>();
+        if (searchResult != null) {
+            Collection<ExtraFeature> updates = searchResult.getCurrentPageResult();
+            if (updates != null && !updates.isEmpty()) {
+                for (ExtraFeature update : updates) {
+                    IStatus status = null;
+                    try {
+                        if (update.canBeInstalled(monitor)) {
+                            status = update.install(monitor, new ArrayList<>());
+                        }
+                    } catch (Exception e) {
+                        ExceptionHandler.process(e);
+                    }
+                    if (status == null) {
+                        String name = ""; //$NON-NLS-1$
+                        String version = ""; //$NON-NLS-1$
+                        try {
+                            name = update.getName();
+                            version = update.getVersion();
+                        } catch (Exception e) {
+                            ExceptionHandler.process(e);
+                        }
+                        status = new Status(IStatus.ERROR, Constants.PLUGIN_ID,
+                                Messages.getString("ComponentsManager.form.updates.notification.execute.status.failed", //$NON-NLS-1$
+                                        name, version));
+                    }
+                    resultMap.put(update, status);
+                }
+            }
+        }
+        return resultMap;
+    }
+
+    public FeatureUpdateNotification createUpdateNotificationItem() {
+        FeatureUpdateNotification update = new FeatureUpdateNotification();
+        update.setTitle(Messages.getString("ComponentsManager.form.showUpdate.label.title")); //$NON-NLS-1$
+        update.setDescription(Messages.getString("ComponentsManager.form.showUpdate.label.description")); //$NON-NLS-1$
+        return update;
     }
 
     private ExtraFeaturesUpdatesFactory getExtraFeatureFactory() {

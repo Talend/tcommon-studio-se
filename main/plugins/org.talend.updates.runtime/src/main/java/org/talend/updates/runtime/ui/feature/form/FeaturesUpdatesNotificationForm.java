@@ -12,7 +12,12 @@
 // ============================================================================
 package org.talend.updates.runtime.ui.feature.form;
 
+import java.util.Map;
+
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.FontDescriptor;
 import org.eclipse.jface.resource.FontRegistry;
 import org.eclipse.jface.resource.JFaceResources;
@@ -25,6 +30,7 @@ import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
@@ -36,10 +42,16 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Layout;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
+import org.talend.commons.ui.gmf.util.DisplayUtils;
+import org.talend.commons.ui.runtime.exception.ExceptionMessageDialog;
 import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.updates.runtime.EUpdatesImage;
 import org.talend.updates.runtime.feature.ImageFactory;
 import org.talend.updates.runtime.i18n.Messages;
+import org.talend.updates.runtime.model.ExtraFeature;
 import org.talend.updates.runtime.ui.feature.model.IFeatureUpdateNotification;
 import org.talend.updates.runtime.ui.feature.model.runtime.FeaturesManagerRuntimeData;
 import org.talend.updates.runtime.ui.util.UIUtils;
@@ -83,7 +95,10 @@ public class FeaturesUpdatesNotificationForm extends Composite {
 
     private IFeatureUpdateNotification update;
 
-    public FeaturesUpdatesNotificationForm(Composite parent, int style, FeaturesManagerRuntimeData runtimeData, IFeatureUpdateNotification update) {
+    private boolean isExecuting = false;
+
+    public FeaturesUpdatesNotificationForm(Composite parent, int style, FeaturesManagerRuntimeData runtimeData,
+            IFeatureUpdateNotification update) {
         super(parent, style);
         this.runtimeData = runtimeData;
         this.update = update;
@@ -93,13 +108,7 @@ public class FeaturesUpdatesNotificationForm extends Composite {
     protected void init() {
         FormLayout layout = new FormLayout();
         this.setLayout(layout);
-        FormData formData = new FormData();
-        formData.top = new FormAttachment(0, 0);
-        formData.left = new FormAttachment(0, 0);
-        formData.right = new FormAttachment(100, 0);
-        formData.bottom = new FormAttachment(100, 0);
-        this.setLayoutData(formData);
-        this.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_TITLE_BACKGROUND_GRADIENT));
+        this.setBackground(getBackgroundColor());
         panel = createPanel();
         initControl(panel);
         layoutControl();
@@ -119,6 +128,8 @@ public class FeaturesUpdatesNotificationForm extends Composite {
         layoutData.left = new FormAttachment(0, 0);
         layoutData.right = new FormAttachment(100, 0);
         cPanel.setLayoutData(layoutData);
+
+        cPanel.setBackground(getBackgroundColor());
         return cPanel;
     }
 
@@ -127,11 +138,14 @@ public class FeaturesUpdatesNotificationForm extends Composite {
         // horizonLine = new Label(panel, SWT.SEPARATOR | SWT.HORIZONTAL);
         horizonLine = new Label(panel, SWT.HORIZONTAL);
         imageLabel = new Label(panel, SWT.CENTER);
+        imageLabel.setBackground(getBackgroundColor());
 
         titleLabel = new Label(panel, SWT.NONE);
         titleLabel.setFont(getTitleFont());
+        titleLabel.setBackground(getBackgroundColor());
 
         contentPanel = new Composite(panel, SWT.NONE);
+        contentPanel.setBackground(getBackgroundColor());
         stackLayout = new StackLayout();
         contentPanel.setLayout(stackLayout);
         descText = new StyledText(contentPanel, SWT.READ_ONLY | SWT.WRAP | SWT.MULTI | SWT.NO_FOCUS);
@@ -144,16 +158,27 @@ public class FeaturesUpdatesNotificationForm extends Composite {
                 e.detail = ACC.ROLE_LABEL;
             }
         });
-        progressBar = new ProgressMonitorPart(contentPanel, null, true);
+        descText.setBackground(getBackgroundColor());
+        progressBar = new ProgressMonitorPart(contentPanel, null, true) {
+
+            @Override
+            protected void initialize(Layout layout, int progressIndicatorHeight) {
+                super.initialize(layout, progressIndicatorHeight);
+                fLabel.setBackground(getBackgroundColor());
+            }
+        };
         progressBar.attachToCancelComponent(null);
+        progressBar.setBackground(getBackgroundColor());
 
         installUpdatesButton = new Button(panel, SWT.NONE);
         installUpdatesButton.setText(Messages.getString("ComponentsManager.form.showUpdate.label.button.updateNow")); //$NON-NLS-1$
         installUpdatesButton.setFont(getInstallButtonFont());
+        installUpdatesButton.setBackground(getBackgroundColor());
 
         showUpdatesButton = new Button(panel, SWT.NONE);
         showUpdatesButton.setText(Messages.getString("ComponentsManager.form.showUpdate.label.button.showUpdates")); //$NON-NLS-1$
         showUpdatesButton.setFont(getInstallButtonFont());
+        showUpdatesButton.setBackground(getBackgroundColor());
     }
 
     protected void layoutControl() {
@@ -319,13 +344,21 @@ public class FeaturesUpdatesNotificationForm extends Composite {
         this.contentPanel.layout();
     }
 
+    public void enableButtons(boolean enable) {
+        this.installUpdatesButton.setEnabled(enable);
+        this.showUpdatesButton.setEnabled(enable);
+    }
+
+    protected Color getBackgroundColor() {
+        return Display.getDefault().getSystemColor(SWT.COLOR_TITLE_BACKGROUND_GRADIENT);
+    }
+
     private void onShowUpdatesButtonClicked(SelectionEvent e) {
-        hideProgress();
+        getRuntimeData().getUpdateNotificationButtonListener().onShowUpdatesButtonClicked(e, this);
     }
 
     private void onInstallUpdatesButtonClicked(SelectionEvent e) {
-        IProgressMonitor showProgress = showProgress();
-        showProgress.beginTask("Installing updates...", IProgressMonitor.UNKNOWN);
+        getRuntimeData().getUpdateNotificationButtonListener().onInstallUpdatesButtonClicked(e, this);
     }
 
     protected IFeatureUpdateNotification getUpdate() {
@@ -336,11 +369,137 @@ public class FeaturesUpdatesNotificationForm extends Composite {
         return this.runtimeData;
     }
 
+    public void setExecuting(boolean executing) {
+        this.isExecuting = executing;
+    }
+
+    public boolean isExecuting() {
+        return this.isExecuting;
+    }
+
     protected int getHorizonAlignWidth() {
         return 5;
     }
 
     protected int getVerticalAlignHeight() {
         return 5;
+    }
+
+    public static abstract class AbstractNotificationButtonListener {
+
+        public void onShowUpdatesButtonClicked(SelectionEvent e, FeaturesUpdatesNotificationForm form) {
+            // nothing to do
+        }
+
+        public void onInstallUpdatesButtonClicked(SelectionEvent e, FeaturesUpdatesNotificationForm form) {
+            // nothing to do
+        }
+
+        public void close() {
+            // nothing to do
+        }
+
+        protected void openExceptionDialog(FeaturesUpdatesNotificationForm form, Exception ex) {
+            ExceptionMessageDialog.openError(getActiveShell(form),
+                    Messages.getString("ComponentsManager.form.updates.notification.execute.exception.title"), //$NON-NLS-1$
+                    Messages.getString("ComponentsManager.form.updates.notification.execute.exception.description"), ex); //$NON-NLS-1$
+        }
+
+        protected void installUpdates(IProgressMonitor monitor, FeaturesManagerRuntimeData runtimeData,
+                FeaturesUpdatesNotificationForm form) throws Exception {
+            monitor.beginTask(Messages.getString("ComponentsManager.form.updates.notification.execute.label"), //$NON-NLS-1$
+                    IProgressMonitor.UNKNOWN);
+            Map<ExtraFeature, IStatus> resultMap = runtimeData.getFeaturesManager().installUpdates(monitor);
+            if (resultMap != null) {
+                boolean needResart = false;
+                boolean hasSucceedUpdate = false;
+                boolean hasFailedUpdate = false;
+                StringBuffer succeedBuffer = new StringBuffer();
+                StringBuffer failedBuffer = new StringBuffer();
+                succeedBuffer.append("\n"); //$NON-NLS-1$
+                failedBuffer.append("\n"); //$NON-NLS-1$
+                for (Map.Entry<ExtraFeature, IStatus> entry : resultMap.entrySet()) {
+
+                    ExtraFeature update = entry.getKey();
+                    IStatus result = entry.getValue();
+                    if (result != null && update != null) {
+                        switch (result.getSeverity()) {
+                        case IStatus.OK:
+                        case IStatus.INFO:
+                        case IStatus.WARNING:
+                            hasSucceedUpdate = true;
+                            succeedBuffer.append("\t").append(result.getMessage()).append("\n"); //$NON-NLS-1$ //$NON-NLS-2$
+                            if (update.needRestart()) {
+                                // only need to check restart for successful ones
+                                needResart = true;
+                            }
+                            break;
+                        default:
+                            hasFailedUpdate = true;
+                            failedBuffer.append("\t").append(result.getMessage()).append("\n"); //$NON-NLS-1$//$NON-NLS-2$
+                            break;
+                        }
+                    }
+                }
+                if (!hasFailedUpdate) {
+                    form.setExecuting(false);
+                    Display.getDefault().syncExec(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            close();
+                        }
+                    });
+                }
+                if (hasSucceedUpdate || hasFailedUpdate) {
+                    String message = null;
+                    if (hasSucceedUpdate && !hasFailedUpdate) {
+                        message = Messages
+                                .getString("ComponentsManager.form.updates.notification.execute.succeed.description.allSucceed"); //$NON-NLS-1$
+                    } else {
+                        message = Messages
+                                .getString("ComponentsManager.form.updates.notification.execute.succeed.description.hasFailure"); //$NON-NLS-1$
+                    }
+                    String details = Messages.getString(
+                            "ComponentsManager.form.updates.notification.execute.succeed.description.result", //$NON-NLS-1$
+                            succeedBuffer.toString(), failedBuffer.toString());
+                    String[] buttons = null;
+                    if (needResart) {
+                        message = message + "\n\n" + Messages.getString( //$NON-NLS-1$
+                                "ComponentsManager.form.updates.notification.execute.succeed.description.restart"); //$NON-NLS-1$
+                        buttons = new String[] { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL };
+                    } else {
+                        buttons = new String[] { IDialogConstants.OK_LABEL };
+                    }
+                    final String msg = message;
+                    final String[] btns = buttons;
+                    final boolean restart = needResart;
+                    Display.getDefault().asyncExec(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            ExceptionMessageDialog dialog = new ExceptionMessageDialog(getActiveShell(form),
+                                    Messages.getString("ComponentsManager.form.updates.notification.execute.succeed.title"), null, //$NON-NLS-1$
+                                    msg, MessageDialog.INFORMATION, btns, 0, null);
+                            dialog.setExceptionString(details);
+                            int userChoice = dialog.open();
+                            if (restart) {
+                                if (userChoice == 0) {
+                                    PlatformUI.getWorkbench().restart();
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+        }
+
+        protected Shell getActiveShell(FeaturesUpdatesNotificationForm form) {
+            if (form != null && form.isDisposed()) {
+                return DisplayUtils.getDefaultShell();
+            } else {
+                return form.getShell();
+            }
+        }
     }
 }

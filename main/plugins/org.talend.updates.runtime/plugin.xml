@@ -52,6 +52,12 @@
          </command>
       </menuContribution>
    </extension>
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup
+            class="org.talend.updates.runtime.ui.startup.FeatureCheckUpdateStartup">
+      </startup>
+   </extension>
    
    <extension
          point="org.talend.updates.runtime.extraUpdatesFactory">

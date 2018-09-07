@@ -16,8 +16,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
+import org.eclipse.jface.dialogs.Dialog;
 import org.talend.updates.runtime.feature.FeaturesManager;
 import org.talend.updates.runtime.model.ExtraFeature;
+import org.talend.updates.runtime.ui.feature.form.FeaturesUpdatesNotificationForm.AbstractNotificationButtonListener;
 import org.talend.updates.runtime.ui.feature.form.listener.ICheckListener;
 import org.talend.updates.runtime.ui.feature.job.FeaturesCheckUpdateJob;
 
@@ -26,13 +28,23 @@ import org.talend.updates.runtime.ui.feature.job.FeaturesCheckUpdateJob;
  */
 public class FeaturesManagerRuntimeData {
 
+    public static final String TAB_INSTALLATION = "installtionTab"; //$NON-NLS-1$
+
+    public static final String TAB_UPDATE = "updateTab"; //$NON-NLS-1$
+
     private FeaturesManager featuresManager;
 
     private ICheckListener checkListener;
 
+    private AbstractNotificationButtonListener updateNotificationButtonListener;
+
     private Collection<ExtraFeature> installedFeatures = Collections.synchronizedList(new ArrayList<>());
 
     private FeaturesCheckUpdateJob checkUpdateJob;
+
+    private Dialog dialog;
+
+    private String firstShowTab = TAB_INSTALLATION;
 
     private Object checkUpdateJobLock = new Object();
 
@@ -58,6 +70,30 @@ public class FeaturesManagerRuntimeData {
 
     public void setCheckListener(ICheckListener checkListener) {
         this.checkListener = checkListener;
+    }
+
+    public AbstractNotificationButtonListener getUpdateNotificationButtonListener() {
+        return this.updateNotificationButtonListener;
+    }
+
+    public void setUpdateNotificationButtonListener(AbstractNotificationButtonListener buttonListener) {
+        this.updateNotificationButtonListener = buttonListener;
+    }
+
+    public Dialog getDialog() {
+        return this.dialog;
+    }
+
+    public void setDialog(Dialog dialog) {
+        this.dialog = dialog;
+    }
+
+    public String getFirstShowTab() {
+        return this.firstShowTab;
+    }
+
+    public void setFirstShowTab(String firstShowTab) {
+        this.firstShowTab = firstShowTab;
     }
 
     public FeaturesCheckUpdateJob getCheckUpdateJob() {

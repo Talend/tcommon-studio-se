@@ -100,6 +100,7 @@ public class FeaturesManagerWizard extends Wizard {
         clear();
         Rectangle clientArea = shell.getMonitor().getClientArea();
         FeaturesManagerWizardDialog dialog = new FeaturesManagerWizardDialog(shell, this);
+        getRuntimeData().setDialog(dialog);
         dialog.setHelpAvailable(false);
         dialog.setPageSize(clientArea.width * 8 / 10, clientArea.height * 7 / 10);
         return dialog.open();

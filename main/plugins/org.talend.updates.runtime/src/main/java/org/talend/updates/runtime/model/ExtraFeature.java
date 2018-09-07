@@ -30,7 +30,7 @@ import org.talend.updates.runtime.storage.IFeatureStorage;
  * created by sgandon on 24 sept. 2013 Interface used for element to be installed after the Studio is launched.
  * 
  */
-public interface ExtraFeature {
+public interface ExtraFeature extends Comparable<Object> {
 
     /**
      * Getter for isInstalled.
@@ -170,5 +170,18 @@ public interface ExtraFeature {
             status.setRequiredStudioVersion(getCompatibleStudioVersion());
             return status;
         }
+    }
+
+    @Override
+    default int compareTo(Object o) {
+        if (o instanceof ExtraFeature) {
+            String sn = getName();
+            String on = ((ExtraFeature) o).getName();
+            if (sn != null && on != null) {
+                return sn.compareTo(on);
+            }
+        }
+
+        return 0;
     }
 }
