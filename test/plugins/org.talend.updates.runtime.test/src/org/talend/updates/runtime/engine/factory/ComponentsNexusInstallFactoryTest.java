@@ -105,7 +105,6 @@ public class ComponentsNexusInstallFactoryTest {
 
         };
 
-        final ComponentNexusP2ExtraFeature defaultFeature = new ComponentNexusP2ExtraFeature();
         ArtifactRepositoryBean serverSetting = factory.getServerSetting();
         if (serverSetting == null) {
             serverSetting = new ArtifactRepositoryBean();

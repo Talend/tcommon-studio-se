@@ -24,7 +24,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.equinox.p2.metadata.IInstallableUnit;
-import org.eclipse.equinox.p2.metadata.Version;
 import org.talend.updates.runtime.feature.model.Category;
 import org.talend.updates.runtime.feature.model.Type;
 import org.talend.updates.runtime.i18n.Messages;
@@ -63,7 +62,7 @@ public class ComponentNexusP2ExtraFeature extends ComponentP2ExtraFeature {
                 extraFeature = this;
             } else {// else already installed so try to find updates
                 boolean isUpdate = true;
-                org.eclipse.equinox.p2.metadata.Version currentVer = Version.create(this.getVersion());
+                org.eclipse.equinox.p2.metadata.Version currentVer = PathUtils.convert2Version(this.getVersion());
                 Set<IInstallableUnit> installedIUs = getInstalledIUs(getP2IuId(), progress);
                 for (IInstallableUnit iu : installedIUs) {
                     if (currentVer.compareTo(iu.getVersion()) <= 0) {

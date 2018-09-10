@@ -27,6 +27,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.p2.metadata.IInstallableUnit;
@@ -119,7 +120,8 @@ public class ComponentP2ExtraFeatureTest {
         assertFalse(feature.isInstalled(NULL_PROGRESS_MONITOR));
         List<URI> repoUris = new ArrayList<>(1);
         repoUris.add(PathUtils.getP2RepURIFromCompFile(updatesiteFile));
-        feature.install(NULL_PROGRESS_MONITOR, repoUris);
+        IStatus result = feature.install(NULL_PROGRESS_MONITOR, repoUris);
+        assertTrue(result.getMessage(), result.isOK());
         try {
             assertTrue(feature.isInstalled(NULL_PROGRESS_MONITOR));
         } finally {
@@ -143,7 +145,8 @@ public class ComponentP2ExtraFeatureTest {
 
         assertFalse(feature.isInstalled(NULL_PROGRESS_MONITOR));
         List<URI> repoUris = Collections.singletonList(PathUtils.getP2RepURIFromCompFile(updatesiteV1File));
-        feature.install(NULL_PROGRESS_MONITOR, repoUris);
+        IStatus result = feature.install(NULL_PROGRESS_MONITOR, repoUris);
+        assertTrue(result.getMessage(), result.isOK());
         try {
             assertTrue(feature.isInstalled(NULL_PROGRESS_MONITOR));
             ExtraFeature updateFeature = feature.createFeatureIfUpdates(NULL_PROGRESS_MONITOR, repoUris);
@@ -152,7 +155,8 @@ public class ComponentP2ExtraFeatureTest {
             repoUris = Collections.singletonList(PathUtils.getP2RepURIFromCompFile(updatesiteV2File));
             updateFeature = feature.createFeatureIfUpdates(NULL_PROGRESS_MONITOR, repoUris);
             assertNotNull(updateFeature);
-            updateFeature.install(NULL_PROGRESS_MONITOR, repoUris);
+            result = updateFeature.install(NULL_PROGRESS_MONITOR, repoUris);
+            assertTrue(result.getMessage(), result.isOK());
             Set<IInstallableUnit> installedIUs = feature.getInstalledIUs(feature.getP2IuId(), NULL_PROGRESS_MONITOR);
             assertFalse(installedIUs.isEmpty());
             assertEquals("0.2.0", installedIUs.iterator().next().getVersion().getOriginal()); //$NON-NLS-1$
@@ -171,7 +175,8 @@ public class ComponentP2ExtraFeatureTest {
 
         assertFalse(feature.isInstalled(NULL_PROGRESS_MONITOR));
         List<URI> repoUris = Collections.singletonList(PathUtils.getP2RepURIFromCompFile(updatesiteV1File));
-        feature.install(NULL_PROGRESS_MONITOR, repoUris);
+        IStatus result = feature.install(NULL_PROGRESS_MONITOR, repoUris);
+        assertTrue(result.getMessage(), result.isOK());
         try {
             assertTrue(feature.isInstalled(NULL_PROGRESS_MONITOR));
             ExtraFeature updateFeature = feature.createFeatureIfUpdates(NULL_PROGRESS_MONITOR, repoUris);

@@ -43,6 +43,7 @@ import org.talend.updates.runtime.i18n.Messages;
 import org.talend.updates.runtime.model.ExtraFeature;
 import org.talend.updates.runtime.service.ITaCoKitUpdateService;
 import org.talend.updates.runtime.ui.feature.model.impl.FeatureUpdateNotification;
+import org.talend.updates.runtime.utils.PathUtils;
 
 /**
  * DOC cmeng  class global comment. Detailled comment
@@ -198,7 +199,7 @@ public class FeaturesManager {
                 IInstallableUnit iu = installedMap.get(feature.getId());
                 if (iu != null) {
                     Version iuVersion = iu.getVersion();
-                    Version featVersion = Version.create(feature.getVersion());
+                    Version featVersion = PathUtils.convert2Version(feature.getVersion());
                     if (0 < featVersion.compareTo(iuVersion)) {
                         p2Updates.add(feature);
                     }

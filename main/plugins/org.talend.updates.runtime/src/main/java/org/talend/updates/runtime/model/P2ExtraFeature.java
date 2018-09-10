@@ -702,7 +702,7 @@ public class P2ExtraFeature extends AbstractExtraFeature {
         if (installedP2s != null && !installedP2s.isEmpty()) {
             String version = getVersion();
             if (StringUtils.isNotBlank(version)) {
-                Version featVersion = Version.create(version);
+                Version featVersion = PathUtils.convert2Version(version);
                 if (featVersion != null) {
                     Version installedLatestVersion = null;
                     for (IInstallableUnit installedP2 : installedP2s) {
