@@ -41,8 +41,10 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.eclipse.m2e.core.embedder.IMaven;
 import org.osgi.util.tracker.ServiceTracker;
+import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.VersionUtils;
+import org.talend.commons.utils.time.TimeMeasure;
 import org.talend.core.runtime.projectsetting.IProjectSettingTemplateConstants;
 import org.talend.designer.maven.DesignerMavenPlugin;
 import org.talend.designer.maven.repository.DefaultMavenRepositoryProvider;
@@ -99,6 +101,11 @@ public class M2eUserSettingForTalendLoginTask extends AbstractLoginTask {
      */
     @Override
     public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+        TimeMeasure.display = CommonsPlugin.isDebugMode();
+        TimeMeasure.displaySteps = CommonsPlugin.isDebugMode();
+        TimeMeasure.measureActive = CommonsPlugin.isDebugMode();
+
+        TimeMeasure.begin("M2eUserSettingForTalendLoginTask"); //$NON-NLS-1$
         if (monitor == null) {
             monitor = new NullProgressMonitor();
         }
@@ -177,10 +184,10 @@ public class M2eUserSettingForTalendLoginTask extends AbstractLoginTask {
                     maven.reloadSettings();
                 }
             }
-
+            TimeMeasure.step("M2eUserSettingForTalendLoginTask", "Check maven user setting"); //$NON-NLS-1$
             // update the proxies
             updateProxiesPreference(monitor, maven, settings);
-
+            TimeMeasure.step("M2eUserSettingForTalendLoginTask", "Update proxies preference"); //$NON-NLS-1$
             // add one marker to check to sync or not.
             File repoFolder = new File(maven.getLocalRepositoryPath());
             File markerFile = new File(repoFolder, ".syncMarker"); //$NON-NLS-1$
@@ -206,6 +213,7 @@ public class M2eUserSettingForTalendLoginTask extends AbstractLoginTask {
                     prop.put(VERSION_KEY, VersionUtils.getTalendVersion());
                     outputStream = new FileOutputStream(markerFile);
                     prop.store(outputStream, null);
+                    TimeMeasure.step("M2eUserSettingForTalendLoginTask", "Sync maven repository"); //$NON-NLS-1$
                 }
             } catch (IOException e) {
                 ExceptionHandler.process(e);
@@ -220,8 +228,12 @@ public class M2eUserSettingForTalendLoginTask extends AbstractLoginTask {
 
         } catch (Exception e) {
             ExceptionHandler.process(e);
+        } finally {
+            TimeMeasure.end("M2eUserSettingForTalendLoginTask"); //$NON-NLS-1$
+            TimeMeasure.display = false;
+            TimeMeasure.displaySteps = false;
+            TimeMeasure.measureActive = false;
         }
-
     }
 
     private IProxyService getProxyService() {

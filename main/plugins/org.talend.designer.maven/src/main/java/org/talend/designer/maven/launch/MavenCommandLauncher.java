@@ -225,14 +225,8 @@ public abstract class MavenCommandLauncher {
                 programArgs = workingCopy.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, ""); //$NON-NLS-1$
                 if (StringUtils.isBlank(programArgs)) {
                     programArgs = TalendMavenConstants.ARG_SKIP_CI_BUILDER;
-                } else {
-                    if (!StringUtils.contains(programArgs, TalendMavenConstants.PROFILE_CI_BUILDER)) {
-                        if (StringUtils.contains(programArgs, "-P ")) { //$NON-NLS-1$
-                            programArgs = StringUtils.replace(programArgs, "-P ", TalendMavenConstants.ARG_SKIP_CI_BUILDER + ","); //$NON-NLS-1$ //$NON-NLS-2$
-                        } else {
-                            programArgs += " " + TalendMavenConstants.ARG_SKIP_CI_BUILDER; //$NON-NLS-1$
-                        }
-                    }
+                } else if (!StringUtils.contains(programArgs, TalendMavenConstants.ARG_SKIP_CI_BUILDER)) {
+                    programArgs += " " + TalendMavenConstants.ARG_SKIP_CI_BUILDER; //$NON-NLS-1$
                 }
                 workingCopy.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, programArgs);
             }

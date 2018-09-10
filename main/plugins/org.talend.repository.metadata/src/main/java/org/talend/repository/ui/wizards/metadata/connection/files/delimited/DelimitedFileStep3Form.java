@@ -45,9 +45,11 @@ import org.talend.core.model.metadata.builder.connection.Escape;
 import org.talend.core.model.metadata.builder.connection.MetadataColumn;
 import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.core.model.properties.ConnectionItem;
+import org.talend.core.model.utils.ContextParameterUtils;
 import org.talend.core.ui.metadata.editor.MetadataEmfTableEditor;
 import org.talend.core.ui.metadata.editor.MetadataEmfTableEditorView;
 import org.talend.core.utils.CsvArray;
+import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.metadata.managment.ui.preview.ProcessDescription;
 import org.talend.metadata.managment.ui.utils.ConnectionContextHelper;
 import org.talend.metadata.managment.ui.utils.FileConnectionContextUtils;
@@ -362,9 +364,17 @@ public class DelimitedFileStep3Form extends AbstractDelimitedFileStepForm {
         informationLabel.setText("   " + Messages.getString("FileStep3.guessIsDone")); //$NON-NLS-1$ //$NON-NLS-2$
 
         tableEditorView.getMetadataEditor().removeAll();
-
+        String realEncodingValue = getConnection().getEncoding();
+        if (getConnection().isContextMode()) {
+            ContextType contextType = ConnectionContextHelper.getContextTypeForContextMode(getConnection(),
+            		getConnection().getContextName());
+            if(contextType!=null) {
+                realEncodingValue = ContextParameterUtils.getOriginalValue(contextType, getConnection().getEncoding());
+            }
+        }
+        
         List<MetadataColumn> columns = GuessSchemaUtil.guessSchemaFromArray(csvArray, getConnection().isFirstLineCaption(),
-                getConnection().getEncoding(), tableEditorView, 1);
+        		realEncodingValue, tableEditorView, 1); 
         tableEditorView.getMetadataEditor().addAll(columns);
 
         checkFieldsValue();

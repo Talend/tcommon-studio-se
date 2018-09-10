@@ -965,6 +965,16 @@ public class PomUtil {
         ResourcesPlugin.getWorkspace().run(runnable, rule, IWorkspace.AVOID_UPDATE, monitor);
     }
 
+    public static String getPomProperty(IFile pomFile, String key) {
+        try {
+            Model model = MavenPlugin.getMavenModelManager().readMavenModel(pomFile);
+            return model.getProperties().getProperty(key);
+        } catch (CoreException e) {
+            ExceptionHandler.process(e);
+        }
+        return null;
+    }
+
     public static void cleanLastUpdatedFile(final File file) {
         if (file != null && file.exists()) {
             if (file.isDirectory()) {

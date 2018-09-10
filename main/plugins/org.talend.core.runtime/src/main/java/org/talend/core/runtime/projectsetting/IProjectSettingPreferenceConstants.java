@@ -71,4 +71,10 @@ public interface IProjectSettingPreferenceConstants {
      * Enable ODBC or not, used for DatabaseForm and stats&logs
      */
     public static final String METADATA_DBCONNECTION_ODBC_ENABLE = "metadata.dbconnection.odbc.enable"; //$NON-NLS-1$
+    
+    /*
+     * docker profile
+     */
+    public static final String TEMPLATE_DOCKER_PROFILE_POM = "template_docker_profile_pom_script"; //$NON-NLS-1$
+
 }

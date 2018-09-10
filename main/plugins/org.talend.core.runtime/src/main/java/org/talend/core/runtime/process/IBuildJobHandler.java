@@ -13,6 +13,7 @@
 package org.talend.core.runtime.process;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.talend.core.runtime.repository.build.IBuildExportHandler;
 import org.talend.designer.runprocess.IProcessor;
@@ -36,5 +37,7 @@ public interface IBuildJobHandler extends IBuildExportHandler {
     public void generateItemFiles(boolean withDependencies, IProgressMonitor monitor) throws Exception;
 
     public IFile getJobTargetFile();
+
+    IFolder getTargetFolder();
 
 }

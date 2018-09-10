@@ -306,7 +306,6 @@ public class ModulesNeededProvider {
                     toAdd = new ModuleNeeded("Job " + process.getName(), "Required for the job " + process.getName() + ".", true,
                             neededLibrary.getMavenUri());
 
-                    toAdd.setCustomMavenUri(neededLibrary.getMavenUri());
 
                 } else {
                     toAdd = new ModuleNeeded("Job " + process.getName(), neededLibrary.getModuleName(), //$NON-NLS-1$
@@ -317,9 +316,6 @@ public class ModulesNeededProvider {
                 getAllManagedModules().add(toAdd);
             }
 
-            ILibraryManagerService libManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault()
-                    .getService(ILibraryManagerService.class);
-            libManagerService.saveCustomMavenURIMap();
         }
     }
 
