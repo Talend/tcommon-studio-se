@@ -50,7 +50,7 @@ public class ComponentNexusP2ExtraFeature extends ComponentP2ExtraFeature {
     public ComponentNexusP2ExtraFeature(String name, String version, String description, String mvnUri, String imageMvnUri,
             String product, String compatibleStudioVersion, String p2IuId, Collection<Type> types,
             Collection<Category> categories, boolean degradable) {
-        super(p2IuId, name, version, description, mvnUri, imageMvnUri, product, compatibleStudioVersion, types, categories,
+        super(name, version, description, mvnUri, imageMvnUri, product, compatibleStudioVersion, p2IuId, types, categories,
                 degradable);
     }
 

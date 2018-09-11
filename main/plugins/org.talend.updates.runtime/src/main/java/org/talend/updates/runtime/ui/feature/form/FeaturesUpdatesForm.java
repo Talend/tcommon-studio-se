@@ -314,6 +314,7 @@ public class FeaturesUpdatesForm extends AbstractFeatureForm {
             }
             searchResult = checkUpdateJob.getSearchResult();
             Collection<ExtraFeature> allComponentFeatures = searchResult.getCurrentPageResult();
+            allComponentFeatures = checkFeatures(allComponentFeatures);
             featureItems = ModelAdapter.convert(allComponentFeatures, true);
         } catch (Exception e) {
             ExceptionHandler.process(e);

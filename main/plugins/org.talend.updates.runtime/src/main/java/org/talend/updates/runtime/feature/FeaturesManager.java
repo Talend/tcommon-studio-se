@@ -41,6 +41,7 @@ import org.talend.updates.runtime.feature.model.Category;
 import org.talend.updates.runtime.feature.model.Type;
 import org.talend.updates.runtime.i18n.Messages;
 import org.talend.updates.runtime.model.ExtraFeature;
+import org.talend.updates.runtime.model.interfaces.IP2Feature;
 import org.talend.updates.runtime.service.ITaCoKitUpdateService;
 import org.talend.updates.runtime.ui.feature.model.impl.FeatureUpdateNotification;
 import org.talend.updates.runtime.utils.PathUtils;
@@ -174,7 +175,7 @@ public class FeaturesManager {
     private Collection<ExtraFeature> getP2Updates(IProgressMonitor monitor, Collection<ExtraFeature> features) throws Exception {
         Collection<ExtraFeature> p2Updates = new LinkedList<>();
         if (features != null && !features.isEmpty()) {
-            Collection<IInstallableUnit> installedP2Features = P2Manager.getInstance().getInstalledP2Features(monitor);
+            Collection<IInstallableUnit> installedP2Features = P2Manager.getInstance().getInstalledP2Features(monitor, true);
             Map<String, IInstallableUnit> installedMap = new HashMap<>();
             for (IInstallableUnit iu : installedP2Features) {
                 String key = iu.getId();
@@ -193,7 +194,7 @@ public class FeaturesManager {
                 installedMap.put(key, iu);
             }
             for (ExtraFeature feature : features) {
-                if (feature.getTypes().contains(Type.TCOMP_V1)) {
+                if (!(feature instanceof IP2Feature)) {
                     continue;
                 }
                 IInstallableUnit iu = installedMap.get(feature.getId());

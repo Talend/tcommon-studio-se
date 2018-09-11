@@ -62,6 +62,7 @@ import org.talend.updates.runtime.feature.model.Category;
 import org.talend.updates.runtime.feature.model.Type;
 import org.talend.updates.runtime.i18n.Messages;
 import org.talend.updates.runtime.model.InstallationStatus.Status;
+import org.talend.updates.runtime.model.interfaces.IP2Feature;
 import org.talend.updates.runtime.service.ITaCoKitUpdateService;
 import org.talend.updates.runtime.service.ITaCoKitUpdateService.ICarInstallationResult;
 import org.talend.updates.runtime.utils.PathUtils;
@@ -76,9 +77,14 @@ import org.talend.utils.json.JSONObject;
  * https://wiki.talend.com/x/YoVL
  *
  */
-public class P2ExtraFeature extends AbstractExtraFeature {
+public class P2ExtraFeature extends AbstractExtraFeature implements IP2Feature {
 
     private String baseRepoUriStr;// default url of the remote repo where to look for the feature to install
+
+    /**
+     * default is false, in case cache can't be refreshed
+     */
+    private boolean useP2Cache = false;
 
     public P2ExtraFeature() {
         this(null, null, null, null, null, null, null, null, null, null, null, false, null, false, false);
@@ -698,7 +704,8 @@ public class P2ExtraFeature extends AbstractExtraFeature {
 
     @Override
     public InstallationStatus getInstallationStatus(IProgressMonitor monitor) throws Exception {
-        Collection<IInstallableUnit> installedP2s = P2Manager.getInstance().getInstalledP2Feature(monitor, getP2IuId(), null);
+        Collection<IInstallableUnit> installedP2s = P2Manager.getInstance().getInstalledP2Feature(monitor, getP2IuId(), null,
+                useP2Cache());
         if (installedP2s != null && !installedP2s.isEmpty()) {
             String version = getVersion();
             if (StringUtils.isNotBlank(version)) {
@@ -734,5 +741,15 @@ public class P2ExtraFeature extends AbstractExtraFeature {
         InstallationStatus status = new InstallationStatus(Status.INSTALLABLE);
         status.setRequiredStudioVersion(getCompatibleStudioVersion());
         return status;
+    }
+
+    @Override
+    public void setUseP2Cache(boolean useP2Cache) {
+        this.useP2Cache = useP2Cache;
+    }
+
+    @Override
+    public boolean useP2Cache() {
+        return this.useP2Cache;
     }
 }

@@ -12,6 +12,8 @@
 // ============================================================================
 package org.talend.updates.runtime.ui.feature.form;
 
+import java.util.Collection;
+
 import org.eclipse.jface.resource.FontDescriptor;
 import org.eclipse.jface.resource.FontRegistry;
 import org.eclipse.jface.resource.JFaceResources;
@@ -20,6 +22,8 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.talend.updates.runtime.model.ExtraFeature;
+import org.talend.updates.runtime.model.interfaces.IP2Feature;
 import org.talend.updates.runtime.ui.feature.form.item.AbstractFeatureListInfoItem;
 import org.talend.updates.runtime.ui.feature.form.listener.ICheckListener;
 import org.talend.updates.runtime.ui.feature.model.runtime.FeaturesManagerRuntimeData;
@@ -90,6 +94,21 @@ public abstract class AbstractFeatureForm extends Composite {
 
     protected int getComboWidth() {
         return 100;
+    }
+
+    protected Collection<ExtraFeature> checkFeatures(Collection<ExtraFeature> features) throws Exception {
+        setUseP2Cache(features, true);
+        return features;
+    }
+
+    protected void setUseP2Cache(Collection<ExtraFeature> features, boolean useP2Cache) {
+        if (features != null) {
+            for (ExtraFeature feature : features) {
+                if (feature instanceof IP2Feature) {
+                    ((IP2Feature) feature).setUseP2Cache(useP2Cache);
+                }
+            }
+        }
     }
 
     protected Font getInstallButtonFont() {

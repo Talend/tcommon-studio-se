@@ -68,18 +68,25 @@ public class P2Manager {
     /**
      * get all p2 features(not only talend p2 features)
      */
-    public Collection<IInstallableUnit> getInstalledP2Features(IProgressMonitor monitor) throws Exception {
+    public Collection<IInstallableUnit> getInstalledP2Features(IProgressMonitor monitor, boolean useCache2ImprovePerformance)
+            throws Exception {
         IQuery<IInstallableUnit> iuQuery = QueryUtil.ALL_UNITS;
+        if (!useCache2ImprovePerformance) {
+            clear();
+        }
         return getP2Profile(monitor).available(iuQuery, monitor).toSet();
     }
 
-    public Collection<IInstallableUnit> getInstalledP2Feature(IProgressMonitor monitor, String p2Id, VersionRange versionRange)
-            throws Exception {
+    public Collection<IInstallableUnit> getInstalledP2Feature(IProgressMonitor monitor, String p2Id, VersionRange versionRange,
+            boolean useCache2ImprovePerformance) throws Exception {
         IQuery<IInstallableUnit> iuQuery = null;
         if (versionRange != null) {
             iuQuery = QueryUtil.createIUQuery(p2Id, versionRange);
         } else {
             iuQuery = QueryUtil.createIUQuery(p2Id);
+        }
+        if (!useCache2ImprovePerformance) {
+            clear();
         }
         return getP2Profile(monitor).available(iuQuery, monitor).toSet();
     }

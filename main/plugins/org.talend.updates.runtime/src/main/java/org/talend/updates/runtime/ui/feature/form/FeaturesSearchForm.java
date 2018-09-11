@@ -303,6 +303,7 @@ public class FeaturesSearchForm extends AbstractFeatureForm {
         try {
             searchResult = componentsManager.searchFeatures(monitor, searchOption);
             Collection<ExtraFeature> allComponentFeatures = searchResult.getCurrentPageResult();
+            allComponentFeatures = checkFeatures(allComponentFeatures);
             featureItems = ModelAdapter.convert(allComponentFeatures, false);
         } catch (Exception e) {
             ExceptionHandler.process(e);
@@ -344,6 +345,7 @@ public class FeaturesSearchForm extends AbstractFeatureForm {
                 SearchResult checkUpdateResult = checkUpdateJob.getSearchResult();
                 if (checkUpdateResult != null) {
                     Collection<ExtraFeature> currentPageResult = checkUpdateResult.getCurrentPageResult();
+                    currentPageResult = checkFeatures(currentPageResult);
                     if (currentPageResult != null && !currentPageResult.isEmpty()) {
                         FeatureUpdateNotification update = getRuntimeData().getFeaturesManager().createUpdateNotificationItem();
                         features.add(update);
