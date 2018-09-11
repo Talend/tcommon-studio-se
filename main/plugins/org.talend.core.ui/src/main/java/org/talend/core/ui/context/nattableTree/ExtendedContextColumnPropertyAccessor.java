@@ -27,6 +27,7 @@ import org.eclipse.nebula.widgets.nattable.data.IColumnPropertyAccessor;
 import org.eclipse.nebula.widgets.nattable.data.ReflectiveColumnPropertyAccessor;
 import org.eclipse.nebula.widgets.nattable.group.ColumnGroupModel;
 import org.talend.commons.utils.PasswordEncryptUtil;
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.language.ECodeLanguage;
 import org.talend.core.language.LanguageManager;
 import org.talend.core.model.context.ContextUtils;
@@ -40,6 +41,7 @@ import org.talend.core.model.process.IContextParameter;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.JobletProcessItem;
 import org.talend.core.model.properties.ProcessItem;
+import org.talend.core.service.IResourcesDependenciesService;
 import org.talend.core.ui.context.ContextComposite;
 import org.talend.core.ui.context.IContextModelManager;
 import org.talend.core.ui.context.model.table.ContextTableConstants;
@@ -259,16 +261,21 @@ public class ExtendedContextColumnPropertyAccessor<R> implements IColumnProperty
                 if (contextPara.getType() == ((String) newValue)) {
                     return;
                 }
+                boolean isResourceType = ContextNatTableUtils.isResourceType(contextPara.getType());
                 String newType = getRealType((String) newValue);
                 contextPara.setType(newType);
 
                 Command cmd = new SetContextTypeCommand(manager, contextPara, newType);
                 runCommand(cmd, manager);
+                if (isResourceType) {
+                    refreshResourceView();
+                }
             } else if (currentColumnName.equals(ContextTableConstants.COLUMN_NAME_PROPERTY)) {
                 ContextTableTabParentModel parent = (ContextTableTabParentModel) dataElement;
                 IContextParameter contextPara = parent.getContextParameter();
                 String sourceId = contextPara.getSource();
                 String newParaName = (String) newValue;
+                boolean needRefresh = !contextPara.getName().equals(newParaName);
 
                 if (manager.getContextManager() instanceof JobContextManager) {
                     // in case joblet rename will propagate to the job,just record it
@@ -278,6 +285,9 @@ public class ExtendedContextColumnPropertyAccessor<R> implements IColumnProperty
                 }
                 Command cmd = new SetContextNameCommand(manager, contextPara, newParaName, sourceId);
                 runCommand(cmd, manager);
+                if (needRefresh) {
+                    refreshResourceView();
+                }
             } else if (currentColumnName.equals(ContextTableConstants.COLUMN_COMMENT_PROPERTY)) {
                 ContextTableTabParentModel parent = (ContextTableTabParentModel) dataElement;
                 IContextParameter contextPara = parent.getContextParameter();
@@ -709,5 +719,13 @@ public class ExtendedContextColumnPropertyAccessor<R> implements IColumnProperty
             }
         }
         return false;
+    }
+
+    private void refreshResourceView() {
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IResourcesDependenciesService.class)) {
+            IResourcesDependenciesService resService = (IResourcesDependenciesService) GlobalServiceRegister.getDefault()
+                    .getService(IResourcesDependenciesService.class);
+            resService.refreshDependencyViewer();
+        }
     }
 }

@@ -46,6 +46,7 @@ import org.talend.commons.ui.runtime.image.EImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.commons.utils.platform.PluginChecker;
 import org.talend.commons.utils.threading.ExecutionLimiter;
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.language.ECodeLanguage;
 import org.talend.core.language.LanguageManager;
 import org.talend.core.model.context.ContextUtils;
@@ -58,6 +59,7 @@ import org.talend.core.model.process.IContextManager;
 import org.talend.core.model.process.IContextParameter;
 import org.talend.core.model.properties.Item;
 import org.talend.core.prefs.ITalendCorePrefConstants;
+import org.talend.core.service.IResourcesDependenciesService;
 import org.talend.core.ui.CoreUIPlugin;
 import org.talend.core.ui.context.ContextTreeTable.ContextTreeNode;
 import org.talend.core.ui.context.model.ContextTabChildModel;
@@ -276,6 +278,7 @@ public class ContextNebulaGridComposite extends AbstractContextTabEditComposite 
                     }
                     modelManager.onContextChangeDefault(modelManager.getContextManager(), newSelContext);
                     refresh();
+                    refreshResourceView();
                 }
 
             }
@@ -342,6 +345,7 @@ public class ContextNebulaGridComposite extends AbstractContextTabEditComposite 
 
                     }
 
+                    boolean isResTypeExist = false;
                     for (Object object : obj) { // multi delete
                         if (object == null) {
                             return;
@@ -349,6 +353,9 @@ public class ContextNebulaGridComposite extends AbstractContextTabEditComposite 
                         if (object instanceof ContextTableTabParentModel) {
                             ContextTableTabParentModel parentModel = (ContextTableTabParentModel) object;
                             removeParentModelInGroupBySource(parentModel);
+                            if (ContextNatTableUtils.isResourceType(parentModel.getContextParameter().getType())) {
+                                isResTypeExist = true;
+                            }
                         } else if (object instanceof ContextTableTabChildModel) {
                             ContextTableTabChildModel childModel = (ContextTableTabChildModel) object;
                             removeChildModelInGroupBySource(childModel);
@@ -357,6 +364,10 @@ public class ContextNebulaGridComposite extends AbstractContextTabEditComposite 
                     modelManager.refresh();
                     setButtonEnableState();
                     
+                    if (isResTypeExist) {
+                        refreshResourceView();
+                    }
+
                     if (!treeTable.getSelection().isEmpty()) {
                         treeTable.clearSelection();
                     }
@@ -603,6 +614,14 @@ public class ContextNebulaGridComposite extends AbstractContextTabEditComposite 
 
                 setButtonEnableState();
             }
+        }
+    }
+
+    private void refreshResourceView() {
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IResourcesDependenciesService.class)) {
+            IResourcesDependenciesService resService = (IResourcesDependenciesService) GlobalServiceRegister.getDefault()
+                    .getService(IResourcesDependenciesService.class);
+            resService.refreshDependencyViewer();
         }
     }
 

@@ -205,8 +205,7 @@ public class ContextNatTableUtils {
     }
 
     public static String getSpecialTypeDisplayValue(String parameterType, String parameterValue) {
-        if (JavaTypesManager.RESOURCE.getId().equals(parameterType)
-                || JavaTypesManager.RESOURCE.getLabel().equals(parameterType)) {
+        if (isResourceType(parameterType)) {
             if (parameterValue.contains("|")) {
                 String[] part = parameterValue.split("\\|");
                 if (part.length > 1) {
@@ -218,6 +217,15 @@ public class ContextNatTableUtils {
             }
         }
         return null;
+    }
+
+    public static boolean isResourceType(String parameterType) {
+        if (JavaTypesManager.RESOURCE.getId().equals(parameterType)
+                || JavaTypesManager.RESOURCE.getLabel().equals(parameterType)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }
