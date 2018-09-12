@@ -247,8 +247,12 @@ public class ContextNatTableConfiguration extends AbstractRegistryConfiguration 
 
     private void registerColumnTwoComboxEditor(IConfigRegistry configRegistry) {
         List<String> originalTypes = Arrays.asList(ContextParameterJavaTypeManager.getJavaTypesLabels());
+        boolean isFromRepository = modelManager.isRepositoryContext();
         List<String> finalTypes = new ArrayList<String>();
         for (String type : originalTypes) {
+            if (isFromRepository && JavaTypesManager.RESOURCE.getLabel().equals(type)) {
+                continue;
+            }
             String newType = type;
             if (type.contains("|")) {
                 int index = type.indexOf("|");
