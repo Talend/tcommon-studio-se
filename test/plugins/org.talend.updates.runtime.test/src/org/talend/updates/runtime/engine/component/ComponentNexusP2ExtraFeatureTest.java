@@ -14,8 +14,10 @@ package org.talend.updates.runtime.engine.component;
 
 import org.eclipse.core.runtime.Platform;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.talend.commons.CommonsPlugin;
+import org.talend.updates.runtime.engine.P2Manager;
 import org.talend.updates.runtime.model.P2ExtraFeatureException;
 
 /**
@@ -38,6 +40,11 @@ public class ComponentNexusP2ExtraFeatureTest {
             super(name, version, description, mvnURI, imageMvnURI, product, null, p2IuId, null, null, false);
         }
 
+    }
+
+    @Before
+    public void beforeTest() {
+        P2Manager.getInstance().reset();
     }
 
     @Test

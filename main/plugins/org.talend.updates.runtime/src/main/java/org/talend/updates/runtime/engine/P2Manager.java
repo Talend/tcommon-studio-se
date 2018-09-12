@@ -39,9 +39,9 @@ public class P2Manager {
 
     private static P2Manager instance;
 
-    private String p2ProfileId = "_SELF_"; //$NON-NLS-1$
+    private String p2ProfileId;
 
-    private URI p2AgentUri = null;
+    private URI p2AgentUri;
 
     private IProvisioningAgent p2Agent = null;
 
@@ -50,7 +50,7 @@ public class P2Manager {
     private final Object p2ProfileLock = new Object();
 
     private P2Manager() {
-        // nothing to do
+        reset();
     }
 
     public static P2Manager getInstance() {
@@ -176,6 +176,12 @@ public class P2Manager {
             p2Profile = null;
             releaseP2Agent();
         }
+    }
+
+    public void reset() {
+        p2ProfileId = "_SELF_"; //$NON-NLS-1$
+        p2AgentUri = null;
+        clear();
     }
 
     private void releaseP2Agent() {

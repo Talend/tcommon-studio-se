@@ -42,6 +42,7 @@ import org.talend.commons.utils.resource.BundleFileUtil;
 import org.talend.librariesmanager.prefs.LibrariesManagerUtils;
 import org.talend.updates.runtime.TestUtils;
 import org.talend.updates.runtime.engine.P2InstallerTest;
+import org.talend.updates.runtime.engine.P2Manager;
 import org.talend.updates.runtime.model.ExtraFeature;
 import org.talend.updates.runtime.model.UpdateSiteLocationType;
 import org.talend.updates.runtime.utils.PathUtils;
@@ -72,6 +73,7 @@ public class ComponentP2ExtraFeatureTest {
                 "mvn:org.talend.components/components-file-definition/0.1.0/png", "org.talend.components.file");
         tmpFolder = org.talend.utils.files.FileUtils.createTmpFolder("test", "comp"); //$NON-NLS-1$ //$NON-NLS-2$
         tempP2Folder = org.talend.utils.files.FileUtils.createTmpFolder("test", "p2"); //$NON-NLS-1$ //$NON-NLS-2$
+        P2Manager.getInstance().reset();
     }
 
     @After
