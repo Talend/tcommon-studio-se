@@ -154,6 +154,10 @@ public class P2Manager {
         return p2ProfileId;
     }
 
+    public void setP2ProfileId(String p2ProfileId) {
+        this.p2ProfileId = p2ProfileId;
+    }
+
     /**
      * create for JUnit test so that URI can be change to some other P2 repo
      *
@@ -161,6 +165,10 @@ public class P2Manager {
      */
     public URI getP2AgentUri() {
         return p2AgentUri;
+    }
+
+    public void setP2AgentUri(URI p2AgentUri) {
+        this.p2AgentUri = p2AgentUri;
     }
 
     public void clear() {

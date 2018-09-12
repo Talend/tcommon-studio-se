@@ -50,6 +50,7 @@ import org.talend.updates.runtime.ui.feature.model.IFeatureInfo;
 import org.talend.updates.runtime.ui.feature.model.IFeatureItem;
 import org.talend.updates.runtime.ui.feature.model.runtime.FeaturesManagerRuntimeData;
 import org.talend.updates.runtime.ui.util.UIUtils;
+import org.talend.updates.runtime.utils.PathUtils;
 
 /**
  * DOC cmeng  class global comment. Detailled comment
@@ -385,25 +386,7 @@ public abstract class AbstractFeatureListInfoItem<T extends IFeatureInfo> extend
                     @Override
                     public void run() {
                         Throwable ex = status.getException();
-                        if (ex != null) {
-                            ExceptionHandler.process(ex);
-                        }
-                        String message = status.getMessage();
-                        IStatus[] childrenStatus = status.getChildren();
-                        if (childrenStatus != null) {
-                            for (IStatus childStatus : childrenStatus) {
-                                if (childStatus != null) {
-                                    Throwable e = childStatus.getException();
-                                    if (e != null) {
-                                        ExceptionHandler.process(e);
-                                    }
-                                    if (ex == null) {
-                                        ex = e;
-                                    }
-                                    message = message + ", " + childStatus.getMessage(); //$NON-NLS-1$
-                                }
-                            }
-                        }
+                        String message = PathUtils.getMessage(status, true);
 
                         ExceptionMessageDialog.openError(getShell(),
                                 Messages.getString("ComponentsManager.form.install.dialog.failed.title"), //$NON-NLS-1$

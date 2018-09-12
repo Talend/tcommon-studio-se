@@ -31,6 +31,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.equinox.p2.metadata.IInstallableUnit;
+import org.eclipse.equinox.p2.metadata.IProvidedCapability;
 import org.eclipse.equinox.p2.metadata.Version;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.threading.TalendCustomThreadPoolExecutor;
@@ -178,7 +179,19 @@ public class FeaturesManager {
             Collection<IInstallableUnit> installedP2Features = P2Manager.getInstance().getInstalledP2Features(monitor, true);
             Map<String, IInstallableUnit> installedMap = new HashMap<>();
             for (IInstallableUnit iu : installedP2Features) {
-                String key = iu.getId();
+                String key = null;
+                Collection<IProvidedCapability> providedCapabilities = iu.getProvidedCapabilities();
+                if (providedCapabilities == null) {
+                    continue;
+                }
+                for (IProvidedCapability capability : providedCapabilities) {
+                    if (IInstallableUnit.NAMESPACE_IU_ID.equals(capability.getNamespace())) {
+                        key = capability.getName();
+                    }
+                }
+                if (StringUtils.isBlank(key)) {
+                    continue;
+                }
                 if (installedMap.containsKey(key)) {
                     IInstallableUnit existedIU = installedMap.get(key);
                     Version existedVersion = null;

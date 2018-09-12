@@ -27,6 +27,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.URIUtil;
 import org.eclipse.equinox.p2.metadata.Version;
@@ -196,29 +197,110 @@ public class PathUtils {
         return categoryList;
     }
 
+    @SuppressWarnings("nls")
     public static Version convert2Version(String vStr) throws Exception {
         if (vStr == null) {
             return null;
         }
+        Version version = null;
+        try {
+            version = Version.create(vStr);
+        } catch (Exception e) {
+            // nothing to do
+        }
+        if (version != null) {
+            return version;
+        }
         String[] split = vStr.split("\\.", 4); //$NON-NLS-1$
         int length = split.length;
         int major = 0;
-        if (0 < length) {
-            major = Integer.valueOf(split[0]);
-        }
         int minor = 0;
-        if (1 < length) {
-            minor = Integer.valueOf(split[1]);
-        }
         int micro = 0;
+        String classifier = "";
+
+        boolean classifierBegin = false;
+        if (0 < length) {
+            if (!classifierBegin) {
+                try {
+                    major = Integer.valueOf(split[0]);
+                } catch (Exception e) {
+                    classifierBegin = true;
+                }
+            }
+            if (classifierBegin) {
+                if (!StringUtils.isBlank(classifier)) {
+                    classifier = classifier + ".";
+                }
+                classifier = classifier + split[0];
+            }
+        }
+        if (1 < length) {
+            if (!classifierBegin) {
+                try {
+                    minor = Integer.valueOf(split[1]);
+                } catch (Exception e) {
+                    classifierBegin = true;
+                }
+            }
+            if (classifierBegin) {
+                if (!StringUtils.isBlank(classifier)) {
+                    classifier = classifier + ".";
+                }
+                classifier = classifier + split[1];
+            }
+        }
         if (2 < length) {
-            micro = Integer.valueOf(split[2]);
+            if (!classifierBegin) {
+                try {
+                    micro = Integer.valueOf(split[2]);
+                } catch (Exception e) {
+                    classifierBegin = true;
+                }
+            }
+            if (classifierBegin) {
+                if (!StringUtils.isBlank(classifier)) {
+                    classifier = classifier + ".";
+                }
+                classifier = classifier + split[2];
+            }
         }
 
-        String classifier = null;
         if (3 < length) {
-            classifier = split[3];
+            if (classifierBegin) {
+                if (!StringUtils.isBlank(classifier)) {
+                    classifier = classifier + ".";
+                }
+                classifier = classifier + split[3];
+            } else {
+                classifier = split[3];
+            }
         }
         return Version.createOSGi(major, minor, micro, classifier);
+    }
+
+    @SuppressWarnings("nls")
+    public static String getMessage(IStatus status, boolean printException) {
+        StringBuffer strBuff = new StringBuffer();
+
+        if (status == null) {
+            return "";
+        }
+
+        strBuff.append(status.getMessage());
+        if (printException) {
+            Throwable exception = status.getException();
+            if (exception != null) {
+                ExceptionHandler.process(exception);
+            }
+        }
+        IStatus[] children = status.getChildren();
+        if (children != null && 0 < children.length) {
+            strBuff.append("\n");
+            for (IStatus child : children) {
+                strBuff.append(getMessage(child, printException)).append("\n");
+            }
+        }
+
+        return strBuff.toString();
     }
 }
