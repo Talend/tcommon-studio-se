@@ -71,6 +71,8 @@ public interface TalendMavenConstants {
 
     static final String GOAL_INSTALL = "install";
 
+    static final String GOAL_DEPLOY = "deploy";
+
     /**
      * Profiles
      */
@@ -127,7 +129,7 @@ public interface TalendMavenConstants {
     
     static final String ARG_TEST_FAILURE_IGNORE = "-Dmaven.test.failure.ignore=true";
 
-    static final String ARG_SKIP_CI_BUILDER = "-P !" + TalendMavenConstants.PROFILE_CI_BUILDER;
+    static final String ARG_SKIP_CI_BUILDER = "-Dci.builder.skip=true";
 
     /* same as the JavaUtils.JAVA_PROJECT_NAME */
     static final String PROJECT_NAME = ".Java";
@@ -137,6 +139,8 @@ public interface TalendMavenConstants {
     static final String DEFAULT_ENCODING = "UTF-8";
 
     static final String DEFAULT_GROUP_ID = "org.talend";
+
+    static final String DEFAULT_CI_GROUP_ID = "org.talend.ci";
 
     static final String DEFAULT_VERSION = "6.0.0";
 
