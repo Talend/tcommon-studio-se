@@ -707,23 +707,29 @@ public class P2ExtraFeature extends AbstractExtraFeature implements IP2Feature {
         Collection<IInstallableUnit> installedP2s = P2Manager.getInstance().getInstalledP2Feature(monitor, getP2IuId(), null,
                 useP2Cache());
         if (installedP2s != null && !installedP2s.isEmpty()) {
-            String version = getVersion();
-            if (StringUtils.isNotBlank(version)) {
-                Version featVersion = PathUtils.convert2Version(version);
-                if (featVersion != null) {
-                    Version installedLatestVersion = null;
-                    for (IInstallableUnit installedP2 : installedP2s) {
-                        Version installedVersion = installedP2.getVersion();
-                        if (installedVersion != null) {
-                            if (installedLatestVersion == null) {
-                                installedLatestVersion = installedVersion;
-                            } else {
-                                if (installedLatestVersion.compareTo(installedVersion) < 0) {
-                                    installedLatestVersion = installedVersion;
-                                }
-                            }
+            Version installedLatestVersion = null;
+            for (IInstallableUnit installedP2 : installedP2s) {
+                Version installedVersion = installedP2.getVersion();
+                if (installedVersion != null) {
+                    if (installedLatestVersion == null) {
+                        installedLatestVersion = installedVersion;
+                    } else {
+                        if (installedLatestVersion.compareTo(installedVersion) < 0) {
+                            installedLatestVersion = installedVersion;
                         }
                     }
+                }
+            }
+
+            String version = getVersion();
+            if (StringUtils.isBlank(version)) {
+                InstallationStatus status = new InstallationStatus(Status.INSTALLED);
+                status.setInstalledVersion(installedLatestVersion.toString());
+                status.setRequiredStudioVersion(getCompatibleStudioVersion());
+                return status;
+            } else {
+                Version featVersion = PathUtils.convert2Version(version);
+                if (featVersion != null) {
                     if (featVersion.compareTo(installedLatestVersion) <= 0) {
                         InstallationStatus status = new InstallationStatus(Status.INSTALLED);
                         status.setInstalledVersion(installedLatestVersion.toString());
