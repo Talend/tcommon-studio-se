@@ -163,7 +163,7 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
                 if (f.isFile()) {
                     ExtraFeature feature = null;
                     try {
-                        if (UpdatesHelper.isComponentUpdateSite(f)) {                            
+                        if (UpdatesHelper.isComponentUpdateSite(f)) {
                             // get ComponentP2ExtraFeature from update site file
                             ComponentIndexBean indexBean = indexManager.create(f);
                             if (indexBean == null) {

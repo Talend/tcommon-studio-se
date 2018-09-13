@@ -92,7 +92,7 @@ public interface ExtraFeature extends Comparable<Object> {
         try {
             return !isInstalled(progress);
         } catch (Exception e) {
-            throw new P2ExtraFeatureException(e);
+            throw new ExtraFeatureException(e);
         }
     }
 

@@ -25,7 +25,7 @@ import org.talend.updates.runtime.model.FeatureCategory;
  * created by ggu on Jul 17, 2014 Detailled comment
  *
  */
-public abstract class AbstractExtraUpdatesFactory {
+public abstract class AbstractExtraUpdatesFactory implements IUpdatesFactory {
 
     protected String getAcronym() {
         String acronym = "";
@@ -37,6 +37,7 @@ public abstract class AbstractExtraUpdatesFactory {
         return acronym;
     }
 
+    @Override
     public void retrieveAllExtraFeatures(IProgressMonitor monitor, Set<ExtraFeature> features) throws Exception {
         throw new UnsupportedOperationException("Unsupported operation, please check");
     }

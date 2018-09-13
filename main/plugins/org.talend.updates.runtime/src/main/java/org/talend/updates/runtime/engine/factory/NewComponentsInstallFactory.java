@@ -43,7 +43,7 @@ import org.talend.utils.io.FilesUtils;
 /**
  * DOC ggu class global comment. Detailled comment
  */
-public class NewComponentsInstallFactory extends AbstractExtraUpdatesFactory {
+public class NewComponentsInstallFactory extends AbstractExtraUpdatesFactory implements IComponentUpdatesFactory {
 
     public static final String FILE_COMPONENTS_INDEX = "components.index";
 

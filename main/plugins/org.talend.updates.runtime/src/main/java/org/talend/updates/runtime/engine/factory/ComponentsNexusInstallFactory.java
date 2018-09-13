@@ -34,7 +34,6 @@ import org.talend.updates.runtime.feature.model.Type;
 import org.talend.updates.runtime.i18n.Messages;
 import org.talend.updates.runtime.model.ExtraFeature;
 import org.talend.updates.runtime.model.FeatureCategory;
-import org.talend.updates.runtime.model.P2ExtraFeatureException;
 import org.talend.updates.runtime.nexus.component.ComponentIndexBean;
 import org.talend.updates.runtime.nexus.component.ComponentIndexManager;
 import org.talend.updates.runtime.nexus.component.NexusComponentsTransport;
@@ -46,7 +45,7 @@ import org.talend.updates.runtime.utils.PathUtils;
 /**
  * DOC Talend class global comment. Detailled comment
  */
-public class ComponentsNexusInstallFactory extends AbstractExtraUpdatesFactory {
+public class ComponentsNexusInstallFactory extends AbstractExtraUpdatesFactory implements IComponentUpdatesFactory {
 
     private ComponentIndexManager indexManager = new ComponentIndexManager();
 
@@ -213,7 +212,7 @@ public class ComponentsNexusInstallFactory extends AbstractExtraUpdatesFactory {
                     addToCategory(category, extraFeature);
                 }
                 checkSubMonitor.worked(1);
-            } catch (P2ExtraFeatureException e) {
+            } catch (Exception e) {
                 ExceptionHandler.process(e);
             }
         }
