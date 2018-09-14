@@ -27,6 +27,7 @@ import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.ui.branding.IBrandingService;
 import org.talend.core.ui.images.RepositoryImageProvider;
 import org.talend.repository.model.nodes.IProjectRepositoryNode;
+import org.talend.repository.ui.actions.ActionFilterDelegateFactory;
 
 /**
  * Node used to fill the repository view TreeViewer. Each node has a type defines in ENodeType enum. Object isn't stored
@@ -496,7 +497,8 @@ public class RepositoryNode implements IRepositoryNode, IActionFilter {
                 return true;
             }
         }
-        return false;
+        
+        return ActionFilterDelegateFactory.getInstance().testAttribute(name, node);
     }
 
     public boolean isEnableDisposed() {
