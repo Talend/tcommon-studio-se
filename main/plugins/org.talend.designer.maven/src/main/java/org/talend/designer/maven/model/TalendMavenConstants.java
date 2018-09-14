@@ -133,6 +133,8 @@ public interface TalendMavenConstants {
     
     static final String ARG_LICENSE_PATH = "-Dlicense.path";
     
+    static final String ARG_SESSION_ID = "-Dsession.id";
+    
     static final String ARG_SKIP_CI_BUILDER = "-Dci.builder.skip=true";
     /* same as the JavaUtils.JAVA_PROJECT_NAME */
     static final String PROJECT_NAME = ".Java";
