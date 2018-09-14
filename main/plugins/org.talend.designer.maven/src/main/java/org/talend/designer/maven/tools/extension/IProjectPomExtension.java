@@ -16,6 +16,8 @@ import org.apache.maven.model.Model;
 
 public interface IProjectPomExtension {
 
-    void updatePom(Model model);
+    void updatePom(Model model) throws Exception;
+
+    void updatePomTemplate(Model model) throws Exception;
 
 }
