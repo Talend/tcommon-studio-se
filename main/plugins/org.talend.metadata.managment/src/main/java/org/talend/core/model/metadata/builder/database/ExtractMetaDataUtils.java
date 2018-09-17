@@ -977,6 +977,9 @@ public class ExtractMetaDataUtils {
                     }else if(EDatabaseTypeName.SYBASEASE.getDisplayName().equals(dbType) 
                             && EDatabaseVersion4Drivers.SYBASEIQ_16.getVersionValue().equals(dbVersion)){
                         driverClassName = EDatabase4DriverClassName.SYBASEIQ_16.getDriverClass();
+                    }else if(EDatabaseTypeName.SYBASEASE.getDisplayName().equals(dbType) 
+                            && EDatabaseVersion4Drivers.SYBASEIQ_16_SA.getVersionValue().equals(dbVersion)){
+                        driverClassName = EDatabase4DriverClassName.SYBASEIQ_16_SA.getDriverClass();
                     }
                 }
             } else {

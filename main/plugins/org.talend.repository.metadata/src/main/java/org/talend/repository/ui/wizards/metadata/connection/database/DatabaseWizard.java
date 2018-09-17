@@ -490,6 +490,10 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
                         && EDatabaseVersion4Drivers.SYBASEIQ_16.getVersionValue().equals(dbVersion)) {
                     driverClass = EDatabase4DriverClassName.SYBASEIQ_16.getDriverClass();
                 }
+                else if (EDatabaseTypeName.SYBASEASE.equals(dbType)
+                        && EDatabaseVersion4Drivers.SYBASEIQ_16_SA.getVersionValue().equals(dbVersion)) {
+                    driverClass = EDatabase4DriverClassName.SYBASEIQ_16_SA.getDriverClass();
+                }
                 dbConnection.setDriverClass(driverClass);
             }
         
