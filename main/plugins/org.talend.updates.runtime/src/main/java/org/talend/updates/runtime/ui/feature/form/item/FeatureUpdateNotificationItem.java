@@ -51,7 +51,7 @@ public class FeatureUpdateNotificationItem extends AbstractControlListItem<IFeat
     @Override
     protected void initControl(Composite panel) {
         super.initControl(panel);
-        notificationForm = new FeaturesUpdatesNotificationForm(panel, SWT.NONE, getRuntimeData(), getFeatureItem());
+        notificationForm = new FeaturesUpdatesNotificationForm(panel, SWT.NONE, getRuntimeData(), getFeatureItem(), true);
     }
 
     @Override

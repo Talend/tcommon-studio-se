@@ -19,7 +19,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -48,6 +47,7 @@ import org.talend.updates.runtime.ui.feature.form.item.FeatureListUpdateItem;
 import org.talend.updates.runtime.ui.feature.form.item.FeatureListViewer;
 import org.talend.updates.runtime.ui.feature.job.FeaturesCheckUpdateJob;
 import org.talend.updates.runtime.ui.feature.model.IFeatureItem;
+import org.talend.updates.runtime.ui.feature.model.Message;
 import org.talend.updates.runtime.ui.feature.model.impl.FeatureProgress;
 import org.talend.updates.runtime.ui.feature.model.impl.FeatureTitle;
 import org.talend.updates.runtime.ui.feature.model.impl.ModelAdapter;
@@ -262,7 +262,7 @@ public class FeaturesUpdatesForm extends AbstractFeatureForm {
     }
 
     private void doSearch() {
-        SearchOption searchOption = new SearchOption(Type.ALL, Category.ALL, "");
+        SearchOption searchOption = new SearchOption(Type.ALL, Category.ALL, ""); //$NON-NLS-1$
         searchOption.setPage(0);
         searchOption.setPageSize(6);
         doSearch(searchOption);
@@ -327,19 +327,18 @@ public class FeaturesUpdatesForm extends AbstractFeatureForm {
         boolean showTitleBar = true;
 
         String titleMsg = ""; //$NON-NLS-1$
+        Collection<Message> detailMessages = new ArrayList<>();
         if (featureItems.isEmpty()) {
             titleMsg = Messages.getString("ComponentsManager.form.updates.label.head.searchResult.empty"); //$NON-NLS-1$
         } else {
-            if (StringUtils.isBlank(searchOption.getKeyword())) {
-                titleMsg = Messages.getString("ComponentsManager.form.updates.label.head.featured"); //$NON-NLS-1$
-            } else {
-                showTitleBar = false;
-            }
+            titleMsg = Messages.getString("ComponentsManager.form.updates.label.head.featured"); //$NON-NLS-1$
+            detailMessages = getRuntimeData().getFeaturesManager().createWarnMessage();
         }
 
         if (showTitleBar) {
             FeatureTitle title = new FeatureTitle();
             title.setTitle(titleMsg);
+            title.setMessages(detailMessages);
             features.add(title);
         }
 

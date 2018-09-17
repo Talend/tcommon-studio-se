@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.updates.runtime.ui.feature.model;
 
+import java.util.Collection;
 
 /**
  * DOC cmeng  class global comment. Detailled comment
@@ -19,5 +20,7 @@ package org.talend.updates.runtime.ui.feature.model;
 public interface IFeatureUpdateNotification extends IFeatureItem {
 
     String getDescription();
+
+    Collection<Message> getMessages();
 
 }

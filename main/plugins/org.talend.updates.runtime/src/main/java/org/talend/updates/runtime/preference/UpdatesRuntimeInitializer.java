@@ -25,6 +25,8 @@ public class UpdatesRuntimeInitializer extends AbstractPreferenceInitializer {
     public void initializeDefaultPreferences() {
         UpdatesRuntimePreference preference = UpdatesRuntimePreference.getInstance();
         preference.setDefault(UpdatesRuntimePreferenceConstants.LAST_CHECK_UPDATE_TIME, "");
+        preference.setInt(UpdatesRuntimePreferenceConstants.CHECK_UPDATE_PER_DAYS, 2, true);
+        preference.setBoolean(UpdatesRuntimePreferenceConstants.AUTO_CHECK_UPDATE, true, true);
     }
 
 }

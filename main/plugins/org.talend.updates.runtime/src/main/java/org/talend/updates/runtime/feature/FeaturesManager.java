@@ -44,6 +44,8 @@ import org.talend.updates.runtime.i18n.Messages;
 import org.talend.updates.runtime.model.ExtraFeature;
 import org.talend.updates.runtime.model.interfaces.IP2Feature;
 import org.talend.updates.runtime.service.ITaCoKitUpdateService;
+import org.talend.updates.runtime.ui.feature.model.EMessageType;
+import org.talend.updates.runtime.ui.feature.model.Message;
 import org.talend.updates.runtime.ui.feature.model.impl.FeatureUpdateNotification;
 import org.talend.updates.runtime.utils.PathUtils;
 
@@ -287,7 +289,24 @@ public class FeaturesManager {
         FeatureUpdateNotification update = new FeatureUpdateNotification();
         update.setTitle(Messages.getString("ComponentsManager.form.showUpdate.label.title")); //$NON-NLS-1$
         update.setDescription(Messages.getString("ComponentsManager.form.showUpdate.label.description")); //$NON-NLS-1$
+        update.setMessages(createWarnMessage());
         return update;
+    }
+
+    public Collection<Message> createWarnMessage() {
+        Collection<Message> messages = new ArrayList<>();
+
+        Message cantRemoveMessage = new Message();
+        cantRemoveMessage.setType(EMessageType.WARN);
+        cantRemoveMessage.setMessage(Messages.getString("ComponentsManager.form.warn.cantRemove")); //$NON-NLS-1$
+        messages.add(cantRemoveMessage);
+
+        Message autoShareMessage = new Message();
+        autoShareMessage.setType(EMessageType.WARN);
+        autoShareMessage.setMessage(Messages.getString("ComponentsManager.form.warn.autoShare")); //$NON-NLS-1$
+        messages.add(autoShareMessage);
+
+        return messages;
     }
 
     private ExtraFeaturesUpdatesFactory getExtraFeatureFactory() {

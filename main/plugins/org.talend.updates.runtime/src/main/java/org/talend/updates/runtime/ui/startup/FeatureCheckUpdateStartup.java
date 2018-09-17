@@ -91,8 +91,11 @@ public class FeatureCheckUpdateStartup implements IStartup {
             return true;
         }
         try {
-            Date lastCheckUpdateTime = UpdatesRuntimePreference.getInstance()
-                    .getDate(UpdatesRuntimePreferenceConstants.LAST_CHECK_UPDATE_TIME);
+            UpdatesRuntimePreference preference = UpdatesRuntimePreference.getInstance();
+            if (!preference.getBoolean(UpdatesRuntimePreferenceConstants.AUTO_CHECK_UPDATE, false)) {
+                return false;
+            }
+            Date lastCheckUpdateTime = preference.getDate(UpdatesRuntimePreferenceConstants.LAST_CHECK_UPDATE_TIME);
             if (lastCheckUpdateTime == null) {
                 return true;
             }
@@ -100,7 +103,8 @@ public class FeatureCheckUpdateStartup implements IStartup {
             LocalDate currentLocalDate = Calendar.getInstance().getTime().toInstant().atZone(ZoneId.systemDefault())
                     .toLocalDate();
             long days = ChronoUnit.DAYS.between(lastLocalDate, currentLocalDate);
-            if (14 < days) {
+            final int perDays = preference.getInt(UpdatesRuntimePreferenceConstants.CHECK_UPDATE_PER_DAYS, false);
+            if (perDays < days) {
                 return true;
             }
         } catch (Exception e) {

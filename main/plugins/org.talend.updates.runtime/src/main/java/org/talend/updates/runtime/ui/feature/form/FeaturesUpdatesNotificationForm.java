@@ -12,6 +12,8 @@
 // ============================================================================
 package org.talend.updates.runtime.ui.feature.form;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -27,6 +29,7 @@ import org.eclipse.swt.accessibility.ACC;
 import org.eclipse.swt.accessibility.AccessibleControlAdapter;
 import org.eclipse.swt.accessibility.AccessibleControlEvent;
 import org.eclipse.swt.custom.StackLayout;
+import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -52,7 +55,10 @@ import org.talend.updates.runtime.EUpdatesImage;
 import org.talend.updates.runtime.feature.ImageFactory;
 import org.talend.updates.runtime.i18n.Messages;
 import org.talend.updates.runtime.model.ExtraFeature;
+import org.talend.updates.runtime.preference.UpdatesRuntimePreference;
+import org.talend.updates.runtime.preference.UpdatesRuntimePreferenceConstants;
 import org.talend.updates.runtime.ui.feature.model.IFeatureUpdateNotification;
+import org.talend.updates.runtime.ui.feature.model.Message;
 import org.talend.updates.runtime.ui.feature.model.runtime.FeaturesManagerRuntimeData;
 import org.talend.updates.runtime.ui.util.UIUtils;
 
@@ -71,15 +77,17 @@ public class FeaturesUpdatesNotificationForm extends Composite {
     /**
      * used to center the image
      */
-    private Label verticalLine;
+    private Label verticalImageBaseLine;
 
     private Label horizonLine;
 
     private StyledText descText;
 
-    private Button installUpdatesButton;
+    private Button dontShownAgainButton;
 
     private Button showUpdatesButton;
+
+    private Button cancelButton;
 
     private Image compImage;
 
@@ -97,11 +105,14 @@ public class FeaturesUpdatesNotificationForm extends Composite {
 
     private boolean isExecuting = false;
 
+    private boolean isEmbeded = false;
+
     public FeaturesUpdatesNotificationForm(Composite parent, int style, FeaturesManagerRuntimeData runtimeData,
-            IFeatureUpdateNotification update) {
+            IFeatureUpdateNotification update, boolean isEmbeded) {
         super(parent, style);
         this.runtimeData = runtimeData;
         this.update = update;
+        this.isEmbeded = isEmbeded;
         init();
     }
 
@@ -134,7 +145,7 @@ public class FeaturesUpdatesNotificationForm extends Composite {
     }
 
     protected void initControl(Composite panel) {
-        verticalLine = new Label(panel, SWT.NONE);
+        verticalImageBaseLine = new Label(panel, SWT.NONE);
         // horizonLine = new Label(panel, SWT.SEPARATOR | SWT.HORIZONTAL);
         horizonLine = new Label(panel, SWT.HORIZONTAL);
         imageLabel = new Label(panel, SWT.CENTER);
@@ -170,15 +181,23 @@ public class FeaturesUpdatesNotificationForm extends Composite {
         progressBar.attachToCancelComponent(null);
         progressBar.setBackground(getBackgroundColor());
 
-        installUpdatesButton = new Button(panel, SWT.NONE);
-        installUpdatesButton.setText(Messages.getString("ComponentsManager.form.showUpdate.label.button.updateNow")); //$NON-NLS-1$
-        installUpdatesButton.setFont(getInstallButtonFont());
-        installUpdatesButton.setBackground(getBackgroundColor());
+        if (!isEmbeded()) {
+            cancelButton = new Button(panel, SWT.NONE);
+            cancelButton.setText(Messages.getString("ComponentsManager.form.showUpdate.label.button.cancel")); //$NON-NLS-1$
+            cancelButton.setFont(getInstallButtonFont());
+            cancelButton.setBackground(getBackgroundColor());
+
+            dontShownAgainButton = new Button(panel, SWT.CHECK);
+            dontShownAgainButton.setText(Messages.getString("ComponentsManager.form.showUpdate.label.button.dontShowAgain")); //$NON-NLS-1$
+            dontShownAgainButton.setFont(getInstallButtonFont());
+            dontShownAgainButton.setBackground(getBackgroundColor());
+        }
 
         showUpdatesButton = new Button(panel, SWT.NONE);
         showUpdatesButton.setText(Messages.getString("ComponentsManager.form.showUpdate.label.button.showUpdates")); //$NON-NLS-1$
         showUpdatesButton.setFont(getInstallButtonFont());
         showUpdatesButton.setBackground(getBackgroundColor());
+
     }
 
     protected void layoutControl() {
@@ -198,11 +217,11 @@ public class FeaturesUpdatesNotificationForm extends Composite {
         formData.bottom = new FormAttachment(contentPanel, 0, SWT.BOTTOM);
         formData.left = new FormAttachment(0, 0);
         formData.right = new FormAttachment(0, 0);
-        verticalLine.setLayoutData(formData);
+        verticalImageBaseLine.setLayoutData(formData);
 
         formData = new FormData();
         formData.left = new FormAttachment(0, horizonAlignWidth);
-        formData.top = new FormAttachment(verticalLine, 0, SWT.CENTER);
+        formData.top = new FormAttachment(verticalImageBaseLine, 0, SWT.CENTER);
         Point imageSize = getImageSize();
         formData.height = imageSize.y;
         formData.width = imageSize.x;
@@ -218,30 +237,42 @@ public class FeaturesUpdatesNotificationForm extends Composite {
         formData.top = new FormAttachment(titleLabel, verticalAlignHeight, SWT.BOTTOM);
         formData.left = new FormAttachment(titleLabel, 0, SWT.LEFT);
         formData.right = new FormAttachment(100, 0);
-        formData.bottom = new FormAttachment(installUpdatesButton, -1 * verticalAlignHeight, SWT.TOP);
+        formData.bottom = new FormAttachment(showUpdatesButton, -1 * verticalAlignHeight, SWT.TOP);
         contentPanel.setLayoutData(formData);
 
-        int buttonWidth = 0;
-        installUpdatesButton.pack();
-        showUpdatesButton.pack();
-        Point installBtnSize = installUpdatesButton.getSize();
-        Point showBtnSize = showUpdatesButton.getSize();
-        if (installBtnSize.x < showBtnSize.x) {
-            buttonWidth = showBtnSize.x;
+        if (isEmbeded()) {
+            formData = new FormData();
+            formData.right = new FormAttachment(100, -1 * horizonAlignWidth);
+            formData.bottom = new FormAttachment(horizonLine, -1 * verticalAlignHeight, SWT.TOP);
+            showUpdatesButton.setLayoutData(formData);
         } else {
-            buttonWidth = installBtnSize.x;
+            formData = new FormData();
+            formData.top = new FormAttachment(showUpdatesButton, 0, SWT.CENTER);
+            formData.left = new FormAttachment(0, horizonAlignWidth);
+            dontShownAgainButton.setLayoutData(formData);
+
+            int buttonWidth = 0;
+            cancelButton.pack();
+            showUpdatesButton.pack();
+            Point installBtnSize = cancelButton.getSize();
+            Point showBtnSize = showUpdatesButton.getSize();
+            if (installBtnSize.x < showBtnSize.x) {
+                buttonWidth = showBtnSize.x;
+            } else {
+                buttonWidth = installBtnSize.x;
+            }
+            buttonWidth = buttonWidth + horizonAlignWidth;
+            formData = new FormData();
+            formData.right = new FormAttachment(100, -1 * horizonAlignWidth);
+            formData.bottom = new FormAttachment(horizonLine, -1 * verticalAlignHeight, SWT.TOP);
+            formData.width = buttonWidth;
+            cancelButton.setLayoutData(formData);
+            formData = new FormData();
+            formData.right = new FormAttachment(cancelButton, -1 * horizonAlignWidth, SWT.LEFT);
+            formData.bottom = new FormAttachment(cancelButton, 0, SWT.CENTER);
+            formData.width = buttonWidth;
+            showUpdatesButton.setLayoutData(formData);
         }
-        buttonWidth = buttonWidth + horizonAlignWidth;
-        formData = new FormData();
-        formData.right = new FormAttachment(100, -1 * horizonAlignWidth);
-        formData.bottom = new FormAttachment(horizonLine, -1 * verticalAlignHeight, SWT.TOP);
-        formData.width = buttonWidth;
-        installUpdatesButton.setLayoutData(formData);
-        formData = new FormData();
-        formData.right = new FormAttachment(installUpdatesButton, -1 * horizonAlignWidth, SWT.LEFT);
-        formData.bottom = new FormAttachment(installUpdatesButton, 0, SWT.CENTER);
-        formData.width = buttonWidth;
-        showUpdatesButton.setLayoutData(formData);
     }
 
     protected void initData() {
@@ -249,13 +280,24 @@ public class FeaturesUpdatesNotificationForm extends Composite {
     }
 
     protected void addListeners() {
-        installUpdatesButton.addSelectionListener(new SelectionAdapter() {
+        if (dontShownAgainButton != null) {
+            dontShownAgainButton.addSelectionListener(new SelectionAdapter() {
 
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                onInstallUpdatesButtonClicked(e);
-            }
-        });
+                @Override
+                public void widgetSelected(SelectionEvent e) {
+                    onDontShowAgainButtonClicked(e);
+                }
+            });
+        }
+        if (cancelButton != null) {
+            cancelButton.addSelectionListener(new SelectionAdapter() {
+
+                @Override
+                public void widgetSelected(SelectionEvent e) {
+                    onCancelButtonClicked(e);
+                }
+            });
+        }
         showUpdatesButton.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -268,12 +310,38 @@ public class FeaturesUpdatesNotificationForm extends Composite {
     private void loadData() {
         stackLayout.topControl = descText;
         compImageLock = new Object();
+        if (dontShownAgainButton != null) {
+            dontShownAgainButton.setSelection(!UpdatesRuntimePreference.getInstance()
+                    .getBoolean(UpdatesRuntimePreferenceConstants.AUTO_CHECK_UPDATE, false));
+        }
         final IFeatureUpdateNotification cd = getUpdate();
         if (cd != null) {
             titleLabel.setText(cd.getTitle());
-            descText.setText(cd.getDescription());
+            updateDescText(cd);
             loadImage(cd);
         }
+    }
+
+    @SuppressWarnings("nls")
+    private void updateDescText(IFeatureUpdateNotification cd) {
+        if (cd == null) {
+            return;
+        }
+        StringBuffer strBuff = new StringBuffer();
+        strBuff.append(cd.getDescription());
+        Collection<StyleRange> styleRanges = new ArrayList<>();
+        if (!isEmbeded()) {
+            Collection<Message> messages = cd.getMessages();
+            if (messages != null && !messages.isEmpty()) {
+                strBuff.append("\n");
+                for (Message msg : messages) {
+                    strBuff.append("\n");
+                    UIUtils.appendMessage(strBuff, styleRanges, msg);
+                }
+            }
+        }
+        descText.setText(strBuff.toString());
+        descText.setStyleRanges(styleRanges.toArray(new StyleRange[0]));
     }
 
     private void setImage(Image image) {
@@ -344,8 +412,14 @@ public class FeaturesUpdatesNotificationForm extends Composite {
         this.contentPanel.layout();
     }
 
+    private boolean isEmbeded() {
+        return this.isEmbeded;
+    }
+
     public void enableButtons(boolean enable) {
-        this.installUpdatesButton.setEnabled(enable);
+        if (this.cancelButton != null) {
+            this.cancelButton.setEnabled(enable);
+        }
         this.showUpdatesButton.setEnabled(enable);
     }
 
@@ -357,8 +431,15 @@ public class FeaturesUpdatesNotificationForm extends Composite {
         getRuntimeData().getUpdateNotificationButtonListener().onShowUpdatesButtonClicked(e, this);
     }
 
-    private void onInstallUpdatesButtonClicked(SelectionEvent e) {
-        getRuntimeData().getUpdateNotificationButtonListener().onInstallUpdatesButtonClicked(e, this);
+    private void onCancelButtonClicked(SelectionEvent e) {
+        getRuntimeData().getUpdateNotificationButtonListener().close();
+    }
+
+    private void onDontShowAgainButtonClicked(SelectionEvent e) {
+        if (dontShownAgainButton != null) {
+            UpdatesRuntimePreference.getInstance().setBoolean(UpdatesRuntimePreferenceConstants.AUTO_CHECK_UPDATE,
+                    !this.dontShownAgainButton.getSelection(), false);
+        }
     }
 
     protected IFeatureUpdateNotification getUpdate() {

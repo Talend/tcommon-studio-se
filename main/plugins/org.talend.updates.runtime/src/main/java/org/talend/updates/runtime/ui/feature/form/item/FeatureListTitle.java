@@ -12,17 +12,27 @@
 // ============================================================================
 package org.talend.updates.runtime.ui.feature.form.item;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.accessibility.ACC;
+import org.eclipse.swt.accessibility.AccessibleControlAdapter;
+import org.eclipse.swt.accessibility.AccessibleControlEvent;
+import org.eclipse.swt.custom.StyleRange;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.forms.FormColors;
 import org.eclipse.ui.forms.IFormColors;
 import org.talend.commons.ui.swt.composites.GradientCanvas;
 import org.talend.updates.runtime.ui.feature.model.IFeatureTitle;
+import org.talend.updates.runtime.ui.feature.model.Message;
 import org.talend.updates.runtime.ui.feature.model.runtime.FeaturesManagerRuntimeData;
 import org.talend.updates.runtime.ui.util.UIUtils;
 
@@ -35,6 +45,8 @@ public class FeatureListTitle extends AbstractControlListItem<IFeatureTitle> {
     private Label verticalLine;
 
     private Label titleLabel;
+
+    private StyledText messageText;
 
     private GradientCanvas titleBackgroundPanel;
 
@@ -74,12 +86,25 @@ public class FeatureListTitle extends AbstractControlListItem<IFeatureTitle> {
 
         titleLabel = new Label(titleBackgroundPanel, SWT.NONE);
         titleLabel.setFont(getTitleFont());
+
+        messageText = new StyledText(titleBackgroundPanel, SWT.RIGHT | SWT.READ_ONLY | SWT.WRAP | SWT.MULTI | SWT.NO_FOCUS);
+        messageText.setCursor(Display.getDefault().getSystemCursor(SWT.CURSOR_ARROW));
+        messageText.setEditable(false);
+        messageText.getAccessible().addAccessibleControlListener(new AccessibleControlAdapter() {
+
+            @Override
+            public void getRole(AccessibleControlEvent e) {
+                e.detail = ACC.ROLE_LABEL;
+            }
+        });
     }
 
     @Override
     protected void layoutControl() {
         super.layoutControl();
         titleBackgroundPanel.setLayout(new FormLayout());
+
+        final int horizonAlignWidth = getHorizonAlignWidth();
 
         FormData formData = null;
 
@@ -102,12 +127,40 @@ public class FeatureListTitle extends AbstractControlListItem<IFeatureTitle> {
         formData.left = new FormAttachment(verticalLine, 10, SWT.RIGHT);
         titleLabel.setLayoutData(formData);
 
+        formData = new FormData();
+        formData.bottom = new FormAttachment(titleLabel, 0, SWT.BOTTOM);
+        formData.left = new FormAttachment(titleLabel, horizonAlignWidth, SWT.RIGHT);
+        formData.right = new FormAttachment(100, -10);
+        messageText.setLayoutData(formData);
     }
 
     @Override
     protected void initData() {
         super.initData();
         titleLabel.setText(getData().getTitle());
+        updateMessage();
+    }
+
+    @SuppressWarnings("nls")
+    private void updateMessage() {
+        IFeatureTitle featureTitle = getData();
+        if (featureTitle == null) {
+            return;
+        }
+        Collection<Message> messages = featureTitle.getMessages();
+        if (messages == null || messages.isEmpty()) {
+            return;
+        }
+        StringBuffer strBuff = new StringBuffer();
+        Collection<StyleRange> styles = new ArrayList<>();
+        for (Message message : messages) {
+            if (0 < strBuff.length()) {
+                strBuff.append("\n");
+            }
+            UIUtils.appendMessage(strBuff, styles, message);
+        }
+        messageText.setText(strBuff.toString());
+        messageText.setStyleRanges(styles.toArray(new StyleRange[0]));
     }
 
 }

@@ -98,7 +98,8 @@ public abstract class AbstractFeatureListInfoItem<T extends IFeatureInfo> extend
             cPanel.setLayout(layout);
 
             FormData layoutData = new FormData();
-            layoutData.height = 150;
+            // layoutData.height = 150;
+            layoutData.height = 120;
             layoutData.left = new FormAttachment(0, 0);
             layoutData.right = new FormAttachment(100, 0);
             cPanel.setLayoutData(layoutData);
@@ -245,7 +246,8 @@ public abstract class AbstractFeatureListInfoItem<T extends IFeatureInfo> extend
     }
 
     protected Point getImageSize() {
-        return new Point(74, 74);
+        // return new Point(74, 74);
+        return new Point(32, 32);
     }
 
     protected void loadImage(final T cd) {

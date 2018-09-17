@@ -12,12 +12,26 @@
 // ============================================================================
 package org.talend.updates.runtime.ui.feature.model.impl;
 
+import java.util.Collection;
+
 import org.talend.updates.runtime.ui.feature.model.IFeatureTitle;
+import org.talend.updates.runtime.ui.feature.model.Message;
 
 
 /**
  * DOC cmeng  class global comment. Detailled comment
  */
 public class FeatureTitle extends AbstractFeatureItem implements IFeatureTitle {
+
+    Collection<Message> messages;
+
+    public void setMessages(Collection<Message> messages) {
+        this.messages = messages;
+    }
+
+    @Override
+    public Collection<Message> getMessages() {
+        return messages;
+    }
 
 }

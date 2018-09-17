@@ -76,6 +76,38 @@ public class UpdatesRuntimePreference {
         }
     }
 
+    public boolean getBoolean(String key, boolean fromDefault) {
+        if (fromDefault) {
+            return preferenceStore.getDefaultBoolean(key);
+        } else {
+            return preferenceStore.getBoolean(key);
+        }
+    }
+
+    public void setBoolean(String key, boolean value, boolean setDefault) {
+        if (setDefault) {
+            preferenceStore.setDefault(key, value);
+        } else {
+            preferenceStore.setValue(key, value);
+        }
+    }
+
+    public int getInt(String key, boolean fromDefault) {
+        if (fromDefault) {
+            return preferenceStore.getDefaultInt(key);
+        } else {
+            return preferenceStore.getInt(key);
+        }
+    }
+
+    public void setInt(String key, int value, boolean setDefault) {
+        if (setDefault) {
+            preferenceStore.setDefault(key, value);
+        } else {
+            preferenceStore.setValue(key, value);
+        }
+    }
+
     public Date getDate(String key) throws Exception {
         String str = getValue(key);
         if (StringUtils.isBlank(str)) {

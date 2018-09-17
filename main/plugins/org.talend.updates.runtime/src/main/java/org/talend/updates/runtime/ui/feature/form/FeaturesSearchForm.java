@@ -61,6 +61,7 @@ import org.talend.updates.runtime.ui.feature.job.FeaturesCheckUpdateJob;
 import org.talend.updates.runtime.ui.feature.model.IFeatureItem;
 import org.talend.updates.runtime.ui.feature.model.IFeatureNavigator;
 import org.talend.updates.runtime.ui.feature.model.IFeatureNavigator.INavigatorCallBack;
+import org.talend.updates.runtime.ui.feature.model.Message;
 import org.talend.updates.runtime.ui.feature.model.impl.FeatureNavigator;
 import org.talend.updates.runtime.ui.feature.model.impl.FeatureProgress;
 import org.talend.updates.runtime.ui.feature.model.impl.FeatureTitle;
@@ -316,14 +317,12 @@ public class FeaturesSearchForm extends AbstractFeatureForm {
         boolean showTitleBar = true;
 
         String titleMsg = ""; //$NON-NLS-1$
+        Collection<Message> detailMessages = new ArrayList<>();
         if (featureItems.isEmpty()) {
             titleMsg = Messages.getString("ComponentsManager.form.install.label.head.searchResult.empty"); //$NON-NLS-1$
         } else {
-            if (StringUtils.isBlank(searchOption.getKeyword())) {
-                titleMsg = Messages.getString("ComponentsManager.form.install.label.head.featured"); //$NON-NLS-1$
-            } else {
-                showTitleBar = false;
-            }
+            titleMsg = Messages.getString("ComponentsManager.form.install.label.head.featured"); //$NON-NLS-1$
+            detailMessages = getRuntimeData().getFeaturesManager().createWarnMessage();
         }
 
         if (searchOption.getType() == Type.ALL && searchOption.getCategory() == Category.ALL
@@ -365,6 +364,7 @@ public class FeaturesSearchForm extends AbstractFeatureForm {
         if (showTitleBar) {
             FeatureTitle title = new FeatureTitle();
             title.setTitle(titleMsg);
+            title.setMessages(detailMessages);
             features.add(title);
         }
 

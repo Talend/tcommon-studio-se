@@ -136,4 +136,5 @@ public abstract class AbstractControlListItem<T> extends ControlListItem<T> {
         }
         return fontRegistry.get(installBtnFontKey);
     }
+
 }

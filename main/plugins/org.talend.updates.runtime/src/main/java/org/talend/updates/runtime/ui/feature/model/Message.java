@@ -10,19 +10,30 @@
 // 9 rue Pages 92150 Suresnes, France
 //
 // ============================================================================
-package org.talend.updates.runtime.preference;
-
+package org.talend.updates.runtime.ui.feature.model;
 
 /**
  * DOC cmeng  class global comment. Detailled comment
  */
-@SuppressWarnings("nls")
-public class UpdatesRuntimePreferenceConstants {
+public class Message {
 
-    public static final String LAST_CHECK_UPDATE_TIME = "lastCheckUpdateTime";
+    private EMessageType type;
 
-    public static final String CHECK_UPDATE_PER_DAYS = "checkUpdatePerDays";
+    private String message;
 
-    public static final String AUTO_CHECK_UPDATE = "autoCheckUpdate";
+    public EMessageType getType() {
+        return this.type;
+    }
 
+    public void setType(EMessageType type) {
+        this.type = type;
+    }
+
+    public String getMessage() {
+        return this.message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }

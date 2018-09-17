@@ -56,7 +56,7 @@ public class FeaturesUpdateNotificationDialog extends Dialog {
         Composite panel = new Composite(parent, SWT.NONE);
         panel.setLayout(new FillLayout());
         notificationForm = new FeaturesUpdatesNotificationForm(panel, SWT.NONE, runtimeData,
-                runtimeData.getFeaturesManager().createUpdateNotificationItem()) {
+                runtimeData.getFeaturesManager().createUpdateNotificationItem(), false) {
             @Override
             protected Color getBackgroundColor() {
                 return FeaturesUpdateNotificationDialog.this.getBackgroundColor();
