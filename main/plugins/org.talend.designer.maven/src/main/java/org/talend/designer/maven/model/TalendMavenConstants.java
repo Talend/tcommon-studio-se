@@ -122,6 +122,7 @@ public interface TalendMavenConstants {
 
     static final String PROFILE_DOCKER = "docker";
 
+    static final String SIGNER_MAVEN_PLUGIN_NAME= "org.talend.ci:signer-maven-plugin";
     /**
      * argments
      */
