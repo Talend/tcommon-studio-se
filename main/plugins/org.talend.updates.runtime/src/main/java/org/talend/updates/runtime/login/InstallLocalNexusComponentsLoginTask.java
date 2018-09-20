@@ -55,7 +55,7 @@ public class InstallLocalNexusComponentsLoginTask extends AbstractLoginTask {
             ComponentNexusP2ExtraFeature feature = new ComponentNexusP2ExtraFeature(b) {
 
                 @Override
-                protected void syncComponentsToInstalledFolder(IProgressMonitor progress, File downloadedCompFile) {
+                public void syncComponentsToInstalledFolder(IProgressMonitor progress, File downloadedCompFile) {
                     // already shared, no need deploy again
                     // super.syncComponentsToInstalledFolder(progress, installedCompFile);
 

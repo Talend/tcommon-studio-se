@@ -36,7 +36,7 @@ public interface ITaCoKitUpdateService extends IService {
 
     ITaCoKitCarFeature generateExtraFeature(ComponentIndexBean indexBean, IProgressMonitor monitor) throws Exception;
 
-    ICarInstallationResult installCars(Collection<File> files, IProgressMonitor monitor) throws Exception;
+    ICarInstallationResult installCars(Collection<File> files, boolean share, IProgressMonitor monitor) throws Exception;
 
     ICarInstallationResult installCarFeatures(Collection<ITaCoKitCarFeature> features, IProgressMonitor monitor) throws Exception;
 

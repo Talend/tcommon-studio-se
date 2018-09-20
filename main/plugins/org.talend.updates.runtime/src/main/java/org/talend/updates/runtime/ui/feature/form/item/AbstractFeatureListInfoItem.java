@@ -390,7 +390,15 @@ public abstract class AbstractFeatureListInfoItem<T extends IFeatureInfo> extend
 
     public void afterInstalled(IProgressMonitor monitor) {
         P2Manager.getInstance().clear();
-        checkInstallation();
+        InstallationStatus installationStatus = checkInstallation();
+        if (installationStatus.getStatus().isInstalled()) {
+            try {
+                ExtraFeature feature = getFeatureItem().getFeature();
+                feature.syncComponentsToInstalledFolder(monitor, feature.getStorage().getFeatureFile(monitor));
+            } catch (Exception e) {
+                ExceptionHandler.process(e);
+            }
+        }
     }
 
     protected void installFeature(IProgressMonitor monitor, final IFeatureItem featureItem) {
@@ -455,7 +463,7 @@ public abstract class AbstractFeatureListInfoItem<T extends IFeatureInfo> extend
         }
     }
 
-    protected void checkInstallation() {
+    protected InstallationStatus checkInstallation() {
         ExtraFeature feature = getFeatureItem().getFeature();
         InstallationStatus result = null;
         try {
@@ -479,6 +487,7 @@ public abstract class AbstractFeatureListInfoItem<T extends IFeatureInfo> extend
             }
         });
 
+        return result;
     }
 
     protected void updateVersion(InstallationStatus installationStatus) {

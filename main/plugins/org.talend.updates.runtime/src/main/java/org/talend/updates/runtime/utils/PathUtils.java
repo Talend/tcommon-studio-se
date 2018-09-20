@@ -197,6 +197,19 @@ public class PathUtils {
         return typeList;
     }
 
+    public static String convert2StringTypes(Collection<Type> types) {
+        String stringTypes = null;
+        if (types == null || types.isEmpty()) {
+            return stringTypes;
+        }
+        StringBuilder builder = new StringBuilder();
+        for (Type type : types) {
+            builder.append(type.getKeyWord()).append(",");
+        }
+        stringTypes = StringUtils.removeEnd(builder.toString(), ",");
+        return stringTypes;
+    }
+
     public static Collection<Category> convert2Categories(String categories) {
         Collection<Category> categoryList = new ArrayList<>();
         if (StringUtils.isNotBlank(categories)) {

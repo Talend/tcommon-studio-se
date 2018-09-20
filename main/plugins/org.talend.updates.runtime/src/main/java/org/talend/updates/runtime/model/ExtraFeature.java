@@ -12,6 +12,8 @@
 // ============================================================================
 package org.talend.updates.runtime.model;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.util.Collection;
 import java.util.Collections;
@@ -20,11 +22,17 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.swt.graphics.Image;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.updates.runtime.feature.model.Category;
 import org.talend.updates.runtime.feature.model.Type;
 import org.talend.updates.runtime.model.InstallationStatus.Status;
+import org.talend.updates.runtime.nexus.component.ComponentsDeploymentManager;
 import org.talend.updates.runtime.storage.IFeatureStorage;
+import org.talend.updates.runtime.utils.PathUtils;
+import org.talend.utils.io.FilesUtils;
 
 /**
  * created by sgandon on 24 sept. 2013 Interface used for element to be installed after the Studio is launched.
@@ -180,6 +188,41 @@ public interface ExtraFeature extends Comparable<Object> {
         // nothing to do
     }
 
+    default public void syncComponentsToInstalledFolder(IProgressMonitor progress, File downloadedCompFile) {
+        // try to move install success to installed folder
+        if (progress == null) {
+            progress = new NullProgressMonitor();
+        }
+        try {
+            if (progress.isCanceled()) {
+                throw new OperationCanceledException();
+            }
+            final File installedComponentFolder = PathUtils.getComponentsInstalledFolder();
+            final File installedComponentFile = new File(installedComponentFolder, downloadedCompFile.getName());
+            if (!installedComponentFile.equals(downloadedCompFile)) { // not in same folder
+                FilesUtils.copyFile(downloadedCompFile, installedComponentFile);
+                downloadedCompFile.delete();
+                progress.worked(1);
+            }
+
+            shareComponent(progress, installedComponentFile);
+        } catch (IOException e) {
+            ExceptionHandler.process(e);
+        }
+    }
+
+    default void shareComponent(IProgressMonitor progress, File installedCompFile) {
+        if (progress.isCanceled()) {
+            throw new OperationCanceledException();
+        }
+        try {
+            new ComponentsDeploymentManager().deployComponentsToArtifactRepository(progress, installedCompFile);
+        } catch (IOException e) {
+            // don't block other, so catch the exception
+            ExceptionHandler.process(e);
+        }
+    }
+
     @Override
     default int compareTo(Object o) {
         if (o instanceof ExtraFeature) {
@@ -192,4 +235,5 @@ public interface ExtraFeature extends Comparable<Object> {
 
         return 0;
     }
+
 }

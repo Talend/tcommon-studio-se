@@ -27,4 +27,8 @@ public interface ITaCoKitCarFeature extends IComponentFeature, Comparable<Object
 
     boolean isAutoReloadAfterInstalled();
 
+    boolean isShareEnable();
+
+    void setShareEnable(boolean share);
+
 }

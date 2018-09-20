@@ -263,7 +263,7 @@ public class LocalComponentsInstallComponentTest {
                         }
 
                         @Override
-                        protected void syncComponentsToLocalNexus(IProgressMonitor progress, File installedCompFile) {
+                        public void shareComponent(IProgressMonitor progress, File installedCompFile) {
 
                             File sharedCompFile = new File(installedFolder, installedCompFile.getName());
                             try {

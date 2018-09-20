@@ -36,7 +36,7 @@ public class TaCoKitCarUtils {
                             ITaCoKitUpdateService.class.getSimpleName()));
                 }
                 List<File> fileList = Arrays.asList(files);
-                return tckUpdateService.installCars(fileList, progress);
+                return tckUpdateService.installCars(fileList, false, progress);
             }
         }
         return null;

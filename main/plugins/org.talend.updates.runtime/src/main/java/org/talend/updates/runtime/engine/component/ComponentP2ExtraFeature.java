@@ -26,7 +26,6 @@ import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.equinox.p2.core.IProvisioningAgent;
@@ -56,7 +55,6 @@ import org.talend.updates.runtime.model.P2ExtraFeatureException;
 import org.talend.updates.runtime.model.UpdateSiteLocationType;
 import org.talend.updates.runtime.model.interfaces.IP2ComponentFeature;
 import org.talend.updates.runtime.nexus.component.ComponentIndexBean;
-import org.talend.updates.runtime.nexus.component.ComponentsDeploymentManager;
 import org.talend.updates.runtime.storage.AbstractFeatureStorage;
 import org.talend.updates.runtime.storage.IFeatureStorage;
 import org.talend.updates.runtime.utils.OsgiBundleInstaller;
@@ -270,26 +268,6 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature implements IP2Compon
         }
     }
 
-    protected void syncComponentsToInstalledFolder(IProgressMonitor progress, File downloadedCompFile) {
-        // try to move install success to installed folder
-        try {
-            if (progress.isCanceled()) {
-                throw new OperationCanceledException();
-            }
-            final File installedComponentFolder = PathUtils.getComponentsInstalledFolder();
-            final File installedComponentFile = new File(installedComponentFolder, downloadedCompFile.getName());
-            if (!installedComponentFile.equals(downloadedCompFile)) { // not in same folder
-                FilesUtils.copyFile(downloadedCompFile, installedComponentFile);
-                downloadedCompFile.delete();
-                progress.worked(1);
-            }
-
-            syncComponentsToLocalNexus(progress, installedComponentFile);
-        } catch (IOException e) {
-            ExceptionHandler.process(e);
-        }
-    }
-
     protected void installAndStartComponent(File tempUpdateSiteFolder) {
         File tmpPluginsFolder = new File(tempUpdateSiteFolder, UpdatesHelper.FOLDER_PLUGINS);
         if (!tmpPluginsFolder.exists()) {
@@ -320,18 +298,6 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature implements IP2Compon
                 ExceptionHandler.process(e);
                 return; // no need install others
             }
-        }
-    }
-
-    protected void syncComponentsToLocalNexus(IProgressMonitor progress, File installedCompFile) {
-        if (progress.isCanceled()) {
-            throw new OperationCanceledException();
-        }
-        try {
-            new ComponentsDeploymentManager().deployComponentsToLocalNexus(progress, installedCompFile);
-        } catch (IOException e) {
-            // don't block other, so catch the exception
-            ExceptionHandler.process(e);
         }
     }
 

@@ -214,7 +214,7 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
                 return;
             }
             try {
-                ICarInstallationResult instResult = tckUpdateService.installCars(carFiles, new NullProgressMonitor());
+                ICarInstallationResult instResult = tckUpdateService.installCars(carFiles, true, new NullProgressMonitor());
                 msg.setNeedRestart(instResult.needRestart());
                 Map<File, IStatus> installedStatus = instResult.getInstalledStatus();
                 if (installedStatus != null && !installedStatus.isEmpty()) {
