@@ -60,4 +60,6 @@ public interface ICoreTisService extends IService {
     public void clearCustomLicensePathArg();
     
     public File getLicenseFile();
+    
+    public String generateSignerSessionId();
 }
