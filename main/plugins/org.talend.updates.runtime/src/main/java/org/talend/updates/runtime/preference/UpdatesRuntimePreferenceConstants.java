@@ -25,4 +25,8 @@ public class UpdatesRuntimePreferenceConstants {
 
     public static final String AUTO_CHECK_UPDATE = "autoCheckUpdate";
 
+    public static final String AUTO_SHARE_FEATURES = "autoShareFeatures";
+
+    public static final String SHOW_WARN_DIALOG_WHEN_INSTALLING_FEATURES = "showWarnDialogWhenInstallingFeatures";
+
 }

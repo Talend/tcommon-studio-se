@@ -38,6 +38,8 @@ import org.talend.commons.utils.VersionUtils;
 import org.talend.commons.utils.resource.FileExtensions;
 import org.talend.updates.runtime.feature.model.Category;
 import org.talend.updates.runtime.feature.model.Type;
+import org.talend.updates.runtime.model.InstallationStatus;
+import org.talend.updates.runtime.model.InstallationStatus.Status;
 
 /**
  * created by ycbai on 2017年5月23日 Detailled comment
@@ -276,6 +278,34 @@ public class PathUtils {
             }
         }
         return Version.createOSGi(major, minor, micro, classifier);
+    }
+
+    public static InstallationStatus getInstallationStatus(String installedLatestVersionStr, String installingVersionStr)
+            throws Exception {
+        Version installedLatestVersion = null;
+        if (StringUtils.isNotBlank(installedLatestVersionStr)) {
+            installedLatestVersion = convert2Version(installedLatestVersionStr);
+        } else {
+            InstallationStatus status = new InstallationStatus(Status.INSTALLABLE);
+            return status;
+        }
+        if (StringUtils.isNotBlank(installingVersionStr)) {
+            Version featVersion = PathUtils.convert2Version(installingVersionStr);
+            if (featVersion != null) {
+                if (featVersion.compareTo(installedLatestVersion) <= 0) {
+                    InstallationStatus status = new InstallationStatus(Status.INSTALLED);
+                    status.setInstalledVersion(installedLatestVersion.toString());
+                    return status;
+                } else {
+                    InstallationStatus status = new InstallationStatus(Status.UPDATABLE);
+                    status.setInstalledVersion(installedLatestVersion.toString());
+                    return status;
+                }
+            }
+        }
+        InstallationStatus status = new InstallationStatus(Status.INSTALLED);
+        status.setInstalledVersion(installedLatestVersion.toString());
+        return status;
     }
 
     @SuppressWarnings("nls")

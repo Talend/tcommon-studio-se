@@ -116,7 +116,8 @@ public class FeatureListUpdateItem extends AbstractFeatureListInfoItem<IFeatureU
     }
 
     @Override
-    protected void preInstall(IProgressMonitor monitor) {
+    protected void preInstall(IProgressMonitor monitor) throws Exception {
+        super.preInstall(monitor);
         if (!updateButton.isDisposed()) {
             Display.getDefault().syncExec(new Runnable() {
 

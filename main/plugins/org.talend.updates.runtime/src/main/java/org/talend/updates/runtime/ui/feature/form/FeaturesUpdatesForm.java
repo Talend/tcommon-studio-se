@@ -37,7 +37,6 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.ui.swt.listviewer.ControlListItem;
 import org.talend.updates.runtime.feature.FeaturesManager.SearchOption;
 import org.talend.updates.runtime.feature.FeaturesManager.SearchResult;
-import org.talend.updates.runtime.feature.ImageFactory;
 import org.talend.updates.runtime.feature.model.Category;
 import org.talend.updates.runtime.feature.model.Type;
 import org.talend.updates.runtime.i18n.Messages;
@@ -221,7 +220,14 @@ public class FeaturesUpdatesForm extends AbstractFeatureForm {
     }
 
     private void installSelectedItems(IProgressMonitor monitor) {
+        boolean firstShow = true;
         for (IFeatureItem featureItem : selectedItems) {
+            if (firstShow) {
+                firstShow = false;
+                getRuntimeData().setCheckWarnDialog(true);
+            } else {
+                getRuntimeData().setCheckWarnDialog(false);
+            }
             installFeature(monitor, featureItem);
         }
     }
@@ -332,7 +338,7 @@ public class FeaturesUpdatesForm extends AbstractFeatureForm {
             titleMsg = Messages.getString("ComponentsManager.form.updates.label.head.searchResult.empty"); //$NON-NLS-1$
         } else {
             titleMsg = Messages.getString("ComponentsManager.form.updates.label.head.featured"); //$NON-NLS-1$
-            detailMessages = getRuntimeData().getFeaturesManager().createWarnMessage();
+            detailMessages = getRuntimeData().getFeaturesManager().createDefaultMessage();
         }
 
         if (showTitleBar) {
@@ -369,15 +375,6 @@ public class FeaturesUpdatesForm extends AbstractFeatureForm {
         progressList.add(progress);
         featureListViewer.setInput(progressList);
         return progress;
-    }
-
-    private void clear() {
-        ImageFactory.getInstance().disposeFeatureImages();
-        clearThreadPool();
-    }
-
-    private void clearThreadPool() {
-        getRuntimeData().getFeaturesManager().clearUpdateThreadPool();
     }
 
     private void execute(Runnable run) {

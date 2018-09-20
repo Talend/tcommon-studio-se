@@ -24,6 +24,7 @@ import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.designer.maven.utils.PomUtil;
 import org.talend.updates.runtime.nexus.component.NexusComponentsTransport;
+import org.talend.updates.runtime.storage.AbstractFeatureStorage;
 import org.talend.updates.runtime.utils.PathUtils;
 import org.talend.utils.io.FilesUtils;
 

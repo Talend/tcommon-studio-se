@@ -56,7 +56,6 @@ import org.talend.updates.runtime.model.P2ExtraFeatureException;
 import org.talend.updates.runtime.model.UpdateSiteLocationType;
 import org.talend.updates.runtime.model.interfaces.IP2ComponentFeature;
 import org.talend.updates.runtime.nexus.component.ComponentIndexBean;
-import org.talend.updates.runtime.nexus.component.ComponentIndexManager;
 import org.talend.updates.runtime.nexus.component.ComponentsDeploymentManager;
 import org.talend.updates.runtime.utils.OsgiBundleInstaller;
 import org.talend.updates.runtime.utils.PathUtils;
@@ -67,8 +66,6 @@ import org.talend.utils.io.FilesUtils;
  *
  */
 public class ComponentP2ExtraFeature extends P2ExtraFeature implements IP2ComponentFeature {
-
-    private URI repositoryURI;
 
     private boolean isLogin;
 
@@ -87,8 +84,7 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature implements IP2Compon
     }
 
     public ComponentP2ExtraFeature(File componentZipFile) {
-        this(new ComponentIndexManager().create(componentZipFile));
-        this.repositoryURI = PathUtils.getP2RepURIFromCompFile(componentZipFile);
+        super(componentZipFile);
     }
 
     public ComponentP2ExtraFeature(String name, String version, String description, String mvnUri, String imageMvnUri,
@@ -204,14 +200,6 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature implements IP2Compon
             }
         }
         return Messages.createOkStatus("sucessfull.install.of.components", getP2IuId(), getVersion()); //$NON-NLS-1$
-    }
-
-    @Override
-    public URI getP2RepositoryURI() {
-        if (this.repositoryURI != null) {
-            return this.repositoryURI;
-        }
-        return super.getP2RepositoryURI();
     }
 
     @Override

@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.updates.runtime.feature.model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -23,25 +24,43 @@ import org.talend.updates.runtime.i18n.Messages;
  */
 public class Type {
 
-    public static final Type ALL = new Type(Messages.getString("FeaturesManager.Type.all"), ""); //$NON-NLS-1$ //$NON-NLS-2$
+    public static final Type ALL = new Type(Messages.getString("FeaturesManager.Type.all"), "", true, false); //$NON-NLS-1$ //$NON-NLS-2$
 
-    public static final Type P2 = new Type(Messages.getString("FeaturesManager.Type.p2"), "p2"); //$NON-NLS-1$ //$NON-NLS-2$
+    public static final Type P2 = new Type(Messages.getString("FeaturesManager.Type.p2"), "p2", false, false); //$NON-NLS-1$ //$NON-NLS-2$
 
-    public static final Type TCOMP = new Type(Messages.getString("FeaturesManager.Type.tcomp"), "tcomp"); //$NON-NLS-1$ //$NON-NLS-2$
+    public static final Type TCOMP = new Type(Messages.getString("FeaturesManager.Type.tcomp"), "tcomp", true, false); //$NON-NLS-1$ //$NON-NLS-2$
 
-    public static final Type TCOMP_V0 = new Type(Messages.getString("FeaturesManager.Type.tcompV0"), "tcompv0"); //$NON-NLS-1$ //$NON-NLS-2$
+    public static final Type TACOKIT_SDK = new Type(Messages.getString("FeaturesManager.Type.p2.tacokitSDK"), "tckSDK", true, //$NON-NLS-1$ //$NON-NLS-2$
+            true);
 
-    public static final Type TCOMP_V1 = new Type(Messages.getString("FeaturesManager.Type.tcompV1"), "tcompv1"); //$NON-NLS-1$ //$NON-NLS-2$
+    public static final Type P2_PATCH = new Type(Messages.getString("FeaturesManager.Type.p2.studioPatch"), "p2Patch", true, //$NON-NLS-1$ //$NON-NLS-2$
+            true);
 
-    private static final Collection<Type> types = Arrays.asList(ALL, P2, TCOMP, TCOMP_V0, TCOMP_V1);
+    public static final Type PLAIN_ZIP = new Type(Messages.getString("FeaturesManager.Type.plainZip"), "plainZip", false, true); //$NON-NLS-1$ //$NON-NLS-2$
+
+    public static final Type TCOMP_V0 = new Type(Messages.getString("FeaturesManager.Type.tcompV0"), "tcompv0", false, true); //$NON-NLS-1$ //$NON-NLS-2$
+
+    public static final Type TCOMP_V1 = new Type(Messages.getString("FeaturesManager.Type.tcompV1"), "tcompv1", false, true); //$NON-NLS-1$ //$NON-NLS-2$
+
+    private static final Collection<Type> types = Arrays.asList(ALL, P2, TCOMP, TCOMP_V0, TCOMP_V1, TACOKIT_SDK, P2_PATCH,
+            PLAIN_ZIP);
 
     private String keyword;
 
     private String label;
 
-    public Type(String label, String keyword) {
+    private boolean showLabel;
+
+    /**
+     * unique means that one types group can only contains one unique type
+     */
+    private boolean unique;
+
+    public Type(String label, String keyword, boolean showLabel, boolean unique) {
         this.label = label;
         this.keyword = keyword;
+        this.showLabel = showLabel;
+        this.unique = unique;
     }
 
     public String getLabel() {
@@ -50,6 +69,22 @@ public class Type {
 
     public String getKeyWord() {
         return this.keyword;
+    }
+
+    public boolean isShowLabel() {
+        return this.showLabel;
+    }
+
+    public void setShowLabel(boolean showLabel) {
+        this.showLabel = showLabel;
+    }
+
+    public boolean isUnique() {
+        return this.unique;
+    }
+
+    public void setUnique(boolean unique) {
+        this.unique = unique;
     }
 
     public static Type valueOf(String type) {
@@ -64,7 +99,17 @@ public class Type {
         return null;
     }
 
-    public static Collection<Type> getAllTypes() {
-        return types;
+    public static Collection<Type> getAllTypes(boolean checkVisible) {
+        Collection<Type> allTypes = new ArrayList<>();
+        for (Type type : types) {
+            if (checkVisible) {
+                if (type.isShowLabel()) {
+                    allTypes.add(type);
+                }
+            } else {
+                allTypes.add(type);
+            }
+        }
+        return allTypes;
     }
 }

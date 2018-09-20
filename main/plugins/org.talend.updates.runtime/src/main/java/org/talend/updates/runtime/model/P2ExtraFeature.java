@@ -25,9 +25,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.equinox.p2.core.IProvisioningAgent;
@@ -63,8 +63,12 @@ import org.talend.updates.runtime.feature.model.Type;
 import org.talend.updates.runtime.i18n.Messages;
 import org.talend.updates.runtime.model.InstallationStatus.Status;
 import org.talend.updates.runtime.model.interfaces.IP2Feature;
+import org.talend.updates.runtime.nexus.component.ComponentIndexBean;
+import org.talend.updates.runtime.nexus.component.ComponentIndexManager;
 import org.talend.updates.runtime.service.ITaCoKitUpdateService;
 import org.talend.updates.runtime.service.ITaCoKitUpdateService.ICarInstallationResult;
+import org.talend.updates.runtime.storage.AbstractFeatureStorage;
+import org.talend.updates.runtime.storage.IFeatureStorage;
 import org.talend.updates.runtime.utils.PathUtils;
 import org.talend.updates.runtime.utils.TaCoKitCarUtils;
 import org.talend.utils.files.FileUtils;
@@ -88,6 +92,37 @@ public class P2ExtraFeature extends AbstractExtraFeature implements IP2Feature {
 
     public P2ExtraFeature() {
         this(null, null, null, null, null, null, null, null, null, null, null, false, null, false, false);
+        setNeedRestart(false);
+    }
+
+    public P2ExtraFeature(ComponentIndexBean indexBean) {
+        this(indexBean.getName(), indexBean.getVersion(), indexBean.getDescription(), indexBean.getMvnURI(),
+                indexBean.getImageMvnURI(), indexBean.getProduct(), indexBean.getCompatibleStudioVersion(),
+                indexBean.getBundleId(), PathUtils.convert2Types(indexBean.getTypes()),
+                PathUtils.convert2Categories(indexBean.getCategories()), Boolean.valueOf(indexBean.getDegradable()));
+    }
+
+    public P2ExtraFeature(final File zipFile) {
+        this(new ComponentIndexManager().create(zipFile));
+        setStorage(new AbstractFeatureStorage() {
+
+            @Override
+            protected File downloadImageFile(IProgressMonitor monitor) throws Exception {
+                return null;
+            }
+
+            @Override
+            protected File downloadFeatureFile(IProgressMonitor monitor) throws Exception {
+                return zipFile;
+            }
+        });
+    }
+
+    public P2ExtraFeature(String name, String version, String description, String mvnUri, String imageMvnUri, String product,
+            String compatibleStudioVersion, String p2IuId, Collection<Type> types, Collection<Category> categories,
+            boolean degradable) {
+        this(p2IuId, name, version, description, mvnUri, imageMvnUri, product, compatibleStudioVersion, null, types, categories,
+                degradable, null, false, true);
     }
 
     public P2ExtraFeature(String p2IuId, String name, String version, String description, String mvnUri, String imageMvnUri,
@@ -97,21 +132,6 @@ public class P2ExtraFeature extends AbstractExtraFeature implements IP2Feature {
         super(p2IuId, name, version, description, mvnUri, imageMvnUri, product, compatibleStudioVersion, parentCategory, types,
                 categories, degradable, mustBeInstalled, useLegacyP2Install);
         this.baseRepoUriStr = baseRepoUriStr;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.updates.model.ExtraFeature#isInstalled(org.eclipse.core.runtime.IProgressMonitor)
-     */
-    @Override
-    public boolean isInstalled(IProgressMonitor progress) throws P2ExtraFeatureException {
-        try {
-            InstallationStatus installationStatus = getInstallationStatus(progress);
-            return installationStatus.getStatus().isInstalled();
-        } catch (Exception e) {// just convert the exception
-            throw new P2ExtraFeatureException(e);
-        }
     }
 
     public Set<IInstallableUnit> getInstalledIUs(String p2IuId2, IProgressMonitor progress) throws ProvisionException {
@@ -189,6 +209,20 @@ public class P2ExtraFeature extends AbstractExtraFeature implements IP2Feature {
     }
 
     public URI getP2RepositoryURI() {
+        IFeatureStorage storage = getStorage();
+        if (storage != null) {
+            try {
+                File featureFile = storage.getFeatureFile(new NullProgressMonitor());
+                if (featureFile != null) {
+                    URI repositoryURI = PathUtils.getP2RepURIFromCompFile(featureFile);
+                    if (repositoryURI != null) {
+                        return repositoryURI;
+                    }
+                }
+            } catch (Exception e) {
+                ExceptionHandler.process(e);
+            }
+        }
         return getP2RepositoryURI(null, false);
     }
 
@@ -721,28 +755,16 @@ public class P2ExtraFeature extends AbstractExtraFeature implements IP2Feature {
                 }
             }
 
+            String installedLastestVersionStr = null;
             String version = getVersion();
-            if (StringUtils.isBlank(version)) {
-                InstallationStatus status = new InstallationStatus(Status.INSTALLED);
-                status.setInstalledVersion(installedLatestVersion.toString());
-                status.setRequiredStudioVersion(getCompatibleStudioVersion());
-                return status;
-            } else {
-                Version featVersion = PathUtils.convert2Version(version);
-                if (featVersion != null) {
-                    if (featVersion.compareTo(installedLatestVersion) <= 0) {
-                        InstallationStatus status = new InstallationStatus(Status.INSTALLED);
-                        status.setInstalledVersion(installedLatestVersion.toString());
-                        status.setRequiredStudioVersion(getCompatibleStudioVersion());
-                        return status;
-                    } else {
-                        InstallationStatus status = new InstallationStatus(Status.UPDATABLE);
-                        status.setInstalledVersion(installedLatestVersion.toString());
-                        status.setRequiredStudioVersion(getCompatibleStudioVersion());
-                        return status;
-                    }
-                }
+            if (installedLatestVersion != null) {
+                installedLastestVersionStr = installedLatestVersion.toString();
             }
+
+            InstallationStatus status = PathUtils.getInstallationStatus(installedLastestVersionStr, version);
+            status.setRequiredStudioVersion(getCompatibleStudioVersion());
+            return status;
+
         }
         InstallationStatus status = new InstallationStatus(Status.INSTALLABLE);
         status.setRequiredStudioVersion(getCompatibleStudioVersion());

@@ -43,6 +43,8 @@ import org.talend.updates.runtime.feature.model.Type;
 import org.talend.updates.runtime.i18n.Messages;
 import org.talend.updates.runtime.model.ExtraFeature;
 import org.talend.updates.runtime.model.interfaces.IP2Feature;
+import org.talend.updates.runtime.preference.UpdatesRuntimePreference;
+import org.talend.updates.runtime.preference.UpdatesRuntimePreferenceConstants;
 import org.talend.updates.runtime.service.ITaCoKitUpdateService;
 import org.talend.updates.runtime.ui.feature.model.EMessageType;
 import org.talend.updates.runtime.ui.feature.model.Message;
@@ -285,15 +287,17 @@ public class FeaturesManager {
         return resultMap;
     }
 
-    public FeatureUpdateNotification createUpdateNotificationItem() {
+    public FeatureUpdateNotification createUpdateNotificationItem(boolean createDefaultMessage) {
         FeatureUpdateNotification update = new FeatureUpdateNotification();
         update.setTitle(Messages.getString("ComponentsManager.form.showUpdate.label.title")); //$NON-NLS-1$
         update.setDescription(Messages.getString("ComponentsManager.form.showUpdate.label.description")); //$NON-NLS-1$
-        update.setMessages(createWarnMessage());
+        if (createDefaultMessage) {
+            update.setMessages(createDefaultMessage());
+        }
         return update;
     }
 
-    public Collection<Message> createWarnMessage() {
+    public Collection<Message> createDefaultMessage() {
         Collection<Message> messages = new ArrayList<>();
 
         Message cantRemoveMessage = new Message();
@@ -301,10 +305,12 @@ public class FeaturesManager {
         cantRemoveMessage.setMessage(Messages.getString("ComponentsManager.form.warn.cantRemove")); //$NON-NLS-1$
         messages.add(cantRemoveMessage);
 
-        Message autoShareMessage = new Message();
-        autoShareMessage.setType(EMessageType.WARN);
-        autoShareMessage.setMessage(Messages.getString("ComponentsManager.form.warn.autoShare")); //$NON-NLS-1$
-        messages.add(autoShareMessage);
+        if (UpdatesRuntimePreference.getInstance().getBoolean(UpdatesRuntimePreferenceConstants.AUTO_SHARE_FEATURES)) {
+            Message autoShareMessage = new Message();
+            autoShareMessage.setType(EMessageType.WARN);
+            autoShareMessage.setMessage(Messages.getString("ComponentsManager.form.warn.autoShare")); //$NON-NLS-1$
+            messages.add(autoShareMessage);
+        }
 
         return messages;
     }

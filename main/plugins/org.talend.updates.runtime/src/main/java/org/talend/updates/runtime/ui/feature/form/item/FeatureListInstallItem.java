@@ -87,7 +87,8 @@ public class FeatureListInstallItem extends AbstractFeatureListInfoItem<IFeature
     }
 
     @Override
-    protected void preInstall(IProgressMonitor monitor) {
+    protected void preInstall(IProgressMonitor monitor) throws Exception {
+        super.preInstall(monitor);
         Display.getDefault().syncExec(new Runnable() {
 
             @Override

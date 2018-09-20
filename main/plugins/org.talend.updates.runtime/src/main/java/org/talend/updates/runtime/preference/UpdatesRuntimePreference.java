@@ -84,12 +84,28 @@ public class UpdatesRuntimePreference {
         }
     }
 
+    public boolean getBoolean(String key) {
+        return getBoolean(key, false);
+    }
+
+    public boolean getDefaultBoolean(String key) {
+        return getBoolean(key, true);
+    }
+
     public void setBoolean(String key, boolean value, boolean setDefault) {
         if (setDefault) {
             preferenceStore.setDefault(key, value);
         } else {
             preferenceStore.setValue(key, value);
         }
+    }
+
+    public void setValue(String key, boolean value) {
+        setBoolean(key, value, false);
+    }
+
+    public void setDefault(String key, boolean value) {
+        setBoolean(key, value, true);
     }
 
     public int getInt(String key, boolean fromDefault) {
@@ -100,6 +116,14 @@ public class UpdatesRuntimePreference {
         }
     }
 
+    public int getInt(String key) {
+        return getInt(key, false);
+    }
+
+    public int getDefaultInt(String key) {
+        return getInt(key, true);
+    }
+
     public void setInt(String key, int value, boolean setDefault) {
         if (setDefault) {
             preferenceStore.setDefault(key, value);
@@ -108,8 +132,24 @@ public class UpdatesRuntimePreference {
         }
     }
 
+    public void setValue(String key, int value) {
+        setInt(key, value, false);
+    }
+
+    public void setDefault(String key, int value) {
+        setInt(key, value, true);
+    }
+
     public Date getDate(String key) throws Exception {
         String str = getValue(key);
+        if (StringUtils.isBlank(str)) {
+            return null;
+        }
+        return DateFormat.getInstance().parse(str);
+    }
+
+    public Date getDefaultDate(String key) throws Exception {
+        String str = getDefault(key);
         if (StringUtils.isBlank(str)) {
             return null;
         }
@@ -121,6 +161,14 @@ public class UpdatesRuntimePreference {
         if (date != null) {
             dateStr = DateFormat.getInstance().format(date);
         }
-        setValue(key, dateStr);
+        setValue(key, dateStr, false);
+    }
+
+    public void setDefault(String key, Date date) {
+        String dateStr = null;
+        if (date != null) {
+            dateStr = DateFormat.getInstance().format(date);
+        }
+        setValue(key, dateStr, true);
     }
 }

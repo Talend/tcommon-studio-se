@@ -10,12 +10,11 @@
 // 9 rue Pages 92150 Suresnes, France
 //
 // ============================================================================
-package org.talend.updates.runtime.storage.impl;
+package org.talend.updates.runtime.storage;
 
 import java.io.File;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.talend.updates.runtime.storage.IFeatureStorage;
 
 
 /**

@@ -13,7 +13,6 @@
 package org.talend.updates.runtime.engine.factory;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -30,7 +29,6 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.updates.runtime.engine.component.ComponentNexusP2ExtraFeature;
-import org.talend.updates.runtime.feature.model.Type;
 import org.talend.updates.runtime.i18n.Messages;
 import org.talend.updates.runtime.model.ExtraFeature;
 import org.talend.updates.runtime.model.FeatureCategory;
@@ -38,9 +36,7 @@ import org.talend.updates.runtime.nexus.component.ComponentIndexBean;
 import org.talend.updates.runtime.nexus.component.ComponentIndexManager;
 import org.talend.updates.runtime.nexus.component.NexusComponentsTransport;
 import org.talend.updates.runtime.nexus.component.NexusServerManager;
-import org.talend.updates.runtime.service.ITaCoKitUpdateService;
 import org.talend.updates.runtime.storage.impl.NexusFeatureStorage;
-import org.talend.updates.runtime.utils.PathUtils;
 
 /**
  * DOC Talend class global comment. Detailled comment
@@ -149,7 +145,7 @@ public class ComponentsNexusInstallFactory extends AbstractExtraUpdatesFactory i
                     }
                 }
 
-                final ExtraFeature feature = createComponentFeature(monitor, serverBean, b);
+                final ExtraFeature feature = createFeature(monitor, serverBean, b);
                 if (feature != null) {
                     features.add(feature);
                 }
@@ -158,30 +154,25 @@ public class ComponentsNexusInstallFactory extends AbstractExtraUpdatesFactory i
         return features;
     }
 
-    protected ExtraFeature createComponentFeature(IProgressMonitor monitor, ArtifactRepositoryBean serverBean,
+    @Override
+    protected ExtraFeature createFeature(IProgressMonitor monitor, ArtifactRepositoryBean serverBean,
             ComponentIndexBean b) {
         ExtraFeature feature = null;
-        Collection<Type> types = PathUtils.convert2Types(b.getTypes());
-        if (types.contains(Type.TCOMP_V1)) {
-            try {
-                ITaCoKitUpdateService tckService = ITaCoKitUpdateService.getInstance();
-                if (tckService == null) {
-                    throw new Exception("Can't find " + ITaCoKitUpdateService.class.getSimpleName());
-                }
-                feature = tckService.generateExtraFeature(b, monitor);
-            } catch (Exception e) {
-                ExceptionHandler.process(e);
-            }
-        } else if (types.contains(Type.TCOMP_V0)) {
-            feature = new ComponentNexusP2ExtraFeature(b);
-        } else {
-            ExceptionHandler.process(new Exception("Can't create feature for " + b.toString()));
+        try {
+            feature = super.createFeature(monitor, serverBean, b);
+        } catch (Exception e) {
+            ExceptionHandler.process(e);
         }
         if (feature != null) {
             NexusFeatureStorage storage = new NexusFeatureStorage(serverBean, feature.getMvnUri(), feature.getImageMvnUri());
             feature.setStorage(storage);
         }
         return feature;
+    }
+
+    @Override
+    protected ExtraFeature createTcompv0Feature(IProgressMonitor monitor, ComponentIndexBean b) throws Exception {
+        return new ComponentNexusP2ExtraFeature(b);
     }
 
     @Override

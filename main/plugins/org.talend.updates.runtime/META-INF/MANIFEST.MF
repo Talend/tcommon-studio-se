@@ -31,7 +31,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui.forms
 Bundle-ActivationPolicy: lazy
 Service-Component: OSGI-INF/components_install.xml
-Export-Package: org.talend.updates.runtime.engine,
+Export-Package: org.talend.updates.runtime,
+ org.talend.updates.runtime.engine,
  org.talend.updates.runtime.engine.component,
  org.talend.updates.runtime.engine.factory,
  org.talend.updates.runtime.feature.model,

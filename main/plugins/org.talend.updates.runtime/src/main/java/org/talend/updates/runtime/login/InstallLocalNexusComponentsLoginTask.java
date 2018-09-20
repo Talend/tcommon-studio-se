@@ -50,7 +50,7 @@ public class InstallLocalNexusComponentsLoginTask extends AbstractLoginTask {
         }
 
         @Override
-        protected ComponentNexusP2ExtraFeature createComponentFeature(IProgressMonitor monitor, ArtifactRepositoryBean serverBean,
+        protected ComponentNexusP2ExtraFeature createFeature(IProgressMonitor monitor, ArtifactRepositoryBean serverBean,
                 ComponentIndexBean b) {
             ComponentNexusP2ExtraFeature feature = new ComponentNexusP2ExtraFeature(b) {
 

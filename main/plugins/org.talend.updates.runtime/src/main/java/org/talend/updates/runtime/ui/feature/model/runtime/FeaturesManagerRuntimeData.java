@@ -48,6 +48,8 @@ public class FeaturesManagerRuntimeData {
 
     private Object checkUpdateJobLock = new Object();
 
+    private boolean checkWarnDialog = true;
+
     public FeaturesManager getFeaturesManager() {
         return this.featuresManager;
     }
@@ -94,6 +96,14 @@ public class FeaturesManagerRuntimeData {
 
     public void setFirstShowTab(String firstShowTab) {
         this.firstShowTab = firstShowTab;
+    }
+
+    public boolean isCheckWarnDialog() {
+        return this.checkWarnDialog;
+    }
+
+    public void setCheckWarnDialog(boolean checkWarnDialog) {
+        this.checkWarnDialog = checkWarnDialog;
     }
 
     public FeaturesCheckUpdateJob getCheckUpdateJob() {

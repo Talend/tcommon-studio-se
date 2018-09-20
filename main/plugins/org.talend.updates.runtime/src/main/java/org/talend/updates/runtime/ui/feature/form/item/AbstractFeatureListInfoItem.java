@@ -14,12 +14,16 @@ package org.talend.updates.runtime.ui.feature.form.item;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.accessibility.ACC;
@@ -46,8 +50,11 @@ import org.talend.updates.runtime.i18n.Messages;
 import org.talend.updates.runtime.model.ExtraFeature;
 import org.talend.updates.runtime.model.InstallationStatus;
 import org.talend.updates.runtime.model.InstallationStatus.Status;
+import org.talend.updates.runtime.preference.UpdatesRuntimePreference;
+import org.talend.updates.runtime.preference.UpdatesRuntimePreferenceConstants;
 import org.talend.updates.runtime.ui.feature.model.IFeatureInfo;
 import org.talend.updates.runtime.ui.feature.model.IFeatureItem;
+import org.talend.updates.runtime.ui.feature.model.Message;
 import org.talend.updates.runtime.ui.feature.model.runtime.FeaturesManagerRuntimeData;
 import org.talend.updates.runtime.ui.util.UIUtils;
 import org.talend.updates.runtime.utils.PathUtils;
@@ -312,16 +319,16 @@ public abstract class AbstractFeatureListInfoItem<T extends IFeatureInfo> extend
     abstract protected void execute(Runnable runnable);
 
     protected void executeInstall(IProgressMonitor monitor, boolean runInModelContext) {
-        preInstall(monitor);
-        IFeatureItem featureItem = getFeatureItem();
-        IRunnableWithProgress installProgress = new IRunnableWithProgress() {
-
-            @Override
-            public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-                installFeature(monitor, featureItem);
-            }
-        };
         try {
+            preInstall(monitor);
+            IFeatureItem featureItem = getFeatureItem();
+            IRunnableWithProgress installProgress = new IRunnableWithProgress() {
+
+                @Override
+                public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+                    installFeature(monitor, featureItem);
+                }
+            };
             if (runInModelContext) {
                 getCheckListener().run(true, true, installProgress);
             } else {
@@ -333,7 +340,51 @@ public abstract class AbstractFeatureListInfoItem<T extends IFeatureInfo> extend
         }
     }
 
-    abstract protected void preInstall(IProgressMonitor monitor);
+    @SuppressWarnings("nls")
+    protected void preInstall(IProgressMonitor monitor) throws Exception {
+        if (getRuntimeData().isCheckWarnDialog()) {
+            checkWarnDialog(monitor);
+        }
+    }
+
+    private void checkWarnDialog(IProgressMonitor monitor) throws Exception {
+        boolean showWarnDialog = UpdatesRuntimePreference.getInstance()
+                .getBoolean(UpdatesRuntimePreferenceConstants.SHOW_WARN_DIALOG_WHEN_INSTALLING_FEATURES);
+        if (!showWarnDialog) {
+            return;
+        }
+        Collection<Message> defaultMessages = getRuntimeData().getFeaturesManager().createDefaultMessage();
+        if (defaultMessages == null || defaultMessages.isEmpty()) {
+            return;
+        }
+        final StringBuffer strBuff = new StringBuffer();
+        for (Message message : defaultMessages) {
+            UIUtils.appendMessage(strBuff, null, message);
+            strBuff.append("\n");
+        }
+        final String messageDetail = Messages.getString("ComponentsManager.form.warn.dialog.message", strBuff.toString());
+        final AtomicBoolean userAgreed = new AtomicBoolean(false);
+        Display.getDefault().syncExec(new Runnable() {
+
+            @Override
+            public void run() {
+                MessageDialogWithToggle dialog = MessageDialogWithToggle.openOkCancelConfirm(getShell(),
+                        Messages.getString("ComponentsManager.form.warn.dialog.title"), messageDetail,
+                        Messages.getString("ComponentsManager.form.warn.dialog.dontShowAgain"), false, null, null);
+                int returnCode = dialog.getReturnCode();
+                if (IDialogConstants.OK_ID == returnCode) {
+                    userAgreed.set(true);
+                } else {
+                    userAgreed.set(false);
+                }
+                UpdatesRuntimePreference.getInstance().setValue(
+                        UpdatesRuntimePreferenceConstants.SHOW_WARN_DIALOG_WHEN_INSTALLING_FEATURES, !dialog.getToggleState());
+            }
+        });
+        if (!userAgreed.get()) {
+            throw new InterruptedException("User abort the installation.");
+        }
+    }
 
     public void afterInstalled(IProgressMonitor monitor) {
         P2Manager.getInstance().clear();

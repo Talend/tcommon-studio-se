@@ -92,25 +92,28 @@ public class UIUtils {
         if (StringUtils.isBlank(msg)) {
             return;
         }
-        EMessageType type = message.getType();
-        if (type == null) {
-            type = EMessageType.INFO;
-        }
-        Color fontColor = null;
-        switch (type) {
-        case WARN:
-            fontColor = ColorConstants.YELLOW_COLOR;
-            break;
-        case ERROR:
-            fontColor = ColorConstants.RED_COLOR;
-            break;
-        default:
-            fontColor = Display.getDefault().getSystemColor(SWT.COLOR_BLACK);
-            break;
-        }
-        Point msgPosition = new Point(strBuff.length(), msg.length());
-        StyleRange msgTyleRange = new StyleRange(msgPosition.x, msgPosition.y, fontColor, null, SWT.ITALIC | SWT.BOLD);
         strBuff.append(msg);
-        styles.add(msgTyleRange);
+
+        if (styles != null) {
+            EMessageType type = message.getType();
+            if (type == null) {
+                type = EMessageType.INFO;
+            }
+            Color fontColor = null;
+            switch (type) {
+            case WARN:
+                fontColor = ColorConstants.YELLOW_COLOR;
+                break;
+            case ERROR:
+                fontColor = ColorConstants.RED_COLOR;
+                break;
+            default:
+                fontColor = Display.getDefault().getSystemColor(SWT.COLOR_BLACK);
+                break;
+            }
+            Point msgPosition = new Point(strBuff.length(), msg.length());
+            StyleRange msgTyleRange = new StyleRange(msgPosition.x, msgPosition.y, fontColor, null, SWT.ITALIC | SWT.BOLD);
+            styles.add(msgTyleRange);
+        }
     }
 }

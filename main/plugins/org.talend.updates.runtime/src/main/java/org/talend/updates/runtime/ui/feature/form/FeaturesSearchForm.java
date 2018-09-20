@@ -50,7 +50,6 @@ import org.talend.updates.runtime.EUpdatesImage;
 import org.talend.updates.runtime.feature.FeaturesManager;
 import org.talend.updates.runtime.feature.FeaturesManager.SearchOption;
 import org.talend.updates.runtime.feature.FeaturesManager.SearchResult;
-import org.talend.updates.runtime.feature.ImageFactory;
 import org.talend.updates.runtime.feature.model.Category;
 import org.talend.updates.runtime.feature.model.Type;
 import org.talend.updates.runtime.i18n.Messages;
@@ -77,8 +76,6 @@ public class FeaturesSearchForm extends AbstractFeatureForm {
 
     private ComboViewer typesComboViewer;
 
-    private ComboViewer categoriesComboViewer;
-
     private Text searchText;
 
     private Label findLabel;
@@ -99,9 +96,6 @@ public class FeaturesSearchForm extends AbstractFeatureForm {
         typesComboViewer = new ComboViewer(parent, SWT.READ_ONLY);
         typesComboViewer.setContentProvider(ArrayContentProvider.getInstance());
         typesComboViewer.setLabelProvider(new TypeLabelProvider());
-        categoriesComboViewer = new ComboViewer(parent, SWT.READ_ONLY);
-        categoriesComboViewer.setContentProvider(ArrayContentProvider.getInstance());
-        categoriesComboViewer.setLabelProvider(new CategoryLabelProvider());
         searchText = new Text(parent, SWT.BORDER);
 
         findLabel = new Label(parent, SWT.NONE);
@@ -142,14 +136,6 @@ public class FeaturesSearchForm extends AbstractFeatureForm {
         // formData.top = new FormAttachment(searchButton, 0, SWT.TOP);
         // formData.bottom = new FormAttachment(searchButton, 0, SWT.BOTTOM);
         formData.left = new FormAttachment(typesComboViewer.getControl(), horizonAlignWidth, SWT.RIGHT);
-        formData.width = 100;
-        categoriesComboViewer.getControl().setLayoutData(formData);
-
-        formData = new FormData();
-        formData.top = new FormAttachment(categoriesComboViewer.getControl(), 0, SWT.CENTER);
-        // formData.top = new FormAttachment(searchButton, 0, SWT.TOP);
-        // formData.bottom = new FormAttachment(searchButton, 0, SWT.BOTTOM);
-        formData.left = new FormAttachment(categoriesComboViewer.getControl(), horizonAlignWidth, SWT.RIGHT);
         formData.right = new FormAttachment(searchButton, -1 * horizonAlignWidth, SWT.LEFT);
         searchText.setLayoutData(formData);
 
@@ -173,11 +159,8 @@ public class FeaturesSearchForm extends AbstractFeatureForm {
         updateSearchTooltip(null);
         featureListViewer.setCheckListener(getCheckListener());
 
-        typesComboViewer.setInput(Type.getAllTypes());
+        typesComboViewer.setInput(Type.getAllTypes(true));
         typesComboViewer.setSelection(new StructuredSelection(Type.ALL));
-
-        categoriesComboViewer.setInput(Category.getAllCategories());
-        categoriesComboViewer.setSelection(new StructuredSelection(Category.ALL));
 
         // trigger to schedule
         getRuntimeData().getCheckUpdateJob();
@@ -191,13 +174,6 @@ public class FeaturesSearchForm extends AbstractFeatureForm {
             @Override
             public void selectionChanged(SelectionChangedEvent event) {
                 onTypesComboViewerChanged(event);
-            }
-        });
-        categoriesComboViewer.addSelectionChangedListener(new ISelectionChangedListener() {
-
-            @Override
-            public void selectionChanged(SelectionChangedEvent event) {
-                onCategoriesComboViewerChanged(event);
             }
         });
         searchButton.addSelectionListener(new SelectionAdapter() {
@@ -233,10 +209,6 @@ public class FeaturesSearchForm extends AbstractFeatureForm {
     }
 
     private void onTypesComboViewerChanged(SelectionChangedEvent event) {
-        doSearch();
-    }
-
-    private void onCategoriesComboViewerChanged(SelectionChangedEvent event) {
         doSearch();
     }
 
@@ -322,7 +294,7 @@ public class FeaturesSearchForm extends AbstractFeatureForm {
             titleMsg = Messages.getString("ComponentsManager.form.install.label.head.searchResult.empty"); //$NON-NLS-1$
         } else {
             titleMsg = Messages.getString("ComponentsManager.form.install.label.head.featured"); //$NON-NLS-1$
-            detailMessages = getRuntimeData().getFeaturesManager().createWarnMessage();
+            detailMessages = getRuntimeData().getFeaturesManager().createDefaultMessage();
         }
 
         if (searchOption.getType() == Type.ALL && searchOption.getCategory() == Category.ALL
@@ -346,7 +318,8 @@ public class FeaturesSearchForm extends AbstractFeatureForm {
                     Collection<ExtraFeature> currentPageResult = checkUpdateResult.getCurrentPageResult();
                     currentPageResult = checkFeatures(currentPageResult);
                     if (currentPageResult != null && !currentPageResult.isEmpty()) {
-                        FeatureUpdateNotification update = getRuntimeData().getFeaturesManager().createUpdateNotificationItem();
+                        FeatureUpdateNotification update = getRuntimeData().getFeaturesManager()
+                                .createUpdateNotificationItem(false);
                         features.add(update);
                     }
                 }
@@ -452,8 +425,7 @@ public class FeaturesSearchForm extends AbstractFeatureForm {
     }
 
     private Category getSelectedCategory() {
-        ISelection selection = categoriesComboViewer.getSelection();
-        return (Category) ((StructuredSelection) selection).getFirstElement();
+        return Category.ALL;
     }
 
     private FeatureProgress showProgress() {
@@ -464,29 +436,8 @@ public class FeaturesSearchForm extends AbstractFeatureForm {
         return progress;
     }
 
-    private void clear() {
-        ImageFactory.getInstance().disposeFeatureImages();
-        clearThreadPool();
-    }
-
-    private void clearThreadPool() {
-        getRuntimeData().getFeaturesManager().clearSearchThreadPool();
-    }
-
     private void execute(Runnable run) {
         getRuntimeData().getFeaturesManager().getSearchThreadPoolExecutor().execute(run);
-    }
-
-    private class CategoryLabelProvider extends LabelProvider {
-
-        @Override
-        public String getText(Object element) {
-            if (element instanceof Category) {
-                return ((Category) element).getLabel();
-            } else {
-                return super.getText(element);
-            }
-        }
     }
 
     private class TypeLabelProvider extends LabelProvider {

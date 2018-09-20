@@ -320,6 +320,16 @@ public abstract class AbstractExtraFeature implements ExtraFeature {
     }
 
     @Override
+    public boolean isInstalled(IProgressMonitor progress) throws Exception {
+        try {
+            InstallationStatus installationStatus = getInstallationStatus(progress);
+            return installationStatus.getStatus().isInstalled();
+        } catch (Exception e) {// just convert the exception
+            throw new P2ExtraFeatureException(e);
+        }
+    }
+
+    @Override
     public Collection<Category> getCategories() {
         return this.categories;
     }
