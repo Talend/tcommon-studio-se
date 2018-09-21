@@ -14,7 +14,8 @@
          id="net.sourceforge.sqlexplorer.nl"
          download-size="0"
          install-size="0"
-         version="0.0.0" fragment="true"/>
+         version="0.0.0"
+         fragment="true"/>
 
    <plugin
          id="org.talend.libraries.edifact"
@@ -32,31 +33,36 @@
          id="org.talend.libraries.javacsv.jars"
          download-size="0"
          install-size="0"
-         version="0.0.0" fragment="true"/>
+         version="0.0.0"
+         fragment="true"/>
 
    <plugin
          id="org.talend.libraries.jdbc.jtds.jars"
          download-size="0"
          install-size="0"
-         version="0.0.0" fragment="true"/>
+         version="0.0.0"
+         fragment="true"/>
 
    <plugin
          id="org.talend.libraries.jfreechart.jars"
          download-size="0"
          install-size="0"
-         version="0.0.0" fragment="true"/>
+         version="0.0.0"
+         fragment="true"/>
 
    <plugin
          id="org.talend.libraries.jboss.jars"
          download-size="0"
          install-size="0"
-         version="0.0.0" fragment="true"/>
+         version="0.0.0"
+         fragment="true"/>
 
    <plugin
          id="org.talend.libraries.jexcel.jars"
          download-size="0"
          install-size="0"
-         version="0.0.0" fragment="true"/>
+         version="0.0.0"
+         fragment="true"/>
 
    <plugin
          id="org.talend.libraries.microsoft"
@@ -68,13 +74,15 @@
          id="org.talend.libraries.sqlbuilder.jars"
          download-size="0"
          install-size="0"
-         version="0.0.0" fragment="true"/>
+         version="0.0.0"
+         fragment="true"/>
 
    <plugin
          id="org.talend.libraries.nattable.glazedlist"
          download-size="0"
          install-size="0"
-         version="0.0.0" fragment="true"/>
+         version="0.0.0"
+         fragment="true"/>
 
    <plugin
          id="org.talend.libraries.uniserv"
@@ -92,7 +100,8 @@
          id="org.talend.dataprofiler.top.chart.nl"
          download-size="0"
          install-size="0"
-         version="0.0.0" fragment="true"/>
+         version="0.0.0"
+         fragment="true"/>
 
    <plugin
          id="org.talend.libraries.apache.lucene4"
@@ -110,12 +119,20 @@
          id="org.talend.dataquality.standardization.nl"
          download-size="0"
          install-size="0"
-         version="0.0.0" fragment="true"/>
+         version="0.0.0"
+         fragment="true"/>
 
    <plugin
          id="org.talend.developpement"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
+
+   <plugin
+         id="org.talend.designer.oas"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
 </feature>
