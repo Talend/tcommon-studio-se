@@ -62,6 +62,7 @@ import org.talend.core.runtime.projectsetting.IProjectSettingTemplateConstants;
 import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
 import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.core.utils.TalendQuoteUtils;
+import org.talend.core.utils.TemplateFileUtils;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.template.ETalendMavenVariables;
@@ -392,7 +393,20 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
                     templateFile = null; // force to set null, in order to use the template from other places.
                 }
 
-                final Map<String, Object> templateParameters = PomUtil.getTemplateParameters(getJobProcessor());
+                IProcessor processor = getJobProcessor();
+                final Map<String, Object> templateParameters = PomUtil.getTemplateParameters(processor);
+                Object needLauncherObj = processor.getArguments().get(TalendProcessArgumentConstant.ARG_NEED_LAUNCHER);
+                boolean needLauncher = false;
+                if(needLauncherObj != null){
+                	needLauncher = (Boolean)needLauncherObj;
+                }
+                String launcherName = null;
+                if(needLauncher){
+                	Object launcherObj = processor.getArguments().get(TalendProcessArgumentConstant.ARG_LAUNCHER_NAME);
+                	if(launcherObj != null){
+                		launcherName = (String) launcherObj;
+                	}
+                }
                 String content =
                         MavenTemplateManager.getTemplateContent(templateFile,
                                 IProjectSettingPreferenceConstants.TEMPLATE_STANDALONE_JOB_ASSEMBLY,
@@ -401,6 +415,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
                                         + IProjectSettingTemplateConstants.ASSEMBLY_JOB_TEMPLATE_FILE_NAME,
                                 templateParameters);
                 if (content != null) {
+                	content = TemplateFileUtils.handleAssemblyJobTemplate(content, launcherName);
                     ByteArrayInputStream source = new ByteArrayInputStream(content.getBytes());
                     if (assemblyFile.exists()) {
                         assemblyFile.setContents(source, true, false, monitor);
