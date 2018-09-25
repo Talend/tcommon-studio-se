@@ -68,6 +68,7 @@ import org.talend.core.model.general.Project;
 import org.talend.core.model.metadata.IMetadataColumn;
 import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.core.model.metadata.MetadataTalendType;
+import org.talend.core.model.metadata.types.JavaTypesManager;
 import org.talend.core.model.process.EParameterFieldType;
 import org.talend.core.model.process.IContext;
 import org.talend.core.model.process.IElementParameter;
@@ -100,6 +101,7 @@ import org.talend.core.ui.IJobletProviderService;
 import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.core.utils.BitwiseOptionUtils;
 import org.talend.designer.core.IDesignerCoreService;
+import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
@@ -1289,12 +1291,23 @@ public class ProcessorUtilities {
             Set<JobInfo> childrenJobInfo = getChildrenJobInfo(rootItem, false);
             for (JobInfo jobInfo : childrenJobInfo) {
                 Property property = jobInfo.getProcessItem().getProperty();
-                String resources = (String) property.getAdditionalProperties().get("RESOURCES_PROP");
-                if (StringUtils.isBlank(resources)) {
+                
+                List<String> resourceList = new ArrayList<String>();
+                List<ContextType> contexts = jobInfo.getProcessItem().getProcess().getContext();
+                for (ContextType context : contexts) {
+                    List<ContextParameterType> contextParameter = context.getContextParameter();
+                    for (ContextParameterType contextParameterType : contextParameter) {
+                        if (JavaTypesManager.RESOURCE.getId().equals(contextParameterType.getType())
+                                || JavaTypesManager.RESOURCE.getLabel().equals(contextParameterType.getType())) {
+                            resourceList.add(contextParameterType.getValue());
+                        }
+                    }
+                }
+                if (resourceList.isEmpty()) {
                     continue;
                 }
                 try {
-                    for (String res : resources.split(",")) {
+                    for (String res : resourceList) {
                         String[] parts = res.split("\\|");
                         if (parts.length > 1) {
                             IRepositoryViewObject repoObject = null;
