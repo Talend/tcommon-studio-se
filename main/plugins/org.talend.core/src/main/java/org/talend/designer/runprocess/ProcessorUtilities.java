@@ -1110,6 +1110,12 @@ public class ProcessorUtilities {
                 argumentsMap.put(TalendProcessArgumentConstant.ARG_GENERATE_OPTION, option);
                 processor.setArguments(argumentsMap);
             }
+            
+            // TESB-23502
+            if("ROUTE".equals(getBuildType(jobInfo))) {
+                selectedProcessItem.getProperty().getAdditionalProperties().put(TalendProcessArgumentConstant.ARG_BUILD_TYPE, "ROUTE");
+            }
+            
             setNeededResources(argumentsMap, jobInfo);
 
             processor.setArguments(argumentsMap);
@@ -1142,6 +1148,21 @@ public class ProcessorUtilities {
                 TimeMeasure.display = TimeMeasure.displaySteps = TimeMeasure.measureActive = false;
             }
         }
+    }
+    
+    private static Object getBuildType(JobInfo  jobInfo) {
+        if(jobInfo == null) {
+            return null;
+        }
+        JobInfo parentJobInfo = jobInfo.getFatherJobInfo(); 
+        if(parentJobInfo == null) {
+            if(jobInfo.getArgumentsMap() != null) {
+                return jobInfo.getArgumentsMap().get(TalendProcessArgumentConstant.ARG_BUILD_TYPE);
+            }else {
+                return null;
+            }
+        }
+        return getBuildType(parentJobInfo);
     }
 
     private static Set<ModuleNeeded> getAllJobTestcaseModules(ProcessItem selectedProcessItem) {
