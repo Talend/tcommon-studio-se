@@ -57,6 +57,8 @@ import org.talend.updates.runtime.model.UpdateSiteLocationType;
 import org.talend.updates.runtime.model.interfaces.IP2ComponentFeature;
 import org.talend.updates.runtime.nexus.component.ComponentIndexBean;
 import org.talend.updates.runtime.nexus.component.ComponentsDeploymentManager;
+import org.talend.updates.runtime.storage.AbstractFeatureStorage;
+import org.talend.updates.runtime.storage.IFeatureStorage;
 import org.talend.updates.runtime.utils.OsgiBundleInstaller;
 import org.talend.updates.runtime.utils.PathUtils;
 import org.talend.utils.io.FilesUtils;
@@ -85,6 +87,7 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature implements IP2Compon
 
     public ComponentP2ExtraFeature(File componentZipFile) {
         super(componentZipFile);
+        setTypes(Arrays.asList(Type.TCOMP_V0));
     }
 
     public ComponentP2ExtraFeature(String name, String version, String description, String mvnUri, String imageMvnUri,
@@ -332,4 +335,14 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature implements IP2Compon
         }
     }
 
+    @Override
+    public void setStorage(IFeatureStorage storage) {
+        super.setStorage(storage);
+        final File workFolder = PathUtils.getComponentsDownloadedFolder();
+        FilesUtils.deleteFolder(workFolder, false); // empty the folder
+        if (!workFolder.exists()) {
+            workFolder.mkdirs();
+        }
+        ((AbstractFeatureStorage) getStorage()).setFeatDownloadFolder(workFolder);
+    }
 }

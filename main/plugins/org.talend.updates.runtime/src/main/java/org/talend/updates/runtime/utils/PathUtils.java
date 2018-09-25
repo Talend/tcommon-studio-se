@@ -21,6 +21,7 @@ import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -161,6 +162,21 @@ public class PathUtils {
         result.append(studioVersion.getMicro());
 
         return result.toString();
+    }
+
+    public static Collection<Type> getAllTypeCategories(Collection<Type> types) {
+        Collection<Type> allTypeCategories = new HashSet<>();
+
+        if (types != null) {
+            for (Type type : types) {
+                Collection<Type> categories = type.getCategories();
+                if (categories != null) {
+                    allTypeCategories.addAll(categories);
+                }
+            }
+        }
+
+        return allTypeCategories;
     }
 
     public static Collection<Type> convert2Types(String types) {

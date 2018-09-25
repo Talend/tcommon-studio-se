@@ -88,11 +88,31 @@ public interface ExtraFeature extends Comparable<Object> {
         return getName();
     }
 
+    /**
+     * DEV NOTE: implement isInstalled/canBeInstalled/getInstallationStatus at the same time to avoid
+     * deadloop/stackoverflow
+     */
     default boolean canBeInstalled(IProgressMonitor progress) throws ExtraFeatureException {
         try {
             return !isInstalled(progress);
         } catch (Exception e) {
             throw new ExtraFeatureException(e);
+        }
+    }
+
+    /**
+     * DEV NOTE: implement isInstalled/canBeInstalled/getInstallationStatus at the same time to avoid
+     * deadloop/stackoverflow
+     */
+    default InstallationStatus getInstallationStatus(IProgressMonitor monitor) throws Exception {
+        if (canBeInstalled(monitor)) {
+            InstallationStatus status = new InstallationStatus(Status.INSTALLABLE);
+            status.setRequiredStudioVersion(getCompatibleStudioVersion());
+            return status;
+        } else {
+            InstallationStatus status = new InstallationStatus(Status.CANT_INSTALL);
+            status.setRequiredStudioVersion(getCompatibleStudioVersion());
+            return status;
         }
     }
 
@@ -158,18 +178,6 @@ public interface ExtraFeature extends Comparable<Object> {
 
     default void setStorage(IFeatureStorage storage) {
         // nothing to do
-    }
-
-    default InstallationStatus getInstallationStatus(IProgressMonitor monitor) throws Exception {
-        if (canBeInstalled(monitor)) {
-            InstallationStatus status = new InstallationStatus(Status.INSTALLABLE);
-            status.setRequiredStudioVersion(getCompatibleStudioVersion());
-            return status;
-        } else {
-            InstallationStatus status = new InstallationStatus(Status.CANT_INSTALL);
-            status.setRequiredStudioVersion(getCompatibleStudioVersion());
-            return status;
-        }
     }
 
     @Override

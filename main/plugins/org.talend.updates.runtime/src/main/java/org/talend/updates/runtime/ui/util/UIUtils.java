@@ -92,7 +92,6 @@ public class UIUtils {
         if (StringUtils.isBlank(msg)) {
             return;
         }
-        strBuff.append(msg);
 
         if (styles != null) {
             EMessageType type = message.getType();
@@ -115,5 +114,6 @@ public class UIUtils {
             StyleRange msgTyleRange = new StyleRange(msgPosition.x, msgPosition.y, fontColor, null, SWT.ITALIC | SWT.BOLD);
             styles.add(msgTyleRange);
         }
+        strBuff.append(msg);
     }
 }

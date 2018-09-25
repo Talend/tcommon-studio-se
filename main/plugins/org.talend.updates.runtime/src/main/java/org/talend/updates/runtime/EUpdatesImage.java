@@ -26,7 +26,7 @@ public enum EUpdatesImage implements IImage {
 
     COMPONENTS_MANAGER_32("/icons/componentsManager_32.png"),
 
-    LOADING("/icons/componentsManager_banner.png"),
+    LOADING("/icons/componentsManager_32.png"),
 
     UPDATE_BIG("/icons/update.png"),
 

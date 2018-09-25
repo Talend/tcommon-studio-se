@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -30,9 +29,6 @@ import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.equinox.p2.metadata.IInstallableUnit;
-import org.eclipse.equinox.p2.metadata.IProvidedCapability;
-import org.eclipse.equinox.p2.metadata.Version;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.threading.TalendCustomThreadPoolExecutor;
 import org.talend.updates.runtime.Constants;
@@ -42,10 +38,10 @@ import org.talend.updates.runtime.feature.model.Category;
 import org.talend.updates.runtime.feature.model.Type;
 import org.talend.updates.runtime.i18n.Messages;
 import org.talend.updates.runtime.model.ExtraFeature;
+import org.talend.updates.runtime.model.InstallationStatus;
 import org.talend.updates.runtime.model.interfaces.IP2Feature;
 import org.talend.updates.runtime.preference.UpdatesRuntimePreference;
 import org.talend.updates.runtime.preference.UpdatesRuntimePreferenceConstants;
-import org.talend.updates.runtime.service.ITaCoKitUpdateService;
 import org.talend.updates.runtime.ui.feature.model.EMessageType;
 import org.talend.updates.runtime.ui.feature.model.Message;
 import org.talend.updates.runtime.ui.feature.model.impl.FeatureUpdateNotification;
@@ -97,7 +93,7 @@ public class FeaturesManager {
                 while (iterator.hasNext()) {
                     ExtraFeature next = iterator.next();
                     if (type != Type.ALL) {
-                        if (!next.getTypes().contains(type)) {
+                        if (!PathUtils.getAllTypeCategories(next.getTypes()).contains(type)) {
                             continue;
                         }
                     }
@@ -158,17 +154,27 @@ public class FeaturesManager {
         List<ExtraFeature> updates = new LinkedList<>();
         List<ExtraFeature> features = getFeaturesCache(monitor);
         try {
-            Collection<ExtraFeature> p2Updates = getP2Updates(monitor, features);
-            if (p2Updates != null) {
-                updates.addAll(p2Updates);
+            if (features != null) {
+                checkFeatures(features);
             }
         } catch (Exception e) {
             ExceptionHandler.process(e);
         }
         try {
-            Collection<ExtraFeature> tcompv1Updates = getTCompv1Updates(monitor, features);
-            if (tcompv1Updates != null) {
-                updates.addAll(tcompv1Updates);
+            if (features != null && !features.isEmpty()) {
+                for (ExtraFeature feature : features) {
+                    InstallationStatus installationStatus = feature.getInstallationStatus(monitor);
+                    if (installationStatus != null) {
+                        /*
+                         * Here I didn't use InstallationStatus#canBeInstalled, since I think it's good to show there is
+                         * an update but need to update studio first
+                         */
+                        org.talend.updates.runtime.model.InstallationStatus.Status status = installationStatus.getStatus();
+                        if (status.isInstalled() && status.canBeInstalled()) {
+                            updates.add(feature);
+                        }
+                    }
+                }
             }
         } catch (Exception e) {
             ExceptionHandler.process(e);
@@ -177,63 +183,18 @@ public class FeaturesManager {
         return updates;
     }
 
-    private Collection<ExtraFeature> getP2Updates(IProgressMonitor monitor, Collection<ExtraFeature> features) throws Exception {
-        Collection<ExtraFeature> p2Updates = new LinkedList<>();
-        if (features != null && !features.isEmpty()) {
-            Collection<IInstallableUnit> installedP2Features = P2Manager.getInstance().getInstalledP2Features(monitor, true);
-            Map<String, IInstallableUnit> installedMap = new HashMap<>();
-            for (IInstallableUnit iu : installedP2Features) {
-                String key = null;
-                Collection<IProvidedCapability> providedCapabilities = iu.getProvidedCapabilities();
-                if (providedCapabilities == null) {
-                    continue;
-                }
-                for (IProvidedCapability capability : providedCapabilities) {
-                    if (IInstallableUnit.NAMESPACE_IU_ID.equals(capability.getNamespace())) {
-                        key = capability.getName();
-                    }
-                }
-                if (StringUtils.isBlank(key)) {
-                    continue;
-                }
-                if (installedMap.containsKey(key)) {
-                    IInstallableUnit existedIU = installedMap.get(key);
-                    Version existedVersion = null;
-                    Version newVersion = null;
-                    if (existedIU != null) {
-                        existedVersion = existedIU.getVersion();
-                    }
-                    if (iu != null) {
-                        newVersion = iu.getVersion();
-                    }
-                    ExceptionHandler.log(key + " has multiple versions: " + existedVersion + ", " + newVersion);
-                }
-                installedMap.put(key, iu);
-            }
-            for (ExtraFeature feature : features) {
-                if (!(feature instanceof IP2Feature)) {
-                    continue;
-                }
-                IInstallableUnit iu = installedMap.get(feature.getId());
-                if (iu != null) {
-                    Version iuVersion = iu.getVersion();
-                    Version featVersion = PathUtils.convert2Version(feature.getVersion());
-                    if (0 < featVersion.compareTo(iuVersion)) {
-                        p2Updates.add(feature);
-                    }
-                }
-            }
-        }
-        return p2Updates;
+    private Collection<ExtraFeature> checkFeatures(Collection<ExtraFeature> features) throws Exception {
+        setUseP2Cache(features, true);
+        return features;
     }
 
-    private Collection<ExtraFeature> getTCompv1Updates(IProgressMonitor monitor, Collection<ExtraFeature> features)
-            throws Exception {
-        ITaCoKitUpdateService instance = ITaCoKitUpdateService.getInstance();
-        if (instance != null) {
-            return instance.filterUpdatableFeatures(features, monitor);
-        } else {
-            return Collections.EMPTY_SET;
+    private void setUseP2Cache(Collection<ExtraFeature> features, boolean useP2Cache) {
+        if (features != null) {
+            for (ExtraFeature feature : features) {
+                if (feature instanceof IP2Feature) {
+                    ((IP2Feature) feature).setUseP2Cache(useP2Cache);
+                }
+            }
         }
     }
 

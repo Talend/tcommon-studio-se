@@ -205,7 +205,7 @@ public class FeatureListNavigator extends AbstractControlListItem<IFeatureNaviga
 
         formData = new FormData();
         formData.right = new FormAttachment(pagesLabel, -1 * horizonAlignWidth, SWT.LEFT);
-        formData.top = new FormAttachment(pagesLabel, 0, SWT.CENTER);
+        formData.top = new FormAttachment(skipButton, 0, SWT.CENTER);
         formData.width = 18;
         currentPageText.setLayoutData(formData);
     }

@@ -42,6 +42,16 @@ public class P2PatchFeature extends P2ExtraFeature {
     }
 
     @Override
+    public boolean canBeInstalled(IProgressMonitor progress) throws ExtraFeatureException {
+        try {
+            InstallationStatus installationStatus = getInstallationStatus(progress);
+            return installationStatus.canBeInstalled();
+        } catch (Exception e) {
+            throw new ExtraFeatureException(e);
+        }
+    }
+
+    @Override
     public InstallationStatus getInstallationStatus(IProgressMonitor monitor) throws Exception {
         return PathUtils.getInstallationStatus(VersionUtils.getInternalVersion(), getVersion());
     }

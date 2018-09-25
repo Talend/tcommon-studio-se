@@ -664,16 +664,6 @@ public class P2ExtraFeature extends AbstractExtraFeature implements IP2Feature {
         return extraFeature;
     }
 
-    @Override
-    public boolean canBeInstalled(IProgressMonitor progress) throws ExtraFeatureException {
-        try {
-            InstallationStatus installationStatus = getInstallationStatus(progress);
-            return installationStatus.canBeInstalled();
-        } catch (Exception e) {
-            throw new ExtraFeatureException(e);
-        }
-    }
-
     protected Map<File, File> unzipPatches(IProgressMonitor progress, List<URI> allRepoUris) throws ExtraFeatureException {
         if (allRepoUris == null || allRepoUris.size() == 0) {
             return Collections.EMPTY_MAP;
@@ -734,6 +724,16 @@ public class P2ExtraFeature extends AbstractExtraFeature implements IP2Feature {
 
     protected File getTempUpdateSiteFolder() {
         return FileUtils.createTmpFolder("p2updatesite", null); //$NON-NLS-1$
+    }
+
+    @Override
+    public boolean canBeInstalled(IProgressMonitor progress) throws ExtraFeatureException {
+        try {
+            InstallationStatus installationStatus = getInstallationStatus(progress);
+            return installationStatus.canBeInstalled();
+        } catch (Exception e) {
+            throw new ExtraFeatureException(e);
+        }
     }
 
     @Override

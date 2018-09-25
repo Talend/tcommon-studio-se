@@ -23,6 +23,7 @@ import org.eclipse.core.runtime.Status;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.runtime.helper.PatchComponentHelper;
 import org.talend.commons.runtime.service.PatchComponent;
+import org.talend.commons.utils.VersionUtils;
 import org.talend.updates.runtime.Constants;
 import org.talend.updates.runtime.feature.model.Category;
 import org.talend.updates.runtime.feature.model.Type;
@@ -76,14 +77,25 @@ public class PlainZipFeature extends AbstractExtraFeature {
     }
 
     @Override
+    public boolean canBeInstalled(IProgressMonitor progress) throws ExtraFeatureException {
+        try {
+            InstallationStatus installationStatus = getInstallationStatus(progress);
+            return installationStatus.canBeInstalled();
+        } catch (Exception e) {
+            throw new ExtraFeatureException(e);
+        }
+    }
+
+    @Override
     public InstallationStatus getInstallationStatus(IProgressMonitor monitor) throws Exception {
         boolean installed = PatchComponentHelper.getPatchComponent().isPlainZipInstalled(monitor, getVersion());
         InstallationStatus status = null;
         if (installed) {
             status = new InstallationStatus(InstallationStatus.Status.INSTALLED);
         } else {
-            status = new InstallationStatus(InstallationStatus.Status.INSTALLABLE);
+            status = new InstallationStatus(InstallationStatus.Status.UPDATABLE);
         }
+        status.setInstalledVersion(VersionUtils.getInternalVersion());
         return status;
     }
 

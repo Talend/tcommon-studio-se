@@ -46,6 +46,7 @@ import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.updates.runtime.EUpdatesImage;
 import org.talend.updates.runtime.engine.P2Manager;
 import org.talend.updates.runtime.feature.ImageFactory;
+import org.talend.updates.runtime.feature.model.Type;
 import org.talend.updates.runtime.i18n.Messages;
 import org.talend.updates.runtime.model.ExtraFeature;
 import org.talend.updates.runtime.model.InstallationStatus;
@@ -347,6 +348,7 @@ public abstract class AbstractFeatureListInfoItem<T extends IFeatureInfo> extend
         }
     }
 
+    @SuppressWarnings("nls")
     private void checkWarnDialog(IProgressMonitor monitor) throws Exception {
         boolean showWarnDialog = UpdatesRuntimePreference.getInstance()
                 .getBoolean(UpdatesRuntimePreferenceConstants.SHOW_WARN_DIALOG_WHEN_INSTALLING_FEATURES);
@@ -382,7 +384,7 @@ public abstract class AbstractFeatureListInfoItem<T extends IFeatureInfo> extend
             }
         });
         if (!userAgreed.get()) {
-            throw new InterruptedException("User abort the installation.");
+            throw new InterruptedException(Messages.getString("ComponentsManager.form.warn.dialog.cancelled"));
         }
     }
 
@@ -492,22 +494,33 @@ public abstract class AbstractFeatureListInfoItem<T extends IFeatureInfo> extend
         ranges.add(versionLabelStyle);
         Status status = installationStatus.getStatus();
         String version = versionLabel;
-        String newVersion = getFeatureItem().getFeature().getVersion();
-        if (status.isInstalled()) {
-            String installedVersion = installationStatus.getInstalledVersion();
-
-            Point currentVersionPosition = new Point(version.length(), installationStatus.getInstalledVersion().length());
-            StyleRange currentVersionStyle = new StyleRange(currentVersionPosition.x, currentVersionPosition.y,
-                    display.getSystemColor(SWT.COLOR_GRAY), null, SWT.NORMAL);
-            currentVersionStyle.strikeout = true;
-            ranges.add(currentVersionStyle);
-            version = version + installedVersion + BLANK;
-
+        ExtraFeature feature = getFeatureItem().getFeature();
+        String newVersion = feature.getVersion();
+        if (status.isInstalled() && status.canBeInstalled()) {
             Point newVersionPosition = new Point(version.length(), newVersion.length());
             StyleRange newVersionStyle = new StyleRange(newVersionPosition.x, newVersionPosition.y,
                     display.getSystemColor(SWT.COLOR_BLACK), null, SWT.NORMAL);
             ranges.add(newVersionStyle);
             version = version + newVersion;
+
+            boolean isPatch = PathUtils.getAllTypeCategories(feature.getTypes()).contains(Type.PATCH);
+            if (!isPatch) {
+                /**
+                 * Patch version string is too long so that it may has display issue, so just skip it
+                 */
+                String installedVersion = installationStatus.getInstalledVersion();
+                if (installedVersion == null) {
+                    installedVersion = BLANK;
+                }
+                version = version + BLANK;
+
+                Point currentVersionPosition = new Point(version.length(), installedVersion.length());
+                StyleRange currentVersionStyle = new StyleRange(currentVersionPosition.x, currentVersionPosition.y,
+                        display.getSystemColor(SWT.COLOR_GRAY), null, SWT.NORMAL);
+                currentVersionStyle.strikeout = true;
+                ranges.add(currentVersionStyle);
+                version = version + installedVersion;
+            }
         } else {
             Point newVersionPosition = new Point(version.length(), newVersion.length());
             StyleRange newVersionStyle = new StyleRange(newVersionPosition.x, newVersionPosition.y,

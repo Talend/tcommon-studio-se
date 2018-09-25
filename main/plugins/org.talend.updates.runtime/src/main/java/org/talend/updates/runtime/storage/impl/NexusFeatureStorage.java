@@ -25,8 +25,6 @@ import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.designer.maven.utils.PomUtil;
 import org.talend.updates.runtime.nexus.component.NexusComponentsTransport;
 import org.talend.updates.runtime.storage.AbstractFeatureStorage;
-import org.talend.updates.runtime.utils.PathUtils;
-import org.talend.utils.io.FilesUtils;
 
 /**
  * DOC cmeng  class global comment. Detailled comment
@@ -102,16 +100,6 @@ public class NexusFeatureStorage extends AbstractFeatureStorage {
             }
         }
         return null;
-    }
-
-    @Override
-    public File getFeatDownloadFolder() throws Exception {
-        final File workFolder = PathUtils.getComponentsDownloadedFolder();
-        FilesUtils.deleteFolder(workFolder, false); // empty the folder
-        if (!workFolder.exists()) {
-            workFolder.mkdirs();
-        }
-        return workFolder;
     }
 
     public MavenArtifact getArtifact() {

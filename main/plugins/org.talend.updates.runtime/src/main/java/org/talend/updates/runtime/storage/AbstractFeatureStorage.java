@@ -26,6 +26,8 @@ public abstract class AbstractFeatureStorage implements IFeatureStorage {
 
     private File featDownloadFolder;
 
+    final private Object featDownloadFolderLock = new Object();
+
     private File featureFile;
 
     final private Object featureFileLock = new Object();
@@ -39,14 +41,25 @@ public abstract class AbstractFeatureStorage implements IFeatureStorage {
     private boolean autoCleanFiles = false;
 
     public File getFeatDownloadFolder() throws Exception {
-        if (this.featDownloadFolder == null) {
-            return File.createTempFile(TEMP_FOLDER_PREFIX, ""); //$NON-NLS-1$
+        if (this.featDownloadFolder != null) {
+            return this.featDownloadFolder;
+        }
+        synchronized (featDownloadFolderLock) {
+            if (this.featDownloadFolder == null) {
+                this.featDownloadFolder = File.createTempFile(TEMP_FOLDER_PREFIX, ""); //$NON-NLS-1$
+                if (this.featDownloadFolder.exists()) {
+                    this.featDownloadFolder.delete();
+                    this.featDownloadFolder.mkdir();
+                }
+            }
         }
         return this.featDownloadFolder;
     }
 
     public void setFeatDownloadFolder(File featDownloadFolder) {
-        this.featDownloadFolder = featDownloadFolder;
+        synchronized (featDownloadFolderLock) {
+            this.featDownloadFolder = featDownloadFolder;
+        }
     }
 
     public File getImageDownloadFolder() throws Exception {

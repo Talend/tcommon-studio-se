@@ -15,6 +15,7 @@ package org.talend.updates.runtime.feature.model;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.LinkedList;
 
 import org.apache.commons.lang.StringUtils;
 import org.talend.updates.runtime.i18n.Messages;
@@ -30,10 +31,12 @@ public class Type {
 
     public static final Type TCOMP = new Type(Messages.getString("FeaturesManager.Type.tcomp"), "tcomp", true, false); //$NON-NLS-1$ //$NON-NLS-2$
 
-    public static final Type TACOKIT_SDK = new Type(Messages.getString("FeaturesManager.Type.p2.tacokitSDK"), "tckSDK", true, //$NON-NLS-1$ //$NON-NLS-2$
+    public static final Type PATCH = new Type(Messages.getString("FeaturesManager.Type.patch"), "patch", true, false); //$NON-NLS-1$ //$NON-NLS-2$
+
+    public static final Type TACOKIT_SDK = new Type(Messages.getString("FeaturesManager.Type.p2.tacokitSDK"), "tckSDK", false, //$NON-NLS-1$ //$NON-NLS-2$
             true);
 
-    public static final Type P2_PATCH = new Type(Messages.getString("FeaturesManager.Type.p2.studioPatch"), "p2Patch", true, //$NON-NLS-1$ //$NON-NLS-2$
+    public static final Type P2_PATCH = new Type(Messages.getString("FeaturesManager.Type.p2.studioPatch"), "p2Patch", false, //$NON-NLS-1$ //$NON-NLS-2$
             true);
 
     public static final Type PLAIN_ZIP = new Type(Messages.getString("FeaturesManager.Type.plainZip"), "plainZip", false, true); //$NON-NLS-1$ //$NON-NLS-2$
@@ -42,7 +45,7 @@ public class Type {
 
     public static final Type TCOMP_V1 = new Type(Messages.getString("FeaturesManager.Type.tcompV1"), "tcompv1", false, true); //$NON-NLS-1$ //$NON-NLS-2$
 
-    private static final Collection<Type> types = Arrays.asList(ALL, P2, TCOMP, TCOMP_V0, TCOMP_V1, TACOKIT_SDK, P2_PATCH,
+    private static final Collection<Type> types = Arrays.asList(ALL, P2, TCOMP, TCOMP_V0, TCOMP_V1, PATCH, TACOKIT_SDK, P2_PATCH,
             PLAIN_ZIP);
 
     private String keyword;
@@ -87,6 +90,22 @@ public class Type {
         this.unique = unique;
     }
 
+    public Collection<Type> getCategories() {
+        Collection<Type> categories = new LinkedList<>();
+        if (this == Type.TCOMP_V0) {
+            categories.addAll(Arrays.asList(Type.P2, Type.TCOMP, Type.TCOMP_V0));
+        } else if (this == Type.TCOMP_V1) {
+            categories.addAll(Arrays.asList(Type.TCOMP, Type.TCOMP_V1));
+        } else if (this == Type.TACOKIT_SDK) {
+            categories.addAll(Arrays.asList(Type.P2, Type.PATCH, Type.TACOKIT_SDK));
+        } else if (this == Type.P2_PATCH) {
+            categories.addAll(Arrays.asList(Type.P2, Type.PATCH, Type.P2_PATCH));
+        } else if (this == Type.PLAIN_ZIP) {
+            categories.addAll(Arrays.asList(Type.PATCH, Type.PLAIN_ZIP));
+        }
+        return categories;
+    }
+
     public static Type valueOf(String type) {
         if (StringUtils.isBlank(type)) {
             return ALL;
@@ -112,4 +131,5 @@ public class Type {
         }
         return allTypes;
     }
+
 }
