@@ -1292,7 +1292,7 @@ public class ProcessorUtilities {
             for (JobInfo jobInfo : childrenJobInfo) {
                 Property property = jobInfo.getProcessItem().getProperty();
                 
-                List<String> resourceList = new ArrayList<String>();
+                Set<String> resourceList = new HashSet<String>();
                 List<ContextType> contexts = jobInfo.getProcessItem().getProcess().getContext();
                 for (ContextType context : contexts) {
                     List<ContextParameterType> contextParameter = context.getContextParameter();
