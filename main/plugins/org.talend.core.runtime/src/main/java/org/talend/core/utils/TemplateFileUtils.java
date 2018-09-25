@@ -47,6 +47,9 @@ public class TemplateFileUtils {
 		Document doc = reader.read(source);   
 		Element root = doc.getRootElement();   
 		Element files = root.element("files"); //$NON-NLS-1$
+		if(files == null){
+			return content;
+		}
 		for (Iterator j = files.elementIterator("file"); j.hasNext();) { //$NON-NLS-1$
 			Element file = (Element) j.next();
 			Element destName = file.element("destName"); //$NON-NLS-1$
