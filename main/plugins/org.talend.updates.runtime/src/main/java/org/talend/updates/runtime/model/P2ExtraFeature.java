@@ -328,7 +328,7 @@ public class P2ExtraFeature extends AbstractExtraFeature implements IP2Feature {
     }
 
     protected void afterInstallP2(IProgressMonitor progress, Map<File, File> unzippedPatchMap) throws P2ExtraFeatureException {
-
+        P2Manager.getInstance().clearOsgiCache();
     }
 
     protected void afterRestoreConfigFile(IProgressMonitor progress, Map<File, File> unzippedPatchMap)
