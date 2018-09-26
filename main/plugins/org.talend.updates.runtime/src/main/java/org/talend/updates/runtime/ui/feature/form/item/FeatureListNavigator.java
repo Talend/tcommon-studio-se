@@ -20,6 +20,8 @@ import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.TraverseEvent;
@@ -38,6 +40,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.FormColors;
 import org.eclipse.ui.forms.IFormColors;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.ui.swt.composites.GradientCanvas;
 import org.talend.updates.runtime.feature.FeaturesManager.SearchResult;
 import org.talend.updates.runtime.i18n.Messages;
@@ -119,7 +122,8 @@ public class FeatureListNavigator extends AbstractControlListItem<IFeatureNaviga
         nextPageButton.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
 
         skipPanel = new Composite(panel, SWT.NONE);
-        currentPageText = new Text(skipPanel, SWT.BORDER | SWT.RIGHT);
+        currentPageText = new Text(skipPanel, SWT.BORDER | SWT.RIGHT | SWT.V_SCROLL);
+        currentPageText.getVerticalBar().setVisible(false);
         pagesLabel = new Label(skipPanel, SWT.NONE);
         skipButton = new Button(skipPanel, SWT.NONE);
         skipButton.setText(Messages.getString("ComponentsManager.form.navigator.skip")); //$NON-NLS-1$
@@ -273,6 +277,14 @@ public class FeatureListNavigator extends AbstractControlListItem<IFeatureNaviga
                 onSkipPageTextTraversed(e);
             }
         });
+
+        currentPageText.addMouseWheelListener(new MouseWheelListener() {
+
+            @Override
+            public void mouseScrolled(MouseEvent e) {
+                onSkipPageMouseWheel(e);
+            }
+        });
     }
 
     private void onSkipPageTextTraversed(TraverseEvent e) {
@@ -366,6 +378,24 @@ public class FeatureListNavigator extends AbstractControlListItem<IFeatureNaviga
 
     private void onSkipPageFocusLost(FocusEvent e) {
         // currentPageText.setText("" + getDefaultPage()); //$NON-NLS-1$
+    }
+
+    private void onSkipPageMouseWheel(MouseEvent e) {
+        if (e == null) {
+            return;
+        }
+        int count = e.count;
+        int curPage = getDefaultPage();
+        try {
+            curPage = Integer.valueOf(currentPageText.getText());
+        } catch (Exception ex) {
+            ExceptionHandler.process(ex);
+        }
+        if (0 < count) {
+            currentPageText.setText(Integer.toString(curPage - 1));
+        } else {
+            currentPageText.setText(Integer.toString(curPage + 1));
+        }
     }
 
     private boolean checkInteger(VerifyEvent e) {

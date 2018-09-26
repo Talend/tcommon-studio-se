@@ -20,33 +20,15 @@ import org.talend.commons.ui.runtime.image.IImage;
  */
 @SuppressWarnings("nls")
 public enum EUpdatesImage implements IImage {
-    COMPONENTS_MANAGER_BANNER("/icons/componentsManager_banner.png"),
+    COMPONENTS_MANAGER_BANNER("/icons/componentsManager.png"),
 
-    COMPONENTS_MANAGER_16("/icons/componentsManager_16.png"),
-
-    COMPONENTS_MANAGER_32("/icons/componentsManager_32.png"),
-
-    LOADING("/icons/componentsManager_32.png"),
+    LOADING("/icons/featureDefaultIcon.png"),
 
     UPDATE_BIG("/icons/update.png"),
 
-    UPDATE_16("/icons/update_16.png"),
-
-    UPDATE_32("/icons/update_32.png"),
-
     FIND_16("/icons/find_16.png"),
 
-    FIND_32("/icons/find_32.png"),
-
-    MESSAGE_INFO_16("/icons/message_info_16.png"),
-
-    MESSAGE_INFO_32("/icons/message_info_32.png"),
-
-    INSTALL_16("/icons/install_16.gif"),
-
-    UNINSTALL_16("/icons/update_32.png"),
-
-    NEWS_UPDATE_16("/icons/update_32.png");
+    ;
 
     private String path;
 

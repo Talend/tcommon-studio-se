@@ -182,7 +182,6 @@ public class P2Manager {
             p2Profile = null;
             releaseP2Agent();
         }
-        clearOsgiCache();
     }
 
     public void reset() {
