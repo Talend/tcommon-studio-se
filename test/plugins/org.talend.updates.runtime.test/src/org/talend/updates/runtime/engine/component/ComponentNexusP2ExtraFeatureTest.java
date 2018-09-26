@@ -18,7 +18,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.talend.commons.CommonsPlugin;
 import org.talend.updates.runtime.engine.P2Manager;
-import org.talend.updates.runtime.model.P2ExtraFeatureException;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -48,7 +47,7 @@ public class ComponentNexusP2ExtraFeatureTest {
     }
 
     @Test
-    public void test_isInstalled_emptyInstallVersion() throws P2ExtraFeatureException {
+    public void test_isInstalled_emptyInstallVersion() throws Exception {
         if (!CommonsPlugin.isDebugMode() && Platform.inDevelopmentMode()) {
             return; // only enable to test in product
         }
@@ -64,7 +63,7 @@ public class ComponentNexusP2ExtraFeatureTest {
     }
 
     @Test
-    public void test_isInstalled_installed() throws P2ExtraFeatureException {
+    public void test_isInstalled_installed() throws Exception {
         if (!CommonsPlugin.isDebugMode() && Platform.inDevelopmentMode()) {
             return; // only enable to test in product
         }

@@ -30,6 +30,7 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
+import org.talend.commons.utils.VersionUtils;
 import org.talend.updates.runtime.i18n.Messages;
 
 /**
@@ -172,6 +173,7 @@ public class P2Manager {
     }
 
     public void clear() {
+        VersionUtils.clearCache();
         synchronized (p2ProfileLock) {
             p2Profile = null;
             releaseP2Agent();

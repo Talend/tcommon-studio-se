@@ -201,4 +201,10 @@ public class VersionUtils {
         return version;
     }
 
+    public static void clearCache() {
+        synchronized (VersionUtils.class) {
+            productVersion = null;
+            talendVersion = null;
+        }
+    }
 }
