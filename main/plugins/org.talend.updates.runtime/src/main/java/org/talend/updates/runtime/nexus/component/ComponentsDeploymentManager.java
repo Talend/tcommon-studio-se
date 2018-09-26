@@ -53,7 +53,6 @@ public class ComponentsDeploymentManager {
     public ComponentsDeploymentManager() {
         super();
         indexManager = new ComponentIndexManager();
-        prefManager = new ProjectPreferenceManager(UpdatesRuntimePlugin.BUNDLE_ID);
     }
 
     public boolean deployComponentsToLocalNexus(IProgressMonitor progress, File componentZipFile) throws IOException {
@@ -174,6 +173,9 @@ public class ComponentsDeploymentManager {
     }
 
     private IRepositoryArtifactHandler getRepositoryHandler() {
+        if (prefManager == null) {
+            prefManager = new ProjectPreferenceManager(UpdatesRuntimePlugin.BUNDLE_ID);
+        }
         boolean enableShare = prefManager.getBoolean("repository.share.enable"); //$NON-NLS-1$
         if (!enableShare) {
             return null;

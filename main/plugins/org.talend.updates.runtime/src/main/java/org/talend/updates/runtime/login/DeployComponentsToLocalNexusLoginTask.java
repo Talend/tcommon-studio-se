@@ -20,7 +20,14 @@ import java.util.GregorianCalendar;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.commons.exception.PersistenceException;
+import org.talend.core.GlobalServiceRegister;
+import org.talend.core.context.Context;
+import org.talend.core.context.RepositoryContext;
+import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.login.AbstractLoginTask;
+import org.talend.repository.model.IProxyRepositoryFactory;
+import org.talend.repository.model.IRepositoryService;
 import org.talend.updates.runtime.nexus.component.ComponentsDeploymentManager;
 import org.talend.updates.runtime.utils.PathUtils;
 
@@ -50,6 +57,27 @@ public class DeployComponentsToLocalNexusLoginTask extends AbstractLoginTask {
 
     protected void depoloyComponentsFromFolder(final IProgressMonitor monitor, final File componentsBaseFolder) {
         if (componentsBaseFolder == null || !componentsBaseFolder.exists() || !componentsBaseFolder.isDirectory()) {
+            return;
+        }
+        boolean isRemote = false;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IRepositoryService.class)) {
+            IRepositoryService repositoryService = (IRepositoryService) GlobalServiceRegister.getDefault()
+                    .getService(IRepositoryService.class);
+            IProxyRepositoryFactory repositoryFactory = repositoryService.getProxyRepositoryFactory();
+            try {
+                boolean isLocalProject = repositoryFactory.isLocalConnectionProvider();
+                boolean isOffline = false;
+                if (!isLocalProject) {
+                    RepositoryContext repositoryContext = (RepositoryContext) CoreRuntimePlugin.getInstance().getContext()
+                            .getProperty(Context.REPOSITORY_CONTEXT_KEY);
+                    isOffline = repositoryContext.isOffline();
+                }
+                isRemote = !isLocalProject && !isOffline;
+            } catch (PersistenceException e) {
+                ExceptionHandler.process(e);
+            }
+        }
+        if (!isRemote) {
             return;
         }
         ComponentsDeploymentManager deployManager = new ComponentsDeploymentManager();
