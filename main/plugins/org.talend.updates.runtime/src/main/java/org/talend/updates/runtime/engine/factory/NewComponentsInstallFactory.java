@@ -201,6 +201,16 @@ public class NewComponentsInstallFactory extends AbstractExtraUpdatesFactory imp
             return needRestart;
         }
 
+        @Override
+        public boolean isShareEnable() {
+            return share;
+        }
+
+        @Override
+        public void setShareEnable(boolean share) {
+            this.share = share;
+        }
+
     }
 
     /*

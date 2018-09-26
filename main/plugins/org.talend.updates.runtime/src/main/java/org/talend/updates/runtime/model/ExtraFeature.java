@@ -212,6 +212,9 @@ public interface ExtraFeature extends Comparable<Object> {
     }
 
     default void shareComponent(IProgressMonitor progress, File installedCompFile) {
+        if (!isShareEnable()) {
+            return;
+        }
         if (progress.isCanceled()) {
             throw new OperationCanceledException();
         }
@@ -221,6 +224,14 @@ public interface ExtraFeature extends Comparable<Object> {
             // don't block other, so catch the exception
             ExceptionHandler.process(e);
         }
+    }
+
+    default boolean isShareEnable() {
+        return false;
+    }
+
+    default void setShareEnable(boolean share) {
+        // do nothing
     }
 
     @Override
