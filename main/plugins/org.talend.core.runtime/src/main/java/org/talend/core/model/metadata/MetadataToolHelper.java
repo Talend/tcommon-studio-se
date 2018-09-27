@@ -246,11 +246,7 @@ public final class MetadataToolHelper {
 
     public static boolean isResource(final String value) {
         ECodeLanguage codeLanguage = LanguageManager.getCurrentLanguage();
-        if (codeLanguage == ECodeLanguage.JAVA) {
-            return value.equals(JavaTypesManager.RESOURCE.getId());
-        } else {
-            return value.equals(JavaTypesManager.RESOURCE.getLabel());
-        }
+        return value.equals(JavaTypesManager.RESOURCE.getId());
     }
 
     public static boolean isPassword(final String value) {
