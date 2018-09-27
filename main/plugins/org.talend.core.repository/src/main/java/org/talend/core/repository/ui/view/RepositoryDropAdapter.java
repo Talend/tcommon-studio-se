@@ -64,7 +64,6 @@ import org.talend.core.repository.utils.AbstractResourceChangesService;
 import org.talend.core.repository.utils.ConvertJobsUtil;
 import org.talend.core.repository.utils.TDQServiceRegister;
 import org.talend.core.runtime.CoreRuntimePlugin;
-import org.talend.core.service.IResourcesDependenciesService;
 import org.talend.core.service.ITransformService;
 import org.talend.designer.business.diagram.custom.IDiagramModelService;
 import org.talend.designer.core.IDesignerCoreService;
@@ -761,14 +760,6 @@ public class RepositoryDropAdapter extends PluginDropAdapter {
         IDesignerCoreService designerCoreService = CoreRuntimePlugin.getInstance().getDesignerCoreService();
         if (designerCoreService != null) {
             designerCoreService.switchToCurContextsView();
-        }
-        // to refresh resource dependency table view
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IResourcesDependenciesService.class)) {
-            IResourcesDependenciesService resourceService = (IResourcesDependenciesService) GlobalServiceRegister.getDefault()
-                    .getService(IResourcesDependenciesService.class);
-            if (resourceService != null) {
-                resourceService.refreshDependencyViewer();
-            }
         }
     }
 

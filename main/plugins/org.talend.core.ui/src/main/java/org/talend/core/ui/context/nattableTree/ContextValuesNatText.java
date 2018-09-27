@@ -107,6 +107,9 @@ public class ContextValuesNatText extends Composite {
         if (NatTableCellEditorFactory.isPassword(realPara.getType())) {
             widgetStyle = SWT.PASSWORD | HorizontalAlignmentEnum.getSWTStyle(cellStyle);
         }
+        if (NatTableCellEditorFactory.isResource(realPara.getType())) {
+            widgetStyle = SWT.READ_ONLY | HorizontalAlignmentEnum.getSWTStyle(cellStyle);
+        }
         text = new Text(this, widgetStyle);
         text.setBackground(cellStyle.getAttributeValue(CellStyleAttributes.BACKGROUND_COLOR));
         text.setForeground(cellStyle.getAttributeValue(CellStyleAttributes.FOREGROUND_COLOR));
