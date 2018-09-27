@@ -265,6 +265,17 @@ public class ExtendedContextColumnPropertyAccessor<R> implements IColumnProperty
                 }
                 boolean isResourceType = ContextNatTableUtils.isResourceType(contextPara.getType());
                 String contextValue = contextPara.getValue();
+                //to make sure current value for resource type is truly blank
+                if (isResourceType&&StringUtils.isBlank(contextValue)) {
+                    IContextManager contextManger = manager.getContextManager();
+                    List<IContextParameter> realParametersList = getRealParametersList(contextManger, dataElement);
+                    for (IContextParameter realPara : realParametersList) {
+                        if (StringUtils.isNotBlank(realPara.getValue())) {
+                            contextValue = realPara.getValue();
+                            break;
+                        }
+                    }
+                }
                 String newType = getRealType((String) newValue);
                 contextPara.setType(newType);
 
@@ -344,6 +355,30 @@ public class ExtendedContextColumnPropertyAccessor<R> implements IColumnProperty
             }
         }
         return para;
+    }
+
+    public List<IContextParameter> getRealParametersList(IContextManager manager, Object element) {
+        List<IContextParameter> paraList = new ArrayList<IContextParameter>();
+        if (manager != null) {
+            List<IContext> listContext = manager.getListContext();
+            for (IContext context : listContext) {
+                if (element instanceof ContextTableTabParentModel) {
+                    if (IContextParameter.BUILT_IN.equals(((ContextTableTabParentModel) element).getSourceId())) {
+                        IContextParameter builtContextParameter = ((ContextTableTabParentModel) element).getContextParameter();
+                        if (builtContextParameter != null) {
+                            paraList.add(context.getContextParameter(builtContextParameter.getName()));
+                        }
+                    }
+                } else if (element instanceof ContextTableTabChildModel) {
+                    ContextTableTabChildModel child = (ContextTableTabChildModel) element;
+                    String sourceId = child.getContextParameter().getSource();
+                    paraList.add(context.getContextParameter(sourceId,
+                            ((ContextTableTabChildModel) element).getContextParameter().getName()));
+                }
+
+            }
+        }
+        return paraList;
     }
 
     class SetContextGroupParameterCommand extends Command {
