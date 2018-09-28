@@ -55,6 +55,7 @@ import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.maven.MavenUrlHelper;
+import org.talend.librariesmanager.model.service.DynamicDistibutionLicenseUtil;
 import org.talend.librariesmanager.ui.i18n.Messages;
 
 import us.monoid.json.JSONArray;
@@ -169,6 +170,10 @@ public class RemoteModulesHelper {
 
         private void searchFromLocalNexus(Set<String> mavenUristoSearch, IProgressMonitor monitor) {
             try {
+                ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
+                IRepositoryArtifactHandler customerRepHandler = RepositoryArtifactHandlerManager
+                        .getRepositoryHandler(customNexusServer);
+                if (customerRepHandler != null) {
                 // collect the groupIds to check
                 Set<String> groupIds = new HashSet<String>();
                 Set<String> snapshotgroupIds = new HashSet<String>();
@@ -183,10 +188,6 @@ public class RemoteModulesHelper {
                     }
                 }
 
-                ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
-                IRepositoryArtifactHandler customerRepHandler = RepositoryArtifactHandlerManager
-                        .getRepositoryHandler(customNexusServer);
-                if (customerRepHandler != null) {
                     for (String groupId : groupIds) {
                         List<MavenArtifact> searchResults = customerRepHandler.search(groupId, null, null, true, false);
                         monitor.worked(10);
@@ -219,6 +220,10 @@ public class RemoteModulesHelper {
                         String uriToCheck = iterator.next();
                         final MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(uriToCheck);
                         if (parseMvnUrl != null) {
+                            //
+                            if (StringUtils.isNotEmpty(parseMvnUrl.getRepositoryUrl())) {
+                                continue;
+                            }
                             StringBuffer jarsToCheck = null;
                             List<StringBuffer> buffers = groupIdAndJarsToCheck.get(parseMvnUrl.getGroupId());
                             if (buffers == null) {
@@ -408,6 +413,8 @@ public class RemoteModulesHelper {
                 String repoUrl = parseMvnUrl.getRepositoryUrl();
                 if (StringUtils.isNotEmpty(repoUrl)) {
                     downloadManual = false;
+                    // try to setup license for the jars from distribution
+                    DynamicDistibutionLicenseUtil.setupLicense(m, parseMvnUrl);
                 }
             }
             if (downloadManual) {
