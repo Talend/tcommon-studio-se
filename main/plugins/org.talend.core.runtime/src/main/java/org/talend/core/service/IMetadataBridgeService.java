@@ -12,7 +12,10 @@
 // ============================================================================
 package org.talend.core.service;
 
+import java.util.List;
+
 import org.talend.core.IService;
+import org.talend.core.model.properties.Item;
 
 
 /**
@@ -22,5 +25,5 @@ import org.talend.core.IService;
  */
 public interface IMetadataBridgeService extends IService {
 
-    public boolean exportMetadataBridge();
+    public boolean exportMetadataBridge(List<Item> items, String filter, String directory);
 }
