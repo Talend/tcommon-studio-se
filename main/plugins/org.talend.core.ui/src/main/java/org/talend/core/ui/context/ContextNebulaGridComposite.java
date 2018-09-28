@@ -21,7 +21,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -343,7 +342,6 @@ public class ContextNebulaGridComposite extends AbstractContextTabEditComposite 
 
                     }
 
-                    boolean isResTypeExist = false;
                     for (Object object : obj) { // multi delete
                         if (object == null) {
                             return;
@@ -351,9 +349,6 @@ public class ContextNebulaGridComposite extends AbstractContextTabEditComposite 
                         if (object instanceof ContextTableTabParentModel) {
                             ContextTableTabParentModel parentModel = (ContextTableTabParentModel) object;
                             removeParentModelInGroupBySource(parentModel);
-                            if (ContextNatTableUtils.isResourceType(parentModel.getContextParameter().getType())) {
-                                isResTypeExist = true;
-                            }
                         } else if (object instanceof ContextTableTabChildModel) {
                             ContextTableTabChildModel childModel = (ContextTableTabChildModel) object;
                             removeChildModelInGroupBySource(childModel);
@@ -362,11 +357,6 @@ public class ContextNebulaGridComposite extends AbstractContextTabEditComposite 
                     modelManager.refresh();
                     setButtonEnableState();
                     
-                    if (isResTypeExist) {
-                        MessageDialog.openWarning(getShell(), Messages.getString("ContextNebulaComposite.RemoveDependencyTitle"), //$NON-NLS-1$
-                                Messages.getString("ContextNebulaComposite.RemoveResourceDependencyMessage")); //$NON-NLS-1$
-                    }
-
                     if (!treeTable.getSelection().isEmpty()) {
                         treeTable.clearSelection();
                     }
