@@ -3858,6 +3858,7 @@ public class DatabaseForm extends AbstractForm {
 
     private List<String> getSybaseVersionDrivers(String dbType) {
         List<String> result = new ArrayList<String>();
+        result.add(EDatabaseVersion4Drivers.SYBASEIQ_16_SA.getVersionDisplay());
         result.add(EDatabaseVersion4Drivers.SYBASEIQ_16.getVersionDisplay());
         result.add(EDatabaseVersion4Drivers.SYBASEASE.getVersionDisplay());
 
@@ -4362,6 +4363,7 @@ public class DatabaseForm extends AbstractForm {
                 || EDatabaseConnTemplate.PSQL.getDBDisplayName().equals(getConnectionDBType())
                 || EDatabaseConnTemplate.MSSQL.getDBDisplayName().equals(getConnectionDBType())
                 || EDatabaseConnTemplate.SYBASEASE.getDBDisplayName().equals(getConnectionDBType())
+                || EDatabaseConnTemplate.SYBASEASE_16_SA.getDBDisplayName().equals(getConnectionDBType())
                 || EDatabaseConnTemplate.IMPALA.getDBDisplayName().equals(getConnectionDBType());
     }
 
@@ -4714,6 +4716,14 @@ public class DatabaseForm extends AbstractForm {
                 if (!isContextMode()) {
                     EDatabaseVersion4Drivers version = EDatabaseVersion4Drivers.indexOfByVersionDisplay(dbVersionCombo.getText());
                     if (version != null) {
+                    	if(EDatabaseTypeName.SYBASEASE.getDisplayName().equals(getConnectionDBType())) {
+                    		if(version.getVersionValue().equals( EDatabaseVersion4Drivers.SYBASEIQ_16_SA.getVersionValue())) {
+                        		portText.setText(EDatabaseConnTemplate.SYBASEASE_16_SA.getDefaultPort());
+                        	}else {
+                        		portText.setText(EDatabaseConnTemplate.SYBASEASE.getDefaultPort());
+                        	}
+                    	}
+                    	
                         getConnection().setDbVersionString(version.getVersionValue());
                     }
                     urlConnectionStringText.setText(getStringConnection());
@@ -5274,6 +5284,9 @@ public class DatabaseForm extends AbstractForm {
         } else if (dbType.equals(EDatabaseConnTemplate.SAPHana.getDBDisplayName())) {
             dbVersionCombo.getCombo().setItems(versions);
             dbVersionCombo.setHideWidgets(!isSAPHana);
+        }else if (dbType.equals(EDatabaseConnTemplate.SYBASEASE_16_SA.getDBDisplayName())) {
+            dbVersionCombo.getCombo().setItems(versions);
+            dbVersionCombo.setHideWidgets(!isSybase);
         }
         if (selectedVersion != null && !"".equals(selectedVersion)) { //$NON-NLS-1$
             EDatabaseVersion4Drivers version = EDatabaseVersion4Drivers.indexOfByVersion(selectedVersion);

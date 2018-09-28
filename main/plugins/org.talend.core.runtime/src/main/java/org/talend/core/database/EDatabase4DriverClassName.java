@@ -49,6 +49,7 @@ public enum EDatabase4DriverClassName {
 
     MYSQL(EDatabaseTypeName.MYSQL, "org.gjt.mm.mysql.Driver"), //$NON-NLS-1$
     MYSQL2(EDatabaseTypeName.MYSQL, "com.mysql.jdbc.Driver"), //$NON-NLS-1$
+    MYSQL8(EDatabaseTypeName.MYSQL, "com.mysql.cj.jdbc.Driver"), //$NON-NLS-1$
     MARIADB(EDatabaseTypeName.MYSQL, "org.mariadb.jdbc.Driver"), //$NON-NLS-1$
     AMAZON_AURORA(EDatabaseTypeName.AMAZON_AURORA, "org.gjt.mm.mysql.Driver"), //$NON-NLS-1$
     NETEZZA(EDatabaseTypeName.NETEZZA, "org.netezza.Driver"), //$NON-NLS-1$
@@ -79,7 +80,9 @@ public enum EDatabase4DriverClassName {
     SYBASEIQ_16(
             EDatabaseTypeName.SYBASEASE,
             new String[] { "com.sybase.jdbc4.jdbc.SybDriver", "com.sybase.jdbc4.jdbc.SybDataSource" }, new String[] {}), //$NON-NLS-1$
-
+    SYBASEIQ_16_SA(
+    		EDatabaseTypeName.SYBASEASE,
+    		new String[] { "sap.jdbc4.sqlanywhere.IDriver"}, new String[] {}), //$NON-NLS-1$
     EXASOLUTION(EDatabaseTypeName.EXASOL, "com.exasol.jdbc.EXADriver"), //$NON-NLS-1$
     // MOD klliu 2010-06-04 bug 12819: upgrade jdbc driver class used in sql explorer
     TERADATA(EDatabaseTypeName.TERADATA, "com.teradata.jdbc.TeraDriver"), //$NON-NLS-1$
