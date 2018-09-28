@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.core.services;
 
+import java.io.File;
 import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
@@ -57,4 +58,8 @@ public interface ICoreTisService extends IService {
     public boolean isTheSameType(String userName, String password, String adminUrl);
 
     public void clearCustomLicensePathArg();
+    
+    public File getLicenseFile();
+    
+    public String generateSignerSessionId();
 }
