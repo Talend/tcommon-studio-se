@@ -19,6 +19,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -28,6 +29,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.emf.common.util.EList;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.core.model.general.Project;
@@ -133,6 +135,8 @@ public class RelationshipItemBuilder {
     private boolean loading = false;
 
     private boolean modified = false;
+
+    private boolean autoSave = true;
 
     private Project aimProject;
 
@@ -694,6 +698,16 @@ public class RelationshipItemBuilder {
         return false;
     }
 
+    public void autoSaveRelations() {
+        if (!isAutoSave()) {
+            return;
+        }
+        saveRelations();
+    }
+
+    /**
+     * <font color="red">{@link #autoSaveRelations()} is recommanded</font>
+     */
     public void saveRelations() {
         if (!loaded && !modified) {
             return;
@@ -737,13 +751,7 @@ public class RelationshipItemBuilder {
 
             // sort by type
             List<Relation> relationItemsList = new ArrayList<Relation>(currentProjectItemsRelations.get(relation));
-            Collections.sort(relationItemsList, new Comparator<Relation>() {
-
-                @Override
-                public int compare(Relation o1, Relation o2) {
-                    return o1.getType().compareTo(o2.getType());
-                }
-            });
+            Collections.sort(relationItemsList, new RelationComparator());
             List<ItemRelation> usedRelationList = new ArrayList<ItemRelation>();
             List<ItemRelation> oldRelatedItems = new ArrayList<ItemRelation>(itemRelations.getRelatedItems());
             for (Relation relatedItem : relationItemsList) {
@@ -777,16 +785,28 @@ public class RelationshipItemBuilder {
                 emfRelatedItem.setVersion(relatedItem.getVersion());
                 itemRelations.getRelatedItems().add(emfRelatedItem);
             }
+            EList relatedItems = itemRelations.getRelatedItems();
             // get unused relation items
             oldRelatedItems.removeAll(usedRelationList);
             // remove unused relation items
-            itemRelations.getRelatedItems().removeAll(oldRelatedItems);
+            relatedItems.removeAll(oldRelatedItems);
+
+            // sort result
+            List relatedItemsList = new LinkedList<>(relatedItems);
+            Collections.sort(relatedItemsList, new ItemRelationComparator());
+            relatedItems.clear();
+            relatedItems.addAll(relatedItemsList);
             if (!exist) {
                 currentProject.getEmfProject().getItemsRelations().add(itemRelations);
             }
         }
         oldRelations.removeAll(usedList);
-        currentProject.getEmfProject().getItemsRelations().removeAll(oldRelations);  
+        EList itemsRelations = currentProject.getEmfProject().getItemsRelations();
+        itemsRelations.removeAll(oldRelations);
+        List itemRelationsList = new LinkedList<>(itemsRelations);
+        Collections.sort(itemRelationsList, new ItemRelationsComparator());
+        itemsRelations.clear();
+        itemsRelations.addAll(itemRelationsList);
     }
 
     private String getTypeFromItem(Item item) {
@@ -915,7 +935,7 @@ public class RelationshipItemBuilder {
                     return;
                 }
             }
-            saveRelations();
+            autoSaveRelations();
             monitor.done();
             loaded = true;
 
@@ -1008,7 +1028,7 @@ public class RelationshipItemBuilder {
         }
     }
 
-    public boolean supportRelation(Item item) {
+    public static boolean supportRelation(Item item) {
         IItemRelationshipHandler[] itemRelationshipHandlers = RelationshipRegistryReader.getInstance()
                 .getItemRelationshipHandlers();
         for (IItemRelationshipHandler handler : itemRelationshipHandlers) {
@@ -1098,11 +1118,69 @@ public class RelationshipItemBuilder {
             modified = true;
         }
         if (!fromMigration && modified) {
-            saveRelations();
+            autoSaveRelations();
         }
     }
 
-    public void removeItemRelations(Item item) {
+    public Set<Relation> getItemRelations(Item item) {
+        if (!loaded) {
+            loadRelations();
+        }
+
+        ProcessType processType = null;
+        if (item instanceof ProcessItem) {
+            processType = ((ProcessItem) item).getProcess();
+        }
+        if (item instanceof JobletProcessItem) {
+            processType = ((JobletProcessItem) item).getJobletProcess();
+        }
+
+        Set<Relation> relations = Collections.EMPTY_SET;
+        if (processType != null) {
+            Relation relation = new Relation();
+            relation.setId(item.getProperty().getId());
+            relation.setType(getTypeFromItem(item));
+            relation.setVersion(item.getProperty().getVersion());
+
+            Map<Relation, Set<Relation>> itemRelations = getRelatedRelations(item);
+
+            relations = itemRelations.get(relation);
+        }
+        return relations;
+    }
+
+    public Set<Relation> removeItemRelations(Item item) {
+        if (!loaded) {
+            loadRelations();
+        }
+        modified = true;
+
+        ProcessType processType = null;
+        if (item instanceof ProcessItem) {
+            processType = ((ProcessItem) item).getProcess();
+        }
+        if (item instanceof JobletProcessItem) {
+            processType = ((JobletProcessItem) item).getJobletProcess();
+        }
+
+        Set<Relation> removedRelations = Collections.EMPTY_SET;
+        if (processType != null) {
+            Relation relation = new Relation();
+            relation.setId(item.getProperty().getId());
+            relation.setType(getTypeFromItem(item));
+            relation.setVersion(item.getProperty().getVersion());
+
+            Map<Relation, Set<Relation>> itemRelations = getRelatedRelations(item);
+
+            if (itemRelations.containsKey(relation)) {
+                removedRelations = itemRelations.remove(relation);
+                autoSaveRelations();
+            }
+        }
+        return removedRelations;
+    }
+
+    public void putItemRelations(Item item, Set<Relation> relations) {
         if (!loaded) {
             loadRelations();
         }
@@ -1124,11 +1202,8 @@ public class RelationshipItemBuilder {
 
             Map<Relation, Set<Relation>> itemRelations = getRelatedRelations(item);
 
-            if (itemRelations.containsKey(relation)) {
-                itemRelations.get(relation).clear();
-                itemRelations.remove(relation);
-                saveRelations();
-            }
+            itemRelations.put(relation, relations);
+            autoSaveRelations();
         }
     }
 
@@ -1145,5 +1220,177 @@ public class RelationshipItemBuilder {
 
     public Map<Relation, Set<Relation>> getCurrentProjectItemsRelations() {
         return this.currentProjectItemsRelations;
+    }
+
+    public void setAutoSave(boolean autoSave) {
+        this.autoSave = autoSave;
+    }
+
+    public boolean isAutoSave() {
+        return this.autoSave;
+    }
+
+    public boolean isSame(Set<Relation> r1, Set<Relation> r2) {
+        if (r1 == null && r2 == null) {
+            return true;
+        }
+        if (r1 == null || r2 == null) {
+            return false;
+        }
+        if (r1.size() != r2.size()) {
+            return false;
+        }
+        List<Relation> r1List = new LinkedList<>(r1);
+        List<Relation> r2List = new LinkedList<>(r2);
+        RelationComparator comparator = new RelationComparator();
+        r1List.sort(comparator);
+        r2List.sort(comparator);
+        Iterator<Relation> r1Iter = r1List.iterator();
+        Iterator<Relation> r2Iter = r2List.iterator();
+        while (r1Iter.hasNext() && r2Iter.hasNext()) {
+            Relation r1Relation = r1Iter.next();
+            Relation r2Relation = r2Iter.next();
+            if (r1Relation == null || r2Relation == null) {
+                return false;
+            }
+            if (comparator.compare(r1Relation, r2Relation) != 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static class RelationComparator implements Comparator<Relation> {
+
+        @Override
+        public int compare(Relation o1, Relation o2) {
+            String o1Type = o1.getType();
+            String o2Type = o2.getType();
+            if (o1Type == null) {
+                o1Type = "";
+            }
+            if (o2Type == null) {
+                o2Type = "";
+            }
+            int result = o1Type.compareTo(o2Type);
+            if (result != 0) {
+                return result;
+            }
+            String o1Id = o1.getId();
+            String o2Id = o2.getId();
+            if (o1Id == null) {
+                o1Id = "";
+            }
+            if (o2Id == null) {
+                o2Id = "";
+            }
+            result = o1Id.compareTo(o2Id);
+            if (result != 0) {
+                return result;
+            }
+            String o1Version = o1.getVersion();
+            String o2Version = o2.getVersion();
+            if (o1Version == null) {
+                o1Version = "";
+            }
+            if (o2Version == null) {
+                o2Version = "";
+            }
+            return o1Version.compareTo(o2Version);
+        }
+    }
+
+    public static class ItemRelationComparator implements Comparator<Object> {
+
+        @Override
+        public int compare(Object arg0, Object arg1) {
+            if (arg0 instanceof ItemRelation && arg1 instanceof ItemRelation) {
+                ItemRelation itemRelation0 = (ItemRelation) arg0;
+                ItemRelation itemRelation1 = (ItemRelation) arg1;
+                String type0 = itemRelation0.getType();
+                String type1 = itemRelation1.getType();
+                if (type0 == null) {
+                    type0 = "";
+                }
+                if (type1 == null) {
+                    type1 = "";
+                }
+                int result = type0.compareTo(type1);
+                if (result != 0) {
+                    return result;
+                }
+                String id0 = itemRelation0.getId();
+                String id1 = itemRelation1.getId();
+                if (id0 == null) {
+                    id0 = "";
+                }
+                if (id1 == null) {
+                    id1 = "";
+                }
+                result = id0.compareTo(id1);
+                if (result != 0) {
+                    return result;
+                }
+                String version0 = itemRelation0.getVersion();
+                String version1 = itemRelation1.getVersion();
+                if (version0 == null) {
+                    version0 = "";
+                }
+                if (version1 == null) {
+                    version1 = "";
+                }
+                return version0.compareTo(version1);
+            }
+            return 0;
+        }
+    }
+
+    public static class ItemRelationsComparator implements Comparator<Object> {
+
+        @Override
+        public int compare(Object o1, Object o2) {
+            if (o1 instanceof ItemRelations && o2 instanceof ItemRelations) {
+                ItemRelations itemRelations1 = (ItemRelations) o1;
+                ItemRelations itemRelations2 = (ItemRelations) o2;
+                ItemRelation baseItem1 = itemRelations1.getBaseItem();
+                ItemRelation baseItem2 = itemRelations2.getBaseItem();
+                if (baseItem1 != null && baseItem2 != null) {
+                    String type1 = baseItem1.getType();
+                    String type2 = baseItem2.getType();
+                    if (type1 == null) {
+                        type1 = "";
+                    }
+                    if (type2 == null) {
+                        type2 = "";
+                    }
+                    int result = type1.compareTo(type2);
+                    if (result != 0) {
+                        return result;
+                    }
+                    String id1 = baseItem1.getId();
+                    String id2 = baseItem2.getId();
+                    if (id1 == null) {
+                        id1 = "";
+                    }
+                    if (id2 == null) {
+                        id2 = "";
+                    }
+                    result = id1.compareTo(id2);
+                    if (result != 0) {
+                        return result;
+                    }
+                    String version1 = baseItem1.getVersion();
+                    String version2 = baseItem2.getVersion();
+                    if (version1 == null) {
+                        version1 = "";
+                    }
+                    if (version2 == null) {
+                        version2 = "";
+                    }
+                    return version1.compareTo(version2);
+                }
+            }
+            return 0;
+        }
     }
 }
