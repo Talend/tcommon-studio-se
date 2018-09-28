@@ -105,6 +105,10 @@ public class DatabaseConnStrUtil {
                 && EDatabaseVersion4Drivers.MARIADB.getVersionValue().equals(dbVersion)) {
             connStr = EDatabaseConnTemplate.MARIADB;
         }
+        if(EDatabaseTypeName.SYBASEASE.getDisplayName().equals(dbType)
+                && EDatabaseVersion4Drivers.SYBASEIQ_16_SA.getVersionValue().equals(dbVersion)) {
+        	connStr = EDatabaseConnTemplate.SYBASEASE_16_SA;
+        }
         EDatabaseVersion4Drivers version = EDatabaseVersion4Drivers.indexOfByVersion(dbVersion);
         if (connStr != null) {
             String s = connStr.getUrlTemplate(version);

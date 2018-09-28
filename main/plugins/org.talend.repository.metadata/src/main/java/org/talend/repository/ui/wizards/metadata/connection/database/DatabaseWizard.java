@@ -480,15 +480,22 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
                                     ConnParameterKeys.CONN_PARA_KEY_IMPALA_VERSION));
                         }
                     }
-                } else if (EDatabaseTypeName.MYSQL.equals(dbType)
-                        && (EDatabaseVersion4Drivers.MARIADB.getVersionValue().equals(dbVersion))) {
-                    driverClass = EDatabase4DriverClassName.MARIADB.getDriverClass();
+                } else if (EDatabaseTypeName.MYSQL.equals(dbType)) {
+                    if (EDatabaseVersion4Drivers.MYSQL_8.getVersionValue().equals(dbVersion)) {
+                        driverClass = EDatabase4DriverClassName.MYSQL8.getDriverClass();
+                    } else if (EDatabaseVersion4Drivers.MARIADB.getVersionValue().equals(dbVersion)) {
+                        driverClass = EDatabase4DriverClassName.MARIADB.getDriverClass();
+                    }
                 } else if (EDatabaseTypeName.MSSQL.equals(dbType)
                         && EDatabaseVersion4Drivers.MSSQL_PROP.getVersionValue().equals(dbVersion)) {
                     driverClass = EDatabase4DriverClassName.MSSQL2.getDriverClass();
                 } else if (EDatabaseTypeName.SYBASEASE.equals(dbType)
                         && EDatabaseVersion4Drivers.SYBASEIQ_16.getVersionValue().equals(dbVersion)) {
                     driverClass = EDatabase4DriverClassName.SYBASEIQ_16.getDriverClass();
+                }
+                else if (EDatabaseTypeName.SYBASEASE.equals(dbType)
+                        && EDatabaseVersion4Drivers.SYBASEIQ_16_SA.getVersionValue().equals(dbVersion)) {
+                    driverClass = EDatabase4DriverClassName.SYBASEIQ_16_SA.getDriverClass();
                 }
                 dbConnection.setDriverClass(driverClass);
             }

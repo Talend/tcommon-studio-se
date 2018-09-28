@@ -73,6 +73,7 @@ public enum EDatabaseVersion4Drivers {
             "SAS 9.2", "SAS_9.2", new String[] { "sas.core.jar", "sas.security.sspi.jar", "sas.svc.connection.jar", "org.apache.log4j_1.2.15.v201012070815.jar" })), //$NON-NLS-1$ //$NON-NLS-2$
     SAPHana(new DbVersion4Drivers(EDatabaseTypeName.SAPHana, "HDB 1.0", "HDB_1_0", "ngdbc.jar")), //$NON-NLS-1$
     // MYSQL, add for 9594
+    MYSQL_8(new DbVersion4Drivers(EDatabaseTypeName.MYSQL, "MySQL 8", "MYSQL_8", "mysql-connector-java-8.0.12.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     MYSQL_5(new DbVersion4Drivers(EDatabaseTypeName.MYSQL, "MySQL 5", "MYSQL_5", "mysql-connector-java-5.1.30-bin.jar")), //$NON-NLS-1$  //$NON-NLS-2$ //$NON-NLS-3$
     MYSQL_4(new DbVersion4Drivers(EDatabaseTypeName.MYSQL, "MySQL 4", "MYSQL_4", "mysql-connector-java-3.1.14-bin.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     MARIADB(new DbVersion4Drivers(EDatabaseTypeName.MYSQL, "MariaDB", "MARIADB", "mariadb-java-client-1.1.7.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -96,9 +97,11 @@ public enum EDatabaseVersion4Drivers {
 
     // for bug 0017930
 
-    GREENPLUM(new DbVersion4Drivers(EDatabaseTypeName.GREENPLUM, "postgresql-8.4-703.jdbc4.jar")), //$NON-NLS-1$ 
+    GREENPLUM(new DbVersion4Drivers(EDatabaseTypeName.GREENPLUM, "postgresql-8.4-703.jdbc4.jar")), //$NON-NLS-1$
+//    PSQL_V10(new DbVersion4Drivers(EDatabaseTypeName.PSQL, "v10", "V10", "postgresql-42.2.5.jar")),
+    PSQL_V9_X(new DbVersion4Drivers(EDatabaseTypeName.PSQL, "v9 and later", "V9_X", "postgresql-42.2.5.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     PSQL_PRIOR_TO_V9(new DbVersion4Drivers(EDatabaseTypeName.PSQL, "Prior to v9", "PRIOR_TO_V9", "postgresql-8.4-703.jdbc4.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
-    PSQL_V9_X(new DbVersion4Drivers(EDatabaseTypeName.PSQL, "v9.X", "V9_X", "postgresql-9.4-1201.jdbc41.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
+    
     PLUSPSQL_PRIOR_TO_V9(new DbVersion4Drivers(EDatabaseTypeName.PLUSPSQL,
             "Prior to v9", "PRIOR_TO_V9", "postgresql-8.4-703.jdbc4.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     PLUSPSQL_V9_X(new DbVersion4Drivers(EDatabaseTypeName.PLUSPSQL, "v9.X", "V9_X", "postgresql-9.4-1201.jdbc41.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -107,7 +110,8 @@ public enum EDatabaseVersion4Drivers {
     IBMDB2ZOS(new DbVersion4Drivers(EDatabaseTypeName.IBMDB2ZOS, new String[] { "db2jcc4.jar", "db2jcc_license_cu.jar", //$NON-NLS-1$ //$NON-NLS-2$
             "db2jcc_license_cisuz.jar" })), //$NON-NLS-1$ 
     SYBASEASE(new DbVersion4Drivers(EDatabaseTypeName.SYBASEASE, "Sybase 12/15", "SYBSEIQ_12_15", "jconn3.jar")), //$NON-NLS-1$ 
-    SYBASEIQ_16(new DbVersion4Drivers(EDatabaseTypeName.SYBASEASE, "Sybase 16", "SYBSEIQ_16", "jconn4.jar")), //$NON-NLS-1$ 
+    SYBASEIQ_16(new DbVersion4Drivers(EDatabaseTypeName.SYBASEASE, "Sybase 16", "SYBSEIQ_16", "jconn4.jar")), //$NON-NLS-1$
+    SYBASEIQ_16_SA(new DbVersion4Drivers(EDatabaseTypeName.SYBASEASE, "Sybase 16 (SQL Anywhere)", "SYBSEIQ_16_SA", "sajdbc4.jar")),
     SYBASEIQ(new DbVersion4Drivers(EDatabaseTypeName.SYBASEIQ, "jconn3.jar")), //$NON-NLS-1$ 
     
     // for bug 0013127

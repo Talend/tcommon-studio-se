@@ -231,7 +231,21 @@ public class ExtractManager {
         if (EMPTY.equals(schema)) {
             schema = null; // if empty, same as null, no schema.
         }
-        rsTables = dbMetaData.getTables(null, schema, null, availableTableTypes.toArray(new String[] {}));
+        // Fix a bug was caused by com.mysql.cj.jdbc.DatabaseMetaDataUsingInfoSchema class on method getTables(). I
+        // debug two drivers (5.1.30 and 8.0.12) and define that those drivers in Runtime use different implementation
+        // for java.sql.DatabaseMetaData.I found bug on their bug tracker site, and mySQL team accept that this is a bug
+        // and verified this behavior on
+        // MySQL Connector / J 8.0.11 . Link: https://bugs.mysql.com/bug.php?id=90887. But it is not fixed on 8.0.12.
+        // I will change it just for MySQL database
+        String catalog = null;
+        boolean isMysql = MetadataConnectionUtils.isMysql(dbMetaData);
+        if (isMysql) {
+            Connection conn = dbMetaData.getConnection();
+            if (conn != null) {
+                catalog = conn.getCatalog();
+            }
+        }
+        rsTables = dbMetaData.getTables(catalog, schema, null, availableTableTypes.toArray(new String[] {}));
         if (rsTables != null) {
             try {
                 getMetadataTables(medataTables, rsTables, dbMetaData.supportsSchemasInTableDefinitions(), tablesToFilter, limit);

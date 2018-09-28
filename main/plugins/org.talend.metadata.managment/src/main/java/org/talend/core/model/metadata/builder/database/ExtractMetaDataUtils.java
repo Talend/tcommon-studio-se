@@ -968,15 +968,21 @@ public class ExtractMetaDataUtils {
                                     .getVersionValue().equals(dbVersion) || EDatabaseVersion4Drivers.VERTICA_9
                                     .getVersionValue().equals(dbVersion))) {
                         driverClassName = EDatabase4DriverClassName.VERTICA2.getDriverClass();
-                    } else if (EDatabaseTypeName.MYSQL.getXmlName().equals(dbType)
-                            && (EDatabaseVersion4Drivers.MARIADB.getVersionValue().equals(dbVersion))) {
-                        driverClassName = EDatabase4DriverClassName.MARIADB.getDriverClass();
+                    } else if (EDatabaseTypeName.MYSQL.getXmlName().equals(dbType)) {
+                        if (EDatabaseVersion4Drivers.MYSQL_8.getVersionValue().equals(dbVersion)) {
+                            driverClassName = EDatabase4DriverClassName.MYSQL8.getDriverClass();
+                        } else if (EDatabaseVersion4Drivers.MARIADB.getVersionValue().equals(dbVersion)) {
+                            driverClassName = EDatabase4DriverClassName.MARIADB.getDriverClass();
+                        }
                     }else if(EDatabaseTypeName.MSSQL.getDisplayName().equals(dbType) 
                             && EDatabaseVersion4Drivers.MSSQL_PROP.getVersionValue().equals(dbVersion)){
                         driverClassName = EDatabase4DriverClassName.MSSQL2.getDriverClass();
                     }else if(EDatabaseTypeName.SYBASEASE.getDisplayName().equals(dbType) 
                             && EDatabaseVersion4Drivers.SYBASEIQ_16.getVersionValue().equals(dbVersion)){
                         driverClassName = EDatabase4DriverClassName.SYBASEIQ_16.getDriverClass();
+                    }else if(EDatabaseTypeName.SYBASEASE.getDisplayName().equals(dbType) 
+                            && EDatabaseVersion4Drivers.SYBASEIQ_16_SA.getVersionValue().equals(dbVersion)){
+                        driverClassName = EDatabase4DriverClassName.SYBASEIQ_16_SA.getDriverClass();
                     }
                 }
             } else {
