@@ -26,4 +26,6 @@ import org.talend.core.model.properties.Item;
 public interface IMetadataBridgeService extends IService {
 
     public boolean exportMetadataBridge(List<Item> items, String filter, String directory);
+
+    public boolean checkBridgeConnection();
 }
