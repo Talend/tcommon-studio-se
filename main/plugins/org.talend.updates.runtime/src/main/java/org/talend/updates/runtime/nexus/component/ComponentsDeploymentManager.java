@@ -21,14 +21,11 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.resource.UpdatesHelper;
 import org.talend.core.GlobalServiceRegister;
-import org.talend.core.model.general.INexusService;
 import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.IRepositoryArtifactHandler;
 import org.talend.core.nexus.RepositoryArtifactHandlerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
-import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
-import org.talend.updates.runtime.UpdatesRuntimePlugin;
 import org.talend.updates.runtime.feature.model.Type;
 import org.talend.updates.runtime.model.interfaces.ITaCoKitCarFeature;
 import org.talend.updates.runtime.service.ITaCoKitUpdateService;
@@ -47,8 +44,6 @@ public class ComponentsDeploymentManager {
     private final ComponentIndexManager indexManager;
 
     private File workFolder;
-
-    private ProjectPreferenceManager prefManager;
 
     public ComponentsDeploymentManager() {
         super();
@@ -71,7 +66,7 @@ public class ComponentsDeploymentManager {
         return false;
     }
 
-    public boolean deployComponentsToArtifactRepository(IProgressMonitor progress, File componentFile) throws IOException {
+    public boolean deployComponentsToArtifactRepository(IProgressMonitor progress, File componentFile) {
         if (componentFile == null || !componentFile.exists() || !componentFile.isFile()) {
             return false;
         }
@@ -93,16 +88,17 @@ public class ComponentsDeploymentManager {
                 ExceptionHandler.process(e);
             }
         }
-        if (!UpdatesHelper.isComponentUpdateSite(componentFile) && !isCar) {
+        boolean isPlainPatch = UpdatesHelper.isPlainUpdate(componentFile);
+        boolean isP2Patch = UpdatesHelper.isUpdateSite(componentFile);
+        if (!UpdatesHelper.isComponentUpdateSite(componentFile) && !isCar && !isPlainPatch && !isP2Patch) {
             return false;
         }
         ComponentIndexBean compIndexBean = null;
-        if (!isCar) {
-            compIndexBean = indexManager.create(componentFile);
-            if (compIndexBean == null) {
-                return false;
-            }
-        } else {
+        if (isPlainPatch) {
+            compIndexBean = indexManager.createIndexBean4Patch(componentFile, Type.PLAIN_ZIP);
+        } else if (isP2Patch) {
+            compIndexBean = indexManager.createIndexBean4Patch(componentFile, Type.P2_PATCH);
+        } else if (isCar) {
             try {
                 compIndexBean = new ComponentIndexBean();
                 ITaCoKitCarFeature feature = taCoKitService.generateExtraFeature(componentFile, progress);
@@ -116,6 +112,11 @@ public class ComponentsDeploymentManager {
                 compIndexBean.setValue(ComponentIndexNames.types, PathUtils.convert2StringTypes(types));
             } catch (Exception e) {
                 ExceptionHandler.process(e);
+            }
+        } else {
+            compIndexBean = indexManager.create(componentFile);
+            if (compIndexBean == null) {
+                return false;
             }
         }
         MavenArtifact mvnArtifact = compIndexBean.getMavenArtifact();
@@ -173,26 +174,12 @@ public class ComponentsDeploymentManager {
     }
 
     private IRepositoryArtifactHandler getRepositoryHandler() {
-        if (prefManager == null) {
-            prefManager = new ProjectPreferenceManager(UpdatesRuntimePlugin.BUNDLE_ID);
-        }
-        boolean enableShare = prefManager.getBoolean("repository.share.enable"); //$NON-NLS-1$
-        if (!enableShare) {
-            return null;
-        }
-        String repositoryId = prefManager.getValue("repository.share.repository.id"); //$NON-NLS-1$
-        if (StringUtils.isBlank(repositoryId)) {
-            return null;
-        }
-        INexusService nexusService = null;
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(INexusService.class)) {
-            nexusService = (INexusService) GlobalServiceRegister.getDefault().getService(INexusService.class);
-        }
-        if (nexusService == null) {
-            return null;
-        }
-        ArtifactRepositoryBean artifactRepisotory = nexusService.getArtifactRepositoryFromServer();
+        ArtifactRepositoryBean artifactRepisotory = NexusServerManager.getInstance().getArtifactRepositoryFromTac();
         if (artifactRepisotory == null) {
+            return null;
+        }
+        String repositoryId = NexusServerManager.getInstance().getRepositoryIdForShare();
+        if (StringUtils.isBlank(repositoryId)) {
             return null;
         }
         artifactRepisotory.setRepositoryId(repositoryId);

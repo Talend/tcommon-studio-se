@@ -46,7 +46,7 @@ public class PlainZipFeature extends AbstractExtraFeature {
     }
 
     public PlainZipFeature(final File zipFile) {
-        this(new ComponentIndexManager().create(zipFile));
+        this(new ComponentIndexManager().createIndexBean4Patch(zipFile, Type.PLAIN_ZIP));
         setStorage(new AbstractFeatureStorage() {
 
             @Override
@@ -74,6 +74,16 @@ public class PlainZipFeature extends AbstractExtraFeature {
             boolean useLegacyP2Install) {
         super(p2IuId, name, version, description, mvnUri, imageMvnUri, product, compatibleStudioVersion, parentCategory, types,
                 categories, degradable, mustBeInstalled, useLegacyP2Install);
+    }
+
+    @Override
+    public boolean isShareEnable() {
+        return share;
+    }
+
+    @Override
+    public void setShareEnable(boolean share) {
+        this.share = share;
     }
 
     @Override

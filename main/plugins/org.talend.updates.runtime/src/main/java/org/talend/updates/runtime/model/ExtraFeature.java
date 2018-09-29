@@ -218,12 +218,7 @@ public interface ExtraFeature extends Comparable<Object> {
         if (progress.isCanceled()) {
             throw new OperationCanceledException();
         }
-        try {
-            new ComponentsDeploymentManager().deployComponentsToArtifactRepository(progress, installedCompFile);
-        } catch (IOException e) {
-            // don't block other, so catch the exception
-            ExceptionHandler.process(e);
-        }
+        new ComponentsDeploymentManager().deployComponentsToArtifactRepository(progress, installedCompFile);
     }
 
     default boolean isShareEnable() {

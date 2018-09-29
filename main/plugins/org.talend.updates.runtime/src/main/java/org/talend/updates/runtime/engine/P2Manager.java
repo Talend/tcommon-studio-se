@@ -12,10 +12,13 @@
 // ============================================================================
 package org.talend.updates.runtime.engine;
 
+import java.io.File;
 import java.net.URI;
 import java.util.Collection;
+import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.equinox.p2.core.IProvisioningAgent;
 import org.eclipse.equinox.p2.core.IProvisioningAgentProvider;
@@ -26,13 +29,18 @@ import org.eclipse.equinox.p2.metadata.IInstallableUnit;
 import org.eclipse.equinox.p2.metadata.VersionRange;
 import org.eclipse.equinox.p2.query.IQuery;
 import org.eclipse.equinox.p2.query.QueryUtil;
+import org.eclipse.equinox.p2.repository.artifact.IArtifactRepositoryManager;
+import org.eclipse.equinox.p2.repository.metadata.IMetadataRepository;
+import org.eclipse.equinox.p2.repository.metadata.IMetadataRepositoryManager;
 import org.eclipse.ui.PlatformUI;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.ui.runtime.update.PreferenceKeys;
 import org.talend.commons.utils.VersionUtils;
+import org.talend.commons.utils.io.FilesUtils;
 import org.talend.updates.runtime.i18n.Messages;
 
 /**
@@ -174,6 +182,44 @@ public class P2Manager {
 
     public void setP2AgentUri(URI p2AgentUri) {
         this.p2AgentUri = p2AgentUri;
+    }
+
+    public String getP2Version(File p2PatchZipFile) {
+        String version = null; // $NON-NLS-1$
+        File patchFolder = null;
+        try {
+            patchFolder = File.createTempFile("PatchInstaller", ""); //$NON-NLS-1$ //$NON-NLS-2$
+            patchFolder.delete();
+            patchFolder.mkdirs();
+            FilesUtils.unzip(p2PatchZipFile.getAbsolutePath(), patchFolder.getAbsolutePath());
+            Bundle bundle = FrameworkUtil.getBundle(this.getClass());
+            BundleContext context = bundle.getBundleContext();
+            ServiceReference sr = context.getServiceReference(IProvisioningAgentProvider.SERVICE_NAME);
+            if (sr == null) {
+                return version;
+            }
+            IProvisioningAgentProvider agentProvider = (IProvisioningAgentProvider) context.getService(sr);
+            IProvisioningAgent agent = agentProvider.createAgent(null);
+            IMetadataRepositoryManager manager = (IMetadataRepositoryManager) agent
+                    .getService(IMetadataRepositoryManager.SERVICE_NAME);
+            IArtifactRepositoryManager artifactManager = (IArtifactRepositoryManager) agent
+                    .getService(IArtifactRepositoryManager.SERVICE_NAME);
+            manager.addRepository(patchFolder.toURI());
+            artifactManager.addRepository(patchFolder.toURI());
+            IProgressMonitor monitor = new NullProgressMonitor();
+            IMetadataRepository metadataRepo = manager.loadRepository(patchFolder.toURI(), monitor);
+            Set<IInstallableUnit> toInstall = metadataRepo.query(QueryUtil.createIUAnyQuery(), monitor).toUnmodifiableSet();
+            if (!toInstall.isEmpty()) {
+                version = toInstall.iterator().next().getVersion().toString();
+            }
+        } catch (Exception e) {
+            ExceptionHandler.process(e);
+        } finally {
+            if (patchFolder != null && patchFolder.exists()) {
+                patchFolder.delete();
+            }
+        }
+        return version;
     }
 
     public void clear() {

@@ -24,8 +24,11 @@ import org.talend.commons.runtime.helper.PatchComponentHelper;
 import org.talend.commons.runtime.service.PatchComponent;
 import org.talend.commons.utils.VersionUtils;
 import org.talend.updates.runtime.Constants;
+import org.talend.updates.runtime.feature.model.Type;
 import org.talend.updates.runtime.i18n.Messages;
 import org.talend.updates.runtime.nexus.component.ComponentIndexBean;
+import org.talend.updates.runtime.nexus.component.ComponentIndexManager;
+import org.talend.updates.runtime.storage.AbstractFeatureStorage;
 import org.talend.updates.runtime.utils.PathUtils;
 
 /**
@@ -38,7 +41,19 @@ public class P2PatchFeature extends P2ExtraFeature {
     }
 
     public P2PatchFeature(final File zipFile) {
-        super(zipFile);
+        this(new ComponentIndexManager().createIndexBean4Patch(zipFile, Type.P2_PATCH));
+        setStorage(new AbstractFeatureStorage() {
+
+            @Override
+            protected File downloadImageFile(IProgressMonitor monitor) throws Exception {
+                return null;
+            }
+
+            @Override
+            protected File downloadFeatureFile(IProgressMonitor monitor) throws Exception {
+                return zipFile;
+            }
+        });
     }
 
     @Override
@@ -54,6 +69,21 @@ public class P2PatchFeature extends P2ExtraFeature {
     @Override
     public InstallationStatus getInstallationStatus(IProgressMonitor monitor) throws Exception {
         return PathUtils.getInstallationStatus(VersionUtils.getInternalVersion(), getVersion());
+    }
+
+    @Override
+    public ExtraFeature getInstalledFeature(IProgressMonitor progress) throws ExtraFeatureException {
+        return this;
+    }
+
+    @Override
+    public boolean isShareEnable() {
+        return share;
+    }
+
+    @Override
+    public void setShareEnable(boolean share) {
+        this.share = share;
     }
 
     @Override

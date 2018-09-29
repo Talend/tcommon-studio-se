@@ -26,24 +26,13 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
-import org.talend.commons.exception.PersistenceException;
-import org.talend.core.GlobalServiceRegister;
-import org.talend.core.context.Context;
-import org.talend.core.context.RepositoryContext;
-import org.talend.core.model.general.INexusService;
 import org.talend.core.nexus.ArtifactRepositoryBean;
-import org.talend.core.runtime.CoreRuntimePlugin;
-import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
 import org.talend.login.AbstractLoginTask;
-import org.talend.repository.model.IProxyRepositoryFactory;
-import org.talend.repository.model.IRepositoryService;
-import org.talend.updates.runtime.UpdatesRuntimePlugin;
-import org.talend.updates.runtime.engine.component.ComponentNexusP2ExtraFeature;
 import org.talend.updates.runtime.engine.component.InstallComponentMessages;
 import org.talend.updates.runtime.engine.factory.ComponentsNexusInstallFactory;
 import org.talend.updates.runtime.model.ExtraFeature;
 import org.talend.updates.runtime.model.FeatureCategory;
-import org.talend.updates.runtime.model.interfaces.ITaCoKitCarFeature;
+import org.talend.updates.runtime.nexus.component.NexusServerManager;
 import org.talend.updates.runtime.utils.OsgiBundleInstaller;
 
 /**
@@ -63,31 +52,18 @@ public class InstallLocalNexusComponentsLoginTask extends AbstractLoginTask {
                 progress = new NullProgressMonitor();
             }
             try {
-                ProjectPreferenceManager prefManager = new ProjectPreferenceManager(UpdatesRuntimePlugin.BUNDLE_ID);
-                boolean enableShare = prefManager.getBoolean("repository.share.enable"); //$NON-NLS-1$
-                if (!enableShare) {
-                    return Collections.emptySet();
-                }
-                String repositoryId = prefManager.getValue("repository.share.repository.id"); //$NON-NLS-1$
-                if (StringUtils.isBlank(repositoryId)) {
-                    return Collections.emptySet();
-                }
-                INexusService nexusService = null;
-                if (GlobalServiceRegister.getDefault().isServiceRegistered(INexusService.class)) {
-                    nexusService = (INexusService) GlobalServiceRegister.getDefault().getService(INexusService.class);
-                }
-                if (nexusService == null) {
-                    return Collections.emptySet();
-                }
-                ArtifactRepositoryBean artifactRepisotory = nexusService.getArtifactRepositoryFromServer();
+                ArtifactRepositoryBean artifactRepisotory = NexusServerManager.getInstance().getArtifactRepositoryFromTac();
                 if (artifactRepisotory == null) {
+                    return Collections.emptySet();
+                }
+                String repositoryId = NexusServerManager.getInstance().getRepositoryIdForShare();
+                if (StringUtils.isBlank(repositoryId)) {
                     return Collections.emptySet();
                 }
                 artifactRepisotory.setRepositoryId(repositoryId);
                 if (monitor.isCanceled()) {
                     throw new OperationCanceledException();
                 }
-
                 return retrieveComponentsFromIndex(monitor, artifactRepisotory);
             } catch (Exception e) {
                 if (CommonsPlugin.isDebugMode()) {
@@ -112,25 +88,7 @@ public class InstallLocalNexusComponentsLoginTask extends AbstractLoginTask {
 
     @Override
     public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-        boolean isRemote = false;
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IRepositoryService.class)) {
-            IRepositoryService repositoryService = (IRepositoryService) GlobalServiceRegister.getDefault()
-                    .getService(IRepositoryService.class);
-            IProxyRepositoryFactory repositoryFactory = repositoryService.getProxyRepositoryFactory();
-            try {
-                boolean isLocalProject = repositoryFactory.isLocalConnectionProvider();
-                boolean isOffline = false;
-                if (!isLocalProject) {
-                    RepositoryContext repositoryContext = (RepositoryContext) CoreRuntimePlugin.getInstance().getContext()
-                            .getProperty(Context.REPOSITORY_CONTEXT_KEY);
-                    isOffline = repositoryContext.isOffline();
-                }
-                isRemote = !isLocalProject && !isOffline;
-            } catch (PersistenceException e) {
-                ExceptionHandler.process(e);
-            }
-        }
-        if (!isRemote) {
+        if (!NexusServerManager.getInstance().isRemoteOnlineProject()) {
             return;
         }
         try {
@@ -168,11 +126,9 @@ public class InstallLocalNexusComponentsLoginTask extends AbstractLoginTask {
                 install(monitor, f, messages);
             }
         }
-        if (feature instanceof ComponentNexusP2ExtraFeature || feature instanceof ITaCoKitCarFeature) {
-            if (feature.canBeInstalled(monitor)) {
-                messages.analyzeStatus(feature.install(monitor, null));
-                messages.setNeedRestart(feature.needRestart());
-            }
+        if (feature.canBeInstalled(monitor)) {
+            messages.analyzeStatus(feature.install(monitor, null));
+            messages.setNeedRestart(feature.needRestart());
         }
     }
 }

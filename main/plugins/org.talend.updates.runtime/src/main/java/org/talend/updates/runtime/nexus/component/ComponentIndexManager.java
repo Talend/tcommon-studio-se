@@ -45,6 +45,8 @@ import org.talend.commons.utils.resource.FileExtensions;
 import org.talend.commons.utils.resource.UpdatesHelper;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
+import org.talend.updates.runtime.engine.P2Manager;
+import org.talend.updates.runtime.feature.model.Type;
 import org.talend.updates.runtime.utils.JarMenifestUtil;
 import org.talend.updates.runtime.utils.PathUtils;
 
@@ -299,6 +301,36 @@ public class ComponentIndexManager {
             }
         }
         return component;
+    }
+
+    public ComponentIndexBean createIndexBean4Patch(File patchZipFile, Type type) {
+        if (patchZipFile == null || !patchZipFile.exists() || patchZipFile.isDirectory()
+                || !patchZipFile.getName().endsWith(FileExtensions.ZIP_FILE_SUFFIX) || type == null) {
+            return null;
+        }
+        String name = StringUtils.removeEnd(patchZipFile.getName(), FileExtensions.ZIP_FILE_SUFFIX);
+        String bundleId = null;
+        String bundleVersion = null;
+        String mvnUri = null;
+        if (type == Type.PLAIN_ZIP) {
+            bundleId = "org.talend.studio.patch.plainzip"; //$NON-NLS-1$
+            bundleVersion = name;
+        } else if (type == Type.P2_PATCH) {
+            bundleId = "org.talend.studio.patch.updatesite"; //$NON-NLS-1$
+            bundleVersion = P2Manager.getInstance().getP2Version(patchZipFile);
+        }
+        String artifactId = StringUtils.substringBeforeLast(name, "-"); //$NON-NLS-1$
+        String artifactVersion = StringUtils.substringAfterLast(name, "-"); //$NON-NLS-1$
+        mvnUri = MavenUrlHelper.generateMvnUrl(bundleId, artifactId, artifactVersion, FileExtensions.ZIP_EXTENSION, null);
+        if (name != null && bundleId != null && bundleVersion != null && mvnUri != null) {
+            ComponentIndexBean indexBean = new ComponentIndexBean();
+            boolean set = indexBean.setRequiredFieldsValue(name, bundleId, bundleVersion, mvnUri);
+            indexBean.setValue(ComponentIndexNames.types, type.getKeyWord());
+            if (set) {
+                return indexBean;
+            }
+        }
+        return null;
     }
 
     /**
