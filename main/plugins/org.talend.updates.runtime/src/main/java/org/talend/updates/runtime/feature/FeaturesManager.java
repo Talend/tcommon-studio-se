@@ -29,8 +29,10 @@ import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.threading.TalendCustomThreadPoolExecutor;
+import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
 import org.talend.updates.runtime.Constants;
 import org.talend.updates.runtime.engine.ExtraFeaturesUpdatesFactory;
 import org.talend.updates.runtime.engine.P2Manager;
@@ -58,6 +60,8 @@ public class FeaturesManager {
 
     private final Object featuresCacheLock = new Object();
 
+    private final Object projectPreferenceManagerLock = new Object();
+
     private TalendCustomThreadPoolExecutor searchThreadPoolExecutor;
 
     private TalendCustomThreadPoolExecutor updateThreadPoolExecutor;
@@ -65,6 +69,8 @@ public class FeaturesManager {
     private List<ExtraFeature> featuresCache;
 
     private ExtraFeaturesUpdatesFactory extraFeaturesFactory;
+
+    private ProjectPreferenceManager projectPreferenceManager;
 
     public FeaturesManager() {
         extraFeaturesFactory = new ExtraFeaturesUpdatesFactory();
@@ -266,7 +272,7 @@ public class FeaturesManager {
         cantRemoveMessage.setMessage(Messages.getString("ComponentsManager.form.warn.cantRemove")); //$NON-NLS-1$
         messages.add(cantRemoveMessage);
 
-        if (UpdatesRuntimePreference.getInstance().getBoolean(UpdatesRuntimePreferenceConstants.AUTO_SHARE_FEATURES)) {
+        if (isAutoShare()) {
             Message autoShareMessage = new Message();
             autoShareMessage.setType(EMessageType.WARN);
             autoShareMessage.setMessage(Messages.getString("ComponentsManager.form.warn.autoShare")); //$NON-NLS-1$
@@ -274,6 +280,23 @@ public class FeaturesManager {
         }
 
         return messages;
+    }
+
+    public boolean isAutoShare() {
+        IPreferenceStore preferenceStore = getProjectPrefStore().getPreferenceStore();
+        return preferenceStore.getBoolean(UpdatesRuntimePreferenceConstants.PROJECT_PREF_KEY_SHARE_ENABLE);
+    }
+
+    public ProjectPreferenceManager getProjectPrefStore() {
+        if (this.projectPreferenceManager != null) {
+            return this.projectPreferenceManager;
+        }
+        synchronized (projectPreferenceManagerLock) {
+            if (this.projectPreferenceManager == null) {
+                this.projectPreferenceManager = UpdatesRuntimePreference.getInstance().createProjectPreferenceManager();
+            }
+        }
+        return this.projectPreferenceManager;
     }
 
     private ExtraFeaturesUpdatesFactory getExtraFeatureFactory() {
@@ -343,6 +366,9 @@ public class FeaturesManager {
             if (featuresCache != null) {
                 featuresCache.clear();
             }
+        }
+        synchronized (projectPreferenceManagerLock) {
+            projectPreferenceManager = null;
         }
         P2Manager.getInstance().clear();
     }

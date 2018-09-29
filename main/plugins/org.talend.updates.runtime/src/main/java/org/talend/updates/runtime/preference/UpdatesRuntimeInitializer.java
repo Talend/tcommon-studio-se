@@ -25,10 +25,6 @@ public class UpdatesRuntimeInitializer extends AbstractPreferenceInitializer {
     public void initializeDefaultPreferences() {
         UpdatesRuntimePreference preference = UpdatesRuntimePreference.getInstance();
         preference.setDefault(UpdatesRuntimePreferenceConstants.LAST_CHECK_UPDATE_TIME, "");
-        preference.setDefault(UpdatesRuntimePreferenceConstants.CHECK_UPDATE_PER_DAYS, 2);
-        preference.setDefault(UpdatesRuntimePreferenceConstants.AUTO_CHECK_UPDATE, true);
-        preference.setDefault(UpdatesRuntimePreferenceConstants.AUTO_SHARE_FEATURES, true);
-        preference.setDefault(UpdatesRuntimePreferenceConstants.SHOW_WARN_DIALOG_WHEN_INSTALLING_FEATURES, true);
     }
 
 }

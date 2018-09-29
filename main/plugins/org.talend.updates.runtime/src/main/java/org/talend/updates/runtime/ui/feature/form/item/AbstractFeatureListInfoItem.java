@@ -41,8 +41,14 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.commons.exception.LoginException;
+import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.ui.runtime.exception.ExceptionMessageDialog;
 import org.talend.commons.ui.runtime.image.ImageProvider;
+import org.talend.core.repository.model.ProxyRepositoryFactory;
+import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
+import org.talend.repository.ProjectManager;
+import org.talend.repository.RepositoryWorkUnit;
 import org.talend.updates.runtime.EUpdatesImage;
 import org.talend.updates.runtime.engine.P2Manager;
 import org.talend.updates.runtime.feature.ImageFactory;
@@ -350,7 +356,7 @@ public abstract class AbstractFeatureListInfoItem<T extends IFeatureInfo> extend
 
     @SuppressWarnings("nls")
     private void checkWarnDialog(IProgressMonitor monitor) throws Exception {
-        boolean showWarnDialog = UpdatesRuntimePreference.getInstance()
+        boolean showWarnDialog = getRuntimeData().getFeaturesManager().getProjectPrefStore()
                 .getBoolean(UpdatesRuntimePreferenceConstants.SHOW_WARN_DIALOG_WHEN_INSTALLING_FEATURES);
         if (!showWarnDialog) {
             return;
@@ -379,8 +385,27 @@ public abstract class AbstractFeatureListInfoItem<T extends IFeatureInfo> extend
                 } else {
                     userAgreed.set(false);
                 }
-                UpdatesRuntimePreference.getInstance().setValue(
+                final ProjectPreferenceManager projectPreferenceManager = UpdatesRuntimePreference.getInstance()
+                        .createProjectPreferenceManager();
+                projectPreferenceManager.getPreferenceStore().setValue(
                         UpdatesRuntimePreferenceConstants.SHOW_WARN_DIALOG_WHEN_INSTALLING_FEATURES, !dialog.getToggleState());
+                if (projectPreferenceManager.getPreferenceStore().needsSaving()) {
+                    new Thread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            ProxyRepositoryFactory.getInstance().executeRepositoryWorkUnit(new RepositoryWorkUnit<Object>(
+                                    ProjectManager.getInstance().getCurrentProject(),
+                                    Messages.getString("ComponentsManager.repositoryWorkUnit.showWarnDialog.dontShowAgain")) {
+
+                                @Override
+                                protected void run() throws LoginException, PersistenceException {
+                                    projectPreferenceManager.save();
+                                }
+                            });
+                        }
+                    }).start();
+                }
             }
         });
         if (!userAgreed.get()) {

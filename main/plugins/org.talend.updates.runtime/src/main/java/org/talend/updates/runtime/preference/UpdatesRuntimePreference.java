@@ -17,6 +17,8 @@ import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
+import org.talend.updates.runtime.Constants;
 import org.talend.updates.runtime.UpdatesRuntimePlugin;
 
 /**
@@ -42,6 +44,10 @@ public class UpdatesRuntimePreference {
 
     private UpdatesRuntimePreference() {
         preferenceStore = UpdatesRuntimePlugin.getDefault().getPreferenceStore();
+    }
+
+    public ProjectPreferenceManager createProjectPreferenceManager() {
+        return new ProjectPreferenceManager(Constants.PLUGIN_ID);
     }
 
     public void setValue(String key, String value) {

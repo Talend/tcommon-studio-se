@@ -19,6 +19,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IStartup;
 import org.talend.commons.CommonsPlugin;
@@ -91,11 +92,13 @@ public class FeatureCheckUpdateStartup implements IStartup {
             return true;
         }
         try {
-            UpdatesRuntimePreference preference = UpdatesRuntimePreference.getInstance();
-            if (!preference.getBoolean(UpdatesRuntimePreferenceConstants.AUTO_CHECK_UPDATE, false)) {
+            IPreferenceStore preference = UpdatesRuntimePreference.getInstance().createProjectPreferenceManager()
+                    .getPreferenceStore();
+            if (!preference.getBoolean(UpdatesRuntimePreferenceConstants.AUTO_CHECK_UPDATE)) {
                 return false;
             }
-            Date lastCheckUpdateTime = preference.getDate(UpdatesRuntimePreferenceConstants.LAST_CHECK_UPDATE_TIME);
+            Date lastCheckUpdateTime = UpdatesRuntimePreference.getInstance()
+                    .getDate(UpdatesRuntimePreferenceConstants.LAST_CHECK_UPDATE_TIME);
             if (lastCheckUpdateTime == null) {
                 return true;
             }
@@ -103,7 +106,7 @@ public class FeatureCheckUpdateStartup implements IStartup {
             LocalDate currentLocalDate = Calendar.getInstance().getTime().toInstant().atZone(ZoneId.systemDefault())
                     .toLocalDate();
             long days = ChronoUnit.DAYS.between(lastLocalDate, currentLocalDate);
-            final int perDays = preference.getInt(UpdatesRuntimePreferenceConstants.CHECK_UPDATE_PER_DAYS, false);
+            final int perDays = preference.getInt(UpdatesRuntimePreferenceConstants.CHECK_UPDATE_PER_DAYS);
             if (perDays < days) {
                 return true;
             }

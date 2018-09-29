@@ -48,9 +48,15 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
+import org.talend.commons.exception.LoginException;
+import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.ui.gmf.util.DisplayUtils;
 import org.talend.commons.ui.runtime.exception.ExceptionMessageDialog;
 import org.talend.commons.ui.runtime.image.ImageProvider;
+import org.talend.core.repository.model.ProxyRepositoryFactory;
+import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
+import org.talend.repository.ProjectManager;
+import org.talend.repository.RepositoryWorkUnit;
 import org.talend.updates.runtime.EUpdatesImage;
 import org.talend.updates.runtime.feature.ImageFactory;
 import org.talend.updates.runtime.i18n.Messages;
@@ -311,8 +317,8 @@ public class FeaturesUpdatesNotificationForm extends Composite {
         stackLayout.topControl = descText;
         compImageLock = new Object();
         if (dontShownAgainButton != null) {
-            dontShownAgainButton.setSelection(!UpdatesRuntimePreference.getInstance()
-                    .getBoolean(UpdatesRuntimePreferenceConstants.AUTO_CHECK_UPDATE, false));
+            dontShownAgainButton.setSelection(!getRuntimeData().getFeaturesManager().getProjectPrefStore()
+                    .getBoolean(UpdatesRuntimePreferenceConstants.AUTO_CHECK_UPDATE));
         }
         final IFeatureUpdateNotification cd = getUpdate();
         if (cd != null) {
@@ -437,8 +443,28 @@ public class FeaturesUpdatesNotificationForm extends Composite {
 
     private void onDontShowAgainButtonClicked(SelectionEvent e) {
         if (dontShownAgainButton != null) {
-            UpdatesRuntimePreference.getInstance().setBoolean(UpdatesRuntimePreferenceConstants.AUTO_CHECK_UPDATE,
-                    !this.dontShownAgainButton.getSelection(), false);
+            final ProjectPreferenceManager projectPreferenceManager = UpdatesRuntimePreference.getInstance()
+                    .createProjectPreferenceManager();
+            projectPreferenceManager.getPreferenceStore().setValue(UpdatesRuntimePreferenceConstants.AUTO_CHECK_UPDATE,
+                    !dontShownAgainButton.getSelection());
+            if (projectPreferenceManager.getPreferenceStore().needsSaving()) {
+                new Thread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        ProxyRepositoryFactory.getInstance()
+                                .executeRepositoryWorkUnit(new RepositoryWorkUnit<Object>(
+                                        ProjectManager.getInstance().getCurrentProject(),
+                                        Messages.getString("ComponentsManager.repositoryWorkUnit.commitChanges.dontShowAgain")) { //$NON-NLS-1$
+
+                                    @Override
+                                    protected void run() throws LoginException, PersistenceException {
+                                        projectPreferenceManager.save();
+                                    }
+                                });
+                    }
+                }).start();
+            }
         }
     }
 
