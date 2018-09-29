@@ -66,6 +66,7 @@ import org.talend.core.repository.utils.TDQServiceRegister;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.service.ITransformService;
 import org.talend.designer.business.diagram.custom.IDiagramModelService;
+import org.talend.designer.core.IDesignerCoreService;
 import org.talend.designer.core.convert.ProcessConvertManager;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.RepositoryWorkUnit;
@@ -639,6 +640,7 @@ public class RepositoryDropAdapter extends PluginDropAdapter {
             // MOD gdbu 2011-10-9 TDQ-3545
             List<?> selectItems = ((org.eclipse.jface.viewers.TreeSelection) data).toList();
             final List<RepositoryNode> operationableItems = new ArrayList<RepositoryNode>();
+            boolean isResourceNodeExist = false;
             for (Object object : selectItems) {
                 if (object instanceof RepositoryNode) {
                     RepositoryNode repositoryNode = (RepositoryNode) object;
@@ -682,6 +684,9 @@ public class RepositoryDropAdapter extends PluginDropAdapter {
                             continue;
                             // return;
                         }
+                    }
+                    if (sourceType == ERepositoryObjectType.RESOURCES) {
+                        isResourceNodeExist = true;
                     }
 
                     operationableItems.add(repositoryNode);
@@ -744,6 +749,17 @@ public class RepositoryDropAdapter extends PluginDropAdapter {
 
             setReturnValue(true);
             monitor.done();
+            if (isResourceNodeExist) {
+                refreshResourceDependencyView();
+            }
+        }
+    }
+
+    private void refreshResourceDependencyView() {
+        // to refresh context view
+        IDesignerCoreService designerCoreService = CoreRuntimePlugin.getInstance().getDesignerCoreService();
+        if (designerCoreService != null) {
+            designerCoreService.switchToCurContextsView();
         }
     }
 

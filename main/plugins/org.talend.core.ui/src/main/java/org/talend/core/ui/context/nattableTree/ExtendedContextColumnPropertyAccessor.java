@@ -197,6 +197,11 @@ public class ExtendedContextColumnPropertyAccessor<R> implements IColumnProperty
                                 if (PasswordEncryptUtil.isPasswordType(currentPara.getType())) {
                                     return PasswordEncryptUtil.getPasswordDisplay(currentPara.getValue());
                                 }
+                                String displayValue = ContextNatTableUtils.getSpecialTypeDisplayValue(currentPara.getType(),
+                                        currentPara.getValue());
+                                if (displayValue != null) {
+                                    return displayValue;
+                                }
                                 return currentPara.getDisplayValue();
 
                             }

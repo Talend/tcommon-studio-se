@@ -449,7 +449,10 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
 
     public final static ERepositoryObjectType SQLPATTERNS = ERepositoryObjectType.valueOf("SQLPATTERNS"); //$NON-NLS-1$
 
+    @Deprecated
     public final static ERepositoryObjectType ROUTE_RESOURCES = ERepositoryObjectType.valueOf("ROUTE_RESOURCES"); //$NON-NLS-1$
+
+    public final static ERepositoryObjectType RESOURCES = ERepositoryObjectType.valueOf("RESOURCES"); //$NON-NLS-1$
 
     /**
      * Docs
@@ -804,6 +807,12 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
         if (type == GENERATED || type == JOB_DOC) {
             if ((PluginChecker.isDocumentationPluginLoaded())) {
                 return type.getFolder();
+            }
+        }
+        // for migrate RouteResourceItem to ResourceItem
+        if (type == ROUTE_RESOURCES) {
+            if (PluginChecker.isESBSELoaded()) {
+                return "route_resources";
             }
         }
         if (type == JOBLET_DOC) {

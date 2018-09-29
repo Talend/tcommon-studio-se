@@ -123,6 +123,8 @@ public class PluginChecker {
 
     public static final String IPAAS_PLUGIN_ID = "org.talend.designer.components.ipaas"; //$NON-NLS-1$
 
+    public static final String ESBSE_PLUGIN_ID = "org.talend.camel.designer"; //$NON-NLS-1$
+
     public static final String DOCKER_PLUGIN_ID = "org.talend.designer.docker"; //$NON-NLS-1$
 
     /**
@@ -355,6 +357,10 @@ public class PluginChecker {
 
     public static boolean isRouteletLoaded() {
         return isPluginLoaded(ROUTELET_PLUGIN_ID);
+    }
+
+    public static boolean isESBSELoaded() {
+        return isPluginLoaded(ESBSE_PLUGIN_ID);
     }
 
     public static String getBundlePath(String bundleName) {

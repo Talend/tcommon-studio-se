@@ -20,12 +20,14 @@ import org.eclipse.swt.widgets.Shell;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerUIService;
 import org.talend.core.model.context.ContextUtils;
+import org.talend.core.model.metadata.types.JavaTypesManager;
 import org.talend.core.model.process.IContext;
 import org.talend.core.model.process.IContextManager;
 import org.talend.core.model.process.IContextParameter;
 import org.talend.core.model.properties.ContextItem;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.Project;
+import org.talend.core.model.utils.JavaResourcesHelper;
 import org.talend.core.ui.context.IContextModelManager;
 import org.talend.core.ui.context.model.table.ContextTableTabChildModel;
 import org.talend.core.ui.context.model.table.ContextTableTabParentModel;
@@ -199,6 +201,30 @@ public class ContextNatTableUtils {
             }
         } else {
             return ((ContextTableTabChildModel) element).getContextParameter().getName();
+        }
+    }
+
+    public static String getSpecialTypeDisplayValue(String parameterType, String parameterValue) {
+        if (isResourceType(parameterType)) {
+            if (parameterValue.contains("|")) {
+                String[] part = parameterValue.split("\\|");
+                if (part.length > 1) {
+                    String resource = JavaResourcesHelper.getResouceClasspath(part[0], part[1]);
+                    if (resource != null) {
+                        return resource;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public static boolean isResourceType(String parameterType) {
+        if (JavaTypesManager.RESOURCE.getId().equals(parameterType)
+                || JavaTypesManager.RESOURCE.getLabel().equals(parameterType)) {
+            return true;
+        } else {
+            return false;
         }
     }
 

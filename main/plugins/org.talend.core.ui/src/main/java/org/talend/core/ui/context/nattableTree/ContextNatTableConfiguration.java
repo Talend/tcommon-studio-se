@@ -46,12 +46,10 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.talend.core.model.metadata.types.ContextParameterJavaTypeManager;
 import org.talend.core.model.metadata.types.JavaTypesManager;
 import org.talend.core.model.process.IContextManager;
-import org.talend.core.model.process.IContextParameter;
 import org.talend.core.ui.context.ContextTreeTable.ContextTreeNode;
 import org.talend.core.ui.context.IContextModelManager;
 import org.talend.core.ui.context.model.ContextTabChildModel;
 import org.talend.core.ui.context.model.table.ContextTableConstants;
-import org.talend.core.ui.context.model.table.ContextTableTabParentModel;
 
 /**
  * this one for the main configuration of context NatTable such as the color,editTable,custom control,etc.
@@ -109,8 +107,7 @@ public class ContextNatTableConfiguration extends AbstractRegistryConfiguration 
                 ContextTableConstants.COLUMN_CHECK_PROPERTY);
         configRegistry.registerConfigAttribute(EditConfigAttributes.CELL_EDITABLE_RULE, getEditRule(), DisplayMode.EDIT,
                 ContextTableConstants.COLUMN_PROMPT_PROPERTY);
-        configRegistry.registerConfigAttribute(EditConfigAttributes.CELL_EDITABLE_RULE, getEditRuleCheckValue(),
-                DisplayMode.EDIT,
+        configRegistry.registerConfigAttribute(EditConfigAttributes.CELL_EDITABLE_RULE, getEditRule(), DisplayMode.EDIT,
                 ContextTableConstants.COLUMN_CONTEXT_VALUE);
     }
 
@@ -192,45 +189,6 @@ public class ContextNatTableConfiguration extends AbstractRegistryConfiguration 
         return rule;
     }
 
-    private IEditableRule getEditRuleCheckValue() {
-        EditableRule rule = new EditableRule() {
-
-            @Override
-            public boolean isEditable(int columnIndex, int rowIndex) {
-                if (modelManager != null && modelManager.isReadOnly()) {
-                    return false;
-                }
-                ContextTreeNode rowNode = ((GlazedListsDataProvider<ContextTreeNode>) dataProvider).getRowObject(rowIndex);
-                if (ContextNatTableUtils.isEmptyTreeNode(rowNode.getTreeData())) {
-                    return false;
-                } else {
-                    if (rowNode.getTreeData() instanceof ContextTabChildModel || rowNode.getChildren().size() > 0) {
-                        return false;
-                    } else {
-                        // if the type of context is Resource, the value shouldn't be editable
-                        if (modelManager.getProcess() != null) {
-                            IContextParameter contextParameter = modelManager.getProcess().getContextManager().getDefaultContext()
-                                    .getContextParameter(rowNode.getName());
-                            if (contextParameter != null) {
-                                if (JavaTypesManager.RESOURCE.getId().equals(contextParameter.getType())) {
-                                    return false;
-                                }
-                            }
-                        } else {
-                            if (JavaTypesManager.RESOURCE.getId().equals(
-                                    ((ContextTableTabParentModel) rowNode.getTreeData()).getContextParameter().getType())) {
-                                return false;
-                            }
-                        }
-
-                        return true;
-                    }
-                }
-            }
-        };
-        return rule;
-    }
-
     private void registerEditors(IConfigRegistry configRegistry) {
         registerColumnFirstTextEditor(configRegistry);
         registerColumnTwoComboxEditor(configRegistry);
@@ -247,8 +205,12 @@ public class ContextNatTableConfiguration extends AbstractRegistryConfiguration 
 
     private void registerColumnTwoComboxEditor(IConfigRegistry configRegistry) {
         List<String> originalTypes = Arrays.asList(ContextParameterJavaTypeManager.getJavaTypesLabels());
+        boolean isFromRepository = modelManager.isRepositoryContext();
         List<String> finalTypes = new ArrayList<String>();
         for (String type : originalTypes) {
+            if (isFromRepository && JavaTypesManager.RESOURCE.getLabel().equals(type)) {
+                continue;
+            }
             String newType = type;
             if (type.contains("|")) {
                 int index = type.indexOf("|");
