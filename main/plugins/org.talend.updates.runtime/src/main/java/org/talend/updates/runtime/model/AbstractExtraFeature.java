@@ -15,13 +15,16 @@ package org.talend.updates.runtime.model;
 import java.util.Collection;
 import java.util.EnumSet;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.graphics.Image;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.updates.runtime.feature.ImageFactory;
 import org.talend.updates.runtime.feature.model.Category;
 import org.talend.updates.runtime.feature.model.Type;
 import org.talend.updates.runtime.storage.IFeatureStorage;
+import org.talend.updates.runtime.utils.PathUtils;
 
 /**
  * DOC cmeng  class global comment. Detailled comment
@@ -329,6 +332,64 @@ public abstract class AbstractExtraFeature implements ExtraFeature {
         } catch (Exception e) {// just convert the exception
             throw new P2ExtraFeatureException(e);
         }
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        try {
+            if (o instanceof AbstractExtraFeature) {
+                AbstractExtraFeature oFeature = (AbstractExtraFeature) o;
+                Collection<Type> oTypes = oFeature.getTypes();
+                Collection<Type> sTypes = getTypes();
+                if (oTypes == null || oTypes.isEmpty() || sTypes == null || sTypes.isEmpty()) {
+                    // goto super.compareTo
+                } else {
+                    oTypes = PathUtils.getAllTypeCategories(oTypes);
+                    sTypes = PathUtils.getAllTypeCategories(sTypes);
+
+                    // 1. if all are components, compare p2iuid first, then compare version
+                    if (oTypes.contains(Type.TCOMP) && sTypes.contains(Type.TCOMP)) {
+                        String oId = oFeature.getP2IuId();
+                        String sId = getP2IuId();
+                        if (StringUtils.equals(oId, sId)) {
+                            return getVersion().compareTo(oFeature.getVersion());
+                        } else {
+                            return sId.compareTo(oId);
+                        }
+                    }
+
+                    // 2. if all are patch
+                    if (oTypes.contains(Type.PATCH) && sTypes.contains(Type.PATCH)) {
+                        // 2.1 if all are plainzip patch, just compare version
+                        if (oTypes.contains(Type.PLAIN_ZIP) && sTypes.contains(Type.PLAIN_ZIP)) {
+                            return getVersion().compareTo(oFeature.getVersion());
+                        }
+                        // 2.2 if all are p2 patch, just compare version
+                        if (oTypes.contains(Type.P2_PATCH) && sTypes.contains(Type.P2_PATCH)) {
+                            return getVersion().compareTo(oFeature.getVersion());
+                        }
+                        // 2.3 in other case, p2 patch first
+                        if (sTypes.contains(Type.P2_PATCH)) {
+                            return -1;
+                        } else {
+                            return 1;
+                        }
+                    }
+
+                    // 3. in other case, patch first
+                    if (sTypes.contains(Type.PATCH)) {
+                        return -1;
+                    } else {
+                        return 1;
+                    }
+                }
+            }
+
+            return ExtraFeature.super.compareTo(o);
+        } catch (Exception e) {
+            ExceptionHandler.process(e);
+        }
+        return 0;
     }
 
     @Override

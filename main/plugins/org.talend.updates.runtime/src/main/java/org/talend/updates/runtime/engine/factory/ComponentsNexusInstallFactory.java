@@ -15,6 +15,7 @@ package org.talend.updates.runtime.engine.factory;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -190,13 +191,18 @@ public class ComponentsNexusInstallFactory extends AbstractExtraUpdatesFactory i
         SubMonitor mainSubMonitor = SubMonitor.convert(progress, 5);
         mainSubMonitor.worked(1);
         Set<ExtraFeature> allExtraFeatures = getAllExtraFeatures(mainSubMonitor);
+        List<ExtraFeature> sortedFeatures = new LinkedList<>();
+        if (allExtraFeatures != null) {
+            sortedFeatures.addAll(allExtraFeatures);
+            Collections.sort(sortedFeatures);
+        }
         mainSubMonitor.worked(1);
         if (mainSubMonitor.isCanceled()) {
             return;
         }
         FeatureCategory category = new FeatureCategory();
-        SubMonitor checkSubMonitor = SubMonitor.convert(mainSubMonitor.newChild(1), allExtraFeatures.size() * 2);
-        for (ExtraFeature extraF : allExtraFeatures) {
+        SubMonitor checkSubMonitor = SubMonitor.convert(mainSubMonitor.newChild(1), sortedFeatures.size() * 2);
+        for (ExtraFeature extraF : sortedFeatures) {
             try {
                 ExtraFeature extraFeature = extraF.getInstalledFeature(checkSubMonitor.newChild(1));
                 if (extraFeature != null) {

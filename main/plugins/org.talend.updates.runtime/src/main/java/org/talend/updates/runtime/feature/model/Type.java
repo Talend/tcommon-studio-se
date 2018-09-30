@@ -106,6 +106,11 @@ public class Type {
         return categories;
     }
 
+    @Override
+    public String toString() {
+        return keyword;
+    }
+
     public static Type valueOf(String type) {
         if (StringUtils.isBlank(type)) {
             return ALL;

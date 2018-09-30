@@ -106,6 +106,7 @@ public class UpdatesHelper {
     }
 
     /**
+     * means it's a patch updatesite or tcompV0 updatesite<br>
      * need check that contain "artifacts.xml", "content.xml" and "plugins" folder in same place.
      */
     public static boolean isUpdateSite(File file) {

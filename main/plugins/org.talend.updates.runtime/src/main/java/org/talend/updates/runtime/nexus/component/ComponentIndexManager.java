@@ -16,12 +16,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 import java.util.jar.JarInputStream;
 import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
@@ -181,14 +182,7 @@ public class ComponentIndexManager {
             // put the new one
             newIndexList.add(indexBean);
 
-            // sort
-            Collections.sort(newIndexList, new Comparator<ComponentIndexBean>() {
-
-                @Override
-                public int compare(ComponentIndexBean b1, ComponentIndexBean b2) {
-                    return b1.toString().compareToIgnoreCase(b2.toString());
-                }
-            });
+            // I think no need sort here, since the original order shows the installation order
 
             return createIndexFile(indexFile, newIndexList);
         } catch (Exception e) {
@@ -325,7 +319,7 @@ public class ComponentIndexManager {
         if (name != null && bundleId != null && bundleVersion != null && mvnUri != null) {
             ComponentIndexBean indexBean = new ComponentIndexBean();
             boolean set = indexBean.setRequiredFieldsValue(name, bundleId, bundleVersion, mvnUri);
-            indexBean.setValue(ComponentIndexNames.types, type.getKeyWord());
+            indexBean.setValue(ComponentIndexNames.types, PathUtils.convert2StringTypes(Arrays.asList(type)));
             if (set) {
                 return indexBean;
             }
@@ -369,17 +363,16 @@ public class ComponentIndexManager {
                                 // must use another stream
                                 jarEntryStream = new JarInputStream(zipFile.getInputStream(zipEntry));
 
-                                // find the bundleId and version
-                                final Manifest manifest = jarEntryStream.getManifest();
-                                if (manifest != null) {
-                                    bundleId = JarMenifestUtil.getBundleSymbolicName(manifest);
-                                    bundleVersion = JarMenifestUtil.getBundleVersion(manifest);
-                                }
-
                                 // find the pom.properties
                                 JarEntry jarEntry = null;
                                 while ((jarEntry = jarEntryStream.getNextJarEntry()) != null) {
                                     final String entryPath = jarEntry.getName();
+                                    if (JarFile.MANIFEST_NAME.equalsIgnoreCase(entryPath)) {
+                                        Manifest manifest = new Manifest();
+                                        manifest.read(jarEntryStream);
+                                        bundleId = JarMenifestUtil.getBundleSymbolicName(manifest);
+                                        bundleVersion = JarMenifestUtil.getBundleVersion(manifest);
+                                    }
                                     final Path fullPath = new Path(entryPath);
                                     final String fileName = fullPath.lastSegment();
 
@@ -466,6 +459,7 @@ public class ComponentIndexManager {
         if (name != null && bundleId != null && bundleVersion != null && mvnUri != null) {
             final ComponentIndexBean indexBean = new ComponentIndexBean();
             final boolean set = indexBean.setRequiredFieldsValue(name, bundleId, bundleVersion, mvnUri);
+            indexBean.setValue(ComponentIndexNames.types, PathUtils.convert2StringTypes(Arrays.asList(Type.TCOMP_V0)));
             if (set) {
                 return indexBean;
             }

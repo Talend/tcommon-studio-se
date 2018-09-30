@@ -107,7 +107,7 @@ public class FeatureCheckUpdateStartup implements IStartup {
                     .toLocalDate();
             long days = ChronoUnit.DAYS.between(lastLocalDate, currentLocalDate);
             final int perDays = preference.getInt(UpdatesRuntimePreferenceConstants.CHECK_UPDATE_PER_DAYS);
-            if (perDays < days) {
+            if (perDays <= days) {
                 return true;
             }
         } catch (Exception e) {

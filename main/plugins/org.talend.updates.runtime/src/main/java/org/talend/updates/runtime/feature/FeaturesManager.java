@@ -137,7 +137,8 @@ public class FeaturesManager {
         if (featuresCache == null || featuresCache.isEmpty()) {
             synchronized (featuresCacheLock) {
                 if (featuresCache == null || featuresCache.isEmpty()) {
-                    featuresCache = new ArrayList<>(retrieveAllOfficalFeatures(monitor));
+                    featuresCache = new LinkedList<>(retrieveAllOfficalFeatures(monitor));
+                    Collections.sort(featuresCache);
                 }
             }
         }

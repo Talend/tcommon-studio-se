@@ -18,6 +18,7 @@ import java.util.Collection;
 
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.resource.UpdatesHelper;
 import org.talend.core.GlobalServiceRegister;
@@ -25,7 +26,6 @@ import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.IRepositoryArtifactHandler;
 import org.talend.core.nexus.RepositoryArtifactHandlerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
-import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.updates.runtime.feature.model.Type;
 import org.talend.updates.runtime.model.interfaces.ITaCoKitCarFeature;
 import org.talend.updates.runtime.service.ITaCoKitUpdateService;
@@ -89,14 +89,16 @@ public class ComponentsDeploymentManager {
             }
         }
         boolean isPlainPatch = UpdatesHelper.isPlainUpdate(componentFile);
-        boolean isP2Patch = UpdatesHelper.isUpdateSite(componentFile);
-        if (!UpdatesHelper.isComponentUpdateSite(componentFile) && !isCar && !isPlainPatch && !isP2Patch) {
+        boolean isUpdateSite = UpdatesHelper.isUpdateSite(componentFile);
+        boolean isTcompv0UpdateSite = UpdatesHelper.isComponentUpdateSite(componentFile);
+        boolean isPatchUpdateSite = isUpdateSite && !isTcompv0UpdateSite;
+        if (!isTcompv0UpdateSite && !isCar && !isPlainPatch && !isPatchUpdateSite) {
             return false;
         }
         ComponentIndexBean compIndexBean = null;
         if (isPlainPatch) {
             compIndexBean = indexManager.createIndexBean4Patch(componentFile, Type.PLAIN_ZIP);
-        } else if (isP2Patch) {
+        } else if (isPatchUpdateSite) {
             compIndexBean = indexManager.createIndexBean4Patch(componentFile, Type.P2_PATCH);
         } else if (isCar) {
             try {
@@ -114,6 +116,7 @@ public class ComponentsDeploymentManager {
                 ExceptionHandler.process(e);
             }
         } else {
+            // tcompv0
             compIndexBean = indexManager.create(componentFile);
             if (compIndexBean == null) {
                 return false;
@@ -129,8 +132,35 @@ public class ComponentsDeploymentManager {
 
             MavenArtifact indexArtifact = indexManager.getIndexArtifact();
             File indexFile = null;
+
             try {
-                indexFile = handler.resolve(MavenUrlHelper.generateMvnUrl(indexArtifact));
+                ArtifactRepositoryBean artifactServerBean = handler.getArtifactServerBean();
+                char[] passwordChars = null;
+                String password = artifactServerBean.getPassword();
+                if (password != null) {
+                    passwordChars = password.toCharArray();
+                }
+
+                /**
+                 * don't use mvn.resolve to get the index file here, since the resolved file may come from local mvn
+                 * repository instead of nexus server
+                 */
+                final NexusComponentsTransport transport = new NexusComponentsTransport(artifactServerBean.getRepositoryURL(),
+                        artifactServerBean.getUserName(), passwordChars);
+                if (transport.isAvailable(progress, indexArtifact)) {
+                    if (progress.isCanceled()) {
+                        throw new OperationCanceledException();
+                    }
+                    indexFile = File.createTempFile("index", ".xml"); //$NON-NLS-1$ //$NON-NLS-2$
+                    transport.downloadFile(progress, indexArtifact, indexFile);
+                } else {
+                    indexFile = new File(getWorkFolder(), indexArtifact.getFileName(false));
+                    boolean created = indexManager.createIndexFile(indexFile, compIndexBean);
+                    if (!created) {
+                        return false;
+                    }
+                }
+
                 if (indexFile != null && indexFile.exists()) {
                     boolean updated = indexManager.updateIndexFile(indexFile, compIndexBean);
                     if (!updated) {
@@ -138,11 +168,7 @@ public class ComponentsDeploymentManager {
                     }
                 }
             } catch (Exception e) {
-                indexFile = new File(getWorkFolder(), indexArtifact.getFileName(false));
-                boolean created = indexManager.createIndexFile(indexFile, compIndexBean);
-                if (!created) {
-                    return false;
-                }
+                throw e;
             }
             handler.deploy(indexFile, indexArtifact.getGroupId(), indexArtifact.getArtifactId(), indexArtifact.getClassifier(),
                     indexArtifact.getType(), indexArtifact.getVersion());

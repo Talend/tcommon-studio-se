@@ -125,10 +125,11 @@ public class InstallLocalNexusComponentsLoginTask extends AbstractLoginTask {
             for (ExtraFeature f : children) {
                 install(monitor, f, messages);
             }
-        }
-        if (feature.canBeInstalled(monitor)) {
-            messages.analyzeStatus(feature.install(monitor, null));
-            messages.setNeedRestart(feature.needRestart());
+        } else {
+            if (feature.canBeInstalled(monitor)) {
+                messages.analyzeStatus(feature.install(monitor, null));
+                messages.setNeedRestart(feature.needRestart());
+            }
         }
     }
 }
