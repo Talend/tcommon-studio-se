@@ -394,6 +394,10 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
                         ERepositoryObjectType importType = importItem.getRepositoryType();
                         bothProcessType = allTypesOfProcess.contains(repType) && allTypesOfProcess.contains(importType);
                         isSameRepositoryType = isSameRepType(repType, importType);
+                        if (!isSameRepositoryType && !bothProcessType) {
+                        	// no need to keep track of item with same name if the type is different
+                        	itemWithSameNameObj = null;
+                        }
                     }
                 }
             }
