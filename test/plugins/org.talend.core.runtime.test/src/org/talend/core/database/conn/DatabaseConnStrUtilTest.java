@@ -12,9 +12,11 @@
 // ============================================================================
 package org.talend.core.database.conn;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+import org.talend.core.database.EDatabaseTypeName;
+import org.talend.core.database.conn.version.EDatabaseVersion4Drivers;
 import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.metadata.connection.hive.HiveModeInfo;
@@ -111,5 +113,25 @@ public class DatabaseConnStrUtilTest {
         expectValue = "jdbc:hive2://" + server + ":" + port + "/" + sidOrDatabase + ";" + additionalJDBCSettings;
         realValue = DatabaseConnStrUtil.getHiveURLString(dc, server, port, sidOrDatabase, HIVE2_STANDARDLONE_URL);
         assertTrue(expectValue.equals(realValue));
+    }
+
+    @Test
+    public void testGetURLStringForMSSQL() {
+        String dbType = EDatabaseTypeName.MSSQL.getDisplayName();
+        String dbVersion = EDatabaseVersion4Drivers.MSSQL_PROP.getVersionValue();
+        String host = "lcoalhost";
+        String port = "";
+        String sid = "master";
+        String[] otherParam = new String[] {};
+        String expectURL = "jdbc:sqlserver://" + host + ";DatabaseName=master;";
+        String realValue = DatabaseConnStrUtil.getURLString(false, dbType, dbVersion, host, "", "", port, sid, "", "", "", "",
+                otherParam);
+        assertTrue(expectURL.equals(realValue));
+
+        port = "1433";
+        expectURL = "jdbc:sqlserver://" + host + ":" + port + ";DatabaseName=master;";
+        realValue = DatabaseConnStrUtil.getURLString(false, dbType, dbVersion, host, "", "", port, sid, "", "", "", "",
+                otherParam);
+        assertTrue(expectURL.equals(realValue));
     }
 }
