@@ -12,8 +12,8 @@
 // ============================================================================
 package org.talend.updates.runtime.login;
 
-import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.LinkedHashSet;
@@ -22,15 +22,17 @@ import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
+import org.talend.commons.CommonsPlugin;
+import org.talend.commons.exception.ExceptionHandler;
+import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.login.AbstractLoginTask;
-import org.talend.updates.runtime.engine.component.ComponentNexusP2ExtraFeature;
 import org.talend.updates.runtime.engine.component.InstallComponentMessages;
 import org.talend.updates.runtime.engine.factory.ComponentsNexusInstallFactory;
 import org.talend.updates.runtime.model.ExtraFeature;
 import org.talend.updates.runtime.model.FeatureCategory;
-import org.talend.updates.runtime.model.P2ExtraFeature;
-import org.talend.updates.runtime.model.P2ExtraFeatureException;
-import org.talend.updates.runtime.nexus.component.ComponentIndexBean;
+import org.talend.updates.runtime.nexus.component.NexusServerManager;
 import org.talend.updates.runtime.utils.OsgiBundleInstaller;
 
 /**
@@ -44,26 +46,31 @@ public class InstallLocalNexusComponentsLoginTask extends AbstractLoginTask {
     class ComponentsLocalNexusInstallFactory extends ComponentsNexusInstallFactory {
 
         @Override
-        protected Set<P2ExtraFeature> getAllExtraFeatures(IProgressMonitor monitor) {
-            return getLocalNexusFeatures(monitor); // only get from local nexus
-        }
-
-        @Override
-        protected ComponentNexusP2ExtraFeature createComponentFeature(ComponentIndexBean b) {
-            return new ComponentNexusP2ExtraFeature(b) {
-
-                @Override
-                protected void syncComponentsToInstalledFolder(IProgressMonitor progress, File downloadedCompFile) {
-                    // already shared, no need deploy again
-                    // super.syncComponentsToInstalledFolder(progress, installedCompFile);
-
-                    // already shared, so no need keep it in local, and try to delete the downloaded one.
-                    if (downloadedCompFile.exists()) {
-                        downloadedCompFile.delete();
-                    }
+        protected Set<ExtraFeature> getAllExtraFeatures(IProgressMonitor monitor) {
+            IProgressMonitor progress = monitor;
+            if (progress == null) {
+                progress = new NullProgressMonitor();
+            }
+            try {
+                ArtifactRepositoryBean artifactRepisotory = NexusServerManager.getInstance().getArtifactRepositoryFromTac();
+                if (artifactRepisotory == null) {
+                    return Collections.emptySet();
                 }
-
-            };
+                String repositoryId = NexusServerManager.getInstance().getRepositoryIdForShare();
+                if (StringUtils.isBlank(repositoryId)) {
+                    return Collections.emptySet();
+                }
+                artifactRepisotory.setRepositoryId(repositoryId);
+                if (monitor.isCanceled()) {
+                    throw new OperationCanceledException();
+                }
+                return retrieveComponentsFromIndex(monitor, artifactRepisotory);
+            } catch (Exception e) {
+                if (CommonsPlugin.isDebugMode()) {
+                    ExceptionHandler.process(e);
+                }
+                return Collections.emptySet();
+            }
         }
 
     }
@@ -81,6 +88,9 @@ public class InstallLocalNexusComponentsLoginTask extends AbstractLoginTask {
 
     @Override
     public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+        if (!NexusServerManager.getInstance().isRemoteOnlineProject()) {
+            return;
+        }
         try {
             ComponentsLocalNexusInstallFactory compInstallFactory = new ComponentsLocalNexusInstallFactory();
 
@@ -96,6 +106,8 @@ public class InstallLocalNexusComponentsLoginTask extends AbstractLoginTask {
                 log.info(messages.getInstalledMessage());
                 if (!messages.isNeedRestart()) {
                     OsgiBundleInstaller.reloadComponents();
+                } else {
+                    System.setProperty("update.restart", Boolean.TRUE.toString()); //$NON-NLS-1$
                 }
             }
             if (StringUtils.isNotEmpty(messages.getFailureMessage())) {
@@ -107,18 +119,16 @@ public class InstallLocalNexusComponentsLoginTask extends AbstractLoginTask {
     }
 
     private void install(IProgressMonitor monitor, ExtraFeature feature, InstallComponentMessages messages)
-            throws P2ExtraFeatureException {
+            throws Exception {
         if (feature instanceof FeatureCategory) {
             Set<ExtraFeature> children = ((FeatureCategory) feature).getChildren();
             for (ExtraFeature f : children) {
                 install(monitor, f, messages);
             }
-        }
-        if (feature instanceof ComponentNexusP2ExtraFeature) {
-            ComponentNexusP2ExtraFeature compFeature = (ComponentNexusP2ExtraFeature) feature;
-            if (compFeature.canBeInstalled(monitor)) {
-                messages.analyzeStatus(compFeature.install(monitor));
-                messages.setNeedRestart(compFeature.needRestart());
+        } else {
+            if (feature.canBeInstalled(monitor)) {
+                messages.analyzeStatus(feature.install(monitor, null));
+                messages.setNeedRestart(feature.needRestart());
             }
         }
     }

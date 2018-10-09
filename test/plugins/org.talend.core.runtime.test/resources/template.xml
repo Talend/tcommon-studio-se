@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assembly
+	xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+	<id>bin</id>
+	<includeBaseDirectory>false</includeBaseDirectory>
+	<formats>
+		<format>zip</format>
+	</formats>
+
+	<files>
+		<file> <!-- jobInfo.properties -->
+			<source>${basedir}/src/main/templates/jobInfo_template.properties
+			</source>
+			<outputDirectory>.</outputDirectory>
+			<destName>jobInfo.properties</destName>
+			<filtered>true</filtered>
+		</file>
+		<file> <!-- sh -->
+			<source>${basedir}/src/main/templates/Job_run_template.sh</source>
+			<outputDirectory>${talend.job.name}</outputDirectory>
+			<destName>${talend.job.name}_run.sh</destName>
+			<filtered>true</filtered>
+		</file>
+		<file> <!-- bat -->
+			<source>${basedir}/src/main/templates/Job_run_template.bat</source>
+			<outputDirectory>${talend.job.name}</outputDirectory>
+			<destName>${talend.job.name}_run.bat</destName>
+			<filtered>true</filtered>
+		</file>
+		<file> <!-- ps1 -->
+			<source>${basedir}/src/main/templates/Job_run_template.ps1</source>
+			<outputDirectory>${talend.job.name}</outputDirectory>
+			<destName>${talend.job.name}_run.ps1</destName>
+			<filtered>true</filtered>
+		</file>
+	</files>
+
+	<fileSets>
+		<fileSet><!-- templates -->
+			<directory>${templates.dir}</directory>
+			<outputDirectory>${talend.job.name}/src/main/templates/
+			</outputDirectory>
+			<includes>
+				<include>**</include>
+			</includes>
+		</fileSet>
+		<fileSet><!-- log4j resources -->
+			<directory>${log4j.resources.dir}</directory>
+			<outputDirectory>${output.resources.dir}/
+			</outputDirectory>
+			<includes>
+				<include>log4j.xml</include>
+			</includes>
+		</fileSet>
+		<fileSet><!-- log4j.xml for running -->
+			<directory>${log4j.running.dir}</directory>
+			<outputDirectory>${talend.job.name}</outputDirectory>
+			<includes>
+				<include>log4j.xml</include>
+			</includes>
+		</fileSet>
+		<fileSet><!-- xmlMappings resources -->
+			<directory>${xmlMappings.resources.dir}</directory>
+			<outputDirectory>${output.resources.dir}/xmlMappings/
+			</outputDirectory>
+			<includes>
+				<include>**/*.*</include>
+			</includes>
+		</fileSet>
+		<fileSet><!-- xmlMappings for running -->
+			<directory>${xmlMappings.running.dir}</directory>
+			<outputDirectory>${talend.job.name}/xmlMappings/
+			</outputDirectory>
+			<includes>
+				<include>**/*.*</include>
+			</includes>
+		</fileSet>
+		<fileSet><!-- rules resources -->
+			<directory>${rules.resources.dir}</directory>
+			<outputDirectory>${output.resources.dir}/rules/
+			</outputDirectory>
+			<includes>
+				<include>**/*.*</include>
+			</includes>
+		</fileSet>
+		<fileSet><!-- assembly_*.xml -->
+			<directory>${assemblies.dir}</directory>
+			<outputDirectory>${talend.job.name}/src/main/assemblies/
+			</outputDirectory>
+			<includes>
+				<include>assembly.xml</include>
+			</includes>
+		</fileSet>
+		<fileSet><!-- pom_*.xml -->
+			<directory>${poms.dir}</directory>
+			<outputDirectory>${talend.job.name}</outputDirectory>
+			<includes>
+				<include>pom.xml</include>
+			</includes>
+		</fileSet>
+		<fileSet><!--parent pom.xml -->
+			<directory>${parentpom.dir}</directory>
+			<outputDirectory>.</outputDirectory>
+			<includes>
+				<include>pom.xml</include>
+			</includes>
+		</fileSet>
+		<fileSet><!--routines code -->
+			<directory>${routinescode.dir}</directory>
+			<outputDirectory>code/routines/src/main</outputDirectory>
+			<includes>
+				<include>**/**/*.*</include>
+			</includes>
+		</fileSet>
+		<fileSet><!--routines pom -->
+			<directory>${routinespom.dir}</directory>
+			<outputDirectory>code/routines/</outputDirectory>
+			<includes>
+				<include>pom.xml</include>
+			</includes>
+		</fileSet>
+		<fileSet><!--pigudf code -->
+			<directory>${pigudfcode.dir}</directory>
+			<outputDirectory>code/pigudf/src/main</outputDirectory>
+			<includes>
+				<include>**/**/*.*</include>
+			</includes>
+		</fileSet>
+		<fileSet><!--pifudf pom -->
+			<directory>${pigudfpom.dir}</directory>
+			<outputDirectory>code/pigudf/</outputDirectory>
+			<includes>
+				<include>pom.xml</include>
+			</includes>
+		</fileSet>
+		<fileSet><!--joblet -->
+			<directory>${joblet.dir}</directory>
+			<outputDirectory>jobs/</outputDirectory>
+			<includes>
+				<include>joblets*/**/*.*</include>
+			</includes>
+		</fileSet>
+		<fileSet> <!-- add items -->
+			<directory>${items.dir}</directory>
+			<outputDirectory>${talend.job.name}</outputDirectory>
+			<includes>
+				<include>**</include>
+			</includes>
+		</fileSet>
+		<fileSet> <!-- add java source codes -->
+			<directory>${sourcecodes.dir}</directory>
+			<outputDirectory>${talend.job.name}/src/main/java/</outputDirectory>
+			<includes>
+				<include>${talend.job.path}/**</include>
+			</includes>
+		</fileSet>
+		<fileSet><!-- add context resources -->
+			<directory>${resources.dir}</directory>
+			<outputDirectory>${output.resources.dir}/
+			</outputDirectory>
+			<includes>
+				<include>${talend.job.path}/**</include>
+			</includes>
+		</fileSet>
+		<fileSet><!-- add test source codes -->
+			<directory>${test.sourcecodes.dir}</directory>
+			<outputDirectory>${talend.job.name}/src/test/java/</outputDirectory>
+			<includes>
+				<include>${talend.job.path}/**</include>
+			</includes>
+		</fileSet>
+		<fileSet><!-- add test context resources -->
+			<directory>${test.resources.dir}</directory>
+			<outputDirectory>${talend.job.name}/src/test/resources/
+			</outputDirectory>
+			<includes>
+				<include>${talend.job.path}/**</include>
+			</includes>
+		</fileSet>
+		<fileSet><!-- junits reports -->
+			<directory>${test.reports.dir}</directory>
+			<outputDirectory>sunfire-reports</outputDirectory>
+			<includes>
+				<include>**/*.*</include>
+			</includes>
+		</fileSet>
+		<fileSet><!-- add all resources for running -->
+			<directory>${contexts.running.dir}</directory>
+			<outputDirectory>${talend.job.name}</outputDirectory>
+			<includes>
+				<include>**/*.*</include>
+			</includes>
+		</fileSet>
+		<!-- If have children jobs, will add here -->
+		<fileSet><!-- microservice config files -->
+			<directory>${microservice.configs.dir}</directory>
+			<outputDirectory>${file.separator}</outputDirectory>
+			<includes>
+				<include>config/**</include>
+			</includes>
+		</fileSet>
+		<fileSet><!-- microservice running config files -->
+			<directory>${microservice.running.configs.dir}</directory>
+			<outputDirectory>${talend.job.name}</outputDirectory>
+			<includes>
+				<include>config/**</include>
+			</includes>
+		</fileSet>
+	</fileSets>
+	<dependencySets>
+		<dependencySet>
+			<outputDirectory>lib</outputDirectory>
+			<includes>
+				<!--@TalendLibIncludes@-->
+			</includes>
+			<!-- without version for talend libraries -->
+			<outputFileNameMapping>${artifact.artifactId}.${artifact.extension}
+			</outputFileNameMapping>
+			<useProjectArtifact>false</useProjectArtifact>
+		</dependencySet>
+		<dependencySet>
+			<outputDirectory>lib</outputDirectory>
+			<includes>
+				<!--@3rdPartyLibIncludes@-->
+			</includes>
+			<useProjectArtifact>false</useProjectArtifact>
+		</dependencySet>
+		<!-- for all jobs -->
+		<dependencySet>
+			<outputDirectory>${talend.job.name}</outputDirectory>
+			<includes>
+				<!--@JobIncludes@-->
+			</includes>
+			<outputFileNameMapping>${artifact.build.finalName}.${artifact.extension}</outputFileNameMapping>
+			<useProjectArtifact>true</useProjectArtifact>
+		</dependencySet>
+	</dependencySets>
+</assembly>

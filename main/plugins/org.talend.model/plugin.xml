@@ -123,4 +123,18 @@
             genModel="model/properties.genmodel"/>
    </extension>
 
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated resources -->
+      <package
+            uri="http://www.talend.org/ResourcesProperties"
+            class="org.talend.core.model.resources.ResourcesPackage"
+            genModel="model/resources.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated resources -->
+      <parser
+            type="resources"
+            class="org.talend.core.model.resources.util.ResourcesResourceFactoryImpl"/>
+   </extension>
 </plugin>

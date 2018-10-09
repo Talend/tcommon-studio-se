@@ -7,9 +7,18 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
+import org.talend.commons.exception.ExceptionHandler;
+import org.talend.updates.runtime.feature.FeaturesManager;
+import org.talend.updates.runtime.i18n.Messages;
 import org.talend.updates.runtime.model.ExtraFeature;
+import org.talend.updates.runtime.ui.feature.model.runtime.FeaturesManagerRuntimeData;
+import org.talend.updates.runtime.ui.feature.wizard.FeaturesManagerWizard;
 
 public class ShowWizardHandler extends AbstractHandler {
+
+    public static final String CMD_ID_COMPONENTS_MANAGER = "org.talend.updates.show.wizard.componentsManager"; //$NON-NLS-1$
+
+    public static final String CMD_ID_ADDITIONAL_PACKAGES = "org.talend.updates.show.wizard.command"; //$NON-NLS-1$
 
     public static final Object showWizardLock = new Object();
 
@@ -21,7 +30,20 @@ public class ShowWizardHandler extends AbstractHandler {
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
         Shell activeShell = HandlerUtil.getActiveShell(event);
-        showUpdateWizard(activeShell, null);
+
+        String cmdId = event.getCommand().getId();
+        switch (cmdId) {
+        case CMD_ID_ADDITIONAL_PACKAGES:
+            showUpdateWizard(activeShell, null);
+            break;
+        case CMD_ID_COMPONENTS_MANAGER:
+            showComponentsManagerWizard(activeShell);
+            break;
+        default:
+            ExceptionHandler.process(new Exception(Messages.getString("ShowWizardHandler.exception.commandNotFound"))); //$NON-NLS-1$
+            break;
+        }
+
         return null;
     }
 
@@ -38,4 +60,10 @@ public class ShowWizardHandler extends AbstractHandler {
         updateStudioWizard.show(shell);
     }
 
+    public void showComponentsManagerWizard(final Shell shell) {
+        FeaturesManagerRuntimeData runtimeData = new FeaturesManagerRuntimeData();
+        runtimeData.setFeaturesManager(new FeaturesManager());
+        FeaturesManagerWizard componentsManagerWizard = new FeaturesManagerWizard(runtimeData);
+        componentsManagerWizard.show(shell);
+    }
 }

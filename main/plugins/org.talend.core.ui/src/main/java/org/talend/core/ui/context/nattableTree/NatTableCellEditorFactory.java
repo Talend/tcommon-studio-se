@@ -12,16 +12,20 @@
 // ============================================================================
 package org.talend.core.ui.context.nattableTree;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.talend.commons.ui.runtime.swt.tableviewer.celleditor.DateDialog;
 import org.talend.commons.ui.utils.PathUtils;
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.language.ECodeLanguage;
 import org.talend.core.language.LanguageManager;
 import org.talend.core.model.metadata.MetadataToolHelper;
+import org.talend.core.model.metadata.types.JavaTypesManager;
 import org.talend.core.model.process.IContextParameter;
+import org.talend.core.service.IResourcesDependenciesService;
 import org.talend.core.ui.context.MultiStringSelectionDialog;
 import org.talend.core.utils.TalendQuoteUtils;
 
@@ -39,7 +43,8 @@ public class NatTableCellEditorFactory {
     public boolean isSpecialType(IContextParameter para) {
         String currentType = para.getType();
         if (currentType != null) {
-            if (isFile(currentType) || isDate(currentType) || isDirectory(currentType) || isList(currentType)) {
+            if (isFile(currentType) || isDate(currentType) || isDirectory(currentType) || isList(currentType)
+                    || isResource(currentType)) {
                 return true;
             }
         }
@@ -60,6 +65,8 @@ public class NatTableCellEditorFactory {
             } else if (isList(currentType)) {
                 transformResult = openListValueDialogForCellEditor(parentShell, para);
                 defalutDataValue = para.getDisplayValue();
+            } else if (isResource(currentType)) {
+                transformResult = openResourcesDialogForCellEditor(parentShell, para);
             }
         }
         return transformResult;
@@ -87,6 +94,7 @@ public class NatTableCellEditorFactory {
         if (res == Dialog.OK) {
             String[] result = d.getResultString();
             para.setValueList(result);
+            setContextParameterChangeDirtyManually();
             return result;
         }
         return para.getDisplayValue();
@@ -113,6 +121,23 @@ public class NatTableCellEditorFactory {
             path = PathUtils.getPortablePath(path);
         }
         return getAddQuoteString(path);
+    }
+
+    private String openResourcesDialogForCellEditor(Shell parentShell, IContextParameter para) {
+        String value = para.getValue();
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IResourcesDependenciesService.class)) {
+            IResourcesDependenciesService service = (IResourcesDependenciesService) GlobalServiceRegister.getDefault()
+                    .getService(IResourcesDependenciesService.class);
+            if (service != null) {
+                String result = service.openResourcesDialogForContext(parentShell);
+                if (StringUtils.isNotBlank(result)) {
+                    value = result;
+                    setContextParameterChangeDirtyManually();
+                }
+            }
+            para.setValue(value);
+        }
+        return ContextNatTableUtils.getSpecialTypeDisplayValue(JavaTypesManager.RESOURCE.getId(), value);
     }
 
     public static String getAddQuoteString(String path) {
@@ -153,6 +178,25 @@ public class NatTableCellEditorFactory {
 
     public static boolean isPassword(final String value) {
         return MetadataToolHelper.isPassword(value);
+    }
+
+    public static boolean isResource(final String value) {
+        return MetadataToolHelper.isResource(value);
+    }
+
+    /**
+     * For the different value between display value and real value, due to nattable model comes from context, if set
+     * new context parameter value in this factory, then the UpdateDataCommandHandler of nattable will treat this as no
+     * change, need to set dirty to notify user. DOC jding Comment method "setDesignerEditorDirtyManually".
+     */
+    private void setContextParameterChangeDirtyManually() {
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IResourcesDependenciesService.class)) {
+            IResourcesDependenciesService service = (IResourcesDependenciesService) GlobalServiceRegister.getDefault()
+                    .getService(IResourcesDependenciesService.class);
+            if (service != null) {
+                service.setContextParameterChangeDirtyManually();
+            }
+        }
     }
 
 }

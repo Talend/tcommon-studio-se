@@ -66,6 +66,7 @@ import org.talend.commons.exception.LoginException;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.exception.SystemException;
 import org.talend.commons.runtime.model.repository.ERepositoryStatus;
+import org.talend.commons.runtime.service.ITaCoKitService;
 import org.talend.commons.ui.runtime.CommonUIPlugin;
 import org.talend.commons.ui.runtime.exception.MessageBoxExceptionHandler;
 import org.talend.commons.utils.data.container.RootContainer;
@@ -125,7 +126,6 @@ import org.talend.core.repository.utils.XmiResourceManager;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.repository.item.ItemProductKeys;
 import org.talend.core.runtime.services.IMavenUIService;
-import org.talend.core.runtime.services.ITaCoKitService;
 import org.talend.core.runtime.util.ItemDateParser;
 import org.talend.core.runtime.util.JavaHomeUtil;
 import org.talend.core.service.ICoreUIService;
@@ -1101,6 +1101,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     }
 
+    @Override
     public IRepositoryViewObject getLastRefVersion(Project project, String id) throws PersistenceException {
         IRepositoryViewObject lastVersion = getLastVersion(project, id);
         if (lastVersion == null) {
@@ -2083,17 +2084,16 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                     }
                 }
 
-                if (GlobalServiceRegister.getDefault().isServiceRegistered(ITaCoKitService.class)) {
-                    /**
-                     * Execute TaCoKit migration before fullLogonFinished
-                     */
-                    ITaCoKitService tacokitService = (ITaCoKitService) GlobalServiceRegister.getDefault()
-                            .getService(ITaCoKitService.class);
-                    try {
+                /**
+                 * Execute TaCoKit migration before fullLogonFinished
+                 */
+                try {
+                    ITaCoKitService tacokitService = ITaCoKitService.getInstance();
+                    if (tacokitService != null) {
                         tacokitService.checkMigration(monitor);
-                    } catch (Exception e) {
-                        ExceptionHandler.process(e);
                     }
+                } catch (Exception e) {
+                    ExceptionHandler.process(e);
                 }
                 fullLogonFinished = true;
                 this.repositoryFactoryFromProvider.afterLogon(monitor);

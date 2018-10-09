@@ -26,6 +26,7 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
@@ -81,6 +82,12 @@ public class ProjectDataJsonProvider {
         }
         if ((saveContent & CONTENT_MIGRATIONTASK) > 0) {
             saveMigrationTaskSetting(project);
+        }
+        try {
+            ResourceUtils.getProject(project.getTechnicalLabel()).getFolder(FileConstants.SETTINGS_FOLDER_NAME).refreshLocal(1,
+                    null);
+        } catch (CoreException e) {
+            throw new PersistenceException(e);
         }
     }
 

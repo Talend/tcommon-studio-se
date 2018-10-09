@@ -19,7 +19,7 @@ import org.talend.utils.string.StringUtilities;
  * created by wchen on 2015-5-12 Detailled comment
  *
  */
-public class ArtifactRepositoryBean {
+public class ArtifactRepositoryBean implements Cloneable {
     public static final String REPO2_MIDDLE_PATH = "/content/repositories/";
     public static final String REPO3_MIDDLE_PATH = "/repository/";
     public static final String ARTIFACT_MIDDLE_PATH = "/artifactory/";
@@ -381,5 +381,10 @@ public class ArtifactRepositoryBean {
 
     public void setAbsoluteURL(boolean isAbsoluteURL) {
         this.isAbsoluteURL = isAbsoluteURL;
+    }
+
+    @Override
+    public ArtifactRepositoryBean clone() throws CloneNotSupportedException {
+        return (ArtifactRepositoryBean) super.clone();
     }
 }

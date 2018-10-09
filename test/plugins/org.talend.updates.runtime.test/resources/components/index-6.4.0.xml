@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <components>
-	<component name="JIRA" version="0.18.0" product="tos_di,tos_bd" 
+	<component name="JIRA" version="0.18.0" product="tos_di,tos_bd" types="tcomp,tcompv0,p2"
 		mvn_uri="mvn:org.talend.components/org.talend.components.jira/0.18.0/zip">
 		<description>Contain lib for dependencies</description>
 	</component>
-	<component name="JIRA" version="0.18.1" product="tos_di,tos_bd" 
+	<component name="JIRA" version="0.18.1" product="tos_di,tos_bd" types="tcomp,tcompv0,p2"
 		mvn_uri="mvn:org.talend.components/org.talend.components.jira/0.18.1/zip">
 		<description>Fix some bugs</description>
 	</component>
-	<component name="JIRA" version="0.18.2" product="tos_di,tos_bd" 
+	<component name="JIRA" version="0.18.2" product="tos_di,tos_bd" types="tcomp,tcompv0,p2"
 		mvn_uri="mvn:org.talend.components/org.talend.components.jira/0.18.2/zip">
 		<description>Support the m2 repository for dependencies</description>
 	</component>

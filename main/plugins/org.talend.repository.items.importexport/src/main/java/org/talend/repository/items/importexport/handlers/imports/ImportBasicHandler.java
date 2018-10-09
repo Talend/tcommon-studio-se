@@ -374,6 +374,7 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
             }
 
             boolean isSameRepositoryType = true;
+            boolean bothProcessType = false;
             org.talend.core.model.general.Project currentProject = ProjectManager.getInstance().getCurrentProject();
             Map<String, List<IRepositoryViewObject>> nameCache = repObjectcache.getNameItemChache();
             final Property property = importItem.getProperty();
@@ -395,7 +396,13 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
                         if (dbService != null && dbService.getExtraTypes().contains(repType)) {
                             repType = dbService.getExtraDBType(repType);
                         }
-                        isSameRepositoryType = isSameRepType(repType, importItem.getRepositoryType());
+                        ERepositoryObjectType importType = importItem.getRepositoryType();
+                        bothProcessType = allTypesOfProcess.contains(repType) && allTypesOfProcess.contains(importType);
+                        isSameRepositoryType = isSameRepType(repType, importType);
+                        if (!isSameRepositoryType && !bothProcessType) {
+                        	// no need to keep track of item with same name if the type is different
+                        	itemWithSameNameObj = null;
+                        }
                     }
                 }
             }
@@ -457,7 +464,9 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
                         importItem.addError(Messages.getString("AbstractImportHandler_nameUsed")); //$NON-NLS-1$
                     }
                 } else {
-                    importItem.addError(Messages.getString("AbstractImportHandler_nameUsed.differentRepositoryType")); //$NON-NLS-1$
+                	if(bothProcessType){
+                		importItem.addError(Messages.getString("AbstractImportHandler_nameUsed.differentRepositoryType")); //$NON-NLS-1$
+                	}
                 }
             }
 

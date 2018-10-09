@@ -99,7 +99,7 @@ public class VersionUtils {
                 if (productVersion == null) {
                     Bundle bundle = FrameworkUtil.getBundle(VersionUtils.class);
                     if (bundle != null) {
-                        productVersion = (String) bundle.getHeaders().get(org.osgi.framework.Constants.BUNDLE_VERSION);
+                        productVersion = bundle.getHeaders().get(org.osgi.framework.Constants.BUNDLE_VERSION);
                     }
 
                     FileInputStream in = null;
@@ -137,6 +137,7 @@ public class VersionUtils {
      * @deprecated Please use either getInternalVersion() or getDisplayVersion()
      * @return the studio version.
      */
+    @Deprecated
     public static String getVersion() {
         return getDisplayVersion();
     }
@@ -200,4 +201,10 @@ public class VersionUtils {
         return version;
     }
 
+    public static void clearCache() {
+        synchronized (VersionUtils.class) {
+            productVersion = null;
+            talendVersion = null;
+        }
+    }
 }

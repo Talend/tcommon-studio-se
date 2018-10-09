@@ -26,7 +26,10 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.talend.commons.exception.ExceptionHandler;
+import org.talend.commons.runtime.service.ITaCoKitService;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -103,6 +106,7 @@ public class UpdatesHelper {
     }
 
     /**
+     * means it's a patch updatesite or tcompV0 updatesite<br>
      * need check that contain "artifacts.xml", "content.xml" and "plugins" folder in same place.
      */
     public static boolean isUpdateSite(File file) {
@@ -137,6 +141,18 @@ public class UpdatesHelper {
             }
         }
         return false;
+    }
+
+    public static boolean isTaCoKitCar(File file) {
+        boolean isTaCoKitCar = false;
+        if (file != null && file.exists()) {
+            try {
+                ITaCoKitService.getInstance().isTaCoKitCar(file, new NullProgressMonitor());
+            } catch (Exception e) {
+                ExceptionHandler.process(e);
+            }
+        }
+        return isTaCoKitCar;
     }
 
     /**

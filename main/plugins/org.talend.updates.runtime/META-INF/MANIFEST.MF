@@ -22,16 +22,26 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.m2e.core,
  org.eclipse.m2e.maven.runtime,
  org.talend.common.ui.runtime,
+ org.talend.commons.ui,
  org.talend.librariesmanager.ui,
  org.talend.librariesmanager,
  org.talend.designer.maven,
  org.talend.libraries.dom4j-jaxen,
- org.talend.libraries.apache.http
+ org.talend.libraries.apache.http,
+ org.eclipse.ui.forms,
+ org.talend.core.repository
 Bundle-ActivationPolicy: lazy
 Service-Component: OSGI-INF/components_install.xml
-Export-Package: org.talend.updates.runtime.engine,
+Export-Package: org.talend.updates.runtime,
+ org.talend.updates.runtime.engine,
  org.talend.updates.runtime.engine.component,
  org.talend.updates.runtime.engine.factory,
+ org.talend.updates.runtime.feature.model,
  org.talend.updates.runtime.model,
+ org.talend.updates.runtime.model.interfaces,
+ org.talend.updates.runtime.nexus.component,
+ org.talend.updates.runtime.service,
+ org.talend.updates.runtime.storage,
  org.talend.updates.runtime.ui,
  org.talend.updates.runtime.utils
+Bundle-Activator: org.talend.updates.runtime.UpdatesRuntimePlugin

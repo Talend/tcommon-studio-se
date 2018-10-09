@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.updates.runtime.engine.factory.AbstractExtraUpdatesFactory;
+import org.talend.updates.runtime.engine.factory.IComponentUpdatesFactory;
 import org.talend.updates.runtime.model.ExtraFeature;
 
 /**
@@ -38,17 +39,39 @@ public class ExtraFeaturesUpdatesFactory {
      * @param monitor
      * @return
      */
-    public void retrieveUninstalledExtraFeatures(IProgressMonitor monitor, Set<ExtraFeature> uninstalledExtraFeatures) {
+    public void retrieveUninstalledExtraFeatures(IProgressMonitor monitor, Set<ExtraFeature> uninstalledExtraFeatures,
+            boolean includeComponentsFeature) {
         if (uninstalledExtraFeatures == null) {
             Assert.isNotNull(uninstalledExtraFeatures);
         }
         AbstractExtraUpdatesFactory[] updatesFactories = updatesFactoryReader.getUpdatesFactories();
         if (updatesFactories != null) {
             for (AbstractExtraUpdatesFactory factory : updatesFactories) {
+                if (!includeComponentsFeature) {
+                    if (factory instanceof IComponentUpdatesFactory) {
+                        continue;
+                    }
+                }
                 try {
                     factory.retrieveUninstalledExtraFeatures(monitor, uninstalledExtraFeatures);
                 } catch (Exception e) {
                     ExceptionHandler.process(e);
+                }
+            }
+        }
+    }
+
+    public void retrieveAllComponentFeatures(IProgressMonitor monitor, Set<ExtraFeature> allFeatures) {
+        Assert.isNotNull(allFeatures);
+        AbstractExtraUpdatesFactory[] updatesFactories = updatesFactoryReader.getUpdatesFactories();
+        if (updatesFactories != null) {
+            for (AbstractExtraUpdatesFactory factory : updatesFactories) {
+                if (factory instanceof IComponentUpdatesFactory) {
+                    try {
+                        factory.retrieveAllExtraFeatures(monitor, allFeatures);
+                    } catch (Exception e) {
+                        ExceptionHandler.process(e);
+                    }
                 }
             }
         }

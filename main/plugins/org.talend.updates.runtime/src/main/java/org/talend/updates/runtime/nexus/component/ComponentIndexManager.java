@@ -16,12 +16,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 import java.util.jar.JarInputStream;
 import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
@@ -43,13 +44,21 @@ import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.resource.FileExtensions;
 import org.talend.commons.utils.resource.UpdatesHelper;
+import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
+import org.talend.updates.runtime.engine.P2Manager;
+import org.talend.updates.runtime.feature.model.Type;
 import org.talend.updates.runtime.utils.JarMenifestUtil;
+import org.talend.updates.runtime.utils.PathUtils;
 
 /**
  * DOC ggu class global comment. Detailled comment
  */
 public class ComponentIndexManager {
+
+    public static final String INDEX = "index"; //$NON-NLS-1$
+
+    public static final String COMPONENT_GROUP_ID = "org.talend.components"; //$NON-NLS-1$
 
     public static final String ELEM_COMPONENTS = "components"; //$NON-NLS-1$
 
@@ -108,8 +117,13 @@ public class ComponentIndexManager {
             readAttribute(ComponentIndexNames.bundle_id, element, indexBean);
             readAttribute(ComponentIndexNames.version, element, indexBean);
             readAttribute(ComponentIndexNames.mvn_uri, element, indexBean);
+            readAttribute(ComponentIndexNames.image_mvn_uri, element, indexBean);
             readAttribute(ComponentIndexNames.product, element, indexBean);
             readAttribute(ComponentIndexNames.license_uri, element, indexBean);
+            readAttribute(ComponentIndexNames.compatibleStudioVersion, element, indexBean);
+            readAttribute(ComponentIndexNames.types, element, indexBean);
+            readAttribute(ComponentIndexNames.categories, element, indexBean);
+            readAttribute(ComponentIndexNames.degradable, element, indexBean);
 
             readChildContent(ComponentIndexNames.description, element, indexBean);
             readChildContent(ComponentIndexNames.license, element, indexBean);
@@ -168,14 +182,7 @@ public class ComponentIndexManager {
             // put the new one
             newIndexList.add(indexBean);
 
-            // sort
-            Collections.sort(newIndexList, new Comparator<ComponentIndexBean>() {
-
-                @Override
-                public int compare(ComponentIndexBean b1, ComponentIndexBean b2) {
-                    return b1.toString().compareToIgnoreCase(b2.toString());
-                }
-            });
+            // I think no need sort here, since the original order shows the installation order
 
             return createIndexFile(indexFile, newIndexList);
         } catch (Exception e) {
@@ -269,6 +276,11 @@ public class ComponentIndexManager {
             case mvn_uri:
             case license_uri:
             case product:
+            case image_mvn_uri:
+            case types:
+            case categories:
+            case degradable:
+            case compatibleStudioVersion:
             default:
                 // attribute
                 component.add(docFactory.createAttribute(component, in.getName(), value));
@@ -283,6 +295,36 @@ public class ComponentIndexManager {
             }
         }
         return component;
+    }
+
+    public ComponentIndexBean createIndexBean4Patch(File patchZipFile, Type type) {
+        if (patchZipFile == null || !patchZipFile.exists() || patchZipFile.isDirectory()
+                || !patchZipFile.getName().endsWith(FileExtensions.ZIP_FILE_SUFFIX) || type == null) {
+            return null;
+        }
+        String name = StringUtils.removeEnd(patchZipFile.getName(), FileExtensions.ZIP_FILE_SUFFIX);
+        String bundleId = null;
+        String bundleVersion = null;
+        String mvnUri = null;
+        if (type == Type.PLAIN_ZIP) {
+            bundleId = "org.talend.studio.patch.plainzip"; //$NON-NLS-1$
+            bundleVersion = name;
+        } else if (type == Type.P2_PATCH) {
+            bundleId = "org.talend.studio.patch.updatesite"; //$NON-NLS-1$
+            bundleVersion = P2Manager.getInstance().getP2Version(patchZipFile);
+        }
+        String artifactId = StringUtils.substringBeforeLast(name, "-"); //$NON-NLS-1$
+        String artifactVersion = StringUtils.substringAfterLast(name, "-"); //$NON-NLS-1$
+        mvnUri = MavenUrlHelper.generateMvnUrl(bundleId, artifactId, artifactVersion, FileExtensions.ZIP_EXTENSION, null);
+        if (name != null && bundleId != null && bundleVersion != null && mvnUri != null) {
+            ComponentIndexBean indexBean = new ComponentIndexBean();
+            boolean set = indexBean.setRequiredFieldsValue(name, bundleId, bundleVersion, mvnUri);
+            indexBean.setValue(ComponentIndexNames.types, PathUtils.convert2StringTypes(Arrays.asList(type)));
+            if (set) {
+                return indexBean;
+            }
+        }
+        return null;
     }
 
     /**
@@ -321,17 +363,16 @@ public class ComponentIndexManager {
                                 // must use another stream
                                 jarEntryStream = new JarInputStream(zipFile.getInputStream(zipEntry));
 
-                                // find the bundleId and version
-                                final Manifest manifest = jarEntryStream.getManifest();
-                                if (manifest != null) {
-                                    bundleId = JarMenifestUtil.getBundleSymbolicName(manifest);
-                                    bundleVersion = JarMenifestUtil.getBundleVersion(manifest);
-                                }
-
                                 // find the pom.properties
                                 JarEntry jarEntry = null;
                                 while ((jarEntry = jarEntryStream.getNextJarEntry()) != null) {
                                     final String entryPath = jarEntry.getName();
+                                    if (JarFile.MANIFEST_NAME.equalsIgnoreCase(entryPath)) {
+                                        Manifest manifest = new Manifest();
+                                        manifest.read(jarEntryStream);
+                                        bundleId = JarMenifestUtil.getBundleSymbolicName(manifest);
+                                        bundleVersion = JarMenifestUtil.getBundleVersion(manifest);
+                                    }
                                     final Path fullPath = new Path(entryPath);
                                     final String fileName = fullPath.lastSegment();
 
@@ -418,11 +459,21 @@ public class ComponentIndexManager {
         if (name != null && bundleId != null && bundleVersion != null && mvnUri != null) {
             final ComponentIndexBean indexBean = new ComponentIndexBean();
             final boolean set = indexBean.setRequiredFieldsValue(name, bundleId, bundleVersion, mvnUri);
+            indexBean.setValue(ComponentIndexNames.types, PathUtils.convert2StringTypes(Arrays.asList(Type.TCOMP_V0)));
             if (set) {
                 return indexBean;
             }
         }
         return null;
+    }
+
+    public MavenArtifact getIndexArtifact() {
+        MavenArtifact artifact = new MavenArtifact();
+        artifact.setGroupId(COMPONENT_GROUP_ID);
+        artifact.setArtifactId(INDEX);
+        artifact.setVersion(PathUtils.getTalendVersionStr());
+        artifact.setType(FileExtensions.XML_EXTENSION);
+        return artifact;
     }
 
 }

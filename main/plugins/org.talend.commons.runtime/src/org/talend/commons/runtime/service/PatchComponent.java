@@ -12,10 +12,18 @@
 // ============================================================================
 package org.talend.commons.runtime.service;
 
+import java.io.File;
+
+import org.eclipse.core.runtime.IProgressMonitor;
+
 /**
  * DOC ggu class global comment. Detailled comment
  */
 public interface PatchComponent extends P2InstallComponent {
 
     static final String FOLDER_PATCHES = "patches"; //$NON-NLS-1$
+
+    boolean install(IProgressMonitor monitor, File patchFile) throws Exception;
+
+    boolean isPlainZipInstalled(IProgressMonitor monitor, String patchName) throws Exception;
 }

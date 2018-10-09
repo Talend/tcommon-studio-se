@@ -97,6 +97,7 @@ public class ResumeUtil {
                         csvWriter.write("errorCode");// errorCode
                         csvWriter.write("message");// message
                         csvWriter.write("stackTrace");// stackTrace
+                        csvWriter.write("dynamicData");// dynamicData
                         csvWriter.endRecord();
                         csvWriter.flush();
                     }

@@ -37,6 +37,7 @@ import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.commands.ActionHandler;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.graphics.Point;
@@ -106,7 +107,6 @@ import org.talend.core.utils.ProductUtils;
 import org.talend.core.views.IComponentSettingsView;
 import org.talend.designer.business.diagram.custom.IDiagramModelService;
 import org.talend.designer.core.ui.editor.palette.TalendPaletteHelper;
-import org.talend.designer.runprocess.java.TalendJavaProjectManager;
 import org.talend.rcp.Activator;
 import org.talend.rcp.i18n.Messages;
 import org.talend.rcp.intro.starting.StartingEditorInput;
@@ -432,7 +432,21 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
                 tdqRepositoryService.addSoftwareSystemUpdateListener();
             }
         }
+        if (Boolean.getBoolean("update.restart")) { //$NON-NLS-1$
+            System.clearProperty("update.restart"); //$NON-NLS-1$
+            Display.getDefault().asyncExec(new Runnable() {
 
+                @Override
+                public void run() {
+                    boolean restart = MessageDialog.openQuestion(Display.getCurrent().getActiveShell(),
+                            Messages.getString("ComponentsManager.form.install.dialog.restart.title"), //$NON-NLS-1$
+                            Messages.getString("ComponentsManager.form.install.dialog.restart.message")); //$NON-NLS-1$
+                    if (restart) {
+                        PlatformUI.getWorkbench().restart();
+                    }
+                }
+            });
+        }
     }
 
     private void showStarting() {

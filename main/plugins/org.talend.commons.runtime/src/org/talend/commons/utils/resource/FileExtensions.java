@@ -49,6 +49,8 @@ public interface FileExtensions {
 
     String JAR_EXTENSION = "jar"; //$NON-NLS-1$
 
+    String CAR_EXTENSION = "car";
+
     /*
      * file suffix
      */
@@ -59,6 +61,8 @@ public interface FileExtensions {
     String SCREENSHOT_FILE_SUFFIX = '.' + SCREENSHOT_EXTENSION;
 
     String ZIP_FILE_SUFFIX = '.' + ZIP_EXTENSION;
+
+    String CAR_FILE_SUFFIX = '.' + CAR_EXTENSION;
 
     String TAR_FILE_SUFFIX = ".tar"; //$NON-NLS-1$
 

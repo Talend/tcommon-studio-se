@@ -68,6 +68,7 @@ import org.talend.core.model.general.Project;
 import org.talend.core.model.metadata.IMetadataColumn;
 import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.core.model.metadata.MetadataTalendType;
+import org.talend.core.model.metadata.types.JavaTypesManager;
 import org.talend.core.model.process.EParameterFieldType;
 import org.talend.core.model.process.IContext;
 import org.talend.core.model.process.IElementParameter;
@@ -94,11 +95,13 @@ import org.talend.core.runtime.process.LastGenerationInfo;
 import org.talend.core.runtime.process.TalendProcessArgumentConstant;
 import org.talend.core.runtime.process.TalendProcessOptionConstants;
 import org.talend.core.runtime.repository.build.BuildExportManager;
+import org.talend.core.service.IResourcesDependenciesService;
 import org.talend.core.services.ISVNProviderService;
 import org.talend.core.ui.IJobletProviderService;
 import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.core.utils.BitwiseOptionUtils;
 import org.talend.designer.core.IDesignerCoreService;
+import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
@@ -596,6 +599,8 @@ public class ProcessorUtilities {
          * libraries.
          */
         generateBuildInfo(jobInfo, progressMonitor, isMainJob, currentProcess, currentJobName, processor, option);
+
+        copyDependenciedResources(currentProcess);
 
         return processor;
     }
@@ -1133,6 +1138,8 @@ public class ProcessorUtilities {
             generateBuildInfo(jobInfo, progressMonitor, isMainJob, currentProcess, currentJobName, processor, option);
             TimeMeasure.step(idTimer, "generateBuildInfo");
 
+            copyDependenciedResources(currentProcess);
+
             return processor;
         } finally {
             TimeMeasure.end(timeMeasureGenerateCodesId);
@@ -1261,6 +1268,71 @@ public class ProcessorUtilities {
             }
         }
 
+    }
+
+    /**
+     * For child job runtime resource file needed, copy the reource file to 'src\main\ext-resources' DOC jding Comment
+     * method "copyDependenciedResources".
+     * 
+     * @param currentProcess
+     */
+    private static void copyDependenciedResources(IProcess currentProcess) {
+        if (!(currentProcess instanceof IProcess2)) {
+            return;
+        }
+        IProcess2 process = (IProcess2) currentProcess;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IResourcesDependenciesService.class)) {
+            IResourcesDependenciesService resourcesService = (IResourcesDependenciesService) GlobalServiceRegister.getDefault()
+                    .getService(IResourcesDependenciesService.class);
+            if (resourcesService == null) {
+                return;
+            }
+            Item rootItem = process.getProperty().getItem();
+            Set<JobInfo> childrenJobInfo = getChildrenJobInfo(rootItem, false);
+            for (JobInfo jobInfo : childrenJobInfo) {
+                Property property = jobInfo.getProcessItem().getProperty();
+                
+                Set<String> resourceList = new HashSet<String>();
+                List<ContextType> contexts = jobInfo.getProcessItem().getProcess().getContext();
+                for (ContextType context : contexts) {
+                    List<ContextParameterType> contextParameter = context.getContextParameter();
+                    for (ContextParameterType contextParameterType : contextParameter) {
+                        if (JavaTypesManager.RESOURCE.getId().equals(contextParameterType.getType())
+                                || JavaTypesManager.RESOURCE.getLabel().equals(contextParameterType.getType())) {
+                            resourceList.add(contextParameterType.getValue());
+                        }
+                    }
+                }
+                if (resourceList.isEmpty()) {
+                    continue;
+                }
+                try {
+                    for (String res : resourceList) {
+                        String[] parts = res.split("\\|");
+                        if (parts.length > 1) {
+                            IRepositoryViewObject repoObject = null;
+                            if (RelationshipItemBuilder.LATEST_VERSION.equals(parts[1])) {
+                                repoObject = ProxyRepositoryFactory.getInstance().getLastVersion(parts[0]);
+                            } else {
+                                repoObject = ProxyRepositoryFactory.getInstance().getSpecificVersion(parts[0], parts[1], true);
+                            }
+                            if (repoObject != null) {
+                                StringBuffer rootjoblabel = new StringBuffer();
+                                if (StringUtils.isNotBlank(rootItem.getState().getPath())) {
+                                    rootjoblabel.append(rootItem.getState().getPath() + "/");
+                                }
+                                rootjoblabel
+                                        .append(rootItem.getProperty().getLabel() + "_" + rootItem.getProperty().getVersion());
+                                resourcesService.copyToExtResourceFolder(repoObject, property.getId(), property.getVersion(),
+                                        parts[1], rootjoblabel.toString());
+                            }
+                        }
+                    }
+                } catch (PersistenceException e) {
+                    log.error(e);
+                }
+            }
+        }
     }
 
     /**

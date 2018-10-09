@@ -39,7 +39,6 @@ import org.talend.updates.runtime.i18n.Messages;
 import org.talend.updates.runtime.model.ExtraFeature;
 import org.talend.updates.runtime.model.IuP2ExtraFeature;
 import org.talend.updates.runtime.model.P2ExtraFeature;
-import org.talend.updates.runtime.model.P2ExtraFeatureException;
 
 /**
  * DOC Talend class global comment. Detailled comment
@@ -102,9 +101,9 @@ public class TOSDynamicExtraFeaturesFactory extends AbstractExtraUpdatesFactory 
                         addToSet(uninstalledExtraFeatures, updateFeature);
                     }
                 }
-            } catch (P2ExtraFeatureException e) {
+            } catch (Exception e) {
                 // could not determine if feature is already installed so do not consider it all
-                log.equals(e);
+                log.error(e);
             }
         }
     }
