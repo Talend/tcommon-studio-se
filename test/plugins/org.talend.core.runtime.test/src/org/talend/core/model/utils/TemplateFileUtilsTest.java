@@ -17,7 +17,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -76,7 +77,10 @@ public class TemplateFileUtilsTest {
 	
 	private void test2(String content, String launcher){
 		Map<String, Element> map = test(content, launcher);
-		Assert.assertTrue(map.isEmpty());
+		Assert.assertTrue(map.size() == 3);
+		Assert.assertTrue(map.get(TemplateFileUtils.WINDOWS_LAUNCHER) != null);
+		Assert.assertTrue(map.get(TemplateFileUtils.POWER_SHELL) != null);
+		Assert.assertTrue(map.get(TemplateFileUtils.UNIX_LAUNCHER) != null);
 	}
 
 	private void test3(String content, String launcher){
@@ -124,13 +128,15 @@ public class TemplateFileUtilsTest {
 	}
 	
 	private File getTemplateFile() {
-        Bundle bundle = Platform.getBundle("org.talend.core.runtime.test"); //$NON-NLS-1$
-        URL confEntry = bundle.getEntry("resources/template.xml"); //$NON-NLS-1$
-        try {
-            return new File(FileLocator.toFileURL(confEntry).getFile());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+		try {
+			URI testFileToDeploy = FileLocator.toFileURL(this.getClass().getClassLoader().getResource("resources/template.xml"))//$NON-NLS-1$
+			        .toURI();
+			return new File(testFileToDeploy.getPath());
+		} catch (URISyntaxException e1) {
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
         return null;
     }
 
