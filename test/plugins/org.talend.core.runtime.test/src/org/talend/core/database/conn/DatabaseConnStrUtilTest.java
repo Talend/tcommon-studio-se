@@ -16,6 +16,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.talend.core.database.EDatabaseTypeName;
+import org.talend.core.database.conn.version.EDatabaseVersion4Drivers;
 import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.metadata.connection.hive.HiveModeInfo;
@@ -136,8 +138,8 @@ public class DatabaseConnStrUtilTest {
 
     @Test
     public void testGetURLStringForMSSQL() {
-        String dbType = "Microsoft SQL Server";
-        String dbVersion = "MSSQL_PROP";
+        String dbType = EDatabaseTypeName.MSSQL.getDisplayName();
+        String dbVersion = EDatabaseVersion4Drivers.MSSQL_PROP.getVersionValue();
         String host = "lcoalhost";
         String port = "";
         String sid = "master";
