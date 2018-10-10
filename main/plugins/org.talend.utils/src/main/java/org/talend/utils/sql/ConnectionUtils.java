@@ -516,4 +516,17 @@ public final class ConnectionUtils {
         }
         return false;
     }
+
+    public static boolean isMysql(DatabaseMetaData metadata) throws SQLException {
+        boolean result = false;
+        try {
+            if (metadata != null && metadata.getDriverName() != null && metadata.getDatabaseProductName() != null
+                    && metadata.getDatabaseProductName().toUpperCase().indexOf("MYSQL") > -1) { //$NON-NLS-1$
+                result = true;
+            }
+        } catch (SQLException e) {
+            result = false;
+        }
+        return result;
+    }
 }
