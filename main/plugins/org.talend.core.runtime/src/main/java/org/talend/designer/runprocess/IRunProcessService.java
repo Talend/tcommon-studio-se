@@ -226,6 +226,8 @@ public interface IRunProcessService extends IService {
 
     void generatePom(Item item);
 
+    void generatePom(Item item, int option);
+
     void initializeRootPoms();
 
     boolean isGeneratePomOnly();

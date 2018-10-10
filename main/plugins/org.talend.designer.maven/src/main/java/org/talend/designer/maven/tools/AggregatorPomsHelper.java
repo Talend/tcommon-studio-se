@@ -66,6 +66,7 @@ import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.core.runtime.process.TalendProcessArgumentConstant;
+import org.talend.core.runtime.process.TalendProcessOptionConstants;
 import org.talend.core.runtime.services.IFilterService;
 import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.designer.core.ICamelDesignerCoreService;
@@ -348,6 +349,10 @@ public class AggregatorPomsHelper {
     }
 
     public static void addToParentModules(IFile pomFile, Property property) throws Exception {
+        addToParentModules(pomFile, property, true);
+    }
+
+    public static void addToParentModules(IFile pomFile, Property property, boolean checkFilter) throws Exception {
         // Check relation for ESB service job, should not be added into main pom
         if (property != null) {
             List<Relation> relations = RelationshipItemBuilder.getInstance().getItemsRelatedTo(property.getId(),
@@ -358,8 +363,8 @@ public class AggregatorPomsHelper {
                 }
             }
         }
-
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IFilterService.class)) {
+		
+        if (checkFilter && GlobalServiceRegister.getDefault().isServiceRegistered(IFilterService.class)) {
             IFilterService filterService = (IFilterService) GlobalServiceRegister.getDefault().getService(IFilterService.class);
             if (property != null && !filterService.isFilterAccepted(property.getItem(), PomIdsHelper.getPomFilter())) {
                 return;
@@ -622,6 +627,10 @@ public class AggregatorPomsHelper {
     }
 
     public void syncAllPoms() throws Exception {
+       syncAllPoms(PomIdsHelper.getPomFilter());
+    }
+
+    public void syncAllPoms(String pomFilter) throws Exception {
 
         IRunnableWithProgress runnableWithProgress = new IRunnableWithProgress() {
 
@@ -636,80 +645,7 @@ public class AggregatorPomsHelper {
                             @Override
                             public void run(final IProgressMonitor monitor) throws CoreException {
                                 try {
-                                    IRunProcessService runProcessService = getRunProcessService();
-                                    List<IRepositoryViewObject> objects = new ArrayList<>();
-                                    if (runProcessService != null) {
-                                        for (ERepositoryObjectType type : ERepositoryObjectType.getAllTypesOfProcess2()) {
-                                            objects.addAll(ProxyRepositoryFactory.getInstance().getAll(type, true, true));
-                                        }
-                                    }
-                                    BuildCacheManager.getInstance().clearAllCaches();
-                                    int size = 3 + (objects == null ? 0 : objects.size());
-                                    monitor.setTaskName("Synchronize all poms"); //$NON-NLS-1$
-                                    monitor.beginTask("", size); //$NON-NLS-1$
-                                    // project pom
-                                    monitor.subTask("Synchronize project pom"); //$NON-NLS-1$
-                                    createRootPom(getProjectPomsFolder(), null, true, monitor);
-                                    installRootPom(true);
-                                    monitor.worked(1);
-                                    if (monitor.isCanceled()) {
-                                        return;
-                                    }
-                                    // codes pom
-                                    monitor.subTask("Synchronize code poms"); //$NON-NLS-1$
-                                    updateCodeProjects(monitor, true);
-                                    monitor.worked(1);
-                                    if (monitor.isCanceled()) {
-                                        return;
-                                    }
-                                    // all jobs pom
-                                    List<String> modules = new ArrayList<>();
-                                    if (objects != null) {
-                                        IFilterService filterService = null;
-                                        if (GlobalServiceRegister.getDefault().isServiceRegistered(IFilterService.class)) {
-                                            filterService = (IFilterService) GlobalServiceRegister.getDefault()
-                                                    .getService(IFilterService.class);
-                                        }
-                                        String pomFilter = PomIdsHelper.getPomFilter();
-                                        List<ERepositoryObjectType> allJobletTypes = ERepositoryObjectType.getAllTypesOfJoblet();
-                                        for (IRepositoryViewObject object : objects) {
-                                            if (filterService != null) {
-                                                if (!allJobletTypes.contains(object.getRepositoryObjectType()) && !filterService
-                                                        .isFilterAccepted(object.getProperty().getItem(), pomFilter)) {
-                                                    continue;
-                                                }
-                                            }
-                                            if (object.getProperty() != null && object.getProperty().getItem() != null) {
-                                                Item item = object.getProperty().getItem();
-                                                if (ProjectManager.getInstance().isInCurrentMainProject(item)) {
-                                                    monitor.subTask("Synchronize job pom: " + item.getProperty().getLabel() //$NON-NLS-1$
-                                                            + "_" + item.getProperty().getVersion()); //$NON-NLS-1$
-                                                    runProcessService.generatePom(item);
-                                                    IFile pomFile = getItemPomFolder(item.getProperty())
-                                                            .getFile(TalendMavenConstants.POM_FILE_NAME);
-                                                    if (pomFile.exists()) {
-                                                        modules.add(getModulePath(pomFile));
-                                                    }
-                                                }
-                                            }
-                                            monitor.worked(1);
-                                            if (monitor.isCanceled()) {
-                                                return;
-                                            }
-                                        }
-                                    }
-                                    // sync project pom again with all modules.
-                                    monitor.subTask("Synchronize project pom with modules"); //$NON-NLS-1$
-                                    collectModules(modules);
-                                    createRootPom(getProjectPomsFolder(), modules, true, monitor);
-                                    monitor.worked(1);
-                                    monitor.subTask("Install project pom"); //$NON-NLS-1$
-                                    installRootPom(true);
-                                    monitor.worked(1);
-                                    if (monitor.isCanceled()) {
-                                        return;
-                                    }
-                                    monitor.done();
+                                    syncAllPomsWithoutProgress(monitor, pomFilter);
                                 } catch (Exception e) {
                                     ExceptionHandler.process(e);
                                 }
@@ -854,6 +790,85 @@ public class AggregatorPomsHelper {
             ExceptionHandler.process(e);
         }
         return false;
+    }
+	public void syncAllPomsWithoutProgress(IProgressMonitor monitor) throws Exception {
+        syncAllPomsWithoutProgress(monitor, PomIdsHelper.getPomFilter());
+    }
+
+    public void syncAllPomsWithoutProgress(IProgressMonitor monitor, String pomFilter) throws Exception {
+        IRunProcessService runProcessService = getRunProcessService();
+        List<IRepositoryViewObject> objects = new ArrayList<>();
+        if (runProcessService != null) {
+            for (ERepositoryObjectType type : ERepositoryObjectType.getAllTypesOfProcess2()) {
+                objects.addAll(ProxyRepositoryFactory.getInstance().getAll(type, true, true));
+            }
+        }
+        BuildCacheManager.getInstance().clearAllCaches();
+        int size = 3 + objects.size();
+        monitor.setTaskName("Synchronize all poms"); //$NON-NLS-1$
+        monitor.beginTask("", size); //$NON-NLS-1$
+        // project pom
+        monitor.subTask("Synchronize project pom"); //$NON-NLS-1$
+        createRootPom(getProjectPomsFolder(), null, true, monitor);
+        installRootPom(true);
+        monitor.worked(1);
+        if (monitor.isCanceled()) {
+            return;
+        }
+        // codes pom
+        monitor.subTask("Synchronize code poms"); //$NON-NLS-1$
+        updateCodeProjects(monitor, true);
+        monitor.worked(1);
+        if (monitor.isCanceled()) {
+            return;
+        }
+        // all jobs pom
+        List<String> modules = new ArrayList<>();
+        IFilterService filterService = null;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IFilterService.class)) {
+            filterService = (IFilterService) GlobalServiceRegister.getDefault().getService(IFilterService.class);
+        }
+        List<ERepositoryObjectType> allJobletTypes = ERepositoryObjectType.getAllTypesOfJoblet();
+        for (IRepositoryViewObject object : objects) {
+            if (filterService != null) {
+                if (!allJobletTypes.contains(object.getRepositoryObjectType())
+                        && !filterService.isFilterAccepted(object.getProperty().getItem(), pomFilter)) {
+                    continue;
+                }
+            }
+            if (object.getProperty() != null && object.getProperty().getItem() != null) {
+                Item item = object.getProperty().getItem();
+                if (ProjectManager.getInstance().isInCurrentMainProject(item)) {
+                    monitor.subTask("Synchronize job pom: " + item.getProperty().getLabel() //$NON-NLS-1$
+                            + "_" + item.getProperty().getVersion()); //$NON-NLS-1$
+                    if (runProcessService != null) {
+                        // already filtered
+                        runProcessService.generatePom(item, TalendProcessOptionConstants.GENERATE_POM_NO_FILTER);
+                    } else {
+                        ExceptionHandler.log("Cannot generate pom for " + object.getLabel()
+                                + " - Reason: RunProcessService is null.");
+                    }
+                    IFile pomFile = getItemPomFolder(item.getProperty()).getFile(TalendMavenConstants.POM_FILE_NAME);
+                    if (pomFile.exists()) {
+                        modules.add(getModulePath(pomFile));
+                    }
+                }
+            }
+            monitor.worked(1);
+            if (monitor.isCanceled()) {
+                return;
+            }
+        }
+        // sync project pom again with all modules.
+        monitor.subTask("Synchronize project pom with modules"); //$NON-NLS-1$
+        collectModules(modules);
+        createRootPom(getProjectPomsFolder(), null, true, monitor);
+        installRootPom(true);
+        monitor.worked(1);
+        if (monitor.isCanceled()) {
+            return;
+        }
+        monitor.done();
     }
 
     private static IRunProcessService getRunProcessService() {
