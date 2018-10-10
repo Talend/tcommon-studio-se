@@ -9,6 +9,9 @@ import java.text.DateFormat;
 import java.text.FieldPosition;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.DateTimeException;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -255,6 +258,47 @@ public class TalendDate {
         }
 
         return false;
+    }
+
+    /**
+     * Tests string value as a date with right pattern using strict rules.
+     * This validation uses Java 8 time tools such {@link DateTimeFormatter#parse }
+     * and {@link DateTimeFormatter#format }
+     * </br>
+     * </br>
+     * Examples:
+     * </br>
+     * <code>isDateStrict("20110327 121711", "yyyyMMdd HHmmss")</code> return <code>true</code></br>
+     * <code>isDateStrict("01100327 121711", "yyyyMMdd HHmmss")</code> return <code>false</code></br>
+     * <code>isDateStrict("20180229 221711", "yyyyMMdd HHmmss")</code> return <code>false</code></br>
+     * <code>isDateStrict("2016-02-29 22:17:11", "yyyy-MM-dd HH:mm:ss")</code> return <code>true</code></br>
+     * <code>isDateStrict("2011/03/27 22:17:11+0100", "yyyy/MM/dd HH:mm:ssZ")</code> return <code>true</code></br>
+     * <code>isDateStrict("20110327 021711+1900", "yyyyMMdd HHmmssZ")</code> return <code>false</code></br>
+     * </br>
+     * The range of time-zone offsets is restricted to -18:00 to 18:00 inclusive.
+     *
+     * @param stringDate the date to judge
+     * @param pattern the specified pattern, like: "yyyy-MM-dd HH:mm:ss")
+     * @return whether the stringDate is a date string with a right pattern.
+     * @throws IllegalArgumentException if pattern is not defined.
+     *
+     */
+    public static boolean isDateStrict(String stringDate, String pattern) {
+        if (stringDate == null) {
+            return false;
+        }
+        DateTimeFormatter formatter = java.util.Optional
+                .ofNullable(pattern)
+                .filter((entry) -> !entry.isEmpty())
+                .map(DateTimeFormatter::ofPattern)
+                .orElseThrow(() -> new IllegalArgumentException("Date format is not defined"));
+        try {
+            TemporalAccessor testDate = formatter.parse(stringDate);
+            String formattedString = formatter.format(testDate);
+            return stringDate.equalsIgnoreCase(formattedString);
+        } catch (DateTimeException e) {
+            return false;
+        }
     }
 
     /**
