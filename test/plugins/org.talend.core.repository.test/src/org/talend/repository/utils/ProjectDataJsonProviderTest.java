@@ -42,6 +42,7 @@ import org.talend.core.model.properties.StatAndLogsSettings;
 import org.talend.core.model.properties.Status;
 import org.talend.core.model.properties.User;
 import org.talend.core.model.properties.impl.PropertiesFactoryImpl;
+import org.talend.core.repository.constants.FileConstants;
 import org.talend.core.repository.utils.ProjectDataJsonProvider;
 import org.talend.core.repository.utils.XmiResourceManager;
 import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
@@ -176,6 +177,12 @@ public class ProjectDataJsonProviderTest {
                 ProjectDataJsonProvider.CONTENT_PROJECTSETTING | ProjectDataJsonProvider.CONTENT_RELATIONSHIPS
                         | ProjectDataJsonProvider.CONTENT_RECYCLEBIN | ProjectDataJsonProvider.CONTENT_MIGRATIONTASK,
                 ProjectDataJsonProvider.CONTENT_ALL);
+    }
+
+    @Test
+    public void testGetRelationshipIndexPath() {
+        final String expect = FileConstants.SETTINGS_FOLDER_NAME + "/" + FileConstants.RELATIONSHIP_FILE_NAME; //$NON-NLS-1$
+        assertEquals(expect, ProjectDataJsonProvider.getRelationshipIndexPath());
     }
 
     private void prepareProjectData() {
