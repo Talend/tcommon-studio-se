@@ -31,6 +31,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.collections.keyvalue.MultiKey;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -162,6 +163,9 @@ import org.talend.core.repository.utils.RoutineUtils;
 import org.talend.core.repository.utils.TDQServiceRegister;
 import org.talend.core.repository.utils.URIHelper;
 import org.talend.core.repository.utils.XmiResourceManager;
+import org.talend.core.runtime.maven.MavenConstants;
+import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
+import org.talend.core.ui.branding.IBrandingService;
 import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.helper.SubItemHelper;
 import org.talend.repository.ProjectManager;
@@ -3192,6 +3196,34 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
                 resource.unload();
             }
             // xmiResourceManager.resourceSet.getResources().remove(resource);
+        }
+    }
+
+    @Override
+    public void beforeLogon(Project project) throws PersistenceException, LoginException {
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IBrandingService.class)) {
+            IBrandingService brandingService = (IBrandingService) GlobalServiceRegister.getDefault()
+                    .getService(IBrandingService.class);
+            String productVersion = VersionUtils.getDisplayVersion();
+            String version = brandingService.getFullProductName() + "-" + productVersion; //$NON-NLS-1$
+            if (!version.equals(project.getEmfProject().getProductVersion())) {
+                updatePreferenceProjectVersion(project);
+            }
+        }
+    }
+
+    protected void updatePreferenceProjectVersion(Project project) {
+        String oldProductVersion = project.getEmfProject().getProductVersion();
+        oldProductVersion = StringUtils.substringAfter(oldProductVersion, "-"); //$NON-NLS-1$
+        String oldVersion = VersionUtils.getTalendVersion(oldProductVersion);
+        String currentVersion = VersionUtils.getTalendVersion();
+        if (!currentVersion.equals(oldVersion)) {
+            ProjectPreferenceManager prefManager = new ProjectPreferenceManager(project, "org.talend.designer.maven"); //$NON-NLS-1$
+            String prefVersion = prefManager.getValue(MavenConstants.PROJECT_VERSION);
+            if (oldVersion.equals(prefVersion)) {
+                prefManager.setValue(MavenConstants.PROJECT_VERSION, currentVersion);
+                prefManager.save();
+            }
         }
     }
 
