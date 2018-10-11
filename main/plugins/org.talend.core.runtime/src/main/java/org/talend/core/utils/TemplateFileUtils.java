@@ -39,7 +39,7 @@ public class TemplateFileUtils {
 	public static final String POWER_SHELL = "run.ps1"; //$NON-NLS-1$
 	
 	public static String handleAssemblyJobTemplate(String content, String launcher) throws DocumentException{
-		if(launcher != null && launcher.equalsIgnoreCase(LAUNCHER_ALL)){
+		if(launcher == null || launcher.equalsIgnoreCase(LAUNCHER_ALL)){
 			return content;
 		}
 		ByteArrayInputStream source = new ByteArrayInputStream(content.getBytes());
@@ -53,17 +53,7 @@ public class TemplateFileUtils {
 		for (Iterator j = files.elementIterator("file"); j.hasNext();) { //$NON-NLS-1$
 			Element file = (Element) j.next();
 			Element destName = file.element("destName"); //$NON-NLS-1$
-			if(launcher == null){
-				if(destName.getStringValue().endsWith(WINDOWS_LAUNCHER)){
-					files.remove(file);
-				}
-				if(destName.getStringValue().endsWith(UNIX_LAUNCHER)){
-					files.remove(file);
-				}
-				if(destName.getStringValue().endsWith(POWER_SHELL)){
-					files.remove(file);
-				}
-			}else if(launcher.equalsIgnoreCase(UNIX_ENVIRONMENT)){
+			if(launcher.equalsIgnoreCase(UNIX_ENVIRONMENT)){
 				if(destName.getStringValue().endsWith(WINDOWS_LAUNCHER)){
 					files.remove(file);
 				}
