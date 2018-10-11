@@ -79,12 +79,19 @@ public class DynamicDistributionAetherUtils {
 
         String groupId = dependencyNode.getGroupId();
         String artifactId = dependencyNode.getArtifactId();
+        String extension = dependencyNode.getExtension();
         String classifier = dependencyNode.getClassifier();
         String version = dependencyNode.getVersion();
         String scope = dependencyNode.getScope();
 
         if (scope == null) {
             scope = JavaScopes.COMPILE;
+        }
+        if (StringUtils.isBlank(extension)) {
+            extension = null;
+        }
+        if (StringUtils.isBlank(classifier)) {
+            classifier = null;
         }
 
         String key = remoteUrl + " | " + localPath; //$NON-NLS-1$
@@ -102,7 +109,7 @@ public class DynamicDistributionAetherUtils {
         updateDependencySelector((DefaultRepositorySystemSession) session, monitor);
 
         org.eclipse.aether.graph.Dependency dependency = new org.eclipse.aether.graph.Dependency(
-                new DefaultArtifact(groupId, artifactId, classifier, null, version), scope);
+                new DefaultArtifact(groupId, artifactId, classifier, extension, version), scope);
 
         List<ExclusionNode> exclusionNodes = dependencyNode.getExclusions();
         if (exclusionNodes != null && !exclusionNodes.isEmpty()) {
