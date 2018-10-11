@@ -257,6 +257,11 @@ public class RecycleBinManager {
             RecycleBin recycleBin = projectRecyclebins.get(project.getTechnicalLabel());
             boolean recycleBinChanged = true;
             if (recycleBin != null) {
+                // Synchronize delete folder to recycleBin
+                recycleBin.getDeletedFolders().clear();
+                for (int i = 0; i < project.getDeletedFolders().size(); i++) {
+                    recycleBin.getDeletedFolders().add((String) project.getDeletedFolders().get(i));
+                }
                 recycleBinChanged = !equals(recycleBin, lastSavedRecycleBinMap.get(recycleBin));
             }
 
@@ -270,11 +275,6 @@ public class RecycleBinManager {
             }
             resource.getContents().clear();
             recycleBin.setLastUpdate(new Date());
-            // Synchronize delete folder to recycleBin
-            recycleBin.getDeletedFolders().clear();
-            for (int i = 0; i < project.getDeletedFolders().size(); i++) {
-                recycleBin.getDeletedFolders().add((String) project.getDeletedFolders().get(i));
-            }
             resource.getContents().add(recycleBin);
             EmfHelper.saveResource(resource);
             lastSavedRecycleBinMap.put(recycleBin, EcoreUtil.copy(recycleBin));

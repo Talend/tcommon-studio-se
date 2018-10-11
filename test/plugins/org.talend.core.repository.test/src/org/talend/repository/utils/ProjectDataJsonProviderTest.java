@@ -43,6 +43,7 @@ import org.talend.core.model.properties.Status;
 import org.talend.core.model.properties.User;
 import org.talend.core.model.properties.impl.PropertiesFactoryImpl;
 import org.talend.core.repository.constants.FileConstants;
+import org.talend.core.repository.recyclebin.RecycleBinManager;
 import org.talend.core.repository.utils.ProjectDataJsonProvider;
 import org.talend.core.repository.utils.XmiResourceManager;
 import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
@@ -448,6 +449,9 @@ public class ProjectDataJsonProviderTest {
     }
 
     private void removeTempProject() throws PersistenceException, CoreException {
+        if (sampleProject != null) {
+            RecycleBinManager.getInstance().clearCache(sampleProject);
+        }
         // clear the folder, same as it should be in a real logoffProject.
         ProjectManager.getInstance().getFolders(sampleProject.getEmfProject()).clear();
         final IProject project = ResourceUtils.getProject(sampleProject);
