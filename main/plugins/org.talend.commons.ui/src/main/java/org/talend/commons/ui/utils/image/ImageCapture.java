@@ -27,6 +27,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.talend.commons.ui.runtime.image.ImageUtils;
+import org.talend.commons.utils.system.EnvironmentUtils;
 
 /**
  * <code>ImageCapture</code> provides utilities to capture images.
@@ -53,11 +54,7 @@ public class ImageCapture {
      * 
      * @param control
      */
-    public static Image capture(Control control) {
-
-        // First try not conclusive...
-        // So I should use org.eclipse.ve.internal.swt.targetvm.win32.ImageCapture class which work perfectly
-
+    public static Image capture(Control control) {    	
         Shell shell = control.getShell();
         Rectangle boundsShell = shell.getBounds();
 
@@ -71,7 +68,15 @@ public class ImageCapture {
         GC gc = new GC(control);
         Image image = new Image(control.getDisplay(), control.getSize().x, control.getSize().y);
 
-        gc.copyArea(image, 0, 0);
+        boolean skipCopyArea = false;
+    	if (EnvironmentUtils.isMacOsSytem()) {
+    		if ("10.14".equals(System.getProperty("os.version"))) {
+    			skipCopyArea = true;
+    		}
+    	}
+    	if (!skipCopyArea) {
+    		gc.copyArea(image, 0, 0);
+    	}
         gc.dispose();
         return image;
         // return getImage(control, control.getSize().x, control.getSize().y, true);
