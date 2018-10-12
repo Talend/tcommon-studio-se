@@ -186,6 +186,18 @@ public class VersionUtils {
         return talendVersion;
     }
 
+    public static String getTalendVersion(String productVersion) {
+        try {
+            org.osgi.framework.Version v = new org.osgi.framework.Version(productVersion);
+            // only get major.minor.micro
+            org.osgi.framework.Version simpleVersion = new org.osgi.framework.Version(v.getMajor(), v.getMinor(), v.getMicro());
+            productVersion = simpleVersion.toString();
+        } catch (IllegalArgumentException e) {
+            productVersion = getTalendVersion();
+        }
+        return productVersion;
+    }
+
     public static String getPublishVersion(String version) {
         if (version != null) {
             // if using job version.
