@@ -2,12 +2,12 @@
 	<xsd:element abstract="false" name="Update" nillable="false" type="Update">
 		<xsd:unique name="Update">
 			<xsd:selector xpath="."/>
-			<xsd:field xpath="Source"/>
-			<xsd:field xpath="TimeInMillis"/>
+			<xsd:field xpath="ID"/>
 		</xsd:unique>
 	</xsd:element>
 	<xsd:complexType abstract="false" mixed="false" name="Update">
 		<xsd:sequence maxOccurs="1" minOccurs="1">
+			<xsd:element maxOccurs="1" minOccurs="1" name="ID" nillable="false" type="xsd:string"/>
 			<xsd:element maxOccurs="1" minOccurs="0" name="UserName" nillable="true" type="xsd:string"/>
 			<xsd:element maxOccurs="1" minOccurs="1" name="Source" nillable="false" type="xsd:string"/>
 			<xsd:element maxOccurs="1" minOccurs="1" name="TimeInMillis" nillable="false" type="xsd:string"/>
