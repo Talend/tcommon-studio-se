@@ -167,8 +167,6 @@ public class ConnParameterKeys {
      */
     public static final String CONN_PARA_KEY_METASTORE_PROT = "CONN_PARA_KEY_METASTORE_PROT"; //$NON-NLS-1$
 
-    public static final String CONN_PARA_KEY_HCATALOG_METASTORE = "CONN_PARA_KEY_HCATALOG_METASTORE"; //$NON-NLS-1$
-
     /*********** HD Insight keys ***************/
     public static final String CONN_PARA_KEY_WEB_HCAT_HOSTNAME = "CONN_PARA_KEY_WEB_HCAT_HOSTNAME"; //$NON-NLS-1$
 
