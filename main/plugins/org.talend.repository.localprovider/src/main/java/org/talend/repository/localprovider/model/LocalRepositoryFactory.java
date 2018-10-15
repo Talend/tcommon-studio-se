@@ -828,7 +828,21 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         transientReferenceSet.add(PropertiesPackage.eINSTANCE.getProject_StatAndLogsSettings().getName());
         transientReferenceSet.add(PropertiesPackage.eINSTANCE.getProject_ImplicitContextSettings().getName());
         transientReferenceSet.add(PropertiesPackage.eINSTANCE.getProject_ItemsRelations().getName());
-        transientReferenceSet.add(PropertiesPackage.eINSTANCE.getProject_MigrationTask().getName());
+        List<MigrationTask> realMigrationTaskList = new ArrayList<MigrationTask>();
+        MigrationTask fakeMigratonTask = ProjectDataJsonProvider.createFakeMigrationTask();
+        boolean foundFakeTask = false;
+        for (int i = 0; i < project.getEmfProject().getMigrationTask().size(); i++) {
+            MigrationTask task = (MigrationTask) project.getEmfProject().getMigrationTask().get(i);
+            if (!StringUtils.equals(task.getId(), fakeMigratonTask.getId())) {
+                realMigrationTaskList.add(task);
+            } else {
+                foundFakeTask = true;
+            }
+        }
+        project.getEmfProject().getMigrationTask().removeAll(realMigrationTaskList);
+        if (!foundFakeTask) {
+            project.getEmfProject().getMigrationTask().add(fakeMigratonTask);
+        }
         for (EReference reference : project.getEmfProject().eClass().getEAllReferences()) {
             if (transientReferenceSet.contains(reference.getName())) {
                 if (!reference.isTransient()) {
@@ -884,7 +898,8 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
             }
         }
 
-        xmiResourceManager.saveResource(projectResource);  
+        xmiResourceManager.saveResource(projectResource);
+        project.getEmfProject().getMigrationTask().addAll(realMigrationTaskList);
         ProjectDataJsonProvider.saveProjectData(project.getEmfProject());
     }
     

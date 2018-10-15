@@ -15,6 +15,10 @@ package org.talend.repository.utils;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
@@ -255,9 +259,17 @@ public class ProjectDataJsonProviderTest {
         }
         if ((checkContent & ProjectDataJsonProvider.CONTENT_MIGRATIONTASK) > 0) {
             EList migrationTask = sampleProject.getEmfProject().getMigrationTask();
-            assertEquals(this.migrationTaskCount, migrationTask.size());
+            MigrationTask fakeTask = ProjectDataJsonProvider.createFakeMigrationTask();
+            List<MigrationTask> realTaskList = new ArrayList<MigrationTask>();
+            for (int i= 0; i < migrationTask.size(); i++) {
+                MigrationTask task = (MigrationTask)migrationTask.get(i);
+                if (!StringUtils.equals(fakeTask.getId(), task.getId())) {
+                    realTaskList.add(task);
+                }
+            }
+            assertEquals(this.migrationTaskCount, realTaskList.size());
             for (int i = 0; i < migrationTaskCount; i++) {
-                MigrationTask task = (MigrationTask) migrationTask.get(i);
+                MigrationTask task = (MigrationTask) realTaskList.get(i);
                 assertEquals("id_" + i, task.getId());
                 assertEquals("breaks_" + i, task.getBreaks());
                 assertEquals("version_" + i, task.getVersion());

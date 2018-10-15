@@ -226,11 +226,21 @@ public class ProjectDataJsonProvider {
                 migrationTaskSetting = new ObjectMapper().readValue(input, MigrationTaskSetting.class);
             }
             if (migrationTaskSetting != null) {
-                project.getMigrationTask().clear();
+                MigrationTask fakeTask = createFakeMigrationTask();
+                List<MigrationTask> allRealTask = new ArrayList<MigrationTask>();
+                for (int i = 0; i < project.getMigrationTask().size(); i++) {
+                    MigrationTask task = (MigrationTask) project.getMigrationTask().get(i);
+                    if (!StringUtils.equals(fakeTask.getId(), task.getId())) {
+                        allRealTask.add(task);
+                    }
+                }
+                project.getMigrationTask().removeAll(allRealTask);
                 project.getMigrationTasks().clear();
                 if (migrationTaskSetting.getMigrationTaskList() != null) {
                     for (MigrationTaskJson json : migrationTaskSetting.getMigrationTaskList()) {
-                        project.getMigrationTask().add(json.toEmfObject());
+                        if (!StringUtils.equals(fakeTask.getId(), json.getId())) {
+                            project.getMigrationTask().add(json.toEmfObject());
+                        }
                     }
                 }
                 if (migrationTaskSetting.getMigrationTasksList() != null) {
@@ -414,6 +424,15 @@ public class ProjectDataJsonProvider {
                 project.getItemsRelations().add(json.toEmfObject());
             }
         }
+    }
+    
+    public static MigrationTask createFakeMigrationTask() {
+        MigrationTask fakeTask = PropertiesFactoryImpl.eINSTANCE.createMigrationTask();
+        fakeTask.setId("org.talend.repository.model.migration.CheckProductVersionMigrationTask");
+        fakeTask.setBreaks("7.1.0");
+        fakeTask.setVersion("7.1.1");
+        fakeTask.setStatus(MigrationStatus.DEFAULT_LITERAL);
+        return fakeTask;
     }
 }
 
