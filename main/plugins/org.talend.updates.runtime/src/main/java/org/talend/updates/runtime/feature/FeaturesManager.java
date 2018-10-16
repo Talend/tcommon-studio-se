@@ -95,6 +95,7 @@ public class FeaturesManager {
             if (type == Type.ALL && category == Category.ALL && StringUtils.isBlank(keyword)) {
                 filteredFeatures.addAll(features);
             } else {
+                keyword = keyword.toLowerCase();
                 Iterator<ExtraFeature> iterator = features.iterator();
                 while (iterator.hasNext()) {
                     ExtraFeature next = iterator.next();
