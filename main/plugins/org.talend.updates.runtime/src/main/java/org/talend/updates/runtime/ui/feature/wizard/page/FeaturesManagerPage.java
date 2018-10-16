@@ -15,9 +15,15 @@ package org.talend.updates.runtime.ui.feature.wizard.page;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.updates.runtime.EUpdatesImage;
 import org.talend.updates.runtime.i18n.Messages;
@@ -34,6 +40,8 @@ public class FeaturesManagerPage extends WizardPage {
     private FeaturesManagerRuntimeData runtimeData;
 
     private FeaturesManagerForm managerForm;
+
+    private Image pageTitleImage;
 
     public FeaturesManagerPage(FeaturesManagerRuntimeData runtimeData) {
         super(Messages.getString("ComponentsManager.page.manager.title")); //$NON-NLS-1$
@@ -60,7 +68,48 @@ public class FeaturesManagerPage extends WizardPage {
 
     @Override
     public Image getImage() {
-        return ImageProvider.getImage(EUpdatesImage.COMPONENTS_MANAGER_BANNER);
+        if (pageTitleImage != null) {
+            return pageTitleImage;
+        }
+
+        Image originalImage = ImageProvider.getImage(EUpdatesImage.COMPONENTS_MANAGER_BANNER);
+        Rectangle originalImageSize = originalImage.getBounds();
+        final int horizonWidth = 10;
+        final int verticalHeight = 18;
+
+        Image scaled = new Image(Display.getDefault(), originalImageSize.width + horizonWidth,
+                originalImageSize.height + verticalHeight);
+        GC gc = new GC(scaled);
+        gc.setAntialias(SWT.ON);
+        gc.setInterpolation(SWT.HIGH);
+        gc.drawImage(originalImage, 0, 0, originalImage.getBounds().width, originalImage.getBounds().height, 0,
+                verticalHeight / 2, originalImageSize.width, originalImageSize.height);
+
+        ImageData imageData = scaled.getImageData();
+        imageData.transparentPixel = imageData.palette.getPixel(new RGB(255, 255, 255));
+        Image transparentImage = new Image(Display.getDefault(), imageData);
+
+        scaled.dispose();
+        gc.dispose();
+        originalImage.dispose();
+
+        pageTitleImage = transparentImage;
+        return pageTitleImage;
+    }
+
+    @Override
+    public void dispose() {
+        try {
+            super.dispose();
+        } finally {
+            if (pageTitleImage != null) {
+                try {
+                    pageTitleImage.dispose();
+                } catch (Exception e) {
+                    ExceptionHandler.process(e);
+                }
+            }
+        }
     }
 
     private FeaturesManagerRuntimeData getRuntimeData() {

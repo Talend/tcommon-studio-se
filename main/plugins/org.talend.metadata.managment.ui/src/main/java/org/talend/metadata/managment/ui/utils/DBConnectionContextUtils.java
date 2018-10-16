@@ -1340,6 +1340,11 @@ public final class DBConnectionContextUtils {
             return cloneConn;
         }// ~
 
+        if (dbConn.getURL() != null && !dbConn.getURL().equals("") && EDatabaseTypeName.GENERAL_JDBC
+                .equals(EDatabaseTypeName.getTypeFromDbType(dbConn.getDatabaseType()))) { //$NON-NLS-1$
+            cloneConn.setURL(url);
+            return cloneConn;
+        }
         String newURL =
                 DatabaseConnStrUtil.getURLString(cloneConn.getDatabaseType(), dbConn.getDbVersionString(), server,
                         username, password, port, sidOrDatabase, filePath.toLowerCase(), datasource, dbRootPath,

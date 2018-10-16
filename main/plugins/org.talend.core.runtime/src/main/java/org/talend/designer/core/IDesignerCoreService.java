@@ -118,6 +118,8 @@ public interface IDesignerCoreService extends IService {
 
     public boolean executeUpdatesManager(List<UpdateResult> results, boolean onlySimpleShow);
 
+    public boolean executeUpdatesManagerBackgroud(List<UpdateResult> results, boolean onlySimpleShow);
+
     public Map<String, Date> getLastGeneratedJobsDateMap();
 
     /**

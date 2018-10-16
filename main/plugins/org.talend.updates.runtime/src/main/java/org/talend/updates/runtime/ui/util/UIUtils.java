@@ -101,17 +101,17 @@ public class UIUtils {
             Color fontColor = null;
             switch (type) {
             case WARN:
-                fontColor = ColorConstants.YELLOW_COLOR;
+                fontColor = ColorConstants.LOCHMARA_COLOR;
                 break;
             case ERROR:
-                fontColor = ColorConstants.RED_COLOR;
+                fontColor = ColorConstants.LOCHMARA_COLOR;
                 break;
             default:
-                fontColor = Display.getDefault().getSystemColor(SWT.COLOR_BLACK);
+                fontColor = ColorConstants.LOCHMARA_COLOR;
                 break;
             }
             Point msgPosition = new Point(strBuff.length(), msg.length());
-            StyleRange msgTyleRange = new StyleRange(msgPosition.x, msgPosition.y, fontColor, null, SWT.ITALIC | SWT.BOLD);
+            StyleRange msgTyleRange = new StyleRange(msgPosition.x, msgPosition.y, fontColor, null, SWT.NONE);
             styles.add(msgTyleRange);
         }
         strBuff.append(msg);

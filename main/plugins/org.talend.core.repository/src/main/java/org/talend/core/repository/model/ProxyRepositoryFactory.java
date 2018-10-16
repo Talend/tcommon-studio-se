@@ -2121,9 +2121,9 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
     }
 
     private void checkReferenceProjectsProblems(Project project) throws BusinessException, PersistenceException {
-        if (ReferenceProjectProblemManager.getInstance().getInvalidProjectReferenceSet().size() > 0) {
+        if (ReferenceProjectProblemManager.getInstance().getAllInvalidProjectReferenceSet().size() > 0) {
             StringBuffer sb = new StringBuffer();
-            for (String technicalLabel : ReferenceProjectProblemManager.getInstance().getInvalidProjectReferenceSet()) {
+            for (String technicalLabel : ReferenceProjectProblemManager.getInstance().getAllInvalidProjectReferenceSet()) {
                 if (sb.length() > 0) {
                     sb.append(",");
                 }

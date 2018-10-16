@@ -78,14 +78,14 @@ public class FeaturesUpdatesNotificationForm extends Composite {
 
     private Label imageLabel;
 
-    private Label titleLabel;
-
     /**
      * used to center the image
      */
     private Label verticalImageBaseLine;
 
     private Label horizonLine;
+
+    private StyledText titleLabel;
 
     private StyledText descText;
 
@@ -157,7 +157,7 @@ public class FeaturesUpdatesNotificationForm extends Composite {
         imageLabel = new Label(panel, SWT.CENTER);
         imageLabel.setBackground(getBackgroundColor());
 
-        titleLabel = new Label(panel, SWT.NONE);
+        titleLabel = new StyledText(panel, SWT.READ_ONLY | SWT.WRAP | SWT.MULTI | SWT.NO_FOCUS);
         titleLabel.setFont(getTitleFont());
         titleLabel.setBackground(getBackgroundColor());
 
@@ -227,7 +227,7 @@ public class FeaturesUpdatesNotificationForm extends Composite {
 
         formData = new FormData();
         formData.left = new FormAttachment(0, horizonAlignWidth);
-        formData.top = new FormAttachment(verticalImageBaseLine, 0, SWT.CENTER);
+        formData.top = new FormAttachment(verticalImageBaseLine, 5, SWT.TOP);
         Point imageSize = getImageSize();
         formData.height = imageSize.y;
         formData.width = imageSize.x;
@@ -358,7 +358,7 @@ public class FeaturesUpdatesNotificationForm extends Composite {
     }
 
     private Point getImageSize() {
-        return new Point(74, 74);
+        return new Point(32, 32);
     }
 
     private Font getTitleFont() {
@@ -390,7 +390,7 @@ public class FeaturesUpdatesNotificationForm extends Composite {
             synchronized (compImageLock) {
                 if (compImage == null) {
                     Point imageSize = getImageSize();
-                    Image image = ImageProvider.getImage(EUpdatesImage.UPDATE_BIG);
+                    Image image = ImageProvider.getImage(EUpdatesImage.UPDATE_32);
                     Rectangle originalImageBound = image.getBounds();
                     if (imageSize.x < originalImageBound.width || imageSize.y < originalImageBound.height) {
                         compImage = UIUtils.scaleImage(image, imageSize.x, imageSize.y);

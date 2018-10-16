@@ -836,6 +836,7 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
                             }
 
                             repositoryWorkUnit.setRefreshRepository(false);
+                            repositoryWorkUnit.setAvoidUnloadResources(true);
                             ProxyRepositoryFactory.getInstance().executeRepositoryWorkUnit(repositoryWorkUnit);
                             idDeletedBeforeImport.add(id);
                         }

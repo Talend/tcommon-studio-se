@@ -31,4 +31,6 @@ public interface ColorConstants {
     static final Color RED_COLOR = new Color(null, new RGB(240, 0, 0));// 255
 
     static final Color VERTICAL_SEPERATOR_LINE_COLOR = new Color(null, 162, 179, 195);
+
+    static final Color LOCHMARA_COLOR = new Color(null, 6, 117, 193);
 }

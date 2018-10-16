@@ -15,6 +15,9 @@ package org.talend.updates.runtime.model;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
@@ -25,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -263,7 +267,7 @@ public class P2ExtraFeature extends AbstractExtraFeature implements IP2Feature {
      * @see org.talend.updates.model.ExtraFeature#install(org.eclipse.core.runtime.IProgressMonitor, java.util.List)
      */
     @Override
-    public IStatus install(IProgressMonitor progress, List<URI> allRepoUris) throws ExtraFeatureException {
+    public IStatus install(final IProgressMonitor progress, List<URI> allRepoUris) throws ExtraFeatureException {
         IStatus doInstallStatus = null;
         File configIniBackupFile = null;
         Map<File, File> unzippedPatches = new HashMap<>();
@@ -295,9 +299,26 @@ public class P2ExtraFeature extends AbstractExtraFeature implements IP2Feature {
                     break;
                 }
             }
+            IProgressMonitor monitor2 = progress;
             if (isInstalled) {
+                if (progress != null) {
+                    monitor2 = (IProgressMonitor) Proxy.newProxyInstance(progress.getClass().getClassLoader(),
+                            new Class[] { IProgressMonitor.class }, new InvocationHandler() {
+
+                                @Override
+                                public Object invoke(Object obj, Method method, Object[] args) throws Throwable {
+                                    if (method == null) {
+                                        return null;
+                                    }
+                                    if (StringUtils.equals(method.getName(), "isCanceled")) { //$NON-NLS-1$
+                                        return Boolean.FALSE;
+                                    }
+                                    return method.invoke(progress, args);
+                                }
+                            });
+                }
                 try {
-                    afterInstallP2(progress, unzippedPatches);
+                    afterInstallP2(monitor2, unzippedPatches);
                 } catch (Exception e) {
                     ExceptionHandler.process(e);
                 }
@@ -313,7 +334,7 @@ public class P2ExtraFeature extends AbstractExtraFeature implements IP2Feature {
             }
             if (isInstalled) {
                 try {
-                    afterRestoreConfigFile(progress, unzippedPatches);
+                    afterRestoreConfigFile(monitor2, unzippedPatches);
                 } catch (Exception e) {
                     ExceptionHandler.process(e);
                 }

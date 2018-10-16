@@ -94,7 +94,6 @@ public class BuildCacheManager {
     private AggregatorPomsHelper aggregatorPomsHelper;
 
     private BuildCacheManager() {
-        aggregatorPomsHelper = new AggregatorPomsHelper();
     }
 
     public synchronized static BuildCacheManager getInstance() {
@@ -171,7 +170,7 @@ public class BuildCacheManager {
         currentJobmodules.clear();
         subjobProjects.clear();
         subjobMavenProjects.clear();
-        aggregatorPomsHelper = new AggregatorPomsHelper();
+        aggregatorPomsHelper = null;
     }
 
     public void clearCurrentJobletCache() {
@@ -283,7 +282,7 @@ public class BuildCacheManager {
     }
 
     private void createBuildAggregatorPom() throws Exception {
-        pomFile = aggregatorPomsHelper.getProjectPomsFolder().getFile(new Path(BUILD_AGGREGATOR_POM_NAME));
+        pomFile = getAggregatorPomsHelper().getProjectPomsFolder().getFile(new Path(BUILD_AGGREGATOR_POM_NAME));
         Model model = new Model();
         model.setModelVersion("4.0.0"); //$NON-NLS-1$
         model.setGroupId(TalendMavenConstants.DEFAULT_GROUP_ID);
@@ -298,7 +297,7 @@ public class BuildCacheManager {
     }
 
     private void deleteBuildAggregatorPom() throws CoreException {
-        pomFile = aggregatorPomsHelper.getProjectPomsFolder().getFile(new Path(BUILD_AGGREGATOR_POM_NAME));
+        pomFile = getAggregatorPomsHelper().getProjectPomsFolder().getFile(new Path(BUILD_AGGREGATOR_POM_NAME));
         if (pomFile.exists()) {
             pomFile.delete(true, false, null);
         }
@@ -352,7 +351,7 @@ public class BuildCacheManager {
             }
         } else {
             modulePath = ""; //$NON-NLS-1$
-            basePath = aggregatorPomsHelper.getProjectPomsFolder().getLocation();
+            basePath = getAggregatorPomsHelper().getProjectPomsFolder().getLocation();
         }
         jobProjectPath = jobProjectPath.makeRelativeTo(basePath);
         modulePath += jobProjectPath.toPortableString();
@@ -374,6 +373,13 @@ public class BuildCacheManager {
             return service.getTalendJobJavaProject(property);
         }
         return null;
+    }
+
+    private AggregatorPomsHelper getAggregatorPomsHelper() {
+        if (aggregatorPomsHelper == null) {
+            aggregatorPomsHelper = new AggregatorPomsHelper();
+        }
+        return aggregatorPomsHelper;
     }
 
 }

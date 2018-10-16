@@ -26,6 +26,8 @@ public enum EUpdatesImage implements IImage {
 
     UPDATE_BIG("/icons/update.png"),
 
+    UPDATE_32("/icons/update_32.png"),
+
     FIND_16("/icons/find_16.png"),
 
     ;

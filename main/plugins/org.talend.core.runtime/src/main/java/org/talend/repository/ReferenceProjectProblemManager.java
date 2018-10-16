@@ -32,7 +32,7 @@ public class ReferenceProjectProblemManager {
 
     private static ReferenceProjectProblemManager instance;
 
-    private Map<String, String> invalidProjectMap = new HashMap<String, String>();
+    private Map<String, List<ReferenceProjectBean>> invalidProjectMap = new HashMap<String, List<ReferenceProjectBean>>();
 
     public static synchronized ReferenceProjectProblemManager getInstance() {
         if (instance == null) {
@@ -41,14 +41,37 @@ public class ReferenceProjectProblemManager {
         return instance;
     }
 
-    public void addInvalidProjectReference(String projectTechnicalLabel, String branchName) {
-        if (projectTechnicalLabel != null) {
-            invalidProjectMap.put(projectTechnicalLabel, branchName);
+    public void addInvalidProjectReference(String mainProjectLabel, ReferenceProjectBean bean) {
+        List<ReferenceProjectBean> list = invalidProjectMap.get(mainProjectLabel);
+        if (list == null) {
+            list = new ArrayList<ReferenceProjectBean>();
+            invalidProjectMap.put(mainProjectLabel, list);
         }
+        list.add(bean);
     }
 
-    public Set<String> getInvalidProjectReferenceSet() {
-        return invalidProjectMap.keySet();
+    public List<String> getInvalidProjectReferenceList(String mainProjectLabel) {
+        List<String> result = new ArrayList<String>();
+        List<ReferenceProjectBean> refBeanList = invalidProjectMap.get(mainProjectLabel);
+        if (refBeanList != null) {
+            for (ReferenceProjectBean bean : refBeanList) {
+                result.add(bean.getProjectTechnicalName());
+            }
+        }
+        return result;
+    }
+
+    public Set<String> getAllInvalidProjectReferenceSet() {
+        Set<String> result = new HashSet<String>();
+        for (String key : invalidProjectMap.keySet()) {
+            List<ReferenceProjectBean> refBeanList = invalidProjectMap.get(key);
+            if (refBeanList != null) {
+                for (ReferenceProjectBean bean : refBeanList) {
+                    result.add(bean.getProjectTechnicalName());
+                }
+            }
+        }
+        return result;
     }
 
     public void clearAll() {
@@ -75,31 +98,29 @@ public class ReferenceProjectProblemManager {
         return checkCycleReference(projectRefMap);
     }
 
-	public static List<ProjectReference> readProjectReferenceSetting(ProjectReference projetReference)
-			throws PersistenceException, BusinessException {
-		return readProjectReferenceSetting(projetReference.getReferencedProject(),
-				projetReference.getReferencedBranch());
-	}
+    public static List<ProjectReference> readProjectReferenceSetting(ProjectReference projetReference)
+            throws PersistenceException, BusinessException {
+        return readProjectReferenceSetting(projetReference.getReferencedProject(), projetReference.getReferencedBranch());
+    }
 
-	public static List<ProjectReference> readProjectReferenceSetting(
-			org.talend.core.model.properties.Project emfProject, String branch)
-			throws PersistenceException, BusinessException {
-		byte[] configContent = null;
-		Project referencedProject = new Project(emfProject);
-		IProxyRepositoryService service = (IProxyRepositoryService) GlobalServiceRegister.getDefault()
-				.getService(IProxyRepositoryService.class);
-		IProxyRepositoryFactory factory = service.getProxyRepositoryFactory();
-		if (factory != null) {
-			configContent = factory.getReferenceSettingContent(referencedProject, branch);
-			if (configContent != null && configContent.length > 0) {
-				ReferenceProjectProvider privoder = new ReferenceProjectProvider(referencedProject.getEmfProject(),
-						configContent);
-				privoder.initSettings();
-				return privoder.getProjectReference();
-			}
-		}
-		return new ArrayList<ProjectReference>();
-	}
+    public static List<ProjectReference> readProjectReferenceSetting(org.talend.core.model.properties.Project emfProject,
+            String branch) throws PersistenceException, BusinessException {
+        byte[] configContent = null;
+        Project referencedProject = new Project(emfProject);
+        IProxyRepositoryService service = (IProxyRepositoryService) GlobalServiceRegister.getDefault()
+                .getService(IProxyRepositoryService.class);
+        IProxyRepositoryFactory factory = service.getProxyRepositoryFactory();
+        if (factory != null) {
+            configContent = factory.getReferenceSettingContent(referencedProject, branch);
+            if (configContent != null && configContent.length > 0) {
+                ReferenceProjectProvider privoder = new ReferenceProjectProvider(referencedProject.getEmfProject(),
+                        configContent);
+                privoder.initSettings();
+                return privoder.getProjectReference();
+            }
+        }
+        return new ArrayList<ProjectReference>();
+    }
 
     public static List<ProjectReference> getAllReferenceProject(ProjectReference projectReference,
             Map<String, List<ProjectReference>> projectRefMap, Set<String> addedSet, boolean isReadFromRepository)

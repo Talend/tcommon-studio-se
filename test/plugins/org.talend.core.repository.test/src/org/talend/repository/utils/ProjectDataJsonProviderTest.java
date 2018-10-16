@@ -15,6 +15,10 @@ package org.talend.repository.utils;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
@@ -42,6 +46,8 @@ import org.talend.core.model.properties.StatAndLogsSettings;
 import org.talend.core.model.properties.Status;
 import org.talend.core.model.properties.User;
 import org.talend.core.model.properties.impl.PropertiesFactoryImpl;
+import org.talend.core.repository.constants.FileConstants;
+import org.talend.core.repository.recyclebin.RecycleBinManager;
 import org.talend.core.repository.utils.ProjectDataJsonProvider;
 import org.talend.core.repository.utils.XmiResourceManager;
 import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
@@ -178,6 +184,12 @@ public class ProjectDataJsonProviderTest {
                 ProjectDataJsonProvider.CONTENT_ALL);
     }
 
+    @Test
+    public void testGetRelationshipIndexPath() {
+        final String expect = FileConstants.SETTINGS_FOLDER_NAME + "/" + FileConstants.RELATIONSHIP_FILE_NAME; //$NON-NLS-1$
+        assertEquals(expect, ProjectDataJsonProvider.getRelationshipIndexPath());
+    }
+
     private void prepareProjectData() {
         ImplicitContextSettings implicitContextSettings = createImplicitContextSettingObject();
         sampleProject.getEmfProject().setImplicitContextSettings(implicitContextSettings);
@@ -247,9 +259,17 @@ public class ProjectDataJsonProviderTest {
         }
         if ((checkContent & ProjectDataJsonProvider.CONTENT_MIGRATIONTASK) > 0) {
             EList migrationTask = sampleProject.getEmfProject().getMigrationTask();
-            assertEquals(this.migrationTaskCount, migrationTask.size());
+            MigrationTask fakeTask = ProjectDataJsonProvider.createFakeMigrationTask();
+            List<MigrationTask> realTaskList = new ArrayList<MigrationTask>();
+            for (int i= 0; i < migrationTask.size(); i++) {
+                MigrationTask task = (MigrationTask)migrationTask.get(i);
+                if (!StringUtils.equals(fakeTask.getId(), task.getId())) {
+                    realTaskList.add(task);
+                }
+            }
+            assertEquals(this.migrationTaskCount, realTaskList.size());
             for (int i = 0; i < migrationTaskCount; i++) {
-                MigrationTask task = (MigrationTask) migrationTask.get(i);
+                MigrationTask task = (MigrationTask) realTaskList.get(i);
                 assertEquals("id_" + i, task.getId());
                 assertEquals("breaks_" + i, task.getBreaks());
                 assertEquals("version_" + i, task.getVersion());
@@ -441,6 +461,9 @@ public class ProjectDataJsonProviderTest {
     }
 
     private void removeTempProject() throws PersistenceException, CoreException {
+        if (sampleProject != null) {
+            RecycleBinManager.getInstance().clearCache(sampleProject);
+        }
         // clear the folder, same as it should be in a real logoffProject.
         ProjectManager.getInstance().getFolders(sampleProject.getEmfProject()).clear();
         final IProject project = ResourceUtils.getProject(sampleProject);

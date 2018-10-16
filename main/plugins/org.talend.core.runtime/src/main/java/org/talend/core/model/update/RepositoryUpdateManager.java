@@ -368,7 +368,11 @@ public abstract class RepositoryUpdateManager {
             if (checkedResults != null && !checkedResults.isEmpty()) {
                 if (showed || parameter == null || unShowDialog(checkedResults) || openPropagationDialog()) {
                     IDesignerCoreService designerCoreService = CoreRuntimePlugin.getInstance().getDesignerCoreService();
-                    return designerCoreService.executeUpdatesManager(checkedResults, onlyImpactAnalysis);
+                    if (show) {
+                        return designerCoreService.executeUpdatesManager(checkedResults, onlyImpactAnalysis);
+                    } else {
+                        return designerCoreService.executeUpdatesManagerBackgroud(checkedResults, onlyImpactAnalysis);
+                    }
                 }
                 return false;
             }
