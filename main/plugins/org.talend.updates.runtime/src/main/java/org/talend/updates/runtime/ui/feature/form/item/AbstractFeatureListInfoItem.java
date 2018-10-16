@@ -77,14 +77,14 @@ public abstract class AbstractFeatureListInfoItem<T extends IFeatureInfo> extend
 
     private Label imageLabel;
 
-    private Label titleLabel;
-
     /**
      * used to center the image
      */
     private Label verticalLine;
 
     private Label horizonLine;
+
+    private StyledText titleLabel;
 
     private StyledText descText;
 
@@ -130,7 +130,7 @@ public abstract class AbstractFeatureListInfoItem<T extends IFeatureInfo> extend
         horizonLine = new Label(panel, SWT.SEPARATOR | SWT.HORIZONTAL);
         imageLabel = new Label(panel, SWT.CENTER);
 
-        titleLabel = new Label(panel, SWT.NONE);
+        titleLabel = new StyledText(panel, SWT.READ_ONLY | SWT.WRAP | SWT.MULTI | SWT.NO_FOCUS);
         titleLabel.setFont(getTitleFont());
 
         descText = new StyledText(panel, SWT.READ_ONLY | SWT.WRAP | SWT.MULTI | SWT.NO_FOCUS);
@@ -197,7 +197,7 @@ public abstract class AbstractFeatureListInfoItem<T extends IFeatureInfo> extend
 
         formData = new FormData();
         formData.left = new FormAttachment(0, horizonAlignWidth);
-        formData.top = new FormAttachment(verticalLine, 0, SWT.CENTER);
+        formData.top = new FormAttachment(verticalLine, 5, SWT.TOP);
         Point imageSize = getImageSize();
         formData.height = imageSize.y;
         formData.width = imageSize.x;
