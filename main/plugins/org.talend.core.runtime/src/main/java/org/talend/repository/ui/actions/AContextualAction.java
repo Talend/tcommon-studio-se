@@ -295,7 +295,7 @@ public abstract class AContextualAction extends Action implements ITreeContextua
         if (activePart instanceof IViewPart) {
             workbenchPart = activePart;
             ISelectionProvider selectionProvider = ((IViewPart) activePart).getViewSite().getSelectionProvider();
-            if (selectionProvider != null && !selection.isEmpty()) {
+            if (selectionProvider != null && !selectionProvider.getSelection().isEmpty()) {
                 return selectionProvider.getSelection();
             } else {
                 if (node != null) {
