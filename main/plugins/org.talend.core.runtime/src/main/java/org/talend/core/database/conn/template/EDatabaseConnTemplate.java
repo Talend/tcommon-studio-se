@@ -178,7 +178,7 @@ public enum EDatabaseConnTemplate {
             "5439",//$NON-NLS-1$
             "")), //$NON-NLS-1$
     REDSHIFT_SSO(new DbConnStr(EDatabaseTypeName.REDSHIFT_SSO, //
-            "jdbc:redshift:iam://<host>:<port>/<sid>", //$NON-NLS-1$
+            "jdbc:redshift:iam://<host>:<port>/<sid>?<property>", //$NON-NLS-1$
             "5439",//$NON-NLS-1$
             "")), //$NON-NLS-1$
     NETEZZA(new DbConnStr(EDatabaseTypeName.NETEZZA, //
