@@ -14,10 +14,15 @@ package org.talend.core.repository.recyclebin;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
@@ -51,18 +56,20 @@ import org.talend.repository.ProjectManager;
  */
 public class RecycleBinManager {
 
-    private static Map<String, RecycleBin> projectRecyclebins;
-
     private static RecycleBinManager manager;
 
-    private RecycleBinManager() {
+    private Map<String, RecycleBin> projectRecyclebins;
 
+    private Map<RecycleBin, RecycleBin> lastSavedRecycleBinMap;
+
+    private RecycleBinManager() {
+        lastSavedRecycleBinMap = new HashMap<>();
+        projectRecyclebins = new HashMap<>();
     }
 
     public static RecycleBinManager getInstance() {
         if (manager == null) {
             manager = new RecycleBinManager();
-            projectRecyclebins = new HashMap<String, RecycleBin>();
         }
         return manager;
     }
@@ -73,6 +80,7 @@ public class RecycleBinManager {
 
     public void clearCache() {
         projectRecyclebins.clear();
+        lastSavedRecycleBinMap.clear();
     }
 
     public void clearCache(Project project) {
@@ -81,7 +89,10 @@ public class RecycleBinManager {
 
     public void clearCache(org.talend.core.model.properties.Project project) {
         String projectTechnicalLabel = project.getTechnicalLabel();
-        projectRecyclebins.remove(projectTechnicalLabel);
+        RecycleBin removedRecycleBin = projectRecyclebins.remove(projectTechnicalLabel);
+        if (removedRecycleBin != null) {
+            lastSavedRecycleBinMap.remove(removedRecycleBin);
+        }
     }
 
     public void clearIndex(Project project) {
@@ -208,9 +219,15 @@ public class RecycleBinManager {
             // if there is any exception, just set a new resource
             projectRecyclebins.put(project.getTechnicalLabel(), RecycleBinFactory.eINSTANCE.createRecycleBin());
         }
+
+        RecycleBin recycleBin = projectRecyclebins.get(project.getTechnicalLabel());
+        if (recycleBin != null) {
+            RecycleBin lastSavedRecycleBin = EcoreUtil.copy(recycleBin);
+            lastSavedRecycleBinMap.put(recycleBin, lastSavedRecycleBin);
+        }
+
         // Synchronize delete folder to project
         if (isSynchronizeToProject) {
-            RecycleBin recycleBin = projectRecyclebins.get(project.getTechnicalLabel());
             project.getDeletedFolders().clear();
             for (String deletedFolder : recycleBin.getDeletedFolders()) {
                 project.getDeletedFolders().add(deletedFolder);
@@ -237,20 +254,30 @@ public class RecycleBinManager {
             loadRecycleBin(project, false);
         }
         try {
+            RecycleBin recycleBin = projectRecyclebins.get(project.getTechnicalLabel());
+            boolean recycleBinChanged = true;
+            if (recycleBin != null) {
+                // Synchronize delete folder to recycleBin
+                recycleBin.getDeletedFolders().clear();
+                for (int i = 0; i < project.getDeletedFolders().size(); i++) {
+                    recycleBin.getDeletedFolders().add((String) project.getDeletedFolders().get(i));
+                }
+                recycleBinChanged = !equals(recycleBin, lastSavedRecycleBinMap.get(recycleBin));
+            }
+
+            if (!recycleBinChanged) {
+                return;
+            }
+
             Resource resource = getResource(project);
             if (resource == null) {
                 resource = createRecycleBinResource(project);
             }
             resource.getContents().clear();
-            RecycleBin recycleBin = projectRecyclebins.get(project.getTechnicalLabel());
             recycleBin.setLastUpdate(new Date());
-            // Synchronize delete folder to recycleBin
-            recycleBin.getDeletedFolders().clear();
-            for (int i = 0; i < project.getDeletedFolders().size(); i++) {
-                recycleBin.getDeletedFolders().add((String) project.getDeletedFolders().get(i));
-            }
             resource.getContents().add(recycleBin);
             EmfHelper.saveResource(resource);
+            lastSavedRecycleBinMap.put(recycleBin, EcoreUtil.copy(recycleBin));
         } catch (PersistenceException e) {
             ExceptionHandler.process(e);
         }
@@ -288,5 +315,124 @@ public class RecycleBinManager {
 
         resource.getDefaultLoadOptions().put(XMLResource.OPTION_USE_LEXICAL_HANDLER, Boolean.TRUE);
         return resource;
+    }
+    
+    public static boolean equals(RecycleBin r1, RecycleBin r2) {
+        if (r1 == null && r2 == null) {
+            return true;
+        }
+        if (r1 == null || r2 == null) {
+            return false;
+        }
+        boolean isEquals = false;
+        Set<String> r1DeletedFolders = new HashSet<>(r1.getDeletedFolders());
+        Set<String> r2DeletedFolders = new HashSet<>(r2.getDeletedFolders());
+
+        /**
+         * 1. check deleted folders
+         */
+        if (r1DeletedFolders.size() == r2DeletedFolders.size()) {
+            r1DeletedFolders.removeAll(r2DeletedFolders);
+            if (r1DeletedFolders.isEmpty()) {
+                isEquals = true;
+            } else {
+                isEquals = false;
+            }
+        } else {
+            isEquals = false;
+        }
+
+        /**
+         * 2. check deleted items
+         */
+        if (isEquals) {
+            EList<TalendItem> r1DeletedItems = r1.getDeletedItems();
+            EList<TalendItem> r2DeletedItems = r2.getDeletedItems();
+            if (r1DeletedItems.size() == r2DeletedItems.size()) {
+                List<TalendItem> r1DeletedItemList = new LinkedList<>(r1DeletedItems);
+                List<TalendItem> r2DeletedItemList = new LinkedList<>(r2DeletedItems);
+                TalendItemComparator talendItemComparator = new TalendItemComparator();
+                r1DeletedItemList.sort(talendItemComparator);
+                r2DeletedItemList.sort(talendItemComparator);
+                Iterator<TalendItem> iter1 = r1DeletedItemList.iterator();
+                Iterator<TalendItem> iter2 = r2DeletedItemList.iterator();
+                boolean differentList = false;
+                while (iter1.hasNext() && iter2.hasNext()) {
+                    TalendItem item1 = iter1.next();
+                    TalendItem item2 = iter2.next();
+                    if (talendItemComparator.compare(item1, item2) != 0) {
+                        differentList = true;
+                        break;
+                    }
+                }
+                if (differentList) {
+                    isEquals = false;
+                } else {
+                    isEquals = true;
+                }
+            } else {
+                isEquals = false;
+            }
+        }
+        return isEquals;
+    }
+
+    public static int compare(TalendItem item1, TalendItem item2) {
+        if (item1 == null && item2 == null) {
+            return 0;
+        }
+        if (item1 == null) {
+            return -1;
+        }
+        if (item2 == null) {
+            return 1;
+        }
+        int result = 0;
+
+        String type1 = item1.getType();
+        String type2 = item2.getType();
+        if (type1 == null) {
+            type1 = "";
+        }
+        if (type2 == null) {
+            type2 = "";
+        }
+        result = type1.compareTo(type2);
+        if (result != 0) {
+            return result;
+        }
+
+        String path1 = item1.getPath();
+        String path2 = item2.getPath();
+        if (path1 == null) {
+            path1 = "";
+        }
+        if (path2 == null) {
+            path2 = "";
+        }
+        result = path1.compareTo(path2);
+        if (result != 0) {
+            return result;
+        }
+
+        String id1 = item1.getId();
+        String id2 = item2.getId();
+        if (id1 == null) {
+            id1 = "";
+        }
+        if (id2 == null) {
+            id2 = "";
+        }
+        result = id1.compareTo(id2);
+
+        return result;
+    }
+
+    private static class TalendItemComparator implements Comparator<TalendItem> {
+
+        @Override
+        public int compare(TalendItem arg0, TalendItem arg1) {
+            return RecycleBinManager.compare(arg0, arg1);
+        }
     }
 }

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <components>
-	<component name="JIRA" version="0.18.0" bundle_id="org.talend.components.jira"
+	<component name="JIRA" version="0.18.0" bundle_id="org.talend.components.jira" types="tcomp,tcompv0,p2"
 		product="tos_di,tos_bd" mvn_uri="mvn:org.talend.components/components-jira/0.18.0/zip">
 		<description>Contain lib for dependencies</description>
 	</component>
 	<component name="File" version="0.19.0" bundle_id="org.talend.components.file"
-		product="" license_uri="https://www.apache.org/licenses/LICENSE-2.0"
+		product="" license_uri="https://www.apache.org/licenses/LICENSE-2.0" types="tcomp,tcompv0,p2"
 		mvn_uri="mvn:org.talend.components/components-file/0.19.0/zip">
 		<description>Support the m2 repository for dependencies</description>
 	</component>
-	<component name="JDBC" version="0.19.0" bundle_id="org.talend.components.jdbc"
+	<component name="JDBC" version="0.19.0" bundle_id="org.talend.components.jdbc" types="tcomp,tcompv0,p2"
 		mvn_uri="mvn:org.talend.components/components-jdbc/0.19.0/zip">
 		<license>
 			/* ====================================================================

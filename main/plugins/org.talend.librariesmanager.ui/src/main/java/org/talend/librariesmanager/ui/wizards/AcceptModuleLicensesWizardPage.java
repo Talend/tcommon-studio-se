@@ -267,6 +267,7 @@ public class AcceptModuleLicensesWizardPage extends WizardPage {
         }
     }
 
+
     /*
      * (non-Javadoc)
      * 
@@ -307,7 +308,10 @@ public class AcceptModuleLicensesWizardPage extends WizardPage {
                         License license = typeToLicense.get(licenseType);
                         if (license == null) {
                             license = new License();
-                            String licenseUrl = RemoteModulesHelper.getInstance().getLicenseUrl(licenseType);
+                            String licenseUrl = moduleToInstall.getLicenseUrl();
+                            if (licenseUrl == null) {
+                                licenseUrl = RemoteModulesHelper.getInstance().getLicenseUrl(licenseType);
+                            }
                             license.setName(licenseType);
                             license.setType(licenseType);
                             license.setUrl(licenseUrl);

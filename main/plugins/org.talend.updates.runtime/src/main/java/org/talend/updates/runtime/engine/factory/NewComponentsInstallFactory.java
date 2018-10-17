@@ -37,31 +37,28 @@ import org.talend.updates.runtime.model.FeatureRepositories;
 import org.talend.updates.runtime.model.P2ExtraFeature;
 import org.talend.updates.runtime.model.P2ExtraFeatureException;
 import org.talend.updates.runtime.model.UpdateSiteLocationType;
+import org.talend.updates.runtime.model.interfaces.IP2ComponentFeature;
 import org.talend.utils.io.FilesUtils;
 
 /**
  * DOC ggu class global comment. Detailled comment
  */
-public class NewComponentsInstallFactory extends AbstractExtraUpdatesFactory {
+public class NewComponentsInstallFactory extends AbstractExtraUpdatesFactory implements IComponentUpdatesFactory {
 
     public static final String FILE_COMPONENTS_INDEX = "components.index";
 
     // private static Logger log = Logger.getLogger(NewComponentsInstallFactory.class);
 
-    static class ComponentInstallP2ExtraFeature extends P2ExtraFeature {
+    static class ComponentInstallP2ExtraFeature extends P2ExtraFeature implements IP2ComponentFeature {
 
         private boolean needRestart;
 
         private File workFolder;
 
         ComponentInstallP2ExtraFeature() {
-            name = Messages.getString("installing.new.components.name"); //$NON-NLS-1$
-            description = Messages.getString("installing.new.components.description"); //$NON-NLS-1$
-            version = VersionUtils.getDisplayVersion();
-
-            p2IuId = "org.talend.components." + System.currentTimeMillis(); // make sure it will do always.
-            useLegacyP2Install = true; // enable to modify the config.ini
-            mustBeInstalled = false;
+            super("org.talend.components." + System.currentTimeMillis(), Messages.getString("installing.new.components.name"),
+                    VersionUtils.getDisplayVersion(), Messages.getString("installing.new.components.description"), null, null,
+                    null, null, null, null, null, false, null, false, true);
         }
 
         @Override
@@ -115,7 +112,9 @@ public class NewComponentsInstallFactory extends AbstractExtraUpdatesFactory {
                 throw new P2ExtraFeatureException(new ProvisionException("Install failure", e));
             } finally {
                 subMonitor.setWorkRemaining(10);
-                afterInstall();
+                if (getWorkFolder() != null) {
+                    FilesUtils.deleteFolder(getWorkFolder(), true);
+                }
             }
         }
 
@@ -203,10 +202,13 @@ public class NewComponentsInstallFactory extends AbstractExtraUpdatesFactory {
         }
 
         @Override
-        protected void afterInstall() {
-            if (getWorkFolder() != null) {
-                FilesUtils.deleteFolder(getWorkFolder(), true);
-            }
+        public boolean isShareEnable() {
+            return share;
+        }
+
+        @Override
+        public void setShareEnable(boolean share) {
+            this.share = share;
         }
 
     }

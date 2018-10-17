@@ -16,7 +16,7 @@ package org.talend.updates.runtime.model;
  * created by ggu on Jul 17, 2014 Detailled comment
  *
  */
-public class P2ExtraFeatureException extends Exception {
+public class P2ExtraFeatureException extends ExtraFeatureException {
 
     private static final long serialVersionUID = -1761956032920259160L;
 

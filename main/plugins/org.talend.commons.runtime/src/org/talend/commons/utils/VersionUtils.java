@@ -99,7 +99,7 @@ public class VersionUtils {
                 if (productVersion == null) {
                     Bundle bundle = FrameworkUtil.getBundle(VersionUtils.class);
                     if (bundle != null) {
-                        productVersion = (String) bundle.getHeaders().get(org.osgi.framework.Constants.BUNDLE_VERSION);
+                        productVersion = bundle.getHeaders().get(org.osgi.framework.Constants.BUNDLE_VERSION);
                     }
 
                     FileInputStream in = null;
@@ -137,6 +137,7 @@ public class VersionUtils {
      * @deprecated Please use either getInternalVersion() or getDisplayVersion()
      * @return the studio version.
      */
+    @Deprecated
     public static String getVersion() {
         return getDisplayVersion();
     }
@@ -186,6 +187,18 @@ public class VersionUtils {
         return talendVersion;
     }
 
+    public static String getTalendVersion(String productVersion) {
+        try {
+            org.osgi.framework.Version v = new org.osgi.framework.Version(productVersion);
+            // only get major.minor.micro
+            org.osgi.framework.Version simpleVersion = new org.osgi.framework.Version(v.getMajor(), v.getMinor(), v.getMicro());
+            productVersion = simpleVersion.toString();
+        } catch (IllegalArgumentException e) {
+            productVersion = getTalendVersion();
+        }
+        return productVersion;
+    }
+
     public static String getPublishVersion(String version) {
         if (version != null) {
             // if using job version.
@@ -200,4 +213,10 @@ public class VersionUtils {
         return version;
     }
 
+    public static void clearCache() {
+        synchronized (VersionUtils.class) {
+            productVersion = null;
+            talendVersion = null;
+        }
+    }
 }

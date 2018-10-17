@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -32,8 +31,6 @@ import org.talend.core.model.general.ILibrariesService;
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.model.general.ModuleStatusProvider;
 import org.talend.core.model.general.ModuleToInstall;
-import org.talend.core.runtime.maven.MavenArtifact;
-import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.librariesmanager.ui.LibManagerUiPlugin;
 import org.talend.librariesmanager.ui.i18n.Messages;
 import org.talend.librariesmanager.ui.wizards.AcceptModuleLicensesWizard;
@@ -99,15 +96,7 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
                             || (LibManagerUiPlugin.getDefault().getPreferenceStore().contains(module.getLicenseType())
                                     && LibManagerUiPlugin.getDefault().getPreferenceStore().getBoolean(module.getLicenseType()));
 
-                    boolean hasRepositoryUrl = false;
-                    String moduleMvnUri = module.getMavenUri();
-                    MavenArtifact mavenArtifact = MavenUrlHelper.parseMvnUrl(moduleMvnUri, false);
-                    if (mavenArtifact != null) {
-                        String repositoryUrl = mavenArtifact.getRepositoryUrl();
-                        hasRepositoryUrl = StringUtils.isNotEmpty(repositoryUrl);
-                    }
-
-                    canDownload = isLicenseAccepted | hasRepositoryUrl;
+                    canDownload = isLicenseAccepted;
                     if (!canDownload) {
                         subMonitor.worked(1);
                         continue;

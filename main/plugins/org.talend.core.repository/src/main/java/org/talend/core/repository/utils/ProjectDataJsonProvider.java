@@ -26,7 +26,9 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.model.properties.ImplicitContextSettings;
@@ -65,6 +67,12 @@ public class ProjectDataJsonProvider {
 
     public static final int CONTENT_ALL = 15;
 
+    public static String getRelationshipIndexPath() {
+        StringBuilder strBuilder = new StringBuilder();
+        strBuilder.append(FileConstants.SETTINGS_FOLDER_NAME).append("/").append(FileConstants.RELATIONSHIP_FILE_NAME); //$NON-NLS-1$
+        return strBuilder.toString();
+    }
+
     public static void saveProjectData(Project project) throws PersistenceException {
         saveProjectData(project, CONTENT_ALL);
     }
@@ -82,6 +90,12 @@ public class ProjectDataJsonProvider {
         if ((saveContent & CONTENT_MIGRATIONTASK) > 0) {
             saveMigrationTaskSetting(project);
         }
+        try {
+            ResourceUtils.getProject(project.getTechnicalLabel()).getFolder(FileConstants.SETTINGS_FOLDER_NAME).refreshLocal(1,
+                    null);
+        } catch (CoreException e) {
+            throw new PersistenceException(e);
+        }
     }
 
     public static void loadProjectData(Project project, IPath projectFolderPath, int loadContent) throws PersistenceException {
@@ -97,7 +111,7 @@ public class ProjectDataJsonProvider {
             RecycleBin recycleBin = RecycleBinManager.getInstance().getRecycleBin(project);
             project.getDeletedFolders().clear();
             for (int i = 0; i < recycleBin.getDeletedFolders().size(); i++) {
-                project.getDeletedFolders().add((String) recycleBin.getDeletedFolders().get(i));
+                project.getDeletedFolders().add(recycleBin.getDeletedFolders().get(i));
             }
         }
         if ((loadContent & CONTENT_MIGRATIONTASK) > 0) {
@@ -111,6 +125,9 @@ public class ProjectDataJsonProvider {
     
     public static void loadProjectData(Project project, IPath projectRootPath, InputStreamProvider inputStreamProvider)
             throws PersistenceException, IOException {
+        if (projectRootPath == null) {
+            projectRootPath = new Path("/");
+        }
         IPath settingFolderPath = projectRootPath.append(FileConstants.SETTINGS_FOLDER_NAME);
         IPath projectSettingPath = settingFolderPath.append(FileConstants.PROJECTSETTING_FILE_NAME);
         InputStream input = inputStreamProvider.getStream(projectSettingPath);
@@ -209,11 +226,21 @@ public class ProjectDataJsonProvider {
                 migrationTaskSetting = new ObjectMapper().readValue(input, MigrationTaskSetting.class);
             }
             if (migrationTaskSetting != null) {
-                project.getMigrationTask().clear();
+                MigrationTask fakeTask = createFakeMigrationTask();
+                List<MigrationTask> allRealTask = new ArrayList<MigrationTask>();
+                for (int i = 0; i < project.getMigrationTask().size(); i++) {
+                    MigrationTask task = (MigrationTask) project.getMigrationTask().get(i);
+                    if (!StringUtils.equals(fakeTask.getId(), task.getId())) {
+                        allRealTask.add(task);
+                    }
+                }
+                project.getMigrationTask().removeAll(allRealTask);
                 project.getMigrationTasks().clear();
                 if (migrationTaskSetting.getMigrationTaskList() != null) {
                     for (MigrationTaskJson json : migrationTaskSetting.getMigrationTaskList()) {
-                        project.getMigrationTask().add(json.toEmfObject());
+                        if (!StringUtils.equals(fakeTask.getId(), json.getId())) {
+                            project.getMigrationTask().add(json.toEmfObject());
+                        }
                     }
                 }
                 if (migrationTaskSetting.getMigrationTasksList() != null) {
@@ -397,6 +424,15 @@ public class ProjectDataJsonProvider {
                 project.getItemsRelations().add(json.toEmfObject());
             }
         }
+    }
+    
+    public static MigrationTask createFakeMigrationTask() {
+        MigrationTask fakeTask = PropertiesFactoryImpl.eINSTANCE.createMigrationTask();
+        fakeTask.setId("org.talend.repository.model.migration.CheckProductVersionMigrationTask");
+        fakeTask.setBreaks("7.1.0");
+        fakeTask.setVersion("7.1.1");
+        fakeTask.setStatus(MigrationStatus.DEFAULT_LITERAL);
+        return fakeTask;
     }
 }
 

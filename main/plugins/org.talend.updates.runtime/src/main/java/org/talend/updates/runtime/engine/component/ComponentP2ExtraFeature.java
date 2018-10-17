@@ -18,13 +18,14 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.equinox.p2.core.IProvisioningAgent;
@@ -42,71 +43,59 @@ import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.runtime.utils.io.FileCopyUtils;
-import org.talend.commons.utils.VersionUtils;
 import org.talend.commons.utils.resource.FileExtensions;
 import org.talend.commons.utils.resource.UpdatesHelper;
-import org.talend.core.runtime.maven.MavenArtifact;
-import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.librariesmanager.prefs.LibrariesManagerUtils;
+import org.talend.updates.runtime.feature.model.Category;
+import org.talend.updates.runtime.feature.model.Type;
 import org.talend.updates.runtime.i18n.Messages;
 import org.talend.updates.runtime.maven.MavenRepoSynchronizer;
 import org.talend.updates.runtime.model.P2ExtraFeature;
 import org.talend.updates.runtime.model.P2ExtraFeatureException;
 import org.talend.updates.runtime.model.UpdateSiteLocationType;
+import org.talend.updates.runtime.model.interfaces.IP2ComponentFeature;
 import org.talend.updates.runtime.nexus.component.ComponentIndexBean;
-import org.talend.updates.runtime.nexus.component.ComponentIndexManager;
-import org.talend.updates.runtime.nexus.component.ComponentsDeploymentManager;
+import org.talend.updates.runtime.storage.AbstractFeatureStorage;
+import org.talend.updates.runtime.storage.IFeatureStorage;
 import org.talend.updates.runtime.utils.OsgiBundleInstaller;
 import org.talend.updates.runtime.utils.PathUtils;
-import org.talend.utils.files.FileUtils;
 import org.talend.utils.io.FilesUtils;
 
 /**
  * created by ycbai on 2017年5月18日 Detailled comment
  *
  */
-public class ComponentP2ExtraFeature extends P2ExtraFeature {
-
-    public static final String INDEX = "index"; //$NON-NLS-1$
-
-    public static final String COMPONENT_GROUP_ID = "org.talend.components"; //$NON-NLS-1$
-
-    private String product, mvnURI;
-
-    private URI repositoryURI;
+public class ComponentP2ExtraFeature extends P2ExtraFeature implements IP2ComponentFeature {
 
     private boolean isLogin;
 
     private File tmpM2RepoFolder;
 
-    private boolean needRestart = false;
-
     public ComponentP2ExtraFeature() {
-        //
+        this(null, null, null, null, null, null, null, null, null, null, false);
+        setNeedRestart(false);
     }
 
     public ComponentP2ExtraFeature(ComponentIndexBean indexBean) {
-        this(indexBean.getName(), indexBean.getVersion(), indexBean.getDescription(), indexBean.getProduct(), indexBean
-                .getMvnURI(), indexBean.getBundleId());
+        this(indexBean.getName(), indexBean.getVersion(), indexBean.getDescription(), indexBean.getMvnURI(),
+                indexBean.getImageMvnURI(), indexBean.getProduct(), indexBean.getCompatibleStudioVersion(),
+                indexBean.getBundleId(), PathUtils.convert2Types(indexBean.getTypes()),
+                PathUtils.convert2Categories(indexBean.getCategories()), Boolean.valueOf(indexBean.getDegradable()));
     }
 
     public ComponentP2ExtraFeature(File componentZipFile) {
-        this(new ComponentIndexManager().create(componentZipFile));
-        this.repositoryURI = PathUtils.getP2RepURIFromCompFile(componentZipFile);
+        super(componentZipFile);
+        setTypes(Arrays.asList(Type.TCOMP_V0));
     }
 
-    public ComponentP2ExtraFeature(String name, String version, String description, String product, String mvnURI, String p2IuId) {
-        this.name = name;
-        this.version = version;
-        this.description = description;
-        this.product = product;
-        this.mvnURI = mvnURI;
-        this.p2IuId = p2IuId;
-
-        this.useLegacyP2Install = true; // enable to modify the config.ini
-        this.mustBeInstalled = false;
+    public ComponentP2ExtraFeature(String name, String version, String description, String mvnUri, String imageMvnUri,
+            String product, String compatibleStudioVersion, String p2IuId, Collection<Type> types,
+            Collection<Category> categories, boolean degradable) {
+        super(p2IuId, name, version, description, mvnUri, imageMvnUri, product, compatibleStudioVersion, null, types, categories,
+                degradable, null, false, true);
     }
 
+    @Override
     public String getP2ProfileId() {
         if (Platform.inDevelopmentMode()) {
             return "profile"; ////$NON-NLS-1$
@@ -120,86 +109,16 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature {
         return EnumSet.of(UpdateSiteLocationType.DEFAULT_REPO);
     }
 
-    public MavenArtifact getIndexArtifact() {
-        MavenArtifact artifact = new MavenArtifact();
-        artifact.setGroupId(COMPONENT_GROUP_ID);
-        artifact.setArtifactId(INDEX);
-        artifact.setVersion(getTalendVersionStr());
-        artifact.setType(FileExtensions.XML_EXTENSION);
-        return artifact;
-    }
-
-    public MavenArtifact getArtifact() {
-        return MavenUrlHelper.parseMvnUrl(mvnURI);
-    }
-
-    protected String getTalendVersionStr() {
-        org.osgi.framework.Version studioVersion = new org.osgi.framework.Version(VersionUtils.getTalendVersion());
-
-        StringBuffer result = new StringBuffer();
-        result.append(studioVersion.getMajor());
-        result.append('.');
-        result.append(studioVersion.getMinor());
-        result.append('.');
-        result.append(studioVersion.getMicro());
-
-        return result.toString();
-    }
-
-    public String getProduct() {
-        return product;
-    }
-
-    public String getMvnURI() {
-        return mvnURI;
-    }
-
     public void setLogin(boolean isLogin) {
         this.isLogin = isLogin;
     }
 
     @Override
-    public boolean needRestart() {
-        return needRestart;
-    }
-
-    @Override
-    public IStatus install(IProgressMonitor progress, List<URI> allRepoUris) throws P2ExtraFeatureException {
-        IStatus doInstallStatus = null;
-        File configIniBackupFile = null;
-        try {
-            if (!useLegacyP2Install) {
-                // backup the config.ini
-                configIniBackupFile = copyConfigFile(null);
-            } // else legacy p2 install will update the config.ini
-            doInstallStatus = doInstall(progress, allRepoUris);
-        } catch (IOException e) {
-            throw new P2ExtraFeatureException(new ProvisionException(Messages.createErrorStatus(e,
-                    "ExtraFeaturesFactory.restore.config.error"))); //$NON-NLS-1$
-        } finally {
-            if (doInstallStatus != null && doInstallStatus.isOK()) {
-                afterInstall(progress, allRepoUris);
-                storeInstalledFeatureMessage();
-            }
-            // restore the config.ini
-            if (configIniBackupFile != null) { // must existed backup file.
-                try {
-                    copyConfigFile(configIniBackupFile);
-                } catch (IOException e) {
-                    throw new P2ExtraFeatureException(new ProvisionException(Messages.createErrorStatus(e,
-                            "ExtraFeaturesFactory.back.config.error"))); //$NON-NLS-1$
-                }
-            }
-        }
-        return doInstallStatus;
-    }
-
-    @Override
-    protected IStatus doInstall(IProgressMonitor progress, List<URI> allRepoUris) throws P2ExtraFeatureException {
+    protected IStatus installP2(IProgressMonitor progress, List<URI> allRepoUris) throws P2ExtraFeatureException {
         SubMonitor subMonitor = SubMonitor.convert(progress, 5);
         subMonitor.setTaskName(Messages.getString("ComponentP2ExtraFeature.installing.components", getName())); //$NON-NLS-1$
         // reset isInstalled to make is compute the next time is it used
-        isInstalled = null;
+        setIsInstalled(null);
         // we are not using this bundles context caus it fails to be aquired in junit test
         Bundle bundle = FrameworkUtil.getBundle(org.eclipse.equinox.p2.query.QueryUtil.class);
         BundleContext context = bundle.getBundleContext();
@@ -284,51 +203,30 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature {
         return Messages.createOkStatus("sucessfull.install.of.components", getP2IuId(), getVersion()); //$NON-NLS-1$
     }
 
-    protected void afterInstall(IProgressMonitor progress, List<URI> allRepoUris) throws P2ExtraFeatureException {
-        if (allRepoUris == null || allRepoUris.size() == 0) {
-            return;
-        }
-        if (progress.isCanceled()) {
-            throw new OperationCanceledException();
-        }
-        try {
-            for (URI uri : allRepoUris) {
-                File compFile = PathUtils.getCompFileFromP2RepURI(uri);
-                if (compFile != null && compFile.exists()) {
-                    // sync the component libraries
-                    File tempUpdateSiteFolder = getTempUpdateSiteFolder();
-                    try {
-                        FilesUtils.unzip(compFile.getAbsolutePath(), tempUpdateSiteFolder.getAbsolutePath());
-                        progress.worked(1);
-
-                        syncLibraries(tempUpdateSiteFolder);
-                        progress.worked(1);
-
-                        syncM2Repository(tempUpdateSiteFolder);
-                        progress.worked(1);
-
-                        installAndStartComponent(tempUpdateSiteFolder);
-                        progress.worked(1);
-                    } finally {
-                        if (tempUpdateSiteFolder.exists()) {
-                            FilesUtils.deleteFolder(tempUpdateSiteFolder, true);
-                        }
-                    }
-                    // move to installed folder
-                    syncComponentsToInstalledFolder(progress, compFile);
-                }
+    @Override
+    protected void afterInstallP2(IProgressMonitor progress, Map<File, File> unzippedPatchMap) throws P2ExtraFeatureException {
+        super.afterInstallP2(progress, unzippedPatchMap);
+        for (Map.Entry<File, File> patchEntry : unzippedPatchMap.entrySet()) {
+            try {
+                syncOtherContent(progress, patchEntry.getKey(), patchEntry.getValue());
+            } catch (Exception e) {
+                throw new P2ExtraFeatureException(e);
             }
-        } catch (Exception e) {
-            throw new P2ExtraFeatureException(e);
         }
     }
 
-    @Override
-    public URI getP2RepositoryURI() {
-        if (this.repositoryURI != null) {
-            return this.repositoryURI;
-        }
-        return super.getP2RepositoryURI();
+    protected void syncOtherContent(IProgressMonitor progress, File zipFile, File unzippedFolder) throws Exception {
+        syncLibraries(unzippedFolder);
+        progress.worked(1);
+
+        syncM2Repository(unzippedFolder);
+        progress.worked(1);
+
+        installAndStartComponent(unzippedFolder);
+        progress.worked(1);
+
+        // move to installed folder
+        syncComponentsToInstalledFolder(progress, zipFile);
     }
 
     protected void syncLibraries(File updatesiteFolder) throws IOException {
@@ -370,26 +268,6 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature {
         }
     }
 
-    protected void syncComponentsToInstalledFolder(IProgressMonitor progress, File downloadedCompFile) {
-        // try to move install success to installed folder
-        try {
-            if (progress.isCanceled()) {
-                throw new OperationCanceledException();
-            }
-            final File installedComponentFolder = PathUtils.getComponentsInstalledFolder();
-            final File installedComponentFile = new File(installedComponentFolder, downloadedCompFile.getName());
-            if (!installedComponentFile.equals(downloadedCompFile)) { // not in same folder
-                FilesUtils.copyFile(downloadedCompFile, installedComponentFile);
-                downloadedCompFile.delete();
-                progress.worked(1);
-            }
-
-            syncComponentsToLocalNexus(progress, installedComponentFile);
-        } catch (IOException e) {
-            ExceptionHandler.process(e);
-        }
-    }
-
     protected void installAndStartComponent(File tempUpdateSiteFolder) {
         File tmpPluginsFolder = new File(tempUpdateSiteFolder, UpdatesHelper.FOLDER_PLUGINS);
         if (!tmpPluginsFolder.exists()) {
@@ -414,29 +292,34 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature {
                 File bundleFile = new File(pluginsFolder, b.getName());
 
                 boolean started = OsgiBundleInstaller.installAndStartBundle(bundleFile);
-                needRestart = !started; // if not install, try to restart
+                setNeedRestart(!started); // if not install, try to restart
             } catch (Exception e) {
-                needRestart = true; // if install error, try to restart
+                setNeedRestart(true); // if install error, try to restart
                 ExceptionHandler.process(e);
                 return; // no need install others
             }
         }
     }
 
-    protected void syncComponentsToLocalNexus(IProgressMonitor progress, File installedCompFile) {
-        if (progress.isCanceled()) {
-            throw new OperationCanceledException();
+    @Override
+    public void setStorage(IFeatureStorage storage) {
+        super.setStorage(storage);
+        final File workFolder = PathUtils.getComponentsDownloadedFolder();
+        FilesUtils.deleteFolder(workFolder, false); // empty the folder
+        if (!workFolder.exists()) {
+            workFolder.mkdirs();
         }
-        try {
-            new ComponentsDeploymentManager().deployComponentsToLocalNexus(progress, installedCompFile);
-        } catch (IOException e) {
-            // don't block other, so catch the exception
-            ExceptionHandler.process(e);
-        }
+        ((AbstractFeatureStorage) getStorage()).setFeatDownloadFolder(workFolder);
     }
 
-    protected File getTempUpdateSiteFolder() {
-        return FileUtils.createTmpFolder("p2updatesite", null); //$NON-NLS-1$
+    @Override
+    public boolean isShareEnable() {
+        return share;
+    }
+
+    @Override
+    public void setShareEnable(boolean share) {
+        this.share = share;
     }
 
 }

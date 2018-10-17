@@ -15,12 +15,20 @@
             id="org.talend.updates.show.wizard.command"
             name="%talend.additional.package.menu">
       </command>
+      <command
+            id="org.talend.updates.show.wizard.componentsManager"
+            name="%talend.menu.componentsManager">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
       <handler
             class="org.talend.updates.runtime.ui.ShowWizardHandler"
             commandId="org.talend.updates.show.wizard.command">
+      </handler>
+      <handler
+            class="org.talend.updates.runtime.ui.ShowWizardHandler"
+            commandId="org.talend.updates.show.wizard.componentsManager">
       </handler>
    </extension>
    <extension
@@ -32,8 +40,23 @@
                   commandId="org.talend.updates.show.wizard.command"
                   id="org.talend.updates.menus.show.wizard.command"
                  >
-            </command>
+         </command>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="menu:help?after=talend">
+         <command
+                  commandId="org.talend.updates.show.wizard.componentsManager"
+                  id="org.talend.updates.menus.show.wizard.componentsManager"
+                 >
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup
+            class="org.talend.updates.runtime.ui.startup.FeatureCheckUpdateStartup">
+      </startup>
    </extension>
    
    <extension
@@ -74,6 +97,12 @@
             class="org.talend.updates.runtime.login.InstallLocalNexusComponentsLoginTask"
             priority="normal">
       </loginTask>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.talend.updates.runtime.preference.UpdatesRuntimeInitializer">
+      </initializer>
    </extension>
 
 </plugin>

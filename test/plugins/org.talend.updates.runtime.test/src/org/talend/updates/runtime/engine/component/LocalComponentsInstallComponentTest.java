@@ -33,6 +33,7 @@ import org.talend.commons.CommonsPlugin;
 import org.talend.commons.utils.resource.BundleFileUtil;
 import org.talend.updates.runtime.engine.P2InstallerTest;
 import org.talend.updates.runtime.i18n.Messages;
+import org.talend.updates.runtime.model.ExtraFeatureException;
 import org.talend.updates.runtime.model.P2ExtraFeatureException;
 import org.talend.updates.runtime.nexus.component.ComponentIndexBean;
 import org.talend.updates.runtime.nexus.component.ComponentIndexManager;
@@ -256,13 +257,13 @@ public class LocalComponentsInstallComponentTest {
                     return new ComponentP2ExtraFeature(f) {
 
                         @Override
-                        public IStatus install(IProgressMonitor progress, List<URI> allRepoUris) throws P2ExtraFeatureException {
-                            useLegacyP2Install = false; // no need change the config.ini for test
+                        public IStatus install(IProgressMonitor progress, List<URI> allRepoUris) throws ExtraFeatureException {
+                            setUseLegacyP2Install(false); // no need change the config.ini for test
                             return super.install(progress, allRepoUris);
                         }
 
                         @Override
-                        protected void syncComponentsToLocalNexus(IProgressMonitor progress, File installedCompFile) {
+                        public void shareComponent(IProgressMonitor progress, File installedCompFile) {
 
                             File sharedCompFile = new File(installedFolder, installedCompFile.getName());
                             try {
@@ -361,6 +362,7 @@ public class LocalComponentsInstallComponentTest {
                         return Messages.createOkStatus("sucessfull.install.of.components", getP2IuId(), getVersion()); //$NON-NLS-1$
                     }
 
+                    @Override
                     public boolean needRestart() {
                         return false;
                     }
@@ -430,6 +432,7 @@ public class LocalComponentsInstallComponentTest {
                         return Messages.createOkStatus("sucessfull.install.of.components", getP2IuId(), getVersion()); //$NON-NLS-1$
                     }
 
+                    @Override
                     public boolean needRestart() {
                         return false;
                     }
@@ -517,6 +520,7 @@ public class LocalComponentsInstallComponentTest {
                         return Messages.createOkStatus("sucessfull.install.of.components", getP2IuId(), getVersion()); //$NON-NLS-1$
                     }
 
+                    @Override
                     public boolean needRestart() {
                         return false;
                     }

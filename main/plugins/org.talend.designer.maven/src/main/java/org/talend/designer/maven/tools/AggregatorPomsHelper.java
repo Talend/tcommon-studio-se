@@ -65,6 +65,7 @@ import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.core.runtime.process.TalendProcessArgumentConstant;
+import org.talend.core.runtime.process.TalendProcessOptionConstants;
 import org.talend.core.runtime.services.IFilterService;
 import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.designer.core.ICamelDesignerCoreService;
@@ -331,6 +332,10 @@ public class AggregatorPomsHelper {
     }
 
     public static void addToParentModules(IFile pomFile, Property property) throws Exception {
+        addToParentModules(pomFile, property, true);
+    }
+
+    public static void addToParentModules(IFile pomFile, Property property, boolean checkFilter) throws Exception {
         // Check relation for ESB service job, should not be added into main pom
         if (property != null) {
             List<Relation> relations = RelationshipItemBuilder.getInstance().getItemsRelatedTo(property.getId(),
@@ -342,11 +347,13 @@ public class AggregatorPomsHelper {
             }
         }
 
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IFilterService.class)) {
-            IFilterService filterService =
-                    (IFilterService) GlobalServiceRegister.getDefault().getService(IFilterService.class);
-            if (property != null && !filterService.isFilterAccepted(property.getItem(), PomIdsHelper.getPomFilter())) {
-                return;
+        if (checkFilter) {
+            if (GlobalServiceRegister.getDefault().isServiceRegistered(IFilterService.class)) {
+                IFilterService filterService = (IFilterService) GlobalServiceRegister.getDefault()
+                        .getService(IFilterService.class);
+                if (property != null && !filterService.isFilterAccepted(property.getItem(), PomIdsHelper.getPomFilter())) {
+                    return;
+                }
             }
         }
         IFile parentPom = getParentModulePomFile(pomFile);
@@ -563,6 +570,10 @@ public class AggregatorPomsHelper {
     }
 
     public void syncAllPoms() throws Exception {
+        syncAllPoms(PomIdsHelper.getPomFilter());
+    }
+
+    public void syncAllPoms(String pomFilter) throws Exception {
 
         IRunnableWithProgress runnableWithProgress = new IRunnableWithProgress() {
 
@@ -577,7 +588,7 @@ public class AggregatorPomsHelper {
                             @Override
                             public void run(final IProgressMonitor monitor) throws CoreException {
                                 try {
-                                    syncAllPomsWithoutProgress(monitor);
+                                    syncAllPomsWithoutProgress(monitor, pomFilter);
                                 } catch (Exception e) {
                                     ExceptionHandler.process(e);
                                 }
@@ -730,6 +741,10 @@ public class AggregatorPomsHelper {
     }
 
     public void syncAllPomsWithoutProgress(IProgressMonitor monitor) throws Exception {
+        syncAllPomsWithoutProgress(monitor, PomIdsHelper.getPomFilter());
+    }
+
+    public void syncAllPomsWithoutProgress(IProgressMonitor monitor, String pomFilter) throws Exception {
         IRunProcessService runProcessService = getRunProcessService();
         List<IRepositoryViewObject> objects = new ArrayList<>();
         if (runProcessService != null) {
@@ -762,7 +777,6 @@ public class AggregatorPomsHelper {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IFilterService.class)) {
             filterService = (IFilterService) GlobalServiceRegister.getDefault().getService(IFilterService.class);
         }
-        String pomFilter = PomIdsHelper.getPomFilter();
         List<ERepositoryObjectType> allJobletTypes = ERepositoryObjectType.getAllTypesOfJoblet();
         for (IRepositoryViewObject object : objects) {
             if (filterService != null) {
@@ -776,11 +790,13 @@ public class AggregatorPomsHelper {
                 if (ProjectManager.getInstance().isInCurrentMainProject(item)) {
                     monitor.subTask("Synchronize job pom: " + item.getProperty().getLabel() //$NON-NLS-1$
                             + "_" + item.getProperty().getVersion()); //$NON-NLS-1$
-                    if (runProcessService != null)
-                        runProcessService.generatePom(item);
-                    else
+                    if (runProcessService != null) {
+                        // already filtered
+                        runProcessService.generatePom(item, TalendProcessOptionConstants.GENERATE_POM_NO_FILTER);
+                    } else {
                         ExceptionHandler.log("Cannot generate pom for " + object.getLabel()
                                 + " - Reason: RunProcessService is null.");
+                    }
                     IFile pomFile = getItemPomFolder(item.getProperty()).getFile(TalendMavenConstants.POM_FILE_NAME);
                     // filter esb data service node
                     if (!isDataServiceOperation(object.getProperty()) && pomFile.exists()) {

@@ -25,14 +25,19 @@ import org.dom4j.Document;
 import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.Assert;
 import org.junit.Test;
 import org.talend.commons.utils.resource.BundleFileUtil;
+import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.updates.runtime.engine.component.ComponentNexusP2ExtraFeature;
-import org.talend.updates.runtime.model.P2ExtraFeature;
+import org.talend.updates.runtime.model.ExtraFeature;
 import org.talend.updates.runtime.nexus.component.ComponentIndexManager;
 import org.talend.updates.runtime.nexus.component.ComponentIndexManagerTest;
 import org.talend.updates.runtime.nexus.component.ComponentIndexNames;
+import org.talend.updates.runtime.nexus.component.NexusServerManager;
+import org.talend.updates.runtime.storage.IFeatureStorage;
+import org.talend.updates.runtime.storage.impl.NexusFeatureStorage;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -51,7 +56,7 @@ public class ComponentsNexusInstallFactoryTest {
     public void test_createFeatures_emptyDoc() {
         ComponentsNexusInstallFactoryTestClass factory = new ComponentsNexusInstallFactoryTestClass();
 
-        final Set<P2ExtraFeature> set = factory.createFeatures(new ComponentNexusP2ExtraFeature(), null);
+        final Set<ExtraFeature> set = factory.createFeatures(null, null, null, false);
         Assert.assertNotNull(set);
         Assert.assertTrue(set.isEmpty());
     }
@@ -100,12 +105,17 @@ public class ComponentsNexusInstallFactoryTest {
 
         };
 
-        final ComponentNexusP2ExtraFeature defaultFeature = new ComponentNexusP2ExtraFeature();
-        defaultFeature.setNexusURL("http://abc");
-        defaultFeature.setNexusUser("admin");
-        defaultFeature.setNexusPass("admin123");
+        ArtifactRepositoryBean serverSetting = factory.getServerSetting();
+        if (serverSetting == null) {
+            serverSetting = new ArtifactRepositoryBean();
+        } else {
+            serverSetting = serverSetting.clone();
+        }
+        serverSetting.setServer("http://abc");
+        serverSetting.setUserName("admin");
+        serverSetting.setPassword("admin123");
 
-        final Set<P2ExtraFeature> set = factory.createFeatures(defaultFeature, document);
+        final Set<ExtraFeature> set = factory.createFeatures(new NullProgressMonitor(), serverSetting, document, false);
         Assert.assertNotNull(set);
         // same as createFeatures to check
         if (StringUtils.isNotBlank(product) && !Arrays.asList(product.split(",")).contains(factory.getAcronym())) {
@@ -116,17 +126,20 @@ public class ComponentsNexusInstallFactoryTest {
         Assert.assertEquals(3, set.size());
 
         //
-        List<P2ExtraFeature> list = new ArrayList<P2ExtraFeature>(set);
+        List<ExtraFeature> list = new ArrayList<ExtraFeature>(set);
         for (int i = 0; i < list.size(); i++) {
-            final P2ExtraFeature f = list.get(i);
+            final ExtraFeature f = list.get(i);
 
             Assert.assertTrue(f instanceof ComponentNexusP2ExtraFeature);
             ComponentNexusP2ExtraFeature compFeature = (ComponentNexusP2ExtraFeature) f;
 
+            IFeatureStorage storage = compFeature.getStorage();
+            Assert.assertTrue(storage instanceof NexusFeatureStorage);
+            ArtifactRepositoryBean serverBean = ((NexusFeatureStorage) storage).getServerBean();
             // same the nexus settings
-            Assert.assertEquals("http://abc", compFeature.getNexusURL());
-            Assert.assertEquals("admin", compFeature.getNexusUser());
-            Assert.assertEquals("admin123", new String(compFeature.getNexusPass()));
+            Assert.assertEquals("http://abc", serverBean.getServer());
+            Assert.assertEquals("admin", serverBean.getUserName());
+            Assert.assertEquals("admin123", serverBean.getPassword());
 
             String ver = "0.18." + i;
 
@@ -137,7 +150,7 @@ public class ComponentsNexusInstallFactoryTest {
             } else {
                 Assert.assertEquals(product, compFeature.getProduct());
             }
-            Assert.assertEquals("mvn:org.talend.components/org.talend.components.jira/" + ver + "/zip", compFeature.getMvnURI());
+            Assert.assertEquals("mvn:org.talend.components/org.talend.components.jira/" + ver + "/zip", compFeature.getMvnUri());
             Assert.assertNotNull(compFeature.getDescription());
         }
     }
@@ -165,4 +178,117 @@ public class ComponentsNexusInstallFactoryTest {
     public void test_createFeatures_invalidProduct() throws Exception {
         doTestForProduct("abc", "tos_di,tos_bd");
     }
+
+    @Test
+    public void test_getNexusURL() {
+        ComponentsNexusInstallFactoryTestClass factory = new ComponentsNexusInstallFactoryTestClass();
+        ArtifactRepositoryBean serverSetting = factory.getServerSetting();
+        Assert.assertNull(serverSetting);
+
+        final String KEY = NexusServerManager.PROP_KEY_NEXUS_URL;
+        String oldValue = System.getProperty(KEY);
+        try {
+            System.setProperty(KEY, "http://abc.com:8081/nexus");
+            Assert.assertNotNull(factory.getServerSetting());
+            Assert.assertNotNull(factory.getServerSetting().getServer());
+            Assert.assertEquals("http://abc.com:8081/nexus/content/repositories/releases/",
+                    factory.getServerSetting().getRepositoryURL());
+        } finally {
+            if (oldValue == null) {
+                System.getProperties().remove(KEY);
+            } else {
+                System.setProperty(KEY, oldValue);
+            }
+        }
+    }
+
+    @Test
+    public void test_getNexusRepository() {
+        ComponentsNexusInstallFactoryTestClass factory = new ComponentsNexusInstallFactoryTestClass();
+        ArtifactRepositoryBean serverSetting = factory.getServerSetting();
+        Assert.assertNull(serverSetting);
+
+        final String KEY_SERVER = NexusServerManager.PROP_KEY_NEXUS_URL;
+        String oldServerValue = System.getProperty(KEY_SERVER);
+        final String KEY_REPO = NexusServerManager.PROP_KEY_NEXUS_REPOSITORY;
+        String oldRepoValue = System.getProperty(KEY_REPO);
+        try {
+            System.setProperty(KEY_SERVER, "http://abc.com:8081/nexus");// must set the nexus url
+            System.setProperty(KEY_REPO, "myrepo");
+            Assert.assertNotNull(factory.getServerSetting());
+            Assert.assertEquals("http://abc.com:8081/nexus/content/repositories/myrepo/",
+                    factory.getServerSetting().getRepositoryURL());
+        } finally {
+            if (oldServerValue == null) {
+                System.getProperties().remove(KEY_SERVER);
+            } else {
+                System.setProperty(KEY_SERVER, oldServerValue);
+            }
+            if (oldRepoValue == null) {
+                System.getProperties().remove(KEY_REPO);
+            } else {
+                System.setProperty(KEY_REPO, oldRepoValue);
+            }
+        }
+    }
+
+    @Test
+    public void test_getNexusUser() {
+        ComponentsNexusInstallFactoryTestClass factory = new ComponentsNexusInstallFactoryTestClass();
+        ArtifactRepositoryBean serverSetting = factory.getServerSetting();
+        Assert.assertNull(serverSetting);
+
+        final String KEY_SERVER = NexusServerManager.PROP_KEY_NEXUS_URL;
+        String oldServerValue = System.getProperty(KEY_SERVER);
+        final String KEY_USER = NexusServerManager.PROP_KEY_NEXUS_USER;
+        String oldValue = System.getProperty(KEY_USER);
+        try {
+            System.setProperty(KEY_SERVER, "http://abc.com:8081/nexus");// must set the nexus url
+            System.setProperty(KEY_USER, "admin");
+            Assert.assertNotNull(factory.getServerSetting());
+            Assert.assertNotNull(factory.getServerSetting().getUserName());
+            Assert.assertEquals("admin", factory.getServerSetting().getUserName());
+        } finally {
+            if (oldValue == null) {
+                System.getProperties().remove(KEY_USER);
+            } else {
+                System.setProperty(KEY_USER, oldValue);
+            }
+            if (oldServerValue == null) {
+                System.getProperties().remove(KEY_SERVER);
+            } else {
+                System.setProperty(KEY_SERVER, oldServerValue);
+            }
+        }
+    }
+
+    @Test
+    public void test_getNexusPass() {
+        ComponentsNexusInstallFactoryTestClass factory = new ComponentsNexusInstallFactoryTestClass();
+        ArtifactRepositoryBean serverSetting = factory.getServerSetting();
+        Assert.assertNull(serverSetting);
+
+        final String KEY_SERVER = NexusServerManager.PROP_KEY_NEXUS_URL;
+        String oldServerValue = System.getProperty(KEY_SERVER);
+        final String KEY_PASS = NexusServerManager.PROP_KEY_NEXUS_PASS;
+        String oldValue = System.getProperty(KEY_PASS);
+        try {
+            System.setProperty(KEY_SERVER, "http://abc.com:8081/nexus"); // must set the nexus url
+            System.setProperty(KEY_PASS, "talend");
+            Assert.assertNotNull(factory.getServerSetting());
+            Assert.assertEquals("talend", factory.getServerSetting().getPassword());
+        } finally {
+            if (oldValue == null) {
+                System.getProperties().remove(KEY_PASS);
+            } else {
+                System.setProperty(KEY_PASS, oldValue);
+            }
+            if (oldServerValue == null) {
+                System.getProperties().remove(KEY_SERVER);
+            } else {
+                System.setProperty(KEY_SERVER, oldServerValue);
+            }
+        }
+    }
+
 }

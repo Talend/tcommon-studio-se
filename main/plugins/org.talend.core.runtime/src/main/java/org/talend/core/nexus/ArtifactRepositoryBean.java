@@ -19,7 +19,7 @@ import org.talend.utils.string.StringUtilities;
  * created by wchen on 2015-5-12 Detailled comment
  *
  */
-public class ArtifactRepositoryBean {
+public class ArtifactRepositoryBean implements Cloneable {
     public static final String REPO2_MIDDLE_PATH = "/content/repositories/";
     public static final String REPO3_MIDDLE_PATH = "/repository/";
     public static final String ARTIFACT_MIDDLE_PATH = "/artifactory/";
@@ -107,7 +107,6 @@ public class ArtifactRepositoryBean {
 
     private String snapshotRepId = "";
 
-    private String nexusDefaultGroupID = ""; //$NON-NLS-1$
 
     private String type = NexusType.NEXUS_2.name();
 
@@ -287,7 +286,6 @@ public class ArtifactRepositoryBean {
         result = prime * result + ((password == null) ? 0 : password.hashCode());
         result = prime * result + ((repositoryId == null) ? 0 : repositoryId.hashCode());
         result = prime * result + ((snapshotRepId == null) ? 0 : snapshotRepId.hashCode());
-        result = prime * result + ((nexusDefaultGroupID == null) ? 0 : nexusDefaultGroupID.hashCode());
         result = prime * result + ((type == null) ? 0 : type.hashCode());
         return result;
     }
@@ -347,13 +345,6 @@ public class ArtifactRepositoryBean {
             return false;
         }
 
-        if (nexusDefaultGroupID == null) {
-            if (other.nexusDefaultGroupID != null) {
-                return false;
-            }
-        } else if (!nexusDefaultGroupID.equals(other.nexusDefaultGroupID)) {
-            return false;
-        }
 
         if (type == null) {
             if (other.type != null) {
@@ -367,13 +358,7 @@ public class ArtifactRepositoryBean {
 
     }
 
-    public String getNexusDefaultGroupID() {
-        return this.nexusDefaultGroupID;
-    }
 
-    public void setNexusDefaultGroupID(String nexusDefaultGroupID) {
-        this.nexusDefaultGroupID = nexusDefaultGroupID;
-    }
 
     public boolean isAbsoluteURL() {
         return this.isAbsoluteURL;
@@ -381,5 +366,10 @@ public class ArtifactRepositoryBean {
 
     public void setAbsoluteURL(boolean isAbsoluteURL) {
         this.isAbsoluteURL = isAbsoluteURL;
+    }
+
+    @Override
+    public ArtifactRepositoryBean clone() throws CloneNotSupportedException {
+        return (ArtifactRepositoryBean) super.clone();
     }
 }

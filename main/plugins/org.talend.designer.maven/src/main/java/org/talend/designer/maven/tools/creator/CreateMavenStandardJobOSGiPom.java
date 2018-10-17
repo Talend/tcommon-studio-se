@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.maven.model.Build;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.model.PluginExecution;
@@ -32,6 +33,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.PluginChecker;
 import org.talend.core.model.process.JobInfo;
+import org.talend.core.model.properties.Property;
+import org.talend.core.model.relationship.Relation;
+import org.talend.core.model.relationship.RelationshipItemBuilder;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.core.runtime.process.TalendProcessArgumentConstant;
 import org.talend.core.runtime.process.TalendProcessOptionConstants;
@@ -135,8 +139,20 @@ public class CreateMavenStandardJobOSGiPom extends CreateMavenJobPom {
                 }
             }
         }
-
         model.setName(model.getName() + " Bundle");
+        if (isServiceOperation(getJobProcessor().getProperty())) {
+            model.addProperty("cloud.publisher.skip", "true");
+            Build build = model.getBuild();
+            if(build != null) {
+                List<Plugin> plugins = build.getPlugins();
+                for(Plugin p : plugins) {
+                    if(p.getArtifactId().equals("maven-deploy-plugin")) {
+                        build.removePlugin(p);
+                        break;
+                    }
+                }
+            }
+        }
 
         return model;
     }
@@ -190,5 +206,23 @@ public class CreateMavenStandardJobOSGiPom extends CreateMavenJobPom {
             PomUtil.backupPomFile(jobPomFolder);
         }
         super.afterCreate(monitor);
+    }
+
+    /**
+     * Find service relation for ESB data service
+     * 
+     * @param property
+     * @return
+     */
+    public boolean isServiceOperation(Property property) {
+        List<Relation> relations = RelationshipItemBuilder.getInstance().getItemsRelatedTo(property.getId(),
+                property.getVersion(), RelationshipItemBuilder.JOB_RELATION);
+
+        for (Relation relation : relations) {
+            if (RelationshipItemBuilder.SERVICES_RELATION.equals(relation.getType())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

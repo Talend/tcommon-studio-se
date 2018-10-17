@@ -10,17 +10,17 @@
 // 9 rue Pages 92150 Suresnes, France
 //
 // ============================================================================
-package org.talend.core.runtime.services;
+package org.talend.updates.runtime.ui.feature.model;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.talend.core.IService;
-
+import org.talend.updates.runtime.model.ExtraFeature;
 
 /**
  * DOC cmeng  class global comment. Detailled comment
  */
-public interface ITaCoKitService extends IService {
+public interface IFeatureItem {
 
-    void checkMigration(final IProgressMonitor monitor) throws Exception;
+    String getTitle();
+
+    ExtraFeature getFeature();
 
 }

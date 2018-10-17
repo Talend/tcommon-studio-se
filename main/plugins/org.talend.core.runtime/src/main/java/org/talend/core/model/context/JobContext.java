@@ -32,6 +32,9 @@ public class JobContext implements IContext, Cloneable {
 
     public JobContext(String name) {
         this.name = name;
+        if (this.name == null) {
+        	this.name = ""; 
+        }
     }
 
     List<IContextParameter> contextParameterList = new ArrayList<IContextParameter>();
@@ -50,6 +53,9 @@ public class JobContext implements IContext, Cloneable {
 
     public void setName(final String name) {
         this.name = name;
+        if (this.name == null) {
+        	this.name = ""; 
+        }
     }
 
     public boolean isConfirmationNeeded() {

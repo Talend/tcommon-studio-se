@@ -23,7 +23,6 @@ import java.util.Map;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
 import org.talend.commons.exception.BusinessException;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
@@ -116,7 +115,7 @@ public class ReferenceProjectProvider implements IReferenceProjectProvider {
     public List<ProjectReference> getSettingFileReferenceList() throws PersistenceException {
         referenceProjectList = new ArrayList<ProjectReference>();
         if (referenceProjectConfig != null) {
-            referenceProjectList.addAll(convert2ProjectReferenceList(referenceProjectConfig.getReferenceProject()));
+            referenceProjectList.addAll(convert2ProjectReferenceList(project.getTechnicalLabel(), referenceProjectConfig.getReferenceProject()));
         }
         return referenceProjectList;
     }
@@ -189,10 +188,10 @@ public class ReferenceProjectProvider implements IReferenceProjectProvider {
 
     public static List<ProjectReference> getTempReferenceList(String projectLabel) throws PersistenceException {
         List<ReferenceProjectBean> list = tempReferenceMap.get(projectLabel);
-        return convert2ProjectReferenceList(list);
+        return convert2ProjectReferenceList(projectLabel, list);
     }
 
-    public static List<ProjectReference> convert2ProjectReferenceList(List<ReferenceProjectBean> beanList)
+    public static List<ProjectReference> convert2ProjectReferenceList(String mainProjectLabel, List<ReferenceProjectBean> beanList)
             throws PersistenceException {
         if (beanList == null) {
             return null;
@@ -205,8 +204,7 @@ public class ReferenceProjectProvider implements IReferenceProjectProvider {
             if (refProject != null) {
                 clonedList.add(getProjectReferenceInstance(refProject, bean));
             } else {
-                ReferenceProjectProblemManager.getInstance().addInvalidProjectReference(bean.getProjectTechnicalName(),
-                        bean.getBranchName());
+                ReferenceProjectProblemManager.getInstance().addInvalidProjectReference(mainProjectLabel, bean);
             }
         }
         return clonedList;
@@ -232,7 +230,7 @@ public class ReferenceProjectProvider implements IReferenceProjectProvider {
 
     public static List<ProjectReference> getTacReferenceList(String projectLabel) throws PersistenceException {
         List<ReferenceProjectBean> list = tacReferenceMap.get(projectLabel);
-        return convert2ProjectReferenceList(list);
+        return convert2ProjectReferenceList(projectLabel, list);
     }
 
     public static void clearTacReferenceList() {

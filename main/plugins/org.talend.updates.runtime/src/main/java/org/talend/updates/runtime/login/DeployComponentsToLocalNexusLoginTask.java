@@ -20,9 +20,9 @@ import java.util.GregorianCalendar;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
-import org.talend.commons.utils.resource.UpdatesHelper;
 import org.talend.login.AbstractLoginTask;
 import org.talend.updates.runtime.nexus.component.ComponentsDeploymentManager;
+import org.talend.updates.runtime.nexus.component.NexusServerManager;
 import org.talend.updates.runtime.utils.PathUtils;
 
 /**
@@ -53,19 +53,19 @@ public class DeployComponentsToLocalNexusLoginTask extends AbstractLoginTask {
         if (componentsBaseFolder == null || !componentsBaseFolder.exists() || !componentsBaseFolder.isDirectory()) {
             return;
         }
+        if (!NexusServerManager.getInstance().isRemoteOnlineProject()) {
+            return;
+        }
         ComponentsDeploymentManager deployManager = new ComponentsDeploymentManager();
         final File[] updateFiles = componentsBaseFolder.listFiles();
         if (updateFiles != null && updateFiles.length > 0) {
             for (File f : updateFiles) {
-                // must be file, and update site.
-                if (f.isFile() && UpdatesHelper.isComponentUpdateSite(f)) {
-                    try {
-                        deployManager.deployComponentsToLocalNexus(monitor, f);
-                    } catch (Exception e) {
-                        // won't block others to install.
-                        if (!CommonsPlugin.isHeadless()) {
-                            ExceptionHandler.process(e);
-                        }
+                try {
+                    deployManager.deployComponentsToArtifactRepository(monitor, f);
+                } catch (Exception e) {
+                    // won't block others to install.
+                    if (!CommonsPlugin.isHeadless()) {
+                        ExceptionHandler.process(e);
                     }
                 }
             }

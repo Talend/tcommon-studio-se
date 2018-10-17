@@ -14,7 +14,7 @@ package org.talend.updates.runtime.model;
 
 import java.net.URI;
 import java.util.EnumSet;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -33,7 +33,11 @@ public class FeatureCategory implements ExtraFeature {
     private String name;
     private String version;
     private String description;
-    private Set<ExtraFeature> children = new HashSet<>();
+
+    /**
+     * use LinkedHashSet to keep children order
+     */
+    private Set<ExtraFeature> children = new LinkedHashSet<>();
     
 
     /* (non-Javadoc)
@@ -45,8 +49,11 @@ public class FeatureCategory implements ExtraFeature {
         return false;
     }
 
-    /* (non-Javadoc)
-     * @see org.talend.updates.runtime.model.ExtraFeature#createFeatureIfUpdates(org.eclipse.core.runtime.IProgressMonitor)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.talend.updates.runtime.model.ExtraFeature#createFeatureIfUpdates(org.eclipse.core.runtime.IProgressMonitor)
      */
     @Override
     public ExtraFeature createFeatureIfUpdates(IProgressMonitor progress) throws Exception {

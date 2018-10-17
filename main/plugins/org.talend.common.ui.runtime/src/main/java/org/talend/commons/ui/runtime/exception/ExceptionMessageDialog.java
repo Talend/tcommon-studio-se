@@ -45,9 +45,13 @@ public class ExceptionMessageDialog extends MessageDialog {
     @Override
     protected Control createCustomArea(Composite parent) {
         if (exceptionString == null || exceptionString.isEmpty()) {
-            StringWriter stringWriter = new StringWriter();
-            ex.printStackTrace(new PrintWriter(stringWriter));
-            exceptionString = stringWriter.toString();
+            if (ex != null) {
+                StringWriter stringWriter = new StringWriter();
+                ex.printStackTrace(new PrintWriter(stringWriter));
+                exceptionString = stringWriter.toString();
+            } else {
+                exceptionString = "";
+            }
         }
 
         ExpandableComposite errorComposite = new ExpandableComposite(parent, ExpandableComposite.COMPACT);
