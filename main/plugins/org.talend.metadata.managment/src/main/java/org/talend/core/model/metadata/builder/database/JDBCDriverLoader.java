@@ -192,9 +192,6 @@ public class JDBCDriverLoader {
                 if (EDatabaseTypeName.HIVE.getDisplayName().equals(dbType)) {
                     Thread.currentThread().setContextClassLoader(loader);
                 }
-                // if(additionalParams != null && !"".equals(additionalParams)&&url.startsWith("jdbc:redshift:iam:")) {
-                // url = url+"?"+additionalParams;
-                // }
                 connection = wapperDriver.connect(url, info);
             }
             // }
