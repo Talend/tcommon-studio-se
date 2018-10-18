@@ -201,5 +201,30 @@ public class TalendQuoteUtilsTest {
         resultStr = TalendQuoteUtils.addPairQuotesIfNotExist(testStr);
         assertEquals("\"\\\"\"", resultStr);
     }
+    
+    @Test
+    public void testAddQuotesForComplexusString() {
+        String input = "\"abcd\"";
+        String pid = "pid";
+        
+        String resultStr = TalendQuoteUtils.addQuotesForComplexusString(input);
+        assertTrue(input.equals(resultStr));
+        
+        input = "\"abcd\"" + pid;
+        resultStr = TalendQuoteUtils.addQuotesForComplexusString(input);
+        assertTrue(input.equals(resultStr));
+        
+        input = "abcd\"";
+        resultStr = TalendQuoteUtils.addQuotesForComplexusString(input);
+        assertTrue("\"abcd\"".equals(resultStr));
+        
+        input = "\"abcd";
+        resultStr = TalendQuoteUtils.addQuotesForComplexusString(input);
+        assertTrue("\"abcd\"".equals(resultStr));
+        
+        input = "abcd";
+        resultStr = TalendQuoteUtils.addQuotesForComplexusString(input);
+        assertTrue("\"abcd\"".equals(resultStr));
+    }
 
 }
