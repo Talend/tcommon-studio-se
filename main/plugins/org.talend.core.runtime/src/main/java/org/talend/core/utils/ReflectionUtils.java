@@ -18,6 +18,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -229,6 +230,21 @@ public class ReflectionUtils {
         returnValue = method.invoke(null, args);
 
         return returnValue;
+    }
+
+    public static boolean hasMethod(Class cls, String methodName) throws Exception {
+        if (cls == null || methodName == null) {
+            return false;
+        }
+        Method[] methods = cls.getMethods();
+        if (methods != null) {
+            for (Method method : methods) {
+                if (StringUtils.equals(methodName, method.getName())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public static Object invokeStaticMethod(String className, String methodName, Object[] args, Class... argTypes)
