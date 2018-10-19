@@ -205,22 +205,42 @@ public class TalendQuoteUtilsTest {
     @Test
     public void testAddQuotesForComplexusString() {
         String input = "\"abcd\"";
-        String pid = "pid";
+        String pid = "test";
         
         String resultStr = TalendQuoteUtils.addQuotesForComplexusString(input);
         assertTrue(input.equals(resultStr));
         
-        input = "\"abcd\"" + pid;
+        input = "\"abcd\""+ "+" + pid;
         resultStr = TalendQuoteUtils.addQuotesForComplexusString(input);
         assertTrue(input.equals(resultStr));
         
+        input = "abcd"+ "+" + pid;
+        resultStr = TalendQuoteUtils.addQuotesForComplexusString(input);
+        assertTrue("\"abcd+test\"".equals(resultStr));
+        
+        input = pid + "+" + "\"abcd\"";
+        resultStr = TalendQuoteUtils.addQuotesForComplexusString(input);
+        assertTrue(input.equals(resultStr));
+        
+        input = pid + "+" + "abcd";
+        resultStr = TalendQuoteUtils.addQuotesForComplexusString(input);
+        assertTrue("\"test+abcd\"".equals(resultStr));
+        
+        input = pid + "+" + "\"abcd";
+        resultStr = TalendQuoteUtils.addQuotesForComplexusString(input);
+        assertTrue("\"test+\\\"abcd\"".equals(resultStr));
+        
+        input = pid + "+" + "abcd\"";
+        resultStr = TalendQuoteUtils.addQuotesForComplexusString(input);
+        assertTrue("\"test+abcd\\\"\"".equals(resultStr));
+        
         input = "abcd\"";
         resultStr = TalendQuoteUtils.addQuotesForComplexusString(input);
-        assertTrue("\"abcd\"".equals(resultStr));
+        assertTrue("\"abcd\\\"\"".equals(resultStr));
         
         input = "\"abcd";
         resultStr = TalendQuoteUtils.addQuotesForComplexusString(input);
-        assertTrue("\"abcd\"".equals(resultStr));
+        assertTrue("\"\\\"abcd\"".equals(resultStr));
         
         input = "abcd";
         resultStr = TalendQuoteUtils.addQuotesForComplexusString(input);

@@ -102,7 +102,7 @@ public final class TalendQuoteUtils {
         if(a == 0){
             return input;
         }else{
-            input = addQuotesIfNotExist(input);
+            input = addPairQuotesIfNotExist(input);
         }
         return input;
     }
