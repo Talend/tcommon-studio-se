@@ -75,6 +75,7 @@ import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.maven.MavenUrlHelper;
+import org.talend.core.runtime.services.IMavenUIService;
 import org.talend.designer.maven.utils.PomUtil;
 import org.talend.librariesmanager.maven.MavenArtifactsHandler;
 import org.talend.librariesmanager.model.ExtensionModuleManager;
@@ -400,6 +401,17 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
      */
     @Override
     public File resolveJar(final ArtifactRepositoryBean customNexusServer, String uri) throws Exception, IOException {
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IMavenUIService.class)) {
+            IMavenUIService mavenUIService = (IMavenUIService) GlobalServiceRegister.getDefault()
+                    .getService(IMavenUIService.class);
+            if (mavenUIService != null) {
+                if (customNexusServer != null) {
+                    mavenUIService.updateMavenResolver(customNexusServer);
+                } else {
+                    mavenUIService.updateMavenResolver(false);
+                }
+            }
+        }
         File resolvedFile = TalendMavenResolver.resolve(uri);
         if (resolvedFile != null) {
             // reset module status

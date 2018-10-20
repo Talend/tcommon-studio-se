@@ -31,6 +31,16 @@ import org.talend.core.runtime.CoreRuntimePlugin;
  */
 public class TalendMavenResolver {
 
+    public static final String SOFTWARE_UPDATE_RESOLVER = "talend-software-update";
+
+    public static final String TALEND_DEFAULT_LIBRARIES_RESOLVER = "talend-default-libraries-resolver";
+
+    public static final String TALEND_ARTIFACT_LIBRARIES_RESOLVER = "talend-custom-artifact-repository";
+
+    public static final String COMPONENT_MANANGER_RESOLVER = "component_mananger";
+
+    private static String talendResolverKey = "";
+
     private static MavenResolver mavenResolver = null;
 
     /**
@@ -66,7 +76,10 @@ public class TalendMavenResolver {
         serviceTracker.open();
     }
 
-    public static void updateMavenResolver(Dictionary<String, String> props) throws Exception {
+    public static void updateMavenResolver(String resolverKey, Dictionary<String, String> props) throws Exception {
+        if (!needUpdate(resolverKey)) {
+            return;
+        }
         if (props == null) {
             props = new Hashtable<String, String>();
         }
@@ -76,6 +89,7 @@ public class TalendMavenResolver {
             ManagedService managedService = context.getService(managedServiceRef);
 
             managedService.updated(props);
+            talendResolverKey = resolverKey;
             mavenResolver = null;
         } else {
             throw new RuntimeException("Failed to load the service :" + ManagedService.class.getCanonicalName()); //$NON-NLS-1$
@@ -105,6 +119,12 @@ public class TalendMavenResolver {
         }
 
         return mavenResolver;
+    }
 
+    public static boolean needUpdate(String resolverKey) {
+        if (resolverKey == null || talendResolverKey.equals(resolverKey)) {
+            return false;
+        }
+        return true;
     }
 }
