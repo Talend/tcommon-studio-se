@@ -23,8 +23,8 @@ import org.eclipse.m2e.core.embedder.IMavenConfigurationChangeListener;
 import org.eclipse.m2e.core.embedder.MavenConfigurationChangeEvent;
 import org.eclipse.m2e.core.internal.preferences.MavenPreferenceConstants;
 import org.talend.commons.exception.ExceptionHandler;
-import org.talend.core.nexus.IRepositoryArtifactHandler;
 import org.talend.core.nexus.ArtifactRepositoryBean;
+import org.talend.core.nexus.IRepositoryArtifactHandler;
 import org.talend.core.nexus.RepositoryArtifactHandlerManager;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.nexus.TalendMavenResolver;
@@ -68,20 +68,29 @@ public class MavenUIService implements IMavenUIService {
      */
     @Override
     public void updateMavenResolver(boolean setupCustomLibNexus) {
+        ArtifactRepositoryBean customNexusServer = null;
+        if (setupCustomLibNexus) {
+            customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
+        }
+        updateMavenResolver(customNexusServer);
+    }
+
+    @Override
+    public void updateMavenResolver(ArtifactRepositoryBean customNexusServer) {
         Dictionary<String, String> props = getTalendMavenSetting();
         boolean updated = false;
-        if (setupCustomLibNexus) {
-            ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
+        if (customNexusServer != null) {
             IRepositoryArtifactHandler repositoryHandler = RepositoryArtifactHandlerManager
                     .getRepositoryHandler(customNexusServer);
             if (repositoryHandler != null) {
                 updated = true;
-                repositoryHandler.updateMavenResolver(props);
+                repositoryHandler.updateMavenResolver(TalendMavenResolver.TALEND_ARTIFACT_LIBRARIES_RESOLVER, props);
             }
         }
         if (!updated) {
+            // without custom artifact repository
             try {
-                TalendMavenResolver.updateMavenResolver(props);
+                TalendMavenResolver.updateMavenResolver(TalendMavenResolver.TALEND_DEFAULT_LIBRARIES_RESOLVER, props);
             } catch (Exception e) {
                 throw new RuntimeException("Failed to modifiy the service properties"); //$NON-NLS-1$
             }

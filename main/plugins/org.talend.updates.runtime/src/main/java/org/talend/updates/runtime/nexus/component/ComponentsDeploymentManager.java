@@ -25,6 +25,7 @@ import org.talend.core.GlobalServiceRegister;
 import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.IRepositoryArtifactHandler;
 import org.talend.core.nexus.RepositoryArtifactHandlerManager;
+import org.talend.core.nexus.TalendMavenResolver;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.updates.runtime.feature.model.Type;
 import org.talend.updates.runtime.model.interfaces.ITaCoKitCarFeature;
@@ -211,7 +212,7 @@ public class ComponentsDeploymentManager {
         artifactRepisotory.setRepositoryId(repositoryId);
         if (repositoryHandler == null) {
             repositoryHandler = RepositoryArtifactHandlerManager.getRepositoryHandler(artifactRepisotory);
-            repositoryHandler.updateMavenResolver(null);
+            repositoryHandler.updateMavenResolver(TalendMavenResolver.COMPONENT_MANANGER_RESOLVER, null);
         }
         return repositoryHandler;
     }

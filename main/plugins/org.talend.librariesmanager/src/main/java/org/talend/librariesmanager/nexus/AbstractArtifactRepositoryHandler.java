@@ -55,7 +55,10 @@ public abstract class AbstractArtifactRepositoryHandler implements IRepositoryAr
     }
 
     @Override
-    public void updateMavenResolver(Dictionary<String, String> props) {
+    public void updateMavenResolver(String resolverKey, Dictionary<String, String> props) {
+        if (!TalendMavenResolver.needUpdate(resolverKey)) {
+            return;
+        }
         if (props == null) {
             props = new Hashtable<String, String>();
         }
@@ -94,7 +97,7 @@ public abstract class AbstractArtifactRepositoryHandler implements IRepositoryAr
         props.put("org.ops4j.pax.url.mvn.globalUpdatePolicy", "always");
         props.put("org.ops4j.pax.url.mvn.proxySupport", "true");
         try {
-            TalendMavenResolver.updateMavenResolver(props);
+            TalendMavenResolver.updateMavenResolver(resolverKey, props);
         } catch (Exception e) {
             throw new RuntimeException("Failed to modifiy the service properties"); //$NON-NLS-1$
         }

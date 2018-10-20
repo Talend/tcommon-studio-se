@@ -21,7 +21,6 @@ import org.talend.core.GlobalServiceRegister;
 import org.talend.core.context.RepositoryContext;
 import org.talend.core.model.properties.User;
 import org.talend.core.runtime.CoreRuntimePlugin;
-import org.talend.core.runtime.services.IMavenUIService;
 import org.talend.core.service.IRemoteService;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryConstants;
@@ -155,13 +154,6 @@ public class TalendLibsServerManager {
                 IRepositoryArtifactHandler repHander = RepositoryArtifactHandlerManager.getRepositoryHandler(serverBean);
                 if (repHander.checkConnection()) {
                     artifactServerBean = serverBean;
-                    if (GlobalServiceRegister.getDefault().isServiceRegistered(IMavenUIService.class)) {
-                        IMavenUIService mavenUIService = (IMavenUIService) GlobalServiceRegister.getDefault()
-                                .getService(IMavenUIService.class);
-                        if (mavenUIService != null) {
-                            mavenUIService.updateMavenResolver(true);
-                        }
-                    }
                 }
 
             } catch (Exception e) {
