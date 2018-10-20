@@ -1023,14 +1023,6 @@ public class ProcessorUtilities {
             // processor.cleanBeforeGenerate(TalendProcessOptionConstants.CLEAN_JAVA_CODES
             // | TalendProcessOptionConstants.CLEAN_CONTEXTS | TalendProcessOptionConstants.CLEAN_DATA_SETS);
             jobInfo.setProcessor(processor);
-            JobInfo parentJob = jobInfo.getFatherJobInfo();
-            if (parentJob != null && (parentJob.getProcessor() != null)) {
-                for (JobInfo subJob : parentJob.getProcessor().getBuildChildrenJobs()) {
-                    if (subJob.getJobId().equals(jobInfo.getJobId())) {
-                        subJob.setProcessor(processor);
-                    }
-                }
-            }
             if (!timerStarted) {
                 idTimer = "generateCode for job: " + currentProcess.getName();
                 TimeMeasure.begin(idTimer);
@@ -1349,7 +1341,6 @@ public class ProcessorUtilities {
         generatedJobInfo.setJobName(jobInfo.getJobName());
         generatedJobInfo.setTestContainer(jobInfo.isTestContainer());
         generatedJobInfo.setFatherJobInfo(cloneJobInfo(jobInfo.getFatherJobInfo()));
-        generatedJobInfo.setProcessor(jobInfo.getProcessor());
         return generatedJobInfo;
     }
 
