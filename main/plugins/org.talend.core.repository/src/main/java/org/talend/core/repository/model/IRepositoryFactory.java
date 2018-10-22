@@ -14,6 +14,7 @@ package org.talend.core.repository.model;
 
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -273,6 +274,11 @@ public interface IRepositoryFactory {
      * @throws PersistenceException
      */
     public Property reload(Property property) throws PersistenceException;
+
+    /**
+     * Unload property and reload it with file
+     */
+    public Property reload(Property property, IFile file) throws PersistenceException;
 
     public List<IRepositoryViewObject> getRecycleBinItems(Project project, boolean... options) throws PersistenceException;
 
