@@ -1258,6 +1258,14 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                 } else {
                     libsToMavenUri.put(module.getModuleName(), mavenUrl);
                 }
+                // check if jar name is setup based on maven uri
+                String generatedName = MavenUrlHelper.generateModuleNameByMavenURI(mavenUrl);
+                if(!generatedName.equals(module.getModuleName())) {
+                    String context = module.getContext();
+                    String warning = "Module Name is expected as" + generatedName + ",but it is configured as "
+                            + module.getModuleName() + (context == null || "".equals(context) ? "" : " in " + context);
+                    CommonExceptionHandler.warn(warning);
+                }
             }
             if (moduleLocation != null && moduleLocation.startsWith("platform:/")) {
                 String relativePath = libsToRelativePath.get(module.getModuleName());
