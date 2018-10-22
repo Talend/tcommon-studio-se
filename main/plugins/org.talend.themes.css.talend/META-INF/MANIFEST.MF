@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: CSS themes from talend
 Bundle-SymbolicName: org.talend.themes.css.talend;singleton:=true
-Bundle-Version: 7.1.1.qualifier
+Bundle-Version: 7.2.1.qualifier
 Bundle-Activator: org.talend.themes.css.talend.TalendTheme
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,

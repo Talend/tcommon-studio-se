@@ -98,6 +98,7 @@ public final class SupportDBUrlStore {
         supportDBUrlMap.put(SupportDBUrlType.VERTICA2.getDBKey(), SupportDBUrlType.VERTICA2);
         supportDBUrlMap.put(SupportDBUrlType.IMPALA.getDBKey(), SupportDBUrlType.IMPALA);
         supportDBUrlMap.put(SupportDBUrlType.REDSHIFT.getDBKey(), SupportDBUrlType.REDSHIFT);
+        supportDBUrlMap.put(SupportDBUrlType.REDSHIFT_SSO.getDBKey(), SupportDBUrlType.REDSHIFT_SSO);
         supportDBUrlMap.put(SupportDBUrlType.EXASOL.getDBKey(), SupportDBUrlType.EXASOL);
 
         // MOD mzhao bug 12313, 2010-04-02 There is not dbType in prv files before 4.0 release, here use driver class

@@ -140,6 +140,8 @@ public class CreateMavenStandardJobOSGiPom extends CreateMavenJobPom {
             }
         }
         model.setName(model.getName() + " Bundle");
+        model.setPackaging("bundle");
+        model.addProperty("talend.job.finalName", "${talend.job.name}-bundle-${project.version}");
         if (isServiceOperation(getJobProcessor().getProperty())) {
             model.addProperty("cloud.publisher.skip", "true");
             Build build = model.getBuild();

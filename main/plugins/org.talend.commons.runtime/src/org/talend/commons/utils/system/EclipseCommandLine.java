@@ -92,8 +92,17 @@ public class EclipseCommandLine {
      */
     static public void updateOrCreateExitDataPropertyWithCommand(String command, String value, boolean delete, boolean isOption) {
         boolean isValueNull = false;
-        if (value == null || "".equals(value)) {
+        if (value == null || "".equals(value)) { //$NON-NLS-1$
             isValueNull = true;
+        } else {
+            if (1 < value.length() && value.startsWith("'") && value.endsWith("'")) { //$NON-NLS-1$ //$NON-NLS-2$
+                // nothing to do
+            } else {
+                if (value.contains(" ")) { //$NON-NLS-1$
+                    value = value.replaceAll("\\\\", "\\\\\\\\"); //$NON-NLS-1$ //$NON-NLS-2$
+                    value = "'" + value + "'"; //$NON-NLS-1$ //$NON-NLS-2$
+                }
+            }
         }
         StringBuffer result = new StringBuffer(512);
 

@@ -581,7 +581,11 @@
           <DBType
                 type="REDSHIFT">
           </DBType>
+           <DBType
+                type="REDSHIFT_SSO">
+          </DBType>
        </RepositoryComponent>
+      
        <RepositoryComponent
              input="tSAPHanaInput"
              name="SAPHana"

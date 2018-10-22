@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Teradata Plug-in
 Bundle-SymbolicName: org.talend.libraries.jdbc.teradata;singleton:=true
-Bundle-Version: 7.1.1.qualifier
+Bundle-Version: 7.2.1.qualifier
 Bundle-Vendor: .Talend SA.
 Bundle-ClassPath: lib/terajdbc4-15.10.00.14.jar,
  lib/tdgssconfig-15.10.00.14.jar,
