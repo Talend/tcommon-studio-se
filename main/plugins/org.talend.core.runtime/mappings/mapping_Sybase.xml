@@ -160,12 +160,7 @@
 					<talendType type="id_Double" default="true" />
 					<talendType type="id_Float"/>
 					<talendType type="id_BigDecimal"/>				
-				</dbType>
-				<dbType type="DOUBLE PRECIS">
-					<talendType type="id_Double" default="true" />
-					<talendType type="id_Float"/>
-					<talendType type="id_BigDecimal"/>				
-				</dbType>				
+				</dbType>			
 				<dbType type="FLOAT">
 					<talendType type="id_Float" default="true" />
 					<talendType type="id_Double"/>
