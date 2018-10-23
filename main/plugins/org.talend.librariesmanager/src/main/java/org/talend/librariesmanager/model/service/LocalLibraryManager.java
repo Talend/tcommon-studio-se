@@ -1262,7 +1262,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                 String generatedName = MavenUrlHelper.generateModuleNameByMavenURI(mavenUrl);
                 if(!generatedName.equals(module.getModuleName())) {
                     String context = module.getContext();
-                    String warning = "Module Name is expected as" + generatedName + ",but it is configured as "
+                    String warning = "Module Name is expected as " + generatedName + ",but it is configured as "
                             + module.getModuleName() + (context == null || "".equals(context) ? "" : " in " + context);
                     CommonExceptionHandler.warn(warning);
                 }
