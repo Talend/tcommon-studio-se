@@ -362,16 +362,24 @@ public class ComponentIndexManager {
                             try {
                                 // must use another stream
                                 jarEntryStream = new JarInputStream(zipFile.getInputStream(zipEntry));
+                                // find the bundleId and version
+                                Manifest manifest = jarEntryStream.getManifest();
+                                if (manifest != null) {
+                                    bundleId = JarMenifestUtil.getBundleSymbolicName(manifest);
+                                    bundleVersion = JarMenifestUtil.getBundleVersion(manifest);
+                                }
+                                boolean checkManifest = StringUtils.isBlank(bundleId) || StringUtils.isBlank(bundleVersion);
 
                                 // find the pom.properties
                                 JarEntry jarEntry = null;
                                 while ((jarEntry = jarEntryStream.getNextJarEntry()) != null) {
                                     final String entryPath = jarEntry.getName();
-                                    if (JarFile.MANIFEST_NAME.equalsIgnoreCase(entryPath)) {
-                                        Manifest manifest = new Manifest();
+                                    if (checkManifest && JarFile.MANIFEST_NAME.equalsIgnoreCase(entryPath)) {
+                                        manifest = new Manifest();
                                         manifest.read(jarEntryStream);
                                         bundleId = JarMenifestUtil.getBundleSymbolicName(manifest);
                                         bundleVersion = JarMenifestUtil.getBundleVersion(manifest);
+                                        checkManifest = false;
                                     }
                                     final Path fullPath = new Path(entryPath);
                                     final String fileName = fullPath.lastSegment();
