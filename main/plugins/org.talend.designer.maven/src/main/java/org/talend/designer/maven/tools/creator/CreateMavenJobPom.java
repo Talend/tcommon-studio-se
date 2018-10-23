@@ -395,17 +395,17 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
 
                 IProcessor processor = getJobProcessor();
                 final Map<String, Object> templateParameters = PomUtil.getTemplateParameters(processor);
-                Object needLauncherObj = processor.getArguments().get(TalendProcessArgumentConstant.ARG_NEED_LAUNCHER);
-                boolean needLauncher = false;
-                if(needLauncherObj != null){
-                	needLauncher = (Boolean)needLauncherObj;
-                }
                 String launcherName = null;
-                if(needLauncher){
-                	Object launcherObj = processor.getArguments().get(TalendProcessArgumentConstant.ARG_LAUNCHER_NAME);
-                	if(launcherObj != null){
-                		launcherName = (String) launcherObj;
-                	}
+                if (processor.getArguments() != null) {
+                    Object needLauncher = processor.getArguments().get(TalendProcessArgumentConstant.ARG_NEED_LAUNCHER);
+                    if (needLauncher != null) {
+                        if ((Boolean) needLauncher) {
+                            Object launcherObj = processor.getArguments().get(TalendProcessArgumentConstant.ARG_LAUNCHER_NAME);
+                            if (launcherObj != null) {
+                                launcherName = (String) launcherObj;
+                            }
+                        }
+                    }
                 }
                 String content =
                         MavenTemplateManager.getTemplateContent(templateFile,
