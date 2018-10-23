@@ -43,6 +43,7 @@ import org.eclipse.nebula.widgets.nattable.util.GUIHelper;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
+import org.talend.core.PluginChecker;
 import org.talend.core.model.metadata.types.ContextParameterJavaTypeManager;
 import org.talend.core.model.metadata.types.JavaTypesManager;
 import org.talend.core.model.process.IContextManager;
@@ -208,8 +209,11 @@ public class ContextNatTableConfiguration extends AbstractRegistryConfiguration 
         boolean isFromRepository = modelManager.isRepositoryContext();
         List<String> finalTypes = new ArrayList<String>();
         for (String type : originalTypes) {
-            if (isFromRepository && JavaTypesManager.RESOURCE.getLabel().equals(type)) {
-                continue;
+            if (JavaTypesManager.RESOURCE.getLabel().equals(type)) {
+                // if it on TOS or it in repository context view will not have resource type
+                if (isFromRepository || !PluginChecker.isTIS()) {
+                    continue;
+                }
             }
             String newType = type;
             if (type.contains("|")) {
