@@ -2,7 +2,9 @@ package org.talend.updates.runtime.ui;
 
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.commands.AbstractHandler;
+import org.eclipse.core.commands.Command;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.swt.widgets.Shell;
@@ -31,7 +33,16 @@ public class ShowWizardHandler extends AbstractHandler {
     public Object execute(ExecutionEvent event) throws ExecutionException {
         Shell activeShell = HandlerUtil.getActiveShell(event);
 
-        String cmdId = event.getCommand().getId();
+        String cmdId = CMD_ID_ADDITIONAL_PACKAGES;
+        if (event != null) {
+            Command command = event.getCommand();
+            if (command != null) {
+                String id = command.getId();
+                if (StringUtils.isNotBlank(id)) {
+                    cmdId = id;
+                }
+            }
+        }
         switch (cmdId) {
         case CMD_ID_ADDITIONAL_PACKAGES:
             showUpdateWizard(activeShell, null);

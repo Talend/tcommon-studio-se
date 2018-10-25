@@ -96,7 +96,6 @@ public class P2ExtraFeature extends AbstractExtraFeature implements IP2Feature {
 
     public P2ExtraFeature() {
         this(null, null, null, null, null, null, null, null, null, null, null, false, null, false, false);
-        setNeedRestart(false);
     }
 
     public P2ExtraFeature(ComponentIndexBean indexBean) {
