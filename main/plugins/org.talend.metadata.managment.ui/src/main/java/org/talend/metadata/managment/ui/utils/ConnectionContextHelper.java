@@ -1049,7 +1049,12 @@ public final class ConnectionContextHelper {
 
     public static Set<String> retrieveContextVar(List<? extends IElementParameter> elementParameters, Connection connection,
             EComponentCategory category) {
-        return retrieveContextVar(elementParameters, connection, category, false);
+        return retrieveContextVar(elementParameters, connection, category, false, new HashMap<Object, Object>());
+    }
+    
+    public static Set<String> retrieveContextVar(List<? extends IElementParameter> elementParameters, Connection connection,
+            EComponentCategory category, Map<Object, Object> contextData) {
+        return retrieveContextVar(elementParameters, connection, category, false, contextData);
     }
     
     public static boolean isGenericConnection(Connection connection){
@@ -1062,15 +1067,19 @@ public final class ConnectionContextHelper {
         }
         return false;
     }
-
+    
     public static Set<String> retrieveContextVar(List<? extends IElementParameter> elementParameters, Connection connection,
             EComponentCategory category, boolean onlyConsiderShowedParam) {
+        return retrieveContextVar(elementParameters, connection, category, onlyConsiderShowedParam, new HashMap<Object, Object>());
+    }
+
+    public static Set<String> retrieveContextVar(List<? extends IElementParameter> elementParameters, Connection connection,
+            EComponentCategory category, boolean onlyConsiderShowedParam, Map<Object, Object> contextData) {
         if (elementParameters == null || connection == null) {
             return null;
         }
         Set<String> addedVars = new HashSet<String>();
         String var = null;
-        Map<Object, Object> contextData = new HashMap<Object, Object>();
         for (IElementParameter param : elementParameters) {
             if (onlyConsiderShowedParam && !param.isShow(elementParameters)) {
                 continue;
