@@ -794,7 +794,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                             }
                             moduleLocation = relativePath;
                             found = true;
-                            fileToDeploy = new File(studioJarInstalled.get(moduleLocation));
+                            fileToDeploy = new File(getJarPathFromPlatform(moduleLocation));
                         }
                     }
                 }
