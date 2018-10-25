@@ -106,7 +106,7 @@ public enum SupportDBUrlType {
             "localhost", //$NON-NLS-1$
             "5432", //$NON-NLS-1$
             "dbname", //$NON-NLS-1$
-            null,
+            "?",//$NON-NLS-1$
             "org.postgresql.Driver", //$NON-NLS-1$
             null,
             "PostgreSQL"), //$NON-NLS-1$
