@@ -40,14 +40,9 @@ public class ReferenceProjectProblemManager {
         }
         return instance;
     }
-
-    public void addInvalidProjectReference(String mainProjectLabel, ReferenceProjectBean bean) {
-        List<ReferenceProjectBean> list = invalidProjectMap.get(mainProjectLabel);
-        if (list == null) {
-            list = new ArrayList<ReferenceProjectBean>();
-            invalidProjectMap.put(mainProjectLabel, list);
-        }
-        list.add(bean);
+    
+    public void setInvalidProjectReferenceList(String mainProjectLabel, List<ReferenceProjectBean> beanList) {
+        invalidProjectMap.put(mainProjectLabel, beanList);
     }
 
     public List<String> getInvalidProjectReferenceList(String mainProjectLabel) {

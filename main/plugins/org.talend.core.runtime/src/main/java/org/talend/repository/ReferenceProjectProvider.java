@@ -191,21 +191,25 @@ public class ReferenceProjectProvider implements IReferenceProjectProvider {
         return convert2ProjectReferenceList(projectLabel, list);
     }
 
-    public static List<ProjectReference> convert2ProjectReferenceList(String mainProjectLabel, List<ReferenceProjectBean> beanList)
-            throws PersistenceException {
+    public static List<ProjectReference> convert2ProjectReferenceList(String mainProjectLabel,
+            List<ReferenceProjectBean> beanList) throws PersistenceException {
         if (beanList == null) {
             return null;
         }
         List<ProjectReference> clonedList = new ArrayList<ProjectReference>();
         IProxyRepositoryFactory proxyRepositoryFactory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
+        List<ReferenceProjectBean> invalidProjectList = new ArrayList<ReferenceProjectBean>();
         for (ReferenceProjectBean bean : beanList) {
             org.talend.core.model.properties.Project refProject = proxyRepositoryFactory
                     .getEmfProjectContent(bean.getProjectTechnicalName());
             if (refProject != null) {
                 clonedList.add(getProjectReferenceInstance(refProject, bean));
             } else {
-                ReferenceProjectProblemManager.getInstance().addInvalidProjectReference(mainProjectLabel, bean);
+                invalidProjectList.add(bean);
             }
+        }
+        if (invalidProjectList.size() > 0) {
+            ReferenceProjectProblemManager.getInstance().setInvalidProjectReferenceList(mainProjectLabel, beanList);
         }
         return clonedList;
     }
