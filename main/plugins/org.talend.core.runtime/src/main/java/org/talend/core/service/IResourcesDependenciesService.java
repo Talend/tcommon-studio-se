@@ -19,4 +19,6 @@ public interface IResourcesDependenciesService extends IService {
     public void refreshDependencyViewer();
 
     public void setContextParameterChangeDirtyManually();
+
+    public void removeBuildJobCacheForResource(String resourceId);
 }
