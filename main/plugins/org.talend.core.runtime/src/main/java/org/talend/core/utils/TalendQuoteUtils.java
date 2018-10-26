@@ -83,6 +83,29 @@ public final class TalendQuoteUtils {
             return addQuotes(text, SINGLE_QUOTE);
         }
     }
+    
+    public static String addQuotesForComplexusString(String input){
+        if (input == null) {
+            return null;
+        }
+        
+        int count = 0;
+        for(int i = 0; i < input.length(); i++){
+            if(QUOTATION_MARK.equals(String.valueOf(input.charAt(i)))){
+                count++;
+            }
+        }
+        if(count == 0){
+            return addQuotesIfNotExist(input);
+        }
+        int a = count%2;
+        if(a == 0){
+            return input;
+        }else{
+            input = addPairQuotesIfNotExist(input);
+        }
+        return input;
+    }
 
     public static String declareString(String input) {
         if (input == null) {
