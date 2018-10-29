@@ -130,6 +130,10 @@ public class BuildCacheManager {
         return currentBuildType.equals(cachedBuildType);
     }
 
+    public void preRemoveJobCache(Property property) {
+        jobCache.remove(getKey(property));
+    }
+
     public void putJobCache(Property property) {
         currentJobCache.put(getKey(property), generateCacheInfo(property));
         currentJobmodules.add(getModulePath(property));
