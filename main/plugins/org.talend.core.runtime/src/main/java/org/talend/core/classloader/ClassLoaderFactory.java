@@ -309,18 +309,30 @@ public class ClassLoaderFactory {
     public static String[] getDriverModuleList(IMetadataConnection metadataConn) {
         String[] moduleList;
         String distroKey = (String) metadataConn.getParameter(ConnParameterKeys.CONN_PARA_KEY_HIVE_DISTRIBUTION);
-        String distroVersion = (String) metadataConn.getParameter(ConnParameterKeys.CONN_PARA_KEY_HIVE_VERSION);
-        String hiveModel = (String) metadataConn.getParameter(ConnParameterKeys.CONN_PARA_KEY_HIVE_MODE);
 
         IHDistribution distribution = HiveMetadataHelper.getDistribution(distroKey, false);
         if (distribution != null && distribution.useCustom()) {
             String jarsStr = (String) metadataConn.getParameter(ConnParameterKeys.CONN_PARA_KEY_HADOOP_CUSTOM_JARS);
             moduleList = jarsStr.split(";"); //$NON-NLS-1$
         } else {
-            String index = "HIVE" + KEY_SEPARATOR + distroKey + KEY_SEPARATOR + distroVersion + KEY_SEPARATOR + hiveModel; //$NON-NLS-1$  
+            String index = getDistributionIndex(metadataConn); //$NON-NLS-1$  
             moduleList = getDriverModuleList(index);
         }
         return moduleList;
+    }
+
+    private static String getDistributionIndex(IMetadataConnection metadataConn) {
+        String url = metadataConn.getUrl();
+        String distroKey = (String) metadataConn.getParameter(ConnParameterKeys.CONN_PARA_KEY_HIVE_DISTRIBUTION);
+        String distroVersion = (String) metadataConn.getParameter(ConnParameterKeys.CONN_PARA_KEY_HIVE_VERSION);
+        String hiveModel = (String) metadataConn.getParameter(ConnParameterKeys.CONN_PARA_KEY_HIVE_MODE);
+        String index;
+        if (url != null && url.contains("hive2")) {
+            index = "HIVE2" + KEY_SEPARATOR + distroKey + KEY_SEPARATOR + distroVersion + KEY_SEPARATOR + hiveModel;
+        } else {
+            index = "HIVE" + KEY_SEPARATOR + distroKey + KEY_SEPARATOR + distroVersion + KEY_SEPARATOR + hiveModel;
+        }
+        return index;
     }
 
     public static String[] getDriverModuleList(String connKeyString) {
