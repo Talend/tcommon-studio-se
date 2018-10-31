@@ -48,4 +48,6 @@ public class MavenSystemFolders {
     public static final ProjectSystemFolder[] TEST_DIRS = { JAVA_TEST, RESOURCES_TEST };
 
     public static final ProjectSystemFolder[] ALL_DIRS = { JAVA, JAVA_TEST, RESOURCES, RESOURCES_TEST };
+
+    public static final ProjectSystemFolder[] ALL_DIRS_EXT = { JAVA, JAVA_TEST, RESOURCES, RESOURCES_TEST, EXT_RESOURCES };
 }
