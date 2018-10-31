@@ -165,6 +165,8 @@ public class ProcessorUtilities {
 
     private static final Set<String> esbJobs = new HashSet<String>();
 
+    private static boolean isDebug = false;
+
     public static void addOpenEditor(IEditorPart editor) {
         openedEditors.add(editor);
     }
@@ -2492,6 +2494,14 @@ public class ProcessorUtilities {
             return true;
         }
         return false;
+    }
+
+    public static void setDebug(boolean debug) {
+        isDebug = debug;
+    }
+
+    public static boolean isdebug() {
+        return isDebug;
     }
 
 }
