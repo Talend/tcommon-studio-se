@@ -160,8 +160,6 @@ public class ProcessorUtilities {
 
     private static final Set<ModuleNeeded> retrievedJarsForCurrentBuild = new HashSet<ModuleNeeded>();
 
-    private static final Set<String> esbJobs = new HashSet<String>();
-
     private static boolean isDebug = false;
 
     public static void addOpenEditor(IEditorPart editor) {
@@ -2344,34 +2342,6 @@ public class ProcessorUtilities {
         return doSupportDynamicHadoopConfLoading(property) && !isExportAsOSGI();
     }
 
-    public static boolean isEsbJob(String processId, String version) {
-        return esbJobs.contains(esbJobKey(processId, version));
-    }
-
-    private static void addEsbJob(JobInfo jobInfo) {
-        if (esbJobs.contains(esbJobKey(jobInfo.getJobId(), jobInfo.getJobVersion()))) {
-            return;
-        }
-
-        esbJobs.add(esbJobKey(jobInfo.getJobId(), jobInfo.getJobVersion()));
-        if (jobInfo.getFatherJobInfo() != null) {
-            addEsbJob(jobInfo.getFatherJobInfo());
-        }
-    }
-
-    private static String esbJobKey(String processId, String version) {
-        return processId + "_" + version;
-    }
-
-    private static boolean isEsbComponentName(String componentName) {
-        if (componentName.equals("tESBConsumer") || componentName.equals("tESBProviderRequest")
-                || componentName.equals("tRouteIn") || componentName.equals("tRouteLoop")
-                || componentName.equals("tRouteInput") || componentName.equals("tESBProviderRequestIn")
-                || componentName.equals("tESBProviderRequestLoop")) {
-            return true;
-        }
-        return false;
-    }
 
     public static void setDebug(boolean debug) {
         isDebug = debug;
