@@ -99,7 +99,7 @@ public class MavenProjectUtils {
                     .getService(IRunProcessService.class);
 
             if (service.isdebug()) {
-                changeClasspathDebug(monitor, project);
+                changeClasspath(monitor, project, MavenSystemFolders.ALL_DIRS_EXT);
             } else {
 
                 changeClasspath(monitor, project);
@@ -112,6 +112,10 @@ public class MavenProjectUtils {
     }
 
     public static void changeClasspath(IProgressMonitor monitor, IProject p) {
+        changeClasspath(monitor, p, MavenSystemFolders.ALL_DIRS);
+    }
+
+    public static void changeClasspath(IProgressMonitor monitor, IProject p, ProjectSystemFolder[] folders) {
         try {
             if (!p.hasNature(JavaCore.NATURE_ID)) {
                 JavaUtils.addJavaNature(p, monitor);
@@ -121,7 +125,7 @@ public class MavenProjectUtils {
 
             List<IClasspathEntry> list = new LinkedList<>();
             ClasspathAttribute attribute = new ClasspathAttribute("maven.pomderived", Boolean.TRUE.toString());
-            for (ProjectSystemFolder psf : MavenSystemFolders.ALL_DIRS) {
+            for (ProjectSystemFolder psf : folders) {
                 IFolder resources = p.getFolder(psf.getPath());
                 if (resources.exists()) { // add the condition mostly for routines, since the resources folder might not exist
                     IFolder output = p.getFolder(psf.getOutputPath());
@@ -152,48 +156,7 @@ public class MavenProjectUtils {
         }
     }
 
-    public static void changeClasspathDebug(IProgressMonitor monitor, IProject p) {
-        try {
-            if (!p.hasNature(JavaCore.NATURE_ID)) {
-                JavaUtils.addJavaNature(p, monitor);
-            }
-            IJavaProject javaProject = JavaCore.create(p);
-            IClasspathEntry[] rawClasspathEntries = javaProject.getRawClasspath();
 
-            List<IClasspathEntry> list = new LinkedList<>();
-            ClasspathAttribute attribute = new ClasspathAttribute("maven.pomderived", Boolean.TRUE.toString());
-            for (ProjectSystemFolder psf : MavenSystemFolders.ALL_DIRS_EXT) {
-                IFolder resources = p.getFolder(psf.getPath());
-                if (resources.exists()) { // add the condition mostly for routines, since the resources folder might not
-                                          // exist
-                    IFolder output = p.getFolder(psf.getOutputPath());
-                    IClasspathEntry newEntry = JavaCore.newSourceEntry(resources.getFullPath(), new IPath[0], new IPath[0],
-                            output.getFullPath(), new IClasspathAttribute[] { attribute });
-                    list.add(newEntry);
-                }
-            }
-            IPath defaultJREContainerPath = JavaRuntime.newDefaultJREContainerPath();
-
-            IClasspathEntry newEntry = JavaCore.newContainerEntry(defaultJREContainerPath, new IAccessRule[] {},
-                    new IClasspathAttribute[] { attribute }, false);
-            list.add(newEntry);
-
-            newEntry = JavaCore.newContainerEntry(new Path("org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER"),
-                    newEntry.getAccessRules(), new IClasspathAttribute[] { attribute }, newEntry.isExported());
-            list.add(newEntry);
-
-            if (!Arrays.equals(rawClasspathEntries, list.toArray(new IClasspathEntry[] {}))
-                    || !p.getFile(".classpath").exists()) {
-                rawClasspathEntries = list.toArray(new IClasspathEntry[] {});
-                javaProject.setRawClasspath(rawClasspathEntries, monitor);
-                javaProject.setOutputLocation(p.getFolder(MavenSystemFolders.JAVA.getOutputPath()).getFullPath(), monitor);
-            }
-        } catch (
-
-        CoreException e) {
-            ExceptionHandler.process(e);
-        }
-    }
     /**
      * Clear compliance settings from project, and set them into Eclipse compliance settings
      * 
