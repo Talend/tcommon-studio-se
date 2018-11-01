@@ -13,6 +13,7 @@
 package org.talend.core.runtime.services;
 
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
@@ -124,6 +125,9 @@ public interface IGenericWizardService extends IService {
     public List<ComponentProperties> getAllComponentProperties(Connection connection, String tableLabel);
 
     public List<ComponentProperties> getAllComponentProperties(Connection connection, String tableLabel, boolean withEvaluator);
+    
+    public List<ComponentProperties> getAllComponentProperties(Connection connection, String tableLabel, boolean withEvaluator,
+            boolean forComponentValue, Map<Object, Object> contextMap); 
 
     /**
      * Get the new repository type (the type from component framework) by the old repository type name.

@@ -159,8 +159,9 @@ public abstract class AbstractUpdateManager implements IUpdateManager {
     public void checkAllModification() {
         clearResult();
         IUpdateItemType[] allUpdateItemTypes = UpdateManagerProviderDetector.INSTANCE.getAllUpdateItemTypes();
+        Map<Object, Object> contextData = new HashMap<Object, Object>();
         for (IUpdateItemType type : allUpdateItemTypes) {
-            List<UpdateResult> result = getUpdatesNeeded(type);
+            List<UpdateResult> result = getUpdatesNeeded(type, false, contextData);
             if (result != null) {
                 getUpdatesNeeded().addAll(result);
             }
