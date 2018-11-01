@@ -22,7 +22,6 @@ import java.util.Set;
 
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -43,9 +42,11 @@ import org.eclipse.m2e.core.project.ProjectImportConfiguration;
 import org.osgi.service.prefs.BackingStoreException;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.generation.JavaUtils;
+import org.talend.core.GlobalServiceRegister;
 import org.talend.designer.maven.model.MavenSystemFolders;
 import org.talend.designer.maven.model.ProjectSystemFolder;
 import org.talend.designer.maven.model.TalendMavenConstants;
+import org.talend.designer.runprocess.IRunProcessService;
 
 /**
  * DOC zwxue class global comment. Detailled comment
@@ -93,8 +94,17 @@ public class MavenProjectUtils {
             return;
         }
         MavenPlugin.getProjectConfigurationManager().updateProjectConfiguration(project, monitor);
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
+            IRunProcessService service = (IRunProcessService) GlobalServiceRegister.getDefault().getDefault()
+                    .getService(IRunProcessService.class);
 
-        changeClasspath(monitor, project);
+            if (service.isdebug()) {
+                changeClasspath(monitor, project, MavenSystemFolders.ALL_DIRS_EXT);
+            } else {
+
+                changeClasspath(monitor, project);
+            }
+        }
 
         // only need this when pom has no parent.
         // IJavaProject javaProject = JavaCore.create(project);
@@ -102,6 +112,10 @@ public class MavenProjectUtils {
     }
 
     public static void changeClasspath(IProgressMonitor monitor, IProject p) {
+        changeClasspath(monitor, p, MavenSystemFolders.ALL_DIRS);
+    }
+
+    public static void changeClasspath(IProgressMonitor monitor, IProject p, ProjectSystemFolder[] folders) {
         try {
             if (!p.hasNature(JavaCore.NATURE_ID)) {
                 JavaUtils.addJavaNature(p, monitor);
@@ -111,7 +125,7 @@ public class MavenProjectUtils {
 
             List<IClasspathEntry> list = new LinkedList<>();
             ClasspathAttribute attribute = new ClasspathAttribute("maven.pomderived", Boolean.TRUE.toString());
-            for (ProjectSystemFolder psf : MavenSystemFolders.ALL_DIRS) {
+            for (ProjectSystemFolder psf : folders) {
                 IFolder resources = p.getFolder(psf.getPath());
                 if (resources.exists()) { // add the condition mostly for routines, since the resources folder might not exist
                     IFolder output = p.getFolder(psf.getOutputPath());
@@ -141,6 +155,7 @@ public class MavenProjectUtils {
             ExceptionHandler.process(e);
         }
     }
+
 
     /**
      * Clear compliance settings from project, and set them into Eclipse compliance settings
