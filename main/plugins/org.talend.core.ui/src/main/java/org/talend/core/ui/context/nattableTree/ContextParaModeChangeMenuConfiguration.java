@@ -70,7 +70,12 @@ public class ContextParaModeChangeMenuConfiguration extends AbstractUiBindingCon
                     } else {
                         for (MenuItem item : menu.getItems()) {
                             if (item.getText().equals(Messages.getString("ContextTreeTable.AddToRepository_label"))) {
-                                item.setEnabled(true);
+                                // for now Resource type only restricted by built-in
+                                if (ContextNatTableUtils.isResourceType(parentModel.getContextParameter().getType())) {
+                                    item.setEnabled(false);
+                                } else {
+                                    item.setEnabled(true);
+                                }
                             } else {
                                 item.setEnabled(false);
                             }

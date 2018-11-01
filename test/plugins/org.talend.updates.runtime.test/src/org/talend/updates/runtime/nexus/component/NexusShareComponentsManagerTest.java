@@ -25,6 +25,7 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.utils.resource.BundleFileUtil;
@@ -36,7 +37,7 @@ import org.talend.utils.io.FilesUtils;
 
 /**
  * DOC ggu class global comment. Detailled comment
- */
+ */ @Ignore
 public class NexusShareComponentsManagerTest {
 
     class NexusShareComponentsManagerTestClass extends NexusShareComponentsManager {

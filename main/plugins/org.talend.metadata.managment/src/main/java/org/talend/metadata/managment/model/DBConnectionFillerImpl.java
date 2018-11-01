@@ -173,6 +173,10 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                 if (isRedshift) {
                     productName = EDatabaseTypeName.REDSHIFT.getDisplayName();
                 }
+                boolean isRedshift_SSO = dbconn.getDatabaseType().equals(EDatabaseTypeName.REDSHIFT_SSO.getDisplayName());
+                if (isRedshift_SSO) {
+                    productName = EDatabaseTypeName.REDSHIFT_SSO.getDisplayName();
+                }
                 // ~
                 TaggedValueHelper.setTaggedValue(dbconn, TaggedValueHelper.DB_PRODUCT_NAME, productName);
                 TaggedValueHelper.setTaggedValue(dbconn, TaggedValueHelper.DB_PRODUCT_VERSION, productVersion);

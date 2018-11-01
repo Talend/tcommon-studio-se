@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: org.talend.libraries.persist.lookup
 Bundle-SymbolicName: org.talend.libraries.persist.lookup
-Bundle-Version: 7.1.1.qualifier
+Bundle-Version: 7.2.1.qualifier
 Bundle-ClassPath: lib/advancedPersistentLookupLib-1.2.jar,
  .
 Export-Package: org.talend.commons.utils.data.map,

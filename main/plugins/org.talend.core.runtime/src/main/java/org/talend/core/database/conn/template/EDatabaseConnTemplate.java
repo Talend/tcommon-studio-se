@@ -177,7 +177,10 @@ public enum EDatabaseConnTemplate {
             "jdbc:redshift://<host>:<port>/<sid>", //$NON-NLS-1$
             "5439",//$NON-NLS-1$
             "")), //$NON-NLS-1$
-
+    REDSHIFT_SSO(new DbConnStr(EDatabaseTypeName.REDSHIFT_SSO, //
+            "jdbc:redshift:iam://<host>:<port>/<sid>?<property>", //$NON-NLS-1$
+            "5439",//$NON-NLS-1$
+            "")), //$NON-NLS-1$
     NETEZZA(new DbConnStr(EDatabaseTypeName.NETEZZA, //
             "jdbc:netezza://<host>:<port>/<sid>", //$NON-NLS-1$
             "5480")), //$NON-NLS-1$
@@ -361,6 +364,7 @@ public enum EDatabaseConnTemplate {
             case GREENPLUM:
             case PARACCEL:
             case REDSHIFT:
+            case REDSHIFT_SSO:
             case IBMDB2:
             case IBMDB2_ZOS:
             case SYBASEASE:
@@ -398,6 +402,7 @@ public enum EDatabaseConnTemplate {
             case EXASOL:
             case ACCESS:
             case REDSHIFT:
+            case REDSHIFT_SSO:
             case SAPHana:
                 return true;
             default:

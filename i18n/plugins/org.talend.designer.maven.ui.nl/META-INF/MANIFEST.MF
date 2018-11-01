@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Designer Maven UI NL
 Bundle-SymbolicName: org.talend.designer.maven.ui.nl
-Bundle-Version: 7.1.1.qualifier
+Bundle-Version: 7.2.1.qualifier
 Fragment-Host: org.talend.designer.maven.ui
 Bundle-Vendor: .Talend SA.
 Bundle-Localization: plugin

@@ -122,6 +122,14 @@ public enum EDatabaseTypeName {
 
     REDSHIFT(
              "Redshift", "Redshift", Boolean.TRUE, "REDSHIFT", "REDSHIFT", EDatabaseSchemaOrCatalogMapping.Sid, EDatabaseSchemaOrCatalogMapping.Schema), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+    REDSHIFT_SSO(
+                 "Redshift SSO", //$NON-NLS-1$
+                 "Redshift SSO", //$NON-NLS-1$
+                 Boolean.TRUE,
+                 "REDSHIFT", //$NON-NLS-1$
+                 "REDSHIFT SSO", //$NON-NLS-1$
+                 EDatabaseSchemaOrCatalogMapping.Sid,
+                 EDatabaseSchemaOrCatalogMapping.Schema),
 
     IMPALA(
            "IMPALA", "Impala", Boolean.TRUE, "IMPALA", EDatabaseSchemaOrCatalogMapping.None, EDatabaseSchemaOrCatalogMapping.Schema), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 

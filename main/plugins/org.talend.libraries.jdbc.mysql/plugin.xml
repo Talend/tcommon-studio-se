@@ -6,7 +6,7 @@
               context="plugin:org.talend.libraries.jdbc.mysql"
               language="java"
               message="Needed for Mysql jdbc plugin"
-              name="mysql-connector-java-8.0.12.jar" mvn_uri="mvn:org.talend.libraries/mysql-connector-java-8.0.12/6.0.0" 
+              name="mysql-connector-java-8.0.12.jar" mvn_uri="mvn:mysql/mysql-connector-java/8.0.12" 
               required="true">
         </libraryNeeded>
         <libraryNeeded

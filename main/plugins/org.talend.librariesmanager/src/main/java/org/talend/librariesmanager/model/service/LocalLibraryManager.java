@@ -75,6 +75,7 @@ import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.maven.MavenUrlHelper;
+import org.talend.core.runtime.services.IMavenUIService;
 import org.talend.designer.maven.utils.PomUtil;
 import org.talend.librariesmanager.maven.MavenArtifactsHandler;
 import org.talend.librariesmanager.model.ExtensionModuleManager;
@@ -400,6 +401,17 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
      */
     @Override
     public File resolveJar(final ArtifactRepositoryBean customNexusServer, String uri) throws Exception, IOException {
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IMavenUIService.class)) {
+            IMavenUIService mavenUIService = (IMavenUIService) GlobalServiceRegister.getDefault()
+                    .getService(IMavenUIService.class);
+            if (mavenUIService != null) {
+                if (customNexusServer != null) {
+                    mavenUIService.updateMavenResolver(customNexusServer);
+                } else {
+                    mavenUIService.updateMavenResolver(false);
+                }
+            }
+        }
         File resolvedFile = TalendMavenResolver.resolve(uri);
         if (resolvedFile != null) {
             // reset module status
@@ -782,7 +794,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                             }
                             moduleLocation = relativePath;
                             found = true;
-                            fileToDeploy = new File(studioJarInstalled.get(moduleLocation));
+                            fileToDeploy = new File(getJarPathFromPlatform(moduleLocation));
                         }
                     }
                 }
@@ -1258,8 +1270,16 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                 } else {
                     libsToMavenUri.put(module.getModuleName(), mavenUrl);
                 }
+                // check if jar name is setup based on maven uri
+                String generatedName = MavenUrlHelper.generateModuleNameByMavenURI(mavenUrl);
+                if(!generatedName.equals(module.getModuleName())) {
+                    String context = module.getContext();
+                    String warning = "Module Name is expected as " + generatedName + ",but it is configured as "//$NON-NLS-1$ //$NON-NLS-2$
+                            + module.getModuleName() + (context == null || "".equals(context) ? "" : " in " + context);//$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
+                    CommonExceptionHandler.warn(warning);
+                }
             }
-            if (moduleLocation != null && moduleLocation.startsWith("platform:/")) {
+            if (moduleLocation != null && moduleLocation.startsWith("platform:/")) {//$NON-NLS-1$
                 String relativePath = libsToRelativePath.get(module.getModuleName());
                 if (relativePath != null && !relativePath.equals(moduleLocation)) {
                     if (!duplicateLocationJar.contains(moduleLocation)) {

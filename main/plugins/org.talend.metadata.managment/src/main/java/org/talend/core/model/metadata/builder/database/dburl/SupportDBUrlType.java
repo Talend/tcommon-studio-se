@@ -220,6 +220,14 @@ public enum SupportDBUrlType {
             "com.paraccel.Driver", //$NON-NLS-1$
             null,
             "Redshift"), //$NON-NLS-1$
+    REDSHIFT_SSO("Redshift SSO", //$NON-NLS-1$
+            "localhost", //$NON-NLS-1$
+            "5439", //$NON-NLS-1$
+            null,
+            null,
+            "com.paraccel.Driver", //$NON-NLS-1$
+            null,
+            "Redshift"), //$NON-NLS-1$
     EXASOL("Exasol", //$NON-NLS-1$
             "localhost", //$NON-NLS-1$
             "8563", //$NON-NLS-1$

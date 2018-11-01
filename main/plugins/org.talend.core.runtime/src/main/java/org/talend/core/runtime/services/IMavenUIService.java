@@ -17,6 +17,7 @@ import java.util.Dictionary;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.preference.IPreferenceNode;
 import org.talend.core.IService;
+import org.talend.core.nexus.ArtifactRepositoryBean;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -31,6 +32,8 @@ public interface IMavenUIService extends IService {
     void checkUserSettings(IProgressMonitor monitor);
 
     void updateMavenResolver(boolean setupCustomLibNexus);
+
+    void updateMavenResolver(ArtifactRepositoryBean customNexusServer);
 
     void addMavenConfigurationChangeListener();
 

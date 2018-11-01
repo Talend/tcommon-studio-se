@@ -140,7 +140,6 @@ import org.talend.repository.documentation.ERepositoryActionName;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryConstants;
 import org.talend.utils.io.FilesUtils;
-
 import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
@@ -1509,7 +1508,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
     }
 
     public Property reload(Property property, IFile file) throws PersistenceException {
-        return this.repositoryFactoryFromProvider.reload(property);
+        return this.repositoryFactoryFromProvider.reload(property, file);
     }
 
     /*

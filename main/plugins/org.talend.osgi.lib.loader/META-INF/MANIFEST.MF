@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Loader
 Bundle-SymbolicName: org.talend.osgi.lib.loader
-Bundle-Version: 7.1.1.qualifier
+Bundle-Version: 7.2.1.qualifier
 Fragment-Host: system.bundle; extension:=framework
 Export-Package: org.talend.osgi.hook,
  org.talend.osgi.hook.maven,

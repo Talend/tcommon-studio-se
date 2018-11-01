@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Registration Plug-in
 Bundle-SymbolicName: org.talend.registration;singleton:=true
-Bundle-Version: 7.1.1.qualifier
+Bundle-Version: 7.2.1.qualifier
 Bundle-Vendor: .Talend SA.
 Require-Bundle: org.apache.axis,
  javax.xml.rpc,

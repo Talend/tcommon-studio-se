@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Jackson
 Bundle-SymbolicName: org.talend.libraries.jackson;singleton:=true
-Bundle-Version: 7.1.1.qualifier
+Bundle-Version: 7.2.1.qualifier
 Bundle-Vendor: .Talend SA.
 Bundle-ClassPath: .,
  lib/ezmorph-1.0.6.jar,
@@ -36,7 +36,7 @@ Require-Bundle: org.apache.commons.lang,
  jackson-core-asl;bundle-version="1.9.13";visibility:=reexport,
  jackson-mapper-asl;bundle-version="1.9.13";visibility:=reexport,
  com.fasterxml.jackson.core.jackson-annotations;bundle-version="2.9.0";visibility:=reexport,
- com.fasterxml.jackson.core.jackson-core;bundle-version="2.9.4";visibility:=reexport,
- com.fasterxml.jackson.core.jackson-databind;bundle-version="2.9.4";visibility:=reexport
+ com.fasterxml.jackson.core.jackson-core;bundle-version="2.9.5";visibility:=reexport,
+ com.fasterxml.jackson.core.jackson-databind;bundle-version="2.9.5";visibility:=reexport
 Bundle-ActivationPolicy: lazy
 Eclipse-BundleShape: dir

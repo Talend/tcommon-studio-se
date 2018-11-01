@@ -91,6 +91,7 @@ public final class GenerateQueryFactory {
         case MSSQL:
         case PARACCEL:
         case REDSHIFT:
+        case REDSHIFT_SSO:
         case SQLITE:
         case SYBASEASE:
         case SYBASEIQ:

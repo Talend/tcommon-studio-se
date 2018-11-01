@@ -554,7 +554,7 @@ public class ImportBasicHandlerTest {
         pathes.add(processItemPath1);
         when(resManager.getPaths()).thenReturn(pathes);
         // call
-        when(resManager.getStream(processItemPath1)).thenReturn(new InputStream() {
+        when(resManager.getStream(processItemPath1, null)).thenReturn(new InputStream() {
 
             @Override
             public int read() throws IOException {

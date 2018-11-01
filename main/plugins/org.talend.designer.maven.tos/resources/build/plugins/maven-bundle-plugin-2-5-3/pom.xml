@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.talend.studio</groupId>
 		<artifactId>studio-maven-repository-tos</artifactId>
-		<version>7.1.1-SNAPSHOT</version>
+		<version>7.2.1-SNAPSHOT</version>
 		<relativePath>../../../</relativePath>
 	</parent>
 	<artifactId>maven-bundle-plugin-2-5-3-tos</artifactId>

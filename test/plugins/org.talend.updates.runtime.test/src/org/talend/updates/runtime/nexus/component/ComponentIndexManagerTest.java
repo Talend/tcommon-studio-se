@@ -514,11 +514,11 @@ public class ComponentIndexManagerTest {
         Assert.assertEquals("Add new component failure", 4, newIndexBeans.size());
 
         // test sort
-        Assert.assertEquals("Add new component index with wrong order", new String[] { "abc", "File", "JDBC", "JIRA" },
+        Assert.assertEquals("Add new component index with wrong order", new String[] { "JIRA", "File", "JDBC", "abc" },
                 new String[] { newIndexBeans.get(0).getName(), newIndexBeans.get(1).getName(), newIndexBeans.get(2).getName(),
                         newIndexBeans.get(3).getName() });
 
-        final ComponentIndexBean abcBean = newIndexBeans.get(0);
+        final ComponentIndexBean abcBean = newIndexBeans.get(3);
         Assert.assertEquals("abc", abcBean.getName());
         Assert.assertEquals("0.1.0", abcBean.getVersion());
         Assert.assertEquals("org.talend.components.abc", abcBean.getBundleId());

@@ -103,13 +103,13 @@ public class NexusDownloadHelperWithProgress extends DownloadHelperWithProgress 
             resolved = libManager.resolveJar(customNexusServer, decryptedMvnUri);
         } catch (Exception e) {
             // hide the user/password in the error
-            String account = customNexusServer.getUserName() + ":" + customNexusServer.getPassword() + "@";
+            String regex = "\\://(.+)\\:(.+)@";
             String message = e.getMessage();
-            message = message.replaceAll(account, "");
+            message = message.replaceAll(regex, "://");
             Exception cause = null;
             if (e.getCause() != null) {
                 String causeMessage = e.getCause().getMessage();
-                causeMessage = causeMessage.replaceAll(causeMessage, "");
+                causeMessage = causeMessage.replaceAll(regex, "://");
                 cause = new Exception(causeMessage);
             }
             throw new Exception(message, cause);

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Aether
 Bundle-SymbolicName: org.talend.designer.maven.aether
-Bundle-Version: 7.1.1.qualifier
+Bundle-Version: 7.2.1.qualifier
 Bundle-Activator: org.talend.designer.maven.aether.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.aether.api,

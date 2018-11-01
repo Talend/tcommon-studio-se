@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Metadata Managment UI Plugin
 Bundle-SymbolicName: org.talend.metadata.managment.ui;singleton:=true
-Bundle-Version: 7.1.1.qualifier
+Bundle-Version: 7.2.1.qualifier
 Bundle-Activator: org.talend.metadata.managment.ui.MetadataManagmentUiPlugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.gef,
