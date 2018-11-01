@@ -2089,7 +2089,9 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 try {
                     ITaCoKitService tacokitService = ITaCoKitService.getInstance();
                     if (tacokitService != null) {
-                        tacokitService.checkMigration(monitor);
+                        if (tacokitService.isNeedMigration(project.getTechnicalLabel())) {
+                            tacokitService.checkMigration(monitor);
+                        }
                     }
                 } catch (Exception e) {
                     ExceptionHandler.process(e);
