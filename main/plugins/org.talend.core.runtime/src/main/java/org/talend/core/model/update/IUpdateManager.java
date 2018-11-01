@@ -14,6 +14,7 @@ package org.talend.core.model.update;
 
 import java.beans.PropertyChangeEvent;
 import java.util.List;
+import java.util.Map;
 
 /**
  * ggu class global comment. Detailled comment
@@ -58,6 +59,8 @@ public interface IUpdateManager {
     public List<UpdateResult> getUpdatesNeeded(IUpdateItemType type);
 
     public List<UpdateResult> getUpdatesNeeded(IUpdateItemType type, boolean onlySimpleShow);
+    
+    public List<UpdateResult> getUpdatesNeeded(IUpdateItemType itemType, boolean onlySimpleShow, Map<Object, Object> contextData);
 
     public boolean executeUpdates(List<UpdateResult> results);
 
