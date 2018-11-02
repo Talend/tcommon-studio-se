@@ -70,9 +70,7 @@ public class ImageCapture {
 
         boolean skipCopyArea = false;
     	if (EnvironmentUtils.isMacOsSytem()) {
-    		if ("10.14".equals(System.getProperty("os.version"))) {
-    			skipCopyArea = true;
-    		}
+    		skipCopyArea = true;
     	}
     	if (!skipCopyArea) {
     		gc.copyArea(image, 0, 0);
