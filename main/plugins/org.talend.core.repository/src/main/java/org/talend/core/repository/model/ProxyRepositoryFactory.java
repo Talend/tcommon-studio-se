@@ -638,13 +638,17 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
             throw new PersistenceException(Messages.getString("ProxyRepositoryFactory.MoveFolderContainsLockedItem")); //$NON-NLS-1$
         }
         this.repositoryFactoryFromProvider.moveFolder(type, sourcePath, targetPath);
-        if (type == ERepositoryObjectType.PROCESS) {
-            fireRepositoryPropertyChange(ERepositoryActionName.FOLDER_MOVE.getName(), new IPath[] { sourcePath, targetPath },
-                    type);
-        }
-        if (ERepositoryObjectType.getAllTypesOfJoblet().contains(type)) {
-            fireRepositoryPropertyChange(ERepositoryActionName.JOBLET_FOLDER_MOVE.getName(),
-                    new IPath[] { sourcePath, targetPath }, type);
+        if (type != null) {
+            /*
+             * MUST check joblet first, since getAllTypesOfProcess2 contains joblet
+             */
+            if (ERepositoryObjectType.getAllTypesOfJoblet().contains(type)) {
+                fireRepositoryPropertyChange(ERepositoryActionName.JOBLET_FOLDER_MOVE.getName(),
+                        new IPath[] { sourcePath, targetPath }, type);
+            } else if (ERepositoryObjectType.getAllTypesOfProcess2().contains(type)) {
+                fireRepositoryPropertyChange(ERepositoryActionName.FOLDER_MOVE.getName(), new IPath[] { sourcePath, targetPath },
+                        type);
+            }
         }
         this.repositoryFactoryFromProvider.updateItemsPath(type, targetPath.append(sourcePath.lastSegment()));
     }
