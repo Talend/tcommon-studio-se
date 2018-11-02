@@ -13,6 +13,7 @@
 package org.talend.core.services;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
@@ -62,4 +63,7 @@ public interface ICoreTisService extends IService {
     public File getLicenseFile();
     
     public String generateSignerSessionId();
+
+    public void updateConfiguratorBundles(File configFile, File tempConfigFile) throws IOException;
+
 }
