@@ -195,12 +195,8 @@ public final class SupportDBUrlStore {
      */
     public String getDBUrl(String dbType, String dbVersion, String host, String username, String password, String port,
             String dbName, String dataSource, String paramString) {
-        if (SupportDBUrlType.isMssql(dbType)) {
-            return DatabaseConnStrUtil.getURLString(dbType, dbVersion, host, username, password, port, dbName,
-                    StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY, paramString);
-        } else {
-            return getDBUrl(dbType, host, port, dbName, StringUtils.EMPTY, paramString);
-        }
+        return DatabaseConnStrUtil.getURLString(dbType, dbVersion, host, username, password, port, dbName,
+                StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY, paramString); // mysql oracle mssql is ok
     }
 
     /**
