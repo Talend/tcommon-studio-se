@@ -31,7 +31,7 @@ public enum EDatabaseVersion4Drivers {
     ACCESS_2007(new DbVersion4Drivers(EDatabaseTypeName.ACCESS, "Access 2007", "Access_2007")), //$NON-NLS-1$ //$NON-NLS-2$
     // oracle
     ORACLE_18(new DbVersion4Drivers(new EDatabaseTypeName[] { EDatabaseTypeName.ORACLEFORSID, EDatabaseTypeName.ORACLESN,
-            EDatabaseTypeName.ORACLE_OCI, EDatabaseTypeName.ORACLE_CUSTOM }, "Oracle 18", "ORACLE_18", "ojdbc8.jar")),
+            EDatabaseTypeName.ORACLE_OCI, EDatabaseTypeName.ORACLE_CUSTOM }, "Oracle 18", "ORACLE_18", "ojdbc8-12.2.0.1.jar")),
     ORACLE_12(new DbVersion4Drivers(new EDatabaseTypeName[] { EDatabaseTypeName.ORACLEFORSID, EDatabaseTypeName.ORACLESN,
             EDatabaseTypeName.ORACLE_OCI, EDatabaseTypeName.ORACLE_CUSTOM }, "Oracle 12", "ORACLE_12", "ojdbc7.jar")),
     ORACLE_11(new DbVersion4DriversForOracle11(new EDatabaseTypeName[] { EDatabaseTypeName.ORACLEFORSID,
@@ -162,11 +162,12 @@ public enum EDatabaseVersion4Drivers {
 
     MAPRDB(new DbVersion4Drivers(EDatabaseTypeName.MAPRDB, new String[] {})),
 
-    REDSHIFT(new DbVersion4Drivers(EDatabaseTypeName.REDSHIFT,"redshift","REDSHIFT", "RedshiftJDBC42-no-awssdk-1.2.16.1027.jar")), //$NON-NLS-1$
-    REDSHIFT_SSO(new DbVersion4Drivers(EDatabaseTypeName.REDSHIFT_SSO,"redshift sso","REDSHIFT_SSO",
-            new String[] { "RedshiftJDBC42-no-awssdk-1.2.16.1027.jar", "aws-java-sdk-1.11.406.jar", "jackson-core-2.9.5.jar",
-                    "jackson-databind-2.9.5.jar", "jackson-annotations-2.9.0.jar", "httpcore-4.4.9.jar", "httpclient-4.5.5.jar",
-                    "joda-time-2.8.1.jar", "commons-logging-1.1.3.jar" })),
+    REDSHIFT(new DbVersion4Drivers(EDatabaseTypeName.REDSHIFT, "redshift", "REDSHIFT", //$NON-NLS-1$ //$NON-NLS-2$
+            "redshiftJDBC42-no-awssdk-1.2.16.1027.jar")), //$NON-NLS-1$
+    REDSHIFT_SSO(new DbVersion4Drivers(EDatabaseTypeName.REDSHIFT_SSO, "redshift sso", "REDSHIFT_SSO", //$NON-NLS-1$ //$NON-NLS-2$
+            new String[] { "redshiftJDBC42-no-awssdk-1.2.16.1027.jar", "aws-java-sdk-1.11.406.jar", "jackson-core-2.9.5.jar", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    "jackson-databind-2.9.5.jar", "jackson-annotations-2.9.0.jar", "httpcore-4.4.9.jar", "httpclient-4.5.5.jar", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$
+                    "joda-time-2.8.1.jar", "commons-logging-1.1.3.jar" })), //$NON-NLS-1$ //$NON-NLS-2$
 
     AMAZON_AURORA(new DbVersion4Drivers(EDatabaseTypeName.AMAZON_AURORA, "mysql-connector-java-5.1.30-bin.jar")); //$NON-NLS-1$
 
