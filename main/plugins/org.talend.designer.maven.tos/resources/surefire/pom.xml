@@ -31,11 +31,6 @@
 			<version>4.2.6</version>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>4.2.6</version>
-		</dependency>
-		<dependency>
 			<groupId>org.eclipse.tycho</groupId>
 			<artifactId>tycho-compiler-jdt</artifactId>
 			<version>1.0.0</version>
