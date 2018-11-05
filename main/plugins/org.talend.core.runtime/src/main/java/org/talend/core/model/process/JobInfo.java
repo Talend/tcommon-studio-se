@@ -15,10 +15,17 @@ package org.talend.core.model.process;
 import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
+import org.talend.core.GlobalServiceRegister;
+import org.talend.core.context.Context;
+import org.talend.core.context.RepositoryContext;
 import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.Property;
+import org.talend.core.runtime.CoreRuntimePlugin;
+import org.talend.designer.core.IDesignerCoreService;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.designer.runprocess.IProcessor;
+import org.talend.designer.runprocess.IRunProcessService;
+import org.talend.designer.runprocess.ItemCacheManager;
 
 /**
  * DOC nrousseau ProcessController class global comment. Detailled comment <br/>
@@ -443,6 +450,56 @@ public class JobInfo {
      * @return the processor
      */
     public IProcessor getProcessor() {
+        return this.processor;
+    }
+
+    /**
+     * 
+     * DOC wchen Comment method "getReloadedProcessor". Reload the processor only if need to get the process/property in
+     * the processor
+     * 
+     * @return
+     */
+    public IProcessor getReloadedProcessor() {
+        if (this.processor == null || processor.getProcess() == null) {
+            IProcess process = null;
+            ProcessItem processItem = getProcessItem();
+            if (processItem == null && getJobId() == null && getJobVersion() != null) {
+                processItem = ItemCacheManager.getProcessItem(getJobId(), getJobVersion());
+            }
+            if (processItem == null) {
+                return null;
+            }
+            if (getProcess() == null) {
+                if (processItem != null) {
+                    IDesignerCoreService service = CoreRuntimePlugin.getInstance().getDesignerCoreService();
+                    process = service.getProcessFromProcessItem(processItem);
+                    if (process instanceof IProcess2) {
+                        ((IProcess2) process).setProperty(processItem.getProperty());
+                    }
+                }
+                if (process == null) {
+                    return null;
+                }
+            } else {
+                process = getProcess();
+            }
+
+            Property curProperty = processItem.getProperty();
+            if (curProperty == null && process instanceof IProcess2) {
+                curProperty = ((IProcess2) process).getProperty();
+            }
+
+            if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
+                IRunProcessService service = (IRunProcessService) GlobalServiceRegister.getDefault()
+                        .getService(IRunProcessService.class);
+                IProcessor processor = service.createCodeProcessor(process, curProperty, ((RepositoryContext) CoreRuntimePlugin
+                        .getInstance().getContext().getProperty(Context.REPOSITORY_CONTEXT_KEY)).getProject().getLanguage(),
+                        true);
+
+                setProcessor(processor);
+            }
+        }
         return this.processor;
     }
 

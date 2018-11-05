@@ -324,4 +324,6 @@ public interface IProcessor {
 
     boolean isSkipClasspathJar();
 
+    void unloadProcess();
+
 }

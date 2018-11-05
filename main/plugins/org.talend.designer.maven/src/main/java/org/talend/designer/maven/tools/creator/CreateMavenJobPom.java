@@ -726,4 +726,36 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         builder.append(separator);
     }
 
+    protected ITalendProcessJavaProject getTalendJobJavaProject(JobInfo jobInfo) {
+        IProcessor processor = jobInfo.getProcessor();
+        ITalendProcessJavaProject talendProcessJavaProject = processor.getTalendJavaProject();
+
+        if (talendProcessJavaProject == null) {
+            if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
+                IRunProcessService service = (IRunProcessService) GlobalServiceRegister.getDefault()
+                        .getService(IRunProcessService.class);
+                if (processor.getProperty() == null) {
+                    processor = jobInfo.getReloadedProcessor();
+                }
+                talendProcessJavaProject = service.getTalendJobJavaProject(processor.getProperty());
+
+            }
+        }
+        return talendProcessJavaProject;
+    }
+
+    protected ITalendProcessJavaProject getTalendJobJavaProject(IProcessor processor) {
+        ITalendProcessJavaProject talendProcessJavaProject = processor.getTalendJavaProject();
+
+        if (talendProcessJavaProject == null) {
+            if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
+                IRunProcessService service = (IRunProcessService) GlobalServiceRegister.getDefault()
+                        .getService(IRunProcessService.class);
+                talendProcessJavaProject = service.getTalendJobJavaProject(processor.getProperty());
+
+            }
+        }
+        return talendProcessJavaProject;
+    }
+
 }

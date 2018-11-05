@@ -791,8 +791,6 @@ public class ProcessorUtilities {
                 jobInfo.getProcessor().getSrcCodePath());
         jobInfo.setPomFile(pomFile);
         jobInfo.setCodeFile(codeFile);
-        jobInfo.setProcess(null);
-        jobInfo.setProcessor(null);
         progressMonitor.subTask(Messages.getString("ProcessorUtilities.finalizeBuild") + currentJobName); //$NON-NLS-1$
 
         final String timeMeasureGenerateCodesId = "Generate job source codes for " //$NON-NLS-1$
@@ -820,6 +818,12 @@ public class ProcessorUtilities {
                 CorePlugin.getDefault().getRunProcessService().checkLastGenerationHasCompilationError(true);
             }
         }
+
+        jobInfo.setProcess(null);
+        if (!isMainJob) {
+            jobInfo.getProcessor().unloadProcess();
+        }
+
         codeModified = false;
         if (isMainJob) {
             retrievedJarsForCurrentBuild.clear();
@@ -1341,6 +1345,7 @@ public class ProcessorUtilities {
         generatedJobInfo.setJobName(jobInfo.getJobName());
         generatedJobInfo.setTestContainer(jobInfo.isTestContainer());
         generatedJobInfo.setFatherJobInfo(cloneJobInfo(jobInfo.getFatherJobInfo()));
+        generatedJobInfo.setProcessor(jobInfo.getProcessor());
         return generatedJobInfo;
     }
 
