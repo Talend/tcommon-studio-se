@@ -18,7 +18,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -101,14 +101,24 @@ public class ProjectDataJsonProvider {
         }
     }
 
-    public static void saveConfigComponent(String projectLabel, Collection configComponentList) throws PersistenceException {
+    public static void saveConfigComponent(String projectLabel, List<ComponentsJsonModel> componentJsons)
+            throws PersistenceException {
+        Collections.sort(componentJsons, new Comparator<ComponentsJsonModel>() {
+
+            @Override
+            public int compare(ComponentsJsonModel configTypeNode1, ComponentsJsonModel configTypeNode2) {
+                return configTypeNode1.getId().compareTo(configTypeNode2.getId());
+            }
+
+        });
+
         File file = getSavingConfigurationFile(projectLabel, FileConstants.COMPONENT_FILE_NAME);
         try {
             if (!file.exists()) {
                 file.createNewFile();
             }
             ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, configComponentList);
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, componentJsons);
             ResourceUtils.getProject(projectLabel).getFolder(FileConstants.SETTINGS_FOLDER_NAME).refreshLocal(1, null);
         } catch (Exception e) {
             throw new PersistenceException(e);
@@ -118,9 +128,9 @@ public class ProjectDataJsonProvider {
     public static Map<String, String[]> getLastConfigComponent(String projectLabel) throws PersistenceException {
         Map<String, String[]> componentMap = new HashMap<>();
         File file = getSavingConfigurationFile(projectLabel, FileConstants.COMPONENT_FILE_NAME);
-        TypeReference<List<ComponentsJson>> typeReference = new TypeReference<List<ComponentsJson>>() {
+        TypeReference<List<ComponentsJsonModel>> typeReference = new TypeReference<List<ComponentsJsonModel>>() {
         };
-        List<ComponentsJson> componentsJsons = null;
+        List<ComponentsJsonModel> componentsJsons = null;
         if (file != null && file.exists()) {
             try {
                 FileInputStream input = new FileInputStream(file);
@@ -129,7 +139,7 @@ public class ProjectDataJsonProvider {
                 throw new PersistenceException(e);
             }
             if (componentsJsons != null && componentsJsons.size() > 0) {
-                for (ComponentsJson component : componentsJsons) {
+                for (ComponentsJsonModel component : componentsJsons) {
                     String[] content = new String[] { component.getName(), component.getVersion(), component.getDisplayName() };
                     componentMap.put(component.getId(), content);
                 }
@@ -1144,110 +1154,6 @@ class MigrationTaskJson {
         task.setVersion(getVersion());
         task.setStatus(MigrationStatus.get(getStatus()));
         return task;
-    }
-
-}
-
-@JsonInclude(Include.NON_NULL)
-class ComponentsJson {
-
-    @JsonProperty("id")
-    private String id;
-
-    @JsonProperty("version")
-    private String version;
-
-    @JsonProperty("parentId")
-    private String parentId;
-
-    @JsonProperty("configurationType")
-    private String configurationType;
-
-    @JsonProperty("name")
-    private String name;
-
-    @JsonProperty("displayName")
-    private String displayName;
-
-    @JsonProperty("edges")
-    private List edges;
-
-    @JsonProperty("properties")
-    private List properties;
-
-    @JsonProperty("actions")
-    private Object actions;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getVersion() {
-        return version;
-    }
-
-    public void setVersion(String version) {
-        this.version = version;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
-
-    public String getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(String parentId) {
-        this.parentId = parentId;
-    }
-
-    public String getConfigurationType() {
-        return configurationType;
-    }
-
-    public void setConfigurationType(String configurationType) {
-        this.configurationType = configurationType;
-    }
-
-    public List getEdges() {
-        return edges;
-    }
-
-    public void setEdges(List edges) {
-        this.edges = edges;
-    }
-
-    public List getProperties() {
-        return properties;
-    }
-
-    public void setProperties(List properties) {
-        this.properties = properties;
-    }
-
-    public Object getActions() {
-        return actions;
-    }
-
-    public void setActions(Object actions) {
-        this.actions = actions;
     }
 
 }
