@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.core.model.utils;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -23,6 +24,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.components.ComponentCategory;
@@ -941,18 +944,40 @@ public class NodeUtil {
         return value;
     }
 
+    public static String replaceCRLFInMEMO_SQL(String original) {
+        return replaceCRLFInMEMO_SQL(original, true);
+    }
+    
     /**
      *
      * DOC liuwu Comment method "replaceMEMO_SQL". aim: to resolve TDI-7487
-     *
+     * 
+     * if splitAlways is true, will split the string always to avoid the huge string constant
+     * if splitAlways is false, split only when the string constant reach the limit : 60000 bytes
+     * 
      * @param original
      * @return
      */
-    public static String replaceCRLFInMEMO_SQL(String original) {
+    public static String replaceCRLFInMEMO_SQL(String original, boolean splitAlways) {
         if (original == null || original.trim().length() == 0) {
             return original;
         }
         StringBuilder result = new StringBuilder();
+        
+        boolean needSplit = true;
+        
+        if(!splitAlways) {
+            try {
+                //there is 64k limit for string constant, we set the limit to 60000 for code format reason like auto new line for editor
+                needSplit = original.getBytes("UTF-8").length > 60000;
+            } catch (UnsupportedEncodingException e) {
+            }
+        }
+        
+        Pattern invalid_unicode_character_regex = Pattern.compile("^.*(\\\\u[0-9a-fA-F]{0,3})$", Pattern.DOTALL);
+        //now don't process the octal case for code performance, can enable it when real need from customer
+        //Pattern invalid_octal_character_regex = Pattern.compile("^.*(\\\\[0-9]{1,2})$", Pattern.DOTALL);
+        
         int leftQuotes = original.indexOf("\"");
         int rightQuotes = original.indexOf("\"", leftQuotes + 1);
         int fakeRightQuotes = getFakeRightQuotes( original,leftQuotes);
@@ -961,50 +986,73 @@ public class NodeUtil {
             fakeRightQuotes = getFakeRightQuotes( original,fakeRightQuotes);
         }
         int leftPrev = 0;
-		while (leftQuotes >= 0 && rightQuotes > leftQuotes) {
-			if (leftQuotes > leftPrev) {//Outside of double quote
-				result.append(original.substring(leftPrev, leftQuotes));
-
-			}
-			if (leftQuotes < rightQuotes) {//Inside of double quote
-				//split string for better appearance and avoid compile error when string exceed 64k
-				int current = leftQuotes;
-				int Offset = 120;
-				int count = 0;
-				while (rightQuotes + 1 - current > 120) {
-					while (original.charAt(current + Offset - 1) == '\\') {//avoid split special character e.g. \"
-						Offset--;
-					}
-					
-					if(count>500){//This is the code that really solve TDI-39968 others are only for good appearance.
-						result.append(original.substring(current, current + Offset).replace("\r", "").replace("\n", "\\n")).append("\" + new String()\n+\"");
-						count = 0;
-					}else{
-						result.append(original.substring(current, current + Offset).replace("\r", "").replace("\n", "\\n")).append("\"\n+\"");
-					}
-					current += Offset;
-					Offset = 120;
-					count++;
-				}
-				result.append(original.substring(current, rightQuotes + 1).replace("\r", "").replace("\n", "\\n"));
-			}
+    		while (leftQuotes >= 0 && rightQuotes > leftQuotes) {
+      			if (leftQuotes > leftPrev) {//Outside of double quote
+      				  result.append(original.substring(leftPrev, leftQuotes));
+      			}
+      			
+      			if (leftQuotes < rightQuotes) {//Inside of double quote
+        				//split string for better appearance and avoid compile error when string exceed 64k
+        			  if(needSplit) {
+            				int current = leftQuotes;
+            				int Offset = 120;
+            				int count = 0;
+            				while (rightQuotes + 1 - current > 120) {
+            				    //[\u0000] or [\000]
+            				    Matcher matcher = invalid_unicode_character_regex.matcher(original.substring(current, current + Offset));
+              				  if(matcher.matches()) {
+              				      Offset = Offset - matcher.group(1).length();
+              				  } 
+              				  /*
+              				  else {
+                  				  matcher = invalid_octal_character_regex.matcher(original.substring(current, current + Offset));
+                            if(matcher.matches()) {
+                                Offset = Offset - matcher.group(1).length();
+                            }
+              				  }
+              				  */
+            				  
+              					while (original.charAt(current + Offset - 1) == '\\') {//avoid split special character e.g. \"
+              						  Offset--;
+              					}
+              					
+              					if(count>500){//This is the code that really solve TDI-39968 others are only for good appearance.
+                						result.append(original.substring(current, current + Offset).replace("\r", "").replace("\n", "\\n")).append("\" + new String()\n+\"");
+                						count = 0;
+              					}else{
+              						  result.append(original.substring(current, current + Offset).replace("\r", "").replace("\n", "\\n")).append("\"\n+\"");
+              					}
+              					
+              					current += Offset;
+              					Offset = 120;
+              					count++;
+            				}
+            				result.append(original.substring(current, rightQuotes + 1).replace("\r", "").replace("\n", "\\n"));
+        			  } else {
+            				result.append(original.substring(leftQuotes, rightQuotes + 1).replace("\r", "").replace("\n", "\\n"));
+        			  }
+      			}
 
             leftQuotes = original.indexOf("\"", rightQuotes + 1);
             leftPrev = rightQuotes + 1;
             rightQuotes = original.indexOf("\"", leftQuotes + 1);
-            fakeRightQuotes = getFakeRightQuotes( original,leftQuotes);
+            fakeRightQuotes = getFakeRightQuotes(original,leftQuotes);
             while (rightQuotes == fakeRightQuotes + 1) {
                 rightQuotes = original.indexOf("\"", rightQuotes + 1);
-                fakeRightQuotes = getFakeRightQuotes( original,fakeRightQuotes);
+                fakeRightQuotes = getFakeRightQuotes(original,fakeRightQuotes);
             }
         }
-        result.append( original.substring(leftPrev));
+        result.append(original.substring(leftPrev));
         return result.toString();
     }
     
     /**
+     * [] is the container for the string, not one part
+     * ... mean other part of the string
+     * 
      * This method would avoid get wrong fakeRithQuotes index, like:
-     * "\"\\\\\"" the right quote is not fake one.
+     * ["\\"...] the right quote is not fake one.
+     * ["\"...] the right quote is a fake one
      */
     private static int getFakeRightQuotes(String original, int fromIdex) {
         int fakeRightQuotes = original.indexOf("\\\"", fromIdex + 1);
