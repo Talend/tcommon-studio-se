@@ -37,7 +37,6 @@ import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.commons.utils.VersionUtils;
 import org.talend.commons.utils.data.container.Container;
 import org.talend.commons.utils.data.container.RootContainer;
-import org.talend.commons.utils.time.TimeMeasure;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ICoreService;
@@ -73,7 +72,6 @@ import org.talend.designer.core.model.utils.emf.component.ComponentFactory;
 import org.talend.designer.core.model.utils.emf.component.IMPORTType;
 import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
-import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryConstants;
@@ -269,6 +267,12 @@ public abstract class AbstractEMFRepositoryFactory extends AbstractRepositoryFac
 
         if (givenList.length == 0) {
             list = getAll(project, type, true, false);
+            // list will be empty if type is JDBC, due to JDBC item is created under metadata/connections folder
+
+            // For type of JDBC, should to check all DB Connections
+            if (type == ERepositoryObjectType.valueOf("JDBC")) {
+                list.addAll(getAll(project, ERepositoryObjectType.METADATA_CONNECTIONS, true, false));
+            }
         } else {
             list = givenList[0];
         }
