@@ -112,6 +112,7 @@ public final class ConnectionUtils {
                     connection = driver.connect(url, props);
                 } catch (Exception exception) {
                     log.info(exception);
+                    throw new RuntimeException(exception);
                 }
             }
         } else {
