@@ -29,6 +29,8 @@ public interface FileConstants {
 
     String RELATIONSHIP_FILE_NAME = "relationship.index"; //$NON-NLS-1$
     
+    String COMPONENT_FILE_NAME = "component.index"; //$NON-NLS-1$
+
     String TALEND_RECYCLE_BIN_INDEX = "recycle_bin.index"; //$NON-NLS-1$
     
     String MIGRATION_TASK_FILE_NAME = "migration_task.index"; //$NON-NLS-1$

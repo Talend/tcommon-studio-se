@@ -35,6 +35,8 @@ public interface ITaCoKitService {
 
     boolean isTaCoKitCar(File file, IProgressMonitor monitor) throws Exception;
 
+    boolean isNeedMigration(String projectLabel) throws Exception;
+
     void checkMigration(final IProgressMonitor monitor) throws Exception;
 
     public static ITaCoKitService getInstance() throws Exception {
