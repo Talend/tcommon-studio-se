@@ -14,6 +14,7 @@ package org.talend.commons.runtime.model.emf;
 
 import java.util.Map;
 
+import javax.xml.XMLConstants;
 import javax.xml.crypto.dsig.XMLSignature;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -79,6 +80,7 @@ public class TalendXMIResource extends XMIResourceImpl {
                 final SAXParserFactory saxParserFactory = new SAXParserFactoryImpl();
                 // make sure the namespace for all elements when parse
                 saxParserFactory.setNamespaceAware(true);
+                saxParserFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
                 return saxParserFactory.newSAXParser();
             }
 

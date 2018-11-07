@@ -18,8 +18,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.resources.IContainer;
@@ -96,6 +99,54 @@ public class ProjectDataJsonProvider {
         } catch (CoreException e) {
             throw new PersistenceException(e);
         }
+    }
+
+    public static void saveConfigComponent(String projectLabel, List<ComponentsJsonModel> componentJsons)
+            throws PersistenceException {
+        Collections.sort(componentJsons, new Comparator<ComponentsJsonModel>() {
+
+            @Override
+            public int compare(ComponentsJsonModel configTypeNode1, ComponentsJsonModel configTypeNode2) {
+                return configTypeNode1.getId().compareTo(configTypeNode2.getId());
+            }
+
+        });
+
+        File file = getSavingConfigurationFile(projectLabel, FileConstants.COMPONENT_FILE_NAME);
+        try {
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, componentJsons);
+            ResourceUtils.getProject(projectLabel).getFolder(FileConstants.SETTINGS_FOLDER_NAME).refreshLocal(1, null);
+        } catch (Exception e) {
+            throw new PersistenceException(e);
+        }
+    }
+
+    public static Map<String, String[]> getLastConfigComponent(String projectLabel) throws PersistenceException {
+        Map<String, String[]> componentMap = new HashMap<>();
+        File file = getSavingConfigurationFile(projectLabel, FileConstants.COMPONENT_FILE_NAME);
+        TypeReference<List<ComponentsJsonModel>> typeReference = new TypeReference<List<ComponentsJsonModel>>() {
+        };
+        List<ComponentsJsonModel> componentsJsons = null;
+        if (file != null && file.exists()) {
+            try {
+                FileInputStream input = new FileInputStream(file);
+                componentsJsons = new ObjectMapper().readValue(input, typeReference);
+            } catch (IOException e) {
+                throw new PersistenceException(e);
+            }
+            if (componentsJsons != null && componentsJsons.size() > 0) {
+                for (ComponentsJsonModel component : componentsJsons) {
+                    String[] content = new String[] { component.getName(), component.getVersion(), component.getDisplayName() };
+                    componentMap.put(component.getId(), content);
+                }
+            }
+        }
+        
+        return componentMap;
     }
 
     public static void loadProjectData(Project project, IPath projectFolderPath, int loadContent) throws PersistenceException {

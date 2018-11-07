@@ -404,6 +404,9 @@ public enum EDatabaseConnTemplate {
             case REDSHIFT:
             case REDSHIFT_SSO:
             case SAPHana:
+            case PSQL:
+            case PLUSPSQL:
+            case GREENPLUM:
                 return true;
             default:
             }

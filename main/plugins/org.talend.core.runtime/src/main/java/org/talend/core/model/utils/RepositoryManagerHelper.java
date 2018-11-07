@@ -102,7 +102,8 @@ public final class RepositoryManagerHelper {
                     try {
                         if (IBrandingConfiguration.PERSPECTIVE_DI_ID.equals(page.getPerspective().getId())) {
                             part = page.showView(IRepositoryView.VIEW_ID);
-                        } else if (flag && IBrandingConfiguration.PERSPECTIVE_DQ_ID.equals(page.getPerspective().getId())) {
+                        } else if (flag
+                                && IBrandingConfiguration.PERSPECTIVE_DQ_ID.equals(page.getPerspective().getId())) {
                             part = page.showView(IRepositoryView.VIEW_ID, null, IWorkbenchPage.VIEW_CREATE);
                         }
                     } catch (Exception e) {
@@ -113,6 +114,22 @@ public final class RepositoryManagerHelper {
             }
         }
         return (IRepositoryView) part;
+    }
+
+    public static IViewPart getDQRepositoryView() {
+        if (CommonsPlugin.isHeadless()) {
+            return null;
+        }
+        IWorkbenchWindow activeWorkbenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+        if (activeWorkbenchWindow != null) {
+            IWorkbenchPage page = activeWorkbenchWindow.getActivePage();
+            if (page != null) {
+                if (IBrandingConfiguration.PERSPECTIVE_DQ_ID.equals(page.getPerspective().getId())) {
+                    return page.findView("org.talend.dataprofiler.core.ui.views.DQRespositoryView"); //$NON-NLS-1$
+                }
+            }
+        }
+        return null;
     }
 
     public static int getMaximumRowsToPreview() {

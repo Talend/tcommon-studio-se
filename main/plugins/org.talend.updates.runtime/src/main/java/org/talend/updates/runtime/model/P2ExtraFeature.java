@@ -61,6 +61,8 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.core.GlobalServiceRegister;
+import org.talend.core.services.ICoreTisService;
 import org.talend.updates.runtime.engine.P2Manager;
 import org.talend.updates.runtime.feature.model.Category;
 import org.talend.updates.runtime.feature.model.Type;
@@ -656,7 +658,11 @@ public class P2ExtraFeature extends AbstractExtraFeature implements IP2Feature {
         try {
             File configurationFile = PathUtils.getStudioConfigFile();
             if (toResore != null) {
-                FilesUtils.copyFile(new FileInputStream(toResore), configurationFile);
+                if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreTisService.class)) {
+                    ICoreTisService coreTisService = (ICoreTisService) GlobalServiceRegister.getDefault()
+                            .getService(ICoreTisService.class);
+                    coreTisService.updateConfiguratorBundles(configurationFile, toResore);
+                }
             } else {
                 tempFile = File.createTempFile("config.ini", null); //$NON-NLS-1$
                 FilesUtils.copyFile(new FileInputStream(configurationFile), tempFile);
@@ -665,6 +671,10 @@ public class P2ExtraFeature extends AbstractExtraFeature implements IP2Feature {
             throw e;
         } catch (Exception e) {
             throw new IOException(e);
+        } finally {
+            if (toResore != null && toResore.exists()) {
+                toResore.delete();
+            }
         }
         return tempFile;
     }
