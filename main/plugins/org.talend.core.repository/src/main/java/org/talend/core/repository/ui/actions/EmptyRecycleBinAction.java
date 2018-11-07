@@ -63,6 +63,7 @@ import org.talend.core.repository.utils.AbstractResourceChangesService;
 import org.talend.core.repository.utils.RepositoryNodeDeleteManager;
 import org.talend.core.repository.utils.TDQServiceRegister;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
+import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.designer.core.ICamelDesignerCoreService;
 import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.repository.ProjectManager;
@@ -319,6 +320,16 @@ public class EmptyRecycleBinAction extends AContextualAction {
                                         }
                                     }
                                 }
+                                
+                                if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
+                                    ITestContainerProviderService testService = (ITestContainerProviderService) GlobalServiceRegister.getDefault()
+                                            .getService(ITestContainerProviderService.class);
+                                    if(testService != null){
+                                    	
+                                    }
+                                    testService.deleteDataFiles(objToDelete);
+                                }
+                                
                                 factory.deleteObjectPhysical(ProjectManager.getInstance().getCurrentProject(), objToDelete, null,
                                         true);
                             }

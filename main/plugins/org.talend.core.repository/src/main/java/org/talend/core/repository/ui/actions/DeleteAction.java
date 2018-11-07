@@ -1425,9 +1425,19 @@ public class DeleteAction extends AContextualAction {
                                 }
                             }
                         }
+                        
+                        if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
+                            ITestContainerProviderService testService = (ITestContainerProviderService) GlobalServiceRegister.getDefault()
+                                    .getService(ITestContainerProviderService.class);
+                            if(testService != null){
+                            	
+                            }
+                            testService.deleteDataFiles(objToDelete);
+                        }
 
                         factory.deleteObjectPhysical(objToDelete);
                         ExpressionPersistance.getInstance().jobDeleted(objToDelete.getLabel());
+                        
                     }
                     if (needToUpdataPalette) {
                         ICoreUIService coreUIService = (ICoreUIService) GlobalServiceRegister.getDefault().getService(
@@ -1447,7 +1457,7 @@ public class DeleteAction extends AContextualAction {
 
         return needReturn;
     }
-
+    
     private void deleteTestCases(IProxyRepositoryFactory factory, DeleteActionCache deleteActionCache,
             final IRepositoryNode currentJobNode, Boolean confirm) throws PersistenceException, BusinessException {
         if (currentJobNode.getType() != ENodeType.REPOSITORY_ELEMENT) {

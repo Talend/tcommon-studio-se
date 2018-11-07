@@ -129,5 +129,7 @@ public interface ITestContainerProviderService extends IService {
     boolean isTestContainerEditor(IEditorPart editor);
 
     Set<ModuleNeeded> getAllJobTestcaseModules(ProcessItem item) throws PersistenceException;
+    
+    public void deleteDataFiles(Object deleteObj);
 
 }
