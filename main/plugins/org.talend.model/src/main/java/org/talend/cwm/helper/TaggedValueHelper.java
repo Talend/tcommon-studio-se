@@ -135,6 +135,8 @@ public final class TaggedValueHelper {
 
     public static final String REP_DBINFO_HOST = "REP_DBINFO_HOST"; //$NON-NLS-1$
 
+    public static final String REP_DBINFO_PARAMETER = "REP_DBINFO_PARAMETER"; //$NON-NLS-1$
+
     public static final String REP_DBINFO_PORT = "REP_DBINFO_PORT"; //$NON-NLS-1$
 
     public static final String REP_DBINFO_SCHEMA = "REP_DBINFO_SCHEMA"; //$NON-NLS-1$

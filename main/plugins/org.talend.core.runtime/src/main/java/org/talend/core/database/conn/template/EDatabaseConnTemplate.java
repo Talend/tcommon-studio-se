@@ -45,15 +45,15 @@ public enum EDatabaseConnTemplate {
             "noDatetimeStringSync=true")), //$NON-NLS-1$
 
     PSQL(new DbConnStr(EDatabaseTypeName.PSQL, //
-            "jdbc:postgresql://<host>:<port>/<sid>", //$NON-NLS-1$
+            "jdbc:postgresql://<host>:<port>/<sid>?<property>", //$NON-NLS-1$
             "5432")), //$NON-NLS-1$
 
     PLUSPSQL(new DbConnStr(EDatabaseTypeName.PLUSPSQL, //
-            "jdbc:postgresql://<host>:<port>/<sid>", //$NON-NLS-1$
+            "jdbc:postgresql://<host>:<port>/<sid>?<property>", //$NON-NLS-1$
             "5432")), //$NON-NLS-1$
 
     GREENPLUM(new DbConnStr(EDatabaseTypeName.GREENPLUM, //
-            "jdbc:postgresql://<host>:<port>/<sid>", //$NON-NLS-1$
+            "jdbc:postgresql://<host>:<port>/<sid>?<property>", //$NON-NLS-1$
             "5432")), //$NON-NLS-1$
 
     ORACLEFORSID(new DbConnStr(EDatabaseTypeName.ORACLEFORSID, //
@@ -404,6 +404,9 @@ public enum EDatabaseConnTemplate {
             case REDSHIFT:
             case REDSHIFT_SSO:
             case SAPHana:
+            case PSQL:
+            case PLUSPSQL:
+            case GREENPLUM:
                 return true;
             default:
             }
