@@ -52,6 +52,13 @@
                 <artifactId>jackson-dataformat-cbor</artifactId>
                 <version>2.9.5</version>
             </dependency>
+            <dependency>
+                <groupId>org.talend.components</groupId>
+                <artifactId>components-bom</artifactId>
+                <version>${components.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
