@@ -105,6 +105,9 @@ public interface DiSchemaConstants {
     /** Original Avro logical type date */
     public final static String TALEND6_COLUMN_DATE_DATE = "di.date.date";
 
+    /** Original Avro logical type date */
+    public final static String TALEND6_COLUMN_DATE_TIME = "di.date.time";
+    
     /** Original Avro logical type timestamp */
     public final static String TALEND6_COLUMN_DATE_TIMESTAMP = "di.date.timestamp";
 
