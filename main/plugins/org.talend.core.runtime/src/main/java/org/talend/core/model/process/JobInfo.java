@@ -65,7 +65,7 @@ public class JobInfo {
 
     private boolean isJoblet;
 
-    private boolean isIndependentSubjob;
+    private boolean needUnloadProcessor;
 
     public JobInfo(String jobId, String contextName, String version) {
         this.jobId = jobId;
@@ -559,21 +559,21 @@ public class JobInfo {
     }
 
     /**
-     * Sets the isIndependentSubjob.
+     * Sets the needUnloadProcessor.
      * 
-     * @param isIndependentSubjob the isIndependentSubjob to set
+     * @param needUnloadProcessor the needUnloadProcessor to set
      */
-    public void setIndependentSubjob(boolean isIndependentSubjob) {
-        this.isIndependentSubjob = isIndependentSubjob;
+    public void setNeedUnloadProcessor(boolean needUnloadProcessor) {
+        this.needUnloadProcessor = needUnloadProcessor;
     }
 
     /**
-     * Getter for isIndependentSubjob.
+     * Getter for needUnloadProcessor.
      * 
-     * @return the isIndependentSubjob
+     * @return the needUnloadProcessor
      */
-    public boolean isIndependentSubjob() {
-        return this.isIndependentSubjob;
+    public boolean isNeedUnloadProcessor() {
+        return this.needUnloadProcessor;
     }
 
 }
