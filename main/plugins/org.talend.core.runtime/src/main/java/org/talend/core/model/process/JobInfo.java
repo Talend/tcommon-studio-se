@@ -65,6 +65,8 @@ public class JobInfo {
 
     private boolean isJoblet;
 
+    private boolean isIndependentSubjob;
+
     public JobInfo(String jobId, String contextName, String version) {
         this.jobId = jobId;
         this.contextName = contextName;
@@ -554,6 +556,24 @@ public class JobInfo {
 
     public boolean isJoblet() {
         return isJoblet;
+    }
+
+    /**
+     * Sets the isIndependentSubjob.
+     * 
+     * @param isIndependentSubjob the isIndependentSubjob to set
+     */
+    public void setIndependentSubjob(boolean isIndependentSubjob) {
+        this.isIndependentSubjob = isIndependentSubjob;
+    }
+
+    /**
+     * Getter for isIndependentSubjob.
+     * 
+     * @return the isIndependentSubjob
+     */
+    public boolean isIndependentSubjob() {
+        return this.isIndependentSubjob;
     }
 
 }

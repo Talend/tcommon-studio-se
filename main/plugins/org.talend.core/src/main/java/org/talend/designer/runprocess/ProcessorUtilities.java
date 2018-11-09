@@ -822,7 +822,7 @@ public class ProcessorUtilities {
         }
 
         jobInfo.setProcess(null);
-        if (!isMainJob) {
+        if (!isMainJob && !jobInfo.isIndependentSubjob()) {
             jobInfo.getProcessor().unloadProcess();
         }
 
@@ -1393,6 +1393,9 @@ public class ProcessorUtilities {
                             continue;
                         }
                     }
+                    IElementParameter independentParam = node.getElementParameter("USE_INDEPENDENT_PROCESS");
+                    boolean isIndependentSubjob = independentParam == null ? false
+                            : Boolean.valueOf(String.valueOf(independentParam.getValue()));
                     // IElementParameter indepPara = node.getElementParameter("USE_INDEPENDENT_PROCESS");
                     boolean isNeedLoadmodules = true;
                     // if (indepPara != null) {
@@ -1406,6 +1409,7 @@ public class ProcessorUtilities {
                             String context = (String) node.getElementParameter("PROCESS_TYPE_CONTEXT").getValue(); //$NON-NLS-1$
                             String version = (String) node.getElementParameter("PROCESS_TYPE_VERSION").getValue(); //$NON-NLS-1$
                             final JobInfo subJobInfo = new JobInfo(jobId, context, version);
+                            subJobInfo.setIndependentSubjob(isIndependentSubjob);
 
                             // get processitem from job
                             final ProcessItem processItem = ItemCacheManager.getProcessItem(jobId, version);
