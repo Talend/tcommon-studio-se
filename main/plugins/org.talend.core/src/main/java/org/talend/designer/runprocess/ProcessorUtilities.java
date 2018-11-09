@@ -1393,9 +1393,15 @@ public class ProcessorUtilities {
                             continue;
                         }
                     }
+                    // if subjob is set as independent job or use dynamic jobs , don't unload the process after code
+                    // generated
                     IElementParameter independentParam = node.getElementParameter("USE_INDEPENDENT_PROCESS");
                     boolean isIndependentSubjob = independentParam == null ? false
                             : Boolean.valueOf(String.valueOf(independentParam.getValue()));
+                    IElementParameter dynamicParam = node.getElementParameter("USE_DYNAMIC_JOB");
+                    isIndependentSubjob = isIndependentSubjob || dynamicParam == null ? false
+                            : Boolean.valueOf(String.valueOf(dynamicParam.getValue()));
+
                     // IElementParameter indepPara = node.getElementParameter("USE_INDEPENDENT_PROCESS");
                     boolean isNeedLoadmodules = true;
                     // if (indepPara != null) {
