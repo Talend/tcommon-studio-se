@@ -601,12 +601,18 @@ public final class MetadataToolAvroHelper {
                 TaggedValue tv = TaggedValueHelper.createTaggedValue(DiSchemaConstants.TALEND6_COLUMN_DATE_DATE, "true");
                 col.getTaggedValue().add(tv);
           	} else if(logicalType == LogicalTypes.timeMillis()) {
-            	  col.setTalendType(JavaTypesManager.DATE.getId());
-                TaggedValue tv = TaggedValueHelper.createTaggedValue(DiSchemaConstants.TALEND6_COLUMN_DATE_TIME, "true");
+            	  TaggedValue tv = TaggedValueHelper.createTaggedValue(DiSchemaConstants.TALEND6_COLUMN_DATE_TIME, "true");
                 col.getTaggedValue().add(tv);
+                
+          	    String logical_time_type_as = field.getProp(DiSchemaConstants.LOGICAL_TIME_TYPE_AS);
+          	    if(DiSchemaConstants.AS_TALEND_DATE.equals(logical_time_type_as)) {
+                	  col.setTalendType(JavaTypesManager.DATE.getId());
+          	    } else {
+          	        col.setTalendType(JavaTypesManager.INTEGER.getId());
+          	    }
           	} else {
-          		// The logical type time maps to this as well
-          		col.setTalendType(JavaTypesManager.INTEGER.getId());
+            		// The logical type time maps to this as well
+            		col.setTalendType(JavaTypesManager.INTEGER.getId());
           	}
         } else if (AvroUtils.isSameType(nonnullable, AvroUtils._long())) {
             if (logicalType == LogicalTypes.timestampMillis()) {
