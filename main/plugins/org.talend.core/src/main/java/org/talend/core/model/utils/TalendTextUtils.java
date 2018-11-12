@@ -304,9 +304,9 @@ public class TalendTextUtils {
 
         boolean isH2 = EDatabaseTypeName.H2 == name;
 
-        // if the database type is IBMDB2 and the field name contain lowercase character, should add quotes
+        // if the database type is IBMDB2/ORACLE and the field name contain lowercase character, should add quotes
         if (((!matcher.matches() || matcher2.matches() || isSqlKeyword) && !isH2 && EDatabaseTypeName.SAS != name && EDatabaseTypeName.IMPALA != name)
-                || isIBMDB2ContainLowerCase(dbType, fieldName)) {
+                || isDBContainLowerCase(dbType, fieldName)) {
             isCheck = true; // contain other char
         }
 
@@ -321,16 +321,20 @@ public class TalendTextUtils {
     }
 
     /**
-     * if the database type is IBM DB2 and the field name contains lowercase character return true otherwise return
-     * false.
+     * if the database type is IBM DB2/ORACLE and the field name contains lowercase character return true otherwise
+     * return false.
      * 
      * @param dbType
      * @param fieldName
      * @return
      */
-    private static boolean isIBMDB2ContainLowerCase(String dbType, String fieldName) {
+    private static boolean isDBContainLowerCase(String dbType, String fieldName) {
         if (dbType != null && (dbType.equals(EDatabaseTypeName.IBMDB2.getDisplayName())
-                || dbType.equals(EDatabaseTypeName.IBMDB2ZOS.getDisplayName()))) {
+                || dbType.equals(EDatabaseTypeName.IBMDB2ZOS.getDisplayName())
+                || dbType.equals(EDatabaseTypeName.ORACLEFORSID.getDisplayName())
+                || dbType.equals(EDatabaseTypeName.ORACLE_CUSTOM.getDisplayName())
+                || dbType.equals(EDatabaseTypeName.ORACLE_OCI.getDisplayName())
+                || dbType.equals(EDatabaseTypeName.ORACLESN.getDisplayName()))) {
             String temp = removeQuotes(fieldName);
             Pattern pattern = Pattern.compile("^.*[a-z]+.*$"); //$NON-NLS-1$
             Matcher matcher = pattern.matcher(temp);

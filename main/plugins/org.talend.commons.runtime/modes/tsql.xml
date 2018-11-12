@@ -1024,6 +1024,7 @@
 			<KEYWORD3>sysusers</KEYWORD3>
 			<DATABASE product="ORACLE">
 				<KEYWORD4>COMMENT</KEYWORD4>
+				<KEYWORD4>AUDIT</KEYWORD4><!-- it is a Oracle Reserved Word -->
 			</DATABASE>
 			<DATABASE product="NETEZZA">
 				<!-- <KEYWORD4>tb</KEYWORD4> -->
