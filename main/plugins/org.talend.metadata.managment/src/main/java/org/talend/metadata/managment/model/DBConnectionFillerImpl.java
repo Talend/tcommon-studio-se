@@ -1502,6 +1502,11 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                     }
                     try {
                         int column_size = getIntFromResultSet(columns, GetColumn.COLUMN_SIZE.name());
+                        if (MetadataConnectionUtils.isMysql(dbJDBCMetadata) && column_size == 0
+                                && ExtractManager.BIT.equals(typeName)) {
+                             typeName = ExtractManager.TINYINT;
+                             column_size = 1;
+                        }
                         column.setLength(column_size);
                         decimalDigits = getIntFromResultSet(columns, GetColumn.DECIMAL_DIGITS.name());
 

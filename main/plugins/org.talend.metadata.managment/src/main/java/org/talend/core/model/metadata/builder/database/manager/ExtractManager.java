@@ -102,6 +102,10 @@ public class ExtractManager {
 
     protected static final String DERBY_SHUTDOWN = "jdbc:derby:;shutdown=true"; //$NON-NLS-1$
 
+    public static final String BIT = "BIT";
+
+    public static final String TINYINT = "TINYINT";
+
     private static Logger log = Logger.getLogger(ExtractManager.class);
 
     private EDatabaseTypeName dbType;
@@ -779,6 +783,15 @@ public class ExtractManager {
                         // } else {
                         columnSize = extractMeta.getIntMetaDataInfo(columns, "COLUMN_SIZE");
                         // }
+
+                        if (eDatabaseType != null
+                                && EDatabaseTypeName.MYSQL.getProduct().equalsIgnoreCase(eDatabaseType.getProduct())
+                                && columnSize == 0
+                                && ExtractManager.BIT.equals(dbType)) {
+                            dbType = ExtractManager.TINYINT;
+                            columnSize = 1;
+                            metadataColumn.setSourceType(dbType);
+                        }
                         metadataColumn.setLength(columnSize);
                         intMetaDataInfo = extractMeta.getIntMetaDataInfo(columns, "DECIMAL_DIGITS");
                     }
