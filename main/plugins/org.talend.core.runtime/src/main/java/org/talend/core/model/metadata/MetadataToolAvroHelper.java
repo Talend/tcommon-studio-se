@@ -194,9 +194,11 @@ public final class MetadataToolAvroHelper {
             } else if (JavaTypesManager.DATE.getId().equals(tt)) {
             	if (matchTag(in, DiSchemaConstants.TALEND6_COLUMN_DATE_DATE)) {
             		type = AvroUtils._logicalDate();
-            	} else if (matchTag(in, DiSchemaConstants.TALEND6_COLUMN_DATE_TIMESTAMP)) {
-            		type = AvroUtils._logicalTimestamp();
-            	} else {
+            	} else if (matchTag(in, DiSchemaConstants.TALEND6_COLUMN_DATE_TIME)) {
+            		type = AvroUtils._logicalTime();
+              } else if (matchTag(in, DiSchemaConstants.TALEND6_COLUMN_DATE_TIMESTAMP)) {
+                type = AvroUtils._logicalTimestamp();
+              }else {
             		// FIXME - this one should go away
             		type = AvroUtils._date();
             	}
@@ -595,13 +597,23 @@ public final class MetadataToolAvroHelper {
             col.setTalendType(JavaTypesManager.FLOAT.getId());
         } else if (AvroUtils.isSameType(nonnullable, AvroUtils._int())) {
             if (logicalType == LogicalTypes.date()) {
-             	col.setTalendType(JavaTypesManager.DATE.getId());
+               	col.setTalendType(JavaTypesManager.DATE.getId());
                 TaggedValue tv = TaggedValueHelper.createTaggedValue(DiSchemaConstants.TALEND6_COLUMN_DATE_DATE, "true");
                 col.getTaggedValue().add(tv);
-        	} else {
-        		// The logical type time maps to this as well
-        		col.setTalendType(JavaTypesManager.INTEGER.getId());
-        	}
+          	} else if(logicalType == LogicalTypes.timeMillis()) {
+            	  TaggedValue tv = TaggedValueHelper.createTaggedValue(DiSchemaConstants.TALEND6_COLUMN_DATE_TIME, "true");
+                col.getTaggedValue().add(tv);
+                
+          	    String logical_time_type_as = field.getProp(DiSchemaConstants.LOGICAL_TIME_TYPE_AS);
+          	    if(DiSchemaConstants.AS_TALEND_DATE.equals(logical_time_type_as)) {
+                	  col.setTalendType(JavaTypesManager.DATE.getId());
+          	    } else {
+          	        col.setTalendType(JavaTypesManager.INTEGER.getId());
+          	    }
+          	} else {
+            		// The logical type time maps to this as well
+            		col.setTalendType(JavaTypesManager.INTEGER.getId());
+          	}
         } else if (AvroUtils.isSameType(nonnullable, AvroUtils._long())) {
             if (logicalType == LogicalTypes.timestampMillis()) {
              	col.setTalendType(JavaTypesManager.DATE.getId());
