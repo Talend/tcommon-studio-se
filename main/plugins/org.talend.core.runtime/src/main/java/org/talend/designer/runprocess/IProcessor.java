@@ -326,4 +326,8 @@ public interface IProcessor {
 
     void unloadProcess();
 
+    boolean isProcessUnloaded();
+
+    void reloadProcess();
+
 }
