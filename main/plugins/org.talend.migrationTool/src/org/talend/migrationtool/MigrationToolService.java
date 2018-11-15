@@ -61,6 +61,7 @@ import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.repository.RepositoryObject;
 import org.talend.core.model.utils.MigrationUtil;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
+import org.talend.core.repository.utils.ProjectDataJsonProvider;
 import org.talend.core.repository.utils.RoutineUtils;
 import org.talend.core.repository.utils.URIHelper;
 import org.talend.designer.codegen.ICodeGeneratorService;
@@ -135,6 +136,8 @@ public class MigrationToolService implements IMigrationToolService {
         String itemName = item.getProperty().getLabel();
         List<IProjectMigrationTask> toExecute = new ArrayList<IProjectMigrationTask>();
         for (MigrationTask task : migrationTasksToApply) {
+            if (task.getId().equals(ProjectDataJsonProvider.FAKE_TASK)) // $NON-NLS-1$
+                continue;
             IProjectMigrationTask projectTask = GetTasksHelper.getInstance().getProjectTask(task.getId());
             if (projectTask == null) {
                 log.warn(Messages.getString("MigrationToolService.taskNotExist", task.getId())); //$NON-NLS-1$

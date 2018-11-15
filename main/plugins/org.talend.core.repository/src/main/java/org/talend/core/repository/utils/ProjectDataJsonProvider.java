@@ -70,6 +70,8 @@ public class ProjectDataJsonProvider {
 
     public static final int CONTENT_ALL = 15;
 
+    public static final String FAKE_TASK = "org.talend.repository.model.migration.CheckProductVersionMigrationTask";
+
     public static String getRelationshipIndexPath() {
         StringBuilder strBuilder = new StringBuilder();
         strBuilder.append(FileConstants.SETTINGS_FOLDER_NAME).append("/").append(FileConstants.RELATIONSHIP_FILE_NAME); //$NON-NLS-1$
@@ -479,7 +481,7 @@ public class ProjectDataJsonProvider {
     
     public static MigrationTask createFakeMigrationTask() {
         MigrationTask fakeTask = PropertiesFactoryImpl.eINSTANCE.createMigrationTask();
-        fakeTask.setId("org.talend.repository.model.migration.CheckProductVersionMigrationTask");
+        fakeTask.setId(FAKE_TASK);
         fakeTask.setBreaks("7.1.0");
         fakeTask.setVersion("7.1.1");
         fakeTask.setStatus(MigrationStatus.DEFAULT_LITERAL);
