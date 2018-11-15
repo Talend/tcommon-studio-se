@@ -440,22 +440,19 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 
     public long daysBetween(final Calendar startDate, final Calendar endDate) {
         // assert: startDate must be before endDate
-        int MILLIS_IN_DAY = 1000 * 60 * 60 * 24;
-        long endInstant = endDate.getTimeInMillis();
-        int presumedDays = (int) ((endInstant - startDate.getTimeInMillis()) / MILLIS_IN_DAY);
-        Calendar cursor = (Calendar) startDate.clone();
-        cursor.add(Calendar.DAY_OF_YEAR, presumedDays);
-        long instant = cursor.getTimeInMillis();
-        if (instant == endInstant) {
-            return presumedDays;
-        }
+        Calendar sd = (Calendar) startDate.clone();
+        Calendar ed = (Calendar) endDate.clone();
+        sd.set(Calendar.HOUR, 0);
+        sd.set(Calendar.MINUTE, 0);
+        sd.set(Calendar.SECOND, 0);
+        sd.set(Calendar.MILLISECOND, 0);
 
-        final int step = instant < endInstant ? 1 : -1;
-        do {
-            cursor.add(Calendar.DAY_OF_MONTH, step);
-            presumedDays += step;
-        } while (cursor.getTimeInMillis() <= endInstant);
-        return presumedDays - 1;
+        ed.set(Calendar.HOUR, 0);
+        ed.set(Calendar.MINUTE, 0);
+        ed.set(Calendar.SECOND, 0);
+        ed.set(Calendar.MILLISECOND, 0);
+
+        return Math.abs(ed.getTimeInMillis() - sd.getTimeInMillis()) / (1l * 24 * 3600 * 1000);
     }
 
     /**
