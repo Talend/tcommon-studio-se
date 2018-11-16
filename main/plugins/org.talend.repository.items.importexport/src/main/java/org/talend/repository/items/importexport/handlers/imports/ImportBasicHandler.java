@@ -516,7 +516,9 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
                 repType = dbService.getExtraDBType(repType);
             }
             // if support mult name
-            if (importType != null && importType.equals(repType) && importType.isAllowMultiName()) {
+            if (importType != null && importType.equals(repType)
+                    && (importType.isAllowMultiName()
+                            || importType.getKey().equals(ERepositoryObjectType.SURVIVORSHIP_FILE_ITEM))) {
                 String importPath = importItem.getProperty().getItem().getState().getPath();
                 String repPath = repObject.getPath();
                 // Check the path, if same path, should return true

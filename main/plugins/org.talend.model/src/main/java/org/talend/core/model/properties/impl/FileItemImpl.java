@@ -314,7 +314,10 @@ public abstract class FileItemImpl extends ItemImpl implements FileItem {
                     }
                 }
             }
-
+            if (byteArrayResource != null && byteArrayResource.getContents().isEmpty() && byteArrayResource.isLoaded()) {
+                resources.remove(byteArrayResource);
+                byteArrayResource = null;
+            }
             if (byteArrayResource == null) {
                 byteArrayResource = new ByteArrayResource(resourceUri);
                 resourceSet.getResources().add(byteArrayResource);
