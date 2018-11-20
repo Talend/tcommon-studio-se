@@ -47,7 +47,7 @@ public class ProcessUtilsTest {
         String jobId = "_rHnrstwXEeijXfdWFqSaEA";
         assertEquals(jobId, ProcessUtils.getProjectProcessId(null, jobId));
         assertEquals(jobId, ProcessUtils.getProjectProcessId("", jobId));
-        assertEquals(jobId,
+        assertEquals(ProjectManager.getInstance().getCurrentProject().getTechnicalLabel() + ProcessUtils.PROJECT_ID_SEPARATOR + jobId,
                 ProcessUtils.getProjectProcessId(ProjectManager.getInstance().getCurrentProject().getTechnicalLabel(), jobId));
         String projectLabel = "PROJECT721";
         assertEquals(projectLabel + ProcessUtils.PROJECT_ID_SEPARATOR + jobId,
