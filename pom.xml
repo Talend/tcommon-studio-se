@@ -113,8 +113,6 @@
 		<module>main/plugins/org.talend.libraries.jdbc.h2</module>
 		<module>main/plugins/org.talend.libraries.jdbc.hsql</module>
 		<module>main/plugins/org.talend.libraries.jdbc.ingres</module>
-		<module>main/plugins/org.talend.libraries.jdbc.jtds</module>
-		<module>main/plugins/org.talend.libraries.jdbc.jtds.jars</module>
 		<module>main/plugins/org.talend.libraries.jdbc.mysql</module>
 		<module>main/plugins/org.talend.libraries.jdbc.paraccel</module>
 		<module>main/plugins/org.talend.libraries.jdbc.postgresql</module>
