@@ -17,6 +17,7 @@ import java.util.Map;
 
 import org.talend.core.IService;
 import org.talend.core.model.process.IElementParameter;
+import org.talend.core.model.process.INode;
 
 /**
  * created by ycbai on 2016年3月24日 Detailled comment
@@ -38,5 +39,7 @@ public interface IGenericService extends IService {
      * 
      */
     public List<Map<String, String>> getAllGenericComponentsInfo();
+    
+    public void resetReferenceValue(INode curNode, String oldConnectionName, String newConnectionName);
 
 }
