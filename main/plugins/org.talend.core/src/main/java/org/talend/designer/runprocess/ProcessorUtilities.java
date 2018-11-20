@@ -1955,6 +1955,9 @@ public class ProcessorUtilities {
 
         IProcessor processor = findProcessorFromJobList(processId, contextName, null);
         if (processor != null && targetPlatform.equals(processor.getTargetPlatform())) {
+            if (processor.isProcessUnloaded()) {
+                processor.reloadProcess();
+            }
             boolean oldSkipClasspathJar = processor.isSkipClasspathJar();
             processor.setSkipClasspathJar(skipClasspathJar);
             try {

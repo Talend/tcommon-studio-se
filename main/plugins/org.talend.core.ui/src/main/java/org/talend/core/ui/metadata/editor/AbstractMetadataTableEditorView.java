@@ -354,6 +354,8 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
 
     protected abstract IBeanPropertyAccessors<B, Boolean> getUsefulAccessor();
 
+    private TextCellEditorExtendTab1 commentCellEditor;
+
     /**
      * DOC amaumont Comment method "configureCommentColumn".
      * 
@@ -369,7 +371,8 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
         column.setWeight(10);
         column.setModifiable(!isReadOnly());
         column.setMinimumWidth(20);
-        column.setCellEditor(new TextCellEditor(tableViewerCreator.getTable()));
+        commentCellEditor = new TextCellEditorExtendTab1(tableViewerCreator.getTable());
+        column.setCellEditor(commentCellEditor);
     }
 
     /**
@@ -430,6 +433,8 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
      */
     protected abstract IBeanPropertyAccessors<B, String> getAdditionalFieldAccessor(String field);
 
+    private TextCellEditorExtendTab1 defaultCellEditor;
+
     /**
      * DOC ldong Comment method "getCommentAccessor".
      * 
@@ -457,7 +462,8 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
         column.setModifiable(!isReadOnly());
         column.setMinimumWidth(30);
         column.setDefaultInternalValue(""); //$NON-NLS-1$
-        column.setCellEditor(new TextCellEditor(tableViewerCreator.getTable()));
+        defaultCellEditor = new TextCellEditorExtendTab1(tableViewerCreator.getTable());
+        column.setCellEditor(defaultCellEditor);
     }
 
     /**
@@ -466,6 +472,8 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
      * @return
      */
     protected abstract IBeanPropertyAccessors<B, String> getDefaultValueAccessor();
+
+    private TextCellEditorExtendTab1 precisionCellEditor;
 
     /**
      * DOC amaumont Comment method "configurePrecisionColumn".
@@ -482,9 +490,9 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
         column.setModifiable(!isReadOnly());
         column.setWeight(10);
         column.setMinimumWidth(10);
-        TextCellEditor textCellEditor = new TextCellEditor(tableViewerCreator.getTable());
-        textCellEditor.addListener(new InegerCellEditorListener(textCellEditor, column));
-        column.setCellEditor(textCellEditor, CellEditorValueAdapterFactory.getPositiveIntAdapter());
+        precisionCellEditor = new TextCellEditorExtendTab1(tableViewerCreator.getTable());
+        precisionCellEditor.addListener(new InegerCellEditorListener(precisionCellEditor, column));
+        column.setCellEditor(precisionCellEditor, CellEditorValueAdapterFactory.getPositiveIntAdapter());
     }
 
     /**
@@ -493,6 +501,8 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
      * @return
      */
     protected abstract IBeanPropertyAccessors<B, Integer> getPrecisionAccessor();
+
+    private TextCellEditorExtendTab1 lengthCellEditor;
 
     /**
      * DOC amaumont Comment method "configureLengthColumn".
@@ -510,9 +520,9 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
         column.setModifiable(!isReadOnly());
         column.setWeight(10);
         column.setMinimumWidth(10);
-        TextCellEditor textCellEditor = new TextCellEditor(tableViewerCreator.getTable());
-        textCellEditor.addListener(new InegerCellEditorListener(textCellEditor, column));
-        column.setCellEditor(textCellEditor, CellEditorValueAdapterFactory.getPositiveIntAdapter());
+        lengthCellEditor = new TextCellEditorExtendTab1(tableViewerCreator.getTable());
+        lengthCellEditor.addListener(new InegerCellEditorListener(lengthCellEditor, column));
+        column.setCellEditor(lengthCellEditor, CellEditorValueAdapterFactory.getPositiveIntAdapter());
     }
 
     /**
@@ -682,6 +692,8 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
      */
     protected abstract IBeanPropertyAccessors<B, Boolean> getKeyAccesor();
 
+    private TextCellEditorExtendTab nameCellEditor;
+
     /**
      * DOC amaumont Comment method "configureNameColumn".
      * 
@@ -712,8 +724,8 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
         column.setWeight(25);
         column.setModifiable(!isReadOnly());
         column.setMinimumWidth(45);
-        final TextCellEditor cellEditor = new TextCellEditorExtendTab(tableViewerCreator.getTable());
-        cellEditor.addListener(new DialogErrorForCellEditorListener(cellEditor, column) {
+        nameCellEditor = new TextCellEditorExtendTab(tableViewerCreator.getTable());
+        nameCellEditor.addListener(new DialogErrorForCellEditorListener(nameCellEditor, column) {
 
             @Override
             public void newValidValueTyped(int itemIndex, Object previousValue, Object newValue, CELL_EDITOR_STATE state) {
@@ -728,7 +740,7 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
             }
 
         });
-        column.setCellEditor(cellEditor);
+        column.setCellEditor(nameCellEditor);
     }
 
     public class TextCellEditorExtendTab extends TextCellEditor {
@@ -746,6 +758,22 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
             }
         }
 
+        @Override
+        protected void focusLost() {
+            super.focusLost();
+        }
+    }
+
+    private class TextCellEditorExtendTab1 extends TextCellEditor {
+
+        public TextCellEditorExtendTab1(Composite parent) {
+            super(parent);
+        }
+
+        @Override
+        protected void focusLost() {
+            super.focusLost();
+        }
     }
 
     /**
@@ -929,11 +957,26 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
     protected abstract IBeanPropertyAccessors getDbTypeAccessor();
 
     public void notifyFocusLost() {
+        if (nameCellEditor != null) {
+            nameCellEditor.focusLost();
+        }
         if (talendTypeComboEditor != null) {
             talendTypeComboEditor.focusLost();
         }
         if (dbTypeComboEditor != null) {
             dbTypeComboEditor.focusLost();
+        }
+        if (lengthCellEditor != null) {
+            lengthCellEditor.focusLost();
+        }
+        if (precisionCellEditor != null) {
+            precisionCellEditor.focusLost();
+        }
+        if (defaultCellEditor != null) {
+            defaultCellEditor.focusLost();
+        }
+        if (commentCellEditor != null) {
+            commentCellEditor.focusLost();
         }
     }
 

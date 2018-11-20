@@ -377,7 +377,7 @@ public class RegisterManagement {
             message = Messages.getString("RegisterManagement.userNameInvalid"); //$NON-NLS-1$
             break;
         case -140:
-            message = Messages.getString("RegisterManagement.passwdInvalid"); //$NON-NLS-1$
+            message = Messages.getString("RegisterManagement.passwdInvalidNew"); //$NON-NLS-1$
             break;
         case -150:
             message = Messages.getString("RegisterManagement.userNameDifferent"); //$NON-NLS-1$

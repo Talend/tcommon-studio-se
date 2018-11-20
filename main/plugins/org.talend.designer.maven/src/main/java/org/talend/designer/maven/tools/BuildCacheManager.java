@@ -168,6 +168,11 @@ public class BuildCacheManager {
         currentJobletmodules.add(getModulePath(property));
     }
 
+    public void removeJobletCache(Property property) {
+        currentJobletCache.remove(getKey(property));
+        currentJobletmodules.remove(getModulePath(property));
+    }
+
     public void clearCurrentCache() {
         // clean job cache
         currentJobCache.clear();
@@ -283,6 +288,14 @@ public class BuildCacheManager {
             return false;
         }
         return lastBuildDate.compareTo(cacheLastChangeDate) == 0;
+    }
+
+    /**
+     * only for Junit
+     */
+    public boolean isInCurrentJobletCache(Property property) {
+        String key = getKey(property);
+        return currentJobletCache.containsKey(key) || currentJobletmodules.contains(getModulePath(property));
     }
 
     private void createBuildAggregatorPom() throws Exception {
