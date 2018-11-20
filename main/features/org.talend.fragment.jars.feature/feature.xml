@@ -37,13 +37,6 @@
          fragment="true"/>
 
    <plugin
-         id="org.talend.libraries.jdbc.jtds.jars"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"/>
-
-   <plugin
          id="org.talend.libraries.jfreechart.jars"
          download-size="0"
          install-size="0"

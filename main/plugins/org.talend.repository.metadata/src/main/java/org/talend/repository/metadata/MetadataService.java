@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.repository.metadata;
 
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.SQLException;
-
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.viewers.ISelection;
@@ -64,8 +60,6 @@ import org.talend.repository.ui.wizards.metadata.connection.files.xml.XmlFileWiz
 import org.talend.repository.ui.wizards.metadata.connection.genericshema.GenericSchemaWizard;
 import org.talend.repository.ui.wizards.metadata.connection.ldap.LDAPSchemaWizard;
 import org.talend.repository.ui.wizards.metadata.connection.wsdl.WSDLSchemaWizard;
-
-import net.sourceforge.jtds.jdbc.JtdsConnection;
 
 /**
  * DOC hwang class global comment. Detailled comment
@@ -288,20 +282,4 @@ public class MetadataService implements IMetadataService {
             LinkRulesItem[] linkRuleItems, EProcessTypeForRule rule, String ruleToEdit, boolean readOnly) {
         return new RuleOperationChoiceDialog(shell, node, repositoryRuleItems, linkRuleItems, rule, ruleToEdit, readOnly);
     }
-
-    @Override
-    public DatabaseMetaData findCustomizedJTDSDBMetadata(Connection jtdsConn) {
-        if (jtdsConn instanceof JtdsConnection) {
-            return new JtdsMetadataAdapter((JtdsConnection) jtdsConn);
-        } else {
-            try {
-                return jtdsConn.getMetaData();
-            } catch (SQLException e) {
-                log.error(e);
-                return null;
-            }
-        }
-
-    }
-
 }
