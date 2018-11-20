@@ -1001,8 +1001,7 @@ public final class ProcessUtils {
     }
 
     public static String getProjectProcessId(String projectLabel, String id) {
-        if (StringUtils.isNotEmpty(projectLabel)
-                && !StringUtils.equals(ProjectManager.getInstance().getCurrentProject().getTechnicalLabel(), projectLabel)) {
+        if (StringUtils.isNotEmpty(projectLabel)) {
             StringBuffer sb = new StringBuffer();
             sb.append(projectLabel);
             sb.append(PROJECT_ID_SEPARATOR);
@@ -1029,7 +1028,8 @@ public final class ProcessUtils {
             return false;
         }
         String projectLabel = getProjectLabelFromItemId(jobId);
-        return property.getId().equals(jobId) && (projectLabel == null
+        String pureJobId = getPureItemId(jobId);
+        return property.getId().equals(pureJobId) && (projectLabel == null
                 || projectLabel.equals(ProjectManager.getInstance().getProject(property).getTechnicalLabel()));
     }
 

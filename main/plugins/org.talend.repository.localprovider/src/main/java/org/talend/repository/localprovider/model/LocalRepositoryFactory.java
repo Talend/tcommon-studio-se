@@ -607,7 +607,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
                         } else if (!(curItem instanceof FolderItem)) {
                             if (property.eResource() != null && property.eResource().getResourceSet() != null) {
                                 propertyFounds.add(property.eResource().getURI().lastSegment());
-                                if (id == null || ProcessUtils.isSameProperty(property, id)) {
+                                if (id == null || ProcessUtils.isSameProperty(property.getId(), id, true)) {
                                     if (withDeleted || !property.getItem().getState().isDeleted()) {
                                         toReturn.add(new RepositoryObject(property));
                                     }

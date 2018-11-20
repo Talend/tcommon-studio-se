@@ -13,8 +13,10 @@
 package org.talend.core.repository.link;
 
 import org.eclipse.ui.IEditorInput;
+import org.talend.core.model.process.ProcessUtils;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.repository.IRepositoryEditorInput;
+import org.talend.repository.ProjectManager;
 import org.talend.repository.model.RepositoryNode;
 
 /**
@@ -36,8 +38,15 @@ public abstract class AbstractRepositoryEditorInputLinker extends AbstractRepoVi
 
         if (isValidEditorInput(editorInput)) {
             IRepositoryEditorInput repoEditorInput = (IRepositoryEditorInput) editorInput;
+            Item item = repoEditorInput.getItem();
+            String projectLabel = null;
+            String id = repoEditorInput.getId();
+            if (item != null) {
+                projectLabel = ProjectManager.getInstance().getProject(item.getProperty()).getTechnicalLabel();
+                id = ProcessUtils.getProjectProcessId(projectLabel, id);
+            }
             // search always
-            repositoryNode = searchRepoViewNode(repoEditorInput.getId());
+            repositoryNode = searchRepoViewNode(id);
 
             // repositoryNode = repoEditorInput.getRepositoryNode();
             // if (repositoryNode == null) {
