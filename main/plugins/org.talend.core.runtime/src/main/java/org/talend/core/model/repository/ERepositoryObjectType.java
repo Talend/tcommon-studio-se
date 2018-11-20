@@ -376,7 +376,6 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
             "repository.metadataCalculationView", "METADATA_CON_CALCULATION_VIEW", 106, true, true, new String[] { PROD_DI },
             new String[] {}, false);
 
-    public final static String SURVIVORSHIP_FILE_ITEM = "SURVIVORSHIP_FILE_ITEM";
     private String label;
 
     private String alias;
@@ -1308,6 +1307,10 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
 
     public void setAllowPlainFolder(boolean isAllowPlainFolder) {
         this.isAllowPlainFolder = isAllowPlainFolder;
+    }
+
+    public void setAllowMultiName(boolean isAllowMultiName) {
+        this.isAllowMultiName = isAllowMultiName;
     }
 
     public boolean addExtraProducts(String[] productsArray) {
