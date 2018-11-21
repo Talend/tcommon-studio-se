@@ -119,15 +119,6 @@
             style="push">
       </command>
    </menuContribution>
-   <menuContribution
-         allPopups="false"
-         locationURI="menu:help?after=org.eclipse.equinox.p2.ui.sdk.install">
-      <command
-            commandId="org.eclipse.equinox.p2.ui.sdk.install"
-            label="Install External Software..."
-            style="push">
-      </command>
-   </menuContribution>
 </extension>
 <extension
       point="org.eclipse.ui.menus">
@@ -205,6 +196,11 @@
       <command
             commandId="org.talend.rcp.show.about.command"
             id="org.talend.rcp.show.about.menus.command"
+            style="push">
+      </command>
+      <command
+            commandId="org.eclipse.equinox.p2.ui.sdk.install"
+            id="org.talend.rcp.show.help.p2.install"
             style="push">
       </command>
    </menuContribution>
@@ -336,10 +332,6 @@
             <activityPatternBinding
                   activityId="org.talend.rcp.branding.activity.hidePerspective"
                   pattern=".*/org.eclipse.team.ui.TeamSynchronizingPerspective">
-            </activityPatternBinding>
-            <activityPatternBinding
-                  activityId="org.talend.rcp.branding.activity.hideMenuForTOS"
-                  pattern=".*/org.eclipse.equinox.p2.ui.sdk.install">
             </activityPatternBinding>
             <activityPatternBinding
                   activityId="org.talend.rcp.branding.activity.hideImportMenus"
