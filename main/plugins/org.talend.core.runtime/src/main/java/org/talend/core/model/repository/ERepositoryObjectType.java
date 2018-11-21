@@ -1309,9 +1309,6 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
         this.isAllowPlainFolder = isAllowPlainFolder;
     }
 
-    public void setAllowMultiName(boolean isAllowMultiName) {
-        this.isAllowMultiName = isAllowMultiName;
-    }
 
     public boolean addExtraProducts(String[] productsArray) {
         if (productsArray != null && productsArray.length > 0) {
