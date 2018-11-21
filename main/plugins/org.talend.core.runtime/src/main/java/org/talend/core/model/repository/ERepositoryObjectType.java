@@ -1309,7 +1309,6 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
         this.isAllowPlainFolder = isAllowPlainFolder;
     }
 
-
     public boolean addExtraProducts(String[] productsArray) {
         if (productsArray != null && productsArray.length > 0) {
             if (this.products == null && this.products.length == 0) {
