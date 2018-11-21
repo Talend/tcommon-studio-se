@@ -35,6 +35,7 @@ import org.talend.core.model.process.IGenericElementParameter;
 import org.talend.core.model.process.INode;
 import org.talend.core.model.process.IProcess;
 import org.talend.core.model.process.IProcess2;
+import org.talend.core.model.process.ProcessUtils;
 import org.talend.core.model.properties.ConnectionItem;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.JobletProcessItem;
@@ -141,7 +142,12 @@ public class ChangeIdManager {
 
         List<Relation> relations = getRelations(oldId);
         for (Relation relation : relations) {
-            relationIds.add(relation.getId());
+            String projectLabel = ProcessUtils.getProjectLabelFromItemId(relation.getId());
+            if (projectLabel != null
+                    && !projectLabel.equals(ProjectManager.getInstance().getCurrentProject().getTechnicalLabel())) {
+                continue;
+            }
+            relationIds.add(ProcessUtils.getPureItemId(relation.getId()));
         }
 
         if (relationIds.isEmpty()) {
