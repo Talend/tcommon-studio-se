@@ -356,7 +356,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
         for (IRepositoryViewObject current : list) {
             if (name.equalsIgnoreCase(current.getProperty().getLabel())
-                    && item.getProperty().getId() != current.getProperty().getId()) {
+                    && !item.getProperty().getId().equals(current.getProperty().getId())) {
                 // To check SQLPattern in same path. see bug 0005038: unable to add a SQLPattern into repository.
                 if (!type.isAllowMultiName()
                         || current.getProperty().getItem().getState().getPath().equals(path.toPortableString())) {

@@ -542,7 +542,7 @@ public class MetadataSchema {
             Element racine = document.createElement("schema"); //$NON-NLS-1$
             document.appendChild(racine);
 
-            if (dbmsId != null && dbmsId.trim() != "") { //$NON-NLS-1$
+            if (dbmsId != null && !"".equals(dbmsId.trim())) { //$NON-NLS-1$
                 Attr idAttr = document.createAttribute("dbmsId"); //$NON-NLS-1$
                 idAttr.setNodeValue(dbmsId);
                 racine.setAttributeNode(idAttr);
@@ -739,7 +739,7 @@ public class MetadataSchema {
             Element racine = document.createElement("schema"); //$NON-NLS-1$
             document.appendChild(racine);
 
-            if (table.getDbms() != null && table.getDbms().trim() != "") { //$NON-NLS-1$
+            if (table.getDbms() != null && !"".equals(table.getDbms().trim())) { //$NON-NLS-1$
                 Attr dbmsId = document.createAttribute("dbmsId"); //$NON-NLS-1$
                 dbmsId.setNodeValue(table.getDbms());
                 racine.setAttributeNode(dbmsId);
