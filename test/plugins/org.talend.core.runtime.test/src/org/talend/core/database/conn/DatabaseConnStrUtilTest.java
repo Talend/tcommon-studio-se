@@ -155,4 +155,36 @@ public class DatabaseConnStrUtilTest {
                 otherParam);
         assertTrue(expectURL.equals(realValue));
     }
+
+    @Test
+    public void testAnalyseURLForDynamicPortMSSQL() {
+        String currentDbType = EDatabaseTypeName.MSSQL.getDisplayName();
+        String dbVersion = "JTDS";
+        String server = "192.168.33.117";
+        String serverLocal = "localhost";
+        String port = "1433";
+        String database = "dd";
+        String additionalProp = "instance=mssql_new";
+
+        String url = "jdbc:jtds:sqlserver://" + serverLocal + "/" + database + ";" + additionalProp;
+        String[] analyseURL = DatabaseConnStrUtil.analyseURL(currentDbType, dbVersion, url);
+        Assert.assertEquals(analyseURL[1], serverLocal);
+        Assert.assertEquals(analyseURL[2], "");
+        Assert.assertEquals(analyseURL[3], database);
+        Assert.assertEquals(analyseURL[4], additionalProp);
+
+        String url2 = "jdbc:jtds:sqlserver://" + server + "/" + database + ";" + additionalProp;
+        String[] analyseURL2 = DatabaseConnStrUtil.analyseURL(currentDbType, dbVersion, url2);
+        Assert.assertEquals(analyseURL2[1], server);
+        Assert.assertEquals(analyseURL2[2], "");
+        Assert.assertEquals(analyseURL2[3], database);
+        Assert.assertEquals(analyseURL2[4], additionalProp);
+
+        String url3 = "jdbc:jtds:sqlserver://" + server + ":" + port + "/" + database + ";" + additionalProp;
+        String[] analyseURL3 = DatabaseConnStrUtil.analyseURL(currentDbType, dbVersion, url3);
+        Assert.assertEquals(analyseURL3[1], server);
+        Assert.assertEquals(analyseURL3[2], port);
+        Assert.assertEquals(analyseURL3[3], database);
+        Assert.assertEquals(analyseURL3[4], additionalProp);
+    }
 }

@@ -47,6 +47,7 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.database.AS400DatabaseMetaData;
 import org.talend.commons.utils.database.DB2ForZosDataBaseMetadata;
 import org.talend.commons.utils.database.EXASOLDatabaseMetaData;
+import org.talend.commons.utils.database.JtdsDatabaseMetadata;
 import org.talend.commons.utils.database.SAPHanaDataBaseMetadata;
 import org.talend.commons.utils.database.SASDataBaseMetadata;
 import org.talend.commons.utils.database.SybaseDatabaseMetaData;
@@ -429,19 +430,9 @@ public class ExtractMetaDataUtils {
         return dmd;
     }
 
-    private DatabaseMetaData createJtdsDatabaseMetaData(Connection conn) {
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IMetadataService.class)) {
-            IService service = GlobalServiceRegister.getDefault().getService(IMetadataService.class);
-            if (service != null) {
-                return ((IMetadataService) service).findCustomizedJTDSDBMetadata(conn);
-            }
-        }
-        try {
-            return conn.getMetaData();
-        } catch (SQLException e) {
-            log.error(e.toString());
-            throw new RuntimeException(e);
-        }
+    private DatabaseMetaData createJtdsDatabaseMetaData(Connection conn) throws SQLException {
+        JtdsDatabaseMetadata jmd = new JtdsDatabaseMetadata(conn);
+        return jmd;
     }
 
     /**

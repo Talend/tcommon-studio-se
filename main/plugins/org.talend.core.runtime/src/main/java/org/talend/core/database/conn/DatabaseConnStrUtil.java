@@ -44,6 +44,9 @@ public class DatabaseConnStrUtil {
 
     private static final String SEMICOLON = ";"; //$NON-NLS-1$
 
+    // for match url has :<port> exist
+    private static final String PATTERN_PORT = "(:\\d{1,5})";
+
     private static String getStringReplace(final String init, final String before, final String after,
             final boolean supportContext) {
         return getStringReplace(init, before, after, supportContext, false);
@@ -453,6 +456,8 @@ public class DatabaseConnStrUtil {
                 if (!newDbType.equals(currentDbType)) {
                     currentDbType = newDbType;
                     s = analyseURL(currentDbType, dbVersion, url);
+                } else {
+                    checkIfDynamicPort(template, version, url, s);
                 }
             }
 
@@ -492,6 +497,37 @@ public class DatabaseConnStrUtil {
             }
         }
         return currentDbType;
+    }
+
+
+    private static void checkIfDynamicPort(EDatabaseConnTemplate template, EDatabaseVersion4Drivers version, String url,
+            String[] s) throws MalformedPatternException {
+        if (!EDatabaseTypeName.MSSQL.getDisplayName().equals(template.getDbType().getDisplayName())) {
+            return;
+        }
+        String urlTemplate = template.getUrlTemplate(version);
+        Perl5Compiler compiler = new Perl5Compiler();
+        Perl5Matcher matcher = new Perl5Matcher();
+        Pattern portPattern = compiler.compile(PATTERN_PORT);
+        if (matcher.contains(url, portPattern)) {
+            return;
+        } else {
+            // if not contain match, should be dynamic port
+            String urlTemp = urlTemplate.replace(":" + EDatabaseConnVar.PORT.getVariable(), "");
+            String urlRegex = template.calcuPatternByUrlTemple(urlTemp);
+            Pattern urlPattern = compiler.compile(urlRegex);
+            if (matcher.contains(url, urlPattern)) {
+                matcher.matches(url, urlPattern);
+                MatchResult matchResult = matcher.getMatch();
+                if (matchResult != null) {
+                    s[1] = matchResult.group(1);
+                    // to skip s[2] port
+                    for (int i = 2; i < matchResult.groups(); i++) {
+                        s[i + 1] = matchResult.group(i);
+                    }
+                }
+            }
+        }
     }
 
     private static boolean isHive2EmbeddedUrlString(String currentDbType, String urlStringOfConnection) {

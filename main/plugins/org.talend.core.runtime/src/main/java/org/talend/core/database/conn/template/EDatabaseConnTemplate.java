@@ -258,6 +258,10 @@ public enum EDatabaseConnTemplate {
         return this.connStr.getUrlPattern(version);
     }
 
+    public String calcuPatternByUrlTemple(String urlTemp) {
+        return this.connStr.calcPattern(urlTemp);
+    }
+
     public String getDefaultPort() {
         return this.connStr.getDefaultPort();
     }

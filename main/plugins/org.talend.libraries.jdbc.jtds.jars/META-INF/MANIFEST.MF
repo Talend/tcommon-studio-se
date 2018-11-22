@@ -1,7 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: Jars
-Bundle-SymbolicName: org.talend.libraries.jdbc.jtds.jars
-Bundle-Version: 7.2.1.qualifier
-Fragment-Host: org.talend.libraries.jdbc.jtds
-Eclipse-BundleShape: dir
