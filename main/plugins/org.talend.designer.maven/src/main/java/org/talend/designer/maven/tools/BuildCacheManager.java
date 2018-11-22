@@ -263,6 +263,12 @@ public class BuildCacheManager {
         codesLastBuildCache.remove(codeType);
     }
 
+    public void clearAllCodesCache() {
+        for (ERepositoryObjectType codeType : ERepositoryObjectType.getAllTypesOfCodes()) {
+            codesLastBuildCache.remove(codeType);
+        }
+    }
+
     public void clearAllCaches() {
         jobCache.clear();
         jobletCache.clear();

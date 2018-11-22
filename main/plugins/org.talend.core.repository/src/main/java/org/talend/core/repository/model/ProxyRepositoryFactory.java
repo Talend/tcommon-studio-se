@@ -1590,6 +1590,11 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
         this.repositoryFactoryFromProvider.loadProjectAndSetContext(eclipseProject);
     }
 
+    public void loadProjectAndSetContext(Project project, IProject eclipseProject, boolean updateCurrentProject)
+            throws PersistenceException {
+        this.repositoryFactoryFromProvider.loadProjectAndSetContext(project, eclipseProject, updateCurrentProject);
+    }
+
     /**
      * DOC smallet Comment method "emptyTempFolder".
      * 

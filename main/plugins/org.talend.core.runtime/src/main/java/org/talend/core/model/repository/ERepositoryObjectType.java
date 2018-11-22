@@ -1480,4 +1480,20 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
         }
         return allTypes;
     }
+
+    public static List<ERepositoryObjectType> getAllTypesOfCodes() {
+        List<ERepositoryObjectType> allTypes = new ArrayList<ERepositoryObjectType>();
+        if (ERepositoryObjectType.ROUTINES != null) {
+            allTypes.add(ERepositoryObjectType.ROUTINES);
+        }
+        ERepositoryObjectType beansType = ERepositoryObjectType.valueOf("BEANS"); //$NON-NLS-1$
+        if (beansType != null) {
+            allTypes.add(beansType);
+        }
+        if (ERepositoryObjectType.PIG_UDF != null) {
+            allTypes.add(ERepositoryObjectType.PIG_UDF);
+        }
+        return allTypes;
+    }
+
 }

@@ -22,6 +22,8 @@ import java.util.Set;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
 import org.eclipse.core.resources.IFile;
+import org.talend.core.GlobalServiceRegister;
+import org.talend.core.ILibraryManagerService;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.model.properties.Property;
@@ -102,8 +104,19 @@ public abstract class AbstractMavenCodesTemplatePom extends AbstractMavenGeneral
 
             for (ModuleNeeded module : needModules) {
                 Dependency dependency = null;
-                // TDI-37032 add dependency only if jar avialable in maven
-                if (module.getDeployStatus() == ELibraryInstallStatus.DEPLOYED) {
+                // TDI-37032 add dependency only if jar available in maven
+                boolean isDeployed = false;
+                if (module.getDeployStatus() != ELibraryInstallStatus.DEPLOYED) {
+                    // try to retrieve from custom Nexus
+                    if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerService.class)) {
+                        ILibraryManagerService libManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault()
+                                .getService(ILibraryManagerService.class);
+                        isDeployed = libManagerService.retrieve(module, null, false);
+                    }
+                } else {
+                    isDeployed = true;
+                }
+                if (isDeployed) {
                     dependency = PomUtil.createModuleDependency(module.getMavenUri());
                 }
                 if (dependency != null) {

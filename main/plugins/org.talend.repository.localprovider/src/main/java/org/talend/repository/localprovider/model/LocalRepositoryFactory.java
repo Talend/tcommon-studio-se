@@ -3582,6 +3582,12 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
     }
 
+    @Override
+    public void loadProjectAndSetContext(Project project, IProject eclipseProject, boolean updateCurrentProject)
+            throws PersistenceException {
+        // nothing to do
+    }
+
     public void initProjectRepository(Project project, String branchForMainProject) throws PersistenceException {
     }
 
