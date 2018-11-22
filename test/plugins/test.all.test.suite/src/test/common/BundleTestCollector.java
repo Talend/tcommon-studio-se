@@ -356,7 +356,7 @@ public class BundleTestCollector {
             }
         }
         for (String prefix : allPrefixes) {
-            if (testClassName.startsWith(prefix)) {
+            if (testClassName != null && testClassName.startsWith(prefix)) {
                 return true;
             }
         }
