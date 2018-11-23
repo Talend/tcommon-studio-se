@@ -580,12 +580,4 @@
          version="1.0.1.v20140819-1717"
          unpack="false"/>
 
-   <plugin
-         id="org.eclipse.core.filesystem.java7"
-         download-size="14"
-         install-size="23"
-         version="1.0.0.v20140429-1531"
-         fragment="true"
-         unpack="false"/>
-
 </feature>
