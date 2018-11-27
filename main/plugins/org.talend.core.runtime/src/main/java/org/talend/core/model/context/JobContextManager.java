@@ -219,7 +219,7 @@ public class JobContextManager implements IContextManager {
         for (IContextParameter contextParameter : listContext.get(0).getContextParameterList()) {
             // TDI-17682:avoid to compare the lower/uper case with the parameter itself
             if (oldContextName != null) {
-                if (contextParameter.getName() != oldContextName) {
+                if (!oldContextName.equals(contextParameter.getName())) {
                     if (contextParameter.getName().equals(newContextName)
                             || contextParameter.getName().toLowerCase().equals(newContextName.toLowerCase())) {
                         return false;

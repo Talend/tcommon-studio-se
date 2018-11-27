@@ -52,6 +52,15 @@
                 <artifactId>jackson-dataformat-cbor</artifactId>
                 <version>2.9.5</version>
             </dependency>
+            <!-- It fixes provided dependency scope to compile, because maven-dependency-plugin is setup to include
+             only compile and runtime scopes, but provided is also required. It's not possible to setup plugin to
+             include all: compile, runtime and provided dependencies -->
+            <dependency>
+                <groupId>biz.aQute.bnd</groupId>
+                <artifactId>annotation</artifactId>
+                <version>2.4.0</version>
+                <scope>compile</scope>
+            </dependency>
             <dependency>
                 <groupId>org.talend.components</groupId>
                 <artifactId>components-bom</artifactId>
@@ -143,6 +152,8 @@
             <artifactId>components-api</artifactId>
             <version>${components.version}</version>
         </dependency>
+        <!-- Dependencies in provided scope should be explicitly added as dependency in this module,
+            because provided scope is not transitive -->
         <dependency>
             <groupId>biz.aQute.bnd</groupId>
             <artifactId>annotation</artifactId>

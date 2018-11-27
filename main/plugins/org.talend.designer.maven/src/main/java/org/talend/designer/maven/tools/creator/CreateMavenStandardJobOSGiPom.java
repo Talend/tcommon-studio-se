@@ -16,6 +16,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,8 +50,6 @@ import org.talend.designer.runprocess.IProcessor;
 import org.talend.utils.io.FilesUtils;
 
 /**
- * DOC ggu class global comment. Detailled comment
- * 
  * @see OSGIJavaScriptForESBWithMavenManager to build job
  */
 public class CreateMavenStandardJobOSGiPom extends CreateMavenJobPom {
@@ -94,11 +93,6 @@ public class CreateMavenStandardJobOSGiPom extends CreateMavenJobPom {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.maven.tools.creator.CreateMaven#getArgumentsMap()
-     */
     @Override
     public Map<String, Object> getArgumentsMap() {
         Map<String, Object> argumentsMap = new HashMap<String, Object>(super.getArgumentsMap());
@@ -107,15 +101,11 @@ public class CreateMavenStandardJobOSGiPom extends CreateMavenJobPom {
         return argumentsMap;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.designer.maven.tools.creator.AbstractMavenProcessorPom#createModel()
-     */
     @Override
     protected Model createModel() {
         Model model = super.createModel();
 
+        boolean isServiceOperation = isServiceOperation(getJobProcessor().getProperty());
         List<Profile> profiles = model.getProfiles();
 
         for (Profile profile : profiles) {
@@ -138,22 +128,37 @@ public class CreateMavenStandardJobOSGiPom extends CreateMavenJobPom {
                     }
                 }
             }
+
+            // remove deploy plugin for service operation
+            if (isServiceOperation && profile.getId().equals("deploy-nexus")) {
+                model.removeProfile(profile);
+                break;
+            }
         }
         model.setName(model.getName() + " Bundle");
-        model.setPackaging("bundle");
         model.addProperty("talend.job.finalName", "${talend.job.name}-bundle-${project.version}");
-        if (isServiceOperation(getJobProcessor().getProperty())) {
+        if (isServiceOperation) {
             model.addProperty("cloud.publisher.skip", "true");
             Build build = model.getBuild();
-            if(build != null) {
+
+            List<Plugin> removePlugins = new ArrayList<Plugin>();
+            if (build != null) {
                 List<Plugin> plugins = build.getPlugins();
-                for(Plugin p : plugins) {
-                    if(p.getArtifactId().equals("maven-deploy-plugin")) {
-                        build.removePlugin(p);
-                        break;
+                for (Plugin p : plugins) {
+                    if (p.getArtifactId().equals("maven-deploy-plugin")) {
+                        removePlugins.add(p);
+                    }
+                    if (p.getArtifactId().equals("maven-bundle-plugin")) {
+                        removePlugins.add(p);
                     }
                 }
             }
+
+            for (Plugin p : removePlugins) {
+                build.removePlugin(p);
+            }
+        } else {
+            model.setPackaging("bundle");
         }
 
         return model;
