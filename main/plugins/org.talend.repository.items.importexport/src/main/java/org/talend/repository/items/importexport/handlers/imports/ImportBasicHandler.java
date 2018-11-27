@@ -102,6 +102,7 @@ import org.talend.designer.joblet.model.JobletProcess;
 import org.talend.model.emf.CwmResource;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.RepositoryWorkUnit;
+import org.talend.repository.documentation.ERepositoryActionName;
 import org.talend.repository.items.importexport.handlers.HandlerUtil;
 import org.talend.repository.items.importexport.handlers.cache.RepositoryObjectCache;
 import org.talend.repository.items.importexport.handlers.model.ImportItem;
@@ -823,6 +824,10 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
 
                                 @Override
                                 public void run() throws PersistenceException {
+                                    if (ProxyRepositoryFactory.getInstance().isFullLogonFinished()) {
+                                        ProxyRepositoryFactory.getInstance().fireRepositoryPropertyChange(
+                                                ERepositoryActionName.DELETE_FOREVER.getName(), null, lastVersionBackup);
+                                    }
                                     for (IRepositoryViewObject currentVersion : allVersionToDelete) {
                                         repFactory.forceDeleteObjectPhysical(lastVersionBackup, currentVersion.getVersion(),
                                                 isDeleteOnRemote);
