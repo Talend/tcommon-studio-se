@@ -142,7 +142,9 @@ public class DynamicDependencySelector implements DependencySelector {
 
     private boolean printDetails() {
         if (monitor != null) {
-            return true;
+            // return true;
+            // too many logs, just enable it if we really have to see details
+            return false;
         } else {
             return false;
         }
