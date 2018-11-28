@@ -69,7 +69,7 @@ public abstract class AbstractRepositoryEditorInputLinker extends AbstractRepoVi
      */
     @Override
     public boolean isRelation(IEditorInput editorInput, String repoNodeProjectLabel, String repoNodeId) {
-        return isRelation(editorInput, repoNodeId, null);
+        return isRelation(editorInput, repoNodeProjectLabel, repoNodeId, null);
     }
 
     /*
