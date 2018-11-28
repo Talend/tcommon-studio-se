@@ -404,7 +404,7 @@ public class DynamicDistributionAetherUtils {
 
     public static void checkCancelOrNot(IDynamicMonitor monitor) throws InterruptedException {
         if (monitor != null) {
-            if (monitor.isCanceled()) {
+            if (monitor.isCanceled() || Thread.interrupted()) {
                 throw new InterruptedException("User canceled.");
             }
         }
