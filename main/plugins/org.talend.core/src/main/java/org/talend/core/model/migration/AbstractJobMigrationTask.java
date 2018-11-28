@@ -32,6 +32,7 @@ public abstract class AbstractJobMigrationTask extends AbstractItemMigrationTask
         List<ERepositoryObjectType> toReturn = new ArrayList<ERepositoryObjectType>();
         toReturn.add(ERepositoryObjectType.PROCESS);
         toReturn.add(ERepositoryObjectType.JOBLET);
+        toReturn.add(ERepositoryObjectType.TEST_CONTAINER);
         return toReturn;
     }
 
