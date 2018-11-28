@@ -15,6 +15,7 @@ package org.talend.commons.ui.runtime.exception;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -27,6 +28,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.events.IExpansionListener;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
+import org.talend.commons.exception.BusinessException;
 import org.talend.commons.ui.runtime.i18n.Messages;
 
 /***/
@@ -115,6 +117,24 @@ public class ExceptionMessageDialog extends MessageDialog {
         MessageDialog dialog = new ExceptionMessageDialog(parent, title, null, message, WARNING,
                 new String[] { Messages.getString("ExceptionMessageDialog.OK") }, 0, ex); //$NON-NLS-1$
         dialog.open();
+        return;
+    }
+
+    public static void openWarning(Shell parent, String title, Throwable ex) {
+        Throwable rootException = ExceptionUtils.getRootCause(ex);
+        String message = rootException.getMessage();
+        if (rootException instanceof BusinessException) {
+            MessageDialog dialog = new MessageDialog(parent, title, null, message, WARNING,
+                    new String[] { Messages.getString("ExceptionMessageDialog.OK") }, 0); //$NON-NLS-1$
+            dialog.open();
+        } else {
+            ExceptionHandler.process(ex);
+            MessageDialog dialog = new ExceptionMessageDialog(parent, title, null, message, QUESTION,
+                    new String[] { Messages.getString("ExceptionMessageDialog.Yes"), //$NON-NLS-1$
+                            Messages.getString("ExceptionMessageDialog.No") }, //$NON-NLS-1$
+                    0, ex);
+            dialog.open();
+        }
         return;
     }
 
