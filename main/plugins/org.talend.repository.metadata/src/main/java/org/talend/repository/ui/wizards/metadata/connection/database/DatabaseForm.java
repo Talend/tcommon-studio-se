@@ -6575,8 +6575,10 @@ public class DatabaseForm extends AbstractForm {
                 additionParamText.setEditable(true);
                 addContextParams(EDBParamName.AdditionalParams, true);
             } else {
-                additionParamText.hide();
-                addContextParams(EDBParamName.AdditionalParams, false);
+                if (!EDatabaseConnTemplate.isAddtionParamsNeeded(getConnection().getDatabaseType())) {
+                    additionParamText.hide();
+                    addContextParams(EDBParamName.AdditionalParams, false);
+                }
             }
             if (EDatabaseConnTemplate.FIREBIRD.equals(template)) {
                 portText.show();
