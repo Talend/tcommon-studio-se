@@ -19,7 +19,6 @@ import org.apache.http.client.fluent.Executor;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.prefs.SSLPreferenceConstants;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.daikon.security.SSLContextProvider;
@@ -80,7 +79,6 @@ public class StudioSSLContextProvider {
                 changeProperty();
                 Executor.unregisterScheme("https");
             }
-            ExceptionHandler.process(new Exception("Please check the SSL settings in Preference>Talend>SSL", e));
             return false;
         }
         return true;
