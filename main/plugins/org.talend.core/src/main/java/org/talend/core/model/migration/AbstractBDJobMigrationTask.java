@@ -18,12 +18,11 @@ import java.util.List;
 import org.talend.core.model.repository.ERepositoryObjectType;
 
 /**
- * DOC rdubois class global comment. Detailled comment This job migration extension allows to migrate any type of
- * process.
+ * DOC hwang class global comment. Detailled comment
  */
-public abstract class AbstractAllJobMigrationTask extends AbstractJobMigrationTask {
+public abstract class AbstractBDJobMigrationTask extends AbstractJobMigrationTask {
 
-    @Override
+	@Override
     public List<ERepositoryObjectType> getTypes() {
         List<ERepositoryObjectType> toReturn = new ArrayList<ERepositoryObjectType>();
         toReturn.add(ERepositoryObjectType.PROCESS);
