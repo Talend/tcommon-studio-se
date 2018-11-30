@@ -1,77 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<feature
-      id="org.talend.rcp.feature"
-      label="RCP Feature"
-      version="7.2.1.qualifier"
-      provider-name=".Talend SA.">
 
-   <description url="http://www.talend.com/online/featuresdescription.html#rcp-feature">
-      Complete description about this feature at http://www.talend.com/online/featuresdescription.html#rcp-feature
-   </description>
-
-   <copyright url="http://www.talend.com/online/copyright.txt">
-      Copyright Talend 2006, 2007
-   </copyright>
-
-   <license>
-      The licence are describe in branding feature
-   </license>
-
-   <url>
-      <update label="CORE Talend update site for milestones" url="http://talendforge.org/core/updatesite/testing/"/>
-      <discovery label="Talend web site" url="http://www.talend.com"/>
-   </url>
-
-   <includes
-         id="org.eclipse.rcp"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.talend.rcp"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.talend.rcp.nl"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.libraries.apache"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.ui.views.log"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="net.jeeeyul.eclipse.themes"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.themes.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="net.jeeeyul.swtend"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
+<feature id="org.talend.rcp.feature" label="RCP Feature" version="7.2.1.qualifier" provider-name=".Talend SA."> 
+  <description url="http://www.talend.com/online/featuresdescription.html#rcp-feature">Complete description about this feature at http://www.talend.com/online/featuresdescription.html#rcp-feature</description>  
+  <copyright url="http://www.talend.com/online/copyright.txt">Copyright Talend 2006, 2007</copyright>  
+  <license>The licence are describe in branding feature</license>  
+  <url> 
+    <update label="CORE Talend update site for milestones" url="http://talendforge.org/core/updatesite/testing/"/>  
+    <discovery label="Talend web site" url="http://www.talend.com"/> 
+  </url>  
+  <requires>
+    <import feature="org.eclipse.rcp" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="net.jeeeyul.eclipse.themes" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="net.jeeeyul.swtend" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.ui.views.log" version="0.0.0" match="greaterOrEqual"/>
+  </requires>  
+  <plugin id="org.talend.rcp" download-size="0" install-size="0" version="0.0.0"/>
+  <plugin id="org.talend.rcp.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
 </feature>

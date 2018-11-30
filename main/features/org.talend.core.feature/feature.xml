@@ -1,473 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<feature
-      id="org.talend.core.feature"
-      label="Core Feature"
-      version="7.2.1.qualifier"
-      provider-name=".Talend SA.">
 
-   <description url="http://www.talend.com/online/featuresdescription.html#core-feature">
-      Complete description about this feature at http://www.talend.com/online/featuresdescription.html#core-feature
-   </description>
-
-   <copyright url="http://www.talend.com/online/copyright.txt">
-      Copyright Talend 2006, 2007
-   </copyright>
-
-   <license>
-      The licence are describe in branding feature
-   </license>
-
-   <url>
-      <discovery label="Talend web site" url="http://www.talend.com"/>
-   </url>
-
-   <includes
-         id="org.eclipse.draw2d"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.emf"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.emf.workspace"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.emf.common"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.emf.ecore"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.emf.ecore.edit"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.emf.transaction"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.emf.validation"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.emf.edit"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.gef"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.gmf.runtime.notation"
-         version="0.0.0"/>
-
-   <includes
-         id="org.talend.tos.libraries.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.talend.jdt.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.talend.platform.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.talend.utils.feature"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.talend.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.cwm.mip"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.model"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.cwm.mip.edit"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.model.edit"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.migrationTool"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.core.nl"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.model.edit.nl"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.model.nl"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.resources"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.talend.librariesmanager"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.talend.librariesmanager.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.librariesmanager.nl"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.resources.nl"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.core.runtime"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.metadata.managment"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.metadata.managment.nl"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.core.runtime.nl"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.core.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.core.ui.nl"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.core.repository"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.core.repository.nl"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.commons.runtime"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.commons.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.common.ui.runtime"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.metadata.managment.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.metadata.managment.ui.nl"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.commons.runtime.nl"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.datatools.xml"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.osgi.lib.loader"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"
-         fragment="true"/>
-
-   <plugin
-         id="org.talend.maven.resolver"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.librariesmanager.ui.nl"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="false"/>
-
-   <plugin
-         id="org.apache.commons.collections"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.apache.commons.io"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.compare"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.compare.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.themes.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="net.jeeeyul.eclipse.themes"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="net.jeeeyul.swtend"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.ops4j.pax.url.mvn"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.apache.httpcomponents.httpcore"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.apache.httpcomponents.httpclient"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.aether.api"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.aether.connector.basic"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.aether.impl"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.aether.spi"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.aether.transport.file"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.aether.transport.http"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.aether.util"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.designer.maven.aether"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="javax.mail"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.apache.commons.discovery"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="javax.xml.soap"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="javax.activation"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
+<feature id="org.talend.core.feature" label="Core Feature" version="7.2.1.qualifier" provider-name=".Talend SA."> 
+  <description url="http://www.talend.com/online/featuresdescription.html#core-feature">Complete description about this feature at http://www.talend.com/online/featuresdescription.html#core-feature</description>  
+  <copyright url="http://www.talend.com/online/copyright.txt">Copyright Talend 2006, 2007</copyright>  
+  <license>The licence are describe in branding feature</license>  
+  <url> 
+    <discovery label="Talend web site" url="http://www.talend.com"/> 
+  </url>  
+  <requires>
+    <import feature="org.eclipse.draw2d" version="0.0.0" match="greaterOrEqual"/>
+    <import feature="org.eclipse.emf" version="0.0.0" match="greaterOrEqual"/>
+    <import feature="org.eclipse.emf.common" version="0.0.0" match="greaterOrEqual"/>
+    <import feature="org.eclipse.emf.ecore" version="0.0.0" match="greaterOrEqual"/>
+    <import feature="org.eclipse.emf.ecore.edit" version="0.0.0" match="greaterOrEqual"/>
+    <import feature="org.eclipse.emf.edit" version="0.0.0" match="greaterOrEqual"/>
+    <import feature="org.eclipse.emf.transaction" version="0.0.0" match="greaterOrEqual"/>
+    <import feature="org.eclipse.emf.validation" version="0.0.0" match="greaterOrEqual"/>
+    <import feature="org.eclipse.emf.workspace" version="0.0.0" match="greaterOrEqual"/>
+    <import feature="org.eclipse.gef" version="0.0.0" match="greaterOrEqual"/>
+    <import feature="org.eclipse.gmf.runtime.notation" version="0.0.0" match="greaterOrEqual"/>
+    <import feature="org.talend.jdt.feature" version="0.0.0" match="greaterOrEqual"/>
+    <import feature="org.talend.platform.feature" version="0.0.0" match="greaterOrEqual"/>
+    <import feature="org.talend.tos.libraries.feature" version="0.0.0" match="greaterOrEqual"/>
+    <import feature="org.talend.utils.feature" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="javax.activation" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="javax.mail" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="javax.xml.soap" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="net.jeeeyul.eclipse.themes" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="net.jeeeyul.swtend" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.apache.commons.collections" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.apache.commons.discovery" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.apache.commons.io" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.apache.httpcomponents.httpclient" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.apache.httpcomponents.httpcore" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.aether.api" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.aether.connector.basic" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.aether.impl" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.aether.spi" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.aether.transport.file" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.aether.transport.http" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.aether.util" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.compare" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.compare.core" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.ops4j.pax.url.mvn" version="0.0.0" match="greaterOrEqual"/>
+  </requires>  
+  <plugin id="org.talend.core" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.talend.core.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
+  <plugin id="org.talend.core.repository" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.talend.core.repository.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
+  <plugin id="org.talend.core.runtime" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.talend.core.runtime.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
+  <plugin id="org.talend.core.ui" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.talend.core.ui.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
+  <plugin id="org.talend.cwm.mip" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.talend.cwm.mip.edit" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.talend.datatools.xml" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.talend.designer.maven.aether" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.talend.librariesmanager" download-size="0" install-size="0" version="0.0.0"/>
+  <plugin id="org.talend.librariesmanager.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
+  <plugin id="org.talend.librariesmanager.ui" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.talend.librariesmanager.ui.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
+  <plugin id="org.talend.maven.resolver" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.talend.metadata.managment" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.talend.metadata.managment.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
+  <plugin id="org.talend.metadata.managment.ui" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.talend.metadata.managment.ui.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
+  <plugin id="org.talend.migrationTool" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.talend.model" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.talend.model.edit" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.talend.model.edit.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
+  <plugin download-size="0" install-size="0" version="0.0.0" unpack="false" id="org.talend.model.migration"/>
+  <plugin download-size="0" install-size="0" version="0.0.0" unpack="false" id="org.talend.model.migration.nl"/>
+  <plugin id="org.talend.model.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
+  <plugin id="org.talend.osgi.lib.loader" download-size="0" install-size="0" version="0.0.0" unpack="false" fragment="true"/>
+  <plugin id="org.talend.resources" download-size="0" install-size="0" version="0.0.0"/>
+  <plugin id="org.talend.resources.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
+  <plugin id="org.talend.themes.core" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
 </feature>

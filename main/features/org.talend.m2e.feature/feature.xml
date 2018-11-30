@@ -1,207 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<feature
-      id="org.talend.m2e.feature"
-      label="Feature"
-      version="7.2.1.qualifier">
 
-   <description url="http://www.example.com/description">
-      [Enter Feature Description here.]
-   </description>
-
-   <copyright url="http://www.example.com/copyright">
-      [Enter Copyright Description here.]
-   </copyright>
-
-   <license url="http://www.example.com/license">
-      [Enter License Description here.]
-   </license>
-
-   <includes
-         id="org.talend.jdt.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.wst.xml_core.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.wst.common_core.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.wst.common.fproj"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.m2e.archetype.common"
-         download-size="1844"
-         install-size="2076"
-         version="1.5.0.20140605-2032"/>
-
-   <plugin
-         id="org.eclipse.m2e.maven.indexer"
-         download-size="1103"
-         install-size="1306"
-         version="1.5.0.20140605-2032"/>
-
-   <plugin
-         id="org.eclipse.m2e.model.edit"
-         download-size="385"
-         install-size="1338"
-         version="1.5.0.20140606-0033"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.m2e.core"
-         download-size="554"
-         install-size="1318"
-         version="1.5.0.20140606-0033"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.m2e.launching"
-         download-size="111"
-         install-size="222"
-         version="1.5.0.20140606-0033"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.m2e.jdt"
-         download-size="112"
-         install-size="255"
-         version="1.5.0.20140606-0033"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.m2e.editor"
-         download-size="292"
-         install-size="583"
-         version="1.5.0.20140606-0033"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.m2e.editor.xml"
-         download-size="230"
-         install-size="500"
-         version="1.5.0.20140606-0033"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.m2e.maven.runtime"
-         download-size="5480"
-         install-size="6167"
-         version="1.5.0.20140605-2032"/>
-
-   <plugin
-         id="org.eclipse.m2e.maven.runtime.slf4j.simple"
-         download-size="18"
-         install-size="25"
-         version="1.5.0.20140605-2032"/>
-
-   <plugin
-         id="org.eclipse.m2e.refactoring"
-         download-size="74"
-         install-size="155"
-         version="1.5.0.20140606-0033"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.m2e.lifecyclemapping.defaults"
-         download-size="9"
-         install-size="17"
-         version="1.5.0.20140606-0033"/>
-
-   <plugin
-         id="org.eclipse.m2e.core.ui"
-         download-size="750"
-         install-size="1585"
-         version="1.5.0.20140606-0033"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.m2e.scm"
-         download-size="67"
-         install-size="139"
-         version="1.5.0.20140606-0033"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.m2e.jdt.ui"
-         download-size="28"
-         install-size="60"
-         version="1.5.0.20140606-0033"
-         fragment="true"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.m2e.profiles.core"
-         download-size="22"
-         install-size="43"
-         version="1.5.0.20140606-0033"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.m2e.profiles.ui"
-         download-size="43"
-         install-size="93"
-         version="1.5.0.20140606-0033"
-         unpack="false"/>
-
-   <plugin
-         id="org.slf4j.api"
-         download-size="0"
-         install-size="0"
-         version="1.7.2.v20121108-1250"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.emf.ecore"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.emf.ecore.xmi"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.emf.edit"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.emf.ecore.edit"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.jem.util"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="com.google.guava"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.slf4j.impl.log4j12"
-         download-size="0"
-         install-size="0"
-         version="1.7.2.v20131105-2200"
-         fragment="true"
-         unpack="false"/>
-
+<feature id="org.talend.m2e.feature" label="Feature" version="7.2.1.qualifier"> 
+  <description url="http://www.example.com/description">[Enter Feature Description here.]</description>  
+  <copyright url="http://www.example.com/copyright">[Enter Copyright Description here.]</copyright>  
+  <license url="http://www.example.com/license">[Enter License Description here.]</license>  
+  <requires>
+    <import feature="org.eclipse.wst.common.fproj" version="0.0.0" match="greaterOrEqual"/>
+    <import feature="org.eclipse.wst.common_core.feature" version="0.0.0" match="greaterOrEqual"/>
+    <import feature="org.eclipse.wst.xml_core.feature" version="0.0.0" match="greaterOrEqual"/>
+    <import feature="org.talend.jdt.feature" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="com.google.guava" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.emf.ecore" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.emf.ecore.edit" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.emf.ecore.xmi" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.emf.edit" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.jem.util" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.m2e.archetype.common" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.m2e.core" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.m2e.core.ui" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.m2e.editor" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.m2e.editor.xml" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.m2e.jdt" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.m2e.jdt.ui" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.m2e.launching" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.m2e.lifecyclemapping.defaults" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.m2e.maven.indexer" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.m2e.maven.runtime" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.m2e.maven.runtime.slf4j.simple" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.m2e.model.edit" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.m2e.profiles.core" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.m2e.profiles.ui" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.m2e.refactoring" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.m2e.scm" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.slf4j.api" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.slf4j.impl.log4j12" version="0.0.0" match="greaterOrEqual"/>
+  </requires>
 </feature>

@@ -1,78 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<feature
-      id="org.talend.model.migration.feature"
-      label="model Migration feature"
-      version="7.2.1.qualifier">
 
-   <description url="http://www.example.com/description">
-      [Enter Feature Description here.]
-   </description>
-
-   <copyright url="http://www.example.com/copyright">
-      [Enter Copyright Description here.]
-   </copyright>
-
-   <license url="http://www.example.com/license">
-      [Enter License Description here.]
-   </license>
-
-   <includes
-         id="org.eclipse.m2m.atl"
-         version="0.0.0"/>
-
-   <includes
-         id="org.talend.utils.feature"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.talend.model.migration"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.model.migration.nl"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.model"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.cwm.mip"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.commons.runtime"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="bcprov"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.commons.runtime.nl"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="false"/>
-
+<feature id="org.talend.model.migration.feature" label="model Migration feature" version="7.2.1.qualifier"> 
+  <description url="http://www.example.com/description">[Enter Feature Description here.]</description>  
+  <copyright url="http://www.example.com/copyright">[Enter Copyright Description here.]</copyright>  
+  <license url="http://www.example.com/license">[Enter License Description here.]</license>  
+  <requires>
+    <import feature="org.eclipse.m2m.atl" version="0.0.0" match="greaterOrEqual"/>
+    <import feature="org.talend.utils.feature" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="bcprov" version="0.0.0" match="greaterOrEqual"/>
+  </requires> 
 </feature>

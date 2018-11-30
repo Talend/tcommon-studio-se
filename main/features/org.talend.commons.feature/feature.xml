@@ -1,140 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<feature
-      id="org.talend.commons.feature"
-      label="Commons Feature"
-      version="7.2.1.qualifier"
-      provider-name=".Talend SA.">
 
-   <description url="http://www.talend.com/online/featuresdescription.html#commons-feature">
-      Complete description about this feature at http://www.talend.com/online/featuresdescription.html#commons-feature
-   </description>
-
-   <copyright url="http://www.talend.com/online/copyright.txt">
-      Copyright Talend 2006, 2007
-   </copyright>
-
-   <license>
-      The licence are describe in branding feature
-   </license>
-
-   <url>
-      <discovery label="Talend web site" url="http://www.talend.com"/>
-   </url>
-
-   <includes
-         id="org.talend.model.migration.feature"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.talend.commons.runtime"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.commons.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.commons.ui.nl"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.common.ui.runtime"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.common.ui.runtime.nl"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.libraries.apache"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.talend.libraries.dom4j-jaxen"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.talend.libraries.jackson"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.talend.libraries.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="bcprov"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.commons.runtime.nl"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="false"/>
-
-   <plugin
-         id="org.apache.xalan"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="jackson-core-asl"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="jackson-mapper-asl"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.apache.xerces"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="com.fasterxml.jackson.core.jackson-databind"
-         download-size="0"
-         install-size="0"
-         version="2.9.5"
-         unpack="false"/>
-
+<feature id="org.talend.commons.feature" label="Commons Feature" version="7.2.1.qualifier" provider-name=".Talend SA."> 
+  <description url="http://www.talend.com/online/featuresdescription.html#commons-feature">Complete description about this feature at http://www.talend.com/online/featuresdescription.html#commons-feature</description>  
+  <copyright url="http://www.talend.com/online/copyright.txt">Copyright Talend 2006, 2007</copyright>  
+  <license>The licence are describe in branding feature</license>  
+  <url> 
+    <discovery label="Talend web site" url="http://www.talend.com"/> 
+  </url>  
+  <requires>
+    <import feature="org.talend.model.migration.feature" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="bcprov" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="com.fasterxml.jackson.core.jackson-databind" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="jackson-core-asl" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="jackson-mapper-asl" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.apache.xalan" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.apache.xerces" version="0.0.0" match="greaterOrEqual"/>
+  </requires>  
+  <plugin id="org.talend.common.ui.runtime" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.talend.common.ui.runtime.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
+  <plugin id="org.talend.commons.runtime" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.talend.commons.runtime.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
+  <plugin id="org.talend.commons.ui" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.talend.commons.ui.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
+  <plugin id="org.talend.libraries.ui" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
 </feature>

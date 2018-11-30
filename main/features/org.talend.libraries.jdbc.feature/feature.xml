@@ -1,92 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<feature
-      id="org.talend.libraries.jdbc.feature"
-      label="Jdbc_feature Feature"
-      version="7.2.1.qualifier"
-      provider-name=".Talend SA.">
 
-   <description url="http://www.example.com/description">
-      [Enter Feature Description here.]
-   </description>
-
-   <copyright url="http://www.example.com/copyright">
-      [Enter Copyright Description here.]
-   </copyright>
-
-   <license url="http://www.example.com/license">
-      [Enter License Description here.]
-   </license>
-
-   <plugin
-         id="org.talend.libraries.jdbc.mysql"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.talend.libraries.jdbc.postgresql"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.talend.libraries.jdbc.ingres"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.talend.libraries.jdbc.sqlite3"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.talend.libraries.jdbc.teradata"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.talend.libraries.jdbc.hsql"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.talend.libraries.jdbc.as400"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.talend.libraries.jdbc.derby"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.talend.libraries.jdbc.exasol"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.talend.libraries.jdbc.h2"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.talend.libraries.jdbc.paraccel"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.talend.libraries.jdbc.access"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
+<feature id="org.talend.libraries.jdbc.feature" label="Jdbc_feature Feature" version="7.2.1.qualifier" provider-name=".Talend SA."> 
+  <description url="http://www.example.com/description">[Enter Feature Description here.]</description>  
+  <copyright url="http://www.example.com/copyright">[Enter Copyright Description here.]</copyright>  
+  <license url="http://www.example.com/license">[Enter License Description here.]</license>  
+  <plugin id="org.talend.libraries.jdbc.access" download-size="0" install-size="0" version="0.0.0"/>
+  <plugin id="org.talend.libraries.jdbc.as400" download-size="0" install-size="0" version="0.0.0"/>
+  <plugin id="org.talend.libraries.jdbc.derby" download-size="0" install-size="0" version="0.0.0"/>
+  <plugin id="org.talend.libraries.jdbc.exasol" download-size="0" install-size="0" version="0.0.0"/>
+  <plugin id="org.talend.libraries.jdbc.h2" download-size="0" install-size="0" version="0.0.0"/>
+  <plugin id="org.talend.libraries.jdbc.hsql" download-size="0" install-size="0" version="0.0.0"/>
+  <plugin id="org.talend.libraries.jdbc.ingres" download-size="0" install-size="0" version="0.0.0"/>
+  <plugin id="org.talend.libraries.jdbc.mysql" download-size="0" install-size="0" version="0.0.0"/>
+  <plugin id="org.talend.libraries.jdbc.paraccel" download-size="0" install-size="0" version="0.0.0"/>
+  <plugin id="org.talend.libraries.jdbc.postgresql" download-size="0" install-size="0" version="0.0.0"/>
+  <plugin id="org.talend.libraries.jdbc.sqlite3" download-size="0" install-size="0" version="0.0.0"/>
+  <plugin id="org.talend.libraries.jdbc.teradata" download-size="0" install-size="0" version="0.0.0"/>
 </feature>

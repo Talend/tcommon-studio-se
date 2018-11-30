@@ -1,209 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<feature
-      id="org.talend.jdt.feature"
-      label="Feature"
-      version="7.2.1.qualifier">
 
-   <description url="http://www.example.com/description">
-      [Enter Feature Description here.]
-   </description>
-
-   <copyright url="http://www.example.com/copyright">
-      [Enter Copyright Description here.]
-   </copyright>
-
-   <license url="http://www.example.com/license">
-      [Enter License Description here.]
-   </license>
-
-   <plugin
-         id="org.eclipse.jdt"
-         download-size="42"
-         install-size="57"
-         version="3.10.0.v20140925-0400"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.ant.ui"
-         download-size="1013"
-         install-size="2490"
-         version="3.5.500.v20140521-1557"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.jdt.apt.core"
-         download-size="356"
-         install-size="775"
-         version="3.3.600.v20140311-1758"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.jdt.apt.ui"
-         download-size="67"
-         install-size="150"
-         version="3.3.400.v20140311-1758"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.jdt.apt.pluggable.core"
-         download-size="32"
-         install-size="63"
-         version="1.0.400.v20131113-0353"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.jdt.compiler.apt"
-         download-size="157"
-         install-size="357"
-         version="1.1.0.v20140509-1235"
-         fragment="true"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.jdt.compiler.tool"
-         download-size="57"
-         install-size="114"
-         version="1.0.300.v20140311-1758"
-         fragment="true"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.jdt.core"
-         download-size="5435"
-         install-size="12495"
-         version="3.10.0.xx-201509250011-e44"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.jdt.annotation"
-         download-size="14"
-         install-size="21"
-         version="1.1.0.v20140129-1625"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.jdt.annotation"
-         download-size="17"
-         install-size="28"
-         version="2.0.0.v20140415-1436"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.jdt.core.manipulation"
-         download-size="85"
-         install-size="180"
-         version="1.5.0.v20130605-1748"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.jdt.debug.ui"
-         download-size="1355"
-         install-size="2923"
-         version="3.6.300.v20140512-1926"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.jdt.debug"
-         download-size="849"
-         install-size="960"
-         version="3.8.101.v20140902-1548"/>
-
-   <plugin
-         id="org.eclipse.jdt.junit"
-         download-size="416"
-         install-size="853"
-         version="3.7.300.v20140418-0836"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.jdt.junit.core"
-         download-size="145"
-         install-size="308"
-         version="3.7.300.v20140409-1618"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.jdt.junit.runtime"
-         download-size="51"
-         install-size="96"
-         version="3.4.500.v20140527-1138"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.jdt.junit4.runtime"
-         download-size="19"
-         install-size="35"
-         version="1.1.400.v20140314-0036"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.jdt.launching"
-         download-size="313"
-         install-size="696"
-         version="3.7.101.v20140825-1922"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.jdt.ui"
-         download-size="10216"
-         install-size="24250"
-         version="3.10.1.v20140817-1500"
-         unpack="false"/>
-
-   <plugin
-         id="org.junit"
-         download-size="223"
-         install-size="268"
-         version="4.11.0.v201303080030"/>
-
-   <plugin
-         id="org.hamcrest.core"
-         download-size="54"
-         install-size="113"
-         version="1.3.0.v201303031735"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.jdt.doc.user"
-         download-size="7506"
-         install-size="9604"
-         version="3.10.1.v20140827-1504"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.jdt.launching.macosx"
-         os="macosx"
-         download-size="17"
-         install-size="28"
-         version="3.2.300.v20130801-1441"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.jdt.launching.ui.macosx"
-         os="macosx"
-         download-size="55"
-         install-size="101"
-         version="1.0.300.v20130801-1441"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.ant.launching"
-         download-size="155"
-         install-size="266"
-         version="1.0.400.v20140518-0030"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.jdt.groovy.core"
-         download-size="0"
-         install-size="0"
-         version="2.9.2.xx-201509250011-e44"
-         unpack="false"/>
-
-   <plugin
-         id="org.codehaus.groovy"
-         download-size="0"
-         install-size="0"
-         version="2.4.300.xx-201509250011-e44"/>
-
+<feature id="org.talend.jdt.feature" label="Feature" version="7.2.1.qualifier"> 
+  <description url="http://www.example.com/description">[Enter Feature Description here.]</description>  
+  <copyright url="http://www.example.com/copyright">[Enter Copyright Description here.]</copyright>  
+  <license url="http://www.example.com/license">[Enter License Description here.]</license>  
+  <requires>
+    <import plugin="org.codehaus.groovy" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.ant.launching" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.ant.ui" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.jdt" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.jdt.annotation" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.jdt.apt.core" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.jdt.apt.pluggable.core" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.jdt.apt.ui" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.jdt.compiler.apt" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.jdt.compiler.tool" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.jdt.core" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.jdt.core.manipulation" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.jdt.debug" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.jdt.debug.ui" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.jdt.doc.user" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.jdt.groovy.core" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.jdt.junit" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.jdt.junit.core" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.jdt.junit.runtime" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.jdt.junit4.runtime" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.jdt.launching" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.jdt.ui" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.hamcrest.core" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.junit" version="0.0.0" match="greaterOrEqual"/>
+  </requires>
+  <plugin id="org.eclipse.jdt.launching.macosx" os="macosx" download-size="17" install-size="28" version="3.2.300.v20130801-1441" unpack="false"/>
+  <plugin id="org.eclipse.jdt.launching.ui.macosx" os="macosx" download-size="55" install-size="101" version="1.0.300.v20130801-1441" unpack="false"/>
 </feature>
