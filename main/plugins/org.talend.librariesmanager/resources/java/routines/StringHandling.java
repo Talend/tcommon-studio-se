@@ -63,10 +63,7 @@ public class StringHandling {
 
     /**
      * Substitutes all substrings that match the given regular expression in the given old string with the given replacement and returns a new string.
-     * @param oldStr: the old string.
-     * @param regex: the regular expression to match.
-     * @param replacement: the string to be substituted for every match.
-     * 
+     *
      * {talendTypes} String
      * 
      * {Category} StringHandling
@@ -159,10 +156,7 @@ public class StringHandling {
 
     /**
      * Substitutes all substrings that match the given regular expression in the given old string with the given replacement and returns a new string.
-     * @param oldStr: the old string.
-     * @param regex: the regular expression to match.
-     * @param replacement: the string to be substituted for every match.
-     * 
+     *
      * {talendTypes} String
      * 
      * {Category} StringHandling
@@ -370,12 +364,19 @@ public class StringHandling {
     
 
 	/**
-	 * 
-	 * @param string : Passes the strings you want to search.
-	 * @param start : Must be an integer. The position in the string where you want to start counting.
-	 * @param length : Must be an integer greater than 0. The number of characters you want SUBSTR to return
-	 * @return
-	 * {example} SUBSTR("This is a test.",1,5) #his i
+     * Returns a new string that is a substring of this string.
+     *
+     * {talendTypes} String
+     *
+     * {Category} StringHandling
+     *
+     * {param} string("hello world!") string: Passes the strings you want to search.
+     *
+     * {param} int("2") start: Must be an integer. The position in the string where you want to start counting.
+     *
+     * {param} integer("5") length: Must be an integer greater than 0. The number of characters you want SUBSTR to return
+     *
+     * {example} SUBSTR("This is a test.",2,5) #his i
 	 */
 	public static String SUBSTR(String string, int start, Integer length) {
 
@@ -406,11 +407,17 @@ public class StringHandling {
 	}
 	
 	/**
-	 * 
-	 * @param value : Any string value. Passes the strings you want to modify.
-	 * @param trim_set : Any string value. Passes the characters you want to remove from the end of the string.
-	 * @return
-	 * {example} LTRIM("aatestaa","a") #testaa
+     * Returns a string whose value is this string, with any leading params set in trim_set.
+     *
+     * {talendTypes} String
+     *
+     * {Category} StringHandling
+     *
+     * {param} string("aatestaa") value: Any string value. Passes the strings you want to modify.
+     *
+     * {param} string("a") trim_set: Any string value. Passes the characters you want to remove from the end of the string.
+     *
+     * {example} LTRIM("aatestaa","a") #testaa
 	 */
 	public static String LTRIM(String value, String trim_set) {
         if (isVacant(value)) {
@@ -441,16 +448,33 @@ public class StringHandling {
 
     }
 
+    /**
+     * Returns a string whose value is this string, with any leading whitespace removed.
+     *
+     * {talendTypes} String
+     *
+     * {Category} StringHandling
+     *
+     * {param} string("  test") value: Any string value. Passes the strings you want to modify.
+     *
+     * {example} LTRIM("  test") #test
+     */
 	public static String LTRIM(String value) {
 		return LTRIM(value, null);
 	}
 	
 	/**
-	 * 
-	 * @param value : Any string value. Passes the strings you want to modify.
-	 * @param trim_set : Any string value. Passes the characters you want to remove from the beginning of the first string
-	 * @return
-	 * {example} RTRIM("aatestaa","a") #aatest
+     * Returns a string whose value is this string, with any trailing params set in trim_set.
+     *
+     * {talendTypes} String
+     *
+     * {Category} StringHandling
+     *
+     * {param} string("aatestaa") value: Any string value. Passes the strings you want to modify.
+     *
+     * {param} string("a") trim_set: Any string value. Passes the characters you want to remove from the end of the first string
+     *
+     * {example} RTRIM("aatestaa","a") #aatest
 	 */
 	public static String RTRIM(String value, String trim_set) {
         if (isVacant(value)) {
@@ -485,17 +509,35 @@ public class StringHandling {
 
     }
 
+    /**
+     * Returns a string whose value is this string, with any trailing whitespace removed.
+     *
+     * {talendTypes} String
+     *
+     * {Category} StringHandling
+     *
+     * {param} string("test  ") value: Any string value. Passes the strings you want to modify.
+     *
+     * {example} LTRIM("test  ") #test
+     */
 	public static String RTRIM(String value) {
 		return RTRIM(value, null);
 	}
 	
 	/**
-	 * 
-	 * @param first_string : The strings you want to change.
-	 * @param length : Must be a positive integer literal. Specifies the length you want each string to be.
-	 * @param second_string : Can be any string value. The characters you want to append to the left-side of the first_string values.
-	 * @return
-	 * {example} LPAD("test",6,"a") #aatest
+     * Left-pads a string with another string, to a certain length.
+     *
+     * {talendTypes} String
+     *
+     * {Category} StringHandling
+     *
+     * {param} string("test") first_string: The strings you want to change.
+     *
+     * {param} int(6) length : Must be a positive integer literal. Specifies the length you want each string to be.
+     *
+     * {param} string("a") second_string: Can be any string value. The characters you want to append to the left-side of the first_string values.
+     *
+     * {example} LPAD("test",6,"a") #aatest
 	 */
     public static String LPAD(String first_string, int length, String second_string) {
 
@@ -524,18 +566,38 @@ public class StringHandling {
              return first_string;
          }
     }
-    
+
+    /**
+     * Left-pads a string with whitespaces, to a certain length.
+     *
+     * {talendTypes} String
+     *
+     * {Category} StringHandling
+     *
+     * {param} string("test") first_string: The strings you want to change.
+     *
+     * {param} int(6) length : Must be a positive integer literal. Specifies the length you want each string to be.
+     *
+     * {example} LPAD("test",6) #  test
+     */
 	public static String LPAD(String first_string, int length) {
 		return LPAD(first_string, length, null);
 	}
 	
 	/**
-	 * 
-	 * @param first_string : The strings you want to change.
-	 * @param length : Must be a positive integer literal. Specifies the length you want each string to be.
-	 * @param second_string : Any string value. Passes the string you want to append to the right-side of the first_string values.
-	 * @return
-	 * {example} RPAD("test",6,"a") #testaa
+     * Right-pads a string with another string, to a certain length.
+     *
+     * {talendTypes} String
+     *
+     * {Category} StringHandling
+     *
+     * {param} string("test") first_string: The strings you want to change.
+     *
+     * {param} int(6) length : Must be a positive integer literal. Specifies the length you want each string to be.
+     *
+     * {param} string("a") second_string: Any string value. Passes the string you want to append to the right-side of the first_string values.
+     *
+     * {example} RPAD("test",6,"a") #testaa
 	 */
 	public static String RPAD(String first_string, int length, String second_string) {
 
@@ -562,6 +624,19 @@ public class StringHandling {
         return result.toString();
 	}
 
+    /**
+     * Right-pads a string with whitespaces, to a certain length.
+     *
+     * {talendTypes} String
+     *
+     * {Category} StringHandling
+     *
+     * {param} string("test") first_string: The strings you want to change.
+     *
+     * {param} int(6) length : Must be a positive integer literal. Specifies the length you want each string to be.
+     *
+     * {example} RPAD("test",6) #test
+     */
 	public static String RPAD(String first_string, int length) {
 		return RPAD(first_string, length, null);
 	}
@@ -569,19 +644,22 @@ public class StringHandling {
 	
 	
     /**
-     * 
-     * @param string Can be a String
-     * @param search_value Can be a String 
-     * @param start 
-     * 		The default is 1, meaning that INSTR starts the search at the first character in the string.
-     * @param occurrence
-     * 		If the search value appears more than once in the string, you can specify which occurrence you want to search for.
-     * @param comparison_type
-     * 		default 0: INSTR performs a linguistic string comparison. 1: INSTR performs a binary string comparison.
-     * @return
-     * {example} new StringHandling<String>.INSTR("This is a test","t",1,2,0) #14
+     * Method returns the position of the occurrence of a string in another string.
+     *
+     * {talendTypes} String
+     *
+     * {Category} StringHandling
+     *
+     * {param} string("This is a test") string: The string that will be searched
+     *
+     * {param} string("t") search_value: The string to search for.
+     *
+     * {param} int(1) start : The default is 1, meaning that INSTR starts the search at the first character in the string.
+     *
+     * {param} int(2) occurrence : If the search value appears more than once in the string, you can specify which occurrence you want to search for.
+     *
+     * {example} INSTR("This is a test","t",1,2) #14
      */
-	
     public static Integer INSTR(String string, String search_value, Integer start, Integer occurrence) {
     	// linguistic string comparison.
 
@@ -639,19 +717,22 @@ public class StringHandling {
     }
     
     /**
-     * 
-     * @param string Can be a byte[]
-     * @param search_value Can be byte[]
-     * @param start 
-     * 		The default is 1, meaning that INSTR starts the search at the first character in the string.
-     * @param occurrence
-     * 		If the search value appears more than once in the string, you can specify which occurrence you want to search for.
-     * @param comparison_type
-     * 		default 0: INSTR performs a linguistic string comparison. 1: INSTR performs a binary string comparison.
-     * @return
-     * {example} new StringHandling<String>.INSTR("This is a test".getBytes(),"t".getBytes(),1,2,0) #14
+     * Method returns the position of the occurrence of a byte array in another byte array.
+     *
+     * {talendTypes} String
+     *
+     * {Category} StringHandling
+     *
+     * {param} byte[]("This is a test") string: The byte array that will be searched
+     *
+     * {param} byte[]("t") search_value: The byte array to search for.
+     *
+     * {param} int(1) start : The default is 1, meaning that INSTR starts the search at the first character in the string.
+     *
+     * {param} int(2) occurrence : If the search value appears more than once in the string, you can specify which occurrence you want to search for.
+     *
+     * {example} INSTR("This is a test".getBytes(),"t".getBytes(),1,2) #14
      */
-
     public static Integer INSTR(byte[] string, byte[] search_value, Integer start, Integer occurrence) {
 
         int defaultStart = 1;
@@ -756,6 +837,22 @@ public class StringHandling {
      *         numbers outside these ranges.
      */
 
+    /**
+     * Converts double values to strings of up to 16 digits and provides
+     * accuracy up to 15 digits. If you pass a number with more than 15
+     * digits, TO_CHAR rounds the number to the sixteenth digit.
+     * Returns decimal notation for numbers in the ranges (-1e16,-1e-16]
+     * and [1e-16, 1e16). TO_CHAR returns scientific notation for
+     * numbers outside these ranges.
+     *
+     * {talendTypes} String
+     *
+     * {Category} StringHandling
+     *
+     * {param} Object(5000006463284L) object: Numeric object
+     *
+     * {example} TO_CHAR(5000006463284L) #5000006463284L
+     */
     public static String TO_CHAR(Object numeric_value) {
         if(numeric_value==null){
             return null;
