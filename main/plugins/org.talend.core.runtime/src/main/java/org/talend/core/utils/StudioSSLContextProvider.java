@@ -68,7 +68,7 @@ public class StudioSSLContextProvider {
     public static boolean setSSLSystemProperty(boolean isPreference) {
         try {
             buildContext();
-            if (!isPreference && context == null) {
+            if (context == null) {
                 return false;
             }
             changeProperty();
