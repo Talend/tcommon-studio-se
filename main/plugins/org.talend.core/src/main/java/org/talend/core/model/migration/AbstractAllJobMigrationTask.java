@@ -31,8 +31,8 @@ public abstract class AbstractAllJobMigrationTask extends AbstractJobMigrationTa
         toReturn.add(ERepositoryObjectType.PROCESS_SPARK);
         toReturn.add(ERepositoryObjectType.PROCESS_STORM);
         toReturn.add(ERepositoryObjectType.PROCESS_SPARKSTREAMING);
-        toReturn.add(ERepositoryObjectType.JOBLET);
-        toReturn.add(ERepositoryObjectType.TEST_CONTAINER);
+        toReturn.addAll(ERepositoryObjectType.getAllTypesOfJoblet());
+        toReturn.addAll(ERepositoryObjectType.getAllTypesOfTestContainer());
         return toReturn;
     }
 }

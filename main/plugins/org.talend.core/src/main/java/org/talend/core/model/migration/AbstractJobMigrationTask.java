@@ -47,9 +47,12 @@ public abstract class AbstractJobMigrationTask extends AbstractItemMigrationTask
         }
         if (processType != null) {
             EmfHelper.visitChilds(processType);
-//            if(!ConvertJobsUtil.JobType.STANDARD.getDisplayName().equalsIgnoreCase(processType.getJobType())){
-//            	return null;
-//            }
+            ERepositoryObjectType itemType = ERepositoryObjectType.getItemType(item);
+            if(itemType == ERepositoryObjectType.TEST_CONTAINER && 
+            		!ConvertJobsUtil.JobType.STANDARD.getDisplayName().equalsIgnoreCase(processType.getJobType())){
+            	return null;
+            }
+
         }
         return processType;
     }
