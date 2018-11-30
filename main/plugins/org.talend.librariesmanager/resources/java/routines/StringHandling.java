@@ -541,7 +541,7 @@ public class StringHandling {
 	 */
     public static String LPAD(String first_string, int length, String second_string) {
 
-    	 if (isVacant(first_string) || length < 1) {
+    	 if (first_string == null) {
              return null;
          }
 
@@ -601,7 +601,7 @@ public class StringHandling {
 	 */
 	public static String RPAD(String first_string, int length, String second_string) {
 
-		if (isVacant(first_string) || length < 1) {
+		if (first_string == null) {
             return null;
         }
 
