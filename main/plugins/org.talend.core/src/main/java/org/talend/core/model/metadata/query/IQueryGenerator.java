@@ -32,6 +32,10 @@ public interface IQueryGenerator {
 
     public static final String SQL_FROM = "FROM"; //$NON-NLS-1$
 
+    public static final String SQL_START_CONNECTION = "\"+";
+
+    public static final String SQL_END_CONNECTION = "+\"";
+
     public void setParameters(IElement element, IMetadataTable metadataTable, String schema, String realTableName);
 
     public void setParameters(IElement element, IMetadataTable metadataTable, String schema, String realTableName, boolean isJdbc);
