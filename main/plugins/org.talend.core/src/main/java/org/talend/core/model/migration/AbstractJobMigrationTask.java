@@ -20,6 +20,7 @@ import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.JobletProcessItem;
 import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
+import org.talend.core.repository.utils.ConvertJobsUtil;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 
 /**
@@ -46,6 +47,11 @@ public abstract class AbstractJobMigrationTask extends AbstractItemMigrationTask
         }
         if (processType != null) {
             EmfHelper.visitChilds(processType);
+            ERepositoryObjectType itemType = ERepositoryObjectType.getItemType(item);
+            if(itemType == ERepositoryObjectType.TEST_CONTAINER && 
+                    !ConvertJobsUtil.JobType.STANDARD.getDisplayName().equalsIgnoreCase(processType.getJobType())){
+                return null;
+            }
         }
         return processType;
     }
