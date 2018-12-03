@@ -65,7 +65,7 @@
 		<module>i18n/plugins/org.talend.resources.nl</module>
 		<module>main/features/org.talend.commons.feature</module>
 		<module>main/features/org.talend.core.feature</module>
-		<module>main/features/org.talend.fragment.jars.feature</module>
+        <module>main/features/org.talend.fragment.jars.common.feature</module>
 		<module>main/features/org.talend.help.feature</module>
 		<module>main/features/org.talend.libraries.jdbc.feature</module>
 		<module>main/features/org.talend.model.migration.feature</module>
@@ -164,7 +164,7 @@
 		<module>main/plugins/org.talend.designer.maven.tos</module>
 		<module>main/plugins/org.talend.libraries.persist.lookup</module>
 		<module>main/plugins/org.talend.designer.maven.aether</module>
-		<module>test/features/org.talend.test.tos.feature</module>
+		<!--<module>test/features/org.talend.test.tos.feature</module>-->
 		<module>test/plugins/org.talend.commons.runtime.test</module>
 		<module>test/plugins/org.talend.commons.ui.test</module>
 		<module>test/plugins/org.talend.core.repository.test</module>
@@ -190,6 +190,8 @@
 		<module>test/plugins/org.talend.designer.maven.test</module>
 		<module>test/plugins/test.all.test.suite</module>
 		<module>test/plugins/org.talend.datatools.xml.test</module>
+
+        <!-- modules from other repositories -->
         <module>../tdi-studio-se/main/features/org.talend.tos.libraries.feature</module>
         <module>../tdi-studio-se/main/plugins/org.talend.libraries.asm</module>
         <module>../tdi-studio-se/main/plugins/org.talend.libraries.crm</module>

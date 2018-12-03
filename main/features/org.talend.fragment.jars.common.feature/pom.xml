@@ -7,6 +7,6 @@
     <version>7.2.1-SNAPSHOT</version>
     <relativePath>../../../</relativePath>
   </parent>
-  <artifactId>org.talend.fragment.jars.feature</artifactId>
+  <artifactId>org.talend.fragment.jars.common.feature</artifactId>
   <packaging>eclipse-feature</packaging>
 </project>
