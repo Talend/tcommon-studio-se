@@ -77,4 +77,36 @@
             <type>pom</type>
         </dependency>
 	</dependencies>
+	<profiles>
+		<profile>
+            <id>official</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.eclipse.tycho</groupId>
+                        <artifactId>tycho-packaging-plugin</artifactId>
+                        <version>${tycho.version}</version>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.eclipse.tycho.extras</groupId>
+                                <artifactId>tycho-buildtimestamp-jgit</artifactId>
+                                <version>${tycho.version}</version>
+                            </dependency>
+                        </dependencies>
+                        <configuration>
+                            <strictBinIncludes>false</strictBinIncludes>
+                            <format>'${product.timestamp}'</format>
+                            <archive>
+                                <addMavenDescriptor>false</addMavenDescriptor>
+                                <!-- By default, name of the current user is inserted into generated MANIFEST.MF files -->
+                                <manifestEntries>
+                                    <Built-By />
+                                </manifestEntries>
+                            </archive>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+	</profiles>
 </project>
