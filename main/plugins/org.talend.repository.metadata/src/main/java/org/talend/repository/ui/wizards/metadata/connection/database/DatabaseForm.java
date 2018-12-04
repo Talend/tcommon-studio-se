@@ -6039,10 +6039,6 @@ public class DatabaseForm extends AbstractForm {
             return false;
         }
 
-        if (EDatabaseConnTemplate.isSchemaNeeded(getConnection().getDatabaseType()) && schemaText.getCharCount() == 0) {
-            updateStatus(IStatus.WARNING, Messages.getString("DatabaseForm.schemaAlert", schemaText.getLabelText())); //$NON-NLS-1$
-            return false;
-        }
         updateStatus(IStatus.OK, null);
         return true;
 
