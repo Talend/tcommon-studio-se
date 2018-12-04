@@ -192,6 +192,7 @@
 		<module>test/plugins/org.talend.datatools.xml.test</module>
 
         <!-- modules from other repositories -->
+        <!-- tdi-studio-se -->
         <module>../tdi-studio-se/main/features/org.talend.tos.libraries.feature</module>
         <module>../tdi-studio-se/main/plugins/org.talend.libraries.asm</module>
         <module>../tdi-studio-se/main/plugins/org.talend.libraries.crm</module>
@@ -206,10 +207,13 @@
         <module>../tdi-studio-se/main/plugins/org.talend.libraries.jetty</module>
         <module>../tdi-studio-se/main/plugins/org.talend.libraries.mondrian</module>
         <module>../tdi-studio-se/main/plugins/org.talend.libraries.palo</module>
+        <module>../tdi-studio-se/main/plugins/org.talend.libraries.salesforce</module>
         <module>../tdi-studio-se/main/plugins/org.talend.libraries.servlet</module>
         <module>../tdi-studio-se/main/plugins/org.talend.libraries.slf4j</module>
         <module>../tdi-studio-se/main/plugins/org.talend.libraries.xml</module>
         <module>../tdi-studio-se/main/plugins/org.talend.libraries.zmq</module>
+        
+        <!-- tbd-studio-se -->
         <module>../tbd-studio-se/main/plugins/org.talend.libraries.zookeeper</module>
 	</modules>
 	<build>
