@@ -372,9 +372,9 @@ public class StringHandling {
      *
      * {param} string("hello world!") string: Passes the strings you want to search.
      *
-     * {param} int("2") start: Must be an integer. The position in the string where you want to start counting.
+     * {param} int(2) start: Must be an integer. The position in the string where you want to start counting.
      *
-     * {param} integer("5") length: Must be an integer greater than 0. The number of characters you want SUBSTR to return
+     * {param} integer(5) length: Must be an integer greater than 0. The number of characters you want SUBSTR to return
      *
      * {example} SUBSTR("This is a test.",2,5) #his i
 	 */
