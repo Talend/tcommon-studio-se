@@ -79,7 +79,8 @@ public class OracleQueryGeneratorTest {
         String resultString = oraclegenerator.generateQuery();
 
         StringBuilder expectSql = new StringBuilder();
-        expectSql.append(TalendTextUtils.getQuoteChar()).append("SELECT \n  myschema.mytable.newColumn\nFROM myschema.mytable")
+        expectSql.append(TalendTextUtils.getQuoteChar())
+                .append("SELECT \n  \\\"myschema\\\".\\\"mytable\\\".\\\"newColumn\\\"\nFROM \\\"myschema\\\".\\\"mytable\\\"")
                 .append(TalendTextUtils.getQuoteChar());
         String expectString = expectSql.toString();
 
