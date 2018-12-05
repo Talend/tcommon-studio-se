@@ -303,7 +303,7 @@ public final class ContextParameterUtils {
         return mvnValues;
     }
 
-    private static String getContextString(String code) {
+    public static String getContextString(String code) {
         if (code != null) {
             if (containOldContext(code)) {
                 return code.substring(code.indexOf(JAVA_STARTWITH) + JAVA_STARTWITH.length(), code.indexOf(JAVA_ENDWITH));
