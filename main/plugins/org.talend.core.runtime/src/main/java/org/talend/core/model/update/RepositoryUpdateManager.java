@@ -43,6 +43,7 @@ import org.talend.core.ICoreService;
 import org.talend.core.IRepositoryContextUpdateService;
 import org.talend.core.IService;
 import org.talend.core.ITDQPatternService;
+import org.talend.core.ITDQRepositoryService;
 import org.talend.core.database.conn.ConnParameterKeys;
 import org.talend.core.database.conn.template.EDatabaseConnTemplate;
 import org.talend.core.hadoop.BigDataBasicUtil;
@@ -366,22 +367,41 @@ public abstract class RepositoryUpdateManager {
                 checkedResults = filterCheckedResult(results);
             }
             if (checkedResults != null && !checkedResults.isEmpty()) {
+                boolean updateResult = false;
                 if (showed || parameter == null || unShowDialog(checkedResults) || openPropagationDialog()) {
                     IDesignerCoreService designerCoreService = CoreRuntimePlugin.getInstance().getDesignerCoreService();
                     if (show) {
-                        return designerCoreService.executeUpdatesManager(checkedResults, onlyImpactAnalysis);
+                        updateResult = designerCoreService.executeUpdatesManager(checkedResults, onlyImpactAnalysis);
                     } else {
-                        return designerCoreService.executeUpdatesManagerBackgroud(checkedResults, onlyImpactAnalysis);
+                        updateResult = designerCoreService.executeUpdatesManagerBackgroud(checkedResults, onlyImpactAnalysis);
                     }
                 }
-                return false;
+                // Added TDQ-15353 propogate context changes on DQ side
+                updateContextOnDQ(checked);
+                return updateResult;
             }
             if (show) {
                 openNoModificationDialog();
             }
         }
+
+        // Added TDQ-15353 propogate context changes on DQ side
+        updateContextOnDQ(checked);
+
         getColumnRenamedMap().clear();
         return false;
+    }
+
+    // TDQ-15353 propogate context changes on DQ side
+    private void updateContextOnDQ(boolean checked) {
+        ITDQRepositoryService tdqRepService = null;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ITDQRepositoryService.class)) {
+            tdqRepService = (ITDQRepositoryService) GlobalServiceRegister.getDefault().getService(ITDQRepositoryService.class);
+        }
+        if (tdqRepService != null) {
+            // udpate all ana/reports who used this context
+            tdqRepService.updateAllContextInAnalysisAndReport(this, parameter, checked);
+        }
     }
 
     private List<UpdateResult> filterSpecialCheckedResult(List<UpdateResult> results) {
@@ -2331,6 +2351,9 @@ public abstract class RepositoryUpdateManager {
         } catch (PersistenceException e) {
             ExceptionHandler.process(e);
         }
+        
+        
+
         return repositoryUpdateManager.doWork(show, onlySimpleShow);
     }
 

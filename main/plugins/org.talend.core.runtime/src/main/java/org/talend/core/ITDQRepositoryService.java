@@ -23,15 +23,14 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.ui.IViewPart;
 import org.talend.commons.exception.BusinessException;
-import org.talend.core.model.context.JobContextManager;
 import org.talend.core.model.metadata.IMetadataConnection;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.core.model.properties.ConnectionItem;
-import org.talend.core.model.properties.ContextItem;
 import org.talend.core.model.properties.DatabaseConnectionItem;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.repository.IRepositoryViewObject;
+import org.talend.core.model.update.RepositoryUpdateManager;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.utils.sugars.ReturnCode;
@@ -209,7 +208,9 @@ public interface ITDQRepositoryService extends IService {
      * When the context is modified, the analysis and report which had imported this context should also be updated.
      * Added TDQ-14992,yyin,20180518
      * 
-     * @param contextManager
+     * @param parameter
+     * 
+     * @param ruManager: RepositoryUpdateManager
      */
-    void updateAllContextInAnalysisAndReport(ContextItem contextItem, JobContextManager contextManager);
+    void updateAllContextInAnalysisAndReport(RepositoryUpdateManager ruManager, Object parameter, boolean isUpdated);
 }
