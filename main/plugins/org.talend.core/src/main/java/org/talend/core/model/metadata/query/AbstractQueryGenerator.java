@@ -417,7 +417,9 @@ public abstract class AbstractQueryGenerator implements IQueryGenerator {
             final String tableNameWithDBAndSchema = getTableNameWithDBAndSchema(dbName, schemaName, tableName);
             String columnField = generateColumnFields(tableNameWithDBAndSchema);
             if (dbType == EDatabaseTypeName.HIVE) {
-                columnField = generateColumnFields(tableName);
+                columnField = ContextParameterUtils.containContextVariables(tableName)
+                        ? generateColumnFields(SQL_START_CONNECTION + tableName + SQL_END_CONNECTION)
+                        : generateColumnFields(tableName);
             }
 
             StringBuffer sql = new StringBuffer(100);

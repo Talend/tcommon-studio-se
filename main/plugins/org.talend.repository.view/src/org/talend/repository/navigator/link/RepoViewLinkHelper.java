@@ -27,6 +27,7 @@ import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.repository.link.IRepoViewLinker;
 import org.talend.core.repository.link.RepoViewLinkerRegistryReader;
+import org.talend.repository.ProjectManager;
 import org.talend.repository.model.RepositoryNode;
 
 /**
@@ -83,6 +84,7 @@ public class RepoViewLinkHelper implements ILinkHelper {
         if (object == null) {
             return;
         }
+        final String repoNodeProjectTechLabel = ProjectManager.getInstance().getProject(object.getProperty()).getTechnicalLabel();
         final String repId = object.getId(); // repository item id
         final String version = object.getVersion();
         if (repId == null || version == null) {
@@ -95,7 +97,7 @@ public class RepoViewLinkHelper implements ILinkHelper {
         for (IEditorReference er : editorReferences) {
             try {
                 IEditorInput editorInput = er.getEditorInput();
-                if (isRelation(editorInput, repId, version)) {
+                if (isRelation(editorInput, repoNodeProjectTechLabel, repId, version)) {
                     IEditorPart editor = null;
                     // aPage.bringToTop(er.getPart(false));
                     if ((editor = aPage.findEditor(editorInput)) != null) {
@@ -110,10 +112,10 @@ public class RepoViewLinkHelper implements ILinkHelper {
 
     }
 
-    protected boolean isRelation(IEditorInput editorInput, String repoNodeId, String version) {
+    protected boolean isRelation(IEditorInput editorInput, String repoNodeProjectTechLabel, String repoNodeId, String version) {
         IRepoViewLinker[] allRepoViewLinkers = getRepoViewLinkerReader().getAllRepoViewLinkers();
         for (IRepoViewLinker linker : allRepoViewLinkers) {
-            if (linker.isRelation(editorInput, repoNodeId, version)) {
+            if (linker.isRelation(editorInput, repoNodeProjectTechLabel, repoNodeId, version)) {
                 return true;
             }
         }

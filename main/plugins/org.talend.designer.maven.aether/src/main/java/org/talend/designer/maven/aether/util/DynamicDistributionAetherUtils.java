@@ -72,7 +72,7 @@ public class DynamicDistributionAetherUtils {
     private static Map<String, RepositorySystemSession> sessionMap = new HashMap<>();
 
     public static DependencyNode collectDepencencies(String remoteUrl, String username, String password, String localPath,
-            DependencyNode dependencyNode, IDynamicMonitor monitor) throws Exception {
+            DependencyNode dependencyNode, IDynamicMonitor monitor, boolean multiThread) throws Exception {
         if (monitor == null) {
             monitor = new DummyDynamicMonitor();
         }
@@ -96,15 +96,25 @@ public class DynamicDistributionAetherUtils {
 
         String key = remoteUrl + " | " + localPath; //$NON-NLS-1$
 
-        RepositorySystem repoSystem = repoSystemMap.get(key);
-        if (repoSystem == null) {
+        RepositorySystem repoSystem = null;
+        if (multiThread) {
             repoSystem = newRepositorySystem();
-            repoSystemMap.put(key, repoSystem);
+        } else {
+            repoSystem = repoSystemMap.get(key);
+            if (repoSystem == null) {
+                repoSystem = newRepositorySystem();
+                repoSystemMap.put(key, repoSystem);
+            }
         }
-        RepositorySystemSession session = sessionMap.get(key);
-        if (session == null) {
+        RepositorySystemSession session = null;
+        if (multiThread) {
             session = newSession(repoSystem, localPath, monitor);
-            sessionMap.put(key, session);
+        } else {
+            session = sessionMap.get(key);
+            if (session == null) {
+                session = newSession(repoSystem, localPath, monitor);
+                sessionMap.put(key, session);
+            }
         }
         updateDependencySelector((DefaultRepositorySystemSession) session, monitor);
 
@@ -394,7 +404,7 @@ public class DynamicDistributionAetherUtils {
 
     public static void checkCancelOrNot(IDynamicMonitor monitor) throws InterruptedException {
         if (monitor != null) {
-            if (monitor.isCanceled()) {
+            if (monitor.isCanceled() || Thread.interrupted()) {
                 throw new InterruptedException("User canceled.");
             }
         }

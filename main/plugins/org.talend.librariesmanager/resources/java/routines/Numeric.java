@@ -88,8 +88,12 @@ public class Numeric {
      *
      * {example} random(0, 100) # 93, 12, 83, ...
      *
+     * @throws RuntimeException in case when max value is smaller than min value
      */
     public static Integer random(Integer min, Integer max) {
+        if (max < min) {
+            throw new RuntimeException("Max value should be bigger than min value");
+        }
         return ((Long) Math.round(min - 0.5 + (Math.random() * (max - min + 1)))).intValue();
     }
 

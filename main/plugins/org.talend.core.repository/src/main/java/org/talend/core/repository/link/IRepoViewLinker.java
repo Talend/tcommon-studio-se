@@ -25,7 +25,7 @@ public interface IRepoViewLinker {
 
     RepositoryNode getRelationNode(IEditorInput editorInput);
 
-    boolean isRelation(IEditorInput editorInput, String repoNodeId);
+    boolean isRelation(IEditorInput editorInput, String repoNodeProjectLabel, String repoNodeId);
 
-    boolean isRelation(IEditorInput editorInput, String repoNodeId, String version);
+    boolean isRelation(IEditorInput editorInput, String repoNodeProjectLabel, String repoNodeId, String version);
 }

@@ -21,6 +21,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.EditorPart;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
+import org.talend.repository.ProjectManager;
 import org.talend.repository.model.RepositoryNode;
 
 /**
@@ -47,8 +48,8 @@ public abstract class AbstractEditorInputWithItemIdLinker extends AbstractRepoVi
      * @see org.talend.core.repository.link.IRepoViewLinker#isRelation(org.eclipse.ui.IEditorInput, java.lang.String)
      */
     @Override
-    public boolean isRelation(IEditorInput editorInput, String repoNodeId) {
-        return isRelation(editorInput, repoNodeId, null);
+    public boolean isRelation(IEditorInput editorInput, String repoNodeProjectLabel, String repoNodeId) {
+        return isRelation(editorInput, repoNodeProjectLabel, repoNodeId, null);
     }
 
     /*
@@ -58,13 +59,16 @@ public abstract class AbstractEditorInputWithItemIdLinker extends AbstractRepoVi
      * java.lang.String)
      */
     @Override
-    public boolean isRelation(IEditorInput editorInput, String repoNodeId, String version) {
+    public boolean isRelation(IEditorInput editorInput, String repoNodeProjectLabel, String repoNodeId, String version) {
         RepositoryNode relationNode = getRelationNode(editorInput);
         boolean isRelation = false;
         if (relationNode != null && repoNodeId != null && repoNodeId.equals(relationNode.getId())) {
             isRelation = true;
             if (version != null && relationNode.getObject() != null) {
                 isRelation = isRelation && version.equals(relationNode.getObject().getVersion());
+            }
+            if (repoNodeProjectLabel != null) {
+                isRelation = isRelation && repoNodeProjectLabel.equals(ProjectManager.getInstance().getProject(relationNode.getObject().getProperty()).getTechnicalLabel()); 
             }
         }
         return isRelation;

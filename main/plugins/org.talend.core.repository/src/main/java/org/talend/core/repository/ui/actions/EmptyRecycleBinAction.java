@@ -285,7 +285,7 @@ public class EmptyRecycleBinAction extends AContextualAction {
                         IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
                         for (IEditorReference editors : page.getEditorReferences()) {
                             IEditorInput nameInEditor = editors.getEditorInput();
-                            if (isRelation(nameInEditor, objToDelete.getId())) {
+                            if (isRelation(nameInEditor, ProjectManager.getInstance().getCurrentProject().getTechnicalLabel(), objToDelete.getId())) {
                                 page.closeEditor(editors.getEditor(false), false);
                             }
                         }
@@ -333,10 +333,10 @@ public class EmptyRecycleBinAction extends AContextualAction {
         }
     }
 
-    protected boolean isRelation(IEditorInput editorInput, String repoNodeId) {
+    protected boolean isRelation(IEditorInput editorInput, String repoNodeProjectLabel, String repoNodeId) {
         IRepoViewLinker[] allRepoViewLinkers = RepoViewLinkerRegistryReader.getInstance().getAllRepoViewLinkers();
         for (IRepoViewLinker linker : allRepoViewLinkers) {
-            if (linker.isRelation(editorInput, repoNodeId)) {
+            if (linker.isRelation(editorInput, repoNodeProjectLabel, repoNodeId)) {
                 return true;
             }
         }

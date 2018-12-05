@@ -68,8 +68,8 @@ public abstract class AbstractRepositoryEditorInputLinker extends AbstractRepoVi
      * @see org.talend.core.repository.link.IRepoViewLinker#isRelation(org.eclipse.ui.IEditorInput, java.lang.String)
      */
     @Override
-    public boolean isRelation(IEditorInput editorInput, String repoNodeId) {
-        return isRelation(editorInput, repoNodeId, null);
+    public boolean isRelation(IEditorInput editorInput, String repoNodeProjectLabel, String repoNodeId) {
+        return isRelation(editorInput, repoNodeProjectLabel, repoNodeId, null);
     }
 
     /*
@@ -79,7 +79,7 @@ public abstract class AbstractRepositoryEditorInputLinker extends AbstractRepoVi
      * java.lang.String)
      */
     @Override
-    public boolean isRelation(IEditorInput editorInput, String repoNodeId, String version) {
+    public boolean isRelation(IEditorInput editorInput, String repoNodeProjectLabel, String repoNodeId, String version) {
         // only work for IRepositoryEditorInput
         boolean isRelation = false;
         if (repoNodeId != null && isValidEditorInput(editorInput)) {
@@ -89,6 +89,9 @@ public abstract class AbstractRepositoryEditorInputLinker extends AbstractRepoVi
                 isRelation = repoNodeId.equals(item.getProperty().getId());
                 if (version != null) {
                     isRelation = isRelation && version.equals(item.getProperty().getVersion());
+                }
+                if (repoNodeProjectLabel != null) {
+                    isRelation = isRelation && repoNodeProjectLabel.equals(ProjectManager.getInstance().getProject(item.getProperty()).getTechnicalLabel());
                 }
             }
         }

@@ -1062,4 +1062,14 @@ public final class ProcessUtils {
         }
         return StringUtils.equals(pureJobIdOne, pureJobIdTwo);
     }
+    
+    public static boolean isInProject(String projectTechLabel, Property property) {
+        if (projectTechLabel == null) {
+            return true;
+        }
+        if (projectTechLabel.equals(ProjectManager.getInstance().getProject(property).getTechnicalLabel())) {
+            return true;
+        }
+        return false;
+    }
 }
