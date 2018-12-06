@@ -1,51 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<feature
-      id="org.talend.babel.all.tos.feature"
-      label="Babel feature with all languages for TOS"
-      version="7.2.1.qualifier">
 
-   <description url="http://www.example.com/description">
-      [Enter Feature Description here.]
-   </description>
-
-   <copyright url="http://www.example.com/copyright">
-      [Enter Copyright Description here.]
-   </copyright>
-
-   <license url="http://www.example.com/license">
-      [Enter License Description here.]
-   </license>
-
-   <includes
-         id="org.eclipse.babel.nls_eclipse_de"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.babel.nls_eclipse_es"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.babel.nls_eclipse_fr"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.babel.nls_eclipse_it"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.babel.nls_eclipse_ja"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.babel.nls_eclipse_pt_BR"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.babel.nls_eclipse_ru"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.babel.nls_eclipse_zh"
-         version="0.0.0"/>
-
+<feature id="org.talend.babel.all.tos.feature" label="Babel feature with all languages for TOS" version="7.2.1.qualifier"> 
+  <description url="http://www.example.com/description">[Enter Feature Description here.]</description>  
+  <copyright url="http://www.example.com/copyright">[Enter Copyright Description here.]</copyright>  
+  <license url="http://www.example.com/license">[Enter License Description here.]</license>  
+  <requires>
+    <import feature="org.eclipse.babel.nls_eclipse_de" version="0.0.0" match="greaterOrEqual"/>
+    <import feature="org.eclipse.babel.nls_eclipse_es" version="0.0.0" match="greaterOrEqual"/>
+    <import feature="org.eclipse.babel.nls_eclipse_fr" version="0.0.0" match="greaterOrEqual"/>
+    <import feature="org.eclipse.babel.nls_eclipse_it" version="0.0.0" match="greaterOrEqual"/>
+    <import feature="org.eclipse.babel.nls_eclipse_ja" version="0.0.0" match="greaterOrEqual"/>
+    <import feature="org.eclipse.babel.nls_eclipse_pt_BR" version="0.0.0" match="greaterOrEqual"/>
+    <import feature="org.eclipse.babel.nls_eclipse_ru" version="0.0.0" match="greaterOrEqual"/>
+    <import feature="org.eclipse.babel.nls_eclipse_zh" version="0.0.0" match="greaterOrEqual"/>
+  </requires> 
 </feature>
