@@ -76,6 +76,7 @@ import org.talend.metadata.managment.ui.wizard.metadata.xml.node.FOXTreeNode;
 import org.talend.metadata.managment.ui.wizard.metadata.xml.node.NameSpaceNode;
 import org.talend.metadata.managment.ui.wizard.metadata.xml.utils.StringUtil;
 import org.talend.metadata.managment.ui.wizard.metadata.xml.utils.TreeUtil;
+import org.talend.repository.metadata.i18n.Messages;
 import org.talend.repository.metadata.ui.wizards.form.AbstractXmlFileStepForm;
 import org.talend.repository.ui.wizards.metadata.connection.files.xml.action.CreateAttributeAction;
 import org.talend.repository.ui.wizards.metadata.connection.files.xml.action.CreateElementAction;
@@ -149,6 +150,8 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
     private MoveUpTreeNodeButton moveUpBtn;
 
     private MoveDownTreeNodeButton moveDown;
+
+    private int treeDataCount = 0;
 
     public XmlFileOutputStep2Form(boolean creation, Composite parent, ConnectionItem connectionItem) {
         super(parent, connectionItem);
@@ -544,6 +547,12 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
                 rootNum++;
             }
         }
+        treeDataCount = 0;
+        int schemaViewerCount = schemaViewer.getTable().getItems().length;
+        if (schemaViewerCount < getChildElements(treeData)) {
+            msgError.append(Messages.getString("XmlFileOutputStep2Form.Error"));
+        }
+
         if (num != rootNum) {
             msgError.append("Require set as loop\n");
         }
@@ -565,6 +574,19 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
         return false;
     }
 
+    private int getChildElements(List<FOXTreeNode> treeData) {
+
+        for (FOXTreeNode node : treeData) {
+            if (!node.hasChildren()) {
+                treeDataCount++;
+            } else {
+                getChildElements(node.getChildren());
+            }
+
+        }
+        return treeDataCount;
+
+    }
     @Override
     public void updateStatus() {
         checkFieldsValue();
