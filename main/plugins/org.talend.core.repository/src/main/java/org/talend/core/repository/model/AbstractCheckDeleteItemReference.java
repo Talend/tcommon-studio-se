@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.core.repository.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.Set;
 
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
+import org.talend.core.model.repository.IRepositoryObject;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.repository.RepositoryObject;
 import org.talend.core.repository.model.provider.ICheckDeleteItemReference;
@@ -35,10 +37,13 @@ public abstract class AbstractCheckDeleteItemReference implements ICheckDeleteIt
 
     protected List<? extends IRepositoryNode> deleteNodes;
 
+    protected List<IRepositoryObject> deleteRepositoryObjects;
+
     @Override
 	public Set<ItemReferenceBean> getItemReferenceBeans(List<? extends IRepositoryNode> deleteNodes,
             DeleteActionCache deleteActionCache) {
         this.deleteNodes = deleteNodes;
+        setDeleteRepositoryObjects(deleteNodes);
         Set<ItemReferenceBean> refBeans = new HashSet<ItemReferenceBean>();
 
         if (deleteActionCache == null) {
@@ -85,19 +90,18 @@ public abstract class AbstractCheckDeleteItemReference implements ICheckDeleteIt
 			DeleteActionCache deleteActionCache,IRepositoryViewObject repoObject);
 
 	protected boolean isItemInDeleteList(ItemReferenceBean bean, boolean isRefer) {
-        if (deleteNodes == null) {
+        if (deleteRepositoryObjects == null) {
             return false;
         }
 
         String itemName;
         String itemVersion;
         ERepositoryObjectType itemType;
-        for (IRepositoryNode node : deleteNodes) {
-            IRepositoryViewObject repObj = node.getObject();
-            Property property = repObj.getProperty();
+        for (IRepositoryObject object : deleteRepositoryObjects) {
+            Property property = object.getProperty();
             String label = property.getLabel();
             String version = property.getVersion();
-            ERepositoryObjectType type = repObj.getRepositoryObjectType();
+            ERepositoryObjectType type = object.getRepositoryObjectType();
             if (isRefer) {
                 itemName = bean.getReferenceItemName();
                 itemVersion = bean.getReferenceItemVersion();
@@ -115,4 +119,10 @@ public abstract class AbstractCheckDeleteItemReference implements ICheckDeleteIt
         return false;
     }
 
+    public void setDeleteRepositoryObjects(List<? extends IRepositoryNode> deleteNodes) {
+        deleteRepositoryObjects = new ArrayList<>();
+        for (IRepositoryNode node : deleteNodes) {
+            deleteRepositoryObjects.add(new RepositoryObject(node.getObject().getProperty()));
+        }
+    }
 }
