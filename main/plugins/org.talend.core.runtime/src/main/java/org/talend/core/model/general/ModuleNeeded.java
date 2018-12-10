@@ -46,6 +46,8 @@ public class ModuleNeeded {
 
     private boolean required;
 
+    private boolean excluded;
+
     private boolean mrRequired = false; // That indicates if the module is
                                         // required by M/R job.
 
@@ -291,6 +293,14 @@ public class ModuleNeeded {
 
     public void setRequired(boolean required) {
         this.required = required;
+    }
+
+    public boolean isExcluded() {
+        return this.excluded;
+    }
+
+    public void setExcluded(boolean excluded) {
+        this.excluded = excluded;
     }
 
     public ELibraryInstallStatus getStatus() {
