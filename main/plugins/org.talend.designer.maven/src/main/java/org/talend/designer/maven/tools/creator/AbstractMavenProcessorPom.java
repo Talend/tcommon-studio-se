@@ -213,11 +213,12 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
                 Xpp3Dom artifactSet = new Xpp3Dom("artifactSet"); //$NON-NLS-1$
                 configuration.addChild(artifactSet);
                 Xpp3Dom excludes = new Xpp3Dom("excludes"); //$NON-NLS-1$
-                if (!bigDataProcessor.getShadedModulesExclude().isEmpty()) {
+                Set<ModuleNeeded> modules = bigDataProcessor.getShadedModulesExclude();
+                if (!modules.isEmpty()) {
                     artifactSet.addChild(excludes);
                 }
 
-                for (ModuleNeeded module : bigDataProcessor.getShadedModulesExclude()) {
+                for (ModuleNeeded module : modules) {
                     Xpp3Dom include = new Xpp3Dom("exclude"); //$NON-NLS-1$
                     excludes.addChild(include);
                     MavenArtifact mvnArtifact = MavenUrlHelper.parseMvnUrl(module.getMavenUri());

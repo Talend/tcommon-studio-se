@@ -67,4 +67,6 @@ public interface TalendProcessOptionConstants {
 
     public static final int MODULES_FOR_MR = 1 << 4;
 
+    public static final int MODULES_EXCLUDE_SHADED = 1 << 5;
+
 }
