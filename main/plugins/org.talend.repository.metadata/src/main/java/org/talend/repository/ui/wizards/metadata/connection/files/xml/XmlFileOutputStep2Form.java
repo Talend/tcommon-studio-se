@@ -151,8 +151,6 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
 
     private MoveDownTreeNodeButton moveDown;
 
-    private int treeDataCount = 0;
-
     public XmlFileOutputStep2Form(boolean creation, Composite parent, ConnectionItem connectionItem) {
         super(parent, connectionItem);
         this.creation = creation;
@@ -547,7 +545,6 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
                 rootNum++;
             }
         }
-        treeDataCount = 0;
         int schemaViewerCount = schemaViewer.getTable().getItems().length;
         if (schemaViewerCount == CoreUIPlugin.getDefault().getPreferenceStore()
                 .getInt(ITalendCorePrefConstants.MAXIMUM_AMOUNT_OF_COLUMNS_FOR_XML) + 1) {
