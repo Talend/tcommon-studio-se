@@ -5292,8 +5292,7 @@ public class DatabaseForm extends AbstractForm {
             dbVersionCombo.getCombo().setItems(versions);
             dbVersionCombo.setHideWidgets(false);
         } else if (dbType.equals(EDatabaseConnTemplate.SAPHana.getDBDisplayName())) {
-            dbVersionCombo.getCombo().setItems(versions);
-            dbVersionCombo.setHideWidgets(!isSAPHana);
+            dbVersionCombo.setHideWidgets(true);
         }else if (dbType.equals(EDatabaseConnTemplate.SYBASEASE_16_SA.getDBDisplayName())) {
             dbVersionCombo.getCombo().setItems(versions);
             dbVersionCombo.setHideWidgets(!isSybase);
