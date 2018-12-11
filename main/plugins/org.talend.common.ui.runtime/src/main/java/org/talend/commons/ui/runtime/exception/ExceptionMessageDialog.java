@@ -124,7 +124,8 @@ public class ExceptionMessageDialog extends MessageDialog {
         Throwable rootException = ExceptionUtils.getRootCause(ex);
         String message = rootException.getMessage();
         if (rootException instanceof BusinessException) {
-            MessageDialog dialog = new MessageDialog(parent, title, null, message, WARNING,
+            MessageDialog dialog = new MessageDialog(parent, title, null, Messages.getString("HibernateUtils.auditDBIsNotUsable"), //$NON-NLS-1$
+                    WARNING,
                     new String[] { Messages.getString("ExceptionMessageDialog.OK") }, 0); //$NON-NLS-1$
             dialog.open();
         } else {
