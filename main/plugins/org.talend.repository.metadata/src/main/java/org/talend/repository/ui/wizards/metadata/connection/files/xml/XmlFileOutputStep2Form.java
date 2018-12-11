@@ -549,7 +549,8 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
         }
         treeDataCount = 0;
         int schemaViewerCount = schemaViewer.getTable().getItems().length;
-        if (schemaViewerCount < getChildElements(treeData)) {
+        if (schemaViewerCount == CoreUIPlugin.getDefault().getPreferenceStore()
+                .getInt(ITalendCorePrefConstants.MAXIMUM_AMOUNT_OF_COLUMNS_FOR_XML) + 1) {
             msgError.append(Messages.getString("XmlFileOutputStep2Form.Error"));
         }
 
@@ -574,19 +575,6 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
         return false;
     }
 
-    private int getChildElements(List<FOXTreeNode> treeData) {
-
-        for (FOXTreeNode node : treeData) {
-            if (!node.hasChildren()) {
-                treeDataCount++;
-            } else {
-                getChildElements(node.getChildren());
-            }
-
-        }
-        return treeDataCount;
-
-    }
     @Override
     public void updateStatus() {
         checkFieldsValue();
