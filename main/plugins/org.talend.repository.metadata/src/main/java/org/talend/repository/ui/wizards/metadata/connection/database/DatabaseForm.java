@@ -5247,7 +5247,6 @@ public class DatabaseForm extends AbstractForm {
         boolean isMySQL = asMySQLVersionEnable();
         boolean isVertica = asVerticaVersionEnable();
         boolean isSAS = asSASVersionEnable();
-        boolean isSAPHana = asSAPHanaVersionEnable();
         boolean isImpala = ImpalaVersionEnable();
         boolean isMsSQL = asMsSQLVersionEnable();
         boolean isSybase = asSybaseVersionEnable();
@@ -6869,21 +6868,6 @@ public class DatabaseForm extends AbstractForm {
         }
         EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(getConnectionDBType());
         return template != null && template == EDatabaseConnTemplate.SAS
-                && LanguageManager.getCurrentLanguage().equals(ECodeLanguage.JAVA);
-    }
-
-    /**
-     * 
-     * DOC hwang Comment method "asSAPHanaVersionEnable".
-     * 
-     * @return
-     */
-    private boolean asSAPHanaVersionEnable() {
-        if (getConnectionDBType().length() <= 0) {
-            return false;
-        }
-        EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(getConnectionDBType());
-        return template != null && template == EDatabaseConnTemplate.SAPHana
                 && LanguageManager.getCurrentLanguage().equals(ECodeLanguage.JAVA);
     }
 
