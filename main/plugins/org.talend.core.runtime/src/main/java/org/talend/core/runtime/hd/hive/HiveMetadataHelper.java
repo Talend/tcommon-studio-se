@@ -52,7 +52,8 @@ public class HiveMetadataHelper {
             for (IHDistribution d : distributions) {
                 if (!d.useCustom()) {// custom should be add
                     String[] distributionVersionsDisplay = getDistributionVersionsDisplay(d.getName(), false);
-                    if (distributionVersionsDisplay == null || distributionVersionsDisplay.length == 0) {
+                    if (distributionVersionsDisplay == null || distributionVersionsDisplay.length == 0
+                            || isHiveWizardCheckEnabled(d.getName(), d.getDefaultVersion().getVersion(), false)) {
                         continue; // if no version support, ignore it.
                     }
                 }
@@ -250,4 +251,7 @@ public class HiveMetadataHelper {
         return false;
     }
 
+    public static boolean isHiveWizardCheckEnabled(String hiveDistribution, String hiveVersion, boolean byDisplay) {
+        return doSupportMethod(hiveDistribution, hiveVersion, byDisplay, "isHiveWizardCheckEnabled");//$NON-NLS-1$
+    }
 }
