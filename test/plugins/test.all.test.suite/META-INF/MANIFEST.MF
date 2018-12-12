@@ -2,10 +2,9 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: All Test Launcher Plug-in
 Bundle-SymbolicName: test.all.test.suite
-Bundle-Version: 1.0.0
+Bundle-Version: 7.2.1.qualifier
 Require-Bundle: org.eclipse.core.runtime,
  org.apache.log4j,
- org.eclipse.swtbot.junit4_x,
  org.talend.testutils
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
