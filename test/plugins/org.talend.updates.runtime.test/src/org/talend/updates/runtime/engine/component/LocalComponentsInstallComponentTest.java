@@ -245,8 +245,6 @@ public class LocalComponentsInstallComponentTest {
         ComponentIndexBean index = new ComponentIndexManager().create(testDataFile);
         Assert.assertNotNull(index);
 
-        final File target = new File(tmpFolder, testDataFile.getName());
-        FilesUtils.copyFile(testDataFile, target);
         final File installedFolder = new File(tmpFolder, "installed");
 
         try {
@@ -258,14 +256,15 @@ public class LocalComponentsInstallComponentTest {
 
                         @Override
                         public IStatus install(IProgressMonitor progress, List<URI> allRepoUris) throws ExtraFeatureException {
-                            setUseLegacyP2Install(false); // no need change the config.ini for test
+                            // skip CoreTisService.updateConfiguratorBundles() since no license in JUnit tests
+                            setUseLegacyP2Install(true);
                             return super.install(progress, allRepoUris);
                         }
 
                         @Override
                         public void shareComponent(IProgressMonitor progress, File installedCompFile) {
 
-                            File sharedCompFile = new File(installedFolder, installedCompFile.getName());
+                            File sharedCompFile = new File(PathUtils.getComponentsSharedFolder(), installedCompFile.getName());
                             try {
                                 FilesUtils.copyFile(installedCompFile, sharedCompFile);
                             } catch (IOException e) {
@@ -288,16 +287,16 @@ public class LocalComponentsInstallComponentTest {
             Assert.assertNotNull(failedComponents);
             Assert.assertTrue(failedComponents.isEmpty());
 
-            // move to installed
-            Assert.assertTrue(installedFolder.exists());
+            // move to shared
+            File sharedFolder = PathUtils.getComponentsSharedFolder();
+            Assert.assertTrue(sharedFolder.exists());
 
-            File installedCompFile = new File(installedFolder, testDataFile.getName());
-            Assert.assertTrue(installedCompFile.exists());
-            Assert.assertFalse(target.exists());
-            Assert.assertEquals(testDataFile.getName(), installedCompFile.getName());
+            File sharedCompFile = new File(sharedFolder, testDataFile.getName());
+            Assert.assertTrue(sharedCompFile.exists());
+            Assert.assertEquals(testDataFile.getName(), sharedCompFile.getName());
 
             final long originalChecksumAlder32 = FilesUtils.getChecksumAlder32(testDataFile);
-            final long checksumAlder32 = FilesUtils.getChecksumAlder32(installedCompFile);
+            final long checksumAlder32 = FilesUtils.getChecksumAlder32(sharedCompFile);
             Assert.assertEquals(originalChecksumAlder32, checksumAlder32);
 
             Bundle bundle = Platform.getBundle(index.getBundleId());
