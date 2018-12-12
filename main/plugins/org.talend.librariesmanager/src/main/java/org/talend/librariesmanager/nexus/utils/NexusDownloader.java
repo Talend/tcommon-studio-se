@@ -37,8 +37,8 @@ import org.talend.core.context.RepositoryContext;
 import org.talend.core.download.DownloadListener;
 import org.talend.core.download.IDownloadHelper;
 import org.talend.core.model.general.Project;
-import org.talend.core.nexus.HttpClientTransport;
 import org.talend.core.nexus.ArtifactRepositoryBean;
+import org.talend.core.nexus.HttpClientTransport;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.maven.MavenArtifact;
@@ -91,70 +91,73 @@ public class NexusDownloader implements IDownloadHelper {
 
             NullProgressMonitor monitor = new NullProgressMonitor();
             ArtifactRepositoryBean nServer = getNexusServer();
-            new HttpClientTransport(nServer.getRepositoryURL(), nServer.getUserName(), nServer.getPassword()) {
+            try {
+                new HttpClientTransport(nServer.getRepositoryURL(), nServer.getUserName(), nServer.getPassword()) {
 
-                @Override
-                protected HttpResponse execute(IProgressMonitor monitor, DefaultHttpClient httpClient, URI targetURI)
-                        throws Exception {
-                    HttpGet httpGet = new HttpGet(targetURI);
-                    HttpResponse response = httpClient.execute(httpGet);
-                    if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                        HttpEntity entity = response.getEntity();
-                        InputStream inputStream = entity.getContent();
-                        BufferedInputStream bis = null;
-                        BufferedOutputStream bos = null;
-                        try {
-                            bis = new BufferedInputStream(inputStream);
-                            bos = new BufferedOutputStream(new FileOutputStream(downloadedFile));
-                            long contentLength = entity.getContentLength();
-                            fireDownloadStart(new Long(contentLength).intValue());
+                    @Override
+                    protected HttpResponse execute(IProgressMonitor monitor, DefaultHttpClient httpClient, URI targetURI)
+                            throws Exception {
+                        HttpGet httpGet = new HttpGet(targetURI);
+                        HttpResponse response = httpClient.execute(httpGet);
+                        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                            HttpEntity entity = response.getEntity();
+                            InputStream inputStream = entity.getContent();
+                            BufferedInputStream bis = null;
+                            BufferedOutputStream bos = null;
+                            try {
+                                bis = new BufferedInputStream(inputStream);
+                                bos = new BufferedOutputStream(new FileOutputStream(downloadedFile));
+                                long contentLength = entity.getContentLength();
+                                fireDownloadStart(new Long(contentLength).intValue());
 
-                            long refreshInterval = 1000;
-                            if (contentLength < BUFFER_SIZE * 10) {
-                                refreshInterval = contentLength / 200;
-                            }
-                            int bytesDownloaded = 0;
-                            byte[] buf = new byte[BUFFER_SIZE];
-                            int bytesRead = -1;
-                            long startTime = new Date().getTime();
-                            int byteReadInloop = 0;
-                            while ((bytesRead = bis.read(buf)) != -1) {
-                                bos.write(buf, 0, bytesRead);
-                                long currentTime = new Date().getTime();
-                                byteReadInloop = byteReadInloop + bytesRead;
-                                if (currentTime - startTime > refreshInterval) {
-                                    startTime = currentTime;
-                                    fireDownloadProgress(byteReadInloop);
-                                    byteReadInloop = 0;
+                                long refreshInterval = 1000;
+                                if (contentLength < BUFFER_SIZE * 10) {
+                                    refreshInterval = contentLength / 200;
                                 }
-                                bytesDownloaded += bytesRead;
-                                if (isCancel()) {
-                                    return response;
+                                int bytesDownloaded = 0;
+                                byte[] buf = new byte[BUFFER_SIZE];
+                                int bytesRead = -1;
+                                long startTime = new Date().getTime();
+                                int byteReadInloop = 0;
+                                while ((bytesRead = bis.read(buf)) != -1) {
+                                    bos.write(buf, 0, bytesRead);
+                                    long currentTime = new Date().getTime();
+                                    byteReadInloop = byteReadInloop + bytesRead;
+                                    if (currentTime - startTime > refreshInterval) {
+                                        startTime = currentTime;
+                                        fireDownloadProgress(byteReadInloop);
+                                        byteReadInloop = 0;
+                                    }
+                                    bytesDownloaded += bytesRead;
+                                    if (isCancel()) {
+                                        return response;
+                                    }
+                                }
+                                bos.flush();
+                                if (bytesDownloaded == contentLength) {
+                                    MavenArtifactsHandler deployer = new MavenArtifactsHandler();
+                                    deployer.install(downloadedFile.getAbsolutePath(), mavenUri, nServer.isOfficial());
+                                }
+                                fireDownloadComplete();
+                            } finally {
+                                if (bis != null) {
+                                    bis.close();
+                                }
+                                if (bos != null) {
+                                    bos.close();
                                 }
                             }
-                            bos.flush();
-                            if (bytesDownloaded == contentLength) {
-                                MavenArtifactsHandler deployer = new MavenArtifactsHandler();
-                                deployer.install(downloadedFile.getAbsolutePath(), mavenUri, nServer.isOfficial());
-                            }
-                            fireDownloadComplete();
-                        } finally {
-                            if (bis != null) {
-                                bis.close();
-                            }
-                            if (bos != null) {
-                                bos.close();
-                            }
-                            if (tempFolder != null) {
-                                FilesUtils.deleteFile(tempFolder, true);
-                            }
+
                         }
-
+                        return response;
                     }
-                    return response;
-                }
 
-            }.doRequest(monitor, parseMvnUrl);
+                }.doRequest(monitor, parseMvnUrl);
+            } finally {
+                if (tempFolder != null) {
+                    FilesUtils.deleteFile(tempFolder, true);
+                }
+            }
         }
 
     }

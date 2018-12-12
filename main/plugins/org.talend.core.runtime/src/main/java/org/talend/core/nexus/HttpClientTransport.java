@@ -40,8 +40,10 @@ import org.talend.commons.exception.BusinessException;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.network.TalendProxySelector;
 import org.talend.commons.utils.network.TalendProxySelector.IProxySelectorProvider;
+import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
+import org.talend.designer.core.IDesignerCoreService;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -86,6 +88,41 @@ public abstract class HttpClientTransport {
     }
 
     public void doRequest(IProgressMonitor monitor, final URI requestURI) throws Exception {
+        int retries = 5;
+        long waitMillis = 20000;
+
+        int timeout = NexusServerUtils.getTimeout();
+        boolean fTimeout = false;
+
+        for(int t = 1; t <= retries; t++){
+            try{
+                fTimeout = false;
+                doRequestOne(monitor, requestURI);
+            } catch (java.net.SocketTimeoutException e){
+                // Read timed out
+                fTimeout = true;
+                if(t == retries){
+                    throw new Exception(e);
+                }
+            } catch (Exception e) {
+                // DEBUG //
+                System.err.printf("[%d] Exception occured for %s\n", t, requestURI);
+                e.printStackTrace(System.err);
+                // DEBUG //
+                throw e;
+            }
+            if(!fTimeout){
+                break;
+            }
+            // DEBUG //
+            System.err.printf("[%d] Read timeout (in %d millisecs) occured for %s\n", t, timeout, requestURI);
+            // DEBUG //
+
+            Thread.sleep(waitMillis * t);
+        }
+    }
+
+    public void doRequestOne(IProgressMonitor monitor, final URI requestURI) throws Exception {
         if (monitor == null) {
             monitor = new NullProgressMonitor();
         }
@@ -104,6 +141,10 @@ public abstract class HttpClientTransport {
                         new UsernamePasswordCredentials(username, password));
             }
             int timeout = NexusServerUtils.getTimeout();
+            IDesignerCoreService designerCoreService = CoreRuntimePlugin.getInstance().getDesignerCoreService();
+            if (designerCoreService != null) {
+                timeout = designerCoreService.getTACConnectionTimeout() * 1000;
+            }
             HttpParams params = httpClient.getParams();
             params.setIntParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, timeout);
             params.setIntParameter(CoreConnectionPNames.SO_TIMEOUT, timeout);
@@ -114,6 +155,9 @@ public abstract class HttpClientTransport {
             processResponseCode(response);
         } catch (org.apache.http.conn.HttpHostConnectException e) {
             // connection failure
+            throw e;
+        } catch (java.net.SocketTimeoutException e){
+            // Read timed out
             throw e;
         } catch (Exception e) {
             throw new Exception(requestURI.toString(), e);
@@ -147,13 +191,15 @@ public abstract class HttpClientTransport {
                         address.getAddress(), proxyPort, "Http Proxy", "Http proxy authentication", null);
                 if (proxyAuthentication != null) {
                     String proxyUser = proxyAuthentication.getUserName();
-                    String proxyPassword = "";
-                    char[] passwordChars = proxyAuthentication.getPassword();
-                    if (passwordChars != null) {
-                        proxyPassword = new String(passwordChars);
+                    if(StringUtils.isNotBlank(proxyUser)){
+                        String proxyPassword = "";
+                        char[] passwordChars = proxyAuthentication.getPassword();
+                        if (passwordChars != null) {
+                            proxyPassword = new String(passwordChars);
+                        }
+                        httpClient.getCredentialsProvider().setCredentials(new AuthScope(proxyServer, proxyPort),
+                                new UsernamePasswordCredentials(proxyUser, proxyPassword));
                     }
-                    httpClient.getCredentialsProvider().setCredentials(new AuthScope(proxyServer, proxyPort),
-                            new UsernamePasswordCredentials(proxyUser, proxyPassword));
                 }
                 HttpHost proxyHost = new HttpHost(proxyServer, proxyPort);
                 httpClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxyHost);
