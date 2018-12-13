@@ -16,12 +16,15 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.EMap;
+import org.talend.commons.exception.CommonExceptionHandler;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.Property;
 import org.talend.core.runtime.hd.IDynamicDistributionManager;
+import org.talend.core.runtime.i18n.Messages;
 
 /**
  * created by cmeng on Jul 20, 2015 Detailled comment
@@ -48,42 +51,61 @@ public class BigDataBasicUtil {
         return null;
     }
 
-    public static void reloadAllDynamicDistributions(IProgressMonitor monitor) {
+    private static IDynamicDistributionManager getDynamicDistributionManager(IProgressMonitor monitor) throws Exception {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IHadoopDistributionService.class)) {
             IHadoopDistributionService hdService = (IHadoopDistributionService) GlobalServiceRegister.getDefault()
                     .getService(IHadoopDistributionService.class);
             if (hdService != null) {
-                IDynamicDistributionManager ddManager = hdService.getDynamicDistributionManager();
-                if (ddManager != null && ddManager.isLoaded()) {
-                    try {
-                        ddManager.reloadAllDynamicDistributions(monitor);
-                    } catch (Exception e) {
-                        ExceptionHandler.process(e);
-                    }
-                }
+                return hdService.getDynamicDistributionManager();
             }
+        }
+        return null;
+    }
+
+    public static boolean isDynamicDistributionLoaded(IProgressMonitor monitor) throws Exception {
+        IDynamicDistributionManager dynDistriManager = getDynamicDistributionManager(monitor);
+        if (dynDistriManager != null) {
+            return dynDistriManager.isLoaded();
+        } else {
+            return false;
+        }
+    }
+
+    public static void loadDynamicDistribution(IProgressMonitor monitor) throws Exception {
+        IDynamicDistributionManager ddManager = getDynamicDistributionManager(monitor);
+        if (ddManager != null) {
+            ddManager.load(monitor, false);
+        } else {
+            CommonExceptionHandler
+                    .warn(Messages.getString("BigDataBasicUtil.loadDynamicDistribution.IDynamicDistributionManager.notFound", //$NON-NLS-1$
+                            IDynamicDistributionManager.class.getSimpleName()));
+        }
+    }
+
+    public static void reloadAllDynamicDistributions(IProgressMonitor monitor) {
+        try {
+            IDynamicDistributionManager ddManager = getDynamicDistributionManager(monitor);
+            if (ddManager != null && ddManager.isLoaded()) {
+                ddManager.reloadAllDynamicDistributions(monitor);
+            }
+        } catch (Exception e) {
+            ExceptionHandler.process(e);
         }
     }
 
     public static Collection<String> getDynamicDistributionPaths() {
-        // if (dynamicDistributionPaths == null || dynamicDistributionPaths.isEmpty()) {
         Collection<String> dynamicDistributionPaths = new HashSet<>();
-        IDynamicDistributionManager ddManager = null;
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IHadoopDistributionService.class)) {
-            IHadoopDistributionService hdService = (IHadoopDistributionService) GlobalServiceRegister.getDefault()
-                    .getService(IHadoopDistributionService.class);
-            if (hdService != null) {
-                ddManager = hdService.getDynamicDistributionManager();
-                if (ddManager != null) {
-                    String dynamicDistrPath = ddManager.getUserStoragePath();
-                    dynamicDistributionPaths.add(dynamicDistrPath);
-                    Collection<String> preferencePaths = ddManager.getPreferencePaths();
-                    dynamicDistributionPaths.addAll(preferencePaths);
-                }
+        try {
+            IDynamicDistributionManager ddManager = getDynamicDistributionManager(new NullProgressMonitor());
+            if (ddManager != null) {
+                String dynamicDistrPath = ddManager.getUserStoragePath();
+                dynamicDistributionPaths.add(dynamicDistrPath);
+                Collection<String> preferencePaths = ddManager.getPreferencePaths();
+                dynamicDistributionPaths.addAll(preferencePaths);
             }
-
+        } catch (Exception e) {
+            ExceptionHandler.process(e);
         }
-        // }
         return dynamicDistributionPaths;
     }
 
@@ -98,21 +120,15 @@ public class BigDataBasicUtil {
         }
         return false;
     }
-    
+
     public static String getDynamicDistributionCacheVersion() {
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IHadoopDistributionService.class)) {
-            IHadoopDistributionService hdService = (IHadoopDistributionService) GlobalServiceRegister.getDefault()
-                    .getService(IHadoopDistributionService.class);
-            if (hdService != null) {
-                IDynamicDistributionManager ddManager = hdService.getDynamicDistributionManager();
-                if (ddManager != null && ddManager.isLoaded()) {
-                    try {
-                       return ddManager.getDynamicDistributionCacheVersion();
-                    } catch (Exception e) {
-                        ExceptionHandler.process(e);
-                    }
-                }
+        try {
+            IDynamicDistributionManager ddManager = getDynamicDistributionManager(new NullProgressMonitor());
+            if (ddManager != null && ddManager.isLoaded()) {
+                return ddManager.getDynamicDistributionCacheVersion();
             }
+        } catch (Exception e) {
+            ExceptionHandler.process(e);
         }
         return null;
     }

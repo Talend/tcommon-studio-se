@@ -33,6 +33,8 @@ public interface IDynamicDistributionManager {
 
     public boolean isLoaded();
 
+    public void load(IProgressMonitor monitor, boolean resetModulesCache) throws Exception;
+
     public boolean isBuiltinDynamicDistribution(String dynamicDistributionId);
 
     public boolean isUsersDynamicDistribution(String dynamicDistributionId);
