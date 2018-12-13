@@ -661,6 +661,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
             IFile childPom = assemblyFile.getProject().getFile(childPomFile);
             if (childPom.exists()) {
                 Model childModel = MODEL_MANAGER.readMavenModel(childPom);
+                childModel.getProperties().setProperty("maven.deploy.skip", Boolean.TRUE.toString()); //$NON-NLS-1$
                 List<Plugin> childPlugins = new ArrayList<Plugin>(childModel.getBuild().getPlugins());
                 Iterator<Plugin> childIterator = childPlugins.iterator();
                 while (childIterator.hasNext()) {
@@ -670,6 +671,9 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
                         childIterator.remove();
                     } else if (p.getArtifactId().equals("maven-antrun-plugin")) { //$NON-NLS-1$
                         // because no assembly, so no need copy the scripts and rename it.
+                        childIterator.remove();
+                    } else if (p.getArtifactId().equals("maven-deploy-plugin")) { //$NON-NLS-1$
+                        // no assembly so no need to do deploy for zip.
                         childIterator.remove();
                     }
 
